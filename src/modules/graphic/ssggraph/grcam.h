@@ -44,6 +44,7 @@ class cGrCamera
     int			mirrorAllowed;	/* flag to allox the display of mirror */
 
  protected:
+    sgVec3 speed;
     sgVec3 eye;
     sgVec3 center;
     sgVec3 up;
@@ -89,6 +90,9 @@ class cGrCamera
     }
     sgVec3 *getPosv(void) {
 	return &eye;
+    }
+    sgVec3 *getSpeedv(void) {
+        return &speed;
     }
     t3Dd *getCenter(void) {
 	static t3Dd pos;
