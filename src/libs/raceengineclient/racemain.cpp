@@ -53,7 +53,10 @@ static void *AbandonRaceHookHandle = 0;
 static void
 AbandonRaceHookActivate(void * /* vforce */)
 {
-    /* Return to race menu */
+	// Shutdown current event.
+	ReEventShutdown();
+
+	/* Return to race menu */
     ReInfo->_reState = RE_STATE_CONFIG;
 
     GfuiScreenActivate(ReInfo->_reGameScreen);
