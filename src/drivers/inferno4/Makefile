@@ -26,7 +26,7 @@ SOURCES   = ${ROBOT}.cpp common.cpp
 
 SHIPDIR   = drivers/${ROBOT}
 
-SHIP      = ${ROBOT}.xml car1.xml logo.rgb xj-220.rgb text0.rgb
+SHIP      = ${ROBOT}.xml car1.xml logo.rgb xj-220.rgb clkdtm.rgb
 
 SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
