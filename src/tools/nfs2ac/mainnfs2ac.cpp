@@ -24,7 +24,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     FILE * in ;
     int ver;
     int num=0 ;
-    char c;
+    //char c;
     char *p;
     int i;
     int k;
@@ -86,9 +86,14 @@ int main(int argc, char **argv)
     tVector   *vi;
     struct stat fstat;
     
+	if (argc < 2) {
+		printf("Please give the filename as argument.\n");
+		return -1;
+	}
+
     if (stat(argv[1], &fstat)) {
-	perror(argv[1]);
-	return -1;
+		perror(argv[1]);
+		return -1;
     }
     
     num = fstat.st_size;
@@ -140,7 +145,7 @@ int main(int argc, char **argv)
 
     printf("OBJECT group\n");
     printf("name \"ouature%d\"\n", ver);
-    printf("kids %ld\n", NumParts);
+    printf("kids %d\n", NumParts);
 
   
     for (i = 0; i < NumParts; i++) {
@@ -151,13 +156,13 @@ int main(int argc, char **argv)
 	printf("name \"%s\"\n", PartNames + 64 * i);
 	printf("texture \"car00.tga\"\n");
 
-	printf("numvert %ld\n",PNumVertices[i]);
+	printf("numvert %d\n",PNumVertices[i]);
 	vi= (tVector *) vl;
 	for (k=0 ; k<PNumVertices[i]; k++)
 	    {
 		printf("%f %f %f \n", vi[k].z + Parts[i].z, vi[k].y + Parts[i].y, vi[k].x + Parts[i].x);
 	    }
-	printf("numsurf %ld\n",PNumTriangles[i]);
+	printf("numsurf %d\n",PNumTriangles[i]);
 	for (k=0 ; k<PNumTriangles[i]; k ++)
 	    {
 		printf("SURF 0x10\n");
@@ -165,9 +170,9 @@ int main(int argc, char **argv)
 		printf("refs 3\n");
 		tr=(tTriangle *) ( (sizeof(tTriangle)*k) + tl);
 		vi= (tVector *) vl;
-		printf("%ld %f %f\n",tr->I1, tr->U1, 1.0 - tr->V1);
-		printf("%ld %f %f\n",tr->I2, tr->U2, 1.0 - tr->V2);
-		printf("%ld %f %f\n",tr->I3, tr->U3, 1.0 - tr->V3);
+		printf("%d %f %f\n",tr->I1, tr->U1, 1.0 - tr->V1);
+		printf("%d %f %f\n",tr->I2, tr->U2, 1.0 - tr->V2);
+		printf("%d %f %f\n",tr->I3, tr->U3, 1.0 - tr->V3);
 	    }
 	printf("kids 0\n");
     }

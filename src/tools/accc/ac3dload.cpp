@@ -648,7 +648,7 @@ int splitOb (ob_t **object)
 	}
 	if (numtri==0)
 	    continue;
-	/* must saved the object */ 
+	/* must saved the object */
 	tob=(ob_t*)malloc(sizeof(ob_t));
 	memset(tob,0,sizeof(ob_t ));
 	tob->vertex=(point_t*)malloc(sizeof(point_t)*numtri*3);
@@ -665,8 +665,8 @@ int splitOb (ob_t **object)
 	    tob->data=NULL;
 	}
 	attrSurf=tob->attrSurf;
-	memcpy(tob->vertexarray, vatmp,numtri*3*sizeof(tcoord_t));      
-	memcpy(tob->vertex, pttmp,n*sizeof(point_t));      
+	memcpy(tob->vertexarray, vatmp,numtri*3*sizeof(tcoord_t));
+	memcpy(tob->vertex, pttmp,n*sizeof(point_t));
 	memcpy(tob->snorm, snorm,n*sizeof(point_t));      
 	memcpy(tob->norm, snorm,n*sizeof(point_t));      
 	tob->kids=0;
