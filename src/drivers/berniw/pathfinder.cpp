@@ -1177,7 +1177,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	int i, m = 0;
 	for (i = 0; i < collcars; i++) {
 		if (o[i].dist < COLLDIST/3) {
-//			double dst = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), o[i].collcar->getCurrentPos());
 			double dst = o[i].minorthdist;
 			if (o[i].time > 0.0 && o[i].time < minTime) {
 				minTime = o[i].time;
@@ -1230,7 +1229,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				for (i = 0; i <= (int) myc->MINOVERTAKERANGE; i += 10) {
 					if (track->getSegmentPtr((trackSegId+i) % nPathSeg)->getRadius() < myc->OVERTAKERADIUS) return 0;
 				}
-				//double pathtocarsgn = sign(pathtomiddle - d);
 				v3d r, dir = *o[collcarindex].collcar->getCurrentPos()- *myc->getCurrentPos();
 				myc->getDir()->crossProduct(&dir, &r);
 				double pathtocarsgn = sign(r.z);
