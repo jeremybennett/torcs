@@ -35,11 +35,13 @@
 #include "linalg.h"
 #include "opponent.h"
 #include "pit.h"
+#include "learn.h"
 
 
 class Opponents;
 class Opponent;
 class Pit;
+
 
 class Driver {
 	public:
@@ -93,6 +95,9 @@ class Driver {
 		void initCw();
 		void initTireMu();
 
+		void computeRadius(float *radius);
+		int isAlone();
+
 		// Per robot global data.
 		int stuck;
 		float trackangle;		// The angle of the current track segment (global coordinates).
@@ -105,10 +110,15 @@ class Driver {
 		Opponents *opponents;	// The container for opponents.
 		Opponent *opponent;		// The array of opponents.
 		Pit *pit;				// Pointer to the pit instance.
-		float lastturnarc;		// The arc of the current turn segments of the same type.
-		int lastsegtype;		// The segment type for which lastturnarc is valid.
+		//float lastturnarc;		// The arc of the current turn segments of the same type.
+		//int lastsegtype;		// The segment type for which lastturnarc is valid.
 		float currentspeedsqr;	// Square of the current speed_x.
 		float clutchtime;		// Clutch timer.
+		float oldlookahead;		// Lookahead for steering in the previous step.
+
+		float *radius;
+		SegLearn *learn;
+		int alone;
 
 		// Data that should stay constant after first initialization.
 		int MAX_UNSTUCK_COUNT;
@@ -152,6 +162,9 @@ class Driver {
 		static const float MAX_INC_FACTOR;
 		static const float CATCH_FACTOR;
 		static const float CLUTCH_FULL_MAX_TIME;
+		static const float USE_LEARNED_OFFSET_RANGE;
+
+
 		// Track variables.
 		tTrack* track;
 };
