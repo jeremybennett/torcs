@@ -53,7 +53,6 @@ GfuiHelpScreen(void *prevScreen)
     tGfuiScreen	*pscr = (tGfuiScreen*)prevScreen;
     
     scrHandle = GfuiScreenCreate();
-    GfuiMenuDefaultKeysAdd(scrHandle);
     
     GfuiLabelCreateEx(scrHandle,
 		      "Keys Definition",
@@ -108,6 +107,8 @@ GfuiHelpScreen(void *prevScreen)
     GfuiAddKey(scrHandle, (unsigned char)27, "", prevScreen, GfuiScreenReplace, NULL);
     GfuiAddSKey(scrHandle, GLUT_KEY_F1, "", prevScreen, GfuiScreenReplace, NULL);
     GfuiAddKey(scrHandle, (unsigned char)13, "", prevScreen, GfuiScreenReplace, NULL);
+
+    GfuiMenuDefaultKeysAdd(scrHandle);
 
     GfuiScreenActivate(scrHandle);
 
