@@ -68,13 +68,6 @@ AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please
 
 AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check your installation and add the correct paths!]))
 
-dnl Checks for plib libraries.
-AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check your installation and add the correct paths!]))
-
 dnl Replace `main' with a function in -lpng:
 AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(z, main,,AC_MSG_ERROR([Can't find libz. Please check your installation and add the correct paths!]))
@@ -82,6 +75,13 @@ AC_CHECK_LIB(z, main,,AC_MSG_ERROR([Can't find libz. Please check your installat
 AC_CHECK_LIB(GL, main,,AC_MSG_ERROR([Can't find libGL. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(glut, main,,AC_MSG_ERROR([Can't find libglut. Please check your installation and add the correct paths!]))
+
+dnl Checks for plib libraries.
+AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check your installation and add the correct paths!]))
 
 AC_OUTPUT(Make-config \
           src/tools/launcher/torcs \
