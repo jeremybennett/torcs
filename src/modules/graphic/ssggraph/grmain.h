@@ -88,6 +88,7 @@ extern class cGrScreen *grScreens[];
 #define GR_NB_MAX_SCREEN 4
 
 extern tdble grLodFactorValue;
+extern double grDeltaTime;
 
 #endif /* _GRMAIN_H_ */ 
 

@@ -317,6 +317,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
 	loadParams (s);
 	GfParmWriteFile(NULL, grHandle, "Graph");
+	curCam->onSelect(curCar, s);
     }
 
     light = ssgGetLight (0);

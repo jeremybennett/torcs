@@ -140,7 +140,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 	}
       
 	if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
-	    if (car->_skid[i] > 0.0) {
+	    if (car->_skid[i] > 0.2) {
 
 		basevtx = new ssgVertexArray(4 * 2 + 1);
 	    

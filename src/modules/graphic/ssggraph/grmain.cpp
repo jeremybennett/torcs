@@ -46,7 +46,7 @@
 int maxTextureUnits = 0;
 static double	OldTime;
 static int	nFrame;
-static float	Fps;
+float		grFps;
 double		grCurTime;
 double		grDeltaTime;
 int		segIndice	= 0;
@@ -257,7 +257,7 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
 
     OldTime = GfTimeClock();
     nFrame = 0;
-    Fps = 0;
+    grFps = 0;
 
     sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -319,7 +319,7 @@ refresh(tSituation *s)
     grDeltaTime = grCurTime - OldTime;
     if ((grCurTime - OldTime) > 1.0) {
 	/* The Frames Per Second (FPS) display is refreshed every second */
-	Fps = (tdble)nFrame / (grCurTime - OldTime);
+	grFps = (tdble)nFrame / (grCurTime - OldTime);
 	nFrame = 0;
 	OldTime = grCurTime;
     }
@@ -336,7 +336,7 @@ refresh(tSituation *s)
     STOP_PROFILE("grDrawBackground/glClear");
 
     for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	grScreens[i]->update(s, Fps);
+	grScreens[i]->update(s, grFps);
     }
 
     grUpdateSmoke(s->currentTime);

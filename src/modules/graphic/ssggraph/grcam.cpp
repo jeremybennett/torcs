@@ -38,6 +38,7 @@
 #include "grsmoke.h"
 #include "grcar.h"
 #include "grmain.h"
+#include "grutil.h"
 #include <tgfclient.h>
 
 static char path[1024];
@@ -924,7 +925,6 @@ class cGrCarCamRoadFly : public cGrPerspCamera
     float gain;
     float damp;
     float offset[3];
-    float omega[3];
  public:
     cGrCarCamRoadFly(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
 			float fovy, float fovymin, float fovymax,
@@ -939,14 +939,12 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	offset[0]=0.0;
 	offset[1]=0.0;
 	offset[2]=60.0;
-	omega[0]=0.0;
-	omega[1]=0.0;
-	omega[2]=0.0;
 	current = -1;
     }
     
     void update(tCarElt *car, tSituation *s) {
 	tRoadCam *curCam;
+	float height;
 	float dt;
 
 	if (current == -1) {
@@ -954,7 +952,6 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	}
 
 	curCam = car->_trkPos.seg->cam;
-	dt = s->deltaTime;
 	timer--;
 	if (timer<0) {
 	    eye[0] = car->_pos_X + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
@@ -964,7 +961,7 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 
 	if (current != car->index) {
 	    /* the target car changed */
-	    zOffset = 30.0;
+	    zOffset = 40.0;
 	    current = car->index;
 	} else {
 	    zOffset = 0.0;
@@ -974,13 +971,14 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	    timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
 	    offset[0] = -0.5 + (rand()/(RAND_MAX+1.0));
 	    offset[1] = -0.5 + (rand()/(RAND_MAX+1.0));
-	    offset[2] = (30.0*rand()/(RAND_MAX+1.0)) + zOffset;
+	    offset[2] = -5.0 + (30.0*rand()/(RAND_MAX+1.0)) + zOffset;
 	    offset[0] = offset[0]*(offset[2]+1.0);
 	    offset[1] = offset[1]*(offset[2]+1.0);
-	    damp = 5.0;
 	    gain = 5.0;
+	    damp = 5.0;
 	}
-
+	dt = s->deltaTime;
+	
 	speed[0] += (gain*(offset[0]+car->_pos_X - eye[0]) - speed[0]*damp)*dt;
 	speed[1] += (gain*(offset[1]+car->_pos_Y - eye[1]) - speed[1]*damp)*dt;
 	speed[2] += (gain*(offset[2]+car->_pos_Z - eye[2]) - speed[2]*damp)*dt;
@@ -993,8 +991,22 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	center[1] = (car->_pos_Y);
 	center[2] = (car->_pos_Z);
 
-
+	// avoid going under the scene
+	height = grGetHOT(eye[0], eye[1]) + 1.0;
+	if (eye[2] < height) {
+	    timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
+	    offset[2] = height - car->_pos_Z + 1.0;
+	    eye[2] = height;
+	}
+	
     }
+
+    void onSelect(tCarElt *car, tSituation *s)
+    {
+	timer = 0;
+	current = -1;
+    }
+
 };
 
 class cGrCarCamRoadZoom : public cGrPerspCamera

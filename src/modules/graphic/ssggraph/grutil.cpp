@@ -33,10 +33,8 @@
 
 #include "grutil.h"
 #include "grmultitexstate.h"
+#include "grscene.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
@@ -473,4 +471,37 @@ grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
 	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
     }
     GfuiPrintString(buf, color, font, x, y, GFUI_ALIGN_HR_VB);
+}
+
+float
+grGetHOT(float x, float y)
+{
+  sgVec3 test_vec;
+  sgMat4 invmat;
+  sgMakeIdentMat4(invmat);
+
+  invmat[3][0] = -x;
+  invmat[3][1] = -y;
+  invmat[3][2] =  0.0f         ;
+
+  test_vec [0] = 0;
+  test_vec [1] = 0;
+  test_vec [2] = 100000.0f;
+
+  ssgHit *results;
+  int num_hits = ssgHOT (TheScene, test_vec, invmat, &results);
+
+  float hot = -1000000.0f;
+
+  for (int i = 0; i < num_hits; i++)
+  {
+    ssgHit *h = &results[i];
+
+    float hgt = (h->plane[2] == 0.0 ? 0.0 : - h->plane[3] / h->plane[2]);
+
+    if (hgt >= hot)
+      hot = hgt;
+  }
+
+  return hot;
 }

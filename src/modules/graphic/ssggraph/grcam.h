@@ -60,13 +60,14 @@ class cGrCamera
 	mirrorAllowed = mymirrorAllowed;
     }
 
-	virtual ~cGrCamera() {};
+    virtual ~cGrCamera() {};
     
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
     virtual void setProjection(void) = 0;
     virtual void setModelView(void) = 0;
     virtual void setZoom(int cmd) = 0;				/* Set the zoom with commands */
     virtual void loadDefaults(char *attr) = 0;			/* Load the default values from parameter file */
+    virtual void onSelect(tCarElt *car, tSituation *s) = 0;	/* called when the camera is selected */
 
     virtual float getLODFactor(float x, float y, float z) = 0;	/* Get the LOD factor for an object located at x,y,z */
 
@@ -109,6 +110,7 @@ class cGrCamera
     t3Dd *getUp(void) {
 	static t3Dd pos;
 	pos.x = up[0];
+
 	pos.y = up[1];
 	pos.z = up[2];
 	return &pos;
@@ -167,7 +169,8 @@ class cGrPerspCamera : public cGrCamera
     }
 
    void limitFov(void)  {}
-    
+   void onSelect(tCarElt *car, tSituation *s) {}
+
 };
 
 
@@ -196,6 +199,7 @@ class cGrOrthoCamera : public cGrCamera
     float getLODFactor(float x, float y, float z) { return 1; }
     void loadDefaults(char *attr) { }
     void setZoom(int cmd) { }
+    void onSelect(tCarElt *car, tSituation *s) {}
 };
 
 class cGrBackgroundCam : public cGrPerspCamera
