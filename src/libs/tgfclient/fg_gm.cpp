@@ -53,10 +53,6 @@
 #include "fg_gm.h"
 
 #ifndef WIN32
-#define USE_RANDR_EXT
-#endif // WIN32
-
-#ifndef WIN32
 
 #include <GL/glx.h>
 #include <X11/Xlib.h>

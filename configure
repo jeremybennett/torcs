@@ -864,6 +864,7 @@ Optional Features:
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
   --enable-debug          set the debug mode
+  --disable-xrandr	   reset the XRANDR mode
   --enable-ccmalloc       set the ccmalloc mode (beware path...)
   --enable-profiler       set the profiler mode
 
@@ -1621,7 +1622,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=torcs
- VERSION=1.2.2
+ VERSION=1.3.0
 
 
 cat >>confdefs.h <<_ACEOF
@@ -4910,6 +4911,16 @@ else
   ADDCFLAGS="$ADDCFLAGS -O3"
 fi;
 
+# Check whether --enable-xrandr or --disable-xrandr was given.
+if test "${enable_xrandr+set}" = set; then
+  enableval="$enable_xrandr"
+  if test "$enableval" = "yes";
+	then ADDCFLAGS="$ADDCFLAGS -DUSE_RANDR_EXT"
+	fi
+else
+  ADDCFLAGS="$ADDCFLAGS -DUSE_RANDR_EXT"
+fi;
+
 # Check whether --enable-ccmalloc or --disable-ccmalloc was given.
 if test "${enable_ccmalloc+set}" = set; then
   enableval="$enable_ccmalloc"
@@ -5142,8 +5153,8 @@ fi
 if test $ac_cv_header_GL_glut_h = yes; then
   :
 else
-  { { echo "$as_me:$LINENO: error: Can't find GL/glut.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find GL/glut.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find GL/glut.h. freeglut can be found on http://freeglut.sourceforge.net/" >&5
+echo "$as_me: error: Can't find GL/glut.h. freeglut can be found on http://freeglut.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -5872,12 +5883,14 @@ fi
 if test $ac_cv_header_plib_ssg_h = yes; then
   :
 else
-  { { echo "$as_me:$LINENO: error: Can't find plib/ssg.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find plib/ssg.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find plib/ssg.h. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find plib/ssg.h. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
 
+
+#AC_CHECK_HEADER(AL/al.h,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL can be found on http://www.openal.org/]))
 
 #AC_CHECK_HEADER(X11/Xfuncproto.h,, AC_MSG_ERROR([Can't find X11/Xfuncproto.h. Please check config.log and if you can't solve the problem send the file totorcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 #AC_CHECK_HEADER(X11/extensions/randr.h,, AC_MSG_ERROR([Can't find X11/extensions/randr.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
@@ -7302,8 +7315,8 @@ _ACEOF
   LIBS="-lglut $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libglut. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libglut. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libglut. freeglut can be found on http://freeglut.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libglut. freeglut can be found on http://freeglut.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7375,8 +7388,8 @@ _ACEOF
   LIBS="-lplibul $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibul. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibul. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibul. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibul. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7447,8 +7460,8 @@ _ACEOF
   LIBS="-lplibsg $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibsg. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibsg. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibsg. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibsg. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7519,8 +7532,8 @@ _ACEOF
   LIBS="-lplibsl $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibsl. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibsl. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibsl. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibsl. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7591,8 +7604,8 @@ _ACEOF
   LIBS="-lplibsm $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibsm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibsm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibsm. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibsm. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7663,8 +7676,8 @@ _ACEOF
   LIBS="-lplibssg $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibssg. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibssg. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibssg. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibssg. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7735,8 +7748,8 @@ _ACEOF
   LIBS="-lplibssgaux $LIBS"
 
 else
-  { { echo "$as_me:$LINENO: error: Can't find libplibssgaux. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&5
-echo "$as_me: error: Can't find libplibssgaux. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
+  { { echo "$as_me:$LINENO: error: Can't find libplibssgaux. PLIB can be found on http://plib.sourceforge.net/" >&5
+echo "$as_me: error: Can't find libplibssgaux. PLIB can be found on http://plib.sourceforge.net/" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -7790,8 +7803,8 @@ echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 ( exit $ac_status )
-echo "$as_me:$LINENO: result: PLIB 1.6.0 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.6.0 is really the version installed on your system." >&5
-echo "${ECHO_T}PLIB 1.6.0 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.6.0 is really the version installed on your system." >&6
+echo "$as_me:$LINENO: result: PLIB 1.8.3 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.8.3 is really the version installed on your system." >&5
+echo "${ECHO_T}PLIB 1.8.3 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.8.3 is really the version installed on your system." >&6
 fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
