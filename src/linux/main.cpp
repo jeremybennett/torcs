@@ -48,6 +48,8 @@ init_args(int argc, char **argv)
 	    i++;
 	    GfuiMouseSetHWPresent(); /* allow the hardware cursor */
 #endif
+	} else {
+	    i++;
 	}
     }
 #ifdef FREEGLUT
