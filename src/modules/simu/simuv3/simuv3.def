@@ -7,5 +7,5 @@ LIBRARY
 SECTIONS .data READ WRITE
 
 EXPORTS
-	simuv2
+	simuv3
 

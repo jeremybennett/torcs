@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="simuv2" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="simuv3" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=simuv2 - Win32 Debug
+CFG=simuv3 - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "simuv2.mak".
+!MESSAGE NMAKE /f "simuv3.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "simuv2.mak" CFG="simuv2 - Win32 Debug"
+!MESSAGE NMAKE /f "simuv3.mak" CFG="simuv3 - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "simuv2 - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "simuv2 - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "simuv3 - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "simuv3 - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "simuv2 - Win32 Release"
+!IF  "$(CFG)" == "simuv3 - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -42,8 +42,8 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /W2 /GX /O2 /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV3_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G5 /W2 /GX /O2 /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV3_EXPORTS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -62,7 +62,7 @@ SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\simu
 # End Special Build Tool
 
-!ELSEIF  "$(CFG)" == "simuv2 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "simuv3 - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -75,8 +75,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\simu
 # PROP Intermediate_Dir "Debug"
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W2 /Gm /GX /ZI /Od /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV3_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W2 /Gm /GX /ZI /Od /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV3_EXPORTS" /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -99,8 +99,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\simu
 
 # Begin Target
 
-# Name "simuv2 - Win32 Release"
-# Name "simuv2 - Win32 Debug"
+# Name "simuv3 - Win32 Release"
+# Name "simuv3 - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -146,7 +146,7 @@ SOURCE=.\simuitf.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\simuv2.def
+SOURCE=.\simuv3.def
 # End Source File
 # Begin Source File
 
