@@ -82,7 +82,13 @@
       <section name="t1">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="10"/>
-	<attnum name="arc" unit="deg" val="180"/>
+	<attnum name="arc" unit="deg" val="90"/>
+      </section>
+
+      <section name="t1-2">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="10"/>
+	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
       <section name="s2-1">
