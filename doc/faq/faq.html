@@ -81,7 +81,7 @@
 
 		  <li><h3><a href="#c4_3">4.3 Startup and Runtime Problems.</a></h3></li>
 		  <ul style="list-style-type:disk; color:black;">
-			<li><h4><a href="#c4_3_1">4.3.1 Broken OpenGL/DRI drivers.</a></h4></li>
+			<li><h4><a href="#c4_3_1">4.3.1 Broken OpenGL/DRI drivers or '~' file.</a></h4></li>
 			<li><h4><a href="#c4_3_2">4.3.2 Multiple GLU libraries.</a></h4></li>
 			<li><h4><a href="#c4_3_3">4.3.3 Not removed old TORCS version.</a></h4></li>
 			<li><h4><a href="#c4_3_4">4.3.4 TORCS reports missing files and crashes.</a></h4></li>
@@ -135,7 +135,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-		  Draft, 27.2.2004.
+		  Draft, 5.3.2004 (DD.MM.YYYY).
 		</p>
 
 
@@ -367,15 +367,20 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		  a broken installation or buggy OpenGL/DRI drivers.
 		</p>
 
-		<h4><a name="c4_3_1">4.3.1 Broken OpenGL/DRI drivers.</a></h4>
+		<h4><a name="c4_3_1">4.3.1 Broken OpenGL/DRI drivers or '~' file.</a></h4>
 
 		<pre>/usr/local/bin/torcs: line 54: 31895 Segmentation fault
 $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
 
 		<p>
-		  You have buggy OpenGL/DRI driver, you should update to a recent version. Start TORCS with
-		  the "-s" option to disable multitexturing.
+		  There are two known possibilities which cause such a crash:
 		</p>
+		<ul style="list-style-type:disk; color:black;">
+		  <li>You have buggy OpenGL/DRI driver, you should update to a recent version. Start TORCS with
+		  the "-s" option to disable multitexturing.</li>
+		  <li>You have edited a TORCS XML file (e. g. endrace.xml) and your editor left a copy with an appended
+		  "~" (e. g. endrace.xml~). Remove those "~" files.</li>
+		</ul>
 
 		<h4><a name="c4_3_2">4.3.2 Multiple GLU libraries.</a></h4>
 
