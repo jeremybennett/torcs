@@ -91,7 +91,7 @@ struct section
 #define PARM_MAGIC	0x20030815
 
 /** Configuration header structure */
-struct parmHeader 
+struct parmHeader
 {
     char				*filename;	/**< Name of the configuration file */
     char				*name;		/**< Name of the data */
@@ -1298,7 +1298,7 @@ GfParmSetDTD (void *parmHandle, char *dtd, char*header)
     
     if (header) {
 	FREEZ(conf->header);
-	conf->header = header;
+	conf->header = strdup(header);
     }
 }
 
