@@ -313,9 +313,9 @@ SimCarUpdateWheelPos(tCar *car)
 	tdble dx = x * Cosz - y * Sinz;
 	tdble dy = x * Sinz + y * Cosz;
 	
-	car->wheel[i].pos.x = car->DynGC.pos.x + dx;
-	car->wheel[i].pos.y = car->DynGC.pos.y + dy;
-	car->wheel[i].pos.z = car->DynGC.pos.z - car->statGC.z - x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);
+	car->wheel[i].pos.x = car->DynGCg.pos.x + dx;
+	car->wheel[i].pos.y = car->DynGCg.pos.y + dy;
+	car->wheel[i].pos.z = car->DynGCg.pos.z - car->statGC.z - x * sin(car->DynGCg.pos.ay) + y * sin(car->DynGCg.pos.ax);
 
 	car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * y;
 	car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * x;
@@ -342,7 +342,7 @@ SimCarUpdatePos(tCar *car)
     car->DynGCg.pos.ay += car->DynGCg.vel.ay * SimDeltaTime;
     car->DynGCg.pos.az += car->DynGCg.vel.az * SimDeltaTime;
 
-    NORM_PI_PI(car->DynGC.pos.az);
+    NORM_PI_PI(car->DynGCg.pos.az);
     
     if (car->DynGCg.pos.ax > aMax) car->DynGCg.pos.ax = aMax;
     if (car->DynGCg.pos.ax < -aMax) car->DynGCg.pos.ax = -aMax;
@@ -399,10 +399,10 @@ SimTelemetryOut(tCar *car)
 	   car->trkPos.seg->id, car->trkPos.seg->name, car->trkPos.toStart, car->trkPos.toRight);
     printf("---\nMx: %f  My: %f  Mz: %f (N/m)\n", car->DynGC.acc.ax, car->DynGC.acc.ay, car->DynGC.acc.az);
     printf("Wx: %f  Wy: %f  Wz: %f (rad/s)\n", car->DynGC.vel.ax, car->DynGC.vel.ay, car->DynGC.vel.az);
-    printf("Ax: %f  Ay: %f  Az: %f (rad)\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);
+    printf("Ax: %f  Ay: %f  Az: %f (rad)\n", car->DynGCg.pos.ax, car->DynGCg.pos.ay, car->DynGCg.pos.az);
     printf("---\nAx: %f  Ay: %f  Az: %f (Gs)\n", car->DynGC.acc.x/9.81, car->DynGC.acc.y/9.81, car->DynGC.acc.z/9.81);
     printf("Vx: %f  Vy: %f  Vz: %f (m/s)\n", car->DynGC.vel.x, car->DynGC.vel.y, car->DynGC.vel.z);
-    printf("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGC.pos.x, car->DynGC.pos.y, car->DynGC.pos.z);
+    printf("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGCg.pos.x, car->DynGCg.pos.y, car->DynGCg.pos.z);
     printf("As: %f\n---\n", sqrt(car->airSpeed2));
     for (i = 0; i < 4; i++) {
 	printf("wheel %d - RH:%f susp:%f zr:%.2f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x, car->wheel[i].zRoad);

@@ -103,8 +103,8 @@ typedef struct
 	printf("DynGC.acc.y  = %f\n", (_car_)->DynGC.acc.y);	\
 	printf("DynGC.vel.x  = %f\n", (_car_)->DynGC.vel.x);	\
 	printf("DynGC.vel.y  = %f\n", (_car_)->DynGC.vel.y);	\
-	printf("DynGC.pos.x  = %f\n", (_car_)->DynGC.pos.x);	\
-	printf("DynGC.pos.y  = %f\n", (_car_)->DynGC.pos.y);	\
+	printf("DynGCg.pos.x = %f\n", (_car_)->DynGCg.pos.x);	\
+	printf("DynGCg.pos.y = %f\n", (_car_)->DynGCg.pos.y);	\
 	printf("DynGCg.acc.x = %f\n", (_car_)->DynGCg.acc.x);	\
 	printf("DynGCg.acc.y = %f\n", (_car_)->DynGCg.acc.y);	\
 	printf("DynGCg.vel.x = %f\n", (_car_)->DynGCg.vel.x);	\
@@ -120,8 +120,6 @@ typedef struct
 	isnan((_car_)->DynGC.acc.y) || isinf((_car_)->DynGC.acc.y) ||				\
 	isnan((_car_)->DynGC.vel.x) || isinf((_car_)->DynGC.vel.x) ||				\
 	isnan((_car_)->DynGC.vel.y) || isinf((_car_)->DynGC.vel.y) ||				\
-	isnan((_car_)->DynGC.pos.x) || isinf((_car_)->DynGC.pos.x) ||				\
-	isnan((_car_)->DynGC.pos.y) || isinf((_car_)->DynGC.pos.y) ||				\
 	isnan((_car_)->DynGC.acc.x) || isinf((_car_)->DynGC.acc.x) ||				\
 	isnan((_car_)->DynGCg.acc.y) || isinf((_car_)->DynGCg.acc.y) ||				\
 	isnan((_car_)->DynGCg.vel.x) || isinf((_car_)->DynGCg.vel.x) ||				\

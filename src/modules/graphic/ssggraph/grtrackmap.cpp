@@ -25,6 +25,7 @@
 */
 
 #include "grtrackmap.h"
+#include <tgfclient.h>
 
 // The resolution in [m] to analyse turns.
 const float cGrTrackMap::RESOLUTION = 5.0;
@@ -91,7 +92,7 @@ cGrTrackMap::cGrTrackMap()
 // the build host, include support for GL_ARB_texture_compression.
 #ifdef GL_ARB_texture_compression
 		// Query if the extension is avaiable at the runtime system (true, if > 0).
-		int compressARB = glutExtensionSupported("GL_ARB_texture_compression");
+		int compressARB = GfuiGlutExtensionSupported("GL_ARB_texture_compression");
 		// Check if at least one internal format is vailable. This is a workaround for
 		// driver problems and not a bugfix. According to the specification OpenGL should
 		// choose an uncompressed alternate format if it can't provide the requested

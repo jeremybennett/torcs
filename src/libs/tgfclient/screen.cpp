@@ -55,7 +55,7 @@ static int usedGM = 0;
 static int usedFG = 0;
 #endif
 
-static char	*Res[] = {"640x480", "800x600", "1024x768", "1200x960", "1280x1024", "1600x1200", "320x200"};
+static char	*Res[] = {"640x480", "800x600", "1024x768", "1152x864", "1200x960", "1280x1024", "1600x1200", "320x200"};
 static char	*Mode[] = {"Full-screen mode", "Window mode"};
 static char	*Depth[] = {"24", "32", "8", "16"};
 
@@ -649,3 +649,7 @@ GfScrMenuInit(void *precMenu)
 
 
 
+int GfuiGlutExtensionSupported(char *str)
+{
+    return glutExtensionSupported(str);
+}

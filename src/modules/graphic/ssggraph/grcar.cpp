@@ -296,6 +296,11 @@ initWheel(tCarElt *car, int wheel_index)
 	    ssgTexCoordArray	*whl_tex = new ssgTexCoordArray(WHL_BRANCH + 1);
 	    ssgColourArray	*whl_clr = new ssgColourArray(1);
 	    ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
+
+	    clr[0] = .8;
+	    clr[1] = .8;
+	    clr[2] = .8;
+	    clr[3] = 1.0;
 	
 	    whl_clr->add(clr);
 	    whl_nrm->add(nrm);

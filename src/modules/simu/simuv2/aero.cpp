@@ -46,9 +46,9 @@ SimAeroUpdate(tCar *car, tSituation *s)
     tdble	yaw, otherYaw, airSpeed, tmpas, spdang, tmpsdpang, dyaw;
     tdble	dragK = 1.0;
 
-    x = car->DynGC.pos.x;
-    y = car->DynGC.pos.y;
-    yaw = car->DynGC.pos.az;
+    x = car->DynGCg.pos.x;
+    y = car->DynGCg.pos.y;
+    yaw = car->DynGCg.pos.az;
     airSpeed = car->DynGC.vel.x;
     spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
 
@@ -58,8 +58,8 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		continue;
 	    }
 	    otherCar = &(SimCarTable[i]);
-	    otherYaw = otherCar->DynGC.pos.az;
-	    tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
+	    otherYaw = otherCar->DynGCg.pos.az;
+	    tmpsdpang = spdang - atan2(y - otherCar->DynGCg.pos.y, x - otherCar->DynGCg.pos.x);
 	    NORM_PI_PI(tmpsdpang);
 	    dyaw = yaw - otherYaw;
 	    NORM_PI_PI(dyaw);
@@ -67,14 +67,14 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car */
-		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGCg.pos.x, otherCar->DynGCg.pos.y) /
 				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    if (tmpas < dragK) {
 			dragK = tmpas;
 		    }
 		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
 		    /* before another car */
-		    tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+		    tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGCg.pos.x, otherCar->DynGCg.pos.y) /
 				      (car->aero.Cd * car->DynGC.vel.x));
 		    if (tmpas < dragK) {
 			dragK = tmpas;
@@ -127,7 +127,7 @@ SimWingUpdate(tCar *car, int index)
     tWing  *wing = &(car->wing[index]);
     tdble vt2 = car->airSpeed2;
 	// compute angle of attack
-	tdble aoa = atan2(car->DynGC.vel.z, car->DynGC.vel.x) + car->DynGC.pos.ay;
+	tdble aoa = atan2(car->DynGC.vel.z, car->DynGC.vel.x) + car->DynGCg.pos.ay;
 	aoa += wing->angle;
 	// the sinus of the angle of attack
 	tdble sinaoa = sin(aoa);

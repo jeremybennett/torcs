@@ -299,6 +299,9 @@ extern void GfctrlMouseInitCenter(void);
 extern tCtrlRef *GfctrlGetRefByName(char *name);
 extern char *GfctrlGetNameByRef(int type, int index);
 
+extern int GfuiGlutExtensionSupported(char *str);
+
+
 #endif /* __TGFCLIENT__H__ */
 
 
