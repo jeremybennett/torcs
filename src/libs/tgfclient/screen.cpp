@@ -512,8 +512,12 @@ static void
 ResPrevNext(void *vdelta)
 {
     long delta = (long)vdelta;
-
+#ifdef USE_RANDR_EXT
+    // Don't ask me why...
+    curRes -= (int)delta;
+#else
     curRes += (int)delta;
+#endif
     if (curRes < 0) {
 	curRes = nbRes - 1;
     } else {
