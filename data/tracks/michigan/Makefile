@@ -20,6 +20,9 @@ DATADIR   = tracks/oval/michigan
 
 DATA      = michigan.xml background.png michigan.ac michigan.png
 
+base-tracks_PKGFILES	= $(DATA)
+
+base-tracks_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

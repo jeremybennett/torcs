@@ -45,6 +45,7 @@ endif
 
 PKGLIST		= src data \
 		  gt-cars dtm-cars patwo-cars cg-cars misc-cars \
+		  base-tracks g-tracks \
 		  e-robots berniw-robots K1999-robots
 
 DATASUBDIRS	= data src
@@ -83,6 +84,7 @@ distclean: clean
 	rm -f config.status config.log config.cache
 	rm -f Make-config
 	rm -rf ${EXPORTBASE}
+	rm -rf packages
 
 cleanconfig: clean
 	rm -f config.status config.log config.cache

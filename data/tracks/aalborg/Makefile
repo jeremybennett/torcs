@@ -20,6 +20,9 @@ DATADIR   = tracks/road/aalborg
 
 DATA      = aalborg.xml aalborg.ac aalborg.png
 
+base-tracks_PKGFILES	= $(DATA)
+
+base-tracks_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

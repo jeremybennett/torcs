@@ -6,35 +6,51 @@ Requisites:
             GLUT 3.7 or later (http://reality.sgi.com/mjk/glut3/glut3.html)
             Or FreeGlut (not tested) (http://freeglut.sourceforge.net/)
             PLIB 1.4.2 (http://plib.sourceforge.net/) patched with plib-smoothing.dif
+            libpng (http://www.libpng.org/pub/png/libpng.html)
+	    zlib (for libpng)
             a driver if you have a 3D card (recommended) (http://www.linux3D.org)
             a joystick driver. (mandatory to drive yourself, don't forget to calibrate !!!)
 	                       (http://atrey.karlin.mff.cuni.cz/~vojtech/joystick)
-            libpng (http://www.libpng.org/pub/png/libpng.html)
-	    zlib (for libpng)
 
 Installation:
 -------------
 
-1 - decompress the tar balls: 
+1 - decompress the main sources tar ball: 
 
-      $ tar xzvf torcs-xxx.tgz
+      $ tar xzvf torcs-xxx-src.tgz
 	Or
-      $ tar xjvf torcs-xxx.tar.bz2
+      $ tar xjvf torcs-xxx-src.tar.bz2
 
-2- build the executables 
+2 - decompress the robots sources tar balls:
+
+      $ tar xzvf torcs-xxx-yyy-robots.tgz
+	Or
+      $ tar xjvf torcs-xxx-yyy-robots.tar.bz2
+
+3- build the executables 
 
       $ cd torcs-xxx
-      $ ./configure [--prefix PREFIX (default /usr/local)]
+      $ ./configure [--prefix=PREFIX (default /usr/local)]
       $ make
       $ make install         # installs in PREFIX/games/torcs PREFIX/bin and PREFIX/lib
 
-This should generate the binaries, with no more than few warnings. 
+This should generate the binaries, with no more than few warnings.
 
-3- run TORCS 
+4 - decompress the mandatory data:
+
+      $ cd PREFIX/games/torcs
+      $ tar xzvf torcs-xxx-data.tgz
+
+5 - decompress the optionnal data:
+
+      $ tar xzvf torcs-xxx-...-cars.tgz
+      $ tar xzvf torcs-xxx-...-tracks.tgz
+
+6- run TORCS 
 
  if PREFIX/bin is not in your $PATH
 
-      $ cd PREFIX/games/torcs
+      $ cd PREFIX/bin
       $ ./torcs                    
 
  else

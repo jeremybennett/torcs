@@ -21,6 +21,10 @@ DATADIR   = tracks/road/e-track-1
 DATA      = e-track-1.xml background.png e-track-1.ac e-track-1.png
 
 
+base-tracks_PKGFILES	= $(DATA)
+
+base-tracks_PKGDIR		= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

@@ -19,6 +19,9 @@ DATADIR   = tracks/dirt/mixed-1
 
 DATA      = mixed-1.xml mixed-1.ac background.png env1.png mixed-1.ac mixed-1.png
 
+base-tracks_PKGFILES	= $(DATA)
+
+base-tracks_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

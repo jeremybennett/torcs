@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -48,6 +49,7 @@ static int		PickDrvCarLabelId;
 static int		PickDrvCategoryLabelId;
 static float		aColor[] = {1.0, 0.0, 0.0, 1.0};
 static char		buf[256];    
+static char		path[256];    
 
 
 typedef struct DrvElt
@@ -234,6 +236,9 @@ RmDriversSelect(void *vs)
     int		i, index;
     tDrvElt	*curDrv;
     int		nCars, robotIdx;
+    void	*robhdle;
+    struct stat st;
+    char	*carName;
 
 #define B_BASE  380
 #define B_HT    30
@@ -277,13 +282,10 @@ RmDriversSelect(void *vs)
     GfuiButtonCreate(scrHandle, "Move Down", GFUI_FONT_MEDIUM, 320, B_BASE - B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     (void*)1, rmMove, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     
-    GfuiButtonCreate(scrHandle, "Select", GFUI_FONT_MEDIUM, 320, B_BASE - 2 * B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+    GfuiButtonCreate(scrHandle, "(De)Select", GFUI_FONT_MEDIUM, 320, B_BASE - 2 * B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     (void*)0, rmSelectDeselect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     
-    GfuiButtonCreate(scrHandle, "Deselect", GFUI_FONT_MEDIUM, 320, B_BASE - 3 * B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     (void*)1, rmSelectDeselect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    
-    GfuiButtonCreate(scrHandle, "Set Focus", GFUI_FONT_MEDIUM, 320, B_BASE - 4 * B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+    GfuiButtonCreate(scrHandle, "Set Focus", GFUI_FONT_MEDIUM, 320, B_BASE - 3 * B_HT, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, rmdsSetFocus, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     
     list = (tModList *)NULL;
@@ -303,11 +305,20 @@ RmDriversSelect(void *vs)
 		    }
 		    strcpy(dname, sp);
 		    dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
-		    curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
-		    curDrv->index = curmod->modInfo[i].index;
-		    curDrv->dname = strdup(dname);
-		    curDrv->name = strdup(curmod->modInfo[i].name);
-		    GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+		    sprintf(buf, "drivers/%s/%s.xml", dname, dname);
+		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
+		    carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+		    sprintf(path, "cars/%s/%s.xml", carName, carName);
+		    if (!stat(path, &st)) {
+			curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
+			curDrv->index = curmod->modInfo[i].index;
+			curDrv->dname = strdup(dname);
+			curDrv->name = strdup(curmod->modInfo[i].name);
+			GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+		    } else {
+			GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
+		    }
 		}
 	    }
 	} while (curmod != list);
