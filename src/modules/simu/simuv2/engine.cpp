@@ -107,18 +107,28 @@ SimEngineUpdateTq(tCar *car)
 	engine->Tq = 0;
 	return;
     }
-
+	tdble EngBrkK = engine->brakeCoeff * engine->rads / engine->revsMax;
+	tdble EngBrk = curve->TqAtMaxPw * EngBrkK;
+	if (engine->rads > engine->revsMax) {
+		engine->rads = engine->revsMax;
+	}
+	if (engine->rads < engine->tickover) {
+		engine->rads = engine->tickover;
+	}
     if (engine->rads > engine->revsLimiter) {
-	engine->rads = engine->revsLimiter;
-	engine->Tq = 0;
+		engine->Tq = -EngBrk*(tanh(engine->rads - engine->revsLimiter)+1.0f);
     } else {
 	for (i = 0; i < car->engine.curve.nbPts; i++) {
 	    if (engine->rads < curve->data[i].rads) {
 		tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
-		tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
 		
-		engine->Tq =  Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
-		car->fuel -= engine->Tq * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
+		tdble Tq_cur = (Tmax + EngBrk) * car->ctrl->accelCmd;
+		engine->Tq =  Tq_cur - EngBrk;
+		tdble cons = Tq_cur * 0.8f; // fudge factor to have same average consumption as previous version.
+		if (cons > 0.0f) {
+			car->fuel -= cons * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
+		}
+
 		if (car->fuel <= 0.0) {
 		    car->fuel = 0.0;
 		}
