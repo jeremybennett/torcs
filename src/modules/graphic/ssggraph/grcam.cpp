@@ -1308,12 +1308,20 @@ grGetCurCar(tSituation *s)
 	schedView[car->index].prio = grNbCars - i;
 	fs = GetDistToStart(car);
 	if (i == 0) {
-	    schedView[car->index].viewable = 1;
+	    if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+		schedView[car->index].viewable = 1;
+		if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
+		    schedView[car->index].prio += 5 * grNbCars;
+		    event = 1;
+		}
+	    }
+	} else {
 	    if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
-		schedView[car->index].prio += 5 * grNbCars;
+		schedView[car->index].prio += grNbCars;
 		event = 1;
 	    }
 	}
+	
 	if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
 	    dist = fabs(car->_trkPos.toMiddle) - grTrack->width / 2.0;
 	    /* out of track */
