@@ -924,14 +924,16 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	if (strlen(segName) != 0) {
 	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
 	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
-	    pitEntrySeg = theTrack->seg->next;
+	    pitEntrySeg = theTrack->seg;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		if (pitEntrySeg->id == segId) {
 		    found = 1;
+		} else if (found) {
+		    pitEntrySeg = pitEntrySeg->next;
 		    break;
 		}
-		pitEntrySeg = pitEntrySeg->next;
+		pitEntrySeg = pitEntrySeg->prev;
 	    }
 	    if (!found) {
 		pitEntrySeg = NULL;
@@ -939,17 +941,17 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	}
 	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_EXIT, "");
 	if (strlen(segName) != 0) {
-	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
-	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
-	    pitExitSeg = theTrack->seg;
+	    pitExitSeg = theTrack->seg->next;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		/* set the flag on the last segment of pit_exit */
-		if (pitExitSeg->id == segId) {
+		if (!strcmp(segName, pitExitSeg->name)) {
 		    found = 1;
+		} else if (found) {
+		    pitExitSeg = pitExitSeg->prev;
 		    break;
 		}
-		pitExitSeg = pitExitSeg->prev; /* go back in the list */
+		pitExitSeg = pitExitSeg->next;
 	    }
 	    if (!found) {
 		pitExitSeg = NULL;
@@ -957,16 +959,16 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	}
 	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_START, "");
 	if (strlen(segName) != 0) {
-	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
-	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
 	    pitStart = theTrack->seg;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
-		if (pitStart->id == segId) {
+		if (!strcmp(segName, pitStart->name)) {
 		    found = 1;
+		} else if (found) {
+		    pitStart = pitStart->next;
 		    break;
 		}
-		pitStart = pitStart->next;
+		pitStart = pitStart->prev;
 	    }
 	    if (!found) {
 		pitStart = NULL;
@@ -974,13 +976,13 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	}
 	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_END, "");
 	if (strlen(segName) != 0) {
-	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
-	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
-	    pitEnd = theTrack->seg;
+	    pitEnd = theTrack->seg->next;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
-		if (pitEnd->id == segId) {
+		if (!strcmp(segName, pitEnd->name)) {
 		    found = 1;
+		} else if (found) {
+		    pitEnd = pitEnd->prev;
 		    break;
 		}
 		pitEnd = pitEnd->next;
@@ -1015,9 +1017,11 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	theTrack->pits.type     = TR_PIT_ON_TRACK_SIDE;
 	theTrack->pits.nPitSeg  = 0;
 	if (pitStart->lgfromstart > pitEnd->lgfromstart) {
-	    theTrack->pits.nMaxPits = (int)((theTrack->length - pitStart->lgfromstart + pitEnd->lgfromstart + pitEnd->length) / theTrack->pits.len);
+	    theTrack->pits.nMaxPits = (int)((theTrack->length - pitStart->lgfromstart +
+					     pitEnd->lgfromstart + pitEnd->length + theTrack->pits.len / 2.0) / theTrack->pits.len);
 	} else {
-	    theTrack->pits.nMaxPits = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart + pitEnd->length) / theTrack->pits.len);
+	    theTrack->pits.nMaxPits = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart +
+					     pitEnd->length + theTrack->pits.len / 2.0) / theTrack->pits.len);
 	}
 	for (mSeg = pitStart; mSeg != pitEnd->next; mSeg = mSeg->next) {
 	    switch(theTrack->pits.side) {
@@ -1111,9 +1115,9 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 
     curSeg = theTrack->seg;
     for(i=0; i<theTrack->nseg; i++)  {         /* read the segment data: */
-	if (i == 0) {
+	if (curSeg->lgfromstart > (theTrack->length - 50.0)) {
 	    curSeg->raceInfo |= TR_LAST;
-	} else if (i == 1) {
+	} else if (curSeg->lgfromstart < 50.0) {
 	    curSeg->raceInfo |= TR_START;
 	} else {
 	    curSeg->raceInfo |= TR_NORMAL;
