@@ -713,6 +713,11 @@ installconf:
 	@for C in ${CONFIG} ; \
 	do echo "if [ ! -e  \$$1/${SHIPDIR}/$$C ] || [ ${SHIPDIR}/$$C -nt \$$1/${SHIPDIR}/$$C ]" >> ${SETUP_LINUX} ; \
 	echo "then" >> ${SETUP_LINUX} ; \
+	echo "    if [ -e \$$1/${SHIPDIR}/$$C ]" >> ${SETUP_LINUX} ; \
+	echo "    then" >> ${SETUP_LINUX} ; \
+	echo "        echo \"Saving \$$1/${SHIPDIR}/$$C to \$$1/${SHIPDIR}/$$C.old\"" >> ${SETUP_LINUX} ; \
+	echo "        cp -f \$$1/${SHIPDIR}/$$C \$$1/${SHIPDIR}/$$C.old" >> ${SETUP_LINUX} ; \
+	echo "    fi" >> ${SETUP_LINUX} ; \
 	echo "    cp -f ${SHIPDIR}/$$C \$$1/${SHIPDIR}/$$C" >> ${SETUP_LINUX} ; \
 	echo "fi" >> ${SETUP_LINUX} ; \
 	done
