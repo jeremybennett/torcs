@@ -23,17 +23,10 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="80" val="2"></attnum>
-  </section>
-
-
-  <section name="Clutch">
-    <!-- pressure plate -->
-    <attnum name="inertia" val="0.1150" unit="kg.m2" min="0.05" max="0.2"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="80" val="4"></attnum>
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" min="0.01" max="1.0" val=".2" unit="s"></attnum>
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-5" max="0" val="-2.96"></attnum>
@@ -60,27 +53,27 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.43"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="12000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.48"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="11000"></attnum>
   </section>
 
   <section name="Front Right Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="110"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Front Left Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="110"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Rear Right Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="110"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="110"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
@@ -98,45 +91,45 @@
 
   <section name="Front Right Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
-    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.30"></attnum>
+    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.20"></attnum>
     <attnum name="bellcrank" min="0.1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="100" val="0"></attnum>
-    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
   </section>
 
   <section name="Front Left Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
-    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.30"></attnum>
+    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.20"></attnum>
     <attnum name="bellcrank" min="0.1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="100" val="0"></attnum>
-    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
   </section>
 
   <section name="Rear Right Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
-    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.30"></attnum>
+    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.20"></attnum>
     <attnum name="bellcrank" min="0.1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="100" val="0"></attnum>
-    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
   </section>
 
   <section name="Rear Left Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
-    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.30"></attnum>
+    <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.20"></attnum>
     <attnum name="bellcrank" min="0.1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="100" val="0"></attnum>
-    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
   </section>
 
@@ -169,6 +162,7 @@
   </section>
 
 </params>
+
 
 
 

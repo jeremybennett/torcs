@@ -53,7 +53,7 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.43"></attnum>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.35"></attnum>
     <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="10000"></attnum>
   </section>
 
@@ -114,26 +114,27 @@
   </section>
 
   <section name="Front Right Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="60"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="80"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Front Left Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="60"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="80"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Rear Right Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="60"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="80"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="ride height" unit="mm" min="50" max="2000" val="60"></attnum>
+    <attnum name="ride height" unit="mm" min="50" max="2000" val="80"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
 </params>
+
 
 
 
