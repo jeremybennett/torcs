@@ -100,6 +100,7 @@ ReStoreRaceResults(char *race)
 	    if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
 
 	    GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
+	    GfParmSetStr(results, path, RE_ATTR_CAR, car->_carName);
 	    GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
 
 	    GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
@@ -134,6 +135,7 @@ ReStoreRaceResults(char *race)
 		/* shift */
 		sprintf(path2, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 		GfParmSetStr(results, path2, RE_ATTR_NAME, GfParmGetStr(results, path, RE_ATTR_NAME, ""));
+		GfParmSetStr(results, path2, RE_ATTR_CAR, GfParmGetStr(results, path, RE_ATTR_CAR, ""));
 		GfParmSetNum(results, path2, RE_ATTR_BEST_LAP_TIME, NULL, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0));
 		GfParmSetStr(results, path2, RE_ATTR_MODULE, GfParmGetStr(results, path, RM_ATTR_MODULE, ""));
 		GfParmSetNum(results, path2, RE_ATTR_IDX, NULL, GfParmGetNum(results, path, RM_ATTR_IDX, NULL, 0));
@@ -147,6 +149,7 @@ ReStoreRaceResults(char *race)
 	/* insert after */
 	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 	GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
+	GfParmSetStr(results, path, RE_ATTR_CAR, car->_carName);
 	GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
 	GfParmSetStr(results, path, RE_ATTR_MODULE, car->_modName);
 	GfParmSetNum(results, path, RE_ATTR_IDX, NULL, car->_driverIndex);
@@ -181,17 +184,17 @@ ReUpdateQualifCurRes(tCarElt *car)
 	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i);
 	if (!printed) {
 	    if ((car->_bestLapTime != 0.0) && (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {
-		sprintf(buf, "%d - %s - %s", i, car->_name, GfTime2Str(car->_bestLapTime, 0));
+		sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, car->_carName);
 		ReResScreenSetText(buf, i - 1, 1);
 		printed = 1;
 	    }
 	}
-	sprintf(buf, "%d - %s - %s", i + printed, GfParmGetStr(results, path, RE_ATTR_NAME, ""),
-		GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0));
+	sprintf(buf, "%d - %s - %s (%s)", i + printed, GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0),
+		GfParmGetStr(results, path, RE_ATTR_NAME, ""), GfParmGetStr(results, path, RE_ATTR_CAR, ""));
 	ReResScreenSetText(buf, i - 1 + printed, 0);
     }
     if (!printed) {
-	sprintf(buf, "%d - %s - %s", i, car->_name, GfTime2Str(car->_bestLapTime, 0));
+	sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, car->_carName);
 	ReResScreenSetText(buf, i - 1, 1);
     }
     ReInfo->_refreshDisplay = 1;

@@ -18,6 +18,8 @@
  ***************************************************************************/
 
 
+#include <profiler.h>
+
 #include <stdio.h>
 #include <tgf.h>
 #include "exitmenu.h"
@@ -26,6 +28,8 @@
 static void 
 endofprog(void *dummy)
 {
+    STOP_ACTIVE_PROFILES();
+    PRINT_PROFILE();
 /*     glutSetKeyRepeat(GLUT_KEY_REPEAT_ON); */
     exit(0);
 }

@@ -22,6 +22,8 @@
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
     @version	$Id$
 */
+#include "profiler.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <tgf.h>
@@ -361,6 +363,7 @@ ReOneStep(void *telem)
 	s->currentTime = 0.0; /* resynchronize */
     }
     
+    START_PROFILE("rbDrive*");
     if ((s->currentTime - ReInfo->_reLastTime) >= RCM_MAX_DT_ROBOTS) {
 	s->deltaTime = s->currentTime - ReInfo->_reLastTime;
 	for (i = 0; i < s->_ncars; i++) {
@@ -371,7 +374,9 @@ ReOneStep(void *telem)
 	}
 	ReInfo->_reLastTime = s->currentTime;
     }
+    STOP_PROFILE("rbDrive*");
 
+    START_PROFILE("_reSimItf.update*");
     if (telem) {
 	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, s->cars[s->current]->index);
     } else {
@@ -380,6 +385,7 @@ ReOneStep(void *telem)
     for (i = 0; i < s->_ncars; i++) {
 	ReManage(s->cars[i]);
     }
+    STOP_PROFILE("_reSimItf.update*");
 
     ReRaceMsgUpdate();
     ReSortCars();
@@ -404,14 +410,17 @@ ReUpdate(void)
 {
     double t;
 
+    START_PROFILE("ReUpdate");
     ReInfo->_refreshDisplay = 0;
     switch (ReInfo->_displayMode) {
     case RM_DISP_MODE_NORMAL:
 	t = GfTimeClock();
 
+	START_PROFILE("ReOneStep*");
 	while (ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) {
 	    ReOneStep(NULL);
 	}
+	STOP_PROFILE("ReOneStep*");
 
 	GfuiDisplay();
 	ReInfo->_reGraphicItf.refresh(ReInfo->s);
@@ -427,6 +436,7 @@ ReUpdate(void)
 	break;
     }
 
+    STOP_PROFILE("ReUpdate");
     return RM_ASYNC;
 }
 

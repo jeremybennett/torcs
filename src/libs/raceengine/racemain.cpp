@@ -101,6 +101,7 @@ ReRaceStart(void)
     int		sw, sh, vw, vh;
     int		foundHuman;
     int		nCars;
+    int		maxCars;
     char	*prevRaceName;
     char	*dllname;
     char	key[256];
@@ -140,6 +141,8 @@ ReRaceStart(void)
 	if (!strcmp(gridType, RM_VAL_DRV_LIST_ORDER)) {
 	    /* Starting grid in the drivers list order */
 	    nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS);
+	    maxCars = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DRV, NULL, 100);
+	    nCars = MIN(nCars, maxCars);
 	    for (i = 1; i < nCars + 1; i++) {
 		sprintf(path, "%s/%d", RM_SECT_DRIVERS, i);
 		sprintf(path2, "%s/%d", RM_SECT_DRIVERS_RACING, i);
@@ -149,6 +152,8 @@ ReRaceStart(void)
 	} else if (!strcmp(gridType, RM_VAL_LAST_RACE_ORDER)) {
 	    /* Starting grid in the arrival of the previous race */
 	    nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS);
+	    maxCars = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DRV, NULL, 100);
+	    nCars = MIN(nCars, maxCars);
 	    prevRaceName = ReGetPrevRaceName();
 	    if (!prevRaceName) {
 		return RM_QUIT;

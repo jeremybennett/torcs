@@ -202,6 +202,8 @@ typedef struct RmInfo
 #define RM_ATTR_ALLOW_RESTART	"restart"
 
 #define RM_ATTR_MAXNUM		"maximum number"
+#define RM_ATTR_MAX_DRV		"maximum drivers"
+#define RM_ATTR_CAR		"car"
 
 #define RM_ATTR_PRIO		"priority"
 #define RM_ATTR_NAME		"name"
@@ -279,6 +281,7 @@ typedef struct RmInfo
 #define RE_SECT_RANK		"Rank"		
 
 #define RE_ATTR_NAME		"name"
+#define RE_ATTR_CAR		"car"
 #define RE_ATTR_MODULE		"module"
 #define RE_ATTR_IDX		"idx"
 #define RE_ATTR_LAPS		"laps"

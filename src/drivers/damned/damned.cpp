@@ -17,6 +17,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <profiler.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -582,6 +584,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble	offset = 0;
     tdble	dist;
 
+    START_PROFILE("Damned");
     memset(&(car->ctrl), 0, sizeof(tCarCtrl));
     
     MaxSpeed[idx] = 10000;
@@ -767,6 +770,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if ((car->_speed_x < -0.5) && (car->_gear > 0)) {
 	car->_brakeCmd = 1.0;
     }
+
+    STOP_PROFILE("Damned");
 }
 
 static int
