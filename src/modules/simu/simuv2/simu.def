@@ -1,4 +1,0 @@
-LIBRARY
-SECTIONS .data READ WRITE
-EXPORTS
-	?simu@@YAHPAUModInfo@@@Z
