@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="" type="template" mode="mw">
+<params name="McLaren F1" type="template">
 
 
 <!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->

@@ -20,12 +20,14 @@
     <section name="index">
 
       <section name="1">
-        <attstr name="name" val="Player-p406"></attstr>
-        <attstr name="car name" val="p406"></attstr>
-        <attnum name="race number" val="0.000000"></attnum>
-        <attnum name="red" val="1.000000"></attnum>
-        <attnum name="green" val="1.000000"></attnum>
-        <attnum name="blue" val="0.500000"></attnum>
+        <attstr name="name" val="Player-155"></attstr>
+        <attstr name="car name" val="155-DTM"></attstr>
+        <attstr name="category" val="torcs-a-b"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attnum name="race number" val="20"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="1.0"></attnum>
+        <attnum name="blue" val="0.5"></attnum>
       </section>
       <section name="2">
 	<attstr name="name" val="Player-Buggy"></attstr>
