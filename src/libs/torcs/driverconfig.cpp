@@ -455,11 +455,12 @@ static void
 ChangeCar(void *vp)
 {
     tCarInfo	*car;
-    tCatInfo	*cat = curPlayer->carinfo->cat;
+    tCatInfo	*cat;
     
     if (curPlayer == NULL) {
 	return;
     }
+    cat = curPlayer->carinfo->cat;
     if (vp == 0) {
 	car = (tCarInfo*)GfRlstGetPrev(&(cat->CarsInfoList), (tRingList*)curPlayer->carinfo);
 	if (car == NULL) {
@@ -479,11 +480,12 @@ static void
 ChangeCat(void *vp)
 {
     tCarInfo	*car;
-    tCatInfo	*cat = curPlayer->carinfo->cat;
+    tCatInfo	*cat;
     
     if (curPlayer == NULL) {
 	return;
     }
+    cat = curPlayer->carinfo->cat;
     if (vp == 0) {
 	do {
 	    cat = (tCatInfo*)GfRlstGetPrev(&CatsInfoList, (tRingList*)cat);
