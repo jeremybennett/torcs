@@ -653,8 +653,11 @@ CreateSegRing3(void *TrackHandle, char *section, tTrackSeg **pRoot, tdble *pLeng
 	    if (root == NULL) {
 		root = curSeg;
 		curSeg->next = curSeg;
+		curSeg->prev = curSeg;
 	    } else {
 		curSeg->next = root->next;
+		curSeg->next->prev = curSeg;
+		curSeg->prev = root;
 		root->next = curSeg;
 		root = curSeg;
 	    }
@@ -1122,7 +1125,6 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	if (curSeg->rside) {
 	    normSeg(curSeg->rside);
 	}
-	curSeg->next->prev = curSeg;
 	curSeg = curSeg->next;
     }
     
