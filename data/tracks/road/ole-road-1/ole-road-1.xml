@@ -227,14 +227,14 @@
     </section>
 	
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="25"/>
+      <attnum name="track step" unit="m" val="200"/>
       <attnum name="border margin" unit="m" val="300"/>
-      <attnum name="border step" unit="m" val="50"/>
+      <attnum name="border step" unit="m" val="200"/>
       <attnum name="border height" unit="m" val="20"/>
       <attstr name="surface" val="ole-bushes-1"/>
       <attnum name="maximum altitude" val="174"/>
       <attnum name="minimum altitude" val="-41.4"/>
-      <!-- attnum name="group size" val="100"/ -->
+      <attnum name="group size" val="200"/>
       <attstr name="elevation map" val="elevation-map.png"/>
       <!-- attstr name="relief file" val="ole-road-1.ac" -->
     </section>
@@ -245,7 +245,7 @@
   <section name="Main Track">
 	
     <attnum name="width" unit="m" val="10.0"/>
-    <attnum name="profil steps length" unit="m" val="5"/>
+    <attnum name="profil steps length" unit="m" val="10"/>
 	
     <!-- PITS -->
     <section name="Pits">
@@ -328,6 +328,7 @@
       </section>
 
       <section name="turn1-2">
+    <attnum name="profil steps length" unit="m" val="5"/>
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="90"/>
 	<attnum name="arc" unit="deg" val="10"/>
@@ -380,6 +381,7 @@
 	<attnum name="grade" unit="%" val="-4"/>
       </section>
      <section name="turn1-7">
+ <attnum name="profil steps length" unit="m" val="10"/>
         <attstr name="type" val="lft"/>
 <attstr name="surface" val="asphalt-lines"/>
 	<attnum name="radius" unit="m" val="100"/>
@@ -460,6 +462,7 @@
 	<attnum name="banking end" unit="deg" val="-15.0"/>
     </section>
      <section name="s5">
+<attnum name="profil steps length" unit="m" val="5"/>
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="35"/>
         <attstr name="surface" val="asphalt-lines"/>
@@ -567,6 +570,7 @@
 	<attnum name="lg" unit="m" val="100"/>
       </section>
     <section name="chicane1-1">
+<attnum name="profil steps length" unit="m" val="2"/>
         <attstr name="type" val="rgt"/>
     	<attnum name="radius" unit="m" val="50"/>
     	<attnum name="arc" unit="deg" val="30"/>
@@ -591,6 +595,7 @@
 	<attnum name="banking end" unit="deg" val="0.0"/>
     </section>
      <section name="s8c">
+<attnum name="profil steps length" unit="m" val="5"/>
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
 	<attnum name="banking end" unit="deg" val="-10.0"/>
@@ -642,6 +647,7 @@
     	<attnum name="banking end" unit="deg" val="0.0"/>
     </section>
      <section name="s9">
+<attnum name="profil steps length" unit="m" val="10"/>
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="150.0"/>
 	<attnum name="banking end" unit="deg" val="0.0"/>
@@ -671,6 +677,7 @@
 
 
     <section name="turn10-1">
+ <attnum name="profil steps length" unit="m" val="5"/>
         <attstr name="type" val="lft"/>
     	<attnum name="radius" unit="m" val="250"/>
     	<attnum name="arc" unit="deg" val="45"/>
@@ -705,6 +712,7 @@
     	<attnum name="arc" unit="deg" val="45"/>
     </section>
      <section name="s10">
+ <attnum name="profil steps length" unit="m" val="10"/>
         <attstr name="type" val="str"/>
         <attstr name="surface" val="patched-asphalt-2"/>
 	<attnum name="lg" unit="m" val="50.0"/>
@@ -738,8 +746,8 @@
   <!-- Cameras -->
   <section name="Cameras">
 
-    <section name="cam 0">
-      <!-- Camera's position relative to a segment -->
+    <section name="cam p0">
+      <!-- Start line -->
       <attstr name="segment"  val="s2"/>
       <attnum name="to right" val="0"/>
       <attnum name="to start" val="100"/>
@@ -748,119 +756,128 @@
       <attstr name="fov end"   val="s3"/> <!-- excluded -->
     </section>
     <section name="cam 1">
-      <!-- Camera's position relative to a segment -->
+      <!-- Fist S-curve with bump -->
       <attstr name="segment"  val="turn1-7"/>
       <attnum name="to right" val="0"/>
       <attnum name="to start" val="100"/>
-      <attnum name="height"   val="40"/>
+      <attnum name="height"   val="60"/>
       <attstr name="fov start" val="s3"/> <!-- included  -->
       <attstr name="fov end"   val="turn2"/> <!-- excluded -->
     </section>
     <section name="cam 2">
-      <!-- Camera's position relative to a segment -->
-      <attstr name="segment"  val="turn3"/>
-      <attnum name="to right" val="10"/>
-      <attnum name="to start" val="10"/>
-      <attnum name="height"   val="40"/>
+      <!-- 2nd S-curve -->
+      <attstr name="segment"  val="turn2"/>
+      <attnum name="to right" val="5"/>
+      <attnum name="to start" val="1"/>
+      <attnum name="height"   val="10"/>
       <attstr name="fov start" val="turn2"/> <!-- included  -->
       <attstr name="fov end"   val="s4a"/> <!-- excluded -->
     </section>
     <section name="cam 3">
-      <!-- Camera's position relative to a segment -->
+      <!-- Bump camera -->
       <attstr name="segment"  val="s4f"/>
-      <attnum name="to right" val="0"/>
+      <attnum name="tpo right" val="0"/>
       <attnum name="to start" val="10"/>
-      <attnum name="height"   val="4"/>
+      <attnum name="height"   val="1"/>
       <attstr name="fov start" val="s4a"/> <!-- included  -->
       <attstr name="fov end"   val="turn5"/> <!-- excluded -->
     </section>
     <section name="cam 4">
-      <!-- Camera's position relative to a segment -->
+      <!-- Long Curve -->
       <attstr name="segment"  val="turn5b"/>
       <attnum name="to left" val="50"/>
       <attnum name="to start" val="200"/>
       <attnum name="height"   val="4"/>
       <attstr name="fov start" val="turn5"/> <!-- included  -->
-      <attstr name="fov end"   val="s5"/> <!-- excluded -->
+      <attstr name="fov end"   val="turn5b"/> <!-- excluded -->
     </section>
     <section name="cam 5">
-      <!-- Camera's position relative to a segment -->
+      <!-- Bumpy chicane -->
       <attstr name="segment"  val="turn6-1"/>
       <attnum name="to right" val="1"/>
       <attnum name="to start" val="1"/>
       <attnum name="height"   val="15"/>
-      <attstr name="fov start" val="s5"/> <!-- included  -->
+      <attstr name="fov start" val="turn5b"/> <!-- included  -->
       <attstr name="fov end"   val="s6-1"/> <!-- excluded -->
     </section>
     <section name="cam 6">
-      <!-- Camera's position relative to a segment -->
+      <!-- Patched asphalt -->
       <attstr name="segment"  val="s6-2"/>
       <attnum name="to right" val="0"/>
       <attnum name="to start" val="10"/>
-      <attnum name="height"   val="4"/>
+      <attnum name="height"   val="2"/>
       <attstr name="fov start" val="s6-1"/> <!-- included  -->
       <attstr name="fov end"   val="turn7-1"/> <!-- excluded -->
     </section>
     <section name="cam 7">
-      <!-- Camera's position relative to a segment -->
-      <attstr name="segment"  val="turn7-3"/>
-      <attnum name="to right" val="0"/>
+      <!-- Rocky outcrop -->
+      <attstr name="segment"  val="turn7-2"/>
+      <attnum name="to left" val="0"/>
       <attnum name="to start" val="1"/>
       <attnum name="height"   val="4"/>
       <attstr name="fov start" val="turn7-1"/> <!-- included  -->
       <attstr name="fov end"   val="turn7-5"/> <!-- excluded -->
     </section>
     <section name="cam 8">
-      <!-- Camera's position relative to a segment -->
+      <!-- Uphill -->
       <attstr name="segment"  val="s7"/>
       <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
+      <attnum name="to start" val="1"/>
       <attnum name="height"   val="4"/>
       <attstr name="fov start" val="turn7-5"/> <!-- included  -->
       <attstr name="fov end"   val="turn8"/> <!-- excluded -->
     </section>
     <section name="cam 9">
-      <!-- Camera's position relative to a segment -->
+      <!-- Uphill curve -->
       <attstr name="segment"  val="s8a"/>
       <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
+      <attnum name="to start" val="1"/>
       <attnum name="height"   val="4"/>
       <attstr name="fov start" val="turn8"/> <!-- included  -->
       <attstr name="fov end"   val="s8b"/> <!-- excluded -->
     </section>
     <section name="cam 10">
-      <!-- Camera's position relative to a segment -->
+      <!-- Uphill jumps & curves -->
       <attstr name="segment"  val="chicane1-2"/>
-      <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
-      <attnum name="height"   val="4"/>
+      <attnum name="to right" val="10"/>
+      <attnum name="to start" val="1"/>
+      <attnum name="height"   val="10"/>
       <attstr name="fov start" val="s8b"/> <!-- included  -->
       <attstr name="fov end"   val="turn9-2"/> <!-- excluded -->
     </section>
-    <section name="cam 11">
-      <!-- Camera's position relative to a segment -->
-      <attstr name="segment"  val="turn9-3"/>
-      <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
+    <section name="cam 10b">
+      <!-- Uphill jumps & curves -->
+      <attstr name="segment"  val="turn9-2"/>
+      <attnum name="to right" val="10"/>
+      <attnum name="to start" val="1"/>
       <attnum name="height"   val="10"/>
       <attstr name="fov start" val="turn9-2"/> <!-- included  -->
+      <attstr name="fov end"   val="turn9-3"/> <!-- excluded -->
+    </section>
+    <section name="cam 11">
+      <!-- Flat bit -->
+      <attstr name="segment"  val="turn9-3"/>
+      <attnum name="to right" val="0"/>
+      <attnum name="to start" val="1"/>
+      <attnum name="height"   val="10"/>
+      <attstr name="fov start" val="turn9-3"/> <!-- included  -->
       <attstr name="fov end"   val="s9a"/> <!-- excluded -->
     </section>
     <section name="cam 12">
-      <!-- Camera's position relative to a segment -->
+      <!-- Patched -->
       <attstr name="segment"  val="s9c"/>
       <attnum name="to right" val="1"/>
       <attnum name="to start" val="1"/>
-      <attnum name="height"   val="50"/>
+      <attnum name="height"   val="5"/>
       <attstr name="fov start" val="s9a"/> <!-- included  -->
       <attstr name="fov end"   val="turn10-1"/> <!-- excluded -->
     </section>
     <section name="cam 13">
       <!-- Camera's position relative to a segment -->
-      <attstr name="segment"  val="turn10-5"/>
+      <attstr name="segment"  val="turn10-1"/>
       <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
-      <attnum name="height"   val="100"/>
+      <attnum name="to start" val="1"/>
+      <attnum name="height"   val="10"/>
       <attstr name="fov start" val="turn10-1"/> <!-- included  -->
       <attstr name="fov end"   val="s10"/> <!-- excluded -->
     </section>
@@ -877,7 +894,7 @@
       <!-- Camera's position relative to a segment -->
       <attstr name="segment"  val="s12"/>
       <attnum name="to right" val="0"/>
-      <attnum name="to start" val="10"/>
+      <attnum name="to start" val="1"/>
       <attnum name="height"   val="10"/>
       <attstr name="fov start" val="s11"/> <!-- included  -->
       <attstr name="fov end"   val="s1"/> <!-- excluded -->
