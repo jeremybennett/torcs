@@ -115,6 +115,14 @@
     <attstr name="orientation type" val="random"/>
   </section>
 
+  <section name="treeg1">
+    <attstr name="object" val="treeg1.ac"/>
+    <attnum name="color" val="0xA04000"/>
+    <attstr name="orientation type" val="random"/>
+    <attnum name="delta height" val="4.0"/>
+    <attnum name="delta vert" val="10.0"/>
+  </section>
+
 
 
   <section name="stadn">

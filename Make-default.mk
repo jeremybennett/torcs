@@ -215,7 +215,7 @@ clean: cleancompil cleantools
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
 cleantools: cleantoolsdirs
-	-rm -f  ${TOOLS} ${TOOLSCRIPT} ${LOCALTOOLS} .depend ${GARBAGE} *~
+	-rm -f  ${TOOLS} ${LOCALTOOLS} .depend ${GARBAGE} *~
 
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
@@ -863,7 +863,7 @@ installshipexecwin32dirs:
 	do echo $$I ;\
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \
-	RecurseFlags="installshipexecswin32" ; \
+	RecurseFlags="installshipswin32" ; \
 	${recursedirs} ; \
 	fi
 

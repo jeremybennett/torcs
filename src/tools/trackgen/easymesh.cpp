@@ -35,6 +35,7 @@ static tdble	TrackStep;
 static char	buf[1024];
 static char	*TexName;
 static tdble	TexSize;
+static tdble	TexRand;
 
 #ifndef max
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
@@ -1707,12 +1708,12 @@ insert_elem_in_group(struct ele *elem, struct nod *nods)
     }
     curSurf = &(curGrp->surfaces[curGrp->nbsurf++]);
 
-    curSurf->ref[0].u = nods[elem->i].x / TexSize;
-    curSurf->ref[0].v = nods[elem->i].y / TexSize;
-    curSurf->ref[1].u = nods[elem->j].x / TexSize;
-    curSurf->ref[1].v = nods[elem->j].y / TexSize;
-    curSurf->ref[2].u = nods[elem->k].x / TexSize;
-    curSurf->ref[2].v = nods[elem->k].y / TexSize;
+    curSurf->ref[0].u = nods[elem->i].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[0].v = nods[elem->i].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[1].u = nods[elem->j].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[1].v = nods[elem->j].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[2].u = nods[elem->k].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[2].v = nods[elem->k].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
     
     curSurf->ref[0].vtxidx = insert_node_in_group(&(nods[elem->i]), curGrp);
     curSurf->ref[1].vtxidx = insert_node_in_group(&(nods[elem->j]), curGrp);
@@ -2246,6 +2247,7 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
     }
     TexName = GfParmGetStr(TrackHandle, buf, TRK_ATT_TEXTURE, "grass.rgb");
     TexSize = GfParmGetNum(TrackHandle, buf, TRK_ATT_TEXSIZE, (char*)NULL, 20.0);
+    TexRand = GfParmGetNum(TrackHandle, buf, TRK_ATT_SURFRAND, (char*)NULL, TexSize / 10.0);
 
     FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
     if (FileName) {

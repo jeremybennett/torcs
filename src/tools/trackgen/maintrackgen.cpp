@@ -401,5 +401,5 @@ Generate(void)
 	return;
     }
     
-    GenerateObjects(Track, TrackHandle, CfgHandle, outfd);
+    GenerateObjects(Track, TrackHandle, CfgHandle, outfd, OutMeshName);
 }

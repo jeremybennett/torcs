@@ -21,8 +21,8 @@
 #include <windows.h>
 #endif
 #include <GL/glut.h>
-#include <tgf.h>
-#include <torcs.h>
+#include <tgfclient.h>
+#include <client.h>
 
 #include "windowsspec.h"
 

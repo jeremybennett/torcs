@@ -89,6 +89,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name raceengine
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name client
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -106,6 +109,18 @@ Package=<4>
 ###############################################################################
 
 Project: "berniw2"=".\src\drivers\berniw2\berniw2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "client"=".\src\libs\client\client.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -189,84 +204,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "inferno2"=".\src\drivers\inferno2\inferno2.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name robottools
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "inferno3"=".\src\drivers\inferno3\inferno3.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name robottools
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "inferno4"=".\src\drivers\inferno4\inferno4.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name robottools
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "inferno5"=".\src\drivers\inferno5\inferno5.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "inferno6"=".\src\drivers\inferno6\inferno6.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
 Project: "k1999"=".\src\drivers\K1999\K1999.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -295,36 +232,6 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name tgf
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "raceengine"=".\SRC\LIBS\raceengine\raceengine.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "racemantools"=".\src\libs\racemantools\racemantools.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name robottools
     End Project Dependency
 }}}
 
@@ -481,6 +388,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name ssggraphlib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name client
     End Project Dependency
 }}}
 

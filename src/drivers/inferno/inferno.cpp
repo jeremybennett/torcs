@@ -507,6 +507,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	car->_brakeCmd = 1.0;
     }
 
+    if ((PitState[idx] > PIT_STATE_DECEL) && (PitState[idx] < PIT_STATE_EXIT) && (car->_speed_x < 15.0)) {
+	car->_steerCmd *= 5.0;
+    }
+
 #ifndef WIN32
     if (car->_laps == 2) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {

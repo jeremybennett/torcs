@@ -548,9 +548,26 @@ myStrcmp(const void *s1, const void * s2)
     return strcmp((const char *)s1, (const char *)s2);
 }
 
+static tdble
+getValNumFromStr (const char *str)
+{
+    tdble val;
+
+    if (!str || !strlen (str)) {
+	return 0.0;
+    }
+
+    if (strncmp (str, "0x", 2) == 0) {
+	return (tdble)strtol(str, NULL, 0);
+    }
+    
+    sscanf (str, "%g", &val);
+    return val;
+}
+
 /* XML Processing */
 static void 
-xmlStartElement(void *userData , const char *name, const char **atts)
+xmlStartElement (void *userData , const char *name, const char **atts)
 {
     struct parmHandle	*parmHandle = (struct parmHandle *)userData;
     struct parmHeader	*conf = parmHandle->conf;
@@ -707,9 +724,9 @@ xmlStartElement(void *userData , const char *name, const char **atts)
 	}
 
 	curParam->type = P_NUM;
-	sscanf (val, "%g", &(curParam->valnum));
-	sscanf (min, "%g", &(curParam->min));
-	sscanf (max, "%g", &(curParam->max));
+	curParam->valnum = getValNumFromStr (val);
+	curParam->min    = getValNumFromStr (min);
+	curParam->max    = getValNumFromStr (max);
 
 	if (curParam->min > curParam->valnum) {
 	    curParam->min = curParam->valnum;
@@ -1076,7 +1093,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
     while (1) {
 	switch (outCtrl->state) {
 	case 0:
-	    snprintf (buffer, size, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	    sprintf (buffer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 	    outCtrl->indent = (char *) malloc (LINE_SZ);
 	    if (!outCtrl->indent) {
 		GfError ("xmlGetOuputLine: malloc (%d) failed\n", LINE_SZ);
@@ -1086,14 +1103,14 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    return 1;
 
 	case 1:
-	    snprintf (buffer, size, "<!DOCTYPE params SYSTEM \"params.dtd\">\n");
+	    sprintf (buffer, "<!DOCTYPE params SYSTEM \"params.dtd\">\n");
 	    *outCtrl->indent = 0;
 	    outCtrl->state = 2;
 	    return 1;
 
 	case 2:			/* Start Params */
 	    outCtrl->curSection = parmHandle->conf->rootSection;
-	    snprintf (buffer, size, "\n<params name=\"%s\">\n", parmHandle->conf->name);
+	    sprintf (buffer, "\n<params name=\"%s\">\n", parmHandle->conf->name);
 	    curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
 	    if (curSection) {
 		outCtrl->curSection = curSection;
@@ -1105,7 +1122,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    return 1;
 
 	case 3:			/* End Params */
-	    snprintf (buffer, size, "</params>\n");
+	    sprintf (buffer, "</params>\n");
 	    free (outCtrl->indent);
 	    outCtrl->state = 9;
 	    return 1;
@@ -1118,7 +1135,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    } else {
 		s++;
 	    }
-	    snprintf (buffer, size, "%s<section name=\"%s\">\n", outCtrl->indent, s);
+	    sprintf (buffer, "%s<section name=\"%s\">\n", outCtrl->indent, s);
 	    sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
 	    outCtrl->state = 5;
 	    return 1;
@@ -1131,37 +1148,37 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    curParam = outCtrl->curParam;
 	    if (curParam->type == P_STR) {
 		s = buffer;
-		s += snprintf (s, size, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
+		s += sprintf (s, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
 		curWithin = GF_TAILQ_FIRST (&(curParam->withinList));
 		if (curWithin) {
-		    s += snprintf (s, size + (buffer - s), " in=\"%s", curWithin->val);
+		    s += sprintf (s, " in=\"%s", curWithin->val);
 		    while ((curWithin = GF_TAILQ_NEXT (curWithin, linkWithin)) != NULL) {
-			s += snprintf (s, size, ",%s", curWithin->val);
+			s += sprintf (s, ",%s", curWithin->val);
 		    }
-		    s += snprintf (s, size + (buffer - s), "\"");
+		    s += sprintf (s, "\"");
 		}
-		snprintf (s, size + (buffer - s), " val=\"%s\"/>\n", curParam->value);
+		sprintf (s, " val=\"%s\"/>\n", curParam->value);
 		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
 		return 1;
 
 	    } else {
 
 		s = buffer;
-		s += snprintf (s, size, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
+		s += sprintf (s, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
 		if (curParam->unit) {
 		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-			s += snprintf (s, size + (buffer - s), " min=\"%g\" max=\"%g\"", 
+			s += sprintf (s, " min=\"%g\" max=\"%g\"", 
 				       GfParmSI2Unit (curParam->unit, curParam->min),
 				       GfParmSI2Unit (curParam->unit, curParam->max));
 		    }
-		    s += snprintf (s, size + (buffer - s), " unit=\"%s\" val=\"%g\"/>\n",
+		    s += sprintf (s, " unit=\"%s\" val=\"%g\"/>\n",
 				   curParam->unit, GfParmSI2Unit (curParam->unit, curParam->valnum));
 		} else {
 		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-			s += snprintf (s, size + (buffer - s), " min=\"%g\" max=\"%g\"", 
+			s += sprintf (s, " min=\"%g\" max=\"%g\"", 
 				       curParam->min, curParam->max);
 		    }
-		    s += snprintf (s, size + (buffer - s), " val=\"%g\"/>\n", curParam->valnum);
+		    s += sprintf (s, " val=\"%g\"/>\n", curParam->valnum);
 		}
 
 		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
@@ -1180,7 +1197,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 
 	case 7:			/* End Section */
 	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
-	    snprintf (buffer, size, "%s</section>\n", outCtrl->indent);
+	    sprintf (buffer, "%s</section>\n", outCtrl->indent);
 	    outCtrl->state = 8;
 	    return 1;
 
@@ -1195,7 +1212,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
 	    if (curSection->parent) {
 		outCtrl->curSection = curSection;
-		snprintf (buffer, size, "%s</section>\n", outCtrl->indent);
+		sprintf (buffer, "%s</section>\n", outCtrl->indent);
 		return 1;
 	    }
 	    outCtrl->state = 3;

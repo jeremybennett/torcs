@@ -636,6 +636,8 @@
 	<attstr name="texture name" val="tr-grass3.rgb"/>
 	<attstr name="texture type" in="discrete, continuous" val="continuous"/>
 	<attnum name="texture size" val="5.0" unit="m"/>
+	<attnum name="texture randomness" val="0.5" unit="m"/>
+
 	<attnum name="texture mipmap" val="4.0"/>
 
 	<attstr name="bump name" val=""/>

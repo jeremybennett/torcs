@@ -1414,7 +1414,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  30.0,	/* fovy */
+			  12.0,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
 			  300.0,	/* distz */
@@ -1432,7 +1432,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  30.0,	/* fovy */
+			  12.0,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
 			  300.0,	/* distz */
@@ -1450,7 +1450,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  30.0,	/* fovy */
+			  12.0,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
 			  300.0,	/* distz */
@@ -1468,7 +1468,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  30.0,	/* fovy */
+			  12.0,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
 			  300.0,	/* distz */
@@ -1522,9 +1522,9 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      grWrldY/2,	/* centery */
 			      0,		/* centerz */
 			      10.0,		/* near */
-			      grWrldMaxSize,	/* far */
-			      grWrldMaxSize,	/* fog */
-			      grWrldMaxSize	/* fog */
+			      grWrldMaxSize * 2.0,	/* far */
+			      grWrldMaxSize * 2.0,	/* fog */
+			      grWrldMaxSize * 2.0	/* fog */
 			      );
     cam->add(&cams[c]);
     id++;

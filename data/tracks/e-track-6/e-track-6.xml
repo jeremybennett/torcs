@@ -16,6 +16,7 @@
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
 <!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "../../../data/tracks/objects.xml">
 ]>
 
 <params name="e-track-6" type="template" mode="mw">
@@ -43,9 +44,22 @@
     <attstr name="3d description" val="e-track-6.acc"/>
     <attstr name="background image" val="background.png"/>
     <attnum name="background type" val="4"/>
-    <attnum name="background color R" val="0.28125"/>
-    <attnum name="background color G" val="0.4375"/>
-    <attnum name="background color B" val="0.75"/>
+
+    <attnum name="background color R" val="0.5"/>
+    <attnum name="background color G" val="0.5"/>
+    <attnum name="background color B" val="0.55"/>
+
+    <attnum name="ambient color R" val="0.7"/>
+    <attnum name="ambient color G" val="0.5"/>
+    <attnum name="ambient color B" val="0.4"/>
+
+    <attnum name="diffuse color R" val="1"/>
+    <attnum name="diffuse color G" val="1"/>
+    <attnum name="diffuse color B" val="1"/>
+
+    <attnum name="specular color R" val="0.3"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.1"/>
 
     <attnum name="shininess" val="500"/>
 
@@ -65,6 +79,13 @@
       <attnum name="border step" unit="m" val="50"/>
       <attnum name="border height" unit="m" val="40"/>
       <attstr name="relief file" val="e-track-6-relief.ac"/>
+      <attstr name="surface" val="grass6"/>
+
+      <section name="Object Maps">
+	<section name="map 1">
+	  <attstr name="object map" val="object-map1.png"/>
+	</section>
+      </section>
     </section>
   </section>
 

@@ -384,14 +384,6 @@ void cGrScreen::initCams(tSituation *s)
 {
     tdble		fovFactor;
 
-    ssgGetLight(0)->getColour(GL_AMBIENT, fogColor);
-    sgScaleVec4(fogColor, 0.8);
-    fogColor[3] = 0.5;
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_DENSITY, 0.05);
-    glHint(GL_FOG_HINT, GL_DONT_CARE);
-
     fovFactor = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, (char*)NULL, 1.0);
     fovFactor *= GfParmGetNum(grTrackHandle, TRK_SECT_GRAPH, TRK_ATT_FOVFACT, (char*)NULL, 1.0);
 

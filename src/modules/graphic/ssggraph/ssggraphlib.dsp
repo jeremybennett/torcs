@@ -123,6 +123,10 @@ SOURCE=.\grscene.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\grscreen.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\grshadow.cpp
 # End Source File
 # Begin Source File

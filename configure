@@ -699,7 +699,7 @@ fi
 
 PACKAGE=torcs
 
-VERSION=1.3.0-pre2
+VERSION=1.2.2
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -3564,6 +3564,9 @@ trap 'rm -fr `echo "Make-config \
 	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-gt.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-sport.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-roadsters.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \
@@ -3672,6 +3675,9 @@ CONFIG_FILES=\${CONFIG_FILES-"Make-config \
 	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-gt.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-sport.spec \
+	src/tools/package/specfiles/torcs-data-cars-kcendra-roadsters.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \

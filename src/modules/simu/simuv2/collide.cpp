@@ -196,8 +196,25 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	n[0]  = -(float)collData->normal[0];
 	n[1]  = -(float)collData->normal[1];
     }
-    
-    sgNormalizeVec2(n);
+
+    if ((isnan(p1[0]) ||
+	 isnan(p1[1]) ||
+	 isnan(p2[0]) ||
+	 isnan(p2[1]) ||
+	 isnan(n[0])  ||
+	 isnan(n[1]))) {
+	/* I really don't know where the problem is... */
+	GfOut ("Collide failed 1 (%s - %s)\n", car1->carElt->_name, car2->carElt->_name);
+	return;
+    }
+
+    if (sgLengthVec2 (n) == 0.0) {
+	/* I really don't know where the problem is... */
+	GfOut ("Collide failed 2 (%s - %s)\n", car1->carElt->_name, car2->carElt->_name);
+	return;
+    }
+
+    sgNormaliseVec2 (n);
 
 /*     printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)\n", */
 /* 	   car1->carElt->index, car2->carElt->index, */
@@ -265,7 +282,9 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     j = -(1 + e) * sgScalarProductVec2(v1ab, n) /
 	((car1->Minv + car2->Minv) +
 	 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
-
+    
+    assert (!isnan(j));
+    
     atmp = atan2(rap[1], rap[0]);
     if (fabs(atmp) < (PI / 3.0)) {
 	damFactor = 1.5;

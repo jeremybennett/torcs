@@ -82,6 +82,7 @@
 #define TRK_ATT_ORIENT	"orientation"
 #define TRK_VAL_CLOCK	"clockwise"
 #define TRK_VAL_CCLOCK	"counter-clockwise"
+#define TRK_ATT_SURFRAND	"texture randomness"
 #define TRK_ATT_RELIEF	"relief file"
 #define TRK_ATT_ELEVATION	"elevation map"
 #define TRK_ATT_ALT_MAX	"maximum altitude"
@@ -93,7 +94,8 @@
 #define TRK_ATT_SEED	"random seed"
 #define TRK_ATT_ORIENTATION_TYPE "orientation type"
 #define TRK_ATT_ORIENTATION "orientation"
-
+#define TRK_ATT_DH	"delta height"
+#define TRK_ATT_DV	"delta vert"
 #define TRK_SECT_OBJMAP	"Object Maps"
 #define TRK_SECT_SURFACES "Surfaces"
 #define TRK_SECT_OBJECTS  "Objects"

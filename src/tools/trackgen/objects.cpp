@@ -49,6 +49,7 @@ static char		buf[1024];
 
 static ssgRoot	*Root = NULL;
 static ssgRoot	*GroupRoot = NULL;
+static ssgRoot	*TrackRoot = NULL;
 
 struct group
 {
@@ -84,6 +85,8 @@ typedef struct objdef
     int			random;
     unsigned int	color;
     ssgEntity		*obj;
+    tdble		deltaHeight;
+    tdble		deltaVert;
 } tobjdef;
 
 GF_TAILQ_HEAD(objlist, objdef);
@@ -154,6 +157,8 @@ InitObjects(tTrack *track, void *TrackHandle)
 	curObj->obj = ssgLoadAC(buf);
 	ssgFlatten(curObj->obj);
 	if (strcmp(GfParmGetCurStr(TrackHandle, TRK_SECT_OBJECTS, TRK_ATT_ORIENTATION_TYPE, ""), "random") == 0) {
+	    curObj->deltaHeight = GfParmGetCurNum(TrackHandle, TRK_SECT_OBJECTS, TRK_ATT_DH, NULL, 0);
+	    curObj->deltaVert = GfParmGetCurNum(TrackHandle, TRK_SECT_OBJECTS, TRK_ATT_DV, NULL, 5.0);
 	    curObj->random = 1;
 	} else {
 	    curObj->random = 0;
@@ -190,16 +195,20 @@ AddObject(unsigned int clr, tdble x, tdble y)
     struct objdef	*curObj;
     ssgEntity		*obj;
     sgMat4		m;
+    tdble		dv;
     
     for (curObj = GF_TAILQ_FIRST(&objhead); curObj; curObj = GF_TAILQ_NEXT(curObj, link)) {
 	if (clr == curObj->color) {
 	    obj = (ssgEntity*)curObj->obj->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY | SSG_CLONE_STATE);
 	    if (curObj->random) {
-		/* random z rotation */
-		sgMakeRotMat4(m, (int)((float)rand() / (float)RAND_MAX * 360.0), 0.0, 0.0);
-		ApplyTransform(m, obj);
+		/* random rotations */
+/* 		sgMakeCoordMat4 (m, 0.0, 0.0, curObj->deltaHeight * rand() / (RAND_MAX + 1.0), 0.0, 0.0, 0.0); */
+/* 		ApplyTransform (m, obj); */
+		dv = curObj->deltaVert;
+		sgMakeRotMat4 (m, 360.0 * rand() / (RAND_MAX + 1.0), dv / 2.0 - dv * rand() / (RAND_MAX + 1.0), dv / 2.0  - dv * rand() / (RAND_MAX + 1.0));
+		ApplyTransform (m, obj);
 	    }
-	    sgMakeTransMat4(m, x, y, GetElevation(x, y, 0));
+	    sgMakeTransMat4(m, x, y, getHOT(TrackRoot, x, y));
 	    ApplyTransform(m, obj);
 	    AddToRoot(obj);
 	    return;
@@ -404,8 +413,9 @@ Group(tTrack *track, void *TrackHandle, ssgEntity *ent)
 
 
 void
-GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd)
+GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd, char *meshFile)
 {
+    ssgLoaderOptionsEx	options;
     int			i, j;
     char		*map;
     unsigned char	*MapImage;
@@ -417,6 +427,13 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
     int			index;
     char		*extName;
     FILE		*curFd;
+
+    ssgSetCurrentOptions(&options);
+    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
+    ssgTexturePath(buf);
+    sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
+    ssgModelPath(buf);
+    TrackRoot = (ssgRoot*)ssgLoadAC(meshFile);
 
     InitObjects(track, TrackHandle);
 
@@ -455,7 +472,9 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
 	for (j = 0; j < height; j++) {
 	    for (i = 0; i < width; i++) {
 		clr = (MapImage[4 * (i + width * j)] << 16) + (MapImage[4 * (i + width * j) + 1] << 8) + MapImage[4 * (i + width * j) + 2];
-		AddObject(clr, i * kX + dX, j * kY + dY);
+		if (clr) {
+		    AddObject(clr, i * kX + dX, j * kY + dY);
+		}
 	    }
 	}
 	

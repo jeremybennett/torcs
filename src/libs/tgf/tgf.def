@@ -42,17 +42,6 @@ EXPORTS
 	GfParmGetFileName
 	GfTime2Str
 	GfTimeClock
-	GfRlstInit
-	GfRlstAddFirst
-	GfRlstAddLast
-	GfRlstUnlinkFirst
-	GfRlstUnlinkLast
-	GfRlstUnlinkElt
-	GfRlstGetFirst
-	GfRlstGetNext
-	GfRlstGetLast
-	GfRlstGetPrev
-	GfRlstSeekElt
 	gfMean
 	gfMeanReset
 	_tgf_win_malloc
@@ -62,3 +51,11 @@ EXPORTS
 	_tgf_win_strdup
 	GetLocalDir
 	SetLocalDir
+	GfHashRelease
+	GfHashAddStr
+	GfHashGetStr
+	GfHashCreate
+	GetLibDir
+	SetSingleTextureMode
+	GetSingleTextureMode
+	GfNearestPow2

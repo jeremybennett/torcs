@@ -29,14 +29,14 @@
     <attnum name="spdtgt2"   val="2.0"/>
     <attnum name="steerMult" val="1.0"/>
 
-    <attnum name="offsetApproach" val="27.0"/>
-    <attnum name="offsetFinal"    val="45.0"/>
+    <attnum name="offsetApproach" val="25.0"/>
+    <attnum name="offsetFinal"    val="40.0"/>
     <attnum name="offsetExit"     val="16.0"/>
 
     <attnum name="len before pit entry" val="60"/>
     <attnum name="len before pit start" val="60"/>
     <attnum name="len around pit stop"  val="16"/>
-    <attnum name="len after pit end"    val="0"/>
+    <attnum name="len after pit end"    val="20"/>
     <attnum name="len after pit exit"   val="15"/>
     <attnum name="len to speed down for pitting" val="31"/>
 

@@ -102,25 +102,6 @@ GetElevation(tdble x, tdble y, tdble z)
     return z;
 }
 
-/* Use the texture name to select options like mipmap */
-class ssgLoaderOptionsEx : public ssgLoaderOptions
-{
- public:
-    ssgLoaderOptionsEx()
-	: ssgLoaderOptions() 
-	{}
-
-    virtual void makeModelPath ( char* path, const char *fname ) const
-	{
-	    ulFindFile ( path, model_dir, fname, NULL ) ;
-	}
-    
-    virtual void makeTexturePath ( char* path, const char *fname ) const
-	{
-	    ulFindFile ( path, texture_dir, fname, NULL ) ;
-	}
-
-};
 
 void
 SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int dispf)

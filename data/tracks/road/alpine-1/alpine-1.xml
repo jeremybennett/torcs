@@ -68,13 +68,13 @@
       <attnum name="track step" unit="m" val="20"/>
       <attnum name="border margin" unit="m" val="150"/>
       <attnum name="border step" unit="m" val="20"/>
-      <attstr name="surface" val="grass"/>
 
       <attstr name="relief file" val="relief.ac"/>
       <attstr name="elevation map" val="elevation-map.png"/>
       <attnum name="maximum altitude" val="160"/>
       <attnum name="minimum altitude" val="0"/>
       <attnum name="group size" val="100"/>
+      <attstr name="surface" val="grass6"/>
     </section>
 
   </section>

@@ -26,7 +26,7 @@
 #ifndef _OBJECTS_H_
 #define _OBJECTS_H_
 
-extern void GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd);
+extern void GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd, char *meshFile);
 extern int GetObjectsNb(void *TrackHandle);
 
 #endif /* _OBJECTS_H_ */ 

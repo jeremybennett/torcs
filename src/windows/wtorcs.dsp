@@ -51,7 +51,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 ssgAux.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib raceengine.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /nodefaultlib:"LIBCD" /libpath:"../../export/lib" /libpath:"../windows/lib"
+# ADD LINK32 client.lib ssgAux.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /nodefaultlib:"LIBCD" /libpath:"../../export/lib" /libpath:"../windows/lib"
 # SUBTRACT LINK32 /debug
 # Begin Special Build Tool
 WkspDir=.
@@ -84,7 +84,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ssgAux.lib tgf.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib raceengine.lib /nologo /subsystem:console /pdb:none /map /debug /machine:I386 /libpath:"../../export/libd" /libpath:"../windows/lib"
+# ADD LINK32 tgf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib raceengine.lib ssgAux.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib client.lib /nologo /subsystem:console /pdb:none /map /debug /machine:I386 /libpath:"../../export/libd" /libpath:"../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
@@ -104,47 +104,7 @@ PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed	copy dll\glut32.
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\libs\torcs\controlconfig.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\driverconfig.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\entry.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\exitmenu.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\graphconfig.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\joystickconfig.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\main.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\mainmenu.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\mouseconfig.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\optionmenu.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\libs\torcs\splash.cpp
 # End Source File
 # Begin Source File
 

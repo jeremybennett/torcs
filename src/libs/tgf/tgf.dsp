@@ -110,6 +110,10 @@ SOURCE=.\directory.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\hash.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\module.cpp
 # End Source File
 # Begin Source File

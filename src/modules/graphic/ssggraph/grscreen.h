@@ -59,8 +59,6 @@ class cGrScreen
     int			selectPrevFlag;
     int			mirrorFlag;
 
-    sgVec4		fogColor;		/* fog color... */
-
     void loadParams(tSituation *s);		/* load from parameters files */
     
  public:
