@@ -141,8 +141,8 @@
 		<attstr name="team" val="berniw"></attstr>
 		<attstr name="desc" val="Berni's second Bot 10"></attstr>
 		<attstr name="author" val="Bernhard Wymann"></attstr>
-		<attstr name="car name" val="buggy"></attstr>
-		<attstr name="category" val="Offroad-RWD-GrA"></attstr>
+		<attstr name="car name" val="360-modena"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<attnum name="race number" val="157"></attnum>
 		<attnum name="red" val="0.0"></attnum>
 		<attnum name="green" val="1.0"></attnum>

@@ -20,7 +20,7 @@ ROBOT = berniw2
 
 SHIPDIR   = drivers/${ROBOT}/10
 
-SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = 360-modena.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-berniw_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
