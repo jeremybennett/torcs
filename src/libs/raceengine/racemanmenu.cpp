@@ -172,6 +172,11 @@ reConfigRunState(void)
 	    if (!strcmp(opt, RM_VAL_CONFRACELEN)) {
 		/* Configure race length */
 		rp.confMask |= RM_CONF_RACE_LEN;
+	    } else {
+		if (!strcmp(opt, RM_VAL_CONFDISPMODE)) {
+		    /* Configure display mode */
+		    rp.confMask |= RM_CONF_DISP_MODE;
+		}
 	    }
 	}
 	RmRaceParamMenu(&rp);

@@ -95,7 +95,6 @@ ReShutdown(void)
 
 	GfModUnloadList(&reEventModList);
 
-	GfParmReleaseHandle(ReInfo->params);
 	GfParmReleaseHandle(ReInfo->results);
 
 	FREEZ(ReInfo->s);
@@ -641,7 +640,9 @@ ReRaceCleanup(void)
     
     ReInfo->_reGameScreen = ReHookInit();
     ReInfo->_reSimItf.shutdown();
-    ReInfo->_reGraphicItf.shutdowncars(); 
+    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	ReInfo->_reGraphicItf.shutdowncars();
+    }
     raceName = ReGetCurrentRaceName();
     ReStoreRaceResults(raceName);
     ReRaceCleanDrivers();

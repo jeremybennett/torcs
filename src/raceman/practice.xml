@@ -50,11 +50,11 @@
 
     <section name="Starting Grid">
       <attnum name="rows"                      val="1"/>
-      <attnum name="distance to start"         val="200"/>
+      <attnum name="distance to start"         val="100"/>
       <attnum name="distance between columns"  val="20"/>
       <attnum name="offset within a column"    val="10"/>
       <attnum name="initial speed" unit="km/h" val="0"/>
-      <attnum name="initial height" unit="m"   val="0.5"/>
+      <attnum name="initial height" unit="m"   val="0.2"/>
     </section>
   </section>
 
@@ -87,6 +87,10 @@
 
 	<section name="1">
 	  <attstr name="type" val="race length"/>
+	</section>
+
+	<section name="2">
+	  <attstr name="type" val="display mode"/>
 	</section>
       </section>
     </section>

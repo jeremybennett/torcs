@@ -54,6 +54,7 @@ typedef struct
     char		*title;
     unsigned int	confMask;	/* Tell what to configure */
 #define RM_CONF_RACE_LEN	0x00000001
+#define RM_CONF_DISP_MODE	0x00000002
 } tRmRaceParam;
 
 

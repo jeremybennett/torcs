@@ -234,6 +234,7 @@ typedef struct RmInfo
 #define RM_VAL_DRVSEL		"drivers select"
 #define RM_VAL_RACECONF		"race config"
 #define RM_VAL_CONFRACELEN	"race length"
+#define RM_VAL_CONFDISPMODE	"display mode"
 
 #define RM_VAL_DRV_LIST_ORDER	"drivers list"
 
@@ -244,8 +245,8 @@ typedef struct RmInfo
 #define RM_VAL_YES		"yes"
 #define RM_VAL_NO		"no"
 
-#define RM_VAL_VISIBLE		"visible"
-#define RM_VAL_INVISIBLE	"not visible"
+#define RM_VAL_VISIBLE		"normal"
+#define RM_VAL_INVISIBLE	"results only"
 
 
 /* RESULTS */

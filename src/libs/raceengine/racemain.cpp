@@ -157,11 +157,6 @@ ReRaceStart(void)
 	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
     }
 
-    RmLoadingScreenSetText("Loading Cars 3D Objects...");
-    ReInfo->_reGraphicItf.initcars(s);
-
-    RmLoadingScreenSetText("Ready.");
-
     /* Blind mode or not */
     ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
     ReInfo->_reGameScreen = ReScreenInit();
@@ -181,6 +176,13 @@ ReRaceStart(void)
 	    ReResScreenSetTitle(buf);
 	}
     }
+
+    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	RmLoadingScreenSetText("Loading Cars 3D Objects...");
+	ReInfo->_reGraphicItf.initcars(s);
+    }
+    
+    RmLoadingScreenSetText("Ready.");
     
     ReInfo->_reTimeMult = 1.0;
     ReInfo->_reLastTime = 0.0;

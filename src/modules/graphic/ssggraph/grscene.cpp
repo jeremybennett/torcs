@@ -413,8 +413,7 @@ grInitScene(void)
     sun      = new ssgTransform ;
     sun      -> setTransform    ( light_position ) ;
     sun      -> addKid          ( sun_obj  ) ;
-    TheScene    -> addKid( sun) ;
-
+    TheScene    -> addKid(sun) ;
 
 
     /* GUIONS GL_TRUE */

@@ -44,6 +44,9 @@ static int		rmrpLaps;
 static char		buf[256];
 static int		rmrpDistId;
 static int		rmrpLapsId;
+static int		rmDispModeEditId;
+static int		rmCurDispMode;
+static char		*rmCurDispModeList[] = { RM_VAL_VISIBLE, RM_VAL_INVISIBLE};
 
 
 static void
@@ -100,6 +103,11 @@ rmrpValidate(void * /* dummy */)
 	GfParmSetNum(rp->param, rp->title, RM_ATTR_DISTANCE, "km", rmrpDistance);
 	GfParmSetNum(rp->param, rp->title, RM_ATTR_LAPS, (char*)NULL, rmrpLaps);
     }
+
+    if (rp->confMask & RM_CONF_DISP_MODE) {
+	GfParmSetStr(rp->param, rp->title, RM_ATTR_DISPMODE, rmCurDispModeList[rmCurDispMode]);
+    }
+
     rmrpDeactivate(rp->nextScreen);
 }
 
@@ -113,9 +121,17 @@ rmrpAddKeys(void)
 }
 
 void
+rmChangeDisplayMode(void * /* dummy */)
+{
+    rmCurDispMode = 1 - rmCurDispMode;
+    GfuiLabelSetText(scrHandle, rmDispModeEditId, rmCurDispModeList[rmCurDispMode]);
+}
+
+
+void
 RmRaceParamMenu(void *vrp)
 {
-    int		y, x, dy, dx;
+    int		y, x, x2, dy, dx;
 
     rp = (tRmRaceParam*)vrp;
 
@@ -124,6 +140,7 @@ RmRaceParamMenu(void *vrp)
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-raceopt.png");
     
     x = 80;
+    x2 = 240;
     y = 380;
     dx = 200;
     dy = GfuiFontHeight(GFUI_FONT_LARGE) + 5;
@@ -152,8 +169,30 @@ RmRaceParamMenu(void *vrp)
 	rmrpLapsId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 				       x + dx, y,
 				       0, 8, NULL, (tfuiCallback)NULL, rmrpUpdLaps);
+	y -= dy;
     }
-    
+
+    if (rp->confMask & RM_CONF_DISP_MODE) {
+	GfuiLabelCreate(scrHandle, "Display:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+			   "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+			   x2, y, GFUI_ALIGN_HL_VB, 1,
+			   (void*)0, rmChangeDisplayMode,
+			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
+	GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+			   "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+			   x2 + 150, y, GFUI_ALIGN_HL_VB, 1,
+			   (void*)1, rmChangeDisplayMode,
+			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	if (!strcmp(GfParmGetStr(rp->param, rp->title, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+	    rmCurDispMode = 1;
+	} else {
+	    rmCurDispMode = 0;
+	}
+	rmDispModeEditId = GfuiLabelCreate(scrHandle, rmCurDispModeList[rmCurDispMode], GFUI_FONT_MEDIUM_C, x2 + 35, y, GFUI_ALIGN_HL_VB, 20);
+	y -= dy;
+    }
+
     GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, rmrpValidate, NULL, NULL, NULL);
 

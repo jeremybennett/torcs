@@ -380,6 +380,7 @@ ReResShowCont(void)
 		     NULL, (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
     GfuiAddKey(reResScreenHdle, 13,  "Continue", 0, reResCont);
+    GfuiAddKey(reResScreenHdle, 27,  "Continue", 0, reResCont);
 
     glutDisplayFunc(reContDisplay);
     glutPostRedisplay();
