@@ -1126,17 +1126,13 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 
 	/* set up points */
 	y[0] = d;
-	s[0] = 0.0;
 	ys[0] = 0.0;
 
 	y[1] = ed;
 	ys[1] = pathSlope(endid);
 
-	if ( endid >= id) {
-		s[1] = (double) (endid - id);
-	} else {
-		s[1] = (double) (nPathSeg - id + endid);
-	}
+	s[0] = 0.0;
+	s[1] = countSegments(id, endid);
 
 	/* modify path */
 	double l = 0.0;
@@ -1291,16 +1287,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		/* set up parameter s */
 		s[0] = 0.0;
-		if ( trackSegId1 >= trackSegId) {
-			s[1] = (double) ( trackSegId1 - trackSegId);
-		} else {
-			s[1] = (double) (nPathSeg - trackSegId + trackSegId1);
-		}
-		if ( trackSegId2 >= trackSegId1) {
-			s[2] = s[1] + (double) ( trackSegId2 - trackSegId1);
-		} else {
-			s[2] = s[1] + (double) (nPathSeg - trackSegId1 + trackSegId2);
-		}
+		s[1] = countSegments(trackSegId, trackSegId1);
+		s[2] = s[1] + countSegments(trackSegId1, trackSegId2);
 
 		/* check path for leaving to track */
 		double newdisttomiddle[AHEAD];
@@ -1453,21 +1441,9 @@ int Pathfinder::letoverlap(int trackSegId, tSituation *situation, MyCar* myc, Ot
 
 			/* set up parameter s */
 			s[0] = 0.0;
-			if ( trackSegId1 >= trackSegId) {
-				s[1] = (double) ( trackSegId1 - trackSegId);
-			} else {
-				s[1] = (double) (nPathSeg - trackSegId + trackSegId1);
-			}
-			if ( trackSegId2 >= trackSegId1) {
-				s[2] = s[1] + (double) ( trackSegId2 - trackSegId1);
-			} else {
-				s[2] = s[1] + (double) (nPathSeg - trackSegId1 + trackSegId2);
-			}
-			if ( trackSegId3 >= trackSegId2) {
-				s[3] = s[2] + (double) ( trackSegId3 - trackSegId2);
-			} else {
-				s[3] = s[2] + (double) (nPathSeg - trackSegId2 + trackSegId3);
-			}
+			s[1] = countSegments(trackSegId, trackSegId1);
+			s[2] = s[1] + countSegments(trackSegId1, trackSegId2);
+			s[3] = s[2] + countSegments(trackSegId2, trackSegId3);
 
 			/* check path for leaving to track */
 			double newdisttomiddle[AHEAD], d;
@@ -1494,12 +1470,6 @@ int Pathfinder::letoverlap(int trackSegId, tSituation *situation, MyCar* myc, Ot
 			for (i = trackSegId3; (j = (i+nPathSeg) % nPathSeg) != (trackSegId+AHEAD) % nPathSeg; i ++) {
 				ps[j].setLoc(ps[j].getOptLoc());
 			}
-
-			/*
-			tCarElt* car = ocar[k].getCarPtr();
-			tCarElt* me = myc->getCarPtr();
-			printf("%s lets overtake %s\n", me->info->name, car->info->name);
-			*/
 
 			/* reset all timer to max 3.0 */
 			for (j = 0; j < situation->_ncars; j++) {

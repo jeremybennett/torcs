@@ -218,6 +218,7 @@ class Pathfinder
 		void updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov);
         int letoverlap(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov);
 		double pathSlope(int id);
+		int countSegments(int from, int to);
 };
 
 
@@ -282,6 +283,15 @@ inline int Pathfinder::getCurrentSegment(tCarElt* car, int range)
 	return lastId;
 }
 
+
+inline int Pathfinder::countSegments(int from, int to)
+{
+	if ( to >= from) {
+		return to - from;
+	} else {
+		return nPathSeg - from + to;
+	}
+}
 
 #endif // _PATHFINDER_H_
 
