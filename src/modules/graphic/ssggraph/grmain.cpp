@@ -383,7 +383,7 @@ shutdownCars(void)
 	    TheScene->removeKid(grCarInfo[i].carTransform);
 	    TheScene->removeKid(grCarInfo[i].shadowAnchor);
 	}
-	TheScene->removeKid(ThePits);
+	if (ThePits) TheScene->removeKid(ThePits);
 	ThePits = 0;
 	free(grCarInfo);
     }
