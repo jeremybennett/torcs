@@ -74,16 +74,17 @@ typedef struct {
 
 
 typedef struct {
-	double strdist;			/* straight distance */
 	double speedsqr;		/* on track direction projected speed squared of opponent */
 	double speed;			/* same, but not squared */
 	double time;			/* estimate of time to catch up the car */
 	double cosalpha;		/* cos(alpha) from angle between my ond opponent */
 	double disttomiddle;	/* distance to middle (for prediction) */
-	int catchseg;			/* segment, where i expect (or better guess!) to catch opponent */
+	int catchdist;
+	int catchsegid;			/* segment, where i expect (or better guess!) to catch opponent */
 	double dist;			/* #segments from me to the other car */
 	OtherCar* collcar;		/* pointers to the cars */
 	bool overtakee;			/* is this the guy to overtake? */
+	double disttopath;		/* distance to my path */
 } tOCar;
 
 

@@ -75,8 +75,8 @@ static const tdble waitToTurn = 1.0; /* how long should i wait till i try to tur
 
 /* release resources when the module gets unloaded */
 static void shutdown(int index) {
-    printf("Berniw shutdown %d !!!\n", index);
-	for (int i = 0; i < BOTS; i++) {
+	int i;
+	for (i = 0; i < BOTS; i++) {
 		if (mycar[i] != NULL) {
 			delete mycar[i];
 			mycar[i] = NULL;
