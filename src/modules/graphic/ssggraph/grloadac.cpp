@@ -1101,7 +1101,9 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
 
   GfOut("CarLoadAC3D loading %s\n", fname);
 
-  ssgEntity *obj = myssgLoadAC ( fname, options ) ;
+  ssgAddModelFormat(".acc", myssgLoadAC, NULL);
+
+  ssgEntity *obj = ssgLoad ( fname, options ) ;
   
   if ( obj == NULL )
     return NULL ;
@@ -1135,7 +1137,9 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 
   GfOut("LoadAC3D loading %s\n", fname);
 
-  ssgEntity *obj = myssgLoadAC ( fname, options ) ;
+  ssgAddModelFormat(".acc", myssgLoadAC, NULL);
+
+  ssgEntity *obj = ssgLoad ( fname, options ) ;
 
   if ( obj == NULL )
     return NULL ;

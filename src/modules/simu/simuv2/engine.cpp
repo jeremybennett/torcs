@@ -53,11 +53,7 @@ SimEngineConfig(tCar *car)
 	edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
     }
     edesc[i].rpm = edesc[i - 1].rpm;
-
-	// Potential bug: edesc[i].tq is not properly initialized.
-	// edesc[i].tq  = edesc[i].tq;
-	// Fix:
-	edesc[i].tq  = edesc[i - 1].tq;
+    edesc[i].tq  = edesc[i - 1].tq;
 
     maxTq = 0;
     car->engine.curve.data = (tEngineCurveElem *)malloc(car->engine.curve.nbPts * sizeof(tEngineCurveElem));

@@ -572,9 +572,9 @@ grInitCar(tCarElt *car)
     sprintf(path, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
-    /*carEntity = ssgLoad(param);*/
+
     carEntity = grssgCarLoadAC3D(param, NULL, index);
-	grCarInfo[index].carEntity = carEntity;
+    grCarInfo[index].carEntity = carEntity;
     /* Set a selector on the driver */
     ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
     grCarInfo[index].driverSelector = new ssgSelector;

@@ -342,6 +342,14 @@ SimCarUpdatePos(tCar *car)
     car->DynGCg.pos.ay += car->DynGCg.vel.ay * SimDeltaTime;
     car->DynGCg.pos.az += car->DynGCg.vel.az * SimDeltaTime;
 
+    //tdble tmpx = car->DynGCg.vel.ay * car->DynGCg.pos.az - car->DynGCg.vel.az * car->DynGCg.pos.ay;
+    //tdble tmpy = car->DynGCg.vel.az * car->DynGCg.pos.ax - car->DynGCg.vel.ax * car->DynGCg.pos.az;
+    //tdble tmpz = car->DynGCg.vel.ax * car->DynGCg.pos.ay - car->DynGCg.vel.ay * car->DynGCg.pos.ax;
+
+    //car->DynGCg.pos.ax += 0.5 * tmpx * SimDeltaTime;
+    //car->DynGCg.pos.ay += 0.5 * tmpy * SimDeltaTime;
+    //car->DynGCg.pos.az += 0.5 * tmpz * SimDeltaTime;
+
     NORM_PI_PI(car->DynGCg.pos.az);
     
     if (car->DynGCg.pos.ax > aMax) car->DynGCg.pos.ax = aMax;

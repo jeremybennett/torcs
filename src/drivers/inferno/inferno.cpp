@@ -472,11 +472,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
     curAdv = Advance2[idx];
     AdvMax = fabs(car->_speed_x) * 5.0 + 1.0;
     Amax = 0;
-	// Workaround, look at comment below: Is 0.0001 ok or should it depend on other variables?
-	// Does inferno this way still work correct?
-	step = MAX((AdvMax - Advance2[idx]) / AdvStep[idx], 0.0001);
+    step = (AdvMax - Advance2[idx]) / AdvStep[idx];
+    step = MAX(step, 0.5);
 
-	while (curAdv < AdvMax) {
+    while (curAdv < AdvMax) {
 	x = X + CosA * curAdv;
 	y = Y + SinA * curAdv;
 	RtTrackGlobal2Local(seg, x, y, &trkPos, TR_LPOS_MAIN);
@@ -485,11 +484,6 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	    Amax = Atmp;
 	    curAdvMax = curAdv;
 	}
-	// Bug discovered, review pending.
-	// If curAdv = 20.000001 and step = 0.000001 (happend on e-track-6 in tests) the step is relative to
-	// small to become added, so 20.000001 + 0.000001 = 20.000001 (!= 20.000002) on the fpu... therefore
-	// the loop hangs. I think this was the problem I discovered 2 (?) years ago, where I suspected
-	// the bug in RtTrackGlobal2Local. Temporary fix: Adjust above the step size to a minimum.
 	curAdv += step;
     }
 
