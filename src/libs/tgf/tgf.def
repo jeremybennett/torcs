@@ -115,8 +115,9 @@ EXPORTS
 	GfuiStaticImageSet
 	GfScrReinit
 	GfuiScreenIsActive
-GfuiHookRelease
-GfuiHookCreate
+	GfuiHookRelease
+	GfuiHookCreate
+	GfParmGetFileName
 	_tgf_win_malloc
 	_tgf_win_calloc
 	_tgf_win_realloc

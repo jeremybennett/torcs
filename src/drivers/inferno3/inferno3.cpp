@@ -64,6 +64,7 @@ pitCmd(int index, tCarElt *car, tSituation *s)
     fuel = ConsFactor * (remainLaps + 1);
     //fuel = MIN(fuel, MaxFuel[idx]);
     car->_pitFuel = MAX(fuel - car->_fuel, 0);
+    car->_pitFuel = MIN(car->_pitFuel, car->_tank - car->_fuel);
     if (remainLaps > 20) {
 	car->_pitRepair = (int)(car->_dammage);
     } else {
@@ -158,6 +159,7 @@ tdble O3[10] = {0.0};
 tdble O4[10] = {0.0};
 tdble O5[10] = {20.0};
 tdble OP[10] = {15.0};
+tdble OA[10] = {0.0};
 tdble OW[10] = {2.0};
 tdble VM;
 tdble VM1[10] = {15.0};
@@ -206,6 +208,7 @@ tdble ConsFactor     = 0.0007;
 #define PITOFFSET1	"len before pit entry"
 #define PITOFFSET2	"len before pit start"
 #define PITOFFSETP	"len around pit stop"
+#define PITOFFSETA	"len to align around pit stop"
 #define PITOFFSET3	"len after pit end"
 #define PITOFFSET4	"len after pit exit"
 #define PITOFFSET5	"len to speed down for pitting"
@@ -275,9 +278,10 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	O1[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET1,     NULL, O1[0]);
 	O2[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET2,     NULL, O2[0]);
 	OP[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETP,     NULL, OP[0]);
+	OA[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETA,     NULL, OA[0]);
 	O3[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET3,     NULL, O3[0]);
 	O4[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET4,     NULL, O4[0]);
-	O4[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET5,     NULL, O5[0]);
+	O5[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET5,     NULL, O5[0]);
 	VM1[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX1,          NULL, VM1[0]);
 	VM2[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX2,          NULL, VM2[0]);
 	VM3[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX3,          NULL, VM3[0]);

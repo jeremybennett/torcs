@@ -64,7 +64,7 @@ SOURCE="$(InputPath)"
 # Begin Special Build Tool
 TargetDir=.\Release
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtime	copy $(TargetDir)\*.lib ..\..\..\export\lib
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime	copy $(TargetDir)\*.lib $(WkspDir)\export\lib
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "torcs - Win32 Debug"

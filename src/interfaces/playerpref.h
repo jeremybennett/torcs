@@ -51,17 +51,18 @@
 /* Tell if the sequential shifter can go to neutral */
 #define HM_ATT_SEQSHFT_ALLOW_NEUTRAL "sequential shifter allow neutral"
 
+#define HM_ATT_STEER_SENS	"steer sensitivity"
+#define HM_ATT_STEER_POW	"steer power"
+#define HM_ATT_STEER_SPD	"steer speed sensitivity"
+#define HM_ATT_STEER_DEAD	"steer dead zone"
+
 #define HM_ATT_LEFTSTEER	"left steer"
 #define HM_ATT_LEFTSTEER_MIN	"left steer min"
 #define HM_ATT_LEFTSTEER_MAX	"left steer max"
-#define HM_ATT_LEFTSTEER_SENS	"left steer sensitivity"
-#define HM_ATT_LEFTSTEER_POW	"left steer power"
 
 #define HM_ATT_RIGHTSTEER	"right steer"
 #define HM_ATT_RIGHTSTEER_MIN	"right steer min"
 #define HM_ATT_RIGHTSTEER_MAX	"right steer max"
-#define HM_ATT_RIGHTSTEER_SENS	"right steer sensitivity"
-#define HM_ATT_RIGHTSTEER_POW	"right steer power"
 
 #define HM_ATT_THROTTLE		"throttle"
 #define HM_ATT_THROTTLE_MIN	"throttle min"

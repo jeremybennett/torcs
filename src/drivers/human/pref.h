@@ -36,6 +36,10 @@ typedef struct {
     float	sens;		/* sensitivity of control */
     char	*powName;	/* Name of the pow attribute */
     float	pow;		/* power of curve command = pow(control, power) */
+    char	*spdSensName;	/* Name of the speed sensitivity attribute */
+    float	spdSens;	/* speed sensitivity */
+    char	*deadZoneName;	/* Name of the dead zone attribute */
+    float	deadZone;	/* dead zone (% of the available zone) */
 } tControlCmd;
 
 extern void	*PrefHdle;

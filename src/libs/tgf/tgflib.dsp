@@ -81,7 +81,7 @@ LIB32=link.exe -lib
 # Begin Special Build Tool
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.lib ..\..\..\export\libd
+PostBuild_Cmds=copy $(TargetDir)\*.lib $(WkspDir)\export\libd
 # End Special Build Tool
 
 !ENDIF 

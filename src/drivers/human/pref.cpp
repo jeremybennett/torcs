@@ -53,22 +53,23 @@ int	SeqShftAllowNeutral	= 0;
 #define NB_CMD	16
 
 tControlCmd	CmdControl[NB_CMD] = {
-    {HM_ATT_UP_SHFT,    CMD_TYPE_JOY_BUT,       0, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_DN_SHFT,    CMD_TYPE_JOY_BUT,       1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_ASR_CMD,    CMD_TYPE_JOY_BUT,       2, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_ABS_CMD,    CMD_TYPE_JOY_BUT,       3, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_R,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_N,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_1,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_2,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_3,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_4,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_5,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_GEAR_6,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
-    {HM_ATT_THROTTLE,   CMD_TYPE_ANALOG,        1, HM_ATT_THROTTLE_MIN,   0.0, 0.0, HM_ATT_THROTTLE_MAX,   1.0, HM_ATT_THROTTLE_SENS,   1.0, HM_ATT_THROTTLE_POW,   2.0},
-    {HM_ATT_BRAKE,      CMD_TYPE_ANALOG,        1, HM_ATT_BRAKE_MIN,      0.0, 0.0, HM_ATT_BRAKE_MAX,      1.0, HM_ATT_BRAKE_SENS,      1.0, HM_ATT_BRAKE_POW,      2.0},
-    {HM_ATT_LEFTSTEER,  CMD_TYPE_ANALOG,        0, HM_ATT_LEFTSTEER_MIN,  0.0, 0.0, HM_ATT_LEFTSTEER_MAX,  1.0, HM_ATT_LEFTSTEER_SENS,  2.0, HM_ATT_LEFTSTEER_POW,  1.0},
-    {HM_ATT_RIGHTSTEER, CMD_TYPE_ANALOG,        0, HM_ATT_RIGHTSTEER_MIN, 0.0, 0.0, HM_ATT_RIGHTSTEER_MAX, 1.0, HM_ATT_RIGHTSTEER_SENS, 2.0, HM_ATT_RIGHTSTEER_POW, 1.0}
+    {HM_ATT_UP_SHFT,    CMD_TYPE_JOY_BUT,       0, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DN_SHFT,    CMD_TYPE_JOY_BUT,       1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_ASR_CMD,    CMD_TYPE_JOY_BUT,       2, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_ABS_CMD,    CMD_TYPE_JOY_BUT,       3, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_R,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_N,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_1,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_2,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_3,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_4,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_5,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_6,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+
+    {HM_ATT_THROTTLE,   CMD_TYPE_ANALOG, 1, HM_ATT_THROTTLE_MIN,   0.0, 0.0, HM_ATT_THROTTLE_MAX,   1.0, HM_ATT_THROTTLE_SENS, 1.0, HM_ATT_THROTTLE_POW, 2.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_BRAKE,      CMD_TYPE_ANALOG, 1, HM_ATT_BRAKE_MIN,      0.0, 0.0, HM_ATT_BRAKE_MAX,      1.0, HM_ATT_BRAKE_SENS,    1.0, HM_ATT_BRAKE_POW,    2.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_LEFTSTEER,  CMD_TYPE_ANALOG, 0, HM_ATT_LEFTSTEER_MIN,  0.0, 0.0, HM_ATT_LEFTSTEER_MAX,  1.0, HM_ATT_STEER_SENS,    2.0, HM_ATT_STEER_POW,    1.0, HM_ATT_STEER_SPD, 0.0, HM_ATT_STEER_DEAD, 0.0},
+    {HM_ATT_RIGHTSTEER, CMD_TYPE_ANALOG, 0, HM_ATT_RIGHTSTEER_MIN, 0.0, 0.0, HM_ATT_RIGHTSTEER_MAX, 1.0, HM_ATT_STEER_SENS,    2.0, HM_ATT_STEER_POW,    1.0, HM_ATT_STEER_SPD, 0.0, HM_ATT_STEER_DEAD, 0.0}
 };
 
 
@@ -193,21 +194,31 @@ HmReadPrefs(int index)
 	}
 	if (CmdControl[cmd].maxName) {
 	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
-	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
+	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, sstring,         CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
 	}	
 	if (CmdControl[cmd].sensName) {
 	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
-	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
+	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, sstring,         CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
 	}	
 	if (CmdControl[cmd].powName) {
 	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
-	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
+	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, sstring,         CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
+	}
+	if (CmdControl[cmd].spdSensName) {
+	    CmdControl[cmd].spdSens = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].spdSensName, (char*)NULL, (tdble)CmdControl[cmd].spdSens);
+	    CmdControl[cmd].spdSens = (float)GfParmGetNum(PrefHdle, sstring,         CmdControl[cmd].spdSensName, (char*)NULL, (tdble)CmdControl[cmd].spdSens);
+	    CmdControl[cmd].spdSens = CmdControl[cmd].spdSens / 100.0;
+	}
+	if (CmdControl[cmd].deadZoneName) {
+	    CmdControl[cmd].deadZone = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].deadZoneName, (char*)NULL, (tdble)CmdControl[cmd].deadZone);
+	    CmdControl[cmd].deadZone = (float)GfParmGetNum(PrefHdle, sstring,         CmdControl[cmd].deadZoneName, (char*)NULL, (tdble)CmdControl[cmd].deadZone);
 	}
 	if (CmdControl[cmd].min > CmdControl[cmd].max) {
 	    tmp = CmdControl[cmd].min;
 	    CmdControl[cmd].min = CmdControl[cmd].max;
 	    CmdControl[cmd].max = tmp;
 	}
+	CmdControl[cmd].deadZone = (CmdControl[cmd].max - CmdControl[cmd].min) * CmdControl[cmd].deadZone / 100.0;
 	for (i = 0; i < maxButton; i++) {
 	    if (strcmp(prm, Btn[i]) == 0) {
 		CmdControl[cmd].val = i;

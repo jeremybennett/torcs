@@ -228,7 +228,7 @@ static tdble
 getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 {
     tdble	offset = 0;
-    tdble	lgfs;
+    tdble	lgfs = 0;
     static tTrackPitInfo *pits = &DmTrack->pits;;
     static tdble	 Entry = pits->pitEntry->lgfromstart;
     static tdble	 Start = pits->pitStart->lgfromstart;
@@ -245,6 +245,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, Entry - O1[idx], Start - O2[idx])) {
+	    //GfOut("PIT_STATE_ENTERED\n");
 	    offset = Spline(0, OffsetApproach, lgfs, Entry - O1[idx], Start - O2[idx]);
 	    if (PitState[idx] == PIT_STATE_ASKED) {
 		VI[idx] = car->_speed_x;
@@ -260,9 +261,10 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	
 	/* FALL THROUGH */
     case PIT_STATE_DECEL:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, Start - O2[idx], LgfsFinal[idx] - OP[idx] - O5[idx])) {
+	    //GfOut("PIT_STATE_DECEL\n");
 	    PitState[idx] = PIT_STATE_DECEL;
 	    offset = OffsetApproach;
 	    *maxSpeed = VM;
@@ -272,9 +274,10 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	
 	/* FALL THROUGH */
     case PIT_STATE_PITLANE_BEFORE:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx] - O5[idx], LgfsFinal[idx] - OP[idx])) {
+	    //GfOut("PIT_STATE_PITLANE_BEFORE\n");
 	    PitState[idx] = PIT_STATE_PITLANE_BEFORE;
 	    offset = OffsetApproach;
 	    VM1[idx] = MIN(VM1[idx], VM);
@@ -285,10 +288,11 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_PIT_ENTRY:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	
-	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx])) {
+	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx] - OA[idx])) {
+	    //GfOut("PIT_STATE_PIT_ENTRY\n");
 	    PitState[idx] = PIT_STATE_PIT_ENTRY;
 	    //offset = Spline(OffsetApproach, OffsetFinal, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
 	    offset = OffsetFinal + SIGN(OffsetFinal) * OW[idx];
@@ -299,10 +303,26 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	}
 
 	/* FALL THROUGH */
+    case PIT_STATE_PIT_ALIGN:
+	if (!lgfs) lgfs = GetDistToStart(car);
+
+	
+	if (isBetween(lgfs, LgfsFinal[idx] - OA[idx], LgfsFinal[idx])) {
+	    //GfOut("PIT_STATE_PIT_ALIGN\n");
+	    PitState[idx] = PIT_STATE_PIT_ALIGN;
+	    offset = OffsetApproach;
+	    *maxSpeed = Spline(VM2[idx], 0, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
+	    hold[idx] = 0;
+	    car->_raceCmd = RM_CMD_PIT_ASKED;
+	    break;
+	}
+
+	/* FALL THROUGH */
     case PIT_STATE_PIT_EXIT:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx] + OP[idx])) {
+	    //GfOut("PIT_STATE_PIT_EXIT\n");
 	    PitState[idx] = PIT_STATE_PIT_EXIT;
 	    //offset = Spline(OffsetFinal, OffsetApproach, lgfs, LgfsFinal[idx], LgfsFinal[idx] + OP[idx]);
 	    offset = OffsetExit;
@@ -314,10 +334,11 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_PITLANE_AFTER:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] + OP[idx], End + O3[idx])) {
-	    PitState[idx] = PIT_STATE_PITLANE_BEFORE;
+	    //GfOut("PIT_STATE_PITLANE_AFTER %f - %f - %f\n", lgfs, LgfsFinal[idx] + OP[idx], End + O3[idx]);
+	    PitState[idx] = PIT_STATE_PITLANE_AFTER;
 	    offset = OffsetExit;
 	    *maxSpeed = VM;
 	    hold[idx] = 0;
@@ -326,14 +347,16 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_EXIT:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, End + O3[idx], Exit + O4[idx])) {
+	    //GfOut("PIT_STATE_EXIT\n");
 	    PitState[idx] = PIT_STATE_EXIT;
 	    offset = Spline(OffsetExit, 0, lgfs, End + O3[idx], Exit + O4[idx]);
 	    hold[idx] = 0;
 	    break;
 	}
+	//GfOut("End of Pit\n");
 	PitState[idx] = PIT_STATE_NONE;
 	break;
     }
@@ -359,7 +382,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 
     DynOffset[idx] = 0;
     if ((PitState[idx] == PIT_STATE_NONE) && 
-	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
+	(((car->_dammage > 0) && ((s->_totLaps - car->_laps) > 2)) || 
 	 ((car->_fuel < ConsFactor) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
