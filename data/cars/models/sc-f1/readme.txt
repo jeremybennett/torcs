@@ -1,4 +1,4 @@
-Baja car model
+Open wheel car model
 --
 Copyright © 2004 SpeedyChonChon
 Copyleft: this work of art is free, you can redistribute
