@@ -20,11 +20,28 @@
 #include <stdio.h>
 #include "sim.h"
 
+#define USE_QUATERNIONS 1
 #undef FREE_MOVING_WHEELS
 
+#if 0
+#define BEGIN_PROFILE(x) double x##_dt = GfTimeClock()
+#define END_PROFILE(x) x += GfTimeClock() - x##_dt
+#else
+#define BEGIN_PROFILE(x) 
+#define END_PROFILE(x) 
+#endif
 static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
+
+double timer_coordinate_transform = 0.0f;
+double timer_reaction = 0.0f;
+double timer_angles = 0.0f;
+double timer_friction = 0.0f;
+double timer_temperature = 0.0f;
+double timer_force_calculation = 0.0f;
+double timer_wheel_to_car = 0.0f;
+double access_times = 0.0f;
 
 void
 SimWheelConfig(tCar *car, int index)
@@ -140,7 +157,6 @@ SimWheelUpdateRide(tCar *car, int index)
     prex = wheel->susp.x;
 
     
-    t3Dd angles;
     t3Dd normal;
     t3Dd rel_normal;
     
@@ -162,11 +178,22 @@ SimWheelUpdateRide(tCar *car, int index)
 		wheel->relPos.ax += wheel->rotational_damage_x*sin(wheel->relPos.ay + wheel->bent_damage_x);
 		wheel->relPos.az += wheel->rotational_damage_z*cos(wheel->relPos.ay + wheel->bent_damage_z);
 	}
-    tdble waz = wheel->relPos.az;
-    angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
-    angles.y = car->DynGCg.pos.ay;
-    angles.z = car->DynGCg.pos.az;
-    NaiveRotate (normal, angles, &rel_normal);
+    //tdble waz = wheel->relPos.az;
+	if (USE_QUATERNIONS==0) {
+		t3Dd angles;
+		angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
+		angles.y = car->DynGCg.pos.ay;
+		angles.z = car->DynGCg.pos.az;
+		NaiveRotate (normal, angles, &rel_normal);
+	} else {
+		sgQuat Q;
+		sgCopyQuat (Q, car->posQuat);
+		sgPreRotQuat (Q, RAD2DEG(wheel->relPos.ax), 1.0f, 0.0f, 0.0f);
+		sgVec3 P = {normal.x, normal.y, normal.z};
+		sgRotateVecQuat (P, Q);
+		sg2t3 (P, rel_normal);
+	}
+	
 
     //NaiveRotate (d, angles, &d);
 #ifdef USE_THICKNESS
@@ -177,7 +204,7 @@ SimWheelUpdateRide(tCar *car, int index)
 	tdble adjRadius = wheel->radius;
 #endif
     if (rel_normal.z > MIN_NORMAL_Z) {		
-		tdble dist = dZ*normal.z/rel_normal.z;
+		//tdble dist = dZ*normal.z/rel_normal.z;
 
 		// add a factor as we want to take the *real* wheelpos
 		// also used to bounce.
@@ -195,7 +222,7 @@ SimWheelUpdateRide(tCar *car, int index)
     //wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
     /* verify the suspension travel */
     SimSuspCheckIn(&(wheel->susp));
-    wheel->rideHeight = wheel->susp.x / wheel->susp.spring.bellcrank; //fix
+    wheel->rideHeight = wheel->susp.x / wheel->susp.spring.bellcrank;
     if (index % 2) {
 		wheel->relPos.ax -= wheel->susp.dynamic_angles.x;
     } else {
@@ -232,7 +259,7 @@ SimWheelUpdateForce(tCar *car, int index)
     t3Dd normal;
     t3Dd rel_normal;
     bool right_way_up = true;
-    static int wcnt = 0;
+    static long wcnt = 0;
 
 #ifdef USE_THICKNESS
 	int seg_id = (int) ((tdble) N_THICKNESS_SEGMENTS *  (wheel->relPos.ay/(2*M_PI))) % N_THICKNESS_SEGMENTS;
@@ -242,6 +269,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	tdble adjRadius = wheel->radius;
 #endif	
 
+
 	wheel->T_current = car->carElt->_tyreT_mid(index);
 	wheel->condition = car->carElt->_tyreCondition(index);
 
@@ -249,17 +277,28 @@ SimWheelUpdateForce(tCar *car, int index)
     /* Get normal of road relative to the wheel's axis 
 	   This should help take into account the camber.*/
 
+	BEGIN_PROFILE(timer_coordinate_transform);
     
     RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
     
-    angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
-    angles.y = car->DynGCg.pos.ay;
-    angles.z = car->DynGCg.pos.az + waz;
-    NaiveRotate (normal, angles, &rel_normal);
-
-
+	if (USE_QUATERNIONS==0) {
+		angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
+		angles.y = car->DynGCg.pos.ay;
+		angles.z = car->DynGCg.pos.az + waz;
+		NaiveRotate (normal, angles, &rel_normal);
+	} else {
+		sgQuat Q;
+		sgCopyQuat (Q, car->posQuat);
+		sgPreRotQuat (Q, RAD2DEG(wheel->relPos.ax), 1.0f, 0.0f, 0.0f);
+		sgPreRotQuat (Q, RAD2DEG(waz), 0.0f, 0.0f, 1.0f);
+		sgVec3 P = {normal.x, normal.y, normal.z};
+		sgRotateVecQuat (P, Q);
+		sg2t3 (P, rel_normal);
+	}
     wheel->state = 0;
+	END_PROFILE(timer_coordinate_transform);
 
+	BEGIN_PROFILE(timer_reaction);
     Ft = 0.0;
     Fn = 0.0;
     wheel->forces.x = 0.0;
@@ -267,7 +306,6 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->forces.z = 0.0;
 
 	
-    /* VERTICAL STUFF CONSIDERING SMALL PITCH AND ROLL ANGLES */
     /* Now uses the normal, so it should work */
     /* update suspension force */
     SimSuspUpdate(&(wheel->susp));
@@ -292,25 +330,21 @@ SimWheelUpdateForce(tCar *car, int index)
 		   of the surface is just f_z*rel_normal.z;!
 		*/
 		if ((right_way_up) && (rel_normal.z > MIN_NORMAL_Z)) {
-			// reaction force on track z axis should be equal to f_z's
-			// projection to track's normal
-			// reaction_force = f_z * rel_normal.z;
-			// but we're ignoring a lot of things, such
-			// as the reaction forces from the immovable axis of
-			// the suspension. We make an assumption that:
-			tdble invrel_normal = 2.0/rel_normal.z;
-			if (invrel_normal>=2.0) {
-				invrel_normal = 2.0;
-			} else if (invrel_normal<=-2.0) {
-				invrel_normal = -2.0;
+			// reaction force on track z axis should be equal to
+			// suspension reaction if suspension is perpendicular
+			// to the track plane. We assume other reaction forces
+			// proportional, but things break down when car is 
+			// tilted a lot with respect to the track plane.
+			tdble invrel_normal = 1.0/rel_normal.z;
+			if (invrel_normal>= 4.0) {
+				invrel_normal = 4.0;
+			} else if (invrel_normal<=-4.0) {
+				invrel_normal = -4.0;
 			}
-			reaction_force = f_z;// * invrel_normal;
-			//  rel_normal.z;
-			//reaction_force = f_z;// more stable -  rel_normal.z;
-			//reaction_force = f_z * rel_normal.z;// much more stable -  rel_normal.z;
+			reaction_force = f_z;
 			// the other reactions are then:
-			Ft = reaction_force* rel_normal.x;
-			Fn = reaction_force* rel_normal.y;
+			Ft = reaction_force*rel_normal.x*invrel_normal;
+			Fn = reaction_force*rel_normal.y*invrel_normal;
 		} else {
 			f_z = 0;
 			wheel->susp.force = 0;
@@ -322,7 +356,10 @@ SimWheelUpdateForce(tCar *car, int index)
     }
 
     wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + adjRadius; /* center relative to GC */
+	END_PROFILE(timer_reaction);
 
+
+	BEGIN_PROFILE(timer_angles);
     /* HORIZONTAL FORCES */
 
     CosA = cos(waz);
@@ -335,14 +372,18 @@ SimWheelUpdateForce(tCar *car, int index)
 								+ rel_normal.x*rel_normal.x);
     tdble rel_normal_yz = sqrt (rel_normal.z*rel_normal.z
 								+ rel_normal.y*rel_normal.y);
-    tdble rel_normal_xy = sqrt (rel_normal.x*rel_normal.x
-								+ rel_normal.y*rel_normal.y);
+    //tdble rel_normal_xy = sqrt (rel_normal.x*rel_normal.x
+	//							+ rel_normal.y*rel_normal.y);
+
+
+	END_PROFILE(timer_angles);
 
 #ifndef FREE_MOVING_WHEELS
     wheel->bodyVel.z = 0.0;
 #endif
     wrl = (wheel->spinVel + car->DynGC.vel.ay) * adjRadius;
     {
+		// this thing here should be faster than quat?
 		t3Dd angles = {wheel->relPos.ax, 0.0, waz};
 		NaiveRotate (wheel->bodyVel, angles, &wheel->bodyVel);
     }
@@ -354,7 +395,7 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->bodyVel.x = wvx;
     wheel->bodyVel.y = wvy;
 
-
+	BEGIN_PROFILE(timer_friction);
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
@@ -374,9 +415,11 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	s = sqrt(sx*sx+sy*sy);
 
-	if (index==0) {
-		wcnt--;
-	}
+	wcnt++;
+	access_times = (float) wcnt;
+	//if (index==0) {
+	//wcnt--;
+	//}
 
 	if (wcnt<0) {
 		//printf ("%f", reaction_force);
@@ -401,22 +444,24 @@ SimWheelUpdateForce(tCar *car, int index)
 
     /* MAGIC FORMULA */
     Bx = wheel->mfB * stmp;
-    F = wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0f + stmp * simSkidFactor[car->carElt->_skillLevel]);
+    tdble dynamic_grip = wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0f + stmp * simSkidFactor[car->carElt->_skillLevel]);
 
 	//printf ("%f\n", simSkidFactor[car->carElt->_skillLevel]);
 
 	/* load sensitivity */
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad));
     
+	tdble static_grip = wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
 
-
-    F *= wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
+    F = dynamic_grip * static_grip;
 
 	{
 		tdble Bx = wheel->mfB * sa;
-		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) *  wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad)) * wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
+		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) * static_grip;
 	}
+	END_PROFILE(timer_friction);
 
+	BEGIN_PROFILE(timer_temperature);
 	if (car->options->tyre_temperature) {
     	// heat transfer function with air
 		tdble htrf = (0.002 + fabs(absolute_speed)*0.0005)*SimDeltaTime;
@@ -452,8 +497,9 @@ SimWheelUpdateForce(tCar *car, int index)
     } else {
 		wheel->mfT = 1.0f;
 	}
+	END_PROFILE(timer_temperature);
 
-
+	BEGIN_PROFILE(timer_force_calculation);
 
     wheel->rollRes = reaction_force * wheel->trkPos.seg->surface->kRollRes;
     car->carElt->priv.wheel[index].rollRes = wheel->rollRes;
@@ -485,8 +531,10 @@ SimWheelUpdateForce(tCar *car, int index)
 	wheel->forces.x = Ft2 * rel_normal_yz;
 	wheel->forces.y = Fn2 * rel_normal_xz; 
 	wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;
+
+	END_PROFILE(timer_force_calculation);
 	
-	if (1) {
+	if (0) {
 		// EXPERIMENTAL code - estimate amount of mass linked to this
 		// wheel. Maybe useful for adjusting the slope of the 
 		// static friction function. Currently not used.
@@ -516,30 +564,39 @@ SimWheelUpdateForce(tCar *car, int index)
 		Ft2 = 0.0f;
 		wheel->spinTq = 0.0f;
     } else {
+		BEGIN_PROFILE (timer_wheel_to_car);
 		t3Dd f;
 		// send friction and reaction forces to the car
+		// normally we would not need to add f.z here, as that
+		// would be purely coming from the suspension. However
+		// that would only be the case if the wheels were really
+		// independent objects. Right now their position is determined
+		// in update ride, so we have no choice but to transmit the
+		// suspension-parallel friction forces magically to the car.
 		f.x = wheel->forces.x;
 		f.y = wheel->forces.y;
-		f.z = 0.0f;
+		f.z = wheel->forces.z;
+
+		// TODO: Check whether this is correct.
 		angles.x = wheel->relPos.ax + asin(rel_normal.x);
 		angles.y = asin(rel_normal.y);
 		angles.z = waz;
 		NaiveInverseRotate (f, angles, &wheel->forces);
 		// transmit reaction forces to the car	
-		// -- removed as they can cause infinities(!) when rel_normal.z~0 --
 		wheel->forces.x +=(Ft* CosA - Fn * SinA);
 		wheel->forces.y +=(Ft* SinA + Fn * CosA);
-		// moved
+
 		RELAXATION2(wheel->forces.x, wheel->preFn, 50.0f);
 		RELAXATION2(wheel->forces.y, wheel->preFt, 50.0f);
 
-		wheel->forces.z = f_z;
+		wheel->forces.z = f_z; // only suspension acts on z axis.
 		car->carElt->_wheelFx(index) = wheel->forces.x;
 		car->carElt->_wheelFz(index) = wheel->forces.z;
 
 		wheel->spinTq = Ft2 * adjRadius;
 		wheel->sa = sa;
 		wheel->sx = sx;
+		END_PROFILE (timer_wheel_to_car);
     }
     wheel->feedBack.spinVel = wheel->spinVel;
     wheel->feedBack.Tq = wheel->spinTq;
@@ -548,6 +605,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	car->carElt->_tyreCondition(index) = wheel->condition;
 	car->carElt->_wheelSlipSide(index) = wvy;
 	car->carElt->_wheelSlipAccel(index) = wvx;
+
 }
 
 
