@@ -30,7 +30,7 @@ typedef struct
     tBrake       brake;		/* associated brake disk */
 
     /* dynamic */
-    t3Dd	forces;		/* forces acting on car */
+    t3Dd	forces;		/* forces acting on car, using car's FOR */
     tdble	rollRes;	/* Rolling Resistance (summed over the car) */
     tdble	rideHeight;	/* height of the bottom of the car */
     tdble	zRoad;		/* z of the road */
@@ -61,12 +61,19 @@ typedef struct
     tdble  	weight0;	/* initial weight on this wheel */
     tdble	tireSpringRate;
     tdble  	radius;
+    tdble       width;
     tdble  	mu;
     tdble  	I;       	/* I = inertial moment of the wheel */
     tdble  	curI;       	/* Current inertia for the wheel (including transmission) */
     tdble	mfC;		/* Magic Formula C coeff */
     tdble	mfB;		/* Magic Formula B coeff */
     tdble	mfE;		/* Magic Formula E coeff */
+    tdble       mfT;            /* Temperature-dependent coeff */
+    tdble       Ca;
+    tdble       T_current;      /* Temperature */
+    tdble       T_operating;    /* Operating temperature */
+    tdble       condition;      /* Tyre condition */
+    tdble       T_range;
     tdble	lfMax;		/* Load factor */
     tdble	lfMin;		/* Load factor */
     tdble	lfK;		/* Load factor */

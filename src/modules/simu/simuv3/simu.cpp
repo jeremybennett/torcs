@@ -141,6 +141,21 @@ SimConfig(tCarElt *carElt)
     SimCarCollideConfig(car);
     sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+	//sgEulerToQuat (car->posQuat, RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+	//order is inversed for some reason
+#if 1
+	sgEulerToQuat (car->posQuat, -RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_pitch), RAD2DEG(carElt->_roll));
+	sgQuatToMatrix (car->posMat, car->posQuat);
+	//	carElt->pub.posMat[3][0] = car->DynGCg.pos.x;
+	//	carElt->pub.posMat[3][1] = car->DynGCg.pos.y;
+	//	carElt->pub.posMat[3][2] = car->DynGCg.pos.z - carElt->_statGC_z;
+	//	carElt->pub.posMat[0][3] =  SG_ZERO ;
+	//	carElt->pub.posMat[1][3] =  SG_ZERO ;
+	//	carElt->pub.posMat[2][3] =  SG_ZERO ;
+	//	carElt->pub.posMat[3][3] =  SG_ONE ;
+#endif
+	//sgMakeRotMat4 (car->posMat, RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+
 }
 
 /* After pit stop */
@@ -355,16 +370,17 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		SimWheelUpdateForce(car, i);
 	    }
 	    CHECK(car);
-	    SimTransmissionUpdate(car);
-	    CHECK(car);
+	}
+    
+	SimTransmissionUpdate(car);
+	CHECK(car);
+
+	if (!(s->_raceState & RM_RACE_PRESTART)) {
 	    SimWheelUpdateRotation(car);
 	    CHECK(car);
 	    SimCarUpdate(car, s);
 	    CHECK(car);
-	} else {
-	    SimEngineUpdateRpm(car, 0.0);
 	}
-	
     }
 
     SimCarCollideCars(s);
@@ -387,8 +403,19 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 	carElt->pub.DynGC = car->DynGC;
 	carElt->pub.DynGCg = car->DynGCg;
+#if 0
 	sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+#else
+	sgQuatToMatrix (carElt->pub.posMat, car->posQuat);
+	carElt->pub.posMat[3][0] = car->DynGCg.pos.x;
+	carElt->pub.posMat[3][1] = car->DynGCg.pos.y;
+	carElt->pub.posMat[3][2] = car->DynGCg.pos.z - carElt->_statGC_z;
+	carElt->pub.posMat[0][3] =  SG_ZERO ;
+	carElt->pub.posMat[1][3] =  SG_ZERO ;
+	carElt->pub.posMat[2][3] =  SG_ZERO ;
+	carElt->pub.posMat[3][3] =  SG_ONE ;
+#endif
 	carElt->_trkPos = car->trkPos;
 	for (i = 0; i < 4; i++) {
 	    carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
@@ -434,6 +461,12 @@ SimShutdown(void)
     if (SimCarTable) {
 	for (ncar = 0; ncar < SimNbCars; ncar++) {
 	    car = &(SimCarTable[ncar]);
+	    printf ("Car %d:\n", ncar);
+	    printf ("Wheels:\n");
+	    for (int i=0; i<4; i++) {
+		printf ("%d: %foC %f%% efficiency\n", 
+			i, car->wheel[i].T_current, car->wheel[i].condition);
+	    }
 	    SimEngineShutdown(car);
 	}
 	free(SimCarTable);

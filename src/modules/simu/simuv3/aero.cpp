@@ -49,6 +49,8 @@ SimAeroUpdate(tCar *car, tSituation *s)
     if (airSpeed > 10.0) {
 	tdble x = car->DynGC.pos.x;
 	tdble y = car->DynGC.pos.y;
+	//	tdble x = car->DynGC.pos.x + cos(yaw)*wing->staticPos.x;
+	//	tdble y = car->DynGC.pos.y + sin(yaw)*wing->staticPos.x;
 	tdble yaw = car->DynGC.pos.az;
 	tdble spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
 	for (i = 0; i < s->_ncars; i++) {
@@ -88,12 +90,6 @@ SimAeroUpdate(tCar *car, tSituation *s)
     tdble v2 = car->airSpeed2;
     car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0) * dragK * dragK;
 
-    hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
-    hm = hm*hm;
-    hm = hm*hm;
-    hm = 2 * exp(-3.0*hm);
-    car->aero.lift[0] = - car->aero.Clift[0] * v2 * hm;
-    car->aero.lift[1] = - car->aero.Clift[1] * v2 * hm;
 
     // Since we have the forces ready, we just multiply. 
     // Should insert constants here.
@@ -193,6 +189,12 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 
     // the sinus of the angle of attack
     tdble sinaoa = sin(aoa);
+    tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
+    hm = hm*hm;
+    hm = hm*hm;
+    hm = 2 * exp(-3.0*hm);
+    car->aero.lift[0] = - car->aero.Clift[0] * vt2 * hm;
+    car->aero.lift[1] = - car->aero.Clift[1] * vt2 * hm;
 
     if (car->DynGC.vel.x > 0.0) {
 	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;

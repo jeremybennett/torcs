@@ -78,10 +78,10 @@ simuInit(int /* index */, void *pt)
  *	
  */
 extern "C" int
-simuv3(tModInfo *modInfo)
+simuv2(tModInfo *modInfo)
 {
     modInfo->name = "simu";		/* name of the module (short) */
-    modInfo->desc = "Simulation Engine V3.0";	/* description of the module (can be long) */
+    modInfo->desc = "Simulation Engine V2.0";	/* description of the module (can be long) */
     modInfo->fctInit = simuInit;	/* init function */
     modInfo->gfId = SIM_IDENT;		/* ident */
     modInfo->index = 0;

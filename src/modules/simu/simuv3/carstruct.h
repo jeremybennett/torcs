@@ -78,6 +78,8 @@ typedef struct
     tdble	wheelbase;
     tdble	wheeltrack;
     sgMat4	posMat;
+    sgMat4      rotMat;
+    sgQuat      posQuat;
     DtShapeRef	shape;		/* for collision */
     int		blocked;
     int		dammage;

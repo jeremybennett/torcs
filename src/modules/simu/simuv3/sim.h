@@ -59,7 +59,6 @@ extern void SimWheelUpdateForce(tCar *car, int index);
 extern void SimWheelUpdateRotation(tCar *car);
 extern void SimUpdateFreeWheels(tCar *car, int axlenb);
 
-
 extern void SimSteerConfig(tCar *car);
 extern void SimSteerUpdate(tCar *car);
 
@@ -96,7 +95,11 @@ extern void SimCarCollideInit(void);
 
 extern void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0);
-
+extern void QuatToEuler (sgVec3 hpr, const sgQuat quat);
+extern void EulerToQuat (sgQuat quat, tdble h, tdble p, tdble r);
+extern void SimCarAddAngularVelocity (tCar* car);
+extern tdble ConstantFriction (tdble u, tdble du);
+extern tdble ConstantFriction (tdble u, tdble a, tdble dt);
 extern tdble PartialFlowRectangle(tdble theta, tdble psi);
 extern tdble PartialFlowSmooth(tdble theta, tdble psi);
 extern tdble PartialFlowSphere(tdble theta, tdble psi);

@@ -108,13 +108,14 @@ SimSuspCheckIn(tSuspension *susp)
     switch (susp->type) {
     case Wishbone:
 	{
-	    tdble link_u = asin(((susp->x - susp->spring.x0)/susp->spring.bellcrank)/susp->link.y);
+	    //tdble link_u = asin(((susp->x - .5*susp->spring.x0)/susp->spring.bellcrank)/susp->link.y);
+	    tdble link_u = asin(((susp->x - .2*susp->spring.x0)/susp->spring.bellcrank)/susp->link.y);
 	    tdble x1 = susp->link.y * cos(link_u);
 	    tdble y1 = susp->link.y * sin(link_u);
 	    tdble r1 = susp->link.z;
 	    tdble r0 = susp->link.x;
-	    tdble x0 = 0.25;
-	    tdble y0 = 0.25;
+	    tdble x0 = 0.1;
+	    tdble y0 = 0.20;
 	    tdble dx = x1 - x0;
 	    tdble dy = y1 - y0;
 	    tdble d2 =(dx*dx+dy*dy);
@@ -129,7 +130,6 @@ SimSuspCheckIn(tSuspension *susp)
 		susp->dynamic_angles.x = atan2(x3-x1, y3-y1);
 		//printf ("d:%f sR:%f dR:%f u:%f a:%f\n", d, r0+r1, fabs(r0-r1),link_u,susp->dynamic_angles.x);
 	    } else {
-		printf ("d:%f sR:%f dR:%f u:%f\n", d, r0+r1, fabs(r0-r1),link_u);
 		susp->dynamic_angles.x = 0.0;
 	    }
 	    susp->dynamic_angles.y = 0.0;
