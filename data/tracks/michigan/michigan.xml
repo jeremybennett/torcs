@@ -47,7 +47,7 @@
     </section>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="12"></attnum>
+      <attnum name="track step" unit="m" val="15"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="0"></attnum>
@@ -63,9 +63,21 @@
     <attstr name="rside surface"  val="grass"></attstr>
     <attnum name="rside width"    val="0.0"></attnum>
 
-    <attstr name="lside surface"  val="concrete"></attstr>
+    <attstr name="lside surface"  val="concrete3"></attstr>
     <attnum name="lside width"    val="15.0"></attnum>
     <attstr name="lside type" in="level,tangent" val="level"></attstr>
+
+    <attnum name="profil steps length" val="12" unit="m"></attnum>
+
+    <!-- PITS -->
+    <attstr name="pit type"   val="track side"></attstr>
+    <attstr name="pit side"   val="left"></attstr>
+    <attstr name="pit entry"  val="400"></attstr>
+    <attstr name="pit start"  val="500"></attstr>
+    <attstr name="pit end"    val="500"></attstr>
+    <attstr name="pit exit"   val="600"></attstr>
+    <attnum name="pit length" val="15" unit="m"></attnum>
+    <attnum name="pit width"  val="5" unit="m"></attnum>
 
     <section name="segments">
       <!-- first segment -->
@@ -75,9 +87,9 @@
 	<attnum name="radius" unit="ft" val="1970"></attnum>
 	<attnum name="arc" unit="deg" val="34"></attnum>
 	<attnum name="z start left" unit="ft" val="0"></attnum>
-	<attnum name="z start right" unit="ft" val="9.5"></attnum>
+	<attnum name="z start right" unit="ft" val="7.75"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+	<attnum name="z end right" unit="ft" val="12.5"></attnum>
       </section>
 
       <section name="100">
@@ -85,7 +97,7 @@
 	<attnum name="radius" unit="ft" val="1970"></attnum>
 	<attnum name="arc" unit="deg" val="18"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attnum name="z end right" unit="ft" val="10"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="35"></attnum>
       </section>
@@ -95,7 +107,7 @@
 	<attnum name="radius" unit="ft" val="560"></attnum>
 	<attnum name="arc" unit="deg" val="128"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attnum name="z end right" unit="ft" val="10"></attnum>
       </section>
 
 
@@ -103,7 +115,7 @@
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="ft" val="800"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="4"></attnum>
+	<attnum name="z end right" unit="ft" val="5"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="48"></attnum>
       </section>
@@ -113,17 +125,18 @@
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="ft" val="622.190326"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="4"></attnum>
+	<attnum name="z end right" unit="ft" val="5"></attnum>
+	<attstr name="lside surface"  val="asphalt-pits"></attstr>
       </section>
-
 
       <section name="600">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="ft" val="800"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attnum name="z end right" unit="ft" val="10"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="48"></attnum>
+	<attstr name="lside surface"  val="concrete3"></attstr>
       </section>
 
 
@@ -132,7 +145,7 @@
 	<attnum name="radius" unit="ft" val="560"></attnum>
 	<attnum name="arc" unit="deg" val="128"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attnum name="z end right" unit="ft" val="10"></attnum>
       </section>
 
 
@@ -141,7 +154,7 @@
 	<attnum name="radius" unit="ft" val="1970"></attnum>
 	<attnum name="arc" unit="deg" val="18"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+	<attnum name="z end right" unit="ft" val="7.75"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="35"></attnum>
       </section>
@@ -150,10 +163,8 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="ft" val="1970"></attnum>
 	<attnum name="arc" unit="deg" val="34"></attnum>
-	<attnum name="z start left" unit="ft" val="0"></attnum>
-	<attnum name="z start right" unit="ft" val="9.5"></attnum>
 	<attnum name="z end left" unit="ft" val="0"></attnum>
-	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+	<attnum name="z end right" unit="ft" val="7.75"></attnum>
       </section>
 
     </section>
