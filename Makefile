@@ -44,11 +44,12 @@ restart2:
 
 endif
 
-PKGLIST		= src src-tools \
+PKGLIST		= src \
 		  src-robots-base src-robots-berniw src-robots-K1999 \
 		  data \
 		  data-cars-extra \
 		  data-cars-Patwo-Design \
+		  data-cars-VM \
 		  data-cars-nascar \
 		  data-cars-kcendra-gt \
 		  data-cars-kcendra-sport \
