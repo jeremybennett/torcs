@@ -1155,8 +1155,8 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	}
 
 	/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
-	double p = (id - 1 + nPathSeg) % nPathSeg;
-	double e = (id + 1 + nPathSeg) % nPathSeg;
+	int p = (id - 1 + nPathSeg) % nPathSeg;
+	int e = (id + 1 + nPathSeg) % nPathSeg;
 	smooth(id, p, e, 1.0);
 
 	return 1;
@@ -1338,8 +1338,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 
 		/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
-		double p = (trackSegId - 1 + nPathSeg) % nPathSeg;
-		double e = (trackSegId + 1 + nPathSeg) % nPathSeg;
+		int p = (trackSegId - 1 + nPathSeg) % nPathSeg;
+		int e = (trackSegId + 1 + nPathSeg) % nPathSeg;
 		smooth(trackSegId, p, e, 1.0);
 
 		return 1;
