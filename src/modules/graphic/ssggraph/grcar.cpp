@@ -409,8 +409,9 @@ grInitCar(tCarElt *car)
     ssgEntity		*carEntity;
     ssgSelector		*LODSel;
     /* ssgBranchCb		*branchCb; */
+    ssgTransform	*wheel[4];
     int			nranges;
-    int			i;
+    int			i, j;
     void		*handle;
     char		*param;
     int			lg;
@@ -502,7 +503,8 @@ grInitCar(tCarElt *car)
     carBody->addKid(carEntity);
     /* add wheels */
     for (i = 0; i < 4; i++){
-	carBody->addKid(initWheel(car, i));
+	wheel[i] = initWheel(car, i);
+	carBody->addKid(wheel[i]);
     }
     grCarInfo[index].LODSelectMask[0] = 1 << selIndex; /* car mask */
     selIndex++;
@@ -517,6 +519,12 @@ grInitCar(tCarElt *car)
 	carEntity = grssgCarLoadAC3D(param, NULL, index);;
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
 	carBody->addKid(carEntity);
+	if (!strcmp(GfParmGetStr(handle, buf, PRM_WHEELSON, "no"), "yes")) {
+	    /* add wheels */
+	    for (j = 0; j < 4; j++){
+		carBody->addKid(wheel[j]);
+	    }
+	}
 	LODSel->addKid(carBody);
 	grCarInfo[index].LODSelectMask[i-1] = 1 << selIndex; /* car mask */
 	selIndex++;
