@@ -37,6 +37,7 @@
 #endif /* WIN32 */
 
 #include <tgf.h>
+#include "gui.h"
 #include "fg_gm.h"
 
 static int GfScrWidth;
@@ -255,10 +256,19 @@ GfScrReinit(void *dummy)
     retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
 #else
     GfScrShutdown();
+
     if (strlen(GetLocalDir()) == 0) {
-	retcode = execlp("./torcs", "torcs", (const char *)NULL);
+	if (GfuiMouseHW) {
+	    retcode = execlp("./torcs", "torcs", "-m", (const char *)NULL);
+	} else {
+	    retcode = execlp("./torcs", "torcs", (const char *)NULL);
+	}
     } else {
-	retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), (const char *)NULL);
+	if (GfuiMouseHW) {
+	    retcode = execlp("./torcs", buf, "-l", GetLocalDir(), "-m", (const char *)NULL);
+	} else {
+	    retcode = execlp("./torcs", buf, "-l", GetLocalDir(), (const char *)NULL);
+	}
     }
 #endif
     if (retcode) {
