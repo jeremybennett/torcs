@@ -31,11 +31,11 @@ const float Driver::G = 9.81;								/* [m/(s*s)] */
 const float Driver::FULL_ACCEL_MARGIN = 1.0;				/* [m/s] */
 const float Driver::SHIFT = 0.9;							/* [-] (% of rpmredline) */
 const float Driver::SHIFT_MARGIN = 4.0;						/* [m/s] */
-const float Driver::ABS_SLIP = 0.9;							/* [-] range [0.95..0.3] */
+const float Driver::ABS_SLIP = 2.0;							/* [m/s] range [0..10] */
+const float Driver::ABS_RANGE = 5.0;						/* [m/s] range [0..10] */
 const float Driver::ABS_MINSPEED = 3.0;						/* [m/s] */
-const float Driver::TCL_SLIP = 0.8;							/* [-] range [0.95..0.3] */
-const float Driver::TCL_RANGE = 0.2;						/* [-] */
-const float Driver::TCL_MINSPEED = 3.0;						/* [m/s] */
+const float Driver::TCL_SLIP = 2.0;							/* [m/s] range [0..10] */
+const float Driver::TCL_RANGE = 5.0;						/* [m/s] range [0..10] */
 const float Driver::LOOKAHEAD_CONST = 17.0;					/* [m] */
 const float Driver::LOOKAHEAD_FACTOR = 0.33;				/* [-] */
 const float Driver::WIDTHDIV = 3.0;							/* [-] */
@@ -46,6 +46,7 @@ const float Driver::PIT_LOOKAHEAD = 6.0;					/* [m] */
 const float Driver::PIT_BRAKE_AHEAD = 200.0;				/* [m] */
 const float Driver::PIT_MU = 0.4;							/* [-] */
 const float Driver::MAX_SPEED = 84.0;						/* [m/s] */
+const float Driver::MAX_FUEL_PER_METER = 0.0008;			/* [liter/m] fuel consumtion */
 
 Driver::Driver(int index)
 {
@@ -90,7 +91,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
     }
 
 	/* Load and set parameters */
-	float fuel = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_FUELPERLAP, (char*)NULL, 5.0);
+	float fuel = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_FUELPERLAP, (char*)NULL, t->length*MAX_FUEL_PER_METER);
 	fuel *= (s->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
 
@@ -580,10 +581,12 @@ float Driver::filterABS(float brake)
 	int i;
 	float slip = 0.0;
 	for (i = 0; i < 4; i++) {
-		slip += car->_wheelSpinVel(i) * car->_wheelRadius(i) / car->_speed_x;
+		slip += car->_wheelSpinVel(i) * car->_wheelRadius(i);
 	}
-	slip = slip/4.0;
-	if (slip < ABS_SLIP) brake = brake*slip;
+	slip = car->_speed_x - slip/4.0;
+	if (slip > ABS_SLIP) {
+		brake = brake - MIN(brake, (slip - ABS_SLIP)/ABS_RANGE);
+	}
 	return brake;
 }
 
@@ -591,10 +594,9 @@ float Driver::filterABS(float brake)
 /* TCL filter for accelerator pedal */
 float Driver::filterTCL(float accel)
 {
-	if (car->_speed_x < TCL_MINSPEED) return accel;
-	float slip = car->_speed_x/(this->*GET_DRIVEN_WHEEL_SPEED)();
-	if (slip < TCL_SLIP) {
-		accel = 1.0 - MIN(1.0, (TCL_SLIP-slip)/TCL_RANGE);
+	float slip = (this->*GET_DRIVEN_WHEEL_SPEED)() - car->_speed_x;
+	if (slip > TCL_SLIP) {
+		accel = accel - MIN(accel, (slip - TCL_SLIP)/TCL_RANGE);
 	}
 	return accel;
 }
@@ -675,11 +677,5 @@ float Driver::brakedist(float allowedspeed, float mu)
     float v1sqr = currentspeedsqr;
     float v2sqr = allowedspeed*allowedspeed;
     return -log((c + v2sqr*d)/(c + v1sqr*d))/(2.0*d);
-
-	/*float allowedspeedsqr = allowedspeed*allowedspeed;
-	float cm = mu*G*mass;
-	float ca = CA*mu + CW;
-	return mass*(currentspeedsqr - allowedspeedsqr) / (2.0*(cm + allowedspeedsqr*ca));
-	*/
 }
 

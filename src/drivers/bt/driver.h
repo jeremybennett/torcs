@@ -127,9 +127,9 @@ class Driver {
 		static const float SHIFT;
 		static const float SHIFT_MARGIN;
 		static const float ABS_SLIP;
+		static const float ABS_RANGE ;
 		static const float ABS_MINSPEED;
 		static const float TCL_SLIP;
-		static const float TCL_MINSPEED;
 		static const float LOOKAHEAD_CONST;
 		static const float LOOKAHEAD_FACTOR;
 		static const float WIDTHDIV;
@@ -141,6 +141,8 @@ class Driver {
 		static const float PIT_MU;
 		static const float MAX_SPEED;
 		static const float TCL_RANGE;
+		static const float MAX_FUEL_PER_METER;
+
 		/* track variables */
 		tTrack* track;
 };
