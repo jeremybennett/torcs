@@ -1347,7 +1347,7 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 		if (car != myc->getCarPtr()) {
 			int seg = ocar[i].getCurrentSegId();
 			/* get the next car to catch up */
-			if (track->isBetween(start, end, seg) && !(car->_state & RM_CAR_STATE_DNF)) {
+			if (track->isBetween(start, end, seg) && !(car->_state & (RM_CAR_STATE_DNF | RM_CAR_STATE_PULLUP | RM_CAR_STATE_PULLSIDE | RM_CAR_STATE_PULLDN))) {
 				o[n].cosalpha = (*myc->getDir())*(*ocar[i].getDir());
 				o[n].speed = ocar[i].getSpeed()*o[n].cosalpha;
 				int j, k = track->diffSegId(trackSegId, seg);
