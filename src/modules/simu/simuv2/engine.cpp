@@ -39,9 +39,9 @@ SimEngineConfig(tCar *car)
     car->engine.revsMax     = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSMAX, (char*)NULL, 1000);
     car->carElt->_enginerpmMax = car->engine.revsMax;
     car->engine.tickover    = GfParmGetNum(hdle, SECT_ENGINE, PRM_TICKOVER, (char*)NULL, 150);
-    car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423f);
-    car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622f);
-    car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33f);
+    car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423);
+    car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
+    car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
 
     sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
     car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
@@ -56,20 +56,36 @@ SimEngineConfig(tCar *car)
     edesc[i].tq  = edesc[i - 1].tq;
 
     maxTq = 0;
+	car->engine.curve.maxPw = 0;
     car->engine.curve.data = (tEngineCurveElem *)malloc(car->engine.curve.nbPts * sizeof(tEngineCurveElem));
     for(i = 0; i < car->engine.curve.nbPts; i++) {
-	data = &(car->engine.curve.data[i]);
+		data = &(car->engine.curve.data[i]);
+		
+		data->rads = edesc[i+1].rpm;
+		if ((data->rads>=car->engine.tickover)
+			&& (edesc[i+1].tq > maxTq)
+			&& (data->rads < car->engine.revsLimiter)) {
+			maxTq = edesc[i+1].tq;
+			rpmMaxTq = data->rads;
+		}
+		if ((data->rads>=car->engine.tickover)
+			&& (data->rads * edesc[i+1].tq > car->engine.curve.maxPw)
+			&& (data->rads < car->engine.revsLimiter)) {
+			car->engine.curve.TqAtMaxPw = edesc[i+1].tq;
+			car->engine.curve.maxPw = data->rads * edesc[i+1].tq;
+			car->engine.curve.rpmMaxPw = data->rads;
+		}
 
-	data->rads = edesc[i+1].rpm;
-	if (edesc[i+1].tq > maxTq) {
-	    maxTq = edesc[i+1].tq;
-	    rpmMaxTq = data->rads;
-	}
-	data->a = (edesc[i+1].tq - edesc[i].tq) / (edesc[i+1].rpm - edesc[i].rpm);
-	data->b = edesc[i].tq - data->a * edesc[i].rpm;
+		data->a = (edesc[i+1].tq - edesc[i].tq) / (edesc[i+1].rpm - edesc[i].rpm);
+		data->b = edesc[i].tq - data->a * edesc[i].rpm;
     }
+
     car->engine.curve.maxTq = maxTq;
+    car->carElt->_engineMaxTq = maxTq;
     car->carElt->_enginerpmMaxTq = rpmMaxTq;
+    car->carElt->_engineMaxPw = car->engine.curve.maxPw;
+    car->carElt->_enginerpmMaxPw = car->engine.curve.rpmMaxPw;
+
     car->engine.rads = car->engine.tickover;
 
     free(edesc);
