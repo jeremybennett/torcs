@@ -56,8 +56,13 @@
 	<attstr name="wheels" val="yes"/>
       </section>
       <section name="4">
-        <attnum name="threshold" val="0"/>
+        <attnum name="threshold" val="5"/>
         <attstr name="car" val="gt40-lod3.acc"/>
+	<attstr name="wheels" val="no"/>
+      </section>
+      <section name="5">
+        <attnum name="threshold" val="0"/>
+        <attstr name="car" val="gt40-lod4.acc"/>
 	<attstr name="wheels" val="no"/>
       </section>
     </section>

@@ -124,6 +124,7 @@
     <attnum name="revs limiter" unit="rpm" min="5000" max="7000" val="5500"/>
     <attnum name="tickover" unit="rpm" min="900" max="2000" val="1000"/>
     <attnum name="fuel cons factor" min="1.0" max="1.4" val="1.0"/>
+    <attnum name="inertia" min=".2" max="1.0" unit="kg.m2" val="0.30"/>
     <section name="data points">
       <section name="1">
         <attnum name="rpm" unit="rpm" val="0"/>
@@ -132,17 +133,17 @@
 
       <section name="2">
         <attnum name="rpm" unit="rpm" val="1000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="1098.4381247333072" val="122.60536398467436"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="1098.4381247333072" val="150.60536398467436"/>
       </section>
 
       <section name="3">
         <attnum name="rpm" unit="rpm" val="2000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="899.5829469798637" val="145.51027785254712"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="899.5829469798637" val="160.51027785254712"/>
       </section>
 
       <section name="4">
         <attnum name="rpm" unit="rpm" val="3000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="820.6721621570686" val="168.2462587670076"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="820.6721621570686" val="177.2462587670076"/>
       </section>
 
       <section name="5">
@@ -327,7 +328,7 @@
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="FREE"/>
     <attnum name="inertia" unit="kg.m2" val="0.03"/>
-    <attnum name="ratio" min="0" max="10" val="4.5"/>
+    <attnum name="ratio" min="0" max="10" val="3.0"/>
     <attnum name="efficiency" val="0.9625"/>
   </section>
 
@@ -344,7 +345,7 @@
     <attnum name="rolling resistance" val="0.0005"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="10.0"/>
-    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
+    <attnum name="dynamic friction" min="75" max="120" val="80" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
   </section>
 
@@ -361,7 +362,7 @@
     <attnum name="rolling resistance" val="0.0005"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="10.0"/>
-    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
+    <attnum name="dynamic friction" min="75" max="120" val="80" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
   </section>
 
@@ -378,7 +379,7 @@
     <attnum name="rolling resistance" val="0.0005"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="10.0"/>
-    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
+    <attnum name="dynamic friction" min="75" max="120" val="80" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
   </section>
 
@@ -395,7 +396,7 @@
     <attnum name="rolling resistance" val="0.0005"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="10.0"/>
-    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
+    <attnum name="dynamic friction" min="75" max="120" val="80" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
   </section>
 

@@ -284,8 +284,8 @@
   <section name="Central Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP,VISCOUS COUPLER" val="VISCOUS COUPLER"/>
-    <attnum name="min torque bias" min="30" max="50" unit="%" val="40"/>
-    <attnum name="max torque bias" min="50" max="80" unit="%" val="60"/>
+    <attnum name="min torque bias" min="20" max="50" unit="%" val="40"/>
+    <attnum name="max torque bias" min="20" max="80" unit="%" val="60"/>
     <attnum name="inertia" min="0.001" max="0.1" unit="kg.m2" val="0.0488"/>
     <attnum name="ratio" min="0" max="10" val="6.85"/>
     <attnum name="efficiency" min="0.5" max="1.0" val="0.9625"/>
