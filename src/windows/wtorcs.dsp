@@ -45,7 +45,7 @@ RSC=rc.exe
 # ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
-# ADD RSC /l 0x409 /fo"U:\tocs.res" /d "NDEBUG"
+# ADD RSC /l 0x409 /fo"Release\torcs.res" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
