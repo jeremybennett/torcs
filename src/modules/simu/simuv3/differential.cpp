@@ -124,12 +124,14 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
     inTq0 = differential->inAxis[0]->Tq;
     inTq1 = differential->inAxis[1]->Tq;
 
+
     spdRatio = fabs(spinVel0 + spinVel1);
     if (spdRatio != 0) {
 		spdRatio = fabs(spinVel0 - spinVel1) / spdRatio;
 
 		switch (differential->type) {
 		case DIFF_FREE:
+#if 0
 			/* the torque is limited by the weaker wheel */
 			if (inTq0 > inTq1) {
 				if (SIGN(DrTq) == SIGN(inTq1)) {
@@ -146,6 +148,11 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 				}
 				DrTq0 = DrTq - DrTq1;
 			}
+#else
+			/* I don't understand the above code. I would think that the following is what a FREE differential should look like, with both wheels independent.*/
+			DrTq0 = DrTq/2.0f;
+			DrTq1 = DrTq0;
+#endif
 			break;
 		case DIFF_LIMITED_SLIP:
 			if (DrTq > differential->lockInputTq) {
