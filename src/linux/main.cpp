@@ -42,6 +42,7 @@ init_args(int argc, char **argv)
 		buf = (char *)malloc(strlen(argv[i]) + 2);
 		sprintf(buf, "%s/", argv[i]);
 		SetLocalDir(buf);
+		free(buf);
 		i++;
 	    }
 	} else if (strncmp(argv[i], "-L", 2) == 0) {
@@ -50,6 +51,7 @@ init_args(int argc, char **argv)
 		buf = (char *)malloc(strlen(argv[i]) + 2);
 		sprintf(buf, "%s/", argv[i]);
 		SetLibDir(buf);
+		free(buf);
 		i++;
 	    }
 	} else if (strncmp(argv[i], "-D", 2) == 0) {
@@ -58,6 +60,7 @@ init_args(int argc, char **argv)
 		buf = (char *)malloc(strlen(argv[i]) + 2);
 		sprintf(buf, "%s/", argv[i]);
 		SetDataDir(buf);
+		free(buf);
 		i++;
 	    }
 	} else if (strncmp(argv[i], "-s", 2) == 0) {

@@ -235,7 +235,7 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
     if (dp != NULL) {
 	/* some files in it */
 	while ((ep = readdir (dp)) != 0) {
-	    if ((strlen(ep->d_name) > 4) && 
+	    if ((strlen(ep->d_name) > 4) &&
 		(strcmp(".so", ep->d_name+strlen(ep->d_name)-3) == 0)) { /* xxxx.so */
 		sprintf(sopath, "%s/%s", dir, ep->d_name);
 		strcpy(dname, ep->d_name);
@@ -295,7 +295,7 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 	printf("linuxModLoadDir: ... Couldn't open the directory %s\n", dir);
 	return -1;
     }
-    
+
     free(curMod);
     return modnb;
 }
@@ -360,35 +360,36 @@ linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlis
 			if (fModInfo(curMod->modInfo) == 0) {
 			    modnb++;
 			    for (i = 0; i < MAX_MOD_ITF; i++) {
-				if (curMod->modInfo[i].name) {
-				    curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
-				    curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
-				}
-			    }
-			    curMod->handle = NULL;
-			    curMod->sopath = strdup(sopath);
-			    /* add the module in the list */
-			    if (*modlist == NULL) {
-				*modlist = curMod;
-				curMod->next = curMod;
-			    } else {
-				/* sort by prio */
-				prio = curMod->modInfo[0].prio;
-				if (prio >= (*modlist)->modInfo[0].prio) {
-				    curMod->next = (*modlist)->next;
-				    (*modlist)->next = curMod;
-				    *modlist = curMod;
-				} else {
-				    cMod = *modlist;
-				    do {
-					if (prio < cMod->next->modInfo[0].prio) {
-					    curMod->next = cMod->next;
-					    cMod->next = curMod;
-					    break;
+					if (curMod->modInfo[i].name) {
+						curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
+						curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
 					}
-					cMod = cMod->next;
-				    } while (cMod != *modlist);
 				}
+				curMod->handle = NULL;
+				curMod->sopath = strdup(sopath);
+
+				/* add the module in the list */
+				if (*modlist == NULL) {
+					*modlist = curMod;
+					curMod->next = curMod;
+			    } else {
+					/* sort by prio */
+					prio = curMod->modInfo[0].prio;
+					if (prio >= (*modlist)->modInfo[0].prio) {
+						curMod->next = (*modlist)->next;
+						(*modlist)->next = curMod;
+						*modlist = curMod;
+					} else {
+						cMod = *modlist;
+						do {
+							if (prio < cMod->next->modInfo[0].prio) {
+								curMod->next = cMod->next;
+								cMod->next = curMod;
+								break;
+							}
+							cMod = cMod->next;
+						} while (cMod != *modlist);
+					}
 			    }
 			    dlclose(handle);
 			    curMod = (tModList*)calloc(1, sizeof(tModList));
@@ -410,7 +411,7 @@ linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlis
 	printf("linuxModInfoDir: ... Couldn't open the directory %s.\n", dir);
 	return -1;
     }
-    
+
     free(curMod);
     return modnb;
 }
@@ -440,7 +441,7 @@ linuxModUnloadList(tModList **modlist)
     tfModShut		fModShut;
     char		dname[256];	/* name of the funtions */
     char		*lastSlash;
-    
+
     curMod = *modlist;
     if (curMod == 0) {
 	return 0;
@@ -461,7 +462,19 @@ linuxModUnloadList(tModList **modlist)
 	    GfOut("Call %s\n", dname);
 	    fModShut();
 	}
-	dlclose(curMod->handle);
+
+
+
+
+
+// Comment out for valgrind runs.
+dlclose(curMod->handle);
+
+
+
+
+
+
 	free(curMod->sopath);
 	free(curMod);
     } while (curMod != *modlist);
@@ -528,44 +541,45 @@ linuxModFreeInfoList(tModList **modlist)
 static tFList *
 linuxDirGetList(char *dir)
 {
-    DIR			*dp;		/* */
-    struct dirent	*ep;		/* */
-    tFList		*flist = (tFList*)NULL;
-    tFList		*curf;
+	DIR *dp;
+	struct dirent *ep;
+	tFList *flist = (tFList*)NULL;
+	tFList *curf;
 
-    /* open the current directory */
-    dp = opendir(dir);
-    if (dp != NULL) {
-	/* some files in it */
-	while ((ep = readdir(dp)) != 0) {
-	    if ((strcmp(ep->d_name, ".") != 0) && (strcmp(ep->d_name, "..") != 0)) {
-		curf = (tFList*)calloc(1, sizeof(tFList));
-		curf->name = strdup(ep->d_name);
-		if (flist == (tFList*)NULL) {
-		    curf->next = curf;
-		    curf->prev = curf;
-		    flist = curf;
-		} else {
-		    /* sort entries... */
-		    if (strcasecmp(curf->name, flist->name) > 0) {
-			do {
-			    flist = flist->next;
-			} while ((strcasecmp(curf->name, flist->name) > 0) && (strcasecmp(flist->name, flist->prev->name) > 0));
-			flist = flist->prev;
-		    } else {
-			do {
-			    flist = flist->prev;
-			} while ((strcasecmp(curf->name, flist->name) < 0) && (strcasecmp(flist->name, flist->next->name) < 0));
-		    }
-		    curf->next = flist->next;
-		    flist->next = curf;
-		    curf->prev = flist;
-		    curf->next->prev = curf;
-		    flist = curf;
+	/* open the current directory */
+	dp = opendir(dir);
+	if (dp != NULL) {
+		/* some files in it */
+		while ((ep = readdir(dp)) != 0) {
+			if ((strcmp(ep->d_name, ".") != 0) && (strcmp(ep->d_name, "..") != 0)) {
+				curf = (tFList*)calloc(1, sizeof(tFList));
+				curf->name = strdup(ep->d_name);
+				if (flist == (tFList*)NULL) {
+					curf->next = curf;
+					curf->prev = curf;
+					flist = curf;
+				} else {
+					/* sort entries... */
+					if (strcasecmp(curf->name, flist->name) > 0) {
+						do {
+							flist = flist->next;
+						} while ((strcasecmp(curf->name, flist->name) > 0) && (strcasecmp(flist->name, flist->prev->name) > 0));
+						flist = flist->prev;
+					} else {
+						do {
+							flist = flist->prev;
+						} while ((strcasecmp(curf->name, flist->name) < 0) && (strcasecmp(flist->name, flist->next->name) < 0));
+					}
+					curf->next = flist->next;
+					flist->next = curf;
+					curf->prev = flist;
+					curf->next->prev = curf;
+					flist = curf;
+				}
+			}
 		}
-	    }
+		closedir(dp);
 	}
-    }
     return flist;
 }
 
@@ -585,53 +599,55 @@ linuxDirGetList(char *dir)
 static tFList *
 linuxDirGetListFiltered(char *dir, char *suffix)
 {
-    DIR			*dp;		/* */
-    struct dirent	*ep;		/* */
-    tFList		*flist = (tFList*)NULL;
-    tFList		*curf;
-    int			suffixLg;
-    int			fnameLg;
+	DIR	*dp;
+	struct dirent *ep;
+	tFList *flist = (tFList*)NULL;
+	tFList *curf;
+	int	suffixLg;
+	int	fnameLg;
 
-    if ((suffix == NULL) || (strlen(suffix) == 0))
-	return linuxDirGetList(dir);
-
-    suffixLg = strlen(suffix);
-
-    /* open the current directory */
-    dp = opendir(dir);
-    if (dp != NULL) {
-	/* some files in it */
-	while ((ep = readdir(dp)) != 0) {
-	    fnameLg = strlen(ep->d_name);
-	    if ((fnameLg > suffixLg) && (strcmp(ep->d_name + fnameLg - suffixLg, suffix) == 0)) {
-		curf = (tFList*)calloc(1, sizeof(tFList));
-		curf->name = strdup(ep->d_name);
-		if (flist == (tFList*)NULL) {
-		    curf->next = curf;
-		    curf->prev = curf;
-		    flist = curf;
-		} else {
-		    /* sort entries... */
-		    if (strcasecmp(curf->name, flist->name) > 0) {
-			do {
-			    flist = flist->next;
-			} while ((strcasecmp(curf->name, flist->name) > 0) && (strcasecmp(flist->name, flist->prev->name) > 0));
-			flist = flist->prev;
-		    } else {
-			do {
-			    flist = flist->prev;
-			} while ((strcasecmp(curf->name, flist->name) < 0) && (strcasecmp(flist->name, flist->next->name) < 0));
-		    }
-		    curf->next = flist->next;
-		    flist->next = curf;
-		    curf->prev = flist;
-		    curf->next->prev = curf;
-		    flist = curf;
-		}
-	    }
+	if ((suffix == NULL) || (strlen(suffix) == 0)) {
+		return linuxDirGetList(dir);
 	}
-    }
-    return flist;
+
+	suffixLg = strlen(suffix);
+
+	/* open the current directory */
+	dp = opendir(dir);
+	if (dp != NULL) {
+		/* some files in it */
+		while ((ep = readdir(dp)) != 0) {
+			fnameLg = strlen(ep->d_name);
+			if ((fnameLg > suffixLg) && (strcmp(ep->d_name + fnameLg - suffixLg, suffix) == 0)) {
+				curf = (tFList*)calloc(1, sizeof(tFList));
+				curf->name = strdup(ep->d_name);
+				if (flist == (tFList*)NULL) {
+					curf->next = curf;
+					curf->prev = curf;
+					flist = curf;
+				} else {
+					/* sort entries... */
+					if (strcasecmp(curf->name, flist->name) > 0) {
+						do {
+							flist = flist->next;
+						} while ((strcasecmp(curf->name, flist->name) > 0) && (strcasecmp(flist->name, flist->prev->name) > 0));
+						flist = flist->prev;
+					} else {
+						do {
+							flist = flist->prev;
+						} while ((strcasecmp(curf->name, flist->name) < 0) && (strcasecmp(flist->name, flist->next->name) < 0));
+					}
+					curf->next = flist->next;
+					flist->next = curf;
+					curf->prev = flist;
+					curf->next->prev = curf;
+					flist = curf;
+				}
+	    	}
+		}
+		closedir(dp);
+	}
+	return flist;
 }
 
 static double
