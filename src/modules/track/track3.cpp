@@ -109,12 +109,12 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, char *material)
 
     curSurf->material = material;
     sprintf(path, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, material);
-    curSurf->kFriction     = GfParmGetNum(TrackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8);
-    curSurf->kRollRes      = GfParmGetNum(TrackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001);
-    curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
-    curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
-    curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0);
-    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 1.0);
+    curSurf->kFriction     = GfParmGetNum(TrackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8f);
+    curSurf->kRollRes      = GfParmGetNum(TrackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001f);
+    curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0f) /  2.0f;
+    curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0f);
+    curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0f);
+    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 1.0f);
 
     curSurf->next = theTrack->surfaces;
     theTrack->surfaces = curSurf;
@@ -861,7 +861,7 @@ CreateSegRing3(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg 
 	/* surface change */
 	material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
 	surface = AddTrackSurface(TrackHandle, theTrack, material);
-	envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, envIndex+1) - 1;
+	envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, (float) (envIndex+1)) - 1;
 
 	/* get segment type and lenght */
 	if (strcmp(segtype, TRK_VAL_STR) == 0) {
@@ -1270,83 +1270,86 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     xmin = xmax = ymin = ymax = zmin = zmax = 0.0;
 
     GlobalStepLen = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PROFSTEPSLEN, (char*)NULL, 0);
-    
+
     CreateSegRing3(TrackHandle, theTrack, (tTrackSeg*)NULL, (tTrackSeg*)NULL, ext);
 
     pits = &(theTrack->pits);
     pitType = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_TYPE, TRK_VAL_PIT_TYPE_NONE);
-    
-    
-    if (strcmp(pitType, TRK_VAL_PIT_TYPE_NONE) != 0) {
-	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_ENTRY, NULL);
-	if (segName != 0) {
-	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
-	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
-	    pitEntrySeg = theTrack->seg;
-	    found = 0;
-	    for(i = 0; i < theTrack->nseg; i++)  {
-		if (pitEntrySeg->id == segId) {
-		    found = 1;
-		} else if (found) {
-		    pitEntrySeg = pitEntrySeg->next;
-		    break;
+
+
+	if (strcmp(pitType, TRK_VAL_PIT_TYPE_NONE) != 0) {
+		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_ENTRY, NULL);
+		if (segName != 0) {
+			sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
+			segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
+			pitEntrySeg = theTrack->seg;
+			found = 0;
+			for(i = 0; i < theTrack->nseg; i++)  {
+				if (pitEntrySeg->id == segId) {
+					found = 1;
+				} else if (found) {
+					pitEntrySeg = pitEntrySeg->next;
+					break;
+				}
+				pitEntrySeg = pitEntrySeg->prev;
+			}
+			if (!found) {
+				pitEntrySeg = NULL;
+			}
 		}
-		pitEntrySeg = pitEntrySeg->prev;
-	    }
-	    if (!found) {
-		pitEntrySeg = NULL;
-	    }
-	}
-	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_EXIT, NULL);
-	if (segName != 0) {
-	    pitExitSeg = theTrack->seg->next;
-	    found = 0;
-	    for(i = 0; i < theTrack->nseg; i++)  {
-		/* set the flag on the last segment of pit_exit */
-		if (!strcmp(segName, pitExitSeg->name)) {
-		    found = 1;
-		} else if (found) {
-		    pitExitSeg = pitExitSeg->prev;
-		    break;
+
+		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_EXIT, NULL);
+		if (segName != 0) {
+			pitExitSeg = theTrack->seg->next;
+			found = 0;
+			for(i = 0; i < theTrack->nseg; i++)  {
+				/* set the flag on the last segment of pit_exit */
+				if (!strcmp(segName, pitExitSeg->name)) {
+					found = 1;
+				} else if (found) {
+					pitExitSeg = pitExitSeg->prev;
+					break;
+				}
+				pitExitSeg = pitExitSeg->next;
+			}
+			if (!found) {
+				pitExitSeg = NULL;
+			}
 		}
-		pitExitSeg = pitExitSeg->next;
-	    }
-	    if (!found) {
-		pitExitSeg = NULL;
-	    }
-	}
-	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_START, NULL);
-	if (segName != 0) {
-	    pitStart = theTrack->seg;
-	    found = 0;
-	    for(i = 0; i < theTrack->nseg; i++)  {
-		if (!strcmp(segName, pitStart->name)) {
-		    found = 1;
-		} else if (found) {
-		    pitStart = pitStart->next;
-		    break;
+
+		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_START, NULL);
+		if (segName != 0) {
+			pitStart = theTrack->seg;
+			found = 0;
+			for(i = 0; i < theTrack->nseg; i++)  {
+				if (!strcmp(segName, pitStart->name)) {
+					found = 1;
+				} else if (found) {
+					pitStart = pitStart->next;
+					break;
+				}
+				pitStart = pitStart->prev;
+			}
+			if (!found) {
+				pitStart = NULL;
+			}
+
 		}
-		pitStart = pitStart->prev;
-	    }
-	    if (!found) {
-		pitStart = NULL;
-	    }
-	}
-	segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_END, NULL);
-	if (segName != 0) {
-	    pitEnd = theTrack->seg->next;
-	    found = 0;
-	    for(i = 0; i < theTrack->nseg; i++)  {
-		if (!strcmp(segName, pitEnd->name)) {
-		    found = 1;
-		} else if (found) {
-		    pitEnd = pitEnd->prev;
-		    break;
-		}
-		pitEnd = pitEnd->next;
-	    }
-	    if (!found) {
-		pitEnd = NULL;
+		segName = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_END, NULL);
+		if (segName != 0) {
+			pitEnd = theTrack->seg->next;
+			found = 0;
+			for(i = 0; i < theTrack->nseg; i++)  {
+			if (!strcmp(segName, pitEnd->name)) {
+				found = 1;
+			} else if (found) {
+				pitEnd = pitEnd->prev;
+				break;
+			}
+			pitEnd = pitEnd->next;
+			}
+			if (!found) {
+			pitEnd = NULL;
 	    }
 	}
 	paramVal = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_SIDE, "right");

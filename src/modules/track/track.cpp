@@ -124,7 +124,7 @@ GetTrackHeader(void *TrackHandle)
     int			i;
     char		buf[256];
     char		*s;
-    
+
     theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
     theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
     theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
@@ -133,7 +133,7 @@ GetTrackHeader(void *TrackHandle)
 
     /* Graphic part */
     graphic = &theTrack->graphic;
-    
+
     graphic->background = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND,
 				       "background.png");
     graphic->bgtype = (int)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGTYPE, (char*)NULL, 0.0);
@@ -141,10 +141,10 @@ GetTrackHeader(void *TrackHandle)
 /* 	graphic->background2 = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND2, */
 /* 					    "background.png"); */
 /*     } */
-    graphic->bgColor[0] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_R, (char*)NULL, 0.0);
-    graphic->bgColor[1] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_G, (char*)NULL, 0.0);
-    graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1);
-    
+    graphic->bgColor[0] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_R, (char*)NULL, 0.0f);
+    graphic->bgColor[1] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_G, (char*)NULL, 0.0f);
+    graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1f);
+
     /* env map images */
     sprintf(buf, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
     graphic->envnb = GfParmGetEltNb(TrackHandle, buf);
@@ -159,91 +159,95 @@ GetTrackHeader(void *TrackHandle)
 	env ++;
     }
 
-    theTrack->nseg = 0;
+	theTrack->nseg = 0;
 
-    s = strrchr(theTrack->filename, '/');
-    if (s == NULL) {
-	s = theTrack->filename;
-    } else {
-	s++;
-    }
-    theTrack->internalname = strdup(s);
-    s = strrchr(theTrack->internalname, '.');
-    if (s != NULL) {
-	*s = 0;
-    }
+	s = strrchr(theTrack->filename, '/');
+	if (s == NULL) {
+		s = theTrack->filename;
+	} else {
+		s++;
+	}
+
+	theTrack->internalname = strdup(s);
+	s = strrchr(theTrack->internalname, '.');
+	if (s != NULL) {
+		*s = 0;
+	}
 
     graphic->turnMarksInfo.height = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HEIGHT, NULL, 1);
     graphic->turnMarksInfo.width  = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_WIDTH,  NULL, 1);
     graphic->turnMarksInfo.vSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_VSPACE, NULL, 0);
     graphic->turnMarksInfo.hSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HSPACE, NULL, 0);
-    
-    
+
+
 }
 
 static void
 freeSeg(tTrackSeg *seg)
 {
-    if (seg->barrier[0]) {
-	free(seg->barrier[0]);
-    }
-    if (seg->barrier[1]) {
-	free(seg->barrier[1]);
-    }
-    if (seg->ext) {
-	free(seg->ext->marks);
-	free(seg->ext);
-    }
-    if (seg->lside) {
-	freeSeg(seg->lside);
-    }
-    if (seg->rside) {
-	freeSeg(seg->rside);
-    }
-    free(seg);
+	if (seg->barrier[0]) {
+		free(seg->barrier[0]);
+	}
+	if (seg->barrier[1]) {
+		free(seg->barrier[1]);
+	}
+	if (seg->ext) {
+		free(seg->ext->marks);
+		free(seg->ext);
+	}
+	if (seg->lside) {
+		freeSeg(seg->lside);
+	}
+	if (seg->rside) {
+		freeSeg(seg->rside);
+	}
+	free(seg);
 }
 
 void
 TrackShutdown(void)
 {
-    tTrackSeg	*curSeg;
-    tTrackSeg	*nextSeg;
-    tTrackSurface *curSurf;
-    tTrackSurface *nextSurf;
-    tRoadCam	*curCam;
-    tRoadCam	*nextCam;
+	tTrackSeg *curSeg;
+	tTrackSeg *nextSeg;
+	tTrackSurface *curSurf;
+	tTrackSurface *nextSurf;
+	tRoadCam *curCam;
+	tRoadCam *nextCam;
 
-    if (!theTrack) {
-	return;
-    }
+	if (!theTrack) {
+		return;
+	}
 
-    nextSeg = theTrack->seg->next;
-    do {
-	curSeg = nextSeg;
-	nextSeg = nextSeg->next;
-	freeSeg(curSeg);
-    } while (curSeg != theTrack->seg);
-
-    curSurf = theTrack->surfaces;
-    while (curSurf) {
-	nextSurf = curSurf->next;
-	free(curSurf);
-	curSurf = nextSurf;
-    }
-
-    curCam = theCamList;
-    if (curCam) {
+	nextSeg = theTrack->seg->next;
 	do {
-	    nextCam = curCam->next;
-	    free(curCam);
-	    curCam = nextCam;
-	} while (curCam != theCamList);
-    }
-    theCamList = NULL;
+		curSeg = nextSeg;
+		nextSeg = nextSeg->next;
+		freeSeg(curSeg);
+	} while (curSeg != theTrack->seg);
 
-    if (theTrack->pits.driversPits) free(theTrack->pits.driversPits);
-    free(theTrack->graphic.env);
-    free(theTrack);
-    GfParmReleaseHandle(TrackHandle);
-    theTrack = NULL;
+	curSurf = theTrack->surfaces;
+	while (curSurf) {
+		nextSurf = curSurf->next;
+		free(curSurf);
+		curSurf = nextSurf;
+	}
+
+	curCam = theCamList;
+	if (curCam) {
+	do {
+		nextCam = curCam->next;
+		free(curCam);
+		curCam = nextCam;
+	} while (curCam != theCamList);
+	}
+	theCamList = NULL;
+
+	if (theTrack->pits.driversPits) free(theTrack->pits.driversPits);
+	free(theTrack->graphic.env);
+	free(theTrack->internalname);
+	free(theTrack->filename);
+	free(theTrack);
+
+	GfParmReleaseHandle(TrackHandle);
+	theTrack = NULL;
 }

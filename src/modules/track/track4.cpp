@@ -101,12 +101,12 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, char *material)
 
     curSurf->material = material;
     sprintf(path, "%s/%s", TRK_SECT_SURFACES, material);
-    curSurf->kFriction     = GfParmGetNum(TrackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8);
-    curSurf->kRollRes      = GfParmGetNum(TrackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001);
-    curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
-    curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
-    curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0);
-    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 0.5);
+    curSurf->kFriction     = GfParmGetNum(TrackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8f);
+    curSurf->kRollRes      = GfParmGetNum(TrackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001f);
+    curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0f) /  2.0f;
+    curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0f);
+    curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0f);
+    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 0.5f);
 
     curSurf->next = theTrack->surfaces;
     theTrack->surfaces = curSurf;
@@ -154,7 +154,7 @@ InitSides(void *TrackHandle, tTrack *theTrack)
 	sprintf(path, "%s/%s", TRK_SECT_MAIN, SectBarrier[side]);
 	barrierMaterial[side] = GfParmGetStr(TrackHandle, path, TRK_ATT_SURF, TRK_VAL_BARRIER);
 	barrierSurface[side] = AddTrackSurface(TrackHandle, theTrack, barrierMaterial[side]);
-	barrierHeight[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.6);
+	barrierHeight[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.6f);
 	style = GfParmGetStr(TrackHandle, path, TRK_ATT_STYLE, TRK_VAL_FENCE);
 	if (strcmp(style, TRK_VAL_FENCE) == 0) {
 	    barrierStyle[side] = TR_FENCE;
@@ -875,8 +875,9 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	/* surface change */
 	material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
 	surface = AddTrackSurface(TrackHandle, theTrack, material);
-	envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, envIndex+1) - 1;
-	DoVfactor = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_DOVFACTOR, (char*)NULL, 1.0) ;
+	envIndex = (int) GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, (float) (envIndex+1)) - 1;
+	// TODO: is the (int) intended?
+	DoVfactor = (float) ((int) GfParmGetCurNum(TrackHandle, path, TRK_ATT_DOVFACTOR, (char*)NULL, 1.0)) ;
 
 	/* get segment type and lenght */
 	if (strcmp(segtype, TRK_VAL_STR) == 0) {
