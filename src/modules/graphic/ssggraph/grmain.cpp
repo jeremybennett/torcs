@@ -449,12 +449,6 @@ int
 initTrack(tTrack *track)
 {
     int		i;
-    static int	firstTime = 1; /* for persistent implementations ??? */
-    
-    if (firstTime) {
-	ssgInit();
-	firstTime = 0;
-    }
 
     grContext.makeCurrent();
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);

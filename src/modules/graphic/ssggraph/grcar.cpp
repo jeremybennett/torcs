@@ -155,7 +155,16 @@ initWheel(tCarElt *car, int wheel_index)
     clr[3] = 1.0;
     brk_clr->add(clr);
     nrm[0] = nrm[2] = 0.0;
-    nrm[1] = 1.0;
+    switch(wheel_index) {
+    case FRNT_RGT:
+    case REAR_RGT:
+	nrm[1] = -1.0;
+	break;
+    case FRNT_LFT:
+    case REAR_LFT:
+	nrm[1] = 1.0;
+	break;
+    }
     brk_nrm->add(nrm);
     
     ssgVtxTable *brk = new ssgVtxTable(GL_TRIANGLE_FAN, brk_vtx, brk_nrm, NULL, brk_clr);
@@ -254,10 +263,10 @@ initWheel(tCarElt *car, int wheel_index)
 	{
 	    ssgVertexArray	*whl_vtx = new ssgVertexArray(2 * WHL_BRANCH);
 	    ssgColourArray	*whl_clr = new ssgColourArray(2 * WHL_BRANCH);
-	    ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
+	    ssgNormalArray	*whl_nrm = new ssgNormalArray(2 * WHL_BRANCH);
 
-	    whl_nrm->add(nrm);
 	    clr[3] = 1.0;
+	    nrm[1] = 1.0;
 	    for (i = 0; i < WHL_BRANCH; i++) {
 		alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
 		vtx[0] = wheelRadius * cos(alpha);
@@ -272,7 +281,11 @@ initWheel(tCarElt *car, int wheel_index)
 		    clr[0] = clr[1] = clr[2] = 0.0;
 		}
 		whl_clr->add(clr);
-		whl_clr->add(clr);		
+		whl_clr->add(clr);
+		nrm[0] = cos(alpha);
+		nrm[2] = sin(alpha);
+		whl_nrm->add(nrm);
+		whl_nrm->add(nrm);
 	    }
 	    ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_STRIP, whl_vtx, whl_nrm, NULL, whl_clr);
 	    whl->setState(commonState);
@@ -282,14 +295,17 @@ initWheel(tCarElt *car, int wheel_index)
 	    
     
     /* Rim */
+	nrm[0] = nrm[2] = 0.0;
 	switch(wheel_index) {
 	case FRNT_RGT:
 	case REAR_RGT:
 	    b_offset = -0.05;
+	    nrm[1] = -1.0;
 	    break;
 	case FRNT_LFT:
 	case REAR_LFT:
 	    b_offset = 0.05;
+	    nrm[1] = 1.0;
 	    break;
 	}
 	for (k = 0; k < 2; k++) {

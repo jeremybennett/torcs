@@ -369,7 +369,6 @@ float
 grRefreshSound(tSituation *s, cGrCamera	*camera)
 {
 
-
     tCarElt	*car;//= s->cars[s->current];
     int		i;
 

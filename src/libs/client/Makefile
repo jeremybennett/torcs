@@ -23,7 +23,7 @@ SOLIBDIR  = .
 SOURCES   = entry.cpp mainmenu.cpp splash.cpp exitmenu.cpp \
 	    optionmenu.cpp
 
-LIBS      =  -lplibul
+LIBS      =  -lplibssg -lplibsg -lplibul
 
 EXPDIR    = include
 

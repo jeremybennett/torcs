@@ -20,6 +20,7 @@
 
 #include <client.h>
 #include <tgfclient.h>
+#include <plib/ssg.h>
 
 #include "mainmenu.h"
 #include "splash.h"
@@ -43,6 +44,8 @@
 void
 TorcsEntry(void)
 {
+    ssgInit();
+    
     GfInitClient();
 
     TorcsMainMenuInit();
