@@ -1517,10 +1517,37 @@ if not exist .\src\raceman goto src_raceman
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
 call .\create_dir .\runtimed\config\raceman
+if exist .\src\raceman\champ.xml copy .\src\raceman\champ.xml .\runtimed\config\raceman\champ.xml
 if exist .\src\raceman\dtmrace.xml copy .\src\raceman\dtmrace.xml .\runtimed\config\raceman\dtmrace.xml
+if exist .\src\raceman\ncrace.xml copy .\src\raceman\ncrace.xml .\runtimed\config\raceman\ncrace.xml
 if exist .\src\raceman\practice.xml copy .\src\raceman\practice.xml .\runtimed\config\raceman\practice.xml
 if exist .\src\raceman\quickrace.xml copy .\src\raceman\quickrace.xml .\runtimed\config\raceman\quickrace.xml
 :src_raceman
+
+if not exist results\champ goto results_champ
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\champ
+
+if not exist results\dtmrace goto results_dtmrace
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\dtmrace
+
+if not exist results\ncrace goto results_ncrace
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\ncrace
+
+if not exist results\practice goto results_practice
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\practice
+
+if not exist results\quickrace goto results_quickrace
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\quickrace
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers

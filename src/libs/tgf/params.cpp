@@ -508,6 +508,17 @@ GfParmGetName(void *handle)
     return ((tParm*)handle)->n.kids->name;
 }
 
+/** Get the pararmeters file name
+    @ingroup	params
+    @param	handle	Handle on the parameters
+    @return	File Name
+*/
+char *
+GfParmGetFileName(void *handle)
+{
+    return ((tParm*)handle)->file;
+}
+
 
 #define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
 #define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;

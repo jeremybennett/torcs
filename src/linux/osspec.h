@@ -22,8 +22,9 @@
 #define __OSSPEC__H__
 
 /* Files Extensions */
-#define DLLEXT	"so"	/* for linux */
-#define TRKEXT	"xml"
+#define DLLEXT	 "so"	/* for linux */
+#define TRKEXT	 "xml"
+#define PARAMEXT ".xml"
 
 
 #endif /* __OSSPEC__H__ */ 

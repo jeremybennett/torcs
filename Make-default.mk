@@ -188,11 +188,11 @@ win32setup: win32start exportswin32 installshipswin32 installwin32 win32datainst
 
 exports: expincdirs export
 
-installships: installshipdirs installship
+installships: installshipdirs installship installshipmkdir
 
 exportswin32: expincwin32dirs exportwin32
 
-installshipswin32: installshipwin32dirs installshipwin32
+installshipswin32: installshipwin32dirs installshipwin32 installshipmkdirwin32
 
 tools: toolsdirs ${TOOLS} toolsdata
 
@@ -205,7 +205,7 @@ cleantools: cleantoolsdirs
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
-install: installdirs installship installsolibrary installmodule installprogram installtools installtoolsdata
+install: installdirs installship installshipmkdir installsolibrary installmodule installprogram installtools installtoolsdata
 
 installwin32: installwin32dirs installsolibrarywin32 installmodulewin32
 
@@ -302,6 +302,28 @@ else
 installship: ;
 
 installshipwin32: ;
+
+endif
+
+ifdef SHIPCREATEDIRS
+
+installshipmkdir:
+	@for D in  $(SHIPCREATEDIRS) ; \
+	do echo " Creating ${INSTBASE}/$$D Directory" ; \
+	$(mkinstalldirs) ${INSTBASE}/$$D ; \
+	done
+
+installshipmkdirwin32:
+	@for D in  $(SHIPCREATEDIRS) ; \
+	do createdir="runtime/$$D" ; \
+	${create_dir_win32} ; \
+	done
+
+else
+
+installshipmkdir: ;
+
+installshipmkdirwin32: ;
 
 endif
 

@@ -18,12 +18,13 @@
 
 SHIPDIR   = config/raceman
 
+SHIPCREATEDIRS = $(shell find * -maxdepth 0 -name '*.xml' -print | sed -e 's!\.xml!!' -e 's!^!results/!')
+
 SHIP      = $(shell find * -maxdepth 0 -name '*.xml' -print)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
 src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
 
 
 

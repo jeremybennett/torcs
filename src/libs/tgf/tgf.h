@@ -180,6 +180,7 @@ extern void *GfParmReadFile(const char *file, int mode);
 extern int GfParmWriteFile(const char *file, void* handle, char *name, int type, const char *dtd);
 
 extern char *GfParmGetName(void *handle);
+extern char *GfParmGetFileName(void *handle);
 
 /* get string parameter value */
 extern char *GfParmGetStr(void *handle, char *path, char *key, char *deflt);

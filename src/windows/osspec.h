@@ -24,6 +24,7 @@
 /* Files Extensions */
 #define TRKEXT	"xml"
 #define DLLEXT	"dll"
+#define PARAMEXT ".xml"
 
 #ifndef _WIN32
 #error Hey ! Where is _WIN32 ??

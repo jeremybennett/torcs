@@ -135,6 +135,7 @@ typedef struct
     tRaceModIft		itf;
     void		*gameScreen;
     void		*menuScreen;
+    char		*filename;
     char		*name;
     char		*raceName;
     tReCarInfo		*carInfo;
@@ -156,6 +157,7 @@ typedef struct
 #define _reSimItf	raceEngineInfo.itf.simItf
 #define _reGameScreen	raceEngineInfo.gameScreen
 #define _reMenuScreen	raceEngineInfo.menuScreen
+#define _reFilename	raceEngineInfo.filename
 #define _reName		raceEngineInfo.name
 #define _reRaceName	raceEngineInfo.raceName
 #define _reCarInfo	raceEngineInfo.carInfo

@@ -118,7 +118,19 @@ ReStartNewRace(void * /* dummy */)
 static void
 reSelectRaceman(void *params)
 {
+    char	*p;
+    
     ReInfo->params = params;
+    FREEZ(ReInfo->_reFilename);
+    ReInfo->_reFilename = strdup(GfParmGetFileName(params));
+    while ((p = strstr(ReInfo->_reFilename, "/")) != 0) {
+	ReInfo->_reFilename = p + 1;
+    }
+    p = ReInfo->_reFilename;
+    p = strstr(p, PARAMEXT);
+    if (p) {
+	*p = '\0';
+    }
     ReInfo->_reName = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, "");
     ReStateApply(RE_STATE_CONFIG);
 }

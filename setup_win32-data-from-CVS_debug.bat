@@ -315,7 +315,7 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\cars
 call .\create_dir .\runtimed\cars\porsche-gt3rs
 if exist .\data\cars\models\porsche-gt3rs\porsche-gt3rs.xml copy .\data\cars\models\porsche-gt3rs\porsche-gt3rs.xml .\runtimed\cars\porsche-gt3rs\porsche-gt3rs.xml
-if exist .\data\cars\models\porsche-gt3rs\porsche-gt3rs.ac copy .\data\cars\models\porsche-gt3rs\porsche-gt3rs.ac .\runtimed\cars\porsche-gt3rs\porsche-gt3rs.ac
+if exist .\data\cars\models\porsche-gt3rs\porsche-gt3rs.acc copy .\data\cars\models\porsche-gt3rs\porsche-gt3rs.acc .\runtimed\cars\porsche-gt3rs\porsche-gt3rs.acc
 if exist .\data\cars\models\porsche-gt3rs\porsche-gt3rs.rgb copy .\data\cars\models\porsche-gt3rs\porsche-gt3rs.rgb .\runtimed\cars\porsche-gt3rs\porsche-gt3rs.rgb
 if exist .\data\cars\models\porsche-gt3rs\tex-wheel.rgb copy .\data\cars\models\porsche-gt3rs\tex-wheel.rgb .\runtimed\cars\porsche-gt3rs\tex-wheel.rgb
 if exist .\data\cars\models\porsche-gt3rs\porsche-gt3rs-src.ac copy .\data\cars\models\porsche-gt3rs\porsche-gt3rs-src.ac .\runtimed\cars\porsche-gt3rs\porsche-gt3rs-src.ac

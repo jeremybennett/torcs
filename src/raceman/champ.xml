@@ -29,11 +29,11 @@
     <attnum name="maximum number" val="20"/>
 
     <section name="1">
-      <attstr name="name" val="g-track-2"/>
-      <attstr name="category" val="road"/>
+      <attstr name="name" val="g-track-1"/>
+      <attstr name="category" val="oval"/>
     </section>
     <section name="2">
-      <attstr name="name" val="e-track-3"/>
+      <attstr name="name" val="g-track-2"/>
       <attstr name="category" val="road"/>
     </section>
     <section name="3">
