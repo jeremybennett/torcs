@@ -32,6 +32,7 @@ extern void InitGears(tCarElt* car, int idx);
 extern void SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect);
 extern tdble GetDistToStart(tCarElt *car);
 extern void CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny);
+extern tdble GetDistToStart2(tTrkLocPos *trkPos);
 
 
 #endif /* _COMMON_H_ */ 

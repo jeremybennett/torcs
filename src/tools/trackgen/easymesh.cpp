@@ -2220,7 +2220,7 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
 	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
 	LoadRelief(TrackHandle, buf);
     }
-    if (!noElevation) {
+    if (noElevation == -1) {
 	FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ELEVATION, NULL);
 	if (FileName) {
 	    sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);

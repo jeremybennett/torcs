@@ -41,23 +41,27 @@
   </section>
 
   <section name="Front Right Wheel">
+    <attnum name="rim diameter" unit="in" val="17.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="200"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Front Left Wheel">
+    <attnum name="rim diameter" unit="in" val="17.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="200"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
 
   <section name="Rear Right Wheel">
+    <attnum name="rim diameter" unit="in" val="17.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="200"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
+    <attnum name="rim diameter" unit="in" val="17.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="200"></attnum>
   </section>

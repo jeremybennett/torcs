@@ -123,7 +123,7 @@ class ssgLoaderOptionsEx : public ssgLoaderOptions
 };
 
 void
-SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
+SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int dispf)
 {
     ssgLoaderOptionsEx	options;
     float	zmin, zmax;
@@ -135,6 +135,7 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
     int		columns;
     static char	buf[1024];
     char	*s;
+    float	heightStep;
     
     s = getenv("COLUMNS");
     if (s) {
@@ -162,8 +163,13 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
     zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
     zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z * 1.2);
 
-    kZ = MAX_CLR / (zmax - dZ);
-    dZ = - zmin * MAX_CLR / (zmax - dZ);
+    heightStep = (float)(zmax - zmin) / (float)HeightSteps;
+    if (dispf == 2) {
+	printf("Height of steps = %f\n", heightStep);
+    }
+
+    kZ = MAX_CLR / (zmax - zmin);
+    dZ = - zmin * MAX_CLR / (zmax - zmin);
 
     ElvImage = (unsigned char*)calloc(width * height, 3);
     if (!ElvImage) {
@@ -197,7 +203,20 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
 	    y = j * kY + dY;
 	    z = getHOT(root, x, y);
 	    if (z != -1000000.0f) {
-		clr = (int)(z * kZ + dZ);
+		switch (dispf) {
+		case 0:
+		    clr = 0;
+		    break;
+		case 1:
+		    clr = (int)(z * kZ + dZ);
+		    break;
+		case 2:
+		    clr = (int)(floor((z + heightStep / 2.0) / heightStep) * heightStep * kZ + dZ);
+		    break;
+		default:
+		    clr = 0;
+		    break;
+		}
 	    } else {
 		clr = (int)MAX_CLR;
 	    }

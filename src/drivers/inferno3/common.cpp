@@ -101,7 +101,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	}
 	
 	
-	if ((slip > 0.2) && (gear > 1)) {
+	if ((slip > 1.0) && (gear > 1)) {
 	    car->ctrl->accelCmd *= 0.5;
 	} else {
 	    RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 50.0);

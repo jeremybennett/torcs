@@ -121,9 +121,7 @@ SimCarConfig(tCar *car)
 		       - car->wheel[FRNT_LFT].staticPos.y
 		       + car->wheel[FRNT_RGT].staticPos.y
 		       + car->wheel[REAR_RGT].staticPos.y) / 2.0;
-    carElt->_drvPos_x -= car->statGC.x;
-    carElt->_drvPos_y -= car->statGC.y;
-    carElt->_drvPos_z -= car->statGC.z;
+
     /* set corners pos */
     car->corner[FRNT_RGT].pos.x = car->dimension.x * .5 - car->statGC.x;
     car->corner[FRNT_RGT].pos.y = - overallwidth * .5 - car->statGC.y;

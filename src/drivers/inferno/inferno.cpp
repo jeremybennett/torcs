@@ -133,6 +133,9 @@ static tdble spdtgt[10]    = {115.0};
 static tdble spdtgt2[10]   = {1.0};
 static tdble steerMult[10] = {2.0};
 static tdble Offset[10]    = {0.0};
+static tdble VxnGain[10]   = {0.0};
+static tdble VxnGain2[10]   = {1.0};
+
 static tdble Trightprev[10];
 
 /*
@@ -167,6 +170,8 @@ static tdble Trightprev[10];
 #define STEERMULT	"steerMult"
 #define OFFSET		"offset"
 #define DPNGAIN		"DPnGain"
+#define VNXGAIN		"VnxGain"
+#define VNXGAIN2	"VnxGain2"
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
@@ -208,7 +213,9 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	spdtgt2[0]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
 	steerMult[0] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
 	Offset[0]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSET,    NULL, Offset[0]);
-
+	VxnGain[0]   = GfParmGetNum(hdle, SIMU_PRMS, VNXGAIN,   NULL, VxnGain[0]);
+	VxnGain2[0]  = GfParmGetNum(hdle, SIMU_PRMS, VNXGAIN2,  NULL, VxnGain2[0]);
+	
 	GfParmReleaseHandle(hdle);
     }
 }
@@ -343,7 +350,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     NORM_PI_PI(Da);
     
 
-    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
+    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny * (VxnGain[0] * fabs(car->_speed_x) + VxnGain2[0]) + AGain[0] * Da * Da;
 
     if (car->_speed_x < 0) {
 	car->ctrl->steer *= 1.5;
@@ -363,7 +370,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	x = X + CosA * curAdv;
 	y = Y + SinA * curAdv;
 	RtTrackGlobal2Local(seg, x, y, &trkPos, TR_LPOS_MAIN);
-	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / AdvMax;
+	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / curAdv;
 	if (Amax < Atmp) {
 	    Amax = Atmp;
 	    curAdvMax = curAdv;

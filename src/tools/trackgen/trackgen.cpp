@@ -53,6 +53,7 @@ float	TrackStep = 5.0;
 float	Margin = 100.0;
 float	ExtHeight = 5.0;
 
+int	HeightSteps = 30;
 
 char		*OutputFileName;
 char		*TrackName;
@@ -85,14 +86,19 @@ static void Generate(void);
 void usage(void)
 {
     fprintf(stderr, "Terrain generator for tracks $Revision$ \n");
-    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m] [-s] [-S] [-e]\n");
+    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
-    fprintf(stderr, "       -e             : save elevation file\n");
-    fprintf(stderr, "       -E             : save 2 elevation files\n");
+    fprintf(stderr, "       -E <n>         : save elevation file n\n");
+    fprintf(stderr, "                         0: all elevatation files\n");
+    fprintf(stderr, "                         1: elevation file of terrain + track\n");
+    fprintf(stderr, "                         2: elevation file of terrain with track white\n");
+    fprintf(stderr, "                         3: track only\n");
+    fprintf(stderr, "                         4: track elevations with height steps\n");
+    fprintf(stderr, "       -H <nb>        : nb of height steps for 4th elevation file [30]\n");
 }
 
 void init_args(int argc, char **argv)
@@ -107,7 +113,7 @@ void init_args(int argc, char **argv)
     MergeTerrain = 1;
     TrackName = NULL;
     TrackCategory = NULL;
-    saveElevation = 0;
+    saveElevation = -1;
 
 #ifndef WIN32
     while (1) {
@@ -117,7 +123,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asSeE",
+	c = getopt_long(argc, argv, "hvn:c:asSE:h:",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -142,6 +148,9 @@ void init_args(int argc, char **argv)
 	    usage();
 	    exit(0);
 	    break;
+	case 'H':
+	    HeightSteps = strtol(optarg, NULL, 0);
+	    break;
 	case 'v':
 	    printf("Terrain generator for tracks $Revision$ \n");
 	    exit(0);
@@ -163,12 +172,8 @@ void init_args(int argc, char **argv)
 	case 'c':
 	    TrackCategory = strdup(optarg);
 	    break;
-	case 'e':
-	    saveElevation = 1;
-	    TrackOnly = 0;
-	    break;
 	case 'E':
-	    saveElevation = 2;
+	    saveElevation = strtol(optarg, NULL, 0);;
 	    TrackOnly = 0;
 	    break;
 	default:
@@ -203,15 +208,24 @@ void init_args(int argc, char **argv)
 		usage();
 		exit(0);
 	    }
-	} else if (strncmp(argv[i], "-e", 2) == 0) {
-	    saveElevation = 1;
-	    TrackOnly = 0;
 	} else if (strncmp(argv[i], "-E", 2) == 0) {
-	    saveElevation = 2;
+	    if (i + 1 < argc) {
+		saveElevation = strtol(argv[++i], NULL, 0);
+	    } else {
+		usage();
+		exit(0);
+	    }
 	    TrackOnly = 0;
 	} else if (strncmp(argv[i], "-c", 2) == 0) {
 	    if (i + 1 < argc) {
 		TrackCategory = strdup(argv[++i]);
+	    } else {
+		usage();
+		exit(0);
+	    }
+	} else if (strncmp(argv[i], "-H", 2) == 0) {
+	    if (i + 1 < argc) {
+		HeightSteps = strtol(argv[++i], NULL, 0);
 	    } else {
 		usage();
 		exit(0);
@@ -331,14 +345,33 @@ Generate(void)
     
     GenerateTerrain(Track, TrackHandle, OutMeshName, outfd, saveElevation);
 
-    if (saveElevation) {
+    if (saveElevation != -1) {
 	Ac3dClose(outfd);
-	sprintf(buf2, "%s.ac", OutputFileName);
-	sprintf(buf, "%s-elv.png", OutputFileName);
-	SaveElevation(Track, TrackHandle, buf, buf2);
-	if (saveElevation == 2) {
+	switch (saveElevation) {
+	case 0:
+	case 1:
+	    sprintf(buf2, "%s.ac", OutputFileName);
+	    sprintf(buf, "%s-elv.png", OutputFileName);
+	    SaveElevation(Track, TrackHandle, buf, buf2, 1);
+	    if (saveElevation) {
+		break;
+	    }
+	case 2:
 	    sprintf(buf, "%s-elv2.png", OutputFileName);
-	    SaveElevation(Track, TrackHandle, buf, OutMeshName);
+	    SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
+	    if (saveElevation) {
+		break;
+	    }
+	case 3:
+	    sprintf(buf, "%s-elv3.png", OutputFileName);
+	    SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
+	    if (saveElevation) {
+		break;
+	    }
+	case 4:
+	    sprintf(buf, "%s-elv4.png", OutputFileName);
+	    SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
+	    break;
 	}
 	return;
     }

@@ -28,7 +28,7 @@
 
 extern void LoadElevation(tTrack *track, void *TrackHandle, char *imgFile);
 extern tdble GetElevation(tdble x, tdble y, tdble z);
-extern void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile);
+extern void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int disp);
 
 
 #endif /* _ELEVATION_H_ */ 

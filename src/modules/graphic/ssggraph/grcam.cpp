@@ -253,26 +253,25 @@ class cGrCarCamInside : public cGrPerspCamera
     }
 
     void update(tCarElt *car, tSituation *s) {
-	tdble A1 = car->_yaw;
-	tdble CosA1 = cos(A1);
-	tdble SinA1 = sin(A1);
-	//tdble A2 = MIN(car->ctrl->steer * 1.5, 0.5) + car->_yaw;
-	//tdble CosA2 = cos(A2);
-	//tdble SinA2 = sin(A2);
-	tdble CosA2 = CosA1;
-	tdble SinA2 = SinA1;
-	tdble x = car->_pos_X + 30.0 * CosA2;
-	tdble y = car->_pos_Y + 30.0 * SinA2;
+	sgVec3 P, p;
+	
+	p[0] = car->_drvPos_x;
+	p[1] = car->_drvPos_y;
+	p[2] = car->_drvPos_z;
+	sgXformPnt3(p, car->_posMat);
+	
+	eye[0] = p[0];
+	eye[1] = p[1];
+	eye[2] = p[2];
 
-	tdble X = car->_pos_X + CosA1 * car->_drvPos_x - SinA1 * car->_drvPos_y;
-	tdble Y = car->_pos_Y + SinA1 * car->_drvPos_x + CosA1 * car->_drvPos_y;
-	tdble Z = car->_pos_Z + car->_drvPos_z;
-	eye[0] = X;
-	eye[1] = Y;
-	eye[2] = Z;
-	center[0] = x;
-	center[1] = y;
-	center[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 1.5;
+	P[0] = car->_drvPos_x + 30.0;
+	P[1] = car->_drvPos_y;
+	P[2] = car->_drvPos_z;
+	sgXformPnt3(P, car->_posMat);
+
+	center[0] = P[0];
+	center[1] = P[1];
+	center[2] = P[2];
     }
 };
 
@@ -289,26 +288,26 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
     }
 
     void update(tCarElt *car, tSituation *s) {
-	tdble A1 = car->_yaw;
-	tdble CosA1 = cos(A1);
-	tdble SinA1 = sin(A1);
-	//tdble A2 = MIN(car->ctrl->steer * 1.5, 0.5) + car->_yaw;
-	//tdble CosA2 = cos(A2);
-	//tdble SinA2 = sin(A2);
-	tdble CosA2 = CosA1;
-	tdble SinA2 = SinA1;
-	tdble x = car->_pos_X + 30.0 * CosA2;
-	tdble y = car->_pos_Y + 30.0 * SinA2;
+	sgVec3 P, p;
+	
+	p[0] = car->_drvPos_x;
+	p[1] = car->_drvPos_y;
+	p[2] = car->_drvPos_z;
+	sgXformPnt3(p, car->_posMat);
+	
+	eye[0] = p[0];
+	eye[1] = p[1];
+	eye[2] = p[2];
 
-	tdble X = car->_pos_X + CosA1 * car->_drvPos_x - SinA1 * car->_drvPos_y;
-	tdble Y = car->_pos_Y + SinA1 * car->_drvPos_x + CosA1 * car->_drvPos_y;
-	tdble Z = car->_pos_Z + car->_drvPos_z;
-	eye[0] = X;
-	eye[1] = Y;
-	eye[2] = Z;
-	center[0] = x;
-	center[1] = y;
-	center[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 1.5;
+	P[0] = car->_drvPos_x + 30.0;
+	P[1] = car->_drvPos_y;
+	P[2] = car->_drvPos_z;
+	sgXformPnt3(P, car->_posMat);
+
+	center[0] = P[0];
+	center[1] = P[1];
+	center[2] = P[2];
+
 	up[0] = car->_posMat[2][0];
 	up[1] = car->_posMat[2][1];
 	up[2] = car->_posMat[2][2];

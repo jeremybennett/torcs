@@ -25,10 +25,10 @@
     <attnum name="AdvStep"   val="5.0"></attnum>
     <attnum name="VGain"     val="0.005"></attnum>
     <attnum name="preDy"     val="0"></attnum>
-    <attnum name="spdtgt"    val="320.0"></attnum>
-    <attnum name="spdtgt2"   val="2.5"></attnum>
+    <attnum name="spdtgt"    val="540.0"></attnum>
+    <attnum name="spdtgt2"   val="-4.0"></attnum>
     <attnum name="steerMult" val="1.5"></attnum>
-    <attnum name="offset"    val="0.0"></attnum>
+    <attnum name="offset"    val="0.1"></attnum>
   </section>
 
 </params>

@@ -168,6 +168,26 @@ GetDistToStart(tCarElt *car)
     return lg;
 }
 
+tdble
+GetDistToStart2(tTrkLocPos *trkPos)
+{
+    tTrackSeg	*seg;
+    tdble	lg;
+    
+    seg = trkPos->seg;
+    lg = seg->lgfromstart;
+    
+    switch (seg->type) {
+    case TR_STR:
+	lg += trkPos->toStart;
+	break;
+    default:
+	lg += trkPos->toStart * seg->radius;
+	break;
+    }
+    return lg;
+}
+
 
 void
 CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)

@@ -279,6 +279,7 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
     int		ncar;
     tCarElt 	*carElt;
     tCar 	*car;
+    sgVec3	P;
     
     SimDeltaTime = deltaTime;
     SimTelemetry = telemetry;
@@ -359,6 +360,14 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->priv->collision |= car->collision;
 	carElt->_dammage = car->dammage;
 
+	P[0] = -carElt->_statGC_x;
+	P[1] = -carElt->_statGC_y;
+	P[2] = -carElt->_statGC_z;
+	sgXformPnt3(P, carElt->_posMat);
+	carElt->_pos_X = P[0];
+	carElt->_pos_Y = P[1];
+	carElt->_pos_Z = P[2];
+	
 	/* printf ("(%f / %f)  ", carElt->_pos_X, carElt->_pos_Y); */
     }
     /* printf("\n"); */

@@ -35,7 +35,7 @@
 extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd);
 
 extern char	*OutputFileName;
-
+extern int	HeightSteps;
 
 #endif /* _TRACKGEN_H_ */ 
 

@@ -29,7 +29,7 @@
 
   <section name="Rear Wing">
     <attnum name="area"  unit="m2" val="0.8"></attnum>
-    <attnum name="angle" unit="deg" min="0" max="30" val="5"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="12"></attnum>
     <attnum name="xpos" unit="m" val="-1.94"></attnum>
     <attnum name="zpos" unit="m" val="1.03"></attnum>
   </section>
@@ -75,7 +75,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.7"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="11000"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="9000"></attnum>
   </section>
 
   <section name="Front Differential">
@@ -94,8 +94,8 @@
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP,VISCOUS COUPLER" val="VISCOUS COUPLER"></attstr>
     <attnum name="min torque bias" val="50" unit="%"></attnum>
-    <attnum name="max torque bias" val="70" unit="%"></attnum>
-    <attnum name="ratio" min="0" max="10" val="6.5"></attnum>
+    <attnum name="max torque bias" val="60" unit="%"></attnum>
+    <attnum name="ratio" min="0" max="10" val="6.0"></attnum>
   </section>
 
   <section name="Front Right Wheel">
@@ -130,7 +130,7 @@
   </section>
 
   <section name="Front Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="4000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -141,7 +141,7 @@
   </section>
 
   <section name="Front Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="4000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>

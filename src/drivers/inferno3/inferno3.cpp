@@ -368,7 +368,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	x = X + CosA * curAdv;
 	y = Y + SinA * curAdv;
 	RtTrackGlobal2Local(seg, x, y, &trkPos, TR_LPOS_MAIN);
-	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / AdvMax;
+	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / curAdv;
 	if (Amax < Atmp) {
 	    Amax = Atmp;
 	    curAdvMax = curAdv;
