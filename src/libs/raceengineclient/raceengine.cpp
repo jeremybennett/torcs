@@ -263,20 +263,23 @@ ReManage(tCarElt *car)
 				sprintf(buf, "Winner %s", car->_name);
 				ReRaceBigMsgSet(buf, 10);
 			    } else {
-				switch (car->_pos % 10) {
-				case 1:
-				    sprintf(buf, "%s Finished %dst", car->_name, car->_pos);
-				    break;
-				case 2:
-				    sprintf(buf, "%s Finished %dnd", car->_name, car->_pos);
-				    break;
-				case 3:
-				    sprintf(buf, "%s Finished %drd", car->_name, car->_pos);
-				    break;
-				default:
-				    sprintf(buf, "%s Finished %dth", car->_name, car->_pos);
-				    break;
-				}
+ 				numSuffix = "th";
+ 				if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
+				    switch (car->_pos % 10) {
+				    case 1:
+					numSuffix = "st";
+					break;
+				    case 2:
+					numSuffix = "nd";
+					break;
+				    case 3:
+					numSuffix = "rd";
+					break;
+				    default:
+					break;
+				    }
+  				}
+ 				sprintf(buf, "%s Finished %d%s", car->_name, car->_pos, numSuffix);
 				ReRaceMsgSet(buf, 5);
 			    }
 			}
