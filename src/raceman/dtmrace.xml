@@ -142,8 +142,8 @@
     <attnum name="focused idx" val="5.000000"/>
 
     <section name="1">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno4"/>
+      <attnum name="idx" val="4.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="2">
@@ -162,7 +162,7 @@
     </section>
 
     <section name="5">
-      <attnum name="idx" val="5.000000"/>
+      <attnum name="idx" val="1.000000"/>
       <attstr name="module" val="human"/>
     </section>
 

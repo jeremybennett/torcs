@@ -193,32 +193,32 @@
     </section>
 
     <section name="2">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno2"/>
+      <attnum name="idx" val="2.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="3">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno3"/>
+      <attnum name="idx" val="3.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="4">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno4"/>
+      <attnum name="idx" val="4.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="5">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno5"/>
+      <attnum name="idx" val="5.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="6">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="inferno6"/>
+      <attnum name="idx" val="6.000000"/>
+      <attstr name="module" val="inferno"/>
     </section>
 
     <section name="7">
-      <attnum name="idx" val="4.000000"/>
+      <attnum name="idx" val="1.000000"/>
       <attstr name="module" val="human"/>
     </section>
 

@@ -45,7 +45,7 @@
     <attstr name="type" val="practice"/>
     <attstr name="starting order" val="drivers list"/>
     <attstr name="restart" val="yes"/>
-    <attstr name="display mode" val="results only"/>
+    <attstr name="display mode" val="normal"/>
     <attstr name="display results" val="yes"/>
 
     <section name="Starting Grid">
@@ -61,11 +61,11 @@
   <section name="Drivers">
     <attnum name="maximum number" val="1"/>
     <attstr name="focused module" val="human"/>
-    <attnum name="focused idx" val="1.000000"/>
+    <attnum name="focused idx" val="1"/>
 
     <section name="1">
-      <attnum name="idx" val="5.000000"/>
-      <attstr name="module" val="human"/>
+      <attnum name="idx" val="4"/>
+      <attstr name="module" val="berniw"/>
     </section>
   </section>
 
