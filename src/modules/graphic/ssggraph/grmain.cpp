@@ -82,6 +82,13 @@ PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 // desc: sets up OpenGL for multitexturing support
 bool InitMultiTex(void)
 {
+#ifdef FORCE_SINGLE_TEXTURE
+
+    maxTextureUnits = 1;
+    return true;
+
+#else /* FORCE_SINGLE_TEXTURE */
+
 	char *extensionStr;			// list of available extensions
 		
 	extensionStr = (char*)glGetString(GL_EXTENSIONS);
@@ -107,6 +114,9 @@ bool InitMultiTex(void)
 	}
 	else
 		return false;
+
+#endif /* FORCE_SINGLE_TEXTURE */
+
 }
 
 
@@ -197,6 +207,12 @@ grSelectCamera(void *vp)
 }
 
 static void
+grSelectBoard(void *vp)
+{
+    grGetcurrentScreen()->selectBoard((int)vp);
+}
+
+static void
 grPrevCar(void * /* dummy */)
 {
     grGetcurrentScreen()->selectPrevCar();
@@ -211,6 +227,8 @@ grNextCar(void * /* dummy */)
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
+    int i;
+
     if (maxTextureUnits==0)
       {
 	InitMultiTex();    
@@ -224,7 +242,6 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     grMouseRatioX = width / 640.0;
     grMouseRatioY = height / 480.0;
 
-    grInitBoard();
     OldTime = GfTimeClock();
     nFrame = 0;
     Fps = 0;
@@ -232,7 +249,9 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    grLoadBoardParams();
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	grScreens[i]->initBoard ();
+    }
 
     GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
     GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
@@ -435,7 +454,6 @@ shutdownTrack(void)
     int		i;
 
     grShutdownScene();
-    grShutdownBoard();
     grShutdownSound();
     grShutdownState();
 

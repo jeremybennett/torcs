@@ -51,7 +51,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
     yaw = car->DynGC.pos.az;
     airSpeed = car->DynGC.vel.x;
     spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
-    
+
     if (airSpeed > 10.0) {
 	for (i = 0; i < s->_ncars; i++) {
 	    if (i == car->carElt->index) {
@@ -89,7 +89,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
 
     hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
     hm = hm*hm;
-    hm = hm*hm;    
+    hm = hm*hm;
     hm = 2 * exp(-3.0*hm);
     car->aero.lift[0] = - car->aero.Clift[0] * v2 * hm;
     car->aero.lift[1] = - car->aero.Clift[1] * v2 * hm;
@@ -97,38 +97,46 @@ SimAeroUpdate(tCar *car, tSituation *s)
 
 static char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
 
-void 
+void
 SimWingConfig(tCar *car, int index)
 {
     void   *hdle = car->params;
     tWing  *wing = &(car->wing[index]);
-    tdble area, angle;
+    tdble area;
 
     area              = GfParmGetNum(hdle, WingSect[index], PRM_WINGAREA, (char*)NULL, 0);
-    angle             = GfParmGetNum(hdle, WingSect[index], PRM_WINGANGLE, (char*)NULL, 0);
+	// we need also the angle
+	wing->angle       = GfParmGetNum(hdle, WingSect[index], PRM_WINGANGLE, (char*)NULL, 0);
     wing->staticPos.x = GfParmGetNum(hdle, WingSect[index], PRM_XPOS, (char*)NULL, 0);
     wing->staticPos.z = GfParmGetNum(hdle, WingSect[index], PRM_ZPOS, (char*)NULL, 0);
 
-    wing->Kx = -1.23 * area * sin(angle);
+	// wrong, because the angle of attack changes on jumps
+	//wing->Kx = -1.23 * area * sin(angle);
+	wing->Kx = -1.23 * area;
     wing->Kz = 4.0 * wing->Kx;
 
     if (index == 1) {
-	car->aero.Cd -= wing->Kx;
+		car->aero.Cd -= wing->Kx*sin(wing->angle);
     }
 }
 
 
-void 
+void
 SimWingUpdate(tCar *car, int index)
 {
     tWing  *wing = &(car->wing[index]);
     tdble vt2 = car->airSpeed2;
-    
+	// compute angle of attack
+	tdble aoa = atan2(car->DynGC.vel.z, car->DynGC.vel.x) + car->DynGC.pos.ay;
+	aoa += wing->angle;
+	// the sinus of the angle of attack
+	tdble sinaoa = sin(aoa);
+
     if (car->DynGC.vel.x > 0.0) {
-	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0);
-	wing->forces.z = wing->Kz * vt2;
+		wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;
+		wing->forces.z = wing->Kz * vt2 * sinaoa;
     } else {
-	wing->forces.x = wing->forces.z = 0;
+		wing->forces.x = wing->forces.z = 0;
     }
 }
 

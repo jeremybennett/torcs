@@ -54,6 +54,7 @@ typedef struct ParmKey {
 #define P_STR 1
     char		*valstr;
     tdble		valnum;
+    char		*unit;	/* for output only */
     tdble		min;
     tdble		max;
     struct ParmWithin	*withins;

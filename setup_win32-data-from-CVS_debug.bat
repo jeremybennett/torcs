@@ -230,8 +230,15 @@ if exist .\data\cars\models\p406\*.* call .\create_dir .\runtimed\cars
 if exist .\data\cars\models\p406\*.* call .\create_dir .\runtimed\cars\p406
 if exist .\data\cars\models\p406\p406.xml copy .\data\cars\models\p406\p406.xml .\runtimed\cars\p406\p406.xml
 if exist .\data\cars\models\p406\texmapper.xml copy .\data\cars\models\p406\texmapper.xml .\runtimed\cars\p406\texmapper.xml
-if exist .\data\cars\models\p406\p406.ac copy .\data\cars\models\p406\p406.ac .\runtimed\cars\p406\p406.ac
-if exist .\data\cars\models\p406\p406-base.ac copy .\data\cars\models\p406\p406-base.ac .\runtimed\cars\p406\p406-base.ac
+if exist .\data\cars\models\p406\p406.acc copy .\data\cars\models\p406\p406.acc .\runtimed\cars\p406\p406.acc
+if exist .\data\cars\models\p406\p406-lod1.acc copy .\data\cars\models\p406\p406-lod1.acc .\runtimed\cars\p406\p406-lod1.acc
+if exist .\data\cars\models\p406\p406-lod2.acc copy .\data\cars\models\p406\p406-lod2.acc .\runtimed\cars\p406\p406-lod2.acc
+if exist .\data\cars\models\p406\p406-lod3.acc copy .\data\cars\models\p406\p406-lod3.acc .\runtimed\cars\p406\p406-lod3.acc
+if exist .\data\cars\models\p406\p406-lod4.acc copy .\data\cars\models\p406\p406-lod4.acc .\runtimed\cars\p406\p406-lod4.acc
+if exist .\data\cars\models\p406\p406-lod5.acc copy .\data\cars\models\p406\p406-lod5.acc .\runtimed\cars\p406\p406-lod5.acc
+if exist .\data\cars\models\p406\p406-lod6.acc copy .\data\cars\models\p406\p406-lod6.acc .\runtimed\cars\p406\p406-lod6.acc
+if exist .\data\cars\models\p406\p406-lod7.acc copy .\data\cars\models\p406\p406-lod7.acc .\runtimed\cars\p406\p406-lod7.acc
+if exist .\data\cars\models\p406\p406-1024.rgb copy .\data\cars\models\p406\p406-1024.rgb .\runtimed\cars\p406\p406-1024.rgb
 if exist .\data\cars\models\p406\p406-512.rgb copy .\data\cars\models\p406\p406-512.rgb .\runtimed\cars\p406\p406-512.rgb
 if exist .\data\cars\models\p406\p406.rgb copy .\data\cars\models\p406\p406.rgb .\runtimed\cars\p406\p406.rgb
 if exist .\data\cars\models\p406\shadow.rgb copy .\data\cars\models\p406\shadow.rgb .\runtimed\cars\p406\shadow.rgb
@@ -271,6 +278,14 @@ if exist .\data\cars\models\SWRC62\tex-wheel.rgb copy .\data\cars\models\SWRC62\
 if exist .\data\cars\models\SWRC62\SWRC62.acc copy .\data\cars\models\SWRC62\SWRC62.acc .\runtimed\cars\SWRC62\SWRC62.acc
 if exist .\data\cars\models\SWRC62\readme.txt copy .\data\cars\models\SWRC62\readme.txt .\runtimed\cars\SWRC62\readme.txt
 
+if exist .\data\cars\models\torcs\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\torcs\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\torcs\*.* call .\create_dir .\runtimed\cars\torcs
+if exist .\data\cars\models\torcs\torcs.xml copy .\data\cars\models\torcs\torcs.xml .\runtimed\cars\torcs\torcs.xml
+if exist .\data\cars\models\torcs\torcs.ac copy .\data\cars\models\torcs\torcs.ac .\runtimed\cars\torcs\torcs.ac
+if exist .\data\cars\models\torcs\torcs.rgb copy .\data\cars\models\torcs\torcs.rgb .\runtimed\cars\torcs\torcs.rgb
+if exist .\data\cars\models\torcs\tex-wheel.rgb copy .\data\cars\models\torcs\tex-wheel.rgb .\runtimed\cars\torcs\tex-wheel.rgb
+
 if exist .\data\cars\models\viper-gts-r\*.* call .\create_dir .\runtimed
 if exist .\data\cars\models\viper-gts-r\*.* call .\create_dir .\runtimed\cars
 if exist .\data\cars\models\viper-gts-r\*.* call .\create_dir .\runtimed\cars\viper-gts-r
@@ -281,6 +296,36 @@ if exist .\data\cars\models\viper-gts-r\shadow.rgb copy .\data\cars\models\viper
 if exist .\data\cars\models\viper-gts-r\viper-gts-r.acc copy .\data\cars\models\viper-gts-r\viper-gts-r.acc .\runtimed\cars\viper-gts-r\viper-gts-r.acc
 if exist .\data\cars\models\viper-gts-r\viper-gts-r-lod1.acc copy .\data\cars\models\viper-gts-r\viper-gts-r-lod1.acc .\runtimed\cars\viper-gts-r\viper-gts-r-lod1.acc
 if exist .\data\cars\models\viper-gts-r\viper-gts-r-lod2.acc copy .\data\cars\models\viper-gts-r\viper-gts-r-lod2.acc .\runtimed\cars\viper-gts-r\viper-gts-r-lod2.acc
+
+if exist .\data\cars\models\vm-x2\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\vm-x2\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\vm-x2\*.* call .\create_dir .\runtimed\cars\vm-x2
+if exist .\data\cars\models\vm-x2\readme.txt copy .\data\cars\models\vm-x2\readme.txt .\runtimed\cars\vm-x2\readme.txt
+if exist .\data\cars\models\vm-x2\texmapper.xml copy .\data\cars\models\vm-x2\texmapper.xml .\runtimed\cars\vm-x2\texmapper.xml
+if exist .\data\cars\models\vm-x2\vm-x2.xml copy .\data\cars\models\vm-x2\vm-x2.xml .\runtimed\cars\vm-x2\vm-x2.xml
+if exist .\data\cars\models\vm-x2\vm-x2.acc copy .\data\cars\models\vm-x2\vm-x2.acc .\runtimed\cars\vm-x2\vm-x2.acc
+if exist .\data\cars\models\vm-x2\vm-x2-lod1.acc copy .\data\cars\models\vm-x2\vm-x2-lod1.acc .\runtimed\cars\vm-x2\vm-x2-lod1.acc
+if exist .\data\cars\models\vm-x2\vm-x2-lod2.acc copy .\data\cars\models\vm-x2\vm-x2-lod2.acc .\runtimed\cars\vm-x2\vm-x2-lod2.acc
+if exist .\data\cars\models\vm-x2\vm-x2-lod3.acc copy .\data\cars\models\vm-x2\vm-x2-lod3.acc .\runtimed\cars\vm-x2\vm-x2-lod3.acc
+if exist .\data\cars\models\vm-x2\vm-x2-lod4.acc copy .\data\cars\models\vm-x2\vm-x2-lod4.acc .\runtimed\cars\vm-x2\vm-x2-lod4.acc
+if exist .\data\cars\models\vm-x2\shadow.rgb copy .\data\cars\models\vm-x2\shadow.rgb .\runtimed\cars\vm-x2\shadow.rgb
+if exist .\data\cars\models\vm-x2\tex-wheel.rgb copy .\data\cars\models\vm-x2\tex-wheel.rgb .\runtimed\cars\vm-x2\tex-wheel.rgb
+if exist .\data\cars\models\vm-x2\vm-x2.rgb copy .\data\cars\models\vm-x2\vm-x2.rgb .\runtimed\cars\vm-x2\vm-x2.rgb
+
+if exist .\data\cars\models\vm-x4\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\vm-x4\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\vm-x4\*.* call .\create_dir .\runtimed\cars\vm-x4
+if exist .\data\cars\models\vm-x4\readme.txt copy .\data\cars\models\vm-x4\readme.txt .\runtimed\cars\vm-x4\readme.txt
+if exist .\data\cars\models\vm-x4\texmapper.xml copy .\data\cars\models\vm-x4\texmapper.xml .\runtimed\cars\vm-x4\texmapper.xml
+if exist .\data\cars\models\vm-x4\vm-x4.xml copy .\data\cars\models\vm-x4\vm-x4.xml .\runtimed\cars\vm-x4\vm-x4.xml
+if exist .\data\cars\models\vm-x4\shadow.rgb copy .\data\cars\models\vm-x4\shadow.rgb .\runtimed\cars\vm-x4\shadow.rgb
+if exist .\data\cars\models\vm-x4\tex-wheel.rgb copy .\data\cars\models\vm-x4\tex-wheel.rgb .\runtimed\cars\vm-x4\tex-wheel.rgb
+if exist .\data\cars\models\vm-x4\vm-x4.rgb copy .\data\cars\models\vm-x4\vm-x4.rgb .\runtimed\cars\vm-x4\vm-x4.rgb
+if exist .\data\cars\models\vm-x4\vm-x4.acc copy .\data\cars\models\vm-x4\vm-x4.acc .\runtimed\cars\vm-x4\vm-x4.acc
+if exist .\data\cars\models\vm-x4\vm-x4-lod1.acc copy .\data\cars\models\vm-x4\vm-x4-lod1.acc .\runtimed\cars\vm-x4\vm-x4-lod1.acc
+if exist .\data\cars\models\vm-x4\vm-x4-lod2.acc copy .\data\cars\models\vm-x4\vm-x4-lod2.acc .\runtimed\cars\vm-x4\vm-x4-lod2.acc
+if exist .\data\cars\models\vm-x4\vm-x4-lod3.acc copy .\data\cars\models\vm-x4\vm-x4-lod3.acc .\runtimed\cars\vm-x4\vm-x4-lod3.acc
+if exist .\data\cars\models\vm-x4\vm-x4-lod4.acc copy .\data\cars\models\vm-x4\vm-x4-lod4.acc .\runtimed\cars\vm-x4\vm-x4-lod4.acc
 
 if exist .\data\cars\models\xj-220\*.* call .\create_dir .\runtimed
 if exist .\data\cars\models\xj-220\*.* call .\create_dir .\runtimed\cars
@@ -526,6 +571,7 @@ if exist .\data\data\textures\tr-grass7.rgb copy .\data\data\textures\tr-grass7.
 if exist .\data\data\textures\tr-grass.rgb copy .\data\data\textures\tr-grass.rgb .\runtimed\data\textures\tr-grass.rgb
 if exist .\data\data\textures\tr-gravel.rgb copy .\data\data\textures\tr-gravel.rgb .\runtimed\data\textures\tr-gravel.rgb
 if exist .\data\data\textures\tr-road1-asphalt.rgb copy .\data\data\textures\tr-road1-asphalt.rgb .\runtimed\data\textures\tr-road1-asphalt.rgb
+if exist .\data\data\textures\tr-road1-pit.rgb copy .\data\data\textures\tr-road1-pit.rgb .\runtimed\data\textures\tr-road1-pit.rgb
 if exist .\data\data\textures\tr-road1.rgb copy .\data\data\textures\tr-road1.rgb .\runtimed\data\textures\tr-road1.rgb
 if exist .\data\data\textures\tr-sand2.rgb copy .\data\data\textures\tr-sand2.rgb .\runtimed\data\textures\tr-sand2.rgb
 if exist .\data\data\textures\tr-sand3.rgb copy .\data\data\textures\tr-sand3.rgb .\runtimed\data\textures\tr-sand3.rgb

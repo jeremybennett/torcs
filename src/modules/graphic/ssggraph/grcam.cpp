@@ -942,6 +942,7 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 		if ((screen != grScreens[i]) && grScreens[i]->isActive()) {
 		    car = grScreens[i]->getCurrentCar();
 		    schedView[car->index].viewable = 0;
+		    schedView[car->index].prio -= 10000;
 		}
 	    }
 	    

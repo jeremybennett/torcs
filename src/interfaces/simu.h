@@ -30,7 +30,7 @@ struct Situation;
 typedef void (*tfSimInit)(int);
 typedef void (*tfSimConfig)(tCarElt*);
 typedef void (*tfSimReConfig)(tCarElt*);
-typedef void (*tfSimUpdate)(struct Situation*, tdble, int);
+typedef void (*tfSimUpdate)(struct Situation*, double, int);
 typedef void (*tfSimShutdown)(void);
 
 typedef struct

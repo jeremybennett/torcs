@@ -110,7 +110,6 @@ startElement(void * /* userData */, const char *name, const char **atts)
     const char	**p;
     const char	*s1, *s2;
     char	*stk, *stk1;
-    char	*unit;
     int		minflg, maxflg, found;
     tParmWithin	*curWithin;
 
@@ -177,7 +176,6 @@ startElement(void * /* userData */, const char *name, const char **atts)
 	gfParmAddKid(TheCurNode, (tParmNode*)curkey);
 	TheCurNode = (tParmNode*)curkey;
 	
-	unit = (char*)NULL;
 	minflg = maxflg = 0;
 	curkey->type = P_NUM;
 	while (*atts) {
@@ -187,7 +185,7 @@ startElement(void * /* userData */, const char *name, const char **atts)
 		curkey->n.name = strdup(s2);
 	    }
 	    if (!strcmp(s1, "unit")) {
-		unit = strdup(s2);
+		curkey->unit = strdup(s2);
 	    }
 	    if (!strcmp(s1, "val")) {
 		if (strncasecmp(s2, "0x", 2) == 0) {
@@ -211,11 +209,10 @@ startElement(void * /* userData */, const char *name, const char **atts)
 	if (maxflg == 0) {
 	    curkey->max = curkey->valnum;
 	}
-	if (unit) {
-	    curkey->valnum = GfParmUnit2SI(unit, curkey->valnum);
-	    curkey->min = GfParmUnit2SI(unit, curkey->min);
-	    curkey->max = GfParmUnit2SI(unit, curkey->max);
-	    free(unit);
+	if (curkey->unit) {
+	    curkey->valnum = GfParmUnit2SI(curkey->unit, curkey->valnum);
+	    curkey->min = GfParmUnit2SI(curkey->unit, curkey->min);
+	    curkey->max = GfParmUnit2SI(curkey->unit, curkey->max);
 	}
 	if (curkey->min > curkey->valnum) {
 	    curkey->min = curkey->valnum;
@@ -542,7 +539,7 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
     static	char *typeStr[2] = {GFPARM_PARAM_STR, GFPARM_TEMPL_STR};
     char	buf[BUFMAX];
     char	blank[BUFMAX];
-    int		indent, i;
+    int		indent, i, nb;
     char	*s;
     FILE	*out;
     tParmWithin	*curWithin;
@@ -608,21 +605,41 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
 	    s = buf;
 	    if (curkey->type == P_NUM) {
 		s += sprintf(s, "%s<attnum name=\"%s\" ", blank, curkey->n.name);
-		if (type == GFPARM_TEMPLATE) {
-		    s += sprintf(s, "min=\"%f\" max=\"%f\" ", curkey->min, curkey->max);
-		} 
-		sprintf(s, "val=\"%f\"/>\n", curkey->valnum);
+		if ((type == GFPARM_TEMPLATE) &&
+		    ((curkey->min != curkey->valnum) || (curkey->max != curkey->valnum))) {
+		    if (curkey->unit) {
+			s += sprintf(s, "min=\"%g\" max=\"%g\" ",
+				     GfParmSI2Unit(curkey->unit, curkey->min),
+				     GfParmSI2Unit(curkey->unit, curkey->max));
+		    } else {
+			s += sprintf(s, "min=\"%g\" max=\"%g\" ", curkey->min, curkey->max);
+		    }
+		}
+		if (curkey->unit) {
+		    sprintf(s, "val=\"%g\" unit=\"%s\"/>\n", GfParmSI2Unit(curkey->unit, curkey->valnum), curkey->unit);
+		} else {
+		    sprintf(s, "val=\"%g\"/>\n", curkey->valnum);
+		}
 	    } else {
 		s += sprintf(s, "%s<attstr name=\"%s\" ", blank, curkey->n.name);
 		if ((type == GFPARM_TEMPLATE) && (curkey->withins)) {
-		    s += sprintf(s, "in=\"");
+		    nb = 0;
 		    curWithin = curkey->withins;
 		    do {
+			nb++;
 			curWithin = curWithin->next;
-			s += sprintf(s, "%s,", curWithin->val);
 		    } while (curWithin != curkey->withins);
-		    s--;
-		    s += sprintf(s, "\" ");
+
+		    if (nb > 1) {
+			s += sprintf(s, "in=\"");
+			curWithin = curkey->withins;
+			do {
+			    curWithin = curWithin->next;
+			    s += sprintf(s, "%s,", curWithin->val);
+			} while (curWithin != curkey->withins);
+			s--;
+			s += sprintf(s, "\" ");
+		    }
 		} 
 		sprintf(s, "val=\"%s\"/>\n", curkey->valstr);
 	    }
@@ -826,6 +843,7 @@ gfRemoveNode(tParmNode *node)
 	tParmKey *curKey = (tParmKey*)node;
 
 	free(node->name);
+	if (curKey->unit) free (curKey->unit);
 	if (curKey->valstr != NULL) free(curKey->valstr);
 	if (curKey->withins != NULL) {
 	    ParmWithin *curWithin = curKey->withins;
@@ -1386,6 +1404,79 @@ GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
+	//GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
+	/* return -1; */
+    }
+#endif
+
+    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
+	return -1;
+    }
+    curNode = curParm->n.kids;
+    curNode = gfCreatePath(curNode, path);
+    kidNode = curNode->kids;
+    found = 0;
+    if (kidNode != NULL) {
+	do {
+	    if (strcmp(key, kidNode->name)) {
+		kidNode = kidNode->next;
+	    } else {
+		curNode = kidNode;
+		found = 1;
+		break;
+	    }
+	} while (kidNode != curNode->kids);
+    }
+    if (!found) {
+	/* Create Key */
+	curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
+	curKey->n.name = strdup(key);
+	curKey->n.type = PARM_NODE_KEY;
+	gfParmAddKid(curNode, (tParmNode*)curKey);	
+	curKey->type = P_NUM;
+    } else {
+	/* key found, modify it */
+	curKey = (tParmKey*)curNode;
+    }
+    if (unit) {
+	if (curKey->unit) free (curKey->unit);
+	curKey->unit = strdup(unit);
+    }
+    val = GfParmUnit2SI(unit, val);
+    curKey->valnum = val;
+    curKey->min = val;
+    curKey->max = val;
+    return 0;
+}
+
+/** Set a numerical parameter in a config file.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	val	value to set	
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary
+ */
+int
+GfParmSetNumEx(void *handle, char *path, char *key, char *unit, tdble val, tdble min, tdble max)
+{
+    tParmNode	*curNode;
+    tParmNode	*kidNode;
+    tParm	*curParm;
+    tParmKey	*curKey;
+    int		found;
+    
+    curParm = (tParm*)handle;
+
+    if (handle == NULL) {
+	return -1;
+    }
+
+#ifdef DEBUG
+    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
 	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
@@ -1420,10 +1511,12 @@ GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
 	/* key found, modify it */
 	curKey = (tParmKey*)curNode;
     }
-    val = GfParmUnit2SI(unit, val);
-    curKey->valnum = val;
-    curKey->min = val;
-    curKey->max = val;
+    if (unit) {
+	curKey->unit = strdup(unit);
+    }
+    curKey->valnum = GfParmUnit2SI(unit, val);
+    curKey->min = GfParmUnit2SI(unit, min);
+    curKey->max = GfParmUnit2SI(unit, max);
     return 0;
 }
 
@@ -1491,8 +1584,11 @@ GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
 	/* key found, modify it */
 	curKey = (tParmKey*)curNode;
     }
+    if (unit) {
+	curKey->unit = strdup(unit);
+    }
     val = GfParmUnit2SI(unit, val);
-    curKey->valnum = val;
+    curKey->valnum = GfParmUnit2SI(unit, val);
     curKey->min = val;
     curKey->max = val;
     return 0;

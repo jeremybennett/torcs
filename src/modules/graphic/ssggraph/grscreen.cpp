@@ -50,6 +50,7 @@ cGrScreen::cGrScreen(int myid)
     dispCam = NULL;
     boardCam = NULL;
     bgCam = NULL;
+    board = NULL;
     curCamHead = 0;
     drawCurrent = 0;
     active = 0;
@@ -70,6 +71,9 @@ cGrScreen::~cGrScreen()
 	    delete cam;
 	}
     }
+
+    board->shutdown ();
+    delete board;
 }
 
 int cGrScreen::isInScreen(int x, int y)
@@ -128,6 +132,10 @@ void cGrScreen::selectPrevCar(void)
     selectPrevFlag = 1;
 }
 
+void cGrScreen::selectBoard(int brd)
+{
+    board->selectBoard(brd);
+}
 
 /* Select the camera by number */
 void cGrScreen::selectCamera(int cam)
@@ -251,7 +259,7 @@ void cGrScreen::update(tSituation *s, float Fps)
     dispCam = curCam;
     camDraw(s);
 
-#if 0
+#if MIRROR
     if (curCam->isMirrorAllowed()) {
 	glViewport(scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
 	dispCam = mirrorCam;
@@ -276,7 +284,7 @@ void cGrScreen::update(tSituation *s, float Fps)
     glDisable(GL_FOG);
 
     TRACE_GL("cGrScreen::update glDisable(GL_DEPTH_TEST)");
-    grRefreshBoard(s, Fps, 0, curCar);
+    board->refreshBoard(s, Fps, 0, curCar);
     TRACE_GL("cGrScreen::update display boards");
 
     STOP_PROFILE("grDisp**");
@@ -386,4 +394,13 @@ void cGrScreen::initCams(tSituation *s)
     grCamCreateSceneCameraList(this, cams, fovFactor);
 
     loadParams(s);
+}
+
+void cGrScreen::initBoard(void)
+{
+    if (board == NULL) {
+	board = new cGrBoard (id);
+    }
+    board->initBoard ();
+    board->loadDefaults ();
 }

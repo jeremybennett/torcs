@@ -39,6 +39,7 @@ typedef struct
     t3Dd	forces;
     tdble	Kx;
     tdble	Kz;
+	tdble	angle;
     
     /* static */
     t3Dd	staticPos;

@@ -638,10 +638,12 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (ax0 < cmd[CMD_THROTTLE].min) {
 	    ax0 = cmd[CMD_THROTTLE].min;
 	}
-	printf("axO:%f", ax0);
 	ax0 = ax0 * cmd[CMD_THROTTLE].pow;
 	car->_accelCmd =  pow(fabs(ax0), cmd[CMD_THROTTLE].sens) / (1.0 + cmd[CMD_THROTTLE].spdSens * car->_speed_x / 10.0);
-	printf("  axO:%f  accelCmd:%f\n", ax0, car->_accelCmd);
+	if (isnan (car->_accelCmd)) {
+	    car->_accelCmd = 0;
+	}
+	/* printf("  axO:%f  accelCmd:%f\n", ax0, car->_accelCmd); */
 	break;
     case GFCTRL_TYPE_JOY_BUT:
 	car->_accelCmd = joyInfo->levelup[cmd[CMD_THROTTLE].val];

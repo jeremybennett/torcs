@@ -49,8 +49,8 @@ CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
 CXXFLAGS =  -Wall -Wstrict-prototypes -O3 -march=i686 ${CFLAGSD}
 CFLAGS   =  -Wall -Wstrict-prototypes -O3 ${CFLAGSD}
 
-#EXT_LIBS = -lpthread -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lfreeglut-1.3 -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
-EXT_LIBS = -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lfreeglut-1.3 -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
+#EXT_LIBS = -lpthread -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
+EXT_LIBS = -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
 #LDFLAGS =   -L/usr/X11R6/lib -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
 LDFLAGS =   -L/usr/X11R6/lib -L${EXPORTBASE}/lib -L/usr/lib 
 
@@ -60,7 +60,7 @@ INCFLAGS =  -I${EXPORTBASE}/include
 CPP = gcc -E -march=i686 -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.3.0
+VERSION = 1.3.0-pre2
 
 TAR = gtar
 GZIP_ENV = --best

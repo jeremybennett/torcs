@@ -112,6 +112,7 @@ SimTransmissionConfig(tCar *car)
     /* initial state */
     clutch->state = CLUTCH_RELEASING;
     clutch->timeToRelease = 0;
+    clutch->plip = 1.0;
     trans->gearbox.gear = 0; /* neutral */
     trans->curI = trans->freeI[1];
     switch(trans->type) {
@@ -187,7 +188,7 @@ SimGearboxUpdate(tCar *car)
 	    if (gearbox->gear > 0) {
 		clutch->plip = 0.5;
 	    } else {
-		clutch->plip = 0.0;
+		clutch->plip = 1.0;
 	    }
 	    clutch->state = CLUTCH_RELEASING;
 	    clutch->transferValue = 0.0;
@@ -216,7 +217,7 @@ SimGearboxUpdate(tCar *car)
 	    if (gearbox->gear > 0) {
 		clutch->plip = 0.8;
 	    } else {
-		clutch->plip = 0.0;
+		clutch->plip = 1.0;
 	    }
 	    clutch->state = CLUTCH_RELEASING;
 	    clutch->transferValue = 0.0;

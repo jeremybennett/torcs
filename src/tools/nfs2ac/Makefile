@@ -14,12 +14,14 @@
 #
 ##############################################################################
 
-PROGRAM = nfs2ac
+APROGRAM = nfs2ac
 
-SOURCES =  nfs2ac.cpp
-CFLAGS  += -O2
+ASOURCES =  nfs2ac.cpp
+ACFLAGS  += -O2
 
-$(PROGRAM): $(SOURCES)
-	gcc $(CFLAGS) $(SOURCES)  -o $(PROGRAM)
+$(APROGRAM): $(ASOURCES)
+	gcc $(ACFLAGS) $(ASOURCES)  -o $(APROGRAM)
 
+
+include ${MAKE_DEFAULT}
 

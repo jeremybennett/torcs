@@ -134,6 +134,7 @@ void GfScrInit(int argc, char *argv[])
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
 #if !defined(FREEGLUT) && !defined(WIN32)
     /* Resize the screen */
+	GfOut ("Freeglut not detected...\n");
 	for (i = maxfreq; i > 59; i--) {
 	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
 	    GfOut("Trying %s mode\n", buf);
@@ -148,7 +149,9 @@ void GfScrInit(int argc, char *argv[])
 	for (i = maxfreq; i > 59; i--) {
 	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
 	    glutGameModeString(buf);
+	    GfOut("2 - Trying %s mode\n", buf);
 	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+		GfOut("2- %s mode Possible\n", buf);
 		glutEnterGameMode();
 		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
 		    GfOut("Use GameMode %s\n", buf);

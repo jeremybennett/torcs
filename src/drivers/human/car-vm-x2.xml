@@ -27,7 +27,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="20"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="10"/>
    </section>
 
   <section name="Gearbox">
@@ -75,7 +75,7 @@
   <section name="Rear Differential">
 
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-    <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
+    <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="SPOOL"/>
     <attnum name="ratio" min="0" max="10" val="4.5"/>
   </section>
 

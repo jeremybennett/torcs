@@ -27,16 +27,6 @@
     <attnum name="fov factor" val="1.0"/>
   </section>
 
-  <section name="Display Mode">
-    <attnum name="driver board" val="2"/>
-    <attnum name="leader board" val="1"/>
-    <attnum name="driver counter" val="1"/>
-    <attnum name="debug info" val="1"/>
-    <attnum name="camera" val="0"/>
-    <attnum name="camera head list" val="0"/>
-    <attnum name="G graph" val="1"/>
-  </section>
-
   <section name="Playable Cameras Distance of Views">
     <attnum name="Front Level Group Global" val="600"/>
     <attnum name="Front Level Group 1" val="400"/>

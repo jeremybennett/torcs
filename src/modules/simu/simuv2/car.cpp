@@ -62,7 +62,7 @@ SimCarConfig(tCar *car)
     }
     k = k * k;
     car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
-    car->Iinv.y = 12.0 / (car->mass * (k * car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
+    car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
     car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
     
     /* configure components */

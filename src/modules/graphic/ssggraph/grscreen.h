@@ -28,6 +28,7 @@
 
 #include <car.h>
 #include "grcam.h"
+#include "grboard.h"
 
 class cGrScreen
 {
@@ -44,6 +45,8 @@ class cGrScreen
     class cGrPerspCamera	*dispCam;	/* the display camera */
     class cGrOrthoCamera	*boardCam;	/* the board camera */
     class cGrBackgroundCam 	*bgCam;		/* the background camera */
+
+    class cGrBoard		*board;		/* the board */
 
     int			drawCurrent;		/* Should the current car be drawn */
 
@@ -80,9 +83,13 @@ class cGrScreen
 
     void selectCamera(int cam);
 
+    void selectBoard(int brd);
+
     void setCurrentCar(tCarElt *newCurCar);
 
     void initCams(tSituation *s);
+
+    void initBoard(void);
 
     void selectNextCar(void);
     void selectPrevCar(void);

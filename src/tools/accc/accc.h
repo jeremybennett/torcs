@@ -163,6 +163,10 @@ double  findDistmin(ob_t * ob1, ob_t *ob2);
 #ifndef WIN32
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
+#else
+#include <windows.h>
+#include <float.h>
+#define isnan _isnan
 #endif
 
 

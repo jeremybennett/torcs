@@ -269,7 +269,7 @@ RemoveCar(tCar *car, tSituation *s)
 
 
 void
-SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
+SimUpdate(tSituation *s, double deltaTime, int telemetry)
 {
     int		i;
     int		ncar;

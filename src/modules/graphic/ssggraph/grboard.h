@@ -22,20 +22,50 @@
 
 #include <raceman.h>
 
-extern void grDispDebug(float fps, tCarElt *car, tSituation *s);
-extern void grDispCarBoard(tCarElt *car, tSituation *s);
-extern void grDispLeaderBoard(tCarElt *car, tSituation *s);
-extern void grDispCounterBoard(tCarElt *car);
-extern void grDispCounterBoard2(tCarElt *car);
-extern void grDispPause(void);
-extern void grInitBoard(void);
-extern void grShutdownBoard(void);
-extern void grSelectBoard(void *vp);
-extern void grDispGGraph(tCarElt *car);
+class cGrBoard
+{
+ protected:
+    int			id;		/* Board Id */
+
+    int	boardFlag;
+    
+    int leaderFlag;
+    int debugFlag;
+    int leaderNb;
+    int counterFlag;
+    int GFlag;
+    int arcadeFlag;
+
+ private:
+    void grDispDebug(float fps, tCarElt *car);
+    void grDispGGraph(tCarElt *car);
+    void grDispCarBoard1(tCarElt *car, tSituation *s);
+    void grDispMisc(tCarElt *car);
+    void grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, char *title);
+    void grDispCarBoard2(tCarElt *car, tSituation *s);
+    void grDispCarBoard(tCarElt *car, tSituation *s);
+    void grDispCounterBoard(tCarElt *car);
+    void grDispLeaderBoard(tCarElt *car, tSituation *s);
+    void grDispCounterBoard2(tCarElt *car);
+    void grDispArcade(tCarElt *car, tSituation *s);
+    
+ public:
+    cGrBoard (int myid) {
+	id = myid;
+    }
+    
+    void initBoard(void);
+    void shutdown(void);
+    void selectBoard(int brd);
+    void dispGaph(tCarElt *car);
+    void initBoardCar(tCarElt *car);
+
+    void refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr);
+    void loadDefaults(void);
+};
+
 extern void grInitBoardCar(tCarElt *car);
 
-extern void grRefreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr);
-extern void grLoadBoardParams(void);
 
 #endif /* _GRBOARD_H_ */ 
 
