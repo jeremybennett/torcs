@@ -124,7 +124,7 @@ ctrlCheck(tCar *car)
 
 /* Initial configuration */
 void
-SimConfig(tCarElt *carElt)
+SimConfig(tCarElt *carElt, RmInfo *)
 {
     tCar *car = &(SimCarTable[carElt->index]);
 

@@ -36,7 +36,7 @@
 #include "carstruct.h"
 #include <robottools.h>
 
-extern void SimConfig(tCarElt *carElt);
+extern void SimConfig(tCarElt *carElt, RmInfo *);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
 extern void SimInit(int nbcars);
