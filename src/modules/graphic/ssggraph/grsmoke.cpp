@@ -75,6 +75,11 @@ void grInitSmoke(int index)
 					 (char*)NULL, DELTAT);
     grSmokeLife = (double)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKEDLIFE,
 				       (char*)NULL, MAX_SMOKE_LIFE);
+
+    if (!grSmokeMaxNumber) {
+	return;
+    }
+    
     grFireDeltaT=grSmokeDeltaT*8;
 
     if (!timeSmoke) {
@@ -145,6 +150,10 @@ void grUpdateSmoke(double t)
     tgrSmoke * tmp, *tmp2;
     tgrSmoke * prev;
 
+    if (!grSmokeMaxNumber) {
+	return;
+    }
+
     prev = NULL;
     tmp = smokeManager->smokeList;
     while( tmp!=NULL) {
@@ -209,6 +218,10 @@ void grAddSmoke(tCarElt *car, double t)
     tdble		val;
     int			index;
 
+    if (!grSmokeMaxNumber) {
+	return;
+    }
+
     if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
 	if (smokeManager->number < grSmokeMaxNumber) {
 	    for (i = 0; i < 4; i++) {
@@ -270,12 +283,11 @@ void grAddSmoke(tCarElt *car, double t)
 	}
     }
 
-
     if (car->_exhaustNb && ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0)) {
 	if (smokeManager->number < grSmokeMaxNumber) {
 	    index = car->index;	/* current car's index */
-	    if ((t - timeFire[index+i]) > grFireDeltaT) {
-		timeFire[index+i] = t;
+	    if ((t - timeFire[index]) > grFireDeltaT) {
+		timeFire[index] = t;
 		curInst = &(grCarInfo[index].instrument[0]);
 		val = ((curInst->rawPrev - curInst->minValue) / curInst->maxValue) - ((*(curInst->monitored) - curInst->minValue) / curInst->maxValue);
 		curInst->rawPrev = *(curInst->monitored);
@@ -328,6 +340,10 @@ void grAddSmoke(tCarElt *car, double t)
 void grShutdownSmoke ()
 {
     tgrSmoke *tmp, *tmp2;
+
+    if (!grSmokeMaxNumber) {
+	return;
+    }
 
     if (smokeManager) {
 	tmp = smokeManager->smokeList;

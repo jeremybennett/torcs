@@ -52,7 +52,7 @@ typedef struct
     ssgVtxTableShadow	*shadowBase;
     ssgVtxTableShadow	*shadowCurr;
     ssgBranch		*shadowAnchor;
-    tgrSkidmarks         *skidmarks;
+    tgrSkidmarks        *skidmarks;
     sgMat4		carPos;
     tgrCarInstrument	instrument[2];
     tdble               distFromStart;

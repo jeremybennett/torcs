@@ -58,8 +58,6 @@ void grInitSkidmarks(tCarElt *car)
 {
     int i; 
     int k;
-    sgVec4		clr;
-    ssgColourArray	*shd_clr;
     ssgNormalArray	*shd_nrm;
     sgVec3		nrm;
 
@@ -73,11 +71,6 @@ void grInitSkidmarks(tCarElt *car)
     if (!grSkidMaxStripByWheel) {
 	return;
     }
-
-    shd_clr = new ssgColourArray(1);
-    clr[0] = clr[1] = clr[2] = 0.1;
-    clr[3] = 0.6;
-    shd_clr->add(clr);
 
     shd_nrm = new ssgNormalArray(1);
     nrm[0] = nrm[1] = 0.0;
@@ -117,11 +110,11 @@ void grInitSkidmarks(tCarElt *car)
 	    grCarInfo[car->index].skidmarks->strips[i].timeStrip = 0;
 	    TheScene->addKid(grCarInfo[car->index].skidmarks->strips[i].vta[k]);
 	}
-	/** no skid is in used */
+	/* no skid is in used */
 	grCarInfo[car->index].skidmarks->strips[i].running_skid = 0;
-	/** the next skid to used is the first one */
+	/* the next skid to used is the first one */
 	grCarInfo[car->index].skidmarks->strips[i].next_skid = 0;
-	/** there was no skid for this wheel during the next shot */
+	/* there was no skid for this wheel during the next shot */
 	grCarInfo[car->index].skidmarks->strips[i].last_state_of_skid = 0;
     }
 }
@@ -134,6 +127,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
     sgVec3		*tvtx;
     ssgVertexArray 	*basevtx = NULL;
     sgVec4		cur_clr;
+    
     if (!grSkidMaxStripByWheel) {
 	return;
     }

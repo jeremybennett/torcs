@@ -383,7 +383,7 @@ shutdownCars(void)
     
     if (grNbCars) {
 	grShutdownSkidmarks();
-	grShutdownSmoke();
+	/* grShutdownSmoke(); */
 	/* Delete ssg objects */
 	for (i = 0; i < grNbCars; i++) {
 	    TheScene->removeKid(grCarInfo[i].carTransform);
