@@ -199,6 +199,7 @@ SimCarUpdateForces(tCar *car)
 	    car->wheel[i].forces.y * car->wheel[i].staticPos.x;
     }
 
+
     /* Aero Drag */
     F.F.x += car->aero.drag;
     F.F.y += car->aero.lateral_drag;
@@ -256,10 +257,10 @@ SimCarUpdateForces(tCar *car)
 	original.x = car->DynGC.acc.x;
 	original.y = car->DynGC.acc.y;
 	original.z = car->DynGC.acc.z;
-	angles.x = -car->DynGCg.pos.ax;
-	angles.y = -car->DynGCg.pos.ay;
-	angles.z = -car->DynGCg.pos.az;	
-	NaiveRotate (original, angles, &updated);
+	angles.x = car->DynGCg.pos.ax;
+	angles.y = car->DynGCg.pos.ay;
+	angles.z = car->DynGCg.pos.az;	
+	NaiveInverseRotate (original, angles, &updated);
 	car->DynGCg.acc.x = updated.x;
 	car->DynGCg.acc.y = updated.y;
 	car->DynGCg.acc.z = updated.z;
@@ -370,20 +371,40 @@ SimCarUpdateWheelPos(tCar *car)
     Sinz = car->Sinz;
     vx = car->DynGC.vel.x;
     vy = car->DynGC.vel.y;
-
     /* Wheels data */
-    for (i = 0; i < 4; i++) {
-	tdble x = car->wheel[i].staticPos.x;
-	tdble y = car->wheel[i].staticPos.y;
-	tdble dx = x * Cosz - y * Sinz;
-	tdble dy = x * Sinz + y * Cosz;
-	
-	car->wheel[i].pos.x = car->DynGC.pos.x + dx;
-	car->wheel[i].pos.y = car->DynGC.pos.y + dy;
-	car->wheel[i].pos.z = car->DynGC.pos.z - car->statGC.z - x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);
-
-	car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * y;
-	car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * x;
+    // Note that the naive calculation of wheel position does not work for large angles ay, ax. Especially x and y are not properly done.
+    if (1) {
+	t3Dd angles;
+	angles.x = car->DynGC.pos.ax;
+	angles.y = car->DynGC.pos.ay;
+	angles.z = car->DynGC.pos.az;
+	for (i = 0; i < 4; i++) {
+	    t3Dd pos;
+	    pos.x = car->wheel[i].staticPos.x;
+	    pos.y = car->wheel[i].staticPos.y;
+	    pos.z = -car->statGC.z; // or car->wheel[i].staticPos.z; ??
+	    NaiveInverseRotate (pos, angles, &car->wheel[i].pos);
+	    car->wheel[i].pos.x += car->DynGC.pos.x;
+	    car->wheel[i].pos.y += car->DynGC.pos.y;
+	    car->wheel[i].pos.z += car->DynGC.pos.z;
+	    
+	    car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * car->wheel[i].staticPos.y;
+	    car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * car->wheel[i].staticPos.x;
+	}
+    } else {
+	for (i = 0; i < 4; i++) {
+	    tdble x = car->wheel[i].staticPos.x;
+	    tdble y = car->wheel[i].staticPos.y;
+	    tdble dx = x * Cosz - y * Sinz;
+	    tdble dy = x * Sinz + y * Cosz;
+	    
+	    car->wheel[i].pos.x = car->DynGC.pos.x + dx;
+	    car->wheel[i].pos.y = car->DynGC.pos.y + dy;
+	    car->wheel[i].pos.z = car->DynGC.pos.z - car->statGC.z - x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);
+	    
+	    car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * y;
+	    car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * x;
+	}
     }
 }
 
@@ -408,9 +429,9 @@ SimCarUpdatePos(tCar *car)
     car->DynGCg.pos.ay += car->DynGCg.vel.ay * SimDeltaTime;
     car->DynGCg.pos.az += car->DynGCg.vel.az * SimDeltaTime;
 
-    NORM_PI_PI(car->DynGC.pos.ax);
-    NORM_PI_PI(car->DynGC.pos.ay);
-    NORM_PI_PI(car->DynGC.pos.az);
+    NORM_PI_PI(car->DynGCg.pos.ax);
+    NORM_PI_PI(car->DynGCg.pos.ay);
+    NORM_PI_PI(car->DynGCg.pos.az);
     
     //    if (car->DynGCg.pos.ax > aMax) car->DynGCg.pos.ax = aMax;
     //    if (car->DynGCg.pos.ax < -aMax) car->DynGCg.pos.ax = -aMax;
@@ -521,6 +542,35 @@ void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0)
     tdble vz_y = v.z * cosy + vx_z * siny;
     tdble vy_0 = vy_z * cosx + vz_y * sinx;
     tdble vz_0 = vz_y * cosx - vy_z * sinx;
+    v0->x = vx_0;
+    v0->y = vy_0;
+    v0->z = vz_0;
+    //        printf ("..(%f %f %f)\n..[%f %f %f]\n->[%f %f %f]\n",
+    //    	    u.x, u.y, u.z,
+    //    	    v.x, v.y, v.z,
+    //    	    v0->x, v0->y, v0->z);
+}
+
+/* Original coords, angle, new coords */
+/* This is a naive implementation. It should also work with A(BxC),
+   with the angles being represented as a normal vector. That'd be a
+   bit faster too. */
+void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0)
+{
+    tdble cosx = cos(-u.x);
+    tdble cosy = cos(-u.y);
+    tdble cosz = cos(-u.z);
+    tdble sinx = sin(-u.x);
+    tdble siny = sin(-u.y);
+    tdble sinz = sin(-u.z);
+
+    tdble vy_x = v.y * cosx + v.z* sinx;
+    tdble vz_x = v.z * cosx - v.y * sinx;
+    tdble vx_y = v.x * cosy - vz_x * siny;
+    tdble vz_0 = vz_x * cosy + v.x * siny;
+    tdble vx_0 = vx_y * cosz + vy_x * sinz;
+    tdble vy_0 = vy_x * cosz - vx_y * sinz;
+
     v0->x = vx_0;
     v0->y = vy_0;
     v0->z = vz_0;

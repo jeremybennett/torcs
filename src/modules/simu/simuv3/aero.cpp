@@ -41,49 +41,50 @@ SimAeroUpdate(tCar *car, tSituation *s)
 {
     tdble	hm;
     int		i;	    
-    tCar	*otherCar;
-    tdble	x, y;
-    tdble	yaw, otherYaw, airSpeed, tmpas, spdang, tmpsdpang, dyaw;
+    tdble	airSpeed;
     tdble	dragK = 1.0;
 
-    x = car->DynGC.pos.x;
-    y = car->DynGC.pos.y;
-    yaw = car->DynGC.pos.az;
     airSpeed = car->DynGC.vel.x;
-    spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
 
     if (airSpeed > 10.0) {
+	tdble x = car->DynGC.pos.x;
+	tdble y = car->DynGC.pos.y;
+	tdble yaw = car->DynGC.pos.az;
+	tdble spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
 	for (i = 0; i < s->_ncars; i++) {
 	    if (i == car->carElt->index) {
 		continue;
 	    }
-	    otherCar = &(SimCarTable[i]);
-	    otherYaw = otherCar->DynGC.pos.az;
-	    tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
+
+
+	    tdble tmpas = 1.00;
+
+	    tCar* otherCar = &(SimCarTable[i]);
+	    tdble otherYaw = otherCar->DynGC.pos.az;
+	    tdble tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
 	    NORM_PI_PI(tmpsdpang);
-	    dyaw = yaw - otherYaw;
+	    tdble dyaw = yaw - otherYaw;
 	    NORM_PI_PI(dyaw);
+
 	    if ((otherCar->DynGC.vel.x > 10.0) &&
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
-		    /* behind another car */
+		    /* behind another car - reduce overall airflow */
 		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
-		    if (tmpas < dragK) {
-			dragK = tmpas;
-		    }
+		    airSpeed = airSpeed * tmpas;
 		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
-		    /* before another car */
+		    /* before another car - breaks down rear eddies, reduces only drag*/
 		    tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 				      (car->aero.Cd * car->DynGC.vel.x));
-		    if (tmpas < dragK) {
-			dragK = tmpas;
-		    }
+		    dragK = dragK * tmpas;
 		}
 	    }
 	}
     }
+
     car->airSpeed2 = airSpeed * airSpeed;
+    
     tdble v2 = car->airSpeed2;
     car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0) * dragK * dragK;
 
@@ -118,24 +119,24 @@ SimWingConfig(tCar *car, int index)
     tdble area;
 
     area              = GfParmGetNum(hdle, WingSect[index], PRM_WINGAREA, (char*)NULL, 0);
-	// we need also the angle
-	wing->angle       = GfParmGetNum(hdle, WingSect[index], PRM_WINGANGLE, (char*)NULL, 0);
+    // we need also the angle
+    wing->angle       = GfParmGetNum(hdle, WingSect[index], PRM_WINGANGLE, (char*)NULL, 0);
     wing->staticPos.x = GfParmGetNum(hdle, WingSect[index], PRM_XPOS, (char*)NULL, 0);
     wing->staticPos.z = GfParmGetNum(hdle, WingSect[index], PRM_ZPOS, (char*)NULL, 0);
-
-	// wrong, because the angle of attack changes on jumps
-	//wing->Kx = -1.23 * area * sin(angle);
-	wing->Kx = -1.23 * area;
+    
+    // wrong, because the angle of attack changes on jumps
+    //wing->Kx = -1.23 * area * sin(angle);
+    wing->Kx = -1.23 * area;
     wing->Kz = 4.0 * wing->Kx;
 
     if (index == 1) {
-		car->aero.Cd -= wing->Kx*sin(wing->angle);
+	car->aero.Cd -= wing->Kx*sin(wing->angle);
     }
 }
 
 
 void
-SimWingUpdate(tCar *car, int index)
+SimWingUpdate(tCar *car, int index, tSituation* s)
 {
     tWing  *wing = &(car->wing[index]);
     tdble vt2 = car->DynGC.vel.x;
@@ -152,6 +153,40 @@ SimWingUpdate(tCar *car, int index)
     if (index==1) {
 	i_flow = PartialFlowSmooth (-0.4, aoa);
     } 
+    // Flow to the wings gets cut off by other cars.
+    tdble airSpeed = car->DynGC.vel.x;
+
+    if (airSpeed > 10.0) {
+	tdble yaw = car->DynGC.pos.az;
+	tdble x = car->DynGC.pos.x + cos(yaw)*wing->staticPos.x;
+	tdble y = car->DynGC.pos.y + sin(yaw)*wing->staticPos.x;
+	tdble spdang = atan2(car->DynGCg.vel.y, car->DynGCg.vel.x);
+
+	int i;
+	for (i = 0; i < s->_ncars; i++) {
+	    if (i == car->carElt->index) {
+		continue;
+	    }
+	    tdble tmpas = 1.00;
+	    tCar* otherCar = &(SimCarTable[i]);
+	    tdble otherYaw = otherCar->DynGC.pos.az;
+	    tdble tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
+	    NORM_PI_PI(tmpsdpang);
+	    tdble dyaw = yaw - otherYaw;
+	    NORM_PI_PI(dyaw);
+	    if ((otherCar->DynGC.vel.x > 10.0) &&
+		(fabs(dyaw) < 0.1396)) {
+		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
+		    /* behind another car - reduce overall airflow */
+		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
+		    i_flow = i_flow * tmpas;
+		} 
+	    }
+	}
+    }
+
+
     vt2=vt2*i_flow;
     vt2=vt2*vt2;
     aoa += wing->angle;
@@ -160,10 +195,10 @@ SimWingUpdate(tCar *car, int index)
     tdble sinaoa = sin(aoa);
 
     if (car->DynGC.vel.x > 0.0) {
-		wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;
-		wing->forces.z = wing->Kz * vt2 * sinaoa;
+	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;
+	wing->forces.z = wing->Kz * vt2 * sinaoa;
     } else {
-		wing->forces.x = wing->forces.z = 0;
+	wing->forces.x = wing->forces.z = 0;
     }
 }
 

@@ -71,7 +71,7 @@ extern void SimBrakeSystemUpdate(tCar *car);
 extern void SimAeroConfig(tCar *car);
 extern void SimAeroUpdate(tCar *car, tSituation *s);
 extern void SimWingConfig(tCar *car, int index);
-extern void SimWingUpdate(tCar *car, int index);
+extern void SimWingUpdate(tCar *car, int index, tSituation *s);
 
 extern void SimCarUpdateWheelPos(tCar *car);
 
@@ -95,6 +95,7 @@ extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(void);
 
 extern void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0);
+extern void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0);
 
 extern tdble PartialFlowRectangle(tdble theta, tdble psi);
 extern tdble PartialFlowSmooth(tdble theta, tdble psi);
