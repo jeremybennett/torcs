@@ -88,6 +88,20 @@ cGrTrackMap::cGrTrackMap()
 		tTrackSeg* first = track->seg;
 		tTrackSeg* seg = first;
 
+
+// Simply disable GL_ARB_texture_compression support for windows.
+// TODO: Windows support.
+#ifdef WIN32
+#undef GL_ARB_texture_compression
+#endif
+// If the OpenGL ARB texture comression extension is defined in the gl.h header file of
+// the build host, include support for GL_ARB_texture_compression.
+#ifdef GL_ARB_texture_compression
+		// Query if the extension is avaiable at the runtime system (true, if > 0).
+		int compressARB = glutExtensionSupported("GL_ARB_texture_compression");
+#endif //GL_ARB_texture_compression
+
+
 		// Search the maximum/minimum x/y values of the track (axis aligned bounding box),
 		// to compute later the texture parameters and to be able to place the cars (dots)
 		// correct.
@@ -318,7 +332,6 @@ cGrTrackMap::cGrTrackMap()
 		glEnd();
 
 		// Read track picture into memory to be able to generate mipmaps.
-		// TODO: use texture compression if available.
 		GLuint *trackImage = (GLuint*) malloc(texturesize*texturesize*sizeof(GLuint));
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -332,7 +345,37 @@ cGrTrackMap::cGrTrackMap()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+
+// If the OpenGL ARB texture comression extension is defined in the gl.h header file of
+// the build host, include code which tries to use it.
+#ifdef GL_ARB_texture_compression
+		// If GL_ARB_texture_compression is available at runtime, (try to) compress the
+		// texture. This is done with the specification of the internal format to
+		// GL_COMPRESSED_RGBA_ARB.
+		if (compressARB) {
+			// This texture contains mostly the clear color value and should therefore
+			// compress well even with high quality.
+			glHint(GL_TEXTURE_COMPRESSION_HINT_ARB, GL_NICEST);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_COMPRESSED_RGBA_ARB, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+			// The following commented code is just for testing purposes.
+			/*int compressed;
+			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_ARB, &compressed);
+			if (compressed == GL_TRUE) {
+				int csize;
+				printf("compression succesful!\n");
+				glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_IMAGE_SIZE_ARB, &csize);
+				printf("compression ratio: %d to %d\n", csize, texturesize*texturesize*sizeof(GLuint));
+			}*/
+		} else {
+			// GL_ARB_texture_compression not available at runtime, fallback.
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+		}
+#else // GL_ARB_texture_compression
+// The build host has not GL_ARB_texture_compression defined in gl.h.
 		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+#endif // GL_ARB_texture_compression
+
 
 		// Free the memory of the initial texture.
 		free(trackImage);
@@ -377,12 +420,10 @@ cGrTrackMap::~cGrTrackMap()
 	if (isinitalized) {
 		glDeleteTextures(1, &mapTexture);
 		isinitalized = false;
-		//printf("delete texture\n");
 		if (cardot != 0) {
 			glDeleteLists(cardot, 1);
 		}
 	}
-	//printf("destroy\n");
 }
 
 
@@ -393,7 +434,6 @@ void cGrTrackMap::selectTrackMap()
 	if (viewmode > TRACK_MAP_MASK) {
 		viewmode = TRACK_MAP_NONE;
 	}
-	//printf("mode: %d\n", viewmode);
 }
 
 
@@ -565,18 +605,6 @@ void cGrTrackMap::drawTrackPanningAligned(
 
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
-
-	/*glDisable(GL_BLEND);
-	glDisable(GL_TEXTURE_2D);
-	glColor4fv(currentCarColor);
-	if (cardot != 0) {
-		glMatrixMode(GL_MODELVIEW);
-		glPushMatrix();
-		glTranslatef(x + map_size/2.0, y + map_size/2.0, 0.0);
-		glScalef(1.0/factor, 1.0/factor, 1.0);
-		glCallList(cardot);
-		glPopMatrix();
-	}*/
 
 	// Draw car "dots".
 	glDisable(GL_BLEND);
