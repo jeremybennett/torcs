@@ -726,7 +726,7 @@ void Pathfinder::plan(MyCar* myc)
 	}
 
 	if (isPitAvailable()) initPitStopPath();
-	plotPath("/home/berni/path.dat");
+	//plotPath("/home/berni/path.dat");
 }
 
 
