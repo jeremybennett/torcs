@@ -33,9 +33,9 @@ static void shutdown(void);
 /* Module entry point */
 extern "C" int berniw(tModInfo *modInfo)
 {
-    char	buffer[BUFSIZE];
+	char	buffer[BUFSIZE];
 
-    for (int i = 0; i < BOTS; i++) {
+	for (int i = 0; i < BOTS; i++) {
 		sprintf(buffer, "berniw %d", i+1);
 		modInfo[i].name = strdup(buffer);		/* name of the module (short) */
 		sprintf(buffer, "berniw %d", i+1);
@@ -43,23 +43,23 @@ extern "C" int berniw(tModInfo *modInfo)
 		modInfo[i].fctInit = InitFuncPt;		/* init function */
 		modInfo[i].gfId    = ROB_IDENT;			/* supported framework version */
 		modInfo[i].index   = i+1;
-    }
-    return 0;
+	}
+	return 0;
 }
 
 
 /* initialize function pointers for torcs */
 static int InitFuncPt(int index, void *pt)
 {
-    tRobotItf *itf = (tRobotItf *)pt;
+	tRobotItf *itf = (tRobotItf *)pt;
 
-    itf->rbNewTrack = initTrack;	/* init new track */
-    itf->rbNewRace  = newrace;		/* init new race */
-    itf->rbDrive    = drive;		/* drive during race */
+	itf->rbNewTrack = initTrack;	/* init new track */
+	itf->rbNewRace  = newrace;		/* init new race */
+	itf->rbDrive    = drive;		/* drive during race */
 	itf->rbShutdown	= shutdown;		/* called for cleanup per driver */
 	itf->rbPitCmd   = pitcmd;		/* pit command */
 	itf->index      = index;
-    return 0;
+	return 0;
 }
 
 
@@ -130,12 +130,12 @@ static void newrace(int index, tCarElt* car, tSituation *situation)
 /* controls the car */
 static void drive(int index, tCarElt* car, tSituation *situation)
 {
-    tdble	angle;
-    tdble	tmp;
+	tdble	angle;
+	tdble	tmp;
 	tdble b1;							/* brake value in case we are to fast HERE and NOW */
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
-    tdble	rpm;
+	tdble	rpm;
 	tdble	abs[4], abs_mean;
 	tdble steer, targetAngle, shiftaccel;
 

@@ -173,7 +173,7 @@ class Pathfinder
 		int pitside;
 		int nPitLaneStart;
 		int nPitLaneEnd;
-		bool optlocreloaded;
+		//bool optlocreloaded;
 		int changed;
 
 		tdble ypit[pitpoints], yspit[pitpoints], spit[pitpoints];

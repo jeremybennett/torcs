@@ -57,7 +57,6 @@ class MyCar
 		static const int DFWD = 1;
 		static const int D4WD = 2;
 
-		static const tdble PITTOL = 3.0;			/* range around pit, where we assume we are in the pit [m] */
 		static const tdble PATHERR = 0.5;			/* if derror > PATHERR we take actions to come back to the path [m] */
 		static const tdble CORRLEN = 30.0;			/* CORRLEN * derror is the length of the correction [m] */
 		static const tdble CARWIDTH = 2.2;			/* width of the car [m] */
@@ -66,12 +65,12 @@ class MyCar
 		static const tdble TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
 		static const tdble MARGIN = 0.3;			/* security margin from track border [m] */
 		static const tdble AEROMAGIC = 9.7;			/* aerodynamic lift factor [-] */
-		static const tdble SLOWDOWN = 5.0;			/* slowdown to avoid collision [m/s] */
 		static const tdble STABLESPEED = 80.0;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
 		static const tdble TIMETOCATCH = 5.0;		/* when do we start thinking about overtaking [s]*/
-		static const tdble MINOVERTAKERANGE = 150.0;/* minimum length for overtaking [m] */
+		static const tdble MINOVERTAKERANGE = 250.0;/* minimum length for overtaking [m] */
 		static const tdble OVERTAKERADIUS = 100.0;	/* min allowd radius to start overtaking [m] */
 		static const tdble OVERTAKESPEED = 1.0;		/* sould be at least > 50/FLT_MAX !, greater values cause more optimistic overtaking [m/s] */
+		static const tdble OVERTAKEDIST = 3.0;		/* minimal distance of CG's while overtaking */
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();

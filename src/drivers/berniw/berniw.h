@@ -72,5 +72,10 @@ inline tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3)
 	}
 }
 
+inline tdble sign(tdble number)
+{
+	return (number >= 0.0) ? 1.0 : -1.0;
+}
+
 #endif // _BERNIW_H_
 
