@@ -142,8 +142,12 @@ rmdsClickOnDriver(void *dummy)
     if (name) {
 	GfuiLabelSetText(scrHandle, PickDrvNameLabelId, curDrv->name);
 	/* search driver infos */
-	sprintf(buf, "drivers/%s/%s.xml", curDrv->dname, curDrv->dname);
+	sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, curDrv->dname, curDrv->dname);
 	robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	if (!robhdle) {
+	    sprintf(buf, "drivers/%s/%s.xml", curDrv->dname, curDrv->dname);
+	    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	}
 	if (robhdle != NULL) {
 	    sprintf(buf, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curDrv->index);
 	    GfuiLabelSetText(scrHandle, PickDrvCarLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CAR, ""));
@@ -316,8 +320,12 @@ RmDriversSelect(void *vs)
 		    }
 		    strcpy(dname, sp);
 		    dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
-		    sprintf(buf, "drivers/%s/%s.xml", dname, dname);
+		    sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, dname, dname);
 		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		    if (!robhdle) {
+			sprintf(buf, "drivers/%s/%s.xml", dname, dname);
+			robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		    }
 		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
 		    carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
 		    if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {

@@ -41,6 +41,7 @@
 
 static char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 
+static char buf[1024];
 
 static int	scrollList;
 static void	*scrHandle = NULL;
@@ -289,7 +290,8 @@ GenDrvList(void)
     char	*str;
     int		found;
 
-    drvinfo = GfParmReadFile(DRV_FILE, GFPARM_RMODE_REREAD);
+    sprintf(buf, "%s%s", LocalDir, DRV_FILE);
+    drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (drvinfo == NULL) {
 	return -1;
     }
@@ -340,7 +342,8 @@ GenDrvList(void)
     }
     UpdtScrollList();
 
-    PrefHdle = GfParmReadFile(PREF_FILE, GFPARM_RMODE_REREAD);
+    sprintf(buf, "%s%s", LocalDir, PREF_FILE);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PrefHdle == NULL) {
 	return -1;
     }
@@ -364,7 +367,8 @@ SaveDrvList(void *dummy)
     char	str[32];
     int		i;
 
-    drvinfo = GfParmReadFile(DRV_FILE, GFPARM_RMODE_STD);
+    sprintf(buf, "%s%s", LocalDir, DRV_FILE);
+    drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (drvinfo == NULL) {
 	return;
     }
@@ -383,15 +387,16 @@ SaveDrvList(void *dummy)
 	    GfParmSetStr(drvinfo, str, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skill_level]);
 	}
     }
-    GfParmWriteFile(DRV_FILE, drvinfo, dllname, GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, drvinfo, dllname, GFPARM_PARAMETER, "../../config/params.dtd");
 
-    PrefHdle = GfParmReadFile(PREF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, PREF_FILE);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < NB_DRV; i++) {
 	sprintf(str, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
 	GfParmSetStr(PrefHdle, str, HM_ATT_TRANS, PlayersInfo[i].transmission);
 	GfParmSetNum(PrefHdle, str, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
     }
-    GfParmWriteFile(PREF_FILE, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
     GfParmReleaseHandle(PrefHdle);
     PrefHdle = NULL;
     GfuiScreenActivate(prevHandle);

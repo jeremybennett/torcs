@@ -55,7 +55,8 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static jsJoystick *js[NUM_JOY] = {NULL};
 int joyPresent = 0;
 
-static char	sstring[256];
+static char	sstring[1024];
+static char	buf[1024];
 
 static tTrack	*curTrack;
 
@@ -153,7 +154,8 @@ human(tModInfo *modInfo)
     
     memset(modInfo, 0, 10*sizeof(tModInfo));
 
-    DrvInfo = GfParmReadFile("drivers/human/human.xml", GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%sdrivers/human/human.xml", LocalDir);
+    DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
     
     if (DrvInfo != NULL) {
 	for (i = 0; i < 10; i++) {
@@ -224,22 +226,22 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     trackname[s2-s1] = 0;
     sprintf(sstring, "Robots/index/%d", index);
     carname = GfParmGetStr(DrvInfo, sstring, "car name", "");
-    sprintf(sstring, "drivers/human/tracks/%s/car-%s-%d.xml", trackname, carname, index);
+    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s-%d.xml", LocalDir, trackname, carname, index);
     *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
     if (*carParmHandle != NULL) {
 	GfOut("Player: %s Loaded\n", sstring);
     } else {
-	sprintf(sstring, "drivers/human/car-%s-%d.xml", carname, index);
+	sprintf(sstring, "%sdrivers/human/car-%s-%d.xml", LocalDir, carname, index);
 	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	if (*carParmHandle != NULL) {
 	    GfOut("Player: %s Loaded\n", sstring);
 	} else {
-	    sprintf(sstring, "drivers/human/tracks/%s/car-%s.xml", trackname, carname);
+	    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s.xml", LocalDir, trackname, carname);
 	    *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	    if (*carParmHandle != NULL) {
 		GfOut("Player: %s Loaded\n", sstring);
 	    } else {
-		sprintf(sstring, "drivers/human/car-%s.xml", carname);
+		sprintf(sstring, "%sdrivers/human/car-%s.xml", LocalDir, carname);
 		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 		if (*carParmHandle != NULL) {
 		    GfOut("Player: %s Loaded\n", sstring);

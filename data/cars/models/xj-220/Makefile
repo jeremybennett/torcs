@@ -15,14 +15,15 @@
 #
 ##############################################################################
 
+CAR          = xj-220
 
-DATADIR      = cars/xj-220
+DATADIR      = cars/$(CAR)
 
-DATA         = $(shell find *.xml -maxdepth 0 -type f -print) \
-	       $(shell find *.rgb -maxdepth 0 -type f -print) \
+DATA         = $(CAR).xml \
+               $(CAR).rgb tex-wheel.rgb \
                $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA) xj-220.xcf $(shell find *.ac -maxdepth 0 -type f -print)
+data-cars-extra_PKGFILES	= $(DATA)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

@@ -46,6 +46,7 @@ static int GfScrCenX;
 static int GfScrCenY;
 
 void	*scrMenuHdle = NULL;
+static char buf[1024];
 
 void
 gfScreenInit(void)
@@ -75,11 +76,10 @@ void GfScrInit(int argc, char *argv[])
     void	*handle;
     char	*fscr;
     int		fullscreen;
-    static char	buf[256];
     int		i;
     
-    
-    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
     yw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 480);
     winX = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, xw);
@@ -123,8 +123,9 @@ void GfScrInit(int argc, char *argv[])
     }
 
     if ((strcmp(fscr, GFSCR_VAL_YES) == 0) && (!fullscreen)) {
-	/* glutFullScreen(); */
+	glutFullScreen();
     }
+
     GfParmReleaseHandle(handle);
 
     glutReshapeFunc( Reshape );
@@ -148,18 +149,21 @@ void GfScrGetSize(int *scrw, int *scrh, int *vieww, int *viewh)
 void
 GfScrReinit(void *dummy)
 {
+    int retcode;
+    
 #ifdef WIN32
-    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
+    retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
 #else
-	if (execlp("./torcs", "torcs", (const char *)NULL)) {
-#endif
-	    perror("torcs");
-	    exit(1);
-#ifdef WIN32
-	}
-#else
+    if (strlen(LocalDir) == 0) {
+	retcode = execlp("./torcs", "torcs", (const char *)NULL);
+    } else {
+	retcode = execlp("./torcs", "torcs", "-l", LocalDir, (const char *)NULL);
     }
-#endif    
+#endif
+    if (retcode) {
+	perror("torcs");
+	exit(1);
+    }
 }
 
 
@@ -169,7 +173,8 @@ chgScreenType(void *p)
     void	*handle;
     int i = (int)p;
     
-    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     switch(i){
     case 0:
 	GfParmSetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
@@ -178,7 +183,7 @@ chgScreenType(void *p)
 	GfParmSetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
 	break;
     }
-    GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
     GfScrReinit(NULL);
@@ -190,7 +195,8 @@ chgScreenSize(void *p)
     void	*handle;
     int i = (int)p;
     
-    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     switch(i){
     case 0:
 	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 320);
@@ -235,7 +241,7 @@ chgScreenSize(void *p)
 	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 1200);
 	break;
     }
-    GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
     GfScrReinit(NULL);
@@ -264,7 +270,8 @@ GfScrMenuInit(void *precMenu)
     GfuiMenuButtonCreate(scrMenuHdle, "1280x1024", "Relaunch TORCS in 1280x1024 mode", (void*)5, chgScreenSize);
     GfuiMenuButtonCreate(scrMenuHdle, "1600x1200", "Relaunch TORCS in 1600x1200 mode", (void*)6, chgScreenSize);
 
-    paramHdle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     fullscreen = GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     if (strcmp(fullscreen, GFSCR_VAL_NO) == 0) {
 	GfuiMenuButtonCreate(scrMenuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode", (void*)0, chgScreenType);

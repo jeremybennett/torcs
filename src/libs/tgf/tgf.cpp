@@ -33,6 +33,8 @@ extern void gfScreenInit(void);
 extern void gfMenuInit(void);
 extern void gfRlstInit(void);
 
+char *LocalDir = "";
+
 // <esppat>
 #ifdef WIN32
 #include <crtdbg.h>

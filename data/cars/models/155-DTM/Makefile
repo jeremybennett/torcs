@@ -15,15 +15,15 @@
 #
 ##############################################################################
 
-
+CAR       = 155-DTM
 
 DATADIR   = cars/155-DTM
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print)  \
-	    $(shell find *.rgb -maxdepth 0 -type f -print)  \
+DATA      = $(CAR).xml \
+            $(CAR).rgb tex-wheel.rgb \
 	    $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA) 155-DTM-1024.xcf $(shell find *.ac -maxdepth 0 -type f -print)
+data-cars-extra_PKGFILES	= $(DATA)
 
 data-cars-extra_PKGDIR		= $(DATADIR)
 

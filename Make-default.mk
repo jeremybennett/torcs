@@ -26,7 +26,7 @@
 
 ifndef TORCS_BASE
 
--include ${HOME}/.torcs
+-include ${HOME}/.torcs.rc
 
 ifndef TORCS_BASE
 
@@ -44,11 +44,14 @@ EXPORTBASE  = ${TORCS_BASE}/export
 DOCBASE     = ${TORCS_BASE}/doc
 INSTBASE    = ${DESTDIR}${instdir}
 INSTBINBASE = ${DESTDIR}${bindir}
-INSTLIBBASE = ${DESTDIR}${prefix}/lib
+INSTLIBBASE = ${DESTDIR}${libdir}
 
 PACKAGEBASE   = ${TORCS_BASE}/package
 PACKAGESBASE  = ${TORCS_BASE}/RPM/SOURCES
 SPECFILESBASE = ${TORCS_BASE}/RPM/SPECS
+
+# linux user setup
+SETUP_LINUX	 = ${TORCS_BASE}/setup_linux.sh
 
 # win32
 INIT_WIN32       = ${TORCS_BASE}/setup_win32.bat
@@ -180,6 +183,23 @@ win32end:
 	@sed -e "s:runtime:runtimed:g" ${DATA_WIN32} > ${DATA_WIN32_D}
 
 win32setup: win32start exportswin32 installshipswin32 installwin32 win32datainstall win32end
+
+
+linuxconfstart:
+	@rm -f ${SETUP_LINUX}
+	@echo '#! /bin/bash' >> ${SETUP_LINUX}
+	@echo '' >> ${SETUP_LINUX}
+	@echo '[ -z "$$1" ] && exit 1' >> ${SETUP_LINUX}
+	@echo '[ ! -d "$$1" ] && exit 1' >> ${SETUP_LINUX}
+	@echo '' >> ${SETUP_LINUX}
+
+linuxconfend:
+	@sed -e "s:${TORCS_BASE}:\.:g" ${SETUP_LINUX} > ${SETUP_LINUX}.eee
+	@mv ${SETUP_LINUX}.eee ${SETUP_LINUX}
+
+linuxsetup: linuxconfstart installconfdirs linuxconfend
+
+userconfinstall: installconfdirs installconfmkdir installconf
 
 .PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil \
  datadirs shipdirs doc win32start win32end installship installships installshipdirs
@@ -317,7 +337,8 @@ installshipmkdirwin32:
 	@for D in  $(SHIPCREATEDIRS) ; \
 	do createdir="runtime/$$D" ; \
 	${create_dir_win32} ; \
-	done
+	${end_win32} ;\
+	done ;
 
 else
 
@@ -689,6 +710,36 @@ info:
 
 endif
 
+ifdef CONFIGCREATEDIRS
+
+installconfmkdir:
+	@for D in  $(CONFIGCREATEDIRS) ; \
+	do echo "mkdir -p \$$1/$$D 2>/dev/null" >> ${SETUP_LINUX} ; \
+	done
+
+else
+
+installconfmkdir: ;
+
+endif
+
+ifdef CONFIG
+
+installconf:
+	@for C in ${CONFIG} ; \
+	do echo "if [ ! -e  \$$1/${SHIPDIR}/$$C ] || [ ${SHIPDIR}/$$C -nt \$$1/${SHIPDIR}/$$C ]" >> ${SETUP_LINUX} ; \
+	echo "then" >> ${SETUP_LINUX} ; \
+	echo "    cp -f ${SHIPDIR}/$$C \$$1/${SHIPDIR}/$$C" >> ${SETUP_LINUX} ; \
+	echo "fi" >> ${SETUP_LINUX} ; \
+	done
+
+else
+
+installconf: ;
+
+endif
+
+
 
 installdirs:
 	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
@@ -750,3 +801,13 @@ installshipwin32dirs:
 	${recursedirs} ; \
 	fi
 
+
+installconfdirs:
+	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="userconfinstall" ; \
+	${recursedirs} ; \
+	fi

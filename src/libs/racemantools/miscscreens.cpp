@@ -169,8 +169,12 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 	    name = GfParmGetStr(info->params, path, RM_ATTR_MODULE, "");
 	    robotIdx = (int)GfParmGetNum(info->params, path, RM_ATTR_IDX, NULL, 0);
 	    
-	    sprintf(path, "drivers/%s/%s.xml", name, name);
+	    sprintf(path, "%sdrivers/%s/%s.xml", LocalDir, name, name);
 	    robhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
+	    if (!robhdle) {
+		sprintf(path, "drivers/%s/%s.xml", name, name);
+		robhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
+	    }
 	    if (robhdle) {
 		sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, robotIdx);
 		name = GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>");

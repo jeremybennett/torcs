@@ -22,12 +22,13 @@ ifndef TORCS_BASE
 
 TORCS_BASE = $(shell pwd)
 MAKE_DEFAULT = ${TORCS_BASE}/Make-default.mk
+TORCS_RC = ${HOME}/.torcs.rc
 
 -include Make-config
 
 restart:
-	@echo "TORCS_BASE = ${TORCS_BASE}" > ${HOME}/.torcs
-	@echo "MAKE_DEFAULT = ${MAKE_DEFAULT}" >> ${HOME}/.torcs
+	@echo "TORCS_BASE = ${TORCS_BASE}" > ${TORCS_RC}
+	@echo "MAKE_DEFAULT = ${MAKE_DEFAULT}" >> ${TORCS_RC}
 	${MAKE} TORCS_BASE=${TORCS_BASE} MAKE_DEFAULT=${MAKE_DEFAULT}
 
 endif
@@ -63,7 +64,7 @@ SUBDIRS		= src
 
 DATADIR 	= .
 
-DATA    	= CHANGELOG.html COPYING
+DATA    	= CHANGELOG.html COPYING setup_linux.sh
 
 PKGSUBDIRS	= src data
 
@@ -87,7 +88,7 @@ aclocal.m4: acinclude.m4
 
 distclean: clean
 	rm -f config.status config.log config.cache
-	rm -f Make-config
+	rm -f setup_linux.sh
 	rm -rf ${EXPORTBASE}
 	rm -rf ${PACKAGESBASE}/*
 	rm -rf ${SPECFILESBASE}/*
@@ -110,3 +111,6 @@ tags:
 	find ${TORCS_BASE}/src -name '*.c' -exec etags -a {} \;
 	find ${TORCS_BASE}/src -name '*.h' -exec etags -a {} \;
 	find /usr/include/plib -name '*.h' -exec etags -a {} \;
+
+setup_linux.sh: linuxsetup
+	@chmod +x setup_linux.sh

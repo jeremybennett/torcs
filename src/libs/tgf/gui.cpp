@@ -36,6 +36,8 @@ static int	GfuiMouseVisible = 1;
 tMouseInfo	GfuiMouse;
 
 float		GfuiColor[GFUI_COLORNB][4];
+static		char buf[1024];
+
 
 static int	ScrW, ScrH, ViewW, ViewH;
 
@@ -47,7 +49,6 @@ static double LastTimeClick;
 static void
 gfuiColorInit(void)
 {
-    char buf[256];
     void *hdle;
     int  i, j;
     char *rgba[4] = {GFSCR_ATTR_RED, GFSCR_ATTR_GREEN, GFSCR_ATTR_BLUE, GFSCR_ATTR_ALPHA};
@@ -60,7 +61,8 @@ gfuiColorInit(void)
 	GFSCR_ELT_EDITCURSORCLR
     };
     
-    hdle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    hdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < GFUI_COLORNB; i++) {
 	for (j = 0; j < 4; j++) {
 	    sprintf(buf, "%s/%s/%s", GFSCR_SECT_MENUCOL, GFSCR_LIST_COLORS, clr[i]);
@@ -757,7 +759,8 @@ GfuiScreenAddBgImg(void *scr, char *filename)
 	glDeleteTextures(1, &screen->bgImage);
     }
     
-    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
     tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
     if (!tex) {

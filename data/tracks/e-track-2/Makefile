@@ -22,7 +22,7 @@ DATA_rel   = e-track-2.xml e-track-2.acc background.png e-track-2.png env.png py
 
 DATA_devel = e-track-2.ac e-track-2-relief.ac elevation-map.png object-map1.png object-map2.png
 
-DATA       = $(DATA_rel) $(DATA_devel)
+DATA       = $(DATA_rel)
 
 data_PKGFILES	= $(DATA_rel)
 

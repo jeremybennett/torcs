@@ -77,6 +77,8 @@ extern char * _tgf_win_strdup(const char * str);
 #endif // WIN32
 // </esppat>
 
+extern char *LocalDir;
+
 /*********************************
  * Interface For Dynamic Modules *
  *********************************/

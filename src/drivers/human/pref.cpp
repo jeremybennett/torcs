@@ -117,7 +117,7 @@ HmReadPrefs(int index)
 {
     char	*prm;
     char	*defaultSettings;
-    char	sstring[256];
+    char	sstring[1024];
     uint	i, cmd;
     float	tmp;
     uint	maxButton;
@@ -126,10 +126,11 @@ HmReadPrefs(int index)
     uint	maxMouseAxis;
     
     
+
+    sprintf(sstring, "%s%s", LocalDir, HM_PREF_FILE);
+    PrefHdle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
     sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
-
-    PrefHdle = GfParmReadFile(HM_PREF_FILE, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_TRANS, HM_VAL_AUTO);
     if (strcmp(prm, HM_VAL_AUTO) == 0) {
 	Transmission = 0;

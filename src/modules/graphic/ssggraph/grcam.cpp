@@ -193,7 +193,7 @@ void cGrPerspCamera::setZoom(int cmd)
 
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, getId());
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf, (char*)NULL, (tdble)fovy);
-    GfParmWriteFile(GR_PARAM_FILE, grHandle, "Graph",
+    GfParmWriteFile(NULL, grHandle, "Graph",
 		    GFPARM_PARAMETER, "../dtd/params.dtd");
 }
 
@@ -238,7 +238,7 @@ grSelectCamera(void *vp)
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->getId());
     grCurCam->loadDefaults(buf);
     grDrawCurrent = grCurCam->getDrawCurrent();
-    GfParmWriteFile(GR_PARAM_FILE, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 }
 
 class cGrCarCamInside : public cGrPerspCamera

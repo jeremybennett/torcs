@@ -316,7 +316,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 
     InitGears(car, 0);
 
-    if (car->_pit) {
+    if ((car->_pit) && (OffsetFinal != 0.0)) {
 	LgfsFinal[0] = RtGetDistFromStart2(&car->_pit->pos);
     } else {
 	PitState[0] = PIT_STATE_NO;

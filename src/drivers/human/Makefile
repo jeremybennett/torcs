@@ -30,6 +30,10 @@ SHIPDIR   = drivers/${ROBOT}
 
 SHIP      = $(shell find *.xml -maxdepth 0 -type f -print) $(shell find *.rgb -maxdepth 0 -type f -print)
 
+CONFIGCREATEDIRS = ${SHIPDIR}
+
+CONFIG    = $(shell find *.xml -maxdepth 0 -type f -print)
+
 SHIPSUBDIRS = tracks
 
 PKGSUBDIRS	= $(SHIPSUBDIRS)

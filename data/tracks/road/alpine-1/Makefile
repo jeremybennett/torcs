@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/alpine-1
 
-DATA      = alpine-1.xml alpine-1.ac alpine-1.png elevation-map.png relief.ac background.png
+DATA      = alpine-1.xml alpine-1.ac alpine-1.png background.png
 
 data-tracks-base_PKGFILES	= $(DATA)
 

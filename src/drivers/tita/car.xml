@@ -45,25 +45,25 @@
 
   <section name="Front Right Wheel">
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="50" max="200" val="50"/>
+    <attnum name="ride height" unit="mm"  val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
   </section>
 
   <section name="Front Left Wheel">
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="50" max="200" val="50"/>
+    <attnum name="ride height" unit="mm" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
   </section>
 
   <section name="Rear Right Wheel">
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="50" max="200" val="50"/>
+    <attnum name="ride height" unit="mm" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
   </section>
 
   <section name="Rear Left Wheel">
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="50" max="200" val="50"/>
+    <attnum name="ride height" unit="mm" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
   </section>
 

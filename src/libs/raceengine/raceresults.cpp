@@ -60,7 +60,8 @@ ReInitResults(void)
 
     t = time(NULL);
     stm = localtime(&t);
-    sprintf(buf, "results/%s/results-%4d-%02d-%02d-%02d-%02d.xml",
+    sprintf(buf, "%sresults/%s/results-%4d-%02d-%02d-%02d-%02d.xml",
+	    LocalDir,
 	    ReInfo->_reFilename,
 	    stm->tm_year+1900,
 	    stm->tm_mon+1,

@@ -16,15 +16,15 @@
 ##############################################################################
 
 
-
+CAR       = 360-modena
 
 DATADIR   = cars/360-modena
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
-            $(shell find *.rgb -maxdepth 0 -type f -print) \
+DATA      = $(CAR).xml \
+            $(CAR).rgb tex-wheel.rgb \
             $(shell find *.acc -maxdepth 0 -type f -print)
 
-data_PKGFILES	= $(DATA) 360-modena.xcf $(shell find *.ac -maxdepth 0 -type f -print)
+data_PKGFILES	= $(DATA)
 
 data_PKGDIR	= $(DATADIR)
 

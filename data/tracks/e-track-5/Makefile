@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/oval/e-track-5
 
-DATA      = e-track-5.xml background.png e-track-5.ac e-track-5-relief.ac e-track-5.png
+DATA      = e-track-5.xml background.png e-track-5.ac e-track-5.png
 
 data-tracks-base_PKGFILES	= $(DATA)
 

@@ -72,10 +72,10 @@
     <attstr name="release gear button goes neutral" in="yes,no" val="yes"/>
     <attstr name="sequential shifter allow neutral" in="yes,no" val="no"/>
 
-    <attnum name="steer sensitivity" val="300"/>
+    <attnum name="steer sensitivity" val="500"/>
     <attnum name="steer power" val="0"/>
-    <attnum name="steer speed sensitivity" val="1.0"/>
-    <attnum name="steer dead zone" unit="%" val="20.0"/>
+    <attnum name="steer speed sensitivity" val="0.7"/>
+    <attnum name="steer dead zone" unit="%" val="2.0"/>
 
     <attstr name="left steer" val="MOUSE_LEFT"/>
     <attnum name="left steer min" val="0"/>

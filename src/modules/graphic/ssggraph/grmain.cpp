@@ -75,7 +75,7 @@ int grWinx, grWiny, grWinw, grWinh;
 tgrCarInfo	*grCarInfo;
 ssgContext	grContext;
 
-
+static char buf[1024];
 
 #ifdef WIN32
 #include "win32_glext.h"
@@ -173,7 +173,8 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     Fps = 0;
     grWindowRatio = 0;
 
-    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
 				    (char*)NULL, grDebugFlag);
@@ -332,13 +333,13 @@ initCars(tSituation *s)
     int		i;
     tCarElt 	*elt;
     void	*hdle;
-    char	buf[256];
     int		camNum;
     cGrCamera	*cam;
 
     TRACE_GL("initCars: start");
 
-    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grInitCommonState();
 

@@ -1230,6 +1230,7 @@ if exist .\src\drivers\inferno4\tracksdata\car_e-track-5.xml copy .\src\drivers\
 if exist .\src\drivers\inferno4\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno4\tracksdata\car_e-track-6.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\inferno4\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno4\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno4\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno4\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno4\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno4\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno4\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno4\tracksdata\car_g-track-3.xml .\runtimed\drivers\inferno4\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno4\tracksdata\car_michigan.xml copy .\src\drivers\inferno4\tracksdata\car_michigan.xml .\runtimed\drivers\inferno4\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno4\tracksdata\car_test-1.xml copy .\src\drivers\inferno4\tracksdata\car_test-1.xml .\runtimed\drivers\inferno4\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno4\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno4\tracksdata\car_wheel-1.xml .\runtimed\drivers\inferno4\tracksdata\car_wheel-1.xml
@@ -1243,6 +1244,7 @@ if exist .\src\drivers\inferno4\tracksdata\e-track-5.xml copy .\src\drivers\infe
 if exist .\src\drivers\inferno4\tracksdata\e-track-6.xml copy .\src\drivers\inferno4\tracksdata\e-track-6.xml .\runtimed\drivers\inferno4\tracksdata\e-track-6.xml
 if exist .\src\drivers\inferno4\tracksdata\g-track-1.xml copy .\src\drivers\inferno4\tracksdata\g-track-1.xml .\runtimed\drivers\inferno4\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno4\tracksdata\g-track-2.xml copy .\src\drivers\inferno4\tracksdata\g-track-2.xml .\runtimed\drivers\inferno4\tracksdata\g-track-2.xml
+if exist .\src\drivers\inferno4\tracksdata\g-track-3.xml copy .\src\drivers\inferno4\tracksdata\g-track-3.xml .\runtimed\drivers\inferno4\tracksdata\g-track-3.xml
 if exist .\src\drivers\inferno4\tracksdata\michigan.xml copy .\src\drivers\inferno4\tracksdata\michigan.xml .\runtimed\drivers\inferno4\tracksdata\michigan.xml
 if exist .\src\drivers\inferno4\tracksdata\wheel-1.xml copy .\src\drivers\inferno4\tracksdata\wheel-1.xml .\runtimed\drivers\inferno4\tracksdata\wheel-1.xml
 :src_drivers_inferno4_tracksdata
@@ -1267,6 +1269,7 @@ if exist .\src\drivers\inferno5\tracksdata\aalborg.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno5\tracksdata\a-speedway.xml copy .\src\drivers\inferno5\tracksdata\a-speedway.xml .\runtimed\drivers\inferno5\tracksdata\a-speedway.xml
 if exist .\src\drivers\inferno5\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno5\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno5\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno5\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno5\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno5\tracksdata\car_e-track-4.xml
+if exist .\src\drivers\inferno5\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno5\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno5\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno5\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno5\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno5\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno5\tracksdata\eroad.xml copy .\src\drivers\inferno5\tracksdata\eroad.xml .\runtimed\drivers\inferno5\tracksdata\eroad.xml
 if exist .\src\drivers\inferno5\tracksdata\e-track-1.xml copy .\src\drivers\inferno5\tracksdata\e-track-1.xml .\runtimed\drivers\inferno5\tracksdata\e-track-1.xml
@@ -1300,6 +1303,7 @@ if exist .\src\drivers\inferno6\tracksdata\aalborg.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno6\tracksdata\a-speedway.xml copy .\src\drivers\inferno6\tracksdata\a-speedway.xml .\runtimed\drivers\inferno6\tracksdata\a-speedway.xml
 if exist .\src\drivers\inferno6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno6\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno6\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno6\tracksdata\car_e-track-4.xml
+if exist .\src\drivers\inferno6\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno6\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno6\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno6\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno6\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno6\tracksdata\car_g-track-3.xml .\runtimed\drivers\inferno6\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno6\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno6\tracksdata\car_wheel-1.xml .\runtimed\drivers\inferno6\tracksdata\car_wheel-1.xml
@@ -1519,6 +1523,7 @@ call .\create_dir .\runtimed\config
 call .\create_dir .\runtimed\config\raceman
 if exist .\src\raceman\champ.xml copy .\src\raceman\champ.xml .\runtimed\config\raceman\champ.xml
 if exist .\src\raceman\dtmrace.xml copy .\src\raceman\dtmrace.xml .\runtimed\config\raceman\dtmrace.xml
+if exist .\src\raceman\endrace.xml copy .\src\raceman\endrace.xml .\runtimed\config\raceman\endrace.xml
 if exist .\src\raceman\ncrace.xml copy .\src\raceman\ncrace.xml .\runtimed\config\raceman\ncrace.xml
 if exist .\src\raceman\practice.xml copy .\src\raceman\practice.xml .\runtimed\config\raceman\practice.xml
 if exist .\src\raceman\quickrace.xml copy .\src\raceman\quickrace.xml .\runtimed\config\raceman\quickrace.xml
@@ -1528,26 +1533,37 @@ if not exist results\champ goto results_champ
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\results
 call .\create_dir .\runtimed\results\champ
+:results_champ
 
 if not exist results\dtmrace goto results_dtmrace
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\results
 call .\create_dir .\runtimed\results\dtmrace
+:results_dtmrace
+
+if not exist results\endrace goto results_endrace
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\results
+call .\create_dir .\runtimed\results\endrace
+:results_endrace
 
 if not exist results\ncrace goto results_ncrace
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\results
 call .\create_dir .\runtimed\results\ncrace
+:results_ncrace
 
 if not exist results\practice goto results_practice
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\results
 call .\create_dir .\runtimed\results\practice
+:results_practice
 
 if not exist results\quickrace goto results_quickrace
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\results
 call .\create_dir .\runtimed\results\quickrace
+:results_quickrace
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers

@@ -54,7 +54,7 @@ SaveGraphicOptions(void *prevMenu)
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, SmokeValue);
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, SkidValue);
-    GfParmWriteFile(GR_PARAM_FILE, grHandle, "graph", GFPARM_PARAMETER, "../../../libs/tgf/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "graph", GFPARM_PARAMETER, "../../../libs/tgf/params.dtd");
     ExitGraphicOptions(prevMenu);
 }
 
@@ -106,7 +106,8 @@ GraphMenuInit(void *prevMenu)
 
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 
-    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     x = 50;
     x2 = 200;

@@ -19,14 +19,33 @@
 
 DEFAULT_RUNTIME=/usr/local/games/torcs
 
+LOCAL_CONF=$HOME/.torcs
+
+prefix=/usr/local
+exec_prefix=${prefix}
+
 if [ -d $DEFAULT_RUNTIME ]
 then
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+    if [ ! -d $LOCAL_CONF ]
+    then
+	rm -rf $LOCAL_CONF
+	mkdir -p $LOCAL_CONF
+	echo "$$LOCAL_CONF created, copying/linking game data"
+    fi
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${exec_prefix}/lib
     cd $DEFAULT_RUNTIME
-    ./torcs
+    if [ -f ./setup_linux.sh ]
+    then
+	/bin/bash ./setup_linux.sh $LOCAL_CONF
+	if [ $? -ne 0 ]
+	then
+	    exit 1
+	fi
+    fi
+    ./torcs -l $LOCAL_CONF
     exit 0
 fi
 
-echo "TORCS location not found (run make install first)"
+echo "TORCS location not found"
 	
 	

@@ -382,7 +382,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 
     DynOffset[idx] = 0;
     if ((PitState[idx] == PIT_STATE_NONE) && 
-	(((car->_dammage > 0) && ((s->_totLaps - car->_laps) > 2)) || 
+	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
 	 ((car->_fuel < ConsFactor) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }

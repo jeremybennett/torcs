@@ -15,16 +15,15 @@
 #
 ##############################################################################
 
+CAR       = porsche-gt3rs
 
+DATADIR   = cars/$(CAR)
 
-DATADIR   = cars/porsche-gt3rs
-
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
-            $(shell find *.rgb -maxdepth 0 -type f -print) \
+DATA      = $(CAR).xml \
+            $(CAR).rgb tex-wheel.rgb \
             $(shell find *.acc -maxdepth 0 -type f -print)
-# texmapper.xml porsche-gt3rs-base.ac porsche-gt3rs-lod1.ac
 
-data-cars-extra_PKGFILES	= $(DATA) porsche-gt3rs.xcf $(shell find *.ac -maxdepth 0 -type f -print)
+data-cars-extra_PKGFILES	= $(DATA)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

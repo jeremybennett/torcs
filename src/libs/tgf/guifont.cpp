@@ -33,6 +33,8 @@
 
 #include "guifont.h"
 
+static char buf[1024];
+
 #define FONT_NB	9
 GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };
@@ -60,10 +62,10 @@ gfuiLoadFonts(void)
     void 	*param;
     char	*fontName;
     int		size;
-    char	buf[256];
     int		i;
 
-    param = GfParmReadFile("config/screen.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    param = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     fontName = GfParmGetStr(param, "Menu Font", "name", "b5.glf");
     sprintf(buf, "data/fonts/%s", fontName);

@@ -36,6 +36,7 @@ static void	*PrefHdle = NULL;
 
 static void joyCalMenuInit(void);
 
+static char buf[1024];
 
 #define NB_CMD	14
 
@@ -171,7 +172,7 @@ onCancel1(void *param)
 static void
 onSave(void * /* dummy */)
 {
-    GfParmWriteFile(HM_PREF_FILE, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
     GfuiScreenActivate(prevHandle);
 }
 
@@ -183,7 +184,8 @@ onActivate1(void * /* dummy */)
     char	*prm;
     int		i;
 
-    PrefHdle = GfParmReadFile(HM_PREF_FILE, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
     
     maxButton = sizeof(Btn)/sizeof(char*);
 
@@ -240,7 +242,8 @@ TorcsJoystick1MenuInit(void *prevMenu)
     }
 
     prevHandle = prevMenu;
-    PrefHdle = GfParmReadFile(HM_PREF_FILE, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
     maxButton = sizeof(Btn)/sizeof(char*);
 

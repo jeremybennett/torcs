@@ -135,7 +135,7 @@ reSelectRaceman(void *params)
 static void
 reRegisterRaceman(tFList *racemanCur)
 {
-    sprintf(buf, "config/raceman/%s", racemanCur->name);
+    sprintf(buf, "%sconfig/raceman/%s", LocalDir, racemanCur->name);
     racemanCur->userData = GfParmReadFile(buf, GFPARM_RMODE_STD);
     racemanCur->dispName = GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_NAME, 0);
 }
@@ -410,8 +410,12 @@ ReInitCars(void)
 		/* retrieve the robot interface (function pointers) */
 		curRobot = (tRobotItf*)calloc(1, sizeof(tRobotItf));
 		curModInfo->fctInit(robotIdx, (void*)(curRobot));
-		sprintf(buf, "drivers/%s/%s.xml", cardllname, cardllname);
+		sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, cardllname, cardllname);
 		robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		if (!robhdle) {
+		    sprintf(buf, "drivers/%s/%s.xml", cardllname, cardllname);
+		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		}
 		if (robhdle != NULL) {
 		    elt = &(ReInfo->carList[index]);
 		    

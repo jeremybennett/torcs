@@ -37,6 +37,8 @@
 #include <direct.h>
 #endif
 
+static char buf[1024];
+
 #define PNG_BYTES_TO_CHECK 4
 
 /** Load an image from disk to a buffer in RGBA mode.
@@ -277,7 +279,8 @@ GfImgReadTex(char *filename)
     int		w, h;
     GLuint	retTex;
 
-    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
     tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
     if (!tex) {

@@ -25,6 +25,7 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 
 bindir = @bindir@
+libdir = @libdir@
 instdir = ${prefix}/games/@PACKAGE@
 
 top_builddir = .

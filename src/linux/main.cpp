@@ -23,8 +23,28 @@
 #include <tgf.h>
 #include <torcs.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "linuxspec.h"
+
+
+static void
+init_args(int argc, char **argv)
+{
+    int i;
+
+    i = 1;
+    while (i < argc) {
+	if (strncmp(argv[i], "-l", 2) == 0) {
+	    if (i + 1 < argc) {
+		i++;
+		LocalDir = (char *)malloc(strlen(argv[i]) + 2);
+		sprintf(LocalDir, "%s/", argv[i]);
+	    }
+	}
+	i++;
+    }
+}
 
 /*
  * Function
@@ -45,6 +65,8 @@
 int 
 main(int argc, char *argv[])
 {
+    init_args(argc, argv);
+    
     LinuxSpecInit();		/* init specific linux functions */
     
     GfScrInit(argc, argv);	/* init screen */

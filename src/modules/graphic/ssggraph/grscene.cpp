@@ -76,6 +76,8 @@ static void initBackground(void);
 static ssgLoaderOptionsEx	grloaderOptions;
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 
+static char buf[1024];
+
 #define DISTG 80
 
 
@@ -347,8 +349,11 @@ grInitScene(void)
     GLfloat lmodel_ambient[]={0.2,0.2,0.2,1.0};
     GLfloat lmodel_diffuse[]={0.8,0.8,0.8,1.0};
 
-    if (grHandle==NULL)
-      grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    if (grHandle==NULL) {
+	sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+	grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    }
+    
 #ifdef GUIONS
 
     PlayableDistanceOfView.FrontLevelGroupGlobal=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,

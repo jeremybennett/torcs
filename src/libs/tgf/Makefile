@@ -50,6 +50,10 @@ SHIPDIR = config
 
 SHIP    = screen.xml params.dtd
 
+CONFIGCREATEDIRS = config
+
+CONFIG    = screen.xml
+
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
 src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
