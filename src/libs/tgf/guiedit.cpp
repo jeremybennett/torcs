@@ -33,10 +33,6 @@
 #include "gui.h"
 #include "guifont.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void
 gfuiEditboxInit(void)
 {
@@ -371,7 +367,7 @@ GfuiEditboxGetString(void *scr, int id)
     editbox = &(curObject->u.editbox);
     label = &(editbox->label);
     
-    return strdup(label->text);
+    return label->text;
 }
 
 /** Set a new string.

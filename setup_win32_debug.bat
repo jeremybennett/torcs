@@ -228,6 +228,7 @@ copy .\data\cars\models\xj-220\xj-220.rgb .\runtimed\cars\xj-220\xj-220.rgb
 copy .\data\cars\models\xj-220\xj-220.ac .\runtimed\cars\xj-220\xj-220.ac
 copy .\data\cars\models\xj-220\tex-wheel.rgb .\runtimed\cars\xj-220\tex-wheel.rgb
 copy .\data\cars\models\xj-220\xj-220-base.ac .\runtimed\cars\xj-220\xj-220-base.ac
+copy .\data\cars\models\xj-220\texmapper.xml .\runtimed\cars\xj-220\texmapper.xml
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\data
@@ -273,6 +274,7 @@ copy .\data\data\img\splash-qrloading.png .\runtimed\data\img\splash-qrloading.p
 copy .\data\data\img\splash-qr.png .\runtimed\data\img\splash-qr.png
 copy .\data\data\img\splash-qrtrk.png .\runtimed\data\img\splash-qrtrk.png
 copy .\data\data\img\splash-quit.png .\runtimed\data\img\splash-quit.png
+copy .\data\data\img\splash-raceopt.png .\runtimed\data\img\splash-raceopt.png
 copy .\data\data\img\splash-result.png .\runtimed\data\img\splash-result.png
 
 call .\create_dir .\runtimed
@@ -1300,6 +1302,48 @@ copy .\src\drivers\inferno3\porsche-gt1.rgb .\runtimed\drivers\inferno3\porsche-
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\inferno3
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno4
+call .\create_dir .\runtimed\drivers\inferno4\tracksdata
+copy .\src\drivers\inferno4\tracksdata\aalborg.xml .\runtimed\drivers\inferno4\tracksdata\aalborg.xml
+copy .\src\drivers\inferno4\tracksdata\a-speedway.xml .\runtimed\drivers\inferno4\tracksdata\a-speedway.xml
+copy .\src\drivers\inferno4\tracksdata\car_aalborg.xml .\runtimed\drivers\inferno4\tracksdata\car_aalborg.xml
+copy .\src\drivers\inferno4\tracksdata\car_a-speedway.xml .\runtimed\drivers\inferno4\tracksdata\car_a-speedway.xml
+copy .\src\drivers\inferno4\tracksdata\car_eroad.xml .\runtimed\drivers\inferno4\tracksdata\car_eroad.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-1.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-1.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-2.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-3.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-3.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-4.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-5.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-5.xml
+copy .\src\drivers\inferno4\tracksdata\car_e-track-6.xml .\runtimed\drivers\inferno4\tracksdata\car_e-track-6.xml
+copy .\src\drivers\inferno4\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno4\tracksdata\car_g-track-1.xml
+copy .\src\drivers\inferno4\tracksdata\car_michigan.xml .\runtimed\drivers\inferno4\tracksdata\car_michigan.xml
+copy .\src\drivers\inferno4\tracksdata\car_test-1.xml .\runtimed\drivers\inferno4\tracksdata\car_test-1.xml
+copy .\src\drivers\inferno4\tracksdata\car_wheel-1.xml .\runtimed\drivers\inferno4\tracksdata\car_wheel-1.xml
+copy .\src\drivers\inferno4\tracksdata\dirt-2.xml .\runtimed\drivers\inferno4\tracksdata\dirt-2.xml
+copy .\src\drivers\inferno4\tracksdata\eroad.xml .\runtimed\drivers\inferno4\tracksdata\eroad.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-1.xml .\runtimed\drivers\inferno4\tracksdata\e-track-1.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-2.xml .\runtimed\drivers\inferno4\tracksdata\e-track-2.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-3.xml .\runtimed\drivers\inferno4\tracksdata\e-track-3.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-4.xml .\runtimed\drivers\inferno4\tracksdata\e-track-4.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-5.xml .\runtimed\drivers\inferno4\tracksdata\e-track-5.xml
+copy .\src\drivers\inferno4\tracksdata\e-track-6.xml .\runtimed\drivers\inferno4\tracksdata\e-track-6.xml
+copy .\src\drivers\inferno4\tracksdata\g-track-1.xml .\runtimed\drivers\inferno4\tracksdata\g-track-1.xml
+copy .\src\drivers\inferno4\tracksdata\michigan.xml .\runtimed\drivers\inferno4\tracksdata\michigan.xml
+copy .\src\drivers\inferno4\tracksdata\wheel-1.xml .\runtimed\drivers\inferno4\tracksdata\wheel-1.xml
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno4
+copy .\src\drivers\inferno4\inferno4.xml .\runtimed\drivers\inferno4\inferno4.xml
+copy .\src\drivers\inferno4\car1.xml .\runtimed\drivers\inferno4\car1.xml
+copy .\src\drivers\inferno4\logo.rgb .\runtimed\drivers\inferno4\logo.rgb
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno4
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers

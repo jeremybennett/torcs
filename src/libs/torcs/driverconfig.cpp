@@ -26,10 +26,6 @@
 #include <robot.h>
 #include "driverconfig.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define NO_DRV	"--- empty ---"
 #define dllname   "human"
 #define DRV_FILE  "drivers/human/human.xml"
@@ -417,7 +413,6 @@ ChangeNum(void *dummy)
 	sprintf(buf, "%d", curPlayer->racenumber);
 	GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
     }
-    free(val);
 }
 
 static void
@@ -432,7 +427,6 @@ ChangePits(void *dummy)
 	sprintf(buf, "%d", curPlayer->nbpitstops);
 	GfuiEditboxSetString(scrHandle, PitsEditId, buf);
     }
-    free(val);
 }
 
 static void

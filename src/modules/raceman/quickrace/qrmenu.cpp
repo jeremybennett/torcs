@@ -28,14 +28,12 @@
 #include "qracemain.h"
 #include <osspec.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void			*qrMainMenuHandle = NULL;
 static tRmTrackSelect	ts;
+static tRmRaceParam	rp;
 static void 		*qrPrevMenuHandle;
 static int		qrTitleId;
+static char		buf[256];
 
 static void
 qrSelectTrack(void *dummy)
@@ -46,13 +44,12 @@ qrSelectTrack(void *dummy)
 static void
 qrMenuOnActivate(void *dummy)
 {
-    char	buf[256];
     char	*trackName;
     char	*catName;
     
     qrLoadTrackModule();
     ts.trackItf = qrTrackItf;
-    ts.param = GfParmReadFile(QRACE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    rp.param = ts.param = GfParmReadFile(QRACE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     GfParmWriteFile(QRACE_CFG, ts.param, "quick race", GFPARM_PARAMETER, "../../dtd/params.dtd");
 
     trackName = GfParmGetStr(ts.param, "Race/Track", "name", "");
@@ -70,8 +67,6 @@ qrMenuOnActivate(void *dummy)
 void
 qrMenuRun(void *backmenu)
 {
-    char buf[256];
-    
     qrPrevMenuHandle = backmenu;
     
     if (qrMainMenuHandle == NULL) {
@@ -99,6 +94,13 @@ qrMenuRun(void *backmenu)
 	GfuiMenuButtonCreate(qrMainMenuHandle, 
 			  "Select Drivers", "Select the List of Drivers for Quick Race",
 			  (void*)(&ts), RmDriversSelect);
+
+	
+	rp.prevScreen = qrMainMenuHandle;
+	rp.title = "Quick Race Options";
+	GfuiMenuButtonCreate(qrMainMenuHandle, 
+			  "Race Options", "Set the options of the Quick Race",
+			  (void*)(&rp), RmRaceParamMenu);
     
 	GfuiMenuBackQuitButtonCreate(qrMainMenuHandle,
 				  "Back to Main", "Return to TORCS Main Menu",

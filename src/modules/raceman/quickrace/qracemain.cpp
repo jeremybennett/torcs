@@ -104,6 +104,7 @@ qraceRun(void *dummy)
     char	key[256];
     tModInfo	*curModInfo;
     tRobotItf	*robot;
+    tdble	dist;
 
     curTime = lastTime = 0;
     RmLoadingScreenStart("Quick Race Loading", "data/img/splash-qrloading.png");
@@ -113,9 +114,14 @@ qraceRun(void *dummy)
     
     qracecfg = GfParmReadFile(QRACE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    qrTheSituation._totLaps = (int)GfParmGetNum(qracecfg, "Race", "laps", (char*)NULL, 30);
+    dist = GfParmGetNum(qracecfg, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
+    if (dist== 0.0) {
+	qrTheSituation._totLaps = (int)GfParmGetNum(qracecfg, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
+    } else {
+	qrTheSituation._totLaps = ((int)(dist / qrTheTrack->length)) + 1;
+    }
     qrTheSituation._raceType = RM_TYPE_RACE;
-    qrTheSituation._maxDammage = (int)GfParmGetNum(qracecfg, "Race", RM_ATTR_MAX_DMG, (char*)NULL, 10000);
+    qrTheSituation._maxDammage = (int)GfParmGetNum(qracecfg, RM_SECT_RACE, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
     
     simudllname    = GfParmGetStr(qracecfg, "Modules", "simu", "");
     graphicdllname = GfParmGetStr(qracecfg, "Modules", "graphic", "");

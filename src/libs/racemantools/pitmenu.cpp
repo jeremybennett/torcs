@@ -29,10 +29,6 @@
 #include <tgf.h>
 #include <car.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void		*menuHandle;
 static int		fuelId;
 static int		repairId;
@@ -48,7 +44,6 @@ rmUpdtFuel(void * /* dummy */)
     rmCar->pitcmd->fuel = (tdble)strtol(val, (char **)NULL, 0);
     sprintf(buf, "%f", rmCar->pitcmd->fuel);
     GfuiEditboxSetString(menuHandle, fuelId, buf);
-    free(val);
 }
 
 static void
@@ -61,7 +56,6 @@ rmUpdtRepair(void * /* dummy */)
     rmCar->pitcmd->repair = strtol(val, (char **)NULL, 0);
     sprintf(buf, "%d", rmCar->pitcmd->repair);
     GfuiEditboxSetString(menuHandle, repairId, buf);
-    free(val);
 }
 
 void
@@ -100,7 +94,7 @@ RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
 
     sprintf(buf, "%d", (int)car->pitcmd->repair);
     repairId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
-				 x + GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Repair amount:") + 20, y,
+				 x + GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Fuel amount (liters):") + 20, y,
 				 0, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
     
     GfuiMenuBackQuitButtonCreate(menuHandle, "Proceed", "Return to race", userdata, callback);

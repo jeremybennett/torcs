@@ -52,7 +52,7 @@
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" val="4.86"></attnum>
     <attnum name="overall width"  unit="m" val="2.00"></attnum>
-    <attnum name="mass" unit="kg" min="1200.0" max="1400" val="1350.0"></attnum>
+    <attnum name="mass" unit="kg" min="1100.0" max="1400" val="1100.0"></attnum>
     <attnum name="GC height" unit="m" val="0.25"></attnum>
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" val="0.45"></attnum>

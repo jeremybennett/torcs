@@ -37,10 +37,6 @@
 #include <robot.h>
 #include <racemantools.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 
 static void		*scrHandle;
 static tRmDrvSelect	*ds;
@@ -249,7 +245,7 @@ RmDriversSelect(void *vs)
 
     rmdsAddKeys();
     
-    GfuiTitleCreate(scrHandle, "Select Drivers", strlen("Select Drivers"));
+    GfuiTitleCreate(scrHandle, "Select Drivers", sizeof("Select Drivers"));
 
     GfuiLabelCreate(scrHandle,
 		    "Selected",

@@ -44,6 +44,13 @@ typedef struct
     void        *prevScreen;
 } tRmDrvSelect;
 
+typedef struct
+{
+    void        *param;
+    void        *prevScreen;
+    char	*title;
+} tRmRaceParam;
+
 
 /* Lap based information */
 typedef struct
@@ -94,6 +101,8 @@ extern int RmInitResults(tRmInfo * /* rmInfo */);
 extern void RmShutdownResults(tRmInfo * /* rmInfo */);
 
 extern void RmSaveResults(tRmInfo *rmInfo);
+
+extern void RmRaceParamMenu(void *vrp);
 
 
 #endif /* __RACEMANTOOLS_H__ */

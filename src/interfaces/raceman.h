@@ -93,6 +93,8 @@ typedef struct
 #define RM_ATTR_INITHEIGHT	"initial height"
 #define RM_ATTR_SHOW_RACE	"show race"
 #define RM_ATTR_MAX_DMG		"maximum dammage"
+#define RM_ATTR_DISTANCE	"distance"
+#define RM_ATTR_LAPS		"laps"
 #endif /* _RACEMANV1_H_ */ 
 
 

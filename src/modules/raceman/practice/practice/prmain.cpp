@@ -93,6 +93,7 @@ prRun(void)
     char	buf[256];
     tRingList	*lm;
     char	*name;
+    tdble	dist;
 
     curTime = lastTime = 0;
     RmLoadingScreenStart("Practice Loading", "data/img/splash-qrloading.png");
@@ -116,8 +117,16 @@ prRun(void)
     sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
     
     prTheTrack = prTrackItf.trkBuild(buf);
-    prTheSituation._totLaps = (int)GfParmGetNum(pracecfg, RM_SECT_RACE, "laps", (char*)NULL, 30);
-
+    dist = GfParmGetNum(pracecfg, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
+    if (dist== 0.0) {
+	prTheSituation._totLaps = (int)GfParmGetNum(pracecfg, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
+    } else {
+	prTheSituation._totLaps = ((int)(dist / prTheTrack->length)) + 1;
+    }
+    if (prTheSituation._totLaps > 20) {
+	prTheSituation._totLaps = 20;
+    }
+    
     prTheSituation._raceType = RM_TYPE_PRACTICE;
     
     simudllname    = GfParmGetStr(pracecfg, "Modules", "simu", "");

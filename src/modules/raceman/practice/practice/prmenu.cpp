@@ -37,6 +37,7 @@
 
 void			*prMainMenuHandle = NULL;
 static tRmTrackSelect	ts;
+static tRmRaceParam	rp;
 void 			*prPrevMenuHandle;
 static int		prTitleId;
 tModList		*prCtrlModLoaded = (tModList*)NULL;
@@ -62,17 +63,14 @@ prMenuOnActivate(void *dummy)
     char	*trackName;
     char	*catName;
 
-    /* load the track module in advance for the track selection */
-    if (prTrackItf.trkBuild == NULL) {
-	prLoadTrackModule();
-	ts.trackItf = prTrackItf;
-    }
+    prLoadTrackModule();
+    ts.trackItf = prTrackItf;
     
     if (prCtrlModLoaded != NULL) {
 	GfModUnloadList(&prCtrlModLoaded);
     }
 
-    ts.param = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    rp.param = ts.param = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     catName = GfParmGetStr(ts.param, "Race/Track", "category", "");
     trackName = GfParmGetStr(ts.param, "Race/Track", "name", "");
     GfOut("track name = %s  category = %s\n", trackName, catName);
@@ -176,6 +174,12 @@ prMenuRun(void *backmenu)
 			  "Select Driver", "Select the  Driver for Practice",
 			  (void*)&ts, RmDriverSelect);
     
+	rp.prevScreen = prMainMenuHandle;
+	rp.title = "Practice Options";
+	GfuiMenuButtonCreate(prMainMenuHandle, 
+			  "Race Options", "Set the options of the Practice",
+			  (void*)(&rp), RmRaceParamMenu);
+
 	GfuiMenuBackQuitButtonCreate(prMainMenuHandle,
 				  "Back to Main", "Return to TORCS Main Menu",
 				  prPrevMenuHandle, GfuiScreenActivate);
