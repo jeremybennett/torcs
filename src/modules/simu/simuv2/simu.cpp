@@ -55,8 +55,8 @@ ctrlCheck(tCar *car)
 	    car->ctrl->steer = -0.1;
 	}
     } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
-	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.15);
-	if (car->DynGC.vel.x > 20.0) {
+	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.20);
+	if (car->DynGC.vel.x > 30.0) {
 	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
 	}
     }
