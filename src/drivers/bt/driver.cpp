@@ -99,7 +99,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 
 	// Load and set parameters.
 	float fuel = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_FUELPERLAP, (char*)NULL, t->length*MAX_FUEL_PER_METER);
-	//fuel *= (s->_totLaps + 1.0);
+	fuel *= (s->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
 
 	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69);
