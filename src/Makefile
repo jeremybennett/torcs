@@ -29,7 +29,7 @@ SUBDIRS		= libs linux modules drivers tools
 
 SRCDOC		= yes
 
-PKGSUBDIRS	= interfaces libs linux modules windows tools drivers doc
+PKGSUBDIRS	= interfaces libs linux modules windows tools drivers doc raceman
 
 src_PKGFILES	= Makefile
 

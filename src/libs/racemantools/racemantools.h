@@ -29,7 +29,6 @@
 #include <raceman.h>
 #include <track.h>
 #include <simu.h>
-#include <practicectrl.h>
 
 typedef struct
 {

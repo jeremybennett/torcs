@@ -49,6 +49,7 @@ static void	*rmScrHdle = NULL;
 void
 RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
 {
+#if 0
     void	*hdle;
     int		x1, x2, x3, x4, x5, x6;
     int		y;
@@ -180,6 +181,7 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
     GfuiAddSKey(hdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
 
     GfuiScreenActivate(hdle);
+#endif
 }
 
 void
