@@ -16,15 +16,15 @@
 
 <params name="Tanhoj" type="template">
   <section name="Car">
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="25.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="30.0"></attnum>
   </section>
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="15"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="4"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="17"></attnum>
   </section>
 
  <section name="Gearbox">
@@ -69,7 +69,7 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.36"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.3"></attnum>
     <attnum name="max pressure" unit="kPa" val="17000"></attnum>
   </section>
 
@@ -108,7 +108,7 @@
   </section>
 
   <section name="Rear Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="1500"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -119,7 +119,7 @@
   </section>
 
   <section name="Rear Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="1500"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -130,6 +130,7 @@
   </section>
 
 </params>
+
 
 
 

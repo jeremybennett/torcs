@@ -8,7 +8,7 @@
 
 <body>
 
-<h2>berniw development snapshot for torcs-1.0.0-pre7</h2>
+<h2>berniw development snapshot for torcs-1.0.0</h2>
 
 <h3>1.0 what is berniw?</h3>
 
@@ -29,9 +29,9 @@ version of torcs, you don't need this package, berniw is already included.
 <h3>1.2 how do i install berniw?</h3>
 
 <p>
-so, first you need a working version of torcs 1.0.0-pre7 under linux with sources installed. i
+so, first you need a working version of torcs 1.0.0 under linux with sources installed. i
 assume in this instructions the following:<br>   you have the permisson on the system to do the
-needed tasks. the torcs sources  are in /usr/src/torcs/torcs-1.0.0-pre7 and the installation is in
+needed tasks. the torcs sources  are in /usr/src/torcs/torcs and the installation is in
 /usr/local/games/torcs.  in case you use other directories, just replace this directories with the
 ones on your system. i also assume that the <a  href="download/berniw.tar.bz2">  berniw.tar.bz2</a>
 is in your home directory.
@@ -39,9 +39,9 @@ is in your home directory.
 <br>
 first export the following environment variables (for bash):
 <br>
-export TORCS_BASE=/usr/src/torcs/torcs-1.0.0-pre7
+export TORCS_BASE=/usr/src/torcs/torcs
 <br>
-export MAKE_DEFAULT=/usr/src/torcs/torcs-1.0.0-pre7/Make-default.mk
+export MAKE_DEFAULT=/usr/src/torcs/torcs
 <br>
 <br>
 now change to the drivers directory:
@@ -98,6 +98,18 @@ etc.).<br>
 </p>
 
 <h3>1.5 changes</h3>
+
+<h4>18. dec. 2001</h4>
+<p>
+- Eric released torcs 1.0.0. hurray:-).<br>
+- just played a bit with the setups of my cars.<br>
+</p>
+
+<h4>17. dec. 2001</h4>
+<p>
+- added defines in pathfinder.h. you can now choose the trajectory on compile time through defining PATH_K1999 or PATH_BERNIW. if you choose none, the driver will drive on the midde of the track. if you choose both, first a berniw path is generated, then a K1999 optimisation is performed. the reason for having two path's handy is, that you can check, if an idea is "in general" good, and not just on one path.<br>
+- added support to take care of bumps (ala dirt-2).<br>
+</p>
 
 <h4>15. dec. 2001</h4>
 <p>

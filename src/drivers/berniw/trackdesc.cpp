@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 #include "trackdesc.h"
+#include "berniw.h"
 
 TrackSegment::TrackSegment()
 {
@@ -46,7 +47,6 @@ void TrackSegment::init(int id, const tTrackSeg* s, const t3Dd* lp, const t3Dd* 
 		kroughness = s->kRoughness;
 		kroughwavelen = s->kRoughWaveLen;
 		width = distToLeft3D(&r);
-		kalpha = 1.0;
 
 		tdble dz = getRightBorder()->z - getLeftBorder()->z;
 		tdble d = getWidth();
@@ -62,6 +62,8 @@ void TrackSegment::init(int id, const tTrackSeg* s, const t3Dd* lp, const t3Dd* 
 			} else {
 				kalpha = 1.0*cos(asin(fabs(dz/d)));
 			}
+		} else {
+			kalpha = 1.0;
 		}
 	} else {
 		printf("error: TrackSegment::init tTrackSeg* is NULL.\n");
@@ -185,26 +187,32 @@ TrackDesc::TrackDesc(const tTrack* track)
 		ts[i].setLength(ts[i].distToMiddle2D(p->x, p->y));
 	}
 
-	/* init kbeta */
-	tdble z0 = 0.0;
-	tdble z1 = ts[(nTrackSegments-2) % nTrackSegments].getMiddle()->z;
-	tdble z2 = ts[0].getMiddle()->z;
-	tdble dz10 = 0.0;
-	tdble dz21 = z2 - z1;
+	/* init kbeta, for height profile of track */
+	t3Dd *p0, *p1, *p2;
+	tdble dz10, dz21;
 
 	for (int i = 0; i < nTrackSegments; i++) {
-		int k = (i+nTrackSegments+2) % nTrackSegments;
-		z0 = z1;
-		z1 = z2;
-		z2 = ts[k].getMiddle()->z;
-		dz10 = dz21;
-		tdble dz21 = z2 - z1;
+		p0 = ts[(i+nTrackSegments-5) % nTrackSegments].getMiddle();
+		p1 = ts[(i+nTrackSegments) % nTrackSegments].getMiddle();
+		p2 = ts[(i+nTrackSegments+5) % nTrackSegments].getMiddle();
+		dz10 = p1->z - p0->z;
+		dz21 = p2->z - p1->z;
+
 		if (dz21 < dz10) {
-			tdble tmp = cos(asin(dz10)-asin(dz21));
-			tmp *= tmp;
-			ts[i].setKbeta(tmp);
+			tdble dl10, dl21, r;
+			t3Dd pr;
+			dirVector2D(p1, p0, &pr);
+			dl10 = vectorLength(&pr);
+			dirVector2D(p2, p1, &pr);
+			dl21 = vectorLength(&pr);
+			r = radius(0.0, p0->z, dl10, p1->z, dl21+dl10, p2->z);
+			if (r < RREL) {
+				ts[i].setKbeta(1.0/r);
+			} else {
+				ts[i].setKbeta(0.0);
+			}
 		} else {
-			ts[i].setKbeta(1.0);
+			ts[i].setKbeta(0.0);
 		}
 	}
 }

@@ -16,22 +16,8 @@
 
 <params name="NASCAR RWD" type="template">
 
-  <section name="Graphic Objects">
-    <attstr name="env" val="cg-nascar-rwd.ac"></attstr>
-    <attstr name="wheel texture" val="tex-wheel.rgb"></attstr>
-
-    <section name="Ranges">
-      <section name="1">
-	<attnum name="distance" val="500" unit="km"></attnum>
-	<attstr name="car" val="cg-nascar-rwd.ac"></attstr>
-      </section>
-    </section>
-  </section>
-
-
   <section name="Car">
-    <attstr name="category" val="torcs-r-a"></attstr>
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="33.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="40.0"></attnum>
   </section>
 
   <section name="Front Wing">
@@ -140,6 +126,7 @@
   </section>
 
 </params>
+
 
 
 

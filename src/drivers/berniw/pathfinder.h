@@ -43,11 +43,22 @@
 #define FNPF "drivers/berniw/parameter.dat"
 #define FNIS "drivers/berniw/intsinsqr.dat"
 #define FNIC "drivers/berniw/intcossqr.dat"
+
+/* how far we look forward for overtaking, collisions, etc */
 #define AHEAD 500
 
 #define BERNIW_SECT_PRIV	"berniw private"
 #define BERNIW_ATT_PITENTRY	"pitentry"
 #define BERNIW_ATT_PITEXIT	"pitexit"
+
+/* how many segments can i pass per simulation step, depends on TRACKRES, simulation->_deltaTime and speed */
+#define SEGRANGE 3
+
+/* choose old path */
+//#define PATH_BERNIW
+
+/* choose k1999 path */
+#define PATH_K1999
 
 class MyCar;
 class OtherCar;
@@ -175,7 +186,7 @@ class Pathfinder
 		void getPitPoint(int j, int k, tdble slope, tdble dist, t3Dd* r);
 		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
 		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);
-		tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3);
+		//tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3);
 		double curvature(double xp, double yp, double x, double y, double xn, double yn);
 		void adjustRadius(int s, int p, int e, double c, tdble carwidth);
 		void stepInterpolate(int iMin, int iMax, int Step);

@@ -18,9 +18,7 @@
  ***************************************************************************/
 
 #include "pathfinder.h"
-
-/* how many segments can i pass per simulation step, depends on TRACKRES, simulation->_deltaTime and speed */
-#define SEGRANGE 3
+#include "berniw.h"
 
 
 Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car)
@@ -241,6 +239,7 @@ void Pathfinder::plotPath(char* filename)
 	fclose(fd);
 }
 
+#ifdef PATH_BERNIW
 
 /* load parameters for clothoid from the files */
 bool Pathfinder::loadClothoidParams(tParam* p)
@@ -633,6 +632,7 @@ int Pathfinder::initRight(int id, tdble w)
 	return next;
 }
 
+#endif // PATH_BERNIW
 
 /*
 	plans a static route ignoring current situation
@@ -649,14 +649,9 @@ void Pathfinder::plan(MyCar* myc)
 		ps[i].setWeight(0.0);
 	}
 
-	for (int Step = 128; (Step /= 2) > 0;) {
-		for (int i = 100 * int(sqrt(Step)); --i >= 0;) smooth(Step);
-		interpolate(Step);
-	}
-
-
+#ifdef PATH_BERNIW
 	/* read parameter files and compute trajectory */
-/*	if (loadClothoidParams(cp)) {
+	if (loadClothoidParams(cp)) {
 		int i = 0, k = 0;
 		while (k < nPathSeg) {
 			int j = k % nPathSeg;
@@ -693,7 +688,14 @@ void Pathfinder::plan(MyCar* myc)
 			}
 		}
 	}
-*/
+#endif	// PATH_BERNIW
+
+#ifdef PATH_K1999
+	for (int Step = 128; (Step /= 2) > 0;) {
+		for (int i = 100 * int(sqrt(Step)); --i >= 0;) smooth(Step);
+		interpolate(Step);
+	}
+#endif	// PATH_K1999
 
 	for (int i = 0; i < nPathSeg; i++) {
 		ps[i].setOpt(ps[i].getLoc());
@@ -710,8 +712,9 @@ void Pathfinder::plan(MyCar* myc)
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
-		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha()*track->getSegmentPtr(i)->getKbeta();
-		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)));
+		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
+		tdble b = track->getSegmentPtr(i)->getKbeta();
+		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(0.9999, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 
 		dir.x = ps[w].getLoc()->x - ps[u].getLoc()->x;
 		dir.y = ps[w].getLoc()->y - ps[u].getLoc()->y;
@@ -797,9 +800,10 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
-		/* move that to ELSE path later */
-		tdble mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha()*track->getSegmentPtr(j)->getKbeta();
-		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)));
+		/* compute allowed speedsqr */
+		tdble mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha();
+		tdble b = track->getSegmentPtr(j)->getKbeta();
+		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(0.9999, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 		if (pitStop && track->isBetween(s3, pitSegId, j)) {
 			tdble speedsqrpit = ((tdble) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
 			if (speedsqr > speedsqrpit) speedsqr = speedsqrpit;
@@ -1039,7 +1043,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 
 
 /* compute the radius given three points */
-inline tdble Pathfinder::radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3)
+/*inline tdble Pathfinder::radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3)
 {
 	tdble dx1 = x2 - x1;
 	tdble dy1 = y2 - y1;
@@ -1054,8 +1058,9 @@ inline tdble Pathfinder::radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3
 	} else {
 		return FLT_MAX;
 	}
-}
+}*/
 
+#ifdef PATH_K1999
 
 /* computes curvature, from Remi Coulom, K1999.cpp */
 inline double Pathfinder::curvature(double xp, double yp, double x, double y, double xn, double yn)
@@ -1211,6 +1216,7 @@ void Pathfinder::smooth(int Step)
 	}
 }
 
+#endif // PATH_K1999
 
 /* compute a path back to the planned path */
 int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
