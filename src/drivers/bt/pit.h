@@ -23,11 +23,7 @@
 #include "driver.h"
 #include "spline.h"
 
-#define NPOINTS 7
-
-
 class Driver;
-
 
 class Pit {
 	public:
@@ -56,34 +52,29 @@ class Pit {
 		float getSpeedLimitBrake(float speedsqr);
 
 		void update();
-		int getRepair();
-		float getFuel();
 
 	private:
 		tTrack *track;
 		tCarElt *car;
-		tTrackOwnPit *mypit;    // Pointer to my pit.
-		tTrackPitInfo *pitinfo; // General pit info.
+		tTrackOwnPit *mypit;			// Pointer to my pit.
+		tTrackPitInfo *pitinfo;			// General pit info.
 
-		SplinePoint p[NPOINTS]; // Spline points.
-		Spline *spline;         // Spline.
+		enum { NPOINTS = 7 };
+		SplinePoint p[NPOINTS];			// Spline points.
+		Spline *spline;					// Spline.
 
-		bool pitstop;           // Pitstop planned.
-		bool inpitlane;         // We are still in the pit lane.
-		float pitentry;         // Distance to start line of the pit entry.
-		float pitexit;          // Distance to the start line of the pit exit.
-		float speedlimitsqr;    // Pit speed limit squared.
-		float speedlimit;       // Pit speed limit.
-		float pitspeedlimitsqr;	// The original speedlimit squared.
+		bool pitstop;					// Pitstop planned.
+		bool inpitlane;					// We are still in the pit lane.
+		float pitentry;					// Distance to start line of the pit entry.
+		float pitexit;					// Distance to the start line of the pit exit.
 
-		bool fuelchecked;       // Fuel statistics updated.
-		float lastfuel;         // the fuel available when we cross the start lane.
-		float lastpitfuel;      // Amount refueled, special case when we refuel.
-		float fuelperlap;       // The maximum amount of fuel we needed for a lap.
-		float pittimer;			// Timer for pit timeouts.
+		float speedlimitsqr;			// Pit speed limit squared.
+		float speedlimit;				// Pit speed limit.
+		float pitspeedlimitsqr;			// The original speedlimit squared.
+
+		float pittimer;					// Timer for pit timeouts.
 
 		static const float SPEED_LIMIT_MARGIN;
-		static const int PIT_DAMMAGE;
 };
 
 #endif // _PIT_H_

@@ -2,7 +2,7 @@
 #
 #    file                 : Makefile
 #    created              : Wed Jan 8 18:31:16 CET 2003
-#    copyright            : (C) 2002 Bernhard Wymann
+#    copyright            : (C) 2002-2004 Bernhard Wymann
 #    email                : berniw@bluewin.ch
 #    version              : $Id$
 #
@@ -18,7 +18,7 @@
 ROBOT       = bt
 MODULE      = ${ROBOT}.so
 MODULEDIR   = drivers/${ROBOT}
-SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp spline.cpp pit.cpp learn.cpp
+SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp spline.cpp pit.cpp learn.cpp strategy.cpp
 
 SHIPDIR     = drivers/${ROBOT}
 SHIP        = ${ROBOT}.xml logo.rgb

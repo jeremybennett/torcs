@@ -36,11 +36,16 @@
 #include "opponent.h"
 #include "pit.h"
 #include "learn.h"
+#include "strategy.h"
 
+#define BT_SECT_PRIV "bt private"
+#define BT_ATT_FUELPERLAP "fuelperlap"
+#define BT_ATT_MUFACTOR "mufactor"
 
 class Opponents;
 class Opponent;
 class Pit;
+class AbstractStrategy;
 
 
 class Driver {
@@ -109,9 +114,10 @@ class Driver {
 		tCarElt *car;			// Pointer to tCarElt struct.
 		Opponents *opponents;	// The container for opponents.
 		Opponent *opponent;		// The array of opponents.
-		Pit *pit;				// Pointer to the pit instance.
-		//float lastturnarc;		// The arc of the current turn segments of the same type.
-		//int lastsegtype;		// The segment type for which lastturnarc is valid.
+
+		Pit *pit;						// Pointer to the pit instance.
+		AbstractStrategy *strategy;		// Pit stop strategy.
+
 		float currentspeedsqr;	// Square of the current speed_x.
 		float clutchtime;		// Clutch timer.
 		float oldlookahead;		// Lookahead for steering in the previous step.

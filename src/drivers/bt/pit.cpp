@@ -20,8 +20,7 @@
 
 #include "pit.h"
 
-const float Pit::SPEED_LIMIT_MARGIN = 0.5;      // [m/s] savety margin to avoid pit speeding.
-const int Pit::PIT_DAMMAGE = 5000;              // [-]
+const float Pit::SPEED_LIMIT_MARGIN = 0.5;		// [m/s] savety margin to avoid pit speeding.
 
 
 Pit::Pit(tSituation *s, Driver *driver)
@@ -32,10 +31,6 @@ Pit::Pit(tSituation *s, Driver *driver)
 	pitinfo = &track->pits;
 	pitstop = inpitlane = false;
 	pittimer = 0.0;
-	fuelchecked = false;
-	fuelperlap = 0.0;
-	lastpitfuel = 0.0;
-	lastfuel = car->priv.fuel;
 
 	if (mypit != NULL) {
 		speedlimit = pitinfo->speedLimit - SPEED_LIMIT_MARGIN;
@@ -50,6 +45,7 @@ Pit::Pit(tSituation *s, Driver *driver)
 		p[1].x = pitinfo->pitStart->lgfromstart;
 		p[5].x = p[3].x + (pitinfo->nMaxPits - car->index)*pitinfo->len;
 		p[6].x = pitinfo->pitExit->lgfromstart;
+
 		pitentry = p[0].x;
 		pitexit = p[6].x;
 
@@ -60,14 +56,18 @@ Pit::Pit(tSituation *s, Driver *driver)
 			p[i].x = toSplineCoord(p[i].x);
 		}
 
-		// If we have the first pit head directly towards it.
-		// bool firstpit = (car->index == 0) ? true : false;
+		// Fix broken pit exit.
+		if (p[6].x < p[5].x) {
+			//printf("bt: Pitexit broken on track %s.\n", track->name);
+			p[6].x = p[5].x + 50.0;
+		}
+
+		// Fix point for first pit if necessary.
 		if (p[1].x > p[2].x) {
 			p[1].x = p[2].x;
 		}
 
-		// If we have the last used pit head directly outside.
-		// bool lastpit = (s->_ncars - 1 == car->index) ? true : false;
+		// Fix point for last pit if necessary.
 		if (p[4].x > p[5].x) {
 			p[5].x = p[4].x;
 		}
@@ -146,9 +146,8 @@ bool Pit::isBetween(float fromstart)
 			return false;
 		}
 	} else {
-		if ((/*fromstart >= 0.0 &&*/ fromstart <= pitexit) ||
-			(fromstart >= pitentry /*&& fromstart <= track->length*/))
-		{
+		// Warning: TORCS reports sometimes negative values for "fromstart"!
+		if (fromstart <= pitexit || fromstart >= pitentry) {
 			return true;
 		} else {
 			return false;
@@ -158,6 +157,8 @@ bool Pit::isBetween(float fromstart)
 
 
 // Checks if we stay too long without getting captured by the pit.
+// Distance is the distance to the pit along the track, when the pit is
+// ahead it is > 0, if we overshoot the pit it is < 0.
 bool Pit::isTimeout(float distance)
 {
 	if (car->_speed_x > 1.0 || distance > 3.0 || !getPitstop()) {
@@ -187,33 +188,6 @@ void Pit::update()
 			setInPit(false);
 		}
 
-		// Check for damage
-		if (car->_dammage > PIT_DAMMAGE) {
-			setPitstop(true);
-		}
-
-		// Fuel update
-		int id = car->_trkPos.seg->id;
-		if (id >= 0 && id < 5 && !fuelchecked) {
-			if (car->race.laps > 0) {
-				fuelperlap = MAX(fuelperlap, (lastfuel+lastpitfuel-car->priv.fuel));
-			}
-			lastfuel = car->priv.fuel;
-			lastpitfuel = 0.0;
-			fuelchecked = true;
-		} else if (id > 5) {
-			fuelchecked = false;
-		}
-
-		int laps = car->_remainingLaps-car->_lapsBehindLeader;
-		if (!getPitstop() && laps > 0) {
-			if (car->_fuel < 1.5*fuelperlap &&
-				car->_fuel < laps*fuelperlap)
-			{
-				setPitstop(true);
-			}
-		}
-
 		if (getPitstop()) {
 			car->_raceCmd = RM_CMD_PIT_ASKED;
 		}
@@ -225,24 +199,4 @@ float Pit::getSpeedLimitBrake(float speedsqr)
 {
 	return (speedsqr-speedlimitsqr)/(pitspeedlimitsqr-speedlimitsqr);
 }
-
-
-// Computes the amount of fuel to refuel at pit stop.
-float Pit::getFuel()
-{
-	float fuel;
-	fuel = MAX(MIN((car->_remainingLaps+1.0)*fuelperlap - car->_fuel,
-					car->_tank - car->_fuel),
-			   0.0);
-	lastpitfuel = fuel;
-	return fuel;
-}
-
-
-// Computes how much damage to repair at pit stop.
-int Pit::getRepair()
-{
-	return car->_dammage;
-}
-
 

@@ -86,7 +86,6 @@ class Opponent {
 		// constants.
 		static const float FRONTCOLLDIST;
 		static const float BACKCOLLDIST;
-		static const float SIDECOLLDIST;
 		static const float LENGTH_MARGIN;
 		static const float SIDE_MARGIN;
 		static const float EXACT_DIST;

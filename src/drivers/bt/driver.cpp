@@ -19,10 +19,6 @@
 
 #include "driver.h"
 
-#define BT_SECT_PRIV "bt private"
-#define BT_ATT_FUELPERLAP "fuelperlap"
-#define BT_ATT_MUFACTOR "mufactor"
-
 const float Driver::MAX_UNSTUCK_ANGLE = 15.0/180.0*PI;		// [radians] If the angle of the car on the track is smaller, we assume we are not stuck.
 const float Driver::UNSTUCK_TIME_LIMIT = 2.0;				// [s] We try to get unstuck after this time.
 const float Driver::MAX_UNSTUCK_SPEED = 5.0;				// [m/s] Below this speed we consider being stuck.
@@ -41,7 +37,7 @@ const float Driver::LOOKAHEAD_FACTOR = 0.33;				// [-]
 const float Driver::WIDTHDIV = 3.0;							// [-] Defines the percentage of the track to use (2/WIDTHDIV).
 const float Driver::SIDECOLL_MARGIN = 3.0;					// [m] Distance between car centers to avoid side collisions.
 const float Driver::BORDER_OVERTAKE_MARGIN = 0.5;			// [m]
-const float Driver::OVERTAKE_OFFSET_SPEED = 5.0;			// [m/s] Offset cange speed.
+const float Driver::OVERTAKE_OFFSET_SPEED = 5.0;			// [m/s] Offset change speed.
 const float Driver::PIT_LOOKAHEAD = 6.0;					// [m] Lookahead to stop in the pit.
 const float Driver::PIT_BRAKE_AHEAD = 200.0;				// [m] Workaround for "broken" pitentries.
 const float Driver::PIT_MU = 0.4;							// [-] Friction of pit concrete.
@@ -67,6 +63,7 @@ Driver::~Driver()
 	delete pit;
 	delete [] radius;
 	delete learn;
+	delete strategy;
 }
 
 
@@ -77,6 +74,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 
 	const int BUFSIZE = 256;
 	char buffer[BUFSIZE];
+	// Load a custom setup if one is available.
 	// Get a pointer to the first char of the track filename.
 	char* trackname = strrchr(track->filename, '/') + 1;
 
@@ -100,11 +98,13 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 		*carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
     }
 
-	// Load and set parameters.
-	float fuel = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_FUELPERLAP, (char*)NULL, t->length*MAX_FUEL_PER_METER);
-	fuel *= (s->_totLaps + 1.0);
-	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
+	// Create a pit stop strategy object.
+	strategy = new SimpleStrategy();
 
+	// Init fuel.
+	strategy->setFuelAtRaceStart(t, carParmHandle, s);
+
+	// Load and set parameters.
 	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69);
 }
 
@@ -119,7 +119,6 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	alone = 1;
 	clutchtime = 0.0;
 	oldlookahead = 0.0;
-	//lastsegtype = TR_STR;
 	this->car = car;
 	CARMASS = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_MASS, NULL, 1000.0);
 	myoffset = 0.0;
@@ -150,6 +149,8 @@ void Driver::drive(tSituation *s)
 
 	update(s);
 
+	//pit->setPitstop(true);
+
 	if (isStuck()) {
 		car->_steerCmd = -angle / car->_steerLock;
 		car->_gearCmd = -1;		// Reverse gear.
@@ -174,8 +175,9 @@ void Driver::drive(tSituation *s)
 // Set pitstop commands.
 int Driver::pitCommand(tSituation *s)
 {
-	car->_pitRepair = pit->getRepair();
-	car->_pitFuel = pit->getFuel();
+	car->_pitRepair = strategy->pitRepair(car, s);
+	car->_pitFuel = strategy->pitRefuel(car, s);
+	// This should be the only place where the pit stop is set to false!
 	pit->setPitstop(false);
 	return ROB_PIT_IM; // return immediately.
 }
@@ -598,6 +600,10 @@ void Driver::update(tSituation *s)
 	currentspeedsqr = car->_speed_x*car->_speed_x;
 	speed = Opponent::getSpeed(car, trackangle);
 	opponents->update(s, this);
+	strategy->update(car, s);
+	if (!pit->getPitstop()) {
+		pit->setPitstop(strategy->needPitstop(car, s));
+	}
 	pit->update();
 	alone = isAlone();
 	learn->update(s, track, car, alone, myoffset, car->_trkPos.seg->width/WIDTHDIV-BORDER_OVERTAKE_MARGIN, radius);
@@ -797,12 +803,13 @@ float Driver::filterSColl(float steer)
 				if (d < 0.0) {
 					d = 0.0;
 				}
+
 				float psteer = diffangle/car->_steerLock;
 				myoffset = car->_trkPos.toMiddle;
 
 				float w = o->getCarPtr()->_trkPos.seg->width/WIDTHDIV-BORDER_OVERTAKE_MARGIN;
 				if (fabs(myoffset) > w) {
-					myoffset = (myoffset > 0) ? w : -w;
+					myoffset = (myoffset > 0.0) ? w : -w;
 				}
 
 				// Who is outside?

@@ -94,8 +94,8 @@ void Opponent::update(tSituation *s, Driver *driver)
 				Straight carFrontLine(
 					mycar->_corner_x(FRNT_LFT),
 					mycar->_corner_y(FRNT_LFT),
-					mycar->_corner_x(FRNT_RGT),
-					mycar->_corner_y(FRNT_RGT)
+					mycar->_corner_x(FRNT_RGT) - mycar->_corner_x(FRNT_LFT),
+					mycar->_corner_y(FRNT_RGT) - mycar->_corner_y(FRNT_LFT)
 				);
 
 				float mindist = FLT_MAX;
@@ -103,20 +103,24 @@ void Opponent::update(tSituation *s, Driver *driver)
 				for (i = 0; i < 4; i++) {
 					v2d corner(car->_corner_x(i), car->_corner_y(i));
 					float dist = carFrontLine.dist(corner);
-					if (carFrontLine.dist(corner) < mindist) {
+					if (dist < mindist) {
 						mindist = dist;
 					}
 				}
+
 				if (mindist < distance) {
 					distance = mindist;
 				}
 			}
+
 			catchdist = driver->getSpeed()*distance/(driver->getSpeed() - speed);
 
 			float cardist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			sidedist = cardist;
 			cardist = fabs(cardist) - fabs(width/2.0) - mycar->_dimension_y/2.0;
-			if (cardist < SIDE_MARGIN) state |= OPP_COLL;
+			if (cardist < SIDE_MARGIN) {
+				state |= OPP_COLL;
+			}
 		} else
 		// Is opponent behind and faster.
 		if (distance < -SIDECOLLDIST && speed > driver->getSpeed() - SPEED_PASS_MARGIN) {

@@ -20,33 +20,37 @@
 #ifndef _LINALG_H_
 #define _LINALG_H_
 
+inline float sign(float d) {
+	return (d >= 0.0) ? 1.0 : -1.0;
+}
+
 
 class v2d {
-    public:
-        /* constructors */
-        v2d() {}
-        v2d(const v2d &src) { this->x = src.x; this->y = src.y; }
-        v2d(float x, float y) { this->x = x; this->y = y; }
+	public:
+		/* constructors */
+		v2d() {}
+		v2d(const v2d &src) { this->x = src.x; this->y = src.y; }
+		v2d(float x, float y) { this->x = x; this->y = y; }
 
-        /* operators */
-        v2d& operator=(const v2d &src);         /* assignment */
-        v2d operator+(const v2d &src) const;    /* addition */
-        v2d operator-(void) const;              /* negation */
-        v2d operator-(const v2d &src) const;    /* subtraction */
-        v2d operator*(const float s) const;     /* multiply with scalar */
-        float operator*(const v2d &src) const;  /* dot product */
-        friend v2d operator*(const float s, const v2d & src);
+		/* operators */
+		v2d& operator=(const v2d &src);         /* assignment */
+		v2d operator+(const v2d &src) const;    /* addition */
+		v2d operator-(void) const;              /* negation */
+		v2d operator-(const v2d &src) const;    /* subtraction */
+		v2d operator*(const float s) const;     /* multiply with scalar */
+		float operator*(const v2d &src) const;  /* dot product */
+		friend v2d operator*(const float s, const v2d & src);
 
-        /* methods */
-        float len(void) const;
-        void normalize(void);
-        float dist(const v2d &p) const;
-        float cosalpha(const v2d &p2, const v2d &center) const;
-        v2d rotate(const v2d &c, float arc) const;
+		/* methods */
+		float len(void) const;
+		void normalize(void);
+		float dist(const v2d &p) const;
+		float cosalpha(const v2d &p2, const v2d &center) const;
+		v2d rotate(const v2d &c, float arc) const;
 
-        /* data */
-        float x;
-        float y;
+		/* data */
+		float x;
+		float y;
 };
 
 
