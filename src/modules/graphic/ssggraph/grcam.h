@@ -58,6 +58,7 @@ class cGrCamera
 	drawDriver = mydrawdrv;
 	drawBackground = mydrawBackground;
 	mirrorAllowed = mymirrorAllowed;
+	speed[0] = speed[1] = speed[2] = 0.0;
     }
 
     virtual ~cGrCamera() {};
