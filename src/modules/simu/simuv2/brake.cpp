@@ -42,13 +42,10 @@ SimBrakeUpdate(tCar *car, tWheel *wheel, tBrake *brake)
 {
     brake->Tq = brake->coeff * brake->pressure;
 
-    if ((brake->Tq == 0.0) || (wheel->spinVel == 0.0)) {
-	brake->temp -= fabs(car->DynGC.vel.x) * 0.0001 + 0.0001;
-	if (brake->temp < 0 ) brake->temp = 0;
-    } else {
-	brake->temp += brake->pressure * brake->radius * fabs(wheel->spinVel) * 0.00000000005;
-	if (brake->temp > 1.0) brake->temp = 1.0;
-    }
+    brake->temp -= fabs(car->DynGC.vel.x) * 0.0001 + 0.0002;
+    if (brake->temp < 0 ) brake->temp = 0;
+    brake->temp += brake->pressure * brake->radius * fabs(wheel->spinVel) * 0.00000000005;
+    if (brake->temp > 1.0) brake->temp = 1.0;
 }
 
 void 

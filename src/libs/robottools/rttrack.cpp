@@ -48,7 +48,7 @@
 tdble
 RtTrackGetWidth(tTrackSeg *seg, tdble toStart)
 {
-    return seg->startWidth + toStart * seg->Kyl;
+    return fabs(seg->startWidth + toStart * seg->Kyl);
 }
 
 
@@ -110,9 +110,11 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
 	    switch (seg->type2) {
 	    case TR_MAIN:
 	    case TR_LSIDE:
+	    case TR_LBORDER:
 		tr = p->toRight;
 		break;
 	    case TR_RSIDE:
+	    case TR_RBORDER:
 		tr = p->toRight - seg->Kyl * p->toStart;
 		break;
 	    default:
@@ -128,9 +130,11 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
 	    switch (seg->type2) {
 	    case TR_MAIN:
 	    case TR_LSIDE:
+	    case TR_LBORDER:
 		r = seg->radiusr - p->toRight ;
 		break;
 	    case TR_RSIDE:
+	    case TR_RBORDER:
 		r = seg->radiusl + seg->startWidth + seg->Kyl * p->toStart - p->toRight ;
 		break;
 	    default:
@@ -146,9 +150,11 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
 	    switch (seg->type2) {
 	    case TR_MAIN:
 	    case TR_LSIDE:
+	    case TR_LBORDER:
 		r = seg->radiusr + p->toRight ;
 		break;
 	    case TR_RSIDE:
+	    case TR_RBORDER:
 		r = seg->radiusl - seg->startWidth - seg->Kyl * p->toStart + p->toRight ;
 		break;
 	    default:
@@ -203,7 +209,7 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
     @param	p	Returned local position
     @param	type	Type of local position desired:
     			- TR_LPOS_MAIN relative to the main segment
-			- TR_LPOS_SENGMENT if the point is on a side, relative to this side
+			- TR_LPOS_SEGMENT if the point is on a side, relative to this side
 			- TR_LPOS_TRACK local pos includes all the track width
  */
 
@@ -303,10 +309,18 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 	if (seg->rside != NULL) {
 	    sseg = seg->rside;
 	    p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
+	    sseg = sseg->rside;
+	    if (sseg) {
+		p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
+	    }
 	}
 	if (seg->lside != NULL) {
 	    sseg = seg->lside;
 	    p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    sseg = sseg->lside;
+	    if (sseg) {
+		p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    }
 	}
     }
 
@@ -318,12 +332,26 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 	    p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
 	    p->toLeft += -seg->width;
 	    p->toMiddle += (seg->width + sseg->startWidth) / 2.0;
+	    if ((p->toRight < 0) && (sseg->rside != NULL)) {
+		sseg = sseg->rside;
+		p->seg = sseg;
+		p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
+		p->toLeft += -seg->width;
+		p->toMiddle += (seg->width + sseg->startWidth) / 2.0;
+	    }
 	} else if ((p->toLeft < 0) && (seg->lside != NULL)) {
 	    sseg = seg->lside;
 	    p->seg = sseg;
 	    p->toRight += -seg->width;
 	    p->toMiddle += -(seg->width + sseg->startWidth) / 2.0;
 	    p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    if ((p->toLeft < 0) && (sseg->lside != NULL)) {
+		sseg = sseg->lside;
+		p->seg = sseg;
+		p->toRight += -seg->width;
+		p->toMiddle += -(seg->width + sseg->startWidth) / 2.0;
+		p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    }	
 	}
     }
 }
@@ -359,9 +387,17 @@ RtTrackHeightL(tTrkLocPos *p)
     if ((p->toRight < 0) && (seg->rside != NULL)) {
 	seg = seg->rside;
  	p->toRight += seg->width;
-   } else if ((p->toRight > seg->width) && (seg->lside != NULL)) {
+	if ((p->toRight < 0) && (seg->rside != NULL)) {
+	    seg = seg->rside;
+	    p->toRight += seg->width;
+	}   
+    } else if ((p->toRight > seg->width) && (seg->lside != NULL)) {
 	p->toRight -= seg->width;
 	seg = seg->lside;
+	if ((p->toRight > seg->width) && (seg->lside != NULL)) {
+	    p->toRight -= seg->width;
+	    seg = seg->lside;
+	}
     }
     switch (seg->type) {
     case TR_STR:

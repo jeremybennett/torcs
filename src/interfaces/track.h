@@ -98,11 +98,24 @@
 #define TRK_ATT_RSWS	"rside start width"
 #define TRK_ATT_RSWE	"rside end width"
 #define TRK_ATT_RSSURF	"rside surface"
+#define TRK_ATT_LBS	"lborder style"
+#define TRK_ATT_LBW	"lborder width"
+#define TRK_ATT_LBH	"lborder height"
+#define TRK_ATT_LBSURF	"lborder surface"
+#define TRK_ATT_RBS	"rborder style"
+#define TRK_ATT_RBW	"rborder width"
+#define TRK_ATT_RBH	"rborder height"
+#define TRK_ATT_RBSURF	"rborder surface"
 #define TRK_ATT_FINISH	"finish segment"
 #define TRK_ATT_ENVIND	"env map index"
 #define TRK_ATT_STEPLEN	"steps length"
+
 #define TRK_VAL_ST_LEVEL	"level"
 #define TRK_VAL_ST_TANGENT	"tangent"
+
+#define TRK_VAL_ST_PLAN		"plan"
+#define TRK_VAL_ST_WALL		"wall"
+#define TRK_VAL_ST_BUMPER	"bumper"
 
 #define TRK_VAL_YES	"yes"
 #define TRK_VAL_NO	"no"
@@ -122,7 +135,6 @@
 #define TRK_VAL_PIT_TYPE_NONE		"no pit"
 #define TRK_VAL_PIT_TYPE_SIDE		"track side"
 #define TRK_VAL_PIT_TYPE_SEP_PATH	"seperate path"
-
 
 #define TRK_LST_SEG	"segments"
 
@@ -218,6 +230,14 @@ typedef struct trackSeg {
 #define TR_MAIN	    1
 #define TR_LSIDE    2
 #define TR_RSIDE    3
+#define TR_LBORDER  4
+#define TR_RBORDER  5
+
+    /** segment style */
+    int style;
+#define TR_PLAN	    0
+#define TR_BUMPER   1
+#define TR_WALL     2
 
     /** length in meters of the middle of the track */
     tdble length;

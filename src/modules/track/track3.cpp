@@ -53,12 +53,32 @@ static char *KeySideStartWidth[2] = {TRK_ATT_RSWS, TRK_ATT_LSWS};
 static char *KeySideEndWidth[2] = {TRK_ATT_RSWE, TRK_ATT_LSWE};
 static char *KeySideBankType[2] = {TRK_ATT_RST, TRK_ATT_LST};
 
+static char *KeyBorderSurface[2] = {TRK_ATT_RBSURF, TRK_ATT_LBSURF};
+static char *KeyBorderWidth[2] = {TRK_ATT_RBW, TRK_ATT_LBW};
+static char *KeyBorderStyle[2] = {TRK_ATT_RBS, TRK_ATT_LBS};
+static char *KeyBorderHeight[2] = {TRK_ATT_RBH, TRK_ATT_LBH};
+
 
 static tdble sideEndWidth[2];
 static tdble sideStartWidth[2];
 static int sideBankType[2];
 static char *sideMaterial[2];
+static tdble sidekFriction[2];
+static tdble sidekRollRes[2];
+static tdble sidekRoughness[2];
+static tdble sidekRoughWaveLen[2];
+
+
 static int envIndex;
+
+static tdble borderWidth[2];
+static tdble borderHeight[2];
+static char *borderMaterial[2];
+static tdble borderkFriction[2];
+static tdble borderkRollRes[2];
+static tdble borderkRoughness[2];
+static tdble borderkRoughWaveLen[2];
+static int borderStyle[2];
 
 static tdble GlobalStepLen = 0;
 
@@ -67,15 +87,27 @@ static void
 InitSides(void *TrackHandle, char *section)
 {
     int side;
+    char *style;
     
     for (side = 0; side < 2; side++) {
-	sideMaterial[side]  = GfParmGetStr(TrackHandle, section, KeySideSurface[side], TRK_VAL_GRASS);
+	sideMaterial[side] = GfParmGetStr(TrackHandle, section, KeySideSurface[side], TRK_VAL_GRASS);
 	sideEndWidth[side] = GfParmGetNum(TrackHandle, section, KeySideWidth[side], (char*)NULL, 0.0);
 	/* banking of borders */
 	if (strcmp(TRK_VAL_LEVEL, GfParmGetStr(TrackHandle, section, KeySideBankType[side], TRK_VAL_LEVEL)) == 0) {
 	    sideBankType[side] = 0;
 	} else {
 	    sideBankType[side] = 1;
+	}
+	borderMaterial[side] = GfParmGetStr(TrackHandle, section, KeyBorderSurface[side], TRK_VAL_GRASS);
+	borderWidth[side] = GfParmGetNum(TrackHandle, section, KeyBorderWidth[side], (char*)NULL, 0.0);
+	borderHeight[side] = GfParmGetNum(TrackHandle, section, KeyBorderHeight[side], (char*)NULL, 0.0);
+	style = GfParmGetStr(TrackHandle, section, KeyBorderStyle[side], TRK_VAL_ST_PLAN);
+	if (strcmp(style, TRK_VAL_ST_PLAN) == 0) {
+	    borderStyle[side] = TR_PLAN;
+	} else if (strcmp(style, TRK_VAL_ST_BUMPER) == 0) {
+	    borderStyle[side] = TR_BUMPER;
+	} else if (strcmp(style, TRK_VAL_ST_WALL) == 0) {
+	    borderStyle[side] = TR_WALL;
 	}
     }
 }
@@ -85,276 +117,540 @@ static void
 AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int steps)
 {
     tTrackSeg	*curSide;
+    tTrackSeg	*mSeg;
+    tTrackSeg	*curBorder;
     tdble	x, y, z;
     tdble	al, alfl;
     int		j;
     tdble	x1, x2, y1, y2;
-    tdble	sw, ew;
+    tdble	sw, ew, bw;
     tdble	minWidth;
     tdble	maxWidth;
     int		type;
     int		side;
-    char	*material;
+    char	*style;
     tdble	Kew;
     char	path[256];
     char	path2[256];
 
     x = y = z = 0;
-
+    mSeg = curSeg;
+    
     sprintf(path, "%s/%s", section, TRK_LST_SEG);
     for (side = 0; side < 2; side++) {
+	curSeg = mSeg;
 	if (curStep == 0) {
-	    sw = GfParmGetCurNum(TrackHandle, path, KeySideStartWidth[side], (char*)NULL,sideEndWidth[side]);
+	    /* Side parameters */
+	    sw = GfParmGetCurNum(TrackHandle, path, KeySideStartWidth[side], (char*)NULL, sideEndWidth[side]);
 	    ew = GfParmGetCurNum(TrackHandle, path, KeySideEndWidth[side], (char*)NULL, sw);
 	    sideStartWidth[side] = sw;
 	    sideEndWidth[side] = ew;
+	    sideMaterial[side] = GfParmGetCurStr(TrackHandle, path, KeySideSurface[side], sideMaterial[side]);
+	    sprintf(path2, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, sideMaterial[side]);
+	    sidekFriction[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_FRICTION, (char*)NULL, 0.8);
+	    sidekRollRes[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROLLRES, (char*)NULL, 0.001);
+	    sidekRoughness[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
+	    sidekRoughWaveLen[side] = 2.0 * PI / GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
+
+	    /* Border parameters */
+	    bw = GfParmGetCurNum(TrackHandle, path, KeyBorderWidth[side], (char*)NULL, borderWidth[side]);
+	    borderWidth[side] = bw;
+	    borderHeight[side] = GfParmGetCurNum(TrackHandle, path, KeyBorderHeight[side], (char*)NULL, 0.0);
+	    borderMaterial[side] = GfParmGetCurStr(TrackHandle, path, KeyBorderSurface[side], borderMaterial[side]);
+	    sprintf(path2, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, borderMaterial[side]);
+	    borderkFriction[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_FRICTION, (char*)NULL, 0.8);
+	    borderkRollRes[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROLLRES, (char*)NULL, 0.001);
+	    borderkRoughness[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
+	    borderkRoughWaveLen[side] = 2.0 * PI / GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
+
+	    style = GfParmGetCurStr(TrackHandle, path, KeyBorderStyle[side], TRK_VAL_ST_PLAN);
+	    if (strcmp(style, TRK_VAL_ST_PLAN) == 0) {
+		borderStyle[side] = TR_PLAN;
+	    } else if (strcmp(style, TRK_VAL_ST_BUMPER) == 0) {
+		borderStyle[side] = TR_BUMPER;
+	    } else if (strcmp(style, TRK_VAL_ST_WALL) == 0) {
+		borderStyle[side] = TR_WALL;
+	    }
 	} else {
 	    sw = sideStartWidth[side];
 	    ew = sideEndWidth[side];
+	    bw = borderWidth[side];
 	}
 	Kew = (ew - sw) / (tdble)steps;
 	ew = sw + (tdble)(curStep+1) * Kew;
 	sw = sw + (tdble)(curStep) * Kew;
-	
-	if ((sw == 0.0) && (ew == 0.0)) {
-	    /* no additional track side */
-	    continue;
+
+	/* Borders */
+	if (bw != 0.0) {
+	    curBorder = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
+	    if (side == 1) {
+		curSeg->lside = curBorder;
+		curBorder->vertex[TR_SR] = curSeg->vertex[TR_SL];
+		curBorder->vertex[TR_ER] = curSeg->vertex[TR_EL];
+		curBorder->type2 = TR_LBORDER;
+	    } else {
+		curSeg->rside = curBorder;
+		curBorder->vertex[TR_SL] = curSeg->vertex[TR_SR];
+		curBorder->vertex[TR_EL] = curSeg->vertex[TR_ER];
+		curBorder->type2 = TR_RBORDER;
+	    }
+
+	    curBorder->startWidth = bw;
+	    curBorder->endWidth = bw;
+	    curBorder->width = bw;
+	    curBorder->type = curSeg->type;
+	    curBorder->material = borderMaterial[side];
+	    curBorder->kFriction = borderkFriction[side];
+	    curBorder->kRollRes = borderkRollRes[side];
+	    curBorder->kRoughness = borderkRoughness[side];
+	    curBorder->kRoughWaveLen = borderkRoughWaveLen[side];
+	    curBorder->envIndex = envIndex;
+	    curBorder->angle[TR_XS] = curSeg->angle[TR_XS];
+	    curBorder->angle[TR_XE] = curSeg->angle[TR_XE];
+	    curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
+	    curBorder->angle[TR_ZE] = curSeg->angle[TR_ZE];
+	    curBorder->angle[TR_CS] = curSeg->angle[TR_CS];
+
+	    switch(curSeg->type) {
+	    case TR_STR:
+		curBorder->length = curSeg->length;
+
+		switch(side) {
+		case 1:
+		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * curSeg->rgtSideNormal.x;
+		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * curSeg->rgtSideNormal.y;
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * curSeg->rgtSideNormal.x;	    
+		    y = curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * curSeg->rgtSideNormal.y;
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+		    break;
+		case 0:
+		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * curSeg->rgtSideNormal.x;
+		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * curSeg->rgtSideNormal.y;
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * curSeg->rgtSideNormal.x;	    
+		    y = curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * curSeg->rgtSideNormal.y;
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+		    break;
+		}
+		curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z, curBorder->length);
+		curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z, curBorder->length);
+
+		curBorder->Kzl = tan(curBorder->angle[TR_YR]);
+		curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->length;
+		curBorder->Kyl = 0;
+
+		curBorder->rgtSideNormal.x = curSeg->rgtSideNormal.x;
+		curBorder->rgtSideNormal.y = curSeg->rgtSideNormal.y;
+
+		TSTX(x);
+		TSTY(y);
+		TSTZ(z);
+		break;
+
+	    case TR_LFT:
+		curBorder->center.x = curSeg->center.x;
+		curBorder->center.y = curSeg->center.y;
+
+		switch(side) {
+		case 1:
+		    curBorder->radius = curSeg->radiusl - bw / 2.0;
+		    curBorder->radiusr = curSeg->radiusl;
+		    curBorder->radiusl = curSeg->radiusl - bw;
+		    curBorder->arc = curSeg->arc;
+		    curBorder->length = curBorder->radius * curBorder->arc;
+
+		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x - bw * cos(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y - bw * sin(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x - bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
+		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+
+		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
+						    curBorder->arc * curBorder->radiusr);
+		    curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
+						    curBorder->arc * curBorder->radiusl);
+
+		    curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
+		    curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
+		    curBorder->Kyl = 0;
+
+		    /* to find the boundary */
+		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
+		    alfl = curBorder->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x1 = curBorder->center.x + (curBorder->radiusl) * sin(alfl);   /* location of end */
+			y1 = curBorder->center.y - (curBorder->radiusl) * cos(alfl);
+			TSTX(x1);
+			TSTY(y1);
+		    }
+		    TSTZ(z);
+		    break;
+
+		case 0:
+		    curBorder->radius = curSeg->radiusr + bw / 2.0;
+		    curBorder->radiusl = curSeg->radiusr;
+		    curBorder->radiusr = curSeg->radiusr + bw;
+		    curBorder->arc = curSeg->arc;
+		    curBorder->length = curBorder->radius * curBorder->arc;
+
+		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x + bw * cos(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y + bw * sin(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x + bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
+		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y + bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+
+		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
+						    curBorder->arc * curBorder->radiusr);
+		    curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
+						    curBorder->arc * curBorder->radiusl);
+
+		    curBorder->Kzl = tan(curBorder->angle[TR_YR]) * (curBorder->radiusr);
+		    curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
+		    curBorder->Kyl = 0;
+
+		    /* to find the boundary */
+		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
+		    alfl = curBorder->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x2 = curBorder->center.x + (curBorder->radiusr) * sin(alfl);   /* location of end */
+			y2 = curBorder->center.y - (curBorder->radiusr) * cos(alfl);
+			TSTX(x2);
+			TSTY(y2);
+		    }
+		    TSTZ(z);
+		    break;
+
+		}
+		break;
+	    case TR_RGT:
+		curBorder->center.x = curSeg->center.x;
+		curBorder->center.y = curSeg->center.y;
+
+		switch(side) {
+		case 1:
+		    curBorder->radius = curSeg->radiusl + bw / 2.0;
+		    curBorder->radiusr = curSeg->radiusl;
+		    curBorder->radiusl = curSeg->radiusl + bw;
+		    curBorder->arc = curSeg->arc;
+		    curBorder->length = curBorder->radius * curBorder->arc;
+
+		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * cos(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * sin(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
+		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+
+		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
+						    curBorder->arc * curBorder->radiusr);
+		    curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
+						    curBorder->arc * curBorder->radiusl);
+
+		    curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
+		    curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
+		    curBorder->Kyl = 0;
+
+		    /* to find the boundary */
+		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
+		    alfl = curBorder->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x1 = curBorder->center.x - (curBorder->radiusl) * sin(alfl);   /* location of end */
+			y1 = curBorder->center.y + (curBorder->radiusl) * cos(alfl);
+			TSTX(x1);
+			TSTY(y1);
+		    }
+		    TSTZ(z);
+		    break;
+
+		case 0:
+		    curBorder->radius = curSeg->radiusr - bw / 2.0;
+		    curBorder->radiusl = curSeg->radiusr;
+		    curBorder->radiusr = curSeg->radiusr - bw;
+		    curBorder->arc = curSeg->arc;
+		    curBorder->length = curBorder->radius * curBorder->arc;
+
+		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * cos(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * sin(curBorder->angle[TR_CS]);
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
+		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+
+		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
+						    curBorder->arc * curBorder->radiusr);
+		    curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
+						    curBorder->arc * curBorder->radiusl);
+
+		    curBorder->Kzl = tan(curBorder->angle[TR_YR]) * (curBorder->radiusr);
+		    curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
+		    curBorder->Kyl = 0;
+
+		    /* to find the boundary */
+		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
+		    alfl = curBorder->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x2 = curBorder->center.x - (curBorder->radiusr) * sin(alfl);   /* location of end */
+			y2 = curBorder->center.y - (curBorder->radiusr) * cos(alfl);
+			TSTX(x2);
+			TSTY(y2);
+		    }
+		    TSTZ(z);
+		    break;
+		}
+		break;
+	    }
+
+	    curSeg = curBorder;
 	}
-    
-	curSide = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
-	if (side == 1) {
-	    curSeg->lside = curSide;
-	    curSide->vertex[TR_SR] = curSeg->vertex[TR_SL];
-	    curSide->vertex[TR_ER] = curSeg->vertex[TR_EL];
-	    curSide->type2 = TR_LSIDE;
-	} else {
-	    curSeg->rside = curSide;
-	    curSide->vertex[TR_SL] = curSeg->vertex[TR_SR];
-	    curSide->vertex[TR_EL] = curSeg->vertex[TR_ER];
-	    curSide->type2 = TR_RSIDE;
-	}
 
-	type = sideBankType[side];
-	curSide->startWidth = sw;
-	curSide->endWidth = ew;
-	curSide->width = minWidth = MIN(sw, ew);
-	maxWidth = MAX(sw, ew);
-	curSide->type = curSeg->type;
-	material = GfParmGetCurStr(TrackHandle, path, KeySideSurface[side], sideMaterial[side]);
-	sideMaterial[side] = curSide->material = material;
-	sprintf(path2, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, material);
-	curSide->kFriction = GfParmGetNum(TrackHandle, path2, TRK_ATT_FRICTION, (char*)NULL, 0.8);
-	curSide->kRollRes = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROLLRES, (char*)NULL, 0.001);
-	curSide->kRoughness = GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
-	curSide->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path2, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
-	curSide->envIndex = envIndex;
-	curSide->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
-	curSide->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
-	curSide->angle[TR_ZS] = curSeg->angle[TR_ZS];
-	curSide->angle[TR_ZE] = curSeg->angle[TR_ZE];
-	curSide->angle[TR_CS] = curSeg->angle[TR_CS];
 
-	switch(curSeg->type) {
-	case TR_STR:
-	    curSide->length = curSeg->length;
+	/* Sides */
+	if ((sw != 0.0) || (ew != 0)) {
+	    curSide = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
+	    if (side == 1) {
+		curSeg->lside = curSide;
+		curSide->vertex[TR_SR] = curSeg->vertex[TR_SL];
+		curSide->vertex[TR_ER] = curSeg->vertex[TR_EL];
+		curSide->type2 = TR_LSIDE;
+	    } else {
+		curSeg->rside = curSide;
+		curSide->vertex[TR_SL] = curSeg->vertex[TR_SR];
+		curSide->vertex[TR_EL] = curSeg->vertex[TR_ER];
+		curSide->type2 = TR_RSIDE;
+	    }
 
-	    switch(side) {
-	    case 1:
-		curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * curSeg->rgtSideNormal.x;
-		curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * curSeg->rgtSideNormal.y;
-		curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		x = curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * curSeg->rgtSideNormal.x;	    
-		y = curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * curSeg->rgtSideNormal.y;
-		z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+	    type = sideBankType[side];
+	    curSide->startWidth = sw;
+	    curSide->endWidth = ew;
+	    curSide->width = minWidth = MIN(sw, ew);
+	    maxWidth = MAX(sw, ew);
+	    curSide->type = curSeg->type;
+	    curSide->material = sideMaterial[side];
+	    curSide->kFriction = sidekFriction[side];
+	    curSide->kRollRes = sidekRollRes[side];
+	    curSide->kRoughness = sidekRoughness[side];
+	    curSide->kRoughWaveLen = sidekRoughWaveLen[side];
+	    curSide->envIndex = envIndex;
+	    curSide->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
+	    curSide->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
+	    curSide->angle[TR_ZS] = curSeg->angle[TR_ZS];
+	    curSide->angle[TR_ZE] = curSeg->angle[TR_ZE];
+	    curSide->angle[TR_CS] = curSeg->angle[TR_CS];
+
+	    switch(curSeg->type) {
+	    case TR_STR:
+		curSide->length = curSeg->length;
+
+		switch(side) {
+		case 1:
+		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * curSeg->rgtSideNormal.x;
+		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * curSeg->rgtSideNormal.y;
+		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    x = curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * curSeg->rgtSideNormal.x;	    
+		    y = curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * curSeg->rgtSideNormal.y;
+		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+		    break;
+		case 0:
+		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * curSeg->rgtSideNormal.x;
+		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * curSeg->rgtSideNormal.y;
+		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    x = curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * curSeg->rgtSideNormal.x;	    
+		    y = curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * curSeg->rgtSideNormal.y;
+		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+		    break;
+		}
+		curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z, curSide->length);
+		curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z, curSide->length);
+
+		curSide->Kzl = tan(curSide->angle[TR_YR]);
+		curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->length;
+		curSide->Kyl = (ew - sw) / curSide->length;
+
+		curSide->rgtSideNormal.x = curSeg->rgtSideNormal.x;
+		curSide->rgtSideNormal.y = curSeg->rgtSideNormal.y;
+
+		TSTX(x);
+		TSTY(y);
+		TSTZ(z);
 		break;
-	    case 0:
-		curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * curSeg->rgtSideNormal.x;
-		curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * curSeg->rgtSideNormal.y;
-		curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		x = curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * curSeg->rgtSideNormal.x;	    
-		y = curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * curSeg->rgtSideNormal.y;
-		z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+
+	    case TR_LFT:
+		curSide->center.x = curSeg->center.x;
+		curSide->center.y = curSeg->center.y;
+
+		switch(side) {
+		case 1:
+		    curSide->radius = curSeg->radiusl - sw / 2.0;
+		    curSide->radiusr = curSeg->radiusl;
+		    curSide->radiusl = curSeg->radiusl - maxWidth;
+		    curSide->arc = curSeg->arc;
+		    curSide->length = curSide->radius * curSide->arc;
+
+		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x - sw * cos(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y - sw * sin(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x - ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
+		    curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y - ew * sin(curSide->angle[TR_CS] + curSide->arc);
+		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+
+		    curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
+						  curSide->arc * curSide->radiusr);
+		    curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
+						  curSide->arc * curSide->radiusl);
+
+		    curSide->Kzl = tan(curSide->angle[TR_YR]) * curSide->radiusr;
+		    curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
+		    curSide->Kyl = (ew - sw) / curSide->arc;
+
+		    /* to find the boundary */
+		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
+		    alfl = curSide->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x1 = curSide->center.x + (curSide->radiusl) * sin(alfl);   /* location of end */
+			y1 = curSide->center.y - (curSide->radiusl) * cos(alfl);
+			TSTX(x1);
+			TSTY(y1);
+		    }
+		    TSTZ(z);
+		    break;
+
+		case 0:
+		    curSide->radius = curSeg->radiusr + sw / 2.0;
+		    curSide->radiusl = curSeg->radiusr;
+		    curSide->radiusr = curSeg->radiusr + maxWidth;
+		    curSide->arc = curSeg->arc;
+		    curSide->length = curSide->radius * curSide->arc;
+
+		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x + sw * cos(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y + sw * sin(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x + ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
+		    curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y + ew * sin(curSide->angle[TR_CS] + curSide->arc);
+		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+
+		    curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
+						  curSide->arc * curSide->radiusr);
+		    curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
+						  curSide->arc * curSide->radiusl);
+
+		    curSide->Kzl = tan(curSide->angle[TR_YR]) * (curSide->radiusr);
+		    curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
+		    curSide->Kyl = (ew - sw) / curSide->arc;
+
+		    /* to find the boundary */
+		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
+		    alfl = curSide->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x2 = curSide->center.x + (curSide->radiusr) * sin(alfl);   /* location of end */
+			y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
+			TSTX(x2);
+			TSTY(y2);
+		    }
+		    TSTZ(z);
+		    break;
+
+		}
+		break;
+	    case TR_RGT:
+		curSide->center.x = curSeg->center.x;
+		curSide->center.y = curSeg->center.y;
+
+		switch(side) {
+		case 1:
+		    curSide->radius = curSeg->radiusl + sw / 2.0;
+		    curSide->radiusr = curSeg->radiusl;
+		    curSide->radiusl = curSeg->radiusl + maxWidth;
+		    curSide->arc = curSeg->arc;
+		    curSide->length = curSide->radius * curSide->arc;
+
+		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * cos(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * sin(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
+		    curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * sin(curSide->angle[TR_CS] - curSide->arc);
+		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+
+		    curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
+						  curSide->arc * curSide->radiusr);
+		    curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
+						  curSide->arc * curSide->radiusl);
+
+		    curSide->Kzl = tan(curSide->angle[TR_YR]) * curSide->radiusr;
+		    curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
+		    curSide->Kyl = (ew - sw) / curSide->arc;
+
+		    /* to find the boundary */
+		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
+		    alfl = curSide->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x1 = curSide->center.x - (curSide->radiusl) * sin(alfl);   /* location of end */
+			y1 = curSide->center.y + (curSide->radiusl) * cos(alfl);
+			TSTX(x1);
+			TSTY(y1);
+		    }
+		    TSTZ(z);
+		    break;
+
+		case 0:
+		    curSide->radius = curSeg->radiusr - sw / 2.0;
+		    curSide->radiusl = curSeg->radiusr;
+		    curSide->radiusr = curSeg->radiusr - maxWidth;
+		    curSide->arc = curSeg->arc;
+		    curSide->length = curSide->radius * curSide->arc;
+
+		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * cos(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * sin(curSide->angle[TR_CS]);
+		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
+		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
+		    curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * sin(curSide->angle[TR_CS] - curSide->arc);
+		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
+
+		    curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
+						  curSide->arc * curSide->radiusr);
+		    curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
+						  curSide->arc * curSide->radiusl);
+
+		    curSide->Kzl = tan(curSide->angle[TR_YR]) * (curSide->radiusr);
+		    curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
+		    curSide->Kyl = (ew - sw) / curSide->arc;
+
+		    /* to find the boundary */
+		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
+		    alfl = curSide->angle[TR_ZS];
+
+		    for (j = 0; j < 36; j++) {
+			alfl += al;
+			x2 = curSide->center.x - (curSide->radiusr) * sin(alfl);   /* location of end */
+			y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
+			TSTX(x2);
+			TSTY(y2);
+		    }
+		    TSTZ(z);
+		    break;
+		}
 		break;
 	    }
-	    curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z, curSide->length);
-	    curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z, curSide->length);
-
-	    curSide->Kzl = tan(curSide->angle[TR_YR]);
-	    curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->length;
-	    curSide->Kyl = (ew - sw) / curSide->length;
-
-	    curSide->rgtSideNormal.x = curSeg->rgtSideNormal.x;
-	    curSide->rgtSideNormal.y = curSeg->rgtSideNormal.y;
-
-	    TSTX(x);
-	    TSTY(y);
-	    TSTZ(z);
-	    break;
-
-	case TR_LFT:
-	    curSide->center.x = curSeg->center.x;
-	    curSide->center.y = curSeg->center.y;
-
-	    switch(side) {
-	    case 1:
-		curSide->radius = curSeg->radiusl - sw / 2.0;
-		curSide->radiusr = curSeg->radiusl;
-		curSide->radiusl = curSeg->radiusl - maxWidth;
-		curSide->arc = curSeg->arc;
-		curSide->length = curSide->radius * curSide->arc;
-
-		curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x - sw * cos(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y - sw * sin(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x - ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
-		curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y - ew * sin(curSide->angle[TR_CS] + curSide->arc);
-		z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-
-		curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
-					      curSide->arc * curSide->radiusr);
-		curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
-					      curSide->arc * curSide->radiusl);
-
-		curSide->Kzl = tan(curSide->angle[TR_YR]) * curSide->radiusr;
-		curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
-		curSide->Kyl = (ew - sw) / curSide->arc;
-
-		/* to find the boundary */
-		al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		alfl = curSide->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x1 = curSide->center.x + (curSide->radiusl) * sin(alfl);   /* location of end */
-		    y1 = curSide->center.y - (curSide->radiusl) * cos(alfl);
-		    TSTX(x1);
-		    TSTY(y1);
-		}
-		TSTZ(z);
-		break;
-
-	    case 0:
-		curSide->radius = curSeg->radiusr + sw / 2.0;
-		curSide->radiusl = curSeg->radiusr;
-		curSide->radiusr = curSeg->radiusr + maxWidth;
-		curSide->arc = curSeg->arc;
-		curSide->length = curSide->radius * curSide->arc;
-
-		curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x + sw * cos(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y + sw * sin(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x + ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
-		curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y + ew * sin(curSide->angle[TR_CS] + curSide->arc);
-		z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-
-		curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
-					      curSide->arc * curSide->radiusr);
-		curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
-					      curSide->arc * curSide->radiusl);
-
-		curSide->Kzl = tan(curSide->angle[TR_YR]) * (curSide->radiusr);
-		curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
-		curSide->Kyl = (ew - sw) / curSide->arc;
-
-		/* to find the boundary */
-		al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		alfl = curSide->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x2 = curSide->center.x + (curSide->radiusr) * sin(alfl);   /* location of end */
-		    y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
-		    TSTX(x2);
-		    TSTY(y2);
-		}
-		TSTZ(z);
-		break;
-
-	    }
-	    break;
-	case TR_RGT:
-	    curSide->center.x = curSeg->center.x;
-	    curSide->center.y = curSeg->center.y;
-
-	    switch(side) {
-	    case 1:
-		curSide->radius = curSeg->radiusl + sw / 2.0;
-		curSide->radiusr = curSeg->radiusl;
-		curSide->radiusl = curSeg->radiusl + maxWidth;
-		curSide->arc = curSeg->arc;
-		curSide->length = curSide->radius * curSide->arc;
-
-		curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * cos(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * sin(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
-		curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * sin(curSide->angle[TR_CS] - curSide->arc);
-		z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-
-		curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
-					      curSide->arc * curSide->radiusr);
-		curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
-					      curSide->arc * curSide->radiusl);
-
-		curSide->Kzl = tan(curSide->angle[TR_YR]) * curSide->radiusr;
-		curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
-		curSide->Kyl = (ew - sw) / curSide->arc;
-
-		/* to find the boundary */
-		al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		alfl = curSide->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x1 = curSide->center.x - (curSide->radiusl) * sin(alfl);   /* location of end */
-		    y1 = curSide->center.y + (curSide->radiusl) * cos(alfl);
-		    TSTX(x1);
-		    TSTY(y1);
-		}
-		TSTZ(z);
-		break;
-
-	    case 0:
-		curSide->radius = curSeg->radiusr - sw / 2.0;
-		curSide->radiusl = curSeg->radiusr;
-		curSide->radiusr = curSeg->radiusr - maxWidth;
-		curSide->arc = curSeg->arc;
-		curSide->length = curSide->radius * curSide->arc;
-
-		curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * cos(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * sin(curSide->angle[TR_CS]);
-		curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
-		curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * sin(curSide->angle[TR_CS] - curSide->arc);
-		z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-
-		curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z,
-					      curSide->arc * curSide->radiusr);
-		curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z,
-					      curSide->arc * curSide->radiusl);
-
-		curSide->Kzl = tan(curSide->angle[TR_YR]) * (curSide->radiusr);
-		curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->arc;
-		curSide->Kyl = (ew - sw) / curSide->arc;
-
-		/* to find the boundary */
-		al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		alfl = curSide->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x2 = curSide->center.x - (curSide->radiusr) * sin(alfl);   /* location of end */
-		    y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
-		    TSTX(x2);
-		    TSTY(y2);
-		}
-		TSTZ(z);
-		break;
-	    }
-	    break;
 	}
     }
 }
+
 
 static void
 normSeg(tTrackSeg *curSeg)
@@ -901,6 +1197,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 {
     int		i;
     tTrackSeg	*curSeg = NULL, *mSeg;
+    tTrackSeg	*curSeg2;
     tTrackSeg	*pitEntrySeg = NULL;
     tTrackSeg	*pitExitSeg = NULL;
     tTrackSeg	*pitStart = NULL;
@@ -1027,15 +1324,21 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 					     pitEnd->length + theTrack->pits.len / 2.0) / theTrack->pits.len);
 	}
 	for (mSeg = pitStart; mSeg != pitEnd->next; mSeg = mSeg->next) {
+	    curSeg2 = NULL;
 	    switch(theTrack->pits.side) {
 	    case TR_RGT:
 		curSeg = mSeg->rside;
+		curSeg2 = curSeg->rside;
 		break;
 	    case TR_LFT:
 		curSeg = mSeg->lside;
+		curSeg2 = curSeg->lside;
 		break;
 	    }
 	    curSeg->raceInfo |= TR_PIT;
+	    if (curSeg2) {
+		curSeg2->raceInfo |= TR_PIT;
+	    }
 	}
 	    
     }
@@ -1126,9 +1429,15 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	normSeg(curSeg);
 	if (curSeg->lside) {
 	    normSeg(curSeg->lside);
+	    if (curSeg->lside->lside) {
+		normSeg(curSeg->lside->lside);
+	    }
 	}
 	if (curSeg->rside) {
 	    normSeg(curSeg->rside);
+	    if (curSeg->rside->rside) {
+		normSeg(curSeg->rside->rside);
+	    }
 	}
 	curSeg = curSeg->next;
     }

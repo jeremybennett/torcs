@@ -323,6 +323,10 @@ void newrace(int index, tCarElt* car, tSituation *s)
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
     hold[index-1] = 5.0;
     InitGears(car, index);
+    spdtgt2[0] = DmTrack->width - 4.0;
+    Advance[0] = Advance2[2] = DmTrack->width * 2.0;
+    spdtgt2[1] = DmTrack->width + 5.0;
+    Advance[1] = Advance2[2] = DmTrack->width * 2.0 + 5.0;
     spdtgt2[2] = DmTrack->width - 4.0;
     Advance[2] = Advance2[2] = DmTrack->width * 2.0;
     spdtgt2[3] = DmTrack->width - 4.0;

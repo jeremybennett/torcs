@@ -379,6 +379,7 @@ static void initPits(tRmInfo *raceInfo)
     tTrackSeg		*curMainSeg;
     tTrackSeg		*curPitSeg = NULL;
     tdble		toStart = 0.0;
+    tdble		offset = 0.0;
     tTrkLocPos		curPos;
     int			changeSeg;
     int			i;
@@ -396,13 +397,22 @@ static void initPits(tRmInfo *raceInfo)
 	while (i < pits->nMaxPits) {
 	    if (changeSeg) {
 		changeSeg = 0;
+		offset = 0;
 		curMainSeg = curMainSeg->next;
 		switch (pits->side) {
 		case TR_RGT:
 		    curPitSeg = curMainSeg->rside;
+		    if (curPitSeg->rside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->rside;
+		    }
 		    break;
 		case TR_LFT:
 		    curPitSeg = curMainSeg->lside;
+		    if (curPitSeg->lside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->lside;
+		    }
 		    break;
 		}
 		curPos.seg = curMainSeg;
@@ -415,12 +425,12 @@ static void initPits(tRmInfo *raceInfo)
 	    curPos.toStart = toStart + pits->len / 2.0;
 	    switch (pits->side) {
 	    case TR_RGT:
-		curPos.toRight  = -RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
+		curPos.toRight  = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
 		curPos.toLeft   = curMainSeg->width - curPos.toRight;
 		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toRight;
 		break;
 	    case TR_LFT:
-		curPos.toLeft   = -RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
+		curPos.toLeft   = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
 		curPos.toRight  = curMainSeg->width - curPos.toLeft;
 		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toLeft;
 		break;

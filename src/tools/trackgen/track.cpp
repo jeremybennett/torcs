@@ -80,6 +80,7 @@ initPits(tTrackPitInfo *pits)
     tTrackSeg	*curMainSeg;
     tTrackSeg	*curPitSeg = NULL;
     tdble	toStart = 0;
+    tdble	offset = 0;
     tTrkLocPos	curPos;
     int		changeSeg;
     int		i;
@@ -96,13 +97,22 @@ initPits(tTrackPitInfo *pits)
 	while (i < pits->nMaxPits) {
 	    if (changeSeg) {
 		changeSeg = 0;
+		offset = 0;
 		curMainSeg = curMainSeg->next;
 		switch (pits->side) {
 		case TR_RGT:
 		    curPitSeg = curMainSeg->rside;
+		    if (curPitSeg->rside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->rside;
+		    }
 		    break;
 		case TR_LFT:
 		    curPitSeg = curMainSeg->lside;
+		    if (curPitSeg->lside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->lside;
+		    }
 		    break;
 		}
 		curPos.seg = curMainSeg;
@@ -116,12 +126,12 @@ initPits(tTrackPitInfo *pits)
 	    curPos.toStart = toStart;
 	    switch (pits->side) {
 	    case TR_RGT:
-		curPos.toRight  = -RtTrackGetWidth(curPitSeg, toStart);
+		curPos.toRight  = -offset - RtTrackGetWidth(curPitSeg, toStart);
 		curPos.toLeft   = curMainSeg->width - curPos.toRight;
 		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toRight;
 		break;
 	    case TR_LFT:
-		curPos.toLeft   = -RtTrackGetWidth(curPitSeg, toStart);
+		curPos.toLeft   = -offset - RtTrackGetWidth(curPitSeg, toStart);
 		curPos.toRight  = curMainSeg->width - curPos.toLeft;
 		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toLeft;
 		break;
@@ -204,6 +214,7 @@ InitScene(tTrack *track)
     tdble		tmHSpace = track->graphic.turnMarksInfo.hSpace;
     char		buf[256];
     int			uniqueId = 0;
+    int			hasBorder;
     
     
     
@@ -382,10 +393,10 @@ InitScene(tTrack *track)
     }
 
     nbvert++;
-    nbvert *= 11;
+    nbvert *= 15;
     nbvert+=58; /* start bridge */
     nbvert+=12 + 10 * track->pits.driversPitsNb;
-    nbvert+=1000;
+    nbvert+=1000; /* safety margin */
     printf("=== Indices Array Size   = %d\n", nbvert);
     printf("=== Vertex Array Size    = %d\n", nbvert * 3);
     printf("=== Tex Coord Array Size = %d\n", nbvert * 2);
@@ -416,20 +427,19 @@ InitScene(tTrack *track)
 	    runninglentgh = 0;
 	    ts = 0;
 	    texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
-	    tracktexcoord[2*nbvert]   = texLen;
-	    tracktexcoord[2*nbvert+1] = 0.0;
-	    
-	    trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
-	    trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
-	    trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
-	    trackindices[nbvert]      = nbvert++;
-	    
+
 	    tracktexcoord[2*nbvert]   = texLen;
 	    tracktexcoord[2*nbvert+1] = texMaxT;
-	    
 	    trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
 	    trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
 	    trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
+	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = 0.0;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
 	    trackindices[nbvert]      = nbvert++;
 	}
 	    
@@ -441,21 +451,22 @@ InitScene(tTrack *track)
 	    while (ts < seg->length) {
 		texLen += texStep;
 		trkpos.toStart = ts;
-		trkpos.toRight = 0;
-		RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = 0.0;
 
+		trkpos.toRight = width;
+		RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = texMaxT;
 		trackvertices[3*nbvert]   = x;
 		trackvertices[3*nbvert+1] = y;
 		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		trackindices[nbvert]      = nbvert++;
 
-		trkpos.toRight = width;
+		trkpos.toRight = 0;
 		RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = texMaxT;
 
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0.0;
 		trackvertices[3*nbvert]   = x;
 		trackvertices[3*nbvert+1] = y;
 		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
@@ -463,6 +474,7 @@ InitScene(tTrack *track)
 
 		ts += LMAX;
 	    }
+	    ts = seg->length;
 	    break;
 	case TR_LFT:
 	    step = LMAX / (seg->radiusr);
@@ -475,30 +487,29 @@ InitScene(tTrack *track)
 	    while (anz < seg->angle[TR_ZE]) {
 		texLen += texStep;
 		trkpos.toStart = ts;
-		/* right */
-		trkpos.toRight = 0;
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = 0.0;
-
-		trackvertices[3*nbvert]   = seg->center.x + radiusr * sin(anz);
-		trackvertices[3*nbvert+1] = seg->center.y - radiusr * cos(anz);
-		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		trackindices[nbvert]      = nbvert++;
 
 		/* left */
 		trkpos.toRight = width;
 		tracktexcoord[2*nbvert]   = texLen;
 		tracktexcoord[2*nbvert+1] = texMaxT;
-
 		trackvertices[3*nbvert]   = seg->center.x + radiusl * sin(anz);
 		trackvertices[3*nbvert+1] = seg->center.y - radiusl * cos(anz);
 		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		trackindices[nbvert]      = nbvert++;
 
+		/* right */
+		trkpos.toRight = 0;
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0.0;
+		trackvertices[3*nbvert]   = seg->center.x + radiusr * sin(anz);
+		trackvertices[3*nbvert+1] = seg->center.y - radiusr * cos(anz);
+		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		trackindices[nbvert]      = nbvert++;
 
 		ts += step;
 		anz += step;
 	    }
+	    ts = seg->arc;
 	    break;
 	case TR_RGT:
 	    step = LMAX / (seg->radiusl);
@@ -510,48 +521,236 @@ InitScene(tTrack *track)
 	    trkpos.seg = seg;
 	    while (anz > seg->angle[TR_ZE]) {
 		texLen += texStep;
-		/* right */
 		trkpos.toStart = ts;
-		trkpos.toRight = 0;
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = 0;
 
-		trackvertices[3*nbvert]   = seg->center.x - radiusr * sin(anz);
-		trackvertices[3*nbvert+1] = seg->center.y + radiusr * cos(anz);
-		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		trackindices[nbvert]      = nbvert++;
 		/* left */
 		trkpos.toRight = width;
 		tracktexcoord[2*nbvert]   = texLen;
 		tracktexcoord[2*nbvert+1] = texMaxT;
-
 		trackvertices[3*nbvert]   = seg->center.x - radiusl * sin(anz);
 		trackvertices[3*nbvert+1] = seg->center.y + radiusl * cos(anz);
 		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		trackindices[nbvert]      = nbvert++;
+
+		/* right */
+		trkpos.toRight = 0;
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0;
+		trackvertices[3*nbvert]   = seg->center.x - radiusr * sin(anz);
+		trackvertices[3*nbvert+1] = seg->center.y + radiusr * cos(anz);
+		trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		trackindices[nbvert]      = nbvert++;
+
 		ts += step;
 		anz -= step;
 	    }
+	    ts = seg->arc;
 	    break;
 	}
 	texLen = (curTexSeg + seg->length) / curTexSize;
+
+	tracktexcoord[2*nbvert]   = texLen;
+	tracktexcoord[2*nbvert+1] = texMaxT;
+	trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
+	trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
+	trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
+	trackindices[nbvert]      = nbvert++;
+
 	tracktexcoord[2*nbvert]   = texLen;
 	tracktexcoord[2*nbvert+1] = 0;
-
 	trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
 	trackvertices[3*nbvert+1] = seg->vertex[TR_ER].y;
 	trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
 	trackindices[nbvert]      = nbvert++;
 
-	tracktexcoord[2*nbvert]   = texLen;
-	tracktexcoord[2*nbvert+1] = texMaxT;
-
-	trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
-	trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
-	trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
-	trackindices[nbvert]      = nbvert++;
 	startNeeded = 0;
 	runninglentgh += seg->length;
+    }
+
+
+    /* Right Border */
+    prevTexId = 0;
+    texLen = 0;
+    startNeeded = 1;
+    runninglentgh = 0;
+    uniqueId++;
+    NEWDISPLIST(0, "tkRtBr", uniqueId);
+    for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	if ((mseg->rside != NULL) && (mseg->ralt == NULL) && (mseg->rside->type2 == TR_RBORDER)) {
+	    seg = mseg->rside;
+	    uniqueId++;
+	    CHECKDISPLIST(seg->material, "tkRtBr", uniqueId, mseg->lgfromstart);
+	    if (!curTexLink) {
+		curTexSeg = 0;
+	    } else {
+		curTexSeg = mseg->lgfromstart;
+	    }
+	    curTexSeg += curTexOffset;
+	    texLen = curTexSeg / curTexSize;
+	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
+		uniqueId++;
+		NEWDISPLIST(0, "tkRtBr", uniqueId);
+		runninglentgh = 0;
+		ts = 0;
+
+		width = RtTrackGetWidth(seg, ts);
+		texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = texMaxT;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
+		trackindices[nbvert]      = nbvert++;
+	    }
+	    
+	    switch (seg->type) {
+	    case TR_STR:
+		ts = LMAX;
+		texStep = LMAX / curTexSize;
+		texLen += texStep;
+		trkpos.seg = seg;
+		while (ts < seg->length) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    trkpos.toRight = 0 ;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    ts += LMAX;
+		    texLen += texStep;
+		}
+		ts = seg->length;
+		break;
+	    case TR_LFT:
+		step = LMAX / (mseg->radiusr);
+		texStep = step * mseg->radius / curTexSize;
+		anz = seg->angle[TR_ZS] + step;
+		ts = step;
+		texLen += texStep;
+		radiusr = seg->radiusr;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz < seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    ts += step;
+		    texLen += texStep;
+		    anz += step;
+		}
+		ts = seg->arc;
+		break;
+	    case TR_RGT:
+		step = LMAX / (mseg->radiusl);
+		texStep = step * mseg->radius / curTexSize;
+		anz = seg->angle[TR_ZS] - step;
+		ts = step;
+		texLen += texStep;
+		radiusr = seg->radiusr;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz > seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+		    ts += step;
+		    texLen += texStep;
+		    anz -= step;
+		}
+		ts = seg->arc;
+		break;
+	    }
+	    texLen = (curTexSeg + mseg->length) / curTexSize;
+
+	    width = RtTrackGetWidth(seg, ts);
+	    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = 0;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
+	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = texMaxT;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_ER].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
+	    trackindices[nbvert]      = nbvert++;
+
+	    startNeeded = 0;
+	    runninglentgh += seg->length;
+	} else {
+	    uniqueId++;
+	    NEWDISPLIST(0, "tkRtBr", uniqueId);
+	    startNeeded = 1;
+	}
     }
 
     /* Right Side */
@@ -559,11 +758,22 @@ InitScene(tTrack *track)
     texLen = 0;
     startNeeded = 1;
     runninglentgh = 0;
+    hasBorder = 0;
     uniqueId++;
     NEWDISPLIST(0, "tkRtSd", uniqueId);
     for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
-	if ((mseg->rside != NULL) && (mseg->ralt == NULL)) {
+	if ((mseg->rside != NULL) && (mseg->ralt == NULL) &&
+	    ((mseg->rside->type2 == TR_RSIDE) || (mseg->rside->rside != NULL))) {
 	    seg = mseg->rside;
+	    if (seg->rside != NULL) {
+		seg = seg->rside;
+		if (hasBorder == 0) {
+		    startNeeded = 1;
+		    hasBorder = 1;
+		}
+	    } else {
+		hasBorder = 0;
+	    }
 	    uniqueId++;
 	    CHECKDISPLIST(seg->material, "tkRtSd", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
@@ -577,22 +787,23 @@ InitScene(tTrack *track)
 		uniqueId++;
 		NEWDISPLIST(0, "tkRtSd", uniqueId);
 		runninglentgh = 0;
-		//if (curTexType == 0) texLen = 0;
 		ts = 0;
-		texMaxT = RtTrackGetWidth(seg, ts);
-		texMaxT = (curTexType == 1 ? texMaxT / curTexSize : 1.0 + floor(texMaxT / curTexSize));
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = texMaxT;
-		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
-		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
-		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
-		trackindices[nbvert]      = nbvert++;
+
+		width = RtTrackGetWidth(seg, ts);
+		texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
 
 		tracktexcoord[2*nbvert]   = texLen;
 		tracktexcoord[2*nbvert+1] = 0;
 		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
 		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
 		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = texMaxT;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
 		trackindices[nbvert]      = nbvert++;
 	    }
 	    
@@ -604,16 +815,10 @@ InitScene(tTrack *track)
 		trkpos.seg = seg;
 		while (ts < seg->length) {
 		    trkpos.toStart = ts;
+
 		    width = RtTrackGetWidth(seg, ts);
 		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-		    trkpos.toRight = 0 ;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = texMaxT;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
+
 		    trkpos.toRight = width;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 		    tracktexcoord[2*nbvert]   = texLen;
@@ -622,9 +827,20 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
+
+		    trkpos.toRight = 0 ;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += LMAX;
 		    texLen += texStep;
 		}
+		ts = seg->length;
 		break;
 	    case TR_LFT:
 		step = LMAX / (mseg->radiusr);
@@ -639,15 +855,7 @@ InitScene(tTrack *track)
 		    trkpos.toStart = ts;
 		    width = RtTrackGetWidth(seg, ts);
 		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-		    /* right */
-		    trkpos.toRight = 0;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = texMaxT;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
+
 		    /* left */
 		    trkpos.toRight = width;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
@@ -657,10 +865,22 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz += step;
 		}
+		ts = seg->arc;
 		break;
 	    case TR_RGT:
 		step = LMAX / (mseg->radiusl);
@@ -672,18 +892,10 @@ InitScene(tTrack *track)
 		radiusl = seg->radiusl;
 		trkpos.seg = seg;
 		while (anz > seg->angle[TR_ZE]) {
-		    /* right */
 		    trkpos.toStart = ts;
 		    width = RtTrackGetWidth(seg, ts);
 		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-		    trkpos.toRight = 0;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = texMaxT;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
+
 		    /* left */
 		    trkpos.toRight = width;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
@@ -693,22 +905,28 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz -= step;
 		}
+		ts = seg->arc;
 		break;
 	    }
 	    texLen = (curTexSeg + mseg->length) / curTexSize;
 
 	    width = RtTrackGetWidth(seg, ts);
 	    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-	    tracktexcoord[2*nbvert]   = texLen;
-	    tracktexcoord[2*nbvert+1] = texMaxT;
-	    trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
-	    trackvertices[3*nbvert+1] = seg->vertex[TR_ER].y;
-	    trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
-	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = texLen;
 	    tracktexcoord[2*nbvert+1] = 0;
@@ -716,6 +934,14 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
 	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
 	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = texMaxT;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_ER].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
+	    trackindices[nbvert]      = nbvert++;
+
 	    startNeeded = 0;
 	    runninglentgh += seg->length;
 	} else {
@@ -726,16 +952,212 @@ InitScene(tTrack *track)
     }
 
 
-    /* Left Side */
+    /* Left Border */
     prevTexId = 0;
     texLen = 0;
     startNeeded = 1;
     runninglentgh = 0;
     uniqueId++;
+    NEWDISPLIST(0, "tkLtBr", uniqueId);
+    for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	if ((mseg->lside != NULL) && (mseg->lalt == NULL) && (mseg->lside->type2 == TR_LBORDER)) {
+	    seg = mseg->lside;
+	    uniqueId++;
+	    CHECKDISPLIST(seg->material, "tkLtBr", uniqueId, mseg->lgfromstart);
+	    if (!curTexLink) {
+		curTexSeg = 0;
+	    } else {
+		curTexSeg = mseg->lgfromstart;
+	    }
+	    curTexSeg += curTexOffset;
+	    texLen = curTexSeg / curTexSize;
+	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
+		uniqueId++;
+		NEWDISPLIST(0, "tkLtBr", uniqueId);
+		runninglentgh = 0;
+		ts = 0;
+		width = RtTrackGetWidth(seg, ts);
+		texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = texMaxT;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
+		trackindices[nbvert]      = nbvert++;
+	    }
+	    
+	    switch (seg->type) {
+	    case TR_STR:
+		ts = LMAX;
+		texStep = LMAX / curTexSize;
+		texLen += texStep;
+		trkpos.seg = seg;
+		while (ts < seg->length) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    ts += LMAX;
+		    texLen += texStep;
+		}
+		ts = seg->length;
+		break;
+	    case TR_LFT:
+		step = LMAX / (mseg->radiusr);
+		texStep = step * mseg->radius / curTexSize;
+		anz = seg->angle[TR_ZS] + step;
+		ts = step;
+		texLen += texStep;
+		radiusr = seg->radiusr;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz < seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    ts += step;
+		    texLen += texStep;
+		    anz += step;
+		}
+		ts = seg->arc;
+		break;
+	    case TR_RGT:
+		step = LMAX / (mseg->radiusl);
+		texStep = step * mseg->radius / curTexSize;
+		anz = seg->angle[TR_ZS] - step;
+		ts = step;
+		texLen += texStep;
+		radiusr = seg->radiusr;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz > seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
+		    ts += step;
+		    texLen += texStep;
+		    anz -= step;
+		}
+		ts = seg->arc;
+		break;
+	    }
+	    texLen = (curTexSeg + mseg->length) / curTexSize;
+
+	    width = RtTrackGetWidth(seg, ts);
+	    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = texMaxT;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
+	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = 0;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_ER].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
+	    trackindices[nbvert]      = nbvert++;
+
+	    startNeeded = 0;
+	    runninglentgh += seg->length;
+	} else {
+	    uniqueId++;
+	    NEWDISPLIST(0, "tkLtBr", uniqueId);
+	    startNeeded = 1;
+	}
+    }
+
+    /* Left Side */
+    prevTexId = 0;
+    texLen = 0;
+    startNeeded = 1;
+    runninglentgh = 0;
+    hasBorder = 0;
+    uniqueId++;
     NEWDISPLIST(0, "tkLtSd", uniqueId);
     for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
-	if ((mseg->lside != NULL) && (mseg->lalt == NULL)) {
+	if ((mseg->lside != NULL) && (mseg->lalt == NULL) &&
+	    ((mseg->lside->type2 == TR_LSIDE) || (mseg->lside->lside != NULL))) {
 	    seg = mseg->lside;
+	    if (seg->lside) {
+		seg = seg->lside;
+		if (hasBorder == 0) {
+		    startNeeded = 1;
+		    hasBorder = 1;
+		}
+	    } else {
+		hasBorder = 0;
+	    }
 	    uniqueId++;
 	    CHECKDISPLIST(seg->material, "tkLtSd", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
@@ -748,14 +1170,8 @@ InitScene(tTrack *track)
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
 		NEWDISPLIST(0, "tkLtSd", uniqueId);
-		//if (curTexType == 0) texLen = 0;
 		runninglentgh = 0;
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = 0;
-		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
-		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
-		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
-		trackindices[nbvert]      = nbvert++;
+
 		ts = 0;
 		width = RtTrackGetWidth(seg, ts);
 		texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
@@ -764,6 +1180,13 @@ InitScene(tTrack *track)
 		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
 		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
 		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SR].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SR].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SR].z;
 		trackindices[nbvert]      = nbvert++;
 	    }
 	    
@@ -775,16 +1198,10 @@ InitScene(tTrack *track)
 		trkpos.seg = seg;
 		while (ts < seg->length) {
 		    trkpos.toStart = ts;
-		    trkpos.toRight = 0;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = 0;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
+
 		    width = RtTrackGetWidth(seg, ts);
 		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
 		    trkpos.toRight = width;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 		    tracktexcoord[2*nbvert]   = texLen;
@@ -793,9 +1210,20 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
+
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += LMAX;
 		    texLen += texStep;
 		}
+		ts = seg->length;
 		break;
 	    case TR_LFT:
 		step = LMAX / (mseg->radiusr);
@@ -808,6 +1236,19 @@ InitScene(tTrack *track)
 		trkpos.seg = seg;
 		while (anz < seg->angle[TR_ZE]) {
 		    trkpos.toStart = ts;
+		    width = RtTrackGetWidth(seg, ts);
+		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
+		    trkpos.toRight = width;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = texMaxT;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    /* right */
 		    trkpos.toRight = 0;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
@@ -817,21 +1258,12 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
-		    /* left */
-		    width = RtTrackGetWidth(seg, ts);
-		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-		    trkpos.toRight = width;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = texMaxT;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz += step;
 		}
+		ts = seg->arc;
 		break;
 	    case TR_RGT:
 		step = LMAX / (mseg->radiusl);
@@ -843,19 +1275,11 @@ InitScene(tTrack *track)
 		radiusl = seg->radiusl;
 		trkpos.seg = seg;
 		while (anz > seg->angle[TR_ZE]) {
-		    /* right */
 		    trkpos.toStart = ts;
-		    trkpos.toRight = 0;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = 0;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
-		    /* left */
 		    width = RtTrackGetWidth(seg, ts);
 		    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+		    /* left */
 		    trkpos.toRight = width;
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 		    tracktexcoord[2*nbvert]   = texLen;
@@ -864,13 +1288,36 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
 		    trackindices[nbvert]      = nbvert++;
+
+		    /* right */
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz -= step;
 		}
+		ts = seg->arc;
 		break;
 	    }
 	    texLen = (curTexSeg + mseg->length) / curTexSize;
+
+	    width = RtTrackGetWidth(seg, ts);
+	    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = texMaxT;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
+	    trackindices[nbvert]      = nbvert++;
+
 	    tracktexcoord[2*nbvert]   = texLen;
 	    tracktexcoord[2*nbvert+1] = 0;
 	    trackvertices[3*nbvert]   = seg->vertex[TR_ER].x;
@@ -878,14 +1325,6 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert+2] = seg->vertex[TR_ER].z;
 	    trackindices[nbvert]      = nbvert++;
 
-	    width = RtTrackGetWidth(seg, ts);
-	    texMaxT = (curTexType == 1 ?  width / curTexSize : 1.0 + floor(width / curTexSize));
-	    tracktexcoord[2*nbvert]   = texLen;
-	    tracktexcoord[2*nbvert+1] = texMaxT;
-	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
-	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
-	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
-	    trackindices[nbvert]      = nbvert++;
 	    startNeeded = 0;
 	    runninglentgh += seg->length;
 	} else {
@@ -918,9 +1357,13 @@ InitScene(tTrack *track)
 		curTexSeg = mseg->lgfromstart;
 	    }
 	    texLen = curTexSeg / curTexSize;
-	    if (mseg->rside != NULL) {
+	    if (mseg->rside) {
 		seg = mseg->rside;
 		tr = -seg->width;
+		if (seg->rside) {
+		    seg = seg->rside;
+		    tr -= seg->width;
+		}
 	    } else {
 		seg = mseg;
 		tr = 0;
@@ -970,6 +1413,7 @@ InitScene(tTrack *track)
 		    ts += LMAX;
 		    texLen += texStep;
 		}
+		ts = seg->length;
 		break;
 	    case TR_LFT:
 		step = LMAX / (mseg->radiusr);
@@ -1001,6 +1445,7 @@ InitScene(tTrack *track)
 		    texLen += texStep;
 		    anz += step;
 		}
+		ts = seg->arc;
 		break;
 	    case TR_RGT:
 		step = LMAX / (mseg->radiusl);
@@ -1032,6 +1477,7 @@ InitScene(tTrack *track)
 		    texLen += texStep;
 		    anz -= step;
 		}
+		ts = seg->arc;
 		break;
 	    }
 	    texLen = (curTexSeg + mseg->length) / curTexSize;
@@ -1078,6 +1524,10 @@ InitScene(tTrack *track)
 	    if (mseg->lside) {
 		seg = mseg->lside;
 		tr = width + seg->width;
+		if (seg->lside) {
+		    seg = seg->lside;
+		    tr += seg->width;
+		}
 	    } else {
 		seg = mseg;
 		tr = width;
@@ -1087,18 +1537,19 @@ InitScene(tTrack *track)
 		NEWDISPLIST(0, "BrLt", uniqueId);
 		runninglentgh = 0;
 		if (curTexType == 0) texLen = 0;
-		tracktexcoord[2*nbvert]   = texLen;
-		tracktexcoord[2*nbvert+1] = 0;
-		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
-		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
-		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
-		trackindices[nbvert]      = nbvert++;
 
 		tracktexcoord[2*nbvert]   = texLen;
 		tracktexcoord[2*nbvert+1] = 1.0;
 		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
 		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
 		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z + borderHeight;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = texLen;
+		tracktexcoord[2*nbvert+1] = 0;
+		trackvertices[3*nbvert]   = seg->vertex[TR_SL].x;
+		trackvertices[3*nbvert+1] = seg->vertex[TR_SL].y;
+		trackvertices[3*nbvert+2] = seg->vertex[TR_SL].z;
 		trackindices[nbvert]      = nbvert++;
 	    }
 	    
@@ -1112,12 +1563,6 @@ InitScene(tTrack *track)
 		    trkpos.toStart = ts;
 		    trkpos.toRight = RtTrackGetWidth(seg, ts);
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = 0;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
 
 		    tracktexcoord[2*nbvert]   = texLen;
 		    tracktexcoord[2*nbvert+1] = 1.0;
@@ -1125,9 +1570,18 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos) + borderHeight;
 		    trackindices[nbvert]      = nbvert++;
+
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += LMAX;
 		    texLen += texStep;
 		}
+		ts = seg->length;
 		break;
 	    case TR_LFT:
 		step = LMAX / (mseg->radiusr);
@@ -1141,13 +1595,6 @@ InitScene(tTrack *track)
 		    trkpos.toStart = ts;
 		    trkpos.toRight = RtTrackGetWidth(seg, ts);
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    /* left */
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = 0;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
 
 		    tracktexcoord[2*nbvert]   = texLen;
 		    tracktexcoord[2*nbvert+1] = 1.0;
@@ -1155,10 +1602,19 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos) + borderHeight;
 		    trackindices[nbvert]      = nbvert++;
+
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz += step;
 		}
+		ts = seg->arc;
 		break;
 	    case TR_RGT:
 		step = LMAX / (mseg->radiusl);
@@ -1172,13 +1628,6 @@ InitScene(tTrack *track)
 		    trkpos.toStart = ts;
 		    trkpos.toRight = RtTrackGetWidth(seg, ts);
 		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    /* left */
-		    tracktexcoord[2*nbvert]   = texLen;
-		    tracktexcoord[2*nbvert+1] = 0;
-		    trackvertices[3*nbvert]   = x;
-		    trackvertices[3*nbvert+1] = y;
-		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
-		    trackindices[nbvert]      = nbvert++;
 
 		    tracktexcoord[2*nbvert]   = texLen;
 		    tracktexcoord[2*nbvert+1] = 1.0;
@@ -1186,19 +1635,22 @@ InitScene(tTrack *track)
 		    trackvertices[3*nbvert+1] = y;
 		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos) + borderHeight;
 		    trackindices[nbvert]      = nbvert++;
+
+		    tracktexcoord[2*nbvert]   = texLen;
+		    tracktexcoord[2*nbvert+1] = 0;
+		    trackvertices[3*nbvert]   = x;
+		    trackvertices[3*nbvert+1] = y;
+		    trackvertices[3*nbvert+2] = RtTrackHeightL(&trkpos);
+		    trackindices[nbvert]      = nbvert++;
+
 		    ts += step;
 		    texLen += texStep;
 		    anz -= step;
 		}
+		ts = seg->arc;
 		break;
 	    }
 	    texLen = (curTexSeg + mseg->length) / curTexSize;
-	    tracktexcoord[2*nbvert]   = texLen;
-	    tracktexcoord[2*nbvert+1] = 0;
-	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
-	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
-	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
-	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = texLen;
 	    tracktexcoord[2*nbvert+1] = 1.0;
@@ -1206,6 +1658,14 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
 	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z + borderHeight;
 	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = texLen;
+	    tracktexcoord[2*nbvert+1] = 0;
+	    trackvertices[3*nbvert]   = seg->vertex[TR_EL].x;
+	    trackvertices[3*nbvert+1] = seg->vertex[TR_EL].y;
+	    trackvertices[3*nbvert+2] = seg->vertex[TR_EL].z;
+	    trackindices[nbvert]      = nbvert++;
+
 	    startNeeded = 0;
 	    runninglentgh += seg->length;
 	}
@@ -1336,9 +1796,13 @@ InitScene(tTrack *track)
     mseg = track->seg->next;
     if (mseg->rside) {
 	seg = mseg->rside;
+	if (seg->rside) {
+	    seg = seg->rside;
+	}
     } else {
 	seg = mseg;
     }
+
     x = seg->vertex[TR_SR].x;
     y = seg->vertex[TR_SR].y - 0.1;
     z = seg->vertex[TR_SR].z;
@@ -1421,111 +1885,15 @@ InitScene(tTrack *track)
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
-    uniqueId++;
-    CHECKDISPLIST2("pylon2", 4, "StBg", uniqueId);
-
-
-    tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    y -= BR_WIDTH_1;
-
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    x += BR_WIDTH_0;
-
-    tracktexcoord[2*nbvert]   = 2;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 2;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    y += BR_WIDTH_1;
-
-    tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-    
-    tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    x -= BR_WIDTH_0;
-
-    tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-    
-    tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x + BR_WIDTH_0;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    y -= BR_WIDTH_1;
-
-    tracktexcoord[2*nbvert]   = 4;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-    
-    tracktexcoord[2*nbvert]   = 4;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x + BR_WIDTH_0;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    y += BR_WIDTH_1;	/* back to origin */
     
     uniqueId++;
-    CHECKDISPLIST2("pylon1", 4, "StBg", uniqueId);
+    NEWDISPLIST(0, "StBg", uniqueId);
 
     if (mseg->lside) {
 	seg = mseg->lside;
+	if (seg->lside) {
+	    seg = seg->lside;
+	}
     } else {
 	seg = mseg;
     }
@@ -1534,98 +1902,215 @@ InitScene(tTrack *track)
     z2 = seg->vertex[TR_SL].z;
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 0;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 0;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z2;
     trackindices[nbvert]      = nbvert++;
 
     x2 += BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z2;
     trackindices[nbvert]      = nbvert++;
 
     y2 += BR_WIDTH_1;
 
     tracktexcoord[2*nbvert]   = 2;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 2;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 2;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z2;
     trackindices[nbvert]      = nbvert++;
 
     x2 -= BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 3;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z2;
     trackindices[nbvert]      = nbvert++;
 
     y2 -= BR_WIDTH_1;
 
     tracktexcoord[2*nbvert]   = 4;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 4;
     tracktexcoord[2*nbvert+1] = 0;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z2;
     trackindices[nbvert]      = nbvert++;
 
-    tracktexcoord[2*nbvert]   = 4;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     uniqueId++;
     CHECKDISPLIST2("pylon2", 4, "StBg", uniqueId);
 
-    y2 += BR_WIDTH_1;
+
+    tracktexcoord[2*nbvert]   = 0;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 0;
     tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    y -= BR_WIDTH_1;
+
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    x += BR_WIDTH_0;
+
+    tracktexcoord[2*nbvert]   = 2;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 2;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    y += BR_WIDTH_1;
+    
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    x -= BR_WIDTH_0;
+    
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x + BR_WIDTH_0;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    y -= BR_WIDTH_1;
+    
+    tracktexcoord[2*nbvert]   = 4;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x + BR_WIDTH_0;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 4;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x;
+    trackvertices[3*nbvert+1] = y;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    y += BR_WIDTH_1;	/* back to origin */
+
+    uniqueId++;
+    NEWDISPLIST(0, "StBg", uniqueId);
+
+    y2 += BR_WIDTH_1;
+
+    tracktexcoord[2*nbvert]   = 0;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x2 + BR_WIDTH_0;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x2 + BR_WIDTH_0;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
@@ -1633,15 +2118,15 @@ InitScene(tTrack *track)
     y2 -= BR_WIDTH_1;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x2 + BR_WIDTH_0;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x2 + BR_WIDTH_0;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
@@ -1649,67 +2134,68 @@ InitScene(tTrack *track)
     x2 += BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
     y2 += BR_WIDTH_1;
 
     tracktexcoord[2*nbvert]   = 2;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 2;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 2;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
     x2 -= BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 3;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 3;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 3;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
     y2 -= BR_WIDTH_1;
 
     tracktexcoord[2*nbvert]   = 4;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 4;
     tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
+    tracktexcoord[2*nbvert]   = 4;
+    tracktexcoord[2*nbvert+1] = 0;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    /* Middle on the bridge */
     uniqueId++;
     CHECKDISPLIST2("pylon3", 4, "StBg", uniqueId);
 
@@ -1728,14 +2214,14 @@ InitScene(tTrack *track)
     trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 1;
+    tracktexcoord[2*nbvert+1] = 0.25;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 1;
+    tracktexcoord[2*nbvert+1] = 0.25;
     trackvertices[3*nbvert]   = x;
     trackvertices[3*nbvert+1] = y;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
@@ -1745,64 +2231,31 @@ InitScene(tTrack *track)
     x2 += BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 2;
+    tracktexcoord[2*nbvert+1] = 0.5;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
     tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 2;
+    tracktexcoord[2*nbvert+1] = 0.5;
     trackvertices[3*nbvert]   = x;
     trackvertices[3*nbvert+1] = y;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
     trackindices[nbvert]      = nbvert++;
 
-    uniqueId++;
-    NEWDISPLIST(0, "StBg", uniqueId);
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_1;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x;
-    trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
+    tracktexcoord[2*nbvert+1] = 0.75;
     trackvertices[3*nbvert]   = x2;
     trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
-    uniqueId++;
-    CHECKDISPLIST2("pylon1", 4, "StBg", uniqueId);
-
-    tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 1;
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 0.75;
     trackvertices[3*nbvert]   = x;
     trackvertices[3*nbvert+1] = y;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
-
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 1;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
@@ -1810,18 +2263,20 @@ InitScene(tTrack *track)
     x2 -= BR_WIDTH_0;
 
     tracktexcoord[2*nbvert]   = 0;
-    tracktexcoord[2*nbvert+1] = 0;
+    tracktexcoord[2*nbvert+1] = 1;
+    trackvertices[3*nbvert]   = x2;
+    trackvertices[3*nbvert+1] = y2;
+    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
+    trackindices[nbvert]      = nbvert++;
+
+    tracktexcoord[2*nbvert]   = 1;
+    tracktexcoord[2*nbvert+1] = 1;
     trackvertices[3*nbvert]   = x;
     trackvertices[3*nbvert+1] = y;
     trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
     trackindices[nbvert]      = nbvert++;
 
-    tracktexcoord[2*nbvert]   = 1;
-    tracktexcoord[2*nbvert+1] = 0;
-    trackvertices[3*nbvert]   = x2;
-    trackvertices[3*nbvert+1] = y2;
-    trackvertices[3*nbvert+2] = z + BR_HEIGHT_2;
-    trackindices[nbvert]      = nbvert++;
+
 
 
     /* draw the pits */
@@ -1925,13 +2380,6 @@ InitScene(tTrack *track)
 
 	    z3 = RtTrackHeightG(pits->driversPits[i].pos.seg, x3, y3);
 
-	    tracktexcoord[2*nbvert]   = 0;
-	    tracktexcoord[2*nbvert+1] = 0;
-	    trackvertices[3*nbvert]   = x3;
-	    trackvertices[3*nbvert+1] = y3;
-	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT - PIT_TOP;
-	    trackindices[nbvert]      = nbvert++;
-
 	    tracktexcoord[2*nbvert]   = pits->len;
 	    tracktexcoord[2*nbvert+1] = 0;
 	    trackvertices[3*nbvert]   = x2;
@@ -1939,15 +2387,15 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert+2] = z2 + PIT_HEIGHT - PIT_TOP;
 	    trackindices[nbvert]      = nbvert++;
 
-	    dx = PIT_TOP * normvec.x;
-	    dy = PIT_TOP * normvec.y;
-
 	    tracktexcoord[2*nbvert]   = 0;
-	    tracktexcoord[2*nbvert+1] = PIT_TOP;
-	    trackvertices[3*nbvert]   = x3 + dx;
-	    trackvertices[3*nbvert+1] = y3 + dy;
+	    tracktexcoord[2*nbvert+1] = 0;
+	    trackvertices[3*nbvert]   = x3;
+	    trackvertices[3*nbvert+1] = y3;
 	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT - PIT_TOP;
 	    trackindices[nbvert]      = nbvert++;
+
+	    dx = PIT_TOP * normvec.x;
+	    dy = PIT_TOP * normvec.y;
 
 	    tracktexcoord[2*nbvert]   = pits->len;
 	    tracktexcoord[2*nbvert+1] = PIT_TOP;
@@ -1957,10 +2405,10 @@ InitScene(tTrack *track)
 	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = 0;
-	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP;
+	    tracktexcoord[2*nbvert+1] = PIT_TOP;
 	    trackvertices[3*nbvert]   = x3 + dx;
 	    trackvertices[3*nbvert+1] = y3 + dy;
-	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT;
+	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT - PIT_TOP;
 	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = pits->len;
@@ -1968,18 +2416,18 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert]   = x2 + dx;
 	    trackvertices[3*nbvert+1] = y2 + dy;
 	    trackvertices[3*nbvert+2] = z2 + PIT_HEIGHT;
+	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = 0;
+	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP;
+	    trackvertices[3*nbvert]   = x3 + dx;
+	    trackvertices[3*nbvert+1] = y3 + dy;
+	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT;
 	    trackindices[nbvert]      = nbvert++;
 
 	    dx = - PIT_DEEP * normvec.x;
 	    dy = - PIT_DEEP * normvec.y;
 
-	    tracktexcoord[2*nbvert]   = 0;
-	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP + PIT_DEEP;
-	    trackvertices[3*nbvert]   = x3 + dx;
-	    trackvertices[3*nbvert+1] = y3 + dy;
-	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT;
-	    trackindices[nbvert]      = nbvert++;
-
 	    tracktexcoord[2*nbvert]   = pits->len;
 	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP + PIT_DEEP;
 	    trackvertices[3*nbvert]   = x2 + dx;
@@ -1988,10 +2436,10 @@ InitScene(tTrack *track)
 	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = 0;
-	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP + PIT_DEEP + PIT_HEIGHT;
+	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP + PIT_DEEP;
 	    trackvertices[3*nbvert]   = x3 + dx;
 	    trackvertices[3*nbvert+1] = y3 + dy;
-	    trackvertices[3*nbvert+2] = z3;
+	    trackvertices[3*nbvert+2] = z3 + PIT_HEIGHT;
 	    trackindices[nbvert]      = nbvert++;
 
 	    tracktexcoord[2*nbvert]   = pits->len;
@@ -1999,6 +2447,13 @@ InitScene(tTrack *track)
 	    trackvertices[3*nbvert]   = x2 + dx;
 	    trackvertices[3*nbvert+1] = y2 + dy;
 	    trackvertices[3*nbvert+2] = z2;
+	    trackindices[nbvert]      = nbvert++;
+
+	    tracktexcoord[2*nbvert]   = 0;
+	    tracktexcoord[2*nbvert+1] = 2 * PIT_TOP + PIT_DEEP + PIT_HEIGHT;
+	    trackvertices[3*nbvert]   = x3 + dx;
+	    trackvertices[3*nbvert+1] = y3 + dy;
+	    trackvertices[3*nbvert+2] = z3;
 	    trackindices[nbvert]      = nbvert++;
 
 	}
@@ -2026,23 +2481,13 @@ InitScene(tTrack *track)
 	y2 = y + PIT_TOP * normvec.y;
 
 	tracktexcoord[2*nbvert]   = 1.0 - PIT_TOP;
-	tracktexcoord[2*nbvert+1] = PIT_HEIGHT - PIT_TOP;
-	trackvertices[3*nbvert]   = x2;
-	trackvertices[3*nbvert+1] = y2;
-	trackvertices[3*nbvert+2] = z2 + PIT_HEIGHT - PIT_TOP;
-	trackindices[nbvert]      = nbvert++;
-
-	tracktexcoord[2*nbvert]   = 1.0 - PIT_TOP;
 	tracktexcoord[2*nbvert+1] = PIT_HEIGHT;
 	trackvertices[3*nbvert]   = x2;
 	trackvertices[3*nbvert+1] = y2;
 	trackvertices[3*nbvert+2] = z2 + PIT_HEIGHT;
 	trackindices[nbvert]      = nbvert++;
 
-	x2 = x;
-	y2 = y;
-
-	tracktexcoord[2*nbvert]   = 1.0;
+	tracktexcoord[2*nbvert]   = 1.0 - PIT_TOP;
 	tracktexcoord[2*nbvert+1] = PIT_HEIGHT - PIT_TOP;
 	trackvertices[3*nbvert]   = x2;
 	trackvertices[3*nbvert+1] = y2;
@@ -2063,16 +2508,26 @@ InitScene(tTrack *track)
 	y2 = y;
 
 	tracktexcoord[2*nbvert]   = 1.0;
+	tracktexcoord[2*nbvert+1] = PIT_HEIGHT - PIT_TOP;
+	trackvertices[3*nbvert]   = x2;
+	trackvertices[3*nbvert+1] = y2;
+	trackvertices[3*nbvert+2] = z2 + PIT_HEIGHT - PIT_TOP;
+	trackindices[nbvert]      = nbvert++;
+
+	x2 = x - PIT_DEEP * normvec.x;
+	y2 = y - PIT_DEEP * normvec.y;
+
+	tracktexcoord[2*nbvert]   = 1.0 + PIT_DEEP;
 	tracktexcoord[2*nbvert+1] = 0;
 	trackvertices[3*nbvert]   = x2;
 	trackvertices[3*nbvert+1] = y2;
 	trackvertices[3*nbvert+2] = z2;
 	trackindices[nbvert]      = nbvert++;
 
-	x2 = x - PIT_DEEP * normvec.x;
-	y2 = y - PIT_DEEP * normvec.y;
+	x2 = x;
+	y2 = y;
 
-	tracktexcoord[2*nbvert]   = 1.0 + PIT_DEEP;
+	tracktexcoord[2*nbvert]   = 1.0;
 	tracktexcoord[2*nbvert+1] = 0;
 	trackvertices[3*nbvert]   = x2;
 	trackvertices[3*nbvert+1] = y2;
@@ -2279,6 +2734,9 @@ GenerateMesh(tTrack *track, int rightside, int reverse, int exterior)
 	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
 	    if (mseg->rside != NULL) {
 		seg = mseg->rside;
+		if (seg->rside != NULL) {
+		    seg = seg->rside;
+		}
 	    } else {
 		seg = mseg;
 	    }
@@ -2423,6 +2881,9 @@ GenerateMesh(tTrack *track, int rightside, int reverse, int exterior)
 	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
 	    if (mseg->lside) {
 		seg = mseg->lside;
+		if (seg->lside) {
+		    seg = seg->lside;
+		}
 	    } else {
 		seg = mseg;
 	    }

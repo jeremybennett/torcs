@@ -71,6 +71,8 @@
     <attnum name="lside width" val="4"></attnum>
     <attstr name="lside surface"  val="dirt-b"></attstr>
     <attstr name="lside type" in="level,tangent" val="level"></attstr>
+    <attstr name="rborder surface" val="sand"></attstr>
+    <attstr name="lborder surface" val="sand"></attstr>
     <attnum name="profil steps length" val="8" unit="m"></attnum>
 
     <!-- PITS -->
@@ -88,7 +90,6 @@
       <section name="s1">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="100"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -97,7 +98,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="-5" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-1"></attnum>
       </section>
@@ -106,7 +106,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -115,7 +114,6 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="42.5"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="10" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-0.5"></attnum>
       </section>
@@ -124,7 +122,6 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="42.5"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -133,7 +130,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="-5" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-1"></attnum>
       </section>
@@ -142,7 +138,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -170,7 +165,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="-5" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-1"></attnum>
       </section>
@@ -179,7 +173,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -188,7 +181,6 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="42.5"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="10" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-0.5"></attnum>
       </section>
@@ -197,7 +189,6 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="42.5"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>
@@ -206,7 +197,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="-5" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="-1"></attnum>
       </section>
@@ -215,7 +205,6 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="66.25"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
  	<attnum name="banking end" val="0" unit="deg"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>

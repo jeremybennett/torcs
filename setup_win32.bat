@@ -107,6 +107,15 @@ copy .\data\cars\models\155-DTM\155-DTM-base.ac .\runtime\cars\155-DTM\155-DTM-b
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\206W10
+copy .\data\cars\models\206W10\206W10.xml .\runtime\cars\206W10\206W10.xml
+copy .\data\cars\models\206W10\206W10.rgb .\runtime\cars\206W10\206W10.rgb
+copy .\data\cars\models\206W10\tex-wheel.rgb .\runtime\cars\206W10\tex-wheel.rgb
+copy .\data\cars\models\206W10\206W10.ac .\runtime\cars\206W10\206W10.ac
+copy .\data\cars\models\206W10\readme.txt .\runtime\cars\206W10\readme.txt
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\360-modena
 copy .\data\cars\models\360-modena\360-modena.xml .\runtime\cars\360-modena\360-modena.xml
 copy .\data\cars\models\360-modena\360-modena.ac .\runtime\cars\360-modena\360-modena.ac
@@ -731,7 +740,7 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\berniw
 call .\create_dir .\runtime\drivers\berniw\3
-copy .\src\drivers\berniw\3\acura-nsx-sz.rgb .\runtime\drivers\berniw\3\acura-nsx-sz.rgb
+copy .\src\drivers\berniw\3\porsche-gt1.rgb .\runtime\drivers\berniw\3\porsche-gt1.rgb
 copy .\src\drivers\berniw\3\aalborg.xml .\runtime\drivers\berniw\3\aalborg.xml
 copy .\src\drivers\berniw\3\a-speedway.xml .\runtime\drivers\berniw\3\a-speedway.xml
 copy .\src\drivers\berniw\3\dirt-1.xml .\runtime\drivers\berniw\3\dirt-1.xml
@@ -1096,6 +1105,7 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\human
 call .\create_dir .\runtime\drivers\human\tracks
 call .\create_dir .\runtime\drivers\human\tracks\e-track-2
+copy .\src\drivers\human\tracks\e-track-2\car-206W10.xml .\runtime\drivers\human\tracks\e-track-2\car-206W10.xml
 copy .\src\drivers\human\tracks\e-track-2\car-torcs.xml .\runtime\drivers\human\tracks\e-track-2\car-torcs.xml
 
 call .\create_dir .\runtime
@@ -1159,6 +1169,7 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\human
 copy .\src\drivers\human\car-155-DTM.xml .\runtime\drivers\human\car-155-DTM.xml
 copy .\src\drivers\human\car-360-modena.xml .\runtime\drivers\human\car-360-modena.xml
+copy .\src\drivers\human\car-acura-nsx-sz.xml .\runtime\drivers\human\car-acura-nsx-sz.xml
 copy .\src\drivers\human\car-buggy.xml .\runtime\drivers\human\car-buggy.xml
 copy .\src\drivers\human\car-cg-gt-rwd.xml .\runtime\drivers\human\car-cg-gt-rwd.xml
 copy .\src\drivers\human\car-cg-nascar-fwd.xml .\runtime\drivers\human\car-cg-nascar-fwd.xml

@@ -107,6 +107,15 @@ copy .\data\cars\models\155-DTM\155-DTM-base.ac .\runtimed\cars\155-DTM\155-DTM-
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\206W10
+copy .\data\cars\models\206W10\206W10.xml .\runtimed\cars\206W10\206W10.xml
+copy .\data\cars\models\206W10\206W10.rgb .\runtimed\cars\206W10\206W10.rgb
+copy .\data\cars\models\206W10\tex-wheel.rgb .\runtimed\cars\206W10\tex-wheel.rgb
+copy .\data\cars\models\206W10\206W10.ac .\runtimed\cars\206W10\206W10.ac
+copy .\data\cars\models\206W10\readme.txt .\runtimed\cars\206W10\readme.txt
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
 call .\create_dir .\runtimed\cars\360-modena
 copy .\data\cars\models\360-modena\360-modena.xml .\runtimed\cars\360-modena\360-modena.xml
 copy .\data\cars\models\360-modena\360-modena.ac .\runtimed\cars\360-modena\360-modena.ac
@@ -731,7 +740,7 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\3
-copy .\src\drivers\berniw\3\acura-nsx-sz.rgb .\runtimed\drivers\berniw\3\acura-nsx-sz.rgb
+copy .\src\drivers\berniw\3\porsche-gt1.rgb .\runtimed\drivers\berniw\3\porsche-gt1.rgb
 copy .\src\drivers\berniw\3\aalborg.xml .\runtimed\drivers\berniw\3\aalborg.xml
 copy .\src\drivers\berniw\3\a-speedway.xml .\runtimed\drivers\berniw\3\a-speedway.xml
 copy .\src\drivers\berniw\3\dirt-1.xml .\runtimed\drivers\berniw\3\dirt-1.xml
@@ -1096,6 +1105,7 @@ call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\human
 call .\create_dir .\runtimed\drivers\human\tracks
 call .\create_dir .\runtimed\drivers\human\tracks\e-track-2
+copy .\src\drivers\human\tracks\e-track-2\car-206W10.xml .\runtimed\drivers\human\tracks\e-track-2\car-206W10.xml
 copy .\src\drivers\human\tracks\e-track-2\car-torcs.xml .\runtimed\drivers\human\tracks\e-track-2\car-torcs.xml
 
 call .\create_dir .\runtimed
@@ -1159,6 +1169,7 @@ call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\human
 copy .\src\drivers\human\car-155-DTM.xml .\runtimed\drivers\human\car-155-DTM.xml
 copy .\src\drivers\human\car-360-modena.xml .\runtimed\drivers\human\car-360-modena.xml
+copy .\src\drivers\human\car-acura-nsx-sz.xml .\runtimed\drivers\human\car-acura-nsx-sz.xml
 copy .\src\drivers\human\car-buggy.xml .\runtimed\drivers\human\car-buggy.xml
 copy .\src\drivers\human\car-cg-gt-rwd.xml .\runtimed\drivers\human\car-cg-gt-rwd.xml
 copy .\src\drivers\human\car-cg-nascar-fwd.xml .\runtimed\drivers\human\car-cg-nascar-fwd.xml
