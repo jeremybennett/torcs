@@ -27,6 +27,7 @@ SimCarCollideZ(tCar *car)
 {
     int 	i;
     t3Dd	normal;
+    t3Dd        rel_normal;
     tdble	dotProd;
     tWheel	*wheel;
     
@@ -34,6 +35,27 @@ SimCarCollideZ(tCar *car)
 	return;
     }
 
+    
+    t3Dd angles;
+
+    RtTrackSurfaceNormalL(&(car->trkPos), &normal);
+    
+    angles.x = car->DynGC.pos.ax;
+    angles.y = car->DynGC.pos.ay;
+    angles.z = car->DynGC.pos.az;
+    NaiveRotate (normal, angles, &rel_normal);
+    tdble Nz = car->DynGCg.pos.z - RtTrackHeightL(&(car->trkPos));
+
+    if (rel_normal.z < 0) {
+	if (Nz < 0) {
+	    car->DynGCg.pos.z -= Nz;
+	    car->DynGCg.vel.x *=0.9;
+	    car->DynGCg.vel.y *=0.9;
+	    car->DynGCg.vel.z *=0.9;
+	}
+
+	return;
+    }
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	if (wheel->state & SIM_SUSP_COMP) {
