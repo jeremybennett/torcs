@@ -163,18 +163,17 @@ class Pathfinder
 		int nPitLaneStart;
 		int nPitLaneEnd;
 		bool optlocreloaded;
+		int changed;
 
 		tdble ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
 		int snpit[pitpoints];
-
-		bool coll;
 
 		tCarElt* thiscar;
 
 		//void initPitSlopes(void);
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, tdble slope, tdble dist, t3Dd* r);
-		bool collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
+		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
 		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);
 		tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3);
 		double curvature(double xp, double yp, double x, double y, double xn, double yn);
@@ -213,3 +212,4 @@ class Pathfinder
 };
 
 #endif // _PATHFINDER_H_
+

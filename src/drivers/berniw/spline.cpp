@@ -157,3 +157,4 @@ tdble spline(int dim, tdble z, tdble * x, tdble * y, tdble * ys)
 	a3 = h * ys[i+1] - a1; a3 -= a2;
 	return a0 + (a1 + (a2 + a3*t) * (t-1))*t;
 }
+

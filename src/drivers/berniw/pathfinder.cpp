@@ -32,8 +32,8 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car)
 
 	/* get memory for trajectory */
 	ps = new PathSeg[nPathSeg];
-	lastPlan = lastPlanRange = 0;
-	optlocreloaded = inPit = pitStop = coll = false;
+	changed = lastPlan = lastPlanRange = 0;
+	optlocreloaded = inPit = pitStop = false;
 
 	/* check if there is a pit type we can use and if for this car is a pit available. */
 	pit = false;
@@ -711,7 +711,8 @@ void Pathfinder::plan(MyCar* myc)
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
-		speedsqr = g*r*track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
+		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha()*track->getSegmentPtr(i)->getKbeta();
+		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)));
 
 		dir.x = ps[w].getLoc()->x - ps[u].getLoc()->x;
 		dir.y = ps[w].getLoc()->y - ps[u].getLoc()->y;
@@ -736,16 +737,15 @@ void Pathfinder::plan(MyCar* myc)
 void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)
 {
 	tdble r, length, speedsqr;
-	int u, v, w, changed;
+	int u, v, w;
 	t3Dd dir;
 
 	int start;
 
 	if (myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
 		start = trackSegId;
-		coll = false;
 	} else {
-		start = lastPlan+lastPlanRange;
+		start = lastPlan+lastPlanRange-2;
 	}
 
 	if (track->isBetween(e3, s1, trackSegId)) inPit = false;
@@ -754,33 +754,24 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 	/* load precomputed trajectory */
 	if (!pitStop && !inPit) {
-		for (int i = start; i < trackSegId+AHEAD; i += 3) {
+		for (int i = start; i < trackSegId+AHEAD; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
-			int k = (i+nPathSeg-1) % nPathSeg;
-			int l = (i+nPathSeg-2) % nPathSeg;
 			/* setting more than one, because somtimes we pass more than one per simulation step */
-			ps[j].set(0.0, 0.0, ps[j].getOptLoc(), NULL);
-			ps[k].set(0.0, 0.0, ps[k].getOptLoc(), NULL);
-			ps[l].set(0.0, 0.0, ps[l].getOptLoc(), NULL);
+			ps[j].setLoc(ps[j].getOptLoc());
 			optlocreloaded = true;
 		}
 	} else {
-		for (int i = start; i < trackSegId+AHEAD; i += 3) {
+		for (int i = start; i < trackSegId+AHEAD; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
-			int k = (i+nPathSeg-1) % nPathSeg;
-			int l = (i+nPathSeg-2) % nPathSeg;
 			/* setting more than one, because somtimes we pass more than one per simulation step */
-			ps[j].set(0.0, 0.0, ps[j].getPitLoc(), NULL);
-			ps[k].set(0.0, 0.0, ps[k].getPitLoc(), NULL);
-			ps[l].set(0.0, 0.0, ps[l].getPitLoc(), NULL);
+			ps[j].setLoc(ps[j].getPitLoc());
 			optlocreloaded = true;
 		}
 	}
 
 	/* are we on the trajectory or do i need a correction */
-	changed = 0;
 	if (!inPit && myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
-		changed = correctPath(trackSegId, car, myc);
+		changed += correctPath(trackSegId, car, myc);
 	}
 
 	/* overtaking */
@@ -789,7 +780,9 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	/* recompute speed and direction of new trajectory */
-	start = trackSegId;
+	if (changed > 0) {
+		start = trackSegId;
+	}
 
 	u = start - 1; v = start; w = start+1;
 	u = (u + nPathSeg) % nPathSeg;
@@ -825,8 +818,10 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		w = (w + 1 + nPathSeg) % nPathSeg;
 	}
 
+	changed = 0;
+
 	/* set speed limits on the path, in case there is an obstacle (other car) */
-	coll = collision(trackSegId, car, situation, myc, ocar);
+	changed += collision(trackSegId, car, situation, myc, ocar);
 
 	lastPlan = trackSegId; lastPlanRange = AHEAD;
 	optlocreloaded = false;
@@ -954,12 +949,12 @@ void Pathfinder::optimize3(int start, int range, tdble w)
 
 
 
-bool Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)
+int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)
 {
 	tCarElt* car;
 	int seg;
 	int end = (trackSegId + (int) colldist + nPathSeg) % nPathSeg;
-	bool didsomething = false;
+	int didsomething = 0;
 
 	tdble dst;
 	tdble tspeed;
@@ -1023,20 +1018,20 @@ bool Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar*
 				t *= t;
 				if (spseg->getSpeedsqr() > t) {
 					spseg->setSpeedsqr(t);
-					didsomething = true;
+					didsomething = 1;
 				}
 				if (opseg->getSpeedsqr() > t) {
 					opseg->setSpeedsqr(t);
-					didsomething = true;
+					didsomething = 1;
 				}
 			} else if (s <= dists[i] + myc->CARLEN + myc->DIST) {
 				if (spseg->getSpeedsqr() > speedsqr[i]) {
 					spseg->setSpeedsqr(speedsqr[i]);
-					didsomething = true;
+					didsomething = 1;
 				}
 				if (opseg->getSpeedsqr() > speedsqr[i]) {
 					opseg->setSpeedsqr(speedsqr[i]);
-					didsomething = true;
+					didsomething = 1;
 				}
 			}
 		}
@@ -1161,9 +1156,9 @@ void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)
 	double ir1 = curvature(p->x, p->y, pn->x, pn->y, pnn->x, pnn->y);
 
 	for (int k = iMax; --k > iMin;) {
-  		double x = double(k - iMin) / double(iMax - iMin);
-  		double TargetRInverse = x * ir1 + (1 - x) * ir0;
-  		adjustRadius(iMin, k, iMax % nPathSeg, TargetRInverse, 0.0);
+		double x = double(k - iMin) / double(iMax - iMin);
+		double TargetRInverse = x * ir1 + (1 - x) * ir0;
+		adjustRadius(iMin, k, iMax % nPathSeg, TargetRInverse, 0.0);
 	}
 }
 
@@ -1172,10 +1167,10 @@ void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)
 void Pathfinder::interpolate(int Step)
 {
 	if (Step > 1) {
- 		int i;
+		int i;
 		for (i = Step; i <= nPathSeg - Step; i += Step) stepInterpolate(i - Step, i, Step);
-  		stepInterpolate(i - Step, nPathSeg, Step);
- 	}
+		stepInterpolate(i - Step, nPathSeg, Step);
+	}
 }
 
 
@@ -1212,8 +1207,8 @@ void Pathfinder::smooth(int Step)
 		prevprev = prev;
 		prev = i;
 		next = nextnext;
-  		nextnext = next + Step;
-  		if (nextnext > nPathSeg - Step) nextnext = 0;
+		nextnext = next + Step;
+		if (nextnext > nPathSeg - Step) nextnext = 0;
 	}
 }
 
@@ -1273,7 +1268,7 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 		optimize(id, l+i, 1.0);
 	}
 
-	return (int) l + 1;
+	return 1;
 }
 
 
@@ -1348,14 +1343,10 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	/* not enough space, so we try to overtake */
 	if (dtp < d && minTime < myc->TIMETOCATCH) {
 		if (!optlocreloaded) {
-			for (int i = trackSegId; i < trackSegId+AHEAD; i += 3) {
+			int start = (trackSegId+nPathSeg-2) % nPathSeg;
+			for (int i = start; i < trackSegId+AHEAD; i ++) {
 				int j = (i+nPathSeg) % nPathSeg;
-				int k = (i+nPathSeg-1) % nPathSeg;
-				int l = (i+nPathSeg-2) % nPathSeg;
-				/* setting more than one, because somtimes we pass more than one per simulation step */
-				ps[j].set(0.0, 0.0, ps[j].getOptLoc(), NULL);
-				ps[k].set(0.0, 0.0, ps[k].getOptLoc(), NULL);
-				ps[l].set(0.0, 0.0, ps[l].getOptLoc(), NULL);
+				ps[j].setLoc(ps[j].getOptLoc());
 			}
 		}
 
@@ -1432,7 +1423,10 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		for (int i = 20; i > 0; i--) {
 			optimize((trackSegId2-i+nPathSeg) % nPathSeg, 2*i, 1.0);
 		}
-	}
 
-	return 0;
+		return 1;
+	} else {
+		return 0;
+	}
 }
+

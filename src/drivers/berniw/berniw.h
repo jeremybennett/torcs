@@ -56,3 +56,4 @@ inline tdble queryAngleToTrack(tCarElt * car)
 }
 
 #endif // _BERNIW_H_
+

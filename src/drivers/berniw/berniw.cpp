@@ -388,3 +388,4 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
 
 	return ROB_PIT_IM; /* return immediately */
 }
+

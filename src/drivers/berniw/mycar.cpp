@@ -26,7 +26,7 @@
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
-	tdble rear, front, cgcorr;
+	//tdble rear, front, cgcorr;
 
 	/* init pointer to car data */
 	mycar = car;
@@ -78,10 +78,10 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 
 	cw = 0.625*cx*frontarea;
 
-	front = fabs(car->priv->wheel[FRNT_RGT].relPos.x);
-	rear = fabs(car->priv->wheel[REAR_RGT].relPos.x);
-	cgcorr = MIN(front/wheelbase, rear/wheelbase);
-	cgcorr *= 2.0;
+	//front = fabs(car->priv->wheel[FRNT_RGT].relPos.x);
+	//rear = fabs(car->priv->wheel[REAR_RGT].relPos.x);
+	//cgcorr = MIN(front/wheelbase, rear/wheelbase);
+	//cgcorr *= 2.0;
 	cgcorr_b = 0.46; //cgcorr * (1.0 + (cgh - front)/wheelbase);
 
 	pf = new Pathfinder(track, car);
@@ -305,3 +305,4 @@ void OtherCar::update()
     int searchrange = MAX((int) ceil(dt*speed+1.0) * 2, 4);
 	currentsegid = track->getCurrentSegment(me, currentsegid, searchrange);
 }
+

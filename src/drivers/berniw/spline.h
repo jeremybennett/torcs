@@ -41,3 +41,4 @@ extern void parametricslopesn(int dim, tdble * x, tdble * y, tdble * xs, tdble *
 extern tdble spline(int dim, tdble z, tdble * x, tdble * y, tdble * ys);
 
 #endif // _SPLINE_H_
+
