@@ -977,8 +977,8 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	    offset[2] = (30.0*rand()/(RAND_MAX+1.0)) + zOffset;
 	    offset[0] = offset[0]*(offset[2]+1.0);
 	    offset[1] = offset[1]*(offset[2]+1.0);
-	    damp = 5.0;//drand48()*50.0 + 5.0;
-	    gain = 5.0;//drand48()*200.0 + 10.0;
+	    damp = 5.0;
+	    gain = 5.0;
 	}
 
 	speed[0] += (gain*(offset[0]+car->_pos_X - eye[0]) - speed[0]*damp)*dt;
@@ -988,16 +988,6 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	eye[0] = eye[0] + speed[0]*dt;
 	eye[1] = eye[1] + speed[1]*dt;
 	eye[2] = eye[2] + speed[2]*dt;
-
-	// float o_d = 50.0;
-	// float o_g = 50.0;
-	// omega[0] = omega[0]*(1.0-dt*o_d) + dt*o_g*(car->_pos_X-center[0]);
-	// omega[1] = omega[1]*(1.0-dt*o_d) + dt*o_g*(car->_pos_Y-center[1]);
-	// omega[2] = omega[2]*(1.0-dt*o_d) + dt*o_g*(car->_pos_Z-center[2]);
-
-	// center[0] = center[0] + dt*omega[0];
-	// center[1] = center[1] + dt*omega[1];
-	// center[2] = center[2] + dt*omega[2];
 
 	center[0] = (car->_pos_X);
 	center[1] = (car->_pos_Y);
