@@ -1,0 +1,37 @@
+Summary: TORCS - Ryuji KAINOH Car Pack
+Name: TORCS-data-cars-Ryuji-Kainoh
+Version: @VERSION@
+Release: 1
+Epoch: 1
+Source: TORCS-%{version}-data-cars-Ryuji-Kainoh.tgz
+Group: Amusements/Games
+BuildRoot: %{_tmppath}/%{name}-buildroot
+Copyright: Ryuji KAINOH 1999
+BuildArch: noarch
+URL: http://www1.odn.ne.jp/ryuji_k/nfs3.htm
+Packager: Eric Espié <Eric.Espie@free.fr>
+
+%description
+Ryuji KAINOH Car Pack for TORCS.
+PLEASE, these files may NOT BE EDITED or COPIED in any way.
+http://www1.odn.ne.jp/ryuji_k/
+
+%prep
+%setup -c
+
+%build
+
+%install
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/games/torcs
+cp -r * $RPM_BUILD_ROOT/%{_prefix}/games/torcs
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+%{_prefix}/games/torcs/*
+
+%changelog
+* Thu Jan 2 2003 Eric Espié <Eric.Espie@free.fr> 1.2.0
+- Creation
