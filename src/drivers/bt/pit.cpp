@@ -2,7 +2,7 @@
 
     file                 : pit.cpp
     created              : Thu Mai 15 2:43:00 CET 2003
-    copyright            : (C) 2003 by Bernhard Wymann
+    copyright            : (C) 2003-2004 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -20,8 +20,8 @@
 
 #include "pit.h"
 
-const float Pit::SPEED_LIMIT_MARGIN = 0.5;      /* [m/s] savety margin */
-const int Pit::PIT_DAMMAGE = 5000;              /* [-] */
+const float Pit::SPEED_LIMIT_MARGIN = 0.5;      // [m/s] savety margin to avoid pit speeding.
+const int Pit::PIT_DAMMAGE = 5000;              // [-]
 
 
 Pit::Pit(tSituation *s, Driver *driver)
@@ -37,12 +37,14 @@ Pit::Pit(tSituation *s, Driver *driver)
 	lastpitfuel = 0.0;
 	lastfuel = car->priv.fuel;
 
+	printf("pits: %d, index: %d\n", pitinfo->nMaxPits, car->index);
+
 	if (mypit != NULL) {
 		speedlimit = pitinfo->speedLimit - SPEED_LIMIT_MARGIN;
 		speedlimitsqr = speedlimit*speedlimit;
 		pitspeedlimitsqr = pitinfo->speedLimit*pitinfo->speedLimit;
 
-		/* compute pit spline points along the track */
+		// Compute pit spline points along the track.
 		p[3].x = mypit->pos.seg->lgfromstart + mypit->pos.toStart;
 		p[2].x = p[3].x - pitinfo->len;
 		p[4].x = p[3].x + pitinfo->len;
@@ -53,15 +55,24 @@ Pit::Pit(tSituation *s, Driver *driver)
 		pitentry = p[0].x;
 		pitexit = p[6].x;
 
-		/* normalizing spline segments to >= 0.0 */
+		// Normalizing spline segments to >= 0.0.
 		int i;
 		for (i = 0; i < NPOINTS; i++) {
 			p[i].s = 0.0;
 			p[i].x = toSplineCoord(p[i].x);
 		}
 
-		if (p[1].x > p[2].x) p[1].x = p[2].x;
-		if (p[4].x > p[5].x) p[5].x = p[4].x;
+		// If we have the first pit head directly towards it.
+		// bool firstpit = (car->index == 0) ? true : false;
+		if (p[1].x > p[2].x) {
+			p[1].x = p[2].x;
+		}
+
+		// If we have the last used pit head directly outside.
+		// bool lastpit = (s->_ncars - 1 == car->index) ? true : false;
+		if (p[4].x > p[5].x) {
+			p[5].x = p[4].x;
+		}
 
 		float sign = (pitinfo->side == TR_LFT) ? 1.0 : -1.0;
 		p[0].y = 0.0;
@@ -79,11 +90,13 @@ Pit::Pit(tSituation *s, Driver *driver)
 
 Pit::~Pit()
 {
-	if (mypit != NULL) delete spline;
+	if (mypit != NULL) {
+		delete spline;
+	}
 }
 
 
-/* Transforms track coordinates to spline parameter coordinates */
+// Transforms track coordinates to spline parameter coordinates.
 float Pit::toSplineCoord(float x)
 {
 	x -= pitentry;
@@ -94,7 +107,7 @@ float Pit::toSplineCoord(float x)
 }
 
 
-/* computes offset to track middle for trajectory */
+// Computes offset to track middle for trajectory.
 float Pit::getPitOffset(float offset, float fromstart)
 {
 	if (mypit != NULL) {
@@ -107,10 +120,13 @@ float Pit::getPitOffset(float offset, float fromstart)
 }
 
 
-/* Sets the pitstop flag if we are not in the pit range */
+// Sets the pitstop flag if we are not in the pit range.
 void Pit::setPitstop(bool pitstop)
 {
-	if (mypit == NULL) return;
+	if (mypit == NULL) {
+		return;
+	}
+
 	float fromstart = car->_distFromStartLine;
 
 	if (!isBetween(fromstart)) {
@@ -122,7 +138,7 @@ void Pit::setPitstop(bool pitstop)
 }
 
 
-/* Check if the argument fromstart is in the range of the pit */
+// Check if the argument fromstart is in the range of the pit.
 bool Pit::isBetween(float fromstart)
 {
 	if (pitentry <= pitexit) {
@@ -161,7 +177,7 @@ bool Pit::isTimeout(float distance)
 }
 
 
-/* update pit data and strategy */
+// Update pit data and strategy.
 void Pit::update()
 {
 	if (mypit != NULL) {
@@ -173,12 +189,12 @@ void Pit::update()
 			setInPit(false);
 		}
 
-		// check for damage
+		// Check for damage
 		if (car->_dammage > PIT_DAMMAGE) {
 			setPitstop(true);
 		}
 
-		// fuel update
+		// Fuel update
 		int id = car->_trkPos.seg->id;
 		if (id >= 0 && id < 5 && !fuelchecked) {
 			if (car->race.laps > 0) {
@@ -213,7 +229,7 @@ float Pit::getSpeedLimitBrake(float speedsqr)
 }
 
 
-/* Computes the amount of fuel */
+// Computes the amount of fuel to refuel at pit stop.
 float Pit::getFuel()
 {
 	float fuel;
@@ -225,7 +241,7 @@ float Pit::getFuel()
 }
 
 
-/* Computes how much damage to repair */
+// Computes how much damage to repair at pit stop.
 int Pit::getRepair()
 {
 	return car->_dammage;

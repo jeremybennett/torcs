@@ -2,7 +2,7 @@
 
     file                 : pit.h
     created              : Thu Mai 15 2:41:00 CET 2003
-    copyright            : (C) 2003 by Bernhard Wymann
+    copyright            : (C) 2003-2004 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -62,25 +62,25 @@ class Pit {
 	private:
 		tTrack *track;
 		tCarElt *car;
-		tTrackOwnPit *mypit;    /* pointer to my pit */
-		tTrackPitInfo *pitinfo; /* general pit info */
+		tTrackOwnPit *mypit;    // Pointer to my pit.
+		tTrackPitInfo *pitinfo; // General pit info.
 
-		SplinePoint p[NPOINTS]; /* spline points */
-		Spline *spline;         /* spline */
+		SplinePoint p[NPOINTS]; // Spline points.
+		Spline *spline;         // Spline.
 
-		bool pitstop;           /* pitstop planned */
-		bool inpitlane;         /* we are still in the pit lane */
-		float pitentry;         /* distance to start line of the pit entry */
-		float pitexit;          /* distance to the start line of the pit exit */
-		float speedlimitsqr;    /* pit speed limit squared */
-		float speedlimit;       /* pit speed limit */
-		float pitspeedlimitsqr;	/* the original speedlimit squared */
+		bool pitstop;           // Pitstop planned.
+		bool inpitlane;         // We are still in the pit lane.
+		float pitentry;         // Distance to start line of the pit entry.
+		float pitexit;          // Distance to the start line of the pit exit.
+		float speedlimitsqr;    // Pit speed limit squared.
+		float speedlimit;       // Pit speed limit.
+		float pitspeedlimitsqr;	// The original speedlimit squared.
 
-		bool fuelchecked;       /* fuel statistics updated */
-		float lastfuel;         /* the fuel available when we cross the start lane */
-		float lastpitfuel;      /* amount refueled, special case when we refuel */
-		float fuelperlap;       /* the maximum amount of fuel we needed for a lap */
-		float pittimer;			/* timer for pit timeouts */
+		bool fuelchecked;       // Fuel statistics updated.
+		float lastfuel;         // the fuel available when we cross the start lane.
+		float lastpitfuel;      // Amount refueled, special case when we refuel.
+		float fuelperlap;       // The maximum amount of fuel we needed for a lap.
+		float pittimer;			// Timer for pit timeouts.
 
 		static const float SPEED_LIMIT_MARGIN;
 		static const int PIT_DAMMAGE;

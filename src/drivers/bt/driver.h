@@ -2,7 +2,7 @@
 
     file                 : driver.h
     created              : Thu Dec 20 01:20:19 CET 2002
-    copyright            : (C) 2002 Bernhard Wymann
+    copyright            : (C) 2002-2004 Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -46,7 +46,7 @@ class Driver {
 		Driver(int index);
 		~Driver();
 
-		/* callback functions called from TORCS */
+		// Callback functions called from TORCS.
 		void initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituation *s);
 		void newRace(tCarElt* car, tSituation *s);
 		void drive(tSituation *s);
@@ -58,7 +58,7 @@ class Driver {
 		float getSpeed() { return speed; }
 
 	private:
-		/* utility functions */
+		// Utility functions.
 		bool isStuck();
 		void update(tSituation *s);
 		float getAllowedSpeed(tTrackSeg *segment);
@@ -71,8 +71,8 @@ class Driver {
 		v2d getTargetPoint();
 		float getOffset();
 		float brakedist(float allowedspeed, float mu);
-		float filterOverlap(float accel);
 
+		float filterOverlap(float accel);
 		float filterBColl(float brake);
 		float filterABS(float brake);
 		float filterBPit(float brake);
@@ -93,35 +93,35 @@ class Driver {
 		void initCw();
 		void initTireMu();
 
-		/* per robot global data */
+		// Per robot global data.
 		int stuck;
-		float trackangle;		/* the angle of the current track segment (global coordinates) */
-		float speedangle;		/* the angle of the speed vector relative to trackangle, > 0.0 points to right */
-		float angle;			/* the angle of the car relative to the current segment */
-		float speed;			/* speed in track direction */
-		float mass;				/* mass of car + fuel */
-		float myoffset;			/* offset to the track middle */
-		tCarElt *car;			/* pointer to tCarElt struct */
-		Opponents *opponents;	/* the container for opponents */
-		Opponent *opponent;		/* the array of opponents */
-		Pit *pit;				/* pointer to the pit instance */
-		float lastturnarc;		/* the arc of the current turn segments of the same type */
-		int lastsegtype;		/* the segment type for which lastturnarc is valid */
-		float currentspeedsqr;	/* square of the current speed_x */
+		float trackangle;		// The angle of the current track segment (global coordinates).
+		float speedangle;		// the angle of the speed vector relative to trackangle, > 0.0 points to right.
+		float angle;			// The angle of the car relative to the current segment.
+		float speed;			// Speed in track direction.
+		float mass;				// Mass of car + fuel.
+		float myoffset;			// Offset to the track middle.
+		tCarElt *car;			// Pointer to tCarElt struct.
+		Opponents *opponents;	// The container for opponents.
+		Opponent *opponent;		// The array of opponents.
+		Pit *pit;				// Pointer to the pit instance.
+		float lastturnarc;		// The arc of the current turn segments of the same type.
+		int lastsegtype;		// The segment type for which lastturnarc is valid.
+		float currentspeedsqr;	// Square of the current speed_x.
+		float clutchtime;		// Clutch timer.
 
-
-		/* data that should stay constant after first initialization */
+		// Data that should stay constant after first initialization.
 		int MAX_UNSTUCK_COUNT;
 		int INDEX;
-		float CARMASS;		/* mass of the car only [kg] */
-		float CA;			/* aerodynamic downforce coefficient */
-		float CW;			/* aerodynamic drag coefficient */
-		float TIREMU;		/* friction coefficient of tires */
+		float CARMASS;		// Mass of the car only [kg].
+		float CA;			// Aerodynamic downforce coefficient.
+		float CW;			// Aerodynamic drag coefficient.
+		float TIREMU;		// Friction coefficient of tires.
 		float (Driver::*GET_DRIVEN_WHEEL_SPEED)();
-		float OVERTAKE_OFFSET_INC;		/* [m/timestep] */
-		float MU_FACTOR;				/* [-] */
+		float OVERTAKE_OFFSET_INC;		// [m/timestep]
+		float MU_FACTOR;				// [-]
 
-		/* class constants */
+		// Class constants.
 		static const float MAX_UNSTUCK_ANGLE;
 		static const float UNSTUCK_TIME_LIMIT;
 		static const float MAX_UNSTUCK_SPEED;
@@ -151,8 +151,8 @@ class Driver {
 		static const float DISTCUTOFF;
 		static const float MAX_INC_FACTOR;
 		static const float CATCH_FACTOR;
-
-		/* track variables */
+		static const float CLUTCH_FULL_MAX_TIME;
+		// Track variables.
 		tTrack* track;
 };
 

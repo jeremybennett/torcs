@@ -2,7 +2,7 @@
 
     file                 : opponent.cpp
     created              : Thu Apr 22 01:20:19 CET 2003
-    copyright            : (C) 2003 Bernhard Wymann
+    copyright            : (C) 2003-2004 Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -20,7 +20,7 @@
 #include "opponent.h"
 
 
-/* class variables and constants */
+// class variables and constants.
 tTrack* Opponent::track;
 const float Opponent::FRONTCOLLDIST = 200.0;			// [m] distance on the track to check other cars.
 const float Opponent::BACKCOLLDIST = 70.0;				// [m] distance on the track to check other cars.
@@ -41,15 +41,15 @@ void Opponent::update(tSituation *s, Driver *driver)
 {
 	tCarElt *mycar = driver->getCarPtr();
 
-	// init state of opponent to ignore.
+	// Init state of opponent to ignore.
 	state = OPP_IGNORE;
 
-	// if the car is out of the simulation ignore it.
+	// If the car is out of the simulation ignore it.
 	if (car->_state & RM_CAR_STATE_NO_SIMU) {
 		return;
 	}
 
-	// updating distance along the middle.
+	// Updating distance along the middle.
 	float oppToStart = car->_trkPos.seg->lgfromstart + getDistToSegStart();
 	distance = oppToStart - mycar->_distFromStartLine;
 	if (distance > track->length/2.0) {
@@ -58,24 +58,38 @@ void Opponent::update(tSituation *s, Driver *driver)
 		distance += track->length;
 	}
 
-	// update speed in track direction.
-	speed = Opponent::getSpeed(car);
-	float cosa = speed/sqrt(car->_speed_X*car->_speed_X + car->_speed_Y*car->_speed_Y);
-	float alpha = acos(cosa);
+	// Update track angle of the opponent.
+	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
+
+	// Update speed in track direction.
+	speed = Opponent::getSpeed(car, trackangle);
+	float cosa, alpha;
+	if (speed > 3.0) {
+		// If the opponent is driving, avoid division by a small number.
+		cosa = speed/sqrt(car->_speed_X*car->_speed_X + car->_speed_Y*car->_speed_Y);
+		alpha = acos(cosa);
+	} else {
+		// Too slow, take the angle of the car.
+		float angle = trackangle - car->_yaw;
+		NORM_PI_PI(angle);
+		cosa = acos(angle);
+		alpha = angle;
+	}
+
+	// Compute an estimate of the needed width on the track.
 	width = car->_dimension_x*sin(alpha) + car->_dimension_y*cosa;
 	float SIDECOLLDIST = MIN(car->_dimension_x, mycar->_dimension_x);
 
-	// is opponent in relevant range -50..200 m.
+	// Is opponent in relevant range -BACKCOLLDIST..FRONTCOLLDIST m.
 	if (distance > -BACKCOLLDIST && distance < FRONTCOLLDIST) {
-		// is opponent in front and slower.
+		// Is opponent in front and slower.
 		if (distance > SIDECOLLDIST && speed < driver->getSpeed()) {
-			catchdist = driver->getSpeed()*distance/(driver->getSpeed() - speed);
 			state |= OPP_FRONT;
 
 			distance -= MAX(car->_dimension_x, mycar->_dimension_x);
 			distance -= LENGTH_MARGIN;
 
-			// if the distance is small we compute it more accurate.
+			// If the distance is small we compute it more accurate.
 			if (distance < EXACT_DIST) {
 				Straight carFrontLine(
 					mycar->_corner_x(FRNT_LFT),
@@ -97,28 +111,29 @@ void Opponent::update(tSituation *s, Driver *driver)
 					distance = mindist;
 				}
 			}
+			catchdist = driver->getSpeed()*distance/(driver->getSpeed() - speed);
 
 			float cardist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			sidedist = cardist;
 			cardist = fabs(cardist) - fabs(width/2.0) - mycar->_dimension_y/2.0;
 			if (cardist < SIDE_MARGIN) state |= OPP_COLL;
 		} else
-		// is opponent behind and faster.
+		// Is opponent behind and faster.
 		if (distance < -SIDECOLLDIST && speed > driver->getSpeed() - SPEED_PASS_MARGIN) {
 			catchdist = driver->getSpeed()*distance/(speed - driver->getSpeed());
 			state |= OPP_BACK;
 			distance -= MAX(car->_dimension_x, mycar->_dimension_x);
 			distance -= LENGTH_MARGIN;
 		} else
-		// is opponent aside.
+		// Is opponent aside.
 		if (distance > -SIDECOLLDIST &&
 			distance < SIDECOLLDIST) {
 			sidedist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			state |= OPP_SIDE;
 		} else
-		// opponent is in front and faster.
+		// Opponent is in front and faster.
 		if (distance > SIDECOLLDIST && speed > driver->getSpeed()) {
-			state |= OPP_FRONT_SLOW;
+			state |= OPP_FRONT_FAST;
 		}
 	}
 
@@ -131,15 +146,13 @@ void Opponent::update(tSituation *s, Driver *driver)
 
 
 // compute speed component parallel to the track.
-float Opponent::getSpeed(tCarElt *car)
+float Opponent::getSpeed(tCarElt *car, float ltrackangle)
 {
 	v2d speed, dir;
-	float trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
-
 	speed.x = car->_speed_X;
 	speed.y = car->_speed_Y;
-	dir.x = cos(trackangle);
-	dir.y = sin(trackangle);
+	dir.x = cos(ltrackangle);
+	dir.y = sin(ltrackangle);
 	return speed*dir;
 }
 
@@ -165,7 +178,7 @@ void Opponent::updateOverlapTimer(tSituation *s, tCarElt *mycar)
 			overlaptimer = LAP_BACK_TIME_PENALTY;
 		} else {
 			if (overlaptimer > 0.0) {
-				if (getState() & OPP_FRONT_SLOW) {
+				if (getState() & OPP_FRONT_FAST) {
 					overlaptimer = MIN(0.0, overlaptimer);
 				} else {
 					overlaptimer -= s->deltaTime;
@@ -180,7 +193,7 @@ void Opponent::updateOverlapTimer(tSituation *s, tCarElt *mycar)
 }
 
 
-// initialize the list of opponents.
+// Initialize the list of opponents.
 Opponents::Opponents(tSituation *s, Driver *driver)
 {
 	opponent = new Opponent[s->_ncars - 1];

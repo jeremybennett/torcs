@@ -2,7 +2,7 @@
 
     file                 : linalg.h
     created              : Wed Feb 18 01:20:19 CET 2003
-    copyright            : (C) 2003 Bernhard Wymann
+    copyright            : (C) 2003-2004 Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 

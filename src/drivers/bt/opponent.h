@@ -2,7 +2,7 @@
 
     file                 : opponent.h
     created              : Thu Apr 22 01:20:19 CET 2003
-    copyright            : (C) 2003 Bernhard Wymann
+    copyright            : (C) 2003-2004 Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -41,12 +41,12 @@
 #define OPP_SIDE		(1<<2)
 #define OPP_COLL		(1<<3)
 #define OPP_LETPASS		(1<<4)
-#define OPP_FRONT_SLOW	(1<<5)
+#define OPP_FRONT_FAST	(1<<5)
 
 
 class Driver;
 
-// Opponent maintains the data for one opponent.
+// Opponent maintains the data for one opponent RELATIVE to the drivers car.
 class Opponent {
 	public:
 		Opponent();
@@ -54,7 +54,7 @@ class Opponent {
 		void setCarPtr(tCarElt *car) { this->car = car; }
 		static void setTrackPtr(tTrack *track) { Opponent::track = track; }
 
-		static float getSpeed(tCarElt *car);
+		static float getSpeed(tCarElt *car, float trackangle);
 		tCarElt *getCarPtr() { return car; }
 		int getState() { return state; }
 		float getCatchDist() { return catchdist; }
@@ -72,12 +72,13 @@ class Opponent {
 
 		tCarElt *car;
 		float distance;		// approximation of the real distance, negative if the opponent is behind.
-		float speed;		// speed in direction of the track.
+		float speed;		// speed in direction of the track (TODO: not per instance).
 		float catchdist;	// distance needed to catch the opponent (linear estimate).
-		float width;		// the cars needed width on the track.
+		float width;		// the cars needed width on the track (TODO: not per instance).
 		float sidedist;		// approx distance of center of gravity of the cars.
 		int state;			// State variable to characterize the relation to the opponent, e. g. opponent is behind.
 		float overlaptimer;
+		float trackangle;	// Track angle at the opponents position (TODO: not per instance).
 
 		// class variables.
 		static tTrack *track;
