@@ -30,8 +30,6 @@
 
 const double MyCar::PATHERR = 0.5;				/* if derror > PATHERR we take actions to come back to the path [m] */
 const double MyCar::CORRLEN = 30.0;				/* CORRLEN * derror is the length of the correction [m] */
-const double MyCar::CARWIDTH = 2.2;				/* width of the car [m] */
-const double MyCar::CARLEN = 6.0;				/* length of the car [m] */
 const double MyCar::TURNTOL = 1.0;				/* tolerance for end backing up [m] */
 const double MyCar::TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
 const double MyCar::MARGIN = 0.3;				/* security margin from track border [m] */
@@ -55,6 +53,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	setCarPtr(car);
 
 	initCGh();
+	initCarGeometry();
 	updatePos();
 	updateDir();
 	updateSpeedSqr();
@@ -307,11 +306,18 @@ void OtherCar::update()
 }
 
 
-
-
 void MyCar::updateDError()
 {
 	derror = pf->distToPath(currentsegid, &currentpos);
 	derrorsgn = (derror >= 0.0) ? 1.0 : -1.0;
 	derror = fabs(derror);
 }
+
+
+void MyCar::initCarGeometry()
+{
+	CARWIDTH = me->_dimension_y;
+	CARLEN = me->_dimension_x;
+}
+
+

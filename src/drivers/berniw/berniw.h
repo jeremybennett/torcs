@@ -80,5 +80,11 @@ inline double sign(double number)
 	return (number >= 0.0) ? 1.0 : -1.0;
 }
 
+
+inline double sqr(double x)
+{
+	return x*x;
+}
+
 #endif // _BERNIW_H_
 

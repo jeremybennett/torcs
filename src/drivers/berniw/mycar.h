@@ -86,8 +86,6 @@ class MyCar : public AbstractCar
 
 		static const double PATHERR;			/* if derror > PATHERR we take actions to come back to the path [m] */
 		static const double CORRLEN;			/* CORRLEN * derror is the length of the correction [m] */
-		static const double CARWIDTH;			/* width of the car [m] */
-		static const double CARLEN;				/* length of the car [m] */
 		static const double TURNTOL;			/* tolerance for end backing up [m] */
 		static const double TURNSPEED;			/* if speed lower than this you can back up [m/s] */
 		static const double MARGIN;				/* security margin from track border [m] */
@@ -120,6 +118,8 @@ class MyCar : public AbstractCar
 		double GCTIME;									/* minimal time between gear changes */
 		double ACCELLIMIT;								/* maximal allowed acceleration */
 		double PATHERRFACTOR;							/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
+		double CARWIDTH;								/* width of the car [m] */
+		double CARLEN;									/* length of the car [m] */
 
 		/* static data */
 		double cgcorr_b;
@@ -179,6 +179,7 @@ class MyCar : public AbstractCar
 
 		void updateCa();
 		void updateDError();
+		void initCarGeometry();
 };
 
 
