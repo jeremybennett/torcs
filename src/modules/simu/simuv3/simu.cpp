@@ -356,16 +356,19 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	    }
 	    CHECK(car);
 	}
-    
-	SimTransmissionUpdate(car);
-	CHECK(car);
 
+    
 	if (!(s->_raceState & RM_RACE_PRESTART)) {
+	    SimTransmissionUpdate(car);
+	    CHECK(car);
 	    SimWheelUpdateRotation(car);
 	    CHECK(car);
 	    SimCarUpdate(car, s);
 	    CHECK(car);
+	} else {
+	    SimEngineUpdateRpm(car, 0.0);
 	}
+	
     }
 
     SimCarCollideCars(s);
