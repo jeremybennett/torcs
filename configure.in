@@ -72,6 +72,9 @@ AC_CHECK_HEADER(X11/Xlib.h,, AC_MSG_ERROR([Can't find X11/Xlib.h. Please check c
 AC_CHECK_HEADER(X11/Xatom.h,, AC_MSG_ERROR([Can't find X11/Xatom.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(X11/keysym.h,, AC_MSG_ERROR([Can't find X11/keysym.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(plib/ssg.h,, AC_MSG_ERROR([Can't find plib/ssg.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+#AC_CHECK_HEADER(X11/Xfuncproto.h,, AC_MSG_ERROR([Can't find X11/Xfuncproto.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+#AC_CHECK_HEADER(X11/extensions/randr.h,, AC_MSG_ERROR([Can't find X11/extensions/randr.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+#AC_CHECK_HEADER(X11/extensions/Xrandr.h,, AC_MSG_ERROR([Can't find X11/extensions/Xrandr.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 dnl Checks for libraries.
 
@@ -92,6 +95,8 @@ AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check confi
 dnl Replace `main' with a function in -lXmu:
 AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(Xxf86vm, XF86VidModeSetViewPort,,AC_MSG_ERROR([Can't find libXxf86vm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(Xrender, XRenderSetSubpixelOrder,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(Xrandr, XRRQueryVersion,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_FUNC(dlopen,,AC_MSG_ERROR([Can't find dlopen function. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
