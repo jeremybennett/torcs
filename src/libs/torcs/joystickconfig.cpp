@@ -313,7 +313,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
     GfuiButtonCreate(scrHandle1, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     prevMenu, onCancel1, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle1, 27, "Cancel Selection", prevMenu, onCancel1);
+    GfuiAddKey(scrHandle1, 27, "Cancel Selection", prevMenu, onCancel1, NULL);
 
     return scrHandle1;
 }
@@ -521,7 +521,7 @@ joyCalMenuInit(void)
     GfuiButtonCreate(scrHandle2, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
      NULL, onCancel2, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle2, 27, "Cancel Selection", NULL, onCancel2);
+    GfuiAddKey(scrHandle2, 27, "Cancel Selection", NULL, onCancel2, NULL);
     
 }
 

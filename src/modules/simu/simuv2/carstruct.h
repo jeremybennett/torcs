@@ -92,6 +92,7 @@ typedef struct
 #define CHECK_VAR(_var_, _msg_) do {						\
     if (isnan(_var_) || isinf(_var_)) {						\
 	printf("%s = %f  in %s line %d\n", _msg_, _var_, __FILE__, __LINE__);	\
+        GfScrShutdown();							\
 	exit(0);								\
     }										\
 } while (0)
@@ -130,6 +131,7 @@ typedef struct
 	isnan((_car_)->aero.drag) || isinf((_car_)->aero.drag)) {				\
 	printf("Problem for %s in %s line %d\n", (_car_)->carElt->_name, __FILE__, __LINE__);	\
 	DUMP_CAR(_car_);									\
+	GfScrShutdown();									\
 	exit(0);										\
     }												\
 } while (0)

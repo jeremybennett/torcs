@@ -986,5 +986,4 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\.
 if exist .\CHANGELOG.html copy .\CHANGELOG.html .\runtime\.\CHANGELOG.html
 if exist .\COPYING copy .\COPYING .\runtime\.\COPYING
-if exist .\setup_linux.sh copy .\setup_linux.sh .\runtime\.\setup_linux.sh
 :_home_torcs_sb3_torcs_torcs

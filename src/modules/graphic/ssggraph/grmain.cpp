@@ -191,28 +191,28 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
 				(char*)NULL, grGFlag);
 
-    GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom);
-    GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom);
+    GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
+    GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom, NULL);
 
-    GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F4,   "Side Car Views",    (void*)2, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F5,   "Up Car View",       (void*)3, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F6,   "Persp Car View",    (void*)4, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F7,   "All Circuit Views", (void*)5, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F8,   "Track View",        (void*)6, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F9,   "Track View Zoomed", (void*)7, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera);
-    GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera);
+    GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F4,   "Side Car Views",    (void*)2, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F5,   "Up Car View",       (void*)3, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F6,   "Persp Car View",    (void*)4, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F7,   "All Circuit Views", (void*)5, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F8,   "Track View",        (void*)6, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F9,   "Track View Zoomed", (void*)7, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera, NULL);
 
-    GfuiAddKey(screen, 'b',            "Driver Board",     (void*)0, grSelectBoard);
-    GfuiAddKey(screen, 'c',            "Driver Counters",  (void*)1, grSelectBoard);
-    GfuiAddKey(screen, 'l',            "Leaders Board",    (void*)2, grSelectBoard);
-    GfuiAddKey(screen, 'f',            "FPS Counter",      (void*)3, grSelectBoard);
-    GfuiAddKey(screen, 'g',            "Debug Info",       (void*)4, grSelectBoard);
+    GfuiAddKey(screen, 'b',            "Driver Board",     (void*)0, grSelectBoard, NULL);
+    GfuiAddKey(screen, 'c',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
+    GfuiAddKey(screen, 'l',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
+    GfuiAddKey(screen, 'f',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
+    GfuiAddKey(screen, 'g',            "Debug Info",       (void*)4, grSelectBoard, NULL);
 
     grInitScene();
 

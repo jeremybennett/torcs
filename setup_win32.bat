@@ -1366,6 +1366,7 @@ if exist .\src\drivers\lliaw\tracksdata\car_e-track-3.xml copy .\src\drivers\lli
 if exist .\src\drivers\lliaw\tracksdata\car_e-track-4.xml copy .\src\drivers\lliaw\tracksdata\car_e-track-4.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\lliaw\tracksdata\car_e-track-6.xml copy .\src\drivers\lliaw\tracksdata\car_e-track-6.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\lliaw\tracksdata\car_eroad.xml copy .\src\drivers\lliaw\tracksdata\car_eroad.xml .\runtime\drivers\lliaw\tracksdata\car_eroad.xml
+if exist .\src\drivers\lliaw\tracksdata\car_g-track-3.xml copy .\src\drivers\lliaw\tracksdata\car_g-track-3.xml .\runtime\drivers\lliaw\tracksdata\car_g-track-3.xml
 :src_drivers_lliaw_tracksdata
 
 if not exist .\src\drivers\lliaw goto src_drivers_lliaw
@@ -1395,6 +1396,7 @@ if exist .\src\drivers\tanhoj\tracksdata\car_e-track-4.xml copy .\src\drivers\ta
 if exist .\src\drivers\tanhoj\tracksdata\car_e-track-5.xml copy .\src\drivers\tanhoj\tracksdata\car_e-track-5.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\tanhoj\tracksdata\car_e-track-6.xml copy .\src\drivers\tanhoj\tracksdata\car_e-track-6.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\tanhoj\tracksdata\car_g-track-1.xml copy .\src\drivers\tanhoj\tracksdata\car_g-track-1.xml .\runtime\drivers\tanhoj\tracksdata\car_g-track-1.xml
+if exist .\src\drivers\tanhoj\tracksdata\car_g-track-3.xml copy .\src\drivers\tanhoj\tracksdata\car_g-track-3.xml .\runtime\drivers\tanhoj\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\tanhoj\tracksdata\car_michigan.xml copy .\src\drivers\tanhoj\tracksdata\car_michigan.xml .\runtime\drivers\tanhoj\tracksdata\car_michigan.xml
 if exist .\src\drivers\tanhoj\tracksdata\car_s2.xml copy .\src\drivers\tanhoj\tracksdata\car_s2.xml .\runtime\drivers\tanhoj\tracksdata\car_s2.xml
 if exist .\src\drivers\tanhoj\tracksdata\car_test-1.xml copy .\src\drivers\tanhoj\tracksdata\car_test-1.xml .\runtime\drivers\tanhoj\tracksdata\car_test-1.xml
@@ -1409,6 +1411,7 @@ if exist .\src\drivers\tanhoj\tracksdata\e-track-4.xml copy .\src\drivers\tanhoj
 if exist .\src\drivers\tanhoj\tracksdata\e-track-5.xml copy .\src\drivers\tanhoj\tracksdata\e-track-5.xml .\runtime\drivers\tanhoj\tracksdata\e-track-5.xml
 if exist .\src\drivers\tanhoj\tracksdata\e-track-6.xml copy .\src\drivers\tanhoj\tracksdata\e-track-6.xml .\runtime\drivers\tanhoj\tracksdata\e-track-6.xml
 if exist .\src\drivers\tanhoj\tracksdata\g-track-1.xml copy .\src\drivers\tanhoj\tracksdata\g-track-1.xml .\runtime\drivers\tanhoj\tracksdata\g-track-1.xml
+if exist .\src\drivers\tanhoj\tracksdata\g-track-3.xml copy .\src\drivers\tanhoj\tracksdata\g-track-3.xml .\runtime\drivers\tanhoj\tracksdata\g-track-3.xml
 if exist .\src\drivers\tanhoj\tracksdata\michigan.xml copy .\src\drivers\tanhoj\tracksdata\michigan.xml .\runtime\drivers\tanhoj\tracksdata\michigan.xml
 if exist .\src\drivers\tanhoj\tracksdata\s2.xml copy .\src\drivers\tanhoj\tracksdata\s2.xml .\runtime\drivers\tanhoj\tracksdata\s2.xml
 if exist .\src\drivers\tanhoj\tracksdata\wheel-1.xml copy .\src\drivers\tanhoj\tracksdata\wheel-1.xml .\runtime\drivers\tanhoj\tracksdata\wheel-1.xml
@@ -1441,6 +1444,7 @@ if exist .\src\drivers\tita\tracksdata\car_e-track-4.xml copy .\src\drivers\tita
 if exist .\src\drivers\tita\tracksdata\car_e-track-5.xml copy .\src\drivers\tita\tracksdata\car_e-track-5.xml .\runtime\drivers\tita\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\tita\tracksdata\car_e-track-6.xml copy .\src\drivers\tita\tracksdata\car_e-track-6.xml .\runtime\drivers\tita\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\tita\tracksdata\car_g-track-1.xml copy .\src\drivers\tita\tracksdata\car_g-track-1.xml .\runtime\drivers\tita\tracksdata\car_g-track-1.xml
+if exist .\src\drivers\tita\tracksdata\car_g-track-3.xml copy .\src\drivers\tita\tracksdata\car_g-track-3.xml .\runtime\drivers\tita\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\tita\tracksdata\car_michigan.xml copy .\src\drivers\tita\tracksdata\car_michigan.xml .\runtime\drivers\tita\tracksdata\car_michigan.xml
 if exist .\src\drivers\tita\tracksdata\car_s2.xml copy .\src\drivers\tita\tracksdata\car_s2.xml .\runtime\drivers\tita\tracksdata\car_s2.xml
 if exist .\src\drivers\tita\tracksdata\car_test-1.xml copy .\src\drivers\tita\tracksdata\car_test-1.xml .\runtime\drivers\tita\tracksdata\car_test-1.xml
@@ -1454,6 +1458,7 @@ if exist .\src\drivers\tita\tracksdata\e-track-4.xml copy .\src\drivers\tita\tra
 if exist .\src\drivers\tita\tracksdata\e-track-5.xml copy .\src\drivers\tita\tracksdata\e-track-5.xml .\runtime\drivers\tita\tracksdata\e-track-5.xml
 if exist .\src\drivers\tita\tracksdata\e-track-6.xml copy .\src\drivers\tita\tracksdata\e-track-6.xml .\runtime\drivers\tita\tracksdata\e-track-6.xml
 if exist .\src\drivers\tita\tracksdata\g-track-1.xml copy .\src\drivers\tita\tracksdata\g-track-1.xml .\runtime\drivers\tita\tracksdata\g-track-1.xml
+if exist .\src\drivers\tita\tracksdata\g-track-3.xml copy .\src\drivers\tita\tracksdata\g-track-3.xml .\runtime\drivers\tita\tracksdata\g-track-3.xml
 if exist .\src\drivers\tita\tracksdata\michigan.xml copy .\src\drivers\tita\tracksdata\michigan.xml .\runtime\drivers\tita\tracksdata\michigan.xml
 if exist .\src\drivers\tita\tracksdata\s2.xml copy .\src\drivers\tita\tracksdata\s2.xml .\runtime\drivers\tita\tracksdata\s2.xml
 if exist .\src\drivers\tita\tracksdata\wheel-1.xml copy .\src\drivers\tita\tracksdata\wheel-1.xml .\runtime\drivers\tita\tracksdata\wheel-1.xml
@@ -1564,6 +1569,12 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\results
 call .\create_dir .\runtime\results\quickrace
 :results_quickrace
+
+if not exist . goto _home_torcs_sb3_torcs_torcs
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+if exist .\setup_linux.sh copy .\setup_linux.sh .\runtime\.\setup_linux.sh
+:_home_torcs_sb3_torcs_torcs
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers

@@ -338,7 +338,7 @@ ReNewTrackMenu(void)
 			 "Abandon", "Abandon The Race",
 			 ReInfo->_reMenuScreen, GfuiScreenActivate);
 
-    GfuiAddKey(newTrackMenuHdle, 27,  "Abandon", ReInfo->_reMenuScreen, GfuiScreenActivate);
+    GfuiAddKey(newTrackMenuHdle, 27,  "Abandon", ReInfo->_reMenuScreen, GfuiScreenActivate, NULL);
 
     GfuiScreenActivate(newTrackMenuHdle);
 

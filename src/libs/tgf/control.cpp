@@ -246,12 +246,20 @@ GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
     @return	none
 */
 void
-GfctrlMouseCalibrate(void)
+GfctrlMouseCenter(void)
 {
     int sw, sh, vw, vh;
 
     GfScrGetSize(&sw, &sh, &vw, &vh);
     GfuiMouseSetPos(sw / 2, sh / 2);
-    refMouse.X = sw / 2;
-    refMouse.Y = sh / 2;
+}
+
+/** Recentre the mouse on the screen and get the reference position.
+    @ingroup	ctrl
+    @return	none
+*/
+void
+GfctrlMouseCalibrate(void)
+{
+    memcpy(&refMouse, GfuiMouseInfo(), sizeof(refMouse));
 }

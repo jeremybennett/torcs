@@ -55,14 +55,14 @@ gfMenuInit(void)
 void
 GfuiMenuDefaultKeysAdd(void *scr)
 {
-    GfuiAddKey(scr, 9, "Select Next Entry", NULL, gfuiSelectNext);
-    GfuiAddKey(scr, 13, "Perform Action", (void*)2, gfuiMouseAction);
-    GfuiAddSKey(scr, GLUT_KEY_UP, "Select Previous Entry", NULL, gfuiSelectPrev);
-    GfuiAddSKey(scr, GLUT_KEY_DOWN, "Select Next Entry", NULL, gfuiSelectNext);
-    GfuiAddSKey(scr, GLUT_KEY_PAGE_UP, "Select Previous Entry", NULL, gfuiSelectPrev);
-    GfuiAddSKey(scr, GLUT_KEY_PAGE_DOWN, "Select Next Entry", NULL, gfuiSelectNext);
-    GfuiAddSKey(scr, GLUT_KEY_F1, "Help", scr, GfuiHelpScreen);
-    GfuiAddSKey(scr, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
+    GfuiAddKey(scr, 9, "Select Next Entry", NULL, gfuiSelectNext, NULL);
+    GfuiAddKey(scr, 13, "Perform Action", (void*)2, gfuiMouseAction, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_UP, "Select Previous Entry", NULL, gfuiSelectPrev, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_DOWN, "Select Next Entry", NULL, gfuiSelectNext, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_PAGE_UP, "Select Previous Entry", NULL, gfuiSelectPrev, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_PAGE_DOWN, "Select Next Entry", NULL, gfuiSelectNext, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_F1, "Help", scr, GfuiHelpScreen, NULL);
+    GfuiAddSKey(scr, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
     
 }
 
@@ -177,7 +177,7 @@ GfuiMenuBackQuitButtonCreate(void *scr, char *text, char *tip, void *userdata, t
 			(void*)cbinfo, dispInfo,
 			remInfo);
 
-    GfuiAddKey(scr, (unsigned char)27, tip, userdata, onpush);
+    GfuiAddKey(scr, (unsigned char)27, tip, userdata, onpush, NULL);
 
     return bId;
 }

@@ -284,7 +284,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    GfctrlMouseCalibrate();
+    GfctrlMouseCenter();
 
 #ifndef WIN32
 #ifdef TELEMETRY
@@ -316,7 +316,13 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     float	 leftSteer;
     float	 rightSteer;
     int		 scrw, scrh, dummy;
+    static int	 firstTime = 1;
 
+    if (firstTime) {
+	GfctrlMouseCalibrate();
+	firstTime = 0;
+    }
+    
     distToStart = RtGetDistFromStart(car);
     
     Gear = (tdble)car->_gear;	/* telemetry */

@@ -75,7 +75,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	}
 	
 	
-	if ((slip > 0.2) && (gear > 1)) {
+	if ((slip > 0.5) && (gear > 1)) {
 	    car->_accelCmd = 0;
 	} else {
 	    RELAXATION(car->_accelCmd, lastAccel[idx], 3.0);
@@ -99,7 +99,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	    }
 	}
 	car->_brakeCmd = MIN(-MIN((Vtarget+1.0 - car->_speed_x) / 10.0, 1.0), 1.0);
-	if (slip > 0.2) {
+	if (slip > 0.5) {
 	    car->_brakeCmd = 0.0;
 	} else {
 	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 3.0);

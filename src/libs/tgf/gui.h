@@ -200,6 +200,7 @@ typedef struct GfuiKey
     int			modifier;
     void		*userData;
     tfuiCallback	onPress;
+    tfuiCallback	onRelease;
     struct GfuiKey	*next;
 } tGfuiKey;
 
@@ -222,6 +223,10 @@ typedef struct
     tfuiCallback	onActivate;
     void		*userDeactData;
     tfuiCallback	onDeactivate;
+
+    /* key callback functions */
+    tfuiKeyCallback	onKeyAction;
+    tfuiSKeyCallback	onSKeyAction;
 
     /* mouse handling */
     int			mouse;

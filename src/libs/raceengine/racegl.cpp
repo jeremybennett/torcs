@@ -89,19 +89,19 @@ reSkipPreStart(void * /* dummy */)
 static void
 reAddKeys(void)
 {
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_F1,        "Help", reScreenHandle, GfuiHelpScreen);
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, RePrevCar);
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_DOWN, "Select Next Car", (void*)0, ReNextCar);
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_F12,       "Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddSKey(reScreenHandle, GLUT_KEY_F1,        "Help", reScreenHandle, GfuiHelpScreen, NULL);
+    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, RePrevCar, NULL);
+    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_DOWN, "Select Next Car", (void*)0, ReNextCar, NULL);
+    GfuiAddSKey(reScreenHandle, GLUT_KEY_F12,       "Screen Shot", NULL, GfuiScreenShot, NULL);
 
 
-    GfuiAddKey(reScreenHandle, '-', "Slow Time",         (void*)0, ReTimeMod);
-    GfuiAddKey(reScreenHandle, '+', "Accelerate Time",   (void*)1, ReTimeMod);
-    GfuiAddKey(reScreenHandle, '.', "Real Time",         (void*)2, ReTimeMod);
-    GfuiAddKey(reScreenHandle, 'p', "Pause Race",        (void*)0, ReBoardInfo);
-    GfuiAddKey(reScreenHandle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply);
-    GfuiAddKey(reScreenHandle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply);
-    GfuiAddKey(reScreenHandle, ' ', "Skip Pre Start",    (void*)0, reSkipPreStart);
+    GfuiAddKey(reScreenHandle, '-', "Slow Time",         (void*)0, ReTimeMod, NULL);
+    GfuiAddKey(reScreenHandle, '+', "Accelerate Time",   (void*)1, ReTimeMod, NULL);
+    GfuiAddKey(reScreenHandle, '.', "Real Time",         (void*)2, ReTimeMod, NULL);
+    GfuiAddKey(reScreenHandle, 'p', "Pause Race",        (void*)0, ReBoardInfo, NULL);
+    GfuiAddKey(reScreenHandle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply, NULL);
+    GfuiAddKey(reScreenHandle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply, NULL);
+    GfuiAddKey(reScreenHandle, ' ', "Skip Pre Start",    (void*)0, reSkipPreStart, NULL);
     
 }
 
@@ -236,11 +236,11 @@ static int	reCurLine;
 static void
 reAddResKeys(void)
 {
-    GfuiAddSKey(reResScreenHdle, GLUT_KEY_F1,  "Help", reScreenHandle, GfuiHelpScreen);
-    GfuiAddSKey(reResScreenHdle, GLUT_KEY_F12, "Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddSKey(reResScreenHdle, GLUT_KEY_F1,  "Help", reScreenHandle, GfuiHelpScreen, NULL);
+    GfuiAddSKey(reResScreenHdle, GLUT_KEY_F12, "Screen Shot", NULL, GfuiScreenShot, NULL);
 
-    GfuiAddKey(reResScreenHdle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply);
-    GfuiAddKey(reResScreenHdle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply);
+    GfuiAddKey(reResScreenHdle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply, NULL);
+    GfuiAddKey(reResScreenHdle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply, NULL);
 }
 
 static void
@@ -404,8 +404,8 @@ ReResShowCont(void)
 		     0, 0, reResCont,
 		     NULL, (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
-    GfuiAddKey(reResScreenHdle, 13,  "Continue", 0, reResCont);
-    GfuiAddKey(reResScreenHdle, 27,  "Continue", 0, reResCont);
+    GfuiAddKey(reResScreenHdle, 13,  "Continue", 0, reResCont, NULL);
+    GfuiAddKey(reResScreenHdle, 27,  "Continue", 0, reResCont, NULL);
 
     glutDisplayFunc(reContDisplay);
     glutPostRedisplay();

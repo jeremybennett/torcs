@@ -226,14 +226,14 @@ rmSelectDeselect(void * dummy )
 static void
 rmdsAddKeys(void)
 {
-    GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate);
-    GfuiAddKey(scrHandle, 13, "Accept Selection", NULL, rmdsSelect);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
-    GfuiAddKey(scrHandle, '-', "Move Up", (void*)-1, rmMove);
-    GfuiAddKey(scrHandle, '+', "Move Down", (void*)1, rmMove);
-    GfuiAddKey(scrHandle, ' ', "Select/Deselect", NULL, rmSelectDeselect);
-    GfuiAddKey(scrHandle, 'f', "Set Focus", NULL, rmdsSetFocus);
+    GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate, NULL);
+    GfuiAddKey(scrHandle, 13, "Accept Selection", NULL, rmdsSelect, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
+    GfuiAddKey(scrHandle, '-', "Move Up", (void*)-1, rmMove, NULL);
+    GfuiAddKey(scrHandle, '+', "Move Down", (void*)1, rmMove, NULL);
+    GfuiAddKey(scrHandle, ' ', "Select/Deselect", NULL, rmSelectDeselect, NULL);
+    GfuiAddKey(scrHandle, 'f', "Set Focus", NULL, rmdsSetFocus, NULL);
     
 }
 

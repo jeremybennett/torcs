@@ -16,7 +16,7 @@
 ##############################################################################
 
 AC_INIT(Make-config.in)
-AM_INIT_AUTOMAKE(torcs, 1.2.0-rc3)
+AM_INIT_AUTOMAKE(torcs, 1.2.0-rc4)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -79,6 +79,7 @@ dnl Replace `main' with a function in -lXi:
 AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXmu:
 AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(Xxf86vm, XF86VidModeSetViewPort,,AC_MSG_ERROR([Can't find libXxf86vm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 

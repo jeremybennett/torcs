@@ -114,10 +114,10 @@ rmrpValidate(void * /* dummy */)
 static void
 rmrpAddKeys(void)
 {
-    GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
-    GfuiAddKey(scrHandle, 13, "Validate Modifications", NULL, rmrpValidate);
+    GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
+    GfuiAddKey(scrHandle, 13, "Validate Modifications", NULL, rmrpValidate, NULL);
 }
 
 void

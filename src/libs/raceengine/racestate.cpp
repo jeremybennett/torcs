@@ -152,11 +152,13 @@ ReStateManage(void)
 	    break;
 
 	case RE_STATE_EXIT:
+	    GfScrShutdown();
 	    exit (0);		/* brutal isn't it ? */
 	    break;
 	}
     } while ((mode & (RM_SYNC | RM_QUIT)) == RM_SYNC);
     if (mode & RM_QUIT) {
+	GfScrShutdown();
 	exit (0);		/* brutal isn't it ? */
     }
     if (mode & RM_ACTIVGAMESCR) {

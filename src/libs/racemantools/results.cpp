@@ -160,7 +160,7 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 			   80, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmPrevRace, rmChgPracticeScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgPracticeScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgPracticeScreen, NULL);
     }
     
 
@@ -201,12 +201,12 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 			   540, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmNextRace, rmChgPracticeScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgPracticeScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgPracticeScreen, NULL);
     }
 
-    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
-    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
-    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiScreenActivate(rmScrHdle);
 }
@@ -335,7 +335,7 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 			   80, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmPrevRace, rmChgRaceScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgRaceScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgRaceScreen, NULL);
     }
 
     GfuiButtonCreate(rmScrHdle,
@@ -376,12 +376,12 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 			   540, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmNextRace, rmChgRaceScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgRaceScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgRaceScreen, NULL);
     }
 
-    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
-    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
-    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiScreenActivate(rmScrHdle);
 }
@@ -465,7 +465,7 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 			   80, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmPrevRace, rmChgQualifScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgQualifScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgQualifScreen, NULL);
     }
 
     GfuiButtonCreate(rmScrHdle,
@@ -505,12 +505,12 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 			   540, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmNextRace, rmChgQualifScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgQualifScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgQualifScreen, NULL);
     }
 
-    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
-    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
-    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiScreenActivate(rmScrHdle);
 }
@@ -583,7 +583,7 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 			   80, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmPrevRace, rmChgStandingScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgStandingScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgStandingScreen, NULL);
     }
 
     GfuiButtonCreate(rmScrHdle,
@@ -623,12 +623,12 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 			   540, 40, GFUI_ALIGN_HL_VB, 1,
 			   (void*)&RmNextRace, rmChgStandingScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgStandingScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgStandingScreen, NULL);
     }
 
-    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
-    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
-    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiScreenActivate(rmScrHdle);
 }

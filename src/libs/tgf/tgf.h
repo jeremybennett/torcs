@@ -251,6 +251,7 @@ extern void GfImgFreeTex(GLuint tex);
 extern GLuint GfImgReadTex(char *filename);
 
 extern void GfScrInit(int argc, char *argv[]);
+extern void GfScrShutdown(void);
 extern void *GfScrMenuInit(void *precMenu);
 extern char *GfTime2Str(tdble sec, int sgn);
 extern void GfScrGetSize(int *ScrW, int *ScrH, int *ViewW, int *ViewH);
@@ -304,6 +305,9 @@ typedef struct ScrollBarInfo
 
 typedef void (*tfuiCallback)(void * /* userdata */);
 typedef void (*tfuiSBCallback)(tScrollBarInfo *);
+typedef void (*tfuiKeyCallback)(char *key, int state);
+typedef void (*tfuiSKeyCallback)(int key, int state);
+
 
 /* GLUT Callback functions                  */
 /* should be called explicitely if          */
@@ -326,9 +330,9 @@ extern void GfuiScreenReplace(void *screen);
 extern void GfuiScreenDeactivate(void);
 extern void *GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate);
 extern void GfuiHookRelease(void *hook);
-extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
-extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
-extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed);
+extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
+extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
+extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
 extern void GfuiHelpScreen(void *prevScreen);
 extern void GfuiScreenShot(void *notused);
 extern void GfuiScreenAddBgImg(void *scr, char *filename);
@@ -480,6 +484,7 @@ GfFatal(char *fmt, ...)
     va_start(ap, fmt);
     vprintf(fmt, ap);
     va_end(ap);
+    GfScrShutdown();
     exit(1);
 }
 #endif
@@ -597,6 +602,7 @@ typedef struct
 extern tCtrlMouseInfo *GfctrlMouseInit(void);
 extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
+extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseCalibrate(void);
 
 #endif /* __TGF__H__ */

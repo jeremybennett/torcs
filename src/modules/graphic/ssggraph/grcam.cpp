@@ -824,6 +824,7 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 	schedView = (tSchedView *)calloc(grNbCars, sizeof(tSchedView));
 	if (!schedView) {
 	    GfTrace("malloc error");
+	    GfScrShutdown();
 	    exit (1);
 	}
     

@@ -986,5 +986,4 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\.
 if exist .\CHANGELOG.html copy .\CHANGELOG.html .\runtimed\.\CHANGELOG.html
 if exist .\COPYING copy .\COPYING .\runtimed\.\COPYING
-if exist .\setup_linux.sh copy .\setup_linux.sh .\runtimed\.\setup_linux.sh
 :_home_torcs_sb3_torcs_torcs

@@ -383,7 +383,7 @@ endif
 ifdef PROGRAM
 
 ${PROGRAM}: ${OBJECTS} $(subst -l,${EXPORTBASE}/lib/lib, ${LIBS:=.a})
-	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${EXT_LIBS} ${SOLIBS} -o $@
+	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${SOLIBS} ${EXT_LIBS} -o $@
 
 installprogram: ${PROGRAM}
 	@ createdir="${INSTBASE}" ; \

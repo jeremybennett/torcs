@@ -81,6 +81,7 @@ gfParmAddKid(tParmNode *node, tParmNode *newNode)
     } else {
 	GfTrace("file: %s -> Grammar Error %s not allowed in %s\n", CurParm->file, newNode->name, node->name);
 	GfParmReleaseHandle((void*)CurParm);
+	GfScrShutdown();
 	exit(1);
     }
 }

@@ -198,7 +198,7 @@ gfuiKeyboard(unsigned char key, int /* x */, int /* y */)
 	do {
 	    curKey = curKey->next;
 	    if ((curKey->key == key) && ((curKey->modifier == 0) || (curKey->modifier & modifier) != 0)) {
-		curKey->onPress(curKey->userData);
+		if (curKey->onPress) curKey->onPress(curKey->userData);
 		break;
 	    }
 	} while (curKey != GfuiScreen->userKeys);
@@ -230,7 +230,7 @@ gfuiSpecial(int key, int /* x */, int /* y */)
 	do {
 	    curKey = curKey->next;
 	    if ((curKey->specialkey == key) && ((curKey->modifier == 0) || (curKey->modifier & modifier) != 0)) {
-		curKey->onPress(curKey->userData);
+		if (curKey->onPress) curKey->onPress(curKey->userData);
 		break;
 	    }
 	} while (curKey != GfuiScreen->userSpecKeys);
@@ -243,6 +243,52 @@ gfuiSpecial(int key, int /* x */, int /* y */)
 	    break;
 	}
     }
+    glutPostRedisplay();
+}
+
+static void
+gfuiKeyboardUp(unsigned char key, int /* x */, int /* y */)
+{
+    tGfuiKey	*curKey;
+    int		modifier;
+    
+    modifier = glutGetModifiers();
+    
+    /* now see the user's defined keys */
+    if (GfuiScreen->userKeys != NULL) {
+	curKey = GfuiScreen->userKeys;
+	do {
+	    curKey = curKey->next;
+	    if ((curKey->key == key) && ((curKey->modifier == 0) || (curKey->modifier & modifier) != 0)) {
+		if (curKey->onRelease) curKey->onRelease(curKey->userData);
+		break;
+	    }
+	} while (curKey != GfuiScreen->userKeys);
+    }
+
+    glutPostRedisplay();
+}
+
+static void
+gfuiSpecialUp(int key, int /* x */, int /* y */)
+{
+    tGfuiKey	*curKey;
+    int		modifier;
+    
+    modifier = glutGetModifiers();
+
+    /* now see the user's defined keys */
+    if (GfuiScreen->userSpecKeys != NULL) {
+	curKey = GfuiScreen->userSpecKeys;
+	do {
+	    curKey = curKey->next;
+	    if ((curKey->specialkey == key) && ((curKey->modifier == 0) || (curKey->modifier & modifier) != 0)) {
+		if (curKey->onRelease) curKey->onRelease(curKey->userData);
+		break;
+	    }
+	} while (curKey != GfuiScreen->userSpecKeys);
+    }
+
     glutPostRedisplay();
 }
 
@@ -341,6 +387,8 @@ GfuiScreenActivate(void *screen)
     
     glutKeyboardFunc(gfuiKeyboard);
     glutSpecialFunc(gfuiSpecial);
+    glutKeyboardUpFunc(gfuiKeyboardUp);
+    glutSpecialUpFunc(gfuiSpecialUp);
     glutMouseFunc(gfuiMouse);
     glutMotionFunc(gfuiMotion);
     glutPassiveMotionFunc(gfuiPassiveMotion);
@@ -555,7 +603,7 @@ GfuiHookRelease(void *hook)
     @param	onKeyPressed	Callback function
  */
 void
-GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed)
+GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)
 {
     tGfuiKey	*curKey;
     tGfuiScreen	*screen = (tGfuiScreen*)scr;
@@ -609,9 +657,9 @@ GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallba
     @param	onKeyPressed	Callback function called when the specified key is pressed
  */
 void
-GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed)
+GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)
 {
-    GfuiAddKey(GfuiScreen, key, descr, userData, onKeyPressed);
+    GfuiAddKey(GfuiScreen, key, descr, userData, onKeyPressed, onKeyReleased);
 }
 
 /** Add a Special Keyboard shortcut to the screen.
@@ -624,7 +672,7 @@ GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onK
     @param	onKeyPressed	Callback function
  */
 void
-GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed)
+GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)
 {
     tGfuiKey	*curKey;
     tGfuiScreen	*screen = (tGfuiScreen*)scr;

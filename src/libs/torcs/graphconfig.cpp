@@ -141,7 +141,7 @@ GraphMenuInit(void *prevMenu)
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
      prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate);
+    GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
 
     return scrHandle;
 }

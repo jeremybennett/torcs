@@ -749,6 +749,7 @@ initBackground(void)
 	ulSetError ( UL_WARNING, "        should be in the .xml !! ") ;
 	ulSetError ( UL_WARNING, "        copy the envshadow.png from g-track-2 to the track you selected ") ;
 	ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
+	GfScrShutdown();
 	exit(-1);
       }
 }

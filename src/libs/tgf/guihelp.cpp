@@ -104,9 +104,9 @@ GfuiHelpScreen(void *prevScreen)
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle, (unsigned char)27, "", prevScreen, GfuiScreenReplace);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "", prevScreen, GfuiScreenReplace);
-    GfuiAddKey(scrHandle, (unsigned char)13, "", prevScreen, GfuiScreenReplace);
+    GfuiAddKey(scrHandle, (unsigned char)27, "", prevScreen, GfuiScreenReplace, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "", prevScreen, GfuiScreenReplace, NULL);
+    GfuiAddKey(scrHandle, (unsigned char)13, "", prevScreen, GfuiScreenReplace, NULL);
 
     GfuiScreenActivate(scrHandle);
 

@@ -135,7 +135,7 @@ static Processor prologInitProcessor;
 static Processor contentProcessor;
 static Processor cdataSectionProcessor;
 static Processor epilogProcessor;
-static Processor errorProcessor;
+/* static Processor errorProcessor; */
 static Processor externalEntityInitProcessor;
 static Processor externalEntityInitProcessor2;
 static Processor externalEntityInitProcessor3;
@@ -687,7 +687,7 @@ const XML_LChar *XML_ErrorString(int code)
     XML_T("unclosed CDATA section"),
     XML_T("error in processing external entity reference")
   };
-  if (code > 0 && code < sizeof(message)/sizeof(message[0]))
+  if (code > 0 && code < (int)(sizeof(message)/sizeof(message[0])))
     return message[code];
   return 0;
 }
@@ -1849,14 +1849,14 @@ enum XML_Error epilogProcessor(XML_Parser parser,
   }
 }
 
-static
-enum XML_Error errorProcessor(XML_Parser parser,
-			      const char *s,
-			      const char *end,
-			      const char **nextPtr)
-{
-  return errorCode;
-}
+/* static */
+/* enum XML_Error errorProcessor(XML_Parser parser, */
+/* 			      const char *s, */
+/* 			      const char *end, */
+/* 			      const char **nextPtr) */
+/* { */
+/*   return errorCode; */
+/* } */
 
 static enum XML_Error
 storeAttributeValue(XML_Parser parser, const ENCODING *enc, int isCdata,

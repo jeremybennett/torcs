@@ -52,7 +52,7 @@ RmTwoStateScreen(char *title,
 			 label2, tip2, screen2,
 			 GfuiScreenActivate);
 
-    GfuiAddKey(twoStateHdle, 27, tip2, screen2, GfuiScreenActivate);
+    GfuiAddKey(twoStateHdle, 27, tip2, screen2, GfuiScreenActivate, NULL);
 
     GfuiScreenActivate(twoStateHdle);
 }
@@ -84,7 +84,7 @@ RmTriStateScreen(char *title,
     
 
 
-    GfuiAddKey(triStateHdle, 27, tip3, screen3, GfuiScreenActivate);
+    GfuiAddKey(triStateHdle, 27, tip3, screen3, GfuiScreenActivate, NULL);
 
     GfuiScreenActivate(triStateHdle);
 }
@@ -204,7 +204,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 			       80, 40, GFUI_ALIGN_HL_VB, 1,
 			       (void*)&prevStartRace, rmChgStartScreen,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	    GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous drivers", (void*)&prevStartRace, rmChgStartScreen);
+	    GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous drivers", (void*)&prevStartRace, rmChgStartScreen, NULL);
 	}
 
 	if (i < nCars) {
@@ -217,7 +217,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 			       540, 40, GFUI_ALIGN_HL_VB, 1,
 			       (void*)&nextStartRace, rmChgStartScreen,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	    GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Drivers", (void*)&nextStartRace, rmChgStartScreen);
+	    GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Drivers", (void*)&nextStartRace, rmChgStartScreen, NULL);
 	}
     }
 
@@ -234,7 +234,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 		     NULL,
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
-    GfuiAddKey(rmScrHdle, (unsigned char)13, "Start",   startScr, GfuiScreenReplace);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "Start",   startScr, GfuiScreenReplace, NULL);
 
     GfuiButtonCreate(rmScrHdle,
 		     "Abandon",
@@ -249,9 +249,9 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 		     NULL,
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
-    GfuiAddKey(rmScrHdle, (unsigned char)27, "Abandon", abortScr, GfuiScreenReplace);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "Abandon", abortScr, GfuiScreenReplace, NULL);
 
-    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiScreenActivate(rmScrHdle);
 }

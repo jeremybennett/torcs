@@ -31,6 +31,7 @@ endofprog(void *dummy)
     STOP_ACTIVE_PROFILES();
     PRINT_PROFILE();
 /*     glutSetKeyRepeat(GLUT_KEY_REPEAT_ON); */
+    GfScrShutdown();
     exit(0);
 }
 

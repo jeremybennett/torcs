@@ -37,6 +37,7 @@
 #endif /* WIN32 */
 
 #include <tgf.h>
+#include "fg_gm.h"
 
 static int GfScrWidth;
 static int GfScrHeight;
@@ -47,6 +48,9 @@ static int GfScrCenY;
 
 void	*scrMenuHdle = NULL;
 static char buf[1024];
+
+static int usedFG = 0;
+static int usedGM = 0;
 
 void
 gfScreenInit(void)
@@ -68,6 +72,8 @@ static void Reshape(int width, int height)
     GfScrCenY = height / 2;
 }
 
+static int DepthList[] = { 24, 24, 16, 8, 0};
+
 void GfScrInit(int argc, char *argv[])
 {
     int		Window;
@@ -76,7 +82,7 @@ void GfScrInit(int argc, char *argv[])
     void	*handle;
     char	*fscr;
     int		fullscreen;
-    int		i;
+    int		i, depth;
     
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -88,7 +94,25 @@ void GfScrInit(int argc, char *argv[])
     GfViewHeight = yw;
     GfScrCenX = xw / 2;
     GfScrCenY = yw / 2;
-    
+
+    fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
+    if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
+	depth = 0;
+	while (!usedFG && DepthList[depth]) {
+	    for (i = 160; i > 49; i--) {
+		sprintf(buf, "%dx%d:%d@%d", winX, winY, DepthList[depth], i);
+		printf("Trying %s mode\n", buf);
+		fglutGameModeString(buf);
+		if (fglutEnterGameMode()) {
+		    printf("OK done for %s\n", buf);
+		    usedFG = 1;
+		    break;
+		}
+	    }
+	    depth++;
+	}
+    }
+   
     glutInit(&argc, argv);
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
@@ -96,17 +120,22 @@ void GfScrInit(int argc, char *argv[])
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	for (i = 160; i > 49; i--) {
-	    sprintf(buf, "%dx%d:32@%d", winX, winY, i);
-	    glutGameModeString(buf);
-	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
-		glutEnterGameMode();
-		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
-		    fullscreen = 1;
-		    break;
-		} else {
-		    glutLeaveGameMode();
+	depth = 0;
+	while (!fullscreen && DepthList[depth]) {
+	    for (i = 160; i > 49; i--) {
+		sprintf(buf, "%dx%d:%d@%d", winX, winY, DepthList[depth], i);
+		glutGameModeString(buf);
+		if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+		    glutEnterGameMode();
+		    if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
+			usedGM = 1;
+			fullscreen = 1;
+			break;
+		    } else {
+			glutLeaveGameMode();
+		    }
 		}
+		depth++;
 	    }
 	}
     }
@@ -118,6 +147,7 @@ void GfScrInit(int argc, char *argv[])
 	Window = glutCreateWindow(argv[0]);
 	if (!Window) {
 	    printf("Error, couldn't open window\n");
+	    GfScrShutdown();
 	    exit(1);
 	}
     }
@@ -131,6 +161,22 @@ void GfScrInit(int argc, char *argv[])
 
     glutReshapeFunc( Reshape );
 }
+
+/** Shutdown the screen
+    @ingroup	screen
+    @return	none
+*/
+void GfScrShutdown(void)
+{
+    if (usedGM) {
+	glutLeaveGameMode();
+    }
+    if (usedFG) {
+	fglutLeaveGameMode();
+    }
+}
+
+
 /** Get the screen and viewport sizes.
     @ingroup	screen
     @param	scrw	address of screen with
@@ -155,6 +201,7 @@ GfScrReinit(void *dummy)
 #ifdef WIN32
     retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
 #else
+    GfScrShutdown();
     if (strlen(LocalDir) == 0) {
 	retcode = execlp("./torcs", "torcs", (const char *)NULL);
     } else {
