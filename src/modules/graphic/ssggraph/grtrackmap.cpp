@@ -31,7 +31,7 @@ const float cGrTrackMap::RESOLUTION = 5.0;
 
 // Minimum and Maximum line width in pixels to draw the track.
 const float cGrTrackMap::MINLINEWIDTH = 5.0;
-const float cGrTrackMap::MAXLINEWIDTH = 15.0;
+const float cGrTrackMap::MAXLINEWIDTH = 20.0;
 
 // Some data needs just one initalization, after first initialization this is set to true.
 bool cGrTrackMap::isinitalized = false;
@@ -164,7 +164,8 @@ cGrTrackMap::cGrTrackMap()
 		track_height = track_max_y - track_min_y;
 
 		// Compute the final line width to draw the track.
-		float linewidth = MIN(MAXLINEWIDTH, MINLINEWIDTH*(texturesize/512.0)*4000.0/MAX(track_width, track_height));
+		float linewidth = MIN(MAXLINEWIDTH, MINLINEWIDTH*4000.0/MAX(track_width, track_height));
+		linewidth = linewidth*(texturesize/512.0);
 
 		// Compute a first estimate of the pixel to distance ratio.
 		ratio = texturesize/MAX(track_width, track_height);
