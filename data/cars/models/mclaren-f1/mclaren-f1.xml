@@ -30,7 +30,7 @@
 
   <section name="Sound">
 	<attstr name="engine sample" val="mclarenf1.wav"/>
-	<attnum name="rpm scale" val="0.7"/>
+	<attnum name="rpm scale" val="0.6458"/>
   </section>
 
 

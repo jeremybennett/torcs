@@ -29,7 +29,7 @@
 
   <section name="Sound">
 	<attstr name="engine sample" val="ferrarif355.wav"/>
-	<attnum name="rpm scale" val="0.77"/>
+	<attnum name="rpm scale" val="0.725"/>
   </section>
 
 

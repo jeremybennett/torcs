@@ -28,8 +28,8 @@
     <attnum name="zpos" val="0.95" unit="m"/>
   </section>
   <section name="Sound">
-	<attstr name="engine sample" val="lamborghinidiablo.wav"/>
-	<attnum name="rpm scale" val="0.92"/>
+	<attstr name="engine sample" val="944.wav"/>
+	<attnum name="rpm scale" val="0.88"/>
   </section>
 
 

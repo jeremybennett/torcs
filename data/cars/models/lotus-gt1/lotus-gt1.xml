@@ -28,6 +28,12 @@
     <attnum name="zpos" val="1.0" unit="m"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="lotus.wav"/>
+	<attnum name="rpm scale" val="0.8"/>
+  </section>
+
+
   <section name="Graphic Objects">
     <attstr name="env" val="lotus-gt1.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
