@@ -678,11 +678,11 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispCarFlag, int dispDrvFlag, doubl
 	if (car->priv.collision_state.collision_count > 0) {
 		tCollisionState* collision_state = &car->priv.collision_state;
 		grPropagateDamage (grCarInfo[index].carEntity, collision_state->pos, collision_state->force, 0);
-		printf("%d: ",collision_state->collision_count );
-		for (int i=0; i<3; i++) {
-			printf ("(%f %f) ", collision_state->pos[i], collision_state->force[i]);
-		}
-		printf("\n");
+		//printf("%d: ",collision_state->collision_count );
+		//for (int i=0; i<3; i++) {
+		//printf ("(%f %f) ", collision_state->pos[i], collision_state->force[i]);
+		//}
+		//printf("\n");
 		collision_state->collision_count = 0;
 	}
     grCarInfo[index].distFromStart=grGetDistToStart(car);

@@ -17,6 +17,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <AL/al.h>
+#include <AL/alc.h>
+#include <AL/alut.h>
 
 #include <math.h>
 
@@ -484,9 +487,9 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			u_car[0] = car->pub.DynGCg.vel.x;
 			u_car[1] = car->pub.DynGCg.vel.y;
 			u_car[2] = car->pub.DynGCg.vel.z;
-			p_car[0] = car->pub.DynGC.pos.x;
-			p_car[1] = car->pub.DynGC.pos.y;
-			p_car[2] = car->pub.DynGC.pos.z;
+			p_car[0] = car->pub.DynGCg.pos.x;
+			p_car[1] = car->pub.DynGCg.pos.y;
+			p_car[2] = car->pub.DynGCg.pos.z;
 			src_sound.f = 1.0;//mpitch;
 			src_sound.a = 1.0;
 			DopplerShift (&src_sound, p_car, u_car, *p_camera, *u_camera);
@@ -500,10 +503,10 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			smooth_accel[car_i] = smooth_accel[car_i]*.5 + .5*(car->ctrl.accelCmd*.99+0.01);
 			engpri[car_i].a = src_sound.a;
 			engpri[car_i].f = mpitch;
-			tdble rev_cor =((float)car->_enginerpm / (float)car->_enginerpmMax);
+			tdble rev_cor =((float)car->_enginerpm / (float)car->_enginerpmRedLine);
 			//engpri[car_i].lp = (smooth_accel[car_i]*(1.0-0.5*rev_cor) + rev_cor*rev_cor*rev_cor*0.5);
 			//engpri[car_i].lp = (smooth_accel[car_i]*(1.0-0.25*rev_cor) + rev_cor*rev_cor*rev_cor*0.25);
-			engpri[car_i].lp = .5*(rev_cor*rev_cor+1.0)*smooth_accel[car_i]
+			engpri[car_i].lp = (rev_cor*rev_cor*.75+.25)*smooth_accel[car_i]
 				+ (1.0-smooth_accel[car_i])*rev_cor*rev_cor*.25;
 		}
 
@@ -517,17 +520,40 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		//	if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speaed_y) > 0.0) {
 		if(1) {
 			for(i = 0; i < 4; i++) {
-				char* s = car->priv.wheel[i].seg->surface->material;
-				tdble roughness = car->priv.wheel[i].seg->surface->kRoughness;
-				tdble roughnessFreq = 2.0*EX_PI/car->priv.wheel[i].seg->surface->kRoughWaveLen;
+				char* s = NULL;
+				tdble roughness = 0.0;
+				tdble roughnessFreq = 1.0;
+				float ride  = 0.0001;
 				float tmpvol = sqrt(car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y)*0.01;
-				float ride  = car->priv.wheel[i].rollRes;
-			
+				if (car==NULL) {
+					fprintf (stderr, "Error: (grsound.c) no car\n");
+					continue;
+				} else if (car->priv.wheel==NULL) {
+					fprintf (stderr, "Error: (grsound.c) no wheels\n");
+					continue;
+				} else if (car->priv.wheel[i].seg==NULL) {
+					fprintf (stderr, "Error: (grsound.c) no seg\n");
+					continue;
+				} else if (car->priv.wheel[i].seg->surface==NULL) {
+					fprintf (stderr, "Error: (grsound.c) no surface\n");
+					continue;
+				} else if (car->priv.wheel[i].seg->surface->material==NULL) {
+					fprintf (stderr, "Error: (grsound.c) no material\n");
+					continue;
+				} else {
+					s = car->priv.wheel[i].seg->surface->material;
+					roughness = car->priv.wheel[i].seg->surface->kRoughness;
+					roughnessFreq = 2.0*EX_PI/car->priv.wheel[i].seg->surface->kRoughWaveLen;
+					ride  = car->priv.wheel[i].rollRes;
+				}
+
 				if (update_cnt<=-10) {
 					printf ("%f %f %f %f\n", roughness, roughnessFreq, ride, tmpvol);
 				}
 				int out_of_road = false;
-				if ((strcmp(s, TRK_VAL_GRASS)==0)
+
+				if ((s)
+					&&((strcmp(s, TRK_VAL_GRASS)==0)
 					||(strcmp(s, TRK_VAL_SAND)==0)
 					||(strcmp(s, TRK_VAL_DIRT)==0)
 					||(strstr(s, "sand"))
@@ -535,7 +561,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 					||(strstr(s, "grass"))
 					||(strstr(s, "gravel"))
 					||(strstr(s, "mud"))
-					) {
+					)) {
 					out_of_road = true;
 				}
 

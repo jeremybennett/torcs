@@ -384,7 +384,7 @@ static int do_object   ( char * s  )
   ssgBranch  *current_branch_g   = NULL ;
   int obj_type = search ( obj_type_tags, s ) ;
 
-  delete current_tfname ;
+  delete [] current_tfname ;
   current_tfname = NULL ;
 
   char buffer [ 1024 ] ;
@@ -513,13 +513,13 @@ static int do_texture  ( char *s )
 	*p='\0';
 	numMapLevel=1;
 	mapLevel=LEVEL0;
-	delete current_tbase ;
-	delete current_tfname ;
-	delete current_ttiled ;
+	delete [] current_tbase ;
+	delete [] current_tfname ;
+	delete [] current_ttiled ;
 	current_ttiled = 0;
-	delete current_tskids ;
+	delete [] current_tskids ;
 	current_tskids = 0;
-	delete current_tshad ;
+	delete [] current_tshad ;
 	current_tshad = 0;
 	skip_quotes ( &s ) ;
 	current_tbase = new char [ strlen(s)+1 ] ;
@@ -530,11 +530,11 @@ static int do_texture  ( char *s )
     else  if ((p=strstr(s," tiled"))!=NULL)
       {
 	*p='\0';
-	delete current_ttiled ;
+	delete [] current_ttiled ;
 	current_ttiled=0;
-	delete current_tskids ;
+	delete [] current_tskids ;
 	current_tskids = 0;
-	delete current_tshad ;
+	delete [] current_tshad ;
 	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
@@ -548,9 +548,9 @@ static int do_texture  ( char *s )
     else  if ((p=strstr(s," skids"))!=NULL)
       {
 	*p='\0';
-	delete current_tskids ;
+	delete [] current_tskids ;
 	current_tskids = 0;
-	delete current_tshad ;
+	delete [] current_tshad ;
 	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
@@ -564,7 +564,7 @@ static int do_texture  ( char *s )
     else  if ((p=strstr(s," shad"))!=NULL)
       {
 	*p='\0';
-	delete current_tshad ;
+	delete [] current_tshad ;
 	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
@@ -580,14 +580,14 @@ static int do_texture  ( char *s )
 	skip_quotes ( &s ) ;
 	numMapLevel=1;
 	mapLevel=LEVEL0;
-	delete current_tfname ;
-	delete current_tbase ;
+	delete [] current_tfname ;
+	delete [] current_tbase ;
 	current_tbase = 0;
-	delete current_ttiled ;
+	delete [] current_ttiled ;
 	current_ttiled = 0;
-	delete current_tskids ;
+	delete [] current_tskids ;
 	current_tskids = 0;
-	delete current_tshad ;
+	delete [] current_tshad ;
 	current_tshad = 0;
 	current_tfname = new char [ strlen(s)+1 ] ;
 	strcpy ( current_tfname, s ) ;
@@ -1228,7 +1228,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
       search ( top_tags, s ) ;
   }
 
-  delete current_tfname ;
+  delete [] current_tfname;
   current_tfname = NULL ;
   delete [] vtab ;
   vtab = 0;

@@ -164,33 +164,36 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 		} else {
 			cur_clr[3]=0.0;
 		}
-		char* s = car->priv.wheel[i].seg->surface->material;
 		tdble sling_mud = 1.0;
-		if (strstr(s, "sand")) {
-			cur_clr[0] = 0.8;
-			cur_clr[1] = 0.6;
-			cur_clr[2] = 0.35;
-		} else if (strstr(s, "dirt")) {
-			cur_clr[0] = 0.7;
-			cur_clr[1] = 0.55;
-			cur_clr[2] = 0.45;
-		} else if (strstr(s,"mud")) {
-			cur_clr[0] = 0.5;
-			cur_clr[1] = 0.35;
-			cur_clr[2] = 0.15;
-		} else if (strstr(s,"grass")) {
-			cur_clr[0] = 0.75;
-			cur_clr[1] = 0.5;
-			cur_clr[2] = 0.3;
-		} else if (strstr(s,"gravel")) {
-			cur_clr[0] = 0.6;
-			cur_clr[1] = 0.6;
-			cur_clr[2] = 0.6;
-		} else {
-			sling_mud=0.0;
-			cur_clr[0] = 0.0;
-			cur_clr[1] = 0.0;
-			cur_clr[2] = 0.0;
+
+		if (car->priv.wheel[i].seg) { // sanity check
+			char* s = car->priv.wheel[i].seg->surface->material;
+			if (strstr(s, "sand")) {
+				cur_clr[0] = 0.8;
+				cur_clr[1] = 0.6;
+				cur_clr[2] = 0.35;
+			} else if (strstr(s, "dirt")) {
+				cur_clr[0] = 0.7;
+				cur_clr[1] = 0.55;
+				cur_clr[2] = 0.45;
+			} else if (strstr(s,"mud")) {
+				cur_clr[0] = 0.5;
+				cur_clr[1] = 0.35;
+				cur_clr[2] = 0.15;
+			} else if (strstr(s,"grass")) {
+				cur_clr[0] = 0.75;
+				cur_clr[1] = 0.5;
+				cur_clr[2] = 0.3;
+			} else if (strstr(s,"gravel")) {
+				cur_clr[0] = 0.6;
+				cur_clr[1] = 0.6;
+				cur_clr[2] = 0.6;
+			} else {
+				sling_mud=0.0;
+				cur_clr[0] = 0.0;
+				cur_clr[1] = 0.0;
+				cur_clr[2] = 0.0;
+			}
 		}
 		for (int c=0; c<3; c++) {
 			tdble tmp = grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c];

@@ -243,54 +243,60 @@ void grAddSmoke(tCarElt *car, double t)
 				} else {
 					timeSmoke[car->index*4+i] = t;
 				}
-				
-				char* surface = car->priv.wheel[i].seg->surface->material;
+
 				sgVec3 cur_clr;
 				tdble init_speed;
 				tdble threshold = .1;
 				tdble smoke_life_coefficient = 30.0;
 				tdble smoke_speed_coefficient = 0.0;
-				if (strstr(surface, "sand")) {
-					cur_clr[0] = 0.8;
-					cur_clr[1] = 0.7+urandom()*0.1;
-					cur_clr[2] = 0.4+urandom()*0.2;
-					init_speed = .5;
-					threshold=.05;
-					smoke_life_coefficient = 12.5;
-					smoke_speed_coefficient = 0.25;
-				} else if (strstr(surface, "dirt")) {
-					cur_clr[0] = 0.7+urandom()*0.1;
-					cur_clr[1] = 0.6+urandom()*0.1;
-					cur_clr[2] = 0.5+urandom()*0.1;
-					init_speed = 0.45;
-					threshold=0.0;
-					smoke_life_coefficient = 10.0;
-					smoke_speed_coefficient = 0.5;
-				} else if (strstr(surface,"mud")) {
-					cur_clr[0] = 0.65;
-					cur_clr[1] = 0.4+urandom()*.2;
-					cur_clr[2] = 0.3+urandom()*.2;
-					init_speed = 0.4;
-					threshold=.2;
-					smoke_speed_coefficient = 0.05;
-				} else if (strstr(surface,"gravel")) {
-					cur_clr[0] = 0.6;
-					cur_clr[1] = 0.6;
-					cur_clr[2] = 0.6;
-					init_speed = 0.35;
-					smoke_life_coefficient = 20.0;
-					smoke_speed_coefficient = 0.1;
-				} else if (strstr(surface,"grass")) {
-					cur_clr[0] = 0.4+urandom()*.2;
+				cur_clr[0] = 0.8;
+				cur_clr[1] = 0.8;
+				cur_clr[2] = 0.8;
+				init_speed = 0.01;
+				if (car->priv.wheel[i].seg) { // sanity check
+					char* surface = car->priv.wheel[i].seg->surface->material;
+					if (strstr(surface, "sand")) {
+						cur_clr[0] = 0.8;
+						cur_clr[1] = 0.7+urandom()*0.1;
+						cur_clr[2] = 0.4+urandom()*0.2;
+						init_speed = .5;
+						threshold=.05;
+						smoke_life_coefficient = 12.5;
+						smoke_speed_coefficient = 0.25;
+					} else if (strstr(surface, "dirt")) {
+						cur_clr[0] = 0.7+urandom()*0.1;
+						cur_clr[1] = 0.6+urandom()*0.1;
+						cur_clr[2] = 0.5+urandom()*0.1;
+						init_speed = 0.45;
+						threshold=0.0;
+						smoke_life_coefficient = 10.0;
+						smoke_speed_coefficient = 0.5;
+					} else if (strstr(surface,"mud")) {
+						cur_clr[0] = 0.65;
+						cur_clr[1] = 0.4+urandom()*.2;
+						cur_clr[2] = 0.3+urandom()*.2;
+						init_speed = 0.4;
+						threshold=.2;
+						smoke_speed_coefficient = 0.05;
+					} else if (strstr(surface,"gravel")) {
+						cur_clr[0] = 0.6;
+						cur_clr[1] = 0.6;
+						cur_clr[2] = 0.6;
+						init_speed = 0.35;
+						smoke_life_coefficient = 20.0;
+						smoke_speed_coefficient = 0.1;
+					} else if (strstr(surface,"grass")) {
+						cur_clr[0] = 0.4+urandom()*.2;
 					cur_clr[1] = 0.5+urandom()*.1;
 					cur_clr[2] = 0.3+urandom()*.1;
 					init_speed = 0.3;
 					smoke_life_coefficient = 25.0;
-				} else {
-					cur_clr[0] = 0.8;
-					cur_clr[1] = 0.8;
-					cur_clr[2] = 0.8;
-					init_speed = 0.01;
+					} else {
+						cur_clr[0] = 0.8;
+						cur_clr[1] = 0.8;
+						cur_clr[2] = 0.8;
+						init_speed = 0.01;
+					}
 				}
 				smoke_life_coefficient = smoke_life_coefficient * (1.0 - urandom()*urandom());
 				tdble spd_fx=tanh(0.001*car->_reaction[i])*smoke_speed_coefficient*sqrt(spd2);
