@@ -139,7 +139,7 @@
 
   <section name="berniw private">
     <attnum name="caero" val="1.0"></attnum>
-    <attnum name="cfriction" val="1.15"></attnum>
+    <attnum name="cfriction" val="1.25"></attnum>
   </section>
 
 </params>
