@@ -59,9 +59,6 @@ static tgrSmokeManager *smokeManager = 0;
 ssgSimpleState	*mst = NULL;
 ssgSimpleState	*mstf0 = NULL;
 ssgSimpleState	*mstf1 = NULL;
-ssgVtxTable * tsmoke = 0 ;
-ssgVtxTable * tfire0 = 0 ;
-ssgVtxTable * tfire1 = 0 ;
 double * timeSmoke = 0;
 double * timeFire = 0;
 
@@ -98,7 +95,6 @@ void grInitSmoke(int index)
 
     /* add temp object to get a reference on the states */
     if (!mst) {
-	tsmoke = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
 	sprintf(buf, "data/textures;data/img;.");
 	mst = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
 	if (mst!=NULL) {
@@ -108,39 +104,31 @@ void grInitSmoke(int index)
 	    mst->disable(GL_CULL_FACE);
 	    mst->setTranslucent();
 	    mst->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-	    tsmoke->setState(mst);    
 	}
-	TheScene->addKid(tsmoke);
     }
     if (!mstf0) {
-      tfire0 = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
-      sprintf(buf, "data/textures;data/img;.");
-      mstf0 = (ssgSimpleState*)grSsgLoadTexStateEx("fire0.rgb", buf, FALSE, FALSE);
-      if (mst!=NULL) {
-	mstf0->disable(GL_LIGHTING);
-	mstf0->disable(GL_COLOR_MATERIAL);
-	mstf0->enable(GL_BLEND);
-	mstf0->disable(GL_CULL_FACE);
-	mstf0->setTranslucent();
-	mstf0->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-	tfire0->setState(mstf0);    
-      }
-      TheScene->addKid(tfire0);
+	sprintf(buf, "data/textures;data/img;.");
+	mstf0 = (ssgSimpleState*)grSsgLoadTexStateEx("fire0.rgb", buf, FALSE, FALSE);
+	if (mst!=NULL) {
+	    mstf0->disable(GL_LIGHTING);
+	    mstf0->disable(GL_COLOR_MATERIAL);
+	    mstf0->enable(GL_BLEND);
+	    mstf0->disable(GL_CULL_FACE);
+	    mstf0->setTranslucent();
+	    mstf0->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+	}
     }
     if (!mstf1) {
-      tfire1 = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
-      sprintf(buf, "data/textures;data/img;.");
-      mstf1 = (ssgSimpleState*)grSsgLoadTexStateEx("fire1.rgb", buf, FALSE, FALSE);
-      if (mst!=NULL) {
-	mstf1->disable(GL_LIGHTING);
-	mstf1->disable(GL_COLOR_MATERIAL);
-	mstf1->enable(GL_BLEND);
-	mstf1->disable(GL_CULL_FACE);
-	mstf1->setTranslucent();
-	mstf1->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-	tfire1->setState(mstf1);    
-      }
-      TheScene->addKid(tfire1);
+	sprintf(buf, "data/textures;data/img;.");
+	mstf1 = (ssgSimpleState*)grSsgLoadTexStateEx("fire1.rgb", buf, FALSE, FALSE);
+	if (mst!=NULL) {
+	    mstf1->disable(GL_LIGHTING);
+	    mstf1->disable(GL_COLOR_MATERIAL);
+	    mstf1->enable(GL_BLEND);
+	    mstf1->disable(GL_CULL_FACE);
+	    mstf1->setTranslucent();
+	    mstf1->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+	}
     }
 }
 
@@ -359,12 +347,7 @@ void grShutdownSmoke ()
 	free(timeFire);
 	free(smokeManager);
 	smokeManager = 0;
-	TheScene->removeKid(tsmoke);
-	TheScene->removeKid(tfire0);
-	TheScene->removeKid(tfire1);
 	smokeManager = NULL;
-	tsmoke = NULL;
-	tfire0=NULL;
 	timeSmoke = NULL;
 	timeFire=NULL;
     }

@@ -732,7 +732,9 @@ GfParmGetEltNb(void *handle, char *path)
     count = 0;
     do {
 	kidNode = kidNode->next;
-	count++;
+	if (kidNode->type == PARM_NODE_SECT) {
+	    count++;
+	}
     } while (kidNode != curNode->kids);
 
     return count;

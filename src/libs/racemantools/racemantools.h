@@ -77,7 +77,7 @@ extern void RmLoadingScreenSetText(char * /* text */);
 extern int RmInitResults(tRmInfo * /* rmInfo */);
 extern void RmShutdownResults(tRmInfo * /* rmInfo */);
 extern void RmSaveResults(tRmInfo *rmInfo);
-extern void RmShowResults(void */* prevHdle */, tRmInfo */* info */);
+extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
 
 extern void RmConfirmScreen(char *question,
 			    char *yesLabel, char *yesTip, void *yesScreen,

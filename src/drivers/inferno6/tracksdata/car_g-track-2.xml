@@ -65,7 +65,7 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="FREE"/>
-    <attnum name="ratio" min="0" max="10" val="4.5"/>
+    <attnum name="ratio" min="0" max="10" val="4.8"/>
   </section>
 
   <section name="Front Right Wheel">

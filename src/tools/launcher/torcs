@@ -17,11 +17,11 @@
 #
 ##############################################################################
 
-DEFAULT_RUNTIME=/home/torcs/runtime3/games/torcs
+DEFAULT_RUNTIME=/usr/local/games/torcs
 
 if [ -d $DEFAULT_RUNTIME ]
 then
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/torcs/runtime3/lib
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
     cd $DEFAULT_RUNTIME
     ./torcs
     exit 0

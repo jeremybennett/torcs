@@ -51,6 +51,12 @@ typedef struct
 #define _brakeDiskRadius(i) info->wheel[i].brakeDiskRadius	/**< short cut to tWheelSpec#brakeDiskRadius */
 #define _wheelRadius(i) info->wheel[i].wheelRadius		/**< short cut to tWheelSpec#wheelRadius */
 
+/** Static visual attributes */
+typedef struct {
+    int		exhaustNb;	/**< Number of exhaust pipes (max 2) */
+    t3Dd	exhaustPos[2];	/**< Position of exhaust pipes */
+    tdble	exhaustPower;	/**< Power of the flames (from 1 to 3) */
+} tVisualAttributes;
 
 /** Static Public info */
 typedef struct {
@@ -67,6 +73,7 @@ typedef struct {
     tdble	steerLock;	/**< Steer lock angle */
     t3Dd	statGC;		/**< Static pos of GC (should be the origin of car axis) */
     tWheelSpec	wheel[4];	/**< Wheels specifications */
+    tVisualAttributes visualAttr; /**< Visual attributes */
 } tInitCar;
 /* structure access short cuts */
 #define _name		info->name		/**< short cut to tInitCar#name */
@@ -89,6 +96,9 @@ typedef struct {
 #define _iconColor	info->iconColor		/**< short cut to tInitCar#iconColor */
 #define _tank		info->tank		/**< short cut to tInitCar#tank */
 #define _steerLock	info->steerLock		/**< short cut to tInitCar#steerLock */
+#define _exhaustNb	info->visualAttr.exhaustNb	/**< short cut to tVisualAttributes#exhaustNb */
+#define _exhaustPos	info->visualAttr.exhaustPos	/**< short cut to tVisualAttributes#exhaustPos */
+#define _exhaustPower	info->visualAttr.exhaustPower	/**< short cut to tVisualAttributes#exhaustPower */
 
 /** Race Administrative info */
 typedef struct {
@@ -319,6 +329,7 @@ typedef struct CarElt
 #define SECT_GEARBOX		"Gearbox"
 #define SECT_DRIVER		"Driver"
 #define SECT_GROBJECTS		"Graphic Objects"
+#define SECT_EXHAUST		"Exhaust"
 
 /* parameters names */
 #define PRM_CATEGORY		"category"
@@ -394,6 +405,7 @@ typedef struct CarElt
 #define ARR_DATAPTS		"data points"
 #define PRM_FUELCONS		"fuel cons factor"
 #define PRM_ENGBRKCOEFF		"brake coefficient"
+#define PRM_POWER		"power"
 
 
 #define PRM_RATIO		"ratio"

@@ -21,3 +21,6 @@ EXPORTS
 	RmShutdownResults
 	RmSaveResults
 	RmRaceParamMenu
+	RmShowResults
+	RmConfirmScreen
+	RmInitTrack

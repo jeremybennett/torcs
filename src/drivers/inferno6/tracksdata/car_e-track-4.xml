@@ -53,7 +53,7 @@
 	<attnum name="ratio" min="0" max="5" val=".958"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.74"/>
+	<attnum name="ratio" min="0" max="5" val="0.85"/>
       </section>
     </section>
   </section>

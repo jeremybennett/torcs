@@ -115,6 +115,10 @@ SOURCE=.\loadingscreen.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\miscscreens.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\pitmenu.cpp
 # End Source File
 # Begin Source File
