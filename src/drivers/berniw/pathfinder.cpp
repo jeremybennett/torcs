@@ -56,6 +56,8 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)
 		e3 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITEXIT, (char*)NULL, e3);
 		pitspeedsqrlimit = t->pits.speedLimit - 0.5;
 		pitspeedsqrlimit *= pitspeedsqrlimit;
+		/* get memory for the pit points */
+		pitcord = new v3d[countSegments(s1, e3)];
 	}
 }
 
@@ -63,6 +65,7 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)
 Pathfinder::~Pathfinder()
 {
 	delete [] ps;
+	if (isPitAvailable()) delete [] pitcord;
 	delete [] o;
 	delete [] overlaptimer;
 }
@@ -204,7 +207,8 @@ void Pathfinder::initPitStopPath(void)
 		q.y = pp->y + p.y*d;
 		q.z = (t->pits.side == TR_LFT) ? track->getSegmentPtr(j)->getLeftBorder()->z: track->getSegmentPtr(j)->getRightBorder()->z;
 
-		ps[j].setPitLoc(&q);
+		pitcord[i-s1] = q;
+		ps[j].setPitLoc(&pitcord[i-s1]);
 		l += TRACKRES;
 	}
 }
@@ -667,7 +671,7 @@ void Pathfinder::plan(MyCar* myc)
 	/* init pit ond optimal path */
 	for (i = 0; i < nPathSeg; i++) {
 		ps[i].setOptLoc(ps[i].getLoc());
-		ps[i].setPitLoc(ps[i].getLoc());
+		ps[i].setPitLoc(ps[i].getOptLoc());
 	}
 
 	/* compute possible speeds, direction vector and length of trajectoies */
@@ -678,7 +682,6 @@ void Pathfinder::plan(MyCar* myc)
 			ps[v].getLoc()->x, ps[v].getLoc()->y, ps[w].getLoc()->x, ps[w].getLoc()->y);
 		ps[i].setRadius(r);
 		r = fabs(r);
-
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 

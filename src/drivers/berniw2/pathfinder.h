@@ -103,7 +103,7 @@ class PathSeg
 		void set(tdble ispeedsqr, tdble ilength, v3d* id);
 		inline void setLoc(v3d* ip) { p = (*ip); }
 		inline void setOptLoc(v3d* ip) { o = (*ip); }
-		inline void setPitLoc(v3d* ip) { l = (*ip); }
+		inline void setPitLoc(v3d* ip) { l = ip; }
 
 		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }
 		inline void setWeight(tdble w) { weight = w; }
@@ -115,7 +115,7 @@ class PathSeg
 		inline tdble getRadius() { return radius; }
 
 		inline v3d* getOptLoc() { return &o; }
-		inline v3d* getPitLoc() { return &l; }
+		inline v3d* getPitLoc() { return l; }
 		inline v3d* getLoc() { return &p; }
 		inline v3d* getDir() { return &d; }
 
@@ -127,7 +127,7 @@ class PathSeg
 		v3d p;			/* position in space, dynamic trajectory */
 		v3d o;			/* position in space, static trajectory */
 		v3d d;			/* direction vector of dynamic trajectory */
-		v3d l;			/* trajectory for pit lane */
+		v3d* l;			/* trajectory for pit lane */
 };
 
 
@@ -186,6 +186,7 @@ class Pathfinder
 		int collcars;
 		tOCar* o;
 		tOverlapTimer* overlaptimer;
+		v3d* pitcord;
 
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, double slope, double dist, v3d* r);
