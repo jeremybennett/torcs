@@ -93,6 +93,8 @@ typedef int (*tfGraphicRefresh)(struct Situation *);
 typedef void (*tfGraphicShutdwnCars)(void);
 typedef void (*tfGraphicShutdwnTrack)(void);
 
+class ssgEntity;
+typedef void (*tfGraphicBendCar) (int /*index*/, sgVec3 /*poc*/, sgVec3 /*force*/, int /*cnt*/);
 
 /* Interface with the graphic lib */
 typedef struct {
@@ -102,6 +104,7 @@ typedef struct {
     tfGraphicRefresh	    refresh;	    /* Graphic refresh function */
     tfGraphicShutdwnCars    shutdowncars;   /* Graphic shutdown function */
     tfGraphicShutdwnTrack   shutdowntrack;  /* Graphic shutdown function */
+	tfGraphicBendCar        bendcar;
 } tGraphicItf;
 
 

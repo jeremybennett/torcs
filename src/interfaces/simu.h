@@ -22,13 +22,15 @@
 #define _SIMUV1_H_
 
 #include <track.h>
+#include <raceman.h>
 
 #define SIM_IDENT	0
 
 struct Situation;
+struct RmInfo;
 
 typedef void (*tfSimInit)(int);
-typedef void (*tfSimConfig)(tCarElt*);
+typedef void (*tfSimConfig)(tCarElt*, struct RmInfo*);
 typedef void (*tfSimReConfig)(tCarElt*);
 typedef void (*tfSimUpdate)(struct Situation*, double, int);
 typedef void (*tfSimShutdown)(void);

@@ -247,11 +247,15 @@ typedef struct {
     tdble rollRes;              /**< rolling resistance, useful for sound */
 	tdble   temp_in, temp_mid, temp_out;
 	tdble   condition;
+	tdble slipSide;
+	tdble slipAccel;
 } tWheelState;
 #define _ride(i)	priv.wheel[i].relPos.z
 #define _brakeTemp(i)	priv.wheel[i].brakeTemp
 #define _wheelSpinVel(i) priv.wheel[i].spinVel
 #define _wheelSeg(i)	priv.wheel[i].seg
+#define _wheelSlipSide(i) priv.wheel[i].slipSide
+#define _wheelSlipAccel(i) priv.wheel[i].slipAccel
 #define _tyreT_in(i) priv.wheel[i].temp_in
 #define _tyreT_mid(i) priv.wheel[i].temp_mid
 #define _tyreT_out(i) priv.wheel[i].temp_out
@@ -549,7 +553,7 @@ typedef struct CarElt
 #define PRM_SPEEDO_MAXVAL	"speedometer max value"
 #define PRM_SPEEDO_MINANG	"speedometer min angle"
 #define PRM_SPEEDO_MAXANG	"speedometer max angle"
-
+#define PRM_SPEEDO_DIGITAL  "speedometer digital"
 /* Lights */
 #define	VAL_LIGHT_HEAD1		"head1"
 #define	VAL_LIGHT_HEAD2		"head2"
