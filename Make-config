@@ -20,7 +20,7 @@ SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = ${TORCS_BASE}
-prefix = /home/torcs/runtime3
+prefix = /usr/local
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
