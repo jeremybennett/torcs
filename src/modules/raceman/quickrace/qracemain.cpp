@@ -253,7 +253,7 @@ static void
 qrRaceMsgSet(char *msg, double life)
 {
     qrSetRaceMsg(msg);
-    msgDisp = curTime + life / timeMult;
+    msgDisp = curTime + life;
 }
 
 
@@ -557,6 +557,9 @@ qrTimeMod (void *vcmd)
     switch ((int)vcmd) {
     case 0:
 	timeMult *= 2.0;
+	if (timeMult > 64.0) {
+	    timeMult = 64.0;
+	}
 	break;
     case 1:
 	timeMult *= 0.5;
