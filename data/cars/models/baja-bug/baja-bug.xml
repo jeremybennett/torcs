@@ -62,6 +62,21 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="50.0" val="30.0"/>
   </section>
 
+  <section name="Exhaust">
+    <!-- for flames -->
+    <attnum name="power" val="0.5"/>
+    <section name="1">
+      <attnum name="xpos" val="-1.78"/>
+      <attnum name="ypos" val="-0.34"/>
+      <attnum name="zpos" val="0.23"/>
+    </section>
+    <section name="2">
+      <attnum name="xpos" val="-1.78"/>
+      <attnum name="ypos" val="0.34"/>
+      <attnum name="zpos" val="0.23"/>
+    </section>
+  </section>
+
   <section name="Aerodynamics">
     <attnum name="Cx" val="0.45"/>
     <attnum name="front area" unit="m2" val="2.0"/>

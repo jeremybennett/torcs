@@ -16,6 +16,7 @@
 
 <params name="Porsche GT1" type="template">
 
+<!--  Designed by Christophe Guionneau -->
 
   <section name="Driver">
     <!-- Position of the driver -->
@@ -65,7 +66,21 @@
     <attnum name="mass repartition coefficient" val="0.4"/>
     <attnum name="fuel tank" unit="l" val="100.0"/>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
+  </section>
 
+  <section name="Exhaust">
+    <!-- for flames -->
+    <attnum name="power" val="2.0"/>
+    <section name="1">
+      <attnum name="xpos" val="-2.30"/>
+      <attnum name="ypos" val="-0.57"/>
+      <attnum name="zpos" val="0.33"/>
+    </section>
+    <section name="2">
+      <attnum name="xpos" val="-2.30"/>
+      <attnum name="ypos" val="0.57"/>
+      <attnum name="zpos" val="0.33"/>
+    </section>
   </section>
 
   <section name="Aerodynamics">

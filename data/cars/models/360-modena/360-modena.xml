@@ -65,7 +65,21 @@
     <attnum name="mass repartition coefficient" val="0.5"/>
     <attnum name="fuel tank" unit="l" val="100.0"/>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
+  </section>
 
+  <section name="Exhaust">
+    <!-- for flames -->
+    <attnum name="power" val="0.5"/>
+    <section name="1">
+      <attnum name="xpos" val="-2.08"/>
+      <attnum name="ypos" val="-0.60"/>
+      <attnum name="zpos" val="0.25"/>
+    </section>
+    <section name="2">
+      <attnum name="xpos" val="-2.08"/>
+      <attnum name="ypos" val="0.60"/>
+      <attnum name="zpos" val="0.25"/>
+    </section>
   </section>
 
   <section name="Aerodynamics">
