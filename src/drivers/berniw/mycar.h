@@ -96,7 +96,8 @@ class MyCar : public AbstractCar
 		static const double TIMETOCATCH;		/* when do we start thinking about overtaking [s]*/
 		static const double MINOVERTAKERANGE;	/* minimum length for overtaking [m] */
 		static const double OVERTAKERADIUS;		/* min allowed radius to start overtaking [m] */
-		static const double OVERTAKEDIST;		/* minimal distance of CG's while overtaking [m] */
+		static const double OVERTAKEDIST;		/* planned distance of CG's while overtaking [m] */
+		static const double OVERTAKEMINDIST;	/* minimal distance of CG's while overtaking [m] */
 		static const double OVERTAKEANGLE;
 		static const double DISTTHRESHOLD;
 		static const double OVERTAKEMARGIN;
@@ -176,7 +177,7 @@ class MyCar : public AbstractCar
 		double wheelbase;
 		double wheeltrack;
 		double derrorsgn;		/* on which side of the trajectory am i left -1 or 1 right */
-		
+
 		Pathfinder* pf;
 
 		void updateCa();

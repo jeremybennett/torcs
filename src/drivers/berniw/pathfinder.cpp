@@ -716,12 +716,12 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 	/* load precomputed trajectory */
 	if (!pitStop && !inPit) {
-		for (int i = start; i < trackSegId+AHEAD; i++) {
+		for (int i = start; i < trackSegId+AHEAD+3; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getOptLoc());
 		}
 	} else {
-		for (int i = start; i < trackSegId+AHEAD; i++) {
+		for (int i = start; i < trackSegId+AHEAD+3; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getPitLoc());
 		}
@@ -746,14 +746,21 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	u = start - 1; v = start; w = start+1;
+	int u2 = (start - 3 + nPathSeg) % nPathSeg;
+	int w2 = (start + 3 + nPathSeg) % nPathSeg;
 	u = (u + nPathSeg) % nPathSeg;
 	v = (v + nPathSeg) % nPathSeg;
 	w = (w + nPathSeg) % nPathSeg;
 
 	for (int i = start; i < trackSegId+AHEAD; i++) {
 		int j = (i+nPathSeg) % nPathSeg;
-		r = radius(ps[u].getLoc()->x, ps[u].getLoc()->y,
+		/* taking 2 radiuses to reduce "noise" */
+		double r2 = radius(ps[u].getLoc()->x, ps[u].getLoc()->y,
 			ps[v].getLoc()->x, ps[v].getLoc()->y, ps[w].getLoc()->x, ps[w].getLoc()->y);
+		double r1 = radius(ps[u2].getLoc()->x, ps[u2].getLoc()->y,
+			ps[v].getLoc()->x, ps[v].getLoc()->y, ps[w2].getLoc()->x, ps[w2].getLoc()->y);
+		r = MAX(r1, r2);
+
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
@@ -772,6 +779,8 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		ps[j].set(speedsqr, length, ps[v].getLoc(), &dir);
 
 		u = v; v = w; w = (w + 1 + nPathSeg) % nPathSeg;
+		w2 = (w2 + 1 + nPathSeg) % nPathSeg;
+		u2 = (u2 + 1 + nPathSeg) % nPathSeg;
 	}
 
 	changed = 0;
@@ -910,6 +919,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 	int n = collcars;
 
 	for (int i = 0; i < n; i++) {
+		if (o[i].overtakee == true) continue;
 		if (track->isBetween(trackSegId, end, o[i].collcar->getCurrentSegId()) && myc->getSpeed() > o[i].speed) {
 			PathSeg* opseg = getPathSeg((o[i].collcar->getCurrentSegId() - (int) myc->CARLEN/2 + nPathSeg) % nPathSeg);
 			int spsegid = (o[i].collcar->getCurrentSegId() - (int) myc->CARLEN + nPathSeg) % nPathSeg;
@@ -1224,7 +1234,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 	bool sidechangeallowed;
 
-	if (minorthdist <= myc->OVERTAKEDIST && o[minIndex].dist >= o[minorthdistindex].dist) {
+	if (minorthdist <= myc->OVERTAKEMINDIST && o[minIndex].dist >= o[minorthdistindex].dist) {
 		minIndex = minorthdistindex;
 		nearestCar = o[minorthdistindex].collcar;
 		sidechangeallowed = false;
@@ -1293,10 +1303,15 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 					y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
 				}
+				o[minIndex].overtakee = true;
 			}
 		} else {
 			double pathtocarsgn = sign(pathtomiddle - d);
 			y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
+			/*if (y[1] > 0.0 && track->getSegmentPtr(trackSegId)->getType() == TR_RGT) {
+				if (fabs(y[1]) > w - (0.5*myc->CARWIDTH)) y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
+			} else if (y[1] < 0.0 && track->getSegmentPtr(trackSegId)->getType() == TR_LFT) {
+			    if (fabs(y[1]) > w - (0.5*myc->CARWIDTH)) y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;*/
 			if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 				y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
 			}
@@ -1347,7 +1362,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 			ps[j].setLoc(&q);
 		}
 
-
 		/* reload old trajectory where needed */
 		for (i = trackSegId2; (j = (i+nPathSeg) % nPathSeg) != (trackSegId+AHEAD) % nPathSeg; i ++) {
 			ps[j].setLoc(ps[j].getOptLoc());
@@ -1393,6 +1407,7 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				o[n].disttomiddle = track->distToMiddle(seg, ocar[i].getCurrentPos());
 				o[n].speedsqr = sqr(o[n].speed);
 				o[n].catchseg = (int(o[n].dist/(myc->getSpeed() - ocar[i].getSpeed())*myc->getSpeed()) + trackSegId + nPathSeg) % nPathSeg;
+				o[n].overtakee = false;
 				n++;
 			}
 		}
