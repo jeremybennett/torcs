@@ -136,7 +136,7 @@ qraceRun(void *dummy)
     qrRaceInfo = (tRmInfo*)calloc(1, sizeof(tRmInfo));
     qrRaceInfo->s = &qrTheSituation;
     qrRaceInfo->track = qrTheTrack;
-    qrRaceInfo->simItf = &SimItf;
+    memcpy(&qrRaceInfo->_reSimItf, &SimItf, sizeof(tSimItf));
     qrRaceInfo->params = qracecfg;
     qrRaceInfo->modList = &qracemodlist;
 
@@ -382,15 +382,15 @@ qrManage(tCarElt *car)
 		    if ((car->_remainingLaps < 0) || (qrTheSituation._raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;
 			qrTheSituation._raceState = RM_RACE_FINISHING;
-			switch (car->_pos) {
+			switch (car->_pos % 10) {
 			case 1:
-			    sprintf(buf, "%s Finished 1st", car->_name);
+			    sprintf(buf, "%s Finished %dst", car->_name, car->_pos);
 			    break;
 			case 2:
-			    sprintf(buf, "%s Finished 2nd", car->_name);
+			    sprintf(buf, "%s Finished %dnd", car->_name, car->_pos);
 			    break;
 			case 3:
-			    sprintf(buf, "%s Finished 3rd", car->_name);
+			    sprintf(buf, "%s Finished %drd", car->_name, car->_pos);
 			    break;
 			default:
 			    sprintf(buf, "%s Finished %dth", car->_name, car->_pos);

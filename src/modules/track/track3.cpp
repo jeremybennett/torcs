@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include <tgf.h>
+#include <robottools.h>
 #include <track.h>
 #include "trackinc.h"
 
@@ -1244,22 +1245,27 @@ CreateSegRing3(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg 
 void 
 ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 {
-    int		i;
-    tTrackSeg	*curSeg = NULL, *mSeg;
-    tTrackSeg	*curSeg2;
-    tTrackSeg	*pitEntrySeg = NULL;
-    tTrackSeg	*pitExitSeg = NULL;
-    tTrackSeg	*pitStart = NULL;
-    tTrackSeg	*pitEnd = NULL;
-    char	*segName;
-    int		segId;
-    tRoadCam	*curCam;
-    tTrkLocPos	trkPos;
-    int		found = 0;
-    char	*paramVal;
-    char	*pitType;
-    static char	path[256];
-    static char	path2[256];
+    int			i;
+    tTrackSeg		*curSeg = NULL, *mSeg;
+    tTrackSeg		*curSeg2;
+    tTrackSeg		*pitEntrySeg = NULL;
+    tTrackSeg		*pitExitSeg = NULL;
+    tTrackSeg		*pitStart = NULL;
+    tTrackSeg		*pitEnd = NULL;
+    tTrackSeg		*curPitSeg;
+    tTrackPitInfo	*pits;
+    char		*segName;
+    int			segId;
+    tRoadCam		*curCam;
+    tTrkLocPos		trkPos;
+    int			found = 0;
+    char		*paramVal;
+    char		*pitType;
+    static char		path[256];
+    static char		path2[256];
+    int			changeSeg;
+    tdble		offset;
+    tdble		toStart;
 
     xmin = xmax = ymin = ymax = zmin = zmax = 0.0;
 
@@ -1267,6 +1273,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     
     CreateSegRing3(TrackHandle, theTrack, (tTrackSeg*)NULL, (tTrackSeg*)NULL, ext);
 
+    pits = &(theTrack->pits);
     pitType = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_TYPE, TRK_VAL_PIT_TYPE_NONE);
     
     if (strcmp(pitType, TRK_VAL_PIT_TYPE_NONE) != 0) {
@@ -1343,20 +1350,20 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	}
 	paramVal = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_SIDE, "right");
 	if (strcmp(paramVal, "right") == 0) {
-	    theTrack->pits.side = TR_RGT;
+	    pits->side = TR_RGT;
 	} else {
-	    theTrack->pits.side = TR_LFT;
+	    pits->side = TR_LFT;
 	}
-	theTrack->pits.speedLimit = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_SPD_LIM, (char*)NULL, 25.0);
+	pits->speedLimit = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_SPD_LIM, (char*)NULL, 25.0);
 	if ((pitEntrySeg != NULL) && (pitExitSeg != NULL) && (pitStart != NULL) && (pitEnd != NULL)) {
-	    theTrack->pits.pitEntry = pitEntrySeg;
-	    theTrack->pits.pitExit  = pitExitSeg;
-	    theTrack->pits.pitStart = pitStart;
-	    theTrack->pits.pitEnd = pitEnd;
+	    pits->pitEntry = pitEntrySeg;
+	    pits->pitExit  = pitExitSeg;
+	    pits->pitStart = pitStart;
+	    pits->pitEnd = pitEnd;
 	    pitEntrySeg->raceInfo |= TR_PITENTRY;
 	    pitExitSeg->raceInfo |= TR_PITEXIT;
-	    theTrack->pits.len   = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_LEN, (char*)NULL, 15.0);
-	    theTrack->pits.width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_WIDTH, (char*)NULL, 5.0);
+	    pits->len   = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_LEN, (char*)NULL, 15.0);
+	    pits->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PIT_WIDTH, (char*)NULL, 5.0);
 	    found = 1;
 	} else {
 	    found = 0;
@@ -1364,18 +1371,74 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     }
 
     if (found && (strcmp(pitType, TRK_VAL_PIT_TYPE_SIDE) == 0)) {
-	theTrack->pits.type     = TR_PIT_ON_TRACK_SIDE;
-	theTrack->pits.nPitSeg  = 0;
+	pits->type     = TR_PIT_ON_TRACK_SIDE;
+	pits->nPitSeg  = 0;
 	if (pitStart->lgfromstart > pitEnd->lgfromstart) {
-	    theTrack->pits.nMaxPits = (int)((theTrack->length - pitStart->lgfromstart +
-					     pitEnd->lgfromstart + pitEnd->length + theTrack->pits.len / 2.0) / theTrack->pits.len);
+	    pits->nMaxPits = (int)((theTrack->length - pitStart->lgfromstart +
+					     pitEnd->lgfromstart + pitEnd->length + pits->len / 2.0) / pits->len);
 	} else {
-	    theTrack->pits.nMaxPits = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart +
-					     pitEnd->length + theTrack->pits.len / 2.0) / theTrack->pits.len);
+	    pits->nMaxPits = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart +
+					     pitEnd->length + pits->len / 2.0) / pits->len);
 	}
+	pits->driversPits = (tTrackOwnPit*)calloc(pits->nMaxPits, sizeof(tTrackOwnPit));
+
+	mSeg = pits->pitStart->prev;
+	changeSeg = 1;
+	toStart = 0;
+	i =  0;
+	while (i < pits->nMaxPits) {
+	    pits->driversPits[i].pos.type = TR_LPOS_MAIN;
+	    if (changeSeg) {
+		changeSeg = 0;
+		offset = 0;
+		mSeg = mSeg->next;
+		switch (pits->side) {
+		case TR_RGT:
+		    curPitSeg = mSeg->rside;
+		    if (curPitSeg->rside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->rside;
+		    }
+		    break;
+		case TR_LFT:
+		    curPitSeg = mSeg->lside;
+		    if (curPitSeg->lside) {
+			offset = curPitSeg->width;
+			curPitSeg = curPitSeg->lside;
+		    }
+		    break;
+		}
+		if (toStart >= mSeg->length) {
+		    toStart -= mSeg->length;
+		    changeSeg = 1;
+		    continue;
+		}
+	    }
+	    pits->driversPits[i].pos.seg = mSeg;
+	    pits->driversPits[i].pos.toStart = toStart + pits->len / 2.0;
+	    switch (pits->side) {
+	    case TR_RGT:
+		pits->driversPits[i].pos.toRight  = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
+		pits->driversPits[i].pos.toLeft   = mSeg->width - pits->driversPits[i].pos.toRight;
+		pits->driversPits[i].pos.toMiddle = mSeg->width / 2.0 - pits->driversPits[i].pos.toRight;
+		break;
+	    case TR_LFT:
+		pits->driversPits[i].pos.toLeft   = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
+		pits->driversPits[i].pos.toRight  = mSeg->width - pits->driversPits[i].pos.toLeft;
+		pits->driversPits[i].pos.toMiddle = mSeg->width / 2.0 - pits->driversPits[i].pos.toLeft;
+		break;
+	    }
+	    toStart += pits->len;
+	    if (toStart >= mSeg->length) {
+		toStart -= mSeg->length;
+		changeSeg = 1;
+	    }
+	    i++;
+	}
+
 	for (mSeg = pitStart; mSeg != pitEnd->next; mSeg = mSeg->next) {
 	    curSeg2 = NULL;
-	    switch(theTrack->pits.side) {
+	    switch(pits->side) {
 	    case TR_RGT:
 		curSeg = mSeg->rside;
 		curSeg2 = curSeg->rside;

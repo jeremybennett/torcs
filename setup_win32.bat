@@ -44,6 +44,10 @@ copy .\src\libs\robottools\robottools.h .\export\include\robottools.h
 
 call .\create_dir .\export
 call .\create_dir .\export\include
+copy .\src\libs\raceengine\singleplayer.h .\export\include\singleplayer.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
 copy .\src\windows\osspec.h .\export\include\osspec.h
 
 call .\create_dir .\export
@@ -353,10 +357,6 @@ copy .\src\drivers\berniw\intcossqr.dat .\runtime\drivers\berniw\intcossqr.dat
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\berniw
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\berniw2
 call .\create_dir .\runtime\drivers\berniw2\1
 copy .\src\drivers\berniw2\1\aalborg.xml .\runtime\drivers\berniw2\1\aalborg.xml
@@ -549,7 +549,7 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\berniw2
 call .\create_dir .\runtime\drivers\berniw2\7
-copy .\src\drivers\berniw2\7\cg-nascar-fwd.rgb .\runtime\drivers\berniw2\7\cg-nascar-fwd.rgb
+copy .\src\drivers\berniw2\7\porsche-gt3rs.rgb .\runtime\drivers\berniw2\7\porsche-gt3rs.rgb
 copy .\src\drivers\berniw2\7\aalborg.xml .\runtime\drivers\berniw2\7\aalborg.xml
 copy .\src\drivers\berniw2\7\alpine-1.xml .\runtime\drivers\berniw2\7\alpine-1.xml
 copy .\src\drivers\berniw2\7\a-speedway.xml .\runtime\drivers\berniw2\7\a-speedway.xml
@@ -640,10 +640,6 @@ copy .\src\drivers\berniw2\intcossqr.dat .\runtime\drivers\berniw2\intcossqr.dat
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\berniw2
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\cylos1
 call .\create_dir .\runtime\drivers\cylos1\tracksdata
 copy .\src\drivers\cylos1\tracksdata\car_e-track-3.xml .\runtime\drivers\cylos1\tracksdata\car_e-track-3.xml
@@ -659,10 +655,6 @@ copy .\src\drivers\cylos1\cylos1.xml .\runtime\drivers\cylos1\cylos1.xml
 copy .\src\drivers\cylos1\car1.xml .\runtime\drivers\cylos1\car1.xml
 copy .\src\drivers\cylos1\cg-nascar-rwd.rgb .\runtime\drivers\cylos1\cg-nascar-rwd.rgb
 copy .\src\drivers\cylos1\logo.rgb .\runtime\drivers\cylos1\logo.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\cylos1
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -755,10 +747,6 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\damned
 copy .\src\drivers\damned\damned.xml .\runtime\drivers\damned\damned.xml
 copy .\src\drivers\damned\car1.xml .\runtime\drivers\damned\car1.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\damned
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -912,10 +900,6 @@ copy .\src\drivers\human\mclaren-f1.rgb .\runtime\drivers\human\mclaren-f1.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\human
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\inferno
 call .\create_dir .\runtime\drivers\inferno\tracksdata
 copy .\src\drivers\inferno\tracksdata\aalborg.xml .\runtime\drivers\inferno\tracksdata\aalborg.xml
@@ -957,10 +941,6 @@ copy .\src\drivers\inferno\inferno.xml .\runtime\drivers\inferno\inferno.xml
 copy .\src\drivers\inferno\car1.xml .\runtime\drivers\inferno\car1.xml
 copy .\src\drivers\inferno\logo.rgb .\runtime\drivers\inferno\logo.rgb
 copy .\src\drivers\inferno\mclaren-f1.rgb .\runtime\drivers\inferno\mclaren-f1.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1006,10 +986,6 @@ copy .\src\drivers\inferno2\360-modena.rgb .\runtime\drivers\inferno2\360-modena
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno2
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\inferno3
 call .\create_dir .\runtime\drivers\inferno3\tracksdata
 copy .\src\drivers\inferno3\tracksdata\aalborg.xml .\runtime\drivers\inferno3\tracksdata\aalborg.xml
@@ -1048,10 +1024,6 @@ copy .\src\drivers\inferno3\inferno3.xml .\runtime\drivers\inferno3\inferno3.xml
 copy .\src\drivers\inferno3\car1.xml .\runtime\drivers\inferno3\car1.xml
 copy .\src\drivers\inferno3\logo.rgb .\runtime\drivers\inferno3\logo.rgb
 copy .\src\drivers\inferno3\porsche-gt1.rgb .\runtime\drivers\inferno3\porsche-gt1.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno3
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1098,10 +1070,6 @@ copy .\src\drivers\inferno4\clkdtm.rgb .\runtime\drivers\inferno4\clkdtm.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno4
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\inferno5
 call .\create_dir .\runtime\drivers\inferno5\tracksdata
 copy .\src\drivers\inferno5\tracksdata\aalborg.xml .\runtime\drivers\inferno5\tracksdata\aalborg.xml
@@ -1131,7 +1099,32 @@ copy .\src\drivers\inferno5\gt40.rgb .\runtime\drivers\inferno5\gt40.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno5
+call .\create_dir .\runtime\drivers\inferno6
+call .\create_dir .\runtime\drivers\inferno6\tracksdata
+copy .\src\drivers\inferno6\tracksdata\aalborg.xml .\runtime\drivers\inferno6\tracksdata\aalborg.xml
+copy .\src\drivers\inferno6\tracksdata\a-speedway.xml .\runtime\drivers\inferno6\tracksdata\a-speedway.xml
+copy .\src\drivers\inferno6\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno6\tracksdata\car_e-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno6\tracksdata\car_e-track-4.xml
+copy .\src\drivers\inferno6\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno6\tracksdata\car_g-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\eroad.xml .\runtime\drivers\inferno6\tracksdata\eroad.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-1.xml .\runtime\drivers\inferno6\tracksdata\e-track-1.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-2.xml .\runtime\drivers\inferno6\tracksdata\e-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-3.xml .\runtime\drivers\inferno6\tracksdata\e-track-3.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-4.xml .\runtime\drivers\inferno6\tracksdata\e-track-4.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-5.xml .\runtime\drivers\inferno6\tracksdata\e-track-5.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-6.xml .\runtime\drivers\inferno6\tracksdata\e-track-6.xml
+copy .\src\drivers\inferno6\tracksdata\g-track-1.xml .\runtime\drivers\inferno6\tracksdata\g-track-1.xml
+copy .\src\drivers\inferno6\tracksdata\g-track-2.xml .\runtime\drivers\inferno6\tracksdata\g-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\michigan.xml .\runtime\drivers\inferno6\tracksdata\michigan.xml
+copy .\src\drivers\inferno6\tracksdata\wheel-1.xml .\runtime\drivers\inferno6\tracksdata\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno6
+copy .\src\drivers\inferno6\inferno6.xml .\runtime\drivers\inferno6\inferno6.xml
+copy .\src\drivers\inferno6\car1.xml .\runtime\drivers\inferno6\car1.xml
+copy .\src\drivers\inferno6\logo.rgb .\runtime\drivers\inferno6\logo.rgb
+copy .\src\drivers\inferno6\porsche-gt3rs.rgb .\runtime\drivers\inferno6\porsche-gt3rs.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1155,10 +1148,6 @@ copy .\src\drivers\K1999\logo.rgb .\runtime\drivers\K1999\logo.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\K1999
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\lliaw
 call .\create_dir .\runtime\drivers\lliaw\tracksdata
 copy .\src\drivers\lliaw\tracksdata\car_e-track-3.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-3.xml
@@ -1173,10 +1162,6 @@ copy .\src\drivers\lliaw\lliaw.xml .\runtime\drivers\lliaw\lliaw.xml
 copy .\src\drivers\lliaw\car.xml .\runtime\drivers\lliaw\car.xml
 copy .\src\drivers\lliaw\viper-gts-r.rgb .\runtime\drivers\lliaw\viper-gts-r.rgb
 copy .\src\drivers\lliaw\logo.rgb .\runtime\drivers\lliaw\logo.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\lliaw
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1222,10 +1207,6 @@ copy .\src\drivers\tanhoj\cg-nascar-rwd.rgb .\runtime\drivers\tanhoj\cg-nascar-r
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tanhoj
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tita
 call .\create_dir .\runtime\drivers\tita\tracksdata
 copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtime\drivers\tita\tracksdata\aalborg.xml
@@ -1267,18 +1248,10 @@ copy .\src\drivers\tita\lotus-gt1.rgb .\runtime\drivers\tita\lotus-gt1.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tita
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tutor
 copy .\src\drivers\tutor\tutor.xml .\runtime\drivers\tutor\tutor.xml
 copy .\src\drivers\tutor\360-modena.rgb .\runtime\drivers\tutor\360-modena.rgb
 copy .\src\drivers\tutor\logo.rgb .\runtime\drivers\tutor\logo.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tutor
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1287,22 +1260,8 @@ copy .\src\drivers\tutorial1\tutorial1.xml .\runtime\drivers\tutorial1\tutorial1
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tutorial1
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tutorial2
 copy .\src\drivers\tutorial2\tutorial2.xml .\runtime\drivers\tutorial2\tutorial2.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tutorial2
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\config
@@ -1310,14 +1269,117 @@ copy .\src\libs\tgf\screen.xml .\runtime\config\screen.xml
 copy .\src\libs\tgf\params.dtd .\runtime\config\params.dtd
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
+call .\create_dir .\runtime\config
+copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\config
-copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
+call .\create_dir .\runtime\config\practice
+copy .\src\modules\raceman\practice\practice\practice.xml .\runtime\config\practice\practice.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\config
+call .\create_dir .\runtime\config\quickrace
+copy .\src\modules\raceman\quickrace\qrace.xml .\runtime\config\quickrace\qrace.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\config
+call .\create_dir .\runtime\config\simplerace
+copy .\src\modules\raceman\simplerace\simplerace.xml .\runtime\config\simplerace\simplerace.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\telemetry
+copy .\src\modules\telemetry\telemetry.sh .\runtime\telemetry\telemetry.sh
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\cylos1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\damned
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\human
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno3
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno4
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno5
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\inferno6
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\K1999
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\lliaw
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tanhoj
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tita
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tutor
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tutorial1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tutorial2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
@@ -1330,27 +1392,12 @@ call .\create_dir .\runtime\modules\raceman\practice
 call .\create_dir .\runtime\modules\raceman\practice\control
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\practice
-copy .\src\modules\raceman\practice\practice\practice.xml .\runtime\config\practice\practice.xml
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\raceman
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\quickrace
-copy .\src\modules\raceman\quickrace\qrace.xml .\runtime\config\quickrace\qrace.xml
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\raceman
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\simplerace
-copy .\src\modules\raceman\simplerace\simplerace.xml .\runtime\config\simplerace\simplerace.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
@@ -1359,10 +1406,6 @@ call .\create_dir .\runtime\modules\raceman
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\simu
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\telemetry
-copy .\src\modules\telemetry\telemetry.sh .\runtime\telemetry\telemetry.sh
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules

@@ -18,7 +18,8 @@
  ***************************************************************************/
 
 /** @file   
-    		
+    		This is the race options menu.
+    @ingroup	racemantools
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
     @version	$Id$
 */
@@ -46,12 +47,12 @@ static int		rmrpLapsId;
 
 
 static void
-rmrpDeactivate(void * /* notused */)
+rmrpDeactivate(void *screen)
 {
     GfuiScreenRelease(scrHandle);
     
-    if (rp->prevScreen) {
-	GfuiScreenActivate(rp->prevScreen);
+    if (screen) {
+	GfuiScreenActivate(screen);
     }
 }
 
@@ -60,13 +61,13 @@ rmrpValidate(void * /* dummy */)
 {
     GfParmSetNum(rp->param, RM_SECT_RACE, RM_ATTR_DISTANCE, "km", rmrpDistance);
     GfParmSetNum(rp->param, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, rmrpLaps);
-    rmrpDeactivate(NULL);
+    rmrpDeactivate(rp->nextScreen);
 }
 
 static void
 rmrpAddKeys(void)
 {
-    GfuiAddKey(scrHandle, 27, "Cancel Modifications", NULL, rmrpDeactivate);
+    GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
     GfuiAddKey(scrHandle, 13, "Validate Modifications", NULL, rmrpValidate);
@@ -106,19 +107,7 @@ rmrpUpdLaps(void * /* dummy */)
     GfuiEditboxSetString(scrHandle, rmrpLapsId, buf);
 }
 
-/** 
-    @ingroup
-    @param	
-    @param	
-    @param	
-    @param	
-    @return	<tt>0 ... </tt>Ok
-		<br><tt>-1 .. </tt>Error
-    @warning	
-    @bug	
-    @see
-    @note		
-*/
+
 void
 RmRaceParamMenu(void *vrp)
 {
@@ -162,7 +151,8 @@ RmRaceParamMenu(void *vrp)
 		     NULL, rmrpValidate, NULL, NULL, NULL);
 
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, rmrpDeactivate, NULL, NULL, NULL);
+		     rp->prevScreen, rmrpDeactivate, NULL, NULL, NULL);
+
     rmrpAddKeys();
     
     GfuiScreenActivate(scrHandle);

@@ -119,19 +119,16 @@ void grInitSkidmarks(tCarElt *car)
 }
 
 /** update if necessary the skidmarks for a car */
-void grUpdateSkidmarks(tCarElt *car)
+void grUpdateSkidmarks(tCarElt *car, double t)
 {
     int			i = 0;
     sgVec3		vtx;
     sgVec3		*tvtx;
     ssgVertexArray 	*basevtx = NULL;
-    double 		t;
 
     if (!grSkidMaxStripByWheel) {
 	return;
     }
-
-    t = GfTimeClock();
 
     for (i = 0; i < 4; i++) {
 	if ((t - grCarInfo[car->index].skidmarks->strips[i].timeStrip) < grSkidDeltaT) {

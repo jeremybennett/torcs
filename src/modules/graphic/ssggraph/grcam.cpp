@@ -47,7 +47,7 @@ int grScissorflag = 0;
 float grviewRatio;
 
 int		grCurCamHead = 0;			/* the current camera list */	
-tGrCamHead	grCams[10];				/* from F1 to F12 */
+tGrCamHead	grCams[10];				/* from F2 to F11 */
 cGrCamera	*grCurCam = (cGrCamera*)NULL;		/* the current camera */
 cGrOrthoCamera	*grBoardCam = (cGrOrthoCamera*)NULL;	/* the board camera */
 
@@ -192,7 +192,7 @@ void cGrPerspCamera::setZoom(int cmd)
 
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, getId());
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf, (char*)NULL, (tdble)fovy);
-    GfParmWriteFile("config/graph.xml", grHandle, "Graph",
+    GfParmWriteFile(GR_PARAM_FILE, grHandle, "Graph",
 		    GFPARM_PARAMETER, "../dtd/params.dtd");
     
     }
@@ -239,7 +239,7 @@ grSelectCamera(void *vp)
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->getId());
     grCurCam->loadDefaults(buf);
     grDrawCurrent = grCurCam->getDrawCurrent();
-    GfParmWriteFile("config/graph.xml", grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(GR_PARAM_FILE, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 }
 
 class cGrCarCamInside : public cGrPerspCamera
@@ -1474,6 +1474,19 @@ grInitCams(void)
     c++;
     TAILQ_INIT(&grCams[c]);
     id = 0;
+
+    curCam = new cGrCarCamRoadZoom(id,
+				   1,		/* drawCurr */
+				   1,		/* drawBG  */
+				   17.0,	/* fovy */
+				   1.0,		/* fovymin */
+				   90.0,	/* fovymax */
+				   1.0,		/* near */
+				   1000.0 * fovFactor,	/* far */
+				   500.0 * fovFactor,	/* fog */
+				   1000.0 * fovFactor	/* fog */
+				   );
+    curCam->add(&grCams[c]);
 
     /* F11 */
     c++;

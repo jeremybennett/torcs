@@ -30,8 +30,37 @@
 #include <ttypes.h>
 #include <tgf.h>
 #include <car.h>
+#include <track.h>
+#include <graphic.h>
+#include <simu.h>
 
-#define RCM_IDENT	((0x01)<<RCM_IDENT_SHIFT)	/* allowed from 0x01 to 0xFF */
+#define RCM_IDENT 0
+
+#define RM_PRIO_QUICKRACE	10
+#define RM_PRIO_SIMPLERACE	20
+#define RM_PRIO_CHAMPIONSHIP	30
+#define RM_PRIO_PRACTICE	90
+
+#define RM_MAGIC	161102	/* Should be chaged every time the tRacemanItf structure is modified */
+struct RmInfo;
+
+typedef int (*tfRmRunState) (struct RmInfo *);
+#define RM_SYNC		0x01
+#define RM_ASYNC	0x02
+#define RM_NEXT_STEP	0x04
+#define RM_END_RACE	0x08
+#define RM_NEXT_RACE	0x10
+#define RM_NEXT_EVENT	0x20
+
+
+/** Race manager module interface  */
+typedef struct
+{
+    tfRmRunState	runState;
+    tfuiCallback	start;
+} tRacemanItf;
+
+
 
 #define RCM_MAX_DT_SIMU		0.002
 #define RCM_MAX_DT_ROBOTS	0.02
@@ -50,6 +79,7 @@ typedef struct {
     int                 maxDammage;
     unsigned long	fps;
 } tRaceAdmInfo;
+
 #define _ncars		raceInfo.ncars
 #define _totLaps	raceInfo.totLaps
 #define _raceState	raceInfo.state
@@ -57,7 +87,7 @@ typedef struct {
 #define _maxDammage	raceInfo.maxDammage
 
 /** cars situation used to inform the GUI and the drivers */
-typedef struct {
+typedef struct Situation {
     tRaceAdmInfo	raceInfo;
     double		deltaTime;
     double		currentTime;	/**< current time in sec since the beginning of the simulation */
@@ -65,12 +95,98 @@ typedef struct {
     tCarElt		**cars;		/**< list of cars */ 
 } tSituation;
 
-    
+/* RACE ENGINE */
 
 typedef struct 
 {
-    tfuiCallback	start;
-} tRacemanItf;
+    tTrackItf	trackItf;
+    tGraphicItf	graphicItf;
+    tSimItf	simItf;
+    tRacemanItf	racemanItf;
+} tRaceModIft;
+
+#define RE_STATE_CONFIG			0
+#define RE_STATE_RACE_EVENT_INIT	1
+#define RE_STATE_RACE_TRACK_INIT	2
+#define RE_STATE_PRE_RACE		3
+#define RE_STATE_RACE_CARS_INIT		4
+#define RE_STATE_RACE			5
+#define RE_STATE_RACE_CARS_SHUTDOWN	6
+#define RE_STATE_POST_RACE		7
+#define RE_STATE_RACE_TRACK_SHUTDOWN	8
+#define RE_STATE_RACE_EVENT_SHUTDOWN	9
+#define RE_STATE_SHUTDOWN		10
+#define RE_STATE_ERROR			11
+
+/* Race Engine Car Information about the race */
+typedef struct 
+{
+    tTrkLocPos	prevTrkPos;
+    tdble	sTime;
+    int		lapFlag;
+    char	*raceMsg;
+    double	totalPitTime;
+    double	startPitTime;
+} tReCarInfo;
+
+/* Race Engine Information */
+typedef struct
+{
+    int			state;
+    tTrack		*track;
+    void		*param;
+    tRaceModIft		itf;
+    void		*gameScreen;
+    void		*menuScreen;
+    char		*name;
+    tReCarInfo		*carInfo;
+    double		curTime;
+    double		lastTime;
+    double		timeMult;
+    int			running;
+} tRaceEngineInfo;
+
+#define _reState	raceEngineInfo.state
+#define _reTrack	raceEngineInfo.track
+#define _reParam	raceEngineInfo.param
+#define _reRacemanItf	raceEngineInfo.itf.racemanItf
+#define _reTrackItf	raceEngineInfo.itf.trackItf
+#define _reGraphicItf	raceEngineInfo.itf.graphicItf
+#define _reSimItf	raceEngineInfo.itf.simItf
+#define _reGameScreen	raceEngineInfo.gameScreen
+#define _reMenuScreen	raceEngineInfo.menuScreen
+#define _reName		raceEngineInfo.name
+#define _reCarInfo	raceEngineInfo.carInfo
+#define _reCurTime	raceEngineInfo.curTime
+#define _reTimeMult	raceEngineInfo.timeMult
+#define _reRunning	raceEngineInfo.running
+#define _reLastTime	raceEngineInfo.lastTime
+
+/* Lap based information */
+typedef struct
+{
+    int		pos;		/* driver position */
+    tdble	lapTime;	/* lap time */
+    int		lapsBehind;	/* laps behind leader */
+    int		event;		/* special event */
+#define RM_EVENT_PIT_STOP	0x01
+    void	*eventData;	/* event specific data */
+} tDrvLapInfo;
+
+
+/*
+ * Race Manager General Info
+ */
+typedef struct RmInfo
+{
+    tCarElt		*carList;	/* List of all the cars racing */
+    tSituation		*s;		/* Situation during race */
+    tTrack		*track;		/* Current track */
+    void		*params;	/* Raceman parameters */
+    tModList		**modList;	/* drivers loaded */
+    tDrvLapInfo 	*lapInfo;	/* per lap driver info using start index */
+    tRaceEngineInfo	raceEngineInfo;
+} tRmInfo;
 
 /*
  * Parameters name definitions for Race Managers

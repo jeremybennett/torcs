@@ -23,14 +23,15 @@
 
 #include <ttypes.h>
 #include <track.h>
-#include <raceman.h>
 
 #define SIM_IDENT	(CAR_IDENT|TRK_IDENT)
+
+struct Situation;
 
 typedef void (*tfSimInit)(int);
 typedef void (*tfSimConfig)(tCarElt*);
 typedef void (*tfSimReConfig)(tCarElt*);
-typedef void (*tfSimUpdate)(tSituation*, tdble, int);
+typedef void (*tfSimUpdate)(struct Situation*, tdble, int);
 typedef void (*tfSimShutdown)(void);
 
 typedef struct

@@ -24,8 +24,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <telemetry.h>
 #include <tgf.h>
+#include <telemetry.h>
+
 #include "tlm.h"
 
 typedef struct Channel 

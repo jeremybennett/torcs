@@ -60,39 +60,39 @@
 
   <!-- Same engine for every one -->
   <section name="Engine">
-    <attnum name="inertia"      unit="kg.m2" val="0.20"/>
-    <attnum name="revs limiter" unit="rpm"   val="6500"/>
-    <attnum name="revs maxi"    unit="rpm"   val="7000"/>
-    <attnum name="tickover"     unit="rpm"   val="1000"/>
-    <attnum name="fuel cons factor"          val="1.2"/>
+    <attnum name="inertia" min="0.2" max="1.0" unit="kg.m2" val="0.20"/>
+    <attnum name="revs limiter" min="5000" max="7000" unit="rpm" val="6500"/>
+    <attnum name="revs maxi" min="5000" max="8000" unit="rpm" val="7000"/>
+    <attnum name="tickover" min="900" max="2000" unit="rpm" val="1000"/>
+    <attnum name="fuel cons factor" min="1.0" max="1.4" val="1.2"/>
     <section name="data points">
       <section name="1">
 	<attnum name="rpm" unit="rpm" val="1000"/>
-	<attnum name="Tq"  unit="N.m" val="300"/>
+	<attnum name="Tq" min="0" max="300" unit="N.m" val="300"/>
       </section>
       <section name="2">
 	<attnum name="rpm" unit="rpm" val="3500"/>
-	<attnum name="Tq"  unit="N.m" val="300"/>
+	<attnum name="Tq"  min="0" max="300" unit="N.m" val="300"/>
       </section>
       <section name="3">
 	<attnum name="rpm" unit="rpm" val="4000"/>
-	<attnum name="Tq"  unit="N.m" val="350"/>
+	<attnum name="Tq"  min="0" max="350" unit="N.m" val="350"/>
       </section>
       <section name="4">
 	<attnum name="rpm" unit="rpm" val="5000"/>
-	<attnum name="Tq"  unit="N.m" val="350"/>
+	<attnum name="Tq"  min="0" max="350" unit="N.m" val="350"/>
       </section>
       <section name="5">
 	<attnum name="rpm" unit="rpm" val="5500"/>
-	<attnum name="Tq"  unit="N.m" val="350"/>
+	<attnum name="Tq"  min="0" max="350" unit="N.m" val="350"/>
       </section>
       <section name="6">
 	<attnum name="rpm" unit="rpm" val="6000"/>
-	<attnum name="Tq"  unit="N.m" val="320"/>
+	<attnum name="Tq"  min="0" max="350" unit="N.m" val="320"/>
       </section>
       <section name="7">
 	<attnum name="rpm" unit="rpm" val="7000"/>
-	<attnum name="Tq"  unit="N.m" val="300"/>
+	<attnum name="Tq"  min="0" max="350" unit="N.m" val="300"/>
       </section>
     </section>
   </section>

@@ -1,12 +1,12 @@
 AC3Db
-MATERIAL "" rgb 0.20 0.20 0.20 amb 0.10 0.10 0.10 emis 0.60 0.60 0.60 spec 0.90 0.90 0.90 shi 500 trans 0 
+MATERIAL "ac3dmat1" rgb 0.60 0.60 0.60 amb 0.40 0.40 0.40 emis 0.40 0.40 0.40 spec 0.60 0.60 0.60 shi 20 trans 0 
 OBJECT world
 kids 16
 OBJECT poly
-name "NONAMEs6"
+name "s6"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 7
 1.514855 0.551311 0.970828 0.628478 0.392866 0.671321
@@ -31,10 +31,10 @@ refs 9
 0 0.79000 0.10107 0.83134 0.61203 0.33134 -0.38160 
 kids 0
 OBJECT poly
-name "NONAMEs5"
+name "s5"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 25
 -2.061305 0.156254 0.747248 -0.936064 -0.239423 0.257799
@@ -123,10 +123,10 @@ refs 5
 5 0.16231 0.06095 0.08766 0.42561 -0.41234 -0.36837 
 kids 0
 OBJECT poly
-name "NONAMEs4"
+name "s4"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 7
 1.514855 0.551311 -0.970828 0.628478 0.392866 -0.671321
@@ -152,10 +152,10 @@ refs 10
 0 0.79000 0.54017 0.83134 0.61203 0.33134 0.38873 
 kids 0
 OBJECT poly
-name "NONAMEs3"
+name "s3"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 25
 -2.061305 0.156254 -0.747248 -0.935405 -0.241104 -0.258623
@@ -243,10 +243,10 @@ refs 4
 6 0.12128 0.50349 0.07649 0.73374 -0.42351 0.29174 
 kids 0
 OBJECT poly
-name "NONAMEs2"
+name "s2"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 108
 0.978604 0.614806 0.964477 0.226961 0.579056 0.783060
@@ -660,10 +660,10 @@ refs 10
 59 0.74516 0.45264 0.77593 0.78809 0.27593 0.18874 
 kids 0
 OBJECT poly
-name "NONAMEs1"
+name "s1"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 9
 -2.137045 0.751599 0.798082 -0.724524 0.504494 0.469629
@@ -695,10 +695,10 @@ refs 14
 0 0.10902 0.17448 0.07649 0.73374 -0.42351 -0.28461 
 kids 0
 OBJECT poly
-name "NONAMEs0"
+name "s0"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 14
 1.931155 0.316238 0.827752 0.780009 0.265323 0.566736
@@ -741,10 +741,10 @@ refs 20
 0 0.91603 0.16905 0.91672 0.47007 0.41672 -0.32288 
 kids 0
 OBJECT poly
-name "NONAME"
+name "1"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 16
 -0.574758 0.950017 0.168769 -0.325769 0.727732 0.603556
@@ -799,10 +799,10 @@ refs 15
 15 0.57302 0.32062 0.64120 0.95493 0.14120 0.00356 
 kids 0
 OBJECT poly
-name "NONAME"
+name "2"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 32
 -1.946915 0.905398 0.775263 -0.668858 0.432510 0.604619
@@ -898,10 +898,10 @@ refs 12
 0 0.04628 0.96258 0.11209 0.78736 -0.38791 -0.32773 
 kids 0
 OBJECT poly
-name "NONAMEs6"
+name "3s6"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 3
 1.250410 0.665147 -0.964558 0.535329 -0.608185 -0.586118
@@ -916,10 +916,10 @@ refs 3
 0 0.19635 0.11789 0.77789 0.41233 0.27789 0.35826 
 kids 0
 OBJECT poly
-name "NONAMEs5"
+name "4s5"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 3
 0.978604 0.614806 0.964477 0.797655 -0.363836 0.481009
@@ -934,10 +934,10 @@ refs 3
 0 0.19466 0.11947 0.81260 0.45055 0.31260 -0.31475 
 kids 0
 OBJECT poly
-name "NONAMEs4"
+name "5s4"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 14
 0.868025 0.010310 0.655494 0.624772 -0.595648 0.504840
@@ -991,10 +991,10 @@ refs 14
 3 0.66003 0.06386 0.81855 0.40942 0.31855 -0.29847 
 kids 0
 OBJECT poly
-name "NONAMEs3"
+name "6s3"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 14
 -1.783380 0.610802 0.607010 -0.297752 -0.227351 0.927176
@@ -1041,10 +1041,10 @@ refs 24
 9 0.31429 0.05764 0.15012 0.41477 -0.34988 -0.23432 
 kids 0
 OBJECT poly
-name "NONAMEs2"
+name "7s2"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 14
 0.868025 0.010310 -0.655494 0.623405 -0.596601 -0.505404
@@ -1096,10 +1096,10 @@ refs 14
 4 0.69244 0.52897 0.80355 0.52022 0.30355 0.32981 
 kids 0
 OBJECT poly
-name "NONAMEs1"
+name "8s1"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 14
 -1.858520 0.056811 -0.959962 0.108228 -0.532631 -0.839399
@@ -1152,10 +1152,10 @@ refs 14
 5 0.18623 0.52881 0.20214 0.36347 -0.29786 0.36663 
 kids 0
 OBJECT poly
-name "NONAMEs0"
+name "9s0"
 texture "mclaren-f1.rgb" base
 texture "mclaren-f1.rgb" tiled
-texture "mclaren-f1.rgb" skids
+texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
 numvert 30
 -2.126220 0.201873 0.000000 -0.952283 -0.305217 0.000000

@@ -5,9 +5,9 @@
 #define MAX_SMOKE_LIFE  120
 #define MAX_SMOKE_NUMBER  300
 #define DELTAT 0.1f
-#define VZ_INIT 0.2f
-#define VY_INIT 0.01f
-#define VX_INIT 0.01f
+#define VZ_INIT 0.05f
+#define VY_INIT 0.1f
+#define VX_INIT 0.1f
 #define V_EXPANSION 0.4f
 #define SMOKE_TYPE_TIRE 1
 
@@ -78,8 +78,8 @@ typedef struct
 
 
 extern void grInitSmoke(int index);
-extern void grAddSmoke(tCarElt *car);
-extern void grUpdateSmoke(double dt, double t);
+extern void grAddSmoke(tCarElt *car, double t);
+extern void grUpdateSmoke(double t);
 extern void grShutdownSmoke ();
 
 extern int grSmokeMaxNumber;

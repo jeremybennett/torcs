@@ -35,6 +35,7 @@ struct _ssgMaterial
 {
   sgVec4 spec ;
   sgVec4 emis ;
+  sgVec4 amb ;
   sgVec4 rgb  ;
   float  shi  ;
 } ;
@@ -224,7 +225,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
 {
   if (current_tfname != NULL) {
     ssgState *st = current_options -> createState ( current_tfname ) ;
-    /*printf("creating texture : %s\n",current_tfname);*/
+    /* printf("creating texture : %s\n",current_tfname); */
     if ( st != NULL )
       return st ;
   }
@@ -233,6 +234,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
 
   st -> setMaterial ( GL_SPECULAR, mat -> spec ) ;
   st -> setMaterial ( GL_EMISSION, mat -> emis ) ;
+  st -> setMaterial ( GL_AMBIENT_AND_DIFFUSE, mat -> amb ) ;
   st -> setShininess ( mat -> shi ) ;
 
   st -> enable ( GL_COLOR_MATERIAL ) ;
@@ -241,6 +243,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
   st -> enable  ( GL_LIGHTING ) ;
 
   st -> setShadeModel ( GL_SMOOTH ) ;
+  st -> setAlphaClamp(0);
 
   if ( mat -> rgb[3] < 0.99 )
   {
@@ -316,8 +319,7 @@ static int do_material ( char *s )
     &shi,
     &trans ) != 15 )
   {
-    ulSetError ( UL_WARNING, "ac_to_gl: Can't parse this MATERIAL:" ) ;
-    ulSetError ( UL_WARNING, "ac_to_gl: MATERIAL %s", s ) ;
+    ulSetError ( UL_WARNING, "grloadac:do_material: Can't parse this MATERIAL:%s", s ) ;
   }
   else
   {
@@ -337,6 +339,7 @@ static int do_material ( char *s )
     sgCopyVec4 ( current_material -> spec, spec ) ;
     sgCopyVec4 ( current_material -> emis, emis ) ;
     sgCopyVec4 ( current_material -> rgb , rgb  ) ;
+    sgCopyVec4 ( current_material -> amb , amb  ) ;
     current_material -> shi = (float) shi ;
   }
 
@@ -469,6 +472,12 @@ static int do_texture  ( char *s )
 	mapLevel=LEVEL0;
 	delete current_tbase ;
 	delete current_tfname ;
+	delete current_ttiled ;
+	current_ttiled = 0;
+	delete current_tskids ;
+	current_tskids = 0;
+	delete current_tshad ;
+	current_tshad = 0;
 	skip_quotes ( &s ) ;
 	current_tbase = new char [ strlen(s)+1 ] ;
 	current_tfname = new char [ strlen(s)+1 ] ;
@@ -479,7 +488,11 @@ static int do_texture  ( char *s )
       {
 	*p='\0';
 	delete current_ttiled ;
-	current_ttiled=NULL;
+	current_ttiled=0;
+	delete current_tskids ;
+	current_tskids = 0;
+	delete current_tshad ;
+	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
 	    numMapLevel++;;
@@ -493,7 +506,9 @@ static int do_texture  ( char *s )
       {
 	*p='\0';
 	delete current_tskids ;
-	current_tskids=NULL;
+	current_tskids = 0;
+	delete current_tshad ;
+	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
 	    numMapLevel++;;
@@ -507,7 +522,7 @@ static int do_texture  ( char *s )
       {
 	*p='\0';
 	delete current_tshad ;
-	current_tshad=NULL;
+	current_tshad = 0;
 	if (!strstr(s,NOTEXTURE))
 	  {
 	    numMapLevel++;;
@@ -523,6 +538,14 @@ static int do_texture  ( char *s )
 	numMapLevel=1;
 	mapLevel=LEVEL0;
 	delete current_tfname ;
+	delete current_tbase ;
+	current_tbase = 0;
+	delete current_ttiled ;
+	current_ttiled = 0;
+	delete current_tskids ;
+	current_tskids = 0;
+	delete current_tshad ;
+	current_tshad = 0;
 	current_tfname = new char [ strlen(s)+1 ] ;
 	strcpy ( current_tfname, s ) ;
       }
@@ -711,9 +734,9 @@ static int do_refs     ( char *s )
 
     int vtx ;
     sgVec2 tc ;
-    sgVec2 tc1 ;
-    sgVec2 tc2 ;
-    sgVec2 tc3 ;
+    sgVec2 tc1 = {0};
+    sgVec2 tc2 = {0};
+    sgVec2 tc3 = {0};
     int tn=0;
     tn= sscanf ( buffer, "%d %f %f %f %f %f %f %f %f", &vtx,
 		 &tc[0],&tc[1],
@@ -817,28 +840,31 @@ static int do_refs     ( char *s )
       }
 #endif
 
-    /*ssgVtxTable* vtab = new ssgVtxTable ( gltype,
-      vlist, nrm, tlist, col ) ;*/
-
     /* check the number of texture units */
     if (numMapLevel>maxTextureUnits)
       numMapLevel=maxTextureUnits;
     if (isacar==TRUE) {
       mapLevel=LEVELC;
-      if (tlist1 && maxTextureUnits>2) {
-	  mapLevel=LEVELC2;
-	  numMapLevel=2;
+      if (tlist1 && maxTextureUnits>1) {
+	mapLevel=LEVELC2;
+	numMapLevel=2;
       }
-      if (tlist2 && maxTextureUnits>2) {
-	  mapLevel=LEVELC3;
-	  numMapLevel=3;
+      if (tlist2 && maxTextureUnits>2){
+	mapLevel=LEVELC3;
+	numMapLevel=3;
       }
     }
-
+#define VTXARRAY_GUIONS
 #ifdef VTXARRAY_GUIONS
     if (usestrip==FALSE)
 #endif
       {
+	/* TEST 
+	   if (isacar==FALSE)
+	   {numMapLevel=1;
+	   mapLevel=LEVEL0;
+	   }
+	*/
 	grVtxTable* vtab = new grVtxTable ( gltype,
 	  vlist, nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;
 	/* good */
@@ -856,9 +882,14 @@ static int do_refs     ( char *s )
 	
 	vtab -> setState ( get_state ( current_material ) ) ;
 	vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
-	vtab -> setState1 (get_state_ext (current_ttiled ));
-	vtab -> setState2 (get_state_ext (current_tskids ));
-	vtab -> setState3 (get_state_ext (current_tshad ));
+
+	if (numMapLevel>1)
+	    vtab -> setState1 (get_state_ext (current_ttiled ));
+	if (numMapLevel>2)
+	    vtab -> setState2 (get_state_ext (current_tskids ));
+	if (numMapLevel>3)
+	    vtab -> setState3 (get_state_ext (current_tshad ));
+
 	ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
 
 	if ( leaf )
@@ -871,12 +902,19 @@ static int do_refs     ( char *s )
 	striplist-> add (nrefs);
 	totalstripe++;
 	delete vlist;
+	vlist = 0;
 	delete tlist;
+	tlist = 0;
 	delete tlist1;
+	tlist1 = 0;
 	delete tlist2;
+	tlist2 = 0;
 	delete tlist3;
+	tlist3 = 0;
 	delete vindices;
+	vindices = 0;
 	delete nrm;
+	nrm = 0;
       }
 #endif
   }
@@ -896,20 +934,20 @@ static int do_kids ( char *s )
       ssgTexCoordArray *tlist1 = NULL;
       ssgTexCoordArray *tlist2 = NULL;
       ssgTexCoordArray *tlist3 = NULL;
-      if (numMapLevel>1)
+      /* if (numMapLevel>1) */
 	tlist1=new ssgTexCoordArray ( totalnv ) ;
-      if (numMapLevel>2)
+      /* if (numMapLevel>2) */
 	tlist2=new ssgTexCoordArray ( totalnv ) ;
-      if (numMapLevel>3)
+      /* if (numMapLevel>3) */
 	tlist3=new ssgTexCoordArray ( totalnv ) ;
       for ( int i = 0 ; i < totalnv ; i++ )
 	{
 	  tlist0 -> add ( t0tab[i] ) ;
-	  if (numMapLevel>1)
+	  /* if (numMapLevel>1) */
 	    tlist1 -> add ( t1tab[i] ) ;
-	  if (numMapLevel>2)
+	  /* if (numMapLevel>2) */
 	    tlist2 -> add ( t2tab[i] ) ;
-	  if (numMapLevel>3)
+	  /* if (numMapLevel>3) */
 	    tlist3 -> add ( t3tab[i] ) ;
 	  vlist -> add ( vtab[i] ) ;
 	  if (usenormal==1)
@@ -919,7 +957,7 @@ static int do_kids ( char *s )
       ssgColourArray *col = new ssgColourArray ( 1 ) ;
       col -> add ( *current_colour ) ;
       
-      int type = ( current_flags & 0x0F ) ;      
+      /* int type = ( current_flags & 0x0F ) ; */      
       GLenum gltype = GL_TRIANGLE_STRIP ;
       
       /* check the number of texture units */
@@ -928,12 +966,12 @@ static int do_kids ( char *s )
       if (isacar==TRUE) {
 	mapLevel=LEVELC;
 	if (tlist1 && maxTextureUnits>2) {
-	    mapLevel=LEVELC2;
-	    numMapLevel=2;
+	  mapLevel=LEVELC2;
+	  numMapLevel=2;
 	}
-	if (tlist2 && maxTextureUnits>2) {
-	    mapLevel=LEVELC3;
-	    numMapLevel=3;
+	if (tlist2 && maxTextureUnits>2){
+	  mapLevel=LEVELC3;
+	  numMapLevel=3;
 	}
       }
       /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
@@ -951,9 +989,12 @@ static int do_kids ( char *s )
 					  indexCar ) ;
       vtab -> setState ( get_state ( current_material ) ) ;
       vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
-      vtab -> setState1 (get_state_ext (current_ttiled ));
-      vtab -> setState2 (get_state_ext (current_tskids ));
-      vtab -> setState3 (get_state_ext (current_tshad ));
+      if (numMapLevel>1)
+	  vtab -> setState1 (get_state_ext (current_ttiled ));
+      if (numMapLevel>2)
+	  vtab -> setState2 (get_state_ext (current_tskids ));
+      if (numMapLevel>3)
+	  vtab -> setState3 (get_state_ext (current_tshad ));
       ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
       
       if ( leaf )
@@ -998,11 +1039,14 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
   isacar=TRUE;
   usestrip=FALSE;
   indexCar=index;
+
+  GfOut("CarLoadAC3D loading %s\n", fname);
+
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
   
   if ( obj == NULL )
     return NULL ;
-
+  
   /* Do some simple optimisations */
 
   ssgBranch *model = new ssgBranch () ;
@@ -1022,10 +1066,14 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
   isacar=FALSE;
   usegroup=FALSE;
   usestrip=FALSE;
+
+  GfOut("LoadAC3D loading %s\n", fname);
+
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
 
   if ( obj == NULL )
     return NULL ;
+
 
   /* Do some simple optimisations */
 
@@ -1047,7 +1095,6 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 /*
   Original function for backwards compatibility...
 */
-
 static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* options )
 {
 
@@ -1117,6 +1164,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   delete current_tfname ;
   current_tfname = NULL ;
   delete [] vtab ;
+  vtab = 0;
   fclose ( loader_fd ) ;
 
   return current_branch ;

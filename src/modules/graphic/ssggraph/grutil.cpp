@@ -265,7 +265,8 @@ grSsgLoadTexState(char *img)
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
-    
+    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+   
     curr = (stlist*)calloc(sizeof(stlist), 1);
     curr->next = stateList;
     stateList = curr;
@@ -308,6 +309,7 @@ grSsgEnvTexState(char *img)
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
+    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     
     curr = (stlist*)calloc(sizeof(stlist), 1);
     curr->next = stateList;
@@ -356,6 +358,7 @@ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
+    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     
     curr = (stlist*)calloc(sizeof(stlist), 1);
     curr->next = stateList;
@@ -384,10 +387,19 @@ grPruneTree(ssgEntity *start, bool init)
 	ssgEntity *k = ((ssgBranch*)start)->getKid(i);
 	if (k->getNumKids() != 0) {
 	    grPruneTree(k, FALSE);
-	} else {
+	}
+	/* pruning can remove all the kids... */
+	if (k->getNumKids() == 0) {
 	    if (k->isAKindOf(ssgTypeBranch())) {
 		((ssgBranch*)start)->removeKid(i);
 		nb++;
+#if AGGRESSIVE_PRUNING
+	    } else if (k->isAKindOf(ssgTypeVtxTable())) {
+		if (((ssgVtxTable*)k)->getNumVertices() == 0) {
+		    ((ssgBranch*)start)->removeKid(i);
+		    nb++;
+		}
+#endif
 	    }
 	}
     }

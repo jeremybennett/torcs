@@ -31,13 +31,13 @@
 #include <robottools.h>
 #include "sim.h"
 
-tCar *SimCarTable;
+tCar *SimCarTable = 0;
 
 tdble SimDeltaTime;
 
 int SimTelemetry;
 
-static int SimNbCars;
+static int SimNbCars = 0;
 
 t3Dd vectStart[16];
 t3Dd vectEnd[16];
@@ -382,6 +382,9 @@ void
 SimShutdown(void)
 {
     SimCarCollideShutdown(SimNbCars);
-    free(SimCarTable);   
+    if (SimCarTable) {
+	free(SimCarTable);
+	SimCarTable = 0;
+    }
 }
 

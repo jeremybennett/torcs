@@ -70,14 +70,14 @@ rmGetMapName(void)
 }
 
 static void
-rmtsDeactivate(void * /* dummy */)
+rmtsDeactivate(void *screen)
 {
     
     GfuiScreenRelease(scrHandle);
 
     GfDirFreeList(CategoryList, rmtsFreeLists);
-    if (ts->prevScreen) {
-	GfuiScreenActivate(ts->prevScreen);
+    if (screen) {
+	GfuiScreenActivate(screen);
     }
 }
 
@@ -149,14 +149,14 @@ rmtsSelect(void *dummy)
     GfParmSetStr(ts->param, "Race/Track", "category", CategoryList->name);
     GfParmSetStr(ts->param, "Race/Track", "name", ((tFList*)CategoryList->userData)->name);
 
-    rmtsDeactivate(NULL);
+    rmtsDeactivate(ts->nextScreen);
 }
 
 static void
 rmtsAddKeys(void)
 {
     GfuiAddKey(scrHandle, 13, "Select Track", NULL, rmtsSelect);
-    GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmtsDeactivate);
+    GfuiAddKey(scrHandle, 27, "Cancel Selection", ts->prevScreen, rmtsDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Track", (void*)0, rmtsPrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Track", (void*)1, rmtsPrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
@@ -169,6 +169,7 @@ rmtsAddKeys(void)
     @param	category	track category directory
     @param	trackName	track name for file
     @return	Long track name
+    @ingroup	racemantools
  */
 char *
 RmGetTrackName(char *category, char *trackName)
@@ -189,6 +190,7 @@ RmGetTrackName(char *category, char *trackName)
 /** Get the track category name from the directory name
     @param	category	track category directory
     @return	category display name
+    @ingroup	racemantools
 */
 char *
 RmGetCategoryName(char *category)
@@ -208,9 +210,11 @@ RmGetCategoryName(char *category)
 }
 
 
+
 /** Interactive track selection
     @param	vs	Pointer on a tRmTrackSelect structure (cast to void *)
     @warning	The race manager's parameters are updated but not saved.
+    @ingroup	racemantools
  */
 void
 RmTrackSelect(void *vs)
@@ -339,9 +343,12 @@ RmTrackSelect(void *vs)
     MapId = GfuiStaticImageCreate(scrHandle,
 				  320, 100, 260, 195,
 				  rmGetMapName());
-    
-    GfuiMenuBackQuitButtonCreate(scrHandle, "Select", "Select the track", NULL, rmtsSelect);
 
+    GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     NULL, rmtsSelect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    
+    GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     ts->prevScreen, rmtsDeactivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     Xpos = 20;
     Ypos = 320;

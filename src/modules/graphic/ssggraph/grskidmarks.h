@@ -34,7 +34,7 @@ typedef struct
 }tgrSkidmarks;
 
 extern void grInitSkidmarks(tCarElt *car);
-extern void grUpdateSkidmarks(tCarElt *car);
+extern void grUpdateSkidmarks(tCarElt *car, double t);
 extern void grShutdownSkidmarks (void);
 extern void grDrawSkidmarks (tCarElt *car);
 

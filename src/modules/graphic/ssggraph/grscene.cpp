@@ -68,6 +68,7 @@ grMultiTexState	*grEnvShadowState=NULL;
 #define BG_DIST		1.0
 
 ssgRoot *TheScene = 0;
+ssgBranch *ThePits = 0;
 
 static void initBackground(void);
 
@@ -437,15 +438,15 @@ grLoadScene(tTrack *track)
 	InitMultiTex();   
 	if( maxTextureUnits>1)
 	  {
-	    glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
-	    glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-	    glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-	    glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
+/* 	    glActiveTextureARB ( GL_TEXTURE1_ARB ) ; */
+/* 	    glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
+/* 	    glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
+/* 	    glActiveTextureARB ( GL_TEXTURE0_ARB ) ; */
 	  }
       }
 
-    glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-    glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+/*     glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
+/*     glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
     /*glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
       glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);*/
 
@@ -470,8 +471,10 @@ grLoadScene(tTrack *track)
     sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
     ssgModelPath(buf);
     /*desc = ssgLoad((const char *)acname*/ /* , (const ssgLoaderOptions *)&grloaderOptions *//* );*/
+
     desc = grssgLoadAC3D(acname, NULL);
     TheScene->addKid(desc);
+
     /* TheScene->setCallback(SSG_CALLBACK_PREDRAW, preScene); */
 #ifdef GUIONS
     computeSceneHashing(track);
@@ -488,6 +491,9 @@ void grDrawScene(void)
     /*glEnable(GL_DEPTH_TEST);*/
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
+
+    //fprintf(stderr, "=========== grDrawScene ===================\n");
+    //TheScene->print (stderr, "", 4 ) ;
     
     ssgCullAndDraw(TheScene);
     
@@ -753,6 +759,9 @@ grCustomizePits(void)
     tdble		x, y;
     tdble		x2, y2, z2;
 
+    ThePits = new ssgBranch();
+    TheScene->addKid(ThePits);
+
     pits = &(grTrack->pits);
     /* draw the pit identification */
 
@@ -763,7 +772,7 @@ grCustomizePits(void)
 	    t3Dd		normalvector;
 	    sgVec3		vtx;
 	    sgVec4		clr = {0,0,0,1};
-	    sgVec3		nrm = {0,1,0};
+	    sgVec3		nrm;
 	    sgVec2		tex;
 	    ssgState		*st;
 	    ssgVertexArray	*pit_vtx = new ssgVertexArray(4);
@@ -772,7 +781,6 @@ grCustomizePits(void)
 	    ssgNormalArray	*pit_nrm = new ssgNormalArray(1);
 	    
 	    pit_clr->add(clr);
-	    pit_nrm->add(nrm);
 
 	    if (pits->driversPits[i].car) {
 		sprintf(buf, "drivers/%s/%d;drivers/%s;data/textures;data/img;.",
@@ -783,12 +791,17 @@ grCustomizePits(void)
 	    }
 	    
 	    st = grSsgLoadTexStateEx("logo.rgb", buf, FALSE, FALSE);
-
+	    
 	    RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
 	    RtTrackSideNormalG(pits->driversPits[i].pos.seg, x, y, pits->side, &normalvector);
 	    x2 = x - pits->width/2.0 * normalvector.x + pits->len/2.0 * normalvector.y;
 	    y2 = y - pits->width/2.0 * normalvector.y - pits->len/2.0 * normalvector.x;
 	    z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
+
+	    nrm[0] = normalvector.x;
+	    nrm[1] = normalvector.y;
+	    nrm[2] = 0;
+	    pit_nrm->add(nrm);
 
 	    tex[0] = -0.7;
 	    tex[1] = 0.33;
@@ -829,8 +842,7 @@ grCustomizePits(void)
 	    ssgVtxTable *pit = new ssgVtxTable(GL_TRIANGLE_STRIP, pit_vtx, pit_nrm, pit_tex, pit_clr);
 	    pit->setState(st);
 	    pit->setCullFace(0);
-	    TheScene->addKid(pit);
-	    grCarInfo[i].pit = pit;
+	    ThePits->addKid(pit);
 	}
 	break;
     case TR_PIT_ON_SEPARATE_PATH:
@@ -838,5 +850,4 @@ grCustomizePits(void)
     case TR_PIT_NONE:
 	break;	
     }
-
 }

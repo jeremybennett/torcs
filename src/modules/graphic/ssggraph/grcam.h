@@ -34,6 +34,7 @@ TAILQ_HEAD(GrCamHead, cGrCamera);
 /* Camera interface */
 class cGrCamera 
 {
+ private:
     TAILQ_ENTRY(cGrCamera) link;
     int id;		/* Camera Id */
     int drawCurrent;	/* flag to draw the current car */

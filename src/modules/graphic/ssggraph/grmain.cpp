@@ -146,10 +146,6 @@ bool InitMultiTex(void)
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
-    char	buf[256];
-    int		camNum;
-    cGrCamera	*cam;
-
     if (maxTextureUnits==0)
       {
 	InitMultiTex();    
@@ -167,12 +163,13 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     grWinw = width;
     grWinh = height;
     grSetView(x, y, width, height);
-    grInitCams();
     grInitBoard();
     OldTime = GfTimeClock();
     nFrame = 0;
     Fps = 0;
     grWindowRatio = 0;
+
+    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
 				    (char*)NULL, grDebugFlag);
@@ -186,29 +183,6 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 				      (char*)NULL, grCounterFlag);
     grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
 				(char*)NULL, grGFlag);
-    camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
-			       (char*)NULL, 0);
-    grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
-				     (char*)NULL, 9);
-    cam = TAILQ_FIRST(&grCams[grCurCamHead]);
-    grCurCam = NULL;
-    while (cam) {
-	if (cam->getId() == camNum) {
-	    grCurCam = cam;
-	    break;
-	}
-	cam = cam->next();
-    }
-    if (grCurCam == NULL) {
-	/* back to default camera */
-	grCurCamHead = 0;
-	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
-	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
-	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
-    }
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
-    grCurCam->loadDefaults(buf);
-    grDrawCurrent = grCurCam->getDrawCurrent();
 
     GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom);
     GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom);
@@ -293,10 +267,10 @@ refresh(tSituation *s)
 
     glEnable(GL_LIGHTING);    
     for (i = 0; i < s->_ncars; i++) {
-      grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
+      grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
     } 
     segIndice = (s->cars[s->current])->_trkPos.seg->id;
-    grUpdateSmoke(grDeltaTime, grCurTime);
+    grUpdateSmoke(s->currentTime);
 
     grDrawScene();
 
@@ -329,14 +303,41 @@ initCars(tSituation *s)
     int		i;
     tCarElt 	*elt;
     void	*hdle;
+    char	buf[256];
+    int		camNum;
+    cGrCamera	*cam;
 
     TRACE_GL("initCars: start");
+
+    grNbCars = s->_ncars;
+    grInitCams();
+    grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
+				     (char*)NULL, 9);
+    cam = TAILQ_FIRST(&grCams[grCurCamHead]);
+    grCurCam = NULL;
+    camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
+			       (char*)NULL, 0);
+    while (cam) {
+	if (cam->getId() == camNum) {
+	    grCurCam = cam;
+	    break;
+	}
+	cam = cam->next();
+    }
+    if (grCurCam == NULL) {
+	/* back to default camera */
+	grCurCamHead = 0;
+	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
+	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
+	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
+    }
+    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
+    grCurCam->loadDefaults(buf);
+    grDrawCurrent = grCurCam->getDrawCurrent();
 
     grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
-    
-    grNbCars = s->_ncars;
 
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
@@ -362,6 +363,10 @@ initCars(tSituation *s)
     grInitSmoke(s->_ncars);
 
     grCustomizePits();
+
+    int nb = grPruneTree(TheScene, true);
+    GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);
+
     return 0;
     
 }
@@ -377,8 +382,9 @@ shutdownCars(void)
 	for (i = 0; i < grNbCars; i++) {
 	    TheScene->removeKid(grCarInfo[i].carTransform);
 	    TheScene->removeKid(grCarInfo[i].shadowAnchor);
-	    TheScene->removeKid(grCarInfo[i].pit);
 	}
+	TheScene->removeKid(ThePits);
+	ThePits = 0;
 	free(grCarInfo);
     }
     GfParmReleaseHandle(grHandle);

@@ -24,6 +24,7 @@ LDFLAGS = -rdynamic
 
 SOLIBS  =  -lracemantools \
 	   -lrobottools   \
+	   -lraceengine   \
 	   -ltorcs        \
 	   -ltgf          \
 	   -ltxml	  \

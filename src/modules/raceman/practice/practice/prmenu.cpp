@@ -162,6 +162,7 @@ prMenuRun(void *backmenu)
 	prListControls();
     
 	ts.prevScreen = prMainMenuHandle;
+	ts.nextScreen = prMainMenuHandle;
 	GfuiMenuButtonCreate(prMainMenuHandle, 
 			     "Select Other Track", "Select a Track for Practice",
 			     (void*)&ts, RmTrackSelect);
@@ -171,6 +172,7 @@ prMenuRun(void *backmenu)
 			  (void*)&ts, RmDriverSelect);
     
 	rp.prevScreen = prMainMenuHandle;
+	rp.nextScreen = prMainMenuHandle;
 	rp.title = "Practice Options";
 	GfuiMenuButtonCreate(prMainMenuHandle, 
 			  "Race Options", "Set the options of the Practice",

@@ -20,6 +20,10 @@
 
 #include <stdio.h>
 #include <tgf.h>
+#ifdef RACE_ENGINE
+#include <singleplayer.h>
+#endif
+
 #include "mainmenu.h"
 #include "exitmenu.h"
 #include "raceman.h"
@@ -63,29 +67,33 @@ TorcsMainMenuInit(void)
 
     GfuiScreenAddBgImg(menuHandle, "data/img/splash-main.png");
 
-    GfuiTitleCreate(menuHandle, "TORCS", 32);
+    GfuiTitleCreate(menuHandle, "TORCS", 0);
 
     GfuiLabelCreate(menuHandle,
-		 "The Open Racing Cars Simulator",
-		 GFUI_FONT_LARGE,
-		 320,
-		 420,
-		 GFUI_ALIGN_HC_VB,
-		 0);
+		    "The Open Racing Cars Simulator",
+		    GFUI_FONT_LARGE,
+		    320,
+		    420,
+		    GFUI_ALIGN_HC_VB,
+		    0);
+
+#ifdef RACE_ENGINE
+    GfuiMenuButtonCreate(menuHandle,
+			 "Single Player", "Play in single player mode",
+			 ReSinglePlayerInit(menuHandle), GfuiScreenActivate);
+#endif
 
     TorcsLoadRaceMan();
 
     GfuiMenuButtonCreate(menuHandle,
-		      "Options", "Configure",
-		      TorcsOptionOptionInit(menuHandle), GfuiScreenActivate);
+			 "Options", "Configure",
+			 TorcsOptionOptionInit(menuHandle), GfuiScreenActivate);
     
     GfuiMenuDefaultKeysAdd(menuHandle);
 
     GfuiMenuBackQuitButtonCreate(menuHandle,
-			      "Quit",
-			      "Quit TORCS",
-			      TorcsExitMenuInit(menuHandle),
-			      GfuiScreenActivate);
+				 "Quit", "Quit TORCS",
+				 TorcsExitMenuInit(menuHandle), GfuiScreenActivate);
 
     return 0;
 }

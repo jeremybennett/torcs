@@ -44,6 +44,10 @@ copy .\src\libs\robottools\robottools.h .\export\include\robottools.h
 
 call .\create_dir .\export
 call .\create_dir .\export\include
+copy .\src\libs\raceengine\singleplayer.h .\export\include\singleplayer.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
 copy .\src\windows\osspec.h .\export\include\osspec.h
 
 call .\create_dir .\export
@@ -353,10 +357,6 @@ copy .\src\drivers\berniw\intcossqr.dat .\runtimed\drivers\berniw\intcossqr.dat
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\berniw
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw2
 call .\create_dir .\runtimed\drivers\berniw2\1
 copy .\src\drivers\berniw2\1\aalborg.xml .\runtimed\drivers\berniw2\1\aalborg.xml
@@ -549,7 +549,7 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw2
 call .\create_dir .\runtimed\drivers\berniw2\7
-copy .\src\drivers\berniw2\7\cg-nascar-fwd.rgb .\runtimed\drivers\berniw2\7\cg-nascar-fwd.rgb
+copy .\src\drivers\berniw2\7\porsche-gt3rs.rgb .\runtimed\drivers\berniw2\7\porsche-gt3rs.rgb
 copy .\src\drivers\berniw2\7\aalborg.xml .\runtimed\drivers\berniw2\7\aalborg.xml
 copy .\src\drivers\berniw2\7\alpine-1.xml .\runtimed\drivers\berniw2\7\alpine-1.xml
 copy .\src\drivers\berniw2\7\a-speedway.xml .\runtimed\drivers\berniw2\7\a-speedway.xml
@@ -640,10 +640,6 @@ copy .\src\drivers\berniw2\intcossqr.dat .\runtimed\drivers\berniw2\intcossqr.da
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\berniw2
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\cylos1
 call .\create_dir .\runtimed\drivers\cylos1\tracksdata
 copy .\src\drivers\cylos1\tracksdata\car_e-track-3.xml .\runtimed\drivers\cylos1\tracksdata\car_e-track-3.xml
@@ -659,10 +655,6 @@ copy .\src\drivers\cylos1\cylos1.xml .\runtimed\drivers\cylos1\cylos1.xml
 copy .\src\drivers\cylos1\car1.xml .\runtimed\drivers\cylos1\car1.xml
 copy .\src\drivers\cylos1\cg-nascar-rwd.rgb .\runtimed\drivers\cylos1\cg-nascar-rwd.rgb
 copy .\src\drivers\cylos1\logo.rgb .\runtimed\drivers\cylos1\logo.rgb
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\cylos1
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -755,10 +747,6 @@ call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\damned
 copy .\src\drivers\damned\damned.xml .\runtimed\drivers\damned\damned.xml
 copy .\src\drivers\damned\car1.xml .\runtimed\drivers\damned\car1.xml
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\damned
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -912,10 +900,6 @@ copy .\src\drivers\human\mclaren-f1.rgb .\runtimed\drivers\human\mclaren-f1.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\human
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\inferno
 call .\create_dir .\runtimed\drivers\inferno\tracksdata
 copy .\src\drivers\inferno\tracksdata\aalborg.xml .\runtimed\drivers\inferno\tracksdata\aalborg.xml
@@ -957,10 +941,6 @@ copy .\src\drivers\inferno\inferno.xml .\runtimed\drivers\inferno\inferno.xml
 copy .\src\drivers\inferno\car1.xml .\runtimed\drivers\inferno\car1.xml
 copy .\src\drivers\inferno\logo.rgb .\runtimed\drivers\inferno\logo.rgb
 copy .\src\drivers\inferno\mclaren-f1.rgb .\runtimed\drivers\inferno\mclaren-f1.rgb
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\inferno
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -1006,10 +986,6 @@ copy .\src\drivers\inferno2\360-modena.rgb .\runtimed\drivers\inferno2\360-moden
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\inferno2
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\inferno3
 call .\create_dir .\runtimed\drivers\inferno3\tracksdata
 copy .\src\drivers\inferno3\tracksdata\aalborg.xml .\runtimed\drivers\inferno3\tracksdata\aalborg.xml
@@ -1048,10 +1024,6 @@ copy .\src\drivers\inferno3\inferno3.xml .\runtimed\drivers\inferno3\inferno3.xm
 copy .\src\drivers\inferno3\car1.xml .\runtimed\drivers\inferno3\car1.xml
 copy .\src\drivers\inferno3\logo.rgb .\runtimed\drivers\inferno3\logo.rgb
 copy .\src\drivers\inferno3\porsche-gt1.rgb .\runtimed\drivers\inferno3\porsche-gt1.rgb
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\inferno3
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -1098,10 +1070,6 @@ copy .\src\drivers\inferno4\clkdtm.rgb .\runtimed\drivers\inferno4\clkdtm.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\inferno4
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\inferno5
 call .\create_dir .\runtimed\drivers\inferno5\tracksdata
 copy .\src\drivers\inferno5\tracksdata\aalborg.xml .\runtimed\drivers\inferno5\tracksdata\aalborg.xml
@@ -1131,7 +1099,32 @@ copy .\src\drivers\inferno5\gt40.rgb .\runtimed\drivers\inferno5\gt40.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\inferno5
+call .\create_dir .\runtimed\drivers\inferno6
+call .\create_dir .\runtimed\drivers\inferno6\tracksdata
+copy .\src\drivers\inferno6\tracksdata\aalborg.xml .\runtimed\drivers\inferno6\tracksdata\aalborg.xml
+copy .\src\drivers\inferno6\tracksdata\a-speedway.xml .\runtimed\drivers\inferno6\tracksdata\a-speedway.xml
+copy .\src\drivers\inferno6\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno6\tracksdata\car_e-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno6\tracksdata\car_e-track-4.xml
+copy .\src\drivers\inferno6\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno6\tracksdata\car_g-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\eroad.xml .\runtimed\drivers\inferno6\tracksdata\eroad.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-1.xml .\runtimed\drivers\inferno6\tracksdata\e-track-1.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-2.xml .\runtimed\drivers\inferno6\tracksdata\e-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-3.xml .\runtimed\drivers\inferno6\tracksdata\e-track-3.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-4.xml .\runtimed\drivers\inferno6\tracksdata\e-track-4.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-5.xml .\runtimed\drivers\inferno6\tracksdata\e-track-5.xml
+copy .\src\drivers\inferno6\tracksdata\e-track-6.xml .\runtimed\drivers\inferno6\tracksdata\e-track-6.xml
+copy .\src\drivers\inferno6\tracksdata\g-track-1.xml .\runtimed\drivers\inferno6\tracksdata\g-track-1.xml
+copy .\src\drivers\inferno6\tracksdata\g-track-2.xml .\runtimed\drivers\inferno6\tracksdata\g-track-2.xml
+copy .\src\drivers\inferno6\tracksdata\michigan.xml .\runtimed\drivers\inferno6\tracksdata\michigan.xml
+copy .\src\drivers\inferno6\tracksdata\wheel-1.xml .\runtimed\drivers\inferno6\tracksdata\wheel-1.xml
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno6
+copy .\src\drivers\inferno6\inferno6.xml .\runtimed\drivers\inferno6\inferno6.xml
+copy .\src\drivers\inferno6\car1.xml .\runtimed\drivers\inferno6\car1.xml
+copy .\src\drivers\inferno6\logo.rgb .\runtimed\drivers\inferno6\logo.rgb
+copy .\src\drivers\inferno6\porsche-gt3rs.rgb .\runtimed\drivers\inferno6\porsche-gt3rs.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -1155,10 +1148,6 @@ copy .\src\drivers\K1999\logo.rgb .\runtimed\drivers\K1999\logo.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\K1999
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\lliaw
 call .\create_dir .\runtimed\drivers\lliaw\tracksdata
 copy .\src\drivers\lliaw\tracksdata\car_e-track-3.xml .\runtimed\drivers\lliaw\tracksdata\car_e-track-3.xml
@@ -1173,10 +1162,6 @@ copy .\src\drivers\lliaw\lliaw.xml .\runtimed\drivers\lliaw\lliaw.xml
 copy .\src\drivers\lliaw\car.xml .\runtimed\drivers\lliaw\car.xml
 copy .\src\drivers\lliaw\viper-gts-r.rgb .\runtimed\drivers\lliaw\viper-gts-r.rgb
 copy .\src\drivers\lliaw\logo.rgb .\runtimed\drivers\lliaw\logo.rgb
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\lliaw
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -1222,10 +1207,6 @@ copy .\src\drivers\tanhoj\cg-nascar-rwd.rgb .\runtimed\drivers\tanhoj\cg-nascar-
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\tanhoj
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\tita
 call .\create_dir .\runtimed\drivers\tita\tracksdata
 copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtimed\drivers\tita\tracksdata\aalborg.xml
@@ -1267,18 +1248,10 @@ copy .\src\drivers\tita\lotus-gt1.rgb .\runtimed\drivers\tita\lotus-gt1.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\tita
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\tutor
 copy .\src\drivers\tutor\tutor.xml .\runtimed\drivers\tutor\tutor.xml
 copy .\src\drivers\tutor\360-modena.rgb .\runtimed\drivers\tutor\360-modena.rgb
 copy .\src\drivers\tutor\logo.rgb .\runtimed\drivers\tutor\logo.rgb
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\tutor
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -1287,22 +1260,8 @@ copy .\src\drivers\tutorial1\tutorial1.xml .\runtimed\drivers\tutorial1\tutorial
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\tutorial1
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\tutorial2
 copy .\src\drivers\tutorial2\tutorial2.xml .\runtimed\drivers\tutorial2\tutorial2.xml
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\drivers
-call .\create_dir .\runtimed\drivers\tutorial2
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\.
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\.
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
@@ -1310,14 +1269,117 @@ copy .\src\libs\tgf\screen.xml .\runtimed\config\screen.xml
 copy .\src\libs\tgf\params.dtd .\runtimed\config\params.dtd
 
 call .\create_dir .\runtimed
-call .\create_dir .\runtimed\.
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\.
+call .\create_dir .\runtimed\config
+copy .\src\modules\graphic\ssggraph\graph.xml .\runtimed\config\graph.xml
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
-copy .\src\modules\graphic\ssggraph\graph.xml .\runtimed\config\graph.xml
+call .\create_dir .\runtimed\config\practice
+copy .\src\modules\raceman\practice\practice\practice.xml .\runtimed\config\practice\practice.xml
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\config
+call .\create_dir .\runtimed\config\quickrace
+copy .\src\modules\raceman\quickrace\qrace.xml .\runtimed\config\quickrace\qrace.xml
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\config
+call .\create_dir .\runtimed\config\simplerace
+copy .\src\modules\raceman\simplerace\simplerace.xml .\runtimed\config\simplerace\simplerace.xml
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\telemetry
+copy .\src\modules\telemetry\telemetry.sh .\runtimed\telemetry\telemetry.sh
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\berniw
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\berniw2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\cylos1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\damned
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\human
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno3
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno4
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno5
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno6
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\K1999
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\lliaw
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\tanhoj
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\tita
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\tutor
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\tutorial1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\tutorial2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
@@ -1330,27 +1392,12 @@ call .\create_dir .\runtimed\modules\raceman\practice
 call .\create_dir .\runtimed\modules\raceman\practice\control
 
 call .\create_dir .\runtimed
-call .\create_dir .\runtimed\config
-call .\create_dir .\runtimed\config\practice
-copy .\src\modules\raceman\practice\practice\practice.xml .\runtimed\config\practice\practice.xml
-
-call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
 call .\create_dir .\runtimed\modules\raceman
 
 call .\create_dir .\runtimed
-call .\create_dir .\runtimed\config
-call .\create_dir .\runtimed\config\quickrace
-copy .\src\modules\raceman\quickrace\qrace.xml .\runtimed\config\quickrace\qrace.xml
-
-call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
 call .\create_dir .\runtimed\modules\raceman
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\config
-call .\create_dir .\runtimed\config\simplerace
-copy .\src\modules\raceman\simplerace\simplerace.xml .\runtimed\config\simplerace\simplerace.xml
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
@@ -1359,10 +1406,6 @@ call .\create_dir .\runtimed\modules\raceman
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
 call .\create_dir .\runtimed\modules\simu
-
-call .\create_dir .\runtimed
-call .\create_dir .\runtimed\telemetry
-copy .\src\modules\telemetry\telemetry.sh .\runtimed\telemetry\telemetry.sh
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules

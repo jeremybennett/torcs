@@ -87,6 +87,7 @@ qrMenuRun(void *backmenu)
 			  NULL, qraceRun);
     
 	ts.prevScreen = qrMainMenuHandle;
+	ts.nextScreen = qrMainMenuHandle;
 	GfuiMenuButtonCreate(qrMainMenuHandle, 
 			  "Select Track", "Select a Track for Quick Race",
 			  NULL, qrSelectTrack);
@@ -97,6 +98,7 @@ qrMenuRun(void *backmenu)
 
 	
 	rp.prevScreen = qrMainMenuHandle;
+	rp.nextScreen = qrMainMenuHandle;
 	rp.title = "Quick Race Options";
 	GfuiMenuButtonCreate(qrMainMenuHandle, 
 			  "Race Options", "Set the options of the Quick Race",

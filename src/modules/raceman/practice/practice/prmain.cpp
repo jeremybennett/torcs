@@ -150,7 +150,7 @@ prRun(void)
     prRaceInfo = (tRmInfo*)calloc(1, sizeof(tRmInfo));
     prRaceInfo->s = &prTheSituation;
     prRaceInfo->track = prTheTrack;
-    prRaceInfo->simItf = &SimItf;
+    memcpy(&prRaceInfo->_reSimItf, &SimItf, sizeof(tSimItf));;
     prRaceInfo->params = pracecfg;
     prRaceInfo->modList = &pracemodlist;
     

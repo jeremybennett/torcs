@@ -40,8 +40,9 @@
 /** Display the Practice session results.
     @param	prevHdle	Handle to return to.
     @param	trackname	Current track.
-    @param	res		Result list.
+    @param	reshead		Result list.
     @return	None.
+    @ingroup	racemantools
  */
 void
 RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)

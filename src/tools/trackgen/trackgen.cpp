@@ -108,11 +108,10 @@ void usage(void)
 
 void init_args(int argc, char **argv)
 {
-    int		c;
-    
-    
 #ifdef WIN32
     int i=0;
+#else
+    int	c;    
 #endif
     TrackOnly = 1;
     MergeAll = 1;

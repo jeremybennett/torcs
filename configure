@@ -16,7 +16,7 @@ ac_help="$ac_help
 ac_help="$ac_help
   --enable-debug          set the debug mode"
 ac_help="$ac_help
-  --enable-ccmalloc       set the ccmalloc mode (baware path...)"
+  --enable-ccmalloc       set the ccmalloc mode (beware path...)"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -1617,7 +1617,7 @@ else
   ac_cv_prog_LD="$LD" # Let the user override the test.
 else
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
-  ac_dummy="/usr/bin/ld"
+  ac_dummy="/usr/bin/gxx"
   for ac_dir in $ac_dummy; do
     test -z "$ac_dir" && ac_dir=.
     if test -f $ac_dir/$ac_word; then
@@ -1975,7 +1975,7 @@ fi
 # Check whether --enable-ccmalloc or --disable-ccmalloc was given.
 if test "${enable_ccmalloc+set}" = set; then
   enableval="$enable_ccmalloc"
-  LDFLAGS="$LDFLAGS /home/torcs/ccmalloc-0.3.9-nco/obj/ccmalloc-g++.o -L/home/torcs/ccmalloc-0.3.9-nco/lib -lccmalloc"
+  LDFLAGS="$LDFLAGS /home/torcs/ccmalloc-0.3.9-nco/obj/ccmalloc-g++.o -L/home/torcs/ccmalloc-0.3.9-nco/lib -lccmalloc -ldl"
 else
   LDFLAGS="$LDFLAGS"
 fi

@@ -21,13 +21,9 @@
 #ifndef _TELEMETRY_H_
 #define _TELEMETRY_H_
 
-#if _WIN32
-#include <windows.h>
-#endif
-
-#include <ttypes.h>
-
 #define TLM_IDENT	1
+
+#include <tgf.h>
 
 typedef void(*tftlmInit)(tdble /* ymin */, tdble /* ymax */);
 typedef void(*tftlmNewChannel)(const char * /* name */, tdble * /* var */, tdble /* min */, tdble /* max */);

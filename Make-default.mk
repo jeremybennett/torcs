@@ -85,14 +85,14 @@ endif
 
 ifdef COMPILATION
 
-default: win32start exports tools compil win32end
+default: exports tools compil
 
 ifeq (.depend,$(wildcard .depend))
 include .depend
 endif
 
 .depend:
-	$(CPP) $(INCFLAGS) $(CFLAGSD)  $(SOURCES) > .depend
+	$(CPP) $(INCFLAGS) $(CFLAGSD) $(COMPILFLAGS)  $(SOURCES) > .depend
 
 dep:	.depend
 
@@ -100,7 +100,7 @@ compil: subdirs dep ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM}
 
 else
 
-default: win32start exports tools subdirs win32end
+default: exports tools subdirs
 
 compil: subdirs ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM}
 
@@ -125,7 +125,7 @@ win32end:
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:runtime:runtimed:g" ${INIT_WIN32} > ${INIT_WIN32_D}
 
-win32setup: win32start exports installships win32end
+win32setup: win32start exportswin32 installshipswin32 installwin32 win32end
 
 .PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil \
  datadirs shipdirs doc win32start win32end installship installships installshipdirs
@@ -135,6 +135,10 @@ win32setup: win32start exports installships win32end
 exports: expincdirs export
 
 installships: installshipdirs installship
+
+exportswin32: expincwin32dirs exportwin32
+
+installshipswin32: installshipwin32dirs installshipwin32
 
 tools: toolsdirs ${TOOLS} toolsdata
 
@@ -147,7 +151,9 @@ cleantools: cleantoolsdirs
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
-install: installdirs installship installsolibrary installmodule installprogram installtools installtoolsdata win32end
+install: installdirs installship installsolibrary installmodule installprogram installtools installtoolsdata
+
+installwin32: installwin32dirs installsolibrarywin32 installmodulewin32
 
 datainstall: installdatadirs installdata
 
@@ -187,7 +193,6 @@ ifdef DATA
 installdata: $(DATA)
 	@D=`pwd` ; \
 	createdir="runtime/${DATADIR}" ; \
-	${create_dir_win32} ; \
 	createdir="${INSTBASE}/${DATADIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
@@ -205,19 +210,27 @@ ifdef SHIP
 
 installship: $(SHIP)
 	@D=`pwd` ; \
-	createdir="runtime/${SHIPDIR}" ; \
-	${create_dir_win32} ; \
 	createdir="${INSTBASE}/${SHIPDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
 	$(INSTALL_DATA) $$X $$createdir/$$X ; \
+	done
+
+installshipwin32: $(SHIP)
+	@D=`pwd` ; \
+	createdir="runtime/${SHIPDIR}" ; \
+	${create_dir_win32} ; \
+	for X in $? ; \
+	do echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" ; \
 	echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" >> ${INIT_WIN32} ; \
 	done
 
 else
 
 installship: ;
+
+installshipwin32: ;
 
 endif
 
@@ -227,16 +240,25 @@ export: $(EXPORTS)
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${EXPDIR}" ;\
 	$(mkinstalldirs) $$createdir ; \
-	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo " Exporting $$X to $$createdir/$$X"; \
 	ln -sf $$D/$$X $$createdir/$$X ; \
+	done
+
+exportwin32: $(EXPORTS)
+	@D=`pwd` ; \
+	createdir="${EXPORTBASE}/${EXPDIR}" ;\
+	${create_dir_win32} ; \
+	for X in $? ; \
+	do echo "copy $$D/$$X $$createdir/$$X" ; \
 	echo "copy $$D/$$X $$createdir/$$X" >> ${INIT_WIN32} ; \
 	done
 
 else
 
 export: ;
+
+exportwin32: ;
 
 endif
 
@@ -324,18 +346,21 @@ ${SOLIBRARY}: ${OBJECTS}
 
 
 installsolibrary: ${SOLIBRARY}
-	@createdir="runtime/${SOLIBDIR}" ; \
-	${create_dir_win32} ; \
-	createdir="${INSTLIBBASE}" ; \
+	@createdir="${INSTLIBBASE}" ; \
 	X="${SOLIBRARY}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
 	$(INSTALL_DATA) $$X $$createdir/$$X
 
+installsolibrarywin32:
+	@createdir="runtime/${SOLIBDIR}" ; \
+	${create_dir_win32}
 
 else
 
 installsolibrary: ;
+
+installsolibrarywin32: ;
 
 endif
 
@@ -352,18 +377,22 @@ ${MODULE}: ${OBJECTS}
 
 
 installmodule: ${MODULE}
-	@createdir="runtime/${MODULEDIR}" ; \
-	${create_dir_win32} ; \
-	createdir="${INSTBASE}/${MODULEDIR}" ; \
+	@createdir="${INSTBASE}/${MODULEDIR}" ; \
 	X="${MODULE}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
 	$(INSTALL_DATA) $$X $$createdir/$$X
 
+installmodulewin32:
+	@createdir="runtime/${MODULEDIR}" ; \
+	${create_dir_win32}
+
 
 else
 
 installmodule: ;
+
+installmodulewin32: ;
 
 endif
 
@@ -474,9 +503,16 @@ expincdirs:
 	RecurseFlags="exports" ; \
 	${recursedirs}
 
+expincwin32dirs: 
+	@RecurseDirs="${EXPINCDIRS}" ; \
+	RecurseFlags="exportswin32" ; \
+	${recursedirs}
+
 else
 
 expincdirs: ;
+
+expincwin32dirs: ;
 
 endif
 
@@ -570,6 +606,16 @@ installdirs:
 	${recursedirs} ; \
 	fi
 
+installwin32dirs:
+	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="installwin32" ; \
+	${recursedirs} ; \
+	fi
+
 installdatadirs:
 	@if [ -n "${DATASUBDIRS}" ] ; \
 	then R=`for I in ${DATASUBDIRS} ; \
@@ -587,6 +633,16 @@ installshipdirs:
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \
 	RecurseFlags="installships" ; \
+	${recursedirs} ; \
+	fi
+
+installshipwin32dirs:
+	@if [ -n "${SHIPSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="installshipswin32" ; \
 	${recursedirs} ; \
 	fi
 

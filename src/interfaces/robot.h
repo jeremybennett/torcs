@@ -36,6 +36,8 @@
 #ifndef _ROBOTV1_H_
 #define _ROBOTV1_H_
 
+#include <raceman.h>
+
 #define ROB_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
 
 /** Callback prototype */
@@ -49,7 +51,7 @@ typedef void (*tfRbDrive)   (int index, tCarElt *car, tSituation *s);
 /** Callback prototype */
 typedef void (*tfRbShutdown)(int index);
 /** Callback prototype */
-typedef int  (*tfRbPitCmd)(int index, tCarElt*, tSituation*);
+typedef int  (*tfRbPitCmd)  (int index, tCarElt* car, tSituation *s);
 
 #define ROB_PIT_IM	0	/**< Immediate return from pit command */
 #define ROB_PIT_MENU	1	/**< Call the interactive menu for pit command */

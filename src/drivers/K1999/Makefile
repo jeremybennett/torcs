@@ -31,7 +31,7 @@ SHIPSUBDIRS = 1 2
 
 PKGSUBDIRS  = $(SHIPSUBDIRS)
 
-CXXFLAGS    = -Wno-deprecated
+COMPILFLAGS  =	-Wno-deprecated
 
 src-robots-K1999_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

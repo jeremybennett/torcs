@@ -24,7 +24,6 @@
 #include <ttypes.h>
 #include <track.h>
 #include <car.h>
-#include <raceman.h>
 
 #define GRX_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
 
@@ -76,13 +75,15 @@
 
 /* graphic functions prototypes */
 
+struct Situation;
+
 typedef int (*tfGraphicInitTrack)(tTrack *);
-typedef int (*tfGraphicInitCars)(tSituation *); 
+typedef int (*tfGraphicInitCars)(struct Situation *); 
 typedef int (*tfGraphicInitView)(int /*x*/, int /*y*/, int /*width*/, int /*height*/, int /*flag*/, void * /*screen*/);
 #define GR_VIEW_STD  0 /* full screen view */
 #define GR_VIEW_PART 1 /* partial screen view (scissor test) */
 
-typedef int (*tfGraphicRefresh)(tSituation *);
+typedef int (*tfGraphicRefresh)(struct Situation *);
 typedef void (*tfGraphicShutdwnCars)(void);
 typedef void (*tfGraphicShutdwnTrack)(void);
 

@@ -241,6 +241,7 @@ TrackShutdown(void)
     }
     theCamList = NULL;
 
+    if (theTrack->pits.driversPits) free(theTrack->pits.driversPits);
     free(theTrack->graphic.env);
     free(theTrack);
     GfParmReleaseHandle(TrackHandle);

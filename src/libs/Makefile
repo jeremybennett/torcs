@@ -18,11 +18,11 @@
 
 SHIPSUBDIRS	= tgf
 
-EXPINCDIRS	= txml tgf torcs racemantools robottools
+EXPINCDIRS	= txml tgf torcs racemantools robottools raceengine
 
 TOOLSUBDIRS	= txml
 
-SUBDIRS		= racemantools robottools txml tgf torcs
+SUBDIRS		= racemantools robottools txml tgf torcs raceengine
 
 PKGSUBDIRS	= $(SUBDIRS)
 

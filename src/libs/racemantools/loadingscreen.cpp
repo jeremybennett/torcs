@@ -51,7 +51,8 @@ rmDeativate(void * /* dummy */)
 
 /** 
     @ingroup	racemantools
-    @param	bgimg	Optionnal backgrounf image.
+    @param	title	Screen title.
+    @param	bgimg	Optionnal backgrounf image (0 for no img).
     @return	None.
 */
 void
@@ -59,6 +60,11 @@ RmLoadingScreenStart(char *title, char *bgimg)
 {
     int		i;
     int		y;
+
+    if (GfuiScreenIsActive(menuHandle)) {
+	/* Already active */
+	return;
+    }
     
     if (menuHandle) {
 	GfuiScreenRelease(menuHandle);

@@ -48,7 +48,6 @@ typedef struct
     ssgColourArray	*brkColor[4];
     ssgSelector		*wheelselector[4];
     ssgState		*wheelTexture;
-    ssgVtxTable		*pit;
     ssgVtxTableShadow	*shadowBase;
     ssgVtxTableShadow	*shadowCurr;
     ssgBranch		*shadowAnchor;
@@ -62,7 +61,7 @@ typedef struct
 extern tgrCarInfo	*grCarInfo;
 
 extern void grInitCar(tCarElt *car);
-extern void grDrawCar(tCarElt*, tCarElt *, int);
+extern void grDrawCar(tCarElt*, tCarElt *, int, double curTime);
 extern void grDrawShadow(tCarElt *car);
 extern void grInitShadow(tCarElt *car);
 extern tdble grGetDistToStart(tCarElt *car);

@@ -35,50 +35,26 @@ typedef struct
 {
     void        *param;		/* Race manager parameters where to set the selected track */
     void        *prevScreen;	/* Race manager screen to go back */
+    void        *nextScreen;	/* Race manager screen to go after select */
     tTrackItf	trackItf;	/* Track module interface */
 } tRmTrackSelect;
 
 typedef struct
 {
     void        *param;
-    void        *prevScreen;
+    void        *prevScreen;	/* Race manager screen to go back */
+    void        *nextScreen;	/* Race manager screen to go after select */
 } tRmDrvSelect;
 
 typedef struct
 {
     void        *param;
     void        *prevScreen;
+    void        *nextScreen;	/* Race manager screen to go after select */
     char	*title;
 } tRmRaceParam;
 
 
-/* Lap based information */
-typedef struct
-{
-    int		pos;		/* driver position */
-    tdble	lapTime;	/* lap time */
-    int		lapsBehind;	/* laps behind leader */
-    int		event;		/* special event */
-#define RM_EVENT_PIT_STOP	0x01
-    void	*eventData;	/* event specific data */
-} tDrvLapInfo;
-
-
-/*
- * Race Manager General Info
- * can't be in interface/raceman.h because
- * of circular reference...
- */
-typedef struct
-{
-    tCarElt	*carList;	/* List of all the cars racing */
-    tSituation	*s;		/* Situation during race */
-    tTrack	*track;		/* Current track */
-    tSimItf	*simItf;	/* Simulation interface */
-    void	*params;	/* Raceman parameters */
-    tModList	**modList;	/* drivers loaded */
-    tDrvLapInfo *lapInfo;	/* per lap driver info using start index */
-} tRmInfo;
 
 
 extern void RmTrackSelect(void * /* vs */);
@@ -86,6 +62,7 @@ extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
 
 extern void RmDumpTrack(tTrack * /* track */, int /* verbose */);
 extern int RmInitCars(tRmInfo * /* raceInfo */);
+extern int RmInitTrack(tRmInfo * /* raceInfo */);
 
 extern void RmDriversSelect(void * /* vs */);
 extern void RmDriverSelect(void * /* vs */);

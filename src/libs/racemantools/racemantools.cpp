@@ -37,10 +37,13 @@
 
 static void initStartingGrid(tRmInfo *raceInfo);
 static void initPits(tRmInfo *raceInfo);
+static char buf[256];
+static char path[256];
 
 /** Dump the track segments on screen
     @param	track	track to dump
     @param	verbose	if set to 1 all the segments are described (long)
+    @ingroup	racemantools
  */
 void
 RmDumpTrack(tTrack *track, int verbose)
@@ -54,6 +57,8 @@ RmDumpTrack(tTrack *track, int verbose)
 
     RmLoadingScreenSetText("Loading Track Geometry...");
     sprintf(buf, ">>> Track Name    %s", track->name);
+    RmLoadingScreenSetText(buf);
+    sprintf(buf, ">>> Track Author  %s", track->author);
     RmLoadingScreenSetText(buf);
     sprintf(buf, ">>> Track Length  %.2f m", track->length);
     RmLoadingScreenSetText(buf);
@@ -124,11 +129,37 @@ RmDumpTrack(tTrack *track, int verbose)
 }
 
 
+/** Initialize the track for a race manager.
+    @param	raceInfo	the tRmInfo structure with track, simItf already stored.
+    @return	<tt>0 ... </tt>Ok
+		<br><tt>-1 .. </tt>Error
+    @ingroup	racemantools
+*/
+int
+RmInitTrack(tRmInfo *raceInfo)
+{
+    char	*trackName;
+    char	*catName;
+    
+    trackName = GfParmGetStr(raceInfo->params, "Race/Track", "name", "");
+    catName = GfParmGetStr(raceInfo->params, "Race/Track", "category", "");
+
+    sprintf(buf, "Loading Track %s...", trackName);
+    RmLoadingScreenSetText(buf);
+    sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
+    raceInfo->track = raceInfo->_reTrackItf.trkBuild(buf);
+    RmDumpTrack(raceInfo->track, 0);
+
+    return 0;
+}
+
+
 /** Initialize the cars for a race manager.
     The car are positionned on the starting grid.
     @param	raceInfo	the tRmInfo structure with track, simItf already stored.
     @return	0 Ok
 		-1 Error
+    @ingroup	racemantools
  */
 int
 RmInitCars(tRmInfo *raceInfo)
@@ -140,8 +171,6 @@ RmInitCars(tRmInfo *raceInfo)
     int		robotIdx;
     tModInfo	*curModInfo;
     tRobotItf	*curRobot;
-    char	buf[256];
-    char	path[256];
     void	*handle;
     char	*category;
     void	*cathdle;
@@ -179,8 +208,6 @@ RmInitCars(tRmInfo *raceInfo)
 	    if ((*(raceInfo->modList))->modInfo[j].index == robotIdx) {
 		/* good robot found */
 		curModInfo = &((*(raceInfo->modList))->modInfo[j]);
-		sprintf(buf, "Loading Driver %s...", curModInfo->name);
-		RmLoadingScreenSetText(buf);
 		GfOut("Driver's name: %s\n", curModInfo->name);
 		/* retrieve the robot interface (function pointers) */
 		curRobot = (tRobotItf*)calloc(1, sizeof(tRobotItf));
@@ -216,6 +243,8 @@ RmInitCars(tRmInfo *raceInfo)
 		    GfOut("Car Specification: %s\n", buf);
 		    carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 		    category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
+		    sprintf(buf, "Loading Driver %s... Car: %s  Category %s", curModInfo->name, elt->_carName, category);
+		    RmLoadingScreenSetText(buf);
 		    if (category != 0) {
 			/* Read Car Category specifications */
 			sprintf(buf, "categories/%s.xml", category);
@@ -272,7 +301,7 @@ RmInitCars(tRmInfo *raceInfo)
 	raceInfo->s->cars[i] = &(raceInfo->carList[i]);
     }
 
-    raceInfo->simItf->init(nCars);
+    raceInfo->_reSimItf.init(nCars);
 
     initStartingGrid(raceInfo);
 
@@ -311,7 +340,6 @@ initStartingGrid(tRmInfo *raceInfo)
 
     trHdle = GfParmReadFile(raceInfo->track->filename, GFPARM_RMODE_STD);
     
-    RmDumpTrack(raceInfo->track, 0);
     curseg = raceInfo->track->seg->next;
     while (curseg->type == TR_STR) {
 	curseg = curseg->next;
@@ -379,75 +407,23 @@ initStartingGrid(tRmInfo *raceInfo)
 	car->_pos_Z = RtTrackHeightL(&(car->_trkPos)) + heightInit;
 
 	NORM0_2PI(car->_yaw);
-	raceInfo->simItf->config(car);
+	raceInfo->_reSimItf.config(car);
     }
 }
 
 
-static void initPits(tRmInfo *raceInfo)
+static void
+initPits(tRmInfo *raceInfo)
 {
     tTrackPitInfo	*pits;
-    tTrackSeg		*curMainSeg;
-    tTrackSeg		*curPitSeg = NULL;
-    tdble		toStart = 0.0;
-    tdble		offset = 0.0;
-    tTrkLocPos		curPos;
-    int			changeSeg;
     int			i;
     
     switch (raceInfo->track->pits.type) {
     case TR_PIT_ON_TRACK_SIDE:
 	pits = &(raceInfo->track->pits);
-	pits->driversPits = (tTrackOwnPit*)calloc(pits->nMaxPits, sizeof(tTrackOwnPit));
 	pits->driversPitsNb = raceInfo->s->_ncars;
-	curPos.type = TR_LPOS_MAIN;
-	curMainSeg = pits->pitStart->prev;
-	changeSeg = 1;
-	toStart = 0;
-	i =  0;
-	while (i < pits->nMaxPits) {
-	    if (changeSeg) {
-		changeSeg = 0;
-		offset = 0;
-		curMainSeg = curMainSeg->next;
-		switch (pits->side) {
-		case TR_RGT:
-		    curPitSeg = curMainSeg->rside;
-		    if (curPitSeg->rside) {
-			offset = curPitSeg->width;
-			curPitSeg = curPitSeg->rside;
-		    }
-		    break;
-		case TR_LFT:
-		    curPitSeg = curMainSeg->lside;
-		    if (curPitSeg->lside) {
-			offset = curPitSeg->width;
-			curPitSeg = curPitSeg->lside;
-		    }
-		    break;
-		}
-		curPos.seg = curMainSeg;
-		if (toStart >= curMainSeg->length) {
-		    toStart -= curMainSeg->length;
-		    changeSeg = 1;
-		    continue;
-		}
-	    }
-	    curPos.toStart = toStart + pits->len / 2.0;
-	    switch (pits->side) {
-	    case TR_RGT:
-		curPos.toRight  = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
-		curPos.toLeft   = curMainSeg->width - curPos.toRight;
-		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toRight;
-		break;
-	    case TR_LFT:
-		curPos.toLeft   = -offset - RtTrackGetWidth(curPitSeg, toStart) + pits->width / 2.0;
-		curPos.toRight  = curMainSeg->width - curPos.toLeft;
-		curPos.toMiddle = curMainSeg->width / 2.0 - curPos.toLeft;
-		break;
-	    }
-	    pits->driversPits[i].pos = curPos;
-	    if (i < raceInfo->s->_ncars) {
+	for (i =  0; i < pits->nMaxPits; i++) {
+	    if (i < pits->driversPitsNb) {
 		tCarElt *car = &(raceInfo->carList[i]);
 		tTrackOwnPit *pit = &(pits->driversPits[i]);
 		pits->driversPits[i].car = car;
@@ -460,14 +436,9 @@ static void initPits(tRmInfo *raceInfo)
 		if (pit->lmax > raceInfo->track->length) {
 		    pit->lmax -= raceInfo->track->length;
 		}
+	    } else {
+		pits->driversPits[i].car = 0;
 	    }
-	    
-	    toStart += pits->len;
-	    if (toStart >= curMainSeg->length) {
-		toStart -= curMainSeg->length;
-		changeSeg = 1;
-	    }
-	    i++;
 	}
 	break;
     case TR_PIT_ON_SEPARATE_PATH:

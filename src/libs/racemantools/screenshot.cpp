@@ -17,7 +17,8 @@
  ***************************************************************************/
 
 /** @file   
-    		
+    		Screen Shots
+    @ingroup	racemantools
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
     @version	$Id$
     @ingroup racemantools
@@ -32,6 +33,7 @@
 #include <tgf.h>
 
 /** Save a screen shot in png format
+    @ingroup	racemantools
  */
 void
 RmScreenShot(void * /* notused */)

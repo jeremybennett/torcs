@@ -73,13 +73,13 @@ rmdsActivate(void * /* notused */)
 }
 
 static void
-rmdsDeactivate(void * /* notused */)
+rmdsDeactivate(void *screen)
 {
     rmFreeDrvList();    
     GfuiScreenRelease(scrHandle);
     
-    if (ds->prevScreen) {
-	GfuiScreenActivate(ds->prevScreen);
+    if (screen) {
+	GfuiScreenActivate(screen);
     }
 }
 
@@ -117,7 +117,7 @@ rmdsSelect(void * /* dummy */)
 	name = GfuiScrollListExtractElement(scrHandle, selectedScrollList, 0, (void**)&curDrv);
     }
     GfParmSetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_NDRIVERS, (char*)NULL, index-1);
-    rmdsDeactivate(NULL);
+    rmdsDeactivate(ds->nextScreen);
 }
 
 static void
@@ -211,7 +211,7 @@ rmSelectDeselect(void * dummy )
 static void
 rmdsAddKeys(void)
 {
-    GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmdsDeactivate);
+    GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate);
     GfuiAddKey(scrHandle, 13, "Accept Selection", NULL, rmdsSelect);
     GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
@@ -249,8 +249,6 @@ RmDriversSelect(void *vs)
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmdsActivate, NULL, (tfuiCallback)NULL, 1);
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-qrdrv.png");
 
-    rmdsAddKeys();
-    
     GfuiTitleCreate(scrHandle, "Select Drivers", sizeof("Select Drivers"));
 
     GfuiLabelCreate(scrHandle,
@@ -275,7 +273,7 @@ RmDriversSelect(void *vs)
 		     NULL, rmdsSelect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, rmdsDeactivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		     ds->prevScreen, rmdsDeactivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiButtonCreate(scrHandle, "Move Up", GFUI_FONT_MEDIUM, 320, B_BASE, 100, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     (void*)-1, rmMove, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
@@ -386,6 +384,8 @@ RmDriversSelect(void *vs)
     PickDrvCategoryLabelId = GfuiLabelCreateEx(scrHandle, "", aColor, GFUI_FONT_MEDIUM_C,
 					       320, B_BASE - 9 * B_HT - GfuiFontHeight(GFUI_FONT_MEDIUM), GFUI_ALIGN_HC_VB, 256);
     GfuiMenuDefaultKeysAdd(scrHandle);
+    rmdsAddKeys();
+
     GfuiScreenActivate(scrHandle);
 }
 
@@ -455,14 +455,14 @@ rmds2Select(void * /* dummy */)
 	GfParmSetStr(ds->param, path, RM_ATTR_MODULE, cur->dname);
 	GfParmSetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_NDRIVERS, (char*)NULL, 1);
     }
-    rmdsDeactivate(NULL);
+    rmdsDeactivate(ds->nextScreen);
 }
 
 static void
 rmds2AddKeys(void)
 {
     GfuiAddKey(scrHandle, 13, "Select Driver", NULL, rmds2Select);
-    GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmdsDeactivate);
+    GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Driver", (void*)0, rmds2PrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Driver", (void*)1, rmds2PrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);

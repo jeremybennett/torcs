@@ -20,17 +20,12 @@
 #ifndef _TLM_H_
 #define _TLM_H_
 
-#if _WIN32
-#include <windows.h>
-#endif
-
 extern void TlmInit(tdble ymin, tdble ymax);
 extern void TlmNewChannel(const char *name, tdble *var, tdble min, tdble max);
 extern void TlmStartMonitoring(const char *filename);
 extern void TlmUpdate(double time);
 extern void TlmStopMonitoring(void);
 extern void TlmShutdown(void);
-
 
 #endif /* _TLM_H_ */ 
 

@@ -33,6 +33,7 @@ extern int grWrldMaxSize;
 extern tTrack 	 *grTrack;
 
 extern ssgRoot *TheScene;
+extern ssgBranch *ThePits;
 
 extern int grInitScene(void);
 extern int grLoadScene(tTrack *track);

@@ -57,8 +57,8 @@ static tgrSmokeManager *smokeManager = 0;
 ssgCutout * rootSmoke = NULL;
 /** initialize the smoke structure */
 ssgSimpleState	*mst = NULL;
-ssgVtxTable * tsmoke ;
-double * timeSmoke;
+ssgVtxTable * tsmoke = 0 ;
+double * timeSmoke = 0;
 
 void grInitSmoke(int index)
 {
@@ -96,13 +96,10 @@ void grInitSmoke(int index)
 }
 
 /** update if necessary the smoke for a car */
-void grUpdateSmoke(double dt, double t)
+void grUpdateSmoke(double t)
 {
     tgrSmoke * tmp, *tmp2;
     tgrSmoke * prev;
-
-    if (dt==0)
-	return;
 
     prev = NULL;
     tmp = smokeManager->smokeList;
@@ -126,31 +123,29 @@ void grUpdateSmoke(double dt, double t)
 	/* update the smoke */
 	tmp->smoke->dt = t-tmp->smoke->lastTime;
 	/* expand the Y value */
-	tmp->smoke->sizey +=  tmp->smoke->dt*tmp->smoke->vexp;
+	tmp->smoke->sizey += tmp->smoke->dt*tmp->smoke->vexp*2.0;
 	tmp->smoke->sizez += tmp->smoke->dt*tmp->smoke->vexp;
-	tmp->smoke->sizex += tmp->smoke->dt*tmp->smoke->vexp;
+	tmp->smoke->sizex += tmp->smoke->dt*tmp->smoke->vexp*2.0;
 	/* expand the Z value */
 	/*vtx[2][2]+=tmp->vexp*dt2;
 	  vtx[3][2]+=tmp->vexp*dt2;
 	*/
 	tmp->smoke->lastTime = t;
-	tmp->smoke->cur_life+=dt;
+	tmp->smoke->cur_life+=tmp->smoke->dt;
 	prev = tmp;
 	tmp = tmp->next;
     }
 }
 
-void grAddSmoke(tCarElt *car)
+void grAddSmoke(tCarElt *car, double t)
 {
     int i = 0;
     tgrSmoke * tmp;
-    double t;
     sgVec3	vtx;
     char		buf[256];
     ssgSimpleState	*st = NULL;
     ssgVertexArray	*shd_vtx ;
 
-    t = GfTimeClock();
     if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
 	if (smokeManager->number < grSmokeMaxNumber) {
 	    for (i = 0; i < 4; i++) {
@@ -177,6 +172,7 @@ void grAddSmoke(tCarElt *car)
 			st->enable(GL_BLEND);
 			st->disable(GL_CULL_FACE);
 			st->setTranslucent();
+			st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
 			tmp->smoke->setState(st);    
 		    }
 		    else
@@ -188,13 +184,13 @@ void grAddSmoke(tCarElt *car)
 		    tmp->smoke->setCullFace(0);
 		    tmp->smoke->max_life = grSmokeLife * car->_skid[i];
 		    tmp->smoke->cur_life = 0;
-		    tmp->smoke->vvx = VX_INIT*(((float)rand()/(float)RAND_MAX));
-		    tmp->smoke->vvy = VY_INIT*(((float)rand()/(float)RAND_MAX));
-		    tmp->smoke->vvz = VZ_INIT+(car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y)/10000;
-		    tmp->smoke->vexp = V_EXPANSION;
+		    tmp->smoke->sizex = VX_INIT;
+		    tmp->smoke->sizey = VY_INIT;
+		    tmp->smoke->sizez = VZ_INIT;
+		    tmp->smoke->vexp = V_EXPANSION+car->_skid[i]*2.0*(((float)rand()/(float)RAND_MAX));
 		    tmp->smoke->smokeType = SMOKE_TYPE_TIRE;
 		    tmp->next = NULL;
-		    tmp->smoke->lastTime = GfTimeClock();
+		    tmp->smoke->lastTime = t;
 		    tmp->smoke->transform(grCarInfo[car->index].carPos);
 		    TheScene->addKid(tmp->smoke);
 		    smokeManager->number++;
@@ -347,13 +343,13 @@ void ssgVtxTableSmoke::draw_geometry ()
     /* the computed coordinates are translated from the smoke position
        with the x,y,z speed*/
     glTexCoord2f(0,0);
-    glVertex3f(vx[0][0]+sizex*A[0]+vvx*dt,vx[0][1]+sizey*A[1]+vvy*dt, vx[0][2]+sizez*A[2]+vvz*dt);
+    glVertex3f(vx[0][0]+sizex*A[0],vx[0][1]+sizey*A[1], vx[0][2]+sizez*A[2]);
     glTexCoord2f(0,1);
-    glVertex3f(vx[0][0]+sizex*B[0]+vvx*dt,vx[0][1]+sizey*B[1]+vvy*dt, vx[0][2]+sizez*B[2]+vvz*dt);
+    glVertex3f(vx[0][0]+sizex*B[0],vx[0][1]+sizey*B[1], vx[0][2]+sizez*B[2]);
     glTexCoord2f(1,0);
-    glVertex3f(vx[0][0]+sizex*D[0]+vvx*dt,vx[0][1]+sizey*D[1]+vvy*dt, vx[0][2]+sizez*D[2]+vvz*dt);
+    glVertex3f(vx[0][0]+sizex*D[0],vx[0][1]+sizey*D[1], vx[0][2]+sizez*D[2]);
     glTexCoord2f(1,1);
-    glVertex3f(vx[0][0]+sizex*C[0]+vvx*dt,vx[0][1]+sizey*C[1]+vvy*dt, vx[0][2]+sizez*C[2]+vvz*dt);
+    glVertex3f(vx[0][0]+sizex*C[0],vx[0][1]+sizey*C[1], vx[0][2]+sizez*C[2]);
     glEnd () ;
     glDisable(GL_POLYGON_OFFSET_FILL);
     glDepthMask(GL_TRUE);
