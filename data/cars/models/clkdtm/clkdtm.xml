@@ -26,6 +26,11 @@
     <attnum name="zpos" unit="m" val="1.0"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="clkdtmb2.wav"/>
+	<attnum name="rpm scale" val="0.7"/>
+  </section>
+
   <section name="Graphic Objects">
     <attstr name="env" val="clkdtm.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

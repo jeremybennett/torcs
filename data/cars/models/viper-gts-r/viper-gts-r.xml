@@ -29,8 +29,8 @@
   </section>
 
   <section name="Sound">
-	<attstr name="engine sample" val="viper2.wav"/>
-	<attnum name="rpm scale" val="0.5"/>
+	<attstr name="engine sample" val="viper_long.wav"/>
+	<attnum name="rpm scale" val="1.0"/>
   </section>
 
   <section name="Graphic Objects">
