@@ -31,6 +31,15 @@
 #include <robottools.h>
 #include "sim.h"
 
+extern double timer_coordinate_transform;
+extern double timer_reaction;
+extern double timer_angles;
+extern double timer_friction;
+extern double timer_temperature;
+extern double timer_force_calculation;
+extern double timer_wheel_to_car;
+extern double access_times;
+
 tCar *SimCarTable = 0;
 
 tdble SimDeltaTime;
@@ -38,12 +47,15 @@ tdble SimDeltaTime;
 int SimTelemetry;
 
 static int SimNbCars = 0;
+static double simu_total_time = 0.0f;
+static double simu_init_time = 0.0f;
 
 t3Dd vectStart[16];
 t3Dd vectEnd[16];
 
 #define MEANNB 0
 #define MEANW  1
+
 
 
 /*
@@ -141,19 +153,12 @@ SimConfig(tCarElt *carElt, tRmInfo* ReInfo)
     SimCarCollideConfig(car);
     sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 					RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
-	//sgEulerToQuat (car->posQuat, RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
-	//order is inversed for some reason
-#if 1
+
 	sgEulerToQuat (car->posQuat, -RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_pitch), RAD2DEG(carElt->_roll));
 	sgQuatToMatrix (car->posMat, car->posQuat);
-	//	carElt->pub.posMat[3][0] = car->DynGCg.pos.x;
-	//	carElt->pub.posMat[3][1] = car->DynGCg.pos.y;
-	//	carElt->pub.posMat[3][2] = car->DynGCg.pos.z - carElt->_statGC_z;
-	//	carElt->pub.posMat[0][3] =  SG_ZERO ;
-	//	carElt->pub.posMat[1][3] =  SG_ZERO ;
-	//	carElt->pub.posMat[2][3] =  SG_ZERO ;
-	//	carElt->pub.posMat[3][3] =  SG_ONE ;
-#endif
+
+	simu_total_time = 0.0f;
+	simu_init_time = GfTimeClock();
 	//sgMakeRotMat4 (car->posMat, RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 }
@@ -321,7 +326,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
     tCarElt 	*carElt;
     tCar 	*car;
     sgVec3	P;
-    
+	static const float UPSIDE_DOWN_TIMEOUT = 5.0f;
+
+	double timestamp_start = GfTimeClock();
     SimDeltaTime = deltaTime;
     SimTelemetry = telemetry;
     for (ncar = 0; ncar < s->_ncars; ncar++) {
@@ -338,6 +345,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 			continue;
 		} else if (((s->_maxDammage) && (car->dammage > s->_maxDammage)) ||
 				   (car->fuel == 0) ||
+				   (car->upside_down_timer > UPSIDE_DOWN_TIMEOUT) ||
 				   (car->carElt->_state & RM_CAR_STATE_ELIMINATED))  {
 			RemoveCar(car, s);
 			if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
@@ -349,6 +357,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 			car->ctrl->gear = 0;
 		}
 	
+
+
+
 		CHECK(car);
 		ctrlCheck(car);
 		CHECK(car);
@@ -360,38 +371,36 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		CHECK(car);
 
 		if (!(s->_raceState & RM_RACE_PRESTART)) {
-
-			SimCarUpdateWheelPos(car);
+				SimCarUpdateWheelPos(car);
 			CHECK(car);
-			SimBrakeSystemUpdate(car);
+				SimBrakeSystemUpdate(car);
 			CHECK(car);
-			SimAeroUpdate(car, s);
+				SimAeroUpdate(car, s);
 			CHECK(car);
-			for (i = 0; i < 2; i++){
+				for (i = 0; i < 2; i++){
 				SimWingUpdate(car, i, s);
 			}
 			CHECK(car);
-			for (i = 0; i < 4; i++){
+				for (i = 0; i < 4; i++){
 				SimWheelUpdateRide(car, i);
 			}
 			CHECK(car);
-			for (i = 0; i < 2; i++){
+				for (i = 0; i < 2; i++){
 				SimAxleUpdate(car, i);
 			}
 			CHECK(car);
-			for (i = 0; i < 4; i++){
+				for (i = 0; i < 4; i++){
 				SimWheelUpdateForce(car, i);
 			}
 			CHECK(car);
 		}
-    
 		SimTransmissionUpdate(car);
 		CHECK(car);
 
 		if (!(s->_raceState & RM_RACE_PRESTART)) {
-			SimWheelUpdateRotation(car);
+				SimWheelUpdateRotation(car);
 			CHECK(car);
-			SimCarUpdate(car, s);
+				SimCarUpdate(car, s);
 			CHECK(car);
 		}
     }
@@ -449,10 +458,8 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->_pos_X = P[0];
 		carElt->_pos_Y = P[1];
 		carElt->_pos_Z = P[2];
-	
-		/* printf ("(%f / %f) ", carElt->_pos_X, carElt->_pos_Y); */
-    }
-    /* printf("\n"); */
+	}
+	simu_total_time +=  GfTimeClock() - timestamp_start;
 }
 
 
@@ -469,7 +476,29 @@ SimShutdown(void)
 {
     tCar *car;
     int	 ncar;
-
+	double elapsed_time = GfTimeClock() - simu_init_time;
+#if 0
+	printf ("delta_time: %f\n", SimDeltaTime);
+	printf ("simu time: %fs (%f%% of %fs)\n", simu_total_time,
+			100.0f * simu_total_time/elapsed_time, elapsed_time);
+	printf ("\
+			 timer_coordinate_transform:%f\n\
+			 timer_reaction:%f\n\
+			 timer_angles:%f\n\
+			 timer_friction:%f\n\
+			 timer_temperature:%f\n\
+			 timer_force_calculation:%f\n\
+			 timer_wheel_to_car:%f\n\
+			 access_times:%f\n",
+			 timer_coordinate_transform,
+			 timer_reaction,
+			 timer_angles,
+			 timer_friction,
+			 timer_temperature,
+			 timer_force_calculation,
+			timer_wheel_to_car,
+			access_times);
+#endif
     SimCarCollideShutdown(SimNbCars);
     if (SimCarTable) {
 		for (ncar = 0; ncar < SimNbCars; ncar++) {

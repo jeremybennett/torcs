@@ -90,6 +90,7 @@ typedef struct
     int		blocked;
     int		dammage;
     
+	tdble upside_down_timer;
     tDynPt	restPos;	/* target rest position after the car is broken */
 	tRmInfo *ReInfo;
     int		collisionAware;
