@@ -71,8 +71,8 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="desc" val=""/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="clkdtm"/>
-	<attnum name="race number" val="20"/>
+	<attstr name="car name" val="gt40"/>
+	<attnum name="race number" val="18"/>
 	<attnum name="red" val="1.0"/>
 	<attnum name="green" val="0.0"/>
 	<attnum name="blue" val="0.0"/>
