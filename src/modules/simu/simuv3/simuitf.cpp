@@ -63,7 +63,7 @@ simuInit(int /* index */, void *pt)
 
 /*
  * Function
- *	simuv1
+ *	simuv3
  *
  * Description
  *	DLL entry point

@@ -184,7 +184,7 @@ SimWheelUpdateRide(tCar *car, int index)
 		wheel->susp.fx = adjRadius - adjRadius/rel_normal.z;
 		wheel->susp.fy = 0.0;
 		wheel->susp.x = wheel->rideHeight =
-					adjRadius + ((dZ)*normal.z - adjRadius)/rel_normal.z;
+			adjRadius + ((dZ)*normal.z - adjRadius)/rel_normal.z;
     } else {
 		//wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
 		//	wheel->susp.x = wheel->rideHeight = wheel->susp.spring.packers; 
@@ -289,12 +289,12 @@ SimWheelUpdateForce(tCar *car, int index)
 		   of the surface is just f_z*rel_normal.z;!
 		*/
 		if ((right_way_up) && (rel_normal.z > MIN_NORMAL_Z)) {
-		  // reaction force on track z axis should be equal to f_z's
-		  // projection to track's normal
-		  // reaction_force = f_z * rel_normal.z;
-		  // but we're ignoring a lot of things, such
-		  // as the reaction forces from the immovable axis of
-		  // the suspension. We make an assumption that:
+			// reaction force on track z axis should be equal to f_z's
+			// projection to track's normal
+			// reaction_force = f_z * rel_normal.z;
+			// but we're ignoring a lot of things, such
+			// as the reaction forces from the immovable axis of
+			// the suspension. We make an assumption that:
 			tdble invrel_normal = 2.0/rel_normal.z;
 			if (invrel_normal>=2.0) {
 				invrel_normal = 2.0;
@@ -302,12 +302,12 @@ SimWheelUpdateForce(tCar *car, int index)
 				invrel_normal = -2.0;
 			}
 			reaction_force = f_z;// * invrel_normal;
-				//  rel_normal.z;
+			//  rel_normal.z;
 			//reaction_force = f_z;// more stable -  rel_normal.z;
-		   //reaction_force = f_z * rel_normal.z;// much more stable -  rel_normal.z;
-		  // the other reactions are then:
-		  Ft = reaction_force* rel_normal.x;
-		  Fn = reaction_force* rel_normal.y;
+			//reaction_force = f_z * rel_normal.z;// much more stable -  rel_normal.z;
+			// the other reactions are then:
+			Ft = reaction_force* rel_normal.x;
+			Fn = reaction_force* rel_normal.y;
 		} else {
 			f_z = 0;
 			wheel->susp.force = 0;
@@ -355,9 +355,9 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
-    } else if (absolute_speed < 10.0) {
-		sx = wvx/10.0;//absolute_speed;
-		sy = wvy/10.0;//absolute_speed;
+    } else if (absolute_speed < 1.0f) {
+		sx = wvx/10.0f;//absolute_speed;
+		sy = wvy/10.0f;//absolute_speed;
 		sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
@@ -368,6 +368,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		sy = wvy/absolute_speed;
 		sa = atan2(wvy, wvx);
     }
+
 	s = sqrt(sx*sx+sy*sy);
 
 	if (index==0) {
@@ -403,10 +404,12 @@ SimWheelUpdateForce(tCar *car, int index)
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad));
     
     F *= wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
+
 	{
 		tdble Bx = wheel->mfB * sa;
 		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) *  wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad)) * wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
 	}
+	if (0) 
     {
     	// heat transfer function with air
 		tdble htrf = (0.002 + fabs(absolute_speed)*0.0005)*SimDeltaTime;
@@ -418,7 +421,8 @@ SimWheelUpdateForce(tCar *car, int index)
 		T_current += 0.00003*((fabs(relative_speed)+0.1*fabs(wrl))*reaction_force)*SimDeltaTime;
 		T_current = T_current * (1.0-htrf) + htrf * 25.0;	
 		tdble dist = (T_current - T_operating)/T_range;
-		mfT = 200.0*exp(-0.5*(dist*dist))/T_range;
+		//mfT = 100.0f * exp(-0.5f*(dist*dist))/T_range;
+		mfT = 0.85f + 3.0f * exp(-0.5f*(dist*dist))/T_range;
 		if (T_current>200.0) T_current=200.0;
 		wheel->mfT = mfT;
 		wheel->T_current = T_current;
@@ -435,25 +439,11 @@ SimWheelUpdateForce(tCar *car, int index)
 			wheel_damage = 0.01;
 		}
 		tdble delta_dam = wheel_damage * SimDeltaTime;
-#ifdef USE_THICKNESS
-		{
-			int seg_id = (int) ((tdble) N_THICKNESS_SEGMENTS *  (wheel->relPos.ay/(2*M_PI))) % N_THICKNESS_SEGMENTS;
-			if (seg_id<0) seg_id += N_THICKNESS_SEGMENTS;
-			tdble htrf = (0.002 + fabs(absolute_speed)*0.0005)*SimDeltaTime;
-			wheel->segtemp[seg_id] += 0.0003*((fabs(relative_speed)+0.1*fabs(wrl))*reaction_force)*SimDeltaTime;
-			wheel->segtemp[seg_id] = wheel->segtemp[seg_id] * (1.0-htrf) + htrf * wheel->T_current;
-			tdble melt = (exp (2.0*(wheel->segtemp[seg_id] - compound_melt_point)/compound_melt_point)) ;
-			tdble wheel_damage = 0.001* melt * relative_speed * removal / (2.0 * M_PI * wheel->radius * wheel->width * wheel->Ca);
-			tdble delta_dam = wheel_damage * SimDeltaTime;
-			wheel->thickness[seg_id] -= delta_dam;
-			wheel->thickness[(seg_id+1)%N_THICKNESS_SEGMENTS] -= .5*delta_dam;
-			wheel->thickness[(seg_id-1)%N_THICKNESS_SEGMENTS] -= .5*delta_dam;
-
-		}
-#endif
 		wheel->condition -= 0.5*delta_dam;
 		if (wheel->condition < 0.5) wheel->condition = 0.5;
-    }
+    } else {
+		wheel->mfT = 1.0f;
+	}
 
 
 
@@ -466,41 +456,42 @@ SimWheelUpdateForce(tCar *car, int index)
 	tdble epsilon = 0.00001;
 	if (s > epsilon) {
 		/* wheel axis based - no control after an angle*/
-	  if (rel_normal.z > MIN_NORMAL_Z) {
-	    // When the tyre is tilted there is less surface
-	    // touching the road. Modelling effect simply with rel_normal_xz
-		  tdble sur_f = rel_normal_xz;
-		  //sur_f = 1.0;
-	    Ft2 = - sur_f*F*sx/s;
-	    Fn2 = - sur_f*F*sy/s;
-	    //Ft2 = -F*sx/s;
-	    //Fn2 = -F*sy/s;
-	  } else {
-		  Ft2 = 0.0;
-		  Fn2 = 0.0;
-	    //Ft2 = -F*sx/s;
-	  }
+		if (rel_normal.z > MIN_NORMAL_Z) {
+			// When the tyre is tilted there is less surface
+			// touching the road. Modelling effect simply with rel_normal_xz
+			// constant 1.05f for equality with simuv2
+			tdble sur_f = 1.05f * rel_normal_xz;
+			//sur_f = 1.0;
+			Ft2 = - sur_f*F*sx/s;
+			Fn2 = - sur_f*F*sy/s;
+			//Ft2 = -F*sx/s;
+			//Fn2 = -F*sy/s;
+		} else {
+			Ft2 = 0.0;
+			Fn2 = 0.0;
+			//Ft2 = -F*sx/s;
+		}
 		wheel->forces.x = Ft2 * rel_normal_yz;
 		wheel->forces.y = Fn2 * rel_normal_xz; 
 		wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;
 		
     } else {
-		  tdble sur_f = rel_normal_xz;
-		  Ft2 = - sur_f*F*sx/epsilon;
-		  Fn2 = - sur_f*F*sy/epsilon;
+		tdble sur_f = rel_normal_xz;
+		Ft2 = - sur_f*F*sx/epsilon;
+		Fn2 = - sur_f*F*sy/epsilon;
 	}
 
 	if (1)
-    {
-		// experimental code - estimate 'mass'
-		tdble Ftot = sqrt(Ft2*Ft2 + Fn2*Fn2);
-		tdble ds = wheel->s_old-s;
-		tdble EF = wheel->Em * ds;
-		tdble dF = wheel->F_old - EF;
-		wheel->Em += 0.1 * dF*ds;
-		wheel->F_old = Ftot;
-		wheel->s_old = s;
-	}
+		{
+			// experimental code - estimate 'mass'
+			tdble Ftot = sqrt(Ft2*Ft2 + Fn2*Fn2);
+			tdble ds = wheel->s_old-s;
+			tdble EF = wheel->Em * ds;
+			tdble dF = wheel->F_old - EF;
+			wheel->Em += 0.1 * dF*ds;
+			wheel->F_old = Ftot;
+			wheel->s_old = s;
+		}
     wheel->relPos.az = waz;
     if (rel_normal.z > MIN_NORMAL_Z) {
 		right_way_up = true;

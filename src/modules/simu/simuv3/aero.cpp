@@ -37,7 +37,7 @@ SimAeroConfig(tCar *car)
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
     //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
-	printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
+	//printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
     car->aero.Cd += car->aero.SCx2;
 	car->aero.rot_front[0] = 0.0;
 	car->aero.rot_front[1] = 0.0;

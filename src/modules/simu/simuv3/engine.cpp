@@ -164,6 +164,7 @@ SimEngineUpdateTq(tCar *car)
 		if (engine->rads<0) {
 			engine->rads = 0.01f;
 		}
+	}
 #endif
 
     if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {
