@@ -1,54 +1,38 @@
-TORCS version 1.1.0 Installation Instructions
+TORCS version 1.2.0 Installation Instructions
 ---------------------------------------------
 
-INSTALLATION FROM BINARIES:
----------------------------
+Installation from Windows binaries
 
-1 - unzip the TORCS-x.y.z-win32.zip
+   1. Unzip the TORCS binaries TORCS-x.y.z-win32.zip
+   2. Unzip the data TORCS-x.y.z-data.zip into the TORCS-x.y.z newly created directory
+   3. Unzip the optional tracks, cars and robots into the TORCS-x.y.z directory
+   4. Go to the TORCS-x.y.z directory and click on wtorcs.exe
+   5. Don't forget to calibrate the joystick
+   6. Enjoy
 
-go to the TORCS-x.y.z directory newly created
+Installation from Windows sources
 
-2 - unzip all the other archives in this directory.
-  TORCS-x.y.z-data.zip, TORCS-x.y.z-data-tracks*.zip, TORCS-x.y.z-data-cars.zip
-  TORCS-x.y.z-win32-robots*.zip
-
-
-INSTALLATION FROM SOURCES:
---------------------------
-
-1 - unzip the source archives
-
-IMPORTANT: run setup_win32.bat
-----------
-
-Open The TORCS.dsw with VC++6.0
-Select the TORCS project and the w32-Release version.
-
-Compile (33 warnings)
-
-exit from VC++
-
-Go to runtime
-
-2 - unzip the data archives
-
-click on wtorcs.exe
-
-Et Voila !
-
+   1. Unzip the source archives
+   2. IMPORTANT: run setup_win32.bat
+   3. Open The TORCS.dsw with VC++6.0
+   4. Select the TORCS project and the w32-Release version.
+   5. Compile (33 warnings)
+   6. exit from VC++
+   7. Go to runtime
+   8. unzip the data archives
+   9. click on wtorcs.exe
+  10. Et Voila !
 
 Note:
------
+
 The debug version is not working at this time, you should use the release version.
-
-
 VC++ setting:
--------------
 
 View->Properties
 	tab size = 8
 	Indent size = 4
 Tools->Options (Tab)
 	tab size = 8
-	Indent size = 4
+	Indent size = 4 
+
 
