@@ -158,7 +158,7 @@
 						   "rd.race_pitstops, rd.race_time, rd.points " .
 						   "FROM $race_report_driver_table rd, $driver_tablename d, $team_tablename t " .
 						   "WHERE rd.raceid=$raceid_for_db AND rd.driverid=d.driverid AND " .
-						   "d.teamid=t.teamid ORDER BY rd.points DESC";
+						   "d.teamid=t.teamid ORDER BY rd.points DESC, rd.race_rank ASC";
 					$result = mysql_query($sql);
 
 					$i = 1;
