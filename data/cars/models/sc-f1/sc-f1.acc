@@ -5,10 +5,10 @@ OBJECT world
 kids 1
 OBJECT poly
 name "Plane.014"
-texture "f1.rgb" base
-texture "f1.rgb" tiled
-texture "f1.rgb" skids
-texture "f1.rgb" shad
+texture "sc-f1.rgb" base
+texture "sc-f1.rgb" tiled
+texture "sc-f1.rgb" skids
+texture "sc-f1.rgb" shad
 texrep 1 1
 numvert 936
 -1.365172 0.312423 -0.638696
