@@ -19,7 +19,8 @@
 
 <params name="Buggy" type="template">
   <section name="Graphic Objects">
-    <attstr name="wheel texture" val="cars/buggy/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm7000.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="8000" unit="rpm"/>

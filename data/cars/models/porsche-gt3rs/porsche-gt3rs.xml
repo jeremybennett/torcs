@@ -29,8 +29,8 @@
   </section>
 
   <section name="Graphic Objects">
-    <attstr name="env" val="porsche-gt3rs.acc"/>
-    <attstr name="wheel texture" val="cars/porsche-gt3rs/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
@@ -66,12 +66,12 @@
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"/>
     <attnum name="body length" unit="m" val="4.43"/>
-    <attnum name="body width" unit="m" val="1.8"/>
+    <attnum name="body width" unit="m" val="1.9"/>
     <attnum name="body height" unit="m" val="1.15"/>
 
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" val="4.43"/>
-    <attnum name="overall width" unit="m" val="1.8"/>
+    <attnum name="overall width" unit="m" val="1.9"/>
     <attnum name="mass" unit="kg" val="1150.0"/>
     <attnum name="GC height" unit="m" val="0.20"/>
 

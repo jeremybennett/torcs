@@ -63,8 +63,8 @@
   </section>
 
   <section name="Engine">
-    <attnum name="inertia" min="0.1" max="0.35" unit="kg.m2" val="0.3"/>
-    <attnum name="revs limiter" unit="rpm" val="8500"/>
+    <attnum name="inertia" min="0.1" max="1.0" unit="kg.m2" val="0.3"/>
+    <attnum name="revs limiter" min="6000" max="8500" unit="rpm" val="8500"/>
     <attnum name="revs maxi" unit="rpm" val="8500"/>
     <attnum name="tickover" unit="rpm" val="1000"/>
     <attnum name="fuel cons factor" val="1.0"/>
@@ -168,7 +168,7 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" unit="s" val="0.30"/>
+    <attnum name="shift time" min="0.3" max="2.0" unit="s" val="0.30"/>
     <section name="gears">
       <section name="r">
         <attnum name="ratio" min="-3" max="0" val="-2.0"/>

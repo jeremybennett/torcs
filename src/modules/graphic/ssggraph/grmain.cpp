@@ -161,6 +161,8 @@ grSplitScreen(void *vp)
 	}
 	break;
     }
+    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NB_SCREENS, NULL, grNbScreen);
+    GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
     grAdaptScreenSize();
 }
 
@@ -289,7 +291,7 @@ refresh(tSituation *s)
     TRACE_GL("refresh: start");
 
     START_PROFILE("grRefreshSound*");
-    grRefreshSound(s);
+    grRefreshSound(s, grScreens[0]->getCurrentCar());
     STOP_PROFILE("grRefreshSound*");
 
     START_PROFILE("grDrawBackground/glClear");
@@ -339,7 +341,6 @@ initCars(tSituation *s)
     }
     
     grNbScreen = 0;
-    
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
 	index = elt->index;
@@ -357,7 +358,7 @@ initCars(tSituation *s)
     }
 
     if (grNbScreen == 0) {
-	grNbScreen = 1;
+	grNbScreen = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NB_SCREENS, NULL, 1.0);
     }
 
     for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
@@ -378,7 +379,7 @@ initCars(tSituation *s)
 void
 shutdownCars(void)
 {
-    /* int i; */
+    int i;
 
     GfOut("-- shutdownCars\n");
 
@@ -398,6 +399,10 @@ shutdownCars(void)
 	free(grCarInfo);
     }
     GfParmReleaseHandle(grHandle);
+
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	grScreens[i]->setCurrentCar(NULL);
+    }
 }
 
 int

@@ -28,7 +28,8 @@
 
   <section name="Graphic Objects">
     <attstr name="env" val="clkdtm.ac"/>
-    <attstr name="wheel texture" val="cars/clkdtm/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
     <attnum name="tachometer max value" unit="rpm" val="10000"/>
@@ -232,7 +233,7 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" unit="s" val="0.15"/>
+    <attnum name="shift time" unit="s" val=".25"/>
     <section name="gears">
       <section name="r">
         <attnum name="ratio" min="-3" max="0" val="-2.0"/>

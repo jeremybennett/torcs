@@ -41,7 +41,7 @@
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
 
-char		*grFilePath = NULL;	/* Multiple path (; separated) used to search for files */
+char		*grFilePath = NULL;	/* Multiple path (';' separated) used to search for files */
 char		*grTexturePath = NULL;	/* Default ssg path */
 
 
@@ -439,4 +439,38 @@ grForceState(ssgEntity *start, ssgState *state)
 	    }
 	}
     }
+}
+
+
+void 
+grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
+{
+    char  buf[256];
+    char* sign;
+
+    if (sec < 0.0) {
+	sec = -sec;
+	sign = "-";
+    } else {
+	if (sgn) {
+	    sign = "+";
+	} else {
+	    sign = "  ";
+	}
+    }
+    int h = (int)(sec / 3600.0);
+    sec -= 3600 * h;
+    int m = (int)(sec / 60.0);
+    sec -= 60 * m;
+    int s = (int)(sec);
+    sec -= s;
+    int c = (int)floor((sec) * 100.0);
+    if (h) {
+	(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
+    } else if (m) {
+	(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
+    } else {
+	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
+    }
+    GfuiPrintString(buf, color, font, x, y, GFUI_ALIGN_HR_VB);
 }

@@ -29,8 +29,8 @@
   </section>
 
   <section name="Graphic Objects">
-    <attstr name="env" val="viper-gts-r.ac"/>
-    <attstr name="wheel texture" val="cars/viper-gts-r/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
@@ -60,13 +60,13 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrA"/>
-    <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.597"/>
+    <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.9"/>
     <attnum name="body width" unit="m" min="0.8" max="2.0" val="2.0"/>
     <attnum name="body height" unit="m" min="1.05" max="1.7" val="1.05"/>
 
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.597"/>
-    <attnum name="overall width" unit="m" min="1.2" max="2.0" val="1.923"/>
+    <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.9"/>
+    <attnum name="overall width" unit="m" min="1.2" max="2.0" val="2.0"/>
     <attnum name="mass" unit="kg" min="900.0" max="1500" val="1250.0"/>
     <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.30"/>
 

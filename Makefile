@@ -49,6 +49,7 @@ PKGLIST		= src src-tools \
 		  data \
 		  data-cars-extra \
 		  data-cars-Patwo-Design \
+		  data-cars-nascar \
 		  data-tracks-base data-devel
 
 DATASUBDIRS	= data

@@ -127,15 +127,25 @@ tdble
 SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 {
     tTransmission	*trans = &(car->transmission);
+    tClutch		*clutch = &(trans->clutch);
     tEngine		*engine = &(car->engine);
 
     if (car->fuel <= 0.0) {
 	engine->rads = 0;
-	trans->clutch.state = CLUTCH_APPLIED;
+	clutch->state = CLUTCH_APPLIED;
 	return 0.0;
     }
-    if ((trans->clutch.state == CLUTCH_RELEASED) && (trans->gearbox.gear)) {
-	engine->rads = axleRpm * trans->curOverallRatio;
+/*     if ((clutch->state == CLUTCH_RELEASED) && (trans->gearbox.gear)) { */
+    if (clutch->transferValue == 1.0) {
+	engine->freerads = engine->rads;
+    }
+    engine->freerads += engine->Tq / engine->I * SimDeltaTime;
+    if ((clutch->transferValue != 0.0) && (trans->gearbox.gear)) {
+	if (clutch->transferValue != 1.0) {
+	    engine->rads = axleRpm * trans->curOverallRatio * clutch->transferValue + engine->freerads * (1.0 - clutch->transferValue);
+	} else {
+	    engine->rads = axleRpm * trans->curOverallRatio;
+	}
 	if (engine->rads < engine->tickover) {
 	    engine->rads = engine->tickover;
 	} else if (engine->rads > engine->revsMax) {
@@ -143,8 +153,7 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 	    return engine->revsMax / trans->curOverallRatio;
 	}
     } else {
-	//engine->rads = engine->tickover + (car->ctrl->accelCmd * (engine->revsLimiter - engine->tickover));
-	engine->rads += engine->Tq / engine->I * SimDeltaTime;
+	engine->rads = engine->freerads;
     }
     return 0.0;
 }

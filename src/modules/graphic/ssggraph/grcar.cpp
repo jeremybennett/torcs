@@ -69,7 +69,6 @@ static int grCarIndex;
 
 static ssgSimpleState *brakeState = NULL;
 static ssgSimpleState *commonState = NULL;
-static ssgSimpleState *shadowState = NULL;
 
 void
 grInitCommonState(void)
@@ -89,18 +88,6 @@ grInitCommonState(void)
 	commonState->disable(GL_TEXTURE_2D);
 	commonState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     }
-
-    if (shadowState == NULL) {
-	shadowState = new ssgSimpleState;
-	shadowState->ref();
-	shadowState->disable(GL_LIGHTING);
-	shadowState->disable(GL_TEXTURE_2D);
-	shadowState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-	shadowState->enable(GL_BLEND);
-	shadowState->setAlphaClamp(0.1);
-    }
-
-    
 }
 
 
@@ -347,38 +334,53 @@ initWheel(tCarElt *car, int wheel_index)
 void
 grInitShadow(tCarElt *car)
 {
+    char		buf[256];
+    char		*shdTexName;
     int			i;
     float		x;
     sgVec3		vtx;
     sgVec4		clr;
     sgVec3		nrm;
+    sgVec2		tex;
     ssgVertexArray	*shd_vtx = new ssgVertexArray(GR_SHADOW_POINTS+1);
     ssgColourArray	*shd_clr = new ssgColourArray(1);
     ssgNormalArray	*shd_nrm = new ssgNormalArray(1);
+    ssgTexCoordArray	*shd_tex = new ssgTexCoordArray(GR_SHADOW_POINTS+1);
 
+    sprintf(buf, "cars/%s;", car->_carName);
+    grFilePath = buf;
+
+    shdTexName = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_SHADOW_TEXTURE, "");
 
     grCarInfo[car->index].shadowAnchor = new ssgBranch();
     
-    clr[0] = clr[1] = clr[2] = 0.1;
-    clr[3] = 0.6;
+    clr[0] = clr[1] = clr[2] = 1.0;
+    clr[3] = 1.0;
     shd_clr->add(clr);
     nrm[0] = nrm[1] = 0.0;
     nrm[2] = 1.0;
     shd_nrm->add(nrm);
     
     /* vertices */
+#define MULT	1.1
     vtx[2] = 0.0;
-    for (i = 0, x = car->_dimension_x / 2.0; i < GR_SHADOW_POINTS / 2; i++, x -= car->_dimension_x / (float)(GR_SHADOW_POINTS - 2) * 2.0) {
+    for (i = 0, x = car->_dimension_x * MULT / 2.0; i < GR_SHADOW_POINTS / 2; i++, x -= car->_dimension_x * MULT / (float)(GR_SHADOW_POINTS - 2) * 2.0) {
 	vtx[0] = x;
-	vtx[1] = car->_dimension_y / 2.0;
+	vtx[1] = car->_dimension_y * MULT / 2.0;
 	shd_vtx->add(vtx);
-	vtx[1] = -car->_dimension_y / 2.0;
+	tex[0] = 1.0 - (float)i / (float)((GR_SHADOW_POINTS - 2) / 2.0);
+	tex[1] = 1.0;
+	shd_tex->add(tex);
+
+	vtx[1] = -car->_dimension_y * MULT / 2.0;
 	shd_vtx->add(vtx);
+	tex[1] = 0.0;
+	shd_tex->add(tex);
     };
 
-    grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
-    if (!shadowState) grInitCommonState();
-    grCarInfo[car->index].shadowBase->setState(shadowState);
+    grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, shd_tex, shd_clr);
+    grMipMap = 0;
+    grCarInfo[car->index].shadowBase->setState(grSsgLoadTexState(shdTexName));
     grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     grCarInfo[car->index].shadowAnchor->addKid(grCarInfo[car->index].shadowCurr);
     ShadowAnchor->addKid(grCarInfo[car->index].shadowAnchor);
@@ -427,14 +429,16 @@ grInitCar(tCarElt *car)
     GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
 
     lg = 0;
-    lg += sprintf(buf, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(buf, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
+    lg += sprintf(buf, "drivers/%s/%d;", car->_modName, car->_driverIndex);
+    lg += sprintf(buf, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(buf, "drivers/%s;", car->_modName);
     lg += sprintf(buf, "cars/%s;", car->_carName);
     grFilePath = (char*)malloc(lg);
     lg = 0;
-    lg += sprintf(grFilePath + lg, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(grFilePath + lg, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
+    lg += sprintf(grFilePath + lg, "drivers/%s/%d;", car->_modName, car->_driverIndex);
+    lg += sprintf(grFilePath + lg, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(grFilePath + lg, "drivers/%s;", car->_modName);
     lg += sprintf(grFilePath + lg, "cars/%s", car->_carName);
 
@@ -541,7 +545,7 @@ grDrawShadow(tCarElt *car, int visible)
 
     if (visible) {
 	shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
-	shadow->setState(shadowState);
+	/* shadow->setState(shadowState); */
 	shadow->setCullFace(0);
 	shadow->getVertexList((void**)&vtx);
 

@@ -216,8 +216,9 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 
     if (first) {
 	meanv = (spinVel0 + spinVel1) / 2.0;
+	engineReaction = SimEngineUpdateRpm(car, meanv);
 	if (meanv != 0.0) {
-	    engineReaction = SimEngineUpdateRpm(car, meanv) / meanv;
+	    engineReaction = engineReaction / meanv;
 	    if (engineReaction != 0.0) {
 		spinVel1 *= engineReaction;
 		spinVel0 *= engineReaction;

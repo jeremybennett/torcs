@@ -62,7 +62,7 @@ extern int grPruneTree(ssgEntity *start, bool init);
 extern void grForceState(ssgEntity *start, ssgState *state);
 extern bool grLoadPngTexture (const char *fname, ssgTextureInfo* info);
 extern void grShutdownState(void);
-
+extern void grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn);
 
 #endif /* _GRUTIL_H_ */ 
 

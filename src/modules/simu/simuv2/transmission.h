@@ -39,8 +39,12 @@ typedef struct
 #define CLUTCH_APPLIED	 1
 #define CLUTCH_RELEASED  0
 #define CLUTCH_RELEASING 2
+    int		mode;
+#define CLUTCH_AUTO	0
+#define CLUTCH_MANUAL	1
     tdble	timeToRelease;	/* remaining time before releasing the clutch pedal */
     tdble	releaseTime;	/* time needed for releasing the clutch pedal */
+    tdble	transferValue;	/* 1.0 -> released, 0.0 -> applied */
     tdble	plip;		/* automatic plip... */
 } tClutch;
 

@@ -20,6 +20,7 @@
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
     <attnum name="tachometer max value" unit="rpm" val="10000"/>
@@ -200,7 +201,7 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.65"/>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.55"/>
     <attnum name="max pressure" min="100" max="150000" unit="kPa" val="10000"/>
   </section>
 

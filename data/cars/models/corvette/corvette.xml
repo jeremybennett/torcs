@@ -30,7 +30,8 @@
 
   <section name="Graphic Objects">
     <attstr name="env" val="corvette.ac"/>
-    <attstr name="wheel texture" val="cars/corvette/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
     <attnum name="tachometer max value" unit="rpm" val="10000"/>
@@ -47,12 +48,12 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"/>
-    <attnum name="body length" min="4.5" max="5.0" unit="m" val="4.90"/>
+    <attnum name="body length" min="4.5" max="5.0" unit="m" val="5.0"/>
     <attnum name="body width" min="0.8" max="2.0" unit="m" val="2.0"/>
     <attnum name="body height" min="1.1" max="1.7" unit="m" val="1.10"/>
 
     <!-- collision bounding box -->
-    <attnum name="overall length" min="4.5" max="5.0" unit="m" val="4.90"/>
+    <attnum name="overall length" min="4.5" max="5.0" unit="m" val="5.0"/>
     <attnum name="overall width" min="1.2" max="2.0" unit="m" val="2.0"/>
     <attnum name="mass" unit="kg" val="1475.0"/>
     <attnum name="GC height" unit="m" val="0.2"/>

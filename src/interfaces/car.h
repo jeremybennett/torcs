@@ -180,16 +180,17 @@ typedef struct {
 				   - RM_CAR_STATE_BROKEN
 				   - RM_CAR_STATE_OUTOFGAS
 				*/
-#define RM_CAR_STATE_FINISH	 0x00000100				/**< Car having passed the finish line */
-#define RM_CAR_STATE_PIT	 0x00000001				/**< Car currently stopped in pits */
-#define RM_CAR_STATE_DNF	 0x00000002				/**< Car did not finish */
-#define RM_CAR_STATE_PULLUP	 0x00000004				/**< Car pulled out in the air */
-#define RM_CAR_STATE_PULLSIDE	 0x00000008				/**< Car pulled out in the air */
-#define RM_CAR_STATE_PULLDN	 0x00000010				/**< Car pulled out in the air */
-#define RM_CAR_STATE_OUT	(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/**< Car out of race */
-#define RM_CAR_STATE_NO_SIMU	 0x000000FF				/**< Do not simulate the car */
-#define RM_CAR_STATE_BROKEN	 0x00000200				/**< Engine no more working */
-#define RM_CAR_STATE_OUTOFGAS	 0x00000400				/**< Out of Gas */
+#define RM_CAR_STATE_FINISH	 	0x00000100				/**< Car having passed the finish line */
+#define RM_CAR_STATE_PIT	 	0x00000001				/**< Car currently stopped in pits */
+#define RM_CAR_STATE_DNF	 	0x00000002				/**< Car did not finish */
+#define RM_CAR_STATE_PULLUP	 	0x00000004				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLSIDE	 	0x00000008				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLDN	 	0x00000010				/**< Car pulled out in the air */
+#define RM_CAR_STATE_OUT		(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/**< Car out of race */
+#define RM_CAR_STATE_NO_SIMU	 	0x000000FF				/**< Do not simulate the car */
+#define RM_CAR_STATE_BROKEN	 	0x00000200				/**< Engine no more working */
+#define RM_CAR_STATE_OUTOFGAS	 	0x00000400				/**< Out of Gas */
+#define RM_CAR_STATE_SIMU_NO_MOVE	0x00010000 				/**< Simulation without car move (i.e. clutch applied and no wheel move)  */
     tPosd	corner[4];
 
 } tPublicCar;
@@ -452,6 +453,7 @@ typedef struct CarElt
 #define PRM_ENV			"env"
 #define PRM_BONNET		"bonnet"
 #define PRM_WHEEL_TEXTURE	"wheel texture"
+#define PRM_SHADOW_TEXTURE	"shadow texture"
 
 #define PRM_MIN_TQ_BIAS		"min torque bias"
 #define PRM_MAX_TQ_BIAS		"max torque bias"

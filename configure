@@ -3438,6 +3438,9 @@ rm -fr conftest*
 fi
 
 
+
+TORCS_BASE=$PWD
+
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -3551,7 +3554,9 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+trap 'rm -fr `echo "Make-config \
+	src/tools/launcher/torcs \
+	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
@@ -3610,6 +3615,7 @@ s%@RANLIB@%$RANLIB%g
 s%@CXXCPP@%$CXXCPP%g
 s%@AR@%$AR%g
 s%@LD@%$LD%g
+s%@TORCS_BASE@%$TORCS_BASE%g
 
 CEOF
 EOF
@@ -3651,7 +3657,9 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+CONFIG_FILES=\${CONFIG_FILES-"Make-config \
+	src/tools/launcher/torcs \
+	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \

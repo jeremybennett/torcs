@@ -26,7 +26,8 @@
   </section>
 
   <section name="Graphic Objects">
-    <attstr name="wheel texture" val="cars/acura-nsx-sz/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
@@ -55,12 +56,12 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"/>    
-    <attnum name="body length" unit="m" val="4.56"/>
-    <attnum name="body width" unit="m" val="2.08"/>
+    <attnum name="body length" unit="m" val="5.0"/>
+    <attnum name="body width" unit="m" val="1.92"/>
     <attnum name="body height" unit="m" val="1.12"/>
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" val="4.56"/>
-    <attnum name="overall width"  unit="m" val="2.08"/>
+    <attnum name="overall length" unit="m" val="5.0"/>
+    <attnum name="overall width"  unit="m" val="1.92"/>
     <attnum name="mass" unit="kg" val="1200.0"/>
     <attnum name="GC height" unit="m" val="0.20"/>
     <!-- weight bias -->

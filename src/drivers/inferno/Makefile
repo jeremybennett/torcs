@@ -28,7 +28,7 @@ SHIPDIR   = drivers/${ROBOT}
 
 SHIP      = ${ROBOT}.xml car1.xml logo.rgb mclaren-f1.rgb
 
-SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS | grep -v tracksdata)
 
 PKGSUBDIRS		= ${SHIPSUBDIRS}
 

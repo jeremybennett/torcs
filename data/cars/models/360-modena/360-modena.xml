@@ -28,7 +28,8 @@
 
   <section name="Graphic Objects">
     <attstr name="env" val="360-modena.acc"/>
-    <attstr name="wheel texture" val="cars/360-modena/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>

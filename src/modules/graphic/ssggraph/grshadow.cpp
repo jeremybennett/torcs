@@ -49,8 +49,8 @@ ssgVtxTableShadow::ssgVtxTableShadow (float f, float u)
   ssgVtxTable();
 }
 ssgVtxTableShadow::ssgVtxTableShadow ( GLenum ty, ssgVertexArray   *vl,
-		    ssgNormalArray   *nl,
-		    ssgTexCoordArray *tl,
+				       ssgNormalArray   *nl,
+				       ssgTexCoordArray *tl,
 				       ssgColourArray   *cl ) : ssgVtxTable( ty, vl, nl, tl, cl )
 {
   type = ssgTypeVtxTable () ;

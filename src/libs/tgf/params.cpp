@@ -415,7 +415,7 @@ gfCheckParmWithFile(const char *file, int mode, int *toload)
 }
 
 /** Read a parameter file.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	file	Name of the parameter file
     @param	mode	GFPARM_RMODE_STD Open the parameter file only once
     			<br>GFPARM_RMODE_REREAD Force the re-read of the file and release the previous one
@@ -499,7 +499,7 @@ GfParmReadFile(const char *file, int mode)
 
 
 /** Get the pararmeters name
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	Handle on the parameters
     @return	Name
 */
@@ -510,7 +510,7 @@ GfParmGetName(void *handle)
 }
 
 /** Get the pararmeters file name
-    @ingroup	params
+    @ingroup	paramsfile
     @param	handle	Handle on the parameters
     @return	File Name
 */
@@ -524,7 +524,7 @@ GfParmGetFileName(void *handle)
 #define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
 #define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
 /** Write a parameter file.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	file	Filename of the parameter file (local to $BASE/runtime).
     		<br>If file is NULL the current filenane is used.
     @param	handle	Handle on the parameters
@@ -731,8 +731,8 @@ gfParmGetNode(tParm *curParm, char *path)
 }
 
 
-/** Count the number of elements of a list.
-    @ingroup	params
+/** Count the number of section elements of a list.
+    @ingroup	paramslist
     @param	handle	handle of parameters
     @param	path	path of list
     @return	element count
@@ -762,7 +762,7 @@ GfParmGetEltNb(void *handle, char *path)
 }
 
 /** Seek the first section element of a list.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters
     @param	path	list path
     @return	0 Ok
@@ -862,7 +862,7 @@ gfCleanNode(tParmNode *node)
 
 
 /** Remove all the section elements of a list.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters
     @param	path	path of list
     @return	0 Ok
@@ -906,6 +906,7 @@ GfParmListClean(void *handle, char *path)
 }
 
 /** Go to the next section element in the current list.
+    @ingroup	paramslist
     @param	handle	handle of parameters
     @param	path	path of list
     @return	0 Ok
@@ -937,7 +938,7 @@ GfParmListSeekNext(void *handle, char *path)
 }
 
 /** Get The current element name.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters
     @param	path	path of list
     @return	Name of the current element in the list
@@ -1115,7 +1116,7 @@ gfGetCurKey(void *handle, char *path, char *key)
 
 
 /** Get a string parameter in a config file.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1144,7 +1145,7 @@ GfParmGetStr(void *handle, char *path, char *key, char *deflt)
 
 
 /** Get a string parameter in a config file.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1170,7 +1171,7 @@ GfParmGetCurStr(void *handle, char *path, char *key, char *deflt)
 
 
 /** Get a numerical parameter in a config file.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1198,7 +1199,7 @@ GfParmGetNum(void *handle, char *path, char *key, char *unit, tdble deflt)
 }
 
 /** Get a numerical parameter in a config file.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1223,7 +1224,7 @@ GfParmGetCurNum(void *handle, char *path, char *key, char *unit, tdble deflt)
 
 
 /** Set a string parameter in a config file.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1289,7 +1290,7 @@ GfParmSetStr(void *handle, char *path, char *key, char *val)
 }
 
 /** Set a string parameter in a config file.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1358,7 +1359,7 @@ GfParmSetCurStr(void *handle, char *path, char *key, char *val)
 
 
 /** Set a numerical parameter in a config file.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1427,7 +1428,7 @@ GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
 }
 
 /** Set a numerical parameter in a config file.
-    @ingroup	params
+    @ingroup	paramslist
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
@@ -1498,7 +1499,7 @@ GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
 }
 
 /** Free all Parameters for a handle.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	handle	handle of parameters
     @return	<tt>0 ... </tt>Ok
 		<br><tt>-1 .. </tt>Error
@@ -1529,7 +1530,7 @@ GfParmClean(void *handle)
 
 
 /** Release the parameters handle without removing data from the file.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	handle handle on the parameters
     @return	0 Ok
 		<br>-1 Error
@@ -1620,7 +1621,7 @@ evalUnit(char *unit, tdble *dest, int flg)
 }
 
 /** Convert a value in "units" into SI.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	unit	unit name
     @param	val	value in units
     @return	the value in corresponding SI unit
@@ -1687,7 +1688,7 @@ GfParmUnit2SI(char *unit, tdble val)
 }
 
 /** Convert a value in SI to "units".
-    @ingroup	params
+    @ingroup	paramsdata
     @param	unit	unit name to convert to
     @param	val	value in SI units to be converted to units
     @return	converted value to units
@@ -1808,7 +1809,7 @@ CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
 }
 
 /** Check a parameter set against another.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	ref	Contains the min and max values (reference)
     @param	tgt	Contains the parameters to check.
     @return	0 Match
@@ -1957,7 +1958,7 @@ mergekeys(tParmKey *newKey,
 }
 
 /** Merge two parameters sets into a new one.
-    @ingroup	params
+    @ingroup	paramsfile
     @param	ref	reference handle
     @param	tgt	target handle for merge
     @param	mode	merge mode, can be any combination of:
@@ -2116,7 +2117,7 @@ GfParmMergeHandles(void *ref, void *tgt, int mode)
 }
 
 /** Get the min and max of a numerical parameter.
-    @ingroup	params
+    @ingroup	paramsdata
     @param	handle	handle of parameters	
     @param	path	path of the attribute
     @param	key	key name	

@@ -43,7 +43,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
     int		i;	    
     tCar	*otherCar;
     tdble	x, y;
-    tdble	yaw, otherYaw, airSpeed, tmpas, spdang, tmpsdpang;
+    tdble	yaw, otherYaw, airSpeed, tmpas, spdang, tmpsdpang, dyaw;
     tdble	dragK = 1.0;
 
     x = car->DynGC.pos.x;
@@ -58,22 +58,23 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		continue;
 	    }
 	    otherCar = &(SimCarTable[i]);
-	    /* 8 degrees */
 	    otherYaw = otherCar->DynGC.pos.az;
 	    tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
 	    NORM_PI_PI(tmpsdpang);
+	    dyaw = yaw - otherYaw;
+	    NORM_PI_PI(dyaw);
 	    if ((otherCar->DynGC.vel.x > 10.0) &&
-		(fabs(yaw - otherYaw) < 0.1396)) {
-		if (fabs(tmpsdpang) > 3.002) {
+		(fabs(dyaw) < 0.1396)) {
+		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car */
-		    tmpas = 1.0 - exp(- 1.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
-				   (otherCar->aero.Cd * otherCar->DynGC.vel.x));
+		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    if (tmpas < dragK) {
 			dragK = tmpas;
 		    }
-		} else if (fabs(tmpsdpang) < 0.1396) {
+		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
 		    /* before another car */
-		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+		    tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 				      (car->aero.Cd * car->DynGC.vel.x));
 		    if (tmpas < dragK) {
 			dragK = tmpas;

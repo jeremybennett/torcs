@@ -30,7 +30,8 @@
 
   <section name="Graphic Objects">
     <attstr name="env" val="lotus-gt1.ac"/>
-    <attstr name="wheel texture" val="cars/lotus-gt1/tex-wheel.rgb"/>
+    <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
@@ -87,14 +88,14 @@
     <attnum name="power" val="1.5"/>
     <section name="1">
       <attnum name="xpos" val="-2.13"/>
-      <attnum name="ypos" val="-0.53"/>
-      <attnum name="zpos" val="0.19"/>
+      <attnum name="ypos" val="-0.07"/>
+      <attnum name="zpos" val="0.30"/>
     </section>
 
     <section name="2">
       <attnum name="xpos" val="-2.13"/>
-      <attnum name="ypos" val="0.53"/>
-      <attnum name="zpos" val="0.19"/>
+      <attnum name="ypos" val="0.07"/>
+      <attnum name="zpos" val="0.30"/>
     </section>
   </section>
 

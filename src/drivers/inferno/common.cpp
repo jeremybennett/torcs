@@ -74,15 +74,14 @@ InitGears(tCarElt* car, int idx)
     int i, j;
     tdble rpm;
 
+    GfOut("Car %d\n", idx + 1);
     for (i = 0; i < MAX_GEARS; i++) {
 	j = i + 1;
 	if (j < MAX_GEARS) {
 	    if ((car->_gearRatio[j] != 0) && (car->_gearRatio[i] != 0)) {
-/* 		rpm = car->_enginerpmMaxTq * car->_gearRatio[i] / car->_gearRatio[j]; */
-/* 		if (rpm > car->_enginerpmRedLine) { */
-		    rpm = car->_enginerpmRedLine;
-/* 		} */
+		rpm = car->_enginerpmRedLine;
 		shiftThld[idx][i] = rpm * .95  * car->_wheelRadius(2) / car->_gearRatio[i];
+		/* GfOut("   Gear %d: shift %d km/h\n", i, (int)(shiftThld[idx][i] * 3.6)); */
 	    } else {
 		shiftThld[idx][i] = 10000.0;
 	    }
@@ -92,7 +91,7 @@ InitGears(tCarElt* car, int idx)
     }
 }
 
-static tdble lastAccel[10] = {1.0};
+static tdble lastAccel[10] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 static tdble lastBrkCmd[10] = {0};
 static tdble lastDv[10] = {0};
 
@@ -128,7 +127,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	    slip = 0;
 	}
 	if (gear == 1) {
-	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 1.0) * exp(-fabs(aspect) * 5.0) + .1;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 0.1) * exp(-fabs(aspect) * 5.0) + .1;
 	} else if ((gear > 1) && (car->_speed_x < 40.0)) {
 	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
 	}
@@ -228,7 +227,7 @@ static tdble
 getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 {
     tdble	offset = 0;
-    tdble	lgfs;
+    tdble	lgfs = 0;
     static tTrackPitInfo *pits = &DmTrack->pits;;
     static tdble	 Entry = pits->pitEntry->lgfromstart;
     static tdble	 Start = pits->pitStart->lgfromstart;
@@ -245,7 +244,8 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, Entry - O1[idx], Start - O2[idx])) {
-	    offset = Spline(0, OffsetApproach, lgfs, Entry - O1[idx], Start - O2[idx]);
+	    //GfOut("PIT_STATE_ENTERED\n");
+	    offset = Spline(0, OffsetApproach[idx], lgfs, Entry - O1[idx], Start - O2[idx]);
 	    if (PitState[idx] == PIT_STATE_ASKED) {
 		VI[idx] = car->_speed_x;
 	    }
@@ -260,11 +260,12 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	
 	/* FALL THROUGH */
     case PIT_STATE_DECEL:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, Start - O2[idx], LgfsFinal[idx] - OP[idx] - O5[idx])) {
+	    //GfOut("PIT_STATE_DECEL\n");
 	    PitState[idx] = PIT_STATE_DECEL;
-	    offset = OffsetApproach;
+	    offset = OffsetApproach[idx];
 	    *maxSpeed = VM;
 	    hold[idx] = 0;
 	    break;
@@ -272,11 +273,12 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	
 	/* FALL THROUGH */
     case PIT_STATE_PITLANE_BEFORE:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx] - O5[idx], LgfsFinal[idx] - OP[idx])) {
+	    //GfOut("PIT_STATE_PITLANE_BEFORE\n");
 	    PitState[idx] = PIT_STATE_PITLANE_BEFORE;
-	    offset = OffsetApproach;
+	    offset = OffsetApproach[idx];
 	    VM1[idx] = MIN(VM1[idx], VM);
 	    *maxSpeed = Spline(VM, VM1[idx], lgfs, LgfsFinal[idx] - OP[idx] - O5[idx], LgfsFinal[idx] - OP[idx]);
 	    hold[idx] = 0;
@@ -285,13 +287,29 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_PIT_ENTRY:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	
-	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx])) {
+	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx] - OA[idx])) {
+	    //GfOut("PIT_STATE_PIT_ENTRY\n");
 	    PitState[idx] = PIT_STATE_PIT_ENTRY;
 	    //offset = Spline(OffsetApproach, OffsetFinal, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
-	    offset = OffsetFinal + SIGN(OffsetFinal) * OW[idx];
+	    offset = OffsetFinal[idx] + SIGN(OffsetFinal[idx]) * OW[idx];
+	    *maxSpeed = Spline(VM2[idx], 0, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
+	    hold[idx] = 0;
+	    car->_raceCmd = RM_CMD_PIT_ASKED;
+	    break;
+	}
+
+	/* FALL THROUGH */
+    case PIT_STATE_PIT_ALIGN:
+	if (!lgfs) lgfs = GetDistToStart(car);
+
+	
+	if (isBetween(lgfs, LgfsFinal[idx] - OA[idx], LgfsFinal[idx])) {
+	    //GfOut("PIT_STATE_PIT_ALIGN\n");
+	    PitState[idx] = PIT_STATE_PIT_ALIGN;
+	    offset = OffsetApproach[idx];
 	    *maxSpeed = Spline(VM2[idx], 0, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
 	    hold[idx] = 0;
 	    car->_raceCmd = RM_CMD_PIT_ASKED;
@@ -300,12 +318,13 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_PIT_EXIT:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx] + OP[idx])) {
+	    //GfOut("PIT_STATE_PIT_EXIT\n");
 	    PitState[idx] = PIT_STATE_PIT_EXIT;
 	    //offset = Spline(OffsetFinal, OffsetApproach, lgfs, LgfsFinal[idx], LgfsFinal[idx] + OP[idx]);
-	    offset = OffsetExit;
+	    offset = OffsetExit[idx];
 	    VM3[idx] = MIN(VM3[idx], VM);
 	    *maxSpeed = Spline(VM3[idx], VM, lgfs, LgfsFinal[idx], LgfsFinal[idx] + OP[idx]);
 	    hold[idx] = 0;
@@ -314,11 +333,12 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_PITLANE_AFTER:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, LgfsFinal[idx] + OP[idx], End + O3[idx])) {
-	    PitState[idx] = PIT_STATE_PITLANE_BEFORE;
-	    offset = OffsetExit;
+	    //GfOut("PIT_STATE_PITLANE_AFTER %f - %f - %f\n", lgfs, LgfsFinal[idx] + OP[idx], End + O3[idx]);
+	    PitState[idx] = PIT_STATE_PITLANE_AFTER;
+	    offset = OffsetExit[idx];
 	    *maxSpeed = VM;
 	    hold[idx] = 0;
 	    break;
@@ -326,14 +346,16 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 
 	/* FALL THROUGH */
     case PIT_STATE_EXIT:
-	lgfs = GetDistToStart(car);
+	if (!lgfs) lgfs = GetDistToStart(car);
 
 	if (isBetween(lgfs, End + O3[idx], Exit + O4[idx])) {
+	    //GfOut("PIT_STATE_EXIT\n");
 	    PitState[idx] = PIT_STATE_EXIT;
-	    offset = Spline(OffsetExit, 0, lgfs, End + O3[idx], Exit + O4[idx]);
+	    offset = Spline(OffsetExit[idx], 0, lgfs, End + O3[idx], Exit + O4[idx]);
 	    hold[idx] = 0;
 	    break;
 	}
+	//GfOut("End of Pit\n");
 	PitState[idx] = PIT_STATE_NONE;
 	break;
     }
@@ -352,15 +374,23 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     tdble	maxdlg;
     tTrackSeg	*seg;
     int		canOverlap = 1;
+    const tdble MARGIN = 8.0;
 
     maxdlg = 200.0;
     seg = car->_trkPos.seg;
     lgfs = GetDistToStart(car);
 
     DynOffset[idx] = 0;
-    if ((PitState[idx] == PIT_STATE_NONE) && 
+    /* Automatic pit every lap (test) */
+#if 0
+        if ((PitState[idx] == PIT_STATE_NONE) && (car->_laps)) {
+     	PitState[idx] = PIT_STATE_ASKED;
+    }
+#endif
+
+    if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) && 
 	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
-	 ((car->_fuel < ConsFactor) && ((s->_totLaps - car->_laps) > 1)))) {
+	 ((car->_fuel < ConsFactor[idx]) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
     if (PitState[idx] != PIT_STATE_NO) {
@@ -381,18 +411,30 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	if (dlg < -(DmTrack->length / 2.0)) dlg += DmTrack->length;
 
 	dspd = car->_speed_x - otherCar->_speed_x;
-	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
-	    ((dlg < (dspd*4.5)) ||
-	    (dlg < (car->_dimension_x * 4.0)))) {
+	if ((car->_laps < otherCar->_laps) && 
+	    (dlg > -maxdlg) && (dlg < (car->_dimension_x + 1.0)) &&
+	    (dlg > (dspd * 6.0))) {
+	    if ((fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0)) &&
+		(otherCar->_speed_x > car->_speed_x)) {
+		maxdlg = fabs(dlg);
+		hold[idx] = Curtime + 1.0;
+		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
+		    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 3.0);
+		} else {
+		    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 3.0);
+		}
+	    }
+	} else	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
+		    ((dlg < (dspd*4.5)) ||
+		     (dlg < (car->_dimension_x * 4.0)))) {
 
 	    if (canOverlap) {
-		maxdlg = dlg;
+		maxdlg = fabs(dlg);
 		/* risk of collision */
-		tdble MARGIN = /* 0.4 * DmTrack->width */ 8.0;
 
 		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
-			if (otherCar->_trkPos.toRight > MARGIN) {
+			if (otherCar->_trkPos.toRight > MARGIN / 2.0) {
 			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0 - 1.0);
 			    if (dny < 0) {
 				if (car->_trkPos.toRight > 2.0) {
@@ -409,7 +451,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			    }
 			}
 		    } else {
-			if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
+			if (otherCar->_trkPos.toRight < seg->width - MARGIN / 2.0) {
 			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0 - 1.0);
 			    if (dny > 0) {
 				if (car->_trkPos.toRight < (seg->width - 2.0)) {
@@ -420,7 +462,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			    }
 			} else {
 			    if ((dlg > (car->_dimension_x * 2.0)) &&
-				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN)) {
+				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0))) {
 				MaxSpeed[idx] = otherCar->_speed_x * .99;
 				Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
 			    }
@@ -433,7 +475,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 		}
 	    } else {
 		/* Stay behind the front car */
-		MaxSpeed[idx] = MIN(MaxSpeed[idx], otherCar->_speed_x);
+		MaxSpeed[idx] = MIN(MaxSpeed[idx], otherCar->_speed_x * .99);
 	    }
 	}
     }

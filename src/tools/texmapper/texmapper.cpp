@@ -493,6 +493,7 @@ void set_texture_coord(void)
 */
 void load_database(void)
 {
+
     ssgLoaderOptions *loaderopt = new ssgLoaderOptions();
     
     loaderopt->setCreateBranchCallback(hookNode);

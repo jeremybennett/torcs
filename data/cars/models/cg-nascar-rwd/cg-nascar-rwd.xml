@@ -29,6 +29,7 @@
   <section name="Graphic Objects">
     <attstr name="env" val="cg-nascar-rwd.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
@@ -56,7 +57,7 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="Track-RWD-GrA"/>
+    <attstr name="category" val="Nascar"/>
     <attnum name="body length" unit="m" val="5.0"/>
     <attnum name="body width" unit="m" val="2.0"/>
     <attnum name="body height" unit="m" val="1.1"/>

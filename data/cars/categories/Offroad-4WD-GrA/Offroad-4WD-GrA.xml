@@ -128,7 +128,7 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" min="0.01" max="1.0" unit="s" val="0.25"/>
+    <attnum name="shift time" min="0.01" max="2.0" unit="s" val="0.25"/>
     <section name="gears">
       <section name="r">
         <attnum name="ratio" min="-5" max="0" val="-2.0"/>

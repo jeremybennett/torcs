@@ -20,7 +20,7 @@ CAR       = gt40
 DATADIR   = cars/$(CAR)
 
 DATA      = $(CAR).xml \
-            $(CAR).rgb tex-wheel.rgb \
+            $(CAR).rgb tex-wheel.rgb shadow.rgb \
             $(shell find *.acc -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGFILES	= $(DATA)

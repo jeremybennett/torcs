@@ -62,14 +62,23 @@
     of <b>numerical attributes</b> and <b>string attributes</b>.
 */
 /**
+   @defgroup paramsfile		Parameters File manipulation.
+   Read, write, merge parameters files.
+   @ingroup params
+*/
+/**
+   @defgroup paramsdata		Parameters Data manipulation.
+   Read, write, merge parameters files.
+   @ingroup params
+*/
+/**
+   @defgroup paramslist		Parameters List manipulation.
+   Read, write, merge parameters files.
+   @ingroup params
+*/
+/**
    @defgroup screen		Screen management.
 */
-/** 
-    @defgroup ringlist		Ring Lists Management.
-    The ring lists are linked lists without end, the tail is linked to the head.
-    <br>The list pointer is on the tail, so the access to the head is list->next.
-    <br>The first field of the elements is always next.
- */
 /**
    @defgroup trace		Trace management.
    Allow the trace in the file <tt>trace.txt</tt>
