@@ -31,7 +31,7 @@
 
   <section name="Car">
     <attstr name="category" val="torcs-r-a"></attstr>
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="50.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="65.0"></attnum>
   </section>
 
   <section name="Front Wing">
@@ -79,10 +79,10 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.40"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.50"></attnum>
   </section>
 
- 
+
   <section name="Front Anti-Roll Bar">
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>

@@ -31,7 +31,7 @@
 
   <section name="Car">
     <attstr name="category" val="torcs-r-a"></attstr>
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="58.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="73.0"></attnum>
   </section>
 
   <section name="Front Wing">
@@ -79,7 +79,7 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.4"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.46"></attnum>
   </section>
 
  
