@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : michigan.xml
+    created              : Sat Mar 18 23:25:55 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
+
+<params name="michigan traj" type="template">
+
+  <section name="Trajectory">
+    <section name="Points">
+    </section>
+  </section>
+</params>

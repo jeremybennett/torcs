@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : tutorial2.xml
+    created              : Sat Mar 18 23:29:51 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="tutorial1" type="robotdef"> 
+  <section name="Robots"> 
+    <section name="index"> 
+      <section name="1"> 
+	<!-- Driver's name (short please) --> 
+	<attstr name="name" val="Tutorial2"></attstr> 
+	<!-- Description (can be long) --> 
+	<attstr name="desc" val="Tutorial1 robot"></attstr> 
+	<!-- Author's name --> 
+	<attstr name="author" val="My Name"></attstr> 
+	<!-- Car used to race --> 
+	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
+	<!-- Car category --> 
+	<attstr name="category" val="torcs-r-a"></attstr> 
+	<!-- Race number, should be unique for TORCS... --> 
+	<attnum name="race number" val="98"></attnum> 
+	<!-- Your color for car and board --> 
+	<attnum name="red" val="1.0"></attnum> 
+	<attnum name="green" val="1.0"></attnum> 
+	<attnum name="blue" val="1.0"></attnum> 
+      </section> 
+    </section> 
+  </section> 
+</params>

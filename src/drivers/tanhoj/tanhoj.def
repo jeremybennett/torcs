@@ -1,0 +1,11 @@
+;
+; tanhoj.def
+;
+
+LIBRARY	tanhoj
+
+CODE	PRELOAD MOVEABLE DISCARDABLE
+DATA	PRELOAD SINGLE
+
+EXPORTS
+tanhoj

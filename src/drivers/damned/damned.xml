@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : damned.xml
+    created              : Sat Mar 18 23:10:44 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="human" type="robotdef">
+  <section name="Robots">
+
+    <section name="index">
+      <section name="1">
+	<attstr name="name" val="Damned 1"></attstr>
+	<attstr name="desc" val="first TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="buggy"></attstr>
+	<attstr name="category" val="offroad-r-a"></attstr>
+	<attnum name="race number" val="1"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="2">
+	<attstr name="name" val="Damned 2"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="buggy"></attstr>
+	<attstr name="category" val="offroad-r-a"></attstr>
+	<attnum name="race number" val="2"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="3">
+	<attstr name="name" val="Damned 3"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="p406"></attstr>
+	<attstr name="category" val="torcs-f-b"></attstr>
+	<attnum name="race number" val="3"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="4">
+	<attstr name="name" val="Damned 4"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="torcs"></attstr>
+	<attstr name="category" val="free"></attstr>
+	<attnum name="race number" val="4"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="5">
+	<attstr name="name" val="Damned 5"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="acura-nsx-sz"></attstr>
+	<attstr name="category" val="torcs-r-b"></attstr>
+	<attnum name="race number" val="5"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="6">
+	<attstr name="name" val="Damned 6"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="acura-nsx-sz"></attstr>
+	<attstr name="category" val="torcs-r-b"></attstr>
+	<attnum name="race number" val="6"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="7">
+	<attstr name="name" val="Damned 7"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="viper-gts-r"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="7"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="8">
+	<attstr name="name" val="Damned 8"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="mclaren-f1"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="8"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="9">
+	<attstr name="name" val="Damned 9"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="cg-nascar-rwd"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="9"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+      <section name="10">
+	<attstr name="name" val="Damned 10"></attstr>
+	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
+	<attstr name="team" val="torcs"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="cg-nascar-rwd"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="10"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="1.0"></attnum>
+      </section>
+    </section>
+  </section>
+</params>

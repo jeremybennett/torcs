@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!-- cylos1 -->
+<!--  -->
+
+<!DOCTYPE params SYSTEM "../../dtd/params.dtd">
+
+<params name="cylos1" type="robotdef">
+  <section name="Robots">
+
+    <section name="index">
+      <section name="1">
+	<attstr name="name" val="cylos1"></attstr>
+	<attstr name="desc" val=""></attstr>
+	<attstr name="author" val="Eric Espie /C Guionneau"></attstr>
+	<attstr name="car name" val="cg-nascar-rwd"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="15"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.0"></attnum>
+      </section>
+    </section>
+  </section>
+</params>

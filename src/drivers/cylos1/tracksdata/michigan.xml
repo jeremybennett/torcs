@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!-- E8 -->
+
+<!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
+
+<params name="michigan traj" type="template">
+
+  <section name="Trajectory">
+    <section name="Points">
+    </section>
+  </section>
+</params>
