@@ -1307,7 +1307,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				dists[norder] = track->diffSegId(trackSegId, seg);
 				collcar[norder] = &ocar[i];
 				cosalpha[norder] = cosa;
-				time[norder] = dists[norder]/(myc->speed - tspeed);
+				//time[norder] = dists[norder]/(myc->speed - tspeed);
+				time[norder] = dists[norder]/MIN((myc->speed - tspeed), (myc->speed - sqrt(getPathSeg(seg)->getSpeedsqr())));
 
 				if (time[norder] < minTime) {
 					minTime = time[norder];
