@@ -146,19 +146,24 @@ SimEngineUpdateTq(tCar *car)
 	if (engine->rads < engine->tickover) {
 		clutch->state = CLUTCH_APPLIED;
 		//tdble d = exp(0.01*(engine->rads-engine->tickover))*engine->rads/engine->tickover;
-		tdble d = 0.5f + 0.6f*(tanh(4.0f*engine->rads/engine->tickover - 2.0f));
+		tdble d = tanh(10.0f*(engine->rads/engine->tickover-0.85f));
 
+
+		if (d>1.0) {d = 1.0f;}
+		tdble ac = 0.0f;
+		if (d<0.0) {
+			ac =  -d;
+			d = 0.0f;
+		}
 		if (car->ctrl->brakeCmd>0) {
 			d=0.0f;
 		}
-		if (d>1.0) {d = 1.0f;}
-		if (d<0.0) {d = 0.0f;}
 		if (d<clutch->transferValue) {
 			clutch->transferValue = d;
 		}
-		tdble ac =  3.0f*(1-engine->rads/engine->tickover);
+
 		if (ac>1.0f) {ac = 1.0f;}
-		if (ac>car->ctrl->accelCmd) {
+		if (ac>car->ctrl->accelCmd && d == 0.0) {
 			car->ctrl->accelCmd = ac;
 		}
 		if (engine->rads<0) {
@@ -182,21 +187,11 @@ SimEngineUpdateTq(tCar *car)
 		engine->Tq = 0.0;
 	} else {
 		tdble Tq_max = CalculateTorque(engine, engine->rads);
-#if 0
-		tdble EngBrkK = engine->brakeCoeff * (engine->rads) / (engine->revsMax);
-		engine->Tq = Tq_max * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
-
-		tdble cons = engine->Tq + Tq_max*EngBrkK;
-#else
-
-
 		tdble alpha = car->ctrl->accelCmd;
 		tdble Tq_cur = (Tq_max + EngBrkK)* alpha;
 		engine->Tq =  Tq_cur - EngBrkK;
-		tdble cons = Tq_cur;
-#endif
+		tdble cons = Tq_cur * 0.75f;
 
-		//printf ("%f %f %f #CONS\n", engine->Tq, Tq*EngBrkK, cons);
 		if (cons > 0) {
 			car->fuel -= cons * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
 		}
