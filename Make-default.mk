@@ -215,7 +215,7 @@ clean: cleancompil cleantools
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
 cleantools: cleantoolsdirs
-	-rm -f  ${TOOLS} ${LOCALTOOLS} .depend ${GARBAGE} *~
+	-rm -f  ${TOOLS} ${TOOLSCRIPT} ${LOCALTOOLS} .depend ${GARBAGE} *~
 
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
