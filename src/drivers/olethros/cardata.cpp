@@ -54,10 +54,11 @@ Cardata::Cardata()
 }
 void Cardata::initialise(tSituation* s)
 {
-	ncars = s->_ncars;
 	if (data) {
-		delete [] data;
+		return;
 	}
+	ncars = s->_ncars;
+
 	data = new SingleCardata[ncars];
 	int i;
 	for (i = 0; i < ncars; i++) {
@@ -71,6 +72,7 @@ Cardata::~Cardata()
 	if (data) {
 		delete [] data;
 	}
+	data = NULL;
 }
 
 

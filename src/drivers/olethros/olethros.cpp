@@ -52,11 +52,7 @@ namespace olethros
 #define BUFSIZE 20
 #define NBBOTS 10
 
-static char* botname[NBBOTS] = {"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
-							  "olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"};
-static char* botdesc[NBBOTS] = {"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
-							  "olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"};
-
+static char *botname[NBBOTS];
 static Driver *driver[NBBOTS];
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
@@ -71,14 +67,17 @@ static void endRace(int index, tCarElt *car, tSituation *s);
 // Module entry point.
 extern "C" int olethros(tModInfo *modInfo)
 {
+	char buffer[BUFSIZE];
 	int i;
 
 	// Clear all structures.
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
 	for (i = 0; i < NBBOTS; i++) {
+		snprintf(buffer, BUFSIZE, "olethros %d", i+1);
+		botname[i] = strndup(buffer, BUFSIZE);      // Store pointer to string.
 		modInfo[i].name    = botname[i];  			// name of the module (short).
-		modInfo[i].desc    = botdesc[i];			// Description of the module (can be long).
+		modInfo[i].desc    = "";          			// Description of the module (can be long).
 		modInfo[i].fctInit = InitFuncPt;			// Init function.
 		modInfo[i].gfId    = ROB_IDENT;				// Supported framework version.
 		modInfo[i].index   = i;						// Indices from 0 to 9.
@@ -143,7 +142,8 @@ static void endRace(int index, tCarElt *car, tSituation *s)
 // Called before the module is unloaded.
 static void shutdown(int index)
 {
-	delete driver[index];
+	free(botname[index]);
+	delete driver[index]; ///< \bug
 }
 
 #ifdef USE_OLETHROS_NAMESPACE

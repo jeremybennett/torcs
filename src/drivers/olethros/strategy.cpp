@@ -53,8 +53,16 @@ SimpleStrategy::~SimpleStrategy()
 // too small fill the tank completely.
 void SimpleStrategy::setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s)
 {
-	// Load and set parameters.
-	float fuel = GfParmGetNum(*carParmHandle, OLETHROS_SECT_PRIV, OLETHROS_ATT_FUELPERLAP, (char*) NULL, t->length*MAX_FUEL_PER_METER);
+	// Load and set parameters. An estimate of fuel per meter is used
+	// to calculate necessary fuel. This is overridden by a fuel per
+	// lap estimate, if available.
+	float fuel_per_meter = GfParmGetNum (*carParmHandle, OLETHROS_SECT_PRIV,
+										 OLETHROS_ATT_FUELCONSUMPTION,
+										 (char*) NULL,
+										 MAX_FUEL_PER_METER);
+
+	float fuel = GfParmGetNum(*carParmHandle, OLETHROS_SECT_PRIV, OLETHROS_ATT_FUELPERLAP, (char*) NULL, t->length*fuel_per_meter);
+
 	expectedfuelperlap = fuel;
 	float maxfuel = GfParmGetNum(*carParmHandle, SECT_CAR, PRM_TANK, (char*) NULL, 100.0);
 	fuel *= (s->_totLaps + 1.0);

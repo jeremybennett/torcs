@@ -42,7 +42,8 @@
 #include "geometry.h"
 
 #define OLETHROS_SECT_PRIV "olethros private"
-#define OLETHROS_ATT_FUELPERLAP "fuelperlap"
+#define OLETHROS_ATT_FUELPERLAP "fuel per lap"
+#define OLETHROS_ATT_FUELCONSUMPTION "fuel consumption"
 #define OLETHROS_ATT_MUFACTOR "mufactor"
 
 #ifdef USE_OLETHROS_NAMESPACE
@@ -159,7 +160,7 @@ protected:
 	float u_toleft; ///< speed to left side
 	float u_toright; ///< speed to right side
 	float dt; ///< delta time
-
+	float my_pitch;
 	float TCL_status; ///< traction control
 
 	// Data that should stay constant after first initialization.

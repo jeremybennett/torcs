@@ -44,14 +44,17 @@ class SingleCardata {
 		width = 1.0;
 		trackangle = 0.0;
 		angle = 0.0;
+		car = NULL;
 	}
 	inline void init(CarElt *car) { this->car = car; }
 
-	inline float getSpeedInTrackDirection() { return speed; }
+	inline float getSpeedInTrackDirection() {
+		return speed;
+	}
 	inline float getWidthOnTrack() { return width; }
 	inline float getTrackangle() { return trackangle; }
 	inline float getCarAngle() { return angle; }
-
+	
 	inline bool thisCar(tCarElt *car) { return (car == this->car); }
 
 	void update();

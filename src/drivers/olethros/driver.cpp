@@ -32,6 +32,8 @@
 #include "MathFunctions.h"
 #include "geometry.h"
 
+#undef TEST_PITSTOPS
+
 #ifdef USE_OLETHROS_NAMESPACE
 namespace olethros {
 #endif
@@ -39,10 +41,10 @@ namespace olethros {
 const float Driver::MAX_UNSTUCK_ANGLE = 15.0/180.0*PI;		///< [radians] If the angle of the car on the track is smaller, we assume we are not stuck.
 const float Driver::UNSTUCK_TIME_LIMIT = 2.0;				///< [s] We try to get unstuck after this time.
 const float Driver::MAX_UNSTUCK_SPEED = 5.0;				///< [m/s] Below this speed we consider being stuck.
-const float Driver::MIN_UNSTUCK_DIST = 3.0;					///< [m] If we are closer to the middle we assume to be not stuck.
+const float Driver::MIN_UNSTUCK_DIST = 2.0;					///< [m] If we are closer to the middle we assume to be not stuck.
 const float Driver::G = 9.81;								///< [m/(s*s)] Welcome on Earth.
 const float Driver::FULL_ACCEL_MARGIN = 3.0;				///< [m/s] Margin reduce oscillation of brake/acceleration.
-const float Driver::SHIFT = 0.99;							///< [-] (% of rpmredline) When do we like to shift gears.
+const float Driver::SHIFT = 0.98;							///< [-] (% of rpmredline) When do we like to shift gears.
 const float Driver::SHIFT_MARGIN = 4.0;						///< [m/s] Avoid oscillating gear changes.
 const float Driver::ABS_SLIP = 2.0;							///< [m/s] range [0..10]
 const float Driver::ABS_RANGE = 5.0;						///< [m/s] range [0..10]
@@ -56,7 +58,7 @@ const float Driver::SIDECOLL_MARGIN = 3.0;					///< [m] Distance between car cen
 const float Driver::BORDER_OVERTAKE_MARGIN = 0.5;			///< [m]
 const float Driver::OVERTAKE_OFFSET_SPEED = 1.0;			///< [m/s] Offset change speed.
 const float Driver::PIT_LOOKAHEAD = 6.0;					///< [m] Lookahead to stop in the pit.
-const float Driver::PIT_BRAKE_AHEAD = 200.0;				///< [m] Workaround for "broken" pitentries.
+const float Driver::PIT_BRAKE_AHEAD = 400.0;				///< [m] Workaround for "broken" pitentries.
 const float Driver::PIT_MU = 0.4;							///< [-] Friction of pit concrete.
 const float Driver::MAX_SPEED = 84.0;						///< [m/s] Speed to compute the percentage of brake to apply.
 const float Driver::MAX_FUEL_PER_METER = 0.0008;			///< [liter/m] fuel consumtion.
@@ -96,18 +98,17 @@ Driver::Driver(int index)
 Driver::~Driver()
 {
 	
-	//ShowPaths();
+	// ShowPaths();
 
 
 	// Do not save learnt stuff from race itself.
 	// We save only for practice and qualifying.
-/*
 	if (race_type!=RM_TYPE_RACE) {
 		char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->name);
 		learn->saveParameters (fname);
 		free (fname);
 	}
-*/
+
 #if 0
 	printf ("# BEGIN ~Driver() dump\n");
 	for (int i=0; i<track->nseg; i++, seg=seg->next) {
@@ -259,18 +260,19 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 void Driver::drive(tSituation *s)
 {
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
-
+	//printf("%d: %s\n", mycardata->this->index, mycardata->car->name);
 	update(s);
 	if (0)
 	{
 		tTrackSeg* segment = car->_trkPos.seg;
 		if (radius[segment->id]!=FLT_MAX) {
-			//printf ("%f ", radius[segment->id]);
-			//printf ("%f\n", ideal_radius[segment->id]);
-		}
+			printf ("%f ", radius[segment->id]);
+			printf ("%f\n", ideal_radius[segment->id]);
+		}	
 	}
-	//pit->setPitstop(true); // uncomment to test pitstops
-
+#ifdef TEST_PITSTOPS
+	pit->setPitstop(true); // uncomment to test pitstops
+#endif
 	if (isStuck()) {
 		car->_steerCmd = -mycardata->getCarAngle() / car->_steerLock;
 		car->_gearCmd = -1;		// Reverse gear.
@@ -284,6 +286,7 @@ void Driver::drive(tSituation *s)
 		car->_steerCmd = steer;//prev_steer;
 		car->_gearCmd = getGear();
 		float fbrake = filterBrakeSpeed(getBrake());
+
 		float faccel = getAccel();
 
 		float accel = faccel - fbrake;
@@ -635,10 +638,12 @@ int Driver::getGear()
 		return car->_gear + 1;
 	} else {
 		float gr_down = car->_gearRatio[car->_gear + car->_gearOffset - 1];
-		float prev_rpm = gr_down * (car->_speed_x + SHIFT_MARGIN) / wr;
+		float prev_rpm = gr_down * (car->_speed_x) / wr;
 
-		if (EstimateTorque (prev_rpm) * gr_down
-			> EstimateTorque (rpm) * gr_up) {
+		if (prev_rpm < car->_enginerpmMaxPw * SHIFT
+			&& car->_gear > 1
+			&& (EstimateTorque (prev_rpm) * gr_down
+				> EstimateTorque (rpm) * gr_up)) {
 			return car->_gear - 1;
 		}
 		//omega = car->_enginerpmRedLine/gr_down;
@@ -706,10 +711,10 @@ float Driver::getSteer()
 	float avoidance = 0.0;
 	
 	if (!pit->getInPit()) {
-		if (car->_trkPos.toRight<car->_dimension_y) {
-			avoidance = tanh(0.1*(car->_dimension_y - car->_trkPos.toRight));
-		} else 	if (car->_trkPos.toLeft<car->_dimension_y) {
-			avoidance = tanh(0.1*(car->_trkPos.toLeft - car->_dimension_y));
+		if (car->_trkPos.toRight < car->_dimension_y) {
+			avoidance = tanh(0.2*(car->_dimension_y - car->_trkPos.toRight));
+		} else 	if (car->_trkPos.toLeft < car->_dimension_y) {
+			avoidance = tanh(0.2*(car->_trkPos.toLeft - car->_dimension_y));
 		}
 	}
 	v2d target = getTargetPoint();
@@ -718,7 +723,8 @@ float Driver::getSteer()
 	//	if (pit->getInPit()) {
 	//		targetAngle *=2;
 	//	}
-	targetAngle -= car->_yaw;
+	//targetAngle -= .5*car->_yaw;
+	targetAngle = 1.0*(targetAngle - car->_yaw); //+ 0.1*(targetAngle - atan2(car->_speed_Y, car->_speed_X));
 #if 0
 	tTrackSeg *seg = car->_trkPos.seg;
 	if (seg->type == TR_LFT) {
@@ -770,6 +776,7 @@ float Driver::getClutch()
 v2d Driver::getTargetPoint()
 {
 	tTrackSeg *seg = car->_trkPos.seg;
+	tTrackSeg *init_seg = seg;
 	float lookahead;
 	float length = getDistToSegEnd();
 	float offset = getOffset();
@@ -831,7 +838,7 @@ v2d Driver::getTargetPoint()
 		
 		s.y = (alpha*seg->vertex[TR_SL].y
 				+(1-alpha)*seg->vertex[TR_SR].y);
-	} else {
+	} else if (1) {
 		s.x =(1-beta)*(alpha*seg->vertex[TR_SL].x
 					   +(1-alpha)*seg->vertex[TR_SR].x)
 			+beta*(nalpha*seg->vertex[TR_EL].x
@@ -841,6 +848,31 @@ v2d Driver::getTargetPoint()
 					   +(1-alpha)*seg->vertex[TR_SR].y)
 			+ beta*(nalpha*seg->vertex[TR_EL].y
 					+(1-nalpha)*seg->vertex[TR_ER].y);
+	} else {
+		s.x = 0.0;
+		s.y = 0.0;
+		//float sum = 0.0;
+		float cnt = 0.0;
+		while (init_seg != seg->next) {
+			float alpha2 = seg_alpha[init_seg->id];
+			float nalpha2 = seg_alpha[init_seg->next->id];
+			s.x *= .25;
+			s.y *= .25;
+			cnt *= .25;
+			s.x +=(1-beta)*(alpha2*init_seg->vertex[TR_SL].x
+							+(1-alpha2)*init_seg->vertex[TR_SR].x)
+			+beta*(nalpha2*init_seg->vertex[TR_EL].x
+				   +(1-nalpha2)*init_seg->vertex[TR_ER].x);
+			
+			s.y +=(1-beta)*(alpha2*init_seg->vertex[TR_SL].y
+							+(1-alpha2)*init_seg->vertex[TR_SR].y)
+				+ beta*(nalpha2*init_seg->vertex[TR_EL].y
+						+(1-nalpha2)*init_seg->vertex[TR_ER].y);
+			cnt+=1.0;
+			init_seg = init_seg->next;
+		}
+		s.x /= (cnt);
+		s.y /= (cnt);
 	}
 
 	if ( seg->type == TR_STR) {
@@ -1178,6 +1210,9 @@ float Driver::filterAPit(float accel)
 			if (accel < 0) {
 				accel = 0;
 			}
+#ifdef TEST_PITSTOPS
+			printf ("apit(N):%f\n", accel);
+#endif
 		}
 	}
 
@@ -1188,6 +1223,10 @@ float Driver::filterAPit(float accel)
 			if (delta>0) {
 				accel = tanh(delta);
 			}
+#ifdef TEST_PITSTOPS
+			printf ("apit(Y):%f %f %f %f\n", accel, delta, pit->getSpeedlimit(), getSpeed());
+#endif
+
 		}
 	}
 	return accel;
@@ -1203,8 +1242,11 @@ float Driver::filterBPit(float brake)
 			float mu = car->_trkPos.seg->surface->kFriction*TIREMU*PIT_MU;
 			float bd = brakedist(0.0, mu);
 			if (bd > dl) {
-				//printf ("Brakeahead\n");
-				return tanh((bd-dl));
+				float br = tanh((bd-dl));
+#ifdef TEST_PITSTOPS
+				printf ("Brakeahead:%f\n", br);
+#endif
+				return br;
 			}
 		}
 	}
@@ -1219,12 +1261,20 @@ float Driver::filterBPit(float brake)
 				float dist = pit->getNPitStart() - s;
 				float b =  (brakedist(pit->getSpeedlimit(), mu) - dist);
 				if (b > 0) {
+#ifdef TEST_PITSTOPS
+				printf ("pitstart:%f\n", tanh(b));
+#endif
 					return tanh(b);
+
 				}
 			} else {
 				// Hold speed limit.
 				if (currentspeedsqr > pit->getSpeedlimitSqr()) {
-					return pit->getSpeedLimitBrake(currentspeedsqr);
+					float br = pit->getSpeedLimitBrake(currentspeedsqr);
+#ifdef TEST_PITSTOPS
+					printf ("limit:%f\n", br);
+#endif
+					return br;
 				}
 			}
 			// Brake into pit (speed limit 0.0 to stop)
@@ -1235,6 +1285,9 @@ float Driver::filterBPit(float brake)
 			} else {
 				if (brakedist(0.0, mu) > dist) {
 					float bd = brakedist(0.0,mu)-dist;
+#ifdef TEST_PITSTOPS
+					printf ("brakedist:%f\n", tanh(bd));
+#endif
 					return tanh(bd);
 					//return 1.0;
 				} else if (s > pit->getNPitLoc()) {
@@ -1247,7 +1300,11 @@ float Driver::filterBPit(float brake)
 			if (s < pit->getNPitEnd()) {
 				// Pit speed limit.
 				if (currentspeedsqr > pit->getSpeedlimitSqr()) {
-					return pit->getSpeedLimitBrake(currentspeedsqr);
+					float br =  pit->getSpeedLimitBrake(currentspeedsqr);
+#ifdef TEST_PITSTOPS
+					printf ("exit_limit:%f\n", br);
+#endif
+					return br;
 				}
 			}
 		}
@@ -1314,6 +1371,7 @@ float Driver::filterBColl(float brake)
 			}
 		}
 	}
+	//printf ("%f %f\n", brake, maxbrake);
 	return maxbrake;
 }
 
@@ -1463,7 +1521,10 @@ float Driver::filterTCL_4WD()
 }
 
 
-/// Hold car on the track.
+/** Hold car on the track.
+	
+    It has a bug
+ */
 float Driver::filterTrk(tSituation* s, float accel)
 {
 	tTrackSeg* seg = car->_trkPos.seg;
@@ -1502,7 +1563,7 @@ float Driver::filterTrk(tSituation* s, float accel)
 	// around 1:16 1:17 with the others.  the -0.1 term that subtracts
 	// the predicted error is there to prevent the error from growing
 	// too much.
-	float dtm = -( 1.0 * orig_steer
+	float dtm = -( 0.1 * orig_steer
 				   - 0.1 * learn->predictedError(car)
 				   + 0.1 * (target_x - actual_x));//(car->_trkPos.toMiddle);
 	float tm = fabs(actual_x - target_x);
@@ -1510,6 +1571,10 @@ float Driver::filterTrk(tSituation* s, float accel)
 
 	if (accel>0) {
 		accel = filterTCL(accel);
+	}
+    float speed_to_inside = 0.0;
+	if (car->_trkPos.toMiddle*speedangle > 0.0) {
+		speed_to_inside = 0.5;
 	}
 	if (car->_speed_x < MAX_UNSTUCK_SPEED ||		// Too slow.
 		pit->getInPit())// ||							// Pit stop.
@@ -1527,22 +1592,31 @@ float Driver::filterTrk(tSituation* s, float accel)
 		if (margin > .5*car->_dimension_y) {
 			accident = -1;
 		}
-		if (car->_trkPos.toRight<.5*car->_dimension_y) {
-			dtm -= 1.0*tanh((car->_dimension_y - car->_trkPos.toRight));
+		if (car->_trkPos.toRight<car->_dimension_y) {
+			dtm -= 10.0*tanh((car->_dimension_y - car->_trkPos.toRight));
 		} else 	if (car->_trkPos.toLeft<car->_dimension_y) {
-			dtm -= 1.0*tanh((car->_trkPos.toLeft - car->_dimension_y));
+			dtm -= 10.0*tanh((car->_trkPos.toLeft - car->_dimension_y));
 		}
 		//printf ("%f %f %f\n", -orig_steer, dtm, margin);
 			
 	}
-	float uleft = (car->_trkPos.toLeft - prev_toleft)/dt;
-	float uright = (car->_trkPos.toRight - prev_toright)/dt;
+	//	printf ("%.1f %.1f %.1f %.1f | ",
+	//prev_toleft, prev_toright,
+	//u_toleft, u_toright);
+	float uleft = 0; 
+
+	float uright = 0;
+	if (dt > 0.001) {
+		uleft = (car->_trkPos.toLeft - prev_toleft)/dt;
+		uright = (car->_trkPos.toRight - prev_toright)/dt;
+	}
 	u_toleft = .9*u_toleft + 0.1*uleft;
 	u_toright = .9*u_toright + 0.1*uright;
 	prev_toleft = car->_trkPos.toLeft;
 	prev_toright = car->_trkPos.toRight;
 	float danger = 1000.0; // larger, less danger
 	float steer_adjust = 0.0;
+			
 	if (seg->type == TR_RGT) {
 	//printf ("%f %f\n", u_toleft, u_toright);
 		if (u_toleft<0) {
@@ -1562,7 +1636,7 @@ float Driver::filterTrk(tSituation* s, float accel)
 		} else if (u_toleft<0) {
 			danger = -2*car->_trkPos.toLeft/u_toleft;
 			steer_adjust = -0.1;
-			//printf ("LCR: %fs %d\n", danger, seg->id);
+			//printf ("LCL: %fs %d\n", danger, seg->id);
 		}
 	}
 	float danger_accel = 0.0;
@@ -1576,7 +1650,31 @@ float Driver::filterTrk(tSituation* s, float accel)
 			//printf ("%f %f \n", car->_steerCmd, steer_adjust);
 			car->_steerCmd += 0.1*(danger-2) * steer_adjust;
 		} 
+		//printf ("Danger: %f %f\n", danger, danger_accel);
 	}
+	float Kgamma;
+	{
+		float ay= 0.5*(seg->angle[TR_YL] + seg->angle[TR_YR]);
+		float ny= 0.5*(seg->next->angle[TR_YL] + seg->next->angle[TR_YR]);
+		float py= 0.5*(seg->prev->angle[TR_YL] + seg->prev->angle[TR_YR]);
+		//float l = seg->length;
+		//float derp = (sin(ay)-sin(py));
+		//		float dern = (sin(ny)-sin(ay));
+		//		float der = .5*(dern+derp)/l;
+		Kgamma = -0.25 * (2*ay + ny + py);
+		//printf ("%f %f %f\n", der, Kgamma, car->_pitch);
+	}
+	float deltapitch = MAX(-Kgamma - car->_pitch, 0.0);
+	float flyspeed = MAX(50, getSpeed());
+	float fly_mode = (1.0/(5.0 + flyspeed)- deltapitch);
+	if (fly_mode < -0.1) {
+		// only let go if we have to let go a lot
+		float cut_accel =  2 * tanh(fly_mode);
+		if (cut_accel < -1) {
+			danger_accel += 2 * tanh(fly_mode);
+		}
+	}
+
 	if (seg->type == TR_STR) {
 		float w = car->_dimension_y/seg->width ;
 		if (tm > w) {
@@ -1687,9 +1785,9 @@ void Driver::prepareTrack()
 	bool adjust_entry = true;
 #endif
 	float squash = 0.0;
-	float beta_curve = 0.01;
-	float beta_straight = 0.01;
-	if (0) {
+	float beta_curve = 0.025;
+	float beta_straight = 0.025;
+	if (0) { // this code is just a test
 		Vector A(2);
 		Vector B(2);
 		Vector C(2);
@@ -1701,15 +1799,15 @@ void Driver::prepareTrack()
 		C.x[1] = 1;
 		ParametricLine R(&A,&B);
 		for (float r=(sqrt(2*.5*.5))/(1.1); r<5; r*=1.1) {
-			//printf ("r=%f =>",r);
+			printf ("r=%f =>",r);
 			Vector* v = IntersectSphereLine (&R, &C, r);
 			if (v->Size()==0) {
-				//printf ("NULL");
+				printf ("NULL");
 			}
 			for (int i=0; i<v->Size(); i++) {
-				//printf (" %f", v->x[i]);
+				printf (" %f", v->x[i]);
 			}
-			//printf("\n");
+			printf("\n");
 			delete v;
 		}
 
@@ -1755,13 +1853,13 @@ void Driver::prepareTrack()
 		// with different radi, get a set of weights
 		if (seg->type != TR_STR) {
 			AdjustRadi (cs, ce, radi);
-			ideal_radius[i] = seg->radius;// * radi[i]/sum;
+			ideal_radius[seg->id] = seg->radius;// * radi[i]/sum;
 		} else {
-			ideal_radius[i] = FLT_MAX;
+			ideal_radius[seg->id] = FLT_MAX;
 		}
 
 		if (seg->type==TR_LFT) {
-			target_mean = aleft * radi[i] + (1-radi[i])*0.5;//entryleft;
+			target_mean = aleft;// * radi[seg->id] + (1-radi[seg->id])*entryleft;
 			if (cs->type==TR_STR) {
 				target_start = entryleft;
 			} else if (cs->type==TR_RGT) {
@@ -1773,7 +1871,7 @@ void Driver::prepareTrack()
 				target_end = 0.5;
 			}
 		} else if (seg->type==TR_RGT) {
-			target_mean = aright* radi[i] + (1-radi[i])*0.5;//entryright;
+			target_mean = aright;//* radi[seg->id] + (1-radi[seg->id])*entryright;
 			if (cs->type==TR_STR) {
 				target_start = entryright;
 			} else if (cs->type==TR_LFT) {
@@ -1792,10 +1890,10 @@ void Driver::prepareTrack()
 			}
 			if (ce->type==TR_LFT) {
 				target_mean = - 0.5 * squash/(1.0-squash);
-				target_end = 0.25 + 0.5 * entryleft;
+				target_end = entryleft;//0.25 + 0.5 * entryleft;
 			} else if (ce->type==TR_RGT) {
 				target_mean = 1.0 + 0.5 * squash / (1.0-squash);
-				target_end = 0.25 + 0.5 * entryright;
+				target_end = entryright;//0.25 + 0.5 * entryright;
 			}
 			if (adjust_entry==false) {
 				target_mean = 0.5 *  (target_start+target_end);
@@ -1812,12 +1910,13 @@ void Driver::prepareTrack()
 			target_p = target_end;
 		}
 		if (seg->type!=TR_STR) {
-			//printf ("%f\n", radi[i]);
-			beta = 1 * radi[i] + beta* (1-radi[i]);
-			targets[i] = target_mean * beta + target_p * (1-beta);
+
+			target_mean =  target_mean * radi[seg->id] + target_p * (1-radi[seg->id]);
+			//printf ("R:%f, %f\n", radi[seg->id], target_mean);
+			targets[seg->id] = target_mean * beta + target_p * (1-beta);
 			//targets[i] = target_mean * radi[i] + targets[i] * (1-radi[i]);
 		} else {
-			targets[i] = target_mean * beta + target_p * (1-beta);
+			targets[seg->id] = target_mean * beta + target_p * (1-beta);
 		}
 	}
 #else
@@ -1825,8 +1924,8 @@ void Driver::prepareTrack()
 	{
 		FILE* centers = fopen ("centers","w");
 		for (int i=0; i<N; i++, seg=seg->next) {
-			targets[i] = computeOptimalTarget (seg, centers);
-			seg_alpha[i] = targets[i];
+			targets[seg->id] = computeOptimalTarget (seg, centers);
+			seg_alpha[seg->id] = targets[seg->id];
 		}
 		fclose(centers);
 	}
@@ -1836,6 +1935,7 @@ void Driver::prepareTrack()
 
 	// first make sure we are in the proper range.
 	float margin = 2.0;
+	int n_iter = 100;
 	seg=track->seg;
 	for (int i=0; i<N; i++) {
 		int id = seg->id;
@@ -1846,21 +1946,22 @@ void Driver::prepareTrack()
 		}
 		float lowlimit = margin*car->_dimension_y / track->width;
 		float hilimit = 1-lowlimit;
+		seg_alpha[id] = targets[id];
 		if (seg_alpha[id]<lowlimit) seg_alpha[id] = lowlimit;
 		if (seg_alpha[id]>hilimit) seg_alpha[id] = hilimit;
 		seg = seg->next;
 	}
 	// Smooth targets
-	float d = 0.01;
-	for (int iter=0; iter<10000; iter++) {
+	float d = 0.1;
+	for (int iter=0; iter<n_iter; iter++) {
 		float err = 0.0;
 		seg = track->seg;
-		for (int i=0; i<N; i++, seg=seg->next) {
-			float alpha = seg_alpha[i];
+		for (int i=0; i<N+1; i++, seg=seg->next) {
+			float alpha = seg_alpha[seg->id];
 			float alpha_next = seg_alpha[seg->next->id];
 			float alpha_prev = seg_alpha[seg->prev->id];
 			float gamma;
-			float target = targets[i];
+			float target = targets[seg->id];
 			if (seg->type==TR_STR) {
 				gamma = exp(-beta_straight*seg->length);
 			} else {
@@ -1869,19 +1970,19 @@ void Driver::prepareTrack()
 			
 			target = alpha_next * gamma + target * (1-gamma);
 			alpha += d * (target - alpha);
-			target = targets[i];
+			target = targets[seg->id];
 			target = alpha_prev * gamma + target * (1-gamma);
 			alpha += 0.5 * d * (target - alpha);
-			err += (seg_alpha[i] - alpha)*(seg_alpha[i]-alpha);
-			seg_alpha[i] = alpha;
+			err += (seg_alpha[seg->id] - alpha)*(seg_alpha[seg->id] - alpha);
+			seg_alpha[seg->id] = alpha;
 		}
 
-		for (int i=N-1; i>=0; i--, seg=seg->prev) {
-			float alpha = seg_alpha[i];
+		for (int i=N; i>=0; i--, seg=seg->prev) {
+			float alpha = seg_alpha[seg->id];
 			float alpha_next = seg_alpha[seg->next->id];
 			//float alpha_prev = seg_alpha[seg->prev->id];
 			float gamma;
-			float target = targets[i];
+			float target = targets[seg->id];
 			if (seg->type==TR_STR) {
 				gamma = exp(-beta_straight*seg->length);
 			} else {
@@ -1889,8 +1990,8 @@ void Driver::prepareTrack()
 			}
 			target = alpha_next * gamma + target * (1-gamma);
 			alpha += d * (target - alpha);
-			err += (seg_alpha[i] - alpha)*(seg_alpha[i]-alpha);
-			seg_alpha[i] = alpha;
+			err += (seg_alpha[seg->id] - alpha)*(seg_alpha[seg->id] - alpha);
+			seg_alpha[seg->id] = alpha;
 		}
 	}
 #if 1
@@ -1992,7 +2093,7 @@ void Driver::ShowPaths()
 {
 	tTrackSeg* seg = track->seg;
 	int N = track->nseg;
-
+	
 	FILE* fplan = fopen("track_plan", "w");
 	FILE* fpath = fopen("track_path", "w");
 	FILE* fpathnew = fopen("track_path_new", "w");
@@ -2014,11 +2115,11 @@ void Driver::ShowPaths()
 		fprintf (fplan, "%f %f %f %f %d\n", xls, yls, xrs, yrs, id);
 		fprintf (fplan, "%f %f %f %f %d\n", xlm, ylm, xrm, yrm, id);
 		fprintf (fplan, "%f %f %f %f %d\n", xle, yle, xre, yre, id);
-		float a = seg_alpha[i];
+		float a = seg_alpha[seg->id];
 		fprintf (fpath, "%f %f %d\n", xls*a+(1-a)*xrs, yls*a+(1-a)*yrs, id);
 		fprintf (fpath, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
 		fprintf (fpath, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
-		a = seg_alpha_new[i];
+		a = seg_alpha_new[seg->id];
 		fprintf (fpathnew, "%f %f %d\n", xls*a+(1-a)*xrs, yls*a+(1-a)*yrs, id);
 		fprintf (fpathnew, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
 		fprintf (fpathnew, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
@@ -2167,8 +2268,8 @@ float Driver::EstimateRadius (tTrackSeg* seg, tTrackSeg* prev_seg, tTrackSeg* ne
 	ParametricSphere curve(2);
 	for (tTrackSeg* s = prev_seg; s!=next_seg; s=s->next) {
 		Vector optimal(2);
-		int i = s->id;
-		float alpha = seg_alpha[i];
+		//int i = s->id;
+		float alpha = seg_alpha[s->id];
 		//alpha = 0.0;
 		optimal[0] = s->vertex[TR_SL].x * alpha
 			+ s->vertex[TR_SR].x * (1 - alpha);
@@ -2182,18 +2283,6 @@ float Driver::EstimateRadius (tTrackSeg* seg, tTrackSeg* prev_seg, tTrackSeg* ne
 	//printf ("%f %f\n", (*curve.C)[0], (*curve.C)[1]);
 	curve.r = ideal_radius[seg->id];//seg->radius ;
 	EstimateSphere (vmatrix, &curve);
-#if 0
-	printf ("%d ", seg->id);
-	for (int i=0; i<curve.C->N; i++) {
-		printf ("%.1f ", (*(curve.C))[i]);
-	}
-	printf (":%.1f ",curve.r);
-	if (seg->type!=TR_STR) {
-		printf ("(%.1f %.1f) :  %.1f %.1f\n", seg->center.x, seg->center.y, seg->radiusl, seg->radiusr);
-	} else {
-		printf ("\n");
-	}
-#endif
 	return curve.r;
 }
 

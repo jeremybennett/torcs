@@ -24,28 +24,33 @@
     <attnum name="angle" unit="deg" min="0" max="30" val="15"/>
   </section>
 
+  <section name="Engine">
+    <attnum name="revs limiter" unit="rpm" val="9000"/>
+    <attnum name="tickover" unit="rpm" val="1000"/>
+  </section>
+
   <section name="Gearbox">
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-5" max="0" val="-3.4"/>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="3.0"/>
+	<attnum name="ratio" min="0" max="5" val="2.0"/>
       </section>
       <section name="2">
-	<attnum name="ratio" min="0" max="5" val="2.2"/>
+	<attnum name="ratio" min="0" max="5" val="1.4063"/>
       </section>
       <section name="3">
-	<attnum name="ratio" min="0" max="5" val="1.54"/>
+	<attnum name="ratio" min="0" max="5" val="1.0564"/>
       </section>
       <section name="4">
-	<attnum name="ratio" min="0" max="5" val="1.14"/>
+	<attnum name="ratio" min="0" max="5" val=".833"/>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val="0.77"/>
+	<attnum name="ratio" min="0" max="5" val="0.69"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.55"/>
+	<attnum name="ratio" min="0" max="5" val="0.6"/>
       </section>
     </section>
   </section>
@@ -65,6 +70,14 @@
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="5000"/>
     <attnum name="suspension course" unit="m" val="0.25"/>
     <attnum name="bellcrank" val="1.5"/>
+  </section>
+
+  <section name="Central Differential">
+    <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
+    <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP,VISCOUS COUPLER" val="VISCOUS COUPLER"/>
+    <attnum name="min torque bias" unit="%" val="50"/>
+    <attnum name="max torque bias" unit="%" val="60"/>
+    <attnum name="ratio" min="0" max="10" val="5.54"/>
   </section>
 
   <section name="Front Right Wheel">
@@ -135,10 +148,6 @@
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="140"/>
   </section>
 
-  <section name="berniw private">
-    <attnum name="caero" val="1.0"/>
-    <attnum name="cfriction" val="1.2"/>
-  </section>
 
 </params>
 

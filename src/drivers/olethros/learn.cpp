@@ -40,7 +40,7 @@ inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 	fread(buf->c, sizeof(char), l, f);
 
 	if (strcmp(tag,buf->c)) {
-		//fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
+		fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
 		free(tag);
 		return false;
 	}
@@ -137,11 +137,24 @@ SegLearn::~SegLearn()
 
 void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha)
 {
+	bool local_update = true;
+	float risk_factor = 100.0;
 	// Still on the same segment, alone, offset near 0, check.
 	tTrackSeg *seg = car->_trkPos.seg;
 	if (prev_time!=s->currentTime) {
 		delta_time = s->currentTime - prev_time;
 		prev_time = s->currentTime;
+	}
+	tTrackSeg *prev_seg = seg;
+	bool term = false;
+	float dist = 0;
+	while (term == false) {
+		prev_seg = prev_seg->prev;
+		dist += prev_seg->length;
+		if ((prev_seg->type != seg->type)
+			|| (dist > 100)) {
+			term = true;
+		}
 	}
 	if (seg->type == lastturn || seg->type == TR_STR) {
 		if (fabs(offset) < 0.2 &&
@@ -173,19 +186,25 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 			if (lastturn == TR_RGT) {
 				float dtheta = theta-target_error;
 				if (target_toRight > car->_trkPos.toRight) {
-					dtheta = theta;
+					if (prev_seg->type == TR_LFT) {
+						if (car->_trkPos.toRight - car->_dimension_y < 0) {
+							dtheta = -1;
+						}
+					} else {
+						dtheta = theta;
+					}
 				}
 				if (car->_trkPos.toLeft < 1.5*car->_dimension_y) {
 					float a = 1.5*car->_dimension_y - car->_trkPos.toLeft;
 					dtheta = (1-a) * dtheta;
 				}
 				if (car->_trkPos.toLeft - car->_dimension_y<0) {
-					dtheta = car->_trkPos.toLeft - car->_dimension_y;// - 1;
+					dtheta = risk_factor * (car->_trkPos.toLeft - car->_dimension_y);// - 1;
 				}
 				if ((car->_trkPos.toLeft - .5*car->_dimension_y<0)
 					|| (car->_speed_x < 0)) {
- 					dtheta = -10;
-					PropagateUpdateBackwards (seg, -10, 0.02, 100.0);
+ 					dtheta = - risk_factor;
+					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
 					//printf ("DTH %d\n ", seg->id);
 				}
 
@@ -193,7 +212,13 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 					+ beta * (dtheta);
 			} else if (lastturn == TR_LFT) {
 				float dtheta = theta - target_error;
-				if (target_toLeft > car->_trkPos.toLeft) {
+				if (prev_seg->type == TR_RGT) {
+					if (target_toLeft > car->_trkPos.toLeft) {
+						if (car->_trkPos.toLeft - car->_dimension_y < 0) {
+							dtheta = -1;
+						}
+					}
+				} else {
 					dtheta = theta;
 				}
 				if (car->_trkPos.toRight < 1.5*car->_dimension_y) {
@@ -201,20 +226,27 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 					dtheta = (1-a) * dtheta;
 				}
 				if (car->_trkPos.toRight - car->_dimension_y<0) {
-					dtheta = car->_trkPos.toRight - car->_dimension_y;// - 1;
+					dtheta = risk_factor *(car->_trkPos.toRight - car->_dimension_y);// - 1;
 				}
 				if ((car->_trkPos.toRight - .5*car->_dimension_y < 0)
 					|| (car->_speed_x < 0)) {
-					dtheta = -10;
-					PropagateUpdateBackwards (seg, -10, 0.02, 100.0);
+					dtheta = - risk_factor;
+					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
 					//printf ("DTH %d\n", seg->id);
 				}
 				dr = (1-beta) * (outside + tomiddle)
 					+ beta * (dtheta);
 			}
-			
-			//printf ("%f %f %f %f \n", target_error, dr, rmin, r[seg->id]);
+			if (local_update) {
+				//radius[updateid[seg->id]] += 0.01*dr;
+				if (dr<0) {
+					PropagateUpdateBackwards (seg->prev, 0.01*dr, 0.005, 400.0);
+				} else {
+					PropagateUpdateBackwards (seg, 0.01*dr, 0.02, 200.0);
+				}
 
+			}
+				//printf ("%f %f %f %f \n", target_error, dr, rmin, r[seg->id]);
 			if (dr < rmin) {
 				rmin = dr;
 			}
@@ -237,8 +269,10 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 					if (radius[updateid[cs->id]] + rmin < 0.0) {
 						rmin = MAX(cs->radius - r[cs->id], rmin);
 					}
-					radius[updateid[cs->id]] += rmin;
-					radius[updateid[cs->id]] = MIN(radius[updateid[cs->id]], 1000.0);
+					if (local_update == false) {
+						radius[updateid[cs->id]] += rmin;
+						radius[updateid[cs->id]] = MIN(radius[updateid[cs->id]], 1000.0);
+					}
 					cs = cs->prev;
 				}
 			}
@@ -253,12 +287,13 @@ void SegLearn::PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, f
 {
 
 	//printf ("back: %d->", pseg->id);
-	for (float length = 0; length<max_length;) {
+	float length;
+	for (length = 0; length<max_length;) {
 		length += pseg->length;
 		pseg = pseg->prev;
 		radius[updateid[pseg->id]] += d*exp(-beta*length);
 	}
-	//printf ("%d\n", pseg->id);
+	//printf ("%d (%f->%f)\n", pseg->id, length, exp(-beta*length));
 }
 
 float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm)
