@@ -42,7 +42,8 @@ AC_CHECK_PROG(LD, ld, :, ld, /usr/bin/gxx)
 AC_C_BIGENDIAN
 
 AC_PATH_X
-CFLAGS="-ansi -Wall -Wstrict-prototypes"
+#CFLAGS="-ansi -Wall -Wstrict-prototypes"
+CFLAGS="-Wall -Wstrict-prototypes"
 AC_ARG_ENABLE(debug,
 	[  --enable-debug          set the debug mode], 
 	CFLAGS="$CFLAGS -g -DDEBUG -DDEBUG_OUT",
