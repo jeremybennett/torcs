@@ -81,6 +81,7 @@
 	<attnum name="roughness" val="0"/>
 	<attnum name="roughness wavelength" val="1.0"/>
       </section>
+
       <section name="asphalt-l-both">
 	<attnum name="color R1" val="0.1"/>
 	<attnum name="color G1" val="0.1"/>
@@ -188,11 +189,11 @@
 	<attstr name="bump name" val="bump-as.rgb"/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="1.0"/>
-	<attnum name="rolling resistance" val="0.002"/>
+	<attnum name="friction"           val="0.8"/>
+	<attnum name="rolling resistance" val="0.003"/>
 
-	<attnum name="roughness" val="0"/>
-	<attnum name="roughness wavelength" val="1.0"/>
+	<attnum name="roughness" unit="mm" val="0.8"/>
+	<attnum name="roughness wavelength" unit="cm" val="5.0"/>
       </section>
 
       <section name="concrete3">
@@ -215,6 +216,96 @@
 
 	<attnum name="roughness" val="0"/>
 	<attnum name="roughness wavelength" val="1.0"/>
+      </section>
+
+      <section name="concrete4">
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.3"/>
+	<attnum name="color B1" val="0.3"/>
+	<attnum name="color R2" val="0.4"/>
+	<attnum name="color G2" val="0.4"/>
+	<attnum name="color B2" val="0.4"/>
+	<attstr name="texture name" val="tr-concrete4.rgb"/>
+	<attstr name="texture type" in="discrete, continuous" val="continuous"/>
+	<attnum name="texture size" val="15.0" unit="m"/>
+	<attnum name="texture mipmap" val="0.0" unit="m"/>
+
+	<attstr name="bump name" val="bump-as.rgb"/>
+	<attnum name="bump size" val="2.0" unit="m"/>
+
+	<attnum name="friction"           val="1.1"/>
+	<attnum name="rolling resistance" val="0.0015"/>
+
+	<attnum name="roughness" unit="mm" val="0.5"/>
+	<attnum name="roughness wavelength" unit="cm" val="1.0"/>
+      </section>
+
+      <section name="b-concrete4-concrete-l1">
+	<attnum name="color R1" val="0.1"/>
+	<attnum name="color G1" val="0.4"/>
+	<attnum name="color B1" val="0.1"/>
+	<attnum name="color R2" val="0.2"/>
+	<attnum name="color G2" val="0.5"/>
+	<attnum name="color B2" val="0.2"/>
+	<attstr name="texture name" val="tr-b-concrete4-concrete-l1.rgb"/>
+	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+	<attnum name="texture size" val="1.0" unit="m"/>
+	<attnum name="texture mipmap" val="0.0"/>
+
+	<attstr name="bump name" val=""/>
+	<attnum name="bump size" val="2.0" unit="m"/>
+
+	<attnum name="friction"           val="0.9"/>
+	<attnum name="rolling resistance" val="0.002"/>
+
+	<attnum name="roughness" unit="mm" val="0.8"/>
+	<attnum name="roughness wavelength" unit="cm" val="5.0"/>
+      </section>
+
+      <section name="b-concrete4-concrete-l1p">
+	<attnum name="color R1" val="0.1"/>
+	<attnum name="color G1" val="0.4"/>
+	<attnum name="color B1" val="0.1"/>
+	<attnum name="color R2" val="0.2"/>
+	<attnum name="color G2" val="0.5"/>
+	<attnum name="color B2" val="0.2"/>
+	<attstr name="texture name" val="tr-b-concrete4-concrete-l1p.rgb"/>
+	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+	<attnum name="texture size" val="1.0" unit="m"/>
+	<attnum name="texture mipmap" val="0.0"/>
+
+	<attstr name="bump name" val=""/>
+	<attnum name="bump size" val="2.0" unit="m"/>
+
+	<attnum name="friction"           val="0.9"/>
+	<attnum name="rolling resistance" val="0.002"/>
+
+	<attnum name="roughness" unit="mm" val="0.8"/>
+	<attnum name="roughness wavelength" unit="cm" val="5.0"/>
+      </section>
+
+      <section name="concrete-pits">
+	<attnum name="color R1" val="0.1"/>
+	<attnum name="color G1" val="0.1"/>
+	<attnum name="color B1" val="0.1"/>
+	<attnum name="color R2" val="0.2"/>
+	<attnum name="color G2" val="0.2"/>
+	<attnum name="color B2" val="0.2"/>
+	<attstr name="texture name" val="tr-concrete-pit.rgb"/>
+	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+	<attstr name="texture link with previous" val="yes"/>
+	<attstr name="texture start on boundary" val="yes"/>
+	<attnum name="texture size" val="15.0001" unit="m"/>
+	<attnum name="texture mipmap" val="0.0" unit="m"/>
+
+	<attstr name="bump name" val=""/>
+	<attnum name="bump size" val="2.0" unit="m"/>
+
+	<attnum name="friction"           val="1.1"/>
+	<attnum name="rolling resistance" val="0.05"/>
+
+	<attnum name="roughness" unit="mm" val="0.8"/>
+	<attnum name="roughness wavelength" unit="cm" val="5.0"/>
       </section>
 
       <section name="grass">
