@@ -92,6 +92,15 @@ cGrTrackMap::cGrTrackMap()
 #ifdef GL_ARB_texture_compression
 		// Query if the extension is avaiable at the runtime system (true, if > 0).
 		int compressARB = glutExtensionSupported("GL_ARB_texture_compression");
+		// Check if at least one internal format is vailable. This is a workaround for
+		// driver problems and not a bugfix. According to the specification OpenGL should
+		// choose an uncompressed alternate format if it can't provide the requested
+		// compressed one... but it does not on all cards/drivers.
+		int numformats;
+		glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB, &numformats);
+		if (numformats == 0) {
+			compressARB = 0;
+		}
 #endif //GL_ARB_texture_compression
 
 
@@ -169,6 +178,13 @@ cGrTrackMap::cGrTrackMap()
 			texturesize <<= 1;
 		}
 		texturesize >>= 1;
+
+		// Get maximum OpenGL texture size and reduce texturesize if necessary.
+		int maxOpenGLtexturesize;
+		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxOpenGLtexturesize);
+		if (texturesize > maxOpenGLtexturesize) {
+			texturesize = maxOpenGLtexturesize;
+		}
 
 		// Compute an estimate of the overall width and height of the track in [m].
 		track_width = track_max_x - track_min_x;
