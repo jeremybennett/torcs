@@ -245,10 +245,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 
 	/* check if we are on the way */
-	tdble ax = myc->currentpathseg->getDir()->x;
-	tdble ay = myc->currentpathseg->getDir()->y;
 	tdble bx = cos(car->_yaw), by = sin(car->_yaw);
-	tdble back = (ax*bx + ay*by) / (sqrt(ax*ax + ay*ay)*sqrt(bx*bx + by*by));
 
 	/* try to avoid flying */
 	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
@@ -259,16 +256,14 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (fabs(steer) > 1.0) steer/=fabs(steer);
 
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
-		targetAngle = atan2(myc->destpathseg->getDir()->y, myc->destpathseg->getDir()->x);
+		//targetAngle = atan2(myc->destpathseg->getDir()->y, myc->destpathseg->getDir()->x);
+		targetAngle = atan2(myc->currentpathseg->getDir()->y, myc->currentpathseg->getDir()->x);
 		targetAngle -= car->_yaw;
 		NORM_PI_PI(targetAngle);
 		if (myc->derror > myc->PATHERR) {
 			b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
 			tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
 			steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
-		}
-		if (acos(back) > PI*myc->MAXANGLE/180.0) {
-			b3 += (myc->getSpeed()/myc->STABLESPEED)*acos(back-PI*myc->MAXANGLE/180.0);
 		}
 	}
 
@@ -336,7 +331,6 @@ static void drive(int index, tCarElt* car, tSituation *situation)
     }
 
 	/* check if we are stuck, try to get unstuck */
-	bx = cos(car->_yaw), by = sin(car->_yaw);
 	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
 	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 

@@ -21,7 +21,7 @@
 	this class holds some properties of the car
 */
 
-#include "mycar.h"
+#include "berniw.h"
 
 #ifdef DMALLOC
 #include "dmalloc.h"
@@ -108,6 +108,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	fuelchecked = false;
 	startmode = true;
 	trtime = 0.0;
+	derror = 0.0;
 
 	/*
 		DIST; MAXRELAX; MAXANGLE; ACCELINC; MININVSLIP; SFTUPRATIO; SFTDOWNRATIO; SFTDOWNSTEER;
@@ -190,8 +191,6 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 
 	mass = carmass + car->priv->fuel;
 	updateDError(track);
-	//derror =  track->distGFromPoint(pf->getPathSeg(currentsegid)->getLoc(), pf->getPathSeg(currentsegid)->getDir(), &currentpos);
-	derrorsgn = pf->pathSide(getCurrentSegId(), getCurrentPos());
 	trtime += situation->deltaTime;
 	deltapitch = fabs(track->getSegmentPtr(currentsegid)->getKgamma() + me->_pitch);
 }
@@ -314,6 +313,5 @@ void MyCar::updateDError(TrackDesc* track)
 	v3d pos = currentpos;
 	loc.z = 0.0; dir.z = 0.0; pos.z = 0.0;
 	derror =  track->distGFromPoint(&loc, &dir, &pos);
+	derrorsgn = pf->pathSide(getCurrentSegId(), getCurrentPos());
 }
-
-

@@ -1218,7 +1218,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	int m = 0;
 	for (int i = 0; i < n; i++) {
 		if (o[i].dist < COLLDIST/3) {
-			if (o[i].time < minTime) {
+			if (o[i].time < minTime && o[i].time > 0.0) {
 				minTime = o[i].time;
 				minIndex = i;
 			}
@@ -1308,10 +1308,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		} else {
 			double pathtocarsgn = sign(pathtomiddle - d);
 			y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
-			/*if (y[1] > 0.0 && track->getSegmentPtr(trackSegId)->getType() == TR_RGT) {
-				if (fabs(y[1]) > w - (0.5*myc->CARWIDTH)) y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
-			} else if (y[1] < 0.0 && track->getSegmentPtr(trackSegId)->getType() == TR_LFT) {
-			    if (fabs(y[1]) > w - (0.5*myc->CARWIDTH)) y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;*/
 			if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 				y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
 			}
@@ -1402,7 +1398,7 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				o[n].speed = ocar[i].getSpeed()*o[n].cosalpha;
 				o[n].dist = track->diffSegId(trackSegId, seg);
 				o[n].collcar = &ocar[i];
-				o[n].time = o[n].dist/MIN((myc->getSpeed() - o[n].speed), (myc->getSpeed() - sqrt(getPathSeg(seg)->getSpeedsqr())));
+				o[n].time = o[n].dist/(myc->getSpeed() - o[n].speed);
 				o[n].strdist = dist(myc->getCurrentPos(), ocar[i].getCurrentPos());
 				o[n].disttomiddle = track->distToMiddle(seg, ocar[i].getCurrentPos());
 				o[n].speedsqr = sqr(o[n].speed);
