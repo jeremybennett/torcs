@@ -1,0 +1,48 @@
+# DO NOT DELETE
+
+tanhoj.o: /usr/include/stdlib.h /usr/include/features.h
+tanhoj.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+tanhoj.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+tanhoj.o: /usr/include/sys/types.h /usr/include/bits/types.h
+tanhoj.o: /usr/include/time.h /usr/include/endian.h
+tanhoj.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+tanhoj.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+tanhoj.o: /usr/include/sys/sysmacros.h /usr/include/alloca.h
+tanhoj.o: /usr/include/stdio.h
+tanhoj.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stdarg.h
+tanhoj.o: /usr/include/libio.h /usr/include/_G_config.h
+tanhoj.o: /usr/include/bits/stdio_lim.h /usr/include/string.h
+tanhoj.o: /usr/include/math.h /usr/include/bits/huge_val.h
+tanhoj.o: /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h
+tanhoj.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/tgf.h /usr/include/GL/glut.h
+tanhoj.o: /usr/include/GL/gl.h /usr/include/GL/glu.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/track.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/ttypes.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/car.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/raceman.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/robot.h
+tanhoj.o: /home/torcs/sb00/torcs/export/include/robottools.h common.h
+common.o: /usr/include/stdlib.h /usr/include/features.h
+common.o: /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h
+common.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h
+common.o: /usr/include/sys/types.h /usr/include/bits/types.h
+common.o: /usr/include/time.h /usr/include/endian.h
+common.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+common.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+common.o: /usr/include/sys/sysmacros.h /usr/include/alloca.h
+common.o: /usr/include/stdio.h
+common.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stdarg.h
+common.o: /usr/include/libio.h /usr/include/_G_config.h
+common.o: /usr/include/bits/stdio_lim.h /usr/include/string.h
+common.o: /usr/include/math.h /usr/include/bits/huge_val.h
+common.o: /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h
+common.o: /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/float.h
+common.o: /home/torcs/sb00/torcs/export/include/tgf.h /usr/include/GL/glut.h
+common.o: /usr/include/GL/gl.h /usr/include/GL/glu.h
+common.o: /home/torcs/sb00/torcs/export/include/track.h
+common.o: /home/torcs/sb00/torcs/export/include/ttypes.h
+common.o: /home/torcs/sb00/torcs/export/include/car.h
+common.o: /home/torcs/sb00/torcs/export/include/raceman.h
+common.o: /home/torcs/sb00/torcs/export/include/robot.h
+common.o: /home/torcs/sb00/torcs/export/include/robottools.h common.h

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : lliaw.xml
+    created              : Sat Mar 18 23:19:52 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="lliaw" type="robotdef">
+  <section name="Robots">
+
+    <section name="index">
+      <section name="1">
+	<attstr name="name" val="LLiaw"></attstr>
+	<attstr name="desc" val="A robot dedicated to William"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+	<attstr name="car name" val="viper-gts-r"></attstr>
+	<attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="14"></attnum>
+	<attnum name="red" val="0.0"></attnum>
+	<attnum name="green" val="0.5"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+
+    </section>
+  </section>
+</params>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : michigan.xml
+    created              : Sun Mar 19 00:18:38 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+]>
+
+<params name="MICHIGAN SPEEDWAY" type="trackdef" mode="mw">
+
+  <section name="Surfaces">
+    <section name="List">
+      &default-surfaces;
+    </section>
+  </section>
+
+  <section name="Header">
+    <attstr name="name"              val="Michigan Speedway"></attstr>
+    <attnum name="version"           val="2"></attnum>
+    <attstr name="author"            val="E.Espie"></attstr>
+    <attstr name="description"       val="This is an D-shaped oval with banking"></attstr>
+  </section>
+
+  <section name="Graphic">
+    <attstr name="3d description" val="michigan.ac"></attstr>
+
+    <attstr name="background image" val="background.png"></attstr>
+    <attnum name="background color R" val="0.28125"></attnum>
+    <attnum name="background color G" val="0.4375"></attnum>
+    <attnum name="background color B" val="0.75"></attnum>
+
+    <section name="Environment Mapping">
+      <section name="1">
+	<attstr name="env map image" val="env.rgb"></attstr>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="12"></attnum>
+      <attnum name="border margin" unit="m" val="100"></attnum>
+      <attnum name="border step" unit="m" val="30"></attnum>
+      <attnum name="border height" unit="m" val="0"></attnum>
+      <attstr name="orientation" val="anti-clockwise"></attstr>
+    </section>
+  </section>
+
+  <section name="Main Track">
+
+    <attstr name="surface" in="asphalt,grass,sand" val="asphalt-lines"></attstr>
+    <attnum name="width" unit="m" val="18.0"></attnum>
+
+    <attstr name="rside surface"  val="grass"></attstr>
+    <attnum name="rside width"    val="0.0"></attnum>
+
+    <attstr name="lside surface"  val="concrete"></attstr>
+    <attnum name="lside width"    val="15.0"></attnum>
+    <attstr name="lside type" in="level,tangent" val="level"></attstr>
+
+    <section name="segments">
+      <!-- first segment -->
+
+      <section name="0">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="1970"></attnum>
+	<attnum name="arc" unit="deg" val="34"></attnum>
+	<attnum name="z start left" unit="ft" val="0"></attnum>
+	<attnum name="z start right" unit="ft" val="9.5"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+      </section>
+
+      <section name="100">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="1970"></attnum>
+	<attnum name="arc" unit="deg" val="18"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attstr name="profil" val="spline"></attstr>
+	<attnum name="profil steps" val="35"></attnum>
+      </section>
+
+      <section name="200">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="560"></attnum>
+	<attnum name="arc" unit="deg" val="128"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="14"></attnum>
+      </section>
+
+
+      <section name="400">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="ft" val="800"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="4"></attnum>
+	<attstr name="profil" val="spline"></attstr>
+	<attnum name="profil steps" val="48"></attnum>
+      </section>
+
+
+      <section name="500">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="ft" val="622.190326"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="4"></attnum>
+      </section>
+
+
+      <section name="600">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="ft" val="800"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="14"></attnum>
+	<attstr name="profil" val="spline"></attstr>
+	<attnum name="profil steps" val="48"></attnum>
+      </section>
+
+
+      <section name="700">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="560"></attnum>
+	<attnum name="arc" unit="deg" val="128"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="14"></attnum>
+      </section>
+
+
+      <section name="800">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="1970"></attnum>
+	<attnum name="arc" unit="deg" val="18"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+	<attstr name="profil" val="spline"></attstr>
+	<attnum name="profil steps" val="35"></attnum>
+      </section>
+
+      <section name="900">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="ft" val="1970"></attnum>
+	<attnum name="arc" unit="deg" val="34"></attnum>
+	<attnum name="z start left" unit="ft" val="0"></attnum>
+	<attnum name="z start right" unit="ft" val="9.5"></attnum>
+	<attnum name="z end left" unit="ft" val="0"></attnum>
+	<attnum name="z end right" unit="ft" val="9.5"></attnum>
+      </section>
+
+    </section>
+  </section>
+
+</params>
+

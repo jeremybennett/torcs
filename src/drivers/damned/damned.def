@@ -1,0 +1,11 @@
+;
+; damned.def
+;
+
+LIBRARY	damned
+
+CODE	PRELOAD MOVEABLE DISCARDABLE
+DATA	PRELOAD SINGLE
+
+EXPORTS
+damned

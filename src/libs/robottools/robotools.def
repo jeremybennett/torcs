@@ -1,0 +1,11 @@
+LIBRARY
+SECTIONS .data READ WRITE SHARED
+EXPORTS
+	?RtTrackGetWidth@@YAMPAUtrackSeg@@M@Z
+	?RtTrackHeightL@@YAMPAUtTrkLocPos@@@Z
+	?RtTrackLocal2Global@@YAXPAUtTrkLocPos@@PAM1H@Z
+	?RtTrackHeightG@@YAMPAUtrackSeg@@MM@Z
+	?RtTrackSideTgAngleL@@YAMPAUtTrkLocPos@@@Z
+	?RtTrackSideNormalG@@YAXPAUtrackSeg@@MMHPAUt3Dd@@@Z
+	?RtTrackGlobal2Local@@YAXPAUtrackSeg@@MMPAUtTrkLocPos@@H@Z
+	?RtTrackSurfaceNormalL@@YAXPAUtTrkLocPos@@PAUt3Dd@@@Z

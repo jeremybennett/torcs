@@ -1,0 +1,65 @@
+/***************************************************************************
+
+    file                 : ssggraph.cpp
+    created              : Thu Aug 17 23:19:19 CEST 2000
+    copyright            : (C) 2000 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include <GL/gl.h>
+
+#include <tgf.h>
+#include <graphic.h>
+
+#include "grmain.h"
+
+static int
+graphInit(int idx, void *pt)
+{
+    tGraphicItf *itf = (tGraphicItf*)pt;
+    
+    itf->initview      = initView;
+    itf->inittrack     = initTrack;
+    itf->initcars      = initCars;
+    itf->refresh       = refresh;
+    itf->shutdowncars  = shutdownCars;
+    itf->shutdowntrack = shutdownTrack;
+    
+    return 0;
+}
+
+/*
+ * Function
+ *	ssggraph
+ *
+ * Description
+ *	module entry point
+ *
+ * Parameters
+ *	
+ *
+ * Return
+ *	
+ */
+extern "C" int
+ssggraph(tModInfo *modInfo)
+{
+    modInfo->name = "ssggraph";		        		/* name of the module (short) */
+    modInfo->desc = "The Graphic Library using PLIB ssg";	/* description of the module (can be long) */
+    modInfo->fctInit = graphInit;				/* init function */
+    modInfo->gfId = 1;						/* v 1  */
+
+    return 0;
+}

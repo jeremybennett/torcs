@@ -1,0 +1,31 @@
+#! /bin/bash
+
+##############################################################################
+#
+#    file                 : torcs
+#    created              : Sat Sep 11 20:20:04 CEST 1999
+#    copyright            : (C) 1999 by Eric Espie                         
+#    email                : torcs@free.fr   
+#    version              : $Id$                                  
+#
+##############################################################################
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+##############################################################################
+
+DEFAULT_RUNTIME=/usr/local/games/torcs
+
+if [ -d $DEFAULT_RUNTIME ]
+then
+    cd $DEFAULT_RUNTIME
+    ./torcs
+    exit 0
+fi
+
+echo "TORCS location not found (run make install first)"
+	
+	

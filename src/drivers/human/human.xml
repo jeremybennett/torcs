@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : human.xml
+    created              : Sat Mar 18 23:16:52 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params mode="mw" type="robotdef" name="human">
+  <section name="Robots">
+
+    <section name="index">
+
+      <section name="1">
+        <attstr name="name" val="Player-p406"></attstr>
+        <attstr name="car name" val="p406"></attstr>
+        <attnum name="race number" val="0.000000"></attnum>
+        <attnum name="red" val="1.000000"></attnum>
+        <attnum name="green" val="1.000000"></attnum>
+        <attnum name="blue" val="0.500000"></attnum>
+      </section>
+      <section name="2">
+	<attstr name="name" val="Player-Buggy"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="buggy"></attstr>
+        <attstr name="category" val="offroad-r-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="3">
+	<attstr name="name" val="Player-Nascar"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="cg-nascar-rwd"></attstr>
+        <attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="4">
+	<attstr name="name" val="Player-Acura"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="acura-nsx-sz"></attstr>
+        <attstr name="category" val="torcs-r-b"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="5">
+	<attstr name="name" val="Player-Viper"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="viper-gts-r"></attstr>
+        <attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="6">
+	<attstr name="name" val="Player-Lotus"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="lotus-gt1"></attstr>
+        <attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="7">
+	<attstr name="name" val="Player-McLaren"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="mclaren-f1"></attstr>
+        <attstr name="category" val="torcs-r-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="8">
+	<attstr name="name" val="Player-Fun"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="torcs"></attstr>
+        <attstr name="category" val="free"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="9">
+	<attstr name="name" val="Player-Nascar-fwd"></attstr>
+	<attstr name="desc" val="Human driver"></attstr>
+	<attstr name="author" val="Eric Espie"></attstr>
+        <attstr name="car name" val="cg-nascar-fwd"></attstr>
+        <attstr name="category" val="torcs-f-a"></attstr>
+	<attnum name="race number" val="20"></attnum>
+	<attnum name="red" val="1.0"></attnum>
+	<attnum name="green" val="1.0"></attnum>
+	<attnum name="blue" val="0.5"></attnum>
+      </section>
+      <section name="10">
+        <attstr name="name" val=""></attstr>
+      </section>
+
+    </section>
+  </section>
+</params>

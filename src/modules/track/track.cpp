@@ -1,0 +1,195 @@
+/***************************************************************************
+
+    file                 : track.cpp
+    created              : Sun Jan 30 22:54:56 CET 2000
+    copyright            : (C) 2000 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
+#include <tgf.h>
+#include <track.h>
+#include "trackinc.h"
+
+
+const tdble DEGPRAD = 180.0 / PI;   /* degrees per radian */
+
+static tTrack *theTrack;
+static tRoadCam *theCamList;
+
+/*
+ * External function used to (re)build a track
+ * from the track file
+ */
+tTrack *
+TrackBuildv1(char *trackfile)
+{
+    void	*TrackHandle;
+    
+    theTrack = (tTrack*)calloc(1, sizeof(tTrack));
+    theCamList = (tRoadCam*)NULL;
+
+    TrackHandle = GfParmReadFile(trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    
+    theTrack->filename = strdup(trackfile);
+
+    GetTrackHeader(theTrack, TrackHandle);
+
+    
+    switch(theTrack->version) {
+    case 0:
+	ReadTrack0(theTrack, TrackHandle, &theCamList);
+	break;
+    case 1:
+	ReadTrack1(theTrack, TrackHandle, &theCamList);
+	break;
+    case 2:
+	ReadTrack2(theTrack, TrackHandle, &theCamList, 0);
+	break;
+    }
+
+    GfParmReleaseHandle(TrackHandle);
+    return theTrack;
+}
+
+tTrack *
+TrackBuildEx(char *trackfile)
+{
+    void	*TrackHandle;
+
+    theTrack = (tTrack*)calloc(1, sizeof(tTrack));
+    theCamList = (tRoadCam*)NULL;
+
+    TrackHandle = GfParmReadFile(trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    
+    theTrack->filename = strdup(trackfile);
+
+    GetTrackHeader(theTrack, TrackHandle);
+
+    ReadTrack2(theTrack, TrackHandle, &theCamList, 1);
+    
+    GfParmReleaseHandle(TrackHandle);
+    return theTrack;
+}
+
+
+/*
+ * Function
+ *	GetTrackHeader
+ *
+ * Description
+ *	Get the header of the track file
+ *	in order to know the number of segments
+ * Parameters
+ *	
+ *
+ * Return
+ *	
+ *
+ * Remarks
+ *	
+ */
+void 
+GetTrackHeader(tTrack *theTrack, void *TrackHandle)
+{
+    tTrackGraphicInfo	*graphic;
+    char		**env;
+    int			i;
+    char		buf[256];
+    char		*s;
+    
+    theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
+    theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
+    theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
+    theTrack->author = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, "none");
+
+    /* Graphic part */
+    graphic = &theTrack->graphic;
+    
+    graphic->background = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND,
+				       "background.png");
+    graphic->bgtype = (int)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGTYPE, (char*)NULL, 0.0);
+    if (graphic->bgtype > 2) {
+	graphic->background2 = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND2,
+					    "background.png");
+    }
+    graphic->bgColor[0] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_R, (char*)NULL, 0.0);
+    graphic->bgColor[1] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_G, (char*)NULL, 0.0);
+    graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1);
+    
+    /* env map images */
+    sprintf(buf, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
+    graphic->envnb = GfParmGetEltNb(TrackHandle, buf);
+    if (graphic->envnb < 1) {
+	graphic->envnb = 1;
+    }
+    graphic->env = (char**)calloc(graphic->envnb, sizeof(char*));
+    env = graphic->env;
+    for (i = 1; i <= graphic->envnb; i++) {
+	sprintf(buf, "%s/%s/%d", TRK_SECT_GRAPH, TRK_LST_ENV, i);
+	*env = GfParmGetStr(TrackHandle, buf, TRK_ATT_ENVNAME, "env.png");
+	env ++;
+    }
+
+    theTrack->nseg = 0;
+
+    s = strrchr(theTrack->filename, '/');
+    if (s == NULL) {
+	s = theTrack->filename;
+    } else {
+	s++;
+    }
+    theTrack->internalname = strdup(s);
+    s = strrchr(theTrack->internalname, '.');
+    if (s != NULL) {
+	*s = 0;
+    }
+
+    graphic->turnMarksInfo.height = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HEIGHT, NULL, 1);
+    graphic->turnMarksInfo.width  = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_WIDTH,  NULL, 1);
+    graphic->turnMarksInfo.vSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_VSPACE, NULL, 0);
+    graphic->turnMarksInfo.hSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HSPACE, NULL, 0);
+    
+    
+}
+
+
+
+void
+TrackShutdown(void)
+{
+    tTrackSeg	*curSeg;
+    tTrackSeg	*nextSeg;
+    int		i;
+    
+    nextSeg = theTrack->seg->next;
+    do {
+	curSeg = nextSeg;
+	nextSeg = nextSeg->next;
+	free(curSeg);
+    } while (curSeg != theTrack->seg);
+    free(theTrack->name);
+    free(theTrack->filename);
+    free(theTrack->author);
+    for (i = 0; i < theTrack->graphic.envnb; i++) {
+	free(theTrack->graphic.env[i]);
+    }
+    free(theTrack->graphic.env);
+    free(theTrack);
+}
