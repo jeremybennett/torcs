@@ -3,8 +3,6 @@
 
 <xsl:output method="html"/>
 
-<!--  Author Eugen Treise -->
-
 <!--	This xsl file was made to format results-*.xml files, which are created by torcs
 		after a race, into readable html files.
 -->
@@ -50,7 +48,7 @@
 
 <!-- Template for Header and Current sections -->
 <xsl:template name="Header">
-	<h4>Section <xsl:value-of select="@name"/>: </h4>
+	<h4>Section <xsl:value-of select="@name"/>:</h4>
 	<!-- print all attributes and their values of all child elements in the current section -->
 	<xsl:for-each select="*">
 		<xsl:value-of select="@name"/> = <xsl:value-of select="@val"/> <br/>
@@ -78,7 +76,7 @@
 <!-- Template for Race sections with several drivers -->
 <xsl:template name="Race">
 	<xsl:for-each select="section[@name='Results']/section">
-		<h3><xsl:value-of select="@name"/> </h3>
+		<h3><xsl:value-of select="@name"/></h3>
 		<xsl:for-each select="*[@val]">
 			<xsl:value-of select="@name"/> = <xsl:value-of select="@val"/> <br/>
 		</xsl:for-each>
@@ -86,7 +84,7 @@
 		<table border="1">
 		<!-- Table Head -->
 		<tr>
-		<td><b>Position</b></td>
+		<th>Rank</th>
 		<xsl:for-each select="section[@name='Rank']/section[1]/*">
 			<th><xsl:value-of select="@name"/></th>
 		</xsl:for-each>
@@ -118,7 +116,7 @@
 
 			<xsl:variable name="BGColor">
 				<xsl:choose>
-					<xsl:when test="attnum[@name='damages' and @val>=10000]">
+					<xsl:when test="attnum[@name='dammages' and @val>10000]">
 						<xsl:value-of select="'lightgrey'"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -142,7 +140,9 @@
 			<td> <xsl:value-of select="@name"/> </td>
 			<xsl:for-each select="*">
 				<td>
-				<xsl:call-template name="FormatedOutput"/>
+				<xsl:call-template name="FormatedOutput">
+					<xsl:with-param name="TimeDiff" select="1"/>
+				</xsl:call-template>
 				</td>
 			</xsl:for-each>
 			</tr>
@@ -161,7 +161,7 @@
 		<xsl:for-each select="*[@val]">
 			<xsl:value-of select="@name"/> = <xsl:value-of select="@val"/> <br/>
 		</xsl:for-each>
-		<xsl:value-of select="count(section)"/> laps <br/>
+		<xsl:value-of select="count(section)"/> laps<br/>
 		<xsl:variable name="TotalTime" select="sum(//attnum[@name='time']/@val)"/>
 		total practice time: <xsl:value-of select="floor($TotalTime div 60)"/> min <xsl:value-of select="round($TotalTime mod 60)"/> s<br/>
 		<p>
@@ -198,7 +198,7 @@
 	<table border="1">
 	<!-- Table header -->
 	<tr>
-		<th>Position</th>
+		<th>Rank</th>
 		<th>Name</th>
 		<th>Points</th>
 	</tr>
@@ -243,7 +243,7 @@
 		<!-- Table content (row) -->
 		<td> <xsl:value-of select="@name"/> </td>
 		<td> <xsl:value-of select="attstr[@name='name']/@val"/> </td>
-		<td> <xsl:value-of select="number(attnum[@name='points']/@val)"/> </td>
+		<td> <xsl:value-of select="attnum[@name='points']/@val"/> </td>
 		</tr>
 	</xsl:for-each>
 
@@ -252,22 +252,50 @@
 </xsl:template>
 
 
-<!-- Print values, speed and time will be formated. -->
+<!-- Print values; speed and time will be formated. -->
 <xsl:template name="FormatedOutput">
+	<!-- When parameter TimeDiff is != 0, show the values of the 'time' column as difference to the value in the first row. -->
+	<xsl:param name="TimeDiff" select="0"/>
 	<xsl:choose>
 		<xsl:when test="contains(@name,'speed')">
 			<!-- convert speed from m/s to km/h -->
 			<xsl:value-of select="round(3.6*@val)"/>
 		</xsl:when>
+		<xsl:when test="@name = 'time' and $TimeDiff and ../../section[1]/attnum[@name='laps']/@val > ../attnum[@name='laps']/@val">
+			<!-- when the winner overlaped this driver, show the difference of laps count instead of time -->
+			<xsl:text>+</xsl:text>
+			<xsl:variable name="LapsBehind" select="../../section[1]/attnum[@name='laps']/@val - ../attnum[@name='laps']/@val"/>
+			<xsl:value-of select="$LapsBehind"/>
+			<xsl:text> Lap</xsl:text>
+			<xsl:if test="$LapsBehind > 1">s</xsl:if>
+		</xsl:when>
+		<xsl:when test="@name = 'time' and $TimeDiff and ../@name != 1">
+			<!-- show the time difference to the winner with a plus sign -->
+			<xsl:text>+</xsl:text>
+			<xsl:call-template name="FormatTime">
+				<xsl:with-param name="time" select="@val - ../../section[1]/attnum[@name='time']/@val"/>
+			</xsl:call-template>
+		</xsl:when>
 		<xsl:when test="contains(@name,'time')">
-			<!-- convert time from s to min:s -->
-			<!-- (mod returns not exact values, therefore round to have 3 numbers behind the decimal point) -->
-			<xsl:value-of select="floor(@val div 60)"/>:<xsl:value-of select="round((@val mod 60)*1000) div 1000"/>
+			<!-- print time -->
+			<xsl:call-template name="FormatTime">
+				<xsl:with-param name="time" select="@val"/>
+			</xsl:call-template>
 		</xsl:when>
 		<xsl:otherwise>
 			<xsl:value-of select="@val"/>
 		</xsl:otherwise>
 	</xsl:choose>
+</xsl:template>
+
+
+<!-- Converts positive time values from s to min:s. -->
+<xsl:template name="FormatTime">
+	<xsl:param name="time"/>
+	<xsl:value-of select="floor($time div 60)"/>
+	<xsl:text>:</xsl:text>
+	<!-- (mod returns not exact values, therefore format to have 3 digits behind the decimal point) -->
+	<xsl:value-of select="format-number(($time mod 60),'00.000')"/>
 </xsl:template>
 
 </xsl:stylesheet>
