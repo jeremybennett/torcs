@@ -16,26 +16,15 @@
 
 <params name="" type="template" mode="mw">
 
-
-<!-- The car 3D model is based on a 3DCAFE.COM model -->
-
- 
-
   <section name="Car">
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="52.0"></attnum>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-  </section>
-
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="16"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="9"></attnum>
   </section>
-
 
   <section name="Gearbox">
-    <attnum name="shift time" unit="s" val="0.20"></attnum>
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"></attnum>
@@ -50,13 +39,13 @@
 	<attnum name="ratio" min="0" max="5" val="1.75"></attnum>
       </section>
       <section name="4">
-	<attnum name="ratio" min="0" max="5" val="1.4"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.3"></attnum>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val="1.11"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.9"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.82"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.62"></attnum>
       </section>
     </section>
   </section>
@@ -123,6 +112,7 @@
   </section>
 
 </params>
+
 
 
 
