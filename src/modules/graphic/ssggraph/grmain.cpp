@@ -289,7 +289,7 @@ refresh(tSituation *s)
     TRACE_GL("refresh: start");
 
     START_PROFILE("grRefreshSound*");
-    grRefreshSound(s);
+    grRefreshSound(s, grScreens[0]->getCurrentCar());
     STOP_PROFILE("grRefreshSound*");
 
     START_PROFILE("grDrawBackground/glClear");

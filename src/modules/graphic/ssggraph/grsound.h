@@ -24,7 +24,7 @@
 
 extern void grInitSound(void);
 extern void grShutdownSound(void);
-extern void grRefreshSound(tSituation *s);
+extern void grRefreshSound(tSituation *s, tCarElt *car);
 
 #endif /* _GRSOUND_H_ */ 
 

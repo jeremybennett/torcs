@@ -21,6 +21,7 @@
   <section name="Graphic Objects">
     <attstr name="env" val="FOCW61.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
 
     <section name="Ranges">
       <section name="1">

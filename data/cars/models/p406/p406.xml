@@ -18,9 +18,8 @@
 
     
   <section name="Graphic Objects">
-    <attstr name="env" val="p406.ac"/>
-    <attstr name="bonnet" val="p406.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
+    <attstr name="shadow texture" val="shadow.rgb"/>
     <attstr name="tachometer texture" val="rpm7000.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="8000" unit="rpm"/>
@@ -30,7 +29,7 @@
 
     <section name="Ranges">
       <section name="1">
-	<attnum name="distance" val="500"/>
+	<attnum name="threshold" val="0"/>
 	<attstr name="car" val="p406.ac"/>
       </section>
     </section>
@@ -45,12 +44,12 @@
 
   <section name="Car">
     <attstr name="category" val="Track-FWD-GrB"/>    
-    <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.60"/>
-    <attnum name="body width" unit="m" min="0.8" max="2.0" val="1.76"/>
+    <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.64"/>
+    <attnum name="body width" unit="m" min="0.8" max="2.0" val="1.78"/>
     <attnum name="body height" unit="m" min="1.1" max="3.0" val="1.16"/>
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.6"/>
-    <attnum name="overall width"  unit="m" min="1.2" max="2.0" val="1.76"/>
+    <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.64"/>
+    <attnum name="overall width"  unit="m" min="1.2" max="2.0" val="1.78"/>
     <attnum name="mass" unit="kg" min="600.0" max="2500" val="1000.0"/>
     <attnum name="GC height" unit="m" min="0.25" max="1.0" val="0.20"/>
     <!-- weight bias -->

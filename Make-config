@@ -45,8 +45,8 @@ INSTALL_SCRIPT = ${INSTALL_PROGRAM}
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 
 CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
-CXXFLAGS =  -Wall -Wstrict-prototypes -O3 -march=i686 ${CFLAGSD}
-CFLAGS   =  -Wall -Wstrict-prototypes -O3 ${CFLAGSD}
+CXXFLAGS =  -Wall -Wstrict-prototypes -g -DDEBUG -DDEBUG_OUT -march=i686 ${CFLAGSD}
+CFLAGS   =  -Wall -Wstrict-prototypes -g -DDEBUG -DDEBUG_OUT ${CFLAGSD}
 
 #EXT_LIBS = -lpthread -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lfreeglut-1.3 -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
 EXT_LIBS = -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lfreeglut-1.3 -lGLU -lGL -lpng -lz -ldl -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 

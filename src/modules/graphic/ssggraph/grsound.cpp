@@ -121,11 +121,10 @@ grShutdownSound(void)
 
 
 void
-grRefreshSound(tSituation *s)
+grRefreshSound(tSituation *s, tCarElt *car)
 {
     float	mpitch;
     float	skvol;
-    tCarElt	*car = s->cars[/* s->current */ 0];
     int		i;
 
     mpitch = (float)(car->_enginerpm) / 600.0;

@@ -560,7 +560,15 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     int dy;
     int drawCurrent;
     int drawLaps = grLeaderFlag - 1;
+    int current = 0;
 
+    for (i = 0; i < s->_ncars; i++) {
+	if (car == s->cars[i]) {
+	    current = i;
+	    break;
+	}
+    }
+    
     x = grBoardWinx + 5;
     x2 = grBoardWinx + 170;
     y = grBoardWiny + 10;
@@ -577,19 +585,19 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     glEnd();
     glDisable(GL_BLEND);
 
-    if (/* s->current */ 0+1 > maxi) {
+    if (current + 1 > maxi) {
 	drawCurrent = 1;
     } else {
 	drawCurrent = 0;
     }
     for (j = maxi; j > 0; j--) {
 	if (drawCurrent) {
-	    i = /* s->current */ 0+1;
+	    i = current + 1;
 	    drawCurrent = 0;
 	} else {
 	    i = j;
 	}
-	if (i == /* s->current */ 0+1) {
+	if (i == current + 1) {
 	    clr = grCarInfo[car->index].iconColor;
 	    drawCurrent = 0;
 	} else {

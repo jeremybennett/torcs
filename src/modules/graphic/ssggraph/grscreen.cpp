@@ -47,9 +47,12 @@ cGrScreen::cGrScreen(int myid)
     boardCam = NULL;
     bgCam = NULL;
     curCamHead = 0;
+    drawCurrent = 0;
+    active = 0;
     selectNextFlag = 0;
     selectPrevFlag = 0;
     memset(cams, 0, sizeof(cams));
+    viewRatio = 1.33;
 }
 
 cGrScreen::~cGrScreen()
@@ -166,6 +169,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	for (i = 0; i < (s->_ncars - 1); i++) {
 	    if (curCar == s->cars[i]) {
 		curCar = s->cars[i + 1];
+		curCar->priv.collision = 0;
 		break;
 	    }
 	}
@@ -175,6 +179,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	for (i = 1; i < s->_ncars; i++) {
 	    if (curCar == s->cars[i]) {
 		curCar = s->cars[i - 1];
+		curCar->priv.collision = 0;
 		break;
 	    }
 	}

@@ -452,6 +452,7 @@ typedef struct CarElt
 #define PRM_ENV			"env"
 #define PRM_BONNET		"bonnet"
 #define PRM_WHEEL_TEXTURE	"wheel texture"
+#define PRM_SHADOW_TEXTURE	"shadow texture"
 
 #define PRM_MIN_TQ_BIAS		"min torque bias"
 #define PRM_MAX_TQ_BIAS		"max torque bias"
