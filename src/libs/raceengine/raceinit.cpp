@@ -67,7 +67,7 @@ ReInit(void)
     ReInfo = (tRmInfo *)calloc(1, sizeof(tRmInfo));
     ReInfo->s = (tSituation *)calloc(1, sizeof(tSituation));
     ReInfo->modList = &ReRaceModList;
-    ReInfo->_reParam = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    ReInfo->_reParam = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
     GfOut("Loading Track Loader...\n");
     dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "track", "");
@@ -108,7 +108,8 @@ ReStartNewRace(void * /* dummy */)
     void	*params = ReInfo->params;
    
     GfParmSetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
-    GfParmSetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_RACE, NULL, 1);
+    GfParmSetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
+    GfParmSetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1);
     ReStateManage();
 }
 
@@ -223,11 +224,12 @@ initStartingGrid(void)
     tdble	speedInit;
     tdble	heightInit;
     tCarElt	*car;
-    void	*trHdle;
     char	*pole;
+    void	*trHdle = ReInfo->track->params;
+    void	*params = ReInfo->params;
 
-    trHdle = ReInfo->track->params;
-
+    sprintf(path, "%s/%s", ReInfo->_reRaceName, RM_SECT_STARTINGGRID);
+    
     /* Search for the first turn for find the pole side */
     curseg = ReInfo->track->seg->next;
     while (curseg->type == TR_STR) {
@@ -236,9 +238,9 @@ initStartingGrid(void)
     }
     /* Set the pole for the inside of the first turn */
     if (curseg->type == TR_LFT) {
-	pole = GfParmGetStr(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_POLE, "left");
+	pole = GfParmGetStr(params, path, RM_ATTR_POLE, "left");
     } else {
-	pole = GfParmGetStr(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_POLE, "right");
+	pole = GfParmGetStr(params, path, RM_ATTR_POLE, "right");
     }
     /* Tracks definitions can force the pole side */
     pole = GfParmGetStr(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_POLE, pole);
@@ -252,16 +254,16 @@ initStartingGrid(void)
     }
     wi2 = ReInfo->track->width * 0.5;
 
-    rows = (int)GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_ROWS, (char*)NULL, 2);
+    rows = (int)GfParmGetNum(params, path, RM_ATTR_ROWS, (char*)NULL, 2);
     rows = (int)GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_ROWS, (char*)NULL, rows);
-    d1 = GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_TOSTART, (char*)NULL, 10);
+    d1 = GfParmGetNum(params, path, RM_ATTR_TOSTART, (char*)NULL, 10);
     d1 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_TOSTART, (char*)NULL, d1);
-    d2 = GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_COLDIST, (char*)NULL, 10);
+    d2 = GfParmGetNum(params, path, RM_ATTR_COLDIST, (char*)NULL, 10);
     d2 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_COLDIST, (char*)NULL, d2);
-    d3 = GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_COLOFFSET, (char*)NULL, 5);
+    d3 = GfParmGetNum(params, path, RM_ATTR_COLOFFSET, (char*)NULL, 5);
     d3 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_COLOFFSET, (char*)NULL, d3);
-    speedInit = GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_INITSPEED, (char*)NULL, 0.0);
-    heightInit = GfParmGetNum(ReInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_INITHEIGHT, (char*)NULL, 1.0);
+    speedInit = GfParmGetNum(params, path, RM_ATTR_INITSPEED, (char*)NULL, 0.0);
+    heightInit = GfParmGetNum(params, path, RM_ATTR_INITHEIGHT, (char*)NULL, 1.0);
     heightInit = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_INITHEIGHT, (char*)NULL, heightInit);
 
     if (rows < 1) {

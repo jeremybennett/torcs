@@ -80,6 +80,7 @@ extern void RmTriStateScreen(char *title,
 			     char *label1, char *tip1, void *screen1,
 			     char *label2, char *tip2, void *screen2,
 			     char *label3, char *tip3, void *screen3);
+extern void RmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr);
 
 
 extern void RmRaceParamMenu(void *vrp);

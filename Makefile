@@ -67,7 +67,7 @@ DATA    	= CHANGELOG.html COPYING
 
 PKGSUBDIRS	= src data
 
-src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print | grep -v TAGS | grep -v torcstune.jar)
 
 src_PKGDIR	= ${PACKAGE}-${VERSION}
 

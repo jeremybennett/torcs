@@ -108,6 +108,7 @@ OBJECTS = $(OB1:.c=.o)
 define recursedirs
 for Dir in $$RecurseDirs ;\
 do ${MAKE} -C $$Dir $$RecurseFlags TORCS_BASE=${TORCS_BASE} MAKE_DEFAULT=${MAKE_DEFAULT}; \
+if [ $$? != 0 ]; then exit 1; fi ; \
 done
 endef
 

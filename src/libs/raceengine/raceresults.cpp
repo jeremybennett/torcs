@@ -82,6 +82,8 @@ ReStoreRaceResults(char *race)
     int		nCars;
     tCarElt	*car;
     tSituation 	*s = ReInfo->s;
+    char	*carName;
+    void	*carparam;
     void	*results = ReInfo->results;
     void	*params = ReInfo->params;
 
@@ -100,7 +102,13 @@ ReStoreRaceResults(char *race)
 	    if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
 
 	    GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
-	    GfParmSetStr(results, path, RE_ATTR_CAR, car->_carName);
+
+	    sprintf(buf, "cars/%s/%s.xml", car->_carName, car->_carName);
+	    carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	    carName = GfParmGetName(carparam);
+	    GfParmReleaseHandle(carparam);
+
+	    GfParmSetStr(results, path, RE_ATTR_CAR, carName);
 	    GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
 
 	    GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
@@ -149,7 +157,13 @@ ReStoreRaceResults(char *race)
 	/* insert after */
 	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 	GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
-	GfParmSetStr(results, path, RE_ATTR_CAR, car->_carName);
+
+	sprintf(buf, "cars/%s/%s.xml", car->_carName, car->_carName);
+	carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	carName = GfParmGetName(carparam);
+	GfParmReleaseHandle(carparam);
+
+	GfParmSetStr(results, path, RE_ATTR_CAR, carName);
 	GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
 	GfParmSetStr(results, path, RE_ATTR_MODULE, car->_modName);
 	GfParmSetNum(results, path, RE_ATTR_IDX, NULL, car->_driverIndex);
@@ -168,6 +182,8 @@ ReUpdateQualifCurRes(tCarElt *car)
     int		nCars;
     int		printed;
     int		maxLines;
+    void	*carparam;
+    char	*carName;
     char	*race = ReInfo->_reRaceName;
     void	*results = ReInfo->results;
     
@@ -176,7 +192,12 @@ ReUpdateQualifCurRes(tCarElt *car)
 
     sprintf(buf, "%s on %s - Lap %d", car->_name, ReInfo->track->name, car->_laps);
     ReResScreenSetTitle(buf);
-    
+
+    sprintf(buf, "cars/%s/%s.xml", car->_carName, car->_carName);
+    carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
+    carName = GfParmGetName(carparam);
+    GfParmReleaseHandle(carparam);
+
     printed = 0;
     sprintf(path, "%s/%s/%s", RE_SECT_RESULTS, race, RE_SECT_RANK);
     nCars = GfParmGetEltNb(results, path);
@@ -185,7 +206,7 @@ ReUpdateQualifCurRes(tCarElt *car)
 	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i);
 	if (!printed) {
 	    if ((car->_bestLapTime != 0.0) && (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {
-		sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, car->_carName);
+		sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, carName);
 		ReResScreenSetText(buf, i - 1, 1);
 		printed = 1;
 	    }
@@ -195,7 +216,7 @@ ReUpdateQualifCurRes(tCarElt *car)
 	ReResScreenSetText(buf, i - 1 + printed, 0);
     }
     if (!printed) {
-	sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, car->_carName);
+	sprintf(buf, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, carName);
 	ReResScreenSetText(buf, i - 1, 1);
     }
     ReInfo->_refreshDisplay = 1;

@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params type="" name="damned2">
+<params name="damned2" type="" mode="mw">
 
 
   <section name="Car">

@@ -43,6 +43,55 @@ static char path[1024];
 static char path2[1024];
 
 
+/***************************************************************/
+/* ABANDON RACE HOOK */
+
+static void	*AbandonRaceHookHandle = 0;
+
+static void
+AbandonRaceHookActivate(void *vforce)
+{
+    void	*params = ReInfo->params;
+    int		force = (int)vforce;
+
+    if (force || !strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_MUST_COMPLETE, RM_VAL_NO), RM_VAL_YES)) {
+	/* RePostRace() */
+
+	/* ReEventShutdown() */
+	ReInfo->_reGraphicItf.shutdowntrack();
+
+	/* Return to race menu */
+	ReInfo->_reState = RE_STATE_CONFIG;
+    }
+    GfuiScreenActivate(ReInfo->_reGameScreen);
+}
+
+static void *
+AbandonRaceHookInit(void)
+{
+    if (AbandonRaceHookHandle) {
+	return AbandonRaceHookHandle;
+    }
+
+    AbandonRaceHookHandle = GfuiHookCreate(0, AbandonRaceHookActivate);
+
+    return AbandonRaceHookHandle;
+}
+
+static void	*AbortRaceHookHandle = 0;
+
+static void *
+AbortRaceHookInit(void)
+{
+    if (AbortRaceHookHandle) {
+	return AbortRaceHookHandle;
+    }
+
+    AbortRaceHookHandle = GfuiHookCreate((void*)1, AbandonRaceHookActivate);
+
+    return AbortRaceHookHandle;
+}
+
 int
 ReRaceEventInit(void)
 {
@@ -89,33 +138,147 @@ RePreRace(void)
     /* Cleanup results */
     sprintf(path, "%s/%s", RE_SECT_RESULTS, raceName);
     GfParmListClean(results, path);
+    
+    return RM_SYNC | RM_NEXT_STEP;
+}
+
+/* return state mode */
+static int
+reRaceRealStart(void)
+{
+    int		i, j;
+    int		sw, sh, vw, vh;
+    tRobotItf	*robot;
+    tReCarInfo	*carInfo;
+    char	*dllname;
+    char	key[256];
+    int		foundHuman;
+    void	*params = ReInfo->params;
+    tSituation	*s = ReInfo->s;
+
+    RmLoadingScreenSetText("Loading Simulation Engine...");
+    dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
+    sprintf(key, "modules/simu/%s.%s", dllname, DLLEXT);
+    if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
+    ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
+
+    if (ReInitCars()) {
+	return RM_QUIT;
+    }
+
+    /* Blind mode or not */
+    ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
+    ReInfo->_reGameScreen = ReScreenInit();
+    foundHuman = 0;
+    for (i = 0; i < s->_ncars; i++) {
+	if (s->cars[i]->_driverType == RM_DRV_HUMAN) {
+	    foundHuman = 1;
+	    break;
+	}
+    }
+    if (!foundHuman) {
+	if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+	    ReInfo->_displayMode = RM_DISP_MODE_NONE;
+	    ReInfo->_reGameScreen = ReResScreenInit();
+	}
+    }
+
+    if (!(ReInfo->s->_raceType == RM_TYPE_QUALIF) ||
+	((int)GfParmGetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1) == 1)) {
+	RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
+    }
+
+    for (i = 0; i < s->_ncars; i++) {
+	sprintf(buf, "Initializing Driver %s...", s->cars[i]->_name);
+	RmLoadingScreenSetText(buf);
+	robot = s->cars[i]->robot;
+	robot->rbNewRace(robot->index, s->cars[i], s);
+    }
+    carInfo = ReInfo->_reCarInfo;
+    
+    ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
+    for (i = 0; i < s->_ncars; i++) {
+	carInfo[i].prevTrkPos = s->cars[i]->_trkPos;
+    }
+
+    RmLoadingScreenSetText("Running Prestart...");
+    for (i = 0; i < s->_ncars; i++) {
+	memset(&(s->cars[i]->ctrl), 0, sizeof(tCarCtrl));
+	s->cars[i]->ctrl.brakeCmd = 1.0;
+    }    
+    for (j = 0; j < ((int)(1.0 / RCM_MAX_DT_SIMU)); j++) {
+	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
+    }
+
+    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	RmLoadingScreenSetText("Loading Cars 3D Objects...");
+	ReInfo->_reGraphicItf.initcars(s);
+    } else {
+	if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
+	    ReUpdateQualifCurRes(s->cars[0]);
+	} else {
+	    sprintf(buf, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
+	    ReResScreenSetTitle(buf);
+	}
+    }
+    
+    
+    RmLoadingScreenSetText("Ready.");
+    
+    ReInfo->_reTimeMult = 1.0;
+    ReInfo->_reLastTime = 0.0;
+    ReInfo->s->currentTime = -2.0;
+    ReInfo->s->deltaTime = RCM_MAX_DT_SIMU;
+   
+    ReInfo->s->_raceState = RM_RACE_STARTING;
+
+    GfScrGetSize(&sw, &sh, &vw, &vh);
+    ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
+
+    GfuiScreenActivate(ReInfo->_reGameScreen);
 
     return RM_SYNC | RM_NEXT_STEP;
+}
+
+/***************************************************************/
+/* START RACE HOOK */
+
+static void	*StartRaceHookHandle = 0;
+
+static void
+StartRaceHookActivate(void * /* dummy */)
+{
+    reRaceRealStart();
+}
+
+static void *
+StartRaceHookInit(void)
+{
+    if (StartRaceHookHandle) {
+	return StartRaceHookHandle;
+    }
+
+    StartRaceHookHandle = GfuiHookCreate(0, StartRaceHookActivate);
+
+    return StartRaceHookHandle;
 }
 
 /* return state mode */
 int
 ReRaceStart(void)
 {
-    int		i, j;
-    int		sw, sh, vw, vh;
-    int		foundHuman;
+    int		i;
     int		nCars;
     int		maxCars;
     char	*prevRaceName;
-    char	*dllname;
-    char	key[256];
     char	*gridType;
-    tRobotItf	*robot;
-    tReCarInfo	*carInfo;
-    tSituation	*s = ReInfo->s;
     char	*raceName = ReInfo->_reRaceName;
     void	*params = ReInfo->params;
     void	*results = ReInfo->results;
 
 
     FREEZ(ReInfo->_reCarInfo);
-    carInfo = ReInfo->_reCarInfo = (tReCarInfo*)calloc(GfParmGetEltNb(params, RM_SECT_DRIVERS), sizeof(tReCarInfo));
+    ReInfo->_reCarInfo = (tReCarInfo*)calloc(GfParmGetEltNb(params, RM_SECT_DRIVERS), sizeof(tReCarInfo));
 
     /* Drivers starting order */
     GfParmListClean(params, RM_SECT_DRIVERS_RACING);
@@ -133,7 +296,6 @@ ReRaceStart(void)
 	GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(params, path, RM_ATTR_MODULE, ""));
 	GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, 0));
     } else {
-
 	RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
 	RmLoadingScreenSetText("Preparing Starting Grid...");
 
@@ -166,82 +328,14 @@ ReRaceStart(void)
 	    }
 	}
     }
-    
-    RmLoadingScreenSetText("Loading Simulation Engine...");
-    dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
-    sprintf(key, "modules/simu/%s.%s", dllname, DLLEXT);
-    if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
-    ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
 
-    
-    if (ReInitCars()) {
-	return RM_QUIT;
+    if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_SPLASH_MENU, RM_VAL_NO), RM_VAL_YES)) {
+	RmShutdownLoadingScreen();
+	RmDisplayStartRace(ReInfo, StartRaceHookInit(), AbortRaceHookInit());
+	return RM_ASYNC | RM_NEXT_STEP;
     }
 
-    for (i = 0; i < s->_ncars; i++) {
-	sprintf(buf, "Initializing Driver %s...", s->cars[i]->_name);
-	RmLoadingScreenSetText(buf);
-	robot = s->cars[i]->robot;
-	robot->rbNewRace(robot->index, s->cars[i], s);
-    }
-    
-    ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
-    for (i = 0; i < s->_ncars; i++) {
-	carInfo[i].prevTrkPos = s->cars[i]->_trkPos;
-    }
-
-    RmLoadingScreenSetText("Running Prestart...");
-    for (i = 0; i < s->_ncars; i++) {
-	memset(&(s->cars[i]->ctrl), 0, sizeof(tCarCtrl));
-	s->cars[i]->ctrl.brakeCmd = 1.0;
-    }    
-    for (j = 0; j < ((int)(1.0 / RCM_MAX_DT_SIMU)); j++) {
-	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
-    }
-
-    /* Blind mode or not */
-    ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
-    ReInfo->_reGameScreen = ReScreenInit();
-    foundHuman = 0;
-    for (i = 0; i < s->_ncars; i++) {
-	if (s->cars[i]->_driverType == RM_DRV_HUMAN) {
-	    foundHuman = 1;
-	    break;
-	}
-    }
-    if (!foundHuman) {
-	if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
-	    ReInfo->_displayMode = RM_DISP_MODE_NONE;
-	    ReInfo->_reGameScreen = ReResScreenInit();
-	    if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
-		ReUpdateQualifCurRes(s->cars[0]);
-	    } else {
-		sprintf(buf, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
-		ReResScreenSetTitle(buf);
-	    }
-	}
-    }
-
-    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
-	RmLoadingScreenSetText("Loading Cars 3D Objects...");
-	ReInfo->_reGraphicItf.initcars(s);
-    }
-    
-    RmLoadingScreenSetText("Ready.");
-    
-    ReInfo->_reTimeMult = 1.0;
-    ReInfo->_reLastTime = 0.0;
-    ReInfo->s->currentTime = -2.0;
-    ReInfo->s->deltaTime = RCM_MAX_DT_SIMU;
-   
-    ReInfo->s->_raceState = RM_RACE_STARTING;
-
-    GfScrGetSize(&sw, &sh, &vw, &vh);
-    ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
-
-    GfuiScreenActivate(ReInfo->_reGameScreen);
-
-    return RM_SYNC | RM_NEXT_STEP;
+    return reRaceRealStart();
 }
 
 /***************************************************************/
@@ -300,12 +394,12 @@ ReRaceStop(void)
 
     if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_ALLOW_RESTART, RM_VAL_NO), RM_VAL_NO)) {
 	RmTwoStateScreen("Race Stopped",
-			 "Abandon Race", "Abort current race", ReInfo->_reGameScreen,
+			 "Abandon Race", "Abort current race", AbandonRaceHookInit(),
 			 "Resume Race", "Return to Race", BackToRaceHookInit());
     } else {
 	RmTriStateScreen("Race Stopped",
 			 "Restart Race", "Restart the current race", RestartRaceHookInit(),
-			 "Abandon Race", "Abort current race", ReInfo->_reGameScreen,
+			 "Abandon Race", "Abort current race", AbandonRaceHookInit(),
 			 "Resume Race", "Return to Race", BackToRaceHookInit());
     }
     return RM_ASYNC | RM_NEXT_STEP;	    

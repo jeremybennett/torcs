@@ -861,6 +861,7 @@ GfParmListClean(void *handle, char *path)
 {
     tParmNode	*curNode;
     tParmNode	*curKid;
+    int		restartLoop;
 
     curNode = gfParmGetNode((tParm *)handle, path);
     if (curNode == NULL) {
@@ -869,19 +870,25 @@ GfParmListClean(void *handle, char *path)
     /* removes only the sections */
     curKid = curNode->kids;
     do {
+	restartLoop = 0;
 	curKid = curKid->next;
 	if (curKid->type == PARM_NODE_SECT) {
 	    gfCleanNode(curKid);
 	    /* back to the beginning */
 	    if (curNode->kids) {
-		curKid = curNode->kids->next;
+		curKid = curNode->kids;
+		restartLoop = 1;
 	    } else {
 		curKid = NULL;
 	    }
 	}
-    } while (curKid && (curKid != curNode->kids));
+    } while (curKid && (restartLoop || (curKid != curNode->kids)));
     
     ((tParmSect*)curNode)->current = NULL;
+    if (curNode->kids == NULL) {
+	/* don't keep empty nodes */
+	gfCleanNode(curNode);
+    }
 
     return 0;
 }

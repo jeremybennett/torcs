@@ -104,8 +104,8 @@ typedef struct
 #define RE_STATE_PRE_RACE		3
 #define RE_STATE_RACE_START		5
 #define RE_STATE_RACE			6
-#define RE_STATE_RACE_END		7
-#define RE_STATE_RACE_STOP		8
+#define RE_STATE_RACE_STOP		7
+#define RE_STATE_RACE_END		8
 #define RE_STATE_POST_RACE		9
 #define RE_STATE_EVENT_SHUTDOWN		11
 #define RE_STATE_SHUTDOWN		12
@@ -200,6 +200,9 @@ typedef struct RmInfo
 #define RM_ATTR_CUR_DRIVER	"current driver"
 #define RM_ATTR_START_ORDER	"starting order"
 #define RM_ATTR_ALLOW_RESTART	"restart"
+#define RM_ATTR_MUST_COMPLETE	"must complete"
+#define RM_ATTR_SPLASH_MENU	"splash menu"
+#define RM_ATTR_DISP_START_GRID	"display starting grid"
 
 #define RM_ATTR_MAXNUM		"maximum number"
 #define RM_ATTR_MAX_DRV		"maximum drivers"
@@ -212,6 +215,7 @@ typedef struct RmInfo
 #define RM_ATTR_DESCR		"description"
 #define RM_ATTR_BGIMG		"menu image"
 #define RM_ATTR_RUNIMG		"run image"
+#define RM_ATTR_STARTIMG	"start image"
 
 #define RM_ATTR_MODULE		"module"
 #define RM_ATTR_IDX		"idx"

@@ -22,6 +22,7 @@
     <attnum name="priority" val="20"/>
     <attstr name="menu image" val="data/img/splash-dtm.png"/>
     <attstr name="run image" val="data/img/splash-run-practice.png"/>
+    <attstr name="start image" val="data/img/splash-dtmstart.png"/>
   </section>
 
   <section name="Tracks">
@@ -55,6 +56,7 @@
     <attstr name="display mode" val="results only"/>
     <attstr name="restart" val="no"/>
     <attstr name="display results" val="yes"/>
+    <attstr name="must complete" val="yes"/>
 
     <section name="Starting Grid">
       <attnum name="rows" val="1.000000"/>
@@ -72,6 +74,7 @@
     <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
     <attnum name="maximum drivers" val="8"/>
+    <attstr name="splash menu" val="yes"/>
 
     <section name="Starting Grid">
       <attnum name="rows" val="2.000000"/>
@@ -101,6 +104,7 @@
     <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
     <attnum name="maximum drivers" val="8"/>
+    <attstr name="splash menu" val="yes"/>
 
     <section name="Starting Grid">
       <attnum name="rows" val="2.000000"/>

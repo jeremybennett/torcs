@@ -286,7 +286,6 @@ ReResScreenInit(void)
 
     if (reResScreenHdle) {
 	GfuiScreenRelease(reResScreenHdle);
-	reResScreenHdle = 0;
     }
 
     reResScreenHdle = GfuiScreenCreateEx(bgcolor, 0, reResScreenActivate, 0, reResScreenShutdown, 0);
@@ -411,3 +410,4 @@ ReResShowCont(void)
     glutDisplayFunc(reContDisplay);
     glutPostRedisplay();
 }
+

@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="Acura NSX type S-Zero" type="parameters">
+<params name="Acura NSX type S-Zero" type="parameters" mode="mw">
 
 
   <section name="Car">
@@ -30,7 +30,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="0"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="5"/>
   </section>
 
 

@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="Peugeot 406" type="parameter">
+<params name="Peugeot 406" type="parameter" mode="mw">
 
   <section name="Car">
     <!-- weight bias -->

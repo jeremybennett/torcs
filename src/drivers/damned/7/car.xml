@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="Porsche GT1" type="template">
+<params name="Porsche GT1" type="template" mode="mw">
 
 
   <section name="Car">

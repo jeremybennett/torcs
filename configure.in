@@ -87,6 +87,8 @@ AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check your insta
 AC_CHECK_LIB(glut, main,,AC_MSG_ERROR([Can't find libglut. Please check your installation and add the correct paths!]))
 
 dnl Checks for plib libraries.
+AC_LANG_CPLUSPLUS
+
 AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check your installation and add the correct paths!]))

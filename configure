@@ -2656,8 +2656,16 @@ else
 fi
 
 
+ac_ext=C
+# CXXFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='${CXX-g++} -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
+ac_link='${CXX-g++} -o conftest${ac_exeext} $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS 1>&5'
+cross_compiling=$ac_cv_prog_cxx_cross
+
+
 echo $ac_n "checking for main in -lplibul""... $ac_c" 1>&6
-echo "configure:2661: checking for main in -lplibul" >&5
+echo "configure:2669: checking for main in -lplibul" >&5
 ac_lib_var=`echo plibul'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2665,14 +2673,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lplibul  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2669 "configure"
+#line 2677 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2676: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2684: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2701,7 +2709,7 @@ else
 fi
 
 echo $ac_n "checking for main in -lplibsg""... $ac_c" 1>&6
-echo "configure:2705: checking for main in -lplibsg" >&5
+echo "configure:2713: checking for main in -lplibsg" >&5
 ac_lib_var=`echo plibsg'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2709,14 +2717,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lplibsg  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2713 "configure"
+#line 2721 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2720: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2728: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2745,7 +2753,7 @@ else
 fi
 
 echo $ac_n "checking for main in -lplibsl""... $ac_c" 1>&6
-echo "configure:2749: checking for main in -lplibsl" >&5
+echo "configure:2757: checking for main in -lplibsl" >&5
 ac_lib_var=`echo plibsl'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2753,14 +2761,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lplibsl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2757 "configure"
+#line 2765 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2764: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2772: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2789,7 +2797,7 @@ else
 fi
 
 echo $ac_n "checking for main in -lplibsm""... $ac_c" 1>&6
-echo "configure:2793: checking for main in -lplibsm" >&5
+echo "configure:2801: checking for main in -lplibsm" >&5
 ac_lib_var=`echo plibsm'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2797,14 +2805,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lplibsm  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2801 "configure"
+#line 2809 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2808: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2816: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2833,7 +2841,7 @@ else
 fi
 
 echo $ac_n "checking for main in -lplibssg""... $ac_c" 1>&6
-echo "configure:2837: checking for main in -lplibssg" >&5
+echo "configure:2845: checking for main in -lplibssg" >&5
 ac_lib_var=`echo plibssg'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2841,14 +2849,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lplibssg  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2845 "configure"
+#line 2853 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2852: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2860: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
