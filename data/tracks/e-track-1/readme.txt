@@ -1,6 +1,6 @@
 Track
 --
-Copyright © 2002 Eric Espie
+Copyright © 2002 Eric Espie,© 2005 Bernhard Wymann  
 Copyleft: this work of art is free, you can redistribute
 it and/or modify it according to terms of the Free Art license.
 You will find a specimen of this license on the site
