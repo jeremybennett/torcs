@@ -48,12 +48,11 @@ typedef struct
 
 
 static tCtrl	controlList[] = {
-    {"Joystick", HM_VAL_JOYSTICK, NULL},
-    {"Keyboard", HM_VAL_KEYBOARD, NULL},
-    {"Mouse",    HM_VAL_MOUSE,    NULL}
+    {"Joystick",	HM_VAL_JOYSTICK, NULL},
+    {"Mouse/keyboard",	HM_VAL_MOUSE,    NULL}
 };
 
-static const int dfltCtrl = 2;
+static const int dfltCtrl = 1;
 static const int nbControl = sizeof(controlList) / sizeof(controlList[0]);
 static int	curControl = 0;
 
@@ -186,7 +185,7 @@ TorcsControlMenuInit(void *prevMenu)
 
 
     controlList[0].handle = TorcsJoystick1MenuInit(prevMenu);
-    controlList[2].handle = TorcsMouseMenuInit(prevMenu);
+    controlList[1].handle = TorcsMouseMenuInit(prevMenu);
 
     return scrHandle;
 }

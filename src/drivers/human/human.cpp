@@ -396,15 +396,18 @@ onSKeyAction(int key, int modifier, int state)
 static void common_drive(int index, tCarElt* car, tSituation *s)
 {
     tdble	 slip;
-    static float ABS = 1.0;
-    static float AntiSlip = 1.0;
-    static int	 lap = 0;
     float	 ax0;
     float	 brake;
     float	 throttle;
     float	 leftSteer;
     float	 rightSteer;
     int		 scrw, scrh, dummy;
+
+    static float ABS = 1.0;
+    static float AntiSlip = 1.0;
+    static int	 lap = 0;
+    static float prevLeftSteer = 0.0;
+    static float prevRightSteer = 0.0;
     static int	 firstTime = 1;
 
     if (firstTime) {
@@ -482,6 +485,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	ax0 = ax0 * CmdControl[CMD_LEFTSTEER].pow;
 	leftSteer = pow(fabs(ax0), CmdControl[CMD_LEFTSTEER].sens) / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x / 10.0);
 	break;
+    case GFCTRL_TYPE_KEYBOARD:
+    case GFCTRL_TYPE_SKEYBOARD:
+	if (CmdControl[CMD_LEFTSTEER].type == GFCTRL_TYPE_KEYBOARD) {
+	    ax0 = keyInfo[CmdControl[CMD_LEFTSTEER].val].state;
+	} else {
+	    ax0 = skeyInfo[CmdControl[CMD_LEFTSTEER].val].state;
+	}
+	ax0 = 2 * ax0 - 1;
+	leftSteer = prevLeftSteer + ax0 * CmdControl[CMD_LEFTSTEER].sens * s->deltaTime / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x / 10.0);
+	if (leftSteer > 1.0) leftSteer = 1.0;
+	if (leftSteer < 0.0) leftSteer = 0.0;
+	prevLeftSteer = leftSteer;
+	break;
     default:
 	leftSteer = 0;
 	break;
@@ -506,6 +522,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 	ax0 = ax0 * CmdControl[CMD_RIGHTSTEER].pow;
 	rightSteer = - pow(fabs(ax0), CmdControl[CMD_RIGHTSTEER].sens) / (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x / 10.0);
+	break;
+    case GFCTRL_TYPE_KEYBOARD:
+    case GFCTRL_TYPE_SKEYBOARD:
+	if (CmdControl[CMD_RIGHTSTEER].type == GFCTRL_TYPE_KEYBOARD) {
+	    ax0 = keyInfo[CmdControl[CMD_RIGHTSTEER].val].state;
+	} else {
+	    ax0 = skeyInfo[CmdControl[CMD_RIGHTSTEER].val].state;
+	}
+	ax0 = 2 * ax0 - 1;
+	rightSteer = prevRightSteer - ax0 * CmdControl[CMD_RIGHTSTEER].sens * s->deltaTime/ (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x / 10.0);
+	if (rightSteer > 0.0) rightSteer = 0.0;
+	if (rightSteer < -1.0) rightSteer = -1.0;
+	prevRightSteer = rightSteer;
 	break;
     default:
 	rightSteer = 0;
