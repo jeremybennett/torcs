@@ -125,7 +125,7 @@ grShutdownSound(void)
 
 
 void
-grRefreshSound(tSituation *s, tCarElt *car)
+grRefreshSound(tSituation * /* s */, tCarElt *car)
 {
     float	mpitch;
     float	skvol;

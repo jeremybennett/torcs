@@ -133,13 +133,13 @@ RePreRace(void)
     if (!raceName) {
 	return RM_QUIT;
     }
-    dist = GfParmGetNum(params, raceName, RM_ATTR_DISTANCE, (char*)NULL, 0);
-    if (dist == 0.0) {
-	ReInfo->s->_totLaps = (int)GfParmGetNum(params, raceName, RM_ATTR_LAPS, (char*)NULL, 30);
+    dist = GfParmGetNum(params, raceName, RM_ATTR_DISTANCE, NULL, 0);
+    if (dist < 0.001) {
+	ReInfo->s->_totLaps = (int)GfParmGetNum(params, raceName, RM_ATTR_LAPS, NULL, 30);
     } else {
 	ReInfo->s->_totLaps = ((int)(dist / ReInfo->track->length)) + 1;
     }
-    ReInfo->s->_maxDammage = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
+    ReInfo->s->_maxDammage = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DMG, NULL, 10000);
 
     raceType = GfParmGetStr(params, raceName, RM_ATTR_TYPE, RM_VAL_RACE);
     if (!strcmp(raceType, RM_VAL_RACE)) {

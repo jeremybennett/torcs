@@ -1082,7 +1082,7 @@ GfParmReadFile (const char *file, int mode)
  *	@image html output-state.png
  */
 static int
-xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
+xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
 {
     struct parmOutput	*outCtrl = &(parmHandle->outCtrl);
     struct section	*curSection;

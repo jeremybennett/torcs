@@ -57,11 +57,11 @@ typedef struct
     tdble	wheelRadius;	/**< Overall wheel radius */
 } tWheelSpec;
 /* structure access short cuts */
-#define _rimRadius(i)		info.wheel[i].rimRadius 			/**< short cut to tWheelSpec#rimRadius */
-#define _tireHeight(i)		info.wheel[i].tireHeight		/**< short cut to tWheelSpec#tireHeight */
-#define _tireWidth(i)		info.wheel[i].tireWidth			/**< short cut to tWheelSpec#tireWidth */
+#define _rimRadius(i)		info.wheel[i].rimRadius 	/**< short cut to tWheelSpec#rimRadius */
+#define _tireHeight(i)		info.wheel[i].tireHeight	/**< short cut to tWheelSpec#tireHeight */
+#define _tireWidth(i)		info.wheel[i].tireWidth		/**< short cut to tWheelSpec#tireWidth */
 #define _brakeDiskRadius(i)	info.wheel[i].brakeDiskRadius	/**< short cut to tWheelSpec#brakeDiskRadius */
-#define _wheelRadius(i)		info.wheel[i].wheelRadius		/**< short cut to tWheelSpec#wheelRadius */
+#define _wheelRadius(i)		info.wheel[i].wheelRadius	/**< short cut to tWheelSpec#wheelRadius */
 
 /** Static visual attributes */
 typedef struct {
@@ -82,6 +82,7 @@ typedef struct {
     tdble	iconColor[3];		/**< Car color in leaders board */
     t3Dd	dimension;		/**< Car's mesures */
     t3Dd	drvPos;			/**< Driver's position */
+    t3Dd	bonnetPos;		/**< Bonnet's position */
     tdble	tank;			/**< Fuel tank capa */
     tdble	steerLock;		/**< Steer lock angle */
     t3Dd	statGC;			/**< Static pos of GC (should be the origin of car axis) */
@@ -103,6 +104,9 @@ typedef struct {
 #define _drvPos_x	info.drvPos.x			/**< short cut to tInitCar#drvPos.x */
 #define _drvPos_y	info.drvPos.y			/**< short cut to tInitCar#drvPos.y */
 #define _drvPos_z	info.drvPos.z			/**< short cut to tInitCar#drvPos.z */
+#define _bonnetPos_x	info.bonnetPos.x		/**< short cut to tInitCar#bonnetPos.x */
+#define _bonnetPos_y	info.bonnetPos.y		/**< short cut to tInitCar#bonnetPos.y */
+#define _bonnetPos_z	info.bonnetPos.z		/**< short cut to tInitCar#bonnetPos.z */
 #define _statGC		info.statGC			/**< short cut to tInitCar#statGC */
 #define _statGC_x	info.statGC.x			/**< short cut to tInitCar#statGC.x */
 #define _statGC_y	info.statGC.y			/**< short cut to tInitCar#statGC.y */
@@ -286,6 +290,9 @@ typedef struct {
 #define RM_CMD_PIT_ASKED	1	/**< Race command: Pit asked */
     char	*msg[4];     /**< 4 lines of 12 characters from car */
     float	msgColor[4]; /**< RGBA of text */
+    int		lightCmd;    /**< Lights command */
+#define RM_LIGHT_HEAD1		0x00000001	/**< head light 1 */
+#define RM_LIGHT_HEAD2		0x00000002	/**< head light 2 */
 } tCarCtrl;
 #define _steerCmd	ctrl.steer
 #define _accelCmd	ctrl.accelCmd
@@ -294,6 +301,7 @@ typedef struct {
 #define _raceCmd	ctrl.raceCmd
 #define _msgCmd		ctrl.msg
 #define _msgColorCmd	ctrl.msgColor
+#define _lightCmd	ctrl.lightCmd
 
 struct RobotItf;
 
@@ -358,6 +366,7 @@ typedef struct CarElt
 #define SECT_DRIVETRAIN		"Drivetrain"
 #define SECT_GEARBOX		"Gearbox"
 #define SECT_DRIVER		"Driver"
+#define SECT_BONNET		"Bonnet"
 #define SECT_GROBJECTS		"Graphic Objects"
 #define SECT_EXHAUST		"Exhaust"
 #define SECT_LIGHT		"Light"

@@ -29,6 +29,20 @@
 extern void *TorcsControlMenuInit(void *prevMenu, int index);
 
 
+typedef struct
+{
+    char	*name;
+    tCtrlRef	ref;
+    int		Id;
+    char	*minName;
+    float	min;
+    char	*maxName;
+    float	max;
+    char	*powName;
+    float	pow;
+    int		keyboardPossible;
+} tCmdInfo;
+
 #endif /* _CONTROLCONFIG_H_ */ 
 
 

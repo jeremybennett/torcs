@@ -66,6 +66,7 @@ extern char *Yn[];
 #define CMD_BRAKE	13
 #define CMD_LEFTSTEER	14
 #define CMD_RIGHTSTEER	15
+#define CMD_LIGHT1	16
 
 
 extern void HmReadPrefs(int index);

@@ -43,6 +43,7 @@ typedef struct
     ssgSelector		*LODSelector;
     int			LODSelectMask[32];
     float		LODThreshold[32];
+    ssgSelector		*driverSelector;
     ssgStateSelector	*envSelector;
     ssgTransform	*wheelPos[4];
     ssgTransform	*wheelRot[4];
@@ -67,7 +68,7 @@ typedef struct
 extern tgrCarInfo	*grCarInfo;
 
 extern void grInitCar(tCarElt *car);
-extern void grDrawCar(tCarElt*, tCarElt *, int, double curTime, class cGrPerspCamera *curCam);
+extern void grDrawCar(tCarElt*, tCarElt *, int, int, double curTime, class cGrPerspCamera *curCam);
 extern void grDrawShadow(tCarElt *car);
 extern void grInitShadow(tCarElt *car);
 extern tdble grGetDistToStart(tCarElt *car);

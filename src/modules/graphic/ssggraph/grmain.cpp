@@ -214,7 +214,7 @@ grSelectBoard(void *vp)
 }
 
 static void
-grSelectTrackMap(void *vp)
+grSelectTrackMap(void * /* vp */)
 {
     grGetcurrentScreen()->selectTrackMap();
 }
@@ -238,7 +238,7 @@ grSwitchMirror(void * /* dummy */)
 }
 
 int
-initView(int x, int y, int width, int height, int flag, void *screen)
+initView(int x, int y, int width, int height, int /* flag */, void *screen)
 {
     int i;
 
@@ -425,6 +425,7 @@ shutdownCars(void)
     if (grNbCars) {
 	grShutdownSkidmarks();
 	grShutdownSmoke();
+	grShudownCarlight();
 	/* Delete ssg objects */
 	CarsAnchor->removeAllKids();
 	ShadowAnchor->removeAllKids();

@@ -54,6 +54,12 @@
     <attnum name="brake max" val="-1.1"/>
     <attnum name="brake sensitivity" val="0.2"/>
     <attnum name="brake power" val="1.2"/>
+
+    <attstr name="clutch" val="AXIS4-0"/>
+    <attnum name="clutch min" val="1.0"/>
+    <attnum name="clutch max" val="-1.1"/>
+    <attnum name="clutch sensitivity" val="0.2"/>
+    <attnum name="clutch power" val="1.2"/>
   </section>
 
   <section name="mouse">

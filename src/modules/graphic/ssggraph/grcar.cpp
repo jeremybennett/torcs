@@ -462,13 +462,7 @@ grInitCar(tCarElt *car)
 
     GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
 
-    lg = 0;
-    lg += sprintf(buf, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
-    lg += sprintf(buf, "drivers/%s/%d;", car->_modName, car->_driverIndex);
-    lg += sprintf(buf, "drivers/%s/%s;", car->_modName, car->_carName);
-    lg += sprintf(buf, "drivers/%s;", car->_modName);
-    lg += sprintf(buf, "cars/%s;", car->_carName);
-    grFilePath = (char*)malloc(lg);
+    grFilePath = (char*)malloc(4096);
     lg = 0;
     lg += sprintf(grFilePath + lg, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
     lg += sprintf(grFilePath + lg, "drivers/%s/%d;", car->_modName, car->_driverIndex);
@@ -497,14 +491,13 @@ grInitCar(tCarElt *car)
     nranges = GfParmGetEltNb(handle, path) + 1;
     if (nranges < 2) {
 	GfOut("Error not enough levels of detail\n");
-	free(grFilePath);
-	grFilePath = NULL;
+	FREEZ(grFilePath);
 	return;
     }
 
     /* First LOD */
     ssgBranch *carBody = new ssgBranch;
-    DBG_SET_NAME(carBody, "LOD", index,0);
+    DBG_SET_NAME(carBody, "LOD", index, 0);
     LODSel->addKid(carBody);
     
     /* The car's model is under cars/<model> */
@@ -522,6 +515,18 @@ grInitCar(tCarElt *car)
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
     /*carEntity = ssgLoad(param);*/
     carEntity = grssgCarLoadAC3D(param, NULL, index);
+    /* Set a selector on the driver */
+    ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
+    grCarInfo[index].driverSelector = new ssgSelector;
+    if (b) {
+	ssgBranch *bp = b->getParent(0);
+	bp->addKid(grCarInfo[index].driverSelector);
+	grCarInfo[index].driverSelector->addKid(b);
+	bp->removeKid(b);
+	grCarInfo[index].driverSelector->select(1);
+    }
+    
+ 
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
     /* add wheels */
@@ -561,9 +566,8 @@ grInitCar(tCarElt *car)
     
     //grCarInfo[index].carTransform->print(stdout, "-", 1);
 
-    free(grFilePath);
-    free(grTexturePath);
-    grFilePath = NULL;
+    FREEZ(grTexturePath);
+    FREEZ(grFilePath);
 
     TRACE_GL("loadcar: end");
 }
@@ -617,7 +621,7 @@ tdble grGetDistToStart(tCarElt *car)
 }
 
 void
-grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGrPerspCamera *curCam)
+grDrawCar(tCarElt *car, tCarElt *curCar, int dispCarFlag, int dispDrvFlag, double curTime, class cGrPerspCamera *curCam)
 {
     sgCoord	wheelpos;
     int		index, i, j;
@@ -631,7 +635,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     grCarInfo[index].distFromStart=grGetDistToStart(car);
     grCarInfo[index].envAngle=RAD2DEG(car->_yaw);
 
-    if ((car == curCar) && (dispFlag != 1)) {
+    if ((car == curCar) && (dispCarFlag != 1)) {
 	grCarInfo[index].LODSelector->select(0);
     } else {
 	lod = curCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
@@ -643,6 +647,11 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
 	    i++;
 	}
 	grCarInfo[index].LODSelector->select(grCarInfo[index].LODSelectMask[i]);
+	if (dispDrvFlag) {
+	    grCarInfo[index].driverSelector->select(1);
+	} else {
+	    grCarInfo[index].driverSelector->select(0);
+	}
     }
 
     sgCopyMat4(grCarInfo[index].carPos, car->_posMat);
@@ -651,7 +660,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     
     grCarInfo[index].carTransform->setTransform(grCarInfo[index].carPos);
 
-    if ((car == curCar) && (dispFlag != 1)) {
+    if ((car == curCar) && (dispCarFlag != 1)) {
 	grDrawShadow(car, 0);
     } else {
 	grDrawShadow(car, 1);
@@ -659,7 +668,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     grUpdateSkidmarks(car, curTime); 
     grDrawSkidmarks(car);
     grAddSmoke(car, curTime);
-    if ((car == curCar) && (dispFlag != 1)) {
+    if ((car == curCar) && (dispCarFlag != 1)) {
 	grUpdateCarlight(car, curCam, 0);
     } else {
 	grUpdateCarlight(car, curCam, 1);

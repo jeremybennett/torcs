@@ -50,7 +50,7 @@
  *	
  */
 static int
-linuxModLoad(unsigned int gfid, char *sopath, tModList **modlist)
+linuxModLoad(unsigned int /* gfid */, char *sopath, tModList **modlist)
 {
     tfModInfo		fModInfo;	/* init function of the modules */
     void		*handle;	/* */
@@ -119,7 +119,7 @@ linuxModLoad(unsigned int gfid, char *sopath, tModList **modlist)
  *	
  */
 static int
-linuxModInfo(unsigned int gfid, char *sopath, tModList **modlist)
+linuxModInfo(unsigned int /* gfid */, char *sopath, tModList **modlist)
 {
     tfModInfo		fModInfo;	/* init function of the modules */
     void		*handle;	/* */
@@ -319,7 +319,7 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
  *	
  */
 static int
-linuxModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
+linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlist)
 {
     tfModInfo		fModInfo;	/* init function of the modules */
     char		dname[256];	/* name of the funtions */

@@ -523,7 +523,6 @@ ReInitCars(void)
 static void
 reDumpTrack(tTrack *track, int verbose)
 {
-    char	buf[256];
     int		i;
     tTrackSeg	*seg;
 #ifdef DEBUG

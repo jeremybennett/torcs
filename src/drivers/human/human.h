@@ -49,6 +49,7 @@ typedef struct HumanContext
     int		AutoReverse;
     tControlCmd	*CmdControl;
     int		MouseControlUsed;
+    int		lightCmd;
 } tHumanContext;
 
 

@@ -1,3 +1,29 @@
+/***************************************************************************
+
+    file        : grcarlight.h
+    created     : Sun Oct 26 15:15:11 CET 2003
+    copyright   : (C) 2003 by Christophe Guionneau                      
+    version     : $Id$                                  
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+ 
+/** @file    
+    		
+    @version	$Id$
+*/
+
+#ifndef _GRCARLIGHT_H_
+#define _GRCARLIGHT_H_
+
 class ssgVtxTableCarlight : public ssgVtxTable
 {
 protected:
@@ -82,3 +108,6 @@ extern void grInitCarlight(int index); /* number of cars*/
 extern void grAddCarlight(tCarElt *car, int type, sgVec3 pos, double size);
 extern void grUpdateCarlight(tCarElt *car, class cGrPerspCamera *curCam, int dispflag);
 extern void grShudownCarlight(void);
+
+
+#endif /* _GRCARLIGHT_H_ */ 

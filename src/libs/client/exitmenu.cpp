@@ -24,7 +24,7 @@
 #include "mainmenu.h"
 
 static void 
-endofprog(void *dummy)
+endofprog(void * /* dummy */)
 {
     STOP_ACTIVE_PROFILES();
     PRINT_PROFILE();
@@ -54,8 +54,10 @@ static void *exitmenuHandle = NULL;
 void *
 TorcsExitMenuInit(void *mainMenu)
 {
-    if (exitmenuHandle) return exitmenuHandle;
-
+    if (exitmenuHandle) {
+	GfuiScreenRelease(exitmenuHandle);
+    }
+    
     exitmenuHandle = GfuiMenuScreenCreate("Quit ?");
     GfuiScreenAddBgImg(exitmenuHandle, "data/img/splash-quit.png");
 

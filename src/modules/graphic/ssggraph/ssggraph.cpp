@@ -31,7 +31,7 @@
 #endif
 
 static int
-graphInit(int idx, void *pt)
+graphInit(int /* idx */, void *pt)
 {
     tGraphicItf *itf = (tGraphicItf*)pt;
     

@@ -111,8 +111,6 @@ static char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 static void
 refreshEditVal(void)
 {
-    char	buf[32];
-
     if (curPlayer == NULL) {
 	GfuiEditboxSetString(scrHandle, NameEditId, "");
 	GfuiEnable(scrHandle, NameEditId, GFUI_DISABLE);
@@ -180,7 +178,6 @@ GenCarsInfo(void)
     tCatInfo	*tmpCat;
     tFList	*files;
     tFList	*curFile;
-    char	buf[256];
     void	*carparam;
     char	*str;
     void	*hdle;
@@ -455,7 +452,6 @@ static void
 ChangeNum(void * /* dummy */)
 {
     char	*val;
-    char	buf[32];
     
     val = GfuiEditboxGetString(scrHandle, RaceNumEditId);
     if (curPlayer != NULL) {
@@ -469,7 +465,6 @@ static void
 ChangePits(void * /* dummy */)
 {
     char	*val;
-    char	buf[32];
     
     val = GfuiEditboxGetString(scrHandle, PitsEditId);
     if (curPlayer != NULL) {    

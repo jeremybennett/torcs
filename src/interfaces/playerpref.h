@@ -42,6 +42,8 @@
 #define HM_ATT_ASR_CMD		"ASR cmd"
 #define HM_ATT_ABS_CMD		"ABS cmd"
 
+#define HM_ATT_LIGHT1_CMD	"Light1 cmd"
+
 #define HM_ATT_AUTOREVERSE	"auto reverse"
 
 #define HM_ATT_GEAR_R		"reverse gear"
@@ -89,6 +91,13 @@
 #define HM_ATT_BRAKE_SENS	"brake sensitivity"
 #define HM_ATT_BRAKE_POW	"brake power"
 #define HM_ATT_BRAKE_DEAD	"brake dead zone"
+
+#define HM_ATT_CLUTCH		"clutch"
+#define HM_ATT_CLUTCH_MIN	"clutch min"
+#define HM_ATT_CLUTCH_MAX	"clutch max"
+#define HM_ATT_CLUTCH_SENS	"clutch sensitivity"
+#define HM_ATT_CLUTCH_POW	"clutch power"
+#define HM_ATT_CLUTCH_DEAD	"clutch dead zone"
 
 #define	HM_SECT_PREF	"Preferences"
 

@@ -47,7 +47,7 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
  *	
  */
 static int
-trackInit(int index, void *pt)
+trackInit(int /* index */, void *pt)
 {
     tTrackItf	*ptf = (tTrackItf*)pt;
     

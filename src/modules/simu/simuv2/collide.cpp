@@ -37,7 +37,8 @@ SimCarCollideZ(tCar *car)
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	if (wheel->state & SIM_SUSP_COMP) {
-	    car->DynGCg.pos.z += wheel->susp.x - wheel->rideHeight;
+	    //car->DynGCg.pos.z += wheel->susp.x - wheel->rideHeight;
+	    car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
 	    
 	    if ((car->DynGCg.vel.ax * wheel->staticPos.y) < 0) {
 		car->DynGCg.vel.ax = 0;

@@ -39,6 +39,7 @@ class cGrCamera
     GF_TAILQ_ENTRY(cGrCamera) link;
     int			id;		/* Camera Id */
     int			drawCurrent;	/* flag to draw the current car */
+    int			drawDriver;	/* flag to draw the driver */
     int			drawBackground;	/* flag to draw the background */
     int			mirrorAllowed;	/* flag to allox the display of mirror */
 
@@ -49,10 +50,11 @@ class cGrCamera
     class cGrScreen	*screen;	/* screen where the camera is attached */
     
  public:
-    cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0, int mymirrorAllowed = 0) {
+    cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawdrv = 0, int mydrawBackground = 0, int mymirrorAllowed = 0) {
 	screen = myscreen;
 	id = myid;
 	drawCurrent = mydrawCurrent;
+	drawDriver = mydrawdrv;
 	drawBackground = mydrawBackground;
 	mirrorAllowed = mymirrorAllowed;
     }
@@ -74,6 +76,7 @@ class cGrCamera
     /* Get the camera info */
     int getId(void)		{ return id; }
     int getDrawCurrent(void)	{ return drawCurrent; }
+    int getDrawDriver(void)	{ return drawDriver; }
     int getDrawBackground(void)	{ return drawBackground; }
     int isMirrorAllowed(void)	{ return mirrorAllowed; }
 
@@ -140,7 +143,7 @@ class cGrPerspCamera : public cGrCamera
     float fogend;
     
  public:
-    cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG, int mirrorAllowed,
+    cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawDrv, int drawBG, int mirrorAllowed,
 		   float myfovy, float myfovymin, float myfovymax,
 		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
@@ -193,7 +196,7 @@ class cGrBackgroundCam : public cGrPerspCamera
 {
  public:
     cGrBackgroundCam(class cGrScreen *myscreen)
-	: cGrPerspCamera(myscreen, 0, 0, 1, 0,
+	: cGrPerspCamera(myscreen, 0, 0, 0, 1, 0,
 			 67.5, 67.5, 67.5,
 			 0.1, 2000.0, 100000, 100000) {
     }
@@ -218,7 +221,7 @@ class cGrCarCamMirror : public cGrPerspCamera
 		    float myfovy, float myfovymin, float myfovymax,
 		    float myfnear, float myffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
 	glGenTextures (1, &tex);

@@ -147,8 +147,10 @@ void init_args(int argc, char **argv)
       typeConvertion=_AC3DTOAC3D;
       extendedStrips=0;
       isobjectacar=0;
+      notexturesplit=1;
       extendedTriangles=0;
       normalMapping=1;
+      collapseObject=1;
     } 
     else  if (!strcmp(argv[1],"-g")) {
       typeConvertion=_AC3DTOAC3DGROUP;

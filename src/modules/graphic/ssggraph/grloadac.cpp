@@ -454,16 +454,18 @@ static int do_name ( char *s )
 	q=strstr(s,"_g");
 	if (q!=NULL)
 	  *q='\0';
-	current_branch -> setName ( s ) ;
 /* 	if (inGroup!=0) */
 /* 	  { */
 /* 	    printf("ingroup =%s\n",s); */
 /* 	  } */
       }
-    else
-      {
-	current_branch -> setName ( s ) ;
-      }
+
+  if (!strncmp(s, "DR", 2)) {
+      current_branch -> setName ( "DRIVER" );
+  } else {
+      current_branch -> setName ( s ) ;
+  }
+  
   return PARSE_CONT ;
 }
 

@@ -41,7 +41,7 @@
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
 
-char		*grFilePath = NULL;	/* Multiple path (';' separated) used to search for files */
+char		*grFilePath;	/* Multiple path (';' separated) used to search for files */
 char		*grTexturePath = NULL;	/* Default ssg path */
 
 

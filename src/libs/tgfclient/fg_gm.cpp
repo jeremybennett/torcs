@@ -298,7 +298,7 @@ static int fghCheckDisplayMode( int width, int height, int depth, int refresh )
 /*
  * Changes the current display mode to match user's settings
  */
-static int fghChangeDisplayMode( int haveToTest )
+static int fghChangeDisplayMode( int /* haveToTest */ )
 {
     /*
      * This highly depends on the XFree86 extensions, not approved as X Consortium standards

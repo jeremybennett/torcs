@@ -23,7 +23,7 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="desc" val=""/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="kc-2000gt"/>
+	<attstr name="car name" val="kc-dino"/>
 	<attnum name="race number" val="16"/>
 	<attnum name="red" val="1.0"/>
 	<attnum name="green" val="0.0"/>
@@ -119,7 +119,7 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="desc" val=""/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="kc-conrero"/>
+	<attstr name="car name" val="kc-p4"/>
 	<attnum name="race number" val="18"/>
 	<attnum name="red" val="1.0"/>
 	<attnum name="green" val="0.0"/>

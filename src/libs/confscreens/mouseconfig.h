@@ -26,8 +26,7 @@
 #ifndef _MOUSECONFIG_H_
 #define _MOUSECONFIG_H_
 
-extern void *TorcsMouseMenuInit(void *prevMenu, int idx);
-
+extern void *MouseCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd);
 
 #endif /* _MOUSECONFIG_H_ */ 
 

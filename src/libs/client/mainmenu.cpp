@@ -32,7 +32,7 @@ void *menuHandle = NULL;
 tModList *RacemanModLoaded = (tModList*)NULL;
 
 static void
-TorcsMainMenuActivate(void *dummy)
+TorcsMainMenuActivate(void * /* dummy */)
 {
     if (RacemanModLoaded != NULL) {
 	GfModUnloadList(&RacemanModLoaded);

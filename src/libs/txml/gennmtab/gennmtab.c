@@ -237,7 +237,7 @@ struct range nmstrt[] = {
   /* Ideographic */
   { 0x4e00, 0x9fa5 },
   { 0x3007 },
-  { 0x3021, 0x3029 },
+  { 0x3021, 0x3029 }
 };
 
 /* name chars that are not name start chars */
@@ -367,7 +367,7 @@ struct range name[] = {
   { 0x3005 },
   { 0x3031, 0x3035 },
   { 0x309d, 0x309e },
-  { 0x30fc, 0x30fe },
+  { 0x30fc, 0x30fe }
 };
 
 void setTab(char *tab, struct range *ranges, size_t nRanges)

@@ -452,6 +452,8 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     memset(&(car->ctrl), 0, sizeof(tCarCtrl));
 
+    car->_lightCmd = HCtx[idx]->lightCmd;
+    
     if (car->_laps != HCtx[idx]->LastPitStopLap) {
 	car->_raceCmd = RM_CMD_PIT_ASKED;
     }
@@ -491,6 +493,16 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	car->_msgCmd[1] = "ASR";
     }
     memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
+
+    if (((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_LIGHT1].val]) ||
+	((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_LIGHT1].val].edgeUp) ||
+	((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_LIGHT1].val].edgeUp)) {
+	if (HCtx[idx]->lightCmd & RM_LIGHT_HEAD1) {
+	    HCtx[idx]->lightCmd &= ~(RM_LIGHT_HEAD1 | RM_LIGHT_HEAD2);
+	} else {
+	    HCtx[idx]->lightCmd |= RM_LIGHT_HEAD1 | RM_LIGHT_HEAD2;
+	}
+    }
 
     switch (cmd[CMD_LEFTSTEER].type) {
     case GFCTRL_TYPE_JOY_AXIS:

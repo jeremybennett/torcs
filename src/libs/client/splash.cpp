@@ -53,7 +53,7 @@ static char buf[1024];
  *	
  */
 static void 
-splashKey( unsigned char key, int x, int y )
+splashKey( unsigned char /* key */, int /* x */, int /* y */)
 {
     SplashDisplaying = 0;
     free(Image);
@@ -78,7 +78,7 @@ splashKey( unsigned char key, int x, int y )
  *	
  */
 static void
-splashTimer(int value)
+splashTimer(int /* value */)
 {
     if (SplashDisplaying) {
 	SplashDisplaying = 0;
@@ -124,7 +124,7 @@ splashDisplay( void )
 }
 
 static void
-splashMouse(int b, int s, int x, int y)
+splashMouse(int /* b */, int s, int /* x */, int /* y */)
 {
     if (s == GLUT_UP) {
 	SplashDisplaying = 0;

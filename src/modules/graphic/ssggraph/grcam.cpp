@@ -92,10 +92,10 @@ grMakeLookAtMat4 ( sgMat4 dst, const sgVec3 eye, const sgVec3 center, const sgVe
 }
 
 
-cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG, int mirrorAllowed,
+cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawDrv, int drawBG, int mirrorAllowed,
 			       float myfovy, float myfovymin, float myfovymax,
 			       float myfnear, float myffar, float myfogstart, float myfogend)
-    : cGrCamera(myscreen, id, drawCurr, drawBG, mirrorAllowed)
+    : cGrCamera(myscreen, id, drawCurr, drawDrv, drawBG, mirrorAllowed)
 {
     fovy     = myfovy;
     fovymin  = myfovymin;
@@ -229,7 +229,7 @@ class cGrCarCamInside : public cGrPerspCamera
 		    float myfovy, float myfovymin, float myfovymax,
 		    float myfnear, float myffar = 1500.0,
 		    float myfogstart = 800.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
+	: cGrPerspCamera(myscreen, id, drawCurr, 0, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
 	up[0] = 0;
@@ -278,22 +278,22 @@ void cGrCarCamMirror::limitFov(void) {
     fovy = 90.0 / screen->getViewRatio();
 }
 
-void cGrCarCamMirror::update(tCarElt *car, tSituation *s)
+void cGrCarCamMirror::update(tCarElt *car, tSituation * /* s */)
 {
     sgVec3 P, p;
 
-    P[0] = car->_drvPos_x;
-    P[1] = car->_drvPos_y;
-    P[2] = car->_drvPos_z;
+    P[0] = car->_bonnetPos_x;
+    P[1] = car->_bonnetPos_y;
+    P[2] = car->_bonnetPos_z;
     sgXformPnt3(P, car->_posMat);
 	
     eye[0] = P[0];
     eye[1] = P[1];
     eye[2] = P[2];
 	
-    p[0] = car->_drvPos_x - 30.0;
-    p[1] = car->_drvPos_y;
-    p[2] = car->_drvPos_z;
+    p[0] = car->_bonnetPos_x - 30.0;
+    p[1] = car->_bonnetPos_y;
+    p[2] = car->_bonnetPos_z;
     sgXformPnt3(p, car->_posMat);
 
     center[0] = p[0];
@@ -386,7 +386,7 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
 			    float myfovy, float myfovymin, float myfovymax,
 			    float myfnear, float myffar = 1500.0,
 			    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
     }
@@ -400,18 +400,18 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
     void update(tCarElt *car, tSituation *s) {
 	sgVec3 P, p;
 	
-	p[0] = car->_drvPos_x;
-	p[1] = car->_drvPos_y;
-	p[2] = car->_drvPos_z;
+	p[0] = car->_bonnetPos_x;
+	p[1] = car->_bonnetPos_y;
+	p[2] = car->_bonnetPos_z;
 	sgXformPnt3(p, car->_posMat);
 	
 	eye[0] = p[0];
 	eye[1] = p[1];
 	eye[2] = p[2];
 
-	P[0] = car->_drvPos_x + 30.0;
-	P[1] = car->_drvPos_y;
-	P[2] = car->_drvPos_z;
+	P[0] = car->_bonnetPos_x + 30.0;
+	P[1] = car->_bonnetPos_y;
+	P[2] = car->_bonnetPos_z;
 	sgXformPnt3(P, car->_posMat);
 
 	center[0] = P[0];
@@ -438,7 +438,7 @@ class cGrCarCamBehind : public cGrPerspCamera
 		    float fovy, float fovymin, float fovymax,
 		    float mydist, float myHeight, float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	height = myHeight;
@@ -495,7 +495,7 @@ class cGrCarCamBehind2 : public cGrPerspCamera
 		    float fovy, float fovymin, float fovymax,
 		    float mydist, float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	PreA = 0.0;
@@ -549,7 +549,7 @@ class cGrCarCamFront : public cGrPerspCamera
 		   float fovy, float fovymin, float fovymax,
 		   float mydist, float fnear, float ffar = 1500.0,
 		   float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	up[0] = 0;
@@ -592,7 +592,7 @@ protected:
 		  float mydistx, float mydisty, float mydistz,
 		  float fnear, float ffar = 1500.0,
 		  float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distx = mydistx;
 	disty = mydisty;
@@ -634,7 +634,7 @@ class cGrCarCamUp : public cGrPerspCamera
 		float mydistz, int axis,
 		float fnear, float ffar = 1500.0,
 		float myfogstart = 1600.0, float myfogend = 1700.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distz = mydistz;
 	up[2] = 0;
@@ -695,7 +695,7 @@ class cGrCarCamCenter : public cGrPerspCamera
 		    float mydistz,
 		    float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distz = mydistz;
 	locfar = ffar;
@@ -763,7 +763,7 @@ class cGrCarCamLookAt : public cGrPerspCamera
 		    float centerx, float centery, float centerz,
 		    float fnear, float ffar = 1500.0,
 		    float myfogstart = 1600.0, float myfogend = 1700.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 
 	eye[0] = eyex;
@@ -833,7 +833,7 @@ class cGrCarCamRoadNoZoom : public cGrPerspCamera
 			float fovy, float fovymin, float fovymax,
 			float fnear, float ffar = 1500.0,
 			float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	up[0] = 0;
 	up[1] = 0;
@@ -880,7 +880,7 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 		      float fovy, float fovymin, float fovymax,
 		      float fnear, float ffar = 1500.0,
 		      float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	locfar = ffar;
 	locfovy = fovy;
@@ -1155,7 +1155,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      40.0,	/* fovy */
 			      5.0,	/* fovymin */
 			      95.0,	/* fovymax */
-			      5.0,	/* dist */
+			      6.0,	/* dist */
 			      2.0,	/* height */
 			      1.0,	/* near */
 			      600.0 * fovFactor,	/* far */
@@ -1207,7 +1207,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      67.5,	/* fovy */
 			      50.0,	/* fovymin */
 			      95.0,	/* fovymax */
-			      0.3,	/* near */
+			      0.1,	/* near */
 			      600.0 * fovFactor,	/* far */
 			      300.0 * fovFactor,	/* fog */
 			      600.0 * fovFactor	/* fog */

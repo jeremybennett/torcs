@@ -330,7 +330,6 @@ void grAddCarlight(tCarElt *car, int type, sgVec3 pos, double size)
       theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(frontlight2);
       theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
       break;
-
     case LIGHT_TYPE_REAR:
       theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(rearlight1);
       theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
@@ -365,9 +364,9 @@ void grAddCarlight(tCarElt *car, int type, sgVec3 pos, double size)
 void grUpdateCarlight(tCarElt *car,class cGrPerspCamera *curCam, int disp)
 {
   int i=0;
-  double d1;
-  double d2;
-  double alpha;
+/*   double d1; */
+/*   double d2; */
+/*   double alpha; */
   sgVec3 *campos;
   sgVec3 *centerpos;
   sgVec3 * lightpos;
@@ -380,9 +379,9 @@ void grUpdateCarlight(tCarElt *car,class cGrPerspCamera *curCam, int disp)
   campos=curCam->getPosv();
   centerpos=curCam->getCenterv();
     
-  alpha=atan2( centerpos[1] - campos[1], centerpos[0] - campos[0]);           
-  d1=car->_yaw;
-  d2=alpha-d1;
+/*   alpha=atan2( centerpos[1] - campos[1], centerpos[0] - campos[0]);            */
+/*   d1=car->_yaw; */
+/*   d2=alpha-d1; */
   for (i=0; i<theCarslight[car->index].numberCarlight; i++)
     {
       clight = (ssgVtxTableCarlight *)theCarslight[car->index].lightArray[i]->clone(SSG_CLONE_GEOMETRY);
@@ -397,14 +396,39 @@ void grUpdateCarlight(tCarElt *car,class cGrPerspCamera *curCam, int disp)
       theCarslight[car->index].lightAnchor->addKid(clight);
       lightpos=clight->getPos();
       
-      if ((theCarslight[car->index].lightType[i] == LIGHT_TYPE_BRAKE) ||
-	  (theCarslight[car->index].lightType[i] == LIGHT_TYPE_BRAKE2))
-
-	{
-	  if (car->_brakeCmd>0)
-	    clight->setOnOff(1);
-	  else
-	    clight->setOnOff(0);
+      switch (theCarslight[car->index].lightType[i]) {
+      case LIGHT_TYPE_BRAKE:
+      case LIGHT_TYPE_BRAKE2:
+	  if (car->_brakeCmd>0) {
+	      clight->setOnOff(1);
+	  } else {
+	      clight->setOnOff(0);
+	  }
+	  break;
+      case LIGHT_TYPE_FRONT:
+	  if (car->_lightCmd & RM_LIGHT_HEAD1) {
+	      clight->setOnOff(1);
+	  } else {
+	      clight->setOnOff(0);
+	  }
+	  break;
+      case LIGHT_TYPE_FRONT2:
+	  if (car->_lightCmd & RM_LIGHT_HEAD2) {
+	      clight->setOnOff(1);
+	  } else {
+	      clight->setOnOff(0);
+	  }
+	  break;
+      case LIGHT_TYPE_REAR:
+	  if ((car->_lightCmd & RM_LIGHT_HEAD1) ||
+	      (car->_lightCmd & RM_LIGHT_HEAD2)) {
+	      clight->setOnOff(1);
+	  } else {
+	      clight->setOnOff(0);
+	  }	      
+	  break;
+      default:
+	  break;
 	}
       /*clight->setFactor( cos( d2));*/
       clight->setFactor( 1);

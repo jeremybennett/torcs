@@ -33,7 +33,7 @@
 #include "grskidmarks.h"
 #include "grcar.h"
 #include "grboard.h"
-
+#include "grcarlight.h"
 
 #include "grscreen.h"
 
@@ -59,6 +59,7 @@ cGrScreen::cGrScreen(int myid)
     mirrorFlag = 1;
     memset(cams, 0, sizeof(cams));
     viewRatio = 1.33;
+    cars = 0;
 }
 
 cGrScreen::~cGrScreen()
@@ -74,8 +75,7 @@ cGrScreen::~cGrScreen()
     }
 
     board->shutdown ();
-
-    free(cars);
+    FREEZ(cars);
     
     delete board;
 }
@@ -266,7 +266,7 @@ void cGrScreen::camDraw(tSituation *s)
     qsort(cars, s->_ncars, sizeof(tCarElt*), comparCars);
   
     for (i = 0; i < s->_ncars; i++) {
-	grDrawCar(cars[i], curCar, dispCam->getDrawCurrent(), s->currentTime, dispCam);
+	grDrawCar(cars[i], curCar, dispCam->getDrawCurrent(), dispCam->getDrawDriver(), s->currentTime, dispCam);
     } 
     STOP_PROFILE("grDrawCar*");
 	

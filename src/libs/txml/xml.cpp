@@ -176,7 +176,7 @@ startElement(void *userData, const char *name, const char **atts)
  *	none
  */
 static void 
-endElement(void *userData, const char *name)
+endElement(void *userData, const char * /* name */)
 {
     txmlElement **curElt = (txmlElement **)userData;
     

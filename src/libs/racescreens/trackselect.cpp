@@ -89,7 +89,7 @@ rmUpdateTrackInfo(void)
     void	*trackHandle;
     float	tmp;
     tTrack	*trk;
-
+ 
     sprintf(buf, "tracks/%s/%s/%s.%s", CategoryList->name, ((tFList*)CategoryList->userData)->name,
 	    ((tFList*)CategoryList->userData)->name, TRKEXT);
     trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD); /* don't release, the name is used later */
@@ -107,9 +107,8 @@ rmUpdateTrackInfo(void)
     tmp = trk->length;
     sprintf(buf, "%.2f m", tmp);
     GfuiLabelSetText(scrHandle, LengthId, buf);
-    tmp = trk->pits.nMaxPits;
-    if (tmp != 0) {
-	sprintf(buf, "%d", (int)tmp);
+    if (trk->pits.nMaxPits != 0) {
+	sprintf(buf, "%d", trk->pits.nMaxPits);
 	GfuiLabelSetText(scrHandle, PitsId, buf);
     } else {
 	GfuiLabelSetText(scrHandle, PitsId, "none");

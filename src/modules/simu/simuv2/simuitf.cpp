@@ -47,7 +47,7 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
  *	
  */
 static int
-simuInit(int index, void *pt)
+simuInit(int /* index */, void *pt)
 {
     tSimItf	*sim = (tSimItf*)pt;
     
