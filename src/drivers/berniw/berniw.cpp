@@ -206,7 +206,6 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 	if (mpf->getPitStop()) {
 		car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
-		//printf("berniw %d, time: %f\n", index, situation->currentTime);
 	}
 
 	/* steer to next target point */

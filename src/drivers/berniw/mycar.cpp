@@ -26,11 +26,11 @@
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
-	//tdble rear, front, cgcorr;
-
 	/* init pointer to car data */
 	mycar = car;
 
+
+	cgh = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0);
 	currentpos.x = car->_pos_X;
 	currentpos.y = car->_pos_Y;
 	currentpos.z = car->_pos_Z - cgh;
@@ -51,7 +51,6 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	wheelbase = car->priv->wheel[FRNT_RGT].relPos.x - car->priv->wheel[REAR_RGT].relPos.x;
 	wheeltrack = 2* fabs(car->priv->wheel[REAR_RGT].relPos.y);
 
-	cgh = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0);
 	carmass = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_MASS, NULL, 0.0);
 	mass = carmass + lastfuel;
 
@@ -78,15 +77,9 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 
 	cw = 0.625*cx*frontarea;
 
-	//front = fabs(car->priv->wheel[FRNT_RGT].relPos.x);
-	//rear = fabs(car->priv->wheel[REAR_RGT].relPos.x);
-	//cgcorr = MIN(front/wheelbase, rear/wheelbase);
-	//cgcorr *= 2.0;
-	cgcorr_b = 0.46; //cgcorr * (1.0 + (cgh - front)/wheelbase);
+	cgcorr_b = 0.46;
 
 	pf = new Pathfinder(track, car);
-	/* this call is needed! perhaps i shold move it into the constructor of pathfinder. */
-	pf->plan(this);
 	currentsegid = destsegid = pf->getCurrentSegment(car);
 
 	currentseg = track->getSegmentPtr(currentsegid);
@@ -102,18 +95,10 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	startmode = true;
 	trtime = 0.0;
 
-	/*DIST = 0.5;
-	MAXRELAX = 0.9;
-	MAXANGLE = 15.0;
-	ACCELINC = 0.02;
-	MININVSLIP = 0.85;
-	SFTUPRATIO = 0.8;
-	SFTDOWNRATIO = 0.7;
-	SFTDOWNSTEER = 0.05;
-	SPEEDSQRFACTOR = 1.0;
-	GCTIME = 0.5;
-	ACCELLIMIT = 1.0;
-	PATHERRFACTOR*/
+	/*
+		DIST; MAXRELAX; MAXANGLE; ACCELINC; MININVSLIP; SFTUPRATIO; SFTDOWNRATIO; SFTDOWNSTEER;
+		SPEEDSQRFACTOR; GCTIME; ACCELLIMIT; PATHERRFACTOR
+	*/
 
 	tdble ba[6][12] = {
 		{0.5, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
@@ -124,8 +109,16 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 		{0.9, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.1, 0.5, 1.0, 1.0}
 	};
 
-	behaviour = ba;
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 12; j++) {
+			behaviour[i][j] = ba[i][j];
+		}
+	}
+
 	loadBehaviour(NORMAL);
+
+	/* this call is needed! perhaps i shold move it into the constructor of pathfinder. */
+	pf->plan(this);
 }
 
 

@@ -18,7 +18,9 @@
  ***************************************************************************/
 
 #include "pathfinder.h"
-#define PEM 150
+
+/* how many segments can i pass per simulation step, depends on TRACKRES, simulation->_deltaTime and speed */
+#define SEGRANGE 3
 
 
 Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car)
@@ -530,7 +532,6 @@ int Pathfinder::initLeft(int id, tdble w)
 
 	int startsp = (tseg - tlen/2 + nPathSeg) % nPathSeg;
 	int endsp = (startsp + tlen) % nPathSeg;
-	//int endsp1 = (endsp + 1) % nPathSeg;
 
 	tdble s[3], y[3], ys[3];
 
@@ -556,7 +557,6 @@ int Pathfinder::initLeft(int id, tdble w)
 		q.z = pp->z + qq->z*d;
 
 		setLocWeighted(j, computeWeight(((tdble) l) / ((tdble) tlen), tlen), &q);
-		//ps[i].setLoc(&q);
 
 		l += TRACKRES;
 	}
@@ -601,7 +601,6 @@ int Pathfinder::initRight(int id, tdble w)
 
 	int startsp = (tseg - tlen/2 + nPathSeg) % nPathSeg;
 	int endsp = (startsp + tlen) % nPathSeg;
-	//int endsp1 = (endsp + 1) % nPathSeg;
 
 	tdble s[3], y[3], ys[3];
 
@@ -745,7 +744,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	if (myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
 		start = trackSegId;
 	} else {
-		start = lastPlan+lastPlanRange-2;
+		start = lastPlan+lastPlanRange-SEGRANGE;
 	}
 
 	if (track->isBetween(e3, s1, trackSegId)) inPit = false;
@@ -982,7 +981,6 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 				/* in front of us and slower */
 				   (track->isBetween(trackSegId, end, seg) /*&& myc->speed > tspeed*/)))
 				{
-					//int t; OtherCar* tc;
 					dists[norder] = track->diffSegId(trackSegId, seg);
 					collcar[norder] = &ocar[i];
 					speedsqr[norder] = tspeed*tspeed;
@@ -1077,6 +1075,7 @@ inline double Pathfinder::curvature(double xp, double yp, double x, double y, do
 	return 2 * det / nnn;
 }
 
+
 /* optimize point p ala k1999 (curvature), Remi Coulom, K1999.cpp */
 inline void Pathfinder::adjustRadius(int s, int p, int e, double c, tdble security) {
 	const double sidedistext = 2.0;
@@ -1107,27 +1106,27 @@ inline void Pathfinder::adjustRadius(int s, int p, int e, double c, tdble securi
 	if (deltacurvature > 0.000000001) {
 		newlane += (delta / deltacurvature) * c;
 		double ExtLane = (sidedistext + security) / t->getWidth();
-  		double IntLane = (sidedistint + security) / t->getWidth();
+		double IntLane = (sidedistint + security) / t->getWidth();
 
 		if (ExtLane > 0.5) ExtLane = 0.5;
 		if (IntLane > 0.5) IntLane = 0.5;
 
- 		if (c >= 0.0) {
-   			if (newlane < IntLane) newlane = IntLane;
-   			if (1 - newlane < ExtLane) {
+		if (c >= 0.0) {
+			if (newlane < IntLane) newlane = IntLane;
+			if (1 - newlane < ExtLane) {
     			if (1 - oldlane < ExtLane) newlane = MIN(oldlane, newlane);
     			else newlane = 1 - ExtLane;
 			}
-  		} else {
-   			if (newlane < ExtLane) {
+		} else {
+			if (newlane < ExtLane) {
     			if (oldlane < ExtLane) newlane = MAX(oldlane, newlane);
     			else newlane = ExtLane;
-   			}
+			}
 			if (1 - newlane < IntLane) newlane = 1 - IntLane;
 		}
 
 		tdble d = (newlane - 0.5) * t->getWidth();
-	t3Dd* trackmiddle = t->getMiddle();
+		t3Dd* trackmiddle = t->getMiddle();
 
 		n.x = trackmiddle->x + rgh->x * d;
 		n.y = trackmiddle->y + rgh->y * d;
@@ -1343,7 +1342,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	/* not enough space, so we try to overtake */
 	if (dtp < d && minTime < myc->TIMETOCATCH) {
 		if (!optlocreloaded) {
-			int start = (trackSegId+nPathSeg-2) % nPathSeg;
+			int start = (trackSegId+nPathSeg-SEGRANGE) % nPathSeg;
 			for (int i = start; i < trackSegId+AHEAD; i ++) {
 				int j = (i+nPathSeg) % nPathSeg;
 				ps[j].setLoc(ps[j].getOptLoc());
