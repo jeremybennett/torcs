@@ -1,0 +1,96 @@
+#include <plib/ssg.h>
+#include "grshadow.h"
+
+void ssgVtxTableShadow::copy_from ( ssgVtxTableShadow *src, int clone_flags )
+{
+  ssgVtxTable::copy_from ( src, clone_flags ) ;
+  factor=src->factor;
+  unit=src->unit;
+}
+ssgBase *ssgVtxTableShadow::clone ( int clone_flags )
+{
+  ssgVtxTableShadow *b = new ssgVtxTableShadow ;
+  b -> copy_from ( this, clone_flags ) ;
+  return b ;
+}
+ssgVtxTableShadow::ssgVtxTableShadow ()
+{
+  ssgVtxTableShadow(0,0);
+}
+
+
+
+ssgVtxTableShadow::ssgVtxTableShadow (float f, float u) 
+{
+  factor=f;
+  unit=f;
+  ssgVtxTable();
+}
+ssgVtxTableShadow::ssgVtxTableShadow ( GLenum ty, ssgVertexArray   *vl,
+		    ssgNormalArray   *nl,
+		    ssgTexCoordArray *tl,
+				       ssgColourArray   *cl ) : ssgVtxTable( ty, vl, nl, tl, cl )
+{
+  type = ssgTypeVtxTable () ;
+  factor=0;
+  unit=0;
+}
+
+ssgVtxTableShadow::~ssgVtxTableShadow ()
+{
+  /*  ssgDeRefDelete ( vertices  ) ;
+      ssgDeRefDelete ( normals   ) ;
+      ssgDeRefDelete ( texcoords ) ;
+      ssgDeRefDelete ( colours   ) ; */
+} 
+
+
+void ssgVtxTableShadow::setOffset(float f, float u)
+{
+  factor=f;
+  unit=f;
+}
+
+
+
+void ssgVtxTableShadow::draw_geometry ()
+{
+  int num_colours   = getNumColours   () ;
+  int num_normals   = getNumNormals   () ;
+  int num_vertices  = getNumVertices  () ;
+  int num_texcoords = getNumTexCoords () ;
+
+
+  sgVec3 *vx = (sgVec3 *) vertices  -> get(0) ;
+  sgVec3 *nm = (sgVec3 *) normals   -> get(0) ;
+  sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ;
+  sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
+
+  glDepthMask(GL_FALSE);
+  glDisable(GL_LIGHTING);
+  /*glDisable(GL_TEXTURE_2D);*/
+  glDisable(GL_CULL_FACE);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glPolygonOffset(-5.0f, +10.0f);
+  glEnable(GL_POLYGON_OFFSET_FILL);
+
+  glBegin ( gltype ) ;
+
+  if ( num_colours == 0 ) glColor4f   ( 1.0f, 1.0f, 1.0f, 1.0f ) ;
+  if ( num_colours == 1 ) glColor4fv  ( cl [ 0 ] ) ;
+  if ( num_normals == 1 ) glNormal3fv ( nm [ 0 ] ) ;
+
+  for ( int i = 0 ; i < num_vertices ; i++ )
+  {
+    if ( num_colours   > 1 ) glColor4fv    ( cl [ i ] ) ;
+    if ( num_normals   > 1 ) glNormal3fv   ( nm [ i ] ) ;
+    if ( num_texcoords > 1 ) glTexCoord2fv ( tx [ i ] ) ;
+
+    glVertex3fv ( vx [ i ] ) ;
+  }
+ 
+  glEnd () ;
+  glDisable(GL_POLYGON_OFFSET_FILL);
+  glDepthMask(GL_TRUE);
+}
