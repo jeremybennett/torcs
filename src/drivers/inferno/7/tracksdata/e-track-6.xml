@@ -20,14 +20,14 @@
     <attnum name="PGain"     val="0.019"/>
     <attnum name="AGain"     val="0.008"/>
     <attnum name="PnGain"    val="0.02"/>
-    <attnum name="Advance"   val="10.0"/>
+    <attnum name="Advance"   val="12.0"/>
     <attnum name="Advance2"  val="25.0"/>
     <attnum name="AdvStep"   val="10.0"/>
     <attnum name="VGain"     val="0.0005"/>
     <attnum name="preDy"     val="0"/>
-    <attnum name="spdtgt"    val="320.0"/>
-    <attnum name="spdtgt2"   val="1.5"/>
-    <attnum name="steerMult" val="3.0"/>
+    <attnum name="spdtgt"    val="230.0"/>
+    <attnum name="spdtgt2"   val="2.0"/>
+    <attnum name="steerMult" val="1.0"/>
 
     <attnum name="offsetApproach" val="27.0"/>
     <attnum name="offsetFinal"    val="45.0"/>

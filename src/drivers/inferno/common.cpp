@@ -374,6 +374,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     tdble	maxdlg;
     tTrackSeg	*seg;
     int		canOverlap = 1;
+    const tdble MARGIN = 8.0;
 
     maxdlg = 200.0;
     seg = car->_trkPos.seg;
@@ -381,9 +382,11 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 
     DynOffset[idx] = 0;
     /* Automatic pit every lap (test) */
-    /*     if (PitState[idx] == PIT_STATE_NONE) { */
-    /* 	PitState[idx] = PIT_STATE_ASKED; */
-    /*     } */
+#if 0
+        if ((PitState[idx] == PIT_STATE_NONE) && (car->_laps)) {
+     	PitState[idx] = PIT_STATE_ASKED;
+    }
+#endif
 
     if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) && 
 	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
@@ -408,14 +411,26 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	if (dlg < -(DmTrack->length / 2.0)) dlg += DmTrack->length;
 
 	dspd = car->_speed_x - otherCar->_speed_x;
-	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
-	    ((dlg < (dspd*4.5)) ||
-	    (dlg < (car->_dimension_x * 4.0)))) {
+	if ((car->_laps < otherCar->_laps) && 
+	    (dlg > -maxdlg) && (dlg < (car->_dimension_x + 1.0)) &&
+	    (dlg > (dspd * 6.0))) {
+	    if ((fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0)) &&
+		(otherCar->_speed_x > car->_speed_x)) {
+		maxdlg = fabs(dlg);
+		hold[idx] = Curtime + 1.0;
+		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
+		    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 3.0);
+		} else {
+		    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 3.0);
+		}
+	    }
+	} else	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
+		    ((dlg < (dspd*4.5)) ||
+		     (dlg < (car->_dimension_x * 4.0)))) {
 
 	    if (canOverlap) {
-		maxdlg = dlg;
+		maxdlg = fabs(dlg);
 		/* risk of collision */
-		tdble MARGIN = /* 0.4 * DmTrack->width */ 8.0;
 
 		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
@@ -447,7 +462,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			    }
 			} else {
 			    if ((dlg > (car->_dimension_x * 2.0)) &&
-				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN)) {
+				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0))) {
 				MaxSpeed[idx] = otherCar->_speed_x * .99;
 				Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
 			    }

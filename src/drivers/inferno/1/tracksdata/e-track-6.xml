@@ -34,15 +34,15 @@
     <attnum name="offsetFinal"    val="38.0"/>
     <attnum name="offsetExit"     val="15.0"/>
 
-    <attnum name="len before pit entry" val="60"/>
-    <attnum name="len before pit start" val="60"/>
-    <attnum name="len around pit stop"  val="16"/>
-    <attnum name="len after pit end"    val="0"/>
+    <attnum name="len before pit entry" val="100"/>
+    <attnum name="len before pit start" val="50"/>
+    <attnum name="len around pit stop"  val="18"/>
+    <attnum name="len after pit end"    val="16"/>
     <attnum name="len after pit exit"   val="15"/>
-    <attnum name="len to speed down for pitting" val="30"/>
+    <attnum name="len to speed down for pitting" val="15"/>
 
-    <attnum name="VMax1" unit="m/s" val="15"/>
-    <attnum name="VMax2" unit="m/s" val="4"/>
+    <attnum name="VMax1" unit="m/s" val="16"/>
+    <attnum name="VMax2" unit="m/s" val="5"/>
     <attnum name="VMax3" unit="m/s" val="25"/>
   </section>
 
