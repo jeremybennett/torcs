@@ -141,11 +141,8 @@ HmReadPrefs(int index)
     if ((i == 0) && !joyPresent) {
 	i = 2;
     }
-    if (i == 2) {
-	MouseControlUsed = 1;
-    } else {
-	MouseControlUsed = 0;
-    }
+    MouseControlUsed = 0;
+
     defaultSettings = controlList[i].settings;
 
     /* Command Settings */
@@ -194,6 +191,9 @@ HmReadPrefs(int index)
 	    CmdControl[cmd].max = tmp;
 	}
 	CmdControl[cmd].deadZone = (CmdControl[cmd].max - CmdControl[cmd].min) * CmdControl[cmd].deadZone;
+	if (CmdControl[cmd].type == GFCTRL_TYPE_MOUSE_AXIS) {
+	    MouseControlUsed = 1;
+	}
     }
 
     prm = GfParmGetStr(PrefHdle, defaultSettings, HM_ATT_REL_BUT_NEUTRAL, Yn[RelButNeutral]);

@@ -134,6 +134,8 @@ TorcsControlMenuInit(void *prevMenu)
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
     GfuiTitleCreate(scrHandle, "Control Configuration", 0);
 
+    GfuiMenuDefaultKeysAdd(scrHandle);
+
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-ctrlconf.png");
 
     x1 = 200;
