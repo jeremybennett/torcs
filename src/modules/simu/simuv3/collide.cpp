@@ -112,7 +112,7 @@ SimCarCollideZ(tCar *car)
 		    forces.z = 0.5 *dotProd * rel_normal.z;
 
 
-		    car->DynGCg.vel.ax +=
+		    car->DynGCg.vel.ax -=
 			(car->mass * car->Iinv.x) *
 		    (forces.z * wheel->relPos.y +
 		     forces.y * corner.z);
@@ -141,7 +141,7 @@ SimCarCollideZ(tCar *car)
 		    forces.y = 0.1*dotProd * rel_normal.y;
 		    forces.z = 0.1*dotProd * rel_normal.z;
 
-		    car->DynGCg.vel.ax -=
+		    car->DynGCg.vel.ax +=
 			(car->mass * car->Iinv.x) *
 			(forces.z * wheel->relPos.y +
 			 forces.y*(car->statGC.z + wheel->rideHeight));
