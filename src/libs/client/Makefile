@@ -27,7 +27,7 @@ LIBS      =  -lplibul
 
 EXPDIR    = include
 
-EXPORTS   = client.h
+EXPORTS   = client.h exitmenu.h
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

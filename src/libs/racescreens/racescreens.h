@@ -81,13 +81,21 @@ extern void RmShutdownLoadingScreen(void);
 
 extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
 
-extern void RmTwoStateScreen(char *title,
-			     char *label1, char *tip1, void *screen1,
-			     char *label2, char *tip2, void *screen2);
-extern void RmTriStateScreen(char *title,
-			     char *label1, char *tip1, void *screen1,
-			     char *label2, char *tip2, void *screen2,
-			     char *label3, char *tip3, void *screen3);
+extern void *RmTwoStateScreen(char *title,
+			      char *label1, char *tip1, void *screen1,
+			      char *label2, char *tip2, void *screen2);
+
+extern void *RmTriStateScreen(char *title,
+			      char *label1, char *tip1, void *screen1,
+			      char *label2, char *tip2, void *screen2,
+			      char *label3, char *tip3, void *screen3);
+
+extern void *RmFourStateScreen(char *title,
+			       char *label1, char *tip1, void *screen1,
+			       char *label2, char *tip2, void *screen2,
+			       char *label3, char *tip3, void *screen3,
+			       char *label4, char *tip4, void *screen4);
+
 extern void RmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr);
 
 

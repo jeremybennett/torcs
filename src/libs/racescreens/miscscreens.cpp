@@ -31,9 +31,10 @@
 
 static void *twoStateHdle = 0;
 static void *triStateHdle = 0;
+static void *fourStateHdle = 0;
 
 
-void
+void *
 RmTwoStateScreen(char *title,
 		 char *label1, char *tip1, void *screen1,
 		 char *label2, char *tip2, void *screen2)
@@ -55,10 +56,12 @@ RmTwoStateScreen(char *title,
     GfuiAddKey(twoStateHdle, 27, tip2, screen2, GfuiScreenActivate, NULL);
 
     GfuiScreenActivate(twoStateHdle);
+
+    return twoStateHdle;
 }
 
 
-void
+void *
 RmTriStateScreen(char *title,
 		 char *label1, char *tip1, void *screen1,
 		 char *label2, char *tip2, void *screen2,
@@ -87,6 +90,46 @@ RmTriStateScreen(char *title,
     GfuiAddKey(triStateHdle, 27, tip3, screen3, GfuiScreenActivate, NULL);
 
     GfuiScreenActivate(triStateHdle);
+
+    return triStateHdle;
+}
+
+void *
+RmFourStateScreen(char *title,
+		  char *label1, char *tip1, void *screen1,
+		  char *label2, char *tip2, void *screen2,
+		  char *label3, char *tip3, void *screen3,
+		  char *label4, char *tip4, void *screen4)
+{
+    if (fourStateHdle) {
+	GfuiScreenRelease(fourStateHdle);
+    }
+    fourStateHdle = GfuiMenuScreenCreate(title);
+    GfuiScreenAddBgImg(fourStateHdle, "data/img/splash-quit.png");
+
+    GfuiMenuButtonCreate(fourStateHdle,
+			 label1, tip1, screen1,
+			 GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(fourStateHdle,
+			 label2, tip2, screen2,
+			 GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(fourStateHdle,
+			 label3, tip3, screen3,
+			 GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(fourStateHdle,
+			 label4, tip4, screen4,
+			 GfuiScreenActivate);
+    
+
+
+    GfuiAddKey(fourStateHdle, 27, tip4, screen4, GfuiScreenActivate, NULL);
+
+    GfuiScreenActivate(fourStateHdle);
+
+    return fourStateHdle;
 }
 
 

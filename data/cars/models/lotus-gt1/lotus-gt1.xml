@@ -87,14 +87,14 @@
     <attnum name="power" val="1.5"/>
     <section name="1">
       <attnum name="xpos" val="-2.13"/>
-      <attnum name="ypos" val="-0.53"/>
-      <attnum name="zpos" val="0.19"/>
+      <attnum name="ypos" val="-0.07"/>
+      <attnum name="zpos" val="0.30"/>
     </section>
 
     <section name="2">
       <attnum name="xpos" val="-2.13"/>
-      <attnum name="ypos" val="0.53"/>
-      <attnum name="zpos" val="0.19"/>
+      <attnum name="ypos" val="0.07"/>
+      <attnum name="zpos" val="0.30"/>
     </section>
   </section>
 

@@ -46,13 +46,13 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 
 CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
-CXXFLAGS +=  @CXXFLAGS@ @CPPFLAGS@ ${CFLAGSD}
-CFLAGS   +=  @CFLAGS@ ${CFLAGSD}
+CXXFLAGS =  @CXXFLAGS@ @CPPFLAGS@ ${CFLAGSD}
+CFLAGS   =  @CFLAGS@ ${CFLAGSD}
 
 #EXT_LIBS = -lpthread @LIBS@
 EXT_LIBS = @LIBS@
 #LDFLAGS =  @LDFLAGS@ -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
-LDFLAGS +=  @LDFLAGS@ -L${EXPORTBASE}/lib -L/usr/lib 
+LDFLAGS =  @LDFLAGS@ -L${EXPORTBASE}/lib -L/usr/lib 
 
 #INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
 INCFLAGS =  -I${EXPORTBASE}/include 

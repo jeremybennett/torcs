@@ -22,14 +22,22 @@
 */
 
 #include <plib/ssg.h>
-/*#include "ssgLocal.h"*/
+#include <zlib.h>
+
 #include "grssgext.h"
 #include "grvtxtable.h"
 #include "grmultitexstate.h"
 #include "grmain.h"
 int inGroup=0;
 
-static FILE *loader_fd ;
+
+#define FGETS(buf, len, file) gzgets(file, buf, len)
+#define FGETC(file) gzgetc(file)
+#define FOPEN(path, mode) gzopen(path, mode)
+#define FCLOSE(fd) gzclose(fd)
+
+static gzFile loader_fd ;
+
 
 struct _ssgMaterial
 {
@@ -156,7 +164,7 @@ static int search ( Tag *tags, char *s )
       return (*(tags[i].func))( s ) ;
     }
 
-  ulSetError ( UL_FATAL, "ac_to_gl: Unrecognised token '%s'", s ) ;
+  ulSetError ( UL_FATAL, "ac_to_gl: Unrecognised token '%s' (%d)", s , strlen(s)) ;
 
   return 0 ;  /* Should never get here */
 }
@@ -385,7 +393,7 @@ static int do_object   ( char * s  )
   current_branch -> addKid ( tr ) ;
   current_branch = tr ;
 
-  while ( fgets ( buffer, 1024, loader_fd ) != NULL )
+  while ( FGETS ( buffer, 1024, loader_fd ) != NULL )
     if ( search ( object_tags, buffer ) == PARSE_POP )
       break ;
 
@@ -393,8 +401,11 @@ static int do_object   ( char * s  )
 
   for ( int i = 0 ; i < num_kids ; i++ )
   {
-    fgets ( buffer, 1024, loader_fd ) ;
-    search ( top_tags, buffer ) ;
+      /* EE: bad hack for buggy .acc format... */
+    if (FGETS ( buffer, 1024, loader_fd ) != NULL )
+	search ( top_tags, buffer ) ;
+    else
+	break;
   }
 
   current_branch = (ssgBranch *) old_cb ;
@@ -436,11 +447,11 @@ static int do_data     ( char *s )
   current_data = new char [ len + 1 ] ;
 
   for ( int i = 0 ; i < len ; i++ )
-    current_data [ i ] = fgetc ( loader_fd ) ;
+    current_data [ i ] = FGETC ( loader_fd ) ;
 
   current_data [ len ] = '\0' ;
 
-  fgetc ( loader_fd ) ;  /* Final RETURN */
+  FGETC ( loader_fd ) ;  /* Final RETURN */
 
   ssgBranch *br = current_options -> createBranch ( current_data ) ;
 
@@ -637,7 +648,7 @@ static int do_numvert  ( char *s )
 
   for ( int i = 0 ; i < nv ; i++ )
   {
-    fgets ( buffer, 1024, loader_fd ) ;
+    FGETS ( buffer, 1024, loader_fd ) ;
 
     if ( sscanf ( buffer, "%f %f %f %f %f %f",
                           &vtab[i][0], &vtab[i][1], &vtab[i][2],&ntab[i][0], &ntab[i][1], &ntab[i][2] ) != 6 )
@@ -673,7 +684,7 @@ static int do_numsurf  ( char *s )
   {
     char buffer [ 1024 ] ;
 
-    fgets ( buffer, 1024, loader_fd ) ;
+    FGETS ( buffer, 1024, loader_fd ) ;
     search ( surf_tag, buffer ) ;
   }
 
@@ -686,7 +697,7 @@ static int do_surf     ( char *s )
 
   char buffer [ 1024 ] ;
 
-  while ( fgets ( buffer, 1024, loader_fd ) != NULL )
+  while ( FGETS ( buffer, 1024, loader_fd ) != NULL )
     if ( search ( surface_tags, buffer ) == PARSE_POP )
       break ;
 
@@ -730,7 +741,7 @@ static int do_refs     ( char *s )
 
   for ( int i = 0 ; i < nrefs ; i++ )
   {
-    fgets ( buffer, 1024, loader_fd ) ;
+    FGETS ( buffer, 1024, loader_fd ) ;
 
     int vtx ;
     sgVec2 tc ;
@@ -925,6 +936,7 @@ static int do_refs     ( char *s )
 static int do_kids ( char *s )
 {
   last_num_kids = strtol ( s, NULL, 0 ) ;
+  
 #ifdef VTXARRAY_GUIONS
   if (last_num_kids==0 && usestrip==TRUE && inGroup!=1)
     {
@@ -1119,7 +1131,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   sgSetVec2 ( texrep, 1.0, 1.0 ) ;
   sgSetVec2 ( texoff, 0.0, 0.0 ) ;
 
-  loader_fd = fopen ( filename, "ra" ) ;
+  loader_fd = FOPEN ( filename, "rb" ) ;
 
   if ( loader_fd == NULL )
   {
@@ -1132,9 +1144,10 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
 
   current_branch = new ssgTransform () ;
 
-  while ( fgets ( buffer, 1024, loader_fd ) != NULL )
+  while ( FGETS ( buffer, 1024, loader_fd ) != NULL )
   {
     char *s = buffer ;
+
 
     /* Skip leading whitespace */
 
@@ -1151,7 +1164,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
 
       if ( ! ulStrNEqual ( s, "AC3D", 4 ) )
       {
-        fclose ( loader_fd ) ;
+        FCLOSE ( loader_fd ) ;
         ulSetError ( UL_WARNING, "ssgLoadAC: '%s' is not in AC3D format.", filename ) ;
         return NULL ;
       }
@@ -1164,7 +1177,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   current_tfname = NULL ;
   delete [] vtab ;
   vtab = 0;
-  fclose ( loader_fd ) ;
+  FCLOSE ( loader_fd ) ;
 
   return current_branch ;
 

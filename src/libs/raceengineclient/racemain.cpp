@@ -29,6 +29,7 @@
 #include <raceman.h>
 #include <robot.h>
 #include <racescreens.h>
+#include <exitmenu.h>
 
 #include "raceengine.h"
 #include "raceinit.h"
@@ -417,20 +418,48 @@ RestartRaceHookInit(void)
     return RestartRaceHookHandle;
 }
 
+/***************************************************************/
+/* QUIT HOOK */
+
+static void	*QuitHookHandle = 0;
+static void	*StopScrHandle = 0;
+
+static void
+QuitHookActivate(void * /* dummy */)
+{
+    if (StopScrHandle) {
+	GfuiScreenActivate(TorcsExitMenuInit(StopScrHandle));
+    }
+}
+
+static void *
+QuitHookInit(void)
+{
+    if (QuitHookHandle) {
+	return QuitHookHandle;
+    }
+
+    QuitHookHandle = GfuiHookCreate(0, QuitHookActivate);
+
+    return QuitHookHandle;
+}
+
 int
 ReRaceStop(void)
 {
     void	*params = ReInfo->params;
 
     if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_ALLOW_RESTART, RM_VAL_NO), RM_VAL_NO)) {
-	RmTwoStateScreen("Race Stopped",
-			 "Abandon Race", "Abort current race", AbortRaceHookInit(),
-			 "Resume Race", "Return to Race", BackToRaceHookInit());
+	StopScrHandle = RmTriStateScreen("Race Stopped",
+					 "Abandon Race", "Abort current race", AbortRaceHookInit(),
+					 "Resume Race", "Return to Race", BackToRaceHookInit(),
+					 "Quit Game", "Quit the game", QuitHookInit());
     } else {
-	RmTriStateScreen("Race Stopped",
-			 "Restart Race", "Restart the current race", RestartRaceHookInit(),
-			 "Abandon Race", "Abort current race", AbortRaceHookInit(),
-			 "Resume Race", "Return to Race", BackToRaceHookInit());
+	StopScrHandle = RmFourStateScreen("Race Stopped",
+					  "Restart Race", "Restart the current race", RestartRaceHookInit(),
+					  "Abandon Race", "Abort current race", AbortRaceHookInit(),
+					  "Resume Race", "Return to Race", BackToRaceHookInit(),
+					  "Quit Game", "Quit the game", QuitHookInit());
     }
     return RM_ASYNC | RM_NEXT_STEP;	    
 }
