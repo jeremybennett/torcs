@@ -20,7 +20,7 @@
 ROBOT       = olethros
 MODULE      = ${ROBOT}.so
 MODULEDIR   = drivers/${ROBOT}
-SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp spline.cpp pit.cpp learn.cpp strategy.cpp cardata.cpp
+SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp spline.cpp pit.cpp learn.cpp strategy.cpp cardata.cpp geometry.cpp
 LIBS        = -L${EXPORTBASE}/lib -llearning
 
 SHIPDIR     = drivers/${ROBOT}

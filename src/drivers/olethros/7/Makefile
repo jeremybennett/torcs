@@ -15,8 +15,8 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/7
-SHIP        = default.xml
-SHIPSUBDIRS = 
+SHIP        = default.xml 360-modena.rgb
+SHIPSUBDIRS = practice qualifying race 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
 src-robots-olethros_PKGFILES = $(shell find * -maxdepth 0 -type f -print)

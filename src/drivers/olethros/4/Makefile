@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/4
-SHIP        = default.xml
+SHIP        = default.xml mclaren-f1.rgb
 SHIPSUBDIRS = 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}

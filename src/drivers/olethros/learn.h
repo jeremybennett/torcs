@@ -1,3 +1,4 @@
+// -*- Mode: c++ -*-
 /***************************************************************************
 
     file                 : learn.h
@@ -36,31 +37,79 @@
 
 
 class SegLearn {
+public:
+	SegLearn(tTrack* t);
+	~SegLearn();
+
+	float getRadius(tTrackSeg *s) { return radius[s->id]; }
+	void update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha=0.5);
+	float updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm);
+	float predictedError (tCarElt* car);
+	void AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_);
+	float GetFrictionDm(tTrackSeg* s) {
+		if (s->id >= track->nseg) {
+			printf ("Warning: %d>%d\n", s->id, track->nseg);
+		}
+		return dm + segdm[s->id];
+	}
+	float GetFrictionDm2(tTrackSeg* s) {return dm2 + segdm2[s->id];}
+private:
+	class Averages {
 	public:
-		SegLearn(tTrack* t);
-		~SegLearn();
+		Averages ()
+		{
+			k=0;
+			taccel = derr = dtm = 0.0;
+		}
+		int k;
+		float taccel;
+		float derr;
+		float dtm;
+		void Measure(float taccel_, float derr_, float dtm_)
+		{
+			float r = (float) k;
+			float d = 1.0/(1.0 + (float) k);
+			taccel = d *(taccel * r + taccel_);
+			derr = d *(derr * r + derr_);
+			dtm = d *(dtm * r + dtm_);
+			k++;
+		}
+	};
+	Averages averages;
+	tTrack* track;
+	int n_quantums;
+	int segments_per_quantum;
+	int prev_quantum;
+	float prev_accel;
+	double previous_time;
+	int segQuantum (int segid);
+	float *radius;
+	int *updateid;
+	float* accel;
+	float* derror;
+	float* elig;
+	
+	// estimates for friction
+	float* segdm;
+	float* segdm2;
+	int prevsegid;
+	float dm;
+	float dm2;
+	float mu;
+	float mass;
+	float CA;
+	float CW;
+	float u;
+	float brake;
+	double prev_time;
+	double delta_time;
 
-		float getRadius(tTrackSeg *s) { return radius[s->id]; }
-		void update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r);
-		float updateAccel (tCarElt* car, float taccel, float derr, float dtm);
-		float predictedError (tCarElt* car);
-	private:
-		int n_quantums;
-		int segments_per_quantum;
-		int prev_quantum;
-		int segQuantum (int segid);
-		float *radius;
-		int *updateid;
-		float* accel;
-		float* derror;
-		float* elig;
+	bool check;
+	float rmin;
+	int lastturn;
+	int prevtype;
 
-		bool check;
-		float rmin;
-		int lastturn;
-		int prevtype;
-
-		int n_seg;
+	int n_seg;
 };
 
 
