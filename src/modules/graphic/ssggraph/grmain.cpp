@@ -173,6 +173,16 @@ initCars(tSituation *s)
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
     
     grNbCars = s->_ncars;
+
+    for (i = 0; i < s->_ncars; i++) {
+	elt = s->cars[i];
+
+	/* Shadow init */
+	grInitShadow(elt);
+
+	/* Skidmarks init */
+	grInitSkidmarks(elt);
+    }
     
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];

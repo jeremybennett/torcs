@@ -49,6 +49,7 @@ typedef struct
     ssgState		*wheelTexture;
     ssgVtxTableShadow	*shadowBase;
     ssgVtxTableShadow	*shadowCurr;
+    ssgBranch		*shadowAnchor;
     tgrSkidmarks         *skidmarks;
     sgMat4		carPos;
     tgrCarInstrument	instrument[2];
@@ -59,6 +60,7 @@ extern tgrCarInfo	*grCarInfo;
 extern void grInitCar(tCarElt *car);
 extern void grDrawCar(tCarElt*, tCarElt *, int);
 extern void grDrawShadow(tCarElt *car);
+extern void grInitShadow(tCarElt *car);
 
 #endif /* _GRCAR_H_ */ 
 

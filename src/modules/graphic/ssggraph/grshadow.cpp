@@ -72,7 +72,7 @@ void ssgVtxTableShadow::draw_geometry ()
   glDisable(GL_CULL_FACE);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glPolygonOffset(-5.0f, +10.0f);
+  glPolygonOffset(-15.0f, -20.0f);
   glEnable(GL_POLYGON_OFFSET_FILL);
 
   glBegin ( gltype ) ;

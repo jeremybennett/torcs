@@ -335,8 +335,8 @@ initWheel(tCarElt *car, int wheel_index)
 
 #define GR_SHADOW_POINTS	6
 
-static void
-initShadow(tCarElt *car)
+void
+grInitShadow(tCarElt *car)
 {
     int			i;
     float		x;
@@ -347,6 +347,9 @@ initShadow(tCarElt *car)
     ssgColourArray	*shd_clr = new ssgColourArray(1);
     ssgNormalArray	*shd_nrm = new ssgNormalArray(1);
 
+
+    grCarInfo[car->index].shadowAnchor = new ssgBranch();
+    
     clr[0] = clr[1] = clr[2] = 0.2;
     clr[3] = 0.7;
     shd_clr->add(clr);
@@ -367,7 +370,8 @@ initShadow(tCarElt *car)
     grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
     grCarInfo[car->index].shadowBase->setState(brakeState);
     grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
-    TheScene->addKid(grCarInfo[car->index].shadowCurr);
+    grCarInfo[car->index].shadowAnchor->addKid(grCarInfo[car->index].shadowCurr);
+    TheScene->addKid(grCarInfo[car->index].shadowAnchor);
 }
 
 
@@ -510,11 +514,6 @@ grInitCar(tCarElt *car)
     free(grTexturePath);
     grFilePath = NULL;
 
-    /* Shadow init */
-    initShadow(car);
-    /* Skidmarks init */
-    grInitSkidmarks(car);
-
     TRACE_GL("loadcar: end");
 }
 
@@ -525,7 +524,7 @@ grDrawShadow(tCarElt *car)
     ssgVtxTableShadow	*shadow;
     sgVec3	*vtx;
 
-    TheScene->removeKid(grCarInfo[car->index].shadowCurr);
+    grCarInfo[car->index].shadowAnchor->removeKid(grCarInfo[car->index].shadowCurr);
     //delete grCarInfo[car->index].shadowCurr;
 
     shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
@@ -540,7 +539,7 @@ grDrawShadow(tCarElt *car)
     }
 
     grCarInfo[car->index].shadowCurr = shadow;
-    TheScene->addKid(shadow);
+    grCarInfo[car->index].shadowAnchor->addKid(shadow);
 }
 
 
