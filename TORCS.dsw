@@ -86,11 +86,26 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name berniw
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name berniw2
+    End Project Dependency
 }}}
 
 ###############################################################################
 
 Project: "berniw"=.\src\drivers\berniw\berniw.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "berniw2"=.\src\drivers\berniw2\berniw2.dsp - Package Owner=<4>
 
 Package=<5>
 {{{

@@ -2968,9 +2968,18 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Make-config \
-          src/tools/launcher/torcs \
-          src/doc/torcsdoc.conf" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+	src/tools/package/specfiles/torcs-data.spec \
+	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
+	src/tools/package/specfiles/torcs-data-cars-gt.spec \
+	src/tools/package/specfiles/torcs-data-cars-dtm.spec  \
+	src/tools/package/specfiles/torcs-data-cars-misc.spec \
+	src/tools/package/specfiles/torcs-data-tracks-base.spec \
+	src/tools/package/specfiles/torcs-robot-K1999.spec \
+	src/tools/package/specfiles/torcs-robot-base.spec \
+	src/tools/package/specfiles/torcs-robot-berniw.spec \
+	src/tools/package/specfiles/torcs.spec \
+" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -3060,9 +3069,18 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Make-config \
-          src/tools/launcher/torcs \
-          src/doc/torcsdoc.conf"}
+CONFIG_FILES=\${CONFIG_FILES-"Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+	src/tools/package/specfiles/torcs-data.spec \
+	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
+	src/tools/package/specfiles/torcs-data-cars-gt.spec \
+	src/tools/package/specfiles/torcs-data-cars-dtm.spec  \
+	src/tools/package/specfiles/torcs-data-cars-misc.spec \
+	src/tools/package/specfiles/torcs-data-tracks-base.spec \
+	src/tools/package/specfiles/torcs-robot-K1999.spec \
+	src/tools/package/specfiles/torcs-robot-base.spec \
+	src/tools/package/specfiles/torcs-robot-berniw.spec \
+	src/tools/package/specfiles/torcs.spec \
+"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

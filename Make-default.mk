@@ -37,9 +37,9 @@ INSTBASE    = ${DESTDIR}${instdir}
 INSTBINBASE = ${DESTDIR}${bindir}
 INSTLIBBASE = ${DESTDIR}${prefix}/lib
 
-PACKAGEBASE = ${TORCS_BASE}/package
-
-PACKAGESBASE = ${TORCS_BASE}/packages
+PACKAGEBASE   = ${TORCS_BASE}/package
+PACKAGESBASE  = ${TORCS_BASE}/RPM/SOURCES
+SPECFILESBASE = ${TORCS_BASE}/RPM/SPECS
 
 # win32
 INIT_WIN32       = ${TORCS_BASE}/setup_win32.bat
@@ -151,10 +151,11 @@ install: installdirs installship installsolibrary installmodule installprogram i
 
 datainstall: installdatadirs installdata
 
-packages: packagelist
+packages: specfiles packagelist
 
 onepackage: packagedirs packagefiles
 
+specfiles: installspecfiles specfilesdirs
 
 .SUFFIXES: .cpp
 
@@ -400,12 +401,29 @@ packagefiles:
 	$(mkinstalldirs) $$createdir ; \
 	for Pkg in ${PKGFILES} ; \
 	do cp $$Pkg $$createdir/$$Pkg ; \
+	echo " Package $$Pkg to $$createdir/$$Pkg"; \
 	done ;\
 	fi
 
 else
 
 packagefiles: ;
+
+endif
+
+ifdef SPECFILES
+
+installspecfiles:
+	@createdir="$(SPECFILESBASE)" ; \
+	$(mkinstalldirs) $$createdir ; \
+	for spec in $(SPECFILES) ; \
+	do cp $$spec $$createdir/$$spec ; \
+	echo " Specfile $$spec copied to $$createdir/$$spec" ; \
+	done ;
+
+else
+
+installspecfiles: ;
 
 endif
 
@@ -481,11 +499,18 @@ instsubdirs:
 	RecurseFlags="install" ; \
 	${recursedirs}
 
+specfilesdirs:
+	@RecurseDirs="${SUBDIRS}" ; \
+	RecurseFlags="specfiles" ; \
+	${recursedirs}
+
+
 else
 
 subdirs: ;
 cleansubdirs: ;
 instsubdirs: ;
+specfilesdirs: ;
 
 endif
 
@@ -564,3 +589,4 @@ installshipdirs:
 	RecurseFlags="installships" ; \
 	${recursedirs} ; \
 	fi
+

@@ -4,11 +4,13 @@ TORCS version 1.1.0 Installation Instructions
 INSTALLATION FROM BINARIES:
 ---------------------------
 
-1 - unzip the torcs-1.1.0-wtorcs.zip
+1 - unzip the TORCS-x.y.z-win32.zip
 
-go to the torcs-1.1.0 directory newly created
+go to the TORCS-x.y.z directory newly created
 
 2 - unzip all the other archives in this directory.
+  TORCS-x.y.z-data.zip, TORCS-x.y.z-data-tracks*.zip, TORCS-x.y.z-data-cars.zip
+  TORCS-x.y.z-win32-robots*.zip
 
 
 INSTALLATION FROM SOURCES:

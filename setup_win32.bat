@@ -343,6 +343,280 @@ call .\create_dir .\runtime\drivers\berniw
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\1
+copy .\src\drivers\berniw2\1\aalborg.xml .\runtime\drivers\berniw2\1\aalborg.xml
+copy .\src\drivers\berniw2\1\a-speedway.xml .\runtime\drivers\berniw2\1\a-speedway.xml
+copy .\src\drivers\berniw2\1\dirt-1.xml .\runtime\drivers\berniw2\1\dirt-1.xml
+copy .\src\drivers\berniw2\1\dirt-2.xml .\runtime\drivers\berniw2\1\dirt-2.xml
+copy .\src\drivers\berniw2\1\dirt-3.xml .\runtime\drivers\berniw2\1\dirt-3.xml
+copy .\src\drivers\berniw2\1\dirt-4.xml .\runtime\drivers\berniw2\1\dirt-4.xml
+copy .\src\drivers\berniw2\1\dirt-5.xml .\runtime\drivers\berniw2\1\dirt-5.xml
+copy .\src\drivers\berniw2\1\dirt-6.xml .\runtime\drivers\berniw2\1\dirt-6.xml
+copy .\src\drivers\berniw2\1\eroad.xml .\runtime\drivers\berniw2\1\eroad.xml
+copy .\src\drivers\berniw2\1\e-track-1.xml .\runtime\drivers\berniw2\1\e-track-1.xml
+copy .\src\drivers\berniw2\1\e-track-2.xml .\runtime\drivers\berniw2\1\e-track-2.xml
+copy .\src\drivers\berniw2\1\e-track-3.xml .\runtime\drivers\berniw2\1\e-track-3.xml
+copy .\src\drivers\berniw2\1\e-track-4.xml .\runtime\drivers\berniw2\1\e-track-4.xml
+copy .\src\drivers\berniw2\1\e-track-5.xml .\runtime\drivers\berniw2\1\e-track-5.xml
+copy .\src\drivers\berniw2\1\e-track-6.xml .\runtime\drivers\berniw2\1\e-track-6.xml
+copy .\src\drivers\berniw2\1\g-track-1.xml .\runtime\drivers\berniw2\1\g-track-1.xml
+copy .\src\drivers\berniw2\1\g-track-2.xml .\runtime\drivers\berniw2\1\g-track-2.xml
+copy .\src\drivers\berniw2\1\michigan.xml .\runtime\drivers\berniw2\1\michigan.xml
+copy .\src\drivers\berniw2\1\mixed-1.xml .\runtime\drivers\berniw2\1\mixed-1.xml
+copy .\src\drivers\berniw2\1\mixed-2.xml .\runtime\drivers\berniw2\1\mixed-2.xml
+copy .\src\drivers\berniw2\1\wheel-1.xml .\runtime\drivers\berniw2\1\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\10
+copy .\src\drivers\berniw2\10\aalborg.xml .\runtime\drivers\berniw2\10\aalborg.xml
+copy .\src\drivers\berniw2\10\a-speedway.xml .\runtime\drivers\berniw2\10\a-speedway.xml
+copy .\src\drivers\berniw2\10\dirt-1.xml .\runtime\drivers\berniw2\10\dirt-1.xml
+copy .\src\drivers\berniw2\10\dirt-2.xml .\runtime\drivers\berniw2\10\dirt-2.xml
+copy .\src\drivers\berniw2\10\dirt-3.xml .\runtime\drivers\berniw2\10\dirt-3.xml
+copy .\src\drivers\berniw2\10\dirt-4.xml .\runtime\drivers\berniw2\10\dirt-4.xml
+copy .\src\drivers\berniw2\10\dirt-5.xml .\runtime\drivers\berniw2\10\dirt-5.xml
+copy .\src\drivers\berniw2\10\dirt-6.xml .\runtime\drivers\berniw2\10\dirt-6.xml
+copy .\src\drivers\berniw2\10\eroad.xml .\runtime\drivers\berniw2\10\eroad.xml
+copy .\src\drivers\berniw2\10\e-track-1.xml .\runtime\drivers\berniw2\10\e-track-1.xml
+copy .\src\drivers\berniw2\10\e-track-2.xml .\runtime\drivers\berniw2\10\e-track-2.xml
+copy .\src\drivers\berniw2\10\e-track-3.xml .\runtime\drivers\berniw2\10\e-track-3.xml
+copy .\src\drivers\berniw2\10\e-track-4.xml .\runtime\drivers\berniw2\10\e-track-4.xml
+copy .\src\drivers\berniw2\10\e-track-5.xml .\runtime\drivers\berniw2\10\e-track-5.xml
+copy .\src\drivers\berniw2\10\e-track-6.xml .\runtime\drivers\berniw2\10\e-track-6.xml
+copy .\src\drivers\berniw2\10\g-track-1.xml .\runtime\drivers\berniw2\10\g-track-1.xml
+copy .\src\drivers\berniw2\10\michigan.xml .\runtime\drivers\berniw2\10\michigan.xml
+copy .\src\drivers\berniw2\10\mixed-1.xml .\runtime\drivers\berniw2\10\mixed-1.xml
+copy .\src\drivers\berniw2\10\mixed-2.xml .\runtime\drivers\berniw2\10\mixed-2.xml
+copy .\src\drivers\berniw2\10\wheel-1.xml .\runtime\drivers\berniw2\10\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\2
+copy .\src\drivers\berniw2\2\aalborg.xml .\runtime\drivers\berniw2\2\aalborg.xml
+copy .\src\drivers\berniw2\2\a-speedway.xml .\runtime\drivers\berniw2\2\a-speedway.xml
+copy .\src\drivers\berniw2\2\dirt-1.xml .\runtime\drivers\berniw2\2\dirt-1.xml
+copy .\src\drivers\berniw2\2\dirt-2.xml .\runtime\drivers\berniw2\2\dirt-2.xml
+copy .\src\drivers\berniw2\2\dirt-3.xml .\runtime\drivers\berniw2\2\dirt-3.xml
+copy .\src\drivers\berniw2\2\dirt-4.xml .\runtime\drivers\berniw2\2\dirt-4.xml
+copy .\src\drivers\berniw2\2\dirt-5.xml .\runtime\drivers\berniw2\2\dirt-5.xml
+copy .\src\drivers\berniw2\2\dirt-6.xml .\runtime\drivers\berniw2\2\dirt-6.xml
+copy .\src\drivers\berniw2\2\eroad.xml .\runtime\drivers\berniw2\2\eroad.xml
+copy .\src\drivers\berniw2\2\e-track-1.xml .\runtime\drivers\berniw2\2\e-track-1.xml
+copy .\src\drivers\berniw2\2\e-track-2.xml .\runtime\drivers\berniw2\2\e-track-2.xml
+copy .\src\drivers\berniw2\2\e-track-3.xml .\runtime\drivers\berniw2\2\e-track-3.xml
+copy .\src\drivers\berniw2\2\e-track-4.xml .\runtime\drivers\berniw2\2\e-track-4.xml
+copy .\src\drivers\berniw2\2\e-track-5.xml .\runtime\drivers\berniw2\2\e-track-5.xml
+copy .\src\drivers\berniw2\2\e-track-6.xml .\runtime\drivers\berniw2\2\e-track-6.xml
+copy .\src\drivers\berniw2\2\g-track-1.xml .\runtime\drivers\berniw2\2\g-track-1.xml
+copy .\src\drivers\berniw2\2\g-track-2.xml .\runtime\drivers\berniw2\2\g-track-2.xml
+copy .\src\drivers\berniw2\2\michigan.xml .\runtime\drivers\berniw2\2\michigan.xml
+copy .\src\drivers\berniw2\2\mixed-1.xml .\runtime\drivers\berniw2\2\mixed-1.xml
+copy .\src\drivers\berniw2\2\mixed-2.xml .\runtime\drivers\berniw2\2\mixed-2.xml
+copy .\src\drivers\berniw2\2\wheel-1.xml .\runtime\drivers\berniw2\2\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\3
+copy .\src\drivers\berniw2\3\aalborg.xml .\runtime\drivers\berniw2\3\aalborg.xml
+copy .\src\drivers\berniw2\3\a-speedway.xml .\runtime\drivers\berniw2\3\a-speedway.xml
+copy .\src\drivers\berniw2\3\dirt-1.xml .\runtime\drivers\berniw2\3\dirt-1.xml
+copy .\src\drivers\berniw2\3\dirt-2.xml .\runtime\drivers\berniw2\3\dirt-2.xml
+copy .\src\drivers\berniw2\3\dirt-3.xml .\runtime\drivers\berniw2\3\dirt-3.xml
+copy .\src\drivers\berniw2\3\dirt-4.xml .\runtime\drivers\berniw2\3\dirt-4.xml
+copy .\src\drivers\berniw2\3\dirt-5.xml .\runtime\drivers\berniw2\3\dirt-5.xml
+copy .\src\drivers\berniw2\3\dirt-6.xml .\runtime\drivers\berniw2\3\dirt-6.xml
+copy .\src\drivers\berniw2\3\eroad.xml .\runtime\drivers\berniw2\3\eroad.xml
+copy .\src\drivers\berniw2\3\e-track-1.xml .\runtime\drivers\berniw2\3\e-track-1.xml
+copy .\src\drivers\berniw2\3\e-track-2.xml .\runtime\drivers\berniw2\3\e-track-2.xml
+copy .\src\drivers\berniw2\3\e-track-3.xml .\runtime\drivers\berniw2\3\e-track-3.xml
+copy .\src\drivers\berniw2\3\e-track-4.xml .\runtime\drivers\berniw2\3\e-track-4.xml
+copy .\src\drivers\berniw2\3\e-track-5.xml .\runtime\drivers\berniw2\3\e-track-5.xml
+copy .\src\drivers\berniw2\3\e-track-6.xml .\runtime\drivers\berniw2\3\e-track-6.xml
+copy .\src\drivers\berniw2\3\g-track-1.xml .\runtime\drivers\berniw2\3\g-track-1.xml
+copy .\src\drivers\berniw2\3\g-track-2.xml .\runtime\drivers\berniw2\3\g-track-2.xml
+copy .\src\drivers\berniw2\3\michigan.xml .\runtime\drivers\berniw2\3\michigan.xml
+copy .\src\drivers\berniw2\3\mixed-1.xml .\runtime\drivers\berniw2\3\mixed-1.xml
+copy .\src\drivers\berniw2\3\mixed-2.xml .\runtime\drivers\berniw2\3\mixed-2.xml
+copy .\src\drivers\berniw2\3\wheel-1.xml .\runtime\drivers\berniw2\3\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\4
+copy .\src\drivers\berniw2\4\aalborg.xml .\runtime\drivers\berniw2\4\aalborg.xml
+copy .\src\drivers\berniw2\4\a-speedway.xml .\runtime\drivers\berniw2\4\a-speedway.xml
+copy .\src\drivers\berniw2\4\dirt-1.xml .\runtime\drivers\berniw2\4\dirt-1.xml
+copy .\src\drivers\berniw2\4\dirt-2.xml .\runtime\drivers\berniw2\4\dirt-2.xml
+copy .\src\drivers\berniw2\4\dirt-3.xml .\runtime\drivers\berniw2\4\dirt-3.xml
+copy .\src\drivers\berniw2\4\dirt-4.xml .\runtime\drivers\berniw2\4\dirt-4.xml
+copy .\src\drivers\berniw2\4\dirt-5.xml .\runtime\drivers\berniw2\4\dirt-5.xml
+copy .\src\drivers\berniw2\4\dirt-6.xml .\runtime\drivers\berniw2\4\dirt-6.xml
+copy .\src\drivers\berniw2\4\eroad.xml .\runtime\drivers\berniw2\4\eroad.xml
+copy .\src\drivers\berniw2\4\e-track-1.xml .\runtime\drivers\berniw2\4\e-track-1.xml
+copy .\src\drivers\berniw2\4\e-track-2.xml .\runtime\drivers\berniw2\4\e-track-2.xml
+copy .\src\drivers\berniw2\4\e-track-3.xml .\runtime\drivers\berniw2\4\e-track-3.xml
+copy .\src\drivers\berniw2\4\e-track-4.xml .\runtime\drivers\berniw2\4\e-track-4.xml
+copy .\src\drivers\berniw2\4\e-track-5.xml .\runtime\drivers\berniw2\4\e-track-5.xml
+copy .\src\drivers\berniw2\4\e-track-6.xml .\runtime\drivers\berniw2\4\e-track-6.xml
+copy .\src\drivers\berniw2\4\g-track-1.xml .\runtime\drivers\berniw2\4\g-track-1.xml
+copy .\src\drivers\berniw2\4\g-track-2.xml .\runtime\drivers\berniw2\4\g-track-2.xml
+copy .\src\drivers\berniw2\4\michigan.xml .\runtime\drivers\berniw2\4\michigan.xml
+copy .\src\drivers\berniw2\4\mixed-1.xml .\runtime\drivers\berniw2\4\mixed-1.xml
+copy .\src\drivers\berniw2\4\mixed-2.xml .\runtime\drivers\berniw2\4\mixed-2.xml
+copy .\src\drivers\berniw2\4\wheel-1.xml .\runtime\drivers\berniw2\4\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\5
+copy .\src\drivers\berniw2\5\aalborg.xml .\runtime\drivers\berniw2\5\aalborg.xml
+copy .\src\drivers\berniw2\5\a-speedway.xml .\runtime\drivers\berniw2\5\a-speedway.xml
+copy .\src\drivers\berniw2\5\dirt-1.xml .\runtime\drivers\berniw2\5\dirt-1.xml
+copy .\src\drivers\berniw2\5\dirt-2.xml .\runtime\drivers\berniw2\5\dirt-2.xml
+copy .\src\drivers\berniw2\5\dirt-3.xml .\runtime\drivers\berniw2\5\dirt-3.xml
+copy .\src\drivers\berniw2\5\dirt-4.xml .\runtime\drivers\berniw2\5\dirt-4.xml
+copy .\src\drivers\berniw2\5\dirt-5.xml .\runtime\drivers\berniw2\5\dirt-5.xml
+copy .\src\drivers\berniw2\5\dirt-6.xml .\runtime\drivers\berniw2\5\dirt-6.xml
+copy .\src\drivers\berniw2\5\eroad.xml .\runtime\drivers\berniw2\5\eroad.xml
+copy .\src\drivers\berniw2\5\e-track-1.xml .\runtime\drivers\berniw2\5\e-track-1.xml
+copy .\src\drivers\berniw2\5\e-track-2.xml .\runtime\drivers\berniw2\5\e-track-2.xml
+copy .\src\drivers\berniw2\5\e-track-3.xml .\runtime\drivers\berniw2\5\e-track-3.xml
+copy .\src\drivers\berniw2\5\e-track-4.xml .\runtime\drivers\berniw2\5\e-track-4.xml
+copy .\src\drivers\berniw2\5\e-track-5.xml .\runtime\drivers\berniw2\5\e-track-5.xml
+copy .\src\drivers\berniw2\5\e-track-6.xml .\runtime\drivers\berniw2\5\e-track-6.xml
+copy .\src\drivers\berniw2\5\g-track-1.xml .\runtime\drivers\berniw2\5\g-track-1.xml
+copy .\src\drivers\berniw2\5\g-track-2.xml .\runtime\drivers\berniw2\5\g-track-2.xml
+copy .\src\drivers\berniw2\5\michigan.xml .\runtime\drivers\berniw2\5\michigan.xml
+copy .\src\drivers\berniw2\5\mixed-1.xml .\runtime\drivers\berniw2\5\mixed-1.xml
+copy .\src\drivers\berniw2\5\mixed-2.xml .\runtime\drivers\berniw2\5\mixed-2.xml
+copy .\src\drivers\berniw2\5\wheel-1.xml .\runtime\drivers\berniw2\5\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\6
+copy .\src\drivers\berniw2\6\aalborg.xml .\runtime\drivers\berniw2\6\aalborg.xml
+copy .\src\drivers\berniw2\6\a-speedway.xml .\runtime\drivers\berniw2\6\a-speedway.xml
+copy .\src\drivers\berniw2\6\dirt-1.xml .\runtime\drivers\berniw2\6\dirt-1.xml
+copy .\src\drivers\berniw2\6\dirt-2.xml .\runtime\drivers\berniw2\6\dirt-2.xml
+copy .\src\drivers\berniw2\6\dirt-3.xml .\runtime\drivers\berniw2\6\dirt-3.xml
+copy .\src\drivers\berniw2\6\dirt-4.xml .\runtime\drivers\berniw2\6\dirt-4.xml
+copy .\src\drivers\berniw2\6\dirt-5.xml .\runtime\drivers\berniw2\6\dirt-5.xml
+copy .\src\drivers\berniw2\6\dirt-6.xml .\runtime\drivers\berniw2\6\dirt-6.xml
+copy .\src\drivers\berniw2\6\eroad.xml .\runtime\drivers\berniw2\6\eroad.xml
+copy .\src\drivers\berniw2\6\e-track-1.xml .\runtime\drivers\berniw2\6\e-track-1.xml
+copy .\src\drivers\berniw2\6\e-track-2.xml .\runtime\drivers\berniw2\6\e-track-2.xml
+copy .\src\drivers\berniw2\6\e-track-3.xml .\runtime\drivers\berniw2\6\e-track-3.xml
+copy .\src\drivers\berniw2\6\e-track-4.xml .\runtime\drivers\berniw2\6\e-track-4.xml
+copy .\src\drivers\berniw2\6\e-track-5.xml .\runtime\drivers\berniw2\6\e-track-5.xml
+copy .\src\drivers\berniw2\6\e-track-6.xml .\runtime\drivers\berniw2\6\e-track-6.xml
+copy .\src\drivers\berniw2\6\g-track-1.xml .\runtime\drivers\berniw2\6\g-track-1.xml
+copy .\src\drivers\berniw2\6\g-track-2.xml .\runtime\drivers\berniw2\6\g-track-2.xml
+copy .\src\drivers\berniw2\6\michigan.xml .\runtime\drivers\berniw2\6\michigan.xml
+copy .\src\drivers\berniw2\6\mixed-1.xml .\runtime\drivers\berniw2\6\mixed-1.xml
+copy .\src\drivers\berniw2\6\mixed-2.xml .\runtime\drivers\berniw2\6\mixed-2.xml
+copy .\src\drivers\berniw2\6\wheel-1.xml .\runtime\drivers\berniw2\6\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\7
+copy .\src\drivers\berniw2\7\cg-nascar-fwd.rgb .\runtime\drivers\berniw2\7\cg-nascar-fwd.rgb
+copy .\src\drivers\berniw2\7\aalborg.xml .\runtime\drivers\berniw2\7\aalborg.xml
+copy .\src\drivers\berniw2\7\a-speedway.xml .\runtime\drivers\berniw2\7\a-speedway.xml
+copy .\src\drivers\berniw2\7\dirt-1.xml .\runtime\drivers\berniw2\7\dirt-1.xml
+copy .\src\drivers\berniw2\7\dirt-2.xml .\runtime\drivers\berniw2\7\dirt-2.xml
+copy .\src\drivers\berniw2\7\dirt-3.xml .\runtime\drivers\berniw2\7\dirt-3.xml
+copy .\src\drivers\berniw2\7\dirt-4.xml .\runtime\drivers\berniw2\7\dirt-4.xml
+copy .\src\drivers\berniw2\7\dirt-5.xml .\runtime\drivers\berniw2\7\dirt-5.xml
+copy .\src\drivers\berniw2\7\dirt-6.xml .\runtime\drivers\berniw2\7\dirt-6.xml
+copy .\src\drivers\berniw2\7\eroad.xml .\runtime\drivers\berniw2\7\eroad.xml
+copy .\src\drivers\berniw2\7\e-track-1.xml .\runtime\drivers\berniw2\7\e-track-1.xml
+copy .\src\drivers\berniw2\7\e-track-2.xml .\runtime\drivers\berniw2\7\e-track-2.xml
+copy .\src\drivers\berniw2\7\e-track-3.xml .\runtime\drivers\berniw2\7\e-track-3.xml
+copy .\src\drivers\berniw2\7\e-track-4.xml .\runtime\drivers\berniw2\7\e-track-4.xml
+copy .\src\drivers\berniw2\7\e-track-5.xml .\runtime\drivers\berniw2\7\e-track-5.xml
+copy .\src\drivers\berniw2\7\e-track-6.xml .\runtime\drivers\berniw2\7\e-track-6.xml
+copy .\src\drivers\berniw2\7\g-track-1.xml .\runtime\drivers\berniw2\7\g-track-1.xml
+copy .\src\drivers\berniw2\7\g-track-2.xml .\runtime\drivers\berniw2\7\g-track-2.xml
+copy .\src\drivers\berniw2\7\michigan.xml .\runtime\drivers\berniw2\7\michigan.xml
+copy .\src\drivers\berniw2\7\mixed-1.xml .\runtime\drivers\berniw2\7\mixed-1.xml
+copy .\src\drivers\berniw2\7\mixed-2.xml .\runtime\drivers\berniw2\7\mixed-2.xml
+copy .\src\drivers\berniw2\7\wheel-1.xml .\runtime\drivers\berniw2\7\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\8
+copy .\src\drivers\berniw2\8\clkdtm.rgb .\runtime\drivers\berniw2\8\clkdtm.rgb
+copy .\src\drivers\berniw2\8\aalborg.xml .\runtime\drivers\berniw2\8\aalborg.xml
+copy .\src\drivers\berniw2\8\a-speedway.xml .\runtime\drivers\berniw2\8\a-speedway.xml
+copy .\src\drivers\berniw2\8\dirt-1.xml .\runtime\drivers\berniw2\8\dirt-1.xml
+copy .\src\drivers\berniw2\8\dirt-2.xml .\runtime\drivers\berniw2\8\dirt-2.xml
+copy .\src\drivers\berniw2\8\dirt-3.xml .\runtime\drivers\berniw2\8\dirt-3.xml
+copy .\src\drivers\berniw2\8\dirt-4.xml .\runtime\drivers\berniw2\8\dirt-4.xml
+copy .\src\drivers\berniw2\8\dirt-5.xml .\runtime\drivers\berniw2\8\dirt-5.xml
+copy .\src\drivers\berniw2\8\dirt-6.xml .\runtime\drivers\berniw2\8\dirt-6.xml
+copy .\src\drivers\berniw2\8\eroad.xml .\runtime\drivers\berniw2\8\eroad.xml
+copy .\src\drivers\berniw2\8\e-track-1.xml .\runtime\drivers\berniw2\8\e-track-1.xml
+copy .\src\drivers\berniw2\8\e-track-2.xml .\runtime\drivers\berniw2\8\e-track-2.xml
+copy .\src\drivers\berniw2\8\e-track-3.xml .\runtime\drivers\berniw2\8\e-track-3.xml
+copy .\src\drivers\berniw2\8\e-track-4.xml .\runtime\drivers\berniw2\8\e-track-4.xml
+copy .\src\drivers\berniw2\8\e-track-5.xml .\runtime\drivers\berniw2\8\e-track-5.xml
+copy .\src\drivers\berniw2\8\e-track-6.xml .\runtime\drivers\berniw2\8\e-track-6.xml
+copy .\src\drivers\berniw2\8\g-track-1.xml .\runtime\drivers\berniw2\8\g-track-1.xml
+copy .\src\drivers\berniw2\8\g-track-2.xml .\runtime\drivers\berniw2\8\g-track-2.xml
+copy .\src\drivers\berniw2\8\michigan.xml .\runtime\drivers\berniw2\8\michigan.xml
+copy .\src\drivers\berniw2\8\mixed-1.xml .\runtime\drivers\berniw2\8\mixed-1.xml
+copy .\src\drivers\berniw2\8\mixed-2.xml .\runtime\drivers\berniw2\8\mixed-2.xml
+copy .\src\drivers\berniw2\8\wheel-1.xml .\runtime\drivers\berniw2\8\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+call .\create_dir .\runtime\drivers\berniw2\9
+copy .\src\drivers\berniw2\9\aalborg.xml .\runtime\drivers\berniw2\9\aalborg.xml
+copy .\src\drivers\berniw2\9\a-speedway.xml .\runtime\drivers\berniw2\9\a-speedway.xml
+copy .\src\drivers\berniw2\9\dirt-1.xml .\runtime\drivers\berniw2\9\dirt-1.xml
+copy .\src\drivers\berniw2\9\dirt-2.xml .\runtime\drivers\berniw2\9\dirt-2.xml
+copy .\src\drivers\berniw2\9\dirt-3.xml .\runtime\drivers\berniw2\9\dirt-3.xml
+copy .\src\drivers\berniw2\9\dirt-4.xml .\runtime\drivers\berniw2\9\dirt-4.xml
+copy .\src\drivers\berniw2\9\dirt-5.xml .\runtime\drivers\berniw2\9\dirt-5.xml
+copy .\src\drivers\berniw2\9\dirt-6.xml .\runtime\drivers\berniw2\9\dirt-6.xml
+copy .\src\drivers\berniw2\9\eroad.xml .\runtime\drivers\berniw2\9\eroad.xml
+copy .\src\drivers\berniw2\9\e-track-1.xml .\runtime\drivers\berniw2\9\e-track-1.xml
+copy .\src\drivers\berniw2\9\e-track-2.xml .\runtime\drivers\berniw2\9\e-track-2.xml
+copy .\src\drivers\berniw2\9\e-track-3.xml .\runtime\drivers\berniw2\9\e-track-3.xml
+copy .\src\drivers\berniw2\9\e-track-4.xml .\runtime\drivers\berniw2\9\e-track-4.xml
+copy .\src\drivers\berniw2\9\e-track-5.xml .\runtime\drivers\berniw2\9\e-track-5.xml
+copy .\src\drivers\berniw2\9\e-track-6.xml .\runtime\drivers\berniw2\9\e-track-6.xml
+copy .\src\drivers\berniw2\9\g-track-1.xml .\runtime\drivers\berniw2\9\g-track-1.xml
+copy .\src\drivers\berniw2\9\g-track-2.xml .\runtime\drivers\berniw2\9\g-track-2.xml
+copy .\src\drivers\berniw2\9\michigan.xml .\runtime\drivers\berniw2\9\michigan.xml
+copy .\src\drivers\berniw2\9\mixed-1.xml .\runtime\drivers\berniw2\9\mixed-1.xml
+copy .\src\drivers\berniw2\9\mixed-2.xml .\runtime\drivers\berniw2\9\mixed-2.xml
+copy .\src\drivers\berniw2\9\wheel-1.xml .\runtime\drivers\berniw2\9\wheel-1.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+copy .\src\drivers\berniw2\berniw2.xml .\runtime\drivers\berniw2\berniw2.xml
+copy .\src\drivers\berniw2\logo.rgb .\runtime\drivers\berniw2\logo.rgb
+copy .\src\drivers\berniw2\parameter.dat .\runtime\drivers\berniw2\parameter.dat
+copy .\src\drivers\berniw2\intsinsqr.dat .\runtime\drivers\berniw2\intsinsqr.dat
+copy .\src\drivers\berniw2\intcossqr.dat .\runtime\drivers\berniw2\intcossqr.dat
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\cylos1
 call .\create_dir .\runtime\drivers\cylos1\tracksdata
 copy .\src\drivers\cylos1\tracksdata\car_e-track-3.xml .\runtime\drivers\cylos1\tracksdata\car_e-track-3.xml
@@ -1000,3 +1274,258 @@ call .\create_dir .\runtime\modules\telemetry
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\track
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/categories
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/155-DTM
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/206W10
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/306W61
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/360-modena
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/acura-nsx-sz
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/buggy
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/cg-nascar-fwd
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/cg-nascar-rwd
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/clkdtm
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/corvette
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/CORW61
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/EVOWRC61
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/FOCW61
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/lotus-gt1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/mclaren-f1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/p406
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/porsche-55
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/porsche-gt1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/SWRC62
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/torcs
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/viper-gts-r
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/cars
+call .\create_dir ./runtime/cars/xj-220
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/fonts
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/img
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/menu
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/objects
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/sound
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/textures
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/data
+call .\create_dir ./runtime/data/tracks
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/aalborg
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/oval
+call .\create_dir ./runtime/tracks/oval/a-speedway
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-2
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-3
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-4
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-5
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/dirt-6
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/eroad
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/e-track-1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/e-track-2
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/e-track-3
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/e-track-4
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/oval
+call .\create_dir ./runtime/tracks/oval/e-track-5
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/e-track-6
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/oval
+call .\create_dir ./runtime/tracks/oval/g-track-1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/oval
+call .\create_dir ./runtime/tracks/oval/michigan
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/mixed-1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/dirt
+call .\create_dir ./runtime/tracks/dirt/mixed-2
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/oval
+call .\create_dir ./runtime/tracks/oval/daytona
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/g-track-2
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/tracks
+call .\create_dir ./runtime/tracks/road
+call .\create_dir ./runtime/tracks/road/wheel-1
+
+call .\create_dir ./runtime
+call .\create_dir ./runtime/.

@@ -87,7 +87,8 @@ distclean: clean
 	rm -f config.status config.log config.cache
 	rm -f Make-config
 	rm -rf ${EXPORTBASE}
-	rm -rf packages
+	rm -rf ${PACKAGESBASE}/*
+	rm -rf ${SPECFILESBASE}/*
 
 cleanconfig: clean
 	rm -f config.status config.log config.cache

@@ -83,6 +83,15 @@ AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check your
 AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check your installation and add the correct paths!]))
 AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check your installation and add the correct paths!]))
 
-AC_OUTPUT(Make-config \
-          src/tools/launcher/torcs \
-          src/doc/torcsdoc.conf)
+AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+	src/tools/package/specfiles/torcs-data.spec \
+	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
+	src/tools/package/specfiles/torcs-data-cars-gt.spec \
+	src/tools/package/specfiles/torcs-data-cars-dtm.spec  \
+	src/tools/package/specfiles/torcs-data-cars-misc.spec \
+	src/tools/package/specfiles/torcs-data-tracks-base.spec \
+	src/tools/package/specfiles/torcs-robot-K1999.spec \
+	src/tools/package/specfiles/torcs-robot-base.spec \
+	src/tools/package/specfiles/torcs-robot-berniw.spec \
+	src/tools/package/specfiles/torcs.spec \
+)
