@@ -55,20 +55,20 @@ static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.05,	0.05,	0.08,	0.2,	0.02,	0.02,	0.1	};
-const  tdble AGain[10]   = {	0.30,	0.4,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
+const  tdble AGain[10]   = {	0.30,	0.1,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
 static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.05,	0.05,	0.08,	0.015,	0.02,	0.015,	0.15	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
 static tdble Advance3[10]= {	-5.0,	0.0,  -16.0,	0.0,	0.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
-const  tdble VGain[10]   = {	0.010,	0.04,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
+const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	10000,	10000,	10000,	10000	};
 static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt2ref[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
-static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
+static double hold[10] =    {	0,	5,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble steerk[10] = {	1.0,	1.0,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
 static tdble MaxFuel[10] = {	30.0,	50.0,	100.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
 static tdble MaxSpeed[10];
@@ -284,7 +284,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 void newrace(int index, tCarElt* car, tSituation *s)
 {
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
-    hold[index-1] = 5.0;
+    hold[index-1] = 10.0;
     InitGears(car, index);
 
     spdtgt2[0] = DmTrack->width - 4.0;
@@ -317,8 +317,11 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[9] = (DmTrack->width + 2.5) * 1.1;
     Advance[9] = Advance2[9] = DmTrack->width * 2.0 - 1.0;
 
-    LgfsFinal[index - 1] = dmGetDistToStart(&car->_pit->pos);
-
+    if (car->_pit) {
+	LgfsFinal[index - 1] = dmGetDistToStart(&car->_pit->pos);
+    } else {
+	PitState[index - 1] = PIT_STATE_NO;
+    }
 }
 
 static tdble
@@ -582,14 +585,15 @@ static void drive(int index, tCarElt* car, tSituation *s)
     CosA = cos(car->_yaw);
     SinA = sin(car->_yaw);
 
-    if (index == MinIndex) {
-	Curtime += s->deltaTime;
-    }
+    Curtime = s->currentTime;
     
-    Tright[idx] = trkPos.toRight;
+    //Tright[idx] = trkPos.toRight;
     if (Curtime > hold[idx]) {
 	Tright[idx] = DmTrack->width / 2.0;
+/*     } else { */
+/* 	if (index == 2) printf ("time=%f hold=%f TR=%f\n", Curtime, hold[idx], Tright[idx]); */
     }
+    
     if ((PitState[idx] == PIT_STATE_NONE) && 
 	((car->_dammage > 5000) || 
 	 ((car->_fuel < (ConsFactor + 5.0)) && ((s->_totLaps - car->_laps) > 1)))) {
@@ -626,7 +630,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
 	dspd = car->_speed_x - otherCar->_speed_x;
 	if ((dlg > -(car->_dimension_x + 1.0)) &&
-	    ((dlg < (dspd*6.0 + 10.0)) ||
+	    ((dlg < (dspd*3.0 + 10.0)) ||
 	    (dlg < (car->_dimension_x * 4.0)))) {
 	    /* risk of collision */
 	    tdble MARGIN = 2.5;

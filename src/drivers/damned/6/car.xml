@@ -91,12 +91,12 @@
 
   <section name="Rear Right Wheel">
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-3"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-3"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Anti-Roll Bar">

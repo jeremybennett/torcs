@@ -76,13 +76,13 @@
   <section name="Rear Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="150"></attnum>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-3"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="150"></attnum>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-3"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Right Suspension">
