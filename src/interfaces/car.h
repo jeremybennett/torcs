@@ -395,6 +395,7 @@ typedef struct CarElt
 
 /* sections in xml description files */
 
+#define SECT_SIMU_SETTINGS "Simulation Options"
 #define SECT_CAR		"Car"
 #define SECT_FRNT		"Front"
 #define SECT_FRNTWING		"Front Wing"
@@ -585,7 +586,12 @@ typedef struct CarElt
 #define	VAL_LIGHT_BRAKE2	"brake2"
 #define	VAL_LIGHT_REVERSE	"reverse"
 #define	VAL_LIGHT_REAR		"rear"
-
+/* Simulation Options */
+#define PRM_DAMAGE_TYRES "damage/tyres"
+#define PRM_DAMAGE_SUSPENSION "damage/suspension"
+#define PRM_DAMAGE_ALIGNMENT "damage/alignment"
+#define PRM_DAMAGE_AERO "damage/aero"
+#define PRM_MODEL_AEROFLOW "model/aeroflow"
 
 #endif /* __CARV1_H__ */ 
 
