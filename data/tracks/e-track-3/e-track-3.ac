@@ -5,7 +5,7 @@ kids 15
 OBJECT poly
 name "ext2594"
 loc 1380.44 5.45405 -124.133
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 207
 -219.305 -5.45405 147.67
@@ -2362,7 +2362,7 @@ kids 0
 OBJECT poly
 name "ext3467"
 loc 1356.67 18.5447 -521.139
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 539
 -243.855 -7.6366 229.212
@@ -8735,7 +8735,7 @@ kids 0
 OBJECT poly
 name "ext6432"
 loc 1264.49 18.8753 -872.807
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 394
 360.074 -18.8753 146.896
@@ -13145,7 +13145,7 @@ kids 0
 OBJECT poly
 name "ext2924"
 loc 596.79 11.5318 -924.293
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 452
 -306.678 -11.5318 -33.3199
@@ -18369,7 +18369,7 @@ kids 0
 OBJECT poly
 name "ext849"
 loc 87.111 11.5318 -783.406
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 308
 -150.605 -11.5318 169.698
@@ -21859,7 +21859,7 @@ kids 0
 OBJECT poly
 name "ext2661"
 loc 401.067 22.2178 -468.928
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 589
 -142.493 0.0819511 55.0065
@@ -28924,7 +28924,7 @@ kids 0
 OBJECT poly
 name "ext339"
 loc 83.4285 11.5318 -448.767
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 411
 -149.559 -11.5318 110.755
@@ -33777,7 +33777,7 @@ kids 0
 OBJECT poly
 name "ext0"
 loc 178.334 11.3822 -121.851
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 373
 -251.954 -11.3822 196.716
@@ -37872,7 +37872,7 @@ kids 0
 OBJECT poly
 name "ext438"
 loc 623.362 9.36685 -141.423
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 376
 -182.898 -9.36685 175.951
@@ -42252,7 +42252,7 @@ kids 0
 OBJECT poly
 name "ext1182"
 loc 970.081 9.36685 -202.933
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 507
 -194.09 -9.36685 218.68
@@ -48263,7 +48263,7 @@ kids 0
 OBJECT poly
 name "int504"
 loc 1251.24 21.0085 -707.544
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 274
 -239.61 -9.32236 98.025
@@ -50987,7 +50987,7 @@ kids 0
 OBJECT poly
 name "int0"
 loc 786.003 17.1562 -555.868
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 203
 -109.178 5.66225 -28.267
@@ -52950,7 +52950,7 @@ kids 0
 OBJECT poly
 name "int70"
 loc 340.524 22.0952 -692.868
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 239
 208.587 0.72315 88.731
@@ -55321,7 +55321,7 @@ kids 0
 OBJECT poly
 name "int185"
 loc 338.711 11.4092 -269.126
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 texrep 11 8
 numvert 321
 254.831 11.4092 -181.076
@@ -58484,7 +58484,7 @@ name "track"
 kids 484
 OBJECT poly
 name "tkMn 1"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 740.75 22.0847 -793.687
 740.75 22.0847 -811.687
@@ -58576,7 +58576,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 9"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 797.592 22.0847 -793.687
 797.592 22.0847 -811.687
@@ -58668,7 +58668,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 16"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 854.434 22.0847 -793.687
 854.434 22.0847 -811.687
@@ -58760,7 +58760,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 23"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 911.276 22.0847 -793.687
 911.276 22.0847 -811.687
@@ -58852,7 +58852,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 30"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 963.75 22.0847 -793.687
 963.75 22.0847 -811.687
@@ -58944,7 +58944,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 37"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1018.87 22.1283 -793.687
 1018.87 22.0412 -811.687
@@ -59036,7 +59036,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 44"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1075.12 22.3646 -793.687
 1075.12 21.8049 -811.687
@@ -59128,7 +59128,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 51"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 4
 1131.37 22.5511 -793.687
 1131.37 21.6184 -811.687
@@ -59150,7 +59150,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 52"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 10
 1140.75 22.5564 -793.687
 1140.75 21.6131 -811.687
@@ -59214,7 +59214,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 57"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1175.25 22.5564 -802.931
 1166.25 21.6131 -818.52
@@ -59306,7 +59306,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 65"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1224.74 23.4889 -831.503
 1215.74 22.9196 -847.091
@@ -59398,7 +59398,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 72"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1274.22 25.7161 -860.074
 1265.22 25.9169 -875.662
@@ -59490,7 +59490,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 79"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 8
 1323.71 28.3825 -888.645
 1314.71 29.2214 -904.234
@@ -59540,7 +59540,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 82"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 1348.45 29.6131 -902.931
 1339.45 30.5564 -918.52
@@ -59632,7 +59632,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 90"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 6
 1393.47 31.8122 -905.882
 1400.36 32.7555 -922.512
@@ -59668,7 +59668,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 92"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1406.74 32.5452 -897.832
 1418.31 33.4886 -911.621
@@ -59760,7 +59760,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 100"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 12
 1448.52 35.268 -862.771
 1460.09 36.2113 -876.56
@@ -59838,7 +59838,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 105"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 1483.34 36.5452 -833.553
 1494.91 37.4886 -847.342
@@ -59930,7 +59930,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 113"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 6
 1501.26 36.5452 -788.933
 1519.15 37.4886 -786.973
@@ -59966,7 +59966,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 115"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1496.78 36.5452 -772.932
 1513.09 37.4886 -765.324
@@ -60058,7 +60058,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 123"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 12
 1473.73 32.2176 -723.497
 1490.04 33.161 -715.89
@@ -60136,7 +60136,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 128"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 1454.52 26.5452 -682.301
 1470.83 27.4886 -674.694
@@ -60228,7 +60228,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 136"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 4
 1420.27 21.1596 -654.278
 1424.49 22.103 -636.781
@@ -60250,7 +60250,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 137"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1412.74 20.262 -653.048
 1414.31 21.2054 -635.117
@@ -60342,7 +60342,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 145"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1356.71 13.4679 -648.146
 1358.28 14.1128 -630.214
@@ -60434,7 +60434,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 152"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1300.67 7.30063 -643.243
 1302.24 7.44803 -625.312
@@ -60526,7 +60526,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 159"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1245.2 6.21058 -638.39
 1246.77 6.12837 -620.459
@@ -60618,7 +60618,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 166"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 8
 1190.86 10.2064 -633.636
 1192.43 9.4353 -615.705
@@ -60668,7 +60668,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 169"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 14
 1163.69 11.2054 -631.259
 1165.26 10.262 -613.328
@@ -60760,7 +60760,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 177"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 6
 1119.01 10.4094 -584.583
 1136.99 11.058 -583.798
@@ -60796,7 +60796,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 179"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 1123.56 10.262 -561.737
 1139.87 11.2054 -569.345
@@ -60888,7 +60888,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 186"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 16
 1111.01 10.7337 -532.89
 1116.58 10.7337 -515.771
@@ -60994,7 +60994,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 195"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1054.4 10.7864 -514.496
 1059.96 10.7864 -497.377
@@ -61086,7 +61086,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 202"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 1000.06 12.8078 -496.838
 1005.62 12.8078 -479.719
@@ -61178,7 +61178,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 209"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 945.71 16.1353 -479.18
 951.273 16.1353 -462.061
@@ -61270,7 +61270,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 216"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 891.364 18.5298 -461.522
 896.927 18.5298 -444.403
@@ -61362,7 +61362,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 223"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 835.458 18.7337 -441.255
 842.684 18.7337 -424.769
@@ -61454,7 +61454,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 230"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 781.892 18.7337 -412.874
 791.475 18.7337 -397.637
@@ -61546,7 +61546,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 237"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 732.815 18.5058 -379.12
 743.139 18.5175 -364.376
@@ -61638,7 +61638,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 244"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 684.472 17.4072 -345.27
 694.796 17.475 -330.525
@@ -61730,7 +61730,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 251"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 636.128 15.5879 -311.42
 646.453 15.7485 -296.675
@@ -61822,7 +61822,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 258"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 587.785 13.2588 -277.569
 598.109 13.5384 -262.824
@@ -61914,7 +61914,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 265"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 539.441 10.6309 -243.719
 549.766 11.0447 -228.974
@@ -62006,7 +62006,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 272"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 491.098 7.91508 -209.869
 501.422 8.46758 -195.124
@@ -62098,7 +62098,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 279"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 442.755 5.32232 -176.018
 453.079 6.00723 -161.273
@@ -62190,7 +62190,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 286"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 394.411 3.06354 -142.168
 404.736 3.86381 -127.423
@@ -62282,7 +62282,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 293"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 346.068 1.34968 -108.318
 356.392 2.23748 -93.5728
@@ -62374,7 +62374,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 300"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 297.725 0.39168 -74.4672
 308.049 1.3284 -59.7224
@@ -62466,7 +62466,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 307"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 249.289 0.478544 -43.0999
 257.326 1.42189 -26.9941
@@ -62558,7 +62558,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 314"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 195.738 1.9387 -25.6555
 198.729 2.88204 -7.9057
@@ -62650,7 +62650,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 321"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 139.429 4.16418 -24.5871
 137.113 5.10752 -6.73663
@@ -62742,7 +62742,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 328"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 6
 85.2554 6.42993 -39.9876
 77.8345 7.37327 -23.5886
@@ -62778,7 +62778,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 330"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 68.5 7.06882 -48.5891
 59.5 8.01216 -33.0007
@@ -62870,7 +62870,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 338"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 32.3846 8.98521 -87.1492
 16.2409 9.63007 -79.188
@@ -62962,7 +62962,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 345"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 10
 23.7785 11.0011 -139.275
 5.9325 11.1485 -141.625
@@ -63026,7 +63026,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 349"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 35.1916 12.2529 -172.897
 19.6031 12.2529 -181.897
@@ -63118,7 +63118,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 357"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 63.3166 16.0229 -221.612
 47.7281 16.0229 -230.612
@@ -63210,7 +63210,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 364"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 91.4416 20.7594 -270.326
 75.8531 20.7594 -279.326
@@ -63302,7 +63302,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 371"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 10
 118.525 21.9625 -317.235
 102.936 22.207 -326.235
@@ -63366,7 +63366,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 375"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 135.191 21.6131 -346.103
 119.603 22.5564 -355.103
@@ -63458,7 +63458,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 383"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 6
 176.023 22.011 -371.494
 174.846 22.1584 -389.455
@@ -63494,7 +63494,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 385"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 192.558 22.0847 -369.865
 197.217 22.0847 -387.252
@@ -63586,7 +63586,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 393"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 246.892 22.234 -355.307
 251.55 21.9355 -372.693
@@ -63678,7 +63678,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 400"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 10
 301.225 22.4827 -340.748
 305.884 21.6868 -358.135
@@ -63742,7 +63742,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 404"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 14
 337.447 22.5564 -331.043
 342.106 21.6131 -348.429
@@ -63834,7 +63834,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 412"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 4
 400.314 22.5564 -345.392
 388.573 21.6131 -359.035
@@ -63856,7 +63856,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 413"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 408.163 22.5564 -353.339
 394.374 21.6131 -364.909
@@ -63948,7 +63948,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 421"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 446.544 22.5564 -399.08
 432.755 21.6131 -410.65
@@ -64040,7 +64040,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 428"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 484.924 22.5564 -444.821
 471.136 21.6131 -456.391
@@ -64132,7 +64132,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 435"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 12
 523.305 22.5564 -490.561
 509.516 21.6131 -502.131
@@ -64210,7 +64210,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 440"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 14
 555.289 22.5564 -528.678
 541.5 21.6131 -540.249
@@ -64302,7 +64302,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 448"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-left_nmm.rgb"
+texture "tr-asphalt-left_nmm.rgb"
 numvert 10
 554.734 22.5564 -592.322
 541.149 21.6131 -580.513
@@ -64366,7 +64366,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 452"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 16
 513.482 22.5564 -608.989
 515.051 21.6131 -591.057
@@ -64472,7 +64472,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 461"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 454.333 23.0679 -603.813
 455.902 23.0679 -585.882
@@ -64564,7 +64564,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 468"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 398.297 22.4746 -598.911
 399.866 22.4746 -580.979
@@ -64656,7 +64656,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 475"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 342.261 21.7232 -594.008
 343.83 21.7232 -576.076
@@ -64748,7 +64748,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 482"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 289.338 21.6776 -589.378
 290.907 21.9919 -571.446
@@ -64840,7 +64840,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 489"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 241.9 21.7669 -589.407
 238.774 22.4026 -571.681
@@ -64932,7 +64932,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 496"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 186.504 21.6423 -599.175
 183.379 22.5272 -581.448
@@ -65024,7 +65024,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 503"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 8
 131.109 21.4845 -608.942
 127.983 22.685 -591.216
@@ -65074,7 +65074,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 506"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 14
 103.411 21.4554 -613.826
 100.285 22.7141 -596.099
@@ -65166,7 +65166,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 514"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 10
 77.7986 21.4554 -644.896
 59.8013 22.7141 -645.21
@@ -65230,7 +65230,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 518"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 91.0129 21.4554 -669.749
 80.6885 22.7141 -684.493
@@ -65322,7 +65322,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 526"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 137.822 21.4554 -702.524
 127.497 22.7141 -717.269
@@ -65414,7 +65414,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 533"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 184.63 21.4554 -735.3
 174.306 22.7141 -750.045
@@ -65506,7 +65506,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 540"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 8
 231.439 21.4554 -768.076
 221.115 22.7141 -782.821
@@ -65556,7 +65556,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 543"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-right_nmm.rgb"
+texture "tr-asphalt-right_nmm.rgb"
 numvert 10
 254.843 21.4554 -784.464
 244.519 22.7141 -799.209
@@ -65620,7 +65620,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 548"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 284.096 21.4554 -793.688
 284.096 22.7141 -811.688
@@ -65712,7 +65712,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 556"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 342.757 21.6769 -793.688
 342.757 22.4926 -811.688
@@ -65804,7 +65804,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 563"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 401.419 22.0193 -793.688
 401.419 22.1502 -811.688
@@ -65896,7 +65896,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 570"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 458.985 22.0847 -793.688
 458.985 22.0847 -811.688
@@ -65988,7 +65988,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 577"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 515.456 22.0847 -793.688
 515.456 22.0847 -811.688
@@ -66080,7 +66080,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 584"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 16
 571.926 22.0847 -793.689
 571.926 22.0847 -811.689
@@ -66186,7 +66186,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 592"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 629.981 22.0847 -793.689
 629.981 22.0847 -811.689
@@ -66278,7 +66278,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkMn 599"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-l_nmm.rgb"
+texture "tr-asphalt-l_nmm.rgb"
 numvert 14
 685.365 22.0847 -793.689
 685.365 22.0847 -811.689
@@ -66370,7 +66370,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 605"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 14
 740.75 22.0847 -778.687
 740.75 22.0847 -793.687
@@ -66462,7 +66462,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 614"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 14
 797.592 22.0847 -778.687
 797.592 22.0847 -793.687
@@ -66554,7 +66554,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 621"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 14
 854.434 22.0847 -778.687
 854.434 22.0847 -793.687
@@ -66646,7 +66646,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 628"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 4
 911.276 22.0847 -778.687
 911.276 22.0847 -793.687
@@ -66668,7 +66668,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 629"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 920.75 22.0847 -778.687
 920.75 22.0847 -793.687
@@ -66760,7 +66760,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 637"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 972.75 22.0847 -783.687
 972.75 22.0847 -793.687
@@ -66852,7 +66852,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 644"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 1028.25 22.2199 -786.187
 1028.25 22.1584 -793.687
@@ -66944,7 +66944,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 651"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 1084.5 22.5415 -789.937
 1084.5 22.4072 -793.687
@@ -67036,7 +67036,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 657"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1140.75 22.5564 -793.687
 1140.75 22.5564 -793.687
@@ -67128,7 +67128,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 665"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1194.25 22.9193 -808.125
 1191.75 22.6706 -812.455
@@ -67220,7 +67220,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 672"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1243.73 24.2215 -836.696
 1241.23 24.1297 -841.026
@@ -67312,7 +67312,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 679"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1293.22 26.4722 -865.268
 1290.72 26.5984 -869.598
@@ -67404,7 +67404,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 686"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 1342.71 28.9625 -893.839
 1340.21 29.2211 -898.169
@@ -67510,7 +67510,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 694"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1391.56 31.5501 -901.262
 1393.47 31.8122 -905.882
@@ -67602,7 +67602,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 701"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1431.38 34.0743 -870.628
 1434.59 34.3364 -874.458
@@ -67694,7 +67694,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 708"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 1473.16 36.2201 -835.567
 1476.38 36.4821 -839.397
@@ -67800,7 +67800,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 716"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1496.29 36.2832 -789.477
 1501.26 36.5452 -788.933
@@ -67892,7 +67892,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 723"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1476.88 34.1194 -742.088
 1481.41 34.3814 -739.975
@@ -67984,7 +67984,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 730"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 1453.83 27.2674 -692.653
 1458.36 27.5294 -690.54
@@ -68090,7 +68090,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 738"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1419.09 20.8976 -659.139
 1420.27 21.1596 -654.278
@@ -68182,7 +68182,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 745"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1365.61 14.4756 -653.944
 1366.05 14.6769 -648.963
@@ -68274,7 +68274,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 752"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1309.57 8.03546 -649.041
 1310.01 8.09624 -644.06
@@ -68366,7 +68366,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 759"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1253.82 5.86725 -644.164
 1254.26 5.86115 -639.183
@@ -68458,7 +68458,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 766"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 10
 1199.48 9.74429 -639.41
 1199.92 9.561 -634.429
@@ -68522,7 +68522,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 770"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 12
 1163.26 11.4674 -636.24
 1163.69 11.2054 -631.259
@@ -68600,7 +68600,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 777"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 14
 1116.12 10.4643 -597.557
 1120.92 10.5605 -596.157
@@ -68692,7 +68692,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 784"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 18
 1119.2 10.3669 -546.483
 1123.78 10.4979 -544.489
@@ -68812,7 +68812,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 793"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 4
 1069.84 10.7337 -524.77
 1071.39 10.7337 -520.015
@@ -68834,7 +68834,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 794"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1061.92 10.7337 -522.195
 1063.46 10.7337 -517.44
@@ -68926,7 +68926,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 802"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1007.57 12.3197 -504.537
 1009.11 12.3197 -499.781
@@ -69018,7 +69018,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 809"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 953.223 15.585 -486.879
 954.768 15.585 -482.123
@@ -69110,7 +69110,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 816"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 898.877 18.2906 -469.22
 900.422 18.2906 -464.465
@@ -69202,7 +69202,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 823"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 842.876 18.7337 -449.828
 844.77 18.7337 -445.2
@@ -69280,7 +69280,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 829"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 796.822 18.7337 -427.573
 799.272 18.7337 -423.214
@@ -69358,7 +69358,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 835"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 754.119 18.7188 -400.141
 756.987 18.719 -396.045
@@ -69450,7 +69450,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 842"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 705.775 18.0502 -366.291
 708.643 18.0598 -362.195
@@ -69542,7 +69542,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 849"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 657.432 16.5438 -332.441
 660.3 16.5745 -328.345
@@ -69634,7 +69634,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 856"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 609.089 14.4135 -298.59
 611.957 14.4739 -294.494
@@ -69726,7 +69726,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 863"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 560.745 11.873 -264.74
 563.613 11.969 -260.644
@@ -69818,7 +69818,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 870"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 512.402 9.13654 -230.889
 515.27 9.27078 -226.794
@@ -69910,7 +69910,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 877"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 464.058 6.41786 -197.039
 466.926 6.59013 -192.943
@@ -70002,7 +70002,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 884"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 415.715 3.93094 -163.189
 418.583 4.138 -159.093
@@ -70094,7 +70094,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 891"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 367.372 1.88971 -129.338
 370.24 2.12531 -125.243
@@ -70186,7 +70186,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 898"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 319.028 0.508085 -95.4881
 321.896 0.763018 -91.3923
@@ -70278,7 +70278,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 905"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 270.685 0 -61.6378
 273.553 0.262039 -57.542
@@ -70370,7 +70370,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 912"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 221.611 0.805603 -37.1472
 223.16 1.06764 -32.3931
@@ -70462,7 +70462,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 919"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 167.528 2.73905 -28.0334
 167.623 3.00109 -23.0344
@@ -70554,7 +70554,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 926"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 113.139 5.0753 -35.0891
 111.771 5.33734 -30.2796
@@ -70646,7 +70646,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 933"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 63.907 7.10955 -57.4926
 60.9946 7.36865 -53.4284
@@ -70738,7 +70738,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 940"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 33.5121 9.16688 -97.1039
 28.8326 9.32234 -95.3427
@@ -70830,7 +70830,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 947"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 30.2465 11.3016 -146.926
 25.3771 11.3258 -148.061
@@ -70922,7 +70922,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 954"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 53.5842 13.7172 -194.755
 49.2541 13.7172 -197.255
@@ -71014,7 +71014,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 961"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 81.7092 18.5702 -243.469
 77.3791 18.5702 -245.969
@@ -71106,7 +71106,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 968"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 109.834 21.9908 -292.183
 105.504 21.9908 -294.683
@@ -71198,7 +71198,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 975"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 135.355 21.4054 -336.386
 131.025 21.648 -338.886
@@ -71304,7 +71304,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 983"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 176.35 21.9701 -366.505
 176.023 22.011 -371.494
@@ -71396,7 +71396,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 990"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 227.486 22.1994 -355.33
 228.781 22.1584 -360.16
@@ -71488,7 +71488,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 997"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 281.82 22.5863 -340.772
 283.114 22.4072 -345.601
@@ -71580,7 +71580,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1004"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 336.153 22.8184 -326.213
 337.447 22.5564 -331.043
@@ -71658,7 +71658,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1010"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 393.892 22.8184 -334.548
 391.285 22.5564 -338.815
@@ -71736,7 +71736,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1016"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 431.184 22.8184 -372.996
 427.353 22.5564 -376.21
@@ -71828,7 +71828,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1023"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 469.564 22.8184 -418.736
 465.734 22.5564 -421.95
@@ -71920,7 +71920,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1030"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 507.945 22.8184 -464.477
 504.115 22.5564 -467.691
@@ -72012,7 +72012,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1037"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 546.326 22.8184 -510.218
 542.496 22.5564 -513.432
@@ -72090,7 +72090,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1043"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 571.751 22.8184 -560.646
 566.751 22.5564 -560.603
@@ -72168,7 +72168,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1049"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 537.981 22.8184 -610.243
 536.108 22.5564 -605.607
@@ -72260,7 +72260,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1056"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 479.84 23.0157 -611.064
 480.276 22.9478 -606.083
@@ -72352,7 +72352,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1063"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 425.879 22.8504 -606.343
 426.315 22.8504 -601.362
@@ -72444,7 +72444,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1070"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 369.843 22.0593 -601.44
 370.279 22.0593 -596.459
@@ -72536,7 +72536,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1077"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 313.807 21.5847 -596.537
 314.243 21.5847 -591.557
@@ -72642,7 +72642,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1085"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 257.982 21.5958 -592.048
 257.764 21.7705 -587.053
@@ -72734,7 +72734,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1092"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 205.838 21.4822 -600.843
 204.97 21.6974 -595.919
@@ -72826,7 +72826,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1099"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 150.442 21.2194 -610.61
 149.574 21.5285 -605.686
@@ -72904,7 +72904,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1104"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 18
 104.279 21.1058 -618.75
 103.411 21.4554 -613.826
@@ -73024,7 +73024,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1114"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 6
 85.8372 21.1058 -656.561
 81.4225 21.4554 -658.908
@@ -73060,7 +73060,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1116"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 93.8809 21.1058 -665.653
 91.0129 21.4554 -669.749
@@ -73152,7 +73152,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1124"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 140.69 21.1058 -698.429
 137.822 21.4554 -702.524
@@ -73244,7 +73244,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1131"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 187.498 21.1058 -731.205
 184.63 21.4554 -735.3
@@ -73336,7 +73336,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1138"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 234.307 21.1058 -763.981
 231.439 21.4554 -768.076
@@ -73428,7 +73428,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1145"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 4
 276.528 21.368 -791.859
 276.337 21.4554 -793.094
@@ -73450,7 +73450,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1146"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 284.096 21.4554 -793.688
 284.096 21.4554 -793.688
@@ -73542,7 +73542,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1154"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 342.757 21.4957 -789.688
 342.757 21.6769 -793.688
@@ -73634,7 +73634,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1161"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 401.419 21.9611 -785.688
 401.419 22.0193 -793.688
@@ -73726,7 +73726,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1168"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 458.985 22.0847 -783.688
 458.985 22.0847 -793.688
@@ -73818,7 +73818,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1175"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 515.456 22.0847 -783.688
 515.456 22.0847 -793.688
@@ -73910,7 +73910,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1182"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt_nmm.rgb"
+texture "tr-asphalt_nmm.rgb"
 numvert 14
 571.926 22.0847 -783.689
 571.926 22.0847 -793.689
@@ -74002,7 +74002,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1188"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 14
 620.75 22.0847 -778.689
 620.75 22.0847 -793.689
@@ -74094,7 +74094,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1196"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 14
 676.135 22.0847 -778.689
 676.134 22.0847 -793.689
@@ -74186,7 +74186,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRtSd 1203"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-asphalt-p_nmm.rgb"
+texture "tr-asphalt-p_nmm.rgb"
 numvert 4
 731.519 22.0847 -778.689
 731.519 22.0847 -793.689
@@ -74208,7 +74208,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1204"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 740.75 22.0847 -811.687
 740.75 22.0847 -816.687
@@ -74300,7 +74300,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1213"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 797.592 22.0847 -811.687
 797.592 22.0847 -816.687
@@ -74392,7 +74392,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1220"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 854.434 22.0847 -811.687
 854.434 22.0847 -816.687
@@ -74484,7 +74484,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1227"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 911.276 22.0847 -811.687
 911.276 22.0847 -816.687
@@ -74576,7 +74576,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1234"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 963.75 22.0847 -811.687
 963.75 22.0847 -816.687
@@ -74668,7 +74668,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1241"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1018.87 22.0412 -811.687
 1018.87 22.017 -816.687
@@ -74760,7 +74760,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1248"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1075.12 21.8049 -811.687
 1075.12 21.6495 -816.687
@@ -74852,7 +74852,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1255"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 1131.37 21.6184 -811.687
 1131.37 21.3593 -816.687
@@ -74958,7 +74958,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1263"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1182.75 21.7753 -828.043
 1180.25 21.5266 -832.374
@@ -75050,7 +75050,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1270"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1232.23 23.7992 -856.615
 1229.73 23.7074 -860.945
@@ -75142,7 +75142,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1277"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1281.72 27.0526 -885.186
 1279.22 27.1787 -889.516
@@ -75234,7 +75234,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1284"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 1331.21 30.152 -913.758
 1328.71 30.4106 -918.088
@@ -75312,7 +75312,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1290"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 1379.97 32.0225 -927.501
 1380.4 32.2845 -932.482
@@ -75390,7 +75390,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1296"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1425.27 33.8823 -905.777
 1428.49 34.1443 -909.608
@@ -75482,7 +75482,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1303"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1467.06 36.623 -870.716
 1470.27 36.8851 -874.547
@@ -75574,7 +75574,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1310"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 1509.55 37.4886 -830.281
 1513.82 37.7506 -832.874
@@ -75652,7 +75652,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1316"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1517.01 37.4886 -775.901
 1521.82 37.7506 -774.554
@@ -75744,7 +75744,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1323"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1493.88 34.2955 -724.129
 1498.42 34.5575 -722.016
@@ -75836,7 +75836,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1330"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 1470.83 27.4886 -674.694
 1475.36 27.7506 -672.581
@@ -75914,7 +75914,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1336"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1434.3 23.0006 -639.943
 1436.19 23.2626 -635.312
@@ -76006,7 +76006,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1343"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1376.95 16.6786 -631.849
 1377.39 16.8997 -626.868
@@ -76098,7 +76098,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1350"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1320.92 9.31068 -626.946
 1321.35 9.39359 -621.965
@@ -76190,7 +76190,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1357"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1264.88 5.73371 -622.043
 1265.32 5.73371 -617.062
@@ -76282,7 +76282,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1364"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 1210.54 8.30577 -617.289
 1210.98 8.15694 -612.308
@@ -76360,7 +76360,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1369"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 18
 1165.26 10.262 -613.328
 1165.7 10 -608.347
@@ -76480,7 +76480,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1379"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 12
 1139.87 11.2054 -569.345
 1144.4 11.4674 -571.458
@@ -76558,7 +76558,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1385"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 14
 1126.43 10.7686 -520.594
 1129.23 10.7881 -516.457
@@ -76650,7 +76650,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1392"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 4
 1076.95 10.7337 -502.896
 1078.49 10.7337 -498.14
@@ -76672,7 +76672,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1393"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1069.02 10.7337 -500.32
 1070.57 10.7337 -495.565
@@ -76764,7 +76764,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1401"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 1014.68 12.3197 -482.662
 1016.22 12.3197 -477.907
@@ -76856,7 +76856,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1408"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 960.33 15.585 -465.004
 961.875 15.585 -460.249
@@ -76948,7 +76948,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1415"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 905.984 18.2906 -447.346
 907.529 18.2906 -442.591
@@ -77040,7 +77040,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1422"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 851.585 18.7337 -428.54
 853.478 18.7337 -423.913
@@ -77132,7 +77132,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1429"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 799.721 18.7337 -402.682
 802.278 18.7337 -398.385
@@ -77224,7 +77224,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1436"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 751.197 18.6107 -370.017
 754.065 18.6125 -365.921
@@ -77316,7 +77316,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1443"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 702.853 17.7016 -336.167
 705.721 17.717 -332.071
@@ -77408,7 +77408,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1450"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 654.51 16.0753 -302.317
 657.378 16.115 -298.221
@@ -77500,7 +77500,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1457"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 606.166 13.9319 -268.466
 609.034 14.0036 -264.37
@@ -77592,7 +77592,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1464"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 557.823 11.4715 -234.616
 560.691 11.5801 -230.52
@@ -77684,7 +77684,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1471"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 509.48 8.89439 -200.766
 512.348 9.04149 -196.67
@@ -77776,7 +77776,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1478"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 461.136 6.40069 -166.915
 464.004 6.58506 -162.819
@@ -77868,7 +77868,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1485"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 412.793 4.19054 -133.065
 415.661 4.40796 -128.969
@@ -77960,7 +77960,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1492"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 364.45 2.46413 -99.2145
 367.318 2.70735 -95.1187
@@ -78052,7 +78052,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1499"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 316.106 1.42161 -65.3641
 318.974 1.68041 -61.2684
@@ -78144,7 +78144,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1506"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 266.433 1.30384 -31.8229
 268.884 1.56588 -27.4647
@@ -78222,7 +78222,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1512"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 218.859 2.27448 -12.3282
 220.171 2.53652 -7.50348
@@ -78300,7 +78300,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1518"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 167.965 3.94443 -5.0376
 168.06 4.20647 -0.038513
@@ -78378,7 +78378,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1524"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 116.831 5.8941 -10.3924
 115.702 6.15614 -5.52142
@@ -78456,7 +78456,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1530"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 68.5511 7.70391 -28.0685
 66.2677 7.96595 -23.6204
@@ -78534,7 +78534,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1536"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 27.5245 9.11656 -61.0425
 23.5577 9.33766 -57.9987
@@ -78612,7 +78612,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1542"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 6.45587 10.3831 -109.642
 1.52264 10.4896 -108.827
@@ -78690,7 +78690,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1548"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 10.7845 11.6841 -162.434
 6.04987 11.6954 -164.041
@@ -78768,7 +78768,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1554"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 33.6656 13.7172 -206.254
 29.3354 13.7172 -208.754
@@ -78860,7 +78860,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1561"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 61.7906 18.5702 -254.969
 57.4604 18.5702 -257.469
@@ -78952,7 +78952,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1568"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 89.9156 21.9908 -303.683
 85.5854 21.9908 -306.183
@@ -79044,7 +79044,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1575"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 115.436 22.5215 -347.886
 111.106 22.7641 -350.386
@@ -79122,7 +79122,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1581"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 152.953 22.3206 -384.351
 151.04 22.4516 -388.97
@@ -79200,7 +79200,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1587"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 206.273 22.0794 -384.826
 207.567 22.0765 -389.655
@@ -79292,7 +79292,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1594"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 260.606 21.8929 -370.267
 261.9 21.7863 -375.097
@@ -79384,7 +79384,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1601"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 314.939 21.6566 -355.709
 316.233 21.4187 -360.538
@@ -79476,7 +79476,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1608"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 366.654 21.6131 -347.97
 365.542 21.351 -352.845
@@ -79568,7 +79568,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1615"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 407.168 21.6131 -380.156
 403.337 21.351 -383.37
@@ -79660,7 +79660,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1622"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 445.548 21.6131 -425.897
 441.718 21.351 -429.111
@@ -79752,7 +79752,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1629"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 483.929 21.6131 -471.638
 480.099 21.351 -474.852
@@ -79844,7 +79844,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1636"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 8
 522.31 21.6131 -517.378
 518.48 21.351 -520.592
@@ -79894,7 +79894,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1639"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 18
 541.5 21.6131 -540.249
 537.67 21.351 -543.463
@@ -80014,7 +80014,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1649"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-concrete_nmm.rgb"
+texture "tr-concrete_nmm.rgb"
 numvert 6
 529.366 21.6131 -588.918
 527.493 21.351 -584.282
@@ -80050,7 +80050,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1651"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 515.051 21.6131 -591.057
 515.487 21.351 -586.076
@@ -80156,7 +80156,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1660"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 455.902 23.0679 -585.882
 456.338 23.0679 -580.901
@@ -80248,7 +80248,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1667"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 399.866 22.4746 -580.979
 400.302 22.4746 -575.998
@@ -80340,7 +80340,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1674"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 343.83 21.7232 -576.076
 344.266 21.7232 -571.095
@@ -80432,7 +80432,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1681"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 290.907 21.9919 -571.446
 291.343 22.0792 -566.465
@@ -80524,7 +80524,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1688"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 238.774 22.4026 -571.681
 237.906 22.5791 -566.757
@@ -80616,7 +80616,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1695"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 183.379 22.5272 -581.448
 182.51 22.773 -576.524
@@ -80708,7 +80708,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1702"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 127.983 22.685 -591.216
 127.115 23.0185 -586.292
@@ -80786,7 +80786,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1708"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 79.3051 22.7141 -605.222
 76.296 23.0637 -601.228
@@ -80864,7 +80864,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1714"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 61.3546 22.7141 -656.623
 56.5139 23.0637 -657.875
@@ -80942,7 +80942,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1720"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 96.2914 22.7141 -695.419
 93.4235 23.0637 -699.514
@@ -81034,7 +81034,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1727"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 143.1 22.7141 -728.194
 140.232 23.0637 -732.29
@@ -81126,7 +81126,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1734"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 189.909 22.7141 -760.97
 187.041 23.0637 -765.066
@@ -81218,7 +81218,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1741"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 12
 236.718 22.7141 -793.746
 233.85 23.0637 -797.842
@@ -81296,7 +81296,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1747"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 284.096 22.7141 -811.688
 284.096 23.0637 -816.688
@@ -81388,7 +81388,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1754"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 342.757 22.4926 -811.688
 342.757 22.7191 -816.688
@@ -81480,7 +81480,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1761"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 401.419 22.1502 -811.688
 401.419 22.1866 -816.688
@@ -81572,7 +81572,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1768"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 458.985 22.0847 -811.688
 458.985 22.0847 -816.688
@@ -81664,7 +81664,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1775"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 515.456 22.0847 -811.688
 515.456 22.0847 -816.688
@@ -81756,7 +81756,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1782"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 16
 571.926 22.0847 -811.689
 571.926 22.0847 -816.689
@@ -81862,7 +81862,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1790"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 629.981 22.0847 -811.689
 629.981 22.0847 -816.689
@@ -81954,7 +81954,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkLtSd 1797"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-grass.rgb"
+texture "tr-grass.rgb"
 numvert 14
 685.365 22.0847 -811.689
 685.365 22.0847 -816.689
@@ -82046,7 +82046,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1803"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 920.75 22.0847 -778.687
 920.75 22.6847 -778.687
@@ -82138,7 +82138,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1831"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 972.75 22.0847 -783.687
 972.75 22.6847 -783.687
@@ -82230,7 +82230,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1838"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1028.25 22.2199 -786.187
 1028.25 22.8199 -786.187
@@ -82322,7 +82322,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1845"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1084.5 22.5415 -789.937
 1084.5 23.1415 -789.937
@@ -82414,7 +82414,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1852"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1140.75 22.5564 -793.687
 1140.75 23.1564 -793.687
@@ -82506,7 +82506,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1859"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1194.25 22.9193 -808.125
 1194.25 23.5193 -808.125
@@ -82598,7 +82598,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1866"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1243.73 24.2215 -836.696
 1243.73 24.8215 -836.696
@@ -82690,7 +82690,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1873"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1293.22 26.4722 -865.268
 1293.22 27.0722 -865.268
@@ -82782,7 +82782,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1880"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 1342.71 28.9625 -893.839
 1342.71 29.5625 -893.839
@@ -82888,7 +82888,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1888"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1391.56 31.5501 -901.262
 1391.56 32.1501 -901.262
@@ -82980,7 +82980,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1895"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1431.38 34.0743 -870.628
 1431.38 34.6743 -870.628
@@ -83072,7 +83072,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1902"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 1473.16 36.2201 -835.567
 1473.16 36.8201 -835.567
@@ -83178,7 +83178,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1910"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1496.29 36.2832 -789.477
 1496.29 36.8832 -789.477
@@ -83270,7 +83270,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1917"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1476.88 34.1194 -742.088
 1476.88 34.7194 -742.088
@@ -83362,7 +83362,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1924"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 1453.83 27.2674 -692.653
 1453.83 27.8674 -692.653
@@ -83468,7 +83468,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1932"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1419.09 20.8976 -659.139
 1419.09 21.4976 -659.139
@@ -83560,7 +83560,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1939"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1365.61 14.4756 -653.944
 1365.61 15.0756 -653.944
@@ -83652,7 +83652,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1946"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1309.57 8.03546 -649.041
 1309.57 8.63546 -649.041
@@ -83744,7 +83744,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1953"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1253.82 5.86725 -644.164
 1253.82 6.46725 -644.164
@@ -83836,7 +83836,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1960"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1199.48 9.74429 -639.41
 1199.48 10.3443 -639.41
@@ -83928,7 +83928,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1967"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1138.95 11.2381 -627.989
 1138.95 11.8381 -627.989
@@ -84006,7 +84006,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1973"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 18
 1115 10.0631 -571.911
 1115 10.6631 -571.911
@@ -84126,7 +84126,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1982"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1101.54 10.7337 -535.07
 1101.54 11.3337 -535.07
@@ -84218,7 +84218,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1989"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1052.86 10.7864 -519.252
 1052.86 11.3864 -519.252
@@ -84310,7 +84310,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 1996"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 998.511 12.8078 -501.594
 998.511 13.4078 -501.594
@@ -84402,7 +84402,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2003"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 944.165 16.1353 -483.935
 944.165 16.7353 -483.935
@@ -84494,7 +84494,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2010"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 889.819 18.5298 -466.277
 889.819 19.1298 -466.277
@@ -84586,7 +84586,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2017"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 833.451 18.7337 -445.835
 833.451 19.3337 -445.835
@@ -84664,7 +84664,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2023"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 787.961 18.7337 -422.448
 787.961 19.3337 -422.448
@@ -84742,7 +84742,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2029"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 746.062 18.6746 -394.499
 746.062 19.2746 -394.499
@@ -84834,7 +84834,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2036"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 697.718 17.8516 -360.649
 697.718 18.4516 -360.649
@@ -84926,7 +84926,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2043"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 649.375 16.2263 -326.799
 649.375 16.8263 -326.799
@@ -85018,7 +85018,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2050"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 601.031 14.0127 -292.948
 601.031 14.6127 -292.948
@@ -85110,7 +85110,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2057"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 552.688 11.4248 -259.098
 552.688 12.0248 -259.098
@@ -85202,7 +85202,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2064"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 504.345 8.67641 -225.248
 504.345 9.27641 -225.248
@@ -85294,7 +85294,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2071"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 456.001 5.98151 -191.397
 456.001 6.58151 -191.397
@@ -85386,7 +85386,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2078"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 407.658 3.55401 -157.547
 407.658 4.15401 -157.547
@@ -85478,7 +85478,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2085"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 359.315 1.60785 -123.697
 359.315 2.20785 -123.697
@@ -85570,7 +85570,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2092"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 310.971 0.356964 -89.8464
 310.971 0.956964 -89.8464
@@ -85662,7 +85662,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2099"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 263.043 0.025175 -56.563
 263.043 0.625175 -56.563
@@ -85754,7 +85754,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2106"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 212.822 1.0691 -34.5218
 212.822 1.6691 -34.5218
@@ -85846,7 +85846,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2113"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 158.355 3.12003 -28.0856
 158.355 3.72003 -28.0856
@@ -85938,7 +85938,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2120"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 104.379 5.45292 -37.8143
 104.379 6.05292 -37.8143
@@ -86030,7 +86030,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2127"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 57.2963 7.42736 -62.7393
 57.2963 8.02736 -62.7393
@@ -86122,7 +86122,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2134"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 30.9304 9.52983 -105.139
 30.9304 10.1298 -105.139
@@ -86214,7 +86214,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2141"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 32.564 11.6323 -155.041
 32.564 12.2323 -155.041
@@ -86306,7 +86306,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2148"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 58.2717 14.4219 -202.874
 58.2717 15.0219 -202.874
@@ -86398,7 +86398,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2155"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 86.3967 19.3694 -251.588
 86.3967 19.9694 -251.588
@@ -86490,7 +86490,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2162"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 114.522 22.0847 -300.302
 114.522 22.6847 -300.302
@@ -86596,7 +86596,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2170"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 143.8 21.3826 -349.785
 143.8 21.9826 -349.785
@@ -86702,7 +86702,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2178"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 191.264 22.0847 -365.036
 191.264 22.6847 -365.036
@@ -86794,7 +86794,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2185"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 245.598 22.3169 -350.477
 245.598 22.9169 -350.477
@@ -86886,7 +86886,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2192"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 299.931 22.7038 -335.919
 299.931 23.3038 -335.919
@@ -86978,7 +86978,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2199"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 359.916 22.8184 -323.835
 359.916 23.4184 -323.835
@@ -87056,7 +87056,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2205"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 411.993 22.8184 -350.125
 411.993 23.4184 -350.125
@@ -87148,7 +87148,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2212"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 450.374 22.8184 -395.866
 450.374 23.4184 -395.866
@@ -87240,7 +87240,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2219"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 488.755 22.8184 -441.607
 488.755 23.4184 -441.607
@@ -87332,7 +87332,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2226"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 527.135 22.8184 -487.347
 527.135 23.4184 -487.347
@@ -87424,7 +87424,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2233"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 566.079 22.8184 -536.08
 566.079 23.4184 -536.08
@@ -87502,7 +87502,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2239"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 558.507 22.8184 -595.602
 558.507 23.4184 -595.602
@@ -87580,7 +87580,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2245"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 504.745 22.8382 -613.243
 504.745 23.4382 -613.243
@@ -87672,7 +87672,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2252"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 453.897 23.0679 -608.794
 453.897 23.6679 -608.794
@@ -87764,7 +87764,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2259"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 397.861 22.4746 -603.892
 397.861 23.0746 -603.892
@@ -87856,7 +87856,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2266"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 341.825 21.7232 -598.989
 341.825 22.3232 -598.989
@@ -87948,7 +87948,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2273"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 288.903 21.5903 -594.359
 288.903 22.1903 -594.359
@@ -88054,7 +88054,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2281"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 233.536 21.5748 -595.959
 233.536 22.1748 -595.959
@@ -88146,7 +88146,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2288"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 178.14 21.3508 -605.727
 178.14 21.9508 -605.727
@@ -88238,7 +88238,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2295"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 122.744 21.1268 -615.494
 122.744 21.7268 -615.494
@@ -88344,7 +88344,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2303"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 83.4102 21.1058 -638.727
 83.4102 21.7058 -638.727
@@ -88450,7 +88450,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2311"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 109.484 21.1058 -676.578
 109.484 21.7058 -676.578
@@ -88542,7 +88542,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2318"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 156.292 21.1058 -709.354
 156.292 21.7058 -709.354
@@ -88634,7 +88634,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2325"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 203.101 21.1058 -742.13
 203.101 21.7058 -742.13
@@ -88726,7 +88726,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2332"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 249.91 21.1058 -774.906
 249.91 21.7058 -774.906
@@ -88832,7 +88832,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2340"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 303.65 21.3973 -792.354
 303.65 21.9973 -792.354
@@ -88924,7 +88924,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2347"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 362.311 21.6336 -788.354
 362.311 22.2336 -788.354
@@ -89016,7 +89016,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2354"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 420.973 22.0684 -784.355
 420.973 22.6684 -784.355
@@ -89108,7 +89108,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2361"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 477.809 22.0847 -783.688
 477.809 22.6847 -783.688
@@ -89200,7 +89200,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2368"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 534.279 22.0847 -783.688
 534.279 22.6847 -783.688
@@ -89292,7 +89292,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2375"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 10
 590.75 22.0847 -783.689
 590.75 22.6847 -783.689
@@ -89356,7 +89356,7 @@ refs 3
 kids 0
 OBJECT poly
 name "brRt 2379"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 740.75 22.0847 -816.687
 740.75 22.6847 -816.687
@@ -89448,7 +89448,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2401"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 797.592 22.0847 -816.687
 797.592 22.6847 -816.687
@@ -89540,7 +89540,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2408"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 854.434 22.0847 -816.687
 854.434 22.6847 -816.687
@@ -89632,7 +89632,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2415"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 911.276 22.0847 -816.687
 911.276 22.6847 -816.687
@@ -89724,7 +89724,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2422"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 963.75 22.0847 -816.687
 963.75 22.6847 -816.687
@@ -89816,7 +89816,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2429"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1018.87 22.017 -816.687
 1018.87 22.617 -816.687
@@ -89908,7 +89908,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2436"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1075.12 21.6495 -816.687
 1075.12 22.2495 -816.687
@@ -90000,7 +90000,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2443"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 1131.37 21.3593 -816.687
 1131.37 21.9593 -816.687
@@ -90106,7 +90106,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2451"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1180.25 21.5266 -832.374
 1180.25 22.1266 -832.374
@@ -90198,7 +90198,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2458"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1229.73 23.7074 -860.945
 1229.73 24.3074 -860.945
@@ -90290,7 +90290,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2465"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1279.22 27.1787 -889.516
 1279.22 27.7787 -889.516
@@ -90382,7 +90382,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2472"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1328.71 30.4106 -918.088
 1328.71 31.0106 -918.088
@@ -90460,7 +90460,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2478"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1380.4 32.2845 -932.482
 1380.4 32.8845 -932.482
@@ -90538,7 +90538,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2484"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1428.49 34.1443 -909.608
 1428.49 34.7443 -909.608
@@ -90630,7 +90630,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2491"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1470.27 36.8851 -874.547
 1470.27 37.4851 -874.547
@@ -90722,7 +90722,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2498"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1513.82 37.7506 -832.874
 1513.82 38.3506 -832.874
@@ -90800,7 +90800,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2504"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1521.82 37.7506 -774.554
 1521.82 38.3506 -774.554
@@ -90892,7 +90892,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2511"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1498.42 34.5575 -722.016
 1498.42 35.1575 -722.016
@@ -90984,7 +90984,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2518"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1475.36 27.7506 -672.581
 1475.36 28.3506 -672.581
@@ -91062,7 +91062,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2524"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1436.19 23.2626 -635.312
 1436.19 23.8626 -635.312
@@ -91154,7 +91154,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2531"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1377.39 16.8997 -626.868
 1377.39 17.4997 -626.868
@@ -91246,7 +91246,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2538"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1321.35 9.39359 -621.965
 1321.35 9.99359 -621.965
@@ -91338,7 +91338,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2545"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1265.32 5.73371 -617.062
 1265.32 6.33371 -617.062
@@ -91430,7 +91430,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2552"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1210.98 8.15694 -612.308
 1210.98 8.75694 -612.308
@@ -91522,7 +91522,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2559"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 18
 1159.61 10.0631 -607.066
 1159.61 10.6631 -607.066
@@ -91642,7 +91642,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2568"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1148 11.4131 -559.619
 1148 12.0131 -559.619
@@ -91720,7 +91720,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2574"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 1118.12 10.7337 -511.016
 1118.12 11.3337 -511.016
@@ -91826,7 +91826,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2582"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1061.51 10.7864 -492.622
 1061.51 11.3864 -492.622
@@ -91918,7 +91918,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2589"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 1007.16 12.8078 -474.964
 1007.16 13.4078 -474.964
@@ -92010,7 +92010,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2596"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 952.818 16.1353 -457.306
 952.818 16.7353 -457.306
@@ -92102,7 +92102,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2603"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 898.472 18.5298 -439.648
 898.472 19.1298 -439.648
@@ -92194,7 +92194,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2610"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 844.691 18.7337 -420.19
 844.691 19.3337 -420.19
@@ -92286,7 +92286,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2617"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 794.137 18.7337 -393.404
 794.137 19.3337 -393.404
@@ -92378,7 +92378,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2624"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 746.007 18.5207 -360.28
 746.007 19.1207 -360.28
@@ -92470,7 +92470,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2631"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 697.664 17.4938 -326.429
 697.664 18.0938 -326.429
@@ -92562,7 +92562,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2638"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 649.32 15.7932 -292.579
 649.32 16.3932 -292.579
@@ -92654,7 +92654,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2645"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 600.977 13.6161 -258.729
 600.977 14.2161 -258.729
@@ -92746,7 +92746,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2652"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 552.634 11.1596 -224.878
 552.634 11.7596 -224.878
@@ -92838,7 +92838,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2659"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 504.29 8.62105 -191.028
 504.29 9.22105 -191.028
@@ -92930,7 +92930,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2666"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 455.947 6.19749 -157.178
 455.947 6.79749 -157.178
@@ -93022,7 +93022,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2673"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 407.604 4.08611 -123.327
 407.604 4.68611 -123.327
@@ -93114,7 +93114,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2680"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 359.26 2.48409 -89.477
 359.26 3.08409 -89.477
@@ -93206,7 +93206,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2687"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 310.917 1.5886 -55.6266
 310.917 2.1886 -55.6266
@@ -93284,7 +93284,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2693"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 268.884 1.56588 -27.4647
 268.884 2.16588 -27.4647
@@ -93362,7 +93362,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2699"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 220.171 2.53652 -7.50348
 220.171 3.13652 -7.50348
@@ -93440,7 +93440,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2705"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 168.06 4.20647 -0.038513
 168.06 4.80647 -0.038513
@@ -93518,7 +93518,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2711"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 115.702 6.15614 -5.52142
 115.702 6.75614 -5.52142
@@ -93596,7 +93596,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2717"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 66.2677 7.96595 -23.6204
 66.2677 8.56595 -23.6204
@@ -93674,7 +93674,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2723"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 23.5577 9.33766 -57.9987
 23.5577 9.93766 -57.9987
@@ -93752,7 +93752,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2729"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 1.52264 10.4896 -108.827
 1.52264 11.0896 -108.827
@@ -93830,7 +93830,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2735"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 6.04987 11.6954 -164.041
 6.04987 12.2954 -164.041
@@ -93908,7 +93908,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2741"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 29.3354 13.7172 -208.754
 29.3354 14.3172 -208.754
@@ -94000,7 +94000,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2748"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 57.4604 18.5702 -257.469
 57.4604 19.1702 -257.469
@@ -94092,7 +94092,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2755"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 85.5854 21.9908 -306.183
 85.5854 22.5908 -306.183
@@ -94184,7 +94184,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2762"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 111.106 22.7641 -350.386
 111.106 23.3641 -350.386
@@ -94262,7 +94262,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2768"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 151.04 22.4516 -388.97
 151.04 23.0516 -388.97
@@ -94340,7 +94340,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2774"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 207.567 22.0765 -389.655
 207.567 22.6765 -389.655
@@ -94432,7 +94432,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2781"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 261.9 21.7863 -375.097
 261.9 22.3863 -375.097
@@ -94524,7 +94524,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2788"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 316.233 21.4187 -360.538
 316.233 22.0187 -360.538
@@ -94616,7 +94616,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2795"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 365.542 21.351 -352.845
 365.542 21.951 -352.845
@@ -94708,7 +94708,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2802"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 403.337 21.351 -383.37
 403.337 21.951 -383.37
@@ -94800,7 +94800,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2809"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 441.718 21.351 -429.111
 441.718 21.951 -429.111
@@ -94892,7 +94892,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2816"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 480.099 21.351 -474.852
 480.099 21.951 -474.852
@@ -94984,7 +94984,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2823"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 518.48 21.351 -520.592
 518.48 21.951 -520.592
@@ -95076,7 +95076,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2830"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 18
 543.752 21.351 -560.402
 543.752 21.951 -560.402
@@ -95196,7 +95196,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2839"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 507.185 21.4795 -585.35
 507.185 22.0795 -585.35
@@ -95288,7 +95288,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2846"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 456.338 23.0679 -580.901
 456.338 23.6679 -580.901
@@ -95380,7 +95380,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2853"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 400.302 22.4746 -575.998
 400.302 23.0746 -575.998
@@ -95472,7 +95472,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2860"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 344.266 21.7232 -571.095
 344.266 22.3232 -571.095
@@ -95564,7 +95564,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2867"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 291.343 22.0792 -566.465
 291.343 22.6792 -566.465
@@ -95656,7 +95656,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2874"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 237.906 22.5791 -566.757
 237.906 23.1791 -566.757
@@ -95748,7 +95748,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2881"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 182.51 22.773 -576.524
 182.51 23.373 -576.524
@@ -95840,7 +95840,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2888"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 127.115 23.0185 -586.292
 127.115 23.6185 -586.292
@@ -95918,7 +95918,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2894"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 76.296 23.0637 -601.228
 76.296 23.6637 -601.228
@@ -95996,7 +95996,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2900"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 56.5139 23.0637 -657.875
 56.5139 23.6637 -657.875
@@ -96074,7 +96074,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2906"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 93.4235 23.0637 -699.514
 93.4235 23.6637 -699.514
@@ -96166,7 +96166,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2913"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 140.232 23.0637 -732.29
 140.232 23.6637 -732.29
@@ -96258,7 +96258,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2920"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 187.041 23.0637 -765.066
 187.041 23.6637 -765.066
@@ -96350,7 +96350,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2927"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 12
 233.85 23.0637 -797.842
 233.85 23.6637 -797.842
@@ -96428,7 +96428,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2933"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 284.096 23.0637 -816.688
 284.096 23.6637 -816.688
@@ -96520,7 +96520,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2940"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 342.757 22.7191 -816.688
 342.757 23.3191 -816.688
@@ -96612,7 +96612,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2947"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 401.419 22.1866 -816.688
 401.419 22.7866 -816.688
@@ -96704,7 +96704,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2954"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 458.985 22.0847 -816.688
 458.985 22.6847 -816.688
@@ -96796,7 +96796,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2961"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 515.456 22.0847 -816.688
 515.456 22.6847 -816.688
@@ -96888,7 +96888,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2968"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 16
 571.926 22.0847 -816.689
 571.926 22.6847 -816.689
@@ -96994,7 +96994,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2976"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 629.981 22.0847 -816.689
 629.981 22.6847 -816.689
@@ -97086,7 +97086,7 @@ refs 3
 kids 0
 OBJECT poly
 name "BrLt 2983"
-texture "/home/torcs/runtime3/games/torcs/eee/tr-barrier.rgb"
+texture "tr-barrier.rgb"
 numvert 14
 685.365 22.0847 -816.689
 685.365 22.6847 -816.689
@@ -97178,7 +97178,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2989"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50R.rgb"
+texture "turn50R.rgb"
 numvert 4
 1294.65 29.1406 -896.118
 1296.15 29.1406 -893.52
@@ -97200,7 +97200,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2991"
-texture "/home/torcs/runtime3/games/torcs/eee/turn100R.rgb"
+texture "turn100R.rgb"
 numvert 4
 1251.35 26.087 -871.118
 1252.85 26.087 -868.52
@@ -97222,7 +97222,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2993"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50R.rgb"
+texture "turn50R.rgb"
 numvert 4
 1458.54 37.1416 -881.78
 1456.61 37.1416 -879.482
@@ -97244,7 +97244,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2995"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50L.rgb"
+texture "turn50L.rgb"
 numvert 4
 1213.5 9.46956 -635.617
 1213.24 9.46956 -638.606
@@ -97266,7 +97266,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2997"
-texture "/home/torcs/runtime3/games/torcs/eee/turn100L.rgb"
+texture "turn100L.rgb"
 numvert 4
 1263.31 6.73372 -639.975
 1263.05 6.73372 -642.964
@@ -97288,7 +97288,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 2999"
-texture "/home/torcs/runtime3/games/torcs/eee/turn150L.rgb"
+texture "turn150L.rgb"
 numvert 4
 1313.12 9.40152 -644.333
 1312.86 9.40152 -647.321
@@ -97310,7 +97310,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3001"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50R.rgb"
+texture "turn50R.rgb"
 numvert 4
 106.717 7.41145 -9.88553
 107.528 7.41145 -12.7739
@@ -97332,7 +97332,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3003"
-texture "/home/torcs/runtime3/games/torcs/eee/turn100R.rgb"
+texture "turn100R.rgb"
 numvert 4
 158.996 5.4305 -2.05905
 159.067 5.4305 -5.05822
@@ -97354,7 +97354,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3005"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50R.rgb"
+texture "turn50R.rgb"
 numvert 4
 92.0048 23.0847 -313.301
 94.6029 23.0847 -311.801
@@ -97376,7 +97376,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3007"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50L.rgb"
+texture "turn50L.rgb"
 numvert 4
 289.151 23.4337 -343.984
 288.375 23.4337 -341.086
@@ -97398,7 +97398,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3009"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50L.rgb"
+texture "turn50L.rgb"
 numvert 4
 523.15 23.5564 -490.376
 525.448 23.5564 -488.448
@@ -97420,7 +97420,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3011"
-texture "/home/torcs/runtime3/games/torcs/eee/turn100L.rgb"
+texture "turn100L.rgb"
 numvert 4
 491.01 23.5564 -452.074
 493.309 23.5564 -450.145
@@ -97442,7 +97442,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3013"
-texture "/home/torcs/runtime3/games/torcs/eee/turn150L.rgb"
+texture "turn150L.rgb"
 numvert 4
 458.871 23.5564 -413.771
 461.169 23.5564 -411.843
@@ -97464,7 +97464,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3015"
-texture "/home/torcs/runtime3/games/torcs/eee/turn50R.rgb"
+texture "turn50R.rgb"
 numvert 4
 149.005 23.8146 -584.463
 149.526 23.8146 -587.417
@@ -97486,7 +97486,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3017"
-texture "/home/torcs/runtime3/games/torcs/eee/turn100R.rgb"
+texture "turn100R.rgb"
 numvert 4
 198.245 23.613 -575.78
 198.766 23.613 -578.735
@@ -97508,7 +97508,7 @@ refs 3
 kids 0
 OBJECT poly
 name "TuMk 3019"
-texture "/home/torcs/runtime3/games/torcs/eee/turn150R.rgb"
+texture "turn150R.rgb"
 numvert 4
 247.486 23.5038 -567.098
 248.007 23.5038 -570.053
@@ -97530,7 +97530,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3021"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon1.rgb"
+texture "pylon1.rgb"
 numvert 10
 740.75 22.0847 -778.587
 740.75 28.0847 -778.587
@@ -97594,7 +97594,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3022"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon2.rgb"
+texture "pylon2.rgb"
 numvert 12
 740.75 28.0847 -778.587
 740.75 30.0847 -778.587
@@ -97672,7 +97672,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3023"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon1.rgb"
+texture "pylon1.rgb"
 numvert 10
 740.75 22.0847 -816.787
 740.75 28.0847 -816.787
@@ -97736,7 +97736,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3024"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon2.rgb"
+texture "pylon2.rgb"
 numvert 12
 740.75 30.0847 -818.787
 742.75 30.0847 -818.787
@@ -97814,7 +97814,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3025"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon3.rgb"
+texture "pylon3.rgb"
 numvert 6
 740.75 28.0847 -816.787
 740.75 28.0847 -778.587
@@ -97850,7 +97850,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3026"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon3.rgb"
+texture "pylon3.rgb"
 numvert 4
 742.75 30.0847 -778.587
 742.75 30.0847 -816.787
@@ -97872,7 +97872,7 @@ refs 3
 kids 0
 OBJECT poly
 name "StBg 3027"
-texture "/home/torcs/runtime3/games/torcs/eee/pylon1.rgb"
+texture "pylon1.rgb"
 numvert 4
 742.75 28.0847 -778.587
 742.75 28.0847 -816.787
@@ -97894,7 +97894,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3028"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete2.rgb"
+texture "concrete2.rgb"
 numvert 6
 620.75 26.8847 -778.889
 620.75 27.0847 -778.889
@@ -97930,7 +97930,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3030"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 635.75 26.8847 -778.689
 620.75 26.8847 -778.689
@@ -97994,7 +97994,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3032"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 650.75 26.8847 -778.689
 635.75 26.8847 -778.689
@@ -98058,7 +98058,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3034"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 665.75 26.8847 -778.689
 650.75 26.8847 -778.689
@@ -98122,7 +98122,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3036"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 680.75 26.8847 -778.689
 665.75 26.8847 -778.689
@@ -98186,7 +98186,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3038"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 695.75 26.8847 -778.689
 680.75 26.8847 -778.689
@@ -98250,7 +98250,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3040"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 710.75 26.8847 -778.689
 695.75 26.8847 -778.689
@@ -98314,7 +98314,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3042"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 725.75 26.8847 -778.689
 710.75 26.8847 -778.689
@@ -98378,7 +98378,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3044"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 740.75 26.8847 -778.689
 725.75 26.8847 -778.689
@@ -98442,7 +98442,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3046"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 755.75 26.8847 -778.687
 740.75 26.8847 -778.687
@@ -98506,7 +98506,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3048"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 770.75 26.8847 -778.687
 755.75 26.8847 -778.687
@@ -98570,7 +98570,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3050"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 785.75 26.8847 -778.687
 770.75 26.8847 -778.687
@@ -98634,7 +98634,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3052"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 800.75 26.8847 -778.687
 785.75 26.8847 -778.687
@@ -98698,7 +98698,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3054"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 815.75 26.8847 -778.687
 800.75 26.8847 -778.687
@@ -98762,7 +98762,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3056"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 830.75 26.8847 -778.687
 815.75 26.8847 -778.687
@@ -98826,7 +98826,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3058"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 845.75 26.8847 -778.687
 830.75 26.8847 -778.687
@@ -98890,7 +98890,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3060"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 860.75 26.8847 -778.687
 845.75 26.8847 -778.687
@@ -98954,7 +98954,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3062"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 875.75 26.8847 -778.687
 860.75 26.8847 -778.687
@@ -99018,7 +99018,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3064"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 890.75 26.8847 -778.687
 875.75 26.8847 -778.687
@@ -99082,7 +99082,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3066"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 905.75 26.8847 -778.687
 890.75 26.8847 -778.687
@@ -99146,7 +99146,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3068"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete.rgb"
+texture "concrete.rgb"
 numvert 10
 920.75 26.8847 -778.687
 905.75 26.8847 -778.687
@@ -99210,7 +99210,7 @@ refs 3
 kids 0
 OBJECT poly
 name "Pits 3070"
-texture "/home/torcs/runtime3/games/torcs/eee/concrete2.rgb"
+texture "concrete2.rgb"
 numvert 6
 920.75 26.8847 -778.887
 920.75 27.0847 -778.887
