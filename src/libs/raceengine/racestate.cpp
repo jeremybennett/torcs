@@ -139,9 +139,11 @@ ReStateManage(void)
 	case RE_STATE_SHUTDOWN:
 	case RE_STATE_ERROR:
 	    GfOut("RaceEngine: state = RE_STATE_SHUTDOWN\n");
-	    ReShutdown();
-	    GfuiScreenActivate(mainMenu);
-	    return;
+	    /* ReShutdown(); */
+	    /* GfuiScreenActivate(mainMenu); */
+	    ReInfo->_reState = RE_STATE_CONFIG;
+	    mode = RM_SYNC;
+	    break;
 
 	case RE_STATE_EXIT:
 	    exit (0);		/* brutal isn't it ? */

@@ -244,15 +244,3 @@ ReRacemanMenu(void)
     return RM_ASYNC | RM_NEXT_STEP;
 }
 
-
-int
-ReRaceEndMenu(void)
-{
-    char *raceName;
-    void *params = ReInfo->params;
-
-    raceName = ReGetCurrentRaceName();
-    
-    return RM_ASYNC | RM_NEXT_STEP;
-    
-}
