@@ -80,4 +80,12 @@
     <attnum name="proximity threshold" val="25.0"/>
   </section>
 
+
+  <section name="Display Mode">
+    <section name="Player">
+      <attnum name="camera" val="0"/>
+      <attnum name="camera head list" val="0"/>
+    </section>
+  </section>
+
 </params>
