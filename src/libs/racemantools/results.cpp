@@ -53,11 +53,17 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
     char	*s;
     static float	fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
     tPractResults	*curRes;
+    int		laps = 0;
     tdble	bestTopSpd = 0;
+    tdble	avgTopSpd = 0;
     tdble	bestMinSpd = 0;
+    tdble	avgMinSpd = 0;
     tdble	bestAvgSpd = 0;
-    tdble	bestLapTime = 100000;
+    tdble	avgAvgSpd = 0;
+    double	bestLapTime = 100000;
+    double	totalTime = 0;
     tdble	bestfuel = 100000;
+    tdble	totalFuel = 0;
     
     hdle = GfuiScreenCreate();
     sprintf(buf, "Results");
@@ -96,34 +102,39 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
 
 	curRes = (tPractResults*)GfRlstGetFirst(reshead);
 	do {
-	    
+	    laps++;
 	    sprintf(buf, "%d", curRes->lap);
 	    GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HL_VB, 0);
 	    s = GfTime2Str(curRes->lapTime, 0);
+	    totalTime += curRes->lapTime;
 	    if (curRes->lapTime == bestLapTime) {
 		GfuiLabelCreateEx(hdle, s, fgcolor, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
 	    } else {
 		GfuiLabelCreate(hdle, s, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
 	    }
 	    sprintf(buf, "%.2f", curRes->topSpeed * 3.6);
+	    avgTopSpd += curRes->topSpeed;
 	    if (curRes->topSpeed == bestTopSpd) {
 		GfuiLabelCreateEx(hdle, buf, fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
 	    } else {
 		GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
 	    }
 	    sprintf(buf, "%.2f", curRes->bottomSpeed * 3.6);
+	    avgMinSpd += curRes->bottomSpeed;
 	    if (curRes->bottomSpeed == bestMinSpd) {
 		GfuiLabelCreateEx(hdle, buf, fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HL_VB, 0);
 	    } else {
 		GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HL_VB, 0);
 	    }
 	    sprintf(buf, "%.2f", curRes->speedAvg * 3.6);
+	    avgAvgSpd += curRes->speedAvg;
 	    if (curRes->speedAvg == bestAvgSpd) {
 		GfuiLabelCreateEx(hdle, buf, fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HL_VB, 0);
 	    } else {
 		GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HL_VB, 0);
 	    }
 	    sprintf(buf, "%.2f", curRes->fuel);
+	    totalFuel += curRes->fuel;
 	    if (curRes->fuel == bestfuel) {
 		GfuiLabelCreateEx(hdle, buf, fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HL_VB, 0);
 	    } else {
@@ -133,6 +144,18 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
 
 	    curRes = (tPractResults*)GfRlstGetNext(reshead, (tRingList*)curRes);
 	} while (curRes != NULL);
+	y -= 5;
+	GfuiLabelCreate(hdle, "Total:", GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HL_VB, 0);
+	s = GfTime2Str(totalTime, 0);
+	GfuiLabelCreate(hdle, s, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
+	sprintf(buf, "%.2f", avgTopSpd / (tdble)laps * 3.6);
+	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
+	sprintf(buf, "%.2f", avgMinSpd / (tdble)laps * 3.6);
+	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HL_VB, 0);
+	sprintf(buf, "%.2f", avgAvgSpd / (tdble)laps * 3.6);
+	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HL_VB, 0);
+	sprintf(buf, "%.2f", totalFuel);
+	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HL_VB, 0);
     }
 
     GfuiButtonCreate(hdle,

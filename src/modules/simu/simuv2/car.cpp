@@ -221,22 +221,13 @@ SimCarUpdateForces(tCar *car)
     car->DynGC.acc.y = F.F.y * minv;
     car->DynGC.acc.z = F.F.z * minv;
 
-#define MEANNB	2
-#define MEANW	3
-
     car->DynGCg.acc.x = (F.F.x * Cosz - F.F.y * Sinz - Rx) * minv;
-    car->DynGCg.acc.x = gfMean(car->DynGCg.acc.x, &car->meanAx, MEANNB, MEANW);
     car->DynGCg.acc.y = (F.F.x * Sinz + F.F.y * Cosz - Ry) * minv;
-    car->DynGCg.acc.y = gfMean(car->DynGCg.acc.y, &car->meanAy, MEANNB, MEANW);
     car->DynGCg.acc.z = car->DynGC.acc.z;
-    car->DynGCg.acc.z = gfMean(car->DynGCg.acc.z, &car->meanAz, MEANNB, MEANW);
 
     car->DynGCg.acc.ax = car->DynGC.acc.ax = F.M.x * car->Iinv.x;
-    car->DynGCg.acc.ax = gfMean(car->DynGCg.acc.ax, &car->meanMx, MEANNB, MEANW);
     car->DynGCg.acc.ay = car->DynGC.acc.ay = F.M.y * car->Iinv.y;
-    car->DynGCg.acc.ay = gfMean(car->DynGCg.acc.ay, &car->meanMy, MEANNB, MEANW);
     car->DynGCg.acc.az = car->DynGC.acc.az = (F.M.z - Rm) * car->Iinv.z;
-    car->DynGCg.acc.az = gfMean(car->DynGCg.acc.az, &car->meanMz, MEANNB, MEANW);
 }
 
 static void
@@ -254,9 +245,9 @@ SimCarUpdateSpeed(tCar *car)
     Sinz = car->Sinz;
 
 
-    car->DynGCg.vel.x += (1.5 * car->DynGCg.acc.x - .5 * car->preDynGC.acc.x) * SimDeltaTime;
-    car->DynGCg.vel.y += (1.5 * car->DynGCg.acc.y - .5 * car->preDynGC.acc.y) * SimDeltaTime;
-    car->DynGCg.vel.z += (1.5 * car->DynGCg.acc.z - .5 * car->preDynGC.acc.z) * SimDeltaTime;
+    car->DynGCg.vel.x += car->DynGCg.acc.x * SimDeltaTime;
+    car->DynGCg.vel.y += car->DynGCg.acc.y * SimDeltaTime;
+    car->DynGCg.vel.z += car->DynGCg.acc.z * SimDeltaTime;
 
     Rr = 0;
     for (i = 0; i < 4; i++) {
@@ -274,9 +265,9 @@ SimCarUpdateSpeed(tCar *car)
 	car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel * SIGN(car->DynGCg.vel.y);
     }
 
-    car->DynGCg.vel.ax += (1.5 * car->DynGCg.acc.ax - .5 * car->preDynGC.acc.ax) * SimDeltaTime;
-    car->DynGCg.vel.ay += (1.5 * car->DynGCg.acc.ay - .5 * car->preDynGC.acc.ay) * SimDeltaTime;
-    car->DynGCg.vel.az += (1.5 * car->DynGCg.acc.az - .5 * car->preDynGC.acc.az) * SimDeltaTime;
+    car->DynGCg.vel.ax += car->DynGCg.acc.ax * SimDeltaTime;
+    car->DynGCg.vel.ay += car->DynGCg.acc.ay * SimDeltaTime;
+    car->DynGCg.vel.az += car->DynGCg.acc.az * SimDeltaTime;
 
     if (Rm > fabs(car->DynGCg.vel.az)) {
 	Rm = fabs(car->DynGCg.vel.az);
@@ -334,13 +325,13 @@ SimCarUpdatePos(tCar *car)
     accx = car->DynGCg.acc.x;
     accy = car->DynGCg.acc.y;
 
-    car->DynGCg.pos.x += (vx /* + SimDeltaTime * accx * .5 */) * SimDeltaTime;
-    car->DynGCg.pos.y += (vy /* + SimDeltaTime * accy * .5 */) * SimDeltaTime;
-    car->DynGCg.pos.z += (car->DynGCg.vel.z /* + SimDeltaTime * car->DynGCg.acc.z * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.x += vx * SimDeltaTime;
+    car->DynGCg.pos.y += vy * SimDeltaTime;
+    car->DynGCg.pos.z += car->DynGCg.vel.z * SimDeltaTime;
     
-    car->DynGCg.pos.ax += (car->DynGCg.vel.ax /* + SimDeltaTime * car->DynGCg.acc.ax * .5 */) * SimDeltaTime;
-    car->DynGCg.pos.ay += (car->DynGCg.vel.ay /* + SimDeltaTime * car->DynGCg.acc.ay * .5 */) * SimDeltaTime;
-    car->DynGCg.pos.az += (car->DynGCg.vel.az /* + SimDeltaTime * car->DynGCg.acc.az * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.ax += car->DynGCg.vel.ax * SimDeltaTime;
+    car->DynGCg.pos.ay += car->DynGCg.vel.ay * SimDeltaTime;
+    car->DynGCg.pos.az += car->DynGCg.vel.az * SimDeltaTime;
 
     NORM_PI_PI(car->DynGC.pos.az);
     
@@ -389,20 +380,20 @@ SimTelemetryOut(tCar *car)
 {
     int i;
     
-    GfOut("-----------------------------\nCar: %d %s ---\n", car->carElt->index, car->carElt->_name);
-    GfOut("Seg: %d  Ts:%f  Tr:%f\n",
+    printf("-----------------------------\nCar: %d %s ---\n", car->carElt->index, car->carElt->_name);
+    printf("Seg: %d  Ts:%f  Tr:%f\n",
 	   car->trkPos.seg->id, car->trkPos.toStart, car->trkPos.toRight);
-    GfOut("---\nMx: %f  My: %f  Mz: %f (N/m)\n", car->DynGC.acc.ax, car->DynGC.acc.ay, car->DynGC.acc.az);
-    GfOut("Wx: %f  Wy: %f  Wz: %f (rad/s)\n", car->DynGC.vel.ax, car->DynGC.vel.ay, car->DynGC.vel.az);
-    GfOut("Ax: %f  Ay: %f  Az: %f (rad)\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);
-    GfOut("---\nAx: %f  Ay: %f  Az: %f (Gs)\n", car->DynGC.acc.x/9.81, car->DynGC.acc.y/9.81, car->DynGC.acc.z/9.81);
-    GfOut("Vx: %f  Vy: %f  Vz: %f (m/s)\n", car->DynGC.vel.x, car->DynGC.vel.y, car->DynGC.vel.z);
-    GfOut("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGC.pos.x, car->DynGC.pos.y, car->DynGC.pos.z);
-    GfOut("As: %f---\n", sqrt(car->airSpeed2));
+    printf("---\nMx: %f  My: %f  Mz: %f (N/m)\n", car->DynGC.acc.ax, car->DynGC.acc.ay, car->DynGC.acc.az);
+    printf("Wx: %f  Wy: %f  Wz: %f (rad/s)\n", car->DynGC.vel.ax, car->DynGC.vel.ay, car->DynGC.vel.az);
+    printf("Ax: %f  Ay: %f  Az: %f (rad)\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);
+    printf("---\nAx: %f  Ay: %f  Az: %f (Gs)\n", car->DynGC.acc.x/9.81, car->DynGC.acc.y/9.81, car->DynGC.acc.z/9.81);
+    printf("Vx: %f  Vy: %f  Vz: %f (m/s)\n", car->DynGC.vel.x, car->DynGC.vel.y, car->DynGC.vel.z);
+    printf("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGC.pos.x, car->DynGC.pos.y, car->DynGC.pos.z);
+    printf("As: %f\n---\n", sqrt(car->airSpeed2));
     for (i = 0; i < 4; i++) {
-	GfOut("wheel %d - RH:%f susp:%f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x);
-	GfOut("sx:%f sa:%f w:%f ", car->wheel[i].sx, car->wheel[i].sa, car->wheel[i].spinVel);
-	GfOut("fx:%f fy:%f fz:%f\n", car->wheel[i].forces.x, car->wheel[i].forces.y, car->wheel[i].forces.z);
+	printf("wheel %d - RH:%f susp:%f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x);
+	printf("sx:%f sa:%f w:%f ", car->wheel[i].sx, car->wheel[i].sa, car->wheel[i].spinVel);
+	printf("fx:%f fy:%f fz:%f\n", car->wheel[i].forces.x, car->wheel[i].forces.y, car->wheel[i].forces.z);
     }
     
 }

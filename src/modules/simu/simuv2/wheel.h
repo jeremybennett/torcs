@@ -45,14 +45,11 @@ typedef struct
     /* 1 and 2 are for suspension state */
 #define SIM_WH_SPINNING 4	/* the wheel is spinning */
 #define SIM_WH_LOCKED   8	/* the wheel is locked */
-    tdble	preSpinVel;
     tdble	axleFz;		/* force from axle (anti-roll bar) */
     tTrkLocPos	trkPos;		/* current track position */
     tPosd	relPos;		/* relative pos / GC */
     tdble	sa;		/* slip angle */
     tdble	sx;		/* longitudinal slip value */
-    tdble	presx;		/* longitudinal slip value */
-    tdble	presy;		/* lat slip value */
     tdble	steer;
     
     /* static */

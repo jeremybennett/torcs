@@ -10,6 +10,10 @@
 #define SKID_RUNNING 3
 #define SKID_STOPPED 4
 
+extern int grSkidMaxStripByWheel;
+extern int grSkidMaxPointByStrip;
+extern double grSkidDeltaT;
+
 typedef struct 
 {
   ssgVertexArray * vtx[MAXSTRIP_BYWHEEL]; /* the strips */
@@ -34,6 +38,5 @@ extern void grInitSkidmarks(tCarElt *car);
 extern void grUpdateSkidmarks(tCarElt *car);
 extern void grShutdownSkidmarks (void);
 extern void grDrawSkidmarks (tCarElt *car);
-
 
 #endif /* _GRSKIDMARKS_*/

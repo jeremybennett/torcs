@@ -11,7 +11,6 @@
 #define V_EXPANSION 0.4f
 #define SMOKE_TYPE_TIRE 1
 
-
 class ssgVtxTableSmoke : public ssgVtxTable
 {
 protected:
@@ -84,6 +83,10 @@ extern void grInitSmoke(int index);
 extern void grAddSmoke(tCarElt *car);
 extern void grUpdateSmoke(double dt, double t);
 extern void grShutdownSmoke ();
+
+extern int grSmokeMaxNumber;
+extern double grSmokeDeltaT;
+extern double grSmokeLife;
 
 
 #endif /* _GRSMOKE_H_*/

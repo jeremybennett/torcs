@@ -173,7 +173,6 @@ SimGearboxUpdate(tCar *car)
 	differential->in.Tq = 0;
 	if (clutch->timeToRelease <= 0.0) {
 	    clutch->state = CLUTCH_RELEASED;
-	    gfMeanReset(0, &car->meanAccel);
 	    trans->curI = trans->driveI[gearbox->gear+1];
 	    differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
 	    differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];

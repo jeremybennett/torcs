@@ -28,6 +28,7 @@
     <attnum name="spdtgt"    val="230.0"></attnum>
     <attnum name="spdtgt2"   val="2.0"></attnum>
     <attnum name="steerMult" val="2.2"></attnum>
+    <attnum name="offset"    val="0.7"></attnum>
   </section>
 
 </params>

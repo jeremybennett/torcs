@@ -34,7 +34,8 @@
 
 
 static tSimItf	SimItf;
-static double	curTime;
+static double	curTime = 0;
+static double	lastTime = 0;
 static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*pracecfg = NULL;
@@ -50,7 +51,7 @@ tRmInfo		*prRaceInfo = (tRmInfo*)NULL;
 
 tprCarInfo	*prCarInfo;
 
-static const tdble dtmax = 0.01;
+static const tdble dtmax = RCM_MAX_DT_SIMU;
 
 static void prPreStart(void);
 static tRingListHead prCurResults = {(tRingList*)&prCurResults, (tRingList*)&prCurResults}; /* empty */
@@ -89,6 +90,7 @@ prRun(void)
     tRingList	*lm;
     char	*name;
 
+    curTime = lastTime = 0;
     RmLoadingScreenStart("Practice Loading", "data/img/splash-qrloading.png");
     RmLoadingScreenSetText("Race Configuration...");
 
@@ -147,10 +149,13 @@ prRun(void)
     prCarInfo = (tprCarInfo*)calloc(prTheSituation._ncars, sizeof(tprCarInfo));
     prRunning = 0;    
 
-    RmLoadingScreenSetText("Loading Track 3D Description...");
-    prGraphicItf.inittrack(prTheTrack);
-    RmLoadingScreenSetText("Loading Cars 3D Objects...");
-    prGraphicItf.initcars(&prTheSituation);
+    if (prShowRace) {
+	RmLoadingScreenSetText("Loading Track 3D Description...");
+	prGraphicItf.inittrack(prTheTrack);
+	RmLoadingScreenSetText("Loading Cars 3D Objects...");
+	prGraphicItf.initcars(&prTheSituation);
+    }
+    
 
     RmLoadingScreenSetText("Initializing the driver...");
     for (i = 0; i < prTheSituation._ncars; i++) {
@@ -283,7 +288,7 @@ static void
 prPreStart(void)
 {
     int i,j;
-    for (j = 0; j < 300; j++) {
+    for (j = 0; j < ((int)(1.0 / dtmax)); j++) {
 	for (i = 0; i < prTheSituation._ncars; i++) {
 	    memset(prTheSituation.cars[i]->ctrl, 0, sizeof(tCarCtrl));
 	    prTheSituation.cars[i]->ctrl->brakeCmd = 1.0;
@@ -298,6 +303,7 @@ prStart(void)
 {
     prRunning = 1;
     curTime = GfTimeClock() - dtmax;
+    lastTime = curTime;
 }
 
 void
@@ -312,17 +318,23 @@ prUpdate(void)
 {
     int i;
     tRobotItf *robot;
+
     double t = GfTimeClock();
 
     if (prRunning) {
 	while ((t - curTime) > dtmax) {
-	    prTheSituation.deltaTime = 2 * dtmax;
-	    for (i = 0; i < prTheSituation._ncars; i++) {
-		robot = prTheSituation.cars[i]->robot;
-		robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
+	    curTime += dtmax;
+	    prTheSituation.currentTime += dtmax;
+	    if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+		prTheSituation.deltaTime = curTime - lastTime;
+		for (i = 0; i < prTheSituation._ncars; i++) {
+		    robot = prTheSituation.cars[i]->robot;
+		    robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
+		}
+		lastTime = curTime;
+		prKeyPressed = 0;
 	    }
 	    prTheSituation.deltaTime = dtmax;
-	    SimItf.update(&prTheSituation, dtmax, -1);
 	    SimItf.update(&prTheSituation, dtmax, -1);
 	    for (i = 0; i < prTheSituation._ncars; i++) {
 		if (prManage(prTheSituation.cars[i], 0)) {
@@ -330,11 +342,8 @@ prUpdate(void)
 		    return;
 		}
 	    }
-	    prTheSituation.currentTime += 2*dtmax;
-	    curTime += 2 * dtmax;
 	}
     }
-    prKeyPressed = 0;
 }
 
 void
@@ -342,15 +351,23 @@ prUpdateBlind(void)
 {
     int i;
     tRobotItf *robot;
-    
+
+    lastTime = 0;
+    curTime = 0;
+
     while (1) {
-	prTheSituation.deltaTime = 2 * dtmax;
-	for (i = 0; i < prTheSituation._ncars; i++) {
-	    robot = prTheSituation.cars[i]->robot;
-	    robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
+	curTime += dtmax;
+	prTheSituation.currentTime += dtmax;
+	if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+	    prTheSituation.deltaTime = curTime - lastTime;
+	    for (i = 0; i < prTheSituation._ncars; i++) {
+		robot = prTheSituation.cars[i]->robot;
+		robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
+	    }
+	    prKeyPressed = 0;
+	    lastTime = curTime;
 	}
 	prTheSituation.deltaTime = dtmax;
-	SimItf.update(&prTheSituation, dtmax, -1);
 	SimItf.update(&prTheSituation, dtmax, -1);
 	for (i = 0; i < prTheSituation._ncars; i++) {
 	    if (prManage(prTheSituation.cars[i], 1)) {
@@ -358,7 +375,5 @@ prUpdateBlind(void)
 		return;
 	    }
 	}
-	prTheSituation.currentTime += 2*dtmax;
-	prKeyPressed = 0;
     }
 }

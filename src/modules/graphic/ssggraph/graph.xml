@@ -15,6 +15,15 @@
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
 <params name="graph" type="param" mode="mw">
+  <section name="Graphic">
+    <attnum name="smoke value" val="300"></attnum>
+    <attnum name="smoke interval" val="0.1"></attnum>
+    <attnum name="smoke duration" val="120"></attnum>
+
+    <attnum name="skid value" val="20"></attnum>
+    <attnum name="skid length" val="300"></attnum>
+    <attnum name="skid interval" val="0.3"></attnum>
+  </section>
 
   <section name="Display Mode">
     <attnum name="driver board" val="2"></attnum>

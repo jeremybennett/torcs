@@ -1096,7 +1096,7 @@ grInitCams(void)
 			     1,	/* drawCurr */
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
-			     5.0,	/* fovymin */
+			     1.0,	/* fovymin */
 			     60.0,	/* fovymax */
 			     300.0,	/* distz */
 			     0,		/* axis */
@@ -1110,7 +1110,7 @@ grInitCams(void)
 			     1,	/* drawCurr */
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
-			     5.0,	/* fovymin */
+			     1.0,	/* fovymin */
 			     60.0,	/* fovymax */
 			     300.0,	/* distz */
 			     1,		/* axis */
@@ -1124,7 +1124,7 @@ grInitCams(void)
 			     1,	/* drawCurr */
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
-			     5.0,	/* fovymin */
+			     1.0,	/* fovymin */
 			     60.0,	/* fovymax */
 			     300.0,	/* distz */
 			     2,		/* axis */
@@ -1138,7 +1138,7 @@ grInitCams(void)
 			     1,	/* drawCurr */
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
-			     5.0,	/* fovymin */
+			     1.0,	/* fovymin */
 			     60.0,	/* fovymax */
 			     300.0,	/* distz */
 			     3,		/* axis */

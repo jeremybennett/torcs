@@ -93,23 +93,22 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     Fps = 0;
     grWindowRatio = 0;
 
-    grHandle = GfParmReadFile("config/graph.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
-				      (char*)NULL, grDebugFlag);
+				    (char*)NULL, grDebugFlag);
     grBoardFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_BOARD,
-				      (char*)NULL, grBoardFlag);
+				    (char*)NULL, grBoardFlag);
     grLeaderFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_LEADER,
-				       (char*)NULL, grLeaderFlag);
+				     (char*)NULL, grLeaderFlag);
     grLeaderNb = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NBLEADER,
-				     (char*)NULL, grLeaderNb);
+				   (char*)NULL, grLeaderNb);
     grCounterFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_COUNTER,
-					(char*)NULL, grCounterFlag);
+				      (char*)NULL, grCounterFlag);
     grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
-				  (char*)NULL, grGFlag);
+				(char*)NULL, grGFlag);
     camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
 			       (char*)NULL, 0);
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
-			       (char*)NULL, 9);
+				     (char*)NULL, 9);
     cam = TAILQ_FIRST(&grCams[grCurCamHead]);
     grCurCam = NULL;
     while (cam) {

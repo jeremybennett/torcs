@@ -20,7 +20,7 @@
 
   <section name="Driver">
     <!-- Position of the driver -->
-    <attnum name="xpos" val="0.50" unit="m"></attnum>
+    <attnum name="xpos" val="0.60" unit="m"></attnum>
     <attnum name="ypos" val="0.0" unit="m"></attnum>
     <attnum name="zpos" val="0.95" unit="m"></attnum>
   </section>
@@ -51,7 +51,7 @@
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.56"></attnum>
     <attnum name="overall width"  unit="m" min="1.2" max="2.1" val="2.08"></attnum>
-    <attnum name="mass" unit="kg" min="1200.0" max="2500" val="1200.0"></attnum>
+    <attnum name="mass" unit="kg" min="200.0" max="2500" val="1200.0"></attnum>
     <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.20"></attnum>
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
@@ -86,7 +86,7 @@
   <!-- Engine Max curve -->
   <section name="Engine">
     <attnum name="inertia"      unit="kg.m2" val="0.20"></attnum>
-    <attnum name="revs limiter"  unit="rpm" val="8500"></attnum>
+    <attnum name="revs limiter" min="3000" max="9000" val="8500" unit="rpm"></attnum>
     <attnum name="revs maxi"  unit="rpm" val="10000"></attnum>
     <attnum name="tickover" min="500" max="5000" unit="rpm" val="2000"></attnum>
     <attnum name="fuel cons factor" min="1.0" max="2.0" val="1.2"></attnum>
@@ -218,7 +218,7 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.65"></attnum>
+    <attnum name="front-rear brake repartition" min="0.1" max="0.7" val="0.65"></attnum>
     <attnum name="max pressure" unit="kPa" min="100" max="150000" val="10000"></attnum>
   </section>
 
@@ -249,7 +249,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
+    <attnum name="dynamic friction" unit="%" min="100" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.008"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
@@ -263,7 +263,7 @@
     <attnum name="mu" val="1.6"></attnum>
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
+    <attnum name="dynamic friction" unit="%" min="100" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.008"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
@@ -277,7 +277,7 @@
     <attnum name="mu" val="1.6"></attnum>
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
+    <attnum name="dynamic friction" unit="%" min="100" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.0105"></attnum>
   </section>
 
@@ -290,7 +290,7 @@
     <attnum name="mu" val="1.6"></attnum>
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
+    <attnum name="dynamic friction" unit="%" min="100" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.0105"></attnum>
   </section>
 

@@ -19,8 +19,8 @@
 
 #include "sim.h"
 
-#define ROAD_DAMMAGE	5
-#define BARRIER_DAMMAGE	5
+#define ROAD_DAMMAGE	10.0
+#define BARRIER_DAMMAGE	10.0
 #define CAR_DAMMAGE	0.1
 
 void
@@ -124,8 +124,6 @@ SimCarCollideXYScene(tCar *car)
 	}
 	for (j = 0; j < 4; j++) {
 	    wheel = &(car->wheel[j]);
-	    wheel->presx = wheel->sx;
-	    wheel->preSpinVel = wheel->spinVel;
 	}
     }
 }
@@ -311,7 +309,6 @@ SimCarCollideShutdown(int nbcars)
 	dtDeleteObject(&(SimCarTable[i]));
     }
     dtClearDefaultResponse();
-    dtDisableCaching();
 }
 
 
@@ -354,8 +351,6 @@ SimCarCollideCars(tSituation *s)
 	memset(&(car->VelColl), 0, sizeof(tPosd));
     }
 
-    /* dtDisableCaching(); */
-    
     if (dtTest() == 0) {
 	dtProceed();
     }

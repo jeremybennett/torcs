@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/7
 
-DATA      =  viper-gts-r.rgb logo.rgb
+DATA      =  porsche-gt1.rgb logo.rgb car.xml
 
 include ${MAKE_DEFAULT}
 

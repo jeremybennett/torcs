@@ -21,7 +21,6 @@
 
   <section name="Car">
     <!-- weight bias -->
-    <attnum name="front-rear weight repartition" val="0.5"></attnum>
   </section>
 
 

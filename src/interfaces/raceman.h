@@ -27,6 +27,8 @@
 
 #define RCM_IDENT	((0x01)<<RCM_IDENT_SHIFT)	/* allowed from 0x01 to 0xFF */
 
+#define RCM_MAX_DT_SIMU		0.002
+#define RCM_MAX_DT_ROBOTS	0.02
 
 /* General info on current race */
 typedef struct {

@@ -75,12 +75,6 @@ ctrlCheck(tCar *car)
 	}
     }
 
-    /* try to smooth the robot commands */
-    /* by filtering the vibrations */
-    car->ctrl->accelCmd = gfMean(car->ctrl->accelCmd, &car->meanAccel, MEANNB, MEANW);    
-    car->ctrl->brakeCmd = gfMean(car->ctrl->brakeCmd, &car->meanBrake, MEANNB, MEANW);
-    car->ctrl->steer = gfMean(car->ctrl->steer, &car->meanSteer, MEANNB, MEANW);
-
     /* check boundaries */
     if (car->ctrl->accelCmd > 1.0) {
 	car->ctrl->accelCmd = 1.0;

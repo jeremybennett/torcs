@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="NASCAR RWD" type="template">
+<params name="NASCAR RWD" type="template" mode="mw">
 
 
   <section name="Car">

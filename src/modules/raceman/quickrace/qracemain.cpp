@@ -37,7 +37,8 @@
 
 
 static tSimItf	SimItf;
-static double	curTime;
+static double	curTime = 0;
+static double	lastTime = 0;
 static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*qracecfg = NULL;
@@ -52,7 +53,7 @@ int		qrKeyPressed = 0;
 tRmInfo		*qrRaceInfo = (tRmInfo*)NULL;
 tqrCarInfo	*qrCarInfo;
 
-static const double dtmax = 0.005;
+static const double dtmax = RCM_MAX_DT_SIMU;
 
 static void qrPreStart(void);
 
@@ -98,7 +99,8 @@ qraceRun(void *dummy)
     char	key[256];
     tModInfo	*curModInfo;
     tRobotItf	*robot;
-	
+
+    curTime = lastTime = 0;
     RmLoadingScreenStart("Quick Race Loading", "data/img/splash-qrloading.png");
     RmLoadingScreenSetText("Race Configuration...");
 
@@ -244,6 +246,7 @@ qrManage(tCarElt *car)
     }
     
     if (car->_state & RM_CAR_STATE_PIT) {
+	car->ctrl->raceCmd &= ~RM_CMD_PIT_ASKED; /* clear the flag */
 	if (car->_scheduledEventTime < qrTheSituation.currentTime) {
 	    car->_state &= ~RM_CAR_STATE_PIT;
 	} else {
@@ -400,7 +403,7 @@ qrPreStart(void)
 	qrTheSituation.cars[i]->ctrl->accelCmd = 0.0;
 	qrTheSituation.cars[i]->ctrl->gear = 0;
     }    
-    for (j = 0; j < 200; j++) {
+    for (j = 0; j < ((int)(1.0 / dtmax)); j++) {
 	SimItf.update(&qrTheSituation, dtmax, -1);
     }
 }
@@ -411,27 +414,33 @@ qrOneStep(void *telem)
 {
     int i;
     tRobotItf *robot;
+
+    curTime += dtmax;
+    qrTheSituation.currentTime += dtmax;
     
-    qrTheSituation.deltaTime = 2 * dtmax;
-    for (i = 0; i < qrTheSituation._ncars; i++) {
-	if ((qrTheSituation.cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-	    robot = qrTheSituation.cars[i]->robot;
-	    robot->rbDrive(robot->index, qrTheSituation.cars[i], &qrTheSituation);
+    if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+	qrTheSituation.deltaTime = curTime - lastTime;
+	for (i = 0; i < qrTheSituation._ncars; i++) {
+	    if ((qrTheSituation.cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+		robot = qrTheSituation.cars[i]->robot;
+		robot->rbDrive(robot->index, qrTheSituation.cars[i], &qrTheSituation);
+	    }
 	}
+	lastTime = curTime;
+	qrKeyPressed = 0;
     }
+
     qrTheSituation.deltaTime = dtmax;
+
     if (telem) {
 	SimItf.update(&qrTheSituation, dtmax, qrTheSituation.cars[qrTheSituation.current]->index);
-	SimItf.update(&qrTheSituation, dtmax, qrTheSituation.cars[qrTheSituation.current]->index);
     } else {
-	SimItf.update(&qrTheSituation, dtmax, -1);
 	SimItf.update(&qrTheSituation, dtmax, -1);
     }
     for (i = 0; i < qrTheSituation._ncars; i++) {
 	qrManage(qrTheSituation.cars[i]);
     }
-    qrTheSituation.currentTime += 2*dtmax;
-    qrKeyPressed = 0;
+
     qrSortCars();
 }
 
@@ -440,6 +449,7 @@ qrStart(void)
 {
     qrRunning = 1;
     curTime = GfTimeClock() - dtmax;
+    lastTime = curTime;
 }
 
 void
@@ -454,11 +464,9 @@ qrUpdate(void)
 {
     double t = GfTimeClock();
 
-    while (qrRunning && ((t - curTime) > (2*dtmax))) {
+    while (qrRunning && ((t - curTime) > dtmax)) {
 	qrOneStep(NULL);
-	curTime += 2*dtmax;
     }
-    
 }
 
 void

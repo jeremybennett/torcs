@@ -60,6 +60,12 @@ Package=<4>
     Project_Dep_Name inferno
     End Project Dependency
     Begin Project Dependency
+    Project_Dep_Name inferno2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name inferno3
+    End Project Dependency
+    Begin Project Dependency
     Project_Dep_Name track
     End Project Dependency
     Begin Project Dependency
@@ -139,6 +145,30 @@ Package=<4>
 ###############################################################################
 
 Project: "inferno"=".\src\drivers\inferno\inferno.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "inferno"=".\src\drivers\inferno2\inferno2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "inferno"=".\src\drivers\inferno3\inferno3.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

@@ -24,8 +24,6 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-/* #define RELAXATION(target, prev, amount) {(target) = (prev) + (amount) * ((target) - (prev)) * SimDeltaTime; (prev) = (target);} */
-
 void
 SimWheelConfig(tCar *car, int index)
 {
@@ -163,25 +161,17 @@ SimWheelUpdateForce(tCar *car, int index)
 
     wrl = wheel->spinVel * wheel->radius;
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
-	wheel->presx = sx = sy = 0;
+	sx = sy = 0;
     } else if (v < 0.000001) {
 	sx = wrl;
-	wheel->presx = sx;
-	wheel->presy = sy = 0;
+	sy = 0;
     } else {
 	sx = (vt - wrl) / v; /* target */
 	sy = sin(sa);
     }
     
-    /* Damping force */
     Ft = 0;
     Fn = 0;
-    //if (fabs(vt) < 1.0) {
-    //	RELAXATION(sy, wheel->presy, 50.0); /* used to stabilize the value when speed is near 0 */
-    //} else {
-    //	wheel->presy = sy;
-    //}
-    /* RELAXATION(sx, wheel->presx, 1.0 + 99.0 * (1 - exp(-fabs(wheel->spinVel)))); */ /* used to stabilize the value when speed is near 0 */
     s = sqrt(sx*sx+sy*sy);
     car->carElt->_skid[index] = MAX(0.2, MIN(s, 1.2)) - 0.2;
 
@@ -227,9 +217,7 @@ SimWheelUpdateRotation(tCar *car)
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	wheel->spinVel = wheel->in.spinVel;
-/* 	RELAXATION(wheel->spinVel, wheel->preSpinVel, 50.0); */
 	wheel->relPos.ay += wheel->spinVel * SimDeltaTime;
-	//NORM0_2PI(wheel->relPos.ay);
 	car->carElt->_wheelSpinVel(i) = wheel->spinVel;
     }
 }

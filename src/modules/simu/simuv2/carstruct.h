@@ -66,24 +66,6 @@ typedef struct
     tTrkLocPos	trkPos;		/* current track position */
     tdble	airSpeed2;	/* current air speed (squared) for aerodynamic forces */
 
-    tMeanVal	meanBrake;
-    tMeanVal	meanAccel;
-    tMeanVal	meanSteer;
-
-    tMeanVal	meanAx;
-    tMeanVal	meanAy;
-    tMeanVal	meanAz;
-    tMeanVal	meanMx;
-    tMeanVal	meanMy;
-    tMeanVal	meanMz;
-
-    tMeanVal	meanVx;
-    tMeanVal	meanVy;
-    tMeanVal	meanVz;
-    tMeanVal	meanVax;
-    tMeanVal	meanVay;
-    tMeanVal	meanVaz;
-
     /* internals */
     tdble	Cosz;
     tdble	Sinz;

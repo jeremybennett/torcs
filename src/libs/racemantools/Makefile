@@ -22,9 +22,13 @@ SOLIBDIR  = .
 
 SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp
 
-EXPDIR  = include
+EXPDIR    = include
 
-EXPORTS = racemantools.h
+EXPORTS   = racemantools.h
+
+DATADIR   = results
+
+DATA      = res.png
 
 include ${MAKE_DEFAULT}
 

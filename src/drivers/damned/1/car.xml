@@ -22,7 +22,6 @@
     <attnum name="front-rear weight repartition" min="0.3" max="0.7" val="0.45"></attnum>
     <attnum name="front right-left weight repartition" min="0.3" max="0.7" val="0.5"></attnum>
     <attnum name="rear right-left weight repartition" min="0.3" max="0.7" val="0.5"></attnum>
-    <!-- used for inertia, indicates the good mass centering (lower values) -->
     <attnum name="initial fuel" unit="l" min="1.0" max="30.0" val="30.0"></attnum>
   </section>
 

@@ -120,6 +120,7 @@ static tdble PGain[10]     = {0.02};
 static tdble AGain[10]     = {0.008};
 static tdble PnGain[10]    = {0.02};
 static tdble Advance[10]   = {35.0};
+static tdble AdvSpd[10]    = {5.0};
 static tdble Advance2[10]  = {20.0};
 static tdble AdvStep[10]   = {20.0};
 static tdble VGain[10]     = {0.0005};
@@ -152,6 +153,7 @@ static tdble Trightprev[10];
 #define AGAIN		"AGain"
 #define PNGAIN		"PnGain"
 #define ADVANCE		"Advance"
+#define ADVSPD		"AdvSpd"
 #define ADVANCE2	"Advance2"
 #define ADVSTEP		"AdvStep"
 #define VGAIN		"VGain"
@@ -183,9 +185,11 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     } else {
 	GfOut("%s Loaded\n", ParamNames);
     }
-    fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
-    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
-
+    if (s->_raceType != RM_TYPE_PRACTICE) {
+	fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
+	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+    }
+    
     Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
     tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
     Gmax = MIN(Gmax, tmpMu);
@@ -202,6 +206,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	AGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
 	PnGain[0]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
 	Advance[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
+	AdvSpd[0]    = GfParmGetNum(hdle, SIMU_PRMS, ADVSPD,    NULL, AdvSpd[0]);
 	Advance2[0]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
 	AdvStep[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVSTEP,   NULL, AdvStep[0]);
 	VGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, VGAIN,     NULL, VGain[0]);
@@ -315,7 +320,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    adv = Advance[0] + 5.0 * sqrt(fabs(car->_speed_x));
+    adv = Advance[0] + AdvSpd[0] * sqrt(fabs(car->_speed_x));
     
     if (Curtime > hold[0]) {
 	    Tright[0] = seg->width / 2.0 + Offset[0];

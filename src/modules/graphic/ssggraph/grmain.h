@@ -65,6 +65,15 @@ extern void shutdownTrack(void);
 #define GR_ATT_EVTINT		"event interval"
 #define GR_ATT_PROXTHLD		"proximity threshold"
 
+#define GR_SCT_GRAPHIC		"Graphic"
+#define GR_ATT_SMOKENB		"smoke value"
+#define GR_ATT_SMOKEDELTAT	"smoke interval"
+#define GR_ATT_SMOKEDLIFE	"smoke duration"
+
+#define GR_ATT_MAXSTRIPBYWHEEL	"skid value"
+#define GR_ATT_MAXPOINTBYSTRIP	"skid length"
+#define GR_ATT_SKIDDELTAT	"skid interval"
+
 #endif /* _GRMAIN_H_ */ 
 
 

@@ -26,34 +26,39 @@
     </section>
 
     <section name="Drivers">
-      <attnum name="ndrivers" val="10.000000"></attnum>
-      <attstr name="focused module" val="inferno"></attstr>
+      <attnum name="ndrivers" val="6.000000"></attnum>
+      <attstr name="focused module" val="inferno3"></attstr>
       <attnum name="focused idx" val="1.000000"></attnum>
 
       <section name="drivers">
         <section name="1">
           <attnum name="idx" val="1.000000"></attnum>
-          <attstr name="module" val="inferno"></attstr>
+          <attstr name="module" val="inferno3"></attstr>
         </section>
 
         <section name="2">
-          <attnum name="idx" val="1.000000"></attnum>
-          <attstr name="module" val="lliaw"></attstr>
+          <attnum name="idx" val="9.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
         </section>
 
         <section name="3">
           <attnum name="idx" val="1.000000"></attnum>
-          <attstr name="module" val="cylos1"></attstr>
+          <attstr name="module" val="inferno"></attstr>
         </section>
 
         <section name="4">
-          <attnum name="idx" val="8.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
+          <attnum name="idx" val="1.000000"></attnum>
+          <attstr name="module" val="inferno2"></attstr>
         </section>
 
         <section name="5">
-          <attnum name="idx" val="9.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
+          <attnum name="idx" val="1.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
+        </section>
+
+        <section name="6">
+          <attnum name="idx" val="1.000000"></attnum>
+          <attstr name="module" val="tanhoj"></attstr>
         </section>
       </section>
     </section>
