@@ -51,6 +51,11 @@ const float Driver::CATCH_FACTOR = 10.0;					// [-] select MIN(catchdist, dist*C
 const float Driver::CLUTCH_FULL_MAX_TIME = 2.0;				// [s] Time to apply full clutch.
 const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2;			// [m] if offset < this use the learned stuff
 
+// Static variables.
+Cardata *Driver::cardata = NULL;
+double Driver::currentsimtime;
+
+
 Driver::Driver(int index)
 {
 	INDEX = index;
@@ -64,6 +69,10 @@ Driver::~Driver()
 	delete [] radius;
 	delete learn;
 	delete strategy;
+	if (cardata != NULL) {
+		delete cardata;
+		cardata = NULL;
+	}
 }
 
 
@@ -127,8 +136,15 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	initTireMu();
 	initTCLfilter();
 
+	// Create just one instance of cardata shared by all drivers.
+	if (cardata == NULL) {
+		cardata = new Cardata(s);
+	}
+	mycardata = cardata->findCar(car);
+	currentsimtime = s->currentTime;
+
 	// initialize the list of opponents.
-	opponents = new Opponents(s, this);
+	opponents = new Opponents(s, this, cardata);
 	opponent = opponents->getOpponentPtr();
 
 	// Initialize radius of segments.
@@ -152,7 +168,7 @@ void Driver::drive(tSituation *s)
 	//pit->setPitstop(true);
 
 	if (isStuck()) {
-		car->_steerCmd = -angle / car->_steerLock;
+		car->_steerCmd = -mycardata->getCarAngle() / car->_steerLock;
 		car->_gearCmd = -1;		// Reverse gear.
 		car->_accelCmd = 1.0;	// 100% accelerator pedal.
 		car->_brakeCmd = 0.0;	// No brakes.
@@ -591,14 +607,17 @@ float Driver::getOffset()
 // Update my private data every timestep.
 void Driver::update(tSituation *s)
 {
-	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
-	speedangle = trackangle - atan2(car->_speed_Y, car->_speed_X);
+	// Update global car data (shared by all instances) just once per timestep.
+	if (currentsimtime != s->currentTime) {
+		currentsimtime = s->currentTime;
+		cardata->update();
+	}
+
+	// Update the local data rest.
+	speedangle = mycardata->getTrackangle() - atan2(car->_speed_Y, car->_speed_X);
 	NORM_PI_PI(speedangle);
-	angle = trackangle - car->_yaw;
-	NORM_PI_PI(angle);
 	mass = CARMASS + car->_fuel;
 	currentspeedsqr = car->_speed_x*car->_speed_x;
-	speed = Opponent::getSpeed(car, trackangle);
 	opponents->update(s, this);
 	strategy->update(car, s);
 	if (!pit->getPitstop()) {
@@ -625,10 +644,10 @@ int Driver::isAlone()
 // Check if I'm stuck.
 bool Driver::isStuck()
 {
-	if (fabs(angle) > MAX_UNSTUCK_ANGLE &&
+	if (fabs(mycardata->getCarAngle()) > MAX_UNSTUCK_ANGLE &&
 		car->_speed_x < MAX_UNSTUCK_SPEED &&
 		fabs(car->_trkPos.toMiddle) > MIN_UNSTUCK_DIST) {
-		if (stuck > MAX_UNSTUCK_COUNT && car->_trkPos.toMiddle*angle < 0.0) {
+		if (stuck > MAX_UNSTUCK_COUNT && car->_trkPos.toMiddle*mycardata->getCarAngle() < 0.0) {
 			return true;
 		} else {
 			stuck++;

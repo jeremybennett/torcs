@@ -37,6 +37,7 @@
 #include "pit.h"
 #include "learn.h"
 #include "strategy.h"
+#include "cardata.h"
 
 #define BT_SECT_PRIV "bt private"
 #define BT_ATT_FUELPERLAP "fuelperlap"
@@ -62,7 +63,7 @@ class Driver {
 
 		tCarElt *getCarPtr() { return car; }
 		tTrack *getTrackPtr() { return track; }
-		float getSpeed() { return speed; }
+		float getSpeed() { return mycardata->getSpeedInTrackDirection(); /*speed;*/ }
 
 	private:
 		// Utility functions.
@@ -105,18 +106,20 @@ class Driver {
 
 		// Per robot global data.
 		int stuck;
-		float trackangle;		// The angle of the current track segment (global coordinates).
 		float speedangle;		// the angle of the speed vector relative to trackangle, > 0.0 points to right.
-		float angle;			// The angle of the car relative to the current segment.
-		float speed;			// Speed in track direction.
 		float mass;				// Mass of car + fuel.
 		float myoffset;			// Offset to the track middle.
 		tCarElt *car;			// Pointer to tCarElt struct.
+
 		Opponents *opponents;	// The container for opponents.
 		Opponent *opponent;		// The array of opponents.
 
 		Pit *pit;						// Pointer to the pit instance.
 		AbstractStrategy *strategy;		// Pit stop strategy.
+
+		static Cardata *cardata;		// Data about all cars shared by all instances.
+		SingleCardata *mycardata;		// Pointer to "global" data about my car.
+		static double currentsimtime;	// Store time to avoid useless updates.
 
 		float currentspeedsqr;	// Square of the current speed_x.
 		float clutchtime;		// Clutch timer.

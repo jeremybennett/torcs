@@ -34,6 +34,7 @@
 
 #include "linalg.h"
 #include "driver.h"
+#include "cardata.h"
 
 #define OPP_IGNORE		0
 #define OPP_FRONT		(1<<0)
@@ -52,16 +53,16 @@ class Opponent {
 		Opponent();
 
 		void setCarPtr(tCarElt *car) { this->car = car; }
+		void setCarDataPtr(SingleCardata *cardata) { this->cardata = cardata; }
 		static void setTrackPtr(tTrack *track) { Opponent::track = track; }
 
-		static float getSpeed(tCarElt *car, float trackangle);
 		tCarElt *getCarPtr() { return car; }
 		int getState() { return state; }
 		float getCatchDist() { return catchdist; }
 		float getDistance() { return distance; }
 		float getSideDist() { return sidedist; }
-		float getWidth() { return width; }
-		float getSpeed() { return speed; }
+		float getWidth() { return cardata->getWidthOnTrack(); }
+		float getSpeed() { return cardata->getSpeedInTrackDirection(); }
 		float getOverlapTimer() { return overlaptimer; }
 
 		void update(tSituation *s, Driver *driver);
@@ -70,15 +71,14 @@ class Opponent {
 		float getDistToSegStart();
 		void updateOverlapTimer(tSituation *s, tCarElt *mycar);
 
-		tCarElt *car;
 		float distance;		// approximation of the real distance, negative if the opponent is behind.
-		float speed;		// speed in direction of the track (TODO: not per instance).
 		float catchdist;	// distance needed to catch the opponent (linear estimate).
-		float width;		// the cars needed width on the track (TODO: not per instance).
 		float sidedist;		// approx distance of center of gravity of the cars.
 		int state;			// State variable to characterize the relation to the opponent, e. g. opponent is behind.
 		float overlaptimer;
-		float trackangle;	// Track angle at the opponents position (TODO: not per instance).
+
+		tCarElt *car;
+		SingleCardata *cardata;		// Pointer to global data about this opponent.
 
 		// class variables.
 		static tTrack *track;
@@ -98,7 +98,7 @@ class Opponent {
 // The Opponents class holds an array of all Opponents.
 class Opponents {
 	public:
-		Opponents(tSituation *s, Driver *driver);
+		Opponents(tSituation *s, Driver *driver, Cardata *cardata);
 		~Opponents();
 
 		void update(tSituation *s, Driver *driver);
