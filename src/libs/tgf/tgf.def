@@ -60,6 +60,7 @@ EXPORTS
 	GfuiUnSelectCurrent
 	GfuiLabelCreate
 	GfuiLabelCreateEx
+	GfuiMouseInfo
 	GfuiTipCreate
 	GfuiTitleCreate
 	GfuiLabelSetText

@@ -6,7 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -29,15 +29,15 @@
 #include <direct.h>
 #include <io.h>
 
-int
+extern "C" int
 ssggraph(tModInfo *modInfo);
 
 /*
-* Function
-*	windowsModLoad
-*
-* Description
-*	
+ * Function
+ *	windowsModLoad
+ *
+ * Description
+ *	
 *
 * Parameters
 *	
@@ -51,75 +51,73 @@ ssggraph(tModInfo *modInfo);
 static int
 windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 {
-    tfModInfo		fModInfo;	/* init function of the modules */
-    HMODULE			handle;	/* */
-    tModList		*curMod;
-    char			dname[256];	/* name of the funtions */
-    char			*lastSlash;
+    tfModInfo	fModInfo;	/* init function of the modules */
+    HMODULE	handle;		/* */
+    tModList	*curMod;
+    char	dname[256];	/* name of the funtions */
+    char	*lastSlash;
     
     curMod = (tModList*)calloc(1, sizeof(tModList));
     fprintf(stdout,"loading windows module %s\n",sopath);
     lastSlash = strrchr(sopath, '/');
     if (lastSlash) {
-		strcpy(dname, lastSlash+1);
+	strcpy(dname, lastSlash+1);
     } else {
-		strcpy(dname, sopath);
+	strcpy(dname, sopath);
     }
     dname[strlen(dname) - 4] = 0; /* cut .dll */
     
-	fprintf(stdout,"LoadLibrary from %s\n",sopath);
+    fprintf(stdout,"LoadLibrary from %s\n",sopath);
 
-    if (strcmp(sopath,"modules/graphic/ssggraph.dll")==0)
-	{
-
+    /* This one doesn't load dynamically... */
+    if (strcmp(sopath,"modules/graphic/ssggraph.dll") == 0) {
         ssggraph(curMod->modInfo);
         if (*modlist == NULL) {
-			*modlist = curMod;
-		    curMod->next = curMod;
-		} else {
-			curMod->next = (*modlist)->next;
-			(*modlist)->next = curMod;
-			*modlist = curMod;
-		}
-		fprintf(stdout,"%s loaded staticaly\n",sopath);
-		return 0;
-
-	} 
+	    *modlist = curMod;
+	    curMod->next = curMod;
+	} else {
+	    curMod->next = (*modlist)->next;
+	    (*modlist)->next = curMod;
+	    *modlist = curMod;
+	}
+	fprintf(stdout,"%s loaded staticaly\n",sopath);
+	return 0;
+    } 
 
     handle = LoadLibrary( sopath ); 
-	fprintf(stdout,"LoadLibrary return from %s\n",sopath);
+    fprintf(stdout,"LoadLibrary return from %s\n",sopath);
     if (handle != NULL) {
-		if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
-			/* DLL loaded, init function exists, call it... */
-	        fprintf(stdout,"calling modInfo from %s\n",sopath);
-			if (fModInfo(curMod->modInfo) == 0) {
-				GfOut(">>> %s >>>\n", sopath);
-				curMod->handle = handle;
-				curMod->sopath = strdup(sopath);
-				if (*modlist == NULL) {
-					*modlist = curMod;
-					curMod->next = curMod;
-				} else {
-					curMod->next = (*modlist)->next;
-					(*modlist)->next = curMod;
-					*modlist = curMod;
-				}
-			} else {
-				FreeLibrary(handle);
-				GfTrace1("windowsModLoad: Module: %s not loaded\n", dname);
-				return -1;
-			}
+	if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
+	    /* DLL loaded, init function exists, call it... */
+	    fprintf(stdout,"calling modInfo from %s\n",sopath);
+	    if (fModInfo(curMod->modInfo) == 0) {
+		GfOut(">>> %s >>>\n", sopath);
+		curMod->handle = handle;
+		curMod->sopath = strdup(sopath);
+		if (*modlist == NULL) {
+		    *modlist = curMod;
+		    curMod->next = curMod;
 		} else {
-			GfTrace1("windowsModLoad: ... can't find proc %s\n", dname);
-			FreeLibrary(handle);
-			return -1;
+		    curMod->next = (*modlist)->next;
+		    (*modlist)->next = curMod;
+		    *modlist = curMod;
 		}
-    } else {
-		GfTrace1("windowsModLoad: ...  can't open dll %s\n", sopath);
+	    } else {
+		FreeLibrary(handle);
+		GfTrace1("windowsModLoad: Module: %s not loaded\n", dname);
 		return -1;
+	    }
+	} else {
+	    GfTrace1("windowsModLoad: ... can't find proc %s\n", dname);
+	    FreeLibrary(handle);
+	    return -1;
+	}
+    } else {
+	GfTrace1("windowsModLoad: ...  can't open dll %s\n", sopath);
+	return -1;
     }
       
-	fprintf(stdout,"windows module %s loaded\n",sopath);
+    fprintf(stdout,"windows module %s loaded\n",sopath);
     return 0;
 }
 
@@ -143,74 +141,74 @@ static int
 windowsModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 {
     tfModInfo	fModInfo;	/* init function of the modules */
-    HMODULE		handle;	/* */
+    HMODULE	handle;		/* */
     tModList	*curMod;
-    char		dname[256];	/* name of the funtions */
-    char		*lastSlash;
-    int			i;
+    char	dname[256];	/* name of the funtions */
+    char	*lastSlash;
+    int		i;
     tModList	*cMod;
-    int			prio;
+    int		prio;
     
     curMod = (tModList*)calloc(1, sizeof(tModList));
     
     lastSlash = strrchr(sopath, '/');
     if (lastSlash) {
-		strcpy(dname, lastSlash+1);
+	strcpy(dname, lastSlash+1);
     } else {
-		strcpy(dname, sopath);
+	strcpy(dname, sopath);
     }
     dname[strlen(dname) - 4] = 0; /* cut .dll */
     
     handle = LoadLibrary( sopath );
     if (handle != NULL) {
-		if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
-			/* DLL loaded, init function exists, call it... */
-			if (fModInfo(curMod->modInfo) == 0) {
-				GfOut("Request Info for %s\n", sopath);
-				for (i = 0; i < MAX_MOD_ITF; i++) {
-					if (curMod->modInfo[i].name) {
-						curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
-						curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
-					}
-				}
-				curMod->handle = NULL;
-				curMod->sopath = strdup(sopath);
-				if (*modlist == NULL) {
-					*modlist = curMod;
-					curMod->next = curMod;
-				} else {
-					/* sort by prio */
-					prio = curMod->modInfo[0].prio;
-					if (prio >= (*modlist)->modInfo[0].prio) {
-						curMod->next = (*modlist)->next;
-						(*modlist)->next = curMod;
-						*modlist = curMod;
-					} else {
-						cMod = *modlist;
-						do {
-							if (prio < cMod->next->modInfo[0].prio) {
-								curMod->next = cMod->next;
-								cMod->next = curMod;
-								break;
-							}
-							cMod = cMod->next;
-						} while (cMod != *modlist);
-					}
-				}
-				FreeLibrary(handle);
-			} else {
-				FreeLibrary(handle);
-				GfTrace1("windowsModInfo: Module: %s not loaded\n", dname);
-				return -1;
-			}
-		} else {
-			GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
-			FreeLibrary(handle);
-			return -1;
+	if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
+	    /* DLL loaded, init function exists, call it... */
+	    if (fModInfo(curMod->modInfo) == 0) {
+		GfOut("Request Info for %s\n", sopath);
+		for (i = 0; i < MAX_MOD_ITF; i++) {
+		    if (curMod->modInfo[i].name) {
+			curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
+			curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
+		    }
 		}
-    } else {
-		GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
+		curMod->handle = NULL;
+		curMod->sopath = strdup(sopath);
+		if (*modlist == NULL) {
+		    *modlist = curMod;
+		    curMod->next = curMod;
+		} else {
+		    /* sort by prio */
+		    prio = curMod->modInfo[0].prio;
+		    if (prio >= (*modlist)->modInfo[0].prio) {
+			curMod->next = (*modlist)->next;
+			(*modlist)->next = curMod;
+			*modlist = curMod;
+		    } else {
+			cMod = *modlist;
+			do {
+			    if (prio < cMod->next->modInfo[0].prio) {
+				curMod->next = cMod->next;
+				cMod->next = curMod;
+				break;
+			    }
+			    cMod = cMod->next;
+			} while (cMod != *modlist);
+		    }
+		}
+		FreeLibrary(handle);
+	    } else {
+		FreeLibrary(handle);
+		GfTrace1("windowsModInfo: Module: %s not loaded\n", dname);
 		return -1;
+	    }
+	} else {
+	    GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
+	    FreeLibrary(handle);
+	    return -1;
+	}
+    } else {
+	GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
+	return -1;
     }
     
     return 0;
@@ -237,90 +235,73 @@ windowsModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 static int
 windowsModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 {
-    tfModInfo		fModInfo;	/* init function of the modules */
-    char			dname[256];	/* name of the funtions */
-    char			sopath[256];	/* path of the lib[x].so */
-    HMODULE			handle;	/* */
-    int				modnb;		/* number on loaded modules */
-    tModList		*curMod;
-    tModList		*cMod;
-    int				prio;
+    tfModInfo	fModInfo;	/* init function of the modules */
+    char	dname[256];	/* name of the funtions */
+    char	sopath[256];	/* path of the lib[x].so */
+    HMODULE	handle;		/* */
+    int		modnb;		/* number on loaded modules */
+    tModList	*curMod;
+    tModList	*cMod;
+    int		prio;
     
     modnb = 0;
     curMod = (tModList*)calloc(1, sizeof(tModList));
 
-	// parcours du répertoire
-	_finddata_t FData;
-	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.dll", dir );
-	long Dirent = _findfirst( Dir_name, &FData );
-	if ( Dirent != -1 )
-		do
-		{
-			sprintf(sopath, "%s\\%s", dir, FData.name);
-		    handle = LoadLibrary( sopath );
-			if (handle != NULL)
-			{
-				if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL)
-				{
-					/* DLL loaded, init function exists, call it... */
-					if ((fModInfo(curMod->modInfo) == 0) && (curMod->modInfo[0].gfId == gfid))
-					{
-						GfOut(">>> %s loaded >>>\n", sopath);
-						modnb++;
-						curMod->handle = handle;
-						curMod->sopath = strdup(sopath);
-						/* add the module in the list */
-						if (*modlist == NULL)
-						{
-							*modlist = curMod;
-							curMod->next = curMod;
-						}
-						else
-						{
-							/* sort by prio */
-							prio = curMod->modInfo[0].prio;
-							if (prio >= (*modlist)->modInfo[0].prio)
-							{
-								curMod->next = (*modlist)->next;
-								(*modlist)->next = curMod;
-								*modlist = curMod;
-							}
-							else
-							{
-								cMod = *modlist;
-								do
-								{
-									if (prio < cMod->next->modInfo[0].prio)
-									{
-										curMod->next = cMod->next;
-										cMod->next = curMod;
-										break;
-									}
-									cMod = cMod->next;
-								} while (cMod != *modlist);
-							}
-						}
-						curMod = (tModList*)calloc(1, sizeof(tModList));
-					}
-					else
-					{
-						FreeLibrary(handle);
-						GfTrace1("windowsModLoadDir: Module: %s not retained\n", dname);
-					}
-				}
-				else
-				{
-					GfTrace1("windowsModLoadDir: ...  can't find proc %s\n", dname);
-					FreeLibrary(handle);
-					_findclose( Dirent );
-					return -1;
-				}
+    // parcours du répertoire
+    _finddata_t FData;
+    char Dir_name[ 1024 ];
+    sprintf( Dir_name, "%s\\*.dll", dir );
+    long Dirent = _findfirst( Dir_name, &FData );
+    if ( Dirent != -1 )
+	do {
+	    sprintf(sopath, "%s\\%s", dir, FData.name);
+	    handle = LoadLibrary( sopath );
+	    if (handle != NULL) {
+		if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
+		    /* DLL loaded, init function exists, call it... */
+		    if ((fModInfo(curMod->modInfo) == 0) && (curMod->modInfo[0].gfId == gfid)) {
+			GfOut(">>> %s loaded >>>\n", sopath);
+			modnb++;
+			curMod->handle = handle;
+			curMod->sopath = strdup(sopath);
+			/* add the module in the list */
+			if (*modlist == NULL) {
+			    *modlist = curMod;
+			    curMod->next = curMod;
+			} else {
+			    /* sort by prio */
+			    prio = curMod->modInfo[0].prio;
+			    if (prio >= (*modlist)->modInfo[0].prio) {
+				curMod->next = (*modlist)->next;
+				(*modlist)->next = curMod;
+				*modlist = curMod;
+			    } else {
+				cMod = *modlist;
+				do {
+				    if (prio < cMod->next->modInfo[0].prio) {
+					curMod->next = cMod->next;
+					cMod->next = curMod;
+					break;
+				    }
+				    cMod = cMod->next;
+				} while (cMod != *modlist);
+			    }
 			}
+			curMod = (tModList*)calloc(1, sizeof(tModList));
+		    } else {
+			FreeLibrary(handle);
+			GfTrace1("windowsModLoadDir: Module: %s not retained\n", dname);
+		    }
+		} else {
+		    GfTrace1("windowsModLoadDir: ...  can't find proc %s\n", dname);
+		    FreeLibrary(handle);
+		    _findclose( Dirent );
+		    return -1;
 		}
-		while ( _findnext( Dirent, &FData ) != -1 );
+	    }
+	} while ( _findnext( Dirent, &FData ) != -1 );
 
-	_findclose( Dirent );
+    _findclose( Dirent );
 
     free(curMod);
     return modnb;
@@ -346,95 +327,94 @@ windowsModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 static int
 windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 {
-    tfModInfo		fModInfo;	/* init function of the modules */
-    char			dname[256];	/* name of the funtions */
-    char			sopath[256];	/* path of the lib[x].so */
-    HMODULE			handle;	/* */
-    int				modnb;		/* number on loaded modules */
-    tModList		*curMod;
-    int				i;
-    tModList		*cMod;
-    int				prio;
+    tfModInfo	fModInfo;	/* init function of the modules */
+    char	dname[256];	/* name of the funtions */
+    char	sopath[256];	/* path of the lib[x].so */
+    HMODULE	handle;		/* */
+    int		modnb;		/* number on loaded modules */
+    tModList	*curMod;
+    int		i;
+    tModList	*cMod;
+    int		prio;
     
     modnb = 0;
     curMod = (tModList*)calloc(1, sizeof(tModList));
     
     /* open the current directory */
-	_finddata_t FData;
+    _finddata_t FData;
 
-	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.*", dir );
-	fprintf(stdout,"trying dir info %s\n",dir);
-	long Dirent = _findfirst( Dir_name, &FData );
-	if ( Dirent != -1 )
-		do
-		{
-			if (((strlen(FData.name) > 5) && 
-				(strcmp(".dll", FData.name+strlen(FData.name)-4) == 0)) || (level == 1)) { /* xxxx.dll */
-				if (level == 1) {
-					sprintf(sopath, "%s/%s/%s.dll", dir, FData.name, FData.name);
-					strcpy(dname, FData.name);
-				} else {
-					sprintf(sopath, "%s/%s", dir, FData.name);
-					strcpy(dname, FData.name);
-					dname[strlen(dname) - 4] = 0; /* cut .dll */
-				}
-			    handle = LoadLibrary( sopath );
-				if (handle != NULL) {
-					if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
-						GfOut("Request Info for %s\n", sopath);
-						/* DLL loaded, init function exists, call it... */
-						if (fModInfo(curMod->modInfo) == 0) {
-							modnb++;
-							for (i = 0; i < MAX_MOD_ITF; i++) {
-								if (curMod->modInfo[i].name) {
-									curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
-									curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
-								}
-							}
-							curMod->handle = NULL;
-							curMod->sopath = strdup(sopath);
-							/* add the module in the list */
-							if (*modlist == NULL) {
-								*modlist = curMod;
-								curMod->next = curMod;
-							} else {
-								/* sort by prio */
-								prio = curMod->modInfo[0].prio;
-								if (prio >= (*modlist)->modInfo[0].prio) {
-									curMod->next = (*modlist)->next;
-									(*modlist)->next = curMod;
-									*modlist = curMod;
-								} else {
-									cMod = *modlist;
-									do {
-										if (prio < cMod->next->modInfo[0].prio) {
-											curMod->next = cMod->next;
-											cMod->next = curMod;
-											break;
-										}
-										cMod = cMod->next;
-									} while (cMod != *modlist);
-								}
-							}
-							FreeLibrary(handle);
-							curMod = (tModList*)calloc(1, sizeof(tModList));
-						} else {
-							FreeLibrary(handle);
-							GfTrace1("windowsModInfoDir: Module: %s not retained\n", dname);
-						}
-					} else {
-						GfTrace1("windowsModInfoDir: ...  can't find proc %s\n", dname);
-						FreeLibrary(handle);
-					}
-				} else {
-					GfTrace1("windowsModInfoDir: ...  can't open dll %s\n", sopath);
-				}
-			}
+    char Dir_name[ 1024 ];
+    sprintf( Dir_name, "%s\\*.*", dir );
+    fprintf(stdout,"trying dir info %s\n",dir);
+    long Dirent = _findfirst( Dir_name, &FData );
+    if ( Dirent != -1 ) {
+	do {
+	    if (((strlen(FData.name) > 5) && 
+		 (strcmp(".dll", FData.name+strlen(FData.name)-4) == 0)) || (level == 1)) { /* xxxx.dll */
+		if (level == 1) {
+		    sprintf(sopath, "%s/%s/%s.dll", dir, FData.name, FData.name);
+		    strcpy(dname, FData.name);
+		} else {
+		    sprintf(sopath, "%s/%s", dir, FData.name);
+		    strcpy(dname, FData.name);
+		    dname[strlen(dname) - 4] = 0; /* cut .dll */
 		}
-		while ( _findnext( Dirent, &FData ) != -1 );
-
-	_findclose( Dirent );
+		handle = LoadLibrary( sopath );
+		if (handle != NULL) {
+		    if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
+			GfOut("Request Info for %s\n", sopath);
+			/* DLL loaded, init function exists, call it... */
+			if (fModInfo(curMod->modInfo) == 0) {
+			    modnb++;
+			    for (i = 0; i < MAX_MOD_ITF; i++) {
+				if (curMod->modInfo[i].name) {
+				    curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
+				    curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
+				}
+			    }
+			    curMod->handle = NULL;
+			    curMod->sopath = strdup(sopath);
+			    /* add the module in the list */
+			    if (*modlist == NULL) {
+				*modlist = curMod;
+				curMod->next = curMod;
+			    } else {
+				/* sort by prio */
+				prio = curMod->modInfo[0].prio;
+				if (prio >= (*modlist)->modInfo[0].prio) {
+				    curMod->next = (*modlist)->next;
+				    (*modlist)->next = curMod;
+				    *modlist = curMod;
+				} else {
+				    cMod = *modlist;
+				    do {
+					if (prio < cMod->next->modInfo[0].prio) {
+					    curMod->next = cMod->next;
+					    cMod->next = curMod;
+					    break;
+					}
+					cMod = cMod->next;
+				    } while (cMod != *modlist);
+				}
+			    }
+			    FreeLibrary(handle);
+			    curMod = (tModList*)calloc(1, sizeof(tModList));
+			} else {
+			    FreeLibrary(handle);
+			    GfTrace1("windowsModInfoDir: Module: %s not retained\n", dname);
+			}
+		    } else {
+			GfTrace1("windowsModInfoDir: ...  can't find proc %s\n", dname);
+			FreeLibrary(handle);
+		    }
+		} else {
+		    GfTrace1("windowsModInfoDir: ...  can't open dll %s\n", sopath);
+		}
+	    }
+	} while ( _findnext( Dirent, &FData ) != -1 );
+    }
+    
+    _findclose( Dirent );
     free(curMod);
     return modnb;
 }
@@ -459,18 +439,18 @@ windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 static int
 windowsModUnloadList(tModList **modlist)
 {
-    tModList		*curMod;
-    tModList		*nextMod;
+    tModList	*curMod;
+    tModList	*nextMod;
     
     curMod = *modlist;
     nextMod = curMod->next;
     do {
-		curMod = nextMod;
-		nextMod = curMod->next;
-		GfOut("<<< %s unloaded <<<\n", curMod->sopath);
-		FreeLibrary(curMod->handle);
-		free(curMod->sopath);
-		free(curMod);
+	curMod = nextMod;
+	nextMod = curMod->next;
+	GfOut("<<< %s unloaded <<<\n", curMod->sopath);
+	FreeLibrary(curMod->handle);
+	free(curMod->sopath);
+	free(curMod);
     } while (curMod != *modlist);
     
     *modlist = (tModList *)NULL;
@@ -497,22 +477,22 @@ windowsModUnloadList(tModList **modlist)
 static int
 windowsModFreeInfoList(tModList **modlist)
 {
-    tModList		*curMod;
-    tModList		*nextMod;
-    int			i;
+    tModList	*curMod;
+    tModList	*nextMod;
+    int		i;
     
     curMod = *modlist;
     nextMod = curMod->next;
     do {
-		curMod = nextMod;
-		for (i = 0; i < MAX_MOD_ITF; i++) {
-			if (curMod->modInfo[i].name) {
-				free(curMod->modInfo[i].name);
-				free(curMod->modInfo[i].desc);
-			}
-		}
-		free(curMod->sopath);
-		free(curMod);
+	curMod = nextMod;
+	for (i = 0; i < MAX_MOD_ITF; i++) {
+	    if (curMod->modInfo[i].name) {
+		free(curMod->modInfo[i].name);
+		free(curMod->modInfo[i].desc);
+	    }
+	}
+	free(curMod->sopath);
+	free(curMod);
     } while (curMod != *modlist);
     
     *modlist = (tModList *)NULL;
@@ -535,62 +515,61 @@ windowsModFreeInfoList(tModList **modlist)
 static tFList *
 windowsDirGetList(char *dir)
 {
-    tFList			*flist = NULL;
-    tFList			*curf;
+    tFList	*flist = NULL;
+    tFList	*curf;
 	
-	// parcours du répertoire
-	_finddata_t FData;
-	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.*", dir );
-	fprintf(stdout,"trying dir %s\n",dir);
-	long Dirent = _findfirst( Dir_name, &FData );
-	if ( Dirent != -1 )
-		do
-		{
-			if ( strcmp(FData.name, ".") != 0 && strcmp(FData.name, "..") != 0 ) {
-				curf = (tFList*)calloc(1, sizeof(tFList));
-				curf->name = strdup(FData.name);
-				if (flist == (tFList*)NULL) {
-					curf->next = curf;
-					curf->prev = curf;
-					flist = curf;
-				} else {
-					/* sort entries... */
-					if (_stricmp(curf->name, flist->name) > 0) {
-						do {
-							flist = flist->next;
-						} while ((stricmp(curf->name, flist->name) > 0) && (stricmp(flist->name, flist->prev->name) > 0));
-						flist = flist->prev;
-					} else {
-						do {
-							flist = flist->prev;
-						} while ((stricmp(curf->name, flist->name) < 0) && (stricmp(flist->name, flist->next->name) < 0));
-					}
-					curf->next = flist->next;
-					flist->next = curf;
-					curf->prev = curf->next->prev;
-					curf->next->prev = curf;
-					flist = curf;
-				}
-			}
+    _finddata_t FData;
+    char Dir_name[ 1024 ];
+    sprintf( Dir_name, "%s\\*.*", dir );
+    fprintf(stdout,"trying dir %s\n",dir);
+    long Dirent = _findfirst( Dir_name, &FData );
+    if ( Dirent != -1 ) {
+	do {
+	    if ( strcmp(FData.name, ".") != 0 && strcmp(FData.name, "..") != 0 ) {
+		curf = (tFList*)calloc(1, sizeof(tFList));
+		curf->name = strdup(FData.name);
+		if (flist == (tFList*)NULL) {
+		    curf->next = curf;
+		    curf->prev = curf;
+		    flist = curf;
+		} else {
+		    /* sort entries... */
+		    if (_stricmp(curf->name, flist->name) > 0) {
+			do {
+			    flist = flist->next;
+			} while ((stricmp(curf->name, flist->name) > 0) && (stricmp(flist->name, flist->prev->name) > 0));
+			flist = flist->prev;
+		    } else {
+			do {
+			    flist = flist->prev;
+			} while ((stricmp(curf->name, flist->name) < 0) && (stricmp(flist->name, flist->next->name) < 0));
+		    }
+		    curf->next = flist->next;
+		    flist->next = curf;
+		    curf->prev = curf->next->prev;
+		    curf->next->prev = curf;
+		    flist = curf;
 		}
-		while ( _findnext( Dirent, &FData ) != -1 );
+	    }
+	} while ( _findnext( Dirent, &FData ) != -1 );
+    }
+    
     return flist;
 }
 
 static double
 windowsTimeClock(void)
 {
-	LARGE_INTEGER Frequency;
-	if ( !QueryPerformanceFrequency( &Frequency ) )
-		return( 0 );
+    LARGE_INTEGER Frequency;
+    if ( !QueryPerformanceFrequency( &Frequency ) )
+	return( 0 );
 
-	LARGE_INTEGER Counter;
-	if ( !QueryPerformanceCounter( &Counter ) )
-		return( 0 );
+    LARGE_INTEGER Counter;
+    if ( !QueryPerformanceCounter( &Counter ) )
+	return( 0 );
 
-	double D = (double)Counter.QuadPart / (double)Frequency.QuadPart;
-	return( D );
+    double D = (double)Counter.QuadPart / (double)Frequency.QuadPart;
+    return( D );
 }
 
 

@@ -23,7 +23,7 @@
     <attnum name="debug info" val="1"></attnum>
     <attnum name="camera" val="0"></attnum>
     <attnum name="camera head list" val="9"></attnum>
-    <attnum name="G graph" val="0"></attnum>
+    <attnum name="G graph" val="1"></attnum>
   </section>
 
   <section name="TV Director View">

@@ -192,6 +192,7 @@ RmSaveResults(tRmInfo *rmInfo)
     char	*filename = "res";
     int		pos;
 
+#ifndef WIN32
     GfOut("Saving Results\n");
 
     index = (int*)malloc(rmInfo->s->_ncars * sizeof(int *));
@@ -263,4 +264,5 @@ RmSaveResults(tRmInfo *rmInfo)
     system(buf);
 
     free (index);
+#endif
 }

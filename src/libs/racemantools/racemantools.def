@@ -13,3 +13,4 @@ EXPORTS
 	RmLoadingScreenSetText
 	RmInitResults
 	RmShutdownResults
+	RmSaveResults

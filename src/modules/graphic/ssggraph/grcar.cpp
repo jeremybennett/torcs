@@ -35,6 +35,9 @@
 #include <robottools.h>
 
 #include "grmain.h"
+#include "grshadow.h"
+#include "grskidmarks.h"
+#include "grsmoke.h"
 #include "grcar.h"
 #include "grcam.h"
 #include "grscene.h"
@@ -361,9 +364,9 @@ initShadow(tCarElt *car)
 	shd_vtx->add(vtx);
     };
 
-    grCarInfo[car->index].shadowBase = new ssgVtxTable(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
+    grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
     grCarInfo[car->index].shadowBase->setState(brakeState);
-    grCarInfo[car->index].shadowCurr = (ssgVtxTable *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
+    grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     TheScene->addKid(grCarInfo[car->index].shadowCurr);
 }
 
@@ -509,7 +512,9 @@ grInitCar(tCarElt *car)
 
     /* Shadow init */
     initShadow(car);
-    
+    /* Skidmarks init */
+    /*initSkidmarks(car);*/
+
     TRACE_GL("loadcar: end");
 }
 
@@ -517,12 +522,13 @@ void
 grDrawShadow(tCarElt *car)
 {
     int		i;
-    ssgVtxTable	*shadow;
+    ssgVtxTableShadow	*shadow;
     sgVec3	*vtx;
 
     TheScene->removeKid(grCarInfo[car->index].shadowCurr);
     //delete grCarInfo[car->index].shadowCurr;
-    shadow = (ssgVtxTable *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
+
+    shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     shadow->setState(brakeState);
     shadow->setCullFace(0);
     shadow->getVertexList((void**)&vtx);
@@ -530,7 +536,7 @@ grDrawShadow(tCarElt *car)
     shadow->transform(grCarInfo[car->index].carPos);
     
     for (i = 0; i < GR_SHADOW_POINTS; i++) {
-	vtx[i][2] = RtTrackHeightG(car->_trkPos.seg, vtx[i][0], vtx[i][1]) + 0.02;
+	vtx[i][2] = RtTrackHeightG(car->_trkPos.seg, vtx[i][0], vtx[i][1]) + 0.00;
     }
 
     grCarInfo[car->index].shadowCurr = shadow;
@@ -561,8 +567,12 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 
     if ((car != curCar) || (dispFlag == 1)) {
 	grDrawShadow(car);
+/* 	grUpdateSkidmarks(car); */
+/* 	grDrawSkidmarks(car); */
+
+	grAddSmoke(car);
     }
-    
+
     /* Env mapping selection by the position on the track */
     grCarInfo[index].envSelector->selectStep(car->_trkPos.seg->envIndex);
 

@@ -42,23 +42,23 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "runtime\include" /I "../../export/include" /I "../interfaces" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
-# ADD RSC /l 0x40c /d "NDEBUG"
+# ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 tgf.lib sl.lib robottools.lib ssggraphlib.lib sg.lib ssg.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /out:"Release/wtorcs.exe" /libpath:"../../export/lib"
+# ADD LINK32 sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /libpath:"../../export/lib" /libpath:"../windows/lib"
 # SUBTRACT LINK32 /debug
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
 SOURCE="$(InputPath)"
 PostBuild_Desc=exports
-PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime
+PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime	copy dll\glut32.dll $(WkspDir)\runtime
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "wtorcs - Win32 Debug"
@@ -75,7 +75,7 @@ PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W4 /Gi /GX /ZI /Od /I "../../export/include" /I "../interfaces" /I "../libs/wtorcs" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /Gi /GX /ZI /Od /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /FD /GZ /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"
@@ -84,13 +84,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 tgf.lib sl.lib robottools.lib ssggraphlib.lib sg.lib ssg.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /debug /machine:I386 /libpath:"../../export/libd"
+# ADD LINK32 tgf.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /debug /machine:I386 /libpath:"../../export/libd" /libpath:"../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
 PostBuild_Desc=exports
-PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed
+PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed	copy dll\glut32.dll $(WkspDir)\runtimed
 # End Special Build Tool
 
 !ENDIF 

@@ -40,10 +40,10 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
-# PROP Ignore_Export_Lib 0
+# PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "../../../../../../export/include" /I "../../../../../interfaces" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "../../../../../../export/include" /I "../../../../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /YX /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -54,12 +54,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib racemantools.lib tgf.lib libpng.lib txml.lib ul.lib sg.lib /nologo /dll /pdb:none /map /machine:I386 /libpath:"../../../../../../export/lib"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib racemantools.lib tgf.lib libpng.lib txml.lib ul.lib sg.lib /nologo /dll /pdb:none /map /machine:I386 /libpath:"../../../../../../export/lib" /libpath:"../../../../../windows/lib"
+# SUBTRACT LINK32 /nodefaultlib
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman\practice\control	copy $(TargetDir)\*.dll ..\..\..\..\..\runtime\modules\raceman\practice\control
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman\practice\control
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "manual - Win32 Debug"
@@ -73,10 +74,10 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman\practi
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
-# PROP Ignore_Export_Lib 0
+# PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../../../../export/include" /I "../../../../../../libpng" /I "../../../../../../zlib" /I "../../../../../../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../../../../export/include" /I "../../../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "MANUAL_EXPORTS" /FR /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -86,13 +87,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /libpath:"../../../../../../export/libd" /libpath:"../../../../../../libpng/lib" /libpath:"../../../../../../plib"
-# SUBTRACT LINK32 /pdb:none /incremental:no
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /libpath:"../../../../../../export/libd" /libpath:"../../../../../windows/lib"
+# SUBTRACT LINK32 /pdb:none /incremental:no /nodefaultlib
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\raceman\practice\control	copy $(TargetDir)\*.dll ..\..\..\..\..\runtimed\modules\raceman\practice\control
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\raceman\practice\control
 # End Special Build Tool
 
 !ENDIF 

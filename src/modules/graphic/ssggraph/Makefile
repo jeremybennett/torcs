@@ -16,13 +16,14 @@
 ##############################################################################
 
 
-SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp grscene.cpp grutil.cpp
+SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp \
+	    grscene.cpp grutil.cpp grshadow.cpp grsmoke.cpp
 
 MODULE    = ssggraph.so
 
 MODULEDIR = modules/graphic
 
-LIBS      =  -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
+LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
 
 DATADIR   = config
 

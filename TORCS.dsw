@@ -51,12 +51,6 @@ Package=<4>
     Project_Dep_Name ssggraphlib
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name tgflib
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name SSGGRAPH
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name cylos1
     End Project Dependency
     Begin Project Dependency
@@ -67,6 +61,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name track
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name human
     End Project Dependency
 }}}
 
@@ -87,7 +84,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "SSGGRAPH"=".\src\modules\graphic\ssggraph\SSGGRAPH.dsp" - Package Owner=<4>
+Project: "ssggraphlib"=".\src\modules\graphic\ssggraph\ssggraphlib.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -279,18 +276,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "ssggraphlib"=".\src\modules\graphic\ssggraph\ssggraphlib.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
 Project: "telemetry"=".\SRC\MODULES\TELEMETRY\telemetry.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -318,7 +303,19 @@ Package=<4>
 
 ###############################################################################
 
-Project: "tgflib"=".\src\libs\tgf\tgflib.dsp" - Package Owner=<4>
+Project: "track"=".\src\modules\track\track.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "txml"=".\src\libs\txml\txml.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -357,35 +354,11 @@ Package=<4>
     Project_Dep_Name solid
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name ssggraphlib
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name tgf
     End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "track"=".\src\modules\track\track.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "txml"=".\src\libs\txml\txml.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
+    Begin Project Dependency
+    Project_Dep_Name ssggraphlib
+    End Project Dependency
 }}}
 
 ###############################################################################

@@ -526,12 +526,16 @@ extern void GfTrace(char *szTrc);
     @param	args	parameter (ala printf)
     @fn	 GfTracen(s, args...)
  */
+#ifdef WIN32
+#define GfTracen printf
+#else
 #define GfTracen(s, args...)		\
 {					\
     char _trc_buff[256];		\
     sprintf(_trc_buff, s, ## args);	\
     GfTrace(_trc_buff);			\
 }
+#endif
 
 #if !(_DEBUG || DEBUG)
 #ifdef WIN32

@@ -47,8 +47,9 @@ typedef struct
     ssgColourArray	*brkColor[4];
     ssgSelector		*wheelselector[4];
     ssgState		*wheelTexture;
-    ssgVtxTable		*shadowBase;
-    ssgVtxTable		*shadowCurr;
+    ssgVtxTableShadow	*shadowBase;
+    ssgVtxTableShadow	*shadowCurr;
+    tgrSkidmarks         *skidmarks;
     sgMat4		carPos;
     tgrCarInstrument	instrument[2];
 } tgrCarInfo;

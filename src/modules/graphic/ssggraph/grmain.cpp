@@ -20,16 +20,20 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <GL/glut.h>
-#include <plib/ssg.h>
 #ifdef WIN32
 #include <windows.h>
 #endif
+#include <GL/glut.h>
+#include <plib/ssg.h>
+
 #include <tgf.h>
 #include <graphic.h>
 #include <racemantools.h>
 
 #include "grmain.h"
+#include "grshadow.h"
+#include "grskidmarks.h"
+#include "grsmoke.h"
 #include "grcar.h"
 #include "grcam.h"
 #include "grscene.h"
@@ -49,6 +53,7 @@ static double	OldTime;
 static int	nFrame;
 static float	Fps;
 double		grCurTime;
+double		grDeltaTime;
 
 static int grWindowRatio = 0;
 int grNbCars;
@@ -156,14 +161,6 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddKey(screen, 'f',            "FPS Counter",      (void*)3, grSelectBoard);
     GfuiAddKey(screen, 'g',            "Debug Info",       (void*)4, grSelectBoard);
 
-/*     GfuiAddKey(screen, '1', "Select Speed and Accel Car Vectors", (void*)5, grVectorSelect); */
-/*     GfuiAddKey(screen, '2', "Select Wheel Velocity Vectors",      (void*)6, grVectorSelect); */
-/*     GfuiAddKey(screen, '3', "Select Wheel Acceleration Vectors",  (void*)7, grVectorSelect); */
-/*     GfuiAddKey(screen, '4', "Select Collision Vector",            (void*)4, grVectorSelect); */
-/*     GfuiAddKey(screen, '5', "Select User Vectors group 1",        (void*)1, grVectorSelect); */
-/*     GfuiAddKey(screen, '6', "Select User Vectors group 2",        (void*)2, grVectorSelect); */
-/*     GfuiAddKey(screen, '7', "Select User Vectors group 3",        (void*)3, grVectorSelect); */
-
     return 0;
 }
 
@@ -200,6 +197,7 @@ initCars(tSituation *s)
 
     grInitSound();
     grInitTVDirectorView(s);
+    grInitSmoke(s->_ncars);
     return 0;
     
 }
@@ -219,10 +217,12 @@ shutdownCars(void)
 int
 refresh(tSituation *s)
 {
-    int		i;
-    
+    int			i;
+    ssgSimpleState	*st = NULL;
+
     nFrame++;
     grCurTime = GfTimeClock();
+    grDeltaTime = grCurTime - OldTime;
     if ((grCurTime - OldTime) > 1.0) {
 	/* The Frames Per Second (FPS) display is refresh every second */
 	Fps = (tdble)nFrame / (grCurTime - OldTime);
@@ -250,12 +250,18 @@ refresh(tSituation *s)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     grSetCamera(grCurCam, s->cars[s->current]);
-    
     for (i = 0; i < s->_ncars; i++) {
 	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->drawCurrent);
     }
-    grDrawScene();
+
+/*     for (i = 0; i < s->_ncars; i++) { */
+/* 	grDrawShadow(s->cars[i]); */
+/*     } */
     
+    grUpdateSmoke(grDeltaTime, grCurTime);
+
+    grDrawScene();
+
     glViewport(grWinx, grWiny, grWinw, grWinh);
     grSetCamera(grBoardCam, (tCarElt*)NULL);
 

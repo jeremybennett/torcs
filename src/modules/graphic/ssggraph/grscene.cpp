@@ -36,6 +36,9 @@
 #include <robottools.h>
 
 #include "grmain.h"
+#include "grshadow.h"
+#include "grskidmarks.h"
+#include "grsmoke.h"
 #include "grcar.h"
 #include "grcam.h"
 #include "grscene.h"
@@ -138,6 +141,7 @@ void grDrawScene(void)
 
 void grShutdownScene(void)
 {
+    grShutdownSmoke ();
     delete TheScene;
     glDeleteTextures(1, &BackgroundTex);
     glDeleteLists(BackgroundList, 1);

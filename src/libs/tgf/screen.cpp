@@ -2,7 +2,7 @@
                            screen.cpp -- screen init                           
                              -------------------                                         
     created              : Fri Aug 13 22:29:56 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999, 2002 by Eric Espie                         
     email                : torcs@free.fr   
     version              : $Id$                                  
 ***************************************************************************/
@@ -30,11 +30,11 @@
 #endif
 #include <GL/glut.h>
 #include <math.h>
-#ifndef _WIN32
+#ifndef WIN32
 #include <unistd.h>
 #else
 #include <process.h>
-#endif // _WIN32
+#endif /* WIN32 */
 
 #include <tgf.h>
 
@@ -139,14 +139,14 @@ chgScreenType(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-#ifdef _WIN32
-    if (execlp("torcs.exe", "torcs", (const char *)NULL)) {
+#ifdef WIN32
+    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
 #else
 	if (execlp("./torcs", "torcs", (const char *)NULL)) {
 #endif
 	    perror("torcs");
 	    exit(1);
-#ifdef _WIN32
+#ifdef WIN32
 	}
 #else
     }
@@ -207,14 +207,14 @@ chgScreenSize(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-#ifdef _WIN32
-    if (execlp("torcs.exe", "torcs", (const char *)NULL)) {
+#ifdef WIN32
+    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
 #else
 	if (execlp("./torcs", "torcs", (const char *)NULL)) {
 #endif
 	    perror("torcs");
 	    exit(1);
-#ifdef _WIN32
+#ifdef WIN32
 	}    
 #else
     }

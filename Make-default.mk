@@ -109,6 +109,9 @@ win32start:
 	@echo '@echo off' > ${INIT_WIN32}
 	@echo 'echo Checking directories ...' >> ${INIT_WIN32}
 	@echo '' >> ${INIT_WIN32}
+	@echo 'call .\create_dir .\export' >> ${INIT_WIN32}
+	@echo 'call .\create_dir .\export\lib' >> ${INIT_WIN32}
+	@echo 'call .\create_dir .\export\libd' >> ${INIT_WIN32}
 
 
 win32end:

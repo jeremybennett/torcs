@@ -26,8 +26,11 @@
 #include "grcam.h"
 #include "grboard.h"
 #include "grscene.h"
-#include "grcar.h"
 #include "grssgext.h"
+#include "grshadow.h"
+#include "grskidmarks.h"
+#include "grsmoke.h"
+#include "grcar.h"
 #include "grmain.h"
 #include "grutil.h"
 #include <robottools.h>

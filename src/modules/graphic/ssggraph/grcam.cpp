@@ -32,6 +32,9 @@
 #include <graphic.h>
 #include "grscene.h"
 #include "grcam.h"
+#include "grshadow.h"
+#include "grskidmarks.h"
+#include "grsmoke.h"
 #include "grcar.h"
 #include "grmain.h"
 
