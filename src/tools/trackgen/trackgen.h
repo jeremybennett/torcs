@@ -32,7 +32,7 @@
 #define CFG_FILE	"tools/trackgen/trackgen.xml"
 
 
-extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd);
+extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump);
 
 extern char	*OutputFileName;
 extern int	HeightSteps;

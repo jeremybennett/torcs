@@ -57,6 +57,8 @@ float	ExtHeight = 5.0;
 
 int	HeightSteps = 30;
 
+int	bump = 0;
+
 char		*OutputFileName;
 char		*TrackName;
 char		*TrackCategory;
@@ -91,6 +93,7 @@ void usage(void)
     fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
+    fprintf(stderr, "       -b             : draw bump track\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
@@ -106,6 +109,7 @@ void usage(void)
 void init_args(int argc, char **argv)
 {
     int		c;
+    
     
 #ifdef WIN32
     int i=0;
@@ -125,7 +129,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asSE:h:",
+	c = getopt_long(argc, argv, "hvn:c:asSE:h:b",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -159,6 +163,9 @@ void init_args(int argc, char **argv)
 	    break;
 	case 'a':
 	    TrackOnly = 0;
+	    break;
+	case 'b':
+	    bump = 1;
 	    break;
 	case 's':
 	    MergeAll = 0;
@@ -324,11 +331,15 @@ Generate(void)
     }
 
     /* Main Track */
-    extName = "trk";
+    if (bump) {
+	extName = "trk-bump";
+    } else {
+	extName = "trk";
+    }
     sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
     OutTrackName = strdup(buf2);
 
-    GenerateTrack(Track, TrackHandle, OutTrackName, outfd);
+    GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump);
 
     if (TrackOnly) {
 	return;
