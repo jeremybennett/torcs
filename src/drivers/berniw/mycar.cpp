@@ -41,6 +41,9 @@ const double MyCar::OVERTAKEANGLE = 0.03;		/* minimum angle between cars [radian
 const double MyCar::OVERTAKEMARGIN = 1.7;		/* distance between cars [m] */
 const double MyCar::MAXALLOWEDPITCH = 0.06;		/* max allowed angle between road and car [radians] */
 const double MyCar::FLYSPEED = 55.0;			/* above this speed anti fly system is activated [m/s] */
+const double MyCar::OVERLAPSTARTDIST = 70.0;	/* distance where we start to check the need to let pass the opponent */
+const double MyCar::OVERLAPPASSDIST = 30.0;		/* distance smaller than that and waiting long enough -> let him pass */
+const double MyCar::OVERLAPWAITTIME = 5.0;		/* minimal waiting time before we consider let him pass */
 
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)

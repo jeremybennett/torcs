@@ -61,6 +61,7 @@ class MyCar;
 class OtherCar;
 
 
+/* holds a point of datafile from clothoid */
 typedef struct {
 	double x;
 	double pd;
@@ -69,6 +70,7 @@ typedef struct {
 } tParam;
 
 
+/* holds data relative to my car */
 typedef struct {
 	double speedsqr;		/* on track direction projected speed squared of opponent */
 	double speed;			/* same, but not squared */
@@ -82,9 +84,16 @@ typedef struct {
 	bool overtakee;			/* is this the guy to overtake? */
 	double disttopath;		/* distance to my path */
 	double brakedist;		/* distance needed for braking to the speed of this car */
-	double mincorner;
-	double minorthdist;
+	double mincorner;		/* corner nearest to my car */
+	double minorthdist;		/* minimal distance relative to my car */
 } tOCar;
+
+
+/* holds data needed for let pass opponents */
+typedef struct {
+	double time;			/* how long is the opponent "in range" to overlap me */
+} tOverlapTimer;
+
 
 
 class PathSeg
@@ -172,6 +181,7 @@ class Pathfinder
 
 		int collcars;
 		tOCar* o;
+		tOverlapTimer* overlaptimer;
 
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, double slope, double dist, v3d* r);
@@ -205,6 +215,8 @@ class Pathfinder
 		void optimize2(int start, int range, double w);
 		void optimize3(int start, int range, double w);
 		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);
+		void updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov);
+        int letoverlap(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov);
 		double pathSlope(int id);
 };
 

@@ -95,10 +95,13 @@ class MyCar : public AbstractCar
 		static const double OVERTAKERADIUS;		/* min allowed radius to start overtaking [m] */
 		static const double OVERTAKEDIST;		/* planned distance of CG's while overtaking [m] */
 		static const double OVERTAKEMINDIST;	/* minimal distance of CG's while overtaking [m] */
-		static const double OVERTAKEANGLE;
-		static const double OVERTAKEMARGIN;
-		static const double MAXALLOWEDPITCH;
-		static const double FLYSPEED;
+		static const double OVERTAKEANGLE;		/* [-] radians */
+		static const double OVERTAKEMARGIN;		/* [m] */
+		static const double MAXALLOWEDPITCH;	/* [-] radians */
+		static const double FLYSPEED;			/* speed where antifly checking gets activated [m/s] */
+		static const double OVERLAPSTARTDIST;	/* distance where we start to check the need to let pass the opponent */
+		static const double OVERLAPPASSDIST;	/* distance smaller than that and waiting long enough -> let him pass */
+		static const double OVERLAPWAITTIME;	/* minimal waiting time before we consider let him pass */
 
 		/* data for behavior */
 		int bmode;
