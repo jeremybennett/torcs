@@ -39,6 +39,7 @@
 #include "trackdesc.h"
 #include "mycar.h"
 #include "spline.h"
+#include "linalg.h"
 
 #define FNPF "drivers/berniw/parameter.dat"
 #define FNIS "drivers/berniw/intsinsqr.dat"
@@ -64,16 +65,16 @@ class MyCar;
 class OtherCar;
 
 typedef struct {
-	tdble x;
-	tdble pd;
-	tdble is;
-	tdble ic;
+	double x;
+	double pd;
+	double is;
+	double ic;
 } tParam;
 
 class PathSeg
 {
 	public:
-		inline void set(tdble ispeedsqr, tdble ilength, t3Dd* ip, t3Dd* id) {
+		inline void set(double ispeedsqr, double ilength, v3d* ip, v3d* id) {
 			speedsqr = ispeedsqr;
 			length = ilength;
 			p.x = ip->x; p.y = ip->y; p.z = ip->z;
@@ -81,39 +82,39 @@ class PathSeg
 				d.x = id->x; d.y = id->y; d.z = id->z;
 			}
 		}
-		inline void setLoc(t3Dd* ip) { p.x = ip->x; p.y = ip->y; p.z = ip->z; }
-		inline void setOpt(t3Dd* ip) { o.x = ip->x; o.y = ip->y; o.z = ip->z; }
-		inline void setPit(t3Dd* ip) { l.x = ip->x; l.y = ip->y; l.z = ip->z; }
+		inline void setLoc(v3d* ip) { p.x = ip->x; p.y = ip->y; p.z = ip->z; }
+		inline void setOpt(v3d* ip) { o.x = ip->x; o.y = ip->y; o.z = ip->z; }
+		inline void setPit(v3d* ip) { l.x = ip->x; l.y = ip->y; l.z = ip->z; }
 
-		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }
-		inline void setWeight(tdble w) { weight = w; }
+		inline void setSpeedsqr(double spsqr) { speedsqr = spsqr; }
+		inline void setWeight(double w) { weight = w; }
 
-		inline tdble getSpeedsqr() { return speedsqr; }
-		inline tdble getLength() { return length; }
-		inline tdble getWeight() { return weight; }
+		inline double getSpeedsqr() { return speedsqr; }
+		inline double getLength() { return length; }
+		inline double getWeight() { return weight; }
 
-		inline t3Dd* getOptLoc() { return &o; }
-		inline t3Dd* getPitLoc() { return &l; }
-		inline t3Dd* getLoc() { return &p; }
-		inline t3Dd* getDir() { return &d; }
+		inline v3d* getOptLoc() { return &o; }
+		inline v3d* getPitLoc() { return &l; }
+		inline v3d* getLoc() { return &p; }
+		inline v3d* getDir() { return &d; }
 
 	private:
-		tdble speedsqr;	/* max possible speed sqared (speed ist therefore sqrt(speedsqr) */
-		tdble length;	/* dist to the next pathseg */
-		tdble weight;	/* weight function value for superposition */
-		t3Dd p;			/* position in space, dynamic trajectory */
-		t3Dd o;			/* position in space, static trajectory */
-		t3Dd d;			/* direction vector of dynamic trajectory */
-		t3Dd l;			/* trajectory for pit lane */
+		double speedsqr;	/* max possible speed sqared (speed ist therefore sqrt(speedsqr) */
+		double length;		/* dist to the next pathseg */
+		double weight;		/* weight function value for superposition */
+		v3d p;				/* position in space, dynamic trajectory */
+		v3d o;				/* position in space, static trajectory */
+		v3d d;				/* direction vector of dynamic trajectory */
+		v3d l;				/* trajectory for pit lane */
 };
 
 class Pathfinder
 {
 	public:
-		static const tdble colldist = 200.0;
+		static const double colldist = 200.0;
 		static const int pitpoints = 7;
 		static const int NTPARAMS = 1001;				/* # entries in dat files */
-		static const tdble TPRES = PI/(NTPARAMS - 1);	/* resolution of the steps */
+		static const double TPRES = PI/(NTPARAMS - 1);	/* resolution of the steps */
 		tParam cp[NTPARAMS];							/* holds values needed for clothiod */
 
 
@@ -142,9 +143,9 @@ class Pathfinder
 		void plotPitStopPath(char* filename);
 		void plotPath(char* filename);
 
-		inline tdble sqr(tdble a) { return a*a; };
-		inline tdble dist(t3Dd* a, t3Dd* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y) + sqr(a->z-b->z)); }
-		inline tdble dist2D(t3Dd* a, t3Dd* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y)); }
+		inline double sqr(double a) { return a*a; };
+		inline double dist(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y) + sqr(a->z-b->z)); }
+		inline double dist2D(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y)); }
 		inline PathSeg* getPathSeg(int pathSegId) { return &ps[pathSegId]; }
 		int getCurrentSegment(tCarElt* car);
 		int getCurrentSegment(tCarElt* car, int range);
@@ -162,11 +163,11 @@ class Pathfinder
 
 		int s1, s3;				/* pitentrystart, pitentryend */
 		int e1, e3;				/* pitexitstart, pitexitend */
-		t3Dd *pmypitseg;
+		v3d *pmypitseg;
 
-		t3Dd pitLoc;			/* location of pit */
-		t3Dd pitDir;			/* direction vector of the pit */
-		t3Dd toPit;				/* vector pointing perpendicular from the track to the pit */
+		v3d pitLoc;				/* location of pit */
+		v3d pitDir;				/* direction vector of the pit */
+		v3d toPit;				/* vector pointing perpendicular from the track to the pit */
 		int pitSegId;			/* segment id of pit */
 		bool pit;
 		int pitside;
@@ -174,18 +175,17 @@ class Pathfinder
 		int nPitLaneEnd;
 		int changed;
 
-		tdble ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
+		double ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
 		int snpit[pitpoints];
 
 		tCarElt* thiscar;
 
-		//void initPitSlopes(void);
 		void initPitStopPath(void);
-		void getPitPoint(int j, int k, tdble slope, tdble dist, t3Dd* r);
+		void getPitPoint(int j, int k, double slope, double dist, v3d* r);
 		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
 		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);
 		double curvature(double xp, double yp, double x, double y, double xn, double yn);
-		void adjustRadius(int s, int p, int e, double c, tdble carwidth);
+		void adjustRadius(int s, int p, int e, double c, double carwidth);
 		void stepInterpolate(int iMin, int iMax, int Step);
 		void interpolate(int Step);
 		void smooth(int Step);
@@ -193,28 +193,28 @@ class Pathfinder
 		int correctPath(int id, tCarElt* car, MyCar* myc);
 
 		bool loadClothoidParams(tParam* p);
-		tdble intsinsqr(tdble alpha);
-		tdble intcossqr(tdble alpha);
-		tdble clothparam(tdble alpha);
-		tdble clothsigma(tdble beta, tdble y);
-		tdble clothlength(tdble beta, tdble y);
+		double intsinsqr(double alpha);
+		double intcossqr(double alpha);
+		double clothparam(double alpha);
+		double clothsigma(double beta, double y);
+		double clothlength(double beta, double y);
 
 		int findStartSegId(int id);
 		int findEndSegId(int id);
-		int initStraight(int id, tdble w);
-		int initLeft(int id, tdble w);
-		int initRight(int id, tdble w);
-		tdble computeWeight(tdble x, tdble len);
-		void setLocWeighted(int id, tdble newweight, t3Dd* newp);
-		void smooth(int s, int e, int p, tdble w);
-		void smooth(int id, tdble delta, tdble w);
-		void optimize(int start, int range, tdble w);
-		void optimize2(int start, int range, tdble w);
-		void optimize3(int start, int range, tdble w);
+		int initStraight(int id, double w);
+		int initLeft(int id, double w);
+		int initRight(int id, double w);
+		double computeWeight(double x, double len);
+		void setLocWeighted(int id, double newweight, v3d* newp);
+		void smooth(int s, int e, int p, double w);
+		void smooth(int id, double delta, double w);
+		void optimize(int start, int range, double w);
+		void optimize2(int start, int range, double w);
+		void optimize3(int start, int range, double w);
 
-		inline tdble pathSlope(int id) {
-			tdble dp = track->dotProduct(ps[id].getDir(), track->getSegmentPtr(id)->getToRight());
-			tdble alpha = PI/2.0 - acos(dp);
+		inline double pathSlope(int id) {
+			double dp = (*ps[id].getDir())*(*track->getSegmentPtr(id)->getToRight());
+			double alpha = PI/2.0 - acos(dp);
 			return sin(alpha);
 		}
 };

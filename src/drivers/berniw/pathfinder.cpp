@@ -69,22 +69,22 @@ void Pathfinder::initPit(tCarElt* car) {
 		if (isPitAvailable()) {
 			tTrackSeg* pitSeg = t->pits.driversPits->pos.seg;
 			if (pitSeg->type == TR_STR) {
-				t3Dd v1, v2;
+				v3d v1, v2;
 				/* v1 points in the direction of the segment */
 				v1.x = pitSeg->vertex[TR_EL].x - pitSeg->vertex[TR_SL].x;
 				v1.y = pitSeg->vertex[TR_EL].y - pitSeg->vertex[TR_SL].y;
 				v1.z = pitSeg->vertex[TR_EL].z - pitSeg->vertex[TR_SL].z;
-				track->normalizeVector(&v1);
-				pitDir.x = v1.x; pitDir.y = v1.y; pitDir.z = v1.z;
+				v1.normalize();
+				pitDir = v1;
 
 				/* v2 points to the side of the segment */
 				pitside = t->pits.side;
-				tdble s = (t->pits.side == TR_LFT) ? -1.0 : 1.0 ;
+				double s = (t->pits.side == TR_LFT) ? -1.0 : 1.0 ;
 				v2.x = s*(pitSeg->vertex[TR_SR].x - pitSeg->vertex[TR_SL].x);
 				v2.y = s*(pitSeg->vertex[TR_SR].y - pitSeg->vertex[TR_SL].y);
 				v2.z = s*(pitSeg->vertex[TR_SR].z - pitSeg->vertex[TR_SL].z);
-				track->normalizeVector(&v2);
-				toPit.x = v2.x; toPit.y = v2.y; toPit.z = v2.z;
+				v2.normalize();
+				toPit = v2;
 
 				/* loading starting point of segment */
 				pitLoc.x = (pitSeg->vertex[TR_SR].x + pitSeg->vertex[TR_SL].x) / 2.0;
@@ -92,30 +92,21 @@ void Pathfinder::initPit(tCarElt* car) {
 				pitLoc.z = (pitSeg->vertex[TR_SR].z + pitSeg->vertex[TR_SL].z) / 2.0;
 
 				/* going along the track */
-				tdble l = t->pits.len*car->index;
-
-				pitLoc.x = pitLoc.x + (t->pits.driversPits->pos.toStart + l)*v1.x;
-				pitLoc.y = pitLoc.y + (t->pits.driversPits->pos.toStart + l)*v1.y;
-				pitLoc.z = pitLoc.z + (t->pits.driversPits->pos.toStart + l)*v1.z;
+				double l = t->pits.len*car->index;
+				pitLoc = pitLoc + (t->pits.driversPits->pos.toStart + l)*v1;
 
 				/* going sideways, minus because of opposite sign of v2 and the value toMiddle */
-				tdble m = fabs(t->pits.driversPits->pos.toMiddle);
-				pitLoc.x = pitLoc.x + m*v2.x;
-				pitLoc.y = pitLoc.y + m*v2.y;
-				pitLoc.z = pitLoc.z + m*v2.z;
+				double m = fabs(t->pits.driversPits->pos.toMiddle);
+				pitLoc = pitLoc + m*v2;
 
 				pitSegId = track->getNearestId(&pitLoc);
 
 				l = t->pits.len*(car->index+2);
-				v2.x = pitLoc.x - l*v1.x;
-				v2.y = pitLoc.y - l*v1.y;
-				v2.z = pitLoc.z - l*v1.z;
+				v2 = pitLoc - l*v1;
 				nPitLaneStart = track->getNearestId(&v2);
 
 				l = t->pits.len*(t->pits.nMaxPits + 1 + 2);
-				v2.x = v2.x + l*v1.x;
-				v2.y = v2.y + l*v1.y;
-				v2.z = v2.z + l*v1.z;
+				v2 = v2 + l*v1;
 				nPitLaneEnd = track->getNearestId(&v2);
 			} else pit = false;
 		}
@@ -129,9 +120,9 @@ void Pathfinder::initPit(tCarElt* car) {
 void Pathfinder::initPitStopPath(void)
 {
 	tTrack* t = track->getTorcsTrack();
-	t3Dd p, q, *pp, *qq;
-	tdble d, dp, sgn;
-	tdble delta = t->pits.width;
+	v3d p, q, *pp, *qq;
+	double d, dp, sgn;
+	double delta = t->pits.width;
 	int i;
 
 	/* set up point 0 on the track (s1) */
@@ -140,7 +131,7 @@ void Pathfinder::initPitStopPath(void)
 
 	/* set up point 1 pit lane entry (s3) */
 	track->dirVector2D(&pitLoc, pmypitseg, &p);
-	dp = track->vectorLength(&p);
+	dp = p.len();
 	d = dp - delta;
 
 	sgn = (pitside == TR_LFT) ? -1.0 : 1.0 ;
@@ -175,9 +166,9 @@ void Pathfinder::initPitStopPath(void)
 		d = 0.0;
 		for (int j = snpit[i-1]; (j + 1) % nPathSeg !=  snpit[i]; j++) {
 			if (snpit[i] > snpit[i-1]) {
-				d = (tdble) (snpit[i] - snpit[i-1]);
+				d = (double) (snpit[i] - snpit[i-1]);
 			} else {
-				d = (tdble) (nPathSeg - snpit[i-1] + snpit[i]);
+				d = (double) (nPathSeg - snpit[i-1] + snpit[i]);
 			}
 		}
 		spit[i] = spit[i-1] + d;
@@ -192,7 +183,7 @@ void Pathfinder::initPitStopPath(void)
 	}
 
 	/* compute path to pit */
-	tdble l = 0.0;
+	double l = 0.0;
 	for (int i = s1; (i + nPathSeg) % nPathSeg != e3; i++) {
 		int j = (i + nPathSeg) % nPathSeg;
 		d = spline(pitpoints, l, spit, ypit, yspit);
@@ -201,7 +192,7 @@ void Pathfinder::initPitStopPath(void)
 		qq = track->getSegmentPtr(j)->getToRight();
 
 		p.x = qq->x; p.y = qq->y; p.z = 0.0;
-		track->normalizeVector(&p);
+		p.normalize();
 
 		q.x = pp->x + p.x*d;
 		q.y = pp->y + p.y*d;
@@ -244,13 +235,13 @@ void Pathfinder::plotPath(char* filename)
 /* load parameters for clothoid from the files */
 bool Pathfinder::loadClothoidParams(tParam* p)
 {
-	tdble dummy;
+	double dummy;
 	FILE* fd = fopen(FNPF, "r");
 
 	/* read FNPF */
 	if (fd != NULL) {
 		for (int i = 0; i < NTPARAMS; i++) {
-			fscanf(fd, "%f %f", &p[i].x, &p[i].pd);
+			fscanf(fd, "%lf %lf", &p[i].x, &p[i].pd);
 		}
 	} else {
 		printf("error in loadClothoidParams(tParam* p): couldn't open file %s.\n", FNPF);
@@ -262,7 +253,7 @@ bool Pathfinder::loadClothoidParams(tParam* p)
 	fd = fopen(FNIS, "r");
 	if (fd != NULL) {
 		for (int i = 0; i < NTPARAMS; i++) {
-			fscanf(fd, "%f %f", &dummy, &p[i].is);
+			fscanf(fd, "%lf %lf", &dummy, &p[i].is);
 		}
 	} else {
 		printf("error in loadClothoidParams(tParam* p): couldn't open file %s.\n", FNIS);
@@ -274,7 +265,7 @@ bool Pathfinder::loadClothoidParams(tParam* p)
 	fd = fopen(FNIC, "r");
 	if (fd != NULL) {
 		for (int i = 0; i < NTPARAMS; i++) {
-			fscanf(fd, "%f %f", &dummy, &p[i].ic);
+			fscanf(fd, "%lf %lf", &dummy, &p[i].ic);
 		}
 	} else {
 		printf("error in loadClothoidParams(tParam* p): couldn't open file %s.\n", FNIC);
@@ -289,7 +280,7 @@ bool Pathfinder::loadClothoidParams(tParam* p)
 /*
 	computes int(sin(u^2), u=0..alpha), where alpha is [0..PI).
 */
-tdble Pathfinder::intsinsqr(tdble alpha)
+double Pathfinder::intsinsqr(double alpha)
 {
 	int i = (int) floor(alpha/TPRES), j = i + 1;
 	/* linear interpoation between the nearest known two points */
@@ -300,7 +291,7 @@ tdble Pathfinder::intsinsqr(tdble alpha)
 /*
 	computes int(cos(u^2), u=0..alpha), where alpha is [0..PI).
 */
-tdble Pathfinder::intcossqr(tdble alpha)
+double Pathfinder::intcossqr(double alpha)
 {
 	int i = (int) floor(alpha/TPRES), j = i + 1;
 	/* linear interpoation between the nearest known two points */
@@ -311,7 +302,7 @@ tdble Pathfinder::intcossqr(tdble alpha)
 /*
 	computes clothoid parameter pd(look with maple at clothoid.mws), where alpha is [0..PI).
 */
-tdble Pathfinder::clothparam(tdble alpha)
+double Pathfinder::clothparam(double alpha)
 {
 	int i = (int) floor(alpha/TPRES), j = i + 1;
 	/* linear interpoation between the nearest known two points */
@@ -322,9 +313,9 @@ tdble Pathfinder::clothparam(tdble alpha)
 /*
 	computes clothoid parameter sigma (look with maple at clothoid.mws), where beta is [0..PI) and y > 0.0.
 */
-tdble Pathfinder::clothsigma(tdble beta, tdble y)
+double Pathfinder::clothsigma(double beta, double y)
 {
-		tdble a = intsinsqr(sqrt(fabs(beta)))/y;
+		double a = intsinsqr(sqrt(fabs(beta)))/y;
 		return a*a*2.0;
 }
 
@@ -332,7 +323,7 @@ tdble Pathfinder::clothsigma(tdble beta, tdble y)
 /*
 	computes the langth of the clothoid(look with maple at clothoid.mws), where beta is [0..PI) and y > 0.0.
 */
-tdble Pathfinder::clothlength(tdble beta, tdble y)
+double Pathfinder::clothlength(double beta, double y)
 {
 	return 2.0*sqrt(2.0*beta/clothsigma(beta, y));
 }
@@ -345,7 +336,7 @@ tdble Pathfinder::clothlength(tdble beta, tdble y)
 int Pathfinder::findStartSegId(int id)
 {
 
-	tdble radius = track->getSegmentPtr(id)->getRadius();
+	double radius = track->getSegmentPtr(id)->getRadius();
 	int type = track->getSegmentPtr(id)->getType();
 	int i = (id - 1 + nPathSeg) % nPathSeg, j = id;
 
@@ -364,7 +355,7 @@ int Pathfinder::findStartSegId(int id)
 */
 int Pathfinder::findEndSegId(int id)
 {
-	tdble radius = track->getSegmentPtr(id)->getRadius();
+	double radius = track->getSegmentPtr(id)->getRadius();
 	int type = track->getSegmentPtr(id)->getType();
 	int i = (id + 1 + nPathSeg) % nPathSeg, j = id;
 
@@ -381,7 +372,7 @@ int Pathfinder::findEndSegId(int id)
 /*
 	weight function, x 0..1
 */
-tdble Pathfinder::computeWeight(tdble x, tdble len)
+double Pathfinder::computeWeight(double x, double len)
 {
 	return (x <= 0.5) ? (2.0*x)*len : (2.0*(1.0-x))*len;
 }
@@ -390,25 +381,25 @@ tdble Pathfinder::computeWeight(tdble x, tdble len)
 /*
 	modify point according to the weights
 */
-void Pathfinder::setLocWeighted(int id, tdble newweight, t3Dd* newp)
+void Pathfinder::setLocWeighted(int id, double newweight, v3d* newp)
 {
-	tdble oldweight = ps[id].getWeight();
-	t3Dd* oldp = ps[id].getLoc();
-	t3Dd p;
+	double oldweight = ps[id].getWeight();
+	v3d* oldp = ps[id].getLoc();
+	v3d p;
 
 	/* ugly, fix it in init.... */
 	if (newweight < 0.001) newweight = 0.001;
 
 	if (oldweight + newweight == 0.0) printf("ops! O: %f, N: %f\n", oldweight, newweight);
 	if (oldweight > newweight) {
-		tdble d = newweight/(oldweight+newweight);
+		double d = newweight/(oldweight+newweight);
 		p.x = oldp->x + (newp->x - oldp->x)*d;
 		p.y = oldp->y + (newp->y - oldp->y)*d;
 		p.z = oldp->z + (newp->z - oldp->z)*d;
 		ps[id].setLoc(&p);
 		ps[id].setWeight(oldweight+newweight);
 	} else {
-		tdble d = oldweight/(oldweight+newweight);
+		double d = oldweight/(oldweight+newweight);
 		p.x = newp->x + (oldp->x - newp->x)*d;
 		p.y = newp->y + (oldp->y - newp->y)*d;
 		p.z = newp->z + (oldp->z - newp->z)*d;
@@ -420,7 +411,7 @@ void Pathfinder::setLocWeighted(int id, tdble newweight, t3Dd* newp)
 /*
 	initializes the path for straight parts of the track.
 */
-int Pathfinder::initStraight(int id, tdble w)
+int Pathfinder::initStraight(int id, double w)
 {
 	int start = findStartSegId(id), end = findEndSegId(id);
 	int prev = (start - 1 + nPathSeg) % nPathSeg, next = (end + 1) % nPathSeg;
@@ -434,13 +425,13 @@ int Pathfinder::initStraight(int id, tdble w)
 			for (int i = start; i != next; i++) {
 				i = i % nPathSeg;
 				if (ps[i].getWeight() == 0.0) {
-					t3Dd* p = track->getSegmentPtr(i)->getLeftBorder();
-					t3Dd* r = track->getSegmentPtr(i)->getToRight();
-					t3Dd np;
+					v3d* p = track->getSegmentPtr(i)->getLeftBorder();
+					v3d* r = track->getSegmentPtr(i)->getToRight();
+					v3d np;
 					np.x = p->x + w*r->x;
 					np.y = p->y + w*r->y;
 					np.z = p->z + w*r->z;
-					setLocWeighted(i, computeWeight(((tdble) l) / ((tdble) len), len), &np);
+					setLocWeighted(i, computeWeight(((double) l) / ((double) len), len), &np);
 					l++;
 				}
 			}
@@ -449,44 +440,44 @@ int Pathfinder::initStraight(int id, tdble w)
 			for (int i = start; i != next; i++) {
 				i = i % nPathSeg;
 				if (ps[i].getWeight() == 0.0) {
-					t3Dd* p = track->getSegmentPtr(i)->getRightBorder();
-					t3Dd* r = track->getSegmentPtr(i)->getToRight();
-					t3Dd np;
+					v3d* p = track->getSegmentPtr(i)->getRightBorder();
+					v3d* r = track->getSegmentPtr(i)->getToRight();
+					v3d np;
 					np.x = p->x - w*r->x;
 					np.y = p->y - w*r->y;
 					np.z = p->z - w*r->z;
-					setLocWeighted(i, computeWeight(((tdble) l) / ((tdble) len), len), &np);
+					setLocWeighted(i, computeWeight(((double) l) / ((double) len), len), &np);
 					l++;
 				}
 			}
 		}
 	} else {
-		tdble startwidth = track->getSegmentPtr(start)->getWidth()/2.0 - w;
-		tdble endwidth = track->getSegmentPtr(end)->getWidth()/2.0 - w;
-		tdble dw = (startwidth + endwidth) / len;
+		double startwidth = track->getSegmentPtr(start)->getWidth()/2.0 - w;
+		double endwidth = track->getSegmentPtr(end)->getWidth()/2.0 - w;
+		double dw = (startwidth + endwidth) / len;
 		int l = 0;
 		if (prevtype == TR_RGT) {
 			for (int i = start; i != next; i++) {
 				i = i % nPathSeg;
-				t3Dd* p = track->getSegmentPtr(i)->getLeftBorder();
-				t3Dd* r = track->getSegmentPtr(i)->getToRight();
-				t3Dd np;
+				v3d* p = track->getSegmentPtr(i)->getLeftBorder();
+				v3d* r = track->getSegmentPtr(i)->getToRight();
+				v3d np;
 				np.x = p->x + (w+dw*l)*r->x;
 				np.y = p->y + (w+dw*l)*r->y;
 				np.z = p->z + (w+dw*l)*r->z;
-				setLocWeighted(i, computeWeight(((tdble) l) / ((tdble) len), len), &np);
+				setLocWeighted(i, computeWeight(((double) l) / ((double) len), len), &np);
 				l++;
 			}
 		} else {
 			for (int i = start; i != next; i++) {
 				i = i % nPathSeg;
-				t3Dd* p = track->getSegmentPtr(i)->getRightBorder();
-				t3Dd* r = track->getSegmentPtr(i)->getToRight();
-				t3Dd np;
+				v3d* p = track->getSegmentPtr(i)->getRightBorder();
+				v3d* r = track->getSegmentPtr(i)->getToRight();
+				v3d np;
 				np.x = p->x - (w+dw*l)*r->x;
 				np.y = p->y - (w+dw*l)*r->y;
 				np.z = p->z - (w+dw*l)*r->z;
-				setLocWeighted(i, computeWeight(((tdble) l) / ((tdble) len), len), &np);
+				setLocWeighted(i, computeWeight(((double) l) / ((double) len), len), &np);
 				l++;
 			}
 		}
@@ -498,24 +489,24 @@ int Pathfinder::initStraight(int id, tdble w)
 /*
 	initializes the path for left turns.
 */
-int Pathfinder::initLeft(int id, tdble w)
+int Pathfinder::initLeft(int id, double w)
 {
 	int start = findStartSegId(id), end = findEndSegId(id);
 	int prev = (start - 1 + nPathSeg) % nPathSeg, next = (end + 1) % nPathSeg;
 	int len = track->diffSegId(start, end);
 	int tseg = (start + (len)/2) % nPathSeg;
-	t3Dd* s1 = track->getSegmentPtr(start)->getRightBorder();
-	t3Dd* s2 = track->getSegmentPtr(prev)->getRightBorder();
-	t3Dd* tr = track->getSegmentPtr(prev)->getToRight();
-	t3Dd* tg = track->getSegmentPtr(tseg)->getLeftBorder();
-	t3Dd* trtg = track->getSegmentPtr(tseg)->getToRight();
-	t3Dd sdir, sp, t;
+	v3d* s1 = track->getSegmentPtr(start)->getRightBorder();
+	v3d* s2 = track->getSegmentPtr(prev)->getRightBorder();
+	v3d* tr = track->getSegmentPtr(prev)->getToRight();
+	v3d* tg = track->getSegmentPtr(tseg)->getLeftBorder();
+	v3d* trtg = track->getSegmentPtr(tseg)->getToRight();
+	v3d sdir, sp, t;
 
-	tdble beta = acos(track->cosalpha(trtg, tr));
+	double beta = acos(track->cosalpha(trtg, tr));
 
 	if (beta < 0.0) printf("error in initLeft: turn > 360° ??\n");
 
-	track->dirVector(s1, s2, &sdir);
+	s1->dirVector(s2, &sdir);
 	sp.x = s2->x - w*tr->x;
 	sp.y = s2->y - w*tr->y;
 	sp.z = s2->z - w*tr->z;
@@ -524,7 +515,7 @@ int Pathfinder::initLeft(int id, tdble w)
 	t.y = tg->y + w*trtg->y;
 	t.z = tg->z + w*trtg->z;
 
-	tdble yd = track->distGFromPoint(&sp, &sdir, &t);
+	double yd = track->distGFromPoint(&sp, &sdir, &t);
 	int tlen = (int) ceil(clothlength(beta, yd));
 
 	if (tlen < 0) printf("error in initLeft: tlen < 0 ??\n");
@@ -532,7 +523,7 @@ int Pathfinder::initLeft(int id, tdble w)
 	int startsp = (tseg - tlen/2 + nPathSeg) % nPathSeg;
 	int endsp = (startsp + tlen) % nPathSeg;
 
-	tdble s[3], y[3], ys[3];
+	double s[3], y[3], ys[3];
 
 	ys[0] = ys[1] = ys[2] = 0.0;
 	s[0] = 0;
@@ -542,11 +533,11 @@ int Pathfinder::initLeft(int id, tdble w)
 	y[1] = -(track->getSegmentPtr(tseg)->getWidth()/2.0 - w);
 	y[2] = track->getSegmentPtr(endsp)->getWidth()/2.0 - w;
 
-	tdble l = 0.0;
-	t3Dd q, *pp, *qq;
+	double l = 0.0;
+	v3d q, *pp, *qq;
 	for (int i = startsp; (i + nPathSeg) % nPathSeg != endsp; i++) {
 		int j = (i + nPathSeg) % nPathSeg;
-		tdble d = spline(3, l, s, y, ys);
+		double d = spline(3, l, s, y, ys);
 
 		pp = track->getSegmentPtr(j)->getMiddle();
 		qq = track->getSegmentPtr(j)->getToRight();
@@ -555,7 +546,7 @@ int Pathfinder::initLeft(int id, tdble w)
 		q.y = pp->y + qq->y*d;
 		q.z = pp->z + qq->z*d;
 
-		setLocWeighted(j, computeWeight(((tdble) l) / ((tdble) tlen), tlen), &q);
+		setLocWeighted(j, computeWeight(((double) l) / ((double) tlen), tlen), &q);
 
 		l += TRACKRES;
 	}
@@ -567,24 +558,24 @@ int Pathfinder::initLeft(int id, tdble w)
 /*
 	initializes the path for right turns.
 */
-int Pathfinder::initRight(int id, tdble w)
+int Pathfinder::initRight(int id, double w)
 {
 	int start = findStartSegId(id), end = findEndSegId(id);
 	int prev = (start - 1 + nPathSeg) % nPathSeg, next = (end + 1) % nPathSeg;
 	int len = track->diffSegId(start, end);
 	int tseg = (start + (len)/2) % nPathSeg;
-	t3Dd* s1 = track->getSegmentPtr(start)->getLeftBorder();
-	t3Dd* s2 = track->getSegmentPtr(prev)->getLeftBorder();
-	t3Dd* tr = track->getSegmentPtr(prev)->getToRight();
-	t3Dd* tg = track->getSegmentPtr(tseg)->getRightBorder();
-	t3Dd* trtg = track->getSegmentPtr(tseg)->getToRight();
-	t3Dd sdir, sp, t;
+	v3d* s1 = track->getSegmentPtr(start)->getLeftBorder();
+	v3d* s2 = track->getSegmentPtr(prev)->getLeftBorder();
+	v3d* tr = track->getSegmentPtr(prev)->getToRight();
+	v3d* tg = track->getSegmentPtr(tseg)->getRightBorder();
+	v3d* trtg = track->getSegmentPtr(tseg)->getToRight();
+	v3d sdir, sp, t;
 
-	tdble beta = acos(track->cosalpha(trtg, tr));
+	double beta = acos(track->cosalpha(trtg, tr));
 
 	if (beta < 0.0) printf("error in initRight: turn > 360° ??\n");
 
-	track->dirVector(s1, s2, &sdir);
+	s1->dirVector(s2, &sdir);
 	sp.x = s2->x + w*tr->x;
 	sp.y = s2->y + w*tr->y;
 	sp.z = s2->z + w*tr->z;
@@ -593,7 +584,7 @@ int Pathfinder::initRight(int id, tdble w)
 	t.y = tg->y - w*trtg->y;
 	t.z = tg->z - w*trtg->z;
 
-	tdble yd = track->distGFromPoint(&sp, &sdir, &t);
+	double yd = track->distGFromPoint(&sp, &sdir, &t);
 	int tlen = (int) ceil(clothlength(beta, yd));
 
 	if (tlen < 0) printf("error in initRight: tlen < 0 ??\n");
@@ -601,7 +592,7 @@ int Pathfinder::initRight(int id, tdble w)
 	int startsp = (tseg - tlen/2 + nPathSeg) % nPathSeg;
 	int endsp = (startsp + tlen) % nPathSeg;
 
-	tdble s[3], y[3], ys[3];
+	double s[3], y[3], ys[3];
 
 	ys[0] = ys[1] = ys[2] = 0.0;
 	s[0] = 0;
@@ -611,11 +602,11 @@ int Pathfinder::initRight(int id, tdble w)
 	y[1] = track->getSegmentPtr(tseg)->getWidth()/2.0 - w;
 	y[2] = -(track->getSegmentPtr(endsp)->getWidth()/2.0 - w);
 
-	tdble l = 0.0;
-	t3Dd q, *pp, *qq;
+	double l = 0.0;
+	v3d q, *pp, *qq;
 	for (int i = startsp; (i + nPathSeg) % nPathSeg != endsp; i++) {
 		int j = (i + nPathSeg) % nPathSeg;
-		tdble d = spline(3, l, s, y, ys);
+		double d = spline(3, l, s, y, ys);
 
 		pp = track->getSegmentPtr(j)->getMiddle();
 		qq = track->getSegmentPtr(j)->getToRight();
@@ -624,7 +615,7 @@ int Pathfinder::initRight(int id, tdble w)
 		q.y = pp->y + qq->y*d;
 		q.z = pp->z + qq->z*d;
 
-		setLocWeighted(j, computeWeight(((tdble) l) / ((tdble) tlen), tlen), &q);
+		setLocWeighted(j, computeWeight(((double) l) / ((double) tlen), tlen), &q);
 
 		l += TRACKRES;
 	}
@@ -639,9 +630,9 @@ int Pathfinder::initRight(int id, tdble w)
 */
 void Pathfinder::plan(MyCar* myc)
 {
-	tdble r, length, speedsqr;
+	double r, length, speedsqr;
 	int u, v, w;
-	t3Dd dir;
+	v3d dir;
 
 	/* basic initialisation */
 	for (int i = 0; i < nPathSeg; i++) {
@@ -684,7 +675,7 @@ void Pathfinder::plan(MyCar* myc)
 		const int step = 65536*64;
 		for (int j = 0; j < nPathSeg; j++) {
 			for (int i = step; i > 0; i /=2) {
-				smooth(j, (tdble) i / (step / 2), myc->CARWIDTH/2.0);
+				smooth(j, (double) i / (step / 2), myc->CARWIDTH/2.0);
 			}
 		}
 	}
@@ -710,14 +701,14 @@ void Pathfinder::plan(MyCar* myc)
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
-		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
-		tdble b = track->getSegmentPtr(i)->getKbeta();
+		double mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
+		double b = track->getSegmentPtr(i)->getKbeta();
 		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 
 		dir.x = ps[w].getLoc()->x - ps[u].getLoc()->x;
 		dir.y = ps[w].getLoc()->y - ps[u].getLoc()->y;
 		dir.z = ps[w].getLoc()->z - ps[u].getLoc()->z;
-		track->normalizeVector(&dir);
+		dir.normalize();
 
 		ps[i].set(speedsqr, length, ps[v].getLoc(), &dir);
 
@@ -734,9 +725,9 @@ void Pathfinder::plan(MyCar* myc)
 */
 void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)
 {
-	tdble r, length, speedsqr;
+	double r, length, speedsqr;
 	int u, v, w;
-	t3Dd dir;
+	v3d dir;
 
 	int start;
 
@@ -771,7 +762,6 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	/* overtaking */
-	//if (!inPit && !pitStop && changed == 0) {
 	if (!inPit && (!pitStop || track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, trackSegId)) && changed == 0) {
 		changed += overtake(trackSegId, situation, myc, ocar);
 	}
@@ -796,18 +786,18 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
 		/* compute allowed speedsqr */
-		tdble mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha();
-		tdble b = track->getSegmentPtr(j)->getKbeta();
+		double mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha();
+		double b = track->getSegmentPtr(j)->getKbeta();
 		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 		if (pitStop && track->isBetween(s3, pitSegId, j)) {
-			tdble speedsqrpit = ((tdble) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
+			double speedsqrpit = ((double) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
 			if (speedsqr > speedsqrpit) speedsqr = speedsqrpit;
 		}
 
 		dir.x = ps[w].getLoc()->x - ps[u].getLoc()->x;
 		dir.y = ps[w].getLoc()->y - ps[u].getLoc()->y;
 		dir.z = ps[w].getLoc()->z - ps[u].getLoc()->z;
-		track->normalizeVector(&dir);
+		dir.normalize();
 
 		ps[j].set(speedsqr, length, ps[v].getLoc(), &dir);
 
@@ -839,12 +829,12 @@ int Pathfinder::getCurrentSegment(tCarElt* car, int range)
 }
 
 
-void Pathfinder::smooth(int id, tdble delta, tdble w)
+void Pathfinder::smooth(int id, double delta, double w)
 {
 	int ids[5] = {id-2, id-1, id, id+1, id+2};
-	tdble x[5], y[5], r, rmin = RMAX;
+	double x[5], y[5], r, rmin = RMAX;
 	TrackSegment* t = track->getSegmentPtr(id);
-	t3Dd* tr = t->getToRight();
+	v3d* tr = t->getToRight();
 
 	for (int i = 0; i < 5; i++) {
 		ids[i] = (ids[i] + nPathSeg) % nPathSeg;
@@ -860,7 +850,7 @@ void Pathfinder::smooth(int id, tdble delta, tdble w)
 	/* no optimisation needed */
 	if (rmin == RMAX) return;
 
-	tdble xp, yp, xm, ym, xo = x[2], yo = y[2], rp = RMAX, rm = RMAX;
+	double xp, yp, xm, ym, xo = x[2], yo = y[2], rp = RMAX, rm = RMAX;
 
 	xp = x[2] = xo + delta*tr->x; yp = y[2] = yo + delta*tr->y;
 	for (int i = 0; i < 3; i++) {
@@ -875,13 +865,13 @@ void Pathfinder::smooth(int id, tdble delta, tdble w)
 	}
 
 	if (rp > rmin && rp > rm) {
-		t3Dd n;
+		v3d n;
 		n.x = xp;
 		n.y = yp;
 		n.z = ps[id].getLoc()->z + delta*tr->z;
 		ps[id].setLoc(&n);
 	} else if (rm > rmin && rm > rp) {
-		t3Dd n;
+		v3d n;
 		n.x = xm;
 		n.y = ym;
 		n.z = ps[id].getLoc()->z - delta*tr->z;
@@ -889,14 +879,14 @@ void Pathfinder::smooth(int id, tdble delta, tdble w)
 	}
 }
 
-void Pathfinder::smooth(int s, int p, int e, tdble w)
+void Pathfinder::smooth(int s, int p, int e, double w)
 {
 	TrackSegment* t = track->getSegmentPtr(p);
-	t3Dd *rgh = t->getToRight();
-	t3Dd *rs = ps[s].getLoc(), *rp = ps[p].getLoc(), *re = ps[e].getLoc(), n;
+	v3d *rgh = t->getToRight();
+	v3d *rs = ps[s].getLoc(), *rp = ps[p].getLoc(), *re = ps[e].getLoc(), n;
 
-	tdble rgx = (re->x - rs->x), rgy = (re->y - rs->y);
-	tdble m = (rs->x * rgy + rgx * rp->y - rs->y * rgx - rp->x * rgy) / (rgy * rgh->x - rgx * rgh->y);
+	double rgx = (re->x - rs->x), rgy = (re->y - rs->y);
+	double m = (rs->x * rgy + rgx * rp->y - rs->y * rgx - rp->x * rgy) / (rgy * rgh->x - rgx * rgh->y);
 
 	n.x = rp->x + rgh->x * m*w;
 	n.y = rp->y + rgh->y * m*w;
@@ -906,7 +896,7 @@ void Pathfinder::smooth(int s, int p, int e, tdble w)
 }
 
 
-void Pathfinder::optimize(int start, int range, tdble w)
+void Pathfinder::optimize(int start, int range, double w)
 {
 	for (int p = start; p < start + range; p = p + 1) {
 		int j = (p) % nPathSeg;
@@ -917,7 +907,7 @@ void Pathfinder::optimize(int start, int range, tdble w)
 }
 
 
-void Pathfinder::optimize2(int start, int range, tdble w)
+void Pathfinder::optimize2(int start, int range, double w)
 {
 	for (int p = start; p < start + range; p = p + 1) {
 		int j = (p) % nPathSeg;
@@ -930,7 +920,7 @@ void Pathfinder::optimize2(int start, int range, tdble w)
 }
 
 
-void Pathfinder::optimize3(int start, int range, tdble w)
+void Pathfinder::optimize3(int start, int range, double w)
 {
 	for (int p = start; p < start + range; p = p + 3) {
 		int j = (p) % nPathSeg;
@@ -951,13 +941,15 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 	int end = (trackSegId + (int) colldist + nPathSeg) % nPathSeg;	/* end of searchrange */
 	int didsomething = 0;			/* if greater than one --> we changed something in the path */
 
-	tdble tspeed;					/* temporary (speed) */
+	double tspeed;					/* temporary (speed) */
 	int dists[s->_ncars];			/* how many segments away from me */
-	tdble speedsqr[s->_ncars];		/* on my directionvector projected speed squared of opponent */
-	tdble speed[s->_ncars];			/* same, but not squared */
+	double strdist[s->_ncars];		/* straight distance */
+	double speedsqr[s->_ncars];		/* on my directionvector projected speed squared of opponent */
+	double speed[s->_ncars];			/* same, but not squared */
 	OtherCar* collcar[s->_ncars];	/* pointers to the cars */
-	tdble disttomiddle[s->_ncars];	/* distance to middle (for prediction) */
+	double disttomiddle[s->_ncars];	/* distance to middle (for prediction) */
 	int catchseg[s->_ncars];		/* segment, where i expect (or better guess!) to catch opponent */
+	double cosalpha[s->_ncars];
 	int norder = 0;
 
 	/* find and collect information about collision "candidates" */
@@ -968,44 +960,47 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 		if (car != mycar) {
 			/* is it near enough to care about ? */
 			seg = ocar[i].getCurrentSegId();
-			tdble cosa = track->cosalpha(myc->getDir(), ocar[i].getDir());
-			//tdble cosa = track->cosalpha(ps[seg].getDir(), &ocar[i].dir);
+			double cosa = track->cosalpha(myc->getDir(), ocar[i].getDir());
 			tspeed = ocar[i].getSpeed()*cosa;
 
 			if (track->isBetween(trackSegId, end, seg) && myc->getSpeed() > tspeed) {
+				cosalpha[norder] = cosa;
 				dists[norder] = track->diffSegId(trackSegId, seg);
+				strdist[norder] = dist(myc->getCurrentPos(), ocar[i].getCurrentPos());
 				collcar[norder] = &ocar[i];
-				speedsqr[norder] = tspeed*tspeed;
-				speed[norder] = tspeed;
-				/* stuff for new prediction code */
 				disttomiddle[norder] = track->distToMiddle(seg, ocar[i].getCurrentPos());
+				speed[norder] = tspeed;
+				speedsqr[norder] = tspeed*tspeed;
 				catchseg[norder] = (int(dists[norder]/(myc->getSpeed() - ocar[i].getSpeed())*myc->getSpeed()) + trackSegId + nPathSeg) % nPathSeg;
+
 				norder++;
 			}
 		}
 	}
 
 	for (int i = 0; i < norder; i++) {
-		PathSeg* opseg = getPathSeg(collcar[i]->getCurrentSegId());
+		PathSeg* opseg = getPathSeg((collcar[i]->getCurrentSegId() - (int) myc->CARLEN/2 + nPathSeg) % nPathSeg);
 		int spsegid = (collcar[i]->getCurrentSegId() - (int) myc->CARLEN + nPathSeg) % nPathSeg;
 		PathSeg* spseg = getPathSeg(spsegid);
 		TrackSegment* otseg = track->getSegmentPtr(collcar[i]->getCurrentSegId());
 		/* compute cosalpha of angle between path and other car */
-		tdble cosa = collcar[i]->getDir()->x * opseg->getDir()->x +
-					 collcar[i]->getDir()->y * opseg->getDir()->y +
-					 collcar[i]->getDir()->z * opseg->getDir()->z;
-		/* compute minimal space requred */
-		tdble d = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosa)) + myc->DIST + fabs(myc->derror);
+		double cosa = collcar[i]->getDir()->x * opseg->getDir()->x +
+					collcar[i]->getDir()->y * opseg->getDir()->y +
+					collcar[i]->getDir()->z * opseg->getDir()->z;
+		/* compute minimal space requred, sin(arccos(x)) == sqrt(1-sqr(x)) */
+		double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST + fabs(myc->derror);
 		/* compute distance to path */
-		tdble dtp = dist(opseg->getLoc(), collcar[i]->getCurrentPos());
+		double dtp = dist(opseg->getLoc(), collcar[i]->getCurrentPos());
 
 		/* not enough space, perhaps we have to do something */
 		if (dtp < d) {
-			tdble gm = otseg->getKfriction();
-			tdble qs = speedsqr[i];
-			tdble s = (myc->getSpeedSqr() - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca /*+ myc->cw*/)));
+			double gm = otseg->getKfriction();
+			double qs = speedsqr[i];
+			double s = (myc->getSpeedSqr() - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca)));
 
-			if (s <= dists[i] + myc->CARLEN + myc->DIST) {
+			double cmpdist = dists[i] + myc->CARLEN + myc->DIST;
+
+			if (s <= cmpdist) {
 				if (spseg->getSpeedsqr() > speedsqr[i]) {
 					spseg->setSpeedsqr(speedsqr[i]);
 					didsomething = 1;
@@ -1019,15 +1014,17 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 
 		/* now the experimental prediction part, abra-cadabra ... */
 		if (track->isBetween(trackSegId, end, catchseg[i])) {
-			tdble myd = track->distToMiddleOnSeg(catchseg[i], ps[catchseg[i]].getLoc());
+			double myd = track->distToMiddleOnSeg(catchseg[i], ps[catchseg[i]].getLoc());
 			dtp = fabs(myd - disttomiddle[i]);
 
 			if (dtp < myc->CARWIDTH + myc->DIST) {
-				tdble gm = otseg->getKfriction();
-				tdble qs = speedsqr[i];
-				tdble s = (myc->getSpeedSqr() - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca /*+ myc->cw*/)));
+				double gm = otseg->getKfriction();
+				double qs = speedsqr[i];
+				double s = (myc->getSpeedSqr() - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca)));
 
-				if (s <= dists[i] + myc->CARLEN + myc->DIST) {
+				double cmpdist = dists[i] + myc->CARLEN + myc->DIST;
+
+				if (s <= cmpdist) {
 					if (spseg->getSpeedsqr() > speedsqr[i]) {
 						spseg->setSpeedsqr(speedsqr[i]);
 						didsomething = 1;
@@ -1066,19 +1063,19 @@ inline double Pathfinder::curvature(double xp, double yp, double x, double y, do
 
 
 /* optimize point p ala k1999 (curvature), Remi Coulom, K1999.cpp */
-inline void Pathfinder::adjustRadius(int s, int p, int e, double c, tdble security) {
+inline void Pathfinder::adjustRadius(int s, int p, int e, double c, double security) {
 	const double sidedistext = 2.0;
 	const double sidedistint = 1.2;
 
 	TrackSegment* t = track->getSegmentPtr(p);
-	t3Dd *rgh = t->getToRight();
-	t3Dd *left = t->getLeftBorder();
-	t3Dd *right = t->getRightBorder();
-	t3Dd *rs = ps[s].getLoc(), *rp = ps[p].getLoc(), *re = ps[e].getLoc(), n;
+	v3d *rgh = t->getToRight();
+	v3d *left = t->getLeftBorder();
+	v3d *right = t->getRightBorder();
+	v3d *rs = ps[s].getLoc(), *rp = ps[p].getLoc(), *re = ps[e].getLoc(), n;
 	double oldlane = track->distToMiddleOnSeg(p, rp)/t->getWidth() + 0.5;
 
-	tdble rgx = (re->x - rs->x), rgy = (re->y - rs->y);
-	tdble m = (rs->x * rgy + rgx * rp->y - rs->y * rgx - rp->x * rgy) / (rgy * rgh->x - rgx * rgh->y);
+	double rgx = (re->x - rs->x), rgy = (re->y - rs->y);
+	double m = (rs->x * rgy + rgx * rp->y - rs->y * rgx - rp->x * rgy) / (rgy * rgh->x - rgx * rgh->y);
 
 	n.x = rp->x + rgh->x * m;
 	n.y = rp->y + rgh->y * m;
@@ -1114,8 +1111,8 @@ inline void Pathfinder::adjustRadius(int s, int p, int e, double c, tdble securi
 			if (1 - newlane < IntLane) newlane = 1 - IntLane;
 		}
 
-		tdble d = (newlane - 0.5) * t->getWidth();
-		t3Dd* trackmiddle = t->getMiddle();
+		double d = (newlane - 0.5) * t->getWidth();
+		v3d* trackmiddle = t->getMiddle();
 
 		n.x = trackmiddle->x + rgh->x * d;
 		n.y = trackmiddle->y + rgh->y * d;
@@ -1135,10 +1132,10 @@ void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)
 	if (prev > nPathSeg - Step)
 	prev -= Step;
 
-	t3Dd *pp = ps[prev].getLoc();
-	t3Dd *p = ps[iMin].getLoc();
-	t3Dd *pn = ps[iMax % nPathSeg].getLoc();
-	t3Dd *pnn = ps[next].getLoc();
+	v3d *pp = ps[prev].getLoc();
+	v3d *p = ps[iMin].getLoc();
+	v3d *pn = ps[iMax % nPathSeg].getLoc();
+	v3d *pnn = ps[next].getLoc();
 
 	double ir0 = curvature(pp->x, pp->y, p->x, p->y, pn->x, pn->y);
 	double ir1 = curvature(p->x, p->y, pn->x, pn->y, pnn->x, pnn->y);
@@ -1170,7 +1167,7 @@ void Pathfinder::smooth(int Step)
 	int next = Step;
 	int nextnext = next + Step;
 
-	t3Dd *pp, *p, *n, *nn, *cp;
+	v3d *pp, *p, *n, *nn, *cp;
 
 	for (int i = 0; i <= nPathSeg - Step; i += Step) {
 		pp = ps[prevprev].getLoc();
@@ -1205,17 +1202,17 @@ void Pathfinder::smooth(int Step)
 /* compute a path back to the planned path */
 int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 {
-	tdble s[2], y[2], ys[2];
+	double s[2], y[2], ys[2];
 
-	tdble d = track->distToMiddle(id, myc->getCurrentPos());
-	tdble factor = MIN(myc->CORRLEN*fabs(d), nPathSeg/2.0);
+	double d = track->distToMiddle(id, myc->getCurrentPos());
+	double factor = MIN(myc->CORRLEN*fabs(d), nPathSeg/2.0);
 	int endid = (id + (int) (factor) + nPathSeg) % nPathSeg;
 
 	if (fabs(d) > (track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0) {
 		d = d/fabs(d)*(track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0;
 	}
 
-	tdble ed = track->distToMiddle(endid, ps[endid].getLoc());
+	double ed = track->distToMiddle(endid, ps[endid].getLoc());
 
 	/* set up points */
 	y[0] = d;
@@ -1226,14 +1223,14 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	ys[1] = pathSlope(endid);
 
 	if ( endid >= id) {
-		s[1] = (tdble) (endid - id);
+		s[1] = (double) (endid - id);
 	} else {
-		s[1] = (tdble) (nPathSeg - id + endid);
+		s[1] = (double) (nPathSeg - id + endid);
 	}
 
 	/* modify path */
-	tdble l = 0.0;
-	t3Dd q, *pp, *qq;
+	double l = 0.0;
+	v3d q, *pp, *qq;
 	for (int i = id; (i + nPathSeg) % nPathSeg != endid; i++) {
 		int j = (i + nPathSeg) % nPathSeg;
 		d = spline(2, l, s, y, ys);
@@ -1258,8 +1255,8 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	}
 
 	/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
-	tdble p = (id - 1 + nPathSeg) % nPathSeg;
-	tdble e = (id + 1 + nPathSeg) % nPathSeg;
+	double p = (id - 1 + nPathSeg) % nPathSeg;
+	double e = (id + 1 + nPathSeg) % nPathSeg;
 	smooth(id, p, e, 1.0);
 
 	return 1;
@@ -1275,19 +1272,19 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	const int nearend = (trackSegId + (int) (3.0*myc->CARLEN)) % nPathSeg;
 	const int end = (trackSegId + (int) colldist/3 + nPathSeg) % nPathSeg;
 
-	tdble dst;
-	tdble tspeed;
-	tdble minTime = FLT_MAX;
+	double dst;
+	double tspeed;
+	double minTime = FLT_MAX;
 	int minIndex = 0;
 	OtherCar* nearestCar = NULL;	/* car near in time, not in space ! (next reached car) */
-	tdble cosa;
+	double cosa;
 
 	int dists[s->_ncars];
-	tdble time[s->_ncars];			/* estimate of time to catch up the car */
+	double time[s->_ncars];			/* estimate of time to catch up the car */
 	OtherCar* collcar[s->_ncars];
-	tdble cosalpha[s->_ncars];
+	double cosalpha[s->_ncars];
 
-	tdble minorthdist = FLT_MAX;		/* near in space */
+	double minorthdist = FLT_MAX;		/* near in space */
 	int minorthdistindex = 0;
 
 	int norder = 0;
@@ -1328,7 +1325,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 	bool sidechangeallowed;
 
-	if (minorthdist <= myc->OVERTAKEDIST) {
+	if (minorthdist <= myc->OVERTAKEDIST && dists[minIndex] >= dists[minorthdistindex]) {
 		minIndex = minorthdistindex;
 		nearestCar = collcar[minorthdistindex];
 		sidechangeallowed = false;
@@ -1344,9 +1341,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	/* is he on my trajectory */
 	PathSeg* opseg = getPathSeg(nearestCar->getCurrentSegId());
 	/* compute minimal space requred */
-	tdble carwidth = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosalpha[minIndex])) + myc->DIST + fabs(myc->derror);
+	double carwidth = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1-sqr(cosalpha[minIndex])) + myc->OVERTAKEMARGIN + fabs(myc->derror);
 	/* compute distance to path */
-	tdble dtp = dist(opseg->getLoc(), nearestCar->getCurrentPos());
+	double dtp = dist(opseg->getLoc(), nearestCar->getCurrentPos());
 
 	/* not enough space, so we try to overtake */
 	if ((dtp < carwidth && minTime < myc->TIMETOCATCH) || !sidechangeallowed) {
@@ -1354,57 +1351,62 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		int overtakerange = (int) MIN(MAX((3*minTime*myc->getSpeed()), myc->MINOVERTAKERANGE), AHEAD-50);
 
 		/* compute new path */
-		tdble d = track->distToMiddle(nearestCar->getCurrentSegId(), nearestCar->getCurrentPos());
-		tdble mydisttomiddle = track->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos());
+		double d = track->distToMiddle(nearestCar->getCurrentSegId(), nearestCar->getCurrentPos());
+		double mydisttomiddle = track->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos());
 
-		tdble y[3], ys[3], s[3];
+		double y[3], ys[3], s[3];
 
 		/* set up point 0 and 1 */
 		y[0] = track->distToMiddle(trackSegId, myc->getCurrentPos());
-		tdble mydp = track->dotProduct(myc->getDir(), track->getSegmentPtr(trackSegId)->getToRight());
-		tdble alpha = PI/2.0 - acos(mydp);
+		double mydp = (*myc->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
+		double alpha = PI/2.0 - acos(mydp);
 		int trackSegId1 = (trackSegId + overtakerange/2) % nPathSeg;
-		tdble w = track->getSegmentPtr(nearestCar->getCurrentSegId())->getWidth() / 2;
+		double w = track->getSegmentPtr(nearestCar->getCurrentSegId())->getWidth() / 2;
 
 		if (!sidechangeallowed) {
-			tdble paralleldist = cosalpha[minIndex]*dist(myc->getCurrentPos(), nearestCar->getCurrentPos());
+			double paralleldist = cosalpha[minIndex]*dist(myc->getCurrentPos(), nearestCar->getCurrentPos());
 			if (paralleldist > 1.5*myc->CARLEN) {
-				tdble pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
-				tdble pathtocarsgn = sign(pathtomiddle - d);
-				y[1] = d + 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
-				if (fabs(y[1]) > w - carwidth) {
-					y[1] = d - 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				double pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
+				double pathtocarsgn = sign(pathtomiddle - d);
+				y[1] = d + myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				if (fabs(y[1]) > w - (myc->CARWIDTH + myc->MARGIN)) {
+					y[1] = d - myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
 				}
 
-				tdble ocdp = track->dotProduct(nearestCar->getDir(), track->getSegmentPtr(trackSegId)->getToRight());
-				tdble beta = PI/2.0 - acos(ocdp);
+				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
+				double beta = PI/2.0 - acos(ocdp);
 				if (y[1] - mydisttomiddle >= 0.0) {
-					if (alpha < beta + 0.0175) alpha = alpha + 0.0175;
+					if (alpha < beta + myc->OVERTAKEANGLE) alpha = alpha + myc->OVERTAKEANGLE;
 				} else {
-					if (alpha > beta - 0.0175) alpha = alpha - 0.0175;
+					if (alpha > beta - myc->OVERTAKEANGLE) alpha = alpha - myc->OVERTAKEANGLE;
 				}
 			} else {
-				tdble ocdp = track->dotProduct(nearestCar->getDir(), track->getSegmentPtr(trackSegId)->getToRight());
-				tdble beta = PI/2.0 - acos(ocdp);
+				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
+				double beta = PI/2.0 - acos(ocdp);
 				if (mydisttomiddle - d >= 0.0) {
-					if (alpha < beta + 0.0175) alpha = beta + 0.0175;
+					if (alpha < beta + myc->OVERTAKEANGLE) alpha = beta + myc->OVERTAKEANGLE;
 				} else {
-					if (alpha > beta - 0.0175) alpha = beta - 0.0175;
+					if (alpha > beta - myc->OVERTAKEANGLE) alpha = beta - myc->OVERTAKEANGLE;
 				}
 
-				tdble cartocarsgn = sign(mydisttomiddle - d);
-				y[1] = d + 2.0*cartocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				double cartocarsgn = sign(mydisttomiddle - d);
+				y[1] = d + myc->OVERTAKEFACTOR*cartocarsgn*(myc->CARWIDTH + myc->MARGIN);
 				if (fabs(y[1]) > w - (myc->CARWIDTH + myc->MARGIN)) {
 					y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
 				}
 			}
 		} else {
-			tdble pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
-			tdble pathtocarsgn = sign(pathtomiddle - d);
-			y[1] = d + 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
-			if (fabs(y[1]) > w - carwidth) {
-				y[1] = d - 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+			double pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
+			double pathtocarsgn = sign(pathtomiddle - d);
+			y[1] = d + myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+			if (fabs(y[1]) > w - (myc->CARWIDTH + myc->MARGIN)) {
+				y[1] = d - myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
 			}
+		}
+
+		double ww = w - (myc->CARWIDTH + myc->MARGIN);
+		if ((y[1] >  ww && alpha > 0.0) || (y[1] < -ww && alpha < 0.0)) {
+			alpha = 0.0;
 		}
 
 		ys[0] = sin(alpha);
@@ -1418,19 +1420,19 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		/* set up parameter s */
 		s[0] = 0.0;
 		if ( trackSegId1 >= trackSegId) {
-			s[1] = (tdble) ( trackSegId1 - trackSegId);
+			s[1] = (double) ( trackSegId1 - trackSegId);
 		} else {
-			s[1] = (tdble) (nPathSeg - trackSegId + trackSegId1);
+			s[1] = (double) (nPathSeg - trackSegId + trackSegId1);
 		}
 		if ( trackSegId2 >= trackSegId1) {
-			s[2] = s[1] + (tdble) ( trackSegId2 - trackSegId1);
+			s[2] = s[1] + (double) ( trackSegId2 - trackSegId1);
 		} else {
-			s[2] = s[1] + (tdble) (nPathSeg - trackSegId1 + trackSegId2);
+			s[2] = s[1] + (double) (nPathSeg - trackSegId1 + trackSegId2);
 		}
 
 		/* compute path */
 		int j;
-		tdble l = 0.0; t3Dd q, *pp, *qq;
+		double l = 0.0; v3d q, *pp, *qq;
 		for (int i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			d = spline(3, l, s, y, ys);
 
@@ -1455,8 +1457,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 
 		/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
-		tdble p = (trackSegId - 1 + nPathSeg) % nPathSeg;
-		tdble e = (trackSegId + 1 + nPathSeg) % nPathSeg;
+		double p = (trackSegId - 1 + nPathSeg) % nPathSeg;
+		double e = (trackSegId + 1 + nPathSeg) % nPathSeg;
 		smooth(trackSegId, p, e, 1.0);
 
 		return 1;

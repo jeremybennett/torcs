@@ -32,6 +32,8 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	initCGh();
 	updatePos();
 	updateDir();
+	updateSpeedSqr();
+	updateSpeed();
 
 	/* damage and fuel status */
 	lastfuel = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_FUEL, NULL, 100.0);
@@ -59,15 +61,17 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	}
 
 	/* guess aerodynamic downforce coefficient from the wings */
-	tdble frontwingarea = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGAREA, (char*)NULL, 0);
-    tdble frontwingangle = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGANGLE, (char*)NULL, 0);
-	tdble rearwingarea = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
-    tdble rearwingangle = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
+	double frontwingarea = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGAREA, (char*)NULL, 0);
+    double frontwingangle = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGANGLE, (char*)NULL, 0);
+	double rearwingarea = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
+    double rearwingangle = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
 
 	ca = AEROMAGIC*1.23*(frontwingarea*sin(frontwingangle) + rearwingarea*sin(rearwingangle));
 
-	tdble cx = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.0);
-	tdble frontarea = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 0.0);
+	double cx = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.0);
+	double frontarea = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 0.0);
+	//double caa = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_CL, (char*)NULL, 0.0);
+	//printf("caa: %f\n", caa);
 
 	cw = 0.625*cx*frontarea;
 
@@ -94,13 +98,13 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 		SPEEDSQRFACTOR; GCTIME; ACCELLIMIT; PATHERRFACTOR
 	*/
 
-	tdble ba[6][12] = {
+	double ba[6][12] = {
 		{0.5, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
 		{0.5, 0.9, 20.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.1, 0.5, 1.0, 5.0},
 		{0.5, 0.9, 15.0, 0.02, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
-		{0.9, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
-		{1.4, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
-		{0.9, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.1, 0.5, 1.0, 1.0}
+		{0.8, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
+		{0.8, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
+		{0.8, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.0, 0.5, 1.0, 1.0}
 	};
 
 	for (int i = 0; i < 6; i++) {
@@ -153,13 +157,13 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	updateDir();
 
 	/* compute current speed */
-	speedsqr = (car->_speed_x)*(car->_speed_x) + (car->_speed_y)*(car->_speed_y) + (car->_speed_z)*(car->_speed_z);
-	speed = sqrt(speedsqr);
+	updateSpeedSqr();
+	updateSpeed();
 
 	/* update currentsegment and destination segment id's */
 	int searchrange = MAX((int) ceil(situation->deltaTime*speed+1.0) * 2, 4);
 	currentsegid = destsegid = pf->getCurrentSegment(car, searchrange);
-	tdble l = 0.0;
+	double l = 0.0;
 
 	while (l < 2.0 * wheelbase) {
 		l = l + pf->getPathSeg(destsegid)->getLength();
@@ -200,9 +204,9 @@ void MyCar::loadBehaviour(int id) {
 /*
 	compute the inverse of the rear => speed == 0 is allowed
 */
-tdble MyCar::queryInverseSlip(tCarElt * car, tdble speed)
+double MyCar::queryInverseSlip(tCarElt * car, double speed)
 {
-	tdble s;
+	double s;
 	switch (drivetrain) {
 		case DRWD:
 			s = (car->_wheelSpinVel(REAR_RGT) +
@@ -229,9 +233,9 @@ tdble MyCar::queryInverseSlip(tCarElt * car, tdble speed)
 /*
 	compute an acceleration value for a given speed
 */
-tdble MyCar::queryAcceleration(tCarElt * car, tdble speed)
+double MyCar::queryAcceleration(tCarElt * car, double speed)
 {
-	tdble a, gr = car->_gearRatio[car->_gear + car->_gearOffset], rm = car->_enginerpmMax;
+	double a, gr = car->_gearRatio[car->_gear + car->_gearOffset], rm = car->_enginerpmMax;
 	switch (drivetrain) {
 		case DRWD:
 			a = speed / car->_wheelRadius(REAR_RGT) * gr / rm;

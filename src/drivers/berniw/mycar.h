@@ -38,9 +38,11 @@
 #include <ttypes.h>
 #include "trackdesc.h"
 #include "pathfinder.h"
+#include "linalg.h"
 
 class Pathfinder;
 class PathSeg;
+
 
 class AbstractCar
 {
@@ -48,10 +50,10 @@ class AbstractCar
 		AbstractCar() {};
 		~AbstractCar() {};
 		inline tCarElt* getCarPtr() { return me; }
-		inline t3Dd* getCurrentPos() { return &currentpos; }
-		inline t3Dd* getDir() { return &dir; }
-		inline tdble getSpeedSqr() { return speedsqr; }
-		inline tdble getSpeed() { return speed; }
+		inline v3d* getCurrentPos() { return &currentpos; }
+		inline v3d* getDir() { return &dir; }
+		inline double getSpeedSqr() { return speedsqr; }
+		inline double getSpeed() { return speed; }
 		inline int getCurrentSegId() { return currentsegid; }
 
 	protected:
@@ -63,16 +65,16 @@ class AbstractCar
 		inline void initCGh() { cgh = GfParmGetNum(me->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0); }
 
 		tCarElt* me;
-		t3Dd currentpos;
-		t3Dd dir;
-		tdble speedsqr;
-		tdble speed;
-
+		v3d currentpos;
+		v3d dir;
+		double speedsqr;
+		double speed;
 		int currentsegid;
 
 	private:
-		tdble cgh;
+		double cgh;			/* height of center of gravity */
 };
+
 
 class MyCar : public AbstractCar
 {
@@ -85,23 +87,23 @@ class MyCar : public AbstractCar
 		static const int SLOW = 4;
 		static const int START = 5;
 
-		static const int DRWD = 0;
-		static const int DFWD = 1;
-		static const int D4WD = 2;
-
-		static const tdble PATHERR = 0.5;			/* if derror > PATHERR we take actions to come back to the path [m] */
-		static const tdble CORRLEN = 30.0;			/* CORRLEN * derror is the length of the correction [m] */
-		static const tdble CARWIDTH = 2.2;			/* width of the car [m] */
-		static const tdble CARLEN = 6.0;			/* length of the car [m] */
-		static const tdble TURNTOL = 1.0;			/* tolerance for end backing up [m] */
-		static const tdble TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
-		static const tdble MARGIN = 0.3;			/* security margin from track border [m] */
-		static const tdble AEROMAGIC = 9.7;			/* aerodynamic lift factor [-] */
-		static const tdble STABLESPEED = 80.0;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
-		static const tdble TIMETOCATCH = 5.0;		/* when do we start thinking about overtaking [s]*/
-		static const tdble MINOVERTAKERANGE = 250.0;/* minimum length for overtaking [m] */
-		static const tdble OVERTAKERADIUS = 100.0;	/* min allowed radius to start overtaking [m] */
-		static const tdble OVERTAKEDIST = 3.0;		/* minimal distance of CG's while overtaking [m] */
+		static const double PATHERR = 0.5;				/* if derror > PATHERR we take actions to come back to the path [m] */
+		static const double CORRLEN = 30.0;				/* CORRLEN * derror is the length of the correction [m] */
+		static const double CARWIDTH = 2.2;				/* width of the car [m] */
+		static const double CARLEN = 6.0;				/* length of the car [m] */
+		static const double TURNTOL = 1.0;				/* tolerance for end backing up [m] */
+		static const double TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
+		static const double MARGIN = 0.3;				/* security margin from track border [m] */
+		static const double AEROMAGIC = 9.7;			/* aerodynamic lift factor [-] */
+		static const double STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
+		static const double TIMETOCATCH = 5.0;			/* when do we start thinking about overtaking [s]*/
+		static const double MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
+		static const double OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
+		static const double OVERTAKEDIST = 3.5;			/* minimal distance of CG's while overtaking [m] */
+		static const double OVERTAKEFACTOR = OVERTAKEDIST / (CARWIDTH + MARGIN);
+		static const double OVERTAKEANGLE = 0.03;//0.0175;
+		static const double DISTTHRESHOLD = 30.0;
+		static const double OVERTAKEMARGIN = 0.9;
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();
@@ -109,39 +111,37 @@ class MyCar : public AbstractCar
 		void info(void);
 		void update(TrackDesc* track, tCarElt* car, tSituation *situation);
 		void loadBehaviour(int id);
-		tdble queryInverseSlip(tCarElt * car, tdble speed);
-		tdble queryAcceleration(tCarElt * car, tdble speed);
+		double queryInverseSlip(tCarElt * car, double speed);
+		double queryAcceleration(tCarElt * car, double speed);
 
 		Pathfinder* pf;
 
 		/* data for behavior */
 		int bmode;
-		tdble behaviour[6][12];
-		int MAXDAMMAGE;								/* if dammage > MAXDAMMAGE then we plan a pit stop [-] */
-		tdble DIST;									/* minimal distance to other cars [m] */
-		tdble MAXRELAX;								/* to avoid skidding (0..0.99) [-] */
-		tdble MAXANGLE;								/* biggest allowed angle to the path [deg] */
-		tdble ACCELINC;								/* increment/decrement for acceleration [-] */
-		tdble MININVSLIP;							/* 1/slip ==> defines maximum allowed slip [-] */
-		tdble SFTUPRATIO;							/* rpm/rpmmax ratio for shift up (0.3..0.85) [-] */
-		tdble SFTDOWNRATIO;							/* hmmm, more complicated [-] */
-		tdble SFTDOWNSTEER;							/* max steer value for shift down [-] */
-		tdble SPEEDSQRFACTOR;						/* multiplier for speedsqr */
-		tdble GCTIME;								/* minimal time between gear changes */
-		tdble ACCELLIMIT;							/* maximal allowed acceleration */
-		tdble PATHERRFACTOR;						/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
+		double behaviour[6][12];
+		int MAXDAMMAGE;									/* if dammage > MAXDAMMAGE then we plan a pit stop [-] */
+		double DIST;									/* minimal distance to other cars [m] */
+		double MAXRELAX;								/* to avoid skidding (0..0.99) [-] */
+		double MAXANGLE;								/* biggest allowed angle to the path [deg] */
+		double ACCELINC;								/* increment/decrement for acceleration [-] */
+		double MININVSLIP;								/* 1/slip ==> defines maximum allowed slip [-] */
+		double SFTUPRATIO;								/* rpm/rpmmax ratio for shift up (0.3..0.85) [-] */
+		double SFTDOWNRATIO;							/* hmmm, more complicated [-] */
+		double SFTDOWNSTEER;							/* max steer value for shift down [-] */
+		double SPEEDSQRFACTOR;							/* multiplier for speedsqr */
+		double GCTIME;									/* minimal time between gear changes */
+		double ACCELLIMIT;								/* maximal allowed acceleration */
+		double PATHERRFACTOR;							/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
 
 		/* static data (car geometry) */
-		tdble wheelbase;
-		tdble wheeltrack;
-		tdble cgcorr_b;
-		tdble carmass;
-		tdble ca;
-		tdble cw;
-		int drivetrain;
+		double wheelbase;
+		double wheeltrack;
+		double cgcorr_b;
+		double ca;
+		double cw;
 
 		/* dynamic data */
-		tdble mass;
+		double mass;
 		int destsegid;
 		double trtime;
 
@@ -151,19 +151,26 @@ class MyCar : public AbstractCar
 		PathSeg* destpathseg;
 
 		int undamaged;
-		tdble lastfuel;
-		tdble fuelperlap;
-		tdble lastpitfuel;
+		double lastfuel;
+		double fuelperlap;
+		double lastpitfuel;
 
 		int count;
-		tdble turnaround;
+		double turnaround;
 		int tr_mode;
-		tdble accel;
+		double accel;
 		bool fuelchecked;
 		bool startmode;
 
-		tdble derror;			/* distance to desired trajectory */
+		double derror;			/* distance to desired trajectory */
 	private:
+		static const int DRWD = 0;
+		static const int DFWD = 1;
+		static const int D4WD = 2;
+
+		int drivetrain;			/* RWD, FWD or 4WD */
+		double carmass;			/* mass of car without fuel */
+
 };
 
 
@@ -175,7 +182,7 @@ class OtherCar: public AbstractCar
 
 	private:
 		TrackDesc* track;
-		tdble dt;
+		double dt;
 };
 
 #endif // _MYCAR_H_

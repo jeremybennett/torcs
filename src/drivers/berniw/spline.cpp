@@ -30,9 +30,9 @@
 	[ ................ c(n-1) an ]
 */
 
-void tridiagonal(int dim, tdble * c, tdble * a, tdble * b, tdble * x)
+void tridiagonal(int dim, double * c, double * a, double * b, double * x)
 {
-	tdble co, si, h, t;
+	double co, si, h, t;
 
 	dim--;
 	b[dim] = 0;
@@ -53,17 +53,17 @@ void tridiagonal(int dim, tdble * c, tdble * a, tdble * b, tdble * x)
 }
 
 /* compute the slopes of the spline points with periodic constraints */
-void slopesp(int dim, tdble * x, tdble * y, tdble * ys)
+void slopesp(int dim, double * x, double * y, double * ys)
 {
-	tdble * a, * b, * c, * d, * h, * u, * v, factor;
+	double * a, * b, * c, * d, * h, * u, * v, factor;
 
-	a = (tdble *) malloc(sizeof(tdble)*dim);
-	b = (tdble *) malloc(sizeof(tdble)*dim);
-	c = (tdble *) malloc(sizeof(tdble)*dim);
-	d = (tdble *) malloc(sizeof(tdble)*dim);
-	h = (tdble *) malloc(sizeof(tdble)*dim);
-	u = (tdble *) malloc(sizeof(tdble)*dim);
-	v = (tdble *) malloc(sizeof(tdble)*dim);
+	a = (double *) malloc(sizeof(double)*dim);
+	b = (double *) malloc(sizeof(double)*dim);
+	c = (double *) malloc(sizeof(double)*dim);
+	d = (double *) malloc(sizeof(double)*dim);
+	h = (double *) malloc(sizeof(double)*dim);
+	u = (double *) malloc(sizeof(double)*dim);
+	v = (double *) malloc(sizeof(double)*dim);
 
 	dim--;
 	for (int i = 0; i < dim; i++) {
@@ -93,15 +93,15 @@ void slopesp(int dim, tdble * x, tdble * y, tdble * ys)
 }
 
 /* compute the slopes of the spline points with natural constraints */
-void slopesn(int dim, tdble * x, tdble * y, tdble * ys)
+void slopesn(int dim, double * x, double * y, double * ys)
 {
-	tdble * a, * b, * c, * d, * h;
+	double * a, * b, * c, * d, * h;
 
-	a = (tdble *) malloc(sizeof(tdble)*dim);
-	b = (tdble *) malloc(sizeof(tdble)*dim);
-	c = (tdble *) malloc(sizeof(tdble)*dim);
-	d = (tdble *) malloc(sizeof(tdble)*dim);
-	h = (tdble *) malloc(sizeof(tdble)*dim);
+	a = (double *) malloc(sizeof(double)*dim);
+	b = (double *) malloc(sizeof(double)*dim);
+	c = (double *) malloc(sizeof(double)*dim);
+	d = (double *) malloc(sizeof(double)*dim);
+	h = (double *) malloc(sizeof(double)*dim);
 	
 	dim--;
 	for (int i = 0; i < dim; i++) {
@@ -121,7 +121,7 @@ void slopesn(int dim, tdble * x, tdble * y, tdble * ys)
 }
 
 /* compute the slopes for 2-dim curve, sums euclidian distances as parameter, periodic */	
-void parametricslopesp(int dim, tdble * x, tdble * y, tdble * xs, tdble * ys, tdble * s)
+void parametricslopesp(int dim, double * x, double * y, double * xs, double * ys, double * s)
 {
 	s[0] = 0;
 	for (int i = 1; i < dim; i++) {
@@ -131,7 +131,7 @@ void parametricslopesp(int dim, tdble * x, tdble * y, tdble * xs, tdble * ys, td
 	slopesp(dim, s, y, ys);
 }
 
-void parametricslopesn(int dim, tdble * x, tdble * y, tdble * xs, tdble * ys, tdble * s)
+void parametricslopesn(int dim, double * x, double * y, double * xs, double * ys, double * s)
 {
 	s[0] = 0;
 	for (int i = 1; i < dim; i++) {
@@ -142,10 +142,10 @@ void parametricslopesn(int dim, tdble * x, tdble * y, tdble * xs, tdble * ys, td
 }
 
 /* compute the y value for a given z */
-tdble spline(int dim, tdble z, tdble * x, tdble * y, tdble * ys)
+double spline(int dim, double z, double * x, double * y, double * ys)
 {
 	int i, a, b;
-	tdble t, a0, a1, a2, a3, h;
+	double t, a0, a1, a2, a3, h;
 
 	a = 0; b = dim-1;
 	do {

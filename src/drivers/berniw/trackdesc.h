@@ -40,6 +40,7 @@
 #include <robottools.h>
 #include <math.h>
 #include <ttypes.h>
+#include "linalg.h"
 
 #define TRACKRES 1.0
 #define RMAX 10000.0
@@ -52,43 +53,43 @@ class TrackSegment
 	public:
 		TrackSegment();
 		~TrackSegment();
-		void init(int id, const tTrackSeg* s, const t3Dd* l, const t3Dd* m, const t3Dd* r);
-		inline void setLength(tdble len) { length = len; }
-		inline void setKbeta(tdble b) { kbeta = b; }
+		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);
+		inline void setLength(double len) { length = len; }
+		inline void setKbeta(double b) { kbeta = b; }
 
 		inline int getSegmentId() { return segID; }
 		inline int getType() { return type; }
 		inline unsigned int getRaceType() { return raceType; }
-		inline tdble getRadius() { return radius; }
-		inline tdble getKfriction() { return kfriction; }
-		inline tdble getKrollres() { return krollres; }
-		inline tdble getKroughness() { return kroughness; }
-		inline tdble getKroughwavelen() { return kroughwavelen; }
-		inline tdble getWidth() { return width; }
-		inline tdble getKalpha() { return kalpha; }
-		inline tdble getKbeta() { return kbeta; }
-		inline tdble getLength() { return length; }
+		inline double getRadius() { return radius; }
+		inline double getKfriction() { return kfriction; }
+		inline double getKrollres() { return krollres; }
+		inline double getKroughness() { return kroughness; }
+		inline double getKroughwavelen() { return kroughwavelen; }
+		inline double getWidth() { return width; }
+		inline double getKalpha() { return kalpha; }
+		inline double getKbeta() { return kbeta; }
+		inline double getLength() { return length; }
 
-		inline t3Dd* getLeftBorder() { return &l; }
-		inline t3Dd* getRightBorder() { return &r; }
-		inline t3Dd* getMiddle() { return &m; }
-		inline t3Dd* getToRight() { return &tr; }
+		inline v3d* getLeftBorder() { return &l; }
+		inline v3d* getRightBorder() { return &r; }
+		inline v3d* getMiddle() { return &m; }
+		inline v3d* getToRight() { return &tr; }
 
-		inline tdble sqr(tdble a) { return a*a; };
-		inline tdble distToLeft2D(tdble x, tdble y) { return sqrt(sqr(x-l.x) + sqr(y-l.y)); }
-		inline tdble distToMiddle2D(tdble x, tdble y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }
-		inline tdble distToRight2D(tdble x, tdble y) { return sqrt(sqr(x-r.x) + sqr(y-r.y)); }
+		inline double sqr(double a) { return a*a; };
+		inline double distToLeft2D(double x, double y) { return sqrt(sqr(x-l.x) + sqr(y-l.y)); }
+		inline double distToMiddle2D(double x, double y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }
+		inline double distToRight2D(double x, double y) { return sqrt(sqr(x-r.x) + sqr(y-r.y)); }
 
-		inline tdble distToRight3D(t3Dd* p) {
+		inline double distToRight3D(v3d* p) {
 			return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z));
 		}
-		inline tdble distToLeft3D(t3Dd* p) {
+		inline double distToLeft3D(v3d* p) {
 			return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z));
 		}
-		inline tdble distToMiddle3D(tdble x, tdble y, tdble z) {
+		inline double distToMiddle3D(double x, double y, double z) {
 			return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z));
 		}
-		inline tdble distToMiddle3D(t3Dd* p) {
+		inline double distToMiddle3D(v3d* p) {
 			return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z));
 		}
 
@@ -96,17 +97,17 @@ class TrackSegment
 		int segID;				/* id of the corresponding segment */
 		int type;				/* physical type (eg. straight, left or right) */
 		unsigned int raceType;	/* race type (eg. pitlane, speedlimit, ...) */
-		t3Dd l, m, r;			/* right, middle and left segment (road) border */
-		t3Dd tr;				/* normalized direction vector to the right side */
-		tdble radius;			/* radius */
-		tdble kfriction;		/* friction */
-		tdble krollres;			/* rolling resistance */
-		tdble kroughness;		/* roughness */
-		tdble kroughwavelen;	/* wavelen */
-		tdble width;			/* width of the track segment*/
-		tdble kalpha;			/* factor for the angle (like michigan) */
-		tdble kbeta;			/* factor for bumps (e-track-3) */
-		tdble length;			/* distance to the next segment (2-D, not 3-D!) */
+		v3d l, m, r;			/* right, middle and left segment (road) border */
+		v3d tr;					/* normalized direction vector to the right side */
+		double radius;			/* radius */
+		double kfriction;		/* friction */
+		double krollres;			/* rolling resistance */
+		double kroughness;		/* roughness */
+		double kroughwavelen;	/* wavelen */
+		double width;			/* width of the track segment*/
+		double kalpha;			/* factor for the angle (like michigan) */
+		double kbeta;			/* factor for bumps (e-track-3) */
+		double length;			/* distance to the next segment (2-D, not 3-D!) */
 };
 
 class TrackDesc
@@ -122,51 +123,31 @@ class TrackDesc
 		inline int getnTrackSegments() { return nTrackSegments; }
 		int getCurrentSegment(tCarElt* car, int lastId, int range);
 		int getCurrentSegment(tCarElt* car);
-		int getNearestId(t3Dd* p);
+		int getNearestId(v3d* p);
 
-		void getNormalVector(int index, t3Dd* normal);
+		void getNormalVector(int index, v3d* normal);
 
 		inline int getPitEntryStartId() { return nPitEntryStart; }
 		inline int getPitExitEndId() { return nPitExitEnd; }
 		inline int getPitType() { return torcstrack->pits.type; }
 
-		static inline tdble vectorLength(t3Dd* p) {
-			return sqrt(p->x*p->x + p->y*p->y + p->z*p->z);
-		}
-		static inline void normalizeVector(t3Dd* p) {
-			tdble l = vectorLength(p);
-			p->x /= l; p->y /= l; p->z /= l;
-		}
-		static inline tdble dotProduct(t3Dd* a, t3Dd* b) {
-			return (a->x*b->x + a->y*b->y + a->z*b->z);
-		}
-		static inline void crossProduct(t3Dd* a, t3Dd* b, t3Dd* r) {
-			r->x = a->y*b->z - a->z*b->y;
-			r->y = a->z*b->x - a->x*b->z;
-			r->z = a->x*b->y - a->y*b->x;
-		}
-		static inline void dirVector(t3Dd* a, t3Dd* b, t3Dd* r) {
-			r->x = a->x - b->x; r->y = a->y - b->y; r->z = a->z - b->z;
-		}
-		static inline void dirVector2D(t3Dd* a, t3Dd* b, t3Dd* r) {
+		static inline void dirVector2D(v3d* a, v3d* b, v3d* r) {
 			r->x = a->x - b->x; r->y = a->y - b->y; r->z = 0.0;
 		}
-		static inline tdble cosalpha(t3Dd* a, t3Dd* b) {
-			normalizeVector(a);
-			normalizeVector(b);
-			return dotProduct(a, b);
+		static inline double cosalpha(v3d* a, v3d* b) {
+			return (*a)*(*b)/(a->len()*b->len());
 		}
-		static inline tdble distGFromPoint(t3Dd* r1, t3Dd* rdir, t3Dd* p) {
-			t3Dd t, s;
-			dirVector(p, r1, &t);
-			crossProduct(rdir, &t, &s);
-			return (vectorLength(&s)/vectorLength(rdir));
+		static inline double distGFromPoint(v3d* r1, v3d* rdir, v3d* p) {
+			v3d t, s;
+			p->dirVector(r1, &t);
+			rdir->crossProduct(&t, &s);
+			return s.len()/rdir->len();
 		}
 
 		/* returns distance to middle: value > 0 is right, value < 0 is left */
-		inline tdble distToMiddle(int id, t3Dd* p) {
-			t3Dd *r1, *rdir, r12, rdir2, p2;
-			tdble d, dr, dl;
+		inline double distToMiddle(int id, v3d* p) {
+			v3d *r1, *rdir, r12, rdir2, p2;
+			double d, dr, dl;
 
 			r1 = ts[id].getMiddle();
 			rdir = ts[id].getToRight();
@@ -182,10 +163,10 @@ class TrackDesc
 		}
 
 		/* returns distance of trajectory point to the middle point of segment */
-		inline tdble distToMiddleOnSeg(int id, t3Dd* p) {
-			tdble d = ts[id].distToMiddle3D(p);
-			tdble dr = ts[id].distToRight3D(p);
-			tdble dl = ts[id].distToLeft3D(p);
+		inline double distToMiddleOnSeg(int id, v3d* p) {
+			double d = ts[id].distToMiddle3D(p);
+			double dr = ts[id].distToRight3D(p);
+			double dl = ts[id].distToLeft3D(p);
 			return (dr <= dl) ? d : -d;
 		}
 

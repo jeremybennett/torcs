@@ -25,19 +25,17 @@ TrackSegment::TrackSegment()
 	// nothing so far
 }
 
-void TrackSegment::init(int id, const tTrackSeg* s, const t3Dd* lp, const t3Dd* mp, const t3Dd* rp)
+void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)
 {
 	/* id of the corresponding segment */
 	segID = id;
-	/* right, middle and left segment (road) border */
-	l.x = lp->x; l.y = lp->y; l.z = lp->z;
-	m.x = mp->x; m.y = mp->y; m.z = mp->z;
-	r.x = rp->x; r.y = rp->y; r.z = rp->z;
 
-	TrackDesc::dirVector(&r, &l, &tr);
-	TrackDesc::normalizeVector(&tr);
+	/* right, middle and left segment (road) border, pointer to right side */
+	l = *lp; m = *mp; r = *rp;
+	r.dirVector(&l, &tr);
+	tr.normalize();
 
-
+	/* fill in the remaining properties */
 	if (s != NULL) {
 		type = s->type;
 		raceType = s->raceInfo;
@@ -48,8 +46,8 @@ void TrackSegment::init(int id, const tTrackSeg* s, const t3Dd* lp, const t3Dd* 
 		kroughwavelen = s->kRoughWaveLen;
 		width = distToLeft3D(&r);
 
-		tdble dz = getRightBorder()->z - getLeftBorder()->z;
-		tdble d = getWidth();
+		double dz = getRightBorder()->z - getLeftBorder()->z;
+		double d = getWidth();
 		if (type == TR_LFT) {
 			if (dz > 0.0) {
 				kalpha = 1.0/cos(asin(fabs(dz/d)));
@@ -79,7 +77,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 {
 	tTrackSeg* first = track->seg;
 	tTrackSeg* seg = first;
-	tdble tracklength = 0.0;
+	double tracklength = 0.0;
 	int nsegments = 0;
 
 	/* compute the length of the track */
@@ -96,7 +94,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 	torcstrack = (tTrack*) track;
 
 	/* init all the segments of my temporary track description */
-	t3Dd l, m, r;
+	v3d l, m, r;
 	int currentts = 0;
 	double lastseglen = 0.0;
 	double curseglen = 0.0;
@@ -121,9 +119,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 				r.y = seg->vertex[TR_SR].y + dyr*curseglen;
 				r.z = seg->vertex[TR_SR].z + dzr*curseglen;
 
-				m.x = (l.x + r.x) / 2.0;
-				m.y = (l.y + r.y) / 2.0;
-				m.z = (l.z + r.z) / 2.0;
+				m = (l + r)/2.0;
 
 				ts[currentts].init(seg->id, seg, &l, &m, &r);
 				currentts++;
@@ -150,9 +146,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 				r.y = seg->vertex[TR_SR].x * ss + seg->vertex[TR_SR].y * cs - xc * ss - yc * cs + yc;
 				r.z = seg->vertex[TR_SR].z + dzr*curseglen;
 
-				m.x = (l.x + r.x) / 2.0;
-				m.y = (l.y + r.y) / 2.0;
-				m.z = (l.z + r.z) / 2.0;
+				m = (l + r)/2.0;
 
 				ts[currentts].init(seg->id, seg, &l, &m, &r);
 				currentts++;
@@ -183,13 +177,13 @@ TrackDesc::TrackDesc(const tTrack* track)
 		if ((ts[i].getRaceType() & TR_PITEXIT) && !(ts[k].getRaceType() & TR_PITEXIT)) {
 			nPitExitEnd = i;
 		}
-		t3Dd* p = ts[k].getMiddle();
+		v3d* p = ts[k].getMiddle();
 		ts[i].setLength(ts[i].distToMiddle2D(p->x, p->y));
 	}
 
 	/* init kbeta, for height profile of track */
-	t3Dd *p0, *p1, *p2;
-	tdble dz10, dz21;
+	v3d *p0, *p1, *p2;
+	double dz10, dz21;
 
 	for (int i = 0; i < nTrackSegments; i++) {
 		p0 = ts[(i+nTrackSegments-5) % nTrackSegments].getMiddle();
@@ -199,12 +193,12 @@ TrackDesc::TrackDesc(const tTrack* track)
 		dz21 = p2->z - p1->z;
 
 		if (dz21 < dz10) {
-			tdble dl10, dl21, r;
-			t3Dd pr;
+			double dl10, dl21, r;
+			v3d pr;
 			dirVector2D(p1, p0, &pr);
-			dl10 = vectorLength(&pr);
+			dl10 = pr.len();
 			dirVector2D(p2, p1, &pr);
-			dl21 = vectorLength(&pr);
+			dl21 = pr.len();
 			r = radius(0.0, p0->z, dl10, p1->z, dl21+dl10, p2->z);
 			if (r < RREL) {
 				ts[i].setKbeta(1.0/r);
@@ -225,7 +219,7 @@ TrackDesc::~TrackDesc()
 void TrackDesc::plot(char* filename)
 {
 	FILE *fd = fopen(filename, "w");
-	t3Dd *l, *m, *r;
+	v3d *l, *m, *r;
 
 	/* plot track */
 	for (int i = 0; i < getnTrackSegments(); i++) {
@@ -245,7 +239,7 @@ void TrackDesc::plot(char* filename)
 /* get the segment on which the car is, searching ALL the segments */
 int TrackDesc::getCurrentSegment(tCarElt* car)
 {
-	tdble d, min = FLT_MAX;
+	double d, min = FLT_MAX;
 	TrackSegment* ts;
 	int minindex = 0;
 
@@ -266,7 +260,7 @@ int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)
 {
 	int start = -(range / 4);
 	int end = range * 3 / 4;
- 	tdble d, min = FLT_MAX;
+ 	double d, min = FLT_MAX;
 	TrackSegment* ts;
 	int minindex = 0;
 
@@ -283,9 +277,9 @@ int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)
 }
 
 
-int TrackDesc::getNearestId(t3Dd* p)
+int TrackDesc::getNearestId(v3d* p)
 {
-	tdble tmp, dist = FLT_MAX;
+	double tmp, dist = FLT_MAX;
 	int minindex = 0;
 
 	for (int i = 0; i < getnTrackSegments(); i++) {
@@ -300,10 +294,10 @@ int TrackDesc::getNearestId(t3Dd* p)
 }
 
 
-void TrackDesc::getNormalVector(int i, t3Dd* n)
+void TrackDesc::getNormalVector(int i, v3d* n)
 {
-	t3Dd *t1, *t2, *t3;
-	t3Dd a, b, c;
+	v3d *t1, *t2, *t3;
+	v3d a, b, c;
 
 	/* get three points */
 	t1 = getSegmentPtr((i - 2 + getnTrackSegments()) % getnTrackSegments())->getMiddle();
@@ -311,16 +305,16 @@ void TrackDesc::getNormalVector(int i, t3Dd* n)
 	t3 = getSegmentPtr((i + 2 + getnTrackSegments()) % getnTrackSegments())->getMiddle();
 
 	/* make two vectors out of them */
-	dirVector(t1, t2, &a);
-	dirVector(t3, t2, &b);
+	t1->dirVector(t2, &a);
+	t3->dirVector(t2, &b);
 
 	/* cross(vector) product */
-	crossProduct(&a, &b, &c);
+	a.crossProduct(&b, &c);
 
 	/* normalize */
-	normalizeVector(&c);
+	c.normalize();
 
-	n->x = c.x; n->y = c.y; n->z = c.z;
+	*n = c;
 }
 
 
