@@ -447,9 +447,14 @@ void loadAndGroup( char *OutputFileName)
       return ;
     }
   fprintf(ofile,"AC3Db\n");
-  tmat=root_material->next;
+  tmat=root_material;
   while (tmat!=NULL)
     {
+      if (strcmp (tmat->name, "root") == 0)
+	{
+	  tmat = tmat->next;
+	  continue;
+	}
       fprintf(ofile, "MATERIAL %s rgb %1.2f %1.2f %1.2f amb %1.2f %1.2f %1.2f emis %1.2f %1.2f %1.2f spec %1.2f %1.2f %1.2f shi %3d trans 0 \n",
 	      tmat->name,
 	      tmat->rgb.r,

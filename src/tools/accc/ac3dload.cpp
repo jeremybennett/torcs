@@ -132,6 +132,16 @@ int computeNorm( point_t * pv1, point_t *pv2, point_t *pv3, point_t *norm)
   y3=pv3->y; 
   z3=pv3->z; 
 
+  if ( (x1==x2 && y1==y2 && z1==z2)
+       || (x1==x3 && y1==y3 && z1==z3)
+       || (x2==x3 && y2==y3 && z2==z3))
+    {
+      norm->x=0;
+      norm->y=1.0;
+      norm->z=0;
+      return 0;
+    }
+
   p1=x2-x1;
   p2=y2-y1;
   p3=z2-z1;
@@ -399,7 +409,15 @@ int terrainSplitOb (ob_t **object)
       memcpy(tob->vertex, pttmp,n*sizeof(point_t));  
       memcpy(tob->snorm, snorm,n*sizeof(point_t));  
       memcpy(tob->norm, snorm,n*sizeof(point_t));  
-      tob->data=strdup((*object)->data);
+      
+      if ((*object)->data) 
+	  {
+	      tob->data=strdup((*object)->data);
+	  }
+      else
+	  {
+	      tob->data=0;
+	  }
       tob->kids=0;
       for (j=0; j<numtri*3; j++)
 	{
@@ -2296,6 +2314,11 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
   tmat=root_material;
   while (tmat!=NULL)
     {
+      if (strcmp (tmat->name, "root") == 0)
+	{
+	  tmat = tmat->next;
+	  continue;
+	}
       fprintf(ofile, "MATERIAL %s rgb %1.2f %1.2f %1.2f amb %1.2f %1.2f %1.2f emis %1.2f %1.2f %1.2f spec %1.2f %1.2f %1.2f shi %d trans 0 \n",
 	     tmat->name,
 	     tmat->rgb.r,
@@ -3135,6 +3158,12 @@ void computeSaveAC3DM( char * OutputFilename, ob_t * object)
   tmat=root_material;
   while (tmat!=NULL)
     {
+      if (strcmp (tmat->name, "root") == 0)
+	{
+	  tmat = tmat->next;
+	  continue;
+	}
+	
       fprintf(ofile, "MATERIAL %s rgb %lf %lf %lf amb %lf %lf %lf emis %lf %lf %lf spec %lf %lf %lf shi %d trans0 \n",
 	      tmat->name,
 	      tmat->rgb.r,
