@@ -1,0 +1,11 @@
+Building Windows Installer for TORCS
+------------------------------------
+Required tools from nsis.sourceforge.net (GPL):
+- NSIS 2.04
+- HM NIS EDIT 2.0.2
+
+- Build a TORCS release and copy the runtime directory into this (here).
+- Rename the runtime to base.
+- Open torcs.nsi with HM NIS EDIT 2.0.2 and compile the installer.
+
+
