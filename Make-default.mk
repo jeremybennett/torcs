@@ -37,6 +37,9 @@ INSTBASE    = ${DESTDIR}${instdir}
 INSTBINBASE = ${DESTDIR}${bindir}
 INSTLIBBASE = ${DESTDIR}${prefix}/lib
 
+PACKAGEBASE = ${TORCS_BASE}/package
+
+PACKAGESBASE = ${TORCS_BASE}/packages
 
 # win32
 INIT_WIN32       = ${TORCS_BASE}/setup_win32.bat
@@ -142,6 +145,10 @@ cleancompil: cleansubdirs
 
 install: installdirs installdata installsolibrary installmodule installprogram installtools installtoolsdata win32end
 
+packages: packagelist
+
+onepackage: packagedirs packagefiles
+
 
 .SUFFIXES: .cpp
 
@@ -152,7 +159,6 @@ install: installdirs installdata installsolibrary installmodule installprogram i
 
 .c.o:
 	${CC} $(INCFLAGS) $(CFLAGS) $(COMPILFLAGS) -c $<
-
 
 
 ifdef LIBRARY
@@ -332,6 +338,62 @@ installmodule: ${MODULE}
 else
 
 installmodule: ;
+
+endif
+
+ifdef PKGLIST
+
+packagelist:
+	@for Pkg in ${PKGLIST} ;\
+	do ${MAKE} onepackage PKG=$$Pkg ;\
+	createdir="${PACKAGESBASE}" ;\
+	$(mkinstalldirs) $$createdir ; \
+	archive="TORCS-${VERSION}-$$Pkg".tgz ;\
+	echo "Creating Package $$archive" ;\
+	tar -C ${PACKAGEBASE} -zcf "${PACKAGESBASE}/$$archive" . ;\
+	rm -rf ${PACKAGEBASE} ;\
+	done
+
+else
+
+packagelist: ;
+
+endif
+
+ifdef PKG
+
+PKGFILES = $($(PKG)_PKGFILES)
+PKGDIR = $($(PKG)_PKGDIR)
+
+ifeq ($(strip $(PKGFILES)),)
+PKGFILES = ""
+endif
+
+packagefiles:
+	@if [ -n "${PKGFILES}" ];\
+	then createdir="${PACKAGEBASE}/${PKGDIR}" ; \
+	$(mkinstalldirs) $$createdir ; \
+	for Pkg in ${PKGFILES} ; \
+	do cp $$Pkg $$createdir/$$Pkg ; \
+	done ;\
+	fi
+
+else
+
+packagefiles: ;
+
+endif
+
+ifdef PKGSUBDIR
+
+packagedirs:
+	@RecurseDirs="${PKGSUBDIR}" ; \
+	RecurseFlags="onepackage PKG=${PKG}" ; \
+	${recursedirs}
+
+else
+
+packagedirs: ;
 
 endif
 
