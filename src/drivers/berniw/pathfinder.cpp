@@ -723,17 +723,18 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		}
 	}
 
-	/* are we on the trajectory or do i need a correction */
-	if (!inPit && (myc->derror > myc->PATHERR*myc->PATHERRFACTOR ||
-		(myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED))) {
-		changed += correctPath(trackSegId, car, myc);
-	}
-
 	collcars = updateOCar(trackSegId, situation, myc, ocar, o);
 
-	/* overtaking */
-	if (!inPit && (!pitStop || track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, trackSegId)) && changed == 0) {
-		changed += overtake(trackSegId, situation, myc, ocar);
+	if (!inPit && (!pitStop || track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, trackSegId))) {
+		/* are we on the trajectory or do i need a correction */
+		if ((myc->derror > myc->PATHERR*myc->PATHERRFACTOR ||
+		(myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED))) {
+			changed += correctPath(trackSegId, car, myc);
+		}
+		/* overtaking */
+		if (changed == 0) {
+			changed += overtake(trackSegId, situation, myc, ocar);
+		}
 	}
 
 	/* recompute speed and direction of new trajectory */
