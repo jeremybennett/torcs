@@ -103,6 +103,8 @@ shutdown(int index)
 	GfParmReleaseHandle(PrefHdle);
 	GfctrlJoyRelease(joyInfo);
 	GfctrlMouseRelease(mouseInfo);
+	GfuiKeyEventRegisterCurrent(NULL);
+	GfuiSKeyEventRegisterCurrent(NULL);
 	firstTime = 0;
     }
 }

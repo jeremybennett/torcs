@@ -75,6 +75,8 @@ static void *AbortRaceHookHandle = 0;
 static void
 AbortRaceHookActivate(void * /* dummy */)
 {
+    GfuiScreenActivate(ReInfo->_reGameScreen);
+
     ReInfo->_reSimItf.shutdown();
     if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
 	ReInfo->_reGraphicItf.shutdowncars();
@@ -84,8 +86,6 @@ AbortRaceHookActivate(void * /* dummy */)
 
     /* Return to race menu */
     ReInfo->_reState = RE_STATE_CONFIG;
-
-    GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
 static void *
