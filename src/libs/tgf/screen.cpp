@@ -125,11 +125,16 @@ void GfScrInit(int argc, char *argv[])
     GfScrCenX = xw / 2;
     GfScrCenY = yw / 2;
 
+    glutInit(&argc, argv);
+
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
+
+    fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
+    fullscreen = 0;
+    if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
 #if !defined(FREEGLUT) && !defined(WIN32)
     /* Resize the screen */
-    fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
-    if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	for (i = 160; i > 59; i--) {
+	for (i = maxfreq; i > 59; i--) {
 	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
 	    GfOut("Trying %s mode\n", buf);
 	    fglutGameModeString(buf);
@@ -139,23 +144,14 @@ void GfScrInit(int argc, char *argv[])
 		break;
 	    }
 	}
-    }
-    /* End of resize the screen */
 #endif
-
-    glutInit(&argc, argv);
-
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
-
-    fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
-    fullscreen = 0;
-    if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
 	for (i = maxfreq; i > 59; i--) {
 	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
 	    glutGameModeString(buf);
 	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
 		glutEnterGameMode();
 		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
+		    GfOut("Use GameMode %s\n", buf);
 		    usedGM = 1;
 		    fullscreen = 1;
 		    break;
