@@ -289,3 +289,10 @@ RePostRace(void)
 }
 
 
+int
+ReEventShutdown(void)
+{
+    ReInfo->_reGraphicItf.shutdowntrack();
+    return RM_SYNC | RM_NEXT_STEP;
+}
+

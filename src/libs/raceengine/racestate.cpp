@@ -132,8 +132,10 @@ ReStateManage(void)
 
 	case RE_STATE_EVENT_SHUTDOWN:
 	    GfOut("RaceEngine: state = RE_STATE_EVENT_SHUTDOWN\n");
-	    ReInfo->_reState = RE_STATE_SHUTDOWN;
-	    mode = RM_SYNC;
+	    mode = ReEventShutdown();
+	    if (mode & RM_NEXT_STEP) {
+		ReInfo->_reState = RE_STATE_SHUTDOWN;
+	    }
 	    break;
 
 	case RE_STATE_SHUTDOWN:

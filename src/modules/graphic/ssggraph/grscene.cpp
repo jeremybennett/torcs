@@ -506,7 +506,7 @@ void grDrawScene(void)
 
 void grShutdownScene(void)
 {
-    grShutdownSmoke ();
+    //grShutdownSmoke ();
     if (TheScene) {
 	delete TheScene;
 	TheScene = 0;

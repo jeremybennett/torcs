@@ -248,6 +248,7 @@ void grShutdownSkidmarks (void)
 	free(grCarInfo[z].skidmarks);
 	grCarInfo[z].skidmarks = NULL;
     }
+    skidState = NULL;
 }
 
 

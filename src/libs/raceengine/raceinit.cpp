@@ -91,7 +91,6 @@ ReShutdown(void)
     /* Free previous situation */
     if (ReInfo) {
 	ReInfo->_reTrackItf.trkShutdown();
-	ReInfo->_reGraphicItf.shutdowntrack(); 
 
 	GfModUnloadList(&reEventModList);
 

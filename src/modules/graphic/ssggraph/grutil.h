@@ -61,6 +61,8 @@ extern ssgState *grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mi
 extern int grPruneTree(ssgEntity *start, bool init);
 extern void grForceState(ssgEntity *start, ssgState *state);
 extern bool grLoadPngTexture (const char *fname, ssgTextureInfo* info);
+extern void grShutdownState(void);
+
 
 #endif /* _GRUTIL_H_ */ 
 

@@ -424,5 +424,6 @@ shutdownTrack(void)
     grShutdownScene();
     grShutdownBoard();
     grShutdownSound();
+    grShutdownState();
 }
 

@@ -32,6 +32,7 @@ extern int  ReRaceStart(void);
 extern int  ReRaceStop(void);
 extern int  ReRaceEnd(void);
 extern int  RePostRace(void);
+extern int  ReEventShutdown(void);
 
 #endif /* _RACEMAIN_H_ */ 
 

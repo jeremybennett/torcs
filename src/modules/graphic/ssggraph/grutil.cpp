@@ -234,6 +234,23 @@ grGetState(char *img)
     return NULL;
 }
 
+void
+grShutdownState(void)
+{
+    stlist	*curr;
+    stlist	*next;
+
+    curr = stateList;
+    while (curr != NULL) {
+	next = curr->next;
+	free(curr->name);
+	//curr->state->deRef(); // it's already deleted
+	free(curr);
+	curr = next;
+    }
+    stateList = NULL;
+}
+
 
 ssgState *
 grSsgLoadTexState(char *img)
@@ -329,10 +346,8 @@ grSsgEnvTexState(char *img)
     return (ssgState*)st;
 }
 
-
-
 ssgState *
- grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
+grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
 {
     char		buf[256];
     char		*s;
