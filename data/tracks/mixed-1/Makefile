@@ -17,7 +17,8 @@
 
 DATADIR   = tracks/dirt/mixed-1
 
-DATA = $(shell find * -maxdepth 0 -type f -print)
+DATA = background.png env1.png mixed-1.png mixed-1.xml shadow2.rgb mixed-1.acc readme.txt
+
 
 data-tracks-dirt_PKGFILES	= $(DATA)
 

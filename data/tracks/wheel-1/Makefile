@@ -18,11 +18,11 @@
 
 DATADIR   = tracks/road/wheel-1
 
-DATA      = wheel-1.xml background.png env.rgb wheel-1.ac wheel-1.png
+DATA      = wheel-1.xml background.png env.rgb wheel-1.ac wheel-1.png readme.txt
 
 data-tracks-road_PKGFILES	= $(DATA)
 
-data-tracks-road_PKGDIR	= $(DATADIR)
+data-tracks-road_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

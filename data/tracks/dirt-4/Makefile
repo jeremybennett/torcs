@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/dirt/dirt-4
 
-DATA      = dirt-4.xml background.png dirt-4.ac dirt-4.png
+DATA      = dirt-4.xml background.png dirt-4.ac dirt-4.png readme.txt
 
 data-tracks-dirt_PKGFILES	= $(DATA)
 

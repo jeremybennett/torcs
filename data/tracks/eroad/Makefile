@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/eroad
 
-DATA      = eroad.xml background.png eroad.ac eroad.png
+DATA      = eroad.xml background.png eroad.ac eroad.png readme.txt
 
 data-tracks-road_PKGFILES	= $(DATA)
 

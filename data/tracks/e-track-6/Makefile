@@ -18,11 +18,9 @@
 
 DATADIR   = tracks/road/e-track-6
 
-DATA = $(shell find * -maxdepth 0 -type f -print)
+DATA      = e-track-6.xml background.png e-track-6.acc e-track-6.png readme.txt
 
-DATA_PKG      = e-track-6.xml background.png e-track-6.acc e-track-6.png
-
-data-tracks-road_PKGFILES	= $(DATA_PKG)
+data-tracks-road_PKGFILES	= $(DATA)
 
 data-tracks-road_PKGDIR		= $(DATADIR)
 

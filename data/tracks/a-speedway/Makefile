@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/oval/a-speedway
 
-DATA      = a-speedway.xml background.png a-speedway.ac a-speedway.png
+DATA      = a-speedway.xml background.png a-speedway.ac a-speedway.png readme.txt
 
 data-tracks-oval_PKGFILES	= $(DATA)
 

@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/oval/michigan
 
-DATA      = michigan.xml background.png michigan.ac michigan.png
+DATA      = michigan.xml background.png michigan.ac michigan.png readme.txt
 
 data-tracks-oval_PKGFILES	= $(DATA)
 

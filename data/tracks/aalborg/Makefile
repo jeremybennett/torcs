@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/aalborg
 
-DATA      = aalborg.xml aalborg.ac aalborg.png
+DATA      = aalborg.xml aalborg.ac aalborg.png readme.txt
 
 data-tracks-road_PKGFILES	= $(DATA)
 
