@@ -3390,8 +3390,8 @@ fi
 
 
 ADDCFLAGS=""
-echo $ac_n "checking for ALPHA capabilities""... $ac_c" 1>&6
-echo "configure:3395: checking for ALPHA capabilities" >&5
+echo $ac_n "checking for OpenGL driver ALPHA capabilities""... $ac_c" 1>&6
+echo "configure:3395: checking for OpenGL driver ALPHA capabilities" >&5
 if test "$cross_compiling" = yes; then
   echo "$ac_t""yes" 1>&6
 
