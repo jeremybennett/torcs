@@ -270,6 +270,7 @@ typedef struct {
     int		gearNb;			/**< incl reverse and neutral */
     int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
     tdble	skid[4];		/**< skid intensity */
+    tdble	reaction[4];
     int		collision;
     t3Dd	normal;
     t3Dd	collpos;
@@ -292,6 +293,7 @@ typedef struct {
 #define _gear		priv.gear
 #define _debug		priv.debug
 #define _skid		priv.skid
+#define _reaction	priv.reaction
 #define _dammage	priv.dammage
 
 /** Info returned by driver during the race */
