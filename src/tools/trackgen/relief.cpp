@@ -37,12 +37,16 @@
 #include <GL/glut.h>
 
 #include <tgf.h>
+#include <track.h>
 #include "trackgen.h"
 #include "easymesh.h"
 
+#include "relief.h"
 
 tRingListHead	InteriorList;
 tRingListHead	ExteriorList;
+
+static tdble	GridStep;
 
 typedef struct 
 {
@@ -77,15 +81,19 @@ hookNode(char *s)
   Load a simple database
 */
 void
-LoadRelief(char *reliefFile)
+LoadRelief(void *TrackHandle, char *reliefFile)
 {
     GfRlstInit(&InteriorList);
     GfRlstInit(&ExteriorList);
     
+    GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
+
     ssgLoaderOptions *loaderopt = new ssgLoaderOptions();
  
     loaderopt->setCreateBranchCallback(hookNode);
 
+    printf("\nLoading relief file %s\n", reliefFile);
+    
     Root = ssgLoadAC(reliefFile, loaderopt);
 }
 
@@ -106,7 +114,6 @@ countRec(ssgEntity *e, int *nb_vert, int *nb_seg)
 	}
     }
 }
-
 
 void
 CountRelief(int interior, int *nb_vert, int *nb_seg)
@@ -164,7 +171,7 @@ genRec(ssgEntity *e)
 		point[Nc].y = vtx[1];
 		point[Nc].z = vtx[2];
 		point[Nc].F = GridStep;
-		point[Nc].mark = 200000;
+		point[Nc].mark = 100000;
 		Nc++;
 	    }
 
@@ -175,7 +182,7 @@ genRec(ssgEntity *e)
 
 		segment[Fl].n0 = vv0 + sv;
 		segment[Fl].n1 = vv1 + sv;
-		segment[Fl].mark = 1;
+		segment[Fl].mark = 100000;
 		
 		Fl++;
 	    }

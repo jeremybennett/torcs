@@ -36,17 +36,10 @@
 #include <track.h>
 #include <robottools.h>
 
-#include "easymesh.h"
+#include "ac3d.h"
+#include "util.h"
 
 #include "trackgen.h"
-
-#define CFG_FILE	"tools/trackgen/trackgen.xml"
-
-tModList	*modlist = NULL;
-void		*cfg;
-
-tTrackItf	TrackItf;
-tTrack		*Track;
 
 typedef struct texElt
 {
@@ -73,6 +66,8 @@ static tDispElt		*DispList = (tDispElt*)NULL;
 static float		*trackvertices;
 static float		*tracktexcoord;
 static unsigned int	*trackindices;
+
+static tdble		TrackStep;
 
 static void
 initPits(tTrackPitInfo *pits)
@@ -152,34 +147,11 @@ initPits(tTrackPitInfo *pits)
     }
 }
 
-#ifdef WIN32
-#define INSTBASE "./"
-#endif
-
 int
-LoadTrackModule(void)
-{
-    char	*trackdllname;
-    char	buf[256];
-
-    sprintf(buf, "%s/%s", INSTBASE, CFG_FILE);
-    cfg = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-
-    trackdllname = GfParmGetStr(cfg, "Modules", "track", "track");
-    sprintf(buf, "%s/modules/track/%s.%s", INSTBASE, trackdllname, DLLEXT);
-    if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
-	GfOut("Failed to find the track module %s", buf);
-	return -1;
-    }
-    return modlist->modInfo->fctInit(modlist->modInfo->index, &TrackItf);
-}
-
-int
-InitScene(tTrack *track)
+InitScene(tTrack *Track, void *TrackHandle)
 {
 
     int 		i, j;
-    void		*hndl;
     tTrackSeg 		*seg;
     tTrackSeg 		*mseg;
     int 		nbvert;
@@ -191,7 +163,6 @@ InitScene(tTrack *track)
     tdble		x, y, z;
     tdble		x2, y2, z2;
     tdble		x3, y3, z3;
-    int			nbSets;
     int			startNeeded;
 
     tDispElt		*aDispElt = NULL;
@@ -213,10 +184,10 @@ InitScene(tTrack *track)
     static int		GenTexId = 1;
     tdble		runninglentgh;
 
-    tdble		tmWidth  = track->graphic.turnMarksInfo.width;
-    tdble		tmHeight = track->graphic.turnMarksInfo.height;
-    tdble		tmVSpace = track->graphic.turnMarksInfo.vSpace;
-    tdble		tmHSpace = track->graphic.turnMarksInfo.hSpace;
+    tdble		tmWidth  = Track->graphic.turnMarksInfo.width;
+    tdble		tmHeight = Track->graphic.turnMarksInfo.height;
+    tdble		tmVSpace = Track->graphic.turnMarksInfo.vSpace;
+    tdble		tmHSpace = Track->graphic.turnMarksInfo.hSpace;
     char		buf[256];
     int			uniqueId = 0;
     int			hasBorder;
@@ -224,21 +195,21 @@ InitScene(tTrack *track)
 #define	LG_STEP_MAX	50.0
 
     printf("++++++++++++ Track ++++++++++++\n");
-    printf("name      = %s\n", track->name);
-    printf("author    = %s\n", track->author);
-    printf("filename  = %s\n", track->filename);
-    printf("nseg      = %d\n", track->nseg);
-    printf("version   = %d\n", track->version);
-    printf("length    = %f\n", track->length);
-    printf("width     = %f\n", track->width);
-    printf("XSize     = %f\n", track->max.x);
-    printf("YSize     = %f\n", track->max.y);
-    printf("ZSize     = %f\n", track->max.z);
+    printf("name      = %s\n", Track->name);
+    printf("author    = %s\n", Track->author);
+    printf("filename  = %s\n", Track->filename);
+    printf("nseg      = %d\n", Track->nseg);
+    printf("version   = %d\n", Track->version);
+    printf("length    = %f\n", Track->length);
+    printf("width     = %f\n", Track->width);
+    printf("XSize     = %f\n", Track->max.x);
+    printf("YSize     = %f\n", Track->max.y);
+    printf("ZSize     = %f\n", Track->max.z);
 
-    tdble delatx = track->seg->next->vertex[TR_SL].x - track->seg->vertex[TR_EL].x;
-    tdble delaty = track->seg->next->vertex[TR_SL].y - track->seg->vertex[TR_EL].y;
-    tdble delatz = track->seg->next->vertex[TR_SL].z - track->seg->vertex[TR_EL].z;
-    tdble delata = track->seg->next->angle[TR_ZE] - track->seg->angle[TR_ZS];
+    tdble delatx = Track->seg->next->vertex[TR_SL].x - Track->seg->vertex[TR_EL].x;
+    tdble delaty = Track->seg->next->vertex[TR_SL].y - Track->seg->vertex[TR_EL].y;
+    tdble delatz = Track->seg->next->vertex[TR_SL].z - Track->seg->vertex[TR_EL].z;
+    tdble delata = Track->seg->next->angle[TR_ZE] - Track->seg->angle[TR_ZS];
     
     printf("Delta X   = %f\n", delatx);
     printf("Delta Y   = %f\n", delaty);
@@ -249,11 +220,10 @@ InitScene(tTrack *track)
 /* 	exit(0); */
     }
 
-    width = track->width;
+    width = Track->width;
     wi2 = width / 2.0;
 
     trkpos.type = TR_LPOS_MAIN;
-    hndl = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 #define SETTEXTURE(texname, mipmap) { 											\
 	int found = 0;													\
@@ -322,28 +292,32 @@ InitScene(tTrack *track)
 	char *texname;									\
 	int  mipmap;									\
 	static char path_[256];								\
-	sprintf(path_, "%s/%s", TRK_SECT_SURFACES, mat);		\
-	texname = GfParmGetStr(hndl, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");		\
-	mipmap = (int)GfParmGetNum(hndl, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);	\
+	if (Track->version < 4) {							\
+	    sprintf(path_, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);		\
+        } else {									\
+	    sprintf(path_, "%s/%s", TRK_SECT_SURFACES, mat);				\
+        }										\
+	texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");		\
+	mipmap = (int)GfParmGetNum(TrackHandle, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);	\
 	SETTEXTURE(texname, mipmap);							\
 	if ((curTexId != prevTexId) || (startNeeded)) {					\
 	    char *textype;								\
-	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXTYPE, "continuous"); 	\
+	    textype = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTYPE, "continuous");		\
 	    if (strcmp(textype, "continuous") == 0)					\
 		curTexType = 1;								\
 	    else									\
 		curTexType = 0;								\
-	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXLINK, TRK_VAL_YES);		\
+	    textype = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXLINK, TRK_VAL_YES);		\
 	    if (strcmp(textype, TRK_VAL_YES) == 0)					\
 		curTexLink = 1;								\
 	    else									\
 		curTexLink = 0;								\
-	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXSTARTBOUNDARY, TRK_VAL_NO);	\
+	    textype = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXSTARTBOUNDARY, TRK_VAL_NO);	\
 	    if (strcmp(textype, TRK_VAL_YES) == 0)					\
 		curTexOffset = -off;							\
 	    else									\
 		curTexOffset = 0;							\
-	    curTexSize = GfParmGetNum(hndl, path_, TRK_ATT_TEXSIZE, (char*)NULL, 20.0); \
+	    curTexSize = GfParmGetNum(TrackHandle, path_, TRK_ATT_TEXSIZE, (char*)NULL, 20.0);	\
 	    prevTexId = curTexId;							\
 	    NEWDISPLIST(1, name, id);							\
 	}										\
@@ -392,16 +366,9 @@ InitScene(tTrack *track)
     } while (0)
 
 
-/*     cggrWrldX = (int)(track->max.x - track->min.x + 1); */
-/*     cggrWrldY = (int)(track->max.y - track->min.y + 1); */
-/*     cggrWrldZ = (int)(track->max.z - track->min.z + 1); */
-/*     cggrWrldMaxSize = (int)(MAX(MAX(cggrWrldX, cggrWrldY), cggrWrldZ)); */
-
-    nbSets = 5;
-    
     /* Count the number of vertice to allocate */
     nbvert = 0;
-    for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
+    for (i = 0, seg = Track->seg->next; i < Track->nseg; i++, seg = seg->next) {
 	    nbvert++;
 	switch (seg->type) {
 	case TR_STR:
@@ -417,11 +384,10 @@ InitScene(tTrack *track)
     }
 
     nbvert++;
-    nbvert *= 15;
+    nbvert *= 30;
     nbvert+=58; /* start bridge */
-    nbvert+=12 + 10 * track->pits.driversPitsNb;
+    nbvert+=12 + 10 * Track->pits.driversPitsNb;
     nbvert+=1000; /* safety margin */
-    nbvert *= 2; /* safety margin */
     printf("=== Indices Array Size   = %d\n", nbvert);
     printf("=== Vertex Array Size    = %d\n", nbvert * 3);
     printf("=== Tex Coord Array Size = %d\n", nbvert * 2);
@@ -436,7 +402,7 @@ InitScene(tTrack *track)
     texLen = 0;
     startNeeded = 1;
     runninglentgh = 0;
-    for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
+    for (i = 0, seg = Track->seg->next; i < Track->nseg; i++, seg = seg->next) {
 	uniqueId++;
 	CHECKDISPLIST(seg->surface->material, "tkMn", uniqueId, seg->lgfromstart);
 	if (!curTexLink) {
@@ -601,7 +567,7 @@ InitScene(tTrack *track)
 	runninglentgh = 0;
 	uniqueId++;
 	NEWDISPLIST(0, "tkRtBr", uniqueId);
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->rside != NULL) && (mseg->rside->type2 == TR_RBORDER)) {
 		seg = mseg->rside;
 		uniqueId++;
@@ -960,7 +926,7 @@ InitScene(tTrack *track)
     hasBorder = 0;
     uniqueId++;
     NEWDISPLIST(0, "tkRtSd", uniqueId);
-    for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+    for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	if ((mseg->rside != NULL) &&
 	    ((mseg->rside->type2 == TR_RSIDE) || (mseg->rside->rside != NULL))) {
 	    seg = mseg->rside;
@@ -1162,7 +1128,7 @@ InitScene(tTrack *track)
 	runninglentgh = 0;
 	uniqueId++;
 	NEWDISPLIST(0, "tkLtBr", uniqueId);
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->lside != NULL) && (mseg->lside->type2 == TR_LBORDER)) {
 		seg = mseg->lside;
 		uniqueId++;
@@ -1516,7 +1482,7 @@ InitScene(tTrack *track)
     hasBorder = 0;
     uniqueId++;
     NEWDISPLIST(0, "tkLtSd", uniqueId);
-    for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+    for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	if ((mseg->lside != NULL) &&
 	    ((mseg->lside->type2 == TR_LSIDE) || (mseg->lside->lside != NULL))) {
 	    seg = mseg->lside;
@@ -1717,7 +1683,7 @@ InitScene(tTrack *track)
 	runninglentgh = 0;
 	uniqueId++;
 	NEWDISPLIST(0, "BrRt", uniqueId);
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->rside != NULL) && (mseg->rside->raceInfo & TR_PIT)) {
 		startNeeded = 1;
 		runninglentgh = 0;
@@ -1976,7 +1942,7 @@ InitScene(tTrack *track)
 	runninglentgh = 0;
 	uniqueId++;
 	NEWDISPLIST(0, "BrLt", uniqueId);
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->lside != NULL) && (mseg->lside->raceInfo & TR_PIT)) {
 		runninglentgh = 0;
 		startNeeded = 1;
@@ -2241,7 +2207,7 @@ InitScene(tTrack *track)
 
 
     /* Turn Marks */
-    for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
+    for (i = 0, seg = Track->seg->next; i < Track->nseg; i++, seg = seg->next) {
 	if (seg->ext) {
 	    t3Dd	normvec;
 	    int 	nbMarks = seg->ext->nbMarks;
@@ -2255,9 +2221,9 @@ InitScene(tTrack *track)
 		/* find the segment */
 		tdble lgfs = seg->lgfromstart - (tdble)marks[j];
 		if (lgfs < 0) {
-		    lgfs += track->length;
+		    lgfs += Track->length;
 		}
-		for (k = 0, mseg = track->seg->next; k < track->nseg; k++, mseg = mseg->next) {
+		for (k = 0, mseg = Track->seg->next; k < Track->nseg; k++, mseg = mseg->next) {
 		    if ((lgfs >= mseg->lgfromstart) && (lgfs < (mseg->lgfromstart + mseg->length))) {
 			break;
 		    }
@@ -2265,7 +2231,7 @@ InitScene(tTrack *track)
 		
 		if (seg->type == TR_RGT) {
 		    sprintf(buf, "turn%dR", marks[j]);
-		    trkpos.toRight = track->width + tmHSpace + tmWidth;
+		    trkpos.toRight = Track->width + tmHSpace + tmWidth;
 		} else {
 		    sprintf(buf, "turn%dL", marks[j]);
 		    trkpos.toRight = -tmHSpace;
@@ -2362,7 +2328,7 @@ InitScene(tTrack *track)
 #define BR_HEIGHT_2	6.0
 #define BR_WIDTH_0	2.0
 #define BR_WIDTH_1	2.0
-    mseg = track->seg->next;
+    mseg = Track->seg->next;
     if (mseg->rside) {
 	seg = mseg->rside;
 	if (seg->rside) {
@@ -2853,7 +2819,7 @@ InitScene(tTrack *track)
 #define PIT_DEEP	10.0
 #define PIT_TOP		0.2
 
-    pits = &(track->pits);
+    pits = &(Track->pits);
     initPits(pits);
     
     if (pits->type == TR_PIT_ON_TRACK_SIDE) {
@@ -3113,41 +3079,12 @@ InitScene(tTrack *track)
     return 0;
 }
 
-int NbMainTrackObjects;
-FILE *save_fd;
-
-static int
-StartOutputFile(char *filename)
-{
-    save_fd = fopen(filename, "wa");
-
-    if (save_fd == NULL) {
-	    GfOut("Failed to open '%s' for writing", filename);
-	    return -1;
-    }
-
-    fprintf(save_fd, "AC3Db\n");
-    fprintf(save_fd, "MATERIAL \"\" rgb 0.2 0.2 0.2  amb 0.8 0.8 0.8  emis 0.4 0.4 0.4  spec 0.9 0.9 0.9  shi 50  trans 0\n");
-    
-    fprintf(save_fd, "OBJECT world\n");
-    fprintf(save_fd, "kids 1\n");
-    fprintf(save_fd, "OBJECT group\n");
-    fprintf(save_fd, "name \"track\"\n");
-    fprintf(save_fd, "kids %d\n", NbMainTrackObjects);
-
-    return 0;
-}
-
-void
-EndOutputFile(void)
-{
-    fclose(save_fd);
-}
 
 
-void
+int
 CountMainTrack(void)
 {
+    int		NbMainTrackObjects;
     tDispElt	*aDispElt;
 
     NbMainTrackObjects = 0;
@@ -3160,68 +3097,69 @@ CountMainTrack(void)
 	    }
 	} while (aDispElt != DispList);
     }
+    return NbMainTrackObjects;
 }
 
 
 
 static void
-saveObject(int nb, int start, char *texture, char *name, int surfType)
+saveObject(FILE *curFd, int nb, int start, char *texture, char *name, int surfType)
 {
     int	i, index;
     
-    fprintf(save_fd, "OBJECT poly\n");
-    fprintf(save_fd, "name \"%s\"\n", name);    
-    fprintf(save_fd, "texture \"%s\"\n", texture);
-    fprintf(save_fd, "numvert %d\n", nb);
+    fprintf(curFd, "OBJECT poly\n");
+    fprintf(curFd, "name \"%s\"\n", name);    
+    fprintf(curFd, "texture \"%s\"\n", texture);
+    fprintf(curFd, "numvert %d\n", nb);
 
     for (i = 0; i < nb; i++) {
 	index = 3 * (start + i);
-	fprintf(save_fd, "%f %f %f\n", trackvertices[index], trackvertices[index+2], -trackvertices[index+1]);
+	fprintf(curFd, "%f %f %f\n", trackvertices[index], trackvertices[index+2], -trackvertices[index+1]);
     }
 
-    fprintf(save_fd, "numsurf %d\n", nb - 2);
+    fprintf(curFd, "numsurf %d\n", nb - 2);
     if (surfType) {
-	fprintf(save_fd, "SURF 0x10\n");
+	fprintf(curFd, "SURF 0x10\n");
     } else {
-	fprintf(save_fd, "SURF 0x30\n");
+	fprintf(curFd, "SURF 0x30\n");
     }
-    fprintf(save_fd, "mat 0\n");
-    fprintf(save_fd, "refs 3\n");
-    fprintf(save_fd, "%d %f %f\n", 0, tracktexcoord[2*start], tracktexcoord[2*start+1]);
-    fprintf(save_fd, "%d %f %f\n", 1, tracktexcoord[2*(start+1)], tracktexcoord[2*(start+1)+1]);
-    fprintf(save_fd, "%d %f %f\n", 2, tracktexcoord[2*(start+2)], tracktexcoord[2*(start+2)+1]);
+    fprintf(curFd, "mat 0\n");
+    fprintf(curFd, "refs 3\n");
+    fprintf(curFd, "%d %f %f\n", 0, tracktexcoord[2*start], tracktexcoord[2*start+1]);
+    fprintf(curFd, "%d %f %f\n", 1, tracktexcoord[2*(start+1)], tracktexcoord[2*(start+1)+1]);
+    fprintf(curFd, "%d %f %f\n", 2, tracktexcoord[2*(start+2)], tracktexcoord[2*(start+2)+1]);
    
     /* triangle strip conversion to triangles */
     for (i = 2; i < nb-1; i++) {
 	if (surfType) {
-	    fprintf(save_fd, "SURF 0x10\n");
+	    fprintf(curFd, "SURF 0x10\n");
 	} else {
-	    fprintf(save_fd, "SURF 0x30\n");
+	    fprintf(curFd, "SURF 0x30\n");
 	}
-	fprintf(save_fd, "mat 0\n");
-	fprintf(save_fd, "refs 3\n");
+	fprintf(curFd, "mat 0\n");
+	fprintf(curFd, "refs 3\n");
 	if ((i % 2) == 0) {
 	    index = i;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	    index = i - 1;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	    index = i + 1;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	} else {
 	    index = i - 1;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	    index = i;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	    index = i + 1;
-	    fprintf(save_fd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
+	    fprintf(curFd, "%d %f %f\n", index, tracktexcoord[2*(start+index)], tracktexcoord[2*(start+index)+1]);
 	}
     }
-    fprintf(save_fd, "kids 0\n");
+    fprintf(curFd, "kids 0\n");
 }
 
 
 static void
-SaveMainTrack(void)
+SaveMainTrack(FILE *curFd)
 {
     tDispElt	*aDispElt;
     char	buf[256];
@@ -3232,520 +3170,40 @@ SaveMainTrack(void)
 	    aDispElt = aDispElt->next;
 	    if (aDispElt->nb != 0) {
 		sprintf(buf, "%s %d", aDispElt->name, aDispElt->id);
-		saveObject(aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
+		saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
 	    }
 	} while (aDispElt != DispList);
     }
 }
 
-/** Generate the terrain mesh.
-    @param	rightside	1 if use the right side
-				0 if use the left side
-    @param	reverse		1 if reverse the points order
-				0 if keep the track order
-    @param	exterior	1 if it is the exterior
-				0 if it is the interior
-    @param	
-    @return	None.
+
+/** Generate the track AC3D file(s).
+    @param	Track	track structure
+    @param	TrackHandle	handle on the track description
+    @param	outFile	output file name for track only
+    @param	AllFd	fd of the merged file
+    @return	none
 */
-static void
-GenerateMesh(tTrack *track, int rightside, int reverse, int exterior)
-{
-    int		startNeeded;
-    int		i, j, nbvert;
-    tdble	ts, step, anz;
-    char	buf[256];
-    tTrackSeg 	*seg;
-    tTrackSeg 	*mseg;
-    tTrkLocPos 	trkpos;
-    tdble	x, y;
-    tdble 	radiusr, radiusl;
-    struct nod	*point2;
-    int		nb_relief_vtx, nb_relief_seg;
-
-    CountRelief(1 - exterior, &nb_relief_vtx, &nb_relief_seg);
-    
-    /* Estimation of the number of points */
-    point = (struct nod*)calloc((int)(track->length) + nb_relief_vtx, sizeof(struct nod));
-    
-    if (rightside) {
-	nbvert = 0;
-
-	if (exterior && !reverse) {
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	}
-
-	/* Right side */
-	startNeeded = 1;
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
-	    if (mseg->rside != NULL) {
-		seg = mseg->rside;
-		if (seg->rside != NULL) {
-		    seg = seg->rside;
-		}
-	    } else {
-		seg = mseg;
-	    }
-	    if (startNeeded) {
-		point[nbvert].x = seg->vertex[TR_SR].x;
-		point[nbvert].y = seg->vertex[TR_SR].y;
-		point[nbvert].z = seg->vertex[TR_SR].z;
-		point[nbvert].F = GridStep;
-		point[nbvert].mark = i+1;
-		nbvert++;
-	    }
-	    switch (seg->type) {
-	    case TR_STR:
-		ts = LMAX;
-		trkpos.seg = seg;
-		while (ts < seg->length) {
-		    trkpos.toStart = ts;
-		    trkpos.toRight = 0;
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += LMAX;
-		}
-		break;
-	    case TR_LFT:
-		step = LMAX / (mseg->radiusr);
-		anz = seg->angle[TR_ZS] + step;
-		ts = step;
-		radiusr = seg->radiusr;
-		trkpos.seg = seg;
-		trkpos.toRight = 0;
-		while (anz < seg->angle[TR_ZE]) {
-		    trkpos.toStart = ts;
-		    /* right */
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += step;
-		    anz += step;
-		}
-		break;
-	    case TR_RGT:
-		step = LMAX / (mseg->radiusl);
-		anz = seg->angle[TR_ZS] - step;
-		ts = step;
-		radiusr = seg->radiusr;
-		trkpos.seg = seg;
-		trkpos.toRight = 0;
-		while (anz > seg->angle[TR_ZE]) {
-		    trkpos.toStart = ts;
-		    /* right */
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += step;
-		    anz -= step;
-		}
-		break;
-	    }
-	    if (i != (track->nseg - 1)) {
-		point[nbvert].x = seg->vertex[TR_ER].x;
-		point[nbvert].y = seg->vertex[TR_ER].y;
-		point[nbvert].z = seg->vertex[TR_ER].z;
-		point[nbvert].F = GridStep;
-		point[nbvert].mark = i+1;
-		nbvert++;
-		startNeeded = 0;
-	    }
-	}
-
-	if (exterior && reverse) {
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	}
-
-    } else {
-	nbvert = 0;
-
-	if (exterior && !reverse) {
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	}
-
-	/* Left Side */
-	startNeeded = 1;
-	for (i = 0, mseg = track->seg->next; i < track->nseg; i++, mseg = mseg->next) {
-	    if (mseg->lside) {
-		seg = mseg->lside;
-		if (seg->lside) {
-		    seg = seg->lside;
-		}
-	    } else {
-		seg = mseg;
-	    }
-	    if (startNeeded) {
-		point[nbvert].x = seg->vertex[TR_SL].x;
-		point[nbvert].y = seg->vertex[TR_SL].y;
-		point[nbvert].z = seg->vertex[TR_SL].z;
-		point[nbvert].F = GridStep;
-		point[nbvert].mark = i+1;
-		nbvert++;
-	    }
-	    
-	    switch (seg->type) {
-	    case TR_STR:
-		ts = LMAX;
-		trkpos.seg = seg;
-		while (ts < seg->length) {
-		    trkpos.toStart = ts;
-		    trkpos.toRight = RtTrackGetWidth(seg, ts);
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += LMAX;
-		}
-		break;
-	    case TR_LFT:
-		step = LMAX / (mseg->radiusr);
-		anz = seg->angle[TR_ZS] + step;
-		ts = step;
-		radiusl = seg->radiusl;
-		trkpos.seg = seg;
-		while (anz < seg->angle[TR_ZE]) {
-		    trkpos.toStart = ts;
-		    trkpos.toRight = RtTrackGetWidth(seg, ts);
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    /* left */
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += step;
-		    anz += step;
-		}
-		break;
-	    case TR_RGT:
-		step = LMAX / (mseg->radiusl);
-		anz = seg->angle[TR_ZS] - step;
-		ts = step;
-		radiusl = seg->radiusl;
-		trkpos.seg = seg;
-		while (anz > seg->angle[TR_ZE]) {
-		    trkpos.toStart = ts;
-		    trkpos.toRight = RtTrackGetWidth(seg, ts);
-		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
-		    /* left */
-		    point[nbvert].x = x;
-		    point[nbvert].y = y;
-		    point[nbvert].z = RtTrackHeightL(&trkpos);
-		    point[nbvert].F = GridStep;
-		    point[nbvert].mark = i+1;
-		    nbvert++;
-		    ts += step;
-		    anz -= step;
-		}
-		break;
-	    }
-	    if (i != (track->nseg - 1)) {
-		point[nbvert].x = seg->vertex[TR_EL].x;
-		point[nbvert].y = seg->vertex[TR_EL].y;
-		point[nbvert].z = seg->vertex[TR_EL].z;
-		point[nbvert].F = GridStep;
-		point[nbvert].mark = i+1;
-		nbvert++;
-		startNeeded = 0;
-	    }
-	}
-
-	if (exterior && reverse) {
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = track->max.y + Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = track->max.x + Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	    point[nbvert].x = -Margin;
-	    point[nbvert].y = -Margin;
-	    point[nbvert].z = ExtHeight;
-	    point[nbvert].F = GridStep;
-	    point[nbvert].mark = 100000;
-	    nbvert++;
-	}
-    }
-
-    
-    Nc = nbvert;
-    segment = (struct seg *)calloc(Nc + 1 + nb_relief_seg, sizeof(struct seg));
-    segment[Nc].n0 = -1;
-    segment[Nc].n1 = -1;
-
-    if (reverse){
-	    
-	/* reverse order */
-	point2 = (struct nod*)calloc(Nc + 1 + nb_relief_vtx, sizeof(struct nod));
-	for (i = 0; i < Nc; i++) {
-	    memcpy(&(point2[i]), &(point[Nc-i-1]), sizeof(struct nod));
-	}
-	free(point);
-	point = point2;
-    }
-    if (exterior) {
-	segment[0].n0 = 0;
-	segment[0].n1 = 1;
-	segment[0].mark = 1;
-	segment[1].n0 = 1;
-	segment[1].n1 = 2;
-	segment[1].mark = 1;
-	segment[2].n0 = 2;
-	segment[2].n1 = 3;
-	segment[2].mark = 1;
-	segment[3].n0 = 3;
-	segment[3].n1 = 0;
-	segment[3].mark = 1;
-
-	i = 0;
-	j = 0;
-	do {
-	    segment[j+4].n0 = i+4;
-	    i = (i + 1) % (Nc - 4);
-	    segment[j+4].n1 = i+4;
-	    segment[j+4].mark = 2;
-	    j++;
-	} while (i != 0);
-	
-    } else {
-	i = 0;
-	j = 0;
-	do {
-	    segment[j].n0 = i;
-	    i = (i + 1) % Nc;
-	    segment[j].n1 = i;
-	    segment[j].mark = 1;
-	    j++;
-	} while (i != 0);
-    }
-    sprintf(buf, "%s", OutputFileName);
-    if (exterior) {
-	char *s;
-	s = strrchr(buf, '.');
-	sprintf(s, "_ext.ac");
-
-	Fl = Nc;
-	GenRelief(0);
-    } else {
-	char *s;
-	s = strrchr(buf, '.');
-	sprintf(s, "_in.ac");
-
-	Fl = Nc;
-	GenRelief(1);
-    }
-    GfOut("Output filename: %s", buf);
-    generate_mesh(buf);
-}
-
-int
-GetFilename(char *filename, char *filepath, char *buf)
-{
-    char	*c1, *c2;
-    int		found = 0;
-    int		lg;
-    
-    if (filepath) {
-	c1 = filepath;
-	c2 = c1;
-	while ((!found) && (c2 != NULL)) {
-	    c2 = strchr(c1, ';');
-	    if (c2 == NULL) {
-		sprintf(buf, "%s/%s", c1, filename);
-	    } else {
-		lg = c2 - c1;
-		strncpy(buf, c1, lg);
-		buf[lg] = '/';
-		strcpy(buf + lg + 1, filename);
-	    }
-	    if (ulFileExists(buf)) {
-		found = 1;
-	    }
-	    c1 = c2 + 1;
-	}
-    } else {
-	strcpy(buf, filename);
-	if (ulFileExists(buf)) {
-	    found = 1;
-	}
-    }
-    if (!found) {
-	printf("File %s not found\n", filename);
-	printf("File Path was %s\n", filepath);
-	return 0;
-    }
-
-    return 1;
-}
-
-
 void
-GenerateTrack(char *trackname)
+GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd)
 {
-    tTrack	*track;
-    void	*hndl;
-    char	outfile[256];
-    char	reliefFile[256];
-    char	buf[256];
-
-    if (LoadTrackModule()) {
-	GfOut("Track Module Loading Failure.");
-	return;
-    }
-    track = TrackItf.trkBuildEx(trackname);
-
-    hndl = GfParmReadFile(trackname, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-
-    OutputFileName = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, NULL);
-    if (OutputFileName == 0) {
-	GfOut("Missing \"%s\" parameter in section \"%s\" of trackfile", TRK_ATT_3DDESC, TRK_SECT_GRAPH);
-	return;
-    }
-    sprintf(outfile, "tracks/%s/%s/%s", track->category, track->internalname, OutputFileName);
-    GfOut("Output file: %s", outfile);
-    OutputFileName = strdup(outfile);
+    FILE *curFd;
     
-    TrackStep = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
+    TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
     GfOut("Track step: %.2f", TrackStep);
-    Margin    = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
-    GridStep  = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
-    ExtHeight = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, ExtHeight);
-    GfOut("Border margin: %.2f    step: %.2f    height: %.2f", Margin, GridStep, ExtHeight);
-    
-    if (strncmp(TRK_VAL_CLOCK,
-		GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_ORIENT, TRK_VAL_CLOCK),
-		strlen(TRK_VAL_CLOCK)) == 0) {
-	Orientation = CLOCKWISE;
-	GfOut("Orientation: clockwise");
-    } else {
-	Orientation = ANTICLOCKWISE;
-	GfOut("Orientation: counter-clockwise");
-    }
 
-    ReliefFileName = GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
-    if (ReliefFileName) {
-	sprintf(buf, "tracks/%s/%s;.", track->category, track->internalname);
-	if (GetFilename(ReliefFileName, buf, reliefFile)) {
-	    GfOut("Relief file: %s", reliefFile);
-	    LoadRelief(reliefFile);
-	}
+    InitScene(Track, TrackHandle);
+
+    if (outFile) {
+	curFd = Ac3dOpen(outFile, 1);
+	Ac3dGroup(curFd, "track", CountMainTrack());
+	SaveMainTrack(curFd);
+	Ac3dClose(curFd);
     }
     
-	
-    InitScene(track);
-
-    CountMainTrack();
-    StartOutputFile(outfile);
-    SaveMainTrack();
-
-    EndOutputFile();
-
-    if (SceneDraw) {
-	if (Orientation == CLOCKWISE) {
-	    GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
-	    GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
-	} else {
-	    GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
-	    GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
-	}
+    if (AllFd) {
+	Ac3dGroup(AllFd, "track", CountMainTrack());
+	SaveMainTrack(AllFd);
     }
+    
 }
-
-

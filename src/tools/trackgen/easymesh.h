@@ -55,7 +55,7 @@ struct seg
 
 extern struct seg *segment;
 
-extern void generate_mesh(char *name);
+extern void GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd);
 
 extern int Nc;
 extern int Fl;

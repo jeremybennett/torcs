@@ -26,24 +26,16 @@
 #ifndef _TRACKGEN_H_
 #define _TRACKGEN_H_
 
-extern void GenerateTrack(char *trackname);
-
-extern int	Orientation;
-extern float	GridStep;
-extern float	TrackStep;
-extern float	Margin;
-extern float	ExtHeight;
-extern char	*OutputFileName;
-extern char	*ReliefFileName;
-extern int 	SceneDraw;
-
-extern void	LoadRelief(char *reliefFile);
-extern void	GenRelief(int interior);
-extern void	CountRelief(int interior, int *nb_vert, int *nb_seg);
-
-
 #define CLOCKWISE	0
 #define ANTICLOCKWISE	1
+
+#define CFG_FILE	"tools/trackgen/trackgen.xml"
+
+
+extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd);
+
+extern char	*OutputFileName;
+
 
 #endif /* _TRACKGEN_H_ */ 
 

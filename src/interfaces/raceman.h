@@ -95,6 +95,7 @@ typedef struct
 #define RM_ATTR_MAX_DMG		"maximum dammage"
 #define RM_ATTR_DISTANCE	"distance"
 #define RM_ATTR_LAPS		"laps"
+#define RM_ATTR_POLE		"pole position side"
 #endif /* _RACEMANV1_H_ */ 
 
 

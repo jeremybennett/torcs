@@ -37,7 +37,6 @@
 #include "dmalloc.h"
 #endif
 
-
 /*
  * Function
  *	linuxModLoad
@@ -184,16 +183,16 @@ linuxModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 		dlclose(handle);
 	    } else {
 		dlclose(handle);
-		GfTrace1("linuxModInfo: Module: %s not loaded\n", dname);
+		GfTrace("linuxModInfo: Module: %s not loaded\n", dname);
 		return -1;
 	    }
 	} else {
-	    GfTrace1("linuxModInfo: ...  %s\n", dlerror());
+	    GfTrace("linuxModInfo: ...  %s\n", dlerror());
 	    dlclose(handle);
 	    return -1;
 	}
     } else {
-	GfTrace1("linuxModInfo: ...  %s\n", dlerror());
+	GfTrace("linuxModInfo: ...  %s\n", dlerror());
 	return -1;
     }
     
@@ -280,16 +279,16 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 			    curMod = (tModList*)calloc(1, sizeof(tModList));
 			} else {
 			    dlclose(handle);
-			    GfTrace1("linuxModLoadDir: Module: %s not retained\n", dname);
+			    GfTrace("linuxModLoadDir: Module: %s not retained\n", dname);
 			}
 		    } else {
-			GfTrace1("linuxModLoadDir: ...  %s [1]\n", dlerror());
+			GfTrace("linuxModLoadDir: ...  %s [1]\n", dlerror());
 			dlclose(handle);
 			(void) closedir (dp);
 			return -1;
 		    }
 		} else {
-		    GfTrace1("linuxModLoadDir: ...  %s [2]\n", dlerror());
+		    GfTrace("linuxModLoadDir: ...  %s [2]\n", dlerror());
 		    (void) closedir (dp);
 		    return -1;
 		}
@@ -297,7 +296,7 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 	}
 	(void) closedir (dp);
     } else {
-	GfTrace1("linuxModLoadDir: ... Couldn't open the directory %s\n", dir);
+	GfTrace("linuxModLoadDir: ... Couldn't open the directory %s\n", dir);
 	return -1;
     }
     
@@ -399,20 +398,20 @@ linuxModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 			    curMod = (tModList*)calloc(1, sizeof(tModList));
 			} else {
 			    dlclose(handle);
-			    GfTrace1("linuxModInfoDir: Module: %s not retained\n", dname);
+			    GfTrace("linuxModInfoDir: Module: %s not retained\n", dname);
 			}
 		    } else {
-			GfTrace1("linuxModInfoDir: ...  %s [1]\n", dlerror());
+			GfTrace("linuxModInfoDir: ...  %s [1]\n", dlerror());
 			dlclose(handle);
 		    }
 		} else {
-		    GfTrace1("linuxModInfoDir: ...  %s [2]\n", dlerror());
+		    GfTrace("linuxModInfoDir: ...  %s [2]\n", dlerror());
 		}
 	    }
 	}
 	(void) closedir (dp);
     } else {
-	GfTrace1("linuxModInfoDir: ... Couldn't open the directory %s.\n", dir);
+	GfTrace("linuxModInfoDir: ... Couldn't open the directory %s.\n", dir);
 	return -1;
     }
     

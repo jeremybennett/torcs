@@ -72,11 +72,14 @@
 #define TRK_ATT_TSTEP	"track step"
 #define TRK_ATT_BMARGIN	"border margin"
 #define TRK_ATT_BSTEP	"border step"
-#define TRK_ATT_BHEIGHT	"border height"
 #define TRK_ATT_ORIENT	"orientation"
 #define TRK_VAL_CLOCK	"clockwise"
 #define TRK_VAL_CCLOCK	"counter-clockwise"
 #define TRK_ATT_RELIEF	"relief file"
+#define TRK_ATT_ELEVATION	"elevation map"
+#define TRK_ATT_ALT_MAX	"maximum altitude"
+#define TRK_ATT_ALT_MIN	"minimum altitude"
+#define TRK_ATT_GRPSZ   "group size"
 
 #define TRK_SECT_SURFACES "Surfaces"
 
@@ -508,6 +511,8 @@ typedef struct {
 #define TRK_ATT_RBW	"rborder width"
 #define TRK_ATT_RBH	"rborder height"
 #define TRK_ATT_RBSURF	"rborder surface"
+
+#define TRK_ATT_BHEIGHT	"border height"
 
 #define TRK_ATT_LBAS	"lbarrier style"
 #define TRK_ATT_LBAW	"lbarrier width"

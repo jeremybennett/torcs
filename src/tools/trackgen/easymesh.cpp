@@ -1,12 +1,13 @@
-/***************************************************************************
+/************************************************************************************************
 
     file                 : easymesh.cpp
-    author		 : Bojan NICENO (niceno@univ.trieste.it)
+    author		 : Bojan NICENO 
+    Original Location    : http://www-dinma.univ.trieste.it/~nirftc/research/easymesh/easymesh.html
     modified             : Eric Espie (eric.espie@torcs.org)
     copyright            : Bojan NICENO & Eric Espie (parts)
     version              : $Id$
 
- ***************************************************************************/
+ ************************************************************************************************/
 
 
 #include <math.h>
@@ -14,8 +15,26 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <tgf.h>
+#include <track.h>
+#include <robottools.h>
+
 #include "trackgen.h"
+#include "elevation.h"
 #include "easymesh.h"
+#include "objects.h"
+#include "relief.h"
+#include "ac3d.h"
+#include "easymesh.h"
+
+
+static tdble 	Margin;
+static tdble 	ExtHeight;
+static tdble 	GridStep;
+static tdble	TrackStep;
+static char	buf[1024];
+static char	*TexName;
+static tdble	TexSize;
 
 #ifndef max
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
@@ -94,7 +113,48 @@ int ugly;                       /* mora li biti globalna ??? */
 
 double xmax, xmin, ymax, ymin;
 
-char *MeshName;
+struct vtx
+{
+    double	x;
+    double	y;
+    double	z;
+};
+
+struct ref
+{
+    int		vtxidx;
+    double	u;
+    double	v;
+};
+
+
+struct surf
+{
+    struct ref	ref[3];
+};
+
+
+struct group
+{
+    int		nbvtx;
+    int		maxvtx;
+    struct vtx	*vertices;
+    
+    int		nbsurf;
+    int		maxsurf;
+    struct surf	*surfaces;
+};
+
+#define SURF_INCR	100
+#define VTX_INCR	100
+
+static struct group	*Groups;
+static int		ActiveGoups;
+static float		GroupSize;
+static float		XGroupOffset;
+static float		YGroupOffset;
+static int		XGroupNb;
+static int		GroupNb;
 
 
 void swap_side(int s);
@@ -1592,22 +1652,78 @@ int load(void)
 }
 /*-load--------------------------------------------------------------------*/
 
-
-void
-draw_ac(char *ac_name)
+static int
+insert_node_in_group(struct nod *nod, struct group *group)
 {
-    FILE *ac_file;
+    int		i;
+
+    /* find if node is already present in this group */
+    for (i = 0; i < group->nbvtx; i++) {
+	if ((group->vertices[i].x == nod->x) &&
+	    (group->vertices[i].y == nod->y) &&
+	    (group->vertices[i].z == nod->z)) {
+	    return i;
+	}
+    }
+    /* insert new node */
+    if (group->nbvtx == group->maxvtx) {
+	group->maxvtx += VTX_INCR;
+	group->vertices = (struct vtx	*)realloc(group->vertices, group->maxvtx * sizeof (struct vtx));
+    }
+    group->vertices[group->nbvtx].x = nod->x;
+    group->vertices[group->nbvtx].y = nod->y;
+    group->vertices[group->nbvtx].z = nod->z;
+    group->nbvtx++;
+    return (group->nbvtx - 1);
+}
+
+static void
+insert_elem_in_group(struct ele *elem, struct nod *nods)
+{
+    int			grIdx;
+    double		xmean, ymean;
+    struct group	*curGrp;
+    struct surf		*curSurf;
+
+    xmean = (nods[elem->i].x + nods[elem->j].x + nods[elem->k].x) / 3.0;
+    ymean = (nods[elem->i].y + nods[elem->j].y + nods[elem->k].y) / 3.0;
+
+    grIdx = (int)((xmean - XGroupOffset) / GroupSize) + 
+	XGroupNb * (int)((ymean - YGroupOffset) / GroupSize);
+    
+    curGrp = &(Groups[grIdx]);
+    
+    /* insert the surface */
+    if (curGrp->nbsurf == curGrp->maxsurf) {
+	if (curGrp->nbsurf == 0) {
+	    ActiveGoups++;
+	}
+	curGrp->maxsurf += SURF_INCR;
+	curGrp->surfaces = (struct surf	*)realloc(curGrp->surfaces, curGrp->maxsurf * sizeof (struct surf));
+    }
+    curSurf = &(curGrp->surfaces[curGrp->nbsurf++]);
+
+    curSurf->ref[0].u = nods[elem->i].x / TexSize;
+    curSurf->ref[0].v = nods[elem->i].y / TexSize;
+    curSurf->ref[1].u = nods[elem->j].x / TexSize;
+    curSurf->ref[1].v = nods[elem->j].y / TexSize;
+    curSurf->ref[2].u = nods[elem->k].x / TexSize;
+    curSurf->ref[2].v = nods[elem->k].y / TexSize;
+    
+    curSurf->ref[0].vtxidx = insert_node_in_group(&(nods[elem->i]), curGrp);
+    curSurf->ref[1].vtxidx = insert_node_in_group(&(nods[elem->j]), curGrp);
+    curSurf->ref[2].vtxidx = insert_node_in_group(&(nods[elem->k]), curGrp);
+}
+
+static void
+groups(void)
+{
     int  e, s, n, r_Nn=0, r_Ns=0, r_Ne=0;
 
     struct nod *r_node;
     struct ele *r_elem;
     struct sid *r_side;
 
-    if ((ac_file = fopen(ac_name,"w")) == NULL) {
-	printf("A file '%s' cannot be opened for output ! \n\n", ac_name);
-	return;
-    }
- 
     r_node = (struct nod *)calloc(Nn, sizeof(struct nod));
     r_elem = (struct ele *)calloc(Ne, sizeof(struct ele));
     r_side = (struct sid *)calloc(Ns, sizeof(struct sid));
@@ -1621,7 +1737,11 @@ draw_ac(char *ac_name)
 	    r_Nn++;
 	    r_node[node[n].new_numb].x    = node[n].x;
 	    r_node[node[n].new_numb].y    = node[n].y;
-	    r_node[node[n].new_numb].z    = node[n].z;
+	    if ((node[n].mark == 0) || (node[n].mark == 100000)) {
+		r_node[node[n].new_numb].z = GetElevation(node[n].x, node[n].y, node[n].z);
+	    } else {
+		r_node[node[n].new_numb].z    = node[n].z;
+	    }
 	    r_node[node[n].new_numb].mark = node[n].mark;
 	}
     }
@@ -1683,54 +1803,60 @@ draw_ac(char *ac_name)
 	}
     }
 
-    fprintf(ac_file, "AC3Db\n");
-    fprintf(ac_file, "MATERIAL \"\" rgb 1 1 1  amb 1 1 1  emis 0 0 0  spec 0 0 0  shi 0  trans 0\n");
-    fprintf(ac_file, "OBJECT world\n");
-    fprintf(ac_file, "kids %d\n", r_Ne);
-
     for (e = 0; e < r_Ne; e++) {
+	insert_elem_in_group(&(r_elem[e]), r_node);
+    }
+}
+/*-groups--------------------------------------------------------------------*/
+
+
+static void
+draw_ac(FILE *ac_file, char *name)
+{
+    int			i, j, k;
+    struct group	*curGrp;
+
+    Ac3dGroup(ac_file, name, ActiveGoups);
+
+    for (i = 0; i < GroupNb; i++) {
+	curGrp = &(Groups[i]);
+	if (curGrp->nbsurf == 0) {
+	    continue;
+	}
+	
 	fprintf(ac_file, "OBJECT poly\n");
-	if (strstr(MeshName,"_ext.ac"))
-	  fprintf(ac_file, "name \"ext%d\"\n", e);
-	else
-	  if (strstr(MeshName,"_in.ac"))
-	    fprintf(ac_file, "name \"int%d\"\n", e);
-	else
-	  fprintf(ac_file, "name \"unk%d\"\n", e);
-	fprintf(ac_file, "numvert %d\n", 3);
-	fprintf(ac_file, "%g %g %g\n", r_node[r_elem[e].i].x, r_node[r_elem[e].i].z, -r_node[r_elem[e].i].y);
-	fprintf(ac_file, "%g %g %g\n", r_node[r_elem[e].j].x, r_node[r_elem[e].j].z, -r_node[r_elem[e].j].y);
-	fprintf(ac_file, "%g %g %g\n", r_node[r_elem[e].k].x, r_node[r_elem[e].k].z, -r_node[r_elem[e].k].y);
-	fprintf(ac_file, "numsurf 1\n");
-	fprintf(ac_file, "SURF 0x30\n");
-	fprintf(ac_file, "mat 0\n");
-	fprintf(ac_file, "refs 3\n");
-	fprintf(ac_file, "0 0 0\n");
-	fprintf(ac_file, "1 0 0\n");
-	fprintf(ac_file, "2 0 0\n");
+	fprintf(ac_file, "name \"%s%d\"\n", name, i);
+	fprintf(ac_file, "texture \"%s\"\n", TexName);
+	fprintf(ac_file, "numvert %d\n", curGrp->nbvtx);
+	for (j = 0; j < curGrp->nbvtx; j++) {
+	    fprintf(ac_file, "%g %g %g\n", curGrp->vertices[j].x, curGrp->vertices[j].z, -curGrp->vertices[j].y);
+	}
+	fprintf(ac_file, "numsurf %d\n", curGrp->nbsurf);
+	for (j = 0; j < curGrp->nbsurf; j++) {
+	    fprintf(ac_file, "SURF 0x30\n");
+	    fprintf(ac_file, "mat 0\n");
+	    fprintf(ac_file, "refs 3\n");
+	    for (k = 0; k < 3; k++) {
+		fprintf(ac_file, "%d %f %f\n", curGrp->surfaces[j].ref[k].vtxidx, curGrp->surfaces[j].ref[k].u, curGrp->surfaces[j].ref[k].v);
+	    }
+	}
 	fprintf(ac_file, "kids 0\n");
     }
-    fclose(ac_file);
     
 }
+/*-draw_ac--------------------------------------------------------------------*/
 
 
 
-void
-generate_mesh(char *name)
+
+static void
+generate_mesh(void)
 {
     int		Nn0;
     
     printf("Load Chains\n");
     load();
     erase();
-    MeshName = strrchr(name, '/');
-    if (MeshName == NULL) {
-	MeshName = name;
-    } else {
-	MeshName++;
-    }
-    printf("\nGenerate Mesh %s\n", MeshName);
     classify();
     
     do {
@@ -1751,8 +1877,381 @@ generate_mesh(char *name)
     renum();
     fflush(stdout);
     materials();
-    draw_ac(name);
-
+    groups();
 }
 
 
+static int
+GetTrackOrientation(tTrack *track)
+{
+    tTrackSeg 	*seg;
+    int		i;
+    tdble	ang = 0;
+
+    for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
+	switch (seg->type) {
+	case TR_STR:
+	    break;
+	case TR_LFT:
+	    ang += seg->arc;
+	    break;
+	case TR_RGT:
+	    ang -= seg->arc;
+	    break;
+	}
+    }
+    if (ang > 0) {
+	return ANTICLOCKWISE;
+    }
+    return CLOCKWISE;
+}
+
+
+#define ADD_POINT(_x,_y,_z,_F,_mark)			\
+do {							\
+    point[nbvert].x = _x;				\
+    point[nbvert].y = _y;				\
+    point[nbvert].z = _z;				\
+    point[nbvert].F = _F;				\
+    point[nbvert].mark = _mark;				\
+    nbvert++;						\
+    if (nbvert == maxVert) {				\
+	maxVert *= 2;					\
+	point = (struct nod*)realloc(point, maxVert);	\
+	memset(&point[nbvert], 0, maxVert / 2);		\
+    }							\
+} while (0)
+
+/** Generate the terrain mesh.
+    @param	rightside	1 if use the right side
+				0 if use the left side
+    @param	reverse		1 if reverse the points order
+				0 if keep the track order
+    @param	exterior	1 if it is the exterior
+				0 if it is the interior
+    @param	
+    @return	None.
+*/
+static void
+GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
+{
+    int		startNeeded;
+    int		i, j, nbvert, maxVert;
+    tdble	ts, step, anz;
+    tTrackSeg 	*seg;
+    tTrackSeg 	*mseg;
+    tTrkLocPos 	trkpos;
+    tdble	x, y;
+    tdble 	radiusr, radiusl;
+    struct nod	*point2;
+    int		nb_relief_vtx, nb_relief_seg;
+
+    CountRelief(1 - exterior, &nb_relief_vtx, &nb_relief_seg);
+    
+    /* Estimation of the number of points */
+    maxVert = ((int)(Track->length) + nb_relief_vtx) * sizeof(struct nod);
+    point = (struct nod*)calloc(1, maxVert);
+    
+    if (rightside) {
+	nbvert = 0;
+
+	if (exterior && !reverse) {
+	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(-Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	}
+
+	/* Right side */
+	startNeeded = 1;
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
+	    if (mseg->rside != NULL) {
+		seg = mseg->rside;
+		if (seg->rside != NULL) {
+		    seg = seg->rside;
+		}
+	    } else {
+		seg = mseg;
+	    }
+	    if (startNeeded) {
+		ADD_POINT(seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, GridStep, i+1);
+	    }
+	    switch (seg->type) {
+	    case TR_STR:
+		ts = TrackStep;
+		trkpos.seg = seg;
+		while (ts < seg->length) {
+		    trkpos.toStart = ts;
+		    trkpos.toRight = 0;
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += TrackStep;
+		}
+		break;
+	    case TR_LFT:
+		step = TrackStep / (mseg->radiusr);
+		anz = seg->angle[TR_ZS] + step;
+		ts = step;
+		radiusr = seg->radiusr;
+		trkpos.seg = seg;
+		trkpos.toRight = 0;
+		while (anz < seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    /* right */
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += step;
+		    anz += step;
+		}
+		break;
+	    case TR_RGT:
+		step = TrackStep / (mseg->radiusl);
+		anz = seg->angle[TR_ZS] - step;
+		ts = step;
+		radiusr = seg->radiusr;
+		trkpos.seg = seg;
+		trkpos.toRight = 0;
+		while (anz > seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    /* right */
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += step;
+		    anz -= step;
+		}
+		break;
+	    }
+	    if (i != (Track->nseg - 1)) {
+		ADD_POINT(seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, GridStep, i+1);
+		startNeeded = 0;
+	    }
+	}
+
+	if (exterior && reverse) {
+	    ADD_POINT(-Margin,Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
+	}
+
+    } else {
+	nbvert = 0;
+
+	if (exterior && !reverse) {
+	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(-Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	}
+
+	/* Left Side */
+	startNeeded = 1;
+	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
+	    if (mseg->lside) {
+		seg = mseg->lside;
+		if (seg->lside) {
+		    seg = seg->lside;
+		}
+	    } else {
+		seg = mseg;
+	    }
+	    if (startNeeded) {
+		ADD_POINT(seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, GridStep, i+1);
+	    }
+	    
+	    switch (seg->type) {
+	    case TR_STR:
+		ts = TrackStep;
+		trkpos.seg = seg;
+		while (ts < seg->length) {
+		    trkpos.toStart = ts;
+		    trkpos.toRight = RtTrackGetWidth(seg, ts);
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += TrackStep;
+		}
+		break;
+	    case TR_LFT:
+		step = TrackStep / (mseg->radiusr);
+		anz = seg->angle[TR_ZS] + step;
+		ts = step;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz < seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    trkpos.toRight = RtTrackGetWidth(seg, ts);
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    /* left */
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += step;
+		    anz += step;
+		}
+		break;
+	    case TR_RGT:
+		step = TrackStep / (mseg->radiusl);
+		anz = seg->angle[TR_ZS] - step;
+		ts = step;
+		radiusl = seg->radiusl;
+		trkpos.seg = seg;
+		while (anz > seg->angle[TR_ZE]) {
+		    trkpos.toStart = ts;
+		    trkpos.toRight = RtTrackGetWidth(seg, ts);
+		    RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
+		    /* left */
+		    ADD_POINT(x, y, RtTrackHeightL(&trkpos), GridStep, i+1);
+		    ts += step;
+		    anz -= step;
+		}
+		break;
+	    }
+	    if (i != (Track->nseg - 1)) {
+		ADD_POINT(seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, GridStep, i+1);
+		startNeeded = 0;
+	    }
+	}
+
+	if (exterior && reverse) {
+	    ADD_POINT(-Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
+	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
+	}
+    }
+
+    Nc = nbvert;
+    segment = (struct seg *)calloc(Nc + 1 + nb_relief_seg, sizeof(struct seg));
+    segment[Nc].n0 = -1;
+    segment[Nc].n1 = -1;
+
+    if (reverse){
+	    
+	/* reverse order */
+	point2 = (struct nod*)calloc(Nc + 1 + nb_relief_vtx, sizeof(struct nod));
+	for (i = 0; i < Nc; i++) {
+	    memcpy(&(point2[i]), &(point[Nc-i-1]), sizeof(struct nod));
+	}
+	free(point);
+	point = point2;
+    }
+    if (exterior) {
+	segment[0].n0 = 0;
+	segment[0].n1 = 1;
+	segment[0].mark = 100000;
+	segment[1].n0 = 1;
+	segment[1].n1 = 2;
+	segment[1].mark = 100000;
+	segment[2].n0 = 2;
+	segment[2].n1 = 3;
+	segment[2].mark = 100000;
+	segment[3].n0 = 3;
+	segment[3].n1 = 0;
+	segment[3].mark = 100000;
+
+	i = 0;
+	j = 0;
+	do {
+	    segment[j+4].n0 = i+4;
+	    i = (i + 1) % (Nc - 4);
+	    segment[j+4].n1 = i+4;
+	    segment[j+4].mark = 2;
+	    j++;
+	} while (i != 0);
+	
+    } else {
+	i = 0;
+	j = 0;
+	do {
+	    segment[j].n0 = i;
+	    i = (i + 1) % Nc;
+	    segment[j].n1 = i;
+	    segment[j].mark = 1;
+	    j++;
+	} while (i != 0);
+    }
+    if (exterior) {
+	Fl = Nc;
+	GenRelief(0);
+    } else {
+	Fl = Nc;
+	GenRelief(1);
+    }
+    generate_mesh();
+}
+
+
+void
+GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd)
+{
+    char	*FileName;
+    char	*mat;
+    FILE	*curFd = NULL;
+
+    TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
+    GfOut("Track step: %.2f", TrackStep);
+    Margin    = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
+    GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
+    ExtHeight = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, ExtHeight);
+    GfOut("Border margin: %.2f    step: %.2f    height: %.2f", Margin, GridStep, ExtHeight);
+    
+    GroupSize = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_GRPSZ, NULL, 100.0);
+    XGroupOffset = track->min.x - Margin;
+    YGroupOffset = track->min.y - Margin;
+
+    XGroupNb = (int)((track->max.x + Margin - (track->min.x - Margin)) / GroupSize) + 1;
+    
+    GroupNb = XGroupNb * ((int)((track->max.y + Margin - (track->min.y - Margin)) / GroupSize) + 1);
+    
+    Groups = (struct group *)calloc(GroupNb, sizeof (struct group));
+    ActiveGoups = 0;
+    
+    
+
+    mat = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_SURF, "grass");
+    if (track->version < 4) {
+	sprintf(buf, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);
+    } else {
+	sprintf(buf, "%s/%s", TRK_SECT_SURFACES, mat);
+    }
+    TexName = GfParmGetStr(TrackHandle, buf, TRK_ATT_TEXTURE, "grass.rgb");
+    TexSize = GfParmGetNum(TrackHandle, buf, TRK_ATT_TEXSIZE, (char*)NULL, 20.0);
+
+    FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
+    if (FileName) {
+	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
+	LoadRelief(TrackHandle, buf);
+    }
+    FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ELEVATION, NULL);
+    if (FileName) {
+	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
+	LoadElevation(track, TrackHandle, buf);
+    }
+    
+    if (outfile) {
+	curFd = Ac3dOpen(outfile, 2);
+    }
+
+    if (GetTrackOrientation(track) == CLOCKWISE) {
+
+	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
+	GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
+	if (curFd) {
+	    draw_ac(curFd, "terrain");
+	}
+	if (AllFd) {
+	    draw_ac(AllFd, "terrain");
+	}
+    } else {
+	GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
+	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
+	if (curFd) {
+	    draw_ac(curFd, "terrain");
+	}
+	if (AllFd) {
+	    draw_ac(AllFd, "terrain");
+	}
+    }
+    if (curFd) {
+	Ac3dClose(curFd);
+    }
+    
+}

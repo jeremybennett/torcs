@@ -114,7 +114,7 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
 	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, mipmap, w, w, GL_RGBA, 
 					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
 	if(gluerr) {
-	    GfTrace2("grLoadTexture: %s %s\n", buf, gluErrorString(gluerr));
+	    GfTrace("grLoadTexture: %s %s\n", buf, gluErrorString(gluerr));
 	    free(tex);
 	    return 0;
 	}
@@ -184,7 +184,7 @@ grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, GL_RGBA, 
 					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
 	if(gluerr) {
-	    GfTrace2("grLoadTexture: %s %s\n", fname, gluErrorString(gluerr));
+	    GfTrace("grLoadTexture: %s %s\n", fname, gluErrorString(gluerr));
 	    free(tex);
 	    return false;
 	}

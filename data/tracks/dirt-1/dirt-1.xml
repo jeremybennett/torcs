@@ -52,6 +52,11 @@
       <attnum name="border step" unit="m" val="10"></attnum>
       <attnum name="border height" unit="m" val="10"></attnum>
       <attstr name="orientation" val="clockwise"></attstr>
+
+      <attstr name="elevation map" val="elevation-map.png"></attstr>
+      <attnum name="maximum altitude" val="25"></attnum>
+      <attnum name="minimum altitude" val="0"></attnum>
+
     </section>
 
   </section>

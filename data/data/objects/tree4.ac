@@ -4,17 +4,17 @@ OBJECT world
 kids 1
 OBJECT poly
 name "rect"
-loc 0 12 0
-texture "tree4.rgb"
+loc 0 7 0
+texture "/home/torcs/runtime3/games/torcs/eee/tree4.rgb"
 numvert 8
--5 12 0
-5 12 0
-5 -12 0
--5 -12 0
-2.23517e-07 12 5
--2.23517e-07 12 -5
--2.23517e-07 -12 -5
-2.23517e-07 -12 5
+-5 7 0
+5 7 0
+5 -7 0
+-5 -7 0
+2.23517e-07 7 5
+-2.23517e-07 7 -5
+-2.23517e-07 -7 -5
+2.23517e-07 -7 5
 numsurf 2
 SURF 0x20
 mat 0

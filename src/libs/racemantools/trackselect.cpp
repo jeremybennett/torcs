@@ -95,7 +95,7 @@ rmUpdateTrackInfo(void)
 	    ((tFList*)CategoryList->userData)->name, TRKEXT);
     trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD); /* don't release, the name is used later */
     if (!trackHandle) {
-	GfTrace1("File %s has pb\n", buf);
+	GfTrace("File %s has pb\n", buf);
 	return;
     }
     trk = ts->trackItf.trkBuild(buf);
@@ -184,7 +184,7 @@ RmGetTrackName(char *category, char *trackName)
     if (trackHandle) {
 	name = GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_NAME, trackName);
     } else {
-	GfTrace1("File %s has pb\n", buf);
+	GfTrace("File %s has pb\n", buf);
 	return "";
     }
     return name;
@@ -204,7 +204,7 @@ RmGetCategoryName(char *category)
     if (categoryHandle) {
 	name = GfParmGetStr(categoryHandle, TRK_SECT_HDR, TRK_ATT_NAME, category);
     } else {
-	GfTrace1("File %s has pb\n", buf);
+	GfTrace("File %s has pb\n", buf);
 	return "";
     }
     return name;
@@ -236,14 +236,14 @@ RmTrackSelect(void *vs)
     do {
 	CatCur->dispName = RmGetCategoryName(CatCur->name);
 	if (strlen(CatCur->dispName) == 0) {
-	    GfTrace1("RmTrackSelect: No definition for track category %s\n", CatCur->name);
+	    GfTrace("RmTrackSelect: No definition for track category %s\n", CatCur->name);
 	    return;
 	}
 	/* get the tracks in the category directory */
 	sprintf(buf, "tracks/%s", CatCur->name);
 	TrList = GfDirGetList(buf);
 	if (TrList == NULL) {
-	    GfTrace1("RmTrackSelect: No track for category %s available\n", CatCur->name);
+	    GfTrace("RmTrackSelect: No track for category %s available\n", CatCur->name);
 	    return;
 	}
 	TrList = TrList->next; /* get the first one */
@@ -252,7 +252,7 @@ RmTrackSelect(void *vs)
 	do {
 	    TrCur->dispName = RmGetTrackName(CatCur->name, TrCur->name);
 	    if (strlen(TrCur->dispName) == 0) {
-		GfTrace1("RmTrackSelect: No definition for track %s\n", TrCur->name);
+		GfTrace("RmTrackSelect: No definition for track %s\n", TrCur->name);
 		return;
 	    }
 	    TrCur = TrCur->next;

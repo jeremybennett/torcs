@@ -37,34 +37,65 @@
 #include <ttypes.h>
 #include <plib/ul.h>
 
+#include <tgf.h>
+#include <track.h>
+
+#include "ac3d.h"
+#include "easymesh.h"
 #include "trackgen.h"
 
-int Orientation;
-int SceneDraw;
-
-char	*InputFileName = NULL;
-char	*OutputFileName = NULL;
-char	*ReliefFileName = NULL;
 float	GridStep = 40.0;
 float	TrackStep = 5.0;
 float	Margin = 100.0;
 float	ExtHeight = 5.0;
 
 
+char		*OutputFileName;
+char		*TrackName;
+char		*TrackCategory;
+
+void		*TrackHandle;
+void		*CfgHandle;
+
+tTrack		*Track;
+tTrackItf	TrackItf;
+
+int		TrackOnly;
+int		MergeAll;
+int		MergeTerrain;
+
+static char	buf[1024];
+static char	buf2[1024];
+static char	trackdef[1024];
+
+char		*OutTrackName;
+char		*OutMeshName;
+
+tModList	*modlist = NULL;
+
+
+static void Generate(void);
+
 void usage(void)
 {
     fprintf(stderr, "Terrain generator for tracks $Revision$ \n");
-    fprintf(stderr, "Usage: trackgen [-n] <input xmlfile>\n");
-    fprintf(stderr, "<input xmlfile>  : input track in XML format\n");
-    fprintf(stderr, "n                : don't draw scenery\n");
+    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m]\n");
+    fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
+    fprintf(stderr, "       -n name        : track name\n");
+    fprintf(stderr, "       -a             : draw all (default is track only)\n");
+    fprintf(stderr, "       -s             : split the track and the terrain\n");
+    fprintf(stderr, "       -S             : split all\n");
 }
 
 void init_args(int argc, char **argv)
 {
     int		c;
     
-    Orientation = CLOCKWISE;
-    SceneDraw = 1;
+    TrackOnly = 1;
+    MergeAll = 1;
+    MergeTerrain = 1;
+    TrackName = NULL;
+    TrackCategory = NULL;
 
 #ifndef WIN32
     while (1) {
@@ -74,7 +105,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn",
+	c = getopt_long(argc, argv, "hvn:c:asS",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -103,8 +134,22 @@ void init_args(int argc, char **argv)
 	    printf("Terrain generator for tracks $Revision$ \n");
 	    exit(0);
 	    break;
+	case 'a':
+	    TrackOnly = 0;
+	    break;
+	case 's':
+	    MergeAll = 0;
+	    MergeTerrain = 1;
+	    break;
+	case 'S':
+	    MergeAll = 0;
+	    MergeTerrain = 0;
+	    break;
 	case 'n':
-	    SceneDraw = 0;
+	    TrackName = strdup(optarg);
+	    break;
+	case 'c':
+	    TrackCategory = strdup(optarg);
 	    break;
 	default:
 	    usage();
@@ -113,52 +158,48 @@ void init_args(int argc, char **argv)
 	}
     }
 #else
-    if (argc==1)
-      {
-	usage();
-	exit(1);
-      }
-    if (argc==2)
-      {
-	if (strncmp(argv[1],"-h",2)==0)
-	  {
+    i = 1;
+    while (i < argc) {
+	if (strncmp(argv[i], "-h", 2) == 0) {
 	    usage();
 	    exit(0);
-	  }
-	else if (strncmp(argv[1],"-v",2)==0)
-	  {
+	}
+	if (strncmp(argv[i], "-v", 2) == 0) {
 	    printf("Terrain generator for tracks $Revision$ \n");
 	    exit(0);
-	  }
-	else if (strncmp(argv[1],"-n",2)==0)
-	  {
-	    SceneDraw=0;
-	  }
-	else
-	  {
-	    InputFileName = strdup(argv[1]);
-	  }
-      }
-    else
-      {
-	usage();
-	exit(1);
-      }
-#endif
-
-#ifndef WIN32
-    if (optind < argc) {
-	if (optind == argc - 1) {
-	    InputFileName = strdup(argv[optind]);
+	}
+	if (strncmp(argv[i], "-a", 2) == 0) {
+	    TrackOnly = 0;
+	} else if (strncmp(argv[i], "-s", 2) == 0) {
+	    MergeAll = 0;
+	    MergeTerrain = 1;
+	} else if (strncmp(argv[i], "-S", 2) == 0) {
+	    MergeAll = 0;
+	    MergeTerrain = 0;
+	} else if (strncmp(argv[i], "-n", 2) == 0) {
+	    if (i + 1 < argc) {
+		TrackName = strdup(argv[i++]);
+	    } else {
+		usage();
+		exit(0);
+	    }
+	} else if (strncmp(argv[i], "-c", 2) == 0) {
+	    if (i + 1 < argc) {
+		TrackCategory = strdup(argv[i++]);
+	    } else {
+		usage();
+		exit(0);
+	    }
 	} else {
 	    usage();
-	    exit(1);
+	    exit(0);
 	}
+	i++;
     }
 #endif
 
-    if (!ulFileExists(InputFileName)) {
-	fprintf(stderr, "The Input XML track file is not correct\n");
+    if (!TrackName || !TrackCategory) {
+	usage();
 	exit(1);
     }
 }
@@ -179,6 +220,83 @@ main(int argc, char **argv)
     WindowsSpecInit();
 #endif
 
-    GenerateTrack(InputFileName);
+    Generate();
     return 0;
+}
+
+#ifdef WIN32
+#define INSTBASE "./"
+#endif
+
+static void
+Generate(void)
+{
+    char	*trackdllname;
+    char	*extName;
+    FILE	*outfd = NULL;
+
+    /* Get the trackgen paramaters */
+    sprintf(buf, "%s/%s", INSTBASE, CFG_FILE);
+    CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    trackdllname = GfParmGetStr(CfgHandle, "Modules", "track", "track");
+    sprintf(buf, "%s/modules/track/%s.%s", INSTBASE, trackdllname, DLLEXT);
+    if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
+	GfFatal("Failed to find the track module %s", buf);
+    }
+    if (modlist->modInfo->fctInit(modlist->modInfo->index, &TrackItf)) {
+	GfFatal("Failed to init the track module %s", buf);
+    }
+
+    /* This is the track definition */
+    sprintf(trackdef, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
+    TrackHandle = GfParmReadFile(trackdef, GFPARM_RMODE_STD);
+    if (!TrackHandle) {
+	fprintf(stderr, "Cannot find %s\n", trackdef);
+	exit(1);
+    }
+
+    /* build the track structure with graphic extensions */
+    Track = TrackItf.trkBuildEx(trackdef);
+
+    /* Get the output file radix */
+    sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+    OutputFileName = strdup(buf2);
+
+    /* Number of goups for the complete track */
+    if (TrackOnly) {
+	sprintf(buf2, "%s.ac", OutputFileName);
+	/* track */
+	outfd = Ac3dOpen(buf2, 1);
+    } else if (MergeAll) {
+	sprintf(buf2, "%s.ac", OutputFileName);
+	/* track + terrain */
+	outfd = Ac3dOpen(buf2, 2);
+    }
+
+    /* Main Track */
+    extName = GfParmGetStr(CfgHandle, "Files", "track", "trk");
+    sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+    OutTrackName = strdup(buf2);
+
+    GenerateTrack(Track, TrackHandle, OutTrackName, outfd);
+
+    if (TrackOnly) {
+	return;
+    }
+    
+    /* Terrain */
+    if (MergeTerrain && !MergeAll) {
+	sprintf(buf2, "%s.ac", OutputFileName);
+	/* terrain */
+	outfd = Ac3dOpen(buf2, 1);
+    }
+
+    extName = GfParmGetStr(CfgHandle, "Files", "mesh", "msh");
+    sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+    OutMeshName = strdup(buf2);
+    
+    GenerateTerrain(Track, TrackHandle, OutMeshName, outfd);
+    
+    
 }

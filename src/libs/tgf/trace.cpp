@@ -38,24 +38,23 @@
 #endif
 #include <tgf.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+/* static FILE *outTrace = (FILE*)NULL; */
 
-static FILE *outTrace = (FILE*)NULL;
-
-static char TraceStr[1024];
+/* static char TraceStr[1024]; */
 
 void
 gfTraceInit(void)
 {
 }
 
-void GfFatal(char *szTrc)
-{
-    GfTrace(szTrc);
-    exit(1);
-}
+/* void GfFatal(char *fmt, ...) */
+/* { */
+/*     va_list ap; */
+/*     va_start(ap, fmt); */
+/*     GfTrace(fmt, ap); */
+/*     va_end(ap); */
+/*     exit(1); */
+/* } */
 
 
 /** Print a message in the trace file.
@@ -63,29 +62,36 @@ void GfFatal(char *szTrc)
     @ingroup	trace
     @param	szTrc	message to trace
 */
-void GfTrace(char *szTrc)
-{
-    struct tm		*stm;
-    time_t		t;
-    char		*s = TraceStr;
+/* void GfTrace(char *fmt, ...) */
+/* { */
+/*     va_list		ap; */
+/*     struct tm		*stm; */
+/*     time_t		t; */
+/*     char		*s = TraceStr; */
 
-    fprintf(stderr, "ERROR: %s", szTrc);
-    fflush(stderr);
+/*     fprintf(stderr, "ERROR: "); */
+/*     va_start(ap, fmt); */
+/*     vfprintf(stderr, fmt, ap); */
+/*     va_end(ap); */
+/*     fflush(stderr); */
 
-    if (outTrace == NULL) {
-	if ((outTrace = fopen("trace.txt", "w+")) == NULL) {
-	    perror("trace.txt");
-	    return;
-	}
-    }
-    t = time(NULL);
-    stm = localtime(&t);
-    s += sprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ",
-		 stm->tm_year+1900, stm->tm_mon+1, stm->tm_mday,
-		 stm->tm_hour, stm->tm_min, stm->tm_sec);
+/*     if (outTrace == NULL) { */
+/* 	if ((outTrace = fopen("trace.txt", "w+")) == NULL) { */
+/* 	    perror("trace.txt"); */
+/* 	    return; */
+/* 	} */
+/*     } */
+/*     t = time(NULL); */
+/*     stm = localtime(&t); */
+/*     s += sprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ", */
+/* 		 stm->tm_year+1900, stm->tm_mon+1, stm->tm_mday, */
+/* 		 stm->tm_hour, stm->tm_min, stm->tm_sec); */
 
-    strncpy(s, szTrc, 1023 - strlen(TraceStr));
-    fwrite(TraceStr, strlen(TraceStr), 1, outTrace);
-    fflush(outTrace);
-}
+/*     va_start(ap, fmt); */
+/*     vsnprintf(s, 1023 - strlen(TraceStr), fmt, ap); */
+/*     va_end(ap); */
+
+/*     fwrite(TraceStr, strlen(TraceStr), 1, outTrace); */
+/*     fflush(outTrace); */
+/* } */
 

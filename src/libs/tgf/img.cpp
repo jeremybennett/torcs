@@ -69,18 +69,18 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     png_uint_32		i;
     
     if ((fp = fopen(filename, "rb")) == NULL) {
-	GfTrace1("Can't open file %s\n", filename);
+	GfTrace("Can't open file %s\n", filename);
 	return (unsigned char *)NULL;
     }
    
     if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
-	GfTrace1("Can't read file %s\n", filename);
+	GfTrace("Can't read file %s\n", filename);
 	fclose(fp);
 	return (unsigned char *)NULL;
     }
 
     if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0) {
-	GfTrace1("File %s not in png format\n", filename);
+	GfTrace("File %s not in png format\n", filename);
 	fclose(fp);
 	return (unsigned char *)NULL;
     }
@@ -138,7 +138,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     rowbytes = png_get_rowbytes(png_ptr, info_ptr);
     /* RGBA expected... */
     if (rowbytes != (4 * width)) {
-	GfTrace3("%s bad byte count... %ld instead of %ld\n", filename, rowbytes, 4 * width);
+	GfTrace("%s bad byte count... %ld instead of %ld\n", filename, rowbytes, 4 * width);
 	fclose(fp);
 	png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 	return (unsigned char *)NULL;
@@ -203,7 +203,7 @@ GfImgWritePng(unsigned char *img, const char *filename, int width, int height)
     
     fp = fopen(filename, "wb");
     if (fp == NULL) {
-	GfTrace1("Can't open file %s\n", filename);
+	GfTrace("Can't open file %s\n", filename);
 	return -1;
     }
     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);

@@ -83,7 +83,7 @@ gfParmAddKid(tParmNode *node, tParmNode *newNode)
 	}
 	newNode->parent = node;
     } else {
-	GfTrace3("file: %s -> Grammar Error %s not allowed in %s\n", CurParm->file, newNode->name, node->name);
+	GfTrace("file: %s -> Grammar Error %s not allowed in %s\n", CurParm->file, newNode->name, node->name);
 	GfParmReleaseHandle((void*)CurParm);
 	exit(1);
     }
@@ -344,7 +344,7 @@ externalEntityRefHandler(XML_Parser mainparser,
     in = fopen(systemId, "r");
     if (in == NULL) {
 	perror(systemId);
-	GfTrace1("GfReadParmFile: file %s has pb\n", systemId);
+	GfTrace("GfReadParmFile: file %s has pb\n", systemId);
 	return 0;
     }
 
@@ -353,7 +353,7 @@ externalEntityRefHandler(XML_Parser mainparser,
 	size_t len = fread(buf, 1, sizeof(buf), in);
 	done = len < sizeof(buf);
 	if (!XML_Parse(parser, buf, len, done)) {
-	    GfTrace3("file: %s -> %s at line %d\n",
+	    GfTrace("file: %s -> %s at line %d\n",
 		     systemId,
 		     XML_ErrorString(XML_GetErrorCode(parser)),
 		     XML_GetCurrentLineNumber(parser));
@@ -415,13 +415,9 @@ gfCheckParmWithFile(const char *file, int mode, int *toload)
     @param	file	Name of the parameter file
     @param	mode	GFPARM_RMODE_STD Open the parameter file only once
     			<br>GFPARM_RMODE_REREAD Force the re-read of the file and release the previous one
-    @param	name	Receives the name of the parameter file
-    @param	type	Receives the type of the parameter file:
-			<br>GFPARM_PARAMETER normal parameter file
-			<br>GFPARM_TEMPLATE template containing min and max values
+			<br>GFPARM_RMODE_CREAT Force the creation of the file
     @return	handle on the parameters
-	        <br>NULL on error.
-    @warning	When the file does not exist, the (*name) parameter is set to NULL.
+	        <br>NULL if file does not exist and not GFPARM_RMODE_CREAT.
  */
 void *
 GfParmReadFile(const char *file, int mode)
@@ -470,7 +466,7 @@ GfParmReadFile(const char *file, int mode)
     
     if ((in = fopen(file, "r")) == NULL) {
 	perror(file);
-	GfTrace1("GfReadParmFile: file %s has pb\n", file);
+	GfTrace("GfReadParmFile: file %s has pb\n", file);
 	GfParmReleaseHandle((void*)CurParm);
 	return NULL;
     }
@@ -482,7 +478,7 @@ GfParmReadFile(const char *file, int mode)
 	size_t len = fread(buf, 1, sizeof(buf), in);
 	done = len < sizeof(buf);
 	if (!XML_Parse(parser, buf, len, done)) {
-	    GfTrace3("GfReadParmFile: %s -> %s at line %d\n",
+	    GfTrace("GfReadParmFile: %s -> %s at line %d\n",
 		     file,
 		     XML_ErrorString(XML_GetErrorCode(parser)),
 		     XML_GetCurrentLineNumber(parser));
@@ -542,14 +538,14 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
 
 #ifndef DEBUG
     if ((CurParm->mode & GFPARM_WRITABLE) == 0) {
-	GfTrace1("GfParmWriteFile: file %s is not allowed to be rewrited\n", file);
+	GfTrace("GfParmWriteFile: file %s is not allowed to be rewrited\n", file);
 	/* return -1; */
     }
 #endif
 
     if ((out = fopen(file, "w")) == NULL) {
 	perror(file);
-	GfTrace1("GfParmWriteFile: file %s has pb\n", file);
+	GfTrace("GfParmWriteFile: file %s has pb\n", file);
 	return -1;
     }
 
@@ -1200,7 +1196,7 @@ GfParmSetStr(void *handle, char *path, char *key, char *val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1266,7 +1262,7 @@ GfParmSetCurStr(void *handle, char *path, char *key, char *val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1336,7 +1332,7 @@ GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1405,7 +1401,7 @@ GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1723,13 +1719,13 @@ CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
 
     if (curKey->type == P_NUM) {
 	if (testKey->valnum > curKey->max) { 
-	    GfTrace2("bad path: %s  key: %s\n", path, curKey->n.name);
-	    GfTrace3("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
+	    GfTrace("bad path: %s  key: %s\n", path, curKey->n.name);
+	    GfTrace("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
 	    testKey->valnum = curKey->max;
 	    return 0;
 	} else if (testKey->valnum < curKey->min) {
-	    GfTrace2("bad path: %s  key: %s\n", path, curKey->n.name);
-	    GfTrace3("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
+	    GfTrace("bad path: %s  key: %s\n", path, curKey->n.name);
+	    GfTrace("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
 	    testKey->valnum = curKey->min;
 	    return 0;
 	} else {
@@ -1746,7 +1742,7 @@ CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
 		return 0;
 	    }
 	} while (curWithin != curKey->withins);
-	GfTrace3("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
+	GfTrace("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
 	return -1;
     }
    
@@ -1754,7 +1750,7 @@ CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
     if (strcmp(curKey->valstr, testKey->valstr) == 0) {
 	return 0;
     }
-    GfTrace3("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
+    GfTrace("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
     return -1;
 }
 

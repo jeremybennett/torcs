@@ -175,7 +175,7 @@ RmInitCars(tRmInfo *raceInfo)
 	sprintf(path, "drivers/%s/%s.%s", cardllname, cardllname, DLLEXT);
 	/* load the robot shared library */
 	if (GfModLoad(CAR_IDENT, path, raceInfo->modList)) {
-	    GfTrace1("Pb with loading %s driver\n", path);
+	    GfTrace("Pb with loading %s driver\n", path);
 	    break;
 	}
 	/* search for corresponding index */
@@ -227,7 +227,7 @@ RmInitCars(tRmInfo *raceInfo)
 			GfOut("Category Specification: %s\n", buf);
 			cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 			if (GfParmCheckHandle(cathdle, carhdle)) {
-			    GfTrace3("Car %s not in Category %s (driver %s) !!!\n", elt->_carName, category, elt->_name);
+			    GfTrace("Car %s not in Category %s (driver %s) !!!\n", elt->_carName, category, elt->_name);
 			    break;
 			}
 			carhdle = GfParmMergeHandles(cathdle, carhdle,
@@ -235,7 +235,7 @@ RmInitCars(tRmInfo *raceInfo)
 			//GfParmWriteFile("merge.xml", carhdle, "merged", GFPARM_TEMPLATE, "config/params.dtd");
 			if (handle != NULL) {
 			    if (GfParmCheckHandle(carhdle, handle)) {
-				GfTrace1("Bad Car parameters for driver %s\n", elt->_name);
+				GfTrace("Bad Car parameters for driver %s\n", elt->_name);
 				break;
 			    }
 			    handle = GfParmMergeHandles(carhdle, handle,
@@ -246,12 +246,12 @@ RmInitCars(tRmInfo *raceInfo)
 			elt->_carHandle = handle;
 			//GfParmWriteFile("toto.xml", handle, "toto", GFPARM_PARAMETER, "toto.dtd");
 		    } else {
-			GfTrace1("Bad Car category for driver %s\n", elt->_name);
+			GfTrace("Bad Car category for driver %s\n", elt->_name);
 			break;
 		    }
 		    index ++;
 		} else {
-		    GfTrace1("Pb No description file for driver %s\n", cardllname);
+		    GfTrace("Pb No description file for driver %s\n", cardllname);
 		}
     
 		break;
@@ -311,13 +311,24 @@ initStartingGrid(tRmInfo *raceInfo)
     tdble	speedInit;
     tdble	heightInit;
     tCarElt	*car;
+    void	*trHdle;
+    char	*pole;
 
+    trHdle = GfParmReadFile(raceInfo->track->filename, GFPARM_RMODE_STD);
+    
     RmDumpTrack(raceInfo->track, 0);
     curseg = raceInfo->track->seg->next;
     while (curseg->type == TR_STR) {
 	curseg = curseg->next;
     }
     if (curseg->type == TR_LFT) {
+	pole = GfParmGetStr(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_POLE, "left");
+    } else {
+	pole = GfParmGetStr(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_POLE, "right");
+    }
+    pole = GfParmGetStr(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_POLE, pole);
+    
+    if (strcmp(pole, "left") == 0) {
 	a = raceInfo->track->width;
 	b = -a;
     } else {
@@ -327,11 +338,16 @@ initStartingGrid(tRmInfo *raceInfo)
     wi2 = raceInfo->track->width * 0.5;
 
     rows = (int)GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_ROWS, (char*)NULL, 2);
+    rows = (int)GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_ROWS, (char*)NULL, rows);
     d1 = GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_TOSTART, (char*)NULL, 10);
+    d1 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_TOSTART, (char*)NULL, d1);
     d2 = GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_COLDIST, (char*)NULL, 10);
+    d2 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_COLDIST, (char*)NULL, d2);
     d3 = GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_COLOFFSET, (char*)NULL, 5);
+    d3 = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_COLOFFSET, (char*)NULL, d3);
     speedInit = GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_INITSPEED, (char*)NULL, 0.0);
     heightInit = GfParmGetNum(raceInfo->params, RM_SECT_STARTINGGRID, RM_ATTR_INITHEIGHT, (char*)NULL, 1.0);
+    heightInit = GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_INITHEIGHT, (char*)NULL, heightInit);
 
     if (rows < 1) {
 	rows = 1;

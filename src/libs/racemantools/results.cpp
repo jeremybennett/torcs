@@ -233,7 +233,7 @@ RmSaveResults(tRmInfo *rmInfo)
     sprintf(buf, "results/%s.cmd", filename);
     fcmd = fopen(buf, "w");
     if (fcmd == NULL) {
-	GfTrace1("Error while openning %s\n", buf);
+	GfTrace("Error while openning %s\n", buf);
 	return;
     }
     fprintf(fcmd, "#!/bin/sh\n");
@@ -268,7 +268,7 @@ RmSaveResults(tRmInfo *rmInfo)
     sprintf(buf, "results/%s.dat", filename);
     fout = fopen(buf, "w");
     if (fout == NULL) {
-	GfTrace1("Error while openning %s\n", buf);
+	GfTrace("Error while openning %s\n", buf);
 	return;
     }
     fprintf(fout, "0 ");

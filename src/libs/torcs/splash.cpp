@@ -169,7 +169,7 @@ SplashScreen(void)
 	ImgFormat = GL_RGBA;
     }
     if (!Image) {
-	GfTrace1("Couldn't read %s\n", img);
+	GfTrace("Couldn't read %s\n", img);
 	return -1;
     }
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
