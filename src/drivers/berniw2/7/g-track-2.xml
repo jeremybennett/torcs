@@ -113,7 +113,9 @@
   </section>
 
   <section name="berniw private">
+    <attnum name="pitexit" val="250"></attnum>
   </section>
+
 </params>
 
 

@@ -52,7 +52,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.7"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="60000"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="30000"></attnum>
   </section>
 
   <section name="Rear Differential">
@@ -100,6 +100,12 @@
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
   </section>
+  
+  <section name="berniw private">
+    <attnum name="caero" val="0.0"></attnum>
+    <attnum name="cfriction" val="1.2"></attnum>
+  </section>
+
 </params>
 
 

@@ -21,7 +21,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="11"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="15"></attnum>
   </section>
 
   <section name="Gearbox">
@@ -58,8 +58,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.44"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="12000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.4"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="15000"></attnum>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -143,8 +143,9 @@
   </section>
 
   <section name="berniw private">
+    <attnum name="caero" val="1.0"></attnum>
+    <attnum name="cfriction" val="1.2"></attnum>
   </section>
-
 
 </params>
 

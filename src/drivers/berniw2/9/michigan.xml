@@ -20,7 +20,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="5"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="7"></attnum>
   </section>
 
  <section name="Gearbox">
@@ -55,13 +55,13 @@
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="5000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1"></attnum>
   </section>
 
   <section name="Rear Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="5000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
   </section>

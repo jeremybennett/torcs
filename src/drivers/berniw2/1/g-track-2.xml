@@ -132,6 +132,10 @@
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
   </section>
+ 
+  <section name="berniw private">
+    <attnum name="pitexit" val="250"></attnum>
+  </section>
 
 </params>
 

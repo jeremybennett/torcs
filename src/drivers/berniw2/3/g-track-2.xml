@@ -134,6 +134,9 @@
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="60"></attnum>
   </section>
 
+  <section name="berniw private">
+    <attnum name="pitexit" val="250"></attnum>
+  </section>
 
 </params>
 

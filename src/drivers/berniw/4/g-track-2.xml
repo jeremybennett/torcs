@@ -127,6 +127,11 @@
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="80"></attnum>
   </section>
+
+  <section name="berniw private">
+    <attnum name="pitexit" val="250"></attnum>
+  </section>
+
 </params>
 
 
