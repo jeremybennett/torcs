@@ -36,14 +36,17 @@ init_args(int argc, char **argv)
     i = 1;
     while (i < argc) {
 	if (strncmp(argv[i], "-l", 2) == 0) {
-	    if (i + 1 < argc) {
-		i++;
+	    i++;
+	    if (i < argc) {
 		buf = (char *)malloc(strlen(argv[i]) + 2);
 		sprintf(buf, "%s/", argv[i]);
 		SetLocalDir(buf);
+		i++;
 	    }
+	} else if (strncmp(argv[i], "-m", 2) == 0) {
+	    i++;
+	    GfuiMouseSetHWPresent(); /* allow the hardware cursor */
 	}
-	i++;
     }
 }
 

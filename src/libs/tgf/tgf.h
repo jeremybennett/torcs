@@ -357,6 +357,7 @@ extern tMouseInfo *GfuiMouseInfo(void);
 extern void GfuiMouseSetPos(int x, int y);
 extern void GfuiMouseHide(void);
 extern void GfuiMouseShow(void);
+extern void GfuiMouseSetHWPresent(void);
 
 /* all widgets */
 #define	GFUI_VISIBLE	1	/**< Object visibility flag  */

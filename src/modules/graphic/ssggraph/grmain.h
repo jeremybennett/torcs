@@ -24,6 +24,12 @@
 #include <plib/ssg.h>
 #include <raceman.h>
 
+#if GL_VERSION_1_3
+#define glActiveTextureARB glActiveTexture
+#define glMultiTexCoord2fvARB glMultiTexCoord2fv
+#define glClientActiveTextureARB glClientActiveTexture
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #include <GL/gl.h>

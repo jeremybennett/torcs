@@ -35,6 +35,8 @@ tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
 tMouseInfo	GfuiMouse;
 
+int		GfuiMouseHW = 0;
+
 float		GfuiColor[GFUI_COLORNB][4];
 static		char buf[1024];
 
@@ -72,13 +74,11 @@ gfuiColorInit(void)
     GfParmReleaseHandle(hdle);
 
     /* Remove the X11/Windows cursor  */
-    glutSetCursor(GLUT_CURSOR_NONE);
+    if (!GfuiMouseHW) {
+	glutSetCursor(GLUT_CURSOR_NONE);
+    }
 
-/*     if (strstr((const char*)glGetString(GL_RENDERER), "Glide") != NULL) { */
     GfuiMouseVisible = 1;
-/*     } else { */
-/* 	GfuiMouseVisible = 0; */
-/*     } */
 }
 
 
@@ -181,7 +181,7 @@ GfuiDisplay(void)
 	} while (curObj != GfuiScreen->objects);
     }
     
-    if ((GfuiMouseVisible) && (GfuiScreen->mouseAllowed)) GfuiDrawCursor();
+    if (!GfuiMouseHW && GfuiMouseVisible && GfuiScreen->mouseAllowed) GfuiDrawCursor();
     glDisable(GL_BLEND);
     glutSwapBuffers();
 }
@@ -206,6 +206,24 @@ GfuiMouseShow(void)
     GfuiScreen->mouseAllowed = 1;
 }
 
+/** 
+    @ingroup	
+    @param	
+    @param	
+    @param	
+    @param	
+    @return	<tt>0 ... </tt>Ok
+		<br><tt>-1 .. </tt>Error
+    @warning	
+    @bug	
+    @see	
+    @note		
+*/
+void
+GfuiMouseSetHWPresent(void)
+{
+    GfuiMouseHW = 1;
+}
 
 static void
 gfuiKeyboard(unsigned char key, int /* x */, int /* y */)
@@ -453,10 +471,6 @@ GfuiScreenActivate(void *screen)
 	GfuiDisplay();
 	glutPostRedisplay();
     }
-    if (GfuiScreen->mouseAllowed == 0) {
-	/* erase the cursor */
-	/* glutSetCursor(GLUT_CURSOR_NONE); */
-    }
 }
 
 
@@ -494,7 +508,6 @@ GfuiScreenDeactivate(void)
     glutPassiveMotionFunc((void(*)(int,int))NULL);
     glutIdleFunc((void(*)(void))NULL);
     glutDisplayFunc(GfuiDisplayNothing);
-    /* glutSetCursor(GLUT_CURSOR_LEFT_ARROW); */
 }
 
 /** Create a new screen.
@@ -679,6 +692,7 @@ GfuiSKeyEventRegisterCurrent(tfuiSKeyCallback onSKeyAction)
     @param	descr		Description for help screen
     @param	userData	Parameter to the callback function
     @param	onKeyPressed	Callback function
+    @param	onKeyReleased	Callback function
  */
 void
 GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)
@@ -733,6 +747,7 @@ GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallba
     @param	descr		Description for help screen
     @param	userData	Parameter to the callback function
     @param	onKeyPressed	Callback function called when the specified key is pressed
+    @param	onKeyReleased	Callback function
  */
 void
 GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)
@@ -748,6 +763,7 @@ GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onK
     @param	descr		Description for help screen
     @param	userData	Parameter to the callback function
     @param	onKeyPressed	Callback function
+    @param	onKeyReleased	Callback function
  */
 void
 GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased)

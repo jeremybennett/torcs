@@ -17,11 +17,11 @@
 #
 ##############################################################################
 
-DEFAULT_RUNTIME=/home/torcs/runtime3/share/games/torcs
+DEFAULT_RUNTIME=/usr/share/games/torcs
 
 LOCAL_CONF=$HOME/.torcs
 
-prefix=/home/torcs/runtime3
+prefix=/usr
 exec_prefix=${prefix}
 
 if [ -d $DEFAULT_RUNTIME ]
@@ -45,7 +45,7 @@ then
 	echo "$DEFAULT_RUNTIME/setup_linux.sh file does not exist, check your installation"
 	exit 1
     fi
-    ./torcs -l $LOCAL_CONF
+    ./torcs -l $LOCAL_CONF $*
     exit 0
 fi
 

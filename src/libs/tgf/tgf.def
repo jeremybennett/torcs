@@ -66,6 +66,7 @@ EXPORTS
 	GfuiMouseInfo
 	GfuiMouseHide
 	GfuiMouseShow
+	GfuiMouseSetHWPresent
 	GfuiTipCreate
 	GfuiTitleCreate
 	GfuiLabelSetText

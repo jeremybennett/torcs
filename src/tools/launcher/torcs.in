@@ -45,7 +45,7 @@ then
 	echo "$DEFAULT_RUNTIME/setup_linux.sh file does not exist, check your installation"
 	exit 1
     fi
-    ./torcs -l $LOCAL_CONF
+    ./torcs -l $LOCAL_CONF $*
     exit 0
 fi
 
