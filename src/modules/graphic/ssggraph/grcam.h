@@ -118,6 +118,9 @@ class cGrCamera
 	GF_TAILQ_REMOVE(head, this, link);
     }
 
+    /* Get the squared distance between the car and the camera */
+    float getDist2(tCarElt *car);
+
     cGrCamera *next(void) {
 	return GF_TAILQ_NEXT(this, link);
     }
@@ -141,6 +144,7 @@ class cGrPerspCamera : public cGrCamera
 		   float myfovy, float myfovymin, float myfovymax,
 		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
+    virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
     void setProjection(void);
     void setModelView(void);
     void loadDefaults(char *attr);
@@ -153,7 +157,7 @@ class cGrPerspCamera : public cGrCamera
 	return (cGrPerspCamera *)cGrCamera::next();
     }
 
-    virtual void limitFov(void) = 0;
+   void limitFov(void)  {}
     
 };
 

@@ -36,6 +36,8 @@ class cGrScreen
     int			id;
 
     tCarElt		*curCar;		/* Current car viewed */
+    tCarElt		**cars;			/* list of cars */ 
+
 
     int			curCamHead;		/* the current camera list */	
     tGrCamHead		cams[10];		/* from F2 to F11 */
@@ -60,8 +62,8 @@ class cGrScreen
     int			mirrorFlag;
 
     void loadParams(tSituation *s);		/* load from parameters files */
-    
- public:
+
+public:
 
     cGrScreen(int id);
 

@@ -49,6 +49,7 @@
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index );
 
+ssgBranch *CarsAnchorTmp = 0;
 
 class myLoaderOptions : public ssgLoaderOptions
 {
@@ -405,6 +406,9 @@ grInitCar(tCarElt *car)
     char		path[256];
     myLoaderOptions	options ;
 
+    if (!CarsAnchorTmp) {
+	CarsAnchorTmp = new ssgBranch();
+    }
 
     grInitBoardCar(car);
 
@@ -643,6 +647,12 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
 	clr[1] = 0.1 + car->_brakeTemp(i) * 0.3;
 	clr[2] = 0.1 - car->_brakeTemp(i) * 0.3;
     }
+
+    /* push the car at the end of the display order */
+    CarsAnchorTmp->addKid(grCarInfo[index].carTransform);
+    CarsAnchor->removeKid(grCarInfo[index].carTransform);
+    CarsAnchor->addKid(grCarInfo[index].carTransform);
+    CarsAnchorTmp->removeKid(grCarInfo[index].carTransform);
 
     TRACE_GL("cggrDrawCar: end");
 }

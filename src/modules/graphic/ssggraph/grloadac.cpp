@@ -268,11 +268,14 @@ static ssgState *get_state ( _ssgMaterial *mat )
   if (current_tfname != NULL) {
     st -> setTexture( current_options -> createTexture(current_tfname) ) ;
     st -> enable( GL_TEXTURE_2D ) ;
+    if (isacar==TRUE) {
+	st -> enable  ( GL_BLEND );
+    }
     if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
       {
-	st -> enable  ( GL_BLEND );
 	st->setAlphaClamp(0.65);
 	st -> enable ( GL_ALPHA_TEST ) ;
+	st -> enable  ( GL_BLEND );
       }
   } else {
     st -> disable  ( GL_BLEND ) ;

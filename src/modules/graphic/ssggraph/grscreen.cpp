@@ -74,6 +74,9 @@ cGrScreen::~cGrScreen()
     }
 
     board->shutdown ();
+
+    free(cars);
+    
     delete board;
 }
 
@@ -216,6 +219,21 @@ void cGrScreen::selectCamera(int cam)
     GfParmWriteFile(NULL, grHandle, "Graph");
 }
 
+static class cGrPerspCamera *ThedispCam;	/* the display camera */
+
+static int
+comparCars(const void *car1, const void *car2)
+{
+    float d1 = ThedispCam->getDist2(*(tCarElt**)car1);
+    float d2 = ThedispCam->getDist2(*(tCarElt**)car2);
+
+    if (d1 > d2) {
+	return -1;
+    } else {
+	return 1;
+    }
+}
+
 void cGrScreen::camDraw(tSituation *s)
 {
     int		i;
@@ -243,9 +261,12 @@ void cGrScreen::camDraw(tSituation *s)
     glFogf(GL_FOG_END, dispCam->getFogEnd());
     glEnable(GL_FOG);
 
+    /*sort the cars by distance for transparent windows */
+    ThedispCam = dispCam;
+    qsort(cars, s->_ncars, sizeof(tCarElt*), comparCars);
+  
     for (i = 0; i < s->_ncars; i++) {
-	/* FIXME: sort the cars by distance for transparent windows */
-	grDrawCar(s->cars[i], curCar, dispCam->getDrawCurrent(), s->currentTime, dispCam);
+	grDrawCar(cars[i], curCar, dispCam->getDrawCurrent(), s->currentTime, dispCam);
     } 
     STOP_PROFILE("grDrawCar*");
 	
@@ -403,6 +424,7 @@ void cGrScreen::loadParams(tSituation *s)
 void cGrScreen::initCams(tSituation *s)
 {
     tdble		fovFactor;
+    int			i;
 
     fovFactor = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, (char*)NULL, 1.0);
     fovFactor *= GfParmGetNum(grTrackHandle, TRK_SECT_GRAPH, TRK_ATT_FOVFACT, (char*)NULL, 1.0);
@@ -434,6 +456,11 @@ void cGrScreen::initCams(tSituation *s)
     memset(cams, 0, sizeof(cams));
 
     grCamCreateSceneCameraList(this, cams, fovFactor);
+
+    cars = (tCarElt**)calloc(s->_ncars, sizeof (tCarElt*));
+    for (i = 0; i < s->_ncars; i++) {
+	cars[i] = s->cars[i];
+    }
 
     loadParams(s);
 }

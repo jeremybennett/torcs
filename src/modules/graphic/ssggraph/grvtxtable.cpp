@@ -320,16 +320,16 @@ void grVtxTable::draw_geometry_for_a_car ()
     {
 	/* UP Vector for OpenGl */
 	axis[0]=0;
-	axis[1]=1;
-	axis[2]=0;
+	axis[1]=0;
+	axis[2]=1;
 
 	glActiveTextureARB (GL_TEXTURE2_ARB);
 	sgMakeRotMat4(mat, grCarInfo[indexCar].envAngle, axis);
-	grEnvShadowState->apply(2);
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity ();
 	glMultMatrixf ((float *)mat);
 	glMatrixMode(GL_MODELVIEW);
+	grEnvShadowState->apply(2);
     }
 
   grEnvState->apply(1);
@@ -470,16 +470,16 @@ void grVtxTable::draw_geometry_for_a_car_array ()
     {
 	/* UP Vector for OpenGl */
 	axis[0]=0;
-	axis[1]=1;
-	axis[2]=0;
+	axis[1]=0;
+	axis[2]=1;
 
 	glActiveTextureARB (GL_TEXTURE2_ARB);
 	sgMakeRotMat4(mat, grCarInfo[indexCar].envAngle, axis);
-	grEnvShadowState->apply(2);
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity ();
 	glMultMatrixf ((float *)mat);
 	glMatrixMode(GL_MODELVIEW);
+	grEnvShadowState->apply(2);
     }
 
   grEnvState->apply(1);

@@ -42,6 +42,17 @@
 
 static char path[1024];
 
+
+float
+cGrCamera::getDist2 (tCarElt *car)
+{
+    float dx = car->_pos_X - eye[0];
+    float dy = car->_pos_Y - eye[1];
+
+    return dx * dx + dy * dy;
+}
+
+
 static void
 grMakeLookAtMat4 ( sgMat4 dst, const sgVec3 eye, const sgVec3 center, const sgVec3 up )
 {
@@ -844,15 +855,17 @@ class cGrCarCamRoadNoZoom : public cGrPerspCamera
 	    eye[0] = grWrldX * 0.5;
 	    eye[1] = grWrldY * 0.6;
 	    eye[2] = 120;
+	    center[2] = car->_pos_Z;
 	} else {
 	    eye[0] = curCam->pos.x;
 	    eye[1] = curCam->pos.y;
 	    eye[2] = curCam->pos.z;
+	    center[2] = curCam->pos.z;
 	}
 	
 	center[0] = car->_pos_X;
 	center[1] = car->_pos_Y;
-	center[2] = car->_pos_Z;
+	/* center[2] = car->_pos_Z; */
     }
 };
 

@@ -412,12 +412,6 @@ grInitScene(void)
     light_position[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Z, NULL, light_position[2]);
 
     glShadeModel(GL_SMOOTH);
-    /*glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
-      glMaterialfv (GL_FRONT, GL_SHININESS, mat_shininess);
-      glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
-      glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-      glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
-    */
     light->setPosition(light_position[0],light_position[1],light_position[2]);
     light->setColour(GL_AMBIENT,lmodel_ambient);
     light->setColour(GL_DIFFUSE,lmodel_diffuse);
@@ -470,19 +464,7 @@ grLoadScene(tTrack *track)
     if (maxTextureUnits==0)
       {
 	InitMultiTex();   
-	if( maxTextureUnits>1)
-	  {
-/* 	    glActiveTextureARB ( GL_TEXTURE1_ARB ) ; */
-/* 	    glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
-/* 	    glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
-/* 	    glActiveTextureARB ( GL_TEXTURE0_ARB ) ; */
-	  }
       }
-
-/*     glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
-/*     glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); */
-    /*glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-      glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);*/
 
     ssgSetCurrentOptions(&options);
     ssgAddTextureFormat(".png", grLoadPngTexture);
@@ -533,7 +515,6 @@ grLoadScene(tTrack *track)
     ssgTexturePath(buf);
     sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
     ssgModelPath(buf);
-    /*desc = ssgLoad((const char *)acname*/ /* , (const ssgLoaderOptions *)&grloaderOptions *//* );*/
 
     desc = grssgLoadAC3D(acname, NULL);
     LandAnchor->addKid(desc);
