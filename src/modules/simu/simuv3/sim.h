@@ -132,6 +132,20 @@ inline float safe_urandom() {
 	return X;
 }
 
+inline void t2sg3 (t3Dd& p, sgVec3& v)
+{
+	v[SG_X] = p.x;
+	v[SG_Y] = p.y;
+	v[SG_Z] = p.z;
+}
+
+inline void sg2t3 (sgVec3& v, t3Dd& p)
+{
+	p.x = v[SG_X];
+	p.y = v[SG_Y];
+	p.z = v[SG_Z];
+}
+
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13
 #define SIM_VECT_ACCEL	14
