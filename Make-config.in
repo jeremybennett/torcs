@@ -1,0 +1,64 @@
+##############################################################################
+#
+#    file                 : Make-config.in
+#    created              : Mon Dec 11 23:47:37 CET 2000
+#    copyright            : (C) 2000 by Eric Espié                        
+#    email                : Eric.Espie@torcs.org   
+#    version              : $Id$                                  
+#
+##############################################################################
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+##############################################################################
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = ${TORCS_BASE}
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+instdir = ${prefix}/games/@PACKAGE@
+
+top_builddir = .
+
+CC = @CC@
+CXX = @CXX@
+LD = @LD@
+AR = @AR@
+ARFLAGS = ruv
+RANLIB = @RANLIB@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL@ -m 755
+INSTALL_DATA = @INSTALL@ -m 666
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+
+CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
+
+CXXFLAGS =  @CXXFLAGS@ ${CFLAGSD}
+CFLAGS =  @CFLAGS@ ${CFLAGSD}
+
+GL_LIBNAME = @GL_LIBNAME@
+
+EXT_LIBS = -lpthread -lpng -lz -lglut -l${GL_LIBNAME}GLU -l${GL_LIBNAME}GL @LIBS@
+LDFLAGS =  @LDFLAGS@ @GL_LDFLAGS@ @GLUT_LDFLAGS@ @X_LDFLAGS@ -L/usr/lib -L/usr/local/lib
+
+INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include @X_INCLUDES@ @GL_INCLUDES@ @GLUT_INCLUDES@
+
+CPP = @CPP@ $(CPPFLAGS) -M -D__DEPEND__
+
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+TAR = gtar
+GZIP_ENV = --best
+

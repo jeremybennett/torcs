@@ -1,0 +1,75 @@
+##############################################################################
+#
+#    file                 : configure.in
+#    created              : Mon Dec 11 22:34:38 CET 2000
+#    copyright            : (C) 2000 by Eric Espié                        
+#    email                : Eric.Espie@torcs.org   
+#    version              : $Id$                                  
+#
+##############################################################################
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+##############################################################################
+
+
+AC_INIT(Make-config.in)
+AM_INIT_AUTOMAKE(torcs, 1.0.0)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_RANLIB
+AC_PROG_INSTALL
+
+dnl Checks for header files.
+AC_HEADER_STDC
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_HEADER_TIME
+
+dnl Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+
+AC_CHECK_COMPILERS
+
+AC_CHECK_PROG(AR, ar, :, ar, /usr/bin/ar)
+AC_CHECK_PROG(LD, ld, :, ld, /usr/bin/ld)
+
+AC_PATH_X
+TORCS_PATH_X
+
+CPPFLAGS="$CPPFLAGS -L$x_libraries"
+
+dnl Checks for libraries.
+
+dnl Replace `main' with a function in -lm:
+AC_CHECK_LIB(m, sin,,AC_MSG_ERROR([Can't find libm. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lX11:
+AC_CHECK_LIB(X11, XOpenDisplay,,AC_MSG_ERROR([Can't find libX11. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lXext:
+AC_CHECK_LIB(Xext, XShmCreateImage,,AC_MSG_ERROR([Can't find libXext. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lICE:
+AC_CHECK_LIB(ICE, IceSetIOErrorHandler,,AC_MSG_ERROR([Can't find libICE. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lSM:
+AC_CHECK_LIB(SM, SmsSetErrorHandler,,AC_MSG_ERROR([Can't find libSM. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lXt:
+AC_CHECK_LIB(Xt, XtDisplay,,AC_MSG_ERROR([Can't find libXt. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lXi:
+AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check your installation and add the correct paths!]))
+dnl Replace `main' with a function in -lXmu:
+AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check your installation and add the correct paths!]),-lXt)
+
+AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check your installation and add the correct paths!]))
+
+
+AC_HAVE_GL
+AC_PATH_GLUT
+
+AC_OUTPUT(Make-config \
+          src/tools/launcher/torcs \
+          src/doc/torcsdoc.conf)
