@@ -16,9 +16,9 @@
 
 <table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
 	<tr class="submitbuttoncolor">
-		<th class="filledlist" align="left">Topic</th>
+		<th class="filledlist" align="left" style="width:340px;">Topic</th>
 		<th class="filledlist" align="left">Author</th>
-		<th class="filledlist" align="left">Replies</th>
+		<th class="filledlist" align="left" title="Replies">R</th>
 		<th class="filledlist" align="left">Last Post</th>
 	</tr>
 	<!-- BEGIN row -->
