@@ -2,7 +2,7 @@
 <!-- 
     file                 : g-track-2.xml
     created              : Sun Mar 19 00:18:38 CET 2000
-    copyright            : (C) 2000 C.guionneau                       
+    copyright            : (C) 2000 C. Guionneau
     email                : torcs@free.fr   
     version              : $Id$                                  
 -->
@@ -33,13 +33,13 @@
   <section name="Graphic">
     <attstr name="3d description" val="g-track-2.acc"/>
     <attstr name="background image" val="background.png"/>
-    <attnum name="background color R" val="0.28"/>
-    <attnum name="background color G" val="0.44"/>
-    <attnum name="background color B" val="0.75"/>
+    <attnum name="background color R" val="0.55"/>
+    <attnum name="background color G" val="0.55"/>
+    <attnum name="background color B" val="0.6"/>
 
-    <attnum name="ambient color R" val="0.1"/>
-    <attnum name="ambient color G" val="0.1"/>
-    <attnum name="ambient color B" val="0.1"/>
+    <attnum name="ambient color R" val="0.2"/>
+    <attnum name="ambient color G" val="0.2"/>
+    <attnum name="ambient color B" val="0.2"/>
 
     <attnum name="diffuse color R" val="1"/>
     <attnum name="diffuse color G" val="1"/>
@@ -52,8 +52,8 @@
     <attnum name="shininess" val="5"/>
 
 
-    <attnum name="light position x" val="-5000"/>
-    <attnum name="light position y" val="-50"/>
+    <attnum name="light position x" val="-10000"/>
+    <attnum name="light position y" val="-10000"/>
     <attnum name="light position z" val="15000"/>
 
     <section name="Environment Mapping">
@@ -1413,7 +1413,7 @@
       <attnum name="color R2" val="0.4"/>
       <attnum name="color G2" val="0.4"/>
       <attnum name="color B2" val="0.1"/>
-      <attstr name="texture name" val="assandr.rgb"/>
+      <attstr name="texture name" val="asconcr.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="5.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
@@ -1474,7 +1474,7 @@
       <attnum name="color R2" val="0.2"/>
       <attnum name="color G2" val="0.5"/>
       <attnum name="color B2" val="0.2"/>
-      <attstr name="texture name" val="asgrassr.rgb"/>
+      <attstr name="texture name" val="asconcr.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="5" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
@@ -1496,7 +1496,7 @@
       <attnum name="color R2" val="0.2"/>
       <attnum name="color G2" val="0.5"/>
       <attnum name="color B2" val="0.2"/>
-      <attstr name="texture name" val="asgrassr.rgb"/>
+      <attstr name="texture name" val="asconcr.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="5" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
@@ -1629,7 +1629,7 @@
       <attnum name="color R2" val="0.2"/>
       <attnum name="color G2" val="0.2"/>
       <attnum name="color B2" val="0.2"/>
-      <attstr name="texture name" val="asasphr.rgb"/>
+      <attstr name="texture name" val="asconcr.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="5" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
