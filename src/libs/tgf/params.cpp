@@ -95,6 +95,8 @@ struct parmHeader
 {
     char				*filename;	/**< Name of the configuration file */
     char				*name;		/**< Name of the data */
+    char				*dtd;		/**< Optional DTD location */
+    char				*header;	/**< Optional header (comment, xsl...) */
     int					refcount;	/**< Use counter (number of conf handle) */
     struct section			*rootSection;	/**< List of sections at the first level */
     void				*paramHash;	/**< Hash table for parameter access */
@@ -1085,6 +1087,7 @@ static int
 xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
 {
     struct parmOutput	*outCtrl = &(parmHandle->outCtrl);
+    struct parmHeader	*conf = parmHandle->conf;
     struct section	*curSection;
     struct param	*curParam;
     struct within	*curWithin;
@@ -1103,7 +1106,13 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
 	    return 1;
 
 	case 1:
-	    sprintf (buffer, "<!DOCTYPE params SYSTEM \"params.dtd\">\n");
+	    if (conf->dtd == NULL) {
+		conf->dtd = strdup("params.dtd");
+	    }
+	    if (conf->header == NULL) {
+		conf->header = strdup("");
+	    }
+	    sprintf (buffer, "<!DOCTYPE params SYSTEM \"%s\">\n%s\n", conf->dtd, conf->header);
 	    *outCtrl->indent = 0;
 	    outCtrl->state = 2;
 	    return 1;
@@ -1269,6 +1278,30 @@ GfParmWriteBuf (void *handle, char *buf, int size)
     return 0;
 }
 
+/** Set the dtd path and header if necessary
+    @ingroup	conf
+    @param	parmHandle	Configuration handle
+    @param	dtd		Optional dtd path
+    @param	header		Optional header
+    @return	none
+*/
+void
+GfParmSetDTD (void *parmHandle, char *dtd, char*header)
+{
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+    struct parmHeader	*conf = handle->conf;
+
+    if (dtd) {
+	FREEZ(conf->dtd);
+	conf->dtd = strdup(dtd);
+    }
+    
+    if (header) {
+	FREEZ(conf->header);
+	conf->header = header;
+    }
+}
+
 
 /** Write a configuration file.
     @ingroup	conf
@@ -1403,6 +1436,8 @@ parmReleaseHeader (struct parmHeader *conf)
 	GfHashRelease (conf->sectionHash, NULL);
     }
     freez (conf->rootSection);
+    freez (conf->dtd);
+    freez (conf->header);
     freez (conf);
 }
 

@@ -29,7 +29,7 @@ EXPORTS      = singleplayer.h
 
 SHIPDIR      = config
 
-SHIP         = raceengine.xml
+SHIP         = raceengine.xml style.xsl
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

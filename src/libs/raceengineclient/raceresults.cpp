@@ -109,6 +109,7 @@ ReUpdateStandings(void)
     int			found;
     tReStandings	*standings = 0;
     void		*results = ReInfo->results;
+    char		str1[1024], str2[1024];
 
     sprintf(path, "%s/%s/%s/%s", ReInfo->track->name, RE_SECT_RESULTS, ReInfo->_reRaceName, RE_SECT_RANK);
 
@@ -186,6 +187,11 @@ ReUpdateStandings(void)
 	GfParmSetNum(results, path, RE_ATTR_POINTS, NULL, standings[i].points);
     }
     free(standings);
+
+    sprintf(str1, "%sconfig/param.dtd", GetDataDir());
+    sprintf(str2, "<?xml-stylesheet type=\"text/xsl\" href=\"%sconfig/style.xsl\"?>", GetDataDir());
+    
+    GfParmSetDTD (results, str1, str2);
     GfParmWriteFile(0, results, "Results");
 }
 

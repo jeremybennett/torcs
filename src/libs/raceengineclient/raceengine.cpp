@@ -225,7 +225,7 @@ ReManage(tCarElt *car)
 			case RM_TYPE_PRACTICE:
 			    if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 				ReInfo->_refreshDisplay = 1;
-				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
+				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d", 
 					car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0),
 					info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
 				ReResScreenAddText(buf);
@@ -478,9 +478,9 @@ ReOneStep(double deltaTimeIncrement)
     if (floor(s->currentTime) == -2.0) {
 	ReRaceBigMsgSet("Ready !", 1.0);
     } else if (floor(s->currentTime) == -1.0) {
-	ReRaceBigMsgSet("Set !", 1.0);
+	ReRaceBigMsgSet("", 1.0);
     } else if (floor(s->currentTime) == 0.0) {
-	ReRaceBigMsgSet("Go !", 1.0);
+	ReRaceBigMsgSet("", 1.0);
     }
 
     ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
@@ -550,7 +550,7 @@ reCapture(void)
     glReadBuffer(GL_FRONT);
     glReadPixels((sw-vw)/2, (sh-vh)/2, vw, vh, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)img);
 
-    sprintf(buf, "%s/torcs-%04.4d-%08.8d.png", capture->outputBase, capture->currentCapture, capture->currentFrame++);
+    sprintf(buf, "%s/torcs-%4.4d-%8.8d.png", capture->outputBase, capture->currentCapture, capture->currentFrame++);
     GfImgWritePng(img, buf, vw, vh);
     free(img);
 }

@@ -139,7 +139,7 @@ void
 ReSetRaceMsg(char *msg)
 {
     static char *curMsg = 0;
-    
+
     if (curMsg) free(curMsg);
     if (msg) {
 	curMsg = strdup(msg);

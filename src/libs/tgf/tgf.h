@@ -278,6 +278,9 @@ extern int GfParmWriteFile(const char *file, void* handle, char *name);
 extern char *GfParmGetName(void *handle);
 extern char *GfParmGetFileName(void *handle);
 
+/* set the dtd and header values */
+extern void GfParmSetDTD (void *parmHandle, char *dtd, char*header);
+
 /* get string parameter value */
 extern char *GfParmGetStr(void *handle, char *path, char *key, char *deflt);
 /* get string parameter value */
