@@ -51,6 +51,8 @@ typedef struct Suspension
 
     tdble x; /* suspension travel */
     tdble v; /* suspension travel speed */
+    tdble fx; // pure elastic collision 
+    tdble fy; // pure elastic collision
 
     tdble force;        /* generated force */
     int    state;        /* indicate the state of the suspension */

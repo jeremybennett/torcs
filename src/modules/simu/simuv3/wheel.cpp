@@ -126,16 +126,19 @@ SimWheelUpdateRide(tCar *car, int index)
  	angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
  	angles.y = car->DynGC.pos.ay;
  	angles.z = car->DynGC.pos.az + waz;
-	NaiveRotate (d, angles, &rel_normal);
-	wheel->susp.x = wheel->rideHeight = rel_normal.z;
-	//	obsolete 
-// 	NaiveRotate (normal, angles, &rel_normal);
-// 	wheel->susp.x = wheel->rideHeight = ( wheel->pos.z - Zroad)*rel_normal.z;
+	NaiveRotate (normal, angles, &rel_normal);
+	if (rel_normal.z > 0) {
+	    wheel->susp.x = wheel->rideHeight = dZ/rel_normal.z;
+	    wheel->susp.fx = wheel->susp.x * rel_normal.x;
+	    wheel->susp.fy = wheel->susp.x* rel_normal.y;
+	}
+	//	NaiveRotate (d, angles, &rel_normal);
+	//	wheel->susp.x = wheel->rideHeight = rel_normal.z;
     } else {
 	wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
     }
     /* verify the suspension travel */
-    SimSuspCheckIn(&(wheel->susp));
+    SimSuspCheckIn(&(wheel->susp));                                                                                                                                                                                                                                                                   
     wheel->susp.v = (prex - wheel->susp.x) / SimDeltaTime;
     /* update wheel brake */
     SimBrakeUpdate(car, wheel, &(wheel->brake));
@@ -199,13 +202,13 @@ SimWheelUpdateForce(tCar *car, int index)
 	   reaction. Now we have included the reaction from the sides
 	   which is fake. */
 	if (right_way_up) {
-	    Ft = rel_normal.x * f_z;
-	    Fn = rel_normal.y * f_z;
-	    //	    Ft = -rel_normal.x/rel_normal.z * f_z;
-	    //	    Fn = -rel_normal.y/rel_normal.z * f_z;
+	    if (rel_normal.z > 0) {
+		Ft = rel_normal.x * f_z;// rel_normal.z;
+		Fn = rel_normal.y * f_z;// rel_normal.z;
+	    }
 	    wheel->forces.x = 0;
 	    wheel->forces.y = 0;
-	    wheel->forces.z = f_z;//&rel_normal.z;
+	    wheel->forces.z = f_z;
 	} else {
 	    f_z = 0;
 	    wheel->susp.force = 0;
@@ -284,14 +287,14 @@ SimWheelUpdateForce(tCar *car, int index)
     Ft2 = 0.0;
     if (s > 0.000001) {
 	/* wheel axis based - no control after an angle*/
-	if (rel_normal.z > 0.25) {
-	    Ft2 = -F*sx/s;
+	if (rel_normal.z > 0.1) {
+	    Ft2 = - F*sx/s;
 	    Ft +=  Ft2;
 	    Fn -=  F*sy / s;
 	} else {
-	    Ft2 = -F*SIGN(sx)*s;
+	    Ft2 = -F*SIGN(sx)/s*rel_normal.z;
 	    Ft += Ft2;
-	    Fn -= F*SIGN(sy)*s;
+	    Fn -= F*SIGN(sy)/s*rel_normal.z;
 	}
     }
 
@@ -309,8 +312,9 @@ SimWheelUpdateForce(tCar *car, int index)
     if (right_way_up==false) {
 	Fn = 0;
 	Ft = 0;
-	wheel->forces.x = -wheel->forces.x;
-	wheel->forces.y = -wheel->forces.y;
+	wheel->forces.x = 0.0;
+	wheel->forces.y = 0.0;
+	wheel->forces.z = 0.0;
 	Ft2 = 0.0;
     }
     wheel->spinTq = Ft2 * wheel->radius;

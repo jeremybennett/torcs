@@ -192,9 +192,11 @@ SimCarUpdateForces(tCar *car)
 	F.F.z += car->wheel[i].forces.z;
 	/* moments */
 	F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * (car->wheel[i].rollCenter);
+	    car->wheel[i].forces.y * //(car->wheel[i].rollCenter);
+	    (car->statGC.z + car->wheel[i].rideHeight);
 	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
-	    car->wheel[i].forces.x * (car->statGC.z + car->wheel[i].rideHeight);
+	    car->wheel[i].forces.x * //car->wheel[i].relPos.z;
+	    (car->statGC.z + car->wheel[i].rideHeight);
 	F.M.z += -car->wheel[i].forces.x * car->wheel[i].staticPos.y +
 	    car->wheel[i].forces.y * car->wheel[i].staticPos.x;
     }
@@ -372,24 +374,34 @@ SimCarUpdateWheelPos(tCar *car)
     vx = car->DynGC.vel.x;
     vy = car->DynGC.vel.y;
     /* Wheels data */
-    // Note that the naive calculation of wheel position does not work for large angles ay, ax. Especially x and y are not properly done.
     if (1) {
 	t3Dd angles;
-	angles.x = car->DynGC.pos.ax;
-	angles.y = car->DynGC.pos.ay;
-	angles.z = car->DynGC.pos.az;
+	t3Dd normal;
+	t3Dd rel_normal;
+
+
 	for (i = 0; i < 4; i++) {
 	    t3Dd pos;
-	    pos.x = car->wheel[i].staticPos.x;
-	    pos.y = car->wheel[i].staticPos.y;
-	    pos.z = -car->statGC.z; // or car->wheel[i].staticPos.z; ??
-	    NaiveInverseRotate (pos, angles, &car->wheel[i].pos);
-	    car->wheel[i].pos.x += car->DynGC.pos.x;
-	    car->wheel[i].pos.y += car->DynGC.pos.y;
-	    car->wheel[i].pos.z += car->DynGC.pos.z;
+	    tWheel *wheel = &(car->wheel[i]);
+	    pos.x = wheel->staticPos.x;
+	    pos.y = wheel->staticPos.y;
+	    pos.z = -car->statGC.z; // or wheel->staticPos.z; ??
+	    angles.x = car->DynGC.pos.ax;
+	    angles.y = car->DynGC.pos.ay;
+	    angles.z = car->DynGC.pos.az;
+	    NaiveInverseRotate (pos, angles, &wheel->pos);
+	    wheel->pos.x += car->DynGC.pos.x;
+	    wheel->pos.y += car->DynGC.pos.y;
+	    wheel->pos.z += car->DynGC.pos.z;
+	    //	    angles.x += wheel->relPos.ax;
+	    //	    angles.z += wheel->steer + wheel->staticPos.az;
 	    
-	    car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * car->wheel[i].staticPos.y;
-	    car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * car->wheel[i].staticPos.x;
+	    wheel->bodyVel.x = vx
+		- car->DynGC.vel.az * wheel->staticPos.y;
+	    + car->DynGC.vel.ay * wheel->staticPos.x;
+	    wheel->bodyVel.y = vy
+		+ car->DynGC.vel.az * wheel->staticPos.x;
+	    - car->DynGC.vel.ax * wheel->staticPos.y;
 	}
     } else {
 	for (i = 0; i < 4; i++) {
@@ -461,6 +473,7 @@ SimCarUpdateCornerPos(tCar *car)
     for (i = 0; i < 4; i++) {
 	tdble x = car->corner[i].pos.x;
 	tdble y = car->corner[i].pos.y;
+	
 	tdble dx = x * Cosz - y * Sinz;
 	tdble dy = x * Sinz + y * Cosz;
 	

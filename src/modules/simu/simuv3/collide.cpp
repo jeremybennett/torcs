@@ -44,48 +44,25 @@ SimCarCollideZ(tCar *car)
     angles.y = car->DynGC.pos.ay;
     angles.z = car->DynGC.pos.az;
     NaiveRotate (normal, angles, &rel_normal);
-    tdble Nz = car->DynGCg.pos.z - 1.0-  RtTrackHeightL(&(car->trkPos));
-    if (Nz>0.0) Nz = 0.0;
-    if (Nz<-0.1) Nz = -0.1;
 
-    if (rel_normal.z < 0.0) {
-    printf ("%f %f %f\n", rel_normal.z, Nz, car->DynGCg.pos.z);
-	for (i = 0; i < 4; i++) {
-	    wheel = &(car->wheel[i]);
-	    car->DynGCg.pos.x -= Nz*normal.x;
-	    car->DynGCg.pos.y -= Nz*normal.y;
-	    car->DynGCg.pos.z -= Nz*normal.z;
-	    
-	    if ((car->DynGCg.vel.ax * wheel->staticPos.y) < 0) {
-		car->DynGCg.vel.ax = 0;
-	    }
-	    if ((car->DynGCg.vel.ay * wheel->staticPos.x) < 0) { 
-		car->DynGCg.vel.ay = 0;
-	    }
-	    RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
-	    dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
-	    if (dotProd < 0) {
-		car->DynGCg.vel.x -= normal.x * dotProd;
-		car->DynGCg.vel.y -= normal.y * dotProd;
-		car->DynGCg.vel.z -= normal.z * dotProd;
-		if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-		    car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
-		}
-	    }
-	}
+    if (rel_normal.z < 0) {
+	car->dammage += 100;
+	car->DynGCg.pos.ax = 0;
+	car->DynGCg.pos.ay = 0;
+	car->DynGCg.pos.az = 0;
 	return;
     }
-
-
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	if (wheel->state & SIM_SUSP_COMP) {
 	    t3Dd angles;
 	    t3Dd orig;
 	    t3Dd delta;
+	    t3Dd rel_normal;
 	    orig.x = 0.0;
 	    orig.y = 0.0;
 	    orig.z = wheel->susp.spring.packers - wheel->rideHeight;
+
 	    angles.x = car->DynGC.pos.ax;
 	    angles.y = car->DynGC.pos.ay;
 	    angles.z = car->DynGC.pos.az;
@@ -94,21 +71,40 @@ SimCarCollideZ(tCar *car)
 	    car->DynGCg.pos.y += delta.y;
 	    car->DynGCg.pos.z += delta.z;
 	    
-	    if ((car->DynGCg.vel.ax * wheel->staticPos.y) < 0) {
-		car->DynGCg.vel.ax = 0;
-	    }
-	    if ((car->DynGCg.vel.ay * wheel->staticPos.x) < 0) { 
-		car->DynGCg.vel.ay = 0;
-	    }
 	    RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 	    dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
 	    if (dotProd < 0) {
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
+
 		if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 		    car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 		}
+	    }
+	    NaiveRotate (normal, angles, &rel_normal);
+	    // dotProd = (car->DynGC.vel.x * rel_normal.x + car->DynGC.vel.y * rel_normal.y + car->DynGC.vel.z * rel_normal.z) * wheel->trkPos.seg->surface->kRebound;
+
+	    if (0) {//dotProd < 0) {
+		t3Dd forces;
+		forces.x = 0.5*dotProd * rel_normal.x;
+		forces.y = 0.5*dotProd * rel_normal.y;
+		forces.z = 0.5*dotProd * rel_normal.z;
+		car->DynGCg.vel.ax -=
+		    (car->mass * car->Iinv.x) *
+		    (forces.z * wheel->relPos.y +
+		     forces.y * wheel->rollCenter);
+		//(car->statGC.z + wheel->rideHeight));
+		//		     forces.y * wheel->relPos.z);
+		car->DynGCg.vel.ay -=
+		    (car->mass * car->Iinv.y) *
+		    (forces.z * wheel->relPos.x +
+		     forces.x * (car->statGC.z));// + wheel->rideHeight));
+		//forces.x * wheel->relPos.z);
+		car->DynGCg.vel.az +=
+		    (car->mass * car->Iinv.z) *
+		    (-forces.x * wheel->relPos.y +
+		     forces.y * wheel->relPos.x);
 	    }
 	}
     }

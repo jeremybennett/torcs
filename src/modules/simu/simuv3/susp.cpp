@@ -103,6 +103,9 @@ SimSuspCheckIn(tSuspension *susp)
 	susp->x = susp->spring.xMax;
 	susp->state = SIM_SUSP_EXT;
     }
+
+    susp->fx *= susp->spring.K;
+    susp->fy *= susp->spring.K;
 }
 
 void
