@@ -29,7 +29,7 @@ EXPORTS
 	GfuiHelpScreen
 	GfuiScreenShot
 	GfuiScreenAddBgImg
-	GfuiVisiblilitySet
+	GfuiVisibilitySet
 	GfuiEnable
 	GfuiUnSelectCurrent
 	GfuiLabelCreate

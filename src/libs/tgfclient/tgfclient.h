@@ -155,7 +155,7 @@ extern void GfuiMouseSetHWPresent(void);
 /* all widgets */
 #define	GFUI_VISIBLE	1	/**< Object visibility flag  */
 #define	GFUI_INVISIBLE	0	/**< Object invisibility flag  */
-extern int GfuiVisiblilitySet(void *scr, int id, int visible);
+extern int GfuiVisibilitySet(void *scr, int id, int visible);
 #define	GFUI_DISABLE	1
 #define	GFUI_ENABLE	0
 extern int GfuiEnable(void *scr, int id, int flag);

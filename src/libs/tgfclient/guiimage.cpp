@@ -36,13 +36,14 @@
     This kind of image is not clickable.
     @ingroup	gui
     @param	scr	Screen where to add the label
-    @param	x	Position of the image on the screen
-    @param	y	Position of the image on the screen
+    @param	x	Position of the left of the image on the screen
+    @param	y	Position of the bottom of the image on the screen
     @param	w	Width of the image on the screen
     @param	h	Height of the image on the screen
     @param	name	Filename on the image (png)
     @return	Image Id
 		<br>-1 Error
+    @warning	the image must be sqare and its size must be a power of 2.
 */
 int
 GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name)
@@ -73,12 +74,13 @@ GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name)
     return object->id;
 }
 
-/** Set a new image.
+/** Replace an image by another one.
     @ingroup	gui
     @param	scr	Screen where to add the label
     @param	id	Image Id
     @param	name	Filename on the image (png)
     @return	none
+    @warning	the image must be sqare and its size must be a power of 2.
 */
 void
 GfuiStaticImageSet(void *scr, int id, char *name)

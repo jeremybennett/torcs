@@ -89,12 +89,12 @@ GfuiMenuScreenCreate(char *title)
 static void
 dispInfo(void *cbinfo)
 {
-    GfuiVisiblilitySet(((tMnuCallbackInfo*)cbinfo)->screen, ((tMnuCallbackInfo*)cbinfo)->labelId, 1);
+    GfuiVisibilitySet(((tMnuCallbackInfo*)cbinfo)->screen, ((tMnuCallbackInfo*)cbinfo)->labelId, 1);
 }
 static void
 remInfo(void *cbinfo)
 {
-    GfuiVisiblilitySet(((tMnuCallbackInfo*)cbinfo)->screen, ((tMnuCallbackInfo*)cbinfo)->labelId, 0);
+    GfuiVisibilitySet(((tMnuCallbackInfo*)cbinfo)->screen, ((tMnuCallbackInfo*)cbinfo)->labelId, 0);
 }
 
 
@@ -131,7 +131,7 @@ GfuiMenuButtonCreate(void *scr, char *text, char *tip, void *userdata, tfuiCallb
     cbinfo->screen = scr;
     cbinfo->labelId = GfuiTipCreate(scr, tip, strlen(tip));
 
-    GfuiVisiblilitySet(scr, cbinfo->labelId, 0);
+    GfuiVisibilitySet(scr, cbinfo->labelId, 0);
     
     bId = GfuiButtonCreate(scr,
 			   text,
@@ -167,7 +167,7 @@ GfuiMenuBackQuitButtonCreate(void *scr, char *text, char *tip, void *userdata, t
     cbinfo->screen = scr;
     cbinfo->labelId = GfuiTipCreate(scr, tip, strlen(tip));
 
-    GfuiVisiblilitySet(scr, cbinfo->labelId, 0);
+    GfuiVisibilitySet(scr, cbinfo->labelId, 0);
     
     bId = GfuiButtonCreate(scr,
 			text,

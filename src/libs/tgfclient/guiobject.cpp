@@ -385,7 +385,7 @@ gfuiSelectId(void *scr, int id)
     }
 }
 
-/** Set/unset the visibility attribute of an object
+/** Set/unset the visibility attribute of an object.
     @param	scr	Screen    
     @param	id	Object id
     @param	visible	GFUI_VISIBLE or GFUI_INVISIBLE
@@ -394,7 +394,7 @@ gfuiSelectId(void *scr, int id)
     @ingroup	gui
  */
 int
-GfuiVisiblilitySet(void *scr, int id, int visible)
+GfuiVisibilitySet(void *scr, int id, int visible)
 {
     tGfuiObject *curObject;
     

@@ -35,8 +35,8 @@
 
   <section name="Console Font">
     <attstr name="name"        val="b7.glf"/>
-    <attnum name="size big"    val="10"/>
-    <attnum name="size large"  val="8"/>
+    <attnum name="size big"    val="14"/>
+    <attnum name="size large"  val="10"/>
     <attnum name="size medium" val="6"/>
     <attnum name="size small"  val="5"/>
   </section>
