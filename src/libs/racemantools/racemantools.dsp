@@ -111,6 +111,10 @@ SOURCE=.\driverselect.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\fileselect.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\loadingscreen.cpp
 # End Source File
 # Begin Source File

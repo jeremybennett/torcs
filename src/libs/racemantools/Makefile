@@ -20,7 +20,7 @@ SOLIBRARY = libracemantools.so
 
 SOLIBDIR  = .
 
-SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp
+SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp fileselect.cpp
 
 EXPDIR    = include
 

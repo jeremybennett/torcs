@@ -161,6 +161,7 @@ GfuiTipCreate(void *scr, char *text, int maxlen)
     @param	scr	Screen where to add the label
     @param	text	Text of the title
     @param	maxlen	Maximum length of the button string (used when the label is changed)
+    			<br>0 for the text length.
     @return	label Id
     @see	GfuiSetLabelText
  */

@@ -56,7 +56,15 @@ typedef struct
 #define RM_CONF_DISP_MODE	0x00000002
 } tRmRaceParam;
 
+typedef void (*tfSelectFile) (char *);
 
+typedef struct
+{
+    char		*title;
+    char		*path;
+    void        	*prevScreen;
+    tfSelectFile	select;
+} tRmFileSelect;
 
 
 extern void RmTrackSelect(void * /* vs */);
@@ -87,6 +95,7 @@ extern void RmRaceParamMenu(void *vrp);
 
 extern void RmShowStandings(void *prevHdle, tRmInfo *info);
 
+extern void RmFileSelect(void *vs);
 
 #endif /* __RACEMANTOOLS_H__ */
 

@@ -43,6 +43,7 @@ static void		*newTrackMenuHdle = NULL;
 static tRmTrackSelect	ts;
 static tRmDrvSelect	ds;
 static tRmRaceParam	rp;
+static tRmFileSelect    fs;
 
 static char		path[1024];
 static char		buf[1024];
@@ -207,6 +208,35 @@ reConfigureMenu(void * /* dummy */)
     reConfigRunState();
 }
 
+static void
+reSelectLoadFile(char *filename)
+{
+    sprintf(buf, "results/%s/%s", ReInfo->_reFilename, filename);
+    GfOut("Loading Saved File %s...\n", buf);
+    ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    ReInfo->_reRaceName = ReInfo->_reName;
+    RmShowStandings(ReInfo->_reGameScreen, ReInfo);
+}
+
+static void
+reLoadMenu(void *prevHandle)
+{
+    char *str;
+    void *params = ReInfo->params;
+
+    fs.prevScreen = prevHandle;
+    fs.select = reSelectLoadFile;
+
+    str = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, 0);
+    if (str) {
+	fs.title = str;
+    }
+    sprintf(buf, "results/%s", ReInfo->_reFilename);
+    fs.path = buf;
+
+    RmFileSelect((void*)&fs);
+}
+
 int
 ReRacemanMenu(void)
 {
@@ -238,12 +268,16 @@ ReRacemanMenu(void)
 			 "New Race", "Start a New Race",
 			 NULL, ReStartNewRace);
 
-    
     GfuiMenuButtonCreate(racemanMenuHdle, 
-			 "Configure", "Configure",
+			 "Configure", "Configure The Race",
 			 NULL, reConfigureMenu);
 
-
+    if (GfParmGetEltNb(params, RM_SECT_TRACKS) > 1) {
+	GfuiMenuButtonCreate(racemanMenuHdle, 
+			     "Load", "Load a Previously Saved Game",
+			     racemanMenuHdle, reLoadMenu);
+    }
+    
     GfuiMenuBackQuitButtonCreate(racemanMenuHdle,
 				 "Back to Main", "Return to previous Menu",
 				 ReInfo->_reMenuScreen, GfuiScreenActivate);
@@ -283,8 +317,9 @@ ReNewTrackMenu(void)
 
     GfuiMenuDefaultKeysAdd(newTrackMenuHdle);
 
-    sprintf(buf, "Race Day #%d on %s",
+    sprintf(buf, "Race Day #%d/%d on %s",
 	    (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1),
+	    GfParmGetEltNb(params, RM_SECT_TRACKS),
 	    ReInfo->track->name);
 
     GfuiLabelCreateEx(newTrackMenuHdle,
