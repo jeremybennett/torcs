@@ -11,7 +11,6 @@ kids 10
 OBJECT poly
 name "tkMn0"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 664.996 0 -30
 664.996 8.03848 0
@@ -104,7 +103,6 @@ kids 0
 OBJECT poly
 name "t0LB0"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 664.996 0 -31
 664.996 0 -30
@@ -197,7 +195,6 @@ kids 0
 OBJECT poly
 name "t1LB0"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 14
 664.996 0 -46
 664.996 0 -31
@@ -290,7 +287,6 @@ kids 0
 OBJECT poly
 name "B0Rt0"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 664.996 8.03848 0
 664.996 9.53848 0
@@ -383,7 +379,6 @@ kids 0
 OBJECT poly
 name "B1Rt0"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 664.996 9.53848 0
 664.996 9.53848 0.5
@@ -476,7 +471,6 @@ kids 0
 OBJECT poly
 name "B2Rt0"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 664.996 9.53848 0.5
 664.996 8.03848 0.5
@@ -569,7 +563,6 @@ kids 0
 OBJECT poly
 name "B0Lt0"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 814.996 0.6 -46
 814.996 0 -46
@@ -662,7 +655,6 @@ kids 0
 OBJECT poly
 name "S1Bg0"
 texture "pylon1.rgb"
-crease 85.000000
 numvert 8
 664.996 14.0385 -46.1
 664.996 0 -46.1
@@ -725,7 +717,6 @@ kids 0
 OBJECT poly
 name "S2Bg0"
 texture "pylon2.rgb"
-crease 85.000000
 numvert 8
 664.996 16.0385 0.1
 664.996 14.0385 0.1
@@ -794,7 +785,6 @@ kids 0
 OBJECT poly
 name "S3Bg0"
 texture "pylon2.rgb"
-crease 85.000000
 numvert 8
 666.996 16.0385 -48.1
 664.996 16.0385 -48.1
@@ -866,7 +856,6 @@ kids 1
 OBJECT poly
 name "S4Bg2"
 texture "pylon3.rgb"
-crease 85.000000
 numvert 8
 664.996 14.0385 -46.1
 664.996 14.0385 0.1
@@ -932,7 +921,6 @@ kids 6
 OBJECT poly
 name "tkMn6"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 721.246 0 -30
 721.246 8.03848 0
@@ -1025,7 +1013,6 @@ kids 0
 OBJECT poly
 name "t0LB6"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 721.246 0 -31
 721.246 0 -30
@@ -1118,7 +1105,6 @@ kids 0
 OBJECT poly
 name "tkLS6"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 14
 721.246 0 -46
 721.246 0 -31
@@ -1211,7 +1197,6 @@ kids 0
 OBJECT poly
 name "B0Rt6"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 721.246 8.03848 0
 721.246 9.53848 0
@@ -1304,7 +1289,6 @@ kids 0
 OBJECT poly
 name "B1Rt6"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 721.246 9.53848 0
 721.246 9.53848 0.5
@@ -1397,7 +1381,6 @@ kids 0
 OBJECT poly
 name "B2Rt6"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 721.246 9.53848 0.5
 721.246 8.03848 0.5
@@ -1493,7 +1476,6 @@ kids 6
 OBJECT poly
 name "tkMn12"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 777.496 0 -30
 777.496 8.03848 0
@@ -1586,7 +1568,6 @@ kids 0
 OBJECT poly
 name "t0LB12"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 10
 777.496 0 -31
 777.496 0 -30
@@ -1651,7 +1632,6 @@ kids 0
 OBJECT poly
 name "tkLS12"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 10
 777.496 0 -46
 777.496 0 -31
@@ -1716,7 +1696,6 @@ kids 0
 OBJECT poly
 name "B0Rt12"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 777.496 8.03848 0
 777.496 9.53848 0
@@ -1809,7 +1788,6 @@ kids 0
 OBJECT poly
 name "B1Rt12"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 777.496 9.53848 0
 777.496 9.53848 0.5
@@ -1902,7 +1880,6 @@ kids 0
 OBJECT poly
 name "B2Rt12"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 777.496 9.53848 0.5
 777.496 8.03848 0.5
@@ -1998,7 +1975,6 @@ kids 1
 OBJECT poly
 name "P22ts14"
 texture "concrete2.rgb"
-crease 85.000000
 numvert 6
 814.996 5 -45.8
 814.996 4.8 -45.8
@@ -2038,7 +2014,6 @@ kids 2
 OBJECT poly
 name "t0LB16"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 14
 814.996 0 -31
 814.996 0 -30
@@ -2131,7 +2106,6 @@ kids 0
 OBJECT poly
 name "tkLS16"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 814.996 0 -46
 814.996 0 -31
@@ -2227,7 +2201,6 @@ kids 4
 OBJECT poly
 name "tkMn18"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 833.746 0 -30
 833.746 8.03848 0
@@ -2320,7 +2293,6 @@ kids 0
 OBJECT poly
 name "B0Rt18"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 833.746 8.03848 0
 833.746 9.53848 0
@@ -2413,7 +2385,6 @@ kids 0
 OBJECT poly
 name "B1Rt18"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 833.746 9.53848 0
 833.746 9.53848 0.5
@@ -2506,7 +2477,6 @@ kids 0
 OBJECT poly
 name "B2Rt18"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 833.746 9.53848 0.5
 833.746 8.03848 0.5
@@ -2602,7 +2572,6 @@ kids 3
 OBJECT poly
 name "t0LB22"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 14
 871.246 0 -31
 871.246 0 -30
@@ -2695,7 +2664,6 @@ kids 0
 OBJECT poly
 name "tkLS22"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 871.246 0 -43.375
 871.246 0 -31
@@ -2788,7 +2756,6 @@ kids 0
 OBJECT poly
 name "B0Lt22"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 871.246 0.6 -43.375
 871.246 0 -43.375
@@ -2884,7 +2851,6 @@ kids 4
 OBJECT poly
 name "tkMn24"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 889.996 0 -30
 889.996 8.03848 0
@@ -2977,7 +2943,6 @@ kids 0
 OBJECT poly
 name "B0Rt24"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 889.996 8.03848 0
 889.996 9.53848 0
@@ -3070,7 +3035,6 @@ kids 0
 OBJECT poly
 name "B1Rt24"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 889.996 9.53848 0
 889.996 9.53848 0.5
@@ -3163,7 +3127,6 @@ kids 0
 OBJECT poly
 name "B2Rt24"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 889.996 9.53848 0.5
 889.996 8.03848 0.5
@@ -3259,7 +3222,6 @@ kids 3
 OBJECT poly
 name "t0LB28"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 10
 927.496 0 -31
 927.496 0 -30
@@ -3324,7 +3286,6 @@ kids 0
 OBJECT poly
 name "tkLS28"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 927.496 0 -40.75
 927.496 0 -31
@@ -3417,7 +3378,6 @@ kids 0
 OBJECT poly
 name "B0Lt28"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 927.496 0.6 -40.75
 927.496 0 -40.75
@@ -3513,7 +3473,6 @@ kids 4
 OBJECT poly
 name "tkMn30"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 946.246 0 -30
 946.246 8.03848 0
@@ -3606,7 +3565,6 @@ kids 0
 OBJECT poly
 name "B0Rt30"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 946.246 8.03848 0
 946.246 9.53848 0
@@ -3699,7 +3657,6 @@ kids 0
 OBJECT poly
 name "B1Rt30"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 946.246 9.53848 0
 946.246 9.53848 0.5
@@ -3792,7 +3749,6 @@ kids 0
 OBJECT poly
 name "B2Rt30"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 946.246 9.53848 0.5
 946.246 8.03848 0.5
@@ -3888,7 +3844,6 @@ kids 1
 OBJECT poly
 name "t0LB32"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 964.996 0 -31
 964.996 0 -30
@@ -3984,7 +3939,6 @@ kids 2
 OBJECT poly
 name "tkLS34"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 983.738 0 -39.4674
 984.137 0 -31.4773
@@ -4077,7 +4031,6 @@ kids 0
 OBJECT poly
 name "B0Lt34"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 983.738 0.6 -39.4674
 983.738 0 -39.4674
@@ -4173,7 +4126,6 @@ kids 4
 OBJECT poly
 name "tkMn36"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1003.33 0 -31.9132
 1006.32 8.03848 -2.06223
@@ -4266,7 +4218,6 @@ kids 0
 OBJECT poly
 name "B0Rt36"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1006.32 8.03848 -2.06223
 1006.32 9.53848 -2.06223
@@ -4359,7 +4310,6 @@ kids 0
 OBJECT poly
 name "B1Rt36"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1006.32 9.53848 -2.06223
 1006.37 9.53848 -1.56471
@@ -4452,7 +4402,6 @@ kids 0
 OBJECT poly
 name "B2Rt36"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1006.37 9.53848 -1.56471
 1006.37 8.03848 -1.56471
@@ -4548,7 +4497,6 @@ kids 1
 OBJECT poly
 name "t0LB38"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1022.23 0 -35.289
 1022.38 0 -34.3001
@@ -4644,7 +4592,6 @@ kids 2
 OBJECT poly
 name "tkLS40"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1039.5 0 -46.4551
 1041.08 0 -38.6138
@@ -4737,7 +4684,6 @@ kids 0
 OBJECT poly
 name "B0Lt40"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1039.5 0.6 -46.4551
 1039.5 0 -46.4551
@@ -4833,7 +4779,6 @@ kids 4
 OBJECT poly
 name "tkMn42"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1060 0 -41.9052
 1067.4 8.03848 -12.8329
@@ -4926,7 +4871,6 @@ kids 0
 OBJECT poly
 name "B0Rt42"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1067.4 8.03848 -12.8329
 1067.4 9.53848 -12.8329
@@ -5019,7 +4963,6 @@ kids 0
 OBJECT poly
 name "B1Rt42"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1067.4 9.53848 -12.8329
 1067.52 9.53848 -12.3484
@@ -5112,7 +5055,6 @@ kids 0
 OBJECT poly
 name "B2Rt42"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1067.52 9.53848 -12.3484
 1067.52 8.03848 -12.3484
@@ -5208,7 +5150,6 @@ kids 1
 OBJECT poly
 name "t0LB44"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1078.18 0 -48.06
 1078.48 0 -47.1045
@@ -5304,7 +5245,6 @@ kids 2
 OBJECT poly
 name "tkLS46"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1093.6 0 -61.6756
 1096.33 0 -54.158
@@ -5397,7 +5337,6 @@ kids 0
 OBJECT poly
 name "B0Lt46"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1093.6 0.6 -61.6756
 1093.6 0 -61.6756
@@ -5493,7 +5432,6 @@ kids 4
 OBJECT poly
 name "tkMn48"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1114.54 0 -60.2317
 1126.2 8.03848 -32.5874
@@ -5586,7 +5524,6 @@ kids 0
 OBJECT poly
 name "B0Rt48"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1126.2 8.03848 -32.5874
 1126.2 9.53848 -32.5874
@@ -5679,7 +5616,6 @@ kids 0
 OBJECT poly
 name "B1Rt48"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1126.2 9.53848 -32.5874
 1126.39 9.53848 -32.1266
@@ -5772,7 +5708,6 @@ kids 0
 OBJECT poly
 name "B2Rt48"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1126.39 9.53848 -32.1266
 1126.39 8.03848 -32.1266
@@ -5868,7 +5803,6 @@ kids 1
 OBJECT poly
 name "t0LB50"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1131.61 0 -69.028
 1132.04 0 -68.127
@@ -5964,7 +5898,6 @@ kids 2
 OBJECT poly
 name "tkLS52"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1144.82 0 -84.7887
 1148.65 0 -77.7629
@@ -6057,7 +5990,6 @@ kids 0
 OBJECT poly
 name "B0Lt52"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1144.82 0.6 -84.7887
 1144.82 0 -84.7887
@@ -6153,7 +6085,6 @@ kids 4
 OBJECT poly
 name "tkMn54"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1165.5 0 -86.3748
 1181.34 8.03848 -60.8988
@@ -6246,7 +6177,6 @@ kids 0
 OBJECT poly
 name "B0Rt54"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1181.34 8.03848 -60.8988
 1181.34 9.53848 -60.8988
@@ -6339,7 +6269,6 @@ kids 0
 OBJECT poly
 name "B1Rt54"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1181.34 9.53848 -60.8988
 1181.6 9.53848 -60.4742
@@ -6432,7 +6361,6 @@ kids 0
 OBJECT poly
 name "B2Rt54"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1181.6 9.53848 -60.4742
 1181.6 8.03848 -60.4742
@@ -6528,7 +6456,6 @@ kids 1
 OBJECT poly
 name "t0LB56"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1180.42 0 -97.549
 1181 0 -96.7362
@@ -6624,7 +6551,6 @@ kids 2
 OBJECT poly
 name "tkLS58"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1190.09 0 -115.047
 1195.16 0 -108.862
@@ -6717,7 +6643,6 @@ kids 0
 OBJECT poly
 name "B0Lt58"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1190.09 0.6 -115.047
 1190.09 0 -115.047
@@ -6813,7 +6738,6 @@ kids 4
 OBJECT poly
 name "tkMn60"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1209.82 0 -120.386
 1230.33 8.03848 -98.4903
@@ -6906,7 +6830,6 @@ kids 0
 OBJECT poly
 name "B0Rt60"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1230.33 8.03848 -98.4903
 1230.33 9.53848 -98.4903
@@ -6999,7 +6922,6 @@ kids 0
 OBJECT poly
 name "B1Rt60"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1230.33 9.53848 -98.4903
 1230.67 9.53848 -98.1253
@@ -7092,7 +7014,6 @@ kids 0
 OBJECT poly
 name "B2Rt60"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1230.67 9.53848 -98.1253
 1230.67 8.03848 -98.1253
@@ -7188,7 +7109,6 @@ kids 1
 OBJECT poly
 name "t0LB62"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1222.28 0 -134.257
 1223.01 0 -133.574
@@ -7284,7 +7204,6 @@ kids 2
 OBJECT poly
 name "tkLS64"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1228.35 0 -153.305
 1234.53 0 -148.23
@@ -7377,7 +7296,6 @@ kids 0
 OBJECT poly
 name "B0Lt64"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1228.35 0.6 -153.305
 1228.35 0 -153.305
@@ -7473,7 +7391,6 @@ kids 4
 OBJECT poly
 name "tkMn66"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1246.66 0 -162.391
 1271.04 8.03848 -144.917
@@ -7566,7 +7483,6 @@ kids 0
 OBJECT poly
 name "B0Rt66"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1271.04 8.03848 -144.917
 1271.04 9.53848 -144.917
@@ -7659,7 +7575,6 @@ kids 0
 OBJECT poly
 name "B1Rt66"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1271.04 9.53848 -144.917
 1271.45 9.53848 -144.626
@@ -7752,7 +7667,6 @@ kids 0
 OBJECT poly
 name "B2Rt66"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1271.45 9.53848 -144.626
 1271.45 8.03848 -144.626
@@ -7848,7 +7762,6 @@ kids 1
 OBJECT poly
 name "t0LB68"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1256.17 0 -178.426
 1257.02 0 -177.898
@@ -7944,7 +7857,6 @@ kids 2
 OBJECT poly
 name "tkLS70"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1258.41 0 -198.292
 1265.46 0 -194.521
@@ -8037,7 +7949,6 @@ kids 0
 OBJECT poly
 name "B0Lt70"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1258.41 0.6 -198.292
 1258.41 0 -198.292
@@ -8133,7 +8044,6 @@ kids 4
 OBJECT poly
 name "tkMn72"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1274.59 0 -210.776
 1301.92 8.03848 -198.395
@@ -8226,7 +8136,6 @@ kids 0
 OBJECT poly
 name "B0Rt72"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1301.92 8.03848 -198.395
 1301.92 9.53848 -198.395
@@ -8319,7 +8228,6 @@ kids 0
 OBJECT poly
 name "B1Rt72"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1301.92 9.53848 -198.395
 1302.37 9.53848 -198.188
@@ -8412,7 +8320,6 @@ kids 0
 OBJECT poly
 name "B2Rt72"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1302.37 9.53848 -198.188
 1302.37 8.03848 -198.188
@@ -8508,7 +8415,6 @@ kids 1
 OBJECT poly
 name "t0LB74"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1280.79 0 -228.359
 1281.73 0 -228.006
@@ -8604,7 +8510,6 @@ kids 2
 OBJECT poly
 name "tkLS76"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1279.11 0 -248.279
 1286.77 0 -245.957
@@ -8697,7 +8602,6 @@ kids 0
 OBJECT poly
 name "B0Lt76"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1279.11 0.6 -248.279
 1279.11 0 -248.279
@@ -8793,7 +8697,6 @@ kids 4
 OBJECT poly
 name "tkMn78"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1292.55 0 -263.681
 1321.77 8.03848 -256.869
@@ -8886,7 +8789,6 @@ kids 0
 OBJECT poly
 name "B0Rt78"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1321.77 8.03848 -256.869
 1321.77 9.53848 -256.869
@@ -8979,7 +8881,6 @@ kids 0
 OBJECT poly
 name "B1Rt78"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1321.77 9.53848 -256.869
 1322.25 9.53848 -256.755
@@ -9072,7 +8973,6 @@ kids 0
 OBJECT poly
 name "B2Rt78"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1322.25 9.53848 -256.755
 1322.25 8.03848 -256.755
@@ -9168,7 +9068,6 @@ kids 1
 OBJECT poly
 name "t0LB80"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1295.2 0 -282.135
 1296.19 0 -281.972
@@ -9264,7 +9163,6 @@ kids 2
 OBJECT poly
 name "tkLS82"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1289.67 0 -301.345
 1297.63 0 -300.561
@@ -9357,7 +9255,6 @@ kids 0
 OBJECT poly
 name "B0Lt82"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1289.67 0.6 -301.345
 1289.67 0 -301.345
@@ -9453,7 +9350,6 @@ kids 4
 OBJECT poly
 name "tkMn84"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1299.84 0 -319.073
 1329.83 8.03848 -318.091
@@ -9546,7 +9442,6 @@ kids 0
 OBJECT poly
 name "B0Rt84"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1329.83 8.03848 -318.091
 1329.83 9.53848 -318.091
@@ -9639,7 +9534,6 @@ kids 0
 OBJECT poly
 name "B1Rt84"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1329.83 9.53848 -318.091
 1330.33 9.53848 -318.075
@@ -9732,7 +9626,6 @@ kids 0
 OBJECT poly
 name "B2Rt84"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1330.33 9.53848 -318.075
 1330.33 8.03848 -318.075
@@ -9828,7 +9721,6 @@ kids 1
 OBJECT poly
 name "t0LB86"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1298.88 0 -337.971
 1299.88 0 -337.996
@@ -9924,7 +9816,6 @@ kids 2
 OBJECT poly
 name "tkLS88"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1289.94 0 -356.496
 1297.92 0 -357.094
@@ -10017,7 +9908,6 @@ kids 0
 OBJECT poly
 name "B0Lt88"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1289.94 0.6 -356.496
 1289.94 0 -356.496
@@ -10113,7 +10003,6 @@ kids 4
 OBJECT poly
 name "tkMn90"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1297.01 0 -376.27
 1326.78 8.03848 -380
@@ -10206,7 +10095,6 @@ kids 0
 OBJECT poly
 name "B0Rt90"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1326.78 8.03848 -380
 1326.78 9.53848 -380
@@ -10299,7 +10187,6 @@ kids 0
 OBJECT poly
 name "B1Rt90"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1326.78 9.53848 -380
 1327.27 9.53848 -380.062
@@ -10392,7 +10279,6 @@ kids 0
 OBJECT poly
 name "B2Rt90"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1327.27 9.53848 -380.062
 1327.27 8.03848 -380.062
@@ -10488,7 +10374,6 @@ kids 1
 OBJECT poly
 name "t0LB92"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1293.16 0 -395.078
 1294.15 0 -395.252
@@ -10584,7 +10469,6 @@ kids 2
 OBJECT poly
 name "tkLS94"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1281.57 0 -412.065
 1289.37 0 -413.846
@@ -10677,7 +10561,6 @@ kids 0
 OBJECT poly
 name "B0Lt94"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1281.57 0.6 -412.065
 1281.57 0 -412.065
@@ -10773,7 +10656,6 @@ kids 4
 OBJECT poly
 name "tkMn96"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1285.61 0 -432.671
 1314.49 8.03848 -440.796
@@ -10866,7 +10748,6 @@ kids 0
 OBJECT poly
 name "B0Rt96"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1314.49 8.03848 -440.796
 1314.49 9.53848 -440.796
@@ -10959,7 +10840,6 @@ kids 0
 OBJECT poly
 name "B1Rt96"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1314.49 9.53848 -440.796
 1314.97 9.53848 -440.932
@@ -11052,7 +10932,6 @@ kids 0
 OBJECT poly
 name "B2Rt96"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1314.97 9.53848 -440.932
 1314.97 8.03848 -440.932
@@ -11148,7 +11027,6 @@ kids 1
 OBJECT poly
 name "t0LB98"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1279 0 -450.696
 1279.95 0 -451.015
@@ -11244,7 +11122,6 @@ kids 2
 OBJECT poly
 name "tkLS100"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1265 0 -465.766
 1272.45 0 -468.688
@@ -11337,7 +11214,6 @@ kids 0
 OBJECT poly
 name "B0Lt100"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1265 0.6 -465.766
 1265 0 -465.766
@@ -11433,7 +11309,6 @@ kids 4
 OBJECT poly
 name "tkMn102"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1265.93 0 -486.743
 1293.27 8.03848 -499.081
@@ -11526,7 +11401,6 @@ kids 0
 OBJECT poly
 name "B0Rt102"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1293.27 8.03848 -499.081
 1293.27 9.53848 -499.081
@@ -11619,7 +11493,6 @@ kids 0
 OBJECT poly
 name "B1Rt102"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1293.27 9.53848 -499.081
 1293.73 9.53848 -499.287
@@ -11712,7 +11585,6 @@ kids 0
 OBJECT poly
 name "B2Rt102"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1293.73 9.53848 -499.287
 1293.73 8.03848 -499.287
@@ -11808,7 +11680,6 @@ kids 1
 OBJECT poly
 name "t0LB104"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1256.71 0 -503.582
 1257.6 0 -504.038
@@ -11904,7 +11775,6 @@ kids 2
 OBJECT poly
 name "tkLS106"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1240.62 0 -516.397
 1247.55 0 -520.397
@@ -11997,7 +11867,6 @@ kids 0
 OBJECT poly
 name "B0Lt106"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1240.62 0.6 -516.397
 1240.62 0 -516.397
@@ -12093,7 +11962,6 @@ kids 4
 OBJECT poly
 name "tkMn108"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1238.41 0 -537.278
 1263.61 8.03848 -553.554
@@ -12186,7 +12054,6 @@ kids 0
 OBJECT poly
 name "B0Rt108"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1263.61 8.03848 -553.554
 1263.61 9.53848 -553.554
@@ -12279,7 +12146,6 @@ kids 0
 OBJECT poly
 name "B1Rt108"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1263.61 9.53848 -553.554
 1264.03 9.53848 -553.825
@@ -12372,7 +12238,6 @@ kids 0
 OBJECT poly
 name "B2Rt108"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1264.03 9.53848 -553.825
 1264.03 8.03848 -553.825
@@ -12468,7 +12333,6 @@ kids 1
 OBJECT poly
 name "t0LB110"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1226.78 0 -552.555
 1227.59 0 -553.139
@@ -12564,7 +12428,6 @@ kids 2
 OBJECT poly
 name "tkLS112"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1208.96 0 -562.83
 1215.22 0 -567.818
@@ -12657,7 +12520,6 @@ kids 0
 OBJECT poly
 name "B0Lt112"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1208.96 0.6 -562.83
 1208.96 0 -562.83
@@ -12753,7 +12615,6 @@ kids 4
 OBJECT poly
 name "tkMn114"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1203.66 0 -583.147
 1226.16 8.03848 -602.997
@@ -12846,7 +12707,6 @@ kids 0
 OBJECT poly
 name "B0Rt114"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1226.16 8.03848 -602.997
 1226.16 9.53848 -602.997
@@ -12939,7 +12799,6 @@ kids 0
 OBJECT poly
 name "B1Rt114"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1226.16 9.53848 -602.997
 1226.53 9.53848 -603.328
@@ -13032,7 +12891,6 @@ kids 0
 OBJECT poly
 name "B2Rt114"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1226.53 9.53848 -603.328
 1226.53 8.03848 -603.328
@@ -13128,7 +12986,6 @@ kids 1
 OBJECT poly
 name "t0LB116"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1189.89 0 -596.521
 1190.6 0 -597.219
@@ -13224,7 +13081,6 @@ kids 2
 OBJECT poly
 name "tkLS118"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1170.74 0 -604.025
 1176.18 0 -609.89
@@ -13317,7 +13173,6 @@ kids 0
 OBJECT poly
 name "B0Lt118"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1170.74 0.6 -604.025
 1170.74 0 -604.025
@@ -13413,7 +13268,6 @@ kids 4
 OBJECT poly
 name "tkMn120"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1162.47 0 -623.325
 1181.75 8.03848 -646.306
@@ -13506,7 +13360,6 @@ kids 0
 OBJECT poly
 name "B0Rt120"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1181.75 8.03848 -646.306
 1181.75 9.53848 -646.306
@@ -13599,7 +13452,6 @@ kids 0
 OBJECT poly
 name "B1Rt120"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1181.75 9.53848 -646.306
 1182.07 9.53848 -646.689
@@ -13692,7 +13544,6 @@ kids 0
 OBJECT poly
 name "B2Rt120"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1182.07 9.53848 -646.689
 1182.07 8.03848 -646.689
@@ -13788,7 +13639,6 @@ kids 1
 OBJECT poly
 name "t0LB122"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1146.86 0 -634.497
 1147.46 0 -635.294
@@ -13884,7 +13734,6 @@ kids 2
 OBJECT poly
 name "tkLS124"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1126.8 0 -639.063
 1131.31 0 -645.673
@@ -13977,7 +13826,6 @@ kids 0
 OBJECT poly
 name "B0Lt124"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1126.8 0.6 -639.063
 1126.8 0 -639.063
@@ -14073,7 +13921,6 @@ kids 4
 OBJECT poly
 name "tkMn126"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1115.75 0 -656.915
 1131.39 8.03848 -682.513
@@ -14166,7 +14013,6 @@ kids 0
 OBJECT poly
 name "B0Rt126"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1131.39 8.03848 -682.513
 1131.39 9.53848 -682.513
@@ -14259,7 +14105,6 @@ kids 0
 OBJECT poly
 name "B1Rt126"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1131.39 9.53848 -682.513
 1131.65 9.53848 -682.94
@@ -14352,7 +14197,6 @@ kids 0
 OBJECT poly
 name "B2Rt126"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1131.65 9.53848 -682.94
 1131.65 8.03848 -682.94
@@ -14448,7 +14292,6 @@ kids 1
 OBJECT poly
 name "t0LB128"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1098.53 0 -665.777
 1099.02 0 -666.648
@@ -14544,7 +14387,6 @@ kids 2
 OBJECT poly
 name "tkLS130"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1077.67 0 -668.09
 1081.44 0 -675.147
@@ -14637,7 +14479,6 @@ kids 0
 OBJECT poly
 name "B0Lt130"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1077.67 0.6 -668.09
 1077.67 0 -668.09
@@ -14733,7 +14574,6 @@ kids 4
 OBJECT poly
 name "tkMn132"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1064.6 0 -685.03
 1078.15 8.03848 -711.797
@@ -14826,7 +14666,6 @@ kids 0
 OBJECT poly
 name "B0Rt132"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1078.15 8.03848 -711.797
 1078.15 9.53848 -711.797
@@ -14919,7 +14758,6 @@ kids 0
 OBJECT poly
 name "B1Rt132"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1078.15 9.53848 -711.797
 1078.37 9.53848 -712.243
@@ -15012,7 +14850,6 @@ kids 0
 OBJECT poly
 name "B2Rt132"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1078.37 9.53848 -712.243
 1078.37 8.03848 -712.243
@@ -15108,7 +14945,6 @@ kids 1
 OBJECT poly
 name "t0LB134"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 1046.67 0 -692.745
 1047.1 0 -693.647
@@ -15204,7 +15040,6 @@ kids 2
 OBJECT poly
 name "tkLS136"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 1025.7 0 -693.674
 1029 0 -700.965
@@ -15297,7 +15132,6 @@ kids 0
 OBJECT poly
 name "B0Lt136"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 1025.7 0.6 -693.674
 1025.7 0 -693.674
@@ -15393,7 +15227,6 @@ kids 4
 OBJECT poly
 name "tkMn138"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 1011.54 0 -709.713
 1023.29 8.03848 -737.318
@@ -15486,7 +15319,6 @@ kids 0
 OBJECT poly
 name "B0Rt138"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1023.29 8.03848 -737.318
 1023.29 9.53848 -737.318
@@ -15579,7 +15411,6 @@ kids 0
 OBJECT poly
 name "B1Rt138"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1023.29 9.53848 -737.318
 1023.48 9.53848 -737.778
@@ -15672,7 +15503,6 @@ kids 0
 OBJECT poly
 name "B2Rt138"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 1023.48 9.53848 -737.778
 1023.48 8.03848 -737.778
@@ -15768,7 +15598,6 @@ kids 1
 OBJECT poly
 name "t0LB140"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 993.135 0 -716.226
 993.506 0 -717.155
@@ -15864,7 +15693,6 @@ kids 2
 OBJECT poly
 name "tkLS142"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 972.155 0 -715.768
 974.96 0 -723.26
@@ -15957,7 +15785,6 @@ kids 0
 OBJECT poly
 name "B0Lt142"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 972.155 0.6 -715.768
 972.155 0 -715.768
@@ -16053,7 +15880,6 @@ kids 4
 OBJECT poly
 name "tkMn144"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 956.965 0 -730.836
 966.862 8.03848 -759.156
@@ -16146,7 +15972,6 @@ kids 0
 OBJECT poly
 name "B0Rt144"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 966.862 8.03848 -759.156
 966.862 9.53848 -759.156
@@ -16239,7 +16064,6 @@ kids 0
 OBJECT poly
 name "B1Rt144"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 966.862 9.53848 -759.156
 967.027 9.53848 -759.628
@@ -16332,7 +16156,6 @@ kids 0
 OBJECT poly
 name "B2Rt144"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 967.027 9.53848 -759.628
 967.027 8.03848 -759.628
@@ -16428,7 +16251,6 @@ kids 1
 OBJECT poly
 name "t0LB146"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 938.168 0 -736.118
 938.477 0 -737.069
@@ -16524,7 +16346,6 @@ kids 2
 OBJECT poly
 name "tkLS148"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 917.264 0 -734.275
 919.568 0 -741.936
@@ -16617,7 +16438,6 @@ kids 0
 OBJECT poly
 name "B0Lt148"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 917.264 0.6 -734.275
 917.264 0 -734.275
@@ -16713,7 +16533,6 @@ kids 4
 OBJECT poly
 name "tkMn150"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 901.112 0 -748.306
 909.115 8.03848 -777.218
@@ -16806,7 +16625,6 @@ kids 0
 OBJECT poly
 name "B0Rt150"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 909.115 8.03848 -777.218
 909.115 9.53848 -777.218
@@ -16899,7 +16717,6 @@ kids 0
 OBJECT poly
 name "B1Rt150"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 909.115 9.53848 -777.218
 909.249 9.53848 -777.7
@@ -16992,7 +16809,6 @@ kids 0
 OBJECT poly
 name "B2Rt150"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 909.249 9.53848 -777.7
 909.249 8.03848 -777.7
@@ -17088,7 +16904,6 @@ kids 1
 OBJECT poly
 name "t0LB152"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 882.007 0 -752.334
 882.252 0 -753.303
@@ -17184,7 +16999,6 @@ kids 2
 OBJECT poly
 name "tkLS154"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 861.271 0 -749.113
 863.063 0 -756.91
@@ -17277,7 +17091,6 @@ kids 0
 OBJECT poly
 name "B0Lt154"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 861.271 0.6 -749.113
 861.271 0 -749.113
@@ -17373,7 +17186,6 @@ kids 4
 OBJECT poly
 name "tkMn156"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 844.226 0 -762.046
 850.301 8.03848 -791.424
@@ -17466,7 +17278,6 @@ kids 0
 OBJECT poly
 name "B0Rt156"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 850.301 8.03848 -791.424
 850.301 9.53848 -791.424
@@ -17559,7 +17370,6 @@ kids 0
 OBJECT poly
 name "B1Rt156"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 850.301 9.53848 -791.424
 850.403 9.53848 -791.914
@@ -17652,7 +17462,6 @@ kids 0
 OBJECT poly
 name "B2Rt156"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 850.403 9.53848 -791.914
 850.403 8.03848 -791.914
@@ -17748,7 +17557,6 @@ kids 1
 OBJECT poly
 name "t0LB158"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 824.896 0 -764.803
 825.077 0 -765.786
@@ -17844,7 +17652,6 @@ kids 2
 OBJECT poly
 name "tkLS160"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 804.419 0 -760.218
 805.692 0 -768.116
@@ -17937,7 +17744,6 @@ kids 0
 OBJECT poly
 name "B0Lt160"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 804.419 0.6 -760.218
 804.419 0 -760.218
@@ -18033,7 +17839,6 @@ kids 4
 OBJECT poly
 name "tkMn162"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 786.556 0 -771.996
 790.677 8.03848 -801.712
@@ -18126,7 +17931,6 @@ kids 0
 OBJECT poly
 name "B0Rt162"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 790.677 8.03848 -801.712
 790.677 9.53848 -801.712
@@ -18219,7 +18023,6 @@ kids 0
 OBJECT poly
 name "B1Rt162"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 790.677 9.53848 -801.712
 790.746 9.53848 -802.207
@@ -18312,7 +18115,6 @@ kids 0
 OBJECT poly
 name "B2Rt162"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 790.746 9.53848 -802.207
 790.746 8.03848 -802.207
@@ -18408,7 +18210,6 @@ kids 1
 OBJECT poly
 name "t0LB164"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 767.087 0 -773.47
 767.202 0 -774.463
@@ -18504,7 +18305,6 @@ kids 2
 OBJECT poly
 name "tkLS166"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 746.957 0 -767.542
 747.705 0 -775.507
@@ -18597,7 +18397,6 @@ kids 0
 OBJECT poly
 name "B0Lt166"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 746.957 0.6 -767.542
 746.957 0 -767.542
@@ -18693,7 +18492,6 @@ kids 4
 OBJECT poly
 name "tkMn168"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 728.355 0 -778.113
 730.503 8.03848 -808.036
@@ -18786,7 +18584,6 @@ kids 0
 OBJECT poly
 name "B0Rt168"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 730.503 8.03848 -808.036
 730.503 9.53848 -808.036
@@ -18879,7 +18676,6 @@ kids 0
 OBJECT poly
 name "B1Rt168"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 730.503 9.53848 -808.036
 730.539 9.53848 -808.535
@@ -18972,7 +18768,6 @@ kids 0
 OBJECT poly
 name "B2Rt168"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 730.539 9.53848 -808.535
 730.539 8.03848 -808.535
@@ -19068,7 +18863,6 @@ kids 1
 OBJECT poly
 name "t0LB170"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 708.831 0 -778.297
 708.881 0 -779.296
@@ -19164,7 +18958,6 @@ kids 2
 OBJECT poly
 name "tkLS172"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 689.137 0 -771.052
 689.357 0 -779.049
@@ -19257,7 +19050,6 @@ kids 0
 OBJECT poly
 name "B0Lt172"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 689.137 0.6 -771.052
 689.137 0 -771.052
@@ -19353,7 +19145,6 @@ kids 4
 OBJECT poly
 name "tkMn174"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 669.877 0 -780.371
 670.042 8.03848 -810.37
@@ -19446,7 +19237,6 @@ kids 0
 OBJECT poly
 name "B0Rt174"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 670.042 8.03848 -810.37
 670.042 9.53848 -810.37
@@ -19539,7 +19329,6 @@ kids 0
 OBJECT poly
 name "B1Rt174"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 670.042 9.53848 -810.37
 670.045 9.53848 -810.87
@@ -19632,7 +19421,6 @@ kids 0
 OBJECT poly
 name "B2Rt174"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 670.045 9.53848 -810.87
 670.045 8.03848 -810.87
@@ -19728,7 +19516,6 @@ kids 1
 OBJECT poly
 name "t0LB176"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 650.383 0 -779.264
 650.367 0 -780.263
@@ -19824,7 +19611,6 @@ kids 2
 OBJECT poly
 name "tkLS178"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 631.211 0 -770.733
 630.902 0 -778.727
@@ -19917,7 +19703,6 @@ kids 0
 OBJECT poly
 name "B0Lt178"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 631.211 0.6 -770.733
 631.211 0 -770.733
@@ -20013,7 +19798,6 @@ kids 4
 OBJECT poly
 name "tkMn180"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 611.377 0 -778.759
 609.56 8.03848 -808.703
@@ -20106,7 +19890,6 @@ kids 0
 OBJECT poly
 name "B0Rt180"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 609.56 8.03848 -808.703
 609.56 9.53848 -808.703
@@ -20199,7 +19982,6 @@ kids 0
 OBJECT poly
 name "B1Rt180"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 609.56 9.53848 -808.703
 609.53 9.53848 -809.203
@@ -20292,7 +20074,6 @@ kids 0
 OBJECT poly
 name "B2Rt180"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 609.53 9.53848 -809.203
 609.53 8.03848 -809.203
@@ -20388,7 +20169,6 @@ kids 1
 OBJECT poly
 name "t0LB182"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 592 0 -776.365
 591.917 0 -777.362
@@ -20484,7 +20264,6 @@ kids 2
 OBJECT poly
 name "tkLS184"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 573.433 0 -766.586
 572.597 0 -774.542
@@ -20577,7 +20356,6 @@ kids 0
 OBJECT poly
 name "B0Lt184"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 573.433 0.6 -766.586
 573.433 0 -766.586
@@ -20673,7 +20451,6 @@ kids 4
 OBJECT poly
 name "tkMn186"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 553.112 0 -773.284
 549.32 8.03848 -803.043
@@ -20766,7 +20543,6 @@ kids 0
 OBJECT poly
 name "B0Rt186"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 549.32 8.03848 -803.043
 549.32 9.53848 -803.043
@@ -20859,7 +20635,6 @@ kids 0
 OBJECT poly
 name "B1Rt186"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 549.32 9.53848 -803.043
 549.257 9.53848 -803.539
@@ -20952,7 +20727,6 @@ kids 0
 OBJECT poly
 name "B2Rt186"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 549.257 9.53848 -803.539
 549.257 8.03848 -803.539
@@ -21048,7 +20822,6 @@ kids 1
 OBJECT poly
 name "t0LB188"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 533.935 0 -769.615
 533.787 0 -770.604
@@ -21144,7 +20917,6 @@ kids 2
 OBJECT poly
 name "tkLS190"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 516.055 0 -758.63
 514.695 0 -766.513
@@ -21237,7 +21009,6 @@ kids 0
 OBJECT poly
 name "B0Lt190"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 516.055 0.6 -758.63
 516.055 0 -758.63
@@ -21333,7 +21104,6 @@ kids 4
 OBJECT poly
 name "tkMn192"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 495.337 0 -763.97
 489.585 8.03848 -793.413
@@ -21426,7 +21196,6 @@ kids 0
 OBJECT poly
 name "B0Rt192"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 489.585 8.03848 -793.413
 489.585 9.53848 -793.413
@@ -21519,7 +21288,6 @@ kids 0
 OBJECT poly
 name "B1Rt192"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 489.585 9.53848 -793.413
 489.49 9.53848 -793.904
@@ -21612,7 +21380,6 @@ kids 0
 OBJECT poly
 name "B2Rt192"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 489.49 9.53848 -793.904
 489.49 8.03848 -793.904
@@ -21708,7 +21475,6 @@ kids 1
 OBJECT poly
 name "t0LB194"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 476.444 0 -759.042
 476.231 0 -760.019
@@ -21804,7 +21570,6 @@ kids 2
 OBJECT poly
 name "tkLS196"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 459.329 0 -746.899
 457.451 0 -754.675
@@ -21897,7 +21662,6 @@ kids 0
 OBJECT poly
 name "B0Lt196"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 459.329 0.6 -746.899
 459.329 0 -746.899
@@ -21993,7 +21757,6 @@ kids 4
 OBJECT poly
 name "tkMn198"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 438.303 0 -750.858
 430.618 8.03848 -779.857
@@ -22086,7 +21849,6 @@ kids 0
 OBJECT poly
 name "B0Rt198"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.618 8.03848 -779.857
 430.618 9.53848 -779.857
@@ -22179,7 +21941,6 @@ kids 0
 OBJECT poly
 name "B1Rt198"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.618 9.53848 -779.857
 430.49 9.53848 -780.34
@@ -22272,7 +22033,6 @@ kids 0
 OBJECT poly
 name "B2Rt198"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.49 9.53848 -780.34
 430.49 8.03848 -780.34
@@ -22368,7 +22128,6 @@ kids 1
 OBJECT poly
 name "t0LB200"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 419.777 0 -744.692
 419.5 0 -745.653
@@ -22464,7 +22223,6 @@ kids 2
 OBJECT poly
 name "tkLS202"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 403.502 0 -731.445
 401.114 0 -739.08
@@ -22557,7 +22315,6 @@ kids 0
 OBJECT poly
 name "B0Lt202"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 403.502 0.6 -731.445
 403.502 0 -731.445
@@ -22653,7 +22410,6 @@ kids 4
 OBJECT poly
 name "tkMn204"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 382.26 0 -734.005
 372.676 8.03848 -762.433
@@ -22746,7 +22502,6 @@ kids 0
 OBJECT poly
 name "B0Rt204"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 372.676 8.03848 -762.433
 372.676 9.53848 -762.433
@@ -22839,7 +22594,6 @@ kids 0
 OBJECT poly
 name "B1Rt204"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 372.676 9.53848 -762.433
 372.516 9.53848 -762.907
@@ -22932,7 +22686,6 @@ kids 0
 OBJECT poly
 name "B2Rt204"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 372.516 9.53848 -762.907
 372.516 8.03848 -762.907
@@ -23028,7 +22781,6 @@ kids 1
 OBJECT poly
 name "t0LB206"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 364.182 0 -726.628
 363.842 0 -727.569
@@ -23124,7 +22876,6 @@ kids 2
 OBJECT poly
 name "tkLS208"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 348.819 0 -712.334
 345.931 0 -719.795
@@ -23217,7 +22968,6 @@ kids 0
 OBJECT poly
 name "B0Lt208"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 348.819 0.6 -712.334
 348.819 0 -712.334
@@ -23313,7 +23063,6 @@ kids 4
 OBJECT poly
 name "tkMn210"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 327.454 0 -713.486
 316.012 8.03848 -741.218
@@ -23406,7 +23155,6 @@ kids 0
 OBJECT poly
 name "B0Rt210"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 316.012 8.03848 -741.218
 316.012 9.53848 -741.218
@@ -23499,7 +23247,6 @@ kids 0
 OBJECT poly
 name "B1Rt210"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 316.012 9.53848 -741.218
 315.821 9.53848 -741.68
@@ -23592,7 +23339,6 @@ kids 0
 OBJECT poly
 name "B2Rt210"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 315.821 9.53848 -741.68
 315.821 8.03848 -741.68
@@ -23688,7 +23434,6 @@ kids 1
 OBJECT poly
 name "t0LB212"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 309.903 0 -704.93
 309.501 0 -705.846
@@ -23784,7 +23529,6 @@ kids 2
 OBJECT poly
 name "tkLS214"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 295.518 0 -689.652
 292.143 0 -696.906
@@ -23877,7 +23621,6 @@ kids 0
 OBJECT poly
 name "B0Lt214"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 295.518 0.6 -689.652
 295.518 0 -689.652
@@ -23973,7 +23716,6 @@ kids 4
 OBJECT poly
 name "tkMn216"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 274.123 0 -689.389
 260.873 8.03848 -716.304
@@ -24066,7 +23808,6 @@ kids 0
 OBJECT poly
 name "B0Rt216"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 260.873 8.03848 -716.304
 260.873 9.53848 -716.304
@@ -24159,7 +23900,6 @@ kids 0
 OBJECT poly
 name "B1Rt216"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 260.873 9.53848 -716.304
 260.653 9.53848 -716.753
@@ -24252,7 +23992,6 @@ kids 0
 OBJECT poly
 name "B2Rt216"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 260.653 9.53848 -716.753
 260.653 8.03848 -716.753
@@ -24348,7 +24087,6 @@ kids 1
 OBJECT poly
 name "t0LB218"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 257.176 0 -679.692
 256.715 0 -680.579
@@ -24444,7 +24182,6 @@ kids 2
 OBJECT poly
 name "tkLS220"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 243.832 0 -663.497
 239.986 0 -670.512
@@ -24537,7 +24274,6 @@ kids 0
 OBJECT poly
 name "B0Lt220"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 243.832 0.6 -663.497
 243.832 0 -663.497
@@ -24633,7 +24369,6 @@ kids 4
 OBJECT poly
 name "tkMn222"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 222.502 0 -661.82
 207.502 8.03848 -687.801
@@ -24726,7 +24461,6 @@ kids 0
 OBJECT poly
 name "B0Rt222"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 207.502 8.03848 -687.801
 207.502 9.53848 -687.801
@@ -24819,7 +24553,6 @@ kids 0
 OBJECT poly
 name "B1Rt222"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 207.502 9.53848 -687.801
 207.252 9.53848 -688.234
@@ -24912,7 +24645,6 @@ kids 0
 OBJECT poly
 name "B2Rt222"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 207.252 9.53848 -688.234
 207.252 8.03848 -688.234
@@ -25008,7 +24740,6 @@ kids 1
 OBJECT poly
 name "t0LB224"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 206.664 0 -650.97
 206.122 0 -651.81
@@ -25104,7 +24835,6 @@ kids 2
 OBJECT poly
 name "tkLS226"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 195.514 0 -633.689
 190.844 0 -640.185
@@ -25197,7 +24927,6 @@ kids 0
 OBJECT poly
 name "B0Lt226"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 195.514 0.6 -633.689
 195.514 0 -633.689
@@ -25293,7 +25022,6 @@ kids 4
 OBJECT poly
 name "tkMn228"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 174.958 0 -629.406
 156.254 8.03848 -652.861
@@ -25386,7 +25114,6 @@ kids 0
 OBJECT poly
 name "B0Rt228"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 156.254 8.03848 -652.861
 156.254 9.53848 -652.861
@@ -25479,7 +25206,6 @@ kids 0
 OBJECT poly
 name "B1Rt228"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 156.254 9.53848 -652.861
 155.942 9.53848 -653.252
@@ -25572,7 +25298,6 @@ kids 0
 OBJECT poly
 name "B2Rt228"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 155.942 9.53848 -653.252
 155.942 8.03848 -653.252
@@ -25668,7 +25393,6 @@ kids 1
 OBJECT poly
 name "t0LB230"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 160.914 0 -616.317
 160.253 0 -617.066
@@ -25764,7 +25488,6 @@ kids 2
 OBJECT poly
 name "tkLS232"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 152.465 0 -597.567
 146.879 0 -603.294
@@ -25857,7 +25580,6 @@ kids 0
 OBJECT poly
 name "B0Lt232"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 152.465 0.6 -597.567
 152.465 0 -597.567
@@ -25953,7 +25675,6 @@ kids 4
 OBJECT poly
 name "tkMn234"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 132.777 0 -590.267
 110.785 8.03848 -610.673
@@ -26046,7 +25767,6 @@ kids 0
 OBJECT poly
 name "B0Rt234"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 110.785 8.03848 -610.673
 110.785 9.53848 -610.673
@@ -26139,7 +25859,6 @@ kids 0
 OBJECT poly
 name "B1Rt234"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 110.785 9.53848 -610.673
 110.419 9.53848 -611.013
@@ -26232,7 +25951,6 @@ kids 0
 OBJECT poly
 name "B2Rt234"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 110.419 9.53848 -611.013
 110.419 8.03848 -611.013
@@ -26328,7 +26046,6 @@ kids 1
 OBJECT poly
 name "t0LB236"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 120.84 0 -575.231
 120.074 0 -575.874
@@ -26424,7 +26141,6 @@ kids 2
 OBJECT poly
 name "tkLS238"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 115.279 0 -555.431
 108.902 0 -560.262
@@ -26517,7 +26233,6 @@ kids 0
 OBJECT poly
 name "B0Lt238"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 115.279 0.6 -555.431
 115.279 0 -555.431
@@ -26613,7 +26328,6 @@ kids 4
 OBJECT poly
 name "tkMn240"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 96.8992 0 -545.279
 72.1121 8.03848 -562.179
@@ -26706,7 +26420,6 @@ kids 0
 OBJECT poly
 name "B0Rt240"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 72.1121 8.03848 -562.179
 72.1121 9.53848 -562.179
@@ -26799,7 +26512,6 @@ kids 0
 OBJECT poly
 name "B1Rt240"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 72.1121 9.53848 -562.179
 71.699 9.53848 -562.46
@@ -26892,7 +26604,6 @@ kids 0
 OBJECT poly
 name "B2Rt240"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 71.699 9.53848 -562.46
 71.699 8.03848 -562.46
@@ -26988,7 +26699,6 @@ kids 1
 OBJECT poly
 name "t0LB242"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 87.3373 0 -528.632
 86.484 0 -529.153
@@ -27084,7 +26794,6 @@ kids 2
 OBJECT poly
 name "tkLS244"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 84.7896 0 -508.224
 77.7639 0 -512.05
@@ -27177,7 +26886,6 @@ kids 0
 OBJECT poly
 name "B0Lt244"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 84.7896 0.6 -508.224
 84.7896 0 -508.224
@@ -27273,7 +26981,6 @@ kids 4
 OBJECT poly
 name "tkMn246"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 68.1278 0 -495.446
 41.0988 8.03848 -508.463
@@ -27366,7 +27073,6 @@ kids 0
 OBJECT poly
 name "B0Rt246"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 41.0988 8.03848 -508.463
 41.0988 9.53848 -508.463
@@ -27459,7 +27165,6 @@ kids 0
 OBJECT poly
 name "B1Rt246"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 41.0988 9.53848 -508.463
 40.6483 9.53848 -508.68
@@ -27552,7 +27257,6 @@ kids 0
 OBJECT poly
 name "B2Rt246"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 40.6483 9.53848 -508.68
 40.6483 8.03848 -508.68
@@ -27648,7 +27352,6 @@ kids 1
 OBJECT poly
 name "t0LB248"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 61.1539 0 -477.56
 60.2324 0 -477.948
@@ -27744,7 +27447,6 @@ kids 2
 OBJECT poly
 name "tkLS250"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 61.6762 0 -457
 54.1587 0 -459.737
@@ -27837,7 +27539,6 @@ kids 0
 OBJECT poly
 name "B0Lt250"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 61.6762 0.6 -457
 61.6762 0 -457
@@ -27933,7 +27634,6 @@ kids 4
 OBJECT poly
 name "tkMn252"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 47.105 0 -441.882
 18.4379 8.03848 -450.724
@@ -28026,7 +27726,6 @@ kids 0
 OBJECT poly
 name "B0Rt252"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 18.4379 8.03848 -450.724
 18.4379 9.53848 -450.724
@@ -28119,7 +27818,6 @@ kids 0
 OBJECT poly
 name "B1Rt252"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 18.4379 9.53848 -450.724
 17.9601 9.53848 -450.872
@@ -28212,7 +27910,6 @@ kids 0
 OBJECT poly
 name "B2Rt252"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 17.9601 9.53848 -450.872
 17.9601 8.03848 -450.872
@@ -28308,7 +28005,6 @@ kids 1
 OBJECT poly
 name "t0LB254"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 42.8748 0 -423.156
 41.9057 0 -423.402
@@ -28404,7 +28100,6 @@ kids 2
 OBJECT poly
 name "tkLS256"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 46.4554 0 -402.904
 38.6141 0 -404.489
@@ -28497,7 +28192,6 @@ kids 0
 OBJECT poly
 name "B0Lt256"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 46.4554 0.6 -402.904
 46.4554 0 -402.904
@@ -28593,7 +28287,6 @@ kids 4
 OBJECT poly
 name "tkMn258"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 34.3004 0 -385.782
 4.63544 8.03848 -390.253
@@ -28686,7 +28379,6 @@ kids 0
 OBJECT poly
 name "B0Rt258"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 4.63544 8.03848 -390.253
 4.63544 9.53848 -390.253
@@ -28779,7 +28471,6 @@ kids 0
 OBJECT poly
 name "B1Rt258"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 4.63544 9.53848 -390.253
 4.14102 9.53848 -390.328
@@ -28872,7 +28563,6 @@ kids 0
 OBJECT poly
 name "B2Rt258"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 4.14102 9.53848 -390.328
 4.14102 8.03848 -390.328
@@ -28968,7 +28658,6 @@ kids 1
 OBJECT poly
 name "t0LB260"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 32.9083 0 -366.635
 31.9133 0 -366.734
@@ -29064,7 +28753,6 @@ kids 2
 OBJECT poly
 name "tkLS262"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 39.4675 0 -347.143
 31.4774 0 -347.541
@@ -29157,7 +28845,6 @@ kids 0
 OBJECT poly
 name "B0Lt262"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 39.4675 0.6 -347.143
 39.4675 0 -347.143
@@ -29253,7 +28940,6 @@ kids 4
 OBJECT poly
 name "tkMn264"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 30 0 -328.401
 0 8.03848 -328.401
@@ -29346,7 +29032,6 @@ kids 0
 OBJECT poly
 name "B0Rt264"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 0 8.03848 -328.401
 0 9.53848 -328.401
@@ -29439,7 +29124,6 @@ kids 0
 OBJECT poly
 name "B1Rt264"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 0 9.53848 -328.401
 -0.5 9.53848 -328.401
@@ -29532,7 +29216,6 @@ kids 0
 OBJECT poly
 name "B2Rt264"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 -0.5 9.53848 -328.401
 -0.5 8.03848 -328.401
@@ -29628,7 +29311,6 @@ kids 1
 OBJECT poly
 name "t0LB266"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 31.608 0 -309.826
 30.6101 0 -309.761
@@ -29724,7 +29406,6 @@ kids 2
 OBJECT poly
 name "tkLS268"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 41.361 0 -292.375
 33.4294 0 -291.331
@@ -29817,7 +29498,6 @@ kids 0
 OBJECT poly
 name "B0Lt268"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 41.361 0.6 -292.375
 41.361 0 -292.375
@@ -29913,7 +29593,6 @@ kids 4
 OBJECT poly
 name "tkMn270"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 35.4759 0 -272.8
 6.05231 8.03848 -266.947
@@ -30006,7 +29685,6 @@ kids 0
 OBJECT poly
 name "B0Rt270"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 6.05231 8.03848 -266.947
 6.05231 9.53848 -266.947
@@ -30099,7 +29777,6 @@ kids 0
 OBJECT poly
 name "B1Rt270"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 6.05231 9.53848 -266.947
 5.56193 9.53848 -266.85
@@ -30192,7 +29869,6 @@ kids 0
 OBJECT poly
 name "B2Rt270"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 5.56193 9.53848 -266.85
 5.56193 8.03848 -266.85
@@ -30288,7 +29964,6 @@ kids 1
 OBJECT poly
 name "t0LB272"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 40.6766 0 -254.896
 39.7107 0 -254.637
@@ -30384,7 +30059,6 @@ kids 2
 OBJECT poly
 name "tkLS274"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 53.6467 0 -239.683
 46.0713 0 -237.112
@@ -30477,7 +30151,6 @@ kids 0
 OBJECT poly
 name "B0Lt274"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 53.6467 0.6 -239.683
 53.6467 0 -239.683
@@ -30573,7 +30246,6 @@ kids 4
 OBJECT poly
 name "tkMn276"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 51.6937 0 -219.336
 23.9772 8.03848 -207.856
@@ -30666,7 +30338,6 @@ kids 0
 OBJECT poly
 name "B0Rt276"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 23.9772 8.03848 -207.856
 23.9772 9.53848 -207.856
@@ -30759,7 +30430,6 @@ kids 0
 OBJECT poly
 name "B1Rt276"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 23.9772 9.53848 -207.856
 23.5153 9.53848 -207.664
@@ -30852,7 +30522,6 @@ kids 0
 OBJECT poly
 name "B2Rt276"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 23.5153 9.53848 -207.664
 23.5153 8.03848 -207.664
@@ -30948,7 +30617,6 @@ kids 1
 OBJECT poly
 name "t0LB278"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 60.2874 0 -202.791
 59.3905 0 -202.348
@@ -31044,7 +30712,6 @@ kids 2
 OBJECT poly
 name "tkLS280"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 75.9761 0 -190.401
 69.0479 0 -186.401
@@ -31137,7 +30804,6 @@ kids 0
 OBJECT poly
 name "B0Lt280"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 75.9761 0.6 -190.401
 75.9761 0 -190.401
@@ -31233,7 +30899,6 @@ kids 4
 OBJECT poly
 name "tkMn282"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 78.0302 0 -170.063
 53.086 8.03848 -153.396
@@ -31326,7 +30991,6 @@ kids 0
 OBJECT poly
 name "B0Rt282"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 53.086 8.03848 -153.396
 53.086 9.53848 -153.396
@@ -31419,7 +31083,6 @@ kids 0
 OBJECT poly
 name "B1Rt282"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 53.086 9.53848 -153.396
 52.6702 9.53848 -153.118
@@ -31512,7 +31175,6 @@ kids 0
 OBJECT poly
 name "B2Rt282"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 52.6702 9.53848 -153.118
 52.6702 8.03848 -153.118
@@ -31608,7 +31270,6 @@ kids 1
 OBJECT poly
 name "t0LB284"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 89.6865 0 -155.512
 88.8932 0 -154.904
@@ -31704,7 +31365,6 @@ kids 2
 OBJECT poly
 name "tkLS286"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 107.491 0 -146.421
 101.476 0 -141.146
@@ -31797,7 +31457,6 @@ kids 0
 OBJECT poly
 name "B0Lt286"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 107.491 0.6 -146.421
 107.491 0 -146.421
@@ -31893,7 +31552,6 @@ kids 4
 OBJECT poly
 name "tkMn288"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 113.473 0 -126.875
 92.2599 8.03848 -105.662
@@ -31986,7 +31644,6 @@ kids 0
 OBJECT poly
 name "B0Rt288"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 92.2599 8.03848 -105.662
 92.2599 9.53848 -105.662
@@ -32079,7 +31736,6 @@ kids 0
 OBJECT poly
 name "B1Rt288"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 92.2599 9.53848 -105.662
 91.9063 9.53848 -105.309
@@ -32172,7 +31828,6 @@ kids 0
 OBJECT poly
 name "B2Rt288"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 91.9063 9.53848 -105.309
 91.9063 8.03848 -105.309
@@ -32268,7 +31923,6 @@ kids 1
 OBJECT poly
 name "t0LB290"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 127.744 0 -114.878
 127.085 0 -114.126
@@ -32364,7 +32018,6 @@ kids 2
 OBJECT poly
 name "tkLS292"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 146.98 0 -109.435
 142.11 0 -103.088
@@ -32457,7 +32110,6 @@ kids 0
 OBJECT poly
 name "B0Lt292"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 146.98 0.6 -109.435
 146.98 0 -109.435
@@ -32553,7 +32205,6 @@ kids 4
 OBJECT poly
 name "tkMn294"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 156.661 0 -91.4315
 139.994 8.03848 -66.4875
@@ -32646,7 +32297,6 @@ kids 0
 OBJECT poly
 name "B0Rt294"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 139.994 8.03848 -66.4875
 139.994 9.53848 -66.4875
@@ -32739,7 +32389,6 @@ kids 0
 OBJECT poly
 name "B1Rt294"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 139.994 9.53848 -66.4875
 139.716 9.53848 -66.0718
@@ -32832,7 +32481,6 @@ kids 0
 OBJECT poly
 name "B2Rt294"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 139.716 9.53848 -66.0718
 139.716 8.03848 -66.0718
@@ -32928,7 +32576,6 @@ kids 1
 OBJECT poly
 name "t0LB296"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 172.998 0 -82.4491
 172.498 0 -81.5831
@@ -33024,7 +32671,6 @@ kids 2
 OBJECT poly
 name "tkLS298"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 193.463 0 -80.4109
 189.813 0 -73.2919
@@ -33117,7 +32763,6 @@ kids 0
 OBJECT poly
 name "B0Lt298"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 193.463 0.6 -80.4109
 193.463 0 -80.4109
@@ -33213,7 +32858,6 @@ kids 4
 OBJECT poly
 name "tkMn300"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 206.653 0 -64.0728
 194.314 8.03848 -36.7277
@@ -33306,7 +32950,6 @@ kids 0
 OBJECT poly
 name "B0Rt300"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 194.314 8.03848 -36.7277
 194.314 9.53848 -36.7277
@@ -33399,7 +33042,6 @@ kids 0
 OBJECT poly
 name "B1Rt300"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 194.314 9.53848 -36.7277
 194.108 9.53848 -36.272
@@ -33492,7 +33134,6 @@ kids 0
 OBJECT poly
 name "B2Rt300"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 194.108 9.53848 -36.272
 194.108 8.03848 -36.272
@@ -33588,7 +33229,6 @@ kids 1
 OBJECT poly
 name "t0LB302"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 224.707 0 -57.5469
 224.342 0 -56.6161
@@ -33684,7 +33324,6 @@ kids 2
 OBJECT poly
 name "tkLS304"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 245.247 0 -58.5816
 242.699 0 -50.9982
@@ -33777,7 +33416,6 @@ kids 0
 OBJECT poly
 name "B0Lt304"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 245.247 0.6 -58.5816
 245.247 0 -58.5816
@@ -33873,7 +33511,6 @@ kids 4
 OBJECT poly
 name "tkMn306"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 260.725 0 -44.3919
 252.599 8.03848 -15.5132
@@ -33966,7 +33603,6 @@ kids 0
 OBJECT poly
 name "B0Rt306"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 252.599 8.03848 -15.5132
 252.599 9.53848 -15.5132
@@ -34059,7 +33695,6 @@ kids 0
 OBJECT poly
 name "B1Rt306"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 252.599 9.53848 -15.5132
 252.464 9.53848 -15.0319
@@ -34152,7 +33787,6 @@ kids 0
 OBJECT poly
 name "B2Rt306"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 252.464 9.53848 -15.0319
 252.464 8.03848 -15.0319
@@ -34248,7 +33882,6 @@ kids 1
 OBJECT poly
 name "t0LB308"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 279.55 0 -40.6298
 279.328 0 -39.6549
@@ -34344,7 +33977,6 @@ kids 2
 OBJECT poly
 name "tkLS310"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 299.707 0 -44.7143
 298.317 0 -36.8358
@@ -34437,7 +34069,6 @@ kids 0
 OBJECT poly
 name "B0Lt310"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 299.707 0.6 -44.7143
 299.707 0 -44.7143
@@ -34533,7 +34164,6 @@ kids 4
 OBJECT poly
 name "tkMn312"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 317.126 0 -32.9898
 313.396 8.03848 -3.22263
@@ -34626,7 +34256,6 @@ kids 0
 OBJECT poly
 name "B0Rt312"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 313.396 8.03848 -3.22263
 313.396 9.53848 -3.22263
@@ -34719,7 +34348,6 @@ kids 0
 OBJECT poly
 name "B1Rt312"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 313.396 9.53848 -3.22263
 313.333 9.53848 -2.72651
@@ -34812,7 +34440,6 @@ kids 0
 OBJECT poly
 name "B2Rt312"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 313.333 9.53848 -2.72651
 313.333 8.03848 -2.72651
@@ -34908,7 +34535,6 @@ kids 1
 OBJECT poly
 name "t0LB314"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 8
 336.302 0 -32.0755
 336.227 0 -31.0783
@@ -34962,7 +34588,6 @@ kids 2
 OBJECT poly
 name "tkLS316"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 355.625 0 -39.1185
 355.425 0 -31.121
@@ -35055,7 +34680,6 @@ kids 0
 OBJECT poly
 name "B0Lt316"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 355.625 0.6 -39.1185
 355.625 0 -39.1185
@@ -35151,7 +34775,6 @@ kids 1
 OBJECT poly
 name "t0LB317"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 14
 364.998 0 -31.0016
 364.998 0 -30.0016
@@ -35247,7 +34870,6 @@ kids 4
 OBJECT poly
 name "tkMn318"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 374.373 0 -30.0016
 374.373 8.03848 -0.00157
@@ -35340,7 +34962,6 @@ kids 0
 OBJECT poly
 name "B0Rt318"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 374.373 8.03848 -0.00157
 374.373 9.53848 -0.00157
@@ -35433,7 +35054,6 @@ kids 0
 OBJECT poly
 name "B1Rt318"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 374.373 9.53848 -0.00157
 374.373 9.53848 0.49843
@@ -35526,7 +35146,6 @@ kids 0
 OBJECT poly
 name "B2Rt318"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 374.373 9.53848 0.49843
 374.373 8.03848 0.49843
@@ -35622,7 +35241,6 @@ kids 2
 OBJECT poly
 name "tkLS322"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 14
 411.874 0 -41.1889
 411.873 0 -31.0014
@@ -35715,7 +35333,6 @@ kids 0
 OBJECT poly
 name "B0Lt322"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 14
 411.874 0.6 -41.1889
 411.874 0 -41.1889
@@ -35811,7 +35428,6 @@ kids 1
 OBJECT poly
 name "t0LB323"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 14
 421.248 0 -31.0013
 421.248 0 -30.0013
@@ -35907,7 +35523,6 @@ kids 4
 OBJECT poly
 name "tkMn324"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 430.623 0 -30.0013
 430.623 8.03848 -0.001285
@@ -36000,7 +35615,6 @@ kids 0
 OBJECT poly
 name "B0Rt324"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.623 8.03848 -0.001285
 430.623 9.53848 -0.001285
@@ -36093,7 +35707,6 @@ kids 0
 OBJECT poly
 name "B1Rt324"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.623 9.53848 -0.001285
 430.623 9.53848 0.498715
@@ -36186,7 +35799,6 @@ kids 0
 OBJECT poly
 name "B2Rt324"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 430.623 9.53848 0.498715
 430.623 8.03848 0.498715
@@ -36282,7 +35894,6 @@ kids 2
 OBJECT poly
 name "tkLS328"
 texture "tr-concrete_nmm.rgb"
-crease 85.000000
 numvert 12
 468.124 0 -43.8136
 468.123 0 -31.0011
@@ -36361,7 +35972,6 @@ kids 0
 OBJECT poly
 name "B0Lt328"
 texture "tr-barrier.rgb"
-crease 85.000000
 numvert 12
 468.124 0.6 -43.8136
 468.124 0 -43.8136
@@ -36443,7 +36053,6 @@ kids 1
 OBJECT poly
 name "t0LB329"
 texture "tr-b-concrete4-concrete-l1p.rgb"
-crease 85.000000
 numvert 10
 477.498 0 -31.001
 477.498 0 -30.001
@@ -36511,7 +36120,6 @@ kids 4
 OBJECT poly
 name "tkMn330"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 486.873 0 -30.001
 486.873 8.03848 -0.000999
@@ -36604,7 +36212,6 @@ kids 0
 OBJECT poly
 name "B0Rt330"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 486.873 8.03848 -0.000999
 486.873 9.53848 -0.000999
@@ -36697,7 +36304,6 @@ kids 0
 OBJECT poly
 name "B1Rt330"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 486.873 9.53848 -0.000999
 486.873 9.53848 0.499001
@@ -36790,7 +36396,6 @@ kids 0
 OBJECT poly
 name "B2Rt330"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 486.873 9.53848 0.499001
 486.873 8.03848 0.499001
@@ -36886,7 +36491,6 @@ kids 5
 OBJECT poly
 name "t0LB333"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 514.998 0 -31.0009
 514.998 0 -30.0009
@@ -36979,7 +36583,6 @@ kids 0
 OBJECT poly
 name "tkLS333"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 14
 514.999 0 -46.0009
 514.998 0 -31.0009
@@ -37072,7 +36675,6 @@ kids 0
 OBJECT poly
 name "B0Lt333"
 texture "pylon1.rgb"
-crease 85.000000
 numvert 8
 664.996 8.03848 0.1
 664.996 14.0385 0.1
@@ -37135,7 +36737,6 @@ kids 0
 OBJECT poly
 name "P1ts333"
 texture "concrete2.rgb"
-crease 85.000000
 numvert 6
 514.999 4.8 -45.8009
 514.999 5 -45.8009
@@ -37172,7 +36773,6 @@ kids 0
 OBJECT poly
 name "P2ts333"
 texture "concrete.rgb"
-crease 85.000000
 numvert 110
 514.999 4.8 -46.0009
 529.999 4.8 -46.0008
@@ -38480,7 +38080,6 @@ kids 4
 OBJECT poly
 name "tkMn336"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 543.123 0 -30.0007
 543.123 8.03848 -0.000714
@@ -38573,7 +38172,6 @@ kids 0
 OBJECT poly
 name "B0Rt336"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 543.123 8.03848 -0.000714
 543.123 9.53848 -0.000714
@@ -38666,7 +38264,6 @@ kids 0
 OBJECT poly
 name "B1Rt336"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 543.123 9.53848 -0.000714
 543.123 9.53848 0.499286
@@ -38759,7 +38356,6 @@ kids 0
 OBJECT poly
 name "B2Rt336"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 543.123 9.53848 0.499286
 543.123 8.03848 0.499286
@@ -38855,7 +38451,6 @@ kids 2
 OBJECT poly
 name "t0LB339"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 14
 571.248 0 -31.0006
 571.248 0 -30.0006
@@ -38948,7 +38543,6 @@ kids 0
 OBJECT poly
 name "tkLS339"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 14
 571.249 0 -46.0006
 571.248 0 -31.0006
@@ -39044,7 +38638,6 @@ kids 4
 OBJECT poly
 name "tkMn342"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 14
 599.373 0 -30.0004
 599.373 8.03848 -0.000429
@@ -39137,7 +38730,6 @@ kids 0
 OBJECT poly
 name "B0Rt342"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 599.373 8.03848 -0.000429
 599.373 9.53848 -0.000429
@@ -39230,7 +38822,6 @@ kids 0
 OBJECT poly
 name "B1Rt342"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 599.373 9.53848 -0.000429
 599.373 9.53848 0.499571
@@ -39323,7 +38914,6 @@ kids 0
 OBJECT poly
 name "B2Rt342"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 14
 599.373 9.53848 0.499571
 599.373 8.03848 0.499571
@@ -39419,7 +39009,6 @@ kids 2
 OBJECT poly
 name "t0LB345"
 texture "tr-b-concrete4-concrete-l1.rgb"
-crease 85.000000
 numvert 10
 627.498 0 -31.0003
 627.498 0 -30.0003
@@ -39484,7 +39073,6 @@ kids 0
 OBJECT poly
 name "tkLS345"
 texture "tr-concrete-pit.rgb"
-crease 85.000000
 numvert 10
 627.499 0 -46.0003
 627.498 0 -31.0003
@@ -39552,7 +39140,6 @@ kids 4
 OBJECT poly
 name "tkMn348"
 texture "tr-concrete4.rgb"
-crease 85.000000
 numvert 4
 655.623 0 -30.0001
 655.623 8.03848 -0.000144
@@ -39575,7 +39162,6 @@ kids 0
 OBJECT poly
 name "B0Rt348"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 4
 655.623 8.03848 -0.000144
 655.623 9.53848 -0.000144
@@ -39598,7 +39184,6 @@ kids 0
 OBJECT poly
 name "B1Rt348"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 4
 655.623 9.53848 -0.000144
 655.623 9.53848 0.499856
@@ -39621,7 +39206,6 @@ kids 0
 OBJECT poly
 name "B2Rt348"
 texture "tr-wall_nmm.rgb"
-crease 85.000000
 numvert 4
 655.623 9.53848 0.499856
 655.623 8.03848 0.499856
@@ -39643,12 +39227,10 @@ refs 3
 kids 0
 OBJECT poly
 name "TERR"
-crease 85.000000
 kids 126
 OBJECT poly
 name "TERR45"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 12
 303.146 8.03848 -4.63716
 292.934 8.03848 -6.3068
@@ -39721,7 +39303,6 @@ kids 0
 OBJECT poly
 name "TERR46"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 14
 402.498 8.03848 -0.0014273
 393.123 8.03848 -0.00147483
@@ -39814,7 +39395,6 @@ kids 0
 OBJECT poly
 name "TERR47"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 505.623 8.03848 -0.000904417
 496.248 8.03848 -0.000951951
@@ -39914,7 +39494,6 @@ kids 0
 OBJECT poly
 name "TERR48"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 14
 599.373 8.03848 -0.00042907
 589.998 8.03848 -0.000476605
@@ -40007,7 +39586,6 @@ kids 0
 OBJECT poly
 name "TERR49"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 702.496 8.03848 0
 693.121 8.03848 0
@@ -40107,7 +39685,6 @@ kids 0
 OBJECT poly
 name "TERR50"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 805.621 8.03848 0
 796.246 8.03848 0
@@ -40207,7 +39784,6 @@ kids 0
 OBJECT poly
 name "TERR51"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 899.371 8.03848 0
 908.746 8.03848 0
@@ -40307,7 +39883,6 @@ kids 0
 OBJECT poly
 name "TERR52"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 14
 996.009 8.03848 -1.16042
 1006.32 8.03848 -2.06223
@@ -40400,7 +39975,6 @@ kids 0
 OBJECT poly
 name "TERR53"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 1087.32 8.03848 -18.4373
 1097.17 8.03848 -21.6102
@@ -40486,7 +40060,6 @@ kids 0
 OBJECT poly
 name "TERR54"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 1116.61 8.03848 -28.6874
 1169.46 0 10.7446
@@ -40510,7 +40083,6 @@ kids 0
 OBJECT poly
 name "TERR63"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 99.6669 8.03848 -98.4935
 107.305 8.03848 -91.5711
@@ -40547,7 +40119,6 @@ kids 0
 OBJECT poly
 name "TERR64"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 213.382 8.03848 -28.6899
 203.798 8.03848 -32.59
@@ -40685,7 +40256,6 @@ kids 0
 OBJECT poly
 name "TERR66"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 299.707 0 -44.7143
 308.958 0 -43.2015
@@ -40871,7 +40441,6 @@ kids 0
 OBJECT poly
 name "TERR67"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 393.922 0 -53.8579
 402.499 0 -40.7514
@@ -41063,7 +40632,6 @@ kids 0
 OBJECT poly
 name "TERR68"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 24
 496.249 0 -45.1259
 505.624 0 -45.5634
@@ -41262,7 +40830,6 @@ kids 0
 OBJECT poly
 name "TERR69"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 608.749 0 -46.0004
 618.124 0 -46.0003
@@ -41442,7 +41009,6 @@ kids 0
 OBJECT poly
 name "TERR70"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 22
 711.871 0 -46
 739.996 0 -46
@@ -41621,7 +41187,6 @@ kids 0
 OBJECT poly
 name "TERR71"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 899.371 0 -42.0625
 880.621 0 -42.9375
@@ -41807,7 +41372,6 @@ kids 0
 OBJECT poly
 name "TERR72"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 22
 1002.43 0 -40.8684
 993.095 0 -40.0514
@@ -41986,7 +41550,6 @@ kids 0
 OBJECT poly
 name "TERR73"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 1102.36 0 -64.9915
 1075.82 0 -55.7046
@@ -42178,7 +41741,6 @@ kids 0
 OBJECT poly
 name "TERR74"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 32
 1198.48 8.03848 -72.3508
 1190 8.03848 -66.4845
@@ -42409,7 +41971,6 @@ kids 0
 OBJECT poly
 name "TERR75"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 12
 1251.83 8.03848 -120.704
 1309.87 0 -92.921
@@ -42482,7 +42043,6 @@ kids 0
 OBJECT poly
 name "TERR82"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 -50.779 0 -209.404
 20.189 8.03848 -217.442
@@ -42498,7 +42058,6 @@ kids 0
 OBJECT poly
 name "TERR83"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 27
 20.189 8.03848 -217.442
 23.9772 8.03848 -207.856
@@ -42664,7 +42223,6 @@ kids 0
 OBJECT poly
 name "TERR84"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 32
 101.648 0 -153.308
 113.556 0 -139.729
@@ -42925,7 +42483,6 @@ kids 0
 OBJECT poly
 name "TERR85"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 200.55 0 -99.3317
 206.291 0 -96.1685
@@ -43025,7 +42582,6 @@ kids 0
 OBJECT poly
 name "TERR86"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 310.817 0 -85.485
 311.65 0 -150.247
@@ -43055,7 +42611,6 @@ kids 0
 OBJECT poly
 name "TERR87"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 352.291 0 -307.765
 401.366 0 -86.8021
@@ -43079,7 +42634,6 @@ kids 0
 OBJECT poly
 name "TERR88"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 477.947 0 -351.558
 493.133 0 -88.1368
@@ -43103,7 +42657,6 @@ kids 0
 OBJECT poly
 name "TERR89"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 606.892 0 -361.443
 586.118 0 -89.4893
@@ -43127,7 +42680,6 @@ kids 0
 OBJECT poly
 name "TERR90"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 715.075 0 -310.787
 680.321 0 -90.8595
@@ -43151,7 +42703,6 @@ kids 0
 OBJECT poly
 name "TERR91"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 893.324 0 -310.676
 873.6 0 -93.6708
@@ -43175,7 +42726,6 @@ kids 0
 OBJECT poly
 name "TERR92"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 972.067 0 -95.1031
 1016.64 0 -301.405
@@ -43199,7 +42749,6 @@ kids 0
 OBJECT poly
 name "TERR93"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 1098.81 0 -113.873
 1071.75 0 -96.553
@@ -43236,7 +42785,6 @@ kids 0
 OBJECT poly
 name "TERR94"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 24
 1203.67 0 -126.955
 1196.98 0 -120.89
@@ -43441,7 +42989,6 @@ kids 0
 OBJECT poly
 name "TERR95"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 29
 1282.49 8.03848 -162.056
 1276.91 8.03848 -153.393
@@ -43627,7 +43174,6 @@ kids 0
 OBJECT poly
 name "TERR96"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 10
 1306.02 8.03848 -207.852
 1301.92 8.03848 -198.395
@@ -43686,7 +43232,6 @@ kids 0
 OBJECT poly
 name "TERR102"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 0.674316 8.03848 -307.799
 1.51666 8.03848 -297.525
@@ -43772,7 +43317,6 @@ kids 0
 OBJECT poly
 name "TERR103"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 29
 48.4041 0 -256.967
 50.884 0 -248.282
@@ -44018,7 +43562,6 @@ kids 0
 OBJECT poly
 name "TERR104"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 92.8073 0 -192.276
 88.1263 0 -203.969
@@ -44098,7 +43641,6 @@ kids 0
 OBJECT poly
 name "TERR105"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 4
 214.448 0 -232.649
 210.175 0 -371.16
@@ -44121,7 +43663,6 @@ kids 0
 OBJECT poly
 name "TERR106"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 308.951 0 -232.554
 352.291 0 -307.765
@@ -44137,7 +43678,6 @@ kids 0
 OBJECT poly
 name "TERR107"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 352.291 0 -307.765
 447.097 0 -87.4672
@@ -44161,7 +43701,6 @@ kids 0
 OBJECT poly
 name "TERR108"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 477.947 0 -351.558
 539.473 0 -88.8109
@@ -44185,7 +43724,6 @@ kids 0
 OBJECT poly
 name "TERR109"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 633.067 0 -90.1722
 606.892 0 -361.443
@@ -44209,7 +43747,6 @@ kids 0
 OBJECT poly
 name "TERR110"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 728.184 0 -91.5557
 715.075 0 -310.787
@@ -44233,7 +43770,6 @@ kids 0
 OBJECT poly
 name "TERR111"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 835.95 0 -380.614
 893.324 0 -310.676
@@ -44249,7 +43785,6 @@ kids 0
 OBJECT poly
 name "TERR112"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 1016.64 0 -301.405
 922.681 0 -94.3847
@@ -44273,7 +43808,6 @@ kids 0
 OBJECT poly
 name "TERR113"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 1016.64 0 -301.405
 1078.61 0 -252.316
@@ -44289,7 +43823,6 @@ kids 0
 OBJECT poly
 name "TERR114"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 8
 1194.77 0 -194.751
 1203.09 0 -221.288
@@ -44340,7 +43873,6 @@ kids 0
 OBJECT poly
 name "TERR115"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 28
 1262.53 0 -206.326
 1258.41 0 -198.292
@@ -44573,7 +44105,6 @@ kids 0
 OBJECT poly
 name "TERR116"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 1328.48 8.03848 -297.522
 1329.32 8.03848 -307.796
@@ -44673,7 +44204,6 @@ kids 0
 OBJECT poly
 name "TERR122"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 3.22095 8.03848 -380.003
 2.06238 8.03848 -369.721
@@ -44759,7 +44289,6 @@ kids 0
 OBJECT poly
 name "TERR123"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 23
 40.3289 0 -301.348
 40.0514 0 -356.499
@@ -44945,7 +44474,6 @@ kids 0
 OBJECT poly
 name "TERR124"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 9
 91.1285 0 -317.086
 103.273 0 -288.258
@@ -44991,7 +44519,6 @@ kids 0
 OBJECT poly
 name "TERR125"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 308.951 0 -232.554
 210.175 0 -371.16
@@ -45007,7 +44534,6 @@ kids 0
 OBJECT poly
 name "TERR126"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 308.951 0 -232.554
 259.878 0 -429.01
@@ -45031,7 +44557,6 @@ kids 0
 OBJECT poly
 name "TERR127"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 419.314 0 -308.951
 402.621 0 -515.464
@@ -45047,7 +44572,6 @@ kids 0
 OBJECT poly
 name "TERR129"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 715.075 0 -310.787
 664.509 0 -319.733
@@ -45063,7 +44587,6 @@ kids 0
 OBJECT poly
 name "TERR130"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 767.289 0 -321.686
 715.075 0 -310.787
@@ -45079,7 +44602,6 @@ kids 0
 OBJECT poly
 name "TERR132"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 1016.35 0 -465.286
 1016.64 0 -301.405
@@ -45103,7 +44625,6 @@ kids 0
 OBJECT poly
 name "TERR133"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 1016.64 0 -301.405
 1107.95 0 -428.547
@@ -45119,7 +44640,6 @@ kids 0
 OBJECT poly
 name "TERR134"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 1206.97 0 -413.448
 1203.95 0 -365.606
@@ -45156,7 +44676,6 @@ kids 0
 OBJECT poly
 name "TERR135"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 26
 1285.28 0 -393.689
 1290.41 0 -310.346
@@ -45375,7 +44894,6 @@ kids 0
 OBJECT poly
 name "TERR136"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 1323.69 8.03848 -400.462
 1325.36 8.03848 -390.25
@@ -45461,7 +44979,6 @@ kids 0
 OBJECT poly
 name "TERR142"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 11
 -38.478 0 -508.325
 21.6108 8.03848 -460.573
@@ -45533,7 +45050,6 @@ kids 0
 OBJECT poly
 name "TERR143"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 29
 36.7259 8.03848 -499.085
 32.5882 8.03848 -489.601
@@ -45749,7 +45265,6 @@ kids 0
 OBJECT poly
 name "TERR144"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 9
 87.7813 0 -481.53
 93.6368 0 -413.504
@@ -45807,7 +45322,6 @@ kids 0
 OBJECT poly
 name "TERR145"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 210.175 0 -371.16
 183.302 0 -561.182
@@ -45831,7 +45345,6 @@ kids 0
 OBJECT poly
 name "TERR146"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 286.384 0 -506.125
 352.291 0 -307.765
@@ -45855,7 +45368,6 @@ kids 0
 OBJECT poly
 name "TERR147"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 4
 402.621 0 -515.464
 477.947 0 -351.558
@@ -45878,7 +45390,6 @@ kids 0
 OBJECT poly
 name "TERR148"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 477.947 0 -351.558
 500.785 0 -553.372
@@ -45908,7 +45419,6 @@ kids 0
 OBJECT poly
 name "TERR149"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 4
 606.892 0 -361.443
 664.509 0 -319.733
@@ -45931,7 +45441,6 @@ kids 0
 OBJECT poly
 name "TERR150"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 715.075 0 -310.787
 700.661 0 -522.159
@@ -45955,7 +45464,6 @@ kids 0
 OBJECT poly
 name "TERR151"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 7
 893.324 0 -310.676
 914.313 0 -527.842
@@ -45993,7 +45501,6 @@ kids 0
 OBJECT poly
 name "TERR152"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 1016.35 0 -465.286
 947.681 0 -290.648
@@ -46017,7 +45524,6 @@ kids 0
 OBJECT poly
 name "TERR153"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 1108.69 0 -512.213
 1107.95 0 -428.547
@@ -46047,7 +45553,6 @@ kids 0
 OBJECT poly
 name "TERR154"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 7
 1206.97 0 -413.448
 1202.13 0 -476.204
@@ -46091,7 +45596,6 @@ kids 0
 OBJECT poly
 name "TERR155"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 27
 1283.54 0 -402.9
 1281.57 0 -412.065
@@ -46317,7 +45821,6 @@ kids 0
 OBJECT poly
 name "TERR156"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 14
 1297.41 8.03848 -489.598
 1293.27 8.03848 -499.081
@@ -46410,7 +45913,6 @@ kids 0
 OBJECT poly
 name "TERR162"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 -15.6147 0 -549.744
 36.7259 8.03848 -499.085
@@ -46426,7 +45928,6 @@ kids 0
 OBJECT poly
 name "TERR163"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 18
 84.1914 8.03848 -578.98
 72.1121 8.03848 -562.179
@@ -46529,7 +46030,6 @@ kids 0
 OBJECT poly
 name "TERR164"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 25
 94.1636 0 -524.46
 99.1512 0 -532.398
@@ -46729,7 +46229,6 @@ kids 0
 OBJECT poly
 name "TERR165"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 183.302 0 -561.182
 259.878 0 -429.01
@@ -46766,7 +46265,6 @@ kids 0
 OBJECT poly
 name "TERR166"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 297.428 0 -648.563
 286.384 0 -506.125
@@ -46797,7 +46295,6 @@ kids 0
 OBJECT poly
 name "TERR167"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 402.621 0 -515.464
 388.048 0 -686.609
@@ -46821,7 +46318,6 @@ kids 0
 OBJECT poly
 name "TERR168"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 560.562 0 -549.242
 607.486 0 -606.381
@@ -46837,7 +46333,6 @@ kids 0
 OBJECT poly
 name "TERR169"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 607.486 0 -606.381
 606.892 0 -361.443
@@ -46861,7 +46356,6 @@ kids 0
 OBJECT poly
 name "TERR170"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 700.661 0 -522.159
 735.538 0 -716.669
@@ -46885,7 +46379,6 @@ kids 0
 OBJECT poly
 name "TERR171"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 914.313 0 -527.842
 906.533 0 -619.36
@@ -46909,7 +46402,6 @@ kids 0
 OBJECT poly
 name "TERR172"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 4
 1028.05 0 -629.077
 914.313 0 -527.842
@@ -46932,7 +46424,6 @@ kids 0
 OBJECT poly
 name "TERR173"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 7
 1108.69 0 -512.213
 1111.87 0 -587.701
@@ -46976,7 +46467,6 @@ kids 0
 OBJECT poly
 name "TERR174"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 25
 1190.62 0 -584.143
 1184.16 0 -590.935
@@ -47182,7 +46672,6 @@ kids 0
 OBJECT poly
 name "TERR175"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 28
 1232.9 8.03848 -595.154
 1239.46 8.03848 -587.146
@@ -47361,7 +46850,6 @@ kids 0
 OBJECT poly
 name "TERR176"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 7
 1301.72 0 -574.139
 1279.46 8.03848 -526.873
@@ -47405,7 +46893,6 @@ kids 0
 OBJECT poly
 name "TERR183"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 9
 85.0382 0 -694.388
 117.917 8.03848 -618.169
@@ -47463,7 +46950,6 @@ kids 0
 OBJECT poly
 name "TERR184"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 25
 198.607 8.03848 -682.516
 189.846 8.03848 -677.011
@@ -47615,7 +47101,6 @@ kids 0
 OBJECT poly
 name "TERR185"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 24
 195.514 0 -633.689
 211.005 0 -644.25
@@ -47796,7 +47281,6 @@ kids 0
 OBJECT poly
 name "TERR186"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 14
 304.295 0 -693.677
 313.117 0 -697.604
@@ -47901,7 +47385,6 @@ kids 0
 OBJECT poly
 name "TERR187"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 388.048 0 -686.609
 444.553 0 -574.669
@@ -47938,7 +47421,6 @@ kids 0
 OBJECT poly
 name "TERR188"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 7
 482.116 0 -711.999
 500.785 0 -553.372
@@ -47982,7 +47464,6 @@ kids 0
 OBJECT poly
 name "TERR189"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 614.52 0 -729.899
 607.486 0 -606.381
@@ -48012,7 +47493,6 @@ kids 0
 OBJECT poly
 name "TERR190"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 5
 688.23 0 -723.282
 700.661 0 -522.159
@@ -48036,7 +47516,6 @@ kids 0
 OBJECT poly
 name "TERR191"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 8
 906.533 0 -619.36
 896.045 0 -694.232
@@ -48087,7 +47566,6 @@ kids 0
 OBJECT poly
 name "TERR192"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 16
 999.112 0 -705.164
 990.165 0 -708.798
@@ -48200,7 +47678,6 @@ kids 0
 OBJECT poly
 name "TERR193"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 31
 1103 0 -654.023
 1094.61 0 -658.805
@@ -48466,7 +47943,6 @@ kids 0
 OBJECT poly
 name "TERR194"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 30
 1197.27 8.03848 -632.614
 1189.6 8.03848 -639.557
@@ -48665,7 +48141,6 @@ kids 0
 OBJECT poly
 name "TERR195"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 9
 1204.76 8.03848 -625.482
 1212.08 8.03848 -618.166
@@ -48723,7 +48198,6 @@ kids 0
 OBJECT poly
 name "TERR204"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 6
 198.607 8.03848 -682.516
 195.443 0 -753.136
@@ -48754,7 +48228,6 @@ kids 0
 OBJECT poly
 name "TERR205"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 306.709 8.03848 -737.32
 297.451 8.03848 -733.319
@@ -48854,7 +48327,6 @@ kids 0
 OBJECT poly
 name "TERR206"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 30
 401.503 8.03848 -771.624
 391.86 8.03848 -768.666
@@ -49053,7 +48525,6 @@ kids 0
 OBJECT poly
 name "TERR207"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 26
 450.173 8.03848 -784.809
 440.382 8.03848 -782.387
@@ -49236,7 +48707,6 @@ kids 0
 OBJECT poly
 name "TERR208"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 22
 497.062 0 -755.137
 525.58 0 -760.219
@@ -49409,7 +48879,6 @@ kids 0
 OBJECT poly
 name "TERR209"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 21
 611.923 0 -769.775
 602.288 0 -769.137
@@ -49581,7 +49050,6 @@ kids 0
 OBJECT poly
 name "TERR210"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 26
 698.788 0 -770.732
 718.076 0 -769.775
@@ -49806,7 +49274,6 @@ kids 0
 OBJECT poly
 name "TERR211"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 30
 899.38 8.03848 -779.855
 889.617 8.03848 -782.385
@@ -50047,7 +49514,6 @@ kids 0
 OBJECT poly
 name "TERR212"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 36
 995.256 8.03848 -748.703
 976.365 8.03848 -755.776
@@ -50276,7 +49742,6 @@ kids 0
 OBJECT poly
 name "TERR213"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 16
 1087.12 8.03848 -707.194
 1104.92 8.03848 -697.691
@@ -50383,7 +49848,6 @@ kids 0
 OBJECT poly
 name "TERR214"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 4
 1113.73 8.03848 -692.793
 1136.36 0 -716.948
@@ -50406,7 +49870,6 @@ kids 0
 OBJECT poly
 name "TERR226"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 414.468 0 -828.294
 401.503 8.03848 -771.624
@@ -50422,7 +49885,6 @@ kids 0
 OBJECT poly
 name "TERR227"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 9
 499.495 8.03848 -795.292
 498.08 0 -847.051
@@ -50480,7 +49942,6 @@ kids 0
 OBJECT poly
 name "TERR228"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 609.56 8.03848 -808.703
 599.496 8.03848 -808.037
@@ -50580,7 +50041,6 @@ kids 0
 OBJECT poly
 name "TERR229"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 716.731 0 -858.807
 690.211 8.03848 -810.037
@@ -50666,7 +50126,6 @@ kids 0
 OBJECT poly
 name "TERR230"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 15
 800.659 8.03848 -800.271
 790.677 8.03848 -801.712
@@ -50766,7 +50225,6 @@ kids 0
 OBJECT poly
 name "TERR231"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 13
 870.009 8.03848 -787.121
 906.404 0 -825.579
@@ -50852,7 +50310,6 @@ kids 0
 OBJECT poly
 name "TERR232"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 3
 939.814 0 -809.796
 909.115 8.03848 -777.218
@@ -50867,12 +50324,10 @@ refs 3
 kids 0
 OBJECT poly
 name "TERR"
-crease 85.000000
 kids 1
 OBJECT poly
 name "TERR65"
 texture "tr-grass6.rgb"
-crease 85.000000
 numvert 30
 282.758 0 -68.2188
 310.817 0 -85.485
