@@ -109,3 +109,7 @@ EXPORTS
 	GfInit
 	gfMean
 	gfMeanReset
+	gfuiDrawImage
+	gfuiReleaseImage
+    GfuiStaticImageCreate
+	GfuiStaticImageSet

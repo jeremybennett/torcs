@@ -134,6 +134,10 @@ SOURCE=.\guihelp.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\guiimage.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\guilabel.cpp
 # End Source File
 # Begin Source File
