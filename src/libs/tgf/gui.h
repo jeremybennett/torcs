@@ -272,6 +272,12 @@ extern void gfuiLoadFonts(void);
 
 extern void gfuiEditboxKey(tGfuiObject *obj, int key, int modifier);
 
+
+extern void gfuiScrollListNextElt (tGfuiObject *object);
+extern void gfuiScrollListPrevElt (tGfuiObject *object);
+
+
+
 #endif /* _GUI_H__ */ 
 
 

@@ -136,12 +136,12 @@ GfuiMenuButtonCreate(void *scr, char *text, char *tip, void *userdata, tfuiCallb
     GfuiVisiblilitySet(scr, cbinfo->labelId, 0);
     
     bId = GfuiButtonCreate(scr,
-			text,
-			GFUI_FONT_LARGE,
-			xpos, ypos, GFUI_BTNSZ, GFUI_ALIGN_HC_VB, 0,
-			userdata, onpush,
-			(void*)cbinfo, dispInfo,
-			remInfo);
+			   text,
+			   GFUI_FONT_LARGE,
+			   xpos, ypos, GFUI_BTNSZ, GFUI_ALIGN_HC_VB, 0,
+			   userdata, onpush,
+			   (void*)cbinfo, dispInfo,
+			   remInfo);
 
     return bId;
 }

@@ -65,6 +65,60 @@ gfuiScroll(tScrollBarInfo *sinfo)
     }
 }
 
+void
+gfuiScrollListNextElt (tGfuiObject *object)
+{
+    tGfuiScrollList	*scrollist;
+
+    scrollist = &(object->u.scrollist);
+
+    scrollist->selectedElt++;
+    if (scrollist->selectedElt == scrollist->nbElts) {
+	scrollist->selectedElt = scrollist->nbElts - 1;
+	return;
+    }
+    if (scrollist->onSelect) {
+	scrollist->onSelect(scrollist->userDataOnSelect);
+    }
+    if (scrollist->selectedElt == scrollist->firstVisible + scrollist->nbVisible) {
+	/* Scroll down */
+	if (scrollist->firstVisible + scrollist->nbVisible < scrollist->nbElts) {
+	    scrollist->firstVisible++;
+	    if (scrollist->scrollBar) {
+		GfuiScrollBarPosSet(GfuiScreen, scrollist->scrollBar, 0, MAX(scrollist->nbElts - scrollist->nbVisible, 0),
+				    scrollist->nbVisible, scrollist->firstVisible);
+	    }
+	}
+    }
+}
+
+void
+gfuiScrollListPrevElt (tGfuiObject *object)
+{
+    tGfuiScrollList	*scrollist;
+
+    scrollist = &(object->u.scrollist);
+
+    scrollist->selectedElt--;
+    if (scrollist->selectedElt < 0) {
+	scrollist->selectedElt = 0;
+	return;
+    }
+    if (scrollist->onSelect) {
+	scrollist->onSelect(scrollist->userDataOnSelect);
+    }
+    if (scrollist->selectedElt < scrollist->firstVisible) {
+	/* Scroll down */
+	if (scrollist->firstVisible > 0) {
+	    scrollist->firstVisible--;
+	    if (scrollist->scrollBar) {
+		GfuiScrollBarPosSet(GfuiScreen, scrollist->scrollBar, 0, MAX(scrollist->nbElts - scrollist->nbVisible, 0),
+				    scrollist->nbVisible, scrollist->firstVisible);
+	    }
+	}
+    }
+}
+
 
 /** Create a new scroll list.
     @ingroup	gui
@@ -573,6 +627,26 @@ GfuiScrollListMoveSelectedElement(void *scr, int Id, int delta)
     gfuiScrollListInsElt(scrollist, elt, newPos);
     
     scrollist->selectedElt = newPos;
+
+    if (scrollist->selectedElt == scrollist->firstVisible + scrollist->nbVisible) {
+	/* Scroll down */
+	if (scrollist->firstVisible + scrollist->nbVisible < scrollist->nbElts) {
+	    scrollist->firstVisible++;
+	    if (scrollist->scrollBar) {
+		GfuiScrollBarPosSet(GfuiScreen, scrollist->scrollBar, 0, MAX(scrollist->nbElts - scrollist->nbVisible, 0),
+				    scrollist->nbVisible, scrollist->firstVisible);
+	    }
+	}
+    } else if (scrollist->selectedElt < scrollist->firstVisible) {
+	/* Scroll down */
+	if (scrollist->firstVisible > 0) {
+	    scrollist->firstVisible--;
+	    if (scrollist->scrollBar) {
+		GfuiScrollBarPosSet(GfuiScreen, scrollist->scrollBar, 0, MAX(scrollist->nbElts - scrollist->nbVisible, 0),
+				    scrollist->nbVisible, scrollist->firstVisible);
+	    }
+	}
+    }
     
     return 0;
 }

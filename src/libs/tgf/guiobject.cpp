@@ -313,12 +313,20 @@ gfuiSelectNext(void *dummy)
     }
     curObject = startObject;
     do {
-	curObject = curObject->next;
-	if ((curObject->focusMode != GFUI_FOCUS_NONE) &&
-	    (curObject->state != GFUI_DISABLE) &&
-	    (curObject->visible)) {
-	    gfuiSetFocus(curObject);
-	    return;
+	switch (curObject->widget) {
+	case GFUI_SCROLLIST:
+	    gfuiScrollListNextElt(curObject);
+	    break;
+	    
+	default:
+	    curObject = curObject->next;
+	    if ((curObject->focusMode != GFUI_FOCUS_NONE) &&
+		(curObject->state != GFUI_DISABLE) &&
+		(curObject->visible)) {
+		gfuiSetFocus(curObject);
+		return;
+	    }
+	    break;
 	}
     } while (curObject != startObject);    
 }
@@ -339,12 +347,20 @@ gfuiSelectPrev(void *dummy)
     }
     curObject = startObject;
     do {
-	curObject = curObject->prev;
-	if ((curObject->focusMode != GFUI_FOCUS_NONE) &&
-	    (curObject->state != GFUI_DISABLE) &&
-	    (curObject->visible)) {
-	    gfuiSetFocus(curObject);
-	    return;
+	switch (curObject->widget) {
+	case GFUI_SCROLLIST:
+	    gfuiScrollListPrevElt(curObject);
+	    break;
+
+	default:
+	    curObject = curObject->prev;
+	    if ((curObject->focusMode != GFUI_FOCUS_NONE) &&
+		(curObject->state != GFUI_DISABLE) &&
+		(curObject->visible)) {
+		gfuiSetFocus(curObject);
+		return;
+	    }
+	    break;
 	}
     } while (curObject != startObject);
 }
