@@ -232,17 +232,18 @@ extern int GfParmListClean(void *handle, char *path);
  * Screen Interface *
  ********************/
 
-#define GFSCR_CONF_FILE	"config/screen.xml"
-#define GFSCR_SECT_PROP	"Screen Properties"
-#define GFSCR_ATT_X	"x"
-#define GFSCR_ATT_Y	"y"
-#define GFSCR_ATT_BPP	"bpp"
-#define GFSCR_ATT_WIN_X	"window width"
-#define GFSCR_ATT_WIN_Y	"window height"
-#define GFSCR_ATT_FSCR	"fullscreen"
-#define GFSCR_VAL_YES	"yes"
-#define GFSCR_VAL_NO	"no"
-#define GFSCR_ATT_GAMMA	"gamma"
+#define GFSCR_CONF_FILE		"config/screen.xml"
+#define GFSCR_SECT_PROP		"Screen Properties"
+#define GFSCR_ATT_X		"x"
+#define GFSCR_ATT_Y		"y"
+#define GFSCR_ATT_BPP		"bpp"
+#define GFSCR_ATT_WIN_X		"window width"
+#define GFSCR_ATT_WIN_Y		"window height"
+#define GFSCR_ATT_MAXREFRESH	"maximum refresh frequency"
+#define GFSCR_ATT_FSCR		"fullscreen"
+#define GFSCR_VAL_YES		"yes"
+#define GFSCR_VAL_NO		"no"
+#define GFSCR_ATT_GAMMA		"gamma"
 
 extern unsigned char *GfImgReadPng(const char *filename, int *widthp, int *heightp, float gamma);
 extern int GfImgWritePng(unsigned char *img, const char *filename, int width, int height);

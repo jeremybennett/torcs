@@ -66,6 +66,9 @@ static int	curRes = 0;
 static int	curMode = 0;
 static int	curDepth = 0;
 
+static int	curMaxFreq = 160;
+static int	MaxFreqId;
+
 static int	ResLabelId;
 static int	DepthLabelId;
 static int	ModeLabelId;
@@ -103,6 +106,7 @@ void GfScrInit(int argc, char *argv[])
     void	*handle;
     char	*fscr;
     int		fullscreen;
+    int		maxfreq;
     int		i, depth;
     
     sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
@@ -112,6 +116,7 @@ void GfScrInit(int argc, char *argv[])
     winX = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, xw);
     winY = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, yw);
     depth = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, 32);
+    maxfreq = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, (char*)NULL, 160);
     GfViewWidth = xw;
     GfViewHeight = yw;
     GfScrCenX = xw / 2;
@@ -142,7 +147,7 @@ void GfScrInit(int argc, char *argv[])
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	for (i = 160; i > 59; i--) {
+	for (i = maxfreq; i > 59; i--) {
 	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
 	    glutGameModeString(buf);
 	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
@@ -226,6 +231,7 @@ saveParams(void)
     GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, x);
     GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, y);
     GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, bpp);
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, (char*)NULL, curMaxFreq);
 
     if (curMode == 0) {
 	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
@@ -265,6 +271,8 @@ updateLabelText(void)
     GfuiLabelSetText (scrHandle, ResLabelId, Res[curRes]);
     GfuiLabelSetText (scrHandle, DepthLabelId, Depth[curDepth]);
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
+    sprintf(buf, "%d", curMaxFreq);
+    GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
 }
 
 static void
@@ -346,8 +354,20 @@ initFromConf(void)
 	    break;
 	}
     }
+
+    curMaxFreq = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, NULL, curMaxFreq);
 }
 
+static void
+ChangeMaxFreq(void *dummy)
+{
+    char	*val;
+    
+    val = GfuiEditboxGetString(scrHandle, MaxFreqId);
+    curMaxFreq = (int)strtol(val, (char **)NULL, 0);
+    sprintf(buf, "%d", curMaxFreq);
+    GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
+}
 
 static void
 onActivate(void *dummy)
@@ -473,6 +493,16 @@ GfScrMenuInit(void *precMenu)
 		       x2, y, GFUI_ALIGN_HC_VB, 0,
 		       (void*)1, ModePrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    y -= 60;
+    GfuiLabelCreate(scrHandle,
+		    "Max Frequency",
+		    GFUI_FONT_LARGE,
+		    320, y, GFUI_ALIGN_HC_VB,
+		    0);   
+    y -= 30;
+    MaxFreqId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
+				   275, y, 0, 8, NULL, (tfuiCallback)NULL, ChangeMaxFreq);
 
     GfuiAddKey(scrHandle, 13, "Apply Mode", NULL, GfScrReinit, NULL);
     GfuiButtonCreate(scrHandle, "Apply", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
