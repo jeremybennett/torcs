@@ -18,7 +18,7 @@
 
 DATADIR   = cars/corvette
 
-DATA      = corvette.xml corvette-base.ac corvette.ac tex-wheel.rgb texmapper.xml corvette.rgb corvette-src.ac
+DATA      = corvette.xml corvette-base.ac corvette.ac tex-wheel.rgb texmapper.xml corvette.rgb
 
 include ${MAKE_DEFAULT}
 
