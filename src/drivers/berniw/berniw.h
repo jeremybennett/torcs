@@ -47,7 +47,6 @@
 static const double g = 9.81;
 
 
-
 /* compute the angle between the track and the car */
 inline double queryAngleToTrack(tCarElt * car)
 {

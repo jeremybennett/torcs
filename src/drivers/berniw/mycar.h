@@ -104,18 +104,6 @@ class MyCar : public AbstractCar
 		static const double MAXALLOWEDPITCH;
 		static const double FLYSPEED;
 
-		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
-		~MyCar();
-
-		void info(void);
-		void update(TrackDesc* track, tCarElt* car, tSituation *situation);
-		void loadBehaviour(int id);
-		double queryInverseSlip(tCarElt * car, double speed);
-		double queryAcceleration(tCarElt * car, double speed);
-		inline double getDeltaPitch() { return deltapitch; }
-
-		Pathfinder* pf;
-
 		/* data for behavior */
 		int bmode;
 		double behaviour[6][12];
@@ -134,12 +122,10 @@ class MyCar : public AbstractCar
 		double PATHERRFACTOR;							/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
 
 		/* static data (car geometry) */
-		double wheelbase;
-		double wheeltrack;
+
 		double cgcorr_b;
 		double ca;
 		double cw;
-		double brake;
 
 		/* dynamic data */
 		double mass;
@@ -164,6 +150,20 @@ class MyCar : public AbstractCar
 		bool startmode;
 
 		double derror;			/* distance to desired trajectory */
+
+		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
+		~MyCar();
+
+		void info(void);
+		void update(TrackDesc* track, tCarElt* car, tSituation *situation);
+		void loadBehaviour(int id);
+		double queryInverseSlip(tCarElt * car, double speed);
+		double queryAcceleration(tCarElt * car, double speed);
+		inline double getDeltaPitch() { return deltapitch; }
+		inline double getWheelBase() { return wheelbase; }
+		inline double getWheelTrack() { return wheeltrack; }
+		inline Pathfinder* getPathfinderPtr() { return pf; }
+
 	private:
 		enum {
 			DRWD = 0, DFWD = 1, D4WD = 2
@@ -172,6 +172,10 @@ class MyCar : public AbstractCar
 		int drivetrain;			/* RWD, FWD or 4WD */
 		double carmass;			/* mass of car without fuel */
 		double deltapitch;		/* angle between road and car */
+		double wheelbase;
+		double wheeltrack;
+		Pathfinder* pf;
+
 		void updateCa();
 
 };

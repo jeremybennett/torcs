@@ -20,8 +20,6 @@
 #ifndef _SPLINE_H_
 #define _SPLINE_H_
 
-//#include <tgf.h>
-
 /* solves tridiagonal matrix in linear time O(n) with Given's Rotations */
 extern void tridiagonal(int dim, double * c, double * a, double * b, double * x);
 

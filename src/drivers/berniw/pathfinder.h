@@ -64,6 +64,7 @@
 class MyCar;
 class OtherCar;
 
+
 typedef struct {
 	double x;
 	double pd;
@@ -83,6 +84,7 @@ typedef struct {
 	int dist;				/* #segments from me to the other car */
 	OtherCar* collcar;		/* pointers to the cars */
 } tOCar;
+
 
 class PathSeg
 {
@@ -123,16 +125,6 @@ class PathSeg
 class Pathfinder
 {
 	public:
-		static const double colldist; // = 200.0;
-		// static const int pitpoints; // = 7;
-		static const int NTPARAMS; // = 1001;				/* # entries in dat files */
-		static const double TPRES; //  = PI/(NTPARAMS - 1);	/* resolution of the steps */
-
-		enum { pitpoints = 7 };
-
-		tParam cp[1001];							/* holds values needed for clothiod */
-
-
 		Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *situation);
 		~Pathfinder();
 		void plan(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar);
@@ -167,10 +159,16 @@ class Pathfinder
 		inline int getnPathSeg() { return nPathSeg; }
 
 	private:
+		static const double COLLDIST;	/* up to this distance do we consider other cars as dangerous */
+		static const double TPRES;		/* resolution of the steps */
+		enum { PITPOINTS = 7 };			/* # points for pit spline */
+		enum { NTPARAMS = 1001 };		/* # entries in dat files */
+		tParam cp[NTPARAMS];			/* holds values needed for clothiod */
+
 		TrackDesc* track;		/* pointer to track data */
 		int lastId;				/* segment id of the last call */
 		PathSeg* ps;			/* array with the plan */
-		int nPathSeg;			/* # of PathSeg */
+		int nPathSeg;			/* # of PathSeg's */
 		int lastPlan;			/* start of the last plan */
 		int lastPlanRange;		/* range of the last plan */
 		bool pitStop;			/* pitstop ? */
@@ -178,7 +176,6 @@ class Pathfinder
 
 		int s1, s3;				/* pitentrystart, pitentryend */
 		int e1, e3;				/* pitexitstart, pitexitend */
-		v3d *pmypitseg;
 
 		v3d pitLoc;				/* location of pit */
 		v3d pitDir;				/* direction vector of the pit */
@@ -186,15 +183,10 @@ class Pathfinder
 		int pitSegId;			/* segment id of pit */
 		bool pit;
 		int pitside;
-		int nPitLaneStart;
-		int nPitLaneEnd;
 		int changed;
 
 		int collcars;
 		tOCar* o;
-
-		double ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
-		int snpit[pitpoints];
 
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, double slope, double dist, v3d* r);

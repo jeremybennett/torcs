@@ -135,13 +135,18 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	tdble b1;							/* brake value in case we are to fast HERE and NOW */
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
+	tdble b4;
 	tdble rpm;
 	tdble steer, targetAngle, shiftaccel;
 
 	MyCar* myc = mycar[index-1];
-	Pathfinder* mpf = myc->pf;
+	Pathfinder* mpf = myc->getPathfinderPtr();
 
-	b1 = 0.0; b2 = 0.0; b3 = 0.0; shiftaccel = 0.0;
+	b1 = 0.0;
+	b2 = 0.0;
+	b3 = 0.0;
+	b4 = 0.0;
+	shiftaccel = 0.0;
 
 	/* update some values needed */
 	myc->update(myTrackDesc, car, situation);
@@ -229,7 +234,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			qs = mpf->getPathSeg(i)->getSpeedsqr();
 			brakedist = brakespeed*(myc->mass/(2.0*gm*g*myc->mass + qs*(gm*myc->ca + myc->cw)));
 
-			if (brakedist > lookahead - myc->wheeltrack) {
+			if (brakedist > lookahead - myc->getWheelTrack()) {
 				qb = brakespeed*brakecoeff/brakedist;
 				if (qb > b2) {
 					b2 = qb;
@@ -247,7 +252,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	/* try to avoid flying */
 	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
-		b3 = 1.0;
+		b4 = 1.0;
 	}
 
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
@@ -266,8 +271,9 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	/* anti blocking and brake code */
 	if (b1 > b2) tmp = b1; else tmp = b2;
-	if (tmp < b3) {
-		tmp = b3;
+	if (tmp < b3) tmp = b3;
+	if (tmp < b4) {
+		tmp = b4;
 		tdble abs_mean;
 		abs_mean = (car->_wheelSpinVel(REAR_LFT) + car->_wheelSpinVel(REAR_RGT))*car->_wheelRadius(REAR_LFT)/myc->getSpeed();
 		abs_mean /= 2.0;
@@ -382,7 +388,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 static int pitcmd(int index, tCarElt* car, tSituation *s)
 {
 	MyCar* myc = mycar[index-1];
-	Pathfinder* mpf = myc->pf;
+	Pathfinder* mpf = myc->getPathfinderPtr();
 
 	car->pitcmd->fuel = MAX(MIN((car->_remainingLaps+1.0)*myc->fuelperlap - car->_fuel, car->_tank - car->_fuel), 0.0);
 	myc->lastpitfuel = MAX(car->pitcmd->fuel, 0.0);

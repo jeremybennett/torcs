@@ -20,12 +20,8 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="75.0"></attnum>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-  </section>
-
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="20"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="9"></attnum>
   </section>
 
   <!-- Same engine for every one -->
@@ -126,11 +122,10 @@
   </section>
 
   <section name="berniw private">
-    <!--attnum name="pitentry" val="4100"></attnum-->
-	<!--attnum name="pitexit" val="280"></attnum-->
   </section>
 
 </params>
+
 
 
 

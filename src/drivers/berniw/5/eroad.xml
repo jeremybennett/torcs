@@ -20,12 +20,8 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="65.0"></attnum>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-  </section>
-
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="17"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="9"></attnum>
   </section>
 
   <!-- Same engine for every one -->
@@ -52,13 +48,13 @@
 	<attnum name="ratio" min="0" max="5" val="1.35"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="1.2"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.15"></attnum>
       </section>
     </section>
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.44"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.43"></attnum>
     <attnum name="max pressure" unit="kPa" min="100" max="150000" val="11000"></attnum>
   </section>
 
@@ -120,12 +116,11 @@
   </section>
 
   <section name="berniw private">
-    <!--attnum name="pitentry" val="3200"></attnum-->
-	<!--attnum name="pitexit" val="510"></attnum-->
   </section>
 
 
 </params>
+
 
 
 
