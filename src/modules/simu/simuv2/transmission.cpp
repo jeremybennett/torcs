@@ -251,11 +251,12 @@ SimTransmissionUpdate(tCar *car)
     tTransmission	*trans = &(car->transmission);
     tClutch		*clutch = &(trans->clutch);
     tDifferential	*differential, *differential0, *differential1;
+    tdble		transfer = MIN(clutch->transferValue * 3.0, 1.0);
 
     switch(trans->type) {
     case TRANS_RWD:
 	differential = &(trans->differential[TRANS_REAR_DIFF]);
-	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * clutch->transferValue;
+	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
 	SimDifferentialUpdate(car, differential, 1);
 	SimUpdateFreeWheels(car, 0);
 /* 	printf("s0 %f - s1 %f (%f)	inTq %f -- Tq0 %f - Tq1 %f (%f)\n", */
@@ -265,7 +266,7 @@ SimTransmissionUpdate(tCar *car)
 	break;
     case TRANS_FWD:
 	differential = &(trans->differential[TRANS_FRONT_DIFF]);
-	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * clutch->transferValue;
+	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
 	SimDifferentialUpdate(car, differential, 1);
 	SimUpdateFreeWheels(car, 1);
 /* 	printf("s0 %f - s1 %f (%f)	inTq %f -- Tq0 %f - Tq1 %f (%f)\n", */
@@ -278,7 +279,7 @@ SimTransmissionUpdate(tCar *car)
 	differential0 = &(trans->differential[TRANS_FRONT_DIFF]);
 	differential1 = &(trans->differential[TRANS_REAR_DIFF]);
 
-	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * clutch->transferValue;
+	differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
 	differential->inAxis[0]->spinVel = (differential0->inAxis[0]->spinVel + differential0->inAxis[1]->spinVel) / 2.0;
 	differential->inAxis[1]->spinVel = (differential1->inAxis[0]->spinVel + differential1->inAxis[1]->spinVel) / 2.0;
 	differential->inAxis[0]->Tq = (differential0->inAxis[0]->Tq + differential0->inAxis[1]->Tq) / differential->ratio;
