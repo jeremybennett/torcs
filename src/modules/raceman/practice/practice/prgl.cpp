@@ -32,6 +32,10 @@
 
 #include "practice.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static int BoardFl = 1;
 static int FpsFl = 1;
 static int RunFl = 0;

@@ -26,6 +26,10 @@
 
 #include "Transform.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void Transform::setValue(const float m[16]) {
   basis.setValue(m);
   origin.setValue(&m[12]);

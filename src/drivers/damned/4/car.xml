@@ -17,7 +17,6 @@
 <params name="TORCS FREE" type="template" mode="mw">
 
   <section name="Car">
-    <attstr name="category" val="free"></attstr>    
     <attnum name="body length" unit="m" min="1.5" max="25.0" val="5"></attnum>
     <attnum name="body width" unit="m" min="0.5" max="4.0" val="2"></attnum>
     <attnum name="body height" unit="m" min="0.5" max="10.0" val="1.2"></attnum>

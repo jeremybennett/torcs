@@ -24,6 +24,10 @@
 #include "mainmenu.h"
 #include "splash.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /*
  * Function
  *	TorcsEntry

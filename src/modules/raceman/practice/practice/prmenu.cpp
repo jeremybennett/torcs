@@ -31,6 +31,10 @@
 
 #include "practice.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void			*prMainMenuHandle = NULL;
 static tRmTrackSelect	ts;
 void 			*prPrevMenuHandle;

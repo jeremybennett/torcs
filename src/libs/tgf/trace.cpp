@@ -38,6 +38,10 @@
 #endif
 #include <tgf.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static FILE *outTrace = (FILE*)NULL;
 
 static char TraceStr[1024];

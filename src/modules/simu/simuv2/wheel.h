@@ -41,6 +41,7 @@ typedef struct
 
     tdble  	spinTq;		/* spin torque feedback */
     tdble  	spinVel;   	/* spin velocity */
+    tdble  	prespinVel;   	/* spin velocity */
     int     	state;     	/* wheel state */
     /* 1 and 2 are for suspension state */
 #define SIM_WH_SPINNING 4	/* the wheel is spinning */
@@ -76,6 +77,8 @@ typedef struct
 
     tDynAxis	in;
     tDynAxis	feedBack;
+
+    tdble	preFn, preFt;
 } tWheel;
 
     

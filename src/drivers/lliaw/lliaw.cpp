@@ -35,7 +35,9 @@
 #include <robot.h>
 #include <robottools.h>
 
-
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);

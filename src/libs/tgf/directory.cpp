@@ -30,6 +30,10 @@
 #include <tgf.h>
 #include "os.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void
 gfDirInit(void)
 {

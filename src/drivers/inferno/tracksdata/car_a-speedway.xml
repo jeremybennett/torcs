@@ -22,12 +22,8 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"></attnum>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="14"></attnum>
-  </section>
-
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="7"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="4"></attnum>
   </section>
 
   <section name="Gearbox">

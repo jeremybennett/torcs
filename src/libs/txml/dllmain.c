@@ -21,6 +21,10 @@ $Id$
 
 #include <windows.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 BOOL WINAPI DllMain(HANDLE hInst, ULONG ul_reason_for_call, LPVOID lpReserved)
 {
   return TRUE;

@@ -39,6 +39,10 @@
 #include <js.h>
 #include "pref.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void	*PrefHdle;
 
 int	Transmission;

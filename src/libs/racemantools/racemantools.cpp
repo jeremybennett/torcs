@@ -35,6 +35,10 @@
 #include <robottools.h>
 #include <robot.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void initStartingGrid(tRmInfo *raceInfo);
 static void initPits(tRmInfo *raceInfo);
 

@@ -23,6 +23,10 @@
 #include "exitmenu.h"
 #include "mainmenu.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void 
 endofprog(void *dummy)
 {

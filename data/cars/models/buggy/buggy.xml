@@ -41,7 +41,7 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="offroad-r-a"></attstr>
+    <attstr name="category" val="Offroad-RWD-GrA"></attstr>
     <attnum name="body length" unit="m" val="4.0"></attnum>
     <attnum name="body width" unit="m" val="2.0"></attnum>
     <attnum name="body height" unit="m" val="1.0"></attnum>

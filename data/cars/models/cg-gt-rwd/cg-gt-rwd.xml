@@ -24,7 +24,7 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="torcs-r-b"></attstr>    
+    <attstr name="category" val="Track-RWD-GrB"></attstr>    
     <attnum name="body length" unit="m" val="4.5"></attnum>
     <attnum name="body width"  unit="m" val="2.0"></attnum>
     <attnum name="body height" unit="m" val="1.2"></attnum>

@@ -25,6 +25,10 @@ $Id$
 #include "xmldef.h"
 #include "hashtable.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 #ifdef XML_UNICODE
 #define keycmp wcscmp
 #else

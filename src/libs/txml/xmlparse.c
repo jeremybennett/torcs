@@ -25,6 +25,10 @@ $Id$
 
 #include "xmldef.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 #ifdef XML_UNICODE
 #define XML_ENCODE_MAX XML_UTF16_ENCODE_MAX
 #define XmlConvert XmlUtf16Convert

@@ -26,3 +26,7 @@
     @version	$Id$
 */
 
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif

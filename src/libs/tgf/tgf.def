@@ -1,5 +1,11 @@
+;
+; tgf.def
+;
+
 LIBRARY
-SECTIONS .data READ WRITE SHARED
+
+SECTIONS .data READ WRITE
+
 EXPORTS
 	GfModLoad
 	GfModLoadDir
@@ -31,11 +37,6 @@ EXPORTS
 	GfParmListSeekNext
 	GfParmListGetCurEltName
 	GfParmListClean
-;	GfProcCreateSched
-;	GfProcCreate
-;	GfProcKillAll
-;	GfProcDispatch
-;	GfProcSelectSched
 	GfImgReadPng
 	GfImgWritePng
 	GfScrInit

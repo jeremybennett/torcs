@@ -29,6 +29,10 @@
 #include <playerpref.h>
 #include <js.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void	*scrHandle1 = NULL;
 static void	*scrHandle2 = NULL;
 static void	*prevHandle = NULL;

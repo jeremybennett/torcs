@@ -30,6 +30,10 @@
 
 #include <new.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 BBoxInternal *free_node;
 
 Complex::~Complex() {

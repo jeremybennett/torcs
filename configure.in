@@ -17,7 +17,7 @@
 
 
 AC_INIT(Make-config.in)
-AM_INIT_AUTOMAKE(torcs, 1.0.0)
+AM_INIT_AUTOMAKE(torcs, 1.1.0)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -66,6 +66,19 @@ AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please
 
 AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check your installation and add the correct paths!]))
 
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lplibsg:
+AC_CHECK_LIB(plibsg, sgVectorProductVec3)
+dnl Replace `main' with a function in -lplibsl:
+AC_CHECK_LIB(plibsl, isWaiting__8slPlayer)
+dnl Replace `main' with a function in -lplibsm:
+AC_CHECK_LIB(plibsm, setMasterVolume__7smMixeri)
+dnl Replace `main' with a function in -lplibssg:
+AC_CHECK_LIB(plibssg, glIsValidContext)
+dnl Replace `main' with a function in -lplibul:
+AC_CHECK_LIB(plibul, ulOpenDir)
+dnl Replace `main' with a function in -lpng:
+AC_CHECK_LIB(png, png_init_io)
 
 AC_HAVE_GL
 AC_PATH_GLUT

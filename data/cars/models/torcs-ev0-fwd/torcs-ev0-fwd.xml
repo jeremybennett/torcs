@@ -25,7 +25,7 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="torcs-f-a"></attstr>
+    <attstr name="category" val="Track-FWD-GrA"></attstr>
     <attnum name="body length" unit="m" val="4.683"></attnum>
     <attnum name="body width"  unit="m" val="1.7"></attnum>
     <attnum name="body height" unit="m" val="1.173"></attnum>

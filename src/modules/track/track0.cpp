@@ -26,6 +26,10 @@
 #include <track.h>
 #include "trackinc.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 /*
  * Read version 0 track segments

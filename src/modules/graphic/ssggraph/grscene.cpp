@@ -45,6 +45,10 @@
 #include "grutil.h"
 #include "grssgext.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 int grWrldX;
 int grWrldY;
 int grWrldZ;

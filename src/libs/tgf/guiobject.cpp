@@ -24,6 +24,10 @@
 #include <tgf.h>
 #include "gui.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void
 gfuiObjectInit(void)
 {

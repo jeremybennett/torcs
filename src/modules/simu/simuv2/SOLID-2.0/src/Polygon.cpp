@@ -26,6 +26,10 @@
 
 #include "Polygon.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 Point Polygon::support(const Vector& v) const {
   Scalar h = dot((*this)[ci], v), d;
   int ni = ci < numVerts()-1 ? ci+1 : 0;

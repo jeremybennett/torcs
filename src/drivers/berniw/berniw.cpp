@@ -20,6 +20,10 @@
 
 #include "berniw.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 /* function prototypes */
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation);

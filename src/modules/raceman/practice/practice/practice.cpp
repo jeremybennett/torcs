@@ -31,6 +31,10 @@
 
 #include "practice.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 #ifdef _WIN32
 BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 {

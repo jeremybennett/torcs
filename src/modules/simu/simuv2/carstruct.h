@@ -38,7 +38,9 @@ typedef struct
     tCarCtrl	*ctrl;
     void	*params;
     tCarElt	*carElt;
-    
+
+    tCarCtrl	preCtrl;
+
     /* components */
     tAxle		axle[2];
     tWheel		wheel[4];

@@ -27,7 +27,7 @@
 	<!-- Car used to race --> 
 	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
 	<!-- Car category --> 
-	<attstr name="category" val="torcs-r-a"></attstr> 
+	<attstr name="category" val="Track-RWD-GrA"></attstr> 
 	<!-- Race number, should be unique for TORCS... --> 
 	<attnum name="race number" val="99"></attnum> 
 	<!-- Your color for car and board --> 
@@ -41,7 +41,7 @@
 	<attstr name="desc" val="A tutorial robot"></attstr> 
 	<attstr name="author" val="My Name"></attstr> 
 	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
-	<attstr name="category" val="torcs-r-a"></attstr> 
+	<attstr name="category" val="Track-RWD-GrA"></attstr> 
 	<attnum name="race number" val="99"></attnum> 
 	<attnum name="red" val="1.0"></attnum> 
 	<attnum name="green" val="1.0"></attnum> 
@@ -53,7 +53,7 @@
 	<attstr name="desc" val="A tutorial robot"></attstr> 
 	<attstr name="author" val="My Name"></attstr> 
 	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
-	<attstr name="category" val="torcs-r-a"></attstr> 
+	<attstr name="category" val="Track-RWD-GrA"></attstr> 
 	<attnum name="race number" val="99"></attnum> 
 	<attnum name="red" val="1.0"></attnum> 
 	<attnum name="green" val="1.0"></attnum> 

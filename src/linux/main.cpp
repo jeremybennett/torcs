@@ -22,8 +22,20 @@
 
 #include <tgf.h>
 #include <torcs.h>
+#include <stdlib.h>
 
 #include "linuxspec.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
+static void
+torcs_end(void)
+{
+    printf("Thanks to play with TORCS.\n");
+}
+
 
 /*
  * Function
@@ -44,6 +56,8 @@
 int 
 main(int argc, char *argv[])
 {
+    
+    /* atexit(torcs_end); */
     
     LinuxSpecInit();		/* init specific linux functions */
     

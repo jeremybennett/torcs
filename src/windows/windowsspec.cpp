@@ -29,6 +29,10 @@
 #include <direct.h>
 #include <io.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 extern "C" int
 ssggraph(tModInfo *modInfo);
 

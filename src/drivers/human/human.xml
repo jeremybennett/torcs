@@ -22,7 +22,7 @@
       <section name="1">
         <attstr name="name" val="Player-GT1"></attstr>
         <attstr name="car name" val="porsche-gt1"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attnum name="race number" val="20"></attnum>
         <attnum name="red" val="1.0"></attnum>
@@ -34,7 +34,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="buggy"></attstr>
-        <attstr name="category" val="offroad-r-a"></attstr>
+        <attstr name="category" val="Offroad-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -45,7 +45,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="cg-nascar-rwd"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -56,7 +56,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="acura-nsx-sz"></attstr>
-        <attstr name="category" val="torcs-r-b"></attstr>
+        <attstr name="category" val="Track-RWD-GrB"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -67,7 +67,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="viper-gts-r"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -78,7 +78,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="lotus-gt1"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -89,7 +89,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="mclaren-f1"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -111,7 +111,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="cg-nascar-fwd"></attstr>
-        <attstr name="category" val="torcs-f-a"></attstr>
+        <attstr name="category" val="Track-FWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -122,7 +122,7 @@
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
         <attstr name="car name" val="360-modena"></attstr>
-        <attstr name="category" val="torcs-r-a"></attstr>
+        <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>

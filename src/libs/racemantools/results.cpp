@@ -36,6 +36,10 @@
 #include <robottools.h>
 #include <robot.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 /** Display the Practice session results.
     @param	prevHdle	Handle to return to.
@@ -206,6 +210,7 @@ RmShutdownResults(tRmInfo *rmInfo)
 void
 RmSaveResults(tRmInfo *rmInfo)
 {
+#ifndef WIN32
     int		*index;
     tCarElt	**cars;
     int		nb, i, max, ncars;
@@ -215,7 +220,6 @@ RmSaveResults(tRmInfo *rmInfo)
     char	*filename = "res";
     int		pos;
 
-#ifndef WIN32
     GfOut("Saving Results\n");
 
     index = (int*)malloc(rmInfo->s->_ncars * sizeof(int *));

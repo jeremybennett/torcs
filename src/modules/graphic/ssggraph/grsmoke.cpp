@@ -1,3 +1,20 @@
+/***************************************************************************
+
+    file                 : grsmoke.cpp
+    created              : Fri Mar 22 23:17:54 CET 2002
+    copyright            : (C) 2001 by Christophe Guionneau
+    version              : $Id$
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
 #include <math.h>
 #include <stdlib.h>
@@ -26,6 +43,10 @@
 #include "grboard.h"
 #include "grssgext.h"
 #include "grutil.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 int grSmokeMaxNumber;
 double grSmokeDeltaT;

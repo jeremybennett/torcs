@@ -17,7 +17,6 @@
 <params name="NASCAR RWD" type="template">
 
   <section name="Car">
-    <attstr name="category" val="torcs-r-a"></attstr>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="65.0"></attnum>
   </section>
 

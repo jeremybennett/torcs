@@ -1,11 +1,10 @@
 ;
-; tanhoj.def
+; inferno2.def
 ;
 
-LIBRARY	
+LIBRARY	inferno2
 
-CODE	PRELOAD MOVEABLE DISCARDABLE
-DATA	PRELOAD SINGLE
+SECTIONS .data READ WRITE
 
 EXPORTS
-inferno2
+	inferno2

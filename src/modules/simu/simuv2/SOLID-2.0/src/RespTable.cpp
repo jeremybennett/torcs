@@ -29,6 +29,10 @@
 #include "RespTable.h"
 
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 const Response& RespTable::find(DtObjectRef obj1, DtObjectRef obj2) const {
   PairList::const_iterator i = pairList.find(make_ObjPair(obj1, obj2));

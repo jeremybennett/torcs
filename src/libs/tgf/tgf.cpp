@@ -24,6 +24,10 @@
 
 #include "gui.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 extern void gfDirInit(void);
 extern void gfModInit(void);
 extern void gfOsInit(void);

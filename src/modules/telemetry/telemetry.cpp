@@ -28,6 +28,9 @@
 #include <tgf.h>
 #include "tlm.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 typedef struct Channel 
 {

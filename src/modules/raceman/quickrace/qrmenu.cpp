@@ -28,6 +28,10 @@
 #include "qracemain.h"
 #include <osspec.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void			*qrMainMenuHandle = NULL;
 static tRmTrackSelect	ts;
 static void 		*qrPrevMenuHandle;

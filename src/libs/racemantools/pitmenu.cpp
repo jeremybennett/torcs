@@ -29,6 +29,10 @@
 #include <tgf.h>
 #include <car.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void		*menuHandle;
 static int		fuelId;
 static int		repairId;

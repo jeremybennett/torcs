@@ -34,6 +34,10 @@
 #include <track.h>
 #include <racemantools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 static void		*scrHandle;
 static tRmDrvSelect	*ds;

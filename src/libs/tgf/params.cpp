@@ -45,6 +45,10 @@
 
 #include "params.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /* All the lists are organized circularly */
 /* and the pointer is on the last element */
 static tParm *TheParms = (tParm*)NULL;

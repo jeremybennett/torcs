@@ -23,13 +23,13 @@
 typedef struct
 {
     /* dynamic */
-    tdble	drag;	/* drag force along car x axis */
-    tdble	lift;	/* lift force along car z axis */
+    tdble	drag;		/* drag force along car x axis */
+    tdble	lift[2];	/* front & rear lift force along car z axis */
 
     /* static */
     tdble	SCx2;
-    tdble	Clift;	/* global lift due to body not wings */
-    tdble	Cd;	/* for aspiration */
+    tdble	Clift[2];	/* front & rear lift due to body not wings */
+    tdble	Cd;		/* for aspiration */
 } tAero;
 
 

@@ -34,6 +34,10 @@
 
 #include <robottools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /** Get the track width at the specified point.
     @ingroup	robottools
     @param	seg	Segment
@@ -217,7 +221,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 
     while (segnotfound) {
 	
-	switch(seg->type){
+	switch(seg->type) {
 	case TR_STR:
 	    /* rotation */
 	    tdble sine, cosine;
@@ -322,7 +326,6 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 	    p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
 	}
     }
-    
 }
 
 /** Returns the absolute height in meters of the road

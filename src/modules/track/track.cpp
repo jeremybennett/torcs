@@ -27,6 +27,9 @@
 #include <track.h>
 #include "trackinc.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 const tdble DEGPRAD = 180.0 / PI;   /* degrees per radian */
 

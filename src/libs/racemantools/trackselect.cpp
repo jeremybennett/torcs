@@ -34,6 +34,9 @@
 #include <osspec.h>
 #include <racemantools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 static tFList		*FileList;
 static void		*scrHandle;

@@ -20,12 +20,22 @@
 #include <stdio.h>
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /*
  * b2 and b3 calculus
  */
 static void
 initDamper(tSuspension *susp)
 {
+    tDamper *damp;
+    
+    damp = &(susp->damper);
+    
+    damp->bump.b2 = (damp->bump.C1 - damp->bump.C2) * damp->bump.v1 + damp->bump.b1;
+    damp->rebound.b2 = (damp->rebound.C1 - damp->rebound.C2) * damp->rebound.v1 + damp->rebound.b1;
 }
 
 /*
@@ -54,7 +64,12 @@ damperForce(tSuspension *susp)
     }
     
     av = fabs(v);
-    f = (dampdef->C1 * av + dampdef->b1);
+    if (av < dampdef->v1) {
+	f = (dampdef->C1 * av + dampdef->b1);
+    } else {
+	f = (dampdef->C2 * av + dampdef->b2);
+    }
+
     f *= SIGN(v);
 
     return f;
@@ -109,12 +124,16 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->spring.packers    = GfParmGetNum(hdle, section, PRM_PACKERS, (char*)NULL, 0);
     susp->damper.bump.C1    = GfParmGetNum(hdle, section, PRM_SLOWBUMP, (char*)NULL, 0);
     susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0);
+    susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, 0);
+    susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0);
 
     susp->spring.x0 = susp->spring.bellcrank * X0;
     susp->spring.F0 = F0 / susp->spring.bellcrank;
     susp->spring.K = - susp->spring.K;
     susp->damper.bump.b1 = 0;
     susp->damper.rebound.b1 = 0;
+    susp->damper.bump.v1 = 0.5;
+    susp->damper.rebound.v1 = 0.5;
 
     initDamper(susp);
 }

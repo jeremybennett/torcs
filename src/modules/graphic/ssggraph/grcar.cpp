@@ -45,6 +45,10 @@
 #include "grssgext.h"
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static int
 preCbEnv(ssgEntity *e)
 {

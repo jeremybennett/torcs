@@ -19,6 +19,10 @@
 
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void 
 SimSteerConfig(tCar *car)
 {

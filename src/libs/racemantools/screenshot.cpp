@@ -27,15 +27,19 @@
 #include <GL/glut.h>
 #include <tgf.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /** Save a screen shot in png format
  */
 void
 RmScreenShot(void * /* notused */)
 {
+#ifndef WIN32
     unsigned char	*img;
     char		buf[256];
 
-#ifndef WIN32
     img = (unsigned char*)malloc(GfScrWidth * GfScrHeight * 3);
     if (img == NULL) {
 	return;

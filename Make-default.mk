@@ -80,7 +80,6 @@ ifdef TOOLS
 COMPILATION=true
 endif
 
-
 ifdef COMPILATION
 
 default: win32start exports tools compil win32end
@@ -283,7 +282,7 @@ endif
 ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
-	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LIBSPATH} ${LIBS} 
+	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \

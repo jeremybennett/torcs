@@ -28,7 +28,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="cg-nascar-rwd"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="138"></attnum>
 		<!-- Your color for car and board -->
@@ -47,7 +47,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="cg-nascar-rwd"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="139"></attnum>
 		<!-- Your color for car and board -->
@@ -66,7 +66,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="acura-nsx-sz"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-b"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="140"></attnum>
 		<!-- Your color for car and board -->
@@ -85,7 +85,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="viper-gts-r"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="141"></attnum>
 		<!-- Your color for car and board -->
@@ -104,7 +104,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="cg-nascar-rwd"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="142"></attnum>
 		<!-- Your color for car and board -->
@@ -123,7 +123,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="155-DTM"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-b"></attstr>
+		<attstr name="category" val="Track-4WD-GrB"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="143"></attnum>
 		<!-- Your color for car and board -->
@@ -142,7 +142,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="lotus-gt1"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="144"></attnum>
 		<!-- Your color for car and board -->
@@ -161,7 +161,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="corvette"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="145"></attnum>
 		<!-- Your color for car and board -->
@@ -180,7 +180,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="mclaren-f1"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="Track-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="146"></attnum>
 		<!-- Your color for car and board -->
@@ -199,7 +199,7 @@
 		<!-- Car used to race -->
 		<attstr name="car name" val="buggy"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="offroad-r-a"></attstr>
+		<attstr name="category" val="Offroad-RWD-GrA"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="147"></attnum>
 		<!-- Your color for car and board -->

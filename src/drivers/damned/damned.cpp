@@ -34,6 +34,10 @@
 #include <robot.h>
 #include <robottools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
@@ -299,7 +303,7 @@ dmGetDistToStart(tCarElt *car)
  */
 const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.25,	0.02,	0.2,	0.2,	0.02,	0.02,	0.02	};
 const  tdble AGain[10]   = {	0.30,	0.10,   0.15,	0.1,	0.015,	0.05,	0.08,	0.08,	0.08,	0.08	};
-static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.008,	0.01,	0.015,	0.015,	0.015,	0.015	};
+static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.008,	0.01,	0.015,	0.02,	0.015,	0.015	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.0,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
@@ -328,7 +332,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[5] = DmTrack->width - 5.0;
     spdtgt2[6] = DmTrack->width + 3.0;
     Advance[6] = Advance2[6] = DmTrack->width * 2.0 + 15.0;
-    spdtgt2[7] = DmTrack->width;
+    spdtgt2[7] = DmTrack->width + 3.0;
     Advance[7] = Advance2[7] = DmTrack->width * 2.0 + 8.0;
     spdtgt2[8] = DmTrack->width + 3.0;
     Advance[8] = Advance2[8] = DmTrack->width * 2.0 + 8.0;

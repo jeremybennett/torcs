@@ -20,6 +20,10 @@
 #include <stdio.h>
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
@@ -36,7 +40,7 @@ SimWheelConfig(tCar *car, int index)
     pressure              = GfParmGetNum(hdle, WheelSect[index], PRM_PRESSURE, (char*)NULL, 275600);
     rimdiam               = GfParmGetNum(hdle, WheelSect[index], PRM_RIMDIAM, (char*)NULL, 0.33);
     tirewidth             = GfParmGetNum(hdle, WheelSect[index], PRM_TIREWIDTH, (char*)NULL, 0.145);
-    tireratio             = GfParmGetNum(hdle, WheelSect[index], PRM_TIRERATIO, (char*)NULL, .75);
+    tireratio             = GfParmGetNum(hdle, WheelSect[index], PRM_TIRERATIO, (char*)NULL, 0.75);
     wheel->mu             = GfParmGetNum(hdle, WheelSect[index], PRM_MU, (char*)NULL, 1.0);
     wheel->I              = GfParmGetNum(hdle, WheelSect[index], PRM_INERTIA, (char*)NULL, 1.5);
     wheel->I += wheel->brake.I; /* add brake inertia */
@@ -48,11 +52,11 @@ SimWheelConfig(tCar *car, int index)
     EFactor               = GfParmGetNum(hdle, WheelSect[index], PRM_EFACTOR, (char*)NULL, 0.7);
     wheel->lfMax          = GfParmGetNum(hdle, WheelSect[index], PRM_LOADFMAX, (char*)NULL, 1.6);
     wheel->lfMin          = GfParmGetNum(hdle, WheelSect[index], PRM_LOADFMIN, (char*)NULL, 0.8);
-    wheel->opLoad         = GfParmGetNum(hdle, WheelSect[index], PRM_OPLOAD, (char*)NULL, wheel->weight0*1.2);
+    wheel->opLoad         = GfParmGetNum(hdle, WheelSect[index], PRM_OPLOAD, (char*)NULL, wheel->weight0 * 1.2);
     wheel->mass           = GfParmGetNum(hdle, WheelSect[index], PRM_MASS, (char*)NULL, 20.0);
 
-    wheel->lfMin = MIN(0.99, wheel->lfMin);
-    wheel->lfMax = MAX(1.01, wheel->lfMax);
+    wheel->lfMin = MIN(0.8, wheel->lfMin);
+    wheel->lfMax = MAX(1.6, wheel->lfMax);
 
     RFactor = MIN(1.0, RFactor);
     RFactor = MAX(0.1, RFactor);
@@ -72,17 +76,17 @@ SimWheelConfig(tCar *car, int index)
     SimSuspConfig(hdle, SuspSect[index], &(wheel->susp), wheel->weight0, x0);
     SimBrakeConfig(hdle, BrkSect[index], &(wheel->brake));
     
-    carElt->_rimRadius(index) = rimdiam * .5;
+    carElt->_rimRadius(index) = rimdiam / 2.0;
     carElt->_tireHeight(index) = tirewidth * tireratio;
     carElt->_tireWidth(index) = tirewidth;
     carElt->_brakeDiskRadius(index) = wheel->brake.radius;
     carElt->_wheelRadius(index) = wheel->radius;
 
-    wheel->mfC = 2 - asin(RFactor) * 2 / PI;
+    wheel->mfC = 2.0 - asin(RFactor) * 2.0 / PI;
     wheel->mfB = Ca / wheel->mfC;
     wheel->mfE = EFactor;
     
-    wheel->lfK = log((1 - wheel->lfMin) / (wheel->lfMax - wheel->lfMin));
+    wheel->lfK = log((1.0 - wheel->lfMin) / (wheel->lfMax - wheel->lfMin));
 
     wheel->feedBack.I += wheel->I;
     wheel->feedBack.spinVel = 0;
@@ -193,6 +197,9 @@ SimWheelUpdateForce(tCar *car, int index)
 	Ft -= F * sx / s;
 	Fn -= F * sy / s;
     }
+
+    RELAXATION2(Fn, wheel->preFn, 50.0);
+    RELAXATION2(Ft, wheel->preFt, 50.0);
     
     wheel->relPos.az = waz;
     
@@ -217,6 +224,9 @@ SimWheelUpdateRotation(tCar *car)
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	wheel->spinVel = wheel->in.spinVel;
+	
+	RELAXATION2(wheel->spinVel, wheel->prespinVel, 50.0);
+	
 	wheel->relPos.ay += wheel->spinVel * SimDeltaTime;
 	car->carElt->_wheelSpinVel(i) = wheel->spinVel;
     }

@@ -34,6 +34,10 @@
 #include <tgf.h>
 #include "gui.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
 tMouseInfo	GfuiMouse;

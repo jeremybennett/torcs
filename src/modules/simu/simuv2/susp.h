@@ -23,7 +23,8 @@
 
 typedef struct 
 {
-    tdble C1, b1; /* coefs for slow */
+    tdble C1, b1, v1; /* coefs for slow */
+    tdble C2, b2;     /* coefs for fast */
 } tDamperDef;
 
 typedef struct

@@ -36,8 +36,11 @@
 #include <robot.h>
 #include <robottools.h>
 
-
 #include "common.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
@@ -119,6 +122,7 @@ tdble	shiftThld[10][MAX_GEARS+1];
 static tdble PGain[10]     = {0.02};
 static tdble AGain[10]     = {0.008};
 static tdble PnGain[10]    = {0.02};
+static tdble DPnGain[10]    = {0.1};
 static tdble Advance[10]   = {35.0};
 static tdble AdvSpd[10]    = {5.0};
 static tdble Advance2[10]  = {20.0};
@@ -162,8 +166,7 @@ static tdble Trightprev[10];
 #define SPDTGT2		"spdtgt2"
 #define STEERMULT	"steerMult"
 #define OFFSET		"offset"
-
-tdble Gmax;
+#define DPNGAIN		"DPnGain"
 
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s)
 {
@@ -171,9 +174,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     char	*str;
     char	buf[256];
     tdble	fuel;
-    tdble	tmpMu;
-    
-    
+
     DmTrack = track;
     str = strrchr(track->filename, '/') + 1;
     sprintf(ParamNames, "drivers/inferno/tracksdata/car_%s", str);
@@ -189,15 +190,6 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
     }
-    
-    Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
 
     sprintf(buf, "drivers/inferno/tracksdata/%s", str);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
@@ -205,6 +197,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	PGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, PGAIN,     NULL, PGain[0]);
 	AGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
 	PnGain[0]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
+	DPnGain[0]   = GfParmGetNum(hdle, SIMU_PRMS, DPNGAIN,   NULL, DPnGain[0]);
 	Advance[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
 	AdvSpd[0]    = GfParmGetNum(hdle, SIMU_PRMS, ADVSPD,    NULL, AdvSpd[0]);
 	Advance2[0]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
@@ -333,7 +326,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * adv;
     y = Y + (SinA) * adv;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos2, TR_LPOS_MAIN);
-    Dny = seg->width / 2.0 - trkPos2.toRight + Offset[0];
+    Dny = seg->width / 2.0 + DPnGain[0] * (Tright[0] - seg->width / 2.0) - trkPos2.toRight + Offset[0];
 
     CollDet(car, 0, s, Curtime, Dny);
     

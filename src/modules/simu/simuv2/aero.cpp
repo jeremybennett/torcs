@@ -21,6 +21,10 @@
 
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void 
 SimAeroConfig(tCar *car)
 {
@@ -29,7 +33,8 @@ SimAeroConfig(tCar *car)
     
     Cx       = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.4);
     FrntArea = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 2.5);
-    car->aero.Clift = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_CL, (char*)NULL, 0.0);
+    car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
+    car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
     car->aero.Cd += car->aero.SCx2;
 }
@@ -89,7 +94,8 @@ SimAeroUpdate(tCar *car, tSituation *s)
     hm = hm*hm;
     hm = hm*hm;    
     hm = 2 * exp(-3.0*hm);
-    car->aero.lift = - car->aero.Clift * v2 * hm;
+    car->aero.lift[0] = - car->aero.Clift[0] * v2 * hm;
+    car->aero.lift[1] = - car->aero.Clift[1] * v2 * hm;
 }
 
 static char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};

@@ -26,6 +26,10 @@
 
 #include "Cone.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 Point Cone::support(const Vector& v) const {
   if (v[Y] > v.length() * sinAngle) return Point(0, halfHeight, 0);
   else {

@@ -35,6 +35,10 @@
 #include <robottools.h>
 #include <tgf.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static tTelemItf	tlm;
 static tModList		*modlist = (tModList*)NULL;
 

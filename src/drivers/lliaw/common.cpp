@@ -30,6 +30,10 @@
 #include <robot.h>
 #include <robottools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void
 InitGears(tCarElt* car, int idx)
 {

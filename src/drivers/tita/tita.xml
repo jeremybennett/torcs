@@ -23,7 +23,7 @@
 	<attstr name="desc" val="A robot dedicated to Tristan"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
 	<attstr name="car name" val="lotus-gt1"></attstr>
-	<attstr name="category" val="torcs-r-a"></attstr>
+	<attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="13"></attnum>
 	<attnum name="red" val="0.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>

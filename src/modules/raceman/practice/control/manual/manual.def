@@ -1,4 +1,10 @@
+;
+; manual.def
+;
+
 LIBRARY
-SECTIONS .data READ WRITE SHARED
+
+SECTIONS .data READ WRITE
+
 EXPORTS
 	manual

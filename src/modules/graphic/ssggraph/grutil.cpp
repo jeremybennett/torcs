@@ -33,6 +33,10 @@
 
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
 
@@ -119,8 +123,10 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
     }
-    
+
+#ifndef WIN32    
     free(tex);
+#endif
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return image;

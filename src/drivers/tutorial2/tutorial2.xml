@@ -27,7 +27,7 @@
 	<!-- Car used to race --> 
 	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
 	<!-- Car category --> 
-	<attstr name="category" val="torcs-r-a"></attstr> 
+	<attstr name="category" val="Track-RWD-GrA"></attstr> 
 	<!-- Race number, should be unique for TORCS... --> 
 	<attnum name="race number" val="98"></attnum> 
 	<!-- Your color for car and board --> 

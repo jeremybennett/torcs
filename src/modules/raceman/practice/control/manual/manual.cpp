@@ -30,6 +30,10 @@
 
 #include <practicectrl.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static void		*prMainMenuHandle = NULL;
 static void		*PractParam;
 

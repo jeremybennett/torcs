@@ -20,6 +20,10 @@
 #include "trackdesc.h"
 #include "berniw.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 TrackSegment::TrackSegment()
 {
 	// nothing so far

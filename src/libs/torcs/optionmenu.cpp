@@ -23,6 +23,10 @@
 #include "driverconfig.h"
 #include "joystickconfig.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void *
 TorcsOptionOptionInit(void *precMenu)
 {

@@ -19,6 +19,10 @@
 
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void 
 SimBrakeConfig(void *hdle, char *section, tBrake *brake)
 {

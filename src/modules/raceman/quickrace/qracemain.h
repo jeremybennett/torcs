@@ -58,6 +58,7 @@ extern void qrOneStep(void *);
 extern void qrPrevCar(void *);
 extern void qrNextCar(void *);
 extern void qrShutdown(void);
+extern void qrTimeMod (void *vcmd);
 
 extern void qrMenuRun(void *backmenu);
 

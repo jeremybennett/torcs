@@ -21,6 +21,10 @@
 #include <math.h>
 #include "spline.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /*	solving tridiagonal nxn matrix with Givens-Rotations in linear time O(n)
 	[ a1 b1 0   0   0 .......... ]
 	[ c1 a2 b2  0   0 ...........]

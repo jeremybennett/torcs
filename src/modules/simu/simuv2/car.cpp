@@ -24,6 +24,10 @@
 
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 const tdble aMax = 0.35; /*  */
 
 void
@@ -181,15 +185,14 @@ SimCarUpdateForces(tCar *car)
 
     /* Aero Drag */
     F.F.x += car->aero.drag;
-    F.F.z += car->aero.lift;
 
-    /* Wings */
+    /* Wings & Aero Downforce */
     for (i = 0; i < 2; i++) {
 	/* forces */
-	F.F.z += car->wing[i].forces.z;
+	F.F.z += car->wing[i].forces.z + car->aero.lift[i];
 	F.F.x += car->wing[i].forces.x;
 	/* moments */
-	F.M.y -= car->wing[i].forces.z * car->wing[i].staticPos.x +
+	F.M.y -= (car->wing[i].forces.z + car->aero.lift[i]) * car->wing[i].staticPos.x +
 	    car->wing[i].forces.x * car->wing[i].staticPos.z;
     }
 
@@ -379,6 +382,7 @@ void
 SimTelemetryOut(tCar *car)
 {
     int i;
+    tdble Fzf, Fzr;
     
     printf("-----------------------------\nCar: %d %s ---\n", car->carElt->index, car->carElt->_name);
     printf("Seg: %d  Ts:%f  Tr:%f\n",
@@ -395,6 +399,10 @@ SimTelemetryOut(tCar *car)
 	printf("sx:%f sa:%f w:%f ", car->wheel[i].sx, car->wheel[i].sa, car->wheel[i].spinVel);
 	printf("fx:%f fy:%f fz:%f\n", car->wheel[i].forces.x, car->wheel[i].forces.y, car->wheel[i].forces.z);
     }
+    Fzf = (car->aero.lift[0] + car->wing[0].forces.z) / 9.81;
+    Fzr = (car->aero.lift[1] + car->wing[1].forces.z) / 9.81;
+    printf("Aero Fx:%f Fz:%f Fzf=%f Fzr=%f ratio=%f\n", car->aero.drag / 9.81, Fzf + Fzr,
+	   Fzf, Fzr, (Fzf + Fzr) / (car->aero.drag + 0.1) * 9.81);
     
 }
 

@@ -34,6 +34,10 @@
 #include "gui.h"
 #include "guifont.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 void
 gfuiScrListInit(void)
 {

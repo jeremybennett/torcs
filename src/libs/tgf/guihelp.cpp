@@ -30,6 +30,9 @@
 #include <tgf.h>
 #include "gui.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 static void	*scrHandle;
 static float	*fgColor1 = &(GfuiColor[GFUI_HELPCOLOR1][0]);

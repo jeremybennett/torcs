@@ -28,7 +28,12 @@
 #endif
 
 #include <tgf.h>
+#include <robottools.h>
 #include "sim.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 tCar *SimCarTable;
 
@@ -56,7 +61,11 @@ ctrlCheck(tCar *car)
     if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
-    
+
+    RELAXATION2(car->ctrl->accelCmd, car->preCtrl.accelCmd, 50.0);
+    RELAXATION2(car->ctrl->brakeCmd, car->preCtrl.brakeCmd, 50.0);
+    RELAXATION2(car->ctrl->steer,    car->preCtrl.steer,    50.0);
+
     /* When the car is broken try to send it on the track side */
     if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
 	car->ctrl->accelCmd = 0.0;

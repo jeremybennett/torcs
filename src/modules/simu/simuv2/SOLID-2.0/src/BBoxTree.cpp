@@ -30,6 +30,10 @@
 #include <algorithm>
 #include <new.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 class BBoxCompAxis {
 public:
   int axis;

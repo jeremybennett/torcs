@@ -17,12 +17,7 @@
 <params name="NASCAR RWD" type="template">
 
   <section name="Car">
-    <attstr name="category" val="torcs-r-a"></attstr>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"></attnum>
-  </section>
-
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="26"></attnum>
   </section>
 
   <section name="Rear Wing">

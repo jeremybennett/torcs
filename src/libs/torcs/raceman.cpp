@@ -26,6 +26,10 @@
 #include "raceman.h"
 #include "mainmenu.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 typedef struct 
 {
     int		index;

@@ -23,6 +23,10 @@
 
 #include "mycar.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {

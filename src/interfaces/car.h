@@ -352,7 +352,8 @@ typedef struct CarElt
 #define PRM_BRKPRESS		"max pressure"
 
 #define PRM_CX			"Cx"
-#define PRM_CL			"Clift"
+#define PRM_FCL			"front Clift"
+#define PRM_RCL			"rear Clift"
 #define PRM_FRNTAREA		"front area"
 #define PRM_WINGAREA		"area"
 #define PRM_WINGANGLE		"angle"

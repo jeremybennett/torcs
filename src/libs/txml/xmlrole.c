@@ -22,6 +22,10 @@ $Id$
 #include "xmldef.h"
 #include "xmlrole.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 /* Doesn't check:
 
  that ,| are not mixed in a model group

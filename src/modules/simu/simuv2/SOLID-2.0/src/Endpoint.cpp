@@ -30,6 +30,10 @@
 
 #include <new.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 void addPair(ObjectPtr object1, ObjectPtr object2);
 void removePair(ObjectPtr object1, ObjectPtr object2);

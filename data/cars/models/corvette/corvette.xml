@@ -45,7 +45,7 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="torcs-r-a"></attstr>
+    <attstr name="category" val="Track-RWD-GrA"></attstr>
 
     <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.90"></attnum>
     <attnum name="body width" unit="m" min="0.8" max="2.0" val="2.0"></attnum>
@@ -67,16 +67,14 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" min="0.20" max="2.0" val="0.28"></attnum>
+    <attnum name="Cx" min="0.20" max="2.0" val="0.32"></attnum>
     <attnum name="front area" unit="m2" min="1.0" max="3.0" val="1.8"></attnum>
-    <attnum name="Clift" min="0.0" max="1.0" val="1.0"></attnum>
+    <attnum name="front Clift" val="0.6"></attnum>
+    <attnum name="rear Clift"  val="0.4"></attnum>
   </section>
 
   <section name="Front Wing">
-    <attnum name="area" unit="m2" val="0.25"></attnum>
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-    <attnum name="xpos" unit="m" val="2.20"></attnum>
-    <attnum name="zpos" unit="m" val="0.1"></attnum>
+    <attnum name="area" unit="m2" val="0"></attnum>
   </section>
 
   <section name="Rear Wing">

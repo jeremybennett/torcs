@@ -13,7 +13,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 #include <iostream.h>
+#ifndef WIN32
 #include <strstream.h>
+#endif
 #include <iomanip.h>
 #include <math.h>
 #include <stdlib.h>
@@ -26,6 +28,10 @@
 #include "raceman.h" 
 #include "robot.h" 
 #include "robottools.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // Parameters
@@ -512,8 +518,12 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 {
  OUTPUT("initTrack(" << index << ")");
  char szSettings[100];
+#ifndef WIN32
  ostrstream os(szSettings, sizeof(szSettings));
  os << "drivers/K1999/" << index << "/settings.xml" << ends;
+#else
+ sprintf(szSettings, "drivers/K1999/%d/settings.xml", index);
+#endif
  *carParmHandle = GfParmReadFile(szSettings, GFPARM_RMODE_STD);
  if (*carParmHandle)
   OUTPUT(szSettings << " read.");

@@ -44,14 +44,14 @@
   </section>
 
   <section name="Car">
-    <attstr name="category" val="torcs-r-b"></attstr>    
+    <attstr name="category" val="Track-RWD-GrB"></attstr>    
     <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.56"></attnum>
     <attnum name="body width" unit="m" min="0.8" max="2.1" val="2.08"></attnum>
     <attnum name="body height" unit="m" min="1.1" max="1.7" val="1.12"></attnum>
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.56"></attnum>
     <attnum name="overall width"  unit="m" min="1.2" max="2.1" val="2.08"></attnum>
-    <attnum name="mass" unit="kg" min="200.0" max="2500" val="1200.0"></attnum>
+    <attnum name="mass" unit="kg" min="900.0" max="1500" val="1200.0"></attnum>
     <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.20"></attnum>
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
@@ -64,16 +64,14 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.26"></attnum>
-    <attnum name="front area" unit="m2" val="1.6"></attnum>
-    <attnum name="Clift" val="1.0"></attnum>
+    <attnum name="Cx" val="0.34"></attnum>
+    <attnum name="front area" unit="m2" val="1.8"></attnum>
+    <attnum name="front Clift" val="0.6"></attnum>
+    <attnum name="rear Clift"  val="0.3"></attnum>
   </section>
 
   <section name="Front Wing">
-    <attnum name="area" unit="m2" val="0.25"></attnum>
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-    <attnum name="xpos" unit="m" val="2.22"></attnum>
-    <attnum name="zpos" unit="m" val="0.1"></attnum>
+    <attnum name="area" unit="m2" val="0"></attnum>
   </section>
 
   <section name="Rear Wing">

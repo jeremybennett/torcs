@@ -38,6 +38,10 @@
 
 #include <tgf.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static int GfScrWidth;
 static int GfScrHeight;
 static int GfViewWidth;

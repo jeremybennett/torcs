@@ -35,10 +35,15 @@
 #include "qracemain.h"
 
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 
 static tSimItf	SimItf;
 static double	curTime = 0;
 static double	lastTime = 0;
+static double   timeMult = 1.0;
 static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*qracecfg = NULL;
@@ -415,18 +420,18 @@ qrOneStep(void *telem)
     int i;
     tRobotItf *robot;
 
-    curTime += dtmax;
+    curTime += dtmax * timeMult;
     qrTheSituation.currentTime += dtmax;
     
-    if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
-	qrTheSituation.deltaTime = curTime - lastTime;
+    if ((qrTheSituation.currentTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+	qrTheSituation.deltaTime = qrTheSituation.currentTime - lastTime;
 	for (i = 0; i < qrTheSituation._ncars; i++) {
 	    if ((qrTheSituation.cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
 		robot = qrTheSituation.cars[i]->robot;
 		robot->rbDrive(robot->index, qrTheSituation.cars[i], &qrTheSituation);
 	    }
 	}
-	lastTime = curTime;
+	lastTime = qrTheSituation.currentTime;
 	qrKeyPressed = 0;
     }
 
@@ -449,7 +454,7 @@ qrStart(void)
 {
     qrRunning = 1;
     curTime = GfTimeClock() - dtmax;
-    lastTime = curTime;
+    lastTime = 0;
 }
 
 void
@@ -495,4 +500,21 @@ qrPrevCar(void *dummy)
     GfParmSetNum(qracecfg, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL,
 		 (tdble)(qrTheSituation.cars[qrTheSituation.current]->_driverIndex));
     qrTheSituation.cars[qrTheSituation.current]->priv->collision = 0;
+}
+
+void
+qrTimeMod (void *vcmd)
+{
+    switch ((int)vcmd) {
+    case 0:
+	timeMult *= 2.0;
+	break;
+    case 1:
+	timeMult *= 0.5;
+	break;
+    case 2:
+    default:
+	timeMult = 1.0;
+	break;
+    }
 }

@@ -19,6 +19,10 @@
 
 #include "sim.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 #define ROAD_DAMMAGE	10.0
 #define BARRIER_DAMMAGE	10.0
 #define CAR_DAMMAGE	0.1

@@ -26,6 +26,10 @@
 
 #include "Simplex.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 Point Simplex::support(const Vector& v) const {
   int c = 0;
   Scalar h = dot((*this)[0], v), d;

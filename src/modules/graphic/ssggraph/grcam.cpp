@@ -38,6 +38,10 @@
 #include "grcar.h"
 #include "grmain.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 int grScissorflag = 0;
 
 float grviewRatio;

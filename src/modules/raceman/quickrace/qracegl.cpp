@@ -33,6 +33,10 @@
 #include "qracemain.h"
 #include "qracegl.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static int BoardFl = 1;
 static int FpsFl = 1;
 static int RunFl = 1;
@@ -78,10 +82,13 @@ qrAddKeys(void)
     GfuiAddSKey(qrHandle, GLUT_KEY_PAGE_DOWN, "Select Next Car", (void*)0, qrNextCar);
 
 
-    GfuiAddKey(qrHandle, 'p', "Pause Race", (void*)0, qrBoardInfo);
+    GfuiAddKey(qrHandle, '-', "Slow Time",       (void*)0, qrTimeMod);
+    GfuiAddKey(qrHandle, '+', "Accelerate Time", (void*)1, qrTimeMod);
+    GfuiAddKey(qrHandle, '.', "Real Time",       (void*)2, qrTimeMod);
+    GfuiAddKey(qrHandle, 'p', "Pause Race",      (void*)0, qrBoardInfo);
     GfuiAddKey(qrHandle, 27, "End Current Race", (void*)1, qrQuit);
-    GfuiAddKey(qrHandle, 'q', "Exit of TORCS", (void*)0, qrQuit);
-    GfuiAddKey(qrHandle, ' ', "One Step Debug", (void*)1, qrOneStep);
+    GfuiAddKey(qrHandle, 'q', "Exit of TORCS",   (void*)0, qrQuit);
+    GfuiAddKey(qrHandle, ' ', "One Step Debug",  (void*)1, qrOneStep);
     GfuiAddSKey(qrHandle, GLUT_KEY_F12,   "Screen Shot", NULL, GfuiScreenShot);
     
 }

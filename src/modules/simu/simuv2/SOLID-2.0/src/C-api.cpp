@@ -45,6 +45,10 @@
 #include <set>
 #include <vector>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 typedef vector<Point> PointBuf;
 typedef vector<unsigned int> IndexBuf;
 typedef vector<const Polytope *> PolyList;
