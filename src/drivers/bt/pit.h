@@ -43,6 +43,7 @@ class Pit {
 		float getPitOffset(float offset, float fromstart);
 
 		bool isBetween(float fromstart);
+		bool isTimeout(float distance);
 
 		float getNPitStart() { return p[1].x; }
 		float getNPitLoc() { return p[3].x; }
@@ -79,6 +80,7 @@ class Pit {
 		float lastfuel;         /* the fuel available when we cross the start lane */
 		float lastpitfuel;      /* amount refueled, special case when we refuel */
 		float fuelperlap;       /* the maximum amount of fuel we needed for a lap */
+		float pittimer;			/* timer for pit timeouts */
 
 		static const float SPEED_LIMIT_MARGIN;
 		static const int PIT_DAMMAGE;

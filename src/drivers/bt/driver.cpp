@@ -47,6 +47,8 @@ const float Driver::PIT_BRAKE_AHEAD = 200.0;				/* [m] */
 const float Driver::PIT_MU = 0.4;							/* [-] */
 const float Driver::MAX_SPEED = 84.0;						/* [m/s] */
 const float Driver::MAX_FUEL_PER_METER = 0.0008;			/* [liter/m] fuel consumtion */
+const float Driver::CLUTCH_SPEED = 5.0;						/* [m/s] */
+const float Driver::CENTERDIV = 0.1;						/* [-] (factor) [0.01..0.6] */
 
 Driver::Driver(int index)
 {
@@ -132,18 +134,21 @@ void Driver::drive(tSituation *s)
 	update(s);
 
 	if (isStuck()) {
-		car->ctrl.steer = -angle / car->_steerLock;
-		car->ctrl.gear = -1; // reverse gear
-		car->ctrl.accelCmd = 0.5; // 50% accelerator pedal
-		car->ctrl.brakeCmd = 0.0; // no brakes
+		car->_steerCmd = -angle / car->_steerLock;
+		car->_gearCmd = -1; // reverse gear
+		car->_accelCmd = 1.0; // 50% accelerator pedal
+		car->_brakeCmd = 0.0; // no brakes
+		car->_clutchCmd = 0.0;
 	} else {
-		car->ctrl.steer = filterSColl(getSteer());
-		car->ctrl.gear = getGear();
-		car->ctrl.brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
-		if (car->ctrl.brakeCmd == 0.0) {
-			car->ctrl.accelCmd = filterTCL(filterTrk(getAccel()));
+		car->_steerCmd = filterSColl(getSteer());
+		car->_gearCmd = getGear();
+		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
+		if (car->_brakeCmd == 0.0) {
+			car->_accelCmd = filterTCL(filterTrk(getAccel()));
+			car->_clutchCmd = getClutch();
 		} else {
-			car->ctrl.accelCmd = 0.0;
+			car->_accelCmd = 0.0;
+			car->_clutchCmd = getClutch();
 		}
 	}
 }
@@ -182,12 +187,12 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 		if (segment->type != lastsegtype) {
 			float arc = 0.0;
 			tTrackSeg *s = segment;
+			lastsegtype = segment->type;
 
-			while (s->type == segment->type && arc < PI/2.0) {
+			while (s->type == lastsegtype && arc < PI/2.0) {
 				arc += s->arc;
 				s = s->next;
 			}
-			lastsegtype = segment->type;
 			lastturnarc = arc/(PI/2.0);
 
 		}
@@ -212,13 +217,17 @@ float Driver::getDistToSegEnd()
 /* Compute fitting acceleration */
 float Driver::getAccel()
 {
-	float allowedspeed = getAllowedSpeed(car->_trkPos.seg);
-	float gr = car->_gearRatio[car->_gear + car->_gearOffset];
-	float rm = car->_enginerpmRedLine;
-	if (allowedspeed > car->_speed_x + FULL_ACCEL_MARGIN) {
-		return 1.0;
+	if (car->_gear > 0) {
+		float allowedspeed = getAllowedSpeed(car->_trkPos.seg);
+		if (allowedspeed > car->_speed_x + FULL_ACCEL_MARGIN) {
+			return 1.0;
+		} else {
+			float gr = car->_gearRatio[car->_gear + car->_gearOffset];
+			float rm = car->_enginerpmRedLine;
+			return allowedspeed/car->_wheelRadius(REAR_RGT)*gr /rm;
+		}
 	} else {
-		return allowedspeed/car->_wheelRadius(REAR_RGT)*gr /rm;
+		return 1.0;
 	}
 }
 
@@ -254,7 +263,9 @@ float Driver::getBrake()
 /* Compute gear */
 int Driver::getGear()
 {
-	if (car->_gear <= 0) return 1;
+	if (car->_gear <= 0) {
+		return 1;
+	}
 	float gr_up = car->_gearRatio[car->_gear + car->_gearOffset];
 	float omega = car->_enginerpmRedLine/gr_up;
 	float wr = car->_wheelRadius(2);
@@ -284,6 +295,31 @@ float Driver::getSteer()
 	return targetAngle / car->_steerLock;
 }
 
+
+// Compute the clutch value.
+float Driver::getClutch()
+{
+	if (car->_gear > 1) {
+		return 0.0;
+	} else {
+		float drpm = car->_enginerpm - car->_enginerpmRedLine/2.0;
+		if (drpm > 0) {
+			float speedr;
+			if (car->_gearCmd == 1) {
+				// Compute corresponding speed to engine rpm.
+				float omega = car->_enginerpmRedLine/car->_gearRatio[car->_gear + car->_gearOffset];
+				float wr = car->_wheelRadius(2);
+				speedr = (CLUTCH_SPEED + MAX(0.0, car->_speed_x))/fabs(wr*omega);
+				return MAX(0.0, (1.0 - speedr*2.0*drpm/car->_enginerpmRedLine));
+			} else {
+				// For the reverse gear.
+				return 0.0;
+			}
+		} else {
+			return 1.0;
+		}
+	}
+}
 
 /* Compute target point for steering */
 v2d Driver::getTargetPoint()
@@ -357,14 +393,80 @@ float Driver::getOvertakeOffset()
 	}
 
 	if (o != NULL) {
+		// Compute the width around the middle which we can use for overtaking.
 		float w = o->getCarPtr()->_trkPos.seg->width/WIDTHDIV-BORDER_OVERTAKE_MARGIN;
+		// Compute the opponents distance to the middle.
 		float otm = o->getCarPtr()->_trkPos.toMiddle;
-		if (otm > 0.0 && myoffset > -w) myoffset -= OVERTAKE_OFFSET_INC;
-		else if (otm < 0.0 && myoffset < w) myoffset += OVERTAKE_OFFSET_INC;
+		// Define the with of the middle range.
+		float wm = o->getCarPtr()->_trkPos.seg->width*CENTERDIV;
+
+		if (otm > wm && myoffset > -w) {
+			myoffset -= OVERTAKE_OFFSET_INC;
+		} else if (otm < -wm && myoffset < w) {
+			myoffset += OVERTAKE_OFFSET_INC;
+		} else {
+			// If the opponent is near the middle we try to move the offset toward
+			// the inside of the expected turn.
+			// Try to find out the characteristic of the track up to catchdist.
+			tTrackSeg *seg = car->_trkPos.seg;
+			float length = getDistToSegEnd();
+			float oldlen, seglen = length;
+			float lenright = 0.0, lenleft = 0.0; //, lenstraight = 0.0;
+			do {
+				switch (seg->type) {
+				case TR_LFT:
+					lenleft += seglen;
+					break;
+				case TR_RGT:
+					lenright += seglen;
+					break;
+				case TR_STR:
+					// lenstraight += seglen;
+					break;
+				default:
+					// If we end up here its a bug!
+					break;
+				}
+				seg = seg->next;
+				seglen = seg->length;
+				oldlen = length;
+				length += seglen;
+			} while (oldlen < mincatchdist);
+
+			// If we are on a straight look for the next turn.
+			if (lenleft == 0.0 && lenright == 0.0) {
+				while (seg->type == TR_STR) {
+					seg = seg->next;
+				}
+				// Assume: left or right if not straight.
+				if (seg->type == TR_LFT) {
+					lenleft = 1.0;
+				} else {
+					lenright = 1.0;
+				}
+			}
+
+			// Because we are inside we can go to the border.
+			float maxoff = (o->getCarPtr()->_trkPos.seg->width - car->_dimension_y)/2.0-BORDER_OVERTAKE_MARGIN;
+			if (lenleft > lenright) {
+				if (myoffset < maxoff) {
+					myoffset += OVERTAKE_OFFSET_INC;
+				}
+			} else {
+				if (myoffset > -maxoff) {
+					myoffset -= OVERTAKE_OFFSET_INC;
+				}
+			}
+		}
 	} else {
-		if (myoffset > OVERTAKE_OFFSET_INC) myoffset -= OVERTAKE_OFFSET_INC;
-		else if (myoffset < -OVERTAKE_OFFSET_INC) myoffset += OVERTAKE_OFFSET_INC;
-		else myoffset = 0.0;
+		// There is no opponent to overtake, so the offset goes slowly back to zero.
+		if (myoffset > OVERTAKE_OFFSET_INC) {
+			myoffset -= OVERTAKE_OFFSET_INC;
+		} else if (myoffset < -OVERTAKE_OFFSET_INC) {
+			myoffset += OVERTAKE_OFFSET_INC;
+		} else {
+			myoffset = 0.0;
+		}
 	}
 
 	return myoffset;
@@ -456,7 +558,7 @@ float Driver::filterBrakeSpeed(float brake)
 }
 
 
-/* Brake filter for pit stop */
+// Brake filter for pit stop.
 float Driver::filterBPit(float brake)
 {
 	if (pit->getPitstop() && !pit->getInPit()) {
@@ -464,30 +566,42 @@ float Driver::filterBPit(float brake)
 		RtDistToPit(car, track, &dl, &dw);
 		if (dl < PIT_BRAKE_AHEAD) {
 			float mu = car->_trkPos.seg->surface->kFriction*TIREMU*PIT_MU;
-			if (brakedist(0.0, mu) > dl) return 1.0;
+			if (brakedist(0.0, mu) > dl) {
+				return 1.0;
+			}
 		}
 	}
 
 	if (pit->getInPit()) {
 		float s = pit->toSplineCoord(car->_distFromStartLine);
-		/* pit entry */
+		// pit entry
 		if (pit->getPitstop()) {
 			float mu = car->_trkPos.seg->surface->kFriction*TIREMU*PIT_MU;
 			if (s < pit->getNPitStart()) {
-				/* brake to pit speed limit */
+				// brake to pit speed limit
 				float dist = pit->getNPitStart() - s;
-				if (brakedist(pit->getSpeedlimit(), mu) > dist) return 1.0;
+				if (brakedist(pit->getSpeedlimit(), mu) > dist) {
+					return 1.0;
+				}
 			} else {
-				/* hold speed limit */
+				// hold speed limit
 				if (currentspeedsqr > pit->getSpeedlimitSqr()) {
 					return pit->getSpeedLimitBrake(currentspeedsqr);
 				}
 			}
-			/* brake into pit (speed limit 0.0 to stop ) */
+			// brake into pit (speed limit 0.0 to stop )
 			float dist = pit->getNPitLoc() - s;
-			if (brakedist(0.0, mu) > dist) return 1.0;
-			/* hold in the pit */
-			if (s > pit->getNPitLoc()) return 1.0;
+			if (pit->isTimeout(dist)) {
+				pit->setPitstop(false);
+				return 0.0;
+			} else {
+				if (brakedist(0.0, mu) > dist) {
+					return 1.0;
+				} else if (s > pit->getNPitLoc()) {
+					// hold in the pit
+			 		return 1.0;
+				}
+			}
 		} else {
 			/* pit exit */
 			if (s < pit->getNPitEnd()) {
@@ -648,15 +762,22 @@ float Driver::filterTrk(float accel)
 	tTrackSeg* seg = car->_trkPos.seg;
 	float speedangle = trackangle - atan2(car->_speed_Y, car->_speed_X);
 	NORM_PI_PI(speedangle);
-	
+
 	if (car->_speed_x < MAX_UNSTUCK_SPEED ||
 		pit->getInPit() ||
-		car->_trkPos.toMiddle*speedangle > 0.0) return accel;
+		car->_trkPos.toMiddle*speedangle > 0.0)
+	{
+		return accel;
+	}
 
 	if (seg->type == TR_STR) {
 		float tm = fabs(car->_trkPos.toMiddle);
-		float w = seg->width/WIDTHDIV;
-		if (tm > w) return 0.0; else return accel;
+		float w = (seg->width - car->_dimension_y)/2.0 ;
+		if (tm > w) {
+			return 0.0;
+		} else {
+			return accel;
+		}
 	} else {
 		float sign = (seg->type == TR_RGT) ? -1.0 : 1.0;
 		if (car->_trkPos.toMiddle*sign > 0.0) {
@@ -664,7 +785,11 @@ float Driver::filterTrk(float accel)
 		} else {
 			float tm = fabs(car->_trkPos.toMiddle);
 			float w = seg->width/WIDTHDIV;
-			if (tm > w) return 0.0; else return accel;
+			if (tm > w) {
+				return 0.0;
+			} else {
+				return accel;
+			}
 		}
 	}
 }

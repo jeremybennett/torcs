@@ -31,6 +31,7 @@ Pit::Pit(tSituation *s, Driver *driver)
 	mypit = driver->getCarPtr()->_pit;
 	pitinfo = &track->pits;
 	pitstop = inpitlane = false;
+	pittimer = 0.0;
 	fuelchecked = false;
 	fuelperlap = 0.0;
 	lastpitfuel = 0.0;
@@ -116,6 +117,7 @@ void Pit::setPitstop(bool pitstop)
 		this->pitstop = pitstop;
 	} else if (!pitstop) {
 		this->pitstop = pitstop;
+		pittimer = 0.0;
 	}
 }
 
@@ -141,6 +143,24 @@ bool Pit::isBetween(float fromstart)
 }
 
 
+// Checks if we stay too long without getting captured by the pit.
+bool Pit::isTimeout(float distance)
+{
+	if (car->_speed_x > 1.0 || distance > 3.0 || !getPitstop()) {
+		pittimer = 0.0;
+		return false;
+	} else {
+		pittimer += RCM_MAX_DT_ROBOTS;
+		if (pittimer > 3.0) {
+			pittimer = 0.0;
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+
 /* update pit data and strategy */
 void Pit::update()
 {
@@ -153,12 +173,12 @@ void Pit::update()
 			setInPit(false);
 		}
 
-		/* check for damage */
+		// check for damage
 		if (car->_dammage > PIT_DAMMAGE) {
 			setPitstop(true);
 		}
 
-		/* fuel update */
+		// fuel update
 		int id = car->_trkPos.seg->id;
 		if (id >= 0 && id < 5 && !fuelchecked) {
 			if (car->race.laps > 0) {
@@ -174,12 +194,15 @@ void Pit::update()
 		int laps = car->_remainingLaps-car->_lapsBehindLeader;
 		if (!getPitstop() && laps > 0) {
 			if (car->_fuel < 1.5*fuelperlap &&
-				car->_fuel < laps*fuelperlap) {
+				car->_fuel < laps*fuelperlap)
+			{
 				setPitstop(true);
 			}
 		}
 
-		if (getPitstop()) car->_raceCmd = RM_CMD_PIT_ASKED;
+		if (getPitstop()) {
+			car->_raceCmd = RM_CMD_PIT_ASKED;
+		}
 	}
 }
 

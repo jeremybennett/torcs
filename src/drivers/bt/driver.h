@@ -67,6 +67,7 @@ class Driver {
 		float getBrake();
 		int getGear();
 		float getSteer();
+		float getClutch();
 		v2d getTargetPoint();
 		float getOvertakeOffset();
 		float brakedist(float allowedspeed, float mu);
@@ -142,7 +143,9 @@ class Driver {
 		static const float MAX_SPEED;
 		static const float TCL_RANGE;
 		static const float MAX_FUEL_PER_METER;
-
+		static const float CLUTCH_SPEED;
+		static const float CENTERDIV;
+		
 		/* track variables */
 		tTrack* track;
 };
