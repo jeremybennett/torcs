@@ -411,7 +411,7 @@ CreateSegRing(void *TrackHandle, char *section, tTrackSeg **pRoot, tdble *pLengt
     char	path2[256];
 #define MAX_TMP_INTS	256
     int		mi[MAX_TMP_INTS];
-    int		ind;
+    int		ind = 0;
 
     radius = arc = length = alf = xr = yr = newxr = newyr = xl = yl = 0;
     zel = zer = etgtl = etgtr = newxl = newyl = 0;
@@ -857,7 +857,7 @@ void
 ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 {
     int		i;
-    tTrackSeg	*curSeg, *mSeg;
+    tTrackSeg	*curSeg = NULL, *mSeg;
     tTrackSeg	*pitEntrySeg = NULL;
     tTrackSeg	*pitExitSeg = NULL;
     tTrackSeg	*pitStart = NULL;
@@ -866,7 +866,7 @@ ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     int		segId;
     tRoadCam	*curCam;
     tTrkLocPos	trkPos;
-    int		found;
+    int		found = 0;
     char	*paramVal;
     char	*pitType;
     char	path[256];

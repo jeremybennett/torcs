@@ -368,8 +368,8 @@ static void initPits(tRmInfo *raceInfo)
 {
     tTrackPitInfo	*pits;
     tTrackSeg		*curMainSeg;
-    tTrackSeg		*curPitSeg;
-    tdble		toStart;
+    tTrackSeg		*curPitSeg = NULL;
+    tdble		toStart = 0.0;
     tTrkLocPos		curPos;
     int			changeSeg;
     int			i;

@@ -78,7 +78,9 @@ LoadRelief(char *reliefFile)
     GfRlstInit(&InteriorList);
     GfRlstInit(&ExteriorList);
     
-    ssgLoaderOptions *loaderopt = new ssgLoaderOptions(NULL, NULL, hookNode);
+    ssgLoaderOptions *loaderopt = new ssgLoaderOptions();
+ 
+    loaderopt->setCreateBranchCallback(hookNode);
 
     Root = ssgLoadAC(reliefFile, loaderopt);
 }
@@ -86,14 +88,14 @@ LoadRelief(char *reliefFile)
 static void
 countRec(ssgEntity *e, int *nb_vert, int *nb_seg)
 {
-    if (e->isAKindOf(SSG_TYPE_BRANCH)) {
+    if (e->isAKindOf(_SSG_TYPE_BRANCH)) {
 	ssgBranch *br = (ssgBranch *)e;
 	
 	for (int i = 0; i < br->getNumKids(); i++) {
 	    countRec(br->getKid(i), nb_vert, nb_seg);
 	}
     } else {
-	if (e->isAKindOf(SSG_TYPE_VTXTABLE)) {
+	if (e->isAKindOf(_SSG_TYPE_VTXTABLE)) {
 	    ssgVtxTable *vt = (ssgVtxTable *)e;
 	    *nb_vert += vt->getNumVertices();
 	    *nb_seg  += vt->getNumLines();
@@ -138,14 +140,14 @@ CountRelief(int interior, int *nb_vert, int *nb_seg)
 static void
 genRec(ssgEntity *e)
 {
-    if (e->isAKindOf(SSG_TYPE_BRANCH)) {
+    if (e->isAKindOf(_SSG_TYPE_BRANCH)) {
 	ssgBranch *br = (ssgBranch *)e;
 	
 	for (int i = 0; i < br->getNumKids(); i++) {
 	    genRec(br->getKid(i));
 	}
     } else {
-	if (e->isAKindOf(SSG_TYPE_VTXTABLE)) {
+	if (e->isAKindOf(_SSG_TYPE_VTXTABLE)) {
 	    ssgVtxTable *vt = (ssgVtxTable *)e;
 	    int nv = vt->getNumVertices();
 	    int nl = vt->getNumLines();

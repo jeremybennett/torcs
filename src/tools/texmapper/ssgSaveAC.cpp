@@ -15,7 +15,7 @@ static int vcount ;
 
 static void getStuff ( ssgEntity *e, sgVec3 *vtab, saveTriangle *ttab )
 {
-  if ( e -> isAKindOf ( SSG_TYPE_BRANCH ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_BRANCH ) )
   {
     ssgBranch *br = (ssgBranch *) e ;
 
@@ -23,7 +23,7 @@ static void getStuff ( ssgEntity *e, sgVec3 *vtab, saveTriangle *ttab )
       getStuff ( br -> getKid ( i ), vtab, ttab ) ;
   }
   else
-  if ( e -> isAKindOf ( SSG_TYPE_VTXTABLE ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_VTXTABLE ) )
   {
     ssgVtxTable *vt = (ssgVtxTable *) e ;
     int nv = vt -> getNumVertices () ;
@@ -61,7 +61,7 @@ static int countTriangles ( ssgEntity *e )
 {
   int count = 0 ;
 
-  if ( e -> isAKindOf ( SSG_TYPE_BRANCH ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_BRANCH ) )
   {
     ssgBranch *br = (ssgBranch *) e ;
 
@@ -69,7 +69,7 @@ static int countTriangles ( ssgEntity *e )
       count += countTriangles ( br -> getKid ( i ) ) ;
   }
   else
-  if ( e -> isAKindOf ( SSG_TYPE_VTXTABLE ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_VTXTABLE ) )
   {
     ssgVtxTable *vt = (ssgVtxTable *) e ;
     count += vt -> getNumTriangles () ;
@@ -84,7 +84,7 @@ static int countVertices ( ssgEntity *e )
 {
   int count = 0 ;
 
-  if ( e -> isAKindOf ( SSG_TYPE_BRANCH ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_BRANCH ) )
   {
     ssgBranch *br = (ssgBranch *) e ;
 
@@ -92,7 +92,7 @@ static int countVertices ( ssgEntity *e )
       count += countVertices ( br -> getKid ( i ) ) ;
   }
   else
-  if ( e -> isAKindOf ( SSG_TYPE_VTXTABLE ) )
+  if ( e -> isAKindOf ( _SSG_TYPE_VTXTABLE ) )
   {
     ssgVtxTable *vt = (ssgVtxTable *) e ;
     count += vt -> getNumVertices () ;

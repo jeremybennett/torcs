@@ -325,7 +325,7 @@ void calc_coord(void)
 
 	    if (curFace->isPresent) {
 		branch = curFace->branch->getParent(0);
-		if (branch->isAKindOf(SSG_TYPE_BASETRANSFORM)) {
+		if (branch->isAKindOf(_SSG_TYPE_BASETRANSFORM)) {
 		    ((ssgBaseTransform*)branch)->getTransform(m2);
 		    curFace->align[0] *= m2[3][0];
 		    curFace->align[1] *= m2[3][1];
@@ -438,7 +438,7 @@ void set_texcoord(ssgEntity *start, sgMat4 m)
 	if (k->getNumKids() != 0) {
 	    set_texcoord(k, m);
 	} else {
-	    if (k->isAKindOf(SSG_TYPE_VTXTABLE)) {
+	    if (k->isAKindOf(_SSG_TYPE_VTXTABLE)) {
 		ssgVtxTable	*vtt = (ssgVtxTable*)k;
 		int		j;
 		float		*texCoord;
@@ -487,8 +487,10 @@ void set_texture_coord(void)
 */
 void load_database(void)
 {
-    ssgLoaderOptions *loaderopt = new ssgLoaderOptions(NULL, NULL, hookNode);
-
+    ssgLoaderOptions *loaderopt = new ssgLoaderOptions();
+    
+    loaderopt->setCreateBranchCallback(hookNode);
+    
     Root = ssgLoadAC(InputFileName, loaderopt);
 
     fprintf(stderr, "%d branches found\n", BrNb);

@@ -63,6 +63,21 @@ postCbEnv(ssgEntity *e)
     return TRUE;
 }
 
+class myLoaderOptions : public ssgLoaderOptions
+{
+public:
+  virtual void makeModelPath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, model_dir, fname, NULL ) ;
+  }
+
+  virtual void makeTexturePath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, texture_dir, fname, NULL ) ;
+  }
+} ;
+
+
 static int grCarIndex;
 
 static ssgSimpleState *brakeState = NULL;
@@ -76,7 +91,7 @@ initWheel(tCarElt *car, int wheel_index)
     sgVec4	clr;
     sgVec3	nrm;
     sgVec2	tex;
-    float	b_offset;
+    float	b_offset = 0;
 
     /* brake */
     if (brakeState == NULL) {
@@ -270,8 +285,6 @@ initShadow(tCarElt *car)
 }
 
 
-static ssgLoaderOptions	loaderOptions(NULL, NULL, NULL, NULL);
-
 void 
 grInitCar(tCarElt *car)
 {
@@ -287,8 +300,11 @@ grInitCar(tCarElt *car)
     char		*param;
     int			lg;
     char		path[256];
-    
+    myLoaderOptions	options ;
+
     TRACE_GL("loadcar: start");
+
+    ssgSetCurrentOptions ( &options ) ;    
 
     selIndex = 0; 	/* current selector index */
     grCarIndex = index = car->index;	/* current car's index */

@@ -306,7 +306,7 @@ static int
 getMovedAxis(void)
 {
     int		i;
-    int		Index;
+    int		Index = 0;
     float	maxDiff = -1;
 
     for (i = 0; i < _JS_MAX_AXES; i++) {

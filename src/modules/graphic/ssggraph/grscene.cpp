@@ -63,16 +63,32 @@ static void initBackground(void);
 
 static void customizePits(void);
 
-static ssgLoaderOptionsEx	grloaderOptions(NULL, NULL, NULL, NULL);
+static ssgLoaderOptionsEx	grloaderOptions;
+
+class myLoaderOptions : public ssgLoaderOptions
+{
+public:
+  virtual void makeModelPath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, model_dir, fname, NULL ) ;
+  }
+
+  virtual void makeTexturePath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, texture_dir, fname, NULL ) ;
+  }
+} ;
 
 
 int grInitScene(tTrack *track)
 {
-    void	*hndl;
-    char	*acname;
-    ssgEntity	*desc;
-    char	buf[256];
+    void		*hndl;
+    char		*acname;
+    ssgEntity		*desc;
+    char		buf[256];
+    myLoaderOptions	options;
 
+    ssgSetCurrentOptions(&options);
     grTrack = track;
     TheScene = new ssgRoot;
     initBackground();
@@ -97,7 +113,7 @@ int grInitScene(tTrack *track)
     sprintf(buf, "tracks/%s", grTrack->internalname);
     ssgModelPath(buf);
     
-    desc = ssgLoad(acname, &grloaderOptions);
+    desc = ssgLoad((const char *)acname /* , (const ssgLoaderOptions *)&grloaderOptions */ );
 
     TheScene->addKid(desc);
 

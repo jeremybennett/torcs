@@ -80,21 +80,13 @@ class ssgBranchCb : public ssgBranch
 class ssgLoaderOptionsEx : public ssgLoaderOptions
 {
  public:
-    ssgLoaderOptionsEx(ssgAppStateFunc        _app_state_cb,
-		       ssgCreateLeafFunc      _create_leaf_cb = 0,
-		       ssgHookFunc            _hook_cb = 0,
-		       ssgCreateTextureFunc   _create_texture_cb = 0,
-		       ssgCreateTransformFunc _create_transform_cb = 0)
-	: ssgLoaderOptions(_app_state_cb,
-			   _create_leaf_cb,
-			   _hook_cb,
-			   _create_texture_cb,
-			   _create_transform_cb) 
+    ssgLoaderOptionsEx()
+	: ssgLoaderOptions() 
 	{}
 
     ssgTexture* createTexture(char* tfname, 
 			      int wrapu  = TRUE, int wrapv = TRUE, 
-			      int mipmap = TRUE) const
+			      int mipmap = TRUE)
 	{
 	    char *buf;
 	    char *s;

@@ -17,7 +17,7 @@
 #
 ##############################################################################
 
-DEFAULT_RUNTIME=/usr/local/games/torcs
+DEFAULT_RUNTIME=/home/torcs/essai/games/torcs
 
 if [ -d $DEFAULT_RUNTIME ]
 then

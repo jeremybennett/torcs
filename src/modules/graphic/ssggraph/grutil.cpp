@@ -274,7 +274,7 @@ grForceState(ssgEntity *start, ssgState *state)
 	if (k->getNumKids() != 0) {
 	    grForceState(k, state);
 	} else {
-	    if (k->isAKindOf(SSG_TYPE_VTXTABLE)) {
+	    if (k->isAKindOf(_SSG_TYPE_VTXTABLE)) {
 		((ssgVtxTable*)k)->setState(state);
 	    }
 	}
