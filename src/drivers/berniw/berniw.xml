@@ -76,7 +76,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's first Bot 5"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="cg-nascar-rwd"/>
+		<attstr name="car name" val="gt40"/>
 		<attstr name="category" val="Track-RWD-GrA"/>
 		<attnum name="race number" val="142"/>
 		<attnum name="red" val="0.0"/>
