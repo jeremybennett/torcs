@@ -114,6 +114,7 @@ rmdsAddKeys(void)
 {
     GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmdsDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
     
 }
 
@@ -383,6 +384,7 @@ rmds2AddKeys(void)
     GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmdsDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Driver", (void*)0, rmds2PrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Driver", (void*)1, rmds2PrevNext);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
     
 }
 

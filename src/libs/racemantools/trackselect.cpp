@@ -83,6 +83,7 @@ rmtsAddKeys(void)
     GfuiAddKey(scrHandle, 27, "Cancel Selection", NULL, rmtsDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Track", (void*)0, rmtsPrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Track", (void*)1, rmtsPrevNext);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
     
 }
 

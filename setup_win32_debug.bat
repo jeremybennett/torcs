@@ -592,7 +592,6 @@ call .\create_dir .\runtimed\drivers\berniw\1
 copy .\src\drivers\berniw\1\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\1\cg-nascar-rwd.rgb
 copy .\src\drivers\berniw\1\aalborg.xml .\runtimed\drivers\berniw\1\aalborg.xml
 copy .\src\drivers\berniw\1\a-speedway.xml .\runtimed\drivers\berniw\1\a-speedway.xml
-copy .\src\drivers\berniw\1\cg-nascar-rwd.xml .\runtimed\drivers\berniw\1\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\1\dirt-1.xml .\runtimed\drivers\berniw\1\dirt-1.xml
 copy .\src\drivers\berniw\1\dirt-2.xml .\runtimed\drivers\berniw\1\dirt-2.xml
 copy .\src\drivers\berniw\1\dirt-3.xml .\runtimed\drivers\berniw\1\dirt-3.xml
@@ -606,6 +605,7 @@ copy .\src\drivers\berniw\1\e-track-3.xml .\runtimed\drivers\berniw\1\e-track-3.
 copy .\src\drivers\berniw\1\e-track-4.xml .\runtimed\drivers\berniw\1\e-track-4.xml
 copy .\src\drivers\berniw\1\e-track-5.xml .\runtimed\drivers\berniw\1\e-track-5.xml
 copy .\src\drivers\berniw\1\e-track-6.xml .\runtimed\drivers\berniw\1\e-track-6.xml
+copy .\src\drivers\berniw\1\g-track-1.xml .\runtimed\drivers\berniw\1\g-track-1.xml
 copy .\src\drivers\berniw\1\michigan.xml .\runtimed\drivers\berniw\1\michigan.xml
 copy .\src\drivers\berniw\1\mixed-1.xml .\runtimed\drivers\berniw\1\mixed-1.xml
 copy .\src\drivers\berniw\1\mixed-2.xml .\runtimed\drivers\berniw\1\mixed-2.xml
@@ -615,11 +615,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\10
-copy .\src\drivers\berniw\10\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\10\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\10\buggy.rgb .\runtimed\drivers\berniw\10\buggy.rgb
 copy .\src\drivers\berniw\10\aalborg.xml .\runtimed\drivers\berniw\10\aalborg.xml
 copy .\src\drivers\berniw\10\a-speedway.xml .\runtimed\drivers\berniw\10\a-speedway.xml
-copy .\src\drivers\berniw\10\car.xml .\runtimed\drivers\berniw\10\car.xml
-copy .\src\drivers\berniw\10\cg-nascar-rwd.xml .\runtimed\drivers\berniw\10\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\10\dirt-1.xml .\runtimed\drivers\berniw\10\dirt-1.xml
 copy .\src\drivers\berniw\10\dirt-2.xml .\runtimed\drivers\berniw\10\dirt-2.xml
 copy .\src\drivers\berniw\10\dirt-3.xml .\runtimed\drivers\berniw\10\dirt-3.xml
@@ -633,6 +631,7 @@ copy .\src\drivers\berniw\10\e-track-3.xml .\runtimed\drivers\berniw\10\e-track-
 copy .\src\drivers\berniw\10\e-track-4.xml .\runtimed\drivers\berniw\10\e-track-4.xml
 copy .\src\drivers\berniw\10\e-track-5.xml .\runtimed\drivers\berniw\10\e-track-5.xml
 copy .\src\drivers\berniw\10\e-track-6.xml .\runtimed\drivers\berniw\10\e-track-6.xml
+copy .\src\drivers\berniw\10\g-track-1.xml .\runtimed\drivers\berniw\10\g-track-1.xml
 copy .\src\drivers\berniw\10\michigan.xml .\runtimed\drivers\berniw\10\michigan.xml
 copy .\src\drivers\berniw\10\mixed-1.xml .\runtimed\drivers\berniw\10\mixed-1.xml
 copy .\src\drivers\berniw\10\mixed-2.xml .\runtimed\drivers\berniw\10\mixed-2.xml
@@ -642,9 +641,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\2
+copy .\src\drivers\berniw\2\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\2\cg-nascar-rwd.rgb
 copy .\src\drivers\berniw\2\aalborg.xml .\runtimed\drivers\berniw\2\aalborg.xml
 copy .\src\drivers\berniw\2\a-speedway.xml .\runtimed\drivers\berniw\2\a-speedway.xml
-copy .\src\drivers\berniw\2\cg-nascar-rwd.xml .\runtimed\drivers\berniw\2\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\2\dirt-1.xml .\runtimed\drivers\berniw\2\dirt-1.xml
 copy .\src\drivers\berniw\2\dirt-2.xml .\runtimed\drivers\berniw\2\dirt-2.xml
 copy .\src\drivers\berniw\2\dirt-3.xml .\runtimed\drivers\berniw\2\dirt-3.xml
@@ -658,11 +657,11 @@ copy .\src\drivers\berniw\2\e-track-3.xml .\runtimed\drivers\berniw\2\e-track-3.
 copy .\src\drivers\berniw\2\e-track-4.xml .\runtimed\drivers\berniw\2\e-track-4.xml
 copy .\src\drivers\berniw\2\e-track-5.xml .\runtimed\drivers\berniw\2\e-track-5.xml
 copy .\src\drivers\berniw\2\e-track-6.xml .\runtimed\drivers\berniw\2\e-track-6.xml
+copy .\src\drivers\berniw\2\g-track-1.xml .\runtimed\drivers\berniw\2\g-track-1.xml
 copy .\src\drivers\berniw\2\michigan.xml .\runtimed\drivers\berniw\2\michigan.xml
 copy .\src\drivers\berniw\2\mixed-1.xml .\runtimed\drivers\berniw\2\mixed-1.xml
 copy .\src\drivers\berniw\2\mixed-2.xml .\runtimed\drivers\berniw\2\mixed-2.xml
 copy .\src\drivers\berniw\2\wheel-1.xml .\runtimed\drivers\berniw\2\wheel-1.xml
-copy .\src\drivers\berniw\2\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\2\cg-nascar-rwd.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -671,7 +670,6 @@ call .\create_dir .\runtimed\drivers\berniw\3
 copy .\src\drivers\berniw\3\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\3\cg-nascar-rwd.rgb
 copy .\src\drivers\berniw\3\aalborg.xml .\runtimed\drivers\berniw\3\aalborg.xml
 copy .\src\drivers\berniw\3\a-speedway.xml .\runtimed\drivers\berniw\3\a-speedway.xml
-copy .\src\drivers\berniw\3\cg-nascar-rwd.xml .\runtimed\drivers\berniw\3\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\3\dirt-1.xml .\runtimed\drivers\berniw\3\dirt-1.xml
 copy .\src\drivers\berniw\3\dirt-2.xml .\runtimed\drivers\berniw\3\dirt-2.xml
 copy .\src\drivers\berniw\3\dirt-3.xml .\runtimed\drivers\berniw\3\dirt-3.xml
@@ -685,6 +683,7 @@ copy .\src\drivers\berniw\3\e-track-3.xml .\runtimed\drivers\berniw\3\e-track-3.
 copy .\src\drivers\berniw\3\e-track-4.xml .\runtimed\drivers\berniw\3\e-track-4.xml
 copy .\src\drivers\berniw\3\e-track-5.xml .\runtimed\drivers\berniw\3\e-track-5.xml
 copy .\src\drivers\berniw\3\e-track-6.xml .\runtimed\drivers\berniw\3\e-track-6.xml
+copy .\src\drivers\berniw\3\g-track-1.xml .\runtimed\drivers\berniw\3\g-track-1.xml
 copy .\src\drivers\berniw\3\michigan.xml .\runtimed\drivers\berniw\3\michigan.xml
 copy .\src\drivers\berniw\3\mixed-1.xml .\runtimed\drivers\berniw\3\mixed-1.xml
 copy .\src\drivers\berniw\3\mixed-2.xml .\runtimed\drivers\berniw\3\mixed-2.xml
@@ -697,7 +696,6 @@ call .\create_dir .\runtimed\drivers\berniw\4
 copy .\src\drivers\berniw\4\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\4\cg-nascar-rwd.rgb
 copy .\src\drivers\berniw\4\aalborg.xml .\runtimed\drivers\berniw\4\aalborg.xml
 copy .\src\drivers\berniw\4\a-speedway.xml .\runtimed\drivers\berniw\4\a-speedway.xml
-copy .\src\drivers\berniw\4\cg-nascar-rwd.xml .\runtimed\drivers\berniw\4\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\4\dirt-1.xml .\runtimed\drivers\berniw\4\dirt-1.xml
 copy .\src\drivers\berniw\4\dirt-2.xml .\runtimed\drivers\berniw\4\dirt-2.xml
 copy .\src\drivers\berniw\4\dirt-3.xml .\runtimed\drivers\berniw\4\dirt-3.xml
@@ -711,6 +709,7 @@ copy .\src\drivers\berniw\4\e-track-3.xml .\runtimed\drivers\berniw\4\e-track-3.
 copy .\src\drivers\berniw\4\e-track-4.xml .\runtimed\drivers\berniw\4\e-track-4.xml
 copy .\src\drivers\berniw\4\e-track-5.xml .\runtimed\drivers\berniw\4\e-track-5.xml
 copy .\src\drivers\berniw\4\e-track-6.xml .\runtimed\drivers\berniw\4\e-track-6.xml
+copy .\src\drivers\berniw\4\g-track-1.xml .\runtimed\drivers\berniw\4\g-track-1.xml
 copy .\src\drivers\berniw\4\michigan.xml .\runtimed\drivers\berniw\4\michigan.xml
 copy .\src\drivers\berniw\4\mixed-1.xml .\runtimed\drivers\berniw\4\mixed-1.xml
 copy .\src\drivers\berniw\4\mixed-2.xml .\runtimed\drivers\berniw\4\mixed-2.xml
@@ -723,7 +722,6 @@ call .\create_dir .\runtimed\drivers\berniw\5
 copy .\src\drivers\berniw\5\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\5\cg-nascar-rwd.rgb
 copy .\src\drivers\berniw\5\aalborg.xml .\runtimed\drivers\berniw\5\aalborg.xml
 copy .\src\drivers\berniw\5\a-speedway.xml .\runtimed\drivers\berniw\5\a-speedway.xml
-copy .\src\drivers\berniw\5\cg-nascar-rwd.xml .\runtimed\drivers\berniw\5\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\5\dirt-1.xml .\runtimed\drivers\berniw\5\dirt-1.xml
 copy .\src\drivers\berniw\5\dirt-2.xml .\runtimed\drivers\berniw\5\dirt-2.xml
 copy .\src\drivers\berniw\5\dirt-3.xml .\runtimed\drivers\berniw\5\dirt-3.xml
@@ -737,6 +735,7 @@ copy .\src\drivers\berniw\5\e-track-3.xml .\runtimed\drivers\berniw\5\e-track-3.
 copy .\src\drivers\berniw\5\e-track-4.xml .\runtimed\drivers\berniw\5\e-track-4.xml
 copy .\src\drivers\berniw\5\e-track-5.xml .\runtimed\drivers\berniw\5\e-track-5.xml
 copy .\src\drivers\berniw\5\e-track-6.xml .\runtimed\drivers\berniw\5\e-track-6.xml
+copy .\src\drivers\berniw\5\g-track-1.xml .\runtimed\drivers\berniw\5\g-track-1.xml
 copy .\src\drivers\berniw\5\michigan.xml .\runtimed\drivers\berniw\5\michigan.xml
 copy .\src\drivers\berniw\5\mixed-1.xml .\runtimed\drivers\berniw\5\mixed-1.xml
 copy .\src\drivers\berniw\5\mixed-2.xml .\runtimed\drivers\berniw\5\mixed-2.xml
@@ -746,10 +745,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\6
-copy .\src\drivers\berniw\6\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\6\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\6\155-DTM.rgb .\runtimed\drivers\berniw\6\155-DTM.rgb
 copy .\src\drivers\berniw\6\aalborg.xml .\runtimed\drivers\berniw\6\aalborg.xml
 copy .\src\drivers\berniw\6\a-speedway.xml .\runtimed\drivers\berniw\6\a-speedway.xml
-copy .\src\drivers\berniw\6\cg-nascar-rwd.xml .\runtimed\drivers\berniw\6\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\6\dirt-1.xml .\runtimed\drivers\berniw\6\dirt-1.xml
 copy .\src\drivers\berniw\6\dirt-2.xml .\runtimed\drivers\berniw\6\dirt-2.xml
 copy .\src\drivers\berniw\6\dirt-3.xml .\runtimed\drivers\berniw\6\dirt-3.xml
@@ -763,6 +761,7 @@ copy .\src\drivers\berniw\6\e-track-3.xml .\runtimed\drivers\berniw\6\e-track-3.
 copy .\src\drivers\berniw\6\e-track-4.xml .\runtimed\drivers\berniw\6\e-track-4.xml
 copy .\src\drivers\berniw\6\e-track-5.xml .\runtimed\drivers\berniw\6\e-track-5.xml
 copy .\src\drivers\berniw\6\e-track-6.xml .\runtimed\drivers\berniw\6\e-track-6.xml
+copy .\src\drivers\berniw\6\g-track-1.xml .\runtimed\drivers\berniw\6\g-track-1.xml
 copy .\src\drivers\berniw\6\michigan.xml .\runtimed\drivers\berniw\6\michigan.xml
 copy .\src\drivers\berniw\6\mixed-1.xml .\runtimed\drivers\berniw\6\mixed-1.xml
 copy .\src\drivers\berniw\6\mixed-2.xml .\runtimed\drivers\berniw\6\mixed-2.xml
@@ -772,10 +771,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\7
-copy .\src\drivers\berniw\7\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\7\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\7\lotus-gt1.rgb .\runtimed\drivers\berniw\7\lotus-gt1.rgb
 copy .\src\drivers\berniw\7\aalborg.xml .\runtimed\drivers\berniw\7\aalborg.xml
 copy .\src\drivers\berniw\7\a-speedway.xml .\runtimed\drivers\berniw\7\a-speedway.xml
-copy .\src\drivers\berniw\7\cg-nascar-rwd.xml .\runtimed\drivers\berniw\7\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\7\dirt-1.xml .\runtimed\drivers\berniw\7\dirt-1.xml
 copy .\src\drivers\berniw\7\dirt-2.xml .\runtimed\drivers\berniw\7\dirt-2.xml
 copy .\src\drivers\berniw\7\dirt-3.xml .\runtimed\drivers\berniw\7\dirt-3.xml
@@ -789,6 +787,7 @@ copy .\src\drivers\berniw\7\e-track-3.xml .\runtimed\drivers\berniw\7\e-track-3.
 copy .\src\drivers\berniw\7\e-track-4.xml .\runtimed\drivers\berniw\7\e-track-4.xml
 copy .\src\drivers\berniw\7\e-track-5.xml .\runtimed\drivers\berniw\7\e-track-5.xml
 copy .\src\drivers\berniw\7\e-track-6.xml .\runtimed\drivers\berniw\7\e-track-6.xml
+copy .\src\drivers\berniw\7\g-track-1.xml .\runtimed\drivers\berniw\7\g-track-1.xml
 copy .\src\drivers\berniw\7\michigan.xml .\runtimed\drivers\berniw\7\michigan.xml
 copy .\src\drivers\berniw\7\mixed-1.xml .\runtimed\drivers\berniw\7\mixed-1.xml
 copy .\src\drivers\berniw\7\mixed-2.xml .\runtimed\drivers\berniw\7\mixed-2.xml
@@ -798,10 +797,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\8
-copy .\src\drivers\berniw\8\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\8\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\8\corvette.rgb .\runtimed\drivers\berniw\8\corvette.rgb
 copy .\src\drivers\berniw\8\aalborg.xml .\runtimed\drivers\berniw\8\aalborg.xml
 copy .\src\drivers\berniw\8\a-speedway.xml .\runtimed\drivers\berniw\8\a-speedway.xml
-copy .\src\drivers\berniw\8\cg-nascar-rwd.xml .\runtimed\drivers\berniw\8\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\8\dirt-1.xml .\runtimed\drivers\berniw\8\dirt-1.xml
 copy .\src\drivers\berniw\8\dirt-2.xml .\runtimed\drivers\berniw\8\dirt-2.xml
 copy .\src\drivers\berniw\8\dirt-3.xml .\runtimed\drivers\berniw\8\dirt-3.xml
@@ -815,6 +813,7 @@ copy .\src\drivers\berniw\8\e-track-3.xml .\runtimed\drivers\berniw\8\e-track-3.
 copy .\src\drivers\berniw\8\e-track-4.xml .\runtimed\drivers\berniw\8\e-track-4.xml
 copy .\src\drivers\berniw\8\e-track-5.xml .\runtimed\drivers\berniw\8\e-track-5.xml
 copy .\src\drivers\berniw\8\e-track-6.xml .\runtimed\drivers\berniw\8\e-track-6.xml
+copy .\src\drivers\berniw\8\g-track-1.xml .\runtimed\drivers\berniw\8\g-track-1.xml
 copy .\src\drivers\berniw\8\michigan.xml .\runtimed\drivers\berniw\8\michigan.xml
 copy .\src\drivers\berniw\8\mixed-1.xml .\runtimed\drivers\berniw\8\mixed-1.xml
 copy .\src\drivers\berniw\8\mixed-2.xml .\runtimed\drivers\berniw\8\mixed-2.xml
@@ -824,10 +823,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\berniw
 call .\create_dir .\runtimed\drivers\berniw\9
-copy .\src\drivers\berniw\9\cg-nascar-rwd.rgb .\runtimed\drivers\berniw\9\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\9\mclaren-f1.rgb .\runtimed\drivers\berniw\9\mclaren-f1.rgb
 copy .\src\drivers\berniw\9\aalborg.xml .\runtimed\drivers\berniw\9\aalborg.xml
 copy .\src\drivers\berniw\9\a-speedway.xml .\runtimed\drivers\berniw\9\a-speedway.xml
-copy .\src\drivers\berniw\9\cg-nascar-rwd.xml .\runtimed\drivers\berniw\9\cg-nascar-rwd.xml
 copy .\src\drivers\berniw\9\dirt-1.xml .\runtimed\drivers\berniw\9\dirt-1.xml
 copy .\src\drivers\berniw\9\dirt-2.xml .\runtimed\drivers\berniw\9\dirt-2.xml
 copy .\src\drivers\berniw\9\dirt-3.xml .\runtimed\drivers\berniw\9\dirt-3.xml
@@ -841,6 +839,7 @@ copy .\src\drivers\berniw\9\e-track-3.xml .\runtimed\drivers\berniw\9\e-track-3.
 copy .\src\drivers\berniw\9\e-track-4.xml .\runtimed\drivers\berniw\9\e-track-4.xml
 copy .\src\drivers\berniw\9\e-track-5.xml .\runtimed\drivers\berniw\9\e-track-5.xml
 copy .\src\drivers\berniw\9\e-track-6.xml .\runtimed\drivers\berniw\9\e-track-6.xml
+copy .\src\drivers\berniw\9\g-track-1.xml .\runtimed\drivers\berniw\9\g-track-1.xml
 copy .\src\drivers\berniw\9\michigan.xml .\runtimed\drivers\berniw\9\michigan.xml
 copy .\src\drivers\berniw\9\mixed-1.xml .\runtimed\drivers\berniw\9\mixed-1.xml
 copy .\src\drivers\berniw\9\mixed-2.xml .\runtimed\drivers\berniw\9\mixed-2.xml
