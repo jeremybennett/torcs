@@ -448,22 +448,24 @@
       <section name="s15-3">
 	<attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="30"></attnum>
-	<attnum name="end width" val="15.5"></attnum>
+	<section name="Right Side">
+	  <attnum name="end width" val="15.5"></attnum>
+	</section>
       </section>
 
       <section name="last segment">
 	<attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="120"></attnum>
-	<section name="Right Side">
-	  <attstr name="surface"  val="asphalt-pits"></attstr>
-	  <attnum name="start width" val="15"></attnum>
-	  <attnum name="end width" val="15"></attnum>
-	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="concrete"></attstr>
 	  <attstr name="style" val="wall"></attstr>
 	  <attnum name="width" val="0.5"></attnum>
 	  <attnum name="height" val="1.0"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="asphalt-pits"></attstr>
+	  <attnum name="start width" val="15"></attnum>
+	  <attnum name="end width" val="15"></attnum>
 	</section>
       </section>
 
