@@ -1,0 +1,36 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Track Maps</h3>
+			<p>
+				Maps of the tracks available for races on the TORCS racing board.
+			</p>
+
+			<table class="text14" cellspacing="3px" style="margin:2px;">
+				<!-- BEGIN row -->
+				<tr>
+					<!-- BEGIN col -->
+					<td style="margin:5px;padding:5px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+						<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_TRACK_ID}">
+							<img src="{PC_TRACK_IMG_SRC}" alt="track map" border="0" style="border:0px; width:140px; height:140px; border-style:hidden;" title="{PC_NAME}, {PC_TYPE}, {PC_LENGTH}m, {PC_NBPITS} Pits."></img>
+						</a>
+					</td>
+					<!-- END col -->
+				</tr>
+				<!-- END row -->
+			</table>
+
+			<table style="width:625px;margin-left:4px;margin-right:6px;">
+				<tr>
+					<td style="text-align:left;">
+						<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+					</td>
+					<td style="text-align:right;">
+						<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>

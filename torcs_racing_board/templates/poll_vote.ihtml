@@ -1,0 +1,44 @@
+
+<form method="post" action="{PC_POLL_PAGE}" style="margin:0px; border:0px;">
+	<table style="width:100%">
+		<tr>
+			<td style="text-align:center;" class="pollbigtext" colspan="2">
+				{PC_POLL_QUESTION}
+				<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;"/>
+			</td>
+		</tr>
+
+		<!-- BEGIN answer_row -->
+		<tr>
+			<td>
+				<input type="radio" name="poll_vote" value="{PC_ANSWER_ID}"/>
+			</td>
+			<td class="pollsmalltext" style="width:500px">
+				<img src="{ROOTPATH}images/pollbar.gif" style="width:{PC_ANSWER_PERCENT}%; height:10px;"></img><img src="{ROOTPATH}images/pollbar_back.gif" style="width:{PC_ANSWER_PERCENT2}%; height:10px;"></img><br/>
+				{PC_ANSWER_TEXT} ({PC_ANSWER_COUNT}, {PC_ANSWER_PERCENT}%)
+			</td>
+		</tr>
+		<!-- END answer_row -->
+
+		<tr>
+			<td style="text-align:center; padding-top:0px; padding-bottom:0px; border-spacing:0px; padding-left:3px; padding-right:3px;" colspan="2">
+				<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;"/>
+				<input type="submit" name="poll_submit" value="Vote"/>
+			</td>
+		</tr>
+
+		<tr>
+			<td style="text-align:center;" class="pollsmalltext" colspan="2">
+				<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;"/>
+				Total votes: {PC_POLL_VOTES}.
+			</td>
+		</tr>
+
+		<tr>
+			<td style="text-align:center;" class="pollsmalltext" colspan="2">
+				Poll open for {PC_POLL_GROUPS}.
+			</td>
+		</tr>
+	</table>
+</form>
+

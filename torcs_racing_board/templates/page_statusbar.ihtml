@@ -1,0 +1,39 @@
+<table style="border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:780px; margin-left:7px; margin-top:4px;" cellspacing="0">
+	<tr>
+		<td>
+			<form method="post" action="{PS_LOGINPAGE}" style="margin:0px; border:0px;">
+			<table style="border-style:none; border-spacing:0px; border-width:0px; padding:0px;" cellspacing="0">
+				<tr>
+					<td title="Your login name (not your real name)" class="text14">
+						Username:
+					</td>
+					<td>
+						<input type="text" name="login_username" size="15" maxlength="{PS_USERNAME_SIZE}"/>
+					</td>
+					<td title="Your password for {PS_HOSTNAME}" class="text14">
+						Password:
+					</td>
+					<td class="text14">
+						<input type="password" name="login_password" size="11" maxlength="{PS_PASSWORD_SIZE}"/>
+					</td>
+					<td class="text14">
+						<input type="submit" name="login_submit" value="Log In"/>
+					</td>
+					<td class="text14">
+						<input type="checkbox" name="login_remember" value="remember"/>
+					</td>
+					<td title="You become logged in the next time automagically" class="text14">
+						Remember Me?
+					</td>
+			</table>
+			</form>
+		</td>
+		<td class="text14">
+			<a href="{ROOTPATH}lostpassword.php" title="Have you lost your password?">Lost Password</a>
+		</td>
+		<td class="text14" style="text-align:right;">
+			<a href="{ROOTPATH}register.php" title="Create an account">Register</a>
+		</td>
+	</tr>
+</table>
+

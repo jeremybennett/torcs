@@ -1,0 +1,113 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Enter a New Track</h3>
+			<p>
+				Here you can enter a new track. If the page comes up again after submission,
+				there must be errors, please correct them and submit again. The image size must
+				be exactly 256x256.
+			</p>
+
+			<form method="post" enctype="multipart/form-data" action="{PC_CREATETRACKPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:90px">
+							Name:
+						</td>
+						<td class="filledlist" style="width:525px">
+							<input type="text" name="track_name" size="40" maxlength="40" value="{PC_TRACK_NAME}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Author:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="track_author" size="40" maxlength="40" value="{PC_TRACK_AUTHOR}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							#Pits:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="track_nbpits" size="10" maxlength="10" value="{PC_TRACK_NBPITS}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Width [m]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="track_width" size="10" maxlength="10" value="{PC_TRACK_WIDTH}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Length [m]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="track_length" size="10" maxlength="10" value="{PC_TRACK_LENGTH}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Type:
+						</td>
+						<td class="filledlist">
+							<select name="track_type" size="1">
+								<option {PC_TRACK_TYPE_DIRT} value="dirt">dirt</option>
+								<option {PC_TRACK_TYPE_OVAL} value="oval">oval</option>
+								<option {PC_TRACK_TYPE_ROAD} value="road">road</option>
+							</select>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Description:
+						</td>
+						<td class="filledlist">
+							<textarea name="track_description" rows="6" style="width:525px">{PC_TRACK_DESCRIPTION}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Map (*.jpg):
+						</td>
+						<td class="filledlist">
+							<input name="track_image" type="file" size="60" maxlength="50000" accept="image/jpeg" value="{PC_TRACK_IMG_SRC}"/>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="track_submit" value="Submit Track">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+

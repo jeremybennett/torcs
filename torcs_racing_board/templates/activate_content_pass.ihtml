@@ -1,0 +1,13 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Account Activated</h3>
+			<p>
+				Congratulations, your account is now active. You should now be able to log in. If you want
+				to enter the races with your robot you need to move your account into a 'racer' account. You
+				can do this via 'Your Account'.
+			</p>
+		</td>
+	</tr>
+</table>

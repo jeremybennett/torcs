@@ -1,0 +1,65 @@
+/*
+	copyright   : (C) 2004 Bernhard Wymann
+	email       : berniw@bluewin.ch
+	version     : $Id$
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
+*/
+
+/* css definitions for berniw's hompepage and trb */
+
+h1,h2,h3,h4,p,ol,div,td,tr,th,address,blockquote,nobr { font-family:Arial,Helvetica,sans-serif; margin-top:0px; margin-left:5px; margin-right:5px; }
+ul, li { font-family:Arial,Helvetica,sans-serif; font-size:14px;}
+pre { margin-top:0px; margin-left:5px; margin-right:5px; margin-bottom:6px; }
+
+h1 { font-size:20px; margin-top:4px; margin-bottom:4px; }
+h2 { font-size:18px; margin-top:4px; margin-bottom:4px; }
+h3 { font-size:16px; margin-top:4px; margin-bottom:4px; }
+h4 { font-size:14px; margin-top:3px; margin-bottom:3px; }
+p { font-size:14px; margin-top:4px; margin-bottom:4px; text-align:justify; }
+a { font-family:Arial,Helvetica,sans-serif; font-size:14px; }
+tt { font-size:12px; }
+th { font-size:14px; }
+
+body { font-family:Arial,Helvetica,sans-serif; margin-top:0px; margin-left:0px; }
+
+table.main_format { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; table-layout:fixed; }
+
+table.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; table-layout:fixed; width:800px; }
+
+tr.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;}
+td.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;}
+
+td.main_top { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
+td.main_status { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
+td.main_nav { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:150px; overflow:auto; vertical-align:top;}
+td.main_content { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:650px; overflow:auto; vertical-align:top;}
+td.main_footer { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
+td.filledlist { border-top-style:solid; border-top-width:2px; border-color:#ffffff;}
+th.filledlist { border-top-style:solid; border-top-width:2px; border-color:#ffffff;}
+
+td.forumthread { border-style:none; border-spacing:0px; border-width:0px;}
+tr.forumthread { border-style:none; border-spacing:0px; border-width:0px;}
+
+img.tight { margin:0px; border:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+p.statusbar { font-size:16px; text-align:center; margin:0px; }
+
+.text14 { font-family:Arial,Helvetica,sans-serif; font-size:14px; }
+.text12 { font-family:Arial,Helvetica,sans-serif; font-size:14px; }
+.text10 { font-family:Arial,Helvetica,sans-serif; font-size:10px; }
+
+.rawresultlist { border-color:#a9a9a9; border-style:solid; border-width:1px; border-bottom-width:0px; border-right-width:0px; }
+
+
+.submitbuttoncolor { background-color:#e0ffe0; }
+.contentbordercolor { border-color:#e8e8e8; }
+.table1color { background-color:#e8e8e8; }
+.table2color { background-color:#f0f0f0; }
+.warncolor { color:#ff0000 }
+.pollinpara { float:left; border-style:solid; border-width:1px; margin-top:3px; margin-bottom:5px; margin-right:8px; border-color:#a8a8a8;}
+.pollcentered { border-style:solid; border-width:1px; margin-top:3px; margin-bottom:5px; margin-right:8px; border-color:#a8a8a8;}
+.pollbigtext { font-family:Arial,Helvetica,sans-serif; font-size:12px; margin:2px; padding-top:0px; padding-bottom:0px; border-spacing:0px; padding-left:3px; padding-right:3px;}
+.pollsmalltext { font-family:Arial,Helvetica,sans-serif; font-size:10px; margin:1px; padding-top:0px; padding-bottom:0px; border-spacing:0px; padding-left:3px; padding-right:3px;}

@@ -1,0 +1,38 @@
+<table style="width:100%">
+	<tr>
+		<td style="text-align:center;" class="pollbigtext">
+			{PC_POLL_QUESTION}
+			<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;"/>
+		</td>
+	</tr>
+	<!-- BEGIN answer_row -->
+	<tr>
+		<td class="pollsmalltext">
+			<img src="{ROOTPATH}images/pollbar.gif" style="width:{PC_ANSWER_PERCENT}%; height:10px;"></img><img src="{ROOTPATH}images/pollbar_back.gif" style="width:{PC_ANSWER_PERCENT2}%; height:10px;"></img><br/>
+			{PC_ANSWER_TEXT} ({PC_ANSWER_COUNT}, {PC_ANSWER_PERCENT}%)
+		</td>
+	</tr>
+	<!-- END answer_row -->
+	<tr>
+		<td style="text-align:center;" class="pollsmalltext">
+			<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;"/>
+			Total votes: {PC_POLL_VOTES}.
+		</td>
+	</tr>
+
+	<tr>
+		<td style="text-align:center;" class="pollsmalltext">
+			Poll open for {PC_POLL_GROUPS}.
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:center;" class="pollsmalltext">
+			Start: {PC_POLL_STIME}.
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:center;" class="pollsmalltext">
+			End: {PC_POLL_ETIME}.
+		</td>
+	</tr>
+</table>

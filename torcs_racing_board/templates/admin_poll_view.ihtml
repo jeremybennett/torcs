@@ -1,0 +1,89 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>View Poll</h3>
+
+			<table class="text14" cellspacing="0" style="width:629px; margin-left:3px;margin-right:0px;border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<tr class="table1color">
+					<td class="filledlist" style="width:90px">
+						Id:
+					</td>
+					<td class="filledlist">
+						{PC_POLL_ID}
+					</td>
+				</tr>
+
+				<tr class="table2color">
+					<td class="filledlist">
+						Owner:
+					</td>
+					<td class="filledlist">
+						{PC_POLL_OWNER}
+					</td>
+				</tr>
+
+				<tr class="table1color">
+					<td class="filledlist" align="left" valign="top">
+						Question:
+					</td>
+					<td class="filledlist" style="text-align:justify;">
+						{PC_POLL_QUESTION}
+					</td>
+				</tr>
+
+				<tr class="table2color">
+					<td class="filledlist">
+						Start date:
+					</td>
+					<td class="filledlist">
+						{PC_POLL_STARTDATE}
+					</td>
+				</tr>
+
+				<tr class="table1color">
+					<td class="filledlist">
+						End date:
+					</td>
+					<td class="filledlist">
+						{PC_POLL_ENDDATE}
+					</td>
+				</tr>
+
+				<tr class="table2color">
+					<td class="filledlist">
+						Groups:
+					</td>
+					<td class="filledlist">
+						{PC_POLL_GROUPS}
+					</td>
+				</tr>
+			</table>
+
+			<table class="text14" cellspacing="0" style="width:629px;margin-top:5px;margin-bottom:5px;margin-left:3px;margin-right:0px;border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<tr class="submitbuttoncolor">
+					<th class="filledlist" align="left">Id</th>
+					<th class="filledlist" align="left">Answer</th>
+					<th class="filledlist" align="left">#Votes</th>
+				</tr>
+
+				<!-- BEGIN answer_row -->
+				<tr bgcolor="{PC_COLOR_ANSWER}">
+					<td class="filledlist" align="left" valign="top">
+						{PC_POLL_ANSWER_ID}
+					</td>
+					<td class="filledlist" align="left" valign="top">
+						{PC_POLL_ANSWER}
+					</td>
+					<td class="filledlist" align="left" valign="top">
+						{PC_POLL_ANSWER_VOTES}
+					</td>
+				</tr>
+				<!-- END answer_row -->
+
+			</table>
+
+		</td>
+	</tr>
+
+</table>

@@ -1,0 +1,19 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3 class="warncolor">Result Rejected</h3>
+			<p>
+				Your result has been rejected because of {PC_NB_ERRORS} {PC_ERROR_STRING}. Try to
+				resolve the problem and to submit a correct result. In case your result is ok, but
+				the system rejects it, contact <a href="mailto:{PC_ADMIN_EMAIL}">the administrator</a>.
+				Do not rely too much on the error messages.
+			</p>
+			<ul>
+				<!-- BEGIN error -->
+				<li>{PC_ERROR}</li>
+				<!-- END error -->
+			</ul>
+		</td>
+	</tr>
+</table>

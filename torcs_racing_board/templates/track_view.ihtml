@@ -1,0 +1,68 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_TRACK_NAME}</h3>
+
+			<img src="{PC_TRACK_IMG_SRC}" alt="track map" border="0" style="float:left; border:0px; width:256px; height:256px; border-style:hidden; margin-bottom:5px; margin-right:10px; margin-left:5px;"></img>
+			<table style=" margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">
+				<tr class="tight">
+					<td style="width:60px;">
+						Name:
+					</td>
+					<td>
+						{PC_TRACK_NAME}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Author:
+					</td>
+					<td>
+						{PC_TRACK_AUTHOR}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Type:
+					</td>
+					<td>
+						{PC_TRACK_TYPE}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Length:
+					</td>
+					<td>
+						{PC_TRACK_LENGTH}m
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Width:
+					</td>
+					<td>
+						{PC_TRACK_WIDTH}m
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Pits:
+					</td>
+					<td>
+						{PC_TRACK_NBPITS}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td colspan="2">
+						<h4 style="margin-left:0px;">Description</h4>
+						{PC_TRACK_DESCRIPTION}
+					</td>
+				</tr>
+			</table>
+
+		</td>
+	</tr>
+</table>
+

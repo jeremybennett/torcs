@@ -1,0 +1,91 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_CAR_NAME}</h3>
+
+			<img src="{PC_CAR_IMG_SRC}" alt="track map" border="0" style="float:left; border:0px; width:300px; height:379px; border-style:hidden; margin-bottom:5px; margin-right:10px; margin-left:5px;"></img>
+			<table style=" margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">
+				<tr class="tight">
+					<td style="width:60px;">
+						Name:
+					</td>
+					<td>
+						{PC_CAR_NAME}
+					</td>
+				</tr>
+				<!--tr class="tight">
+					<td>
+						Author:
+					</td>
+					<td>
+						{PC_CAR_AUTHOR}
+					</td>
+				</tr-->
+				<tr class="tight">
+					<td>
+						Mass:
+					</td>
+					<td>
+						{PC_CAR_MASS}kg
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Max. Fuel:
+					</td>
+					<td>
+						{PC_CAR_TANK}kg
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Power:
+					</td>
+					<td>
+						{PC_CAR_POWER}kW
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Cx*A:
+					</td>
+					<td>
+						{PC_CAR_CXA}m<sup>2</sup>
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Drive-train:
+					</td>
+					<td>
+						{PC_CAR_TYPE}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Length:
+					</td>
+					<td>
+						{PC_CAR_LENGTH}m
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Width:
+					</td>
+					<td>
+						{PC_CAR_WIDTH}m
+					</td>
+				</tr>
+				<tr class="tight">
+					<td colspan="2">
+						<h4 style="margin-left:0px;">Description</h4>
+						{PC_CAR_DESCRIPTION}
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+

@@ -1,0 +1,47 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Edit News</h3>
+
+			<form method="post" action="{PC_CREATENEWSPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="news_id" value="{PC_NEWS_ID}"/>
+				<table class="text14" cellspacing="0">
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Title:<br>
+							<input type="text" name="news_title" maxlength="100" value="{PC_NEWS_TITLE}" style="width:620px"><br>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" style="width:100%" align="left" valign="top">
+							Text:<br>
+							<textarea name="news_text" rows="12" style="width:620px">{PC_NEWS_TEXT}</textarea><br>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="news_submit" value="Update News">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+

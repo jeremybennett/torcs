@@ -1,0 +1,56 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>User List</h3>
+			<p>
+				List of the registerd users on the TORCS racing board.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Username</th>
+		<th class="filledlist" align="left">Real Name</th>
+		<th class="filledlist" align="left">Account</th>
+		<th class="filledlist" align="left">State</th>
+		<th class="filledlist" align="left">Admin</th>
+
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_USER_ID}">{PC_USER_NAME}</a>
+		</td>
+		<td class="filledlist">
+			{PC_USER_FIRSTNAME} {PC_USER_LASTNAME}
+		</td>
+		<td class="filledlist">
+			{PC_USER_ACCOUNT}
+		</td>
+		<td class="filledlist">
+			{PC_USER_STATE}
+		</td>
+		<td class="filledlist">
+			<a href="{PC_USER_PAGE}?{PC_USER_ACTION_GET}={PC_USER_ID}" onclick="return confirm('Do you really want to {PC_USER_ACTION_GET} this user?')">{PC_USER_ACTION}</a>
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>
+
+
+
+

@@ -1,0 +1,140 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Enter a New Car</h3>
+			<p>
+				Here you can enter a new car. If the page comes up again after submission,
+				there must be errors, please correct them and submit again. The image size must
+				be exactly 300x379.
+			</p>
+
+			<form method="post" enctype="multipart/form-data" action="{PC_CREATECARPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:120px">
+							Name:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="car_name" size="40" maxlength="40" value="{PC_CAR_NAME}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Author:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_author" size="40" maxlength="40" value="{PC_CAR_AUTHOR}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Mass [kg]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_mass" size="10" maxlength="10" value="{PC_CAR_MASS}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Max. Fuel [kg]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_maxfuel" size="10" maxlength="10" value="{PC_CAR_TANK}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Cx*A [m*m]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_cxa" size="10" maxlength="10" value="{PC_CAR_CXA}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Max. Power [kW]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_power" size="10" maxlength="10" value="{PC_CAR_POWER}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Length [m]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_length" size="10" maxlength="10" value="{PC_CAR_LENGTH}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Width [m]:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="car_width" size="10" maxlength="10" value="{PC_CAR_WIDTH}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Drivetrain:
+						</td>
+						<td class="filledlist">
+							<select name="car_type" size="1">
+								<option {PC_CAR_RWD} value="rwd">Rear Wheel Driven</option>
+								<option {PC_CAR_FWD} value="fwd">Front Wheel Driven</option>
+								<option {PC_CAR_4WD} value="4wd">All Wheels Driven</option>
+							</select>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Description:
+						</td>
+						<td class="filledlist">
+							<textarea name="car_description" rows="6" style="width:495px">{PC_CAR_DESCRIPTION}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Image (*.jpg):
+						</td>
+						<td class="filledlist">
+							<input name="car_image" type="file" size="60" maxlength="50000" accept="image/jpeg" value="{PC_CAR_IMG_SRC}"/>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="car_submit" value="Submit Car">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+

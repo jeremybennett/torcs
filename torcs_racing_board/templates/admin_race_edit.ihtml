@@ -1,0 +1,75 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Edit an Existing Race</h3>
+			<p>
+				Here you can edit a race.
+			</p>
+
+			<form method="post" action="{PC_EDITRACEPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="event_id" value="{PC_EVENT_ID}">
+				<input type="hidden" name="race_id" value="{PC_RACE_ID}">
+				<table class="text14" cellspacing="0">
+
+					<tr>
+						<td class="filledlist" style="width:160px">
+							Robot submission start:
+						</td>
+						<td class="filledlist" style="width:455px">
+							<input type="text" name="race_robot_sub_start" size="20" maxlength="19" value="{PC_RACE_ROBOT_SUBMIT_START}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Robot submission end:
+						</td>
+						<td class="filledlist" style="width:455px">
+							<input type="text" name="race_robot_sub_end" size="20" maxlength="19" value="{PC_RACE_ROBOT_SUBMIT_END}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Result submission start:
+						</td>
+						<td class="filledlist" style="width:455px">
+							<input type="text" name="race_result_sub_start" size="20" maxlength="19" value="{PC_RACE_RESULT_SUBMIT_START}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Result submission end:
+						</td>
+						<td class="filledlist" style="width:455px">
+							<input type="text" name="race_result_sub_end" size="20" maxlength="19" value="{PC_RACE_RESULT_SUBMIT_END}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Track:
+						</td>
+						<td class="filledlist">
+							<select name="race_track" size="1">
+							<!-- BEGIN row -->
+								<option {PC_RACE_TRACK_SEL} value="{PC_RACE_TRACK_ID}">{PC_RACE_TRACK_NAME}</option>
+							<!-- END row -->
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="race_submit" value="Submit Race">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,172 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_EVENT_NAME}</h3>
+
+			<table style="margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">
+				<tr class="tight">
+					<td style="width:100px;" align="left" valign="top">
+						Description:
+					</td>
+					<td style="width:525px;">
+						{PC_EVENT_DESCRIPTION}
+					</td>
+				</tr>
+
+				<tr class="tight">
+					<td>
+						Rules:
+					</td>
+					<td>
+						<a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}">Display rules</a>.
+					</td>
+				</tr>
+
+				<tr class="tight">
+					<td>
+						Schedule:
+					</td>
+					<td>
+						<a href="{ROOTPATH}events/race_schedule_view.php?viewscheduleid={PC_EVENT_ID}">Display detailed race schedule</a>.
+					</td>
+				</tr>
+
+				<tr class="tight">
+					<td>
+						Sign-in:
+					</td>
+					<td>
+						From {PC_EVENT_SIGNIN_START} to {PC_EVENT_SIGNIN_END}.
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Duration:
+					</td>
+					<td>
+						From {PC_EVENT_START} to {PC_EVENT_END}.
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Max. Teams:
+					</td>
+					<td>
+						{PC_EVENT_MAXTEAMS} ({PC_EVENT_REGISTERED_TEAMS} registered, {PC_EVENT_FREE_TEAMS} free)
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Pointsystem:
+					</td>
+					<td>
+						{PC_EVENT_POINTSYSTEM_NAME}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td style="width:100px;" align="left" valign="top">
+						Allowed cars:
+					</td>
+					<td style="width:525px;">
+						<!-- BEGIN carlist -->
+						{PC_EVENT_CAR_SEP}<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_EVENT_CAR_ID}">{PC_EVENT_CAR_NAME}</a>
+						<!-- END carlist -->
+					</td>
+				</tr>
+				<tr class="tight">
+					<td align="left" valign="top">
+						Teams:
+					</td>
+					<td>
+						<!-- BEGIN teamlist -->
+						{PC_EVENT_TEAM_SEP}<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_EVENT_TEAM_ID}">{PC_EVENT_TEAM_NAME}</a>
+						<!-- END teamlist -->
+					</td>
+				</tr>
+
+				<tr class="tight">
+					<td align="left" valign="top">
+						Races:
+					</td>
+					<td style="margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;">
+						<table style="margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:525px" cellspacing="0" class="text14">
+						<!-- BEGIN racelist -->
+							<tr class="tight">
+								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">
+									<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_EVENT_TRACK_ID}">{PC_EVENT_TRACK_NAME}</a>
+								</td>
+								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">
+									{PC_RACE_STATE}
+								</td>
+								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">
+									<!-- BEGIN raceresult -->
+									<a href="{ROOTPATH}events/event_view_result.php?raceid={PC_RACE_ID}">Race Result</a>
+									<a href="{ROOTPATH}events/event_view_rawresult.php?raceid={PC_RACE_ID}">Raw Data</a>
+									<!-- END raceresult -->
+									&nbsp;
+								</td>
+								<!-- BEGIN raceadmin -->
+								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">
+									<a href="{ROOTPATH}admin/event_edit_race.php?editraceid={PC_RACE_ID}">Edit</a>
+								</td>
+								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">
+									<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENT_ID}&deleteraceid={PC_RACE_ID}" onclick="return confirm('Do you really want to delete this race?')">Delete</a>
+								</td>
+								<!-- END raceadmin -->
+							</tr>
+						<!-- END racelist -->
+						</table>
+					</td>
+				</tr>
+
+				<!-- BEGIN admin -->
+				<tr class="tight">
+					<td>
+						Admin:
+					</td>
+					<td>
+						<a href="{ROOTPATH}admin/event_create_race.php?eventid={PC_EVENT_ID}">Create and add a race</a>.
+					</td>
+				</tr>
+				<!-- END admin -->
+
+				<!-- BEGIN racer -->
+				<tr class="tight">
+					<td align="left" valign="top">
+						Sign in team:
+					</td>
+					<td>
+						<!-- BEGIN raceteamadd -->
+						<a href="{ROOTPATH}events/event_register_team.php?eventid={PC_EVENT_ID}&teamid={PC_TEAM_ID}">Register the {PC_TEAM_NAME} team for this event</a>.<br/>
+						<!-- END raceteamadd -->
+					</td>
+				</tr>
+				<tr class="tight">
+					<td align="left" valign="top">
+						Remove team:
+					</td>
+					<td>
+						<!-- BEGIN raceteamremove -->
+						<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENT_ID}&remteamid={PC_TEAM_ID}" onclick="return confirm('Do you really want to remove this team?')">Remove the {PC_TEAM_NAME} team from this event</a>.<br/>
+						<!-- END raceteamremove -->
+					</td>
+				</tr>
+				<!-- END racer -->
+
+				<!-- BEGIN standings -->
+				<tr class="tight">
+					<td align="left" valign="top">
+						Standings:
+					</td>
+					<td>
+						<a href="{ROOTPATH}events/event_view_standings.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">Standings</a>
+					</td>
+				</tr>
+				<!-- END standings -->
+
+			</table>
+		</td>
+	</tr>
+</table>
+

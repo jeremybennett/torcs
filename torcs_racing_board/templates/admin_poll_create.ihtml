@@ -1,0 +1,135 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Create a New Poll</h3>
+			<p>
+				Here you can create a new poll. First select the number of answers you require, when you change
+				it the content of the answers is lost. The groups define which people are allowed to vote, anonymous allows unregistered
+				users to vote. If the page comes up again after submission, there must be errors, please correct them
+				and submit again.
+			</p>
+
+			<form method="post" action="{PC_CREATEPOLLPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:90px" align="left" valign="top">
+							Question:
+						</td>
+						<td class="filledlist">
+							<textarea name="poll_question" style="width:525px" rows="3"></textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Start date:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_startdate" size="20" maxlength="19" value="{PC_VALUE_STARTDATE}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							End date:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_enddate" size="20" maxlength="19" value="{PC_VALUE_ENDDATE}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Groups:
+						</td>
+						<td class="filledlist">
+							<select name="poll_groups[]" size="3" multiple="multiple">
+								<option>anonymous</option>
+								<option>spectator</option>
+								<option>racer</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr id="theselector">
+						<td class="filledlist">
+							Answers:
+						</td>
+						<td class="filledlist">
+							<select name="poll_nboptions" size="1" onchange="insertTextInput(this.form.poll_nboptions.options[this.form.poll_nboptions.selectedIndex].value, 'hello', 'theanswers', 'theselector')">
+								<option selected value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+								<option value="24">24</option>
+								<option value="25">25</option>
+								<option value="26">26</option>
+								<option value="27">27</option>
+								<option value="28">28</option>
+								<option value="29">29</option>
+								<option value="30">30</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0" id="theanswers">
+					<tr>
+						<td style="width:90px" class="filledlist">
+							Answer 1:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_answer[]" maxlength="255" style="width:525px"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:90px" class="filledlist">
+							Answer 2:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_answer[]" maxlength="255" style="width:525px"/>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="poll_submit" value="Create Poll">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+

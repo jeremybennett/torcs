@@ -1,0 +1,113 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Data of {PC_USER_NAME}</h3>
+
+			<!-- BEGIN userimage -->
+			<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:right; border:0px; width:150px; height:150px; border-style:hidden; margin:5px;"></img>
+			<!-- END userimage -->
+
+			<table style=" margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">
+				<tr class="tight">
+					<td style="width:80px;">
+						Name:
+					</td>
+					<td>
+						{PC_USER_NAME}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Real Name:
+					</td>
+					<td>
+						{PC_USER_FIRSTNAME} {PC_USER_LASTNAME}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Account:
+					</td>
+					<td>
+						{PC_USER_ACCOUNT}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Postings:
+					</td>
+					<td>
+						{PC_USER_POSTINGS}
+					</td>
+				</tr>
+
+				<!-- BEGIN admin -->
+				<tr class="tight">
+					<td>
+						E-Mail:
+					</td>
+					<td>
+						{PC_USER_EMAIL}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						State:
+					</td>
+					<td>
+						{PC_USER_ACTIVE}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Registered:
+					</td>
+					<td>
+						{PC_USER_REGISTER}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Last login:
+					</td>
+					<td>
+						{PC_USER_LASTLOGIN}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Last visit:
+					</td>
+					<td>
+						{PC_USER_LASTVISIT}
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+						Last IP:
+					</td>
+					<td>
+						{PC_USER_IP}
+					</td>
+				</tr>
+				<!-- END admin -->
+
+				<!-- BEGIN racer -->
+				<tr class="tight">
+					<td align="left" valign="top">
+						Teams:
+					</td>
+					<td>
+						<!-- BEGIN team -->
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_USER_TEAM_ID}">{PC_USER_TEAM_NAME}</a><br/>
+						<!-- END team -->
+					</td>
+				</tr>
+				<!-- END racer -->
+
+			</table>
+		</td>
+	</tr>
+</table>
+

@@ -1,0 +1,34 @@
+<!-- BEGIN article -->
+
+<table style="width:640px; margin-left:10px; margin-top:0px;margin-bottom:5px;" cellspacing="0" class="text14">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;padding-left:5px;padding-right:5px;background-color:#e8e8e8;border-color:#e8e8e8;" align="left">{PC_NEWS_TITLE}</td>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;;padding-right:5px;background-color:#e8e8e8;border-color:#e8e8e8;" align="right">
+			<!-- BEGIN newsadmin -->
+			<a href="{ROOTPATH}admin/news_edit.php?editnewsid={PC_NEWS_ID}">Edit</a>
+			<a href="{ROOTPATH}news/news.php?deletenewsid={PC_NEWS_ID}&listfrom={PC_LIST_FROM}" onclick="return confirm('Do you really want to delete this article?')">Delete</a>
+			<!-- END newsadmin -->
+			{PC_NEWS_DATE}
+		</td>
+	</tr>
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor" colspan="2">
+			<p>
+				{PC_NEWS_TEXT}
+			</p>
+		</td>
+	</tr>
+</table>
+
+<!-- END article -->
+
+<table style="width:640px; margin-left:10px; margin-top:0px;margin-bottom:5px;" cellspacing="0" class="text14">
+	<tr>
+		<td style="margin:0px;border-style:none; border-width:0px;border-spacing:0px;padding-left:5px;padding-right:5px;background-color:#ffffff;border-color:#ffffff;" align="left">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td style="margin:0px;border-style:none; border-width:0px;border-spacing:0px;;padding-right:5px;background-color:#ffffff;border-color:#ffffff;" align="right">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>

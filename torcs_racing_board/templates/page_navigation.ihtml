@@ -1,0 +1,513 @@
+<table style="border-style:none; border-spacing:0px; border-width:0px; padding:0px; margin-left:9px; margin-top:0px;" cellspacing="0">
+
+<!-- BEGIN anonymous_nav -->
+
+<!--
+	Anonymous Navigation
+-->
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php">Home</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=faq">FAQ</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}forum/threadlist.php">Forum and Polls</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}cars/carlist.php">Cars</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}cars/car_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}tracks/tracklist.php">Tracks</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}tracks/trackmaps.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}teams/teamlist.php">Teams</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/team_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/driverlist.php">Drivers</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}events/eventlist.php">Events</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}users/userlist.php">Members</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=downloads">Downloads</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=credits">Credits</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			&nbsp;
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="mailto:webmaster@berniw.org">Contact</a>
+		</td>
+	</tr>
+
+<!-- END anonymous_nav -->
+
+<!-- BEGIN spectator_nav -->
+
+<!--
+	Spectator Navigation
+-->
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php">Home</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=faq">FAQ</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}forum/threadlist.php">Forum and Polls</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/write.php">New Topic</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}cars/carlist.php">Cars</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}cars/car_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}tracks/tracklist.php">Tracks</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}tracks/trackmaps.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}teams/teamlist.php">Teams</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/team_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/driverlist.php">Drivers</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}events/eventlist.php">Events</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}users/userlist.php">Members</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=downloads">Downloads</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=credits">Credits</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="mailto:webmaster@berniw.org">Contact</a>
+		</td>
+	</tr>
+<!-- END spectator_nav -->
+
+
+<!-- BEGIN racer_nav -->
+
+<!--
+	Racer Navigation
+-->
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php">Home</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=faq">FAQ</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}forum/threadlist.php">Forum and Polls</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/write.php">New Topic</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}cars/carlist.php">Cars</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}cars/car_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}tracks/tracklist.php">Tracks</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}tracks/trackmaps.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}teams/teamlist.php">Teams</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/team_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/driverlist.php">Drivers</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/team_create.php">Create a Team</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}events/eventlist.php">Events</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}users/userlist.php">Members</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=downloads">Downloads</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=credits">Credits</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="mailto:webmaster@berniw.org">Contact</a>
+		</td>
+	</tr>
+<!-- END racer_nav -->
+
+<!-- BEGIN admin_nav -->
+
+<!--
+	Admin Navigation
+-->
+
+
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php">Home</a>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/news_create.php">Write News</a>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}forum/threadlist.php">Forum and Polls</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/write.php">New Topic</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}admin/poll_list.php">Poll List</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/poll_create.php">Create a Poll</a>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/screenshot_create.php">Add Screenshot</a>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}cars/carlist.php">Cars</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}cars/car_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/car_create.php">Create a Car</a>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}tracks/tracklist.php">Tracks</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}tracks/trackmaps.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/track_create.php">Create a Track</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}teams/teamlist.php">Teams</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/team_overview.php">Overview</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}teams/driverlist.php">Drivers</a>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}events/eventlist.php">Events</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/event_create.php">Create an Event</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}users/userlist.php">Members</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=downloads">Downloads</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}index.php?page=credits">Credits</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="text14">
+			Admin Functions
+		</td>
+	</tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/loginlog_list.php">Login Log</a>
+		</td>
+	</tr>
+
+<!-- END admin_nav -->
+
+
+
+</table>

@@ -1,0 +1,71 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Current Standings of {PC_EVENT_NAME}</h3>
+
+			<p>
+				You can find the
+				<a href="{ROOTPATH}events/event_view_rawresult.php?raceid={PC_RACE_ID}">raw submitted data
+				of the race on {PC_TRACK_NAME} here</a> and
+				<a href="{ROOTPATH}events/event_view_result.php?raceid={PC_RACE_ID}">the result of the race on {PC_TRACK_NAME} here</a>.
+			</p>
+
+			<table style="margin:6px;margin-top:0px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:624px;border-color:#a9a9a9;" class="text14" cellspacing="0">
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="3">Drivers Standings</th>
+				</tr>
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Driver</td>
+					<td class="rawresultlist" align="left" title="Driver Rank">Rank</td>
+					<td class="rawresultlist" align="left" title="Driver Points">Points</td>
+				</tr>
+
+				<!-- BEGIN driver -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_RACE_TEAM_ID}">{PC_RACE_DRIVER}</a>
+					</td>
+					<td class="rawresultlist" title="Driver Rank">
+						{PC_RACE_LISTRANK}
+					</td>
+					<td class="rawresultlist" title="Driver Points">
+						{PC_RACE_POINTS}
+					</td>
+				</tr-->
+				<!-- END driver -->
+
+				<tr>
+					<td class="rawresultlist" colspan="3">
+						&nbsp;
+					</td>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="3">Teams Standings</th>
+				</tr>
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Team</td>
+					<td class="rawresultlist" align="left" title="Team Rank">Rank</td>
+					<td class="rawresultlist" align="left" title="Team Points">Points</td>
+				</tr>
+
+				<!-- BEGIN team -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_RACE_TEAM_ID}">{PC_RACE_TEAM_NAME}</a>
+					</td>
+					<td class="rawresultlist" title="Team Rank">
+						{PC_RACE_LISTRANK}
+					</td>
+					<td class="rawresultlist" title="Team Points">
+						{PC_RACE_POINTS}
+					</td>
+				</tr-->
+				<!-- END team -->
+
+			</table>
+		</td>
+	</tr>
+</table>

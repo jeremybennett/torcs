@@ -1,0 +1,60 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Logins</h3>
+			<p>
+				All recent logins.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Id</th>
+		<th class="filledlist" align="left">Username</th>
+		<th class="filledlist" align="left">IP</th>
+		<th class="filledlist" align="left">Date</th>
+		<th class="filledlist" align="left">Count</th>
+		<th class="filledlist" align="left">Pass</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_ID}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_NAME}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_IP}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_TIME}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_COUNT}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_USER_STATE}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>
+
+
+
+

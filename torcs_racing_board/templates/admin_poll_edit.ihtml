@@ -1,0 +1,79 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Edit a Poll</h3>
+			<p>
+				Here you can edit an existing poll. If the page comes up again after submission,
+				there must be errors, please correct them and submit again.
+			</p>
+
+			<form method="post" action="{PC_CREATEPOLLPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="poll_id" value="{PC_POLL_ID}"/>
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:90px" align="left" valign="top">
+							Question:
+						</td>
+						<td class="filledlist">
+							<textarea name="poll_question" style="width:525px" rows="3">{PC_POLL_QUESTION}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Start date:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_startdate" size="20" maxlength="19" value="{PC_VALUE_STARTDATE}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							End date:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_enddate" size="20" maxlength="19" value="{PC_VALUE_ENDDATE}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Groups:
+						</td>
+						<td class="filledlist">
+							<select name="poll_groups[]" size="3" multiple="multiple">
+								<option {PC_ANONYMOUS_SELECTED}>anonymous</option>
+								<option {PC_SPECTATOR_SELECTED}>spectator</option>
+								<option {PC_RACER_SELECTED}>racer</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0" id="theanswers">
+					<!-- BEGIN answer_row -->
+					<tr>
+						<td style="width:90px" class="filledlist">
+							Answer {PC_ANSWER_NUMBER}:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="poll_answer[]" maxlength="255" style="width:525px" value="{PC_ANSWER_TEXT}"/>
+						</td>
+					</tr>
+					<input type="hidden" name="poll_answer_id[]" value="{PC_ANSWER_ID}"/>
+					<!-- END answer_row -->
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="poll_submit" value="Submit Poll">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,13 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3 class="warncolor">Robot Submission Failed</h3>
+			<p>
+				The robot has not been submitted. Either the file was too big (allowed size:
+				{PC_ALLOWED_FILE_SIZE} bytes, submitted size: {PC_SUBMITTED_FILE_SIZE} bytes) or the mime type
+				was wrong
+				(submitted mime type was: '{PC_SUBMITTED_MIME_TYPE}').
+		</td>
+	</tr>
+</table>

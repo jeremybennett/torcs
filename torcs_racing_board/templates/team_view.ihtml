@@ -1,0 +1,134 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_TEAM_NAME} Team</h3>
+
+			<table style="margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:628px" class="text14" cellspacing="0">
+				<tr>
+					<td style="width:90px;">
+						Name:
+					</td>
+					<td>
+						{PC_TEAM_NAME}
+					</td>
+					<td rowspan="7" align="right" valign="top">
+						<!-- BEGIN logoimage -->
+						<img src="{PC_TEAM_IMG_LOGO}" alt="logo" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"></img>
+						<!-- END logoimage -->
+
+						<!-- BEGIN flagimage -->
+						<img src="{PC_TEAM_IMG_FLAG}" alt="flag" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"></img>
+						<!-- END flagimage -->
+
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Owner:
+					</td>
+					<td>
+						<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_TEAM_OWNER_ID}">{PC_TEAM_OWNER_NAME}</a>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Created:
+					</td>
+					<td>
+						{PC_TEAM_CREATED}
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Car:
+					</td>
+					<td>
+						<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_TEAM_CAR_ID}">{PC_TEAM_CAR_NAME}</a>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Races:
+					</td>
+					<td>
+						{PC_TEAM_RACES}
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Distance:
+					</td>
+					<td>
+						{PC_TEAM_DISTANCE} km
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						Points:
+					</td>
+					<td>
+						{PC_TEAM_POINTS}
+					</td>
+				</tr>
+
+				<tr>
+					<td align="left" valign="top">
+						Description:
+					</td>
+					<td style="padding-right:10px;" colspan="2">
+						{PC_TEAM_DESCRIPTION}
+					</td>
+				</tr>
+			</table>
+
+			<table style="margin:4px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:628px;" class="text14" cellspacing="0">
+				<tr>
+					<td align="left" style="width:90px;">Drivers:</td>
+					<th align="left">Name</th>
+					<th align="left">Number</th>
+					<th align="left">Races</th>
+					<th align="left">Points</th>
+					<th align="left">Distance [km]</th>
+				</tr>
+				<!-- BEGIN driver -->
+				<tr>
+					<td>
+					</td>
+					<td>
+						{PC_TEAM_DRIVER_NAME}
+					</td>
+					<td>
+						{PC_TEAM_DRIVER_RACENUMBER}
+					</td>
+					<td>
+						{PC_TEAM_DRIVER_RACES}
+					</td>
+					<td>
+						{PC_TEAM_DRIVER_POINTS}
+					</td>
+					<td>
+						{PC_TEAM_DRIVER_DISTANCE}
+					</td>
+				</tr>
+				<!-- END driver -->
+			</table>
+
+			<!-- BEGIN shot1image -->
+			<img src="{PC_TEAM_IMG_SHOT1}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"></img>
+			<!-- END shot1image -->
+
+			<!-- BEGIN shot2image -->
+			<img src="{PC_TEAM_IMG_SHOT2}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"></img>
+			<!-- END shot2image -->
+
+		</td>
+	</tr>
+</table>
+

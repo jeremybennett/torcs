@@ -1,0 +1,51 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<form method="post" action="{PC_FORUM_EDIT}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="id_message" value="{PC_ID_MESSAGE}">
+				<input type="hidden" name="id_thread" value="{PC_ID_THREAD}">
+
+				<table class="text14" cellspacing="0" style="width:625px">
+					<!-- BEGIN message_poll -->
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Poll:<br>
+							<select name="message_pollid" size="1" style="width:620px">
+								<option value="0">No Poll</option>
+							<!-- BEGIN message_poll_options -->
+								<option {PC_POLL_SELECTED} value="{PC_POLL_ID}">{PC_POLL_QUESTION}</option>
+							<!-- END message_poll_options -->
+							</select>
+						</td>
+					</tr>
+					<!-- END message_poll -->
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Subject:<br>
+							<input type="text" name="subject" value="{PC_SUBJECT}" style="width:620px"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Text:<br>
+							<textarea name="text" rows="10" style="width:620px">{PC_MESSAGE}</textarea>
+						</td>
+					</tr>
+
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="submit_forum_edit" value="Submit Message"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

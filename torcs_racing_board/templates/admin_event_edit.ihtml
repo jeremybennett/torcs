@@ -1,0 +1,128 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Edit an Event</h3>
+			<p>
+				Here you can edit an existing event. An event is a container for multiple races, e.g. a
+				championship. If the page comes up again after submission,
+				there must be errors, please correct them and submit again.
+			</p>
+
+			<form method="post" enctype="multipart/form-data" action="{PC_EDITEVENTPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="event_id" value="{PC_EVENT_ID}">
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:120px">
+							Name:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="event_name" size="40" maxlength="40" value="{PC_EVENT_NAME}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Description:
+						</td>
+						<td class="filledlist">
+							<textarea name="event_description" rows="6" style="width:495px">{PC_EVENT_DESCRIPTION}</textarea>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Sign-in start:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="event_signin_start" size="20" maxlength="19" value="{PC_EVENT_SIGNIN_START}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Sign-in end:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="event_signin_end" size="20" maxlength="19" value="{PC_EVENT_SIGNIN_END}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Start date:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="event_start" size="20" maxlength="19" value="{PC_EVENT_START}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							End date:
+						</td>
+						<td class="filledlist" style="width:495px">
+							<input type="text" name="event_end" size="20" maxlength="19" value="{PC_EVENT_END}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Cars:
+						</td>
+						<td class="filledlist">
+							<select name="event_cars[]" size="6" multiple="multiple">
+							<!-- BEGIN row -->
+								<option {PC_EVENT_CAR_SEL} value="{PC_EVENT_CAR_ID}">{PC_EVENT_CAR_NAME}</option>
+							<!-- END row -->
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Max. Teams:
+						</td>
+						<td class="filledlist">
+							<select name="event_maxteams" size="1">
+							<!-- BEGIN maxtrow -->
+								<option {PC_EVENT_MAXTEAM_SEL} value="{PC_EVENT_MAXTEAM_NB}">{PC_EVENT_MAXTEAM_NB}</option>
+							<!-- END maxtrow -->
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Pointssystem:
+						</td>
+						<td class="filledlist">
+							<select name="event_pointsystem" size="1">
+							<!-- BEGIN pointsrow -->
+								<option {PC_EVENT_POINTSYSTEM_SEL} value="{PC_EVENT_POINTSYSTEM_NB}">{PC_EVENT_POINTSYSTEM_NAME}</option>
+							<!-- END pointsrow -->
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Rules (*.html):
+						</td>
+						<td class="filledlist">
+							<input name="event_rules" type="file" size="60" maxlength="50000" accept="text/html"/>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="event_submit" value="Submit Event">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

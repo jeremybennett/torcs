@@ -1,0 +1,55 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>The TORCS Racing Board Forum</h3>
+			<p>
+				Here is the place to discuss about races and problems related to the TORCS Racing Board,
+				racing rules, robots and more. If you want to discuss you need to create an account.
+				In case you have a problem related to TORCS the best place to get help is
+				the <a href="http://lists.sourceforge.net/lists/listinfo/torcs-users">torcs-users</a>
+				mailing list.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Topic</th>
+		<th class="filledlist" align="left">Author</th>
+		<th class="filledlist" align="left">Replies</th>
+		<th class="filledlist" align="left">Last Post</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR_POLL}">
+		<td class="filledlist" align="left" valign="top">
+			<a href="{ROOTPATH}forum/showthread.php?topicid={PC_TOPIC_ID}">{PC_TOPIC}</a>
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_AUTHOR_ID}">{PC_AUTHOR}</a>
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_REPLIES}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_LASTPOST}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>
+
+
+
+

@@ -1,0 +1,37 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Team Update List</h3>
+			<p>
+				List of the possible teams to update for the current race of the {PC_EVENT_NAME}.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Team</th>
+		<th class="filledlist" align="left">Last Upload</th>
+		<th class="filledlist" align="left">Size [Bytes]</th>
+		<th class="filledlist" align="left">Upload</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
+		</td>
+		<td class="filledlist">
+			{PC_FILE_MTIME}
+		</td>
+		<td class="filledlist">
+			{PC_FILE_SIZE}
+		</td>
+		<td class="filledlist">
+			<a href="{ROOTPATH}events/event_upload_robot.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}&teamid={PC_TEAM_ID}">Upload</a>
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+

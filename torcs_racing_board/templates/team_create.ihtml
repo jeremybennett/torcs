@@ -1,0 +1,158 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Create a New Team</h3>
+			<p>
+				Here you can create a new team. A team consists of one robot module which contains the
+				two robots for your team. The two robots drive the same type of car, for more information have
+				a look into the rules.
+				Make sure that you fill in the fields correctly and
+				according to the rules of the races you would like to attend with this team. The module name,
+				driver names,
+				race numbers and the car you choose are immutable after the team has joined a championship,
+				so please fill in
+				everything very careful. This values must match with the ones in the results XML files
+				which will be submitted. <span style="color:#ff0000">If they not match your drivers and your
+				team will not receive any points,
+				because the system can't identify your data.</span> To find the correct values follow these
+				instructions, the <i>italic</i> notation is used for the fields you must fill in the form
+				below:
+			</p>
+			<ul>
+				<li>Choose a Quick Race on a short track with the two robots which should form your team
+				(no other drivers), they must be contained in the same module.</li>
+				<li>Run a race with just one lap (just to safe time).</li>
+				<li>Open the result file in an editor, you can find it in ~/.torcs/results/quickrace.</li>
+				<li>Look for "module", you should find a line similiar to this:<br>
+				&lt;attstr name="module" val="<span style="color:#ff0000">test_2004</span>"/&gt;</li>
+				<li>On the place of the red test_2004 you should find your "<i>Module name</i>".
+				<li>Now look for the driver/robot names, you should find "name" lines similiar to those in the
+				rank sections:<br>
+				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 1</span>"/&gt<br>
+				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 2</span>"/&gt<br></li>
+				<li>On the place of the red names you should find your "<i>Name driver 1</i>" and
+				"<i>Name driver 2</i>".</li>
+				<li>It is very important that the driver names are consistent across the robot xml file
+				and the c robot interface, check if these values match.</li>
+				<li>The <i>Car</i> must match as well.</li>
+			</ul>
+			<p>
+				If the page comes up again after submission,
+				there must be errors, please correct them and submit again. The name, racing number,
+				module name and the drivers name must be unique in the system.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<form method="post" action="{PC_CREATETEAMPAGE}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+
+		<tr bgcolor="{PC_COLOR_NAME}">
+			<td class="filledlist" style="width:120px">
+				Name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="team_name" size="30" maxlength="40" value="{PC_TEAM_NAME}"/> Team
+			</td>
+			<td class="filledlist">
+				{PC_NAME_ERROR}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_CAR}">
+			<td class="filledlist">
+				Car:
+			</td>
+			<td class="filledlist">
+				<select name="team_car_id" size="1">
+					<!-- BEGIN row -->
+					<option {PC_TEAM_CAR_SEL} value="{PC_TEAM_CAR_ID}">{PC_TEAM_CAR_NAME}</option>
+					<!-- END row -->
+				</select>
+			</td>
+			<td class="filledlist">
+				{PC_CAR_ERROR}
+			</td>
+		</tr>
+
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+
+		<tr bgcolor="{PC_COLOR_DESCRIPTION}">
+			<td class="filledlist" align="left" valign="top" style="width:120px">
+				Description:
+			</td>
+			<td class="filledlist">
+				<textarea name="team_description" rows="6" style="width:495px">{PC_TEAM_DESCRIPTION}</textarea>
+			</td>
+		</tr>
+
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="{PC_COLOR_MODULENAME}">
+			<td class="filledlist" style="width:120px">
+				Module name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="team_modulename" size="30" maxlength="40" value="{PC_TEAM_MODULE}"/>
+			</td>
+			<td class="filledlist">
+				{PC_MODULENAME_ERROR}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_DRIVER1}">
+			<td class="filledlist" style="width:120px">
+				Name driver 1:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="team_driver1_name" size="30" maxlength="40" value="{PC_TEAM_DRIVERNAME1}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DRIVERNAME1_ERROR}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_DRIVER2}">
+			<td class="filledlist" style="width:120px">
+				Name driver 2:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="team_driver2_name" size="30" maxlength="40" value="{PC_TEAM_DRIVERNAME2}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DRIVERNAME2_ERROR}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_RACENUMBER}">
+			<td class="filledlist">
+				Race number:
+			</td>
+			<td class="filledlist">
+				<select name="team_base_number" size="1">
+					<!-- BEGIN racenumber_row -->
+					<option {PC_TEAM_RN_SEL} value="{PC_TEAM_RN}">{PC_TEAM_RN}</option>
+					<!-- END racenumber_row -->
+				</select>
+			</td>
+			<td class="filledlist">
+				{PC_RACENUMBER_ERROR}
+			</td>
+
+		</tr>
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_submit" value="Create Team">
+			</td>
+		</tr>
+	</table>
+
+</form>

@@ -1,0 +1,31 @@
+{PAGE_BEGIN}
+
+<table class="main_format" cellspacing="0">
+	<table class="tight" cellspacing="0">
+		<tr>
+			<td class="main_top">{PAGE_TITLEBAR}</td>
+		</tr>
+		<tr>
+			<td class="main_status"  bgcolor="#d7d7d7" style="background-image:url({ROOTPATH}images/statusbar.jpg); background-repeat:no-repeat;">
+				<img class="tight" src="{ROOTPATH}images/transparent.gif" style="float:left; height:35px; width:1px; border:0px; margin:0px;"></img>
+				{PAGE_STATUSBAR}
+			</td>
+		</tr>
+		<tr>
+			<td class="main_top"><img class="tight" src="{ROOTPATH}images/statusbar2.jpg"></img></td>
+		</tr>
+	</table>
+	<table class="tight" cellspacing="0" style="height:400px;">
+		<tr>
+			<td class="main_nav" style="background-image:url({ROOTPATH}images/navbar.jpg); background-repeat:no-repeat;" bgcolor="#d8d8d8">{PAGE_NAVIGATION}</td>
+			<td class="main_content">{PAGE_CONTENT}</td>
+		</tr>
+	</table>
+	<table class="tight" cellspacing="0" style="height:50px;">
+		<tr>
+			<td class="main_footer" style="background-image:url({ROOTPATH}images/footer.jpg); background-repeat:no-repeat;">{PAGE_FOOTER}</td>
+		</tr>
+	</table>
+</table>
+
+{PAGE_END}

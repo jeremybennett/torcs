@@ -1,0 +1,26 @@
+
+<table class="text14" cellspacing="0" style="width:100%;margin-bottom:12px;">
+	<tr class="forumthread" bgcolor="{PC_COLOR_HEADER}">
+		<td class="forumthread"  colspan="2">
+			Author: <a href="{ROOTPATH}users/user_view.php?viewuserid={PC_AUTHOR_ID}">{PC_AUTHOR}</a> | Created: {PC_CREATED}<br/>
+			Subject: {PC_SUBJECT}
+		</td>
+	</tr>
+	<tr class="forumthread" bgcolor="{PC_COLOR_MESSAGE}">
+		<td class="forumthread" colspan="2">
+			{PC_TEXT}
+		</td>
+	</tr>
+	<tr class="forumthread" bgcolor="{PC_COLOR_FOOTER}">
+		<td class="forumthread" style="text-align:left;">
+			<a href="{PC_REPLY_MESSAGE_HREF}">{PC_REPLY_MESSAGE}</a>
+			<a href="{PC_EDIT_MESSAGE_HREF}">{PC_EDIT_MESSAGE}</a>
+			<a href="{PC_HIDE_MESSAGE_HREF}">{PC_HIDE_MESSAGE}</a>
+			<a href="{PC_DELETE_MESSAGE_HREF}" onclick="return confirm('Do you really want to delete this message tree?')">{PC_DELETE_MESSAGE}</a>
+		</td>
+		<td class="forumthread" style="text-align:right;">
+			Last Edited: {PC_LASTEDITED} by
+			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_LASTEDITOR_ID}">{PC_LASTEDITOR}</a>
+		</td>
+	</tr>
+</table>

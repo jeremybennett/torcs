@@ -1,0 +1,26 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Become a Racer</h3>
+			<p>
+				Here you can transform your 'spectator' account into a 'racer' account. If you are
+				a racer you can
+				attend to races with your robot on this site, so this makes just sense if you already have a
+				robot to race with. To check if you are competent you have to fill in the quizz below without
+				errors.
+			</p>
+			<p>
+				The quizz consists of a selection of 15 random questions from a bigger set. If you fail you
+				can come back again, perhaps the new set of questions is more familiar for you. You can try
+				as often you like, there is no limitation. You can find most of the answers in the robot
+				tutorial and in TORCS itself. For a few questions you have to switch on your brain for a
+				glimpse or to search the web. Have fun and good luck.
+			</p>
+
+			<h3>Racers Entry Quizz</h3>
+
+			<div>{PC_QUIZZ_1}</div>
+		</td>
+	</tr>
+</table>

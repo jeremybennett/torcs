@@ -1,0 +1,55 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Track List</h3>
+			<p>
+				List of the tracks available for races on the TORCS racing board.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Track</th>
+		<th class="filledlist" align="left">Type</th>
+		<th class="filledlist" align="left">Length [m]</th>
+		<th class="filledlist" align="left">Width [m]</th>
+		<th class="filledlist" align="left">#Pits</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_TRACK_ID}">{PC_NAME}</a>
+		</td>
+		<td class="filledlist">
+			{PC_TYPE}
+		</td>
+		<td class="filledlist">
+			{PC_LENGTH}
+		</td>
+		<td class="filledlist">
+			{PC_WIDTH}
+		</td>
+		<td class="filledlist">
+			{PC_NBPITS}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>
+
+
+
+

@@ -1,0 +1,155 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_EVENT_NAME}</h3>
+
+			<p>
+				Here you can download the robots for running the race and submit your result. I recommend that you use a
+				dedicated user and TORCS installation for doing that, <span style="color:#ff0000">be aware of the risks of running
+				foreign unreviewed code!</span> If your environment is set up correctly ($TORCS_BASE, $MAKE_DEFAULT,
+				permissions)
+				you can compile and install the robots from any directory, so I recommend to download the
+				sources to a clean directory and to install from there (this way you avoid the danger of
+				messing up your submitted robot with your current one).
+			</p>
+
+			<!--p>
+				To simplify the process you can get this script, please review it before you run it. It
+				automates the steps 1-4 in the process described below. If you want to use it download it
+				for every race!
+			</p-->
+
+			<h4>Process</h4>
+			<ul>
+				<li>1. Create an empty directory.</li>
+				<li>2. Download all robots from the list below into the empty directory.</li>
+				<li>3. Unpack all robots with "<tt>find . -type f -exec tar xfvj {} \;</tt>".</li>
+				<li>4. Install all robots with "<tt>find . -type d -maxdepth 1 -exec bash -c "cd {}; make clean install" \;</tt>".</li>
+				<li>5. Start the <a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}#c6_1">TORCS version required by the rules</a>.</li>
+				<li>6. Choose the race type and track (<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_TRACK_ID}">{PC_TRACK_NAME}</a>) according to the rules and schedule.</li>
+				<li>7. Fill in the start list <span style="color:#ff0000">exactly</span> like stated below (same order).</li>
+				<li>8. Run the race.</li>
+				<li>9. Submit the result (it is below ~/.torcs/results).</li>
+			</ul>
+
+			<h4>File List</h4>
+
+			<table style="margin:6px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:624px" class="text14" cellspacing="0">
+				<tr class="submitbuttoncolor">
+                	<th class="filledlist" align="left" style="width:180px">Team Name</th>
+                	<th class="filledlist" align="left">Download Module</th>
+				</tr>
+				<!-- BEGIN filelist -->
+				<tr class="tight">
+					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
+					</td>
+					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
+						<a href="{ROOTPATH}events/event_download_robot.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}&teamid={PC_TEAM_ID}">{PC_TEAM_MODULENAME}</a>
+					</td>
+				</tr>
+				<!-- END filelist -->
+			</table>
+
+			<h4>Start List and Order</h4>
+
+			<table style="margin:6px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:624px" class="text14" cellspacing="0">
+				<tr class="submitbuttoncolor">
+					<th class="filledlist" align="left" style="width:180px">Position</th>
+					<th class="filledlist" align="left">Driver Name</th>
+				</tr>
+				<!-- BEGIN driverlist -->
+				<tr class="tight">
+					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
+						{PC_DRIVER_NO}
+					</td>
+					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
+						{PC_DRIVER_NAME}
+					</td>
+				</tr>
+				<!-- END driverlist -->
+			</table>
+
+
+			<h4>Submit result</h4>
+			<p>
+				Before you submit the result please check the following points. If you tried to run the race
+				but it did not work because of TORCS itself check this option. If a robot did not compile or
+				crashes/hangs TORCS remove the offending robot (after you checked if it is really the robots fault),
+				rerun the race and submit the result.
+				In this case you
+				have to post your findings in the forum. You can just submit one valid result!
+			</p>
+			<ul>
+				<li>Did you use the correct TORCS version?</li>
+				<li>Did you a clean install of all robots like stated above?</li>
+				<li>Did you choose the correct race type?</li>
+				<li>Was the start list and track correct?</li>
+				<li>Are you submitting the correct file?</li>
+			</ul>
+		</td>
+	</tr>
+</table>
+
+<form method="post" enctype="multipart/form-data" action="{ROOTPATH}events/event_result_submitted.php" style="margin-top:5px">
+	<input type="hidden" name="race_id" value="{PC_RACE_ID}"/>
+	<input type="hidden" name="event_id" value="{PC_EVENT_ID}"/>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist">
+				Result (*.xml):
+			</td>
+			<td class="filledlist">
+				<input name="race_result_file" type="file" size="62" maxlength="{PC_RESULT_SIZE}" accept="text/xml"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="race_result_submit" value="Submit Race Result">
+			</td>
+		</tr>
+	</table>
+</form>
+
+<form method="post" action="{ROOTPATH}events/event_result_not_submitted.php" style="margin-top:5px">
+	<input type="hidden" name="race_id" value="{PC_RACE_ID}"/>
+	<input type="hidden" name="event_id" value="{PC_EVENT_ID}"/>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:20px;">
+				<input type="checkbox" name="no_race_result" value="failed"/>
+			</td>
+			<td class="filledlist">
+				I was not able to run the race because of a TORCS problem.
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="no_race_result_submit" value="Submit">
+			</td>
+		</tr>
+	</table>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Race Result of {PC_EVENT_NAME}, {PC_TRACK_NAME}</h3>
+
+			<p>
+				This page shows the result of the race on {PC_TRACK_NAME} of the {PC_EVENT_NAME}. Keep in
+				mind that the data is computed according the rules, so it is perfectly possible that you
+				find funny things like a driver with 2.5 pit stops. You can find the
+				<a href="{ROOTPATH}events/event_view_rawresult.php?raceid={PC_RACE_ID}">raw submitted data
+				for this race here</a> and
+				<a href="{ROOTPATH}events/event_view_standings.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">the standings of the {PC_EVENT_NAME} here</a>.
+			</p>
+
+			<table style="margin:6px;margin-top:0px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:624px;border-color:#a9a9a9;" class="text14" cellspacing="0">
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="12">Drivers {PC_TRACK_NAME} Race Result</th>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="3">Race Standings</th>
+					<th class="rawresultlist" align="center" colspan="7">Race</th>
+                	<th class="rawresultlist" align="center" colspan="2">Qualifying</th>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Driver</td>
+					<td class="rawresultlist" align="left" title="Final Rank">R</td>
+					<td class="rawresultlist" align="left" title="Final Driver Points (median)">P</td>
+					<td class="rawresultlist" align="left" title="Rank (median)">R</td>
+					<td class="rawresultlist" align="left" title="Top Speed [km/h] (median)">TS</td>
+					<td class="rawresultlist" align="left" title="Best Lap [min]:[s] (median)">Best Lap</td>
+					<td class="rawresultlist" align="left" title="Laps (median)">Laps</td>
+					<td class="rawresultlist" align="left" title="Pit Stops (median)">Pit</td>
+					<td class="rawresultlist" align="left" title="Damage Points (median)">D</td>
+					<td class="rawresultlist" align="left" title="Race Time [h]:[min]:[s] (median)">Time</td>
+					<td class="rawresultlist" align="left" title="Rank (median)">R</td>
+					<td class="rawresultlist" align="left" title="[min]:[s] (median)">Best Lap</td>
+				</tr>
+
+				<!-- BEGIN driver -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_RACE_TEAM_ID}">{PC_RACE_DRIVER}</a>
+					</td>
+					<td class="rawresultlist" title="Final Rank">
+						{PC_RACE_LISTRANK}
+					</td>
+					<td class="rawresultlist" title="Final Driver Points (median)">
+						{PC_RACE_POINTS}
+					</td>
+
+					<td class="rawresultlist" title="Rank (median)">
+						{PC_RACE_RANK}
+					</td>
+					<td class="rawresultlist" title="Top Speed [km/h] (median)">
+						{PC_RACE_TOPSPEED}
+					</td>
+					<td class="rawresultlist" title="Best Lap [min]:[s] (median)">
+						{PC_RACE_LAPTIME}
+					</td>
+					<td class="rawresultlist" title="Laps (median)">
+						{PC_RACE_LAPS}
+					</td>
+					<td class="rawresultlist" title="Pit Stops (median)">
+						{PC_RACE_PITSTOPS}
+					</td>
+					<td class="rawresultlist" title="Damage Points (median)">
+						{PC_RACE_DAMAGE}
+					</td>
+					<td class="rawresultlist" title="Race Time [h]:[min]:[s] (median)">
+						{PC_RACE_TIME}
+					</td>
+					<td class="rawresultlist" title="Rank (median)">
+						{PC_QUALI_RANK}
+					</td>
+					<td class="rawresultlist" title="[min]:[s] (median)">
+						{PC_QUALI_LAPTIME}
+					</td>
+				</tr-->
+				<!-- END driver -->
+
+				<tr>
+					<td class="rawresultlist" colspan="12">
+						&nbsp;
+					</td>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="12">Teams {PC_TRACK_NAME} Race Result</th>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="12">Race Standings</th>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Team</td>
+					<td class="rawresultlist" align="left" title="Final Team Rank">R</td>
+					<td class="rawresultlist" align="left" title="Final Team Points">P</td>
+					<td class="rawresultlist" align="left" colspan="9">&nbsp;</td>
+				</tr>
+
+				<!-- BEGIN team -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_RACE_TEAM_ID}">{PC_RACE_TEAM_NAME}</a>
+					</td>
+					<td class="rawresultlist" title="Final Team Rank">
+						{PC_RACE_LISTRANK}
+					</td>
+					<td class="rawresultlist" title="Final Team Points">
+						{PC_RACE_POINTS}
+					</td>
+					<td class="rawresultlist" colspan="9">
+						&nbsp;
+					</td>
+				</tr-->
+				<!-- END team -->
+			</table>
+
+
+		</td>
+	</tr>
+</table>

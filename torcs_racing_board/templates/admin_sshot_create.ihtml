@@ -1,0 +1,53 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Submit Screenshot</h3>
+			<p>
+				Here you can submit a screenshot, it must be of mime type image/jpeg, 620 pixels width
+				and 465 pixels height, the file size must be smaller than 100000 bytes.
+			</p>
+
+			<form method="post" enctype="multipart/form-data" action="{PC_CREATESSHOTPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist" style="width:90px">
+							Description:
+						</td>
+						<td class="filledlist" style="width:525px">
+							<input type="text" name="sshot_description" size="40" maxlength="100" value="{PC_SSHOT_DESCRIPTION}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
+							Image (*.jpg):
+						</td>
+						<td class="filledlist">
+							<input name="sshot_image" type="file" size="60" maxlength="100000" accept="image/jpeg" value="{PC_SSHOT_IMG_SRC}"/>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="sshot_submit" value="Submit Screenshot">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+

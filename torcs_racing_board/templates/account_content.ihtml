@@ -1,0 +1,157 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Your Account</h3>
+			<p>
+				Here you can manage your account. Change the settings and hit the
+				"Submit Changes" button. In case the form pops up with some lines in red, then please
+				correct your input according to the error messages and try to submit again.
+				If you want keep your password simply
+				leave the password fields blank. To change your account from
+				'spectator' to 'racer' hit the link in the 'Account' field.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+<form method="post" action="{PC_ACCOUNTPAGE}" style="margin-top:5px">
+	<input type="hidden" name="account_username" value="{PC_VALUE_USERNAME}"/>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="{PC_COLOR_USERNAME}">
+			<td class="filledlist">
+				Username:
+			</td>
+			<td class="filledlist">
+				{PC_VALUE_USERNAME}
+			</td>
+			<td class="filledlist">
+				No change allowed.
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_ACCOUNT}">
+			<td class="filledlist">
+				Account:
+			</td>
+			<td class="filledlist">
+				{PC_VALUE_ACCOUNT}
+			</td>
+			<td class="filledlist">
+				{BECOME_A_RACER}
+			</td>
+		</tr>
+
+
+		<tr bgcolor="{PC_COLOR_FIRSTNAME}">
+			<td class="filledlist">
+				First name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="account_firstname" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_FIRSTNAME}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_FIRSTNAME}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_LASTNAME}">
+			<td class="filledlist">
+				Last name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="account_lastname" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_LASTNAME}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_LASTNAME}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_PASSWORD}">
+			<td class="filledlist">
+				Password:
+			</td>
+			<td class="filledlist">
+				<input type="password" name="account_password" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_PASSWORD}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_PASSWORD}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_PASSWORD2}">
+			<td class="filledlist">
+				Password:
+			</td>
+			<td class="filledlist">
+				<input type="password" name="account_password2" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_PASSWORD2}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_PASSWORD2}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_EMAIL}">
+			<td class="filledlist">
+				E-mail:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="account_email" size="20" maxlength="40" value="{PC_VALUE_EMAIL}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_EMAIL}
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="account_submit" value="Submit Changes">
+			</td>
+		</tr>
+	</table>
+</form>
+
+<!-- BEGIN racer_image -->
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+
+			<h3>Photo</h3>
+
+			<p>
+				<!-- BEGIN userimage -->
+				<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:left;border:0px;margin-right:5px;width:50px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<!-- END userimage -->
+				Optionally you can upload a photo of you. It will be visible for all visitors. It must
+				be of mime type image/jpeg, 150 pixels width and height and smaller than 20000 bytes. To delete
+				the photo from the server simply submit with an empty photo field.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+
+<form method="post" enctype="multipart/form-data" action="{PC_ACCOUNTPAGE}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist">
+				Photo:
+			</td>
+			<td class="filledlist">
+				<input name="racer_image" type="file" size="70" maxlength="20000" accept="image/jpeg"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="racer_image_submit" value="Submit Photo">
+			</td>
+		</tr>
+	</table>
+</form>
+<!-- END racer_image -->

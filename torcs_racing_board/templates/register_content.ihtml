@@ -1,0 +1,109 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Register (create an account)</h3>
+			<p>
+				Welcome. As registered user you can post into the forums, attend to the spectator
+				game (when it is implemented then...) and join races with your robot. If you are not
+				interested in the above activities there is no reason to register.
+			</p>
+			<p>
+				To register you need to fill in the form below, after you have submitted you will
+				receive a mail to activate your account. With the activation you agree with the terms
+				of use you receive in the mail. If you do not activate your account the data will be
+				deleted after some time (it lasts at least 24 hours). Do not use an important password
+				for this site, the connection is not protected with encryption. Please fill in your
+				first and last name correctly.
+			</p>
+			<p>
+				In case the form pops up again after pressing "Register" with some lines in red, then
+				please correct your input according to the error message and try to register again.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+<form method="post" action="{PC_REGISTERPAGE}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="{PC_COLOR_USERNAME}">
+			<td class="filledlist">
+				Username:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="register_username" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_USERNAME}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_USERNAME}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_FIRSTNAME}">
+			<td class="filledlist">
+				First name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="register_firstname" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_FIRSTNAME}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_FIRSTNAME}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_LASTNAME}">
+			<td class="filledlist">
+				Last name:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="register_lastname" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_LASTNAME}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_LASTNAME}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_PASSWORD}">
+			<td class="filledlist">
+				Password:
+			</td>
+			<td class="filledlist">
+				<input type="password" name="register_password" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_PASSWORD}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_PASSWORD}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_PASSWORD2}">
+			<td class="filledlist">
+				Password:
+			</td>
+			<td class="filledlist">
+				<input type="password" name="register_password2" size="20" maxlength="{PS_USERNAME_SIZE}" value="{PC_VALUE_PASSWORD2}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_PASSWORD2}
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_EMAIL}">
+			<td class="filledlist">
+				E-mail:
+			</td>
+			<td class="filledlist">
+				<input type="text" name="register_email" size="20" maxlength="40" value="{PC_VALUE_EMAIL}"/>
+			</td>
+			<td class="filledlist">
+				{PC_DESC_EMAIL}
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="register_submit" value="Register">
+			</td>
+		</tr>
+	</table>
+</form>

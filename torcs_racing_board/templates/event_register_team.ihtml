@@ -1,0 +1,48 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Register the {PC_TEAM_NAME} Team for the {PC_EVENT_NAME}</h3>
+			<p>
+				For the registration you need to upload your TORCS robot. Make sure that
+				the robot fulfills the rules and matches <a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">with the team definition</a>.
+				Then do a "make clean" and package it up in a tar.bz2. Example:
+			</p>
+
+			<ul>
+				<li>cd $TORCS_BASE/src/drivers/{PC_TEAM_MODULE_NAME}</li>
+				<li>make clean</li>
+				<li>cd ..</li>
+				<li>tar cfvj {PC_TEAM_MODULE_NAME}.tar.bz2 {PC_TEAM_MODULE_NAME}</li>
+			</ul>
+
+			<p>
+				Fill in the location below and upload/register your robot/team. If the upload fails either
+				the mime type is wrong or the file is bigger than {PC_ROBOTPACKAGE_SIZE} bytes.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<form method="post" enctype="multipart/form-data" action="{ROOTPATH}events/event_team_registered.php?vieweventid={PC_EVENT_ID}" style="margin-top:5px">
+	<input type="hidden" name="robot_teamid" value="{PC_TEAM_ID}"/>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:120px;">
+				<p>
+				Robot package:
+				</p>
+			</td>
+			<td class="filledlist">
+				<input name="robot_package" type="file" size="60" maxlength="500000" accept="application/*"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="robot_package_submit" value="Upload and Register">
+			</td>
+		</tr>
+	</table>
+</form>

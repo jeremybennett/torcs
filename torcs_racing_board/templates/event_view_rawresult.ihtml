@@ -1,0 +1,99 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Raw Data of {PC_EVENT_NAME}, {PC_TRACK_NAME}</h3>
+			<p>
+				Here you can review all submitted results, and the list of people which reported that they
+				could not run the race ("non submittors"). You can find
+				<a href="{ROOTPATH}events/event_view_result.php?raceid={PC_RACE_ID}">the result of the race on {PC_TRACK_NAME} here</a>
+				and
+				<a href="{ROOTPATH}events/event_view_standings.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">the standings of the {PC_EVENT_NAME} here</a>.
+			</p>
+
+			<table style="margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;margin-top:0px;" class="text14" cellspacing="0">
+				<tr class="tight">
+					<td style="width:130px;" align="left" valign="top">
+						Submittors ({PC_SUBMISSIONS_OK}):
+					</td>
+					<td style="width:495px;">
+						<!-- BEGIN submittor -->
+						{PC_SEP}<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_SUBMITTOR_ID}">{PC_SUBMITTOR_NAME}</a>
+						<!-- END submittor -->
+					</td>
+				</tr>
+				<tr class="tight">
+					<td style="width:130px;" align="left" valign="top">
+						Non Submittors ({PC_SUBMISSIONS_NOT_OK}):
+					</td>
+					<td style="width:495px;">
+						<!-- BEGIN nonsubmittor -->
+						{PC_SEP}<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_NON_SUBMITTOR_ID}">{PC_NON_SUBMITTOR_NAME}</a>
+						<!-- END nonsubmittor -->
+					</td>
+				</tr>
+			</table>
+
+			<!-- BEGIN driver -->
+			<table style="margin:6px;margin-top:0px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:624px;border-color:#a9a9a9;" class="text14" cellspacing="0">
+
+				<tr class="submitbuttoncolor">
+                	<th class="rawresultlist" align="left" colspan="10">Driver {PC_DRIVER_NAME}, <a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a> Team</th>
+				</tr>
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist">&nbsp;</td>
+					<td class="rawresultlist" align="center" colspan="7">Race</td>
+                	<td class="rawresultlist" align="center" colspan="2">Qualifying</td>
+				</tr>
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Submitter</td>
+					<td class="rawresultlist" align="left">Rank</td>
+					<td class="rawresultlist" align="left" title="[m/s]">Top Speed</td>
+					<td class="rawresultlist" align="left" title="[s]">Best Lap</td>
+					<td class="rawresultlist" align="left">Laps</td>
+					<td class="rawresultlist" align="left">Pit Stops</td>
+					<td class="rawresultlist" align="left">Damage</td>
+					<td class="rawresultlist" align="left" title="[s]">Time</td>
+					<td class="rawresultlist" align="left">Rank</td>
+					<td class="rawresultlist" align="left" title="[s]">Best Lap</td>
+				</tr>
+
+				<!-- BEGIN data -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_SUBMITTER_ID}">{PC_SUBMITTER_NAME}</a>
+					</td>
+					<td class="rawresultlist">
+						{PC_RACE_RANK}
+					</td>
+					<td class="rawresultlist" title="[m/s]">
+						{PC_RACE_TOPSPEED}
+					</td>
+					<td class="rawresultlist" title="[s]">
+						{PC_RACE_LAPTIME}
+					</td>
+					<td class="rawresultlist">
+						{PC_RACE_LAPS}
+					</td>
+					<td class="rawresultlist">
+						{PC_RACE_PITSTOPS}
+					</td>
+					<td class="rawresultlist">
+						{PC_RACE_DAMAGE}
+					</td>
+					<td class="rawresultlist" title="[s]">
+						{PC_RACE_TIME}
+					</td>
+					<td class="rawresultlist">
+						{PC_QUALI_RANK}
+					</td>
+					<td class="rawresultlist" title="[s]">
+						{PC_QUALI_LAPTIME}
+					</td>
+				</tr>
+				<!-- END data -->
+			</table>
+			<!-- END driver -->
+		</td>
+	</tr>
+</table>

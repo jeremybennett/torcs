@@ -1,0 +1,71 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Driver List</h3>
+			<p>
+				List of all the drivers registered on this site.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">#</th>
+		<th class="filledlist" align="left">Name</th>
+		<!--th class="filledlist" align="left">Team</th-->
+		<th class="filledlist" align="left">Owner</th>
+		<th class="filledlist" align="left">Car</th>
+		<th class="filledlist" align="left" title="Races">Races</th>
+		<th class="filledlist" align="left" title="Points">Points</th>
+		<th class="filledlist" align="left" title="Distance">D[km]</th>
+		<th class="filledlist" align="left"></th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			{PC_DRIVER_NUMBER}
+		</td>
+		<td class="filledlist">
+			<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_DRIVER_NAME}</a>
+		</td>
+		<!--td class="filledlist">
+			<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
+		</td-->
+		<td class="filledlist">
+			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_TEAM_OWNER_ID}">{PC_TEAM_OWNER_NAME}</a>
+		</td>
+		<td class="filledlist">
+			<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_TEAM_CAR_ID}">{PC_TEAM_CAR_NAME}</a>
+		</td>
+		<td class="filledlist">
+			{PC_DRIVER_RACES}
+		</td>
+		<td class="filledlist">
+			{PC_DRIVER_POINTS}
+		</td>
+		<td class="filledlist">
+			{PC_DRIVER_DISTANCE}
+		</td>
+		<td class="filledlist">
+			<a href="{PC_TEAM_EDIT_HREF}">{PC_TEAM_EDIT}</a>
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
+		</td>
+	</tr>
+</table>
+
+
+
+

@@ -1,0 +1,69 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Write Message</h3>
+			<p>
+				Please write your message according to the terms of use.
+			</p>
+
+			<!-- BEGIN parent_message -->
+			<form style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<table class="text14" cellspacing="0" style="width:625px">
+					<tr>
+						<td class="filledlist" style="width:100%" align="left" valign="top">
+							Parent message text:<br>
+							<textarea name="text" rows="12" style="width:620px" readonly>{PC_PARENT_MESSAGE}</textarea><br>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<!-- END parent_message -->
+
+			<form method="post" action="{PC_FORUM_WRITE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+				<input type="hidden" name="id_parent" value="{PC_ID_PARENT}">
+				<input type="hidden" name="id_thread" value="{PC_ID_THREAD}">
+
+				<table class="text14" cellspacing="0" style="width:625px">
+
+					<!-- BEGIN message_poll -->
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Poll:<br>
+							<select name="message_pollid" size="1" style="width:620px">
+								<option selected value="0">No Poll</option>
+							<!-- BEGIN message_poll_options -->
+								<option value="{PC_POLL_ID}">{PC_POLL_QUESTION}</option>
+							<!-- END message_poll_options -->
+							</select>
+						</td>
+					</tr>
+					<!-- END message_poll -->
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							Subject:<br>
+							<input type="text" name="subject" value="{PC_SUBJECT}" style="width:620px"><br>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist" style="width:100%" align="left" valign="top">
+							Text:<br>
+							<textarea name="text" rows="12" style="width:620px"></textarea><br>
+						</td>
+					</tr>
+				</table>
+
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="submit_forum_write" value="Submit Message">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

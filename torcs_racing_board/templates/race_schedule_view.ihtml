@@ -1,0 +1,50 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>{PC_EVENT_NAME} Detailed Racing Schedule</h3>
+			<p>
+				Racing actually takes place after the robot submission phase and before the end of the
+				result submission phase.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">Track</th>
+		<th class="filledlist" align="left"></th>
+		<th class="filledlist" align="left">Robot Submission</th>
+		<!--th class="filledlist" align="left">Racing</th-->
+		<th class="filledlist" align="left">Racing/Result Submission</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_TRACK_ID}">{PC_TRACK_NAME}</a>
+		</td>
+		<td class="filledlist">
+			From:<br>
+			To:
+		</td>
+		<td class="filledlist" bgcolor="{PC_STATE_COLOR1}">
+			{PC_RACE_ROBOT_SUBMIT_START}<br>
+			{PC_RACE_ROBOT_SUBMIT_END}
+		</td>
+		<!--td class="filledlist" bgcolor="{PC_STATE_COLOR2}">
+			{PC_RACE_ROBOT_SUBMIT_END}<br>
+			{PC_RACE_RESULT_SUBMIT_START}
+		</td>
+		<td class="filledlist" bgcolor="{PC_STATE_COLOR3}">
+			{PC_RACE_RESULT_SUBMIT_START}<br>
+			{PC_RACE_RESULT_SUBMIT_END}
+		</td-->
+		<td class="filledlist" bgcolor="{PC_STATE_COLOR3}">
+			{PC_RACE_ROBOT_SUBMIT_END}<br>
+			{PC_RACE_RESULT_SUBMIT_END}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+

@@ -1,0 +1,286 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Edit a Team</h3>
+			<p>
+				Here you can edit the data of a team. Make sure that you fill in the fields correctly and
+				according to the rules of the races you would like to attend with this team. The module name,
+				driver names,
+				race numbers and the car you choose are immutable after the team has joined a championship,
+				so please fill in
+				everything very careful. This values must match with the ones in the results XML files
+				which will be submitted. <span style="color:#ff0000">If they not match your drivers and your
+				team will not receive any points,
+				because the system can't identify your data.</span>
+				If the page comes up again after submission,
+				there must be errors, please correct them and submit again. The name, racing number,
+				module name and the drivers name must be unique in the system.
+			</p>
+		</td>
+	</tr>
+</table>
+
+<form method="post" action="{PC_EDITTEAMPAGE}" style="margin-top:5px">
+	<input type="hidden" name="editteamid" value="{PC_TEAM_ID}"/>
+	<input type="hidden" name="driver_id_1" value="{PC_TEAM_DRIVER1_ID}"/>
+	<input type="hidden" name="driver_id_2" value="{PC_TEAM_DRIVER2_ID}"/>
+	<input type="hidden" name="team_name" value="{PC_TEAM_NAME}"/>
+	<input type="hidden" name="team_car_id" value="{PC_TEAM_CAR_ID}"/>
+	<input type="hidden" name="team_modulename" value="{PC_TEAM_MODULE}"/>
+	<input type="hidden" name="team_driver1_name" value="{PC_TEAM_DRIVERNAME1}"/>
+	<input type="hidden" name="team_driver2_name" value="{PC_TEAM_DRIVERNAME2}"/>
+	<input type="hidden" name="team_base_number" value="{PC_TEAM_RN}"/>
+
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+
+		<tr bgcolor="{PC_COLOR_NAME}">
+			<td class="filledlist" style="width:120px">
+				Name:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_NAME}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_CAR}">
+			<td class="filledlist">
+				Car:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_CAR_NAME}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+		</tr>
+
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+
+		<tr bgcolor="{PC_COLOR_DESCRIPTION}">
+			<td class="filledlist" align="left" valign="top" style="width:120px">
+				Description:
+			</td>
+			<td class="filledlist">
+				<textarea name="team_description" rows="6" style="width:495px">{PC_TEAM_DESCRIPTION}</textarea>
+			</td>
+		</tr>
+
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="{PC_COLOR_MODULENAME}">
+			<td class="filledlist" style="width:120px">
+				Module name:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_MODULE}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_DRIVER1}">
+			<td class="filledlist" style="width:120px">
+				Name driver 1:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_DRIVERNAME1}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_DRIVER2}">
+			<td class="filledlist" style="width:120px">
+				Name driver 2:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_DRIVERNAME2}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+		</tr>
+
+		<tr bgcolor="{PC_COLOR_RACENUMBER}">
+			<td class="filledlist">
+				Race number:
+			</td>
+			<td class="filledlist">
+				{PC_TEAM_RN}
+			</td>
+			<td class="filledlist">
+				&nbsp;
+			</td>
+
+		</tr>
+	</table>
+
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_edit_submit_inrace" value="Submit Changes">
+			</td>
+		</tr>
+	</table>
+
+</form>
+
+
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Team Logo</h3>
+
+			<p>
+				<!-- BEGIN logoimage -->
+				<img src="{PC_TEAM_LOGO_IMG}" alt="team logo" border="0" style="float:left;border:0px;margin-right:5px;width:74px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<!-- END logoimage -->
+
+				Optionally you can upload a team logo. It will be visible for all visitors. It must
+				be of mime type image/jpeg, 124 pixels width and 84 pixels height and smaller than 15000 bytes. To delete
+				the logo from the server simply submit with an empty logo field.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+
+<form method="post" enctype="multipart/form-data" action="{PC_EDITTEAMPAGE}?editteamid={PC_TEAM_ID}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:100px;">
+				Team Logo:
+			</td>
+			<td class="filledlist">
+				<input name="team_logo_image" type="file" size="62" maxlength="15000" accept="image/jpeg"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_logo_image_submit" value="Submit Logo">
+			</td>
+		</tr>
+	</table>
+</form>
+
+
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Flag</h3>
+
+			<p>
+				<!-- BEGIN flagimage -->
+				<img src="{PC_TEAM_FLAG_IMG}" alt="flag" border="0" style="float:left;border:0px;margin-right:5px;width:74px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<!-- END flagimage -->
+
+				Optionally you can upload a flag of your country. It will be visible for all visitors. It must
+				be of mime type image/jpeg, 124 pixels width and 84 pixels height and smaller than 10000 bytes. To delete
+				the flag from the server simply submit with an empty flag field.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+
+<form method="post" enctype="multipart/form-data" action="{PC_EDITTEAMPAGE}?editteamid={PC_TEAM_ID}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:100px;">
+				Flag:
+			</td>
+			<td class="filledlist">
+				<input name="team_flag_image" type="file" size="62" maxlength="10000" accept="image/jpeg"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_flag_image_submit" value="Submit Flag">
+			</td>
+		</tr>
+	</table>
+</form>
+
+
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Screenshots</h3>
+
+			<p>
+				<!-- BEGIN shot1image -->
+				<img src="{PC_TEAM_SHOT1_IMG}" alt="screenshot 1" title="Screenshot 1" border="0" style="float:left;border:0px;margin-right:5px;width:83px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<!-- END shot1image -->
+
+				<!-- BEGIN shot2image -->
+				<img src="{PC_TEAM_SHOT2_IMG}" alt="screenshot 2" title="Screenshot 2" border="0" style="float:left;border:0px;margin-right:5px;width:83px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<!-- END shot2image -->
+
+				You can upload two screenshots of your teams car.
+				They will be visible for all visitors. They must
+				be of mime type image/jpeg, 300 pixels width and 180 pixels height
+				and smaller than 15000 bytes. To delete
+				a screenshot from the server simply submit with an empty field.
+			</p>
+		</td>
+	</tr>
+
+</table>
+
+
+<form method="post" enctype="multipart/form-data" action="{PC_EDITTEAMPAGE}?editteamid={PC_TEAM_ID}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:100px;">
+				Screenshot 1:
+			</td>
+			<td class="filledlist">
+				<input name="team_shot1_image" type="file" size="62" maxlength="15000" accept="image/jpeg"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_shot1_image_submit" value="Submit Screenshot 1">
+			</td>
+		</tr>
+	</table>
+</form>
+
+
+<form method="post" enctype="multipart/form-data" action="{PC_EDITTEAMPAGE}?editteamid={PC_TEAM_ID}" style="margin-top:5px">
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr bgcolor="#e8e8e8">
+			<td class="filledlist" style="width:100px;">
+				Screenshot 2:
+			</td>
+			<td class="filledlist">
+				<input name="team_shot2_image" type="file" size="62" maxlength="15000" accept="image/jpeg"/>
+			</td>
+		</tr>
+	</table>
+	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+		<tr class="submitbuttoncolor">
+			<td class="filledlist">
+				<input type="submit" name="team_shot2_image_submit" value="Submit Screenshot 2">
+			</td>
+		</tr>
+	</table>
+</form>

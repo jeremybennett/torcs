@@ -1,0 +1,38 @@
+
+<form method="post" action="{PC_QUIZZ_PAGE}" style="margin:0px; border:0px;width:100%">
+	<input type="hidden" name="id_quizz" value="{PC_QUIZZ_ID}"/>
+	<table style="width:100%" class="text14" cellspacing="0">
+		<!-- BEGIN question_row -->
+		<tr>
+			<td align="left" valign="top">
+				{PC_QUIZZ_QUESTION_NB}.
+			</td>
+			<td align="left" valign="top">
+				{PC_QUIZZ_QUESTION}
+			</td>
+		</tr>
+		<!-- BEGIN answer_row -->
+		<tr>
+			<td align="left" valign="top">
+				<input type="radio" name="quizz_question_{PC_QUIZZ_QUESTION_NB}" value="{PC_QUIZZ_ANSWER_ID}"/>
+			</td>
+			<td>
+				{PC_QUIZZ_ANSWER_TEXT}
+			</td>
+		</tr>
+		<!-- END answer_row -->
+		<tr>
+			<td colspan="2">
+				<hr noshade="noshade" style="background-color:#a8a8a8; height:1px; border:0px; margin-top:3px; margin-bottom:3px; margin-left:0px; margin-right:0px;">
+			</td>
+		</tr>
+
+		<!-- END question_row -->
+		<tr>
+			<td colspan="2">
+				<input type="submit" name="quizz_submit" value="Submit"/>
+			</td>
+		</tr>
+	</table>
+</form>
+

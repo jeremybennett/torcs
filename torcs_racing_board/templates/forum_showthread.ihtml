@@ -1,0 +1,13 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px;" cellspacing="0">
+	<tr>
+		<td style="margin:0px;padding:5px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<!-- BEGIN show_poll -->
+				<div class="pollcentered" style="width:200px;margin-left:210px;">
+				{PC_POLL}
+				</div>
+			<!-- END show_poll -->
+			{MESSAGES}
+		</td>
+	</tr>
+</table>
