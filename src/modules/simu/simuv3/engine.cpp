@@ -171,11 +171,13 @@ SimEngineUpdateTq(tCar *car)
 		car->ctrl->accelCmd = 0.0;
     }
 
+
 	if (engine->rads > engine->revsMax) {
 		engine->rads = engine->revsMax;
 	}
+	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
 	if (engine->rads > engine->revsLimiter) {
-		engine->Tq = -1.0-10.0*(engine->rads - engine->revsLimiter);
+		engine->Tq = -EngBrkK*(tanh(engine->rads - engine->revsLimiter)+1.0f);
     } else if (engine->rads < 0) {
 		engine->Tq = 0.0;
 	} else {
@@ -186,7 +188,7 @@ SimEngineUpdateTq(tCar *car)
 
 		tdble cons = engine->Tq + Tq_max*EngBrkK;
 #else
-		tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
+
 
 		tdble alpha = car->ctrl->accelCmd;
 		tdble Tq_cur = (Tq_max + EngBrkK)* alpha;
