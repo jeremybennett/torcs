@@ -536,18 +536,20 @@
 	function secondsToTime($sec)
 	{
 		$cs = $sec - floor($sec);
-		$s = ($sec % 60) + $cs;
+		$cs = intval(round(100.0*$cs));
+		$s = ($sec % 60);
 		$m = floor(($sec%3600)/60);
 		$h = floor($sec/3600);
-		return sprintf("%d:%02d:%02.2f", $h, $m, $s);
+		return sprintf("%d:%02d:%02d.%02d", $h, $m, $s, $cs);
 	}
 
 	function secondsToLaptime($sec)
 	{
 		$cs = $sec - floor($sec);
-		$s = ($sec % 60) + $cs;
+		$cs = intval(round(1000.0*$cs));
+		$s = ($sec % 60);
 		$m = floor(($sec%3600)/60);
-		return sprintf("%d:%02.3f", $m, $s);
+		return sprintf("%d:%02d.%03d", $m, $s, $cs);
 	}
 
 
