@@ -20,9 +20,9 @@ SOLIBRARY    = liblearning.so
 
 SOLIBDIR     = .
 
-SOURCES      = policy.cpp
+SOURCES      = policy.cpp ann_policy.cpp List.cpp string_utils.cpp Distribution.c MathFunctions.cpp ANN.cpp
 
-EXPORTS      = policy.h
+EXPORTS      = policy.h ann_policy.h ANN.h learn_debug.h real.h string_utils.h List.h MathFunctions.h Distribution.h SmartAssert.h
 
 EXPDIR       = include
 
