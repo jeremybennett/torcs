@@ -18,7 +18,14 @@
 
 DATADIR   = tracks/road/aalborg
 
-DATA      = aalborg.xml aalborg.ac aalborg.png readme.txt
+DATA      = aalborg.xml aalborg.acc aalborg.png readme.txt allborg-trees_n.rgb shadow2.rgb \
+			tr-barrier-aa-1.rgb tr-asphalt-aa-l_n.rgb tr-asphalt-aa-pt-bw1_n.rgb \
+			tr-asphalt-aa-bw1_n.rgb tarmac-wall-2-g2.rgb spectator.rgb barr1.rgb \
+			torcs1.rgb tr-asphalt-aa-pe-bw1_n.rgb tr-asphalt-aa-ro-bw1_n.rgb poutre4.rgb \
+			tr-curb-bw-aa-r.rgb grass-aa.rgb tr-g-to-asphalt-aa-l_n.rgb tr-grass-aa-l_n.rgb \
+			tr-asphalt-2-aa-r_n.rgb tr-asphalt-aa-bw2-e_n.rgb tr-asphalt-aa-bw2_n.rgb \
+			tarmac-wall-1-g2.rgb tr-asphalt-to-g-aa-l_n.rgb tr-asphalt-aa-bw2-s_n.rgb \
+			aalborg.png background.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 
