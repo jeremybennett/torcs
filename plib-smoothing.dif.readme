@@ -1,0 +1,7 @@
+Smoothing patch from flightgear for plib-1.4.2
+
+http://www.megginson.com/flightsim/plib-smoothing.dif
+
+under the plib source directory:
+
+patch -p 2 < plib-smoothing.dif
