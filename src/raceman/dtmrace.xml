@@ -19,7 +19,7 @@
   <section name="Header">
     <attstr name="name" val="DTM Race"/>
     <attstr name="description" val="DTM Race"/>
-    <attnum name="priority" val="20"/>
+    <attnum name="priority" val="50"/>
     <attstr name="menu image" val="data/img/splash-dtm.png"/>
     <attstr name="run image" val="data/img/splash-run-practice.png"/>
     <attstr name="start image" val="data/img/splash-dtmstart.png"/>
@@ -50,7 +50,7 @@
   </section>
 
   <section name="Qualifications">
-    <attnum name="laps" val="5"/>
+    <attnum name="laps" val="12"/>
     <attstr name="type" val="qualifications"/>
     <attstr name="starting order" val="drivers list"/>
     <attstr name="display mode" val="results only"/>
@@ -103,7 +103,6 @@
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
-    <attnum name="maximum drivers" val="8"/>
     <attstr name="splash menu" val="yes"/>
 
     <section name="Starting Grid">
