@@ -86,8 +86,6 @@ typedef struct {
 	bool overtakee;			/* is this the guy to overtake? */
 	double disttopath;		/* distance to my path */
 	double brakedist;		/* distance needed for braking to the speed of this car */
-	double corner[4];
-	double orthdist[4];
 	double mincorner;
 	double minorthdist;
 } tOCar;

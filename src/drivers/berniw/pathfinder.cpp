@@ -1369,10 +1369,10 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				o[n].minorthdist = FLT_MAX;
 				for (j = 0; j < 4; j++) {
 					v3d e(car->pub->corner[j].ax, car->pub->corner[j].ay, car->_pos_Z);
-					o[n].corner[j] = distToPath(seg, &e);
-					o[n].orthdist[j] = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), &e) - myc->CARWIDTH/2.0;
-					if (fabs(o[n].corner[j]) < o[n].mincorner) o[n].mincorner = fabs(o[n].corner[j]);
-					if (o[n].orthdist[j] < o[n].minorthdist) o[n].minorthdist = o[n].orthdist[j];
+					double corner = fabs(distToPath(seg, &e));
+					double orthdist = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), &e) - myc->CARWIDTH/2.0;
+					if (corner < o[n].mincorner) o[n].mincorner = corner;
+					if (orthdist < o[n].minorthdist) o[n].minorthdist = orthdist;
 				}
 				n++;
 			}

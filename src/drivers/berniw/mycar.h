@@ -97,7 +97,6 @@ class MyCar : public AbstractCar
 		static const double OVERTAKEDIST;		/* planned distance of CG's while overtaking [m] */
 		static const double OVERTAKEMINDIST;	/* minimal distance of CG's while overtaking [m] */
 		static const double OVERTAKEANGLE;
-		static const double DISTTHRESHOLD;
 		static const double OVERTAKEMARGIN;
 		static const double MAXALLOWEDPITCH;
 		static const double FLYSPEED;

@@ -22,11 +22,9 @@
 */
 
 #include "berniw.h"
-
 #ifdef DMALLOC
 #include "dmalloc.h"
 #endif
-
 
 const double MyCar::PATHERR = 0.5;				/* if derror > PATHERR we take actions to come back to the path [m] */
 const double MyCar::CORRLEN = 30.0;				/* CORRLEN * derror is the length of the correction [m] */
@@ -39,19 +37,17 @@ const double MyCar::TIMETOCATCH = 3.0;			/* when do we start thinking about over
 const double MyCar::MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
 const double MyCar::OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
 const double MyCar::OVERTAKEDIST = 4.0;			/* planning distance of CG's while overtaking [m] */
-const double MyCar::OVERTAKEMINDIST = 1.7;		/* minimal distance of CG's while overtaking [m] */
-const double MyCar::OVERTAKEANGLE = 0.03;
-const double MyCar::DISTTHRESHOLD = 30.0;
-const double MyCar::OVERTAKEMARGIN = 1.7;
-const double MyCar::MAXALLOWEDPITCH = 0.06;
-const double MyCar::FLYSPEED = 55.0;
+const double MyCar::OVERTAKEMINDIST = 1.7;		/* minimal distance between cars overtaking [m] */
+const double MyCar::OVERTAKEANGLE = 0.03;		/* minimum angle between cars [radians] */
+const double MyCar::OVERTAKEMARGIN = 1.7;		/* distance between cars [m] */
+const double MyCar::MAXALLOWEDPITCH = 0.06;		/* max allowed angle between road and car [radians] */
+const double MyCar::FLYSPEED = 55.0;			/* above this speed anti fly system is activated [m/s] */
 
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
 	/* init pointer to car data */
 	setCarPtr(car);
-
 	initCGh();
 	initCarGeometry();
 	updatePos();
@@ -225,6 +221,7 @@ void MyCar::updateCa()
 	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
 	ca = AEROMAGIC*(h*cl + 4.0*wingca);
 }
+
 
 /*
 	compute the inverse of the rear => speed == 0 is allowed
