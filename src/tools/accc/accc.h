@@ -41,6 +41,7 @@ extern int extendedEnvCoord;
 extern int notexturesplit;
 extern int isobjectacar;
 extern int normalMapping;
+extern char *OrderString;
 extern void loadAndGroup( char *OutputFileName);
 extern int loadAC( char * inputFilename, char * outputFilename, int saveIn);
 
@@ -108,6 +109,7 @@ typedef struct ob {
   struct ob* ob1;
   struct ob* ob2;
   struct ob* ob3;
+  int saved;
   int kids_o;
   int inkids_o;
 } ob_t;
@@ -118,6 +120,7 @@ typedef struct ob_groups
   int numkids;
   struct ob * tkmn;
   char * name;
+  int    tkmnlabel;
   struct ob * kids0;
   int numkids0;
   struct ob * kids1;

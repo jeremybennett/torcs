@@ -928,7 +928,7 @@
     <section name="cam 1">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t1"/>
-      <attnum name="to right" val="-10.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="15"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -939,7 +939,7 @@
     <section name="cam 2">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t3"/>
-      <attnum name="to right" val="-10.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="15"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -950,7 +950,7 @@
     <section name="cam 3">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t4"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="50"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -961,7 +961,7 @@
     <section name="cam 4">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="s5-2"/>
-      <attnum name="to right" val="25.0"/>
+      <attnum name="to right" val="35.0"/>
       <attnum name="to start" val="0"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -972,7 +972,7 @@
     <section name="cam 5">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t7"/>
-      <attnum name="to right" val="25.0"/>
+      <attnum name="to right" val="35.0"/>
       <attnum name="to start" unit="deg" val="20"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -983,7 +983,7 @@
     <section name="cam 6">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t9"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="40"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -994,7 +994,7 @@
     <section name="cam 7">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t10"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="30"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1005,7 +1005,7 @@
     <section name="cam 8">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t11"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="30"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1016,7 +1016,7 @@
     <section name="cam 9">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t12"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="30"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1027,7 +1027,7 @@
     <section name="cam 10">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="s14-2"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" val="0"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1038,7 +1038,7 @@
     <section name="cam 11">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t14"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="60"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1049,7 +1049,7 @@
     <section name="cam 12">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t15"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="0"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1060,7 +1060,7 @@
     <section name="cam 125">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t16"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="10"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1071,7 +1071,7 @@
     <section name="cam 13">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t17"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="60"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1082,7 +1082,7 @@
     <section name="cam 14">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t19"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="30"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1093,7 +1093,7 @@
     <section name="cam 15">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t20"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" unit="deg" val="30"/>
       <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
@@ -1104,7 +1104,7 @@
     <section name="cam 16">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="s23-1"/>
-      <attnum name="to right" val="-5.0"/>
+      <attnum name="to right" val="-15.0"/>
       <attnum name="to start" val="50"/>
       <attnum name="height" val="5"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->

@@ -807,7 +807,17 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 	   || !strnicmp(object->next->name,"tklb",4) 
 	   || !strnicmp(object->next->name,"brlt",4) 
 	   || !strnicmp(object->next->name,"brrt",4) 
-	   || !strnicmp(object->next->name,"tkls",4) )
+	   || !strnicmp(object->next->name,"tkls",4)
+	   || !strnicmp(object->next->name, "t0RB",4)
+	   || !strnicmp(object->next->name, "t1RB",4)
+	   || !strnicmp(object->next->name, "t2RB",4)
+	   || !strnicmp(object->next->name, "tkRS",4)
+	   || !strnicmp(object->next->name, "t0LB",4)
+	   || !strnicmp(object->next->name, "t1LB",4)
+	   || !strnicmp(object->next->name, "t2LB",4)
+	   || !strnicmp(object->next->name, "tkLS",4)
+	   || !strnicmp(object->next->name, "BOLt",4)
+	   || !strnicmp(object->next->name, "BORt",4) ) 
 	  {
 	    printf("no terrain split for %s\n",object->next->name);
 	  }
@@ -1640,6 +1650,7 @@ int printOb(ob_t * ob)
     return 0;
   if (extendedStrips==0 && normalMapping!=1)  
     stripifyOb(ob,0);
+  ob->saved=1;
   fprintf(ofile,"OBJECT poly\n");
   fprintf(ofile,"name \"%s\"\n",ob->name);
   if (ob->texture1 || ob->texture2 || ob->texture3  )
@@ -2267,7 +2278,7 @@ void smoothTriNorm(ob_t * object )
 			  tmpob->snorm[i].y!=tmpob1->snorm[j].y ||
 			  tmpob->snorm[i].z!=tmpob1->snorm[j].z )
 			{
-			  printf("object %s found vertex not smoothed with %s\n",tmpob->name, tmpob1->name);
+			  /*printf("object %s found vertex not smoothed with %s\n",tmpob->name, tmpob1->name);*/
 			}
 		      
 		    }
@@ -2354,6 +2365,10 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
   ob_t * tmpob =NULL;
   mat_t * tmat=NULL;
   int numg=0;
+  int lastpass=FALSE;
+  int nborder=0;
+  int ordering=FALSE;
+  int ik;
 
   if (normalMapping==1)
     {
@@ -2394,6 +2409,33 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
     }
   
   fprintf(ofile,"OBJECT world\n");
+
+  if (OrderString && isobjectacar)
+    {
+      fprintf(stderr,"ordering objects according to  %s\n", OrderString);
+      p=OrderString;
+      ordering=TRUE;
+      nborder=1;
+      while (TRUE)
+	{
+	  q=strstr(p,";");
+	  if (q!=NULL) nborder++;
+	  else
+	    break;
+	  p=q+1;
+	  if (*p=='\0')
+	    {
+	      nborder--;
+	      break;
+	    }
+	}
+    }
+  else
+    {
+      ordering=FALSE;
+      nborder=0;
+    }
+
   tmpob=object;
   while(tmpob!=NULL)
     {
@@ -2416,52 +2458,53 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
   texnum=0;
   tmpob=object;
   while (tmpob!=NULL) {
-    int texnofound=0;
-    if (tmpob->name==NULL)  {
-      tmpob=tmpob->next;
-      continue;
-    }
-    if (!strcmp(tmpob->name, "root"))  {
-      tmpob=tmpob->next;
-      continue;
-    }
-    if (!strcmp(tmpob->name, "world")){
-      tmpob=tmpob->next;
-      continue;
-    }
-    texnofound=1;
-    for (i=0; i<texnum; i++) {
-       if (tmpob->texture==NULL)
-	 {
-	   texnofound=0;
-	   break;
+	int texnofound=0;
+	if (tmpob->name==NULL)  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "root"))  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "world")){
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	texnofound=1;
+	for (i=0; i<texnum; i++) {
+	  if (tmpob->texture==NULL)
+	    {
+	      texnofound=0;
+	      break;
 	   
-	 }
-       if (!strncmp(tex[i],tmpob->texture,13))
-	 {
-	 texnofound=0;
-	 break;
+	    }
+	  if (!strncmp(tex[i],tmpob->texture,13))
+	    {
+	      texnofound=0;
+	      break;
 
-	 }
-       else
-	 texnofound=1;
-     }
-     if  (texnofound==1){
-       if (tmpob->texture!=NULL)
-	 {
-	   strcpy(tex[texnum],tmpob->texture);
-	   tex[texnum][13]='\0';
-	   /*sprintf(tex[texnum],"%s",tmpob->texture);*/
-	 }
-       texnum ++;
-     }
-     printf("name=%s x_min=%.1f y_min=%.1f x_max=%.1f y_max=%.1f\n",tmpob->name
-	    , tmpob->x_min, tmpob->y_min
-	    , tmpob->x_max, tmpob->y_max);
+	    }
+	  else
+	    texnofound=1;
+	}
+	if  (texnofound==1){
+	  if (tmpob->texture!=NULL)
+	    {
+	      strcpy(tex[texnum],tmpob->texture);
+	      tex[texnum][13]='\0';
+	      /*sprintf(tex[texnum],"%s",tmpob->texture);*/
+	    }
+	  texnum ++;
+	}
+	tmpob->saved=0;
+	printf("name=%s x_min=%.1f y_min=%.1f x_max=%.1f y_max=%.1f\n",tmpob->name
+	       , tmpob->x_min, tmpob->y_min
+	       , tmpob->x_max, tmpob->y_max);
 	    
-     tmpob=tmpob->next;
-   }
-
+	tmpob=tmpob->next;
+      }
+  
    tmpob=object;
    tmpob->kids_o=0;
    while (tmpob!=NULL) {
@@ -2496,34 +2539,87 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
        tmpob=tmpob->next;
      }
 
-   tmpob=object;
-   while (tmpob!=NULL) {
-     if (tmpob->name==NULL)  {
-       tmpob=tmpob->next;
-       continue;
+   p=OrderString;
+   q=OrderString;
+   nborder++;
+   for (ik=0; ik<nborder; ik++)
+     {
+       if (ordering)
+	 {
+	   /* look to the current object name to save */
+	   if (p==NULL)
+	     lastpass=TRUE;
+	   else
+	     {
+	       q=p;
+	       p=strstr(p,";");
+	       if (p!=NULL) {
+		 *p='\0';
+		 p++;
+	       }
+	     }
+	 }
+       tmpob=object;
+       while (tmpob!=NULL) {
+	 if (tmpob->name==NULL)  {
+	   tmpob=tmpob->next;
+	   continue;
+	 }
+	 if (!strcmp(tmpob->name, "root"))  {
+	   tmpob=tmpob->next;
+	   continue;
+	 }
+	 if (!strcmp(tmpob->name, "world")){
+	   tmpob=tmpob->next;
+	   continue;
+	 }
+	 if (!isobjectacar)
+	   {
+	     if (!strnicmp(tmpob->name, "tkmn",4)){
+	       fprintf(ofile,"OBJECT group\n");
+	       fprintf(ofile,"name \"%s_g\"\n",tmpob->name);
+	       fprintf(ofile,"kids %d\n",tmpob->kids_o+1);
+	       printOb(tmpob);
+	       foundNear(tmpob,object,far_dist,TRUE);
+	       printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
+	       /*foundNear(tmpob,object,200);
+		 foundNear(tmpob,object,100);*/
+	     }
+	   }
+	 else
+	   {
+	     if (tmpob->saved==0)
+	       {
+		 
+		 if (ordering && !lastpass)
+		   {
+		     if (!strcmp(tmpob->name,q)){
+		       printOb(tmpob);
+		       printf("object =%s num kids_o=%d test with %s\n",tmpob->name,tmpob->kids_o,q);
+		     }
+		     else
+		       {
+			 char  nameBuf[1024];
+			 sprintf(nameBuf,"%ss",q);
+			 if (!strncmp(tmpob->name,nameBuf,strlen(nameBuf))){
+			   printOb(tmpob);
+			   printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
+			 }
+			 
+		       }
+		   }
+		 else
+		   {
+		     printOb(tmpob);
+		     printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
+		   }
+	       }
+	     
+	   }
+	 
+	 tmpob=tmpob->next;
+       }
      }
-     if (!strcmp(tmpob->name, "root"))  {
-       tmpob=tmpob->next;
-       continue;
-     }
-     if (!strcmp(tmpob->name, "world")){
-       tmpob=tmpob->next;
-       continue;
-     }
-     if (!strnicmp(tmpob->name, "tkmn",4)){
-       fprintf(ofile,"OBJECT group\n");
-       fprintf(ofile,"name \"%s_g\"\n",tmpob->name);
-       fprintf(ofile,"kids %d\n",tmpob->kids_o+1);
-       printOb(tmpob);
-       foundNear(tmpob,object,far_dist,TRUE);
-       printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
-       /*foundNear(tmpob,object,200);
-	 foundNear(tmpob,object,100);*/
-     }
-    
-     tmpob=tmpob->next;
-   }
-   
 
    for (i=0; i<texnum; i++) 
      {
@@ -3766,9 +3862,15 @@ void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
 {
 
   int i =0;
+  int ik=0;
   ob_t * tmpob =NULL;
   mat_t * tmat=NULL;
   int numg=0;
+  char *p;
+  char *q=NULL;
+  int lastpass=FALSE;
+  int nborder=0;
+  int ordering=FALSE;
 
   if ((ofile=fopen (OutputFilename,"w"))==NULL) 
     {
@@ -3810,6 +3912,35 @@ void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
     }
   
   fprintf(ofile,"OBJECT world\n");
+
+
+  if (OrderString)
+    {
+      fprintf(stderr,"ordering objects according to  %s\n", OrderString);
+      p=OrderString;
+      ordering=TRUE;
+      nborder=1;
+      while (TRUE)
+	{
+	  q=strstr(p,";");
+	  if (q!=NULL) nborder++;
+	  else
+	    break;
+	  p=q+1;
+	  if (*p=='\0')
+	    {
+	      nborder--;
+	      break;
+	    }
+	}
+    }
+  else
+    {
+      ordering=FALSE;
+      nborder=0;
+    }
+
+
   tmpob=object;
   while(tmpob!=NULL)
     {
@@ -3826,110 +3957,299 @@ void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
 	continue;
       }
       numg++;
+      tmpob->saved=0;
       tmpob=tmpob->next;
     }
 
+      
   fprintf(ofile,"kids %d\n",numg);
-
+      
   texnum=0;
-  tmpob=object;
-  while (tmpob!=NULL) {
-    int texnofound=0;
-    if (tmpob->name==NULL)  {
-      tmpob=tmpob->next;
-      continue;
-    }
-    if (!strcmp(tmpob->name, "root"))  {
-      tmpob=tmpob->next;
-      continue;
-    }
-    if (!strcmp(tmpob->name, "world")){
-      tmpob=tmpob->next;
-      continue;
-    }
-    texnofound=1;
-    for (i=0; i<texnum; i++) {
-       if (tmpob->texture==NULL)
-	 {
-	   texnofound=0;
-	   break;
-	   
-	 }
-       if (!strncmp(tex[i],tmpob->texture,13))
-	 {
-	 texnofound=0;
-	 break;
 
-	 }
-       else
-	 texnofound=1;
-     }
-     if  (texnofound==1){
-       if (tmpob->texture!=NULL)
-	 {
-	   strcpy(tex[texnum],tmpob->texture);
-	   tex[texnum][13]='\0';
-	   /*sprintf(tex[texnum],"%s",tmpob->texture);*/
-	 }
-       texnum ++;
-     }
-     printf("name=%s x_min=%.1f y_min=%.1f x_max=%.1f y_max=%.1f\n",tmpob->name
-	    , tmpob->x_min, tmpob->y_min
-	    , tmpob->x_max, tmpob->y_max);
+  p=OrderString;
+  q=OrderString;
+  nborder++;
+  for (ik=0; ik<nborder; ik++)
+    {
+      if (ordering)
+	{
+	  /* look to the current object name to save */
+	  if (p==NULL)
+	    lastpass=TRUE;
+	  else
+	    {
+	      q=p;
+	      p=strstr(p,";");
+	      if (p!=NULL) {
+		*p='\0';
+		p++;
+	      }
+	    }
+	}
+      tmpob=object;
+      while (tmpob!=NULL) {
+	int texnofound=0;
+	if (tmpob->name==NULL)  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "root"))  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "world")){
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	texnofound=1;
+	for (i=0; i<texnum; i++) {
+	  if (tmpob->texture==NULL)
+	    {
+	      texnofound=0;
+	      break;
+	      
+	    }
+	  if (!strncmp(tex[i],tmpob->texture,13))
+	    {
+	      texnofound=0;
+	      break;
+	      
+	    }
+	  else
+	    texnofound=1;
+	}
+	if  (texnofound==1){
+	  if (tmpob->texture!=NULL)
+	    {
+	      strcpy(tex[texnum],tmpob->texture);
+	      tex[texnum][13]='\0';
+	      /*sprintf(tex[texnum],"%s",tmpob->texture);*/
+	    }
+	  texnum ++;
+	}
+	printf("name=%s x_min=%.1f y_min=%.1f x_max=%.1f y_max=%.1f\n",tmpob->name
+	       , tmpob->x_min, tmpob->y_min
+	       , tmpob->x_max, tmpob->y_max);
+	
+	tmpob=tmpob->next;
+      }
+
+      tmpob=object;
+      tmpob->kids_o=0;
+      
+      tmpob=object;
+      while (tmpob!=NULL)
+	{
+	  tmpob->inkids_o=0;
+	  tmpob=tmpob->next;
+	}
+      
+      tmpob=object;
+      while (tmpob!=NULL) {
+	if (tmpob->name==NULL)  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "root"))  {
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (!strcmp(tmpob->name, "world")){
+	  tmpob=tmpob->next;
+	  continue;
+	}
+	if (tmpob->saved==0)
+	  {
 	    
-     tmpob=tmpob->next;
-   }
-
-   tmpob=object;
-   tmpob->kids_o=0;
-
-   tmpob=object;
-   while (tmpob!=NULL)
-     {
-       tmpob->inkids_o=0;
-       tmpob=tmpob->next;
-     }
-
-   tmpob=object;
-   while (tmpob!=NULL) {
-     if (tmpob->name==NULL)  {
-       tmpob=tmpob->next;
-       continue;
-     }
-     if (!strcmp(tmpob->name, "root"))  {
-       tmpob=tmpob->next;
-       continue;
-     }
-     if (!strcmp(tmpob->name, "world")){
-       tmpob=tmpob->next;
-       continue;
-     }
-     printOb(tmpob);
-     printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
-     tmpob=tmpob->next;
-   }
-   
-
-   tmpIndice=0;
-   /* do the job */
+	    if (ordering && !lastpass)
+	      {
+		if (!strcmp(tmpob->name,q)){
+		  printOb(tmpob);
+		  printf("object =%s num kids_o=%d test with %s\n",tmpob->name,tmpob->kids_o,q);
+		}
+		else
+		  {
+		    char  nameBuf[1024];
+		    sprintf(nameBuf,"%ss",q);
+		    if (!strncmp(tmpob->name,nameBuf,strlen(nameBuf))){
+		      printOb(tmpob);
+		      printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
+		    }
+		    
+		  }
+	      }
+	    else
+	      {
+		printOb(tmpob);
+		printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
+	      }
+	  }
+	tmpob=tmpob->next;
+      }
+      /* i++; */
+    }
+  tmpIndice=0;
+  /* do the job */
    printf("\nend\n");
 
 }
 
+ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
+{
+  ob_t * tobS=NULL;
+  int  oldva1[10000];
+  int  oldva2[10000];
+  int n =0;
+  int m=0;
+  int i=0;
+  int j=0;
+
+  int numtri =(ob1)->numsurf+(ob2)->numsurf;;
+
+  memset(oldva1,-1,sizeof(oldva1));
+  memset(oldva2,-1,sizeof(oldva2));
+  tobS=(ob_t *)malloc(sizeof(ob_t ));
+  memset(tobS,0,sizeof(ob_t));
+  tobS->x_min=1000000;
+  tobS->y_min=1000000;
+  tobS->z_min=1000000;
+  tobS->numsurf=ob1->numsurf;
+  tobS->vertexarray=(tcoord_t *) malloc(sizeof(tcoord_t)*numtri*3);
+  tobS->norm=(point_t*)malloc(sizeof(point_t)*numtri*3);
+  tobS->snorm=(point_t*)malloc(sizeof(point_t)*numtri*3);
+  tobS->vertex=(point_t*)malloc(sizeof(point_t)*numtri*3);
+  memset(tobS->snorm,0,sizeof(point_t )*numtri*3);
+  memset(tobS->norm,0,sizeof(point_t )*numtri*3);
+  tobS->textarray=(double *) malloc(sizeof(tcoord_t)* numtri*2*3);
+  tobS->textarray1=(double *) malloc(sizeof(tcoord_t)* numtri*2*3);
+  tobS->textarray2=(double *) malloc(sizeof(tcoord_t)* numtri*2*3);
+  tobS->textarray3=(double *) malloc(sizeof(tcoord_t)* numtri*2*3);
+  tobS->attrSurf=ob1->attrSurf;
+  tobS->name=(char *) malloc(strlen(nameS)+1);
+  tobS->texture=strdup(nameS);
+  tobS->type=strdup(ob1->type);
+  tobS->data=strdup(ob1->data);
+  
+
+
+
+  /**/
+  memcpy(tobS->vertex, ob1->vertex,ob1->numvert*sizeof(point_t));      
+  memcpy(tobS->vertexarray, ob1->vertexarray,ob1->numsurf*sizeof(tcoord_t )*3);      
+  memcpy(tobS->textarray, ob1->textarray,ob1->numvert*sizeof(tcoord_t )*2); 
+  memcpy(tobS->norm, ob1->norm,ob1->numvert*sizeof(point_t )); 
+  memcpy(tobS->snorm, ob1->snorm,ob1->numvert*sizeof(point_t )); 
+
+  if (ob1->texture1)
+    {
+      memcpy(tobS->textarray1, ob1->textarray1,ob1->numvert*2*sizeof(tcoord_t )); 
+    }
+  if (ob1->texture2)
+    {
+      memcpy(tobS->textarray2, ob1->textarray2,ob1->numvert*2*sizeof(tcoord_t )); 
+    }
+  if (ob1->texture3)
+    {
+      memcpy(tobS->textarray3, ob1->textarray3,ob1->numvert*2*sizeof(tcoord_t )); 
+    }
+
+  m=n=ob1->numvert;
+  for (i=0;i<ob2->numvert; i++)
+    {
+      for(j=0; j<ob1->numvert; j++)
+	{
+	  if (ob2->vertex[i].x==ob1->vertex[j].x
+	      && ob2->vertex[i].y==ob1->vertex[j].y
+	      && ob2->vertex[i].z==ob1->vertex[j].z)
+	    {
+	      oldva1[i]=j;
+	    }
+	}
+    }
+
+  for (i=0;i<ob2->numvert; i++)
+    {
+      if (oldva1[i]==-1)
+	{
+	  oldva1[i]=n;
+	  tobS->textarray[n*2]=ob2->textarray[i*2];
+	  tobS->textarray[n*2+1]=ob2->textarray[i*2+1];
+	  if (ob2->texture1) {
+	    tobS->textarray1[n*2]=ob2->textarray1[i*2];
+	    tobS->textarray1[n*2+1]=ob2->textarray1[i*2+1];
+	  }
+	  if (ob2->texture2) {
+	    tobS->textarray2[n*2]=ob2->textarray2[i*2];
+	    tobS->textarray2[n*2+1]=ob2->textarray2[i*2+1];
+	  }
+	  if (ob2->texture3) {
+	    tobS->textarray3[n*2]=ob2->textarray3[i*2];
+	    tobS->textarray3[n*2+1]=ob2->textarray3[i*2+1];
+	  }
+	  tobS->snorm[n].x=ob2->snorm[i].x;
+	  tobS->snorm[n].y=ob2->snorm[i].y;
+	  tobS->snorm[n].z=ob2->snorm[i].z;
+	  tobS->norm[n].x=ob2->norm[i].x;
+	  tobS->norm[n].y=ob2->norm[i].y;
+	  tobS->norm[n].z=ob2->norm[i].z;
+	  tobS->vertex[n].x=ob2->vertex[i].x;
+	  tobS->vertex[n].y=ob2->vertex[i].y;
+	  tobS->vertex[n].z=ob2->vertex[i].z;
+	      
+	  n++;
+	}
+    }
+  tobS->numvert=n;
+  for (i=0;i<ob2->numsurf; i++)
+    {
+      int found=FALSE;
+      for (j=0; j<ob1->numsurf; j++)
+	{
+	  if ( tobS->vertexarray[j*3].indice == oldva1[ob2->vertexarray[i*3].indice] 
+	       && tobS->vertexarray[j*3+1].indice == oldva1[ob2->vertexarray[i*3+1].indice] 
+	       && tobS->vertexarray[j*3+2].indice == oldva1[ob2->vertexarray[i*3+2].indice] )
+	    {
+	      /* this face is OK */
+	      found=TRUE;
+	      break;
+	    }
+	}
+      if (found==FALSE)
+	{
+	  int k=tobS->numsurf;
+	  /* add the triangle */
+	  tobS->vertexarray[k*3].indice = oldva1[ob2->vertexarray[i*3].indice] ;
+	  tobS->vertexarray[k*3+1].indice = oldva1[ob2->vertexarray[i*3+1].indice] ;
+	  tobS->vertexarray[k*3+2].indice = oldva1[ob2->vertexarray[i*3+2].indice] ;
+	  tobS->numsurf++;
+	}
+    }
+
+  ob1->numsurf=tobS->numsurf;
+  ob1->numvert=tobS->numvert;
+  ob1->vertexarray=tobS->vertexarray;
+  ob1->norm=tobS->norm;
+  ob1->snorm=tobS->snorm;
+  ob1->vertex=tobS->vertex;
+  ob1->textarray=tobS->textarray;
+  ob1->textarray1=tobS->textarray1;
+  ob1->textarray2=tobS->textarray2;
+  ob1->textarray3=tobS->textarray3;
+  return ob1;
+}
 
 int mergeSplitted (ob_t **object)
 {
 
-  int j=0;
   int k=0;
   char nameS[256];
   char *p ;
   ob_t * tob=NULL;
   ob_t * tob0=NULL;
-  ob_t * tobS=NULL;
+  ob_t * tobP=NULL;
   int numtri;
-  int n=0;
-
+  int reduced=0;
+  
   tob=*object;
   while (tob)
     {
@@ -3938,6 +4258,7 @@ int mergeSplitted (ob_t **object)
 	  tob=tob->next; 
 	  continue;
 	}
+      tobP=tob;
       tob0=tob->next;
       sprintf(nameS,"%s",tob->name);
       p=strstr(nameS,"__split__");
@@ -3946,6 +4267,8 @@ int mergeSplitted (ob_t **object)
 	  tob=tob->next; 
 	  continue;
 	}
+      printf("looking for merge : %s\n",nameS);
+      p=p+strlen("__split__");
       *p='\0';
       k=0;
       numtri=0;
@@ -3955,11 +4278,16 @@ int mergeSplitted (ob_t **object)
 	  
 	  if (!strnicmp(tob0->name,nameS,strlen(nameS)))
 	    {
+	      mergeObject (tob,tob0, nameS)	      ;
+	      printf("merging %s with %s\n",nameS, tob0->name);
+	      reduced ++;
+	      tobP->next=tob0->next;
 	      k++;
-	      numtri+=tob0->numsurf;
 	    }
+	  tobP=tob0;
 	  tob0=tob0->next;
 	}
+
       if (k==0)
 	{
 	  tob=tob->next; 
@@ -3970,6 +4298,7 @@ int mergeSplitted (ob_t **object)
       /* we know that nameS has k+1 objects and need to be merged */
 
       /* allocate the new object */
+#ifdef NEWSRC
       tobS=(ob_t *)malloc(sizeof(ob_t ));
       memset(tobS,0,sizeof(ob_t));
       tobS->x_min=1000000;
@@ -4015,12 +4344,6 @@ int mergeSplitted (ob_t **object)
       n=tob->numvert;
 
       /* now add the new points */
-      
-
-
-
-
-
       tob0=tob->next;
       while (tob0)
 	{
@@ -4057,22 +4380,8 @@ int mergeSplitted (ob_t **object)
 	      tobS->textarray1[tobS->vertexarray[j].indice*2]=tob->vertexarray1[j].u;
 	      tobS->textarray1[tobS->vertexarray[j].indice*2+1]=tob->vertexarray1[j].v;
 	    }
-	  
-	  
-	  
 	  tob0=tob0->next;
 	}
-
-
-
-
-
-
-
-
-
-
-
       for (j=0; j<tobS->numvert; j++)
 	{
 	  if (tobS->vertex[j].x>tobS->x_max)
@@ -4092,12 +4401,12 @@ int mergeSplitted (ob_t **object)
 
 	}
 
-
+#endif
       tob=tob->next; 
     }
 
 
-  return 0;
+  return reduced;
 }
 
 int freeobject(ob_t *o)
@@ -4129,110 +4438,6 @@ int findPoint(point_t * vertexArray,int sizeVertexArray, point_t * theVertex)
   return -1;
 }
 
-#ifdef NEWSRC
-ob_t * mergeobject(ob_t * ob1, ob_t *ob2)
-{
-  ob_t * obret=NULL;
-  tcoord_t      * vta=NULL;
-  int numsurf=0;
-  int i=0;
-  point_t  * vertex;
-  
-  vta=(tcoord_t*)(malloc(sizeof(tcoord_t)*numsurf));
-  vta1=(tcoord_t*)(malloc(sizeof(tcoord_t)*numsurf));
-  vta2=(tcoord_t*)(malloc(sizeof(tcoord_t)*numsurf));
-  vta3=(tcoord_t*)(malloc(sizeof(tcoord_t)*numsurf));
-  vertex=(point_t  *) malloc(sizeof(point_t )*numsurf*3);
-  memcpy(vertex,ob1->vertex, ,numsurf*3*sizeof(point_t));      
-  memcpy(vta, ob1->vertexarray,ob1->numsurf*sizeof(tcoord_t )); 
-  if (ob1->vertexarray1)
-    memcpy(vta1, ob1->vertexarray1,ob1->numsurf*sizeof(tcoord_t )); 
-  if (ob2->vertexarray2)
-    memcpy(vta2, ob->vertexarray2,ob1->numsurf*sizeof(tcoord_t )); 
-  if (ob1->vertexarray1)
-    memcpy(vta2, ob1->vertexarray2,ob1->numsurf*sizeof(tcoord_t )); 
-  
-
-  for (i=0; i<ob2->numsurf; i++)
-    {
-      int indice=0;
-      j=i+ob1->numsurf;
-
-      indice=findPoint(vta,n, ob2->vertex[ob2->vertexarray[j*3].indice]);
-      if (indice==-1)
-	{
-	  
-	}
-      vta[j*3].indice=;
-      vta[j*3].u=ob2->vertexarray[j*3].u;
-      vta[j*3].v=ob2->vertexarray[j*3].v;      
-      vta[j*3].saved=0;
-      vta[j*3+1].indice=ob2->vertexarray[j*3+1].indice;
-      vta[j*3+1].u=ob2->vertexarray[j*3+1].u;
-      vta[j*3+1].v=ob2->vertexarray[j*3+1].v;      
-      vta[j*3+1].saved=0;
-      vta[j*3+2].indice=ob2->vertexarray[j*3+2].indice;
-      vta[j*3+2].u=ob2->vertexarray[j*3+2].u;
-      vta[j*3+2].v=ob2->vertexarray[j*3+2].v;      
-      vta[j*3+2].saved=0;
-
-      if (ob2->vertexarray1)
-	{
-	  vta1[j*3].indice=ob2->vertexarray1[j*3].indice;
-	  vta1[j*3].u=ob2->vertexarray1[j*3].u;
-	  vta1[j*3].v=ob2->vertexarray1[j*3].v;      
-	  vta1[j*3].saved=0;
-	  vta1[j*3+1].indice=ob2->vertexarray1[j*3+1].indice;
-	  vta1[j*3+1].u=ob2->vertexarray1[j*3+1].u;
-	  vta1[j*3+1].v=ob2->vertexarray1[j*3+1].v;      
-	  vta1[j*3+1].saved=0;
-	  vta1[j*3+2].indice=ob2->vertexarray1[j*3+2].indice;
-	  vta1[j*3+2].u=ob2->vertexarray1[j*3+2].u;
-	  vta1[j*3+2].v=ob2->vertexarray1[j*3+2].v;      
-	  vta1[j*3+2].saved=0;
-	}
-
-      if (ob2->vertexarray2)
-	{
-	  vta2[j*3].indice=ob2->vertexarray2[j*3].indice;
-	  vta2[j*3].u=ob2->vertexarray2[j*3].u;
-	  vta2[j*3].v=ob2->vertexarray2[j*3].v;      
-	  vta2[j*3].saved=0;
-	  vta2[j*3+1].indice=ob2->vertexarray2[j*3+1].indice;
-	  vta2[j*3+1].u=ob2->vertexarray2[j*3+1].u;
-	  vta2[j*3+1].v=ob2->vertexarray2[j*3+1].v;      
-	  vta2[j*3+1].saved=0;
-	  vta2[j*3+2].indice=ob2->vertexarray2[j*3+2].indice;
-	  vta2[j*3+2].u=ob2->vertexarray2[j*3+2].u;
-	  vta2[j*3+2].v=ob2->vertexarray2[j*3+2].v;      
-	  vta2[j*3+2].saved=0;
-	}
-
-      if (ob2->vertexarray3)
-	{
-	  vta3[j*3].indice=ob2->vertexarray3[j*3].indice;
-	  vta3[j*3].u=ob2->vertexarray3[j*3].u;
-	  vta3[j*3].v=ob2->vertexarray3[j*3].v;      
-	  vta3[j*3].saved=0;
-	  vta3[j*3+1].indice=ob2->vertexarray3[j*3+1].indice;
-	  vta3[j*3+1].u=ob2->vertexarray3[j*3+1].u;
-	  vta3[j*3+1].v=ob2->vertexarray3[j*3+1].v;      
-	  vta3[j*3+1].saved=0;
-	  vta3[j*3+2].indice=ob2->vertexarray3[j*3+2].indice;
-	  vta3[j*3+2].u=ob2->vertexarray3[j*3+2].u;
-	  vta3[j*3+2].v=ob2->vertexarray3[j*3+2].v;      
-	  vta3[j*3+2].saved=0;
-	}
-    }
-
-
-
-		  
-
-
-  return obret;
-}
-#endif
 
 #define P2(x) ((x)*(x))
 
@@ -4242,31 +4447,44 @@ double  findDistmin(ob_t * ob1, ob_t *ob2)
   double di[16];
   double d=100000;
   int i;
-
-  di[1]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_min-ob2->y_min);
-  di[2]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_max-ob2->y_min);
-  di[3]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_max-ob2->y_max);
-  di[4]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_min-ob2->y_max);
-
-  di[5]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_max-ob2->y_max);
-  di[6]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_max-ob2->y_min);
-  di[7]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_min-ob2->y_min);
-  di[8]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_min-ob2->y_max);
-
-  di[9]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_min-ob2->y_min);
-  di[10]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_max-ob2->y_min);
-  di[11]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_max-ob2->y_max);
-  di[12]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_min-ob2->y_max);
-
-  di[13]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_max-ob2->y_max);
-  di[14]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_max-ob2->y_min);
-  di[15]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_min-ob2->y_min);
-  di[0]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_min-ob2->y_max);
-
-  d=di[0];
-  for (i=0; i<16; i++)
+  /*
+    di[1]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_min-ob2->y_min);
+    di[2]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_max-ob2->y_min);
+    di[3]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_max-ob2->y_max);
+    di[4]=P2(ob1->x_min-ob2->x_min)+P2(ob1->y_min-ob2->y_max);
+    
+    di[5]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_max-ob2->y_max);
+    di[6]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_max-ob2->y_min);
+    di[7]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_min-ob2->y_min);
+    di[8]=P2(ob1->x_max-ob2->x_max)+P2(ob1->y_min-ob2->y_max);
+    
+    di[9]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_min-ob2->y_min);
+    di[10]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_max-ob2->y_min);
+    di[11]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_max-ob2->y_max);
+    di[12]=P2(ob1->x_min-ob2->x_max)+P2(ob1->y_min-ob2->y_max);
+    
+    di[13]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_max-ob2->y_max);
+    di[14]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_max-ob2->y_min);
+    di[15]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_min-ob2->y_min);
+    di[0]=P2(ob1->x_max-ob2->x_min)+P2(ob1->y_min-ob2->y_max);
+    
+    d=di[0];
+    for (i=0; i<16; i++)
     if (di[i]<d)
-      d=di[i];
+    d=di[i];
+  */
+
+  for (i=0; i<ob1->numvert; i++)
+    for (int j=0; j<ob2->numvert; j++)
+      {
+	double a1=ob1->vertex[i].x; 
+	double b1=ob1->vertex[i].y; 
+	double a2=ob2->vertex[j].x; 
+	double b2=ob2->vertex[j].y; 
+	di[0]=P2(a1-a2)+P2(b1-b2);
+	if (di[0]<d)
+	  d=di[0];
+      }
 
   return d;
     

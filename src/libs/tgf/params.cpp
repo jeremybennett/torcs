@@ -1197,7 +1197,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 
 	case 7:			/* End Section */
 	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
-	    sprintf (buffer, "%s</section>\n", outCtrl->indent);
+	    sprintf (buffer, "%s</section>\n\n", outCtrl->indent);
 	    outCtrl->state = 8;
 	    return 1;
 
@@ -1212,7 +1212,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
 	    if (curSection->parent) {
 		outCtrl->curSection = curSection;
-		sprintf (buffer, "%s</section>\n", outCtrl->indent);
+		sprintf (buffer, "%s</section>\n\n", outCtrl->indent);
 		return 1;
 	    }
 	    outCtrl->state = 3;

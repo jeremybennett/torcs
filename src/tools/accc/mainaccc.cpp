@@ -43,6 +43,7 @@ char * fileL0=NULL;
 char * fileL1=NULL;
 char * fileL2=NULL;
 char * fileL3=NULL;
+char * OrderString=NULL;
 int d1=0;
 int d2=0;
 int d3=0;
@@ -60,7 +61,7 @@ extern double smooth_angle;
 void usage(void)
 {
     fprintf(stderr, "Ac3d Compiler $Revision$ \n");
-    fprintf(stderr, "Usage: accc [option] <inputfile> <outputfile> [dist]<\n");
+    fprintf(stderr, "Usage: accc [option] <inputfile> <outputfile> [dist][-order \"orderstring\"]<\n");
     /*fprintf(stderr, "-strip : stripify any ac3d output models\n");*/
     fprintf(stderr, "+o: ac3d to ac3d : the result file is optimized\n");
     fprintf(stderr, "                   in using groups by zone of track\n");
@@ -77,6 +78,12 @@ void usage(void)
     fprintf(stderr, "+shad: ac3d to ac3d with triangles, create a new ac3d file used for track shading\n   vertical mapping of a single texture \n");
     fprintf(stderr, "<inputfile>: \n");
     fprintf(stderr, "<oututfile>: \n");
+    fprintf(stderr, "-order \"orderstring\": only used with +es , +s and (not yet +et)  \n");
+    fprintf(stderr, "       \"orderstring\" is the order of the objects during the save\n");
+    fprintf(stderr, "        for example : \"HB;OB;OBM\" is the names of the objet separate\n");
+    fprintf(stderr, "        by a semicolon\n");
+    fprintf(stderr, "        for imported NFS cars the object name \"HB\" must be used instead\n");
+    fprintf(stderr, "        of \":HB\"\n");
     fprintf(stderr, "-g <outputfile>: for grouping multilayer ac3d track \n");
     fprintf(stderr, "     -l0 <input filename> : the base geometry\n");
     fprintf(stderr, "     -l1 <input filename> : the base geometry map-tiled \n");
@@ -223,10 +230,19 @@ void init_args(int argc, char **argv)
 	  InputFileName = strdup(argv[2]);
 	if (OutputFileName==NULL)
 	  OutputFileName = strdup(argv[3]);
-	
-	if (typeConvertion==_AC3DTOAC3D)
-	  if (argc==5)
-	    far_dist=atoi(argv[4]);
+
+	if (argc==7)
+	  {if (!strcmp(argv[5],"-order"))
+	      OrderString=argv[6];
+	  }
+	else
+	  if (typeConvertion==_AC3DTOAC3D)
+	    if (argc>=5)
+	      if (!strcmp(argv[4],"-order"))
+		OrderString=argv[5];
+	      else
+		far_dist=atoi(argv[4]);
+
       }
 }
 

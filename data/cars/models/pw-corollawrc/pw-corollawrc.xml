@@ -24,14 +24,22 @@
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
     <attnum name="tachometer max value" unit="rpm" val="10000"/>
-    <attstr name="speedometer texture" val="speed300.rgb"/>
+    <attstr name="speedometer texture" val="speed240.rgb"/>
     <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="300"/>
+    <attnum name="speedometer max value" unit="km/h" val="240"/>
 
     <section name="Ranges">
       <section name="1">
-	<attnum name="threshold" val="0"/>
+	<attnum name="threshold" val="10"/>
 	<attstr name="car" val="pw-corollawrc.acc"/>
+      </section>
+      <section name="2">
+	<attnum name="threshold" val="5"/>
+	<attstr name="car" val="pw-corollawrc-lod1.acc"/>
+      </section>
+      <section name="3">
+	<attnum name="threshold" val="0"/>
+	<attstr name="car" val="pw-corollawrc-lod2.acc"/>
       </section>
     </section>
   </section>

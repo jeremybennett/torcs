@@ -30,13 +30,19 @@
 #define _GNU_SOURCE
 #endif
 #include <math.h>
-
+#ifdef WIN32
+#include <windows.h>
+#else
+#define TRUE	1
+#define FALSE	0
+#endif
 #include "accc.h"
 
 
 extern int printOb(ob_t * ob);
 extern mat_t * root_material;
 extern void smoothTriNorm(ob_t * object ); 
+void reorder(ob_t * ob,ob_t * ob2, double    *textarray,tcoord_t      *vertexarray);
 void loadAndGroup( char *OutputFileName)
 {
   ob_t * ob0=NULL;
@@ -53,6 +59,7 @@ void loadAndGroup( char *OutputFileName)
   int good_group=0;
   int i=0;
   double dist=0;
+  int notinsameorder=FALSE;
 
   if (fileL0)
     {
@@ -102,6 +109,11 @@ void loadAndGroup( char *OutputFileName)
       tmpob=tmpob->next;
       continue;
     }
+    if (!strcmp(tmpob->type,"group"))
+      {
+	tmpob=tmpob->next;
+	continue;
+      }
      
     tmpob2=ob1;
     while (tmpob2!=NULL) {
@@ -117,12 +129,30 @@ void loadAndGroup( char *OutputFileName)
 	tmpob2=tmpob2->next;
 	continue;
       }
+      if (!strcmp(tmpob->type,"group")){
+	tmpob2=tmpob2->next;
+	continue;
+      }
+      notinsameorder=FALSE;
       if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob1 */
 	  tmpob->texture1=tmpob2->texture;
 	  tmpob->textarray1=tmpob2->textarray;
 	  tmpob->vertexarray1=tmpob2->vertexarray;
+	  for (i=0; i<tmpob->numvert; i++)
+	    if (       fabs(tmpob->vertex[i].x - tmpob2->vertex[i].x )>MINVAL || 
+		       fabs(tmpob->vertex[i].y - tmpob2->vertex[i].y )>MINVAL ||
+		       fabs(tmpob->vertex[i].z - tmpob2->vertex[i].z )>MINVAL )
+	      {
+		notinsameorder=TRUE;
+	      }
+	  if (notinsameorder==TRUE)
+	    {
+	      printf("%s : points not in the same order, reordering ...\n",tmpob->name);
+	      reorder(tmpob,tmpob2,tmpob->textarray1,tmpob->vertexarray1 );
+	      printf("%s : reordering ... done\n",tmpob->name);
+	    }
 	  break;
 	}
       tmpob2=tmpob2->next;
@@ -142,6 +172,12 @@ void loadAndGroup( char *OutputFileName)
 	tmpob2=tmpob2->next;
 	continue;
       }
+
+      if (!strcmp(tmpob->type,"group")){
+	tmpob2=tmpob2->next;
+	continue;
+      }
+
       if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob2 */
@@ -164,6 +200,10 @@ void loadAndGroup( char *OutputFileName)
 	continue;
       }
       if (!strcmp(tmpob2->name, "world")){
+	tmpob2=tmpob2->next;
+	continue;
+      }
+      if (!strcmp(tmpob->type,"group")){
 	tmpob2=tmpob2->next;
 	continue;
       }
@@ -243,6 +283,7 @@ void loadAndGroup( char *OutputFileName)
       array_groups[i].tkmn=tmpob;
       array_groups[i].numkids=1;
       array_groups[i].name=tmpob->name;
+      array_groups[i].tkmnlabel=atoi(tmpob->name+4);
       array_groups[i].kids=NULL;
       array_groups[i].kids0=NULL;
       array_groups[i].kids1=NULL;
@@ -288,6 +329,25 @@ void loadAndGroup( char *OutputFileName)
 	  {
 	    tmpob->dist_min=dist;
 	    good_group=i;
+	  }
+	if (    !strnicmp(tmpob->name, "t0RB",4)
+		|| !strnicmp(tmpob->name, "t1RB",4)
+		|| !strnicmp(tmpob->name, "t2RB",4)
+		|| !strnicmp(tmpob->name, "tkRS",4)
+		|| !strnicmp(tmpob->name, "t0LB",4)
+		|| !strnicmp(tmpob->name, "t1LB",4)
+		|| !strnicmp(tmpob->name, "t2LB",4)
+		|| !strnicmp(tmpob->name, "tkLS",4)
+		|| !strnicmp(tmpob->name, "BOLt",4)
+		|| !strnicmp(tmpob->name, "BORt",4)
+		)
+	  {
+	    if (atoi(tmpob->name+4)==array_groups[i].tkmnlabel)
+	      {
+		printf( "object %s is forced in group %d \n",tmpob->name,array_groups[i].tkmnlabel);
+		good_group=i;
+		break;
+	      }
 	  }
       }
     if (good_group==-1)
@@ -417,23 +477,27 @@ void loadAndGroup( char *OutputFileName)
 
     }
 
-#ifdef NEWSRC
+  /*#ifdef NEWSRC*/
   for (i=0; i<num_tkmn; i++)
     {
+      int red=0;
       if (array_groups[i].numkids3>0)
 	{
-	  mergeSplitted(&(array_groups[i].kids3));
+	  red=mergeSplitted(&(array_groups[i].kids3));
+	  array_groups[i].numkids3-=red;
 	}
       if (array_groups[i].numkids2>0)
 	{
-	  mergeSplitted(&(array_groups[i].kids2));
+	  red=mergeSplitted(&(array_groups[i].kids2));
+	  array_groups[i].numkids2-=red;
 	}
       if (array_groups[i].numkids1>0)
 	{
-	  mergeSplitted(&(array_groups[i].kids1));
+	  red=mergeSplitted(&(array_groups[i].kids1));
+	  array_groups[i].numkids1-=red;
 	}
     }
-#endif
+  /*#endif*/
 
 
   fprintf(stderr,"writing destination file %s\n",OutputFileName);
@@ -553,4 +617,68 @@ void loadAndGroup( char *OutputFileName)
 
 
 
+void reorder(ob_t * ob,ob_t * ob2, double    *textarray,tcoord_t      *vertexarray)
+{
+  int i=0;
+  int j=0;
+  int k=0;
+
+  for (i=0; i<ob->numvert; i++)
+    {
+      if ((ob->vertex[i].x != ob2->vertex[i].x ) || (ob->vertex[i].y != ob2->vertex[i].y )
+	  || (ob->vertex[i].z != ob2->vertex[i].z ))
+	{
+	  for (j=0; j<ob->numvert; j++)
+	    {
+	      if ((ob->vertex[i].x==ob2->vertex[i].x) &&
+		  (ob->vertex[i].y==ob2->vertex[i].y) &&
+		  (ob->vertex[i].z==ob2->vertex[i].z) )
+		{
+		  double tx, ty, tz;
+		  double tu,tv;
+		  int tindice;
+		  int tsaved;
+		  double text;
+
+		  k++;
+
+		  tx=ob2->vertex[i].x;
+		  ty=ob2->vertex[i].y;
+		  tz=ob2->vertex[i].z;
+		  ob2->vertex[i].x=ob2->vertex[j].x;
+		  ob2->vertex[i].y=ob2->vertex[j].y;
+		  ob2->vertex[i].z=ob2->vertex[j].z;
+		  ob2->vertex[j].x=tx;
+		  ob2->vertex[j].y=ty;
+		  ob2->vertex[j].z=tz;
+		  
+		  tu=vertexarray[i].u;
+		  tv=vertexarray[i].v;
+		  tindice=vertexarray[i].indice;
+		  tsaved=vertexarray[i].saved;
+		  vertexarray[i].u=vertexarray[j].u;
+		  vertexarray[i].v=vertexarray[j].v;
+		  vertexarray[i].indice=vertexarray[j].indice;
+		  vertexarray[i].saved=vertexarray[j].saved;
+		  vertexarray[j].u=tu;
+		  vertexarray[j].v=tv;
+		  vertexarray[j].saved=tsaved;
+		  vertexarray[j].indice=tindice;
+		  
+		  text=textarray[i*2];
+		  textarray[i*2]=textarray[j*2];
+		  textarray[j*2]=text;
+		  text=textarray[i*2+1];
+		  textarray[i*2+1]=textarray[j*2+1];
+		  textarray[j*2+1]=text;
+		  
+		}
+						       
+	    }
+	}
+      
+    }
+  printf("%s : reordered %d points\n",ob->name,k);
+  return;
+}
 

@@ -18,12 +18,16 @@
 
 DATADIR   = cars/vm-x2
 
-DATA      = 	readme.txt \
+DATA      = 	$(shell find *.txt -maxdepth 0 -type f -print) \
 		$(shell find *.xml -maxdepth 0 -type f -print) \
 		$(shell find *.acc -maxdepth 0 -type f -print) \
 		$(shell find *.rgb -maxdepth 0 -type f -print)
 
-DATA_devel = 	$(shell find * -maxdepth 0 -type f -print) \
+DATA_devel = 	$(shell find * -maxdepth 0 -type f -print)
+
+data-cars-VM_PKGFILES	= $(DATA)
+
+data-cars-VM_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

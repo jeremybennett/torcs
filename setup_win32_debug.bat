@@ -79,22 +79,6 @@ if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\*.* call .\create_dir
 if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include\SOLID
 if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h copy .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
 
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export\include
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export\include\3D
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Basic.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Basic.h .\export\include\3D\Basic.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Matrix.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Matrix.h .\export\include\3D\Matrix.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Point.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Point.h .\export\include\3D\Point.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Quaternion.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Quaternion.h .\export\include\3D\Quaternion.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple3.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple3.h .\export\include\3D\Tuple3.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple4.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple4.h .\export\include\3D\Tuple4.h
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Vector.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Vector.h .\export\include\3D\Vector.h
-
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include\SOLID
-if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\solid.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
-
 if exist .\src\drivers\astigot\0\practice\*.* call .\create_dir .\runtimed
 if exist .\src\drivers\astigot\0\practice\*.* call .\create_dir .\runtimed\drivers
 if exist .\src\drivers\astigot\0\practice\*.* call .\create_dir .\runtimed\drivers\astigot
@@ -865,6 +849,7 @@ if exist .\src\drivers\berniw2\6\*.* call .\create_dir .\runtimed\drivers\berniw
 if exist .\src\drivers\berniw2\6\aalborg.xml copy .\src\drivers\berniw2\6\aalborg.xml .\runtimed\drivers\berniw2\6\aalborg.xml
 if exist .\src\drivers\berniw2\6\alpine-1.xml copy .\src\drivers\berniw2\6\alpine-1.xml .\runtimed\drivers\berniw2\6\alpine-1.xml
 if exist .\src\drivers\berniw2\6\a-speedway.xml copy .\src\drivers\berniw2\6\a-speedway.xml .\runtimed\drivers\berniw2\6\a-speedway.xml
+if exist .\src\drivers\berniw2\6\default.xml copy .\src\drivers\berniw2\6\default.xml .\runtimed\drivers\berniw2\6\default.xml
 if exist .\src\drivers\berniw2\6\dirt-1.xml copy .\src\drivers\berniw2\6\dirt-1.xml .\runtimed\drivers\berniw2\6\dirt-1.xml
 if exist .\src\drivers\berniw2\6\dirt-2.xml copy .\src\drivers\berniw2\6\dirt-2.xml .\runtimed\drivers\berniw2\6\dirt-2.xml
 if exist .\src\drivers\berniw2\6\dirt-3.xml copy .\src\drivers\berniw2\6\dirt-3.xml .\runtimed\drivers\berniw2\6\dirt-3.xml
@@ -884,6 +869,7 @@ if exist .\src\drivers\berniw2\6\g-track-3.xml copy .\src\drivers\berniw2\6\g-tr
 if exist .\src\drivers\berniw2\6\michigan.xml copy .\src\drivers\berniw2\6\michigan.xml .\runtimed\drivers\berniw2\6\michigan.xml
 if exist .\src\drivers\berniw2\6\mixed-1.xml copy .\src\drivers\berniw2\6\mixed-1.xml .\runtimed\drivers\berniw2\6\mixed-1.xml
 if exist .\src\drivers\berniw2\6\mixed-2.xml copy .\src\drivers\berniw2\6\mixed-2.xml .\runtimed\drivers\berniw2\6\mixed-2.xml
+if exist .\src\drivers\berniw2\6\spring.xml copy .\src\drivers\berniw2\6\spring.xml .\runtimed\drivers\berniw2\6\spring.xml
 if exist .\src\drivers\berniw2\6\wheel-1.xml copy .\src\drivers\berniw2\6\wheel-1.xml .\runtimed\drivers\berniw2\6\wheel-1.xml
 
 if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtimed
@@ -925,6 +911,7 @@ if exist .\src\drivers\berniw2\8\clkdtm.rgb copy .\src\drivers\berniw2\8\clkdtm.
 if exist .\src\drivers\berniw2\8\aalborg.xml copy .\src\drivers\berniw2\8\aalborg.xml .\runtimed\drivers\berniw2\8\aalborg.xml
 if exist .\src\drivers\berniw2\8\alpine-1.xml copy .\src\drivers\berniw2\8\alpine-1.xml .\runtimed\drivers\berniw2\8\alpine-1.xml
 if exist .\src\drivers\berniw2\8\a-speedway.xml copy .\src\drivers\berniw2\8\a-speedway.xml .\runtimed\drivers\berniw2\8\a-speedway.xml
+if exist .\src\drivers\berniw2\8\default.xml copy .\src\drivers\berniw2\8\default.xml .\runtimed\drivers\berniw2\8\default.xml
 if exist .\src\drivers\berniw2\8\dirt-1.xml copy .\src\drivers\berniw2\8\dirt-1.xml .\runtimed\drivers\berniw2\8\dirt-1.xml
 if exist .\src\drivers\berniw2\8\dirt-2.xml copy .\src\drivers\berniw2\8\dirt-2.xml .\runtimed\drivers\berniw2\8\dirt-2.xml
 if exist .\src\drivers\berniw2\8\dirt-3.xml copy .\src\drivers\berniw2\8\dirt-3.xml .\runtimed\drivers\berniw2\8\dirt-3.xml
@@ -1089,6 +1076,7 @@ if exist .\src\drivers\damned\7\*.* call .\create_dir .\runtimed\drivers\damned\
 if exist .\src\drivers\damned\7\porsche-gt1.rgb copy .\src\drivers\damned\7\porsche-gt1.rgb .\runtimed\drivers\damned\7\porsche-gt1.rgb
 if exist .\src\drivers\damned\7\logo.rgb copy .\src\drivers\damned\7\logo.rgb .\runtimed\drivers\damned\7\logo.rgb
 if exist .\src\drivers\damned\7\car.xml copy .\src\drivers\damned\7\car.xml .\runtimed\drivers\damned\7\car.xml
+if exist .\src\drivers\damned\7\car-dirt.xml copy .\src\drivers\damned\7\car-dirt.xml .\runtimed\drivers\damned\7\car-dirt.xml
 
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\runtimed
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\runtimed\drivers
@@ -1544,6 +1532,7 @@ if exist .\src\drivers\inferno\6\tracksdata\aalborg.xml copy .\src\drivers\infer
 if exist .\src\drivers\inferno\6\tracksdata\a-speedway.xml copy .\src\drivers\inferno\6\tracksdata\a-speedway.xml .\runtimed\drivers\inferno\6\tracksdata\a-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-4.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-3.xml
@@ -1713,6 +1702,13 @@ if exist .\src\drivers\inferno\inferno.xml copy .\src\drivers\inferno\inferno.xm
 if exist .\src\drivers\inferno\car1.xml copy .\src\drivers\inferno\car1.xml .\runtimed\drivers\inferno\car1.xml
 if exist .\src\drivers\inferno\logo.rgb copy .\src\drivers\inferno\logo.rgb .\runtimed\drivers\inferno\logo.rgb
 if exist .\src\drivers\inferno\mclaren-f1.rgb copy .\src\drivers\inferno\mclaren-f1.rgb .\runtimed\drivers\inferno\mclaren-f1.rgb
+
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed\drivers
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed\drivers\inferno2
+if exist .\src\drivers\inferno2\inferno2.xml copy .\src\drivers\inferno2\inferno2.xml .\runtimed\drivers\inferno2\inferno2.xml
+if exist .\src\drivers\inferno2\car1.xml copy .\src\drivers\inferno2\car1.xml .\runtimed\drivers\inferno2\car1.xml
+if exist .\src\drivers\inferno2\logo.rgb copy .\src\drivers\inferno2\logo.rgb .\runtimed\drivers\inferno2\logo.rgb
 
 if exist .\src\drivers\K1999\1\*.* call .\create_dir .\runtimed
 if exist .\src\drivers\K1999\1\*.* call .\create_dir .\runtimed\drivers
@@ -2686,6 +2682,7 @@ if exist .\src\drivers\berniw2\6\*.* call .\create_dir .\runtimed\drivers\berniw
 if exist .\src\drivers\berniw2\6\aalborg.xml copy .\src\drivers\berniw2\6\aalborg.xml .\runtimed\drivers\berniw2\6\aalborg.xml
 if exist .\src\drivers\berniw2\6\alpine-1.xml copy .\src\drivers\berniw2\6\alpine-1.xml .\runtimed\drivers\berniw2\6\alpine-1.xml
 if exist .\src\drivers\berniw2\6\a-speedway.xml copy .\src\drivers\berniw2\6\a-speedway.xml .\runtimed\drivers\berniw2\6\a-speedway.xml
+if exist .\src\drivers\berniw2\6\default.xml copy .\src\drivers\berniw2\6\default.xml .\runtimed\drivers\berniw2\6\default.xml
 if exist .\src\drivers\berniw2\6\dirt-1.xml copy .\src\drivers\berniw2\6\dirt-1.xml .\runtimed\drivers\berniw2\6\dirt-1.xml
 if exist .\src\drivers\berniw2\6\dirt-2.xml copy .\src\drivers\berniw2\6\dirt-2.xml .\runtimed\drivers\berniw2\6\dirt-2.xml
 if exist .\src\drivers\berniw2\6\dirt-3.xml copy .\src\drivers\berniw2\6\dirt-3.xml .\runtimed\drivers\berniw2\6\dirt-3.xml
@@ -2705,6 +2702,7 @@ if exist .\src\drivers\berniw2\6\g-track-3.xml copy .\src\drivers\berniw2\6\g-tr
 if exist .\src\drivers\berniw2\6\michigan.xml copy .\src\drivers\berniw2\6\michigan.xml .\runtimed\drivers\berniw2\6\michigan.xml
 if exist .\src\drivers\berniw2\6\mixed-1.xml copy .\src\drivers\berniw2\6\mixed-1.xml .\runtimed\drivers\berniw2\6\mixed-1.xml
 if exist .\src\drivers\berniw2\6\mixed-2.xml copy .\src\drivers\berniw2\6\mixed-2.xml .\runtimed\drivers\berniw2\6\mixed-2.xml
+if exist .\src\drivers\berniw2\6\spring.xml copy .\src\drivers\berniw2\6\spring.xml .\runtimed\drivers\berniw2\6\spring.xml
 if exist .\src\drivers\berniw2\6\wheel-1.xml copy .\src\drivers\berniw2\6\wheel-1.xml .\runtimed\drivers\berniw2\6\wheel-1.xml
 
 if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtimed
@@ -2746,6 +2744,7 @@ if exist .\src\drivers\berniw2\8\clkdtm.rgb copy .\src\drivers\berniw2\8\clkdtm.
 if exist .\src\drivers\berniw2\8\aalborg.xml copy .\src\drivers\berniw2\8\aalborg.xml .\runtimed\drivers\berniw2\8\aalborg.xml
 if exist .\src\drivers\berniw2\8\alpine-1.xml copy .\src\drivers\berniw2\8\alpine-1.xml .\runtimed\drivers\berniw2\8\alpine-1.xml
 if exist .\src\drivers\berniw2\8\a-speedway.xml copy .\src\drivers\berniw2\8\a-speedway.xml .\runtimed\drivers\berniw2\8\a-speedway.xml
+if exist .\src\drivers\berniw2\8\default.xml copy .\src\drivers\berniw2\8\default.xml .\runtimed\drivers\berniw2\8\default.xml
 if exist .\src\drivers\berniw2\8\dirt-1.xml copy .\src\drivers\berniw2\8\dirt-1.xml .\runtimed\drivers\berniw2\8\dirt-1.xml
 if exist .\src\drivers\berniw2\8\dirt-2.xml copy .\src\drivers\berniw2\8\dirt-2.xml .\runtimed\drivers\berniw2\8\dirt-2.xml
 if exist .\src\drivers\berniw2\8\dirt-3.xml copy .\src\drivers\berniw2\8\dirt-3.xml .\runtimed\drivers\berniw2\8\dirt-3.xml
@@ -2910,6 +2909,7 @@ if exist .\src\drivers\damned\7\*.* call .\create_dir .\runtimed\drivers\damned\
 if exist .\src\drivers\damned\7\porsche-gt1.rgb copy .\src\drivers\damned\7\porsche-gt1.rgb .\runtimed\drivers\damned\7\porsche-gt1.rgb
 if exist .\src\drivers\damned\7\logo.rgb copy .\src\drivers\damned\7\logo.rgb .\runtimed\drivers\damned\7\logo.rgb
 if exist .\src\drivers\damned\7\car.xml copy .\src\drivers\damned\7\car.xml .\runtimed\drivers\damned\7\car.xml
+if exist .\src\drivers\damned\7\car-dirt.xml copy .\src\drivers\damned\7\car-dirt.xml .\runtimed\drivers\damned\7\car-dirt.xml
 
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\runtimed
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\runtimed\drivers
@@ -3365,6 +3365,7 @@ if exist .\src\drivers\inferno\6\tracksdata\aalborg.xml copy .\src\drivers\infer
 if exist .\src\drivers\inferno\6\tracksdata\a-speedway.xml copy .\src\drivers\inferno\6\tracksdata\a-speedway.xml .\runtimed\drivers\inferno\6\tracksdata\a-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-4.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml .\runtimed\drivers\inferno\6\tracksdata\car_e-track-6.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml .\runtimed\drivers\inferno\6\tracksdata\car_g-track-3.xml
@@ -3534,6 +3535,13 @@ if exist .\src\drivers\inferno\inferno.xml copy .\src\drivers\inferno\inferno.xm
 if exist .\src\drivers\inferno\car1.xml copy .\src\drivers\inferno\car1.xml .\runtimed\drivers\inferno\car1.xml
 if exist .\src\drivers\inferno\logo.rgb copy .\src\drivers\inferno\logo.rgb .\runtimed\drivers\inferno\logo.rgb
 if exist .\src\drivers\inferno\mclaren-f1.rgb copy .\src\drivers\inferno\mclaren-f1.rgb .\runtimed\drivers\inferno\mclaren-f1.rgb
+
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed\drivers
+if exist .\src\drivers\inferno2\*.* call .\create_dir .\runtimed\drivers\inferno2
+if exist .\src\drivers\inferno2\inferno2.xml copy .\src\drivers\inferno2\inferno2.xml .\runtimed\drivers\inferno2\inferno2.xml
+if exist .\src\drivers\inferno2\car1.xml copy .\src\drivers\inferno2\car1.xml .\runtimed\drivers\inferno2\car1.xml
+if exist .\src\drivers\inferno2\logo.rgb copy .\src\drivers\inferno2\logo.rgb .\runtimed\drivers\inferno2\logo.rgb
 
 if exist .\src\drivers\K1999\1\*.* call .\create_dir .\runtimed
 if exist .\src\drivers\K1999\1\*.* call .\create_dir .\runtimed\drivers
@@ -3772,6 +3780,10 @@ call .\create_dir .\runtimed\drivers\human
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\inferno
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\drivers
+call .\create_dir .\runtimed\drivers\inferno2
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers

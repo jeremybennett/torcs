@@ -22,11 +22,25 @@
     <attstr name="env" val="pw-focuswrc.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
+    <attstr name="tachometer texture" val="rpm8500.rgb"/>
+    <attnum name="tachometer min value" unit="rpm" val="0"/>
+    <attnum name="tachometer max value" unit="rpm" val="10000"/>
+    <attstr name="speedometer texture" val="speed240.rgb"/>
+    <attnum name="speedometer min value" unit="km/h" val="0"/>
+    <attnum name="speedometer max value" unit="km/h" val="240"/>
 
     <section name="Ranges">
       <section name="1">
-	<attnum name="distance" unit="km" val="500"/>
+	<attnum name="threshold" val="10"/>
 	<attstr name="car" val="pw-focuswrc.acc"/>
+      </section>
+      <section name="2">
+	<attnum name="threshold" val="5"/>
+	<attstr name="car" val="pw-focuswrc-lod1.acc"/>
+      </section>
+      <section name="3">
+	<attnum name="threshold" val="0"/>
+	<attstr name="car" val="pw-focuswrc-lod2.acc"/>
       </section>
     </section>
   </section>
