@@ -28,6 +28,12 @@
     <attnum name="zpos" val="1.0" unit="m"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="mclarenf1.wav"/>
+	<attnum name="rpm scale" val="0.7"/>
+  </section>
+
+
   <section name="Graphic Objects">
     <attstr name="env" val="mclaren-f1.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
