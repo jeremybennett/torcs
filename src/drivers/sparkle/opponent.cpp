@@ -71,13 +71,13 @@ void Opponent::update(tSituation *s, Driver *driver)
 			distance -= MAX(car->_dimension_x, mycar->_dimension_x);
 			distance -= LENGTH_MARGIN;
 
-			// if the distance is small we compute it more accurate */
+			/* if the distance is small we compute it more accurate */
 			if (distance < 7.0) {
 				Straight carFrontLine(
 					mycar->_corner_x(FRNT_LFT),
 					mycar->_corner_y(FRNT_LFT),
 					mycar->_corner_x(FRNT_RGT),
-					mycar->_corner_x(FRNT_RGT)
+					mycar->_corner_y(FRNT_RGT)
 				);
 
 				float mindist = FLT_MAX;
