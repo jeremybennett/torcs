@@ -18,7 +18,7 @@
 
 DATADIR   = cars/cg-nascar-rwd
 
-DATA      = cg-nascar-rwd.xml cg-nascar-rwd.ac cg-nascar-rwd-lod1.ac cg-nascar-rwd.rgb tex-wheel.rgb
+DATA      = cg-nascar-rwd.xml cg-nascar-rwd.ac cg-nascar-rwd-lod1.ac cg-nascar-rwd.rgb tex-wheel.rgb cg-nascar-rwd-src.ac
 
 data-cars-gt_PKGFILES= $(DATA)
 

@@ -24,6 +24,9 @@
 #include <plib/ssg.h>
 /*#include "ssgLocal.h"*/
 #include "grssgext.h"
+#include "grvtxtable.h"
+#include "grmultitexstate.h"
+#include "grmain.h"
 int inGroup=0;
 
 static FILE *loader_fd ;
@@ -37,19 +40,36 @@ struct _ssgMaterial
 } ;
 
 static int		num_materials = 0 ;
-static sgVec3		*vtab = NULL ;
-static sgVec3		*ntab = NULL ;
+static sgVec3		*vtab  = NULL ;
+static sgVec3		*ntab  = NULL ;
+static sgVec2           *t0tab = NULL;
+static sgVec2           *t1tab = NULL;
+static sgVec2           *t2tab = NULL;
+static sgVec2           *t3tab = NULL;
+static ssgIndexArray    *vertlist=NULL;
+static ssgIndexArray    *striplist=NULL;
+static int              totalnv=0;
+static int              totalstripe=0;
 static int		usenormal = 0;
 static int		nv;
 static int		isacar = TRUE;
+static int              usestrip=TRUE;
+static int              usegroup=TRUE;
+static int              mapLevel;
+static int              numMapLevel;
+static int              indexCar;
 
 static ssgLoaderOptions	*current_options  = NULL ;
 static _ssgMaterial	*current_material = NULL ;
 static sgVec4		*current_colour   = NULL ;
 static ssgBranch	*current_branch   = NULL ;
 static char		*current_tfname   = NULL ;
+static char		*current_tbase    = NULL ;
+static char		*current_ttiled   = NULL ;
+static char		*current_tskids   = NULL ;
+static char		*current_tshad    = NULL ;
 static char		*current_data     = NULL ;
-
+#define NOTEXTURE "empty_texture_no_mapping"
 #define MAX_MATERIALS 1000    /* This *ought* to be enough! */
 static _ssgMaterial   *mlist    [ MAX_MATERIALS ] ;
 static sgVec4         *clist    [ MAX_MATERIALS ] ;
@@ -115,7 +135,7 @@ static void skip_quotes ( char **s )
 
     *t = '\0' ;
   }
-  else
+  else 
     ulSetError ( UL_WARNING, "ac_to_gl: Expected double-quote ('\"') in '%s'", *s ) ;
 }
 
@@ -204,6 +224,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
 {
   if (current_tfname != NULL) {
     ssgState *st = current_options -> createState ( current_tfname ) ;
+    /*printf("creating texture : %s\n",current_tfname);*/
     if ( st != NULL )
       return st ;
   }
@@ -239,7 +260,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
     if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL)
       {
 	st -> enable  ( GL_BLEND );
-	st->setAlphaClamp(0.2);
+	st->setAlphaClamp(0.65);
 	st -> enable ( GL_ALPHA_TEST ) ;
       }
   } else {
@@ -247,6 +268,30 @@ static ssgState *get_state ( _ssgMaterial *mat )
     st -> disable( GL_TEXTURE_2D ) ;
   }
 
+  return st ;
+}
+
+static ssgState *get_state_ext ( char * name)
+{
+  if (name==NULL)
+    return NULL;
+  grMultiTexState *st = new grMultiTexState () ;
+  st -> disable ( GL_BLEND ) ;
+  st -> setOpaque () ;
+
+  if (name != NULL) {
+    st -> setTexture( current_options -> createTexture(name) ) ;
+    st -> enable( GL_TEXTURE_2D ) ;
+    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL)
+      {
+	st -> enable  ( GL_BLEND );
+	st->setAlphaClamp(0.7);
+	st -> enable ( GL_ALPHA_TEST ) ;
+      }
+  } else {
+    st -> disable  ( GL_BLEND ) ;
+    st -> disable( GL_TEXTURE_2D ) ;
+  }
   return st ;
 }
 
@@ -359,6 +404,9 @@ static int do_name ( char *s )
   char *q=NULL;
   skip_quotes ( &s ) ;
 
+  if (strstr(s,"__TKMN"))
+    usegroup=TRUE;
+
   if (!strncmp(s, "TKMN",4))
       {
 	q=strstr(s,"_g");
@@ -408,16 +456,76 @@ static int do_data     ( char *s )
 
 static int do_texture  ( char *s )
 {
-  skip_quotes ( &s ) ;
-
-  delete current_tfname ;
+  char *p ;
 
   if ( s == NULL || s[0] == '\0' )
     current_tfname = NULL ;
   else
   {
-    current_tfname = new char [ strlen(s)+1 ] ;
-    strcpy ( current_tfname, s ) ;
+    if ((p=strstr(s," base"))!=NULL)
+      {
+	*p='\0';
+	numMapLevel=1;
+	mapLevel=LEVEL0;
+	delete current_tbase ;
+	delete current_tfname ;
+	skip_quotes ( &s ) ;
+	current_tbase = new char [ strlen(s)+1 ] ;
+	current_tfname = new char [ strlen(s)+1 ] ;
+	strcpy ( current_tbase, s ) ;
+	strcpy ( current_tfname, s ) ;
+      }
+    else  if ((p=strstr(s," tiled"))!=NULL)
+      {
+	*p='\0';
+	delete current_ttiled ;
+	current_ttiled=NULL;
+	if (!strstr(s,NOTEXTURE))
+	  {
+	    numMapLevel++;;
+	    mapLevel|=LEVEL1;
+	    skip_quotes ( &s ) ;
+	    current_ttiled = new char [ strlen(s)+1 ] ;
+	    strcpy ( current_ttiled, s ) ;
+	  }
+      }
+    else  if ((p=strstr(s," skids"))!=NULL)
+      {
+	*p='\0';
+	delete current_tskids ;
+	current_tskids=NULL;
+	if (!strstr(s,NOTEXTURE))
+	  {
+	    numMapLevel++;;
+	    mapLevel|=LEVEL2;
+	    skip_quotes ( &s ) ;
+	    current_tskids = new char [ strlen(s)+1 ] ;
+	    strcpy ( current_tskids, s ) ;
+	  }
+      }
+    else  if ((p=strstr(s," shad"))!=NULL)
+      {
+	*p='\0';
+	delete current_tshad ;
+	current_tshad=NULL;
+	if (!strstr(s,NOTEXTURE))
+	  {
+	    numMapLevel++;;
+	    mapLevel|=LEVEL3;
+	    skip_quotes ( &s ) ;
+	    current_tshad = new char [ strlen(s)+1 ] ;
+	    strcpy ( current_tshad, s ) ;
+	  }
+      }
+    else
+      {
+	skip_quotes ( &s ) ;
+	numMapLevel=1;
+	mapLevel=LEVEL0;
+	delete current_tfname ;
+	current_tfname = new char [ strlen(s)+1 ] ;
+	strcpy ( current_tfname, s ) ;
+      }
   }
 
   return PARSE_CONT ;
@@ -488,9 +596,21 @@ static int do_numvert  ( char *s )
  
   delete [] vtab ;
   delete [] ntab ;
+  delete [] t0tab ;
+  delete [] t1tab ;
+  delete [] t2tab ;
+  delete [] t3tab ;
+  totalnv=nv;
+  totalstripe=0;
 
   vtab = new sgVec3 [ nv ] ;
   ntab = new sgVec3 [ nv ] ;
+  t0tab = new sgVec2 [ nv ] ;
+  t1tab = new sgVec2 [ nv ] ;
+  t2tab = new sgVec2 [ nv ] ;
+  t3tab = new sgVec2 [ nv ] ;
+  vertlist=new ssgIndexArray ();
+  striplist=new ssgIndexArray ();
 
   for ( int i = 0 ; i < nv ; i++ )
   {
@@ -572,8 +692,18 @@ static int do_refs     ( char *s )
 
   ssgVertexArray   *vlist = new ssgVertexArray ( nrefs ) ;
   ssgTexCoordArray *tlist = new ssgTexCoordArray ( nrefs ) ;
+  ssgTexCoordArray *tlist1 = NULL;
+  ssgTexCoordArray *tlist2 = NULL;
+  ssgTexCoordArray *tlist3 = NULL;
   ssgIndexArray	   *vindices = new ssgIndexArray(nrefs);
   ssgNormalArray   *nrm = new ssgNormalArray ( nrefs ) ;
+
+  if (numMapLevel>1)
+    tlist1=new ssgTexCoordArray ( nrefs ) ;
+  if (numMapLevel>2)
+    tlist2=new ssgTexCoordArray ( nrefs ) ;
+  if (numMapLevel>3)
+    tlist3=new ssgTexCoordArray ( nrefs ) ;
 
   for ( int i = 0 ; i < nrefs ; i++ )
   {
@@ -581,24 +711,51 @@ static int do_refs     ( char *s )
 
     int vtx ;
     sgVec2 tc ;
+    sgVec2 tc1 ;
+    sgVec2 tc2 ;
+    sgVec2 tc3 ;
+    int tn=0;
+    tn= sscanf ( buffer, "%d %f %f %f %f %f %f %f %f", &vtx,
+		 &tc[0],&tc[1],
+		 &tc1[0],&tc1[1],
+		 &tc2[0],&tc2[1],
+		 &tc3[0],&tc3[1]);
 
-    if ( sscanf ( buffer, "%d %f %f", &vtx,
-                                      &tc[0],
-                                      &tc[1] ) != 3 )
-    {
-      ulSetError ( UL_FATAL, "ac_to_gl: Illegal ref record." ) ;
-    }
-
+    if (tn < 3 )
+      {
+	ulSetError ( UL_FATAL, "ac_to_gl: Illegal ref record not enough text coord." ) ;
+      }
+	
     tc[0] *= texrep[0] ;
     tc[1] *= texrep[1] ;
     tc[0] += texoff[0] ;
     tc[1] += texoff[1] ;
 
     tlist -> add ( tc ) ;
+    t0tab[vtx][0]=tc[0];
+    t0tab[vtx][1]=tc[1];
+
+    t1tab[vtx][0]=tc1[0];
+    t1tab[vtx][1]=tc1[1];
+
+    t2tab[vtx][0]=tc2[0];
+    t2tab[vtx][1]=tc2[1];
+
+    t3tab[vtx][0]=tc2[0];
+    t3tab[vtx][1]=tc2[1];
+
+    if (numMapLevel>1)
+      tlist1 -> add ( tc1 ) ;
+    if (numMapLevel>2)
+      tlist2 -> add ( tc2 ) ;
+    if (numMapLevel>3)
+      tlist3 -> add ( tc3 ) ;
+
     vlist -> add ( vtab[vtx] ) ;
     if (usenormal==1)
       nrm -> add ( ntab[vtx] ) ;
     vindices-> add (i);
+    vertlist->add(vtx);
   }
 #ifdef GUIONS
   if (usenormal==1)
@@ -637,10 +794,12 @@ static int do_refs     ( char *s )
       case 2 : gltype = GL_LINE_STRIP ;
                break ;
       case 4 : gltype = GL_TRIANGLE_STRIP ;
+	       usestrip=TRUE;
                break ;
     }
-    /* GUIONS TEST */
+
 #ifdef NORMAL_TEST
+    /* GUIONS TEST that draw all the normals of a car */
     if(  isacar==TRUE)
       {
 	ssgVertexArray   *vlinelist = new ssgVertexArray ( nv*2 ) ;
@@ -650,36 +809,76 @@ static int do_refs     ( char *s )
 	    tv[0]=ntab[i][0]*0.2 +vtab[i][0]  ;
 	    tv[1]=ntab[i][1]*0.2 +vtab[i][1] ;
 	    tv[2]=ntab[i][2]*0.2 +vtab[i][2];
-	    
 	    vlinelist -> add ( vtab[i] ) ;
 	    vlinelist -> add ( tv ) ;
-	    
 	  }
 	ssgVtxTable * vline=new ssgVtxTable(GL_LINES,vlinelist,NULL,NULL,NULL   );
 	current_branch -> addKid ( current_options -> createLeaf (vline,0)  );
       }
 #endif
-    /*ssgVertexArray * va=  new   ssgVertexArray(nv,vtab);*/
-    /*va->set(vtab,nv);*/
-    /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
-      va, nrm, tlist, col , vindices) ;*/
 
-    /* good */
-    /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
-      vlist, nrm, tlist, col , vindices) ;*/
+    /*ssgVtxTable* vtab = new ssgVtxTable ( gltype,
+      vlist, nrm, tlist, col ) ;*/
 
-    ssgVtxTable* vtab = new ssgVtxTable ( gltype,
-					  vlist, nrm, tlist, col ) ;
+    /* check the number of texture units */
+    if (numMapLevel>maxTextureUnits)
+      numMapLevel=maxTextureUnits;
+    if (isacar==TRUE) {
+      mapLevel=LEVELC;
+      if (tlist1 && maxTextureUnits>2) {
+	mapLevel=LEVELC2;
+	numMapLevel=2;
+      }
+      if (tlist2 && maxTextureUnits>2){
+	mapLevel=LEVELC3;
+	numMapLevel=3;
+      }
+    }
 
-    vtab -> setState ( get_state ( current_material ) ) ;
-    vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
+#ifdef VTXARRAY_GUIONS
+    if (usestrip==FALSE)
+#endif
+      {
+	grVtxTable* vtab = new grVtxTable ( gltype,
+	  vlist, nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;
+	/* good */
+	/*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+	  vlist, nrm, tlist, col , vindices) ;*/
 
-    ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
+	/*striplist-> add (nrefs);
+	grVtxTable* vtab = new grVtxTable ( gltype,
+					    vlist,
+					    striplist,
+					    1,vertlist,
+					    nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;*/
+	
+	/*printf("name ob =%s , numMapLevel =%d , maoLevel=%d \n",	current_branch -> getName (  ) ,numMapLevel, mapLevel);*/
+	
+	vtab -> setState ( get_state ( current_material ) ) ;
+	vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
+	vtab -> setState1 (get_state_ext (current_ttiled ));
+	vtab -> setState2 (get_state_ext (current_tskids ));
+	vtab -> setState3 (get_state_ext (current_tshad ));
+	ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
 
-
-    if ( leaf )
-       current_branch -> addKid ( leaf ) ;
-
+	if ( leaf )
+	  current_branch -> addKid ( leaf ) ;
+      }
+#ifdef VTXARRAY_GUIONS
+    else
+      {
+	/* memorize the stripe index */
+	striplist-> add (nrefs);
+	totalstripe++;
+	delete vlist;
+	delete tlist;
+	delete tlist1;
+	delete tlist2;
+	delete tlist3;
+	delete vindices;
+	delete nrm;
+      }
+#endif
   }
 
   return PARSE_POP ;
@@ -688,7 +887,83 @@ static int do_refs     ( char *s )
 static int do_kids ( char *s )
 {
   last_num_kids = strtol ( s, NULL, 0 ) ;
+#ifdef VTXARRAY_GUIONS
+  if (last_num_kids==0 && usestrip==TRUE && inGroup!=1)
+    {
+      ssgVertexArray   *vlist = new ssgVertexArray ( totalnv ) ;
+      ssgNormalArray   *nrm = new ssgNormalArray ( totalnv ) ;
+      ssgTexCoordArray *tlist0 = new ssgTexCoordArray ( totalnv) ;
+      ssgTexCoordArray *tlist1 = NULL;
+      ssgTexCoordArray *tlist2 = NULL;
+      ssgTexCoordArray *tlist3 = NULL;
+      if (numMapLevel>1)
+	tlist1=new ssgTexCoordArray ( totalnv ) ;
+      if (numMapLevel>2)
+	tlist2=new ssgTexCoordArray ( totalnv ) ;
+      if (numMapLevel>3)
+	tlist3=new ssgTexCoordArray ( totalnv ) ;
+      for ( int i = 0 ; i < totalnv ; i++ )
+	{
+	  tlist0 -> add ( t0tab[i] ) ;
+	  if (numMapLevel>1)
+	    tlist1 -> add ( t1tab[i] ) ;
+	  if (numMapLevel>2)
+	    tlist2 -> add ( t2tab[i] ) ;
+	  if (numMapLevel>3)
+	    tlist3 -> add ( t3tab[i] ) ;
+	  vlist -> add ( vtab[i] ) ;
+	  if (usenormal==1)
+	    nrm -> add ( ntab[i] ) ;
+	}
+      
+      ssgColourArray *col = new ssgColourArray ( 1 ) ;
+      col -> add ( *current_colour ) ;
+      
+      int type = ( current_flags & 0x0F ) ;      
+      GLenum gltype = GL_TRIANGLE_STRIP ;
+      
+      /* check the number of texture units */
+      if (numMapLevel>maxTextureUnits)
+	numMapLevel=maxTextureUnits;
+      if (isacar==TRUE) {
+	mapLevel=LEVELC;
+	if (tlist1 && maxTextureUnits>2) {
+	  mapLevel=LEVELC2;
+	  numMapLevel=2;
+	}
+	if (tlist2 && maxTextureUnits>2){
+	  mapLevel=LEVELC3;
+	  numMapLevel=3;
+	}
+      }
+      /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+	vlist, nrm, tlist0, col , vertlist) ;*/
 
+      grVtxTable* vtab = new grVtxTable ( gltype,
+					  vlist,
+					  striplist,
+					  totalstripe,					  
+					  vertlist,
+					  nrm,
+					  tlist0,tlist1,tlist2,tlist3,
+					  numMapLevel,mapLevel,
+					  col,
+					  indexCar ) ;
+      vtab -> setState ( get_state ( current_material ) ) ;
+      vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
+      vtab -> setState1 (get_state_ext (current_ttiled ));
+      vtab -> setState2 (get_state_ext (current_tskids ));
+      vtab -> setState3 (get_state_ext (current_tshad ));
+      ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
+      
+      if ( leaf )
+	current_branch -> addKid ( leaf ) ; 
+      
+    }
+#endif
+  
+  numMapLevel=1;
+  mapLevel=LEVEL0;
   return PARSE_POP ;
 }
 
@@ -717,12 +992,14 @@ void myssgFlatten(ssgEntity *obj)
 
 }
 
-ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
+ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index )
 {
 
   isacar=TRUE;
+  usestrip=FALSE;
+  indexCar=index;
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
-
+  
   if ( obj == NULL )
     return NULL ;
 
@@ -730,9 +1007,12 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
 
   ssgBranch *model = new ssgBranch () ;
   model -> addKid ( obj ) ;
+  if(usestrip==FALSE)
+    {
   /*myssgFlatten(obj);*/
-  /*ssgFlatten      ( obj ) ;
-    ssgStripify   ( model ) ;*/
+      ssgFlatten      ( obj ) ;
+      ssgStripify   ( model ) ;
+    }
   return model ;
 
 }
@@ -740,6 +1020,8 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
 ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 {
   isacar=FALSE;
+  usegroup=FALSE;
+  usestrip=FALSE;
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
 
   if ( obj == NULL )
@@ -749,9 +1031,16 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 
   ssgBranch *model = new ssgBranch () ;
   model -> addKid ( obj ) ;
-  /*myssgFlatten(obj);*/
-  ssgFlatten      ( obj ) ;
-  ssgStripify   ( model ) ;
+  if (usegroup==FALSE)
+    {
+      ssgFlatten      ( obj ) ;
+    }
+  if(usestrip==FALSE)
+    {
+      /*myssgFlatten(obj);*/
+      /*ssgFlatten      ( obj ) ;*/
+	ssgStripify   ( model ) ;
+    }
   return model ;
 }
 
@@ -761,6 +1050,12 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 
 static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* options )
 {
+
+  if (maxTextureUnits==0)
+    {
+      InitMultiTex();
+    }
+
   ssgSetCurrentOptions ( (ssgLoaderOptions*)options ) ;
   current_options = ssgGetCurrentOptions () ;
 
@@ -825,4 +1120,5 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   fclose ( loader_fd ) ;
 
   return current_branch ;
+
 }

@@ -43,6 +43,10 @@
 #include "grssgext.h"
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static ssgSimpleState *skidState = NULL;
 
 int grSkidMaxStripByWheel;

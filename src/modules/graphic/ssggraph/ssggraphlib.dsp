@@ -69,7 +69,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.lib ..\..\..\..\export\lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W3 /Gm /GX /ZI /Od /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W3 /Gm /GX /ZI /Od /I "./" /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /YX /FD /GZ /c
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"
 BSC32=bscmake.exe
@@ -115,6 +115,10 @@ SOURCE=.\grmain.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\grmultitexstate.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\grscene.cpp
 # End Source File
 # Begin Source File
@@ -139,6 +143,10 @@ SOURCE=.\grutil.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\grvtxtable.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ssggraph.cpp
 # End Source File
 # End Group
@@ -160,6 +168,10 @@ SOURCE=.\grcar.h
 # Begin Source File
 
 SOURCE=.\grmain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\grmultitexstate.h
 # End Source File
 # Begin Source File
 
@@ -188,6 +200,10 @@ SOURCE=.\grssgext.h
 # Begin Source File
 
 SOURCE=.\grutil.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\grvtxtable.h
 # End Source File
 # End Group
 # End Target

@@ -44,6 +44,10 @@
 #include "grssgext.h"
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 int grSmokeMaxNumber;
 double grSmokeDeltaT;
 double grSmokeLife;

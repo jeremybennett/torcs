@@ -35,6 +35,10 @@
 #include "grutil.h"
 #include <robottools.h>
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 static float grWhite[4] = {1.0, 1.0, 1.0, 1.0};
 static float grRed[4] = {1.0, 0.0, 0.0, 1.0};
 static float grBlue[4] = {0.0, 0.0, 1.0, 1.0};

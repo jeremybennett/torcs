@@ -25,6 +25,7 @@
 #endif /* GUIONS */
 #include <track.h>
 
+
 extern int grWrldX;
 extern int grWrldY;
 extern int grWrldZ;
@@ -33,7 +34,8 @@ extern tTrack 	 *grTrack;
 
 extern ssgRoot *TheScene;
 
-extern int grInitScene(tTrack *track);
+extern int grInitScene(void);
+extern int grLoadScene(tTrack *track);
 extern void grDrawScene(void);
 extern void grShutdownScene(void);
 
@@ -41,6 +43,9 @@ struct Camera;
 extern void grDrawBackground(cGrCamera *);
 
 extern ssgStateSelector	*grEnvSelector;
+#include "grmultitexstate.h"
+extern grMultiTexState	*grEnvState;
+extern grMultiTexState	*grEnvShadowState;
 
 #ifdef GUIONS
 typedef struct DoV 

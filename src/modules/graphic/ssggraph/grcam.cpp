@@ -38,6 +38,10 @@
 #include "grcar.h"
 #include "grmain.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 int grScissorflag = 0;
 
 float grviewRatio;
@@ -133,6 +137,7 @@ float cGrPerspCamera::getLODFactor(float x, float y, float z) {
     tdble	dx, dy, dz, dd;
     float	ang;
     int		scrh, dummy;
+    float	res;
 
     dx = x - eye[0];
     dy = y - eye[1];
@@ -140,10 +145,14 @@ float cGrPerspCamera::getLODFactor(float x, float y, float z) {
 
     dd = sqrt(dx*dx+dy*dy+dz*dz);
 
-    ang = DEG2RAD(fovy);
+    ang = DEG2RAD(fovy / 2.0);
     GfScrGetSize(&dummy, &scrh, &dummy, &dummy);
     
-    return (float)scrh / dd / tan(ang);
+    res = (float)scrh / 2.0 / dd / tan(ang);
+    if (res < 0) {
+	res = 0;
+    }
+    return res;
 }
 
 void cGrPerspCamera::setZoom(int cmd)

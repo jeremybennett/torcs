@@ -41,7 +41,7 @@
 
   <!-- Graphic -->
   <section name="Graphic">
-    <attstr name="3d description" val="e-track-2.ac"></attstr>
+    <attstr name="3d description" val="e-track-2.acc"></attstr>
 
     <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.96"></attnum>
@@ -74,7 +74,7 @@
       <attstr name="elevation map" val="elevation-map.png"></attstr>
       <attnum name="maximum altitude" val="15"></attnum>
       <attnum name="minimum altitude" val="0"></attnum>
-      <attnum name="group size" val="10000"></attnum>
+      <attnum name="group size" val="100"></attnum>
 
       <section name="Object Maps">
 	<section name="map 1">
@@ -196,6 +196,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-sand"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Left Side">
 	  <attstr name="surface" val="grass3"></attstr>
@@ -240,6 +241,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
@@ -328,6 +330,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -392,6 +395,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Right Barrier">
 	  <attstr name="surface" val="tire-wall"></attstr>
@@ -433,6 +437,11 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="50"></attnum>
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	</section>
 	<section name="Left Barrier">
 	  <attstr name="surface" val="tire-wall"></attstr>
 	  <attstr name="style" val="wall"></attstr>
@@ -485,6 +494,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -497,6 +507,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -510,6 +521,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="concrete"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Left Side">
 	  <attstr name="surface" val="concrete"></attstr>
@@ -526,14 +538,21 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="20"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
+	<section name="Right Side">
+	  <attstr name="surface" val="concrete"></attstr>
+	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="curb-5cm-r"></attstr>
 	  <attstr name="style" val="curb"></attstr>
 	  <attnum name="height" val="0.05"></attnum>
 	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="concrete"></attstr>
+	</section>
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="concrete"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -542,9 +561,6 @@
 	<attnum name="lg" unit="m" val="50"></attnum>
 	<section name="Right Side">
 	  <attstr name="surface" val="grass3"></attstr>
-	</section>
-	<section name="Right Border">
-	  <attstr name="surface" val="tar-grass3-r"></attstr>
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-grass3-r"></attstr>
@@ -573,6 +589,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-sand"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Left Border">
 	  <attstr name="surface" val="curb-5cm-l"></attstr>
@@ -588,6 +605,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -619,6 +637,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -635,6 +654,7 @@
 	</section>
 	<section name="Left Border">
 	  <attstr name="surface" val="tar-sand"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="curb-5cm-r"></attstr>
@@ -675,6 +695,7 @@
 	</section>
 	<section name="Left Border">
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-grass3-r"></attstr>
@@ -707,6 +728,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-sand"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -716,6 +738,7 @@
 	<section name="Left Border">
 	  <attnum name="width" val="1.0"></attnum>
 	  <attstr name="surface" val="tar-grass3-l"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 
@@ -747,6 +770,7 @@
 	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="tar-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
 	</section>
       </section>
 

@@ -28,6 +28,9 @@
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.001"></attnum>
 
@@ -46,6 +49,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.001"></attnum>
@@ -66,6 +72,9 @@
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.001"></attnum>
 
@@ -83,6 +92,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.001"></attnum>
@@ -105,6 +117,9 @@
 	<attnum name="texture size" val="15.0001" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.05"></attnum>
 
@@ -126,6 +141,9 @@
 	<attstr name="texture start on boundary" val="yes"></attstr>
 	<attstr name="texture link with previous" val="yes"></attstr>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.2"></attnum>
 	<attnum name="rolling resistance" val="0.001"></attnum>
 
@@ -144,6 +162,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="15.0001" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rolling resistance" val="0.002"></attnum>
@@ -164,6 +185,9 @@
 	<attnum name="texture size" val="15.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rolling resistance" val="0.002"></attnum>
 
@@ -182,6 +206,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="15.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="0.7"></attnum>
 	<attnum name="rolling resistance" val="0.003"></attnum>
@@ -202,6 +229,9 @@
 	<attnum name="texture size" val="20.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="0.4"></attnum>
 	<attnum name="rolling resistance" val="0.01"></attnum>
 
@@ -220,6 +250,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="20.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="0.6"></attnum>
 	<attnum name="rolling resistance" val="0.1"></attnum>
@@ -240,6 +273,9 @@
 	<attnum name="texture size" val="20.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="0.9"></attnum>
 	<attnum name="rolling resistance" val="0.006"></attnum>
 
@@ -258,6 +294,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="20.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="0.8"></attnum>
 	<attnum name="rolling resistance" val="0.006"></attnum>
@@ -278,6 +317,9 @@
 	<attnum name="texture size" val="10.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="0.0"></attnum>
 
 	<attnum name="roughness" val="0.03"></attnum>
@@ -296,6 +338,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="10.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="0.4"></attnum>
 
@@ -316,6 +361,9 @@
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val="bump-as.rgb"></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0012"></attnum>
 
@@ -334,6 +382,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0012"></attnum>
@@ -354,6 +405,9 @@
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0012"></attnum>
 
@@ -372,6 +426,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="50.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0012"></attnum>
@@ -392,6 +449,9 @@
 	<attnum name="texture size" val="2.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0025"></attnum>
 
@@ -410,6 +470,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="2.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.4"></attnum>
 	<attnum name="rolling resistance" val="0.0025"></attnum>
@@ -430,6 +493,9 @@
 	<attnum name="texture size" val="3.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="0.5"></attnum>
       </section>
 
@@ -445,6 +511,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="2.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rebound"            val="0.1"></attnum>
@@ -462,6 +531,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="5.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="0.4"></attnum>
 	<attnum name="rolling resistance" val="0.01"></attnum>
@@ -482,6 +554,9 @@
 	<attnum name="texture size" val="5.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="0.4"></attnum>
 	<attnum name="rolling resistance" val="0.01"></attnum>
 
@@ -500,6 +575,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="5.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rolling resistance" val="0.005"></attnum>
@@ -520,6 +598,9 @@
 	<attnum name="texture size" val="5.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
+
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rolling resistance" val="0.005"></attnum>
 
@@ -538,6 +619,9 @@
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
 	<attnum name="texture size" val="5.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attstr name="bump name" val=""></attstr>
+	<attnum name="bump size" val="2.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.0"></attnum>
 	<attnum name="rolling resistance" val="0.01"></attnum>

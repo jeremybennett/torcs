@@ -44,9 +44,9 @@
     <attstr name="3d description" val="alpine-1.ac"></attstr>
 
     <attstr name="background image" val="background.png"></attstr>
-    <attnum name="background color R" val="0.96"></attnum>
-    <attnum name="background color G" val="0.84"></attnum>
-    <attnum name="background color B" val="0.64"></attnum>
+    <attnum name="background color R" val="0.28"></attnum>
+    <attnum name="background color G" val="0.44"></attnum>
+    <attnum name="background color B" val="0.75"></attnum>
 
     <attnum name="ambient color R" val="0.8"></attnum>
     <attnum name="ambient color G" val="0.8"></attnum>
@@ -83,8 +83,8 @@
     <attnum name="rows" val="2"></attnum>
     <attstr name="pole position side" val="left"></attstr>
     <attnum name="distance to start" unit="m" val="4.0"></attnum>
-    <attnum name="distance between columns" unit="m" val="8.0"></attnum>
-    <attnum name="offset within a column" unit="m" val="4.0"></attnum>
+    <attnum name="distance between columns" unit="m" val="15.0"></attnum>
+    <attnum name="offset within a column" unit="m" val="7.0"></attnum>
     <attnum name="initial height" unit="m" val="0.2"></attnum>
   </section>
 

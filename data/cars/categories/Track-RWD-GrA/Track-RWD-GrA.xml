@@ -361,28 +361,28 @@
 
   <section name="Front Right Brake">
     <attnum name="disk diameter" min="100" max="380" val="380" unit="mm"></attnum>
-    <attnum name="piston area" min="25" max="60" val="50" unit="cm2"></attnum>
+    <attnum name="piston area" min="25" max="80" val="50" unit="cm2"></attnum>
     <attnum name="mu" min="0.1" max="0.5" val="0.45"></attnum>
     <attnum name="inertia" min="0.07" max="0.13" val="0.1241" unit="kg.m2"></attnum>
   </section>
 
   <section name="Front Left Brake">
     <attnum name="disk diameter" min="100" max="380" val="380" unit="mm"></attnum>
-    <attnum name="piston area" min="25" max="60" val="50" unit="cm2"></attnum>
+    <attnum name="piston area" min="25" max="80" val="50" unit="cm2"></attnum>
     <attnum name="mu" min="0.1" max="0.5" val="0.45"></attnum>
     <attnum name="inertia" min="0.07" max="0.13" val="0.1241" unit="kg.m2"></attnum>
   </section>
 
   <section name="Rear Right Brake">
     <attnum name="disk diameter" min="100" max="380" val="280" unit="mm"></attnum>
-    <attnum name="piston area" min="25" max="60" val="50" unit="cm2"></attnum>
+    <attnum name="piston area" min="25" max="80" val="50" unit="cm2"></attnum>
     <attnum name="mu" min="0.1" max="0.5" val="0.45"></attnum>
     <attnum name="inertia" min="0.07" max="0.13" val="0.1241" unit="kg.m2"></attnum>
   </section>
 
   <section name="Rear Left Brake">
     <attnum name="disk diameter" min="100" max="380" val="280" unit="mm"></attnum>
-    <attnum name="piston area" min="25" max="60" val="50" unit="cm2"></attnum>
+    <attnum name="piston area" min="25" max="80" val="50" unit="cm2"></attnum>
     <attnum name="mu" min="0.1" max="0.5" val="0.45"></attnum>
     <attnum name="inertia" min="0.07" max="0.13" val="0.1241" unit="kg.m2"></attnum>
   </section>

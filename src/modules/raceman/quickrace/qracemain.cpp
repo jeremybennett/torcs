@@ -157,12 +157,6 @@ qraceRun(void *dummy)
     qrCarInfo = (tqrCarInfo*)calloc(qrTheSituation._ncars, sizeof(tqrCarInfo));
     qrRunning = 0;    
 
-    RmLoadingScreenSetText("Loading Track 3D Description...");
-    qrGraphicItf.inittrack(qrTheTrack);
-    RmLoadingScreenSetText("Loading Cars 3D Objects...");
-    qrGraphicItf.initcars(&qrTheSituation);
-
-    
     for (i = 0; i < qrTheSituation._ncars; i++) {
 	sprintf(buf, "Initializing Driver %s...", qrTheSituation.cars[i]->_name);
 	RmLoadingScreenSetText(buf);
@@ -180,6 +174,11 @@ qraceRun(void *dummy)
 
     RmLoadingScreenSetText("Running Prestart...");
     qrPreStart();
+
+    RmLoadingScreenSetText("Loading Track 3D Description...");
+    qrGraphicItf.inittrack(qrTheTrack);
+    RmLoadingScreenSetText("Loading Cars 3D Objects...");
+    qrGraphicItf.initcars(&qrTheSituation);
 
     RmLoadingScreenSetText("Ready.");
     qraceglRun();

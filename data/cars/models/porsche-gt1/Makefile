@@ -21,7 +21,7 @@
 DATADIR   = cars/porsche-gt1
 
 DATA      = porsche-gt1.xml  porsche-gt1.ac porsche-gt1-lod1.ac \
-	    tex-wheel.rgb porsche-gt1.rgb
+	    tex-wheel.rgb porsche-gt1.rgb porsche-gt1-src.ac
 
 data-cars-gt_PKGFILES	= $(DATA)
 

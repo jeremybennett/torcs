@@ -16,11 +16,15 @@
 ##############################################################################
 
 
-DATADIR   = tracks/road/e-track-2
+DATADIR    = tracks/road/e-track-2
 
-DATA      = e-track-2.xml background.png e-track-2.ac e-track-2-relief.ac e-track-2.png elevation-map.png object-map1.png object-map2.png pylon3.rgb env.png
+DATA_rel   = e-track-2.xml e-track-2.acc background.png e-track-2.png env.png pylon3.rgb
 
-data_PKGFILES	= $(DATA)
+DATA_devel = e-track-2.ac e-track-2-relief.ac elevation-map.png object-map1.png object-map2.png
+
+DATA       = $(DATA_rel) $(DATA_devel)
+
+data_PKGFILES	= $(DATA_rel)
 
 data_PKGDIR	= $(DATADIR)
 

@@ -86,16 +86,16 @@ linuxModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 		}
 	    } else {
 		dlclose(handle);
-		GfOut("linuxModLoad: Module: %s not loaded\n", dname);
+		printf("linuxModLoad: Module: %s not loaded\n", dname);
 		return -1;
 	    }
 	} else {
-	    GfOut("linuxModLoad: ...  %s\n", dlerror());
+	    printf("linuxModLoad: ...  %s\n", dlerror());
 	    dlclose(handle);
 	    return -1;
 	}
     } else {
-	GfOut("linuxModLoad: ...  %s\n", dlerror());
+	printf("linuxModLoad: ...  %s\n", dlerror());
 	return -1;
     }
     
@@ -179,16 +179,16 @@ linuxModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 		dlclose(handle);
 	    } else {
 		dlclose(handle);
-		GfTrace("linuxModInfo: Module: %s not loaded\n", dname);
+		printf("linuxModInfo: Module: %s not loaded\n", dname);
 		return -1;
 	    }
 	} else {
-	    GfTrace("linuxModInfo: ...  %s\n", dlerror());
+	    printf("linuxModInfo: ...  %s\n", dlerror());
 	    dlclose(handle);
 	    return -1;
 	}
     } else {
-	GfTrace("linuxModInfo: ...  %s\n", dlerror());
+	printf("linuxModInfo: ...  %s\n", dlerror());
 	return -1;
     }
     
@@ -278,13 +278,13 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 			    GfTrace("linuxModLoadDir: Module: %s not retained\n", dname);
 			}
 		    } else {
-			GfTrace("linuxModLoadDir: ...  %s [1]\n", dlerror());
+			printf("linuxModLoadDir: ...  %s [1]\n", dlerror());
 			dlclose(handle);
 			(void) closedir (dp);
 			return -1;
 		    }
 		} else {
-		    GfTrace("linuxModLoadDir: ...  %s [2]\n", dlerror());
+		    printf("linuxModLoadDir: ...  %s [2]\n", dlerror());
 		    (void) closedir (dp);
 		    return -1;
 		}
@@ -292,7 +292,7 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 	}
 	(void) closedir (dp);
     } else {
-	GfTrace("linuxModLoadDir: ... Couldn't open the directory %s\n", dir);
+	printf("linuxModLoadDir: ... Couldn't open the directory %s\n", dir);
 	return -1;
     }
     
@@ -397,17 +397,17 @@ linuxModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 			    GfTrace("linuxModInfoDir: Module: %s not retained\n", dname);
 			}
 		    } else {
-			GfTrace("linuxModInfoDir: ...  %s [1]\n", dlerror());
+			printf("linuxModInfoDir: ...  %s [1]\n", dlerror());
 			dlclose(handle);
 		    }
 		} else {
-		    GfTrace("linuxModInfoDir: ...  %s [2]\n", dlerror());
+		    printf("linuxModInfoDir: ...  %s [2]\n", dlerror());
 		}
 	    }
 	}
 	(void) closedir (dp);
     } else {
-	GfTrace("linuxModInfoDir: ... Couldn't open the directory %s.\n", dir);
+	printf("linuxModInfoDir: ... Couldn't open the directory %s.\n", dir);
 	return -1;
     }
     

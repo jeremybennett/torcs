@@ -18,7 +18,7 @@
 
 DATADIR   = cars/buggy
 
-DATA      = buggy.xml buggy.ac buggy.rgb tex-wheel.rgb
+DATA      = buggy.xml buggy.ac buggy.rgb tex-wheel.rgb buggy-src.ac
 
 data-cars-misc_PKGFILES	= $(DATA)
 

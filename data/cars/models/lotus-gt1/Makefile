@@ -21,7 +21,7 @@ DATADIR   = cars/lotus-gt1
 
 DATA      = lotus-gt1.xml  lotus-gt1.ac \
 	    lotus-gt1-base.ac texmapper.xml \
-	    tex-wheel.rgb lotus-gt1.rgb lotus-gt1-512.rgb 
+	    tex-wheel.rgb lotus-gt1.rgb lotus-gt1-512.rgb lotus-gt1-src.ac
 
 data-cars-gt_PKGFILES	= $(DATA)
 

@@ -18,7 +18,7 @@
 
 DATADIR      = cars/xj-220
 
-DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb xj-220-base.ac texmapper.xml
+DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb xj-220-base.ac texmapper.xml xj-220-src.ac
 
 data-cars-gt_PKGFILES	= $(DATA)
 

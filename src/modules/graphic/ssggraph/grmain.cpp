@@ -41,6 +41,10 @@
 #include "grboard.h"
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
+
 int grDebugFlag			= 1;
 int grBoardFlag			= 1;
 int grLeaderFlag		= 1;
@@ -49,6 +53,7 @@ int grCounterFlag		= 1;
 int grGFlag			= 0;
 int grDrawCurrent		= 0;
 
+int maxTextureUnits = 0;
 static double	OldTime;
 static int	nFrame;
 static float	Fps;
@@ -67,6 +72,77 @@ int grWinx, grWiny, grWinw, grWinh;
 tgrCarInfo	*grCarInfo;
 ssgContext	grContext;
 
+
+
+#ifdef WIN32
+#include "win32_glext.h"
+PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
+PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB =NULL;
+PFNGLACTIVETEXTUREARBPROC   glActiveTextureARB = NULL;
+PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
+
+// InStr
+// desc: returns true if searchStr is in str, which is a list of
+//       strings separated by spaces
+bool InStr(char *searchStr, char *str)
+{
+	char *extension;			// start of an extension in the list
+	char *endOfStr;				// pointer to last string element
+	int idx = 0;
+
+	endOfStr = str + strlen(str);	// find the last character in str
+
+	// loop while we haven't reached the end of the string
+	while (str < endOfStr)
+	{
+		// find where a space is located
+		idx = strcspn(str, " ");
+
+		// we found searchStr
+		if ( (strlen(searchStr) == idx) && (strncmp(searchStr, str, idx) == 0))
+		{
+			return true;
+		}
+
+		// we didn't find searchStr, move pointer to the next string to search
+		str += (idx + 1);
+	}
+
+	return false;
+}
+#endif
+
+// InitMultiTex
+// desc: sets up OpenGL for multitexturing support
+bool InitMultiTex(void)
+{
+	char *extensionStr;			// list of available extensions
+		
+	extensionStr = (char*)glGetString(GL_EXTENSIONS);
+
+	if (extensionStr == NULL)
+		return false;
+
+	/* printf("glextensionstr: %s\n", extensionStr); */
+
+	if (strstr(extensionStr, "GL_ARB_multitexture"))
+	{
+		// retrieve the maximum number of texture units allowed
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &maxTextureUnits);
+		/* printf("\nfound number of texture units : %d\n", maxTextureUnits); */
+#ifdef WIN32
+		// retrieve addresses of multitexturing functions
+		glMultiTexCoord2fARB = (PFNGLMULTITEXCOORD2FARBPROC) wglGetProcAddress("glMultiTexCoord2fARB");
+		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
+		glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
+		glMultiTexCoord2fvARB = (PFNGLMULTITEXCOORD2FVARBPROC) wglGetProcAddress("glMultiTexCoord2fvARB");
+#endif
+		return true;
+	}
+	else
+		return false;
+}
+
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
@@ -74,7 +150,10 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     int		camNum;
     cGrCamera	*cam;
 
-    
+    if (maxTextureUnits==0)
+      {
+	InitMultiTex();    
+      }
     switch (flag) {
     case GR_VIEW_STD:
 	grScissorflag = 0;
@@ -154,6 +233,8 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddKey(screen, 'f',            "FPS Counter",      (void*)3, grSelectBoard);
     GfuiAddKey(screen, 'g',            "Debug Info",       (void*)4, grSelectBoard);
 
+    grInitScene();
+
     return 0;
 }
 
@@ -177,10 +258,8 @@ initCars(tSituation *s)
 
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
-
-	/* Shadow init */
+	/* Shadow init (Should be done before the cars for display order) */
 	grInitShadow(elt);
-
 	/* Skidmarks init */
 	grInitSkidmarks(elt);
     }
@@ -270,8 +349,8 @@ refresh(tSituation *s)
 
     glEnable(GL_LIGHTING);    
     for (i = 0; i < s->_ncars; i++) {
-	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
-    }
+      grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
+    } 
     segIndice = (s->cars[s->current])->_trkPos.seg->id;
     grUpdateSmoke(grDeltaTime, grCurTime);
 
@@ -295,7 +374,6 @@ refresh(tSituation *s)
 
     glEnable(GL_LIGHTING);
 
-
     return 0;
 }
 
@@ -308,11 +386,10 @@ initTrack(tTrack *track)
 	ssgInit();
 	firstTime = 0;
     }
-    
 
     grContext.makeCurrent();
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    grInitScene(track);
+    grLoadScene(track);
     return 0;
 }
 

@@ -45,8 +45,11 @@
 #include "grssgext.h"
 #include "grutil.h"
 
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
-extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
+extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index );
 static int
 preCbEnv(ssgEntity *e)
 {
@@ -385,7 +388,7 @@ grInitCar(tCarElt *car)
     int			selIndex;
     ssgEntity		*carEntity;
     ssgSelector		*LODSel;
-    ssgBranchCb		*branchCb;
+    /* ssgBranchCb		*branchCb; */
     int			nranges;
     int			i;
     void		*handle;
@@ -465,7 +468,7 @@ grInitCar(tCarElt *car)
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
     /*carEntity = ssgLoad(param);*/
-    carEntity = grssgCarLoadAC3D(param, NULL);
+    carEntity = grssgCarLoadAC3D(param, NULL,index);
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
     /* add wheels */
@@ -476,15 +479,16 @@ grInitCar(tCarElt *car)
     selIndex++;
 
     /* env map car */
-    carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
-    grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
-    branchCb = new ssgBranchCb;
-    branchCb->addKid(carEntity);
-    branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
-    branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
-    DBG_SET_NAME(branchCb, "EnvMap", index, -1);
-    carBody->addKid(branchCb);
-
+    /*
+      carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
+      grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
+      branchCb = new ssgBranchCb;
+      branchCb->addKid(carEntity);
+      branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
+      branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
+      DBG_SET_NAME(branchCb, "EnvMap", index, -1);
+      carBody->addKid(branchCb);
+    */
     /* Other LODs */
     for (i = 2; i < nranges; i++) {
 	carBody = new ssgBranch;
@@ -495,14 +499,15 @@ grInitCar(tCarElt *car)
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
 	carBody->addKid(carEntity);
 	/* env map car */
-	carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
-	grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
-	branchCb = new ssgBranchCb;
-	branchCb->addKid(carEntity);
-	branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
-	branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
-	DBG_SET_NAME(branchCb, "EnvMap", index, -1);
-	carBody->addKid(branchCb);
+	/*
+	  carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
+	  grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
+	  branchCb = new ssgBranchCb;
+	  branchCb->addKid(carEntity);
+	  branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
+	  branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
+	  DBG_SET_NAME(branchCb, "EnvMap", index, -1);
+	  carBody->addKid(branchCb);*/
 	LODSel->addKid(carBody);
 	grCarInfo[index].LODSelectMask[i-1] = 1 << selIndex; /* car mask */
 	selIndex++;
@@ -547,6 +552,25 @@ grDrawShadow(tCarElt *car)
 }
 
 
+tdble grGetDistToStart(tCarElt *car)
+{
+    tTrackSeg	*seg;
+    tdble	lg;
+    
+    seg = car->_trkPos.seg;
+    lg = seg->lgfromstart;
+    
+    switch (seg->type) {
+    case TR_STR:
+	lg += car->_trkPos.toStart;
+	break;
+    default:
+	lg += car->_trkPos.toStart * seg->radius;
+	break;
+    }
+    return lg;
+}
+
 void
 grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 {
@@ -559,6 +583,9 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 
     index = car->index;
   
+    grCarInfo[index].distFromStart=grGetDistToStart(car);
+    grCarInfo[index].envAngle=RAD2DEG(car->_yaw);
+
     if ((car == curCar) && (dispFlag != 1)) {
 	grCarInfo[index].LODSelector->select(0);
     } else {
@@ -576,11 +603,10 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 
     if ((car != curCar) || (dispFlag == 1)) {
 	grDrawShadow(car);
-	grUpdateSkidmarks(car); 
- 	grDrawSkidmarks(car); 
-
-	grAddSmoke(car);
     }
+    grUpdateSkidmarks(car); 
+    grDrawSkidmarks(car);
+    grAddSmoke(car);
 
     /* Env mapping selection by the position on the track */
     grCarInfo[index].envSelector->selectStep(car->_trkPos.seg->envIndex);

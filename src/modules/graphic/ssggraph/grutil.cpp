@@ -32,6 +32,11 @@
 #include <tgf.h>
 
 #include "grutil.h"
+#include "grmultitexstate.h"
+
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
@@ -236,7 +241,7 @@ grSsgLoadTexState(char *img)
     char		buf[256];
     char		*s;
     GLuint		tex;
-    ssgSimpleState	*st;
+    ssgSimpleState     	*st;
     stlist		*curr;
 
     /* remove the directory */
@@ -277,6 +282,50 @@ grSsgLoadTexState(char *img)
     }
     return (ssgState*)st;
 }
+
+ssgState *
+grSsgEnvTexState(char *img)
+{
+    char		buf[256];
+    char		*s;
+    GLuint		tex;
+    grMultiTexState    	*st;
+    stlist		*curr;
+
+    /* remove the directory */
+    s = strrchr(img, '/');
+    if (s == NULL) {
+	s = img;
+    } else {
+	s++;
+    }
+    if (!grGetFilename(s, grFilePath, buf)) {
+	GfOut("grSsgLoadTexState: File %s not found\n", s);
+	return NULL;
+    }
+    
+    st = new grMultiTexState;
+    st->enable(GL_LIGHTING);
+    st->enable(GL_TEXTURE_2D);
+    st->enable(GL_BLEND);
+    
+    curr = (stlist*)calloc(sizeof(stlist), 1);
+    curr->next = stateList;
+    stateList = curr;
+    curr->state = st;
+    curr->name = strdup(buf);
+
+    if (strcmp(buf + strlen(buf) - 4, ".png") == 0) {
+	tex = grLoadTexture(buf, NULL, grGammaValue, grMipMap);
+	st->setTexture(tex);
+    } else {
+	GfOut("Loading %s\n", buf);
+	st->setTexture(buf);
+    }
+    return (ssgState*)st;
+}
+
+
 
 ssgState *
 grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)

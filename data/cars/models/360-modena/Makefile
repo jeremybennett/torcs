@@ -22,7 +22,7 @@ DATADIR   = cars/360-modena
 
 DATA      = 360-modena.xml  360-modena.ac \
 	    360-modena-lod1.ac texmapper.xml \
-	    tex-wheel.rgb 360-modena.rgb
+	    tex-wheel.rgb 360-modena.rgb 360-modena-src.ac
 
 data_PKGFILES	= $(DATA)
 

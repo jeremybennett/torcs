@@ -44,6 +44,10 @@
 #include "grscene.h"
 #include "grutil.h"
 #include "grssgext.h"
+#include "win32_glext.h"
+#ifdef DMALLOC
+#include "dmalloc.h"
+#endif
 
 int grWrldX;
 int grWrldY;
@@ -58,7 +62,8 @@ GLuint BackgroundList2;
 GLuint BackgroundTex2;
 
 ssgStateSelector	*grEnvSelector;
-
+grMultiTexState	*grEnvState=NULL;
+grMultiTexState	*grEnvShadowState=NULL;
 #define NB_BG_FACES	20
 #define BG_DIST		1.0
 
@@ -330,17 +335,12 @@ int preScene(ssgEntity *e)
   return TRUE;
 }
 
-
-int grInitScene(tTrack *track)
+int
+grInitScene(void)
 {
     void		*hndl = grTrackHandle;
-    char		*acname;
-    ssgEntity		*desc;
-    char		buf[256];
-    ssgLoaderOptionsEx	options;
-    ssgLight *          light;
+    ssgLight *          light = ssgGetLight(0);
 
-    light=ssgGetLight(0);
     GLfloat mat_specular[]={0.3,0.3,0.3,1.0};
     GLfloat mat_shininess[] ={50.0};
     GLfloat light_position[]={0,0,200,0.0};
@@ -411,18 +411,51 @@ int grInitScene(tTrack *track)
     /* GUIONS GL_TRUE */
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_FALSE);
 
+#ifdef GL_SEPARATE_SPECULAR_COLOR 
     glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+#else
+#ifdef GL_SEPARATE_SPECULAR_COLOR_EXT
+    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL_EXT,GL_SEPARATE_SPECULAR_COLOR_EXT);
+#endif
+#endif
     
-    ssgSetCurrentOptions(&options);
-    ssgAddTextureFormat(".png", grLoadPngTexture);
-    grTrack = track;
-    TheScene = new ssgRoot;
-    initBackground();
+    
+
+    return 0;
+}
+
+static ssgLoaderOptionsEx	options;
+
+int
+grLoadScene(tTrack *track)
+{
+    void		*hndl = grTrackHandle;
+    char		*acname;
+    ssgEntity		*desc;
+    char		buf[256];
+
+    if (maxTextureUnits==0)
+      {
+	InitMultiTex();   
+	if( maxTextureUnits>1)
+	  {
+	    glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
+	    glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	    glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+	    glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
+	  }
+      }
 
     glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
     glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
     /*glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
       glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);*/
+
+    ssgSetCurrentOptions(&options);
+    ssgAddTextureFormat(".png", grLoadPngTexture);
+    grTrack = track;
+    TheScene = new ssgRoot;
+    initBackground();
     
     grWrldX = (int)(track->max.x - track->min.x + 1);
     grWrldY = (int)(track->max.y - track->min.y + 1);
@@ -447,7 +480,6 @@ int grInitScene(tTrack *track)
 #endif /* GUIONS */
     customizePits();
 
-
     return 0;
 }
 
@@ -455,7 +487,7 @@ int grInitScene(tTrack *track)
 void grDrawScene(void)
 {
     TRACE_GL("refresh: ssgCullAndDraw start");
-    glEnable(GL_DEPTH_TEST);
+    /*glEnable(GL_DEPTH_TEST);*/
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
     
@@ -640,12 +672,23 @@ initBackground(void)
     grMipMap = 0;
     grFilePath = buf;
     for (i = 0; i < graphic->envnb; i++) {
-	GfOut("Loading Environment Mapping Image %s\n", graphic->env[i]);
-	envst = (ssgSimpleState*)grSsgLoadTexState(graphic->env[i]);
-	envst->enable(GL_BLEND);
-	grEnvSelector->setStep(i, envst);
+      GfOut("Loading Environment Mapping Image %s\n", graphic->env[i]);
+      envst = (ssgSimpleState*)grSsgLoadTexState(graphic->env[i]);
+      envst->enable(GL_BLEND);
+      grEnvSelector->setStep(i, envst);
     }
     grEnvSelector->selectStep(0); /* mandatory !!! */
+    grEnvState=(grMultiTexState*)grSsgEnvTexState(graphic->env[0]);
+    grEnvShadowState=(grMultiTexState*)grSsgEnvTexState("envshadow.png");
+    if (grEnvShadowState==NULL)
+      {
+	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open envshadow.png for reading") ;
+	ulSetError ( UL_WARNING, "        mandatory for top env mapping ") ;
+	ulSetError ( UL_WARNING, "        should be in the .xml !! ") ;
+	ulSetError ( UL_WARNING, "        copy the envshadow.png from g-track-2 to the track you selected ") ;
+	ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
+	exit(-1);
+      }
 }
 
 

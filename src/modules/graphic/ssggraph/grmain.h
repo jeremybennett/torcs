@@ -24,6 +24,32 @@
 #include <plib/ssg.h>
 #include <graphic.h>
 
+#ifdef WIN32
+#include <windows.h>
+#include <GL/gl.h>
+#include "win32_glext.h"
+////// Multitexturing Info
+/*typedef void (APIENTRY * PFNGLMULTITEXCOORD2FARBPROC) (GLenum target, GLfloat s, GLfloat t);
+typedef void (APIENTRY * PFNGLACTIVETEXTUREARBPROC) (GLenum texture);
+typedef void (APIENTRY * PFNGLCLIENTACTIVETEXTUREARBPROC) (GLenum texture);*/
+extern PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB ;
+extern PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB;
+extern PFNGLACTIVETEXTUREARBPROC   glActiveTextureARB ;
+extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB ;
+
+/*
+  PFNGLMULTITEXCOORD2FVARBPROC	glMultiTexCoord2fvARB		= NULL;
+  PFNGLACTIVETEXTUREARBPROC		glActiveTextureARB			= NULL;
+  PFNGLCLIENTACTIVETEXTUREARBPROC	glClientActiveTextureARB	= NULL;
+  
+  PFNGLDRAWARRAYSEXTPROC			glDrawArraysEXT				= NULL;
+  PFNGLVERTEXPOINTEREXTPROC		glVertexPointerEXT			= NULL;
+  PFNGLNORMALPOINTEREXTPROC		glNormalPointerEXT			= NULL;
+  PFNGLTEXCOORDPOINTEREXTPROC		glTexCoordPointerEXT		= NULL;
+*/
+extern bool InStr(char *searchStr, char *str);
+#endif
+extern bool InitMultiTex();
 extern int grWinx, grWiny, grWinw, grWinh;
 
 extern int grDrawCurrent;
@@ -52,6 +78,8 @@ extern int  refresh(tSituation *s);
 extern void shutdownCars(void);
 extern int  initTrack(tTrack *track);
 extern void shutdownTrack(void);
+extern int maxTextureUnits;
+
 
 #endif /* _GRMAIN_H_ */ 
 

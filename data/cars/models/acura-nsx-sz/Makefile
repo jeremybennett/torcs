@@ -19,7 +19,7 @@
 
 DATADIR   = cars/acura-nsx-sz
 
-DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-lod1.ac
+DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-lod1.ac acura-nsx-sz-src.ac
 
 data-cars-gt_PKGFILES	= $(DATA)
 
