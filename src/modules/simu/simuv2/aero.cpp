@@ -73,9 +73,8 @@ SimAeroUpdate(tCar *car, tSituation *s)
 						dragK = tmpas;
 					}
 				} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
-					/* before another car */
-					tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGCg.pos.x, otherCar->DynGCg.pos.y) /
-									  (car->aero.Cd * car->DynGC.vel.x));
+					/* before another car [not sure how much the drag should be reduced in this case. In no case it should be lowered more than 50% I think. - Christos] */
+					tmpas = 1.0 - 0.5f * exp(- 8.0 * DIST(x, y, otherCar->DynGCg.pos.x, otherCar->DynGCg.pos.y) / (car->aero.Cd * car->DynGC.vel.x));
 					if (tmpas < dragK) {
 						dragK = tmpas;
 					}

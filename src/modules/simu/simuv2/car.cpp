@@ -175,7 +175,8 @@ SimCarUpdateForces(tCar *car)
 	F.F.z += car->wheel[i].forces.z;
 	/* moments */
 	F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * car->wheel[i].rollCenter;
+	    car->wheel[i].forces.y * (car->statGC.z + car->wheel[i].rideHeight);
+		//car->wheel[i].rollCenter;
 	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
 	    car->wheel[i].forces.x * (car->statGC.z + car->wheel[i].rideHeight);
 	F.M.z += -car->wheel[i].forces.x * car->wheel[i].staticPos.y +
@@ -291,6 +292,8 @@ SimCarUpdateSpeed(tCar *car)
     car->DynGC.vel.y = -car->DynGCg.vel.x * Sinz + car->DynGCg.vel.y * Cosz;
     car->DynGC.vel.z = car->DynGCg.vel.z;
 
+	//printf ("%f\n", car->DynGC.vel.az);
+
 }
 
 void
@@ -391,8 +394,27 @@ SimCarUpdateCornerPos(tCar *car)
 	/* the speed is vel.az * r                   */
 	/* where r = sqrt(x*x + y*y)                 */
 	/* the tangent vector is -y / r and x / r    */
+	// Hm, here local and global frames are mixed.
+	if (0) {
 	car->corner[i].vel.x = vx - car->DynGCg.vel.az * y;
 	car->corner[i].vel.y = vy + car->DynGCg.vel.az * x;
+	} else {
+	// This bit should clean it up.
+	// compute corner velocity at local frame
+	car->corner[i].vel.ax = - car->DynGC.vel.az * y;
+	car->corner[i].vel.ay = car->DynGC.vel.az * x;
+  	
+	// rotate to global and add global center of mass velocity
+	// note: global to local.
+	car->corner[i].vel.x = vx
+		+ car->corner[i].vel.ax * Cosz - car->corner[i].vel.ay * Sinz;
+	car->corner[i].vel.y = vy
+		+ car->corner[i].vel.ax * Sinz + car->corner[i].vel.ay * Cosz;
+
+	// add local center of mass velocity
+	car->corner[i].vel.ax += car->DynGC.vel.x;
+	car->corner[i].vel.ay += car->DynGC.vel.y;
+	}
     }
 }
 
