@@ -92,8 +92,6 @@ int main(int argc, char **argv)
     }
     
     num = fstat.st_size;
-    printf("size = %d\n", num);
-    
     
     mem= (char *) malloc(num+1);
 
