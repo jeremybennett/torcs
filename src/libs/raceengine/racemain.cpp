@@ -82,6 +82,10 @@ AbortRaceHookActivate(void * /* dummy */)
     ReInfo->_reGraphicItf.shutdowntrack();
     ReRaceCleanDrivers();
 
+    /* Remove keyboard hooks... */
+    GfuiKeyEventRegister(ReInfo->_reGameScreen, NULL);
+    GfuiSKeyEventRegister(ReInfo->_reGameScreen, NULL);
+
     /* Return to race menu */
     ReInfo->_reState = RE_STATE_CONFIG;
 
