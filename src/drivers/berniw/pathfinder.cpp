@@ -979,7 +979,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 				speed[norder] = tspeed;
 				/* stuff for new prediction code */
 				disttomiddle[norder] = track->distToMiddle(seg, &ocar[i].currentpos);
-				catchseg[norder] = (int(dists[norder]/(myc->speed - tspeed)*myc->speed) + trackSegId + nPathSeg) % nPathSeg;
+				catchseg[norder] = (int(dists[norder]/(myc->speed - ocar[i].speed)*myc->speed) + trackSegId + nPathSeg) % nPathSeg;
 				norder++;
 			}
 		}
@@ -995,8 +995,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 					 collcar[i]->dir.y * opseg->getDir()->y +
 					 collcar[i]->dir.z * opseg->getDir()->z;
 		/* compute minimal space requred */
-		//tdble velmargin = 1.0 + (myc->speed - speed[i]) / myc->speed*0.5;
-		tdble d = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosa)) + myc->DIST/* *velmargin*/ + fabs(myc->derror);
+		tdble d = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosa)) + myc->DIST + fabs(myc->derror);
 		/* compute distance to path */
 		tdble dtp = dist(opseg->getLoc(), &collcar[i]->currentpos);
 
@@ -1020,10 +1019,10 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 
 		/* now the experimental prediction part, abra-cadabra ... */
 		if (track->isBetween(trackSegId, end, catchseg[i])) {
-			tdble myd = track->distToMiddleOnSeg(catchseg[i], ps[i].getLoc());
+			tdble myd = track->distToMiddleOnSeg(catchseg[i], ps[catchseg[i]].getLoc());
 			dtp = fabs(myd - disttomiddle[i]);
 
-				if (dtp < d) {
+				if (dtp < myc->CARWIDTH + myc->DIST) {
 				tdble gm = otseg->getKfriction();
 				tdble qs = speedsqr[i];
 				tdble s = (myc->speedsqr - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca + myc->cw)));
@@ -1226,7 +1225,7 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	y[1] = ed;
 	ys[1] = pathSlope(endid);
 
-	if ( endid > id) {
+	if ( endid >= id) {
 		s[1] = (tdble) (endid - id);
 	} else {
 		s[1] = (tdble) (nPathSeg - id + endid);
@@ -1419,12 +1418,12 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		/* set up parameter s */
 		s[0] = 0.0;
-		if ( trackSegId1 > trackSegId) {
+		if ( trackSegId1 >= trackSegId) {
 			s[1] = (tdble) ( trackSegId1 - trackSegId);
 		} else {
 			s[1] = (tdble) (nPathSeg - trackSegId + trackSegId1);
 		}
-		if ( trackSegId2 > trackSegId1) {
+		if ( trackSegId2 >= trackSegId1) {
 			s[2] = s[1] + (tdble) ( trackSegId2 - trackSegId1);
 		} else {
 			s[2] = s[1] + (tdble) (nPathSeg - trackSegId1 + trackSegId2);
