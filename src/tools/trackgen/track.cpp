@@ -321,7 +321,7 @@ InitScene(tTrack *track)
 #define CHECKDISPLIST(mat, name, id, off) do {						\
 	char *texname;									\
 	int  mipmap;									\
-	char path_[256];								\
+	static char path_[256];								\
 	sprintf(path_, "%s/%s", TRK_SECT_SURFACES, mat);		\
 	texname = GfParmGetStr(hndl, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");		\
 	mipmap = (int)GfParmGetNum(hndl, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);	\
@@ -350,7 +350,7 @@ InitScene(tTrack *track)
     } while (0)
 
 #define CHECKDISPLIST2(texture, mipmap, name, id) {		\
-	char texname[256];					\
+	static char texname[256];				\
 	sprintf(texname, "%s.rgb", texture);			\
 	SETTEXTURE(texname, mipmap);				\
 	if (curTexId != prevTexId) {				\
@@ -421,6 +421,7 @@ InitScene(tTrack *track)
     nbvert+=58; /* start bridge */
     nbvert+=12 + 10 * track->pits.driversPitsNb;
     nbvert+=1000; /* safety margin */
+    nbvert *= 2; /* safety margin */
     printf("=== Indices Array Size   = %d\n", nbvert);
     printf("=== Vertex Array Size    = %d\n", nbvert * 3);
     printf("=== Tex Coord Array Size = %d\n", nbvert * 2);
@@ -631,7 +632,7 @@ InitScene(tTrack *track)
 		    case TR_CURB:
 			if (j == 0) {
 			    if (!mseg->prev->rside || (mseg->prev->rside->type2 != TR_RBORDER) || (mseg->prev->rside->style != TR_CURB)) {
-				SETPOINT(texLen, 0,       seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z);
+/* 				SETPOINT(texLen, 0,       seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z); */
 				SETPOINT(texLen, texMaxT, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z);
 			    }
 			    SETPOINT(texLen, 0,       seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z);
@@ -908,7 +909,7 @@ InitScene(tTrack *track)
 			SETPOINT(texLen, 0,       seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z);
 			SETPOINT(texLen, texMaxT, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z + seg->height);
 			if (mseg->next->rside && ((mseg->next->rside->type2 != TR_RBORDER) || (mseg->next->rside->style != TR_CURB))) {
-			    SETPOINT(texLen, 0,       seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z);
+/* 			    SETPOINT(texLen, 0,       seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z); */
 			    SETPOINT(texLen, texMaxT, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z);
 			}
 		    } else if (j == 1) {
@@ -1194,7 +1195,7 @@ InitScene(tTrack *track)
 			} else if (j == 1) {
 			    if (!mseg->prev->rside || (mseg->prev->rside->type2 != TR_RBORDER) || (mseg->prev->rside->style != TR_CURB)) {
 				SETPOINT(texLen, texMaxT, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z);
-				SETPOINT(texLen, 0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z);
+/* 				SETPOINT(texLen, 0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z); */
 			    }
 			    SETPOINT(texLen, texMaxT, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z + seg->height);
 			    SETPOINT(texLen, 0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z);
@@ -1471,7 +1472,7 @@ InitScene(tTrack *track)
 			SETPOINT(texLen, 0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z);
 			if (mseg->next->lside && ((mseg->next->lside->type2 != TR_LBORDER) || (mseg->next->lside->style != TR_CURB))) {
 			    SETPOINT(texLen, texMaxT, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z);
-			    SETPOINT(texLen, 0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z);
+/* 			    SETPOINT(texLen, 0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z); */
 			}
 		    }
 		    break;

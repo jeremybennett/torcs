@@ -254,7 +254,7 @@ static void
 DeletePlayer(void *dummy)
 {
     if (curPlayer) {
-	curPlayer->_DispName = NO_DRV;
+	curPlayer->_DispName = strdup(NO_DRV);
 	refreshEditVal();
 	UpdtScrollList();
     }
@@ -376,10 +376,13 @@ ChangeName(void *dummy)
 
     val = GfuiEditboxGetString(scrHandle, NameEditId);
     if (curPlayer != NULL) {
+	if (curPlayer->_DispName) {
+	    free(curPlayer->_DispName);
+	}
 	if (strlen(val)) {
-	    curPlayer->_DispName = val;
+	    curPlayer->_DispName = strdup(val);
 	} else {
-	    curPlayer->_DispName = NO_DRV;
+	    curPlayer->_DispName = strdup(NO_DRV);
 	}
     }
     UpdtScrollList();

@@ -103,7 +103,7 @@ int grInitScene(tTrack *track)
     GLfloat mat_specular[]={0.3,0.3,0.3,1.0};
     GLfloat mat_shininess[] ={5.0};
     GLfloat light_position[]={0,0,200,0.0};
-    GLfloat lmodel_ambient[]={0.5,0.5,0.5,1.0};
+    GLfloat lmodel_ambient[]={0.8,0.8,0.8,1.0};
 
     hndl = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 

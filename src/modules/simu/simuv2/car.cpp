@@ -387,8 +387,8 @@ SimTelemetryOut(tCar *car)
     tdble Fzf, Fzr;
     
     printf("-----------------------------\nCar: %d %s ---\n", car->carElt->index, car->carElt->_name);
-    printf("Seg: %d  Ts:%f  Tr:%f\n",
-	   car->trkPos.seg->id, car->trkPos.toStart, car->trkPos.toRight);
+    printf("Seg: %d (%s)  Ts:%f  Tr:%f\n",
+	   car->trkPos.seg->id, car->trkPos.seg->name, car->trkPos.toStart, car->trkPos.toRight);
     printf("---\nMx: %f  My: %f  Mz: %f (N/m)\n", car->DynGC.acc.ax, car->DynGC.acc.ay, car->DynGC.acc.az);
     printf("Wx: %f  Wy: %f  Wz: %f (rad/s)\n", car->DynGC.vel.ax, car->DynGC.vel.ay, car->DynGC.vel.az);
     printf("Ax: %f  Ay: %f  Az: %f (rad)\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);

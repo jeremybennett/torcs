@@ -307,17 +307,17 @@ dmGetDistToStart(tCarElt *car)
  * Remarks
  *	
  */
-const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.1,	0.02,	0.2,	0.2,	0.02,	0.02,	0.02	};
-const  tdble AGain[10]   = {	0.30,	0.1,   0.25,	0.01,	0.015,	0.05,	0.08,	0.08,	0.08,	0.08	};
-static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.008,	0.01,	0.015,	0.02,	0.015,	0.015	};
-const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.0,	0.00,	0.00,	0.00	};
-static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	0.0,	0.0,	0.0,	0	};
+const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.1,	0.05,	0.08,	0.2,	0.02,	0.02,	0.02	};
+const  tdble AGain[10]   = {	0.30,	0.1,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.08	};
+static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.05,	0.08,	0.015,	0.02,	0.015,	0.015	};
+const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
+static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
-const  tdble Advance3[10]= {	-15.0,	-17.0,  -16.0,	-17.0,	-26.0,	-30.0,	0.0,	0.0,	0.0,	-30.0	};
+const  tdble Advance3[10]= {	-15.0,	-17.0,  -16.0,	-17.0,	-17.0,	-15.0,	0.0,	0.0,	0.0,	-30.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
-const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.001,	0.005,	0.0002,	0.0005,	0.0005,	0.0005	};
+const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.0005	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	10000,	10000,	10000,	10000,	10000,	10000	};
+static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	10000,	10000,	10000,	10000	};
 static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt2ref[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
@@ -330,23 +330,34 @@ void newrace(int index, tCarElt* car, tSituation *s)
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
     hold[index-1] = 5.0;
     InitGears(car, index);
+
     spdtgt2[0] = DmTrack->width - 4.0;
     Advance[0] = Advance2[0] = DmTrack->width * 2.0;
+
     spdtgt2ref[1] = spdtgt2[1] = DmTrack->width + 4.0;
     Advance[1] = Advance2[1] = DmTrack->width * 2.0 + 4.5;
-    spdtgt2[2] = DmTrack->width - 4.0;
-    Advance[2] = Advance2[2] = DmTrack->width * 2.0;
+
+    spdtgt2ref[2] = spdtgt2[2] = DmTrack->width * .8 + 7.5;
+    Advance[2] = Advance2[2] = DmTrack->width * 2.0 + 3.0;
+
     spdtgt2ref[3] = spdtgt2[3] = DmTrack->width + 1.0;
     Advance[3] = Advance2[3] = DmTrack->width * 2.0 + 5.0;
-    spdtgt2[4] = DmTrack->width;
-    Advance[4] = Advance2[4] = DmTrack->width * 2.0 + 8.0;
-    spdtgt2[5] = DmTrack->width - 5.0;
+
+    spdtgt2ref[4] = spdtgt2[4] = DmTrack->width + 3.0;
+    Advance[4] = Advance2[4] = DmTrack->width * 2.0 + 6.0;
+
+    spdtgt2ref[5] = spdtgt2[5] = DmTrack->width + 3.0;
+    Advance[5] = Advance2[5] = DmTrack->width * 2.0 + 6.0;
+
     spdtgt2[6] = DmTrack->width + 3.0;
     Advance[6] = Advance2[6] = DmTrack->width * 2.0 + 15.0;
+
     spdtgt2[7] = DmTrack->width + 3.0;
     Advance[7] = Advance2[7] = DmTrack->width * 2.0 + 8.0;
+
     spdtgt2[8] = DmTrack->width + 3.0;
     Advance[8] = Advance2[8] = DmTrack->width * 2.0 + 8.0;
+
     spdtgt2[9] = DmTrack->width + 2.5;
     Advance[9] = Advance2[9] = DmTrack->width * 2.0 + 3.0;
 }
@@ -392,6 +403,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
 	spdtgt2[1] = spdtgt2ref[1] * (seg->surface->kFriction - .2);
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .2);
+	spdtgt2[4] = spdtgt2ref[4] * (seg->surface->kFriction - .3);
+	spdtgt2[5] = spdtgt2ref[5] * (seg->surface->kFriction - .3);
     }
 
     vtgt1 = spdtgt[idx];

@@ -47,7 +47,7 @@ static char *SectSide[2]    = {TRK_SECT_RSIDE, TRK_SECT_LSIDE};
 static char *SectBorder[2]  = {TRK_SECT_RBORDER, TRK_SECT_LBORDER};
 static char *SectBarrier[2] = {TRK_SECT_RBARRIER, TRK_SECT_LBARRIER};
 
-static char *ValStyle[4] = {TRK_VAL_PLAN, TRK_VAL_WALL, TRK_VAL_CURB, TRK_VAL_FENCE};
+static char *ValStyle[] = {TRK_VAL_PLAN, TRK_VAL_CURB, TRK_VAL_WALL, TRK_VAL_FENCE, TRK_VAL_FENCE};
 
 
 static tdble sideEndWidth[2];
@@ -173,7 +173,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
     tdble	al, alfl;
     int		j;
     tdble	x1, x2, y1, y2;
-    tdble	sw, ew, bw;
+    tdble	w, sw, ew, bw;
     tdble	minWidth;
     tdble	maxWidth;
     int		type;
@@ -196,7 +196,8 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	    /* Side parameters */
 	    sprintf(path2, "%s/%s", path, SectSide[side]);
 	    sw = GfParmGetNum(TrackHandle, path2, TRK_ATT_SWIDTH, (char*)NULL, sideEndWidth[side]);
-	    ew = GfParmGetNum(TrackHandle, path2, TRK_ATT_EWIDTH, (char*)NULL, sw);
+	    w = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, sw);
+	    ew = GfParmGetNum(TrackHandle, path2, TRK_ATT_EWIDTH, (char*)NULL, w);
 	    sideStartWidth[side] = sw;
 	    sideEndWidth[side] = ew;
 	    sideMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, sideMaterial[side]);
