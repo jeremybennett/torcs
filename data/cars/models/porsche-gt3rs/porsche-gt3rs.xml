@@ -29,7 +29,7 @@
   </section>
 
   <section name="Graphic Objects">
-    <attstr name="env" val="porsche-gt3rs.ac"/>
+    <attstr name="env" val="porsche-gt3rs.acc"/>
     <attstr name="wheel texture" val="cars/porsche-gt3rs/tex-wheel.rgb"/>
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
@@ -40,7 +40,7 @@
     <section name="Ranges">
       <section name="1">
         <attnum name="threshold" val="0"/>
-        <attstr name="car" val="porsche-gt3rs.ac"/>
+        <attstr name="car" val="porsche-gt3rs.acc"/>
       </section>
     </section>
   </section>
@@ -73,15 +73,15 @@
     <!-- for flames -->
     <attnum name="power" val="1.5"/>
     <section name="1">
-      <attnum name="xpos" val="-2.12"/>
-      <attnum name="ypos" val="-0.58"/>
-      <attnum name="zpos" val="0.23"/>
+      <attnum name="xpos" val="-2.03"/>
+      <attnum name="ypos" val="-0.5"/>
+      <attnum name="zpos" val="0.16"/>
     </section>
 
     <section name="2">
-      <attnum name="xpos" val="-2.12"/>
-      <attnum name="ypos" val="0.58"/>
-      <attnum name="zpos" val="0.23"/>
+      <attnum name="xpos" val="-2.03"/>
+      <attnum name="ypos" val="0.5"/>
+      <attnum name="zpos" val="0.16"/>
     </section>
   </section>
 
