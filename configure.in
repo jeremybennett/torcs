@@ -82,9 +82,10 @@ AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please
 
 AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
+dnl Replace `main' with a function in -lz:
+AC_CHECK_LIB(z, crc32,,AC_MSG_ERROR([Can't find libz. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lpng:
 AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
-AC_CHECK_LIB(z, main,,AC_MSG_ERROR([Can't find libz. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 AC_CHECK_LIB(GL, main,,AC_MSG_ERROR([Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
