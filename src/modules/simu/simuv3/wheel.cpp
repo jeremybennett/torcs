@@ -303,7 +303,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
     if (right_way_up) {
 	car->carElt->_skid[index] = MIN(1.0, s*reaction_force*0.0002);
-//0.0002*(MAX(0.2, MIN(s, 1.2)) - 0.2)*reaction_force;
+	//0.0002*(MAX(0.2, MIN(s, 1.2)) - 0.2)*reaction_force;
 	car->carElt->_reaction[index] = reaction_force;
     } else {
 	car->carElt->_skid[index] = 0.0;
