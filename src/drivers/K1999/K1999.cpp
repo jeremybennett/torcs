@@ -13,6 +13,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 #include <iostream.h>
+#include <strstream.h>
 #include <iomanip.h>
 #include <math.h>
 #include <stdlib.h>
@@ -31,29 +32,95 @@
 ////////////////////////////////////////////////////////////////////////////
 
 //
-// These first parameters depend on your car's tuning
-//
-static const char * const szSettings = "drivers/K1999/settings.xml";
-static const double TireAccel1 = 13.20;
-static const double WingRInverse = 0.0029;
-static const double MaxBrake = 13.00;
-
-//
 // These parameters are for the computation of the path
 //
+static const int MaxSegments = 1000;
+static const int MaxDivs = 20000;
+
 static const int Iterations = 100;     // Number of smoothing operations
-static const double DivLength = 1.0;   // Length of path elements in meters
+static const double DivLength = 3.0;   // Length of path elements in meters
  
 static const double SecurityR = 100.0; // Security radius
-static double SideDistExt = 1.4; // Security distance wrt outside
-static double SideDistInt = 1.2; // Security distance wrt inside          
+static double SideDistExt = 2.0; // Security distance wrt outside
+static double SideDistInt = 1.0; // Security distance wrt inside          
+
+class CK1999Data
+{
+ public:
+  CK1999Data(double x1, double x2, double x3, double x4, double x5, char * const psz) :
+   WingRInverse(x1),
+   TireAccel1(x2),
+   MaxBrake(x3),
+   SlipLimit(x4),
+   SteerSkid(x5),
+   pszCarName(psz)
+  {
+   fDirt = 0;
+  }
+   
+  const double WingRInverse;
+  const double TireAccel1;
+  const double MaxBrake;
+  const double SlipLimit;
+  const double SteerSkid;
+  char * const pszCarName; 
+
+  double ABS;
+  double TractionHelp;
+  int fStuck;
+  double wheelbase;
+  double wheeltrack;
+
+  int Divs;
+  int Segs;
+  double Width;
+  double Length;
+  double tSegDist[MaxSegments];
+  int tSegIndex[MaxSegments];
+  double tElemLength[MaxSegments];
+  double tx[MaxDivs];
+  double ty[MaxDivs];
+  double tDistance[MaxDivs];
+  double tRInverse[MaxDivs];
+  double tMaxSpeed[MaxDivs];
+  double tSpeed[MaxDivs];
+  double txLeft[MaxDivs];
+  double tyLeft[MaxDivs];
+  double txRight[MaxDivs];
+  double tyRight[MaxDivs];
+  double tLane[MaxDivs];
+  double tFriction[MaxDivs];
+
+  int fDirt;
+
+  void UpdateTxTy(int i);
+  void DrawPath(ostream &out);
+  void SetSegmentInfo(const tTrackSeg *pseg, double d, int i, double l);
+  void SplitTrack(tTrack *ptrack);
+  double GetRInverse(int prev, double x, double y, int next);
+  void AdjustRadius(int prev, int i, int next, double TargetRInverse, double Security = 0);
+  void Smooth(int Step);
+  void StepInterpolate(int iMin, int iMax, int Step);
+  void Interpolate(int Step);
+  void InitTrack(tTrack* track, void **carParmHandle, tSituation *p);
+  void NewRace(tCarElt* car, tSituation *s);
+  void Drive(tCarElt* car, tSituation *s);
+};
+
+CK1999Data data1(0.0032,  9.50,  8.00, 8.00, 0.40, "K1999-buggy");
+CK1999Data data2(0.0032, 12.00, 11.00, 2.00, 0.20, "K1999-cg-nascar-rwd");
+
+CK1999Data *tpdata[] = {&data1, &data2};
+
+#define CARS (sizeof(tpdata)/sizeof(*tpdata))
+
 
 //
 // Debugging options
 //
-//#define VERBOSE
+#define VERBOSE
 //#define DOLOG
-//#define DRAWPATH
+#define DRAWPATH
 
 #ifdef DOLOG
 ofstream ofsLog("K1999.log", ios::out);
@@ -94,40 +161,10 @@ static double Max(double x1, double x2)
   return x1;
 }
  
-////////////////////////////////////////////////////////////////////////////
-// Global data
-////////////////////////////////////////////////////////////////////////////
-const int MaxSegments = 1000;
-const int MaxDivs = 20000;
- 
-static int Divs;
-static int Segs;
-static double Width;
-static double Length;
-static double tSegDist[MaxSegments];
-static int tSegIndex[MaxSegments];
-static double tElemLength[MaxSegments];
-static double tx[MaxDivs];
-static double ty[MaxDivs];
-static double tDistance[MaxDivs];
-static double tRInverse[MaxDivs];
-static double tMaxSpeed[MaxDivs];
-static double tSpeed[MaxDivs];
-static double txLeft[MaxDivs];
-static double tyLeft[MaxDivs];
-static double txRight[MaxDivs];
-static double tyRight[MaxDivs];
-static double tLane[MaxDivs];
-static double tFriction[MaxDivs];
-
-static tTrack *ptrack;
-static double wheeltrack;
-static int fDirt = 0;
-
 /////////////////////////////////////////////////////////////////////////////
 // Update tx and ty arrays
 /////////////////////////////////////////////////////////////////////////////
-static void UpdateTxTy(int i)
+void CK1999Data::UpdateTxTy(int i)
 {
  tx[i] = tLane[i] * txRight[i] + (1 - tLane[i]) * txLeft[i];
  ty[i] = tLane[i] * tyRight[i] + (1 - tLane[i]) * tyLeft[i];
@@ -137,7 +174,7 @@ static void UpdateTxTy(int i)
 // Draw a path (use gnuplot)
 /////////////////////////////////////////////////////////////////////////////
 #ifdef DRAWPATH
-static void DrawPath(ostream &out)
+void CK1999Data::DrawPath(ostream &out)
 {
  for (int i = 0; i <= Divs; i++)
  {
@@ -153,7 +190,7 @@ static void DrawPath(ostream &out)
 /////////////////////////////////////////////////////////////////////////////
 // Set segment info
 /////////////////////////////////////////////////////////////////////////////
-static void SetSegmentInfo(const tTrackSeg *pseg, double d, int i, double l)
+void CK1999Data::SetSegmentInfo(const tTrackSeg *pseg, double d, int i, double l)
 {
  if (pseg)
  {
@@ -170,7 +207,7 @@ static void SetSegmentInfo(const tTrackSeg *pseg, double d, int i, double l)
 // Split the track into small elements
 // ??? constant width supposed
 /////////////////////////////////////////////////////////////////////////////
-static void SplitTrack()                                                        
+void CK1999Data::SplitTrack(tTrack *ptrack)
 {
  Segs = 0;
  OUTPUT("Analyzing track...");
@@ -178,8 +215,10 @@ static void SplitTrack()
 
  double Distance = 0;
  double Angle = psegCurrent->angle[TR_ZS];
- double xPos = 0;
- double yPos = 0;
+ double xPos = (psegCurrent->vertex[TR_SL].x +
+                psegCurrent->vertex[TR_SR].x) / 2;
+ double yPos = (psegCurrent->vertex[TR_SL].y +
+                psegCurrent->vertex[TR_SR].y) / 2;
 
  int i = 0;
 
@@ -237,10 +276,10 @@ static void SplitTrack()
    tFriction[i] = psegCurrent->kFriction;
    if (tFriction[i] < 1) // ??? ugly trick for dirt
    {
-    tFriction[i] *= 0.70;
+    //tFriction[i] *= 0.90;
     fDirt = 1;
-    SideDistInt = -1.0;
-    SideDistExt = 1.0;
+    SideDistInt = -1.5;
+    SideDistExt = 0.0;
    }
    UpdateTxTy(i);
 
@@ -264,12 +303,13 @@ static void SplitTrack()
  OUTPUT("Number of path elements : " << Divs);
  OUTPUT("Segs = " << Segs);
  OUTPUT("Track length : " << Length);
+ OUTPUT("Width : " << Width);
 }
  
 /////////////////////////////////////////////////////////////////////////////
 // Compute the inverse of the radius
 /////////////////////////////////////////////////////////////////////////////
-static double GetRInverse(int prev, double x, double y, int next)
+double CK1999Data::GetRInverse(int prev, double x, double y, int next)
 {
  double x1 = tx[next] - x;
  double y1 = ty[next] - y;
@@ -286,14 +326,11 @@ static double GetRInverse(int prev, double x, double y, int next)
  
  return 2 * det / nnn;
 }
-                                                                                /////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
 // Change lane value to reach a given radius
 /////////////////////////////////////////////////////////////////////////////
-static void AdjustRadius(int prev,
-                         int i,
-                         int next,
-                         double TargetRInverse,
-                         double Security = 0)
+void CK1999Data::AdjustRadius(int prev, int i, int next, double TargetRInverse, double Security)
 {
  double OldLane = tLane[i];
  
@@ -363,7 +400,7 @@ static void AdjustRadius(int prev,
 /////////////////////////////////////////////////////////////////////////////
 // Smooth path
 /////////////////////////////////////////////////////////////////////////////
-static void Smooth(int Step)
+void CK1999Data::Smooth(int Step)
 {
  int prev = ((Divs - Step) / Step) * Step;
  int prevprev = prev - Step;
@@ -376,9 +413,6 @@ static void Smooth(int Step)
   double ri1 = GetRInverse(i, tx[next], ty[next], nextnext);
   double lPrev = Mag(tx[i] - tx[prev], ty[i] - ty[prev]);
   double lNext = Mag(tx[i] - tx[next], ty[i] - ty[next]);
-
-//  if (fabs(ri1) < fabs(ri0))
-//   lNext *= 1.05;
 
   double TargetRInverse = (lNext * ri0 + lPrev * ri1) / (lNext + lPrev);
  
@@ -397,7 +431,7 @@ static void Smooth(int Step)
 /////////////////////////////////////////////////////////////////////////////
 // Interpolate between two control points
 /////////////////////////////////////////////////////////////////////////////
-static void StepInterpolate(int iMin, int iMax, int Step)
+void CK1999Data::StepInterpolate(int iMin, int iMax, int Step)
 {
  int next = (iMax + Step) % Divs;
  if (next > Divs - Step)
@@ -420,7 +454,7 @@ static void StepInterpolate(int iMin, int iMax, int Step)
 /////////////////////////////////////////////////////////////////////////////
 // Calls to StepInterpolate for the full path
 /////////////////////////////////////////////////////////////////////////////
-static void Interpolate(int Step)
+void CK1999Data::Interpolate(int Step)
 {
  if (Step > 1)
  {
@@ -434,8 +468,7 @@ static void Interpolate(int Step)
 ////////////////////////////////////////////////////////////////////////////
 // Function declaration 
 ////////////////////////////////////////////////////////////////////////////
-static void initTrack(int index, tTrack* track, void **carParmHandle,
-tSituation *p); 
+static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *p); 
 static void drive(int index, tCarElt* car, tSituation *s); 
 static void newrace(int index, tCarElt* car, tSituation *s); 
 static int InitFuncPt(int index, void *pt); 
@@ -446,11 +479,15 @@ static int InitFuncPt(int index, void *pt);
 extern "C" int K1999(tModInfo *modInfo) 
 { 
  OUTPUT("modInfo");
- modInfo->name    = "K1999";    // name of the module (short)
- modInfo->desc    = "K1999";    // description of the module
- modInfo->fctInit = InitFuncPt; // init function
- modInfo->gfId    = ROB_IDENT;  // supported framework version
- modInfo->index   = 1;          // same as in XML file
+ for (int i = CARS; --i >= 0;)
+ {
+  OUTPUT("modInfo[" << i << "].name = " << tpdata[i]->pszCarName);
+  modInfo[i].name    = tpdata[i]->pszCarName;
+  modInfo[i].desc    = tpdata[i]->pszCarName;
+  modInfo[i].fctInit = InitFuncPt;
+  modInfo[i].gfId    = ROB_IDENT;
+  modInfo[i].index   = i + 1;
+ }
  return 0; 
 } 
 
@@ -471,17 +508,27 @@ static int InitFuncPt(int index, void *pt)
 ////////////////////////////////////////////////////////////////////////////
 // New track
 ////////////////////////////////////////////////////////////////////////////
-static void initTrack(int index, tTrack* track, void **carParmHandle,
-tSituation *p) 
-{ 
- OUTPUT("initTrack");
+static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *p) 
+{
+ OUTPUT("initTrack(" << index << ")");
+ char szSettings[100];
+ ostrstream os(szSettings, sizeof(szSettings));
+ os << "drivers/K1999/" << index << "/settings.xml" << ends;
  *carParmHandle = GfParmReadFile(szSettings, GFPARM_RMODE_STD);
  if (*carParmHandle)
-  OUTPUT("settings.xml read, name = " << name);
+  OUTPUT(szSettings << " read.");
  else
   OUTPUT("Settings not loaded : " << szSettings);
- ptrack = track;
- SplitTrack();
+
+ tpdata[index - 1]->InitTrack(track, carParmHandle, p);
+}
+
+void CK1999Data::InitTrack(tTrack* track, void **carParmHandle, tSituation *p)
+{
+ //
+ // split track
+ //
+ SplitTrack(track);
 
  //
  // Smoothing loop
@@ -534,12 +581,21 @@ tSituation *p)
   double LatA = tSpeed[i] * tSpeed[i] *
                 (fabs(tRInverse[prev]) + fabs(tRInverse[i])) / 2;
  
+#if 0
   double TanA = TireAccel * TireAccel - LatA * LatA;
   if (TanA < 0.0)
    TanA = 0.0;
   TanA = sqrt(TanA) + WingRInverse * Speed * Speed;
   if (TanA > MaxBrake)
    TanA = MaxBrake;
+#else
+  double TanA = TireAccel * TireAccel +
+                WingRInverse * Speed * Speed - LatA * LatA;
+  if (TanA < 0.0)
+   TanA = 0.0;
+  if (TanA > MaxBrake * tFriction[i])
+   TanA = MaxBrake * tFriction[i];
+#endif
  
   double Time = dist / Speed;
   double MaxSpeed = tSpeed[i] + TanA * Time;
@@ -555,10 +611,14 @@ tSituation *p)
 ////////////////////////////////////////////////////////////////////////////
 // New race
 ////////////////////////////////////////////////////////////////////////////
-static double wheelbase;
 static void newrace(int index, tCarElt* car, tSituation *s) 
 { 
- OUTPUT("newrace");
+ OUTPUT("newrace(" << index << ")");
+ tpdata[index - 1]->NewRace(car, s);
+}
+
+void CK1999Data::NewRace(tCarElt* car, tSituation *s)
+{
  wheelbase = (car->priv->wheel[FRNT_RGT].relPos.x +
               car->priv->wheel[FRNT_LFT].relPos.x -
               car->priv->wheel[REAR_RGT].relPos.x -
@@ -569,12 +629,21 @@ static void newrace(int index, tCarElt* car, tSituation *s)
                car->priv->wheel[REAR_RGT].relPos.y) / 2;
  OUTPUT("wheelbase = " << wheelbase);
  OUTPUT("wheeltrack = " << wheeltrack);
+
+ ABS = 1;
+ TractionHelp = 1;
+ fStuck = 0;
 } 
 
 ////////////////////////////////////////////////////////////////////////////
 // Car control
 ////////////////////////////////////////////////////////////////////////////
 static void drive(int index, tCarElt* car, tSituation *s) 
+{
+ tpdata[index - 1]->Drive(car, s);
+}
+
+void CK1999Data::Drive(tCarElt* car, tSituation *s)
 {
  memset(car->ctrl, 0, sizeof(tCarCtrl));
 
@@ -588,21 +657,30 @@ static void drive(int index, tCarElt* car, tSituation *s)
  if (car->_trkPos.seg->type != TR_STR)
   dist *= car->_trkPos.seg->radius;
  int Index = tSegIndex[SegId] + int(dist / tElemLength[SegId]);
- Index = Index % Divs;
- int Next = (Index + 1) % Divs;
  double d = tSegDist[SegId] + dist;
- double d0 = tDistance[Index];
- double d1 = tDistance[Next];
- if (d1 < d0)
-  d1 += Length;
- if (d > d1 + Length / 2)
-  d -= Length;
- double c0 = (d - d1) / (d0 - d1);
 
- //
- // Find target lane (=relative distance to the left side of the track)
- //
- double TargetLane = (1 - c0) * tLane[Next] + c0 * tLane[Index];
+ Index = (Index + Divs - 5) % Divs;
+ int Next;
+ static const double Time = 0.01;
+ double X = car->_pos_X + car->_speed_X * Time / 2;
+ double Y = car->_pos_Y + car->_speed_Y * Time / 2;
+ while(1)
+ {
+  Next = (Index + 1) % Divs;
+  if ((tx[Next] - tx[Index]) * (X - tx[Next]) +
+      (ty[Next] - ty[Index]) * (Y - ty[Next]) < 0)
+   break;
+  Index = Next;
+ }
+ double c0 = (tx[Next] - tx[Index]) * (tx[Next] - X) +
+             (ty[Next] - ty[Index]) * (ty[Next] - Y);
+ double c1 = (tx[Next] - tx[Index]) * (X - tx[Index]) +
+             (ty[Next] - ty[Index]) * (Y - ty[Index]);
+ {
+  double sum = c0 + c1;
+  c0 /= sum;
+  c1 /= sum;
+ }
 
  //
  // Find target curvature (for the inside wheel)
@@ -643,7 +721,11 @@ static void drive(int index, tCarElt* car, tSituation *s)
   //
   // Servo system to stay on the pre-computed path
   //
-  Error = TargetLane * Width - car->_trkPos.toLeft;
+  {
+   double dx = tx[Next] - tx[Index];
+   double dy = ty[Next] - ty[Index];
+   Error = (dx * (Y - ty[Index]) - dy * (X - tx[Index])) / Mag(dx, dy);
+  }  
 
   int Prev = (Index + Divs - 1) % Divs;
   int NextNext = (Next + 1) % Divs;
@@ -663,10 +745,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
   if (cError < 0)
    VnError = PI - VnError;
 
-  car->ctrl->steer -= (atan(Error * (300 / (speed + 300)) / 20) + VnError) / car->_steerLock;
+  car->ctrl->steer -= (atan(Error * (300 / (speed + 300)) / 15) + VnError) / car->_steerLock;
 
   //
-  // Counter-steering in case of skidding
+  // Steer into the skid
   //
   double vx = car->_speed_X;
   double vy = car->_speed_Y;
@@ -679,8 +761,11 @@ static void drive(int index, tCarElt* car, tSituation *s)
    Skid = 0.9;
   if (Skid < -0.9)
    Skid = -0.9;
+  car->ctrl->steer += asin(Skid) / car->_steerLock;
+
   double yr = speed * TargetCurvature;
-  car->ctrl->steer += (asin(Skid) - 0.2 * (1 + fDirt) * (100 / (speed + 100)) * (car->_yaw_rate - yr)) / car->_steerLock;
+  double diff = car->_yaw_rate - yr;
+  car->ctrl->steer -= (SteerSkid * (1 + fDirt) * (100 / (speed + 100)) * diff) / car->_steerLock;
  }
 
  //
@@ -689,52 +774,44 @@ static void drive(int index, tCarElt* car, tSituation *s)
  car->ctrl->accelCmd = 0;
  car->ctrl->brakeCmd = 0;
 
- static double ABS = 1;
- static double AntiSlip = 1;
+ double x = (10 + car->_speed_x) * (TargetSpeed - car->_speed_x) / 200;
+ if (fDirt && x > 0)
+  x = 1;
 
- double x = (10 + car->_speed_x) * (TargetSpeed - car->_speed_x) / 400;
- if (fDirt)
-  x *= 2;
  if (x > 0)
-  car->ctrl->accelCmd = Min(x, AntiSlip);
+  car->ctrl->accelCmd = Min(x, TractionHelp);
  else
   car->ctrl->brakeCmd = Min(-10 * x, ABS);
-
- if (car->_speed_x > 30 && fabs(Error) * car->_speed_x > 100)
+ 
+ if (car->_speed_x > 30 && fabs(Error) * car->_speed_x > 60)
   car->ctrl->accelCmd = 0;
-
- if (car->_speed_x > 20)
- {
-  const double SkidLimit = 0.2;
-  if (fabs(Skid) > SkidLimit)
-   car->ctrl->accelCmd = 0;
-  else if (fabs(Skid) > SkidLimit / 2)
-  {
-   double k = 1 - fabs(Skid) / SkidLimit;
-   car->ctrl->accelCmd *= k * k;
-  }
- }
 
  if (car->ctrl->accelCmd > 0)
   car->ctrl->brakeCmd = 0;
 
  //
- // anti-slip
+ // Traction help
  //
+ //if (!fDirt)
  {
   double slip = 0;
   if (car->_speed_x > 0.1)
-   slip = (car->_wheelRadius(3) * car->_wheelSpinVel(3) - car->_speed_x);
+   for (int i = 4; --i >= 0;)
+   {
+    double s = (car->_wheelRadius(i) * car->_wheelSpinVel(i) - car->_speed_x);
+    if (s > slip)
+     slip = s;
+   }
 
-  if (slip > 1.0)
-   AntiSlip *= 0.9;
+  if (slip > SlipLimit)
+   TractionHelp *= 0.9;
   else
   {
-   if (AntiSlip < 0.1)
-    AntiSlip = 0.1;
-   AntiSlip *= 1.1;
-   if (AntiSlip > 1.0)
-    AntiSlip = 1.0;
+   if (TractionHelp < 0.1)
+    TractionHelp = 0.1;
+   TractionHelp *= 1.1;
+   if (TractionHelp > 1.0)
+    TractionHelp = 1.0;
   }
  }
 
@@ -744,9 +821,14 @@ static void drive(int index, tCarElt* car, tSituation *s)
  {
   double slip = 0;
   if (car->_speed_x > 0.1)
-   slip = (car->_wheelRadius(1) * car->_wheelSpinVel(1) - car->_speed_x);
+   for (int i = 4; --i >= 0;)
+   {
+    double s = (car->_wheelRadius(i) * car->_wheelSpinVel(i) - car->_speed_x);
+    if (s < slip)
+     slip = s;
+   }
 
-  if (slip < -2.0)
+  if (slip < -SlipLimit)
    ABS *= 0.9;
   else
   {
@@ -763,34 +845,30 @@ static void drive(int index, tCarElt* car, tSituation *s)
  //
  car->ctrl->gear = car->_gear;
  if (car->_gear <= 0)
-  car->ctrl->gear++;
+  car->ctrl->gear = 1;
  else
  {
-  static double OldSpeed = 0;
-  double Speed = car->_speed_x;
-  if (car->_enginerpm > car->_enginerpmRedLine * 0.95)
-   car->ctrl->gear++;
+  float *tRatio = car->_gearRatio + car->_gearOffset;
+  double rpm = (car->_speed_x + SlipLimit) * tRatio[car->_gear] / car->_wheelRadius(2);
+
+  if (rpm > car->_enginerpmRedLine * 0.95)
+   car->ctrl->gear = car->_gear + 1;
+    
   if (car->_gear > 1 &&
-      car->_enginerpm /
-           car->_gearRatio[car->_gear + car->_gearOffset] *
-           car->_gearRatio[car->_gear - 1 + car->_gearOffset] <
-      car->_enginerpmRedLine * 0.80)
-   car->ctrl->gear--;
-  OldSpeed = Speed;
+      rpm / tRatio[car->_gear] * tRatio[car->_gear - 1] < car->_enginerpmRedLine * 0.70 + 2 * car->_gear)
+   car->ctrl->gear = car->_gear - 1;
  }
 
  //
  // Handle getting unstuck
  //
- static int fStuck = 0;
-
- if (car->_gear < 2 &&
+ if (car->_gear <= 2 &&
      car->_speed_x < 3.0 &&
-     (CosAngleError < 0.6 || (fStuck && CosAngleError < 0.95)) &&
+     (CosAngleError < 0.7 || (fStuck && CosAngleError < 0.90)) &&
      SinAngleError * Error > 0)
  {
   fStuck = 1;
-  car->ctrl->gear = -1;
+  car->ctrl->gear = car->_gear -1;
   if (car->_speed_x < 0)
   {
    if (SinAngleError > 0)
@@ -809,11 +887,13 @@ static void drive(int index, tCarElt* car, tSituation *s)
  // Special race commands
  //
  car->ctrl->raceCmd = RM_CMD_NONE;
- if (1)
+#if 0
+ if (0)
  {
   car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
   car->pitcmd->fuel = 1;
  }
+#endif
 
  LOG(d);
  LOG(car->_trkPos.toLeft);
@@ -828,6 +908,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
   LOG(d - PrevD);
   PrevD = d;
  }
+ LOG(VnError);
+ LOG(car->_pos_X);
+ LOG(car->_pos_Y);
+ LOG(double(Index % 10) / 10.0);
  LOG('\n');
 } 
-

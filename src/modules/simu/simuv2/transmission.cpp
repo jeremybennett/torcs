@@ -74,6 +74,7 @@ SimTransmissionConfig(tCar *car)
 	fRatio = trans->differential[TRANS_CENTRAL_DIFF].ratio;
 	fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency * trans->differential[TRANS_CENTRAL_DIFF].efficiency * trans->differential[TRANS_REAR_DIFF].efficiency;
     }
+    free(transType);
 
     trans->gearbox.gearMax = 0;
     for (i = MAX_GEARS - 1; i >= 0; i--) {
@@ -174,7 +175,6 @@ SimGearboxUpdate(tCar *car)
 	if (clutch->timeToRelease <= 0.0) {
 	    clutch->state = CLUTCH_RELEASED;
 	    gfMeanReset(0, &car->meanAccel);
-	    car->carElt->ctrl->accelCmd = 0;
 	    trans->curI = trans->driveI[gearbox->gear+1];
 	    differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
 	    differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
@@ -188,7 +188,10 @@ SimGearboxUpdate(tCar *car)
 		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 	    }
 	} else {
-	    car->carElt->ctrl->accelCmd = clutch->plip;
+	    //car->carElt->ctrl->accelCmd = clutch->plip;
+	    if (car->carElt->ctrl->accelCmd > car->engine.brakeCoeff) {
+		car->carElt->ctrl->accelCmd = car->engine.brakeCoeff;
+	    }
 	}
 	
     } else if ((car->ctrl->gear > gearbox->gear)) {

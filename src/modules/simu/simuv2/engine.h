@@ -43,6 +43,7 @@ typedef struct
     tdble		rads;   /* revs in rad/s ... */
     tdble		Tq;	/* output torque */
     tdble		fuelcons;
+    tdble		brakeCoeff;
 } tEngine;
 
 #endif /* _ENGINE_H_ */ 

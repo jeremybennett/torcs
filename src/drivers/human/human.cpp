@@ -428,7 +428,6 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	car->ctrl->accelCmd = 0;
     }
     
-
     if (car->_laps == 1) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {
 	    if (lap == 0) {

@@ -40,6 +40,7 @@ SimEngineConfig(tCar *car)
     car->engine.tickover    = GfParmGetNum(hdle, SECT_ENGINE, PRM_TICKOVER, (char*)NULL, 150);
     car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423);
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
+    car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
     
     for (i = 0; i < MAXPTS; i++) {
 	sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
@@ -78,22 +79,16 @@ SimEngineUpdateTq(tCar *car)
 	return;
     }
 
-    if (car->ctrl->accelCmd < 0.05) {
-	// engine brake
-	//engine->Tq = - engine->rads * curve->maxTq / (engine->revsMax * 20.0);
-	for (i = 0; i < MAXPTS; i++) {
-	    if (engine->rads < curve->data[i].rads) {
-		engine->Tq =  - (engine->rads * curve->data[i].a + curve->data[i].b) / 10.0;
-		return;
-	    }
-	}		
-    } else if (engine->rads > engine->revsLimiter) {
+    if (engine->rads > engine->revsLimiter) {
 	engine->rads = engine->revsLimiter;
 	engine->Tq = 0;
     } else {
 	for (i = 0; i < MAXPTS; i++) {
 	    if (engine->rads < curve->data[i].rads) {
-		engine->Tq =  car->ctrl->accelCmd * (engine->rads * curve->data[i].a + curve->data[i].b);
+		tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
+		tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
+		
+		engine->Tq =  Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
 		car->fuel -= engine->Tq * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
 		if (car->fuel <= 0.0) {
 		    car->fuel = 0.0;
@@ -138,7 +133,8 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 	    return engine->revsMax / trans->curOverallRatio;
 	}
     } else {
-	engine->rads = engine->tickover + (car->ctrl->accelCmd * (engine->revsLimiter - engine->tickover));
+	//engine->rads = engine->tickover + (car->ctrl->accelCmd * (engine->revsLimiter - engine->tickover));
+	engine->rads += engine->Tq / engine->I * SimDeltaTime;
     }
     return 0.0;
 }

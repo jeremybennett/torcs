@@ -199,12 +199,19 @@ qrShutdown(void)
 }
 
 static void
+qrUpdtPitTime(tCarElt *car)
+{
+    car->_scheduledEventTime = qrTheSituation.currentTime + 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.015;
+    SimItf.reconfig(car);    
+}
+
+
+static void
 qrUpdtPitCmd(void *pvcar)
 {
     tCarElt *car = (tCarElt*)pvcar;
     
-    car->_scheduledEventTime = qrTheSituation.currentTime + 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.03;
-    SimItf.reconfig(car);
+    qrUpdtPitTime(car);
     qrStart(); /* resynchro */
     GfuiScreenActivate(qrHandle);
 }
@@ -246,8 +253,7 @@ qrManage(tCarElt *car)
 		qrStop();
 		RmPitMenuStart(car, (void*)car, qrUpdtPitCmd);
 	    }
-	    car->_scheduledEventTime = qrTheSituation.currentTime + 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.03;
-	    SimItf.reconfig(car);
+	    qrUpdtPitTime(car);
 	}
     }
 

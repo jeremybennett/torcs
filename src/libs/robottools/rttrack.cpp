@@ -561,13 +561,14 @@ RtGetDistFromStart(tCarElt *car)
 /** Get the distance to the pit stop.
     @ingroup	robottools
     @param	car 	The concerned car.
+    @param	track	The current Track
     @param	dL	Length to the pits
     @param	dW	Width to the pits
     @return	0
     @note	dW > 0 if the pit is on the right
 */
 int
-RtDistToPit(struct CarElt *car, tdble *dL, tdble *dW)
+RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW)
 {
     tTrkLocPos	*pitpos;
     tTrkLocPos	*carpos;
@@ -591,6 +592,10 @@ RtDistToPit(struct CarElt *car, tdble *dL, tdble *dW)
     }
     
     *dL = pitpos->seg->lgfromstart - carpos->seg->lgfromstart + pitts - carts;
+    if (*dL < 0) {
+	*dL += track->length;
+    }
+    
     *dW = pitpos->toRight - carpos->toRight;
 
     return 0;

@@ -365,6 +365,7 @@ typedef struct CarElt
 #define PRM_WINGAREA		"area"
 #define PRM_WINGANGLE		"angle"
 
+/* Engine */
 #define PRM_REVSLIM		"revs limiter"
 #define PRM_REVSMAX		"revs maxi"
 #define PRM_TICKOVER		"tickover"
@@ -372,6 +373,8 @@ typedef struct CarElt
 #define PRM_TQ			"Tq"
 #define ARR_DATAPTS		"data points"
 #define PRM_FUELCONS		"fuel cons factor"
+#define PRM_ENGBRKCOEFF		"brake coefficient"
+
 
 #define PRM_RATIO		"ratio"
 #define PRM_BIAS		"bias"

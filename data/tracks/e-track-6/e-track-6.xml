@@ -28,7 +28,7 @@
 
   <section name="Header">
     <attstr name="name" val="E-Track 6"></attstr>
-    <attnum name="version" val="2"></attnum>
+    <attnum name="version" val="3"></attnum>
     <attstr name="author" val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
     <attstr name="3d description" val="e-track-6.ac"></attstr>
@@ -50,7 +50,7 @@
     </section>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="8"></attnum>
+      <attnum name="track step" unit="m" val="12"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="40"></attnum>
@@ -68,29 +68,41 @@
     <attstr name="rside surface"  val="grass"></attstr>
     <attstr name="rside type" in="level,tangent" val="level"></attstr>
 
-    <attnum name="lside width" val="10"></attnum>
-    <attstr name="lside surface"  val="grass"></attstr>
+    <attnum name="lside width" val="15"></attnum>
+    <attstr name="lside surface"  val="asphalt-pits"></attstr>
     <attstr name="lside type" in="level,tangent" val="level"></attstr>
 
+    <attstr name="pit type"   val="track side"></attstr>
+    <attstr name="pit side"   val="left"></attstr>
+    <attstr name="pit entry"  val="pit entry"></attstr>
+    <attstr name="pit exit"   val="pit exit"></attstr>
+    <attstr name="pit start"  val="last seg"></attstr>
+    <attstr name="pit end"    val="start lane"></attstr>
+    <attnum name="pit length" val="15" unit="m"></attnum>
+    <attnum name="pit width"  val="5" unit="m"></attnum>
+
+    <attnum name="steps length" val="10" unit="m"></attnum>
 
     <section name="segments">
 
 
-      <section name="s1-1">
+      <section name="start lane">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="133.333333"></attnum>
+	<attnum name="lg" unit="m" val="150"></attnum>
 	<attstr name="surface" val="asphalt-lines"></attstr>
       </section>
 
-      <section name="s1-2">
+      <section name="pit exit">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="lg" unit="m" val="83.333333"></attnum>
 	<attstr name="surface" val="asphalt-lines"></attstr>
-	<attstr name="profil" val="spline"></attstr>
 	<attnum name="grade" val="4" unit="%"></attnum>
-	<attnum name="profil steps" val="20"></attnum>
+	<attnum name="profil start tangent" val="0" unit="%"></attnum>
 	<attnum name="profil end tangent" val="4" unit="%"></attnum>
+	<attnum name="profil steps length" val="5"></attnum>
 	<attnum name="banking end" val="3" unit="deg"></attnum>
+	<attstr name="lside surface" val="asphalt"></attstr>
+	<attnum name="lside end width" val="10"></attnum>
       </section>
 
       <section name="t1">
@@ -103,6 +115,7 @@
 	<attnum name="profil end tangent" val="2" unit="%"></attnum>
 	<attnum name="banking end" val="1" unit="deg"></attnum>
  	<attnum name="profil steps" val="7"></attnum>
+	<attstr name="lside surface" val="grass"></attstr>
      </section>
 
       <section name="s2">
@@ -359,6 +372,7 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="33.333333"></attnum>
 	<attnum name="arc" unit="deg" val="135"></attnum>
+	<attnum name="profil steps length" val="5"></attnum>
 	<attstr name="surface" val="asphalt-l-right"></attstr>
       </section>
 
@@ -499,10 +513,19 @@
 	<attnum name="z end" val="0"></attnum>
       </section>
 
-      <section name="s23-2">
+      <section name="pit entry">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="206.700887"></attnum>
+	<attnum name="lg" unit="m" val="56.700887"></attnum>
 	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="lside surface" val="asphalt"></attstr>
+	<attnum name="lside end width" val="15"></attnum>
+      </section>
+
+      <section name="last seg">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="lside surface" val="asphalt-pits"></attstr>
       </section>
 
     </section>

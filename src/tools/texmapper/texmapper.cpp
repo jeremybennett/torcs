@@ -161,7 +161,7 @@ void saveSkin(void)
     }
     
     glPixelStorei(GL_PACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
     glReadBuffer(GL_BACK);
     glReadPixels(0, 0, ImgSize, ImgSize, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)img);
 

@@ -905,6 +905,7 @@ ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		if (pitExitSeg->id == segId) {
 		    found = 1;
+		} else if (found) {
 		    break;
 		}
 		pitExitSeg = pitExitSeg->next;

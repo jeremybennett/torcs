@@ -127,6 +127,10 @@ typedef struct ModInfo {
 /* module init function interface */
 typedef int (*tfModInfo)(tModInfo *);	/* first function called in the module */
 
+/* module shutdown function interface */
+typedef int (*tfModShut)(void);	/* last function called in the module */
+
+
 /** list of module interfaces */
 typedef struct ModList {
     /** module info list for this dll */

@@ -21,10 +21,12 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-extern tdble Tright[10];
-extern tdble MaxSpeed[10];
-extern tdble hold[10];
-extern tdble shiftThld[10][MAX_GEARS+1];
+extern tdble Tright[1];
+extern tdble TRightMin[1];
+extern tdble TRightMax[1];
+extern tdble MaxSpeed[1];
+extern tdble hold[1];
+extern tdble shiftThld[1][MAX_GEARS+1];
 extern tTrack *DmTrack;
 
 

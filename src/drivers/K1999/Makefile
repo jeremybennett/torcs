@@ -15,7 +15,6 @@
 #
 ##############################################################################
 
-
 ROBOT = K1999
 
 SOLIBRARY = ${ROBOT}.so
@@ -26,13 +25,8 @@ SOURCES   = ${ROBOT}.cpp
 
 DATADIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml settings.xml logo.rgb cg-nascar-rwd.rgb
+DATA      = ${ROBOT}.xml logo.rgb
 
-# Mandatory Line Do Not Remove 
+DATASUBDIRS = 1 2
+
 include ${MAKE_DEFAULT}
-
-distrib:
-	cd ..; tar -cvf K1999.tar K1999/{K1999.cpp,K1999.xml,settings.xml,skin.png,Makefile,logo.png}; gzip --best K1999.tar
-
-
-

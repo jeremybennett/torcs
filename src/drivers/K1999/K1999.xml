@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--    This program is free software; you can redistribute it and/or modify  -->
-<!--    it under the terms of the GNU General Public License as published by  -->
-<!--    the Free Software Foundation; either version 2 of the License, or     -->
-<!--    (at your option) any later version.                                   -->
 
 <!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
 
-<params name="K1999" type="robotdef"> 
-  <section name="Robots"> 
-    <section name="index"> 
-      <section name="1"> 
-	<!-- Driver's name (short please) --> 
-	<attstr name="name" val="K1999"></attstr> 
-	<!-- Description (can be long) --> 
-	<attstr name="desc" val="K1999"></attstr> 
-	<!-- Author's name --> 
-	<attstr name="author" val="Remi"></attstr> 
-	<!-- Car used to race --> 
-	<attstr name="car name" val="cg-nascar-rwd"></attstr> 
-	<!-- Car category --> 
-	<attstr name="category" val="torcs-r-a"></attstr> 
-	<!-- Race number, should be unique for TORCS... --> 
-	<attnum name="race number" val="99"></attnum> 
-	<!-- Your color for car and board --> 
-	<attnum name="red" val="1.0"></attnum> 
-	<attnum name="green" val="1.0"></attnum> 
-	<attnum name="blue" val="1.0"></attnum> 
-      </section> 
-    </section> 
+<params name="human" type="robotdef"> 
+ <section name="Robots"> 
+  <section name="index"> 
+
+   <section name="1"> 
+    <attstr name="name" val="K1999-buggy"></attstr> 
+    <attstr name="desc" val="K1999-buggy"></attstr> 
+    <attstr name="team" val="K1999"></attstr>
+    <attstr name="author" val="Rémi"></attstr> 
+    <attstr name="car name" val="buggy"></attstr> 
+    <attstr name="category" val="offroad-r-a"></attstr> 
+    <attnum name="race number" val="99"></attnum> 
+    <attnum name="red" val="0.9"></attnum> 
+    <attnum name="green" val="0.9"></attnum> 
+    <attnum name="blue" val="0.9"></attnum> 
+   </section> 
+
+   <section name="2"> 
+    <attstr name="name" val="K1999-cg-nascar-rwd"></attstr> 
+    <attstr name="desc" val="K1999-cg-nascar-rwd"></attstr> 
+    <attstr name="team" val="K1999"></attstr>
+    <attstr name="author" val="Rémi"></attstr> 
+    <attstr name="car name" val="cg-nascar-rwd"></attstr> 
+    <attstr name="category" val="torcs-r-a"></attstr> 
+    <attnum name="race number" val="97"></attnum> 
+    <attnum name="red" val="0.9"></attnum> 
+    <attnum name="green" val="0.9"></attnum> 
+    <attnum name="blue" val="0.9"></attnum> 
+   </section> 
+
   </section> 
+ </section> 
 </params>

@@ -941,8 +941,10 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    pitExitSeg = theTrack->seg;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
+		/* set the flag on the last segment of pit_exit */
 		if (pitExitSeg->id == segId) {
 		    found = 1;
+		} else if (found) {
 		    break;
 		}
 		pitExitSeg = pitExitSeg->next;

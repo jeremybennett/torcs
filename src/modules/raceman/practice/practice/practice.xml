@@ -20,8 +20,8 @@
   <section name="Race">
     <!-- comma separated section of allowed categories ("*" means every categories can race) -->
     <attstr name="categories" val="*"></attstr>
-    <attstr name="track" val="e-track-3"></attstr>
-    <attnum name="laps"  val="3"></attnum>
+    <attstr name="track" val="e-track-6"></attstr>
+    <attnum name="laps"  val="5"></attnum>
     <attstr name="show race" val="no"></attstr>
   </section>
 

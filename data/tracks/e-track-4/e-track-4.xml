@@ -72,7 +72,7 @@
     <!-- PITS -->
     <attstr name="pit type"   val="track side"></attstr>
     <attstr name="pit side"   val="left"></attstr>
-    <attstr name="pit entry"  val="t20"></attstr>
+    <attstr name="pit entry"  val="s8-2"></attstr>
     <attstr name="pit exit"   val="t1"></attstr>
     <attstr name="pit start"  val="last segment"></attstr>
     <attstr name="pit end"    val="start lane"></attstr>

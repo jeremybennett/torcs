@@ -132,7 +132,7 @@ extern tdble RtTrackSideTgAngleL(tTrkLocPos *p);
  */
 extern void RtTrackSurfaceNormalL(tTrkLocPos *p, t3Dd *norm);
 
-extern int RtDistToPit(struct CarElt *car, tdble *dL, tdble *dW);
+extern int RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW);
 
 extern tdble RtGetDistFromStart(tCarElt *car);
 

@@ -64,8 +64,8 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 {
     const tdble Dx  = 0.02;
     const tdble Dxx = 0.01;
-    const tdble Dxb  = 0.05;
-    const tdble Dxxb = 0.01;
+    const tdble Dxb  = 0.1;
+    const tdble Dxxb = 0.02;
     tdble	Dv;
     tdble	Dvv;
     tdble 	slip;
@@ -127,7 +127,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	} else {
 	    RELAXATION(car->ctrl->brakeCmd, lastBrkCmd[idx], 50.0);
 	}
-	car->ctrl->brakeCmd = MIN(car->ctrl->brakeCmd, fabs(Dv/5.0));
+	//car->ctrl->brakeCmd = MIN(car->ctrl->brakeCmd, fabs(Dv/5.0));
 	//lastAccel[idx] = 1.0;
     }
 
@@ -164,6 +164,17 @@ GetDistToStart(tCarElt *car)
     return lg;
 }
 
+#define SETMAX(x) do {				\
+    if ((x) < TRightMax[idx]) {			\
+	TRightMax[idx] = (x);			\
+    }						\
+} while (0)
+
+#define SETMIN(x) do {				\
+    if ((x) > TRightMin[idx]) {			\
+	TRightMin[idx] = (x);			\
+    }						\
+} while (0)
 
 void
 CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
@@ -180,6 +191,8 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
     lgfs = GetDistToStart(car);
     car->_vect(0).type = CAR_VECT_INVALID;
     for (i = 0; i < s->_ncars; i++) {
+	tdble MARGIN = 4.0;
+
 	otherCar = s->cars[i];
 	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_NO_SIMU)) {
 	    continue;
@@ -189,55 +202,78 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 	if (dlg > (DmTrack->length / 2.0)) dlg -= DmTrack->length;
 	if (dlg < -(DmTrack->length / 2.0)) dlg += DmTrack->length;
 
-	dspd = car->_speed_x - otherCar->_speed_x;
-	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
-	    ((dlg < (dspd*4.5)) ||
-	    (dlg < (car->_dimension_x * 4.0)))) {
-	    car->_vect(0).type = CAR_VECT_ABSOLUTE;
-	    car->_vect(0).start.x = car->_pos_X;
-	    car->_vect(0).start.y = car->_pos_Y;
-	    car->_vect(0).start.z = car->_vect(0).end.z = car->_pos_Z+ 2.0;
-	    car->_vect(0).end.x = otherCar->_pos_X;
-	    car->_vect(0).end.y = otherCar->_pos_Y;
-	    maxdlg = dlg;
-	    /* risk of collision */
-	    tdble MARGIN = /* 0.4 * DmTrack->width */ 7.0;
-	    
-	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 1.0)) {
-		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
-		    if (otherCar->_trkPos.toRight > MARGIN) {
-			Tright[idx] = otherCar->_trkPos.toRight - (MARGIN - 1.0);
-		    } else {
-			//Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
-			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x * .9;
-			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0);
-			}
-		    }
-		} else {
-		    if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
-			Tright[idx] = otherCar->_trkPos.toRight + (MARGIN - 1.0);
-		    } else {
-			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
-			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x * .9;
-			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
-			}
-		    }
+	if (fabs(dlg) < car->_dimension_x) {
+	    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
+		SETMAX(otherCar->_trkPos.toRight - MARGIN);
+		if (TRightMin[idx] > TRightMax[idx]) {
+		    TRightMin[idx] = TRightMax[idx];
 		}
-		hold[idx] = Curtime + 1.0;
-		if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
-		    MaxSpeed[idx] = otherCar->_speed_x - 5.0;
+/* 		printf("%s - TRMax=%f\n", otherCar->_name, TRightMax[idx]); */
+	    } else {
+		SETMIN(otherCar->_trkPos.toRight + MARGIN);
+/* 		printf("%s - TRMin=%f\n", otherCar->_name, TRightMin[idx]); */
+		if (TRightMax[idx] < TRightMin[idx]) {
+		    TRightMax[idx] = TRightMin[idx];
+		}
+	    }
+	} else {
+	    dspd = car->_speed_x - otherCar->_speed_x;
+	    if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
+		((dlg < (dspd*4.5)) ||
+		 (dlg < (car->_dimension_x * 4.0)))) {
+		car->_vect(0).type = CAR_VECT_ABSOLUTE;
+		car->_vect(0).start.x = car->_pos_X;
+		car->_vect(0).start.y = car->_pos_Y;
+		car->_vect(0).start.z = car->_vect(0).end.z = car->_pos_Z+ 2.0;
+		car->_vect(0).end.x = otherCar->_pos_X;
+		car->_vect(0).end.y = otherCar->_pos_Y;
+		maxdlg = dlg;
+		/* risk of collision */
+	    
+		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN) {
+		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
+			if (otherCar->_trkPos.toRight > (MARGIN + 1.0)) {
+			    /* stay on the right */
+			    Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
+			    SETMAX(Tright[idx] + 1.0);
+/* 			    printf("%s - TRMax=%f\n", otherCar->_name, TRightMax[idx]); */
+			} else {
+			    if ((dlg > (car->_dimension_x * 2.0)) && (dlg > dspd)) {
+				MaxSpeed[idx] = otherCar->_speed_x * .99;
+				Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
+				SETMIN(Tright[idx] - 1.0);
+/* 				printf("%s - TRMin=%f\n", otherCar->_name, TRightMin[idx]); */
+			    }
+			}
+		    } else {
+			if (otherCar->_trkPos.toRight < (seg->width - MARGIN - 1.0)) {
+			    Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
+			    SETMIN(Tright[idx] - 1.0);
+/* 			    printf("%s - TRMin=%f\n", otherCar->_name, TRightMin[idx]); */
+			} else {
+			    //Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
+			    if ((dlg > (car->_dimension_x * 2.0)) && (dlg > dspd)) {
+				MaxSpeed[idx] = otherCar->_speed_x * .99;
+				Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
+				SETMAX(Tright[idx] + 1.0);
+/* 				printf("%s - TRMax=%f\n", otherCar->_name, TRightMax[idx]); */
+			    }
+			}
+		    }
+		    hold[idx] = Curtime + 1.0;
+		    if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
+			MaxSpeed[idx] = otherCar->_speed_x * .98;
+		    }
 		}
 	    }
 	}
     }
 
-    if (Tright[idx] < 0.0) {
-	Tright[idx] = 0.0;
-    } else if (Tright[idx] > seg->width) {
-	Tright[idx] = seg->width;
-    }
+/*     if (Tright[idx] < 0.0) { */
+/* 	Tright[idx] = 0.0; */
+/*     } else if (Tright[idx] > seg->width) { */
+/* 	Tright[idx] = seg->width; */
+/*     } */
     
     
 }
