@@ -52,7 +52,7 @@
     <attnum name="area" unit="m2" min="0" max="0.5" val="0.5"/>
     <attnum name="angle" unit="deg" min="0" max="30" val="30"/>
     <attnum name="xpos" unit="m" min="1.0" max="2.5" val="2"/>
-    <attnum name="zpos" unit="m" min="0.1" max="0.5" val="0.1"/>
+    <attnum name="zpos" unit="m" min="0.0" max="0.5" val="0.1"/>
   </section>
 
   <section name="Rear Wing">
@@ -81,7 +81,7 @@
     <attnum name="torque max" unit="N.m" val="750.0"/>
     <attnum name="revs maxi min" unit="rpm" val="1000"/>
     <attnum name="revs maxi max" unit="rpm" val="20000"/>
-    <attnum name="power max" unit="ch" val="1500.0"/>
+    <attnum name="power max" unit="hp" val="1499.0"/>
 
     <!--torque definition-->
     <section name="data points">
@@ -162,32 +162,32 @@
 
       <section name="16">
         <attnum name="rpm" unit="rpm" val="15000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="712.0909222409025" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="711.6161949594086" val="711.6161949594086"/>
       </section>
 
       <section name="17">
         <attnum name="rpm" unit="rpm" val="16000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="667.5852396008461" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="667.1401827744456" val="667.1401827744456"/>
       </section>
 
       <section name="18">
         <attnum name="rpm" unit="rpm" val="17000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="628.3155196243257" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="627.8966426112429" val="627.8966426112429"/>
       </section>
 
       <section name="19">
         <attnum name="rpm" unit="rpm" val="18000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="593.4091018674187" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="593.0134957995072" val="593.0134957995072"/>
       </section>
 
       <section name="20">
         <attnum name="rpm" unit="rpm" val="19000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="562.1770438743966" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="561.8022591784805" val="561.8022591784805"/>
       </section>
 
       <section name="21">
         <attnum name="rpm" unit="rpm" val="20000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="534.0681916806768" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="300.0" max="533.7121462195564" val="533.7121462195564"/>
       </section>
     </section>
   </section>
