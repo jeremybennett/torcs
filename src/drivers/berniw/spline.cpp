@@ -37,10 +37,11 @@
 void tridiagonal(int dim, double * c, double * a, double * b, double * x)
 {
 	double co, si, h, t;
+	int i;
 
 	dim--;
 	b[dim] = 0;
-	for (int i = 0; i < dim; i++) {
+	for (i = 0; i < dim; i++) {
 		if (c[i] != 0) {
 			t = a[i] / c[i]; si = 1 / sqrt(1 + t*t); co = t * si;
 			a[i] = a[i]*co + c[i]*si; h = b[i];
@@ -51,7 +52,7 @@ void tridiagonal(int dim, double * c, double * a, double * b, double * x)
 		}
 	}
 	x[dim] = x[dim] / a[dim]; x[dim-1] = (x[dim-1] - b[dim-1]*x[dim]) / a[dim-1];
-	for (int i = dim - 2; i >= 0; i--) {
+	for (i = dim - 2; i >= 0; i--) {
 		x[i] = (x[i] - b[i]*x[i+1] - c[i]*x[i+2]) / a[i];
 	}
 }
@@ -60,6 +61,7 @@ void tridiagonal(int dim, double * c, double * a, double * b, double * x)
 void slopesp(int dim, double * x, double * y, double * ys)
 {
 	double * a, * b, * c, * d, * h, * u, * v, factor;
+	int i;
 
 	a = (double *) malloc(sizeof(double)*dim);
 	b = (double *) malloc(sizeof(double)*dim);
@@ -70,26 +72,26 @@ void slopesp(int dim, double * x, double * y, double * ys)
 	v = (double *) malloc(sizeof(double)*dim);
 
 	dim--;
-	for (int i = 0; i < dim; i++) {
+	for (i = 0; i < dim; i++) {
 		h[i] = x[i+1] - x[i];
 		d[i] = (y[i+1] - y[i]) / (h[i]*h[i]);
 	}
-	for (int i = 1; i < dim; i++) {
+	for (i = 1; i < dim; i++) {
 		a[i] = 2 / h[i-1] + 2 / h[i];
 		b[i] = 1 / h[i];
 		c[i] = b[i];
-		ys[i] = 3 * (d[i] + d[i-1]); 		
+		ys[i] = 3 * (d[i] + d[i-1]);
 	}
 	b[0] = 1 / h[0]; c[0] = b[0]; a[0] = (2*b[0] + 1/h[dim-1]);
 	a[dim-1] = 2/h[dim-2] + 1/h[dim-1];
-	for (int i = 1;  i < dim; i++) {
+	for (i = 1;  i < dim; i++) {
 		u[i] = 0; v[i] = 3 * (d[i] - d[i-1]);
 	}
 	u[0] = 1; u[dim-1] = 1; v[0] = 3 * (d[0] - d[dim-1]);
 	tridiagonal(dim, c, a, b, u);
 	tridiagonal(dim, c, a, b, v);
 	factor = (v[0]+v[dim-1]) / (u[0]+u[dim-1]+h[dim-1]);
-	for (int i = 0; i < dim; i++) {
+	for (i = 0; i < dim; i++) {
 		ys[i] = v[i] - factor*u[i];
 	}
 	ys[dim] = ys[0];
@@ -100,19 +102,20 @@ void slopesp(int dim, double * x, double * y, double * ys)
 void slopesn(int dim, double * x, double * y, double * ys)
 {
 	double * a, * b, * c, * d, * h;
+	int i;
 
 	a = (double *) malloc(sizeof(double)*dim);
 	b = (double *) malloc(sizeof(double)*dim);
 	c = (double *) malloc(sizeof(double)*dim);
 	d = (double *) malloc(sizeof(double)*dim);
 	h = (double *) malloc(sizeof(double)*dim);
-	
+
 	dim--;
-	for (int i = 0; i < dim; i++) {
+	for (i = 0; i < dim; i++) {
 		h[i] = x[i+1] - x[i];
 		d[i] = (y[i+1] - y[i]) / (h[i]*h[i]);
 	}
-	for (int i = 1; i < dim; i++) {
+	for (i = 1; i < dim; i++) {
 		a[i] = 2 / h[i-1] + 2 / h[i];
 		b[i] = 1 / h[i];
 		c[i] = b[i];

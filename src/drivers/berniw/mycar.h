@@ -80,32 +80,29 @@ class MyCar : public AbstractCar
 {
 	public:
 		/* possible behaviours */
-		static const int INSANE = 0;
-		static const int PUSH = 1;
-		static const int NORMAL = 2;
-		static const int CAREFUL = 3;
-		static const int SLOW = 4;
-		static const int START = 5;
+		enum {
+			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5
+		};
 
-		static const double PATHERR = 0.5;				/* if derror > PATHERR we take actions to come back to the path [m] */
-		static const double CORRLEN = 30.0;				/* CORRLEN * derror is the length of the correction [m] */
-		static const double CARWIDTH = 2.2;				/* width of the car [m] */
-		static const double CARLEN = 6.0;				/* length of the car [m] */
-		static const double TURNTOL = 1.0;				/* tolerance for end backing up [m] */
-		static const double TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
-		static const double MARGIN = 0.3;				/* security margin from track border [m] */
-		static const double AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
-		static const double STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
-		static const double TIMETOCATCH = 1.0;			/* when do we start thinking about overtaking [s]*/
-		static const double MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
-		static const double OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
-		static const double OVERTAKEDIST = 3.5;			/* minimal distance of CG's while overtaking [m] */
-		static const double OVERTAKEFACTOR = OVERTAKEDIST / (CARWIDTH + MARGIN);
-		static const double OVERTAKEANGLE = 0.03;//0.0175;
-		static const double DISTTHRESHOLD = 30.0;
-		static const double OVERTAKEMARGIN = 0.9;
-		static const double MAXALLOWEDPITCH = 0.03;
-		static const double FLYSPEED = 55.0;
+		static const double PATHERR;			/* if derror > PATHERR we take actions to come back to the path [m] */
+		static const double CORRLEN;			/* CORRLEN * derror is the length of the correction [m] */
+		static const double CARWIDTH;			/* width of the car [m] */
+		static const double CARLEN;				/* length of the car [m] */
+		static const double TURNTOL;			/* tolerance for end backing up [m] */
+		static const double TURNSPEED;			/* if speed lower than this you can back up [m/s] */
+		static const double MARGIN;				/* security margin from track border [m] */
+		static const double AEROMAGIC;			/* aerodynamic lift factor [-] */
+		static const double STABLESPEED;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
+		static const double TIMETOCATCH;		/* when do we start thinking about overtaking [s]*/
+		static const double MINOVERTAKERANGE;	/* minimum length for overtaking [m] */
+		static const double OVERTAKERADIUS;		/* min allowed radius to start overtaking [m] */
+		static const double OVERTAKEDIST;		/* minimal distance of CG's while overtaking [m] */
+		static const double OVERTAKEFACTOR;
+		static const double OVERTAKEANGLE;
+		static const double DISTTHRESHOLD;
+		static const double OVERTAKEMARGIN;
+		static const double MAXALLOWEDPITCH;
+		static const double FLYSPEED;
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();
@@ -168,9 +165,9 @@ class MyCar : public AbstractCar
 
 		double derror;			/* distance to desired trajectory */
 	private:
-		static const int DRWD = 0;
-		static const int DFWD = 1;
-		static const int D4WD = 2;
+		enum {
+			DRWD = 0, DFWD = 1, D4WD = 2
+		};
 
 		int drivetrain;			/* RWD, FWD or 4WD */
 		double carmass;			/* mass of car without fuel */

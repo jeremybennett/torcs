@@ -28,6 +28,27 @@
 #endif
 
 
+const double MyCar::PATHERR = 0.5;				/* if derror > PATHERR we take actions to come back to the path [m] */
+const double MyCar::CORRLEN = 30.0;				/* CORRLEN * derror is the length of the correction [m] */
+const double MyCar::CARWIDTH = 2.2;				/* width of the car [m] */
+const double MyCar::CARLEN = 6.0;				/* length of the car [m] */
+const double MyCar::TURNTOL = 1.0;				/* tolerance for end backing up [m] */
+const double MyCar::TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
+const double MyCar::MARGIN = 0.3;				/* security margin from track border [m] */
+const double MyCar::AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
+const double MyCar::STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
+const double MyCar::TIMETOCATCH = 1.5;			/* when do we start thinking about overtaking [s]*/
+const double MyCar::MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
+const double MyCar::OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
+const double MyCar::OVERTAKEDIST = 3.5;			/* minimal distance of CG's while overtaking [m] */
+const double MyCar::OVERTAKEFACTOR = OVERTAKEDIST / (CARWIDTH + MARGIN);
+const double MyCar::OVERTAKEANGLE = 0.03;
+const double MyCar::DISTTHRESHOLD = 30.0;
+const double MyCar::OVERTAKEMARGIN = 0.9;
+const double MyCar::MAXALLOWEDPITCH = 0.03;
+const double MyCar::FLYSPEED = 55.0;
+
+
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
 	/* init pointer to car data */

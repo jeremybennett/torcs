@@ -171,8 +171,10 @@ TrackDesc::TrackDesc(const tTrack* track)
 
 	if (currentts != nTrackSegments) printf("error: TrackDesc::TrackDesc currentts %d != nTrackSegments %d.\n", currentts, nTrackSegments);
 
+	int i;
+
 	/* setting up pit and length */
-	for (int i = 0; i < nTrackSegments; i++) {
+	for (i = 0; i < nTrackSegments; i++) {
 		int j = (i+nTrackSegments-1) % nTrackSegments;
 		int k = (i+nTrackSegments+1) % nTrackSegments;
 		if ((ts[i].getRaceType() & TR_PITENTRY) && !(ts[j].getRaceType() & TR_PITENTRY)) {
@@ -189,7 +191,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 	v3d *p0, *p1, *p2;
 	double dz10, dz21;
 
-	for (int i = 0; i < nTrackSegments; i++) {
+	for (i = 0; i < nTrackSegments; i++) {
 		p0 = ts[(i+nTrackSegments-5) % nTrackSegments].getMiddle();
 		p1 = ts[(i+nTrackSegments) % nTrackSegments].getMiddle();
 		p2 = ts[(i+nTrackSegments+5) % nTrackSegments].getMiddle();
@@ -214,7 +216,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 		}
 	}
 
-	for (int i = 0; i < nTrackSegments; i++) {
+	for (i = 0; i < nTrackSegments; i++) {
 		p0 = ts[(i+nTrackSegments-3) % nTrackSegments].getMiddle();
 		p1 = ts[(i+nTrackSegments+3) % nTrackSegments].getMiddle();
 		ts[i].setKgamma(atan((p1->z - p0->z)/6.0));

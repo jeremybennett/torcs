@@ -46,15 +46,16 @@
 
 static const double g = 9.81;
 
-/*
-	compute the angle between the track and the car
-*/
+
+
+/* compute the angle between the track and the car */
 inline double queryAngleToTrack(tCarElt * car)
 {
 	double angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
 	NORM_PI_PI(angle);
 	return angle;
 }
+
 
 /* compute the radius given three points */
 inline double radius(double x1, double y1, double x2, double y2, double x3, double y3)
@@ -73,6 +74,7 @@ inline double radius(double x1, double y1, double x2, double y2, double x3, doub
 		return FLT_MAX;
 	}
 }
+
 
 inline double sign(double number)
 {

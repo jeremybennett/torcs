@@ -84,7 +84,6 @@ typedef struct {
 	OtherCar* collcar;		/* pointers to the cars */
 } tOCar;
 
-
 class PathSeg
 {
 	public:
@@ -124,11 +123,14 @@ class PathSeg
 class Pathfinder
 {
 	public:
-		static const double colldist = 200.0;
-		static const int pitpoints = 7;
-		static const int NTPARAMS = 1001;				/* # entries in dat files */
-		static const double TPRES = PI/(NTPARAMS - 1);	/* resolution of the steps */
-		tParam cp[NTPARAMS];							/* holds values needed for clothiod */
+		static const double colldist; // = 200.0;
+		// static const int pitpoints; // = 7;
+		static const int NTPARAMS; // = 1001;				/* # entries in dat files */
+		static const double TPRES; //  = PI/(NTPARAMS - 1);	/* resolution of the steps */
+
+		enum { pitpoints = 7 };
+
+		tParam cp[1001];							/* holds values needed for clothiod */
 
 
 		Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *situation);
@@ -193,8 +195,6 @@ class Pathfinder
 
 		double ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
 		int snpit[pitpoints];
-
-		tCarElt* thiscar;
 
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, double slope, double dist, v3d* r);
