@@ -24,6 +24,7 @@
 */
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <tgfclient.h>
 #include <raceman.h>
 #include <robot.h>
@@ -85,6 +86,32 @@ reSkipPreStart(void * /* dummy */)
     }
 }
 
+static void
+reMovieCapture(void * /* dummy */)
+{
+   tRmMovieCapture	*capture = &(ReInfo->movieCapture);
+
+    if (!capture->enabled || (ReInfo->_displayMode == RM_DISP_MODE_NONE)) {
+	GfOut("Video Capture Mode Not Enabled\n");
+	return;
+    }
+    
+    capture->state = 1 - capture->state;
+    if (capture->state) {
+	GfOut("Video Capture Mode On\n");
+	capture->currentFrame = 0;
+	capture->currentCapture++;
+	capture->lastFrame = GfTimeClock() - capture->deltaFrame;
+	ReInfo->_displayMode = RM_DISP_MODE_CAPTURE;
+    } else {
+	GfOut("Video Capture Mode Off\n");
+	ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
+	ReStart();
+    }
+
+}
+
+
 
 static void
 reAddKeys(void)
@@ -103,6 +130,8 @@ reAddKeys(void)
 #ifdef DEBUG
     //GfuiAddKey(reScreenHandle, '0', "One step simulation",    (void*)1, reOneStep, NULL);
 #endif
+    GfuiAddKey(reScreenHandle, 'c', "Movie Capture",      (void*)0, reMovieCapture, NULL);
+    
 }
 
 

@@ -128,8 +128,8 @@ typedef struct {
 /** One penalty */
 typedef struct CarPenalty
 {
-    int penalty;
-    int lapToClear;
+    int penalty;	/**< penalty type */
+    int lapToClear;	/**< the lap before the penalty has to be cleared */
     GF_TAILQ_ENTRY(struct CarPenalty) link;
 } tCarPenalty;
 
@@ -328,14 +328,14 @@ typedef struct
 {
     tdble		fuel;
     int			repair;
+#define RM_PIT_REPAIR		0
+#define RM_PIT_STOPANDGO	1
     int			stopType;
 } tCarPitCmd;
 #define _pitFuel	pitcmd.fuel
 #define _pitRepair	pitcmd.repair
 #define _pitStopType	pitcmd.stopType
 
-#define RM_PIT_REPAIR		0
-#define RM_PIT_STOPANDGO	1
 
 /** Car structure (tCarElt).
     This is the main car structure, used everywhere in the code.

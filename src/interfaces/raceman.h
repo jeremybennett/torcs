@@ -144,7 +144,8 @@ typedef struct
     double		timeMult;
     int			running;
 #define RM_DISP_MODE_NORMAL	0
-#define RM_DISP_MODE_NONE	1
+#define RM_DISP_MODE_CAPTURE	1
+#define RM_DISP_MODE_NONE	2
     int			displayMode;
     int			refreshDisplay;
 } tRaceEngineInfo;
@@ -179,6 +180,19 @@ typedef struct RmCarRules
     int			ruleState;
 } tRmCarRules;
 
+typedef struct RmMovieCapture
+{
+    int		enabled;
+    int		state;
+    double	deltaSimu;
+    double	deltaFrame;
+    double	lastFrame;
+    char	*outputBase;
+    int		currentCapture;
+    int		currentFrame;
+} tRmMovieCapture;
+
+
 /**
  * Race Manager General Info
  */
@@ -192,6 +206,7 @@ typedef struct RmInfo
     tModList		**modList;	/**< drivers loaded */
     tRmCarRules		*rules;		/**< by car rules */
     tRaceEngineInfo	raceEngineInfo;
+    tRmMovieCapture	movieCapture;
 } tRmInfo;
 
 /*
@@ -274,6 +289,12 @@ typedef struct RmInfo
 #define RM_VAL_VISIBLE		"normal"
 #define RM_VAL_INVISIBLE	"results only"
 
+
+#define RM_SECT_MOVIE_CAPTURE	"Movie Capture"
+
+#define RM_ATT_CAPTURE_ENABLE	"enable capture"
+#define RM_ATT_CAPTURE_FPS	"fps"
+#define RM_ATT_CAPTURE_OUT_DIR	"output directory"
 
 /* RESULTS */
 

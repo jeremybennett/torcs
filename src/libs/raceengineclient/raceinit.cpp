@@ -59,8 +59,10 @@ typedef struct
 void
 ReInit(void)
 {
-    char	*dllname;
-    char	key[256];
+    char		*dllname;
+    char		key[256];
+    tRmMovieCapture	*capture;
+    
 
     ReShutdown();
 
@@ -80,6 +82,17 @@ ReInit(void)
     sprintf(key, "%smodules/graphic/%s.%s", GetLibDir (), dllname, DLLEXT);
     if (GfModLoad(0, key, &reEventModList)) return;
     reEventModList->modInfo->fctInit(reEventModList->modInfo->index, &ReInfo->_reGraphicItf);
+
+    capture = &(ReInfo->movieCapture);
+    if (strcmp(GfParmGetStr(ReInfo->_reParam, RM_SECT_MOVIE_CAPTURE, RM_ATT_CAPTURE_ENABLE, "no"), "no") == 0){
+	capture->enabled = 0;
+    } else {
+	capture->enabled = 1;
+	capture->state = 0;
+	capture->deltaFrame = 1.0 / GfParmGetNum(ReInfo->_reParam, RM_SECT_MOVIE_CAPTURE, RM_ATT_CAPTURE_FPS, NULL, 1.0);
+	capture->outputBase = GfParmGetStr(ReInfo->_reParam, RM_SECT_MOVIE_CAPTURE, RM_ATT_CAPTURE_OUT_DIR, "/tmp");
+	capture->deltaSimu = RCM_MAX_DT_SIMU;
+    }
 
     ReInfo->_reGameScreen = ReHookInit();
 }

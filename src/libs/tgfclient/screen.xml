@@ -13,7 +13,7 @@
 <!--    the Free Software Foundation; either version 2 of the License, or     -->
 <!--    (at your option) any later version.                                   -->
 
-<!DOCTYPE params SYSTEM "params.dtd">
+<!DOCTYPE params SYSTEM "../tgf/params.dtd">
 
 <params name="screen" type="params" mode="mw">
 

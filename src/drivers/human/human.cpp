@@ -436,7 +436,6 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     int		scrw, scrh, dummy;
     int		idx = index - 1;
     tControlCmd	*cmd = HCtx[idx]->CmdControl;
-    char	*str;
     
     static int	firstTime = 1;
 

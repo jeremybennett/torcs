@@ -16,11 +16,17 @@
 
 <params name="" type="template" mode="mw">
 
-    <section name="Modules">
-      <attstr name="track"   val="track"/>
-      <attstr name="simu"    val="simuv2"/>
-      <attstr name="graphic" val="ssggraph"/>
-    </section>
+  <section name="Modules">
+    <attstr name="track" val="track"/>
+    <attstr name="simu" val="simuv2"/>
+    <attstr name="graphic" val="ssggraph"/>
+  </section>
+
+  <section name="Movie Capture">
+    <attstr name="enable capture" in="yes,no" val="yes"/>
+    <attnum name="fps" val="25"/>
+    <attstr name="output directory" val="/home/torcs/captures"/>
+  </section>
 
 </params>
 

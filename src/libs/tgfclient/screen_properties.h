@@ -41,8 +41,6 @@
 #define GFSCR_VAL_NO		"no"
 #define GFSCR_ATT_GAMMA		"gamma"
 
-
-
 #define GFSCR_SECT_MENUCOL	"Menu Colors"
 
 #define GFSCR_LIST_COLORS	"colors"

@@ -32,7 +32,6 @@ extern void ReStart(void);
 extern void ReStop(void);
 extern int  ReUpdate(void);
 extern void ReTimeMod (void *vcmd);
-extern void ReOneStep(void *telem);
 
 extern tRmInfo	*ReInfo;
 

@@ -468,8 +468,8 @@ ReRaceRules(tCarElt *car)
 }
 
 
-void
-ReOneStep(void * /* dummy */)
+static void
+ReOneStep(double deltaTimeIncrement)
 {
     int i;
     tRobotItf *robot;
@@ -483,8 +483,8 @@ ReOneStep(void * /* dummy */)
 	ReRaceBigMsgSet("Go !", 1.0);
     }
 
-    ReInfo->_reCurTime += RCM_MAX_DT_SIMU * ReInfo->_reTimeMult; /* "Real" time */
-    s->currentTime += RCM_MAX_DT_SIMU; /* Simulated time */
+    ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
+    s->currentTime += deltaTimeIncrement; /* Simulated time */
 
     if (s->currentTime < 0) {
 	/* no simu yet */
@@ -509,7 +509,7 @@ ReOneStep(void * /* dummy */)
     STOP_PROFILE("rbDrive*");
 
     START_PROFILE("_reSimItf.update*");
-    ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
+    ReInfo->_reSimItf.update(s, deltaTimeIncrement, -1);
     for (i = 0; i < s->_ncars; i++) {
 	ReManage(s->cars[i]);
     }
@@ -532,10 +532,36 @@ ReStop(void)
     ReInfo->_reRunning = 0;
 }
 
+static void
+reCapture(void)
+{
+    unsigned char	*img;
+    int			sw, sh, vw, vh;
+    tRmMovieCapture	*capture = &(ReInfo->movieCapture);
+    
+    GfScrGetSize(&sw, &sh, &vw, &vh);
+    img = (unsigned char*)malloc(vw * vh * 3);
+    if (img == NULL) {
+	return;
+    }
+    
+    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadBuffer(GL_FRONT);
+    glReadPixels((sw-vw)/2, (sh-vh)/2, vw, vh, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)img);
+
+    sprintf(buf, "%s/torcs-%04.4d-%08.8d.png", capture->outputBase, capture->currentCapture, capture->currentFrame++);
+    GfImgWritePng(img, buf, vw, vh);
+    free(img);
+}
+
+
 int
 ReUpdate(void)
 {
-    double t;
+    double 		t;
+    tRmMovieCapture	*capture;
+    
 
     START_PROFILE("ReUpdate");
     ReInfo->_refreshDisplay = 0;
@@ -545,7 +571,7 @@ ReUpdate(void)
 
 	START_PROFILE("ReOneStep*");
 	while (ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) {
-	    ReOneStep(NULL);
+	    ReOneStep(RCM_MAX_DT_SIMU);
 	}
 	STOP_PROFILE("ReOneStep*");
 
@@ -555,12 +581,26 @@ ReUpdate(void)
 	break;
 	
     case RM_DISP_MODE_NONE:
-	ReOneStep(NULL);
+	ReOneStep(RCM_MAX_DT_SIMU);
 	if (ReInfo->_refreshDisplay) {
 	    GfuiDisplay();
 	}
 	glutPostRedisplay();	/* Callback -> reDisplay */
 	break;
+
+    case RM_DISP_MODE_CAPTURE:
+	capture = &(ReInfo->movieCapture);
+	while ((ReInfo->_reCurTime - capture->lastFrame) < capture->deltaFrame) {
+	    ReOneStep(capture->deltaSimu);
+	}
+	capture->lastFrame = ReInfo->_reCurTime;
+	
+	GfuiDisplay();
+	ReInfo->_reGraphicItf.refresh(ReInfo->s);
+	reCapture();
+	glutPostRedisplay();	/* Callback -> reDisplay */
+	break;
+	
     }
     STOP_PROFILE("ReUpdate");
 
