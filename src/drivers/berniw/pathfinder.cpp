@@ -1311,14 +1311,14 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				seg = ocar[i].currentsegid;
 
 				/* get the next car to catch up */
-				if (track->isBetween(trackSegId, end, seg) && myc->speed >= tspeed)
+				if (track->isBetween(trackSegId, end, seg) && myc->speed > tspeed)
 				{
 					dists[norder] = track->diffSegId(trackSegId, seg);
 					collcar[norder] = &ocar[i];
 					speedsqr[norder] = tspeed*tspeed;
 					speed[norder] = tspeed;
 					cosalpha[norder] = cosa;
-					time[norder] = dists[norder]/(myc->speed - speed[norder]);
+					time[norder] = dists[norder]/(myc->speed + myc->OVERTAKESPEED - speed[norder]);
 
 					if (time[norder] < minTime) {
 						minTime = time[norder];
