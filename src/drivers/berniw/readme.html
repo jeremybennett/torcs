@@ -74,12 +74,13 @@ now choose a berniw, have fun.<br>
 
 <h3>1.4 todo</h3>
 <p>
+- review the code and choose better names for variables/procedures, improve comments.<br>
+- replace quick hacks with serious routines.<br>
 - setups for the different tracks.<br>
 - bug fixing (hmm, hard to know...).<br>
 - better trajectory (race, pit is nice) (partially done).<br>
 - better collision avoidance (partially done).<br>
 - overtaking (partially done).<br>
-- setups for the different tracks.<br>
 - better strategy.<br>
 - communication between berniw's (save fuel behind team mate, block opponents, let pass team mates,
 etc.).<br>
@@ -98,6 +99,20 @@ if you are interested, you can tune the setups for the cars. they are in the ber
 </p>
 
 <h3>1.7 changes</h3>
+
+<h4>22. jun. 2002</h4>
+<p>
+- make use of curbs and concrete patches in turns.<br>
+- minor performance improvment.<br>
+- rearranged some code.<br>
+</p>
+
+<h4>21. jun. 2002</h4>
+<p>
+- changed some methods in TrackSegment, to access original data and get rid of local copies. with this i hope to get more cache-hits, because few data is accessed often, and reduce the memory footprint.<br>
+- changed some setups.<br>
+- improved performance of distToMiddleOnSeg(), distToMiddle().<br>
+</p>
 
 <h4>19. jun. 2002</h4>
 <p>

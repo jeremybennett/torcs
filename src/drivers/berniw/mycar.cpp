@@ -190,7 +190,7 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	destpathseg = pf->getPathSeg(destsegid);
 
 	mass = carmass + car->priv->fuel;
-	updateDError(track);
+	updateDError();
 	trtime += situation->deltaTime;
 	deltapitch = fabs(track->getSegmentPtr(currentsegid)->getKgamma() + me->_pitch);
 }
@@ -306,12 +306,12 @@ void OtherCar::update()
 	currentsegid = track->getCurrentSegment(getCarPtr(), currentsegid, searchrange);
 }
 
-void MyCar::updateDError(TrackDesc* track)
+
+
+
+void MyCar::updateDError()
 {
-	v3d loc = *(pf->getPathSeg(currentsegid)->getLoc());
-	v3d dir = *(pf->getPathSeg(currentsegid)->getDir());
-	v3d pos = currentpos;
-	loc.z = 0.0; dir.z = 0.0; pos.z = 0.0;
-	derror =  track->distGFromPoint(&loc, &dir, &pos);
-	derrorsgn = pf->pathSide(getCurrentSegId(), getCurrentPos());
+	derror = pf->distToPath(currentsegid, &currentpos);
+	derrorsgn = (derror >= 0.0) ? 1.0 : -1.0;
+	derror = fabs(derror);
 }

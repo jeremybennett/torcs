@@ -78,14 +78,13 @@ class TrackSegment
 		inline v3d* getMiddle() { return &m; }
 		inline v3d* getToRight() { return &tr; }
 
-		inline double sqr(double a) { return a*a; };
-		inline double distToLeft2D(double x, double y) { return sqrt(sqr(x-l.x) + sqr(y-l.y)); }
+		inline double sqr(double a) { return a*a; }
 		inline double distToMiddle2D(double x, double y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }
-		inline double distToRight2D(double x, double y) { return sqrt(sqr(x-r.x) + sqr(y-r.y)); }
 
 		inline double distToRight3D(v3d* p) { return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z)); }
 		inline double distToLeft3D(v3d* p) { return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z)); }
 		inline double distToMiddle3D(double x, double y, double z) { return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z)); }
+		inline double distToMiddleSqr3D(double x, double y, double z) { return sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z); }
 		inline double distToMiddle3D(v3d* p) { return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z)); }
 
 	private:
@@ -121,57 +120,14 @@ class TrackDesc
 		inline int getPitExitEndId() { return nPitExitEnd; }
 		inline int getPitType() { return torcstrack->pits.type; }
 
-		static inline void dirVector2D(v3d* a, v3d* b, v3d* r) {
-			r->x = a->x - b->x; r->y = a->y - b->y; r->z = 0.0;
-		}
-		static inline double cosalpha(v3d* a, v3d* b) {
-			return (*a)*(*b)/(a->len()*b->len());
-		}
-		static inline double distGFromPoint(v3d* r1, v3d* rdir, v3d* p) {
-			v3d t, s;
-			p->dirVector(r1, &t);
-			rdir->crossProduct(&t, &s);
-			return s.len()/rdir->len();
-		}
+		static inline void dirVector2D(v3d* a, v3d* b, v3d* r) { r->x = a->x - b->x; r->y = a->y - b->y; r->z = 0.0; }
+		static inline double cosalpha(v3d* a, v3d* b) { return (*a)*(*b)/(a->len()*b->len()); }
+		double distGFromPoint(v3d* r1, v3d* rdir, v3d* p);
 
-		/* returns distance to middle: value > 0 is right, value < 0 is left */
-		inline double distToMiddle(int id, v3d* p) {
-			v3d *r1, *rdir, r12, rdir2, p2;
-			double d, dr, dl;
-
-			r1 = ts[id].getMiddle();
-			rdir = ts[id].getToRight();
-			r12.x = r1->x; r12.y = r1->y; r12.z = 0.0;
-			rdir2.x = -rdir->y; rdir2.y = rdir->x; rdir2.z = 0.0;
-			p2.x = p->x; p2.y = p->y; p2.z = 0.0;
-
-			dr = ts[id].distToRight2D(p2.x, p2.y);
-			dl = ts[id].distToLeft2D(p2.x, p2.y);
-			d = (dr > dl) ? -1.0 : 1.0;
-
-			return d*distGFromPoint(&r12, &rdir2, &p2);
-		}
-
-		/* returns distance of trajectory point to the middle point of segment */
-		inline double distToMiddleOnSeg(int id, v3d* p) {
-			v3d d = *p - *ts[id].getMiddle();
-			return (d*(*ts[id].getToRight()) >= 0.0) ? d.len() : -d.len();
-		}
-
-		inline bool isBetween(int start, int end, int id) {
-			if (start <= end) {
-				if (id >= start && id <= end) { return true; } else { return false; }
-			} else {
-				if ((id >= 0 && id <= end) || (id >= start && id < nTrackSegments)) { return true; } else { return false; }
-			}
-		}
-
-		inline int diffSegId(int id1, int id2) {
-			int t;
-			if (id1 > id2) { t = id1; id1 = id2; id2 = t; }
-			t = (nTrackSegments - id2 + id1) % nTrackSegments;
-			return MIN(id2 - id1, t);
-		}
+		/* returns distance to middle with p on the toright vector: value > 0 is right, value < 0 is left */
+		inline double distToMiddle(int id, v3d* p) { return (*p - *ts[id].getMiddle())*(*ts[id].getToRight()); }
+		bool isBetween(int start, int end, int id);
+		int diffSegId(int id1, int id2);
 
 	private:
 		tTrack *torcstrack;
@@ -180,6 +136,53 @@ class TrackDesc
 		int nPitEntryStart;
 		int nPitExitEnd;
 };
+
+
+inline double TrackDesc::distGFromPoint(v3d* r1, v3d* rdir, v3d* p) {
+	v3d t, s;
+	p->dirVector(r1, &t);
+	rdir->crossProduct(&t, &s);
+	return s.len()/rdir->len();
+}
+
+
+inline bool TrackDesc::isBetween(int start, int end, int id) {
+	if (start <= end) {
+		if (id >= start && id <= end) { return true; } else { return false; }
+	} else {
+		if ((id >= 0 && id <= end) || (id >= start && id < nTrackSegments)) { return true; } else { return false; }
+	}
+}
+
+
+inline int TrackDesc::diffSegId(int id1, int id2) {
+	int t;
+	if (id1 > id2) { t = id1; id1 = id2; id2 = t; }
+	t = (nTrackSegments - id2 + id1) % nTrackSegments;
+	return MIN(id2 - id1, t);
+}
+
+
+/* get the segment on which the car is, searching from the position of the last call within range */
+inline int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)
+{
+	int start = -(range / 4);
+	int end = range * 3 / 4;
+ 	double d, min = FLT_MAX;
+	TrackSegment* ts;
+	int minindex = 0;
+
+	for (int i = start; i < end; i++) {
+ 		int j = (lastId+i+getnTrackSegments()) % getnTrackSegments();
+		ts = getSegmentPtr(j);
+		d = ts->distToMiddleSqr3D(car->_pos_X, car->_pos_Y, car->_pos_Z);
+		if (d < min) {
+			min = d;
+			minindex = j;
+		}
+	}
+	return minindex;
+}
 
 #endif // _TRACKDESC_H_
 

@@ -44,6 +44,16 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 		type = s->type;
 		raceType = s->raceInfo;
 		if (type != TR_STR) radius = s->radius; else radius = FLT_MAX;
+
+		if (s->type == TR_LFT) {
+			if (s->lside->style == TR_CURB) l = l - 1.5*tr;
+			else if ((s->lside->style == TR_PLAN) && (strcmp(s->lside->surface->material, TRK_VAL_CONCRETE) == 0)) l = l - 3.0*tr;
+		}
+		if (s->type == TR_RGT) {
+			if (s->rside->style == TR_CURB) r = r + 1.5*tr;
+			else if ((s->rside->style == TR_PLAN) && (strcmp(s->rside->surface->material, TRK_VAL_CONCRETE) == 0)) r = r + 3.0*tr;
+		}
+
 		width = distToLeft3D(&r);
 
 		double dz = getRightBorder()->z - getLeftBorder()->z;
@@ -257,28 +267,6 @@ int TrackDesc::getCurrentSegment(tCarElt* car)
 		if (d < min) {
 			min = d;
 			minindex = i;
-		}
-	}
-	return minindex;
-}
-
-
-/* get the segment on which the car is, searching from the position of the last call within range */
-int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)
-{
-	int start = -(range / 4);
-	int end = range * 3 / 4;
- 	double d, min = FLT_MAX;
-	TrackSegment* ts;
-	int minindex = 0;
-
-	for (int i = start; i < end; i++) {
- 		int j = (lastId+i+getnTrackSegments()) % getnTrackSegments();
-		ts = getSegmentPtr(j);
-		d = ts->distToMiddle3D(car->_pos_X, car->_pos_Y, car->_pos_Z);
-		if (d < min) {
-			min = d;
-			minindex = j;
 		}
 	}
 	return minindex;

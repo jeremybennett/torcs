@@ -121,8 +121,7 @@ class MyCar : public AbstractCar
 		double ACCELLIMIT;								/* maximal allowed acceleration */
 		double PATHERRFACTOR;							/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
 
-		/* static data (car geometry) */
-
+		/* static data */
 		double cgcorr_b;
 		double ca;
 		double cw;
@@ -167,9 +166,7 @@ class MyCar : public AbstractCar
 
 
 	private:
-		enum {
-			DRWD = 0, DFWD = 1, D4WD = 2
-		};
+		enum { DRWD = 0, DFWD = 1, D4WD = 2 };
 
 		int drivetrain;			/* RWD, FWD or 4WD */
 		double carmass;			/* mass of car without fuel */
@@ -181,7 +178,7 @@ class MyCar : public AbstractCar
 		Pathfinder* pf;
 
 		void updateCa();
-		void updateDError(TrackDesc* track);
+		void updateDError();
 };
 
 

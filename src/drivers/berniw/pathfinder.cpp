@@ -75,16 +75,13 @@ void Pathfinder::initPit(tCarElt* car) {
 				v1.y = pitSeg->vertex[TR_EL].y - pitSeg->vertex[TR_SL].y;
 				v1.z = pitSeg->vertex[TR_EL].z - pitSeg->vertex[TR_SL].z;
 				v1.normalize();
-				pitDir = v1;
 
 				/* v2 points to the side of the segment */
-				pitside = t->pits.side;
 				double s = (t->pits.side == TR_LFT) ? -1.0 : 1.0 ;
 				v2.x = s*(pitSeg->vertex[TR_SR].x - pitSeg->vertex[TR_SL].x);
 				v2.y = s*(pitSeg->vertex[TR_SR].y - pitSeg->vertex[TR_SL].y);
 				v2.z = s*(pitSeg->vertex[TR_SR].z - pitSeg->vertex[TR_SL].z);
 				v2.normalize();
-				toPit = v2;
 
 				/* loading starting point of segment */
 				pitLoc.x = (pitSeg->vertex[TR_SR].x + pitSeg->vertex[TR_SL].x) / 2.0;
@@ -136,7 +133,7 @@ void Pathfinder::initPitStopPath(void)
 	dp = p.len();
 	d = dp - delta;
 
-	sgn = (pitside == TR_LFT) ? -1.0 : 1.0 ;
+	sgn = (t->pits.side == TR_LFT) ? -1.0 : 1.0 ;
 	ypit[1] = d*sgn;
 	snpit[1] = s3;
 
@@ -198,7 +195,7 @@ void Pathfinder::initPitStopPath(void)
 
 		q.x = pp->x + p.x*d;
 		q.y = pp->y + p.y*d;
-		q.z = (pitside == TR_LFT) ? track->getSegmentPtr(j)->getLeftBorder()->z: track->getSegmentPtr(j)->getRightBorder()->z;
+		q.z = (t->pits.side == TR_LFT) ? track->getSegmentPtr(j)->getLeftBorder()->z: track->getSegmentPtr(j)->getRightBorder()->z;
 
 		ps[j].setPitLoc(&q);
 		l += TRACKRES;
@@ -791,22 +788,6 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 }
 
 
-/* get the segment on which the car is, searching ALL the segments */
-int Pathfinder::getCurrentSegment(tCarElt* car)
-{
-	lastId = track->getCurrentSegment(car);
-	return lastId;
-}
-
-
-/* get the segment on which the car is, searching from the position of the last call within range */
-int Pathfinder::getCurrentSegment(tCarElt* car, int range)
-{
-	lastId = track->getCurrentSegment(car, lastId, range);
-	return lastId;
-}
-
-
 void Pathfinder::smooth(int id, double delta, double w)
 {
 	int ids[5] = {id-2, id-1, id, id+1, id+2};
@@ -927,7 +908,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 			/* compute cosalpha of angle between path and other car */
 			double cosa = (*o[i].collcar->getDir()) * (*opseg->getDir());
 			/* compute minimal space requred, sin(arccos(x)) == sqrt(1-sqr(x)) */
-			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST; // + myc->derror + 1/50.0*MAX(0.0, (myc->getSpeed() - o[i].collcar->getSpeed()));
+			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST; 
 			/* compute distance to path */
 			double dtp = dist(opseg->getLoc(), o[i].collcar->getCurrentPos());
 
@@ -951,7 +932,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 			}
 
 			if (track->isBetween(trackSegId, end, o[i].catchseg)) {
-				double myd = track->distToMiddleOnSeg(o[i].catchseg, ps[o[i].catchseg].getLoc());
+				double myd = track->distToMiddle(o[i].catchseg, ps[o[i].catchseg].getLoc());
 				dtp = fabs(myd - o[i].disttomiddle);
 
 				if (dtp < myc->CARWIDTH + myc->DIST) {
@@ -1010,14 +991,14 @@ inline void Pathfinder::adjustRadius(int s, int p, int e, double c, double secur
 	v3d *left = t->getLeftBorder();
 	v3d *right = t->getRightBorder();
 	v3d *rs = ps[s].getLoc(), *rp = ps[p].getLoc(), *re = ps[e].getLoc(), n;
-	double oldlane = track->distToMiddleOnSeg(p, rp)/t->getWidth() + 0.5;
+	double oldlane = track->distToMiddle(p, rp)/t->getWidth() + 0.5;
 
 	double rgx = (re->x - rs->x), rgy = (re->y - rs->y);
 	double m = (rs->x * rgy + rgx * rp->y - rs->y * rgx - rp->x * rgy) / (rgy * rgh->x - rgx * rgh->y);
 
 	n = (*rp) +(*rgh)*m;
 	ps[p].setLoc(&n);
-	double newlane = track->distToMiddleOnSeg(p, rp)/t->getWidth() + 0.5;
+	double newlane = track->distToMiddle(p, rp)/t->getWidth() + 0.5;
 
 	/* get an estimate how much the curvature changes by moving the point 1/10000 of track width */
 	const double delta = 0.0001;
@@ -1318,7 +1299,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		/* set up point 2 */
 		int trackSegId2 = (trackSegId + overtakerange) % nPathSeg;
-		y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getOptLoc());
+		y[2] = track->distToMiddle(trackSegId2, ps[trackSegId2].getOptLoc());
 		ys[2] = pathSlope(trackSegId2);
 
 		/* set up parameter s */
@@ -1403,12 +1384,3 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 }
 
 
-double Pathfinder::pathSide(int trackSegId, v3d* p)
-{
-	int previd = (trackSegId - 1 + nPathSeg) % nPathSeg;
- 	v3d *prev = getPathSeg(previd)->getLoc();
-	v3d *dir = getPathSeg(trackSegId)->getDir();
-	v3d res, dir2 = *p - *prev;
-	dir2.crossProduct(dir, &res);
-	return sign(res.z);
-}

@@ -90,12 +90,7 @@ typedef struct {
 class PathSeg
 {
 	public:
-		inline void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {
-			speedsqr = ispeedsqr;
-			length = ilength;
-			p = (*ip);
-			if (id != NULL) d = (*id);
-		}
+		void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id);
 		inline void setLoc(v3d* ip) { p = (*ip); }
 		inline void setOptLoc(v3d* ip) { o = (*ip); }
 		inline void setPitLoc(v3d* ip) { l = (*ip); }
@@ -134,20 +129,9 @@ class Pathfinder
 		void initPit(tCarElt* car);
 		inline bool isPitAvailable() { return pit; }
 		inline int getPitSegId() { return pitSegId; }
-		inline void setPitStop(bool p, int id) {
-			if (isPitAvailable() && track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, id) && p)
-					pitStop = true ;
-				else
-					pitStop = false;
-		}
+		void setPitStop(bool p, int id);
 		inline bool getPitStop() { return pitStop; }
-		inline int segmentsToPit(int id) {
-			if (id <= pitSegId) {
-				return (pitSegId - id);
-			} else {
-				return (track->getnTrackSegments() - id + pitSegId);
-			}
-		}
+		int segmentsToPit(int id);
 		void plotPitStopPath(char* filename);
 		void plotPath(char* filename);
 
@@ -158,7 +142,7 @@ class Pathfinder
 		int getCurrentSegment(tCarElt* car);
 		int getCurrentSegment(tCarElt* car, int range);
 		inline int getnPathSeg() { return nPathSeg; }
-		double pathSide(int trackSegId, v3d* p);
+		double distToPath(int trackSegId, v3d* p);
 
 	private:
 		static const double COLLDIST;	/* up to this distance do we consider other cars as dangerous */
@@ -180,11 +164,8 @@ class Pathfinder
 		int e1, e3;				/* pitexitstart, pitexitend */
 
 		v3d pitLoc;				/* location of pit */
-		v3d pitDir;				/* direction vector of the pit */
-		v3d toPit;				/* vector pointing perpendicular from the track to the pit */
 		int pitSegId;			/* segment id of pit */
 		bool pit;
-		int pitside;
 		int changed;
 
 		int collcars;
@@ -222,16 +203,71 @@ class Pathfinder
 		void optimize2(int start, int range, double w);
 		void optimize3(int start, int range, double w);
 		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);
-
-		inline double pathSlope(int id) {
-			int nextid = (id + 1) % nPathSeg;
-			v3d dir = *ps[nextid].getLoc() - *ps[id].getLoc();
-			dir.normalize();
-			double dp = dir*(*track->getSegmentPtr(id)->getToRight());
-			double alpha = PI/2.0 - acos(dp);
-			return sin(alpha);
-		}
+		double pathSlope(int id);
 };
+
+
+inline double Pathfinder::distToPath(int trackSegId, v3d* p)
+{
+	v3d *toright = track->getSegmentPtr(trackSegId)->getToRight();
+	v3d *pathdir = ps[trackSegId].getDir();
+	v3d n1, torightpath;
+	toright->crossProduct(pathdir, &n1);
+	pathdir->crossProduct(&n1, &torightpath);
+	return ((*p - *ps[trackSegId].getLoc())*torightpath)/torightpath.len();
+}
+
+
+inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {
+	speedsqr = ispeedsqr;
+	length = ilength;
+	p = (*ip);
+	if (id != NULL) d = (*id);
+}
+
+
+inline void Pathfinder::setPitStop(bool p, int id) {
+	if (isPitAvailable() && track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, id) && p) {
+		pitStop = true ;
+	} else {
+		pitStop = false;
+	}
+}
+
+
+inline int Pathfinder::segmentsToPit(int id) {
+	if (id <= pitSegId) {
+		return (pitSegId - id);
+	} else {
+		return (track->getnTrackSegments() - id + pitSegId);
+	}
+}
+
+
+inline double Pathfinder::pathSlope(int id) {
+	int nextid = (id + 1) % nPathSeg;
+	v3d dir = *ps[nextid].getLoc() - *ps[id].getLoc();
+	double dp = dir*(*track->getSegmentPtr(id)->getToRight())/dir.len();
+	double alpha = PI/2.0 - acos(dp);
+	return sin(alpha);
+}
+
+
+/* get the segment on which the car is, searching ALL the segments */
+inline int Pathfinder::getCurrentSegment(tCarElt* car)
+{
+	lastId = track->getCurrentSegment(car);
+	return lastId;
+}
+
+
+/* get the segment on which the car is, searching from the position of the last call within range */
+inline int Pathfinder::getCurrentSegment(tCarElt* car, int range)
+{
+	lastId = track->getCurrentSegment(car, lastId, range);
+	return lastId;
+}
+
 
 #endif // _PATHFINDER_H_
 
