@@ -97,7 +97,7 @@ static void changeSoundState(void *vp)
 	if (vp == 0) {
 		curOption--;
 		if (curOption < 0) {
-	    	curOption = nbOptions;
+	    	curOption = nbOptions - 1;
 		}
 	} else {
 		curOption++;

@@ -92,7 +92,7 @@ ChangeSimuVersion(void *vp)
     if (vp == 0) {
 	curVersion--;
 	if (curVersion < 0) {
-	    curVersion = nbVersions;
+	    curVersion = nbVersions - 1;
 	}
     } else {
 	curVersion++;
