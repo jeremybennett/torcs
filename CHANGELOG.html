@@ -3,9 +3,9 @@
   <!-- 
     file        : CHANGELOG.html
     created     : Tue Mar  4 19:21:10 CET 2003
-    copyright   : (C) 2003 by Eric Espié                         
-    email       : Eric.Espie@torcs.org   
-    version     : $Id$                                  
+    copyright   : (C) 2003, 2005 by Eric Espié, Bernhard Wymann
+    email       : Eric.Espie@torcs.org
+    version     : $Id$
   -->
 
   <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -19,11 +19,60 @@
   <body>
     <hr noshade="noshade" size="2" width="100%"></hr>
 
-    <h1>Version 1.3.0</h1>
+    <h1>Version 1.2.3</h1>
 
-    <h3>Simulation</h3>
+    <h3>Graphic</h3>
     <ul>
-      <li><b>Full 3D mode</b></li>
+      <li><b>Nicer smoke</b></li>
+      <li><b>Nicer skidmarks</b></li>
+      <li><b>Compatibility video init option</b></li>
+      <li><b>Fixed memory leaks and bugs</b></li>
+      <li><b>Mirror uses glCopyTexSubImage2D now</b></li>
+      <li><b>Reduced installed size with RLE compressed SGI's</b></li>
+	  <li><b>Optional use of RANDR extension, new video mode list</b></li>
+    </ul>
+
+    <h3>Control:</h3>
+    <ul>
+      <li><b>Bugfixes</b></li>
+	</ul>
+
+    <h3>Tracks:</h3>
+    <ul>
+      <li><b>New track</b></li>
+      <li><b>Fixed transparency in Spring</b></li>
+      <li><b>Fixed wrong curb banking</b></li>
+      <li><b>Bugfixes (wall of death, leaks, ...)</b></li>
+    </ul>
+
+    <h3>Cars:</h3>
+    <ul>
+      <li><b>Added open wheel car</b></li>
+      <li><b>Fixed counters of 406 Peugeot</b></li>
+	  <li><b>Fixes in viper-gts-r</b></li>
+    </ul>
+
+    <h3>Robots:</h3>
+    <ul>
+      <li><b>New robots "Olethros" 1-10</b></li>
+      <li><b>Fixed bugs in robots</b></li>
+    </ul>
+
+    <h3>Compilation:</h3>
+    <ul>
+      <li><b>Configuration for PLIB 1.8.3 updated</b></li>
+      <li><b>Fixed all warnings for windows Build</b></li>
+      <li><b>Added config.h</b></li>
+      <li><b>Added -fPIC</b></li>
+      <li><b>Changed optimization back to -O2</b></li>
+    </ul>
+
+    <h3>System:</h3>
+    <ul>
+      <li><b>Added sound disable option</b></li>
+      <li><b>Updated plib for windows to 1.8.3</b></li>
+      <li><b>Changed Windows linkage to avoid multiple plib instances in exe/dll</b></li>
+      <li><b>Fixed a lot of bugs in the menu system (memory leaks, crashes, etc)</b></li>
     </ul>
 
     <hr noshade="noshade" size="2" width="100%"></hr>

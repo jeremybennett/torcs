@@ -1,25 +1,79 @@
-TORCS Installation instructions on Linux:
+Brief Linux TORCS Installation Instructions
+-------------------------------------------
+There are several ways to install TORCS:
+- From all in one tarball.
+- From modular packages.
+- From CVS (just for developers!).
 
-Requisites:
------------
-            OpenGl or a recent Mesa (http://mesa3d.sourceforge.net/)
-            GLUT 3.7 or later (http://reality.sgi.com/mjk/glut3/glut3.html)
-            Or FreeGlut (best choice) (http://freeglut.sourceforge.net/)
-            PLIB 1.6.0 (http://plib.sourceforge.net/)
-            libpng (http://www.libpng.org/pub/png/libpng.html)
-	    zlib (for libpng)
-            a driver if you have a 3D card (recommended) (http://www.linux3D.org)
-            a joystick driver. (mandatory to drive yourself, don't forget to calibrate !!!)
-	                       (http://atrey.karlin.mff.cuni.cz/~vojtech/joystick)
+Pick just one of the above options. If you have trouble during the installation
+have a look into the detailed installation instructions on www.torcs.org and
+www.berniw.org. If that does not help you can find solutions to common problems
+in the FAQ on the above sites. In case you get stuck learn how to report the
+problem in the FAQ before you file a bug or contact us. Have fun,
 
-Installation:
+The TORCS Team.
+
+
+Requisites
+----------
+- Working OpenGL Driver and header files
+- FreeGLUT or GLUT (http://freeglut.sourceforge.net/)
+- PLIB 1.8.3 (http://plib.sourceforge.net/)
+- libpng
+- zlib
+
+
+Build options
 -------------
+To get information about build options run "./configure --help". Interesting
+might be debugging support (--enable-debug) and disabling the use of XRANDR
+(--disable-xrandr).
 
-1 - decompress the sources tar ball: 
 
-      $ tar xzvf torcs-xxx-src*.tgz
+Runtime options
+---------------
+-l  list the dynamically linked libraries
+-d  run under gdb and print stack trace on exit
+-e  display the commands to issue when you want to run under gdb
+-s  disable multitexturing
+-m  use X mouse cursor and do not hide it during races
 
-2 - build the executables 
+
+Installation from all in one Tarball
+------------------------------------
+1 - decomress the tarball:
+
+      $ tar xfvj torcs-xxx.tar.bz2
+
+2 - build and install:
+
+      $ cd torcs-xxx
+      $ ./configure [--prefix=PREFIX (default /usr/local)]
+      $ make
+      $ make install         # installs in PREFIX/share/games/torcs PREFIX/bin and PREFIX/lib
+      $ make datainstall     # important!
+
+3 - run TORCS
+
+ if PREFIX/bin is not in your $PATH
+
+      $ cd PREFIX/bin
+      $ ./torcs
+
+ else
+      $ torcs
+
+
+
+Installation from Modular Packages
+----------------------------------
+
+1 - decompress the sources tar ball and optional robots:
+
+      $ tar xfvj torcs-xxx-src*.tgz
+      $ tar xfvj torcs-xxx-src-robots-yyyyy.tgz
+
+2 - build the executables:
 
       $ cd torcs-xxx
       $ ./configure [--prefix=PREFIX (default /usr/local)]
@@ -37,25 +91,25 @@ This should generate the binaries, with no more than few warnings.
 
       $ tar xzvf torcs-xxx-data-*.tgz
 
-6- run TORCS 
+6- run TORCS
 
  if PREFIX/bin is not in your $PATH
 
       $ cd PREFIX/bin
-      $ ./torcs                    
+      $ ./torcs
 
  else
       $ torcs
 
-4- Enjoy
+
+Installation from CVS (just for developers!)
+--------------------------------------------
+Before you start make you aware that the CVS might crash or not even compile
+sometimes. If you want to get it anyway follow the instructions at
+http://sf.net/cvs/?group_id=3777 (the module name is "torcs").
+
+Additionaly to the "./configure && make && make install" you have to use the
+make datainstall to copy the data from the source tree to the runtime
+directories.
 
 
-Note for the CVS users:
------------------------
-
-If you want to get the latest version you can download the current CVS tree
-as explained at http://sf.net/cvs/?group_id=3777
-
-additionaly to the "./configure && make && make install"
-you have to use the make datainstall to copy the data from 
-the source tree to the runtime directories.

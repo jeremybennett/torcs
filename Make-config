@@ -22,7 +22,7 @@ SHELL = /bin/sh
 srcdir = .
 top_srcdir = ${TORCS_BASE}
 
-prefix = /home/torcs/runtime3/
+prefix = /usr/local
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
@@ -47,22 +47,22 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_SCRIPT = ${INSTALL}
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 
-CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
-CXXFLAGS =  -march=i686 -Wall -g -DDEBUG -DDEBUG_OUT -Wall -g -DDEBUG -DDEBUG_OUT -march=i686 ${CFLAGSD}
-CFLAGS   =  -march=i686 -Wall -g -DDEBUG -DDEBUG_OUT -Wall -g -DDEBUG -DDEBUG_OUT ${CFLAGSD}
+CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DHAVE_CONFIG_H
+CXXFLAGS =  -march=athlon-mp -O2 -Wall -fPIC -O2 -DUSE_RANDR_EXT -Wall -fPIC -O2 -DUSE_RANDR_EXT -march=athlon-mp -O2 ${CFLAGSD}
+CFLAGS   =  -march=athlon-mp -O2 -Wall -fPIC -O2 -DUSE_RANDR_EXT -Wall -fPIC -O2 -DUSE_RANDR_EXT ${CFLAGSD}
 
 #EXT_LIBS = -lpthread -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
 EXT_LIBS = -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
 #LDFLAGS =   -L/usr/X11R6/lib -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
-LDFLAGS =  -L${EXPORTBASE}/lib  -L/usr/X11R6/lib -L/usr/lib 
+LDFLAGS =  -L${EXPORTBASE}/lib  -L/usr/X11R6/lib -L/usr/lib
 
 #INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
-INCFLAGS =  -I${EXPORTBASE}/include 
+INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
 
-CPP = gcc -E -march=i686 -M -D__DEPEND__
+CPP = gcc -E -march=athlon-mp -O2 -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.2.2
+VERSION = 1.2.3
 
 TAR = gtar
 GZIP_ENV = --best

@@ -59,8 +59,10 @@ PKGLIST		= src \
 		  data-tracks-dirt \
 		  data-devel \
 		  src-robots-bt \
-		  src-robots-astigot \
-		  src-robots-billy
+		  src-robots-olethros
+#\
+#		  src-robots-astigot \
+#		  src-robots-billy
 
 DATASUBDIRS	= data
 

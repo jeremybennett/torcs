@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="TORCS" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Generic Project" 0x010a
 
 CFG=TORCS - Win32 Debug
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "TORCS.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "TORCS.mak" CFG="TORCS - Win32 Debug"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "TORCS - Win32 Release" (based on "Win32 (x86) Generic Project")
-!MESSAGE "TORCS - Win32 Debug" (based on "Win32 (x86) Generic Project")
+!MESSAGE "TORCS - Win32 Release" (basierend auf  "Win32 (x86) Generic Project")
+!MESSAGE "TORCS - Win32 Debug" (basierend auf  "Win32 (x86) Generic Project")
 !MESSAGE 
 
 # Begin Project
