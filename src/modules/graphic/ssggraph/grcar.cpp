@@ -589,7 +589,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
     /* wheels */
     for (i = 0; i < 4; i++) {
 	float	*clr;
-
+	
 	sgSetCoord(&wheelpos, car->priv->wheel[i].relPos.x, car->priv->wheel[i].relPos.y, car->priv->wheel[i].relPos.z,
 		   RAD2DEG(car->priv->wheel[i].relPos.az), RAD2DEG(car->priv->wheel[i].relPos.ax), 0);
 	grCarInfo[index].wheelPos[i]->setTransform(&wheelpos);

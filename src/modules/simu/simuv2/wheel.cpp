@@ -43,6 +43,7 @@ SimWheelConfig(tCar *car, int index)
     wheel->staticPos.y    = GfParmGetNum(hdle, WheelSect[index], PRM_YPOS, (char*)NULL, 0);
     x0			  = GfParmGetNum(hdle, WheelSect[index], PRM_RIDEHEIGHT, (char*)NULL, 0.20);
     wheel->staticPos.az   = GfParmGetNum(hdle, WheelSect[index], PRM_TOE, (char*)NULL, 0.0);
+    wheel->staticPos.ax   = GfParmGetNum(hdle, WheelSect[index], PRM_CAMBER, (char*)NULL, 0.0);
     Ca                    = GfParmGetNum(hdle, WheelSect[index], PRM_CA, (char*)NULL, 30.0);
     RFactor               = GfParmGetNum(hdle, WheelSect[index], PRM_RFACTOR, (char*)NULL, 0.8);
     EFactor               = GfParmGetNum(hdle, WheelSect[index], PRM_EFACTOR, (char*)NULL, 0.7);
@@ -51,6 +52,12 @@ SimWheelConfig(tCar *car, int index)
     wheel->opLoad         = GfParmGetNum(hdle, WheelSect[index], PRM_OPLOAD, (char*)NULL, wheel->weight0 * 1.2);
     wheel->mass           = GfParmGetNum(hdle, WheelSect[index], PRM_MASS, (char*)NULL, 20.0);
 
+    if (index % 2) {
+	wheel->relPos.ax = -wheel->staticPos.ax;
+    } else {
+	wheel->relPos.ax = wheel->staticPos.ax;
+    }
+    
     wheel->lfMin = MIN(0.8, wheel->lfMin);
     wheel->lfMax = MAX(1.6, wheel->lfMax);
 
@@ -65,7 +72,7 @@ SimWheelConfig(tCar *car, int index)
     wheel->relPos.x = wheel->staticPos.x = car->axle[index/2].xpos;
     wheel->relPos.y = wheel->staticPos.y;
     wheel->relPos.z = wheel->radius - wheel->susp.spring.x0;
-    wheel->relPos.ax = wheel->relPos.ay = wheel->relPos.az = 0;
+    wheel->relPos.ay = wheel->relPos.az = 0;
     wheel->steer = 0;
 
     /* components */
@@ -184,7 +191,7 @@ SimWheelUpdateForce(tCar *car, int index)
     /* load sensitivity */
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * wheel->forces.z / wheel->opLoad));
     
-    F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction;	/* coeff */
+    F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction * (1.0 + 0.05 * sin(-wheel->staticPos.ax * 18.0));	/* coeff */
 
     wheel->rollRes = wheel->forces.z * wheel->trkPos.seg->surface->kRollRes;
     

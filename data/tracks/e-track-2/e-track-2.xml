@@ -100,9 +100,9 @@
   <section name="Starting Grid">
     <attnum name="rows" val="2"></attnum>
     <attstr name="pole position side" val="left"></attstr>
-    <attnum name="distance to start"        val="5.0" unit="m"></attnum>
-    <attnum name="distance between columns" val="10.0" unit="m"></attnum>
-    <attnum name="offset within a column"   val="5.0"  unit="m"></attnum>
+    <attnum name="distance to start"        val="4.0" unit="m"></attnum>
+    <attnum name="distance between columns" val="8.0" unit="m"></attnum>
+    <attnum name="offset within a column"   val="4.0"  unit="m"></attnum>
     <attnum name="initial height"           val="0.2"  unit="m"></attnum>
   </section>
 

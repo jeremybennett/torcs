@@ -275,6 +275,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="toe" min="-5" max="5" unit="deg" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"></attnum>
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
     <attnum name="dynamic friction" min="70" max="80" unit="%" val="80"></attnum>
@@ -291,6 +292,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="toe" min="-5" max="5" unit="deg" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"></attnum>
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
     <attnum name="dynamic friction" min="70" max="80" unit="%" val="80"></attnum>
@@ -307,6 +309,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="toe" min="0" max="0" unit="deg" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"></attnum>
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
     <attnum name="dynamic friction" min="70" max="80" unit="%" val="80"></attnum>
@@ -323,6 +326,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"></attnum>
     <attnum name="toe" min="0" max="0" unit="deg" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"></attnum>
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"></attnum>
     <attnum name="dynamic friction" min="70" max="80" unit="%" val="80"></attnum>

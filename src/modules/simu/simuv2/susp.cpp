@@ -98,14 +98,15 @@ void
 SimSuspCheckIn(tSuspension *susp)
 {
     susp->state = 0;
+    if (susp->x < susp->spring.packers) {
+	susp->x = susp->spring.packers;
+	susp->state = SIM_SUSP_COMP;
+    }
     susp->x *= susp->spring.bellcrank;
     if (susp->x > susp->spring.xMax) {
 	susp->x = susp->spring.xMax;
 	susp->state = SIM_SUSP_EXT;
-    } else if (susp->x < susp->spring.packers) {
-	susp->x = susp->spring.packers;
-	susp->state = SIM_SUSP_COMP;
-    }    
+    }
 }
 
 void

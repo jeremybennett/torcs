@@ -122,6 +122,9 @@ SimCarCollideXYScene(tCar *car)
 	car->DynGCg.vel.y -= nx * dotProd;
 	dotprod2 = (nx * cy + ny * cx);
 	car->DynGCg.vel.az -= dotprod2 * dotProd / 10.0;
+	if (fabs(car->DynGCg.vel.az) > 6.0) {
+	    car->DynGCg.vel.az = SIGN(car->DynGCg.vel.az) * 6.0;
+	}
 	
 	/* rebound */
 	dotProd = (nx * corner->vel.x + ny * corner->vel.y);
