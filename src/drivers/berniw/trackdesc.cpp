@@ -178,17 +178,34 @@ TrackDesc::TrackDesc(const tTrack* track)
 		if ((ts[i].getRaceType() & TR_PITENTRY) && !(ts[j].getRaceType() & TR_PITENTRY)) {
 			nPitEntryStart = i;
 		}
-		if ((ts[i].getRaceType() & TR_PITENTRY) && !(ts[k].getRaceType() & TR_PITENTRY)) {
-			nPitEntryEnd = i;
-		}
-		if ((ts[i].getRaceType() & TR_PITEXIT) && !(ts[j].getRaceType() & TR_PITEXIT)) {
-			nPitExitStart = i;
-		}
 		if ((ts[i].getRaceType() & TR_PITEXIT) && !(ts[k].getRaceType() & TR_PITEXIT)) {
 			nPitExitEnd = i;
 		}
 		t3Dd* p = ts[k].getMiddle();
 		ts[i].setLength(ts[i].distToMiddle2D(p->x, p->y));
+	}
+
+	/* init kbeta */
+	tdble z0 = 0.0;
+	tdble z1 = ts[(nTrackSegments-2) % nTrackSegments].getMiddle()->z;
+	tdble z2 = ts[0].getMiddle()->z;
+	tdble dz10 = 0.0;
+	tdble dz21 = z2 - z1;
+
+	for (int i = 0; i < nTrackSegments; i++) {
+		int k = (i+nTrackSegments+2) % nTrackSegments;
+		z0 = z1;
+		z1 = z2;
+		z2 = ts[k].getMiddle()->z;
+		dz10 = dz21;
+		tdble dz21 = z2 - z1;
+		if (dz21 < dz10) {
+			tdble tmp = cos(asin(dz10)-asin(dz21));
+			tmp *= tmp;
+			ts[i].setKbeta(tmp);
+		} else {
+			ts[i].setKbeta(1.0);
+		}
 	}
 }
 
