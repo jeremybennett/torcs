@@ -19,16 +19,11 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="60.0"></attnum>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-  </section>
-
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="15.5"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="12.5"></attnum>
   </section>
 
  <section name="Gearbox">
-    <attnum name="shift time" unit="s" val="0.15"></attnum>
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"></attnum>
@@ -78,7 +73,7 @@
   </section>
 
   <section name="Front Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="900"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="1900"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -89,7 +84,7 @@
   </section>
 
   <section name="Front Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="900"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="1900"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -122,6 +117,7 @@
   </section>
 
 </params>
+
 
 
 

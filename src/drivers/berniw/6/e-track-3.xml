@@ -17,12 +17,9 @@
 <params name="Alfa Romeo 155 DTM" type="template">
 
 <!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->
+
   <section name="Car">
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="85.0"></attnum>
-  </section>
-
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="17"></attnum>
   </section>
 
   <section name="Rear Wing">
@@ -36,52 +33,52 @@
 	<attnum name="efficiency" val="0.9"></attnum>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="2.7"></attnum>
+	<attnum name="ratio" min="0" max="5" val="2.6"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="2">
-	<attnum name="ratio" min="0" max="5" val="2.0"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.9"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="3">
-	<attnum name="ratio" min="0" max="5" val="1.5"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.35"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="4">
-	<attnum name="ratio" min="0" max="5" val="1.1"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.95"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val="0.81"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.75"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.65"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.6"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
     </section>
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.39"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="11000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.42"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="12000"></attnum>
   </section>
 
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="5000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
   </section>
 
   <section name="Rear Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="5000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
   </section>
 
   <section name="Front Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="5000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -92,7 +89,7 @@
   </section>
 
   <section name="Front Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="5000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -103,7 +100,7 @@
   </section>
 
   <section name="Rear Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="5000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="6000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -114,7 +111,7 @@
   </section>
 
   <section name="Rear Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="5000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="6000"></attnum>
     <attnum name="suspension course" unit="m" val="0.25"></attnum>
     <attnum name="bellcrank" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -124,6 +121,8 @@
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="120"></attnum>
   </section>
 </params>
+
+
 
 
 
