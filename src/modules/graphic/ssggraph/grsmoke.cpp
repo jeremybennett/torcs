@@ -201,13 +201,14 @@ void grAddSmoke(tCarElt *car, double t)
     ssgVertexArray	*shd_vtx ;
     tgrCarInstrument	*curInst;
     tdble		val;
+    tdble		spd2;
     int			index;
 
     if (!grSmokeMaxNumber) {
 	return;
     }
-
-    if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
+    spd2 = car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y;
+    if (spd2 > 10.0) {
 	if (smokeManager->number < grSmokeMaxNumber) {
 	    for (i = 0; i < 4; i++) {
 		if ((t - timeSmoke[car->index*4+i]) < grSmokeDeltaT) {
@@ -227,7 +228,7 @@ void grAddSmoke(tCarElt *car, double t)
 		    tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
 		    tmp->smoke->setState(mst);    
 		    tmp->smoke->setCullFace(0);
-		    tmp->smoke->max_life = grSmokeLife * car->_skid[i];
+		    tmp->smoke->max_life = grSmokeLife * car->_skid[i] * sqrt(spd2) / 30.0;
 		    tmp->smoke->cur_life = 0;
 		    tmp->smoke->sizex = VX_INIT;
 		    tmp->smoke->sizey = VY_INIT;
@@ -251,7 +252,7 @@ void grAddSmoke(tCarElt *car, double t)
 	}
     }
 
-    if (car->_exhaustNb && ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0)) {
+    if (car->_exhaustNb && (spd2 > 10.0)) {
 	if (smokeManager->number < grSmokeMaxNumber) {
 	    index = car->index;	/* current car's index */
 	    if ((t - timeFire[index]) > grFireDeltaT) {
