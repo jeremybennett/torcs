@@ -19,7 +19,7 @@
 
   <section name="Driver">
     <!-- Position of the driver -->
-    <attnum name="xpos" unit="m" val="0.60"></attnum>
+    <attnum name="xpos" unit="m" val="0.65"></attnum>
     <attnum name="ypos" unit="m" val="0.0"></attnum>
     <attnum name="zpos" unit="m" val="1.0"></attnum>
   </section>

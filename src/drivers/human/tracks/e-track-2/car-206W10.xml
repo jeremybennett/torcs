@@ -42,7 +42,7 @@
 	<attnum name="ratio" min="0" max="10" val="1.4"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="10" val="1.0"></attnum>
+	<attnum name="ratio" min="0" max="10" val="1.2"></attnum>
       </section>
     </section>
   </section>
@@ -67,31 +67,35 @@
     <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP,VISCOUS COUPLER" val="VISCOUS COUPLER"></attstr>
     <attnum name="min torque bias" val="50" unit="%"></attnum>
     <attnum name="max torque bias" val="60" unit="%"></attnum>
-    <attnum name="ratio" min="0" max="10" val="4.5"></attnum>
+    <attnum name="ratio" min="0" max="10" val="3.7"></attnum>
   </section>
 
   <section name="Front Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Left Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Rear Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Anti-Roll Bar">
