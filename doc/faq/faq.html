@@ -30,7 +30,7 @@
       <td class="maincontent">
 
         <a name="topofthepage">
-		   <h1>The Official TORCS 1.2.2 FAQ</h1>
+		   <h1>The Official TORCS 1.2.3 FAQ</h1>
 		</a>
 
 		<h2>0. About this Document.</h2>
@@ -93,7 +93,6 @@
 			<li><h4><a href="#c4_3_5">4.3.5 My screen resolution is not supported.</a></h4></li>
 			<li><h4><a href="#c4_3_6">4.3.6 I have a problem with the fullscreen mode.</a></h4></li>
 			<li><h4><a href="#c4_3_7">4.3.7 TORCS graphics is slow and it crashes on "READY!"</a></h4></li>
-			<li><h4><a href="#c4_3_8">4.3.8 I have no sound with Linux on PPC.</a></h4></li>
 			<li><h4><a href="#c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4></li>
 			<li><h4><a href="#c4_3_10">4.3.10 The cars are flickering.</a></h4></li>
 			<li><h4><a href="#c4_3_11">4.3.11 I use ALSA and TORCS does not start up.</a></h4></li>
@@ -145,7 +144,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-			26.11.2004 (DD.MM.YYYY).
+			07.02.2005 (DD.MM.YYYY).
 		</p>
 
 
@@ -172,7 +171,8 @@
 		  <a href="http://torcs.org" target="_parent">TORCS site</a> and on
 		  <a href="http://www.berniw.org" target="_parent">Bernhard's homepage</a>. You can find installation instructions,
 		  the robot tutorial, instructions how to use TORCS and more. A very brief track howto is available
-		  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here</a>.
+		  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here, there is as
+		  well a <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">track editor</a> available</a>.
 		  What is missing at the moment is a car building tutorial.
 		</p>
 
@@ -285,7 +285,7 @@
 		  You need recent, working and properly configured OpenGL/DRI drivers. You need also several
 		  libraries. To avoid problems you should prefer
 		  <a href="http://FreeGLUT.sourceforge.net" target="_parent">FreeGLUT</a> over GLUT. Make
-		  sure that you use exactly plib version 1.6.0.
+		  sure that you use exactly plib version 1.8.3.
 		</p>
 
 
@@ -340,7 +340,7 @@
 
 		<h4><a name="c4_2_2">4.2.2 ./configure reports "configure: error: Can't find plib/ssg.h" or "plib/ul.h".</a></h4>
 		<p>
-		  TORCS requires <a href="http://plib.sourceforge.net" target="_parent">plib</a> 1.6.0 and its
+		  TORCS requires <a href="http://plib.sourceforge.net" target="_parent">plib</a> 1.8.3 and its
 		  header files. Download and install plib.
 		</p>
 
@@ -482,17 +482,6 @@ exception$LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
 		  Select in the TORCS display menu a color depth of 24 or 32 bpp, even if your display runs
 		  at 16 bpp.
 		</p>
-
-		<h4><a name="c4_3_8">4.3.8 I have no sound with Linux on PPC.</a></h4>
-
-		<pre>slDSP: open: Device or resource busy
-WARNING: slScheduler: soundcard init failed.</pre>
-
-		<p>
-		  You can apply <a href="./downloads/plib-1.6-scheduler.patch">this patch</a> to plib 1.6.0.
-		  After that you need to recompile and reinstall plib and TORCS.
-		</p>
-
 
 		<h4><a name="c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4>
 		<p>
