@@ -43,7 +43,7 @@ AC_C_BIGENDIAN
 
 AC_PATH_X
 #CFLAGS="-ansi -Wall -Wstrict-prototypes -W"
-ADDCFLAGS="-Wall -Wstrict-prototypes"
+ADDCFLAGS="-Wall"
 AC_ARG_ENABLE(debug,
 	[  --enable-debug          set the debug mode], 
 	ADDCFLAGS="$ADDCFLAGS -g -DDEBUG -DDEBUG_OUT",

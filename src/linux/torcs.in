@@ -63,6 +63,13 @@ bt
 EOF
 	    ;;
 
+	-e) shift
+	    echo "cd $DATADIR"
+	    echo "export LD_LIBRARY_PATH=$LIBDIR/lib:$LD_LIBRARY_PATH"
+	    echo "gdb  $LIBDIR/torcs-bin"
+	    echo "r -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*"
+	    ;;
+
 	# Normal run
 	*) $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
 	    ;;

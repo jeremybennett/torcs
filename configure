@@ -4901,7 +4901,7 @@ echo "${ECHO_T}libraries $x_libraries, headers $x_includes" >&6
 fi
 
 #CFLAGS="-ansi -Wall -Wstrict-prototypes -W"
-ADDCFLAGS="-Wall -Wstrict-prototypes"
+ADDCFLAGS="-Wall"
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
   enableval="$enable_debug"

@@ -159,48 +159,56 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 
    
     for (i = 0; i < 4; i++) {
-		if (car->_skid[i]>0.1) {
-			cur_clr[3] = car->_skid[i];
-		} else {
-			cur_clr[3]=0.0;
-		}
-		char* s = car->priv.wheel[i].seg->surface->material;
-		tdble sling_mud = 1.0;
-		if (strstr(s, "sand")) {
-			cur_clr[0] = 0.8;
-			cur_clr[1] = 0.75;
-			cur_clr[2] = 0.4;
-		} else if (strstr(s, "dirt")) {
-			cur_clr[0] = 0.8;
-			cur_clr[1] = 0.65;
-			cur_clr[2] = 0.4;
-		} else if (strstr(s,"mud")) {
-			cur_clr[0] = 0.75;
-			cur_clr[1] = 0.5;
-			cur_clr[2] = 0.3;
-		} else if (strstr(s,"grass")) {
-			cur_clr[0] = 0.7;
-			cur_clr[1] = 0.55;
-			cur_clr[2] = 0.4;
-		} else if (strstr(s,"gravel")) {
-			cur_clr[0] = 0.6;
-			cur_clr[1] = 0.6;
-			cur_clr[2] = 0.6;
-		} else {
-			sling_mud=0.0;
-			cur_clr[0] = 0.0;
-			cur_clr[1] = 0.0;
-			cur_clr[2] = 0.0;
-		}
-		for (int c=0; c<3; c++) {
-			tdble tmp = grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c];
-			grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c] =
-				0.9*tmp + 0.1*cur_clr[c];
-			cur_clr[c] = tmp;
-		}
-		if ((t - grCarInfo[car->index].skidmarks->strips[i].timeStrip) < grSkidDeltaT) {
-			continue;
-		}
+	tdble sling_mud = 1.0;
+	if (car->_skid[i]>0.1) {
+	    cur_clr[3] = car->_skid[i];
+	} else {
+	    cur_clr[3]=0.0;
+	}
+	if (car->priv.wheel[i].seg) {
+	    char* s = car->priv.wheel[i].seg->surface->material;
+	    if (strstr(s, "sand")) {
+		cur_clr[0] = 0.8;
+		cur_clr[1] = 0.75;
+		cur_clr[2] = 0.4;
+	    } else if (strstr(s, "dirt")) {
+		cur_clr[0] = 0.8;
+		cur_clr[1] = 0.65;
+		cur_clr[2] = 0.4;
+	    } else if (strstr(s,"mud")) {
+		cur_clr[0] = 0.75;
+		cur_clr[1] = 0.5;
+		cur_clr[2] = 0.3;
+	    } else if (strstr(s,"grass")) {
+		cur_clr[0] = 0.7;
+		cur_clr[1] = 0.55;
+		cur_clr[2] = 0.4;
+	    } else if (strstr(s,"gravel")) {
+		cur_clr[0] = 0.6;
+		cur_clr[1] = 0.6;
+		cur_clr[2] = 0.6;
+	    } else {
+		sling_mud=0.0;
+		cur_clr[0] = 0.0;
+		cur_clr[1] = 0.0;
+		cur_clr[2] = 0.0;
+	    }
+	} else {
+	    sling_mud=0.0;
+	    cur_clr[0] = 0.0;
+	    cur_clr[1] = 0.0;
+	    cur_clr[2] = 0.0;
+	}
+		
+	for (int c=0; c<3; c++) {
+	    tdble tmp = grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c];
+	    grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c] =
+		0.9*tmp + 0.1*cur_clr[c];
+	    cur_clr[c] = tmp;
+	}
+	if ((t - grCarInfo[car->index].skidmarks->strips[i].timeStrip) < grSkidDeltaT) {
+	    continue;
+	}
       
 	if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 1.0) {
 	    if (cur_clr[3] > 0.1) {
@@ -211,9 +219,9 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 #if 0
 		sling_mud *= car->_wheelSlipSide(i);
 		if (sling_mud>0) {
-			sling_right = (sling_mud);
+		    sling_right = (sling_mud);
 		} else {
-			sling_left = (sling_mud);
+		    sling_left = (sling_mud);
 		}
 #else
 		sling_right = sling_mud;
@@ -268,13 +276,13 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 			//printf("clearing [%d] %d\n",i,grCarInfo[car->index].skidmarks->strips[i].running_skid);
 		    }
 
-			grCarInfo[car->index].skidmarks->strips[i].tex_state = 0.0;
+		    grCarInfo[car->index].skidmarks->strips[i].tex_state = 0.0;
 		    grCarInfo[car->index].skidmarks->strips[i].state[grCarInfo[car->index].skidmarks->strips[i].running_skid] = SKID_BEGIN;
 
 		    grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[0]);
 		    grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[1]);
 #if 1
-			grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[0]);
+		    grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[0]);
 		    grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[1]);
 #endif
 		    grCarInfo[car->index].skidmarks->strips[i].clr[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(cur_clr);
@@ -289,7 +297,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 		    grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[0]);
 		    grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[1]);
 #if 1
-			grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[0]);
+		    grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[0]);
 		    grCarInfo[car->index].skidmarks->strips[i].tex[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tclist[1]);
 #endif
 		    grCarInfo[car->index].skidmarks->strips[i].clr[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(cur_clr);
