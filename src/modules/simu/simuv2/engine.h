@@ -47,6 +47,9 @@ typedef struct
     tdble		Tq;	/* output torque */
     tdble		fuelcons;
     tdble		brakeCoeff;
+	tdble       pressure;
+	tdble       exhaust_pressure;
+	tdble       exhaust_refract;
 } tEngine;
 
 #endif /* _ENGINE_H_ */ 

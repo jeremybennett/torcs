@@ -128,7 +128,7 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble	s, sa, sx, sy; /* slip vector */
     tdble	stmp, F, Bx;
     tdble	mu;
-
+	tdble   reaction_force = 0;
     wheel->state = 0;
 
     /* VERTICAL STUFF CONSIDERING SMALL PITCH AND ROLL ANGLES */
@@ -138,6 +138,7 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->state |= wheel->susp.state;
     if ((wheel->state & SIM_SUSP_EXT) == 0) {
 	wheel->forces.z = axleFz + wheel->susp.force;
+	reaction_force = wheel->forces.z;
 	if (wheel->forces.z < 0) {
 	    wheel->forces.z = 0;
 	}
@@ -185,7 +186,7 @@ SimWheelUpdateForce(tCar *car, int index)
     Ft = 0;
     Fn = 0;
     s = sqrt(sx*sx+sy*sy);
-    car->carElt->_skid[index] = MAX(0.2, MIN(s, 1.2)) - 0.2;
+    car->carElt->_skid[index] =  MIN(1.0, (s*reaction_force*0.0002));//MAX(0.2, MIN(s, 1.2)) - 0.2;
 
     stmp = MIN(s, 1.5);
 
@@ -220,6 +221,10 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->feedBack.spinVel = wheel->spinVel;
     wheel->feedBack.Tq = wheel->spinTq;
     wheel->feedBack.brkTq = wheel->brake.Tq;
+
+	car->carElt->_wheelSlipSide(index) = sy*v;
+	car->carElt->_wheelSlipAccel(index) = sx*v;
+	car->carElt->_reaction[index] = reaction_force;
 }
 
 

@@ -104,6 +104,11 @@ extern t3Dd vectEnd[];
 extern tdble simDammageFactor[];
 extern tdble simSkidFactor[];
 
+/// return a number drawn uniformly from [0,1]
+inline float urandom() {
+	return ((((float)rand()-1)/((float)RAND_MAX)));
+}
+
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13
 #define SIM_VECT_ACCEL	14
