@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : texmapper.xml
+    created              : Sun Nov 19 16:19:48 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
+
+<params name="mapper" type="template">
+
+  <section name="image">
+    <attnum name="size" val="512"></attnum>
+  </section>
+
+  <section name="faces">
+
+    <section name="raw 0"> <!-- raw name is whatever you want provided it is unique -->
+      <attnum name="height" val="0"></attnum> <!-- automatic height -->
+
+      <section name="col">
+
+
+	<section name="col 0">
+	  <attstr name="face name" val=""></attstr>
+	</section>
+
+	<section name="col 1"> 
+	  <attstr name="face name" val="right"></attstr>
+	  <attnum name="width" val="0"></attnum> <!-- automatic width -->
+	  <attstr name="align" in="X,Y,Z" val="X"></attstr>
+	</section>
+
+      </section>
+
+    </section>
+
+    <section name="raw 1">
+      <section name="col">
+
+	<section name="col 0">
+	  <attstr name="face name" val="rear"></attstr>
+	  <attnum name="rotX" val="90"></attnum>
+	  <attnum name="rotY" val="90"></attnum>
+	</section>
+
+	<section name="col 1">
+	  <attstr name="face name" val="top"></attstr>
+	  <attstr name="align" val="X"></attstr>
+	  <attnum name="rotX" val="90"></attnum>
+	</section>
+
+	<section name="col 2">
+	  <attstr name="face name" val="front"></attstr>
+	  <attnum name="rotX" val="90"></attnum>
+	  <attnum name="rotY" val="-90"></attnum>
+	</section>
+
+      </section>
+    </section>
+
+    <section name="raw 2">
+      <section name="col">
+
+	<section name="col 0">
+	  <attstr name="face name" val=""></attstr>
+	</section>
+
+	<section name="col 1">
+	  <attstr name="face name" val="left"></attstr>
+	  <attstr name="align" val="X"></attstr>
+	  <attnum name="rotX" val="180"></attnum>
+	</section>
+
+      </section>
+    </section>
+
+    <section name="raw 3">
+      <section name="col">
+
+	<section name="col 0">
+	  <attstr name="face name" val=""></attstr>
+	</section>
+
+	<section name="col 1">
+	  <attstr name="face name" val="bottom"></attstr>
+	  <attstr name="align" val="X"></attstr>
+	  <attnum name="rotX" val="-90"></attnum>
+	</section>
+
+      </section>
+    </section>
+
+  </section>
+
+</params>
+
+
