@@ -21,12 +21,7 @@
 #ifndef _LINUXSPEC_H_
 #define _LINUXSPEC_H_
 
-#if _WIN32
-#include <windows.h>
-#endif
-
 extern void LinuxSpecInit(void);
-
 
 #endif /* _LINUXSPEC_H_ */ 
 

@@ -134,9 +134,6 @@ rmdsClickOnDriver(void *dummy)
     tDrvElt	*curDrv;
     void	*robhdle;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     name = GfuiScrollListGetSelectedElement(scrHandle, selectedScrollList, (void**)&curDrv);
     if (!name) {
 	name = GfuiScrollListGetSelectedElement(scrHandle, unselectedScrollList, (void**)&curDrv);
@@ -145,7 +142,7 @@ rmdsClickOnDriver(void *dummy)
     if (name) {
 	GfuiLabelSetText(scrHandle, PickDrvNameLabelId, curDrv->name);
 	/* search driver infos */
-	sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, curDrv->dname, curDrv->dname);
+	sprintf(buf, "%sdrivers/%s/%s.xml", GetLocalDir(), curDrv->dname, curDrv->dname);
 	robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (!robhdle) {
 	    sprintf(buf, "drivers/%s/%s.xml", curDrv->dname, curDrv->dname);
@@ -263,9 +260,6 @@ RmDriversSelect(void *vs)
 #define B_BASE  380
 #define B_HT    30
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     ds = (tRmDrvSelect*)vs;
 
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmdsActivate, NULL, (tfuiCallback)NULL, 1);
@@ -326,7 +320,7 @@ RmDriversSelect(void *vs)
 		    }
 		    strcpy(dname, sp);
 		    dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
-		    sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, dname, dname);
+		    sprintf(buf, "%sdrivers/%s/%s.xml", GetLocalDir(), dname, dname);
 		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 		    if (!robhdle) {
 			sprintf(buf, "drivers/%s/%s.xml", dname, dname);

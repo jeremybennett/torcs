@@ -38,7 +38,7 @@
           <attnum name="green" val="1.000000"/>
           <attnum name="blue" val="0.500000"/>
           <attstr name="type" val="human"/>
-          <attstr name="skill level" val="rookie"/>
+          <attstr name="skill level" val="amateur"/>
         </section>
 
         <section name="4">
@@ -49,7 +49,7 @@
           <attnum name="green" val="1.000000"/>
           <attnum name="blue" val="0.500000"/>
           <attstr name="type" val="human"/>
-          <attstr name="skill level" val="rookie"/>
+          <attstr name="skill level" val="amateur"/>
         </section>
 
         <section name="5">
@@ -71,7 +71,7 @@
           <attnum name="green" val="1.000000"/>
           <attnum name="blue" val="0.500000"/>
           <attstr name="type" val="human"/>
-          <attstr name="skill level" val="rookie"/>
+          <attstr name="skill level" val="semi-pro"/>
         </section>
 
         <section name="7">
@@ -82,7 +82,7 @@
           <attnum name="green" val="1.000000"/>
           <attnum name="blue" val="0.500000"/>
           <attstr name="type" val="human"/>
-          <attstr name="skill level" val="rookie"/>
+          <attstr name="skill level" val="semi-pro"/>
         </section>
 
         <section name="8">
@@ -93,7 +93,7 @@
           <attnum name="green" val="1.000000"/>
           <attnum name="blue" val="0.500000"/>
           <attstr name="type" val="human"/>
-          <attstr name="skill level" val="rookie"/>
+          <attstr name="skill level" val="amateur"/>
         </section>
 
         <section name="9">

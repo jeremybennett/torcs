@@ -78,8 +78,6 @@ extern char * _tgf_win_strdup(const char * str);
 #endif // WIN32
 // </esppat>
 
-extern char *LocalDir;
-
 /*********************************
  * Interface For Dynamic Modules *
  *********************************/
@@ -630,6 +628,11 @@ extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseInitCenter(void);
 extern tCtrlRef *GfctrlGetRefByName(char *name);
 extern char *GfctrlGetNameByRef(int type, int index);
+
+/* MISC */
+extern char *GetLocalDir(void);
+extern void SetLocalDir(char *buf);
+
 
 #endif /* __TGF__H__ */
 

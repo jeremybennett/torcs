@@ -94,10 +94,7 @@ initFromConf(void)
 {
     char	*ctrl;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
     ctrl = GfParmGetStr(PrefHdle, HM_SECT_PREF, HM_ATT_CONTROL, HM_VAL_MOUSE);

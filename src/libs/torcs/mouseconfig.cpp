@@ -290,10 +290,7 @@ onActivate(void * /* dummy */)
     char	*prm;
     tCtrlRef	*ref;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     /* Mouse Settings */
@@ -329,11 +326,8 @@ TorcsMouseMenuInit(void *prevMenu)
 {
     int		x, y, x2, dy, i;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     prevHandle = prevMenu;
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     if (scrHandle) {

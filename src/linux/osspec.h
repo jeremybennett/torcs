@@ -26,7 +26,6 @@
 #define TRKEXT	 "xml"
 #define PARAMEXT ".xml"
 
-
 #endif /* __OSSPEC__H__ */ 
 
 

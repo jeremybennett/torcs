@@ -169,13 +169,10 @@ human(tModInfo *modInfo)
 {
     int		i;
     char	*driver;
-    
-#ifdef WIN32
-    LocalDir = "";
-#endif
+
     memset(modInfo, 0, 10*sizeof(tModInfo));
 
-    sprintf(buf, "%sdrivers/human/human.xml", LocalDir);
+    sprintf(buf, "%sdrivers/human/human.xml", GetLocalDir());
     DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
     
     if (DrvInfo != NULL) {
@@ -231,9 +228,6 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     char	trackname[256];
     tdble	fuel;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     curTrack = track;
     s1 = strrchr(track->filename, '/') + 1;
     s2 = strchr(s1, '.');
@@ -241,22 +235,22 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     trackname[s2-s1] = 0;
     sprintf(sstring, "Robots/index/%d", index);
     carname = GfParmGetStr(DrvInfo, sstring, "car name", "");
-    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s-%d.xml", LocalDir, trackname, carname, index);
+    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s-%d.xml", GetLocalDir(), trackname, carname, index);
     *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
     if (*carParmHandle != NULL) {
 	GfOut("Player: %s Loaded\n", sstring);
     } else {
-	sprintf(sstring, "%sdrivers/human/car-%s-%d.xml", LocalDir, carname, index);
+	sprintf(sstring, "%sdrivers/human/car-%s-%d.xml", GetLocalDir(), carname, index);
 	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	if (*carParmHandle != NULL) {
 	    GfOut("Player: %s Loaded\n", sstring);
 	} else {
-	    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s.xml", LocalDir, trackname, carname);
+	    sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s.xml", GetLocalDir(), trackname, carname);
 	    *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	    if (*carParmHandle != NULL) {
 		GfOut("Player: %s Loaded\n", sstring);
 	    } else {
-		sprintf(sstring, "%sdrivers/human/car-%s.xml", LocalDir, carname);
+		sprintf(sstring, "%sdrivers/human/car-%s.xml", GetLocalDir(), carname);
 		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 		if (*carParmHandle != NULL) {
 		    GfOut("Player: %s Loaded\n", sstring);

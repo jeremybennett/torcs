@@ -33,8 +33,6 @@ extern void gfScreenInit(void);
 extern void gfMenuInit(void);
 extern void gfRlstInit(void);
 
-char *LocalDir = "";
-
 // <esppat>
 #ifdef WIN32
 #include <crtdbg.h>
@@ -233,4 +231,19 @@ GfTime2Str(tdble sec, int sgn)
 	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
     }
     return strdup(buf);
+}
+
+
+static char *localDir = "";
+
+char *
+GetLocalDir(void)
+{
+    return localDir;
+}
+
+void
+SetLocalDir(char *buf)
+{
+    localDir = strdup(buf);
 }

@@ -211,10 +211,7 @@ reConfigureMenu(void * /* dummy */)
 static void
 reSelectLoadFile(char *filename)
 {
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%sresults/%s/%s", LocalDir, ReInfo->_reFilename, filename);
+    sprintf(buf, "%sresults/%s/%s", GetLocalDir(), ReInfo->_reFilename, filename);
     GfOut("Loading Saved File %s...\n", buf);
     ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     ReInfo->_reRaceName = ReInfo->_reName;

@@ -292,10 +292,7 @@ GenDrvList(void)
     char	*str;
     int		found;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (drvinfo == NULL) {
 	return -1;
@@ -347,7 +344,7 @@ GenDrvList(void)
     }
     UpdtScrollList();
 
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PrefHdle == NULL) {
 	return -1;
@@ -377,10 +374,7 @@ SaveDrvList(void *dummy)
     char	str[32];
     int		i;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (drvinfo == NULL) {
 	return;
@@ -402,7 +396,7 @@ SaveDrvList(void *dummy)
     }
     GfParmWriteFile(NULL, drvinfo, dllname, GFPARM_PARAMETER, "../../config/params.dtd");
 
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < NB_DRV; i++) {
 	sprintf(str, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);

@@ -158,11 +158,8 @@ SplashScreen(void)
     float	screen_gamma;
     char	*img = "data/img/splash.png";
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
     if (!Image) {
-	sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
 	Image = GfImgReadPng(img , &ImgWidth, &ImgHeight, screen_gamma);

@@ -61,10 +61,7 @@ gfuiColorInit(void)
 	GFSCR_ELT_EDITCURSORCLR
     };
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < GFUI_COLORNB; i++) {
 	for (j = 0; j < 4; j++) {
@@ -867,14 +864,11 @@ GfuiScreenAddBgImg(void *scr, char *filename)
     GLbyte	*tex;
     int		w,h;
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
     if (screen->bgImage != 0) {
 	glDeleteTextures(1, &screen->bgImage);
     }
     
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
     tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);

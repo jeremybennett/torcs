@@ -135,10 +135,7 @@ reSelectRaceman(void *params)
 static void
 reRegisterRaceman(tFList *racemanCur)
 {
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%sconfig/raceman/%s", LocalDir, racemanCur->name);
+    sprintf(buf, "%sconfig/raceman/%s", GetLocalDir(), racemanCur->name);
     racemanCur->userData = GfParmReadFile(buf, GFPARM_RMODE_STD);
     racemanCur->dispName = GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_NAME, 0);
 }
@@ -380,9 +377,6 @@ ReInitCars(void)
     int		focusedIdx;
     void	*params = ReInfo->params;
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
     /* Get the number of cars racing */
     nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS_RACING);
     GfOut("loading %d cars\n", nCars);
@@ -416,7 +410,7 @@ ReInitCars(void)
 		/* retrieve the robot interface (function pointers) */
 		curRobot = (tRobotItf*)calloc(1, sizeof(tRobotItf));
 		curModInfo->fctInit(robotIdx, (void*)(curRobot));
-		sprintf(buf, "%sdrivers/%s/%s.xml", LocalDir, cardllname, cardllname);
+		sprintf(buf, "%sdrivers/%s/%s.xml", GetLocalDir(), cardllname, cardllname);
 		robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 		if (!robhdle) {
 		    sprintf(buf, "drivers/%s/%s.xml", cardllname, cardllname);

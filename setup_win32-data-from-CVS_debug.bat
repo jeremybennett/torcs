@@ -316,6 +316,7 @@ if exist .\data\data\img\splash-joycal.png copy .\data\data\img\splash-joycal.pn
 if exist .\data\data\img\splash-joyconf.png copy .\data\data\img\splash-joyconf.png .\runtimed\data\img\splash-joyconf.png
 if exist .\data\data\img\splash-keyconf.png copy .\data\data\img\splash-keyconf.png .\runtimed\data\img\splash-keyconf.png
 if exist .\data\data\img\splash-main.png copy .\data\data\img\splash-main.png .\runtimed\data\img\splash-main.png
+if exist .\data\data\img\splash-mousecal.png copy .\data\data\img\splash-mousecal.png .\runtimed\data\img\splash-mousecal.png
 if exist .\data\data\img\splash-mouseconf.png copy .\data\data\img\splash-mouseconf.png .\runtimed\data\img\splash-mouseconf.png
 if exist .\data\data\img\splash-options.png copy .\data\data\img\splash-options.png .\runtimed\data\img\splash-options.png
 if exist .\data\data\img\splash.png copy .\data\data\img\splash.png .\runtimed\data\img\splash.png

@@ -27,19 +27,20 @@
 
 #include "linuxspec.h"
 
-
 static void
 init_args(int argc, char **argv)
 {
-    int i;
+    int		i;
+    char	*buf;
 
     i = 1;
     while (i < argc) {
 	if (strncmp(argv[i], "-l", 2) == 0) {
 	    if (i + 1 < argc) {
 		i++;
-		LocalDir = (char *)malloc(strlen(argv[i]) + 2);
-		sprintf(LocalDir, "%s/", argv[i]);
+		buf = (char *)malloc(strlen(argv[i]) + 2);
+		sprintf(buf, "%s/", argv[i]);
+		SetLocalDir(buf);
 	    }
 	}
 	i++;

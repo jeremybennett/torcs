@@ -97,9 +97,6 @@ GraphMenuInit(void *prevMenu)
 {
     int		x, y, x2, dy;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     /* screen already created */
     if (scrHandle) {
 	return scrHandle;
@@ -109,7 +106,7 @@ GraphMenuInit(void *prevMenu)
 
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 
-    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     x = 50;

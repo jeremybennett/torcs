@@ -89,7 +89,6 @@ PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 //       strings separated by spaces
 bool InStr(char *searchStr, char *str)
 {
-	char *extension;			// start of an extension in the list
 	char *endOfStr;				// pointer to last string element
 	int idx = 0;
 
@@ -149,9 +148,6 @@ bool InitMultiTex(void)
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
-#ifdef WIN32
-    LocalDir = "";
-#endif
     if (maxTextureUnits==0)
       {
 	InitMultiTex();    
@@ -178,7 +174,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     Fps = 0;
     grWindowRatio = 0;
 
-    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
@@ -343,10 +339,7 @@ initCars(tSituation *s)
 
     TRACE_GL("initCars: start");
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grInitCommonState();

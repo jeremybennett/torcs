@@ -105,10 +105,7 @@ void GfScrInit(int argc, char *argv[])
     int		fullscreen;
     int		i, depth;
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
     yw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 480);
@@ -250,10 +247,10 @@ GfScrReinit(void *dummy)
     retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
 #else
     GfScrShutdown();
-    if (strlen(LocalDir) == 0) {
+    if (strlen(GetLocalDir()) == 0) {
 	retcode = execlp("./torcs", "torcs", (const char *)NULL);
     } else {
-	retcode = execlp("./torcs", "torcs", "-l", LocalDir, (const char *)NULL);
+	retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), (const char *)NULL);
     }
 #endif
     if (retcode) {
@@ -369,10 +366,7 @@ GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
     
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     if (scrHandle) return scrHandle;

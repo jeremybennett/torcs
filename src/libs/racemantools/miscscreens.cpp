@@ -138,9 +138,6 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
     void		*params = info->params;
     char		*race = info->_reRaceName;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     rmScrHdle = GfuiScreenCreate();
     GfuiTitleCreate(rmScrHdle, race, strlen(race));
 
@@ -172,7 +169,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 	    name = GfParmGetStr(info->params, path, RM_ATTR_MODULE, "");
 	    robotIdx = (int)GfParmGetNum(info->params, path, RM_ATTR_IDX, NULL, 0);
 	    
-	    sprintf(path, "%sdrivers/%s/%s.xml", LocalDir, name, name);
+	    sprintf(path, "%sdrivers/%s/%s.xml", GetLocalDir(), name, name);
 	    robhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
 	    if (!robhdle) {
 		sprintf(path, "drivers/%s/%s.xml", name, name);

@@ -222,10 +222,7 @@ onActivate1(void * /* dummy */)
     char	*prm;
     tCtrlRef	*ref;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     /* JOYSTICK SETTINGS */
@@ -276,9 +273,6 @@ TorcsJoystick1MenuInit(void *prevMenu)
     tCtrlRef	*ref;
     int		joyPresent = 0;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     for (index = 0; index < NUM_JOY; index++) {
 	if (js[index] == NULL) {
 	    js[index] = new jsJoystick(index);
@@ -296,7 +290,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
     }
 
     prevHandle = prevMenu;
-    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
+    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     /* JOYSTICK SETTINGS */

@@ -58,13 +58,10 @@ ReInitResults(void)
     time_t	t;
     void	*results;
 
-#ifdef WIN32
-    LocalDir = "";
-#endif
     t = time(NULL);
     stm = localtime(&t);
     sprintf(buf, "%sresults/%s/results-%4d-%02d-%02d-%02d-%02d.xml",
-	    LocalDir,
+	    GetLocalDir(),
 	    ReInfo->_reFilename,
 	    stm->tm_year+1900,
 	    stm->tm_mon+1,

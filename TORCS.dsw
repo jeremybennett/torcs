@@ -89,9 +89,6 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name raceengine
     End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name cylos2
-    End Project Dependency
 }}}
 
 ###############################################################################
@@ -134,18 +131,6 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name robottools
     End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "cylos2"=".\src\drivers\cylos2\cylos2.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
 }}}
 
 ###############################################################################
