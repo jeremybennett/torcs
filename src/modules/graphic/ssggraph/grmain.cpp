@@ -547,6 +547,9 @@ initCars(tSituation *s)
 	    nbScreen++;
 	}
     }
+    if (nbScreen > 4) {
+	nbScreen = 4;
+    }
     TRACE_GL("initCars: end");
 
     grInitSmoke(s->_ncars);
