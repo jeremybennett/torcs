@@ -44,6 +44,8 @@
 #define BUFSIZE 256
 
 
+static const tdble g = 9.81;
+
 /*
 	compute the angle between the track and the car
 */

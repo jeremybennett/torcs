@@ -68,8 +68,8 @@ class MyCar
 		static const tdble STABLESPEED = 80.0;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
 		static const tdble TIMETOCATCH = 5.0;		/* when do we start thinking about overtaking [s]*/
 		static const tdble MINOVERTAKERANGE = 250.0;/* minimum length for overtaking [m] */
-		static const tdble OVERTAKERADIUS = 100.0;	/* min allowd radius to start overtaking [m] */
-		static const tdble OVERTAKEDIST = 3.0;		/* minimal distance of CG's while overtaking */
+		static const tdble OVERTAKERADIUS = 100.0;	/* min allowed radius to start overtaking [m] */
+		static const tdble OVERTAKEDIST = 3.0;		/* minimal distance of CG's while overtaking [m] */
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();

@@ -24,7 +24,7 @@
 /* function prototypes */
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation);
 static void drive(int index, tCarElt* car, tSituation *situation);
-static void newrace(int index, tCarElt* car, tSituation *situation);
+static void newRace(int index, tCarElt* car, tSituation *situation);
 static int  InitFuncPt(int index, void *pt);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(void);
@@ -48,13 +48,13 @@ extern "C" int berniw(tModInfo *modInfo)
 }
 
 
-/* initialize function pointers for torcs */
+/* initialize function (callback) pointers for torcs */
 static int InitFuncPt(int index, void *pt)
 {
 	tRobotItf *itf = (tRobotItf *)pt;
 
 	itf->rbNewTrack = initTrack;	/* init new track */
-	itf->rbNewRace  = newrace;		/* init new race */
+	itf->rbNewRace  = newRace;		/* init new race */
 	itf->rbDrive    = drive;		/* drive during race */
 	itf->rbShutdown	= shutdown;		/* called for cleanup per driver */
 	itf->rbPitCmd   = pitcmd;		/* pit command */
@@ -68,7 +68,6 @@ static OtherCar* ocar = NULL;
 static TrackDesc* myTrackDesc = NULL;
 static double currenttime;
 
-static const tdble g = 9.81;
 static const tdble waitToTurn = 1.0; /* how long should i wait till i try to turn backwards */
 
 
@@ -112,7 +111,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 
 
 /* initialize driver for the race */
-static void newrace(int index, tCarElt* car, tSituation *situation)
+static void newRace(int index, tCarElt* car, tSituation *situation)
 {
 	if (ocar != NULL) delete ocar;
 	ocar = new OtherCar[situation->_ncars];
@@ -130,13 +129,12 @@ static void newrace(int index, tCarElt* car, tSituation *situation)
 /* controls the car */
 static void drive(int index, tCarElt* car, tSituation *situation)
 {
-	tdble	angle;
-	tdble	tmp;
+	tdble angle;
+	tdble tmp;
 	tdble b1;							/* brake value in case we are to fast HERE and NOW */
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
-	tdble	rpm;
-	tdble	abs[4], abs_mean;
+	tdble rpm;
 	tdble steer, targetAngle, shiftaccel;
 
 	MyCar* myc = mycar[index-1];
@@ -228,7 +226,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			tdble gm, qb, qs;
 			gm = myTrackDesc->getSegmentPtr(myc->currentsegid)->getKfriction();
 			qs = mpf->getPathSeg(i)->getSpeedsqr();
-			brakedist = brakespeed*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca + myc->cw)));
+			brakedist = brakespeed*(myc->mass/(2.0*gm*g*myc->mass + qs*(gm*myc->ca + myc->cw)));
 
 			if (brakedist > lookahead - myc->wheeltrack) {
 				qb = brakespeed*brakecoeff/brakedist;
@@ -263,20 +261,17 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (b1 > b2) tmp = b1; else tmp = b2;
 	if (tmp < b3) tmp = b3;
 
-
+	/* anti blocking code */
+	tdble	abs_mean;
 	abs_mean = 0.0;
 	for (int i = 0; i < 4; i++) {
-			abs[i] = (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->speed;
-			abs_mean += abs[i];
+			abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->speed;
 		}
-	abs_mean /= 4;
+	abs_mean /= 4.0;
     tmp = tmp * abs_mean * abs_mean;
 
+	/* gear changing */
 	rpm = (car->_enginerpm / car->_enginerpmMax);
-
-	bx = cos(car->_yaw), by = sin(car->_yaw);
-	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
-	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 
 	if (((car->_gear + car->_gearOffset) <= 1) && (myc->tr_mode == 0) && (myc->count >= 25)) {
 		car->ctrl->gear++;
@@ -298,6 +293,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		}
 	}
 
+	/* acceleration / brake execution */
 	if (myc->tr_mode == 0) {
 		if (tmp > 0.0) {
 			myc->accel = 0.0;
@@ -320,6 +316,11 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			}
 		}
     }
+
+	/* check if we are stuck, try to get unstuck */
+	bx = cos(car->_yaw), by = sin(car->_yaw);
+	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
+	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 
 	if ((myc->speed < myc->TURNSPEED) && (parallel < cos(90.0*PI/180.0))  && (mpf->dist2D(&myc->currentpos, mpf->getPathSeg(myc->currentsegid)->getLoc()) > myc->TURNTOL)) {
 		myc->turnaround += situation->deltaTime;
@@ -368,6 +369,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (myc->tr_mode == 0) car->ctrl->steer = steer;
 }
 
+/* pitstop callback */
 static int pitcmd(int index, tCarElt* car, tSituation *s)
 {
 	MyCar* myc = mycar[index-1];

@@ -110,7 +110,6 @@ class PathSeg
 class Pathfinder
 {
 	public:
-		static const tdble g = 9.81;
 		static const tdble colldist = 200.0;
 		static const int pitpoints = 7;
 		static const int NTPARAMS = 1001;				/* # entries in dat files */

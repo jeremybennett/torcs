@@ -691,9 +691,9 @@ void Pathfinder::plan(MyCar* myc)
 #endif	// PATH_BERNIW
 
 #ifdef PATH_K1999
-	for (int Step = 128; (Step /= 2) > 0;) {
-		for (int i = 100 * int(sqrt(Step)); --i >= 0;) smooth(Step);
-		interpolate(Step);
+	for (int step = 128; (step /= 2) > 0;) {
+		for (int i = 100 * int(sqrt(step)); --i >= 0;) smooth(step);
+		interpolate(step);
 	}
 #endif	// PATH_K1999
 
@@ -1155,12 +1155,12 @@ void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)
 
 
 /* interpolating from Remi Coulom, K1999.cpp */
-void Pathfinder::interpolate(int Step)
+void Pathfinder::interpolate(int step)
 {
-	if (Step > 1) {
+	if (step > 1) {
 		int i;
-		for (i = Step; i <= nPathSeg - Step; i += Step) stepInterpolate(i - Step, i, Step);
-		stepInterpolate(i - Step, nPathSeg, Step);
+		for (i = step; i <= nPathSeg - step; i += step) stepInterpolate(i - step, i, step);
+		stepInterpolate(i - step, nPathSeg, step);
 	}
 }
 
@@ -1427,9 +1427,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 
 		/* compute path */
+		int j;
 		tdble l = 0.0; t3Dd q, *pp, *qq;
-		for (int i = trackSegId; (i + nPathSeg) % nPathSeg != trackSegId2; i++) {
-			int j = (i + nPathSeg) % nPathSeg;
+		for (int i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			d = spline(3, l, s, y, ys);
 
 			pp = track->getSegmentPtr(j)->getMiddle();
@@ -1444,7 +1444,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 
 		/* reload old trajectory where needed */
-		int j;
 		for (int i = trackSegId2; (j = (i+nPathSeg) % nPathSeg) != (trackSegId+AHEAD) % nPathSeg; i ++) {
 			ps[j].setLoc(ps[j].getOptLoc());
 		}
