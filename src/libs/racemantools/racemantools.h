@@ -65,14 +65,12 @@ extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
 extern void RmDriversSelect(void * /* vs */);
 extern void RmDriverSelect(void * /* vs */);
 
-extern void RmPracticeResults(void * /* prevHdle */, char * /* trackname */, tRingListHead * /* res */);
-
 extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallback /* callback */);
 
 extern void RmLoadingScreenStart(char * /* text */, char * /* bgimg */);
 extern void RmLoadingScreenSetText(char * /* text */);
 
-extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */, char * /* race */);
+extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
 
 extern void RmTwoStateScreen(char *title,
 			     char *label1, char *tip1, void *screen1,

@@ -105,6 +105,10 @@ ReStoreRaceResults(char *race)
 	    GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
 	    GfParmSetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, car->_nbPitStops);
 	}
+    } else if (ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+	car = s->cars[0];
+	sprintf(path, "%s/%s", RE_SECT_RESULTS, race);
+	GfParmSetStr(results, path, RM_ATTR_DRVNAME, car->_name);
     }
 }
 
@@ -115,7 +119,7 @@ ReSavePracticeLap(tCarElt *car)
     tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
 
     sprintf(path, "%s/%s/%d", RE_SECT_RESULTS, ReInfo->_reRaceName, car->_laps - 1);
-    GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
+    GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_lastLapTime);
     GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
     GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, info->topSpd);
     GfParmSetNum(results, path, RE_ATTR_BOT_SPEED, NULL, info->botSpd);
@@ -130,7 +134,7 @@ ReDisplayResults(void)
 
     if ((!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
 	(ReInfo->_displayMode == RM_DISP_MODE_NORMAL)) {
-	RmShowResults(ReInfo->_reGameScreen, ReInfo, ReInfo->_reRaceName);
+	RmShowResults(ReInfo->_reGameScreen, ReInfo);
     } else {
 	ReResShowCont();
     }

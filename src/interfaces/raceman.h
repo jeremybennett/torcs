@@ -135,6 +135,7 @@ typedef struct
     void		*gameScreen;
     void		*menuScreen;
     char		*name;
+    char		*raceName;
     tReCarInfo		*carInfo;
     double		curTime;
     double		lastTime;
@@ -155,6 +156,7 @@ typedef struct
 #define _reGameScreen	raceEngineInfo.gameScreen
 #define _reMenuScreen	raceEngineInfo.menuScreen
 #define _reName		raceEngineInfo.name
+#define _reRaceName	raceEngineInfo.raceName
 #define _reCarInfo	raceEngineInfo.carInfo
 #define _reCurTime	raceEngineInfo.curTime
 #define _reTimeMult	raceEngineInfo.timeMult
@@ -201,6 +203,7 @@ typedef struct RmInfo
 
 #define RM_ATTR_PRIO		"priority"
 #define RM_ATTR_NAME		"name"
+#define RM_ATTR_DRVNAME		"driver name"
 #define RM_ATTR_CATEGORY	"category"
 #define RM_ATTR_DESCR		"description"
 #define RM_ATTR_BGIMG		"menu image"
@@ -275,6 +278,7 @@ typedef struct RmInfo
 #define RE_ATTR_BEST_LAP_TIME	"best lap time"
 #define RE_ATTR_TIME		"time"
 #define RE_ATTR_TOP_SPEED	"top speed"
+#define RE_ATTR_BOT_SPEED	"bottom speed"
 #define RE_ATTR_DAMMAGES	"dammages"
 #define RE_ATTR_NB_PIT_STOPS	"pits stops"
 #define RE_ATTR_POINTS		"points"

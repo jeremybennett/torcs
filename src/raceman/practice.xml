@@ -46,7 +46,7 @@
     <attstr name="starting order" val="drivers list"/>
     <attstr name="restart" val="yes"/>
     <attstr name="display mode" val="not visible"/>
-    <attstr name="display results" val="no"/>
+    <attstr name="display results" val="yes"/>
 
     <section name="Starting Grid">
       <attnum name="rows"                      val="1"/>
