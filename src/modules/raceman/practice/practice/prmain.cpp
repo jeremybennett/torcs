@@ -39,6 +39,7 @@
 static tSimItf	SimItf;
 static double	curTime = 0;
 static double	lastTime = 0;
+static double   timeMult = 1.0;
 static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*pracecfg = NULL;
@@ -338,7 +339,7 @@ prUpdate(void)
 
     if (prRunning) {
 	while ((t - curTime) > dtmax) {
-	    curTime += dtmax;
+	    curTime += dtmax * timeMult;
 	    prTheSituation.currentTime += dtmax;
 	    if ((prTheSituation.currentTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
 		prTheSituation.deltaTime = prTheSituation.currentTime - lastTime;
@@ -390,5 +391,25 @@ prUpdateBlind(void)
 		return;
 	    }
 	}
+    }
+}
+
+void
+prTimeMod (void *vcmd)
+{
+    switch ((int)vcmd) {
+    case 0:
+	timeMult *= 2.0;
+	break;
+    case 1:
+	timeMult *= 0.5;
+	if (timeMult < 0.25) {
+	    timeMult = 0.25;
+	}
+	break;
+    case 2:
+    default:
+	timeMult = 1.0;
+	break;
     }
 }

@@ -138,13 +138,13 @@ qraceglRun(void)
 /* 		 strlen(qrTheTrack->name)); */
 
     qrMsgId = GfuiLabelCreateEx(qrHandle,
-				"                        ",
+				"",
 				fgcolor2,
-				GFUI_FONT_BIG,
+				GFUI_FONT_MEDIUM,
 				320,
 				440,
 				GFUI_ALIGN_HC_VB,
-				0);
+				32);
 
     qrPauseId = GfuiLabelCreateEx(qrHandle,
 				  "P A U S E",
@@ -159,6 +159,16 @@ qraceglRun(void)
     qrGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, qrHandle);
 
     GfuiScreenActivate(qrHandle);
+}
+
+void
+qrSetRaceMsg(char *msg)
+{
+    if (msg) {
+	GfuiLabelSetText(qrHandle, qrMsgId, msg);
+    } else {
+	GfuiLabelSetText(qrHandle, qrMsgId, "");
+    }
 }
 
 void

@@ -26,6 +26,7 @@ extern void *qrHandle;
 extern void qraceglRun(void);
 extern void qraceglShutdown(void);
 extern void qrResults(void *prevHdle);
+extern void qrSetRaceMsg(char *msg);
 
 #endif /* _QRACEGL_H_ */ 
 

@@ -36,6 +36,9 @@ typedef struct
     tTrkLocPos	prevTrkPos;
     tdble	sTime;
     int		lapFlag;
+    char	*raceMsg;
+    double	totalPitTime;
+    double	startPitTime;
 } tqrCarInfo;
 
 extern tqrCarInfo *qrCarInfo;

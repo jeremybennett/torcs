@@ -44,6 +44,7 @@ static tSimItf	SimItf;
 static double	curTime = 0;
 static double	lastTime = 0;
 static double   timeMult = 1.0;
+static double 	msgDisp = -1.0;
 static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*qracecfg = NULL;
@@ -59,6 +60,7 @@ tRmInfo		*qrRaceInfo = (tRmInfo*)NULL;
 tqrCarInfo	*qrCarInfo;
 
 static const double dtmax = RCM_MAX_DT_SIMU;
+static char	buf[256];
 
 static void qrPreStart(void);
 
@@ -100,7 +102,6 @@ qraceRun(void *dummy)
     char	*simudllname;
     char	*graphicdllname;
     int 	i;
-    char	buf[256];
     char	key[256];
     tModInfo	*curModInfo;
     tRobotItf	*robot;
@@ -222,7 +223,10 @@ qrShutdown(void)
 static void
 qrUpdtPitTime(tCarElt *car)
 {
-    car->_scheduledEventTime = qrTheSituation.currentTime + 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.015;
+    tqrCarInfo *info = &(qrCarInfo[car->index]);
+
+    info->totalPitTime = 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.015;
+    car->_scheduledEventTime = qrTheSituation.currentTime + info->totalPitTime;
     SimItf.reconfig(car);    
 }
 
@@ -235,6 +239,21 @@ qrUpdtPitCmd(void *pvcar)
     qrUpdtPitTime(car);
     qrStart(); /* resynchro */
     GfuiScreenActivate(qrHandle);
+}
+
+static void
+qrRaceMsgUpdate(void)
+{
+    if (curTime > msgDisp) {
+	qrSetRaceMsg("");
+    }
+}
+
+static void
+qrRaceMsgSet(char *msg, double life)
+{
+    qrSetRaceMsg(msg);
+    msgDisp = curTime + life / timeMult;
 }
 
 
@@ -260,9 +279,15 @@ qrManage(tCarElt *car)
 	car->ctrl->raceCmd &= ~RM_CMD_PIT_ASKED; /* clear the flag */
 	if (car->_scheduledEventTime < qrTheSituation.currentTime) {
 	    car->_state &= ~RM_CAR_STATE_PIT;
+	    sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
+	    qrRaceMsgSet(buf, 5);
 	} else {
 	    car->ctrl->msg[2] = "In Pits";
 	    memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
+	    if (car == qrTheSituation.cars[qrTheSituation.current]) {
+		sprintf(buf, "%s in pits %.1fs", car->_name, qrTheSituation.currentTime - info->startPitTime);
+		qrRaceMsgSet(buf, .1);
+	    }
 	}
     } else if ((car->_pit) && (car->ctrl->raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
@@ -289,6 +314,9 @@ qrManage(tCarElt *car)
 		  (fabs(car->_speed_y) < 0.1)))) {
 		car->_state |= RM_CAR_STATE_PIT;
 		car->_event |= RM_EVENT_PIT_STOP;
+		info->startPitTime = qrTheSituation.currentTime;
+		sprintf(buf, "%s in pits", car->_name);
+		qrRaceMsgSet(buf, 5);
 		if (car->robot->rbPitCmd(car->robot->index, car, &qrTheSituation) == ROB_PIT_MENU) {
 		    /* the pit cmd is modified by menu */
 		    qrStop();
@@ -338,6 +366,21 @@ qrManage(tCarElt *car)
 		    if ((car->_remainingLaps < 0) || (qrTheSituation._raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;
 			qrTheSituation._raceState = RM_RACE_FINISHING;
+			switch (car->_pos) {
+			case 1:
+			    sprintf(buf, "%s Finished 1st", car->_name);
+			    break;
+			case 2:
+			    sprintf(buf, "%s Finished 2nd", car->_name);
+			    break;
+			case 3:
+			    sprintf(buf, "%s Finished 3rd", car->_name);
+			    break;
+			default:
+			    sprintf(buf, "%s Finished %dth", car->_name, car->_pos);
+			    break;
+			}
+			qrRaceMsgSet(buf, 5);
 		    }
 		} else {
 		    /* prevent infinite looping of cars around track, allow one lap after finish for the first car */
@@ -453,6 +496,7 @@ qrOneStep(void *telem)
     }
 
     qrSortCars();
+    qrRaceMsgUpdate();
 }
 
 void
@@ -516,6 +560,9 @@ qrTimeMod (void *vcmd)
 	break;
     case 1:
 	timeMult *= 0.5;
+	if (timeMult < 0.25) {
+	    timeMult = 0.25;
+	}
 	break;
     case 2:
     default:

@@ -70,6 +70,7 @@ extern void prShutdown(void);
 
 extern void praceglRun(void);
 extern void praceglShutdown(void);
+extern void prTimeMod (void *vcmd);
 
 #endif /* _PRACTICE_H__ */ 
 

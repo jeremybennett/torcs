@@ -74,6 +74,9 @@ prAddKeys(void)
 {
     GfuiAddSKey(prHandle, GLUT_KEY_F1, "Help", prHandle, GfuiHelpScreen);
 
+    GfuiAddKey(prHandle, '-', "Slow Time",        (void*)0, prTimeMod);
+    GfuiAddKey(prHandle, '+', "Accelerate Time",  (void*)1, prTimeMod);
+    GfuiAddKey(prHandle, '.', "Real Time",        (void*)2, prTimeMod);
     GfuiAddKey(prHandle, 'p', "Pause Race",       (void*)0, prBoardInfo);
     GfuiAddKey(prHandle,  27, "End Current Race", (void*)1, prQuit);
     GfuiAddKey(prHandle, 'q', "Exit TORCS",       (void*)0, prQuit);
