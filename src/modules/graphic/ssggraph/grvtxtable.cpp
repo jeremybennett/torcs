@@ -381,6 +381,7 @@ void grVtxTable::draw_geometry_for_a_car ()
       glDisable(GL_TEXTURE_2D);
   }
   glActiveTextureARB(GL_TEXTURE0_ARB);
+
   TRACE_GL("draw_geometry_for_a_car: end");
 }
 

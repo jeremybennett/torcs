@@ -94,6 +94,31 @@ public:
 static int grCarIndex;
 
 static ssgSimpleState *brakeState = NULL;
+static ssgSimpleState *commonState = NULL;
+
+void
+grInitCommonState(void)
+{
+    /* brake */
+    if (brakeState == NULL) {
+	brakeState = new ssgSimpleState;
+	brakeState->ref();
+	brakeState->disable(GL_LIGHTING);
+	brakeState->disable(GL_TEXTURE_2D);
+	brakeState->disable(GL_COLOR_MATERIAL);
+	brakeState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+    }
+
+    if (commonState == NULL) {
+	commonState = new ssgSimpleState;
+	commonState->ref();
+	commonState->disable(GL_LIGHTING);
+	commonState->disable(GL_TEXTURE_2D);
+	commonState->disable(GL_COLOR_MATERIAL);
+	commonState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+    }
+}
+
 
 static ssgTransform *
 initWheel(tCarElt *car, int wheel_index)
@@ -107,16 +132,7 @@ initWheel(tCarElt *car, int wheel_index)
     float	b_offset = 0;
     tdble	curAngle = 0.0;
     
-    /* brake */
-    if (brakeState == NULL) {
-	brakeState = new ssgSimpleState;
-	brakeState->ref();
-	brakeState->disable(GL_LIGHTING);
-	brakeState->disable(GL_TEXTURE_2D);
-	brakeState->disable(GL_COLOR_MATERIAL);
-	brakeState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-    }
-
+    
 #define BRK_BRANCH	16
 #define BRK_ANGLE	(2.0 * M_PI / (tdble)BRK_BRANCH)
 #define BRK_OFFSET	0.1
@@ -169,7 +185,7 @@ initWheel(tCarElt *car, int wheel_index)
     
     ssgVtxTable *brk = new ssgVtxTable(GL_TRIANGLE_FAN, brk_vtx, brk_nrm, NULL, brk_clr);
     brk->setCullFace(0);
-    brk->setState(brakeState);
+    brk->setState(commonState);
   
     ssgTransform *wheel = new ssgTransform;
     wheel->addKid(brk);
@@ -235,7 +251,7 @@ initWheel(tCarElt *car, int wheel_index)
     
     brk = new ssgVtxTable(GL_TRIANGLE_STRIP, brk_vtx, brk_nrm, NULL, brk_clr);
     brk->setCullFace(0);
-    brk->setState(brakeState);
+    brk->setState(commonState);
 
     wheel->addKid(brk);
 
@@ -284,7 +300,7 @@ initWheel(tCarElt *car, int wheel_index)
 		whl_clr->add(clr);		
 	    }
 	    ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_STRIP, whl_vtx, whl_nrm, NULL, whl_clr);
-	    whl->setState(brakeState);
+	    whl->setState(commonState);
 	    whl->setCullFace(0);
 	    whl_branch->addKid(whl);
 	}
@@ -377,7 +393,7 @@ grInitShadow(tCarElt *car)
     };
 
     grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
-    grCarInfo[car->index].shadowBase->setState(brakeState);
+    grCarInfo[car->index].shadowBase->setState(commonState);
     grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     grCarInfo[car->index].shadowAnchor->addKid(grCarInfo[car->index].shadowCurr);
     TheScene->addKid(grCarInfo[car->index].shadowAnchor);
@@ -491,17 +507,6 @@ grInitCar(tCarElt *car)
     grCarInfo[index].LODSelectMask[0] = 1 << selIndex; /* car mask */
     selIndex++;
 
-    /* env map car */
-    /*
-      carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
-      grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
-      branchCb = new ssgBranchCb;
-      branchCb->addKid(carEntity);
-      branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
-      branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
-      DBG_SET_NAME(branchCb, "EnvMap", index, -1);
-      carBody->addKid(branchCb);
-    */
     /* Other LODs */
     for (i = 2; i < nranges; i++) {
 	carBody = new ssgBranch;
@@ -512,16 +517,6 @@ grInitCar(tCarElt *car)
 	carEntity = grssgCarLoadAC3D(param, NULL, index);;
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
 	carBody->addKid(carEntity);
-	/* env map car */
-	/*
-	  carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);
-	  grForceState(carEntity, grCarInfo[grCarIndex].envSelector);
-	  branchCb = new ssgBranchCb;
-	  branchCb->addKid(carEntity);
-	  branchCb->setCallback(SSG_CALLBACK_PREDRAW, preCbEnv);
-	  branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
-	  DBG_SET_NAME(branchCb, "EnvMap", index, -1);
-	  carBody->addKid(branchCb);*/
 	LODSel->addKid(carBody);
 	grCarInfo[index].LODSelectMask[i-1] = 1 << selIndex; /* car mask */
 	selIndex++;
@@ -553,7 +548,7 @@ grDrawShadow(tCarElt *car, int visible)
 
     if (visible) {
 	shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
-	shadow->setState(brakeState);
+	shadow->setState(commonState);
 	shadow->setCullFace(0);
 	shadow->getVertexList((void**)&vtx);
 
@@ -609,6 +604,9 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime)
 	lod = grCurCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
 	i = 0;
 	while (lod < grCarInfo[index].LODThreshold[i]) {
+	    i++;
+	}
+	if ((car->_state & RM_CAR_STATE_DNF) && (grCarInfo[index].LODThreshold[i] > 0.0)) {
 	    i++;
 	}
 	grCarInfo[index].LODSelector->select(grCarInfo[index].LODSelectMask[i]);

@@ -161,6 +161,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 	grScissorflag = 1;
 	break;
     }
+    
     grWinx = x;
     grWiny = y;
     grWinw = width;
@@ -280,7 +281,6 @@ refresh(tSituation *s)
     glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
     glEnable(GL_FOG);
 
-    glEnable(GL_LIGHTING);
     for (i = 0; i < s->_ncars; i++) {
       grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
     } 
@@ -293,6 +293,7 @@ refresh(tSituation *s)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
+    glDisable(GL_LIGHTING);
     grDrawScene();
     STOP_PROFILE("grDrawScene*");
 
@@ -319,8 +320,6 @@ refresh(tSituation *s)
     TRACE_GL("refresh: display boards");
     STOP_PROFILE("grDisp**");
 
-    glEnable(GL_LIGHTING);
-
     STOP_PROFILE("refresh");
     return 0;
 }
@@ -340,6 +339,8 @@ initCars(tSituation *s)
     TRACE_GL("initCars: start");
 
     grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    grInitCommonState();
 
     grMaxDammage = (tdble)s->_maxDammage;
     grNbCars = s->_ncars;
@@ -368,6 +369,8 @@ initCars(tSituation *s)
     grCurCam->loadDefaults(buf);
     grDrawCurrent = grCurCam->getDrawCurrent();
 
+    grCustomizePits();
+
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
 
     for (i = 0; i < s->_ncars; i++) {
@@ -393,7 +396,6 @@ initCars(tSituation *s)
 
     grInitSmoke(s->_ncars);
 
-    grCustomizePits();
 
     int nb = grPruneTree(TheScene, true);
     GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);

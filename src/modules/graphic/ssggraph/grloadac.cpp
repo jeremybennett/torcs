@@ -1054,7 +1054,7 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
   if(usestrip==FALSE)
     {
   /*myssgFlatten(obj);*/
-      ssgFlatten      ( obj ) ;
+      ssgFlatten    ( obj ) ;
       ssgStripify   ( model ) ;
     }
   return model ;
@@ -1079,14 +1079,13 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 
   ssgBranch *model = new ssgBranch () ;
   model -> addKid ( obj ) ;
-  if (usegroup==FALSE)
+  if ((usegroup==FALSE) && (usestrip==FALSE))
     {
-      ssgFlatten      ( obj ) ;
+	ssgFlatten    ( obj ) ;
+	ssgStripify   ( model ) ;
     }
   if(usestrip==FALSE)
     {
-      /*myssgFlatten(obj);*/
-      /*ssgFlatten      ( obj ) ;*/
 	ssgStripify   ( model ) ;
     }
   return model ;

@@ -67,6 +67,8 @@ extern void grDrawCar(tCarElt*, tCarElt *, int, double curTime);
 extern void grDrawShadow(tCarElt *car);
 extern void grInitShadow(tCarElt *car);
 extern tdble grGetDistToStart(tCarElt *car);
+extern void grInitCommonState(void);
+
 #endif /* _GRCAR_H_ */ 
 
 
