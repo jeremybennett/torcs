@@ -287,10 +287,8 @@ GfctrlJoyInit(void)
 	gfJoyFirstInit();
     }
 
-    if (gfctrlJoyPresent == GFCTRL_JOY_PRESENT) {
-	joyInfo = (tCtrlJoyInfo *)calloc(1, sizeof(tCtrlJoyInfo));
-    }
-
+    joyInfo = (tCtrlJoyInfo *)calloc(1, sizeof(tCtrlJoyInfo));
+    
     return joyInfo;
 }
 

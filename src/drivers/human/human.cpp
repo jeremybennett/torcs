@@ -507,7 +507,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     switch (cmd[CMD_LEFTSTEER].type) {
     case GFCTRL_TYPE_JOY_AXIS:
-	ax0 = joyInfo->ax[cmd[CMD_LEFTSTEER].val] - cmd[CMD_LEFTSTEER].deadZone;
+	ax0 = joyInfo->ax[cmd[CMD_LEFTSTEER].val];
 	if (ax0 > cmd[CMD_LEFTSTEER].max) {
 	    ax0 = cmd[CMD_LEFTSTEER].max;
 	} else if (ax0 < cmd[CMD_LEFTSTEER].min) {
@@ -552,7 +552,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     switch (cmd[CMD_RIGHTSTEER].type) {
     case GFCTRL_TYPE_JOY_AXIS:
-	ax0 = joyInfo->ax[cmd[CMD_RIGHTSTEER].val] - cmd[CMD_RIGHTSTEER].deadZone;
+	ax0 = joyInfo->ax[cmd[CMD_RIGHTSTEER].val];
 	if (ax0 > cmd[CMD_RIGHTSTEER].max) {
 	    ax0 = cmd[CMD_RIGHTSTEER].max;
 	} else if (ax0 < cmd[CMD_RIGHTSTEER].min) {
@@ -600,7 +600,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     switch (cmd[CMD_BRAKE].type) {
     case GFCTRL_TYPE_JOY_AXIS:
-	brake = joyInfo->ax[cmd[CMD_BRAKE].val] - cmd[CMD_BRAKE].deadZone;
+	brake = joyInfo->ax[cmd[CMD_BRAKE].val];
 	if (brake > cmd[CMD_BRAKE].max) {
 	    brake = cmd[CMD_BRAKE].max;
 	} else if (brake < cmd[CMD_BRAKE].min) {
@@ -640,7 +640,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     switch (cmd[CMD_CLUTCH].type) {
     case GFCTRL_TYPE_JOY_AXIS:
-	clutch = joyInfo->ax[cmd[CMD_CLUTCH].val] - cmd[CMD_CLUTCH].deadZone;
+	clutch = joyInfo->ax[cmd[CMD_CLUTCH].val];
 	if (clutch > cmd[CMD_CLUTCH].max) {
 	    clutch = cmd[CMD_CLUTCH].max;
 	} else if (clutch < cmd[CMD_CLUTCH].min) {
@@ -680,7 +680,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     switch (cmd[CMD_THROTTLE].type) {
     case GFCTRL_TYPE_JOY_AXIS:
-	throttle = joyInfo->ax[cmd[CMD_THROTTLE].val] - cmd[CMD_THROTTLE].deadZone;
+	throttle = joyInfo->ax[cmd[CMD_THROTTLE].val];
 	if (throttle > cmd[CMD_THROTTLE].max) {
 	    throttle = cmd[CMD_THROTTLE].max;
 	} else if (throttle < cmd[CMD_THROTTLE].min) {
