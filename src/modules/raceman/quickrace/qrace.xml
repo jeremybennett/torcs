@@ -10,7 +10,7 @@
         <attstr name="category" val="road"></attstr>
         <attstr name="name" val="wheel-1"></attstr>
       </section>
-      <attnum name="distance" val="150" unit="km"></attnum>
+      <attnum name="distance" val="100" unit="km"></attnum>
     </section>
 
     <section name="Starting Grid">
