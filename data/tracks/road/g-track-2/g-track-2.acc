@@ -1434,7 +1434,7 @@ name "___TKMN492_gl1"
 kids 13
 OBJECT poly
 name "POT03"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 340.175000 13.186200 -372.296000 -0.894427 -0.068646 0.441914
 340.175000 13.186200 -376.329000 -0.447214 0.217131 -0.867672
@@ -1529,7 +1529,7 @@ refs 4
 kids 0
 OBJECT poly
 name "POT02"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 340.175000 13.403500 -394.897000 -0.894427 -0.077963 0.440366
 340.175000 13.403500 -398.931000 -0.447214 0.245409 -0.860101
@@ -2252,7 +2252,7 @@ refs 4
 kids 0
 OBJECT poly
 name "POT0"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 301.768000 13.897700 -319.097000 0.894427 -0.077963 -0.440366
 301.768000 13.897700 -315.063000 0.447214 0.245409 0.860101
@@ -2347,7 +2347,7 @@ refs 4
 kids 0
 OBJECT poly
 name "TOPSTDS1"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 18
 301.782000 21.074900 -321.161000 -1.000000 0.000000 -0.000000
 301.782000 23.324900 -321.890000 -1.000000 0.000000 -0.000000
@@ -2402,7 +2402,7 @@ refs 8
 kids 0
 OBJECT poly
 name "P1TS489"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 6
 306.862000 18.744400 -319.790000 1.000000 0.000000 -0.000000
 306.862000 18.944400 -319.790000 1.000000 0.000000 -0.000000
@@ -3159,7 +3159,7 @@ refs 9
 kids 0
 OBJECT poly
 name "PARKARSTD"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 73
 277.722000 11.875800 -119.439000 -0.011080 0.999468 0.030662
 335.519000 11.875800 -122.133000 0.000000 1.000000 -0.000000
@@ -22400,7 +22400,7 @@ refs 4
 kids 0
 OBJECT poly
 name "TUMK235"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 4
 977.593000 5.079700 -578.064000 -0.500011 0.000000 -0.866019
 975.861000 5.079700 -577.064000 -0.500011 0.000000 -0.866019
@@ -22652,7 +22652,7 @@ refs 24
 kids 0
 OBJECT poly
 name "B1LT0"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 4
 975.861000 5.079700 -577.064000 0.500011 0.000000 0.866019
 977.593000 5.079700 -578.064000 0.500011 0.000000 0.866019
@@ -23240,7 +23240,7 @@ refs 5
 kids 0
 OBJECT poly
 name "TUMK215"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 4
 1002.590000 4.944430 -534.763000 -0.500444 0.000000 -0.865769
 1000.860000 4.944430 -533.763000 -0.500444 0.000000 -0.865769
@@ -23258,7 +23258,7 @@ refs 5
 kids 0
 OBJECT poly
 name "TUMK225"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 4
 1000.860000 4.944430 -533.763000 0.500444 0.000000 0.865769
 1002.590000 4.944430 -534.763000 0.500444 0.000000 0.865769
@@ -39899,7 +39899,7 @@ refs 4
 kids 0
 OBJECT poly
 name "POT01"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 557.936000 13.897700 -319.097000 0.894427 -0.077963 -0.440366
 557.936000 13.897700 -315.063000 0.447214 0.245409 0.860101
@@ -40891,7 +40891,7 @@ refs 7
 kids 0
 OBJECT poly
 name "TOPSTTOP"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 18
 301.782000 27.824900 -321.890000 0.000000 1.000000 -0.000000
 352.782000 27.824900 -321.890000 0.000000 1.000000 -0.000000
@@ -40947,7 +40947,7 @@ refs 10
 kids 0
 OBJECT poly
 name "TOPSTDS2"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 15
 556.782000 18.824900 -319.118000 1.000000 0.000000 -0.000000
 556.782000 21.074900 -321.161000 1.000000 0.000000 -0.000000
@@ -40996,7 +40996,7 @@ refs 8
 kids 0
 OBJECT poly
 name "TOPSTBK"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 30
 301.782000 18.824900 -309.118000 0.000000 0.000000 1.000000
 352.782000 18.824900 -309.118000 0.000000 0.000000 1.000000
@@ -41098,7 +41098,7 @@ refs 6
 kids 0
 OBJECT poly
 name "P2TS489"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 160
 306.862000 18.744400 -319.590000 0.000000 1.000000 -0.000000
 321.862000 18.744400 -319.590000 0.000000 0.992860 0.119287
@@ -41534,7 +41534,7 @@ refs 12
 kids 0
 OBJECT poly
 name "P18TS3"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 6
 546.864000 18.944400 -319.841000 -1.000000 0.000000 -0.000000
 546.864000 18.744400 -319.841000 -1.000000 0.000000 -0.000000
@@ -41792,7 +41792,7 @@ refs 4
 kids 0
 OBJECT poly
 name "POT05"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 481.783000 13.186200 -372.296000 -0.894427 -0.068646 0.441914
 481.783000 13.186200 -376.329000 -0.447214 0.217131 -0.867672
@@ -41887,7 +41887,7 @@ refs 4
 kids 0
 OBJECT poly
 name "POT04"
-texture "(null)"
+texture "tr-concrete.rgb"
 numvert 26
 481.783000 13.403500 -394.897000 -0.894427 -0.077963 0.440366
 481.783000 13.403500 -398.931000 -0.447214 0.245409 -0.860101
