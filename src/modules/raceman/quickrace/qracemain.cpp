@@ -151,7 +151,6 @@ qraceRun(void *dummy)
 	GfParmWriteFile(QRACE_CFG, qracecfg, "quick race", GFPARM_PARAMETER, "../../dtd/params.dtd");
 	GfParmReleaseHandle(qracecfg);
 	qrTrackItf.trkShutdown();
-	qrGraphicItf.shutdowncars();
 	GfModUnloadList(&qracemodlist);
 	qracemodlist = (tModList*)NULL;
 	GfuiScreenActivate(qrMainMenuHandle);
@@ -217,6 +216,7 @@ qrShutdown(void)
     free(qrCarInfo);
     qrTrackItf.trkShutdown();
     SimItf.shutdown();
+    qrGraphicItf.shutdowncars(); 
     GfModUnloadList(&qracemodlist);
     qracemodlist = (tModList*)NULL;
     RmShutdownResults(qrRaceInfo);
