@@ -231,7 +231,7 @@ reLoadMenu(void *prevHandle)
     if (str) {
 	fs.title = str;
     }
-    sprintf(buf, "results/%s", ReInfo->_reFilename);
+    sprintf(buf, "%sresults/%s", GetLocalDir(), ReInfo->_reFilename);
     fs.path = buf;
 
     RmFileSelect((void*)&fs);

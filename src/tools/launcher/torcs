@@ -17,11 +17,11 @@
 #
 ##############################################################################
 
-DEFAULT_RUNTIME=/home/torcs/runtime3/games/torcs
+DEFAULT_RUNTIME=/usr/share/games/torcs
 
 LOCAL_CONF=$HOME/.torcs
 
-prefix=/home/torcs/runtime3
+prefix=/usr
 exec_prefix=${prefix}
 
 if [ -d $DEFAULT_RUNTIME ]

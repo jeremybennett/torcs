@@ -731,13 +731,6 @@ if exist .\data\tracks\road\alpine-1\alpine-1.ac copy .\data\tracks\road\alpine-
 if exist .\data\tracks\road\alpine-1\alpine-1.png copy .\data\tracks\road\alpine-1\alpine-1.png .\runtime\tracks\road\alpine-1\alpine-1.png
 if exist .\data\tracks\road\alpine-1\background.png copy .\data\tracks\road\alpine-1\background.png .\runtime\tracks\road\alpine-1\background.png
 
-if exist .\data\tracks\road\ep-pau call .\create_dir .\runtime
-if exist .\data\tracks\road\ep-pau call .\create_dir .\runtime\tracks
-if exist .\data\tracks\road\ep-pau call .\create_dir .\runtime\tracks\road
-if exist .\data\tracks\road\ep-pau call .\create_dir .\runtime\tracks\road\ep-pau
-if exist .\data\tracks\road\ep-pau\ep-pau.xml copy .\data\tracks\road\ep-pau\ep-pau.xml .\runtime\tracks\road\ep-pau\ep-pau.xml
-if exist .\data\tracks\road\ep-pau\ep-pau.ac copy .\data\tracks\road\ep-pau\ep-pau.ac .\runtime\tracks\road\ep-pau\ep-pau.ac
-
 if exist .\data\tracks\road\g-track-2 call .\create_dir .\runtime
 if exist .\data\tracks\road\g-track-2 call .\create_dir .\runtime\tracks
 if exist .\data\tracks\road\g-track-2 call .\create_dir .\runtime\tracks\road

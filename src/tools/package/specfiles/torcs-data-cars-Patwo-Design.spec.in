@@ -10,6 +10,7 @@ Copyright: Patrick Wisselo,  Patwo Design Production 1999, 2002
 BuildArch: noarch
 URL: http://torcs.org
 Packager: Eric Espié <Eric.Espie@free.fr>
+Requires: TORCS
 
 %description
 Patwo Design Car Pack for TORCS.
@@ -22,15 +23,15 @@ http://www.patwodesign.com
 %build
 
 %install
-mkdir -p $RPM_BUILD_ROOT/%{_prefix}/games/torcs
-cp -r * $RPM_BUILD_ROOT/%{_prefix}/games/torcs
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/games/torcs
+cp -r * $RPM_BUILD_ROOT/%{_prefix}/share/games/torcs
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{_prefix}/games/torcs/*
+%{_prefix}/share/games/torcs/*
 
 %changelog
 * Thu Jan 2 2003 Eric Espié <Eric.Espie@free.fr> 1.2.0

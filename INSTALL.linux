@@ -24,13 +24,13 @@ Installation:
       $ cd torcs-xxx
       $ ./configure [--prefix=PREFIX (default /usr/local)]
       $ make
-      $ make install         # installs in PREFIX/games/torcs PREFIX/bin and PREFIX/lib
+      $ make install         # installs in PREFIX/share/games/torcs PREFIX/bin and PREFIX/lib
 
 This should generate the binaries, with no more than few warnings.
 
 4 - decompress the mandatory data:
 
-      $ cd PREFIX/games/torcs
+      $ cd PREFIX/share/games/torcs
       $ tar xzvf torcs-xxx-data.tgz
 
 5 - decompress the optionnal data:

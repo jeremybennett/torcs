@@ -16,7 +16,7 @@
 ##############################################################################
 
 AC_INIT(Make-config.in)
-AM_INIT_AUTOMAKE(torcs, 1.2.0-rc5)
+AM_INIT_AUTOMAKE(torcs, 1.2.0)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -128,7 +128,6 @@ int main() {
 AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
-	src/tools/package/specfiles/torcs-data-cars-Ryuji-Kainoh.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \

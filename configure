@@ -699,7 +699,7 @@ fi
 
 PACKAGE=torcs
 
-VERSION=1.2.0-rc5
+VERSION=1.2.0
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -3227,7 +3227,6 @@ ac_given_INSTALL="$INSTALL"
 trap 'rm -fr `echo "Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
-	src/tools/package/specfiles/torcs-data-cars-Ryuji-Kainoh.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \
@@ -3328,7 +3327,6 @@ cat >> $CONFIG_STATUS <<EOF
 CONFIG_FILES=\${CONFIG_FILES-"Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
-	src/tools/package/specfiles/torcs-data-cars-Ryuji-Kainoh.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \

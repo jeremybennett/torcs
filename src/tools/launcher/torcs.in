@@ -17,7 +17,7 @@
 #
 ##############################################################################
 
-DEFAULT_RUNTIME=@prefix@/games/@PACKAGE@
+DEFAULT_RUNTIME=@prefix@/share/games/@PACKAGE@
 
 LOCAL_CONF=$HOME/.torcs
 

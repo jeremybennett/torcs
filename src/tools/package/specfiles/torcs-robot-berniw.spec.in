@@ -1,7 +1,7 @@
 Summary: TORCS - Berniw Robots
 Name: TORCS-robots-berniw
 Version: @VERSION@
-Release: 2
+Release: 1
 Epoch: 1
 Source:  TORCS-%{version}-src.tgz
 Source1: TORCS-%{version}-src-robots-berniw.tgz
@@ -30,9 +30,9 @@ make
 
 %install
 make install DESTDIR=%{_tmppath}/%{name}-ship
-cd %{_tmppath}/%{name}-ship/%{_prefix}/games/torcs
-mkdir -p $RPM_BUILD_ROOT/%{_prefix}/games/torcs
-cp -r drivers $RPM_BUILD_ROOT/%{_prefix}/games/torcs
+cd %{_tmppath}/%{name}-ship/%{_prefix}/share/games/torcs
+mkdir -p $RPM_BUILD_ROOT/%{_prefix}/share/games/torcs
+cp -r drivers $RPM_BUILD_ROOT/%{_prefix}/share/games/torcs
 cd -
 rm -rf %{_tmppath}/%{name}-ship
 
@@ -41,9 +41,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{_prefix}/games/torcs/*
+%{_prefix}/share/games/torcs/*
 
 %changelog
+* Mon Mar 24 2003 Eric Espié <Eric.Espie@free.fr> 1.2.0
+- new version
+
 * Mon Jul 15 2002 Eric Espié <Eric.Espie@free.fr> 1.1.0-2
 - improved specfile
 

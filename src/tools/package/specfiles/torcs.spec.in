@@ -1,7 +1,7 @@
 Summary: The Open Racing Car Simulator
 Name: TORCS
 Version: @VERSION@
-Release: 2
+Release: 1
 Epoch: 1
 Source: TORCS-%{version}-src.tgz
 Group: Amusements/Games
@@ -33,9 +33,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_prefix}/bin/*
 %{_prefix}/lib/*
-%{_prefix}/games/torcs/*
+%{_prefix}/share/games/torcs/*
 
 %changelog
+* Mon Mar 24 2003 Eric Espié <Eric.Espie@free.fr> 1.2.0
+- new version
+
 * Mon Jul 15 2002 Eric Espié <Eric.Espie@free.fr> 1.1.0-2
 - improved specfile
 
