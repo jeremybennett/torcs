@@ -17,13 +17,13 @@
 <params name="Tanhoj" type="template" mode="m">
   <section name="Car">
     <!-- weight bias -->
-    <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.45"></attnum>
-    <attnum name="rear right-left weight repartition"  min="0.4" max="0.6" val="0.45"></attnum>
+    <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.4"></attnum>
+    <attnum name="rear right-left weight repartition"  min="0.4" max="0.6" val="0.4"></attnum>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="7"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="5"></attnum>
   </section>
 
   <section name="Gearbox">
@@ -69,7 +69,7 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="LIMITED SLIP"></attstr>
-    <attnum name="ratio" val="4.644"></attnum>
+    <attnum name="ratio" val="4.8"></attnum>
   </section>
 
   <section name="Brake System">
@@ -80,21 +80,37 @@
   <section name="Front Right Wheel">
     <!-- initial ride height -->
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Left Wheel">
     <!-- initial ride height -->
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
+  </section>
+
+  <section name="Rear Right Wheel">
+    <!-- initial ride height -->
+    <attnum name="ride height" min="100" max="200" unit="mm" val="100"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="20" val="20.0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
+  </section>
+
+  <section name="Rear Left Wheel">
+    <!-- initial ride height -->
+    <attnum name="ride height" min="100" max="200" unit="mm" val="100"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="20" val="20.0"></attnum>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"></attnum>
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1"></attnum>
   </section>
 
   <section name="Rear Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="1000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
   </section>

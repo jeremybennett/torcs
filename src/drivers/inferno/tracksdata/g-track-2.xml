@@ -19,15 +19,15 @@
   <section name="Simulation Parameters">
     <attnum name="PGain"     val="0.021"></attnum>
     <attnum name="AGain"     val="0.008"></attnum>
-    <attnum name="PnGain"    val="0.02"></attnum>
-    <attnum name="Advance"   val="12.0"></attnum>
+    <attnum name="PnGain"    val="0.019"></attnum>
+    <attnum name="Advance"   val="9.0"></attnum>
     <attnum name="Advance2"  val="20.0"></attnum>
     <attnum name="AdvStep"   val="5.0"></attnum>
     <attnum name="VGain"     val="0.0005"></attnum>
     <attnum name="preDy"     val="0"></attnum>
-    <attnum name="spdtgt"    val="270.0"></attnum>
+    <attnum name="spdtgt"    val="320.0"></attnum>
     <attnum name="spdtgt2"   val="2.0"></attnum>
-    <attnum name="steerMult" val="2.2"></attnum>
+    <attnum name="steerMult" val="2.5"></attnum>
     <attnum name="offset"    val="0.7"></attnum>
     <attnum name="VnxGain"   val="0.04"></attnum>
     <attnum name="VnxGain2"  val="0.0"></attnum>
