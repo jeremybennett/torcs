@@ -121,9 +121,9 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="155-DTM"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="torcs-r-b"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="143"></attnum>
 		<!-- Your color for car and board -->
@@ -140,7 +140,7 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="lotus-gt1"></attstr>
 		<!-- Car category -->
 		<attstr name="category" val="torcs-r-a"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
@@ -159,7 +159,7 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="corvette"></attstr>
 		<!-- Car category -->
 		<attstr name="category" val="torcs-r-a"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
@@ -178,7 +178,7 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="mclaren-f1"></attstr>
 		<!-- Car category -->
 		<attstr name="category" val="torcs-r-a"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
@@ -197,9 +197,9 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="buggy"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="offroad-r-a"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="147"></attnum>
 		<!-- Your color for car and board -->
@@ -211,3 +211,8 @@
 	</section>
   </section>
 </params>
+
+
+
+
+

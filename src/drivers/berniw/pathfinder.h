@@ -43,7 +43,11 @@
 #define FNPF "drivers/berniw/parameter.dat"
 #define FNIS "drivers/berniw/intsinsqr.dat"
 #define FNIC "drivers/berniw/intcossqr.dat"
-#define AHEAD 400
+#define AHEAD 500
+
+#define BERNIW_SECT_PRIV	"berniw private"
+#define BERNIW_ATT_PITENTRY	"pitentry"
+#define BERNIW_ATT_PITEXIT	"pitexit"
 
 class MyCar;
 class OtherCar;
@@ -146,19 +150,19 @@ class Pathfinder
 		bool pitStop;			/* pitstop ? */
 		bool inPit;				/* internal pit state */
 
-		int s1, s2, s3;			/* pitentrystart, pitentryend, pitlanestart */
-		int e1, e2, e3;			/* pitlaneend, pitexitstart, pitexitend */
-		int mypit;				/* pit */
-		t3Dd *ps1, *ps2, *ps3, *pe1, *pe2, *pe3, *pmypit, *pmypitseg;
+		int s1, s3;				/* pitentrystart, pitentryend */
+		int e1, e3;				/* pitexitstart, pitexitend */
+		t3Dd *pmypitseg;
 
-		t3Dd pitLoc;
+		t3Dd pitLoc;			/* location of pit */
 		t3Dd pitDir;			/* direction vector of the pit */
-		t3Dd toPit;				/* vector pointing orthogonal from the track to the pit */
+		t3Dd toPit;				/* vector pointing perpendicular from the track to the pit */
 		int pitSegId;			/* segment id of pit */
 		bool pit;
 		int pitside;
 		int nPitLaneStart;
 		int nPitLaneEnd;
+		bool optlocreloaded;
 
 		tdble ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
 		int snpit[pitpoints];
@@ -171,7 +175,14 @@ class Pathfinder
 		void initPitStopPath(void);
 		void getPitPoint(int j, int k, tdble slope, tdble dist, t3Dd* r);
 		bool collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
+		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);
 		tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3);
+		double curvature(double xp, double yp, double x, double y, double xn, double yn);
+		void adjustRadius(int s, int p, int e, double c, tdble carwidth);
+		void stepInterpolate(int iMin, int iMax, int Step);
+		void interpolate(int Step);
+		void smooth(int Step);
+
 		int correctPath(int id, tCarElt* car, MyCar* myc);
 
 		bool loadClothoidParams(tParam* p);

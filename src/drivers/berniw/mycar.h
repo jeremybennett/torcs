@@ -53,31 +53,41 @@ class MyCar
 		static const int SLOW = 4;
 		static const int START = 5;
 
-		static int const MAXDAMMAGE = 5000;			/* if dammage > MAXDAMMAGE then we plan a pit stop [-] */
-		static tdble const PITTOL = 3.0;			/* range around pit, where we assume we are in the pit [m] */
-		static tdble const PATHERR = 0.5;			/* if derror > PATHERR we take actions to come back to the path [m] */
-		static tdble const CORRLEN = 30.0;			/* CORRLEN * derror is the length of the correction [m] */
-		static tdble const CARWIDTH = 2.2;			/* width of the car [m] */
-		static tdble const CARLEN = 6.0;			/* length of the car [m] */
-		static tdble const TURNTOL = 1.0;			/* tolerance for end backing up [m] */
-		static tdble const TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
-		static tdble const MARGIN = 0.3;			/* security margin from track border [m] */
-		static tdble const AEROMAGIC = 10.0;		/* aerodynamic lift factor [-] */
-		static tdble const SLOWDOWN = 5.0;			/* slowdown to avoid collision [m/s] */
-		static const tdble STABLESPEED = 80.0;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
+		static const int DRWD = 0;
+		static const int DFWD = 1;
+		static const int D4WD = 2;
 
-		MyCar(TrackDesc* track, tCarElt* car);
+		static const tdble PITTOL = 3.0;			/* range around pit, where we assume we are in the pit [m] */
+		static const tdble PATHERR = 0.5;			/* if derror > PATHERR we take actions to come back to the path [m] */
+		static const tdble CORRLEN = 30.0;			/* CORRLEN * derror is the length of the correction [m] */
+		static const tdble CARWIDTH = 2.2;			/* width of the car [m] */
+		static const tdble CARLEN = 6.0;			/* length of the car [m] */
+		static const tdble TURNTOL = 1.0;			/* tolerance for end backing up [m] */
+		static const tdble TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
+		static const tdble MARGIN = 0.3;			/* security margin from track border [m] */
+		static const tdble AEROMAGIC = 9.7;			/* aerodynamic lift factor [-] */
+		static const tdble SLOWDOWN = 5.0;			/* slowdown to avoid collision [m/s] */
+		static const tdble STABLESPEED = 80.0;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
+		static const tdble TIMETOCATCH = 5.0;		/* when do we start thinking about overtaking [s]*/
+		static const tdble MINOVERTAKERANGE = 150.0;/* minimum length for overtaking [m] */
+		static const tdble OVERTAKERADIUS = 100.0;	/* min allowd radius to start overtaking */
+
+		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();
 
 		void info(void);
 		void update(TrackDesc* track, tCarElt* car, tSituation *situation);
 		void loadBehaviour(int id);
+		tdble queryInverseSlip(tCarElt * car, tdble speed);
+		tdble queryAcceleration(tCarElt * car, tdble speed);
+		inline tCarElt* getCarPtr() { return mycar; }
 
 		Pathfinder* pf;
 
 		/* data for behavior */
 		int bmode;
 		tdble behaviour[6][12];
+		int MAXDAMMAGE;								/* if dammage > MAXDAMMAGE then we plan a pit stop [-] */
 		tdble DIST;									/* minimal distance to other cars [m] */
 		tdble MAXRELAX;								/* to avoid skidding (0..0.99) [-] */
 		tdble MAXANGLE;								/* biggest allowed angle to the path [deg] */
@@ -99,6 +109,7 @@ class MyCar
 		tdble carmass;
 		tdble ca;
 		tdble cw;
+		int drivetrain;
 
 		/* dynamic data */
 		tdble mass;

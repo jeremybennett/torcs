@@ -41,36 +41,8 @@
 #define TRACKFILENAME		"/home/berni/track.dat"
 #define TRACKDESCFILENAME   "/home/berni/track.txt"
 #define RMAX				10000.0
-
-
-/*
-	compute the slip on the rear wheels
-*/
-inline tdble queryRearSlip(tCarElt * car, tdble speed)
-{
-	tdble rear_speed = (car->_wheelSpinVel(REAR_RGT) + car->_wheelSpinVel(REAR_LFT)) * car->_wheelRadius(REAR_LFT) / 2.0;
-	if (fabs(speed) < 1.0) return 1.0; else return fabs(rear_speed / speed);
-}
-
-
-/*
-	compute the inverse of the rear slip => speed == 0 is allowed
-*/
-inline tdble queryInverseRearSlip(tCarElt * car, tdble speed)
-{
-	tdble rear_speed = (car->_wheelSpinVel(REAR_RGT) + car->_wheelSpinVel(REAR_LFT)) * car->_wheelRadius(REAR_LFT) / 2.0;
-	if (fabs(rear_speed) < 3.0) return 1.0; return fabs(speed / rear_speed);
-}
-
-
-/*
-	compute the acceleration value for a given speed
-*/
-inline tdble queryAcceleration(tCarElt * car, tdble speed)
-{
-	tdble accel = speed / car->_wheelRadius(REAR_RGT) * car->_gearRatio[car->_gear + car->_gearOffset] / car->_enginerpmMax;
-	if (accel > 1.0) return 1.0; else return accel;
-}
+#define BOTS 10
+#define BUFSIZE 256
 
 
 /*

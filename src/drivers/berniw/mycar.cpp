@@ -24,7 +24,7 @@
 #include "mycar.h"
 
 
-MyCar::MyCar(TrackDesc* track, tCarElt* car)
+MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
 	tdble rear, front, cgcorr;
 
@@ -41,7 +41,9 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car)
 
 	/* damage and fuel status */
 	lastfuel = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_FUEL, NULL, 100.0);
-	undamaged = 10000;
+	undamaged = situation->_maxDammage;
+	if (undamaged == 0) undamaged = 10000;
+	MAXDAMMAGE = undamaged / 2;
 	fuelperlap = 0.0;
 	lastpitfuel = 0.0;
 
@@ -52,6 +54,16 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car)
 	cgh = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0);
 	carmass = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_MASS, NULL, 0.0);
 	mass = carmass + lastfuel;
+
+	/* which wheels are driven */
+	char *traintype = GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
+	if (strcmp(traintype, VAL_TRANS_RWD) == 0) {
+		drivetrain = DRWD;
+	} else if (strcmp(traintype, VAL_TRANS_FWD) == 0) {
+		drivetrain = DFWD;
+	} else if (strcmp(traintype, VAL_TRANS_4WD) == 0) {
+		drivetrain = D4WD;
+	}
 
 	/* guess aerodynamic downforce coefficient from the wings */
 	tdble frontwingarea = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGAREA, (char*)NULL, 0);
@@ -70,7 +82,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car)
 	rear = fabs(car->priv->wheel[REAR_RGT].relPos.x);
 	cgcorr = MIN(front/wheelbase, rear/wheelbase);
 	cgcorr *= 2.0;
-	cgcorr_b = cgcorr * (1.0 + (cgh - front)/wheelbase);
+	cgcorr_b = 0.46; //cgcorr * (1.0 + (cgh - front)/wheelbase);
 
 	pf = new Pathfinder(track, car);
 	/* this call is needed! perhaps i shold move it into the constructor of pathfinder. */
@@ -109,7 +121,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car)
 		{0.5, 0.9, 15.0, 0.02, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
 		{0.9, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
 		{1.4, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
-		{0.8, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.1, 0.5, 1.0, 1.0}
+		{0.9, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.1, 0.5, 1.0, 1.0}
 	};
 
 	behaviour = ba;
@@ -200,6 +212,59 @@ void MyCar::loadBehaviour(int id) {
 	GCTIME = behaviour[id][9];
 	ACCELLIMIT = behaviour[id][10];
 	PATHERRFACTOR = behaviour[id][11];
+}
+
+
+/*
+	compute the inverse of the rear => speed == 0 is allowed
+*/
+tdble MyCar::queryInverseSlip(tCarElt * car, tdble speed)
+{
+	tdble s;
+	switch (drivetrain) {
+		case DRWD:
+			s = (car->_wheelSpinVel(REAR_RGT) +
+				 car->_wheelSpinVel(REAR_LFT)) * car->_wheelRadius(REAR_LFT) / 2.0;
+			break;
+		case DFWD:
+			s = (car->_wheelSpinVel(FRNT_RGT) +
+				 car->_wheelSpinVel(FRNT_LFT)) * car->_wheelRadius(FRNT_LFT) / 2.0;
+			break;
+		case D4WD:
+			s = ((car->_wheelSpinVel(REAR_RGT) +
+				  car->_wheelSpinVel(REAR_LFT)) * car->_wheelRadius(REAR_LFT) +
+				 (car->_wheelSpinVel(FRNT_RGT) +
+				  car->_wheelSpinVel(FRNT_LFT)) * car->_wheelRadius(FRNT_LFT)) / 4.0;
+			break;
+		default:
+			s = speed;
+			break;
+	}
+	if (fabs(s) < TURNSPEED) return 1.0; return fabs(speed / s);
+}
+
+
+/*
+	compute an acceleration value for a given speed
+*/
+tdble MyCar::queryAcceleration(tCarElt * car, tdble speed)
+{
+	tdble a, gr = car->_gearRatio[car->_gear + car->_gearOffset], rm = car->_enginerpmMax;
+	switch (drivetrain) {
+		case DRWD:
+			a = speed / car->_wheelRadius(REAR_RGT) * gr / rm;
+			break;
+		case DFWD:
+			a = speed / car->_wheelRadius(FRNT_RGT) * gr / rm;
+			break;
+		case D4WD:
+			a = speed / (car->_wheelRadius(REAR_RGT) + car->_wheelRadius(FRNT_RGT)) * 2.0 * gr / rm;
+			break;
+		default:
+			a = 1.0;
+			break;
+	}
+	if (a > 1.0) return 1.0; else return a;
 }
 
 
