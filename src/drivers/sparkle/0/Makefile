@@ -21,8 +21,8 @@ SHIP        = baja-bug.rgb default.xml
 SHIPSUBDIRS =
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
-src-robots_sparkle_PKGFILES = $(shell find * -maxdepth 0 -type f -print)
-src-robots-sparkle_PKGDIR   = ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-berniw_PKGFILES = $(shell find * -maxdepth 0 -type f -print)
+src-robots-berniw_PKGDIR   = ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 include ${MAKE_DEFAULT}
 
 
