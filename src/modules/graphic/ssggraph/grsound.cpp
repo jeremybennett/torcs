@@ -46,6 +46,8 @@ static slSample		*skidSample;
 static slEnvelope	*pitchEnv;
 static slEnvelope	*volEnv;
 
+static int soundInitialized = 0;
+
 
 void
 grInitSound(void)
@@ -82,6 +84,7 @@ grInitSound(void)
     }
     curCrashSnd = 0;
 
+    soundInitialized = 1;
 }
 
 
@@ -89,7 +92,11 @@ void
 grShutdownSound(void)
 {
     int i;
-    
+
+    if (!soundInitialized) {
+	return;
+    }
+    soundInitialized = 0;
     sched->stopSample(skidSample);
     sched->stopSample(engSample);
     sched->stopSample(crashSample[curCrashSnd]);
