@@ -355,10 +355,6 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		SimWheelUpdateForce(car, i);
 	    }
 	    CHECK(car);
-	}
-
-    
-	if (!(s->_raceState & RM_RACE_PRESTART)) {
 	    SimTransmissionUpdate(car);
 	    CHECK(car);
 	    SimWheelUpdateRotation(car);
