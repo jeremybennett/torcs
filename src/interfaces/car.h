@@ -591,7 +591,9 @@ typedef struct CarElt
 #define PRM_DAMAGE_SUSPENSION "damage/suspension"
 #define PRM_DAMAGE_ALIGNMENT "damage/alignment"
 #define PRM_DAMAGE_AERO "damage/aero"
-#define PRM_MODEL_AEROFLOW "model/aeroflow"
+#define PRM_MODEL_AEROFLOW "model/aero/flow"
+#define PRM_MODEL_AERO_FACTOR "model/aero/factor"
+#define PRM_MODEL_TYRE_TEMPERATURE "model/tyre/temperature"
 
 #endif /* __CARV1_H__ */ 
 
