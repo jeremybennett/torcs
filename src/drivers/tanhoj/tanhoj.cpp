@@ -252,6 +252,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 static int	curidx;
 static tdble	Gear;
 static tdble	TargetSpeed;
+static tdble	InvBrkCmd;
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
@@ -271,9 +272,10 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	RtTelemInit(-10, 10);
 	RtTelemNewChannel("Ax", &car->_accel_x, -30, 30);
 	RtTelemNewChannel("Ay", &car->_accel_y, -30, 30);
+	RtTelemNewChannel("Vaz", &car->_yaw_rate, -10, 10);
 	RtTelemNewChannel("Steer", &car->ctrl->steer, -1, 1);
 	RtTelemNewChannel("Throttle", &car->ctrl->accelCmd, -1, 1);
-	RtTelemNewChannel("Brake", &car->ctrl->brakeCmd, -1, 1);
+	RtTelemNewChannel("Brake", &InvBrkCmd, -1, 1);
 	RtTelemNewChannel("Gear", &Gear, -10, 10);
 	RtTelemNewChannel("Speed", &car->_speed_x, -100, 100);
 	RtTelemNewChannel("Target Speed", &TargetSpeed, -100, 100);
@@ -386,7 +388,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * adv;
     y = Y + (SinA) * adv;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
-    Dny = Tright[0] - trkPos.toRight;
+    Dny = seg->width / 2.0 - trkPos.toRight;
 
     car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
 
@@ -459,5 +461,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	}
     }
     lap = car->_laps;
+
+    InvBrkCmd = - car->ctrl->brakeCmd;
 }
 

@@ -39,6 +39,7 @@ INSTBINBASE = ${bindir}
 
 # win32
 INIT_WIN32       = ${TORCS_BASE}/setup_win32.bat
+INIT_WIN32_D     = ${TORCS_BASE}/setup_win32_debug.bat
 
 
 define create_dir_win32
@@ -113,6 +114,7 @@ win32end:
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:/:\\\:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
+	@sed -e "s:runtime:runtimed:g" ${INIT_WIN32} > ${INIT_WIN32_D}
 
 
 .PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil datadirs doc win32start win32end
@@ -165,13 +167,14 @@ ifdef DATA
 
 installdata: $(DATA)
 	@D=`pwd` ; \
-	createdir="${INSTBASE}/${DATADIR}" ; \
+	createdir="runtime/${DATADIR}" ; \
 	${create_dir_win32} ; \
+	createdir="${INSTBASE}/${DATADIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
 	$(INSTALL_DATA) $$X $$createdir/$$X ; \
-	echo "copy $$D/$$X $$createdir/$$X" >> ${INIT_WIN32} ; \
+	echo "copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${INIT_WIN32} ; \
 	done
 
 else

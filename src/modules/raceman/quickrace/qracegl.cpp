@@ -145,7 +145,7 @@ qrResults(void *prevHdle)
     int		i;
     tCarElt	*car;
     void	*hdle;
-    int		x1, x2, x3, x4, x5, x6;
+    int		x1, x2, x3, x4, x5, x6, x7;
     int		dlap;
     int		y;
     char	buf[256];
@@ -166,6 +166,7 @@ qrResults(void *prevHdle)
     x4 = 380;
     x5 = 410;
     x6 = 470;
+    x7 = 560;
     
     y = 400;
     GfuiLabelCreateEx(hdle, "Rank", fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
@@ -174,6 +175,7 @@ qrResults(void *prevHdle)
     GfuiLabelCreateEx(hdle, "Best", fgcolor, GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HR_VB, 0);
     GfuiLabelCreateEx(hdle, "Laps", fgcolor, GFUI_FONT_LARGE_C, x5, y, GFUI_ALIGN_HC_VB, 0);
     GfuiLabelCreateEx(hdle, "Top Spd", fgcolor, GFUI_FONT_LARGE_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(hdle, "Dammages", fgcolor, GFUI_FONT_LARGE_C, x7, y, GFUI_ALIGN_HC_VB, 0);
     y -= 20;
     
     for (i = 0; i < qrTheSituation._ncars; i++) {
@@ -217,6 +219,10 @@ qrResults(void *prevHdle)
 	sprintf(buf, "%d", (int)(car->_topSpeed * 3.6));
 	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C,
 			x6, y, GFUI_ALIGN_HC_VB, 0);
+
+	sprintf(buf, "%d", (int)(car->_dammage));
+	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C,
+			x7, y, GFUI_ALIGN_HC_VB, 0);
 	y -= 15;
     }
 

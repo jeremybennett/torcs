@@ -110,6 +110,8 @@ TlmStartMonitoring(const char *filename)
     tChannel	*curChan;
     int		i;
     
+    GfOut("Telemetry: start monitoring");
+    
     sprintf(buf, "telemetry/%s", filename);
     fout = TlmData.file = fopen(buf, "w");
     if (fout == NULL) {
@@ -125,9 +127,14 @@ TlmStartMonitoring(const char *filename)
 	i = 2;
 	do {
 	    curChan = curChan->next;
-	    fprintf(fout, "# using %d title %s\n", i, curChan->name);
+	    if (i == 2) {
+		fprintf(fout, "# plot '%s' using %d title '%s'", filename, i, curChan->name);
+	    } else {
+		fprintf(fout, ", '' using %d title '%s'", i, curChan->name);
+	    }
 	    i++;
 	} while (curChan != TlmData.chanList);
+	fprintf(fout, "\n");
     }
 }
 
@@ -162,6 +169,7 @@ TlmStopMonitoring(void)
     }
     TlmData.file = (FILE*)NULL;
     TlmData.state = 0;
+    GfOut("Telemetry: stop monitoring");
 }
 
 /*

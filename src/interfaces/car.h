@@ -126,8 +126,10 @@ typedef struct {
     tPosd	corner[4];
 #define RM_CAR_STATE_FINISH	 0x00000100				/* Car having passed the finish line */
 #define RM_CAR_STATE_PIT	 0x00000001				/* Car currently stopped in pits */
-#define RM_CAR_STATE_OUT	(0x00000002 | RM_CAR_STATE_FINISH)	/* Car out of race */
+#define RM_CAR_STATE_DNF	 0x00000002				/* Car did not finish */
+#define RM_CAR_STATE_OUT	(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/* Car out of race */
 #define RM_CAR_STATE_NO_SIMU	 0x000000FF				/* Do not simulate the car */
+#define RM_CAR_STATE_BROKEN	 0x00000200				/* Engine no more working */
 
 } tPublicCar;
 /* structure access */
@@ -198,6 +200,7 @@ typedef struct {
     int		collision;
     t3Dd	normal;
     t3Dd	collpos;
+    int		dammage;
     int		debug;
     tDebugVect	vect[CAR_NVECT];
 } tPrivCar;
@@ -217,6 +220,7 @@ typedef struct {
 #define _debug		priv->debug
 #define _vect(i)	priv->vect[i]
 #define _skid		priv->skid
+#define _dammage	priv->dammage
 
 /* Info returned by driver during the race */
 typedef struct {
@@ -236,6 +240,7 @@ struct RobotItf;
 typedef struct 
 {
     tdble		fuel;
+    int			repair;
 } tCarPitCmd;
 
 /* Element of list of car info */

@@ -506,7 +506,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * adv;
     y = Y + (SinA) * adv;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
-    Dny = Tright[0] - trkPos.toRight;
+    Dny = seg->width / 2.0 - trkPos.toRight;
 
     car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
 

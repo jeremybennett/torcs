@@ -187,6 +187,11 @@ static tdble      Trightprev[10];
 static tdble lastBrkCmd[10] = {0};
 static tdble lastAccel[10];
 
+static tdble AccSteer[10] = { 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
+static tdble AccAngle[10] = { 3.0, 3.0, 3.0, 0.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 };
+
+
+
 static void
 SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, tSituation *s, tdble aspect)
 {
@@ -209,7 +214,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	    slip = 0;
 	}
 	if ((car->_gear == 1) && (idx != 2) && (idx != 3)) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(steer) * 1.0) * exp(-fabs(aspect) * 3.0) + 0.1;
+	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(steer) * AccSteer[idx]) * exp(-fabs(aspect) * AccAngle[idx]) + 0.1;
 	} else if (car->_gear > 1) {
 	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(aspect) * 0.5) ; //+ 0.15;
 	}
@@ -293,7 +298,7 @@ dmGetDistToStart(tCarElt *car)
  *	
  */
 const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.25,	0.2,	0.2,	0.05,	0.08,	0.01,	0.01	};
-const  tdble AGain[10]   = {	0.30,	0.10,   0.15,	0.2,	0.15,	0.05,	0.08,	0.08,	0.008,	0.008	};
+const  tdble AGain[10]   = {	0.30,	0.10,   0.15,	0.1,	0.15,	0.05,	0.08,	0.08,	0.008,	0.008	};
 static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.08,	0.01,	0.02,	0.02,	0.01,	0.01	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.02,	0.02,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	40.8,	35,	40.8,	40.8	};
@@ -306,6 +311,8 @@ static tdble spdtgt[10]  = {	5000,	5000,  	10000,	20000,	10000,	10000,	10000,	10
 static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	13,	0,	12,	12	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
 static tdble hold[10] = {0};
+static tdble steerk[10] = {	1.0,	1.0,	1.0,	1.1,	1.0,	1.0, 	1.0, 	1.0, 	1.0, 	1.0	};
+
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
@@ -315,7 +322,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[2] = DmTrack->width - 4.0;
     Advance[2] = Advance2[2] = DmTrack->width * 2.0;
     spdtgt2[3] = DmTrack->width - 4.0;
-    Advance[3] = Advance2[3] = DmTrack->width * 2.0;
+    Advance[3] = Advance2[3] = DmTrack->width * 2.5;
     spdtgt2[4] = DmTrack->width - 3.0;
     Advance[4] = Advance2[2] = DmTrack->width * 2.0;
     spdtgt2[5] = DmTrack->width - 5.0;
@@ -422,7 +429,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * Advance[idx];
     y = Y + (SinA) * Advance[idx];
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
-    Dny = Tright[idx] - trkPos.toRight;
+    Dny = seg->width / 2.0 - trkPos.toRight;
 
 /*     x = X + (CosA) * Advance2[idx]; */
 /*     y = Y + (SinA) * Advance2[idx]; */
@@ -441,7 +448,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (car->_speed_x < 0) {
 	car->ctrl->steer *= 1.5;
     } else {
-	car->ctrl->steer *= 1.1;
+	car->ctrl->steer *= steerk[idx];
     }
 	
 

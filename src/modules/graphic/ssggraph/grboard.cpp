@@ -200,8 +200,8 @@ grDispCarBoard1(tCarElt *car, tSituation *s)
     glColor4f(0.1, 0.1, 0.1, 0.8);
     glVertex2f(x-5, y + dy);
     glVertex2f(x+dx+5, y + dy);
-    glVertex2f(x+dx+5, y-5 - dy2 * 7);
-    glVertex2f(x-5, y-5 - dy2 * 7);
+    glVertex2f(x+dx+5, y-5 - dy2 * 8 /* lines */);
+    glVertex2f(x-5, y-5 - dy2 * 8 /* lines */);
     glEnd();
     glDisable(GL_BLEND);
 
@@ -220,6 +220,16 @@ grDispCarBoard1(tCarElt *car, tSituation *s)
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     y -= dy;
     
+    if (car->_state & RM_CAR_STATE_BROKEN) {
+	clr = grRed;
+    } else {
+	clr = grWhite;
+    }
+    
+    GfuiPrintString("Dammages:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+    sprintf(buf, "%d", car->_dammage);
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
     clr = grWhite;
 
     GfuiPrintString("Laps:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
@@ -486,7 +496,9 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
 	sprintf(buf, "%3d: %s", i, s->cars[i-1]->_name);
 	GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 	
-	if (s->cars[i-1]->_timeBehindLeader == 0) {
+	if (s->cars[i-1]->_state & RM_CAR_STATE_DNF) {
+	    GfuiPrintString("       out", grRed, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+	} else if (s->cars[i-1]->_timeBehindLeader == 0) {
 	    if (i != 1) {
 		GfuiPrintString("       --:--", clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
 	    } else {

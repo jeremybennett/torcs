@@ -559,7 +559,7 @@ InitScene(tTrack *track)
 		uniqueId++;
 		NEWDISPLIST(0, "tkRtSd", uniqueId);
 		runninglentgh = 0;
-		if (curTexType == 0) texLen = 0;
+		//if (curTexType == 0) texLen = 0;
 		ts = 0;
 		texMaxT = RtTrackGetWidth(seg, ts);
 		texMaxT = (curTexType == 1 ? texMaxT / curTexSize : 1.0 + floor(texMaxT / curTexSize));
@@ -729,7 +729,7 @@ InitScene(tTrack *track)
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
 		NEWDISPLIST(0, "tkLtSd", uniqueId);
-		if (curTexType == 0) texLen = 0;
+		//if (curTexType == 0) texLen = 0;
 		runninglentgh = 0;
 		tracktexcoord[2*nbvert]   = texLen;
 		tracktexcoord[2*nbvert+1] = 0;

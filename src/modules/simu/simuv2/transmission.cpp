@@ -154,7 +154,7 @@ SimGearboxUpdate(tCar *car)
     tTransmission	*trans = &(car->transmission);
     tClutch		*clutch = &(trans->clutch);
     tGearbox		*gearbox = &(trans->gearbox);
-    tDifferential	*differential;
+    tDifferential	*differential = NULL;
 
     switch(trans->type) {
     case TRANS_RWD:
@@ -187,64 +187,60 @@ SimGearboxUpdate(tCar *car)
 		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 	    }
 	}
-    } else {
-	if ((car->ctrl->gear > gearbox->gear)) {
-	    if (car->ctrl->gear <= gearbox->gearMax) {
-		gearbox->gear = car->ctrl->gear;
-		if (gearbox->gear > 0) {
-		    clutch->plip = 0.5;
-		} else {
-		    clutch->plip = 0.0;
-		}
-		clutch->state = CLUTCH_RELEASING;
-		if ((gearbox->gear != 1) && (gearbox->gear != 0)) {
-		    clutch->timeToRelease = clutch->releaseTime;
-		} else {
-		    clutch->timeToRelease = 0;
-		}
-		trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
-		trans->curI = trans->freeI[gearbox->gear+1];
-		differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
-		differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-		if (trans->type == TRANS_4WD) {
-		    differential = &(trans->differential[TRANS_FRONT_DIFF]);
-		    differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		    differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-		    differential = &(trans->differential[TRANS_REAR_DIFF]);
-		    differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		    differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-		}
+    } else if ((car->ctrl->gear > gearbox->gear)) {
+	if (car->ctrl->gear <= gearbox->gearMax) {
+	    gearbox->gear = car->ctrl->gear;
+	    if (gearbox->gear > 0) {
+		clutch->plip = 0.5;
+	    } else {
+		clutch->plip = 0.0;
 	    }
-	} else {
-	    if ((car->ctrl->gear < gearbox->gear)) {
-		if (car->ctrl->gear >= gearbox->gearMin) {
-		    gearbox->gear = car->ctrl->gear;
-		    if (gearbox->gear > 0) {
-			clutch->plip = 0.8;
-		    } else {
-			clutch->plip = 0.0;
-		    }
-		    clutch->state = CLUTCH_RELEASING;
-		    if (gearbox->gear != 0) {
-			clutch->timeToRelease = clutch->releaseTime;
-		    } else {
-			clutch->timeToRelease = 0;
-		    }
-		    trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
-		    trans->curI = trans->freeI[gearbox->gear+1];
-		    differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
-		    differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		    differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-		    if (trans->type == TRANS_4WD) {
-			differential = &(trans->differential[TRANS_FRONT_DIFF]);
-			differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-			differential = &(trans->differential[TRANS_REAR_DIFF]);
-			differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-		    }
-		}
+	    clutch->state = CLUTCH_RELEASING;
+	    if ((gearbox->gear != 1) && (gearbox->gear != 0)) {
+		clutch->timeToRelease = clutch->releaseTime;
+	    } else {
+		clutch->timeToRelease = 0;
+	    }
+	    trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
+	    trans->curI = trans->freeI[gearbox->gear+1];
+	    differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
+	    differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+	    differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+	    if (trans->type == TRANS_4WD) {
+		differential = &(trans->differential[TRANS_FRONT_DIFF]);
+		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+		differential = &(trans->differential[TRANS_REAR_DIFF]);
+		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+	    }
+	}
+    } else if ((car->ctrl->gear < gearbox->gear)) {
+	if (car->ctrl->gear >= gearbox->gearMin) {
+	    gearbox->gear = car->ctrl->gear;
+	    if (gearbox->gear > 0) {
+		clutch->plip = 0.8;
+	    } else {
+		clutch->plip = 0.0;
+	    }
+	    clutch->state = CLUTCH_RELEASING;
+	    if (gearbox->gear != 0) {
+		clutch->timeToRelease = clutch->releaseTime;
+	    } else {
+		clutch->timeToRelease = 0;
+	    }
+	    trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
+	    trans->curI = trans->freeI[gearbox->gear+1];
+	    differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
+	    differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+	    differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+	    if (trans->type == TRANS_4WD) {
+		differential = &(trans->differential[TRANS_FRONT_DIFF]);
+		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+		differential = &(trans->differential[TRANS_REAR_DIFF]);
+		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 	    }
 	}
     }

@@ -96,6 +96,8 @@ typedef struct
     sgMat4	posMat;
     DtShapeRef	shape;		/* for collision */
     int		blocked;
+    int		dammage;
+    
 } tCar;
 
 #endif /* _CAR__H_ */ 

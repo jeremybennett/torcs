@@ -19,6 +19,9 @@
 
 #include "sim.h"
 
+#define ROAD_DAMMAGE	5
+#define BARRIER_DAMMAGE	5
+#define CAR_DAMMAGE	0.1
 
 void
 SimCarCollideZ(tCar *car)
@@ -42,6 +45,7 @@ SimCarCollideZ(tCar *car)
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
+		car->dammage += ROAD_DAMMAGE * fabs(dotProd);
 	    }
 	}
     }
@@ -95,6 +99,8 @@ SimCarCollideXYScene(tCar *car)
 	
 	/* rebound */
 	dotProd = normal.x * corner->vel.x + normal.y * corner->vel.y;
+	car->dammage += BARRIER_DAMMAGE * fabs(dotProd);
+
 	if (dotProd < 0) {
 	    car->collision |= 2;
 	    car->normal = normal;
@@ -213,6 +219,9 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     j = -(1 + e) * sgScalarProductVec2(v1ab, n) /
 	((car1->Minv + car2->Minv) +
 	 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
+
+    car1->dammage += CAR_DAMMAGE * fabs(j);
+    car2->dammage += CAR_DAMMAGE * fabs(j);
 
 /*     if (j < 0) { */
 /* 	return; */

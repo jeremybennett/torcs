@@ -65,8 +65,8 @@ SimAeroUpdate(tCar *car, tSituation *s)
 	    if ((otherCar->DynGC.vel.x > 10.0) &&
 		(fabs(yaw - otherYaw) < 0.1396) && 
 		(fabs(tmpsdpang) > 3.002)) { 
-		tmpas = car->DynGC.vel.x - otherCar->DynGC.vel.x * 0.3 * 
-		    exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+		tmpas = car->DynGC.vel.x - otherCar->DynGC.vel.x * 0.5 * 
+		    exp(- 1.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 			     (otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		if (tmpas < airSpeed) {
 		    airSpeed = tmpas;
@@ -76,7 +76,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
     }
     car->airSpeed2 = airSpeed * airSpeed;
     tdble v2 = car->airSpeed2;
-    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2;
+    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0);
 
     hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
     hm = hm*hm;
@@ -115,7 +115,7 @@ SimWingUpdate(tCar *car, int index)
     tdble vt2 = car->airSpeed2;
     
     if (car->DynGC.vel.x > 0.0) {
-	wing->forces.x = wing->Kx * vt2;
+	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0);
 	wing->forces.z = wing->Kz * vt2;
     } else {
 	wing->forces.x = wing->forces.z = 0;

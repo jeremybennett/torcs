@@ -40,7 +40,16 @@ t3Dd vectEnd[16];
 static void
 ctrlCheck(tCar *car)
 {
-    if (car->carElt->_state & RM_CAR_STATE_FINISH) {
+    if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
+	car->ctrl->accelCmd = 0.0;
+	car->ctrl->brakeCmd = 0.1;
+	car->ctrl->gear = 0;
+	if (car->trkPos.toRight >  car->trkPos.seg->width / 2.0) {
+	    car->ctrl->steer = 0.2;
+	} else {
+	    car->ctrl->steer = -0.2;
+	}
+    } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
 	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.05);
 	if (car->DynGC.vel.x > 20.0) {
 	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
@@ -126,6 +135,50 @@ SimReConfig(tCarElt *carElt)
 	car->fuel += carElt->pitcmd->fuel;
 	if (car->fuel > car->tank) car->fuel = car->tank;
     }
+    if (carElt->pitcmd->repair > 0) {
+	car->dammage -= carElt->pitcmd->repair;
+	if (car->dammage < 0) car->dammage = 0;
+    }
+}
+
+static void
+RemoveCar(tCar *car, tSituation *s)
+{
+    int		i;
+    tCarElt 	*carElt;
+    tTrkLocPos	trkPos;
+
+    carElt = car->carElt;
+
+    if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	return;
+    }
+    carElt->_state |= RM_CAR_STATE_BROKEN;
+    carElt->_gear = car->transmission.gearbox.gear = 0;
+  
+    if (!(carElt->_state & RM_CAR_STATE_DNF)) {
+	if (fabs(carElt->_speed_x) > 1.0) {
+	    return;
+	}
+	carElt->_state |= RM_CAR_STATE_OUT;
+    }
+
+    carElt->_enginerpm = car->engine.rads = 0;
+    carElt->priv->collision = car->collision = 0;
+    for(i = 0; i < 3; i++) {
+	carElt->_skid[i] = 0;
+	carElt->_wheelSpinVel(i) = 0;
+    }
+    carElt->pub->DynGC = car->DynGC;
+    carElt->_speed_x = 0;
+    trkPos = car->trkPos;
+    trkPos.toRight = -3.0;
+    trkPos.type = TR_LPOS_TRACK;
+    RtTrackLocal2Global(&trkPos, &(carElt->_pos_X), &(carElt->_pos_Y), TR_TORIGHT);
+    carElt->_pos_Z += 3.0;
+    car->DynGC = carElt->pub->DynGC;
+    sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 }
 
 
@@ -152,6 +205,14 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	    continue;
 	}
+
+	if (car->dammage > 10000) {
+	    RemoveCar(car, s);
+	    if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+		continue;
+	    }
+	}
+
 
 	ctrlCheck(car);
 	SimSteerUpdate(car);
@@ -205,7 +266,7 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->_enginerpm = car->engine.rads;
 	carElt->_fuel = car->fuel;
 	carElt->priv->collision |= car->collision;
-	
+	carElt->_dammage = car->dammage;
 
 	/* Simulation vectors */
 	if (car->collision > 1) {

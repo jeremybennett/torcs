@@ -47,19 +47,19 @@
     </section>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="8"></attnum>
+      <attnum name="track step" unit="m" val="15"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
-      <attnum name="border step" unit="m" val="30"></attnum>
+      <attnum name="border step" unit="m" val="40"></attnum>
       <attnum name="border height" unit="m" val="0"></attnum>
       <attstr name="orientation" val="clockwise"></attstr>
       <attstr name="relief file" val="e-track-3-relief.ac"></attstr>
     </section>
 
     <section name="Turn Marks">
-      <attnum name="width" val="1.0" unit="m"></attnum>
-      <attnum name="height" val="1.0" unit="m"></attnum>
-      <attnum name="vertical space" val="0" unit="m"></attnum>
-      <attnum name="horizontal space" val="0.5" unit="m"></attnum>
+      <attnum name="width" val="3.0" unit="m"></attnum>
+      <attnum name="height" val="2.0" unit="m"></attnum>
+      <attnum name="vertical space" val="1.0" unit="m"></attnum>
+      <attnum name="horizontal space" val="0.0" unit="m"></attnum>
     </section>
   </section>
 
