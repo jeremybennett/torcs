@@ -181,8 +181,10 @@ TODO for 1.2.4 (estimate: early July)
 - S3TC Option for all textures (with option).
 - Scale down for all textures on load (user adjustable to improve performance).
 - Bugfixes and cleanup.
-- Add cameras/update track format on/for several tracks (spring, alpine,
-  aalborg, ...).
+- Rework eroad (mainly artwork).
+- Rework g-track-1 (format version 4, add pits on straight, update artwork).
+- Fix fence transparency (g-track-3, spring).
+- Add cameras (alpine, spring)
 - solution for varying gl headers (include mesa headers into the source?)
 - Smoke starts too high above ground, review? [done, updating CVS soon - C.]
 - Sound performance problem (no facts, just a feeling at the moment, wait for
@@ -314,5 +316,5 @@ IDEAS FOR MUCH LATER
 - Switch to rigid body engine?
 - Force feedback.
 - (Compressed data files?)
-
+- Story mode with message.
 
