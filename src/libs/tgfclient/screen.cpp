@@ -149,7 +149,7 @@ void GfScrInit(int argc, char *argv[])
 		visualDepthBits = 24;
 		visualSupportsMultisample = true;
 		visualSupportsAlpha = false;
-		glutInitDisplayString("rgba double depth>=24 samples");
+		glutInitDisplayString("rgb double depth>=24 samples");
 	}
 
 	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
@@ -157,7 +157,7 @@ void GfScrInit(int argc, char *argv[])
 		visualDepthBits = 24;
 		visualSupportsMultisample = false;
 		visualSupportsAlpha = false;
-		glutInitDisplayString("rgba double depth>=24");
+		glutInitDisplayString("rgb double depth>=24");
 	}
 
 	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
@@ -173,7 +173,7 @@ void GfScrInit(int argc, char *argv[])
 		visualDepthBits = 16;
 		visualSupportsMultisample = false;
 		visualSupportsAlpha = false;
-		glutInitDisplayString("rgba double depth>=16");
+		glutInitDisplayString("rgb double depth>=16");
 	}
 
 	printf("Visual Properties Report\n");
