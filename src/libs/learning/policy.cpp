@@ -66,8 +66,8 @@ DiscretePolicy::DiscretePolicy (int n_states, int n_actions, float alpha,
 		}
 	}
 	pQ = 0.0;
-	ps = 0;
-	pa = 0;
+	ps = -1;
+	pa = -1;
 	min_el_state = 0;
 	max_el_state = n_states -1;
 	eval = new float[n_actions];
@@ -115,31 +115,39 @@ int DiscretePolicy::SelectAction (int s, float r)
 	} else {
 		a = eGreedy (Q[s]);
 	}
-
-	float delta = r + gamma*Q[s][a] - Q[ps][pa];
-	e[ps][pa] += 1.0;
-	float ad = alpha*delta;
-	float gl = gamma * lambda;
 	
-	if (ps<min_el_state) min_el_state = ps;
-	if (ps>max_el_state) max_el_state = ps;
-	for (int i=0; i<n_states; i++) {
-		//for (int i=min_el_state; i<=max_el_state; i++) {
-		bool el=true;
-		for (int j=0; j<n_actions; j++) {
-			if (e[i][j]>0.01) {
-				Q[i][j] += ad * e[i][j];
-				e[i][j] *= gl;
-			} else {
-				e[i][j] = 0.0;
-				el = false;
+	// do not update before we have selected any actions(!)
+	// [a stricter implementation would solve this problem]
+	if ((ps>=0)&&(pa>=0)) {
+		float delta = r + gamma*Q[s][a] - Q[ps][pa];
+		e[ps][pa] += 1.0;
+		float ad = alpha*delta;
+		float gl = gamma * lambda;
+		
+		//possible use for when we have too many states.. not
+		//necessary at the moment
+		/*
+		  if (ps<min_el_state) min_el_state = ps;
+		  if (ps>max_el_state) max_el_state = ps;
+		*/
+		for (int i=0; i<n_states; i++) {
+			//for (int i=min_el_state; i<=max_el_state; i++) {
+			bool el=true;
+			for (int j=0; j<n_actions; j++) {
+				if (e[i][j]>0.01) {
+					Q[i][j] += ad * e[i][j];
+					e[i][j] *= gl;
+				} else {
+					e[i][j] = 0.0;
+					el = false;
+				}
 			}
-		}
-		if (el==false) {
-			if (min_el_state==i)
-				min_el_state++;
-		} else {
-			max_el_state = i;
+			if (el==false) {
+				if (min_el_state==i)
+					min_el_state++;
+			} else {
+				max_el_state = i;
+			}
 		}
 	}
 
