@@ -200,8 +200,8 @@ static tdble      Trightprev[10];
 static tdble lastBrkCmd[10] = {0};
 static tdble lastAccel[10];
 
-static tdble AccSteer[10] = { 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
-static tdble AccAngle[10] = { 3.0, 3.0, 3.0, 0.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0 };
+static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
 
@@ -233,11 +233,11 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	}
 	
 	
-	if ((slip > 0.3) && (car->_gear > 1)) {
-	    car->ctrl->accelCmd = 0;
+	if ((slip > 1.0) && (car->_gear > 1)) {
+	    car->ctrl->accelCmd /= 2.0;
 	    //lastAccel = 0.0;
 	} else {
-	    RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 3.0);
+	    //RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 30.0);
 	}
 	
     } else {
