@@ -56,12 +56,12 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"/>    
-    <attnum name="body length" unit="m" val="4.56"/>
-    <attnum name="body width" unit="m" val="2.08"/>
+    <attnum name="body length" unit="m" val="5.0"/>
+    <attnum name="body width" unit="m" val="1.92"/>
     <attnum name="body height" unit="m" val="1.12"/>
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" val="4.56"/>
-    <attnum name="overall width"  unit="m" val="2.08"/>
+    <attnum name="overall length" unit="m" val="5.0"/>
+    <attnum name="overall width"  unit="m" val="1.92"/>
     <attnum name="mass" unit="kg" val="1200.0"/>
     <attnum name="GC height" unit="m" val="0.20"/>
     <!-- weight bias -->
