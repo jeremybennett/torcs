@@ -15,19 +15,18 @@
 <!DOCTYPE params SYSTEM "../../../../libs/tgf/params.dtd">
 
 <params name="" type="template">
-
   <section name="Simulation Parameters">
-    <attnum name="PGain"     val="0.022"/>
+    <attnum name="PGain"     val="0.02"/>
     <attnum name="AGain"     val="0.00"/>
     <attnum name="PnGain"    val="0.02"/>
     <attnum name="Advance"   val="145.0"/>
     <attnum name="Advance2"  val="20.0"/>
     <attnum name="AdvStep"   val="5.0"/>
-    <attnum name="VGain"     val="0.0"/>
+    <attnum name="VGain"     val="0.00"/>
     <attnum name="preDy"     val="0"/>
     <attnum name="spdtgt"    val="700.0"/>
     <attnum name="spdtgt2"   val="2.0"/>
-    <attnum name="steerMult" val="1.0"/>
+    <attnum name="steerMult" val="0.5"/>
     <attnum name="offset"    val="-12.0"/>
     <attnum name="damage threshold" val="2000"/>
 

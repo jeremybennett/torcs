@@ -153,7 +153,7 @@ ReUpdateStandings(void)
 	}
 	/* bubble sort... */
 	while (j > 0) {
-	    if (standings[j - 1].points > standings[j].points) {
+	    if (standings[j - 1].points >= standings[j].points) {
 		break;
 	    }
 	    /* Swap with preceeding */

@@ -18,7 +18,7 @@
 
   <section name="Modules">
     <attstr name="track" val="track"/>
-    <attstr name="simu" val="simuv2"/>
+    <attstr name="simu" val="simuv3"/>
     <attstr name="graphic" val="ssggraph"/>
   </section>
 

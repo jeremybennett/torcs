@@ -53,13 +53,14 @@ ReUpdtPitTime(tCarElt *car)
 {
     tSituation	*s = ReInfo->s;
     tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
+    int		i;
 
     switch (car->_pitStopType) {
     case RM_PIT_REPAIR:
 	info->totalPitTime = 2.0 + fabs(car->_pitFuel) / 8.0 + (tdble)(fabs(car->_pitRepair)) * 0.007;
 	car->_scheduledEventTime = s->currentTime + info->totalPitTime;
 	ReInfo->_reSimItf.reconfig(car);
-	for (int i=0; i<4; i++) {
+	for (i=0; i<4; i++) {
 		car->_tyreCondition(i) = 1.01;
 		car->_tyreT_in(i) = 50.0;
 		car->_tyreT_mid(i) = 50.0;
@@ -482,11 +483,11 @@ ReOneStep(double deltaTimeIncrement)
     tSituation	*s = ReInfo->s;
 
     if (floor(s->currentTime) == -2.0) {
-	ReRaceBigMsgSet("Ready !", 1.0);
+	ReRaceBigMsgSet("Ready", 1.0);
     } else if (floor(s->currentTime) == -1.0) {
-	ReRaceBigMsgSet("", 1.0);
+	ReRaceBigMsgSet("Set", 1.0);
     } else if (floor(s->currentTime) == 0.0) {
-	ReRaceBigMsgSet("", 1.0);
+	ReRaceBigMsgSet("Go", 1.0);
     }
 
     ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */

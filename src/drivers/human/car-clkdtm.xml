@@ -22,7 +22,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" min="0" max="80" unit="deg" val="5"/>
+    <attnum name="angle" min="0" max="80" unit="deg" val="10"/>
   </section>
 
 
@@ -59,7 +59,7 @@
 	<attnum name="efficiency" val="0.948"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.60"/>
+	<attnum name="ratio" min="0" max="5" val="0.63"/>
 	<attnum name="inertia" val="0.0150"/>
 	<attnum name="efficiency" val="0.940"/>
       </section>
@@ -73,8 +73,8 @@
 
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-    <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="FREE"/>
-    <attnum name="ratio" min="0" max="10" val="4.5"/>
+    <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
+    <attnum name="ratio" min="0" max="10" val="6.0"/>
   </section>
 
   <section name="Front Anti-Roll Bar">

@@ -582,7 +582,7 @@ windowsDirGetListFiltered(char *dir, char *suffix)
     int		fnameLg;
 
     if ((suffix == NULL) || (strlen(suffix) == 0))
-	return linuxDirGetList(dir);
+	return windowsDirGetList(dir);
 
     suffixLg = strlen(suffix);
 	

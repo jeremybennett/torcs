@@ -426,6 +426,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     }
 
     adv[idx] = Advance[idx] + 5.0 * sqrt(fabs(car->_speed_x));
+
     TRightRef = seg->width / 2.0 + Offset[idx] + DynOffset[idx];
     if (s->currentTime > hold[idx]) {
 	    Tright[idx] = TRightRef;

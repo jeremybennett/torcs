@@ -52,7 +52,7 @@
 #define SetPoint(p, a, b, c) (p).x = a; (p).y = b; (p).z = c;
 
 #ifndef M_PI
-#define M_PI 3.1415927
+#define M_PI 3.14159267
 #endif
 extern int far_dist;
 void computeTriNorm(ob_t * object );
@@ -1876,6 +1876,9 @@ void computeObjectTriNorm(ob_t * object )
 
 int checkMustSmoothVector(point_t *n1, point_t *n2,point_t *t1, point_t *t2)
 {
+    return FALSE;
+    
+
     double dot, cos_angle;
     cos_angle = cos(smooth_angle * M_PI / 180.0);
     if ( fabs(t1->x - t2->x)<=0.05 &&

@@ -15,11 +15,14 @@ EXPORTS
 	GfModInfoDir
 	GfModFreeInfoList
 	GfDirGetList
+	GfDirGetListFiltered
 	GfDirFreeList
 	GfParmReadFile
+	GfParmSetDTD
 	GfParmWriteFile
 	GfParmGetName
 	GfParmGetStr
+	GetDataDir
 	GfParmGetCurStr
 	GfParmSetStr
 	GfParmSetCurStr
