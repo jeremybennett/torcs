@@ -205,14 +205,14 @@ struct {								\
  */
 #define TAILQ_HEAD(name, type)						\
 typedef struct name {							\
-	struct type *tqh_first;	/* first element */			\
-	struct type **tqh_last;	/* addr of last next element */		\
+	type *tqh_first;	/* first element */			\
+	type **tqh_last;	/* addr of last next element */		\
 } t ## name
 
 #define TAILQ_ENTRY(type)						\
 struct {								\
-	struct type *tqe_next;	/* next element */			\
-	struct type **tqe_prev;	/* address of previous next element */	\
+	type *tqe_next;	/* next element */			\
+	type **tqe_prev;	/* address of previous next element */	\
 }
 
 

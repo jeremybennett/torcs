@@ -48,8 +48,8 @@ typedef struct
 
 
 static tCtrl	controlList[] = {
-    {"Joystick",	HM_VAL_JOYSTICK, NULL},
-    {"Mouse/keyboard",	HM_VAL_MOUSE,    NULL}
+    {"Joystick",		HM_VAL_JOYSTICK, NULL},
+    {"Mouse/keyboard/Pad",	HM_VAL_MOUSE,    NULL}
 };
 
 static const int dfltCtrl = 1;
