@@ -42,7 +42,7 @@ AC_CHECK_PROG(LD, ld, :, ld, /usr/bin/gxx)
 AC_C_BIGENDIAN
 
 AC_PATH_X
-#CFLAGS="-ansi -Wall -Wstrict-prototypes"
+#CFLAGS="-ansi -Wall -Wstrict-prototypes -W"
 ADDCFLAGS="-Wall -Wstrict-prototypes"
 AC_ARG_ENABLE(debug,
 	[  --enable-debug          set the debug mode], 
@@ -58,6 +58,8 @@ AC_ARG_ENABLE(profiler,
 	[  --enable-profiler       set the profiler mode], 
 	ADDCFLAGS="$ADDCFLAGS -DPROFILER",
 	ADDCFLAGS="$ADDCFLAGS")
+
+ADDCFLAGS="$ADDCFLAGS -mieee-fp"
 
 CFLAGS="$CFLAGS $ADDCFLAGS"
 CXXFLAGS="$CXXFLAGS $ADDCFLAGS"
@@ -132,23 +134,6 @@ int main() {
 ],
   AC_MSG_RESULT(yes),
   [AC_MSG_RESULT([PLIB 1.6.0 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.6.0 is really the version installed on your system.])],
-  AC_MSG_RESULT(yes)
-)
-
-dnl Check the GL capabilities
-ADDCFLAGS=""
-AC_MSG_CHECKING([for OpenGL driver ALPHA capabilities])
-AC_TRY_RUN([
-#include <GL/glut.h>
-
-int main(int argc, char *argv[]) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE | GLUT_ALPHA);
-    return 0;
-}
-],
-  AC_MSG_RESULT(yes),
-  [ADDCFLAGS="-DNO_ALPHA_DISPLAY"; AC_MSG_RESULT([no, you won't be able to display the inrace map])],
   AC_MSG_RESULT(yes)
 )
 
