@@ -76,6 +76,7 @@ class Driver {
 		float filterABS(float brake);
 		float filterBPit(float brake);
 		float filterBrakeSpeed(float brake);
+		float filterTurnSpeed(float brake);
 
 		float filterTCL(float accel);
 		float filterTrk(float accel);
@@ -94,6 +95,7 @@ class Driver {
 		/* per robot global data */
 		int stuck;
 		float trackangle;		/* the angle of the current track segment (global coordinates) */
+		float speedangle;		/* the angle of the speed vector relative to trackangle, > 0.0 points to right */
 		float angle;			/* the angle of the car relative to the current segment */
 		float speed;			/* speed in track direction */
 		float mass;				/* mass of car + fuel */
@@ -145,7 +147,8 @@ class Driver {
 		static const float MAX_FUEL_PER_METER;
 		static const float CLUTCH_SPEED;
 		static const float CENTERDIV;
-		
+		static const float DISTCUTOFF;
+
 		/* track variables */
 		tTrack* track;
 };

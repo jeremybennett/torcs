@@ -49,6 +49,7 @@ const float Driver::MAX_SPEED = 84.0;						/* [m/s] */
 const float Driver::MAX_FUEL_PER_METER = 0.0008;			/* [liter/m] fuel consumtion */
 const float Driver::CLUTCH_SPEED = 5.0;						/* [m/s] */
 const float Driver::CENTERDIV = 0.1;						/* [-] (factor) [0.01..0.6] */
+const float Driver::DISTCUTOFF = 200.0;						/* [m] */
 
 Driver::Driver(int index)
 {
@@ -142,7 +143,7 @@ void Driver::drive(tSituation *s)
 	} else {
 		car->_steerCmd = filterSColl(getSteer());
 		car->_gearCmd = getGear();
-		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
+		car->_brakeCmd = filterABS(filterBrakeSpeed(filterTurnSpeed(filterBColl(filterBPit(getBrake())))));
 		if (car->_brakeCmd == 0.0) {
 			car->_accelCmd = filterTCL(filterTrk(getAccel()));
 			car->_clutchCmd = getClutch();
@@ -235,28 +236,35 @@ float Driver::getAccel()
 /* Compute initial brake value */
 float Driver::getBrake()
 {
-	tTrackSeg *segptr = car->_trkPos.seg;
-	float mu = segptr->surface->kFriction;//*TIREMU*MU_FACTOR;
-	float maxlookaheaddist = currentspeedsqr/(2.0*mu*G);
-	float lookaheaddist = getDistToSegEnd();
+	// Car drives backward?
+	if (car->_speed_x < -MAX_UNSTUCK_SPEED) {
+		// Yes, brake.
+		return 1.0;
+	} else {
+		// We drive forward, normal braking.
+		tTrackSeg *segptr = car->_trkPos.seg;
+		float mu = segptr->surface->kFriction;//*TIREMU*MU_FACTOR;
+		float maxlookaheaddist = currentspeedsqr/(2.0*mu*G);
+		float lookaheaddist = getDistToSegEnd();
 
-	float allowedspeed = getAllowedSpeed(segptr);
-	if (allowedspeed < car->_speed_x) {
-		return MIN(1.0, (car->_speed_x-allowedspeed)/(FULL_ACCEL_MARGIN));
-	}
-
-	segptr = segptr->next;
-	while (lookaheaddist < maxlookaheaddist) {
-		allowedspeed = getAllowedSpeed(segptr);
+		float allowedspeed = getAllowedSpeed(segptr);
 		if (allowedspeed < car->_speed_x) {
-			if (brakedist(allowedspeed, mu) > lookaheaddist) {
-				return 1.0;
-			}
+			return MIN(1.0, (car->_speed_x-allowedspeed)/(FULL_ACCEL_MARGIN));
 		}
-		lookaheaddist += segptr->length;
+
 		segptr = segptr->next;
+		while (lookaheaddist < maxlookaheaddist) {
+			allowedspeed = getAllowedSpeed(segptr);
+			if (allowedspeed < car->_speed_x) {
+				if (brakedist(allowedspeed, mu) > lookaheaddist) {
+					return 1.0;
+				}
+			}
+			lookaheaddist += segptr->length;
+			segptr = segptr->next;
+		}
+		return 0.0;
 	}
-	return 0.0;
 }
 
 
@@ -412,7 +420,7 @@ float Driver::getOvertakeOffset()
 			float length = getDistToSegEnd();
 			float oldlen, seglen = length;
 			float lenright = 0.0, lenleft = 0.0;
-			mincatchdist = MIN(mincatchdist, 200.0);
+			mincatchdist = MIN(mincatchdist, DISTCUTOFF);
 
 			do {
 				switch (seg->type) {
@@ -476,6 +484,8 @@ float Driver::getOvertakeOffset()
 void Driver::update(tSituation *s)
 {
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
+	speedangle = trackangle - atan2(car->_speed_Y, car->_speed_X);
+	NORM_PI_PI(speedangle);
 	angle = trackangle - car->_yaw;
 	NORM_PI_PI(angle);
 	mass = CARMASS + car->_fuel;
@@ -704,6 +714,51 @@ float Driver::filterABS(float brake)
 }
 
 
+// Brake filter to avoid leaving the track on the outside of a turn.
+float Driver::filterTurnSpeed(float brake)
+{
+	tTrackSeg *s = car->_trkPos.seg;
+	float side = (TR_RGT == s->type) ? 1.0 : -1.0;
+
+	if (s->type == TR_STR ||
+		car->_speed_x < MAX_UNSTUCK_SPEED ||
+		side*car->_trkPos.toMiddle < 0.0 ||		// car on the inside of the turn
+		side*speedangle > 0.0)					// car speed vector points inside the turn
+	{
+		return brake;
+	} else {
+		// Compute length to the turns end.
+		int type = s->type;
+		float dist = getDistToSegEnd();
+
+		while (s->next->type == type && dist < DISTCUTOFF) {
+			s = s->next;
+			dist += s->length;
+		}
+
+		// Compute speed perpendicular to the track side.
+		float carspeedsqr = car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y;
+		float orthspeed = sqrt(carspeedsqr - speed*speed);
+		// Compute distance to outer border.
+		float toBorder = fabs((type == TR_LFT) ? car->_trkPos.toRight : car->_trkPos.toLeft);
+		toBorder -= car->_dimension_y;
+		toBorder = MAX(0.0, toBorder);
+		// Guess times to side and to segments end. To commented code shows the intension.
+		// To avoid NaNs the expession is multiplied by speed*orthspeed.
+		// float timetosegend = dist/speed;
+		// float timetosegside = toBorder/orthspeed;
+		// if (timetosegside < timetosegend) {
+		if (toBorder*speed < dist*orthspeed) {
+			return 1.0;
+		} else {
+			return brake;
+		}
+	}
+
+//	return brake;
+}
+
+
 /* TCL filter for accelerator pedal */
 float Driver::filterTCL(float accel)
 {
@@ -759,8 +814,6 @@ float Driver::filterTCL_4WD()
 float Driver::filterTrk(float accel)
 {
 	tTrackSeg* seg = car->_trkPos.seg;
-	float speedangle = trackangle - atan2(car->_speed_Y, car->_speed_X);
-	NORM_PI_PI(speedangle);
 
 	if (car->_speed_x < MAX_UNSTUCK_SPEED ||
 		pit->getInPit() ||
@@ -794,12 +847,13 @@ float Driver::filterTrk(float accel)
 }
 
 
+// Compute the needed distance to brake.
 float Driver::brakedist(float allowedspeed, float mu)
 {
 	float c = mu*G;
-    float d = (CA*mu + CW)/mass;
-    float v1sqr = currentspeedsqr;
-    float v2sqr = allowedspeed*allowedspeed;
-    return -log((c + v2sqr*d)/(c + v1sqr*d))/(2.0*d);
+	float d = (CA*mu + CW)/mass;
+	float v1sqr = currentspeedsqr;
+	float v2sqr = allowedspeed*allowedspeed;
+	return -log((c + v2sqr*d)/(c + v1sqr*d))/(2.0*d);
 }
 
