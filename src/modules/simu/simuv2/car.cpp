@@ -175,9 +175,10 @@ SimCarUpdateForces(tCar *car)
 	F.F.z += car->wheel[i].forces.z;
 	/* moments */
 	F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * (car->statGC.z + car->wheel[i].rideHeight);
-		//car->wheel[i].rollCenter;
-	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
+	    car->wheel[i].forces.y * car->wheel[i].rollCenter;
+		// Eventually TODO: activate fix below and make all cars/robots fit.
+		//car->wheel[i].forces.y * (car->statGC.z + car->wheel[i].rideHeight);
+	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x +
 	    car->wheel[i].forces.x * (car->statGC.z + car->wheel[i].rideHeight);
 	F.M.z += -car->wheel[i].forces.x * car->wheel[i].staticPos.y +
 	    car->wheel[i].forces.y * car->wheel[i].staticPos.x;
@@ -185,7 +186,7 @@ SimCarUpdateForces(tCar *car)
 
     /* Aero Drag */
     F.F.x += car->aero.drag;
-    
+
     /* Wings & Aero Downforce */
     for (i = 0; i < 2; i++) {
 	/* forces */
