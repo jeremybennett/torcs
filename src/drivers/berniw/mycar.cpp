@@ -187,7 +187,7 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	mass = carmass + car->priv->fuel;
 	updateDError();
 	trtime += situation->deltaTime;
-	deltapitch = fabs(track->getSegmentPtr(currentsegid)->getKgamma() + me->_pitch);
+	deltapitch = MAX(-track->getSegmentPtr(currentsegid)->getKgamma() - me->_pitch, 0.0);
 }
 
 

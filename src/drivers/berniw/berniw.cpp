@@ -254,13 +254,17 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	/* check if we are on the way */
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
-		targetAngle = atan2(myc->currentpathseg->getDir()->y, myc->currentpathseg->getDir()->x);
-		targetAngle -= car->_yaw;
-		NORM_PI_PI(targetAngle);
 		if (myc->derror > myc->PATHERR) {
-			b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
-			tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
-			steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
+			v3d r;
+			myc->getDir()->crossProduct(myc->currentpathseg->getDir(), &r);
+			if (r.z*myc->getErrorSgn() >= 0.0) {
+				targetAngle = atan2(myc->currentpathseg->getDir()->y, myc->currentpathseg->getDir()->x);
+				targetAngle -= car->_yaw;
+				NORM_PI_PI(targetAngle);
+				b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
+				tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
+				steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
+			}
 		}
 	}
 
