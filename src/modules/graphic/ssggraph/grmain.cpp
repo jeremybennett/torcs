@@ -383,7 +383,7 @@ shutdownCars(void)
 	    TheScene->removeKid(grCarInfo[i].carTransform);
 	    TheScene->removeKid(grCarInfo[i].shadowAnchor);
 	}
-	if (ThePits) TheScene->removeKid(ThePits);
+	if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) TheScene->removeKid(ThePits);
 	ThePits = 0;
 	free(grCarInfo);
     }
