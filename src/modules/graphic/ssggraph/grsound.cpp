@@ -55,6 +55,8 @@ grInitSound(void)
     char	buf[256];
     int		i;
 
+    GfOut("-- grInitSound\n");
+
     sched = new slScheduler(44100);
     
     sched->setSafetyMargin(0.128f);
@@ -93,24 +95,33 @@ grShutdownSound(void)
 {
     int i;
 
+    GfOut("-- grShutdownSound\n");
+    
     if (!soundInitialized) {
 	return;
     }
     soundInitialized = 0;
     sched->stopSample(skidSample);
     sched->stopSample(engSample);
-    sched->stopSample(crashSample[curCrashSnd]);
+    //sched->stopSample(crashSample[curCrashSnd]);
+    for (i = 0; i < NB_CRASH_SOUND; i++) {
+	sched->stopSample(crashSample[i]);
+    }
     sched->addSampleEnvelope(engSample, 0, 0, NULL, SL_PITCH_ENVELOPE);
     delete pitchEnv;
     sched->addSampleEnvelope(skidSample, 0, 0, NULL, SL_VOLUME_ENVELOPE);
     delete volEnv;
     sched->update();
-    delete engSample;
     for (i = 0; i < NB_CRASH_SOUND; i++) {
 	delete crashSample[i];
     }
+    delete engSample;
     delete skidSample;
     delete sched;
+    if (__slPendingError) {
+	GfOut("!!! error ignored: %s\n", __slPendingError);
+	__slPendingError = 0;	/* ARG!!! ugly ugly bad thing... may be a plib bug after all... */
+    }
 }
 
 

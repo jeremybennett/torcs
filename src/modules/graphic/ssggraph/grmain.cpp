@@ -294,7 +294,7 @@ refresh(tSituation *s)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
-    glDisable(GL_LIGHTING);
+    /* glDisable(GL_LIGHTING); */
     grDrawScene();
     STOP_PROFILE("grDrawScene*");
 
@@ -398,8 +398,8 @@ initCars(tSituation *s)
     grInitSmoke(s->_ncars);
 
 
-    int nb = grPruneTree(TheScene, true);
-    GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);
+    //int nb = grPruneTree(TheScene, true);
+    //GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);
 
     return 0;
     
@@ -408,17 +408,22 @@ initCars(tSituation *s)
 void
 shutdownCars(void)
 {
-    int i;
-    
+    /* int i; */
+
+    GfOut("-- shutdownCars\n");
+
     if (grNbCars) {
 	grShutdownSkidmarks();
 	grShutdownSmoke();
 	/* Delete ssg objects */
-	for (i = 0; i < grNbCars; i++) {
-	    TheScene->removeKid(grCarInfo[i].carTransform);
-	    TheScene->removeKid(grCarInfo[i].shadowAnchor);
-	}
-	if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) TheScene->removeKid(ThePits);
+	CarsAnchor->removeAllKids();
+	ShadowAnchor->removeAllKids();
+	/* for (i = 0; i < grNbCars; i++) { */
+	/*     CarsAnchor->removeKid(grCarInfo[i].carTransform); */
+	/*     ShadowAnchor->removeKid(grCarInfo[i].shadowAnchor); */
+	/* } */
+	PitsAnchor->removeAllKids();
+	/* if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) PitsAnchor->removeKid(ThePits); */
 	ThePits = 0;
 	free(grCarInfo);
     }

@@ -59,7 +59,12 @@ AbandonRaceHookActivate(void *vforce)
 	/* RePostRace() */
 
 	/* ReEventShutdown() */
+	ReInfo->_reSimItf.shutdown();
+	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	    ReInfo->_reGraphicItf.shutdowncars();
+	}
 	ReInfo->_reGraphicItf.shutdowntrack();
+	ReRaceCleanDrivers();
 
 	/* Return to race menu */
 	ReInfo->_reState = RE_STATE_CONFIG;

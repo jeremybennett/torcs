@@ -33,6 +33,14 @@ extern int grWrldMaxSize;
 extern tTrack 	 *grTrack;
 
 extern ssgRoot *TheScene;
+extern ssgBranch *SunAnchor;
+extern ssgBranch *LandAnchor;
+extern ssgBranch *CarsAnchor;
+extern ssgBranch *ShadowAnchor;
+extern ssgBranch *PitsAnchor;
+extern ssgBranch *SmokeAnchor;
+extern ssgBranch *SkidAnchor;
+
 extern ssgBranch *ThePits;
 
 extern int grInitScene(void);

@@ -68,6 +68,16 @@ grMultiTexState	*grEnvShadowState=NULL;
 #define BG_DIST		1.0
 
 ssgRoot *TheScene = 0;
+
+/* TheScene kid order */
+ssgBranch *SunAnchor = 0;
+ssgBranch *LandAnchor = 0;
+ssgBranch *CarsAnchor = 0;
+ssgBranch *ShadowAnchor = 0;
+ssgBranch *PitsAnchor = 0;
+ssgBranch *SmokeAnchor = 0;
+ssgBranch *SkidAnchor = 0;
+
 ssgBranch *ThePits = 0;
 ssgTransform *sun = NULL ;
 
@@ -419,7 +429,7 @@ grInitScene(void)
 	sun      = new ssgTransform ;
 	sun      -> setTransform    ( light_position ) ;
 	sun      -> addKid          ( sun_obj  ) ;
-	TheScene    -> addKid(sun) ;
+	SunAnchor-> addKid(sun) ;
     }
 
     /* GUIONS GL_TRUE */
@@ -467,6 +477,35 @@ grLoadScene(tTrack *track)
     ssgAddTextureFormat(".png", grLoadPngTexture);
     grTrack = track;
     TheScene = new ssgRoot;
+
+    /* Landscape */
+    LandAnchor = new ssgBranch;
+    TheScene->addKid(LandAnchor);
+
+    /* Pit stops walls */
+    PitsAnchor = new ssgBranch;
+    TheScene->addKid(PitsAnchor);
+
+    /* Car shadows */
+    ShadowAnchor = new ssgBranch;
+    TheScene->addKid(ShadowAnchor);
+
+    /* Skid Marks */
+    SkidAnchor = new ssgBranch;
+    TheScene->addKid(SkidAnchor);
+
+    /* Cars */
+    CarsAnchor = new ssgBranch;
+    TheScene->addKid(CarsAnchor);
+
+    /* Smoke */
+    SmokeAnchor = new ssgBranch;
+    TheScene->addKid(SmokeAnchor);
+
+    /* Lens Flares */
+    SunAnchor = new ssgBranch;
+    TheScene->addKid(SunAnchor);
+
     initBackground();
     
     grWrldX = (int)(track->max.x - track->min.x + 1);
@@ -486,7 +525,7 @@ grLoadScene(tTrack *track)
     /*desc = ssgLoad((const char *)acname*/ /* , (const ssgLoaderOptions *)&grloaderOptions *//* );*/
 
     desc = grssgLoadAC3D(acname, NULL);
-    TheScene->addKid(desc);
+    LandAnchor->addKid(desc);
 
     /* TheScene->setCallback(SSG_CALLBACK_PREDRAW, preScene); */
 #ifdef GUIONS
@@ -770,7 +809,7 @@ grCustomizePits(void)
     tdble		x2, y2, z2;
 
     ThePits = new ssgBranch();
-    TheScene->addKid(ThePits);
+    PitsAnchor->addKid(ThePits);
 
     pits = &(grTrack->pits);
     /* draw the pit identification */

@@ -78,10 +78,11 @@ void grInitSkidmarks(tCarElt *car)
     shd_nrm->add(nrm);
 
     if (skidState == NULL) {
-	skidState = new ssgSimpleState;
-	skidState->enable(GL_LIGHTING);
+	skidState = new ssgSimpleState();
+	skidState->disable(GL_LIGHTING);
+	skidState->enable(GL_BLEND);
 	skidState->disable(GL_TEXTURE_2D);
-	skidState->disable(GL_COLOR_MATERIAL);
+	skidState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     }
       
     grCarInfo[car->index].skidmarks = (tgrSkidmarks *)malloc(sizeof(tgrSkidmarks));
@@ -108,7 +109,7 @@ void grInitSkidmarks(tCarElt *car)
 	    grCarInfo[car->index].skidmarks->strips[i].vta[k]->setCullFace(0);
 	    grCarInfo[car->index].skidmarks->strips[i].vta[k]->setState(skidState);
 	    grCarInfo[car->index].skidmarks->strips[i].timeStrip = 0;
-	    TheScene->addKid(grCarInfo[car->index].skidmarks->strips[i].vta[k]);
+	    SkidAnchor->addKid(grCarInfo[car->index].skidmarks->strips[i].vta[k]);
 	}
 	/* no skid is in used */
 	grCarInfo[car->index].skidmarks->strips[i].running_skid = 0;
@@ -192,7 +193,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 		    if ( grCarInfo[car->index].skidmarks->strips[i].state[grCarInfo[car->index].skidmarks->strips[i].running_skid] == SKID_BEGIN)
 			{
 			    grCarInfo[car->index].skidmarks->strips[i].state[grCarInfo[car->index].skidmarks->strips[i].running_skid] = SKID_RUNNING;
-			    /*TheScene->addKid(grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]);*/
+			    /*SkidAnchor->addKid(grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]);*/
 			}
 		    grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->recalcBSphere();
 		    grCarInfo[car->index].skidmarks->strips[i].timeStrip=t;
@@ -225,21 +226,18 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 /** remove the skidmarks information for a car */
 void grShutdownSkidmarks (void)
 {
-    int i ;
-    int k ; 
+    int i;
     int z;
 
+    GfOut("-- grShutdownSkidmarks\n");
+    
     if (!grSkidMaxStripByWheel) {
 	return;
     }
 
+    SkidAnchor->removeAllKids();
     for (z = 0; z < grNbCars; z++) {
 	for (i = 0; i<4; i++) {
-	    for (k = 0; k < grSkidMaxStripByWheel; k++) {
-		if (grCarInfo[z].skidmarks->strips[i].state[k] != SKID_UNUSED) {
-		    TheScene->removeKid(grCarInfo[z].skidmarks->strips[i].vta[k]);
-		}
-	    }
 	    free(grCarInfo[z].skidmarks->strips[i].vtx);
 	    free(grCarInfo[z].skidmarks->strips[i].vta);
 	    free(grCarInfo[z].skidmarks->strips[i].state);

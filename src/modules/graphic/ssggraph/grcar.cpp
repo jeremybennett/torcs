@@ -95,6 +95,7 @@ static int grCarIndex;
 
 static ssgSimpleState *brakeState = NULL;
 static ssgSimpleState *commonState = NULL;
+static ssgSimpleState *shadowState = NULL;
 
 void
 grInitCommonState(void)
@@ -105,8 +106,6 @@ grInitCommonState(void)
 	brakeState->ref();
 	brakeState->disable(GL_LIGHTING);
 	brakeState->disable(GL_TEXTURE_2D);
-	brakeState->disable(GL_COLOR_MATERIAL);
-	brakeState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     }
 
     if (commonState == NULL) {
@@ -114,9 +113,20 @@ grInitCommonState(void)
 	commonState->ref();
 	commonState->disable(GL_LIGHTING);
 	commonState->disable(GL_TEXTURE_2D);
-	commonState->disable(GL_COLOR_MATERIAL);
 	commonState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
     }
+
+    if (shadowState == NULL) {
+	shadowState = new ssgSimpleState;
+	shadowState->ref();
+	shadowState->disable(GL_LIGHTING);
+	shadowState->disable(GL_TEXTURE_2D);
+	shadowState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+	shadowState->enable(GL_BLEND);
+	shadowState->setAlphaClamp(0.1);
+    }
+
+    
 }
 
 
@@ -393,10 +403,11 @@ grInitShadow(tCarElt *car)
     };
 
     grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, NULL, shd_clr);
-    grCarInfo[car->index].shadowBase->setState(commonState);
+    if (!shadowState) grInitCommonState();
+    grCarInfo[car->index].shadowBase->setState(shadowState);
     grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     grCarInfo[car->index].shadowAnchor->addKid(grCarInfo[car->index].shadowCurr);
-    TheScene->addKid(grCarInfo[car->index].shadowAnchor);
+    ShadowAnchor->addKid(grCarInfo[car->index].shadowAnchor);
 }
 
 
@@ -532,7 +543,7 @@ grInitCar(tCarElt *car)
     /* default range selection */
     LODSel->select(grCarInfo[index].LODSelectMask[0]);
 
-    TheScene->addKid(grCarInfo[index].carTransform);
+    CarsAnchor->addKid(grCarInfo[index].carTransform);
     
     //grCarInfo[index].carTransform->print(stdout, "-", 1);
 
@@ -556,7 +567,7 @@ grDrawShadow(tCarElt *car, int visible)
 
     if (visible) {
 	shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
-	shadow->setState(commonState);
+	shadow->setState(shadowState);
 	shadow->setCullFace(0);
 	shadow->getVertexList((void**)&vtx);
 

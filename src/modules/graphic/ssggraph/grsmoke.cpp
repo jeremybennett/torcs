@@ -99,7 +99,6 @@ void grInitSmoke(int index)
 	mst = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
 	if (mst!=NULL) {
 	    mst->disable(GL_LIGHTING);
-	    mst->disable(GL_COLOR_MATERIAL);
 	    mst->enable(GL_BLEND);
 	    mst->disable(GL_CULL_FACE);
 	    mst->setTranslucent();
@@ -111,7 +110,6 @@ void grInitSmoke(int index)
 	mstf0 = (ssgSimpleState*)grSsgLoadTexStateEx("fire0.rgb", buf, FALSE, FALSE);
 	if (mst!=NULL) {
 	    mstf0->disable(GL_LIGHTING);
-	    mstf0->disable(GL_COLOR_MATERIAL);
 	    mstf0->enable(GL_BLEND);
 	    mstf0->disable(GL_CULL_FACE);
 	    mstf0->setTranslucent();
@@ -123,7 +121,6 @@ void grInitSmoke(int index)
 	mstf1 = (ssgSimpleState*)grSsgLoadTexStateEx("fire1.rgb", buf, FALSE, FALSE);
 	if (mst!=NULL) {
 	    mstf1->disable(GL_LIGHTING);
-	    mstf1->disable(GL_COLOR_MATERIAL);
 	    mstf1->enable(GL_BLEND);
 	    mstf1->disable(GL_CULL_FACE);
 	    mstf1->setTranslucent();
@@ -154,7 +151,7 @@ void grUpdateSmoke(double t)
 	  
 	    smokeManager->number--;
 	  
-	    TheScene->removeKid(tmp->smoke);
+	    SmokeAnchor->removeKid(tmp->smoke);
 	    tmp2 = tmp;
 	    tmp = tmp->next;
 	    free(tmp2);
@@ -228,23 +225,6 @@ void grAddSmoke(tCarElt *car, double t)
 		    vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
 		    shd_vtx->add(vtx);
 		    tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
-		    /*
-		      sprintf(buf, "data/textures;data/img;.");
-		      st = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
-		      if (st!=NULL) {
-		      st->disable(GL_LIGHTING);
-		      st->disable(GL_COLOR_MATERIAL);
-		      st->enable(GL_BLEND);
-		      st->disable(GL_CULL_FACE);
-		      st->setTranslucent();
-		      st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-		      tmp->smoke->setState(st);    
-		      }
-		      else
-		      {
-		      printf("error loading smoke.rgb\n");
-		      }
-		    */
 		    tmp->smoke->setState(mst);    
 		    tmp->smoke->setCullFace(0);
 		    tmp->smoke->max_life = grSmokeLife * car->_skid[i];
@@ -258,7 +238,7 @@ void grAddSmoke(tCarElt *car, double t)
 		    tmp->next = NULL;
 		    tmp->smoke->lastTime = t;
 		    tmp->smoke->transform(grCarInfo[car->index].carPos);
-		    TheScene->addKid(tmp->smoke);
+		    SmokeAnchor->addKid(tmp->smoke);
 		    smokeManager->number++;
 		    if (smokeManager->smokeList==NULL) {
 			smokeManager->smokeList = tmp;
@@ -309,7 +289,7 @@ void grAddSmoke(tCarElt *car, double t)
 			tmp->next = NULL;
 			tmp->smoke->lastTime = t;
 			tmp->smoke->transform(grCarInfo[index].carPos);
-			TheScene->addKid(tmp->smoke);
+			SmokeAnchor->addKid(tmp->smoke);
 			smokeManager->number++;
 			if (smokeManager->smokeList==NULL) {
 			    smokeManager->smokeList = tmp;
@@ -329,16 +309,19 @@ void grShutdownSmoke ()
 {
     tgrSmoke *tmp, *tmp2;
 
+    GfOut("-- grShutdownSmoke\n");
+
     if (!grSmokeMaxNumber) {
 	return;
     }
 
+    SmokeAnchor->removeAllKids();
     if (smokeManager) {
 	tmp = smokeManager->smokeList;
 	while( tmp!=NULL)
 	    {
 		tmp2 = tmp->next;
-		TheScene->removeKid(tmp->smoke);
+		/* SmokeAnchor->removeKid(tmp->smoke); */
 		free(tmp);
 		tmp = tmp2;
 	    }
@@ -409,12 +392,6 @@ void ssgVtxTableSmoke::draw_geometry ()
 
     alpha =  0.9-((float)(cur_life/max_life));
     glDepthMask(GL_FALSE);
-    glDisable(GL_LIGHTING);
-    glAlphaFunc(GL_GREATER,0.0);
-    glDisable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    /*glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);*/
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 
     /*glPolygonOffset(-5.0f, +10.0f);*/
@@ -473,8 +450,8 @@ void ssgVtxTableSmoke::draw_geometry ()
     glTexCoord2f(1,1);
     glVertex3f(vx[0][0]+sizex*C[0],vx[0][1]+sizey*C[1], vx[0][2]+sizez*C[2]);
     glEnd () ;
+
     glDisable(GL_POLYGON_OFFSET_FILL);
     glDepthMask(GL_TRUE);
-    glEnable(GL_LIGHTING);
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 }
