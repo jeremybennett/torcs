@@ -37,7 +37,7 @@
     <section name="Ranges">
       <section name="1">
         <attnum name="threshold" val="0"/>
-        <attstr name="car" val="sc-f1.ac"/>
+        <attstr name="car" val="sc-f1.acc"/>
     	<attstr name="wheels" val="yes"/>
       </section>
     </section>
