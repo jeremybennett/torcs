@@ -115,8 +115,8 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's first Bot 8"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="corvette"/>
-		<attstr name="category" val="Track-RWD-GrA"/>
+		<attstr name="car name" val="baja-bug"/>
+		<attstr name="category" val="Offroad-RWD-GrA"/>
 		<attnum name="race number" val="145"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
