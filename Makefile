@@ -69,7 +69,8 @@ src_PKGDIR	= ${PACKAGE}-${VERSION}
 
 Make-config: configure Make-config.in
 	rm -f config.status config.log config.cache
-	./configure --enable-debug
+	./configure
+	rm -f config.status config.log config.cache
 
 configure: configure.in aclocal.m4
 	rm -f config.status config.log config.cache

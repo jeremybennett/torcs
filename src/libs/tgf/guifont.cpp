@@ -1,10 +1,10 @@
 /***************************************************************************
-                         guifont.cpp -- GLTT fonts management                                 
-                             -------------------                                         
+                         guifont.cpp -- GLTT fonts management
+                             -------------------
     created              : Fri Aug 13 22:19:09 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
-    email                : torcs@free.fr   
-    version              : $Id$                                  
+    copyright            : (C) 1999 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
  ***************************************************************************/
 
 /***************************************************************************
@@ -22,9 +22,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <endian.h>
 #endif
+
 #include <tgf.h>
 
 #include "guifont.h"
@@ -37,6 +41,22 @@
 GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };
 
+#if BYTE_ORDER == BIG_ENDIAN
+#warning big endian
+void swap32(unsigned int *p, unsigned int size)
+{
+	unsigned int i, t;
+	for (i = 0; i < size; i += 4) {
+		t = (unsigned int) *p;
+		*p = (t & 0xff000000U) >> 24;
+		*p |= (t & 0x00ff0000U) >> 8;
+		*p |= (t & 0x0000ff00U) << 8;
+		*p |= (t & 0x000000ffU) << 24;
+		p++;
+	}
+}
+#endif
+
 void
 gfuiLoadFonts(void)
 {
@@ -45,12 +65,12 @@ gfuiLoadFonts(void)
     int		size;
     char	buf[256];
     int		i;
-    
+
     param = GfParmReadFile("config/screen.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    
+
     fontName = GfParmGetStr(param, "Menu Font", "name", "b5.glf");
     sprintf(buf, "data/fonts/%s", fontName);
-    
+
     for(i = 0; i < 4; i++) {
 	size = (int)GfParmGetNum(param, "Menu Font", keySize[i], (char*)NULL, 10.0);
 	gfuiFont[i] = new GfuiFontClass(buf);
@@ -59,7 +79,7 @@ gfuiLoadFonts(void)
 
     fontName = GfParmGetStr(param, "Console Font", "name", "b7.glf");
     sprintf(buf, "data/fonts/%s", fontName);
-    
+
     for(i = 0; i < 4; i++) {
 	size = (int)GfParmGetNum(param, "Console Font", keySize[i], (char*)NULL, 10.0);
 	gfuiFont[i+4] = new GfuiFontClass(buf);
@@ -71,7 +91,7 @@ gfuiLoadFonts(void)
     size = (int)GfParmGetNum(param, "Digital Font", keySize[0], (char*)NULL, 8.0);
     gfuiFont[8] = new GfuiFontClass(buf);
     gfuiFont[8]->create(size);
-    
+
     //GfParmReleaseHandle(param);
 }
 
@@ -85,25 +105,30 @@ GfuiFontClass::GfuiFontClass(char *FileName)
 
     font = NULL;
     size = 8.0;
-    
+
     //Open font file
     if ((Input = fopen(FileName, "rb")) == NULL) {
 	perror(FileName);
 	return;
     }
-    
+
     if ((font = (GLFONT *)malloc(sizeof(GLFONT))) == NULL) {
 	return;
     }
-  
+
     //Read glFont structure
     //fread(font, sizeof(GLFONT), 1, Input);
     fread(font, 24, 1, Input); // for IA64...
-  
+
+#if BYTE_ORDER == BIG_ENDIAN
+#warning big endian
+	swap32((unsigned int *) font, 24);
+#endif
+
 
     //Get number of characters
     Num = font->IntEnd - font->IntStart + 1;
-	
+
     //Allocate memory for characters
     if ((font->Char = (GLFONTCHAR *)malloc(sizeof(GLFONTCHAR) * Num)) == NULL) {
 	free(font);
@@ -111,30 +136,34 @@ GfuiFontClass::GfuiFontClass(char *FileName)
 	fclose(Input);
 	return;
     }
-    
+
     //Read glFont characters
     fread(font->Char, sizeof(GLFONTCHAR), Num, Input);
-  
+
+#if BYTE_ORDER == BIG_ENDIAN
+#warning big endian
+	swap32((unsigned int *) font->Char, sizeof(GLFONTCHAR) * Num);
+#endif
 
     //Get texture size
     Num = font->TexWidth * font->TexHeight * 2;
-	
+
     //Allocate memory for texture data
     if ((TexBytes = (char *)malloc(Num)) == NULL) {
 	fclose(Input);
 	return;
     }
-	
+
     //Read texture data
     fread(TexBytes, sizeof(char), Num, Input);
-  
+
     fclose(Input);
 
     //Save texture number
     glGenTextures(1, &Tex);
     font->Tex = Tex;
     //Set texture attributes
-    glBindTexture(GL_TEXTURE_2D, Tex);  
+    glBindTexture(GL_TEXTURE_2D, Tex);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 

@@ -19,11 +19,6 @@
 
 DEFAULT_RUNTIME=@prefix@/games/@PACKAGE@
 
-modprobe usb-uhci  >/dev/null 2>&1
-modprobe hid       >/dev/null 2>&1
-modprobe evdev     >/dev/null 2>&1
-modprobe joydev    >/dev/null 2>&1
-
 if [ -d $DEFAULT_RUNTIME ]
 then
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@prefix@/lib
