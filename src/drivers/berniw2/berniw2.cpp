@@ -261,7 +261,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 				targetAngle = atan2(myc->currentpathseg->getDir()->y, myc->currentpathseg->getDir()->x);
 				targetAngle -= car->_yaw;
 				NORM_PI_PI(targetAngle);
-				double toborder = MAX(0.001, myc->currentseg->getWidth()/2.0 - fabs(myTrackDesc->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos())));
+				double toborder = MAX(1.0, myc->currentseg->getWidth()/2.0 - fabs(myTrackDesc->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos())));
 				b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/toborder;
 				tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
 				steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
