@@ -298,27 +298,3 @@ int TrackDesc::getNearestId(v3d* p)
 }
 
 
-void TrackDesc::getNormalVector(int i, v3d* n)
-{
-	v3d *t1, *t2, *t3;
-	v3d a, b, c;
-
-	/* get three points */
-	t1 = getSegmentPtr((i - 2 + getnTrackSegments()) % getnTrackSegments())->getMiddle();
-	t2 = getSegmentPtr(i)->getLeftBorder();
-	t3 = getSegmentPtr((i + 2 + getnTrackSegments()) % getnTrackSegments())->getMiddle();
-
-	/* make two vectors out of them */
-	t1->dirVector(t2, &a);
-	t3->dirVector(t2, &b);
-
-	/* cross(vector) product */
-	a.crossProduct(&b, &c);
-
-	/* normalize */
-	c.normalize();
-
-	*n = c;
-}
-
-

@@ -71,27 +71,39 @@ typedef struct {
 	double ic;
 } tParam;
 
+
+typedef struct {
+	double strdist;			/* straight distance */
+	double speedsqr;		/* on track direction projected speed squared of opponent */
+	double speed;			/* same, but not squared */
+	double time;			/* estimate of time to catch up the car */
+	double cosalpha;		/* cos(alpha) from angle between my ond opponent */
+	double disttomiddle;	/* distance to middle (for prediction) */
+	int catchseg;			/* segment, where i expect (or better guess!) to catch opponent */
+	int dist;				/* #segments from me to the other car */
+	OtherCar* collcar;		/* pointers to the cars */
+} tOCar;
+
+
 class PathSeg
 {
 	public:
-		inline void set(double ispeedsqr, double ilength, v3d* ip, v3d* id) {
+		inline void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {
 			speedsqr = ispeedsqr;
 			length = ilength;
-			p.x = ip->x; p.y = ip->y; p.z = ip->z;
-			if (id != NULL) {
-				d.x = id->x; d.y = id->y; d.z = id->z;
-			}
+			p = (*ip);
+			if (id != NULL) d = (*id);
 		}
-		inline void setLoc(v3d* ip) { p.x = ip->x; p.y = ip->y; p.z = ip->z; }
-		inline void setOpt(v3d* ip) { o.x = ip->x; o.y = ip->y; o.z = ip->z; }
-		inline void setPit(v3d* ip) { l.x = ip->x; l.y = ip->y; l.z = ip->z; }
+		inline void setLoc(v3d* ip) { p = (*ip); }
+		inline void setOptLoc(v3d* ip) { o = (*ip); }
+		inline void setPitLoc(v3d* ip) { l = (*ip); }
 
-		inline void setSpeedsqr(double spsqr) { speedsqr = spsqr; }
-		inline void setWeight(double w) { weight = w; }
+		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }
+		inline void setWeight(tdble w) { weight = w; }
 
-		inline double getSpeedsqr() { return speedsqr; }
-		inline double getLength() { return length; }
-		inline double getWeight() { return weight; }
+		inline tdble getSpeedsqr() { return speedsqr; }
+		inline tdble getLength() { return length; }
+		inline tdble getWeight() { return weight; }
 
 		inline v3d* getOptLoc() { return &o; }
 		inline v3d* getPitLoc() { return &l; }
@@ -99,14 +111,15 @@ class PathSeg
 		inline v3d* getDir() { return &d; }
 
 	private:
-		double speedsqr;	/* max possible speed sqared (speed ist therefore sqrt(speedsqr) */
-		double length;		/* dist to the next pathseg */
-		double weight;		/* weight function value for superposition */
-		v3d p;				/* position in space, dynamic trajectory */
-		v3d o;				/* position in space, static trajectory */
-		v3d d;				/* direction vector of dynamic trajectory */
-		v3d l;				/* trajectory for pit lane */
+		tdble speedsqr;	/* max possible speed sqared (speed ist therefore sqrt(speedsqr) */
+		tdble length;	/* dist to the next pathseg */
+		tdble weight;	/* weight function value for superposition */
+		v3d p;			/* position in space, dynamic trajectory */
+		v3d o;			/* position in space, static trajectory */
+		v3d d;			/* direction vector of dynamic trajectory */
+		v3d l;			/* trajectory for pit lane */
 };
+
 
 class Pathfinder
 {
@@ -118,7 +131,7 @@ class Pathfinder
 		tParam cp[NTPARAMS];							/* holds values needed for clothiod */
 
 
-		Pathfinder(TrackDesc* itrack, tCarElt* car);
+		Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *situation);
 		~Pathfinder();
 		void plan(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar);
 		void plan(MyCar* myc);
@@ -175,6 +188,9 @@ class Pathfinder
 		int nPitLaneEnd;
 		int changed;
 
+		int collcars;
+		tOCar* o;
+
 		double ypit[pitpoints], yspit[pitpoints], spit[pitpoints];
 		int snpit[pitpoints];
 
@@ -211,6 +227,7 @@ class Pathfinder
 		void optimize(int start, int range, double w);
 		void optimize2(int start, int range, double w);
 		void optimize3(int start, int range, double w);
+		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);
 
 		inline double pathSlope(int id) {
 			double dp = (*ps[id].getDir())*(*track->getSegmentPtr(id)->getToRight());

@@ -24,7 +24,6 @@
 #include "dmalloc.h"
 #endif
 
-
 /* function prototypes */
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation);
 static void drive(int index, tCarElt* car, tSituation *situation);
@@ -71,7 +70,6 @@ static MyCar* mycar[BOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NU
 static OtherCar* ocar = NULL;
 static TrackDesc* myTrackDesc = NULL;
 static double currenttime;
-
 static const tdble waitToTurn = 1.0; /* how long should i wait till i try to turn backwards */
 
 
@@ -266,10 +264,8 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (tmp < b3) tmp = b3;
 
 	/* anti blocking code */
-	tdble	abs_mean = 0.0;
-	for (int i = 0; i < 4; i++) {
-			abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->getSpeed();
-		}
+	tdble abs_mean = 0.0;
+	for (int i = 0; i < 4; i++) abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->getSpeed();
 	abs_mean /= 4.0;
     tmp = tmp * abs_mean * abs_mean;
 

@@ -94,7 +94,7 @@ class MyCar : public AbstractCar
 		static const double TURNTOL = 1.0;				/* tolerance for end backing up [m] */
 		static const double TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
 		static const double MARGIN = 0.3;				/* security margin from track border [m] */
-		static const double AEROMAGIC = 9.7;			/* aerodynamic lift factor [-] */
+		static const double AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
 		static const double STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
 		static const double TIMETOCATCH = 5.0;			/* when do we start thinking about overtaking [s]*/
 		static const double MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
@@ -139,6 +139,7 @@ class MyCar : public AbstractCar
 		double cgcorr_b;
 		double ca;
 		double cw;
+		double brake;
 
 		/* dynamic data */
 		double mass;
@@ -170,6 +171,7 @@ class MyCar : public AbstractCar
 
 		int drivetrain;			/* RWD, FWD or 4WD */
 		double carmass;			/* mass of car without fuel */
+		void updateCa();
 
 };
 

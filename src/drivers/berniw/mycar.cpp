@@ -64,24 +64,15 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 		drivetrain = D4WD;
 	}
 
-	/* guess aerodynamic downforce coefficient from the wings */
-	double frontwingarea = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGAREA, (char*)NULL, 0);
-    double frontwingangle = GfParmGetNum(car->_carHandle, SECT_FRNTWING, PRM_WINGANGLE, (char*)NULL, 0);
-	double rearwingarea = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
-    double rearwingangle = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
-
-	ca = AEROMAGIC*1.23*(frontwingarea*sin(frontwingangle) + rearwingarea*sin(rearwingangle));
+	updateCa();
 
 	double cx = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.0);
 	double frontarea = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 0.0);
-	//double caa = GfParmGetNum(car->_carHandle, SECT_AERODYNAMICS, PRM_CL, (char*)NULL, 0.0);
-	//printf("caa: %f\n", caa);
-
 	cw = 0.625*cx*frontarea;
 
 	cgcorr_b = 0.46;
 
-	pf = new Pathfinder(track, car);
+	pf = new Pathfinder(track, car, situation);
 	currentsegid = destsegid = pf->getCurrentSegment(car);
 
 	currentseg = track->getSegmentPtr(currentsegid);
@@ -103,12 +94,12 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	*/
 
 	double ba[6][12] = {
-		{0.5, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
-		{0.5, 0.9, 20.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.1, 0.5, 1.0, 5.0},
-		{0.5, 0.9, 15.0, 0.02, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
-		{0.8, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
-		{0.8, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
-		{0.8, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.0, 0.5, 1.0, 1.0}
+		{0.7, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
+		{0.7, 0.9, 20.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.1, 0.5, 1.0, 5.0},
+		{0.7, 0.9, 15.0, 0.02, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
+		{0.9, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
+		{1.2, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
+		{1.2, 0.9, 45.0, 0.1, 0.75, 0.82, 0.7, 0.05, 1.0, 0.5, 1.0, 1.0}
 	};
 
 	for (int i = 0; i < 6; i++) {
@@ -204,6 +195,22 @@ void MyCar::loadBehaviour(int id) {
 	PATHERRFACTOR = behaviour[id][11];
 }
 
+
+void MyCar::updateCa()
+{
+	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	/* guess aerodynamic downforce coefficient from the wings */
+	double rearwingarea = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
+    double rearwingangle = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
+	double wingca = 1.23*rearwingarea*sin(rearwingangle);
+	double cl = GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0) + GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
+
+	double h = 0.0;
+	for (int i = 0; i < 4; i++) h += GfParmGetNum(me->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*)NULL, 0.20);
+	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
+	ca = AEROMAGIC*(h*cl + 4.0*wingca);
+	printf("ca: %f\n", ca);
+}
 
 /*
 	compute the inverse of the rear => speed == 0 is allowed

@@ -80,18 +80,10 @@ class TrackSegment
 		inline double distToMiddle2D(double x, double y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }
 		inline double distToRight2D(double x, double y) { return sqrt(sqr(x-r.x) + sqr(y-r.y)); }
 
-		inline double distToRight3D(v3d* p) {
-			return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z));
-		}
-		inline double distToLeft3D(v3d* p) {
-			return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z));
-		}
-		inline double distToMiddle3D(double x, double y, double z) {
-			return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z));
-		}
-		inline double distToMiddle3D(v3d* p) {
-			return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z));
-		}
+		inline double distToRight3D(v3d* p) { return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z)); }
+		inline double distToLeft3D(v3d* p) { return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z)); }
+		inline double distToMiddle3D(double x, double y, double z) { return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z)); }
+		inline double distToMiddle3D(v3d* p) { return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z)); }
 
 	private:
 		int segID;				/* id of the corresponding segment */
@@ -124,8 +116,6 @@ class TrackDesc
 		int getCurrentSegment(tCarElt* car, int lastId, int range);
 		int getCurrentSegment(tCarElt* car);
 		int getNearestId(v3d* p);
-
-		void getNormalVector(int index, v3d* normal);
 
 		inline int getPitEntryStartId() { return nPitEntryStart; }
 		inline int getPitExitEndId() { return nPitExitEnd; }
