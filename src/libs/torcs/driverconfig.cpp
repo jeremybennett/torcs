@@ -162,7 +162,7 @@ refreshEditVal(void)
 static void
 onSelect(void *Dummy)
 {
-    free(GfuiScrollListGetSelectedElement(scrHandle, scrollList, (void**)&curPlayer));
+    GfuiScrollListGetSelectedElement(scrHandle, scrollList, (void**)&curPlayer);
     refreshEditVal();
 }
 

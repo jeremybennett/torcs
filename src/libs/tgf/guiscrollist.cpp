@@ -289,7 +289,7 @@ GfuiScrollListGetSelectedElement(void *scr, int Id, void **userData)
 	i++;
     } while (elt != scrollist->elts);
     
-    name = strdup(elt->name);
+    name = elt->name;
     *userData = elt->userData;
     
     return name;
@@ -339,7 +339,7 @@ GfuiScrollListGetElement(void *scr, int Id, int index, void **userData)
 	i++;
     } while (elt != scrollist->elts);    
 
-    name = strdup(elt->name);
+    name = elt->name;
     *userData = elt->userData;
     
     return name;
