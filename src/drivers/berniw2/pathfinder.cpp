@@ -50,6 +50,8 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)
 		s1 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITENTRY, (char*)NULL, s1);
 		e3 = track->getPitExitEndId();
 		e3 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITEXIT, (char*)NULL, e3);
+		pitspeedsqrlimit = t->pits.speedLimit - 0.5;
+		pitspeedsqrlimit *= pitspeedsqrlimit;
 	}
 }
 
@@ -768,6 +770,9 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		if (pitStop && track->isBetween(s3, pitSegId, j)) {
 			double speedsqrpit = ((double) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
 			if (speedsqr > speedsqrpit) speedsqr = speedsqrpit;
+		}
+		if ((pitStop || inPit) && track->isBetween(s3, e1, j)) {
+			if (speedsqr > getPitSpeedSqrLimit()) speedsqr = getPitSpeedSqrLimit();
 		}
 
 		dir = (*ps[w].getLoc()) - (*ps[u].getLoc());

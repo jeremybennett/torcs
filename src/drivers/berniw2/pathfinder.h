@@ -146,6 +146,7 @@ class Pathfinder
 		int getCurrentSegment(tCarElt* car);
 		int getCurrentSegment(tCarElt* car, int range);
 		inline int getnPathSeg() { return nPathSeg; }
+		inline double getPitSpeedSqrLimit() { return pitspeedsqrlimit; }
 		double distToPath(int trackSegId, v3d* p);
 
 	private:
@@ -171,6 +172,7 @@ class Pathfinder
 		int pitSegId;			/* segment id of pit */
 		bool pit;
 		int changed;
+		double pitspeedsqrlimit;	/* speed limit for pit lane squared */
 
 		int collcars;
 		tOCar* o;
