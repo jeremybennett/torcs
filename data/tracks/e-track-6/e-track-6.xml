@@ -75,7 +75,7 @@
 
     <section name="Terrain Generation">
       <attnum name="track step" unit="m" val="20"/>
-      <attnum name="border margin" unit="m" val="100"/>
+      <attnum name="border margin" unit="m" val="500"/>
       <attnum name="border step" unit="m" val="50"/>
       <attnum name="border height" unit="m" val="40"/>
       <attstr name="relief file" val="e-track-6-relief.ac"/>
@@ -400,7 +400,7 @@
 
       <section name="s7">
         <attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="100"/>
+	<attnum name="lg" unit="m" val="150"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
 	<attnum name="banking end" unit="deg" val="4"/>
@@ -878,7 +878,7 @@
 
       <section name="pit entry">
         <attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="56.700887"/>
+	<attnum name="lg" unit="m" val="106.700887"/>
 
  	<section name="Left Border">
 	  <attstr name="surface" val="b-road1-l2p"/>
