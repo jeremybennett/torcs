@@ -137,14 +137,21 @@ III. Results
 
 The robot now is performing as well as the berniw robot. On some
 tracks it is better, on others it is worse. Unfortunately it is not as
-fast as me on any track, yet, although it turns on all curves with the same sped as me and 
+fast as me on any track, yet, although it the speed it uses on curves
+is the same as mine, even higher sometimes. Probably it is because it
+starts braking too early and starts accelerating too late. Changing
+the smoothness might give an improvement.
 
 IV. Future work
 ---------------
 
-- Add parameter reading from the .xml file.
+- Add some support for setting hyperparameters from the .xml
+file. Some tracks should require smoother driving than others,
+perhaps. 
 
-- Make it so that it drives a bit less riskily on real races.
+- Make it so that it drives a bit less riskily on real races. 
+
+- Implement a way to save the learned values.
 
 - Adjust riskiness of driving depending on situation (i.e. well-ahead,
 trying to catch up with the leader on a race).
