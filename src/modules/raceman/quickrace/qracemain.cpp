@@ -569,4 +569,6 @@ qrTimeMod (void *vcmd)
 	timeMult = 1.0;
 	break;
     }
+    sprintf(buf, "Time x%.2f", 1.0 / timeMult);
+    qrRaceMsgSet(buf, 5);
 }

@@ -5,7 +5,7 @@ Requisites:
             OpenGl or Mesa 3.1 or later (http://mesa3d.sourceforge.net/)
             GLUT 3.7 or later (http://reality.sgi.com/mjk/glut3/glut3.html)
             Or FreeGlut (not tested) (http://freeglut.sourceforge.net/)
-            PLIB 1.4.0 or later (http://plib.sourceforge.net/)
+            PLIB 1.4.2 (http://plib.sourceforge.net/)
             a driver if you have a 3D card (recommended) (http://www.linux3D.org)
             a joystick driver. (mandatory to drive yourself, don't forget to calibrate !!!)
 	                       (http://atrey.karlin.mff.cuni.cz/~vojtech/joystick)
@@ -19,7 +19,7 @@ Installation:
 
       $ tar xzvf torcs-xxx.tgz
 	Or
-      $ tar xIvf torcs-xxx.tar.bz2
+      $ tar xjvf torcs-xxx.tar.bz2
 
 2- build the executables 
 
