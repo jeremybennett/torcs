@@ -424,7 +424,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -436,7 +435,6 @@
 	<section name="Right Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -464,7 +462,6 @@
 	<section name="Right Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -477,7 +474,6 @@
 <!--	  <attstr name="surface" val="gcurb-5cm-l"/> -->
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -511,7 +507,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -543,7 +538,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -621,7 +615,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -659,7 +652,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -697,7 +689,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -737,7 +728,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -782,7 +772,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -826,7 +815,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
 
@@ -866,7 +854,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -900,7 +887,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -933,7 +919,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.05"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -965,7 +950,6 @@
 	<section name="Left Border">
 	  <attstr name="surface" val="gcurb-5cm-grass"/>
 	  <attstr name="style" val="plan"/>
-	  <attnum name="height" val="0.01"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
       </section>
@@ -2073,7 +2057,7 @@
       <attstr name="bump name" val="astiled.rgb"/>
       <attnum name="bump size" val="2.0" unit="m"/>
 
-      <attnum name="roughness" val="0.01"/>
+      <attnum name="roughness" val="0.005"/>
       <attnum name="roughness wavelength" val="0.2"/>
     </section>
 
@@ -2095,7 +2079,7 @@
       <attstr name="bump name" val="astiled.rgb"/>
       <attnum name="bump size" val="2.0" unit="m"/>
 
-      <attnum name="roughness" val="0.02"/>
+      <attnum name="roughness" val="0.002"/>
       <attnum name="roughness wavelength" val="0.08"/>
     </section>
 
@@ -2378,7 +2362,7 @@
       <attnum name="friction"           val="1.4"/>
       <attnum name="rolling resistance" val="0.0025"/>
 
-      <attnum name="roughness" val="0.05"/>
+      <attnum name="roughness" val="0.00"/>
       <attnum name="roughness wavelength" val="0.3"/>
     </section>
 
@@ -2400,7 +2384,7 @@
       <attstr name="bump name" val="astiled.rgb"/>
       <attnum name="bump size" val="10.0" unit="m"/>
 
-      <attnum name="roughness" val="0.05"/>
+      <attnum name="roughness" val="0.00"/>
       <attnum name="roughness wavelength" val="0.3"/>
     </section>
 
@@ -2422,7 +2406,7 @@
       <attstr name="bump name" val="astiled.rgb"/>
       <attnum name="bump size" val="2.0" unit="m"/>
 
-      <attnum name="roughness" val="0.05"/>
+      <attnum name="roughness" val="0.00"/>
       <attnum name="roughness wavelength" val="0.3"/>
     </section>
 
