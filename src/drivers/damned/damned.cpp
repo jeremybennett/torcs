@@ -50,25 +50,24 @@ static tdble lastAccel[10];
 static tdble lastClutch[10];
 
 static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-const  tdble PGain[10]   = {	0.08,	0.1,   0.2,	0.1,	0.1,	0.08,	0.2,	0.02,	0.02,	0.1	};
-static tdble AGain[10]   = {	0.30,	0.05,   0.25,	0.0,	0.0,	0.05,	0.08,	0.08,	0.08,	0.4	};
+static tdble AccAngle[10] = {	0.0,	0.0,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3 };
+const  tdble PGain[10]   = {	0.2,	0.2,   0.2,	0.1,	0.1,	0.08,	0.2,	0.02,	0.02,	0.1	};
+static tdble AGain[10]   = {	0.30,	-0.08,   0.25,	0.0,	0.0,	0.05,	0.08,	0.08,	0.08,	0.4	};
 static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.1,	0.08,	0.05,	0.02,	0.015,	0.15	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
-static tdble Advance[10] = {	18.0,	18.0,   0.0,	18.0,	18,	0,	0.0,	0.0,	0.0,	0	};
-static tdble Advance2[10]= {	15.0,	15.0,   0.0,	15.0,	15,	15,	0.0,	0.0,	0.0,	0	};
+static tdble Advance[10] = {	0.0,	0.0,   0.0,	18.0,	18,	0,	0.0,	0.0,	0.0,	0	};
+static tdble Advance2[10]= {	0.0,	0.0,   0.0,	15.0,	15,	15,	0.0,	0.0,	0.0,	0	};
 static tdble Advance3[10]= {	-5.0,	-5.0,  -16.0,	-6.0,	-6.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
 //static tdble Advance5[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
-static tdble VGain[10]   = {	0.010,	0.01,   0.01,	0.01,	0.01,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
+static tdble VGain[10]   = {	0.0001,	0.0001,	0.01,	0.01,	0.01,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	6000,	10000,	10000,	10000	};
 static tdble spdtgt2[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
 static tdble spdtgt2ref[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
 static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble steerk[10] = {	1.0,	.5,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
+static tdble steerk[10] = {	1.0,	1.0,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
 static tdble MaxFuel[10] = {	100.0,	50.0,	60.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
 static tdble MaxSpeed[10];
 static tdble TgtRpm[10] = {	RPM2RADS(5000.0), RPM2RADS(5888), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0)	};
@@ -89,7 +88,7 @@ static tdble O2[10] = {-60.0, -60.0, -60.0, -60.0, -60.0, -60.0, -60.0, -60.0, -
 static tdble O3[10] = {15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0};
 static tdble O4[10] = {15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0};
 static tdble OP[10] = {12.0, 12.0, 12.0, 15.0, 12.0, 12.0, 12.0, 18.0, 18.0, 12.0};
-static tdble OW[10] = {2.0, 3.0, 3.0, 2.0, 2.0, 2.0, 0.0, 4.0, 4.0, 2.0};
+static tdble OW[10] = {2.0, 1.0, 3.0, 2.0, 2.0, 2.0, 0.0, 4.0, 4.0, 2.0};
 static tdble VM;
 static tdble VM1[10] = {7.0, 8.0, 8.0, 10.0, 8.0, 8.0, 8.0, 20.0, 20.0, 8.0};
 static tdble VM2[10] = {2.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 7.0, 7.0, 3.0};
@@ -284,48 +283,50 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 void newrace(int index, tCarElt* car, tSituation *s)
 {
     tdble width = DmTrack->width;
+    tdble spdmult = 1.0;
     
     if (strcmp(DmTrack->category, "dirt") == 0) {
-	width *= 0.8;
+	width *= 0.65;
+	spdmult = 0.8;
     }
     
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
     hold[index-1] = 10.0;
     InitGears(car, index);
 
-    spdtgt2[0] = width - 4.0;
-    Advance[0] = Advance2[0] = width * 2.0;
+    spdtgt2[0] = (width + 2.0) * spdmult;
+    Advance[0] = Advance2[0] = width * 2.0 + 10;
 
-    spdtgt2[1] = width - 4.0;
-    Advance[1] = Advance2[1] = width * 2.0;
+    spdtgt2[1] = (width + 2.0) * spdmult;
+    Advance[1] = Advance2[1] = width * 2.0 + 10;
 
 /*     spdtgt2ref[1] = spdtgt2[1] = width / 2.0 - 1.0; */
 /*     Advance[1] = width * 1.88 + 5.0; */
 /*     Advance2[1] = width * 2.8 + 5.0; */
 
-    spdtgt2ref[2] = spdtgt2[2] = width * .8 + 7.5;
+    spdtgt2ref[2] = spdtgt2[2] = (width * .8 + 7.5) * spdmult;
     Advance[2] = Advance2[2] = width * 2.0 + 3.0;
 
 /*     spdtgt2ref[3] = spdtgt2[3] = width / 2.0 - 1.0; */
 /*     Advance[3] = Advance2[3] = width * 2.0 + 6.0; */
-    spdtgt2[3] = width - 4.0;
+    spdtgt2[3] = (width - 4.0) * spdmult;
     Advance[3] = Advance2[3] = width * 2.0;
 
 /*     spdtgt2ref[4] = spdtgt2[4] = width + 3.0; */
 /*     Advance[4] = Advance2[4] = width * 2.0 + 6.0; */
-    spdtgt2[4] = width - 4.0;
-    Advance[4] = Advance2[4] = width * 2.0;
+    spdtgt2[4] = (width + 2.0) * spdmult;
+    Advance[4] = Advance2[4] = width * 2.0 + 12;
 
-    spdtgt2ref[5] = spdtgt2[5] = width + 3.0;
+    spdtgt2ref[5] = spdtgt2[5] = (width + 3.0) * spdmult;
     Advance[5] = Advance2[5] = width * 2.0 + 6.0;
 
-    spdtgt2[6] = width + 2.0;
+    spdtgt2[6] = (width + 2.0) * spdmult;
     Advance[6] = Advance2[6] = width * 2.0 + 10.0;
 
-    spdtgt2[7] = width + 3.0;
+    spdtgt2[7] = (width + 3.0) * spdmult;
     Advance[7] = Advance2[7] = width * 2.0 + 8.0;
 
-    spdtgt2[8] = width + 3.0;
+    spdtgt2[8] = (width + 3.0) * spdmult;
     Advance[8] = Advance2[8] = width * 2.0 + 8.0;
 
     spdtgt2[9] = (width + 2.5) * 1.1;
@@ -523,9 +524,9 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	    slip = 0;
 	}
 	if ((car->_gearCmd == 1) && (idx != 2) && (idx != 3)) {
-	    car->_accelCmd = car->_accelCmd * exp(-fabs(steer) * AccSteer[idx]) * exp(-fabs(aspect) * AccAngle[idx]) + 0.1;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(steer) * AccSteer[idx]) /* * exp(-fabs(aspect) * AccAngle[idx]) */ + 0.1;
 	} else if (car->_gear > 1) {
-	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 0.3) ; //+ 0.15;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * AccAngle[idx]); //+ 0.15;
 	}
 	
 	
@@ -543,11 +544,11 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	    slip = 0;
 	}
 	car->_brakeCmd = MIN(MIN((car->_speed_x - Vtarget) / 20.0, 1.0)  * maxBrk, maxBrk);
-	if (slip > 0.3) {
-	    car->_brakeCmd = 0.0;
-	} else {
-	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 3.0);
+	if (slip > 0.1) {
+	    tdble maxslp = exp(-3.47*(slip - 0.2));
+	    car->_brakeCmd = MIN(car->_brakeCmd, maxslp);
 	}
+	RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 3.0);
 	
 	lastAccel[idx] = 0;
     }

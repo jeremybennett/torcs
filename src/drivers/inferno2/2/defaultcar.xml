@@ -17,8 +17,8 @@
 <params name="car" type="params">
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.8"/>
-    <attnum name="max pressure" min="100" max="150000" unit="kPa" val="25000"/>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.6"/>
+    <attnum name="max pressure" min="100" max="150000" unit="kPa" val="30000"/>
   </section>
 
 </params>

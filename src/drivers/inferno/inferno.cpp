@@ -168,8 +168,8 @@ static tdble preDy[10]     = {0};
 static tdble spdtgt[10]    = {250.0};
 static tdble spdtgt2[10]   = {2.0};
 static tdble steerMult[10] = {2.0};
-static tdble Offset[10]    = {0.0};
 static tdble Trightprev[10];
+tdble Offset[10]    = {0.0};
 tdble DynOffset[10] = {0.0};
 int   PitState[10]  = {0};
 
@@ -191,6 +191,7 @@ tdble OffsetFinal[10]    = {0.0};
 tdble OffsetExit[10]     = {0.0};
 tdble LgfsFinal[10];
 tdble ConsFactor[10]     = {0.0007};
+int   damageThld[10]	 = {5000};
 
 /*
  * Function
@@ -235,6 +236,7 @@ tdble ConsFactor[10]     = {0.0007};
 #define VMAX1		"VMax1"
 #define VMAX2		"VMax2"
 #define VMAX3		"VMax3"
+#define DAMAGETHLD	"damage threshold"
 
 tdble Gmax;
 
@@ -311,6 +313,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	VM1[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX1,          NULL, VM1[0]);
 	VM2[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX2,          NULL, VM2[0]);
 	VM3[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX3,          NULL, VM3[0]);
+	damageThld[idx]  = (int)GfParmGetNum(hdle, SIMU_PRMS, DAMAGETHLD,NULL, 5000);
 	GfParmReleaseHandle(hdle);
     }
 }
@@ -396,6 +399,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble		lgfs;
     tdble		vtgt1, vtgt2;
     tdble		curAdv, curAdvMax, Amax, Atmp, AdvMax;
+    tdble		TRightRef, step;
 
     static int		lap[10] = {0};
     static tdble	lgfsprev[10] = {0.0};
@@ -422,9 +426,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
     }
 
     adv[idx] = Advance[idx] + 5.0 * sqrt(fabs(car->_speed_x));
-    
+    TRightRef = seg->width / 2.0 + Offset[idx] + DynOffset[idx];
     if (s->currentTime > hold[idx]) {
-	    Tright[idx] = seg->width / 2.0 + Offset[idx] + DynOffset[idx];
+	    Tright[idx] = TRightRef;
     }
 
     
@@ -467,6 +471,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     curAdv = Advance2[idx];
     AdvMax = fabs(car->_speed_x) * 5.0 + 1.0;
     Amax = 0;
+    step =  (AdvMax - Advance2[idx]) / AdvStep[idx];
     while (curAdv < AdvMax) {
 	x = X + CosA * curAdv;
 	y = Y + SinA * curAdv;
@@ -476,7 +481,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	    Amax = Atmp;
 	    curAdvMax = curAdv;
 	}
-	curAdv += AdvStep[idx];
+	curAdv += step;
     }
 
     Db = car->_yaw_rate;
@@ -490,7 +495,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     }
     TargetSpeed = tgtSpeed * 1.15;
     SpeedStrategy(car, idx, TargetSpeed, s, Db);
-
+    
 
 #define AMARG 0.6
     if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||
@@ -509,6 +514,13 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
     if ((PitState[idx] > PIT_STATE_DECEL) && (PitState[idx] < PIT_STATE_EXIT) && (car->_speed_x < 15.0)) {
 	car->_steerCmd *= 5.0;
+    }
+
+    if (fabs(car->_yaw_rate) > 2.0) {
+	// spin emergency maneuvre
+	car->_brakeCmd = 1.0;
+	car->_steerCmd = 0;
+	car->_accelCmd = 0;
     }
 
 #ifndef WIN32

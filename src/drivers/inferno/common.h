@@ -46,6 +46,8 @@ extern tdble OffsetApproach[];
 extern tdble OffsetFinal[];
 extern tdble OffsetExit[];
 extern tdble LgfsFinal[];
+extern int   damageThld[];
+extern tdble Offset[];
 
 
 #define PIT_STATE_NO            -1

@@ -359,6 +359,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	PitState[idx] = PIT_STATE_NONE;
 	break;
     }
+    if (*maxSpeed < 1.0) *maxSpeed = 1.0;
 
     return offset;
 }
@@ -372,6 +373,8 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     tdble	lgfs, lgfs2, dlg;
     tdble	dspd;
     tdble	maxdlg;
+    tdble	spdlimit;
+    int		flag;
     tTrackSeg	*seg;
     int		canOverlap = 1;
     const tdble MARGIN = 8.0;
@@ -389,7 +392,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 #endif
 
     if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) && 
-	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
+	(((car->_dammage > damageThld[idx]) && ((s->_totLaps - car->_laps) > 2)) || 
 	 ((car->_fuel < ConsFactor[idx]) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
@@ -413,7 +416,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	dspd = car->_speed_x - otherCar->_speed_x;
 	if ((car->_laps < otherCar->_laps) && 
 	    (dlg > -maxdlg) && (dlg < (car->_dimension_x + 1.0)) &&
-	    (dlg > (dspd * 6.0))) {
+	    (dlg > (dspd * dspd))) {
 	    if ((fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0)) &&
 		(otherCar->_speed_x > car->_speed_x)) {
 		maxdlg = fabs(dlg);
@@ -425,29 +428,44 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 		}
 	    }
 	} else	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
-		    ((dlg < (dspd*4.5)) ||
-		     (dlg < (car->_dimension_x * 4.0)))) {
-
+		    ((dlg < (dspd*dspd)) ||
+		     (dlg < (car->_dimension_x * 3.0)))) {
+	    if (dspd > 0) {
+		if (dlg < (car->_dimension_x * 5.0)) {
+		    spdlimit = otherCar->_speed_x * 0.99;
+		    flag = 1;
+		} else {
+		    spdlimit = otherCar->_speed_x + dlg * dlg / (dspd * dspd * dspd);
+		    flag = 2;
+		}
+	    } else {
+		spdlimit = otherCar->_speed_x;
+		flag = 3;
+	    }
 	    if (canOverlap) {
 		maxdlg = fabs(dlg);
 		/* risk of collision */
-
 		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
 			if (otherCar->_trkPos.toRight > MARGIN / 2.0) {
 			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0 - 1.0);
 			    if (dny < 0) {
 				if (car->_trkPos.toRight > 2.0) {
-				    MaxSpeed[idx] = otherCar->_speed_x * .99;
-				} else {
-				    Tright[idx] += MARGIN * 2.0;
+				    // MaxSpeed[idx] = spdlimit;
+				    if (idx == 2) {
+					/* printf("1- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+				    }
 				}
+				//Tright[idx] += MARGIN * 2.0;
 			    }
 			} else {
 			    if ((dlg > (car->_dimension_x * 2.0)) &&
 				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN)) {
-				MaxSpeed[idx] = otherCar->_speed_x * .99;
+				MaxSpeed[idx] = MIN(MaxSpeed[idx], spdlimit);
 				Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0);
+				if (idx == 2) {
+				    /* printf("2- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+				}
 			    }
 			}
 		    } else {
@@ -455,36 +473,49 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0 - 1.0);
 			    if (dny > 0) {
 				if (car->_trkPos.toRight < (seg->width - 2.0)) {
-				    MaxSpeed[idx] = otherCar->_speed_x * .99;
-				} else {
-				    Tright[idx] -= MARGIN * 2.0;
+				    //MaxSpeed[idx] = spdlimit;
+				    if (idx == 2) {
+					/* printf("3- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+				    }
 				}
+				//Tright[idx] -= MARGIN * 2.0;
 			    }
 			} else {
 			    if ((dlg > (car->_dimension_x * 2.0)) &&
 				(fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0))) {
-				MaxSpeed[idx] = otherCar->_speed_x * .99;
+				MaxSpeed[idx] = spdlimit;
 				Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
+				if (idx == 2) {
+				    /* printf("4- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+				}
 			    }
 			}
 		    }
 		    hold[idx] = Curtime + 1.0;
 		    if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
-			MaxSpeed[idx] = otherCar->_speed_x * .95;
+			MaxSpeed[idx] = MIN(MaxSpeed[idx], spdlimit);
+			if (idx == 2) {
+			    /* printf("5- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+			}
 		    }
 		}
 	    } else {
 		/* Stay behind the front car */
-		MaxSpeed[idx] = MIN(MaxSpeed[idx], otherCar->_speed_x * .99);
+		if (dlg > 0) {
+		    MaxSpeed[idx] = MIN(MaxSpeed[idx], spdlimit);
+		    if (idx == 2) {
+			/* printf("6- %d - %s - limit %g - dlg %g - dspd %g - dspd² %g\n", flag, otherCar->_name, spdlimit * 3.6, dlg, dspd, dspd*dspd); */
+		    }
+		}
 	    }
 	}
     }
-
+    Tright[idx] += Offset[idx] + DynOffset[idx];
     if (Tright[idx] < 0.0) {
 	Tright[idx] = 0.0;
     } else if (Tright[idx] > seg->width) {
 	Tright[idx] = seg->width;
     }
     
-    
+    if (MaxSpeed[idx] < 1.0) MaxSpeed[idx] = 1.0;
 }

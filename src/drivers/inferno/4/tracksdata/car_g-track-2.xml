@@ -99,9 +99,9 @@
     <attnum name="bellcrank" min="1" max="5" val="1.5"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
   </section>
 
   <section name="Front Left Suspension">
@@ -110,9 +110,9 @@
     <attnum name="bellcrank" min="1" max="5" val="1.5"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
   </section>
 
   <section name="Rear Right Suspension">
@@ -121,9 +121,9 @@
     <attnum name="bellcrank" min="1" max="5" val="1.6"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
   </section>
 
   <section name="Rear Left Suspension">
@@ -132,9 +132,9 @@
     <attnum name="bellcrank" min="1" max="5" val="1.6"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="1000"/>
   </section>
 
 </params>

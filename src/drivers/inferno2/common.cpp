@@ -159,7 +159,8 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	}
 	car->_brakeCmd = MIN(-Dv * Dxb + Dvv * Dxxb, 1.0);
 	if (slip > 0.3) {
-	    car->_brakeCmd = MAX(car->_brakeCmd - slip * 0.5, 0);
+	    tdble maxslp = exp(-3.47*(slip - 0.2));
+	    car->_brakeCmd = MIN(car->_brakeCmd, maxslp);
 	} else {
 	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 50.0);
 	}
