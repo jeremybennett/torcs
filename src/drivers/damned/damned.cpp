@@ -325,7 +325,7 @@ static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt2ref[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
 static tdble hold[10] =    {	0,	0,	0,	5,	0,	0,	0,	0,	0,	0	};
-static tdble steerk[10] = {	1.0,	1.0,	1.0,	0.90,	1.0,	1.0, 	1.0, 	1.0, 	1.0, 	0.9	};
+static tdble steerk[10] = {	1.0,	1.0,	0.7,	0.80,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
 static tdble MaxSpeed[10];
 
 void newrace(int index, tCarElt* car, tSituation *s)
@@ -337,8 +337,8 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[0] = DmTrack->width - 4.0;
     Advance[0] = Advance2[0] = DmTrack->width * 2.0;
 
-    spdtgt2ref[1] = spdtgt2[1] = DmTrack->width + 4.0;
-    Advance[1] = Advance2[1] = DmTrack->width * 2.0 + 4.5;
+    spdtgt2ref[1] = spdtgt2[1] = DmTrack->width + 1;
+    Advance[1] = Advance2[1] = DmTrack->width * 2.0 + 4.8;
 
     spdtgt2ref[2] = spdtgt2[2] = DmTrack->width * .8 + 7.5;
     Advance[2] = Advance2[2] = DmTrack->width * 2.0 + 3.0;
@@ -405,8 +405,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (idx == 1) {
 	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
-	spdtgt2[1] = spdtgt2ref[1] * (seg->surface->kFriction - .2);
-	Advance3[1] = (seg->surface->kFriction - 1.4) * 10.0;
+	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction;
+	Advance3[1] = (seg->surface->kFriction - 1.4) * 12.0;
+	steerk[1] = 1.0 + (seg->surface->kFriction - 1.4);
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .2);
 	spdtgt2[4] = spdtgt2ref[4] * (seg->surface->kFriction - .3);
 	spdtgt2[5] = spdtgt2ref[5] * (seg->surface->kFriction - .3);
