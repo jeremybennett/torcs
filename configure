@@ -3105,7 +3105,7 @@ else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -fr conftest*
-  { echo "configure: error: Install plib 1.6.0 first..." 1>&2; exit 1; }
+  echo "$ac_t""PLIB 1.6.0 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.6.0 is really the version installed on your system." 1>&6
 fi
 rm -fr conftest*
 fi

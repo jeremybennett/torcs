@@ -121,7 +121,7 @@ int main() {
 
 ],
   AC_MSG_RESULT(yes),
-  [AC_MSG_ERROR([Install plib 1.6.0 first...])],
+  [AC_MSG_RESULT([PLIB 1.6.0 was not detected. TORCS can run only with PLIB 1.6.0, so verify that the PLIB 1.6.0 is really the version installed on your system.])],
   AC_MSG_RESULT(yes)
 )
 
