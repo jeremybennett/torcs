@@ -74,10 +74,20 @@ cGrScreen::~cGrScreen()
 	}
     }
 
-    board->shutdown ();
+	delete boardCam;
+	delete mirrorCam;
+	delete bgCam;
+
+    if (board != NULL) {
+		board->shutdown ();
+	}
+
     FREEZ(cars);
-    
-    delete board;
+
+	if (board != NULL) {
+    	delete board;
+		board = NULL;
+	}
 }
 
 int cGrScreen::isInScreen(int x, int y)
@@ -85,7 +95,7 @@ int cGrScreen::isInScreen(int x, int y)
     if (!active) {
 	return 0;
     }
-    
+
     if ((x >= scrx) &&
 	(y >= scry) &&
 	(x < (scrx + scrw)) &&
@@ -468,8 +478,8 @@ void cGrScreen::initCams(tSituation *s)
 
 void cGrScreen::initBoard(void)
 {
-    if (board == NULL) {
-	board = new cGrBoard (id);
-    }
-    board->initBoard ();
+	if (board == NULL) {
+		board = new cGrBoard (id);
+	}
+	board->initBoard ();
 }

@@ -69,7 +69,7 @@ class cGrBoard
 };
 
 extern void grInitBoardCar(tCarElt *car);
-
+extern void grShutdownBoardCar(void);
 
 #endif /* _GRBOARD_H_ */ 
 

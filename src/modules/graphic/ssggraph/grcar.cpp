@@ -388,11 +388,13 @@ grInitShadow(tCarElt *car)
     };
 
     grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, shd_tex, shd_clr);
-    grMipMap = 0;
+	grMipMap = 0;
     grCarInfo[car->index].shadowBase->setState(grSsgLoadTexState(shdTexName));
-    grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
+	grCarInfo[car->index].shadowCurr = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
     grCarInfo[car->index].shadowAnchor->addKid(grCarInfo[car->index].shadowCurr);
     ShadowAnchor->addKid(grCarInfo[car->index].shadowAnchor);
+    grCarInfo[car->index].shadowBase->ref();
+
 }
 
 void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt) 
@@ -464,7 +466,7 @@ grInitCar(tCarElt *car)
 
     TRACE_GL("loadcar: start");
 
-    ssgSetCurrentOptions ( &options ) ;    
+    ssgSetCurrentOptions ( &options ) ;
 
     grCarIndex = index = car->index;	/* current car's index */
     handle = car->_carHandle;
@@ -514,11 +516,14 @@ grInitCar(tCarElt *car)
     lg += sprintf(grFilePath + lg, "cars/%s", car->_carName);
 
     param = GfParmGetStr(handle, SECT_GROBJECTS, PRM_WHEEL_TEXTURE, "");
-    if (strlen(param) != 0) {
-	grGammaValue = 1.8;
-	grMipMap = 0;
-	grCarInfo[index].wheelTexture = grSsgLoadTexState(param);
-    }
+	if (strlen(param) != 0) {
+		grGammaValue = 1.8;
+		grMipMap = 0;
+		grCarInfo[index].wheelTexture = grSsgLoadTexState(param);
+		/*if (grCarInfo[index].wheelTexture->getRef() > 0) {
+			grCarInfo[index].wheelTexture->deRef();
+		}*/
+	}
     
     grCarInfo[index].envSelector = (ssgStateSelector*)grEnvSelector->clone();
     grCarInfo[index].envSelector->ref();
@@ -542,7 +547,7 @@ grInitCar(tCarElt *car)
     ssgBranch *carBody = new ssgBranch;
     DBG_SET_NAME(carBody, "LOD", index, 0);
     LODSel->addKid(carBody);
-    
+
     /* The car's model is under cars/<model> */
     sprintf(buf, "cars/%s", car->_carName);
     ssgModelPath(buf);
@@ -562,15 +567,18 @@ grInitCar(tCarElt *car)
     /* Set a selector on the driver */
     ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
     grCarInfo[index].driverSelector = new ssgSelector;
-    if (b) {
-	ssgBranch *bp = b->getParent(0);
-	bp->addKid(grCarInfo[index].driverSelector);
-	grCarInfo[index].driverSelector->addKid(b);
-	bp->removeKid(b);
-	grCarInfo[index].driverSelector->select(1);
-    }
-    
- 
+	if (b) {
+		ssgBranch *bp = b->getParent(0);
+		bp->addKid(grCarInfo[index].driverSelector);
+		grCarInfo[index].driverSelector->addKid(b);
+		bp->removeKid(b);
+		grCarInfo[index].driverSelector->select(1);
+		grCarInfo[index].driverSelectorinsg = true;
+    } else {
+		grCarInfo[index].driverSelectorinsg = false;
+	}
+
+
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
     /* add wheels */

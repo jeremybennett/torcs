@@ -120,7 +120,7 @@ grVtxTable::grVtxTable (GLenum ty, ssgVertexArray   *vl,
 			 ssgTexCoordArray *tl3,
 			 int _numMapLevel,
 			 int _mapLevel,
-			 ssgColourArray   *cl, 
+			 ssgColourArray   *cl,
 			 int _indexCar) : ssgVtxTable(ty, vl, nl, tl, cl)
 {
   type = ssgTypeVtxTable ();
@@ -174,9 +174,9 @@ grVtxTable::grVtxTable (GLenum ty, ssgVertexArray   *vl,
 
 grVtxTable::~grVtxTable ()
 {
-  /*  ssgDeRefDelete (vertices );
+    /*ssgDeRefDelete (vertices );
       ssgDeRefDelete (normals  );
-      ssgDeRefDelete (colours  ); */
+      ssgDeRefDelete (colours  );*/
       ssgDeRefDelete (texcoords1);
       ssgDeRefDelete (texcoords2);
       ssgDeRefDelete (texcoords3);
@@ -185,6 +185,10 @@ grVtxTable::~grVtxTable ()
 	  ssgDeRefDelete (indices     );
 	  ssgDeRefDelete (stripes     );
 	}
+
+	ssgDeRefDelete(state1);
+	ssgDeRefDelete(state2);
+	ssgDeRefDelete(state3);
 
 } 
 
@@ -347,11 +351,11 @@ void grVtxTable::draw_geometry_for_a_car ()
   ttx=grCarInfo[indexCar].distFromStart/50;
   sgMakeTransMat4 (mat, ttx, tty, ttz);
   glMultMatrixf((float *)mat);
-	axis[0]=0;
+/*	axis[0]=0;
 	axis[1]=1;
 	axis[2]=0;
   sgMakeRotMat4(mat, -grCarInfo[indexCar].envAngle, axis);
-  glMultMatrixf((float *)mat);
+  glMultMatrixf((float *)mat);*/
   glMatrixMode(GL_MODELVIEW);
 
   int num_colours   = getNumColours   ();
@@ -569,11 +573,11 @@ void grVtxTable::draw_geometry_for_a_car_array ()
 
   ttx=grCarInfo[indexCar].distFromStart/50;
   sgMakeTransMat4 (mat, ttx, tty, ttz);
-  glMultMatrixf((float *)mat);
+/*  glMultMatrixf((float *)mat);
 	axis[0]=0;
 	axis[1]=1;
 	axis[2]=0;
-  sgMakeRotMat4(mat, -grCarInfo[indexCar].envAngle, axis);
+  sgMakeRotMat4(mat, -grCarInfo[indexCar].envAngle, axis);*/
   glMultMatrixf((float *)mat);
 
   glMatrixMode(GL_MODELVIEW);

@@ -89,9 +89,9 @@ void grInitSkidmarks(tCarElt *car)
 		}
     }
       
-    ssgTexCoordArray* texcoords = NULL;
+    /*ssgTexCoordArray* texcoords = NULL;
 	texcoords = new ssgTexCoordArray();
-
+*/
     grCarInfo[car->index].skidmarks = (tgrSkidmarks *)malloc(sizeof(tgrSkidmarks));
     for (i = 0; i<4; i++) {
 	grCarInfo[car->index].skidmarks->strips[i].vtx   = (ssgVertexArray **)malloc(grSkidMaxStripByWheel * sizeof(ssgVertexArray *));
@@ -99,7 +99,7 @@ void grInitSkidmarks(tCarElt *car)
 
 	grCarInfo[car->index].skidmarks->strips[i].vta   = (ssgVtxTableShadow **)malloc(grSkidMaxStripByWheel 
 											* sizeof(ssgVtxTableShadow *));
-	grCarInfo[car->index].skidmarks->strips[i].clr   = ( ssgColourArray **)malloc(grSkidMaxStripByWheel 
+	grCarInfo[car->index].skidmarks->strips[i].clr   = ( ssgColourArray **)malloc(grSkidMaxStripByWheel
 											* sizeof( ssgColourArray *));
 
 	grCarInfo[car->index].skidmarks->strips[i].smooth_colour[0]=0.0;
@@ -337,28 +337,29 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 /** remove the skidmarks information for a car */
 void grShutdownSkidmarks (void)
 {
-    int i;
-    int z;
+	int i;
+	int z;
 
-    GfOut("-- grShutdownSkidmarks\n");
-    
-    if (!grSkidMaxStripByWheel) {
-	return;
-    }
+	GfOut("-- grShutdownSkidmarks\n");
 
-    SkidAnchor->removeAllKids();
-    for (z = 0; z < grNbCars; z++) {
-	for (i = 0; i<4; i++) {
-	    free(grCarInfo[z].skidmarks->strips[i].vtx);
-	    free(grCarInfo[z].skidmarks->strips[i].vta);
-	    free(grCarInfo[z].skidmarks->strips[i].tex);
-	    free(grCarInfo[z].skidmarks->strips[i].state);
-	    free(grCarInfo[z].skidmarks->strips[i].size);
+	if (!grSkidMaxStripByWheel) {
+		return;
 	}
-	free(grCarInfo[z].skidmarks);
-	grCarInfo[z].skidmarks = NULL;
-    }
-    skidState = NULL;
+
+	SkidAnchor->removeAllKids();
+	for (z = 0; z < grNbCars; z++) {
+		for (i = 0; i<4; i++) {
+			free(grCarInfo[z].skidmarks->strips[i].vtx);
+			free(grCarInfo[z].skidmarks->strips[i].vta);
+			free(grCarInfo[z].skidmarks->strips[i].tex);
+			free(grCarInfo[z].skidmarks->strips[i].state);
+			free(grCarInfo[z].skidmarks->strips[i].size);
+			free(grCarInfo[z].skidmarks->strips[i].clr);
+		}
+		free(grCarInfo[z].skidmarks);
+		grCarInfo[z].skidmarks = NULL;
+	}
+	skidState = NULL;
 }
 
 

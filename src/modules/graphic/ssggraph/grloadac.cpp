@@ -159,7 +159,7 @@ static void skip_quotes ( char **s )
 
     *t = '\0' ;
   }
-  else 
+  else
     ulSetError ( UL_WARNING, "ac_to_gl: Expected double-quote ('\"') in '%s'", *s ) ;
 }
 
@@ -246,7 +246,8 @@ static int current_flags    = -1 ;
 
 static ssgState *get_state ( _ssgMaterial *mat )
 {
-#if EEE_PAS_COMPRIS
+#ifdef EEE_PAS_COMPRIS
+#warning: HELLO ---------------------
   if (current_tfname != NULL) {
     ssgState *st = current_options -> createState ( current_tfname ) ;
     /* printf("creating texture : %s\n",current_tfname); */
@@ -293,7 +294,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
 
     if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
       {
-	st->setAlphaClamp(0.65);
+	st->setAlphaClamp(0.65f);
 	st -> enable ( GL_ALPHA_TEST ) ;
 	st -> enable  ( GL_BLEND );
       }
@@ -307,26 +308,26 @@ static ssgState *get_state ( _ssgMaterial *mat )
 
 static ssgState *get_state_ext ( char * name)
 {
-  if (name==NULL)
-    return NULL;
-  grMultiTexState *st = new grMultiTexState () ;
-  st -> disable ( GL_BLEND ) ;
-  st -> setOpaque () ;
+	if (name==NULL) {
+		return NULL;
+	}
+	grMultiTexState *st = new grMultiTexState();
+	st->disable(GL_BLEND);
+	st->setOpaque();
 
-  if (name != NULL) {
-    st -> setTexture( current_options -> createTexture(name) ) ;
-    st -> enable( GL_TEXTURE_2D ) ;
-    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
-      {
-	st -> enable  ( GL_BLEND );
-	st->setAlphaClamp(0.7);
-	st -> enable ( GL_ALPHA_TEST ) ;
-      }
-  } else {
-    st -> disable  ( GL_BLEND ) ;
-    st -> disable( GL_TEXTURE_2D ) ;
-  }
-  return st ;
+	if (name != NULL) {
+		st->setTexture(current_options->createTexture(name));
+		st->enable(GL_TEXTURE_2D) ;
+		if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL) {
+			st->enable(GL_BLEND);
+			st->setAlphaClamp(0.7f);
+			st->enable(GL_ALPHA_TEST);
+		}
+	} else {
+		st->disable(GL_BLEND);
+		st->disable(GL_TEXTURE_2D);
+	}
+	return st ;
 }
 
 
@@ -381,58 +382,57 @@ static int do_material ( char *s )
 
 static int do_object   ( char * s  )
 {
-  ssgBranch  *current_branch_g   = NULL ;
-  int obj_type = search ( obj_type_tags, s ) ;
+	//ssgBranch *current_branch_g = NULL;
+	int obj_type = search(obj_type_tags, s);
 
-  delete [] current_tfname ;
-  current_tfname = NULL ;
+	delete [] current_tfname;
+	current_tfname = NULL;
 
-  char buffer [ 1024 ] ;
+	char buffer[1024];
 
-  sgSetVec2 ( texrep, 1.0f, 1.0f ) ;
-  sgSetVec2 ( texoff, 0.0f, 0.0f ) ;
+	sgSetVec2(texrep, 1.0f, 1.0f);
+	sgSetVec2(texoff, 0.0f, 0.0f);
 
-  sgMakeIdentMat4 ( current_matrix ) ;
+	sgMakeIdentMat4 ( current_matrix ) ;
 
-  ssgEntity *old_cb = current_branch ;
+	ssgEntity *old_cb = current_branch ;
 
-  if (obj_type==OBJ_GROUP)
-    {
-      inGroup=1;
-      current_branch_g=new ssgBranchCb();
-      current_branch->addKid(current_branch_g);
-      current_branch= (ssgTransform*)current_branch_g;
+	if (obj_type == OBJ_GROUP) {
+		ssgBranch *current_branch_g = NULL;
+		inGroup = 1;
+		current_branch_g = new ssgBranchCb();
+		current_branch->addKid(current_branch_g);
+		current_branch = (ssgTransform*) current_branch_g;
 
-      extern int preScene(ssgEntity *e);
-      current_branch_g->setCallback(SSG_CALLBACK_PREDRAW, preScene);
-    }
-  else
-    inGroup=0;
+		extern int preScene(ssgEntity *e);
+		current_branch_g->setCallback(SSG_CALLBACK_PREDRAW, preScene);
+    } else {
+		inGroup=0;
+	}
 
-  ssgTransform *tr = new ssgTransform () ;
+	ssgTransform *tr = new ssgTransform () ;
 
-  tr -> setTransform ( current_matrix ) ;
+	tr -> setTransform ( current_matrix ) ;
 
-  current_branch -> addKid ( tr ) ;
-  current_branch = tr ;
+	current_branch -> addKid ( tr ) ;
+	current_branch = tr ;
 
-  while ( FGETS ( buffer, 1024, loader_fd ) != NULL )
-    if ( search ( object_tags, buffer ) == PARSE_POP )
-      break ;
+	while ( FGETS ( buffer, 1024, loader_fd ) != NULL )
+    	if ( search ( object_tags, buffer ) == PARSE_POP )
+      		break ;
 
-  int num_kids = last_num_kids ;
+	int num_kids = last_num_kids ;
 
-  for ( int i = 0 ; i < num_kids ; i++ )
-  {
-      /* EE: bad hack for buggy .acc format... */
-    if (FGETS ( buffer, 1024, loader_fd ) != NULL )
-	search ( top_tags, buffer ) ;
-    else
-	break;
-  }
+	for ( int i = 0 ; i < num_kids ; i++ ) {
+		/* EE: bad hack for buggy .acc format... */
+		if (FGETS ( buffer, 1024, loader_fd ) != NULL )
+			search ( top_tags, buffer ) ;
+    	else
+			break;
+	}
 
-  current_branch = (ssgBranch *) old_cb ;
-  return PARSE_CONT ;
+	current_branch = (ssgBranch *) old_cb ;
+	return PARSE_CONT ;
 }
 
 
@@ -759,283 +759,291 @@ static int do_mat ( char *s )
 }
 
 
-static int do_refs     ( char *s )
+static int do_refs( char *s )
 {
-  int nrefs = strtol ( s, NULL, 0 ) ;
-  char buffer [ 1024 ] ;
+	int nrefs = strtol( s, NULL, 0 );
+	char buffer[1024];
 
-  if ( nrefs == 0 )
-    return PARSE_POP ;
+	if (nrefs == 0) {
+		return PARSE_POP ;
+	}
 
-  ssgVertexArray   *vlist = new ssgVertexArray ( nrefs ) ;
-  ssgTexCoordArray *tlist = new ssgTexCoordArray ( nrefs ) ;
-  ssgTexCoordArray *tlist1 = NULL;
-  ssgTexCoordArray *tlist2 = NULL;
-  ssgTexCoordArray *tlist3 = NULL;
-  ssgIndexArray	   *vindices = new ssgIndexArray(nrefs);
-  ssgNormalArray   *nrm = new ssgNormalArray ( nrefs ) ;
+	ssgVertexArray *vlist = new ssgVertexArray(nrefs);
+	ssgTexCoordArray *tlist = new ssgTexCoordArray (nrefs);
+	ssgTexCoordArray *tlist1 = NULL;
+	ssgTexCoordArray *tlist2 = NULL;
+	ssgTexCoordArray *tlist3 = NULL;
+	ssgIndexArray *vindices = new ssgIndexArray(nrefs);
+	ssgNormalArray *nrm = new ssgNormalArray(nrefs);
 
-  if (numMapLevel>1)
-    tlist1=new ssgTexCoordArray ( nrefs ) ;
-  if (numMapLevel>2)
-    tlist2=new ssgTexCoordArray ( nrefs ) ;
-  if (numMapLevel>3)
-    tlist3=new ssgTexCoordArray ( nrefs ) ;
+	if (numMapLevel > 1) {
+		tlist1 = new ssgTexCoordArray(nrefs);
+	}
+	if (numMapLevel > 2) {
+		tlist2 = new ssgTexCoordArray(nrefs);
+	}
+	if (numMapLevel > 3) {
+		tlist3 = new ssgTexCoordArray(nrefs);
+	}
 
-  for ( int i = 0 ; i < nrefs ; i++ )
-  {
-    FGETS ( buffer, 1024, loader_fd ) ;
+	for (int i = 0; i < nrefs; i++) {
+		FGETS(buffer, 1024, loader_fd);
 
-    int vtx ;
-    sgVec2 tc ;
-    sgVec2 tc1 = {0};
-    sgVec2 tc2 = {0};
-    sgVec2 tc3 = {0};
-    int tn=0;
-    tn= sscanf ( buffer, "%d %f %f %f %f %f %f %f %f", &vtx,
-		 &tc[0],&tc[1],
-		 &tc1[0],&tc1[1],
-		 &tc2[0],&tc2[1],
-		 &tc3[0],&tc3[1]);
+		int vtx;
+		sgVec2 tc;
+		sgVec2 tc1 = {0};
+		sgVec2 tc2 = {0};
+		sgVec2 tc3 = {0};
+		int tn=0;
+		tn= sscanf ( buffer, "%d %f %f %f %f %f %f %f %f", &vtx,
+			&tc[0],&tc[1],
+			&tc1[0],&tc1[1],
+			&tc2[0],&tc2[1],
+			&tc3[0],&tc3[1]);
 
-    if (tn < 3 )
-      {
-	ulSetError ( UL_FATAL, "ac_to_gl: Illegal ref record not enough text coord." ) ;
-      }
-	
-    tc[0] *= texrep[0] ;
-    tc[1] *= texrep[1] ;
-    tc[0] += texoff[0] ;
-    tc[1] += texoff[1] ;
+		if (tn < 3 )
+		{
+			ulSetError ( UL_FATAL, "ac_to_gl: Illegal ref record not enough text coord." ) ;
+		}
 
-    tlist -> add ( tc ) ;
-    t0tab[vtx][0]=tc[0];
-    t0tab[vtx][1]=tc[1];
+		tc[0] *= texrep[0] ;
+		tc[1] *= texrep[1] ;
+		tc[0] += texoff[0] ;
+		tc[1] += texoff[1] ;
 
-    t1tab[vtx][0]=tc1[0];
-    t1tab[vtx][1]=tc1[1];
+		tlist -> add ( tc ) ;
+		t0tab[vtx][0]=tc[0];
+		t0tab[vtx][1]=tc[1];
 
-    t2tab[vtx][0]=tc2[0];
-    t2tab[vtx][1]=tc2[1];
+		t1tab[vtx][0]=tc1[0];
+		t1tab[vtx][1]=tc1[1];
 
-    t3tab[vtx][0]=tc3[0];
-    t3tab[vtx][1]=tc3[1];
+		t2tab[vtx][0]=tc2[0];
+		t2tab[vtx][1]=tc2[1];
 
-    if (numMapLevel>1)
-      tlist1 -> add ( tc1 ) ;
-    if (numMapLevel>2)
-      tlist2 -> add ( tc2 ) ;
-    if (numMapLevel>3)
-      tlist3 -> add ( tc3 ) ;
+		t3tab[vtx][0]=tc3[0];
+		t3tab[vtx][1]=tc3[1];
 
-    vlist -> add ( vtab[vtx] ) ;
-    if (usenormal==1)
-      nrm -> add ( ntab[vtx] ) ;
-    vindices-> add (i);
-    vertlist->add(vtx);
-  }
-#ifdef GUIONS
-  if (usenormal==1)
-    {
-      printf("use normal\n");
-    }
-#endif /* GUIONS */
+		if (numMapLevel > 1) {
+			tlist1->add(tc1);
+		}
+		if (numMapLevel > 2) {
+			tlist2->add(tc2);
+		}
+		if (numMapLevel > 3) {
+			tlist3->add(tc3);
+		}
 
-  ssgColourArray *col = new ssgColourArray ( 1 ) ;
+		vlist->add(vtab[vtx]);
+		if (usenormal == 1) {
+			nrm->add(ntab[vtx]);
+		}
+		vindices-> add (i);
+		vertlist->add(vtx);
+	}
+	#ifdef GUIONS
+	if (usenormal==1) {
+		printf("use normal\n");
+	}
+	#endif /* GUIONS */
 
-  col -> add ( *current_colour ) ;
+	ssgColourArray *col = new ssgColourArray(1);
 
-  sgVec3 nm ;
+	col->add(*current_colour);
 
-  if (usenormal==0)
-    {
-      if ( nrefs < 3 )
-	sgSetVec3 ( nm, 0.0f, 0.0f, 1.0f ) ;
-      else
-	sgMakeNormal ( nm, vlist->get(0), vlist->get(1), vlist->get(2) ) ;
-      nrm -> add ( nm ) ;
-      
-    }
+	sgVec3 nm;
+
+	if (usenormal == 0) {
+		if (nrefs < 3) {
+			sgSetVec3 (nm, 0.0f, 0.0f, 1.0f);
+		} else {
+			sgMakeNormal (nm, vlist->get(0), vlist->get(1), vlist->get(2));
+		}
+		nrm -> add ( nm ) ;
+	}
 
 
-  int type = ( current_flags & 0x0F ) ;
-  if ( type >= 0 && type <= 4 )
-  {
-    GLenum gltype = GL_TRIANGLES ;
-    switch ( type )
-    {
-      case 0 : gltype = GL_TRIANGLE_FAN ;
-               break ;
-      case 1 : gltype = GL_LINE_LOOP ;
-               break ;
-      case 2 : gltype = GL_LINE_STRIP ;
-               break ;
-      case 4 : gltype = GL_TRIANGLE_STRIP ;
-	       usestrip=TRUE;
-               break ;
-    }
+	int type = ( current_flags & 0x0F ) ;
+	if ( type >= 0 && type <= 4 ) {
+		GLenum gltype = GL_TRIANGLES ;
+		switch ( type )
+		{
+		case 0 : gltype = GL_TRIANGLE_FAN ;
+				break ;
+		case 1 : gltype = GL_LINE_LOOP ;
+				break ;
+		case 2 : gltype = GL_LINE_STRIP ;
+				break ;
+		case 4 : gltype = GL_TRIANGLE_STRIP ;
+			usestrip=TRUE;
+				break ;
+	}
 
 #ifdef NORMAL_TEST
-    /* GUIONS TEST that draw all the normals of a car */
-    if(  isacar==TRUE)
-      {
-	ssgVertexArray   *vlinelist = new ssgVertexArray ( nv*2 ) ;
-	for (i=0; i<nv; i++)
-	  {
-	    sgVec3 tv;
-	    tv[0]=ntab[i][0]*0.2 +vtab[i][0]  ;
-	    tv[1]=ntab[i][1]*0.2 +vtab[i][1] ;
-	    tv[2]=ntab[i][2]*0.2 +vtab[i][2];
-	    vlinelist -> add ( vtab[i] ) ;
-	    vlinelist -> add ( tv ) ;
-	  }
-	ssgVtxTable * vline=new ssgVtxTable(GL_LINES,vlinelist,NULL,NULL,NULL   );
-	current_branch -> addKid ( current_options -> createLeaf (vline,0)  );
-      }
+	/* GUIONS TEST that draw all the normals of a car */
+	if(isacar == TRUE) {
+		ssgVertexArray *vlinelist = new ssgVertexArray(nv*2);
+		for (i = 0; i < nv; i++) {
+			sgVec3 tv;
+			tv[0] = ntab[i][0]*0.2 + vtab[i][0];
+			tv[1] = ntab[i][1]*0.2 + vtab[i][1];
+			tv[2] = ntab[i][2]*0.2 + vtab[i][2];
+			vlinelist->add(vtab[i]);
+			vlinelist->add(tv);
+		}
+		ssgVtxTable *vline = new ssgVtxTable(GL_LINES, vlinelist, NULL, NULL, NULL);
+		current_branch->addKid(current_options->createLeaf(vline, 0));
+	}
 #endif
 
-    /* check the number of texture units */
-    if (numMapLevel>maxTextureUnits)
-      numMapLevel=maxTextureUnits;
-    if (isacar==TRUE) {
-      mapLevel=LEVELC;
-      if (tlist1 && maxTextureUnits>1) {
-	mapLevel=LEVELC2;
-	numMapLevel=2;
-      }
-      if (tlist2 && maxTextureUnits>2){
-	mapLevel=LEVELC3;
-	numMapLevel=3;
-      }
-    }
+	/* check the number of texture units */
+	if (numMapLevel > maxTextureUnits) {
+		numMapLevel=maxTextureUnits;
+	}
+	if (isacar == TRUE) {
+		mapLevel=LEVELC;
+		if (tlist1 && maxTextureUnits > 1) {
+			mapLevel = LEVELC2;
+			numMapLevel = 2;
+		}
+		if (tlist2 && maxTextureUnits > 2) {
+			mapLevel = LEVELC3;
+			numMapLevel = 3;
+		}
+	}
 #define VTXARRAY_GUIONS
 #ifdef VTXARRAY_GUIONS
-    if (usestrip==FALSE)
+	if (usestrip == FALSE)
 #endif
-      {
-	/* TEST 
-	   if (isacar==FALSE)
-	   {numMapLevel=1;
-	   mapLevel=LEVEL0;
-	   }
-	*/
-	grVtxTable* vtab = new grVtxTable ( gltype,
-	  vlist, nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;
-	/* good */
-	/*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
-	  vlist, nrm, tlist, col , vindices) ;*/
+	{
+		/* TEST
+		if (isacar==FALSE)
+		{numMapLevel=1;
+		mapLevel=LEVEL0;
+		}
+		*/
+		grVtxTable* vtab = new grVtxTable ( gltype,
+		vlist, nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;
+		/* good */
+		/*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+		vlist, nrm, tlist, col , vindices) ;*/
 
-	/*striplist-> add (nrefs);
-	grVtxTable* vtab = new grVtxTable ( gltype,
-					    vlist,
-					    striplist,
-					    1,vertlist,
-					    nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;*/
-	
-	/*printf("name ob =%s , numMapLevel =%d , maoLevel=%d \n",	current_branch -> getName (  ) ,numMapLevel, mapLevel);*/
-	
-	vtab -> setState ( get_state ( current_material ) ) ;
-	vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
+		/*striplist-> add (nrefs);
+		grVtxTable* vtab = new grVtxTable ( gltype,
+							vlist,
+							striplist,
+							1,vertlist,
+							nrm, tlist,tlist1,tlist2,tlist3,numMapLevel,mapLevel, col, indexCar ) ;*/
 
-	if (numMapLevel>1)
-	    vtab -> setState1 (get_state_ext (current_ttiled ));
-	if (numMapLevel>2)
-	    vtab -> setState2 (get_state_ext (current_tskids ));
-	if (numMapLevel>3)
-	    vtab -> setState3 (get_state_ext (current_tshad ));
+		/*printf("name ob =%s , numMapLevel =%d , maoLevel=%d \n",	current_branch -> getName (  ) ,numMapLevel, mapLevel);*/
 
-	ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
+		vtab -> setState ( get_state ( current_material ) ) ;
+		vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
 
-	if ( leaf )
-	  current_branch -> addKid ( leaf ) ;
-      }
+		if (numMapLevel>1)
+			vtab -> setState1 (get_state_ext (current_ttiled ));
+		if (numMapLevel>2)
+			vtab -> setState2 (get_state_ext (current_tskids ));
+		if (numMapLevel>3)
+			vtab -> setState3 (get_state_ext (current_tshad ));
+
+		ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
+
+		if (leaf) {
+			current_branch->addKid(leaf);
+		} else {
+			// TODO: delete leaf or vtab?
+			delete vtab;
+		}
+	}
 #ifdef VTXARRAY_GUIONS
-    else
-      {
-	/* memorize the stripe index */
-	striplist-> add (nrefs);
-	totalstripe++;
-	delete vlist;
-	vlist = 0;
-	delete tlist;
-	tlist = 0;
-	delete tlist1;
-	tlist1 = 0;
-	delete tlist2;
-	tlist2 = 0;
-	delete tlist3;
-	tlist3 = 0;
-	delete vindices;
-	vindices = 0;
-	delete nrm;
-	nrm = 0;
-      }
-#endif
-  }
+	else {
+		/* memorize the stripe index */
+		striplist-> add (nrefs);
+		totalstripe++;
+		delete vlist;
+		vlist = 0;
+		delete tlist;
+		tlist = 0;
+		delete tlist1;
+		tlist1 = 0;
+		delete tlist2;
+		tlist2 = 0;
+		delete tlist3;
+		tlist3 = 0;
+		delete vindices;
+		vindices = 0;
+		delete nrm;
+		nrm = 0;
+		}
+	#endif
+	}
 
-  return PARSE_POP ;
+	if (col->getRef() == 0) {
+		delete col;
+	}
+	return PARSE_POP ;
 }
 
 static int do_kids ( char *s )
 {
-  last_num_kids = strtol ( s, NULL, 0 ) ;
-  
-#ifdef VTXARRAY_GUIONS
-  if (last_num_kids==0 && usestrip==TRUE && inGroup!=1)
-    {
-      ssgVertexArray   *vlist = new ssgVertexArray ( totalnv ) ;
-      ssgNormalArray   *nrm = new ssgNormalArray ( totalnv ) ;
-      ssgTexCoordArray *tlist0 = new ssgTexCoordArray ( totalnv) ;
-      ssgTexCoordArray *tlist1 = NULL;
-      ssgTexCoordArray *tlist2 = NULL;
-      ssgTexCoordArray *tlist3 = NULL;
-      /* if (numMapLevel>1) */
-	tlist1=new ssgTexCoordArray ( totalnv ) ;
-      /* if (numMapLevel>2) */
-	tlist2=new ssgTexCoordArray ( totalnv ) ;
-      /* if (numMapLevel>3) */
-	tlist3=new ssgTexCoordArray ( totalnv ) ;
-      for ( int i = 0 ; i < totalnv ; i++ )
-	{
-	  tlist0 -> add ( t0tab[i] ) ;
-	  /* if (numMapLevel>1) */
-	    tlist1 -> add ( t1tab[i] ) ;
-	  /* if (numMapLevel>2) */
-	    tlist2 -> add ( t2tab[i] ) ;
-	  /* if (numMapLevel>3) */
-	    tlist3 -> add ( t3tab[i] ) ;
-	  vlist -> add ( vtab[i] ) ;
-	  if (usenormal==1)
-	    nrm -> add ( ntab[i] ) ;
-	}
-      
-      ssgColourArray *col = new ssgColourArray ( 1 ) ;
-      col -> add ( *current_colour ) ;
-      
-      /* int type = ( current_flags & 0x0F ) ; */      
-      GLenum gltype = GL_TRIANGLE_STRIP ;
-      
-      /* check the number of texture units */
-      if (numMapLevel>maxTextureUnits)
-	numMapLevel=maxTextureUnits;
-      if (isacar==TRUE) {
-	mapLevel=LEVELC;
-	if (tlist1 && maxTextureUnits>2) {
-	  mapLevel=LEVELC2;
-	  numMapLevel=2;
-	}
-	if (tlist2 && maxTextureUnits>2){
-	  mapLevel=LEVELC3;
-	  numMapLevel=3;
-	}
-      }
-      /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
-	vlist, nrm, tlist0, col , vertlist) ;*/
+	last_num_kids = strtol(s, NULL, 0);
 
-      grVtxTable* vtab = new grVtxTable ( gltype,
+#ifdef VTXARRAY_GUIONS
+	if (last_num_kids == 0 && usestrip == TRUE && inGroup != 1) {
+		ssgVertexArray *vlist = new ssgVertexArray(totalnv);
+		ssgNormalArray *nrm = new ssgNormalArray(totalnv);
+		ssgTexCoordArray *tlist0 = new ssgTexCoordArray(totalnv);
+		ssgTexCoordArray *tlist1 = NULL;
+		ssgTexCoordArray *tlist2 = NULL;
+		ssgTexCoordArray *tlist3 = NULL;
+		/* if (numMapLevel>1) */
+		tlist1 = new ssgTexCoordArray(totalnv);
+		/* if (numMapLevel>2) */
+		tlist2 = new ssgTexCoordArray(totalnv);
+		/* if (numMapLevel>3) */
+		tlist3 = new ssgTexCoordArray(totalnv);
+      	for (int i = 0; i < totalnv; i++) {
+			tlist0 -> add ( t0tab[i] ) ;
+			/* if (numMapLevel>1) */
+			tlist1 -> add ( t1tab[i] ) ;
+			/* if (numMapLevel>2) */
+			tlist2 -> add ( t2tab[i] ) ;
+			/* if (numMapLevel>3) */
+			tlist3 -> add ( t3tab[i] ) ;
+			vlist -> add ( vtab[i] ) ;
+			if (usenormal==1) {
+				nrm -> add ( ntab[i] ) ;
+			}
+		}
+
+		ssgColourArray *col = new ssgColourArray ( 1 ) ;
+		col -> add ( *current_colour ) ;
+
+		/* int type = ( current_flags & 0x0F ) ; */
+		GLenum gltype = GL_TRIANGLE_STRIP ;
+
+		/* check the number of texture units */
+		if (numMapLevel>maxTextureUnits)
+			numMapLevel=maxTextureUnits;
+		if (isacar==TRUE) {
+			mapLevel=LEVELC;
+			if (tlist1 && maxTextureUnits>2) {
+				mapLevel=LEVELC2;
+				numMapLevel=2;
+			}
+			if (tlist2 && maxTextureUnits>2){
+				mapLevel=LEVELC3;
+				numMapLevel=3;
+			}
+		}
+		/*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+		vlist, nrm, tlist0, col , vertlist) ;*/
+
+		grVtxTable* vtab = new grVtxTable ( gltype,
 					  vlist,
 					  striplist,
-					  totalstripe,					  
+					  totalstripe,
 					  vertlist,
 					  nrm,
 					  tlist0,tlist1,tlist2,tlist3,
@@ -1051,16 +1059,18 @@ static int do_kids ( char *s )
       if (numMapLevel>3)
 	  vtab -> setState3 (get_state_ext (current_tshad ));
       ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
-      
-      if ( leaf )
-	current_branch -> addKid ( leaf ) ; 
-      
-    }
+
+		if (leaf) {
+			current_branch -> addKid ( leaf ) ;
+		} else {
+			delete vtab;
+		}
+	}
 #endif
-  
-  numMapLevel=1;
-  mapLevel=LEVEL0;
-  return PARSE_POP ;
+
+	numMapLevel=1;
+	mapLevel=LEVEL0;
+	return PARSE_POP ;
 }
 
 
@@ -1232,6 +1242,13 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   current_tfname = NULL ;
   delete [] vtab ;
   vtab = 0;
+
+	int i;
+	for (i = 0; i < num_materials; i++) {
+		delete mlist[i];
+		delete [] clist[i];
+	}
+
   FCLOSE ( loader_fd ) ;
 
   return current_branch ;

@@ -17,9 +17,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
+//#include <AL/al.h>
+//#include <AL/alc.h>
+//#include <AL/alut.h>
 
 #include <math.h>
 
@@ -47,45 +47,46 @@
 #else
 #define NB_ENGINE_SOUND 1
 #endif
-static int		curCrashSnd;
+
+static int			curCrashSnd;
 static slScheduler	*sched;
 static slSample		**engSample;
 static slSample		*crashSample[NB_CRASH_SOUND];
 
-static slSample         *bottomCrashSample;
-static slSample         *bangSample;
-static slSample     *backfireSample;
-static slSample     *gearchangeSample;
+static slSample		*bottomCrashSample;
+static slSample		*bangSample;
+static slSample		*backfireSample;
+static slSample		*gearchangeSample;
 
 static slSample		**skidSample;
 static slEnvelope	**skidVolEnv;
-static slEnvelope   **skidPitchEnv;
+static slEnvelope	**skidPitchEnv;
 
 #ifdef OLETHROS_PLIB
 static slSample		*grassSample;
 static slEnvelope	*grassVolEnv;
-static slEnvelope       *grassPitchEnv;
+static slEnvelope	*grassPitchEnv;
 
 static slSample		*roadSample;
 static slEnvelope	*roadVolEnv;
-static slEnvelope       *roadPitchEnv;
+static slEnvelope	*roadPitchEnv;
 
 
 static slSample		*skidgrassSample;
 static slEnvelope	*skidgrassVolEnv;
-static slEnvelope       *skidgrassPitchEnv;
+static slEnvelope	*skidgrassPitchEnv;
 
 static slSample		*skid_metalSample;
 static slEnvelope	*skid_metalVolEnv;
-static slEnvelope       *skid_metalPitchEnv;
+static slEnvelope	*skid_metalPitchEnv;
 
 static slSample		*axleSample;
 static slEnvelope	*axleVolEnv;
-static slEnvelope   *axlePitchEnv;
+static slEnvelope	*axlePitchEnv;
 
-static slSample     *backfireLoopSample;
-static slEnvelope   *backfireLoopVolEnv;
-static slEnvelope   *backfireLoopPitchEnv;
+static slSample		*backfireLoopSample;
+static slEnvelope	*backfireLoopVolEnv;
+static slEnvelope	*backfireLoopPitchEnv;
 
 #endif
 
@@ -96,7 +97,7 @@ static slEnvelope	**engVolEnv;
 #ifdef OLETHROS_PLIB
 static slEnvelope	**engFilterEnv;
 #endif
-static SoundPri          *engpri;
+static SoundPri		*engpri;
 
 static float* drag_collision;
 static int* prev_gear;
@@ -108,13 +109,33 @@ static float* engine_backfire;
 static int soundInitialized = 0;
 static int update_cnt = 0;
 static float* smooth_accel;
-void
-grInitSound(tSituation* s, int ncars)
+
+static bool soundEnabled = true;
+
+void grInitSound(tSituation* s, int ncars)
 {
-    char	buf[256];
-    int		i;
-    int car_i;
-    GfOut("-- grInitSound\n");
+	char	buf[256];
+	int		i;
+	int car_i;
+	GfOut("-- grInitSound\n");
+
+	// Check if we want sound (sound.xml).
+	char *soundEnabledStr = GR_ATT_SOUND_STATE_ENABLED;
+	char fnbuf[1024];
+	sprintf(fnbuf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	char *optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundEnabledStr);
+
+	if (strcmp(optionName, soundEnabledStr) != 0) {
+		soundEnabled = false;
+		GfParmReleaseHandle(paramHandle);
+		paramHandle = NULL;
+		return;
+	} else {
+		soundEnabled = true;
+		GfParmReleaseHandle(paramHandle);
+		paramHandle = NULL;
+	}
 
     sched = new slScheduler(44100);
 
@@ -167,7 +188,7 @@ grInitSound(tSituation* s, int ncars)
 	skidVolEnv = new slEnvelope* [4];
 	skidPitchEnv = new slEnvelope* [4];
 
-	for (int i=0; i<4; i++) {
+	for (i=0; i<4; i++) {
 		skidSample[i] = new slSample("data/sound/skid_tyres.wav", sched);
 		skidVolEnv[i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);
 		skidPitchEnv[i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);
@@ -246,11 +267,11 @@ grInitSound(tSituation* s, int ncars)
 		rpm_scale = GfParmGetNum(handle, "Sound", "rpm scale", NULL, 1.0);
 		sprintf (buf, "data/sound/%s", param);
 
-		printf("Loaded %s (rpm scale:%f) for car %d : %s\n", buf, rpm_scale, car_i, s->cars[car_i]->_carName);
+		//printf("Loaded %s (rpm scale:%f) for car %d : %s\n", buf, rpm_scale, car_i, s->cars[car_i]->_carName);
 		engSample[car_i] = new slSample(buf, sched);
 
 		engPitchEnv[car_i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);
-		engVolEnv[car_i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);	
+		engVolEnv[car_i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);
 #ifdef OLETHROS_PLIB
 		engFilterEnv[car_i] = new slEnvelope(1, SL_SAMPLE_ONE_SHOT);
 #endif
@@ -285,7 +306,7 @@ grInitSound(tSituation* s, int ncars)
 		//crashSample[i]->adjustVolume(0.25);
     }
     curCrashSnd = 0;
-    
+
     bangSample = new slSample ("data/sound/boom.wav");
     bottomCrashSample = new slSample ("data/sound/bottom_crash.wav");
     backfireSample = new slSample ("data/sound/backfire.wav");
@@ -300,7 +321,11 @@ grShutdownSound(int ncars)
     int i;
 
     GfOut("-- grShutdownSound\n");
-    
+
+	if (!soundEnabled) {
+		return;
+	}
+
     if (!soundInitialized) {
 		return;
     }
@@ -311,7 +336,7 @@ grShutdownSound(int ncars)
 		}
     }
 #ifdef OLETHROS_PLIB
-	for (int i=0; i<4; i++) {
+	for (i=0; i<4; i++) {
 		sched->stopSample(skidSample[i]);
 	}
     sched->stopSample(roadSample);
@@ -347,7 +372,7 @@ grShutdownSound(int ncars)
 	delete [] pre_axle;
 	delete [] engine_backfire;
 
-	for (int i=0; i<4; i++) {
+	for (i=0; i<4; i++) {
 		sched->addSampleEnvelope(skidSample[i],0,VOLUME_SLOT, NULL, SL_NULL_ENVELOPE);
 		sched->addSampleEnvelope(skidSample[i],0,PITCH_SLOT, NULL, SL_NULL_ENVELOPE);
 		delete skidVolEnv[i];
@@ -429,10 +454,15 @@ grShutdownSound(int ncars)
 float
 grRefreshSound(tSituation *s, cGrCamera	*camera)
 {
-
+	if (!soundEnabled) {
+		return 0.0;
+	}
 
     tCarElt	*car;//= s->cars[s->current];
     int		i;
+
+	// TODO: Fix for a lot of cars.
+	// TODO: Just consider cars near the camera, doing computations just for them?
 
     SoundChar src_sound;
     int car_i;
@@ -474,7 +504,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		engpri[car_i].a = 0.0;
 		engpri[car_i].id = car->index;
 
-		mpitch = base_frequency[car->index] * 
+		mpitch = base_frequency[car->index] *
 			(float)(car->_enginerpm) / 600.0;
 		//Calculate doppler effect
 		u_rel = 0.0f;
@@ -483,7 +513,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			sgVec3* p_camera;
 			sgVec3 u_car;
 			sgVec3 p_car;
-	    
+
 			p_camera = camera->getPosv();
 			u_camera = camera->getSpeedv();
 			u_car[0] = car->pub.DynGCg.vel.x;
@@ -496,7 +526,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			src_sound.a = 1.0;
 			DopplerShift (&src_sound, p_car, u_car, *p_camera, *u_camera);
 			tdble gear_ratio = car->_gearRatio[car->_gear + car->_gearOffset];
-		
+
 			axlevol = 0.1*(tanh(100.0*(fabs(pre_axle[car->index]- mpitch))));//*fabs(gear_ratio));
 			axlepitch = (pre_axle[car->index] + mpitch)*0.05*fabs(gear_ratio);
 			pre_axle[car->index] = (pre_axle[car->index]+mpitch)*.5;
@@ -523,8 +553,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		roadvol = 0.0;
 		grassvol = 0.0;
 		skidgrassvol = 0.0;
-		//	if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speaed_y) > 0.0) {
-		if(1) {
+		if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 3.0) {
 			for(i = 0; i < 4; i++) {
 				char* s = NULL;
 				tdble roughness = 0.0;
@@ -557,7 +586,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 				}
 
 				if (update_cnt<=-10) {
-					printf ("%f %f %f %f\n", roughness, roughnessFreq, ride, tmpvol);
+					//printf ("%f %f %f %f\n", roughness, roughnessFreq, ride, tmpvol);
 				}
 				int out_of_road = false;
 
@@ -582,6 +611,8 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 						roadpitch = tmppitch;
 					}
 					if (skvol[i] < car->_skid[i]-0.05) {
+						//skvol[i] = (float)car->_skid[i];
+						//skpitch[i] = 0.7+0.3*roughnessFreq;
 						skvol[i] = (float)car->_skid[i]-0.05;
 						float wsa = tanh((car->_wheelSlipAccel(i)+10.0)*0.01);
 						skpitch[i] = (0.3-wsa+0.3*roughnessFreq)/(1.0+tanh(car->_reaction[i]*0.0001));
@@ -746,7 +777,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		}
     }
 
-	for (int i=0; i<4; i++) {
+	for (i=0; i<4; i++) {
 		if (max_skvol[i]>1.0) {
 			skidVolEnv[i]->setStep(0, 0.0, MAX_VOL);
 		} else {

@@ -42,11 +42,11 @@ ssgVtxTableShadow::ssgVtxTableShadow ()
 
 
 
-ssgVtxTableShadow::ssgVtxTableShadow (float f, float u) 
+ssgVtxTableShadow::ssgVtxTableShadow (float f, float u) : ssgVtxTable(), factor(f), unit(u)
 {
-  factor=f;
+  /*factor=f;
   unit=u;
-  ssgVtxTable();
+  ssgVtxTable();*/
 }
 ssgVtxTableShadow::ssgVtxTableShadow ( GLenum ty, ssgVertexArray   *vl,
 				       ssgNormalArray   *nl,

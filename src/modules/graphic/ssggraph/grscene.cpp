@@ -359,7 +359,6 @@ grInitScene(void)
     GLfloat lmodel_ambient[] = {0.2, 0.2, 0.2, 1.0};
     GLfloat lmodel_diffuse[] = {0.8, 0.8, 0.8, 1.0};
     GLfloat fog_clr[]        = {1.0, 1.0, 1.0, 0.5};
-    
 
     if (grHandle==NULL) {
 	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
@@ -420,8 +419,8 @@ grInitScene(void)
     light->setColour(GL_AMBIENT,lmodel_ambient);
     light->setColour(GL_DIFFUSE,lmodel_diffuse);
     light->setColour(GL_SPECULAR,mat_specular);
-/*     light->setSpotlight(1); */
-/*     light->setHeadlight(0); */
+     //light->setSpotlight(1);
+     //light->setHeadlight(0);
     light->setSpotAttenuation(0.0, 0.0, 0.0);
 
     sgCopyVec3 (fog_clr,  grTrack->graphic.bgColor);
@@ -486,15 +485,15 @@ grLoadScene(tTrack *track)
     PitsAnchor = new ssgBranch;
     TheScene->addKid(PitsAnchor);
 
-    /* Car shadows */
-    ShadowAnchor = new ssgBranch;
-    TheScene->addKid(ShadowAnchor);
-
     /* Skid Marks */
     SkidAnchor = new ssgBranch;
     TheScene->addKid(SkidAnchor);
 
-    /* Car lights */
+    /* Car shadows */
+    ShadowAnchor = new ssgBranch;
+    TheScene->addKid(ShadowAnchor);
+
+	/* Car lights */
     CarlightAnchor = new ssgBranch;
     TheScene->addKid(CarlightAnchor);
 
@@ -547,7 +546,7 @@ void grDrawScene(void)
 
     //fprintf(stderr, "=========== grDrawScene ===================\n");
     //TheScene->print (stderr, "", 4 ) ;
-    
+
     ssgCullAndDraw(TheScene);
     
     TRACE_GL("refresh: ssgCullAndDraw");
@@ -555,23 +554,43 @@ void grDrawScene(void)
 
 void grShutdownScene(void)
 {
-    //grShutdownSmoke ();
-    if (TheScene) {
-	delete TheScene;
-	TheScene = 0;
-    }
-    if (BackgroundTex) {
-	glDeleteTextures(1, &BackgroundTex);
-	BackgroundTex = 0;
-    }
-    if (BackgroundList) {
-	glDeleteLists(BackgroundList, 1);
-	BackgroundList = 0;
-    }
-    if (BackgroundType > 2) {
-	glDeleteTextures(1, &BackgroundTex2);
-	glDeleteLists(BackgroundList2, 1);
-    }
+	//grShutdownSmoke ();
+	if (TheScene) {
+		delete TheScene;
+		TheScene = 0;
+	}
+
+	if (BackgroundTex) {
+		glDeleteTextures(1, &BackgroundTex);
+		BackgroundTex = 0;
+	}
+
+	if (BackgroundList) {
+		glDeleteLists(BackgroundList, 1);
+		BackgroundList = 0;
+	}
+
+	if (BackgroundType > 2) {
+		glDeleteTextures(1, &BackgroundTex2);
+		glDeleteLists(BackgroundList2, 1);
+	}
+
+	if (grEnvState != NULL) {
+		ssgDeRefDelete(grEnvState);
+		grEnvState = NULL;
+	}
+	if (grEnvShadowState != NULL) {
+		ssgDeRefDelete(grEnvShadowState);
+		grEnvShadowState = NULL;
+	}
+	if (grEnvShadowStateOnCars != NULL) {
+		ssgDeRefDelete(grEnvShadowStateOnCars);
+		grEnvShadowStateOnCars = NULL;
+	}
+	if(grEnvSelector != NULL) {
+		delete grEnvSelector;
+		grEnvSelector = NULL;
+	}
 }
 
 static ssgRoot *TheBackground;
@@ -628,7 +647,7 @@ initBackground(void)
 	for (i = 0; i < NB_BG_FACES + 1; i++) {
 	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
 	    texLen = (float)i / (float)NB_BG_FACES;
-	    
+
 	    x = BG_DIST * cos(alpha);
 	    y = BG_DIST * sin(alpha);
 	    
@@ -866,6 +885,7 @@ initBackground(void)
       envst = (ssgSimpleState*)grSsgLoadTexState(graphic->env[i]);
       envst->enable(GL_BLEND);
       grEnvSelector->setStep(i, envst);
+	  envst->deRef();
     }
     grEnvSelector->selectStep(0); /* mandatory !!! */
     grEnvState=(grMultiTexState*)grSsgEnvTexState(graphic->env[0]);
@@ -940,6 +960,7 @@ grCustomizePits(void)
 		sprintf(buf, "data/textures;data/img;.");
 	    }
 	    
+		
 	    st = grSsgLoadTexStateEx("logo.rgb", buf, FALSE, FALSE);
 	    ((ssgSimpleState*)st)->setShininess(50);
 	    

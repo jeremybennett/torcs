@@ -61,7 +61,6 @@
 
 class grVtxTable : public ssgVtxTable
 {
-  grMultiTexState *state ;
   grMultiTexState *state1 ;
   grMultiTexState *state2 ;
   grMultiTexState *state3 ;

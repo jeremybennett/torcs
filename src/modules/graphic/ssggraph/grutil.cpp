@@ -36,11 +36,11 @@
 #include "grscene.h"
 
 
-float		grGammaValue = 1.8;
-int		grMipMap = 0;
+float grGammaValue = 1.8;
+int grMipMap = 0;
 
-char		*grFilePath;	/* Multiple path (';' separated) used to search for files */
-char		*grTexturePath = NULL;	/* Default ssg path */
+char *grFilePath;			// Multiple path (';' separated) used to search for files.
+char *grTexturePath = NULL;	// Default ssg path.
 
 
 int
@@ -49,7 +49,7 @@ grGetFilename(char *filename, char *filepath, char *buf)
     char	*c1, *c2;
     int		found = 0;
     int		lg;
-    
+
     if (filepath) {
 	c1 = filepath;
 	c2 = c1;
@@ -87,48 +87,49 @@ grGetFilename(char *filename, char *filepath, char *buf)
 GLuint
 grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
 {
-    GLbyte	*tex;
-    int		w, h;
-    GLuint	image;
-    GLenum	gluerr= (GLenum) 0;
-    char	buf[256];
+	GLbyte *tex;
+	int w, h;
+	GLuint image;
+	GLenum gluerr = (GLenum) 0;
+	char buf[256];
 
-    if (!grGetFilename(filename, filepath, buf)) {
-	return 0;
-    }
-    GfOut("Loading %s\n", buf);
-    
-    tex = (GLbyte*)GfImgReadPng(buf, &w, &h, screen_gamma);
-    glGenTextures(1, &image);
-    glBindTexture(GL_TEXTURE_2D, image);
-    /* build the OPENGL texture */
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    if (mipmap) {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, mipmap, w, w, GL_RGBA, 
-					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-	if(gluerr) {
-	    GfTrace("grLoadTexture: %s %s\n", buf, gluErrorString(gluerr));
-	    free(tex);
-	    return 0;
+	if (!grGetFilename(filename, filepath, buf)) {
+		return 0;
 	}
-    } else {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-    }
+	GfOut("Loading %s\n", buf);
 
-#ifndef WIN32    
-    /* free(tex); */
-#endif
-    glBindTexture(GL_TEXTURE_2D, 0);
+	tex = (GLbyte*)GfImgReadPng(buf, &w, &h, screen_gamma);
+	glGenTextures(1, &image);
+	glBindTexture(GL_TEXTURE_2D, image);
 
-    return image;
+	/* build the OPENGL texture */
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	if (mipmap) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, mipmap, w, w, GL_RGBA,
+		GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+		if(gluerr) {
+			GfTrace("grLoadTexture: %s %s\n", buf, gluErrorString(gluerr));
+			free(tex);
+			return 0;
+		}
+	} else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+	}
+
+//#ifndef WIN32
+	free(tex);
+//#endif
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return image;
 }
 
 
@@ -194,7 +195,9 @@ grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
     }
     
+	// TODO: Whats up with this?
     /* free(tex); */
+	free(tex);
 
     if (info) {
 	info -> width  = w;
@@ -235,69 +238,70 @@ grGetState(char *img)
 void
 grShutdownState(void)
 {
-    stlist	*curr;
-    stlist	*next;
+	stlist *curr;
+	stlist *next;
 
-    curr = stateList;
-    while (curr != NULL) {
-	next = curr->next;
-	free(curr->name);
-	//curr->state->deRef(); // it's already deleted
-	free(curr);
-	curr = next;
-    }
-    stateList = NULL;
+	curr = stateList;
+	while (curr != NULL) {
+		next = curr->next;
+		free(curr->name);
+		//curr->state->deRef(); // it's already deleted
+		free(curr);
+		curr = next;
+	}
+	stateList = NULL;
 }
 
 
 ssgState *
 grSsgLoadTexState(char *img)
 {
-    char		buf[256];
-    char		*s;
-    GLuint		tex;
-    ssgSimpleState     	*st;
-    stlist		*curr;
+	char buf[256];
+	char *s;
+	GLuint tex;
+	ssgSimpleState *st;
+	stlist *curr;
 
-    /* remove the directory */
-    s = strrchr(img, '/');
-    if (s == NULL) {
-	s = img;
-    } else {
-	s++;
-    }
-    if (!grGetFilename(s, grFilePath, buf)) {
-	GfOut("grSsgLoadTexState: File %s not found\n", s);
-	return NULL;
-    }
-    
-    st = grGetState(buf);
-    if (st != NULL) {
+	/* remove the directory */
+	s = strrchr(img, '/');
+	if (s == NULL) {
+		s = img;
+	} else {
+		s++;
+	}
+
+	if (!grGetFilename(s, grFilePath, buf)) {
+		GfOut("grSsgLoadTexState: File %s not found\n", s);
+		return NULL;
+	}
+
+	st = grGetState(buf);
+	if (st != NULL) {
+		return (ssgState*)st;
+	}
+
+	st = new ssgSimpleState;
+	st->ref();			/* cannot be removed */
+	st->enable(GL_LIGHTING);
+	st->enable(GL_TEXTURE_2D);
+	st->enable(GL_BLEND);
+	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+
+	curr = (stlist*)calloc(sizeof(stlist), 1);
+	curr->next = stateList;
+	stateList = curr;
+	curr->state = st;
+	curr->name = strdup(buf);
+
+
+	if (strcmp(buf + strlen(buf) - 4, ".png") == 0) {
+		tex = grLoadTexture(buf, NULL, grGammaValue, grMipMap);
+		st->setTexture(tex);
+	} else {
+		GfOut("Loading %s\n", buf);
+		st->setTexture(buf);
+	}
 	return (ssgState*)st;
-    }
-
-    st = new ssgSimpleState;
-    st->ref();			/* cannot be removed */
-    st->enable(GL_LIGHTING);
-    st->enable(GL_TEXTURE_2D);
-    st->enable(GL_BLEND);
-    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-   
-    curr = (stlist*)calloc(sizeof(stlist), 1);
-    curr->next = stateList;
-    stateList = curr;
-    curr->state = st;
-    curr->name = strdup(buf);
-
-
-    if (strcmp(buf + strlen(buf) - 4, ".png") == 0) {
-	tex = grLoadTexture(buf, NULL, grGammaValue, grMipMap);
-	st->setTexture(tex);
-    } else {
-	GfOut("Loading %s\n", buf);
-	st->setTexture(buf);
-    }
-    return (ssgState*)st;
 }
 
 ssgState *
@@ -409,7 +413,7 @@ grPruneTree(ssgEntity *start, bool init)
 	    if (k->isAKindOf(ssgTypeBranch())) {
 		((ssgBranch*)start)->removeKid(i);
 		nb++;
-#if AGGRESSIVE_PRUNING
+#ifdef AGGRESSIVE_PRUNING
 	    } else if (k->isAKindOf(ssgTypeVtxTable())) {
 		if (((ssgVtxTable*)k)->getNumVertices() == 0) {
 		    ((ssgBranch*)start)->removeKid(i);

@@ -28,7 +28,7 @@ LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul -lplibssgaux
 
 SHIPDIR   = config
 
-SHIP      = graph.xml
+SHIP      = graph.xml sound.xml
 
 CONFIGCREATEDIRS = ${SHIPDIR}
 

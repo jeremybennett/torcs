@@ -221,6 +221,8 @@ ssgSimpleState	*breaklight2 = NULL;
 
 tgrCarlight * theCarslight=NULL;
 
+ssgBranch *CarlightCleanupAnchor;
+
 void grInitCarlight(int index)
 {
   char		buf[256];
@@ -302,61 +304,65 @@ void grInitCarlight(int index)
     }
   }
 
-
+	CarlightCleanupAnchor = new ssgBranch();
 }
 
 void grShudownCarlight(void)
 {
-  CarlightAnchor->removeAllKids();
-  free(theCarslight);
-  theCarslight=NULL;
-
+	CarlightAnchor->removeAllKids();
+	CarlightCleanupAnchor->removeAllKids();
+	delete CarlightCleanupAnchor;
+	free(theCarslight);
+	theCarslight=NULL;
 }
 
 
 void grAddCarlight(tCarElt *car, int type, sgVec3 pos, double size)
 {
-  ssgVertexArray *light_vtx = new ssgVertexArray(1);
-  
-  light_vtx->add(pos);
-  theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]= new ssgVtxTableCarlight(light_vtx,size,pos);
-  switch (type)
-    {
-    case LIGHT_TYPE_FRONT :
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(frontlight1);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    case LIGHT_TYPE_FRONT2 :
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(frontlight2);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    case LIGHT_TYPE_REAR:
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(rearlight1);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    case LIGHT_TYPE_BRAKE:
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(breaklight1);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    case LIGHT_TYPE_BRAKE2:
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(breaklight2);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    case LIGHT_NO_TYPE:
-    default :
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(rearlight1);
-      theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
-      break;
-    }
-  theCarslight[car->index].lightType[theCarslight[car->index].numberCarlight]=type;
-  theCarslight[car->index].lightCurr[theCarslight[car->index].numberCarlight]=(ssgVtxTableCarlight *)
-    theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->clone(SSG_CLONE_GEOMETRY);
-										
-  theCarslight[car->index].lightAnchor->addKid(theCarslight[car->index].lightCurr[theCarslight[car->index].numberCarlight]);
-  /*theCarslight[car->index].lightAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);*/
-  CarlightAnchor->addKid(theCarslight[car->index].lightAnchor);
-  /*CarlightAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);*/
-  theCarslight[car->index].numberCarlight++;
+	ssgVertexArray *light_vtx = new ssgVertexArray(1);
+
+	light_vtx->add(pos);
+	theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]= new ssgVtxTableCarlight(light_vtx,size,pos);
+
+	switch (type) {
+		case LIGHT_TYPE_FRONT :
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(frontlight1);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+		case LIGHT_TYPE_FRONT2 :
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(frontlight2);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+		case LIGHT_TYPE_REAR:
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(rearlight1);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+		case LIGHT_TYPE_BRAKE:
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(breaklight1);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+		case LIGHT_TYPE_BRAKE2:
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(breaklight2);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+		case LIGHT_NO_TYPE:
+		default :
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setState(rearlight1);
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->setCullFace(0);
+		break;
+	}
+
+	theCarslight[car->index].lightType[theCarslight[car->index].numberCarlight] = type;
+	theCarslight[car->index].lightCurr[theCarslight[car->index].numberCarlight] = (ssgVtxTableCarlight *)
+		theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]->clone(SSG_CLONE_GEOMETRY);
+
+	theCarslight[car->index].lightAnchor->addKid(theCarslight[car->index].lightCurr[theCarslight[car->index].numberCarlight]);
+	/*theCarslight[car->index].lightAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);*/
+	CarlightCleanupAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);
+	CarlightAnchor->addKid(theCarslight[car->index].lightAnchor);
+	/*CarlightAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);*/
+	//delete theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight];
+	theCarslight[car->index].numberCarlight++;
 
 }
 

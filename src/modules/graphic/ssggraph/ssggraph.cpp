@@ -41,7 +41,7 @@ graphInit(int /* idx */, void *pt)
     itf->refresh       = refresh;
     itf->shutdowncars  = shutdownCars;
     itf->shutdowntrack = shutdownTrack;
-    itf->bendcar       = bendCar;
+    //itf->bendcar       = bendCar;
     return 0;
 }
 

@@ -47,6 +47,7 @@ typedef struct
     int			LODSelectMask[32];
     float		LODThreshold[32];
     ssgSelector		*driverSelector;
+	bool driverSelectorinsg;
     ssgStateSelector	*envSelector;
     ssgTransform	*wheelPos[4];
     ssgTransform	*wheelRot[4];
