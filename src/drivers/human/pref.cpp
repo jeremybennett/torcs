@@ -49,6 +49,7 @@ int	ParamAsr		= 0;	/* anti-slip accel */
 int	ParamAbs		= 1;	/* anti-lock brake */
 int	RelButNeutral		= 0;
 int	SeqShftAllowNeutral	= 0;
+int	AutoReverse		= 0;
 
 #define NB_CMD	16
 
@@ -72,6 +73,20 @@ tControlCmd	CmdControl[NB_CMD] = {
     {HM_ATT_RIGHTSTEER, GFCTRL_TYPE_JOY_AXIS, 0, HM_ATT_RIGHTSTEER_MIN, 0.0, 0.0, HM_ATT_RIGHTSTEER_MAX, 1.0, HM_ATT_STEER_SENS,    2.0, HM_ATT_STEER_POW,    1.0, HM_ATT_STEER_SPD, 0.0, HM_ATT_STEER_DEAD, 0.0}
 };
 
+typedef struct
+{
+    char	*settings;
+    char	*parmName;
+} tCtrl;
+
+
+static tCtrl	controlList[] = {
+    {HM_SECT_JSPREF,    HM_VAL_JOYSTICK},
+    {HM_SECT_KEYBPREF,  HM_VAL_KEYBOARD},
+    {HM_SECT_MOUSEPREF, HM_VAL_MOUSE}
+};
+static const int nbControl = sizeof(controlList) / sizeof(controlList[0]);
+
 
 char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
@@ -87,7 +102,7 @@ HmReadPrefs(int index)
     uint	cmd;
     float	tmp;
     tCtrlRef	*ref;
-    
+    int		i;
 
     sprintf(sstring, "%s%s", LocalDir, HM_PREF_FILE);
     PrefHdle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
@@ -114,11 +129,19 @@ HmReadPrefs(int index)
 	ParamAsr = 0;
     }
 
-    if (joyPresent) {
-	defaultSettings = HM_SECT_JSPREF;
-    } else {
-	defaultSettings = HM_SECT_MOUSEPREF;
+    prm = GfParmGetStr(PrefHdle, HM_SECT_PREF, HM_ATT_CONTROL, controlList[2].parmName);
+    for (i = 0; i < nbControl; i++) {
+	if (!strcmp(prm, controlList[i].parmName)) {
+	    break;
+	}
     }
+    if (i == nbControl) {
+	i = 2;
+    }
+    if ((i == 0) && !joyPresent) {
+	i = 2;
+    }
+    defaultSettings = controlList[i].settings;
 
     /* Command Settings */
     for (cmd = 0; cmd < NB_CMD; cmd++) {
@@ -182,6 +205,13 @@ HmReadPrefs(int index)
 	SeqShftAllowNeutral = 1;
     } else {
 	SeqShftAllowNeutral = 0;
+    }
+
+    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_AUTOREVERSE, Yn[AutoReverse]);
+    if (strcmp(prm, Yn[0]) == 0) {
+	AutoReverse = 1;
+    } else {
+	AutoReverse = 0;
     }
 
 #if 0

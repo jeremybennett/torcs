@@ -16,7 +16,7 @@
 
 <params mode="mw" type="template" name="Player Pref">
 
-  <section name="joystick defaults">
+  <section name="joystick">
     <attstr name="up shift"   val="BTN1-0"/>
     <attstr name="down shift" val="BTN2-0"/>
     <attstr name="ASR cmd" val="BTN6-0"/>
@@ -56,7 +56,7 @@
     <attnum name="brake power" val="1.2"/>
   </section>
 
-  <section name="mouse defaults">
+  <section name="mouse">
     <attstr name="up shift"   val=""/>
     <attstr name="down shift" val=""/>
     <attstr name="ASR cmd" val=""/>
@@ -72,10 +72,10 @@
     <attstr name="release gear button goes neutral" in="yes,no" val="yes"/>
     <attstr name="sequential shifter allow neutral" in="yes,no" val="no"/>
 
-    <attnum name="steer sensitivity" val="500"/>
-    <attnum name="steer power" val="0"/>
+    <attnum name="steer sensitivity" val="0"/>
+    <attnum name="steer power" val="0.250"/>
     <attnum name="steer speed sensitivity" val="0.7"/>
-    <attnum name="steer dead zone" unit="%" val="2.0"/>
+    <attnum name="steer dead zone" unit="%" val="4.0"/>
 
     <attstr name="left steer" val="MOUSE_LEFT"/>
     <attnum name="left steer min" val="0"/>
@@ -99,6 +99,7 @@
   </section>
 
   <section name="Preferences">
+    <attstr name="control" in="mouse,joystick,keyboard" val="mouse"/>
 
     <section name="Drivers">
 

@@ -53,6 +53,7 @@ extern int	ParamAbs;	/* anti-lock brake */
 
 extern int	RelButNeutral;
 extern int	SeqShftAllowNeutral;
+extern int	AutoReverse;
 
 extern tControlCmd CmdControl[];
 

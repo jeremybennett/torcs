@@ -65,8 +65,6 @@ static tCmdInfo Cmd[] = {
      
 static int maxCmd = sizeof(Cmd) / sizeof(Cmd[0]);
 
-char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
-
 static jsJoystick *js[NUM_JOY] = {NULL};
 
 static int SteerSensEditId;
@@ -225,7 +223,7 @@ onActivate1(void * /* dummy */)
     tCtrlRef	*ref;
 
     sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
-    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     /* JOYSTICK SETTINGS */
     for (cmd = 0; cmd < maxCmd; cmd++) {
@@ -293,7 +291,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
 
     prevHandle = prevMenu;
     sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
-    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     /* JOYSTICK SETTINGS */
     for (cmd = 0; cmd < maxCmd; cmd++) {
@@ -316,8 +314,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
     joyCalMenuInit();
     
     scrHandle1 = GfuiScreenCreateEx(NULL, NULL, onActivate1, NULL, NULL, 1);
-    #define TITLE1 "Controls"
-    GfuiTitleCreate(scrHandle1, TITLE1, strlen(TITLE1));
+    GfuiTitleCreate(scrHandle1, "Joystick Configuration", 0);
     GfuiMenuDefaultKeysAdd(scrHandle1);
 
     GfuiScreenAddBgImg(scrHandle1, "data/img/splash-joyconf.png");

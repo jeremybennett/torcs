@@ -23,25 +23,19 @@
 #include <tgf.h>
 #include <track.h>
 #include <robot.h>
+#include <playerpref.h>
+
 #include "driverconfig.h"
 
 #define NO_DRV	"--- empty ---"
 #define dllname   "human"
-#define DRV_FILE  "drivers/human/human.xml"
-#define PREF_FILE "drivers/human/preferences.xml"
-
-#define	HM_SECT_PREF	"Preferences"
-#define HM_LIST_DRV	"Drivers"
-#define HM_ATT_TRANS	"transmission"
-#define HM_ATT_ABS	"ABS on"
-#define HM_ATT_ASR	"ASR on"
-#define HM_ATT_NBPITS	"programmed pit stops"
-#define HM_VAL_AUTO	"auto"
-#define HM_VAL_MANUAL	"manual"
 
 static char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+static const int nbLevels = sizeof(level_str) / sizeof(level_str[0]);
 
 static char buf[1024];
+
+static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 static int	scrollList;
 static void	*scrHandle = NULL;
@@ -56,6 +50,7 @@ static int RaceNumEditId;
 static int TransEditId;
 static int PitsEditId;
 static int SkillId;
+static int AutoReverseId;
 
 #define NB_DRV	10
 
@@ -91,7 +86,8 @@ typedef struct PlayerInfo
     char	*transmission;
     int		nbpitstops;
     float	color[4];
-    int		skill_level;
+    int		skilllevel;
+    int		autoreverse;
 } tPlayerInfo;
 
 #define _Name		info.name
@@ -102,6 +98,8 @@ static tPlayerInfo PlayersInfo[NB_DRV];
 static tRingListHead CatsInfoList = {(tRingList*)&CatsInfoList, (tRingList*)&CatsInfoList};
 
 static tPlayerInfo	*curPlayer;
+
+static char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
 static void
 refreshEditVal(void)
@@ -129,6 +127,8 @@ refreshEditVal(void)
 	GfuiEnable(scrHandle, PitsEditId, GFUI_DISABLE);
 
 	GfuiLabelSetText(scrHandle, SkillId, "");
+
+	GfuiLabelSetText(scrHandle, AutoReverseId, "");
     } else {
 	GfuiEditboxSetString(scrHandle, NameEditId, curPlayer->_DispName);
 	GfuiEnable(scrHandle, NameEditId, GFUI_ENABLE);
@@ -152,7 +152,9 @@ refreshEditVal(void)
 	GfuiEditboxSetString(scrHandle, PitsEditId, buf);
 	GfuiEnable(scrHandle, PitsEditId, GFUI_ENABLE);
 
-	GfuiLabelSetText(scrHandle, SkillId, level_str[curPlayer->skill_level]);
+	GfuiLabelSetText(scrHandle, SkillId, level_str[curPlayer->skilllevel]);
+
+	GfuiLabelSetText(scrHandle, AutoReverseId, Yn[curPlayer->autoreverse]);
     }
 }
 
@@ -290,7 +292,7 @@ GenDrvList(void)
     char	*str;
     int		found;
 
-    sprintf(buf, "%s%s", LocalDir, DRV_FILE);
+    sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (drvinfo == NULL) {
 	return -1;
@@ -310,11 +312,11 @@ GenDrvList(void)
 	} else {
 	    PlayersInfo[i]._DispName = strdup(driver);
 	    PlayersInfo[i]._Name = dllname;
-	    PlayersInfo[i].skill_level = 0;
+	    PlayersInfo[i].skilllevel = 0;
 	    str = GfParmGetStr(drvinfo, sstring, ROB_ATTR_LEVEL, level_str[0]);
-	    for(j = 0; j < (int)(sizeof(level_str)/sizeof(char*)); j++) {
+	    for(j = 0; j < nbLevels; j++) {
 		if (strcmp(level_str[j], str) == 0) {
-		    PlayersInfo[i].skill_level = j;
+		    PlayersInfo[i].skilllevel = j;
 		    break;
 		}
 	    }
@@ -342,7 +344,7 @@ GenDrvList(void)
     }
     UpdtScrollList();
 
-    sprintf(buf, "%s%s", LocalDir, PREF_FILE);
+    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PrefHdle == NULL) {
 	return -1;
@@ -356,6 +358,11 @@ GenDrvList(void)
 	    PlayersInfo[i].transmission = HM_VAL_MANUAL;
 	}
 	PlayersInfo[i].nbpitstops = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0);
+	if (!strcmp(GfParmGetStr(PrefHdle, sstring, HM_ATT_AUTOREVERSE, Yn[0]), Yn[0])) {
+	    PlayersInfo[i].autoreverse = 0;
+	} else {
+	    PlayersInfo[i].autoreverse = 1;
+	}
     }
     return 0;
 }
@@ -367,7 +374,7 @@ SaveDrvList(void *dummy)
     char	str[32];
     int		i;
 
-    sprintf(buf, "%s%s", LocalDir, DRV_FILE);
+    sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (drvinfo == NULL) {
 	return;
@@ -384,17 +391,18 @@ SaveDrvList(void *dummy)
 	    GfParmSetNum(drvinfo, str, ROB_ATTR_GREEN, (char*)NULL, PlayersInfo[i].color[1]);
 	    GfParmSetNum(drvinfo, str, ROB_ATTR_BLUE, (char*)NULL, PlayersInfo[i].color[2]);
 	    GfParmSetStr(drvinfo, str, ROB_ATTR_TYPE, ROB_VAL_HUMAN);
-	    GfParmSetStr(drvinfo, str, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skill_level]);
+	    GfParmSetStr(drvinfo, str, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skilllevel]);
 	}
     }
     GfParmWriteFile(NULL, drvinfo, dllname, GFPARM_PARAMETER, "../../config/params.dtd");
 
-    sprintf(buf, "%s%s", LocalDir, PREF_FILE);
+    sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < NB_DRV; i++) {
 	sprintf(str, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
 	GfParmSetStr(PrefHdle, str, HM_ATT_TRANS, PlayersInfo[i].transmission);
 	GfParmSetNum(PrefHdle, str, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
+	GfParmSetStr(PrefHdle, str, HM_ATT_AUTOREVERSE, Yn[PlayersInfo[i].autoreverse]);
     }
     GfParmWriteFile(NULL, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
     GfParmReleaseHandle(PrefHdle);
@@ -514,16 +522,32 @@ ChangeLevel(void *vp)
 	return;
     }
     if (vp == 0) {
-	curPlayer->skill_level--;
-	if (curPlayer->skill_level < 0) {
-	    curPlayer->skill_level = sizeof(level_str)/sizeof(char*) - 1;
+	curPlayer->skilllevel--;
+	if (curPlayer->skilllevel < 0) {
+	    curPlayer->skilllevel = nbLevels - 1;
 	}
     } else {
-	curPlayer->skill_level++;
-	if (curPlayer->skill_level == sizeof(level_str)/sizeof(char*)) {
-	    curPlayer->skill_level = 0;
+	curPlayer->skilllevel++;
+	if (curPlayer->skilllevel == nbLevels) {
+	    curPlayer->skilllevel = 0;
 	}
     }
+    refreshEditVal();
+}
+
+static void
+ChangeReverse(void *vdelta)
+{
+    if (curPlayer == NULL) {
+	return;
+    }
+    curPlayer->autoreverse += (int)vdelta;
+    if (curPlayer->autoreverse < 0) {
+	curPlayer->autoreverse = 1;
+    } else if (curPlayer->autoreverse > 1) {
+	curPlayer->autoreverse = 0;
+    }
+
     refreshEditVal();
 }
 
@@ -544,7 +568,7 @@ ChangeTrans(void *dummy)
 void *
 TorcsDriverMenuInit(void *prevMenu)
 {
-    int		x, y, x2, dy;
+    int		x, y, x2, x3, x4, dy;
     
     /* screen already created */
     if (scrHandle) {
@@ -555,7 +579,7 @@ TorcsDriverMenuInit(void *prevMenu)
     prevHandle = prevMenu;
     
     scrHandle = GfuiScreenCreate();
-    GfuiTitleCreate(scrHandle, "Player Configuration", strlen("Player Configuration"));
+    GfuiTitleCreate(scrHandle, "Player Configuration", 0);
 
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-qrdrv.png");
 
@@ -578,12 +602,15 @@ TorcsDriverMenuInit(void *prevMenu)
 
     x = 20;
     x2 = 170;
+    x3 = x2 + 100;
+    x4 = x2 + 200;
     y = 370;
     dy = 30;
 
     GfuiLabelCreate(scrHandle, "Name:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     NameEditId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
 				    x2+10, y, 180, 16, NULL, (tfuiCallback)NULL, ChangeName);
+
     y -= dy;
     GfuiLabelCreate(scrHandle, "Category:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
@@ -593,10 +620,12 @@ TorcsDriverMenuInit(void *prevMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
+		       x4, y, GFUI_ALIGN_HR_VB, 1,
 		       (void*)1, ChangeCat,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    CatEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
+    CatEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HC_VB, 32);
+    GfuiLabelSetColor(scrHandle, CatEditId, LabelColor);
+
     y -= dy;
     GfuiLabelCreate(scrHandle, "Car:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
@@ -606,10 +635,12 @@ TorcsDriverMenuInit(void *prevMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
+		       x4, y, GFUI_ALIGN_HR_VB, 1,
 		       (void*)1, ChangeCar,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    CarEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
+    CarEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HC_VB, 32);
+    GfuiLabelSetColor(scrHandle, CarEditId, LabelColor);
+
     y -= dy;
     GfuiLabelCreate(scrHandle, "Race Number:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     RaceNumEditId = GfuiEditboxCreate(scrHandle, "0", GFUI_FONT_MEDIUM_C,
@@ -623,10 +654,12 @@ TorcsDriverMenuInit(void *prevMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
+		       x4, y, GFUI_ALIGN_HR_VB, 1,
 		       (void*)1, ChangeTrans,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    TransEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
+    TransEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HC_VB, 32);
+    GfuiLabelSetColor(scrHandle, TransEditId, LabelColor);
+
     y -= dy;
     GfuiLabelCreate(scrHandle, "Pit Stops:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     PitsEditId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
@@ -640,10 +673,26 @@ TorcsDriverMenuInit(void *prevMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
+		       x4, y, GFUI_ALIGN_HR_VB, 1,
 		       (void*)1, ChangeLevel,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    SkillId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
+    SkillId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HC_VB, 32);
+    GfuiLabelSetColor(scrHandle, SkillId, LabelColor);
+
+    y -= dy;
+    GfuiLabelCreate(scrHandle, "Auto Reverse:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+		       x2, y, GFUI_ALIGN_HL_VB, 1,
+		       (void*)-1, ChangeReverse,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
+    GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+		       x4, y, GFUI_ALIGN_HR_VB, 1,
+		       (void*)1, ChangeReverse,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    AutoReverseId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HC_VB, 32);
+    GfuiLabelSetColor(scrHandle, AutoReverseId, LabelColor);
     
     GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
      NULL, SaveDrvList, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);

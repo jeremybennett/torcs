@@ -58,9 +58,9 @@ static char	*Res[] = {"640x480", "800x600", "1024x768", "1200x960", "1280x1024",
 static char	*Mode[] = {"Full-screen mode", "Window mode"};
 static char	*Depth[] = {"24", "32", "8", "16"};
 
-static int	nbRes = sizeof(Res) / sizeof(Res[0]);
-static int	nbMode = sizeof(Mode) / sizeof(Mode[0]);
-static int	nbDepth = sizeof(Depth) / sizeof(Depth[0]);
+static const int nbRes = sizeof(Res) / sizeof(Res[0]);
+static const int nbMode = sizeof(Mode) / sizeof(Mode[0]);
+static const int nbDepth = sizeof(Depth) / sizeof(Depth[0]);
 
 static int	curRes = 0;
 static int	curMode = 0;
@@ -474,11 +474,10 @@ GfScrMenuInit(void *precMenu)
 		       (void*)1, ModePrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    
-    GfuiAddKey(scrHandle, 13, "Select Mode", NULL, GfScrReinit, NULL);
-    GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+    GfuiAddKey(scrHandle, 13, "Apply Mode", NULL, GfScrReinit, NULL);
+    GfuiButtonCreate(scrHandle, "Apply", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, GfScrReinit, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    
+
     GfuiAddKey(scrHandle, 27, "Cancel", precMenu, GfuiScreenActivate, NULL);
     GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     precMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);

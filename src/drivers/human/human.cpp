@@ -69,6 +69,8 @@ static float color[] = {1.0, 1.0, 1.0, 1.0};
 static tCtrlJoyInfo	*joyInfo = NULL;
 static tCtrlMouseInfo	*mouseInfo = NULL;
 
+static int AutoReverseEngaged = 0;
+
 #ifdef _WIN32
 /* should be present in mswindows */
 BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
@@ -379,7 +381,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (ax0 < CmdControl[CMD_LEFTSTEER].min) {
 	    ax0 = CmdControl[CMD_LEFTSTEER].min;
 	}
-	leftSteer = ax0 * CmdControl[CMD_LEFTSTEER].sens * (tdble)scrw / 1200.0 / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x);
+	leftSteer = ax0 * CmdControl[CMD_LEFTSTEER].pow * (tdble)scrw / 120000.0 / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x);
 	break;
     default:
 	leftSteer = 0;
@@ -403,7 +405,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (ax0 < CmdControl[CMD_RIGHTSTEER].min) {
 	    ax0 = CmdControl[CMD_RIGHTSTEER].min;
 	}
-	rightSteer = -ax0 * CmdControl[CMD_RIGHTSTEER].sens * (tdble)scrw / 1200.0 / (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x);
+	rightSteer = -ax0 * CmdControl[CMD_RIGHTSTEER].pow * (tdble)scrw / 120000.0 / (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x);
 	break;
     default:
 	rightSteer = 0;
@@ -422,9 +424,9 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	    brake = CmdControl[CMD_BRAKE].min;
 	}
 	car->_brakeCmd = fabs(CmdControl[CMD_BRAKE].pow *
-				   pow(fabs((brake - CmdControl[CMD_BRAKE].minVal) /
-					    (CmdControl[CMD_BRAKE].max - CmdControl[CMD_BRAKE].min)),
-				       CmdControl[CMD_BRAKE].sens));
+			      pow(fabs((brake - CmdControl[CMD_BRAKE].minVal) /
+				       (CmdControl[CMD_BRAKE].max - CmdControl[CMD_BRAKE].min)),
+				  CmdControl[CMD_BRAKE].sens));
 	break;
     case GFCTRL_TYPE_JOY_BUT:
 	car->_brakeCmd = joyInfo->levelup[CmdControl[CMD_BRAKE].val];
@@ -437,6 +439,37 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	break;
     }
 
+    switch (CmdControl[CMD_THROTTLE].type) {
+    case GFCTRL_TYPE_JOY_AXIS:
+	throttle = joyInfo->ax[CmdControl[CMD_THROTTLE].val] - CmdControl[CMD_THROTTLE].deadZone;
+	if (throttle > CmdControl[CMD_THROTTLE].max) {
+	    throttle = CmdControl[CMD_THROTTLE].max;
+	} else if (throttle < CmdControl[CMD_THROTTLE].min) {
+	    throttle = CmdControl[CMD_THROTTLE].min;
+	}
+	car->_accelCmd = fabs(CmdControl[CMD_THROTTLE].pow *
+				   pow(fabs((throttle - CmdControl[CMD_THROTTLE].minVal) /
+					    (CmdControl[CMD_THROTTLE].max - CmdControl[CMD_THROTTLE].min)),
+				       CmdControl[CMD_THROTTLE].sens));
+	break;
+    case GFCTRL_TYPE_JOY_BUT:
+	car->_accelCmd = joyInfo->levelup[CmdControl[CMD_THROTTLE].val];
+	break;
+    case GFCTRL_TYPE_MOUSE_BUT:
+	car->_accelCmd = mouseInfo->button[CmdControl[CMD_THROTTLE].val];
+	break;
+    default:
+	car->_accelCmd = 0;
+	break;
+    }
+
+    if (AutoReverseEngaged) {
+	/* swap brake and throttle */
+	brake = car->_brakeCmd;
+	car->_brakeCmd = car->_accelCmd;
+	car->_accelCmd = brake;
+    }
+    
     if (ParamAbs) {
 	tdble meanSpd = 0;
 	int i;
@@ -469,30 +502,6 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     }
 
 
-    switch (CmdControl[CMD_THROTTLE].type) {
-    case GFCTRL_TYPE_JOY_AXIS:
-	throttle = joyInfo->ax[CmdControl[CMD_THROTTLE].val] - CmdControl[CMD_THROTTLE].deadZone;
-	if (throttle > CmdControl[CMD_THROTTLE].max) {
-	    throttle = CmdControl[CMD_THROTTLE].max;
-	} else if (throttle < CmdControl[CMD_THROTTLE].min) {
-	    throttle = CmdControl[CMD_THROTTLE].min;
-	}
-	car->_accelCmd = fabs(CmdControl[CMD_THROTTLE].pow *
-				   pow(fabs((throttle - CmdControl[CMD_THROTTLE].minVal) /
-					    (CmdControl[CMD_THROTTLE].max - CmdControl[CMD_THROTTLE].min)),
-				       CmdControl[CMD_THROTTLE].sens));
-	break;
-    case GFCTRL_TYPE_JOY_BUT:
-	car->_accelCmd = joyInfo->levelup[CmdControl[CMD_THROTTLE].val];
-	break;
-    case GFCTRL_TYPE_MOUSE_BUT:
-	car->_accelCmd = mouseInfo->button[CmdControl[CMD_THROTTLE].val];
-	break;
-    default:
-	car->_accelCmd = 0;
-	break;
-    }
-
     if (ParamAsr) {
 	slip = 0;
 	if (car->_speed_x > 0.1)
@@ -511,6 +520,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 	car->_accelCmd = MIN(car->_accelCmd, AntiSlip);
     }
+
 #ifndef WIN32
 #ifdef TELEMETRY
     if ((car->_laps > 1) && (car->_laps < 5)) {
@@ -526,6 +536,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     }
 #endif
 #endif
+
     lap = car->_laps;
 }
 
@@ -607,39 +618,41 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 	manual = 0;
     }
     gear += car->_gearOffset;
-    
-    /* manual shift */
     car->_gearCmd = car->_gear;
-    if ((CmdControl[CMD_UP_SHFT].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[CMD_UP_SHFT].val]) {
-	car->_gearCmd++;
-	manual = 1;
-    }
-    if ((CmdControl[CMD_DN_SHFT].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[CMD_DN_SHFT].val]) {
-	car->_gearCmd--;
-	manual = 1;
-    }
+    
+    if (!AutoReverse) {
+	/* manual shift */
+	if ((CmdControl[CMD_UP_SHFT].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[CMD_UP_SHFT].val]) {
+	    car->_gearCmd++;
+	    manual = 1;
+	}
+	if ((CmdControl[CMD_DN_SHFT].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[CMD_DN_SHFT].val]) {
+	    car->_gearCmd--;
+	    manual = 1;
+	}
 
-    /* manual shift direct */
-    if (RelButNeutral) {
+	/* manual shift direct */
+	if (RelButNeutral) {
+	    for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
+		if (((CmdControl[i].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgedn[CmdControl[i].val]) ||
+		    ((CmdControl[i].type == GFCTRL_TYPE_MOUSE_BUT) && mouseInfo->edgeup[CmdControl[i].val])) {
+		    car->_gearCmd = 0;
+		    /* return to auto-shift */
+		    manual = 0;
+		}
+	    }
+	}
 	for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
-	    if (((CmdControl[i].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgedn[CmdControl[i].val]) ||
-		((CmdControl[i].type == GFCTRL_TYPE_MOUSE_BUT) && mouseInfo->edgeup[CmdControl[i].val])) {
-		car->_gearCmd = 0;
-		/* return to auto-shift */
-		manual = 0;
+	    if (((CmdControl[i].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[i].val]) ||
+		((CmdControl[i].type == GFCTRL_TYPE_MOUSE_BUT) && mouseInfo->edgedn[CmdControl[i].val])) {
+		car->_gearCmd = i - CMD_GEAR_N;
+		manual = 1;
 	    }
 	}
     }
-    for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
-	if (((CmdControl[i].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[i].val]) ||
-	    ((CmdControl[i].type == GFCTRL_TYPE_MOUSE_BUT) && mouseInfo->edgedn[CmdControl[i].val])) {
-	    car->_gearCmd = i - CMD_GEAR_N;
-	    manual = 1;
-	}
-    }
-    
+
     /* auto shift */
-    if (!manual) {
+    if (!manual && !AutoReverseEngaged) {
 	if (car->_speed_x > shiftThld[gear]) {
 	    car->_gearCmd++;
 	} else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[gear-1] - 4.0))) {
@@ -650,7 +663,21 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    
+    if (AutoReverse) {
+	/* Automatic Reverse Gear Mode */
+	if (!AutoReverseEngaged) {
+	    if ((car->_brakeCmd > car->_accelCmd) && (car->_speed_x < 1.0)) {
+		AutoReverseEngaged = 1;
+		car->_gearCmd = CMD_GEAR_R - CMD_GEAR_N;
+	    }
+	} else {
+	    /* currently in autoreverse mode */
+	    if ((car->_brakeCmd > car->_accelCmd) && (car->_speed_x > -1.0) && (car->_speed_x < 1.0)) {
+		AutoReverseEngaged = 0;
+		car->_gearCmd = CMD_GEAR_1 - CMD_GEAR_N;
+	    }
+	}
+    }
 }
 
 static int pitcmd(int index, tCarElt* car, tSituation *s)

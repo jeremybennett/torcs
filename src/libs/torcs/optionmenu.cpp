@@ -23,6 +23,7 @@
 #include "driverconfig.h"
 #include "graphconfig.h"
 #include "joystickconfig.h"
+#include "controlconfig.h"
 
 static void *optionHandle = NULL;
 
@@ -30,10 +31,10 @@ void *
 TorcsOptionOptionInit(void *precMenu)
 {
     void *playerHandle;
-    void *JoystickHandle;
+    void *controlHandle;
 
     if (optionHandle) return optionHandle;
-    
+
     optionHandle = GfuiMenuScreenCreate("OPTIONS");
 
     GfuiScreenAddBgImg(optionHandle, "data/img/splash-options.png");
@@ -45,21 +46,17 @@ TorcsOptionOptionInit(void *precMenu)
     GfuiMenuButtonCreate(optionHandle,
 			 "Display", "Configure display parameters",
 			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
-    
-    JoystickHandle = TorcsJoystick1MenuInit(optionHandle);
-    playerHandle = TorcsDriverMenuInit(optionHandle);
 
+    playerHandle = TorcsDriverMenuInit(optionHandle);
     GfuiMenuButtonCreate(optionHandle,
 			 "Player", "Configure player parameters",
 			 playerHandle, GfuiScreenActivate);
 
-    if (JoystickHandle) {
-	GfuiMenuButtonCreate(optionHandle,
-			     "Controls", "Configure control parameters",
-			     JoystickHandle, GfuiScreenActivate);
-	
-    }
-    
+    controlHandle = TorcsControlMenuInit(optionHandle);
+    GfuiMenuButtonCreate(optionHandle,
+			 "Controls", "Configure control parameters",
+			 controlHandle, GfuiScreenActivate);
+
     GfuiMenuBackQuitButtonCreate(optionHandle,
 				 "Back",
 				 "Back to Main",

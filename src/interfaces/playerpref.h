@@ -26,15 +26,21 @@
 #ifndef _PLAYERPREF_H_
 #define _PLAYERPREF_H_
 
+#define HM_DRV_FILE  		"drivers/human/human.xml"
 #define HM_PREF_FILE		"drivers/human/preferences.xml"
 
-#define	HM_SECT_JSPREF		"joystick defaults"
-#define	HM_SECT_MOUSEPREF	"mouse defaults"
+#define	HM_SECT_JSPREF		"joystick"
+#define	HM_SECT_MOUSEPREF	"mouse"
+#define	HM_SECT_KEYBPREF	"keyboard"
+
+#define HM_ATT_CONTROL		"control"
 
 #define HM_ATT_UP_SHFT		"up shift"
 #define HM_ATT_DN_SHFT		"down shift"
 #define HM_ATT_ASR_CMD		"ASR cmd"
 #define HM_ATT_ABS_CMD		"ABS cmd"
+
+#define HM_ATT_AUTOREVERSE	"auto reverse"
 
 #define HM_ATT_GEAR_R		"reverse gear"
 #define HM_ATT_GEAR_N		"neutral gear"
@@ -90,6 +96,10 @@
 
 #define HM_VAL_YES	"yes"
 #define HM_VAL_NO	"no"
+
+#define HM_VAL_JOYSTICK	"joystick"
+#define HM_VAL_MOUSE	"mouse"
+#define HM_VAL_KEYBOARD	"keyboard"
 
 #endif /* _PLAYERPREF_H_ */ 
 
