@@ -20,7 +20,7 @@
     <attstr name="name" val="Dtm Race"/>
     <attstr name="description" val="Dtm Race"/>
     <attnum name="priority" val="20"/>
-    <attstr name="menu image" val="data/img/splash-qr.png"/>
+    <attstr name="menu image" val="data/img/splash-dtm.png"/>
   </section>
 
   <section name="Tracks">
@@ -39,7 +39,7 @@
     </section>
 
     <section name="2">
-      <attstr name="name" val="Dtm Race"/>
+      <attstr name="name" val="Main Race"/>
     </section>
   </section>
 
@@ -71,7 +71,7 @@
     </section>
   </section>
 
-  <section name="Dtm Race">
+  <section name="Main Race">
     <attnum name="distance" val="100" unit="km"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="last race"/>
