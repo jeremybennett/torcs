@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : alpine-1.xml
+    created              : Sun Aug 25 11:51:08 CEST 2002
+    copyright            : (C) 2002 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "data/tracks/objects.xml">
+]>
+
+<params name="Alpine 1" type="trackdef" mode="mw">
+
+  <!-- Header -->
+  <section name="Header">
+    <attstr name="name" val="Alpine 1"></attstr>
+    <attstr name="category" val="road"></attstr>
+    <attnum name="version" val="4"></attnum>
+    <attstr name="author" val="E. Espie"></attstr>
+    <attstr name="description" val="Alpine track"></attstr>
+  </section>  <!-- Header -->
+
+  <!-- Surfaces -->
+  <section name="Surfaces">
+      &default-surfaces;
+  </section>  <!-- Surfaces -->
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
+
+  <!-- Graphic -->
+  <section name="Graphic">
+    <attstr name="3d description" val="alpine-1.ac"></attstr>
+
+    <attstr name="background image" val="background.png"></attstr>
+    <attnum name="background color R" val="0.96"></attnum>
+    <attnum name="background color G" val="0.84"></attnum>
+    <attnum name="background color B" val="0.64"></attnum>
+
+    <attnum name="ambient color R" val="0.8"></attnum>
+    <attnum name="ambient color G" val="0.8"></attnum>
+    <attnum name="ambient color B" val="0.6"></attnum>
+
+    <attnum name="light position x" val="-50"></attnum>
+    <attnum name="light position y" val="-50"></attnum>
+    <attnum name="light position z" val="40"></attnum>
+
+    <attnum name="fov factor" val="0.8"></attnum>
+
+    <section name="Environment Mapping">
+      <section name="general">
+	<attstr name="env map image" val="env.png"></attstr>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="20"></attnum>
+      <attnum name="border margin" unit="m" val="150"></attnum>
+      <attnum name="border step" unit="m" val="20"></attnum>
+      <attstr name="surface" val="grass"></attstr>
+
+      <attstr name="relief file" val="relief.ac"></attstr>
+      <attstr name="elevation map" val="elevation-map.png"></attstr>
+      <attnum name="maximum altitude" val="160"></attnum>
+      <attnum name="minimum altitude" val="0"></attnum>
+      <attnum name="group size" val="100"></attnum>
+    </section>
+
+  </section>
+
+  <section name="Starting Grid">
+    <attnum name="rows" val="2"></attnum>
+    <attstr name="pole position side" val="left"></attstr>
+    <attnum name="distance to start" unit="m" val="4.0"></attnum>
+    <attnum name="distance between columns" unit="m" val="8.0"></attnum>
+    <attnum name="offset within a column" unit="m" val="4.0"></attnum>
+    <attnum name="initial height" unit="m" val="0.2"></attnum>
+  </section>
+
+  <!-- Main Track -->
+  <section name="Main Track">
+
+    <attstr name="surface" val="asphalt"></attstr>
+    <attnum name="width" unit="m" val="12.0"></attnum>
+    <attnum name="profil steps length" unit="m" val="6"></attnum>
+
+    <section name="Right Border">
+      <attnum name="width" val="1.0"></attnum>
+      <attstr name="surface" val="tar-grass3-r"></attstr>
+    </section>
+
+    <section name="Left Border">
+      <attstr name="surface" val="tar-grass3-l"></attstr>
+      <attnum name="width" val="1.0"></attnum>
+    </section>
+
+    <!-- PITS -->
+    <section name="Pits">
+      <attstr name="side"   val="right"></attstr>
+      <attstr name="entry"  val="pit-entry"></attstr>
+      <attstr name="start"  val="arrival"></attstr>
+      <attstr name="end"    val="start lane"></attstr>
+      <attstr name="exit"   val="pit-exit"></attstr>
+      <attnum name="length" val="15" unit="m"></attnum>
+      <attnum name="width"  val="5" unit="m"></attnum>
+    </section>  <!-- PITS -->
+
+    <!-- Track Segments -->
+    <section name="Track Segments">
+
+      <section name="start lane">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<section name="Right Side">
+	  <attstr name="surface"  val="asphalt-pits"></attstr>
+	  <attnum name="start width" val="15"></attnum>
+	  <attnum name="end width" val="15"></attnum>
+	</section>
+      </section>
+
+      <section name="pit-exit">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="120"></attnum>
+	<section name="Right Side">
+	  <attnum name="start width" val="15"></attnum>
+	  <attnum name="end width"    val="0"></attnum>
+	  <attstr name="surface" val="asphalt"></attstr>
+	</section>
+      </section>
+
+      <section name="s1">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="86.488892"></attnum>
+      </section>
+
+      <section name="t1-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attnum name="grade" unit="%" val="2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="2"></attnum>
+      </section>
+
+      <section name="t1-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="end radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="70"></attnum>
+	<attnum name="grade" unit="%" val="2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="2"></attnum>
+      </section>
+
+      <section name="t1-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="3"></attnum>
+      </section>
+
+      <section name="t2-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="35"></attnum>
+	<attnum name="grade" unit="%" val="2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="2"></attnum>
+      </section>
+
+      <section name="t2-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="2"></attnum>
+      </section>
+
+      <section name="s2">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="grade" unit="%" val="5"></attnum>
+	<attnum name="profil end tangent" unit="%" val="3"></attnum>
+      </section>
+
+      <section name="t3-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="35"></attnum>
+	<attnum name="grade" unit="%" val="2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="2"></attnum>
+      </section>
+
+      <section name="t3-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="500"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="4"></attnum>
+      </section>
+
+      <section name="t3-3">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="5"></attnum>
+      </section>
+
+      <section name="t3-4">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="5"></attnum>
+	<attnum name="profil end tangent" unit="%" val="5"></attnum>
+      </section>
+
+      <section name="t3-3">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="140"></attnum>
+	<attnum name="grade" unit="%" val="5"></attnum>
+	<attnum name="profil end tangent" unit="%" val="5"></attnum>
+      </section>
+
+      <section name="t4-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="600"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="6"></attnum>
+      </section>
+
+      <section name="t5-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="end radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="6"></attnum>
+      </section>
+
+      <section name="t6-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="80"></attnum>
+	<attnum name="end radius" unit="m" val="800"></attnum>
+	<attnum name="arc" unit="deg" val="35"></attnum>
+	<attnum name="grade" unit="%" val="6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="7"></attnum>
+      </section>
+
+      <section name="t6-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="7"></attnum>
+	<attnum name="profil end tangent" unit="%" val="7"></attnum>
+      </section>
+
+      <section name="t7-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="7"></attnum>
+	<attnum name="profil end tangent" unit="%" val="8"></attnum>
+      </section>
+
+      <section name="t7-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attnum name="grade" unit="%" val="8"></attnum>
+	<attnum name="profil end tangent" unit="%" val="9"></attnum>
+      </section>
+
+      <section name="t7-3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="end radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="40"></attnum>
+	<attnum name="grade" unit="%" val="9"></attnum>
+	<attnum name="profil end tangent" unit="%" val="8"></attnum>
+      </section>
+
+      <section name="t8-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="8"></attnum>
+	<attnum name="profil end tangent" unit="%" val="9"></attnum>
+      </section>
+
+      <section name="t9-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="80"></attnum>
+	<attnum name="end radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="grade" unit="%" val="9"></attnum>
+	<attnum name="profil end tangent" unit="%" val="9"></attnum>
+      </section>
+
+      <section name="t10-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="300"></attnum>
+	<attnum name="end radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="8"></attnum>
+      </section>
+
+      <section name="s3">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="10"></attnum>
+      </section>
+
+      <section name="t11-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="10"></attnum>
+      </section>
+
+      <section name="t11-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="120"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="10"></attnum>
+      </section>
+
+      <section name="t11-3">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="end radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="10"></attnum>
+      </section>
+
+      <section name="t11-4">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="9"></attnum>
+      </section>
+
+      <section name="t12-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="300"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="9"></attnum>
+	<attnum name="profil end tangent" unit="%" val="9"></attnum>
+      </section>
+
+      <section name="t12-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="9"></attnum>
+	<attnum name="profil end tangent" unit="%" val="8"></attnum>
+      </section>
+
+      <section name="t13-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="75"></attnum>
+	<attnum name="grade" unit="%" val="8"></attnum>
+	<attnum name="profil end tangent" unit="%" val="7"></attnum>
+      </section>
+
+      <section name="t14-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attnum name="grade" unit="%" val="7"></attnum>
+	<attnum name="profil end tangent" unit="%" val="6"></attnum>
+      </section>
+
+      <section name="t14-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="20"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attnum name="grade" unit="%" val="6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="5"></attnum>
+      </section>
+
+      <section name="t14-3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="70"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="5"></attnum>
+	<attnum name="profil end tangent" unit="%" val="3"></attnum>
+      </section>
+
+      <section name="s4">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+ 	<attnum name="grade" unit="%" val="0"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+     </section>
+
+      <section name="t15-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="-1"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-1"></attnum>
+      </section>
+
+      <section name="t15-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="90"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+	<attnum name="grade" unit="%" val="-2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-2"></attnum>
+      </section>
+
+      <section name="t16-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="400"></attnum>
+	<attnum name="end radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t17-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="end radius" unit="m" val="300"></attnum>
+	<attnum name="arc" unit="deg" val="65"></attnum>
+	<attnum name="grade" unit="%" val="-6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-6"></attnum>
+      </section>
+
+      <section name="t17-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="35"></attnum>
+	<attnum name="grade" unit="%" val="-8"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-10"></attnum>
+      </section>
+
+      <section name="s5">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="grade" unit="%" val="-10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-10"></attnum>
+      </section>
+
+      <section name="t18-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-10"></attnum>
+      </section>
+
+      <section name="t18-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="400"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="-12"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-14"></attnum>
+      </section>
+
+      <section name="t19-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-14"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-16"></attnum>
+      </section>
+
+      <section name="t19-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="500"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="-16"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-16"></attnum>
+      </section>
+
+      <section name="t19-3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="grade" unit="%" val="-14"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-14"></attnum>
+      </section>
+
+      <section name="t19-4">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-12"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-12"></attnum>
+      </section>
+
+      <section name="t20-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-10"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-10"></attnum>
+      </section>
+
+      <section name="t20-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="grade" unit="%" val="-8"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-8"></attnum>
+      </section>
+
+      <section name="t20-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="-6"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-6"></attnum>
+      </section>
+
+      <section name="t21-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="70"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t22-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="120"></attnum>
+	<attnum name="arc" unit="deg" val="40"></attnum>
+	<attnum name="grade" unit="%" val="-2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-2"></attnum>
+      </section>
+
+      <section name="t22-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-1"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-1"></attnum>
+      </section>
+
+      <section name="t23-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="55"></attnum>
+	<attnum name="grade" unit="%" val="0"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+      </section>
+
+      <section name="Bridge">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="354.336609"></attnum>
+	<attnum name="grade" unit="%" val="0"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+      </section>
+
+      <section name="t24-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="250"></attnum>
+	<attnum name="end radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+	<attnum name="grade" unit="%" val="-1"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-1"></attnum>
+      </section>
+
+      <section name="t24-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-2"></attnum>
+      </section>
+
+      <section name="t25-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="40"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t26-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="end radius" unit="m" val="120"></attnum>
+	<attnum name="arc" unit="deg" val="40"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="s7">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="80"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t27-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="end radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-5"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-5"></attnum>
+      </section>
+
+      <section name="t28-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+     </section>
+
+      <section name="t29-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="400"></attnum>
+	<attnum name="end radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t29-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="300"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t29-3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t29-4">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t29-5">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-4"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-4"></attnum>
+      </section>
+
+      <section name="t30-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t31-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="900"></attnum>
+	<attnum name="end radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t31-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="80"></attnum>
+	<attnum name="end radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t32-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="350"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t32-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t33-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="700"></attnum>
+	<attnum name="arc" unit="deg" val="10"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t33-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="end radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t33-3">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="-3"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-3"></attnum>
+      </section>
+
+      <section name="t33-4">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="end radius" unit="m" val="80"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="-2"></attnum>
+	<attnum name="profil end tangent" unit="%" val="-2"></attnum>
+      </section>
+
+      <section name="t33-5">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="grade" unit="%" val="-1"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+      </section>
+
+      <section name="s8">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="30"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+ 	<attnum name="z end" unit="m" val="0"></attnum>
+      </section>
+
+      <section name="pit-entry">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="grade" unit="%" val="0"></attnum>
+	<section name="Right Side">
+	  <attnum name="start width" val="0"></attnum>
+	  <attnum name="end width"    val="15"></attnum>
+	  <attstr name="surface" val="asphalt"></attstr>
+	</section>
+      </section>
+
+      <section name="arrival">
+	<attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="90"></attnum>
+	<attnum name="profil end tangent" unit="%" val="0"></attnum>
+	<section name="Right Side">
+	  <attstr name="surface"  val="asphalt-pits"></attstr>
+	  <attnum name="start width" val="15"></attnum>
+	  <attnum name="end width" val="15"></attnum>
+	</section>
+      </section>
+
+    </section>    <!-- Track Segments -->
+
+  </section>  <!-- Main Track -->
+
+  <!-- Cameras -->
+  <section name="Cameras">
+
+    <section name="cam 0">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="pit-exit"></attstr>
+      <attnum name="to right" val="6.0"></attnum>
+      <attnum name="to start" val="150"></attnum>
+      <attnum name="height" val="5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="pit-start"></attstr> <!-- included  -->
+      <attstr name="fov end" val="turn 1.1"></attstr> <!-- excluded -->
+    </section>
+
+  </section>  <!-- Cameras -->
+
+</params>
+
+
