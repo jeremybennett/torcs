@@ -56,6 +56,8 @@ class TrackSegment
 		~TrackSegment();
 		void init(int id, const tTrackSeg* s, const t3Dd* l, const t3Dd* m, const t3Dd* r);
 		inline void setLength(tdble len) { length = len; }
+		inline void setKbeta(tdble b) { kbeta = b; }
+
 		inline int getSegmentId() { return segID; }
 		inline int getType() { return type; }
 		inline unsigned int getRaceType() { return raceType; }
@@ -66,6 +68,7 @@ class TrackSegment
 		inline tdble getKroughwavelen() { return kroughwavelen; }
 		inline tdble getWidth() { return width; }
 		inline tdble getKalpha() { return kalpha; }
+		inline tdble getKbeta() { return kbeta; }
 		inline tdble getLength() { return length; }
 
 		inline t3Dd* getLeftBorder() { return &l; }
@@ -78,8 +81,8 @@ class TrackSegment
 		inline tdble distToMiddle2D(tdble x, tdble y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }
 		inline tdble distToRight2D(tdble x, tdble y) { return sqrt(sqr(x-r.x) + sqr(y-r.y)); }
 
-		inline tdble distToLeft3D(tdble x, tdble y, tdble z) {
-			return sqrt(sqr(x-l.x) + sqr(y-l.y) + sqr(z-l.z));
+		inline tdble distToRight3D(t3Dd* p) {
+			return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z));
 		}
 		inline tdble distToLeft3D(t3Dd* p) {
 			return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z));
@@ -89,12 +92,6 @@ class TrackSegment
 		}
 		inline tdble distToMiddle3D(t3Dd* p) {
 			return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z));
-		}
-		inline tdble distToRight3D(tdble x, tdble y, tdble z) {
-			return sqrt(sqr(x-r.x) + sqr(y-r.y) + sqr(z-r.z));
-		}
-		inline tdble distToRight3D(t3Dd* p) {
-			return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z));
 		}
 
 	private:
@@ -109,7 +106,8 @@ class TrackSegment
 		tdble kroughness;		/* roughness */
 		tdble kroughwavelen;	/* wavelen */
 		tdble width;			/* width of the track segment*/
-		tdble kalpha;			/* factor for the angle */
+		tdble kalpha;			/* factor for the angle (like michigan) */
+		tdble kbeta;			/* factor for bumps (e-track-3) */
 		tdble length;			/* distance to the next segment (2-D, not 3-D!) */
 };
 
@@ -131,10 +129,7 @@ class TrackDesc
 		void getNormalVector(int index, t3Dd* normal);
 
 		inline int getPitEntryStartId() { return nPitEntryStart; }
-		inline int getPitEntryEndId() { return nPitEntryEnd; }
-		inline int getPitExitStartId() { return nPitExitStart; }
 		inline int getPitExitEndId() { return nPitExitEnd; }
-
 		inline int getPitType() { return torcstrack->pits.type; }
 
 		static inline tdble vectorLength(t3Dd* p) {
@@ -169,6 +164,7 @@ class TrackDesc
 			crossProduct(rdir, &t, &s);
 			return (vectorLength(&s)/vectorLength(rdir));
 		}
+
 		/* returns distance to middle: value > 0 is right, value < 0 is left */
 		inline tdble distToMiddle(int id, t3Dd* p) {
 			t3Dd *r1, *rdir, r12, rdir2, p2;
@@ -186,6 +182,15 @@ class TrackDesc
 
 			return d*distGFromPoint(&r12, &rdir2, &p2);
 		}
+
+		/* returns distance of trajectory point to the middle point of segment */
+		inline tdble distToMiddleOnSeg(int id, t3Dd* p) {
+			tdble d = ts[id].distToMiddle3D(p);
+			tdble dr = ts[id].distToRight3D(p);
+			tdble dl = ts[id].distToLeft3D(p);
+			return (dr <= dl) ? d : -d;
+		}
+
 		inline bool isBetween(int start, int end, int id) {
 			if (start <= end) {
 				if (id >= start && id <= end) { return true; } else { return false; }
@@ -193,6 +198,7 @@ class TrackDesc
 				if ((id >= 0 && id <= end) || (id >= start && id < nTrackSegments)) { return true; } else { return false; }
 			}
 		}
+
 		inline int diffSegId(int id1, int id2) {
 			int t;
 			if (id1 > id2) { t = id1; id1 = id2; id2 = t; }
@@ -205,8 +211,6 @@ class TrackDesc
 		TrackSegment* ts;		/* pointer to the array of tracksegments */
 		int nTrackSegments;		/* # of track segments */
 		int nPitEntryStart;
-		int nPitEntryEnd;
-		int nPitExitStart;
 		int nPitExitEnd;
 };
 
