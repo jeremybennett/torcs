@@ -50,7 +50,7 @@ extern void grShutdownScene(void);
 extern void grCustomizePits(void);
 
 struct Camera;
-extern void grDrawBackground(cGrCamera *);
+extern void grDrawBackground(class cGrCamera *, class cGrBackgroundCam *bgCam);
 
 extern ssgStateSelector	*grEnvSelector;
 #include "grmultitexstate.h"

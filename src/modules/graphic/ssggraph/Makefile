@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp \
+SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp grscreen.cpp\
 	    grscene.cpp grutil.cpp grshadow.cpp grsmoke.cpp grskidmarks.cpp grloadac.cpp grmultitexstate.cpp grvtxtable.cpp
 
 MODULE    = ssggraph.so

@@ -27,7 +27,6 @@
 #include <float.h>
 #endif
 
-#include <ttypes.h>
 #include <tgf.h>
 #include <track.h>
 #include <car.h>

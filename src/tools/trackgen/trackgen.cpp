@@ -36,12 +36,11 @@
 #include <getopt.h>
 #endif
 #include <math.h>
-#include <ttypes.h>
 #include <plib/ul.h>
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 
 #include "ac3d.h"
@@ -58,6 +57,7 @@ float	ExtHeight = 5.0;
 int	HeightSteps = 30;
 
 int	bump = 0;
+int	UseBorder = 1;
 
 char		*OutputFileName;
 char		*TrackName;
@@ -94,6 +94,7 @@ void usage(void)
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
     fprintf(stderr, "       -b             : draw bump track\n");
+    fprintf(stderr, "       -B             : Don't use terrain border (relief supplied int clockwise, ext CC)\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
@@ -128,7 +129,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asSE:h:b",
+	c = getopt_long(argc, argv, "hvn:c:asSE:h:bB",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -184,6 +185,9 @@ void init_args(int argc, char **argv)
 	    saveElevation = strtol(optarg, NULL, 0);;
 	    TrackOnly = 0;
 	    break;
+	case 'B':
+	    UseBorder = 0;
+	    break;
 	default:
 	    usage();
 	    exit(1);
@@ -206,6 +210,8 @@ void init_args(int argc, char **argv)
 	} else if (strncmp(argv[i], "-s", 2) == 0) {
 	    MergeAll = 0;
 	    MergeTerrain = 1;
+	} else if (strncmp(argv[i], "-B", 2) == 0) {
+	    UseBorder = 0;
 	} else if (strncmp(argv[i], "-S", 2) == 0) {
 	    MergeAll = 0;
 	    MergeTerrain = 0;

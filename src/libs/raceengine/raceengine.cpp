@@ -22,14 +22,13 @@
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
     @version	$Id$
 */
-#include "profiler.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <robot.h>
 #include <raceman.h>
-#include <racemantools.h>
+#include <racescreens.h>
 #include <robottools.h>
 
 #include "racemain.h"
@@ -406,7 +405,6 @@ ReStop(void)
     ReInfo->_reRunning = 0;
 }
 
-
 int
 ReUpdate(void)
 {
@@ -437,8 +435,8 @@ ReUpdate(void)
 	glutPostRedisplay();	/* Callback -> reDisplay */
 	break;
     }
-
     STOP_PROFILE("ReUpdate");
+
     return RM_ASYNC;
 }
 

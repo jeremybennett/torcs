@@ -35,7 +35,6 @@
 #include <robot.h>
 #include <robottools.h>
 #include <math.h>
-#include <ttypes.h>
 #include "trackdesc.h"
 #include "mycar.h"
 #include "spline.h"

@@ -36,23 +36,25 @@
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include "trackgen.h"
 #include "easymesh.h"
 
 #include "relief.h"
 
+typedef struct Line
+{
+    GF_TAILQ_ENTRY(struct Line) link;
+    ssgBranch	*branch;
+} tLine;
+
+GF_TAILQ_HEAD(RingListHead, tLine);
+
 tRingListHead	InteriorList;
 tRingListHead	ExteriorList;
 
 static tdble	GridStep;
-
-typedef struct 
-{
-    tRingList	lnk;
-    ssgBranch	*branch;
-} tLine;
 
 static ssgEntity	*Root = NULL;
 
@@ -69,9 +71,9 @@ hookNode(char *s)
     line->branch = new ssgBranch();
 
     if (strncmp(s, "interior", 8) == 0) {
-	GfRlstAddLast(&InteriorList, (tRingList *)line);
+	GF_TAILQ_INSERT_TAIL(&InteriorList, line, link);
     } else {
-	GfRlstAddLast(&ExteriorList, (tRingList *)line);
+	GF_TAILQ_INSERT_TAIL(&ExteriorList, line, link);
     }
     return line->branch;
 }
@@ -83,8 +85,8 @@ hookNode(char *s)
 void
 LoadRelief(void *TrackHandle, char *reliefFile)
 {
-    GfRlstInit(&InteriorList);
-    GfRlstInit(&ExteriorList);
+    GF_TAILQ_INIT(&InteriorList);
+    GF_TAILQ_INIT(&ExteriorList);
     
     GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
 
@@ -133,7 +135,7 @@ CountRelief(int interior, int *nb_vert, int *nb_seg)
 	curHead = &ExteriorList;
     }
     
-    curLine = (tLine*)GfRlstGetFirst(curHead);
+    curLine = GF_TAILQ_FIRST(curHead);
     while (curLine != NULL) {
 	ssgBranch *br = curLine->branch->getParent(0);
 	ssgBranch *br2 = new ssgBranch();
@@ -144,7 +146,7 @@ CountRelief(int interior, int *nb_vert, int *nb_seg)
 	
 	countRec((ssgEntity *)curLine->branch, nb_vert, nb_seg);
 
-	curLine = (tLine*)GfRlstGetNext(curHead, (tRingList*)curLine);
+	curLine = GF_TAILQ_NEXT(curLine, link);
     }
 }
 
@@ -209,11 +211,11 @@ GenRelief(int interior)
 	curHead = &ExteriorList;
     }
     
-    curLine = (tLine*)GfRlstGetFirst(curHead);
+    curLine = GF_TAILQ_FIRST(curHead);
     while (curLine != NULL) {
 	genRec((ssgEntity *)curLine->branch);
 
-	curLine = (tLine*)GfRlstGetNext(curHead, (tRingList*)curLine);
+	curLine = GF_TAILQ_NEXT(curLine, link);
     }
 }
 

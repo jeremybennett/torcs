@@ -44,21 +44,8 @@ typedef struct {
 
 extern void	*PrefHdle;
 
-extern int	Transmission;
-
-extern int	NbPitStopProg;
-
-extern int	ParamAsr;	/* anti-slip accel */
-extern int	ParamAbs;	/* anti-lock brake */
-
-extern int	RelButNeutral;
-extern int	SeqShftAllowNeutral;
-extern int	AutoReverse;
-
-extern tControlCmd CmdControl[];
 
 extern const int nbCmdControl;
-extern int MouseControlUsed;
 
 
 extern char *Yn[];

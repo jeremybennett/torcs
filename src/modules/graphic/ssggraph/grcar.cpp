@@ -28,7 +28,7 @@
 #include <GL/glut.h>
 #include <plib/ssg.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include <car.h>
 #include <graphic.h>
@@ -45,36 +45,10 @@
 #include "grssgext.h"
 #include "grutil.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index );
-#if 0
-static int
-preCbEnv(ssgEntity *e)
-{
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_GEN_T);
-    glDepthMask(GL_FALSE);
-    glDepthFunc(GL_EQUAL);
-    glBlendFunc(GL_ZERO, GL_SRC_COLOR);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    return TRUE;
-}
 
-static int
-postCbEnv(ssgEntity *e)
-{
-    glDisable(GL_TEXTURE_GEN_S);
-    glDisable(GL_TEXTURE_GEN_T);
-    glDepthMask(GL_TRUE);
-    glDepthFunc(GL_LESS);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    return TRUE;
-}
-#endif
 
 class myLoaderOptions : public ssgLoaderOptions
 {
@@ -603,7 +577,7 @@ tdble grGetDistToStart(tCarElt *car)
 }
 
 void
-grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime)
+grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGrPerspCamera *curCam)
 {
     sgCoord	wheelpos;
     int		index, i, j;
@@ -620,7 +594,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime)
     if ((car == curCar) && (dispFlag != 1)) {
 	grCarInfo[index].LODSelector->select(0);
     } else {
-	lod = grCurCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
+	lod = curCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
 	i = 0;
 	while (lod < grCarInfo[index].LODThreshold[i]) {
 	    i++;

@@ -21,15 +21,10 @@
 #include <plib/sm.h>
 #include <math.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <graphic.h>
-#include <racemantools.h>
 
 #include "grsound.h"
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 #ifndef M_PI
 #define EX_PI 3.1415926535
@@ -130,7 +125,7 @@ grRefreshSound(tSituation *s)
 {
     float	mpitch;
     float	skvol;
-    tCarElt	*car = s->cars[s->current];
+    tCarElt	*car = s->cars[/* s->current */ 0];
     int		i;
 
     mpitch = (float)(car->_enginerpm) / 600.0;

@@ -26,10 +26,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <robot.h>
 #include <raceman.h>
-#include <racemantools.h>
+#include <racescreens.h>
 #include <robottools.h>
 
 #include "racemain.h"

@@ -18,8 +18,7 @@
 
 DATADIR   = data/fonts
 
-DATA      = $(shell find * -maxdepth 0 -type f -print)
-
+DATA      = $(shell find *.glf -maxdepth 0 -type f -print)
 
 data_PKGFILES	= $(DATA)
 

@@ -85,7 +85,8 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
 	case TR_STR:
 	    CosA = cos(seg->angle[TR_ZS]);
 	    SinA = sin(seg->angle[TR_ZS]);
-	    tr = p->toMiddle + seg->startWidth;
+	    /* Jussi Pajala: must be divided by two to get middle of the track ! */
+	    tr = p->toMiddle + seg->startWidth / 2.0; 
 	    *X = seg->vertex[TR_SR].x + p->toStart * CosA - tr * SinA;
 	    *Y = seg->vertex[TR_SR].y + p->toStart * SinA + tr * CosA;
 	    break;

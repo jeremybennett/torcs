@@ -28,10 +28,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <raceman.h>
 #include <robot.h>
-#include <racemantools.h>
+#include <racescreens.h>
 #include <robottools.h>
 
 #include "raceengine.h"

@@ -21,10 +21,9 @@
 #ifndef _SIMUV1_H_
 #define _SIMUV1_H_
 
-#include <ttypes.h>
 #include <track.h>
 
-#define SIM_IDENT	(CAR_IDENT|TRK_IDENT)
+#define SIM_IDENT	0
 
 struct Situation;
 

@@ -27,7 +27,6 @@
 #ifndef _RACEMANV1_H_
 #define _RACEMANV1_H_
 
-#include <ttypes.h>
 #include <tgf.h>
 #include <car.h>
 #include <track.h>
@@ -86,7 +85,7 @@ typedef struct Situation {
     tRaceAdmInfo	raceInfo;
     double		deltaTime;
     double		currentTime;	/**< current time in sec since the beginning of the simulation */
-    int			current;	/**< current car */
+    int			nbPlayers;	/**< number of human player in local (splitted screen) */
     tCarElt		**cars;		/**< list of cars */ 
 } tSituation;
 

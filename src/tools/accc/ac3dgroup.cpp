@@ -1,10 +1,9 @@
 /***************************************************************************
 
-    file                 : ac3dto3ds.cpp
-    created              : Sat Mar 31 09:27:43 CET 2001
-    copyright            : cg
-    email                : 
-    version              : $Id$
+    file        : ac3dgroup.cpp
+    created     : Fri Apr 18 23:11:36 CEST 2003
+    copyright   : (C) 2003 by Christophe Guionneau
+    version     : $Id$                                  
 
  ***************************************************************************/
 
@@ -19,7 +18,7 @@
 
 /** @file   
     		
-    @author	
+    @author	Christophe Guionneau
     @version	$Id$
 */
 

@@ -20,7 +20,7 @@ PROGRAM   = texmapper
 
 SOURCES   = texmapper.cpp ssgSaveAC.cpp
 
-SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltxml -lpng
+SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -ltxml -lpng
 
 src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -56,7 +56,7 @@ static tdble	TexSize;
 #define D       4
 #define W       5
 
-#define MAX_NODES 4000
+#define MAX_NODES 15000
 
 /*-----------------------------+
 |  definitions for the chains  |
@@ -332,6 +332,10 @@ int insert_node(double x, double y, double z, int spac,
 
     if ((x < xmin) || (x > xmax) || (y < ymin) || (y > ymax)) {
 	printf("\nInsert %f %f\n", x, y);
+	if (x < xmin) x = xmin;
+	if (x > xmax) x = xmax;
+	if (y < ymin) y = ymin;
+	if (y > ymax) y = ymax;
     }
  
     node[Nn-1].x = x;
@@ -1863,7 +1867,7 @@ generate_mesh(void)
 	Nn0 = Nn;
 	new_node();
 	classify();
-	if (Nn == (MAX_NODES - 1)) {
+	if (Nn > (MAX_NODES / 2 - 2)) {
 	    break;
 	}
 	if (Nn == Nn0) {
@@ -1946,7 +1950,26 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
     struct nod	*point2;
     int		nb_relief_vtx, nb_relief_seg;
 
+    printf("GenerateMesh: ");
+    if (rightside) {
+	printf("right, ");
+    } else {
+	printf("left, ");
+    }
+    if (reverse) {
+	printf("reverse order, ");
+    } else {
+	printf("normal order, ");
+    }
+    if (exterior) {
+	printf("exterior\n");
+    } else {
+	printf("interior\n");
+    }
+
     CountRelief(1 - exterior, &nb_relief_vtx, &nb_relief_seg);
+
+    printf("Relief: %d vtx, %d seg\n", nb_relief_vtx, nb_relief_seg);
     
     /* Estimation of the number of points */
     maxVert = ((int)(Track->length) + nb_relief_vtx) * sizeof(struct nod);
@@ -1955,7 +1978,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
     if (rightside) {
 	nbvert = 0;
 
-	if (exterior && !reverse) {
+	if (exterior && !reverse && UseBorder) {
 	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
@@ -2027,7 +2050,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 	    }
 	}
 
-	if (exterior && reverse) {
+	if (exterior && reverse && UseBorder) {
 	    ADD_POINT(-Margin,Track->max.y + Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
@@ -2037,7 +2060,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
     } else {
 	nbvert = 0;
 
-	if (exterior && !reverse) {
+	if (exterior && !reverse && UseBorder) {
 	    ADD_POINT(-Margin, -Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
@@ -2110,7 +2133,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 	    }
 	}
 
-	if (exterior && reverse) {
+	if (exterior && reverse && UseBorder) {
 	    ADD_POINT(-Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, Track->max.y + Margin, ExtHeight, GridStep, 100000);
 	    ADD_POINT(Track->max.x + Margin, -Margin, ExtHeight, GridStep, 100000);
@@ -2124,7 +2147,6 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
     segment[Nc].n1 = -1;
 
     if (reverse){
-	    
 	/* reverse order */
 	point2 = (struct nod*)calloc(Nc + 1 + nb_relief_vtx, sizeof(struct nod));
 	for (i = 0; i < Nc; i++) {
@@ -2133,7 +2155,12 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 	free(point);
 	point = point2;
     }
-    if (exterior) {
+
+    Fl = 0;
+    if (exterior && !UseBorder) {
+	GenRelief(0);
+    }
+    if (exterior && UseBorder) {
 	segment[0].n0 = 0;
 	segment[0].n1 = 1;
 	segment[0].mark = 100000;
@@ -2159,22 +2186,27 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 	
     } else {
 	i = 0;
-	j = 0;
+	j = Fl;
 	do {
 	    segment[j].n0 = i;
-	    i = (i + 1) % Nc;
+	    i = (i + 1) % nbvert;
 	    segment[j].n1 = i;
 	    segment[j].mark = 1;
 	    j++;
 	} while (i != 0);
+	Fl = j;
     }
     if (exterior) {
-	Fl = Nc;
-	GenRelief(0);
+	if (UseBorder) {
+	    Fl = Nc;
+	    GenRelief(0);
+	}
     } else {
 	Fl = Nc;
 	GenRelief(1);
     }
+    segment[Fl].n0 = -1;
+    segment[Fl].n1 = -1;
     generate_mesh();
 }
 
@@ -2187,7 +2219,7 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
     FILE	*curFd = NULL;
 
     TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, 10.0);
-    GfOut("Track step: %.2f", TrackStep);
+    GfOut("Track step: %.2f ", TrackStep);
     Margin    = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, 100.0);
     GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, 10.0);
     ExtHeight = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, 0.0);

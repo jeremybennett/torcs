@@ -63,7 +63,7 @@ SUBDIRS		= src
 
 DATADIR 	= .
 
-DATA    	= CHANGELOG.html COPYING
+DATA    	= CHANGELOG.html COPYING Ticon.png Ticon.ico tux.png logo-skinner.png
 
 SHIPDIR		= .
 
@@ -110,10 +110,10 @@ uninstall:
 
 tags:
 	rm -f ${TORCS_BASE}/TAGS
-	find ${TORCS_BASE}/src -name '*.cpp' -exec etags -a {} \;
-	find ${TORCS_BASE}/src -name '*.c' -exec etags -a {} \;
 	find ${TORCS_BASE}/src -name '*.h' -exec etags -a {} \;
 	find /usr/include/plib -name '*.h' -exec etags -a {} \;
+	find ${TORCS_BASE}/src -name '*.cpp' -exec etags -a {} \;
+	find ${TORCS_BASE}/src -name '*.c' -exec etags -a {} \;
 
 setup_linux.sh: linuxsetup
 	@chmod +x setup_linux.sh

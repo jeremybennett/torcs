@@ -29,13 +29,23 @@
 #ifndef __CARV1_H__
 #define __CARV1_H__
 
-#include <ttypes.h>
 #include <track.h>
 #include <plib/sg.h>
 
-#define CAR_IDENT	((0x01)<<CAR_IDENT_SHIFT)
+#define CAR_IDENT	0
 
 #define MAX_NAME_LEN	32
+
+/* designation */
+#define FRNT_RGT	0	/**< front right */
+#define FRNT_LFT	1	/**< front left */
+#define REAR_RGT	2	/**< rear right */
+#define REAR_LFT	3	/**< rear left */
+#define FRNT		0	/**< front */
+#define REAR		1	/**< rear */
+#define RIGHT		0	/**< right */
+#define LEFT		1	/**< left */
+
 
 /** Wheels Specifications */
 typedef struct

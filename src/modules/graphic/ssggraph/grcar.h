@@ -63,7 +63,7 @@ typedef struct
 extern tgrCarInfo	*grCarInfo;
 
 extern void grInitCar(tCarElt *car);
-extern void grDrawCar(tCarElt*, tCarElt *, int, double curTime);
+extern void grDrawCar(tCarElt*, tCarElt *, int, double curTime, class cGrPerspCamera *curCam);
 extern void grDrawShadow(tCarElt *car);
 extern void grInitShadow(tCarElt *car);
 extern tdble grGetDistToStart(tCarElt *car);

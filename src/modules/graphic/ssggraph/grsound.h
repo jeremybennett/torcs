@@ -20,6 +20,8 @@
 #ifndef _GRSOUND_H_
 #define _GRSOUND_H_
 
+#include <raceman.h>
+
 extern void grInitSound(void);
 extern void grShutdownSound(void);
 extern void grRefreshSound(tSituation *s);

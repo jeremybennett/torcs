@@ -55,17 +55,10 @@ extern PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB ;
 */
 extern bool InStr(char *searchStr, char *str);
 #endif
+
 extern bool InitMultiTex();
 extern int grWinx, grWiny, grWinw, grWinh;
 
-extern int grDrawCurrent;
-extern int grDrawCurrent;
-extern int grDebugFlag;
-extern int grBoardFlag;
-extern int grLeaderFlag;
-extern int grLeaderNb;
-extern int grCounterFlag;
-extern int grGFlag;
 extern int grVectFlag;
 extern int grVectDispFlag[];
 extern int segIndice;
@@ -87,6 +80,12 @@ extern void shutdownTrack(void);
 extern int maxTextureUnits;
 extern tdble grMaxDammage;
 
+extern class cGrScreen *grScreens[];
+
+#define GR_SPLIT_ADD	0
+#define GR_SPLIT_REM	1
+
+#define GR_NB_MAX_SCREEN 4
 
 #endif /* _GRMAIN_H_ */ 
 

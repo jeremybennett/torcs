@@ -33,6 +33,8 @@
 #define	HM_SECT_MOUSEPREF	"mouse"
 #define	HM_SECT_KEYBPREF	"keyboard"
 
+#define HM_SECT_DRVPREF		"Preferences/Drivers"
+
 #define HM_ATT_CONTROL		"control"
 
 #define HM_ATT_UP_SHFT		"up shift"

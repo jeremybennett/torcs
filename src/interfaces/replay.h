@@ -21,7 +21,7 @@
 #ifndef __REPLAYV1_H__
 #define __REPLAYV1_H__
 
-#define RPL_IDENT	((0x01)<<RPL_IDENT_SHIFT)
+#define RPL_IDENT	0
 
 
 

@@ -17,17 +17,17 @@
 <params name="" type="template">
 
   <section name="Simulation Parameters">
-    <attnum name="PGain"     val="0.015"/>
+    <attnum name="PGain"     val="0.02"/>
     <attnum name="AGain"     val="0.008"/>
     <attnum name="PnGain"    val="0.02"/>
-    <attnum name="Advance"   val="5.0"/>
-    <attnum name="Advance2"  val="10.0"/>
+    <attnum name="Advance"   val="7.0"/>
+    <attnum name="Advance2"  val="8.0"/>
     <attnum name="AdvStep"   val="1.0"/>
     <attnum name="VGain"     val="0.0005"/>
     <attnum name="preDy"     val="0"/>
-    <attnum name="spdtgt"    val="330.0"/>
+    <attnum name="spdtgt"    val="280.0"/>
     <attnum name="spdtgt2"   val="1.0"/>
-    <attnum name="steerMult" val="2.0"/>
+    <attnum name="steerMult" val="1.0"/>
   </section>
 
 </params>

@@ -22,10 +22,12 @@ SOURCES = main.cpp linuxspec.cpp
 
 LDFLAGS = -rdynamic
 
-SOLIBS  =  -lracemantools \
+SOLIBS  =  -lracescreens  \
 	   -lrobottools   \
-	   -ltorcs        \
+	   -lclient       \
+	   -lconfscreens  \
 	   -ltgf          \
+	   -ltgfclient    \
 	   -ltxml	  \
 	   -lplibul	  \
 	   -lraceengine

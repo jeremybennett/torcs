@@ -21,11 +21,10 @@
 #ifndef _GRAPHV1_H_
 #define _GRAPHV1_H_
 
-#include <ttypes.h>
 #include <track.h>
 #include <car.h>
 
-#define GRX_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
+#define GRX_IDENT	0
 
 #define GR_PARAM_FILE		"config/graph.xml"
 
@@ -38,6 +37,7 @@
 #define GR_ATT_LEADER		"leader board"
 #define GR_ATT_DEBUG		"debug info"
 #define GR_ATT_GGRAPH		"G graph"
+#define GR_ATT_ARCADE		"arcade"
 #define GR_ATT_NBLEADER		"Max leaders entries"
 
 #define GR_SCT_TVDIR		"TV Director View"

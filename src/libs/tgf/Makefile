@@ -20,41 +20,23 @@ SOLIBRARY = libtgf.so
 
 SOLIBDIR  = .
 
-SOURCES   = 	guimenu.cpp \
-		module.cpp \
+SOURCES   = 	module.cpp \
 		os.cpp \
 		params.cpp \
 		tgf.cpp \
 		trace.cpp \
-		screen.cpp \
-		gui.cpp \
-		guifont.cpp \
-		guiobject.cpp \
-		guilabel.cpp \
-		guibutton.cpp \
-		guiedit.cpp \
-		guihelp.cpp \
 		directory.cpp \
-		img.cpp \
-		guiscrollist.cpp \
-		guiscrollbar.cpp \
-		guiimage.cpp \
-		control.cpp \
-		fg_gm.cpp \
-		ringlist.cpp
+		profiler.cpp \
+		hash.cpp
 
 
 EXPDIR  = include
 
-EXPORTS = tgf.h os.h queue.h
+EXPORTS = tgf.h os.h
 
 SHIPDIR = config
 
-SHIP    = screen.xml params.dtd
-
-CONFIGCREATEDIRS = config
-
-CONFIG    = screen.xml
+SHIP    = params.dtd
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
