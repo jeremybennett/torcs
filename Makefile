@@ -54,7 +54,9 @@ PKGLIST		= src \
 		  data-cars-kcendra-gt \
 		  data-cars-kcendra-sport \
 		  data-cars-kcendra-roadsters \
-		  data-tracks-base data-devel
+		  data-tracks-base data-devel \
+		  src-robots-astigot \
+		  src-robots-billy
 
 DATASUBDIRS	= data
 

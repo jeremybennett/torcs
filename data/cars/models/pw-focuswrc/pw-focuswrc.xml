@@ -18,6 +18,20 @@
 
 <params name="Ford Focus WRC" type="template">
 
+  <section name="Bonnet">
+    <!-- Position of the driver -->
+    <attnum name="xpos" unit="m" val="0.50"/>
+    <attnum name="ypos" unit="m" val="0.0"/>
+    <attnum name="zpos" unit="m" val="1.10"/>
+  </section>
+
+  <section name="Driver">
+    <!-- Position of the driver -->
+    <attnum name="xpos" unit="m" val="-0.18"/>
+    <attnum name="ypos" unit="m" val="0.37"/>
+    <attnum name="zpos" unit="m" val="0.93"/>
+  </section>
+
   <section name="Graphic Objects">
     <attstr name="env" val="pw-focuswrc.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
@@ -75,13 +89,6 @@
       </section>
     </section>
 
-  </section>
-
-  <section name="Driver">
-    <!-- Position of the driver -->
-    <attnum name="xpos" unit="m" val="0.50"/>
-    <attnum name="ypos" unit="m" val="0.0"/>
-    <attnum name="zpos" unit="m" val="1.10"/>
   </section>
 
   <section name="Car">

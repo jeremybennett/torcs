@@ -92,6 +92,24 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name client
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name accc
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name nfs2ac
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "accc"=".\src\tools\accc\accc.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################
@@ -109,6 +127,18 @@ Package=<4>
 ###############################################################################
 
 Project: "berniw2"=".\src\drivers\berniw2\berniw2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "billy"=".\src\drivers\billy\billy.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -204,6 +234,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "inferno2"=".\src\drivers\inferno2\inferno2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "k1999"=".\src\drivers\K1999\K1999.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -233,6 +275,18 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name tgf
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "nfs2ac"=".\src\tools\nfs2ac\nfs2ac.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################
@@ -331,6 +385,18 @@ Package=<4>
 ###############################################################################
 
 Project: "track"=".\src\modules\track\track.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "trackgen"=".\src\tools\trackgen\trackgen.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

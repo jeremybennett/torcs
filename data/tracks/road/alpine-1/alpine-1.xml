@@ -32,6 +32,113 @@
   <!-- Surfaces -->
   <section name="Surfaces">
       &default-surfaces;
+    <section name="g-grass3-l">
+      <attnum name="color R1" val="0.1"/>
+      <attnum name="color G1" val="0.4"/>
+      <attnum name="color B1" val="0.1"/>
+      <attnum name="color R2" val="0.2"/>
+      <attnum name="color G2" val="0.5"/>
+      <attnum name="color B2" val="0.2"/>
+      <attstr name="texture name" val="asgrassr_n.rgb"/>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"/>
+      <attnum name="texture size" val="15" unit="m"/>
+      <attnum name="texture mipmap" val="4.0"/>
+
+      <attnum name="friction"           val="1.0"/>
+      <attnum name="rolling resistance" val="0.005"/>
+
+      <attstr name="bump name" val="grtiled.rgb"/>
+      <attnum name="bump size" val="2.0" unit="m"/>
+
+      <attnum name="roughness" val="0.01"/>
+      <attnum name="roughness wavelength" val="0.2"/>
+    </section>
+
+    <section name="gasphalt1">
+      <attnum name="color R1" val="0.1"/>
+      <attnum name="color G1" val="0.1"/>
+      <attnum name="color B1" val="0.1"/>
+      <attnum name="color R2" val="0.2"/>
+      <attnum name="color G2" val="0.2"/>
+      <attnum name="color B2" val="0.2"/>
+      <attstr name="texture name" val="road1.rgb"/>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"/>
+      <attnum name="texture size" val="20.0" unit="m"/>
+      <attnum name="texture mipmap" val="0.0" unit="m"/>
+      
+      <attnum name="friction"           val="1.2"/>
+      <attnum name="rolling resistance" val="0.001"/>
+
+      <attstr name="bump name" val="astiled.rgb"/>
+      <attnum name="bump size" val="2.0" unit="m"/>
+      
+      <attnum name="roughness" val="0"/>
+      <attnum name="roughness wavelength" val="1.0"/>
+    </section>
+
+    <section name="gasphalt4">
+      <attnum name="color R1" val="0.1"/>
+      <attnum name="color G1" val="0.1"/>
+      <attnum name="color B1" val="0.1"/>
+      <attnum name="color R2" val="0.2"/>
+      <attnum name="color G2" val="0.2"/>
+      <attnum name="color B2" val="0.2"/>
+      <attstr name="texture name" val="road4.rgb"/>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"/>
+      <attnum name="texture size" val="20.0" unit="m"/>
+      <attnum name="texture mipmap" val="0.0" unit="m"/>
+      
+      <attnum name="friction"           val="1.2"/>
+      <attnum name="rolling resistance" val="0.001"/>
+
+      <attstr name="bump name" val="astiled.rgb"/>
+      <attnum name="bump size" val="2.0" unit="m"/>
+      
+      <attnum name="roughness" val="0"/>
+      <attnum name="roughness wavelength" val="1.0"/>
+    </section>
+
+    <section name="barrierw1">
+      <attnum name="color R1" val="1.0"/>
+      <attnum name="color G1" val="0.0"/>
+      <attnum name="color B1" val="0.0"/>
+      <attnum name="color R2" val="1.0"/>
+      <attnum name="color G2" val="1.0"/>
+      <attnum name="color B2" val="1.0"/>
+      <attstr name="texture name" val="mur2.rgb"/>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"/>
+      <attnum name="texture size" val="10.0" unit="m"/>
+      <attnum name="texture mipmap" val="4.0"/>
+
+      <attnum name="friction"           val="0.0"/>
+
+      <attnum name="roughness" val="0.03"/>
+      <attnum name="roughness wavelength" val="4.0"/>
+    </section>
+
+    <section name="gconcrete">
+      <attnum name="color R1" val="0.3"/>
+      <attnum name="color G1" val="0.3"/>
+      <attnum name="color B1" val="0.3"/>
+      <attnum name="color R2" val="0.4"/>
+      <attnum name="color G2" val="0.4"/>
+      <attnum name="color B2" val="0.4"/>
+      <attstr name="texture name" val="gconcrete.rgb"/>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"/>
+      <attnum name="texture size" val="4.0" unit="m"/>
+      <attnum name="texture mipmap" val="0.0" unit="m"/>
+
+      <attnum name="friction"           val="1.0"/>
+      <attnum name="rolling resistance" val="0.002"/>
+
+      <attstr name="bump name" val="astiled.rgb"/>
+      <attnum name="bump size" val="2.0" unit="m"/>
+
+      <attnum name="roughness" val="0.002"/>
+      <attnum name="roughness wavelength" val="0.08"/>
+    </section>
+
+
   </section>  <!-- Surfaces -->
 
   <!-- Objects -->
@@ -52,9 +159,18 @@
     <attnum name="ambient color G" val="0.8"/>
     <attnum name="ambient color B" val="0.6"/>
 
-    <attnum name="light position x" val="-50"/>
-    <attnum name="light position y" val="-50"/>
-    <attnum name="light position z" val="40"/>
+    <attnum name="diffuse color R" val="0"/>
+    <attnum name="diffuse color G" val="0"/>
+    <attnum name="diffuse color B" val="0"/>
+
+    <attnum name="specular color R" val="0.4"/>
+    <attnum name="specular color G" val="0.4"/>
+    <attnum name="specular color B" val="0.4"/>
+
+
+    <attnum name="light position x" val="-0"/>
+    <attnum name="light position y" val="1000"/>
+    <attnum name="light position z" val="300"/>
 
     <attnum name="fov factor" val="0.8"/>
 
@@ -91,17 +207,17 @@
   <!-- Main Track -->
   <section name="Main Track">
 
-    <attstr name="surface" val="asphalt"/>
+    <attstr name="surface" val="gasphalt4"/>
     <attnum name="width" unit="m" val="12.0"/>
     <attnum name="profil steps length" unit="m" val="6"/>
 
     <section name="Right Border">
       <attnum name="width" val="1.0"/>
-      <attstr name="surface" val="tar-grass3-r"/>
+      <attstr name="surface" val="g-grass3-l"/>
     </section>
 
     <section name="Left Border">
-      <attstr name="surface" val="tar-grass3-l"/>
+      <attstr name="surface" val="g-grass3-l"/>
       <attnum name="width" val="1.0"/>
     </section>
 
@@ -127,6 +243,11 @@
 	  <attnum name="start width" val="15"/>
 	  <attnum name="end width" val="15"/>
 	</section>
+	<section name="Right Border">
+         <attnum name="width" val="1.0"/>
+         <attstr name="surface" val="gconcrete"/>
+        </section>
+
       </section>
 
       <section name="pit-exit">
@@ -135,17 +256,28 @@
 	<section name="Right Side">
 	  <attnum name="start width" val="15"/>
 	  <attnum name="end width"    val="0"/>
-	  <attstr name="surface" val="asphalt"/>
+	  <attstr name="surface" val="gasphalt4"/>
 	</section>
+
       </section>
 
       <section name="s1">
 	<attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="86.488892"/>
+	<section name="Right Border">
+         <attnum name="width" val="1.0"/>
+         <attstr name="surface" val="g-grass3-l"/>
+        </section>
+        <section name="Left Border">
+         <attstr name="surface" val="g-grass3-l"/>
+         <attnum name="width" val="1.0"/>
+        </section>
+
       </section>
 
       <section name="t1-1">
         <attstr name="type" val="rgt"/>
+	<attstr name="surface" val="gasphalt1"/>
 	<attnum name="radius" unit="m" val="100"/>
 	<attnum name="end radius" unit="m" val="30"/>
 	<attnum name="arc" unit="deg" val="90"/>
@@ -168,6 +300,12 @@
 	<attnum name="arc" unit="deg" val="10"/>
 	<attnum name="grade" unit="%" val="3"/>
 	<attnum name="profil end tangent" unit="%" val="3"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t2-1">
@@ -184,6 +322,12 @@
 	<attnum name="arc" unit="deg" val="45"/>
 	<attnum name="grade" unit="%" val="2"/>
 	<attnum name="profil end tangent" unit="%" val="2"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <section name="s2">
@@ -199,6 +343,12 @@
 	<attnum name="arc" unit="deg" val="35"/>
 	<attnum name="grade" unit="%" val="2"/>
 	<attnum name="profil end tangent" unit="%" val="2"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t3-2">
@@ -231,6 +381,12 @@
 	<attnum name="arc" unit="deg" val="140"/>
 	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="5"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t4-1">
@@ -248,6 +404,12 @@
 	<attnum name="arc" unit="deg" val="45"/>
 	<attnum name="grade" unit="%" val="6"/>
 	<attnum name="profil end tangent" unit="%" val="6"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t6-1">
@@ -274,6 +436,18 @@
 	<attnum name="arc" unit="deg" val="45"/>
 	<attnum name="grade" unit="%" val="7"/>
 	<attnum name="profil end tangent" unit="%" val="8"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <section name="t7-2">
@@ -299,6 +473,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="8"/>
 	<attnum name="profil end tangent" unit="%" val="9"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t9-1">
@@ -308,6 +488,18 @@
 	<attnum name="arc" unit="deg" val="60"/>
 	<attnum name="grade" unit="%" val="9"/>
 	<attnum name="profil end tangent" unit="%" val="9"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t10-1">
@@ -317,6 +509,12 @@
 	<attnum name="arc" unit="deg" val="50"/>
 	<attnum name="grade" unit="%" val="10"/>
 	<attnum name="profil end tangent" unit="%" val="8"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="s3">
@@ -332,6 +530,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="10"/>
 	<attnum name="profil end tangent" unit="%" val="10"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t11-2">
@@ -340,6 +544,18 @@
 	<attnum name="arc" unit="deg" val="120"/>
 	<attnum name="grade" unit="%" val="10"/>
 	<attnum name="profil end tangent" unit="%" val="10"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t11-3">
@@ -357,6 +573,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="10"/>
 	<attnum name="profil end tangent" unit="%" val="9"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t12-1">
@@ -366,6 +588,12 @@
 	<attnum name="arc" unit="deg" val="45"/>
 	<attnum name="grade" unit="%" val="9"/>
 	<attnum name="profil end tangent" unit="%" val="9"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t12-2">
@@ -374,6 +602,7 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="9"/>
 	<attnum name="profil end tangent" unit="%" val="8"/>
+
       </section>
 
       <section name="t13-1">
@@ -382,6 +611,12 @@
 	<attnum name="arc" unit="deg" val="75"/>
 	<attnum name="grade" unit="%" val="8"/>
 	<attnum name="profil end tangent" unit="%" val="7"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t14-1">
@@ -391,6 +626,18 @@
 	<attnum name="arc" unit="deg" val="90"/>
 	<attnum name="grade" unit="%" val="7"/>
 	<attnum name="profil end tangent" unit="%" val="6"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t14-2">
@@ -414,6 +661,18 @@
 	<attnum name="lg" unit="m" val="50"/>
  	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
      </section>
 
       <section name="t15-1">
@@ -430,6 +689,18 @@
 	<attnum name="arc" unit="deg" val="80"/>
 	<attnum name="grade" unit="%" val="-2"/>
 	<attnum name="profil end tangent" unit="%" val="-2"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t16-1">
@@ -439,6 +710,12 @@
 	<attnum name="arc" unit="deg" val="80"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t17-1">
@@ -448,6 +725,18 @@
 	<attnum name="arc" unit="deg" val="65"/>
 	<attnum name="grade" unit="%" val="-6"/>
 	<attnum name="profil end tangent" unit="%" val="-6"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t17-2">
@@ -463,6 +752,12 @@
 	<attnum name="lg" unit="m" val="50"/>
 	<attnum name="grade" unit="%" val="-10"/>
 	<attnum name="profil end tangent" unit="%" val="-10"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t18-1">
@@ -479,6 +774,12 @@
 	<attnum name="arc" unit="deg" val="10"/>
 	<attnum name="grade" unit="%" val="-12"/>
 	<attnum name="profil end tangent" unit="%" val="-14"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <section name="t19-1">
@@ -487,6 +788,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="-14"/>
 	<attnum name="profil end tangent" unit="%" val="-16"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t19-2">
@@ -520,6 +827,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="-10"/>
 	<attnum name="profil end tangent" unit="%" val="-10"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t20-12">
@@ -528,6 +841,12 @@
 	<attnum name="arc" unit="deg" val="60"/>
 	<attnum name="grade" unit="%" val="-8"/>
 	<attnum name="profil end tangent" unit="%" val="-8"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t20-2">
@@ -560,6 +879,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="-1"/>
 	<attnum name="profil end tangent" unit="%" val="-1"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t23-1">
@@ -575,15 +900,35 @@
 	<attnum name="lg" unit="m" val="354.336609"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attstr name="surface" val="gasphalt4"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <section name="t24-1">
         <attstr name="type" val="rgt"/>
+	<attstr name="surface" val="gasphalt1"/>
 	<attnum name="radius" unit="m" val="250"/>
 	<attnum name="end radius" unit="m" val="150"/>
 	<attnum name="arc" unit="deg" val="80"/>
 	<attnum name="grade" unit="%" val="-1"/>
 	<attnum name="profil end tangent" unit="%" val="-1"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t24-2">
@@ -592,6 +937,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="-2"/>
 	<attnum name="profil end tangent" unit="%" val="-2"/>
+	<section name="Right Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t25-1">
@@ -600,6 +951,12 @@
 	<attnum name="arc" unit="deg" val="40"/>
 	<attnum name="grade" unit="%" val="-3"/>
 	<attnum name="profil end tangent" unit="%" val="-3"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t26-1">
@@ -609,6 +966,13 @@
 	<attnum name="arc" unit="deg" val="40"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
+
       </section>
 
       <section name="s7">
@@ -616,6 +980,18 @@
 	<attnum name="lg" unit="m" val="80"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t27-1">
@@ -625,6 +1001,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="-5"/>
 	<attnum name="profil end tangent" unit="%" val="-5"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t28-1">
@@ -633,6 +1015,12 @@
 	<attnum name="arc" unit="deg" val="50"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
      </section>
 
       <section name="t29-1">
@@ -642,6 +1030,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t29-2">
@@ -650,6 +1044,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t29-3">
@@ -691,6 +1091,12 @@
 	<attnum name="arc" unit="deg" val="30"/>
 	<attnum name="grade" unit="%" val="-3"/>
 	<attnum name="profil end tangent" unit="%" val="-3"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.8"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <section name="t31-2">
@@ -708,6 +1114,12 @@
 	<attnum name="arc" unit="deg" val="20"/>
 	<attnum name="grade" unit="%" val="-3"/>
 	<attnum name="profil end tangent" unit="%" val="-3"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrierw1"/>  
+	</section>
       </section>
 
       <section name="t32-2">
@@ -724,6 +1136,18 @@
 	<attnum name="arc" unit="deg" val="10"/>
 	<attnum name="grade" unit="%" val="-3"/>
 	<attnum name="profil end tangent" unit="%" val="-3"/>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="0.6"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <section name="t33-2">
@@ -765,6 +1189,7 @@
 	<attnum name="lg" unit="m" val="30"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
  	<attnum name="z end" unit="m" val="0"/>
+	<attstr name="surface" val="gasphalt4"/>
       </section>
 
       <section name="pit-entry">
@@ -774,8 +1199,13 @@
 	<section name="Right Side">
 	  <attnum name="start width" val="0"/>
 	  <attnum name="end width"    val="15"/>
-	  <attstr name="surface" val="asphalt"/>
+	  <attstr name="surface" val="gasphalt1"/>
 	</section>
+	<section name="Right Border">
+         <attnum name="width" val="1.0"/>
+         <attstr name="surface" val="gconcrete"/>
+        </section>
+
       </section>
 
       <section name="arrival">
@@ -798,13 +1228,47 @@
 
     <section name="cam 0">
       <!-- Camera's position relative to a segment -->
-      <attstr name="segment" val="pit-exit"/>
-      <attnum name="to right" val="6.0"/>
+      <attstr name="segment" val="start lane"/>
+      <attnum name="to right" val="-6"/>
       <attnum name="to start" val="150"/>
-      <attnum name="height" val="5"/>
+      <attnum name="height" val="1.5"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
-      <attstr name="fov start" val="pit-start"/> <!-- included  -->
-      <attstr name="fov end" val="turn 1.1"/> <!-- excluded -->
+      <attstr name="fov start" val="start lane"/> <!-- included  -->
+      <attstr name="fov end" val="pit-exit"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 1">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="pit-exit"/>
+      <attnum name="to right" val="-6.0"/>
+      <attnum name="to start" val="100"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="pit-exit"/> <!-- included  -->
+      <attstr name="fov end" val="s1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 2">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="t1-1"/>
+      <attnum name="to right" val="12.0"/>
+      <attnum name="to start" val="0"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="s1"/> <!-- included  -->
+      <attstr name="fov end" val="t1-12"/> <!-- excluded -->
+    </section>
+
+
+    <section name="cam 3">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="t2-1"/>
+      <attnum name="to right" val="12.0"/>
+      <attnum name="to start" val="12.0"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="t1-12"/> <!-- included  -->
+      <attstr name="fov end" val="t2-2"/> <!-- excluded -->
     </section>
 
   </section>  <!-- Cameras -->

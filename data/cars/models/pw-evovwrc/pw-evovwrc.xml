@@ -18,6 +18,20 @@
 
 <params name="Mitsubishi Lancer EVO V WRC" type="template">
 
+  <section name="Bonnet">
+    <!-- Position of the driver -->
+    <attnum name="xpos" unit="m" val="0.55"/>
+    <attnum name="ypos" unit="m" val="0.0"/>
+    <attnum name="zpos" unit="m" val="1.00"/>
+  </section>
+
+  <section name="Driver">
+    <!-- Position of the driver -->
+    <attnum name="xpos" unit="m" val="-0.14"/>
+    <attnum name="ypos" unit="m" val="0.34"/>
+    <attnum name="zpos" unit="m" val="0.90"/>
+  </section>
+
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
@@ -74,13 +88,6 @@
       </section>
     </section>
 
-  </section>
-
-  <section name="Driver">
-    <!-- Position of the driver -->
-    <attnum name="xpos" unit="m" val="0.55"/>
-    <attnum name="ypos" unit="m" val="0.0"/>
-    <attnum name="zpos" unit="m" val="1.00"/>
   </section>
 
   <section name="Car">
