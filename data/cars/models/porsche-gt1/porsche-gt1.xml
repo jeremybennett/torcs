@@ -27,6 +27,11 @@
     <attnum name="ypos" val="0.0" unit="m"/>
     <attnum name="zpos" val="0.95" unit="m"/>
   </section>
+  <section name="Sound">
+	<attstr name="engine sample" val="lamborghinidiablo.wav"/>
+	<attnum name="rpm scale" val="0.92"/>
+  </section>
+
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

@@ -28,6 +28,12 @@
     <attnum name="zpos" unit="m" val="1.10"/>
   </section>
 
+   <section name="Sound">
+       <attstr name="engine sample" val="chevy.wav"/>
+       <attnum name="rpm scale" val="0.7"/>
+   </section>
+
+
   <section name="Graphic Objects">
     <attstr name="env" val="corvette.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

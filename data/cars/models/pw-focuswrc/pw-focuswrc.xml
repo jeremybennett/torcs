@@ -32,6 +32,12 @@
     <attnum name="zpos" unit="m" val="0.93"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="ford2c.wav"/>
+	<attnum name="rpm scale" val="1.25"/>
+  </section>
+
+
   <section name="Graphic Objects">
     <attstr name="env" val="pw-focuswrc.ac"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

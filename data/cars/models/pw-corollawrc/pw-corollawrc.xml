@@ -22,15 +22,21 @@
     <!-- Position of the driver -->
     <attnum name="xpos" unit="m" val="0.50"/>
     <attnum name="ypos" unit="m" val="0.0"/>
-    <attnum name="zpos" unit="m" val="1.10"/>
+    <attnum name="zpos" unit="m" val="0.95"/>
   </section>
 
   <section name="Driver">
     <!-- Position of the driver -->
-    <attnum name="xpos" unit="m" val="-0.14"/>
+    <attnum name="xpos" unit="m" val="-0.10"/>
     <attnum name="ypos" unit="m" val="0.30"/>
-    <attnum name="zpos" unit="m" val="0.87"/>
+    <attnum name="zpos" unit="m" val="0.95"/>
   </section>
+
+  <section name="Sound">
+	<attstr name="engine sample" val="corolla1400hi2.wav"/>
+	<attnum name="rpm scale" val="1.2347"/>
+  </section>
+
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

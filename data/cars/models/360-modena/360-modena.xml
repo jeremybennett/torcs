@@ -26,6 +26,13 @@
     <attnum name="zpos" val="0.95" unit="m"/>
   </section>
 
+
+  <section name="Sound">
+	<attstr name="engine sample" val="ferrarif355.wav"/>
+	<attnum name="rpm scale" val="0.77"/>
+  </section>
+
+
   <section name="Graphic Objects">
     <attstr name="env" val="360-modena.acc"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>

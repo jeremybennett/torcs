@@ -32,6 +32,12 @@
     <attnum name="zpos" unit="m" val="0.94"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="206_engine.wav"/>
+	<attnum name="rpm scale" val="1.0"/>
+  </section>
+
+
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
