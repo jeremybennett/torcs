@@ -249,6 +249,9 @@ typedef struct {
 	tdble   condition;
 	tdble slipSide;
 	tdble slipAccel;
+	tdble Fx;
+	tdble Fy;
+	tdble Fz;
 } tWheelState;
 #define _ride(i)	priv.wheel[i].relPos.z
 #define _brakeTemp(i)	priv.wheel[i].brakeTemp
@@ -256,6 +259,9 @@ typedef struct {
 #define _wheelSeg(i)	priv.wheel[i].seg
 #define _wheelSlipSide(i) priv.wheel[i].slipSide
 #define _wheelSlipAccel(i) priv.wheel[i].slipAccel
+#define _wheelFx(i) priv.wheel[i].Fx
+#define _wheelFy(i) priv.wheel[i].Fy
+#define _wheelFz(i) priv.wheel[i].Fz
 #define _tyreT_in(i) priv.wheel[i].temp_in
 #define _tyreT_mid(i) priv.wheel[i].temp_mid
 #define _tyreT_out(i) priv.wheel[i].temp_out
@@ -286,6 +292,9 @@ typedef struct {
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
     tdble	enginerpmMaxTq;
+    tdble	enginerpmMaxPw;
+    tdble	engineMaxTq;
+    tdble	engineMaxPw;
     tdble	gearRatio[MAX_GEARS];	/**< including final drive */
     int		gearNb;			/**< incl reverse and neutral */
     int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
@@ -310,6 +319,9 @@ typedef struct {
 #define _enginerpmRedLine	priv.enginerpmRedLine
 #define _enginerpmMax	priv.enginerpmMax
 #define _enginerpmMaxTq	priv.enginerpmMaxTq
+#define _enginerpmMaxPw	priv.enginerpmMaxPw
+#define _engineMaxTq	priv.engineMaxTq
+#define _engineMaxPw	priv.engineMaxPw
 #define _gearRatio	priv.gearRatio
 #define _gearNb		priv.gearNb
 #define _gearOffset	priv.gearOffset
