@@ -233,7 +233,7 @@ grSelectCamera(void *vp)
     if (cam == grCurCamHead) {
 	/* Same camera list, choose the next one */
 	grCurCam = grCurCam->next();
-	if (grCurCam == NULL) {
+	if (grCurCam == GF_TAILQ_END(&grCams[cam])) {
 	    grCurCam = GF_TAILQ_FIRST(&grCams[cam]);
 	}
     } else {
