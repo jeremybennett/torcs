@@ -24,11 +24,12 @@ LDFLAGS = -rdynamic
 
 SOLIBS  =  -lracemantools \
 	   -lrobottools   \
-	   -lraceengine   \
 	   -ltorcs        \
 	   -ltgf          \
 	   -ltxml	  \
 	   -lplibul
+
+#	   -lraceengine   \
 
 EXPDIR  = include
 

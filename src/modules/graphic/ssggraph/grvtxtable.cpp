@@ -350,7 +350,7 @@ void grVtxTable::draw_geometry_for_a_car ()
   sgVec3 *nm = (sgVec3 *) normals   -> get(0) ;
   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ;
   sgVec2 *tx1 = (sgVec2 *) texcoords1 -> get(0) ;
-  /* sgVec2 *tx2 = (sgVec2 *) texcoords2 -> get(0) ; */
+  sgVec2 *tx2 = (sgVec2 *) texcoords2 -> get(0) ;
   sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
 
   glBegin ( gltype ) ;
