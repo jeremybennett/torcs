@@ -87,9 +87,9 @@ typedef struct {
 	double disttopath;		/* distance to my path */
 	double brakedist;		/* distance needed for braking to the speed of this car */
 	double corner[4];
+	double orthdist[4];
 	double mincorner;
-	double maxleftcorner;
-	double maxrightcorner;
+	double minorthdist;
 } tOCar;
 
 

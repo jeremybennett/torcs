@@ -1160,7 +1160,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	if (collcars == 0) return 0;
 
 	const int start = (trackSegId - (int) (2.0 + myc->CARLEN) + nPathSeg) % nPathSeg;
-	const int nearend = (trackSegId + (int) (3.0*myc->CARLEN)) % nPathSeg;
+	const int nearend = (trackSegId + (int) (2.0*myc->CARLEN)) % nPathSeg;
 
 	OtherCar* nearestCar = NULL;	/* car near in time, not in space ! (next reached car) */
 	double minTime = FLT_MAX;
@@ -1172,7 +1172,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	int i, m = 0;
 	for (i = 0; i < collcars; i++) {
 		if (o[i].dist < COLLDIST/3) {
-			double dst = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), o[i].collcar->getCurrentPos());
+//			double dst = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), o[i].collcar->getCurrentPos());
+			double dst = o[i].minorthdist;
 			if (o[i].time > 0.0 && o[i].time < minTime) {
 				minTime = o[i].time;
 				collcarindex = i;
@@ -1204,22 +1205,15 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 	} else return 0;
 
-	/* compute minimal space requred */
-	double carwidth = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1-sqr(o[collcarindex].cosalpha)) + myc->DIST;
-
 	/* not enough space, so we try to overtake */
-
-	//o[i].mincorner < myc->CARWIDTH/2.0 + myc->DIST
-
-	if ((fabs(o[collcarindex].disttopath) < carwidth && minTime < myc->TIMETOCATCH) || !sidechangeallowed) {
+	if (((o[collcarindex].mincorner < myc->CARWIDTH/2.0 + myc->DIST) && (minTime < myc->TIMETOCATCH)) || !sidechangeallowed) {
 		int overtakerange = (int) MIN(MAX((3*minTime*myc->getSpeed()), myc->MINOVERTAKERANGE), AHEAD-50);
-		double d = track->distToMiddle(nearestCar->getCurrentSegId(), nearestCar->getCurrentPos());
+		double d = o[collcarindex].disttomiddle;
 		double mydisttomiddle = track->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos());
 		double y[3], ys[3], s[3];
 
 		y[0] = track->distToMiddle(trackSegId, myc->getCurrentPos());
-		double mydp = (*myc->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
-		double alpha = PI/2.0 - acos(mydp);
+		double alpha = PI/2.0 - acos((*myc->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight()));
 		int trackSegId1 = (trackSegId + overtakerange/3) % nPathSeg;
 		double w = track->getSegmentPtr(nearestCar->getCurrentSegId())->getWidth() / 2;
 		double pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
@@ -1231,34 +1225,35 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				for (i = 0; i <= (int) myc->MINOVERTAKERANGE; i += 10) {
 					if (track->getSegmentPtr((trackSegId+i) % nPathSeg)->getRadius() < myc->OVERTAKERADIUS) return 0;
 				}
-				double pathtocarsgn = sign(pathtomiddle - d);
+				//double pathtocarsgn = sign(pathtomiddle - d);
+				v3d r, dir = *o[collcarindex].collcar->getCurrentPos()- *myc->getCurrentPos();
+				myc->getDir()->crossProduct(&dir, &r);
+				double pathtocarsgn = sign(r.z);
+
 				y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 					y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
 				}
-
-				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
-				double beta = PI/2.0 - acos(ocdp);
+				double beta = PI/2.0 - acos((*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight()));
 				if (y[1] - mydisttomiddle >= 0.0) {
 					if (alpha < beta + myc->OVERTAKEANGLE) alpha = alpha + myc->OVERTAKEANGLE;
 				} else {
 					if (alpha > beta - myc->OVERTAKEANGLE) alpha = alpha - myc->OVERTAKEANGLE;
 				}
 			} else {
-				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
-				double beta = PI/2.0 - acos(ocdp);
-				if (mydisttomiddle - d >= 0.0) {
+				double beta = PI/2.0 - acos((*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight()));
+				double delta = mydisttomiddle - d;
+				if (delta >= 0.0) {
 					if (alpha < beta + myc->OVERTAKEANGLE) alpha = beta + myc->OVERTAKEANGLE;
 				} else {
 					if (alpha > beta - myc->OVERTAKEANGLE) alpha = beta - myc->OVERTAKEANGLE;
 				}
-
-				double cartocarsgn = sign(mydisttomiddle - d);
+				double cartocarsgn = sign(delta);
 				y[1] = d + myc->OVERTAKEDIST*cartocarsgn;
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 					y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
 				}
-				if ((minorthdist > myc->OVERTAKEMINDIST) && (paralleldist < 1.0*myc->CARLEN)) o[collcarindex].overtakee = true;
+				if (minorthdist > myc->OVERTAKEMINDIST) o[collcarindex].overtakee = true;
 			}
 		} else {
 			double pathtocarsgn = sign(pathtomiddle - d);
@@ -1300,7 +1295,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		double l = 0.0; v3d q, *pp, *qq;
 		for (i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			d = spline(3, l, s, y, ys);
-			if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0) {
+			if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0 - myc->MARGIN) {
 				o[collcarindex].overtakee = false;
 				return 0;
 			}
@@ -1371,16 +1366,14 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				double qs = o[n].speedsqr;
 				o[n].brakedist = (myc->getSpeedSqr() - o[n].speedsqr)*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca)));
 				o[n].mincorner = FLT_MAX;
-				o[n].maxleftcorner = FLT_MAX;
-				o[n].maxrightcorner = -FLT_MAX;
+				o[n].minorthdist = FLT_MAX;
 				for (j = 0; j < 4; j++) {
-					v3d e(car->pub->corner[j].ax, car->pub->corner[j].ay, car->pub->corner[j].az);
+					v3d e(car->pub->corner[j].ax, car->pub->corner[j].ay, car->_pos_Z);
 					o[n].corner[j] = distToPath(seg, &e);
+					o[n].orthdist[j] = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), &e) - myc->CARWIDTH/2.0;
 					if (fabs(o[n].corner[j]) < o[n].mincorner) o[n].mincorner = fabs(o[n].corner[j]);
-					if (o[n].corner[j] > o[n].maxrightcorner) o[n].maxrightcorner = o[n].corner[j];
-					if (o[n].corner[j] < o[n].maxleftcorner) o[n].maxleftcorner = o[n].corner[j];
+					if (o[n].orthdist[j] < o[n].minorthdist) o[n].minorthdist = o[n].orthdist[j];
 				}
-
 				n++;
 			}
 		}

@@ -39,10 +39,10 @@ const double MyCar::TIMETOCATCH = 3.0;			/* when do we start thinking about over
 const double MyCar::MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
 const double MyCar::OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
 const double MyCar::OVERTAKEDIST = 4.0;			/* planning distance of CG's while overtaking [m] */
-const double MyCar::OVERTAKEMINDIST = 3.5;		/* minimal distance of CG's while overtaking [m] */
+const double MyCar::OVERTAKEMINDIST = 1.7;		/* minimal distance of CG's while overtaking [m] */
 const double MyCar::OVERTAKEANGLE = 0.03;
 const double MyCar::DISTTHRESHOLD = 30.0;
-const double MyCar::OVERTAKEMARGIN = 1.5;
+const double MyCar::OVERTAKEMARGIN = 1.7;
 const double MyCar::MAXALLOWEDPITCH = 0.06;
 const double MyCar::FLYSPEED = 55.0;
 
