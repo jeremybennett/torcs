@@ -222,7 +222,7 @@ inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {
 	speedsqr = ispeedsqr;
 	length = ilength;
 	p = (*ip);
-	if (id != NULL) d = (*id);
+	d = (*id);
 }
 
 

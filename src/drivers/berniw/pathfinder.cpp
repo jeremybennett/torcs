@@ -675,7 +675,7 @@ void Pathfinder::plan(MyCar* myc)
 		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
 		tdble b = track->getSegmentPtr(i)->getKbeta();
 		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
-
+		
 		dir = (*ps[w].getLoc()) - (*ps[u].getLoc());
 		dir.normalize();
 

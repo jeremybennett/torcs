@@ -40,41 +40,37 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 	tr.normalize();
 
 	/* fill in the remaining properties */
-	if (s != NULL) {
-		type = s->type;
-		raceType = s->raceInfo;
-		if (type != TR_STR) radius = s->radius; else radius = FLT_MAX;
+	type = s->type;
+	raceType = s->raceInfo;
+	if (type != TR_STR) radius = s->radius; else radius = FLT_MAX;
 
-		if (s->type == TR_LFT) {
-			if (s->lside->style == TR_CURB) l = l - 1.5*tr;
-			else if ((s->lside->style == TR_PLAN) && (strcmp(s->lside->surface->material, TRK_VAL_CONCRETE) == 0)) l = l - 3.0*tr;
-		}
-		if (s->type == TR_RGT) {
-			if (s->rside->style == TR_CURB) r = r + 1.5*tr;
-			else if ((s->rside->style == TR_PLAN) && (strcmp(s->rside->surface->material, TRK_VAL_CONCRETE) == 0)) r = r + 3.0*tr;
-		}
+	if (s->type == TR_LFT) {
+		if (s->lside->style == TR_CURB) l = l - 1.5*tr;
+		else if ((s->lside->style == TR_PLAN) && (strcmp(s->lside->surface->material, TRK_VAL_CONCRETE) == 0)) l = l - 3.0*tr;
+	}
+	if (s->type == TR_RGT) {
+		if (s->rside->style == TR_CURB) r = r + 1.5*tr;
+		else if ((s->rside->style == TR_PLAN) && (strcmp(s->rside->surface->material, TRK_VAL_CONCRETE) == 0)) r = r + 3.0*tr;
+	}
 
-		width = distToLeft3D(&r);
+	width = distToLeft3D(&r);
 
-		double dz = getRightBorder()->z - getLeftBorder()->z;
-		double d = getWidth();
-		if (type == TR_LFT) {
-			if (dz > 0.0) {
-				kalpha = 1.0/cos(asin(fabs(dz/d)));
-			} else {
-				kalpha = 1.0*cos(asin(fabs(dz/d)));
-			}
-		} else if (type == TR_RGT) {
-			if (dz < 0.0) {
-				kalpha = 1.0/cos(asin(fabs(dz/d)));
-			} else {
-				kalpha = 1.0*cos(asin(fabs(dz/d)));
-			}
+	double dz = getRightBorder()->z - getLeftBorder()->z;
+	double d = getWidth();
+	if (type == TR_LFT) {
+		if (dz > 0.0) {
+			kalpha = 1.0/cos(asin(fabs(dz/d)));
 		} else {
-			kalpha = 1.0;
+			kalpha = 1.0*cos(asin(fabs(dz/d)));
+		}
+	} else if (type == TR_RGT) {
+		if (dz < 0.0) {
+			kalpha = 1.0/cos(asin(fabs(dz/d)));
+		} else {
+			kalpha = 1.0*cos(asin(fabs(dz/d)));
 		}
 	} else {
-		printf("error: TrackSegment::init tTrackSeg* is NULL.\n");
+		kalpha = 1.0;
 	}
 }
 
@@ -98,12 +94,12 @@ TrackDesc::TrackDesc(const tTrack* track)
 	nsegments = (int) floor(tracklength);
 
 
-	/* allocate memory for the temporary track data */
+	/* allocate memory for the track data */
 	nTrackSegments = nsegments;
 	ts = new TrackSegment[nTrackSegments];
 	torcstrack = (tTrack*) track;
 
-	/* init all the segments of my temporary track description */
+	/* init all the segments of my track description */
 	v3d l, m, r;
 	int currentts = 0;
 	double lastseglen = 0.0;
