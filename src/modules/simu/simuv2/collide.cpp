@@ -144,7 +144,12 @@ SimCarCollideXYScene(tCar *car)
 
 		// Impact speed perpendicular to barrier (of corner).
 		initDotProd = nx * corner->vel.x + ny * corner->vel.y;
-
+		
+		// TODO: This bit doesn't work so swell.
+		// look below for choice between dmg and dmg2.
+		// Test whether new corner speed calculation fixes bug
+		// of high damage when dotProd is used instead of dmgDotProd.
+		// Simuv3 does not seem to have this problem.
 		tdble absvel = MAX(1.0, sqrt(car->DynGCg.vel.x*car->DynGCg.vel.x + car->DynGCg.vel.y*car->DynGCg.vel.y));
 		tdble GCgnormvel = car->DynGCg.vel.x*normal.x + car->DynGCg.vel.y*normal.y;
 		tdble cosa = GCgnormvel/absvel;
@@ -164,7 +169,8 @@ SimCarCollideXYScene(tCar *car)
 		dmg = 0;
 		if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 			dmg = curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel];
-			tdble dmg2 = curBarrier->surface->kDammage * fabs(dmgDotProd) * simDammageFactor[car->carElt->_skillLevel];
+			tdble dmg2 = curBarrier->surface->kDammage * fabs(0.5*dmgDotProd*dmgDotProd) * simDammageFactor[car->carElt->_skillLevel];
+			//tdble dmg2 = curBarrier->surface->kDammage * fabs(0.5*dotProd*dotProd) * simDammageFactor[car->carElt->_skillLevel];
 			//car->dammage += (int)dmg;
 			car->dammage += (int)dmg2;
 		}
@@ -332,7 +338,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     }
     /* printf("Coll %d -> %f - %f %f %f \n", car1->carElt->index, damFactor, atan2(rap[1], rap[0]), car1->carElt->_yaw, atmp); */
     if ((car1->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-	car1->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor * simDammageFactor[car1->carElt->_skillLevel]);
+	car1->dammage += (int)(CAR_DAMMAGE * (0.0002*j*j) * damFactor * simDammageFactor[car1->carElt->_skillLevel]);
     }
 
     atmp = atan2(rbp[1], rbp[0]);
@@ -343,7 +349,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     }
     /* printf("Coll %d -> %f - %f %f %f \n---\n", car2->carElt->index, damFactor, atan2(rbp[1], rbp[0]), car2->carElt->_yaw, atmp); */
     if ((car2->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-	car2->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor * simDammageFactor[car2->carElt->_skillLevel]);
+	car2->dammage += (int)(CAR_DAMMAGE * (0.0002*j*j) * damFactor * simDammageFactor[car2->carElt->_skillLevel]);
     }
     
 /*     if (j < 0) { */
