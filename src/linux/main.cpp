@@ -17,13 +17,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <stdlib.h>
+#include <string.h>
 
 #include <GL/glut.h>
 
 #include <tgfclient.h>
 #include <client.h>
-#include <stdlib.h>
-#include <string.h>
+#include <policy.h>
 
 #include "linuxspec.h"
 
@@ -105,6 +106,8 @@ main(int argc, char *argv[])
     TorcsEntry();		/* launch TORCS */
     
     glutMainLoop();		/* event loop of glut */
+
+    DiscretePolicy *dummy = new DiscretePolicy(0,0,0,0,0,0,0);	/* learning lib */
     
     return 0;			/* just for the compiler, never reached */
 }

@@ -33,7 +33,8 @@ SOLIBS  =  -lracescreens  \
 	   -ltgfclient    \
 	   -ltxml	  \
 	   -lplibul	  \
-	   -lraceengine
+	   -lraceengine   \
+	   -llearning
 
 EXPDIR  = include
 
