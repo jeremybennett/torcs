@@ -1,3 +1,4 @@
+// -*- Mode: c++ -*-
 /***************************************************************************
 
     file                 : cardata.h
@@ -6,7 +7,7 @@
     email                : berniw@bluewin.ch
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -18,8 +19,8 @@
  ***************************************************************************/
 
 /*
-	This class holds global facts about cars, therefore no data relative to
-	each other (for that is the class Opponents/Opponent responsible).
+  This class holds global facts about cars, therefore no data relative to
+  each other (for that is the class Opponents/Opponent responsible).
 */
 
 #ifndef _OLETHROS_CARDATA_H_
@@ -35,42 +36,53 @@
 
 
 class SingleCardata {
-	public:
-		inline void init(CarElt *car) { this->car = car; }
+ public:
+	SingleCardata() {
+		speed = 0.0;
+		width = 1.0;
+		trackangle = 0.0;
+		angle = 0.0;
+	}
+	inline void init(CarElt *car) { this->car = car; }
 
-		inline float getSpeedInTrackDirection() { return speed; }
-		inline float getWidthOnTrack() { return width; }
-		inline float getTrackangle() { return trackangle; }
-		inline float getCarAngle() { return angle; }
+	inline float getSpeedInTrackDirection() { return speed; }
+	inline float getWidthOnTrack() { return width; }
+	inline float getTrackangle() { return trackangle; }
+	inline float getCarAngle() { return angle; }
 
-		inline bool thisCar(tCarElt *car) { return (car == this->car); }
+	inline bool thisCar(tCarElt *car) { return (car == this->car); }
 
-		void update();
+	void update();
 
-	protected:
-		static float getSpeed(tCarElt *car, float trackangle);
+ protected:
+	static float getSpeed(tCarElt *car, float trackangle);
 
-		float speed;		// speed in direction of the track.
-		float width;		// the cars needed width on the track.
-		float trackangle;	// Track angle at the opponents position.
-		float angle;		// The angle of the car relative to the track tangent.
+	float speed;		// speed in direction of the track.
+	float width;		// the cars needed width on the track.
+	float trackangle;	// Track angle at the opponents position.
+	float angle;		// The angle of the car relative to the track tangent.
 
-		tCarElt *car;		// For identification.
+	tCarElt *car;		// For identification.
 };
 
 
 // TODO: use singleton pattern.
 class Cardata {
-	public:
-		Cardata(tSituation *s);
-		~Cardata();
+ public:
+	static Cardata* Instance();
+	void initialise(tSituation* s);
+	
+	void update();
+	SingleCardata *findCar(tCarElt *car);
 
-		void update();
-		SingleCardata *findCar(tCarElt *car);
-
-	protected:
-		SingleCardata *data;	// Array with car data.
-		int ncars;				// # of elements in data.
+ protected:
+	SingleCardata *data;	// Array with car data.
+	int ncars;				// # of elements in data.
+ private:
+	Cardata();
+	Cardata(const Cardata&);
+	Cardata& operator=(const Cardata&);
+	~Cardata();
 };
 
 

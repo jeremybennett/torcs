@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/8
-SHIP        = default.xml
+SHIP        = default.xml xj-220.rgb
 SHIPSUBDIRS = 
 #practice qualifying race
 

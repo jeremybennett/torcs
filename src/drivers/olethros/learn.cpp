@@ -37,6 +37,10 @@ SegLearn::SegLearn(tTrack* t)
 	
 	segdm = new float[t->nseg];
 	segdm2 = new float[t->nseg];
+	segdm3 = new float[t->nseg];
+	dm = 0.0;
+	dm2 = 0.0;
+	dm3 = 0.0;
 
 	tTrackSeg *seg = t->seg;
 
@@ -54,6 +58,7 @@ SegLearn::SegLearn(tTrack* t)
 	for (i = 0; i < t->nseg; i++) {
 		segdm[i] = 0.0;
 		segdm2[i] = 0.0;
+		segdm3[i] = 0.0;
 		radius[i] = 0.0;
 		updateid[i] = i;
 		// Search the last turn in case of a straight.
@@ -90,7 +95,9 @@ SegLearn::~SegLearn()
 	delete [] derror;
 	delete [] elig;
 	delete [] segdm;
-	delete [] segdm;
+	delete [] segdm2;
+	delete [] segdm3;
+
 }
 
 
@@ -104,9 +111,10 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 	}
 	if (seg->type == lastturn || seg->type == TR_STR) {
 		if (fabs(offset) < 0.2 &&
-			check == true &&
-			alone > 0
+			check == true 
+			&& alone > 0
 		) {
+			//printf ("%d %f\n", alone, offset);
 			// + to left, - to right
 			float dr = 0.0;
 			float tomiddle = car->_trkPos.toMiddle;
@@ -122,15 +130,23 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 			//			}
 			tomiddle = tomiddle;
 			float target_toLeft = seg->width * (1-alpha);
+			float target_toRight = seg->width * (alpha);
 			// if negative then we are to the right of our target.
 			// if positive then we are to the left of our target.
 			// theta is a simple threshold
 			float target_error = fabs(target_toLeft - car->_trkPos.toLeft);
-			float theta = .5*seg->width;//car->_dimension_y;
+			float theta = 0.5*seg->width;//car->_dimension_y;
 			if (lastturn == TR_RGT) {
 				float dtheta = theta-target_error;
+				if (target_toRight > car->_trkPos.toRight) {
+					dtheta = theta;
+				}
+				if (car->_trkPos.toLeft < 1.5*car->_dimension_y) {
+					float a = 1.5*car->_dimension_y - car->_trkPos.toLeft;
+					dtheta = (1-a) * dtheta;
+				}
 				if (car->_trkPos.toLeft - car->_dimension_y<0) {
-					dtheta = car->_trkPos.toLeft - car->_dimension_y;
+					dtheta = car->_trkPos.toLeft - car->_dimension_y;// - 1;
 				}
 				if (car->_trkPos.toLeft - .5*car->_dimension_y<0) {
 					dtheta = -10;
@@ -140,8 +156,15 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 					+ beta * (dtheta);
 			} else if (lastturn == TR_LFT) {
 				float dtheta = theta - target_error;
+				if (target_toLeft > car->_trkPos.toLeft) {
+					dtheta = theta;
+				}
+				if (car->_trkPos.toRight < 1.5*car->_dimension_y) {
+					float a = 1.5*car->_dimension_y - car->_trkPos.toRight;
+					dtheta = (1-a) * dtheta;
+				}
 				if (car->_trkPos.toRight - car->_dimension_y<0) {
-					dtheta = car->_trkPos.toRight - car->_dimension_y;
+					dtheta = car->_trkPos.toRight - car->_dimension_y;// - 1;
 				}
 				if (car->_trkPos.toRight - .5*car->_dimension_y<0) {
 					dtheta = -10;
@@ -205,7 +228,7 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 	}
 	int segid = (seg->id);
 	int quantum = segQuantum(segid);
-	float prev_quantum_accel = accel[prev_quantum];
+	//float prev_quantum_accel = accel[prev_quantum];
 	if (quantum != prev_quantum) {
 		float dt = s->currentTime - previous_time;
 		previous_time = s->currentTime;
@@ -247,30 +270,49 @@ int SegLearn::segQuantum (int segid)
 	return q;
 }
 
-void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_)
+/**
+   Model the system
+   \f[
+   \frac{du}{dt}=
+   s_{brake} (
+     \mu G + w_1 +
+	 \frac{(C_A \mu + C_W + w_2) u^2}{m} 
+   )
+   \f]
+ */
+void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_, float learning_rate)
 {
 
 	float mu_ = s->surface->kFriction;
 	float du = (u_ - u)*delta_time;
-	float pdu = -delta_time*SIGN(u)*brake*(mu*G + dm+segdm[prevsegid]
-										   +((CA*mu+CW+dm2+segdm2[prevsegid])/mass)*u*u);
-	float delta = (du-pdu);
+	float pdu = -delta_time*(SIGN(u)*(
+									  brake*(mu*G + dm+segdm[prevsegid]+
+											 ((CA*mu+CW+dm2+segdm2[prevsegid])/mass)*u*u)
+									  //+ u*u*(CW+dm3+segdm3[prevsegid])/mass
+									  )
+							 );
+	float delta = learning_rate * (du-pdu);
 	float der_dm = -SIGN(u)*brake;
 	float der_dm2 = -SIGN(u)*u*u*brake/mass;
+	float der_dm3 = -SIGN(u)*u*u/mass;
 	dm += delta * der_dm;
 	dm2 += delta* der_dm2;
+	//dm3 += delta* der_dm3;
 	segdm[prevsegid] += delta * der_dm;
 	segdm2[prevsegid] += delta* der_dm2;
-	mu=.5*mu_;
+	//segdm3[prevsegid] += delta* der_dm3;
+	mu=0.5*mu_; 
 	mass=mass_;
-	CA=.5*CA_;
-	CW=.5*CW_;
+	CA=0.5*CA_; 
+	CW=0.5*CW_; 
 	u=u_;
 #if 0
-	if (brake>0){
-		printf ("%f %f %f %f %f\n",
+	if (1) {
+		printf ("%f | %f %f | %f %f | %f %f | %f\n", brake,
 				dm, segdm[prevsegid],
-				dm2, segdm2[prevsegid], delta);
+				dm2, segdm2[prevsegid],
+				dm3, segdm3[prevsegid],
+				delta);
 	}
 #endif
 	brake=brake_;

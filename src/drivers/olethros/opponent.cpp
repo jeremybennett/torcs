@@ -24,8 +24,9 @@
 tTrack* Opponent::track;
 const float Opponent::FRONTCOLLDIST = 200.0;			// [m] distance on the track to check other cars.
 const float Opponent::BACKCOLLDIST = 70.0;				// [m] distance on the track to check other cars.
-const float Opponent::LENGTH_MARGIN = 3.0;				// [m] savety margin.
-const float Opponent::SIDE_MARGIN = 1.0;				// [m] savety margin.
+const float Opponent::LENGTH_MARGIN = 3.0;				// [m] safety margin.
+const float Opponent::SIDE_MARGIN = 1.0;				// [m] safety margin.
+const float Opponent::TIME_MARGIN = 1.0;				// [s] safety margin.
 const float Opponent::EXACT_DIST = 12.0;				// [m] if the estimated distance is smaller, compute it more accurate
 const float Opponent::LAP_BACK_TIME_PENALTY = -30.0;	// [s]
 const float Opponent::OVERLAP_WAIT_TIME = 5.0;			// [s] overlaptimer must reach this time before we let the opponent pass.
@@ -99,7 +100,13 @@ void Opponent::update(tSituation *s, Driver *driver)
 			sidedist = cardist;
 			cardist = fabs(cardist) - fabs(getWidth()/2.0) - mycar->_dimension_y/2.0;
 			// smooth collision ? 
-			if (cardist < SIDE_MARGIN) {
+			float du = fabs(getSpeed() - driver->getSpeed());
+			float t_impact = 10;
+			if (du>0) {
+				t_impact = fabs(distance/du);
+			}
+			if (cardist < SIDE_MARGIN
+				&& t_impact < TIME_MARGIN) {
 				state |= OPP_COLL;
 			}
 		} else

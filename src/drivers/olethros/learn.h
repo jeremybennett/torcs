@@ -35,25 +35,29 @@
 #include <robot.h>
 
 
-
+/// A class for learning various things about segments.
 class SegLearn {
 public:
 	SegLearn(tTrack* t);
 	~SegLearn();
-
+	/// Ge the inferred radius of segment \c s
 	float getRadius(tTrackSeg *s) { return radius[s->id]; }
+	/// Update track radius offset
 	void update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha=0.5);
+	/// Update acceleration and steering prediction
 	float updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm);
+	/// Get predicted acceleration error
 	float predictedError (tCarElt* car);
-	void AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_);
-	float GetFrictionDm(tTrackSeg* s) {
-		if (s->id >= track->nseg) {
-			printf ("Warning: %d>%d\n", s->id, track->nseg);
-		}
-		return dm + segdm[s->id];
-	}
+	/// Adjust friction model coefficients
+	void AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_, float learning_rate = 1.0);
+	/// Get friction coefficient
+	float GetFrictionDm(tTrackSeg* s) {return dm + segdm[s->id];}
+	/// Get friction coefficient
 	float GetFrictionDm2(tTrackSeg* s) {return dm2 + segdm2[s->id];}
+	/// Get friction coefficient
+	float GetFrictionDm3(tTrackSeg* s) {return dm3 + segdm3[s->id];}
 private:
+	/// Class for computing averages of measured values
 	class Averages {
 	public:
 		Averages ()
@@ -61,10 +65,11 @@ private:
 			k=0;
 			taccel = derr = dtm = 0.0;
 		}
-		int k;
-		float taccel;
-		float derr;
-		float dtm;
+		int k; ///< number of measurements
+		float taccel; ///< acceleration
+		float derr; ///< steering error
+		float dtm; ///< path error
+		/// Add measurements to list.
 		void Measure(float taccel_, float derr_, float dtm_)
 		{
 			float r = (float) k;
@@ -75,41 +80,43 @@ private:
 			k++;
 		}
 	};
-	Averages averages;
-	tTrack* track;
-	int n_quantums;
-	int segments_per_quantum;
-	int prev_quantum;
-	float prev_accel;
-	double previous_time;
-	int segQuantum (int segid);
-	float *radius;
-	int *updateid;
-	float* accel;
-	float* derror;
-	float* elig;
+	Averages averages; ///< holds average measurements
+	tTrack* track; ///< A pointer to the current track
+	int n_quantums; ///< number of quantums the track is split for learning
+	int segments_per_quantum; ///< number of segments each quantum contains
+	int prev_quantum; ///< id of the previous quantum
+	float prev_accel; ///< previous acceleration
+	double previous_time; ///< previous time
+	int segQuantum (int segid); ///< The quantum ID of a given segment ID
+	float *radius; ///< Array holding the radi of segments
+	int *updateid; ///< Array holding the segments to be update
+	float* accel; ///< Accelerations for each quantum
+	float* derror; ///< Steering control for each quantum
+	float* elig; ///< Eligibility of previously visited quantums for updates
 	
 	// estimates for friction
-	float* segdm;
-	float* segdm2;
-	int prevsegid;
-	float dm;
-	float dm2;
-	float mu;
-	float mass;
-	float CA;
-	float CW;
-	float u;
-	float brake;
-	double prev_time;
-	double delta_time;
+	float* segdm; ///< friction coefficient 1
+	float* segdm2; ///< friction coefficient 2
+	float* segdm3; ///< friction coefficient 3
+	int prevsegid; ///< id of previous segment
+	float dm; ///< global friction coefficient 1
+	float dm2; ///< gloabal friction coefficient 2
+	float dm3; ///< global friction coefficient 3
+	float mu; ///< friction constant
+	float mass; ///< mass
+	float CA; ///< downforce constant
+	float CW; ///< drag constant
+	float u; ///< speed
+	float brake; ///< brake input
+	double prev_time; ///< time of previous friction estimate
+	double delta_time; ///< dt for friction estimate
 
-	bool check;
-	float rmin;
-	int lastturn;
-	int prevtype;
+	bool check; ///< whether we should update radius
+	float rmin; ///< current estimated minimum radius
+	int lastturn; ///< type of last turn entered
+	int prevtype;  ///< type of previous segment
 
-	int n_seg;
+	int n_seg; ///< total number of track segments
 };
 
 

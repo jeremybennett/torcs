@@ -115,3 +115,60 @@ int SimpleStrategy::pitRepair(tCarElt* car, tSituation *s)
 }
 
 
+ManagedStrategy::ManagedStrategy() : SimpleStrategy()
+{
+
+}
+
+
+ManagedStrategy::~ManagedStrategy()
+{
+}
+
+
+bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s)
+{
+	// Do we need to refuel?
+	int laps = car->_remainingLaps-car->_lapsBehindLeader;
+	if (laps > 0) {
+		float cmpfuel = (fuelperlap == 0.0) ? expectedfuelperlap : fuelperlap;
+		if (car->_fuel < 1.5*cmpfuel &&
+			car->_fuel < laps*cmpfuel)
+		{
+				return true;
+		}
+	}
+
+	return RepairDamage(car);
+}
+
+bool ManagedStrategy::RepairDamage(tCarElt* car)
+{
+	if (car->_dammage < PIT_DAMMAGE) {
+		return false;
+	}
+	
+	double P = ((double) car->_dammage - PIT_DAMMAGE)/10000;
+	P = 1 - P;
+	double laps = (double) car->_remainingLaps;
+	double catchtime; 
+	if (car->_pos != 1) {
+		catchtime = car->_timeBehindLeader;
+		if (catchtime*laps > 10) {
+			P /= 0.1*catchtime*laps;
+		}
+		catchtime = (double) car->_timeBehindPrev; 
+		if (catchtime*laps > 10) {
+			P /= 0.1*catchtime*laps;
+		}
+	}
+	catchtime = car->_timeBehindPrev;
+	if (catchtime*laps > 10) {
+		P /= 0.1*catchtime*laps;
+	}
+	if (P < 0.1) {
+		return true;
+	} 
+	return false;
+}
+

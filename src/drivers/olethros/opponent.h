@@ -92,6 +92,7 @@ class Opponent {
 		static const float LAP_BACK_TIME_PENALTY;
 		static const float OVERLAP_WAIT_TIME;
 		static const float SPEED_PASS_MARGIN;
+		static const float TIME_MARGIN;
 };
 
 

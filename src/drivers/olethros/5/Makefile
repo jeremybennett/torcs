@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/5
-SHIP        = default.xml
+SHIP        = default.xml porsche-gt3rs.rgb
 SHIPSUBDIRS = 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}

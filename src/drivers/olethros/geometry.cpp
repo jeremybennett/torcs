@@ -35,6 +35,9 @@ Vector::Vector(int N_, enum BoundsCheckingStatus check)
 		x = NULL;
 	} else {
 		x = (float*) malloc(sizeof(float)*n);
+		for (int i=0; i<n; i++) {
+			x[i] = 0.0;
+		}
 	}
 	checking_bounds = check;
 }
@@ -239,11 +242,14 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 		}
 	}
 
-	Vector center(N);
+	Vector center(d);
 	float r = 1.0;//sphere->r / scale;
-	for (int i=0; i<N; i++) {
+	for (int i=0; i<d; i++) {
+		printf (" %f\n", (*sphere->C)[i]);
+		
 		center[i] =  ((*(sphere->C))[i] - mean[i]) / scale;
 	}
+	printf("(%d)\n", d);
 
 	for (int n=0; n<iter; n++) {
 		float delta_total = 0.0;
@@ -264,7 +270,7 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 				delta_total += delta;
 			}
 			if (isnan(r)) {
-				for (int i=0; i<N; i++) {
+				for (int i=0; i<d; i++) {
 					center[i] =  ((*(sphere->C))[i] - mean[i]) / scale;
 				}
 				r = 1.0;

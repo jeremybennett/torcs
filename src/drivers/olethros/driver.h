@@ -82,7 +82,7 @@ protected:
 	float EstimateTorque (float rpm);
 	float getSteer();
 	float getClutch();
-	v2d getTargetPoint();
+	v2d getTargetPoint(); 
 	float getOffset();
 	float brakedist(float allowedspeed, float mu);
 
@@ -116,6 +116,9 @@ protected:
 	float EstimateRadius (tTrackSeg* seg, tTrackSeg* prev_seg, tTrackSeg* next_seg);
 	float FindCurveTarget(tTrackSeg* seg, Vector* C, float rmax);
 	float FindStraightTarget(tTrackSeg* curve, tTrackSeg* seg, Vector* C, float rmax, bool& flag);
+	// Misc functions
+	
+	void ShowPaths();
 
 	// Per robot global data.
 	int stuck;
@@ -138,18 +141,19 @@ protected:
 	float clutchtime;		///< Clutch timer.
 	float oldlookahead;		///< Lookahead for steering in the previous step.
 
-	float *seg_alpha;
-	float *radius;
-	float *ideal_radius;
-	SegLearn *learn;
-	int alone;
-	float prev_toleft;
-	float prev_toright;
-	float u_toleft;
-	float u_toright;
-	float dt;
+	float *seg_alpha; ///< targets for segments
+	float *seg_alpha_new; ///< new targets for segments
+	float *radius; ///< segment radi
+	float *ideal_radius; ///< ideal radius (according to circle fit)
+	SegLearn *learn; ///< handle to learning module
+	int alone; ///< whether we are alone
+	float prev_toleft; ///< previous left margin
+	float prev_toright; ///< previous right margin
+	float u_toleft; ///< speed to left side
+	float u_toright; ///< speed to right side
+	float dt; ///< delta time
 
-	float TCL_status;
+	float TCL_status; ///< traction control
 
 	// Data that should stay constant after first initialization.
 	int MAX_UNSTUCK_COUNT;
@@ -194,8 +198,12 @@ protected:
 	static const float CATCH_FACTOR;
 	static const float CLUTCH_FULL_MAX_TIME;
 	static const float USE_LEARNED_OFFSET_RANGE;
-
-
+	static const float ACCELERATOR_LETGO_TIME;
+	static const float MIN_BRAKE_FOLLOW_DISTANCE;
+	static const float MAX_BRAKE_FOLLOW_DISTANCE;
+	static const float FILTER_STEER_FEEDBACK;
+	static const float FILTER_PREDICT_FEEDBACK;
+	static const float FILTER_TARGET_FEEDBACK;
 	// Track variables.
 	tTrack* track;
 };

@@ -19,7 +19,11 @@
 
 #include "cardata.h"
 
-
+Cardata* Cardata::Instance()
+{
+	static Cardata obj;
+	return &obj;
+}
 void SingleCardata::update()
 {
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
@@ -43,9 +47,16 @@ float SingleCardata::getSpeed(tCarElt *car, float ltrackangle)
 
 
 
-Cardata::Cardata(tSituation *s)
+Cardata::Cardata()
+{
+	data = NULL;
+}
+void Cardata::initialise(tSituation* s)
 {
 	ncars = s->_ncars;
+	if (data) {
+		delete [] data;
+	}
 	data = new SingleCardata[ncars];
 	int i;
 	for (i = 0; i < ncars; i++) {
@@ -56,7 +67,9 @@ Cardata::Cardata(tSituation *s)
 
 Cardata::~Cardata()
 {
-	delete [] data;
+	if (data) {
+		delete [] data;
+	}
 }
 
 

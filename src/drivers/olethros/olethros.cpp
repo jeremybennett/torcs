@@ -140,7 +140,7 @@ static void shutdown(int index)
 	printf ("Free\n");
 	free(botname[index]);
 	printf ("Delete\n");
-	delete driver[index];
+	delete driver[index]; ///< \bug
 	printf ("\n");
 }
 
