@@ -54,6 +54,22 @@ typedef float tdble;
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
 #endif
 
+// <esppat>
+#ifdef WIN32
+#define malloc _tgf_win_malloc
+#define calloc _tgf_win_calloc
+#define realloc _tgf_win_realloc
+#define free _tgf_win_free
+#define strdup _tgf_win_strdup
+#define _strdup _tgf_win_strdup
+extern void * _tgf_win_malloc(size_t size);
+extern void * _tgf_win_calloc(size_t num, size_t size);
+extern void * _tgf_win_realloc(void * memblock, size_t size);
+extern void _tgf_win_free(void * memblock);
+extern char * _tgf_win_strdup(const char * str);
+#endif // WIN32
+// </esppat>
+
 /*********************************
  * Interface For Dynamic Modules *
  *********************************/
@@ -82,6 +98,8 @@ typedef struct ModInfo {
     int			index;
     /** priority if needed */
     int			prio;
+    /** magic number for integrity check */
+    int			magic;
 } tModInfo;
 
 /* module init function interface */
@@ -311,6 +329,7 @@ extern void *GfuiScreenCreateEx(float *bgColor,
 				int mouseAllowed);
 extern void GfuiScreenRelease(void *screen);
 extern void GfuiScreenActivate(void *screen);
+extern int  GfuiScreenIsActive(void *screen);
 extern void GfuiScreenReplace(void *screen);
 extern void GfuiScreenDeactivate(void);
 extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);

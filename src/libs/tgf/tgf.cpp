@@ -33,6 +33,94 @@ extern void gfScreenInit(void);
 extern void gfMenuInit(void);
 extern void gfRlstInit(void);
 
+// <esppat>
+#ifdef WIN32
+#include <crtdbg.h>
+#include <assert.h>
+void *
+_tgf_win_malloc(size_t size)
+{
+#ifdef _DEBUG
+ char * p = (char*)GlobalAlloc(GMEM_FIXED, size + 12 );
+
+ *(int*)( p ) = size + 12;
+ *( (int*)p + 1 ) = 123456789;
+ *( (int*)( p + size + 12 ) - 1 ) = 987654321;
+
+ return p + 8;
+#else // _DEBUG
+ char * p = (char*)GlobalAlloc(GMEM_FIXED, size + 4 );
+
+ *(int*)( p ) = size;
+
+ return p + 4;
+#endif // _DEBUG
+}
+
+void *
+_tgf_win_calloc(size_t num, size_t size)
+{
+ void * p = _tgf_win_malloc(num * size);
+ memset(p, 0, num * size);
+ return p;
+}
+
+void *
+_tgf_win_realloc(void * memblock, size_t size)
+{
+ void * p = _tgf_win_malloc(size);
+
+ if (!p) {
+  _tgf_win_free(memblock);
+
+  return NULL;
+ }
+ else {
+  memcpy(p, memblock, min(*(int*)((char*)memblock-4), (int)size) );
+  
+  return p;
+ }
+}
+
+void
+_tgf_win_free(void * memblock)
+{
+ if (!memblock)
+  return;
+
+#ifdef _DEBUG
+ char * p = (char*)memblock - 8;
+
+ if ( !_CrtIsValidPointer( p, 4, TRUE ) )
+  assert( 0 );
+
+ if ( !_CrtIsValidPointer( p, *(int*)p, TRUE ) )
+  assert( 0 );
+
+ if ( *( (int*)p + 1 ) != 123456789 )
+  assert( 0 );
+
+ if( *( (int*)( p + *(int*)p ) - 1 ) != 987654321 )
+  assert( 0 );
+
+ GlobalFree((char*)memblock - 8);
+#else // _DEBUG
+ GlobalFree((char*)memblock - 4);
+#endif // _DEBUG
+}
+
+char *
+_tgf_win_strdup(const char * str)
+{
+ char * s = (char*)_tgf_win_malloc(strlen(str)+1);
+ strcpy(s,str);
+
+ return s;
+}
+#endif // WIN32
+// </esppat>
+
+
 void
 GfInit(void)
 {
@@ -103,3 +191,4 @@ GfGetTimeStr(void)
 
     return bufstr;
 }
+
