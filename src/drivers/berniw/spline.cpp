@@ -73,10 +73,11 @@ void tridiagonal(int dim, SplineEquationData *tmp, double *x)
 void tridiagonal2(int dim, SplineEquationData2 *tmp)
 {
 	double cos, sin, h, t;
+	int i;
 
 	dim--;
 	tmp[dim].b = 0.0;
-	for (int i = 0; i < dim; i++) {
+	for (i = 0; i < dim; i++) {
 		if (tmp[i].c != 0.0) {
 			t = tmp[i].a / tmp[i].c;
 			sin = 1.0 / sqrt(1.0 + t*t);
@@ -104,7 +105,7 @@ void tridiagonal2(int dim, SplineEquationData2 *tmp)
 	tmp[dim].x2 = tmp[dim].x2 / tmp[dim].a;
 	tmp[dim-1].x2 = (tmp[dim-1].x2 - tmp[dim-1].b*tmp[dim].x2) / tmp[dim-1].a;
 
-	for (int i = dim - 2; i >= 0; i--) {
+	for (i = dim - 2; i >= 0; i--) {
 		tmp[i].x1 = (tmp[i].x1 - tmp[i].b*tmp[i+1].x1 - tmp[i].c*tmp[i+2].x1) / tmp[i].a;
 		tmp[i].x2 = (tmp[i].x2 - tmp[i].b*tmp[i+1].x2 - tmp[i].c*tmp[i+2].x2) / tmp[i].a;
 	}
