@@ -19,7 +19,7 @@
 
 EXPINCDIRS	= 3D SOLID
 
-PKGSUBDIR	= $(EXPINCDIRS)
+PKGSUBDIRS	= $(EXPINCDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

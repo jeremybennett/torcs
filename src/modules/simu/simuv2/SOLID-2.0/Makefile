@@ -21,7 +21,7 @@ SUBDIRS		= src
 
 EXPINCDIRS	= include
 
-PKGSUBDIR	= $(SUBDIRS) $(EXPINCDIRS)
+PKGSUBDIRS	= $(SUBDIRS) $(EXPINCDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
