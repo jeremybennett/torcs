@@ -27,7 +27,6 @@
 #ifndef _RACEMANV1_H_
 #define _RACEMANV1_H_
 
-#include <ttypes.h>
 #include <tgf.h>
 #include <car.h>
 #include <track.h>

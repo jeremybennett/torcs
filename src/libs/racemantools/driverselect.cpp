@@ -31,7 +31,7 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include <car.h>
 #include <raceman.h>

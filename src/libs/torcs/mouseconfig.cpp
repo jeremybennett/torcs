@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include <robot.h>
 #include <playerpref.h>

@@ -1,7 +1,7 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Mon Nov 13 21:48:27 CET 2000
+#    created              : Sat Mar 18 23:38:24 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id$                                  
@@ -16,15 +16,45 @@
 ##############################################################################
 
 
-PROGRAM   = texmapper
+SOLIBRARY = libtgfclient.so
 
-SOURCES   = texmapper.cpp ssgSaveAC.cpp
+SOLIBDIR  = .
 
-SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -ltxml -lpng
+SOURCES   = 	guimenu.cpp \
+		screen.cpp \
+		gui.cpp \
+		guifont.cpp \
+		guiobject.cpp \
+		guilabel.cpp \
+		guibutton.cpp \
+		guiedit.cpp \
+		guihelp.cpp \
+		img.cpp \
+		guiscrollist.cpp \
+		guiscrollbar.cpp \
+		guiimage.cpp \
+		control.cpp \
+		fg_gm.cpp \
+		tgfclient.cpp
 
-src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-tools_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+EXPDIR  = include
 
+EXPORTS = tgfclient.h screen_properties.h
+
+SHIPDIR = config
+
+SHIP    = screen.xml
+
+CONFIGCREATEDIRS = config
+
+CONFIG    = screen.xml
+
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
+
+
+

@@ -1,3 +1,27 @@
+/***************************************************************************
+
+    file        : ac3dload.cpp
+    created     : Fri Apr 18 23:00:28 CEST 2003
+    copyright   : (C) 2003 by Christophe Guionneau                        
+    version     : $Id$                                  
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+/** @file   
+    		
+    @author	Christophe Guionneau
+    @version	$Id$
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -39,6 +63,7 @@ void normalize(point_t *t );
 int checkMustSmoothVector(point_t *n1,point_t *n2, point_t *t1, point_t *t2);
 void mapNormalToSphere(ob_t * object);
 void mapNormalToSphere2(ob_t * object);
+void normalMap( ob_t * object);
 void mapTextureEnv(ob_t * object);
 ob_t   ob[10000];
 /*mat_t  material[10000];*/
@@ -49,6 +74,7 @@ double   tmptexa[20000];
 int     tmpsurf[10000];  
 ob_t * root_ob;
 int refs=0;
+char *shadowtexture="shadow2.rgb";
 
 FILE * ofile;
 
@@ -1612,7 +1638,7 @@ int printOb(ob_t * ob)
 
   if (ob->numsurf==0)
     return 0;
-  if (extendedStrips==0)  
+  if (extendedStrips==0 && normalMapping!=1)  
     stripifyOb(ob,0);
   fprintf(ofile,"OBJECT poly\n");
   fprintf(ofile,"name \"%s\"\n",ob->name);
@@ -2328,6 +2354,11 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
   ob_t * tmpob =NULL;
   mat_t * tmat=NULL;
   int numg=0;
+
+  if (normalMapping==1)
+    {
+      normalMap(object);
+    }
  
   if ((ofile=fopen (OutputFilename,"w"))==NULL) 
     {
@@ -2484,7 +2515,7 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
        fprintf(ofile,"name \"%s_g\"\n",tmpob->name);
        fprintf(ofile,"kids %d\n",tmpob->kids_o+1);
        printOb(tmpob);
-       foundNear(tmpob,object,100,TRUE);
+       foundNear(tmpob,object,far_dist,TRUE);
        printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
        /*foundNear(tmpob,object,200);
 	 foundNear(tmpob,object,100);*/
@@ -3649,6 +3680,76 @@ void mapNormalToSphere2(ob_t *object)
       }
     tmpob=tmpob->next;
    }
+
+}
+
+
+void normalMap( ob_t * object)
+{
+  ob_t * tmpob =NULL;
+  double xmin=99999;
+  double ymin=99999;
+  double zmin=99999;
+  double xmax=-99999;
+  double ymax=-99999;
+  double zmax=-99999;
+  int i=0;
+
+  tmpob=object;
+  while (tmpob!=NULL) {
+    if (tmpob->name==NULL)  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "root"))  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "world")){
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (tmpob->x_min<xmin)
+      xmin=tmpob->x_min;
+    if (tmpob->y_min<ymin)
+      ymin=tmpob->y_min;
+    if (tmpob->z_min<zmin)
+      zmin=tmpob->z_min;
+
+    if (tmpob->x_max>xmax)
+      xmax=tmpob->x_max;
+    if (tmpob->y_max>ymax)
+      ymax=tmpob->y_max;
+    if (tmpob->z_max>zmax)
+      zmax=tmpob->z_max;
+
+    tmpob=tmpob->next;
+   }
+  tmpob=object;
+
+  while (tmpob!=NULL) {
+    if (tmpob->name==NULL)  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "root"))  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "world")){
+      tmpob=tmpob->next;
+      continue;
+    }
+    printf("normalMap : handling %s \n",tmpob->name);
+    for (i=0; i<tmpob->numvert; i++)
+      {
+	tmpob->textarray[i*2]= (tmpob->vertex[i].x-xmin)/(xmax-xmin) ;
+	tmpob->textarray[i*2+1]= (tmpob->vertex[i].y-ymin)/(ymax-ymin);
+      }
+    tmpob->texture=shadowtexture;
+    tmpob=tmpob->next;
+   }
+
 
 }
 

@@ -106,63 +106,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed	copy $(TargetDir)\*.l
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\control.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\directory.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\gui.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guibutton.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guiedit.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guifont.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guihelp.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guiimage.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guilabel.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guimenu.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guiobject.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guiscrollbar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\guiscrollist.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\img.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\memory.cpp
 # End Source File
 # Begin Source File
 
@@ -175,14 +119,6 @@ SOURCE=.\os.cpp
 # Begin Source File
 
 SOURCE=.\params.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\ringlist.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\screen.cpp
 # End Source File
 # Begin Source File
 
@@ -200,18 +136,6 @@ SOURCE=.\trace.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\gui.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\guifont.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\guimenu.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\os.h

@@ -1,10 +1,10 @@
 /***************************************************************************
 
-    file                 : memory.cpp
-    created              : Mon Aug 23 19:23:53 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
-    email                : torcs@free.fr   
-    version              : $Id$                                  
+    file        : main-server.cpp
+    created     : Mon Apr 14 23:00:52 CEST 2003
+    copyright   : (C) 2003 by Eric Espié                        
+    email       : eric.espie@torcs.org   
+    version     : $Id$                                  
 
  ***************************************************************************/
 
@@ -17,4 +17,10 @@
  *                                                                         *
  ***************************************************************************/
 
+/** @file   
+    		
+    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    @version	$Id$
+*/
 
+/* Game server */

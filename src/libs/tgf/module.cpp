@@ -23,7 +23,7 @@
 		<br>When the directory mode is used, the filenames are not known by advance, this
 		<br>allow more flexibility at runtime.
 		<br>
-		<br>The generic information can be retrieve, without keeping the DLL loaded.
+		<br>The generic information can be retrieved, without keeping the DLL loaded.
 		<br>
 		<br>The gfid parameter is use to differentiate the modules using different includes.
 		<br>This functionality is not used yet.

@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "splash.h"
 #include "mainmenu.h"

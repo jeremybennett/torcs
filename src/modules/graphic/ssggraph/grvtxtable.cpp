@@ -31,6 +31,7 @@
 #include "grscene.h"
 #include "grcar.h"
 #include "grutil.h"
+#include <GL/glu.h>
 
 void grVtxTable::copy_from ( grVtxTable *src, int clone_flags )
 {

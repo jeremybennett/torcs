@@ -29,7 +29,7 @@
 #include <string.h>
 #include <js.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 
 static char *GfJoyBtn[] = {

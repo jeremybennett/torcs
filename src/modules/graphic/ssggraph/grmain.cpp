@@ -17,8 +17,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <profiler.h>
-
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,7 +26,7 @@
 #include <GL/glut.h>
 #include <plib/ssg.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <graphic.h>
 #include <racemantools.h>
 
@@ -349,7 +347,7 @@ initCars(tSituation *s)
     grInitCams();
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
 				     (char*)NULL, 9);
-    cam = TAILQ_FIRST(&grCams[grCurCamHead]);
+    cam = GF_TAILQ_FIRST(&grCams[grCurCamHead]);
     grCurCam = NULL;
     camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
 			       (char*)NULL, 0);
@@ -363,7 +361,7 @@ initCars(tSituation *s)
     if (grCurCam == NULL) {
 	/* back to default camera */
 	grCurCamHead = 0;
-	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
+	grCurCam = GF_TAILQ_FIRST(&grCams[grCurCamHead]);
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
     }

@@ -28,7 +28,7 @@
 #include <string.h>
 #include <math.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include <track.h>
 #include <car.h>

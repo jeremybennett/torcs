@@ -16,13 +16,13 @@
 ##############################################################################
 
 
-SHIPSUBDIRS	= tgf raceengine
+SHIPSUBDIRS	= tgf tgfclient raceengine
 
-EXPINCDIRS	= txml tgf torcs racemantools robottools raceengine
+EXPINCDIRS	= txml tgf tgfclient torcs racemantools robottools raceengine
 
 TOOLSUBDIRS	= txml
 
-SUBDIRS		= racemantools robottools txml tgf torcs raceengine
+SUBDIRS		= racemantools robottools txml tgf tgfclient torcs raceengine
 
 PKGSUBDIRS	= $(SUBDIRS)
 

@@ -36,7 +36,7 @@
 #include <process.h>
 #endif /* WIN32 */
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include "gui.h"
 #include "fg_gm.h"
 

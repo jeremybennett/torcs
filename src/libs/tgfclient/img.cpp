@@ -30,7 +30,7 @@
 
 #include "png.h"
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef WIN32

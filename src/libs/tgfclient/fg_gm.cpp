@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include "fg_gm.h"
 
 #ifndef WIN32

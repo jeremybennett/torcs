@@ -29,7 +29,7 @@
 #include <endian.h>
 #endif
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "guifont.h"
 

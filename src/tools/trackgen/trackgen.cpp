@@ -36,12 +36,11 @@
 #include <getopt.h>
 #endif
 #include <math.h>
-#include <ttypes.h>
 #include <plib/ul.h>
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 
 #include "ac3d.h"

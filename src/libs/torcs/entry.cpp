@@ -19,7 +19,7 @@
 
 
 #include <torcs.h>
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "mainmenu.h"
 #include "splash.h"
@@ -43,7 +43,7 @@
 void
 TorcsEntry(void)
 {
-    GfInit();
+    GfInitClient();
 
     TorcsMainMenuInit();
     

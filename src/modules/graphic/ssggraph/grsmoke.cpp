@@ -27,7 +27,7 @@
 #include <GL/glut.h>
 #include <plib/ssg.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include <car.h>
 #include <graphic.h>

@@ -1,10 +1,9 @@
 /***************************************************************************
 
-    file                 : ac3dto3ds.h
-    created              : 
-    copyright            : 
-    email                : 
-    version              : $Id$
+    file        : accc.h
+    created     : Fri Apr 18 23:09:53 CEST 2003
+    copyright   : (C) 2003 by Christophe Guionneau
+    version     : $Id$                                  
 
  ***************************************************************************/
 
@@ -19,13 +18,12 @@
  
 /** @file    
     		
-    @author	
+    @author	Christophe Guionneau
     @version	$Id$
 */
 
-#ifndef _AC3DTO3DS_H_
-#define _AC3DTO3DS_H_
-
+#ifndef _ACCC_H_
+#define _ACCC_H_
 
 extern char	*OutputFileName;
 extern char	*ReliefFileName;
@@ -42,6 +40,7 @@ extern int extendedTriangles;
 extern int extendedEnvCoord;
 extern int notexturesplit;
 extern int isobjectacar;
+extern int normalMapping;
 extern void loadAndGroup( char *OutputFileName);
 extern int loadAC( char * inputFilename, char * outputFilename, int saveIn);
 
@@ -159,13 +158,13 @@ double  findDistmin(ob_t * ob1, ob_t *ob2);
 #define freez(x) {if ((x)) free((x)); }
 #define SPLITX 75
 #define SPLITY 75
-
+#define MINVAL 0.001
 
 #ifndef WIN32
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
 #endif
-#endif /* _AC3DTO3DS_H_ */ 
 
 
+#endif /* _ACCC_H_ */ 
 

@@ -27,7 +27,7 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <tgf.h>
+#include <tgfclient.h>
 #include <car.h>
 
 static void		*menuHandle = NULL;

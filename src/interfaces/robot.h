@@ -38,7 +38,7 @@
 
 #include <raceman.h>
 
-#define ROB_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
+#define ROB_IDENT	0
 
 /** Callback prototype */
 typedef void (*tfRbNewTrack)(int index, tTrack *track, void *carHandle, void **myCarSettings, tSituation *s);

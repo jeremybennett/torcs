@@ -29,7 +29,7 @@
 #include <GL/glut.h>
 #include <plib/ssg.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "grutil.h"
 #include "grmultitexstate.h"

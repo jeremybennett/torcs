@@ -32,7 +32,7 @@
 #endif
 #include <math.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include <robottools.h>
 

@@ -18,7 +18,7 @@
  ***************************************************************************/
 
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include "optionmenu.h"
 #include "driverconfig.h"
 #include "graphconfig.h"

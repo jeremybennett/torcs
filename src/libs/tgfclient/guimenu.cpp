@@ -32,7 +32,7 @@
 #endif
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include "gui.h"
 #include "guimenu.h"
 

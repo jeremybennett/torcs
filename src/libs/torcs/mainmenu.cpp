@@ -19,7 +19,7 @@
 
 
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <singleplayer.h>
 
 #include "mainmenu.h"

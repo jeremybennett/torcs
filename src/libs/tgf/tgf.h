@@ -36,16 +36,17 @@
 #include <windows.h>
 #endif
 #include <stdarg.h>
-#include <GL/glut.h>
+#include <string.h>
+#include <math.h>
 #include <osspec.h>
-#include <queue.h>
-#include <js.h>
 
 /* typedef double tdble; */
 /** Floating point type used in TORCS.
     @ingroup definitions
 */
 typedef float tdble;
+
+extern void GfInit(void);
 
 #ifndef MAX
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
@@ -61,6 +62,94 @@ typedef float tdble;
 	x = 0;					\
     }						\
 } while (0)
+
+const tdble PI = 3.14159265358979323846;  /**< PI */
+const tdble G = 9.80665; /**< m/s/s */
+
+/* conversion */
+#define RADS2RPM(x) ((x)*9.549296585)		/**< Radian/s to RPM conversion */
+#define RPM2RADS(x) ((x)*.104719755)		/**< RPM to Radian/s conversion */
+#define RAD2DEG(x)  ((x)*(180.0/PI))		/**< Radian to degree conversion */
+#define DEG2RAD(x)  ((x)*(PI/180.0))		/**< Degree to radian conversion */
+#define FEET2M(x)   ((x)*0.304801)		/**< Feet to meter conversion */
+#define SIGN(x)     ((x) < 0 ? -1.0 : 1.0)	/**< Sign of the expression */
+
+/** Angle normalization between 0 and 2 * PI */
+#define NORM0_2PI(x) 				\
+do {						\
+	while ((x) > 2*PI) { (x) -= 2*PI; }	\
+	while ((x) < 0) { (x) += 2*PI; } 	\
+} while (0)
+
+/** Angle normalization between -PI and PI */
+#define NORM_PI_PI(x) 				\
+do {						\
+	while ((x) > PI) { (x) -= 2*PI; }	\
+	while ((x) < -PI) { (x) += 2*PI; } 	\
+} while (0)
+
+
+#ifndef DIST
+/** Distance between two points */
+#define DIST(x1, y1, x2, y2) sqrt(((x1) - (x2)) * ((x1) - (x2)) + ((y1) - (y2)) * ((y1) - (y2)))
+#endif
+
+#ifndef MIN
+/** Minimum between two values */
+#define MIN(x,y) ((x) < (y) ? (x) : (y))
+#endif
+
+
+typedef struct {
+    float	x;
+    float	y;
+    float	z;
+} t3Df;
+
+/** 3D point.
+    @ingroup definitions
+*/
+typedef struct {
+    tdble	x;		/**< x coordinate */
+    tdble	y;		/**< y coordinate */
+    tdble	z;		/**< z coordinate */
+} t3Dd;
+
+typedef struct {
+    int		x;
+    int		y;
+    int		z;
+} t3Di;
+
+/** 6 DOF position.
+    @ingroup definitions
+*/
+typedef struct {
+    tdble	x;		/**< x coordinate */
+    tdble	y;		/**< y coordinate */
+    tdble	z;		/**< z coordinate */
+    tdble	ax;		/**< angle along x axis */
+    tdble	ay;		/**< angle along y axis */
+    tdble	az;		/**< angle along z axis */
+} tPosd;
+
+/** Dynamic point structure.
+    @ingroup definitions
+*/
+typedef struct 
+{
+    tPosd pos; /**< position */
+    tPosd vel; /**< velocity */
+    tPosd acc; /**< acceleration */
+} tDynPt;
+
+/** Forces and moments */
+typedef struct
+{
+    t3Dd F; /**< Forces */
+    t3Dd M; /**< Moments */
+} tForces;
+
 
 // <esppat>
 #ifdef WIN32
@@ -228,255 +317,6 @@ extern int GfParmListSeekNext(void *handle, char *path);
 extern char *GfParmListGetCurEltName(void *handle, char *path);
 extern int GfParmListClean(void *handle, char *path);
 
-/******************** 
- * Screen Interface *
- ********************/
-
-#define GFSCR_CONF_FILE		"config/screen.xml"
-#define GFSCR_SECT_PROP		"Screen Properties"
-#define GFSCR_ATT_X		"x"
-#define GFSCR_ATT_Y		"y"
-#define GFSCR_ATT_BPP		"bpp"
-#define GFSCR_ATT_WIN_X		"window width"
-#define GFSCR_ATT_WIN_Y		"window height"
-#define GFSCR_ATT_MAXREFRESH	"maximum refresh frequency"
-#define GFSCR_ATT_FSCR		"fullscreen"
-#define GFSCR_VAL_YES		"yes"
-#define GFSCR_VAL_NO		"no"
-#define GFSCR_ATT_GAMMA		"gamma"
-
-extern unsigned char *GfImgReadPng(const char *filename, int *widthp, int *heightp, float gamma);
-extern int GfImgWritePng(unsigned char *img, const char *filename, int width, int height);
-extern void GfImgFreeTex(GLuint tex);
-extern GLuint GfImgReadTex(char *filename);
-
-extern void GfScrInit(int argc, char *argv[]);
-extern void GfScrShutdown(void);
-extern void *GfScrMenuInit(void *precMenu);
-extern char *GfTime2Str(tdble sec, int sgn);
-extern void GfScrGetSize(int *ScrW, int *ScrH, int *ViewW, int *ViewH);
-extern void GfScrReinit(void*);
-
-
-/*****************************
- * GUI interface (low-level) *
- *****************************/
-
-/* Widget type */
-#define GFUI_LABEL	0
-#define GFUI_BUTTON	1
-#define GFUI_GRBUTTON	2
-#define GFUI_SCROLLIST	3
-#define GFUI_SCROLLBAR	4
-#define GFUI_EDITBOX	5
-
-/* Alignment */
-#define GFUI_ALIGN_HL_VB	0x00
-#define GFUI_ALIGN_HL_VC	0x01
-#define GFUI_ALIGN_HL_VT	0x02
-#define GFUI_ALIGN_HC_VB	0x10
-#define GFUI_ALIGN_HC_VC	0x11
-#define GFUI_ALIGN_HC_VT	0x12
-#define GFUI_ALIGN_HR_VB	0x20
-#define GFUI_ALIGN_HR_VC	0x21
-#define GFUI_ALIGN_HR_VT	0x22
-
-/* Mouse action */
-#define GFUI_MOUSE_UP	0
-#define GFUI_MOUSE_DOWN	1
-
-/* Keyboard action */
-#define GFUI_KEY_UP	0
-#define GFUI_KEY_DOWN	1
-
-/* Scroll Bar position */
-#define GFUI_SB_NONE	0
-#define GFUI_SB_RIGHT	1
-#define GFUI_SB_LEFT	2
-#define GFUI_SB_TOP	3
-#define GFUI_SB_BOTTOM	4
-
-/* Scroll bar orientation */
-#define GFUI_HORI_SCROLLBAR	0
-#define GFUI_VERT_SCROLLBAR	1
-
-/** Scroll bar call-back information */
-typedef struct ScrollBarInfo
-{
-    int		pos;		/**< Current scroll bar position */
-    void	*userData;	/**< Associated user data */
-} tScrollBarInfo;
-
-typedef void (*tfuiCallback)(void * /* userdata */);
-typedef void (*tfuiSBCallback)(tScrollBarInfo *);
-typedef int (*tfuiKeyCallback)(unsigned char key, int modifier, int state); /**< return 1 to prevent normal key computing */
-typedef int (*tfuiSKeyCallback)(int key, int modifier, int state);  /**< return 1 to prevent normal key computing */
-
-
-/* GLUT Callback functions                  */
-/* should be called explicitely if          */
-/* the corresponding GLUT Func is overriden */
-/* after a call to GfuiActivateScreen       */
-extern void GfuiDisplay(void);
-extern void GfuiDisplayNothing(void);
-extern void GfuiIdle(void);
-
-/* Screen management */
-extern void *GfuiScreenCreate(void);
-extern void *GfuiScreenCreateEx(float *bgColor, 
-				void *userDataOnActivate, tfuiCallback onActivate, 
-				void *userDataOnDeactivate, tfuiCallback onDeactivate, 
-				int mouseAllowed);
-extern void GfuiScreenRelease(void *screen);
-extern void GfuiScreenActivate(void *screen);
-extern int  GfuiScreenIsActive(void *screen);
-extern void GfuiScreenReplace(void *screen);
-extern void GfuiScreenDeactivate(void);
-extern void *GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate);
-extern void GfuiHookRelease(void *hook);
-extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
-extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
-extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
-extern void GfuiHelpScreen(void *prevScreen);
-extern void GfuiScreenShot(void *notused);
-extern void GfuiScreenAddBgImg(void *scr, char *filename);
-extern void GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction);
-extern void GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction);
-extern void GfuiKeyEventRegisterCurrent(tfuiKeyCallback onKeyAction);
-extern void GfuiSKeyEventRegisterCurrent(tfuiSKeyCallback onSKeyAction);
-
-/* mouse */
-typedef struct MouseInfo
-{
-    int	X;
-    int	Y;
-    int	button[3];
-} tMouseInfo;
-
-extern tMouseInfo *GfuiMouseInfo(void);
-extern void GfuiMouseSetPos(int x, int y);
-extern void GfuiMouseHide(void);
-extern void GfuiMouseShow(void);
-extern void GfuiMouseSetHWPresent(void);
-
-/* all widgets */
-#define	GFUI_VISIBLE	1	/**< Object visibility flag  */
-#define	GFUI_INVISIBLE	0	/**< Object invisibility flag  */
-extern int GfuiVisiblilitySet(void *scr, int id, int visible);
-#define	GFUI_DISABLE	1
-#define	GFUI_ENABLE	0
-extern int GfuiEnable(void *scr, int id, int flag);
-extern void GfuiUnSelectCurrent(void);
-
-/* labels */
-#define GFUI_FONT_BIG		0
-#define GFUI_FONT_LARGE		1
-#define GFUI_FONT_MEDIUM	2
-#define GFUI_FONT_SMALL		3
-#define GFUI_FONT_BIG_C		4
-#define GFUI_FONT_LARGE_C	5
-#define GFUI_FONT_MEDIUM_C	6
-#define GFUI_FONT_SMALL_C	7
-#define GFUI_FONT_DIGIT		8
-extern int GfuiLabelCreate(void *scr, char *text, 
-			int font, int x, int y, int align, int maxlen);
-extern int GfuiLabelCreateEx(void *scr, char *text, float *fgColor, int font, int x, int y, int align, int maxlen);
-
-extern int GfuiTipCreate(void *scr, char *text, int maxlen);
-extern int GfuiTitleCreate(void *scr, char *text, int maxlen);
-
-extern void GfuiLabelSetText(void *scr, int id, char *text);
-extern void GfuiLabelSetColor(void *scr, int id, float *color);
-
-extern void GfuiPrintString(char *text, float *fgColor, int font, int x, int y, int align);
-extern int  GfuiFontHeight(int font);
-extern int  GfuiFontWidth(int font, char *text);
-
-
-/* buttons */
-#define GFUI_BTNSZ	300
-extern int GfuiButtonCreate(void *scr, char *text, int font,
-			    int x, int y, int width, int align, int mouse,
-			    void *userDataOnPush, tfuiCallback onPush, 
-			    void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-extern int GfuiButtonStateCreate(void *scr, char *text, int font, int x, int y, int width, int align, int mouse,
-				 void *userDataOnPush, tfuiCallback onPush, 
-				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-extern int GfuiGrButtonCreate(void *scr, char *disabled, char *enabled, char *focused, char *pushed,
-			      int x, int y, int align, int mouse,
-			      void *userDataOnPush, tfuiCallback onPush, 
-			      void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-
-extern void GfuiButtonSetText(void *scr, int id, char *text);
-extern int GfuiButtonGetFocused(void);
-
-/* Edit Box */
-extern int GfuiEditboxCreate(void *scr, char *text, int font, int x, int y, int width, int maxlen,
-			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-extern int GfuiEditboxGetFocused(void);
-extern char *GfuiEditboxGetString(void *scr, int id);
-extern void GfuiEditboxSetString(void *scr, int id, char *text);
-
-/* Scrolling lists */
-extern int GfuiScrollListCreate(void *scr, int font, int x, int y, int align,
-				int width, int height, int scrollbar, void *userDataOnSelect, tfuiCallback onSelect);
-extern int GfuiScrollListInsertElement(void *scr, int Id, char *element, int index, void *userData);
-extern int GfuiScrollListMoveSelectedElement(void *scr, int Id, int delta);
-extern char *GfuiScrollListExtractSelectedElement(void *scr, int Id, void **userData);
-extern char *GfuiScrollListExtractElement(void *scr, int Id, int index, void **userData);
-extern char *GfuiScrollListGetSelectedElement(void *scr, int Id, void **userData);
-extern char *GfuiScrollListGetElement(void *scr, int Id, int index, void **userData);
-
-/* scroll bars */
-extern int GfuiScrollBarCreate(void *scr, int x, int y, int align, int width, int orientation,
-			       int min, int max, int len, int start, 
-			       void *userData, tfuiSBCallback onScroll);
-extern void GfuiScrollBarPosSet(void *scr, int id, int min, int max, int len, int start);
-extern int GfuiScrollBarPosGet(void *scr, int id);
-
-/* Images */
-extern int GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name);
-extern void GfuiStaticImageSet(void *scr, int id, char *name);
-
-/*****************************
- * Menu Management Interface *
- *****************************/
-
-extern void *GfuiMenuScreenCreate(char *title);
-extern void  GfuiMenuDefaultKeysAdd(void *scr);
-extern int   GfuiMenuButtonCreate(void *menu, char *text, char *tip, void *userdata, tfuiCallback onpush);
-extern int   GfuiMenuBackQuitButtonCreate(void *menu, char *text, char *tip, void *userdata, tfuiCallback onpush);
-
-#define GFSCR_SECT_MENUCOL	"Menu Colors"
-#define GFSCR_LIST_COLORS	"colors"
-#define GFSCR_ELT_BGCOLOR	"background"
-#define GFSCR_ELT_TITLECOLOR	"title"
-#define GFSCR_ELT_BGBTNFOCUS	"background focused button"
-#define GFSCR_ELT_BGBTNCLICK	"background pushed button"
-#define GFSCR_ELT_BGBTNENABLED	"background enabled button"
-#define GFSCR_ELT_BGBTNDISABLED	"background disabled button"
-#define GFSCR_ELT_BTNFOCUS	"focused button"
-#define GFSCR_ELT_BTNCLICK	"pushed button"
-#define GFSCR_ELT_BTNENABLED	"enabled button"
-#define GFSCR_ELT_BTNDISABLED	"disabled button"
-#define GFSCR_ELT_LABELCOLOR	"label"
-#define GFSCR_ELT_TIPCOLOR	"tip"
-#define GFSCR_ELT_MOUSECOLOR1	"mouse 1"
-#define GFSCR_ELT_MOUSECOLOR2	"mouse 2"
-#define GFSCR_ELT_HELPCOLOR1	"help key"
-#define GFSCR_ELT_HELPCOLOR2	"help description"
-#define GFSCR_ELT_BGSCROLLIST	"background scroll list"
-#define GFSCR_ELT_SCROLLIST	"scroll list"
-#define GFSCR_ELT_BGSELSCROLLIST "background selected scroll list"
-#define GFSCR_ELT_SELSCROLLIST	"selected scroll list"
-#define GFSCR_ELT_EDITCURSORCLR	"edit box cursor color"
-
-#define GFSCR_ATTR_RED		"red"
-#define GFSCR_ATTR_GREEN	"green"
-#define GFSCR_ATTR_BLUE		"blue"
-#define GFSCR_ATTR_ALPHA	"alpha"
-
-
 /******************* 
  * Trace Interface *
  *******************/
@@ -495,7 +335,7 @@ GfFatal(char *fmt, ...)
     va_start(ap, fmt);
     vprintf(fmt, ap);
     va_end(ap);
-    GfScrShutdown();
+    /* GfScrShutdown(); */
     exit(1);
 }
 #endif
@@ -530,10 +370,25 @@ GfOut(char *fmt, ...)
 extern double GfTimeClock(void);
 extern char *GfGetTimeStr(void);
 
+/* Mean values */
+#define GF_MEAN_MAX_VAL	5
 
-/************************
- * Ring Lists Interface *
- ************************/
+typedef struct 
+{
+    int		curNum;
+    tdble	val[GF_MEAN_MAX_VAL+1];
+} tMeanVal;
+
+extern tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
+extern void gfMeanReset(tdble v, tMeanVal *pvt);
+
+/* MISC */
+extern char *GetLocalDir(void);
+extern void SetLocalDir(char *buf);
+
+/********************************************
+ * Ring Lists Interface OBSOLETE DO NOT USE *
+ ********************************************/
 
 /** Ring List structure */
 typedef struct tRingList
@@ -561,82 +416,173 @@ extern tRingList *GfRlstGetLast(tRingListHead *head);
 extern tRingList *GfRlstGetPrev(tRingListHead *head, tRingList *elt);
 extern void GfRlstSeekElt(tRingListHead *head, tRingList *elt);
 
-extern void GfInit(void);
+/*
+ * Copyright (c) 1991, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by the University of
+ *	California, Berkeley and its contributors.
+ * 4. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *	@(#)queue.h	8.5 (Berkeley) 8/20/94
+ */
 
-/* Mean values */
-#define GF_MEAN_MAX_VAL	5
+/*
+ * Tail queue definitions.
+ */
+#define GF_TAILQ_HEAD(name, type)					\
+typedef struct name {							\
+	type *tqh_first;	/* first element */			\
+	type **tqh_last;	/* addr of last next element */		\
+} t ## name
 
-typedef struct 
-{
-    int		curNum;
-    tdble	val[GF_MEAN_MAX_VAL+1];
-} tMeanVal;
-
-extern tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
-extern void gfMeanReset(tdble v, tMeanVal *pvt);
-
-/*********************
- * Control interface *
- *********************/
-
-#define GFCTRL_TYPE_NOT_AFFECTED	0
-#define GFCTRL_TYPE_JOY_AXIS		1
-#define GFCTRL_TYPE_JOY_BUT		2
-#define GFCTRL_TYPE_KEYBOARD		3
-#define GFCTRL_TYPE_MOUSE_BUT		4
-#define GFCTRL_TYPE_MOUSE_AXIS		5
-#define GFCTRL_TYPE_SKEYBOARD		6
-
-typedef struct
-{
-    int		index;
-    int		type;
-} tCtrlRef;
-
-
-#define GFCTRL_JOY_UNTESTED	-1
-#define GFCTRL_JOY_NONE		0
-#define GFCTRL_JOY_PRESENT	1
-
-#define GFCTRL_JOY_MAXBUTTON	32 /* Size of integer so don't change please */
-
-/** Joystick Information Structure */
-typedef struct
-{
-    int		oldb[NUM_JOY];
-    float	ax[MAX_AXES * NUM_JOY];			/**< Axis values */
-    int		edgeup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from down (pressed) to up */
-    int		edgedn[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from up to down */
-    int		levelup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];/**< Button state (1 = up) */
-} tCtrlJoyInfo;
-
-extern tCtrlJoyInfo *GfctrlJoyInit(void);
-extern int GfctrlJoyIsPresent(void);
-extern int GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo);
-extern void GfctrlJoyRelease(tCtrlJoyInfo *joyInfo);
+#define GF_TAILQ_ENTRY(type)						\
+struct {								\
+	type *tqe_next;	/* next element */				\
+	type **tqe_prev;	/* address of previous next element */	\
+}
 
 
-/** Mouse information structure */
-typedef struct
-{
-    int		edgeup[3];	/**< Button transition from down (pressed) to up */
-    int		edgedn[3];	/**< Button transition from up to down */
-    int		button[3];	/**< Button state (1 = up) */
-    float	ax[4];		/**< mouse axis position (mouse considered as a joystick) */
-} tCtrlMouseInfo;
+#define	GF_TAILQ_FIRST(head)		((head)->tqh_first)
+#define	GF_TAILQ_NEXT(elm, field)	((elm)->field.tqe_next)
+#define	GF_TAILQ_END(head)		NULL
+#define GF_TAILQ_LAST(head, headname) \
+	(*(((struct headname *)((head)->tqh_last))->tqh_last))
+#define GF_TAILQ_PREV(elm, headname, field) \
+	(*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
 
-extern tCtrlMouseInfo *GfctrlMouseInit(void);
-extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
-extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
-extern void GfctrlMouseCenter(void);
-extern void GfctrlMouseInitCenter(void);
-extern tCtrlRef *GfctrlGetRefByName(char *name);
-extern char *GfctrlGetNameByRef(int type, int index);
+/*
+ * Tail queue functions.
+ */
+#define	GF_TAILQ_INIT(head) do {					\
+	(head)->tqh_first = NULL;					\
+	(head)->tqh_last = &(head)->tqh_first;				\
+} while (0)
 
-/* MISC */
-extern char *GetLocalDir(void);
-extern void SetLocalDir(char *buf);
+#define GF_TAILQ_INIT_ENTRY(elm, field) do {	\
+  (elm)->field.tqe_next = 0;			\
+  (elm)->field.tqe_prev = 0;			\
+} while (0)
 
+#define GF_TAILQ_INSERT_HEAD(head, elm, field) do {			\
+	if (((elm)->field.tqe_next = (head)->tqh_first) != NULL)	\
+		(head)->tqh_first->field.tqe_prev =			\
+		    &(elm)->field.tqe_next;				\
+	else								\
+		(head)->tqh_last = &(elm)->field.tqe_next;		\
+	(head)->tqh_first = (elm);					\
+	(elm)->field.tqe_prev = &(head)->tqh_first;			\
+} while (0)
+
+#define GF_TAILQ_INSERT_TAIL(head, elm, field) do {			\
+	(elm)->field.tqe_next = NULL;					\
+	(elm)->field.tqe_prev = (head)->tqh_last;			\
+	*(head)->tqh_last = (elm);					\
+	(head)->tqh_last = &(elm)->field.tqe_next;			\
+} while (0)
+
+#define GF_TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
+	if (((elm)->field.tqe_next = (listelm)->field.tqe_next) != NULL)\
+		(elm)->field.tqe_next->field.tqe_prev = 		\
+		    &(elm)->field.tqe_next;				\
+	else								\
+		(head)->tqh_last = &(elm)->field.tqe_next;		\
+	(listelm)->field.tqe_next = (elm);				\
+	(elm)->field.tqe_prev = &(listelm)->field.tqe_next;		\
+} while (0)
+
+#define	GF_TAILQ_INSERT_BEFORE(listelm, elm, field) do {		\
+	(elm)->field.tqe_prev = (listelm)->field.tqe_prev;		\
+	(elm)->field.tqe_next = (listelm);				\
+	*(listelm)->field.tqe_prev = (elm);				\
+	(listelm)->field.tqe_prev = &(elm)->field.tqe_next;		\
+} while (0)
+
+#define GF_TAILQ_REMOVE(head, elm, field) do {				\
+	if (((elm)->field.tqe_next) != NULL)				\
+		(elm)->field.tqe_next->field.tqe_prev = 		\
+		    (elm)->field.tqe_prev;				\
+	else								\
+		(head)->tqh_last = (elm)->field.tqe_prev;		\
+	*(elm)->field.tqe_prev = (elm)->field.tqe_next;			\
+} while (0)
+
+
+/* author      : Henrik Enqvist IB (henqvist@abo.fi) */
+#ifdef PROFILER
+
+#include <vector>
+#include <map>
+
+#define START_PROFILE(name) Profiler::getInstance()->startProfile(name)
+#define STOP_PROFILE(name) Profiler::getInstance()->stopProfile()
+#define STOP_ACTIVE_PROFILES() Profiler::getInstance()->stopActiveProfiles()
+#define PRINT_PROFILE() Profiler::getInstance()->printProfile()
+
+class ProfileInstance {
+ public:
+  ProfileInstance(const char * pname);
+  ~ProfileInstance();
+  char name[256];
+  int calls;
+  int openCalls;
+  double totalTime;
+  double addTime;
+  double subTime;
+  double tmpStart;
+  std::map<ProfileInstance *, void *> mapChildren;
+};
+
+/** A simple high-level profiler for non-threaded non-recursive functions. */
+class Profiler {
+ protected:
+  Profiler();
+ public:
+  ~Profiler();
+  static Profiler * getInstance();
+  void startProfile(const char * pname);
+  void stopProfile();
+  void stopActiveProfiles();
+  void printProfile();
+ private:
+  static Profiler * profiler;
+  ProfileInstance * curProfile;
+  double fStartTime;
+  std::vector<ProfileInstance *> vecProfiles;
+  std::vector<ProfileInstance *> stkProfiles;
+  std::map<ProfileInstance *, void *> mapWarning;
+};
+
+#else /* PROFILER */
+#define START_PROFILE(a)
+#define STOP_PROFILE(a)
+#define STOP_ACTIVE_PROFILES()
+#define PRINT_PROFILE()
+#endif
 
 #endif /* __TGF__H__ */
 

@@ -36,7 +36,7 @@
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 #include "trackgen.h"
 #include "easymesh.h"

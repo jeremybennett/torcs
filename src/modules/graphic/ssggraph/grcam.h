@@ -29,13 +29,13 @@
 
 class cGrCamera;
 
-TAILQ_HEAD(GrCamHead, cGrCamera);
+GF_TAILQ_HEAD(GrCamHead, cGrCamera);
 
 /* Camera interface */
 class cGrCamera 
 {
  private:
-    TAILQ_ENTRY(cGrCamera) link;
+    GF_TAILQ_ENTRY(cGrCamera) link;
     int id;		/* Camera Id */
     int drawCurrent;	/* flag to draw the current car */
     int drawBackground;	/* flag to draw the background */    
@@ -103,16 +103,16 @@ class cGrCamera
     
     /* Add the camera in the corresponding list */
     void add(tGrCamHead *head) {
-	TAILQ_INSERT_TAIL(head, this, link);
+	GF_TAILQ_INSERT_TAIL(head, this, link);
     }
     
     /* Remove the camera from the corresponding list */
     void remove(tGrCamHead *head) {
-	TAILQ_REMOVE(head, this, link);
+	GF_TAILQ_REMOVE(head, this, link);
     }
 
     cGrCamera *next(void) {
-	return TAILQ_NEXT(this, link);
+	return GF_TAILQ_NEXT(this, link);
     }
 };
 

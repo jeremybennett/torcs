@@ -22,7 +22,7 @@
 #endif
 #include <GL/gl.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "grmain.h"
 

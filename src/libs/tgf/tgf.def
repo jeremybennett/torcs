@@ -7,6 +7,7 @@ LIBRARY
 SECTIONS .data READ WRITE
 
 EXPORTS
+	GfInit
 	GfModLoad
 	GfModLoadDir
 	GfModUnloadList
@@ -38,65 +39,8 @@ EXPORTS
 	GfParmListSeekNext
 	GfParmListGetCurEltName
 	GfParmListClean
-	GfImgReadPng
-	GfImgWritePng
-	GfScrInit
-	GfScrMenuInit
+	GfParmGetFileName
 	GfTime2Str
-	GfScrGetSize
-	GfuiDisplay
-	GfuiDisplayNothing
-	GfuiIdle
-	GfuiScreenCreate
-	GfuiScreenCreateEx
-	GfuiScreenRelease
-	GfuiScreenActivate
-	GfuiScreenReplace
-	GfuiScreenDeactivate
-	GfuiAddKey
-	GfuiAddSKey
-	GfuiHelpScreen
-	GfuiScreenShot
-	GfuiScreenAddBgImg
-	GfuiVisiblilitySet
-	GfuiEnable
-	GfuiUnSelectCurrent
-	GfuiLabelCreate
-	GfuiLabelCreateEx
-	GfuiMouseInfo
-	GfuiMouseHide
-	GfuiMouseShow
-	GfuiMouseSetHWPresent
-	GfuiTipCreate
-	GfuiTitleCreate
-	GfuiLabelSetText
-	GfuiLabelSetColor
-	GfuiPrintString
-	GfuiFontHeight
-	GfuiFontWidth
-	GfuiButtonCreate
-	GfuiButtonStateCreate
-	GfuiGrButtonCreate
-	GfuiButtonSetText
-	GfuiButtonGetFocused
-	GfuiEditboxCreate
-	GfuiEditboxGetFocused
-	GfuiEditboxGetString
-	GfuiEditboxSetString
-	GfuiScrollListCreate
-	GfuiScrollListInsertElement
-	GfuiScrollListMoveSelectedElement
-	GfuiScrollListExtractSelectedElement
-	GfuiScrollListExtractElement
-	GfuiScrollListGetSelectedElement
-	GfuiScrollListGetElement
-	GfuiScrollBarCreate
-	GfuiScrollBarPosSet
-	GfuiScrollBarPosGet
-	GfuiMenuScreenCreate
-	GfuiMenuDefaultKeysAdd
-	GfuiMenuButtonCreate
-	GfuiMenuBackQuitButtonCreate
 	GfTimeClock
 	GfRlstInit
 	GfRlstAddFirst
@@ -109,37 +53,12 @@ EXPORTS
 	GfRlstGetLast
 	GfRlstGetPrev
 	GfRlstSeekElt
-	GfInit
 	gfMean
 	gfMeanReset
-	gfuiDrawImage
-	gfuiReleaseImage
-    	GfuiStaticImageCreate
-	GfuiStaticImageSet
-	GfScrReinit
-	GfuiScreenIsActive
-	GfuiHookRelease
-	GfuiHookCreate
-	GfParmGetFileName
-	GfScrShutdown
 	_tgf_win_malloc
 	_tgf_win_calloc
 	_tgf_win_realloc
 	_tgf_win_free
 	_tgf_win_strdup
-	GfuiSKeyEventRegister
-	GfuiKeyEventRegister
-	GfuiKeyEventRegisterCurrent
-	GfuiSKeyEventRegisterCurrent
-	GfctrlGetRefByName
-	GfctrlGetNameByRef
-	GfctrlMouseInit
-	GfctrlJoyInit
-	GfctrlMouseRelease
-	GfctrlJoyRelease
-	GfctrlMouseCenter
-	GfctrlMouseInitCenter
-	GfctrlMouseGetCurrent
-	GfctrlJoyGetCurrent
 	GetLocalDir
 	SetLocalDir

@@ -30,7 +30,7 @@
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <ttypes.h>
+#include <tgfclient.h>
 
 char	*InputFileName = NULL;
 char	*OutputFileName = NULL;

@@ -20,7 +20,7 @@
 
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <torcs.h>
 #include <stdlib.h>
 #include <string.h>

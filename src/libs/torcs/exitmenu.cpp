@@ -18,10 +18,8 @@
  ***************************************************************************/
 
 
-#include <profiler.h>
-
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include "exitmenu.h"
 #include "mainmenu.h"
 

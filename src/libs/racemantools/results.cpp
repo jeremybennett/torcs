@@ -30,7 +30,7 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <tgf.h>
+#include <tgfclient.h>
 #include <osspec.h>
 #include <racemantools.h>
 #include <robottools.h>

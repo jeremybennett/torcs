@@ -34,6 +34,7 @@
 #include "grmain.h"
 #include "grutil.h"
 #include <robottools.h>
+#include <tgfclient.h>
 
 #ifdef DMALLOC
 #include "dmalloc.h"

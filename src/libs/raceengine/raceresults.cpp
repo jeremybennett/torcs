@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <robot.h>
 #include <raceman.h>
 #include <racemantools.h>

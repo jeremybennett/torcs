@@ -35,7 +35,7 @@
 #include <plib/ssg.h>
 #include <GL/glut.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <track.h>
 
 #include "trackgen.h"
@@ -80,13 +80,13 @@ public:
 
 typedef struct objdef
 {
-    LIST_ENTRY(objdef)	link;
+    GF_TAILQ_ENTRY(objdef)	link;
     int			random;
     unsigned int	color;
     ssgEntity		*obj;
 } tobjdef;
 
-LIST_HEAD(objlist, objdef);
+GF_TAILQ_HEAD(objlist, objdef);
 tobjlist objhead;
 
 int
@@ -129,7 +129,7 @@ InitObjects(tTrack *track, void *TrackHandle)
     
     ssgSetCurrentOptions ( &options ) ;    
 
-    LIST_INIT(&objhead);
+    GF_TAILQ_INIT(&objhead);
 
     sprintf(buf, "tracks/%s/%s;data/objects", track->category, track->internalname);
     search = strdup(buf);
@@ -160,7 +160,7 @@ InitObjects(tTrack *track, void *TrackHandle)
 	    sgMakeRotMat4(m, GfParmGetCurNum(TrackHandle, TRK_SECT_OBJECTS, TRK_ATT_ORIENTATION, "deg", 0), 0.0, 0.0);
 	    ApplyTransform(m, curObj->obj);
 	}
-	LIST_INSERT_HEAD(&objhead, curObj, link);
+	GF_TAILQ_INSERT_HEAD(&objhead, curObj, link);
 
 	GfParmListSeekNext(TrackHandle, TRK_SECT_OBJECTS);
     }
@@ -191,7 +191,7 @@ AddObject(unsigned int clr, tdble x, tdble y)
     ssgEntity		*obj;
     sgMat4		m;
     
-    for (curObj = LIST_FIRST(&objhead); curObj; curObj = LIST_NEXT(curObj, link)) {
+    for (curObj = GF_TAILQ_FIRST(&objhead); curObj; curObj = GF_TAILQ_NEXT(curObj, link)) {
 	if (clr == curObj->color) {
 	    obj = (ssgEntity*)curObj->obj->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY | SSG_CLONE_STATE);
 	    if (curObj->random) {

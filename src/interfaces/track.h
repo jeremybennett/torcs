@@ -28,9 +28,9 @@
 #ifndef _TRACKV1_H_
 #define _TRACKV1_H_
 
-#include <ttypes.h>
+#include <tgf.h>
 
-#define TRK_IDENT	((0x01)<<TRK_IDENT_SHIFT)	/* from 0x01 to 0xFF */
+#define TRK_IDENT	0	/* from 0x01 to 0xFF */
 
 /* Parameters strings for track files */
 

@@ -37,6 +37,7 @@
 #include "grsmoke.h"
 #include "grcar.h"
 #include "grmain.h"
+#include <tgfclient.h>
 
 #ifdef DMALLOC
 #include "dmalloc.h"
@@ -231,17 +232,17 @@ grSelectCamera(void *vp)
 	/* Same camera list, choose the next one */
 	grCurCam = grCurCam->next();
 	if (grCurCam == NULL) {
-	    grCurCam = TAILQ_FIRST(&grCams[cam]);
+	    grCurCam = GF_TAILQ_FIRST(&grCams[cam]);
 	}
     } else {
 	/* Change of camera list, take the first one */
 	grCurCamHead = cam;
-	grCurCam = TAILQ_FIRST(&grCams[cam]);
+	grCurCam = GF_TAILQ_FIRST(&grCams[cam]);
     }
     if (grCurCam == NULL) {
 	/* back to default camera */
 	grCurCamHead = 0;
-	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
+	grCurCam = GF_TAILQ_FIRST(&grCams[grCurCamHead]);
     }
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
@@ -987,7 +988,7 @@ grInitCams(void)
     c = 0;
 
     /* F2 */
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
     
     /* cam F2 = behind near */
@@ -1068,7 +1069,7 @@ grInitCams(void)
 
     /* F3 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F3 = car behind*/
@@ -1104,7 +1105,7 @@ grInitCams(void)
 
     /* F4 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F4 = car side 1*/
@@ -1252,7 +1253,7 @@ grInitCams(void)
 
     /* F5 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F5 = car up 1*/
@@ -1324,7 +1325,7 @@ grInitCams(void)
 
     /* F6 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F6 = car from circuit centre */
@@ -1344,7 +1345,7 @@ grInitCams(void)
 
     /* F7 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F7 = panoramic */
@@ -1459,7 +1460,7 @@ grInitCams(void)
 
     /* F8 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F8 = road cam fixed fov */
@@ -1479,7 +1480,7 @@ grInitCams(void)
 
     /* F9 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     /* cam F9 = road cam zoomed */
@@ -1498,7 +1499,7 @@ grInitCams(void)
 
     /* F10 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
 
     curCam = new cGrCarCamRoadZoom(id,
@@ -1516,7 +1517,7 @@ grInitCams(void)
 
     /* F11 */
     c++;
-    TAILQ_INIT(&grCams[c]);
+    GF_TAILQ_INIT(&grCams[c]);
     id = 0;
     curCam = new cGrCarCamRoadZoomTVD(id,
 				      1,	/* drawCurr */

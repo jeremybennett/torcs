@@ -34,7 +34,7 @@
 #include <math.h>
 #include <js.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include <track.h>
 #include <car.h>

@@ -28,7 +28,7 @@
 #include <string.h>
 #include <time.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include "gui.h"
 
 tGfuiScreen	*GfuiScreen;	/* current screen */

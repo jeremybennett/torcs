@@ -39,7 +39,6 @@
 #include <robot.h>
 #include <robottools.h>
 #include <math.h>
-#include <ttypes.h>
 #include "linalg.h"
 
 #define TRACKRES 1.0

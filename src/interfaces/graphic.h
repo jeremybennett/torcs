@@ -21,11 +21,10 @@
 #ifndef _GRAPHV1_H_
 #define _GRAPHV1_H_
 
-#include <ttypes.h>
 #include <track.h>
 #include <car.h>
 
-#define GRX_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
+#define GRX_IDENT	0
 
 #define GR_PARAM_FILE		"config/graph.xml"
 

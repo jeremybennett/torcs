@@ -32,7 +32,7 @@
 #endif
 
 #include <plib/ul.h>
-#include <tgf.h>
+#include <tgfclient.h>
 
 #include "util.h"
 

@@ -26,6 +26,7 @@ SOLIBS  =  -lracemantools \
 	   -lrobottools   \
 	   -ltorcs        \
 	   -ltgf          \
+	   -ltgfclient    \
 	   -ltxml	  \
 	   -lplibul	  \
 	   -lraceengine

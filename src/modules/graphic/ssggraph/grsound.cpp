@@ -21,7 +21,7 @@
 #include <plib/sm.h>
 #include <math.h>
 
-#include <tgf.h>
+#include <tgfclient.h>
 #include <graphic.h>
 #include <racemantools.h>
 

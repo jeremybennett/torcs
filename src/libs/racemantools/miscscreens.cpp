@@ -24,7 +24,7 @@
 */
 
 #include <stdio.h>
-#include <tgf.h>
+#include <tgfclient.h>
 #include <robot.h>
 
 #include <racemantools.h>

@@ -22,15 +22,10 @@
 #include <tgf.h>
 #include <time.h>
 
-#include "gui.h"
-
 extern void gfDirInit(void);
 extern void gfModInit(void);
 extern void gfOsInit(void);
 extern void gfParamInit(void);
-extern void gfScreenInit(void);
-/* extern void gfTraceInit(void); */
-extern void gfMenuInit(void);
 extern void gfRlstInit(void);
 
 // <esppat>
@@ -125,14 +120,10 @@ void
 GfInit(void)
 {
     gfDirInit();
-    gfuiInit();
-    gfMenuInit();
     gfModInit();
     gfOsInit();
     gfParamInit();
-    gfScreenInit();
     gfRlstInit();
-/*     gfTraceInit(); */
 }
 
 void
