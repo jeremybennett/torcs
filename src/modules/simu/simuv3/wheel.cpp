@@ -112,7 +112,7 @@ SimWheelConfig(tCar *car, int index)
 }
 
 
-#define MIN_NORMAL_Z 0.0
+#define MIN_NORMAL_Z 0.001
 void
 SimWheelUpdateRide(tCar *car, int index)
 {
@@ -255,16 +255,16 @@ SimWheelUpdateForce(tCar *car, int index)
 		   of the surface is just f_z*rel_normal.z;!
 		*/
 		if ((right_way_up) && (rel_normal.z > MIN_NORMAL_Z)) {
-			// reaction force on track z axis should be equal to f_z's
-			// projection to track's normal
-			// reaction_force = f_z * rel_normal.z;
-			// but we're ignoring a lot of things, such
-			// as the reaction forces from the immovable axis of
-			// the suspension. We make an assumption that:
-			reaction_force = f_z /  rel_normal.z;
-			// the other reactions are then:
-			Ft = reaction_force * rel_normal.x;
-			Fn = reaction_force * rel_normal.y;
+		  // reaction force on track z axis should be equal to f_z's
+		  // projection to track's normal
+		  // reaction_force = f_z * rel_normal.z;
+		  // but we're ignoring a lot of things, such
+		  // as the reaction forces from the immovable axis of
+		  // the suspension. We make an assumption that:
+		  reaction_force = f_z/  rel_normal.z;
+		  // the other reactions are then:
+		  Ft = reaction_force* rel_normal.x;
+		  Fn = reaction_force* rel_normal.y;
 		} else {
 			f_z = 0;
 			wheel->susp.force = 0;
@@ -311,8 +311,11 @@ SimWheelUpdateForce(tCar *car, int index)
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
     } else if (absolute_speed < 10.0) {
-		sx = 0.1*wvx;//absolute_speed;
-		sy = 0.1*wvy;//absolute_speed;
+		//		sx = wvx;
+		//		sy = 0;//wvy;
+		//		sa = 0;//atan2(wvy,wvx);
+		sx = .1*wvx;//absolute_speed;
+		sy = .1*wvy;//absolute_speed;
 		sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
@@ -387,19 +390,21 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble Fn2 = 0.0;
 	if (s > 0.000001) {
 		/* wheel axis based - no control after an angle*/
-		if (rel_normal.z > MIN_NORMAL_Z) {
-			// When the tyre is tilted there is less surface
-			// touching the road. Modelling effect simply with rel_normal_xz
-			Ft2 = - rel_normal_xz*F*sx/s;
-			Fn2 = - rel_normal_xz*F*sy/s;
-		} else {
-			Ft2 = 0.0;
-			Fn2 = 0.0;
-		}
+	  if (rel_normal.z > MIN_NORMAL_Z) {
+	    // When the tyre is tilted there is less surface
+	    // touching the road. Modelling effect simply with rel_normal_xz
+	    Ft2 = - rel_normal_xz*F*sx/s;
+	    Fn2 = - rel_normal_xz*F*sy/s;
+	    //Ft2 = -F*sx/s;
+	    //Fn2 = -F*sy/s;
+	  } else {
+	    Ft2 = 0.0;
+	    Fn2 = 0.0;
+	  }
 		wheel->forces.x = Ft2 * rel_normal_yz;
 		wheel->forces.y = Fn2 * rel_normal_xz; 
 		wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;
-
+		
     }
 
     
@@ -431,8 +436,8 @@ SimWheelUpdateForce(tCar *car, int index)
 		NaiveInverseRotate (f, angles, &wheel->forces);
 		// transmit reaction forces to the car	
 		// -- removed as they can cause infinities(!) when rel_normal.z~0 --
-		//		wheel->forces.x +=(Ft* CosA - Fn * SinA);
-		//		wheel->forces.y +=(Ft* SinA + Fn * CosA);
+		wheel->forces.x +=(Ft* CosA - Fn * SinA);
+		wheel->forces.y +=(Ft* SinA + Fn * CosA);
 		// moved
 		RELAXATION2(wheel->forces.x, wheel->preFn, 50.0);
 		RELAXATION2(wheel->forces.y, wheel->preFt, 50.0);

@@ -6,7 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -48,9 +48,9 @@ SimEngineConfig(tCar *car)
     edesc = (struct tEdesc*)malloc((car->engine.curve.nbPts + 1) * sizeof(struct tEdesc));
     
     for (i = 0; i < car->engine.curve.nbPts; i++) {
-	sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
-	edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);
-	edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
+		sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
+		edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);
+		edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
     }
     edesc[i].rpm = edesc[i - 1].rpm;
     edesc[i].tq  = edesc[i].tq;
@@ -58,15 +58,15 @@ SimEngineConfig(tCar *car)
     maxTq = 0;
     car->engine.curve.data = (tEngineCurveElem *)malloc(car->engine.curve.nbPts * sizeof(tEngineCurveElem));
     for(i = 0; i < car->engine.curve.nbPts; i++) {
-	data = &(car->engine.curve.data[i]);
+		data = &(car->engine.curve.data[i]);
 
-	data->rads = edesc[i+1].rpm;
-	if (edesc[i+1].tq > maxTq) {
-	    maxTq = edesc[i+1].tq;
-	    rpmMaxTq = data->rads;
-	}
-	data->a = (edesc[i+1].tq - edesc[i].tq) / (edesc[i+1].rpm - edesc[i].rpm);
-	data->b = edesc[i].tq - data->a * edesc[i].rpm;
+		data->rads = edesc[i+1].rpm;
+		if (edesc[i+1].tq > maxTq) {
+			maxTq = edesc[i+1].tq;
+			rpmMaxTq = data->rads;
+		}
+		data->a = (edesc[i+1].tq - edesc[i].tq) / (edesc[i+1].rpm - edesc[i].rpm);
+		data->b = edesc[i].tq - data->a * edesc[i].rpm;
     }
     car->engine.curve.maxTq = maxTq;
     car->carElt->_enginerpmMaxTq = rpmMaxTq;
@@ -82,30 +82,40 @@ SimEngineUpdateTq(tCar *car)
     int		i;
     tEngine	*engine = &(car->engine);
     tEngineCurve *curve = &(engine->curve);
-    
+
+	if (engine->rads < engine->tickover) {
+		tdble ac =  tanh(0.001*(engine->tickover-engine->rads));
+		if (ac>car->ctrl->accelCmd) {
+			car->ctrl->accelCmd = ac;
+		}
+	}    
     if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {
-	engine->rads = 0;
-	engine->Tq = 0;
-	return;
+		//		engine->rads = 0;
+		//car->ctrl->accelCmd = 0;
+		engine->Tq = 0;
+		return;
     }
 
-    if (engine->rads > engine->revsLimiter) {
-	engine->rads = engine->revsLimiter;
-	engine->Tq = 0;
-    } else {
-	for (i = 0; i < car->engine.curve.nbPts; i++) {
-	    if (engine->rads < curve->data[i].rads) {
-		tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
-		tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
+
+	if (engine->rads > engine->revsLimiter) {
+		engine->rads = engine->revsLimiter;
+		engine->Tq = 0;
+    } else if (engine->rads < 0) {
+		engine->Tq = 0.0;
+	} else {
+		for (i = 0; i < car->engine.curve.nbPts; i++) {
+			if (engine->rads < curve->data[i].rads) {
+				tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
+				tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
 		
-		engine->Tq =  Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
-		car->fuel -= engine->Tq * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
-		if (car->fuel <= 0.0) {
-		    car->fuel = 0.0;
+				engine->Tq =  Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
+				car->fuel -= engine->Tq * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
+				if (car->fuel <= 0.0) {
+					car->fuel = 0.0;
+				}
+				return;
+			}
 		}
-		return;
-	    }
-	}
     } 
 }
 
@@ -132,31 +142,40 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
     float		freerads;
     float		transfer;
     
-
+#if 0
     if (car->fuel <= 0.0) {
-	engine->rads = 0;
-	clutch->state = CLUTCH_APPLIED;
-	clutch->transferValue = 0.0;
-	return 0.0;
+		//engine->rads = 0;
+		clutch->state = CLUTCH_APPLIED;
+		clutch->transferValue = 0.0;
+		//		return 0.0;
     }
+#endif
 
     freerads = engine->rads;
-    freerads += engine->Tq / engine->I * SimDeltaTime;
+    freerads += engine->Tq / (  engine->I) * SimDeltaTime;
+    transfer = 0.0;
+    float ttq = 0.0;
     if ((clutch->transferValue > 0.01) && (trans->gearbox.gear)) {
-	transfer = clutch->transferValue * clutch->transferValue * clutch->transferValue * clutch->transferValue;
+		transfer = clutch->transferValue * clutch->transferValue * clutch->transferValue * clutch->transferValue;
+		ttq = tanh(0.01*(axleRpm * trans->curOverallRatio - freerads))*1000.0*transfer;
+		//engine->rads = axleRpm * trans->curOverallRatio * transfer + freerads * (1.0 - transfer);
+		engine->rads += ((ttq)*SimDeltaTime)/(engine->I);
 	
-	engine->rads = axleRpm * trans->curOverallRatio * transfer + freerads * (1.0 - transfer);
-
-	if (engine->rads < engine->tickover) {
-	    engine->rads = engine->tickover;
-	} else if (engine->rads > engine->revsMax) {
-	    engine->rads = engine->revsMax;
-	    return engine->revsMax / trans->curOverallRatio;
-	}
+		if (engine->rads < 0.0) {
+			//engine->rads += 1.0*(engine->tickover-engine->rads)*SimDeltaTime/(engine->I);
+			engine->rads = 0; engine->Tq = 0.0;
+		} else if (engine->rads > engine->revsMax) {
+			engine->rads = engine->revsMax;
+			return engine->revsMax / trans->curOverallRatio;
+		}
     } else {
-	engine->rads = freerads;
+		engine->rads = freerads;// + engine->Tq / ( engine->I) * SimDeltaTime;;
     }
-    return 0.0;
+    if (trans->curOverallRatio!=0.0) {
+		return axleRpm - trans->curOverallRatio * ttq * SimDeltaTime / ( trans->curI);
+    } else {
+		return 0.0;
+    }
 }
 
 void

@@ -6,6 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
+
  ***************************************************************************/
 
 /***************************************************************************
@@ -416,11 +417,11 @@ SimCarUpdateWheelPos(tCar *car)
 			//	    angles.z += wheel->steer + wheel->staticPos.az;
 	    
 			wheel->bodyVel.x = vx
-				- car->DynGC.vel.az * wheel->staticPos.y
-				+ car->DynGC.vel.ay * wheel->staticPos.x;
+			  - car->DynGC.vel.az * wheel->staticPos.y
+			  + car->DynGC.vel.ay * pos.z;//wheel->staticPos.x;
 			wheel->bodyVel.y = vy
-				+ car->DynGC.vel.az * wheel->staticPos.x
-				- car->DynGC.vel.ax * wheel->staticPos.y;
+			  + car->DynGC.vel.az * wheel->staticPos.x
+			  - car->DynGC.vel.ax * pos.z;//wheel->staticPos.y;
 		}
     } else {
 		for (i = 0; i < 4; i++) {

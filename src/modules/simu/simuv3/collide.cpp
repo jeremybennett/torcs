@@ -190,12 +190,13 @@ SimCarCollideZ(tCar *car)
 
 
 		} else {
+		  /*
 		    t3Dd forces;
-		    forces.x = -0.125*dotProd * rel_normal.x;
-		    forces.y = -0.125*dotProd * rel_normal.y;
-		    forces.z = -0.125*dotProd * rel_normal.z;
-		    forces.x += 0.1*SIGN(wheel->bodyVel.x) * dotProd;
-		    forces.y += 0.1*SIGN(wheel->bodyVel.y) * dotProd;
+		    forces.x = -0.0125*dotProd * rel_normal.x;
+		    forces.y = -0.0125*dotProd * rel_normal.y;
+		    forces.z = -0.0125*dotProd * rel_normal.z;
+		    forces.x += 0.01*SIGN(wheel->bodyVel.x) * dotProd;
+		    forces.y += 0.01*SIGN(wheel->bodyVel.y) * dotProd;
 
 		    car->DynGC.vel.ax += //direction.x * 
 			(car->mass * car->Iinv.x) *
@@ -215,6 +216,7 @@ SimCarCollideZ(tCar *car)
 		    car->DynGCg.vel.ax*=.99;
 		    car->DynGCg.vel.ay*=.99;
 		    car->DynGCg.vel.az*=.99;
+		  */
 		}
 #endif
 		}
@@ -487,8 +489,8 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
 	sgVec3 force;
 	tdble invK = 0.005;
-	force[0] = -invK * v1ab[0];
-	force[1] = -invK * v1ab[1];
+	force[0] = -invK * v1ab[0] * fabs(n[0]);
+	force[1] = -invK * v1ab[1] * fabs(n[1]);
 	force[2] = 0;
 	if (sgLengthVec3 (force) > 0.1) {
 		tdble h=drand48()-0.5;
@@ -523,6 +525,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 		f[2] = updated.z;
 		car1->ReInfo->_reGraphicItf.bendcar(car2->carElt->index, p2, f, 0);
 	}
+
     
     atmp = atan2(rap[1], rap[0]);
     if (fabs(atmp) < (PI / 3.0)) {

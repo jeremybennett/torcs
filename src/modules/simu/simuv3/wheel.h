@@ -46,6 +46,8 @@ typedef struct
     /* 1 and 2 are for suspension state */
 #define SIM_WH_SPINNING 4	/* the wheel is spinning */
 #define SIM_WH_LOCKED   8	/* the wheel is locked */
+#define SIM_WH_FREE     16  /* the wheel is non longer on the car */
+#define SIM_WH_BURST    32  /* the wheel has exploded */ 
     tdble	axleFz;		/* force from axle (anti-roll bar) */
     tTrkLocPos	trkPos;		/* current track position */
     tPosd	relPos;		/* relative pos / GC */
