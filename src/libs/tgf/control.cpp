@@ -62,6 +62,7 @@ gfJoyFirstInit(void)
 		<br>0 .. if no joystick present
     @note	call GfctrlJoyRelease to free the tCtrlJoyInfo structure
     @see	GfctrlJoyRelease
+    @see	tCtrlJoyInfo
 */
 tCtrlJoyInfo *
 GfctrlJoyInit(void)
@@ -153,4 +154,104 @@ GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo)
     }
 
     return 0;
+}
+
+
+
+
+/** Initialize the mouse control
+    @ingroup	ctrl
+    @return	pointer on a tCtrlMouseInfo structure
+		<br>0 .. if no mouse present
+    @note	call GfctrlMouseRelease to free the tCtrlMouseInfo structure
+    @see	GfctrlMouseRelease
+*/
+tCtrlMouseInfo *
+GfctrlMouseInit(void)
+{
+    tCtrlMouseInfo	*mouseInfo = NULL;
+
+    mouseInfo = (tCtrlMouseInfo *)calloc(1, sizeof(tCtrlMouseInfo));
+
+    return mouseInfo;
+}
+
+/** Release the tCtrlMouseInfo structure
+    @ingroup	ctrl
+    @param	mouseInfo	mouse structure
+    @return	none
+*/
+void
+GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo)
+{
+    FREEZ(mouseInfo);
+}
+
+static tMouseInfo refMouse;
+
+/** Get the mouse current values
+    @ingroup	ctrl
+    @param	mouseInfo	mouse structure
+    @return	<tt>0 ... </tt>Ok
+		<br><tt>-1 .. </tt>Error
+    @note	The tCtrlMouseInfo structure is updated with the new values
+*/
+int
+GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
+{
+    float	mouseMove;
+    tMouseInfo	*mouse;
+    int		i;
+
+    mouse = GfuiMouseInfo();
+
+    mouseMove = (float)(refMouse.X - mouse->X);
+    
+    if (mouseMove < 0) {
+	mouseInfo->ax[1] = -mouseMove;
+	mouseInfo->ax[0] = 0;
+    } else {
+	mouseInfo->ax[0] = mouseMove;
+	mouseInfo->ax[1] = 0;
+    }
+    mouseMove = (float)(refMouse.Y - mouse->Y);
+    if (mouseMove < 0) {
+	mouseInfo->ax[3] = -mouseMove;
+	mouseInfo->ax[2] = 0;
+    } else {
+	mouseInfo->ax[2] = mouseMove;
+	mouseInfo->ax[3] = 0;
+    }
+    for (i = 0; i < 3; i++) {
+	if (mouseInfo->button[i] != mouse->button[i]) {
+	    if (mouse->button[i]) {
+		mouseInfo->edgedn[i] = 1;
+		mouseInfo->edgeup[i] = 0;
+	    } else {
+		mouseInfo->edgeup[i] = 1;
+		mouseInfo->edgedn[i] = 0;
+	    }
+	    mouseInfo->button[i] = mouse->button[i];
+	} else {
+	    mouseInfo->edgeup[i] = 0;
+	    mouseInfo->edgedn[i] = 0;
+	}
+    }
+    return 0;
+}
+
+
+/** Recentre the mouse on the screen and get the reference position.
+    @ingroup	ctrl
+    @return	none
+*/
+void
+GfctrlMouseCalibrate(void)
+{
+    int sw, sh, vw, vh;
+
+    GfScrGetSize(&sw, &sh, &vw, &vh);
+    GfuiMouseSetPos(sw / 2, sh / 2);
+    refMouse.X = sw / 2;
+    refMouse.Y = sh / 2;
 }

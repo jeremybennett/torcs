@@ -584,6 +584,21 @@ extern int GfctrlJoyIsPresent(void);
 extern int GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo);
 extern void GfctrlJoyRelease(tCtrlJoyInfo *joyInfo);
 
+
+/** Mouse information structure */
+typedef struct
+{
+    int		edgeup[3];	/**< Button transition from down (pressed) to up */
+    int		edgedn[3];	/**< Button transition from up to down */
+    int		button[3];	/**< Button state (1 = up) */
+    float	ax[4];		/**< mouse axis position (mouse considered as a joystick) */
+} tCtrlMouseInfo;
+
+extern tCtrlMouseInfo *GfctrlMouseInit(void);
+extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
+extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
+extern void GfctrlMouseCalibrate(void);
+
 #endif /* __TGF__H__ */
 
 

@@ -66,7 +66,8 @@ static void	*DrvInfo;
 
 static float color[] = {1.0, 1.0, 1.0, 1.0};
 
-static tCtrlJoyInfo *joyInfo = NULL;
+static tCtrlJoyInfo	*joyInfo = NULL;
+static tCtrlMouseInfo	*mouseInfo = NULL;
 
 #ifdef _WIN32
 /* should be present in mswindows */
@@ -85,6 +86,7 @@ shutdown(int index)
 	GfParmReleaseHandle(DrvInfo);
 	GfParmReleaseHandle(PrefHdle);
 	GfctrlJoyRelease(joyInfo);
+	GfctrlMouseRelease(mouseInfo);
 	firstTime = 0;
     }
 }
@@ -177,7 +179,9 @@ human(tModInfo *modInfo)
     if (joyInfo) {
 	joyPresent = 1;
     }
-    
+
+    mouseInfo = GfctrlMouseInit();
+
     return 0;
 }
 
@@ -265,7 +269,6 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
  */
 static tdble shiftThld[MAX_GEARS+1];
 static tdble Gear;
-static tMouseInfo refMouse;
 static tdble	distToStart;
 
 void newrace(int index, tCarElt* car, tSituation *s)
@@ -281,8 +284,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    /* Get the current mouse position */
-    memcpy(&refMouse, GfuiMouseInfo(), sizeof (tMouseInfo));
+    GfctrlMouseCalibrate();
 
 #ifndef WIN32
 #ifdef TELEMETRY
@@ -302,16 +304,8 @@ void newrace(int index, tCarElt* car, tSituation *s)
 
 }
 
-static float	mouseAxis[4] = {0};
-static tMouseInfo	*mouse;
-static int	mouseEdgeup[3]   = {0};
-static int	mouseEdgedn[3]   = {0};
-static int	lastMouse[3]     = {0};
-
 static void common_drive(int index, tCarElt* car, tSituation *s)
 {
-    static int	 firstTime = 1;
-    int		 i;
     tdble	 slip;
     static float ABS = 1.0;
     static float AntiSlip = 1.0;
@@ -321,7 +315,6 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     float	 throttle;
     float	 leftSteer;
     float	 rightSteer;
-    float	 mouseMove;
     int		 scrw, scrh, dummy;
 
     distToStart = RtGetDistFromStart(car);
@@ -340,46 +333,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	GfctrlJoyGetCurrent(joyInfo);
     }
 
-    mouse = GfuiMouseInfo();
-    if (firstTime) {
-	/* Get the current mouse position to recenter */
-	memcpy(&refMouse, mouse, sizeof (tMouseInfo));
-	firstTime = 0;
-    }
-    
-    mouseMove = (float)(refMouse.X - mouse->X);
-    
-    if (mouseMove < 0) {
-	mouseAxis[1] = -mouseMove;
-	mouseAxis[0] = 0;
-    } else {
-	mouseAxis[0] = mouseMove;
-	mouseAxis[1] = 0;
-    }
-    mouseMove = (float)(refMouse.Y - mouse->Y);
-    if (mouseMove < 0) {
-	mouseAxis[3] = -mouseMove;
-	mouseAxis[2] = 0;
-    } else {
-	mouseAxis[2] = mouseMove;
-	mouseAxis[3] = 0;
-    }
-    for (i = 0; i < 3; i++) {
-	if (lastMouse[i] != mouse->button[i]) {
-	    if (mouse->button[i]) {
-		mouseEdgedn[i] = 1;
-		mouseEdgeup[i] = 0;
-	    } else {
-		mouseEdgeup[i] = 1;
-		mouseEdgedn[i] = 0;
-	    }
-	    lastMouse[i] = mouse->button[i];
-	} else {
-	    mouseEdgeup[i] = 0;
-	    mouseEdgedn[i] = 0;
-	}
-    }
-    
+    GfctrlMouseGetCurrent(mouseInfo);
 
     if ((CmdControl[CMD_ABS].type == CMD_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[CMD_ABS].val]) {
 	ParamAbs = 1 - ParamAbs;
@@ -413,7 +367,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	leftSteer = -SIGN(ax0) * CmdControl[CMD_LEFTSTEER].pow * pow(fabs(ax0), CmdControl[CMD_LEFTSTEER].sens) / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x);
 	break;
     case CMD_TYPE_MOUSE_MOVE:
-	ax0 = mouseAxis[CmdControl[CMD_LEFTSTEER].val] - CmdControl[CMD_LEFTSTEER].deadZone;
+	ax0 = mouseInfo->ax[CmdControl[CMD_LEFTSTEER].val] - CmdControl[CMD_LEFTSTEER].deadZone;
 	if (ax0 > CmdControl[CMD_LEFTSTEER].max) {
 	    ax0 = CmdControl[CMD_LEFTSTEER].max;
 	} else if (ax0 < CmdControl[CMD_LEFTSTEER].min) {
@@ -437,7 +391,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	rightSteer = -SIGN(ax0) * CmdControl[CMD_RIGHTSTEER].pow * pow(fabs(ax0), CmdControl[CMD_RIGHTSTEER].sens) / (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x);
 	break;
     case CMD_TYPE_MOUSE_MOVE:
-	ax0 = mouseAxis[CmdControl[CMD_RIGHTSTEER].val] - CmdControl[CMD_RIGHTSTEER].deadZone;
+	ax0 = mouseInfo->ax[CmdControl[CMD_RIGHTSTEER].val] - CmdControl[CMD_RIGHTSTEER].deadZone;
 	if (ax0 > CmdControl[CMD_RIGHTSTEER].max) {
 	    ax0 = CmdControl[CMD_RIGHTSTEER].max;
 	} else if (ax0 < CmdControl[CMD_RIGHTSTEER].min) {
@@ -470,7 +424,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	car->_brakeCmd = joyInfo->levelup[CmdControl[CMD_BRAKE].val];
 	break;
     case CMD_TYPE_MOUSE_BUT:
-	car->_brakeCmd = mouse->button[CmdControl[CMD_BRAKE].val];
+	car->_brakeCmd = mouseInfo->button[CmdControl[CMD_BRAKE].val];
 	break;
     default:
 	car->_brakeCmd = 0;
@@ -526,7 +480,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	car->_accelCmd = joyInfo->levelup[CmdControl[CMD_THROTTLE].val];
 	break;
     case CMD_TYPE_MOUSE_BUT:
-	car->_accelCmd = mouse->button[CmdControl[CMD_THROTTLE].val];
+	car->_accelCmd = mouseInfo->button[CmdControl[CMD_THROTTLE].val];
 	break;
     default:
 	car->_accelCmd = 0;
@@ -663,7 +617,7 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     if (RelButNeutral) {
 	for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
 	    if (((CmdControl[i].type == CMD_TYPE_JOY_BUT) && joyInfo->edgedn[CmdControl[i].val]) ||
-		((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseEdgeup[CmdControl[i].val])) {
+		((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseInfo->edgeup[CmdControl[i].val])) {
 		car->_gearCmd = 0;
 		/* return to auto-shift */
 		manual = 0;
@@ -672,7 +626,7 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     }
     for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
 	if (((CmdControl[i].type == CMD_TYPE_JOY_BUT) && joyInfo->edgeup[CmdControl[i].val]) ||
-	    ((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseEdgedn[CmdControl[i].val])) {
+	    ((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseInfo->edgedn[CmdControl[i].val])) {
 	    car->_gearCmd = i - CMD_GEAR_N;
 	    manual = 1;
 	}
