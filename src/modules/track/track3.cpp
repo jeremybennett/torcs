@@ -1115,7 +1115,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 
     curSeg = theTrack->seg;
     for(i=0; i<theTrack->nseg; i++)  {         /* read the segment data: */
-	if (curSeg->lgfromstart > (theTrack->length - 50.0)) {
+	if ((curSeg->lgfromstart + curSeg->length) > (theTrack->length - 50.0)) {
 	    curSeg->raceInfo |= TR_LAST;
 	} else if (curSeg->lgfromstart < 50.0) {
 	    curSeg->raceInfo |= TR_START;

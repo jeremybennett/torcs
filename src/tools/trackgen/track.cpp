@@ -90,7 +90,9 @@ initPits(tTrackPitInfo *pits)
 	curPos.type = TR_LPOS_MAIN;
 	curMainSeg = pits->pitStart->prev;
 	changeSeg = 1;
-	for (i = 0; i < pits->nMaxPits; i++) {
+	toStart = 0;
+	i = 0;
+	while (i < pits->nMaxPits) {
 	    if (changeSeg) {
 		changeSeg = 0;
 		curMainSeg = curMainSeg->next;
@@ -102,8 +104,12 @@ initPits(tTrackPitInfo *pits)
 		    curPitSeg = curMainSeg->lside;
 		    break;
 		}
-		toStart = 0;
 		curPos.seg = curMainSeg;
+		if (toStart >= curMainSeg->length) {
+		    toStart -= curMainSeg->length;
+		    changeSeg = 1;
+		    continue;
+		}
 	    }
 	    /* Not the real position but the start and border one instead of center */
 	    curPos.toStart = toStart;
@@ -122,8 +128,10 @@ initPits(tTrackPitInfo *pits)
 	    memcpy(&(pits->driversPits[i].pos), &curPos, sizeof(curPos));
 	    toStart += pits->len;
 	    if (toStart >= curMainSeg->length) {
+		toStart -= curMainSeg->length;
 		changeSeg = 1;
 	    }
+	    i++;
 	}
 	break;
     case TR_PIT_ON_SEPARATE_PATH:
@@ -177,6 +185,7 @@ InitScene(tTrack *track)
     unsigned int	curTexId = 0;
     int			curTexType = 0;
     int			curTexLink = 0;
+    tdble		curTexOffset = 0;
     tdble		curTexSeg;
     tdble		curTexSize = 0;
     tTexElt		*texList = (tTexElt*)NULL;
@@ -291,7 +300,7 @@ InitScene(tTrack *track)
     }								\
 }
 
-#define CHECKDISPLIST(mat, name, id) {							\
+#define CHECKDISPLIST(mat, name, id, off) {						\
 	char *texname;									\
 	int  mipmap;									\
 	char path_[256];								\
@@ -313,6 +322,13 @@ InitScene(tTrack *track)
 		curTexLink = 1;								\
 	    else									\
 		curTexLink = 0;								\
+	    free(textype);								\
+	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXSTARTBOUNDARY, TRK_VAL_NO);	\
+	    if (strcmp(textype, TRK_VAL_YES) == 0)					\
+		curTexOffset = -off;							\
+	    else									\
+		curTexOffset = 0;							\
+	    free(textype);								\
 	    curTexSize = GfParmGetNum(hndl, path_, TRK_ATT_TEXSIZE, (char*)NULL, 20.0); \
 	    prevTexId = curTexId;							\
 	    NEWDISPLIST(1, name, id);							\
@@ -386,12 +402,13 @@ InitScene(tTrack *track)
     runninglentgh = 0;
     for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
 	uniqueId++;
-	CHECKDISPLIST(seg->material, "tkMn", uniqueId);
+	CHECKDISPLIST(seg->material, "tkMn", uniqueId, seg->lgfromstart);
 	if (!curTexLink) {
 	    curTexSeg = 0;
 	} else {
 	    curTexSeg = seg->lgfromstart;
 	}
+	curTexSeg += curTexOffset;
 	texLen = curTexSeg / curTexSize;
 	if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 	    uniqueId++;
@@ -548,12 +565,13 @@ InitScene(tTrack *track)
 	if ((mseg->rside != NULL) && (mseg->ralt == NULL)) {
 	    seg = mseg->rside;
 	    uniqueId++;
-	    CHECKDISPLIST(seg->material, "tkRtSd", uniqueId);
+	    CHECKDISPLIST(seg->material, "tkRtSd", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
 		curTexSeg = mseg->lgfromstart;
 	    }
+	    curTexSeg += curTexOffset;
 	    texLen = curTexSeg / curTexSize;
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
@@ -719,12 +737,13 @@ InitScene(tTrack *track)
 	if ((mseg->lside != NULL) && (mseg->lalt == NULL)) {
 	    seg = mseg->lside;
 	    uniqueId++;
-	    CHECKDISPLIST(seg->material, "tkLtSd", uniqueId);
+	    CHECKDISPLIST(seg->material, "tkLtSd", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
 		curTexSeg = mseg->lgfromstart;
 	    }
+	    curTexSeg += curTexOffset;
 	    texLen = curTexSeg / curTexSize;
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
@@ -892,7 +911,7 @@ InitScene(tTrack *track)
 	    NEWDISPLIST(0, "brRt", uniqueId);
 	} else {
 	    uniqueId++;
-	    CHECKDISPLIST("barrier", "brRt", uniqueId);
+	    CHECKDISPLIST("barrier", "brRt", uniqueId, 0);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
@@ -1049,7 +1068,7 @@ InitScene(tTrack *track)
 	    NEWDISPLIST(0, "BrLt", uniqueId);
 	} else {
 	    uniqueId++;
-	    CHECKDISPLIST("barrier", "BrLt", uniqueId);
+	    CHECKDISPLIST("barrier", "BrLt", uniqueId, 0);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
@@ -1848,7 +1867,7 @@ InitScene(tTrack *track)
 	trackvertices[3*nbvert+1] = y2;
 	trackvertices[3*nbvert+2] = z2;
 	trackindices[nbvert]      = nbvert++;
-
+	
 	for (i = 0; i < pits->driversPitsNb; i++) {
 	    tdble dx, dy;
 

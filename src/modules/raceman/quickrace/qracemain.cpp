@@ -225,7 +225,7 @@ qrUpdtPitCmd(void *pvcar)
 static void
 qrManage(tCarElt *car)
 {
-    int i, evnb;
+    int i /* , evnb */ ;
     
     tqrCarInfo *info = &(qrCarInfo[car->index]);
 
@@ -265,7 +265,7 @@ qrManage(tCarElt *car)
 
     /* Start Line Crossing */
     if (info->prevTrkPos.seg != car->_trkPos.seg) {
-	if ((info->prevTrkPos.seg->raceInfo == TR_LAST) && (car->_trkPos.seg->raceInfo == TR_START)) {
+	if ((info->prevTrkPos.seg->raceInfo & TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {
 	    if (info->lapFlag == 0) {
 		if ((car->_state & RM_CAR_STATE_FINISH) == 0) {
 		    car->_laps++;
@@ -312,7 +312,7 @@ qrManage(tCarElt *car)
 		info->lapFlag--;
 	    }
 	}
-	if ((info->prevTrkPos.seg->raceInfo == TR_START) && (car->_trkPos.seg->raceInfo == TR_LAST)) {
+	if ((info->prevTrkPos.seg->raceInfo & TR_START) && (car->_trkPos.seg->raceInfo & TR_LAST)) {
 	    /* going backward through the start line */
 	    info->lapFlag++;
 	}
