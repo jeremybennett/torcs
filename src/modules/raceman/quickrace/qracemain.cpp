@@ -227,7 +227,7 @@ qrUpdtPitTime(tCarElt *car)
 {
     tqrCarInfo *info = &(qrCarInfo[car->index]);
 
-    info->totalPitTime = 5.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.015;
+    info->totalPitTime = 2.0 + car->pitcmd->fuel / 8.0 + (tdble)(car->pitcmd->repair) * 0.007;
     car->_scheduledEventTime = qrTheSituation.currentTime + info->totalPitTime;
     SimItf.reconfig(car);    
 }
@@ -262,7 +262,9 @@ qrRaceMsgSet(char *msg, double life)
 static void
 qrManage(tCarElt *car)
 {
-    int i, evnb ;
+    int i, evnb, pitok;
+    tTrackSeg *sseg;
+    tdble wseg;
     static float color[] = {0.0, 0.0, 1.0, 1.0};
     
     tqrCarInfo *info = &(qrCarInfo[car->index]);
@@ -304,16 +306,35 @@ qrManage(tCarElt *car)
 	}
 	if ((lgFromStart > (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart - qrTheTrack->pits.len / 2.0 + car->_dimension_x/2.0)) &&
 	    (lgFromStart < (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart + qrTheTrack->pits.len / 2.0 - car->_dimension_x/2.0))) {
-	    if (((qrTheTrack->pits.side == TR_RGT) &&
-		 ((car->_trkPos.toRight + RtTrackGetWidth(car->_trkPos.seg->rside, car->_trkPos.toStart) <
-		   (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-		  (fabs(car->_speed_x) < 0.1) &&
-		  (fabs(car->_speed_y) < 0.1))) ||
-		((qrTheTrack->pits.side != TR_RGT) && 
-		 ((car->_trkPos.toLeft + RtTrackGetWidth(car->_trkPos.seg->lside, car->_trkPos.toStart) <
-		   (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-		  (fabs(car->_speed_x) < 0.1) &&
-		  (fabs(car->_speed_y) < 0.1)))) {
+	    pitok = 0;
+	    if (qrTheTrack->pits.side == TR_RGT) {
+		sseg = car->_trkPos.seg->rside;
+		wseg = RtTrackGetWidth(sseg, car->_trkPos.toStart);
+		if (sseg->rside) {
+		    sseg = sseg->rside;
+		    wseg += RtTrackGetWidth(sseg, car->_trkPos.toStart);
+		}
+		if (((car->_trkPos.toRight + wseg) <
+		     (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
+		    (fabs(car->_speed_x) < 0.1) &&
+		    (fabs(car->_speed_y) < 0.1)) {
+		    pitok = 1;
+		}
+	    } else {
+		sseg = car->_trkPos.seg->lside;
+		wseg = RtTrackGetWidth(sseg, car->_trkPos.toStart);
+		if (sseg->lside) {
+		    sseg = sseg->lside;
+		    wseg += RtTrackGetWidth(sseg, car->_trkPos.toStart);
+		}
+		if (((car->_trkPos.toLeft + wseg) <
+		     (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
+		    (fabs(car->_speed_x) < 0.1) &&
+		    (fabs(car->_speed_y) < 0.1)) {
+		    pitok = 1;
+		}
+	    }
+	    if (pitok) {
 		car->_state |= RM_CAR_STATE_PIT;
 		car->_event |= RM_EVENT_PIT_STOP;
 		info->startPitTime = qrTheSituation.currentTime;
