@@ -59,9 +59,9 @@
 
   <!-- Same engine for every one -->
   <section name="Engine">
-    <attnum name="inertia"      unit="kg.m2" val="0.24"></attnum>
-    <attnum name="revs limiter" unit="rpm"   val="5500"></attnum>
-    <attnum name="revs maxi"    unit="rpm"   val="6000"></attnum>
+    <attnum name="inertia"      unit="kg.m2" val="0.20"></attnum>
+    <attnum name="revs limiter" unit="rpm"   val="6500"></attnum>
+    <attnum name="revs maxi"    unit="rpm"   val="7000"></attnum>
     <attnum name="tickover"     unit="rpm"   val="1000"></attnum>
     <attnum name="fuel cons factor"          val="1.2"></attnum>
     <section name="data points">
@@ -87,7 +87,11 @@
       </section>
       <section name="6">
 	<attnum name="rpm" unit="rpm" val="6000"></attnum>
-	<attnum name="Tq"  unit="N.m" val="280"></attnum>
+	<attnum name="Tq"  unit="N.m" val="320"></attnum>
+      </section>
+      <section name="7">
+	<attnum name="rpm" unit="rpm" val="7000"></attnum>
+	<attnum name="Tq"  unit="N.m" val="300"></attnum>
       </section>
     </section>
   </section>

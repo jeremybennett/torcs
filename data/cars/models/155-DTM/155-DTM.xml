@@ -52,7 +52,7 @@
     <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.8"></attnum>
     <attnum name="overall width"  unit="m" min="1.2" max="2.1" val="1.9"></attnum>
     <attnum name="mass" unit="kg" min="1100.0" max="2500" val="1100.0"></attnum>
-    <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.20"></attnum>
+    <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.28"></attnum>
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
@@ -129,12 +129,12 @@
 
   <section name="Front Axle">
     <attnum name="xpos" val="1.31"></attnum>
-    <attnum name="roll center height" unit="m" val="0.02"></attnum>
+    <attnum name="roll center height" unit="m" val="0.2"></attnum>
   </section>
 
   <section name="Rear Axle">
     <attnum name="xpos" val="-1.36"></attnum>
-    <attnum name="roll center height" unit="m" val="0.08"></attnum>
+    <attnum name="roll center height" unit="m" val="0.8"></attnum>
   </section>
 
   <section name="Front Differential">

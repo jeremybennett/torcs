@@ -18,9 +18,9 @@
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="cars/buggy/tex-wheel.rgb"></attstr>
-    <attstr name="tachometer texture" val="rpm5500.rgb"></attstr>
+    <attstr name="tachometer texture" val="rpm7000.rgb"></attstr>
     <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
-    <attnum name="tachometer max value" val="6000" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="8000" unit="rpm"></attnum>
     <attstr name="speedometer texture" val="speed240.rgb"></attstr>
     <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
     <attnum name="speedometer max value" val="240" unit="km/h"></attnum>
