@@ -67,7 +67,9 @@ static int	curMode = 0;
 static int	curDepth = 0;
 
 static int	curMaxFreq = 160;
+#if WIN32
 static int	MaxFreqId;
+#endif
 
 static int	ResLabelId;
 static int	DepthLabelId;
@@ -271,8 +273,10 @@ updateLabelText(void)
     GfuiLabelSetText (scrHandle, ResLabelId, Res[curRes]);
     GfuiLabelSetText (scrHandle, DepthLabelId, Depth[curDepth]);
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
+#if WIN32
     sprintf(buf, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
+#endif
 }
 
 static void
@@ -358,6 +362,7 @@ initFromConf(void)
     curMaxFreq = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, NULL, curMaxFreq);
 }
 
+#if WIN32
 static void
 ChangeMaxFreq(void *dummy)
 {
@@ -368,6 +373,7 @@ ChangeMaxFreq(void *dummy)
     sprintf(buf, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
 }
+#endif
 
 static void
 onActivate(void *dummy)
@@ -494,6 +500,7 @@ GfScrMenuInit(void *precMenu)
 		       (void*)1, ModePrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+#if WIN32
     y -= 60;
     GfuiLabelCreate(scrHandle,
 		    "Max Frequency",
@@ -503,6 +510,7 @@ GfScrMenuInit(void *precMenu)
     y -= 30;
     MaxFreqId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
 				   275, y, 0, 8, NULL, (tfuiCallback)NULL, ChangeMaxFreq);
+#endif
 
     GfuiAddKey(scrHandle, 13, "Apply Mode", NULL, GfScrReinit, NULL);
     GfuiButtonCreate(scrHandle, "Apply", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
