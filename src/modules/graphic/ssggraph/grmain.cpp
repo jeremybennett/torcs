@@ -17,6 +17,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <profiler.h>
+
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -220,6 +222,7 @@ refresh(tSituation *s)
     int			i;
     ssgLight *          light;
 
+    START_PROFILE("refresh");
     light=ssgGetLight(0);
 
     nFrame++;
@@ -234,13 +237,19 @@ refresh(tSituation *s)
 
     TRACE_GL("refresh: start");
 
+    START_PROFILE("grRefreshSound*");
     grRefreshSound(s);
+    STOP_PROFILE("grRefreshSound*");
 
     grSetView(scrx, scry, scrw, scrh);
 
     glDisable(GL_COLOR_MATERIAL);
 
+    START_PROFILE("grCurCam->update*");
     grCurCam->update(s->cars[s->current], s);
+    STOP_PROFILE("grCurCam->update*");
+
+    START_PROFILE("grDrawBackground/glClear");
     glDepthFunc(GL_LEQUAL);
     if (grCurCam->getDrawBackground()) {
 	glDisable(GL_DEPTH_TEST);
@@ -252,8 +261,13 @@ refresh(tSituation *s)
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
-    grCurCam->action();
+    STOP_PROFILE("grDrawBackground/glClear");
 
+    START_PROFILE("grCurCam->action*");
+    grCurCam->action();
+    STOP_PROFILE("grCurCam->action*");
+
+    START_PROFILE("grDrawCar*");
     sgVec4 fogColor;
     light->getColour(GL_AMBIENT, fogColor);
     sgScaleVec4(fogColor, 0.8);
@@ -272,16 +286,22 @@ refresh(tSituation *s)
     } 
     segIndice = (s->cars[s->current])->_trkPos.seg->id;
     grUpdateSmoke(s->currentTime);
+    STOP_PROFILE("grDrawCar*");
 
+    START_PROFILE("grDrawScene*");
     /*glEnable(GL_DEPTH_TEST);*/
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     grDrawScene();
+    STOP_PROFILE("grDrawScene*");
 
+    START_PROFILE("grBoardCam*");
     glViewport(grWinx, grWiny, grWinw, grWinh);
     grBoardCam->action();
+    STOP_PROFILE("grBoardCam*");
 
+    START_PROFILE("grDisp**");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
@@ -297,9 +317,11 @@ refresh(tSituation *s)
     if (grLeaderFlag)  grDispLeaderBoard(s->cars[s->current], s);
     if (grCounterFlag) grDispCounterBoard2(s->cars[s->current]);
     TRACE_GL("refresh: display boards");
+    STOP_PROFILE("grDisp**");
 
     glEnable(GL_LIGHTING);
 
+    STOP_PROFILE("refresh");
     return 0;
 }
 

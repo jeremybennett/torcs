@@ -49,7 +49,7 @@
   </section>
 
   <section name="Qualifications">
-    <attnum name="laps" val="12"/>
+    <attnum name="laps" val="5"/>
     <attstr name="type" val="qualifications"/>
     <attstr name="starting order" val="drivers list"/>
     <attstr name="display mode" val="results only"/>
@@ -71,6 +71,7 @@
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
+    <attnum name="maximum drivers" val="8"/>
 
     <section name="Starting Grid">
       <attnum name="rows" val="2.000000"/>
@@ -99,6 +100,7 @@
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
+    <attnum name="maximum drivers" val="8"/>
 
     <section name="Starting Grid">
       <attnum name="rows" val="2.000000"/>
