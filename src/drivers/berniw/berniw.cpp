@@ -262,8 +262,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (tmp < b3) tmp = b3;
 
 	/* anti blocking code */
-	tdble	abs_mean;
-	abs_mean = 0.0;
+	tdble	abs_mean = 0.0;
 	for (int i = 0; i < 4; i++) {
 			abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->speed;
 		}

@@ -721,9 +721,7 @@ void Pathfinder::plan(MyCar* myc)
 
 		ps[i].set(speedsqr, length, ps[v].getLoc(), &dir);
 
-		u = (u + 1 + nPathSeg) % nPathSeg;
-		v = (v + 1 + nPathSeg) % nPathSeg;
-		w = (w + 1 + nPathSeg) % nPathSeg;
+		u = v; v = w; w = (w + 1 + nPathSeg) % nPathSeg;
 	}
 
 	if (isPitAvailable()) initPitStopPath();
@@ -773,7 +771,8 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	/* overtaking */
-	if (!inPit && !pitStop && changed == 0) {
+	//if (!inPit && !pitStop && changed == 0) {
+	if (!inPit && (!pitStop || track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, trackSegId)) && changed == 0) {
 		changed += overtake(trackSegId, situation, myc, ocar);
 	}
 
@@ -812,9 +811,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 		ps[j].set(speedsqr, length, ps[v].getLoc(), &dir);
 
-		u = (u + 1 + nPathSeg) % nPathSeg;
-		v = (v + 1 + nPathSeg) % nPathSeg;
-		w = (w + 1 + nPathSeg) % nPathSeg;
+		u = v; v = w; w = (w + 1 + nPathSeg) % nPathSeg;
 	}
 
 	changed = 0;
@@ -970,8 +967,9 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 		/* is it me ? */
 		if (car != mycar) {
 			/* is it near enough to care about ? */
-			tdble cosa = track->cosalpha(&myc->dir, &ocar[i].dir);
 			seg = ocar[i].currentsegid;
+			//tdble cosa = track->cosalpha(&myc->dir, &ocar[i].dir);
+			tdble cosa = track->cosalpha(ps[seg].getDir(), &ocar[i].dir);
 			tspeed = ocar[i].speed*cosa;
 
 			if (track->isBetween(trackSegId, end, seg) && myc->speed > tspeed) {
