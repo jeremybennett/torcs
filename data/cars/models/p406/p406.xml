@@ -20,12 +20,19 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
+    <attnum name="tachometer min angle" unit="deg" val="230"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed240.rgb"/>
+    <attnum name="tachometer max angle" unit="deg" val="-50"/>
+    <attnum name="tachometer max value" unit="rpm" val="7000"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
+    <attnum name="speedometer min angle" unit="deg" val="230"/>
     <attnum name="speedometer min value" unit="km/h" val="0"/>
+    <attnum name="speedometer max angle" unit="deg" val="-50"/>
     <attnum name="speedometer max value" unit="km/h" val="240"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">

@@ -49,7 +49,25 @@ then
 	echo "$LIBDIR/setup_linux.sh file does not exist, check your installation"
 	exit 1
     fi
-    $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
+    case $1 in
+	# List the library used
+	-l) shift
+	    ldd $LIBDIR/torcs-bin
+	    ;;
+
+	# Run under GDB
+	-d) shift
+	    gdb  $LIBDIR/torcs-bin <<EOF
+r -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
+bt
+EOF
+	    ;;
+
+	# Normal run
+	*) $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
+	    ;;
+
+    esac
     exit 0
 fi
 

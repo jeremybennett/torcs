@@ -28,6 +28,7 @@
 #include <tgfclient.h>
 #include <raceman.h>
 #include <racescreens.h>
+#include <driverconfig.h>
 
 #include "raceengine.h"
 #include "racemain.h"
@@ -269,8 +270,12 @@ ReRacemanMenu(void)
 			 NULL, ReStartNewRace);
 
     GfuiMenuButtonCreate(racemanMenuHdle, 
-			 "Configure", "Configure The Race",
+			 "Configure Race", "Configure The Race",
 			 NULL, reConfigureMenu);
+
+/*     GfuiMenuButtonCreate(racemanMenuHdle, */
+/* 			 "Configure Players", "Players configuration menu", */
+/* 			 TorcsDriverMenuInit(racemanMenuHdle), GfuiScreenActivate); */
 
     if (GfParmGetEltNb(params, RM_SECT_TRACKS) > 1) {
 	GfuiMenuButtonCreate(racemanMenuHdle, 
