@@ -375,7 +375,7 @@ packagelist:
 	$(mkinstalldirs) $$createdir ; \
 	archive="TORCS-${VERSION}-$$Pkg".tgz ;\
 	echo "Creating Package $$archive" ;\
-	tar -C ${PACKAGEBASE} -zcf "${PACKAGESBASE}/$$archive" . ;\
+	tar -C ${PACKAGEBASE} -co . | gzip -9 > "${PACKAGESBASE}/$$archive" ;\
 	rm -rf ${PACKAGEBASE} ;\
 	done
 
