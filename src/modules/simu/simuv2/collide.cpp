@@ -29,7 +29,7 @@ SimCarCollideZ(tCar *car)
     tdble	dotProd;
     tWheel	*wheel;
     
-    if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+    if (car->carElt->_state & (RM_CAR_STATE_NO_SIMU | RM_CAR_STATE_FINISH)) {
 	return;
     }
 
@@ -69,7 +69,7 @@ SimCarCollideXYScene(tCar *car)
     tdble	dotProd, nx, ny, cx, cy, dotprod2;
     tTrackBarrier *curBarrier;
     
-    if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+    if (car->carElt->_state & (RM_CAR_STATE_NO_SIMU | RM_CAR_STATE_FINISH)) {
 	return;
     }
 
@@ -150,7 +150,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     tCar	*car1 = (tCar*)obj1;
     tCar	*car2 = (tCar*)obj2;
     tCarElt	*carElt;
-
+    tdble	damFactor, atmp;
 
     sgVec2	n, p1, p2;
     sgVec2	v1ap, v1bp, v1ab;
@@ -165,8 +165,8 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
     float	e = 1.0;	/* energy restitution */
     
-    if ((car1->carElt->_state & RM_CAR_STATE_NO_SIMU) ||
-	(car2->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
+    if ((car1->carElt->_state & (RM_CAR_STATE_NO_SIMU | RM_CAR_STATE_FINISH)) ||
+	(car2->carElt->_state & (RM_CAR_STATE_NO_SIMU | RM_CAR_STATE_FINISH))) {
 	return;
     }
 
@@ -259,8 +259,23 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	((car1->Minv + car2->Minv) +
 	 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
 
-    car1->dammage += (int)(CAR_DAMMAGE * fabs(j));
-    car2->dammage += (int)(CAR_DAMMAGE * fabs(j));
+    atmp = atan2(rap[1], rap[0]);
+    if (fabs(atmp) < (PI / 3.0)) {
+	damFactor = 1.5;
+    } else {
+	damFactor = 1.0;
+    }
+    /* printf("Coll %d -> %f - %f %f %f \n", car1->carElt->index, damFactor, atan2(rap[1], rap[0]), car1->carElt->_yaw, atmp); */
+    car1->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor);
+
+    atmp = atan2(rbp[1], rbp[0]);
+    if (fabs(atmp) < (PI / 3.0)) {
+	damFactor = 1.5;
+    } else {
+	damFactor = 1.0;
+    }
+    /* printf("Coll %d -> %f - %f %f %f \n---\n", car2->carElt->index, damFactor, atan2(rbp[1], rbp[0]), car2->carElt->_yaw, atmp); */
+    car2->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor);
 
 /*     if (j < 0) { */
 /* 	return; */
@@ -390,7 +405,7 @@ SimCarCollideCars(tSituation *s)
 
     for (i = 0; i < s->_ncars; i++) {
 	carElt = s->cars[i];
-	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	if (carElt->_state & (RM_CAR_STATE_NO_SIMU | RM_CAR_STATE_FINISH)) {
 	    continue;
 	}
 	car = &(SimCarTable[carElt->index]);
