@@ -17,13 +17,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <tgf.h>
 #include <math.h>
+#include <stdlib.h>
 #include "spline.h"
 
 #ifdef DMALLOC
 #include "dmalloc.h"
 #endif
+
 
 /*	solving tridiagonal nxn matrix with Givens-Rotations in linear time O(n)
 	[ a1 b1 0   0   0 .......... ]
@@ -34,103 +35,169 @@
 	[ ................ c(n-1) an ]
 */
 
-void tridiagonal(int dim, double * c, double * a, double * b, double * x)
+void tridiagonal(int dim, SplineEquationData *tmp, double *x)
 {
-	double co, si, h, t;
+	double cos, sin, h, t;
 	int i;
 
 	dim--;
-	b[dim] = 0;
+	tmp[dim].b = 0.0;
 	for (i = 0; i < dim; i++) {
-		if (c[i] != 0) {
-			t = a[i] / c[i]; si = 1 / sqrt(1 + t*t); co = t * si;
-			a[i] = a[i]*co + c[i]*si; h = b[i];
-			b[i] = h*co + a[i+1]*si; a[i+1] = -h*si + a[i+1]*co;
-			c[i] = b[i+1]*si; b[i+1] = b[i+1]*co;
-			h = x[i]; x[i] = h*co + x[i+1]*si;
-			x[i+1] = -h*si + x[i+1]*co;
+		if (tmp[i].c != 0.0) {
+			t = tmp[i].a / tmp[i].c;
+			sin = 1.0 / sqrt(1.0 + t*t);
+			cos = t * sin;
+			tmp[i].a = tmp[i].a*cos + tmp[i].c*sin;
+			h = tmp[i].b;
+			tmp[i].b = h*cos + tmp[i+1].a*sin;
+			tmp[i+1].a = -h*sin + tmp[i+1].a*cos;
+			tmp[i].c = tmp[i+1].b*sin;
+			tmp[i+1].b = tmp[i+1].b*cos;
+
+			h = x[i];
+			x[i] = h*cos + x[i+1]*sin;
+			x[i+1] = -h*sin + x[i+1]*cos;
 		}
 	}
-	x[dim] = x[dim] / a[dim]; x[dim-1] = (x[dim-1] - b[dim-1]*x[dim]) / a[dim-1];
+
+	x[dim] = x[dim]/tmp[dim].a;
+	x[dim-1] = (x[dim-1] - tmp[dim-1].b*x[dim]) / tmp[dim-1].a;
+
 	for (i = dim - 2; i >= 0; i--) {
-		x[i] = (x[i] - b[i]*x[i+1] - c[i]*x[i+2]) / a[i];
+		x[i] = (x[i] - tmp[i].b*x[i+1] - tmp[i].c*x[i+2]) / tmp[i].a;
 	}
 }
+
+
+/* solving tridiagonal nxn matrix for two vectors with Givens-Rotations in linear time O(n) */
+void tridiagonal2(int dim, SplineEquationData2 *tmp)
+{
+	double cos, sin, h, t;
+
+	dim--;
+	tmp[dim].b = 0.0;
+	for (int i = 0; i < dim; i++) {
+		if (tmp[i].c != 0.0) {
+			t = tmp[i].a / tmp[i].c;
+			sin = 1.0 / sqrt(1.0 + t*t);
+			cos = t * sin;
+			tmp[i].a = tmp[i].a*cos + tmp[i].c*sin;
+			h = tmp[i].b;
+			tmp[i].b = h*cos + tmp[i+1].a*sin;
+			tmp[i+1].a = -h*sin + tmp[i+1].a*cos;
+			tmp[i].c = tmp[i+1].b*sin;
+			tmp[i+1].b = tmp[i+1].b*cos;
+
+			h = tmp[i].x1;
+			tmp[i].x1 = h*cos + tmp[i+1].x1*sin;
+			tmp[i+1].x1 = -h*sin + tmp[i+1].x1*cos;
+
+			h = tmp[i].x2;
+			tmp[i].x2 = h*cos + tmp[i+1].x2*sin;
+			tmp[i+1].x2 = -h*sin + tmp[i+1].x2*cos;
+		}
+	}
+
+	tmp[dim].x1 = tmp[dim].x1 / tmp[dim].a;
+	tmp[dim-1].x1 = (tmp[dim-1].x1 - tmp[dim-1].b*tmp[dim].x1) / tmp[dim-1].a;
+
+	tmp[dim].x2 = tmp[dim].x2 / tmp[dim].a;
+	tmp[dim-1].x2 = (tmp[dim-1].x2 - tmp[dim-1].b*tmp[dim].x2) / tmp[dim-1].a;
+
+	for (int i = dim - 2; i >= 0; i--) {
+		tmp[i].x1 = (tmp[i].x1 - tmp[i].b*tmp[i+1].x1 - tmp[i].c*tmp[i+2].x1) / tmp[i].a;
+		tmp[i].x2 = (tmp[i].x2 - tmp[i].b*tmp[i+1].x2 - tmp[i].c*tmp[i+2].x2) / tmp[i].a;
+	}
+}
+
 
 /* compute the slopes of the spline points with periodic constraints */
-void slopesp(int dim, double * x, double * y, double * ys)
+void slopesp(int dim, const double *const x, const double *const y, double *const ys)
 {
-	double * a, * b, * c, * d, * h, * u, * v, factor;
+	SplineEquationData2 *tmp = (SplineEquationData2 *) malloc(sizeof(SplineEquationData2)*dim);
 	int i;
-
-	a = (double *) malloc(sizeof(double)*dim);
-	b = (double *) malloc(sizeof(double)*dim);
-	c = (double *) malloc(sizeof(double)*dim);
-	d = (double *) malloc(sizeof(double)*dim);
-	h = (double *) malloc(sizeof(double)*dim);
-	u = (double *) malloc(sizeof(double)*dim);
-	v = (double *) malloc(sizeof(double)*dim);
 
 	dim--;
 	for (i = 0; i < dim; i++) {
-		h[i] = x[i+1] - x[i];
-		d[i] = (y[i+1] - y[i]) / (h[i]*h[i]);
+		tmp[i].h = x[i+1] - x[i];
+		tmp[i].d = (y[i+1]-y[i]) / (tmp[i].h*tmp[i].h);
 	}
+
 	for (i = 1; i < dim; i++) {
-		a[i] = 2 / h[i-1] + 2 / h[i];
-		b[i] = 1 / h[i];
-		c[i] = b[i];
-		ys[i] = 3 * (d[i] + d[i-1]);
+		tmp[i].a = 2.0/tmp[i-1].h + 2.0/tmp[i].h;
+		tmp[i].b = 1.0/tmp[i].h;
+		tmp[i].c = tmp[i].b;
+		ys[i] = 3.0 * (tmp[i].d+tmp[i-1].d);
 	}
-	b[0] = 1 / h[0]; c[0] = b[0]; a[0] = (2*b[0] + 1/h[dim-1]);
-	a[dim-1] = 2/h[dim-2] + 1/h[dim-1];
+
+	tmp[0].b = 1.0/tmp[0].h;
+	tmp[0].c = tmp[0].b;
+	tmp[0].a = (2.0*tmp[0].b + 1.0/tmp[dim-1].h);
+	tmp[dim-1].a = 2.0/tmp[dim-2].h + 1.0/tmp[dim-1].h;
+
 	for (i = 1;  i < dim; i++) {
-		u[i] = 0; v[i] = 3 * (d[i] - d[i-1]);
+		tmp[i].x1 = 0.0; tmp[i].x2 = 3.0 * (tmp[i].d+tmp[i-1].d);
 	}
-	u[0] = 1; u[dim-1] = 1; v[0] = 3 * (d[0] - d[dim-1]);
-	tridiagonal(dim, c, a, b, u);
-	tridiagonal(dim, c, a, b, v);
-	factor = (v[0]+v[dim-1]) / (u[0]+u[dim-1]+h[dim-1]);
+
+	tmp[0].x1 = 1.0;
+	tmp[dim-1].x1 = 1.0;
+	tmp[0].x2 = 3.0 * (tmp[0].d+tmp[dim-1].d);
+
+	tridiagonal2(dim, tmp);
+
+	double factor = (tmp[0].x2+tmp[dim-1].x2) / (tmp[0].x1+tmp[dim-1].x1+tmp[dim-1].h);
 	for (i = 0; i < dim; i++) {
-		ys[i] = v[i] - factor*u[i];
+		ys[i] = tmp[i].x2 - factor*tmp[i].x1;
 	}
 	ys[dim] = ys[0];
-	free(a); free(b); free(c); free(d); free(h); free(u); free(v);
+
+	free(tmp);
 }
 
-/* compute the slopes of the spline points with natural constraints */
-void slopesn(int dim, double * x, double * y, double * ys)
-{
-	double * a, * b, * c, * d, * h;
-	int i;
 
-	a = (double *) malloc(sizeof(double)*dim);
-	b = (double *) malloc(sizeof(double)*dim);
-	c = (double *) malloc(sizeof(double)*dim);
-	d = (double *) malloc(sizeof(double)*dim);
-	h = (double *) malloc(sizeof(double)*dim);
+/* compute the slopes of the spline points with natural constraints */
+void slopesn(int dim, const double *const x, const double *const y, double *const ys)
+{
+	SplineEquationData *tmp = (SplineEquationData *) malloc(sizeof(SplineEquationData)*dim);
+	int i;
 
 	dim--;
 	for (i = 0; i < dim; i++) {
-		h[i] = x[i+1] - x[i];
-		d[i] = (y[i+1] - y[i]) / (h[i]*h[i]);
+		tmp[i].h = x[i+1]-x[i];
+		tmp[i].d = (y[i+1]-y[i]) / (tmp[i].h*tmp[i].h);
 	}
+
 	for (i = 1; i < dim; i++) {
-		a[i] = 2 / h[i-1] + 2 / h[i];
-		b[i] = 1 / h[i];
-		c[i] = b[i];
-		ys[i] = 3 * (d[i] + d[i-1]); 		
+		tmp[i].a = 2.0/tmp[i-1].h + 2.0/tmp[i].h;
+		tmp[i].b = 1.0/tmp[i].h;
+		tmp[i].c = tmp[i].b;
+		ys[i] = 3.0 * (tmp[i].d+tmp[i-1].d);
 	}
-	b[0] = 1 / h[0]; c[0] = b[0]; a[0] = 2*b[0];
-	a[dim] = 2/h[dim-1]; ys[0] = 3*d[0]; ys[dim] = 3*d[dim-1];
-	tridiagonal(dim, c, a, b, ys);
-	free(a); free(b); free(c); free(d); free(h);
+
+	tmp[0].b = 1.0/tmp[0].h;
+	tmp[0].c = tmp[0].b;
+	tmp[0].a = 2.0*tmp[0].b;
+	tmp[dim].a = 2.0/tmp[dim-1].h;
+	ys[0] = 3.0*tmp[0].d;
+	ys[dim] = 3.0*tmp[dim-1].d;
+
+	tridiagonal(dim+1, tmp, ys);
+
+	free(tmp);
 }
 
-/* compute the slopes for 2-dim curve, sums euclidian distances as parameter, periodic */	
-void parametricslopesp(int dim, double * x, double * y, double * xs, double * ys, double * s)
+
+/* compute the slopes for 2-dim curve, sums euclidian distances as parameter, periodic */
+void parametricslopesp(
+	int dim,
+	const double *const x,
+	const double *const y,
+	double *const xs,
+	double *const ys,
+	double *const s
+)
 {
-	s[0] = 0;
+	s[0] = 0.0;
 	for (int i = 1; i < dim; i++) {
 		s[i] = s[i-1] + sqrt((x[i]-x[i-1])*(x[i]-x[i-1]) + (y[i]-y[i-1])*(y[i]-y[i-1]));
 	}
@@ -138,9 +205,18 @@ void parametricslopesp(int dim, double * x, double * y, double * xs, double * ys
 	slopesp(dim, s, y, ys);
 }
 
-void parametricslopesn(int dim, double * x, double * y, double * xs, double * ys, double * s)
+
+/* compute the slopes for 2-dim curve, sums euclidian distances as parameter, natural */
+void parametricslopesn(
+	int dim,
+	const double *const x,
+	const double *const y,
+	double *const xs,
+	double *const ys,
+	double *const s
+)
 {
-	s[0] = 0;
+	s[0] = 0.0;
 	for (int i = 1; i < dim; i++) {
 		s[i] = s[i-1] + sqrt((x[i]-x[i-1])*(x[i]-x[i-1]) + (y[i]-y[i-1])*(y[i]-y[i-1]));
 	}
@@ -148,8 +224,15 @@ void parametricslopesn(int dim, double * x, double * y, double * xs, double * ys
 	slopesn(dim, s, y, ys);
 }
 
+
 /* compute the y value for a given z */
-double spline(int dim, double z, double * x, double * y, double * ys)
+double spline(
+	int dim,
+	double z,
+	const double *const x,
+	const double *const y,
+	const double *const ys
+)
 {
 	int i, a, b;
 	double t, a0, a1, a2, a3, h;
@@ -159,9 +242,14 @@ double spline(int dim, double z, double * x, double * y, double * ys)
 		i = (a + b) / 2;
 		if (x[i] <= z) a = i; else b = i;
 	} while ((a + 1) != b);
-    i = a; h = x[i+1] - x[i]; t = (z-x[i]) / h;
-	a0 = y[i]; a1 = y[i+1] - a0; a2 = a1 - h*ys[i];
-	a3 = h * ys[i+1] - a1; a3 -= a2;
+    i = a;
+	h = x[i+1] - x[i];
+	t = (z-x[i]) / h;
+	a0 = y[i];
+	a1 = y[i+1] - a0;
+	a2 = a1 - h*ys[i];
+	a3 = h * ys[i+1] - a1;
+	a3 -= a2;
 	return a0 + (a1 + (a2 + a3*t) * (t-1))*t;
 }
 
