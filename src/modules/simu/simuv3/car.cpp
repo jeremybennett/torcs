@@ -143,10 +143,11 @@ SimCarUpdateForces(tCar *car)
     tForces	F;
     int		i;
     tdble	m, w, minv;
-    tdble	SinTheta;
     tdble	Cosz, Sinz;
     tdble	v, R, Rv, Rm, Rx, Ry;
-
+    t3Dd original;
+    t3Dd updated;
+    t3Dd angles;
     Cosz = car->Cosz = cos(car->DynGCg.pos.az);
     Sinz = car->Sinz = sin(car->DynGCg.pos.az);
 
@@ -158,32 +159,20 @@ SimCarUpdateForces(tCar *car)
     w = -m * G;
 
     /* Weight - Bring weight vector to the car's frame of reference*/
-    if (1) {
-	t3Dd original;
-	t3Dd updated;
-	t3Dd angles;
-	original.x = 0.0;
-	original.y = 0.0;
-	original.z = w;
-	angles.x = car->DynGCg.pos.ax;
-	angles.y = car->DynGCg.pos.ay;
-	angles.z = car->DynGCg.pos.az;	
-	NaiveRotate (original, angles, &updated);
-	F.F.x = updated.x;
-	F.F.y = updated.y;
-	F.F.z = updated.z;	
-    } else {
-	/* Why are we looking at the wheels here?*/
-	SinTheta = (-car->wheel[FRNT_RGT].zRoad - car->wheel[FRNT_LFT].zRoad
-		    + car->wheel[REAR_RGT].zRoad + car->wheel[REAR_LFT].zRoad) / (2.0 * car->wheelbase);
-	F.F.x = -w * SinTheta;
-	SinTheta = (-car->wheel[FRNT_RGT].zRoad - car->wheel[REAR_RGT].zRoad
-		    + car->wheel[FRNT_LFT].zRoad + car->wheel[REAR_LFT].zRoad) / (2.0 * car->wheeltrack);
-	F.F.y = -w * SinTheta;
-	F.F.z = w; /* not 3D */
-    }
+    original.x = 0.0;
+    original.y = 0.0;
+    original.z = w;
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;	
+    NaiveRotate (original, angles, &updated);
+    F.F.x = updated.x;
+    F.F.y = updated.y;
+    F.F.z = updated.z;	
+
     F.M.x = F.M.y = F.M.z = 0;
-    
+
+
     /* Wheels */
     for (i = 0; i < 4; i++) {
 	/* forces */
@@ -192,7 +181,7 @@ SimCarUpdateForces(tCar *car)
 	F.F.z += car->wheel[i].forces.z;
 	/* moments */
 	F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * //(car->wheel[i].rollCenter);
+	    car->wheel[i].forces.y * //* (car->wheel[i].rollCenter);
 	    (car->statGC.z + car->wheel[i].rideHeight);
 	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
 	    car->wheel[i].forces.x * //car->wheel[i].relPos.z;
@@ -200,7 +189,6 @@ SimCarUpdateForces(tCar *car)
 	F.M.z += -car->wheel[i].forces.x * car->wheel[i].staticPos.y +
 	    car->wheel[i].forces.y * car->wheel[i].staticPos.x;
     }
-
 
     /* Aero Drag */
     F.F.x += car->aero.drag;
@@ -219,30 +207,30 @@ SimCarUpdateForces(tCar *car)
     /* Rolling Resistance */
     if (1) {
 	v = sqrt(car->DynGC.vel.x * car->DynGC.vel.x + car->DynGC.vel.y * car->DynGC.vel.y);
-    } else {
-	v = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y);
-    }
-    R = 0;
-    for (i = 0; i < 4; i++) {
-	R += car->wheel[i].rollRes;
-    }
-    if (v > 0.00001) {
-	Rv = R / v;
-	if ((Rv * minv * SimDeltaTime) > v) {
-	    Rv = v * m / SimDeltaTime;
+	
+	R = 0;
+	for (i = 0; i < 4; i++) {
+	    R += car->wheel[i].rollRes;
+	}
+	if (v > 0.00001) {
+	    Rv = R / v;
+	    if ((Rv * minv * SimDeltaTime) > v) {
+		Rv = v * m / SimDeltaTime;
+	    }
+	} else {
+	    Rv = 0;
+	}
+	Rx = Rv * car->DynGC.vel.x; //car->DynGCg.vel.x; 
+	Ry = Rv * car->DynGC.vel.y; //car->DynGCg.vel.x; 
+	
+	if ((R * car->wheelbase / 2.0 * car->Iinv.z) > fabs(car->DynGCg.vel.az)) {
+	    Rm = car->DynGCg.vel.az / car->Iinv.z;
+	} else {
+	    Rm = SIGN(car->DynGCg.vel.az) * R * car->wheelbase / 2.0;
 	}
     } else {
-	Rv = 0;
+	Rx = Rv = Rm = Ry = 0;
     }
-    Rx = Rv * car->DynGC.vel.x; //car->DynGCg.vel.x; 
-    Ry = Rv * car->DynGC.vel.y; //car->DynGCg.vel.x; 
-
-    if ((R * car->wheelbase / 2.0 * car->Iinv.z) > fabs(car->DynGCg.vel.az)) {
-	Rm = car->DynGCg.vel.az / car->Iinv.z;
-    } else {
-	Rm = SIGN(car->DynGCg.vel.az) * R * car->wheelbase / 2.0;
-    }
-
     /* compute accelerations */
 
     if (1) {
@@ -266,16 +254,6 @@ SimCarUpdateForces(tCar *car)
 	car->DynGCg.acc.x = updated.x;
 	car->DynGCg.acc.y = updated.y;
 	car->DynGCg.acc.z = updated.z;
-	
-    } else {
-	/* This is no longer necessary */	
-	car->DynGC.acc.x = F.F.x * minv;
-	car->DynGC.acc.y = F.F.y * minv;
-	car->DynGC.acc.z = F.F.z * minv;
-	
-	car->DynGCg.acc.x = (F.F.x * Cosz - F.F.y * Sinz - Rx) * minv;
-	car->DynGCg.acc.y = (F.F.x * Sinz + F.F.y * Cosz - Ry) * minv;
-	car->DynGCg.acc.z = car->DynGC.acc.z;
     }
     car->DynGCg.acc.ax = car->DynGC.acc.ax = F.M.x * car->Iinv.x;
     car->DynGCg.acc.ay = car->DynGC.acc.ay = F.M.y * car->Iinv.y;
@@ -286,9 +264,7 @@ SimCarUpdateForces(tCar *car)
 static void
 SimCarUpdateSpeed(tCar *car)
 {
-    static int counter=0;
-
-    tdble	Cosz, Sinz, Cosx, Sinx, Cosy, Siny;
+    tdble	Cosz, Sinz;
     int		i;
     tdble	mass;
     tdble	vel, Rr, Rm;	/* Rolling Resistance */
@@ -376,10 +352,6 @@ SimCarUpdateWheelPos(tCar *car)
     /* Wheels data */
     if (1) {
 	t3Dd angles;
-	t3Dd normal;
-	t3Dd rel_normal;
-
-
 	for (i = 0; i < 4; i++) {
 	    t3Dd pos;
 	    tWheel *wheel = &(car->wheel[i]);
@@ -397,11 +369,11 @@ SimCarUpdateWheelPos(tCar *car)
 	    //	    angles.z += wheel->steer + wheel->staticPos.az;
 	    
 	    wheel->bodyVel.x = vx
-		- car->DynGC.vel.az * wheel->staticPos.y;
-	    + car->DynGC.vel.ay * wheel->staticPos.x;
+		- car->DynGC.vel.az * wheel->staticPos.y
+		+ car->DynGC.vel.ay * wheel->staticPos.x;
 	    wheel->bodyVel.y = vy
-		+ car->DynGC.vel.az * wheel->staticPos.x;
-	    - car->DynGC.vel.ax * wheel->staticPos.y;
+		+ car->DynGC.vel.az * wheel->staticPos.x
+		- car->DynGC.vel.ax * wheel->staticPos.y;
 	}
     } else {
 	for (i = 0; i < 4; i++) {
@@ -453,7 +425,7 @@ SimCarUpdatePos(tCar *car)
     car->DynGC.pos.x = car->DynGCg.pos.x;
     car->DynGC.pos.y = car->DynGCg.pos.y;
     car->DynGC.pos.z = car->DynGCg.pos.z;
-    
+
     car->DynGC.pos.ax = car->DynGCg.pos.ax;
     car->DynGC.pos.ay = car->DynGCg.pos.ay;
     car->DynGC.pos.az = car->DynGCg.pos.az;
@@ -558,10 +530,6 @@ void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0)
     v0->x = vx_0;
     v0->y = vy_0;
     v0->z = vz_0;
-    //        printf ("..(%f %f %f)\n..[%f %f %f]\n->[%f %f %f]\n",
-    //    	    u.x, u.y, u.z,
-    //    	    v.x, v.y, v.z,
-    //    	    v0->x, v0->y, v0->z);
 }
 
 /* Original coords, angle, new coords */
