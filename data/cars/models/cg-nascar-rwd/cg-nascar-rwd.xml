@@ -60,8 +60,8 @@
   <section name="Aerodynamics">
     <attnum name="Cx" val="0.38"></attnum>
     <attnum name="front area" unit="m2" val="1.7"></attnum>
-    <attnum name="front Clift" val="1.0"></attnum>
-    <attnum name="rear Clift"  val="0.7"></attnum>
+    <attnum name="front Clift" val="0.8"></attnum>
+    <attnum name="rear Clift"  val="0.5"></attnum>
   </section>
 
   <section name="Front Wing">

@@ -1,4 +1,3 @@
-
 ##############################################################################
 #
 #    file                 : Makefile
@@ -51,6 +50,10 @@ EXPINCDIRS	= src
 TOOLSUBDIRS	= src
 
 SUBDIRS		= src
+
+DATADIR 	= .
+
+DATA    	= CHANGELOG.html COPYING
 
 
 -include ${MAKE_DEFAULT}

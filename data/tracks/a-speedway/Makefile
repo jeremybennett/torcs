@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/a-speedway
+DATADIR   = tracks/oval/a-speedway
 
 DATA      = a-speedway.xml background.png a-speedway.ac a-speedway-relief.ac
 

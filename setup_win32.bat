@@ -5,62 +5,38 @@ call .\create_dir .\export
 call .\create_dir .\export\lib
 call .\create_dir .\export\libd
 
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\interfaces\graphic.h .\export\include\graphic.h
-copy .\src\interfaces\raceman.h .\export\include\raceman.h
-copy .\src\interfaces\robot.h .\export\include\robot.h
-copy .\src\interfaces\simu.h .\export\include\simu.h
-copy .\src\interfaces\track.h .\export\include\track.h
-copy .\src\interfaces\car.h .\export\include\car.h
-copy .\src\interfaces\ttypes.h .\export\include\ttypes.h
-copy .\src\interfaces\telemetry.h .\export\include\telemetry.h
-copy .\src\interfaces\practicectrl.h .\export\include\practicectrl.h
-copy .\src\interfaces\playerpref.h .\export\include\playerpref.h
-copy .\src\interfaces\js.h .\export\include\js.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\txml\xml.h .\export\include\xml.h
-copy .\src\libs\txml\xmlparse.h .\export\include\xmlparse.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\tgf\tgf.h .\export\include\tgf.h
-copy .\src\libs\tgf\os.h .\export\include\os.h
-copy .\src\libs\tgf\queue.h .\export\include\queue.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\torcs\torcs.h .\export\include\torcs.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\racemantools\racemantools.h .\export\include\racemantools.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\robottools\robottools.h .\export\include\robottools.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\windows\osspec.h .\export\include\osspec.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-call .\create_dir .\export\include\3D
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Basic.h .\export\include\3D\Basic.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Matrix.h .\export\include\3D\Matrix.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Point.h .\export\include\3D\Point.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Quaternion.h .\export\include\3D\Quaternion.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple3.h .\export\include\3D\Tuple3.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple4.h .\export\include\3D\Tuple4.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Vector.h .\export\include\3D\Vector.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-call .\create_dir .\export\include\SOLID
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\tita
+call .\create_dir .\runtime\drivers\tita\tracksdata
+copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtime\drivers\tita\tracksdata\aalborg.xml
+copy .\src\drivers\tita\tracksdata\a-speedway.xml .\runtime\drivers\tita\tracksdata\a-speedway.xml
+copy .\src\drivers\tita\tracksdata\car_aalborg.xml .\runtime\drivers\tita\tracksdata\car_aalborg.xml
+copy .\src\drivers\tita\tracksdata\car_a-speedway.xml .\runtime\drivers\tita\tracksdata\car_a-speedway.xml
+copy .\src\drivers\tita\tracksdata\car_eroad.xml .\runtime\drivers\tita\tracksdata\car_eroad.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-1.xml .\runtime\drivers\tita\tracksdata\car_e-track-1.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-2.xml .\runtime\drivers\tita\tracksdata\car_e-track-2.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-3.xml .\runtime\drivers\tita\tracksdata\car_e-track-3.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-4.xml .\runtime\drivers\tita\tracksdata\car_e-track-4.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-5.xml .\runtime\drivers\tita\tracksdata\car_e-track-5.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-6.xml .\runtime\drivers\tita\tracksdata\car_e-track-6.xml
+copy .\src\drivers\tita\tracksdata\car_g-track-1.xml .\runtime\drivers\tita\tracksdata\car_g-track-1.xml
+copy .\src\drivers\tita\tracksdata\car_michigan.xml .\runtime\drivers\tita\tracksdata\car_michigan.xml
+copy .\src\drivers\tita\tracksdata\car_s2.xml .\runtime\drivers\tita\tracksdata\car_s2.xml
+copy .\src\drivers\tita\tracksdata\car_test-1.xml .\runtime\drivers\tita\tracksdata\car_test-1.xml
+copy .\src\drivers\tita\tracksdata\car_wheel-1.xml .\runtime\drivers\tita\tracksdata\car_wheel-1.xml
+copy .\src\drivers\tita\tracksdata\city-1.xml .\runtime\drivers\tita\tracksdata\city-1.xml
+copy .\src\drivers\tita\tracksdata\eroad.xml .\runtime\drivers\tita\tracksdata\eroad.xml
+copy .\src\drivers\tita\tracksdata\e-track-1.xml .\runtime\drivers\tita\tracksdata\e-track-1.xml
+copy .\src\drivers\tita\tracksdata\e-track-2.xml .\runtime\drivers\tita\tracksdata\e-track-2.xml
+copy .\src\drivers\tita\tracksdata\e-track-3.xml .\runtime\drivers\tita\tracksdata\e-track-3.xml
+copy .\src\drivers\tita\tracksdata\e-track-4.xml .\runtime\drivers\tita\tracksdata\e-track-4.xml
+copy .\src\drivers\tita\tracksdata\e-track-5.xml .\runtime\drivers\tita\tracksdata\e-track-5.xml
+copy .\src\drivers\tita\tracksdata\e-track-6.xml .\runtime\drivers\tita\tracksdata\e-track-6.xml
+copy .\src\drivers\tita\tracksdata\g-track-1.xml .\runtime\drivers\tita\tracksdata\g-track-1.xml
+copy .\src\drivers\tita\tracksdata\michigan.xml .\runtime\drivers\tita\tracksdata\michigan.xml
+copy .\src\drivers\tita\tracksdata\s2.xml .\runtime\drivers\tita\tracksdata\s2.xml
+copy .\src\drivers\tita\tracksdata\wheel-1.xml .\runtime\drivers\tita\tracksdata\wheel-1.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\categories
@@ -68,35 +44,7 @@ copy .\data\cars\categories\free\free.xml .\runtime\categories\free.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\categories
-copy .\data\cars\categories\offroad-r-a\offroad-r-a.xml .\runtime\categories\offroad-r-a.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
 copy .\data\cars\categories\Offroad-RWD-GrA\Offroad-RWD-GrA.xml .\runtime\categories\Offroad-RWD-GrA.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-a-b\torcs-a-b.xml .\runtime\categories\torcs-a-b.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-f-a\torcs-f-a.xml .\runtime\categories\torcs-f-a.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-f-b\torcs-f-b.xml .\runtime\categories\torcs-f-b.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-r-a\torcs-r-a.xml .\runtime\categories\torcs-r-a.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-r-b\torcs-r-b.xml .\runtime\categories\torcs-r-b.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\categories
-copy .\data\cars\categories\torcs-r-c\torcs-r-c.xml .\runtime\categories\torcs-r-c.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\categories
@@ -468,181 +416,190 @@ copy .\data\data\textures\turn50R.rgb .\runtime\data\textures\turn50R.rgb
 call .\create_dir .\runtime
 call .\create_dir .\runtime\data
 call .\create_dir .\runtime\data\tracks
+copy .\data\data\tracks\dirt.xml .\runtime\data\tracks\dirt.xml
+copy .\data\data\tracks\oval.xml .\runtime\data\tracks\oval.xml
+copy .\data\data\tracks\road.xml .\runtime\data\tracks\road.xml
 copy .\data\data\tracks\surfaces.xml .\runtime\data\tracks\surfaces.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\aalborg
-copy .\data\tracks\aalborg\aalborg.xml .\runtime\tracks\aalborg\aalborg.xml
-copy .\data\tracks\aalborg\aalborg.ac .\runtime\tracks\aalborg\aalborg.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\aalborg
+copy .\data\tracks\aalborg\aalborg.xml .\runtime\tracks\road\aalborg\aalborg.xml
+copy .\data\tracks\aalborg\aalborg.ac .\runtime\tracks\road\aalborg\aalborg.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\a-speedway
-copy .\data\tracks\a-speedway\a-speedway.xml .\runtime\tracks\a-speedway\a-speedway.xml
-copy .\data\tracks\a-speedway\background.png .\runtime\tracks\a-speedway\background.png
-copy .\data\tracks\a-speedway\a-speedway.ac .\runtime\tracks\a-speedway\a-speedway.ac
-copy .\data\tracks\a-speedway\a-speedway-relief.ac .\runtime\tracks\a-speedway\a-speedway-relief.ac
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\a-speedway
+copy .\data\tracks\a-speedway\a-speedway.xml .\runtime\tracks\oval\a-speedway\a-speedway.xml
+copy .\data\tracks\a-speedway\background.png .\runtime\tracks\oval\a-speedway\background.png
+copy .\data\tracks\a-speedway\a-speedway.ac .\runtime\tracks\oval\a-speedway\a-speedway.ac
+copy .\data\tracks\a-speedway\a-speedway-relief.ac .\runtime\tracks\oval\a-speedway\a-speedway-relief.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\city-1
-copy .\data\tracks\city-1\city-1.xml .\runtime\tracks\city-1\city-1.xml
-copy .\data\tracks\city-1\city-1.ac .\runtime\tracks\city-1\city-1.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-1
+copy .\data\tracks\dirt-1\dirt-1.xml .\runtime\tracks\dirt\dirt-1\dirt-1.xml
+copy .\data\tracks\dirt-1\background.png .\runtime\tracks\dirt\dirt-1\background.png
+copy .\data\tracks\dirt-1\dirt-1.ac .\runtime\tracks\dirt\dirt-1\dirt-1.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-1
-copy .\data\tracks\dirt-1\dirt-1.xml .\runtime\tracks\dirt-1\dirt-1.xml
-copy .\data\tracks\dirt-1\background.png .\runtime\tracks\dirt-1\background.png
-copy .\data\tracks\dirt-1\dirt-1.ac .\runtime\tracks\dirt-1\dirt-1.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-2
+copy .\data\tracks\dirt-2\dirt-2.xml .\runtime\tracks\dirt\dirt-2\dirt-2.xml
+copy .\data\tracks\dirt-2\background.png .\runtime\tracks\dirt\dirt-2\background.png
+copy .\data\tracks\dirt-2\dirt-2.ac .\runtime\tracks\dirt\dirt-2\dirt-2.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-2
-copy .\data\tracks\dirt-2\dirt-2.xml .\runtime\tracks\dirt-2\dirt-2.xml
-copy .\data\tracks\dirt-2\background.png .\runtime\tracks\dirt-2\background.png
-copy .\data\tracks\dirt-2\dirt-2.ac .\runtime\tracks\dirt-2\dirt-2.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-3
+copy .\data\tracks\dirt-3\dirt-3.xml .\runtime\tracks\dirt\dirt-3\dirt-3.xml
+copy .\data\tracks\dirt-3\background.png .\runtime\tracks\dirt\dirt-3\background.png
+copy .\data\tracks\dirt-3\background2.png .\runtime\tracks\dirt\dirt-3\background2.png
+copy .\data\tracks\dirt-3\dirt-3.ac .\runtime\tracks\dirt\dirt-3\dirt-3.ac
+copy .\data\tracks\dirt-3\dirt-3-relief.ac .\runtime\tracks\dirt\dirt-3\dirt-3-relief.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-3
-copy .\data\tracks\dirt-3\dirt-3.xml .\runtime\tracks\dirt-3\dirt-3.xml
-copy .\data\tracks\dirt-3\background.png .\runtime\tracks\dirt-3\background.png
-copy .\data\tracks\dirt-3\background2.png .\runtime\tracks\dirt-3\background2.png
-copy .\data\tracks\dirt-3\dirt-3.ac .\runtime\tracks\dirt-3\dirt-3.ac
-copy .\data\tracks\dirt-3\dirt-3-relief.ac .\runtime\tracks\dirt-3\dirt-3-relief.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-4
+copy .\data\tracks\dirt-4\dirt-4.xml .\runtime\tracks\dirt\dirt-4\dirt-4.xml
+copy .\data\tracks\dirt-4\background.png .\runtime\tracks\dirt\dirt-4\background.png
+copy .\data\tracks\dirt-4\dirt-4.ac .\runtime\tracks\dirt\dirt-4\dirt-4.ac
+copy .\data\tracks\dirt-4\dirt-4-relief.ac .\runtime\tracks\dirt\dirt-4\dirt-4-relief.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-4
-copy .\data\tracks\dirt-4\dirt-4.xml .\runtime\tracks\dirt-4\dirt-4.xml
-copy .\data\tracks\dirt-4\background.png .\runtime\tracks\dirt-4\background.png
-copy .\data\tracks\dirt-4\dirt-4.ac .\runtime\tracks\dirt-4\dirt-4.ac
-copy .\data\tracks\dirt-4\dirt-4-relief.ac .\runtime\tracks\dirt-4\dirt-4-relief.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-5
+copy .\data\tracks\dirt-5\dirt-5.xml .\runtime\tracks\dirt\dirt-5\dirt-5.xml
+copy .\data\tracks\dirt-5\background.png .\runtime\tracks\dirt\dirt-5\background.png
+copy .\data\tracks\dirt-5\dirt-5.ac .\runtime\tracks\dirt\dirt-5\dirt-5.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-5
-copy .\data\tracks\dirt-5\dirt-5.xml .\runtime\tracks\dirt-5\dirt-5.xml
-copy .\data\tracks\dirt-5\background.png .\runtime\tracks\dirt-5\background.png
-copy .\data\tracks\dirt-5\dirt-5.ac .\runtime\tracks\dirt-5\dirt-5.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-6
+copy .\data\tracks\dirt-6\dirt-6.xml .\runtime\tracks\dirt\dirt-6\dirt-6.xml
+copy .\data\tracks\dirt-6\background.png .\runtime\tracks\dirt\dirt-6\background.png
+copy .\data\tracks\dirt-6\dirt-6.ac .\runtime\tracks\dirt\dirt-6\dirt-6.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\dirt-6
-copy .\data\tracks\dirt-6\dirt-6.xml .\runtime\tracks\dirt-6\dirt-6.xml
-copy .\data\tracks\dirt-6\background.png .\runtime\tracks\dirt-6\background.png
-copy .\data\tracks\dirt-6\dirt-6.ac .\runtime\tracks\dirt-6\dirt-6.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\eroad
+copy .\data\tracks\eroad\eroad.xml .\runtime\tracks\road\eroad\eroad.xml
+copy .\data\tracks\eroad\background.png .\runtime\tracks\road\eroad\background.png
+copy .\data\tracks\eroad\eroad.ac .\runtime\tracks\road\eroad\eroad.ac
+copy .\data\tracks\eroad\eroad-relief.ac .\runtime\tracks\road\eroad\eroad-relief.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\eroad
-copy .\data\tracks\eroad\eroad.xml .\runtime\tracks\eroad\eroad.xml
-copy .\data\tracks\eroad\background.png .\runtime\tracks\eroad\background.png
-copy .\data\tracks\eroad\eroad.ac .\runtime\tracks\eroad\eroad.ac
-copy .\data\tracks\eroad\eroad-relief.ac .\runtime\tracks\eroad\eroad-relief.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-1
+copy .\data\tracks\e-track-1\e-track-1.xml .\runtime\tracks\road\e-track-1\e-track-1.xml
+copy .\data\tracks\e-track-1\background.png .\runtime\tracks\road\e-track-1\background.png
+copy .\data\tracks\e-track-1\e-track-1.ac .\runtime\tracks\road\e-track-1\e-track-1.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-1
-copy .\data\tracks\e-track-1\e-track-1.xml .\runtime\tracks\e-track-1\e-track-1.xml
-copy .\data\tracks\e-track-1\background.png .\runtime\tracks\e-track-1\background.png
-copy .\data\tracks\e-track-1\e-track-1.ac .\runtime\tracks\e-track-1\e-track-1.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-2
+copy .\data\tracks\e-track-2\e-track-2.xml .\runtime\tracks\road\e-track-2\e-track-2.xml
+copy .\data\tracks\e-track-2\background.png .\runtime\tracks\road\e-track-2\background.png
+copy .\data\tracks\e-track-2\e-track-2.ac .\runtime\tracks\road\e-track-2\e-track-2.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-2
-copy .\data\tracks\e-track-2\e-track-2.xml .\runtime\tracks\e-track-2\e-track-2.xml
-copy .\data\tracks\e-track-2\background.png .\runtime\tracks\e-track-2\background.png
-copy .\data\tracks\e-track-2\e-track-2.ac .\runtime\tracks\e-track-2\e-track-2.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-3
+copy .\data\tracks\e-track-3\e-track-3.xml .\runtime\tracks\road\e-track-3\e-track-3.xml
+copy .\data\tracks\e-track-3\background.png .\runtime\tracks\road\e-track-3\background.png
+copy .\data\tracks\e-track-3\env.rgb .\runtime\tracks\road\e-track-3\env.rgb
+copy .\data\tracks\e-track-3\e-track-3.ac .\runtime\tracks\road\e-track-3\e-track-3.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-3
-copy .\data\tracks\e-track-3\e-track-3.xml .\runtime\tracks\e-track-3\e-track-3.xml
-copy .\data\tracks\e-track-3\background.png .\runtime\tracks\e-track-3\background.png
-copy .\data\tracks\e-track-3\env.rgb .\runtime\tracks\e-track-3\env.rgb
-copy .\data\tracks\e-track-3\e-track-3.ac .\runtime\tracks\e-track-3\e-track-3.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-4
+copy .\data\tracks\e-track-4\e-track-4.xml .\runtime\tracks\road\e-track-4\e-track-4.xml
+copy .\data\tracks\e-track-4\background.png .\runtime\tracks\road\e-track-4\background.png
+copy .\data\tracks\e-track-4\e-track-4.ac .\runtime\tracks\road\e-track-4\e-track-4.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-4
-copy .\data\tracks\e-track-4\e-track-4.xml .\runtime\tracks\e-track-4\e-track-4.xml
-copy .\data\tracks\e-track-4\background.png .\runtime\tracks\e-track-4\background.png
-copy .\data\tracks\e-track-4\e-track-4.ac .\runtime\tracks\e-track-4\e-track-4.ac
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\e-track-5
+copy .\data\tracks\e-track-5\e-track-5.xml .\runtime\tracks\oval\e-track-5\e-track-5.xml
+copy .\data\tracks\e-track-5\background.png .\runtime\tracks\oval\e-track-5\background.png
+copy .\data\tracks\e-track-5\e-track-5.ac .\runtime\tracks\oval\e-track-5\e-track-5.ac
+copy .\data\tracks\e-track-5\e-track-5-relief.ac .\runtime\tracks\oval\e-track-5\e-track-5-relief.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-5
-copy .\data\tracks\e-track-5\e-track-5.xml .\runtime\tracks\e-track-5\e-track-5.xml
-copy .\data\tracks\e-track-5\background.png .\runtime\tracks\e-track-5\background.png
-copy .\data\tracks\e-track-5\e-track-5.ac .\runtime\tracks\e-track-5\e-track-5.ac
-copy .\data\tracks\e-track-5\e-track-5-relief.ac .\runtime\tracks\e-track-5\e-track-5-relief.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-6
+copy .\data\tracks\e-track-6\e-track-6.xml .\runtime\tracks\road\e-track-6\e-track-6.xml
+copy .\data\tracks\e-track-6\background.png .\runtime\tracks\road\e-track-6\background.png
+copy .\data\tracks\e-track-6\e-track-6.ac .\runtime\tracks\road\e-track-6\e-track-6.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\e-track-6
-copy .\data\tracks\e-track-6\e-track-6.xml .\runtime\tracks\e-track-6\e-track-6.xml
-copy .\data\tracks\e-track-6\background.png .\runtime\tracks\e-track-6\background.png
-copy .\data\tracks\e-track-6\e-track-6.ac .\runtime\tracks\e-track-6\e-track-6.ac
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\g-track-1
+copy .\data\tracks\g-track-1\g-track-1.xml .\runtime\tracks\oval\g-track-1\g-track-1.xml
+copy .\data\tracks\g-track-1\g-track-1.ac .\runtime\tracks\oval\g-track-1\g-track-1.ac
+copy .\data\tracks\g-track-1\background.png .\runtime\tracks\oval\g-track-1\background.png
+copy .\data\tracks\g-track-1\alltree2.rgb .\runtime\tracks\oval\g-track-1\alltree2.rgb
+copy .\data\tracks\g-track-1\alltree.rgb .\runtime\tracks\oval\g-track-1\alltree.rgb
+copy .\data\tracks\g-track-1\asphalt2.rgb .\runtime\tracks\oval\g-track-1\asphalt2.rgb
+copy .\data\tracks\g-track-1\asphalt3.rgb .\runtime\tracks\oval\g-track-1\asphalt3.rgb
+copy .\data\tracks\g-track-1\env.rgb .\runtime\tracks\oval\g-track-1\env.rgb
+copy .\data\tracks\g-track-1\grassg1.rgb .\runtime\tracks\oval\g-track-1\grassg1.rgb
+copy .\data\tracks\g-track-1\grassg2.rgb .\runtime\tracks\oval\g-track-1\grassg2.rgb
+copy .\data\tracks\g-track-1\grassg3.rgb .\runtime\tracks\oval\g-track-1\grassg3.rgb
+copy .\data\tracks\g-track-1\rock2.rgb .\runtime\tracks\oval\g-track-1\rock2.rgb
+copy .\data\tracks\g-track-1\rock3.rgb .\runtime\tracks\oval\g-track-1\rock3.rgb
+copy .\data\tracks\g-track-1\texte1.rgb .\runtime\tracks\oval\g-track-1\texte1.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\g-track-1
-copy .\data\tracks\g-track-1\g-track-1.xml .\runtime\tracks\g-track-1\g-track-1.xml
-copy .\data\tracks\g-track-1\g-track-1.ac .\runtime\tracks\g-track-1\g-track-1.ac
-copy .\data\tracks\g-track-1\background.png .\runtime\tracks\g-track-1\background.png
-copy .\data\tracks\g-track-1\alltree2.rgb .\runtime\tracks\g-track-1\alltree2.rgb
-copy .\data\tracks\g-track-1\alltree.rgb .\runtime\tracks\g-track-1\alltree.rgb
-copy .\data\tracks\g-track-1\asphalt2.rgb .\runtime\tracks\g-track-1\asphalt2.rgb
-copy .\data\tracks\g-track-1\asphalt3.rgb .\runtime\tracks\g-track-1\asphalt3.rgb
-copy .\data\tracks\g-track-1\env.rgb .\runtime\tracks\g-track-1\env.rgb
-copy .\data\tracks\g-track-1\grassg1.rgb .\runtime\tracks\g-track-1\grassg1.rgb
-copy .\data\tracks\g-track-1\grassg2.rgb .\runtime\tracks\g-track-1\grassg2.rgb
-copy .\data\tracks\g-track-1\grassg3.rgb .\runtime\tracks\g-track-1\grassg3.rgb
-copy .\data\tracks\g-track-1\rock2.rgb .\runtime\tracks\g-track-1\rock2.rgb
-copy .\data\tracks\g-track-1\rock3.rgb .\runtime\tracks\g-track-1\rock3.rgb
-copy .\data\tracks\g-track-1\texte1.rgb .\runtime\tracks\g-track-1\texte1.rgb
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\michigan
+copy .\data\tracks\michigan\michigan.xml .\runtime\tracks\oval\\michigan\michigan.xml
+copy .\data\tracks\michigan\background.png .\runtime\tracks\oval\\michigan\background.png
+copy .\data\tracks\michigan\michigan.ac .\runtime\tracks\oval\\michigan\michigan.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\kid-1
-copy .\data\tracks\kid-1\kid-1.xml .\runtime\tracks\kid-1\kid-1.xml
-copy .\data\tracks\kid-1\kid-1.ac .\runtime\tracks\kid-1\kid-1.ac
-copy .\data\tracks\kid-1\background.png .\runtime\tracks\kid-1\background.png
-copy .\data\tracks\kid-1\env.rgb .\runtime\tracks\kid-1\env.rgb
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\mixed-1
+copy .\data\tracks\mixed-1\mixed-1.xml .\runtime\tracks\dirt\mixed-1\mixed-1.xml
+copy .\data\tracks\mixed-1\mixed-1.ac .\runtime\tracks\dirt\mixed-1\mixed-1.ac
+copy .\data\tracks\mixed-1\background.png .\runtime\tracks\dirt\mixed-1\background.png
+copy .\data\tracks\mixed-1\env1.png .\runtime\tracks\dirt\mixed-1\env1.png
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\michigan
-copy .\data\tracks\michigan\michigan.xml .\runtime\tracks\michigan\michigan.xml
-copy .\data\tracks\michigan\background.png .\runtime\tracks\michigan\background.png
-copy .\data\tracks\michigan\michigan.ac .\runtime\tracks\michigan\michigan.ac
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\mixed-2
+copy .\data\tracks\mixed-2\mixed-2.xml .\runtime\tracks\dirt\mixed-2\mixed-2.xml
+copy .\data\tracks\mixed-2\background.png .\runtime\tracks\dirt\mixed-2\background.png
+copy .\data\tracks\mixed-2\env.rgb .\runtime\tracks\dirt\mixed-2\env.rgb
+copy .\data\tracks\mixed-2\mixed-2.ac .\runtime\tracks\dirt\mixed-2\mixed-2.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\mixed-1
-copy .\data\tracks\mixed-1\mixed-1.xml .\runtime\tracks\mixed-1\mixed-1.xml
-copy .\data\tracks\mixed-1\mixed-1.ac .\runtime\tracks\mixed-1\mixed-1.ac
-copy .\data\tracks\mixed-1\background.png .\runtime\tracks\mixed-1\background.png
-copy .\data\tracks\mixed-1\env1.png .\runtime\tracks\mixed-1\env1.png
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\mixed-2
-copy .\data\tracks\mixed-2\mixed-2.xml .\runtime\tracks\mixed-2\mixed-2.xml
-copy .\data\tracks\mixed-2\background.png .\runtime\tracks\mixed-2\background.png
-copy .\data\tracks\mixed-2\env.rgb .\runtime\tracks\mixed-2\env.rgb
-copy .\data\tracks\mixed-2\mixed-2.ac .\runtime\tracks\mixed-2\mixed-2.ac
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\tracks
-call .\create_dir .\runtime\tracks\wheel-1
-copy .\data\tracks\wheel-1\wheel-1.xml .\runtime\tracks\wheel-1\wheel-1.xml
-copy .\data\tracks\wheel-1\background.png .\runtime\tracks\wheel-1\background.png
-copy .\data\tracks\wheel-1\env.rgb .\runtime\tracks\wheel-1\env.rgb
-copy .\data\tracks\wheel-1\wheel-1.ac .\runtime\tracks\wheel-1\wheel-1.ac
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\wheel-1
+copy .\data\tracks\wheel-1\wheel-1.xml .\runtime\tracks\road\wheel-1\wheel-1.xml
+copy .\data\tracks\wheel-1\background.png .\runtime\tracks\road\wheel-1\background.png
+copy .\data\tracks\wheel-1\env.rgb .\runtime\tracks\road\wheel-1\env.rgb
+copy .\data\tracks\wheel-1\wheel-1.ac .\runtime\tracks\road\wheel-1\wheel-1.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -726,7 +683,7 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\berniw
 call .\create_dir .\runtime\drivers\berniw\3
-copy .\src\drivers\berniw\3\cg-nascar-rwd.rgb .\runtime\drivers\berniw\3\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\3\acura-nsx-sz.rgb .\runtime\drivers\berniw\3\acura-nsx-sz.rgb
 copy .\src\drivers\berniw\3\aalborg.xml .\runtime\drivers\berniw\3\aalborg.xml
 copy .\src\drivers\berniw\3\a-speedway.xml .\runtime\drivers\berniw\3\a-speedway.xml
 copy .\src\drivers\berniw\3\dirt-1.xml .\runtime\drivers\berniw\3\dirt-1.xml
@@ -752,7 +709,7 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\berniw
 call .\create_dir .\runtime\drivers\berniw\4
-copy .\src\drivers\berniw\4\cg-nascar-rwd.rgb .\runtime\drivers\berniw\4\cg-nascar-rwd.rgb
+copy .\src\drivers\berniw\4\viper-gts-r.rgb .\runtime\drivers\berniw\4\viper-gts-r.rgb
 copy .\src\drivers\berniw\4\aalborg.xml .\runtime\drivers\berniw\4\aalborg.xml
 copy .\src\drivers\berniw\4\a-speedway.xml .\runtime\drivers\berniw\4\a-speedway.xml
 copy .\src\drivers\berniw\4\dirt-1.xml .\runtime\drivers\berniw\4\dirt-1.xml
@@ -1098,6 +1055,7 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\human
 call .\create_dir .\runtime\drivers\human\tracks
 call .\create_dir .\runtime\drivers\human\tracks\e-track-3
+copy .\src\drivers\human\tracks\e-track-3\car-porsche-gt1.xml .\runtime\drivers\human\tracks\e-track-3\car-porsche-gt1.xml
 copy .\src\drivers\human\tracks\e-track-3\car-torcs.xml .\runtime\drivers\human\tracks\e-track-3\car-torcs.xml
 
 call .\create_dir .\runtime
@@ -1549,3 +1507,8 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\tools
 call .\create_dir .\runtime\tools\trackgen
 copy .\src\tools\trackgen\trackgen.xml .\runtime\tools\trackgen\trackgen.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+copy .\CHANGELOG.html .\runtime\.\CHANGELOG.html
+copy .\COPYING .\runtime\.\COPYING

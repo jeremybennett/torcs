@@ -18,7 +18,7 @@
 
 DATADIR   = data/tracks
 
-DATA      = surfaces.xml
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 
 

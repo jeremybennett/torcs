@@ -27,6 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="A-SpeedWay"></attstr>
+    <attstr name="category"    val="oval"></attstr>
     <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val="Rectangle shaped SpeedWay"></attstr>
@@ -35,7 +36,7 @@
   <section name="Graphic">
     <attstr name="3d description" val="a-speedway.ac"></attstr>
 
-    <attstr name="background image" val="tracks/a-speedway/background.png"></attstr>
+    <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>
     <attnum name="background color B" val="0.96875"></attnum>
