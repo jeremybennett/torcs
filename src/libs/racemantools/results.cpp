@@ -42,6 +42,7 @@ static void	*rmScrHdle = NULL;
 static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start);
 static void rmRaceResults(void *prevHdle, tRmInfo *info, int start);
 static void rmQualifResults(void *prevHdle, tRmInfo *info, int start);
+static void rmShowStandings(void *prevHdle, tRmInfo *info, int start);
 
 #define MAX_LINES	20
 
@@ -515,6 +516,16 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 }
 
 static void
+rmChgStandingScreen(void *vprc)
+{
+    void		*prevScr = rmScrHdle;
+    tRaceCall 	*prc = (tRaceCall*)vprc;
+
+    rmShowStandings(prc->prevHdle, prc->info, prc->start);
+    GfuiScreenRelease(prevScr);
+}
+
+static void
 rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 {
     int			i;
@@ -570,9 +581,9 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 	GfuiGrButtonCreate(rmScrHdle, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			   "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			   80, 40, GFUI_ALIGN_HL_VB, 1,
-			   (void*)&RmPrevRace, rmChgQualifScreen,
+			   (void*)&RmPrevRace, rmChgStandingScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgQualifScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgStandingScreen);
     }
 
     GfuiButtonCreate(rmScrHdle,
@@ -610,9 +621,9 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 	GfuiGrButtonCreate(rmScrHdle, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			   "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			   540, 40, GFUI_ALIGN_HL_VB, 1,
-			   (void*)&RmNextRace, rmChgQualifScreen,
+			   (void*)&RmNextRace, rmChgStandingScreen,
 			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgQualifScreen);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Results", (void*)&RmNextRace, rmChgStandingScreen);
     }
 
     GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
