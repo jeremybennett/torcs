@@ -140,6 +140,7 @@
   <section name="berniw private">
     <attnum name="caero" val="1.0"></attnum>
     <attnum name="cfriction" val="1.1"></attnum>
+    <attnum name="pitexit" val="250"></attnum>
   </section>
 
 </params>
