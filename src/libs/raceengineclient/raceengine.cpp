@@ -351,12 +351,11 @@ ReOneStep(void * /* dummy */)
 
     if (s->currentTime < 0) {
 	/* no simu yet */
-	return;
-    }
-    
-    if (ReInfo->s->_raceState & RM_RACE_STARTING) {
+	ReInfo->s->_raceState = RM_RACE_PRESTART;
+    } else if (ReInfo->s->_raceState == RM_RACE_PRESTART) {
 	ReInfo->s->_raceState = RM_RACE_RUNNING;
 	s->currentTime = 0.0; /* resynchronize */
+	ReInfo->_reLastTime = 0.0;
     }
     
     START_PROFILE("rbDrive*");

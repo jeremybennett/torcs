@@ -52,15 +52,20 @@ t3Dd vectEnd[16];
 static void
 ctrlCheck(tCar *car)
 {
+    tTransmission	*trans = &(car->transmission);
+    tClutch		*clutch = &(trans->clutch);
+
     /* sanity check */
 #ifndef WIN32
     if (isnan(car->ctrl->accelCmd) || isinf(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
     if (isnan(car->ctrl->brakeCmd) || isinf(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
+    if (isnan(car->ctrl->clutchCmd) || isinf(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
     if (isnan(car->ctrl->steer) || isinf(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear) || isinf(car->ctrl->gear)) car->ctrl->gear = 0;
 #else
     if (isnan(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
     if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
+    if (isnan(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
 #endif
@@ -94,11 +99,18 @@ ctrlCheck(tCar *car)
     } else if (car->ctrl->brakeCmd < 0.0) {
 	car->ctrl->brakeCmd = 0.0;
     }
+    if (car->ctrl->clutchCmd > 1.0) {
+	car->ctrl->clutchCmd = 1.0;
+    } else if (car->ctrl->clutchCmd < 0.0) {
+	car->ctrl->clutchCmd = 0.0;
+    }
     if (car->ctrl->steer > 1.0) {
 	car->ctrl->steer = 1.0;
     } else if (car->ctrl->steer < -1.0) {
 	car->ctrl->steer = -1.0;
     }
+
+    clutch->transferValue = 1.0 - car->ctrl->clutchCmd;
 }
 
 /* Initial configuration */
@@ -295,43 +307,55 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	    }
 	}
 	
-    CHECK(car);
+	if (s->_raceState & RM_RACE_PRESTART) {
+	    car->ctrl->gear = 0;
+	}
+	
+	CHECK(car);
 	ctrlCheck(car);
-    CHECK(car);
+	CHECK(car);
 	SimSteerUpdate(car);
-    CHECK(car);
+	CHECK(car);
 	SimGearboxUpdate(car);
-    CHECK(car);
+	CHECK(car);
 	SimEngineUpdateTq(car);
-    CHECK(car);
-	SimCarUpdateWheelPos(car);
-    CHECK(car);
-	SimBrakeSystemUpdate(car);
-    CHECK(car);
-	SimAeroUpdate(car, s);
-    CHECK(car);
-	for (i = 0; i < 2; i++){
-	    SimWingUpdate(car, i);
+	CHECK(car);
+
+	if (!(s->_raceState & RM_RACE_PRESTART)) {
+
+	    SimCarUpdateWheelPos(car);
+	    CHECK(car);
+	    SimBrakeSystemUpdate(car);
+	    CHECK(car);
+	    SimAeroUpdate(car, s);
+	    CHECK(car);
+	    for (i = 0; i < 2; i++){
+		SimWingUpdate(car, i);
+	    }
+	    CHECK(car);
+	    for (i = 0; i < 4; i++){
+		SimWheelUpdateRide(car, i);
+	    }
+	    CHECK(car);
+	    for (i = 0; i < 2; i++){
+		SimAxleUpdate(car, i);
+	    }
+	    CHECK(car);
+	    for (i = 0; i < 4; i++){
+		SimWheelUpdateForce(car, i);
+	    }
+	    CHECK(car);
 	}
-    CHECK(car);
-	for (i = 0; i < 4; i++){
-	    SimWheelUpdateRide(car, i);
-	}
-    CHECK(car);
-	for (i = 0; i < 2; i++){
-	    SimAxleUpdate(car, i);
-	}
-    CHECK(car);
-	for (i = 0; i < 4; i++){
-	    SimWheelUpdateForce(car, i);
-	}
-    CHECK(car);
+    
 	SimTransmissionUpdate(car);
-    CHECK(car);
-	SimWheelUpdateRotation(car);
-    CHECK(car);
-	SimCarUpdate(car, s);
-    CHECK(car);
+	CHECK(car);
+
+	if (!(s->_raceState & RM_RACE_PRESTART)) {
+	    SimWheelUpdateRotation(car);
+	    CHECK(car);
+	    SimCarUpdate(car, s);
+	    CHECK(car);
+	}
     }
 
     SimCarCollideCars(s);

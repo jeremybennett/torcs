@@ -65,6 +65,7 @@ typedef struct {
 #define RM_RACE_FINISHING	0X00000002
 #define RM_RACE_ENDED		0X00000004
 #define RM_RACE_STARTING	0X00000008
+#define RM_RACE_PRESTART	0X00000010
 #define RM_RACE_PAUSED		0X40000000
     int			type;		/**< Race type */
 #define RM_TYPE_PRACTICE	0 /* Please keep the order */

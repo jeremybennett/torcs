@@ -423,6 +423,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     tdble	slip;
     float	ax0;
     float	brake;
+    float	clutch;
     float	throttle;
     float	leftSteer;
     float	rightSteer;
@@ -634,6 +635,46 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	break;
     default:
 	car->_brakeCmd = 0;
+	break;
+    }
+
+    switch (cmd[CMD_CLUTCH].type) {
+    case GFCTRL_TYPE_JOY_AXIS:
+	clutch = joyInfo->ax[cmd[CMD_CLUTCH].val] - cmd[CMD_CLUTCH].deadZone;
+	if (clutch > cmd[CMD_CLUTCH].max) {
+	    clutch = cmd[CMD_CLUTCH].max;
+	} else if (clutch < cmd[CMD_CLUTCH].min) {
+	    clutch = cmd[CMD_CLUTCH].min;
+	}
+	car->_clutchCmd = fabs(cmd[CMD_CLUTCH].pow *
+			      pow(fabs((clutch - cmd[CMD_CLUTCH].minVal) /
+				       (cmd[CMD_CLUTCH].max - cmd[CMD_CLUTCH].min)),
+				  cmd[CMD_CLUTCH].sens));
+	break;
+    case GFCTRL_TYPE_MOUSE_AXIS:
+	ax0 = mouseInfo->ax[cmd[CMD_CLUTCH].val] - cmd[CMD_CLUTCH].deadZone;
+	if (ax0 > cmd[CMD_CLUTCH].max) {
+	    ax0 = cmd[CMD_CLUTCH].max;
+	} else if (ax0 < cmd[CMD_CLUTCH].min) {
+	    ax0 = cmd[CMD_CLUTCH].min;
+	}
+	ax0 = ax0 * cmd[CMD_CLUTCH].pow;
+	car->_clutchCmd =  pow(fabs(ax0), cmd[CMD_CLUTCH].sens) / (1.0 + cmd[CMD_CLUTCH].spdSens * car->_speed_x / 10.0);
+	break;
+    case GFCTRL_TYPE_JOY_BUT:
+	car->_clutchCmd = joyInfo->levelup[cmd[CMD_CLUTCH].val];
+	break;
+    case GFCTRL_TYPE_MOUSE_BUT:
+	car->_clutchCmd = mouseInfo->button[cmd[CMD_CLUTCH].val];
+	break;
+    case GFCTRL_TYPE_KEYBOARD:
+	car->_clutchCmd = keyInfo[cmd[CMD_CLUTCH].val].state;
+	break;
+    case GFCTRL_TYPE_SKEYBOARD:
+	car->_clutchCmd = skeyInfo[cmd[CMD_CLUTCH].val].state;
+	break;
+    default:
+	car->_clutchCmd = 0;
 	break;
     }
 

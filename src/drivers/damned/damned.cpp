@@ -47,6 +47,7 @@ static tdble      Tright[10];
 static tdble      Trightprev[10];
 static tdble lastBrkCmd[10] = {0};
 static tdble lastAccel[10];
+static tdble lastClutch[10];
 
 static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -70,6 +71,7 @@ static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble steerk[10] = {	1.0,	.5,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
 static tdble MaxFuel[10] = {	100.0,	50.0,	60.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
 static tdble MaxSpeed[10];
+static tdble TgtRpm[10] = {	RPM2RADS(5000.0), RPM2RADS(5888), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0)	};
 
 #define PIT_STATE_NO            -1
 #define PIT_STATE_NONE           0
@@ -780,6 +782,28 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	car->_brakeCmd = 1.0;
     }
 
+    /* Clutch management */
+    car->_clutchCmd = 0.0;
+    if ((car->_gearCmd == 1) && (car->_accelCmd > 0.8) && (car->_speed_x < 6.0)) {
+	if (car->_enginerpm < TgtRpm[idx]) {
+	    lastClutch[idx] += 0.01;
+	} else if (car->_enginerpm > TgtRpm[idx] + RPM2RADS(100.0)) {
+	    lastClutch[idx] -= 0.01;
+	}
+	if (lastClutch[idx] > 0.9) {
+	    lastClutch[idx] = 0.9;
+	} else if (lastClutch[idx] < 0.0) {
+	    lastClutch[idx] = 0.0;
+	}
+	car->_clutchCmd = lastClutch[idx];
+    } else {
+	lastClutch[idx] = 0.0;
+    }
+    if (s->_raceState & RM_RACE_PRESTART) {
+	lastClutch[idx] = 1.0;
+	car->_clutchCmd = 1.0;
+    }
+    
     STOP_PROFILE("Damned");
 }
 

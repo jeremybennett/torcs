@@ -172,15 +172,19 @@ SimGearboxUpdate(tCar *car)
 	break;
     }
 
+    trans->curI = trans->driveI[gearbox->gear + 1] * clutch->transferValue + trans->freeI[gearbox->gear +  1] * (1.0 - clutch->transferValue);
     if (clutch->state == CLUTCH_RELEASING) {
 	clutch->timeToRelease -= SimDeltaTime;
 	if (clutch->timeToRelease <= 0.0) {
 	    clutch->state = CLUTCH_RELEASED;
-	    clutch->transferValue = 1.0;
-	    trans->curI = trans->driveI[gearbox->gear + 1];
-	} else if ((clutch->timeToRelease < (clutch->releaseTime * .7)) || (gearbox->gear == 1)) {
-	    clutch->transferValue = 1.0 - clutch->timeToRelease / clutch->releaseTime / .7;
-	    trans->curI = trans->driveI[gearbox->gear + 1] * clutch->transferValue + trans->freeI[gearbox->gear +  1] * (1.0 - clutch->transferValue);
+	} else  {
+	    if (clutch->transferValue > 0.99) {
+		clutch->transferValue = 0.0;
+		trans->curI = trans->freeI[gearbox->gear +  1];
+		if (car->ctrl->accelCmd > 0.5) {
+		    car->ctrl->accelCmd = 0.5;
+		}
+	    }
 	}
     } else if ((car->ctrl->gear > gearbox->gear)) {
 	if (car->ctrl->gear <= gearbox->gearMax) {
@@ -191,7 +195,6 @@ SimGearboxUpdate(tCar *car)
 		clutch->plip = 1.0;
 	    }
 	    clutch->state = CLUTCH_RELEASING;
-	    clutch->transferValue = 0.0;
 	    if (gearbox->gear != 0) {
 		clutch->timeToRelease = clutch->releaseTime;
 	    } else {
@@ -220,7 +223,6 @@ SimGearboxUpdate(tCar *car)
 		clutch->plip = 1.0;
 	    }
 	    clutch->state = CLUTCH_RELEASING;
-	    clutch->transferValue = 0.0;
 	    if (gearbox->gear != 0) {
 		clutch->timeToRelease = clutch->releaseTime;
 	    } else {

@@ -253,7 +253,6 @@ typedef struct {
     tdble	gearRatio[MAX_GEARS];	/**< including final drive */
     int		gearNb;			/**< incl reverse and neutral */
     int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
-
     tdble	skid[4];		/**< skid intensity */
     int		collision;
     t3Dd	normal;
@@ -284,6 +283,7 @@ typedef struct {
     tdble	steer;	    /**< Steer command [-1.0, 1.0]  */
     tdble	accelCmd;   /**< Accelerator command [0.0, 1.0] */
     tdble	brakeCmd;   /**< Brake command [0.0, 1.0] */
+    tdble	clutchCmd;  /**< Clutch command [0.0, 1.0] */
     int		gear;  	    /**< [-1,6] for gear selection */
     int		raceCmd;    /**< command issued by the driver */
 #define RM_CMD_NONE		0	/**< No race command */
@@ -297,6 +297,7 @@ typedef struct {
 #define _steerCmd	ctrl.steer
 #define _accelCmd	ctrl.accelCmd
 #define _brakeCmd	ctrl.brakeCmd
+#define _clutchCmd	ctrl.clutchCmd
 #define _gearCmd	ctrl.gear
 #define _raceCmd	ctrl.raceCmd
 #define _msgCmd		ctrl.msg

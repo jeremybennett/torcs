@@ -79,9 +79,9 @@ ReBoardInfo(void * /* vboard */)
 static void
 reSkipPreStart(void * /* dummy */)
 {
-    if (ReInfo->s->currentTime < 0) {
-	ReInfo->s->currentTime = - RCM_MAX_DT_SIMU;
-	ReInfo->_reLastTime = 0;
+    if (ReInfo->s->currentTime < -1.0) {
+	ReInfo->s->currentTime = -1.0;
+	ReInfo->_reLastTime = -1.0;
     }
 }
 
