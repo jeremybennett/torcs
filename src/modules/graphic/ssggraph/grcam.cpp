@@ -145,26 +145,13 @@ grCameraLookAt ( const sgVec3 eye, const sgVec3 center, const sgVec3 up )
 
 void grSetCamera(tCamera *cam, tCarElt *car)
 {
-/*     sgFrustum fst; */
     switch (cam->projtype) {
     case CAM_FCTPERSPEC:
-/* 	fst.setFOV(grviewRatio * cam->uproj.fpersp.cfovy, cam->uproj.fpersp.cfovy); */
-/* 	fst.setNearFar(cam->uproj.fpersp.cnear, cam->uproj.fpersp.cfar); */
-/* 	fst.setFrustum(fst.getRight(), fst.getLeft() ,  */
-/* 		      fst.getBot() , fst.getTop(), */
-/* 		      fst.getNear() , fst.getFar()) ; */
-/* 	grContext.setFrustum(&fst); */
 	grContext.setFOV(grviewRatio * cam->uproj.fpersp.cfovy, cam->uproj.fpersp.cfovy);
 	grContext.setNearFar(cam->uproj.fpersp.cnear, cam->uproj.fpersp.cfar);
 	break;
 	
     case CAM_PERSPEC:
-/* 	fst.setFOV(grviewRatio * cam->uproj.persp.fovy, cam->uproj.persp.fovy); */
-/* 	fst.setNearFar(cam->uproj.persp.near, cam->uproj.persp.far); */
-/* 	fst.setFrustum(fst.getRight(), fst.getLeft() ,  */
-/* 		      fst.getBot() , fst.getTop(), */
-/* 		      fst.getNear() , fst.getFar()) ; */
-/* 	grContext.setFrustum(&fst); */
 	grContext.setFOV(grviewRatio * cam->uproj.persp.fovy, cam->uproj.persp.fovy);
 	grContext.setNearFar(cam->uproj.persp.near, cam->uproj.persp.far);
 	break;
@@ -1081,7 +1068,6 @@ grCarCamNoZoompersp(tCamera *cam, tCarElt *car)
     
     dd = sqrt(dx*dx+dy*dy+dz*dz);
     
-    //near = dd - grCurCam->uproj.fpersp.near;
     near = dz - 2;
     if (near < 1) {
 	near = 1;
@@ -1105,7 +1091,6 @@ grCarCamZoompersp(tCamera *cam, tCarElt *car)
     
     dd = sqrt(dx*dx+dy*dy+dz*dz);
 
-    //near = dd - grCurCam->uproj.fpersp.near;
     near = dz - 5;
     if (near < 1) {
 	near = 1;

@@ -339,6 +339,12 @@ void grDrawBackground(struct Camera *cam)
 		  cam->ucam.fcam.center[0], cam->ucam.fcam.center[1], cam->ucam.fcam.center[2],
 		  cam->ucam.fcam.up[0], cam->ucam.fcam.up[1], cam->ucam.fcam.up[2]);
 	break;
+
+    case CAM_FCTS:
+	gluLookAt(cam->ucam.fcams.eye[0], cam->ucam.fcams.eye[1], cam->ucam.fcams.eye[2],
+		  cam->ucam.fcams.center[0], cam->ucam.fcams.center[1], cam->ucam.fcams.center[2],
+		  cam->ucam.fcams.up[0], cam->ucam.fcams.up[1], cam->ucam.fcams.up[2]);
+	break;
     }
     
 
