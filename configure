@@ -2102,7 +2102,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libm. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for XOpenDisplay in -lX11""... $ac_c" 1>&6
@@ -2153,7 +2153,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libX11. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libX11. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for XShmCreateImage in -lXext""... $ac_c" 1>&6
@@ -2204,7 +2204,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libXext. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libXext. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for IceSetIOErrorHandler in -lICE""... $ac_c" 1>&6
@@ -2255,7 +2255,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libICE. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libICE. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for SmsSetErrorHandler in -lSM""... $ac_c" 1>&6
@@ -2306,7 +2306,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libSM. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libSM. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for XtDisplay in -lXt""... $ac_c" 1>&6
@@ -2357,7 +2357,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libXt. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libXt. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for XOpenDevice in -lXi""... $ac_c" 1>&6
@@ -2408,7 +2408,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libXi. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libXi. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for XmuSimpleErrorHandler in -lXmu""... $ac_c" 1>&6
@@ -2459,7 +2459,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libXmu. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libXmu. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 
@@ -2511,7 +2511,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libdl. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libdl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 
@@ -2563,7 +2563,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libpng. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libpng. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lz""... $ac_c" 1>&6
@@ -2607,7 +2607,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libz. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libz. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 
@@ -2652,7 +2652,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libGL. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lGLU""... $ac_c" 1>&6
@@ -2696,7 +2696,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libGLU. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lglut""... $ac_c" 1>&6
@@ -2740,7 +2740,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libglut. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 
@@ -2785,7 +2785,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libplibul. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libplibul. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lplibsg""... $ac_c" 1>&6
@@ -2829,7 +2829,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libplibsg. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libplibsg. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lplibsl""... $ac_c" 1>&6
@@ -2873,7 +2873,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libplibsl. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libplibsl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lplibsm""... $ac_c" 1>&6
@@ -2917,7 +2917,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libplibsm. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libplibsm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 echo $ac_n "checking for main in -lplibssg""... $ac_c" 1>&6
@@ -2961,7 +2961,7 @@ EOF
 
 else
   echo "$ac_t""no" 1>&6
-{ echo "configure: error: Can't find libplibssg. Please check your installation and add the correct paths!" 1>&2; exit 1; }
+{ echo "configure: error: Can't find libplibssg. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"" 1>&2; exit 1; }
 fi
 
 

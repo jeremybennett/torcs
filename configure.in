@@ -64,38 +64,38 @@ LDFLAGS="$LDFLAGS -L$x_libraries"
 dnl Checks for libraries.
 
 dnl Replace `main' with a function in -lm:
-AC_CHECK_LIB(m, sin,,AC_MSG_ERROR([Can't find libm. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(m, sin,,AC_MSG_ERROR([Can't find libm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lX11:
-AC_CHECK_LIB(X11, XOpenDisplay,,AC_MSG_ERROR([Can't find libX11. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(X11, XOpenDisplay,,AC_MSG_ERROR([Can't find libX11. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXext:
-AC_CHECK_LIB(Xext, XShmCreateImage,,AC_MSG_ERROR([Can't find libXext. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(Xext, XShmCreateImage,,AC_MSG_ERROR([Can't find libXext. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lICE:
-AC_CHECK_LIB(ICE, IceSetIOErrorHandler,,AC_MSG_ERROR([Can't find libICE. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(ICE, IceSetIOErrorHandler,,AC_MSG_ERROR([Can't find libICE. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lSM:
-AC_CHECK_LIB(SM, SmsSetErrorHandler,,AC_MSG_ERROR([Can't find libSM. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(SM, SmsSetErrorHandler,,AC_MSG_ERROR([Can't find libSM. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXt:
-AC_CHECK_LIB(Xt, XtDisplay,,AC_MSG_ERROR([Can't find libXt. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(Xt, XtDisplay,,AC_MSG_ERROR([Can't find libXt. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXi:
-AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXmu:
-AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
-AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 dnl Replace `main' with a function in -lpng:
-AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(z, main,,AC_MSG_ERROR([Can't find libz. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(z, main,,AC_MSG_ERROR([Can't find libz. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
-AC_CHECK_LIB(GL, main,,AC_MSG_ERROR([Can't find libGL. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(glut, main,,AC_MSG_ERROR([Can't find libglut. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(GL, main,,AC_MSG_ERROR([Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(glut, main,,AC_MSG_ERROR([Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 dnl Checks for plib libraries.
-AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check your installation and add the correct paths!]))
-AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check your installation and add the correct paths!]))
+AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
