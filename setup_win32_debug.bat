@@ -256,7 +256,6 @@ copy .\data\data\img\ruler.png .\runtimed\data\img\ruler.png
 copy .\data\data\img\ruler-pushed.png .\runtimed\data\img\ruler-pushed.png
 copy .\data\data\img\splash-free1.png .\runtimed\data\img\splash-free1.png
 copy .\data\data\img\splash-free2.png .\runtimed\data\img\splash-free2.png
-copy .\data\data\img\splash-free3.png .\runtimed\data\img\splash-free3.png
 copy .\data\data\img\splash-free4.png .\runtimed\data\img\splash-free4.png
 copy .\data\data\img\splash-free5.png .\runtimed\data\img\splash-free5.png
 copy .\data\data\img\splash-free7.png .\runtimed\data\img\splash-free7.png
@@ -1340,6 +1339,7 @@ call .\create_dir .\runtimed\drivers\inferno4
 copy .\src\drivers\inferno4\inferno4.xml .\runtimed\drivers\inferno4\inferno4.xml
 copy .\src\drivers\inferno4\car1.xml .\runtimed\drivers\inferno4\car1.xml
 copy .\src\drivers\inferno4\logo.rgb .\runtimed\drivers\inferno4\logo.rgb
+copy .\src\drivers\inferno4\xj-220.rgb .\runtimed\drivers\inferno4\xj-220.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers

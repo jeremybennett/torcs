@@ -318,8 +318,11 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     float	 leftSteer;
     float	 rightSteer;
     float	 mouseMove;
+    int		 scrw, dummy;
     
     Gear = (tdble)car->_gear;	/* telemetry */
+
+    GfScrGetSize(&scrw, &dummy, &dummy, &dummy);
 
     memset(car->ctrl, 0, sizeof(tCarCtrl));
 
@@ -430,7 +433,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (ax < CmdControl[CMD_LEFTSTEER].min) {
 	    ax = CmdControl[CMD_LEFTSTEER].min;
 	}
-	leftSteer = ax * CmdControl[CMD_LEFTSTEER].sens;
+	leftSteer = ax * CmdControl[CMD_LEFTSTEER].sens * (tdble)scrw / 1200.0;
 	break;
     default:
 	leftSteer = 0;
@@ -454,7 +457,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (ax < CmdControl[CMD_RIGHTSTEER].min) {
 	    ax = CmdControl[CMD_RIGHTSTEER].min;
 	}
-	rightSteer = -ax * CmdControl[CMD_RIGHTSTEER].sens;
+	rightSteer = -ax * CmdControl[CMD_RIGHTSTEER].sens * (tdble)scrw / 1200.0;
 	break;
     default:
 	rightSteer = 0;

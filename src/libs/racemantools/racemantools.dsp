@@ -127,6 +127,10 @@ SOURCE=.\racemantools.def
 # End Source File
 # Begin Source File
 
+SOURCE=.\racemenu.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\results.cpp
 # End Source File
 # Begin Source File

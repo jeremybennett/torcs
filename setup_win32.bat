@@ -256,7 +256,6 @@ copy .\data\data\img\ruler.png .\runtime\data\img\ruler.png
 copy .\data\data\img\ruler-pushed.png .\runtime\data\img\ruler-pushed.png
 copy .\data\data\img\splash-free1.png .\runtime\data\img\splash-free1.png
 copy .\data\data\img\splash-free2.png .\runtime\data\img\splash-free2.png
-copy .\data\data\img\splash-free3.png .\runtime\data\img\splash-free3.png
 copy .\data\data\img\splash-free4.png .\runtime\data\img\splash-free4.png
 copy .\data\data\img\splash-free5.png .\runtime\data\img\splash-free5.png
 copy .\data\data\img\splash-free7.png .\runtime\data\img\splash-free7.png
@@ -1340,6 +1339,7 @@ call .\create_dir .\runtime\drivers\inferno4
 copy .\src\drivers\inferno4\inferno4.xml .\runtime\drivers\inferno4\inferno4.xml
 copy .\src\drivers\inferno4\car1.xml .\runtime\drivers\inferno4\car1.xml
 copy .\src\drivers\inferno4\logo.rgb .\runtime\drivers\inferno4\logo.rgb
+copy .\src\drivers\inferno4\xj-220.rgb .\runtime\drivers\inferno4\xj-220.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
