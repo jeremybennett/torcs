@@ -44,6 +44,8 @@ SPECFILESBASE = ${TORCS_BASE}/RPM/SPECS
 # win32
 INIT_WIN32       = ${TORCS_BASE}/setup_win32.bat
 INIT_WIN32_D     = ${TORCS_BASE}/setup_win32_debug.bat
+DATA_WIN32       = ${TORCS_BASE}/setup_win32-data-from-CVS.bat
+DATA_WIN32_D     = ${TORCS_BASE}/setup_win32-data-from-CVS_debug.bat
 
 
 define create_dir_win32
@@ -53,6 +55,16 @@ echo "" >> ${INIT_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
 echo "call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
+done
+endef
+
+define create_dir_win32_data
+TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
+CurDir='.' ; \
+echo "" >> ${DATA_WIN32} ; \
+for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
+do CurDir=$$CurDir/$$Dir ; \
+echo "call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
 done
 endef
 
@@ -114,6 +126,9 @@ win32start:
 	@echo 'call .\create_dir .\export' >> ${INIT_WIN32}
 	@echo 'call .\create_dir .\export\lib' >> ${INIT_WIN32}
 	@echo 'call .\create_dir .\export\libd' >> ${INIT_WIN32}
+	@rm -f ${DATA_WIN32}
+	@echo '@echo off' > ${DATA_WIN32}
+	@echo '' >> ${DATA_WIN32}
 
 
 win32end:
@@ -124,8 +139,13 @@ win32end:
 	@sed -e "s:/:\\\:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:runtime:runtimed:g" ${INIT_WIN32} > ${INIT_WIN32_D}
+	@sed -e "s:${TORCS_BASE}:\.:g" ${DATA_WIN32} > ${DATA_WIN32}.eee
+	@mv ${DATA_WIN32}.eee ${DATA_WIN32}
+	@sed -e "s:/:\\\:g" ${DATA_WIN32} > ${DATA_WIN32}.eee
+	@mv ${DATA_WIN32}.eee ${DATA_WIN32}
+	@sed -e "s:runtime:runtimed:g" ${DATA_WIN32} > ${DATA_WIN32_D}
 
-win32setup: win32start exportswin32 installshipswin32 installwin32 win32end
+win32setup: win32start exportswin32 installshipswin32 installwin32 win32datainstall win32end
 
 .PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil \
  datadirs shipdirs doc win32start win32end installship installships installshipdirs
@@ -156,6 +176,8 @@ install: installdirs installship installsolibrary installmodule installprogram i
 installwin32: installwin32dirs installsolibrarywin32 installmodulewin32
 
 datainstall: installdatadirs installdata
+
+win32datainstall: installwin32datadirs installwin32data
 
 packages: specfiles packagelist
 
@@ -192,7 +214,6 @@ ifdef DATA
 
 installdata: $(DATA)
 	@D=`pwd` ; \
-	createdir="runtime/${DATADIR}" ; \
 	createdir="${INSTBASE}/${DATADIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
@@ -200,9 +221,20 @@ installdata: $(DATA)
 	$(INSTALL_DATA) $$X $$createdir/$$X ; \
 	done
 
+installwin32data: $(DATA)
+	@D=`pwd` ; \
+	createdir="runtime/${DATADIR}" ; \
+	${create_dir_win32_data} ; \
+	for X in $? ; \
+	do echo "copy $$D/$$X ./runtime/${DATADIR}/$$X"; \
+	echo "copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${DATA_WIN32} ; \
+	done
+
 else
 
 installdata: ;
+
+installwin32data: ;
 
 endif
 
@@ -623,6 +655,16 @@ installdatadirs:
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \
 	RecurseFlags="datainstall" ; \
+	${recursedirs} ; \
+	fi
+
+installwin32datadirs:
+	@if [ -n "${DATASUBDIRS}" ] ; \
+	then R=`for I in ${DATASUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="win32datainstall" ; \
 	${recursedirs} ; \
 	fi
 

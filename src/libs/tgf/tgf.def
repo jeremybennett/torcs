@@ -115,8 +115,8 @@ EXPORTS
 	GfuiStaticImageSet
 	GfScrReinit
 	GfuiScreenIsActive
-	_tgf_win_malloc(size_t size);
-	_tgf_win_calloc(size_t num, size_t size);
-	_tgf_win_realloc(void * memblock, size_t size);
-	_tgf_win_free(void * memblock);
-	_tgf_win_strdup(const char * str);
+	_tgf_win_malloc
+	_tgf_win_calloc
+	_tgf_win_realloc
+	_tgf_win_free
+	_tgf_win_strdup
