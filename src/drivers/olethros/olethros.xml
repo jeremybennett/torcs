@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file                 : olethros.xml
+    created              : Wed Jan 8 18:31:16 CET 2003
+    copyright            : (C) 2004 Christos Dimitrakakis
+    email                : dimitrak@idiap.ch
+    version              : $Id$
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="Olethros" type="robotdef">
+  <section name="Robots">
+    <section name="index">
+
+      <section name="0">
+        <attstr name="name" val="Olethros 1"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="pw-corollawrc"></attstr>
+        <attnum name="race number" val="71"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="1">
+        <attstr name="name" val="Olethros 2"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="cg-nascar-rwd"></attstr>
+        <attnum name="race number" val="72"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="2">
+        <attstr name="name" val="Olethros 3"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="porsche-gt1"></attstr>
+        <attnum name="race number" val="63"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="3">
+        <attstr name="name" val="Olethros 4"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="155-DTM"></attstr>
+        <attnum name="race number" val="64"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="4">
+        <attstr name="name" val="Olethros 5"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="mclaren-f1"></attstr>
+        <attnum name="race number" val="65"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="5">
+        <attstr name="name" val="Olethros 6"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="porsche-gt3rs"></attstr>
+        <attnum name="race number" val="66"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="6">
+        <attstr name="name" val="Olethros 7"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="clkdtm"></attstr>
+        <attnum name="race number" val="67"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="7">
+        <attstr name="name" val="Olethros 8"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="360-modena"></attstr>
+        <attnum name="race number" val="68"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="8">
+        <attstr name="name" val="Olethros 9"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="xj-220"></attstr>
+        <attnum name="race number" val="69"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+      <section name="9">
+        <attstr name="name" val="Olethros 10"></attstr>
+        <attstr name="desc" val=""></attstr>
+        <attstr name="team" val="olethros"></attstr>
+        <attstr name="author" val="Christos Dimitrakakis"></attstr>
+        <attstr name="car name" val="lotus-gt1"></attstr>
+        <attnum name="race number" val="70"></attnum>
+        <attnum name="red" val="1.0"></attnum>
+        <attnum name="green" val="0.0"></attnum>
+        <attnum name="blue" val="1.0"></attnum>
+      </section>
+
+    </section>
+  </section>
+</params>

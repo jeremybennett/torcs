@@ -1,0 +1,45 @@
+This robot is a demonstration of using a predictive system for control.
+There are two things controlled: the acceleration and braking and the
+steering. The system relies on an existing controller to reasonable
+initial values for acceleration, braking and steering. It basically
+does the following update at every timestep t
+
+for k=0 to ...
+	accel(t-k) += pow(lambda, k) * a *(accel_input(t+1) - accel(t))
+	steer(t-k) += pow(lambda, k) * a *(steer_input(t+1) + gamma *steer(t+1) - steer(t));
+endfor
+
+the acceleration and steering prediction at particular times are associated to various points in the track, so the actual update in the code looks lightly different.
+
+In any case, the effect of the update is that steer(t) approximates
+sum_{k=0}^{\infty} gamma ^ k steer_input(t+k), the discounted future
+steer input.
+
+accel(t) on the other hand, approximates a low-pass filtered version
+of future acceleration input. 
+
+Both approximations learn to expect corrections by the naive
+controller algorithm and try and perform the movements before there is
+a need to engage the naive algorithm. 
+
+lambda is in the range [0,1]. The closer it is to one, the higher the
+smoothing effect. 
+
+Gamma is in the range [0,1] also. The closer it is to one, the more
+important future steering commands are.
+
+The robot also features a naive trajectory target planning algorithn,
+in the function Driver::prepareTrack(). This can be used to set up the
+desired trajectory, but it is a bit fiddly to get to work properly in
+conjuction with the rest of the robot.
+
+The robot is based on bt, by Bernhard. A comparison between this bot
+and bt is shown in g-track-2-results.ps, with this bot running without
+the trajectory target planning algorithm. You can get better results
+with target planning, but setting it up properly is tricky and varies
+from track to track.
+
+Enjoy
+
+Christos Dimitrakakis <dimitrak@idiap.ch>
+
