@@ -264,6 +264,7 @@ ReNewTrackMenu(void)
 {
     char	*str;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
 
     if (newTrackMenuHdle) {
 	GfuiScreenRelease(newTrackMenuHdle);
@@ -283,7 +284,7 @@ ReNewTrackMenu(void)
     GfuiMenuDefaultKeysAdd(newTrackMenuHdle);
 
     sprintf(buf, "Race Day #%d on %s",
-	    (int)GfParmGetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1),
+	    (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1),
 	    ReInfo->track->name);
 
     GfuiLabelCreateEx(newTrackMenuHdle,

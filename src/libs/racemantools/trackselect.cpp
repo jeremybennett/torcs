@@ -32,6 +32,7 @@
 #include <tgf.h>
 #include <track.h>
 #include <osspec.h>
+#include <raceman.h>
 #include <racemantools.h>
 
 
@@ -148,7 +149,7 @@ rmtsSelect(void *dummy)
 {
     int		curTrkIdx;
 
-    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
+    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RE_ATTR_CUR_TRACK, NULL, 1);
     sprintf(path, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
     GfParmSetStr(ts->param, path, RM_ATTR_CATEGORY, CategoryList->name);
     GfParmSetStr(ts->param, path, RM_ATTR_NAME, ((tFList*)CategoryList->userData)->name);
@@ -267,7 +268,7 @@ RmTrackSelect(void *vs)
 	CatCur = CatCur->next;
     } while (CatCur != CategoryList);
 
-    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
+    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RE_ATTR_CUR_TRACK, NULL, 1);
     sprintf(path, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
     defaultCategory = GfParmGetStr(ts->param, path, RM_ATTR_CATEGORY, CategoryList->name);
     /* XXX coherency check */

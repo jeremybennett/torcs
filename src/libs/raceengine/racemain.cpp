@@ -102,8 +102,8 @@ ReRaceEventInit(void)
     ReInitTrack();
     RmLoadingScreenSetText("Loading Track 3D Description...");
     ReInfo->_reGraphicItf.inittrack(ReInfo->track);
-    ReInitResults();
-
+    ReEventInitResults();
+    
     if (GfParmGetEltNb(params, RM_SECT_TRACKS) > 1) {
 	ReNewTrackMenu();
 	return RM_ASYNC | RM_NEXT_STEP;
@@ -143,7 +143,7 @@ RePreRace(void)
     }
 
     /* Cleanup results */
-    sprintf(path, "%s/%s", RE_SECT_RESULTS, raceName);
+    sprintf(path, "%s/%s/%s", ReInfo->track->name, RE_SECT_RESULTS, raceName);
     GfParmListClean(results, path);
     
     return RM_SYNC | RM_NEXT_STEP;
@@ -161,6 +161,7 @@ reRaceRealStart(void)
     char	key[256];
     int		foundHuman;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
     tSituation	*s = ReInfo->s;
 
     RmLoadingScreenSetText("Loading Simulation Engine...");
@@ -191,7 +192,7 @@ reRaceRealStart(void)
     }
 
     if (!(ReInfo->s->_raceType == RM_TYPE_QUALIF) ||
-	((int)GfParmGetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1) == 1)) {
+	((int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1) == 1)) {
 	RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
     }
 
@@ -290,7 +291,7 @@ ReRaceStart(void)
     /* Drivers starting order */
     GfParmListClean(params, RM_SECT_DRIVERS_RACING);
     if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
-	i = (int)GfParmGetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1);
+	i = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1);
 	if (i == 1) {
 	    RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
 	    RmLoadingScreenSetText("Preparing Starting Grid...");
@@ -317,7 +318,7 @@ ReRaceStart(void)
 		return RM_QUIT;
 	    }
 	    for (i = 1; i < nCars + 1; i++) {
-		sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, i);
+		sprintf(path, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, i);
 		sprintf(path2, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 		GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
 		GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
@@ -332,7 +333,7 @@ ReRaceStart(void)
 		return RM_QUIT;
 	    }
 	    for (i = 1; i < nCars + 1; i++) {
-		sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, nCars - i + 1);
+		sprintf(path, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, nCars - i + 1);
 		sprintf(path2, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 		GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
 		GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
@@ -433,17 +434,18 @@ ReRaceEnd(void)
 {
     int		curDrvIdx;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
 
     ReRaceCleanup();
 
     if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
-	curDrvIdx = (int)GfParmGetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1);
+	curDrvIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1);
 	curDrvIdx++;
 	if (curDrvIdx > GfParmGetEltNb(params, RM_SECT_DRIVERS)) {
-	    GfParmSetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1);
+	    GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1);
 	    return ReDisplayResults();
 	}
-	GfParmSetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, curDrvIdx);
+	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, curDrvIdx);
 	return RM_SYNC | RM_NEXT_RACE;
     }
     
@@ -455,17 +457,20 @@ int
 RePostRace(void)
 {
     int		curRaceIdx;
+    void	*results = ReInfo->results;
     void	*params = ReInfo->params;
 
-    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
+    ReUpdateStandings();
+    
+    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
     if (curRaceIdx < GfParmGetEltNb(params, RM_SECT_RACES)) {
 	curRaceIdx++;
 	GfOut("Race Nb %d\n", curRaceIdx);
-	GfParmSetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, curRaceIdx);
+	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, curRaceIdx);
 	return RM_SYNC | RM_NEXT_RACE;
     }
     
-    GfParmSetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
+    GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
     return RM_SYNC | RM_NEXT_STEP;
 }
 
@@ -475,23 +480,32 @@ ReEventShutdown(void)
 {
     int		curTrkIdx;
     void	*params = ReInfo->params;
+    int		nbTrk = GfParmGetEltNb(params, RM_SECT_TRACKS);
+    int		ret = 0;
+    void	*results = ReInfo->results;
 
     ReInfo->_reGraphicItf.shutdowntrack();
 
-    curTrkIdx = (int)GfParmGetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
-    if (curTrkIdx < GfParmGetEltNb(params, RM_SECT_TRACKS)) {
+    curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
+    if (curTrkIdx < nbTrk) {
 	/* Next track  */
 	curTrkIdx++;
     } else {
 	/* Back to the beginning */
 	curTrkIdx = 1;
     }
-    GfParmSetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, curTrkIdx);
+    GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, curTrkIdx);
     if (curTrkIdx != 1) {
-	ReInitResults();
-	return RM_SYNC | RM_NEXT_RACE;
+	ret =  RM_NEXT_RACE;
+    } else {
+	ret =  RM_NEXT_STEP;
+    }
+ 
+    if (nbTrk != 1) {
+	ReDisplayStandings();
+	return RM_ASYNC | ret;
     }
     
-    return RM_SYNC | RM_NEXT_STEP;
+    return RM_SYNC | ret;
 }
 

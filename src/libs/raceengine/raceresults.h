@@ -30,8 +30,11 @@
 extern void ReInitResults(void);
 extern void ReStoreRaceResults(char *race);
 extern int  ReDisplayResults(void);
+extern void ReDisplayStandings(void);
 extern void ReSavePracticeLap(tCarElt *car);
 extern void ReUpdateQualifCurRes(tCarElt *car);
+extern void ReEventInitResults(void);
+extern void ReUpdateStandings();
 
 #endif /* _RACERESULTS_H_ */ 
 

@@ -105,11 +105,7 @@ ReShutdown(void)
 void
 ReStartNewRace(void * /* dummy */)
 {
-    void	*params = ReInfo->params;
-   
-    GfParmSetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
-    GfParmSetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
-    GfParmSetNum(params, RM_SECT_DRIVERS, RM_ATTR_CUR_DRIVER, NULL, 1);
+    ReInitResults();
     ReStateManage();
 }
 
@@ -620,8 +616,9 @@ ReInitTrack(void)
     char	*catName;
     int		curTrkIdx;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
 
-    curTrkIdx = (int)GfParmGetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
+    curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
     sprintf(buf, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
     trackName = GfParmGetStr(params, buf, RM_ATTR_NAME, 0);
     if (!trackName) return -1;
@@ -677,8 +674,9 @@ ReGetCurrentRaceName(void)
 {
     int		curRaceIdx;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
 
-    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
+    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
     sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
     return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
 }
@@ -688,8 +686,9 @@ ReGetPrevRaceName(void)
 {
     int		curRaceIdx;
     void	*params = ReInfo->params;
+    void	*results = ReInfo->results;
 
-    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1) - 1;
+    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1) - 1;
     sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
     return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
 }

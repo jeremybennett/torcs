@@ -197,10 +197,7 @@ typedef struct RmInfo
 
 #define RM_SECT_DRIVERS_RACING	"Drivers Start List"
 
-#define RM_ATTR_CUR_RACE	"current race"
-#define RM_ATTR_CUR_TRACK	"current track"
 #define RM_ATTR_CUR_CONF	"current configuration"
-#define RM_ATTR_CUR_DRIVER	"current driver"
 #define RM_ATTR_START_ORDER	"starting order"
 #define RM_ATTR_ALLOW_RESTART	"restart"
 #define RM_ATTR_MUST_COMPLETE	"must complete"
@@ -270,14 +267,20 @@ typedef struct RmInfo
 /* RESULTS */
 
 #define RE_SECT_HEADER		"Header"
-#define RE_ATTR_TRACK		"track"
 #define RE_ATTR_DATE		"date"
 #define RE_ATTR_TYPE		"race"
+
+#define RE_SECT_CURRENT		"Current"
+#define RE_ATTR_CUR_RACE	"current race"
+#define RE_ATTR_CUR_TRACK	"current track"
+#define RE_ATTR_CUR_DRIVER	"current driver"
 
 #define RE_SECT_DRIVERS		"Drivers"
 #define RE_SECT_DRIVER		"Driver"
 #define RE_ATTR_DLL_NAME	"dll name"
 #define RE_ATTR_INDEX		"index"
+
+#define RE_SECT_STANDINGS	"Standings"
 
 #define RE_SECT_RESULTS		"Results"
 #define RE_SECT_STARTINGGRID	"Starting Grid"

@@ -85,6 +85,8 @@ extern void RmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr);
 
 extern void RmRaceParamMenu(void *vrp);
 
+extern void RmShowStandings(void *prevHdle, tRmInfo *info);
+
 
 #endif /* __RACEMANTOOLS_H__ */
 

@@ -48,8 +48,8 @@ CFLAGS   +=  @CFLAGS@ ${CFLAGSD}
 
 #EXT_LIBS = -lpthread @LIBS@
 EXT_LIBS = @LIBS@
-#LDFLAGS =  @LDFLAGS@ -L/usr/lib -L/usr/local/lib -L${EXPORTBASE}/lib
-LDFLAGS +=  @LDFLAGS@ -L/usr/lib  -L${EXPORTBASE}/lib
+#LDFLAGS =  @LDFLAGS@ -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
+LDFLAGS +=  @LDFLAGS@ -L${EXPORTBASE}/lib -L/usr/lib 
 
 #INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
 INCFLAGS =  -I${EXPORTBASE}/include 

@@ -129,6 +129,8 @@ static tdble steerMult[10] = {2.0};
 static tdble Offset[10]    = {0.0};
 static tdble Trightprev[10];
 
+int   PitState[10]  = {0};
+
 /*
  * Function
  *	
@@ -239,6 +241,8 @@ void newrace(int index, tCarElt* car, tSituation *s)
     Tright[0] = Trightprev[0] = car->_trkPos.toRight;
     hold[0] = 8.0;
     curidx = 0;
+
+    PitState[0] = PIT_STATE_NO;
 
     InitGears(car, 0);
 #ifndef WIN32

@@ -359,8 +359,8 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 
     DynOffset[idx] = 0;
     if ((PitState[idx] == PIT_STATE_NONE) && 
-	((car->_dammage > 5000) || 
-	 ((car->_fuel < (ConsFactor + 5.0)) && ((s->_totLaps - car->_laps) > 1)))) {
+	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
+	 ((car->_fuel < ConsFactor) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
     if (PitState[idx] != PIT_STATE_NO) {
@@ -393,12 +393,12 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
 			if (otherCar->_trkPos.toRight > MARGIN) {
-			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN - 1.0);
+			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0 - 1.0);
 			    if (dny < 0) {
 				if (car->_trkPos.toRight > 2.0) {
 				    MaxSpeed[idx] = otherCar->_speed_x * .99;
 				} else {
-				    Tright[idx] += MARGIN;
+				    Tright[idx] += MARGIN * 2.0;
 				}
 			    }
 			} else {
@@ -410,12 +410,12 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			}
 		    } else {
 			if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
-			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN - 1.0);
+			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0 - 1.0);
 			    if (dny > 0) {
 				if (car->_trkPos.toRight < (seg->width - 2.0)) {
 				    MaxSpeed[idx] = otherCar->_speed_x * .99;
 				} else {
-				    Tright[idx] -= MARGIN;
+				    Tright[idx] -= MARGIN * 2.0;
 				}
 			    }
 			} else {
