@@ -20,9 +20,9 @@ DATADIR   = cars/alpha-156-rk
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
 	    $(shell find *.rgb -maxdepth 0 -type f -print) \
 	    $(shell find *.acc -maxdepth 0 -type f -print)  \
-	    $(shell find *.txt -maxdepth 0 -type f -print)
+	    $(shell find *.txt -maxdepth 0 -type f -print) Readme.txt
 
-data-cars-Ryuji-Kainoh_PKGFILES	= $(DATA) $(shell find *.ac -maxdepth 0 -type f -print)
+data-cars-Ryuji-Kainoh_PKGFILES	= $(DATA)
 
 data-cars-Ryuji-Kainoh_PKGDIR	= $(DATADIR)
 

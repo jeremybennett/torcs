@@ -19,7 +19,7 @@
 
 <params name="Alfa Romeo 155 DTM" type="template">
 
-  <!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->
+  <!-- The car 3D model is used with the authorization of Andrea Alfieri (alfiogt@libero.it) -->
   <section name="Driver">
 
     <!-- Position of the driver -->

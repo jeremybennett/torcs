@@ -19,11 +19,11 @@ CAR          = xj-220
 
 DATADIR      = cars/$(CAR)
 
-DATA         = $(CAR).xml \
+DATA         = $(CAR).xml readme.txt\
                $(CAR).rgb tex-wheel.rgb shadow.rgb \
                $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR		= $(DATADIR)
 

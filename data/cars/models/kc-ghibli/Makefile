@@ -26,9 +26,9 @@ DATA_PKG  = 	$(shell find *.acc -maxdepth 0 -type f -print) \
 		$(shell find *.xml -maxdepth 0 -type f -print) \
 		$(shell find *.txt -maxdepth 0 -type f -print)
 
-data-cars-kcendra-gt_PKGFILES	= $(DATA_PKG)
+data-cars-kcendra-gt_PKGFILES	= $(DATA_PKG) $(shell find *.xcf -maxdepth 0 -type f -print)
 
-data-cars-kcendra-gt_PKGDIR		= $(DATADIR)
+data-cars-kcendra-gt_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

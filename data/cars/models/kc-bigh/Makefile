@@ -26,7 +26,7 @@ DATA_PKG  = 	$(shell find *.acc -maxdepth 0 -type f -print) \
 		$(shell find *.xml -maxdepth 0 -type f -print) \
 		$(shell find *.txt -maxdepth 0 -type f -print)
 
-data-cars-kcendra-roadsters_PKGFILES	= $(DATA_PKG)
+data-cars-kcendra-roadsters_PKGFILES	= $(DATA_PKG) $(shell find *.xcf -maxdepth 0 -type f -print)
 
 data-cars-kcendra-roadsters_PKGDIR	= $(DATADIR)
 
