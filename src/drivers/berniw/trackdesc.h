@@ -50,11 +50,6 @@
 class TrackSegment
 {
 	public:
-		/*
-			int id is segment id
-			tTrackSeg* s points to array of tracksegments
-			l, m, r are pointers to left, middle and right point
-		*/
 		TrackSegment();
 		~TrackSegment();
 		void init(int id, const tTrackSeg* s, const t3Dd* l, const t3Dd* m, const t3Dd* r);

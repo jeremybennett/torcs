@@ -1260,6 +1260,11 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 		optimize(id, l+i, 1.0);
 	}
 
+	/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
+	tdble p = (id - 1 + nPathSeg) % nPathSeg;
+	tdble e = (id + 1 + nPathSeg) % nPathSeg;
+	smooth(id, p, e, 1.0);
+
 	return 1;
 }
 
