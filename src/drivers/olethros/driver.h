@@ -122,7 +122,7 @@ protected:
 	float FindCurveTarget(tTrackSeg* seg, Vector* C, float rmax);
 	float FindStraightTarget(tTrackSeg* curve, tTrackSeg* seg, Vector* C, float rmax, bool& flag);
 	// Misc functions
-	
+	void AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi);
 	void ShowPaths();
 
 	// Per robot global data.

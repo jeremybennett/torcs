@@ -182,10 +182,13 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 				if (car->_trkPos.toLeft - car->_dimension_y<0) {
 					dtheta = car->_trkPos.toLeft - car->_dimension_y;// - 1;
 				}
-				if (car->_trkPos.toLeft - .5*car->_dimension_y<0) {
-					dtheta = -10;
-					//printf ("DTH %d %f\n", seg->id, radius[seg->id]);
-				} 
+				if ((car->_trkPos.toLeft - .5*car->_dimension_y<0)
+					|| (car->_speed_x < 0)) {
+ 					dtheta = -10;
+					PropagateUpdateBackwards (seg, -10, 0.02, 100.0);
+					//printf ("DTH %d\n ", seg->id);
+				}
+
 				dr = (1-beta) * (outside - tomiddle)
 					+ beta * (dtheta);
 			} else if (lastturn == TR_LFT) {
@@ -200,15 +203,17 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 				if (car->_trkPos.toRight - car->_dimension_y<0) {
 					dtheta = car->_trkPos.toRight - car->_dimension_y;// - 1;
 				}
-				if (car->_trkPos.toRight - .5*car->_dimension_y<0) {
+				if ((car->_trkPos.toRight - .5*car->_dimension_y < 0)
+					|| (car->_speed_x < 0)) {
 					dtheta = -10;
-					//printf ("DTH %d %f\n", seg->id, radius[seg->id]);
+					PropagateUpdateBackwards (seg, -10, 0.02, 100.0);
+					//printf ("DTH %d\n", seg->id);
 				}
 				dr = (1-beta) * (outside + tomiddle)
 					+ beta * (dtheta);
-				//printf ("%f %f\n", target_error, dr);
 			}
 			
+			//printf ("%f %f %f %f \n", target_error, dr, rmin, r[seg->id]);
 
 			if (dr < rmin) {
 				rmin = dr;
@@ -244,6 +249,18 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 	}
 }
 
+void SegLearn::PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, float max_length)
+{
+
+	//printf ("back: %d->", pseg->id);
+	for (float length = 0; length<max_length;) {
+		length += pseg->length;
+		pseg = pseg->prev;
+		radius[updateid[pseg->id]] += d*exp(-beta*length);
+	}
+	//printf ("%d\n", pseg->id);
+}
+
 float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm)
 {
 	float alpha = 0.05;
@@ -251,14 +268,20 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 	float lambda = 0.9;
 	tTrackSeg* seg = car->_trkPos.seg;
 	
-	
+	float in_track = 1.0;
 	if (car->_trkPos.toRight - car->_dimension_y<0) {
-		dtm = 2*(car->_trkPos.toRight - car->_dimension_y);
+		in_track = 1-fabs(tanh(0.5*(car->_trkPos.toRight - car->_dimension_y)));
+		dtm = 2.0*(car->_trkPos.toRight - car->_dimension_y);
 		//printf ("R:%f %f\n", car->_steerCmd, dtm);
 	}
 	if (car->_trkPos.toLeft - car->_dimension_y<0) {
-		dtm = -2*(car->_trkPos.toLeft - car->_dimension_y);
+		in_track = 1-fabs(tanh(0.5*(car->_trkPos.toLeft - car->_dimension_y)));
+		dtm = -2.0*(car->_trkPos.toLeft - car->_dimension_y);
 		//printf ("L:%f %f\n", car->_steerCmd, dtm);
+	}
+	if (car->_speed_x < 0) {
+		in_track = 0;
+		taccel = -1;
 	}
 	int segid = (seg->id);
 	int quantum = segQuantum(segid);
@@ -273,7 +296,7 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 		elig[prev_quantum] = 1.0;
 
 		float da = alpha * (taccel - accel[prev_quantum]);
-		float ds = alpha * (dtm + gamma*derror[quantum] - derror[prev_quantum]);
+		float ds = alpha * in_track * (dtm + gamma*derror[quantum] - derror[prev_quantum]);
 		for (int i=0; i<n_quantums; i++) {
 			accel[i] += elig[i] * da;
 			derror[i] += elig[i] * ds;

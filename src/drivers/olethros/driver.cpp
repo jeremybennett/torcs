@@ -54,7 +54,7 @@ const float Driver::LOOKAHEAD_FACTOR = 0.33;				///< [-]
 const float Driver::WIDTHDIV = 3.0;							///< [-] Defines the percentage of the track to use (2/WIDTHDIV).
 const float Driver::SIDECOLL_MARGIN = 3.0;					///< [m] Distance between car centers to avoid side collisions.
 const float Driver::BORDER_OVERTAKE_MARGIN = 0.5;			///< [m]
-const float Driver::OVERTAKE_OFFSET_SPEED = 0.1;			///< [m/s] Offset change speed.
+const float Driver::OVERTAKE_OFFSET_SPEED = 1.0;			///< [m/s] Offset change speed.
 const float Driver::PIT_LOOKAHEAD = 6.0;					///< [m] Lookahead to stop in the pit.
 const float Driver::PIT_BRAKE_AHEAD = 200.0;				///< [m] Workaround for "broken" pitentries.
 const float Driver::PIT_MU = 0.4;							///< [-] Friction of pit concrete.
@@ -65,7 +65,7 @@ const float Driver::CENTERDIV = 0.1;						///< [-] (factor) [0.01..0.6].
 const float Driver::DISTCUTOFF = 200.0;						///< [m] How far to look, terminate while loops.
 const float Driver::MAX_INC_FACTOR = 5.0;					///< [m] Increment faster if speed is slow [1.0..10.0].
 const float Driver::CATCH_FACTOR = 10.0;					///< [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake.
-const float Driver::CLUTCH_FULL_MAX_TIME = 2.0;				///< [s] Time to apply full clutch.
+const float Driver::CLUTCH_FULL_MAX_TIME = 1.0;				///< [s] Time to apply full clutch.
 const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2;			///< [m] if offset < this use the learned stuff
 const float Driver::ACCELERATOR_LETGO_TIME = 0.2;           ///< [s] Time to let go of accelerator before braking.
 const float Driver::MIN_BRAKE_FOLLOW_DISTANCE = 0.5;        ///< [m] Predicted minimum distance from next opponent to apply full brake
@@ -96,7 +96,7 @@ Driver::Driver(int index)
 Driver::~Driver()
 {
 	
-	//ShowPaths();
+	ShowPaths();
 
 
 	// Do not save learnt stuff from race itself.
@@ -429,23 +429,28 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	float mu = segment->surface->kFriction*TIREMU*MU_FACTOR;
 	float r = radius[segment->id];
 	float dr = learn->getRadius(segment);
-	if ((alone > 0)) {
-		// && fabs(myoffset) < USE_LEARNED_OFFSET_RANGE) ||
-		//		dr < 0.0
-		//) {
-		if (dr>0) {
+	if (((alone > 0) && (fabs(myoffset) < USE_LEARNED_OFFSET_RANGE))
+		|| pit->getInPit())
+		 {
+		if (dr>-.5*r) {
 				r += dr;
 		}
 		
 	} else {
 		//printf ("%f %f %f %f ", r, dr, myoffset, (1-tanh(0.1*(fabs(myoffset)))));
 		//printf ("%d : ", segment->id);
-		if (dr>=0) {
+		if (dr>=-.5*r) {
 			r += dr * (1-tanh(fabs(myoffset)));
 			//printf ("off: %.2f :", myoffset);//1-tanh(fabs(myoffset/USE_LEARNED_OFFSET_RANGE))));
 		}
-		r -= fabs(myoffset) * r / segment->width;
-		//printf ("%.1f : R %.1f : dr %.2f : IR %.1f\n", r, radius[segment->id], dr, ideal_radius[segment->id]);
+		float alpha = 2*fabs(myoffset) / segment->width;
+		alpha = MIN (1, alpha);
+		alpha = MAX (0, alpha);
+		r = alpha * segment->radius + (1-alpha) * r;
+		//r -= fabs(myoffset) * r / segment->width;
+		//printf ("%.1f | R %.1f | r+dr %.2f | IR %.1f\n",
+		//				r, radius[segment->id], radius[segment->id]+dr,
+		//				ideal_radius[segment->id]);
 		// * (1-tanh(0.1*(fabs(myoffset)- USE_LEARNED_OFFSET_RANGE)));
 	}
 
@@ -629,11 +634,17 @@ int Driver::getGear()
 		return car->_gear + 1;
 	} else {
 		float gr_down = car->_gearRatio[car->_gear + car->_gearOffset - 1];
-		omega = car->_enginerpmRedLine/gr_down;
-		omega = MIN(omega, car->_enginerpmMaxPw/gr_down) * SHIFT;
-		if (car->_gear > 1 && omega*wr*SHIFT > car->_speed_x + SHIFT_MARGIN) {
+		float prev_rpm = gr_down * (car->_speed_x + SHIFT_MARGIN) / wr;
+
+		if (EstimateTorque (prev_rpm) * gr_down
+			> EstimateTorque (rpm) * gr_up) {
 			return car->_gear - 1;
 		}
+		//omega = car->_enginerpmRedLine/gr_down;
+		//omega = MIN(prev_rpm, car->_enginerpmRedLine)* SHIFT;
+		//if (car->_gear > 1 && omega*wr*SHIFT > car->_speed_x + SHIFT_MARGIN) {
+		//			return car->_gear - 1;
+		//	}
 	}
 	return car->_gear;
 }
@@ -644,17 +655,22 @@ int Driver::getGear()
    Uses a piecewise linear model to estimate torque, given the value
    of torque at the max torque and power points and assuming that the
    torque drops to 0 at 0 revs and that it decays linearly after the
-   maximum power at a rate double than that of the decay between
+   maximum power at a rate 4 times than that of the decay between
    maximum torque and maximum power.
  */
 float Driver::EstimateTorque (float rpm)
 {
 	float TqAtMaxPw = car->_engineMaxPw/car->_enginerpmMaxPw;
-	float rate = (car->_engineMaxTq-TqAtMaxPw)
-		/ (car->_enginerpmMaxPw-car->_enginerpmMaxTq);
-	float TqAtMaxRevs = TqAtMaxPw -
-		fabs(rate*2) * (car->_enginerpmMax - car->_enginerpmMaxPw);
-	//printf ("estimated Tq at maxrevs: %f@%f\n", TqAtMaxRevs, car->_enginerpmMax);
+	//float rate = (car->_engineMaxTq-TqAtMaxPw)
+	// (car->_enginerpmMaxPw-car->_enginerpmMaxTq);
+	//float TqAtMaxRevs = TqAtMaxPw -
+	//		fabs(rate*4) * (car->_enginerpmMax - car->_enginerpmMaxPw);
+	// or otherwsise estimate Tq at max revs as torque for having half the power
+	//printf ("tq-estimated Tq at maxrevs: %f@%f\n", TqAtMaxRevs, car->_enginerpmMax);
+	float PwAtMaxRevs = .8*car->_engineMaxPw;
+	float TqAtMaxRevs = PwAtMaxRevs/car->_enginerpmMax;
+	//printf ("pw-estimated Tq at maxrevs: %f@%f\n", TqAtMaxRevs, car->_enginerpmMax);
+
 	float t [] = {
 		0.0,
 		car->_engineMaxTq,
@@ -1024,11 +1040,12 @@ float Driver::getOffset()
 		}
 	} else {
 		// There is no opponent to overtake, so the offset goes slowly back to zero.
-		if (myoffset > OVERTAKE_OFFSET_INC) {
-			myoffset -= OVERTAKE_OFFSET_INC;
+		float a = 1.0;
+		if (myoffset > a*OVERTAKE_OFFSET_INC) {
+			myoffset -= a*OVERTAKE_OFFSET_INC;
 			//myoffset= 0.0;
-		} else if (myoffset < -OVERTAKE_OFFSET_INC) {
-			myoffset += OVERTAKE_OFFSET_INC;
+		} else if (myoffset < -a*OVERTAKE_OFFSET_INC) {
+			myoffset += a*OVERTAKE_OFFSET_INC;
 			//myoffset= 0.0;
 		} else {
 			myoffset = 0.0;
@@ -1185,7 +1202,7 @@ float Driver::filterBPit(float brake)
 			float mu = car->_trkPos.seg->surface->kFriction*TIREMU*PIT_MU;
 			float bd = brakedist(0.0, mu);
 			if (bd > dl) {
-				printf ("Brakeahead\n");
+				//printf ("Brakeahead\n");
 				return tanh((bd-dl));
 			}
 		}
@@ -1459,9 +1476,32 @@ float Driver::filterTrk(tSituation* s, float accel)
 	float trackR = fabs(car->_trkPos.toRight);
 	float trackL = fabs(car->_trkPos.toLeft);
 	float actual_x = trackR/(trackL + trackR);
+
 	seg_alpha_new[id] += 0.01*(actual_x-(seg_alpha_new[id]));
 	//seg_alpha[id] -= 0.01*(actual_x-(seg_alpha_new[id]));
-	float dtm = -( 1.0 * getSteer()
+
+	if (USE_NEW_ALPHA) { // limit new alpha
+		float margin  = 1.0;
+		if (seg->type==TR_STR) {
+			margin = 1.0;
+		} else {
+			margin = 2.0;
+		}
+		float lowlimit = margin*car->_dimension_y / track->width;
+		float hilimit = 1-lowlimit;
+		if (seg_alpha_new[id]<lowlimit) seg_alpha_new[id] = lowlimit;
+		if (seg_alpha_new[id]>hilimit) seg_alpha_new[id] = hilimit;
+	}
+	float orig_steer = getSteer();
+
+	// Steering filter definition: these values make a huge
+	// difference.  Using for example 0.1, 0.0, 1.0 makes for slower
+	// driving.. I am not sure why.  i.e. on e-track-3, mclarenf1, you
+	// get times in 1:14-1:15 with the currently used values but
+	// around 1:16 1:17 with the others.  the -0.1 term that subtracts
+	// the predicted error is there to prevent the error from growing
+	// too much.
+	float dtm = -( 1.0 * orig_steer
 				   - 0.1 * learn->predictedError(car)
 				   + 0.1 * (target_x - actual_x));//(car->_trkPos.toMiddle);
 	float tm = fabs(actual_x - target_x);
@@ -1481,17 +1521,17 @@ float Driver::filterTrk(tSituation* s, float accel)
 		return accel;
 	}
 	float accident = 0.0;
-	float margin = car->_dimension_y + fabs(car->_trkPos.toMiddle) - 0.5*seg->width;
+	float margin = fabs(car->_trkPos.toMiddle) - 0.5*seg->width;
 	if (margin > 0.0) {
-		if (margin > car->_dimension_y) {
+		if (margin > .5*car->_dimension_y) {
 			accident = -1;
 		}
 		if (car->_trkPos.toRight<.5*car->_dimension_y) {
-			dtm -= tanh((car->_dimension_y - car->_trkPos.toRight));
+			dtm -= 1.0*tanh((car->_dimension_y - car->_trkPos.toRight));
 		} else 	if (car->_trkPos.toLeft<car->_dimension_y) {
-			dtm -= tanh((car->_trkPos.toLeft - car->_dimension_y));
+			dtm -= 1.0*tanh((car->_trkPos.toLeft - car->_dimension_y));
 		}
-		//printf ("%f %f %f\n", dtm, margin, car->_trkPos.toLeft);
+		//printf ("%f %f %f\n", -orig_steer, dtm, margin);
 			
 	}
 	float uleft = (car->_trkPos.toLeft - prev_toleft)/dt;
@@ -1507,19 +1547,27 @@ float Driver::filterTrk(tSituation* s, float accel)
 		if (u_toleft<0) {
 			danger = -car->_trkPos.toLeft/u_toleft;
 			steer_adjust = -1.0;
-			//printf ("LC: %fs\n", danger);
+			//printf ("LCR: %fs %d\n", danger, seg->id);
+		} else if (u_toright>0) {
+			danger = -car->_trkPos.toRight/u_toright;
+			steer_adjust = 0.1;
+			//printf ("RCR: %fs %d\n", danger, seg->id);
 		}
 	} else if (seg->type == TR_LFT) {
 		if (u_toright<0) {
 			danger = -car->_trkPos.toRight/u_toright;
 			steer_adjust = 1.0;
-			//printf ("RC: %fs\n", danger);
+			//printf ("RCL: %fs %d\n", danger, seg->id);
+		} else if (u_toleft<0) {
+			danger = -2*car->_trkPos.toLeft/u_toleft;
+			steer_adjust = -0.1;
+			//printf ("LCR: %fs %d\n", danger, seg->id);
 		}
 	}
 	float danger_accel = 0.0;
 	if (danger>0) {
 		if (danger<0.5) {
-			danger_accel = -0.5 - (0.5-danger);
+			danger_accel = -0.5 - 2*(0.5-danger);
 			//printf ("%f %f\n", car->_steerCmd, steer_adjust);
 			car->_steerCmd += 0.1*steer_adjust;
 		} else if (danger<1.0) {
@@ -1631,8 +1679,8 @@ void Driver::prepareTrack()
 #if 1
 	float aleft = 1.0;
 	float aright= 0.0;
-	float exitleft=0.0;
-	float exitright=1.0;
+	float exitleft=0.2;
+	float exitright=0.8;
 	float entryleft=0.1;
 	float entryright=0.9;
 	bool adjust_entry = true;
@@ -1674,7 +1722,8 @@ void Driver::prepareTrack()
 		seg_alpha[i] = 0.0;
 		seg_alpha_new[i] = 0.0;
 		targets[i] = 0.0;
-		radi[i] = 0.0;
+		radi[i] = 1.0; // set to 1, so that we get something useful
+					   // even if we don't call AdjustRadi()
 	}
 
 
@@ -1702,32 +1751,16 @@ void Driver::prepareTrack()
 		float target_mean = 0.5;
 
 		// for the case of consecutive same-direction curves
-		// with different radius, get a set of weights
-		if (seg->type!=TR_STR) {
-			float sum = 0.0;
-			float max = 0.0;
-			for (tTrackSeg* aseg = cs->next; 
-				 aseg != ce;
-				 aseg = aseg->next) {
-				int id = aseg->id;
-				radi[id] = exp(-0.01*aseg->radius);
-				sum += radi[id];
-				if (max<radi[id]) max = radi[id];
-			}
+		// with different radi, get a set of weights
+		if (seg->type != TR_STR) {
+			AdjustRadi (cs, ce, radi);
 			ideal_radius[i] = seg->radius;// * radi[i]/sum;
-
-			for (tTrackSeg* aseg = cs->next; 
-				 aseg != ce;
-				 aseg = aseg->next) {
-				int id = aseg->id;
-				radi[id] *= .5 / max;
-			}
 		} else {
 			ideal_radius[i] = FLT_MAX;
 		}
 
 		if (seg->type==TR_LFT) {
-			target_mean = aleft;// * radi[i] + (1-radi[i])*entryleft;
+			target_mean = aleft * radi[i] + (1-radi[i])*0.5;//entryleft;
 			if (cs->type==TR_STR) {
 				target_start = entryleft;
 			} else if (cs->type==TR_RGT) {
@@ -1739,7 +1772,7 @@ void Driver::prepareTrack()
 				target_end = 0.5;
 			}
 		} else if (seg->type==TR_RGT) {
-			target_mean = aright;// * radi[i] + (1-radi[i]*entryright);
+			target_mean = aright* radi[i] + (1-radi[i])*0.5;//entryright;
 			if (cs->type==TR_STR) {
 				target_start = entryright;
 			} else if (cs->type==TR_LFT) {
@@ -1801,11 +1834,20 @@ void Driver::prepareTrack()
 	//printf ("Smoothing targets\n");
 
 	// first make sure we are in the proper range.
+	float margin = 2.0;
+	seg=track->seg;
 	for (int i=0; i<N; i++) {
-		float lowlimit = car->_dimension_y / track->width;
+		int id = seg->id;
+		if (seg->type==TR_STR) {
+			margin = 0.5*(margin+1.0);
+		} else {
+			margin = 0.5*(margin+2.0);
+		}
+		float lowlimit = margin*car->_dimension_y / track->width;
 		float hilimit = 1-lowlimit;
-		if (seg_alpha[i]<lowlimit) seg_alpha[i] = lowlimit;
-		if (seg_alpha[i]>hilimit) seg_alpha[i] = hilimit;
+		if (seg_alpha[id]<lowlimit) seg_alpha[id] = lowlimit;
+		if (seg_alpha[id]>hilimit) seg_alpha[id] = hilimit;
+		seg = seg->next;
 	}
 	// Smooth targets
 	float d = 0.01;
@@ -1852,17 +1894,23 @@ void Driver::prepareTrack()
 	}
 #if 1
 
-
+	margin = 2.0;
+	seg=track->seg;
 	for (int i=0; i<N; i++) {
-		seg_alpha[i] = (1-squash) * seg_alpha[i] + 0.5 * squash;
-		float lowlimit = car->_dimension_y / track->width;
+		int id = seg->id;
+		seg_alpha[id] = (1-squash) * seg_alpha[id] + 0.5 * squash;
+		if (seg->type==TR_STR) {
+			margin = 0.5*(margin+1.0);
+		} else {
+			margin = 0.5*(margin+2.0);
+		}
+		float lowlimit = margin*car->_dimension_y / track->width;
 		float hilimit = 1-lowlimit;
-		if (seg_alpha[i]<lowlimit) seg_alpha[i] = lowlimit;
-		if (seg_alpha[i]>hilimit) seg_alpha[i] = hilimit;
-		seg_alpha_new[i] = seg_alpha[i];
+		if (seg_alpha[id]<lowlimit) seg_alpha[id] = lowlimit;
+		if (seg_alpha[id]>hilimit) seg_alpha[id] = hilimit;
+		seg = seg->next;
+		seg_alpha_new[id] = seg_alpha[id];
 	}
-
-
 #endif
 
 
@@ -2250,6 +2298,74 @@ float Driver::FindStraightTarget(tTrackSeg* curve, tTrackSeg* seg, Vector* C, fl
 
 	delete intersect;
 	return target;
+}
+
+/**
+   \brief Adjust influence weight on radi of consecutive curves.
+
+   The radius of some segments of a curve is more influential than
+   others when creating the path. For example if you have one wide
+   curve followed by a tight followed by another wide one, you wish to
+   treat the wide curves as if they were straight, especially close
+   to the tight curve. This function implements a weighting scheme
+   that can be used later. This way one can find optimal paths for
+   each curve independently and then combine them using those weights.
+
+   \c cs is the beginning of the segments and \c ce is the end of the
+   segments for which we will calculate radi.
+
+   \c radi is an array that will contain the weights; it should have a
+   size at least equal to the maximum segment ID.
+ */
+void Driver::AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi)
+{
+	float sum = 0.0;
+	float max = 0.0;
+	for (tTrackSeg* aseg = cs->next; 
+		 aseg != ce;
+		 aseg = aseg->next) {
+		int id = aseg->id;
+		radi[id] = 1/(aseg->radius);//exp(-0.01*aseg->radius);
+		sum += radi[id];
+		if (max<radi[id]) max = radi[id];
+	}
+	//ideal_radius[i] = seg->radius;// * radi[i]/sum;
+
+	for (tTrackSeg* aseg = cs->next; 
+		 aseg != ce;
+		 aseg = aseg->next) {
+		int id = aseg->id;
+		// first compute radius at top of curve piece.
+		radi[id] /= max;
+		// see how far away we are from next and previous
+		// pieces (meaning with different radi).
+		bool same_curve = true;
+		float dist_to_next = aseg->length / 2;
+		float dist_to_prev = aseg->length / 2;
+		tTrackSeg* prev = aseg;
+		tTrackSeg* next = aseg;
+		while (same_curve) {
+			same_curve = false;
+			if ((prev->prev->type == aseg->type)
+				&& (fabs(prev->prev->radius - aseg->radius) < 1)) {
+				prev = prev->prev;
+				dist_to_prev += prev->length;
+				same_curve = true;
+			}
+			if ((next->next->type == aseg->type)
+				&& (fabs(next->next->radius - aseg->radius) < 1)) {
+				next = next->next;
+				dist_to_next += next->length;
+				same_curve = true;
+			}
+		}
+		// calculate weight such that it is 0 at the center of the piece
+		// and 1 at the ends.
+		float total_length = dist_to_next + dist_to_prev;
+		float weight = fabs(dist_to_prev - dist_to_next)/total_length;
+		radi[id] = (1 - weight) + weight * radi[id];
+	} // for (aseg)
+
 }
 
 #ifdef USE_OLETHROS_NAMESPACE

@@ -68,6 +68,7 @@ public:
 	void saveParameters (char* fname);
 
 private:
+	void PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, float max_length);
 	/// Class for computing averages of measured values
 	class Averages {
 	public:
