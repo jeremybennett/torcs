@@ -275,7 +275,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	} else {
 		tdble abs_min = 1.0;
 		for (int i = 0; i < 4; i++) {
-			tdble slip = (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->getSpeed();
+			tdble slip = car->_wheelSpinVel(i) * car->_wheelRadius(i) / myc->getSpeed();
 			if (slip < abs_min) abs_min = slip;
 		}
     	brake = brake * abs_min;
@@ -306,8 +306,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	tdble cerror, cerrorh;
 	cerrorh = sqrt(car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y);
-	if (cerrorh > 1.0) cerror = car->_speed_x/cerrorh; else cerror = 1.0;
-
+	if (cerrorh > myc->TURNSPEED) cerror = fabs(car->_speed_x)/cerrorh; else cerror = 1.0;
 
 	/* acceleration / brake execution */
 	if (myc->tr_mode == 0) {

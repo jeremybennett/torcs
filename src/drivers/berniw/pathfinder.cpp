@@ -1217,9 +1217,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	} else if (minTime < FLT_MAX){
 		nearestCar = o[minIndex].collcar;
 		sidechangeallowed = true;
-		for (int i = 0; i <= (int) myc->MINOVERTAKERANGE; i += 10) {
+		int i;
+		for (i = 0; i <= (int) myc->MINOVERTAKERANGE; i += 10) {
 			if (track->getSegmentPtr((trackSegId+i) % nPathSeg)->getRadius() < myc->OVERTAKERADIUS) return 0;
-
 		}
 	} else return 0;
 
@@ -1252,10 +1252,16 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		if (!sidechangeallowed) {
 			double paralleldist = o[minIndex].cosalpha*dist(myc->getCurrentPos(), nearestCar->getCurrentPos());
 			if (paralleldist > 1.5*myc->CARLEN) {
+				int i;
+				for (i = 0; i <= (int) myc->MINOVERTAKERANGE; i += 10) {
+					if (track->getSegmentPtr((trackSegId+i) % nPathSeg)->getRadius() < myc->OVERTAKERADIUS) return 0;
+				}
 				double pathtocarsgn = sign(pathtomiddle - d);
 				y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 					y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
+				} else {
+					o[minIndex].overtakee = true;
 				}
 
 				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
@@ -1286,6 +1292,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 			y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
 			if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 				y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
+			} else {
+				o[minIndex].overtakee = true;
 			}
 		}
 
@@ -1321,7 +1329,10 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		double l = 0.0; v3d q, *pp, *qq;
 		for (i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			d = spline(3, l, s, y, ys);
-			if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0) return 0;
+			if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0) {
+				o[minIndex].overtakee = false;
+				return 0;
+			}
 			newdisttomiddle[i - trackSegId] = d;
 			l += TRACKRES;
 		}
