@@ -36,10 +36,6 @@
 #include <robottools.h>
 #include <robot.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 
 /** Display the Practice session results.
     @param	prevHdle	Handle to return to.
@@ -171,13 +167,13 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
 		     GFUI_ALIGN_HC_VB,
 		     0,
 		     prevHdle,
-		     GfuiScreenActivate,
+		     GfuiScreenReplace,
 		     NULL,
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
 
-    GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenActivate);
-    GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenActivate);
+    GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
+    GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
     GfuiAddSKey(hdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
 
     GfuiScreenActivate(hdle);

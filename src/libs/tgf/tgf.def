@@ -51,6 +51,7 @@ EXPORTS
 	GfuiScreenCreateEx
 	GfuiScreenRelease
 	GfuiScreenActivate
+	GfuiScreenReplace
 	GfuiScreenDeactivate
 	GfuiAddKey
 	GfuiAddSKey

@@ -34,9 +34,6 @@
 #include <osspec.h>
 #include <racemantools.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 /* Tracks Categories */
 static tFList		*CategoryList;

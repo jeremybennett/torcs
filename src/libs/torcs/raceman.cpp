@@ -26,10 +26,6 @@
 #include "raceman.h"
 #include "mainmenu.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 typedef struct 
 {
     int		index;
@@ -48,6 +44,7 @@ lauchRaceman(void *vmod)
 	racemanItf = (tRacemanItf*)calloc(1, sizeof(tRacemanItf));
 	RacemanModLoaded->modInfo[mod->index].fctInit(mod->index, (void*)(racemanItf));
 	racemanItf->start(menuHandle);
+	free(racemanItf);
     }
 }
 

@@ -26,10 +26,6 @@
 
 #include "Cylinder.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 Point Cylinder::support(const Vector& v) const {
   Scalar s = sqrt(v[X] * v[X] + v[Z] * v[Z]);
   if (s > EPSILON) {

@@ -30,10 +30,6 @@
 #include <tgf.h>
 #include "gui.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void	*scrHandle;
 static float	*fgColor1 = &(GfuiColor[GFUI_HELPCOLOR1][0]);
 static float	*fgColor2 = &(GfuiColor[GFUI_HELPCOLOR2][0]);
@@ -108,9 +104,9 @@ GfuiHelpScreen(void *prevScreen)
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle, (unsigned char)27, "", prevScreen, GfuiScreenActivate);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "", prevScreen, GfuiScreenActivate);
-    GfuiAddKey(scrHandle, (unsigned char)13, "", prevScreen, GfuiScreenActivate);
+    GfuiAddKey(scrHandle, (unsigned char)27, "", prevScreen, GfuiScreenReplace);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "", prevScreen, GfuiScreenReplace);
+    GfuiAddKey(scrHandle, (unsigned char)13, "", prevScreen, GfuiScreenReplace);
 
     GfuiScreenActivate(scrHandle);
 

@@ -141,9 +141,9 @@ inline Scalar Matrix::determinant() const {
 }
 
 inline Matrix Matrix::absolute() const {
-  return Matrix(abs(elem[X][X]), abs(elem[X][Y]), abs(elem[X][Z]),
-		abs(elem[Y][X]), abs(elem[Y][Y]), abs(elem[Y][Z]),
-		abs(elem[Z][X]), abs(elem[Z][Y]), abs(elem[Z][Z]));
+  return Matrix(fabs(elem[X][X]), fabs(elem[X][Y]), fabs(elem[X][Z]),
+		fabs(elem[Y][X]), fabs(elem[Y][Y]), fabs(elem[Y][Z]),
+		fabs(elem[Z][X]), fabs(elem[Z][Y]), fabs(elem[Z][Z]));
 }
 
 inline Matrix Matrix::transpose() const {

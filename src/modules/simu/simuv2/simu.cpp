@@ -31,10 +31,6 @@
 #include <robottools.h>
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 tCar *SimCarTable;
 
 tdble SimDeltaTime;

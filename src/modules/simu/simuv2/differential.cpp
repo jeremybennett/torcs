@@ -19,10 +19,6 @@
 
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void 
 SimDifferentialConfig(void *hdle, char *section, tDifferential *differential)
 {

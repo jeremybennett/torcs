@@ -30,10 +30,6 @@
 
 #include <practicectrl.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void		*prMainMenuHandle = NULL;
 static void		*PractParam;
 
@@ -137,7 +133,7 @@ prStart(tPracticeFct *prf)
     
     GfuiMenuBackQuitButtonCreate(prMainMenuHandle,
 				 "Back", "Return to TORCS Practice Menu",
-				 prf->backMenu, GfuiScreenActivate);
+				 prf->backMenu, GfuiScreenReplace);
 
     GfuiScreenActivate(prMainMenuHandle);
 }

@@ -26,17 +26,6 @@
 
 #include "linuxspec.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
-static void
-torcs_end(void)
-{
-    printf("Thanks to play with TORCS.\n");
-}
-
-
 /*
  * Function
  *	main
@@ -56,9 +45,6 @@ torcs_end(void)
 int 
 main(int argc, char *argv[])
 {
-    
-    /* atexit(torcs_end); */
-    
     LinuxSpecInit();		/* init specific linux functions */
     
     GfScrInit(argc, argv);	/* init screen */

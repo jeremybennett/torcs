@@ -86,9 +86,9 @@ private:
 };
 
 inline bool intersect(const BBox& a, const BBox& b) {
-  return abs(a.center[X] - b.center[X]) <= a.extent[X] + b.extent[X] &&
-         abs(a.center[Y] - b.center[Y]) <= a.extent[Y] + b.extent[Y] &&
-	 abs(a.center[Z] - b.center[Z]) <= a.extent[Z] + b.extent[Z];
+  return fabs(a.center[X] - b.center[X]) <= a.extent[X] + b.extent[X] &&
+         fabs(a.center[Y] - b.center[Y]) <= a.extent[Y] + b.extent[Y] &&
+	 fabs(a.center[Z] - b.center[Z]) <= a.extent[Z] + b.extent[Z];
 }
 
 #endif

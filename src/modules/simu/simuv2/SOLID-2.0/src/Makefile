@@ -25,7 +25,7 @@ SOURCES      = 	Transform.cpp Convex.cpp Box.cpp Cone.cpp Cylinder.cpp Sphere.cp
 
 LIBDIR	     =	lib
 
-COMPILFLAGS  =	-DNDEBUG
+COMPILFLAGS  =	-DNDEBUG -Wno-deprecated
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

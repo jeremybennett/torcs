@@ -26,10 +26,6 @@
 
 #include "Box.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 Point Box::support(const Vector& v) const {
   return Point(v[X] < 0 ? -extent[X] : extent[X],
 	       v[Y] < 0 ? -extent[Y] : extent[Y],

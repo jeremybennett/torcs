@@ -29,7 +29,7 @@
 #include <tgf.h>
 #include <car.h>
 
-static void		*menuHandle;
+static void		*menuHandle = NULL;
 static int		fuelId;
 static int		repairId;
 static tCarElt		*rmCar;
@@ -65,6 +65,10 @@ RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
     int		y, x, dy;
 
     rmCar = car;
+
+    if (menuHandle) {
+	GfuiScreenRelease(menuHandle);
+    }
     menuHandle = GfuiMenuScreenCreate("Pit Stop Info");
 
     x = 80;

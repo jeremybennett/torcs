@@ -24,10 +24,6 @@
 
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 const tdble aMax = 0.35; /*  */
 
 void

@@ -30,10 +30,6 @@
 #include <algorithm>
 #include <new.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 class BBoxCompAxis {
 public:
   int axis;
@@ -91,13 +87,13 @@ inline bool sep_axes_test(const Vector& a, const Vector& b,
   ++num_box_tests;
 #endif
 
-  if (a[X] + dot(abs_b2a[X], b) < abs(pos_b2a[X])) return false; 
-  if (a[Y] + dot(abs_b2a[Y], b) < abs(pos_b2a[Y])) return false; 
-  if (a[Z] + dot(abs_b2a[Z], b) < abs(pos_b2a[Z])) return false; 
+  if (a[X] + dot(abs_b2a[X], b) < fabs(pos_b2a[X])) return false; 
+  if (a[Y] + dot(abs_b2a[Y], b) < fabs(pos_b2a[Y])) return false; 
+  if (a[Z] + dot(abs_b2a[Z], b) < fabs(pos_b2a[Z])) return false; 
 
-  if (b[X] + dot(abs_a2b[X], a) < abs(pos_a2b[X])) return false; 
-  if (b[Y] + dot(abs_a2b[Y], a) < abs(pos_a2b[Y])) return false; 
-  if (b[Z] + dot(abs_a2b[Z], a) < abs(pos_a2b[Z])) return false; 
+  if (b[X] + dot(abs_a2b[X], a) < fabs(pos_a2b[X])) return false; 
+  if (b[Y] + dot(abs_a2b[Y], a) < fabs(pos_a2b[Y])) return false; 
+  if (b[Z] + dot(abs_a2b[Z], a) < fabs(pos_a2b[Z])) return false; 
 
   return true;
 }

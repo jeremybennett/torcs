@@ -20,10 +20,6 @@
 #include <stdio.h>
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 /*
  * b2 and b3 calculus
  */

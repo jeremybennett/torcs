@@ -32,10 +32,6 @@
 #endif
 #include <tgf.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void gfRlstInit(void)
 {
 }

@@ -23,10 +23,6 @@ $Id$
 #include <stdio.h>
 #include <stddef.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 struct range {
   int start;
   int end;

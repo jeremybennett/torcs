@@ -28,10 +28,6 @@
 #include "BBox.h"
 #include "Transform.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 Scalar rel_error = 1e-6; // relative error in the computed distance
 Scalar abs_error = 1e-10; // absolute error if the distance is almost zero
 

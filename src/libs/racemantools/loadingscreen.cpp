@@ -32,10 +32,6 @@
 #include <tgf.h>
 #include <car.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void		*menuHandle = NULL;
 #define			TEXTLINES	20
 static int		rmTextId[TEXTLINES];

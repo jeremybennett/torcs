@@ -311,6 +311,7 @@ extern void *GfuiScreenCreateEx(float *bgColor,
 				int mouseAllowed);
 extern void GfuiScreenRelease(void *screen);
 extern void GfuiScreenActivate(void *screen);
+extern void GfuiScreenReplace(void *screen);
 extern void GfuiScreenDeactivate(void);
 extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
 extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);

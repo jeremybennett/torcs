@@ -38,10 +38,6 @@
 
 #include "common.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);

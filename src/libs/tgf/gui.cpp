@@ -34,10 +34,6 @@
 #include <tgf.h>
 #include "gui.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
 tMouseInfo	GfuiMouse;
@@ -337,6 +333,24 @@ GfuiScreenActivate(void *screen)
     GfuiDisplay();
     glutPostRedisplay();
 
+}
+
+
+/** Activate a screen and make it current plus release the current screen.
+    @ingroup	gui
+    @param	screen	Screen to activate
+    @warning	The current screen at the call time is deactivated.
+ */
+void
+GfuiScreenReplace(void *screen)
+{
+    tGfuiScreen	*oldScreen = GfuiScreen;
+
+    GfuiScreenActivate(screen);
+    
+    if (oldScreen) {
+	GfuiScreenRelease(oldScreen);
+    }
 }
 
 /** Deactivate the current screen.
@@ -710,7 +724,7 @@ GfuiScreenAddBgImg(void *scr, char *filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-    /* free(tex); */
+    free(tex);
     GfParmReleaseHandle(handle);
 }
 

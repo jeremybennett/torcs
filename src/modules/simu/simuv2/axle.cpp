@@ -19,10 +19,6 @@
 
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static char *AxleSect[2] = {SECT_FRNTAXLE, SECT_REARAXLE};
 
 void

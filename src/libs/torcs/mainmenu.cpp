@@ -25,10 +25,6 @@
 #include "raceman.h"
 #include "optionmenu.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 
 void *menuHandle = NULL;
 tModList *RacemanModLoaded = (tModList*)NULL;

@@ -26,10 +26,6 @@
 
 #include "Sphere.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 Point Sphere::support(const Vector& v) const {
   Scalar s = v.length();
   if (s > EPSILON) {

@@ -39,10 +39,6 @@
 
 #include <robottools.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 /** Get the track width at the specified point.
     @ingroup	tracktools
     @param	seg	Segment

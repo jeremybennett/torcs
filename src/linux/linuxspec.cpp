@@ -33,10 +33,6 @@
 
 #include "os.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 /*
  * Function
  *	linuxModLoad

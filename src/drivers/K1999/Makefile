@@ -29,7 +29,9 @@ SHIP      = ${ROBOT}.xml logo.rgb
 
 SHIPSUBDIRS = 1 2
 
-PKGSUBDIRS	= $(SHIPSUBDIRS)
+PKGSUBDIRS  = $(SHIPSUBDIRS)
+
+CXXFLAGS    = -Wno-deprecated
 
 src-robots-K1999_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

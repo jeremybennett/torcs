@@ -33,10 +33,6 @@
 
 #include "guifont.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define FONT_NB	9
 GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };

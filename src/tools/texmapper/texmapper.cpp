@@ -22,7 +22,9 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 #include <getopt.h>
 #include <math.h>
 #include <plib/ssg.h>
@@ -87,6 +89,12 @@ tRow	*Row;
 
 extern int myssgSaveAC ( const char *filename, ssgEntity *ent, const char *skinfilename );
 
+
+void load_database(void);
+void save_database(void);
+void set_texture_coord(void);
+
+
 int BrNb = 0;
 
 void print_mat4(char *title, sgMat4 m)
@@ -135,22 +143,6 @@ hookNode(char *s)
 extern char *optarg;
 extern int optind, opterr, optopt;
 
-/*
-  The GLUT window reshape event
-*/
-/* void reshape(int w, int h) */
-/* { */
-/*     glViewport(0, 0, w, h); */
-/* } */
-
-
-/*
-  The GLUT keyboard event
-*/
-/* void keyboard(unsigned char, int, int) */
-/* { */
-/*     exit(0); */
-/* } */
 
 void saveSkin(void)
 {
@@ -160,10 +152,9 @@ void saveSkin(void)
     if (img == NULL) {
 	return;
     }
-    
     glPixelStorei(GL_PACK_ROW_LENGTH, 0);
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
-    glReadBuffer(GL_BACK);
+    glReadBuffer(GL_FRONT);
     glReadPixels(0, 0, ImgSize, ImgSize, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)img);
 
     GfImgWritePng(img, SkinFileName, ImgSize, ImgSize);
@@ -172,10 +163,7 @@ void saveSkin(void)
 }
 
 
-/*
-  The GLUT redraw event
-*/
-void draw()
+void draw(void)
 {
     int i;
     tRingList	*curElt;
@@ -193,6 +181,7 @@ void draw()
 	while (curElt) {
 	    curFace = (tFace*)curElt;
 	    if (curFace->isPresent) {
+		printf("Drawing face %s\n", curFace->faceName);
 		ssgSetNearFar(MIN(curFace->sbbmin[1], curFace->sbbmax[1]) - 1, 
 			      MAX(curFace->sbbmin[1], curFace->sbbmax[1]) + 1);
 		ssgCullAndDraw((ssgRoot*)curFace->branch);
@@ -200,10 +189,33 @@ void draw()
 	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
 	}
     }
-
-    saveSkin();
+    //saveSkin();
 }
 
+int DisplayCount = 0;
+
+void
+Display(void)
+{
+    DisplayCount++;
+    switch (DisplayCount) {
+    case 10:
+	draw();
+	break;
+    case 11:
+	saveSkin();
+	break;
+    case 12:
+	set_texture_coord();
+	save_database();
+	break;
+    case 20:
+	exit(0);
+	break;
+    }
+    glutSwapBuffers();
+    glutPostRedisplay();
+}
 
 
 void init_graphics ()
@@ -223,10 +235,10 @@ void init_graphics ()
     glutInit(&fake_argc, fake_argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     glutCreateWindow(fake_argv[1]);
-/*     glutDisplayFunc(redraw); */
-/*     glutReshapeFunc(reshape); */
-/*     glutKeyboardFunc(keyboard); */
  
+    /* Callbacks */
+    glutDisplayFunc(Display);
+    
     /*
       Initialise SSG
     */
@@ -237,7 +249,14 @@ void init_graphics ()
     */
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glutSwapBuffers();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glutSwapBuffers();
 
+    load_database();
+
+    glutMainLoop();
 }
 
 void updt_bbox(ssgEntity *start, sgVec3 min, sgVec3 max)
@@ -688,6 +707,8 @@ int main(int argc, char **argv)
     init_args(argc, argv);
     load_params();
     init_graphics();
+
+    /* not used */
     load_database();
     draw();
     set_texture_coord();

@@ -19,10 +19,6 @@
 #include <plib/ssg.h>
 #include "grshadow.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void ssgVtxTableShadow::copy_from ( ssgVtxTableShadow *src, int clone_flags )
 {
   ssgVtxTable::copy_from ( src, clone_flags ) ;

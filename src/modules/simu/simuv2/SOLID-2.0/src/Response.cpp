@@ -26,10 +26,6 @@
 
 #include "Response.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 DtCollData Response::coll_data;
 
 void Response::operator()(DtObjectRef a, DtObjectRef b, 

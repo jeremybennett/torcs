@@ -33,10 +33,6 @@
 
 #include "grutil.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 float		grGammaValue = 1.8;
 int		grMipMap = 0;
 

@@ -39,10 +39,6 @@
 #include <tgf.h>
 #include "os.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void
 gfModInit(void)
 {

@@ -19,10 +19,6 @@
 
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define CAR_DAMMAGE	0.1
 
 void

@@ -32,10 +32,6 @@
 
 #include "practice.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static tSimItf	SimItf;
 static double	curTime = 0;
 static double	lastTime = 0;

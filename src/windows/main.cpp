@@ -26,10 +26,6 @@
 
 #include "windowsspec.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 /*
  * Function
  *	main

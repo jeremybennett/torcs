@@ -19,10 +19,6 @@ Contributor(s):
 $Id$
 */
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #ifndef IS_INVALID_CHAR
 #define IS_INVALID_CHAR(enc, ptr, n) (0)
 #endif

@@ -31,10 +31,6 @@
 
 #include "practice.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void			*prMainMenuHandle = NULL;
 static tRmTrackSelect	ts;
 static tRmRaceParam	rp;
@@ -182,7 +178,7 @@ prMenuRun(void *backmenu)
 
 	GfuiMenuBackQuitButtonCreate(prMainMenuHandle,
 				  "Back to Main", "Return to TORCS Main Menu",
-				  prPrevMenuHandle, GfuiScreenActivate);
+				  prPrevMenuHandle, GfuiScreenReplace);
     }
     
     GfuiScreenActivate(prMainMenuHandle);

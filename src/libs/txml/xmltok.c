@@ -23,10 +23,6 @@ $Id$
 #include "xmltok.h"
 #include "nametab.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define VTABLE1 \
   { PREFIX(prologTok), PREFIX(contentTok), PREFIX(cdataSectionTok) }, \
   { PREFIX(attributeValueTok), PREFIX(entityValueTok) }, \

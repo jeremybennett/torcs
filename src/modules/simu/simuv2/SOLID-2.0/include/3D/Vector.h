@@ -132,8 +132,8 @@ inline Vector Vector::normalized() const { return *this / length(); }
 
 inline int Vector::closestAxis() const {
   Scalar a[2];
-  int axis = (a[X] = abs(comp[X])) < (a[Y] = abs(comp[Y])) ? Y : X;
-  return a[axis] < abs(comp[Z]) ? Z : axis;
+  int axis = (a[X] = fabs(comp[X])) < (a[Y] = fabs(comp[Y])) ? Y : X;
+  return a[axis] < fabs(comp[Z]) ? Z : axis;
 }
 
 inline Vector Vector::random() {

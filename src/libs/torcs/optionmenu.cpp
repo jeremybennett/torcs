@@ -24,17 +24,16 @@
 #include "graphconfig.h"
 #include "joystickconfig.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+static void *optionHandle = NULL;
 
 void *
 TorcsOptionOptionInit(void *precMenu)
 {
-    void *optionHandle;
     void *playerHandle;
     void *JoystickHandle;
 
+    if (optionHandle) return optionHandle;
+    
     optionHandle = GfuiMenuScreenCreate("OPTIONS");
 
     GfuiScreenAddBgImg(optionHandle, "data/img/splash-options.png");

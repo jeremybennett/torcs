@@ -31,10 +31,6 @@
 #include <GL/glut.h>
 #include <tgf.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 /** Save a screen shot in png format
  */
 void

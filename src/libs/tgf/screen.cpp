@@ -38,16 +38,14 @@
 
 #include <tgf.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static int GfScrWidth;
 static int GfScrHeight;
 static int GfViewWidth;
 static int GfViewHeight;
 static int GfScrCenX;
 static int GfScrCenY;
+
+void	*scrMenuHdle = NULL;
 
 void
 gfScreenInit(void)
@@ -251,40 +249,39 @@ chgScreenSize(void *p)
 void *
 GfScrMenuInit(void *precMenu)
 {
-    void	*menuHdle;
     void	*paramHdle;
     char	*fullscreen;
     
+    if (scrMenuHdle) return scrMenuHdle;
+    scrMenuHdle = GfuiMenuScreenCreate("Screen configuration");
+    GfuiScreenAddBgImg(scrMenuHdle, "data/img/splash-graphic.png");
 
-    menuHdle = GfuiMenuScreenCreate("Screen configuration");
-    GfuiScreenAddBgImg(menuHdle, "data/img/splash-graphic.png");
-
-    GfuiMenuButtonCreate(menuHdle, "320x200", "Relaunch TORCS in 320x200 mode", (void*)0, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "640x480", "Relaunch TORCS in 640x480 mode", (void*)1, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "800x600", "Relaunch TORCS in 800x600 mode", (void*)2, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "1024x768", "Relaunch TORCS in 1024x768 mode", (void*)3, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "1200x960", "Relaunch TORCS in 1200x960 mode", (void*)4, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "1280x1024", "Relaunch TORCS in 1280x1024 mode", (void*)5, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "1600x1200", "Relaunch TORCS in 1600x1200 mode", (void*)6, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "320x200", "Relaunch TORCS in 320x200 mode", (void*)0, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "640x480", "Relaunch TORCS in 640x480 mode", (void*)1, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "800x600", "Relaunch TORCS in 800x600 mode", (void*)2, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "1024x768", "Relaunch TORCS in 1024x768 mode", (void*)3, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "1200x960", "Relaunch TORCS in 1200x960 mode", (void*)4, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "1280x1024", "Relaunch TORCS in 1280x1024 mode", (void*)5, chgScreenSize);
+    GfuiMenuButtonCreate(scrMenuHdle, "1600x1200", "Relaunch TORCS in 1600x1200 mode", (void*)6, chgScreenSize);
 
     paramHdle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     fullscreen = GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     if (strcmp(fullscreen, GFSCR_VAL_NO) == 0) {
-	GfuiMenuButtonCreate(menuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode", (void*)0, chgScreenType);
-	GfuiEnable(menuHdle, GfuiMenuButtonCreate(menuHdle, "Window mode", "Relaunch TORCS in window mode",
+	GfuiMenuButtonCreate(scrMenuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode", (void*)0, chgScreenType);
+	GfuiEnable(scrMenuHdle, GfuiMenuButtonCreate(scrMenuHdle, "Window mode", "Relaunch TORCS in window mode",
 						  (void*)1, chgScreenType),
 		   GFUI_DISABLE);
     } else {
-	GfuiEnable(menuHdle, GfuiMenuButtonCreate(menuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode",
+	GfuiEnable(scrMenuHdle, GfuiMenuButtonCreate(scrMenuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode",
 						  (void*)0, chgScreenType),
 		   GFUI_DISABLE);
-	GfuiMenuButtonCreate(menuHdle, "Window mode", "Relaunch TORCS in window mode", (void*)1, chgScreenType);
+	GfuiMenuButtonCreate(scrMenuHdle, "Window mode", "Relaunch TORCS in window mode", (void*)1, chgScreenType);
     }
     GfParmReleaseHandle(paramHdle);
  
-    GfuiMenuBackQuitButtonCreate(menuHdle, "Back", "", precMenu, GfuiScreenActivate);
+    GfuiMenuBackQuitButtonCreate(scrMenuHdle, "Back", "", precMenu, GfuiScreenActivate);
  
-    return menuHdle;
+    return scrMenuHdle;
 }
 
 /** Convert a time in seconds (float) to an ascii string.

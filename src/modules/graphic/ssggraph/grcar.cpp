@@ -45,9 +45,6 @@
 #include "grssgext.h"
 #include "grutil.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 static int

@@ -25,10 +25,6 @@
 
 #include <robottools.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void
 TrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y)
 {

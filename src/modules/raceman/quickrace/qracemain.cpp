@@ -34,12 +34,6 @@
 #include "qracegl.h"
 #include "qracemain.h"
 
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
-
 static tSimItf	SimItf;
 static double	curTime = 0;
 static double	lastTime = 0;
@@ -153,7 +147,7 @@ qraceRun(void *dummy)
 	qrTrackItf.trkShutdown();
 	GfModUnloadList(&qracemodlist);
 	qracemodlist = (tModList*)NULL;
-	GfuiScreenActivate(qrMainMenuHandle);
+	GfuiScreenReplace(qrMainMenuHandle);
 	return;
     }
     

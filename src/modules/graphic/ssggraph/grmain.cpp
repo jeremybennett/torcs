@@ -41,10 +41,6 @@
 #include "grboard.h"
 #include "grutil.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 int grDebugFlag			= 1;
 int grBoardFlag			= 1;
 int grLeaderFlag		= 1;

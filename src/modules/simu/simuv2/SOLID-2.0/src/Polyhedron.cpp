@@ -35,10 +35,6 @@ extern "C" {
 #include <vector>
 #include <new.h>  
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 typedef vector<unsigned int> IndexBuf;
 
 char qh_version[] = "SOLID 2.0";

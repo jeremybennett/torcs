@@ -37,10 +37,6 @@
 #include <direct.h>
 #endif
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define PNG_BYTES_TO_CHECK 4
 
 /** Load an image from disk to a buffer in RGBA mode.

@@ -29,7 +29,9 @@
 #ifndef WIN32
 #include <unistd.h>
 #endif
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
 #ifndef WIN32
 #include <getopt.h>
 #endif

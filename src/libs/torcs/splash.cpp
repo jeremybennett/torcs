@@ -28,10 +28,6 @@
 #include "splash.h"
 #include "mainmenu.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static int ImgWidth, ImgHeight;
 static GLenum ImgFormat;
 static GLubyte *Image = (GLubyte *)NULL;

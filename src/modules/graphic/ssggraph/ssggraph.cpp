@@ -27,10 +27,6 @@
 
 #include "grmain.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static int
 graphInit(int idx, void *pt)
 {

@@ -20,9 +20,9 @@ PROGRAM = torcs
 
 SOURCES = main.cpp linuxspec.cpp
 
-LDFLAGS  = -rdynamic
+LDFLAGS = -rdynamic
 
-SOLIBS   = -lracemantools \
+SOLIBS  =  -lracemantools \
 	   -lrobottools   \
 	   -ltorcs        \
 	   -ltgf          \

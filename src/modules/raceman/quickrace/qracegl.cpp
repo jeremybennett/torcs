@@ -33,10 +33,6 @@
 #include "qracemain.h"
 #include "qracegl.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static int BoardFl = 1;
 static int FpsFl = 1;
 static int RunFl = 1;
@@ -267,13 +263,13 @@ qrResults(void *prevHdle)
 		     GFUI_ALIGN_HC_VB,
 		     0,
 		     prevHdle,
-		     GfuiScreenActivate,
+		     GfuiScreenReplace,
 		     NULL,
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
 
-    GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenActivate);
-    GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenActivate);
+    GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
+    GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
     GfuiAddSKey(hdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
 
     GfuiScreenActivate(hdle);

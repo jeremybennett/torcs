@@ -104,7 +104,7 @@ qrMenuRun(void *backmenu)
     
 	GfuiMenuBackQuitButtonCreate(qrMainMenuHandle,
 				  "Back to Main", "Return to TORCS Main Menu",
-				  qrPrevMenuHandle, GfuiScreenActivate);
+				  qrPrevMenuHandle, GfuiScreenReplace);
     }
     
     GfuiScreenActivate(qrMainMenuHandle);

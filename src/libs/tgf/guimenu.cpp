@@ -36,10 +36,6 @@
 #include "gui.h"
 #include "guimenu.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void
 gfMenuInit(void)
 {

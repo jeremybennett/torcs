@@ -29,10 +29,6 @@
 #include "xmlparse.h"
 #include <xml.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 #define BUFMAX	256
 
 /*

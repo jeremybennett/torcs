@@ -26,10 +26,6 @@
 #include <track.h>
 #include "trackinc.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static tdble	xmin, xmax, ymin, ymax, zmin, zmax;
 
 #define TSTX(x)			\

@@ -31,10 +31,6 @@
 
 #include <new.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 Object::Object(DtObjectRef obj, ShapePtr shape) : 
   ref(obj), 
   shapePtr(shape),

@@ -23,10 +23,6 @@
 #include "exitmenu.h"
 #include "mainmenu.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void 
 endofprog(void *dummy)
 {
@@ -55,6 +51,8 @@ static void *exitmenuHandle = NULL;
 void *
 TorcsExitMenuInit(void *mainMenu)
 {
+    if (exitmenuHandle) return exitmenuHandle;
+
     exitmenuHandle = GfuiMenuScreenCreate("Quit ?");
     GfuiScreenAddBgImg(exitmenuHandle, "data/img/splash-quit.png");
 
