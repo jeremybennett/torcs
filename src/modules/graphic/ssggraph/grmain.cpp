@@ -281,6 +281,9 @@ refresh(tSituation *s)
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);    
+    glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_TEXTURE_2D);
 
     TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
     if (grDebugFlag)   grDispDebug(Fps, s->cars[s->current], s);
