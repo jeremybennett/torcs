@@ -212,7 +212,7 @@ datainstall: installdatadirs installdata
 
 win32datainstall: installwin32datadirs installwin32data
 
-packages: specfiles packagelist
+packages: win32setup specfiles packagelist
 
 onepackage: packagedirs packagefiles
 

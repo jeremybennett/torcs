@@ -23,7 +23,6 @@
 	<attstr name="desc" val="A robot dedicated to William"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="viper-gts-r"/>
-	<attstr name="category" val="Track-RWD-GrA"/>
 	<attnum name="race number" val="14"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="0.5"/>

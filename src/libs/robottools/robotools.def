@@ -15,4 +15,5 @@ EXPORTS
 	RtTrackSideNormalG
 	RtTrackGlobal2Local
 	RtTrackSurfaceNormalL
+	RtGetDistFromStart
 	RtGetDistFromStart2

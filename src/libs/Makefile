@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-SHIPSUBDIRS	= tgf
+SHIPSUBDIRS	= tgf raceengine
 
 EXPINCDIRS	= txml tgf torcs racemantools robottools raceengine
 

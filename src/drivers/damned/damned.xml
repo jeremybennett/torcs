@@ -24,7 +24,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="FOCW61"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="1"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -37,7 +36,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="206W10"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="2"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -49,7 +47,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="306W61"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="3"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -61,7 +58,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="EVOWRC61"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="4"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -73,7 +69,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="SWRC62"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="5"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -85,7 +80,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="CORW61"/>
-	<attstr name="category" val="Offroad-4WD-GrA"/>
 	<attnum name="race number" val="6"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -97,7 +91,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="porsche-gt1"/>
-	<attstr name="category" val="Track-RWD-GrA"/>
 	<attnum name="race number" val="7"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -109,7 +102,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="mclaren-f1"/>
-	<attstr name="category" val="Track-RWD-GrA"/>
 	<attnum name="race number" val="8"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -121,7 +113,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="360-modena"/>
-	<attstr name="category" val="Track-RWD-GrA"/>
 	<attnum name="race number" val="9"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -133,7 +124,6 @@
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
 	<attstr name="car name" val="155-DTM"/>
-	<attstr name="category" val="Track-4WD-GrB"/>
 	<attnum name="race number" val="10"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>

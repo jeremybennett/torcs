@@ -15,12 +15,6 @@ Package=<4>
     Project_Dep_Name lliaw
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name manual
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name practice
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name racemantools
     End Project Dependency
     Begin Project Dependency
@@ -94,6 +88,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name inferno6
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raceengine
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cylos2
     End Project Dependency
 }}}
 
@@ -318,43 +318,19 @@ Package=<4>
 
 ###############################################################################
 
-Project: "manual"=".\src\modules\raceman\practice\control\manual\manual.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name racemantools
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "practice"=".\src\modules\raceman\practice\practice\practice.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name tgf
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name racemantools
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "quickrace"=".\src\modules\raceman\quickrace\quickrace.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "raceengine"=".\SRC\LIBS\raceengine\raceengine.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -526,6 +502,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name quickrace
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name raceengine
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name racemantools

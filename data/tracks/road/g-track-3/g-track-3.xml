@@ -20,11 +20,6 @@
 
 <params name="CG SPEEDWAY 3" type="trackdef" mode="mw">
 
-  <!-- Objects -->
-  <section name="Objects">
-      &default-objects;
-  </section>  <!-- Objects -->
-
   <section name="Header">
     <attstr name="name"              val="CG track 3"/>
     <attstr name="category"          val="road"/>
@@ -32,6 +27,8 @@
     <attstr name="author"            val="CG"/>
     <attstr name="description"       val="High speed track"/>
   </section>
+
+
 
   <section name="Graphic">
     <attstr name="3d description" val="g-track-3.acc"/>
@@ -55,9 +52,9 @@
     <attnum name="shininess" val="5"/>
 
 
-    <attnum name="light position x" val="-5000"/>
-    <attnum name="light position y" val="-50"/>
-    <attnum name="light position z" val="15000"/>
+    <attnum name="light position x" val="-300"/>
+    <attnum name="light position y" val="-300"/>
+    <attnum name="light position z" val="300"/>
 
     <section name="Environment Mapping">
       <section name="general">
@@ -111,7 +108,7 @@
     </section>
 
     <section name="Right Side">
-      <attstr name="surface"  val="asphaltr"/>
+      <attstr name="surface"  val="as-pits"/>
       <attnum name="width"    val="15.0"/>
       <attstr name="banking type" in="level,tangent" val="tangent"/>
     </section>
@@ -132,8 +129,8 @@
       <attstr name="side"   val="right"/>
       <attstr name="entry"  val="segment line 6b"/>
       <attstr name="start"  val="last segment"/>
-      <attstr name="end"    val="last segment"/>
-      <attstr name="exit"   val="start lane"/>
+      <attstr name="end"    val="start lane"/>
+      <attstr name="exit"   val="s3"/>
       <attnum name="length" val="15" unit="m"/>
       <attnum name="width"  val="5" unit="m"/>
     </section>  <!-- PITS -->
@@ -147,12 +144,12 @@
       <!-- -->
       <section name="start lane">
         <attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="60"/>
+	<attnum name="lg" unit="m" val="40"/>
 	<attnum name="z end" val="+0" unit="m"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="2.0"/>
-	  <attstr name="surface" val="g-sand-r"/>
+	  <attstr name="surface" val="gconcrete"/>
 	  <attstr name="style" val="plan"/>
 	</section>
 
@@ -186,7 +183,7 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 
 	<section name="Right Side">
-	  <attstr name="surface" val="gsand"/>
+	  <attstr name="surface" val="gasphalt5"/>
 	  <attnum name="end width" val="8"/>
 	</section>
 
@@ -202,7 +199,7 @@
 	</section>
 
         <section name="Right Border">
-	  <attstr name="surface" val="g-sand-r"/>
+	  <attstr name="surface" val="gconcrete"/>
 	  <attstr name="style" val="plan"/>
 	  <attnum name="width" val="2.0"/>
         </section>
@@ -225,12 +222,12 @@
 	<attnum name="z end" val="+1" unit="m"/>
 
 	<section name="Right Side">
-	  <attstr name="surface" val="gsand"/>
+	  <attstr name="surface" val="gasphalt5"/>
 	</section>
 
         <section name="Right Border">
           <attnum name="width" val="2.0"/>
-          <attstr name="surface" val="g-sand-r"/>
+          <attstr name="surface" val="gconcrete"/>
 	  <attstr name="style" val="plan"/>
         </section>
 
@@ -1426,7 +1423,7 @@
 	<attnum name="profil steps" val="8"/>
 
 	<section name="Right Side">
-	  <attstr name="surface" val="asphaltr"/>
+	  <attstr name="surface" val="gconcrete"/>
 	  <attnum name="width" val="15"/>
 	</section>
 
@@ -1457,13 +1454,13 @@
       <!-- -->
       <section name="segment line 6">
         <attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="50.09"/>
+	<attnum name="lg" unit="m" val="50"/>
 	<attnum name="z end" val="0" unit="m"/>
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="profil steps" val="8"/>
 
 	<section name="Right Side">
-	  <attstr name="surface" val="asphaltr"/>
+	  <attstr name="surface" val="gasphalt5"/>
 	  <attnum name="width" val="15"/>
 	</section>
 
@@ -1495,10 +1492,10 @@
       <section name="last segment">
         <attstr name="type" val="str"/>
         <attstr name="surface" val="gasphalt5"/>
-	<attnum name="lg" unit="m" val="239.99999"/>
+	<attnum name="lg" unit="m" val="260.09"/>
 	<attnum name="z end" val="0" unit="m"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="profil steps" val="8"/>
+	<attnum name="profil steps" val="15"/>
 
 	<section name="Right Side">
 	  <attstr name="surface" val="as-pits"/>
@@ -1529,6 +1526,7 @@
 	</section>
 
       </section>
+      <!-- -->
 
     </section> <!-- Track segments -->
   </section> <!-- Main Track -->
@@ -1767,6 +1765,13 @@
 
   </section>
 
+
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
+
   <section name="Surfaces">
     &default-surfaces;
     <section name="gasphalt">
@@ -1910,7 +1915,7 @@
       <attnum name="color B2" val="0.1"/>
       <attstr name="texture name" val="gsand.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="continuous"/>
-      <attnum name="texture size" val="20.0" unit="m"/>
+      <attnum name="texture size" val="10.0" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
 
       <attnum name="friction"           val="0.6"/>
@@ -1932,7 +1937,7 @@
       <attnum name="color B2" val="0.1"/>
       <attstr name="texture name" val="assandr.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
-      <attnum name="texture size" val="20.0" unit="m"/>
+      <attnum name="texture size" val="5.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
 
       <attnum name="friction"           val="0.6"/>
@@ -2101,7 +2106,7 @@
       <attnum name="color R2" val="0.2"/>
       <attnum name="color G2" val="0.2"/>
       <attnum name="color B2" val="0.2"/>
-      <attstr name="texture name" val="asp_n.rgb"/>
+      <attstr name="texture name" val="asp.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attstr name="texture link with previous" val="yes"/>
       <attstr name="texture start on boundary" val="yes"/>

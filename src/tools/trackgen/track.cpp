@@ -44,6 +44,7 @@
 typedef struct texElt
 {
     char		*name;
+    char		*namebump;
     unsigned int	texid;
     struct texElt	*next;
 } tTexElt;
@@ -211,6 +212,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     printf("version   = %d\n", Track->version);
     printf("length    = %f\n", Track->length);
     printf("width     = %f\n", Track->width);
+    printf("pits      = %d\n", Track->pits.nMaxPits);
     printf("XSize     = %f\n", Track->max.x);
     printf("YSize     = %f\n", Track->max.y);
     printf("ZSize     = %f\n", Track->max.z);
@@ -239,7 +241,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 
     trkpos.type = TR_LPOS_MAIN;
 
-#define SETTEXTURE(texname, mipmap) do {				\
+#define SETTEXTURE(texname, texnamebump, mipmap) do {			\
 	int found = 0;							\
 	curTexElt = texList;						\
 	if (curTexElt == NULL) {					\
@@ -247,6 +249,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	    curTexElt->next = curTexElt;				\
 	    texList = curTexElt;					\
 	    curTexElt->name = strdup(texname);				\
+	    curTexElt->namebump = strdup(texnamebump);			\
 	    curTexElt->texid = GenTexId++;				\
 	} else {							\
 	    do {							\
@@ -262,6 +265,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 		texList->next = curTexElt;				\
 		texList = curTexElt;					\
 		curTexElt->name = strdup(texname);			\
+	    	curTexElt->namebump = strdup(texnamebump);		\
 	        curTexElt->texid = GenTexId++;				\
 	    }								\
 	}								\
@@ -271,7 +275,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 #define NBELTLIST 1
 
 #define NEWDISPLIST(texchange, _name, _id) do {						\
-	if (*(curTexElt->name) != 0) {							\
+	if (!bump || (*(curTexElt->namebump) != 0)) {						\
 	    if (theCurDispElt != NULL) {						\
 		startNeeded = texchange;						\
 		if (theCurDispElt->start != nbvert) {					\
@@ -310,11 +314,13 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 		Groups[_id].nb++;							\
 		ActiveGroups++;								\
 	    }										\
+	fprintf(stderr, "%s %d (%s)\n", _name, _id, curTexElt->name);				\
 	}										\
     } while (0)
 
 #define CHECKDISPLIST(mat, name, id, off) do {									\
 	char *texname;												\
+	char *texnamebump;											\
 	int  mipmap;												\
 	static char path_[256];											\
 	if (Track->version < 4) {										\
@@ -322,13 +328,10 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
         } else {												\
 	    sprintf(path_, "%s/%s", TRK_SECT_SURFACES, mat);							\
         }													\
-        if (bump) {												\
-	    texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_BUMPNAME, "");					\
-        } else {												\
-	    texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");			\
-        }													\
+	texnamebump = GfParmGetStr(TrackHandle, path_, TRK_ATT_BUMPNAME, "");					\
+	texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");				\
 	mipmap = (int)GfParmGetNum(TrackHandle, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);			\
-	SETTEXTURE(texname, mipmap);										\
+	SETTEXTURE(texname, texnamebump, mipmap);										\
 	if ((curTexId != prevTexId) || (startNeeded)) {								\
 	    char *textype;											\
             if (bump) {												\
@@ -362,7 +365,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 #define CHECKDISPLIST2(texture, mipmap, name, id) do {		\
 	char texname[256];					\
 	sprintf(texname, "%s.rgb", texture);			\
-	SETTEXTURE(texname, mipmap);				\
+	SETTEXTURE(texname, "", mipmap);			\
 	if (curTexId != prevTexId) {				\
 	    prevTexId = curTexId;				\
 	    NEWDISPLIST(1, name, id);				\
@@ -370,7 +373,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     }  while (0)
 
 #define CHECKDISPLIST3(texture, mipmap, name, id) do {		\
-	SETTEXTURE(texture, mipmap);				\
+	SETTEXTURE(texture, "", mipmap);			\
 	if (curTexId != prevTexId) {				\
 	    prevTexId = curTexId;				\
 	    NEWDISPLIST(1, name, id);				\
@@ -2552,7 +2555,7 @@ saveObject(FILE *curFd, int nb, int start, char *texture, char *name, int surfTy
 
 
 static void
-SaveMainTrack(FILE *curFd)
+SaveMainTrack(FILE *curFd, int bump)
 {
     tDispElt		*aDispElt;
     char		buf[256];
@@ -2567,7 +2570,11 @@ SaveMainTrack(FILE *curFd)
 		aDispElt = aDispElt->next;
 		if (aDispElt->nb != 0) {
 		    sprintf(buf, "%s%d", aDispElt->name, aDispElt->id);
-		    saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
+		    if (bump) {
+			saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->namebump, buf, aDispElt->surfType);
+		    } else {
+			saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
+		    }
 		}
 	    } while (aDispElt != Groups[i].dispList);
 	}
@@ -2595,13 +2602,13 @@ GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int
     if (outFile) {
 	curFd = Ac3dOpen(outFile, 1);
 	Ac3dGroup(curFd, "track", ActiveGroups);
-	SaveMainTrack(curFd);
+	SaveMainTrack(curFd, bump);
 	Ac3dClose(curFd);
     }
     
     if (AllFd) {
 	Ac3dGroup(AllFd, "track", ActiveGroups);
-	SaveMainTrack(AllFd);
+	SaveMainTrack(AllFd, bump);
     }
     
 }

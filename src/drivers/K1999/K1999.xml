@@ -12,7 +12,6 @@
     <attstr name="team" val="K1999"/>
     <attstr name="author" val="Rémi"/> 
     <attstr name="car name" val="buggy"/> 
-    <attstr name="category" val="Offroad-RWD-GrA"/> 
     <attnum name="race number" val="99"/> 
     <attnum name="red" val="0.9"/> 
     <attnum name="green" val="0.9"/> 
@@ -25,7 +24,6 @@
     <attstr name="team" val="K1999"/>
     <attstr name="author" val="Rémi"/> 
     <attstr name="car name" val="cg-nascar-rwd"/> 
-    <attstr name="category" val="Track-RWD-GrA"/> 
     <attnum name="race number" val="97"/> 
     <attnum name="red" val="0.9"/> 
     <attnum name="green" val="0.9"/> 

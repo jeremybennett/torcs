@@ -19,18 +19,93 @@
 
     <section name="index">
 
-      <section name="1">
-        <attstr name="name" val="Player 1"/>
-        <attstr name="car name" val="360-modena"/>
-        <attstr name="category" val="Track-RWD-GrA"/>
-	<attstr name="author" val="Eric Espie"/>
-        <attnum name="race number" val="20"/>
-        <attnum name="red" val="1.0"/>
-        <attnum name="green" val="1.0"/>
-        <attnum name="blue" val="0.5"/>
-	<attstr name="type" val="human"/>
-	<attstr name="skill level" val="rookie"/>
-      </section>
+        <section name="1">
+          <attstr name="name" val="Player Alfa 156"/>
+          <attstr name="car name" val="alpha-156-rk"/>
+          <attnum name="race number" val="20.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="2">
+          <attstr name="name" val="Player 206WRC"/>
+          <attstr name="car name" val="206W10"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="3">
+          <attstr name="name" val="Player GT3 RS"/>
+          <attstr name="car name" val="porsche-gt3rs"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="4">
+          <attstr name="name" val="Player 360"/>
+          <attstr name="car name" val="360-modena"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="5">
+          <attstr name="name" val="Player CLK DTM"/>
+          <attstr name="car name" val="clkdtm"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="6">
+          <attstr name="name" val="Player Mclaren"/>
+          <attstr name="car name" val="mclaren-f1"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="7">
+          <attstr name="name" val="Player GT1"/>
+          <attstr name="car name" val="porsche-gt1"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
+
+        <section name="8">
+          <attstr name="name" val="Player GT40"/>
+          <attstr name="car name" val="gt40"/>
+          <attnum name="race number" val="0.000000"/>
+          <attnum name="red" val="1.000000"/>
+          <attnum name="green" val="1.000000"/>
+          <attnum name="blue" val="0.500000"/>
+          <attstr name="type" val="human"/>
+          <attstr name="skill level" val="rookie"/>
+        </section>
 
     </section>
   </section>

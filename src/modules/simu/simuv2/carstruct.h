@@ -87,6 +87,8 @@ typedef struct
     int		collisionAware;
 } tCar;
 
+#if 0
+
 #define CHECK_VAR(_var_, _msg_) do {						\
     if (isnan(_var_) || isinf(_var_)) {						\
 	printf("%s = %f  in %s line %d\n", _msg_, _var_, __FILE__, __LINE__);	\
@@ -132,6 +134,12 @@ typedef struct
     }												\
 } while (0)
 
+#else
+
+#define CHECK_VAR(_var_, _msg_)
+#define CHECK(_car_)
+
+#endif
 
 #endif /* _CAR__H_ */ 
 

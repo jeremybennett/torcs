@@ -13,7 +13,6 @@
 	<attstr name="desc" val=""/>
 	<attstr name="author" val="Eric Espie /C Guionneau"/>
 	<attstr name="car name" val="cg-nascar-rwd"/>
-	<attstr name="category" val="Track-RWD-GrA"/>
 	<attnum name="race number" val="15"/>
 	<attnum name="red" val="1.0"/>
 	<attnum name="green" val="1.0"/>

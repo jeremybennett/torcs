@@ -110,6 +110,7 @@ if exist .\src\drivers\berniw\1\e-track-5.xml copy .\src\drivers\berniw\1\e-trac
 if exist .\src\drivers\berniw\1\e-track-6.xml copy .\src\drivers\berniw\1\e-track-6.xml .\runtime\drivers\berniw\1\e-track-6.xml
 if exist .\src\drivers\berniw\1\g-track-1.xml copy .\src\drivers\berniw\1\g-track-1.xml .\runtime\drivers\berniw\1\g-track-1.xml
 if exist .\src\drivers\berniw\1\g-track-2.xml copy .\src\drivers\berniw\1\g-track-2.xml .\runtime\drivers\berniw\1\g-track-2.xml
+if exist .\src\drivers\berniw\1\g-track-3.xml copy .\src\drivers\berniw\1\g-track-3.xml .\runtime\drivers\berniw\1\g-track-3.xml
 if exist .\src\drivers\berniw\1\michigan.xml copy .\src\drivers\berniw\1\michigan.xml .\runtime\drivers\berniw\1\michigan.xml
 if exist .\src\drivers\berniw\1\mixed-1.xml copy .\src\drivers\berniw\1\mixed-1.xml .\runtime\drivers\berniw\1\mixed-1.xml
 if exist .\src\drivers\berniw\1\mixed-2.xml copy .\src\drivers\berniw\1\mixed-2.xml .\runtime\drivers\berniw\1\mixed-2.xml
@@ -140,6 +141,7 @@ if exist .\src\drivers\berniw\10\e-track-5.xml copy .\src\drivers\berniw\10\e-tr
 if exist .\src\drivers\berniw\10\e-track-6.xml copy .\src\drivers\berniw\10\e-track-6.xml .\runtime\drivers\berniw\10\e-track-6.xml
 if exist .\src\drivers\berniw\10\g-track-1.xml copy .\src\drivers\berniw\10\g-track-1.xml .\runtime\drivers\berniw\10\g-track-1.xml
 if exist .\src\drivers\berniw\10\g-track-2.xml copy .\src\drivers\berniw\10\g-track-2.xml .\runtime\drivers\berniw\10\g-track-2.xml
+if exist .\src\drivers\berniw\10\g-track-3.xml copy .\src\drivers\berniw\10\g-track-3.xml .\runtime\drivers\berniw\10\g-track-3.xml
 if exist .\src\drivers\berniw\10\michigan.xml copy .\src\drivers\berniw\10\michigan.xml .\runtime\drivers\berniw\10\michigan.xml
 if exist .\src\drivers\berniw\10\mixed-1.xml copy .\src\drivers\berniw\10\mixed-1.xml .\runtime\drivers\berniw\10\mixed-1.xml
 if exist .\src\drivers\berniw\10\mixed-2.xml copy .\src\drivers\berniw\10\mixed-2.xml .\runtime\drivers\berniw\10\mixed-2.xml
@@ -170,6 +172,7 @@ if exist .\src\drivers\berniw\2\e-track-5.xml copy .\src\drivers\berniw\2\e-trac
 if exist .\src\drivers\berniw\2\e-track-6.xml copy .\src\drivers\berniw\2\e-track-6.xml .\runtime\drivers\berniw\2\e-track-6.xml
 if exist .\src\drivers\berniw\2\g-track-1.xml copy .\src\drivers\berniw\2\g-track-1.xml .\runtime\drivers\berniw\2\g-track-1.xml
 if exist .\src\drivers\berniw\2\g-track-2.xml copy .\src\drivers\berniw\2\g-track-2.xml .\runtime\drivers\berniw\2\g-track-2.xml
+if exist .\src\drivers\berniw\2\g-track-3.xml copy .\src\drivers\berniw\2\g-track-3.xml .\runtime\drivers\berniw\2\g-track-3.xml
 if exist .\src\drivers\berniw\2\michigan.xml copy .\src\drivers\berniw\2\michigan.xml .\runtime\drivers\berniw\2\michigan.xml
 if exist .\src\drivers\berniw\2\mixed-1.xml copy .\src\drivers\berniw\2\mixed-1.xml .\runtime\drivers\berniw\2\mixed-1.xml
 if exist .\src\drivers\berniw\2\mixed-2.xml copy .\src\drivers\berniw\2\mixed-2.xml .\runtime\drivers\berniw\2\mixed-2.xml
@@ -200,6 +203,7 @@ if exist .\src\drivers\berniw\3\e-track-5.xml copy .\src\drivers\berniw\3\e-trac
 if exist .\src\drivers\berniw\3\e-track-6.xml copy .\src\drivers\berniw\3\e-track-6.xml .\runtime\drivers\berniw\3\e-track-6.xml
 if exist .\src\drivers\berniw\3\g-track-1.xml copy .\src\drivers\berniw\3\g-track-1.xml .\runtime\drivers\berniw\3\g-track-1.xml
 if exist .\src\drivers\berniw\3\g-track-2.xml copy .\src\drivers\berniw\3\g-track-2.xml .\runtime\drivers\berniw\3\g-track-2.xml
+if exist .\src\drivers\berniw\3\g-track-3.xml copy .\src\drivers\berniw\3\g-track-3.xml .\runtime\drivers\berniw\3\g-track-3.xml
 if exist .\src\drivers\berniw\3\michigan.xml copy .\src\drivers\berniw\3\michigan.xml .\runtime\drivers\berniw\3\michigan.xml
 if exist .\src\drivers\berniw\3\mixed-1.xml copy .\src\drivers\berniw\3\mixed-1.xml .\runtime\drivers\berniw\3\mixed-1.xml
 if exist .\src\drivers\berniw\3\mixed-2.xml copy .\src\drivers\berniw\3\mixed-2.xml .\runtime\drivers\berniw\3\mixed-2.xml
@@ -230,6 +234,7 @@ if exist .\src\drivers\berniw\4\e-track-5.xml copy .\src\drivers\berniw\4\e-trac
 if exist .\src\drivers\berniw\4\e-track-6.xml copy .\src\drivers\berniw\4\e-track-6.xml .\runtime\drivers\berniw\4\e-track-6.xml
 if exist .\src\drivers\berniw\4\g-track-1.xml copy .\src\drivers\berniw\4\g-track-1.xml .\runtime\drivers\berniw\4\g-track-1.xml
 if exist .\src\drivers\berniw\4\g-track-2.xml copy .\src\drivers\berniw\4\g-track-2.xml .\runtime\drivers\berniw\4\g-track-2.xml
+if exist .\src\drivers\berniw\4\g-track-3.xml copy .\src\drivers\berniw\4\g-track-3.xml .\runtime\drivers\berniw\4\g-track-3.xml
 if exist .\src\drivers\berniw\4\michigan.xml copy .\src\drivers\berniw\4\michigan.xml .\runtime\drivers\berniw\4\michigan.xml
 if exist .\src\drivers\berniw\4\mixed-1.xml copy .\src\drivers\berniw\4\mixed-1.xml .\runtime\drivers\berniw\4\mixed-1.xml
 if exist .\src\drivers\berniw\4\mixed-2.xml copy .\src\drivers\berniw\4\mixed-2.xml .\runtime\drivers\berniw\4\mixed-2.xml
@@ -260,6 +265,7 @@ if exist .\src\drivers\berniw\5\e-track-5.xml copy .\src\drivers\berniw\5\e-trac
 if exist .\src\drivers\berniw\5\e-track-6.xml copy .\src\drivers\berniw\5\e-track-6.xml .\runtime\drivers\berniw\5\e-track-6.xml
 if exist .\src\drivers\berniw\5\g-track-1.xml copy .\src\drivers\berniw\5\g-track-1.xml .\runtime\drivers\berniw\5\g-track-1.xml
 if exist .\src\drivers\berniw\5\g-track-2.xml copy .\src\drivers\berniw\5\g-track-2.xml .\runtime\drivers\berniw\5\g-track-2.xml
+if exist .\src\drivers\berniw\5\g-track-3.xml copy .\src\drivers\berniw\5\g-track-3.xml .\runtime\drivers\berniw\5\g-track-3.xml
 if exist .\src\drivers\berniw\5\michigan.xml copy .\src\drivers\berniw\5\michigan.xml .\runtime\drivers\berniw\5\michigan.xml
 if exist .\src\drivers\berniw\5\mixed-1.xml copy .\src\drivers\berniw\5\mixed-1.xml .\runtime\drivers\berniw\5\mixed-1.xml
 if exist .\src\drivers\berniw\5\mixed-2.xml copy .\src\drivers\berniw\5\mixed-2.xml .\runtime\drivers\berniw\5\mixed-2.xml
@@ -290,6 +296,7 @@ if exist .\src\drivers\berniw\6\e-track-5.xml copy .\src\drivers\berniw\6\e-trac
 if exist .\src\drivers\berniw\6\e-track-6.xml copy .\src\drivers\berniw\6\e-track-6.xml .\runtime\drivers\berniw\6\e-track-6.xml
 if exist .\src\drivers\berniw\6\g-track-1.xml copy .\src\drivers\berniw\6\g-track-1.xml .\runtime\drivers\berniw\6\g-track-1.xml
 if exist .\src\drivers\berniw\6\g-track-2.xml copy .\src\drivers\berniw\6\g-track-2.xml .\runtime\drivers\berniw\6\g-track-2.xml
+if exist .\src\drivers\berniw\6\g-track-3.xml copy .\src\drivers\berniw\6\g-track-3.xml .\runtime\drivers\berniw\6\g-track-3.xml
 if exist .\src\drivers\berniw\6\michigan.xml copy .\src\drivers\berniw\6\michigan.xml .\runtime\drivers\berniw\6\michigan.xml
 if exist .\src\drivers\berniw\6\mixed-1.xml copy .\src\drivers\berniw\6\mixed-1.xml .\runtime\drivers\berniw\6\mixed-1.xml
 if exist .\src\drivers\berniw\6\mixed-2.xml copy .\src\drivers\berniw\6\mixed-2.xml .\runtime\drivers\berniw\6\mixed-2.xml
@@ -320,6 +327,7 @@ if exist .\src\drivers\berniw\7\e-track-5.xml copy .\src\drivers\berniw\7\e-trac
 if exist .\src\drivers\berniw\7\e-track-6.xml copy .\src\drivers\berniw\7\e-track-6.xml .\runtime\drivers\berniw\7\e-track-6.xml
 if exist .\src\drivers\berniw\7\g-track-1.xml copy .\src\drivers\berniw\7\g-track-1.xml .\runtime\drivers\berniw\7\g-track-1.xml
 if exist .\src\drivers\berniw\7\g-track-2.xml copy .\src\drivers\berniw\7\g-track-2.xml .\runtime\drivers\berniw\7\g-track-2.xml
+if exist .\src\drivers\berniw\7\g-track-3.xml copy .\src\drivers\berniw\7\g-track-3.xml .\runtime\drivers\berniw\7\g-track-3.xml
 if exist .\src\drivers\berniw\7\michigan.xml copy .\src\drivers\berniw\7\michigan.xml .\runtime\drivers\berniw\7\michigan.xml
 if exist .\src\drivers\berniw\7\mixed-1.xml copy .\src\drivers\berniw\7\mixed-1.xml .\runtime\drivers\berniw\7\mixed-1.xml
 if exist .\src\drivers\berniw\7\mixed-2.xml copy .\src\drivers\berniw\7\mixed-2.xml .\runtime\drivers\berniw\7\mixed-2.xml
@@ -350,6 +358,7 @@ if exist .\src\drivers\berniw\8\e-track-5.xml copy .\src\drivers\berniw\8\e-trac
 if exist .\src\drivers\berniw\8\e-track-6.xml copy .\src\drivers\berniw\8\e-track-6.xml .\runtime\drivers\berniw\8\e-track-6.xml
 if exist .\src\drivers\berniw\8\g-track-1.xml copy .\src\drivers\berniw\8\g-track-1.xml .\runtime\drivers\berniw\8\g-track-1.xml
 if exist .\src\drivers\berniw\8\g-track-2.xml copy .\src\drivers\berniw\8\g-track-2.xml .\runtime\drivers\berniw\8\g-track-2.xml
+if exist .\src\drivers\berniw\8\g-track-3.xml copy .\src\drivers\berniw\8\g-track-3.xml .\runtime\drivers\berniw\8\g-track-3.xml
 if exist .\src\drivers\berniw\8\michigan.xml copy .\src\drivers\berniw\8\michigan.xml .\runtime\drivers\berniw\8\michigan.xml
 if exist .\src\drivers\berniw\8\mixed-1.xml copy .\src\drivers\berniw\8\mixed-1.xml .\runtime\drivers\berniw\8\mixed-1.xml
 if exist .\src\drivers\berniw\8\mixed-2.xml copy .\src\drivers\berniw\8\mixed-2.xml .\runtime\drivers\berniw\8\mixed-2.xml
@@ -380,6 +389,7 @@ if exist .\src\drivers\berniw\9\e-track-5.xml copy .\src\drivers\berniw\9\e-trac
 if exist .\src\drivers\berniw\9\e-track-6.xml copy .\src\drivers\berniw\9\e-track-6.xml .\runtime\drivers\berniw\9\e-track-6.xml
 if exist .\src\drivers\berniw\9\g-track-1.xml copy .\src\drivers\berniw\9\g-track-1.xml .\runtime\drivers\berniw\9\g-track-1.xml
 if exist .\src\drivers\berniw\9\g-track-2.xml copy .\src\drivers\berniw\9\g-track-2.xml .\runtime\drivers\berniw\9\g-track-2.xml
+if exist .\src\drivers\berniw\9\g-track-3.xml copy .\src\drivers\berniw\9\g-track-3.xml .\runtime\drivers\berniw\9\g-track-3.xml
 if exist .\src\drivers\berniw\9\michigan.xml copy .\src\drivers\berniw\9\michigan.xml .\runtime\drivers\berniw\9\michigan.xml
 if exist .\src\drivers\berniw\9\mixed-1.xml copy .\src\drivers\berniw\9\mixed-1.xml .\runtime\drivers\berniw\9\mixed-1.xml
 if exist .\src\drivers\berniw\9\mixed-2.xml copy .\src\drivers\berniw\9\mixed-2.xml .\runtime\drivers\berniw\9\mixed-2.xml
@@ -420,6 +430,7 @@ if exist .\src\drivers\berniw2\1\e-track-5.xml copy .\src\drivers\berniw2\1\e-tr
 if exist .\src\drivers\berniw2\1\e-track-6.xml copy .\src\drivers\berniw2\1\e-track-6.xml .\runtime\drivers\berniw2\1\e-track-6.xml
 if exist .\src\drivers\berniw2\1\g-track-1.xml copy .\src\drivers\berniw2\1\g-track-1.xml .\runtime\drivers\berniw2\1\g-track-1.xml
 if exist .\src\drivers\berniw2\1\g-track-2.xml copy .\src\drivers\berniw2\1\g-track-2.xml .\runtime\drivers\berniw2\1\g-track-2.xml
+if exist .\src\drivers\berniw2\1\g-track-3.xml copy .\src\drivers\berniw2\1\g-track-3.xml .\runtime\drivers\berniw2\1\g-track-3.xml
 if exist .\src\drivers\berniw2\1\michigan.xml copy .\src\drivers\berniw2\1\michigan.xml .\runtime\drivers\berniw2\1\michigan.xml
 if exist .\src\drivers\berniw2\1\mixed-1.xml copy .\src\drivers\berniw2\1\mixed-1.xml .\runtime\drivers\berniw2\1\mixed-1.xml
 if exist .\src\drivers\berniw2\1\mixed-2.xml copy .\src\drivers\berniw2\1\mixed-2.xml .\runtime\drivers\berniw2\1\mixed-2.xml
@@ -450,6 +461,7 @@ if exist .\src\drivers\berniw2\10\e-track-5.xml copy .\src\drivers\berniw2\10\e-
 if exist .\src\drivers\berniw2\10\e-track-6.xml copy .\src\drivers\berniw2\10\e-track-6.xml .\runtime\drivers\berniw2\10\e-track-6.xml
 if exist .\src\drivers\berniw2\10\g-track-1.xml copy .\src\drivers\berniw2\10\g-track-1.xml .\runtime\drivers\berniw2\10\g-track-1.xml
 if exist .\src\drivers\berniw2\10\g-track-2.xml copy .\src\drivers\berniw2\10\g-track-2.xml .\runtime\drivers\berniw2\10\g-track-2.xml
+if exist .\src\drivers\berniw2\10\g-track-3.xml copy .\src\drivers\berniw2\10\g-track-3.xml .\runtime\drivers\berniw2\10\g-track-3.xml
 if exist .\src\drivers\berniw2\10\michigan.xml copy .\src\drivers\berniw2\10\michigan.xml .\runtime\drivers\berniw2\10\michigan.xml
 if exist .\src\drivers\berniw2\10\mixed-1.xml copy .\src\drivers\berniw2\10\mixed-1.xml .\runtime\drivers\berniw2\10\mixed-1.xml
 if exist .\src\drivers\berniw2\10\mixed-2.xml copy .\src\drivers\berniw2\10\mixed-2.xml .\runtime\drivers\berniw2\10\mixed-2.xml
@@ -479,6 +491,7 @@ if exist .\src\drivers\berniw2\2\e-track-5.xml copy .\src\drivers\berniw2\2\e-tr
 if exist .\src\drivers\berniw2\2\e-track-6.xml copy .\src\drivers\berniw2\2\e-track-6.xml .\runtime\drivers\berniw2\2\e-track-6.xml
 if exist .\src\drivers\berniw2\2\g-track-1.xml copy .\src\drivers\berniw2\2\g-track-1.xml .\runtime\drivers\berniw2\2\g-track-1.xml
 if exist .\src\drivers\berniw2\2\g-track-2.xml copy .\src\drivers\berniw2\2\g-track-2.xml .\runtime\drivers\berniw2\2\g-track-2.xml
+if exist .\src\drivers\berniw2\2\g-track-3.xml copy .\src\drivers\berniw2\2\g-track-3.xml .\runtime\drivers\berniw2\2\g-track-3.xml
 if exist .\src\drivers\berniw2\2\michigan.xml copy .\src\drivers\berniw2\2\michigan.xml .\runtime\drivers\berniw2\2\michigan.xml
 if exist .\src\drivers\berniw2\2\mixed-1.xml copy .\src\drivers\berniw2\2\mixed-1.xml .\runtime\drivers\berniw2\2\mixed-1.xml
 if exist .\src\drivers\berniw2\2\mixed-2.xml copy .\src\drivers\berniw2\2\mixed-2.xml .\runtime\drivers\berniw2\2\mixed-2.xml
@@ -508,6 +521,7 @@ if exist .\src\drivers\berniw2\3\e-track-5.xml copy .\src\drivers\berniw2\3\e-tr
 if exist .\src\drivers\berniw2\3\e-track-6.xml copy .\src\drivers\berniw2\3\e-track-6.xml .\runtime\drivers\berniw2\3\e-track-6.xml
 if exist .\src\drivers\berniw2\3\g-track-1.xml copy .\src\drivers\berniw2\3\g-track-1.xml .\runtime\drivers\berniw2\3\g-track-1.xml
 if exist .\src\drivers\berniw2\3\g-track-2.xml copy .\src\drivers\berniw2\3\g-track-2.xml .\runtime\drivers\berniw2\3\g-track-2.xml
+if exist .\src\drivers\berniw2\3\g-track-3.xml copy .\src\drivers\berniw2\3\g-track-3.xml .\runtime\drivers\berniw2\3\g-track-3.xml
 if exist .\src\drivers\berniw2\3\michigan.xml copy .\src\drivers\berniw2\3\michigan.xml .\runtime\drivers\berniw2\3\michigan.xml
 if exist .\src\drivers\berniw2\3\mixed-1.xml copy .\src\drivers\berniw2\3\mixed-1.xml .\runtime\drivers\berniw2\3\mixed-1.xml
 if exist .\src\drivers\berniw2\3\mixed-2.xml copy .\src\drivers\berniw2\3\mixed-2.xml .\runtime\drivers\berniw2\3\mixed-2.xml
@@ -537,6 +551,7 @@ if exist .\src\drivers\berniw2\4\e-track-5.xml copy .\src\drivers\berniw2\4\e-tr
 if exist .\src\drivers\berniw2\4\e-track-6.xml copy .\src\drivers\berniw2\4\e-track-6.xml .\runtime\drivers\berniw2\4\e-track-6.xml
 if exist .\src\drivers\berniw2\4\g-track-1.xml copy .\src\drivers\berniw2\4\g-track-1.xml .\runtime\drivers\berniw2\4\g-track-1.xml
 if exist .\src\drivers\berniw2\4\g-track-2.xml copy .\src\drivers\berniw2\4\g-track-2.xml .\runtime\drivers\berniw2\4\g-track-2.xml
+if exist .\src\drivers\berniw2\4\g-track-3.xml copy .\src\drivers\berniw2\4\g-track-3.xml .\runtime\drivers\berniw2\4\g-track-3.xml
 if exist .\src\drivers\berniw2\4\michigan.xml copy .\src\drivers\berniw2\4\michigan.xml .\runtime\drivers\berniw2\4\michigan.xml
 if exist .\src\drivers\berniw2\4\mixed-1.xml copy .\src\drivers\berniw2\4\mixed-1.xml .\runtime\drivers\berniw2\4\mixed-1.xml
 if exist .\src\drivers\berniw2\4\mixed-2.xml copy .\src\drivers\berniw2\4\mixed-2.xml .\runtime\drivers\berniw2\4\mixed-2.xml
@@ -566,6 +581,7 @@ if exist .\src\drivers\berniw2\5\e-track-5.xml copy .\src\drivers\berniw2\5\e-tr
 if exist .\src\drivers\berniw2\5\e-track-6.xml copy .\src\drivers\berniw2\5\e-track-6.xml .\runtime\drivers\berniw2\5\e-track-6.xml
 if exist .\src\drivers\berniw2\5\g-track-1.xml copy .\src\drivers\berniw2\5\g-track-1.xml .\runtime\drivers\berniw2\5\g-track-1.xml
 if exist .\src\drivers\berniw2\5\g-track-2.xml copy .\src\drivers\berniw2\5\g-track-2.xml .\runtime\drivers\berniw2\5\g-track-2.xml
+if exist .\src\drivers\berniw2\5\g-track-3.xml copy .\src\drivers\berniw2\5\g-track-3.xml .\runtime\drivers\berniw2\5\g-track-3.xml
 if exist .\src\drivers\berniw2\5\michigan.xml copy .\src\drivers\berniw2\5\michigan.xml .\runtime\drivers\berniw2\5\michigan.xml
 if exist .\src\drivers\berniw2\5\mixed-1.xml copy .\src\drivers\berniw2\5\mixed-1.xml .\runtime\drivers\berniw2\5\mixed-1.xml
 if exist .\src\drivers\berniw2\5\mixed-2.xml copy .\src\drivers\berniw2\5\mixed-2.xml .\runtime\drivers\berniw2\5\mixed-2.xml
@@ -595,6 +611,7 @@ if exist .\src\drivers\berniw2\6\e-track-5.xml copy .\src\drivers\berniw2\6\e-tr
 if exist .\src\drivers\berniw2\6\e-track-6.xml copy .\src\drivers\berniw2\6\e-track-6.xml .\runtime\drivers\berniw2\6\e-track-6.xml
 if exist .\src\drivers\berniw2\6\g-track-1.xml copy .\src\drivers\berniw2\6\g-track-1.xml .\runtime\drivers\berniw2\6\g-track-1.xml
 if exist .\src\drivers\berniw2\6\g-track-2.xml copy .\src\drivers\berniw2\6\g-track-2.xml .\runtime\drivers\berniw2\6\g-track-2.xml
+if exist .\src\drivers\berniw2\6\g-track-3.xml copy .\src\drivers\berniw2\6\g-track-3.xml .\runtime\drivers\berniw2\6\g-track-3.xml
 if exist .\src\drivers\berniw2\6\michigan.xml copy .\src\drivers\berniw2\6\michigan.xml .\runtime\drivers\berniw2\6\michigan.xml
 if exist .\src\drivers\berniw2\6\mixed-1.xml copy .\src\drivers\berniw2\6\mixed-1.xml .\runtime\drivers\berniw2\6\mixed-1.xml
 if exist .\src\drivers\berniw2\6\mixed-2.xml copy .\src\drivers\berniw2\6\mixed-2.xml .\runtime\drivers\berniw2\6\mixed-2.xml
@@ -625,6 +642,7 @@ if exist .\src\drivers\berniw2\7\e-track-5.xml copy .\src\drivers\berniw2\7\e-tr
 if exist .\src\drivers\berniw2\7\e-track-6.xml copy .\src\drivers\berniw2\7\e-track-6.xml .\runtime\drivers\berniw2\7\e-track-6.xml
 if exist .\src\drivers\berniw2\7\g-track-1.xml copy .\src\drivers\berniw2\7\g-track-1.xml .\runtime\drivers\berniw2\7\g-track-1.xml
 if exist .\src\drivers\berniw2\7\g-track-2.xml copy .\src\drivers\berniw2\7\g-track-2.xml .\runtime\drivers\berniw2\7\g-track-2.xml
+if exist .\src\drivers\berniw2\7\g-track-3.xml copy .\src\drivers\berniw2\7\g-track-3.xml .\runtime\drivers\berniw2\7\g-track-3.xml
 if exist .\src\drivers\berniw2\7\michigan.xml copy .\src\drivers\berniw2\7\michigan.xml .\runtime\drivers\berniw2\7\michigan.xml
 if exist .\src\drivers\berniw2\7\mixed-1.xml copy .\src\drivers\berniw2\7\mixed-1.xml .\runtime\drivers\berniw2\7\mixed-1.xml
 if exist .\src\drivers\berniw2\7\mixed-2.xml copy .\src\drivers\berniw2\7\mixed-2.xml .\runtime\drivers\berniw2\7\mixed-2.xml
@@ -655,6 +673,7 @@ if exist .\src\drivers\berniw2\8\e-track-5.xml copy .\src\drivers\berniw2\8\e-tr
 if exist .\src\drivers\berniw2\8\e-track-6.xml copy .\src\drivers\berniw2\8\e-track-6.xml .\runtime\drivers\berniw2\8\e-track-6.xml
 if exist .\src\drivers\berniw2\8\g-track-1.xml copy .\src\drivers\berniw2\8\g-track-1.xml .\runtime\drivers\berniw2\8\g-track-1.xml
 if exist .\src\drivers\berniw2\8\g-track-2.xml copy .\src\drivers\berniw2\8\g-track-2.xml .\runtime\drivers\berniw2\8\g-track-2.xml
+if exist .\src\drivers\berniw2\8\g-track-3.xml copy .\src\drivers\berniw2\8\g-track-3.xml .\runtime\drivers\berniw2\8\g-track-3.xml
 if exist .\src\drivers\berniw2\8\michigan.xml copy .\src\drivers\berniw2\8\michigan.xml .\runtime\drivers\berniw2\8\michigan.xml
 if exist .\src\drivers\berniw2\8\mixed-1.xml copy .\src\drivers\berniw2\8\mixed-1.xml .\runtime\drivers\berniw2\8\mixed-1.xml
 if exist .\src\drivers\berniw2\8\mixed-2.xml copy .\src\drivers\berniw2\8\mixed-2.xml .\runtime\drivers\berniw2\8\mixed-2.xml
@@ -685,6 +704,7 @@ if exist .\src\drivers\berniw2\9\e-track-5.xml copy .\src\drivers\berniw2\9\e-tr
 if exist .\src\drivers\berniw2\9\e-track-6.xml copy .\src\drivers\berniw2\9\e-track-6.xml .\runtime\drivers\berniw2\9\e-track-6.xml
 if exist .\src\drivers\berniw2\9\g-track-1.xml copy .\src\drivers\berniw2\9\g-track-1.xml .\runtime\drivers\berniw2\9\g-track-1.xml
 if exist .\src\drivers\berniw2\9\g-track-2.xml copy .\src\drivers\berniw2\9\g-track-2.xml .\runtime\drivers\berniw2\9\g-track-2.xml
+if exist .\src\drivers\berniw2\9\g-track-3.xml copy .\src\drivers\berniw2\9\g-track-3.xml .\runtime\drivers\berniw2\9\g-track-3.xml
 if exist .\src\drivers\berniw2\9\michigan.xml copy .\src\drivers\berniw2\9\michigan.xml .\runtime\drivers\berniw2\9\michigan.xml
 if exist .\src\drivers\berniw2\9\mixed-1.xml copy .\src\drivers\berniw2\9\mixed-1.xml .\runtime\drivers\berniw2\9\mixed-1.xml
 if exist .\src\drivers\berniw2\9\mixed-2.xml copy .\src\drivers\berniw2\9\mixed-2.xml .\runtime\drivers\berniw2\9\mixed-2.xml
@@ -723,6 +743,25 @@ if exist .\src\drivers\cylos1\car1.xml copy .\src\drivers\cylos1\car1.xml .\runt
 if exist .\src\drivers\cylos1\cg-nascar-rwd.rgb copy .\src\drivers\cylos1\cg-nascar-rwd.rgb .\runtime\drivers\cylos1\cg-nascar-rwd.rgb
 if exist .\src\drivers\cylos1\logo.rgb copy .\src\drivers\cylos1\logo.rgb .\runtime\drivers\cylos1\logo.rgb
 :src_drivers_cylos1
+
+if not exist .\src\drivers\cylos2\tracksdata goto src_drivers_cylos2_tracksdata
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\cylos1
+call .\create_dir .\runtime\drivers\cylos1\tracksdata
+if exist .\src\drivers\cylos2\tracksdata\car_e-track-3.xml copy .\src\drivers\cylos2\tracksdata\car_e-track-3.xml .\runtime\drivers\cylos1\tracksdata\car_e-track-3.xml
+if exist .\src\drivers\cylos2\tracksdata\michigan.xml copy .\src\drivers\cylos2\tracksdata\michigan.xml .\runtime\drivers\cylos1\tracksdata\michigan.xml
+:src_drivers_cylos2_tracksdata
+
+if not exist .\src\drivers\cylos2 goto src_drivers_cylos2
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\cylos2
+if exist .\src\drivers\cylos2\cylos2.xml copy .\src\drivers\cylos2\cylos2.xml .\runtime\drivers\cylos2\cylos2.xml
+if exist .\src\drivers\cylos2\car1.xml copy .\src\drivers\cylos2\car1.xml .\runtime\drivers\cylos2\car1.xml
+if exist .\src\drivers\cylos2\cg-nascar-rwd.rgb copy .\src\drivers\cylos2\cg-nascar-rwd.rgb .\runtime\drivers\cylos2\cg-nascar-rwd.rgb
+if exist .\src\drivers\cylos2\logo.rgb copy .\src\drivers\cylos2\logo.rgb .\runtime\drivers\cylos2\logo.rgb
+:src_drivers_cylos2
 
 if not exist .\src\drivers\damned\1 goto src_drivers_damned_1
 call .\create_dir .\runtime
@@ -966,6 +1005,15 @@ if exist .\src\drivers\human\tracks\g-track-2\car-porsche-gt1.xml copy .\src\dri
 if exist .\src\drivers\human\tracks\g-track-2\car-porsche-gt3rs.xml copy .\src\drivers\human\tracks\g-track-2\car-porsche-gt3rs.xml .\runtime\drivers\human\tracks\g-track-2\car-porsche-gt3rs.xml
 if exist .\src\drivers\human\tracks\g-track-2\car-torcs.xml copy .\src\drivers\human\tracks\g-track-2\car-torcs.xml .\runtime\drivers\human\tracks\g-track-2\car-torcs.xml
 :src_drivers_human_tracks_g_track_2
+
+if not exist .\src\drivers\human\tracks\g-track-3 goto src_drivers_human_tracks_g_track_3
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\human
+call .\create_dir .\runtime\drivers\human\tracks
+call .\create_dir .\runtime\drivers\human\tracks\g-track-3
+if exist .\src\drivers\human\tracks\g-track-3\car-206W10.xml copy .\src\drivers\human\tracks\g-track-3\car-206W10.xml .\runtime\drivers\human\tracks\g-track-3\car-206W10.xml
+:src_drivers_human_tracks_g_track_3
 
 if not exist .\src\drivers\human\tracks\mixed-1 goto src_drivers_human_tracks_mixed_1
 call .\create_dir .\runtime
@@ -1251,6 +1299,7 @@ if exist .\src\drivers\inferno6\tracksdata\a-speedway.xml copy .\src\drivers\inf
 if exist .\src\drivers\inferno6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno6\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno6\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno6\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno6\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno6\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno6\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno6\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno6\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno6\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno6\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno6\tracksdata\eroad.xml copy .\src\drivers\inferno6\tracksdata\eroad.xml .\runtime\drivers\inferno6\tracksdata\eroad.xml
 if exist .\src\drivers\inferno6\tracksdata\e-track-1.xml copy .\src\drivers\inferno6\tracksdata\e-track-1.xml .\runtime\drivers\inferno6\tracksdata\e-track-1.xml
@@ -1261,6 +1310,7 @@ if exist .\src\drivers\inferno6\tracksdata\e-track-5.xml copy .\src\drivers\infe
 if exist .\src\drivers\inferno6\tracksdata\e-track-6.xml copy .\src\drivers\inferno6\tracksdata\e-track-6.xml .\runtime\drivers\inferno6\tracksdata\e-track-6.xml
 if exist .\src\drivers\inferno6\tracksdata\g-track-1.xml copy .\src\drivers\inferno6\tracksdata\g-track-1.xml .\runtime\drivers\inferno6\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno6\tracksdata\g-track-2.xml copy .\src\drivers\inferno6\tracksdata\g-track-2.xml .\runtime\drivers\inferno6\tracksdata\g-track-2.xml
+if exist .\src\drivers\inferno6\tracksdata\g-track-3.xml copy .\src\drivers\inferno6\tracksdata\g-track-3.xml .\runtime\drivers\inferno6\tracksdata\g-track-3.xml
 if exist .\src\drivers\inferno6\tracksdata\michigan.xml copy .\src\drivers\inferno6\tracksdata\michigan.xml .\runtime\drivers\inferno6\tracksdata\michigan.xml
 if exist .\src\drivers\inferno6\tracksdata\wheel-1.xml copy .\src\drivers\inferno6\tracksdata\wheel-1.xml .\runtime\drivers\inferno6\tracksdata\wheel-1.xml
 :src_drivers_inferno6_tracksdata
@@ -1436,6 +1486,12 @@ call .\create_dir .\runtime\drivers\tutorial2
 if exist .\src\drivers\tutorial2\tutorial2.xml copy .\src\drivers\tutorial2\tutorial2.xml .\runtime\drivers\tutorial2\tutorial2.xml
 :src_drivers_tutorial2
 
+if not exist .\src\libs\raceengine goto src_libs_raceengine
+call .\create_dir .\runtime
+call .\create_dir .\runtime\config
+if exist .\src\libs\raceengine\raceengine.xml copy .\src\libs\raceengine\raceengine.xml .\runtime\config\raceengine.xml
+:src_libs_raceengine
+
 if not exist .\src\libs\tgf goto src_libs_tgf
 call .\create_dir .\runtime
 call .\create_dir .\runtime\config
@@ -1487,6 +1543,10 @@ call .\create_dir .\runtime\drivers\berniw2
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\cylos1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\cylos2
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
