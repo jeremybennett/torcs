@@ -67,6 +67,7 @@ typedef struct {
     char	category[MAX_NAME_LEN];	/**< Car's category */
     int		raceNumber;		/**< Car's race number */
     int		startRank;		/**< Car's starting position */
+    int		driverType;		/**< Driver type */
     int		skillLevel;		/**< Driver's skill level (0=rookie -> 3=pro) */
     tdble	iconColor[3];		/**< Car color in leaders board */
     t3Dd	dimension;		/**< Car's mesures */
@@ -81,6 +82,7 @@ typedef struct {
 #define _name		info.name			/**< short cut to tInitCar#name */
 #define _carName	info.carName			/**< short cut to tInitCar#carName */
 #define _category	info.cartegory			/**< short cut to tInitCar#cartegory */
+#define _driverType	info.driverType			/**< short cut to tInitCar#driverType */
 #define _skillLevel	info.skillLevel			/**< short cut to tInitCar#skillLevel */
 #define _raceNumber	info.raceNumber			/**< short cut to tInitCar#raceNumber */
 #define _startRank	info.startRank			/**< short cut to tInitCar#startRank */
@@ -101,6 +103,10 @@ typedef struct {
 #define _exhaustNb	info.visualAttr.exhaustNb	/**< short cut to tVisualAttributes#exhaustNb */
 #define _exhaustPos	info.visualAttr.exhaustPos	/**< short cut to tVisualAttributes#exhaustPos */
 #define _exhaustPower	info.visualAttr.exhaustPower	/**< short cut to tVisualAttributes#exhaustPower */
+
+#define RM_DRV_HUMAN	1
+#define RM_DRV_ROBOT	2
+
 
 /** Race Administrative info */
 typedef struct {

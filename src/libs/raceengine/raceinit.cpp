@@ -95,9 +95,11 @@ ReShutdown(void)
 
 	GfModUnloadList(&reEventModList);
 
-	free(ReInfo->s);
-	free(ReInfo);
-	ReInfo = 0;
+	GfParmReleaseHandle(ReInfo->params);
+	GfParmReleaseHandle(ReInfo->results);
+
+	FREEZ(ReInfo->s);
+	FREEZ(ReInfo);
     }
 }
 
@@ -418,6 +420,11 @@ ReInitCars(void)
 		    strncpy(elt->_carName, GfParmGetStr(robhdle, path, ROB_ATTR_CAR, ""), MAX_NAME_LEN - 1);
 		    elt->_carName[MAX_NAME_LEN - 1] = 0;
 		    elt->_raceNumber = (int)GfParmGetNum(robhdle, path, ROB_ATTR_RACENUM, (char*)NULL, 0);
+		    if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {
+			elt->_driverType = RM_DRV_HUMAN;
+		    } else {
+			elt->_driverType = RM_DRV_ROBOT;
+		    }
 		    elt->_skillLevel = 0;
 		    str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);
 		    for(k = 0; k < (int)(sizeof(level_str)/sizeof(char*)); k++) {

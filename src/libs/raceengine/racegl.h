@@ -33,6 +33,13 @@ extern void ReHookShutdown(void);
 extern void ReSetRaceMsg(char *msg);
 extern void ReSetRaceBigMsg(char *msg);
 
+extern void *ReResScreenInit(void);
+extern void ReResScreenSetTitle(char *title);
+extern void ReResScreenAddText(char *text);
+extern void ReResScreenSetText(char *text, int line);
+extern void ReResScreenRemoveText(int line);
+extern void ReResShowCont(void);
+
 #endif /* _RACEGL_H_ */ 
 
 

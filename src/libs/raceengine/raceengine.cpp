@@ -108,6 +108,7 @@ ReManage(tCarElt *car)
 
     if (car->_speed_x > car->_topSpeed) car->_topSpeed = car->_speed_x;
 
+    /* For practice and qualif */
     if (car->_speed_x > info->topSpd) info->topSpd = car->_speed_x;
     if (car->_speed_x < info->botSpd) info->botSpd = car->_speed_x;
 
@@ -215,11 +216,22 @@ ReManage(tCarElt *car)
 			    car->_timeBehindPrev = 0;
 			}
 			info->sTime = s->currentTime;
+			if (ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+			    ReInfo->_refreshDisplay = 1;
+			    sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
+				    car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0), info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
+			    ReResScreenAddText(buf);
+			    info->topSpd = car->_speed_x;
+			    info->botSpd = car->_speed_x;
+			}
 		    }
 		    if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;
 			s->_raceState = RM_RACE_FINISHING;
-			if (car->_pos != 1) {
+			if (car->_pos == 1) {
+			    sprintf(buf, "Winner %s", car->_name);
+			    ReRaceBigMsgSet(buf, 10);
+			} else {
 			    switch (car->_pos % 10) {
 			    case 1:
 				sprintf(buf, "%s Finished %dst", car->_name, car->_pos);
@@ -235,9 +247,6 @@ ReManage(tCarElt *car)
 				break;
 			    }
 			    ReRaceMsgSet(buf, 5);
-			} else {
-			    sprintf(buf, "Winner %s", car->_name);
-			    ReRaceBigMsgSet(buf, 10);
 			}
 		    }
 		} else {
@@ -377,6 +386,7 @@ ReUpdate(void)
 {
     double t;
 
+    ReInfo->_refreshDisplay = 0;
     switch (ReInfo->_displayMode) {
     case RM_DISP_MODE_NORMAL:
 	t = GfTimeClock();
@@ -392,6 +402,9 @@ ReUpdate(void)
 	
     case RM_DISP_MODE_NONE:
 	ReOneStep(NULL);
+	if (ReInfo->_refreshDisplay) {
+	    GfuiDisplay();
+	}
 	glutPostRedisplay();	/* Callback -> reDisplay */
 	break;
     }

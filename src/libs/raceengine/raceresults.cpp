@@ -110,10 +110,16 @@ int
 ReDisplayResults(void)
 {
     char	*raceName;
+    void	*params = ReInfo->params;
 
     raceName = ReGetCurrentRaceName();
 
-    RmShowResults(ReInfo->_reGameScreen, ReInfo, raceName);
+    if ((!strcmp(GfParmGetStr(params, raceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
+	(ReInfo->_displayMode == RM_DISP_MODE_NORMAL)) {
+	RmShowResults(ReInfo->_reGameScreen, ReInfo, raceName);
+    } else {
+	ReResShowCont();
+    }
 
     return RM_ASYNC | RM_NEXT_STEP;
 }

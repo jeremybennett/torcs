@@ -113,11 +113,14 @@ ReRaceStart(void)
 {
     int		i, j;
     int		sw, sh, vw, vh;
+    int		foundHuman;
     char	*dllname;
     char	key[256];
+    char	*raceName;
     tRobotItf	*robot;
     tReCarInfo	*carInfo = ReInfo->_reCarInfo;;
     tSituation	*s = ReInfo->s;
+    void	*params = ReInfo->params;
 
 
     RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
@@ -159,12 +162,31 @@ ReRaceStart(void)
 
     RmLoadingScreenSetText("Ready.");
 
+    /* Blind mode or not */
+    ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
+    ReInfo->_reGameScreen = ReScreenInit();
+    foundHuman = 0;
+    for (i = 0; i < s->_ncars; i++) {
+	if (s->cars[i]->_driverType == RM_DRV_HUMAN) {
+	    foundHuman = 1;
+	    break;
+	}
+    }
+    if (!foundHuman) {
+	raceName = ReGetCurrentRaceName();
+	if (!strcmp(GfParmGetStr(params, raceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+	    ReInfo->_displayMode = RM_DISP_MODE_NONE;
+	    ReInfo->_reGameScreen = ReResScreenInit();
+	    sprintf(buf, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
+	    ReResScreenSetTitle(buf);
+	}
+    }
+    
     ReInfo->_reTimeMult = 1.0;
     ReInfo->_reLastTime = 0.0;
     ReInfo->s->currentTime = -2.0;
     ReInfo->s->deltaTime = RCM_MAX_DT_SIMU;
    
-    ReInfo->_reGameScreen = ReScreenInit();
     ReInfo->s->_raceState = RM_RACE_STARTING;
 
     GfScrGetSize(&sw, &sh, &vw, &vh);

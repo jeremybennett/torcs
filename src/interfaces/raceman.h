@@ -68,9 +68,9 @@ typedef struct {
 #define RM_RACE_STARTING	0X00000008
 #define RM_RACE_PAUSED		0X40000000
     int			type;		/**< Race type */
-#define RM_TYPE_PRACTICE	1
-#define RM_TYPE_QUALIF		2
-#define RM_TYPE_RACE		3
+#define RM_TYPE_PRACTICE	0 /* Please keep the order */
+#define RM_TYPE_QUALIF		1
+#define RM_TYPE_RACE		2
     int                 maxDammage;
     unsigned long	fps;
 } tRaceAdmInfo;
@@ -143,6 +143,7 @@ typedef struct
 #define RM_DISP_MODE_NORMAL	0
 #define RM_DISP_MODE_NONE	1
     int			displayMode;
+    int			refreshDisplay;
 } tRaceEngineInfo;
 
 #define _reState	raceEngineInfo.state
@@ -160,6 +161,7 @@ typedef struct
 #define _reRunning	raceEngineInfo.running
 #define _reLastTime	raceEngineInfo.lastTime
 #define _displayMode	raceEngineInfo.displayMode
+#define _refreshDisplay	raceEngineInfo.refreshDisplay
 
 
 /*
@@ -208,6 +210,8 @@ typedef struct RmInfo
 #define RM_ATTR_IDX		"idx"
 #define RM_ATTR_FOCUSED		"focused module"
 #define RM_ATTR_FOCUSEDIDX	"focused idx"
+#define RM_ATTR_DISPMODE	"display mode"
+#define RM_ATTR_DISPRES		"display results"
 
 #define RM_ATTR_TIMESTEP	"time step"
 
@@ -239,6 +243,10 @@ typedef struct RmInfo
 
 #define RM_VAL_YES		"yes"
 #define RM_VAL_NO		"no"
+
+#define RM_VAL_VISIBLE		"visible"
+#define RM_VAL_INVISIBLE	"not visible"
+
 
 /* RESULTS */
 
