@@ -79,6 +79,8 @@
 			<li><h4><a href="#c4_2_4">4.2.4 FreeGLUT compilation fails with NVidia OpenGL driver.</a></h4></li>
 			<li><h4><a href="#c4_2_5">4.2.5 TORCS does not compile with make: 'Make-config' is up to date.</a></h4></li>
 			<li><h4><a href="#c4_2_6">4.2.6 Compiling stops with "error: `GL_TEXTURE0_ARB' undeclared".</a></h4></li>
+			<li><h4><a href="#c4_2_7">4.2.7 Compiling fails with "The syntax of
+			the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4></li>
 		  </ul>
 
 		  <li><h3><a href="#c4_3">4.3 Startup and Runtime Problems.</a></h3></li>
@@ -376,6 +378,16 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		  a gl.h which defines the missing symbols. You can get it from your old (5xxx) NVidia drivers or from
 		  Mesa (the problem is not the driver itself).
 		</p>
+
+		<h4><a name="c4_2_7">4.2.7 Compiling fails with "The syntax of
+		the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4>
+		<p>
+			You have probably installed your sources in a path which contains blanks or other
+			special characters, e.g. on the desktop. Move your torcs-1.2.2 folder to a location with a
+			"clean" path, a drive is the best bet (e.g. D:\torcs-1.2.2).
+		</p>
+
+
 
 
 		<h3><a name="c4_3">4.3 Startup and Runtime Problems.</a></h3>
