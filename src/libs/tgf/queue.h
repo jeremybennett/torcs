@@ -83,7 +83,7 @@
  * List definitions.
  */
 #define LIST_HEAD(name, type)						\
-typedef struct name {								\
+typedef struct name {							\
 	struct type *lh_first;	/* first element */			\
 } t ## name
 

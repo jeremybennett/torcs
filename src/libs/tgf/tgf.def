@@ -14,6 +14,7 @@ EXPORTS
 	GfModInfoDir
 	GfModFreeInfoList
 	GfDirGetList
+	GfDirFreeList
 	GfParmReadFile
 	GfParmWriteFile
 	GfParmGetName

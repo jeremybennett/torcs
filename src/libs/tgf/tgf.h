@@ -176,9 +176,14 @@ typedef struct FList
     char		*name;
     /** Name to display on screen */
     char		*dispName;
+    /** User data */
+    void		*userData;
 } tFList;
 
 extern tFList *GfDirGetList(char *dir);
+/** Function to call for releasing the user data associated with file entry */
+typedef void (*tfDirfreeUserData)(void*);
+extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
 
 
 /**********************************

@@ -55,5 +55,33 @@ GfDirGetList(char *dir)
     }
 }
 
-
+/** Free a directory list
+    @ingroup	dir
+    @param	list	List of files
+    @param	freeUserData	User function used to free the user data
+    @return	none
+*/
+void
+GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData)
+{
+    tFList *cur;
+    
+    while (list) {
+	if (list->next == list) {
+	    if ((freeUserData) && (list->userData)) {
+		freeUserData(list->userData);
+	    }
+	    free(list);
+	    list = NULL;
+	} else {
+	    cur = list->next;
+	    list->next = cur->next;
+	    cur->next->prev = list;
+	    if ((freeUserData) && (cur->userData)) {
+		freeUserData(cur->userData);
+	    }
+	    free(cur);
+	}
+    }
+}
 
