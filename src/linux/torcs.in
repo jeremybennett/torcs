@@ -70,6 +70,13 @@ EOF
 	    echo "r -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*"
 	    ;;
 
+	-h)
+	    echo "usage: torcs [-l|-d|-e]"
+	    echo "   -l  list the dynamically linked libraries"
+	    echo "   -d  run under gdb and print stack trace on exit"
+	    echo "   -e  display the commands to issue when you want to run under gdb"
+	    ;;
+
 	# Normal run
 	*) $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
 	    ;;
