@@ -62,7 +62,7 @@ class cGrCamera
     }
 
     virtual ~cGrCamera() {};
-    
+    virtual float getFOV() {return 67.5;}
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
     virtual void setProjection(void) = 0;
     virtual void setModelView(void) = 0;
@@ -157,6 +157,7 @@ class cGrPerspCamera : public cGrCamera
 		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
+	virtual float getFOV(void) { return fovy;}
     void setProjection(void);
     void setModelView(void);
     void loadDefaults(char *attr);
@@ -208,7 +209,7 @@ class cGrBackgroundCam : public cGrPerspCamera
  public:
     cGrBackgroundCam(class cGrScreen *myscreen)
 	: cGrPerspCamera(myscreen, 0, 0, 0, 1, 0,
-			 67.5, 67.5, 67.5,
+			 30.0, 1.0, 90.0,
 			 0.1, 2000.0, 100000, 100000) {
     }
     

@@ -27,7 +27,7 @@
 #include <graphic.h>
 
 #include "grsound.h"
-
+#include "grmain.h"
 
 #ifndef M_PI
 #define EX_PI 3.1415926535
@@ -129,6 +129,8 @@ grInitSound(tSituation* s, int ncars)
     for (car_i=0; car_i<ncars; car_i++) {
 		engpri[car_i].state = None;
 		engpri[car_i].id = car_i;
+		engpri[car_i].lp = 1.0;
+		engpri[car_i].a = 1.0;
     }
 
     int maxcars=NB_ENGINE_SOUND;
@@ -506,8 +508,12 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			tdble rev_cor =((float)car->_enginerpm / (float)car->_enginerpmRedLine);
 			//engpri[car_i].lp = (smooth_accel[car_i]*(1.0-0.5*rev_cor) + rev_cor*rev_cor*rev_cor*0.5);
 			//engpri[car_i].lp = (smooth_accel[car_i]*(1.0-0.25*rev_cor) + rev_cor*rev_cor*rev_cor*0.25);
-			engpri[car_i].lp = (rev_cor*rev_cor*.75+.25)*smooth_accel[car_i]
-				+ (1.0-smooth_accel[car_i])*rev_cor*rev_cor*.25;
+			float sa = smooth_accel[car_i];
+			//float sa2 = sa*sa;
+			float lp = (rev_cor*rev_cor*.75+.25)*sa
+				+ (1.0-sa)*rev_cor*rev_cor*.25;
+			engpri[car_i].lp = lp;//engpri[car_i].lp*.9+.1*lp;
+
 		}
 
 
@@ -543,7 +549,10 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 				} else {
 					s = car->priv.wheel[i].seg->surface->material;
 					roughness = car->priv.wheel[i].seg->surface->kRoughness;
-					roughnessFreq = 2.0*EX_PI/car->priv.wheel[i].seg->surface->kRoughWaveLen;
+					roughnessFreq = 2.0*EX_PI * car->priv.wheel[i].seg->surface->kRoughWaveLen;
+					if (roughnessFreq>2.0) {
+						roughnessFreq = 2.0 + tanh(roughnessFreq-2.0);
+					}
 					ride  = car->priv.wheel[i].rollRes;
 				}
 
@@ -566,7 +575,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 				}
 
 				if (out_of_road==false) {
-					float tmppitch = tmpvol*(1.0+roughnessFreq);
+					float tmppitch = tmpvol*(0.75+0.25*roughnessFreq);
 					tmpvol = tmpvol*(1.0+ride*.1) + tanh(0.5*roughness);
 					if (roadvol < tmpvol) {
 						roadvol = tmpvol;
@@ -575,7 +584,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 					if (skvol[i] < car->_skid[i]-0.05) {
 						skvol[i] = (float)car->_skid[i]-0.05;
 						float wsa = tanh((car->_wheelSlipAccel(i)+10.0)*0.01);
-						skpitch[i] = (1.0-wsa+0.3*roughnessFreq)/(1.0+tanh(car->_reaction[i]*0.0001));
+						skpitch[i] = (0.3-wsa+0.3*roughnessFreq)/(1.0+tanh(car->_reaction[i]*0.0001));
 					}
 				} else {
 					float tmppitch = 0.5*tmpvol + 0.5*tmpvol*roughnessFreq;

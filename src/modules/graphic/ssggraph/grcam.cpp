@@ -216,6 +216,7 @@ void cGrBackgroundCam::update(cGrCamera *curCam)
 {
     memcpy(&eye, curCam->getPosv(), sizeof(eye));
     memcpy(&center, curCam->getCenterv(), sizeof(center));
+	fovy = curCam->getFOV();
     sgSubVec3(center, center, eye);
     sgSetVec3(eye, 0, 0, 0);
     speed[0]=0.0;
@@ -288,9 +289,7 @@ public:
 			}
 			current = car->index;
 		}
-		printf ("%f %f | %f %f %f | %f %f %f\n", dt, currenttime,
-				nod, dnod, inod,
-				roll, droll, iroll);
+
 		tdble accel_x = car->_accel_x;//(car->_speed_x - pspeed_x);
 		tdble accel_y = car->_accel_y;//(car->_speed_y - pspeed_y);
 		tdble accel_z = car->_accel_z;//(car->_speed_y - pspeed_y);
@@ -1783,12 +1782,12 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  12.0,	/* fovy */
+			  67.5,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
-			  300.0,	/* distz */
+			  200.0,	/* distz */
 			  0,		/* axis */
-			  200.0,	/* near */
+			  100.0,	/* near */
 			  1000.0 * fovFactor,/* far */
 			  500.0 * fovFactor,	/* fog */
 			  1000.0 * fovFactor	/* fog */
@@ -1801,10 +1800,10 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  12.0,	/* fovy */
+			  67.5,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
-			  300.0,	/* distz */
+			  250.0,	/* distz */
 			  1,		/* axis */
 			  200.0,	/* near */
 			  1000.0 * fovFactor,/* far */
@@ -1819,10 +1818,10 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  12.0,	/* fovy */
+			  67.5,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
-			  300.0,	/* distz */
+			  350.0,	/* distz */
 			  2,		/* axis */
 			  200.0,	/* near */
 			  1000.0 * fovFactor,/* far */
@@ -1837,10 +1836,10 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			  id,
 			  1,	/* drawCurr */
 			  1,	/* drawBG  */
-			  12.0,	/* fovy */
+			  67.5,	/* fovy */
 			  1.0,	/* fovymin */
 			  90.0,	/* fovymax */
-			  300.0,	/* distz */
+			  400.0,	/* distz */
 			  3,		/* axis */
 			  200.0,	/* near */
 			  1000.0 * fovFactor,/* far */

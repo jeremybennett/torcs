@@ -347,6 +347,11 @@ void grVtxTable::draw_geometry_for_a_car ()
   ttx=grCarInfo[indexCar].distFromStart/50;
   sgMakeTransMat4 (mat, ttx, tty, ttz);
   glMultMatrixf((float *)mat);
+	axis[0]=0;
+	axis[1]=1;
+	axis[2]=0;
+  sgMakeRotMat4(mat, -grCarInfo[indexCar].envAngle, axis);
+  glMultMatrixf((float *)mat);
   glMatrixMode(GL_MODELVIEW);
 
   int num_colours   = getNumColours   ();
@@ -561,9 +566,16 @@ void grVtxTable::draw_geometry_for_a_car_array ()
   glEnable (GL_TEXTURE_2D);
   glMatrixMode(GL_TEXTURE);
   glLoadIdentity();
+
   ttx=grCarInfo[indexCar].distFromStart/50;
   sgMakeTransMat4 (mat, ttx, tty, ttz);
   glMultMatrixf((float *)mat);
+	axis[0]=0;
+	axis[1]=1;
+	axis[2]=0;
+  sgMakeRotMat4(mat, -grCarInfo[indexCar].envAngle, axis);
+  glMultMatrixf((float *)mat);
+
   glMatrixMode(GL_MODELVIEW);
 
   glActiveTextureARB (GL_TEXTURE0_ARB);
