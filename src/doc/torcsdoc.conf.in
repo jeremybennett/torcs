@@ -2,7 +2,7 @@
 #
 #    file                 : torcsdoc.conf
 #    created              : Mon Jan 31 23:57:03 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
+#    copyright            : (C) 2000,2002 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id$                                  
 #
@@ -238,7 +238,7 @@ EXAMPLE_PATTERNS     =
 # directories that contain image that are included in the documentation (see 
 # the \image command).
 
-IMAGE_PATH           = doc/img
+IMAGE_PATH           = doc/manual/img
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program 

@@ -2,7 +2,7 @@
 
     file                 : raceman.h
     created              : Sun Jan 30 22:59:17 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000,2002 by Eric Espie
     email                : torcs@free.fr
     version              : $Id$
 
@@ -17,6 +17,12 @@
  *                                                                         *
  ***************************************************************************/
  
+/** @file
+    		This is the race information structures.
+    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+    @version	$Id$
+    @ingroup	raceinfo
+*/
  
 #ifndef _RACEMANV1_H_
 #define _RACEMANV1_H_
@@ -30,14 +36,14 @@
 #define RCM_MAX_DT_SIMU		0.002
 #define RCM_MAX_DT_ROBOTS	0.02
 
-/* General info on current race */
+/** General info on current race */
 typedef struct {
-    int			ncars;		/* number of cars */
-    int			totLaps;	/* total laps */
+    int			ncars;		/**< number of cars */
+    int			totLaps;	/**< total laps */
     int			state;
 #define RM_RACE_FINISHING	1
 #define RM_RACE_PAUSED		2
-    int			type;		/* Race type */
+    int			type;		/**< Race type */
 #define RM_TYPE_PRACTICE	1
 #define RM_TYPE_QUALIF		2
 #define RM_TYPE_RACE		3
@@ -50,13 +56,13 @@ typedef struct {
 #define _raceType	raceInfo.type
 #define _maxDammage	raceInfo.maxDammage
 
-/* cars situation used to inform the GUI and the drivers */
+/** cars situation used to inform the GUI and the drivers */
 typedef struct {
     tRaceAdmInfo	raceInfo;
     double		deltaTime;
-    double		currentTime;	/* current time in sec since the beginning of the simulation */
-    int			current;	/* current car */
-    tCarElt		**cars;		/* list of cars */ 
+    double		currentTime;	/**< current time in sec since the beginning of the simulation */
+    int			current;	/**< current car */
+    tCarElt		**cars;		/**< list of cars */ 
 } tSituation;
 
     

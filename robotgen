@@ -128,7 +128,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' > $XMLFILE || exit 1
 echo '<!--' >> $XMLFILE || exit 1
 echo '    file                 : '$NAME.xml >> $XMLFILE || exit 1
 echo '    created              : '`date` >> $XMLFILE || exit 1
-echo '    copyright            : (C) 2002'$AUTHOR >> $XMLFILE || exit 1
+echo '    copyright            : (C) 2002 '$AUTHOR >> $XMLFILE || exit 1
 echo '-->' >> $XMLFILE || exit 1
 echo '' >> $XMLFILE || exit 1
 

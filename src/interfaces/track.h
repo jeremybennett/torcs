@@ -247,10 +247,11 @@ typedef struct trackBarrier {
 
 
 /** Track segment (tTrackSeg)
-    The segments can be straights (type TR_STR):
+    The segments can be straights (type TR_STR): (the track goes from the right to the left)
     @image html straight-desc.png
-    Or can be turn segments (type TR_RGT or TR_LFT):
+    Or can be turn segments (type TR_RGT or TR_LFT): (the track goes from the left to the right)
     @image html turn-1-desc.png
+    The reference angle is the orientation of the first segment of the track.
     @ingroup trackstruct
 */
 typedef struct trackSeg {
