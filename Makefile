@@ -63,7 +63,7 @@ SUBDIRS		= src
 
 DATADIR 	= .
 
-DATA    	= CHANGELOG.html COPYING
+DATA    	= CHANGELOG.html COPYING Ticon.png Ticon.ico tux.png logo-skinner.png
 
 SHIPDIR		= .
 

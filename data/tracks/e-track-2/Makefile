@@ -24,9 +24,9 @@ DATA_devel = e-track-2.ac e-track-2-relief.ac elevation-map.png object-map1.png 
 
 DATA       = $(DATA_rel)
 
-data_PKGFILES	= $(DATA_rel)
+data-tracks-base_PKGFILES	= $(DATA_rel)
 
-data_PKGDIR	= $(DATADIR)
+data-tracks-base_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 
