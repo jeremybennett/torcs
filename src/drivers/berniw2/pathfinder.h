@@ -48,10 +48,6 @@
 /* how far we look forward for overtaking, collisions, etc */
 #define AHEAD 500
 
-#define BERNIW_SECT_PRIV	"berniw private"
-#define BERNIW_ATT_PITENTRY	"pitentry"
-#define BERNIW_ATT_PITEXIT	"pitexit"
-
 /* how many segments can i pass per simulation step, depends on TRACKRES, simulation->_deltaTime and speed */
 #define SEGRANGE 3
 

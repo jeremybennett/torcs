@@ -213,7 +213,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
     steer = targetAngle / car->_steerLock;
 
 	/* brakes */
-    tdble brakecoeff = 1.0/(2.0*g*myc->currentseg->getKfriction());
+    tdble brakecoeff = 1.0/(2.0*g*myc->currentseg->getKfriction()*myc->CFRICTION);
     tdble brakespeed, brakedist;
 	tdble lookahead = 0.0;
 	int i = myc->getCurrentSegId();
@@ -224,7 +224,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		brakespeed = myc->getSpeedSqr() - mpf->getPathSeg(i)->getSpeedsqr();
 		if (brakespeed > 0.0) {
 			tdble gm, qb, qs;
-			gm = myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKfriction()*myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKalpha();
+			gm = myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKfriction()*myc->CFRICTION*myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKalpha();
 			qs = mpf->getPathSeg(i)->getSpeedsqr();
 			brakedist = brakespeed*(myc->mass/(2.0*gm*g*myc->mass + qs*(gm*myc->ca + myc->cw)));
 

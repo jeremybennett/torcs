@@ -31,7 +31,6 @@ const double MyCar::CORRLEN = 30.0;				/* CORRLEN * derror is the length of the 
 const double MyCar::TURNTOL = 1.0;				/* tolerance for end backing up [m] */
 const double MyCar::TURNSPEED = 3.0;			/* if speed lower than this you can back up [m/s] */
 const double MyCar::MARGIN = 0.3;				/* security margin from track border [m] */
-const double MyCar::AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
 const double MyCar::STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
 const double MyCar::TIMETOCATCH = 3.0;			/* when do we start thinking about overtaking [s]*/
 const double MyCar::MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
@@ -46,6 +45,9 @@ const double MyCar::FLYSPEED = 55.0;			/* above this speed anti fly system is ac
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
+    AEROMAGIC = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_AMAGIC, (char*)NULL, 1.6);
+	CFRICTION = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_FMAGIC, (char*)NULL, 1.0);
+
 	/* init pointer to car data */
 	setCarPtr(car);
 	initCGh();

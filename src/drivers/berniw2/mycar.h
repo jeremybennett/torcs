@@ -89,7 +89,6 @@ class MyCar : public AbstractCar
 		static const double TURNTOL;			/* tolerance for end backing up [m] */
 		static const double TURNSPEED;			/* if speed lower than this you can back up [m/s] */
 		static const double MARGIN;				/* security margin from track border [m] */
-		static const double AEROMAGIC;			/* aerodynamic lift factor [-] */
 		static const double STABLESPEED;		/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
 		static const double TIMETOCATCH;		/* when do we start thinking about overtaking [s]*/
 		static const double MINOVERTAKERANGE;	/* minimum length for overtaking [m] */
@@ -119,6 +118,8 @@ class MyCar : public AbstractCar
 		double PATHERRFACTOR;							/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] */
 		double CARWIDTH;								/* width of the car [m] */
 		double CARLEN;									/* length of the car [m] */
+		double AEROMAGIC;								/* aerodynamic lift factor [-] */
+		double CFRICTION;								/* friction "magic" coefficient [-] */
 
 		/* static data */
 		double cgcorr_b;

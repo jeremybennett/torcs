@@ -43,6 +43,11 @@
 #define BOTS 10
 #define BUFSIZE 256
 
+#define BERNIW_SECT_PRIV	"berniw private"
+#define BERNIW_ATT_PITENTRY	"pitentry"
+#define BERNIW_ATT_PITEXIT	"pitexit"
+#define BERNIW_ATT_AMAGIC	"caero"
+#define BERNIW_ATT_FMAGIC	"cfriction"
 
 static const double g = 9.81;
 

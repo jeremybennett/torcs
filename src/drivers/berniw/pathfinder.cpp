@@ -674,7 +674,7 @@ void Pathfinder::plan(MyCar* myc)
 
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
-		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
+		tdble mu = track->getSegmentPtr(i)->getKfriction()*myc->CFRICTION*track->getSegmentPtr(i)->getKalpha();
 		tdble b = track->getSegmentPtr(i)->getKbeta();
 		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 
@@ -764,11 +764,11 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		length = dist(ps[v].getLoc(), ps[w].getLoc());
 
 		/* compute allowed speedsqr */
-		double mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha();
+		double mu = track->getSegmentPtr(j)->getKfriction()*myc->CFRICTION*track->getSegmentPtr(j)->getKalpha();
 		double b = track->getSegmentPtr(j)->getKbeta();
 		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 		if (pitStop && track->isBetween(s3, pitSegId, j)) {
-			double speedsqrpit = ((double) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
+			double speedsqrpit = ((double) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->CFRICTION*myc->cgcorr_b;
 			if (speedsqr > speedsqrpit) speedsqr = speedsqrpit;
 		}
 		if ((pitStop || inPit) && track->isBetween(s3, e1, j)) {
@@ -1367,7 +1367,7 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				o[n].catchsegid = (o[n].catchdist + trackSegId + nPathSeg) % nPathSeg;
 				o[n].overtakee = false;
 				o[n].disttopath = distToPath(seg, ocar[i].getCurrentPos());
-				double gm = track->getSegmentPtr(seg)->getKfriction();
+				double gm = track->getSegmentPtr(seg)->getKfriction()*myc->CFRICTION;
 				double qs = o[n].speedsqr;
 				o[n].brakedist = (myc->getSpeedSqr() - o[n].speedsqr)*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca)));
 				o[n].mincorner = FLT_MAX;

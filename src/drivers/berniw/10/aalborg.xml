@@ -21,7 +21,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="20"></attnum>
   </section>
 
   <section name="Gearbox">
@@ -52,7 +52,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.7"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="25000"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="60000"></attnum>
   </section>
 
   <section name="Rear Differential">
@@ -62,7 +62,7 @@
   </section>
 
   <section name="Front Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"></attnum>
     <attnum name="suspension course" val="0.5"></attnum>
     <attnum name="bellcrank" val="1"></attnum>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
@@ -72,7 +72,7 @@
   </section>
 
   <section name="Front Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"></attnum>
     <attnum name="suspension course" val="0.5"></attnum>
     <attnum name="bellcrank" val="1"></attnum>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
@@ -82,7 +82,7 @@
   </section>
 
   <section name="Rear Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"></attnum>
     <attnum name="suspension course" val="0.5"></attnum>
     <attnum name="bellcrank" val="1"></attnum>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
@@ -92,7 +92,7 @@
   </section>
 
   <section name="Rear Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"></attnum>
     <attnum name="suspension course" val="0.5"></attnum>
     <attnum name="bellcrank" val="1"></attnum>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="150"></attnum>
