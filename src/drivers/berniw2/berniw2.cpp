@@ -119,6 +119,12 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		sprintf(buffer, "drivers/berniw2/%d/default.xml", index);
 	    *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
 	}
+
+	/* Load and set parameters */
+	float fuel = GfParmGetNum(*carParmHandle, BERNIW_SECT_PRIV, BERNIW_ATT_FUELPERLAP,
+		(char*)NULL, track->length*MyCar::MAX_FUEL_PER_METER);
+	fuel *= (situation->_totLaps + 1.0);
+	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
 }
 
 
@@ -301,29 +307,27 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 
 	float weight = myc->mass*G;
-	float maxForce = weight + myc->ca*84.0*84.0;
+	float maxForce = weight + myc->ca*myc->MAX_SPEED*myc->MAX_SPEED;
 	float force = weight + myc->ca*myc->getSpeedSqr();
 	brake = brake*MIN(1.0, force/maxForce);
 
-	/* gear changing */
-	tdble rpm = (car->_enginerpm / car->_enginerpmRedLine);
+	// Gear changing.
+	if (myc->tr_mode == 0) {
+		if (car->_gear <= 0) {
+			car->_gearCmd =  1;
+		} else {
+			float gr_up = car->_gearRatio[car->_gear + car->_gearOffset];
+			float omega = car->_enginerpmRedLine/gr_up;
+			float wr = car->_wheelRadius(2);
 
-	if (((car->_gearCmd + car->_gearOffset) <= 1) && (myc->tr_mode == 0) && (myc->count >= 25)) {
-		car->_gearCmd++;
-	}
-
-	if ((rpm > myc->SFTUPRATIO) && (myc->count >= 25) && (myc->tr_mode == 0)) {
-		if (car->_gearCmd < car->_gearNb - 1) {
-			shiftaccel = myc->getSpeed() / car->_wheelRadius(REAR_RGT) * car->_gearRatio[car->_gearCmd + car->_gearOffset + 1] / car->_enginerpmRedLine;
-			car->_gearCmd++;
-			myc->count = 0;
-		}
-	} else if ((myc->getSpeed() < myc->SFTDOWNRATIO * car->_wheelRadius(REAR_RGT) * car->_enginerpmRedLine/car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) && (myc->count >= 25) && (myc->tr_mode == 0)) {
-		if (car->_gearCmd > 1) {
-			shiftaccel = (myc->getSpeed() * car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) / (car->_wheelRadius(REAR_RGT) * car->_enginerpm);
-	        if (fabs(steer) < myc->SFTDOWNSTEER || myc->getSpeed() < myc->TURNSPEED) {
-				car->_gearCmd--;
-				myc->count = 0;
+			if (omega*wr*myc->SHIFT < car->_speed_x) {
+				car->_gearCmd++;
+			} else {
+				float gr_down = car->_gearRatio[car->_gear + car->_gearOffset - 1];
+				omega = car->_enginerpmRedLine/gr_down;
+				if (car->_gear > 1 && omega*wr*myc->SHIFT > car->_speed_x + myc->SHIFT_MARGIN) {
+					car->_gearCmd--;
+				}
 			}
 		}
 	}
@@ -339,22 +343,24 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			car->_accelCmd = myc->accel;
 			car->_brakeCmd = brake*cerror;
 		} else {
-			tdble invslip = myc->queryInverseSlip(car, myc->getSpeed());
-			if (invslip < myc->MININVSLIP) {
-				tdble at = myc->queryAcceleration(car, myc->getSpeed());
-				if (myc->accel > at) myc->accel = at;
+			if (myc->getSpeedSqr() < mpf->getPathSeg(myc->getCurrentSegId())->getSpeedsqr()) {
+				if (myc->accel < myc->ACCELLIMIT) {
+					myc->accel += myc->ACCELINC;
+				}
 				car->_accelCmd = myc->accel/cerror;
 			} else {
-				if (myc->getSpeedSqr() < mpf->getPathSeg(myc->getCurrentSegId())->getSpeedsqr()) {
-					if (myc->accel < myc->ACCELLIMIT) myc->accel += myc->ACCELINC;
-					car->_accelCmd = myc->accel/cerror;
-				} else {
-					if (myc->accel > 0.0) myc->accel -= myc->ACCELINC;
-					car->_accelCmd = myc->accel = MIN(myc->accel/cerror, shiftaccel/cerror);
+				if (myc->accel > 0.0) {
+					myc->accel -= myc->ACCELINC;
 				}
+				car->_accelCmd = myc->accel = MIN(myc->accel/cerror, shiftaccel/cerror);
+			}
+			tdble slipspeed = myc->querySlipSpeed(car);
+			if (slipspeed > myc->TCL_SLIP) {
+				car->_accelCmd = car->_accelCmd - MIN(car->_accelCmd, (slipspeed - myc->TCL_SLIP)/myc->TCL_RANGE);
 			}
 		}
-    }
+	}
+
 
 	/* check if we are stuck, try to get unstuck */
 	tdble bx = myc->getDir()->x, by = myc->getDir()->y;
@@ -380,14 +386,14 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 				angle = queryAngleToTrack(car);
 				car->_steerCmd = ( -angle > 0.0) ? 1.0 : -1.0;
 				car->_brakeCmd = 0.0;
-				tdble invslip = myc->queryInverseSlip(car, myc->getSpeed());
 
-				if (invslip < myc->MININVSLIP) {
-					myc->accel = myc->queryAcceleration(car, myc->getSpeed());
-					car->_accelCmd = myc->accel;
-				} else {
-					if (myc->accel < 1.0) myc->accel += myc->ACCELINC;
-					car->_accelCmd = myc->accel;
+				if (myc->accel < 1.0) {
+					myc->accel += myc->ACCELINC;
+				}
+				car->_accelCmd = myc->accel;
+				tdble slipspeed = myc->querySlipSpeed(car);
+				if (slipspeed < -myc->TCL_SLIP) {
+					car->_accelCmd = car->_accelCmd - MIN(car->_accelCmd, (myc->TCL_SLIP - slipspeed)/myc->TCL_RANGE);
 				}
 			} else {
 				if (myc->getSpeed() < 1.0) {
@@ -404,7 +410,6 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		}
 	}
 
-	if (myc->count < 25) myc->count++;
 	if (myc->tr_mode == 0) car->_steerCmd = steer;
 }
 
