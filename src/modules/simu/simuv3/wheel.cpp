@@ -110,7 +110,6 @@ SimWheelUpdateRide(tCar *car, int index)
     prex = wheel->susp.x;
     if (1) {
 	t3Dd angles;
-	t3Dd d;
 	t3Dd normal;
 	t3Dd rel_normal;
 	tdble waz = wheel->steer + wheel->staticPos.az;
@@ -119,21 +118,15 @@ SimWheelUpdateRide(tCar *car, int index)
 	RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 	// Assume track is planar, find real deltas from closest point
 	dZ = wheel->pos.z - Zroad;
-	d.x = dZ * normal.x;
-	d.y = dZ * normal.y;
-	d.z = dZ * normal.z;
-	// Transform deltas from world to wheel FOR
- 	angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
+
+	// Transform from world to suspension FOR
+ 	angles.x = car->DynGC.pos.ax;
  	angles.y = car->DynGC.pos.ay;
  	angles.z = car->DynGC.pos.az + waz;
 	NaiveRotate (normal, angles, &rel_normal);
 	if (rel_normal.z > 0) {
-	    wheel->susp.x = wheel->rideHeight = dZ/rel_normal.z;
-	    wheel->susp.fx = wheel->susp.x * rel_normal.x;
-	    wheel->susp.fy = wheel->susp.x* rel_normal.y;
+	    wheel->susp.x = wheel->rideHeight = dZ*normal_z/rel_normal.z;
 	}
-	//	NaiveRotate (d, angles, &rel_normal);
-	//	wheel->susp.x = wheel->rideHeight = rel_normal.z;
     } else {
 	wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
     }
