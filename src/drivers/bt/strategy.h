@@ -41,6 +41,8 @@
 
 class AbstractStrategy {
 	public:
+		// Need this empty constructor... do not remove.
+		virtual ~AbstractStrategy() {}
 		// Set Initial fuel at race start.
 		virtual void setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s) = 0;
 		// Update internal data at every timestep.
@@ -57,7 +59,7 @@ class AbstractStrategy {
 class SimpleStrategy : public AbstractStrategy {
 	public:
 		SimpleStrategy();
-		virtual ~SimpleStrategy();
+		~SimpleStrategy();
 
 		void setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s);
 		void update(tCarElt* car, tSituation *s);
