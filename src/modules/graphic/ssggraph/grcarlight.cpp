@@ -169,7 +169,7 @@ void ssgVtxTableCarlight::draw_geometry ()
   axis[1]=0;
   axis[2]=1;
   glActiveTextureARB (GL_TEXTURE0_ARB);
-  sgMakeRotMat4(mat, ((float)rand()/(float)RAND_MAX)*45, axis);
+  sgMakeRotMat4(mat, rand()/(RAND_MAX+1.0)*45, axis);
   glMatrixMode(GL_TEXTURE);
   glLoadIdentity ();
   sgMakeTransMat4(mat3,0.5,0.5,0); /* ok */

@@ -238,7 +238,7 @@ void grAddSmoke(tCarElt *car, double t)
 					timeSmoke[car->index*4+i] = t;
 				}
 				
-				if (car->_skid[i]>rand()/RAND_MAX+0.1) {// instead of 0.3, to randomize
+				if (car->_skid[i]>rand()/(RAND_MAX+1.0)+0.1) {// instead of 0.3, to randomize
 					char* s = car->priv.wheel[i].seg->surface->material;
 					shd_vtx = new ssgVertexArray(1);
 					//shd_clr = new ssgColourArray(1);
@@ -246,18 +246,18 @@ void grAddSmoke(tCarElt *car, double t)
 					tdble init_speed;
 					if (strstr(s, "sand")) {
 						cur_clr[0] = 0.8;
-						cur_clr[1] = 0.7+0.1*rand()/RAND_MAX;
-						cur_clr[2] = 0.4+0.2*rand()/RAND_MAX;
+						cur_clr[1] = 0.7+0.1*rand()/(RAND_MAX+1.0);
+						cur_clr[2] = 0.4+0.2*rand()/(RAND_MAX+1.0);
 						init_speed = 0.5;
 					} else if (strstr(s, "dirt")) {
-						cur_clr[0] = 0.7+0.1*rand()/RAND_MAX;
-						cur_clr[1] = 0.6+0.1*rand()/RAND_MAX;
-						cur_clr[2] = 0.5+0.1*rand()/RAND_MAX;
+						cur_clr[0] = 0.7+0.1*rand()/(RAND_MAX+1.0);
+						cur_clr[1] = 0.6+0.1*rand()/(RAND_MAX+1.0);
+						cur_clr[2] = 0.5+0.1*rand()/(RAND_MAX+1.0);
 						init_speed = 0.45;
 					} else if (strstr(s,"mud")) {
 						cur_clr[0] = 0.65;
-						cur_clr[1] = 0.4+0.2*rand()/RAND_MAX;
-						cur_clr[2] = 0.3+0.2*rand()/RAND_MAX;
+						cur_clr[1] = 0.4+0.2*rand()/(RAND_MAX+1.0);
+						cur_clr[2] = 0.3+0.2*rand()/(RAND_MAX+1.0);
 						init_speed = 0.35;
 					} else if (strstr(s,"gravel")) {
 						cur_clr[0] = 0.6;
@@ -265,9 +265,9 @@ void grAddSmoke(tCarElt *car, double t)
 						cur_clr[2] = 0.6;
 						init_speed = 0.3;
 					} else if (strstr(s,"grass")) {
-						cur_clr[0] = 0.4+0.2*rand()/RAND_MAX;
-						cur_clr[1] = 0.5+0.1*rand()/RAND_MAX;
-						cur_clr[2] = 0.3+0.1*rand()/RAND_MAX;
+						cur_clr[0] = 0.4+0.2*rand()/(RAND_MAX+1.0);
+						cur_clr[1] = 0.5+0.1*rand()/(RAND_MAX+1.0);
+						cur_clr[2] = 0.3+0.1*rand()/(RAND_MAX+1.0);
 						init_speed = 0.25;
 					} else {
 						cur_clr[0] = 0.8;
@@ -300,7 +300,7 @@ void grAddSmoke(tCarElt *car, double t)
 					tmp->smoke->sizex = VX_INIT;
 					tmp->smoke->sizey = VY_INIT;
 					tmp->smoke->sizez = VZ_INIT;
-					tmp->smoke->vexp = V_EXPANSION+car->_skid[i]*2.0*(((float)rand()/(float)RAND_MAX));
+					tmp->smoke->vexp = V_EXPANSION+car->_skid[i]*2.0*rand()/(RAND_MAX+1.0);
 					tmp->smoke->smokeType = SMOKE_TYPE_TIRE;
 					tmp->smoke->smokeTypeStep = 0;
 					tmp->next = NULL;
@@ -351,7 +351,7 @@ void grAddSmoke(tCarElt *car, double t)
 						tmp->smoke->sizex = VX_INIT*4;
 						tmp->smoke->sizey = VY_INIT*4;
 						tmp->smoke->sizez = VZ_INIT*4;
-						tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX)) * car->_exhaustPower / 2.0;
+						tmp->smoke->vexp = V_EXPANSION+5.0*rand()/(RAND_MAX+1.0) * car->_exhaustPower / 2.0;
 						tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
 						tmp->smoke->smokeTypeStep = 0;
 						tmp->next = NULL;
