@@ -186,7 +186,6 @@ class Pathfinder
 		void getPitPoint(int j, int k, tdble slope, tdble dist, t3Dd* r);
 		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);
 		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);
-		//tdble radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3);
 		double curvature(double xp, double yp, double x, double y, double xn, double yn);
 		void adjustRadius(int s, int p, int e, double c, tdble carwidth);
 		void stepInterpolate(int iMin, int iMax, int Step);

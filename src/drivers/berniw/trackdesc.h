@@ -44,6 +44,7 @@
 #define TRACKRES 1.0
 #define RMAX 10000.0
 
+/* magic radius for bumpy roads */
 #define RREL 180.0
 
 class TrackSegment

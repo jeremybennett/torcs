@@ -64,9 +64,9 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="acura-nsx-sz"></attstr>
 		<!-- Car category -->
-		<attstr name="category" val="torcs-r-a"></attstr>
+		<attstr name="category" val="torcs-r-b"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
 		<attnum name="race number" val="140"></attnum>
 		<!-- Your color for car and board -->
@@ -83,7 +83,7 @@
 		<!-- Author's name -->
 		<attstr name="author" val="Bernhard Wymann"></attstr>
 		<!-- Car used to race -->
-		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<attstr name="car name" val="viper-gts-r"></attstr>
 		<!-- Car category -->
 		<attstr name="category" val="torcs-r-a"></attstr>
 		<!-- Race number, should be unique for TORCS... -->
@@ -211,6 +211,7 @@
 	</section>
   </section>
 </params>
+
 
 
 

@@ -1042,24 +1042,6 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 }
 
 
-/* compute the radius given three points */
-/*inline tdble Pathfinder::radius(tdble x1, tdble y1, tdble x2, tdble y2, tdble x3, tdble y3)
-{
-	tdble dx1 = x2 - x1;
-	tdble dy1 = y2 - y1;
-	tdble dx2 = x3 - x2;
-	tdble dy2 = y3 - y2;
-
-	tdble z = (dy1*dx2 - dx1*dy2);
-
-	if (z != 0.0) {
-		tdble k = (dx2*(x3-x1) - dy2*(y1-y3))/z;
-		return sqrt((1.0+k*k)*(dx1*dx1+dy1*dy1))/2.0;
-	} else {
-		return FLT_MAX;
-	}
-}*/
-
 #ifdef PATH_K1999
 
 /* computes curvature, from Remi Coulom, K1999.cpp */
