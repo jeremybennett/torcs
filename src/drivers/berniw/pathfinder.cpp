@@ -927,7 +927,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 			/* compute cosalpha of angle between path and other car */
 			double cosa = (*o[i].collcar->getDir()) * (*opseg->getDir());
 			/* compute minimal space requred, sin(arccos(x)) == sqrt(1-sqr(x)) */
-			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST + myc->derror + 1/50.0*MAX(0.0, (myc->getSpeed() - o[i].collcar->getSpeed()));
+			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST; // + myc->derror + 1/50.0*MAX(0.0, (myc->getSpeed() - o[i].collcar->getSpeed()));
 			/* compute distance to path */
 			double dtp = dist(opseg->getLoc(), o[i].collcar->getCurrentPos());
 
@@ -1318,7 +1318,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		/* set up point 2 */
 		int trackSegId2 = (trackSegId + overtakerange) % nPathSeg;
-		//y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getLoc());
 		y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getOptLoc());
 		ys[2] = pathSlope(trackSegId2);
 

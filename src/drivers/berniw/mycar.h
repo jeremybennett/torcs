@@ -40,9 +40,9 @@
 #include "pathfinder.h"
 #include "linalg.h"
 
+
 class Pathfinder;
 class PathSeg;
-
 
 class AbstractCar
 {

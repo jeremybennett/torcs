@@ -31,8 +31,8 @@ TrackSegment::TrackSegment()
 
 void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)
 {
-	/* id of the corresponding segment */
-	segID = id;
+	/* pointer to the corresponding segment */
+	pTrackSeg = (tTrackSeg*) s;
 
 	/* right, middle and left segment (road) border, pointer to right side */
 	l = *lp; m = *mp; r = *rp;
@@ -44,10 +44,6 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 		type = s->type;
 		raceType = s->raceInfo;
 		if (type != TR_STR) radius = s->radius; else radius = FLT_MAX;
-		kfriction = s->surface->kFriction;
-		krollres = s->surface->kRollRes;
-		kroughness = s->surface->kRoughness;
-		kroughwavelen = s->surface->kRoughWaveLen;
 		width = distToLeft3D(&r);
 
 		double dz = getRightBorder()->z - getLeftBorder()->z;

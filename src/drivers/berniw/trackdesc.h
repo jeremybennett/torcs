@@ -56,21 +56,22 @@ class TrackSegment
 		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);
 		inline void setLength(double len) { length = len; }
 		inline void setKbeta(double b) { kbeta = b; }
-		inline void setKgamma(double c) { kgamma = c; } 
+		inline void setKgamma(double c) { kgamma = c; }
 
-		inline int getSegmentId() { return segID; }
 		inline int getType() { return type; }
 		inline unsigned int getRaceType() { return raceType; }
-		inline double getRadius() { return radius; }
-		inline double getKfriction() { return kfriction; }
-		inline double getKrollres() { return krollres; }
-		inline double getKroughness() { return kroughness; }
-		inline double getKroughwavelen() { return kroughwavelen; }
-		inline double getWidth() { return width; }
-		inline double getKalpha() { return kalpha; }
-		inline double getKbeta() { return kbeta; }
-		inline double getKgamma() { return kgamma; }
-		inline double getLength() { return length; }
+		inline tdble getRadius() { return radius; }
+
+		inline tdble getKfriction() { return pTrackSeg->surface->kFriction; }
+		inline tdble getKrollres() { return pTrackSeg->surface->kRollRes; }
+		inline tdble getKroughness() { return pTrackSeg->surface->kRoughness; }
+		inline tdble getKroughwavelen() { return pTrackSeg->surface->kRoughWaveLen; }
+
+		inline tdble getWidth() { return width; }
+		inline tdble getKalpha() { return kalpha; }
+		inline tdble getKbeta() { return kbeta; }
+		inline tdble getKgamma() { return kgamma; }
+		inline tdble getLength() { return length; }
 
 		inline v3d* getLeftBorder() { return &l; }
 		inline v3d* getRightBorder() { return &r; }
@@ -88,21 +89,17 @@ class TrackSegment
 		inline double distToMiddle3D(v3d* p) { return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z)); }
 
 	private:
-		int segID;				/* id of the corresponding segment */
+		tTrackSeg* pTrackSeg;	/* id of the corresponding segment */
 		int type;				/* physical type (eg. straight, left or right) */
 		unsigned int raceType;	/* race type (eg. pitlane, speedlimit, ...) */
 		v3d l, m, r;			/* right, middle and left segment (road) border */
 		v3d tr;					/* normalized direction vector to the right side */
-		double radius;			/* radius */
-		double kfriction;		/* friction */
-		double krollres;		/* rolling resistance */
-		double kroughness;		/* roughness */
-		double kroughwavelen;	/* wavelen */
-		double width;			/* width of the track segment*/
-		double kalpha;			/* (roll)factor for the angle (like michigan) */
-		double kbeta;			/* (curvature)factor for bumps (e-track-3) */
-		double kgamma;			/* (pitch)factor of road */
-		double length;			/* distance to the next segment (2-D, not 3-D!) */
+		tdble radius;			/* radius */
+		tdble width;			/* width of the track segment*/
+		tdble kalpha;			/* (roll)factor for the angle (like michigan) */
+		tdble kbeta;			/* (curvature)factor for bumps (e-track-3) */
+		tdble kgamma;			/* (pitch)factor of road */
+		tdble length;			/* distance to the next segment (2-D, not 3-D!) */
 };
 
 class TrackDesc
@@ -157,10 +154,8 @@ class TrackDesc
 
 		/* returns distance of trajectory point to the middle point of segment */
 		inline double distToMiddleOnSeg(int id, v3d* p) {
-			double d = ts[id].distToMiddle3D(p);
-			double dr = ts[id].distToRight3D(p);
-			double dl = ts[id].distToLeft3D(p);
-			return (dr <= dl) ? d : -d;
+			v3d d = *p - *ts[id].getMiddle();
+			return (d*(*ts[id].getToRight()) >= 0.0) ? d.len() : -d.len();
 		}
 
 		inline bool isBetween(int start, int end, int id) {
