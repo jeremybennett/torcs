@@ -181,30 +181,33 @@ TODO for 1.2.4
 - Add cameras/update track format on/for several tracks (spring, alpine,
   aalborg, ...).
 - solution for varying gl headers (include mesa headers into the source?)
-- Smoke starts too high above ground, review?
+- Smoke starts too high above ground, review? [done, updating CVS soon - C.]
 - Sound performance problem (no facts, just a feeling at the moment, wait for
   feedback), review?
 - merge berniw_2004 code into berniw's.
+- likewise olethros_2005 to olethros.
 - Add validation for the case no driver selected, do not exit to
   console.
-- (Sound did not work well with 40 cars, investigate).
+- (Sound did not work well with 40 cars, investigate). [probably due to plib]
 - try to resolve "(null)" texture problem (seems to be in the model files).
+- Check for consistency of simuv2/simuv3.
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
 - add RtBarrierNormalG() and use it in simuv*.
-- fix sound in split screen multiplayer.
+- fix sound in split screen multiplayer. [in progress]
 - add more races to championship.
 - Fix non ending races because of failing virtual crane.
 - Problem when driver list changes during championship.
 - Investigate non reproducable (so far) crash after changing properties in
   multiple players (human) and then doing a race with 2 players. Happend just
   after a fresh install and just once so far (is one of the shipped xml files
-  broken)?
+  broken)? [note there are many other crashes when using the menus, seemingly
+  at random times].
 - downsize grey-tracks.rgb texture.
 - in long races car-to-car collisions fail somehow sometimes -> investigate
-
-
+- verify that simulation obeys conservation of momentum and energy.
+- optimise simuv3.
 
 
 TODO for 1.2.5
