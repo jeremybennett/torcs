@@ -255,6 +255,18 @@ tMouseInfo *GfuiMouseInfo(void)
     return &GfuiMouse;
 }
 
+/** Set the mouse position
+    @ingroup	gui
+    @param	x	mouse x pos
+    @param	y	mouse y pos
+    @return	none
+*/
+void GfuiMouseSetPos(int x, int y)
+{
+    glutWarpPointer(x, y);
+}
+
+
 static void
 gfuiMouse(int button, int state, int x, int y)
 {

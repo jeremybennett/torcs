@@ -39,6 +39,7 @@ SOURCES   = 	guimenu.cpp \
 		guiscrollist.cpp \
 		guiscrollbar.cpp \
 		guiimage.cpp \
+		control.cpp \
 		ringlist.cpp
 
 

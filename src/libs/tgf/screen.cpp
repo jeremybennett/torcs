@@ -123,6 +123,7 @@ void GfScrInit(int argc, char *argv[])
     }
 
     if ((strcmp(fscr, GFSCR_VAL_YES) == 0) && (!fullscreen)) {
+	/* glutVideoResize(0, 0, winX, winY); */
 	glutFullScreen();
     }
 

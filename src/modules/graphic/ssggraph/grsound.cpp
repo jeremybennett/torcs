@@ -103,7 +103,6 @@ grShutdownSound(void)
     soundInitialized = 0;
     sched->stopSample(skidSample);
     sched->stopSample(engSample);
-    //sched->stopSample(crashSample[curCrashSnd]);
     for (i = 0; i < NB_CRASH_SOUND; i++) {
 	sched->stopSample(crashSample[i]);
     }
@@ -120,7 +119,7 @@ grShutdownSound(void)
     delete sched;
     if (__slPendingError) {
 	GfOut("!!! error ignored: %s\n", __slPendingError);
-	__slPendingError = 0;	/* ARG!!! ugly ugly bad thing... may be a plib bug after all... */
+	__slPendingError = 0;	/* ARG!!! ugly ugly bad thing... but should not occur anymore now */
     }
 }
 

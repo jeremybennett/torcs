@@ -167,6 +167,8 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     grWinw = width;
     grWinh = height;
     grSetView(x, y, width, height);
+    GfuiMouseSetPos(x + width / 2, y + height / 2);
+
     grInitBoard();
     OldTime = GfTimeClock();
     nFrame = 0;

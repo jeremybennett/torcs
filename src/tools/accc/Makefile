@@ -28,8 +28,8 @@ LDFLAGS      = -rdynamic
 SOURCES      = accc.cpp ../../linux/linuxspec.cpp ac3dload.cpp ac3dgroup.cpp
 
 
-SOLIBS       = 	-lplibssg -lplibsg -lplibul 		\
-		-ltgf -ltxml
+SOLIBS       = 	-ltgf -lplibssg -lplibsg -lplibul \
+		-ltxml
 
 src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

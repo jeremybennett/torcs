@@ -97,6 +97,30 @@ AC_CHECK_LIB(plibsg, main,,AC_MSG_ERROR([Can't find libplibsg. Please check conf
 AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(plibssgaux, main,,AC_MSG_ERROR([Can't find libplibssgaux. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+
+dnl Taken from FlightGear
+AC_MSG_CHECKING([for plib 1.6.0 or newer])
+AC_TRY_RUN([
+#include <plib/ul.h>
+
+#define MIN_PLIB_VERSION 160
+
+int main() {
+    int major, minor, micro;
+
+    if ( PLIB_VERSION != MIN_PLIB_VERSION ) {
+	 return -1;
+    }
+
+    return 0;
+}
+
+],
+  AC_MSG_RESULT(yes),
+  [AC_MSG_ERROR([Install plib 1.6.0 first...])],
+  AC_MSG_RESULT(yes)
+)
 
 AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \

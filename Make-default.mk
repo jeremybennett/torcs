@@ -182,6 +182,7 @@ win32end:
 	@mv ${DATA_WIN32}.eee ${DATA_WIN32}
 	@sed -e "s:runtime:runtimed:g" ${DATA_WIN32} > ${DATA_WIN32_D}
 
+
 win32setup: win32start exportswin32 installshipswin32 installwin32 win32datainstall win32end
 
 

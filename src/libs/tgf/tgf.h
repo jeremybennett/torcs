@@ -39,6 +39,7 @@
 #include <GL/glut.h>
 #include <osspec.h>
 #include <queue.h>
+#include <js.h>
 
 /* typedef double tdble; */
 /** Floating point type used in TORCS.
@@ -341,6 +342,7 @@ typedef struct MouseInfo
 } tMouseInfo;
 
 extern tMouseInfo *GfuiMouseInfo(void);
+extern void GfuiMouseSetPos(int x, int y);
 
 /* all widgets */
 #define	GFUI_VISIBLE	1	/**< Object visibility flag  */
@@ -557,6 +559,30 @@ typedef struct
 extern tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
 extern void gfMeanReset(tdble v, tMeanVal *pvt);
 
+/*********************
+ * Control interface *
+ *********************/
+
+#define GFCTRL_JOY_UNTESTED	-1
+#define GFCTRL_JOY_NONE		0
+#define GFCTRL_JOY_PRESENT	1
+
+#define GFCTRL_JOY_MAXBUTTON	32 /* Size of integer so don't change please */
+
+/** Joystick Information Structure */
+typedef struct
+{
+    int		oldb[NUM_JOY];
+    float	ax[MAX_AXES * NUM_JOY];			/**< Axis values */
+    int		edgeup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from down (pressed) to up */
+    int		edgedn[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from up to down */
+    int		levelup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];/**< Button state (1 = up) */
+} tCtrlJoyInfo;
+
+extern tCtrlJoyInfo *GfctrlJoyInit(void);
+extern int GfctrlJoyIsPresent(void);
+extern int GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo);
+extern void GfctrlJoyRelease(tCtrlJoyInfo *joyInfo);
 
 #endif /* __TGF__H__ */
 

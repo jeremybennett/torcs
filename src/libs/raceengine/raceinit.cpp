@@ -666,7 +666,7 @@ ReRaceCleanDrivers(void)
 	}
 	GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
     }
-    free(ReInfo->s->cars);
+    FREEZ(ReInfo->s->cars);
     ReInfo->s->cars = 0;
     ReInfo->s->_ncars = 0;
     GfModUnloadList(&ReRaceModList);

@@ -47,28 +47,14 @@ static char path2[1024];
 /***************************************************************/
 /* ABANDON RACE HOOK */
 
-static void	*AbandonRaceHookHandle = 0;
+static void *AbandonRaceHookHandle = 0;
 
 static void
 AbandonRaceHookActivate(void *vforce)
 {
-    void	*params = ReInfo->params;
-    int		force = (int)vforce;
+    /* Return to race menu */
+    ReInfo->_reState = RE_STATE_CONFIG;
 
-    if (force || !strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_MUST_COMPLETE, RM_VAL_NO), RM_VAL_YES)) {
-	/* RePostRace() */
-
-	/* ReEventShutdown() */
-	ReInfo->_reSimItf.shutdown();
-	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
-	    ReInfo->_reGraphicItf.shutdowncars();
-	}
-	ReInfo->_reGraphicItf.shutdowntrack();
-	ReRaceCleanDrivers();
-
-	/* Return to race menu */
-	ReInfo->_reState = RE_STATE_CONFIG;
-    }
     GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
@@ -84,7 +70,23 @@ AbandonRaceHookInit(void)
     return AbandonRaceHookHandle;
 }
 
-static void	*AbortRaceHookHandle = 0;
+static void *AbortRaceHookHandle = 0;
+
+static void
+AbortRaceHookActivate(void * /* dummy */)
+{
+    ReInfo->_reSimItf.shutdown();
+    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	ReInfo->_reGraphicItf.shutdowncars();
+    }
+    ReInfo->_reGraphicItf.shutdowntrack();
+    ReRaceCleanDrivers();
+
+    /* Return to race menu */
+    ReInfo->_reState = RE_STATE_CONFIG;
+
+    GfuiScreenActivate(ReInfo->_reGameScreen);
+}
 
 static void *
 AbortRaceHookInit(void)
@@ -93,7 +95,7 @@ AbortRaceHookInit(void)
 	return AbortRaceHookHandle;
     }
 
-    AbortRaceHookHandle = GfuiHookCreate((void*)1, AbandonRaceHookActivate);
+    AbortRaceHookHandle = GfuiHookCreate(0, AbortRaceHookActivate);
 
     return AbortRaceHookHandle;
 }
@@ -359,7 +361,7 @@ ReRaceStart(void)
 
     if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_SPLASH_MENU, RM_VAL_NO), RM_VAL_YES)) {
 	RmShutdownLoadingScreen();
-	RmDisplayStartRace(ReInfo, StartRaceHookInit(), AbortRaceHookInit());
+	RmDisplayStartRace(ReInfo, StartRaceHookInit(), AbandonRaceHookInit());
 	return RM_ASYNC | RM_NEXT_STEP;
     }
 
@@ -422,12 +424,12 @@ ReRaceStop(void)
 
     if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_ALLOW_RESTART, RM_VAL_NO), RM_VAL_NO)) {
 	RmTwoStateScreen("Race Stopped",
-			 "Abandon Race", "Abort current race", AbandonRaceHookInit(),
+			 "Abandon Race", "Abort current race", AbortRaceHookInit(),
 			 "Resume Race", "Return to Race", BackToRaceHookInit());
     } else {
 	RmTriStateScreen("Race Stopped",
 			 "Restart Race", "Restart the current race", RestartRaceHookInit(),
-			 "Abandon Race", "Abort current race", AbandonRaceHookInit(),
+			 "Abandon Race", "Abort current race", AbortRaceHookInit(),
 			 "Resume Race", "Return to Race", BackToRaceHookInit());
     }
     return RM_ASYNC | RM_NEXT_STEP;	    

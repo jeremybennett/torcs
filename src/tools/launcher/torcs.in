@@ -30,7 +30,7 @@ then
     then
 	rm -rf $LOCAL_CONF
 	mkdir -p $LOCAL_CONF
-	echo "$$LOCAL_CONF created, copying/linking game data"
+	echo "$LOCAL_CONF created, copying/linking game data"
     fi
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@libdir@
     cd $DEFAULT_RUNTIME
@@ -41,6 +41,9 @@ then
 	then
 	    exit 1
 	fi
+    else
+	echo "$DEFAULT_RUNTIME/setup_linux.sh file does not exist, check your installation"
+	exit 1
     fi
     ./torcs -l $LOCAL_CONF
     exit 0

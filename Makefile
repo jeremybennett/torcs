@@ -64,7 +64,11 @@ SUBDIRS		= src
 
 DATADIR 	= .
 
-DATA    	= CHANGELOG.html COPYING setup_linux.sh
+DATA    	= CHANGELOG.html COPYING
+
+SHIPDIR		= .
+
+SHIP		= setup_linux.sh
 
 PKGSUBDIRS	= src data
 
