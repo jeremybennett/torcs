@@ -20,9 +20,6 @@
 
 #include "berniw.h"
 
-#define BOTS 10
-#define BUFSIZE 256
-
 
 /* function prototypes */
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation);
@@ -111,11 +108,6 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 
 	sprintf(buffer, "drivers/berniw/%d/%s", index, trackname);
     *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
-
-	/* adjust brake balance in case there is no configuration file */
-	if (*carParmHandle == NULL) {
-		GfParmSetNum(*carParmHandle, SECT_BRKSYST, PRM_FRWEIGHTREP, (char*)NULL, 0.45);
-	}
 }
 
 
@@ -129,7 +121,7 @@ static void newrace(int index, tCarElt* car, tSituation *situation)
 	}
 
 	if (mycar[index-1] != NULL) delete mycar[index-1];
-	mycar[index-1] = new MyCar(myTrackDesc, car);
+	mycar[index-1] = new MyCar(myTrackDesc, car, situation);
 
 	currenttime = situation->currentTime;
 }
@@ -170,6 +162,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		for (int i = 0; i < situation->_ncars; i++) ocar[i].update();
 	}
 
+	/* startmode */
 	if (myc->trtime < 5.0 && myc->bmode != myc->START) {
 		myc->loadBehaviour(myc->START);
 		myc->startmode = true;
@@ -186,6 +179,8 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	memset(car->ctrl, 0, sizeof(tCarCtrl));
 	car->ctrl->gear = car->_gear;
 
+	/* uncommenting the following line causes pitstop on every lap */
+	//if (!mpf->getPitStop()) mpf->setPitStop(true, myc->currentsegid);
 	/* compute fuel consumption */
 	if (myc->currentsegid >= 0 && myc->currentsegid < 5 && !myc->fuelchecked) {
 		if (car->race->laps > 0) {
@@ -200,7 +195,8 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	/* decide if we need a pit stop */
 	if (!mpf->getPitStop() && car->_remainingLaps > 0 && (car->_dammage > myc->MAXDAMMAGE ||
-		(car->priv->fuel < 1.5*myc->fuelperlap && car->priv->fuel < car->_remainingLaps*myc->fuelperlap)))
+		(car->priv->fuel < 1.5*myc->fuelperlap &&
+		 car->priv->fuel < (car->_remainingLaps-car->_lapsBehindLeader)*myc->fuelperlap)))
 	{
 		mpf->setPitStop(true, myc->currentsegid);
 	}
@@ -208,10 +204,13 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (myc->speedsqr > myc->currentpathseg->getSpeedsqr()) {
 		b1 = (myc->speedsqr - myc->currentpathseg->getSpeedsqr()) / (myc->speedsqr);
 	}
-	if (mpf->getPitStop()) { car->ctrl->raceCmd = RM_CMD_PIT_ASKED; }
+	if (mpf->getPitStop()) {
+		car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
+		//printf("berniw %d, time: %f\n", index, situation->currentTime);
+	}
 
 	/* steer to next target point */
-	targetAngle = atan2(myc->destpathseg->getLoc()->y - car->_pos_Y, myc->destpathseg->getLoc()->x  - car->_pos_X);
+	targetAngle = atan2(myc->destpathseg->getLoc()->y - car->_pos_Y, myc->destpathseg->getLoc()->x - car->_pos_X);
     targetAngle -= car->_yaw;
 	NORM_PI_PI(targetAngle);
     steer = targetAngle / car->_steerLock;
@@ -280,6 +279,10 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
 	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 
+	//tdble cx = mpf->getPathSeg(myc->currentsegid)->getDir()->x;
+	//tdble cy = mpf->getPathSeg(myc->currentsegid)->getDir()->y;
+	//tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
+
 	if (((car->_gear + car->_gearOffset) <= 1) && (myc->tr_mode == 0) && (myc->count >= 25)) {
 		car->ctrl->gear++;
 	}
@@ -291,7 +294,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			myc->count = 0;
 		}
 	} else if ((myc->speed < myc->SFTDOWNRATIO * car->_wheelRadius(REAR_RGT) * car->_enginerpmMax/car->_gearRatio[car->_gear + car->_gearOffset - 1]) && (myc->count >= 25) && (myc->tr_mode == 0)) {
-		if (car->_gear > 2) {
+		if (car->_gear > 1) {
 			shiftaccel = (myc->speed * car->_gearRatio[car->_gear + car->_gearOffset - 1]) / (car->_wheelRadius(REAR_RGT) * car->_enginerpm);
 	        if (fabs(steer) < myc->SFTDOWNSTEER) {
 				car->ctrl->gear--;
@@ -306,9 +309,10 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 			car->ctrl->accelCmd = myc->accel;
 			car->ctrl->brakeCmd = tmp;
 		} else {
-			tdble invslip = queryInverseRearSlip(car, myc->speed);
+			tdble invslip = myc->queryInverseSlip(car, myc->speed);
 			if (invslip < myc->MININVSLIP) {
-				if (myc->accel > queryAcceleration(car, myc->speed)) myc->accel = queryAcceleration(car, myc->speed);
+				tdble at = myc->queryAcceleration(car, myc->speed);
+				if (myc->accel > at) myc->accel = at;
 				car->ctrl->accelCmd = myc->accel;
 			} else {
 				if (myc->speedsqr < mpf->getPathSeg(myc->currentsegid)->getSpeedsqr()) {
@@ -322,8 +326,9 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		}
     }
 
-	if ((myc->speed < myc->TURNSPEED) && (parallel < cos(90.0*PI/180.0))  && (mpf->dist2D(&myc->currentpos, mpf->getPathSeg(myc->currentsegid)->getLoc()) > myc->TURNTOL)) myc->turnaround += situation->deltaTime;
-		else myc->turnaround = 0.0;
+	if ((myc->speed < myc->TURNSPEED) && (parallel < cos(90.0*PI/180.0))  && (mpf->dist2D(&myc->currentpos, mpf->getPathSeg(myc->currentsegid)->getLoc()) > myc->TURNTOL)) {
+		myc->turnaround += situation->deltaTime;
+	} else myc->turnaround = 0.0;
 	if ((myc->turnaround >= waitToTurn) || (myc->tr_mode >= 1)) {
 		if (myc->tr_mode == 0) {
 			myc->tr_mode = 1;
@@ -340,10 +345,10 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 				angle = queryAngleToTrack(car);
 				car->ctrl->steer = ( -angle > 0.0) ? 1.0 : -1.0;
 				car->ctrl->brakeCmd = 0.0;
-				tdble invslip = queryInverseRearSlip(car, myc->speed);
+				tdble invslip = myc->queryInverseSlip(car, myc->speed);
 
 				if (invslip < myc->MININVSLIP) {
-					myc->accel = queryAcceleration(car, myc->speed);
+					myc->accel = myc->queryAcceleration(car, myc->speed);
 					car->ctrl->accelCmd = myc->accel;
 				} else {
 					if (myc->accel < 1.0) myc->accel += myc->ACCELINC;
@@ -377,6 +382,9 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
 	myc->lastpitfuel = MAX(car->pitcmd->fuel, 0.0);
 	car->pitcmd->repair = car->_dammage;
 	mpf->setPitStop(false, myc->currentsegid);
+	myc->loadBehaviour(myc->START);
+	myc->startmode = true;
+	myc->trtime = 0.0;
 
 	return ROB_PIT_IM; /* return immediately */
 }
