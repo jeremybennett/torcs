@@ -326,8 +326,8 @@ installshipexec: $(SHIPEXEC)
 	createdir="${INSTLIBBASE}/${SHIPEXECDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
-	do echo " $(INSTALL_PROGRAM) $$X $$createdir/$$X"; \
-	$(INSTALL_PROGRAM) $$X $$createdir/$$X ; \
+	do echo " $(INSTALL_SCRIPT) $$X $$createdir/$$X"; \
+	$(INSTALL_SCRIPT) $$X $$createdir/$$X ; \
 	done
 
 installshipexecwin32: $(SHIPEXEC)
