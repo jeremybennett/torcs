@@ -22,6 +22,10 @@
 
 #include "differential.h"
 
+#undef USE_THICKNESS
+#define N_THICKNESS_SEGMENTS 16
+#define SEGMENT_RANGE 4
+
 typedef struct
 {
 
@@ -54,28 +58,37 @@ typedef struct
     tdble	sa;		/* slip angle */
     tdble	sx;		/* longitudinal slip value */
     tdble	steer;
-    
+
     /* static */
-    tPosd	staticPos;	/* pos relative to the GC (z is suspension travel at rest) */
-				/* and angles are camber (ax), caster (ay) and toe (az) */
+    tPosd	staticPos;	/* pos relative to the GC (z is suspension
+						   travel at rest) and angles are camber (ax),
+						   caster (ay) and toe (az) */
     tdble	rollCenter;
 
     tdble  	weight0;	/* initial weight on this wheel */
     tdble	tireSpringRate;
     tdble  	radius;
-    tdble       width;
+    tdble   width;
     tdble  	mu;
     tdble  	I;       	/* I = inertial moment of the wheel */
     tdble  	curI;       	/* Current inertia for the wheel (including transmission) */
     tdble	mfC;		/* Magic Formula C coeff */
     tdble	mfB;		/* Magic Formula B coeff */
     tdble	mfE;		/* Magic Formula E coeff */
-    tdble       mfT;            /* Temperature-dependent coeff */
-    tdble       Ca;
-    tdble       T_current;      /* Temperature */
-    tdble       T_operating;    /* Operating temperature */
-    tdble       condition;      /* Tyre condition */
-    tdble       T_range;
+    tdble   mfT;            /* Temperature-dependent coeff */
+
+	/* Tyre wear */
+    tdble   Ca;         /* Adherence coefficient */
+    tdble   T_current;      /* Temperature */
+    tdble   T_operating;    /* Operating temperature */
+    tdble   condition;      /* Tyre condition */
+    tdble   T_range;
+	/* Modelling uneven thickness due to wear */ 
+#ifdef USE_THICKNESS
+	tdble   thickness[N_THICKNESS_SEGMENTS];
+	tdble   segtemp[N_THICKNESS_SEGMENTS];
+#endif
+
     tdble	lfMax;		/* Load factor */
     tdble	lfMin;		/* Load factor */
     tdble	lfK;		/* Load factor */

@@ -168,8 +168,18 @@ SimReConfig(tCarElt *carElt)
 	if (car->fuel > car->tank) car->fuel = car->tank;
     }
     if (carElt->pitcmd.repair > 0) {
-	car->dammage -= carElt->pitcmd.repair;
-	if (car->dammage < 0) car->dammage = 0;
+		for (int i=0; i<4; i++) {
+			carElt->_tyreCondition(i) = 1.01;
+			carElt->_tyreT_in(i) = 50.0;
+			carElt->_tyreT_mid(i) = 50.0;
+			carElt->_tyreT_out(i) = 50.0;
+			car->wheel[i].bent_damage_x = 0.0;
+			car->wheel[i].bent_damage_z = 0.0;
+			car->wheel[i].rotational_damage_x = 0.0;
+			car->wheel[i].rotational_damage_z = 0.0;
+		}
+		car->dammage -= carElt->pitcmd.repair;
+		if (car->dammage < 0) car->dammage = 0;
     }
 }
 
@@ -464,8 +474,14 @@ SimShutdown(void)
 	    printf ("Car %d:\n", ncar);
 	    printf ("Wheels:\n");
 	    for (int i=0; i<4; i++) {
-		printf ("%d: %foC %f%% efficiency\n", 
-			i, car->wheel[i].T_current, car->wheel[i].condition);
+			printf ("%d: %foC %f%% efficiency\n", 
+					i, car->wheel[i].T_current, car->wheel[i].condition);
+#ifdef USE_THICKNESS
+			for (int j=0; j<N_THICKNESS_SEGMENTS; j++) {
+				printf("\t%f %f\n", car->wheel[i].thickness[j], car->wheel[i].segtemp[j]);
+			}
+			//free (car->wheel[i].thickness);
+#endif
 	    }
 	    SimEngineShutdown(car);
 	}

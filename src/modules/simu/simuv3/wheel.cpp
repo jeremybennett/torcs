@@ -109,6 +109,13 @@ SimWheelConfig(tCar *car, int index)
 	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
 	wheel->bent_damage_x = drand48();
 	wheel->bent_damage_z = drand48();
+#ifdef USE_THICKNESS
+	//wheel->thickness = malloc(sizeof(tdble)*N_THICKNESS_SEGMENTS);
+	for (int i=0; i<N_THICKNESS_SEGMENTS; i++) {
+		wheel->thickness[i] = 0.0;
+		wheel->segtemp[i] = wheel->T_current;
+	}
+#endif
 }
 
 
@@ -124,6 +131,7 @@ SimWheelUpdateRide(tCar *car, int index)
     RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
     wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
     prex = wheel->susp.x;
+
     
     t3Dd angles;
     t3Dd normal;
@@ -135,6 +143,7 @@ SimWheelUpdateRide(tCar *car, int index)
     RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
     
     dZ = wheel->pos.z - Zroad;
+
 	wheel->relPos.az = wheel->steer + wheel->staticPos.az;
     // Transform from world to suspension FOR
     if (index % 2) {
@@ -151,15 +160,24 @@ SimWheelUpdateRide(tCar *car, int index)
     angles.y = car->DynGCg.pos.ay;
     angles.z = car->DynGCg.pos.az;
     NaiveRotate (normal, angles, &rel_normal);
+
     //NaiveRotate (d, angles, &d);
-    if (rel_normal.z > MIN_NORMAL_Z) {
+#ifdef USE_THICKNESS
+	int seg_id = ((int) ((tdble) N_THICKNESS_SEGMENTS *  (wheel->relPos.ay/(2*M_PI)))) % N_THICKNESS_SEGMENTS;
+	if (seg_id<0) seg_id += N_THICKNESS_SEGMENTS;
+	tdble adjRadius = wheel->radius + wheel->thickness[seg_id];
+#else
+	tdble adjRadius = wheel->radius;
+#endif
+    if (rel_normal.z > MIN_NORMAL_Z) {		
 		tdble dist = dZ*normal.z/rel_normal.z;
+
 		// add a factor as we want to take the *real* wheelpos
 		// also used to bounce.
-		wheel->susp.fx = wheel->radius - wheel->radius/rel_normal.z;
+		wheel->susp.fx = adjRadius - adjRadius/rel_normal.z;
 		wheel->susp.fy = 0.0;
 		wheel->susp.x = wheel->rideHeight =
-			wheel->radius + ((dZ)*normal.z - wheel->radius)/rel_normal.z;
+					adjRadius + ((dZ)*normal.z - adjRadius)/rel_normal.z;
     } else {
 		//wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
 		//	wheel->susp.x = wheel->rideHeight = wheel->susp.spring.packers; 
@@ -204,6 +222,14 @@ SimWheelUpdateForce(tCar *car, int index)
     t3Dd rel_normal;
     bool right_way_up = true;
     static int wcnt = 0;
+
+#ifdef USE_THICKNESS
+	int seg_id = (int) ((tdble) N_THICKNESS_SEGMENTS *  (wheel->relPos.ay/(2*M_PI))) % N_THICKNESS_SEGMENTS;
+	if (seg_id<0) seg_id += N_THICKNESS_SEGMENTS;
+	tdble adjRadius = wheel->radius + wheel->thickness[seg_id];
+#else
+	tdble adjRadius = wheel->radius;
+#endif	
 
 	wheel->T_current = car->carElt->_tyreT_mid(index);
 	wheel->condition = car->carElt->_tyreCondition(index);
@@ -262,13 +288,13 @@ SimWheelUpdateForce(tCar *car, int index)
 		  // but we're ignoring a lot of things, such
 		  // as the reaction forces from the immovable axis of
 		  // the suspension. We make an assumption that:
-			tdble invrel_normal = 1.0/rel_normal.z;
+			tdble invrel_normal = 2.0/rel_normal.z;
 			if (invrel_normal>=2.0) {
 				invrel_normal = 2.0;
 			} else if (invrel_normal<=-2.0) {
 				invrel_normal = -2.0;
 			}
-			reaction_force = f_z * invrel_normal;
+			reaction_force = f_z;// * invrel_normal;
 				//  rel_normal.z;
 			//reaction_force = f_z;// more stable -  rel_normal.z;
 		   //reaction_force = f_z * rel_normal.z;// much more stable -  rel_normal.z;
@@ -286,7 +312,7 @@ SimWheelUpdateForce(tCar *car, int index)
     }
 
     
-    wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
+    wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + adjRadius; /* center relative to GC */
 
     /* HORIZONTAL FORCES */
 
@@ -304,7 +330,7 @@ SimWheelUpdateForce(tCar *car, int index)
 								+ rel_normal.y*rel_normal.y);
     wheel->bodyVel.z = 0.0;
 
-    wrl = (wheel->spinVel + car->DynGC.vel.ay) * wheel->radius;
+    wrl = (wheel->spinVel + car->DynGC.vel.ay) * adjRadius;
     {
 		t3Dd angles = {wheel->relPos.ax, 0.0, waz};
 		NaiveRotate (wheel->bodyVel, angles, &wheel->bodyVel);
@@ -320,12 +346,12 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
-    } else if (absolute_speed < 10.0) {
+    } else if (absolute_speed < 5.0) {
 		//		sx = wvx;
 		//		sy = 0;//wvy;
 		//		sa = 0;//atan2(wvy,wvx);
-		sx = .1*wvx;//absolute_speed;
-		sy = .1*wvy;//absolute_speed;
+		sx = wvx/5.0;//absolute_speed;
+		sy = wvy/5.0;//absolute_speed;
 		sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
@@ -338,9 +364,21 @@ SimWheelUpdateForce(tCar *car, int index)
     }
 	s = sqrt(sx*sx+sy*sy);
 
+	if (index==0) {
+		wcnt--;
+	}
+
+	if (wcnt<0) {
+		//printf ("%f", reaction_force);
+		if (index==3) {
+			wcnt = 10;
+			//printf ("#RCT\n");
+		} else {
+			//printf (" ");
+		}
+	}
 
     if (right_way_up) {
-
 		car->carElt->_skid[index] = MIN(1.0, (s*reaction_force*0.0002));
 		//0.0002*(MAX(0.2, MIN(s, 1.2)) - 0.2)*reaction_force;
 		car->carElt->_reaction[index] = reaction_force;
@@ -386,7 +424,24 @@ SimWheelUpdateForce(tCar *car, int index)
 		if (wheel_damage>0.01) {
 			wheel_damage = 0.01;
 		}
-		wheel->condition -= wheel_damage * SimDeltaTime;
+		tdble delta_dam = wheel_damage * SimDeltaTime;
+#ifdef USE_THICKNESS
+		{
+			int seg_id = (int) ((tdble) N_THICKNESS_SEGMENTS *  (wheel->relPos.ay/(2*M_PI))) % N_THICKNESS_SEGMENTS;
+			if (seg_id<0) seg_id += N_THICKNESS_SEGMENTS;
+			tdble htrf = (0.002 + fabs(absolute_speed)*0.0005)*SimDeltaTime;
+			wheel->segtemp[seg_id] += 0.0003*((fabs(relative_speed)+0.1*fabs(wrl))*reaction_force)*SimDeltaTime;
+			wheel->segtemp[seg_id] = wheel->segtemp[seg_id] * (1.0-htrf) + htrf * wheel->T_current;
+			tdble melt = (exp (2.0*(wheel->segtemp[seg_id] - compound_melt_point)/compound_melt_point)) ;
+			tdble wheel_damage = 0.001* melt * relative_speed * removal / (2.0 * M_PI * wheel->radius * wheel->width * wheel->Ca);
+			tdble delta_dam = wheel_damage * SimDeltaTime;
+			wheel->thickness[seg_id] -= delta_dam;
+			wheel->thickness[(seg_id+1)%N_THICKNESS_SEGMENTS] -= .5*delta_dam;
+			wheel->thickness[(seg_id-1)%N_THICKNESS_SEGMENTS] -= .5*delta_dam;
+
+		}
+#endif
+		wheel->condition -= 0.5*delta_dam;
 		if (wheel->condition < 0.5) wheel->condition = 0.5;
     }
 
@@ -403,8 +458,10 @@ SimWheelUpdateForce(tCar *car, int index)
 	  if (rel_normal.z > MIN_NORMAL_Z) {
 	    // When the tyre is tilted there is less surface
 	    // touching the road. Modelling effect simply with rel_normal_xz
-	    Ft2 = - rel_normal_xz*F*sx/s;
-	    Fn2 = - rel_normal_xz*F*sy/s;
+		  tdble sur_f = rel_normal_xz;
+		  //sur_f = 1.0;
+	    Ft2 = - sur_f*F*sx/s;
+	    Fn2 = - sur_f*F*sy/s;
 	    //Ft2 = -F*sx/s;
 	    //Fn2 = -F*sy/s;
 	  } else {
@@ -460,7 +517,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		wheel->forces.y =0.0;
 		wheel->forces.z =0.0;//f_z;
 #endif
-		wheel->spinTq = Ft2 * wheel->radius;
+		wheel->spinTq = Ft2 * adjRadius;
 		wheel->sa = sa;
 		wheel->sx = sx;
     }

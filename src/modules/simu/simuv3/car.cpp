@@ -82,6 +82,11 @@ SimCarConfig(tCar *car)
     car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
     car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
     
+	// initialise rotational momentum
+	for (int i=0; i<4; i++) {
+		car->rot_mom[i] = 0.0;
+	}
+	car->rot_mom[SG_W] = 1.0;
     /* configure components */
     w = car->mass * G;
 
@@ -224,7 +229,13 @@ SimCarUpdateForces(tCar *car)
 		F.F.x += wheel->forces.x;
 		F.F.y += wheel->forces.y;
 		F.F.z += wheel->forces.z;
+		car->carElt->_wheelFx(i) = wheel->forces.x;
+		car->carElt->_wheelFy(i) = wheel->forces.y;
+		car->carElt->_wheelFz(i) = wheel->forces.z;
 		/* moments */
+		//		direction.x = 1.0;
+		//		direction.y = 1.0;
+		//		direction.z = 1.0;
 		F.M.x += direction.x*(wheel->forces.z * susp_pos_y +
 							  wheel->forces.y *
 							  (car->statGC.z + wheel->rideHeight));
@@ -308,6 +319,9 @@ SimCarUpdateForces(tCar *car)
 		car->DynGC.acc.ax =  F.M.x * car->Iinv.x;
 		car->DynGC.acc.ay =  F.M.y * car->Iinv.y;
 		car->DynGC.acc.az = (F.M.z - Rm) * car->Iinv.z;
+		car->rot_acc[0] =  F.M.x;
+		car->rot_acc[1] =  F.M.y;
+		car->rot_acc[2] = (F.M.z - Rm);
 		original.x = car->DynGC.acc.ax;
 		original.y = car->DynGC.acc.ay;
 		original.z = car->DynGC.acc.az;
@@ -334,7 +348,9 @@ SimCarUpdateSpeed(tCar *car)
 	{
 		tdble delta_fuel = car->fuel_prev - car->fuel;
 		car->fuel_prev = car->fuel;
-		car->carElt->_fuelTotal += delta_fuel;
+		if (delta_fuel > 0) {
+			car->carElt->_fuelTotal += delta_fuel;
+		}
 		tdble fi;
 		tdble as = sqrt(car->airSpeed2);
 		if (as<0.1) {
@@ -392,10 +408,28 @@ SimCarUpdateSpeed(tCar *car)
     // ANGULAR VELOCITIES
 
 #ifndef TEST_ROTATION
+	// for euler angles (deprecated)
     car->DynGC.vel.ax += car->DynGC.acc.ax * SimDeltaTime;
     car->DynGC.vel.ay += car->DynGC.acc.ay * SimDeltaTime;
     car->DynGC.vel.az += car->DynGC.acc.az * SimDeltaTime;
-
+	// for quaternion (under testing)
+#if 0
+	car->rot_mom[SG_X] -= car->DynGC.acc.ax * SimDeltaTime;
+	car->rot_mom[SG_Y] -= car->DynGC.acc.ay * SimDeltaTime;
+	car->rot_mom[SG_Z] -= car->DynGC.acc.az * SimDeltaTime;
+#else
+	//	printf ("RM: %f %f %f ->",
+	//			car->rot_mom[SG_X],
+	//			car->rot_mom[SG_Y],
+	//			car->rot_mom[SG_Z]);
+	car->rot_mom[SG_X] -= car->rot_acc[0] * SimDeltaTime;
+	car->rot_mom[SG_Y] -= car->rot_acc[1] * SimDeltaTime;
+	car->rot_mom[SG_Z] -= car->rot_acc[2] * SimDeltaTime;
+	//	printf ("%f %f %f\n",
+	//			car->rot_mom[SG_X],
+	//			car->rot_mom[SG_Y],
+	//			car->rot_mom[SG_Z]);
+#endif
     if (Rm > fabs(car->DynGCg.vel.az)) {
 		Rm = fabs(car->DynGCg.vel.az);
     }
@@ -711,39 +745,58 @@ void SimCarAddAngularVelocity (tCar* car)
 	sgQuat w;
     sgVec3 new_position;
 
+#if 0
+	// Put angular velocity euler angles into quaternion
 	w[SG_W] = 0.0;
 	w[SG_X] = -0.5*car->DynGCg.vel.ax;
 	w[SG_Y] = -0.5*car->DynGCg.vel.ay; 
 	w[SG_Z] = -0.5*car->DynGCg.vel.az; 
-
-#if 1
+	// Add angular velocity
 	sgPostMultQuat (w, car->posQuat);
-
 	for (int i=0; i<4; i++) {
 		car->posQuat[i] += w[i] * SimDeltaTime ;
 	}
-#endif
-    sgNormaliseQuat(car->posQuat);
-	//euler to quat inverts
-	// quat to euler is normal
-	if (0) {
-		sgQuat tq;
-		sgVec3 hpr;
-		hpr[0]=20.0;
-		hpr[1]=40.0;
-		hpr[2]=60.0;
-		sgEulerToQuat (tq, hpr);
-		//sgInvertQuat (tq);
-		sgNormaliseQuat (tq);
-		sgQuatToEuler (hpr, tq);
-		printf ("%f %f %f\n", hpr[0], hpr[1], hpr[2]);
+#else
+	// Put angular momentum into quaternion
+	for (int i=0; i<4; i++) {
+		w[i] = car->rot_mom[i];
+		//printf ("%f ", w[i]);
 	}
+	w[SG_X] *= car->Iinv.x;
+	w[SG_Y] *= car->Iinv.y;
+	w[SG_Z] *= car->Iinv.z;
+	// Add angular velocity
+	sgPostMultQuat (w, car->posQuat);
+	for (int i=0; i<4; i++) {
+		car->posQuat[i] += w[i] * SimDeltaTime ;
+	}
+	//sgNormaliseQuat (w);
+	for (int i=0; i<4; i++) {
+		w[i] = car->rot_mom[i];
+		//printf ("%f ", w[i]);
+	}
+	w[SG_X] *= car->Iinv.x;
+	w[SG_Y] *= car->Iinv.y;
+	w[SG_Z] *= car->Iinv.z;
+	sgInvertQuat(w);//, car->rot_mom);
+	sgNormaliseQuat(w);
+	sgVec3 new_angular_v;
+	sgQuatToEuler (new_angular_v, w);
+	car->DynGC.vel.ax = DEG2RAD(new_angular_v[0]);
+	car->DynGC.vel.ay = DEG2RAD(new_angular_v[1]);
+	car->DynGC.vel.az = DEG2RAD(new_angular_v[2]);
+	//printf ("%f %f %f#AXYZ\n",
+	//			car->DynGC.vel.ax, 
+	//			car->DynGC.vel.ay, 
+	//			car->DynGC.vel.az); 
+			
+#endif
+	// Turn quaternion into Euler angles
+    sgNormaliseQuat(car->posQuat);
 	sgQuat tmpQ;
 	sgInvertQuat (tmpQ, car->posQuat);
 	sgNormaliseQuat(tmpQ);
 	sgQuatToEuler (new_position, tmpQ);
-	//sgQuatToEuler (new_position, car->posQuat);
-	
 	car->DynGC.pos.ax = DEG2RAD(new_position[0]);
 	car->DynGC.pos.ay = DEG2RAD(new_position[1]);
 	car->DynGC.pos.az = DEG2RAD(new_position[2]);

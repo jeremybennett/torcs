@@ -28,6 +28,10 @@ typedef struct {
 
 typedef struct {
     tdble		maxTq;
+	tdble       maxPw;
+	tdble       rpmMaxPw;
+	tdble       TqAtMaxPw;
+	tdble       rpmMaxTq;
     int			nbPts;
     tEngineCurveElem	*data;
 } tEngineCurve;

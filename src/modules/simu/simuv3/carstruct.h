@@ -57,6 +57,8 @@ typedef struct
     tdble	Minv;		/* 1 / mass with pilot (without fuel) */
     tdble	tank;		/* fuel tank capa */
     t3Dd	statGC;		/* static pos of GC */
+	sgQuat  rot_mom;    /* rotational momentum */
+	sgVec3  rot_acc;    /* rotational acceleratiom */
     t3Dd	Iinv;		/* inverse of inertial moment along the car's 3 axis */
 
     /* dynamic */
