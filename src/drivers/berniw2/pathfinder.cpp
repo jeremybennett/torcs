@@ -939,7 +939,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 				if ((o[i].brakedist >= cmpdist) && (ps[spsegid].getSpeedsqr() > o[i].speedsqr)) {
 					int j;
 					for (j = spsegid - 3; j < spsegid + 3; j++) {
-						ps[j % nPathSeg].setSpeedsqr(o[i].speedsqr);
+						ps[(j + nPathSeg) % nPathSeg].setSpeedsqr(o[i].speedsqr);
 					}
 					didsomething = 1;
 				}
