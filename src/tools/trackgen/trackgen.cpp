@@ -36,7 +36,7 @@
 #include "trackgen.h"
 
 int Orientation;
-
+int SceneDraw;
 
 char	*InputFileName = NULL;
 char	*OutputFileName = NULL;
@@ -50,8 +50,9 @@ float	ExtHeight = 5.0;
 void usage(void)
 {
     fprintf(stderr, "Terrain generator for tracks $Revision$ \n");
-    fprintf(stderr, "Usage: trackgen <input xmlfile>\n");
+    fprintf(stderr, "Usage: trackgen [-n] <input xmlfile>\n");
     fprintf(stderr, "<input xmlfile>  : input track in XML format\n");
+    fprintf(stderr, "n                : don't draw scenery\n");
 }
 
 void init_args(int argc, char **argv)
@@ -59,6 +60,7 @@ void init_args(int argc, char **argv)
     int		c;
     
     Orientation = CLOCKWISE;
+    SceneDraw = 1;
 
     while (1) {
 	int option_index = 0;
@@ -67,7 +69,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 	     
-	c = getopt_long(argc, argv, "hv",
+	c = getopt_long(argc, argv, "hvn",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -95,6 +97,9 @@ void init_args(int argc, char **argv)
 	case 'v':
 	    printf("Terrain generator for tracks $Revision$ \n");
 	    exit(0);
+	    break;
+	case 'n':
+	    SceneDraw = 0;
 	    break;
 	default:
 	    usage();

@@ -140,6 +140,34 @@ rmMove(void *vd)
 }
 
 static void
+rmdsClickOnDriver(void *dummy)
+{
+    char	*name;
+    tDrvElt	*curDrv;
+    void	*robhdle;
+    char	buf[256];    
+
+    name = GfuiScrollListGetSelectedElement(scrHandle, selectedScrollList, (void**)&curDrv);
+    if (!name) {
+	name = GfuiScrollListGetSelectedElement(scrHandle, unselectedScrollList, (void**)&curDrv);
+    }
+    
+    if (name) {
+	GfuiLabelSetText(scrHandle, PickDrvNameLabelId, curDrv->name);
+	/* search driver infos */
+	sprintf(buf, "drivers/%s/%s.xml", curDrv->dname, curDrv->dname);
+	robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	if (robhdle != NULL) {
+	    sprintf(buf, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curDrv->index);
+	    GfuiLabelSetText(scrHandle, PickDrvCarLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CAR, ""));
+	    GfuiLabelSetText(scrHandle, PickDrvCategoryLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CATEGORY, ""));
+	    GfParmReleaseHandle(robhdle);
+	}
+	free(name);
+    }
+}
+
+static void
 rmSelectDeselect(void *vd)
 {
     char	*name;
@@ -188,34 +216,7 @@ rmSelectDeselect(void *vd)
 	    GfuiLabelSetText(scrHandle, FocDrvLabelId, curDrv->name);
 	}
     }
-}
-
-static void
-rmdsClickOnDriver(void *dummy)
-{
-    char	*name;
-    tDrvElt	*curDrv;
-    void	*robhdle;
-    char	buf[256];    
-
-    name = GfuiScrollListGetSelectedElement(scrHandle, selectedScrollList, (void**)&curDrv);
-    if (!name) {
-	name = GfuiScrollListGetSelectedElement(scrHandle, unselectedScrollList, (void**)&curDrv);
-    }
-    
-    if (name) {
-	GfuiLabelSetText(scrHandle, PickDrvNameLabelId, curDrv->name);
-	/* search driver infos */
-	sprintf(buf, "drivers/%s/%s.xml", curDrv->dname, curDrv->dname);
-	robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
-	if (robhdle != NULL) {
-	    sprintf(buf, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curDrv->index);
-	    GfuiLabelSetText(scrHandle, PickDrvCarLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CAR, ""));
-	    GfuiLabelSetText(scrHandle, PickDrvCategoryLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CATEGORY, ""));
-	    GfParmReleaseHandle(robhdle);
-	}
-	free(name);
-    }
+    rmdsClickOnDriver(NULL);
 }
 
 

@@ -35,6 +35,7 @@ extern float	Margin;
 extern float	ExtHeight;
 extern char	*OutputFileName;
 extern char	*ReliefFileName;
+extern int 	SceneDraw;
 
 extern void	LoadRelief(char *reliefFile);
 extern void	GenRelief(int interior);

@@ -275,6 +275,44 @@ class cGrCarCamInside : public cGrPerspCamera
     }
 };
 
+class cGrCarCamInsideFixedCar : public cGrPerspCamera
+{
+ public:
+    cGrCarCamInsideFixedCar(int id, int drawCurr, int drawBG,
+			    float myfovy, float myfovymin, float myfovymax,
+			    float myfnear, float myffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG,
+			 myfovy, myfovymin, myfovymax,
+			 myfnear, myffar) {
+    }
+
+    void update(tCarElt *car, tSituation *s) {
+	tdble A1 = car->_yaw;
+	tdble CosA1 = cos(A1);
+	tdble SinA1 = sin(A1);
+	//tdble A2 = MIN(car->ctrl->steer * 1.5, 0.5) + car->_yaw;
+	//tdble CosA2 = cos(A2);
+	//tdble SinA2 = sin(A2);
+	tdble CosA2 = CosA1;
+	tdble SinA2 = SinA1;
+	tdble x = car->_pos_X + 30.0 * CosA2;
+	tdble y = car->_pos_Y + 30.0 * SinA2;
+
+	tdble X = car->_pos_X + CosA1 * car->_drvPos_x - SinA1 * car->_drvPos_y;
+	tdble Y = car->_pos_Y + SinA1 * car->_drvPos_x + CosA1 * car->_drvPos_y;
+	tdble Z = car->_pos_Z + car->_drvPos_z;
+	eye[0] = X;
+	eye[1] = Y;
+	eye[2] = Z;
+	center[0] = x;
+	center[1] = y;
+	center[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 1.5;
+	up[0] = car->_posMat[2][0];
+	up[1] = car->_posMat[2][1];
+	up[2] = car->_posMat[2][2];
+    }
+};
+
 
 class cGrCarCamBehind : public cGrPerspCamera
 {
@@ -940,6 +978,18 @@ grInitCams(void)
 				 95.0,	/* fovymax */
 				 0.3	/* near */
 				 );
+    curCam->add(&grCams[c]);
+    id++;
+    
+    /* cam F2 = car inside with car (bonnet view) fixed to the car */
+    curCam = new cGrCarCamInsideFixedCar(id,
+					 1,	/* drawCurr */
+					 1,	/* drawBG  */
+					 67.5,	/* fovy */
+					 50.0,	/* fovymin */
+					 95.0,	/* fovymax */
+					 0.3	/* near */
+					 );
     curCam->add(&grCams[c]);
     id++;
 

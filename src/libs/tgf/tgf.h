@@ -279,6 +279,8 @@ extern int GfParmListClean(void *handle, char *path);
 
 extern unsigned char *GfImgReadPng(const char *filename, int *widthp, int *heightp, float gamma);
 extern int GfImgWritePng(unsigned char *img, const char *filename, int width, int height);
+extern void GfImgFreeTex(GLuint tex);
+extern GLuint GfImgReadTex(char *filename);
 
 extern void GfScrInit(int argc, char *argv[]);
 extern void *GfScrMenuInit(void *precMenu);
@@ -442,6 +444,10 @@ extern int GfuiScrollBarCreate(void *scr, int x, int y, int align, int width, in
 			       void *userData, tfuiSBCallback onScroll);
 extern void GfuiScrollBarPosSet(void *scr, int id, int min, int max, int len, int start);
 extern int GfuiScrollBarPosGet(void *scr, int id);
+
+/* Images */
+extern int GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name);
+extern void GfuiStaticImageSet(void *scr, int id, char *name);
 
 /*****************************
  * Menu Management Interface *

@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/wheel-1
 
-DATA      = wheel-1.xml background.png env.rgb wheel-1.ac wheel-1.ac
+DATA      = wheel-1.xml background.png env.rgb wheel-1.ac wheel-1.ac wheel-1.png
 
 
 include ${MAKE_DEFAULT}

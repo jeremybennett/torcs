@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/aalborg
 
-DATA      = aalborg.xml aalborg.ac
+DATA      = aalborg.xml aalborg.ac aalborg.png
 
 
 include ${MAKE_DEFAULT}

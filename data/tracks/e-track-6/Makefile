@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/e-track-6
 
-DATA      = e-track-6.xml background.png e-track-6.ac
+DATA      = e-track-6.xml background.png e-track-6.ac e-track-6.png
 
 
 include ${MAKE_DEFAULT}

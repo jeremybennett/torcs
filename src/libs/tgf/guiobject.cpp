@@ -137,6 +137,10 @@ GfuiDraw(tGfuiObject *obj)
 	case GFUI_EDITBOX:
 	    gfuiDrawEditbox(obj);
 	    break;
+
+	case GFUI_IMAGE:
+	    gfuiDrawImage(obj);
+	    break;
 	}
     }
 }
@@ -527,6 +531,9 @@ gfuiReleaseObject(tGfuiObject *curObject)
 
     case GFUI_EDITBOX:
 	gfuiReleaseEditbox(curObject);
+	break;
+    case GFUI_IMAGE:
+	gfuiReleaseImage(curObject);
 	break;
     }
 }

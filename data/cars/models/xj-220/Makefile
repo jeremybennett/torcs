@@ -18,7 +18,7 @@
 
 DATADIR      = cars/xj-220
 
-DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb
+DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb xj-220-base.ac
 
 
 include ${MAKE_DEFAULT}

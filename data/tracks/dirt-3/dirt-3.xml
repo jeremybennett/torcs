@@ -31,7 +31,7 @@
     <attstr name="category"    val="dirt"></attstr>
     <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
-    <attstr name="description" val=""></attstr>
+    <attstr name="description" val="Oval based dirt track"></attstr>
   </section>
 
   <section name="Graphic">

@@ -814,10 +814,10 @@ refs 3
 16 0.203206 0.823071
 kids 0
 OBJECT poly
-name "right"
+name "left"
 loc -0.0776603 0.425886 -0.8363
-data 5
-right
+data 4
+left
 numvert 36
 2.30612 -0.124841 0.155623
 2.24193 -0.314481 0.102495
@@ -1092,10 +1092,10 @@ refs 3
 16 0 0
 kids 0
 OBJECT poly
-name "left"
+name "right"
 loc -0.0776602 0.425886 0.8363
-data 4
-left
+data 5
+right
 numvert 36
 2.21463 0.0251455 -0.0736808
 2.24193 -0.314481 -0.102495

@@ -125,7 +125,7 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
     }
 
 #ifndef WIN32    
-    free(tex);
+    /* free(tex); */
 #endif
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -195,7 +195,7 @@ grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
     }
     
-    free(tex);
+    /* free(tex); */
 
     if (info) {
 	info -> width  = w;

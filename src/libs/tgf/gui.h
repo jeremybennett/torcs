@@ -45,6 +45,7 @@ extern float	GfuiColor[GFUI_COLORNB][4];
 #define GFUI_BGSELSCROLLIST	18
 #define GFUI_FGSELSCROLLIST	19
 #define GFUI_EDITCURSORCLR	20
+#define GFUI_IMAGE		21
 
 typedef struct
 {
@@ -160,6 +161,11 @@ typedef struct
     tfuiCallback	onFocusLost;    
 } tGfuiEditbox;
 
+typedef struct
+{
+    GLuint		texture;
+} tGfuiImage;
+
 typedef struct GfuiObject
 {
     int		widget;
@@ -178,6 +184,7 @@ typedef struct GfuiObject
 	tGfuiScrollList scrollist;
 	tGfuiScrollBar	scrollbar;
 	tGfuiEditbox	editbox;
+	tGfuiImage	image;
     } u;
     struct GfuiObject	*next;
     struct GfuiObject	*prev;
@@ -276,6 +283,8 @@ extern void gfuiEditboxKey(tGfuiObject *obj, int key, int modifier);
 extern void gfuiScrollListNextElt (tGfuiObject *object);
 extern void gfuiScrollListPrevElt (tGfuiObject *object);
 
+extern void gfuiReleaseImage(tGfuiObject *obj);
+extern void gfuiDrawImage(tGfuiObject *obj);
 
 
 #endif /* _GUI_H__ */ 

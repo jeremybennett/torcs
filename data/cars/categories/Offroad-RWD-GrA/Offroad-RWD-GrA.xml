@@ -197,7 +197,7 @@
     <attnum name="rolling resistance" val="0.00105"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" min="75" max="100" val="100" unit="%"></attnum>
+    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"></attnum>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"></attnum>
   </section>
 
@@ -213,7 +213,7 @@
     <attnum name="rolling resistance" val="0.00105"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" min="75" max="100" val="100" unit="%"></attnum>
+    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"></attnum>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"></attnum>
   </section>
 
@@ -228,7 +228,7 @@
     <attnum name="mu" min="0.05" max="1.8" val="1.7"></attnum>
     <attnum name="rolling resistance" val="0.00105"></attnum>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" min="75" max="100" val="100" unit="%"></attnum>
+    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"></attnum>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"></attnum>
   </section>
 
@@ -243,7 +243,7 @@
     <attnum name="mu" min="0.05" max="1.8" val="1.7"></attnum>
     <attnum name="rolling resistance" val="0.00105"></attnum>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"></attnum>
-    <attnum name="dynamic friction" min="75" max="100" val="100" unit="%"></attnum>
+    <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"></attnum>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"></attnum>
   </section>
 

@@ -43,6 +43,12 @@ static tFList		*CategoryList;
 static void		*scrHandle;
 static int		TrackLabelId;
 static int		CatLabelId;
+static int		MapId;
+static int		AuthorId;
+static int		LengthId;
+static int		WidthId;
+static int		DescId;
+static int		PitsId;
 static tRmTrackSelect	*ts;
 static char		buf[256];
 
@@ -58,6 +64,13 @@ rmtsFreeLists(void *vl)
     GfDirFreeList((tFList*)(((tFList*)vl)->userData), NULL);
 }
 
+static char *
+rmGetMapName(void)
+{
+    sprintf(buf, "tracks/%s/%s/%s.png", CategoryList->name,
+	    ((tFList*)CategoryList->userData)->name, ((tFList*)CategoryList->userData)->name);
+    return buf;
+}
 
 static void
 rmtsDeactivate(void * /* dummy */)
@@ -72,6 +85,40 @@ rmtsDeactivate(void * /* dummy */)
 }
 
 static void
+rmUpdateTrackInfo(void)
+{
+    void	*trackHandle;
+    float	tmp;
+    tTrack	*trk;
+
+    sprintf(buf, "tracks/%s/%s/%s.%s", CategoryList->name, ((tFList*)CategoryList->userData)->name,
+	    ((tFList*)CategoryList->userData)->name, TRKEXT);
+    trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD); /* don't release, the name is used later */
+    if (!trackHandle) {
+	GfTrace1("File %s has pb\n", buf);
+	return;
+    }
+    trk = ts->trackItf.trkBuild(buf);
+    
+    GfuiLabelSetText(scrHandle, DescId, GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_DESCR, ""));
+    GfuiLabelSetText(scrHandle, AuthorId, GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, ""));
+    tmp = GfParmGetNum(trackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, NULL, 0);
+    sprintf(buf, "%.2f m", tmp);
+    GfuiLabelSetText(scrHandle, WidthId, buf);
+    tmp = trk->length;
+    sprintf(buf, "%.2f m", tmp);
+    GfuiLabelSetText(scrHandle, LengthId, buf);
+    tmp = trk->pits.nMaxPits;
+    if (tmp != 0) {
+	sprintf(buf, "%d", (int)tmp);
+	GfuiLabelSetText(scrHandle, PitsId, buf);
+    } else {
+	GfuiLabelSetText(scrHandle, PitsId, "none");
+    }
+}
+
+
+static void
 rmtsPrevNext(void *vsel)
 {
     if ((int)vsel == 0) {
@@ -80,7 +127,8 @@ rmtsPrevNext(void *vsel)
 	CategoryList->userData = (void*)(((tFList*)CategoryList->userData)->next);
     }
     GfuiLabelSetText(scrHandle, TrackLabelId, ((tFList*)CategoryList->userData)->dispName);
-    /* Change the track draw here */
+    GfuiStaticImageSet(scrHandle, MapId, rmGetMapName());
+    rmUpdateTrackInfo();
 }
 
 static void
@@ -93,7 +141,8 @@ rmCatPrevNext(void *vsel)
     }
     GfuiLabelSetText(scrHandle, CatLabelId, CategoryList->dispName);
     GfuiLabelSetText(scrHandle, TrackLabelId, ((tFList*)CategoryList->userData)->dispName);
-    /* Change the track draw here */
+    GfuiStaticImageSet(scrHandle, MapId, rmGetMapName());
+    rmUpdateTrackInfo();
 }
 
  void
@@ -114,6 +163,8 @@ rmtsAddKeys(void)
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Track", (void*)0, rmtsPrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Track", (void*)1, rmtsPrevNext);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot);
+    GfuiAddSKey(scrHandle, GLUT_KEY_UP, "Previous Track Category", (void*)0, rmCatPrevNext);
+    GfuiAddSKey(scrHandle, GLUT_KEY_DOWN, "Next Track Category", (void*)1, rmCatPrevNext);
     
 }
 
@@ -159,6 +210,7 @@ RmGetCategoryName(char *category)
     return name;
 }
 
+
 /** Interactive track selection
     @param	vs	Pointer on a tRmTrackSelect structure (cast to void *)
     @warning	The race manager's parameters are updated but not saved.
@@ -170,6 +222,7 @@ RmTrackSelect(void *vs)
     char	*defaultCategory;
     tFList	*CatCur;
     tFList	*TrList, *TrCur;
+    int		Xpos, Ypos, DX, DY;
     
     ts = (tRmTrackSelect*)vs;
     
@@ -193,6 +246,7 @@ RmTrackSelect(void *vs)
 	    GfTrace1("RmTrackSelect: No track for category %s available\n", CatCur->name);
 	    return;
 	}
+	TrList = TrList->next; /* get the first one */
 	CatCur->userData = (void*)TrList;
 	TrCur = TrList;
 	do {
@@ -285,7 +339,87 @@ RmTrackSelect(void *vs)
 		       (void*)1, rmtsPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+    MapId = GfuiStaticImageCreate(scrHandle,
+				  320, 100, 260, 195,
+				  rmGetMapName());
+    
     GfuiMenuBackQuitButtonCreate(scrHandle, "Select", "Select the track", NULL, rmtsSelect);
+
+
+    Xpos = 20;
+    Ypos = 320;
+    DX = 110;
+    DY = 30;
+
+    GfuiLabelCreate(scrHandle,
+		    "Description:",
+		    GFUI_FONT_MEDIUM,
+		    Xpos, Ypos,
+		    GFUI_ALIGN_HL_VB, 0);
+
+    DescId =  GfuiLabelCreate(scrHandle,
+			      "",
+			      GFUI_FONT_MEDIUM_C,
+			      Xpos + DX, Ypos,
+			      GFUI_ALIGN_HL_VB, 50);
+
+    Ypos -= DY;
+    
+    GfuiLabelCreate(scrHandle,
+		    "Author:",
+		    GFUI_FONT_MEDIUM,
+		    Xpos, Ypos,
+		    GFUI_ALIGN_HL_VB, 0);
+
+    AuthorId = GfuiLabelCreate(scrHandle,
+			       "",
+			       GFUI_FONT_MEDIUM_C,
+			       Xpos + DX, Ypos,
+			       GFUI_ALIGN_HL_VB, 20);
+
+    Ypos -= DY;
+    
+    GfuiLabelCreate(scrHandle,
+		    "Length:",
+		    GFUI_FONT_MEDIUM,
+		    Xpos, Ypos,
+		    GFUI_ALIGN_HL_VB, 0);
+
+    LengthId = GfuiLabelCreate(scrHandle,
+			       "",
+			       GFUI_FONT_MEDIUM_C,
+			       Xpos + DX, Ypos,
+			       GFUI_ALIGN_HL_VB, 20);
+
+    Ypos -= DY;
+    
+    GfuiLabelCreate(scrHandle,
+		    "Width:",
+		    GFUI_FONT_MEDIUM,
+		    Xpos, Ypos,
+		    GFUI_ALIGN_HL_VB, 0);
+
+    WidthId = GfuiLabelCreate(scrHandle,
+			      "",
+			      GFUI_FONT_MEDIUM_C,
+			      Xpos + DX, Ypos,
+			      GFUI_ALIGN_HL_VB, 20);
+
+    Ypos -= DY;
+    
+    GfuiLabelCreate(scrHandle,
+		    "Pits:",
+		    GFUI_FONT_MEDIUM,
+		    Xpos, Ypos,
+		    GFUI_ALIGN_HL_VB, 0);
+
+    PitsId = GfuiLabelCreate(scrHandle,
+			     "",
+			     GFUI_FONT_MEDIUM_C,
+			     Xpos + DX, Ypos,
+			     GFUI_ALIGN_HL_VB, 20);
+
+    rmUpdateTrackInfo();
     
     GfuiScreenActivate(scrHandle);
 }

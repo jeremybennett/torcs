@@ -32,10 +32,6 @@
 #include "gui.h"
 #include "guifont.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 void
 gfuiLabelInit(void)
 {
@@ -179,6 +175,9 @@ gfuiSetLabelText(tGfuiObject *curObject, tGfuiLabel *label, char *text)
 {
     int		pw, w;
 
+    if (!text) {
+	return;
+    }
     pw = label->font->getWidth((const char *)label->text);
     strncpy(label->text, text, label->maxlen);
     w = label->font->getWidth((const char *)text);

@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-DATADIR   = tracks/oval//michigan
+DATADIR   = tracks/oval/michigan
 
-DATA      = michigan.xml background.png michigan.ac
+DATA      = michigan.xml background.png michigan.ac michigan.png
 
 
 include ${MAKE_DEFAULT}

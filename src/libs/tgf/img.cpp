@@ -253,3 +253,47 @@ GfImgWritePng(unsigned char *img, const char *filename, int width, int height)
     free(row_pointers);
     return 0;
 }
+
+/** Free the texture
+    @ingroup	img
+    @param	tex	texture to free
+    @return	none
+*/
+void
+GfImgFreeTex(GLuint tex)
+{
+    if (tex != 0) {
+	glDeleteTextures(1, &tex);
+    }
+}
+
+/** Read a png image into a texture.
+    @ingroup	img
+    @param	filename	file name of the image
+    @return	None.
+ */
+GLuint
+GfImgReadTex(char *filename)
+{
+    void	*handle;
+    float	screen_gamma;
+    GLbyte	*tex;
+    int		w, h;
+    GLuint	retTex;
+
+    handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
+    tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
+    if (!tex) {
+	GfParmReleaseHandle(handle);
+	return 0;
+    }
+    glGenTextures(1, &retTex);
+    glBindTexture(GL_TEXTURE_2D, retTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+    /* free(tex); */
+    GfParmReleaseHandle(handle);
+    return retTex;
+}

@@ -17,7 +17,7 @@
 
 DATADIR   = tracks/dirt/mixed-1
 
-DATA      = mixed-1.xml mixed-1.ac background.png env1.png mixed-1.ac
+DATA      = mixed-1.xml mixed-1.ac background.png env1.png mixed-1.ac mixed-1.png
 
 
 include ${MAKE_DEFAULT}

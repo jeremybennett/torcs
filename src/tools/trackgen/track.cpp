@@ -2707,12 +2707,14 @@ GenerateTrack(char *trackname)
 
     EndOutputFile();
 
-    if (Orientation == CLOCKWISE) {
-	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
-	GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
-    } else {
-	GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
-	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
+    if (SceneDraw) {
+	if (Orientation == CLOCKWISE) {
+	    GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
+	    GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
+	} else {
+	    GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
+	    GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
+	}
     }
 }
 

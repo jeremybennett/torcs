@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/eroad
 
-DATA      = eroad.xml background.png eroad.ac eroad-relief.ac
+DATA      = eroad.xml background.png eroad.ac eroad-relief.ac eroad.png
 
 
 include ${MAKE_DEFAULT}
