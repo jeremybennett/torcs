@@ -180,7 +180,7 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0);
 	susp->damper.efficiency = 1.0;
 
-	char* suspension_type = GfParmGetStr(hdle, section, PRM_SUSPENSION_TYPE, "Wishbone");
+	char* suspension_type = GfParmGetStr(hdle, section, PRM_SUSPENSION_TYPE, "Ideal");
 
     susp->spring.x0 = susp->spring.bellcrank * X0;
     susp->spring.F0 = F0 / susp->spring.bellcrank;

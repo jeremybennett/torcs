@@ -31,9 +31,11 @@ SimAeroConfig(tCar *car)
     FrntArea = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 2.5);
     car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
+	float aero_factor = car->options->aero_factor;
+	printf ("Setting aero factor to %f\n", aero_factor);
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
-	//car->aero.Clift[0] *= 0.5*Cx*FrntArea;
-	//car->aero.Clift[1] *= 0.5*Cx*FrntArea;
+	car->aero.Clift[0] *= aero_factor / 4.0f;
+	car->aero.Clift[1] *= aero_factor / 4.0f;
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
     //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
@@ -186,8 +188,8 @@ SimWingConfig(tCar *car, int index)
     
     // wrong, because the angle of attack changes on jumps
     //wing->Kx = -1.23 * area * sin(angle);
-    wing->Kx = -1.23 * area;
-    wing->Kz = 4.0 * wing->Kx;
+    wing->Kx = -1.23f * area;
+    wing->Kz = car->options->aero_factor * wing->Kx;
 
     if (index == 1) {
 	car->aero.Cd -= wing->Kx*sin(wing->angle);
