@@ -100,16 +100,19 @@ class PathSeg
 {
 	public:
 		void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id);
+		void set(tdble ispeedsqr, tdble ilength, v3d* id);
 		inline void setLoc(v3d* ip) { p = (*ip); }
 		inline void setOptLoc(v3d* ip) { o = (*ip); }
 		inline void setPitLoc(v3d* ip) { l = (*ip); }
 
 		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }
 		inline void setWeight(tdble w) { weight = w; }
+		inline void setRadius(tdble r) { radius = r; }
 
 		inline tdble getSpeedsqr() { return speedsqr; }
 		inline tdble getLength() { return length; }
 		inline tdble getWeight() { return weight; }
+		inline tdble getRadius() { return radius; }
 
 		inline v3d* getOptLoc() { return &o; }
 		inline v3d* getPitLoc() { return &l; }
@@ -120,6 +123,7 @@ class PathSeg
 		tdble speedsqr;	/* max possible speed sqared (speed ist therefore sqrt(speedsqr) */
 		tdble length;	/* dist to the next pathseg */
 		tdble weight;	/* weight function value for superposition */
+		tdble radius;	/* radius of current segment */
 		v3d p;			/* position in space, dynamic trajectory */
 		v3d o;			/* position in space, static trajectory */
 		v3d d;			/* direction vector of dynamic trajectory */
@@ -237,6 +241,13 @@ inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {
 	speedsqr = ispeedsqr;
 	length = ilength;
 	p = (*ip);
+	d = (*id);
+}
+
+
+inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* id) {
+	speedsqr = ispeedsqr;
+	length = ilength;
 	d = (*id);
 }
 

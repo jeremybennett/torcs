@@ -102,6 +102,7 @@ class MyCar : public AbstractCar
 		static const double OVERLAPSTARTDIST;	/* distance where we start to check the need to let pass the opponent */
 		static const double OVERLAPPASSDIST;	/* distance smaller than that and waiting long enough -> let him pass */
 		static const double OVERLAPWAITTIME;	/* minimal waiting time before we consider let him pass */
+		static const double LAPBACKTIMEPENALTY; /* penalty if i am able to "lap back" [s] */
 
 		/* data for behavior */
 		int bmode;
@@ -166,7 +167,6 @@ class MyCar : public AbstractCar
 		inline double getWheelTrack() { return wheeltrack; }
 		inline double getErrorSgn() { return derrorsgn; }
 		inline Pathfinder* getPathfinderPtr() { return pf; }
-        void updateSpeedDir();
 
 	private:
 		enum { DRWD = 0, DFWD = 1, D4WD = 2 };

@@ -263,11 +263,16 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 				NORM_PI_PI(targetAngle);
 				double toborder = MAX(1.0, myc->currentseg->getWidth()/2.0 - fabs(myTrackDesc->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos())));
 				b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/toborder;
-				tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
-				steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
+				//tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
+				//steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
 			}
 		}
 	}
+
+	/* try to control angular velocity */
+	double omega = myc->getSpeed()/myc->currentpathseg->getRadius();
+	steer += 0.1*(omega - myc->getCarPtr()->_yaw_rate); //myc->getSpeed();
+
 
 	/* anti blocking and brake code */
 	if (b1 > b2) brake = b1; else brake = b2;

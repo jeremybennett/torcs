@@ -207,7 +207,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 			dl10 = pr.len();
 			dirVector2D(p2, p1, &pr);
 			dl21 = pr.len();
-			r = radius(0.0, p0->z, dl10, p1->z, dl21+dl10, p2->z);
+			r = fabs(radius(0.0, p0->z, dl10, p1->z, dl21+dl10, p2->z));
 			if (r < RREL) {
 				ts[i].setKbeta(1.0/r);
 			} else {

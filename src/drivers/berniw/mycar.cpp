@@ -44,7 +44,7 @@ const double MyCar::FLYSPEED = 55.0;			/* above this speed anti fly system is ac
 const double MyCar::OVERLAPSTARTDIST = 70.0;	/* distance where we start to check the need to let pass the opponent */
 const double MyCar::OVERLAPPASSDIST = 30.0;		/* distance smaller than that and waiting long enough -> let him pass */
 const double MyCar::OVERLAPWAITTIME = 5.0;		/* minimal waiting time before we consider let him pass */
-
+const double MyCar::LAPBACKTIMEPENALTY = -30.0; /* penalty if i am able to "lap back" [s] */
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
