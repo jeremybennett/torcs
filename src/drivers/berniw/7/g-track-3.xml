@@ -51,8 +51,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.39"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="19000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.41"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="29000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">

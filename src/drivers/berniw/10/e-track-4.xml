@@ -21,7 +21,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="9"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="5"/>
   </section>
 
   <section name="Gearbox">
@@ -45,14 +45,14 @@
 	<attnum name="ratio" min="0" max="8" val="1.2"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="8" val="1.0"/>
+	<attnum name="ratio" min="0" max="8" val="1.00"/>
       </section>
     </section>
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.6"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="18000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.63"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="23000"/>
   </section>
 
   <section name="Front Right Wheel">
@@ -81,48 +81,48 @@
 
 
   <section name="Front Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"/>
     <attnum name="suspension course" val="0.5"/>
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Front Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"/>
     <attnum name="suspension course" val="0.5"/>
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Rear Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"/>
     <attnum name="suspension course" val="0.5"/>
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Rear Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="7000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"/>
     <attnum name="suspension course" val="0.5"/>
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
   
   <section name="berniw private">
-    <attnum name="caero" val="0.8"/>
-    <attnum name="cfriction" val="0.9"/>
+    <attnum name="caero" val="1.0"/>
+    <attnum name="cfriction" val="1.0"/>
   </section>
 
 </params>

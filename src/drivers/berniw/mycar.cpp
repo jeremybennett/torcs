@@ -187,10 +187,13 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	currentseg = track->getSegmentPtr(currentsegid);
 	destseg = track->getSegmentPtr(destsegid);
 	currentpathseg = pf->getPathSeg(currentsegid);
-	destpathseg = pf->getPathSeg(destsegid);
+	updateDError();
+	int lookahead = (destsegid + (int) (MIN(2.0,derror)*speed/3.0)) % pf->getnPathSeg();
+	destpathseg = pf->getPathSeg(lookahead);
+	//destpathseg = pf->getPathSeg(destsegid);
 
 	mass = carmass + car->priv.fuel;
-	updateDError();
+	//updateDError();
 	trtime += situation->deltaTime;
 	deltapitch = MAX(-track->getSegmentPtr(currentsegid)->getKgamma() - me->_pitch, 0.0);
 }

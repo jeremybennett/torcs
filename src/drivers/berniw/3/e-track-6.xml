@@ -56,8 +56,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.31"/>
-    <attnum name="max pressure" unit="kPa" val="35000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.32"/>
+    <attnum name="max pressure" unit="kPa" val="60000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -87,13 +87,13 @@
   <section name="Rear Right Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-1"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Rear Left Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-1"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Front Right Suspension">

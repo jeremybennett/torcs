@@ -19,10 +19,6 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"/>
   </section>
 
-  <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"/>
-  </section>
-
   <section name="Rear Wing">
     <attnum name="angle" unit="deg" min="0" max="30" val="12.5"/>
   </section>
@@ -60,32 +56,36 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.31"/>
-    <attnum name="max pressure" unit="kPa" val="17000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.33"/>
+    <attnum name="max pressure" unit="kPa" val="60000"/>
   </section>
 
   <section name="Front Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="200" unit="mm" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Front Left Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="200" unit="mm" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Rear Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="200" unit="mm" val="100"/>
     <attnum name="rim diameter" unit="in" min="16" max="20" val="20.0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Rear Left Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" min="100" max="200" unit="mm" val="100"/>
     <attnum name="rim diameter" unit="in" min="16" max="20" val="20.0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -142,6 +142,11 @@
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="180"/>
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="160"/>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="190"/>
+  </section>
+  
+  <section name="berniw private">
+    <attnum name="caero" val="1.25"/>
+    <attnum name="cfriction" val="1.1"/>
   </section>
 
 </params>

@@ -16,7 +16,7 @@
 
 <params name="Tanhoj" type="template">
   <section name="Car">
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="63.0"/>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"/>
   </section>
 
   <section name="Rear Wing">
@@ -50,8 +50,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.39"/>
-    <attnum name="max pressure" unit="kPa" val="25000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.42"/>
+    <attnum name="max pressure" unit="kPa" val="40000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">

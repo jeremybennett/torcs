@@ -22,6 +22,10 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="1000.0" val="100.0"/>
   </section>
 
+  <section name="Front Wing">
+    <attnum name="angle" unit="deg" min="0" max="80" val="30"/>
+  </section>
+
   <section name="Rear Wing">
     <attnum name="angle" unit="deg" min="0" max="80" val="4"/>
   </section>
@@ -53,8 +57,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.42"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="14000"/>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.39"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="19000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">

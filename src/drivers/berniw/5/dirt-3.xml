@@ -20,17 +20,13 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"/>
   </section>
 
-  <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="0"/>
-  </section>
-
   <section name="Gearbox">
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"/>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="3.3"/>
+	<attnum name="ratio" min="0" max="5" val="3.7"/>
       </section>
       <section name="2">
 	<attnum name="ratio" min="0" max="5" val="2.5"/>
@@ -51,8 +47,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.36"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="22000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.34"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="40000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -137,7 +133,7 @@
 
   <section name="berniw private">
     <attnum name="caero" val="1.0"/>
-    <attnum name="cfriction" val="1.1"/>
+    <attnum name="cfriction" val="1.2"/>
   </section>
 
 </params>

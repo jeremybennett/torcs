@@ -30,10 +30,10 @@
 	<attnum name="ratio" min="-5" max="0" val="-3.4"/>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="2.8"/>
+	<attnum name="ratio" min="0" max="5" val="3.7"/>
       </section>
       <section name="2">
-	<attnum name="ratio" min="0" max="5" val="2.0"/>
+	<attnum name="ratio" min="0" max="5" val="2.3"/>
       </section>
       <section name="3">
 	<attnum name="ratio" min="0" max="5" val="1.4"/>
@@ -51,8 +51,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.35"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="18000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.39"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="34000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">

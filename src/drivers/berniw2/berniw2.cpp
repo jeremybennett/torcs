@@ -114,6 +114,11 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 
 	sprintf(buffer, "drivers/berniw2/%d/%s", index, trackname);
     *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
+
+	if (*carParmHandle == NULL) {
+		sprintf(buffer, "drivers/berniw2/%d/default.xml", index);
+	    *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
+	}
 }
 
 
@@ -280,12 +285,13 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	if (b1 > b2) brake = b1; else brake = b2;
 	if (brake < b3) brake = b3;
 	if (brake < b4) {
-		brake = b4;
+		brake = MIN(1.0, b4);
 		tdble abs_mean;
 		abs_mean = (car->_wheelSpinVel(REAR_LFT) + car->_wheelSpinVel(REAR_RGT))*car->_wheelRadius(REAR_LFT)/myc->getSpeed();
 		abs_mean /= 2.0;
     	brake = brake * abs_mean;
 	} else {
+		brake = MIN(1.0, brake);
 		tdble abs_min = 1.0;
 		for (int i = 0; i < 4; i++) {
 			tdble slip = car->_wheelSpinVel(i) * car->_wheelRadius(i) / myc->getSpeed();
@@ -293,6 +299,11 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		}
     	brake = brake * abs_min;
 	}
+
+	float weight = myc->mass*G;
+	float maxForce = weight + myc->ca*84.0*84.0;
+	float force = weight + myc->ca*myc->getSpeedSqr();
+	brake = brake*MIN(1.0, force/maxForce);
 
 	/* gear changing */
 	tdble rpm = (car->_enginerpm / car->_enginerpmRedLine);
@@ -310,7 +321,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	} else if ((myc->getSpeed() < myc->SFTDOWNRATIO * car->_wheelRadius(REAR_RGT) * car->_enginerpmRedLine/car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) && (myc->count >= 25) && (myc->tr_mode == 0)) {
 		if (car->_gearCmd > 1) {
 			shiftaccel = (myc->getSpeed() * car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) / (car->_wheelRadius(REAR_RGT) * car->_enginerpm);
-	        if (fabs(steer) < myc->SFTDOWNSTEER) {
+	        if (fabs(steer) < myc->SFTDOWNSTEER || myc->getSpeed() < myc->TURNSPEED) {
 				car->_gearCmd--;
 				myc->count = 0;
 			}
