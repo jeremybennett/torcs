@@ -136,10 +136,6 @@ SOURCE=..\libs\torcs\optionmenu.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\libs\torcs\raceman.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\libs\torcs\splash.cpp
 # End Source File
 # Begin Source File

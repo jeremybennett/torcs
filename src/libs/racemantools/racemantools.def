@@ -10,14 +10,11 @@ EXPORTS
 	RmTrackSelect
 	RmGetTrackName
 	RmDriversSelect
-	RmDriverSelect
 	RmPracticeResults
 	RmPitMenuStart
 	RmLoadingScreenStart
 	RmLoadingScreenSetText
-	RmInitResults
-	RmShutdownResults
-	RmSaveResults
 	RmRaceParamMenu
 	RmShowResults
-	RmConfirmScreen
+	RmTriStateScreen
+	RmTwoStateScreen
