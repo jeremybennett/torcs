@@ -73,10 +73,12 @@ static void
 prResults(tRingListHead *res)
 {
     char	*trackName;
+    char	*catName;
 
     PractParam = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    trackName = GfParmGetStr(PractParam, "Race", "track", "");
-    trackName = RmGetTrackName(trackName);
+    catName = GfParmGetStr(PractParam, "Race/Track", "category", "");
+    trackName = GfParmGetStr(PractParam, "Race/Track", "name", "");
+    trackName = RmGetTrackName(catName, trackName);
 
     RmPracticeResults(prMainMenuHandle, trackName, res);
 }
@@ -99,6 +101,7 @@ static void
 prStart(tPracticeFct *prf)
 {
     char	buf[256];
+    char	*catName;
     char	*trackName;
 
     /* Init the menu */
@@ -115,8 +118,9 @@ prStart(tPracticeFct *prf)
     sprintf(buf, "Torcs Practice Session");
     GfuiTitleCreate(prMainMenuHandle, buf, strlen(buf));
     PractParam = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    trackName = GfParmGetStr(PractParam, "Race", "track", "");
-    trackName = RmGetTrackName(trackName);
+    catName = GfParmGetStr(PractParam, "Race/Track", "category", "");
+    trackName = GfParmGetStr(PractParam, "Race/Track", "name", "");
+    trackName = RmGetTrackName(catName, trackName);
     GfuiLabelCreate(prMainMenuHandle, trackName, GFUI_FONT_LARGE, 320, 420, GFUI_ALIGN_HC_VB, 0);
 
     GfuiMenuButtonCreate(prMainMenuHandle,

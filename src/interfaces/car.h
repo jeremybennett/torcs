@@ -378,7 +378,7 @@ typedef struct CarElt
 #define	PRM_ROLLCENTER		"roll center height"
 
 #define LST_RANGES		"Ranges"
-#define PRM_DISTANCE		"distance"
+#define PRM_THRESHOLD		"threshold"
 #define PRM_CAR			"car"
 #define PRM_ENV			"env"
 #define PRM_BONNET		"bonnet"

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/aalborg
+DATADIR   = tracks/road/aalborg
 
 DATA      = aalborg.xml aalborg.ac
 

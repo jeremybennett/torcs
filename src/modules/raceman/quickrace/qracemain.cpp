@@ -454,7 +454,6 @@ qrStart(void)
 {
     qrRunning = 1;
     curTime = GfTimeClock() - dtmax;
-    lastTime = 0;
 }
 
 void

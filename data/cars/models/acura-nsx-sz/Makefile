@@ -19,7 +19,7 @@
 
 DATADIR   = cars/acura-nsx-sz
 
-DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-base.ac texmapper.xml
+DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-lod1.ac
 
 include ${MAKE_DEFAULT}
 

@@ -561,7 +561,7 @@ linuxDirGetList(char *dir)
 		    }
 		    curf->next = flist->next;
 		    flist->next = curf;
-		    curf->prev = curf->next->prev;
+		    curf->prev = flist;
 		    curf->next->prev = curf;
 		    flist = curf;
 		}

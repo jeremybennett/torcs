@@ -31,7 +31,7 @@ typedef void (*tfRbShutdown)(void);
 
 #define ROB_PIT_IM	0	/* Immediate return from pit command */
 #define ROB_PIT_MENU	1	/* Call the interactive menu for pit command */
-typedef int  (*tfRbPitCmd)  (int index, tCarElt*, tSituation*);
+typedef int  (*tfRbPitCmd)(int index, tCarElt*, tSituation*);
 
 
 /* interface for robots */

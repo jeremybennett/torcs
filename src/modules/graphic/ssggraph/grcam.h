@@ -135,21 +135,7 @@ class cGrPerspCamera : public cGrCamera
     void setModelView(void);
     void loadDefaults(char *attr);
     void setZoom(int cmd);
-
-    /* Give the height in m of the screen at this point */
-    float getLODFactor(float x, float y, float z) {
-	tdble	dx, dy, dz, dd;
-	float	ang;
-
-	dx = x - eye[0];
-	dy = y - eye[1];
-	dz = z - eye[2];
-
-	dd = sqrt(dx*dx+dy*dy+dz*dz);
-
-	ang = DEG2RAD(fovy);
-	return dd * tan(ang);
-    }
+    float getLODFactor(float x, float y, float z);
     
 };
 

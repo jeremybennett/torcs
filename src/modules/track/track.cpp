@@ -33,9 +33,11 @@
 
 const tdble DEGPRAD = 180.0 / PI;   /* degrees per radian */
 
-static tTrack	*theTrack;
+static tTrack	*theTrack = NULL;
 static tRoadCam *theCamList;
 static void	*TrackHandle;
+
+static void GetTrackHeader(void *TrackHandle);
 
 
 /*
@@ -45,6 +47,8 @@ static void	*TrackHandle;
 tTrack *
 TrackBuildv1(char *trackfile)
 {
+    TrackShutdown();
+
     theTrack = (tTrack*)calloc(1, sizeof(tTrack));
     theCamList = (tRoadCam*)NULL;
 
@@ -52,7 +56,7 @@ TrackBuildv1(char *trackfile)
     
     theTrack->filename = strdup(trackfile);
 
-    GetTrackHeader(theTrack, TrackHandle);
+    GetTrackHeader(TrackHandle);
 
     
     switch(theTrack->version) {
@@ -85,7 +89,7 @@ TrackBuildEx(char *trackfile)
     
     theTrack->filename = strdup(trackfile);
 
-    GetTrackHeader(theTrack, TrackHandle);
+    GetTrackHeader(TrackHandle);
 
     switch(theTrack->version) {
     case 0:
@@ -122,8 +126,8 @@ TrackBuildEx(char *trackfile)
  * Remarks
  *	
  */
-void 
-GetTrackHeader(tTrack *theTrack, void *TrackHandle)
+static void 
+GetTrackHeader(void *TrackHandle)
 {
     tTrackGraphicInfo	*graphic;
     char		**env;
@@ -135,6 +139,7 @@ GetTrackHeader(tTrack *theTrack, void *TrackHandle)
     theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
     theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
     theTrack->author = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, "none");
+    theTrack->category = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_CAT, "road");
 
     /* Graphic part */
     graphic = &theTrack->graphic;
@@ -186,13 +191,15 @@ GetTrackHeader(tTrack *theTrack, void *TrackHandle)
     
 }
 
-
-
 void
 TrackShutdown(void)
 {
     tTrackSeg	*curSeg;
     tTrackSeg	*nextSeg;
+    
+    if (!theTrack) {
+	return;
+    }
     
     nextSeg = theTrack->seg->next;
     do {
@@ -203,4 +210,5 @@ TrackShutdown(void)
     free(theTrack->graphic.env);
     free(theTrack);
     GfParmReleaseHandle(TrackHandle);
+    theTrack = NULL;
 }

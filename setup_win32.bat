@@ -5,38 +5,62 @@ call .\create_dir .\export
 call .\create_dir .\export\lib
 call .\create_dir .\export\libd
 
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tita
-call .\create_dir .\runtime\drivers\tita\tracksdata
-copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtime\drivers\tita\tracksdata\aalborg.xml
-copy .\src\drivers\tita\tracksdata\a-speedway.xml .\runtime\drivers\tita\tracksdata\a-speedway.xml
-copy .\src\drivers\tita\tracksdata\car_aalborg.xml .\runtime\drivers\tita\tracksdata\car_aalborg.xml
-copy .\src\drivers\tita\tracksdata\car_a-speedway.xml .\runtime\drivers\tita\tracksdata\car_a-speedway.xml
-copy .\src\drivers\tita\tracksdata\car_eroad.xml .\runtime\drivers\tita\tracksdata\car_eroad.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-1.xml .\runtime\drivers\tita\tracksdata\car_e-track-1.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-2.xml .\runtime\drivers\tita\tracksdata\car_e-track-2.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-3.xml .\runtime\drivers\tita\tracksdata\car_e-track-3.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-4.xml .\runtime\drivers\tita\tracksdata\car_e-track-4.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-5.xml .\runtime\drivers\tita\tracksdata\car_e-track-5.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-6.xml .\runtime\drivers\tita\tracksdata\car_e-track-6.xml
-copy .\src\drivers\tita\tracksdata\car_g-track-1.xml .\runtime\drivers\tita\tracksdata\car_g-track-1.xml
-copy .\src\drivers\tita\tracksdata\car_michigan.xml .\runtime\drivers\tita\tracksdata\car_michigan.xml
-copy .\src\drivers\tita\tracksdata\car_s2.xml .\runtime\drivers\tita\tracksdata\car_s2.xml
-copy .\src\drivers\tita\tracksdata\car_test-1.xml .\runtime\drivers\tita\tracksdata\car_test-1.xml
-copy .\src\drivers\tita\tracksdata\car_wheel-1.xml .\runtime\drivers\tita\tracksdata\car_wheel-1.xml
-copy .\src\drivers\tita\tracksdata\city-1.xml .\runtime\drivers\tita\tracksdata\city-1.xml
-copy .\src\drivers\tita\tracksdata\eroad.xml .\runtime\drivers\tita\tracksdata\eroad.xml
-copy .\src\drivers\tita\tracksdata\e-track-1.xml .\runtime\drivers\tita\tracksdata\e-track-1.xml
-copy .\src\drivers\tita\tracksdata\e-track-2.xml .\runtime\drivers\tita\tracksdata\e-track-2.xml
-copy .\src\drivers\tita\tracksdata\e-track-3.xml .\runtime\drivers\tita\tracksdata\e-track-3.xml
-copy .\src\drivers\tita\tracksdata\e-track-4.xml .\runtime\drivers\tita\tracksdata\e-track-4.xml
-copy .\src\drivers\tita\tracksdata\e-track-5.xml .\runtime\drivers\tita\tracksdata\e-track-5.xml
-copy .\src\drivers\tita\tracksdata\e-track-6.xml .\runtime\drivers\tita\tracksdata\e-track-6.xml
-copy .\src\drivers\tita\tracksdata\g-track-1.xml .\runtime\drivers\tita\tracksdata\g-track-1.xml
-copy .\src\drivers\tita\tracksdata\michigan.xml .\runtime\drivers\tita\tracksdata\michigan.xml
-copy .\src\drivers\tita\tracksdata\s2.xml .\runtime\drivers\tita\tracksdata\s2.xml
-copy .\src\drivers\tita\tracksdata\wheel-1.xml .\runtime\drivers\tita\tracksdata\wheel-1.xml
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\interfaces\graphic.h .\export\include\graphic.h
+copy .\src\interfaces\raceman.h .\export\include\raceman.h
+copy .\src\interfaces\robot.h .\export\include\robot.h
+copy .\src\interfaces\simu.h .\export\include\simu.h
+copy .\src\interfaces\track.h .\export\include\track.h
+copy .\src\interfaces\car.h .\export\include\car.h
+copy .\src\interfaces\ttypes.h .\export\include\ttypes.h
+copy .\src\interfaces\telemetry.h .\export\include\telemetry.h
+copy .\src\interfaces\practicectrl.h .\export\include\practicectrl.h
+copy .\src\interfaces\playerpref.h .\export\include\playerpref.h
+copy .\src\interfaces\js.h .\export\include\js.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\libs\txml\xml.h .\export\include\xml.h
+copy .\src\libs\txml\xmlparse.h .\export\include\xmlparse.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\libs\tgf\tgf.h .\export\include\tgf.h
+copy .\src\libs\tgf\os.h .\export\include\os.h
+copy .\src\libs\tgf\queue.h .\export\include\queue.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\libs\torcs\torcs.h .\export\include\torcs.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\libs\racemantools\racemantools.h .\export\include\racemantools.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\libs\robottools\robottools.h .\export\include\robottools.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+copy .\src\windows\osspec.h .\export\include\osspec.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+call .\create_dir .\export\include\3D
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Basic.h .\export\include\3D\Basic.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Matrix.h .\export\include\3D\Matrix.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Point.h .\export\include\3D\Point.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Quaternion.h .\export\include\3D\Quaternion.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple3.h .\export\include\3D\Tuple3.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple4.h .\export\include\3D\Tuple4.h
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Vector.h .\export\include\3D\Vector.h
+
+call .\create_dir .\export
+call .\create_dir .\export\include
+call .\create_dir .\export\include\SOLID
+copy .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\categories
@@ -74,32 +98,19 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\155-DTM
 copy .\data\cars\models\155-DTM\155-DTM.xml .\runtime\cars\155-DTM\155-DTM.xml
-copy .\data\cars\models\155-DTM\texmapper-top.xml .\runtime\cars\155-DTM\texmapper-top.xml
 copy .\data\cars\models\155-DTM\texmapper.xml .\runtime\cars\155-DTM\texmapper.xml
 copy .\data\cars\models\155-DTM\155-DTM-1024.rgb .\runtime\cars\155-DTM\155-DTM-1024.rgb
-copy .\data\cars\models\155-DTM\155-DTM-512.rgb .\runtime\cars\155-DTM\155-DTM-512.rgb
 copy .\data\cars\models\155-DTM\155-DTM.rgb .\runtime\cars\155-DTM\155-DTM.rgb
-copy .\data\cars\models\155-DTM\alettone.rgb .\runtime\cars\155-DTM\alettone.rgb
-copy .\data\cars\models\155-DTM\cofano.rgb .\runtime\cars\155-DTM\cofano.rgb
-copy .\data\cars\models\155-DTM\fiancata_dx.rgb .\runtime\cars\155-DTM\fiancata_dx.rgb
-copy .\data\cars\models\155-DTM\fiancata_sx.rgb .\runtime\cars\155-DTM\fiancata_sx.rgb
-copy .\data\cars\models\155-DTM\frontale.rgb .\runtime\cars\155-DTM\frontale.rgb
-copy .\data\cars\models\155-DTM\lunotto+coda.rgb .\runtime\cars\155-DTM\lunotto+coda.rgb
-copy .\data\cars\models\155-DTM\retro.rgb .\runtime\cars\155-DTM\retro.rgb
-copy .\data\cars\models\155-DTM\ruota.rgb .\runtime\cars\155-DTM\ruota.rgb
-copy .\data\cars\models\155-DTM\tettino+parabrezza.rgb .\runtime\cars\155-DTM\tettino+parabrezza.rgb
-copy .\data\cars\models\155-DTM\tex-wheel-ref.rgb .\runtime\cars\155-DTM\tex-wheel-ref.rgb
 copy .\data\cars\models\155-DTM\tex-wheel.rgb .\runtime\cars\155-DTM\tex-wheel.rgb
 copy .\data\cars\models\155-DTM\155-DTM.ac .\runtime\cars\155-DTM\155-DTM.ac
 copy .\data\cars\models\155-DTM\155-DTM-base.ac .\runtime\cars\155-DTM\155-DTM-base.ac
-copy .\data\cars\models\155-DTM\155-DTM-base-ok.ac .\runtime\cars\155-DTM\155-DTM-base-ok.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\360-modena
 copy .\data\cars\models\360-modena\360-modena.xml .\runtime\cars\360-modena\360-modena.xml
 copy .\data\cars\models\360-modena\360-modena.ac .\runtime\cars\360-modena\360-modena.ac
-copy .\data\cars\models\360-modena\360-modena-base.ac .\runtime\cars\360-modena\360-modena-base.ac
+copy .\data\cars\models\360-modena\360-modena-lod1.ac .\runtime\cars\360-modena\360-modena-lod1.ac
 copy .\data\cars\models\360-modena\texmapper.xml .\runtime\cars\360-modena\texmapper.xml
 copy .\data\cars\models\360-modena\tex-wheel.rgb .\runtime\cars\360-modena\tex-wheel.rgb
 copy .\data\cars\models\360-modena\360-modena.rgb .\runtime\cars\360-modena\360-modena.rgb
@@ -111,8 +122,7 @@ copy .\data\cars\models\acura-nsx-sz\acura-nsx-sz.xml .\runtime\cars\acura-nsx-s
 copy .\data\cars\models\acura-nsx-sz\acura-nsx-sz.ac .\runtime\cars\acura-nsx-sz\acura-nsx-sz.ac
 copy .\data\cars\models\acura-nsx-sz\tex-wheel.rgb .\runtime\cars\acura-nsx-sz\tex-wheel.rgb
 copy .\data\cars\models\acura-nsx-sz\acura-nsx-sz.rgb .\runtime\cars\acura-nsx-sz\acura-nsx-sz.rgb
-copy .\data\cars\models\acura-nsx-sz\acura-nsx-sz-base.ac .\runtime\cars\acura-nsx-sz\acura-nsx-sz-base.ac
-copy .\data\cars\models\acura-nsx-sz\texmapper.xml .\runtime\cars\acura-nsx-sz\texmapper.xml
+copy .\data\cars\models\acura-nsx-sz\acura-nsx-sz-lod1.ac .\runtime\cars\acura-nsx-sz\acura-nsx-sz-lod1.ac
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
@@ -135,6 +145,7 @@ call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\cg-nascar-rwd
 copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.xml .\runtime\cars\cg-nascar-rwd\cg-nascar-rwd.xml
 copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.ac .\runtime\cars\cg-nascar-rwd\cg-nascar-rwd.ac
+copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd-lod1.ac .\runtime\cars\cg-nascar-rwd\cg-nascar-rwd-lod1.ac
 copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.rgb .\runtime\cars\cg-nascar-rwd\cg-nascar-rwd.rgb
 copy .\data\cars\models\cg-nascar-rwd\tex-wheel.rgb .\runtime\cars\cg-nascar-rwd\tex-wheel.rgb
 
@@ -164,7 +175,7 @@ call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\mclaren-f1
 copy .\data\cars\models\mclaren-f1\mclaren-f1.xml .\runtime\cars\mclaren-f1\mclaren-f1.xml
 copy .\data\cars\models\mclaren-f1\mclaren-f1.ac .\runtime\cars\mclaren-f1\mclaren-f1.ac
-copy .\data\cars\models\mclaren-f1\mclaren-f1-base.ac .\runtime\cars\mclaren-f1\mclaren-f1-base.ac
+copy .\data\cars\models\mclaren-f1\mclaren-f1-lod1.ac .\runtime\cars\mclaren-f1\mclaren-f1-lod1.ac
 copy .\data\cars\models\mclaren-f1\texmapper.xml .\runtime\cars\mclaren-f1\texmapper.xml
 copy .\data\cars\models\mclaren-f1\tex-wheel.rgb .\runtime\cars\mclaren-f1\tex-wheel.rgb
 copy .\data\cars\models\mclaren-f1\mclaren-f1.rgb .\runtime\cars\mclaren-f1\mclaren-f1.rgb
@@ -186,6 +197,7 @@ call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\porsche-gt1
 copy .\data\cars\models\porsche-gt1\porsche-gt1.xml .\runtime\cars\porsche-gt1\porsche-gt1.xml
 copy .\data\cars\models\porsche-gt1\porsche-gt1.ac .\runtime\cars\porsche-gt1\porsche-gt1.ac
+copy .\data\cars\models\porsche-gt1\porsche-gt1-lod1.ac .\runtime\cars\porsche-gt1\porsche-gt1-lod1.ac
 copy .\data\cars\models\porsche-gt1\tex-wheel.rgb .\runtime\cars\porsche-gt1\tex-wheel.rgb
 copy .\data\cars\models\porsche-gt1\porsche-gt1.rgb .\runtime\cars\porsche-gt1\porsche-gt1.rgb
 
@@ -207,6 +219,14 @@ copy .\data\cars\models\viper-gts-r\viper-gts-r.ac .\runtime\cars\viper-gts-r\vi
 copy .\data\cars\models\viper-gts-r\viper-gts-r-512.rgb .\runtime\cars\viper-gts-r\viper-gts-r-512.rgb
 copy .\data\cars\models\viper-gts-r\viper-gts-r-base.ac .\runtime\cars\viper-gts-r\viper-gts-r-base.ac
 copy .\data\cars\models\viper-gts-r\texmapper.xml .\runtime\cars\viper-gts-r\texmapper.xml
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\xj-220
+copy .\data\cars\models\xj-220\xj-220.xml .\runtime\cars\xj-220\xj-220.xml
+copy .\data\cars\models\xj-220\xj-220.rgb .\runtime\cars\xj-220\xj-220.rgb
+copy .\data\cars\models\xj-220\xj-220.ac .\runtime\cars\xj-220\xj-220.ac
+copy .\data\cars\models\xj-220\tex-wheel.rgb .\runtime\cars\xj-220\tex-wheel.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\data
@@ -340,7 +360,6 @@ copy .\data\data\textures\grassg2.rgb .\runtime\data\textures\grassg2.rgb
 copy .\data\data\textures\grassg3.rgb .\runtime\data\textures\grassg3.rgb
 copy .\data\data\textures\logo.rgb .\runtime\data\textures\logo.rgb
 copy .\data\data\textures\panel-empty.rgb .\runtime\data\textures\panel-empty.rgb
-copy .\data\data\textures\parking1.rgb .\runtime\data\textures\parking1.rgb
 copy .\data\data\textures\people1.rgb .\runtime\data\textures\people1.rgb
 copy .\data\data\textures\pit-left.rgb .\runtime\data\textures\pit-left.rgb
 copy .\data\data\textures\pit-right.rgb .\runtime\data\textures\pit-right.rgb
@@ -1088,15 +1107,6 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\human
 call .\create_dir .\runtime\drivers\human\tracks
-call .\create_dir .\runtime\drivers\human\tracks\kid-1
-copy .\src\drivers\human\tracks\kid-1\car-acura-nsx-sz.xml .\runtime\drivers\human\tracks\kid-1\car-acura-nsx-sz.xml
-copy .\src\drivers\human\tracks\kid-1\car-mclaren-f1.xml .\runtime\drivers\human\tracks\kid-1\car-mclaren-f1.xml
-copy .\src\drivers\human\tracks\kid-1\car-torcs.xml .\runtime\drivers\human\tracks\kid-1\car-torcs.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\human
-call .\create_dir .\runtime\drivers\human\tracks
 call .\create_dir .\runtime\drivers\human\tracks\mixed-1
 copy .\src\drivers\human\tracks\mixed-1\car-torcs.xml .\runtime\drivers\human\tracks\mixed-1\car-torcs.xml
 
@@ -1156,7 +1166,6 @@ copy .\src\drivers\inferno\tracksdata\car_e-track-4.xml .\runtime\drivers\infern
 copy .\src\drivers\inferno\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\tracksdata\car_e-track-5.xml
 copy .\src\drivers\inferno\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\tracksdata\car_e-track-6.xml
 copy .\src\drivers\inferno\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\tracksdata\car_g-track-1.xml
-copy .\src\drivers\inferno\tracksdata\car_kid-1.xml .\runtime\drivers\inferno\tracksdata\car_kid-1.xml
 copy .\src\drivers\inferno\tracksdata\car_michigan.xml .\runtime\drivers\inferno\tracksdata\car_michigan.xml
 copy .\src\drivers\inferno\tracksdata\car_s2.xml .\runtime\drivers\inferno\tracksdata\car_s2.xml
 copy .\src\drivers\inferno\tracksdata\car_test-1.xml .\runtime\drivers\inferno\tracksdata\car_test-1.xml
@@ -1170,7 +1179,6 @@ copy .\src\drivers\inferno\tracksdata\e-track-4.xml .\runtime\drivers\inferno\tr
 copy .\src\drivers\inferno\tracksdata\e-track-5.xml .\runtime\drivers\inferno\tracksdata\e-track-5.xml
 copy .\src\drivers\inferno\tracksdata\e-track-6.xml .\runtime\drivers\inferno\tracksdata\e-track-6.xml
 copy .\src\drivers\inferno\tracksdata\g-track-1.xml .\runtime\drivers\inferno\tracksdata\g-track-1.xml
-copy .\src\drivers\inferno\tracksdata\kid-1.xml .\runtime\drivers\inferno\tracksdata\kid-1.xml
 copy .\src\drivers\inferno\tracksdata\michigan.xml .\runtime\drivers\inferno\tracksdata\michigan.xml
 copy .\src\drivers\inferno\tracksdata\s2.xml .\runtime\drivers\inferno\tracksdata\s2.xml
 copy .\src\drivers\inferno\tracksdata\wheel-1.xml .\runtime\drivers\inferno\tracksdata\wheel-1.xml
@@ -1207,7 +1215,6 @@ copy .\src\drivers\inferno2\tracksdata\car_michigan.xml .\runtime\drivers\infern
 copy .\src\drivers\inferno2\tracksdata\car_s2.xml .\runtime\drivers\inferno2\tracksdata\car_s2.xml
 copy .\src\drivers\inferno2\tracksdata\car_test-1.xml .\runtime\drivers\inferno2\tracksdata\car_test-1.xml
 copy .\src\drivers\inferno2\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno2\tracksdata\car_wheel-1.xml
-copy .\src\drivers\inferno2\tracksdata\city-1.xml .\runtime\drivers\inferno2\tracksdata\city-1.xml
 copy .\src\drivers\inferno2\tracksdata\eroad.xml .\runtime\drivers\inferno2\tracksdata\eroad.xml
 copy .\src\drivers\inferno2\tracksdata\e-track-1.xml .\runtime\drivers\inferno2\tracksdata\e-track-1.xml
 copy .\src\drivers\inferno2\tracksdata\e-track-2.xml .\runtime\drivers\inferno2\tracksdata\e-track-2.xml
@@ -1249,10 +1256,7 @@ copy .\src\drivers\inferno3\tracksdata\car_e-track-5.xml .\runtime\drivers\infer
 copy .\src\drivers\inferno3\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno3\tracksdata\car_e-track-6.xml
 copy .\src\drivers\inferno3\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno3\tracksdata\car_g-track-1.xml
 copy .\src\drivers\inferno3\tracksdata\car_michigan.xml .\runtime\drivers\inferno3\tracksdata\car_michigan.xml
-copy .\src\drivers\inferno3\tracksdata\car_s2.xml .\runtime\drivers\inferno3\tracksdata\car_s2.xml
-copy .\src\drivers\inferno3\tracksdata\car_test-1.xml .\runtime\drivers\inferno3\tracksdata\car_test-1.xml
 copy .\src\drivers\inferno3\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno3\tracksdata\car_wheel-1.xml
-copy .\src\drivers\inferno3\tracksdata\city-1.xml .\runtime\drivers\inferno3\tracksdata\city-1.xml
 copy .\src\drivers\inferno3\tracksdata\eroad.xml .\runtime\drivers\inferno3\tracksdata\eroad.xml
 copy .\src\drivers\inferno3\tracksdata\e-track-1.xml .\runtime\drivers\inferno3\tracksdata\e-track-1.xml
 copy .\src\drivers\inferno3\tracksdata\e-track-2.xml .\runtime\drivers\inferno3\tracksdata\e-track-2.xml
@@ -1262,7 +1266,6 @@ copy .\src\drivers\inferno3\tracksdata\e-track-5.xml .\runtime\drivers\inferno3\
 copy .\src\drivers\inferno3\tracksdata\e-track-6.xml .\runtime\drivers\inferno3\tracksdata\e-track-6.xml
 copy .\src\drivers\inferno3\tracksdata\g-track-1.xml .\runtime\drivers\inferno3\tracksdata\g-track-1.xml
 copy .\src\drivers\inferno3\tracksdata\michigan.xml .\runtime\drivers\inferno3\tracksdata\michigan.xml
-copy .\src\drivers\inferno3\tracksdata\s2.xml .\runtime\drivers\inferno3\tracksdata\s2.xml
 copy .\src\drivers\inferno3\tracksdata\wheel-1.xml .\runtime\drivers\inferno3\tracksdata\wheel-1.xml
 
 call .\create_dir .\runtime

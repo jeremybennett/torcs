@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/michigan
+DATADIR   = tracks/oval//michigan
 
 DATA      = michigan.xml background.png michigan.ac
 

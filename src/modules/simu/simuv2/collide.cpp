@@ -157,18 +157,30 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	(car2->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
 	return;
     }
-    
-    /* vector conversion from double to float */
-    p1[0] = (float)collData->point1[0];
-    p1[1] = (float)collData->point1[1];
-    p2[0] = (float)collData->point2[0];
-    p2[1] = (float)collData->point2[1];
-    n[0]  = (float)collData->normal[0];
-    n[1]  = (float)collData->normal[1];
+
+    if (car1->carElt->index < car2->carElt->index) {
+	/* vector conversion from double to float */
+	p1[0] = (float)collData->point1[0];
+	p1[1] = (float)collData->point1[1];
+	p2[0] = (float)collData->point2[0];
+	p2[1] = (float)collData->point2[1];
+	n[0]  = (float)collData->normal[0];
+	n[1]  = (float)collData->normal[1];
+    } else {
+	/* swap the cars (not the same for the simu) */
+	car1 = (tCar*)obj2;
+	car2 = (tCar*)obj1;
+	p1[0] = (float)collData->point2[0];
+	p1[1] = (float)collData->point2[1];
+	p2[0] = (float)collData->point1[0];
+	p2[1] = (float)collData->point1[1];
+	n[0]  = -(float)collData->normal[0];
+	n[1]  = -(float)collData->normal[1];
+    }
 
     sgNormalizeVec2(n);
-    
-/*     printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)    ", */
+
+/*     printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)\n", */
 /* 	   car1->carElt->index, car2->carElt->index, */
 /* 	   p1[0], p1[1], */
 /* 	   p2[0], p2[1], */

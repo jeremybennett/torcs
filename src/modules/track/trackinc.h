@@ -22,7 +22,6 @@
 #define _TRACKINC_H__
 
 
-extern void GetTrackHeader(tTrack *theTrack, void *TrackHandle);
 extern void TrackShutdown(void);
 extern void ReadTrack0(tTrack *theTrack, void *TrackHandle, tRoadCam **camList);
 extern void ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList);

@@ -386,7 +386,7 @@ grInitCar(tCarElt *car)
     int			index;
     int			selIndex;
     ssgEntity		*carEntity;
-    ssgSelector	*rangeSel;
+    ssgSelector		*LODSel;
     ssgBranchCb		*branchCb;
     int			nranges;
     int			i;
@@ -403,7 +403,6 @@ grInitCar(tCarElt *car)
 
     ssgSetCurrentOptions ( &options ) ;    
 
-    selIndex = 0; 	/* current selector index */
     grCarIndex = index = car->index;	/* current car's index */
     handle = car->_carHandle;
 
@@ -437,10 +436,9 @@ grInitCar(tCarElt *car)
     grCarInfo[index].carTransform = new ssgTransform;
     DBG_SET_NAME(grCarInfo[index].carTransform, car->_modName, index, -1);
 
-
     /* Level of details */
-    grCarInfo[index].rangeSelector = rangeSel = new ssgSelector;
-    grCarInfo[index].carTransform->addKid(rangeSel);
+    grCarInfo[index].LODSelector = LODSel = new ssgSelector;
+    grCarInfo[index].carTransform->addKid(LODSel);
     sprintf(path, "%s/%s", SECT_GROBJECTS, LST_RANGES);
     nranges = GfParmGetEltNb(handle, path) + 1;
     if (nranges < 2) {
@@ -453,7 +451,7 @@ grInitCar(tCarElt *car)
     /* First LOD */
     ssgBranch *carBody = new ssgBranch;
     DBG_SET_NAME(carBody, "LOD", index,0);
-    rangeSel->addKid(carBody);
+    LODSel->addKid(carBody);
     
     /* The car's model is under cars/<model> */
     sprintf(buf, "cars/%s", car->_carName);
@@ -463,9 +461,11 @@ grInitCar(tCarElt *car)
     grTexturePath = strdup(buf);
 
     /* loading raw car level 0*/
+    selIndex = 0; 	/* current selector index */
     sprintf(buf, "%s.ac", car->_carName); /* default car name */
     sprintf(path, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
+    grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
     carEntity = ssgLoad(param);
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
@@ -473,7 +473,7 @@ grInitCar(tCarElt *car)
     for (i = 0; i < 4; i++){
 	carBody->addKid(initWheel(car, i));
     }
-    grCarInfo[index].selectMask[0] = 1 << selIndex; /* car mask */
+    grCarInfo[index].LODSelectMask[0] = 1 << selIndex; /* car mask */
     selIndex++;
 
     /* env map car */
@@ -491,6 +491,7 @@ grInitCar(tCarElt *car)
 	carBody = new ssgBranch;
 	sprintf(buf, "%s/%s/%d", SECT_GROBJECTS, LST_RANGES, i);
 	param = GfParmGetStr(handle, buf, PRM_CAR, "");
+	grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, buf, PRM_THRESHOLD, NULL, 0.0);
 	carEntity = ssgLoad(param);
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
 	carBody->addKid(carEntity);
@@ -503,12 +504,12 @@ grInitCar(tCarElt *car)
 	branchCb->setCallback(SSG_CALLBACK_POSTDRAW, postCbEnv);
 	DBG_SET_NAME(branchCb, "EnvMap", index, -1);
 	carBody->addKid(branchCb);
-	rangeSel->addKid(carBody);
-	grCarInfo[index].selectMask[i-1] = 1 << selIndex; /* car mask */
+	LODSel->addKid(carBody);
+	grCarInfo[index].LODSelectMask[i-1] = 1 << selIndex; /* car mask */
 	selIndex++;
     }
     /* default range selection */
-    rangeSel->select(grCarInfo[index].selectMask[0]);
+    LODSel->select(grCarInfo[index].LODSelectMask[0]);
 
     TheScene->addKid(grCarInfo[index].carTransform);
     
@@ -553,15 +554,21 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
     sgCoord	wheelpos;
     int		index, i, j;
     static float maxVel[3] = { 20.0, 40.0, 70.0 };
+    float	lod;
     
     TRACE_GL("cggrDrawCar: start");
 
     index = car->index;
   
     if ((car == curCar) && (dispFlag != 1)) {
-	grCarInfo[index].rangeSelector->select(0);
+	grCarInfo[index].LODSelector->select(0);
     } else {
-	grCarInfo[index].rangeSelector->select(1);	    
+	lod = grCurCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
+	i = 0;
+	while (lod < grCarInfo[index].LODThreshold[i]) {
+	    i++;
+	}
+	grCarInfo[index].LODSelector->select(grCarInfo[index].LODSelectMask[i]);
     }
 
 

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/g-track-1
+DATADIR   = tracks/oval/g-track-1
 
 DATA      = g-track-1.xml g-track-1.ac background.png $(shell find * -maxdepth 0 -type f -name '*.rgb')
 

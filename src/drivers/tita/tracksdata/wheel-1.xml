@@ -26,8 +26,8 @@
     <attnum name="VGain"     val="0.0005"></attnum>
     <attnum name="preDy"     val="0"></attnum>
     <attnum name="spdtgt"    val="250.0"></attnum>
-    <attnum name="spdtgt2"   val="-2.5"></attnum>
-    <attnum name="steerMult" val="1.5"></attnum>
+    <attnum name="spdtgt2"   val="-1.0"></attnum>
+    <attnum name="steerMult" val="1.0"></attnum>
   </section>
 
 </params>

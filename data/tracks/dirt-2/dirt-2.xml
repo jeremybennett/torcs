@@ -27,15 +27,15 @@
   </section>
 
   <section name="Header">
-    <attstr name="name" val="Dirt 2"></attstr>
-    <attnum name="version" val="3"></attnum>
-    <attstr name="author" val="E.Espie"></attstr>
+    <attstr name="name"        val="Dirt 2"></attstr>
+    <attstr name="category"    val="dirt"></attstr>
+    <attnum name="version"     val="3"></attnum>
+    <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>
 
   <section name="Graphic">
     <attstr name="3d description" val="dirt-2.ac"></attstr>
-
     <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.28125"></attnum>
     <attnum name="background color G" val="0.4375"></attnum>

@@ -38,10 +38,13 @@
 #include "dmalloc.h"
 #endif
 
-static tFList		*FileList;
+/* Tracks Categories */
+static tFList		*CategoryList;
 static void		*scrHandle;
 static int		TrackLabelId;
+static int		CatLabelId;
 static tRmTrackSelect	*ts;
+static char		buf[256];
 
 static void
 rmtsActivate(void * /* dummy */)
@@ -50,11 +53,19 @@ rmtsActivate(void * /* dummy */)
 }
 
 static void
+rmtsFreeLists(void *vl)
+{
+    GfDirFreeList((tFList*)(((tFList*)vl)->userData), NULL);
+}
+
+
+static void
 rmtsDeactivate(void * /* dummy */)
 {
     
     GfuiScreenRelease(scrHandle);
-    
+
+    GfDirFreeList(CategoryList, rmtsFreeLists);
     if (ts->prevScreen) {
 	GfuiScreenActivate(ts->prevScreen);
     }
@@ -64,19 +75,33 @@ static void
 rmtsPrevNext(void *vsel)
 {
     if ((int)vsel == 0) {
-	FileList = FileList->prev;
+	CategoryList->userData = (void*)(((tFList*)CategoryList->userData)->prev);
     } else {
-	FileList = FileList->next;
+	CategoryList->userData = (void*)(((tFList*)CategoryList->userData)->next);
     }
-    GfuiLabelSetText(scrHandle, TrackLabelId, FileList->dispName);
+    GfuiLabelSetText(scrHandle, TrackLabelId, ((tFList*)CategoryList->userData)->dispName);
     /* Change the track draw here */
 }
 
 static void
+rmCatPrevNext(void *vsel)
+{
+    if ((int)vsel == 0) {
+	CategoryList = CategoryList->prev;
+    } else {
+	CategoryList = CategoryList->next;
+    }
+    GfuiLabelSetText(scrHandle, CatLabelId, CategoryList->dispName);
+    GfuiLabelSetText(scrHandle, TrackLabelId, ((tFList*)CategoryList->userData)->dispName);
+    /* Change the track draw here */
+}
+
+ void
 rmtsSelect(void *dummy)
 {
 
-    GfParmSetStr(ts->param, "Race", "track", FileList->name);
+    GfParmSetStr(ts->param, "Race/Track", "category", CategoryList->name);
+    GfParmSetStr(ts->param, "Race/Track", "name", ((tFList*)CategoryList->userData)->name);
 
     rmtsDeactivate(NULL);
 }
@@ -93,21 +118,40 @@ rmtsAddKeys(void)
 }
 
 /** Get the track name
+    @param	category	track category directory
     @param	trackName	track name for file
     @return	Long track name
  */
 char *
-RmGetTrackName(char *trackName)
+RmGetTrackName(char *category, char *trackName)
 {
-    char	buf[256];
     void	*trackHandle;
     char	*name;
     
-    sprintf(buf, "tracks/%s/%s.%s", trackName, trackName, TRKEXT);
-    trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+    sprintf(buf, "tracks/%s/%s/%s.%s", category, trackName, trackName, TRKEXT);
+    trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD); /* don't release, the name is used later */
     if (trackHandle) {
 	name = GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_NAME, trackName);
-/* 	GfParmReleaseHandle(trackHandle); */
+    } else {
+	GfTrace1("File %s has pb\n", buf);
+	return "";
+    }
+    return name;
+}
+/** Get the track category name from the directory name
+    @param	category	track category directory
+    @return	category display name
+*/
+char *
+RmGetCategoryName(char *category)
+{
+    void	*categoryHandle;
+    char	*name;
+    
+    sprintf(buf, "data/tracks/%s.%s", category, TRKEXT);
+    categoryHandle = GfParmReadFile(buf, GFPARM_RMODE_STD); /* don't release, the name is used later */
+    if (categoryHandle) {
+	name = GfParmGetStr(categoryHandle, TRK_SECT_HDR, TRK_ATT_NAME, category);
     } else {
 	GfTrace1("File %s has pb\n", buf);
 	return "";
@@ -122,31 +166,67 @@ RmGetTrackName(char *trackName)
 void
 RmTrackSelect(void *vs)
 {
-    char		*defaultTrack;
-    tFList		*FLCur;
+    char	*defaultTrack;
+    char	*defaultCategory;
+    tFList	*CatCur;
+    tFList	*TrList, *TrCur;
     
     ts = (tRmTrackSelect*)vs;
-
-    FileList = GfDirGetList("tracks");
-    if (FileList == NULL) {
+    
+    /* Get the list of categories directories */
+    CategoryList = GfDirGetList("tracks");
+    if (CategoryList == NULL) {
+	GfTrace("RmTrackSelect: No track category available\n");
 	return;
     }
-    FLCur = FileList;
+    CatCur = CategoryList;
     do {
-	FLCur->dispName = RmGetTrackName(FLCur->name);
-	FLCur = FLCur->next;
-    } while (FLCur != FileList);
+	CatCur->dispName = RmGetCategoryName(CatCur->name);
+	if (strlen(CatCur->dispName) == 0) {
+	    GfTrace1("RmTrackSelect: No definition for track category %s\n", CatCur->name);
+	    return;
+	}
+	/* get the tracks in the category directory */
+	sprintf(buf, "tracks/%s", CatCur->name);
+	TrList = GfDirGetList(buf);
+	if (TrList == NULL) {
+	    GfTrace1("RmTrackSelect: No track for category %s available\n", CatCur->name);
+	    return;
+	}
+	CatCur->userData = (void*)TrList;
+	TrCur = TrList;
+	do {
+	    TrCur->dispName = RmGetTrackName(CatCur->name, TrCur->name);
+	    if (strlen(TrCur->dispName) == 0) {
+		GfTrace1("RmTrackSelect: No definition for track %s\n", TrCur->name);
+		return;
+	    }
+	    TrCur = TrCur->next;
+	} while (TrCur != TrList);
+	
+	CatCur = CatCur->next;
+    } while (CatCur != CategoryList);
 
-    defaultTrack = GfParmGetStr(ts->param, "Race", "track", FileList->name);
+    defaultCategory = GfParmGetStr(ts->param, "Race/Track", "category", CategoryList->name);
+    /* XXX coherency check */
+    defaultTrack = GfParmGetStr(ts->param, "Race/Track", "name", ((tFList*)CategoryList->userData)->name);
 
-    FLCur = FileList;
+    CatCur = CategoryList;
     do {
-	if (strcmp(FLCur->name, defaultTrack) == 0) {
-	    FileList = FLCur;
+	if (strcmp(CatCur->name, defaultCategory) == 0) {
+	    CategoryList = CatCur;
+	    TrCur = (tFList*)(CatCur->userData);
+	    do {
+		if (strcmp(TrCur->name, defaultTrack) == 0) {
+		    CatCur->userData = (void*)TrCur;
+		    break;
+		}
+		TrCur = TrCur->next;
+	    } while (TrCur != TrList);
 	    break;
 	}
-	FLCur = FLCur->next;
-    } while (FLCur != FileList);
+	CatCur = CatCur->next;
+    } while (CatCur != CategoryList);
     
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmtsActivate, NULL, (tfuiCallback)NULL, 1);
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-qrtrk.png");
@@ -161,15 +241,15 @@ RmTrackSelect(void *vs)
 		       "data/img/arrow-left.png",
 		       "data/img/arrow-left-pushed.png",
 		       80, 400, GFUI_ALIGN_HC_VB, 0,
-		       (void*)0, rmtsPrevNext,
+		       (void*)0, rmCatPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
 
-    TrackLabelId = GfuiLabelCreate(scrHandle,
-				   FileList->dispName,
-				   GFUI_FONT_LARGE,
-				   320, 400, GFUI_ALIGN_HC_VB,
-				   30);
+    CatLabelId = GfuiLabelCreate(scrHandle,
+				 CategoryList->dispName,
+				 GFUI_FONT_LARGE,
+				 320, 400, GFUI_ALIGN_HC_VB,
+				 30);
 
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-right.png",
@@ -177,6 +257,31 @@ RmTrackSelect(void *vs)
 		       "data/img/arrow-right.png",
 		       "data/img/arrow-right-pushed.png",
 		       540, 400, GFUI_ALIGN_HC_VB, 0,
+		       (void*)1, rmCatPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left-pushed.png",
+		       80, 370, GFUI_ALIGN_HC_VB, 0,
+		       (void*)0, rmtsPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+
+    TrackLabelId = GfuiLabelCreate(scrHandle,
+				   ((tFList*)CategoryList->userData)->dispName,
+				   GFUI_FONT_LARGE,
+				   320, 370, GFUI_ALIGN_HC_VB,
+				   30);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right-pushed.png",
+		       540, 370, GFUI_ALIGN_HC_VB, 0,
 		       (void*)1, rmtsPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 

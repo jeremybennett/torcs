@@ -20,7 +20,7 @@
 
 DATADIR   = cars/porsche-gt1
 
-DATA      = porsche-gt1.xml  porsche-gt1.ac \
+DATA      = porsche-gt1.xml  porsche-gt1.ac porsche-gt1-lod1.ac \
 	    tex-wheel.rgb porsche-gt1.rgb
 
 include ${MAKE_DEFAULT}

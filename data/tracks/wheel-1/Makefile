@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/wheel-1
+DATADIR   = tracks/road/wheel-1
 
 DATA      = wheel-1.xml background.png env.rgb wheel-1.ac wheel-1.ac
 

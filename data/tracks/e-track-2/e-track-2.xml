@@ -27,6 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="E-Track 2"></attstr>
+    <attstr name="category"    val="road"></attstr>
     <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
@@ -34,8 +35,7 @@
 
   <section name="Graphic">
     <attstr name="3d description" val="e-track-2.ac"></attstr>
-
-    <attstr name="background image" val="tracks/e-track-2/background.png"></attstr>
+    <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>
     <attnum name="background color B" val="0.96875"></attnum>
@@ -59,7 +59,7 @@
 
   <section name="Main Track">
 
-    <attstr name="surface" val="asphalt-lines"></attstr>
+    <attstr name="surface" val="asphalt2-lines"></attstr>
     <attnum name="width" unit="m" val="12.0"></attnum>
 
     <attstr name="rside surface"  val="grass"></attstr>
@@ -81,7 +81,7 @@
 
       <section name="turn 1.1">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="35"></attnum>
 	<attnum val="50.0" name="rside end width"></attnum>
@@ -96,7 +96,7 @@
 
       <section name="s1">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="100"></attnum>
 	<attstr val="grass" name="rside surface"></attstr>
 	<attnum val="10.0" name="rside end width"></attnum>
@@ -118,27 +118,27 @@
 
       <section name="turn 3">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="135"></attnum>
       </section>
 
       <section name="s3">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="50"></attnum>
       </section>
 
       <section name="turn 4">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="50"></attnum>
 	<attnum name="arc" unit="deg" val="70"></attnum>
       </section>
 
       <section name="s4">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="50"></attnum>
 	<attnum val="0" name="banking end"></attnum>
 	<attstr val="spline" name="profil"></attstr>
@@ -147,67 +147,67 @@
 
       <section name="turn 5">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="50"></attnum>
 	<attnum name="arc" unit="deg" val="50"></attnum>
       </section>
 
       <section name="s5">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="50"></attnum>
       </section>
 
       <section name="turn 6">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="50"></attnum>
 	<attnum name="arc" unit="deg" val="25"></attnum>
       </section>
 
       <section name="s6">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="50"></attnum>
       </section>
 
       <section name="turn 7">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="s7">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="120"></attnum>
       </section>
 
       <section name="turn 8">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="110"></attnum>
       </section>
 
       <section name="turn 9">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="radius" unit="m" val="300"></attnum>
 	<attnum name="arc" unit="deg" val="50"></attnum>
       </section>
 
       <section name="turn 10">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="100"></attnum>
       </section>
 
       <section name="turn 11a">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="radius" unit="m" val="70"></attnum>
 	<attnum name="arc" unit="deg" val="30"></attnum>
 	<attnum val="20" name="rside end width"></attnum>
@@ -216,14 +216,14 @@
 
       <section name="turn 11b">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="turn 11c">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="radius" unit="m" val="80"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
@@ -237,7 +237,7 @@
 
       <section name="turn 12a">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
 	<attstr name="rside surface" val="concrete"></attstr>
@@ -246,14 +246,14 @@
 
       <section name="turn 12b">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="20"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="s12">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="450"></attnum>
 	<attstr name="rside surface" val="grass"></attstr>
 	<attstr name="lside surface" val="grass"></attstr>
@@ -261,7 +261,7 @@
 
       <section name="turn 13">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="50"></attnum>
 	<attnum name="arc" unit="deg" val="45"></attnum>
 	<attnum val="30" name="rside end width"></attnum>
@@ -270,27 +270,27 @@
 
       <section name="s13">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="30"></attnum>
       </section>
 
       <section name="turn 14">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="s14">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="80"></attnum>
 	<attnum val="10" name="rside end width"></attnum>
       </section>
 
       <section name="turn 15">
         <attstr name="type" val="rgt"></attstr>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="135"></attnum>
 	<attstr val="grass" name="rside surface"></attstr>
@@ -300,7 +300,7 @@
 
       <section name="s15">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="150"></attnum>
 	<attnum val="10" name="lside end width"></attnum>
 	<attstr val="grass" name="lside surface"></attstr>
@@ -308,27 +308,27 @@
 
       <section name="turn 16">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="s16">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="73.81329039"></attnum>
       </section>
 
       <section name="turn 17">
         <attstr name="type" val="lft"></attstr>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
       <section name="s17">
         <attstr name="type" val="str"></attstr>
-	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
 	<attnum name="lg" unit="m" val="189.01632434"></attnum>
       </section>
 

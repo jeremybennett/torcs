@@ -60,23 +60,31 @@ static void
 prMenuOnActivate(void *dummy)
 {
     char	*trackName;
+    char	*catName;
 
+    /* load the track module in advance for the track selection */
+    if (prTrackItf.trkBuild == NULL) {
+	prLoadTrackModule();
+	ts.trackItf = prTrackItf;
+    }
+    
     if (prCtrlModLoaded != NULL) {
 	GfModUnloadList(&prCtrlModLoaded);
     }
 
     ts.param = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    trackName = GfParmGetStr(ts.param, "Race", "track", "");
-    GfOut("track name = %s\n", trackName);
-    trackName = RmGetTrackName(trackName);
+    catName = GfParmGetStr(ts.param, "Race/Track", "category", "");
+    trackName = GfParmGetStr(ts.param, "Race/Track", "name", "");
+    GfOut("track name = %s  category = %s\n", trackName, catName);
+    trackName = RmGetTrackName(catName, trackName);
     GfuiLabelSetText(prMainMenuHandle, prTitleId, trackName);
 }
 
 static void
 prInitControl(void *vmod)
 {
-    tMainMod		*mod = (tMainMod*)vmod;
-    tModList		*curmod = mod->curmod;
+    tMainMod	*mod = (tMainMod*)vmod;
+    tModList	*curmod = mod->curmod;
 
     GfModLoad(0, curmod->sopath, &prCtrlModLoaded);
     if (prCtrlModLoaded != NULL) {

@@ -53,7 +53,7 @@
     <attstr name="brake" val="AXIS4"></attstr>
     <attnum name="brake min" val="1.0"></attnum>
     <attnum name="brake max" val="-1.1"></attnum>
-    <attnum name="brake sensitivity" val="0.5"></attnum>
+    <attnum name="brake sensitivity" val="0.2"></attnum>
     <attnum name="brake power" val="1.2"></attnum>
   </section>
 
@@ -103,7 +103,7 @@
     <section name="Drivers">
 
       <section name="1">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<!-- Starting parameters -->
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>	
@@ -111,7 +111,7 @@
       </section>
 
       <section name="2">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/e-track-1
+DATADIR   = tracks/road/e-track-1
 
 DATA      = e-track-1.xml background.png e-track-1.ac
 

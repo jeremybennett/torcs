@@ -1,4 +1,4 @@
- /***************************************************************************
+/***************************************************************************
 
     file                 : prmain.cpp
     created              : Sun Jan 30 22:53:53 CET 2000
@@ -6,7 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -43,7 +43,7 @@ static tCarElt	*TheCarList = (tCarElt*)NULL;
 
 static void	*pracecfg = NULL;
 tModList	*pracemodlist = (tModList*)NULL;
-tTrackItf	prTrackItf;
+tTrackItf	prTrackItf = {0};
 tTrack		*prTheTrack = (tTrack*)NULL;
 tGraphicItf     prGraphicItf;
 tSituation 	prTheSituation;
@@ -89,6 +89,7 @@ prRun(void)
     tModInfo	*curModInfo;
     tRobotItf	*robot;
     char	*trackName;
+    char	*catName;
     char	buf[256];
     tRingList	*lm;
     char	*name;
@@ -98,21 +99,23 @@ prRun(void)
     RmLoadingScreenSetText("Race Configuration...");
 
     while ((lm = GfRlstUnlinkFirst(&prCurResults)) != NULL) free(lm);
+    if (prTrackItf.trkBuild == NULL) {
+	prLoadTrackModule();
+    }
     
     prBonusTime = 0;
 
-    prLoadTrackModule();
-    
     memset(&prTheSituation, 0, sizeof(prTheSituation));
     
     pracecfg = GfParmReadFile(PRACTICE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    trackName = GfParmGetStr(pracecfg, RM_SECT_RACE, "track", "");
+    trackName = GfParmGetStr(pracecfg, "Race/Track", "name", "");
+    catName = GfParmGetStr(pracecfg, "Race/Track", "category", "");
 
-    GfOut("track name = %s\n", trackName);
-    sprintf(buf, "tracks/%s/%s.%s", trackName, trackName, TRKEXT);
+    GfOut("track name = %s  category = %s\n", trackName, catName);
+    sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
+    
     prTheTrack = prTrackItf.trkBuild(buf);
-
     prTheSituation._totLaps = (int)GfParmGetNum(pracecfg, RM_SECT_RACE, "laps", (char*)NULL, 30);
 
     prTheSituation._raceType = RM_TYPE_PRACTICE;
@@ -196,6 +199,7 @@ prShutdown(void)
     GfModUnloadList(&pracemodlist);
     pracemodlist = (tModList*)NULL;
     prCtrlItf->results(&prCurResults);
+    prTrackItf.trkBuild = NULL;
 }
 
 
@@ -306,7 +310,6 @@ prStart(void)
 {
     prRunning = 1;
     curTime = GfTimeClock() - dtmax;
-    lastTime = curTime;
 }
 
 void
@@ -328,13 +331,13 @@ prUpdate(void)
 	while ((t - curTime) > dtmax) {
 	    curTime += dtmax;
 	    prTheSituation.currentTime += dtmax;
-	    if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
-		prTheSituation.deltaTime = curTime - lastTime;
+	    if ((prTheSituation.currentTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+		prTheSituation.deltaTime = prTheSituation.currentTime - lastTime;
 		for (i = 0; i < prTheSituation._ncars; i++) {
 		    robot = prTheSituation.cars[i]->robot;
 		    robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
 		}
-		lastTime = curTime;
+		lastTime = prTheSituation.currentTime;
 		prKeyPressed = 0;
 	    }
 	    prTheSituation.deltaTime = dtmax;
@@ -361,14 +364,14 @@ prUpdateBlind(void)
     while (1) {
 	curTime += dtmax;
 	prTheSituation.currentTime += dtmax;
-	if ((curTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
-	    prTheSituation.deltaTime = curTime - lastTime;
+	if ((prTheSituation.currentTime - lastTime) >= RCM_MAX_DT_ROBOTS) {
+	    prTheSituation.deltaTime = prTheSituation.currentTime - lastTime;
 	    for (i = 0; i < prTheSituation._ncars; i++) {
 		robot = prTheSituation.cars[i]->robot;
 		robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
 	    }
 	    prKeyPressed = 0;
-	    lastTime = curTime;
+	    lastTime = prTheSituation.currentTime;
 	}
 	prTheSituation.deltaTime = dtmax;
 	SimItf.update(&prTheSituation, dtmax, -1);

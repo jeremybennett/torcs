@@ -36,8 +36,12 @@
 
     <section name="Ranges">
       <section name="1">
-	<attnum name="distance" val="600" unit="km"></attnum>
+	<attnum name="threshold" val="10"></attnum>
 	<attstr name="car" val="porsche-gt1.ac"></attstr>
+      </section>
+      <section name="2">
+	<attnum name="threshold" val="0"></attnum>
+	<attstr name="car" val="porsche-gt1-lod1.ac"></attstr>
       </section>
     </section>
   </section>

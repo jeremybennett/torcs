@@ -132,6 +132,24 @@ void cGrPerspCamera::loadDefaults(char *attr)
 			       attr, (char*)NULL, fovydflt);
 }
 
+/* Give the height in pixels of 1 m high object on the screen at this point */
+float cGrPerspCamera::getLODFactor(float x, float y, float z) {
+    tdble	dx, dy, dz, dd;
+    float	ang;
+    int		scrh, dummy;
+
+    dx = x - eye[0];
+    dy = y - eye[1];
+    dz = z - eye[2];
+
+    dd = sqrt(dx*dx+dy*dy+dz*dz);
+
+    ang = DEG2RAD(fovy);
+    GfScrGetSize(&dummy, &scrh, &dummy, &dummy);
+    
+    return (float)scrh / dd / tan(ang);
+}
+
 void cGrPerspCamera::setZoom(int cmd)
 {
     char	buf[256];

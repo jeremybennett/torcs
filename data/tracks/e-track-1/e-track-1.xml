@@ -27,16 +27,16 @@
   </section>
 
   <section name="Header">
-    <attstr name="name" val="E-Track 1"></attstr>
-    <attnum name="version" val="3"></attnum>
-    <attstr name="author" val="E.Espie"></attstr>
+    <attstr name="name"        val="E-Track 1"></attstr>
+    <attstr name="category"    val="road"></attstr>
+    <attnum name="version"     val="3"></attnum>
+    <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>
 
   <section name="Graphic">
     <attstr name="3d description" val="e-track-1.ac"></attstr>
-
-    <attstr name="background image" val="tracks/e-track-1/background.png"></attstr>
+    <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>
     <attnum name="background color B" val="0.96875"></attnum>

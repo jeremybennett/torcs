@@ -33,8 +33,9 @@
 
 typedef struct
 {
-    void        *param;
-    void        *prevScreen;
+    void        *param;		/* Race manager parameters where to set the selected track */
+    void        *prevScreen;	/* Race manager screen to go back */
+    tTrackItf	trackItf;	/* Track module interface */
 } tRmTrackSelect;
 
 typedef struct
@@ -74,7 +75,7 @@ typedef struct
 
 
 extern void RmTrackSelect(void * /* vs */);
-extern char *RmGetTrackName(char * /* trackName */);
+extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
 
 extern void RmDumpTrack(tTrack * /* track */, int /* verbose */);
 extern int RmInitCars(tRmInfo * /* raceInfo */);

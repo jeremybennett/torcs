@@ -27,16 +27,15 @@
   </section>
 
   <section name="Header">
-    <attstr name="name" val="E-Track 5"></attstr>
-    <attnum name="version" val="3"></attnum>
-    <attstr name="author" val="E.Espie"></attstr>
+    <attstr name="name"        val="E-Track 5"></attstr>
+    <attstr name="category"    val="oval"></attstr>
+    <attnum name="version"     val="3"></attnum>
+    <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
-    <attstr name="3d description" val="e-track-5.ac"></attstr>
   </section>
 
   <section name="Graphic">
     <attstr name="3d description" val="e-track-5.ac"></attstr>
-
     <attstr name="background image" val="background.png"></attstr>
     <attnum name="background type" val="2"></attnum>
     <attnum name="background color R" val="0.28125"></attnum>

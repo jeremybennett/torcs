@@ -118,9 +118,9 @@ int grInitScene(tTrack *track)
 	return -1;
     }
 
-    sprintf(buf, "tracks/%s;data/textures;data/img;.", grTrack->internalname);
+    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", grTrack->category, grTrack->internalname);
     ssgTexturePath(buf);
-    sprintf(buf, "tracks/%s", grTrack->internalname);
+    sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
     ssgModelPath(buf);
     
     desc = ssgLoad((const char *)acname /* , (const ssgLoaderOptions *)&grloaderOptions */ );
@@ -165,7 +165,7 @@ initBackground(void)
     ssgSimpleState	*envst;
     char		buf[256];
 
-    sprintf(buf, "tracks/%s;data/img;data/textures;.", grTrack->internalname);
+    sprintf(buf, "tracks/%s/%s;data/img;data/textures;.", grTrack->category, grTrack->internalname);
 
     graphic = &grTrack->graphic;
     glClearColor(graphic->bgColor[0], graphic->bgColor[1], graphic->bgColor[2], 1.0);

@@ -27,6 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="E-Road"></attstr>
+    <attstr name="category"    val="road"></attstr>
     <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val="Road Course"></attstr>
@@ -34,8 +35,7 @@
 
   <section name="Graphic">
     <attstr name="3d description" val="eroad.ac"></attstr>
-
-    <attstr name="background image" val="tracks/eroad/background.png"></attstr>
+    <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>
     <attnum name="background color B" val="0.96875"></attnum>

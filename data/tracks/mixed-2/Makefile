@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/mixed-2
+DATADIR   = tracks/dirt/mixed-2
 
 DATA      = mixed-2.xml background.png env.rgb mixed-2.ac
 

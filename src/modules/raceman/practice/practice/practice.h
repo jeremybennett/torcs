@@ -52,6 +52,7 @@ extern tSituation 	prTheSituation;
 extern tTrack		*prTheTrack;
 extern tModList		*prCtrlModLoaded;
 extern int prShowRace;
+extern tTrackItf	prTrackItf;
 
 
 extern void prMenuRun(void *backmenu);

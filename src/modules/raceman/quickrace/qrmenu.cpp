@@ -48,16 +48,18 @@ qrMenuOnActivate(void *dummy)
 {
     char	buf[256];
     char	*trackName;
+    char	*catName;
     
     qrLoadTrackModule();
+    ts.trackItf = qrTrackItf;
     ts.param = GfParmReadFile(QRACE_CFG, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     GfParmWriteFile(QRACE_CFG, ts.param, "quick race", GFPARM_PARAMETER, "../../dtd/params.dtd");
 
-    trackName = GfParmGetStr(ts.param, "Race", "track", "");
+    trackName = GfParmGetStr(ts.param, "Race/Track", "name", "");
+    catName = GfParmGetStr(ts.param, "Race/Track", "category", "");
 
-    GfOut("track name = %s\n", trackName);
-    sprintf(buf, "tracks/%s/%s.%s", trackName, trackName, TRKEXT);
-    /* TODO free the previous track */
+    GfOut("track name = %s  category = %s\n", trackName, catName);
+    sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
     qrTheTrack = qrTrackItf.trkBuild(buf);
 
     sprintf(buf, "%s", qrTheTrack->name);

@@ -2668,7 +2668,7 @@ GenerateTrack(char *trackname)
 	GfOut("Missing \"%s\" parameter in section \"%s\" of trackfile", TRK_ATT_3DDESC, TRK_SECT_GRAPH);
 	return;
     }
-    sprintf(outfile, "tracks/%s/%s", track->internalname, OutputFileName);
+    sprintf(outfile, "tracks/%s/%s/%s", track->category, track->internalname, OutputFileName);
     GfOut("Output file: %s", outfile);
     OutputFileName = strdup(outfile);
     
@@ -2691,7 +2691,7 @@ GenerateTrack(char *trackname)
 
     ReliefFileName = GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
     if (ReliefFileName) {
-	sprintf(buf, "tracks/%s;.", track->internalname);
+	sprintf(buf, "tracks/%s/%s;.", track->category, track->internalname);
 	if (GetFilename(ReliefFileName, buf, reliefFile)) {
 	    GfOut("Relief file: %s", reliefFile);
 	    LoadRelief(reliefFile);

@@ -62,9 +62,9 @@ ctrlCheck(tCar *car)
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
 
-    RELAXATION2(car->ctrl->accelCmd, car->preCtrl.accelCmd, 50.0);
-    RELAXATION2(car->ctrl->brakeCmd, car->preCtrl.brakeCmd, 50.0);
-    RELAXATION2(car->ctrl->steer,    car->preCtrl.steer,    50.0);
+    /* RELAXATION2(car->ctrl->accelCmd, car->preCtrl.accelCmd, 50.0); */
+    /* RELAXATION2(car->ctrl->brakeCmd, car->preCtrl.brakeCmd, 50.0); */
+    /* RELAXATION2(car->ctrl->steer,    car->preCtrl.steer,    50.0); */
 
     /* When the car is broken try to send it on the track side */
     if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
@@ -322,6 +322,8 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 
     SimCarCollideCars(s);
 
+    /* printf ("%f - ", s->currentTime); */
+    
     for (ncar = 0; ncar < s->_ncars; ncar++) {
 	car = &(SimCarTable[ncar]);
 	carElt = car->carElt;
@@ -350,7 +352,10 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->_fuel = car->fuel;
 	carElt->priv->collision |= car->collision;
 	carElt->_dammage = car->dammage;
+
+	/* printf ("(%f / %f)  ", carElt->_pos_X, carElt->_pos_Y); */
     }
+    /* printf("\n"); */
 }
 
 

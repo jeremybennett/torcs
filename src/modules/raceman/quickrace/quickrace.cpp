@@ -41,7 +41,7 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 #endif
 
 static void
-qrStart(void *backmenu)
+qrStart2(void *backmenu)
 {
     GfuiScreenDeactivate();
     qrMenuRun(backmenu);
@@ -69,7 +69,7 @@ qraceInit(int index, void *p)
 {
     tRacemanItf *itf = (tRacemanItf*)p;
     
-    itf->start = qrStart;
+    itf->start = qrStart2;
     
     return 0;
 }

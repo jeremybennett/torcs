@@ -66,6 +66,7 @@
 
   <section name="Header">
     <attstr name="name"              val="CG Speedway number 1"></attstr>
+    <attstr name="category"    	     val="oval"></attstr>
     <attnum name="version"           val="3"></attnum>
     <attstr name="author"            val="CG"></attstr>
     <attstr name="description"       val="g"></attstr>
@@ -73,7 +74,6 @@
 
   <section name="Graphic">
     <attstr name="3d description" val="g-track-1.ac"></attstr>
-
     <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>

@@ -27,6 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="E-Track 3"></attstr>
+    <attstr name="category"    val="road"></attstr>
     <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val="Another Track"></attstr>
@@ -34,7 +35,6 @@
 
   <section name="Graphic">
     <attstr name="3d description" val="e-track-3.ac"></attstr>
-
     <attstr name="background image" val="background.png"></attstr>
     <attnum name="background color R" val="0.28125"></attnum>
     <attnum name="background color G" val="0.4375"></attnum>

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/e-track-5
+DATADIR   = tracks/oval/e-track-5
 
 DATA      = e-track-5.xml background.png  e-track-5.ac e-track-5-relief.ac
 

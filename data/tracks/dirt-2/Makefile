@@ -15,7 +15,7 @@
 #
 ##############################################################################
 
-DATADIR   = tracks/dirt-2
+DATADIR   = tracks/dirt/dirt-2
 
 DATA      = dirt-2.xml background.png dirt-2.ac
 

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATADIR   = tracks/eroad
+DATADIR   = tracks/road/eroad
 
 DATA      = eroad.xml background.png eroad.ac eroad-relief.ac
 

@@ -121,7 +121,7 @@ FULL_PATH_NAMES      = YES
 # only done if one of the specified strings matches the left-hand part of
 # the path.
 
-STRIP_FROM_PATH      = /home/torcs/sb/torcs/
+STRIP_FROM_PATH      = /home/torcs/sb3/torcs/
 
 # The INTERNAL_DOCS tag determines if documentation
 # that is typed after a \internal command is included. If the tag is set 
@@ -192,7 +192,7 @@ TAB_SIZE             = 8
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                = src/libs/tgf/ src/libs/tgf/tgf.h src/libs/robottools/ src/libs/racemantools/ src/libs/robottools/robottools.h src/libs/racemantools/racemantools.h
+INPUT                = src/libs/tgf/ src/libs/tgf/tgf.h src/libs/robottools/ src/libs/racemantools/ src/libs/robottools/robottools.h src/libs/racemantools/racemantools.h src/interfaces/track.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

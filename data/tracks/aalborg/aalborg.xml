@@ -26,9 +26,10 @@
   </section>
 
   <section name="Header">
-    <attstr name="name"    val="Aalborg"></attstr>
-    <attnum name="version" val="3"></attnum>
-    <attstr name="author"  val="Torben Thellefsen"></attstr>
+    <attstr name="name"        val="Aalborg"></attstr>
+    <attstr name="category"    val="road"></attstr>
+    <attnum name="version"     val="3"></attnum>
+    <attstr name="author"      val="Torben Thellefsen"></attstr>
     <attstr name="description" val="This track is from RARS"></attstr>
   </section>
 
@@ -47,7 +48,7 @@
 
   <section name="Main Track">
     <attnum name="width"   val="12.0"></attnum>
-    <attstr name="surface" val="asphalt-lines"></attstr>
+    <attstr name="surface" val="asphalt2-lines"></attstr>
     <attnum name="lside width" val="3.0" unit="m"></attnum>
     <attstr name="lside surface" val="asphalt"></attstr>
     <attnum name="rside width" val="3.0" unit="m"></attnum>

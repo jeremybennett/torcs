@@ -39,8 +39,9 @@ typedef struct
 {
     float		iconColor[4];
     ssgTransform	*carTransform;
-    ssgSelector		*rangeSelector;
-    int			selectMask[32];
+    ssgSelector		*LODSelector;
+    int			LODSelectMask[32];
+    float		LODThreshold[32];
     ssgStateSelector	*envSelector;
     ssgTransform	*wheelPos[4];
     ssgTransform	*wheelRot[4];
