@@ -102,6 +102,14 @@ class MyCar : public AbstractCar
 		static const double OVERLAPPASSDIST;	/* distance smaller than that and waiting long enough -> let him pass */
 		static const double OVERLAPWAITTIME;	/* minimal waiting time before we consider let him pass */
 		static const double LAPBACKTIMEPENALTY; /* penalty if i am able to "lap back" [s] */
+		static const double TCL_SLIP;			/* [m/s] range [0..10] */
+		static const double TCL_RANGE;			/* [m/s] range [0..10] */
+		static const double SHIFT;				/* [-] (% of rpmredline) */
+		static const double SHIFT_MARGIN;		/* [m/s] */
+		static const double MAX_SPEED;			/* [m/s] */
+		static const double MAX_FUEL_PER_METER;	/* [liter/m] fuel consumtion */
+		static const double LOOKAHEAD_MAX_ERROR;/* [m] */
+		static const double LOOKAHEAD_FACTOR;	/* [-] */
 
 		/* data for behavior */
 		int bmode;
@@ -111,10 +119,6 @@ class MyCar : public AbstractCar
 		double MAXRELAX;								/* to avoid skidding (0..0.99) [-] */
 		double MAXANGLE;								/* biggest allowed angle to the path [deg] */
 		double ACCELINC;								/* increment/decrement for acceleration [-] */
-		double MININVSLIP;								/* 1/slip ==> defines maximum allowed slip [-] */
-		double SFTUPRATIO;								/* rpm/rpmredline ratio for shift up (0.3..0.95) [-] */
-		double SFTDOWNRATIO;							/* hmmm, more complicated [-] */
-		double SFTDOWNSTEER;							/* max steer value for shift down [-] */
 		double SPEEDSQRFACTOR;							/* multiplier for speedsqr */
 		double GCTIME;									/* minimal time between gear changes */
 		double ACCELLIMIT;								/* maximal allowed acceleration */
@@ -144,7 +148,6 @@ class MyCar : public AbstractCar
 		double fuelperlap;
 		double lastpitfuel;
 
-		int count;
 		double turnaround;
 		int tr_mode;
 		double accel;
@@ -159,7 +162,7 @@ class MyCar : public AbstractCar
 		void info(void);
 		void update(TrackDesc* track, tCarElt* car, tSituation *situation);
 		void loadBehaviour(int id);
-		double queryInverseSlip(tCarElt * car, double speed);
+		double querySlipSpeed(tCarElt* car);
 		double queryAcceleration(tCarElt * car, double speed);
 		inline double getDeltaPitch() { return deltapitch; }
 		inline double getWheelBase() { return wheelbase; }

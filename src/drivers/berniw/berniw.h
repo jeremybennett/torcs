@@ -47,6 +47,7 @@
 #define BERNIW_ATT_PITEXIT	"pitexit"
 #define BERNIW_ATT_AMAGIC	"caero"
 #define BERNIW_ATT_FMAGIC	"cfriction"
+#define BERNIW_ATT_FUELPERLAP "fuelperlap"
 
 static const double g = 9.81;
 

@@ -45,6 +45,15 @@ const double MyCar::OVERLAPSTARTDIST = 70.0;	/* distance where we start to check
 const double MyCar::OVERLAPPASSDIST = 30.0;		/* distance smaller than that and waiting long enough -> let him pass */
 const double MyCar::OVERLAPWAITTIME = 5.0;		/* minimal waiting time before we consider let him pass */
 const double MyCar::LAPBACKTIMEPENALTY = -30.0; /* penalty if i am able to "lap back" [s] */
+const double MyCar::TCL_SLIP = 2.0;				/* [m/s] range [0..10] */
+const double MyCar::TCL_RANGE = 5.0;			/* [m/s] range [0..10] */
+const double MyCar::SHIFT = 0.9;				/* [-] (% of rpmredline) */
+const double MyCar::SHIFT_MARGIN = 4.0;			/* [m/s] */
+const double MyCar::MAX_SPEED = 84.0;			/* [m/s] */
+const double MyCar::MAX_FUEL_PER_METER = 0.0008;/* [liter/m] fuel consumtion */
+const double MyCar::LOOKAHEAD_MAX_ERROR = 2.0;	/* [m] */
+const double MyCar::LOOKAHEAD_FACTOR = 1.0/3.0; /* [-] */
+
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
@@ -101,7 +110,6 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	currentpathseg = pf->getPathSeg(currentsegid);
 	destpathseg = pf->getPathSeg(destsegid);
 
-	count = 25;
 	turnaround = 0.0;
     tr_mode = 0;
 	accel = 1.0;
@@ -111,17 +119,16 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	derror = 0.0;
 
 	/*
-		DIST; MAXRELAX; MAXANGLE; ACCELINC; MININVSLIP; SFTUPRATIO; SFTDOWNRATIO; SFTDOWNSTEER;
-		SPEEDSQRFACTOR; GCTIME; ACCELLIMIT; PATHERRFACTOR
+		DIST; MAXRELAX; MAXANGLE; ACCELINC; SPEEDSQRFACTOR; GCTIME; ACCELLIMIT; PATHERRFACTOR
 	*/
 
-	double ba[6][12] = {
-		{1.2, 0.9, 25.0, 0.1, 0.8, 0.88, 0.8, 0.05, 1.2, 0.2, 1.0, 5.0},
-		{1.2, 0.9, 20.0, 0.1, 0.85, 0.9, 0.82, 0.05, 1.1, 0.5, 1.0, 5.0},
-		{1.2, 0.9, 15.0, 0.1, 0.85, 0.9, 0.82, 0.05, 1.0, 0.5, 1.0, 5.0},
-		{1.3, 0.9, 15.0, 0.02, 0.9, 0.9, 0.82, 0.05, 0.98, 0.5, 1.0, 5.0},
-		{1.6, 0.9, 15.0, 0.01, 0.9, 0.85, 0.77, 0.05, 0.95, 0.5, 1.0, 5.0},
-		{1.2, 0.9, 45.0, 0.1, 0.35, 0.92, 0.84, 0.05, 1.0, 0.5, 1.0, 1.0}
+	double ba[6][8] = {
+		{1.2, 0.9, 25.0, 0.1, 1.2, 0.2, 1.0, 5.0},
+		{1.2, 0.9, 20.0, 0.1, 1.1, 0.5, 1.0, 5.0},
+		{1.2, 0.9, 15.0, 0.1, 1.0, 0.5, 1.0, 5.0},
+		{1.3, 0.9, 15.0, 0.02, 0.98, 0.5, 1.0, 5.0},
+		{1.6, 0.9, 15.0, 0.01, 0.95, 0.5, 1.0, 5.0},
+		{1.2, 0.9, 45.0, 0.1, 1.0, 0.5, 1.0, 1.0}
 	};
 
 	for (int i = 0; i < 6; i++) {
@@ -188,12 +195,10 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	destseg = track->getSegmentPtr(destsegid);
 	currentpathseg = pf->getPathSeg(currentsegid);
 	updateDError();
-	int lookahead = (destsegid + (int) (MIN(2.0,derror)*speed/3.0)) % pf->getnPathSeg();
+	int lookahead = (destsegid + (int) (MIN(LOOKAHEAD_MAX_ERROR,derror)*speed*LOOKAHEAD_FACTOR)) % pf->getnPathSeg();
 	destpathseg = pf->getPathSeg(lookahead);
-	//destpathseg = pf->getPathSeg(destsegid);
 
 	mass = carmass + car->priv.fuel;
-	//updateDError();
 	trtime += situation->deltaTime;
 	deltapitch = MAX(-track->getSegmentPtr(currentsegid)->getKgamma() - me->_pitch, 0.0);
 }
@@ -205,14 +210,10 @@ void MyCar::loadBehaviour(int id) {
 	MAXRELAX = behaviour[id][1];
 	MAXANGLE = behaviour[id][2];
 	ACCELINC = behaviour[id][3];
-	MININVSLIP = behaviour[id][4];
-	SFTUPRATIO = behaviour[id][5];
-	SFTDOWNRATIO = behaviour[id][6];
-	SFTDOWNSTEER = behaviour[id][7];
-	SPEEDSQRFACTOR = behaviour[id][8];
-	GCTIME = behaviour[id][9];
-	ACCELLIMIT = behaviour[id][10];
-	PATHERRFACTOR = behaviour[id][11];
+	SPEEDSQRFACTOR = behaviour[id][4];
+	GCTIME = behaviour[id][5];
+	ACCELLIMIT = behaviour[id][6];
+	PATHERRFACTOR = behaviour[id][7];
 }
 
 
@@ -232,9 +233,9 @@ void MyCar::updateCa()
 
 
 /*
-	compute the inverse of the rear => speed == 0 is allowed
+	compute the slip velocity.
 */
-double MyCar::queryInverseSlip(tCarElt * car, double speed)
+double MyCar::querySlipSpeed(tCarElt* car)
 {
 	double s;
 	switch (drivetrain) {
@@ -253,10 +254,10 @@ double MyCar::queryInverseSlip(tCarElt * car, double speed)
 				  car->_wheelSpinVel(FRNT_LFT)) * car->_wheelRadius(FRNT_LFT)) / 4.0;
 			break;
 		default:
-			s = speed;
+			s = 0.0;
 			break;
 	}
-	if (fabs(s) < TURNSPEED) return 1.0; return fabs(speed / s);
+	return s - car->_speed_x;
 }
 
 
