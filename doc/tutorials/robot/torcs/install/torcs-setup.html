@@ -60,7 +60,7 @@ Free Documentation License".
         <p>
           <tt>
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib<br/>
-            export TORCS_BASE=/usr/src/torcs/torcs-1.2.2<br/>
+            export TORCS_BASE=/usr/src/torcs/torcs-1.2.3<br/>
             export MAKE_DEFAULT=$TORCS_BASE/Make-default.mk<br/>
           </tt>
         </p>
@@ -96,8 +96,11 @@ Free Documentation License".
 		<h3>Command Line Options</h3>
 		<p>
 		  <ul>
-			<li>-s: disable multitexturing (for users of an i810, ATI 3D Rage LT Pro or Matrox G400/G450/G550 graphics board).</li>
-			<li>-m: use the system mouse pointer and do not hide it.
+			<li>-s: disable multitexturing (for users of older graphics boards, e. g. i810, ATI 3D Rage LT Pro or Matrox G400/G450/G550).</li>
+			<li>-m: use the system mouse pointer and do not hide it.</li>
+			<li>-l: list the dynamically linked libraries.</li>
+			<li>-d: run under gdb and print stack trace on exit, makes most sense when compiled with --enable-debug.</li>
+			<li>-e: display the commands to issue when you want to run under gdb.</li>
 		  </ul>
 		</p>
 

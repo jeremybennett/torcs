@@ -30,9 +30,9 @@ Free Documentation License".
         <h1>Plib Installation</h1>
         <h3>Checking Plib</h3>
         <p>First we check if there is already the required plib version installed (TORCS
-        1.2.2 needs exactly plib version 1.6.0):</p>
+        1.2.3 has been tested with plib version 1.8.3):</p>
         <p><tt>$ rpm -qa | grep plib</tt></p>
-        <p>In case we find plib 1.6.0 everything is fine and you can
+        <p>In case we find plib 1.8.3 everything is fine and you can
         <a href="./torcs-install.html">skip</a> the rest of this
         section. If you find plib in any other
         version (e. g. 1.4.2., 1.5.0 or 1.6.1) you have to remove the
@@ -55,22 +55,22 @@ Free Documentation License".
 
         <h3>Download and Unpack Plib</h3>
         <p>
-          Download plib-1.6.0.tar.gz from 
+          Download plib-1.8.3.tar.gz from
           <a href="http://plib.sourceforge.net" target="_parent">
-          here</a>. You need exactly this package, no other version works! Stay as root 
-          and do</p>
+          here</a>. TORCS has been tested against 1.8.3, for other versions we guarantee for nothing!
+		  Stay as root and do</p>
         <p>
           <tt>
             # cd /usr/src<br/>
             # mkdir torcs<br/>
             # cd torcs<br/>
-            # tar xfvz /path_to_downloaded_files/plib-1.6.0.tar.gz<br/>
-            # cd plib-1.6.0<br/>
+            # tar xfvz /path_to_downloaded_files/plib-1.8.3.tar.gz<br/>
+            # cd plib-1.8.3<br/>
           </tt>
         </p>
 
         <h3>Compiling and Installing Plib</h3>
-        <p>You are still root and in /usr/src/torcs/plib-1.6.0:</p>
+        <p>You are still root and in /usr/src/torcs/plib-1.8.3:</p>
         <p>
           <tt>
             # ./configure<br/>

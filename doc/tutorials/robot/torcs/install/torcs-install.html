@@ -35,14 +35,15 @@ Free Documentation License".
         <p>
           <tt>
             # cd /usr/src/torcs<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-base.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-K1999.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-astigot.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-berniw.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-billy.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-robots-bt.tgz<br/>
-            <!--# tar xfvz /path_to_downloaded_files/TORCS-1.2.2-src-tools.tgz<br/-->
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-base.tgz<br/>
+            <!--# tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-K1999.tgz<br/-->
+            <!--# tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-astigot.tgz<br/-->
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-berniw.tgz<br/>
+            <!--# tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-billy.tgz<br/-->
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-bt.tgz<br/>
+			# tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-robots-olethros.tgz<br/>
+            <!--# tar xfvz /path_to_downloaded_files/TORCS-1.2.3-src-tools.tgz<br/-->
           </tt>
         </p>
 
@@ -50,12 +51,14 @@ Free Documentation License".
         <p>So, fasten your seatbelts... we will run the configure script:</p>
         <p>
           <tt>
-            # cd /usr/src/torcs/torcs-1.2.2<br/>
+            # cd /usr/src/torcs/torcs-1.2.3<br/>
             # ./configure<br/>
           </tt>
         </p>
         <p>
-          If there are any problems reported, you have to resolve them now. Remember the config.log file
+		  Optionally you can pass --enable-debug (to build a debug version) and/or --without-xrandr
+		  (does not use xrandr extension) as argument to configure.
+		  If there are any problems reported, you have to resolve them now. Remember the config.log file
           which contains detailed information. If you get stuck, don't hesitate and mail to the
           <a href="mailto:torcs-users@lists.sourceforge.net">torcs-users</a> mailing list. Now start building:
         </p>
@@ -83,17 +86,17 @@ Free Documentation License".
           <tt>
             # make install<br/>
             # cd /usr/local/share/games/torcs<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-tracks-road.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-tracks-dirt.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-tracks-oval.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-extra.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-nascar.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-Patwo-Design.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-kcendra-gt.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-kcendra-roadsters.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-kcendra-sport.tgz<br/>
-            # tar xfvz /path_to_downloaded_files/TORCS-1.2.2-data-cars-VM.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-tracks-road.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-tracks-dirt.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-tracks-oval.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-extra.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-nascar.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-Patwo-Design.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-kcendra-gt.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-kcendra-roadsters.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-kcendra-sport.tgz<br/>
+            # tar xfvz /path_to_downloaded_files/TORCS-1.2.3-data-cars-VM.tgz<br/>
           </tt>
           <br/><br/>
         </p>
