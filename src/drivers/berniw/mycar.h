@@ -2,7 +2,7 @@
 
     file                 : mycar.h
     created              : Mon Oct 10 13:51:00 CET 2001
-    copyright            : (C) 2001 by Bernhard Wymann
+    copyright            : (C) 2001-2002 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 

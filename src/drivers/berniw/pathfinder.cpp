@@ -2,7 +2,7 @@
 
     file                 : pathfinder.cpp
     created              : Tue Oct 9 16:52:00 CET 2001
-    copyright            : (C) 2001 by Bernhard Wymann, some Code from Remi Coulom, K1999.cpp
+    copyright            : (C) 2001-2002 by Bernhard Wymann, some Code from Remi Coulom, K1999.cpp
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -968,8 +968,8 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 		if (car != mycar) {
 			/* is it near enough to care about ? */
 			seg = ocar[i].currentsegid;
-			//tdble cosa = track->cosalpha(&myc->dir, &ocar[i].dir);
-			tdble cosa = track->cosalpha(ps[seg].getDir(), &ocar[i].dir);
+			tdble cosa = track->cosalpha(&myc->dir, &ocar[i].dir);
+			//tdble cosa = track->cosalpha(ps[seg].getDir(), &ocar[i].dir);
 			tspeed = ocar[i].speed*cosa;
 
 			if (track->isBetween(trackSegId, end, seg) && myc->speed > tspeed) {

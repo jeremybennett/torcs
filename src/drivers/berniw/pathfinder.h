@@ -2,7 +2,7 @@
 
     file                 : pathfinder.h
     created              : Tue Oct 9 16:52:00 CET 2001
-    copyright            : (C) 2001 by Bernhard Wymann
+    copyright            : (C) 2001-2002 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
@@ -172,7 +172,6 @@ class Pathfinder
 		int pitside;
 		int nPitLaneStart;
 		int nPitLaneEnd;
-		//bool optlocreloaded;
 		int changed;
 
 		tdble ypit[pitpoints], yspit[pitpoints], spit[pitpoints];

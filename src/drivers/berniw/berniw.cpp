@@ -2,7 +2,7 @@
 
     file                 : berniw.cpp
     created              : Mon Apr 17 13:51:00 CET 2000
-    copyright            : (C) 2000, 2001 by Bernhard Wymann
+    copyright            : (C) 2000-2002 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 

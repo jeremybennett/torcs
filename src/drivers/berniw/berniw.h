@@ -2,7 +2,7 @@
 
     file                 : berniw.h
     created              : Mon Mai 15 16:52:00 CET 2000
-    copyright            : (C) 2000 by Bernhard Wymann
+    copyright            : (C) 2000-2002 by Bernhard Wymann
     email                : berniw@bluewin.ch
     version              : $Id$
 
