@@ -2,7 +2,7 @@
                            screen.cpp -- screen init
                              -------------------
     created              : Fri Aug 13 22:29:56 CEST 1999
-    copyright            : (C) 1999, 2002 by Eric Espie
+    copyright            : (C) 1999, 2004 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 ***************************************************************************/
@@ -40,9 +40,9 @@
 #include "gui.h"
 #include "fg_gm.h"
 
-#ifndef WIN32
-#define USE_RANDR_EXT
-#endif // WIN32
+//#ifndef WIN32
+//#define USE_RANDR_EXT
+//#endif // WIN32
 
 #ifdef USE_RANDR_EXT
 #include <GL/glx.h>
@@ -76,24 +76,28 @@ static const int nbRes = sizeof(Res) / sizeof(Res[0]);
 #endif // USE_RANDR_EXT
 
 static char	*Mode[] = {"Full-screen mode", "Window mode"};
-static char	*Depthlist[] = {"24", "32", "8", "16"};
+static char *VInit[] = {GFSCR_VAL_VINIT_COMPATIBLE, GFSCR_VAL_VINIT_BEST};
+static char	*Depthlist[] = {"24", "32", "16"};
 
 //static const int nbRes = sizeof(Res) / sizeof(Res[0]);
 static const int nbMode = sizeof(Mode) / sizeof(Mode[0]);
+static const int nbVInit = sizeof(VInit) / sizeof(VInit[0]);
 static const int nbDepth = sizeof(Depthlist) / sizeof(Depthlist[0]);
 
 static int	curRes = 0;
 static int	curMode = 0;
 static int	curDepth = 0;
+static int curVInit = 0;
 
-static int	curMaxFreq = 160;
-#if WIN32
+static int	curMaxFreq = 75;
+#ifdef WIN32
 static int	MaxFreqId;
 #endif
 
 static int	ResLabelId;
 static int	DepthLabelId;
 static int	ModeLabelId;
+static int VInitLabelId;
 
 static void	*paramHdle;
 
@@ -119,42 +123,77 @@ gfScreenInit(void)
 
 		XRRScreenConfiguration *screenconfig = XRRGetScreenInfo (display, root);
 		if (screenconfig != NULL) {
-			int i, nsize;
+			int i, j, nsize;
 			XRRScreenSize *sizes = XRRConfigSizes(screenconfig, &nsize);
 
-			const int bufsize = 20;
-			char buffer[bufsize];
-			Res = (char**) malloc(sizeof(char *)*nsize);
-			int resx[nsize];
-			int resy[nsize];
-			for (i = 0; i < nsize; i++) {
-				snprintf(buffer, bufsize, "%dx%d", sizes[i].width, sizes[i].height);
-				Res[i] = strndup(buffer, bufsize);
-				resx[i] = sizes[i].width;
-				resy[i] = sizes[i].height;
+			if (nsize > 0) {
+				// Check if 320x200, 640x480, 800x600 are available, construct a mode wish list.
+				int check_resx[] = {320, 640, 800};
+				int check_resy[] = {240, 480, 600};
+				bool mode_in_list[] = {false, false, false};
+				int add_modes = sizeof(check_resx)/sizeof(check_resx[0]);
 
-				// Stupid sorting (not much elements, don't worry). 
-				int j;
-				for (j = i; j > 0; j--) {
-					if ((resx[j] < resx[j-1]) ||
-						(resx[j] == resx[j-1] && resy[j] < resy[j-1]))
-					{
-						int tx, ty;
-						char *tc;
-						tx = resx[j-1];
-						ty = resy[j-1];
-						resx[j-1] = resx[j];
-						resy[j-1] = resy[j];
-						resx[j] = tx;
-						resy[j] = ty;
-						tc = Res[j-1];
-						Res[j-1] = Res[j];
-						Res[j] = tc;
-					} else {
-						break;
+				for (i = 0; i < nsize; i++) {
+					for (j = 0; j < 3; j++) {
+						if ((mode_in_list[j] == false) && (sizes[i].width == check_resx[j])) {
+							if (sizes[i].height == check_resy[j]) {
+								// Mode already in list.
+								mode_in_list[j] = true;
+								add_modes--;
+							}
+						}
 					}
 				}
 
+				const int bufsize = 20;
+				char buffer[bufsize];
+				Res = (char**) malloc(sizeof(char *)*(nsize+add_modes));
+				int resx[nsize+add_modes];
+				int resy[nsize+add_modes];
+				for (i = 0; i < nsize+add_modes; i++) {
+					if (i < nsize) {
+						// Add mode from screenconfig (system).
+						snprintf(buffer, bufsize, "%dx%d", sizes[i].width, sizes[i].height);
+						Res[i] = strndup(buffer, bufsize);
+						resx[i] = sizes[i].width;
+						resy[i] = sizes[i].height;
+					} else {
+						// Add mode from wish list.
+						unsigned int j;
+						for (j = 0; j < sizeof(check_resx)/sizeof(check_resx[0]); j++) {
+							if (mode_in_list[j] == false) {
+								mode_in_list[j] = true;
+								snprintf(buffer, bufsize, "%dx%d", check_resx[j], check_resy[j]);
+								Res[i] = strndup(buffer, bufsize);
+								resx[i] = check_resx[j];
+								resy[i] = check_resy[j];
+								break;
+							}
+						}
+					}
+
+					// Stupid sorting (not much elements, don't worry).
+					int j;
+					for (j = i; j > 0; j--) {
+						if ((resx[j] < resx[j-1]) ||
+							(resx[j] == resx[j-1] && resy[j] < resy[j-1]))
+						{
+							int tx, ty;
+							char *tc;
+							tx = resx[j-1];
+							ty = resy[j-1];
+							resx[j-1] = resx[j];
+							resy[j-1] = resy[j];
+							resx[j] = tx;
+							resy[j] = ty;
+							tc = Res[j-1];
+							Res[j-1] = Res[j];
+							Res[j] = tc;
+						} else {
+							break;
+						}
+					}
+				}
 			}
 
 			nbRes = nsize;
@@ -202,6 +241,7 @@ void GfScrInit(int argc, char *argv[])
     int		winX, winY;
     void	*handle;
     char	*fscr;
+	char	*vinit;
     int		fullscreen;
     int		maxfreq;
     int		i, depth;
@@ -238,79 +278,94 @@ void GfScrInit(int argc, char *argv[])
 	}
 #endif
 
+	vinit = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_VINIT, GFSCR_VAL_VINIT_COMPATIBLE);
+
     glutInit(&argc, argv);
 
-	// Try to get "best" videomode, z-buffer >= 24bit, visual with alpha channel,
-	// antialiasing support.
+	// Depending on "video mode init" setting try to get the best mode or try to get a mode in a safe way...
+	// This is a workaround for driver/glut/glx bug, which lie about the capabilites of the visual.
 
-	int visualDepthBits = 24;
-	bool visualSupportsMultisample = true;
-	bool visualSupportsAlpha = true;
+	if (strcmp(vinit, GFSCR_VAL_VINIT_BEST) == 0) {
 
-	glutInitDisplayString("rgba double depth>=24 samples alpha");
+		// Try to get "best" videomode, z-buffer >= 24bit, visual with alpha channel,
+		// antialiasing support.
 
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// Failed, try without antialiasing support.
-		visualDepthBits = 24;
-		visualSupportsMultisample = false;
-		visualSupportsAlpha = true;
-		glutInitDisplayString("rgba double depth>=24 alpha");
-	}
+		int visualDepthBits = 24;
+		bool visualSupportsMultisample = true;
+		bool visualSupportsAlpha = true;
 
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// Failed, try without alpha channel.
-		visualDepthBits = 24;
-		visualSupportsMultisample = true;
-		visualSupportsAlpha = false;
-		glutInitDisplayString("rgb double depth>=24 samples");
-	}
+		glutInitDisplayString("rgba double depth>=24 samples alpha");
 
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// Failed, try without antialiasing and alpha support.
-		visualDepthBits = 24;
-		visualSupportsMultisample = false;
-		visualSupportsAlpha = false;
-		glutInitDisplayString("rgb double depth>=24");
-	}
-
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// Failed, try without 24 bit z-Buffer and without antialiasing.
-		visualDepthBits = 16;
-		visualSupportsMultisample = false;
-		visualSupportsAlpha = true;
-		glutInitDisplayString("rgba double depth>=16 alpha");
-	}
-
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// Failed, try without 24 bit z-Buffer, without antialiasing and without alpha.
-		visualDepthBits = 16;
-		visualSupportsMultisample = false;
-		visualSupportsAlpha = false;
-		glutInitDisplayString("rgb double depth>=16");
-	}
-
-	printf("Visual Properties Report\n");
-	printf("------------------------\n");
-
-	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
-		// All failed.
-		printf("The minimum display requirements are not fulfilled.\n");
-		printf("We need a double buffered RGB visual with a 16 bit depth buffer at least.\n");
-		// Try fallback as last resort.
-		printf("Trying generic initialization, fallback.\n");
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	} else {
-		// We have got a mode, report the properties.
-		printf("z-buffer depth: %d (%s)\n", visualDepthBits, visualDepthBits < 24 ? "bad" : "good");
-		printf("multisampling : %s\n", visualSupportsMultisample ? "available" : "no");
-		printf("alpha bits    : %s\n", visualSupportsAlpha ? "available" : "no");
-		if (visualDepthBits < 24) {
-			// Show a hint if the z-buffer depth is not optimal.
-			printf("The z-buffer resolution is below 24 bit, you will experience rendering\n");
-			printf("artefacts. Try to improve the setup of your graphics board or look\n");
-			printf("for an alternate driver.\n");
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// Failed, try without antialiasing support.
+			visualDepthBits = 24;
+			visualSupportsMultisample = false;
+			visualSupportsAlpha = true;
+			glutInitDisplayString("rgba double depth>=24 alpha");
 		}
+
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// Failed, try without alpha channel.
+			visualDepthBits = 24;
+			visualSupportsMultisample = true;
+			visualSupportsAlpha = false;
+			glutInitDisplayString("rgb double depth>=24 samples");
+		}
+
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// Failed, try without antialiasing and alpha support.
+			visualDepthBits = 24;
+			visualSupportsMultisample = false;
+			visualSupportsAlpha = false;
+			glutInitDisplayString("rgb double depth>=24");
+		}
+
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// Failed, try without 24 bit z-Buffer and without antialiasing.
+			visualDepthBits = 16;
+			visualSupportsMultisample = false;
+			visualSupportsAlpha = true;
+			glutInitDisplayString("rgba double depth>=16 alpha");
+		}
+
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// Failed, try without 24 bit z-Buffer, without antialiasing and without alpha.
+			visualDepthBits = 16;
+			visualSupportsMultisample = false;
+			visualSupportsAlpha = false;
+			glutInitDisplayString("rgb double depth>=16");
+		}
+
+		printf("Visual Properties Report\n");
+		printf("------------------------\n");
+
+		if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+			// All failed.
+			printf("The minimum display requirements are not fulfilled.\n");
+			printf("We need a double buffered RGB visual with a 16 bit depth buffer at least.\n");
+			// Try fallback as last resort.
+			printf("Trying generic initialization, fallback.\n");
+			glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+		} else {
+			// We have got a mode, report the properties.
+			printf("z-buffer depth: %d (%s)\n", visualDepthBits, visualDepthBits < 24 ? "bad" : "good");
+			printf("multisampling : %s\n", visualSupportsMultisample ? "available" : "no");
+			printf("alpha bits    : %s\n", visualSupportsAlpha ? "available" : "no");
+			if (visualDepthBits < 24) {
+				// Show a hint if the z-buffer depth is not optimal.
+				printf("The z-buffer resolution is below 24 bit, you will experience rendering\n");
+				printf("artefacts. Try to improve the setup of your graphics board or look\n");
+				printf("for an alternate driver.\n");
+			}
+		}
+	} else {
+		// Compatibility mode.
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+		printf("Visual Properties Report\n");
+		printf("------------------------\n");
+		printf("Compatibility mode, properties unknown.\n");
 	}
+
 
 	if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
 		for (i = maxfreq; i > 59; i--) {
@@ -398,24 +453,26 @@ void GfScrGetSize(int *scrw, int *scrh, int *vieww, int *viewh)
 static void
 saveParams(void)
 {
-    int x, y, bpp;
+	int x, y, bpp;
 
-    sscanf(Res[curRes], "%dx%d", &x, &y);
-    sscanf(Depthlist[curDepth], "%d", &bpp);
+	sscanf(Res[curRes], "%dx%d", &x, &y);
+	sscanf(Depthlist[curDepth], "%d", &bpp);
 
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, x);
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, y);
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, x);
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, y);
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, bpp);
-    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, (char*)NULL, curMaxFreq);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, x);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, y);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, x);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, y);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, bpp);
+	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, (char*)NULL, curMaxFreq);
 
-    if (curMode == 0) {
-	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
-    } else {
-	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
-    }
-    GfParmWriteFile(NULL, paramHdle, "Screen");
+	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_VINIT, VInit[curVInit]);
+
+	if (curMode == 0) {
+		GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
+	} else {
+		GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
+	}
+	GfParmWriteFile(NULL, paramHdle, "Screen");
 }
 
 
@@ -502,10 +559,11 @@ updateLabelText(void)
     GfuiLabelSetText (scrHandle, ResLabelId, Res[curRes]);
     GfuiLabelSetText (scrHandle, DepthLabelId, Depthlist[curDepth]);
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
-#if WIN32
+#ifdef WIN32
     sprintf(buf, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
 #endif
+	GfuiLabelSetText (scrHandle, VInitLabelId, VInit[curVInit]);
 }
 
 static void
@@ -555,42 +613,69 @@ ModePrevNext(void *vdelta)
     updateLabelText();
 }
 
+
+static void
+VInitPrevNext(void *vdelta)
+{
+	long delta = (long)vdelta;
+
+	curVInit += (int)delta;
+	if (curVInit < 0) {
+		curVInit = nbVInit - 1;
+	} else {
+		if (curVInit >= nbVInit) {
+			curVInit = 0;
+		}
+	}
+	updateLabelText();
+}
+
+
 static void
 initFromConf(void)
 {
-    int x, y, bpp;
-    int i;
+	int x, y, bpp;
+	int i;
 
-    x = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, NULL, 640);
-    y = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, NULL, 480);
+	x = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, NULL, 640);
+	y = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, NULL, 480);
 
-    sprintf(buf, "%dx%d", x, y);
-    for (i = 0; i < nbRes; i++) {
-	if (!strcmp(buf, Res[i])) {
-	    curRes = i;
-	    break;
+	sprintf(buf, "%dx%d", x, y);
+	for (i = 0; i < nbRes; i++) {
+		if (!strcmp(buf, Res[i])) {
+			curRes = i;
+			break;
+		}
 	}
-    }
 
-    if (!strcmp("yes", GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes"))) {
-	curMode = 0;
-    } else {
-	curMode = 1;
-    }
-
-    bpp = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, NULL, 24);
-    sprintf(buf, "%d", bpp);
-    for (i = 0; i < nbDepth; i++) {
-	if (!strcmp(buf, Depthlist[i])) {
-	    curDepth = i;
-	    break;
+	if (!strcmp("yes", GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes"))) {
+		curMode = 0;
+	} else {
+		curMode = 1;
 	}
-    }
 
-    curMaxFreq = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, NULL, curMaxFreq);
+	curVInit = 0;
+	char *tmp = GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_VINIT, GFSCR_VAL_VINIT_COMPATIBLE);
+	for (i = 0; i < nbVInit; i++) {
+		if (strcmp(VInit[i], tmp) == 0) {
+			curVInit = i;
+			break;
+		}
+	}
+
+	bpp = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, NULL, 24);
+	sprintf(buf, "%d", bpp);
+	for (i = 0; i < nbDepth; i++) {
+		if (!strcmp(buf, Depthlist[i])) {
+			curDepth = i;
+			break;
+		}
+	}
+
+	curMaxFreq = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, NULL, curMaxFreq);
 }
 
-#if WIN32
+#ifdef WIN32
 static void
 ChangeMaxFreq(void * /* dummy */)
 {
@@ -619,7 +704,11 @@ void *
 GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
-    
+#ifndef WIN32
+	const int yoffset1 = 30, yoffset2 = 60;
+#else // WIN32
+	const int yoffset1 = 30, yoffset2 = 40;
+#endif // WIN32
     sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
@@ -638,7 +727,7 @@ GfScrMenuInit(void *precMenu)
 		    320, y, GFUI_ALIGN_HC_VB,
 		    0);   
 
-    y -= 30;
+    y -= yoffset1; //30;
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-left.png",
 		       "data/img/arrow-left.png",
@@ -666,13 +755,13 @@ GfScrMenuInit(void *precMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Resolution", (void*)1, ResPrevNext, NULL);
 
-    y -= 60;
+    y -= yoffset2; //60;
     GfuiLabelCreate(scrHandle,
 		    "Color Depth",
 		    GFUI_FONT_LARGE,
 		    320, y, GFUI_ALIGN_HC_VB,
 		    0);
-    y -= 30;
+    y -= yoffset1; //30;
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-left.png",
 		       "data/img/arrow-left.png",
@@ -698,13 +787,14 @@ GfScrMenuInit(void *precMenu)
 		       (void*)1, DepthPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    y -= 60;
+    y -= yoffset2; //60;
     GfuiLabelCreate(scrHandle,
 		    "Display Mode",
 		    GFUI_FONT_LARGE,
 		    320, y, GFUI_ALIGN_HC_VB,
-		    0);   
-    y -= 30;
+		    0);
+
+    y -= yoffset1; //30;
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-left.png",
 		       "data/img/arrow-left.png",
@@ -731,17 +821,50 @@ GfScrMenuInit(void *precMenu)
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     GfuiAddKey(scrHandle, 'f', "Display Mode", (void*)1, ModePrevNext, NULL);
 
-#if WIN32
-    y -= 60;
+#ifdef WIN32
+    y -= yoffset2; //60;
     GfuiLabelCreate(scrHandle,
 		    "Max Frequency",
 		    GFUI_FONT_LARGE,
 		    320, y, GFUI_ALIGN_HC_VB,
-		    0);   
-    y -= 30;
+		    0);
+    y -= yoffset1; //30;
     MaxFreqId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
 				   275, y, 0, 8, NULL, (tfuiCallback)NULL, ChangeMaxFreq);
 #endif
+
+	y -= yoffset2; //60;
+    GfuiLabelCreate(scrHandle,
+		    "Video Mode Initialization",
+		    GFUI_FONT_LARGE,
+		    320, y, GFUI_ALIGN_HC_VB,
+		    0);
+    y -= yoffset1; //30;
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left-pushed.png",
+		       x1, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)-1, VInitPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    VInitLabelId = GfuiLabelCreate(scrHandle,
+				  "",
+				  GFUI_FONT_LARGE_C,
+				  320, y, GFUI_ALIGN_HC_VB,
+				  30);
+    GfuiLabelSetColor(scrHandle, VInitLabelId, LabelColor);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right-pushed.png",
+		       x2, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)1, VInitPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
 
     GfuiAddKey(scrHandle, 13, "Apply Mode", NULL, GfScrReinit, NULL);
     GfuiButtonCreate(scrHandle, "Apply", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
@@ -750,7 +873,7 @@ GfScrMenuInit(void *precMenu)
     GfuiAddKey(scrHandle, 27, "Cancel", precMenu, GfuiScreenActivate, NULL);
     GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     precMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
- 
+
     return scrHandle;
 }
 

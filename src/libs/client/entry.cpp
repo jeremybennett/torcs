@@ -45,7 +45,7 @@ void
 TorcsEntry(void)
 {
     ssgInit();
-    
+
     GfInitClient();
 
     TorcsMainMenuInit();

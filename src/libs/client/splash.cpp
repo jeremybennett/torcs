@@ -18,10 +18,15 @@
  ***************************************************************************/
 #ifdef WIN32
 #include <windows.h>
+#define HAVE_CONFIG_H
 #endif
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <tgfclient.h>
 
@@ -94,7 +99,7 @@ splashTimer(int /* value */)
  *	splashDisplay
  *
  * Description
- *	
+ *
  *
  * Parameters
  *	
@@ -120,7 +125,14 @@ splashDisplay( void )
 
     glDrawPixels(ImgWidth, ImgHeight, ImgFormat, GL_UNSIGNED_BYTE, Image);
 
-    glutSwapBuffers();
+#ifdef HAVE_CONFIG_H
+	//glPixelZoom(1.0, 1.0);
+	glDisable(GL_LIGHTING);
+	static float grWhite[4] = {1.0, 1.0, 1.0, 1.0};
+	GfuiPrintString(VERSION, grWhite, GFUI_FONT_SMALL_C, 640-8, 8, GFUI_ALIGN_HR_VB);
+#endif
+
+	glutSwapBuffers();
 }
 
 static void

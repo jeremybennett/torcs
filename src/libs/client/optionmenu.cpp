@@ -22,6 +22,7 @@
 #include "optionmenu.h"
 #include <graphconfig.h>
 #include <simuconfig.h>
+#include <soundconfig.h>
 
 static void *optionHandle = NULL;
 
@@ -42,9 +43,17 @@ TorcsOptionOptionInit(void *precMenu)
 			 "Display", "Configure display parameters",
 			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
 
+/*
     GfuiMenuButtonCreate(optionHandle,
 			 "Simulation", "Configure simulation parameters",
 			 SimuMenuInit(optionHandle), GfuiScreenActivate);
+*/
+
+    GfuiMenuButtonCreate(optionHandle,
+			 "Sound", "Configure sound parameters",
+			 SoundMenuInit(optionHandle), GfuiScreenActivate);
+
+
 
     GfuiMenuBackQuitButtonCreate(optionHandle,
 				 "Back",

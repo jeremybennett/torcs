@@ -594,6 +594,7 @@ gfuiReleaseButton(tGfuiObject *obj)
     button = &(obj->u.button);
     label = &(button->label);
 
+	freez(button->userDataOnFocus);
     free(label->text);
     free(obj);
 }

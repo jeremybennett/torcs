@@ -41,29 +41,28 @@ gfDirInit(void)
     @param	dir	directory name
     @return	The list of files
  */
-tFList *
-GfDirGetList(char *dir)
+tFList * GfDirGetList(char *dir)
 {
-    if (GfOs.dirGetList) {
-	return GfOs.dirGetList(dir);
-    } else {
-	return (tFList*)NULL;
-    }
+	if (GfOs.dirGetList) {
+		return GfOs.dirGetList(dir);
+	} else {
+		return (tFList*)NULL;
+	}
 }
+
 
 /** Get the list of files of a given directory
     @ingroup	dir
     @param	dir	directory name
     @return	The list of files
  */
-tFList *
-GfDirGetListFiltered(char *dir, char *suffix)
+tFList * GfDirGetListFiltered(char *dir, char *suffix)
 {
-    if (GfOs.dirGetListFiltered) {
-	return GfOs.dirGetListFiltered(dir, suffix);
-    } else {
-	return (tFList*)NULL;
-    }
+	if (GfOs.dirGetListFiltered) {
+		return GfOs.dirGetListFiltered(dir, suffix);
+	} else {
+		return (tFList*)NULL;
+	}
 }
 
 /** Free a directory list
@@ -72,27 +71,50 @@ GfDirGetListFiltered(char *dir, char *suffix)
     @param	freeUserData	User function used to free the user data
     @return	none
 */
-void
-GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData)
+void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, bool freedispname)
 {
-    tFList *cur;
-    
-    while (list) {
-	if (list->next == list) {
-	    if ((freeUserData) && (list->userData)) {
-		freeUserData(list->userData);
-	    }
-	    free(list);
-	    list = NULL;
-	} else {
-	    cur = list->next;
-	    list->next = cur->next;
-	    cur->next->prev = list;
-	    if ((freeUserData) && (cur->userData)) {
-		freeUserData(cur->userData);
-	    }
-	    free(cur);
+	//tFList *cur;
+
+	if (list) {
+		// The list contains at least one element, checked above.
+		tFList *rl = list;
+		do {
+			tFList *tmp = rl;
+			rl = rl->next;
+			if ((freeUserData) && (tmp->userData)) {
+				freeUserData(tmp->userData);
+			}
+			if (freename) {
+				freez(tmp->name);
+			}
+			if (freedispname) {
+				freez(tmp->dispName);
+			}
+			free(tmp);
+		} while (rl != list);
 	}
-    }
+
+	list = NULL;
+
+
+/*
+	while (list) {
+		if (list->next == list) {
+			if ((freeUserData) && (list->userData)) {
+				freeUserData(list->userData);
+			}
+			free(list);
+			list = NULL;
+		} else {
+			cur = list->next;
+			list->next = cur->next;
+			cur->next->prev = list;
+			if ((freeUserData) && (cur->userData)) {
+				freeUserData(cur->userData);
+			}
+			free(cur);
+		}
+	}
+*/
 }
 

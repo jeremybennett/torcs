@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="client" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
 CFG=client - Win32 Debug
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "client.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "client.mak" CFG="client - Win32 Debug"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "client - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "client - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "client - Win32 Release" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "client - Win32 Debug" (basierend auf  "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -43,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /W2 /GX /O2 /Ob2 /I "../../../export/include" /I "../../interfaces" /I "../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "../../../export/include" /I "../../interfaces" /I "../../windows/include" /I "../../.." /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -53,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 txml.lib libpng.lib sg.lib ul.lib tgf.lib robottools.lib /nologo /dll /machine:I386 /nodefaultlib:"LIBCD" /def:".\client.def" /libpath:"../../../export/lib" /libpath:"../../windows/lib"
+# ADD LINK32 txml.lib libpng.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib /nologo /dll /machine:I386 /nodefaultlib:"LIBCD" /def:".\client.def" /libpath:"../../../export/lib" /libpath:"../../windows/lib"
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 WkspDir=.
@@ -267,7 +268,15 @@ SOURCE=..\tgfclient\screen.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\confscreens\simuconfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\raceengineclient\singleplayer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\confscreens\soundconfig.cpp
 # End Source File
 # Begin Source File
 

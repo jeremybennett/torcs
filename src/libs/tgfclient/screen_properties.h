@@ -41,6 +41,11 @@
 #define GFSCR_VAL_NO		"no"
 #define GFSCR_ATT_GAMMA		"gamma"
 
+#define GFSCR_ATT_VINIT				"video mode init"
+#define GFSCR_VAL_VINIT_COMPATIBLE	"compatible"
+#define GFSCR_VAL_VINIT_BEST		"best"
+
+
 #define GFSCR_SECT_MENUCOL	"Menu Colors"
 
 #define GFSCR_LIST_COLORS	"colors"

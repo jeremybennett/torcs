@@ -312,58 +312,59 @@ RmDriversSelect(void *vs)
     GfModInfoDir(CAR_IDENT, buf, 1, &list);
 
     curmod = list;
-    if (curmod != NULL) {
-	do {
-	    curmod = curmod->next;
-	    for (i = 0; i < MAX_MOD_ITF; i++) {
-		if (curmod->modInfo[i].name) {
-		    sp = strrchr(curmod->sopath, '/');
-		    if (sp == NULL) {
-			sp = curmod->sopath;
-		    } else {
-			sp++;
-		    }
-		    strcpy(dname, sp);
-		    dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
-		    sprintf(buf, "%sdrivers/%s/%s.xml", GetLocalDir(), dname, dname);
-		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
-		    if (!robhdle) {
-			sprintf(buf, "drivers/%s/%s.xml", dname, dname);
-			robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
-		    }
-		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
-		    carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
-		    if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {
-			human = 1;
-		    } else {
-			human = 0;
-		    }
-		    sprintf(path, "cars/%s/%s.xml", carName, carName);
-		    if (!stat(path, &st)) {
-			carhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
-			if (carhdle) {
-			    curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
-			    curDrv->index = curmod->modInfo[i].index;
-			    curDrv->dname = strdup(dname);
-			    curDrv->name = strdup(curmod->modInfo[i].name);
-			    curDrv->car = carhdle;
-			    if (human) {
-				curDrv->human = 1;
-				GF_TAILQ_INSERT_HEAD(&DrvList, curDrv, link);
-			    } else {
-				curDrv->human = 0;
-				GF_TAILQ_INSERT_TAIL(&DrvList, curDrv, link);
-			    }
-			} else {
-			    GfOut("Driver %s not selected because car %s is not readable\n", curmod->modInfo[i].name, carName);
+	if (curmod != NULL) {
+		do {
+			curmod = curmod->next;
+			for (i = 0; i < MAX_MOD_ITF; i++) {
+				if (curmod->modInfo[i].name) {
+					sp = strrchr(curmod->sopath, '/');
+					if (sp == NULL) {
+						sp = curmod->sopath;
+					} else {
+						sp++;
+					}
+					strcpy(dname, sp);
+					dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
+					sprintf(buf, "%sdrivers/%s/%s.xml", GetLocalDir(), dname, dname);
+					robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+					if (!robhdle) {
+						sprintf(buf, "drivers/%s/%s.xml", dname, dname);
+						robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+					}
+					sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
+					carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+					if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {
+						human = 1;
+					} else {
+						human = 0;
+					}
+					sprintf(path, "cars/%s/%s.xml", carName, carName);
+					if (!stat(path, &st)) {
+						carhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
+						if (carhdle) {
+							curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
+							curDrv->index = curmod->modInfo[i].index;
+							curDrv->dname = strdup(dname);
+							curDrv->name = strdup(curmod->modInfo[i].name);
+							curDrv->car = carhdle;
+							if (human) {
+								curDrv->human = 1;
+								GF_TAILQ_INSERT_HEAD(&DrvList, curDrv, link);
+							} else {
+								curDrv->human = 0;
+								GF_TAILQ_INSERT_TAIL(&DrvList, curDrv, link);
+							}
+						} else {
+							GfOut("Driver %s not selected because car %s is not readable\n", curmod->modInfo[i].name, carName);
+						}
+					} else {
+						GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
+					}
+					GfParmReleaseHandle(robhdle);
+				}
 			}
-		    } else {
-			GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
-		    }
-		}
-	    }
-	} while (curmod != list);
-    }
+		} while (curmod != list);
+	}
 
     nbSelectedDrivers = 0;
     nbMaxSelectedDrivers = (int)GfParmGetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_MAXNUM, NULL, 0);
@@ -440,12 +441,13 @@ RmDriversSelect(void *vs)
 static void
 rmFreeDrvList(void)
 {
-    tDrvElt	*cur;
+	tDrvElt	*cur;
 
-    while ((cur = GF_TAILQ_FIRST(&DrvList)) != NULL) {
-	GF_TAILQ_REMOVE(&DrvList, cur, link);
-	free(cur->name);
-	GfParmReleaseHandle(cur->car);
-	free(cur);
-    }
+	while ((cur = GF_TAILQ_FIRST(&DrvList)) != NULL) {
+		GF_TAILQ_REMOVE(&DrvList, cur, link);
+		free(cur->name);
+		free(cur->dname);
+		GfParmReleaseHandle(cur->car);
+		free(cur);
+	}
 }

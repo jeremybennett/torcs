@@ -97,24 +97,27 @@ ReInit(void)
     ReInfo->_reGameScreen = ReHookInit();
 }
 
+
 /* Race Engine Exit */
-void
-ReShutdown(void)
+void ReShutdown(void)
 {
-    /* Free previous situation */
-    if (ReInfo) {
-	ReInfo->_reTrackItf.trkShutdown();
+	/* Free previous situation */
+	if (ReInfo) {
+		ReInfo->_reTrackItf.trkShutdown();
 
-	GfModUnloadList(&reEventModList);
+		GfModUnloadList(&reEventModList);
 
-	if (ReInfo->results) {
-	    GfParmReleaseHandle(ReInfo->results);
-	}
-
-	FREEZ(ReInfo->s);
-	FREEZ(ReInfo->carList);
-	FREEZ(ReInfo->rules);
-	FREEZ(ReInfo);
+		if (ReInfo->results) {
+	    	GfParmReleaseHandle(ReInfo->results);
+		}
+		if (ReInfo->_reParam) {
+			GfParmReleaseHandle(ReInfo->_reParam);
+		}
+		FREEZ(ReInfo->s);
+		FREEZ(ReInfo->carList);
+		FREEZ(ReInfo->rules);
+		FREEZ(ReInfo->_reFilename);
+		FREEZ(ReInfo);
     }
 }
 
@@ -128,24 +131,42 @@ ReStartNewRace(void * /* dummy */)
 
 
 /* Launch a race manager */
-static void
-reSelectRaceman(void *params)
+static void reSelectRaceman(void *params)
 {
-    char	*p;
-    
-    ReInfo->params = params;
-    FREEZ(ReInfo->_reFilename);
-    ReInfo->_reFilename = strdup(GfParmGetFileName(params));
-    while ((p = strstr(ReInfo->_reFilename, "/")) != 0) {
-	ReInfo->_reFilename = p + 1;
-    }
-    p = ReInfo->_reFilename;
-    p = strstr(p, PARAMEXT);
-    if (p) {
-	*p = '\0';
-    }
-    ReInfo->_reName = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, "");
-    ReStateApply(RE_STATE_CONFIG);
+	char *s, *e, *m;
+
+	ReInfo->params = params;
+	FREEZ(ReInfo->_reFilename);
+
+	s = GfParmGetFileName(params);
+	while ((m = strstr(s, "/")) != 0) {
+		s = m + 1;
+	}
+
+	e = strstr(s, PARAMEXT);
+#ifndef WIN32
+	ReInfo->_reFilename = strndup(s, e-s+1);
+#else // WIN32
+	ReInfo->_reFilename = strdup(s);
+#endif // WIN32
+	ReInfo->_reFilename[e-s] = '\0';
+/*
+
+
+
+	ReInfo->_reFilename = strdup(GfParmGetFileName(params));
+
+	while ((p = strstr(ReInfo->_reFilename, "/")) != 0) {
+		ReInfo->_reFilename = p + 1;
+	}
+
+	p = ReInfo->_reFilename;
+	p = strstr(p, PARAMEXT);
+	if (p) {
+		*p = '\0';
+	}*/
+	ReInfo->_reName = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, "");
+	ReStateApply(RE_STATE_CONFIG);
 }
 
 /* Register a race manager */
@@ -192,34 +213,46 @@ reSortRacemanList(tFList **racemanList)
     *racemanList = head;
 }
 
+
 /* Load race managers selection menu */
-void
-ReAddRacemanListButton(void *menuHandle)
+void ReAddRacemanListButton(void *menuHandle)
 {
-    tFList	*racemanList;
-    tFList	*racemanCur;
-    
-    racemanList = GfDirGetListFiltered("config/raceman", "xml");
-    if (!racemanList) {
-	GfOut("No race manager available\n");
-	return;
-    }
-    racemanCur = racemanList;
-    do {
-	reRegisterRaceman(racemanCur);
-	racemanCur = racemanCur->next;
-    } while (racemanCur != racemanList);
-    reSortRacemanList(&racemanList);
-    
-    racemanCur = racemanList;
-    do {
-	GfuiMenuButtonCreate(menuHandle,
-			     racemanCur->dispName,
-			     GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_DESCR, ""),
-			     racemanCur->userData,
-			     reSelectRaceman);
-	racemanCur = racemanCur->next;
-    } while (racemanCur != racemanList);
+	tFList *racemanList;
+	tFList *racemanCur;
+
+	racemanList = GfDirGetListFiltered("config/raceman", "xml");
+	if (!racemanList) {
+		GfOut("No race manager available\n");
+		return;
+	}
+
+	racemanCur = racemanList;
+	do {
+		reRegisterRaceman(racemanCur);
+		racemanCur = racemanCur->next;
+	} while (racemanCur != racemanList);
+
+	reSortRacemanList(&racemanList);
+
+	racemanCur = racemanList;
+	do {
+		GfuiMenuButtonCreate(menuHandle,
+				racemanCur->dispName,
+				GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_DESCR, ""),
+				racemanCur->userData,
+				reSelectRaceman);
+		racemanCur = racemanCur->next;
+	} while (racemanCur != racemanList);
+
+	// The list contains at least one element, checked above.
+	tFList *rl = racemanList;
+	do {
+		tFList *tmp = rl;
+		rl = rl->next;
+		// Do not free userData and dispName, is in use.
+		freez(tmp->name);
+		free(tmp);
+	} while (rl != racemanList);
 }
 
 
@@ -393,7 +426,7 @@ ReInitCars(void)
     char	*str;
     int		focusedIdx;
     void	*params = ReInfo->params;
-    
+
     /* Get the number of cars racing */
     nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS_RACING);
     GfOut("loading %d cars\n", nCars);
@@ -516,7 +549,7 @@ ReInitCars(void)
     } else {
 	GfOut("%d drivers ready to race\n", nCars);
     }
-    
+
     ReInfo->s->_ncars = nCars;
     FREEZ(ReInfo->s->cars);
     ReInfo->s->cars = (tCarElt **)calloc(nCars, sizeof(tCarElt *));
@@ -529,7 +562,7 @@ ReInitCars(void)
     initStartingGrid();
 
     initPits();
-    
+
     return 0;
 }
 
@@ -544,7 +577,7 @@ reDumpTrack(tTrack *track, int verbose)
     int		i;
     tTrackSeg	*seg;
 #ifdef DEBUG
-    char	*stype[4] = { "", "RGT", "LFT", "STR" }; 
+    char	*stype[4] = { "", "RGT", "LFT", "STR" };
 #endif
 
     RmLoadingScreenSetText("Loading Track Geometry...");
@@ -587,9 +620,9 @@ reDumpTrack(tTrack *track, int verbose)
 #endif
 	    GfOut("        length  %f\n", seg->length);
 	    GfOut("	radius  %f\n", seg->radius);
-	    GfOut("	arc	%f   Zs %f   Ze %f   Zcs %f\n", RAD2DEG(seg->arc), 
-		   RAD2DEG(seg->angle[TR_ZS]), 
-		   RAD2DEG(seg->angle[TR_ZE]), 
+	    GfOut("	arc	%f   Zs %f   Ze %f   Zcs %f\n", RAD2DEG(seg->arc),
+		   RAD2DEG(seg->angle[TR_ZS]),
+		   RAD2DEG(seg->angle[TR_ZE]),
 		   RAD2DEG(seg->angle[TR_CS]));
 	    GfOut("	Za	%f\n", RAD2DEG(seg->angle[TR_ZS]));
 	    GfOut("	vertices: %-8.8f %-8.8f %-8.8f ++++ ",
@@ -616,7 +649,7 @@ reDumpTrack(tTrack *track, int verbose)
 	       track->seg->next->vertex[TR_SR].x - track->seg->vertex[TR_ER].x,
 	       track->seg->next->vertex[TR_SR].y - track->seg->vertex[TR_ER].y,
 	       track->seg->next->vertex[TR_SR].z - track->seg->vertex[TR_ER].z);
-	
+
     }
 }
 
@@ -666,22 +699,24 @@ ReRaceCleanup(void)
 void
 ReRaceCleanDrivers(void)
 {
-    int		i;
-    tRobotItf	*robot;
-    int		nCars;
+	int i;
+	tRobotItf *robot;
+	int nCars;
 
-    nCars = ReInfo->s->_ncars;
-    for (i = 0; i < nCars; i++) {
-	robot = ReInfo->s->cars[i]->robot;
-	if (robot->rbShutdown) {
-	    robot->rbShutdown(robot->index);
+	nCars = ReInfo->s->_ncars;
+	for (i = 0; i < nCars; i++) {
+		robot = ReInfo->s->cars[i]->robot;
+		if (robot->rbShutdown) {
+			robot->rbShutdown(robot->index);
+		}
+		GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
+		free(robot);
 	}
-	GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
-    }
-    FREEZ(ReInfo->s->cars);
-    ReInfo->s->cars = 0;
-    ReInfo->s->_ncars = 0;
-    GfModUnloadList(&ReRaceModList);
+
+	FREEZ(ReInfo->s->cars);
+	ReInfo->s->cars = 0;
+	ReInfo->s->_ncars = 0;
+	GfModUnloadList(&ReRaceModList);
 }
 
 

@@ -370,30 +370,34 @@ void GfuiMouseSetPos(int x, int y)
 static void
 gfuiMouse(int button, int state, int x, int y)
 {
-    GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
-    GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
-    GfuiMouse.button[button] = 1 - state;
-    
-    DelayRepeat = REPEAT1;
-    LastTimeClick = GfTimeClock();
-    if (state == GLUT_DOWN) {
-	if (button == GLUT_RIGHT_BUTTON) {
-	    GfuiScreen->mouse = 0;
-	    /* GfuiMouseVisible = 1 - GfuiMouseVisible; */
-	    gfuiUpdateFocus();
-	} else {
-	    GfuiScreen->mouse = 1;
-	    gfuiUpdateFocus();
-	    gfuiMouseAction((void*)0);
+	// Check array range of button array!
+	if (button > -1 && button < 3) {
+		GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
+		GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
+
+		GfuiMouse.button[button] = 1 - state;
+
+		DelayRepeat = REPEAT1;
+		LastTimeClick = GfTimeClock();
+		if (state == GLUT_DOWN) {
+			if (button == GLUT_RIGHT_BUTTON) {
+				GfuiScreen->mouse = 0;
+				/* GfuiMouseVisible = 1 - GfuiMouseVisible; */
+				gfuiUpdateFocus();
+			} else {
+				GfuiScreen->mouse = 1;
+				gfuiUpdateFocus();
+				gfuiMouseAction((void*)0);
+			}
+		} else {
+			GfuiScreen->mouse = 0;
+			gfuiUpdateFocus();
+			if (button != GLUT_RIGHT_BUTTON) {
+				gfuiMouseAction((void*)1);
+			}
+		}
+		glutPostRedisplay();
 	}
-    } else {
-	GfuiScreen->mouse = 0;
-	gfuiUpdateFocus();
-	if (button != GLUT_RIGHT_BUTTON) {
-	    gfuiMouseAction((void*)1);
-	}
-    }
-    glutPostRedisplay();
 }
 
 static void
@@ -474,13 +478,14 @@ GfuiScreenActivate(void *screen)
 void
 GfuiScreenReplace(void *screen)
 {
-    tGfuiScreen	*oldScreen = GfuiScreen;
+	tGfuiScreen	*oldScreen = GfuiScreen;
 
-    GfuiScreenActivate(screen);
-    
-    if (oldScreen) {
-	GfuiScreenRelease(oldScreen);
-    }
+	//GfuiScreenActivate(screen);
+
+	if (oldScreen) {
+		GfuiScreenRelease(oldScreen);
+	}
+	GfuiScreenActivate(screen);
 }
 
 /** Deactivate the current screen.
@@ -492,7 +497,7 @@ GfuiScreenDeactivate(void)
     if (GfuiScreen->onDeactivate) GfuiScreen->onDeactivate(GfuiScreen->userDeactData);
     
     GfuiScreen = (tGfuiScreen*)NULL;
-    
+
     glutKeyboardFunc((void(*)(unsigned char,int,int))NULL);
     glutSpecialFunc((void(*)(int,int,int))NULL);
     glutMouseFunc((void(*)(int,int,int,int))NULL);
@@ -516,7 +521,15 @@ GfuiScreenCreate(void)
     
     screen->width = 640.0;
     screen->height = 480.0;
-    screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
+
+	screen->bgColor = (float*)calloc(4, sizeof(float));
+	int i;
+	for(i = 0; i < 4; i++) {
+		screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
+	}
+
+
+//    screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
     screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
     screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
     screen->mouseAllowed = 1;
@@ -539,7 +552,7 @@ GfuiScreenCreate(void)
 void *
 GfuiScreenCreateEx(float *bgColor,
 		   void *userDataOnActivate, tfuiCallback onActivate, 
-		   void *userDataOnDeactivate, tfuiCallback onDeactivate, 
+		   void *userDataOnDeactivate, tfuiCallback onDeactivate,
 		   int mouseAllowed)
 {
     int		i;
@@ -549,14 +562,25 @@ GfuiScreenCreateEx(float *bgColor,
     
     screen->width = 640.0;
     screen->height = 480.0;
-    if (bgColor != NULL) {
+
 	screen->bgColor = (float*)calloc(4, sizeof(float));
 	for(i = 0; i < 4; i++) {
-	    screen->bgColor[i] = bgColor[i];
+		if (bgColor != NULL) {
+	    	screen->bgColor[i] = bgColor[i];
+		} else {
+			screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
+		}
 	}
+
+	/*
+	if (bgColor != NULL) {
+		screen->bgColor = (float*)calloc(4, sizeof(float));
+		for(i = 0; i < 4; i++) {
+	    	screen->bgColor[i] = bgColor[i];
+		}
     } else {
-	screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
-    }
+		screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
+    }*/
     screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
     screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
     screen->onActivate = onActivate;
@@ -577,43 +601,55 @@ GfuiScreenCreateEx(float *bgColor,
 void
 GfuiScreenRelease(void *scr)
 {
-    tGfuiObject		*curObject;
-    tGfuiObject		*nextObject;
-    tGfuiKey		*curKey;
-    tGfuiKey		*nextKey;
-    tGfuiScreen		*screen = (tGfuiScreen*)scr;
-    
-    if (GfuiScreen == screen) {
-	GfuiScreenDeactivate();
-    }
-    if (screen->bgImage != 0) {
-	glDeleteTextures(1, &screen->bgImage);
-    }
-    curObject = screen->objects;
-    if (curObject != NULL) {
-	do {
-	    nextObject = curObject->next;
-	    gfuiReleaseObject(curObject);
-	    curObject = nextObject;
-	} while (curObject != screen->objects);
-    }
-    curKey = screen->userKeys;
-    if (curKey != NULL) {
-	do {
-	    nextKey = curKey->next;
-	    free(curKey);
-	    curKey = nextKey;
-	} while (curKey != screen->userKeys);
-    }
-    curKey = screen->userSpecKeys;
-    if (curKey != NULL) {
-	do {
-	    nextKey = curKey->next;
-	    free(curKey);
-	    curKey = nextKey;
-	} while (curKey != screen->userSpecKeys);
-    }
-    free(screen);
+	tGfuiObject *curObject;
+	tGfuiObject *nextObject;
+	tGfuiKey *curKey;
+	tGfuiKey *nextKey;
+	tGfuiScreen *screen = (tGfuiScreen*)scr;
+
+	if (GfuiScreen == screen) {
+		GfuiScreenDeactivate();
+	}
+
+	if (screen->bgImage != 0) {
+		glDeleteTextures(1, &screen->bgImage);
+	}
+
+	if (screen->bgColor != NULL) {
+		free(screen->bgColor);
+		screen->bgColor = NULL;
+	}
+
+	curObject = screen->objects;
+	if (curObject != NULL) {
+		do {
+			nextObject = curObject->next;
+			gfuiReleaseObject(curObject);
+			curObject = nextObject;
+		} while (curObject != screen->objects);
+	}
+
+	curKey = screen->userKeys;
+	if (curKey != NULL) {
+		do {
+			nextKey = curKey->next;
+			free(curKey->name);
+			free(curKey->descr);
+			free(curKey);
+			curKey = nextKey;
+		} while (curKey != screen->userKeys);
+	}
+	curKey = screen->userSpecKeys;
+	if (curKey != NULL) {
+		do {
+			nextKey = curKey->next;
+			free(curKey->name);
+			free(curKey->descr);
+			free(curKey);
+			curKey = nextKey;
+		} while (curKey != screen->userSpecKeys);
+	}
+	free(screen);
 }
 
 /** Create a callback hook.
@@ -627,7 +663,7 @@ void *
 GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate)
 {
     tGfuiScreen	*screen;
-    
+
     screen = (tGfuiScreen*)calloc(1, sizeof(tGfuiScreen));
     screen->onActivate = onActivate;
     screen->userActData = userDataOnActivate;
@@ -762,7 +798,7 @@ GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyP
 {
     tGfuiKey	*curKey;
     tGfuiScreen	*screen = (tGfuiScreen*)scr;
-    
+
     curKey = (tGfuiKey*)calloc(1, sizeof(tGfuiKey));
     curKey->specialkey = key;
     curKey->userData = userData;
@@ -837,15 +873,15 @@ GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyP
 	curKey->name = strdup("Insert");
 	break;
     }
-    
 
-    if (screen->userSpecKeys == NULL) {
-	screen->userSpecKeys = curKey;
-	curKey->next = curKey;
-    } else {
-	curKey->next = screen->userSpecKeys->next;
-	screen->userSpecKeys->next = curKey;
-	screen->userSpecKeys = curKey;
+
+	if (screen->userSpecKeys == NULL) {
+		screen->userSpecKeys = curKey;
+		curKey->next = curKey;
+	} else {
+		curKey->next = screen->userSpecKeys->next;
+		screen->userSpecKeys->next = curKey;
+		screen->userSpecKeys = curKey;
     }
 }
 
@@ -895,31 +931,32 @@ GfuiScreenShot(void * /* notused */)
 void
 GfuiScreenAddBgImg(void *scr, char *filename)
 {
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
-    void	*handle;
-    float	screen_gamma;
-    GLbyte	*tex;
-    int		w,h;
-    
-    if (screen->bgImage != 0) {
-	glDeleteTextures(1, &screen->bgImage);
-    }
-    
-    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
-    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
-    tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
-    if (!tex) {
+	tGfuiScreen	*screen = (tGfuiScreen*)scr;
+	void *handle;
+	float screen_gamma;
+	GLbyte *tex;
+	int w,h;
+
+	if (screen->bgImage != 0) {
+		glDeleteTextures(1, &screen->bgImage);
+	}
+
+	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
+	tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
+	if (!tex) {
+		GfParmReleaseHandle(handle);
+		return;
+	}
+
+	glGenTextures(1, &screen->bgImage);
+	glBindTexture(GL_TEXTURE_2D, screen->bgImage);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+	free(tex);
 	GfParmReleaseHandle(handle);
-	return;
-    }
-    glGenTextures(1, &screen->bgImage);
-    glBindTexture(GL_TEXTURE_2D, screen->bgImage);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-    free(tex);
-    GfParmReleaseHandle(handle);
 }
 
 

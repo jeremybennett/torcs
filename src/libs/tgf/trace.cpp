@@ -24,7 +24,7 @@
 */
 
 
-#if _WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include <windowsx.h>
 #endif /* _WIN32 */

@@ -53,52 +53,53 @@ static char buf[1024];
 unsigned char *
 GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma)
 {
-    unsigned char 	buf[PNG_BYTES_TO_CHECK];
-    FILE		*fp;
-    png_structp		png_ptr;
-    png_infop		info_ptr;
-    png_uint_32		width, height;
-    int			bit_depth, color_type, interlace_type;
-/*     png_color_16p	image_background; */
-    double		gamma;
-    png_bytep		*row_pointers;
-    unsigned char	*image_ptr, *cur_ptr;
-    png_uint_32		rowbytes;
-    png_uint_32		i;
-    
-    if ((fp = fopen(filename, "rb")) == NULL) {
-	GfTrace("Can't open file %s\n", filename);
-	return (unsigned char *)NULL;
-    }
-   
-    if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
-	GfTrace("Can't read file %s\n", filename);
-	fclose(fp);
-	return (unsigned char *)NULL;
-    }
+	unsigned char buf[PNG_BYTES_TO_CHECK];
+	FILE *fp;
+	png_structp	png_ptr;
+	png_infop info_ptr;
+	png_uint_32 width, height;
+	int	bit_depth, color_type, interlace_type;
 
-    if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0) {
-	GfTrace("File %s not in png format\n", filename);
-	fclose(fp);
-	return (unsigned char *)NULL;
-    }
+	/*     png_color_16p	image_background; */
+	double gamma;
+	png_bytep *row_pointers;
+	unsigned char *image_ptr, *cur_ptr;
+	png_uint_32 rowbytes;
+	png_uint_32 i;
 
-    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
-    if (png_ptr == NULL) {
-	GfTrace("Img Failed to create read_struct\n");
-	fclose(fp);
-	return (unsigned char *)NULL;
-    }
-   
-    info_ptr = png_create_info_struct(png_ptr);
-    if (info_ptr == NULL)
-	{
-	    fclose(fp);
-	    png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-	    return (unsigned char *)NULL;
+	if ((fp = fopen(filename, "rb")) == NULL) {
+		GfTrace("Can't open file %s\n", filename);
+		return (unsigned char *)NULL;
 	}
-   
-    if (setjmp(png_ptr->jmpbuf))
+
+	if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
+		GfTrace("Can't read file %s\n", filename);
+		fclose(fp);
+		return (unsigned char *)NULL;
+	}
+
+	if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0) {
+		GfTrace("File %s not in png format\n", filename);
+		fclose(fp);
+		return (unsigned char *)NULL;
+	}
+
+	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
+	if (png_ptr == NULL) {
+		GfTrace("Img Failed to create read_struct\n");
+		fclose(fp);
+		return (unsigned char *)NULL;
+	}
+
+	info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL)
+	{
+		fclose(fp);
+		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		return (unsigned char *)NULL;
+	}
+
+	if (setjmp(png_ptr->jmpbuf))
 	{
 	    /* Free all of the memory associated with the png_ptr and info_ptr */
 	    png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
@@ -107,24 +108,25 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 	    return (unsigned char *)NULL;
 	}
 
-    png_init_io(png_ptr, fp);
-    png_set_sig_bytes(png_ptr, PNG_BYTES_TO_CHECK);
+	png_init_io(png_ptr, fp);
+	png_set_sig_bytes(png_ptr, PNG_BYTES_TO_CHECK);
 /*     png_set_invert_alpha(png_ptr); */
-    png_read_info(png_ptr, info_ptr);
-    png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
-		 &interlace_type, NULL, NULL);
-    *widthp = (int)width;
-    *heightp = (int)height;
-    if (bit_depth == 1 && color_type == PNG_COLOR_TYPE_GRAY) png_set_invert_mono(png_ptr);
-    if (bit_depth == 16) {
-	png_set_swap(png_ptr);
-	png_set_strip_16(png_ptr);
-    }
-    if (bit_depth < 8) png_set_packing(png_ptr);
-    if (color_type == PNG_COLOR_TYPE_PALETTE) png_set_expand(png_ptr);
-    if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand(png_ptr);
-    if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_expand(png_ptr);
-    if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) png_set_gray_to_rgb(png_ptr);
+	png_read_info(png_ptr, info_ptr);
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
+		&interlace_type, NULL, NULL);
+	*widthp = (int)width;
+	*heightp = (int)height;
+
+	if (bit_depth == 1 && color_type == PNG_COLOR_TYPE_GRAY) png_set_invert_mono(png_ptr);
+	if (bit_depth == 16) {
+		png_set_swap(png_ptr);
+		png_set_strip_16(png_ptr);
+	}
+	if (bit_depth < 8) png_set_packing(png_ptr);
+	if (color_type == PNG_COLOR_TYPE_PALETTE) png_set_expand(png_ptr);
+	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand(png_ptr);
+	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_expand(png_ptr);
+	if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) png_set_gray_to_rgb(png_ptr);
 /*     if (png_get_bKGD(png_ptr, info_ptr, &image_background)) */
 /*         png_set_background(png_ptr, image_background, PNG_BACKGROUND_GAMMA_FILE, 1, 1.0); */
     if (bit_depth == 8 && color_type == PNG_COLOR_TYPE_RGB) png_set_filler(png_ptr, 0xff, PNG_FILLER_AFTER);
@@ -140,7 +142,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 	fclose(fp);
 	png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 	return (unsigned char *)NULL;
-    }       
+    }
     row_pointers = (png_bytep*)malloc(height * sizeof(png_bytep));
     if (row_pointers == NULL)
 	{
@@ -176,7 +178,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 
 
 /** Write a buffer to a png image on disk.
-    @ingroup	img		
+    @ingroup	img
     @param	img		image data (RGB)
     @param	filename	filename of the png file
     @param	width		width of the image
@@ -260,9 +262,9 @@ GfImgWritePng(unsigned char *img, const char *filename, int width, int height)
 void
 GfImgFreeTex(GLuint tex)
 {
-    if (tex != 0) {
-	glDeleteTextures(1, &tex);
-    }
+	if (tex != 0) {
+		glDeleteTextures(1, &tex);
+	}
 }
 
 /** Read a png image into a texture.
@@ -273,26 +275,30 @@ GfImgFreeTex(GLuint tex)
 GLuint
 GfImgReadTex(char *filename)
 {
-    void	*handle;
-    float	screen_gamma;
-    GLbyte	*tex;
-    int		w, h;
-    GLuint	retTex;
+	void *handle;
+	float screen_gamma;
+	GLbyte *tex;
+	int w, h;
+	GLuint retTex;
 
-    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
-    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
-    tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
-    if (!tex) {
+	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
+	tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
+
+	if (!tex) {
+		GfParmReleaseHandle(handle);
+		return 0;
+	}
+
+	glGenTextures(1, &retTex);
+	glBindTexture(GL_TEXTURE_2D, retTex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+
+	free(tex);
+
 	GfParmReleaseHandle(handle);
-	return 0;
-    }
-    glGenTextures(1, &retTex);
-    glBindTexture(GL_TEXTURE_2D, retTex);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-    /* free(tex); */
-    GfParmReleaseHandle(handle);
-    return retTex;
+	return retTex;
 }

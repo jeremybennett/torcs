@@ -54,7 +54,7 @@ static tModList		*modlist = (tModList*)NULL;
  */
 void RtTelemInit(tdble ymin, tdble ymax)
 {
-#if later
+#ifdef later
     char	buf[256];
     tModInfo	*curModInfo;
 

@@ -68,7 +68,7 @@ extern void GfInit(void);
 #define freez FREEZ
 
 const double PI = 3.14159265358979323846;  /**< PI */
-const tdble G = 9.80665; /**< m/s/s */
+const tdble G = 9.80665f; /**< m/s/s */
 
 /* conversion */
 #define RADS2RPM(x) ((x)*9.549296585)		/**< Radian/s to RPM conversion */
@@ -242,7 +242,7 @@ typedef struct FList
 extern tFList *GfDirGetList(char *dir);
 extern tFList *GfDirGetListFiltered(char *dir, char *suffix);
 typedef void (*tfDirfreeUserData)(void*);	/**< Function to call for releasing the user data associated with file entry */
-extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
+extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserDatabool, bool freename = false, bool freedispname = false);
 
 
 /**********************************

@@ -370,86 +370,6 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
     }
 }
 
-class PSR_Array
-{
-public:
-	int N;
-	float* X;
-	// create a zero-mean random process with variance 0.70909
-	// and spectral peak around a period of 200 samples
-	PSR_Array(int N_)
-	{
-		N = N_;
-		X = new float [N];
-		float a = 0.2;
-		float u = 0.0;
-		for (int i=0; i<N; i++) {
-			u += drand48()-0.5;
-			X[i] = u + 0.5*(drand48()-0.5);
-			u = u * .9;
-		}
-		X[0] = 0.0;
-		X[N-1]=0.0;
-		for (int k=0; k<2; k++) {
-			for (int i=0; i<N-1; i++) {
-				X[i+1] = a * X[i+1] + (1-a) * X[i];
-			}
-			X[0] = a*X[0] + (1-a)*X[N-1];
-			for (int i=N-1; i>0; i--) {
-				X[i-1] = a * X[i-1] + (1-a) * X[i];
-			}
-			X[N-1] = a*X[N-1] + (1-a)*X[0];
-		}
-		float mean = 0.0;
-		float var = 0.0;
-		for (int i=0; i<N; i++) {
-			X[i] += 0.1*(drand48()-0.5);
-			mean += X[i];
-		}
-		mean /= ((float) N);
-		for (int i=0; i<N; i++) {
-			X[i] -= mean;
-			var += X[i] * X[i];
-		}
-		var /= ((float) N);
-		float std = sqrt(var) / 0.70909; // target variance same as sine wave
-		for (int i=0; i<N; i++) {
-			X[i] /= std;
-		}
-		//FILE* f = fopen ("/home/olethros/octave/randseq","w");
-		//for (int i=0; i<N; i++) {
-		//	fprintf (f, "%f\n", X[i]);
-		//}
-		//fclose(f);
-	}
-	~PSR_Array()
-	{
-		delete [] X;
-	}
-	float Get(float x)
-	{
-		x = 100.0 * x;
-		x = fmodf(fabs(x),N);
-		float fi = floor(x);
-		int i = (int) fi;
-		int j = (i+1)%N;
-		float a = x-fi;
-		float V = X[i] * (1-a) + a*X[j];
-		//if (rand()%100==0) {
-		//			printf ("%f %f %d %f\n", ox, x, i, V);
-		//		}
-		return V;
-	}
-};
-
-float pseudorandom (float x, float l)
-{
-	static PSR_Array psr (10000);
-
-	//printf ("%f\n",l);
-	if (l<=0) return 0;
-	return psr.Get(x*l);
-}
 /** Returns the absolute height in meters of the road
     at the Local position p.
     If the point lies outside the track (and sides)
@@ -478,7 +398,6 @@ RtTrackHeightL(tTrkLocPos *p)
     tdble	lg;
     tdble	tr = p->toRight;
     tTrackSeg	*seg = p->seg;
-	tdble   fromStart = seg->lgfromstart;
 
     if ((tr < 0) && (seg->rside != NULL)) {
 	seg = seg->rside;
@@ -508,16 +427,16 @@ RtTrackHeightL(tTrkLocPos *p)
 	if (seg->type2 == TR_RBORDER) {
 	    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 		(seg->width - tr) * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-		seg->surface->kRoughness * pseudorandom(fromStart + lg, seg->surface->kRoughWaveLen) * (seg->width - tr) / seg->width;
+		seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * (seg->width - tr) / seg->width;
 	}
 	
 	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 	    tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-	    seg->surface->kRoughness * pseudorandom(fromStart + lg, seg->surface->kRoughWaveLen) * tr / seg->width;
+	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * tr / seg->width;
     }
     
     return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
-		seg->surface->kRoughness * /*pseudorandom(tr, seg->surface->kRoughWaveLen) */ pseudorandom(lg + fromStart, seg->surface->kRoughWaveLen);
+	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * tr) * sin(seg->surface->kRoughWaveLen * lg);
 }
 
 /* get the real segment */

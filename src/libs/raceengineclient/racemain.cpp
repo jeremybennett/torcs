@@ -496,56 +496,65 @@ ReRaceEnd(void)
 int
 RePostRace(void)
 {
-    int		curRaceIdx;
-    void	*results = ReInfo->results;
-    void	*params = ReInfo->params;
+	int curRaceIdx;
+	void *results = ReInfo->results;
+	void *params = ReInfo->params;
 
-    ReUpdateStandings();
-    
-    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
-    if (curRaceIdx < GfParmGetEltNb(params, RM_SECT_RACES)) {
-	curRaceIdx++;
-	GfOut("Race Nb %d\n", curRaceIdx);
-	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, curRaceIdx);
-	return RM_SYNC | RM_NEXT_RACE;
-    }
-    
-    GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
-    return RM_SYNC | RM_NEXT_STEP;
+	//ReUpdateStandings();
+
+	curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
+	if (curRaceIdx < GfParmGetEltNb(params, RM_SECT_RACES)) {
+		curRaceIdx++;
+		GfOut("Race Nb %d\n", curRaceIdx);
+		GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, curRaceIdx);
+		ReUpdateStandings();
+		return RM_SYNC | RM_NEXT_RACE;
+	}
+
+	ReUpdateStandings();
+	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
+	return RM_SYNC | RM_NEXT_STEP;
 }
 
 
 int
 ReEventShutdown(void)
 {
-    int		curTrkIdx;
-    void	*params = ReInfo->params;
-    int		nbTrk = GfParmGetEltNb(params, RM_SECT_TRACKS);
-    int		ret = 0;
-    void	*results = ReInfo->results;
+	int curTrkIdx;
+	void *params = ReInfo->params;
+	int nbTrk = GfParmGetEltNb(params, RM_SECT_TRACKS);
+	int ret = 0;
+	void *results = ReInfo->results;
 
-    ReInfo->_reGraphicItf.shutdowntrack();
+	ReInfo->_reGraphicItf.shutdowntrack();
 
-    curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
-    if (curTrkIdx < nbTrk) {
-	/* Next track  */
-	curTrkIdx++;
-    } else {
-	/* Back to the beginning */
-	curTrkIdx = 1;
-    }
-    GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, curTrkIdx);
-    if (curTrkIdx != 1) {
-	ret =  RM_NEXT_RACE;
-    } else {
-	ret =  RM_NEXT_STEP;
-    }
- 
-    if (nbTrk != 1) {
-	ReDisplayStandings();
-	return RM_ASYNC | ret;
-    }
-    
-    return RM_SYNC | ret;
+	int curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
+	curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
+
+	if (curRaceIdx == 1) {
+		if (curTrkIdx < nbTrk) {
+			// Next track.
+			curTrkIdx++;
+		} else if (curTrkIdx >= nbTrk) {
+			// Back to the beginning.
+			curTrkIdx = 1;
+		}
+	}
+
+	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, curTrkIdx);
+
+	if (curTrkIdx != 1) {
+		ret =  RM_NEXT_RACE;
+	} else {
+		ret =  RM_NEXT_STEP;
+	}
+
+	if (nbTrk != 1) {
+		ReDisplayStandings();
+		return RM_ASYNC | ret;
+	}
+	FREEZ(ReInfo->_reCarInfo);
+
+	return RM_SYNC | ret;
 }
 

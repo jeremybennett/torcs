@@ -131,11 +131,13 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 	/* Time */
 	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);;
 	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
+	free(str);
 
 	/* Best Lap Time */
 	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);;
 	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
-	
+	free(str);
+
 	/* Top Spd */
 	sprintf(buf, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_TOP_SPEED, NULL, 0) * 3.6));
 	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 0);
@@ -285,11 +287,13 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 			x2, y, GFUI_ALIGN_HL_VB, 0);
 
 	if (laps == totLaps) {
-	    if (i == 0) {
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
+		if (i == 0) {
+			str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
 	    } else {
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) - refTime, 1);
+			str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) - refTime, 1);
 	    }
+		GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+		free(str);
 	} else {
 	    dlap = totLaps - laps;
 	    if (dlap == 1) {
@@ -297,11 +301,12 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	    } else {
 		sprintf(buf,"+%d Laps", dlap);
 	    }
-	    str = buf;
+		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+
 	}
-	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
+	/*GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
 			x3, y, GFUI_ALIGN_HR_VB, 0);
-	
+*/
 
 	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
 	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
@@ -452,6 +457,7 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
 	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
 			x3, y, GFUI_ALIGN_HR_VB, 0);
+	free(str);
 	y -= 15;
     }
 

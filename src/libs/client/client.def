@@ -107,3 +107,5 @@ EXPORTS
 	GfctrlMouseInitCenter
 	GfctrlMouseGetCurrent
 	GfctrlJoyGetCurrent
+	GfuiGlutExtensionSupported
+	ssggraph

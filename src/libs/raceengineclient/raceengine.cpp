@@ -146,7 +146,7 @@ ReManage(tCarElt *car)
 	}
     } else if ((car->_pit) && (car->ctrl.raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
-	
+
 	switch (car->_trkPos.seg->type) {
 	case TR_STR:
 	    lgFromStart += car->_trkPos.toStart;
@@ -200,7 +200,7 @@ ReManage(tCarElt *car)
 	    }
 	}
     }
-    
+
     /* Start Line Crossing */
     if (info->prevTrkPos.seg != car->_trkPos.seg) {
 	if ((info->prevTrkPos.seg->raceInfo & TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {
@@ -232,10 +232,15 @@ ReManage(tCarElt *car)
 			case RM_TYPE_PRACTICE:
 			    if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 				ReInfo->_refreshDisplay = 1;
-				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d", 
-					car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0),
+				char *t1, *t2;
+				t1 = GfTime2Str(car->_lastLapTime, 0);
+				t2 = GfTime2Str(car->_bestLapTime, 0);
+				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d",
+					car->_laps - 1, t1, t2,
 					info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
 				ReResScreenAddText(buf);
+				free(t1);
+				free(t2);
 			    }
 			    /* save the lap result */
 			    ReSavePracticeLap(car);
@@ -359,12 +364,25 @@ ReRaceRules(tCarElt *car)
     tTrackSeg		*prevSeg = RtTrackGetSeg(&(info->prevTrkPos));
     static float	color[] = {0.0, 0.0, 1.0, 1.0};
 
-    if (car->_skillLevel < 3) {
+	// DNF cars which need too much time for the current lap, this is mainly to avoid
+	// that a "hanging" driver can stop the quali from finishing.
+	// Allowed time is longest pitstop possible + time for tracklength with speed??? (currently fixed 10 [m/s]).
+	// for simplicity. Human driver is an exception to this rule, to allow explorers
+	// to enjoy the landscape.
+	// TODO: Make it configurable.
+	if ((car->_curLapTime > 84.5 + ReInfo->track->length/10.0) &&
+		(car->_driverType != RM_DRV_HUMAN))
+	{
+		car->_state |= RM_CAR_STATE_ELIMINATED;
+	    return;
+	}
+
+	if (car->_skillLevel < 3) {
 	/* only for the pros */
 	return;
     }
-    
-    penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+
+	penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
     if (penalty) {
 	if (car->_laps > penalty->lapToClear) {
 	    /* too late to clear the penalty, out of race */

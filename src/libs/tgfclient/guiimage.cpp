@@ -45,33 +45,34 @@
 		<br>-1 Error
     @warning	the image must be sqare and its size must be a power of 2.
 */
-int
-GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name)
+int GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name)
 {
-    tGfuiImage	*image;
-    tGfuiObject	*object;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
+	tGfuiImage *image;
+	tGfuiObject *object;
+	tGfuiScreen *screen = (tGfuiScreen*)scr;
 
-    object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
-    object->widget = GFUI_IMAGE;
-    object->focusMode = GFUI_FOCUS_NONE;
-    object->visible = 1;
-    object->id = screen->curId++;
+	object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
+	object->widget = GFUI_IMAGE;
+	object->focusMode = GFUI_FOCUS_NONE;
+	object->visible = 1;
+	object->id = screen->curId++;
 
-    image = &(object->u.image);
-    image->texture = GfImgReadTex(name);
-    if (!image->texture) {
-	free(object);
-	return -1;
-    }
-    object->xmin = x;
-    object->xmax = x + w;
-    object->ymin = y;
-    object->ymax = y + h;
-    
-    gfuiAddObject(screen, object);
+	image = &(object->u.image);
+	image->texture = GfImgReadTex(name);
 
-    return object->id;
+	if (!image->texture) {
+		free(object);
+		return -1;
+	}
+
+	object->xmin = x;
+	object->xmax = x + w;
+	object->ymin = y;
+	object->ymax = y + h;
+
+	gfuiAddObject(screen, object);
+
+	return object->id;
 }
 
 /** Replace an image by another one.
@@ -82,37 +83,36 @@ GfuiStaticImageCreate(void *scr, int x, int y, int w, int h, char *name)
     @return	none
     @warning	the image must be sqare and its size must be a power of 2.
 */
-void
-GfuiStaticImageSet(void *scr, int id, char *name)
+void GfuiStaticImageSet(void *scr, int id, char *name)
 {
-    tGfuiObject *curObject;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
-    tGfuiImage	*image;
+	tGfuiObject *curObject;
+	tGfuiScreen *screen = (tGfuiScreen*)scr;
+	tGfuiImage *image;
 
-    curObject = screen->objects;
-    if (curObject != NULL) {
-	do {
-	    curObject = curObject->next;
-	    if (curObject->id == id) {
-		if (curObject->widget == GFUI_IMAGE) {
-		    image = &(curObject->u.image);
-		    GfImgFreeTex(image->texture);
-		    image->texture = GfImgReadTex(name);
-		}
-		return;
-	    }
-	} while (curObject != screen->objects);
-    }
+	curObject = screen->objects;
+	if (curObject != NULL) {
+		do {
+			curObject = curObject->next;
+			if (curObject->id == id) {
+				if (curObject->widget == GFUI_IMAGE) {
+					image = &(curObject->u.image);
+					GfImgFreeTex(image->texture);
+					image->texture = GfImgReadTex(name);
+				}
+			return;
+			}
+		} while (curObject != screen->objects);
+	}
 }
 
 void
 gfuiReleaseImage(tGfuiObject *obj)
 {
-    tGfuiImage	*image;
+	tGfuiImage	*image;
 
-    image = &(obj->u.image);
-    GfImgFreeTex(image->texture);
-    free(obj);
+	image = &(obj->u.image);
+	GfImgFreeTex(image->texture);
+	free(obj);
 }
 
 void
