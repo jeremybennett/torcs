@@ -384,11 +384,10 @@ void grUpdateCarlight(tCarElt *car,class cGrPerspCamera *curCam, int disp)
 /*   d2=alpha-d1; */
   for (i=0; i<theCarslight[car->index].numberCarlight; i++)
     {
-      clight = (ssgVtxTableCarlight *)theCarslight[car->index].lightArray[i]->clone(SSG_CLONE_GEOMETRY);
       if (!disp) {
-	  clight->setOnOff(0);
 	  continue;
       }
+      clight = (ssgVtxTableCarlight *)theCarslight[car->index].lightArray[i]->clone(SSG_CLONE_GEOMETRY);
       clight->setCullFace(0);
       
       clight->transform(grCarInfo[car->index].carPos);

@@ -59,6 +59,8 @@ class cGrCamera
 	drawBackground = mydrawBackground;
 	mirrorAllowed = mymirrorAllowed;
     }
+
+	virtual ~cGrCamera() {};
     
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
     virtual void setProjection(void) = 0;
