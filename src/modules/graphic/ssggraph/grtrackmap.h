@@ -35,6 +35,7 @@
 
 #ifndef WIN32
 #include <unistd.h>
+#include "win32_glext.h"
 #endif
 #include <math.h>
 

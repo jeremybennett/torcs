@@ -72,8 +72,6 @@ GLfloat cGrTrackMap::behindCarColor[4];
 // layout can be displayed efficiently. Additional data gets initialized.
 cGrTrackMap::cGrTrackMap()
 {
-	//printf("init\n");
-
 	// Hardcoded initial view mode, available per instance.
 	viewmode = TRACK_MAP_NORMAL_WITH_OPPONENTS;
 
@@ -89,11 +87,6 @@ cGrTrackMap::cGrTrackMap()
 		tTrackSeg* seg = first;
 
 
-// Simply disable GL_ARB_texture_compression support for windows.
-// TODO: Windows support.
-#ifdef WIN32
-#undef GL_ARB_texture_compression
-#endif
 // If the OpenGL ARB texture comression extension is defined in the gl.h header file of
 // the build host, include support for GL_ARB_texture_compression.
 #ifdef GL_ARB_texture_compression
@@ -104,7 +97,8 @@ cGrTrackMap::cGrTrackMap()
 
 		// Search the maximum/minimum x/y values of the track (axis aligned bounding box),
 		// to compute later the texture parameters and to be able to place the cars (dots)
-		// correct.
+		// correct. The impementation is inefficient, but it's just executed one time per
+		// race, so it doesn't matter.
 		track_min_x = FLT_MAX;
 		track_max_x = -FLT_MAX;
 		track_min_y = FLT_MAX;
@@ -116,6 +110,7 @@ cGrTrackMap::cGrTrackMap()
 				// Straights are trivial, because the corners are sufficient to create a
 				// bounding box.
 				// TODO: If CCW/CW is known, you just need to check one side (the outside).
+				// TODO: More effiecient checking.
 				checkAndSetMinimum(track_min_x, seg->vertex[TR_SL].x);
 				checkAndSetMinimum(track_min_x, seg->vertex[TR_SR].x);
 				checkAndSetMinimum(track_min_y, seg->vertex[TR_SL].y);
@@ -148,6 +143,7 @@ cGrTrackMap::cGrTrackMap()
 					rx = seg->vertex[TR_SR].x * cs - seg->vertex[TR_SR].y * ss - xc * cs + yc * ss + xc;
 					ry = seg->vertex[TR_SR].x * ss + seg->vertex[TR_SR].y * cs - xc * ss - yc * cs + yc;
 
+					// TODO: More effiecient checking.
 					checkAndSetMinimum(track_min_x, lx);
 					checkAndSetMinimum(track_min_x, rx);
 					checkAndSetMinimum(track_min_y, ly);
@@ -166,6 +162,7 @@ cGrTrackMap::cGrTrackMap()
 		} while (seg != first);
 
 		// Compute the maximum possible texture size possible to create the track texture.
+		// TODO: use pbuffer if available or subdivide and render/readback in multiple passes.
 		int texturesize = 1;
 		int maxtexturesize = MIN(grWinw, grWinh);
 		while (texturesize <= maxtexturesize) {
@@ -204,9 +201,6 @@ cGrTrackMap::cGrTrackMap()
 			track_x_ratio = track_width/track_height;
 		}
 
-		//printf("X: max: %f, min: %f\n", track_max_x, track_min_x);
-		//printf("Y: max: %f, min: %f\n", track_max_y, track_min_y);
-		//printf("%d, %d, %d, %d\n", grWinx, grWiny, grWinw, grWinh);
 		isinitalized = true;
 
 		// Now we are ready to render the track into the framebuffer (backbuffer).
@@ -331,12 +325,24 @@ cGrTrackMap::cGrTrackMap()
 		}
 		glEnd();
 
-		// Read track picture into memory to be able to generate mipmaps.
+// Fix weird bug in Windows version. The problem is the glu version of vc++ 6.0, it's just 1.2,
+// not 1.3, so it can't handle the GL_UNSIGNED_INT_8_8_8_8 type in gluBuild2DMipmaps correctly.
+#ifdef GLU_VERSION_1_3
+#define THE_GL_PIXEL_TYPE	GL_UNSIGNED_INT_8_8_8_8
+#else
+#define	THE_GL_PIXEL_TYPE	GL_BYTE
+#endif
+
+		// Read track picture into memory to be able to generate mipmaps. I read back an RGBA
+		// image because I don't know yet what people want to add to the map, so RGBA is most
+		// flexible to add things like start line, elevation coloring etc.
+		// If it turns out that we leave it white a more efficient solution is possible with
+		// GL_ALPHA or GL_LUMINANCE.
 		GLuint *trackImage = (GLuint*) malloc(texturesize*texturesize*sizeof(GLuint));
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glPixelStorei(GL_PACK_ALIGNMENT, 1);
 		glReadBuffer(GL_BACK);
-		glReadPixels(0, 0, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+		glReadPixels(0, 0, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
 
 		// Finally copy the created image of the track from the framebuffer into the texture.
 		glGenTextures (1, &mapTexture);
@@ -357,7 +363,7 @@ cGrTrackMap::cGrTrackMap()
 			// This texture contains mostly the clear color value and should therefore
 			// compress well even with high quality.
 			glHint(GL_TEXTURE_COMPRESSION_HINT_ARB, GL_NICEST);
-			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_COMPRESSED_RGBA_ARB, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_COMPRESSED_RGBA_ARB, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
 			// The following commented code is just for testing purposes.
 			/*int compressed;
 			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_ARB, &compressed);
@@ -369,13 +375,14 @@ cGrTrackMap::cGrTrackMap()
 			}*/
 		} else {
 			// GL_ARB_texture_compression not available at runtime, fallback.
-			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
 		}
 #else // GL_ARB_texture_compression
-// The build host has not GL_ARB_texture_compression defined in gl.h.
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, trackImage);
+// The build host has not GL_ARB_texture_compression defined in gl.h or in another header file.
+		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
 #endif // GL_ARB_texture_compression
 
+#undef THE_GL_PIXEL_TYPE
 
 		// Free the memory of the initial texture.
 		free(trackImage);

@@ -1,10 +1,10 @@
 /***************************************************************************
                            screen.cpp -- screen init
-                             -------------------                                         
+                             -------------------
     created              : Fri Aug 13 22:29:56 CEST 1999
-    copyright            : (C) 1999, 2002 by Eric Espie                         
-    email                : torcs@free.fr   
-    version              : $Id$                                  
+    copyright            : (C) 1999, 2002 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
 ***************************************************************************/
 
 /***************************************************************************
@@ -16,7 +16,7 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @file   
+/** @file
     Screen management.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
@@ -111,7 +111,7 @@ void GfScrInit(int argc, char *argv[])
     int		fullscreen;
     int		maxfreq;
     int		i, depth;
-    
+
     sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
@@ -127,11 +127,74 @@ void GfScrInit(int argc, char *argv[])
 
     glutInit(&argc, argv);
 
-#ifndef NO_ALPHA_DISPLAY
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE | GLUT_ALPHA);
-#else
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-#endif
+	// Try to get "best" videomode, z-buffer >= 24bit, visual with alpha channel,
+	// antialiasing support.
+
+	int visualDepthBits = 24;
+	bool visualSupportsMultisample = true;
+	bool visualSupportsAlpha = true;
+
+	glutInitDisplayString("rgba double depth>=24 samples alpha");
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// Failed, try without antialiasing support.
+		visualDepthBits = 24;
+		visualSupportsMultisample = false;
+		visualSupportsAlpha = true;
+		glutInitDisplayString("rgba double depth>=24 alpha");
+	}
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// Failed, try without alpha channel.
+		visualDepthBits = 24;
+		visualSupportsMultisample = true;
+		visualSupportsAlpha = false;
+		glutInitDisplayString("rgba double depth>=24 samples");
+	}
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// Failed, try without antialiasing and alpha support.
+		visualDepthBits = 24;
+		visualSupportsMultisample = false;
+		visualSupportsAlpha = false;
+		glutInitDisplayString("rgba double depth>=24");
+	}
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// Failed, try without 24 bit z-Buffer and without antialiasing.
+		visualDepthBits = 16;
+		visualSupportsMultisample = false;
+		visualSupportsAlpha = true;
+		glutInitDisplayString("rgba double depth>=16 alpha");
+	}
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// Failed, try without 24 bit z-Buffer, without antialiasing and without alpha.
+		visualDepthBits = 16;
+		visualSupportsMultisample = false;
+		visualSupportsAlpha = false;
+		glutInitDisplayString("rgba double depth>=16");
+	}
+
+	printf("Visual Properties Report\n");
+	printf("------------------------\n");
+
+	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
+		// All failed.
+		printf("The minimum display requirements are not fulfilled.\n");
+		printf("We need a double buffered RGBA visual with a 16 bit depth buffer at least.\n");
+	} else {
+		// We have got a mode, report the properties.
+		printf("z-buffer depth: %d\n", visualDepthBits);
+		printf("alpha channel : %s\n", visualSupportsAlpha ? "enabled" : "disabled");
+		printf("antialiasing  : %s\n", visualSupportsMultisample ? "enabled" : "disabled");
+		if (visualDepthBits < 24) {
+			// Show a hint if the z-buffer depth is not optimal.
+			printf("The z-buffer resolution is below 24 bit, you will experience rendering\n");
+			printf("artefacts. Try to improve the setup of your graphics board or look\n");
+			printf("for an alternate driver.\n");
+		}
+	}
 
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;
