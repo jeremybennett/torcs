@@ -34,9 +34,9 @@
 		<attstr name="background image" val="background.png"/>
 		<attnum name="background type" val="4"/>
 
-		<attnum name="background color R" val="0.59375"/>
-		<attnum name="background color G" val="0.75"/>
-		<attnum name="background color B" val="0.96875"/>
+		<attnum name="background color R" val="0.45"/>
+		<attnum name="background color G" val="0.45"/>
+		<attnum name="background color B" val="0.5"/>
 
 		<attnum name="ambient color R" val="0.1"/>
 		<attnum name="ambient color G" val="0.1"/>
