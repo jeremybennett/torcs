@@ -727,14 +727,14 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 	}
 	/* need to split this face in more face if there is common points with different texture */
 	for (i=0; i<numvertice; i++) {
-	    for (j=0 ; j<numvertice ; j++) {
-		if (i!=j)
-		    if (object->next->vertexarray[i].indice == object->next->vertexarray[j].indice ) {
-			if ( (object->next->vertexarray[i].u != object->next->vertexarray[j].u) ||
-			     (object->next->vertexarray[i].v != object->next->vertexarray[j].v)) {
-			    needSplit=1;
-			}
+	    for (j=i+1 ; j<numvertice ; j++) {
+		if (object->next->vertexarray[i].indice == object->next->vertexarray[j].indice ) {
+		    if ( (object->next->vertexarray[i].u != object->next->vertexarray[j].u) ||
+			 (object->next->vertexarray[i].v != object->next->vertexarray[j].v)) {
+			needSplit=1;
+			break;
 		    }
+		}
 	    }
 	}
 	if( (typeConvertion==_AC3DTOAC3DS && (extendedStrips==1 || extendedTriangles==1)) ||
@@ -743,7 +743,7 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 	    printf ("Computing normals for %s \n",object->next->name);
 	    computeObjectTriNorm(object->next );
 	}
-	if ( (needSplit!=0 && notexturesplit==0) || ( notexturesplit==0 && collapseObject)) {
+	if ( ((needSplit!=0) && (notexturesplit==0)) || ((notexturesplit==0) && collapseObject)) {
 	    printf ("found in %s , a duplicate coord with not the same u,v, split is required\n",
 		    object->next->name);
 	    splitOb (&object->next);

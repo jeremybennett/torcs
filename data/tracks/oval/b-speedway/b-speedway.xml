@@ -75,9 +75,9 @@
 
     <section name="Terrain Generation">
       <attnum name="track step" unit="m" val="20"/>
-      <attnum name="border margin" unit="m" val="500"/>
+      <attnum name="border margin" unit="m" val="300"/>
       <attnum name="border step" unit="m" val="50"/>
-      <attnum name="border height" unit="m" val="40"/>
+      <attnum name="border height" unit="m" val="20"/>
       <attstr name="surface" val="grass6"/>
     </section>
 
@@ -89,18 +89,6 @@
     <attnum name="width" unit="m" val="30.0"/>
     <attnum name="profil steps length" unit="m" val="10"/>
 
-    <section name="Right Side">
-      <attstr name="surface"  val="concrete"/>
-      <attnum name="width"    val="2.0"/>
-      <attstr name="type" in="tangent,level" val="tangent"/>
-    </section>
-
-    <section name="Left Side">
-      <attstr name="surface"  val="asphalt-pits"/>
-      <attnum name="width"    val="15.0"/>
-      <attstr name="type" in="tangent,level" val="level"/>
-    </section>
-
     <!-- PITS -->
     <section name="Pits">
       <attstr name="type" val="track side"/>
@@ -110,7 +98,7 @@
       <attstr name="end" val="start lane"/>
       <attstr name="exit" val="pit exit"/>
       <attnum name="length" unit="m" val="15"/>
-      <attnum name="width" unit="m" val="5"/>
+      <attnum name="width" unit="m" val="6"/>
     </section>  <!-- PITS -->
 
     <section name="Track Segments">
@@ -122,17 +110,11 @@
 	<attnum name="banking start" unit="deg" val="-15"/>
 	<attnum name="banking end" unit="deg" val="-15"/>
 
-	<section name="Right Side">
-	  <attnum name="start width" val="2"/>
-	  <attnum name="end width" val="2"/>
-	  <attstr name="surface" val="concrete"/>
-	  <attstr name="type" in="level,tangent" val="tangent"/>
-	</section>
-
-	<section name="Right Border">
-	  <attnum name="width" val="1.0"/>
-	  <attstr name="surface" val="b-concrete4-concrete-l1"/>
-	  <attstr name="style" val="plan"/>
+	<section name="Right Barrier">
+	  <attstr name="surface" val="wall"/>
+	  <attstr name="style" val="wall"/>
+	  <attnum name="width" val="0.5"/>
+	  <attnum name="height" val="1.5"/>	  
 	</section>
 
 	<section name="Left Border">
@@ -170,7 +152,7 @@
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="400"/>
 	<attnum name="arc" unit="deg" val="30"/>
-	<attnum name="banking end" unit="deg" val="-30"/>
+	<attnum name="banking end" unit="deg" val="-16"/>
 	<attnum name="z end" val="3.88"/>
 
  	<section name="Left Border">
@@ -212,7 +194,7 @@
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="400"/>
 	<attnum name="arc" unit="deg" val="30"/>
-	<attnum name="banking end" unit="deg" val="-30"/>
+	<attnum name="banking end" unit="deg" val="-16"/>
  	<attnum name="z end" val="3.88"/>
      </section>
 
@@ -248,7 +230,7 @@
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="400"/>
 	<attnum name="arc" unit="deg" val="30"/>
-	<attnum name="banking end" unit="deg" val="-30"/>
+	<attnum name="banking end" unit="deg" val="-16"/>
  	<attnum name="z end" val="3.88"/>
       </section>
 
@@ -304,8 +286,112 @@
 
 
     </section>
+  </section>
+
+  <!-- Cameras -->
+  <section name="Cameras">
+
+    <section name="cam 0">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="start lane"/>
+      <attnum name="to right" val="0"/>
+      <attnum name="to start" val="100"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="start lane"/> <!-- included  -->
+      <attstr name="fov end"   val="turn1-1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 1">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="turn1-2"/>
+      <attnum name="to right" val="40"/>
+      <attnum name="to start" unit="deg" val="30"/>
+      <attnum name="height"   val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn1-1"/> <!-- included  -->
+      <attstr name="fov end"   val="line2-1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 2">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="line2-1"/>
+      <attnum name="to right" val="50"/>
+      <attnum name="to start" val="150"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="line2-1"/> <!-- included  -->
+      <attstr name="fov end"   val="line2-2"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 3">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="line2-2"/>
+      <attnum name="to right" val="50"/>
+      <attnum name="to start" val="150"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="line2-2"/> <!-- included  -->
+      <attstr name="fov end"   val="turn2-1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 4">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="turn2-2"/>
+      <attnum name="to right" val="40"/>
+      <attnum name="to start" unit="deg" val="30"/>
+      <attnum name="height"   val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn2-1"/> <!-- included  -->
+      <attstr name="fov end"   val="line3-1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 5">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="line3-1"/>
+      <attnum name="to right" val="50"/>
+      <attnum name="to start" val="150"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="line3-1"/> <!-- included  -->
+      <attstr name="fov end"   val="line3-2"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 6">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="line3-2"/>
+      <attnum name="to right" val="50"/>
+      <attnum name="to start" val="150"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="line3-2"/> <!-- included  -->
+      <attstr name="fov end"   val="turn3-1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 7">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="turn3-2"/>
+      <attnum name="to right" val="40"/>
+      <attnum name="to start" unit="deg" val="30"/>
+      <attnum name="height"   val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn3-1"/> <!-- included  -->
+      <attstr name="fov end"   val="pit entry"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 8">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"  val="last seg"/>
+      <attnum name="to right" val="0"/>
+      <attnum name="to start" val="100"/>
+      <attnum name="height"   val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="pit entry"/> <!-- included  -->
+      <attstr name="fov end"   val="start lane"/> <!-- excluded -->
+    </section>
 
   </section>
+
 
 </params>
 

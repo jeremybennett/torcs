@@ -1708,12 +1708,12 @@ insert_elem_in_group(struct ele *elem, struct nod *nods)
     }
     curSurf = &(curGrp->surfaces[curGrp->nbsurf++]);
 
-    curSurf->ref[0].u = nods[elem->i].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
-    curSurf->ref[0].v = nods[elem->i].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
-    curSurf->ref[1].u = nods[elem->j].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
-    curSurf->ref[1].v = nods[elem->j].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
-    curSurf->ref[2].u = nods[elem->k].x / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
-    curSurf->ref[2].v = nods[elem->k].y / TexSize + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[0].u = nods[elem->i].x / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[0].v = nods[elem->i].y / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[1].u = nods[elem->j].x / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[1].v = nods[elem->j].y / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[2].u = nods[elem->k].x / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
+    curSurf->ref[2].v = nods[elem->k].y / TexSize; // + (TexRand * rand()/(RAND_MAX+1.0));
     
     curSurf->ref[0].vtxidx = insert_node_in_group(&(nods[elem->i]), curGrp);
     curSurf->ref[1].vtxidx = insert_node_in_group(&(nods[elem->j]), curGrp);
@@ -2271,19 +2271,19 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
 	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
 	GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
 	if (curFd) {
-	    draw_ac(curFd, "terr");
+	    draw_ac(curFd, "TERR");
 	}
 	if (AllFd) {
-	    draw_ac(AllFd, "terr");
+	    draw_ac(AllFd, "TERR");
 	}
     } else {
 	GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
 	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
 	if (curFd) {
-	    draw_ac(curFd, "terr");
+	    draw_ac(curFd, "TERR");
 	}
 	if (AllFd) {
-	    draw_ac(AllFd, "terr");
+	    draw_ac(AllFd, "TERR");
 	}
     }
     if (curFd) {

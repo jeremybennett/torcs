@@ -133,7 +133,7 @@ void loadAndGroup( char *OutputFileName)
 	  continue;
 	}
       notinsameorder=FALSE;
-      if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
+      if (!stricmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob1 */
 	  tmpob->texture1=tmpob2->texture;
@@ -177,7 +177,7 @@ void loadAndGroup( char *OutputFileName)
 	  continue;
 	}
 
-      if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
+      if (!stricmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob2 */
 	  tmpob->texture2=tmpob2->texture;
@@ -207,7 +207,7 @@ void loadAndGroup( char *OutputFileName)
 	  tmpob2=tmpob2->next;
 	  continue;
 	}
-      if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
+      if (!stricmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob2 */
 	  tmpob->texture3=tmpob2->texture;

@@ -38,12 +38,12 @@
     <attstr name="3d description" val="mixed-1.acc"/>
     <attstr name="background image" val="background.png"/>
     <attnum name="background type" val="4"/>
-    <attnum name="background color R" val="0.59375"/>
-    <attnum name="background color G" val="0.75"/>
-    <attnum name="background color B" val="0.96875"/>
-    <attnum name="ambient color R" val="0.8"/>
-    <attnum name="ambient color G" val="0.8"/>
-    <attnum name="ambient color B" val="0.8"/>
+    <attnum name="background color R" val="0.3"/>
+    <attnum name="background color G" val="0.3"/>
+    <attnum name="background color B" val="0.3"/>
+    <attnum name="ambient color R" val="0.3"/>
+    <attnum name="ambient color G" val="0.3"/>
+    <attnum name="ambient color B" val="0.3"/>
     <section name="Environment Mapping">
       <section name="1">
 	<attstr name="env map image" val="tracks/mixed-1/env1.png"/>
@@ -54,7 +54,7 @@
       <attnum name="track step" unit="m" val="25"/>
       <attnum name="border margin" unit="m" val="100"/>
       <attnum name="border step" unit="m" val="20"/>
-      <attnum name="border height" unit="m" val="5"/>
+      <attnum name="border height" unit="m" val="0"/>
       <attstr name="orientation" val="clockwise"/>
     </section>
   </section>
@@ -86,13 +86,13 @@
  	<attnum name="banking end" val="4" unit="deg"/>
       </section>
 
-      <section name="turn1">
+      <section name="t1">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="turn1-2">
+      <section name="t1-2">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="45"/>
@@ -106,7 +106,7 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn2">
+      <section name="t2">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="90"/>
@@ -120,13 +120,13 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn3">
+      <section name="t3">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="s5">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="20"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -134,7 +134,7 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="segment1">
+      <section name="s6">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="70"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -145,24 +145,24 @@
 	<attstr name="lside surface"  val="dirt-b"/>
       </section>
 
-      <section name="turn4">
+      <section name="t4">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment2">
+      <section name="s7">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="10"/>
       </section>
 
-      <section name="turn5">
+      <section name="t5">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment3">
+      <section name="s8">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="10"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -170,19 +170,19 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn6">
+      <section name="t6">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="15"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="turn7">
+      <section name="t7">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment4">
+      <section name="s9">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="40"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -190,13 +190,13 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn8">
+      <section name="t8">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="180"/>
       </section>
 
-      <section name="segment5">
+      <section name="s10">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -204,13 +204,13 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn9">
+      <section name="t9">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="45"/>
       </section>
 
-      <section name="segment6">
+      <section name="s11">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -218,13 +218,13 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn10">
+      <section name="t10">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="180"/>
       </section>
 
-      <section name="segment7">
+      <section name="s12">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -232,24 +232,24 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="turn11">
+      <section name="t11">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment8">
+      <section name="s13">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
       </section>
 
-      <section name="turn12">
+      <section name="t12">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="10"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment9">
+      <section name="s14">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -257,7 +257,7 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="segment10">
+      <section name="s15">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="40"/>
 	<attstr name="surface" in="asphalt,concrete,grass,sand,dirt" val="asphalt-lines"/>
@@ -265,26 +265,111 @@
 	<attstr name="lside surface"  val="asphalt"/>
       </section>
 
-      <section name="turn13">
+      <section name="t13">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment11">
+      <section name="s16">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="112.426559"/>
       </section>
 
-      <section name="turn14">
+      <section name="t14">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="s15">
+      <section name="s17">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="70"/>
+      </section>
+
+    </section>
+
+  </section>
+
+  <section name="Cameras">
+
+    <section name="list">
+
+      <section name="c1">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s1"/>
+	<attnum name="to right"  val="-6.0"/>
+	<attnum name="to start"  val="80"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s17"/>
+	<attstr name="fov end"   val="t2"/>	
+      </section>
+
+      <section name="c2">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s4"/>
+	<attnum name="to right"  val="-6.0"/>
+	<attnum name="to start"  val="20"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t2"/>
+	<attstr name="fov end"   val="s6"/>	
+      </section>
+
+      <section name="c3">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s7"/>
+	<attnum name="to right"  val="-6.0"/>
+	<attnum name="to start"  val="5"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s6"/>
+	<attstr name="fov end"   val="s9"/>	
+      </section>
+
+      <section name="c4">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t8"/>
+	<attnum name="to right"  val="-7.0"/>
+	<attnum name="to start"  unit="deg" val="90"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s9"/>
+	<attstr name="fov end"   val="t9"/>	
+      </section>
+
+      <section name="c5">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t10"/>
+	<attnum name="to right"  val="-7.0"/>
+	<attnum name="to start"  unit="deg" val="90"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t9"/>
+	<attstr name="fov end"   val="s13"/>	
+      </section>
+
+      <section name="c6">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s14"/>
+	<attnum name="to right"  val="20.0"/>
+	<attnum name="to start"  val="0"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s13"/>
+	<attstr name="fov end"   val="s16"/>	
+      </section>
+
+      <section name="c7">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t14"/>
+	<attnum name="to right"  val="20.0"/>
+	<attnum name="to start"  val="0"/>
+	<attnum name="height"    val="3"/>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s16"/>
+	<attstr name="fov end"   val="s17"/>	
       </section>
 
     </section>

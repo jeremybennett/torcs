@@ -150,43 +150,43 @@
     <section name="data points">
       <section name="1">
 	<attnum name="rpm" unit="rpm" val="1024"/>
-	<attnum name="Tq" unit="N.m" val="317"/>
+	<attnum name="Tq" unit="N.m" val="217"/>
       </section>
       <section name="2">
 	<attnum name="rpm" unit="rpm" val="2048"/>
-	<attnum name="Tq" unit="N.m" val="339"/>
+	<attnum name="Tq" unit="N.m" val="239"/>
       </section>
       <section name="3">
 	<attnum name="rpm" unit="rpm" val="3072"/>
-	<attnum name="Tq" unit="N.m" val="365"/>
+	<attnum name="Tq" unit="N.m" val="265"/>
       </section>
       <section name="4">
 	<attnum name="rpm" unit="rpm" val="4096"/>
-	<attnum name="Tq" unit="N.m" val="461"/>
+	<attnum name="Tq" unit="N.m" val="361"/>
       </section>
       <section name="5">
 	<attnum name="rpm" unit="rpm" val="5120"/>
-	<attnum name="Tq" unit="N.m" val="442"/>
+	<attnum name="Tq" unit="N.m" val="342"/>
       </section>
       <section name="6">
 	<attnum name="rpm" unit="rpm" val="5888"/>
-	<attnum name="Tq" unit="N.m" val="472"/>
+	<attnum name="Tq" unit="N.m" val="372"/>
       </section>
       <section name="7">
 	<attnum name="rpm" unit="rpm" val="7168"/>
-	<attnum name="Tq" unit="N.m" val="428"/>
+	<attnum name="Tq" unit="N.m" val="328"/>
       </section>
       <section name="8">
 	<attnum name="rpm" unit="rpm" val="8192"/>
-	<attnum name="Tq" unit="N.m" val="354"/>
+	<attnum name="Tq" unit="N.m" val="254"/>
       </section>
       <section name="9">
 	<attnum name="rpm" unit="rpm" val="9216"/>
-	<attnum name="Tq" unit="N.m" val="200"/>
+	<attnum name="Tq" unit="N.m" val="100"/>
       </section>
       <section name="10">
 	<attnum name="rpm" unit="rpm" val="10000"/>
-	<attnum name="Tq" unit="N.m" val="147"/>
+	<attnum name="Tq" unit="N.m" val="47"/>
       </section>
     </section>
   </section>

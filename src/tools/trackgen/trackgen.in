@@ -28,6 +28,8 @@ VARDIR=@localstatedir@/games/torcs
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBDIR/lib
 
+echo "Changing to $DATADIR"
+cd $DATADIR
 $LIBDIR/trackgen-bin -L $LIBDIR $*
 
 exit 0

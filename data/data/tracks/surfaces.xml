@@ -190,9 +190,9 @@
 	<attnum name="bump size" val="2.0" unit="m"/>
 
 	<attnum name="friction"           val="0.8"/>
-	<attnum name="rolling resistance" val="0.003"/>
+	<attnum name="rolling resistance" val="0.0035"/>
 
-	<attnum name="roughness" unit="mm" val="0.8"/>
+	<attnum name="roughness" unit="mm" val="1.0"/>
 	<attnum name="roughness wavelength" unit="cm" val="5.0"/>
       </section>
 

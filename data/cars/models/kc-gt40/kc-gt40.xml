@@ -119,7 +119,7 @@
     <attnum name="body height" unit="m" val="1.0"/>
 
     <attnum name="mass" unit="kg" val="1136"/>
-    <attnum name="GC height" unit="m" val="0.2"/>
+    <attnum name="GC height" unit="m" val="0.15"/>
 
     <attnum name="front-rear weight repartition" val="0.56"/>
     <!-- used for inertia, indicates the good mass centering (lower values) -->
@@ -333,13 +333,13 @@
   <section name="Front Axle">
     <attnum name="xpos" val="1.04"/>
     <attnum name="inertia" unit="kg.m2" val="0.0056"/>
-    <attnum name="roll center height" unit="m" val="0.1"/>
+    <attnum name="roll center height" unit="m" val="0.15"/>
   </section>
 
   <section name="Rear Axle">
     <attnum name="xpos" val="-1.32"/>
     <attnum name="inertia" unit="kg.m2" val="0.008"/>
-    <attnum name="roll center height" unit="m" val="0.1"/>
+    <attnum name="roll center height" unit="m" val="0.15"/>
   </section>
 
   <section name="Front Differential">
