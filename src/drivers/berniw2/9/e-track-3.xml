@@ -50,8 +50,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.36"/>
-    <attnum name="max pressure" unit="kPa" val="28000"/>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.34"/>
+    <attnum name="max pressure" unit="kPa" val="45000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -136,7 +136,7 @@
 
   <section name="berniw private">
     <attnum name="caero" val="1.0"/>
-    <attnum name="cfriction" val="1.35"/>
+    <attnum name="cfriction" val="1.3"/>
   </section>
 
 </params>
