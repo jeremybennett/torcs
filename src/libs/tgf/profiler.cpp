@@ -22,7 +22,6 @@
 
 #include <string.h>
 
-#include "profiler.h"
 #include <tgf.h>
 
 
