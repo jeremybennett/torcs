@@ -346,8 +346,8 @@ XML_Parser XML_ParserCreate(const XML_Char *encodingName)
   tagStack = 0;
   freeTagList = 0;
   attsSize = INIT_ATTS_SIZE;
-  atts = malloc(attsSize * sizeof(ATTRIBUTE));
-  dataBuf = malloc(INIT_DATA_BUF_SIZE * sizeof(XML_Char));
+  atts = (ATTRIBUTE*)malloc(attsSize * sizeof(ATTRIBUTE));
+  dataBuf = (XML_Char*)malloc(INIT_DATA_BUF_SIZE * sizeof(XML_Char));
   groupSize = 0;
   groupConnector = 0;
   hadExternalDoctype = 0;
@@ -551,7 +551,7 @@ int XML_Parse(XML_Parser parser, const char *s, int len, int isFinal)
     if (nLeftOver) {
       if (buffer == 0 || nLeftOver > bufferLim - buffer) {
 	/* FIXME avoid integer overflow */
-	buffer = buffer == 0 ? malloc(len * 2) : realloc(buffer, len * 2);
+	buffer = buffer == 0 ? (char*)malloc(len * 2) : (char*)realloc(buffer, len * 2);
 	if (!buffer) {
 	  errorCode = XML_ERROR_NO_MEMORY;
 	  eventPtr = eventEndPtr = 0;
@@ -608,7 +608,7 @@ void *XML_GetBuffer(XML_Parser parser, int len)
       do {
 	bufferSize *= 2;
       } while (bufferSize < neededSize);
-      newBuf = malloc(bufferSize);
+      newBuf = (char*)malloc(bufferSize);
       if (newBuf == 0) {
 	errorCode = XML_ERROR_NO_MEMORY;
 	return 0;
@@ -942,10 +942,10 @@ doContent(XML_Parser parser,
 	  freeTagList = freeTagList->parent;
 	}
 	else {
-	  tag = malloc(sizeof(TAG));
+	  tag = (TAG*)malloc(sizeof(TAG));
 	  if (!tag)
 	    return XML_ERROR_NO_MEMORY;
-	  tag->buf = malloc(INIT_TAG_BUF_SIZE);
+	  tag->buf = (char*)malloc(INIT_TAG_BUF_SIZE);
 	  if (!tag->buf)
 	    return XML_ERROR_NO_MEMORY;
 	  tag->bufEnd = tag->buf + INIT_TAG_BUF_SIZE;
@@ -958,7 +958,7 @@ doContent(XML_Parser parser,
 	  if (tag->rawNameLength > tag->bufEnd - tag->buf) {
 	    int bufSize = tag->rawNameLength * 4;
 	    bufSize = ROUND_UP(bufSize, sizeof(XML_Char));
-	    tag->buf = realloc(tag->buf, bufSize);
+	    tag->buf = (char*)realloc(tag->buf, bufSize);
 	    if (!tag->buf)
 	      return XML_ERROR_NO_MEMORY;
 	    tag->bufEnd = tag->buf + bufSize;
@@ -985,7 +985,7 @@ doContent(XML_Parser parser,
 	    if (fromPtr == rawNameEnd)
 	      break;
 	    bufSize = (tag->bufEnd - tag->buf) << 1;
-	    tag->buf = realloc(tag->buf, bufSize);
+	    tag->buf = (char*)realloc(tag->buf, bufSize);
 	    if (!tag->buf)
 	      return XML_ERROR_NO_MEMORY;
 	    tag->bufEnd = tag->buf + bufSize;
@@ -1197,7 +1197,7 @@ static enum XML_Error storeAtts(XML_Parser parser, const ENCODING *enc,
   if (n + nDefaultAtts > attsSize) {
     int oldAttsSize = attsSize;
     attsSize = n + nDefaultAtts + INIT_ATTS_SIZE;
-    atts = realloc((void *)atts, attsSize * sizeof(ATTRIBUTE));
+    atts = (ATTRIBUTE*)realloc((void *)atts, attsSize * sizeof(ATTRIBUTE));
     if (!atts)
       return XML_ERROR_NO_MEMORY;
     if (n > oldAttsSize)
@@ -1742,9 +1742,9 @@ prologProcessor(XML_Parser parser,
     case XML_ROLE_GROUP_OPEN:
       if (prologState.level >= groupSize) {
 	if (groupSize)
-	  groupConnector = realloc(groupConnector, groupSize *= 2);
+	  groupConnector = (char*)realloc(groupConnector, groupSize *= 2);
 	else
-	  groupConnector = malloc(groupSize = 32);
+	  groupConnector = (char*)malloc(groupSize = 32);
 	if (!groupConnector)
 	  return XML_ERROR_NO_MEMORY;
       }
@@ -2150,11 +2150,11 @@ defineAttribute(ELEMENT_TYPE *type, ATTRIBUTE_ID *attId, int isCdata, const XML_
   if (type->nDefaultAtts == type->allocDefaultAtts) {
     if (type->allocDefaultAtts == 0) {
       type->allocDefaultAtts = 8;
-      type->defaultAtts = malloc(type->allocDefaultAtts*sizeof(DEFAULT_ATTRIBUTE));
+      type->defaultAtts = (DEFAULT_ATTRIBUTE*)malloc(type->allocDefaultAtts*sizeof(DEFAULT_ATTRIBUTE));
     }
     else {
       type->allocDefaultAtts *= 2;
-      type->defaultAtts = realloc(type->defaultAtts,
+      type->defaultAtts = (DEFAULT_ATTRIBUTE*)realloc(type->defaultAtts,
 				  type->allocDefaultAtts*sizeof(DEFAULT_ATTRIBUTE));
     }
     if (!type->defaultAtts)
@@ -2548,7 +2548,7 @@ int poolGrow(STRING_POOL *pool)
   }
   if (pool->blocks && pool->start == pool->blocks->s) {
     int blockSize = (pool->end - pool->start)*2;
-    pool->blocks = realloc(pool->blocks, offsetof(BLOCK, s) + blockSize * sizeof(XML_Char));
+    pool->blocks = (BLOCK*)realloc(pool->blocks, offsetof(BLOCK, s) + blockSize * sizeof(XML_Char));
     if (!pool->blocks)
       return 0;
     pool->blocks->size = blockSize;
@@ -2563,7 +2563,7 @@ int poolGrow(STRING_POOL *pool)
       blockSize = INIT_BLOCK_SIZE;
     else
       blockSize *= 2;
-    tem = malloc(offsetof(BLOCK, s) + blockSize * sizeof(XML_Char));
+    tem = (BLOCK*)malloc(offsetof(BLOCK, s) + blockSize * sizeof(XML_Char));
     if (!tem)
       return 0;
     tem->size = blockSize;
