@@ -228,7 +228,7 @@ SimCarUpdateForces(tCar *car)
     for (i = 0; i < 4; i++) {
 		tWheel* wheel = &(car->wheel[i]);
 		/* forces */
-		tdble susp_pos_y = wheel->staticPos.y - sin(car->wheel->staticPos.ax)*SIGN(wheel->staticPos.y);
+		tdble susp_pos_y = wheel->staticPos.y - sin(wheel->staticPos.ax)*SIGN(wheel->staticPos.y);
 
 		F.F.x += wheel->forces.x;
 		F.F.y += wheel->forces.y;
