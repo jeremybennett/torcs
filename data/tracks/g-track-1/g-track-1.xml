@@ -66,7 +66,7 @@
 
   <section name="Header">
     <attstr name="name"              val="CG Speedway number 1"/>
-    <attstr name="category"    	     val="oval"/>
+    <attstr name="category"    	     val="road"/>
     <attnum name="version"           val="3"/>
     <attstr name="author"            val="CG"/>
     <attstr name="description"       val="g"/>
