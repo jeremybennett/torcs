@@ -3,18 +3,18 @@ MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.5 0.5 0.5  sh
 OBJECT world
 kids 1
 OBJECT poly
-name "rect"
-loc 0 6 0
+name "tree1"
+loc -2.5 0 -2.5
 texture "tree1.rgb"
 numvert 8
--2.5 6 0
-2.5 6 0
-2.5 -6 0
--2.5 -6 0
-1.11759e-07 6 2.5
--1.11759e-07 6 -2.5
--1.11759e-07 -6 -2.5
-1.11759e-07 -6 2.5
+0 12 2.5
+5 12 2.5
+5 0 2.5
+0 0 2.5
+2.5 12 5
+2.5 12 0
+2.5 0 0
+2.5 0 5
 numsurf 2
 SURF 0x30
 mat 0

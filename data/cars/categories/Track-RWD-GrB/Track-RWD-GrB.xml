@@ -236,7 +236,7 @@
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE" val="FREE"></attstr>
     <attnum name="inertia" unit="kg.m2" val="0.0488"></attnum>
-    <attnum name="ratio" min="0" max="15" val="3.444"></attnum>
+    <attnum name="ratio" min="0" max="10" val="3.444"></attnum>
     <attnum name="efficiency" min=".5" max="1.0" val="0.9625"></attnum>
   </section>
 

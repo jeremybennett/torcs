@@ -26,7 +26,10 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#include <plib/ssg.h>
+
 extern int GetFilename(char *filename, char *filepath, char *buf);
+extern float getHOT(ssgRoot *root, float x, float y);
 
 
 #endif /* _UTIL_H_ */ 

@@ -110,10 +110,6 @@ SOURCE=.\directory.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\racemantools\driverselect.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\gui.cpp
 # End Source File
 # Begin Source File
@@ -178,19 +174,7 @@ SOURCE=.\params.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\racemantools\pitmenu.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\ringlist.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\robottools\rttelem.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\robottools\rttrack.cpp
 # End Source File
 # Begin Source File
 
@@ -207,10 +191,6 @@ SOURCE=.\tgf.def
 # Begin Source File
 
 SOURCE=.\trace.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\racemantools\trackselect.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -235,14 +215,6 @@ SOURCE=.\os.h
 # Begin Source File
 
 SOURCE=.\params.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\racemantools\racemantools.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\robottools\robottools.h
 # End Source File
 # Begin Source File
 

@@ -59,7 +59,7 @@
 
   <!-- Engine Max curve -->
   <section name="Engine">
-    <attnum name="inertia"      unit="kg.m2" val="0.08"></attnum>
+    <attnum name="inertia" min="0.06" val="0.08" unit="kg.m2"></attnum>
     <attnum name="revs limiter" min="3000" max="9500" unit="rpm" val="9000"></attnum>
     <attnum name="revs maxi" min="3000" max="10000" unit="rpm" val="10000"></attnum>
     <attnum name="tickover" min="500" max="5000" unit="rpm" val="2000"></attnum>

@@ -15,20 +15,24 @@
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
 <!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "data/tracks/objects.xml">
 ]>
 
 <params name="dirt 5" type="trackdef" mode="mw">
 
   <section name="Surfaces">
-    <section name="List">
       &default-surfaces;
-    </section>
   </section>
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
 
   <section name="Header">
     <attstr name="name"        val="Dirt 1"></attstr>
     <attstr name="category"    val="dirt"></attstr>
-    <attnum name="version"     val="3"></attnum>
+    <attnum name="version"     val="4"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val="Track for Offroad cars"></attstr>
   </section>
@@ -53,9 +57,19 @@
       <attnum name="border height" unit="m" val="10"></attnum>
       <attstr name="orientation" val="clockwise"></attstr>
 
+      <attstr name="relief file" val="dirt-1-relief.ac"></attstr>
       <attstr name="elevation map" val="elevation-map.png"></attstr>
-      <attnum name="maximum altitude" val="25"></attnum>
+      <attnum name="maximum altitude" val="30"></attnum>
       <attnum name="minimum altitude" val="0"></attnum>
+
+      <section name="Object Maps">
+	<section name="map 1">
+	  <attstr name="object map" val="objects-map1.png"></attstr>
+	</section>
+	<section name="map 2">
+	  <attstr name="object map" val="objects-map2.png"></attstr>
+	</section>
+      </section>
 
     </section>
 
@@ -66,15 +80,19 @@
     <attstr name="surface" val="dirt"></attstr>
     <attnum name="width" unit="m" val="10.0"></attnum>
 
-    <attstr name="rside surface"  val="dirt-b"></attstr>
-    <attnum name="rside width"    val="4.0"></attnum>
-    <attstr name="rside type" in="tangent,level" val="level"></attstr>
+    <section name="Right Side">
+      <attstr name="surface"  val="dirt-b"></attstr>
+      <attnum name="width"    val="4.0"></attnum>
+      <attstr name="type" in="tangent,level" val="level"></attstr>
+    </section>
 
-    <attstr name="lside surface"  val="dirt-b"></attstr>
-    <attnum name="lside width"    val="4.0"></attnum>
-    <attstr name="lside type" in="tangent,level" val="level"></attstr>
+    <section name="Left Side">
+      <attstr name="surface"  val="dirt-b"></attstr>
+      <attnum name="width"    val="4.0"></attnum>
+      <attstr name="type" in="tangent,level" val="level"></attstr>
+    </section>
 
-    <section name="segments">
+    <section name="Track Segments">
 
       <section name="start lane">
         <attstr name="type" val="str"></attstr>
@@ -180,12 +198,45 @@
       <section name="t7-1">
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="60"></attnum>
-	<attnum name="arc" unit="deg" val="140"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
  	<attnum name="banking end" val="3" unit="deg"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="15"></attnum>
 	<attnum name="grade" val="5" unit="%"></attnum>
 	<attnum name="profil end tangent" val="5" unit="%"></attnum>
+	<section name="Right Barrier">
+	  <attstr name="surface" val="wall"></attstr>
+	  <attstr name="style" val="wall"></attstr>
+	  <attnum name="width" val="0.5"></attnum>
+	  <attnum name="height" val="1.0"></attnum>	  
+	</section>
+	<section name="Left Barrier">
+	  <attstr name="surface" val="wall"></attstr>
+	  <attstr name="style" val="wall"></attstr>
+	  <attnum name="width" val="0.5"></attnum>
+	  <attnum name="height" val="1.0"></attnum>	  
+	</section>
+      </section>
+
+      <section name="t7-1b">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+ 	<attnum name="banking end" val="3" unit="deg"></attnum>
+	<attstr name="profil" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+	<attnum name="grade" val="5" unit="%"></attnum>
+	<attnum name="profil end tangent" val="5" unit="%"></attnum>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="0.6"></attnum>
+	  <attstr name="surface" val="barrier"></attstr>
+	</section>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="0.6"></attnum>
+	  <attstr name="surface" val="barrier"></attstr>
+	</section>
       </section>
 
       <section name="t6">
@@ -322,7 +373,6 @@
 
   </section>
   <section name="Cameras">
-    <section name="list">
 
 
       <section name="cam0">
@@ -391,7 +441,6 @@
 	<attstr name="fov end"   val="start lane"></attstr>	
       </section>
 
-    </section>
   </section>
 </params>
 

@@ -58,15 +58,17 @@ static int	nFrame;
 static float	Fps;
 double		grCurTime;
 double		grDeltaTime;
+int		segIndice	= 0;
 
 static int grWindowRatio = 0;
 int grNbCars;
 
 void *grHandle = NULL;
+void *grTrackHandle = NULL;
+
 int grWinx, grWiny, grWinw, grWinh;
 
 tgrCarInfo	*grCarInfo;
-
 ssgContext	grContext;
 
 int
@@ -171,7 +173,7 @@ initCars(tSituation *s)
 
     TRACE_GL("initCars: start");
 
-    grHandle = GfParmReadFile("config/graph.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
     
@@ -216,13 +218,15 @@ shutdownCars(void)
 	free(grCarInfo);
     }
     GfParmReleaseHandle(grHandle);
-    GfParmReleaseHandle(grHandle);
 }
 
 int
 refresh(tSituation *s)
 {
     int			i;
+    ssgLight *          light;
+
+    light=ssgGetLight(0);
 
     nFrame++;
     grCurTime = GfTimeClock();
@@ -256,11 +260,23 @@ refresh(tSituation *s)
     }
     grCurCam->action();
 
+    sgVec4 fogColor;
+    light->getColour(GL_AMBIENT, fogColor);
+    sgScaleVec4(fogColor, 0.5);
+    fogColor[3] = 0.5;
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_DENSITY, 0.05);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
+    glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
+    glEnable(GL_FOG);
+
     glEnable(GL_LIGHTING);    
     for (i = 0; i < s->_ncars; i++) {
 	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
     }
-
+    segIndice = (s->cars[s->current])->_trkPos.seg->id;
     grUpdateSmoke(grDeltaTime, grCurTime);
 
     grDrawScene();
@@ -283,6 +299,7 @@ refresh(tSituation *s)
 
     glEnable(GL_LIGHTING);
 
+
     return 0;
 }
 
@@ -292,6 +309,7 @@ initTrack(tTrack *track)
     ssgInit();
 
     grContext.makeCurrent();
+    grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     grInitScene(track);
     return 0;
 }

@@ -117,11 +117,13 @@ class cGrPerspCamera : public cGrCamera
     float fovydflt;
     float fnear;
     float ffar;
+    float fogstart;
+    float fogend;
     
  public:
     cGrPerspCamera(int id, int drawCurr, int drawBG,
 		   float myfovy, float myfovymin, float myfovymax,
-		   float myfnear, float myffar = 1500.0)
+		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0)
 	: cGrCamera(id, drawCurr, drawBG) {
 	fovy     = myfovy;
 	fovymin  = myfovymin;
@@ -129,6 +131,8 @@ class cGrPerspCamera : public cGrCamera
 	fnear    = myfnear;
 	ffar     = myffar;
 	fovydflt = myfovy;
+	fogstart = myfogstart;
+	fogend   = myfogend;
     }
     
     void setProjection(void);
@@ -136,7 +140,8 @@ class cGrPerspCamera : public cGrCamera
     void loadDefaults(char *attr);
     void setZoom(int cmd);
     float getLODFactor(float x, float y, float z);
-    
+    float getFogStart(void) { return fogstart; }
+    float getFogEnd(void) { return fogend; }
 };
 
 

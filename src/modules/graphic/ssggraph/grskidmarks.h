@@ -1,8 +1,8 @@
 #ifndef _GRSKIDMARKS_H_
 #define _GRSKIDMARKS_H_
 #define DELTATSTRIP 0.3f
-#define MAXPOINT_BY_STRIP 300
-#define MAXSTRIP_BYWHEEL  20
+#define MAXPOINT_BY_STRIP 600
+#define MAXSTRIP_BYWHEEL  40
 #define DIST_INTERVAL     0.2f
 
 #define SKID_UNUSED  1
@@ -16,22 +16,21 @@ extern double grSkidDeltaT;
 
 typedef struct 
 {
-  ssgVertexArray * vtx[MAXSTRIP_BYWHEEL]; /* the strips */
-  ssgVtxTableShadow    * vta[MAXSTRIP_BYWHEEL];
-  int state[MAXSTRIP_BYWHEEL];
-  int size[MAXSTRIP_BYWHEEL];
-  double timeStrip;
-  int running_skid;
-  int next_skid;
-  int last_state_of_skid;
-  int skid_full;
-
+  ssgVertexArray	**vtx; /* the strips */
+  ssgVtxTableShadow	**vta;
+  int			*state;
+  int			*size;
+  double		timeStrip;
+  int			running_skid;
+  int			next_skid;
+  int			last_state_of_skid;
+  int			skid_full;
 }tgrSkidStrip;
 
 typedef struct 
 {
-  ssgVtxTable *base; /* to remember the pos of the wheel line before transform */
-  tgrSkidStrip   strips[4]; /* the strips of the four wheels*/
+  ssgVtxTable	*base; /* to remember the pos of the wheel line before transform */
+  tgrSkidStrip	strips[4]; /* the strips of the four wheels*/
 }tgrSkidmarks;
 
 extern void grInitSkidmarks(tCarElt *car);

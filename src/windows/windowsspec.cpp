@@ -108,16 +108,16 @@ windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 		}
 	    } else {
 		FreeLibrary(handle);
-		GfTrace1("windowsModLoad: Module: %s not loaded\n", dname);
+		GfTrace("windowsModLoad: Module: %s not loaded\n", dname);
 		return -1;
 	    }
 	} else {
-	    GfTrace1("windowsModLoad: ... can't find proc %s\n", dname);
+	    GfTrace("windowsModLoad: ... can't find proc %s\n", dname);
 	    FreeLibrary(handle);
 	    return -1;
 	}
     } else {
-	GfTrace1("windowsModLoad: ...  can't open dll %s\n", sopath);
+	GfTrace("windowsModLoad: ...  can't open dll %s\n", sopath);
 	return -1;
     }
       
@@ -202,16 +202,16 @@ windowsModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 		FreeLibrary(handle);
 	    } else {
 		FreeLibrary(handle);
-		GfTrace1("windowsModInfo: Module: %s not loaded\n", dname);
+		GfTrace("windowsModInfo: Module: %s not loaded\n", dname);
 		return -1;
 	    }
 	} else {
-	    GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
+	    GfTrace("windowsModInfo: ...  %d\n", GetLastError());
 	    FreeLibrary(handle);
 	    return -1;
 	}
     } else {
-	GfTrace1("windowsModInfo: ...  %d\n", GetLastError());
+	GfTrace("windowsModInfo: ...  %d\n", GetLastError());
 	return -1;
     }
     
@@ -294,10 +294,10 @@ windowsModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 			curMod = (tModList*)calloc(1, sizeof(tModList));
 		    } else {
 			FreeLibrary(handle);
-			GfTrace1("windowsModLoadDir: Module: %s not retained\n", dname);
+			GfTrace("windowsModLoadDir: Module: %s not retained\n", dname);
 		    }
 		} else {
-		    GfTrace1("windowsModLoadDir: ...  can't find proc %s\n", dname);
+		    GfTrace("windowsModLoadDir: ...  can't find proc %s\n", dname);
 		    FreeLibrary(handle);
 		    _findclose( Dirent );
 		    return -1;
@@ -405,14 +405,14 @@ windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 			    curMod = (tModList*)calloc(1, sizeof(tModList));
 			} else {
 			    FreeLibrary(handle);
-			    GfTrace1("windowsModInfoDir: Module: %s not retained\n", dname);
+			    GfTrace("windowsModInfoDir: Module: %s not retained\n", dname);
 			}
 		    } else {
-			GfTrace1("windowsModInfoDir: ...  can't find proc %s\n", dname);
+			GfTrace("windowsModInfoDir: ...  can't find proc %s\n", dname);
 			FreeLibrary(handle);
 		    }
 		} else {
-		    GfTrace1("windowsModInfoDir: ...  can't open dll %s\n", sopath);
+		    GfTrace("windowsModInfoDir: ...  can't open dll %s\n", sopath);
 		}
 	    }
 	} while ( _findnext( Dirent, &FData ) != -1 );

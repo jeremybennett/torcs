@@ -62,6 +62,7 @@
 #define TRK_ATT_LIPOS_X	"light position x"
 #define TRK_ATT_LIPOS_Y	"light position y"
 #define TRK_ATT_LIPOS_Z	"light position z"
+#define TRK_ATT_FOVFACT	"fov factor"
 
 #define TRK_SECT_TURNMARKS "Graphic/Turn Marks"
 #define TRK_ATT_HSPACE	"horizontal space"
@@ -80,8 +81,16 @@
 #define TRK_ATT_ALT_MAX	"maximum altitude"
 #define TRK_ATT_ALT_MIN	"minimum altitude"
 #define TRK_ATT_GRPSZ   "group size"
+#define TRK_ATT_OBJMAP	"object map"
+#define TRK_ATT_COLOR	"color"
+#define TRK_ATT_OBJECT	"object"
+#define TRK_ATT_SEED	"random seed"
+#define TRK_ATT_ORIENTATION_TYPE "orientation type"
+#define TRK_ATT_ORIENTATION "orientation"
 
+#define TRK_SECT_OBJMAP	"Object Maps"
 #define TRK_SECT_SURFACES "Surfaces"
+#define TRK_SECT_OBJECTS  "Objects"
 
 #define TRK_ATT_FRICTION "friction"
 #define TRK_ATT_ROLLRES  "rolling resistance"

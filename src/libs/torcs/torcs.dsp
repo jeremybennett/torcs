@@ -129,6 +129,10 @@ SOURCE=.\exitmenu.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\graphconfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mainmenu.cpp
 # End Source File
 # Begin Source File

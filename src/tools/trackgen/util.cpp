@@ -75,3 +75,38 @@ GetFilename(char *filename, char *filepath, char *buf)
 
     return 1;
 }
+
+
+
+float
+getHOT(ssgRoot *root, float x, float y)
+{
+  sgVec3 test_vec;
+  sgMat4 invmat;
+  sgMakeIdentMat4(invmat);
+
+  invmat[3][0] = -x;
+  invmat[3][1] = -y;
+  invmat[3][2] =  0.0f         ;
+
+  test_vec [0] = 0.0f;
+  test_vec [1] = 0.0f;
+  test_vec [2] = 100000.0f;
+
+  ssgHit *results;
+  int num_hits = ssgHOT (root, test_vec, invmat, &results);
+
+  float hot = -1000000.0f;
+
+  for (int i = 0; i < num_hits; i++)
+  {
+    ssgHit *h = &results[i];
+
+    float hgt = - h->plane[3] / h->plane[2];
+
+    if (hgt >= hot)
+      hot = hgt;
+  }
+
+  return hot;
+}

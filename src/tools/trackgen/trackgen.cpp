@@ -36,12 +36,16 @@
 #include <math.h>
 #include <ttypes.h>
 #include <plib/ul.h>
+#include <plib/ssg.h>
+#include <GL/glut.h>
 
 #include <tgf.h>
 #include <track.h>
 
 #include "ac3d.h"
 #include "easymesh.h"
+#include "objects.h"
+#include "elevation.h"
 #include "trackgen.h"
 
 float	GridStep = 40.0;
@@ -73,18 +77,22 @@ char		*OutMeshName;
 
 tModList	*modlist = NULL;
 
+int		saveElevation;
+char		*ElevationFile;
 
 static void Generate(void);
 
 void usage(void)
 {
     fprintf(stderr, "Terrain generator for tracks $Revision$ \n");
-    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m]\n");
+    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m] [-s] [-S] [-e]\n");
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
+    fprintf(stderr, "       -e             : save elevation file\n");
+    fprintf(stderr, "       -E             : save 2 elevation files\n");
 }
 
 void init_args(int argc, char **argv)
@@ -96,6 +104,7 @@ void init_args(int argc, char **argv)
     MergeTerrain = 1;
     TrackName = NULL;
     TrackCategory = NULL;
+    saveElevation = 0;
 
 #ifndef WIN32
     while (1) {
@@ -105,7 +114,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asS",
+	c = getopt_long(argc, argv, "hvn:c:asSeE",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -151,6 +160,12 @@ void init_args(int argc, char **argv)
 	case 'c':
 	    TrackCategory = strdup(optarg);
 	    break;
+	case 'e':
+	    saveElevation = 1;
+	    break;
+	case 'E':
+	    saveElevation = 2;
+	    break;
 	default:
 	    usage();
 	    exit(1);
@@ -183,6 +198,10 @@ void init_args(int argc, char **argv)
 		usage();
 		exit(0);
 	    }
+	} else if (strncmp(argv[i], "-e", 2) == 0) {
+	    saveElevation = 1;
+	} else if (strncmp(argv[i], "-E", 2) == 0) {
+	    saveElevation = 2;
 	} else if (strncmp(argv[i], "-c", 2) == 0) {
 	    if (i + 1 < argc) {
 		TrackCategory = strdup(argv[i++]);
@@ -214,6 +233,13 @@ main(int argc, char **argv)
 {
 
     init_args(argc, argv);
+
+
+    glutInit(&argc, argv);
+    glutCreateWindow(argv[1]);
+
+    ssgInit();
+    
 #ifndef WIN32
     LinuxSpecInit();
 #else
@@ -270,12 +296,12 @@ Generate(void)
 	outfd = Ac3dOpen(buf2, 1);
     } else if (MergeAll) {
 	sprintf(buf2, "%s.ac", OutputFileName);
-	/* track + terrain */
-	outfd = Ac3dOpen(buf2, 2);
+	/* track + terrain + objects */
+	outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
     }
 
     /* Main Track */
-    extName = GfParmGetStr(CfgHandle, "Files", "track", "trk");
+    extName = "trk";
     sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
     OutTrackName = strdup(buf2);
 
@@ -288,15 +314,27 @@ Generate(void)
     /* Terrain */
     if (MergeTerrain && !MergeAll) {
 	sprintf(buf2, "%s.ac", OutputFileName);
-	/* terrain */
-	outfd = Ac3dOpen(buf2, 1);
+	/* terrain + objects  */
+	outfd = Ac3dOpen(buf2, 1 + GetObjectsNb(TrackHandle));
     }
 
-    extName = GfParmGetStr(CfgHandle, "Files", "mesh", "msh");
+    extName = "msh";
     sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
     OutMeshName = strdup(buf2);
     
-    GenerateTerrain(Track, TrackHandle, OutMeshName, outfd);
+    GenerateTerrain(Track, TrackHandle, OutMeshName, outfd, saveElevation);
+
+    if (saveElevation) {
+	Ac3dClose(outfd);
+	sprintf(buf2, "%s.ac", OutputFileName);
+	sprintf(buf, "%s-elv.png", OutputFileName);
+	SaveElevation(Track, TrackHandle, buf, buf2);
+	if (saveElevation == 2) {
+	    sprintf(buf, "%s-elv2.png", OutputFileName);
+	    SaveElevation(Track, TrackHandle, buf, OutMeshName);
+	}
+	return;
+    }
     
-    
+    GenerateObjects(Track, TrackHandle, CfgHandle, outfd);
 }

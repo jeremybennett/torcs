@@ -54,7 +54,7 @@ typedef struct
     ssgBranch	*branch;
 } tLine;
 
-ssgEntity	*Root = NULL;
+static ssgEntity	*Root = NULL;
 
 /*
  * Read the faces from AC3D file

@@ -2180,17 +2180,17 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 
 
 void
-GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd)
+GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, int noElevation)
 {
     char	*FileName;
     char	*mat;
     FILE	*curFd = NULL;
 
-    TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
+    TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, 10.0);
     GfOut("Track step: %.2f", TrackStep);
-    Margin    = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
-    GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
-    ExtHeight = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, ExtHeight);
+    Margin    = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, 100.0);
+    GridStep  = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, 10.0);
+    ExtHeight = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, 0.0);
     GfOut("Border margin: %.2f    step: %.2f    height: %.2f", Margin, GridStep, ExtHeight);
     
     GroupSize = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_GRPSZ, NULL, 100.0);
@@ -2220,10 +2220,12 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd)
 	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
 	LoadRelief(TrackHandle, buf);
     }
-    FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ELEVATION, NULL);
-    if (FileName) {
-	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
-	LoadElevation(track, TrackHandle, buf);
+    if (!noElevation) {
+	FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ELEVATION, NULL);
+	if (FileName) {
+	    sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
+	    LoadElevation(track, TrackHandle, buf);
+	}
     }
     
     if (outfile) {
@@ -2235,19 +2237,19 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd)
 	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 0 /* interior */);
 	GenerateMesh(track, 0 /* left */,  0 /* normal */,  1 /* exterior */);
 	if (curFd) {
-	    draw_ac(curFd, "terrain");
+	    draw_ac(curFd, "terr");
 	}
 	if (AllFd) {
-	    draw_ac(AllFd, "terrain");
+	    draw_ac(AllFd, "terr");
 	}
     } else {
 	GenerateMesh(track, 0 /* left */,  0 /* normal */,  0 /* interior */);
 	GenerateMesh(track, 1 /* right */, 1 /* reverse */, 1 /* exterior */);
 	if (curFd) {
-	    draw_ac(curFd, "terrain");
+	    draw_ac(curFd, "terr");
 	}
 	if (AllFd) {
-	    draw_ac(AllFd, "terrain");
+	    draw_ac(AllFd, "terr");
 	}
     }
     if (curFd) {

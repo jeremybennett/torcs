@@ -64,7 +64,6 @@ void grInitSmoke(int index)
 {
     char		buf[256];
 
-
     grSmokeMaxNumber = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB,
 					 (char*)NULL, MAX_SMOKE_NUMBER);
     grSmokeDeltaT = (double)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKEDELTAT,

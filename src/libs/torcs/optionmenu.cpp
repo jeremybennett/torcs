@@ -21,6 +21,7 @@
 #include <tgf.h>
 #include "optionmenu.h"
 #include "driverconfig.h"
+#include "graphconfig.h"
 #include "joystickconfig.h"
 
 #ifdef DMALLOC
@@ -40,6 +41,10 @@ TorcsOptionOptionInit(void *precMenu)
 
     GfuiMenuButtonCreate(optionHandle,
 			 "Graphic", "Configure graphic parameters",
+			 GraphMenuInit(optionHandle), GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(optionHandle,
+			 "Display", "Configure display parameters",
 			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
     
     JoystickHandle = TorcsJoystick1MenuInit(optionHandle);

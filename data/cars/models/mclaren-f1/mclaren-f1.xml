@@ -83,7 +83,7 @@
 
   <section name="Rear Wing">
     <attnum name="area"  unit="m2" val="1.5"></attnum>
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
     <attnum name="xpos" unit="m" min="-2.5" max="-1.0" val="-1.88"></attnum>
     <attnum name="zpos" unit="m" min="0.1" max="1.5" val="0.75"></attnum>
   </section>
@@ -241,8 +241,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.55"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="50000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.40"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="18000"></attnum>
   </section>
 
   <section name="Front Axle">
@@ -266,7 +266,7 @@
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="FREE"></attstr>
     <attnum name="inertia" unit="kg.m2" val="0.0488"></attnum>
-    <attnum name="ratio" min="0" max="5" val="4.5"></attnum>
+    <attnum name="ratio" min="0" max="10" val="4.5"></attnum>
     <attnum name="efficiency"           val="0.9625"></attnum>
   </section>
 

@@ -62,8 +62,6 @@ public:
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2) { ssgVtxTable::print(fd,indent,how_much);}
   virtual int load ( FILE *fd )  {return  ssgVtxTable::load(fd);}
   virtual int save ( FILE *fd )  {return  ssgVtxTable::save(fd);}
-
-
 };
 
 typedef struct tgrSmoke_st

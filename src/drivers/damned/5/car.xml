@@ -39,6 +39,26 @@
     <attnum name="max pressure" unit="kPa" min="100" max="150000" val="10000"></attnum>
   </section>
 
+  <section name="Front Differential">
+    <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
+    <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP" val="FREE"></attstr>
+    <attnum name="ratio" min="0" max="10" val="1.0"></attnum>
+  </section>
+
+  <section name="Rear Differential">
+    <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
+    <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"></attstr>
+    <attnum name="ratio" min="0" max="10" val="1.0"></attnum>
+  </section>
+
+  <section name="Central Differential">
+    <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
+    <attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP,VISCOUS COUPLER" val="VISCOUS COUPLER"></attstr>
+    <attnum name="min torque bias" val="50" unit="%"></attnum>
+    <attnum name="max torque bias" val="60" unit="%"></attnum>
+    <attnum name="ratio" min="0" max="10" val="7.0"></attnum>
+  </section>
+
   <section name="Front Right Wheel">
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="150"></attnum>

@@ -116,6 +116,10 @@ SOURCE=..\libs\torcs\exitmenu.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\libs\torcs\graphconfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\libs\torcs\joystickconfig.cpp
 # End Source File
 # Begin Source File

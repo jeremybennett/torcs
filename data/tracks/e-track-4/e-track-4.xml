@@ -43,6 +43,7 @@
     <attnum name="ambient color R" val="0.8"></attnum>
     <attnum name="ambient color G" val="0.8"></attnum>
     <attnum name="ambient color B" val="0.8"></attnum>
+    <attnum name="fov factor" val="2.0"></attnum>
 
     <section name="Environment Mapping">
       <section name="1">

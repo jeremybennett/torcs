@@ -28,6 +28,33 @@
 
 #define GRX_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
 
+#define GR_PARAM_FILE		"config/graph.xml"
+
+#define GR_SCT_DISPMODE		"Display Mode"
+#define GR_ATT_CAM		"camera"
+#define GR_ATT_CAM_HEAD		"camera head list"
+#define GR_ATT_FOVY		"fovy"
+#define GR_ATT_BOARD		"driver board"
+#define GR_ATT_COUNTER		"driver counter"
+#define GR_ATT_LEADER		"leader board"
+#define GR_ATT_DEBUG		"debug info"
+#define GR_ATT_GGRAPH		"G graph"
+#define GR_ATT_NBLEADER		"Max leaders entries"
+
+#define GR_SCT_TVDIR		"TV Director View"
+#define GR_ATT_CHGCAMINT	"change camera interval"
+#define GR_ATT_EVTINT		"event interval"
+#define GR_ATT_PROXTHLD		"proximity threshold"
+
+#define GR_SCT_GRAPHIC		"Graphic"
+#define GR_ATT_SMOKENB		"smoke value"
+#define GR_ATT_SMOKEDELTAT	"smoke interval"
+#define GR_ATT_SMOKEDLIFE	"smoke duration"
+
+#define GR_ATT_MAXSTRIPBYWHEEL	"skid value"
+#define GR_ATT_MAXPOINTBYSTRIP	"skid length"
+#define GR_ATT_SKIDDELTAT	"skid interval"
+#define GR_ATT_FOVFACT		"fov factor"
 
 /* graphic functions prototypes */
 

@@ -404,7 +404,7 @@ InitScene(tTrack *Track, void *TrackHandle)
     runninglentgh = 0;
     for (i = 0, seg = Track->seg->next; i < Track->nseg; i++, seg = seg->next) {
 	uniqueId++;
-	CHECKDISPLIST(seg->surface->material, "tkMn", uniqueId, seg->lgfromstart);
+	CHECKDISPLIST(seg->surface->material, "tkMn", i, seg->lgfromstart);
 	if (!curTexLink) {
 	    curTexSeg = 0;
 	} else {
@@ -414,7 +414,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 	texLen = curTexSeg / curTexSize;
 	if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 	    uniqueId++;
-	    NEWDISPLIST(0, "tkMn", uniqueId);
+	    NEWDISPLIST(0, "tkMn", i-1);
 	    runninglentgh = 0;
 	    ts = 0;
 	    texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
@@ -566,12 +566,12 @@ InitScene(tTrack *Track, void *TrackHandle)
 	startNeeded = 1;
 	runninglentgh = 0;
 	uniqueId++;
-	NEWDISPLIST(0, "tkRtBr", uniqueId);
+	NEWDISPLIST(0, "tkRB", uniqueId);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->rside != NULL) && (mseg->rside->type2 == TR_RBORDER)) {
 		seg = mseg->rside;
 		uniqueId++;
-		CHECKDISPLIST(seg->surface->material, "tkRtBr", uniqueId, mseg->lgfromstart);
+		CHECKDISPLIST(seg->surface->material, "tkRB", uniqueId, mseg->lgfromstart);
 		if (!curTexLink) {
 		    curTexSeg = 0;
 		} else {
@@ -581,7 +581,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		texLen = curTexSeg / curTexSize;
 		if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		    uniqueId++;
-		    NEWDISPLIST(0, "tkRtBr", uniqueId);
+		    NEWDISPLIST(0, "tkRB", uniqueId);
 		    runninglentgh = 0;
 		    ts = 0;
 
@@ -911,7 +911,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		runninglentgh += seg->length;
 	    } else {
 		uniqueId++;
-		NEWDISPLIST(0, "tkRtBr", uniqueId);
+		NEWDISPLIST(0, "tkRB", uniqueId);
 		startNeeded = 1;
 	    }
 	}
@@ -925,7 +925,7 @@ InitScene(tTrack *Track, void *TrackHandle)
     runninglentgh = 0;
     hasBorder = 0;
     uniqueId++;
-    NEWDISPLIST(0, "tkRtSd", uniqueId);
+    NEWDISPLIST(0, "tkRS", uniqueId);
     for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	if ((mseg->rside != NULL) &&
 	    ((mseg->rside->type2 == TR_RSIDE) || (mseg->rside->rside != NULL))) {
@@ -943,7 +943,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		}
 	    }
 	    uniqueId++;
-	    CHECKDISPLIST(seg->surface->material, "tkRtSd", uniqueId, mseg->lgfromstart);
+	    CHECKDISPLIST(seg->surface->material, "tkRS", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
@@ -953,7 +953,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 	    texLen = curTexSeg / curTexSize;
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
-		NEWDISPLIST(0, "tkRtSd", uniqueId);
+		NEWDISPLIST(0, "tkRS", uniqueId);
 		runninglentgh = 0;
 		ts = 0;
 
@@ -1114,7 +1114,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 	    runninglentgh += seg->length;
 	} else {
 	    uniqueId++;
-	    NEWDISPLIST(0, "tkRtSd", uniqueId);
+	    NEWDISPLIST(0, "tkRS", uniqueId);
 	    startNeeded = 1;
 	}
     }
@@ -1127,12 +1127,12 @@ InitScene(tTrack *Track, void *TrackHandle)
 	startNeeded = 1;
 	runninglentgh = 0;
 	uniqueId++;
-	NEWDISPLIST(0, "tkLtBr", uniqueId);
+	NEWDISPLIST(0, "tkLB", uniqueId);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->lside != NULL) && (mseg->lside->type2 == TR_LBORDER)) {
 		seg = mseg->lside;
 		uniqueId++;
-		CHECKDISPLIST(seg->surface->material, "tkLtBr", uniqueId, mseg->lgfromstart);
+		CHECKDISPLIST(seg->surface->material, "tkLB", uniqueId, mseg->lgfromstart);
 		if (!curTexLink) {
 		    curTexSeg = 0;
 		} else {
@@ -1142,7 +1142,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		texLen = curTexSeg / curTexSize;
 		if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		    uniqueId++;
-		    NEWDISPLIST(0, "tkLtBr", uniqueId);
+		    NEWDISPLIST(0, "tkLB", uniqueId);
 		    runninglentgh = 0;
 		    ts = 0;
 		    width = RtTrackGetWidth(seg, ts);
@@ -1468,7 +1468,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		runninglentgh += seg->length;
 	    } else {
 		uniqueId++;
-		NEWDISPLIST(0, "tkLtBr", uniqueId);
+		NEWDISPLIST(0, "tkLB", uniqueId);
 		startNeeded = 1;
 	    }
 	}
@@ -1481,7 +1481,7 @@ InitScene(tTrack *Track, void *TrackHandle)
     runninglentgh = 0;
     hasBorder = 0;
     uniqueId++;
-    NEWDISPLIST(0, "tkLtSd", uniqueId);
+    NEWDISPLIST(0, "tkLS", uniqueId);
     for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	if ((mseg->lside != NULL) &&
 	    ((mseg->lside->type2 == TR_LSIDE) || (mseg->lside->lside != NULL))) {
@@ -1499,7 +1499,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 		}
 	    }
 	    uniqueId++;
-	    CHECKDISPLIST(seg->surface->material, "tkLtSd", uniqueId, mseg->lgfromstart);
+	    CHECKDISPLIST(seg->surface->material, "tkLS", uniqueId, mseg->lgfromstart);
 	    if (!curTexLink) {
 		curTexSeg = 0;
 	    } else {
@@ -1509,7 +1509,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 	    texLen = curTexSeg / curTexSize;
 	    if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 		uniqueId++;
-		NEWDISPLIST(0, "tkLtSd", uniqueId);
+		NEWDISPLIST(0, "tkLS", uniqueId);
 		runninglentgh = 0;
 
 		ts = 0;
@@ -1669,7 +1669,7 @@ InitScene(tTrack *Track, void *TrackHandle)
 	    runninglentgh += seg->length;
 	} else {
 	    uniqueId++;
-	    NEWDISPLIST(0, "tkLtSd", uniqueId);
+	    NEWDISPLIST(0, "tkLS", uniqueId);
 	    startNeeded = 1;
 	}
     }
@@ -3169,7 +3169,7 @@ SaveMainTrack(FILE *curFd)
 	do {
 	    aDispElt = aDispElt->next;
 	    if (aDispElt->nb != 0) {
-		sprintf(buf, "%s %d", aDispElt->name, aDispElt->id);
+		sprintf(buf, "%s%d", aDispElt->name, aDispElt->id);
 		saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
 	    }
 	} while (aDispElt != DispList);

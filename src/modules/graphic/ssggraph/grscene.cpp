@@ -74,6 +74,7 @@ static void customizePits(void);
 
 static ssgLoaderOptionsEx	grloaderOptions;
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
+int preScene(ssgEntity *e);
 
 class myLoaderOptions : public ssgLoaderOptions
 {
@@ -89,10 +90,70 @@ public:
   }
 } ;
 
+#define DISTG 80
+
+ int preScene(ssgEntity *e)
+{
+  char *p=NULL ;
+  int id=0;
+  char *q=NULL;
+  int max=0;
+
+  p=( ((ssgBranchCb*)e)->getKid(0))->getName();
+  if (p==NULL)
+    return TRUE;
+  q=strstr(p,"TKMN");
+  if (q)
+    {
+      q=q+strlen("TKMN");
+      id=atoi(q);
+      max=grTrack->seg->prev->id;
+      if (max-segIndice<DISTG)
+	{
+	  if (id>segIndice)
+	    {
+	      return TRUE;
+	    }
+	  if (id< (DISTG-(max-segIndice)))
+	    {
+	      return TRUE;
+	    }
+	  if (id>(segIndice-DISTG))
+	    {
+	      return TRUE;
+	    }
+	  return FALSE;
+	}
+      if (segIndice<DISTG)
+	{
+	  if (id<segIndice)
+	    {
+	      return TRUE;
+	    }
+	  if (id>(max-(DISTG-segIndice)))
+	    {
+	      return TRUE;
+	    }
+	  if (id<segIndice+DISTG)
+	    {
+	      return TRUE;
+	    }
+	  return FALSE;
+	}
+      if (id<(segIndice+DISTG) && id>(segIndice-DISTG))
+	{
+	  return TRUE;
+	}
+      return (FALSE);
+    }
+
+  return TRUE;
+}
+
 
 int grInitScene(tTrack *track)
 {
-    void		*hndl;
+    void		*hndl = grTrackHandle;
     char		*acname;
     ssgEntity		*desc;
     char		buf[256];
@@ -104,8 +165,6 @@ int grInitScene(tTrack *track)
     GLfloat mat_shininess[] ={5.0};
     GLfloat light_position[]={0,0,200,0.0};
     GLfloat lmodel_ambient[]={0.8,0.8,0.8,1.0};
-
-    hndl = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     mat_specular[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_R, NULL, mat_specular[0]);
     mat_specular[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_G, NULL, mat_specular[1]);
@@ -160,9 +219,9 @@ int grInitScene(tTrack *track)
     sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
     ssgModelPath(buf);
     /*desc = ssgLoad((const char *)acname*/ /* , (const ssgLoaderOptions *)&grloaderOptions *//* );*/
-    desc=grssgLoadAC3D ( acname , NULL );
+    desc = grssgLoadAC3D(acname, NULL);
     TheScene->addKid(desc);
-
+    /* TheScene->setCallback(SSG_CALLBACK_PREDRAW, preScene); */
     customizePits();
 
     return 0;
@@ -172,12 +231,12 @@ int grInitScene(tTrack *track)
 void grDrawScene(void)
 {
     TRACE_GL("refresh: ssgCullAndDraw start");
-
+    glEnable(GL_DEPTH_TEST);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
-    glEnable(GL_DEPTH_TEST);
-    ssgCullAndDraw(TheScene);
     
+    ssgCullAndDraw(TheScene);
+
     TRACE_GL("refresh: ssgCullAndDraw");
 }
 
@@ -400,6 +459,15 @@ void grDrawBackground(cGrCamera *cam)
     }
     glBindTexture(GL_TEXTURE_2D, 0);
     glPopMatrix();
+
+/*     GLfloat fogColor[4]={0.4,0.4,0.5,0.5}; */
+/*     glFogi(GL_FOG_MODE,GL_EXP2); */
+/*     glFogfv(GL_FOG_COLOR,fogColor); */
+/*     glFogf(GL_FOG_DENSITY,0.002); */
+/*     glHint(GL_FOG_HINT,GL_DONT_CARE); */
+/*     glFogf(GL_FOG_START,8000.0); */
+/*     glFogf(GL_FOG_END, 10000); */
+/*     glEnable(GL_FOG); */
 
 }
 

@@ -26,8 +26,8 @@
 #ifndef _OBJECTS_H_
 #define _OBJECTS_H_
 
-extern void GenerateObjects(void);
-
+extern void GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd);
+extern int GetObjectsNb(void *TrackHandle);
 
 #endif /* _OBJECTS_H_ */ 
 

@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/road/e-track-2
 
-DATA      = e-track-2.xml background.png e-track-2.ac e-track-2-relief.ac e-track-2.png elevation-map.png
+DATA      = e-track-2.xml background.png e-track-2.ac e-track-2-relief.ac e-track-2.png elevation-map.png object-map1.png object-map2.png
 
 
 include ${MAKE_DEFAULT}

@@ -93,7 +93,6 @@ EXPORTS
 	GfuiMenuDefaultKeysAdd
 	GfuiMenuButtonCreate
 	GfuiMenuBackQuitButtonCreate
-	GfTrace
 	GfTimeClock
 	GfRlstInit
 	GfRlstAddFirst
@@ -111,6 +110,5 @@ EXPORTS
 	gfMeanReset
 	gfuiDrawImage
 	gfuiReleaseImage
-    GfuiStaticImageCreate
+    	GfuiStaticImageCreate
 	GfuiStaticImageSet
-	GfFatal

@@ -22,6 +22,7 @@
 #define _GRMAIN_H_
 
 #include <plib/ssg.h>
+#include <graphic.h>
 
 extern int grWinx, grWiny, grWinw, grWinh;
 
@@ -35,10 +36,13 @@ extern int grCounterFlag;
 extern int grGFlag;
 extern int grVectFlag;
 extern int grVectDispFlag[];
+extern int segIndice;
 
 extern double grCurTime;
 
 extern void *grHandle;
+extern void *grTrackHandle;
+
 extern ssgContext grContext;
 extern int grNbCars;
 
@@ -48,31 +52,6 @@ extern int  refresh(tSituation *s);
 extern void shutdownCars(void);
 extern int  initTrack(tTrack *track);
 extern void shutdownTrack(void);
-
-#define GR_SCT_DISPMODE		"Display Mode"
-#define GR_ATT_CAM		"camera"
-#define GR_ATT_CAM_HEAD		"camera head list"
-#define GR_ATT_FOVY		"fovy"
-#define GR_ATT_BOARD		"driver board"
-#define GR_ATT_COUNTER		"driver counter"
-#define GR_ATT_LEADER		"leader board"
-#define GR_ATT_DEBUG		"debug info"
-#define GR_ATT_GGRAPH		"G graph"
-#define GR_ATT_NBLEADER		"Max leaders entries"
-
-#define GR_SCT_TVDIR		"TV Director View"
-#define GR_ATT_CHGCAMINT	"change camera interval"
-#define GR_ATT_EVTINT		"event interval"
-#define GR_ATT_PROXTHLD		"proximity threshold"
-
-#define GR_SCT_GRAPHIC		"Graphic"
-#define GR_ATT_SMOKENB		"smoke value"
-#define GR_ATT_SMOKEDELTAT	"smoke interval"
-#define GR_ATT_SMOKEDLIFE	"smoke duration"
-
-#define GR_ATT_MAXSTRIPBYWHEEL	"skid value"
-#define GR_ATT_MAXPOINTBYSTRIP	"skid length"
-#define GR_ATT_SKIDDELTAT	"skid interval"
 
 #endif /* _GRMAIN_H_ */ 
 
