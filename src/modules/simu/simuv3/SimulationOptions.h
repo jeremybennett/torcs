@@ -16,7 +16,8 @@
 
 ///	Aerodynamic flow model
 enum AeroFlowModel {
-	SIMPLE, ///< A simple plane surface model.
+	SIMPLE, ///< A simple model.
+	PLANAR, ///< A planar model.
 	SEGMENTS ///< A segmented surface model.
 };
 

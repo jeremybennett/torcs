@@ -67,6 +67,9 @@ SimCarCollideZ(tCar *car)
     } else {
 		upside_down = true;
     }
+
+	float corner_reactions[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+	
     for (i = 0; i < 4; i++) {
 		wheel = &(car->wheel[i]);
 		if ((wheel->state & SIM_SUSP_COMP)
@@ -87,7 +90,7 @@ SimCarCollideZ(tCar *car)
 				orig.x = 0.0;
 				orig.y = 0.0;
 				orig.z = wheel->susp.spring.packers - wheel->rideHeight;
-				corner.z = 0.5;//wheel->susp.spring.packers - wheel->rideHeight;
+				corner.z = orig.z;//wheel->susp.spring.packers - wheel->rideHeight;
 				flag = true;
 			}
 			angles.x = car->DynGCg.pos.ax;
@@ -108,7 +111,9 @@ SimCarCollideZ(tCar *car)
 				tdble cvx = (car->DynGCg.vel.x);
 				tdble cvy = (car->DynGCg.vel.y);
 				tdble cvz = (car->DynGCg.vel.z);
-
+				//cvx = car->corner[i].vel.x;
+				//cvy = car->corner[i].vel.y;
+				//cvz = car->corner[i].vel.z;
 				//printf ("VS: %f %f\n", vx, car->DynGCg.vel.x);
 				dotProd = (cvx * normal.x + cvy * normal.y + cvz * normal.z) * wheel->trkPos.seg->surface->kRebound;
 				if (rel_normal.z < 0) {
@@ -201,11 +206,11 @@ SimCarCollideZ(tCar *car)
 						tdble sum_v = sqrt(cvx*cvx + cvy*cvy + cvz*cvz);
 						if (sum_v>1.0) {
 							t3Dd fr_loc;
-							friction.x = cvx/sum_v;
-							friction.y = cvy/sum_v;
-							friction.z = cvz/sum_v;
+							friction.x = -cvx/sum_v;
+							friction.y = -cvy/sum_v;
+							friction.z = -cvz/sum_v;
 							NaiveRotate(friction, angles, &fr_loc);
-							tdble C = 0.2 * dotProd;
+							tdble C = 0.5f * dotProd;
 
 							forces.x += C*fr_loc.x;
 							forces.y += C*fr_loc.y;
@@ -234,7 +239,7 @@ SimCarCollideZ(tCar *car)
 							 + forces.y * corner.z);
 #endif
 #if 1
-						car->rot_mom[SG_Y] -= //direction.y*
+						car->rot_mom[SG_Y] += //direction.y*
 							(forces.z * wheel->relPos.x
 							 + forces.x * corner.z);
 #endif
@@ -255,21 +260,20 @@ SimCarCollideZ(tCar *car)
 						car->rot_mom[SG_Z]*=.999;
 						{
 							sgQuat w;
-							//sgNormaliseQuat (w);
+							float maxr = 1000.0f;
 							for (int i=0; i<4; i++) {
+								if (fabs(car->rot_mom[i]) > maxr) {
+									car->rot_mom[i] = SIGN(car->rot_mom[i])*maxr;
+								}
 								w[i] = car->rot_mom[i];
-								//printf ("%f ", w[i]);
+
 							}
 							w[SG_X] *= car->Iinv.x;
 							w[SG_Y] *= car->Iinv.y;
 							w[SG_Z] *= car->Iinv.z;
-							sgInvertQuat(w);
-							sgNormaliseQuat(w);
-							sgVec3 new_angular_v;
-							sgQuatToEuler (new_angular_v, w);
-							car->DynGC.vel.ax = car->DynGCg.vel.ax = DEG2RAD(new_angular_v[0]);
-							car->DynGC.vel.ay = car->DynGCg.vel.ay = DEG2RAD(new_angular_v[1]);
-							car->DynGC.vel.az = car->DynGCg.vel.az = DEG2RAD(new_angular_v[2]);
+							car->DynGC.vel.ax = car->DynGCg.vel.ax = -2.0f*car->rot_mom[SG_X] * car->Iinv.x;
+							car->DynGC.vel.ay = car->DynGCg.vel.ay = -2.0f*car->rot_mom[SG_Y] * car->Iinv.y;
+							car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
 						}
 					}
 #endif
@@ -640,8 +644,8 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	{
 		sgVec3 force;
 		tdble invK = 0.005;
-		force[0] = -invK * v1ab[0] * v1ab[0] * fabs(n[0]);
-		force[1] = -invK * v1ab[1] * v1ab[1] * fabs(n[1]);
+		force[0] = invK * v1ab[0] * v1ab[0] * fabs(n[0]);
+		force[1] = invK * v1ab[1] * v1ab[1] * fabs(n[1]);
 		force[2] = 0;
 		if (sgLengthVec3 (force) > 0.1) {
 			tdble h=urandom()-0.5;

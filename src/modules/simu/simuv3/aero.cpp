@@ -32,7 +32,7 @@ SimAeroConfig(tCar *car)
     car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
 	float aero_factor = car->options->aero_factor;
-	printf ("Setting aero factor to %f\n", aero_factor);
+
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
 	car->aero.Clift[0] *= aero_factor / 4.0f;
 	car->aero.Clift[1] *= aero_factor / 4.0f;
@@ -92,12 +92,12 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		    /* behind another car - reduce overall airflow */
 			tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
 
-		    tmpas = 1.0 - factor*exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y)/(otherCar->aero.Cd * otherCar->DynGC.vel.x));
+		    tmpas = 1.0 - factor * exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y)/(otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    airSpeed = airSpeed * tmpas;
-		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
+		} else if (fabs(tmpsdpang) < 0.1396f) {	    /* 8 degrees */
+			tdble factor = 0.5f * (0.1396f-fabs(tmpsdpang))/(0.1396f);
 		    /* before another car - breaks down rear eddies, reduces only drag*/
-		    tmpas = 1.0 - exp(- 8.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
-				      (car->aero.Cd * car->DynGC.vel.x));
+		    tmpas = 1.0f - factor * exp(- 8.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) / (car->aero.Cd * car->DynGC.vel.x));
 		    dragK = dragK * tmpas;
 		}
 	    }
@@ -186,10 +186,19 @@ SimWingConfig(tCar *car, int index)
     wing->staticPos.x = GfParmGetNum(hdle, WingSect[index], PRM_XPOS, (char*)NULL, 0);
     wing->staticPos.z = GfParmGetNum(hdle, WingSect[index], PRM_ZPOS, (char*)NULL, 0);
     
-    // wrong, because the angle of attack changes on jumps
-    //wing->Kx = -1.23 * area * sin(angle);
-    wing->Kx = -1.23f * area;
-    wing->Kz = car->options->aero_factor * wing->Kx;
+	switch (car->options->aeroflow_model) {
+	case SIMPLE:
+		wing->Kx = -1.23f * area;
+		wing->Kz = car->options->aero_factor * wing->Kx;
+		break;
+	case PLANAR:
+		wing->Kx = -1.23f * area * 16.0f;
+		wing->Kz = wing->Kx;
+		break;
+	default:
+		fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
+	}
+
 
     if (index == 1) {
 	car->aero.Cd -= wing->Kx*sin(wing->angle);
@@ -268,17 +277,29 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 
     vt2=vt2*i_flow;
     vt2=vt2*vt2;
+	
     aoa += wing->angle;
-
+	
     // the sinus of the angle of attack
     tdble sinaoa = sin(aoa);
+    tdble cosaoa = cos(aoa);
 
 
-    if (car->DynGC.vel.x > 0.0) {
-	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;
-	wing->forces.z = wing->Kz * vt2 * sinaoa;
+    if (car->DynGC.vel.x > 0.0f) {
+		switch (car->options->aeroflow_model) {
+		case SIMPLE:
+			wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
+			wing->forces.z = wing->Kz * vt2 * sinaoa;
+			break;
+		case PLANAR:
+			wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa * sinaoa * sinaoa;
+			wing->forces.z = wing->Kz * vt2 * sinaoa * sinaoa * cosaoa;
+			break;
+	default:
+		fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
+		}
     } else {
-	wing->forces.x = wing->forces.z = 0;
+		wing->forces.x = wing->forces.z = 0.0f;
     }
 }
 

@@ -204,6 +204,7 @@ SimCarUpdateForces(tCar *car)
 		F.F.y += wheel->forces.y;
 		F.F.z += wheel->forces.z;
 
+		//printf ("%f\n", car->statGC.z + wheel->rideHeight);
 		/* moments */
 		F.M.x += /*direction.x*/(wheel->forces.z * susp_pos_y +
 							  wheel->forces.y *
@@ -395,19 +396,16 @@ SimCarUpdateSpeed(tCar *car)
 void
 SimCarUpdateWheelPos(tCar *car)
 {
-    int i;
-    tdble vx;
-    tdble vy;
-    tdble Cosz, Sinz;
+    tdble Cosz = car->Cosz;
+    tdble Sinz = car->Sinz;
+    tdble vx = car->DynGC.vel.x;
+    tdble vy = car->DynGC.vel.y;
+    tdble vz = car->DynGC.vel.z;
 
-    Cosz = car->Cosz;
-    Sinz = car->Sinz;
-    vx = car->DynGC.vel.x;
-    vy = car->DynGC.vel.y;
     /* Wheels data */
-	t3Dd angles;
-	for (i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		t3Dd pos;
+		t3Dd angles;
 		tWheel *wheel = &(car->wheel[i]);
 		pos.x = wheel->staticPos.x;
 		pos.y = wheel->staticPos.y;
@@ -425,10 +423,14 @@ SimCarUpdateWheelPos(tCar *car)
 	    
 		wheel->bodyVel.x = vx
 			- car->DynGC.vel.az * wheel->staticPos.y
-			+ car->DynGC.vel.ay * pos.z;//wheel->staticPos.x;
+			+ car->DynGC.vel.ay * pos.z;
 		wheel->bodyVel.y = vy
 			+ car->DynGC.vel.az * wheel->staticPos.x
-			- car->DynGC.vel.ax * pos.z;//wheel->staticPos.y; //+ or-?
+			- car->DynGC.vel.ax * pos.z;
+		wheel->bodyVel.z = vz
+			+ car->DynGC.vel.ax * wheel->staticPos.y
+			- car->DynGC.vel.ay * wheel->staticPos.x;
+
     } 
 }
 
@@ -475,6 +477,7 @@ SimCarUpdateCornerPos(tCar *car)
 {
     tdble vx = car->DynGC.vel.x;
     tdble vy = car->DynGC.vel.y;
+    tdble vz = car->DynGC.vel.z;
     t3Dd pos;
     t3Dd angles;
     int i;
@@ -494,19 +497,29 @@ SimCarUpdateCornerPos(tCar *car)
 		corner->pos.ay = car->DynGCg.pos.y + pos.y;
 		corner->pos.az = car->DynGCg.pos.z + pos.z;
 
-		corner->vel.x = car->DynGCg.vel.x
-			- car->DynGC.vel.az * corner->pos.y
-			+ car->DynGC.vel.ay * corner->pos.x;
-		corner->vel.y = car->DynGCg.vel.y
-			+ car->DynGC.vel.az * corner->pos.x
-			- car->DynGC.vel.ax * corner->pos.y;
+		// local - confusing a bit.. vel local is .ax, global is .x
+		// contrary to pos (for legacy code support, will redo it when
+		// I have time - Christos)
+		corner->vel.ax = - car->DynGC.vel.az * corner->pos.y;
+		corner->vel.ay = car->DynGC.vel.az * corner->pos.x;
+		corner->vel.az = car->DynGC.vel.ax * corner->pos.y
+			- car->DynGC.vel.ay * corner->pos.x;
 
-		corner->vel.ax = vx
-			- car->DynGC.vel.az * corner->pos.y
-			+ car->DynGC.vel.ay * corner->pos.x;
-		corner->vel.ay = vy
-			+ car->DynGC.vel.az * corner->pos.x
-			- car->DynGC.vel.ax * corner->pos.y;
+		// (reusing var)
+		pos.x = corner->vel.ax;
+		pos.y = corner->vel.ay;
+		pos.z = corner->vel.az; 
+
+		corner->vel.ax += vx;
+		corner->vel.ay += vy;
+		corner->vel.az += vz;
+
+		NaiveInverseRotate (pos, angles, &pos);
+		
+		// global
+		corner->vel.x = car->DynGCg.vel.x + pos.x;
+		corner->vel.y = car->DynGCg.vel.y + pos.y;
+		corner->vel.z = car->DynGCg.vel.z + pos.z;
     }
 }
 
