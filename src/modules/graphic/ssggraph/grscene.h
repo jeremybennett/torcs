@@ -36,7 +36,7 @@ extern void grDrawScene(void);
 extern void grShutdownScene(void);
 
 struct Camera;
-extern void grDrawBackground(struct Camera *);
+extern void grDrawBackground(cGrCamera *);
 
 extern ssgStateSelector	*grEnvSelector;
 

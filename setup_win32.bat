@@ -28,6 +28,7 @@ call .\create_dir .\export
 call .\create_dir .\export\include
 copy .\src\libs\tgf\tgf.h .\export\include\tgf.h
 copy .\src\libs\tgf\os.h .\export\include\os.h
+copy .\src\libs\tgf\queue.h .\export\include\queue.h
 
 call .\create_dir .\export
 call .\create_dir .\export\include
@@ -988,6 +989,7 @@ call .\create_dir .\runtime\drivers\damned
 call .\create_dir .\runtime\drivers\damned\9
 copy .\src\drivers\damned\9\logo.rgb .\runtime\drivers\damned\9\logo.rgb
 copy .\src\drivers\damned\9\car.xml .\runtime\drivers\damned\9\car.xml
+copy .\src\drivers\damned\9\360-modena.rgb .\runtime\drivers\damned\9\360-modena.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers

@@ -106,7 +106,7 @@
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 
 	<attnum name="friction"           val="1.2"></attnum>
-	<attnum name="rolling resistance" val="0.1"></attnum>
+	<attnum name="rolling resistance" val="0.05"></attnum>
 
 	<attnum name="roughness" val="0"></attnum>
 	<attnum name="roughness wavelength" val="1.0"></attnum>
@@ -182,7 +182,7 @@
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
 	<attnum name="friction"           val="0.4"></attnum>
-	<attnum name="rolling resistance" val="0.1"></attnum>
+	<attnum name="rolling resistance" val="0.01"></attnum>
 
 	<attnum name="roughness" val="0.05"></attnum>
 	<attnum name="roughness wavelength" val="0.5"></attnum>
@@ -201,7 +201,7 @@
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
 	<attnum name="friction"           val="0.6"></attnum>
-	<attnum name="rolling resistance" val="0.3"></attnum>
+	<attnum name="rolling resistance" val="0.03"></attnum>
 
 	<attnum name="roughness" val="0.03"></attnum>
 	<attnum name="roughness wavelength" val="4.0"></attnum>
@@ -257,7 +257,7 @@
 	<attnum name="texture size" val="10.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
-	<attnum name="friction"           val="0.6"></attnum>
+	<attnum name="friction"           val="0.2"></attnum>
 
 	<attnum name="roughness" val="0.03"></attnum>
 	<attnum name="roughness wavelength" val="4.0"></attnum>

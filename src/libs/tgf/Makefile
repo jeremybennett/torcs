@@ -43,7 +43,7 @@ SOURCES   = 	guimenu.cpp \
 
 EXPDIR  = include
 
-EXPORTS = tgf.h os.h
+EXPORTS = tgf.h os.h queue.h
 
 DATADIR = config
 

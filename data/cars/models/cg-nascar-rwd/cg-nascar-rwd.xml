@@ -158,7 +158,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" val="90"></attnum>
     <attnum name="rolling resistance" val="0.01"></attnum>
     <attnum name="mu" val="1.6"></attnum>
@@ -172,7 +172,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" val="90"></attnum>
     <attnum name="rolling resistance" val="0.01"></attnum>
     <attnum name="mu" val="1.6"></attnum>
@@ -186,7 +186,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" val="90"></attnum>
     <attnum name="rolling resistance" val="0.015"></attnum>
     <attnum name="mu" val="1.65"></attnum>
@@ -200,7 +200,7 @@
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" val="90"></attnum>
     <attnum name="rolling resistance" val="0.015"></attnum>
     <attnum name="mu" val="1.65"></attnum>

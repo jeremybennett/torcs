@@ -30,8 +30,8 @@
 
 #include <robottools.h>
 #include <graphic.h>
-#include "grscene.h"
 #include "grcam.h"
+#include "grscene.h"
 #include "grshadow.h"
 #include "grskidmarks.h"
 #include "grsmoke.h"
@@ -42,31 +42,13 @@ int grScissorflag = 0;
 
 float grviewRatio;
 
-tCameraHead grCams[10];  /*  */
-tCamera *grCurCam   = (tCamera*)NULL;   /* the current camera */
-int	grCurCamHead = 0;		/* the current camera list */	
-tCamera *grBoardCam = (tCamera*)NULL;   /* the board camera */
+int		grCurCamHead = 0;			/* the current camera list */	
+tGrCamHead	grCams[10];				/* from F1 to F12 */
+cGrCamera	*grCurCam = (cGrCamera*)NULL;		/* the current camera */
+cGrOrthoCamera	*grBoardCam = (cGrOrthoCamera*)NULL;	/* the board camera */
 
 int scrx, scry, scrw, scrh;
-t3Dd	grCamPos;
 
-static void grCarCam20(tCamera *cam, tCarElt*);
-static void grCarCam21(tCamera *cam, tCarElt*);
-static void grCarCam22(tCamera *cam, tCarElt*);
-static void grCarCam30(tCamera *cam, tCarElt*);
-static void grCarCam31(tCamera *cam, tCarElt*);
-static void grCarCam40(tCamera *cam, tCarElt*);
-static void grCarCam41(tCamera *cam, tCarElt*);
-static void grCarCam42(tCamera *cam, tCarElt*);
-static void grCarCam43(tCamera *cam, tCarElt*);
-static void grCarCam50(tCamera *cam, tCarElt*);
-static void grCarCam60(tCamera *cam, tCarElt*);
-static void grCarCam80(tCamera *cam, tCarElt*);
-static void grCarCamNoZoompersp(tCamera *cam, tCarElt *car);
-static void grCarCamZoompersp(tCamera *cam, tCarElt *car);
-static void grCarCam100(tCamera *cam, tCarElt *car);
-static void grCarCam101(tCamera *cam, tCarElt *car);
-static void grCarCam110(tCamera *cam, tCarElt *car, tSituation *s);
 
 void grSetView(int x, int y, int w, int h)
 {
@@ -83,23 +65,9 @@ void grSetView(int x, int y, int w, int h)
     scrh = h;
 }
 
-void grUpdateCamera(tCamera *cam, tCarElt *car, tSituation *s)
+void grSetZoom(void *vp) 
 {
-    switch (cam->projtype) {
-    case CAM_FCTPERSPEC:
-	cam->uproj.fpersp.fcam(cam, car);
-	break;
-    }
-
-    switch (cam->camtype) {
-    case CAM_FCT:
-	cam->ucam.fcam.fcam(cam, car);
-	break;
-    case CAM_FCTS:
-	cam->ucam.fcams.fcams(cam, car, s);
-	break;
-    }
-    
+    grCurCam->setZoom((int)vp);
 }
 
 static void
@@ -140,8 +108,13 @@ grMakeLookAtMat4 ( sgMat4 dst, const sgVec3 eye, const sgVec3 center, const sgVe
 #undef M
 }
 
-static void
-grCameraLookAt ( const sgVec3 eye, const sgVec3 center, const sgVec3 up )
+void cGrPerspCamera::setProjection(void)
+{
+    grContext.setFOV(grviewRatio * fovy, fovy);
+    grContext.setNearFar(fnear, ffar);
+}
+
+void cGrPerspCamera::setModelView(void)
 {
   sgMat4 mat;
   grMakeLookAtMat4(mat, eye, center, up);
@@ -149,106 +122,66 @@ grCameraLookAt ( const sgVec3 eye, const sgVec3 center, const sgVec3 up )
   grContext.setCamera(mat);
 }
 
-void grSetCamera(tCamera *cam, tCarElt *car)
+void cGrPerspCamera::loadDefaults(char *attr)
 {
-    switch (cam->projtype) {
-    case CAM_FCTPERSPEC:
-	grContext.setFOV(grviewRatio * cam->uproj.fpersp.cfovy, cam->uproj.fpersp.cfovy);
-	grContext.setNearFar(cam->uproj.fpersp.cnear, cam->uproj.fpersp.cfar);
-	break;
-	
-    case CAM_PERSPEC:
-	grContext.setFOV(grviewRatio * cam->uproj.persp.fovy, cam->uproj.persp.fovy);
-	grContext.setNearFar(cam->uproj.persp.fnear, cam->uproj.persp.ffar);
-	break;
-
-    case CAM_ORTHO:
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(cam->uproj.ortho.left, cam->uproj.ortho.right, cam->uproj.ortho.bottom,
-		   cam->uproj.ortho.top);
-	break;
-    }
-    
-
-    switch (cam->camtype) {
-    case CAM_LOOKAT:
-	grCameraLookAt(cam->ucam.lookat.eye, cam->ucam.lookat.center, cam->ucam.lookat.up);
-	break;
-
-    case CAM_FCT:
-	grCameraLookAt(cam->ucam.fcam.eye, cam->ucam.fcam.center, cam->ucam.fcam.up);
-	break;
-
-    case CAM_FCTS:
-	grCameraLookAt(cam->ucam.fcams.eye, cam->ucam.fcams.center, cam->ucam.fcams.up);
-	break;
-
-    default:
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	break;
-    }
-    
+    fovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+			       attr, (char*)NULL, fovydflt);
 }
 
-void
-grSetZoom(void *vp)
+void cGrPerspCamera::setZoom(int cmd)
 {
-    int		cmd = (int)vp;
     char	buf[256];
-    
+
     switch(cmd) {
-	/* zoom in */
-    case 0:
-	if ((grCurCam->projtype == CAM_PERSPEC) || (grCurCam->projtype == CAM_FCTPERSPEC)) {
-	    if (grCurCam->uproj.persp.fovy > 2) {
-		grCurCam->uproj.persp.fovy--;
-	    } else {
-		grCurCam->uproj.persp.fovy /= 2.0;
-	    }
-	    
-	    if (grCurCam->uproj.persp.fovy < grCurCam->uproj.persp.fovymin) {
-		grCurCam->uproj.persp.fovy = grCurCam->uproj.persp.fovymin;
-	    }
+    case GR_ZOOM_IN:
+	if (fovy > 2) {
+	    fovy--;
+	} else {
+	    fovy /= 2.0;
+	}
+	if (fovy < fovymin) {
+	    fovy = fovymin;
 	}
 	break;
 	
-	/* zoom out */
-    case 1:
-	if ((grCurCam->projtype == CAM_PERSPEC) || (grCurCam->projtype == CAM_FCTPERSPEC)) {
-	    grCurCam->uproj.persp.fovy++;
-	    if (grCurCam->uproj.persp.fovy > grCurCam->uproj.persp.fovymax) {
-		grCurCam->uproj.persp.fovy = grCurCam->uproj.persp.fovymax;
-	    }
+    case GR_ZOOM_OUT:
+	fovy++;
+	if (fovy > fovymax) {
+	    fovy = fovymax;
 	}
 	break;
 
-	/* zoom max */
-    case 2:
-	if ((grCurCam->projtype == CAM_PERSPEC) || (grCurCam->projtype == CAM_FCTPERSPEC)) {
-	    grCurCam->uproj.persp.fovy = grCurCam->uproj.persp.fovymax;
-	}
+    case GR_ZOOM_MAX:
+	fovy = fovymax;
 	break;
 
-	/* zoom min */
-    case 3:
-	if ((grCurCam->projtype == CAM_PERSPEC) || (grCurCam->projtype == CAM_FCTPERSPEC)) {
-	    grCurCam->uproj.persp.fovy = grCurCam->uproj.persp.fovymin;
-	}
+    case GR_ZOOM_MIN:
+	fovy = fovymin;
 	break;
 
-	/* zoom default */
-    case 4:
-	if ((grCurCam->projtype == CAM_PERSPEC) || (grCurCam->projtype == CAM_FCTPERSPEC)) {
-	    grCurCam->uproj.persp.fovy = grCurCam->uproj.persp.fovydflt;
-	}
+    case GR_ZOOM_DFLT:
+	fovy = fovydflt;
 	break;
+
+    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, getId());
+    GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf, (char*)NULL, (tdble)fovy);
+    GfParmWriteFile("config/graph.xml", grHandle, "Graph",
+		    GFPARM_PARAMETER, "../dtd/params.dtd");
+    
     }
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->id);
-    GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf,
-		 (char*)NULL, (tdble)grCurCam->uproj.persp.fovy);
-    GfParmWriteFile("config/graph.xml", grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+}
+
+void cGrOrthoCamera::setProjection(void)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(left, right, bottom, top);
+}
+
+void cGrOrthoCamera::setModelView(void)
+{
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void
@@ -259,969 +192,507 @@ grSelectCamera(void *vp)
 
     if (cam == grCurCamHead) {
 	/* Same camera list, choose the next one */
-	grCurCam = (tCamera*)GfRlstGetNext(&(grCams[cam].cams), &(grCurCam->l));
+	grCurCam = grCurCam->next();
 	if (grCurCam == NULL) {
-	    /* only one cam */
-	    grCurCam = (tCamera*)GfRlstGetFirst(&(grCams[cam].cams));
-	} else {
-	    GfRlstSeekElt(&(grCams[cam].cams), &(grCurCam->l));
+	    grCurCam = TAILQ_FIRST(&grCams[cam]);
 	}
     } else {
 	/* Change of camera list, take the first one */
 	grCurCamHead = cam;
-	grCurCam = (tCamera*)GfRlstGetFirst(&(grCams[cam].cams));
+	grCurCam = TAILQ_FIRST(&grCams[cam]);
     }
     if (grCurCam == NULL) {
 	/* back to default camera */
 	grCurCamHead = 0;
-	grCurCam = (tCamera*)GfRlstGetFirst(&(grCams[grCurCamHead].cams));
+	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
     }
-    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->id);
+    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
     
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->id);
-    grCurCam->uproj.persp.fovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
-						       buf, (char*)NULL, grCurCam->uproj.persp.fovydflt);
-    grDrawCurrent = grCurCam->drawCurrent;
+    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->getId());
+    grCurCam->loadDefaults(buf);
+    grDrawCurrent = grCurCam->getDrawCurrent();
     GfParmWriteFile("config/graph.xml", grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 }
 
-void
-grInitCams(void)
+class cGrCarCamInside : public cGrPerspCamera
 {
-    int		c;
-    int		id;
-    tCamera	*curCam;
-
-#define FAR_GEN 1500.0
-
-    /* Board camera ortho */
-    if (grBoardCam == NULL) {
-	grBoardCam = (tCamera*)malloc(sizeof(tCamera));
-	memset(grBoardCam, 0, sizeof(tCamera));
-	grBoardCam->projtype = CAM_ORTHO;
-	grBoardCam->uproj.ortho.left = scrx;
-	grBoardCam->uproj.ortho.right = scrx + scrw;
-	grBoardCam->uproj.ortho.bottom = scry;
-	grBoardCam->uproj.ortho.top = scry + scrh;
-	grBoardCam->camtype = CAM_INIT;
+ public:
+    cGrCarCamInside(int id, int drawCurr, int drawBG,
+		    float myfovy, float myfovymin, float myfovymax,
+		    float myfnear, float myffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG,
+			 myfovy, myfovymin, myfovymax,
+			 myfnear, myffar) {
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
     }
 
-    /* Scene Cameras */
-    memset(grCams, 0, sizeof(grCams));
-    
-    c = 0;
-    
-    /* F2 */
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
+    void update(tCarElt *car, tSituation *s) {
+	tdble A1 = car->_yaw;
+	tdble CosA1 = cos(A1);
+	tdble SinA1 = sin(A1);
+	//tdble A2 = MIN(car->ctrl->steer * 1.5, 0.5) + car->_yaw;
+	//tdble CosA2 = cos(A2);
+	//tdble SinA2 = sin(A2);
+	tdble CosA2 = CosA1;
+	tdble SinA2 = SinA1;
+	tdble x = car->_pos_X + 30.0 * CosA2;
+	tdble y = car->_pos_Y + 30.0 * SinA2;
 
-    /* cam F2 = behind near */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam20;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-    
-    /* cam F2 = behind far */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam21;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F2 = car inside with car (bonnet view) */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 67.5;
-    curCam->uproj.persp.fnear = 0.3;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 50.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam22;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F2 = car inside car (no car - road view) */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 67.5;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam22;
-    curCam->drawCurrent = 0;
-    curCam->drawBackground = 1;
-
-    /* F3 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F3 = car behind*/
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam30;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F3 = car reverse*/
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 95.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam31;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F4 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F4 = car side */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 50.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam40;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F4 = car side */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 50.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam41;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F4 = car side */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 50.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam42;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F4 = car side */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.fnear = 1.0;
-    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
-    curCam->uproj.persp.fovymin = 5.0;
-    curCam->uproj.persp.fovymax = 50.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam43;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F5 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F5 = car up */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 10.0;
-    curCam->uproj.persp.fnear = 200.0;
-    curCam->uproj.persp.ffar  = grWrldMaxSize * 2;
-    curCam->uproj.persp.fovymin = 2.0;
-    curCam->uproj.persp.fovymax = 90.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam50;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 0;
-
-
-    /* F6 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F6 = car from circuit centre */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamZoompersp;
-    curCam->uproj.persp.fovy = 21.0;
-    curCam->uproj.persp.fnear = 100.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 2.0;
-    curCam->uproj.persp.fovymax = 60.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam60;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F7 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F7 = panoramic */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.fnear = 10.0;
-    curCam->uproj.persp.ffar  = grWrldMaxSize;
-    curCam->uproj.persp.fovymin = 1.0;
-    curCam->uproj.persp.fovymax = 110.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_LOOKAT;
-    curCam->ucam.lookat.eye[0] = grWrldX/2;
-    curCam->ucam.lookat.eye[1] = grWrldY/2;
-    curCam->ucam.lookat.eye[2] = MAX(grWrldX/2, grWrldY*4/3/2) + grWrldZ;
-    curCam->ucam.lookat.center[0] = grWrldX/2;
-    curCam->ucam.lookat.center[1] = grWrldY/2;
-    curCam->ucam.lookat.center[2] = 0;
-    curCam->ucam.lookat.up[0] = 0;
-    curCam->ucam.lookat.up[1] = 1;
-    curCam->ucam.lookat.up[2] = 0;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 0;
-
-    /* cam F7 = panoramic */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.fnear = 10.0;
-    curCam->uproj.persp.ffar  = 2 * grWrldMaxSize;
-    curCam->uproj.persp.fovymin = 1.0;
-    curCam->uproj.persp.fovymax = 110.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_LOOKAT;
-    curCam->ucam.lookat.eye[0] = -grWrldX/2;
-    curCam->ucam.lookat.eye[1] = -grWrldY/2;
-    curCam->ucam.lookat.eye[2] = 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY);
-    curCam->ucam.lookat.center[0] = grWrldX/2;
-    curCam->ucam.lookat.center[1] = grWrldY/2;
-    curCam->ucam.lookat.center[2] = 0;
-    curCam->ucam.lookat.up[0] = 0;
-    curCam->ucam.lookat.up[1] = 0;
-    curCam->ucam.lookat.up[2] = 1;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F7 = panoramic */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_PERSPEC;
-    curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.fnear = 10.0;
-    curCam->uproj.persp.ffar  = 2 * grWrldMaxSize;
-    curCam->uproj.persp.fovymin = 1.0;
-    curCam->uproj.persp.fovymax = 110.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_LOOKAT;
-    curCam->ucam.lookat.eye[0] = -grWrldX/2;
-    curCam->ucam.lookat.eye[1] = grWrldY + grWrldY/2;
-    curCam->ucam.lookat.eye[2] = 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY);
-    curCam->ucam.lookat.center[0] = grWrldX/2;
-    curCam->ucam.lookat.center[1] = grWrldY/2;
-    curCam->ucam.lookat.center[2] = 0;
-    curCam->ucam.lookat.up[0] = 0;
-    curCam->ucam.lookat.up[1] = 0;
-    curCam->ucam.lookat.up[2] = 1;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* F8 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F8 = road cam  */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamNoZoompersp;
-    curCam->uproj.persp.fovy = 10.0;
-    curCam->uproj.persp.fnear = 300.0;
-    curCam->uproj.persp.ffar  = FAR_GEN;
-    curCam->uproj.persp.fovymin = 1.0;
-    curCam->uproj.persp.fovymax = 20.0;
-    curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam80;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F9 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F9 = road cam zoomed */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamZoompersp;
-    curCam->uproj.fpersp.fovy = 5.0;
-    curCam->uproj.fpersp.fnear = 300.0;
-    curCam->uproj.fpersp.ffar  = FAR_GEN;
-    curCam->uproj.fpersp.fovymin = 1.0;
-    curCam->uproj.fpersp.fovymax = 90.0;
-    curCam->uproj.fpersp.fovydflt = 17.0;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam80;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F10 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F10 = follow car zoomed */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamZoompersp;
-    curCam->uproj.fpersp.fovy = 22.0;
-    curCam->uproj.fpersp.fnear = 50.0;
-    curCam->uproj.fpersp.ffar  = FAR_GEN;
-    curCam->uproj.fpersp.fovymin = 1.0;
-    curCam->uproj.fpersp.fovymax = 90.0;
-    curCam->uproj.fpersp.fovydflt = curCam->uproj.fpersp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam100;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-    /* cam F10 = road cam zoomed */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamZoompersp;
-    curCam->uproj.fpersp.fovy = 20.0;
-    curCam->uproj.fpersp.fnear = 50.0;
-    curCam->uproj.fpersp.ffar  = FAR_GEN;
-    curCam->uproj.fpersp.fovymin = 1.0;
-    curCam->uproj.fpersp.fovymax = 90.0;
-    curCam->uproj.fpersp.fovydflt = curCam->uproj.fpersp.fovy;
-    curCam->camtype = CAM_FCT;
-    curCam->ucam.fcam.fcam = grCarCam101;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-
-
-    /* F11 */
-    c++;
-    GfRlstInit(&(grCams[c].cams));
-    id = 0;
-
-    /* cam F11 = Realizator view */
-    curCam = (tCamera*)malloc(sizeof(tCamera));
-    memset(curCam, 0, sizeof(tCamera));
-    curCam->id = id++;
-    GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
-    curCam->projtype = CAM_FCTPERSPEC;
-    curCam->uproj.fpersp.fcam = grCarCamZoompersp;
-    curCam->uproj.fpersp.fovy = 5.0;
-    curCam->uproj.fpersp.fnear = 300.0;
-    curCam->uproj.fpersp.ffar  = FAR_GEN;
-    curCam->uproj.fpersp.fovymin = 1.0;
-    curCam->uproj.fpersp.fovymax = 90.0;
-    curCam->uproj.fpersp.fovydflt = 17.0;
-    curCam->camtype = CAM_FCTS;
-    curCam->ucam.fcams.fcams = grCarCam110;
-    curCam->drawCurrent = 1;
-    curCam->drawBackground = 1;
-    
-}
-
-const tdble dist = 30.0;
-
-static void
-grCarCam20(tCamera *cam, tCarElt *car)
-{
-    static tdble PreA = 0.0;
-    tdble A;
-    tdble CosA;
-    tdble SinA;
-    tdble x;
-    tdble y;
-
-    A = car->_yaw;
-    if (fabs(PreA - A) > fabs(PreA - A + 2*PI)) {
-	PreA += 2*PI;
-    } else if (fabs(PreA - A) > fabs(PreA - A - 2*PI)) {
-	PreA -= 2*PI;
+	tdble X = car->_pos_X + CosA1 * car->_drvPos_x - SinA1 * car->_drvPos_y;
+	tdble Y = car->_pos_Y + SinA1 * car->_drvPos_x + CosA1 * car->_drvPos_y;
+	tdble Z = car->_pos_Z + car->_drvPos_z;
+	eye[0] = X;
+	eye[1] = Y;
+	eye[2] = Z;
+	center[0] = x;
+	center[1] = y;
+	center[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 1.5;
     }
-    RELAXATION(A, PreA, 10.0);
-    CosA = cos(A);
-    SinA = sin(A);
-    x = car->_pos_X - 10.0 * CosA;
-    y = car->_pos_Y - 10.0 * SinA;
+};
 
-    grCamPos.x = x;
-    grCamPos.y = y;
-    grCamPos.z = RtTrackHeightG(car->_trkPos.seg, x, y) + 2.0;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
 
-static void
-grCarCam21(tCamera *cam, tCarElt *car)
+class cGrCarCamBehind : public cGrPerspCamera
 {
-    static tdble PreA = 0.0;
-    tdble A;
-    tdble CosA;
-    tdble SinA;
-    tdble x;
-    tdble y;
+    tdble PreA;
 
-    A = RtTrackSideTgAngleL(&(car->_trkPos));
-    if (fabs(PreA - A) > fabs(PreA - A + 2*PI)) {
-	PreA += 2*PI;
-    } else if (fabs(PreA - A) > fabs(PreA - A - 2*PI)) {
-	PreA -= 2*PI;
+ protected:
+    float dist;
+    
+ public:
+    cGrCarCamBehind(int id, int drawCurr, int drawBG,
+		    float fovy, float fovymin, float fovymax,
+		    float mydist, float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	dist = mydist;
+	PreA = 0.0;
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
     }
-    RELAXATION(A, PreA, 10.0);
-    CosA = cos(A);
-    SinA = sin(A);
-    x = car->_pos_X - 20.0 * CosA;
-    y = car->_pos_Y - 20.0 * SinA;
-
-    grCamPos.x = x;
-    grCamPos.y = y;
-    grCamPos.z = RtTrackHeightG(car->_trkPos.seg, x, y) + 3.0;
     
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+    void update(tCarElt *car, tSituation *s) {
+	tdble A;
+	tdble CosA;
+	tdble SinA;
+	tdble x;
+	tdble y;
 
-static void
-grCarCam22(tCamera *cam, tCarElt *car)
-{
-    tdble A1 = car->_yaw;
-    tdble CosA1 = cos(A1);
-    tdble SinA1 = sin(A1);
-    //tdble A2 = MIN(car->ctrl->steer * 1.5, 0.5) + car->_yaw;
-    tdble A2 = car->_yaw;
-    tdble CosA2 = cos(A2);
-    tdble SinA2 = sin(A2);
-    tdble x = car->_pos_X + dist * CosA2;
-    tdble y = car->_pos_Y + dist * SinA2;
-
-    grCamPos.x = car->_pos_X + CosA1 * car->_drvPos_x - SinA1 * car->_drvPos_y;
-    grCamPos.y = car->_pos_Y + SinA1 * car->_drvPos_x + CosA1 * car->_drvPos_y;
-    grCamPos.z = car->_pos_Z + car->_drvPos_z;
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = x;
-    cam->ucam.fcam.center[1] = y;
-    cam->ucam.fcam.center[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 1.5;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
-
-static void
-grCarCam30(tCamera *cam, tCarElt *car)
-{
-    static tdble PreA = 0.0;
-    tdble A;
-    tdble CosA;
-    tdble SinA;
-    tdble x;
-    tdble y;
-
-    A = RtTrackSideTgAngleL(&(car->_trkPos));
-    if (fabs(PreA - A) > fabs(PreA - A + 2*PI)) {
-	PreA += 2*PI;
-    } else if (fabs(PreA - A) > fabs(PreA - A - 2*PI)) {
-	PreA -= 2*PI;
+	A = car->_yaw;
+	if (fabs(PreA - A) > fabs(PreA - A + 2*PI)) {
+	    PreA += 2*PI;
+	} else if (fabs(PreA - A) > fabs(PreA - A - 2*PI)) {
+	    PreA -= 2*PI;
+	}
+	RELAXATION(A, PreA, 10.0);
+	CosA = cos(A);
+	SinA = sin(A);
+	x = car->_pos_X - dist * CosA;
+	y = car->_pos_Y - dist * SinA;
+    
+	eye[0] = x;
+	eye[1] = y;
+	eye[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 2.0;
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
     }
-    RELAXATION(A, PreA, 5.0);
-    CosA = cos(A);
-    SinA = sin(A);
-    x = car->_pos_X - dist * CosA;
-    y = car->_pos_Y - dist * SinA;
-
-    grCamPos.x = x;
-    grCamPos.y = y;
-    grCamPos.z = RtTrackHeightG(car->_trkPos.seg, x, y) + 5.0;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+};
 
 
-
-static void
-grCarCam31(tCamera *cam, tCarElt *car)
+class cGrCarCamBehind2 : public cGrPerspCamera
 {
-    tdble CosA = cos(car->_yaw);
-    tdble SinA = sin(car->_yaw);
-    tdble x = car->_pos_X + dist * CosA;
-    tdble y = car->_pos_Y + dist * SinA;
-    
-    grCamPos.x = x;
-    grCamPos.y = y;
-    grCamPos.z = RtTrackHeightG(car->_trkPos.seg, x, y) + 0.5;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+    tdble PreA;
 
-static void
-grCarCam40(tCamera *cam, tCarElt *car)
+ protected:
+    float dist;
+    
+ public:
+    cGrCarCamBehind2(int id, int drawCurr, int drawBG,
+		    float fovy, float fovymin, float fovymax,
+		    float mydist, float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	dist = mydist;
+	PreA = 0.0;
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	tdble A;
+	tdble CosA;
+	tdble SinA;
+	tdble x;
+	tdble y;
+
+	A = RtTrackSideTgAngleL(&(car->_trkPos));
+	if (fabs(PreA - A) > fabs(PreA - A + 2*PI)) {
+	    PreA += 2*PI;
+	} else if (fabs(PreA - A) > fabs(PreA - A - 2*PI)) {
+	    PreA -= 2*PI;
+	}
+	RELAXATION(A, PreA, 5.0);
+	CosA = cos(A);
+	SinA = sin(A);
+	x = car->_pos_X - dist * CosA;
+	y = car->_pos_Y - dist * SinA;
+    
+	eye[0] = x;
+	eye[1] = y;
+	eye[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 5.0;
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
+    }
+};
+
+
+class cGrCarCamFront : public cGrPerspCamera
 {
-    grCamPos.x = car->_pos_X;
-    grCamPos.y = car->_pos_Y-30;
-    grCamPos.z = car->_pos_Z+5;
+protected:
+    float dist;
     
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+ public:
+    cGrCarCamFront(int id, int drawCurr, int drawBG,
+		   float fovy, float fovymin, float fovymax,
+		   float mydist, float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	dist = mydist;
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	tdble CosA = cos(car->_yaw);
+	tdble SinA = sin(car->_yaw);
+	tdble x = car->_pos_X + dist * CosA;
+	tdble y = car->_pos_Y + dist * SinA;
 
-static void
-grCarCam41(tCamera *cam, tCarElt *car)
+	eye[0] = x;
+	eye[1] = y;
+	eye[2] = RtTrackHeightG(car->_trkPos.seg, x, y) + 0.5;
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
+    }
+};
+
+
+class cGrCarCamSide : public cGrPerspCamera
 {
-    grCamPos.x = car->_pos_X;
-    grCamPos.y = car->_pos_Y+30;
-    grCamPos.z = car->_pos_Z+5;
+protected:
+    float distx;
+    float disty;
+    float distz;
     
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+ public:
+    cGrCarCamSide(int id, int drawCurr, int drawBG,
+		  float fovy, float fovymin, float fovymax,
+		  float mydistx, float mydisty, float mydistz,
+		  float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	distx = mydistx;
+	disty = mydisty;
+	distz = mydistz;
 
-static void
-grCarCam42(tCamera *cam, tCarElt *car)
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	tdble x = car->_pos_X + distx;
+	tdble y = car->_pos_Y + disty;
+	tdble z = car->_pos_Z + distz;
+    
+	eye[0] = x;
+	eye[1] = y;
+	eye[2] = z;
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
+    }
+};
+
+class cGrCarCamUp : public cGrPerspCamera
 {
-    grCamPos.x = car->_pos_X+30;
-    grCamPos.y = car->_pos_Y;
-    grCamPos.z = car->_pos_Z+5;
+protected:
+    float distz;
     
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+ public:
+    cGrCarCamUp(int id, int drawCurr, int drawBG,
+		float fovy, float fovymin, float fovymax,
+		float mydistz, int axis,
+		float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	distz = mydistz;
+	up[2] = 0;
+	switch (axis) {
+	case 0:
+	    up[0] = 0;
+	    up[1] = 1;
+	    break;
+	case 1:
+	    up[0] = 0;
+	    up[1] = -1;
+	    break;
+	case 2:
+	    up[0] = 1;
+	    up[1] = 0;
+	    break;
+	case 3:
+	    up[0] = -1;
+	    up[1] = 0;
+	    break;
+	default:
+	    up[0] = 0;
+	    up[1] = 1;
+	    break;
+	}
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	tdble x = car->_pos_X;
+	tdble y = car->_pos_Y;
+	tdble z = car->_pos_Z + distz;
+    
+	eye[0] = x;
+	eye[1] = y;
+	eye[2] = z;
+	center[0] = x;
+	center[1] = y;
+	center[2] = car->_pos_Z;
+    }
+};
 
-static void
-grCarCam43(tCamera *cam, tCarElt *car)
+class cGrCarCamCenter : public cGrPerspCamera
 {
-    grCamPos.x = car->_pos_X-30;
-    grCamPos.y = car->_pos_Y;
-    grCamPos.z = car->_pos_Z+5;
+protected:
+    float distz;
+    float locfar;
+    float locfovy;
     
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+ public:
+    cGrCarCamCenter(int id, int drawCurr, int drawBG,
+		    float fovy, float fovymin, float fovymax,
+		    float mydistz,
+		    float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	distz = mydistz;
+	locfar = ffar;
+	locfovy = fovy;
 
-static void
-grCarCam50(tCamera *cam, tCarElt *car)
-{
-    static tdble precX = grWrldX*.5;
-    static tdble precY = grWrldY*.6;
-    static tdble precZ = 120;
- 
-#define    CAMSPD4 100.0
+	eye[0] = grWrldX * 0.5;
+	eye[1] = grWrldY * 0.6;
+	eye[2] = distz;
 
-    grCamPos.x = car->_pos_X;
-    RELAXATION(grCamPos.x, precX, CAMSPD4);
-    grCamPos.y = car->_pos_Y;
-    RELAXATION(grCamPos.y, precY, CAMSPD4);
-    grCamPos.z = car->_pos_Z+300;
-    RELAXATION(grCamPos.z, precZ, CAMSPD4);
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = grCamPos.x;
-    cam->ucam.fcam.center[1] = grCamPos.y;
-    cam->ucam.fcam.center[2] = grCamPos.z - 300;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 1;
-    cam->ucam.fcam.up[2] = 0;
-}
-
-static void
-grCarCam60(tCamera *cam, tCarElt *car)
-{
-    //gluLookAt(grWrldX*.5, -60, 120,
-    grCamPos.x = grWrldX*.5;
-    grCamPos.y = grWrldY*.6;
-    grCamPos.z = 120;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
-
-
-static void
-grCarCam80(tCamera *cam, tCarElt *car)
-{
-    tRoadCam *curCam;
-
-    curCam = car->_trkPos.seg->cam;
-    
-    if (curCam == NULL) {
-	grCamPos.x = grWrldX*.5;
-	grCamPos.y = grWrldY*.6;
-	grCamPos.z = 120;
-    
-	cam->ucam.fcam.eye[0] = grCamPos.x;
-	cam->ucam.fcam.eye[1] = grCamPos.y;
-	cam->ucam.fcam.eye[2] = grCamPos.z;
-	cam->ucam.fcam.center[0] = car->_pos_X;
-	cam->ucam.fcam.center[1] = car->_pos_Y;
-	cam->ucam.fcam.center[2] = car->_pos_Z;
-	cam->ucam.fcam.up[0] = 0;
-	cam->ucam.fcam.up[1] = 0;
-	cam->ucam.fcam.up[2] = 1;
-	return;
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
     }
 
-    grCamPos.x = curCam->pos.x;
-    grCamPos.y = curCam->pos.y;
-    grCamPos.z = curCam->pos.z;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
-
-static void
-grCarCamNoZoompersp(tCamera *cam, tCarElt *car)
-{
-    tdble	dx, dy, dz, dd, fnear, ffar;
-
-    dx = grCamPos.x - car->_pos_X;
-    dy = grCamPos.y - car->_pos_Y;
-    dz = grCamPos.z - car->_pos_Z;
-    
-    dd = sqrt(dx*dx+dy*dy+dz*dz);
-    
-    fnear = dz - 2;
-    if (fnear < 1) {
-	fnear = 1;
+    void setZoom(int cmd) {
+	fovy = locfovy;
+	cGrPerspCamera::setZoom(cmd);
+	locfovy = fovy;
     }
-    ffar  = dd + grCurCam->uproj.fpersp.ffar;
-
-    grCurCam->uproj.fpersp.cfovy = grCurCam->uproj.fpersp.fovy;
-    grCurCam->uproj.fpersp.cfar = ffar;
-    grCurCam->uproj.fpersp.cnear = fnear;
-}
-
-
-static void
-grCarCamZoompersp(tCamera *cam, tCarElt *car)
-{
-    tdble	dx, dy, dz, dd, fnear, ffar;
-
-    dx = grCamPos.x - car->_pos_X;
-    dy = grCamPos.y - car->_pos_Y;
-    dz = grCamPos.z - car->_pos_Z;
     
-    dd = sqrt(dx*dx+dy*dy+dz*dz);
+    void update(tCarElt *car, tSituation *s) {
+	tdble	dx, dy, dz, dd;
+	
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
 
-    fnear = dz - 5;
-    if (fnear < 1) {
-	fnear = 1;
+	dx = center[0] - eye[0];
+	dy = center[1] - eye[1];
+	dz = center[2] - eye[2];
+    
+	dd = sqrt(dx*dx+dy*dy+dz*dz);
+    
+	fnear = dz - 5;
+	if (fnear < 1) {
+	    fnear = 1;
+	}
+	ffar  = dd + locfar;
+
+	fovy = RAD2DEG(atan2(locfovy, dd));
     }
-    ffar  = dd + grCurCam->uproj.fpersp.ffar;
+};
 
-    grCurCam->uproj.fpersp.cfovy = RAD2DEG(atan2(grCurCam->uproj.fpersp.fovy, dd));
-    grCurCam->uproj.fpersp.cfar = ffar;
-    grCurCam->uproj.fpersp.cnear = fnear;
-}
-
-static void
-grCarCam100(tCamera *cam, tCarElt *car)
+class cGrCarCamLookAt : public cGrPerspCamera
 {
-    tRoadCam	*curCam;
-    tdble	dx, dy, dz, lg;
-    tdble	x,y,z;
-    static tdble preX = car->_pos_X;
-    static tdble preY = car->_pos_Y;
-    static tdble preZ = car->_pos_Z;
-    static tdble precX = grWrldX*.5;
-    static tdble precY = grWrldY*.6;
-    static tdble precZ = 120;
+ protected:
     
+ public:
+    cGrCarCamLookAt(int id, int drawCurr, int drawBG,
+		    float fovy, float fovymin, float fovymax,
+		    int axis,
+		    float eyex, float eyey, float eyez,
+		    float centerx, float centery, float centerz,
+		    float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
 
-    curCam = car->_trkPos.seg->cam;
+	eye[0] = eyex;
+	eye[1] = eyey;
+	eye[2] = eyez;
+
+	center[0] = centerx;
+	center[1] = centery;
+	center[2] = centerz;
+	
+	switch (axis) {
+	case 0:
+	    up[0] = 0;
+	    up[1] = 1;
+	    up[2] = 0;
+	    break;
+	case 1:
+	    up[0] = 0;
+	    up[1] = -1;
+	    up[2] = 0;
+	    break;
+	case 2:
+	    up[0] = 1;
+	    up[1] = 0;
+	    up[2] = 0;
+	    break;
+	case 3:
+	    up[0] = -1;
+	    up[1] = 0;
+	    up[2] = 0;
+	    break;
+	case 4:
+	    up[0] = 0;
+	    up[1] = 0;
+	    up[2] = 1;
+	    break;
+	case 5:
+	    up[0] = 0;
+	    up[1] = 0;
+	    up[2] = -1;
+	    break;
+	default:
+	    up[0] = 0;
+	    up[1] = 0;
+	    up[2] = 1;
+	    break;
+	}
+    }
     
-    if (curCam == NULL) {
-	grCamPos.x = grWrldX*.5;
-	grCamPos.y = grWrldY*.6;
-	grCamPos.z = 120;
+    void update(tCarElt *car, tSituation *s) {
+    }
+};
+
+
+class cGrCarCamRoadNoZoom : public cGrPerspCamera
+{
+ protected:
     
-	cam->ucam.fcam.eye[0] = grCamPos.x;
-	cam->ucam.fcam.eye[1] = grCamPos.y;
-	cam->ucam.fcam.eye[2] = grCamPos.z;
-	cam->ucam.fcam.center[0] = car->_pos_X;
-	cam->ucam.fcam.center[1] = car->_pos_Y;
-	cam->ucam.fcam.center[2] = car->_pos_Z;
-	cam->ucam.fcam.up[0] = 0;
-	cam->ucam.fcam.up[1] = 0;
-	cam->ucam.fcam.up[2] = 1;
-	return;
+ public:
+    cGrCarCamRoadNoZoom(int id, int drawCurr, int drawBG,
+			float fovy, float fovymin, float fovymax,
+			float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	tRoadCam *curCam;
+
+	curCam = car->_trkPos.seg->cam;
+    
+	if (curCam == NULL) {
+	    eye[0] = grWrldX * 0.5;
+	    eye[1] = grWrldY * 0.6;
+	    eye[2] = 120;
+	} else {
+	    eye[0] = curCam->pos.x;
+	    eye[1] = curCam->pos.y;
+	    eye[2] = curCam->pos.z;
+	}
+	
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
+    }
+};
+
+class cGrCarCamRoadZoom : public cGrPerspCamera
+{
+ protected:
+    float locfar;
+    float locfovy;
+    
+ public:
+    cGrCarCamRoadZoom(int id, int drawCurr, int drawBG,
+		      float fovy, float fovymin, float fovymax,
+		      float fnear, float ffar = 1500.0)
+	: cGrPerspCamera(id, drawCurr, drawBG, fovy, fovymin,
+			 fovymax, fnear, ffar) {
+	locfar = ffar;
+	locfovy = fovy;
+
+	up[0] = 0;
+	up[1] = 0;
+	up[2] = 1;
     }
 
-#define CARSPD	5.0
-    x = car->_pos_X;
-    RELAXATION(x, preX, CARSPD);
-    y = car->_pos_Y;
-    RELAXATION(y, preY, CARSPD);
-    z = car->_pos_Z;
-    RELAXATION(z, preZ, CARSPD);
-
-    dx = x - curCam->pos.x;
-    dy = y - curCam->pos.y;
-    dz = z - curCam->pos.z;
-    lg = sqrt(dx*dx+dy*dy+dz*dz) / grCurCam->uproj.fpersp.fovy;
-    
-#define CAMSPD	40.0
-    
-    grCamPos.x = car->_pos_X - dx / lg;
-    RELAXATION(grCamPos.x, precX, CAMSPD);
-    grCamPos.y = car->_pos_Y - dy / lg;
-    RELAXATION(grCamPos.y, precY, CAMSPD);
-    grCamPos.z = car->_pos_Z - dz / lg;
-    RELAXATION(grCamPos.z, precZ, CAMSPD);
-
-
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
-
-static void
-grCarCam101(tCamera *cam, tCarElt *car)
-{
-    tRoadCam	*curCam;
-    tdble	dx, dy, dz, lg;
-
-    curCam = car->_trkPos.seg->cam;
-    
-    if (curCam == NULL) {
-	grCamPos.x = grWrldX*.5;
-	grCamPos.y = grWrldY*.6;
-	grCamPos.z = 120;
-    
-	cam->ucam.fcam.eye[0] = grCamPos.x;
-	cam->ucam.fcam.eye[1] = grCamPos.y;
-	cam->ucam.fcam.eye[2] = grCamPos.z;
-	cam->ucam.fcam.center[0] = car->_pos_X;
-	cam->ucam.fcam.center[1] = car->_pos_Y;
-	cam->ucam.fcam.center[2] = car->_pos_Z;
-	cam->ucam.fcam.up[0] = 0;
-	cam->ucam.fcam.up[1] = 0;
-	cam->ucam.fcam.up[2] = 1;
-	return;
+    void setZoom(int cmd) {
+	fovy = locfovy;
+	cGrPerspCamera::setZoom(cmd);
+	locfovy = fovy;
     }
-
-    dx = car->_pos_X - curCam->pos.x;
-    dy = car->_pos_Y - curCam->pos.y;
-    dz = car->_pos_Z - curCam->pos.z;
-    lg = sqrt(dx*dx+dy*dy+dz*dz) / grCurCam->uproj.fpersp.fovy;
     
+    void update(tCarElt *car, tSituation *s) {
+	tdble	dx, dy, dz, dd;
+	tRoadCam *curCam;
 
+	curCam = car->_trkPos.seg->cam;
     
-    grCamPos.x = car->_pos_X + dx / lg;
-    grCamPos.y = car->_pos_Y + dy / lg;
-    grCamPos.z = car->_pos_Z - dz / lg;
-    
-    cam->ucam.fcam.eye[0] = grCamPos.x;
-    cam->ucam.fcam.eye[1] = grCamPos.y;
-    cam->ucam.fcam.eye[2] = grCamPos.z;
-    cam->ucam.fcam.center[0] = car->_pos_X;
-    cam->ucam.fcam.center[1] = car->_pos_Y;
-    cam->ucam.fcam.center[2] = car->_pos_Z;
-    cam->ucam.fcam.up[0] = 0;
-    cam->ucam.fcam.up[1] = 0;
-    cam->ucam.fcam.up[2] = 1;
-}
+	if (curCam == NULL) {
+	    eye[0] = grWrldX * 0.5;
+	    eye[1] = grWrldY * 0.6;
+	    eye[2] = 120;
 
+	} else {
+	    eye[0] = curCam->pos.x;
+	    eye[1] = curCam->pos.y;
+	    eye[2] = curCam->pos.z;
+	}
+	
+	center[0] = car->_pos_X;
+	center[1] = car->_pos_Y;
+	center[2] = car->_pos_Z;
+
+	dx = center[0] - eye[0];
+	dy = center[1] - eye[1];
+	dz = center[2] - eye[2];
+    
+	dd = sqrt(dx*dx+dy*dy+dz*dz);
+
+	fnear = dz - 5;
+	if (fnear < 1) {
+	    fnear = 1;
+	}
+	ffar  = dd + locfar;
+	fovy = RAD2DEG(atan2(locfovy, dd));
+    }
+};
 
 static tdble
 GetDistToStart(tCarElt *car)
@@ -1243,7 +714,6 @@ GetDistToStart(tCarElt *car)
     return lg;
 }
 
-/* TV Director View */
 typedef struct 
 {
     double	prio;
@@ -1251,184 +721,604 @@ typedef struct
     int		event;
 } tSchedView;
 
-static tSchedView *schedView;
-static double camChangeInterval;
-static double camEventInterval;
-static double lastEventTime;
-static double lastViewTime;
-static tdble  proximityThld;
-void
-grInitTVDirectorView(tSituation *s)
+class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 {
-    schedView = (tSchedView *)calloc(grNbCars, sizeof(tSchedView));
-    if (!schedView) {
-	GfTrace("malloc error");
-	exit (1);
-    }
-    
-    lastEventTime = 0;
-    lastViewTime = 0;
+    tSchedView *schedView;
+    double camChangeInterval;
+    double camEventInterval;
+    double lastEventTime;
+    double lastViewTime;
+    tdble  proximityThld;
 
-    camChangeInterval = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_CHGCAMINT, (char*)NULL, 10.0);
-    camEventInterval  = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_EVTINT, (char*)NULL, 1.0);
-    proximityThld     = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_PROXTHLD, (char*)NULL, 10.0);
-}
-
-static tCarElt *
-grGetCurCar(tSituation *s)
-{
-    int		i, j;
-    int		curCar;
-    double	curPrio;
-    tCarElt	*car = NULL;
-    double	deltaEventTime = s->currentTime - lastEventTime;
-    double	deltaViewTime = s->currentTime - lastViewTime;
-    int		event = 0;
-    
-    /* Track events */
-    if (deltaEventTime < camEventInterval) {
-	return s->cars[s->current];
-    }
-    
-    memset(schedView, 0, grNbCars * sizeof(tSchedView));
-    
-    for (i = 0; i < grNbCars; i++) {
-	tdble dist, fs;
-
-	car = s->cars[i];
-	schedView[car->index].prio = grNbCars - i;
-	fs = GetDistToStart(car);
-	if (i == 0) {
-	    if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-		schedView[car->index].viewable = 1;
-		if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
-		    schedView[car->index].prio += 5 * grNbCars;
-		    event = 1;
-		}
-	    }
-	} else {
-	    if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
-		schedView[car->index].prio += grNbCars;
-		event = 1;
-	    }
+ public:
+    cGrCarCamRoadZoomTVD(int id, int drawCurr, int drawBG,
+			 float fovy, float fovymin, float fovymax,
+			 float fnear, float ffar = 1500.0)
+	: cGrCarCamRoadZoom(id, drawCurr, drawBG, fovy, fovymin,
+			    fovymax, fnear, ffar) {
+	schedView = (tSchedView *)calloc(grNbCars, sizeof(tSchedView));
+	if (!schedView) {
+	    GfTrace("malloc error");
+	    exit (1);
 	}
-	
-	if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-	    dist = fabs(car->_trkPos.toMiddle) - grTrack->width / 2.0;
-	    /* out of track */
-	    if (dist > 0) {
-		schedView[car->index].prio += grNbCars;
-		schedView[car->index].viewable |= 8;
-		if (car->ctrl->raceCmd & RM_CMD_PIT_ASKED) {
-		    schedView[car->index].prio += grNbCars;
-		    event = 1;
-		}
-	    }
+    
+	lastEventTime = 0;
+	lastViewTime = 0;
 
-	    for (j = i+1; j < grNbCars; j++) {
-		tCarElt *car2 = s->cars[j];
-		tdble fs2 = GetDistToStart(car2);
-		tdble d = fabs(fs2 - fs);
+	camChangeInterval = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_CHGCAMINT, (char*)NULL, 10.0);
+	camEventInterval  = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_EVTINT, (char*)NULL, 1.0);
+	proximityThld     = GfParmGetNum(grHandle, GR_SCT_TVDIR, GR_ATT_PROXTHLD, (char*)NULL, 10.0);
+    }
+    
+    void update(tCarElt *car, tSituation *s) {
+	int	i, j;
+	int	curCar;
+	double	curPrio;
+	double	deltaEventTime = s->currentTime - lastEventTime;
+	double	deltaViewTime = s->currentTime - lastViewTime;
+	int	event = 0;
+    
+	/* Track events */
+	if (deltaEventTime > camEventInterval) {
 
-		if ((car2->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-		    if (d < proximityThld) {
-			d = proximityThld - d;
-			schedView[car->index].prio  += d * grNbCars / proximityThld;
-			schedView[car2->index].prio += d * (grNbCars - 1) / proximityThld;
-			schedView[car->index].viewable  |= 2;
-			schedView[car2->index].viewable |= 2;
-			if (i == 0) {
+	    memset(schedView, 0, grNbCars * sizeof(tSchedView));
+    
+	    for (i = 0; i < grNbCars; i++) {
+		tdble dist, fs;
+
+		car = s->cars[i];
+		schedView[car->index].prio = grNbCars - i;
+		fs = GetDistToStart(car);
+		if (i == 0) {
+		    if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+			schedView[car->index].viewable = 1;
+			if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
+			    schedView[car->index].prio += 5 * grNbCars;
 			    event = 1;
 			}
+		    }
+		} else {
+		    if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
+			schedView[car->index].prio += grNbCars;
+			event = 1;
+		    }
+		}
+	
+		if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+		    dist = fabs(car->_trkPos.toMiddle) - grTrack->width / 2.0;
+		    /* out of track */
+		    if (dist > 0) {
+			schedView[car->index].prio += grNbCars;
+			schedView[car->index].viewable |= 8;
+			if (car->ctrl->raceCmd & RM_CMD_PIT_ASKED) {
+			    schedView[car->index].prio += grNbCars;
+			    event = 1;
+			}
+		    }
+
+		    for (j = i+1; j < grNbCars; j++) {
+			tCarElt *car2 = s->cars[j];
+			tdble fs2 = GetDistToStart(car2);
+			tdble d = fabs(fs2 - fs);
+
+			if ((car2->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+			    if (d < proximityThld) {
+				d = proximityThld - d;
+				schedView[car->index].prio  += d * grNbCars / proximityThld;
+				schedView[car2->index].prio += d * (grNbCars - 1) / proximityThld;
+				schedView[car->index].viewable  |= 2;
+				schedView[car2->index].viewable |= 2;
+				if (i == 0) {
+				    event = 1;
+				}
+			    }
+			}
+		    }
+
+		    if (car->priv->collision) {
+			schedView[car->index].prio += grNbCars;
+			schedView[car->index].viewable |= 4;
+			event = 1;
+		    }
+		} else {
+		    if (i == s->current) {
+			event = 1;	/* update view */
 		    }
 		}
 	    }
 
-	    if (car->priv->collision) {
-		schedView[car->index].prio += grNbCars;
-		schedView[car->index].viewable |= 4;
-		event = 1;
-	    }
-	} else {
-	    if (i == s->current) {
-		event = 1;	/* update view */
-	    }
-	}
-    }
 
+	    /* change current car */
+	    if ((event && (deltaEventTime > camEventInterval)) || (deltaViewTime > camChangeInterval)) {
+		int	last_current = s->current;
 
-    /* change current car */
-    if ((event && (deltaEventTime > camEventInterval)) || (deltaViewTime > camChangeInterval)) {
-	int	last_current = s->current;
-	
-
-
-	curCar = 0;
-	curPrio = -1000000.0;
-	for (i = 0; i < grNbCars; i++) {
+		curCar = 0;
+		curPrio = -1000000.0;
+		for (i = 0; i < grNbCars; i++) {
 	    
-	    if ((schedView[i].prio > curPrio) && (schedView[i].viewable)) {
-		curPrio = schedView[i].prio;
-		curCar = i;
-	    }
-	}
-	for (i = 0; i < grNbCars; i++) {
-	    if (s->cars[i]->index == curCar) {
-		s->current = i;
-		break;
-	    }
-	}
-	if (last_current != s->current) {
-	    lastEventTime = s->currentTime;
-	    lastViewTime = s->currentTime;
+		    if ((schedView[i].prio > curPrio) && (schedView[i].viewable)) {
+			curPrio = schedView[i].prio;
+			curCar = i;
+		    }
+		}
+		for (i = 0; i < grNbCars; i++) {
+		    if (s->cars[i]->index == curCar) {
+			s->current = i;
+			break;
+		    }
+		}
+		if (last_current != s->current) {
+		    lastEventTime = s->currentTime;
+		    lastViewTime = s->currentTime;
 
-	    for (i = 0; i < grNbCars; i++) {
-		s->cars[i]->priv->collision = 0;
+		    for (i = 0; i < grNbCars; i++) {
+			s->cars[i]->priv->collision = 0;
+		    }
+		}
 	    }
 	}
+	
+	car = s->cars[s->current];
+
+	cGrCarCamRoadZoom::update(car, s);
     }
+};
 
-    return s->cars[s->current];
-}
-
-
-static void
-grCarCam110(tCamera *cam, tCarElt *car, tSituation *s)
+void
+grInitCams(void)
 {
-    tRoadCam *curCam;
+    int		id;
+    int		c;
+    cGrCamera	*curCam;
 
-    car = grGetCurCar(s);
-    
-    curCam = car->_trkPos.seg->cam;
-    
-    if (curCam == NULL) {
-	grCamPos.x = grWrldX*.5;
-	grCamPos.y = grWrldY*.6;
-	grCamPos.z = 120;
-    
-	cam->ucam.fcams.eye[0] = grCamPos.x;
-	cam->ucam.fcams.eye[1] = grCamPos.y;
-	cam->ucam.fcams.eye[2] = grCamPos.z;
-	cam->ucam.fcams.center[0] = car->_pos_X;
-	cam->ucam.fcams.center[1] = car->_pos_Y;
-	cam->ucam.fcams.center[2] = car->_pos_Z;
-	cam->ucam.fcams.up[0] = 0;
-	cam->ucam.fcams.up[1] = 0;
-	cam->ucam.fcams.up[2] = 1;
-	return;
+    if (grBoardCam == NULL) {
+	grBoardCam = new cGrOrthoCamera(scrx, scrx + scrw, scry, scry + scrh);
     }
-
-    grCamPos.x = curCam->pos.x;
-    grCamPos.y = curCam->pos.y;
-    grCamPos.z = curCam->pos.z;
     
-    cam->ucam.fcams.eye[0] = grCamPos.x;
-    cam->ucam.fcams.eye[1] = grCamPos.y;
-    cam->ucam.fcams.eye[2] = grCamPos.z;
-    cam->ucam.fcams.center[0] = car->_pos_X;
-    cam->ucam.fcams.center[1] = car->_pos_Y;
-    cam->ucam.fcams.center[2] = car->_pos_Z;
-    cam->ucam.fcams.up[0] = 0;
-    cam->ucam.fcams.up[1] = 0;
-    cam->ucam.fcams.up[2] = 1;
+    /* Scene Cameras */
+    memset(grCams, 0, sizeof(grCams));
+    c = 0;
+
+    /* F2 */
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+    
+    /* cam F2 = behind near */
+    curCam = new cGrCarCamBehind(id,
+				 1,	/* drawCurr */
+				 1,	/* drawBG  */
+				 40.0,	/* fovy */
+				 5.0,	/* fovymin */
+				 95.0,	/* fovymax */
+				 10.0,	/* dist */
+				 1.0	/* near */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+    
+    /* cam F2 = behind far */
+    curCam = new cGrCarCamBehind(id,
+				 1,	/* drawCurr */
+				 1,	/* drawBG  */
+				 40.0,	/* fovy */
+				 5.0,	/* fovymin */
+				 95.0,	/* fovymax */
+				 20.0,	/* dist */
+				 1.0	/* near */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+    
+    /* cam F2 = car inside with car (bonnet view) */
+    curCam = new cGrCarCamInside(id,
+				 1,	/* drawCurr */
+				 1,	/* drawBG  */
+				 67.5,	/* fovy */
+				 50.0,	/* fovymin */
+				 95.0,	/* fovymax */
+				 0.3	/* near */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F2 = car inside car (no car - road view) */
+    curCam = new cGrCarCamInside(id,
+				 0,	/* drawCurr */
+				 1,	/* drawBG  */
+				 67.5,	/* fovy */
+				 50.0,	/* fovymin */
+				 95.0,	/* fovymax */
+				 0.3	/* near */
+				 );
+    curCam->add(&grCams[c]);
+
+    /* F3 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F3 = car behind*/
+    curCam = new cGrCarCamBehind2(id,
+				  1,	/* drawCurr */
+				  1,	/* drawBG  */
+				  40.0,	/* fovy */
+				  5.0,	/* fovymin */
+				  95.0,	/* fovymax */
+				  30.0,	/* dist */
+				  1.0	/* near */
+				  );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F3 = car reverse*/
+    curCam = new cGrCarCamFront(id,
+				1,	/* drawCurr */
+				1,	/* drawBG  */
+				30.0,	/* fovy */
+				5.0,	/* fovymin */
+				95.0,	/* fovymax */
+				20.0,	/* dist */
+				1.0	/* near */
+				);
+    curCam->add(&grCams[c]);
+
+    /* F4 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F4 = car side 1*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       0.0,	/* distx */
+			       -20.0,	/* disty */
+			       3.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 2*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       0.0,	/* distx */
+			       20.0,	/* disty */
+			       3.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 3*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       -20.0,	/* distx */
+			       0.0,	/* disty */
+			       3.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 4*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       20.0,	/* distx */
+			       0.0,	/* disty */
+			       3.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 5*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       0.0,	/* distx */
+			       -40.0,	/* disty */
+			       6.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 6*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       0.0,	/* distx */
+			       40.0,	/* disty */
+			       6.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 7*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       -40.0,	/* distx */
+			       0.0,	/* disty */
+			       6.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F4 = car side 8*/
+    curCam = new cGrCarCamSide(id,
+			       1,	/* drawCurr */
+			       1,	/* drawBG  */
+			       30.0,	/* fovy */
+			       5.0,	/* fovymin */
+			       60.0,	/* fovymax */
+			       40.0,	/* distx */
+			       0.0,	/* disty */
+			       6.0,	/* distz */
+			       1.0	/* near */
+			       );
+    curCam->add(&grCams[c]);
+
+    /* F5 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F5 = car up 1*/
+    curCam = new cGrCarCamUp(id,
+			     1,	/* drawCurr */
+			     1,	/* drawBG  */
+			     30.0,	/* fovy */
+			     5.0,	/* fovymin */
+			     60.0,	/* fovymax */
+			     300.0,	/* distz */
+			     0,		/* axis */
+			     200.0	/* near */
+			     );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F5 = car up 2*/
+    curCam = new cGrCarCamUp(id,
+			     1,	/* drawCurr */
+			     1,	/* drawBG  */
+			     30.0,	/* fovy */
+			     5.0,	/* fovymin */
+			     60.0,	/* fovymax */
+			     300.0,	/* distz */
+			     1,		/* axis */
+			     200.0	/* near */
+			     );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F5 = car up 3*/
+    curCam = new cGrCarCamUp(id,
+			     1,	/* drawCurr */
+			     1,	/* drawBG  */
+			     30.0,	/* fovy */
+			     5.0,	/* fovymin */
+			     60.0,	/* fovymax */
+			     300.0,	/* distz */
+			     2,		/* axis */
+			     200.0	/* near */
+			     );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F5 = car up 4*/
+    curCam = new cGrCarCamUp(id,
+			     1,	/* drawCurr */
+			     1,	/* drawBG  */
+			     30.0,	/* fovy */
+			     5.0,	/* fovymin */
+			     60.0,	/* fovymax */
+			     300.0,	/* distz */
+			     3,		/* axis */
+			     200.0	/* near */
+			     );
+    curCam->add(&grCams[c]);
+
+    /* F6 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F6 = car from circuit centre */
+    curCam = new cGrCarCamCenter(id,
+				 1,	/* drawCurr */
+				 1,	/* drawBG  */
+				 21.0,	/* fovy */
+				 2.0,	/* fovymin */
+				 60.0,	/* fovymax */
+				 120.0,	/* distz */
+				 100.0	/* near */
+				 );
+    curCam->add(&grCams[c]);
+
+    /* F7 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F7 = panoramic */
+    curCam = new cGrCarCamLookAt(id,
+				 1,		/* drawCurr */
+				 0,		/* drawBG  */
+				 74.0,		/* fovy */
+				 1.0,		/* fovymin */
+				 110.0,		/* fovymax */
+				 0,		/* up axis */
+				 grWrldX/2,	/* eyex */
+				 grWrldY/2,	/* eyey */
+				 MAX(grWrldX/2, grWrldY*4/3/2) + grWrldZ, /* eyez */
+				 grWrldX/2,	/* centerx */
+				 grWrldY/2,	/* centery */
+				 0,		/* centerz */
+				 10.0,		/* near */
+				 grWrldMaxSize	/* far */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F7 = panoramic */
+    curCam = new cGrCarCamLookAt(id,
+				 1,		/* drawCurr */
+				 0,		/* drawBG  */
+				 74.0,		/* fovy */
+				 1.0,		/* fovymin */
+				 110.0,		/* fovymax */
+				 4,		/* up axis */
+				 -grWrldX/2,	/* eyex */
+				 -grWrldY/2,	/* eyey */
+				 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+				 grWrldX/2,	/* centerx */
+				 grWrldY/2,	/* centery */
+				 0,		/* centerz */
+				 10.0,		/* near */
+				 2 * grWrldMaxSize	/* far */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F7 = panoramic */
+    curCam = new cGrCarCamLookAt(id,
+				 1,		/* drawCurr */
+				 0,		/* drawBG  */
+				 74.0,		/* fovy */
+				 1.0,		/* fovymin */
+				 110.0,		/* fovymax */
+				 4,		/* up axis */
+				 -grWrldX/2,	/* eyex */
+				 grWrldY * 3/2,	/* eyey */
+				 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+				 grWrldX/2,	/* centerx */
+				 grWrldY/2,	/* centery */
+				 0,		/* centerz */
+				 10.0,		/* near */
+				 2 * grWrldMaxSize	/* far */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F7 = panoramic */
+    curCam = new cGrCarCamLookAt(id,
+				 1,		/* drawCurr */
+				 0,		/* drawBG  */
+				 74.0,		/* fovy */
+				 1.0,		/* fovymin */
+				 110.0,		/* fovymax */
+				 4,		/* up axis */
+				 grWrldX * 3/2,	/* eyex */
+				 grWrldY * 3/2,	/* eyey */
+				 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+				 grWrldX/2,	/* centerx */
+				 grWrldY/2,	/* centery */
+				 0,		/* centerz */
+				 10.0,		/* near */
+				 2 * grWrldMaxSize	/* far */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* cam F7 = panoramic */
+    curCam = new cGrCarCamLookAt(id,
+				 1,		/* drawCurr */
+				 0,		/* drawBG  */
+				 74.0,		/* fovy */
+				 1.0,		/* fovymin */
+				 110.0,		/* fovymax */
+				 4,		/* up axis */
+				 grWrldX * 3/2,	/* eyex */
+				 -grWrldY/2,	/* eyey */
+				 0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+				 grWrldX/2,	/* centerx */
+				 grWrldY/2,	/* centery */
+				 0,		/* centerz */
+				 10.0,		/* near */
+				 2 * grWrldMaxSize	/* far */
+				 );
+    curCam->add(&grCams[c]);
+    id++;
+
+    /* F8 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F8 = road cam fixed fov */
+
+    curCam = new cGrCarCamRoadNoZoom(id,
+				     1,		/* drawCurr */
+				     1,		/* drawBG  */
+				     30.0,	/* fovy */
+				     5.0,	/* fovymin */
+				     60.0,	/* fovymax */
+				     1.0	/* near */
+				     );
+    curCam->add(&grCams[c]);
+
+    /* F9 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* cam F9 = road cam zoomed */
+    curCam = new cGrCarCamRoadZoom(id,
+				   1,		/* drawCurr */
+				   1,		/* drawBG  */
+				   17.0,	/* fovy */
+				   1.0,		/* fovymin */
+				   90.0,	/* fovymax */
+				   1.0		/* near */
+				   );
+    curCam->add(&grCams[c]);
+
+    /* F10 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+
+    /* F11 */
+    c++;
+    TAILQ_INIT(&grCams[c]);
+    id = 0;
+    curCam = new cGrCarCamRoadZoomTVD(id,
+				      1,	/* drawCurr */
+				      1,	/* drawBG  */
+				      17.0,	/* fovy */
+				      1.0,	/* fovymin */
+				      90.0,	/* fovymax */
+				      1.0	/* near */
+				      );
+    curCam->add(&grCams[c]);
+
 }
+

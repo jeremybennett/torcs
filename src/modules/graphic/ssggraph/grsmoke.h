@@ -2,7 +2,7 @@
 #define _GRSMOKE_H_
 
 #define SMOKE_INIT_SIZE 0.2f
-#define MAX_SMOKE_LIFE  9
+#define MAX_SMOKE_LIFE  120
 #define MAX_SMOKE_NUMBER  300
 #define DELTAT 0.1f
 #define VZ_INIT 0.2f
@@ -18,8 +18,8 @@ protected:
   virtual void copy_from ( ssgVtxTableSmoke *src, int clone_flags ) ;
   
 public:
-  int max_life;
-  int cur_life;
+  double max_life;
+  double cur_life;
   tdble vvx, vvy,vvz;
   tdble vexp;
   int smokeType;

@@ -50,25 +50,21 @@
   <section name="Front Right Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
    </section>
 
   <section name="Front Left Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
   </section>
 
   <section name="Rear Right Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
   </section>
 
   <section name="Rear Left Wheel">
     <attnum name="ride height" unit="mm" min="100" max="200" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
-    <attnum name="stiffness" min="5.0" max="50.0" val="50.0"></attnum>
     <attnum name="mu" val="1.65"></attnum>
   </section>
 

@@ -211,20 +211,22 @@ RmSaveResults(tRmInfo *rmInfo)
     }
     fprintf(fcmd, "#!/bin/sh\n");
     fprintf(fcmd, "gnuplot -persist > results/%s.png <<!!\n", filename);
-    fprintf(fcmd, "#   set yrange [%d:0]\n", -rmInfo->s->_ncars);
     fprintf(fcmd, "#   set grid\n");
     fprintf(fcmd, "    set nokey\n");
     fprintf(fcmd, "    set title \"Race Positions Lap by Lap\"\n");
     fprintf(fcmd, "    set xlabel \"Laps\"\n");
     fprintf(fcmd, "    set ylabel \"Drivers\"\n");
+    fprintf(fcmd, "    set y2label \"Positions\"\n");
+    fprintf(fcmd, "    set yrange [* : *] reverse\n");
+    fprintf(fcmd, "    set y2range [* : *] reverse\n");
     fprintf(fcmd, "    set size 2.5,1.5\n");
     fprintf(fcmd, "    set terminal png color\n");
     fprintf(fcmd, "    set data style lines\n");
     fprintf(fcmd, "    set xtics border 1\n");
     fprintf(fcmd, "    set y2tics border mirror 1\n");
-    fprintf(fcmd, "    set ytics border (\"%s\" -1", cars[index[0]]->_name);
+    fprintf(fcmd, "    set ytics border (\"%s\" 1", cars[index[0]]->_name);
     for (i = 1; i < max; i++) {
-	fprintf(fcmd, ", \"%s\" %d", cars[index[i]]->_name, -i - 1);
+	fprintf(fcmd, ", \"%s\" %d", cars[index[i]]->_name, i + 1);
     }
     fprintf(fcmd, ")\n");    
 
@@ -244,7 +246,7 @@ RmSaveResults(tRmInfo *rmInfo)
     }
     fprintf(fout, "0 ");
     for (i = 0; i < max; i++) {
-	fprintf(fout, "%d ", -(cars[index[i]]->_startRank + 1));
+	fprintf(fout, "%d ", cars[index[i]]->_startRank + 1);
     }
     fprintf(fout, "\n");
     for (nb = 0; nb < rmInfo->s->_totLaps + 1; nb++) {
@@ -254,7 +256,7 @@ RmSaveResults(tRmInfo *rmInfo)
 	    if (pos == 0) {
 		fprintf(fout, "- ");
 	    } else {
-		fprintf(fout, "%d ", -pos);
+		fprintf(fout, "%d ", pos);
 	    }
 	}
 	fprintf(fout, "\n");

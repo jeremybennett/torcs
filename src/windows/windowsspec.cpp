@@ -58,7 +58,7 @@ windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
     char	*lastSlash;
     
     curMod = (tModList*)calloc(1, sizeof(tModList));
-    fprintf(stdout,"loading windows module %s\n",sopath);
+    GfOut("loading windows module %s\n",sopath);
     lastSlash = strrchr(sopath, '/');
     if (lastSlash) {
 	strcpy(dname, lastSlash+1);
@@ -67,7 +67,7 @@ windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
     }
     dname[strlen(dname) - 4] = 0; /* cut .dll */
     
-    fprintf(stdout,"LoadLibrary from %s\n",sopath);
+    GfOut("LoadLibrary from %s\n",sopath);
 
     /* This one doesn't load dynamically... */
     if (strcmp(sopath,"modules/graphic/ssggraph.dll") == 0) {
@@ -80,16 +80,16 @@ windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 	    (*modlist)->next = curMod;
 	    *modlist = curMod;
 	}
-	fprintf(stdout,"%s loaded staticaly\n",sopath);
+	GfOut("%s loaded staticaly\n",sopath);
 	return 0;
     } 
 
     handle = LoadLibrary( sopath ); 
-    fprintf(stdout,"LoadLibrary return from %s\n",sopath);
+    GfOut("LoadLibrary return from %s\n",sopath);
     if (handle != NULL) {
 	if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
 	    /* DLL loaded, init function exists, call it... */
-	    fprintf(stdout,"calling modInfo from %s\n",sopath);
+	    GfOut("calling modInfo from %s\n",sopath);
 	    if (fModInfo(curMod->modInfo) == 0) {
 		GfOut(">>> %s >>>\n", sopath);
 		curMod->handle = handle;
@@ -117,7 +117,7 @@ windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 	return -1;
     }
       
-    fprintf(stdout,"windows module %s loaded\n",sopath);
+    GfOut("windows module %s loaded\n",sopath);
     return 0;
 }
 
@@ -345,7 +345,7 @@ windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList **modlist)
 
     char Dir_name[ 1024 ];
     sprintf( Dir_name, "%s\\*.*", dir );
-    fprintf(stdout,"trying dir info %s\n",dir);
+    GfOut("trying dir info %s\n",dir);
     long Dirent = _findfirst( Dir_name, &FData );
     if ( Dirent != -1 ) {
 	do {
@@ -521,7 +521,7 @@ windowsDirGetList(char *dir)
     _finddata_t FData;
     char Dir_name[ 1024 ];
     sprintf( Dir_name, "%s\\*.*", dir );
-    fprintf(stdout,"trying dir %s\n",dir);
+    GfOut("trying dir %s\n",dir);
     long Dirent = _findfirst( Dir_name, &FData );
     if ( Dirent != -1 ) {
 	do {

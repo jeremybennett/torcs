@@ -70,7 +70,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 {
     char	buf[256];
     int		camNum;
-    tRingList	*cam;
+    cGrCamera	*cam;
 
     
     switch (flag) {
@@ -110,39 +110,31 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 			       (char*)NULL, 0);
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
 			       (char*)NULL, 9);
-    cam = GfRlstGetFirst(&(grCams[grCurCamHead].cams));
+    cam = TAILQ_FIRST(&grCams[grCurCamHead]);
     grCurCam = NULL;
     while (cam) {
-	if (((tCamera*)cam)->id == camNum) {
-	    grCurCam = (tCamera*)cam;
+	if (cam->getId() == camNum) {
+	    grCurCam = cam;
 	    break;
 	}
-	cam = GfRlstGetNext(&(grCams[grCurCamHead].cams), cam);
+	cam = cam->next();
     }
     if (grCurCam == NULL) {
 	/* back to default camera */
 	grCurCamHead = 0;
-	grCurCam = (tCamera*)GfRlstGetFirst(&(grCams[grCurCamHead].cams));
-	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->id);
+	grCurCam = TAILQ_FIRST(&grCams[grCurCamHead]);
+	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
     }
-    if (grCurCam->projtype == CAM_PERSPEC) {
-	sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
-	grCurCam->uproj.persp.fovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
-							   buf, (char*)NULL, grCurCam->uproj.persp.fovydflt);
-    }
-    if (grCurCam->projtype == CAM_FCTPERSPEC) {
-	sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
-	grCurCam->uproj.fpersp.fovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
-							   buf, (char*)NULL, grCurCam->uproj.fpersp.fovydflt);
-    }
-    grDrawCurrent = grCurCam->drawCurrent;
+    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
+    grCurCam->loadDefaults(buf);
+    grDrawCurrent = grCurCam->getDrawCurrent();
 
-    GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)0, grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)1, grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)2, grSetZoom);
-    GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)3, grSetZoom);
-    GfuiAddKey(screen, '*',            "Zoom Default",     (void*)4, grSetZoom);
+    GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom);
+    GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom);
+    GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom);
+    GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom);
+    GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom);
 
     GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera);
     GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera);
@@ -196,7 +188,6 @@ initCars(tSituation *s)
     TRACE_GL("initCars: end");
 
     grInitSound();
-    grInitTVDirectorView(s);
     grInitSmoke(s->_ncars);
     return 0;
     
@@ -206,6 +197,7 @@ void
 shutdownCars(void)
 {
     if (grNbCars) {
+	grShutdownSkidmarks();
 	/* TODO delete ssg objects */
 	grShutdownSound();
 	free(grCarInfo);
@@ -218,7 +210,6 @@ int
 refresh(tSituation *s)
 {
     int			i;
-    ssgSimpleState	*st = NULL;
 
     nFrame++;
     grCurTime = GfTimeClock();
@@ -238,8 +229,8 @@ refresh(tSituation *s)
 
     glDisable(GL_COLOR_MATERIAL);
 
-    grUpdateCamera(grCurCam, s->cars[s->current], s);
-    if (grCurCam->drawBackground) {
+    grCurCam->update(s->cars[s->current], s);
+    if (grCurCam->getDrawBackground()) {
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);
 	grDrawBackground(grCurCam);
@@ -249,9 +240,9 @@ refresh(tSituation *s)
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
-    grSetCamera(grCurCam, s->cars[s->current]);
+    grCurCam->action();
     for (i = 0; i < s->_ncars; i++) {
-	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->drawCurrent);
+	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
     }
 
 /*     for (i = 0; i < s->_ncars; i++) { */
@@ -263,7 +254,7 @@ refresh(tSituation *s)
     grDrawScene();
 
     glViewport(grWinx, grWiny, grWinw, grWinh);
-    grSetCamera(grBoardCam, (tCarElt*)NULL);
+    grBoardCam->action();
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glDisable(GL_CULL_FACE);

@@ -324,8 +324,12 @@ initBackground(void)
 }
 
 
-void grDrawBackground(struct Camera *cam)
+void grDrawBackground(cGrCamera *cam)
 {
+    t3Dd *camPos;
+    t3Dd *camCenter;
+    t3Dd *camUp;
+    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -334,31 +338,18 @@ void grDrawBackground(struct Camera *cam)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    switch (cam->camtype) {
-    case CAM_LOOKAT:
-	gluLookAt(cam->ucam.lookat.eye[0], cam->ucam.lookat.eye[1], cam->ucam.lookat.eye[2],
-		  cam->ucam.lookat.center[0], cam->ucam.lookat.center[1], cam->ucam.lookat.center[2],
-		  cam->ucam.lookat.up[0], cam->ucam.lookat.up[1], cam->ucam.lookat.up[2]);
-	break;
-
-    case CAM_FCT:
-	gluLookAt(cam->ucam.fcam.eye[0], cam->ucam.fcam.eye[1], cam->ucam.fcam.eye[2],
-		  cam->ucam.fcam.center[0], cam->ucam.fcam.center[1], cam->ucam.fcam.center[2],
-		  cam->ucam.fcam.up[0], cam->ucam.fcam.up[1], cam->ucam.fcam.up[2]);
-	break;
-
-    case CAM_FCTS:
-	gluLookAt(cam->ucam.fcams.eye[0], cam->ucam.fcams.eye[1], cam->ucam.fcams.eye[2],
-		  cam->ucam.fcams.center[0], cam->ucam.fcams.center[1], cam->ucam.fcams.center[2],
-		  cam->ucam.fcams.up[0], cam->ucam.fcams.up[1], cam->ucam.fcams.up[2]);
-	break;
-    }
+    camPos = cam->getPos();
+    camCenter = cam->getCenter();
+    camUp = cam->getUp();
+   
+    gluLookAt(camPos->x, camPos->y, camPos->z, 
+	      camCenter->x, camCenter->y, camCenter->z,
+	      camUp->x, camUp->y, camUp->z);
     
-
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glPushMatrix();
-    glTranslatef(grCamPos.x, grCamPos.y, grCamPos.z);
+    glTranslatef(camPos->x, camPos->y, camPos->z);
     glBindTexture(GL_TEXTURE_2D, BackgroundTex);
     glCallList(BackgroundList);
     if (BackgroundType > 2) {

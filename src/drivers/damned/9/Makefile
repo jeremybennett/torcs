@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/9
 
-DATA      =   logo.rgb car.xml
+DATA      =   logo.rgb car.xml 360-modena.rgb
 
 include ${MAKE_DEFAULT}
 

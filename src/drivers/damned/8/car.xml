@@ -265,7 +265,6 @@
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="20.0" max="50.0" val="50.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02"></attnum>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"></attnum>
@@ -281,7 +280,6 @@
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="20.0" max="50.0" val="50.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02"></attnum>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"></attnum>
@@ -297,7 +295,6 @@
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"></attnum>
     <attnum name="toe" unit="deg" min="0" max="0" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="20.0" max="50.0" val="50.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02"></attnum>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"></attnum>
@@ -313,7 +310,6 @@
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"></attnum>
     <attnum name="toe" unit="deg" min="0" max="0" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="20.0" max="50.0" val="50.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02"></attnum>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"></attnum>

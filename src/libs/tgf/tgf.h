@@ -84,6 +84,7 @@
 #endif
 #include <GL/glut.h>
 #include <osspec.h>
+#include <queue.h>
 
 /* typedef double tdble; */
 typedef float tdble;

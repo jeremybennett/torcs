@@ -27,113 +27,178 @@
 #include <float.h>
 #endif
 
-extern float grviewRatio;
-struct Camera;
+class cGrCamera;
 
-typedef void (*tfcam)(struct Camera *, tCarElt *);
-typedef void (*tfcams)(struct Camera *, tCarElt *, tSituation *);
+TAILQ_HEAD(GrCamHead, cGrCamera);
 
-typedef struct Camera
+/* Camera interface */
+class cGrCamera 
 {
-    /* ring list should be first */
-    tRingList		l;
-    
-    int projtype;
-#define CAM_NOTPRESENT	0
-#define CAM_PERSPEC	2
-#define CAM_ORTHO	3
-#define CAM_FCTPERSPEC	4
-    union 
-    {
-	struct
-	{
-	    float fovy;
-	    float fnear;
-	    float ffar;
-	    float fovymin, fovymax, fovydflt;
-	    tfcam fcam;
-	    float cfovy;
-	    float cnear;
-	    float cfar;
-	} fpersp;
-
-	struct
-	{
-	    float fovy;
-	    float fnear;
-	    float ffar;
-	    float fovymin, fovymax, fovydflt;
-	} persp;
-	
-	struct
-	{
-	    tdble left, right, bottom, top;
-	} ortho;
-    } uproj;
-    
-    int   camtype;
-#define CAM_INIT   0
-#define CAM_LOOKAT 1
-#define CAM_FCT    3
-#define CAM_FCTS   2
-    union 
-    {
-	struct 
-	{
-	    sgVec3 eye;
-	    sgVec3 center;
-	    sgVec3 up;
-	} lookat;
-	
-	struct 
-	{
-	    sgVec3 eye;
-	    sgVec3 center;
-	    sgVec3 up;
-	    tfcam  fcam;
-	} fcam;
-	
-	struct 
-	{
-	    sgVec3 eye;
-	    sgVec3 center;
-	    sgVec3 up;
-	    tfcams fcams;
-	} fcams;
-	
-    } ucam;
-
+    TAILQ_ENTRY(cGrCamera) link;
     int id;		/* Camera Id */
     int drawCurrent;	/* flag to draw the current car */
-    int drawBackground;	/* flag to draw the background */
+    int drawBackground;	/* flag to draw the background */    
 
-} tCamera;
+ protected:
+    sgVec3 eye;
+    sgVec3 center;
+    sgVec3 up;
+    
+ public:
+    cGrCamera(int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0) {
+	id = myid;
+	drawCurrent = mydrawCurrent;
+	drawBackground = mydrawBackground;
+    }
+    
+    virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
+    virtual void setProjection(void) = 0;
+    virtual void setModelView(void) = 0;
+    virtual void setZoom(int cmd) = 0;				/* Set the zoom with commands */
+    virtual void loadDefaults(char *attr) = 0;			/* Load the default values from parameter file */
 
-typedef struct CameraHead
+    virtual float getLODFactor(float x, float y, float z) = 0;	/* Get the LOD factor for an object located at x,y,z */
+
+    /* Set the camera view */
+    void action(void) {
+	setProjection();
+	setModelView();
+    }
+    
+    /* Get the camera info */
+    int getId(void)		{ return id; }
+    int getDrawCurrent(void)	{ return drawCurrent; }
+    int getDrawBackground(void)	{ return drawBackground; }
+    t3Dd *getPos(void) {
+	static t3Dd pos;
+	pos.x = eye[0];
+	pos.y = eye[1];
+	pos.z = eye[2];
+	return &pos;
+    }
+    t3Dd *getCenter(void) {
+	static t3Dd pos;
+	pos.x = center[0];
+	pos.y = center[1];
+	pos.z = center[2];
+	return &pos;
+    }
+    t3Dd *getUp(void) {
+	static t3Dd pos;
+	pos.x = up[0];
+	pos.y = up[1];
+	pos.z = up[2];
+	return &pos;
+    }
+    
+    
+    /* Add the camera in the corresponding list */
+    void add(tGrCamHead *head) {
+	TAILQ_INSERT_TAIL(head, this, link);
+    }
+    
+    /* Remove the camera from the corresponding list */
+    void remove(tGrCamHead *head) {
+	TAILQ_REMOVE(head, this, link);
+    }
+
+    cGrCamera *next(void) {
+	return TAILQ_NEXT(this, link);
+    }
+};
+
+
+class cGrPerspCamera : public cGrCamera
 {
-    tRingListHead	cams;
-} tCameraHead;
+ protected:
+    float fovy;
+    float fovymin;
+    float fovymax;
+    float fovydflt;
+    float fnear;
+    float ffar;
+    
+ public:
+    cGrPerspCamera(int id, int drawCurr, int drawBG,
+		   float myfovy, float myfovymin, float myfovymax,
+		   float myfnear, float myffar = 1500.0)
+	: cGrCamera(id, drawCurr, drawBG) {
+	fovy     = myfovy;
+	fovymin  = myfovymin;
+	fovymax  = myfovymax;
+	fnear    = myfnear;
+	ffar     = myffar;
+	fovydflt = myfovy;
+    }
+    
+    void setProjection(void);
+    void setModelView(void);
+    void loadDefaults(char *attr);
+    void setZoom(int cmd);
+
+    /* Give the height in m of the screen at this point */
+    float getLODFactor(float x, float y, float z) {
+	tdble	dx, dy, dz, dd;
+	float	ang;
+
+	dx = x - eye[0];
+	dy = y - eye[1];
+	dz = z - eye[2];
+
+	dd = sqrt(dx*dx+dy*dy+dz*dz);
+
+	ang = DEG2RAD(fovy);
+	return dd * tan(ang);
+    }
+    
+};
 
 
 
-extern int grScissorflag;
-extern tCameraHead grCams[];    /* from F1 to F12 */
-extern tCamera *grCurCam;   /* the current camera */
+class cGrOrthoCamera : public cGrCamera
+{
+ protected:
+    float left;
+    float right;
+    float bottom;
+    float top;
+
+ public:
+    cGrOrthoCamera(float myleft, float myright, float mybottom, float mytop) {
+	left   = myleft;
+	right  = myright;
+	bottom = mybottom;
+	top    = mytop;
+    }
+
+    void setProjection(void);
+    void setModelView(void);
+
+    void update(tCarElt *car, tSituation *s) { }
+    float getLODFactor(float x, float y, float z) { return 1; }
+    void loadDefaults(char *attr) { }
+    void setZoom(int cmd) { }
+};
+
+extern int	grScissorflag;
 extern int	grCurCamHead;
-extern tCamera *grBoardCam; /* the board camera */
-extern t3Dd	grCamPos;
+extern tGrCamHead grCams[];		/* from F1 to F12 */
+extern cGrCamera *grCurCam;		/* the current camera */
+extern cGrOrthoCamera *grBoardCam;	/* the board camera */
+extern float grviewRatio;
 
 extern int scrx, scry, scrw, scrh; /* screen size */
 
-
 extern void grSetView(int x, int y, int w, int h);
-extern void grUpdateCamera(tCamera *cam, tCarElt *car, tSituation *s);
-extern void grSetCamera(tCamera *cam, tCarElt *car);
-extern void grInitCams(void);
-extern void grShutdownCams(void);
 extern void grSelectCamera(void *vp);
+extern void grInitCams(void);
 extern void grSetZoom(void *vp);
-extern void grInitTVDirectorView(tSituation *s);
+
+#define GR_ZOOM_IN 	0
+#define GR_ZOOM_OUT 	1
+#define GR_ZOOM_MAX 	2
+#define GR_ZOOM_MIN 	3
+#define GR_ZOOM_DFLT    4
 
 #endif /* _GRCAM_H_ */ 
 

@@ -207,7 +207,7 @@
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="10.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="10.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="50" max="100" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02" min="0.01" max="0.1"></attnum>
     <attnum name="mu" min="0.05" max="5.0" val="1.5"></attnum>
@@ -223,7 +223,7 @@
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="10.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="10.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="50" max="100" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02" min="0.01" max="0.1"></attnum>
     <attnum name="mu" min="0.05" max="5.0" val="1.5"></attnum>
@@ -239,7 +239,7 @@
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="10.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="10.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="50" max="100" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02" min="0.01" max="0.1"></attnum>
     <attnum name="mu" min="0.05" max="5.0" val="1.5"></attnum>
@@ -255,7 +255,7 @@
     <attnum name="ride height" unit="mm" min="50" max="2000" val="100"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
     <!-- Adherence -->
-    <attnum name="stiffness" min="10.0" max="50.0" val="50.0"></attnum>
+    <attnum name="stiffness" min="10.0" max="30.0" val="30.0"></attnum>
     <attnum name="dynamic friction" unit="%" min="50" max="100" val="80"></attnum>
     <attnum name="rolling resistance" val="0.02" min="0.01" max="0.1"></attnum>
     <attnum name="mu" min="0.05" max="5.0" val="1.5"></attnum>

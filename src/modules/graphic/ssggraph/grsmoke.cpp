@@ -262,7 +262,7 @@ void ssgVtxTableSmoke::draw_geometry ()
 /*   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ; */
   sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
 
-  alpha= 1.0-((float)((float)cur_life/(float)max_life));
+  alpha= 1.0-((float)(cur_life/max_life));
   glDepthMask(GL_FALSE);
   glDisable(GL_LIGHTING);
 

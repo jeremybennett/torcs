@@ -143,7 +143,7 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="15.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="200" val="165"></attnum>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"></attnum>
-    <attnum name="stiffness" min="5.0" max="20.0" val="5.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="20.0" val="10.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="300"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
@@ -154,7 +154,7 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="15.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="200" val="165"></attnum>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"></attnum>
-    <attnum name="stiffness" min="5.0" max="20.0" val="5.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="20.0" val="10.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="300"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
@@ -165,7 +165,7 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="15.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="200" val="185"></attnum>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.7"></attnum>
-    <attnum name="stiffness" min="5.0" max="20.0" val="5.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="20.0" val="10.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="300"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>
@@ -176,7 +176,7 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="15.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="200" val="185"></attnum>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.7"></attnum>
-    <attnum name="stiffness" min="5.0" max="20.0" val="5.0"></attnum>
+    <attnum name="stiffness" min="5.0" max="20.0" val="10.0"></attnum>
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="300"></attnum>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"></attnum>

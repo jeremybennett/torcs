@@ -513,7 +513,7 @@ grInitCar(tCarElt *car)
     /* Shadow init */
     initShadow(car);
     /* Skidmarks init */
-    /*initSkidmarks(car);*/
+    grInitSkidmarks(car);
 
     TRACE_GL("loadcar: end");
 }
@@ -567,8 +567,8 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 
     if ((car != curCar) || (dispFlag == 1)) {
 	grDrawShadow(car);
-/* 	grUpdateSkidmarks(car); */
-/* 	grDrawSkidmarks(car); */
+	grUpdateSkidmarks(car); 
+ 	grDrawSkidmarks(car); 
 
 	grAddSmoke(car);
     }
