@@ -19,7 +19,7 @@ Linux Installation from Source
 -------------------------------
 - requires plib 1.8.3, FreeGLUT or GLUT.
 - untar the archive
-- cd into the torcs-1.2.3 directory
+- cd into the torcs-1.2.4 directory
 - ./configure (use --help for showing the options, of interest might be
   --enable-debug and --disable-xrandr).
 - make
@@ -36,7 +36,7 @@ Windows Installation from Source
 --------------------------------
 - requires VC++ 6.0
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.2.3 directory
+- cd into the torcs-1.2.4 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
 - open "TORCS.dsw" with VC++ 6.0, hit cancel for the missing projects.
@@ -49,7 +49,7 @@ Windows Installation from Source
 Windows Binary Installation
 ---------------------------
 - unzip the archive
-- cd into the torcs-1.2.3 directory
+- cd into the torcs-1.2.4 directory
 - run "wtorcs.exe"
 
 Testing
@@ -77,7 +77,6 @@ Changes since 1.2.3
 -------------------
 - Reworked eroad (Bernhard).
 - New sounds/sound adjustments (Christos).
-- Bugfix in transmission (Christos).
 - Introduced additional sound effects for simuv2 (Christos).
 - Reworked cg-nascar-rwd (holes, dark lod, better lighting) (Bernhard).
 - Max Torque as well for simuv2 (Christophe Baegert, Christos).
@@ -86,6 +85,8 @@ Changes since 1.2.3
 - Reworked Aalborg track (Bernhard).
 - Reworked g-track-2 (Bernhard).
 - Fixed wheel normals (Bernhard).
+- Bugfixes in menus (Christos).
+- Improvments in simuv2 (Christos, Bernhard)
 
 
 Changes since 1.2.2
@@ -164,19 +165,21 @@ Changes since 1.2.3-bw-unofficial-test4
 - released as 1.2.3.
 
 
-TODO for 1.2.4
+TODO for 1.2.4 (estimate: early July)
 --------------
-- Fix engine inertia/s of F1 cars, check/fix all other cars as well.
 - Fix new introduced bugs.
 - Fix more memory leaks (already hunt down a LOT there are still more).
 - Fix XSLT/DTD for viewing results (Report by Eugen)
 - Fix (windows) trackgen.
 - Fix strdup (for FreeBSD).
+- Apply useful patches from debian maintainer.
+- Update clkdtm if ready (Speedy).
+- Update porsche-gt3rs if ready (Olaf).
 - (Improve collision).
+- OpenAL (plib causes too much trouble on Windows).
 - Hunting lost open filehandles if any left.
 - S3TC Option for all textures (with option).
 - Scale down for all textures on load (user adjustable to improve performance).
-- possibility of one pit for 2 cars of one module.
 - Bugfixes and cleanup.
 - Add cameras/update track format on/for several tracks (spring, alpine,
   aalborg, ...).
@@ -184,13 +187,11 @@ TODO for 1.2.4
 - Smoke starts too high above ground, review? [done, updating CVS soon - C.]
 - Sound performance problem (no facts, just a feeling at the moment, wait for
   feedback), review?
-- merge berniw_2004 code into berniw's.
 - likewise olethros_2005 to olethros.
 - Add validation for the case no driver selected, do not exit to
   console.
 - (Sound did not work well with 40 cars, investigate). [probably due to plib]
 - try to resolve "(null)" texture problem (seems to be in the model files).
-- Check for consistency of simuv2/simuv3.
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
@@ -206,8 +207,7 @@ TODO for 1.2.4
   at random times].
 - downsize grey-tracks.rgb texture.
 - in long races car-to-car collisions fail somehow sometimes -> investigate
-- verify that simulation obeys conservation of momentum and energy.
-- optimise simuv3.
+- pit wall collision
 
 
 TODO for 1.2.5
@@ -228,14 +228,19 @@ TODO for 1.2.5
 - check and merge Christos camera code.
 - (Add billy, astigot).
 - Integrate documentation into CVS/distribution
-
-
+- merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
+  not hurt).
+- SDL port (or 1.3.0 or 1.4.0, not decided finally)
+- review simuv2
+- possibility of one pit for 2 cars of one module.
 
 
 TODO LATER
 ----------
 - Fix more memory leaks (already hunt down a LOT there are still more).
-- Replace vector/matrix oprations with an efficient implementation.
+- Replace vector/matrix oprations with an efficient implementation (-> use
+  SIMD, e.g. enhanced version of v2/v3d.h with SIMD alternatives if compilers
+  are not more clever at this time (currently they suck on useful vectorizing)).
 - SMP simulaton core (for myself).
 - Replays.
 - Setup editor (add a function to the robot interface to ask the robot
@@ -243,9 +248,6 @@ TODO LATER
   close function is needed as well).
 - Telemetry recorder/viewer.
 - Networking (2.0).
-- SDL Port.
-- Sound OpenAL.
-- Installer/packages (done).
 - Redesign/Reimplement multitexturing and fileformat.
 - Apply light maps to skid marks, smoke and wheels, etc.
 - Phong specular highlights (optional env, cube or GLSL).
@@ -287,7 +289,11 @@ TODO LATER
 - add compatibility lib for strndup etc. on win32.
 - New GUI.
 - driving/races in reverse track direction.
-
+- Check for consistency of simuv2/simuv3.
+- verify that simulation obeys conservation of momentum and energy.
+- optimise simuv3.
+- Fix engine inertia/s of F1 cars, check/fix all other cars as well.
+- Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
 
 IDEAS FOR MUCH LATER
 --------------------
