@@ -37,6 +37,7 @@ extern int  ReInitTrack(void);
 extern void ReRaceCleanup(void);
 extern void ReRaceCleanDrivers(void);
 extern char *ReGetCurrentRaceName(void);
+extern char *ReGetPrevRaceName(void);
 
 extern tModList *ReRaceModList;
 

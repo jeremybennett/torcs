@@ -18,7 +18,7 @@
 
 SHIPDIR   = config/raceman
 
-SHIP      = quickrace.xml practice.xml
+SHIP      = $(shell find * -maxdepth 0 -name '*.xml' -print)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

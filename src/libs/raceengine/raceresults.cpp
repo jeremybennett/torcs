@@ -41,6 +41,7 @@
 
 static char buf[1024];
 static char path[1024];
+static char path2[1024];
 
 void
 ReInitResults(void)
@@ -81,6 +82,7 @@ ReStoreRaceResults(char *race)
     tCarElt	*car;
     tSituation 	*s = ReInfo->s;
     void	*results = ReInfo->results;
+    void	*params = ReInfo->params;
 
     /* Store the number of laps of the race */
     if (ReInfo->s->_raceType == RM_TYPE_RACE) {
@@ -104,6 +106,13 @@ ReStoreRaceResults(char *race)
 	    GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, car->_topSpeed);
 	    GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
 	    GfParmSetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, car->_nbPitStops);
+
+	    GfParmSetStr(results, path, RE_ATTR_MODULE, car->_modName);
+	    GfParmSetNum(results, path, RE_ATTR_IDX, NULL, car->_driverIndex);
+
+	    sprintf(path2, "%s/%s/%d", race, RM_SECT_POINTS, i + 1);
+	    GfParmSetNum(results, path, RE_ATTR_POINTS, NULL,
+			 (int)GfParmGetNum(params, path2, RE_ATTR_POINTS, NULL, 0));
 	}
     } else if (ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
 	car = s->cars[0];

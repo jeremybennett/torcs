@@ -190,6 +190,7 @@ typedef struct RmInfo
 #define RM_SECT_TRACKS		"Tracks"
 #define RM_SECT_CONF		"Configuration"
 #define RM_SECT_OPTIONS		"Options"
+#define RM_SECT_POINTS		"Points"
 
 #define RM_SECT_DRIVERS_RACING	"Drivers Start List"
 
@@ -233,6 +234,8 @@ typedef struct RmInfo
 #define RM_ATTR_QUAL_LAPS	"Qualification laps"
 #define RM_ATTR_POLE		"pole position side"
 
+#define RM_ATTR_POINTS		"points"
+
 #define RM_VAL_TRACKSEL		"track select"
 #define RM_VAL_DRVSEL		"drivers select"
 #define RM_VAL_RACECONF		"race config"
@@ -240,6 +243,7 @@ typedef struct RmInfo
 #define RM_VAL_CONFDISPMODE	"display mode"
 
 #define RM_VAL_DRV_LIST_ORDER	"drivers list"
+#define RM_VAL_LAST_RACE_ORDER	"last race"
 
 #define RM_VAL_RACE		"race"
 #define RM_VAL_QUALIF		"qualifications"
@@ -274,6 +278,8 @@ typedef struct RmInfo
 #define RE_SECT_RANK		"Rank"		
 
 #define RE_ATTR_NAME		"name"
+#define RE_ATTR_MODULE		"module"
+#define RE_ATTR_IDX		"idx"
 #define RE_ATTR_LAPS		"laps"
 #define RE_ATTR_BEST_LAP_TIME	"best lap time"
 #define RE_ATTR_TIME		"time"

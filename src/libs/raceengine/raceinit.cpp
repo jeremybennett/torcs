@@ -673,7 +673,18 @@ ReGetCurrentRaceName(void)
     int		curRaceIdx;
     void	*params = ReInfo->params;
 
-    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_RACE, NULL, 1);
+    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1);
+    sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
+    return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
+}
+
+char *
+ReGetPrevRaceName(void)
+{
+    int		curRaceIdx;
+    void	*params = ReInfo->params;
+
+    curRaceIdx = (int)GfParmGetNum(params, RM_SECT_RACES, RM_ATTR_CUR_RACE, NULL, 1) - 1;
     sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
     return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
 }
