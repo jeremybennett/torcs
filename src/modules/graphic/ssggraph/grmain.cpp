@@ -100,7 +100,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
 			       (char*)NULL, 0);
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
-			       (char*)NULL, 0);
+			       (char*)NULL, 7);
     cam = GfRlstGetFirst(&(grCams[grCurCamHead].cams));
     grCurCam = NULL;
     while (cam) {
@@ -262,7 +262,7 @@ refresh(tSituation *s)
     if (grGFlag)       grDispGGraph(s->cars[s->current]);
     if (grBoardFlag)   grDispCarBoard(s->cars[s->current], s);
     if (grLeaderFlag)  grDispLeaderBoard(s->cars[s->current], s);
-    if (grCounterFlag) grDispCounterBoard(s->cars[s->current]);
+    if (grCounterFlag) grDispCounterBoard2(s->cars[s->current]);
     TRACE_GL("refresh: display boards");
 
     //glutSwapBuffers();

@@ -43,6 +43,16 @@ GfInit(void)
 /*     gfTraceInit(); */
 }
 
+void
+gfMeanReset(tdble v, tMeanVal *pvt)
+{
+    int		i;
+
+    for (i = 0; i < GF_MEAN_MAX_VAL; i++) {
+	pvt->val[i] = v;
+    }
+}
+
 tdble
 gfMean(tdble v, tMeanVal *pvt, int n, int w)
 {

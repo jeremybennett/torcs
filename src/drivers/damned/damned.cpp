@@ -233,7 +233,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	} else {
 	    slip = 0;
 	}
-	car->ctrl->brakeCmd = MIN(-MIN((Vtarget+1.0 - car->_speed_x) / 10.0, 1.0)  * maxBrk, maxBrk);
+	car->ctrl->brakeCmd = MIN(-MIN((Vtarget+1.0 - car->_speed_x) / 20.0, 1.0)  * maxBrk, maxBrk);
 	if (slip > 0.2) {
 	    car->ctrl->brakeCmd = 0.0;
 	} else {
@@ -297,22 +297,22 @@ dmGetDistToStart(tCarElt *car)
  * Remarks
  *	
  */
-const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.25,	0.2,	0.2,	0.05,	0.08,	0.01,	0.01	};
+const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.25,	0.2,	0.2,	0.2,	0.02,	0.01,	0.01	};
 const  tdble AGain[10]   = {	0.30,	0.10,   0.15,	0.1,	0.15,	0.05,	0.08,	0.08,	0.008,	0.008	};
-static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.08,	0.01,	0.02,	0.02,	0.01,	0.01	};
-const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.02,	0.02,	0.00,	0.00	};
-static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	40.8,	35,	40.8,	40.8	};
-static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	40,	15,	40.8,	40.8	};
+static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.08,	0.01,	0.05,	0.015,	0.01,	0.01	};
+const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.02,	0.00,	0.00,	0.00	};
+static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	40.8,	0.0,	40.8,	40.8	};
+static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	40,	0.0,	40.8,	40.8	};
 const  tdble Advance3[10]= {	-35.0,	-27.0,  -26.0,	-26.0,	-26.0,	-30.0,	-35.0,	-30.0,	-30.0,	-30.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	5.0	};
-const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.01,	0.005,	0.02,	0.01,	0.0005,	0.0005	};
+const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.01,	0.005,	0.02,	0.0005,	0.0005,	0.0005	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt[10]  = {	5000,	5000,  	10000,	20000,	10000,	10000,	10000,	10000,	920,	1000	};
 static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	13,	0,	12,	12	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
 static tdble hold[10] = {0};
 static tdble steerk[10] = {	1.0,	1.0,	1.0,	1.1,	1.0,	1.0, 	1.0, 	1.0, 	1.0, 	1.0	};
-
+static tdble MaxSpeed[10];
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
@@ -324,9 +324,10 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[3] = DmTrack->width - 4.0;
     Advance[3] = Advance2[3] = DmTrack->width * 2.5;
     spdtgt2[4] = DmTrack->width - 3.0;
-    Advance[4] = Advance2[2] = DmTrack->width * 2.0;
+    Advance[4] = Advance2[4] = DmTrack->width * 2.0;
     spdtgt2[5] = DmTrack->width - 5.0;
-    spdtgt2[7] = DmTrack->width - 3.0;
+    spdtgt2[7] = DmTrack->width;
+    Advance[7] = Advance2[7] = DmTrack->width * 2.0;
 }
 
 static void drive(int index, tCarElt* car, tSituation *s)
@@ -343,8 +344,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
     int		i;
     tdble	lgfs, lgfs2, dlg;
     tdble	vtgt1, vtgt2;
-    tdble	Dspd;
-    tdble	maxDlg;
+    tdble	dspd = 0;
+    tdble	maxdlg;
     
     memset(car->ctrl, 0, sizeof(tCarCtrl));
 
@@ -371,13 +372,14 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
     vtgt1 = spdtgt[idx];
     vtgt2 = spdtgt2[idx];
-    maxDlg = 200.0;
+    maxdlg = 200.0;
+    MaxSpeed[idx] = 10000;
     /*
      * Collision detection
      */
     for (i = 0; i < s->_ncars; i++) {
 	otherCar = s->cars[i];
-	if (otherCar == car) {
+	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_NO_SIMU)) {
 	    continue;
 	}
 	lgfs2 = dmGetDistToStart(otherCar);
@@ -385,35 +387,42 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	if (dlg > (DmTrack->length / 2.0)) dlg -= DmTrack->length;
 	if (dlg < -(DmTrack->length / 2.0)) dlg += DmTrack->length;
 
-	Dspd = car->_speed_x - otherCar->_speed_x;
-	Dspd = 1;
-	if ((Dspd > 0) && (dlg > -2.0) && (dlg < (Dspd+20.0)) && (dlg < maxDlg)) {
-	    maxDlg = dlg;
+	dspd = car->_speed_x - otherCar->_speed_x;
+	if ((dlg > -(car->_dimension_x + 1.0)) &&
+	    ((dlg < (dspd*6.0 + 10.0)) ||
+	    (dlg < (car->_dimension_x * 4.0)))) {
 	    /* risk of collision */
-	    tdble MARGIN = 0.4 * DmTrack->width;
-	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN/2.0) {
+	    tdble MARGIN = 6.0;
+	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN) {
 		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
 		    if (otherCar->_trkPos.toRight > MARGIN) {
-			Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
-			hold[idx] = Curtime + 2.0;
+			Tright[idx] = otherCar->_trkPos.toRight - (MARGIN + 2.0);
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
-			vtgt1 = 0;
+			if (dlg > (car->_dimension_x * 2.0)) {
+			    /* MaxSpeed[idx] = otherCar->_speed_x * .9; */
+			    /* Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0); */
+			}
 		    }
 		} else {
-		    if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
-			Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
-			hold[idx] = Curtime + 2.0;
+		    if (otherCar->_trkPos.toRight < (seg->width - MARGIN)) {
+			Tright[idx] = otherCar->_trkPos.toRight + (MARGIN + 2.0);
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
-			vtgt1 = 0;
+			if (dlg > (car->_dimension_x * 2.0)) {
+			    /* MaxSpeed[idx] = otherCar->_speed_x * .9; */
+			   /*  Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0); */
+			}
 		    }
 		}
+		hold[idx] = Curtime + 2.0;
+		if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
+		    MaxSpeed[idx] = otherCar->_speed_x * .9;
+		}
 	    }
-	    
 	}
     }
-    RELAXATION(Tright[idx], Trightprev[idx], 0.8);
+    RELAXATION(Tright[idx], Trightprev[idx], 0.5);
 
     /* proportionnal */
     Dy = Tright[idx] - trkPos.toRight;
@@ -466,7 +475,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     Dny = exp(-Dny*Dny);
 
     Db = car->_yaw_rate;
-    SpeedStrategy(car, idx, (vtgt1 * Dny  + vtgt2) * 1.8, car->ctrl->steer, maxBrk[idx], s, Db);
+    SpeedStrategy(car, idx, MIN((vtgt1 * Dny  + vtgt2) * 1.8, MaxSpeed[idx]), car->ctrl->steer, maxBrk[idx], s, Db);
 
 #define AMARG 0.8
     if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||

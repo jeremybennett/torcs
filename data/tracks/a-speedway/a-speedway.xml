@@ -27,7 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="A-SpeedWay"></attstr>
-    <attnum name="version"     val="2"></attnum>
+    <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val="Rectangle shaped SpeedWay"></attstr>
   </section>
@@ -41,7 +41,7 @@
     <attnum name="background color B" val="0.96875"></attnum>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="9"></attnum>
+      <attnum name="track step" unit="m" val="12"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="0"></attnum>
@@ -54,11 +54,12 @@
   <section name="Main Track">
 
     <attstr name="surface" in="asphalt,grass,sand" val="asphalt-lines"></attstr>
-    <attnum name="width" unit="m" val="20.0"></attnum>
+    <attnum name="width" unit="m" val="25.0"></attnum>
+    <attnum name="steps length" val="5" unit="m"></attnum>
 
     <attstr name="rside surface"  val="grass"></attstr>
     <attnum name="rside width"    val="6.0"></attnum>
-    <attstr name="rside type" in="tangent,level" val="tangent"></attstr>
+    <attstr name="rside type" in="tangent,level" val="level"></attstr>
 
     <attstr name="lside surface"  val="asphalt-pits"></attstr>
     <attnum name="lside width"    val="15.0"></attnum>
@@ -76,18 +77,16 @@
     <section name="segments">
 
       <section name="start lane">
+	<attnum name="z start" val="0" unit="m"></attnum>
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="150"></attnum>
-      </section>
+	<attnum name="banking end" val="-5" unit="deg"></attnum>
+ 	<attnum name="z end" val="0" unit="m"></attnum>
+     </section>
 
       <section name="segment e2">
-        <attstr name="type" val="str"></attstr>
+	<attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="100"></attnum>
-	<attnum name="z end" val="2.0" unit="m"></attnum>
-	<attnum name="banking end" val="-10" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
-
 	<attstr name="lside surface" val="asphalt"></attstr>
 	<attnum name="lside end width" val="6"></attnum>
       </section>
@@ -96,25 +95,13 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
-	<attnum name="z end" val="0.0" unit="m"></attnum>
-	<attnum name="banking end" val="0" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
 	<attstr name="lside surface" val="grass"></attstr>
       </section>
 
       <section name="segment l1">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="100"></attnum>
-	<attnum name="z end" val="2.0" unit="m"></attnum>
+	<attnum name="lg" unit="m" val="140"></attnum>
 	<attnum name="banking end" val="-10" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
-      </section>
-
-      <section name="pit entry">
-        <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="40"></attnum>
       </section>
 
       <section name="turn 2">
@@ -125,51 +112,35 @@
 
       <section name="opposite straight 1">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="100"></attnum>
-	<attnum name="z end" val="0.0" unit="m"></attnum>
+	<attnum name="lg" unit="m" val="250"></attnum>
 	<attnum name="banking end" val="0" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
-      </section>
+     </section>
+
 
       <section name="opposite straight 2">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="300"></attnum>
-      </section>
-
-      <section name="opposite straight 2">
-        <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="100"></attnum>
-	<attnum name="z end" val="2.0" unit="m"></attnum>
+	<attnum name="lg" unit="m" val="250"></attnum>
 	<attnum name="banking end" val="-10" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
-      </section>
+    </section>
 
       <section name="turn 3">
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
-      </section>
-
-      <section name="pit exit">
-        <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="40"></attnum>
+	<attnum name="banking end" val="-10" unit="deg"></attnum>
       </section>
 
       <section name="segment l3">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="100"></attnum>
-	<attnum name="z end" val="0.0" unit="m"></attnum>
-	<attnum name="banking end" val="0" unit="deg"></attnum>
-	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
+	<attnum name="lg" unit="m" val="140"></attnum>
+	<attnum name="banking end" val="-5" unit="deg"></attnum>
       </section>
 
       <section name="turn 4">
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="100"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attnum name="banking end" val="-5" unit="deg"></attnum>
       </section>
 
       <section name="segment s1">
@@ -177,17 +148,21 @@
 	<attnum name="lg" unit="m" val="25"></attnum>
 	<attnum name="lside end width" val="15"></attnum>
 	<attstr name="lside surface" val="asphalt"></attstr>
+	<attnum name="banking end" val="-5" unit="deg"></attnum>
       </section>
 
       <section name="segment s2">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="75"></attnum>
+	<attnum name="banking end" val="-5" unit="deg"></attnum>
       </section>
 
       <section name="last segment">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="150"></attnum>
 	<attstr name="lside surface" val="asphalt-pits"></attstr>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+ 	<attnum name="z end" val="0" unit="m"></attnum>
       </section>
 
     </section>

@@ -34,11 +34,21 @@
 void
 InitGears(tCarElt* car, int idx)
 {
-    int i;
+    int i, j;
+    tdble rpm;
 
     for (i = 0; i < MAX_GEARS; i++) {
-	if (car->_gearRatio[i] != 0) {
-	    shiftThld[idx][i] = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.9 / car->_gearRatio[i];
+	j = i + 1;
+	if (j < MAX_GEARS) {
+	    if ((car->_gearRatio[j] != 0) && (car->_gearRatio[i] != 0)) {
+		rpm = car->_enginerpmMaxTq * car->_gearRatio[i] / car->_gearRatio[j];
+		if (rpm > car->_enginerpmRedLine) {
+		    rpm = car->_enginerpmRedLine;
+		}
+		shiftThld[idx][i] = rpm * .95  * car->_wheelRadius(2) / car->_gearRatio[i];
+	    } else {
+		shiftThld[idx][i] = 10000.0;
+	    }
 	} else {
 	    shiftThld[idx][i] = 10000.0;
 	}
@@ -181,7 +191,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 
 	dspd = car->_speed_x - otherCar->_speed_x;
 	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
-	    ((dlg < (dspd*4.0)) ||
+	    ((dlg < (dspd*4.5)) ||
 	    (dlg < (car->_dimension_x * 4.0)))) {
 	    car->_vect(0).type = CAR_VECT_ABSOLUTE;
 	    car->_vect(0).start.x = car->_pos_X;
@@ -191,25 +201,27 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 	    car->_vect(0).end.y = otherCar->_pos_Y;
 	    maxdlg = dlg;
 	    /* risk of collision */
-	    tdble MARGIN = /* 0.4 * DmTrack->width */ 6.0;
+	    tdble MARGIN = /* 0.4 * DmTrack->width */ 7.0;
 	    
-	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN) {
+	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 1.0)) {
 		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
-		    if (otherCar->_trkPos.toRight > (MARGIN + 1.0)) {
-			Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
+		    if (otherCar->_trkPos.toRight > MARGIN) {
+			Tright[idx] = otherCar->_trkPos.toRight - (MARGIN - 1.0);
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
 			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x - 3.0;
+			    MaxSpeed[idx] = otherCar->_speed_x * .9;
+			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0);
 			}
 		    }
 		} else {
-		    if (otherCar->_trkPos.toRight < seg->width - (MARGIN + 1.0)) {
-			Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
+		    if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
+			Tright[idx] = otherCar->_trkPos.toRight + (MARGIN - 1.0);
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
 			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x - 5.0;
+			    MaxSpeed[idx] = otherCar->_speed_x * .9;
+			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
 			}
 		    }
 		}

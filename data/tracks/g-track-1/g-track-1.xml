@@ -147,7 +147,6 @@
 	<attstr name="lside surface" val="concrete"></attstr>
 	<attstr name="rside surface" val="asphalt"></attstr>
 	<attnum name="banking end" val="-10" unit="deg"></attnum>
-	<attstr name="marks" val="50;100"></attstr>
         <attnum name="texture size"    val="100.0"></attnum>
       </section>
 
@@ -315,7 +314,6 @@
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
 	<attnum name="profil steps" val="4"></attnum>
 	<attstr name="lside surface" val="concrete"></attstr>
-	<attstr name="marks" val="50;100"></attstr>
 	<attnum name="lside end width" val="2"></attnum>
 	<attnum name="rside end width" val="5"></attnum>
       </section>

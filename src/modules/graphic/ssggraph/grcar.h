@@ -21,6 +21,19 @@
 #ifndef _GRCAR_H_
 #define _GRCAR_H_
 
+typedef struct
+{
+    ssgSimpleState	*texture;
+    GLuint		CounterList;
+    GLuint		needleList;
+    tdble		needleXCenter, needleYCenter;
+    tdble		digitXCenter, digitYCenter;
+    tdble		minValue, maxValue;
+    tdble		minAngle, maxAngle;
+    tdble		*monitored;
+    tdble		prevVal;
+} tgrCarInstrument;
+
 
 typedef struct 
 {
@@ -37,6 +50,7 @@ typedef struct
     ssgVtxTable		*shadowBase;
     ssgVtxTable		*shadowCurr;
     sgMat4		carPos;
+    tgrCarInstrument	instrument[2];
 } tgrCarInfo;
 
 extern tgrCarInfo	*grCarInfo;

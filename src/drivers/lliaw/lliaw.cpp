@@ -168,7 +168,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     char	buf[256];
     tdble	spd = spdtgt2[0];
     tdble	tr = track->seg->next->width/2.0;
-    tdble	dstfs = 0;
+    tdble	dstfs = 0, fuel;
     
     DmTrack = track;
     str = strrchr(track->filename, '/') + 1;
@@ -180,6 +180,9 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     } else {
 	GfOut("%s Loaded\n", buf);
     }
+    fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
+    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+
     sprintf(buf, "drivers/lliaw/tracksdata/%s", str);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (hdle) {

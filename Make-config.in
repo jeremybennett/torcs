@@ -43,7 +43,6 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 
 CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
-
 CXXFLAGS =  @CXXFLAGS@ ${CFLAGSD}
 CFLAGS =  @CFLAGS@ ${CFLAGSD}
 

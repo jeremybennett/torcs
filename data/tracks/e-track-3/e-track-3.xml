@@ -76,6 +76,8 @@
     <attnum name="rside width"    val="15.0"></attnum>
     <attstr name="rside type" in="tangent,level" val="tangent"></attstr>
 
+    <attnum name="profil steps length" val="12" unit="m"></attnum>
+
     <!-- PITS -->
     <attstr name="pit type"   val="track side"></attstr>
     <attstr name="pit side"   val="right"></attstr>

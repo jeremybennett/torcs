@@ -55,7 +55,7 @@ ctrlCheck(tCar *car)
 	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
 	}
     }
-    car->ctrl->accelCmd = gfMean(car->ctrl->accelCmd, &car->meanAccel, MEANNB, MEANW);
+    car->ctrl->accelCmd = gfMean(car->ctrl->accelCmd, &car->meanAccel, MEANNB, MEANW);    
     car->ctrl->brakeCmd = gfMean(car->ctrl->brakeCmd, &car->meanBrake, MEANNB, MEANW);
     car->ctrl->steer = gfMean(car->ctrl->steer, &car->meanSteer, MEANNB, MEANW);
     if (car->ctrl->accelCmd > 1.0) {
@@ -209,7 +209,11 @@ RemoveCar(tCar *car, tSituation *s)
 	return;
     }
 
-    carElt->_state |= RM_CAR_STATE_BROKEN;
+    if ((s->_maxDammage) && (car->dammage > s->_maxDammage)) {
+	carElt->_state |= RM_CAR_STATE_BROKEN;
+    } else {
+	carElt->_state |= RM_CAR_STATE_OUTOFGAS;
+    }
     carElt->_gear = car->transmission.gearbox.gear = 0;
     carElt->_enginerpm = car->engine.rads = 0;
   
@@ -292,7 +296,8 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	    RemoveCar(car, s);
 	    continue;
-	} else if ((s->_maxDammage) && (car->dammage > s->_maxDammage)) {
+	} else if (((s->_maxDammage) && (car->dammage > s->_maxDammage)) ||
+		   (car->fuel == 0)) {
 	    RemoveCar(car, s);
 	    if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 		continue;

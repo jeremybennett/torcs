@@ -241,7 +241,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
     car->_vect(0).type = CAR_VECT_INVALID;
     for (i = 0; i < s->_ncars; i++) {
 	otherCar = s->cars[i];
-	if (otherCar == car) {
+	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_NO_SIMU)) {
 	    continue;
 	}
 	lgfs2 = GetDistToStart(otherCar);
@@ -252,7 +252,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 	dspd = car->_speed_x - otherCar->_speed_x;
 	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
 	    ((dlg < (dspd*4.0)) ||
-	    (dlg < (car->_dimension_x * 2.0)))) {
+	    (dlg < (car->_dimension_x * 4.0)))) {
 	    car->_vect(0).type = CAR_VECT_ABSOLUTE;
 	    car->_vect(0).start.x = car->_pos_X;
 	    car->_vect(0).start.y = car->_pos_Y;
@@ -261,10 +261,11 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 	    car->_vect(0).end.y = otherCar->_pos_Y;
 	    maxdlg = dlg;
 	    /* risk of collision */
-#define MARGIN 5.0
+	    tdble MARGIN = /* 0.4 * DmTrack->width */ 6.0;
+	    
 	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN) {
 		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
-		    if (otherCar->_trkPos.toRight > MARGIN) {
+		    if (otherCar->_trkPos.toRight > (MARGIN + 1.0)) {
 			Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
@@ -273,16 +274,19 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 			}
 		    }
 		} else {
-		    if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
+		    if (otherCar->_trkPos.toRight < seg->width - (MARGIN + 1.0)) {
 			Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
 			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x - 3.0;
+			    MaxSpeed[idx] = otherCar->_speed_x - 15.0;
 			}
 		    }
 		}
 		hold[idx] = Curtime + 1.0;
+		if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
+		    MaxSpeed[idx] = otherCar->_speed_x - 15.0;
+		}
 	    }
 	}
     }
@@ -336,7 +340,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     char	buf[256];
     tdble	spd = spdtgt2[0];
     tdble	tr = track->seg->next->width/2.0;
-    tdble	dstfs = 0;
+    tdble	dstfs = 0, fuel;
     
     DmTrack = track;
     str = strrchr(track->filename, '/') + 1;
@@ -345,6 +349,9 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     if (*carParmHandle == NULL) {
 	*carParmHandle = GfParmReadFile("drivers/tita/car1.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     }
+    fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
+    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+
     sprintf(buf, "drivers/tita/tracksdata/%s", str);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (hdle) {

@@ -56,6 +56,8 @@ static int sideBankType[2];
 static char *sideMaterial[2];
 static int envIndex;
 
+static tdble GlobalStepLen = 0;
+
 
 static void
 InitSides(void *TrackHandle, char *section)
@@ -374,7 +376,7 @@ CreateSegRing3(void *TrackHandle, char *section, tTrackSeg **pRoot, tdble *pLeng
 {
     int		j;
     int		segread, curindex;
-    tdble	radius, radiusend, dradius;
+    tdble	radius, radiusend = 0, dradius;
     tdble	innerradius;
     tdble	arc;
     tdble	length;
@@ -570,11 +572,14 @@ CreateSegRing3(void *TrackHandle, char *section, tTrackSeg **pRoot, tdble *pLeng
 	stgtl = etgtl;
 	stgtr = etgtr;
 	if (strcmp(profil, TRK_VAL_SPLINE) == 0) {
-	    stepslg = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPSLEN, (char*)NULL, 0);
-	    if (stepslg == 0) {
-		steps = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPS, (char*)NULL, 1.0);
-	    } else {
-		steps = (int)(length / stepslg) + 1;
+	    steps = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPS, (char*)NULL, 1.0);
+	    if (steps == 1) {
+		stepslg = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPSLEN, (char*)NULL, GlobalStepLen);
+		if (stepslg) {
+		    steps = (int)(length / stepslg) + 1;
+		} else {
+		    steps = 1;
+		}
 	    }
 	    stgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTSL, (char*)NULL, stgtl);
 	    etgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTEL, (char*)NULL, etgtl);
@@ -904,6 +909,8 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     char	path2[256];
 
     xmin = xmax = ymin = ymax = zmin = zmax = 0.0;
+
+    GlobalStepLen = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_PROFSTEPSLEN, (char*)NULL, 0);
     
     CreateSegRing3(TrackHandle, TRK_SECT_MAIN, &(theTrack->seg), &(theTrack->length), &(theTrack->nseg), (tTrackSeg*)NULL, (tTrackSeg*)NULL, ext);
 

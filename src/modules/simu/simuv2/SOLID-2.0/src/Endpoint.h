@@ -38,9 +38,9 @@ class Endpoint {
 public:
   Endpoint *succ;
   Endpoint *pred;
-  Scalar pos;
   Side side;
   const Object *objPtr;
+  Scalar pos;
 
   Endpoint() : objPtr(0) {}
   Endpoint(int axis, Side s, const Object *obj);

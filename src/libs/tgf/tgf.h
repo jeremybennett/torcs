@@ -75,7 +75,9 @@
 #define __TGF__H__
 
 #include <stdio.h>
+#ifndef WIN32
 #include <sys/param.h>
+#endif /* WIN32 */
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <osspec.h>
@@ -599,7 +601,8 @@ typedef struct
     tdble	val[GF_MEAN_MAX_VAL+1];
 } tMeanVal;
 
-tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
+extern tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
+extern void gfMeanReset(tdble v, tMeanVal *pvt);
 
 #endif /* __TGF__H__ */
 

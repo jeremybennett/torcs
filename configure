@@ -1689,7 +1689,7 @@ echo "$ac_t""$ac_cv_prog_gcc" 1>&6
     GCC=
   fi
 
-  if test -z "$CFLAGS"; then
+  if test -z "$CFLAGS2"; then
     if test "$ac_use_debug_code" = "yes"; then
       echo $ac_n "checking whether ${CC-cc} accepts -g""... $ac_c" 1>&6
 echo "configure:1696: checking whether ${CC-cc} accepts -g" >&5
@@ -1712,14 +1712,14 @@ echo "$ac_t""$ac_cv_prog_cc_g" 1>&6
       fi
     else
       if test "$GCC" = "yes"; then
-        CFLAGS="-O2"
+        CFLAGS="-O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
       else
         CFLAGS=""
       fi
     fi
 
     if test "$GCC" = "yes"; then
-     CFLAGS="$CFLAGS -ansi -Wall"
+     CFLAGS="$CFLAGS -ansi -Wall -Wstrict-prototypes"
     fi
 
   fi
@@ -2028,7 +2028,7 @@ echo "$ac_t""$ac_cv_prog_cxx_g" 1>&6
       fi
     else
       if test "$GXX" = "yes"; then
-         CXXFLAGS="-O2"
+         CXXFLAGS="-O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
       else
          if test "$ac_cv_prog_CC" = "yes"; then
             CXXFLAGS="-pto -O2"
@@ -2039,7 +2039,7 @@ echo "$ac_t""$ac_cv_prog_cxx_g" 1>&6
     fi
 
     if test "$GXX" = "yes"; then
-       CXXFLAGS="$CXXFLAGS -ansi -Wall"
+       CXXFLAGS="$CXXFLAGS -ansi -Wall -Wstrict-prototypes"
     fi
   fi
 

@@ -26,11 +26,15 @@ extern void grDispDebug(float fps, tCarElt *car, tSituation *s);
 extern void grDispCarBoard(tCarElt *car, tSituation *s);
 extern void grDispLeaderBoard(tCarElt *car, tSituation *s);
 extern void grDispCounterBoard(tCarElt *car);
+extern void grDispCounterBoard2(tCarElt *car);
 extern void grDispPause(void);
 extern void grInitBoard(void);
 extern void grShutdownBoard(void);
 extern void grSelectBoard(void *vp);
 extern void grDispGGraph(tCarElt *car);
+extern void grInitBoardCar(tCarElt *car);
+
+
 
 #endif /* _GRBOARD_H_ */ 
 

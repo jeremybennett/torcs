@@ -25,6 +25,7 @@ SimEngineConfig(tCar *car)
     void	*hdle = car->params;
     int		i;
     tdble	maxTq;
+    tdble	rpmMaxTq = 0;
     char	idx[64];
     tEngineCurveElem *data;
     struct {
@@ -53,11 +54,13 @@ SimEngineConfig(tCar *car)
 	data->rads = edesc[i+1].rpm;
 	if(edesc[i+1].tq > maxTq) {
 	    maxTq = edesc[i+1].tq;
+	    rpmMaxTq = data->rads;
 	}
 	data->a = (edesc[i+1].tq - edesc[i].tq) / (edesc[i+1].rpm - edesc[i].rpm);
 	data->b = edesc[i].tq - data->a * edesc[i].rpm;
     }
     car->engine.curve.maxTq = maxTq;
+    car->carElt->_enginerpmMaxTq = rpmMaxTq;
     car->engine.rads = car->engine.tickover;
 }
 

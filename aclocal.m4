@@ -45,7 +45,7 @@ AC_DEFUN(AC_CHECK_COMPILERS,
     GCC=
   fi
 
-  if test -z "$CFLAGS"; then
+  if test -z "$CFLAGS2"; then
     if test "$ac_use_debug_code" = "yes"; then
       AC_PROG_CC_G
       if test $ac_cv_prog_cc_g = yes; then
@@ -53,14 +53,14 @@ AC_DEFUN(AC_CHECK_COMPILERS,
       fi
     else
       if test "$GCC" = "yes"; then
-        CFLAGS="-O2"
+        CFLAGS="-O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
       else
         CFLAGS=""
       fi
     fi
 
     if test "$GCC" = "yes"; then
-     CFLAGS="$CFLAGS -ansi -Wall"
+     CFLAGS="$CFLAGS -ansi -Wall -Wstrict-prototypes"
     fi
 
   fi
@@ -146,7 +146,7 @@ EOF
       fi
     else
       if test "$GXX" = "yes"; then
-         CXXFLAGS="-O2"
+         CXXFLAGS="-O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
       else
          if test "$ac_cv_prog_CC" = "yes"; then
             CXXFLAGS="-pto -O2"
@@ -157,7 +157,7 @@ EOF
     fi
 
     if test "$GXX" = "yes"; then
-       CXXFLAGS="$CXXFLAGS -ansi -Wall"
+       CXXFLAGS="$CXXFLAGS -ansi -Wall -Wstrict-prototypes"
     fi
   fi
 

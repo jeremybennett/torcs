@@ -28,6 +28,7 @@
 
 static void		*menuHandle;
 static int		fuelId;
+static int		repairId;
 static tCarElt		*rmCar;
 
 static void
@@ -40,6 +41,19 @@ rmUpdtFuel(void * /* dummy */)
     rmCar->pitcmd->fuel = (tdble)strtol(val, (char **)NULL, 0);
     sprintf(buf, "%f", rmCar->pitcmd->fuel);
     GfuiEditboxSetString(menuHandle, fuelId, buf);
+    free(val);
+}
+
+static void
+rmUpdtRepair(void * /* dummy */)
+{
+    char	*val;
+    char	buf[32];
+    
+    val = GfuiEditboxGetString(menuHandle, repairId);
+    rmCar->pitcmd->repair = strtol(val, (char **)NULL, 0);
+    sprintf(buf, "%d", rmCar->pitcmd->repair);
+    GfuiEditboxSetString(menuHandle, repairId, buf);
     free(val);
 }
 
@@ -73,6 +87,14 @@ RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
     fuelId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
 			       x + GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Fuel amount (liters):") + 20, y,
 			       0, 10, NULL, (tfuiCallback)NULL, rmUpdtFuel);
+
+    y -= dy;
+    GfuiLabelCreate(menuHandle, "Repair amount:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+
+    sprintf(buf, "%d", (int)car->pitcmd->repair);
+    repairId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
+				 x + GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Repair amount:") + 20, y,
+				 0, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
     
     GfuiMenuBackQuitButtonCreate(menuHandle, "Proceed", "Return to race", userdata, callback);
 

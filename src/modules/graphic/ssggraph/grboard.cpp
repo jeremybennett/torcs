@@ -27,7 +27,10 @@
 #include "grboard.h"
 #include "grscene.h"
 #include "grcar.h"
+#include "grssgext.h"
 #include "grmain.h"
+#include "grutil.h"
+#include <robottools.h>
 
 static float grWhite[4] = {1.0, 1.0, 1.0, 1.0};
 static float grRed[4] = {1.0, 0.0, 0.0, 1.0};
@@ -391,13 +394,13 @@ grDispCarBoard(tCarElt *car, tSituation *s)
     }
 }
 
+static const char *gearStr[MAX_GEARS] = {"R", "N", "1", "2", "3", "4", "5", "6", "7", "8"};
 
 void
 grDispCounterBoard(tCarElt *car)
 {
     int  x, y;
     char buf[256];
-    const char *gearStr[MAX_GEARS] = {"R", "N", "1", "2", "3", "4", "5", "6", "7", "8"};
     GLfloat ledcolg[2][3] = { 
 	{0.0, 0.2, 0.0},
 	{0.0, 1.0, 0.0}
@@ -534,17 +537,224 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     }
 }
 
+class myLoaderOptions : public ssgLoaderOptions
+{
+public:
+  virtual void makeModelPath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, model_dir, fname, NULL ) ;
+  }
+
+  virtual void makeTexturePath ( char* path, const char *fname ) const
+  {
+    ulFindFile ( path, texture_dir, fname, NULL ) ;
+  }
+} ;
+
 void
 grInitBoardCar(tCarElt *car)
 {
+    char		buf[4096];
     int			index;
     void		*handle;
     char		*param;
+    myLoaderOptions	options ;
+    tgrCarInfo		*carInfo;
+    tgrCarInstrument	*curInst;
+    tdble		xSz, ySz, xpos, ypos;
+    tdble		needlexSz, needleySz;
+    int			sw, sh, vw, vh;
     
+    ssgSetCurrentOptions ( &options ) ;    
+    GfScrGetSize(&sw, &sh, &vw, &vh);
+
     index = car->index;	/* current car's index */
+    carInfo = &grCarInfo[index];
     handle = car->_carHandle;
 
-/*     grCarInfo[index]. */
+    /* Tachometer */
+    curInst = &(carInfo->instrument[0]);
+    
+    /* Load the Tachometer texture */
+    param = GfParmGetStr(handle, SECT_GROBJECTS, PRM_TACHO_TEX, "rpm8000.rgb");
+    sprintf(buf, "drivers/%s/%d;drivers/%s;cars/%s;data/textures", car->_modName, car->_driverIndex, car->_modName, car->_carName);
+    grFilePath = strdup(buf);
+    curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
+    free(grFilePath);
+    free(param);
+
+    /* Load the intrument placement */
+    xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XSZ, (char*)NULL, 128);
+    ySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YSZ, (char*)NULL, 128);
+    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XPOS, (char*)NULL, sw / 2.0 - xSz);
+    ypos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YPOS, (char*)NULL, 0);
+    needlexSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_NDLXSZ, (char*)NULL, 50);
+    needleySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_NDLYSZ, (char*)NULL, 2);
+    curInst->needleXCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XCENTER, (char*)NULL, xSz / 2.0) + xpos;
+    curInst->needleYCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YCENTER, (char*)NULL, ySz / 2.0) + ypos;
+    curInst->digitXCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XDIGITCENTER, (char*)NULL, xSz / 2.0) + xpos;
+    curInst->digitYCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YDIGITCENTER, (char*)NULL, 16) + ypos; 
+    curInst->minValue = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_MINVAL, (char*)NULL, 0);
+    curInst->maxValue = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_MAXVAL, (char*)NULL, RPM2RADS(10000)) - curInst->minValue;
+    curInst->minAngle = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_MINANG, "deg", 225);
+    curInst->maxAngle = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_MAXANG, "deg", -45) - curInst->minAngle;
+    curInst->monitored = &(car->_enginerpm);
+    curInst->prevVal = curInst->minAngle;
+    
+    curInst->CounterList = glGenLists(1);
+    glNewList(curInst->CounterList, GL_COMPILE);
+    glBegin(GL_TRIANGLE_STRIP);
+    {
+	glColor4f(1.0, 1.0, 1.0, 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex2f(xpos, ypos);
+	glTexCoord2f(0.0, 1.0); glVertex2f(xpos, ypos + ySz);
+	glTexCoord2f(1.0, 0.0); glVertex2f(xpos + xSz, ypos);
+	glTexCoord2f(1.0, 1.0); glVertex2f(xpos + xSz, ypos + ySz);
+    }
+    glEnd();
+    glEndList();
+
+    curInst->needleList = glGenLists(1);
+    glNewList(curInst->needleList, GL_COMPILE);
+    glBegin(GL_TRIANGLE_STRIP);
+    {
+	glColor4f(1.0, 0.0, 0.0, 1.0);
+	glVertex2f(0, -needleySz);
+	glVertex2f(0, needleySz);
+	glVertex2f(needlexSz, -needleySz / 2.0);
+	glVertex2f(needlexSz, needleySz / 2.0);
+    }
+    glEnd();
+    glEndList();
+
+
+    /* Speedometer */
+    curInst = &(carInfo->instrument[1]);
+    
+    /* Load the Speedometer texture */
+    param = GfParmGetStr(handle, SECT_GROBJECTS, PRM_SPEEDO_TEX, "speed360.rgb");
+    sprintf(buf, "drivers/%s/%d;drivers/%s;cars/%s;data/textures", car->_modName, car->_driverIndex, car->_modName, car->_carName);
+    grFilePath = strdup(buf);
+    curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
+    free(grFilePath);
+    free(param);
+
+    /* Load the intrument placement */
+    xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XSZ, (char*)NULL, 128);
+    ySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YSZ, (char*)NULL, 128);
+    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XPOS, (char*)NULL, sw / 2.0);
+    ypos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YPOS, (char*)NULL, 0);
+    needlexSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_NDLXSZ, (char*)NULL, 50);
+    needleySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_NDLYSZ, (char*)NULL, 2);
+    curInst->needleXCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XCENTER, (char*)NULL, xSz / 2.0) + xpos;
+    curInst->needleYCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YCENTER, (char*)NULL, ySz / 2.0) + ypos;
+    curInst->digitXCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XDIGITCENTER, (char*)NULL, xSz / 2.0) + xpos;
+    curInst->digitYCenter = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YDIGITCENTER, (char*)NULL, 10) + ypos; 
+    curInst->minValue = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_MINVAL, (char*)NULL, 0);
+    curInst->maxValue = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_MAXVAL, (char*)NULL, 100) - curInst->minValue;
+    curInst->minAngle = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_MINANG, "deg", 225);
+    curInst->maxAngle = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_MAXANG, "deg", -45) - curInst->minAngle;
+    curInst->monitored = &(car->_speed_x);
+    curInst->prevVal = curInst->minAngle;
+    
+    curInst->CounterList = glGenLists(1);
+    glNewList(curInst->CounterList, GL_COMPILE);
+    glBegin(GL_TRIANGLE_STRIP);
+    {
+	glColor4f(1.0, 1.0, 1.0, 0.0);
+	glTexCoord2f(0.0, 0.0); glVertex2f(xpos, ypos);
+	glTexCoord2f(0.0, 1.0); glVertex2f(xpos, ypos + ySz);
+	glTexCoord2f(1.0, 0.0); glVertex2f(xpos + xSz, ypos);
+	glTexCoord2f(1.0, 1.0); glVertex2f(xpos + xSz, ypos + ySz);
+    }
+    glEnd();
+    glEndList();
+
+    curInst->needleList = glGenLists(1);
+    glNewList(curInst->needleList, GL_COMPILE);
+    glBegin(GL_TRIANGLE_STRIP);
+    {
+	glColor4f(1.0, 0.0, 0.0, 1.0);
+	glVertex2f(0, -needleySz);
+	glVertex2f(0, needleySz);
+	glVertex2f(needlexSz, -needleySz / 2.0);
+	glVertex2f(needlexSz, needleySz / 2.0);
+    }
+    glEnd();
+    glEndList();
+    
+}
+
+void
+grDispCounterBoard2(tCarElt *car)
+{
+    int			index;
+    tgrCarInstrument	*curInst;
+    tdble		val;
+    char		buf[32];
+
+    index = car->index;	/* current car's index */
+    curInst = &(grCarInfo[index].instrument[0]);
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glBindTexture(GL_TEXTURE_2D, curInst->texture->getTextureHandle());
+    glCallList(curInst->CounterList);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    val = (*(curInst->monitored) - curInst->minValue) / curInst->maxValue;
+    if (val > 1.0) {
+	val = 1.0;
+    } else if (val < 0.0) {
+	val = 0.0;
+    }
+    
+    val = curInst->minAngle + val * curInst->maxAngle;
+
+    RELAXATION(val, curInst->prevVal, 30);
+    
+    glPushMatrix();
+    glTranslatef(curInst->needleXCenter, curInst->needleYCenter, 0);
+    glRotatef(val, 0, 0, 1);
+    glCallList(curInst->needleList);
+    glPopMatrix();
+
+    GfuiPrintString((char*)(gearStr[car->_gear+car->_gearOffset]), grRed, GFUI_FONT_BIG_C,
+		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
+
+   
+    curInst = &(grCarInfo[index].instrument[1]);
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glBindTexture(GL_TEXTURE_2D, curInst->texture->getTextureHandle());
+    glCallList(curInst->CounterList);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    val = (*(curInst->monitored) - curInst->minValue) / curInst->maxValue;
+    if (val > 1.0) {
+	val = 1.0;
+    } else if (val < 0.0) {
+	val = 0.0;
+    }
+    val = curInst->minAngle + val * curInst->maxAngle;
+
+    RELAXATION(val, curInst->prevVal, 30);
+    
+    glPushMatrix();
+    glTranslatef(curInst->needleXCenter, curInst->needleYCenter, 0);
+    glRotatef(val, 0, 0, 1);
+    glCallList(curInst->needleList);
+    glPopMatrix();
+
+    sprintf(buf, "%3d", abs((int)(car->_speed_x * 3.6)));
+    GfuiPrintString(buf, grBlue, GFUI_FONT_DIGIT,
+		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
+   
 }
 
 void

@@ -631,12 +631,12 @@ void initUpdatePosition(const ENCODING *enc, const char *ptr,
   normal_updatePosition(&utf8_encoding.enc, ptr, end, pos);
 }
 
-const ENCODING *XmlGetUtf8InternalEncoding()
+const ENCODING *XmlGetUtf8InternalEncoding(void)
 {
   return &internal_utf8_encoding.enc;
 }
 
-const ENCODING *XmlGetUtf16InternalEncoding()
+const ENCODING *XmlGetUtf16InternalEncoding(void)
 {
 #if BYTE_ORDER == 12
   return &internal_little2_encoding.enc;
@@ -805,7 +805,6 @@ const ENCODING *findEncoding(const ENCODING *enc, const char *ptr, const char *e
   if (streqci(buf, "US-ASCII"))
     return &ascii_encoding.enc;
   if (streqci(buf, "UTF-16")) {
-    static const unsigned short n = 1;
     if (enc->minBytesPerChar == 2)
       return enc;
     return &big2_encoding.enc;
@@ -975,7 +974,7 @@ struct unknown_encoding {
   char utf8[256][4];
 };
 
-int XmlSizeOfUnknownEncoding()
+int XmlSizeOfUnknownEncoding(void)
 {
   return sizeof(struct unknown_encoding);
 }

@@ -20,15 +20,20 @@
 
   <section name="Driver">
     <!-- Position of the driver -->
-    <attnum name="xpos" val="0.45" unit="m"></attnum>
+    <attnum name="xpos" val="0.50" unit="m"></attnum>
     <attnum name="ypos" val="0.0" unit="m"></attnum>
     <attnum name="zpos" val="0.95" unit="m"></attnum>
   </section>
 
   <section name="Graphic Objects">
     <attstr name="env" val="acura-nsx-sz.ac"></attstr>
-    <attstr name="bonnet" val="acura-nsx-sz.ac"></attstr>
     <attstr name="wheel texture" val="cars/acura-nsx-sz/tex-wheel.rgb"></attstr>
+    <attstr name="tachometer texture" val="rpm8500.rgb"></attstr>
+    <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="10000" unit="rpm"></attnum>
+    <attstr name="speedometer texture" val="speed300.rgb"></attstr>
+    <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
+    <attnum name="speedometer max value" val="300" unit="km/h"></attnum>
 
     <section name="Ranges">
       <section name="1">
@@ -81,8 +86,8 @@
   <!-- Engine Max curve -->
   <section name="Engine">
     <attnum name="inertia"      unit="kg.m2" val="0.20"></attnum>
-    <attnum name="revs limiter" min="3000" max="9500" unit="rpm" val="9000"></attnum>
-    <attnum name="revs maxi" min="3000" max="10000" unit="rpm" val="10000"></attnum>
+    <attnum name="revs limiter"  unit="rpm" val="8500"></attnum>
+    <attnum name="revs maxi"  unit="rpm" val="10000"></attnum>
     <attnum name="tickover" min="500" max="5000" unit="rpm" val="2000"></attnum>
     <attnum name="fuel cons factor" min="1.0" max="2.0" val="1.2"></attnum>
     <section name="data points">
@@ -218,12 +223,12 @@
   </section>
 
   <section name="Front Axle">
-    <attnum name="xpos" val="1.25"></attnum>
+    <attnum name="xpos" val="1.35"></attnum>
     <attnum name="roll center height" unit="m" val="0.02"></attnum>
   </section>
 
   <section name="Rear Axle">
-    <attnum name="xpos" min="-2.5" max="-0.5" val="-1.30"></attnum>
+    <attnum name="xpos" val="-1.43"></attnum>
     <attnum name="roll center height" unit="m" val="0.08"></attnum>
   </section>
 
@@ -235,7 +240,7 @@
   </section>
 
   <section name="Front Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.85"></attnum>
+    <attnum name="ypos" unit="m" val="-0.81"></attnum>
     <attnum name="rim diameter" unit="in" val="18.0"></attnum>
     <attnum name="tire width" unit="mm" val="235"></attnum>
     <attnum name="tire height-width ratio" val=".5"></attnum>
@@ -248,7 +253,7 @@
   </section>
 
   <section name="Front Left Wheel">
-    <attnum name="ypos" unit="m" val="0.85"></attnum>
+    <attnum name="ypos" unit="m" val="0.80"></attnum>
     <attnum name="rim diameter" unit="in" val="18.0"></attnum>
     <attnum name="tire width" unit="mm" val="235"></attnum>
     <attnum name="tire height-width ratio" val=".5"></attnum>
@@ -260,7 +265,7 @@
   </section>
 
   <section name="Rear Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.85"></attnum>
+    <attnum name="ypos" unit="m" val="-0.80"></attnum>
     <attnum name="rim diameter" unit="in" val="18.0"></attnum>
     <attnum name="tire width" unit="mm" val="335"></attnum>
     <attnum name="tire height-width ratio" val=".35"></attnum>
@@ -271,7 +276,7 @@
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="ypos" unit="m" val="0.85"></attnum>
+    <attnum name="ypos" unit="m" val="0.81"></attnum>
     <attnum name="rim diameter" unit="in" val="18.0"></attnum>
     <attnum name="tire width" unit="mm" val="335"></attnum>
     <attnum name="tire height-width ratio" val=".35"></attnum>

@@ -29,6 +29,12 @@
   <section name="Graphic Objects">
     <attstr name="env" val="mclaren-f1.ac"></attstr>
     <attstr name="wheel texture" val="cars/mclaren-f1/tex-wheel.rgb"></attstr>
+    <attstr name="tachometer texture" val="rpm8500.rgb"></attstr>
+    <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="10000" unit="rpm"></attnum>
+    <attstr name="speedometer texture" val="speed360.rgb"></attstr>
+    <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
+    <attnum name="speedometer max value" val="360" unit="km/h"></attnum>
 
     <section name="Ranges">
       <section name="1">

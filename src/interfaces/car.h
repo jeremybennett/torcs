@@ -133,6 +133,7 @@ typedef struct {
 #define RM_CAR_STATE_OUT	(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/* Car out of race */
 #define RM_CAR_STATE_NO_SIMU	 0x000000FF				/* Do not simulate the car */
 #define RM_CAR_STATE_BROKEN	 0x00000200				/* Engine no more working */
+#define RM_CAR_STATE_OUTOFGAS	 0x00000400				/* Out of Gas */
 
 } tPublicCar;
 /* structure access */
@@ -195,6 +196,7 @@ typedef struct {
     tdble	enginerpm;
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
+    tdble	enginerpmMaxTq;
     tdble	gearRatio[MAX_GEARS];	/* including final drive */
     int		gearNb;			/* incl reverse and neutral */
     int		gearOffset;		/* gearRatio[gear + gearOffset] is the ratio for gear */
@@ -215,6 +217,7 @@ typedef struct {
 #define _enginerpm	priv->enginerpm
 #define _enginerpmRedLine	priv->enginerpmRedLine
 #define _enginerpmMax	priv->enginerpmMax
+#define _enginerpmMaxTq	priv->enginerpmMaxTq
 #define _gearRatio	priv->gearRatio
 #define _gearNb		priv->gearNb
 #define _gearOffset	priv->gearOffset
@@ -401,6 +404,40 @@ typedef struct CarElt
 #define VAL_TRANS_RWD		"RWD"
 #define VAL_TRANS_FWD		"FWD"
 #define VAL_TRANS_4WD		"4WD"
+
+
+/* graphic */
+#define PRM_TACHO_TEX		"tachometer texture"
+#define PRM_TACHO_XSZ		"tachometer width"
+#define PRM_TACHO_YSZ		"tachometer height"
+#define PRM_TACHO_XPOS		"tachometer x pos"
+#define PRM_TACHO_YPOS		"tachometer y pos"
+#define PRM_TACHO_NDLXSZ	"tachometer needle width"
+#define PRM_TACHO_NDLYSZ	"tachometer needle height"
+#define PRM_TACHO_XCENTER	"tachometer needle x center"
+#define PRM_TACHO_YCENTER	"tachometer needle y center"
+#define PRM_TACHO_XDIGITCENTER	"tachometer digit x center"
+#define PRM_TACHO_YDIGITCENTER	"tachometer digit y center"
+#define PRM_TACHO_MINVAL	"tachometer min value"
+#define PRM_TACHO_MAXVAL	"tachometer max value"
+#define PRM_TACHO_MINANG	"tachometer min angle"
+#define PRM_TACHO_MAXANG	"tachometer max angle"
+
+#define PRM_SPEEDO_TEX		"speedometer texture"
+#define PRM_SPEEDO_XSZ		"speedometer width"
+#define PRM_SPEEDO_YSZ		"speedometer height"
+#define PRM_SPEEDO_XPOS		"speedometer x pos"
+#define PRM_SPEEDO_YPOS		"speedometer y pos"
+#define PRM_SPEEDO_NDLXSZ	"speedometer needle width"
+#define PRM_SPEEDO_NDLYSZ	"speedometer needle height"
+#define PRM_SPEEDO_XCENTER	"speedometer needle x center"
+#define PRM_SPEEDO_YCENTER	"speedometer needle y center"
+#define PRM_SPEEDO_XDIGITCENTER	"speedometer digit x center"
+#define PRM_SPEEDO_YDIGITCENTER	"speedometer digit y center"
+#define PRM_SPEEDO_MINVAL	"speedometer min value"
+#define PRM_SPEEDO_MAXVAL	"speedometer max value"
+#define PRM_SPEEDO_MINANG	"speedometer min angle"
+#define PRM_SPEEDO_MAXANG	"speedometer max angle"
 
 #endif /* __CARV1_H__ */ 
 

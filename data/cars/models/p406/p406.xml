@@ -21,6 +21,12 @@
     <attstr name="env" val="p406.ac"></attstr>
     <attstr name="bonnet" val="p406.ac"></attstr>
     <attstr name="wheel texture" val="tex-wheel.rgb"></attstr>
+    <attstr name="tachometer texture" val="rpm7000.rgb"></attstr>
+    <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="8000" unit="rpm"></attnum>
+    <attstr name="speedometer texture" val="speed300.rgb"></attstr>
+    <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
+    <attnum name="speedometer max value" val="300" unit="km/h"></attnum>
 
     <section name="Ranges">
       <section name="1">

@@ -62,7 +62,7 @@ gfuiLoadFonts(void)
 
     fontName = GfParmGetStr(param, "Digital Font", "name", "digital.glf");
     sprintf(buf, "data/fonts/%s", fontName);
-    size = (int)GfParmGetNum(param, "Digit Font", keySize[0], (char*)NULL, 8.0);
+    size = (int)GfParmGetNum(param, "Digital Font", keySize[0], (char*)NULL, 8.0);
     gfuiFont[8] = new GfuiFontClass(buf);
     gfuiFont[8]->create(size);
     

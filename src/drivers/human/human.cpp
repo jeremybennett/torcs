@@ -586,6 +586,8 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
 
     LastPitStopLap = car->_laps;
 
+    car->pitcmd->repair = (int)car->_dammage;
+
     return ROB_PIT_MENU; /* The player is able to modify the value by menu */
 }
 

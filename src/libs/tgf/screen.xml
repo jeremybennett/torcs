@@ -42,7 +42,7 @@
 
   <section name="Digital Font">
     <attstr name="name"        val="digital.glf"></attstr>
-    <attnum name="size big"    val="8"></attnum>
+    <attnum name="size big"    val="6"></attnum>
   </section>
 
   <section name="Menu Colors">

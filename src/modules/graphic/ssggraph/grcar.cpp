@@ -36,6 +36,7 @@
 #include "grcar.h"
 #include "grcam.h"
 #include "grscene.h"
+#include "grboard.h"
 #include "grssgext.h"
 #include "grutil.h"
 
@@ -368,7 +369,7 @@ initShadow(tCarElt *car)
 void 
 grInitCar(tCarElt *car)
 {
-    char		buf[256];
+    char		buf[4096];
     int			index;
     int			selIndex;
     ssgEntity		*carEntity;
@@ -381,6 +382,9 @@ grInitCar(tCarElt *car)
     int			lg;
     char		path[256];
     myLoaderOptions	options ;
+
+
+    grInitBoardCar(car);
 
     TRACE_GL("loadcar: start");
 
