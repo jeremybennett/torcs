@@ -209,7 +209,8 @@ qrShutdown(void)
     free(qrCarInfo);
     qrTrackItf.trkShutdown();
     SimItf.shutdown();
-    qrGraphicItf.shutdowncars(); 
+    qrGraphicItf.shutdowncars();
+    qrGraphicItf.shutdowntrack();
     GfModUnloadList(&qracemodlist);
     qracemodlist = (tModList*)NULL;
     RmShutdownResults(qrRaceInfo);
