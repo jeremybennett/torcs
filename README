@@ -164,8 +164,9 @@ Changes since 1.2.3-bw-unofficial-test4
 - released as 1.2.3.
 
 
-TODO for unofficial 1.2.4
--------------------------
+TODO for 1.2.4
+--------------
+- Fix engine inertia/s of F1 cars, check/fix all other cars as well.
 - Fix new introduced bugs.
 - Fix more memory leaks (already hunt down a LOT there are still more).
 - Fix XSLT/DTD for viewing results (Report by Eugen)
@@ -177,7 +178,6 @@ TODO for unofficial 1.2.4
 - Scale down for all textures on load (user adjustable to improve performance).
 - possibility of one pit for 2 cars of one module.
 - Bugfixes and cleanup.
-- (Add billy, astigot).
 - Add cameras/update track format on/for several tracks (spring, alpine,
   aalborg, ...).
 - solution for varying gl headers (include mesa headers into the source?)
@@ -188,7 +188,6 @@ TODO for unofficial 1.2.4
 - Add validation for the case no driver selected, do not exit to
   console.
 - (Sound did not work well with 40 cars, investigate).
-- Integrate documentation into distribution?
 - try to resolve "(null)" texture problem (seems to be in the model files).
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
@@ -207,8 +206,9 @@ TODO for unofficial 1.2.4
 
 
 
-TODO for unofficial 1.2.5
--------------------------
+
+TODO for 1.2.5
+--------------
 - All the new and postponed stuff.
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
@@ -222,6 +222,11 @@ TODO for unofficial 1.2.5
   pit door, pits are quite dark around the logo).
 - (Problem with BRD Sim-pro in windows, investigate)
 - pit wall collision
+- check and merge Christos camera code.
+- (Add billy, astigot).
+- Integrate documentation into CVS/distribution
+
+
 
 
 TODO LATER
