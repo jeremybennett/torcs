@@ -82,8 +82,9 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car - reduce overall airflow */
-		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
-				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
+			tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
+
+		    tmpas = 1.0 - factor*exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y)/(otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    airSpeed = airSpeed * tmpas;
 		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
 		    /* before another car - breaks down rear eddies, reduces only drag*/
@@ -232,7 +233,8 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car - reduce overall airflow */
-		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+			tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
+		    tmpas = 1.0 - factor*exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    i_flow = i_flow * tmpas;
 		} 
