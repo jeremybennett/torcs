@@ -219,6 +219,7 @@ class cGrCarCamMirror : public cGrPerspCamera
 			 myfnear, myffar, myfogstart, myfogend) {
 	glGenTextures (1, &tex);
 	limitFov();
+	viewCam = NULL;
     }
     ~cGrCarCamMirror ();
 

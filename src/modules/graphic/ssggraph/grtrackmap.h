@@ -77,6 +77,15 @@ class cGrTrackMap
 			int Winh
 		);
 
+		// Set the view mode 
+		void setViewMode(int vm);
+		
+		// Get The view mode
+		int getViewMode();
+
+		// Get the default view mode
+		int getDefaultViewMode();
+
 	private:
 		// The resolution in [m] to analyse turns.
 		static const float RESOLUTION;

@@ -226,10 +226,7 @@ reRaceRealStart(void)
 	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
     }
 
-    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
-	RmLoadingScreenSetText("Loading Cars 3D Objects...");
-	ReInfo->_reGraphicItf.initcars(s);
-    } else {
+    if (ReInfo->_displayMode != RM_DISP_MODE_NORMAL) {
 	if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
 	    ReUpdateQualifCurRes(s->cars[0]);
 	} else {
@@ -237,7 +234,6 @@ reRaceRealStart(void)
 	    ReResScreenSetTitle(buf);
 	}
     }
-    
     
     RmLoadingScreenSetText("Ready.");
     
@@ -250,6 +246,11 @@ reRaceRealStart(void)
 
     GfScrGetSize(&sw, &sh, &vw, &vh);
     ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
+
+    if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+	/* RmLoadingScreenSetText("Loading Cars 3D Objects..."); */
+	ReInfo->_reGraphicItf.initcars(s);
+    }
 
     GfuiScreenActivate(ReInfo->_reGameScreen);
 

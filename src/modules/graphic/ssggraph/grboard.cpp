@@ -57,27 +57,43 @@ static char	path[1024];
 
 cGrBoard::cGrBoard (int myid) {
     id = myid;
-	trackMap = NULL;
+    trackMap = NULL;
 }
 
 
 cGrBoard::~cGrBoard () {
-	trackMap = NULL;
+    trackMap = NULL;
 }
 
 
 void
-cGrBoard::loadDefaults(void)
+cGrBoard::loadDefaults(tCarElt *curCar)
 {
     sprintf (path, "%s/%d", GR_SCT_DISPMODE, id);
-    
-    debugFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_DEBUG, NULL, 1);
-    boardFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_BOARD, NULL, 2);
-    leaderFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, 1);
-    leaderNb = (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, 10);
+  
+    debugFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_DEBUG, NULL, 1);
+    boardFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_BOARD, NULL, 2);
+    leaderFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, 1);
+    leaderNb	= (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, 10);
     counterFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_COUNTER, NULL, 1);
-    GFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, 1);
-    arcadeFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, 0);
+    GFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, 1);
+    arcadeFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, 0);
+
+    assert(trackMap);
+
+    trackMap->setViewMode((int) GfParmGetNum(grHandle, path, GR_ATT_MAP, NULL, trackMap->getDefaultViewMode()));
+
+    if (curCar->_driverType == RM_DRV_HUMAN) {
+	sprintf(path, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
+	debugFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_DEBUG, NULL, debugFlag);
+	boardFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_BOARD, NULL, boardFlag);
+	leaderFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_LEADER, NULL, leaderFlag);
+	leaderNb	= (int)GfParmGetNum(grHandle, path, GR_ATT_NBLEADER, NULL, leaderNb);
+	counterFlag 	= (int)GfParmGetNum(grHandle, path, GR_ATT_COUNTER, NULL, counterFlag);
+	GFlag		= (int)GfParmGetNum(grHandle, path, GR_ATT_GGRAPH, NULL, GFlag);
+	arcadeFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_ARCADE, NULL, arcadeFlag);
+	trackMap->setViewMode((int) GfParmGetNum(grHandle, path, GR_ATT_MAP, NULL, trackMap->getViewMode()));
+    }
 }
 
 

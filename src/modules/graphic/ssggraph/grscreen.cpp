@@ -148,7 +148,20 @@ void cGrScreen::selectBoard(int brd)
 
 void cGrScreen::selectTrackMap()
 {
-	board->getTrackMap()->selectTrackMap();
+    int viewmode;
+    
+    board->getTrackMap()->selectTrackMap();
+    viewmode = board->getTrackMap()->getViewMode();
+    
+    sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
+    GfParmSetNum(grHandle, path, GR_ATT_MAP, NULL, (tdble)viewmode);
+    /* save also as user's preference if human */
+    if (curCar->_driverType == RM_DRV_HUMAN) {
+	sprintf(path2, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
+	GfParmSetNum(grHandle, path2, GR_ATT_MAP, NULL, (tdble)viewmode);
+    }
+    GfParmWriteFile(NULL, grHandle, "Graph");
+    
 }
 
 void cGrScreen::switchMirror(void)
@@ -337,15 +350,30 @@ void cGrScreen::loadParams(tSituation *s)
     char		*carName;
 
     sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
-    curCamHead = (int)GfParmGetNum(grHandle, path, GR_ATT_CAM_HEAD, NULL, 9);
-    camNum = (int)GfParmGetNum(grHandle, path, GR_ATT_CAM, NULL, 0);
-    mirrorFlag = (int)GfParmGetNum(grHandle, path, GR_ATT_MIRROR, NULL, (tdble)mirrorFlag);
-    if (curCar) {
-	sprintf(path2, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
-	curCamHead = (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
-	camNum = (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM, NULL, (tdble)camNum);
-	mirrorFlag = (int)GfParmGetNum(grHandle, path2, GR_ATT_MIRROR, NULL, (tdble)mirrorFlag);
+
+    if (!curCar) {
+	carName = GfParmGetStr(grHandle, path, GR_ATT_CUR_DRV, "");
+	for (i = 0; i < s->_ncars; i++) {
+	    if (!strcmp(s->cars[i]->_name, carName)) {
+		break;
+	    }
+	}
+	if (i < s->_ncars) {
+	    curCar = s->cars[i];
+	} else if (id < s->_ncars) {
+	    curCar = s->cars[id];
+	} else {
+	    curCar = s->cars[0];
+	}
     }
+    sprintf(path2, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
+
+    curCamHead	= (int)GfParmGetNum(grHandle, path, GR_ATT_CAM_HEAD, NULL, 9);
+    camNum	= (int)GfParmGetNum(grHandle, path, GR_ATT_CAM, NULL, 0);
+    mirrorFlag	= (int)GfParmGetNum(grHandle, path, GR_ATT_MIRROR, NULL, (tdble)mirrorFlag);
+    curCamHead	= (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
+    camNum	= (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM, NULL, (tdble)camNum);
+    mirrorFlag	= (int)GfParmGetNum(grHandle, path2, GR_ATT_MIRROR, NULL, (tdble)mirrorFlag);
 
     cam = GF_TAILQ_FIRST(&cams[curCamHead]);
     curCam = NULL;
@@ -364,23 +392,10 @@ void cGrScreen::loadParams(tSituation *s)
 	GfParmSetNum(grHandle, path, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
     }
 
-    if (!curCar) {
-	carName = GfParmGetStr(grHandle, path, GR_ATT_CUR_DRV, "");
-	for (i = 0; i < s->_ncars; i++) {
-	    if (!strcmp(s->cars[i]->_name, carName)) {
-		break;
-	    }
-	}
-	if (i < s->_ncars) {
-	    curCar = s->cars[i];
-	} else {
-	    curCar = s->cars[0];
-	}
-    }
-
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, curCamHead, curCam->getId());
     curCam->loadDefaults(buf);
     drawCurrent = curCam->getDrawCurrent();
+    board->loadDefaults(curCar);
 }
 
 
@@ -429,5 +444,4 @@ void cGrScreen::initBoard(void)
 	board = new cGrBoard (id);
     }
     board->initBoard ();
-    board->loadDefaults ();
 }

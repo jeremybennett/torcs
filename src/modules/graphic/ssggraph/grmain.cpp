@@ -213,7 +213,7 @@ grSelectBoard(void *vp)
 static void
 grSelectTrackMap(void *vp)
 {
-	grGetcurrentScreen()->selectTrackMap();
+    grGetcurrentScreen()->selectTrackMap();
 }
 
 static void
@@ -399,6 +399,8 @@ initCars(tSituation *s)
     TRACE_GL("initCars: end");
 
     grInitSmoke(s->_ncars);
+
+    grAdaptScreenSize();
 
     //int nb = grPruneTree(TheScene, true);
     //GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);

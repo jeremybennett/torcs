@@ -26,7 +26,7 @@
 class cGrBoard
 {
  protected:
-    int			id;		/* Board Id */
+    int	id;		/* Board Id */
 
     int	boardFlag;
 
@@ -65,7 +65,7 @@ class cGrBoard
 	cGrTrackMap *getTrackMap() { return trackMap; }
 
     void refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr);
-    void loadDefaults(void);
+    void loadDefaults(tCarElt *curCar);
 };
 
 extern void grInitBoardCar(tCarElt *car);

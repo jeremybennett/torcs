@@ -301,6 +301,9 @@ void cGrCarCamMirror::setViewport (int x, int y, int w, int h)
     vpw = GfNearestPow2 (w);
     vph = GfNearestPow2 (h);
 
+    if (viewCam) {
+	delete viewCam;
+    }
     viewCam = new cGrOrthoCamera (screen, x,  x + w, y, y + h);
     limitFov ();
 }

@@ -730,3 +730,17 @@ void cGrTrackMap::initColors()
 }
 
 
+// Set the view mode 
+void cGrTrackMap::setViewMode(int vm) {
+    viewmode = vm;
+}
+		
+// Get The view mode
+int cGrTrackMap::getViewMode() {
+    return viewmode;
+}
+
+// Get the default view mode
+int cGrTrackMap::getDefaultViewMode() {
+    return TRACK_MAP_NORMAL_WITH_OPPONENTS;
+}
