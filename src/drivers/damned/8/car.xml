@@ -19,18 +19,6 @@
 
 <!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->
 
-  <section name="Graphic Objects">
-    <attstr name="env" val="mclaren-f1.ac"/>
-    <attstr name="wheel texture" val="cars/mclaren-f1/tex-wheel.rgb"/>
-
-    <section name="Ranges">
-      <section name="1">
-	<attnum name="distance" val="600" unit="km"/>
-	<attstr name="car" val="mclaren-f1.ac"/>
-      </section>
-    </section>
-  </section>
-
   <section name="Car">
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" val="0.45"/>

@@ -438,6 +438,7 @@ typedef struct CarElt
 #define LST_RANGES		"Ranges"
 #define PRM_THRESHOLD		"threshold"
 #define PRM_CAR			"car"
+#define PRM_WHEELSON		"wheels"
 #define PRM_ENV			"env"
 #define PRM_BONNET		"bonnet"
 #define PRM_WHEEL_TEXTURE	"wheel texture"

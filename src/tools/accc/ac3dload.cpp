@@ -132,9 +132,9 @@ int computeNorm( point_t * pv1, point_t *pv2, point_t *pv3, point_t *norm)
   y3=pv3->y; 
   z3=pv3->z; 
 
-  if ( (x1==x2 && y1==y2 && z1==z2)
-       || (x1==x3 && y1==y3 && z1==z3)
-       || (x2==x3 && y2==y3 && z2==z3))
+  if ( ((x1==x2) && (y1==y2) && (z1==z2))
+       || ((x1==x3) && (y1==y3) && (z1==z3))
+       || ((x2==x3) && (y2==y3) && (z2==z3)))
     {
       norm->x=0;
       norm->y=1.0;
@@ -152,10 +152,24 @@ int computeNorm( point_t * pv1, point_t *pv2, point_t *pv3, point_t *norm)
 
   dd = sqrt((p2*q3-q2*p3)*(p2*q3-q2*p3)
 	    + (p3*q1-q3*p1)*(p3*q1-q3*p1)+ (p1*q2-q1*p2)*(p1*q2-q1*p2));
+  if (dd == 0.0) {
+      norm->x=0;
+      norm->y=1.0;
+      norm->z=0;
+      return 0;
+    }
+      
   norm->x=(p2*q3-q2*p3)/dd;
   norm->y=(p3*q1-q3*p1)/dd;
   norm->z=(p1*q2-q1*p2)/dd;
 
+  if (isnan(norm->x) || isnan(norm->y) || isnan(norm->z)) {
+      norm->x=0;
+      norm->y=1.0;
+      norm->z=0;
+      return 0;
+    }
+      
   return 0;
 }
 
@@ -1841,9 +1855,15 @@ void normalize(point_t *t )
 {
   double dd;
   dd=sqrt(t->x*t->x + t->y*t->y + t->z*t->z);
-  t->x=t->x/dd;
-  t->y=t->y/dd;
-  t->z=t->z/dd;
+  if (dd != 0.0) {
+      t->x=t->x/dd;
+      t->y=t->y/dd;
+      t->z=t->z/dd;
+  } else {
+      t->x = 0.0;
+      t->y = 1.0;
+      t->z = 0.0;
+  }
 }
 
 void computeTriNorm(ob_t * object )
@@ -1875,21 +1895,23 @@ void computeTriNorm(ob_t * object )
 		    &tmpob->vertex[tmpob->vertexarray[i*3+2].indice],
 		    &norm);
 	dd=sqrt(norm.x*norm.x + norm.y*norm.y + norm.z*norm.z);
-	tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
-	tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
-	tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
+	if (dd != 0.0) {
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
 
-	/*	normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);*/
+	    /*	normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);*/
 	
-	tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
-	tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
-	tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
 	
-	/*normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);*/
+	    /*normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);*/
 
-	tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
-	tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
-	tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
+	}
 	
 	/*normalize(&tmpob->norm[tmpob->vertexarray[i*3+2].indice]);*/
 
@@ -1947,21 +1969,23 @@ void computeObjectTriNorm(ob_t * object )
 		  &tmpob->vertex[tmpob->vertexarray[i*3+2].indice],
 		  &norm);
       dd=sqrt(norm.x*norm.x + norm.y*norm.y + norm.z*norm.z);
-      tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
-      tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
-      tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
+      if (dd != 0.0) {
+	  tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
       
-      /*	normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);*/
+	  /*	normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);*/
       
-      tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
-      tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
-      tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
       
-      /*normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);*/
+	  /*normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);*/
       
-      tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
-      tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
-      tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
+	  tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
+      }
       
       /*normalize(&tmpob->norm[tmpob->vertexarray[i*3+2].indice]);*/
       
