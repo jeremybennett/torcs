@@ -33,7 +33,9 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #include <math.h>
 
 #define TRACK_MAP_NONE							(1<<0)

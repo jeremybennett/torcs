@@ -87,7 +87,7 @@ typedef struct
     int		collisionAware;
 } tCar;
 
-#if 1
+#if 0
 
 #define CHECK_VAR(_var_, _msg_) do {						\
     if (isnan(_var_) || isinf(_var_)) {						\

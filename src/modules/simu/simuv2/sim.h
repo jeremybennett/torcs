@@ -25,6 +25,7 @@
 #include <string.h>
 #ifdef WIN32
 #include <float.h>
+#define isnan _isnan
 #endif
 
 #include <tgf.h>

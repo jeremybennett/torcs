@@ -143,6 +143,10 @@ SOURCE=.\grsound.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\grtrackmap.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\grutil.cpp
 # End Source File
 # Begin Source File
