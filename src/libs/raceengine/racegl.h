@@ -36,9 +36,11 @@ extern void ReSetRaceBigMsg(char *msg);
 extern void *ReResScreenInit(void);
 extern void ReResScreenSetTitle(char *title);
 extern void ReResScreenAddText(char *text);
-extern void ReResScreenSetText(char *text, int line);
+extern void ReResScreenSetText(char *text, int line, int clr);
 extern void ReResScreenRemoveText(int line);
 extern void ReResShowCont(void);
+extern int  ReResGetLines(void);
+extern void ReResEraseScreen(void);
 
 #endif /* _RACEGL_H_ */ 
 

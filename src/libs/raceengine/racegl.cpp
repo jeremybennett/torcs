@@ -42,8 +42,8 @@ static int	reMsgId;
 static int	reBigMsgId;
 
 static float bgcolor[4] = {0.0, 0.0, 0.0, 0.0};
-static float red[4] = {1.0, 0.0, 0.0, 1.0};
-static float white[4] = {1.0, 1.0, 1.0, 1.0};
+static float white[4]   = {1.0, 1.0, 1.0, 1.0};
+static float red[4]     = {1.0, 0.0, 0.0, 1.0};
 
 static void
 reDisplay(void)
@@ -224,9 +224,12 @@ ReHookShutdown(void)
  */
 #define LINES	21
 
+static float	*reColor[] = {white, red};
+
 static void	*reResScreenHdle = 0;
 static int	reResTitleId;
 static int	reResMsgId[LINES];
+static int	reResMsgClr[LINES];
 static char	*reResMsg[LINES];
 static int	reCurLine;
 
@@ -302,12 +305,13 @@ ReResScreenInit(void)
 				     red,
 				     GFUI_FONT_MEDIUM,
 				     320, 420,
-				     GFUI_ALIGN_HC_VB, 32);
+				     GFUI_ALIGN_HC_VB, 50);
 
     y = 400;
     dy = 378 / LINES;
     for (i = 0; i < LINES; i++) {
 	FREEZ(reResMsg[i]);
+	reResMsgClr[i] = 0;
 	reResMsgId[i] = GfuiLabelCreateEx(reResScreenHdle,
 					  "",
 					  white,
@@ -348,12 +352,34 @@ ReResScreenAddText(char *text)
 }
 
 void
-ReResScreenSetText(char *text, int line)
+ReResScreenSetText(char *text, int line, int clr)
 {
     if (line < LINES) {
 	FREEZ(reResMsg[line]);
 	reResMsg[line] = strdup(text);
+	if ((clr >= 0) && (clr < 2)) {
+	    reResMsgClr[line] = clr;
+	} else {
+	    reResMsgClr[line] = 0;
+	}
 	GfuiLabelSetText(reResScreenHdle, reResMsgId[line], reResMsg[line]);
+	GfuiLabelSetColor(reResScreenHdle, reResMsgId[line], reColor[reResMsgClr[line]]);
+    }
+}
+
+int
+ReResGetLines(void)
+{
+    return LINES;
+}
+
+void
+ReResEraseScreen(void)
+{
+    int i;
+
+    for (i = 0; i < LINES; i++) {
+	ReResScreenSetText("", i, 0);
     }
 }
 

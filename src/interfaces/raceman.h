@@ -197,6 +197,7 @@ typedef struct RmInfo
 #define RM_ATTR_CUR_RACE	"current race"
 #define RM_ATTR_CUR_TRACK	"current track"
 #define RM_ATTR_CUR_CONF	"current configuration"
+#define RM_ATTR_CUR_DRIVER	"current driver"
 #define RM_ATTR_START_ORDER	"starting order"
 #define RM_ATTR_ALLOW_RESTART	"restart"
 

@@ -17,10 +17,11 @@
 <params name="dtm race" type="param" mode="mw">
 
   <section name="Header">
-    <attstr name="name" val="Dtm Race"/>
-    <attstr name="description" val="Dtm Race"/>
+    <attstr name="name" val="DTM Race"/>
+    <attstr name="description" val="DTM Race"/>
     <attnum name="priority" val="20"/>
     <attstr name="menu image" val="data/img/splash-dtm.png"/>
+    <attstr name="run image" val="data/img/splash-run-practice.png"/>
   </section>
 
   <section name="Tracks">
@@ -35,18 +36,40 @@
   <section name="Races">
 
     <section name="1">
-      <attstr name="name" val="Qualification Race"/>
+      <attstr name="name" val="Qualifications"/>
     </section>
 
     <section name="2">
+      <attstr name="name" val="Qualification Race"/>
+    </section>
+
+    <section name="3">
       <attstr name="name" val="Main Race"/>
+    </section>
+  </section>
+
+  <section name="Qualifications">
+    <attnum name="laps" val="12"/>
+    <attstr name="type" val="qualifications"/>
+    <attstr name="starting order" val="drivers list"/>
+    <attstr name="display mode" val="results only"/>
+    <attstr name="restart" val="no"/>
+    <attstr name="display results" val="yes"/>
+
+    <section name="Starting Grid">
+      <attnum name="rows" val="1.000000"/>
+      <attnum name="distance to start" val="100.000000"/>
+      <attnum name="distance between columns" val="20.000000"/>
+      <attnum name="offset within a column" val="10.000000"/>
+      <attnum name="initial speed" val="0.000000"/>
+      <attnum name="initial height" val="0.200000"/>
     </section>
   </section>
 
   <section name="Qualification Race">
     <attnum name="distance" val="35" unit="km"/>
     <attstr name="type" val="race"/>
-    <attstr name="starting order" val="drivers list"/>
+    <attstr name="starting order" val="last race"/>
     <attstr name="restart" val="no"/>
 
     <section name="Starting Grid">
@@ -55,7 +78,7 @@
       <attnum name="distance between columns" val="20.000000"/>
       <attnum name="offset within a column" val="10.000000"/>
       <attnum name="initial speed" val="0.000000"/>
-      <attnum name="initial height" val="1.000000"/>
+      <attnum name="initial height" val="0.200000"/>
     </section>
 
     <section name="Points">
@@ -83,7 +106,7 @@
       <attnum name="distance between columns" val="20.000000"/>
       <attnum name="offset within a column" val="10.000000"/>
       <attnum name="initial speed" val="0.000000"/>
-      <attnum name="initial height" val="1.000000"/>
+      <attnum name="initial height" val="0.200000"/>
     </section>
 
     <section name="Points">

@@ -117,6 +117,8 @@ ReStateManage(void)
 	    mode = ReRaceEnd();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_POST_RACE;
+	    } else if (mode & RM_NEXT_RACE) {
+		ReInfo->_reState = RE_STATE_RACE_START;
 	    }
 	    break;
 

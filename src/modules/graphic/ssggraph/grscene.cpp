@@ -408,14 +408,14 @@ grInitScene(void)
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
-    ssgaLensFlare      *sun_obj      = NULL ;
-    sun_obj  = new ssgaLensFlare () ;
-    sun_obj->ref();
-    sun      = new ssgTransform ;
-    sun      -> setTransform    ( light_position ) ;
-    sun      -> addKid          ( sun_obj  ) ;
-    TheScene    -> addKid(sun) ;
-
+    if (!sun) {
+	ssgaLensFlare      *sun_obj      = NULL ;
+	sun_obj  = new ssgaLensFlare () ;
+	sun      = new ssgTransform ;
+	sun      -> setTransform    ( light_position ) ;
+	sun      -> addKid          ( sun_obj  ) ;
+	TheScene    -> addKid(sun) ;
+    }
 
     /* GUIONS GL_TRUE */
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_FALSE);

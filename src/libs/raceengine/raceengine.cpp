@@ -37,7 +37,7 @@
 
 #include "raceengine.h"
 
-static char	buf[256];
+static char	buf[1024];
 static double	msgDisp;
 static double	bigMsgDisp;
 
@@ -216,17 +216,31 @@ ReManage(tCarElt *car)
 			    car->_timeBehindPrev = 0;
 			}
 			info->sTime = s->currentTime;
-			if (ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+			switch (ReInfo->s->_raceType) {
+			case RM_TYPE_PRACTICE:
 			    if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 				ReInfo->_refreshDisplay = 1;
 				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
-					car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0), info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
+					car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0),
+					info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
 				ReResScreenAddText(buf);
 			    }
 			    /* save the lap result */
 			    ReSavePracticeLap(car);
+			    break;
+			    
+			case RM_TYPE_QUALIF:
+			    if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
+				ReUpdateQualifCurRes(car);
+			    }
+			    break;
+			}
+		    } else {
+			if ((ReInfo->_displayMode == RM_DISP_MODE_NONE) && (ReInfo->s->_raceType == RM_TYPE_QUALIF)) {
+			    ReUpdateQualifCurRes(car);
 			}
 		    }
+
 		    info->topSpd = car->_speed_x;
 		    info->botSpd = car->_speed_x;
 		    if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {

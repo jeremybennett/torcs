@@ -96,6 +96,15 @@ RmLoadingScreenStart(char *title, char *bgimg)
     GfuiDisplay();
 }
 
+void
+RmShutdownLoadingScreen(void)
+{
+    if (menuHandle) {
+	GfuiScreenRelease(menuHandle);
+	menuHandle = 0;
+    }
+}
+
 
 /** 
     @ingroup	racemantools

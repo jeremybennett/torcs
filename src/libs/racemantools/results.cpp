@@ -393,6 +393,7 @@ RmShowResults(void *prevHdle, tRmInfo *info)
 	return;
 
     case RM_TYPE_RACE:
+    case RM_TYPE_QUALIF:
 	rmRaceResults(prevHdle, info, 0);
 	return;
     }

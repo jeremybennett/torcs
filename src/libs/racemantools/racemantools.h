@@ -69,6 +69,7 @@ extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallb
 
 extern void RmLoadingScreenStart(char * /* text */, char * /* bgimg */);
 extern void RmLoadingScreenSetText(char * /* text */);
+extern void RmShutdownLoadingScreen(void);
 
 extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
 

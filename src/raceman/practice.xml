@@ -45,7 +45,7 @@
     <attstr name="type" val="practice"/>
     <attstr name="starting order" val="drivers list"/>
     <attstr name="restart" val="yes"/>
-    <attstr name="display mode" val="not visible"/>
+    <attstr name="display mode" val="results only"/>
     <attstr name="display results" val="yes"/>
 
     <section name="Starting Grid">
