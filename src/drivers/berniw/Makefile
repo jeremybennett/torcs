@@ -1,6 +1,6 @@
 ROBOT = berniw
 
-MODULE    = ${ROBOT}.so
+MODULE = ${ROBOT}.so
 
 MODULEDIR = drivers/${ROBOT}
 
@@ -14,5 +14,7 @@ DATASUBDIRS = 1 2 3 4 5 6 7 8 9 10
 
 # Mandatory Line Do Not Remove 
 include ${MAKE_DEFAULT}
+
+
 
 
