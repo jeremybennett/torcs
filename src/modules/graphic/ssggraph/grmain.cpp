@@ -327,7 +327,7 @@ refresh(tSituation *s)
     TRACE_GL("refresh: start");
 
     START_PROFILE("grRefreshSound*");
-    grRefreshSound(s, grScreens[0]->getCurrentCar());
+    grRefreshSound(s, grScreens[0]->getCurCamera());
     STOP_PROFILE("grRefreshSound*");
 
     START_PROFILE("grDrawBackground/glClear");
@@ -404,7 +404,7 @@ initCars(tSituation *s)
     TRACE_GL("initCars: end");
 
     grInitSmoke(s->_ncars);
-
+    grInitSound(s, s->_ncars);
 
     grAdaptScreenSize();
 
@@ -421,7 +421,7 @@ shutdownCars(void)
     int i;
 
     GfOut("-- shutdownCars\n");
-
+	grShutdownSound(grNbCars);
     if (grNbCars) {
 	grShutdownSkidmarks();
 	grShutdownSmoke();
@@ -459,7 +459,6 @@ initTrack(tTrack *track)
     grContext.makeCurrent();
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     grLoadScene(track);
-    grInitSound();
 
     for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
 	grScreens[i] = new cGrScreen(i);
@@ -475,7 +474,6 @@ shutdownTrack(void)
     int		i;
 
     grShutdownScene();
-    grShutdownSound();
     grShutdownState();
 
     for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
@@ -484,3 +482,7 @@ shutdownTrack(void)
 
 }
 
+void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)
+{
+	grPropagateDamage (grCarInfo[index].carEntity, poc, force, cnt);
+}

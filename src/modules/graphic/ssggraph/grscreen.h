@@ -101,7 +101,9 @@ public:
     tCarElt *getCurrentCar(void) {
 	return curCar;
     }
-
+    cGrCamera* getCurCamera(void) {
+	return curCam;
+    }
     float getViewRatio(void) {
 	return viewRatio;
     }

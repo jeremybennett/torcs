@@ -24,6 +24,7 @@ public:
   double step2_max_life;
   double cur_life;
   tdble vvx, vvy,vvz;
+  sgVec3 cur_col;
   tdble vexp;
   int smokeType;
   int smokeTypeStep;

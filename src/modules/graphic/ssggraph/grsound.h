@@ -20,12 +20,59 @@
 #ifndef _GRSOUND_H_
 #define _GRSOUND_H_
 
+#include "grcam.h"
 #include <raceman.h>
+#include <plib/sl.h>
 
-extern void grInitSound(void);
-extern void grShutdownSound(void);
-extern void grRefreshSound(tSituation *s, tCarElt *car);
+#define OLETHROS_PLIB //define this if you have lpfilter and 16 sounds in plib
 
+extern void grInitSound(tSituation* s, int ncars);
+extern void grShutdownSound(int ncars);
+extern float grRefreshSound(tSituation *s, cGrCamera *camera);
+
+typedef struct SoundChar_ {
+    float f; //frequency modulation
+    float a; //amplitude modulation
+} SoundChar;
+
+
+enum SoundPriState {
+    None=0x0, Loaded, Playing, Paused, Stopped, Cleared
+};
+
+typedef struct SoundPri_ {
+    float a; //amplitude
+    float f; //freq
+    float lp; //low pass (1.0 pass all, 0.0 cut all)
+    int id; // car ID.
+    enum SoundPriState state;
+} SoundPri;
+
+
+class SoundInterface {
+ public:
+    SoundInterface();
+    ~SoundInterface();
+};
+
+class SampleInterface {
+ public:
+    slSample* sample;
+    slEnvelope* volume;
+    slEnvelope* pitch;
+
+    SampleInterface();
+    ~SampleInterface();
+    void loop();
+    void setVolume(float a);
+    void setPitch(float f);
+    void pause();
+    void resume();
+    void stop();
+};
+
+void DopplerShift (SoundChar* sound, float* p_src, float* u_src, float* p, float* u);
+int SortSndPriority(const void* a, const void* b);
 #endif /* _GRSOUND_H_ */ 
 
 

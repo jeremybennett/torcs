@@ -238,7 +238,7 @@ class cGrCarCamMirror : public cGrPerspCamera
 	limitFov();
 	viewCam = NULL;
     }
-    ~cGrCarCamMirror ();
+    virtual ~cGrCarCamMirror ();
 
     void update (tCarElt *car, tSituation *s);
     void limitFov (void);

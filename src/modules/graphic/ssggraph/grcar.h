@@ -1,3 +1,4 @@
+
 /***************************************************************************
 
     file                 : grcar.h
@@ -42,6 +43,7 @@ typedef struct
     float		iconColor[4];
     ssgTransform	*carTransform;
     ssgSelector		*LODSelector;
+	ssgEntity       *carEntity;
     int			LODSelectMask[32];
     float		LODThreshold[32];
     ssgSelector		*driverSelector;
@@ -74,7 +76,7 @@ extern void grDrawShadow(tCarElt *car);
 extern void grInitShadow(tCarElt *car);
 extern tdble grGetDistToStart(tCarElt *car);
 extern void grInitCommonState(void);
-
+extern void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt);
 #endif /* _GRCAR_H_ */ 
 
 

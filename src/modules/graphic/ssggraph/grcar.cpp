@@ -1,3 +1,4 @@
+
 /***************************************************************************
 
     file                 : grcar.cpp
@@ -394,6 +395,43 @@ grInitShadow(tCarElt *car)
     ShadowAnchor->addKid(grCarInfo[car->index].shadowAnchor);
 }
 
+void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt) 
+{
+	//showEntityType (l);
+	if (l->isAKindOf (ssgTypeBranch())) {
+		
+		ssgBranch* br = (ssgBranch*) l;
+
+		for (int i = 0 ; i < br -> getNumKids () ; i++ ) {
+			ssgEntity* ln = br->getKid (i);
+			grPropagateDamage(ln, poc, force, cnt+1);
+		}
+	}
+	
+	if (l->isAKindOf (ssgTypeVtxTable())) {
+		sgVec3* v;
+		int Nv;
+		ssgVtxTable* vt = (ssgVtxTable*) l;
+		Nv = vt->getNumVertices();
+		vt->getVertexList ((void**) &v);
+		tdble sigma = sgLengthVec3 (force);
+		tdble invSigma = 10.0;
+		//		if (sigma < 0.1) 
+		//			invSigma = 10.0;
+		//		else
+		//			invSigma = 1.0/sigma;
+		for (int i=0; i<Nv; i++) {
+			tdble r =  sgDistanceSquaredVec3 (poc, v[i]);
+			tdble f = exp(-r*invSigma)*10.0;
+			v[i][0] += force[0]*f;
+			v[i][1] += force[1]*f;
+			// use sigma as a random number generator (!)
+			v[i][2] += (force[2]+0.02*sin(2.0*r + 10.0*sigma))*f;
+			//printf ("(%f %f %f)\n", v[i][0], v[i][1], v[i][2]);
+		}
+	}
+}
+
 
 void 
 grInitCar(tCarElt *car)
@@ -520,6 +558,7 @@ grInitCar(tCarElt *car)
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
     /*carEntity = ssgLoad(param);*/
     carEntity = grssgCarLoadAC3D(param, NULL, index);
+	grCarInfo[index].carEntity = carEntity;
     /* Set a selector on the driver */
     ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
     grCarInfo[index].driverSelector = new ssgSelector;

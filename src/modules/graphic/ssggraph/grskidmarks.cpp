@@ -80,7 +80,7 @@ void grInitSkidmarks(tCarElt *car)
     if (skidState == NULL) {
 		skidState = new ssgSimpleState();
 		if (skidState) {
-			skidState->disable(GL_LIGHTING);
+			skidState->enable(GL_LIGHTING);
 			skidState->enable(GL_BLEND);
 			// add texture
 			skidState->enable(GL_TEXTURE_2D);
@@ -165,26 +165,32 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 			cur_clr[3]=0.0;
 		}
 		char* s = car->priv.wheel[i].seg->surface->material;
+		tdble sling_mud = 1.0;
 		if (strstr(s, "sand")) {
-			cur_clr[0] = 1.0;
-			cur_clr[1] = 1.0;
-			cur_clr[2] = 0.5;
+			cur_clr[0] = 0.8;
+			cur_clr[1] = 0.75;
+			cur_clr[2] = 0.4;
 		} else if (strstr(s, "dirt")) {
 			cur_clr[0] = 0.8;
-			cur_clr[1] = 0.8;
-			cur_clr[2] = 0.8;
+			cur_clr[1] = 0.65;
+			cur_clr[2] = 0.4;
 		} else if (strstr(s,"mud")) {
-			cur_clr[0] = 0.9;
-			cur_clr[1] = 0.7;
-			cur_clr[2] = 0.5;
+			cur_clr[0] = 0.75;
+			cur_clr[1] = 0.5;
+			cur_clr[2] = 0.3;
+		} else if (strstr(s,"grass")) {
+			cur_clr[0] = 0.7;
+			cur_clr[1] = 0.55;
+			cur_clr[2] = 0.4;
 		} else if (strstr(s,"gravel")) {
 			cur_clr[0] = 0.6;
 			cur_clr[1] = 0.6;
 			cur_clr[2] = 0.6;
 		} else {
-			cur_clr[0] = 0.1;
-			cur_clr[1] = 0.1;
-			cur_clr[2] = 0.1;
+			sling_mud=0.0;
+			cur_clr[0] = 0.0;
+			cur_clr[1] = 0.0;
+			cur_clr[2] = 0.0;
 		}
 		for (int c=0; c<3; c++) {
 			tdble tmp = grCarInfo[car->index].skidmarks->strips[i].smooth_colour[c];
@@ -200,52 +206,44 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 	    if (cur_clr[3] > 0.1) {
 
 		basevtx = new ssgVertexArray(4 * 2 + 1);
-		
+		tdble sling_left = 0.0;
+		tdble sling_right = 0.0;
+#if 0
+		sling_mud *= car->_wheelSlipSide(i);
+		if (sling_mud>0) {
+			sling_right = (sling_mud);
+		} else {
+			sling_left = (sling_mud);
+		}
+#else
+		sling_right = sling_mud;
+		sling_left = -sling_mud;
+#endif
 		vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-		vtx[1] = car->priv.wheel[i].relPos.y-car->_tireWidth(i) / 2.0;
+		vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
 		vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 		basevtx->add(vtx);
 		vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-		vtx[1] = car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
+		vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;//car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
 		vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 		basevtx->add(vtx);
 #if 1
 		texcoords = new ssgTexCoordArray();
 
-#if 0
-		if (grCarInfo[car->index].skidmarks->strips[i].tex_state) {
-			grCarInfo[car->index].skidmarks->strips[i].tex_state = 0;
-			TxVtx[0] = 0.0;
-			TxVtx[1] = 0.0;
-			texcoords->add(TxVtx);
-			TxVtx[0] = 0.0;
-			TxVtx[1] = 1.0;
-			texcoords->add(TxVtx);
-		} else {
-			grCarInfo[car->index].skidmarks->strips[i].tex_state = 1;
-			TxVtx[0] = 1.0;
-			TxVtx[1] = 0.0;
-			texcoords->add(TxVtx);
-			TxVtx[0] = 1.0;
-			TxVtx[1] = 1.0;
-			texcoords->add(TxVtx);
-		}
-#else
 		
 		TxVtx[0] = grCarInfo[car->index].skidmarks->strips[i].tex_state;
-		TxVtx[1] = 0.0;
+		TxVtx[1] =  0.25+sling_left*.25;
 		texcoords->add(TxVtx);
 
-		TxVtx[1] = 1.0;
+		TxVtx[1] = 0.75+sling_right*.25;//1.0;
 		texcoords->add(TxVtx);
 
 		// maybe add car->_wheelSpinVel(i) instead of 1.0?
-		grCarInfo[car->index].skidmarks->strips[i].tex_state += 1.0;
+		grCarInfo[car->index].skidmarks->strips[i].tex_state += 0.01*car->_wheelSpinVel(i);
 		//		if (grCarInfo[car->index].skidmarks->strips[i].tex_state > 1.5) {
 		//			grCarInfo[car->index].skidmarks->strips[i].tex_state -=
 		//				floor (grCarInfo[car->index].skidmarks->strips[i].tex_state);
 		//		}
-#endif
 		grCarInfo[car->index].skidmarks->base = new ssgVtxTable(GL_TRIANGLE_STRIP, basevtx, NULL, texcoords, NULL);
 #else
 		grCarInfo[car->index].skidmarks->base = new ssgVtxTable(GL_TRIANGLE_STRIP, basevtx, NULL, NULL, NULL);
