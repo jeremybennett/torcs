@@ -136,8 +136,8 @@ gfScreenInit(void)
 				// Stupid sorting (not much elements, don't worry). 
 				int j;
 				for (j = i; j > 0; j--) {
-					if ((resx[j] > resx[j-1]) ||
-						(resx[j] == resx[j-1] && resy[j] > resy[j-1]))
+					if ((resx[j] < resx[j-1]) ||
+						(resx[j] == resx[j-1] && resy[j] < resy[j-1]))
 					{
 						int tx, ty;
 						char *tc;
@@ -512,12 +512,7 @@ static void
 ResPrevNext(void *vdelta)
 {
     long delta = (long)vdelta;
-#ifdef USE_RANDR_EXT
-    // Don't ask me why...
-    curRes -= (int)delta;
-#else
     curRes += (int)delta;
-#endif
     if (curRes < 0) {
 	curRes = nbRes - 1;
     } else {
