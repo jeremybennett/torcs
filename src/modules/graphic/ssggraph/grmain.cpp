@@ -65,7 +65,7 @@ tgrCarInfo	*grCarInfo;
 ssgContext	grContext;
 
 
-class cGrScreen *grScreens[GR_NB_MAX_SCREEN];
+class cGrScreen *grScreens[GR_NB_MAX_SCREEN] = {NULL, NULL, NULL, NULL};
 
 int grNbScreen = 1;
 
@@ -368,14 +368,14 @@ initCars(tSituation *s)
 
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
 
-    for (i = 0; i < s->_ncars; i++) {
-	elt = s->cars[i];
-	/* Shadow init (Should be done before the cars for display order) */
-	grInitShadow(elt);
-	/* Skidmarks init */
-	grInitSkidmarks(elt);
-    }
-    
+	for (i = 0; i < s->_ncars; i++) {
+		elt = s->cars[i];
+		/* Shadow init (Should be done before the cars for display order) */
+		grInitShadow(elt);
+		/* Skidmarks init */
+		grInitSkidmarks(elt);
+	}
+
     grNbScreen = 0;
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
@@ -418,66 +418,79 @@ initCars(tSituation *s)
 void
 shutdownCars(void)
 {
-    int i;
+	int i;
 
-    GfOut("-- shutdownCars\n");
+	GfOut("-- shutdownCars\n");
 	grShutdownSound(grNbCars);
-    if (grNbCars) {
-	grShutdownSkidmarks();
-	grShutdownSmoke();
-	grShudownCarlight();
-	/* Delete ssg objects */
-	CarsAnchor->removeAllKids();
-	ShadowAnchor->removeAllKids();
-	/* for (i = 0; i < grNbCars; i++) { */
-	/*     CarsAnchor->removeKid(grCarInfo[i].carTransform); */
-	/*     ShadowAnchor->removeKid(grCarInfo[i].shadowAnchor); */
-	/* } */
-	PitsAnchor->removeAllKids();
-	/* if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) PitsAnchor->removeKid(ThePits); */
-	ThePits = 0;
-	free(grCarInfo);
-    }
-    GfParmReleaseHandle(grHandle);
+	if (grNbCars) {
+		grShutdownBoardCar();
+		grShutdownSkidmarks();
+		grShutdownSmoke();
+		grShudownCarlight();
+		/* Delete ssg objects */
+		CarsAnchor->removeAllKids();
+		ShadowAnchor->removeAllKids();
+		for (i = 0; i < grNbCars; i++) {
+			ssgDeRefDelete(grCarInfo[i].envSelector);
+			ssgDeRefDelete(grCarInfo[i].shadowBase);
+			if (grCarInfo[i].driverSelectorinsg == false) {
+				delete grCarInfo[i].driverSelector;
+			}
+		}
 
-    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	grScreens[i]->setCurrentCar(NULL);
-    }
+		/* for (i = 0; i < grNbCars; i++) { */
+		/*     CarsAnchor->removeKid(grCarInfo[i].carTransform); */
+		/*     ShadowAnchor->removeKid(grCarInfo[i].shadowAnchor); */
+		/* } */
+		PitsAnchor->removeAllKids();
+		/* if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) PitsAnchor->removeKid(ThePits); */
+		ThePits = 0;
+		free(grCarInfo);
+	}
+
+	GfParmReleaseHandle(grHandle);
+
+	for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+		grScreens[i]->setCurrentCar(NULL);
+	}
 }
 
 int
 initTrack(tTrack *track)
 {
-    int		i;
+	int i;
 
-    grContext.makeCurrent();
-    grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    grLoadScene(track);
+	grContext.makeCurrent();
+	grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	grLoadScene(track);
 
-    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	grScreens[i] = new cGrScreen(i);
-    }
+	for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+		grScreens[i] = new cGrScreen(i);
+	}
 
-    return 0;
+	return 0;
 }
 
 
 void
 shutdownTrack(void)
 {
-    int		i;
+	int	i;
 
-    grShutdownScene();
-    grShutdownState();
+	grShutdownScene();
+	grShutdownState();
 
-    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	delete grScreens[i];
-    }
+	for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+		if (grScreens[i] != NULL) {
+			delete grScreens[i];
+			grScreens[i] = NULL;
+		}
+	}
 
 }
 
-void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)
+/*void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)
 {
 	if (grCarInfo) 
 		grPropagateDamage (grCarInfo[index].carEntity, poc, force, cnt);
-}
+}*/

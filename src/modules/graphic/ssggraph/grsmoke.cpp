@@ -193,7 +193,6 @@ void grUpdateSmoke(double t)
 		tdble dt = tmp->smoke->dt;
 
 		tdble damp = 0.2;
-		tdble rWalk = 0.1;
 		tmp->smoke->vvx -= damp*tmp->smoke->vvx*fabs(tmp->smoke->vvx) * dt;
 		tmp->smoke->vvy -= damp*tmp->smoke->vvy*fabs(tmp->smoke->vvy) * dt;
 		tmp->smoke->vvz -= damp*tmp->smoke->vvz*fabs(tmp->smoke->vvz) * dt;
@@ -233,10 +232,10 @@ void grAddSmoke(tCarElt *car, double t)
 
 
 	for (i = 0; i < 4; i++) {
-		tdble wspd2 = car->_wheelSlipSide(i) * car->_wheelSlipSide(i)
-			+ car->_wheelSlipAccel(i) *  car->_wheelSlipAccel(i);
+		//tdble wspd2 = car->_wheelSlipSide(i) * car->_wheelSlipSide(i)
+		//	+ car->_wheelSlipAccel(i) *  car->_wheelSlipAccel(i);
 		//printf ("%f %f %f#SLIP\n", car->_wheelSlipSide(i), car->_wheelSlipAccel(i), sqrt(spd2));
-		if (wspd2 > 0.001) {	
+		if (spd2 > 0.001) {
 			if (smokeManager->number < grSmokeMaxNumber) {
 				if ((t - timeSmoke[car->index*4+i]) < grSmokeDeltaT) {
 					continue;
@@ -310,7 +309,7 @@ void grAddSmoke(tCarElt *car, double t)
 					vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
 					vtx[1] = car->priv.wheel[i].relPos.y;
 					vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
-					
+
 					shd_vtx->add(vtx);
 					tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
 					init_speed = urandom()*init_speed;
@@ -330,7 +329,7 @@ void grAddSmoke(tCarElt *car, double t)
 
 					//printf("%f\n", car->_reaction[i]);
 					tmp->smoke->max_life = grSmokeLife *
-						(car->_skid[i]*sqrt(wspd2)+urandom()*spd_fx)/ smoke_life_coefficient;
+						(car->_skid[i]*sqrt(spd2)+urandom()*spd_fx)/ smoke_life_coefficient;
 					for (int c=0; c<3; c++) {
 						tmp->smoke->cur_col[c] = cur_clr[c];
 					}
@@ -371,9 +370,10 @@ void grAddSmoke(tCarElt *car, double t)
 				if (val > 0.1) {
 					grCarInfo[index].fireCount = (int)(10.0 * val * car->_exhaustPower);
 				}
-				//				if (grCarInfo[index].fireCount) {
-				//					grCarInfo[index].fireCount--;
-				if (car->priv.smoke>urandom()) {
+
+				if (grCarInfo[index].fireCount) {
+					grCarInfo[index].fireCount--;
+				//if (car->priv.smoke>urandom()) {
 			
 					//car->priv.smoke = val * car->_exhaustPower;
 					for (i = 0; i < car->_exhaustNb; i++) {
@@ -385,18 +385,19 @@ void grAddSmoke(tCarElt *car, double t)
 		    
 						shd_vtx->add(vtx);
 						tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE*4,SMOKE_TYPE_ENGINE);
-	      
-						tmp->smoke->setState(mstf0);    
+
+						tmp->smoke->setState(mstf0);
 						tmp->smoke->setCullFace(0);
 						tmp->smoke->max_life = grSmokeLife/8;
 						tmp->smoke->step0_max_life =  (grSmokeLife)/50.0;
 						tmp->smoke->step1_max_life =  (grSmokeLife)/50.0+ tmp->smoke->max_life/2.0;
 						tmp->smoke->cur_life = 0;
-						tmp->smoke->init_alpha = 0.9;
+						//tmp->smoke->init_alpha = 0.9;
 						tmp->smoke->sizex = VX_INIT*4;
 						tmp->smoke->sizey = VY_INIT*4;
 						tmp->smoke->sizez = VZ_INIT*4;
-						tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX)) * car->_exhaustPower / 2.0;
+						tmp->smoke->vexp = V_EXPANSION+5.0*rand()/(RAND_MAX+1.0) * car->_exhaustPower / 2.0;
+						//tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX)) * car->_exhaustPower / 2.0;
 						tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
 						tmp->smoke->smokeTypeStep = 0;
 						tmp->next = NULL;
@@ -504,8 +505,9 @@ void ssgVtxTableSmoke::draw_geometry ()
     sgVec3 *nm = (sgVec3 *) normals   -> get(0) ;
     /*   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ; */
     sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
-	float a_c =  ((float)(cur_life/max_life));
-    alpha =  init_alpha*(1.0-a_c);
+	//float a_c =  ((float)(cur_life/max_life));
+    //alpha =  init_alpha*(1.0-a_c);
+	alpha =  0.9-((float)(cur_life/max_life));
     glDepthMask(GL_FALSE);
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 

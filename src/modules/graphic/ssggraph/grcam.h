@@ -52,17 +52,20 @@ class cGrCamera
     
  public:
     cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawdrv = 0, int mydrawBackground = 0, int mymirrorAllowed = 0) {
-	screen = myscreen;
-	id = myid;
-	drawCurrent = mydrawCurrent;
-	drawDriver = mydrawdrv;
-	drawBackground = mydrawBackground;
-	mirrorAllowed = mymirrorAllowed;
-	speed[0] = speed[1] = speed[2] = 0.0;
+		screen = myscreen;
+		id = myid;
+		drawCurrent = mydrawCurrent;
+		drawDriver = mydrawdrv;
+		drawBackground = mydrawBackground;
+		mirrorAllowed = mymirrorAllowed;
+		speed[0] = speed[1] = speed[2] = 0.0;
+		eye[0] = eye[1] = eye[2] = 0.0;
+		center[0] = center[1] = center[2] = 0.0;
+		up[0] = up[1] = 0.0; up[2] = 1.0;
     }
 
     virtual ~cGrCamera() {};
-    virtual float getFOV() {return 67.5;}
+    
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
     virtual void setProjection(void) = 0;
     virtual void setModelView(void) = 0;
@@ -157,7 +160,6 @@ class cGrPerspCamera : public cGrCamera
 		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
-	virtual float getFOV(void) { return fovy;}
     void setProjection(void);
     void setModelView(void);
     void loadDefaults(char *attr);
@@ -209,8 +211,8 @@ class cGrBackgroundCam : public cGrPerspCamera
  public:
     cGrBackgroundCam(class cGrScreen *myscreen)
 	: cGrPerspCamera(myscreen, 0, 0, 0, 1, 0,
-			 30.0, 1.0, 90.0,
-			 0.1, 2000.0, 100000, 100000) {
+			 67.5f, 67.5f, 67.5f,
+			 0.1f, 2000.0f, 100000.0f, 100000.0f) {
     }
     
     void update(tCarElt *car, tSituation *s) {}
