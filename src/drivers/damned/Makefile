@@ -31,9 +31,9 @@ SHIPSUBDIRS = 1 2 3 4 5 6 7 8 9 10
 
 PKGSUBDIRS	= $(SHIPSUBDIRS)
 
-src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -125,12 +125,16 @@ win32end:
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:runtime:runtimed:g" ${INIT_WIN32} > ${INIT_WIN32_D}
 
+win32setup: win32start exports installships win32end
 
-.PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil datadirs shipdirs doc win32start win32end
+.PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil \
+ datadirs shipdirs doc win32start win32end installship installships installshipdirs
 
 # Recursive targets
 
 exports: expincdirs export
+
+installships: installshipdirs installship
 
 tools: toolsdirs ${TOOLS} toolsdata
 
@@ -548,5 +552,15 @@ installdatadirs:
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \
 	RecurseFlags="datainstall" ; \
+	${recursedirs} ; \
+	fi
+
+installshipdirs:
+	@if [ -n "${SHIPSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="installships" ; \
 	${recursedirs} ; \
 	fi

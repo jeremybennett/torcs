@@ -20,11 +20,11 @@ ROBOT = damned
 
 SHIPDIR   = drivers/${ROBOT}/6
 
-SHIP      =  acura-nsx-sz.rgb car.xml logo.rgb
+SHIP      =  car.xml car-dirt.xml logo.rgb
 
-src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -49,3 +49,13 @@ This should generate the binaries, with no more than few warnings.
 
 4- Enjoy
 
+
+Note for the CVS users:
+-----------------------
+
+If you want to get the latest version you can download the current CVS tree
+as explained at http://sf.net/cvs/?group_id=3777
+
+additionaly to the "./configure && make && make install"
+you have to use the make datainstall to copy the data from 
+the source tree to the runtime directories.

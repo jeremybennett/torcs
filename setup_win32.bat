@@ -339,17 +339,13 @@ copy .\src\drivers\berniw\intcossqr.dat .\runtime\drivers\berniw\intcossqr.dat
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\berniw
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\cylos1
-call .\create_dir .\runtime\drivers\cylos1\tracksship
-copy .\src\drivers\cylos1\tracksdata\car_e-track-3.xml .\runtime\drivers\cylos1\tracksship\car_e-track-3.xml
-copy .\src\drivers\cylos1\tracksdata\car_lemans.xml .\runtime\drivers\cylos1\tracksship\car_lemans.xml
-copy .\src\drivers\cylos1\tracksdata\car_test-1.xml .\runtime\drivers\cylos1\tracksship\car_test-1.xml
-copy .\src\drivers\cylos1\tracksdata\lemans.xml .\runtime\drivers\cylos1\tracksship\lemans.xml
-copy .\src\drivers\cylos1\tracksdata\michigan.xml .\runtime\drivers\cylos1\tracksship\michigan.xml
+call .\create_dir .\runtime\drivers\cylos1\tracksdata
+copy .\src\drivers\cylos1\tracksdata\car_e-track-3.xml .\runtime\drivers\cylos1\tracksdata\car_e-track-3.xml
+copy .\src\drivers\cylos1\tracksdata\car_lemans.xml .\runtime\drivers\cylos1\tracksdata\car_lemans.xml
+copy .\src\drivers\cylos1\tracksdata\car_test-1.xml .\runtime\drivers\cylos1\tracksdata\car_test-1.xml
+copy .\src\drivers\cylos1\tracksdata\lemans.xml .\runtime\drivers\cylos1\tracksdata\lemans.xml
+copy .\src\drivers\cylos1\tracksdata\michigan.xml .\runtime\drivers\cylos1\tracksdata\michigan.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -358,10 +354,6 @@ copy .\src\drivers\cylos1\cylos1.xml .\runtime\drivers\cylos1\cylos1.xml
 copy .\src\drivers\cylos1\car1.xml .\runtime\drivers\cylos1\car1.xml
 copy .\src\drivers\cylos1\cg-nascar-rwd.rgb .\runtime\drivers\cylos1\cg-nascar-rwd.rgb
 copy .\src\drivers\cylos1\logo.rgb .\runtime\drivers\cylos1\logo.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\cylos1
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -421,8 +413,8 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\damned
 call .\create_dir .\runtime\drivers\damned\6
-copy .\src\drivers\damned\6\acura-nsx-sz.rgb .\runtime\drivers\damned\6\acura-nsx-sz.rgb
 copy .\src\drivers\damned\6\car.xml .\runtime\drivers\damned\6\car.xml
+copy .\src\drivers\damned\6\car-dirt.xml .\runtime\drivers\damned\6\car-dirt.xml
 copy .\src\drivers\damned\6\logo.rgb .\runtime\drivers\damned\6\logo.rgb
 
 call .\create_dir .\runtime
@@ -454,10 +446,6 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\damned
 copy .\src\drivers\damned\damned.xml .\runtime\drivers\damned\damned.xml
 copy .\src\drivers\damned\car1.xml .\runtime\drivers\damned\car1.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\damned
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -596,10 +584,6 @@ copy .\src\drivers\human\mclaren-f1.rgb .\runtime\drivers\human\mclaren-f1.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\human
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\inferno
 call .\create_dir .\runtime\drivers\inferno\tracksdata
 copy .\src\drivers\inferno\tracksdata\aalborg.xml .\runtime\drivers\inferno\tracksdata\aalborg.xml
@@ -640,10 +624,6 @@ copy .\src\drivers\inferno\inferno.xml .\runtime\drivers\inferno\inferno.xml
 copy .\src\drivers\inferno\car1.xml .\runtime\drivers\inferno\car1.xml
 copy .\src\drivers\inferno\logo.rgb .\runtime\drivers\inferno\logo.rgb
 copy .\src\drivers\inferno\mclaren-f1.rgb .\runtime\drivers\inferno\mclaren-f1.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -689,10 +669,6 @@ copy .\src\drivers\inferno2\360-modena.rgb .\runtime\drivers\inferno2\360-modena
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno2
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\inferno3
 call .\create_dir .\runtime\drivers\inferno3\tracksdata
 copy .\src\drivers\inferno3\tracksdata\aalborg.xml .\runtime\drivers\inferno3\tracksdata\aalborg.xml
@@ -729,10 +705,6 @@ copy .\src\drivers\inferno3\inferno3.xml .\runtime\drivers\inferno3\inferno3.xml
 copy .\src\drivers\inferno3\car1.xml .\runtime\drivers\inferno3\car1.xml
 copy .\src\drivers\inferno3\logo.rgb .\runtime\drivers\inferno3\logo.rgb
 copy .\src\drivers\inferno3\porsche-gt1.rgb .\runtime\drivers\inferno3\porsche-gt1.rgb
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno3
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -775,10 +747,6 @@ copy .\src\drivers\inferno4\xj-220.rgb .\runtime\drivers\inferno4\xj-220.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\inferno4
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\K1999
 call .\create_dir .\runtime\drivers\K1999\1
 copy .\src\drivers\K1999\1\buggy.rgb .\runtime\drivers\K1999\1\buggy.rgb
@@ -799,16 +767,12 @@ copy .\src\drivers\K1999\logo.rgb .\runtime\drivers\K1999\logo.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\K1999
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\lliaw
-call .\create_dir .\runtime\drivers\lliaw\tracksship
-copy .\src\drivers\lliaw\tracksdata\car_e-track-3.xml .\runtime\drivers\lliaw\tracksship\car_e-track-3.xml
-copy .\src\drivers\lliaw\tracksdata\car_e-track-4.xml .\runtime\drivers\lliaw\tracksship\car_e-track-4.xml
-copy .\src\drivers\lliaw\tracksdata\car_e-track-6.xml .\runtime\drivers\lliaw\tracksship\car_e-track-6.xml
-copy .\src\drivers\lliaw\tracksdata\car_eroad.xml .\runtime\drivers\lliaw\tracksship\car_eroad.xml
+call .\create_dir .\runtime\drivers\lliaw\tracksdata
+copy .\src\drivers\lliaw\tracksdata\car_e-track-3.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-3.xml
+copy .\src\drivers\lliaw\tracksdata\car_e-track-4.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-4.xml
+copy .\src\drivers\lliaw\tracksdata\car_e-track-6.xml .\runtime\drivers\lliaw\tracksdata\car_e-track-6.xml
+copy .\src\drivers\lliaw\tracksdata\car_eroad.xml .\runtime\drivers\lliaw\tracksdata\car_eroad.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -820,41 +784,37 @@ copy .\src\drivers\lliaw\logo.rgb .\runtime\drivers\lliaw\logo.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\lliaw
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tanhoj
-call .\create_dir .\runtime\drivers\tanhoj\tracksship
-copy .\src\drivers\tanhoj\tracksdata\aalborg.xml .\runtime\drivers\tanhoj\tracksship\aalborg.xml
-copy .\src\drivers\tanhoj\tracksdata\a-speedway.xml .\runtime\drivers\tanhoj\tracksship\a-speedway.xml
-copy .\src\drivers\tanhoj\tracksdata\car_aalborg.xml .\runtime\drivers\tanhoj\tracksship\car_aalborg.xml
-copy .\src\drivers\tanhoj\tracksdata\car_a-speedway.xml .\runtime\drivers\tanhoj\tracksship\car_a-speedway.xml
-copy .\src\drivers\tanhoj\tracksdata\car_eroad.xml .\runtime\drivers\tanhoj\tracksship\car_eroad.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-1.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-1.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-2.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-2.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-3.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-3.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-4.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-4.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-5.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-5.xml
-copy .\src\drivers\tanhoj\tracksdata\car_e-track-6.xml .\runtime\drivers\tanhoj\tracksship\car_e-track-6.xml
-copy .\src\drivers\tanhoj\tracksdata\car_g-track-1.xml .\runtime\drivers\tanhoj\tracksship\car_g-track-1.xml
-copy .\src\drivers\tanhoj\tracksdata\car_michigan.xml .\runtime\drivers\tanhoj\tracksship\car_michigan.xml
-copy .\src\drivers\tanhoj\tracksdata\car_s2.xml .\runtime\drivers\tanhoj\tracksship\car_s2.xml
-copy .\src\drivers\tanhoj\tracksdata\car_test-1.xml .\runtime\drivers\tanhoj\tracksship\car_test-1.xml
-copy .\src\drivers\tanhoj\tracksdata\car_wheel-1.xml .\runtime\drivers\tanhoj\tracksship\car_wheel-1.xml
-copy .\src\drivers\tanhoj\tracksdata\city-1.xml .\runtime\drivers\tanhoj\tracksship\city-1.xml
-copy .\src\drivers\tanhoj\tracksdata\dirt-2.xml .\runtime\drivers\tanhoj\tracksship\dirt-2.xml
-copy .\src\drivers\tanhoj\tracksdata\eroad.xml .\runtime\drivers\tanhoj\tracksship\eroad.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-1.xml .\runtime\drivers\tanhoj\tracksship\e-track-1.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-2.xml .\runtime\drivers\tanhoj\tracksship\e-track-2.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-3.xml .\runtime\drivers\tanhoj\tracksship\e-track-3.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-4.xml .\runtime\drivers\tanhoj\tracksship\e-track-4.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-5.xml .\runtime\drivers\tanhoj\tracksship\e-track-5.xml
-copy .\src\drivers\tanhoj\tracksdata\e-track-6.xml .\runtime\drivers\tanhoj\tracksship\e-track-6.xml
-copy .\src\drivers\tanhoj\tracksdata\g-track-1.xml .\runtime\drivers\tanhoj\tracksship\g-track-1.xml
-copy .\src\drivers\tanhoj\tracksdata\michigan.xml .\runtime\drivers\tanhoj\tracksship\michigan.xml
-copy .\src\drivers\tanhoj\tracksdata\s2.xml .\runtime\drivers\tanhoj\tracksship\s2.xml
-copy .\src\drivers\tanhoj\tracksdata\wheel-1.xml .\runtime\drivers\tanhoj\tracksship\wheel-1.xml
+call .\create_dir .\runtime\drivers\tanhoj\tracksdata
+copy .\src\drivers\tanhoj\tracksdata\aalborg.xml .\runtime\drivers\tanhoj\tracksdata\aalborg.xml
+copy .\src\drivers\tanhoj\tracksdata\a-speedway.xml .\runtime\drivers\tanhoj\tracksdata\a-speedway.xml
+copy .\src\drivers\tanhoj\tracksdata\car_aalborg.xml .\runtime\drivers\tanhoj\tracksdata\car_aalborg.xml
+copy .\src\drivers\tanhoj\tracksdata\car_a-speedway.xml .\runtime\drivers\tanhoj\tracksdata\car_a-speedway.xml
+copy .\src\drivers\tanhoj\tracksdata\car_eroad.xml .\runtime\drivers\tanhoj\tracksdata\car_eroad.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-1.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-1.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-2.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-2.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-3.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-3.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-4.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-4.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-5.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-5.xml
+copy .\src\drivers\tanhoj\tracksdata\car_e-track-6.xml .\runtime\drivers\tanhoj\tracksdata\car_e-track-6.xml
+copy .\src\drivers\tanhoj\tracksdata\car_g-track-1.xml .\runtime\drivers\tanhoj\tracksdata\car_g-track-1.xml
+copy .\src\drivers\tanhoj\tracksdata\car_michigan.xml .\runtime\drivers\tanhoj\tracksdata\car_michigan.xml
+copy .\src\drivers\tanhoj\tracksdata\car_s2.xml .\runtime\drivers\tanhoj\tracksdata\car_s2.xml
+copy .\src\drivers\tanhoj\tracksdata\car_test-1.xml .\runtime\drivers\tanhoj\tracksdata\car_test-1.xml
+copy .\src\drivers\tanhoj\tracksdata\car_wheel-1.xml .\runtime\drivers\tanhoj\tracksdata\car_wheel-1.xml
+copy .\src\drivers\tanhoj\tracksdata\city-1.xml .\runtime\drivers\tanhoj\tracksdata\city-1.xml
+copy .\src\drivers\tanhoj\tracksdata\dirt-2.xml .\runtime\drivers\tanhoj\tracksdata\dirt-2.xml
+copy .\src\drivers\tanhoj\tracksdata\eroad.xml .\runtime\drivers\tanhoj\tracksdata\eroad.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-1.xml .\runtime\drivers\tanhoj\tracksdata\e-track-1.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-2.xml .\runtime\drivers\tanhoj\tracksdata\e-track-2.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-3.xml .\runtime\drivers\tanhoj\tracksdata\e-track-3.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-4.xml .\runtime\drivers\tanhoj\tracksdata\e-track-4.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-5.xml .\runtime\drivers\tanhoj\tracksdata\e-track-5.xml
+copy .\src\drivers\tanhoj\tracksdata\e-track-6.xml .\runtime\drivers\tanhoj\tracksdata\e-track-6.xml
+copy .\src\drivers\tanhoj\tracksdata\g-track-1.xml .\runtime\drivers\tanhoj\tracksdata\g-track-1.xml
+copy .\src\drivers\tanhoj\tracksdata\michigan.xml .\runtime\drivers\tanhoj\tracksdata\michigan.xml
+copy .\src\drivers\tanhoj\tracksdata\s2.xml .\runtime\drivers\tanhoj\tracksdata\s2.xml
+copy .\src\drivers\tanhoj\tracksdata\wheel-1.xml .\runtime\drivers\tanhoj\tracksdata\wheel-1.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -866,40 +826,36 @@ copy .\src\drivers\tanhoj\cg-nascar-rwd.rgb .\runtime\drivers\tanhoj\cg-nascar-r
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tanhoj
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tita
-call .\create_dir .\runtime\drivers\tita\tracksship
-copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtime\drivers\tita\tracksship\aalborg.xml
-copy .\src\drivers\tita\tracksdata\a-speedway.xml .\runtime\drivers\tita\tracksship\a-speedway.xml
-copy .\src\drivers\tita\tracksdata\car_aalborg.xml .\runtime\drivers\tita\tracksship\car_aalborg.xml
-copy .\src\drivers\tita\tracksdata\car_a-speedway.xml .\runtime\drivers\tita\tracksship\car_a-speedway.xml
-copy .\src\drivers\tita\tracksdata\car_eroad.xml .\runtime\drivers\tita\tracksship\car_eroad.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-1.xml .\runtime\drivers\tita\tracksship\car_e-track-1.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-2.xml .\runtime\drivers\tita\tracksship\car_e-track-2.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-3.xml .\runtime\drivers\tita\tracksship\car_e-track-3.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-4.xml .\runtime\drivers\tita\tracksship\car_e-track-4.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-5.xml .\runtime\drivers\tita\tracksship\car_e-track-5.xml
-copy .\src\drivers\tita\tracksdata\car_e-track-6.xml .\runtime\drivers\tita\tracksship\car_e-track-6.xml
-copy .\src\drivers\tita\tracksdata\car_g-track-1.xml .\runtime\drivers\tita\tracksship\car_g-track-1.xml
-copy .\src\drivers\tita\tracksdata\car_michigan.xml .\runtime\drivers\tita\tracksship\car_michigan.xml
-copy .\src\drivers\tita\tracksdata\car_s2.xml .\runtime\drivers\tita\tracksship\car_s2.xml
-copy .\src\drivers\tita\tracksdata\car_test-1.xml .\runtime\drivers\tita\tracksship\car_test-1.xml
-copy .\src\drivers\tita\tracksdata\car_wheel-1.xml .\runtime\drivers\tita\tracksship\car_wheel-1.xml
-copy .\src\drivers\tita\tracksdata\city-1.xml .\runtime\drivers\tita\tracksship\city-1.xml
-copy .\src\drivers\tita\tracksdata\eroad.xml .\runtime\drivers\tita\tracksship\eroad.xml
-copy .\src\drivers\tita\tracksdata\e-track-1.xml .\runtime\drivers\tita\tracksship\e-track-1.xml
-copy .\src\drivers\tita\tracksdata\e-track-2.xml .\runtime\drivers\tita\tracksship\e-track-2.xml
-copy .\src\drivers\tita\tracksdata\e-track-3.xml .\runtime\drivers\tita\tracksship\e-track-3.xml
-copy .\src\drivers\tita\tracksdata\e-track-4.xml .\runtime\drivers\tita\tracksship\e-track-4.xml
-copy .\src\drivers\tita\tracksdata\e-track-5.xml .\runtime\drivers\tita\tracksship\e-track-5.xml
-copy .\src\drivers\tita\tracksdata\e-track-6.xml .\runtime\drivers\tita\tracksship\e-track-6.xml
-copy .\src\drivers\tita\tracksdata\g-track-1.xml .\runtime\drivers\tita\tracksship\g-track-1.xml
-copy .\src\drivers\tita\tracksdata\michigan.xml .\runtime\drivers\tita\tracksship\michigan.xml
-copy .\src\drivers\tita\tracksdata\s2.xml .\runtime\drivers\tita\tracksship\s2.xml
-copy .\src\drivers\tita\tracksdata\wheel-1.xml .\runtime\drivers\tita\tracksship\wheel-1.xml
+call .\create_dir .\runtime\drivers\tita\tracksdata
+copy .\src\drivers\tita\tracksdata\aalborg.xml .\runtime\drivers\tita\tracksdata\aalborg.xml
+copy .\src\drivers\tita\tracksdata\a-speedway.xml .\runtime\drivers\tita\tracksdata\a-speedway.xml
+copy .\src\drivers\tita\tracksdata\car_aalborg.xml .\runtime\drivers\tita\tracksdata\car_aalborg.xml
+copy .\src\drivers\tita\tracksdata\car_a-speedway.xml .\runtime\drivers\tita\tracksdata\car_a-speedway.xml
+copy .\src\drivers\tita\tracksdata\car_eroad.xml .\runtime\drivers\tita\tracksdata\car_eroad.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-1.xml .\runtime\drivers\tita\tracksdata\car_e-track-1.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-2.xml .\runtime\drivers\tita\tracksdata\car_e-track-2.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-3.xml .\runtime\drivers\tita\tracksdata\car_e-track-3.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-4.xml .\runtime\drivers\tita\tracksdata\car_e-track-4.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-5.xml .\runtime\drivers\tita\tracksdata\car_e-track-5.xml
+copy .\src\drivers\tita\tracksdata\car_e-track-6.xml .\runtime\drivers\tita\tracksdata\car_e-track-6.xml
+copy .\src\drivers\tita\tracksdata\car_g-track-1.xml .\runtime\drivers\tita\tracksdata\car_g-track-1.xml
+copy .\src\drivers\tita\tracksdata\car_michigan.xml .\runtime\drivers\tita\tracksdata\car_michigan.xml
+copy .\src\drivers\tita\tracksdata\car_s2.xml .\runtime\drivers\tita\tracksdata\car_s2.xml
+copy .\src\drivers\tita\tracksdata\car_test-1.xml .\runtime\drivers\tita\tracksdata\car_test-1.xml
+copy .\src\drivers\tita\tracksdata\car_wheel-1.xml .\runtime\drivers\tita\tracksdata\car_wheel-1.xml
+copy .\src\drivers\tita\tracksdata\city-1.xml .\runtime\drivers\tita\tracksdata\city-1.xml
+copy .\src\drivers\tita\tracksdata\eroad.xml .\runtime\drivers\tita\tracksdata\eroad.xml
+copy .\src\drivers\tita\tracksdata\e-track-1.xml .\runtime\drivers\tita\tracksdata\e-track-1.xml
+copy .\src\drivers\tita\tracksdata\e-track-2.xml .\runtime\drivers\tita\tracksdata\e-track-2.xml
+copy .\src\drivers\tita\tracksdata\e-track-3.xml .\runtime\drivers\tita\tracksdata\e-track-3.xml
+copy .\src\drivers\tita\tracksdata\e-track-4.xml .\runtime\drivers\tita\tracksdata\e-track-4.xml
+copy .\src\drivers\tita\tracksdata\e-track-5.xml .\runtime\drivers\tita\tracksdata\e-track-5.xml
+copy .\src\drivers\tita\tracksdata\e-track-6.xml .\runtime\drivers\tita\tracksdata\e-track-6.xml
+copy .\src\drivers\tita\tracksdata\g-track-1.xml .\runtime\drivers\tita\tracksdata\g-track-1.xml
+copy .\src\drivers\tita\tracksdata\michigan.xml .\runtime\drivers\tita\tracksdata\michigan.xml
+copy .\src\drivers\tita\tracksdata\s2.xml .\runtime\drivers\tita\tracksdata\s2.xml
+copy .\src\drivers\tita\tracksdata\wheel-1.xml .\runtime\drivers\tita\tracksdata\wheel-1.xml
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -911,16 +867,8 @@ copy .\src\drivers\tita\lotus-gt1.rgb .\runtime\drivers\tita\lotus-gt1.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tita
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\tutorial1
 copy .\src\drivers\tutorial1\tutorial1.xml .\runtime\drivers\tutorial1\tutorial1.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tutorial1
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -928,42 +876,13 @@ call .\create_dir .\runtime\drivers\tutorial2
 copy .\src\drivers\tutorial2\tutorial2.xml .\runtime\drivers\tutorial2\tutorial2.xml
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tutorial2
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\config
 copy .\src\libs\tgf\screen.xml .\runtime\config\screen.xml
 copy .\src\libs\tgf\params.dtd .\runtime\config\params.dtd
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\.
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\config
 copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\graphic
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-call .\create_dir .\runtime\modules\raceman\practice
-call .\create_dir .\runtime\modules\raceman\practice\control
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\config
@@ -971,30 +890,10 @@ call .\create_dir .\runtime\config\practice
 copy .\src\modules\raceman\practice\practice\practice.xml .\runtime\config\practice\practice.xml
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\config
 call .\create_dir .\runtime\config\quickrace
 copy .\src\modules\raceman\quickrace\qrace.xml .\runtime\config\quickrace\qrace.xml
 
 call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\simu
-
-call .\create_dir .\runtime
 call .\create_dir .\runtime\telemetry
 copy .\src\modules\telemetry\telemetry.sh .\runtime\telemetry\telemetry.sh
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\telemetry
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\track
