@@ -362,7 +362,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     CosA = cos(car->_yaw + car->ctrl->steer*2.0);
     SinA = sin(car->_yaw + car->ctrl->steer*2.0);
     curAdv = Advance2[0];
-    AdvMax = fabs(car->_speed_x) * 5.0 + 1.0;
+    AdvMax = fabs(car->_speed_x) * 4.8 + 1.0;
     Amax = 0;
     while (curAdv < AdvMax) {
 	x = X + CosA * curAdv;

@@ -16,7 +16,7 @@
 ##############################################################################
 
 AC_INIT(Make-config.in)
-AM_INIT_AUTOMAKE(torcs, 1.1.0-rc21)
+AM_INIT_AUTOMAKE(torcs, 1.1.0-rc22)
 
 dnl Checks for programs.
 AC_PROG_CC

@@ -15,9 +15,15 @@
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
 <!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "data/tracks/objects.xml">
 ]>
 
 <params name="CG SPEEDWAY 2" type="trackdef" mode="mw">
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
 
   <section name="Surfaces">
     &default-surfaces;
@@ -455,7 +461,17 @@
       <attnum name="border height" unit="m" val="20"></attnum>
       <attnum name="border margin" unit="m" val="500"></attnum>
       <attstr name="relief file" val="g-track-2-relief.ac"></attstr>
-      <attnum name="maximum altitude" val="20"></attnum>
+      <attnum name="group size" val="100"></attnum>
+
+      <section name="Object Maps">
+	<section name="map 1">
+	  <attstr name="object map" val="object-map1.png"></attstr>
+	</section>
+	<section name="map 2">
+	  <attstr name="object map" val="object-map2.png"></attstr>
+	</section>
+      </section>
+
     </section>
 
     <section name="Turn Marks">

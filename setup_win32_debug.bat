@@ -773,7 +773,7 @@ copy .\src\drivers\inferno4\inferno4.xml .\runtimed\drivers\inferno4\inferno4.xm
 copy .\src\drivers\inferno4\car1.xml .\runtimed\drivers\inferno4\car1.xml
 copy .\src\drivers\inferno4\logo.rgb .\runtimed\drivers\inferno4\logo.rgb
 copy .\src\drivers\inferno4\xj-220.rgb .\runtimed\drivers\inferno4\xj-220.rgb
-copy .\src\drivers\inferno4\text0.rgb .\runtimed\drivers\inferno4\text0.rgb
+copy .\src\drivers\inferno4\clkdtm.rgb .\runtimed\drivers\inferno4\clkdtm.rgb
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
