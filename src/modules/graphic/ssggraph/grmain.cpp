@@ -40,6 +40,7 @@
 #include "grsound.h"
 #include "grboard.h"
 #include "grutil.h"
+#include "grtrackmap.h"
 
 int maxTextureUnits = 0;
 static double	OldTime;
@@ -210,6 +211,12 @@ grSelectBoard(void *vp)
 }
 
 static void
+grSelectTrackMap(void *vp)
+{
+	grGetcurrentScreen()->selectTrackMap();
+}
+
+static void
 grPrevCar(void * /* dummy */)
 {
     grGetcurrentScreen()->selectPrevCar();
@@ -285,6 +292,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddKey(screen, '<',            "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
     GfuiAddKey(screen, '[',            "Split Screen",     (void*)GR_SPLIT_ADD,	grSplitScreen, NULL);
     GfuiAddKey(screen, ']',            "UnSplit Screen",   (void*)GR_SPLIT_REM,	grSplitScreen, NULL);
+    GfuiAddKey(screen, 'm',            "Track Maps",       (void*)0, grSelectTrackMap, NULL);
 
     grAdaptScreenSize();
 

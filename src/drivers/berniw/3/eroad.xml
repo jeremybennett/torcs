@@ -60,12 +60,6 @@
     <attnum name="max pressure" unit="kPa" val="60000"/>
   </section>
 
-  <section name="Front Right Wheel">
-    <!-- initial ride height -->
-    <attnum name="ride height" min="100" max="200" unit="mm" val="100"/>
-    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
-  </section>
-
   <section name="Rear Anti-Roll Bar">
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>

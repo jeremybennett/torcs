@@ -4,7 +4,7 @@
     created     : Thu May 15 22:11:03 CEST 2003
     copyright   : (C) 2003 by Eric Espié                        
     email       : eric.espie@torcs.org   
-    version     : $Id$                                  
+    version     : $Id$
 
  ***************************************************************************/
 
@@ -144,6 +144,11 @@ void cGrScreen::selectPrevCar(void)
 void cGrScreen::selectBoard(int brd)
 {
     board->selectBoard(brd);
+}
+
+void cGrScreen::selectTrackMap()
+{
+	board->getTrackMap()->selectTrackMap();
 }
 
 void cGrScreen::switchMirror(void)

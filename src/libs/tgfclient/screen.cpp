@@ -1,5 +1,5 @@
 /***************************************************************************
-                           screen.cpp -- screen init                           
+                           screen.cpp -- screen init
                              -------------------                                         
     created              : Fri Aug 13 22:29:56 CEST 1999
     copyright            : (C) 1999, 2002 by Eric Espie                         
@@ -127,7 +127,7 @@ void GfScrInit(int argc, char *argv[])
 
     glutInit(&argc, argv);
 
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE | GLUT_ALPHA);
 
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;

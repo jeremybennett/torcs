@@ -30,7 +30,7 @@ extern int grWrldX;
 extern int grWrldY;
 extern int grWrldZ;
 extern int grWrldMaxSize;
-extern tTrack 	 *grTrack;
+extern tTrack *grTrack;
 
 extern ssgRoot *TheScene;
 extern ssgBranch *SunAnchor;

@@ -21,6 +21,7 @@
 #define _GRBOARD_H_
 
 #include <raceman.h>
+#include "grtrackmap.h"
 
 class cGrBoard
 {
@@ -28,7 +29,7 @@ class cGrBoard
     int			id;		/* Board Id */
 
     int	boardFlag;
-    
+
     int leaderFlag;
     int debugFlag;
     int leaderNb;
@@ -48,17 +49,20 @@ class cGrBoard
     void grDispLeaderBoard(tCarElt *car, tSituation *s);
     void grDispCounterBoard2(tCarElt *car);
     void grDispArcade(tCarElt *car, tSituation *s);
-    
+
+	// Track overview object
+	cGrTrackMap *trackMap;
+
  public:
-    cGrBoard (int myid) {
-	id = myid;
-    }
-    
+    cGrBoard(int myid);
+	~cGrBoard();
+
     void initBoard(void);
     void shutdown(void);
     void selectBoard(int brd);
     void dispGaph(tCarElt *car);
     void initBoardCar(tCarElt *car);
+	cGrTrackMap *getTrackMap() { return trackMap; }
 
     void refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr);
     void loadDefaults(void);

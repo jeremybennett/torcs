@@ -55,6 +55,17 @@ static int	Winh	= 600;
 
 static char	path[1024];
 
+cGrBoard::cGrBoard (int myid) {
+    id = myid;
+	trackMap = NULL;
+}
+
+
+cGrBoard::~cGrBoard () {
+	trackMap = NULL;
+}
+
+
 void
 cGrBoard::loadDefaults(void)
 {
@@ -122,7 +133,7 @@ cGrBoard::grDispDebug(float fps, tCarElt *car)
     
     x = Winx + Winw - 100;
     y = Winy + Winh - 30;
-    
+
     sprintf(buf, "FPS: %.1f", fps);
     GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
     return;
@@ -298,7 +309,7 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
     y -= dy;
 
     GfuiPrintString("Curr:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
-    grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_curLapTime, 0);    
+    grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_curLapTime, 0);
     y -= dy;
 
     GfuiPrintString("Last:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
@@ -462,7 +473,7 @@ grDispEngineLeds (tCarElt *car, int X, int Y, int align, int bg)
     int ledSpace  = 2;
     int ledRed    = (int)((car->_enginerpmRedLine * .9 / car->_enginerpmMax) * (tdble)ledNb);
     int ledLit	  = (int)((car->_enginerpm / car->_enginerpmMax) * (tdble)ledNb);
-    
+
     switch (align) {
     case ALIGN_CENTER:
 	x = X - ((ledNb * ledWidth) + (ledNb - 1) * ledSpace) / 2;
@@ -684,7 +695,7 @@ cGrBoard::grDispCounterBoard2(tCarElt *car)
     GfuiPrintString((char*)(gearStr[car->_gear+car->_gearOffset]), grRed, GFUI_FONT_LARGE_C,
 		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
 
-   
+
     curInst = &(grCarInfo[index].instrument[1]);
     
     glEnable(GL_BLEND);
@@ -722,11 +733,15 @@ cGrBoard::grDispCounterBoard2(tCarElt *car)
 void
 cGrBoard::initBoard(void)
 {
+	if (trackMap == NULL) {
+		trackMap = new cGrTrackMap();
+	}
 }
 
 void
 cGrBoard::shutdown(void)
 {
+	delete trackMap;
 }
 
 void
@@ -749,11 +764,11 @@ cGrBoard::grDispArcade(tCarElt *car, tSituation *s)
     dy = GfuiFontHeight(GFUI_FONT_LARGE_C);
     y -= dy;
     GfuiPrintString("Time:", grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HL_VB);
-    grWriteTime(grDefaultClr, GFUI_FONT_LARGE_C, x + 150, y, car->_curLapTime, 0);    
+    grWriteTime(grDefaultClr, GFUI_FONT_LARGE_C, x + 150, y, car->_curLapTime, 0);
 
     y -= dy;
     GfuiPrintString("Best:", grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HL_VB);
-    grWriteTime(grDefaultClr, GFUI_FONT_LARGE_C, x + 150, y, car->_bestLapTime, 0);    
+    grWriteTime(grDefaultClr, GFUI_FONT_LARGE_C, x + 150, y, car->_bestLapTime, 0);
 
     x = Winx + Winw - XM;
     y = Winy + Winh - YM - dy;
@@ -797,6 +812,7 @@ cGrBoard::refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr)
 	if (boardFlag)   grDispCarBoard(curr, s);
 	if (leaderFlag)	 grDispLeaderBoard(curr, s);
 	if (counterFlag) grDispCounterBoard2(curr);
+	trackMap->display(curr, s, Winx, Winy, Winw, Winh);
     }
 }
 
@@ -813,7 +829,7 @@ grInitBoardCar(tCarElt *car)
     tdble		xSz, ySz, xpos, ypos;
     tdble		needlexSz, needleySz;
     
-    ssgSetCurrentOptions ( &options ) ;    
+    ssgSetCurrentOptions ( &options ) ;
     
     index = car->index;	/* current car's index */
     carInfo = &grCarInfo[index];
@@ -821,7 +837,7 @@ grInitBoardCar(tCarElt *car)
 
     /* Tachometer */
     curInst = &(carInfo->instrument[0]);
-    
+
     /* Load the Tachometer texture */
     param = GfParmGetStr(handle, SECT_GROBJECTS, PRM_TACHO_TEX, "rpm8000.rgb");
     sprintf(buf, "drivers/%s/%d;drivers/%s;cars/%s;data/textures", car->_modName, car->_driverIndex, car->_modName, car->_carName);
