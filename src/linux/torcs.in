@@ -1,0 +1,58 @@
+#! /bin/bash
+# @configure_input@
+
+##############################################################################
+#
+#    file                 : torcs.in
+#    created              : Sat Sep 11 20:20:04 CEST 1999
+#    copyright            : (C) 1999 by Eric Espie                         
+#    email                : torcs@free.fr   
+#    version              : $Id$                                  
+#
+##############################################################################
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+##############################################################################
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+BINDIR=@bindir@
+LIBDIR=@libdir@/torcs
+DATADIR=@datadir@/games/torcs
+VARDIR=@localstatedir@/games/torcs
+
+LOCAL_CONF=$HOME/.torcs
+
+if [ -d $DATADIR ]
+then
+    if [ ! -d $LOCAL_CONF ]
+    then
+	rm -rf $LOCAL_CONF
+	mkdir -p $LOCAL_CONF
+	echo "$LOCAL_CONF created, copying/linking game data"
+    fi
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBDIR/lib
+    cd $DATADIR
+    if [ -f $LIBDIR/setup_linux.sh ]
+    then
+	/bin/bash $LIBDIR/setup_linux.sh $LOCAL_CONF
+	if [ $? -ne 0 ]
+	then
+	    exit 1
+	fi
+    else
+	echo "$LIBDIR/setup_linux.sh file does not exist, check your installation"
+	exit 1
+    fi
+    $LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*
+    exit 0
+fi
+
+echo "TORCS location not found"
+	
+	
