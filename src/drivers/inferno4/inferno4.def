@@ -1,0 +1,10 @@
+;
+; inferno4.def
+;
+
+LIBRARY	inferno4
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	inferno4
