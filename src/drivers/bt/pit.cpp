@@ -37,8 +37,6 @@ Pit::Pit(tSituation *s, Driver *driver)
 	lastpitfuel = 0.0;
 	lastfuel = car->priv.fuel;
 
-	printf("pits: %d, index: %d\n", pitinfo->nMaxPits, car->index);
-
 	if (mypit != NULL) {
 		speedlimit = pitinfo->speedLimit - SPEED_LIMIT_MARGIN;
 		speedlimitsqr = speedlimit*speedlimit;
