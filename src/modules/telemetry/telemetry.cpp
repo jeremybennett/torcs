@@ -1,0 +1,187 @@
+/***************************************************************************
+
+    file                 : telemetry.cpp
+    created              : Sat Feb 26 16:48:43 CET 2000
+    copyright            : (C) 2000 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <stdio.h>
+#include <memory.h>
+#include <stdlib.h>
+#include <telemetry.h>
+#include <tgf.h>
+#include "tlm.h"
+
+
+typedef struct Channel 
+{
+    struct Channel	*next;
+    const char		*name;	/* channel name */
+    tdble		*val;	/* monitored value */
+    tdble		scale;
+} tChannel;
+
+typedef struct Tlm
+{
+    FILE	*file;	/* associated file */
+    int		state;
+    tdble	ymin;
+    tdble	ymax;
+    tChannel	*chanList;
+} tTlm;
+    
+static tTlm	TlmData;
+
+
+/*
+ * Function
+ *	TlmInit
+ *
+ * Description
+ *	Init telemetry internal structures.
+ *
+ * Parameters
+ *	none
+ *
+ * Return
+ *	none
+ */
+void
+TlmInit(tdble ymin, tdble ymax)
+{
+    TlmData.file	= (FILE*)NULL;
+    TlmData.state	= 0;
+    TlmData.ymin	= ymin;
+    TlmData.ymax	= ymax;
+    TlmData.chanList	= (tChannel*)NULL;
+}
+
+
+/*
+ * Function
+ *	TlmNewChannel
+ *
+ * Description
+ *	Create a new channel
+ *
+ * Parameters
+ *
+ * Return
+ *	channel ID or -1 if error
+ */
+void
+TlmNewChannel(const char *name, tdble *var, tdble min, tdble max)
+{
+    tChannel	*curChan;
+
+    curChan = (tChannel *)calloc(sizeof(tChannel), 1);
+    if (TlmData.chanList == NULL) {
+	TlmData.chanList = curChan;
+	curChan->next = curChan;
+    } else {
+	curChan->next = TlmData.chanList->next;
+	TlmData.chanList->next = curChan;
+	TlmData.chanList = curChan;
+    }
+
+    curChan->name = name;
+    curChan->val = var;
+    
+    curChan->scale = TlmData.ymax / max;
+}
+
+void 
+TlmStartMonitoring(const char *filename)
+{
+    char	buf[1024];
+    FILE	*fout;
+    tChannel	*curChan;
+    int		i;
+    
+    sprintf(buf, "telemetry/%s", filename);
+    fout = TlmData.file = fopen(buf, "w");
+    if (fout == NULL) {
+	return;
+    }
+    TlmData.state = 1;
+    fprintf(fout, "# set yrange [%f:%f]\n", TlmData.ymin, TlmData.ymax);
+    fprintf(fout, "# set grid\n");
+    fprintf(fout, "# set data style lines \n");
+    
+    curChan = TlmData.chanList;
+    if (curChan != NULL) {
+	i = 2;
+	do {
+	    curChan = curChan->next;
+	    fprintf(fout, "# using %d title %s\n", i, curChan->name);
+	    i++;
+	} while (curChan != TlmData.chanList);
+    }
+}
+
+void 
+TlmUpdate(double time)
+{
+    FILE	*fout;
+    tChannel	*curChan;
+
+    if (TlmData.state == 0) {
+	return;
+    }
+    fout = TlmData.file;
+    fprintf(fout, "%f ", time);
+    
+    curChan = TlmData.chanList;
+    if (curChan != NULL) {
+	do {
+	    curChan = curChan->next;
+	    fprintf(fout, "%f ", curChan->scale * (*curChan->val));
+	} while (curChan != TlmData.chanList);
+    }
+    fprintf(fout, "\n");
+}
+
+
+void 
+TlmStopMonitoring(void)
+{
+    if (TlmData.state == 1) {
+	fclose(TlmData.file);
+    }
+    TlmData.file = (FILE*)NULL;
+    TlmData.state = 0;
+}
+
+/*
+ * Function
+ *	TlmShutdown
+ *
+ * Description
+ *	release all the channels
+ *
+ * Parameters
+ *	none
+ *
+ * Return
+ *	none
+ */
+void
+TlmShutdown(void)
+{
+    if (TlmData.state == 1) {
+	TlmStopMonitoring();
+    }
+    /* GfRlstFree((tRingList **)&TlmData.chanList); */
+}

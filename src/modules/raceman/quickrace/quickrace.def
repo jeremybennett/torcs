@@ -1,0 +1,11 @@
+;
+; quickrace.def
+;
+
+LIBRARY	quickrace
+
+CODE	PRELOAD MOVEABLE DISCARDABLE
+DATA	PRELOAD SINGLE
+
+EXPORTS
+quickrace

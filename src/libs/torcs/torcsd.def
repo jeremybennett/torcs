@@ -1,0 +1,3 @@
+LIBRARY torcsd
+EXPORTS
+	?TorcsEntry@@YAXXZ

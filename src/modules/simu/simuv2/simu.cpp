@@ -1,0 +1,246 @@
+/***************************************************************************
+
+    file                 : simu.cpp
+    created              : Sun Mar 19 00:07:53 CET 2000
+    copyright            : (C) 2000 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
+
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <memory.h>
+#include <math.h>
+
+#include <tgf.h>
+#include "sim.h"
+
+tCar *SimCarTable;
+
+tdble SimDeltaTime;
+
+int SimTelemetry;
+
+t3Dd vectStart[16];
+t3Dd vectEnd[16];
+
+#define MEANNB 0
+#define MEANW  1
+
+static void
+ctrlCheck(tCar *car)
+{
+    if (car->carElt->_state & RM_CAR_STATE_FINISH) {
+	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.05);
+	if (car->DynGC.vel.x > 20.0) {
+	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
+	}
+    }
+    car->ctrl->accelCmd = gfMean(car->ctrl->accelCmd, &car->meanAccel, MEANNB, MEANW);
+    car->ctrl->brakeCmd = gfMean(car->ctrl->brakeCmd, &car->meanBrake, MEANNB, MEANW);
+    car->ctrl->steer = gfMean(car->ctrl->steer, &car->meanSteer, MEANNB, MEANW);
+    if (car->ctrl->accelCmd > 1.0) {
+	car->ctrl->accelCmd = 1.0;
+    } else if (car->ctrl->accelCmd < 0.0) {
+	car->ctrl->accelCmd = 0.0;
+    }
+    if (car->ctrl->brakeCmd > 1.0) {
+	car->ctrl->brakeCmd = 1.0;
+    } else if (car->ctrl->brakeCmd < 0.0) {
+	car->ctrl->brakeCmd = 0.0;
+    }
+    if (car->ctrl->steer > 1.0) {
+	car->ctrl->steer = 1.0;
+    } else if (car->ctrl->steer < -1.0) {
+	car->ctrl->steer = -1.0;
+    }
+}
+
+
+void
+SimConfig(tCarElt *carElt)
+{
+    tCar *car = &(SimCarTable[carElt->index]);
+    int		i;
+    float	collCol[3]  = {1.0, 1.0, 0.0};
+    float	spdCol[3]   = {0.2, 0.2, 1.0};
+    float	accelCol[3] = {1.0, 0.0, 0.0};
+    
+    memset(car, 0, sizeof(tCar));
+
+    car->carElt = carElt;
+    car->DynGCg = car->DynGC = carElt->_DynGC;
+    car->trkPos = carElt->_trkPos;
+    car->ctrl = carElt->ctrl;
+    car->params = carElt->_carHandle;
+    
+    SimCarConfig(car);
+
+    /* vectors config */
+    memcpy(carElt->_vect(SIM_VECT_COLL).color, collCol, sizeof(collCol));
+    carElt->_vect(SIM_VECT_SPD).type = CAR_VECT_RELATIVE;
+    memcpy(carElt->_vect(SIM_VECT_SPD).color, spdCol, sizeof(collCol));
+    carElt->_vect(SIM_VECT_SPD).start.z = SIM_Z_OFFSET;
+    carElt->_vect(SIM_VECT_SPD).end.z = SIM_Z_OFFSET;
+    carElt->_vect(SIM_VECT_ACCEL).type = CAR_VECT_RELATIVE;
+    memcpy(carElt->_vect(SIM_VECT_ACCEL).color, accelCol, sizeof(collCol));
+    carElt->_vect(SIM_VECT_ACCEL).start.z = SIM_Z_OFFSET;
+    carElt->_vect(SIM_VECT_ACCEL).end.z = SIM_Z_OFFSET;
+
+    for (i = 0; i < 4; i++) {
+	carElt->_vect(SIM_WHEEL_SPD+i).type = CAR_VECT_RELATIVE;
+	memcpy(carElt->_vect(SIM_WHEEL_SPD+i).color, spdCol, sizeof(collCol));
+	carElt->_vect(SIM_WHEEL_SPD+i).start.x = carElt->priv->wheel[i].relPos.x;
+	carElt->_vect(SIM_WHEEL_SPD+i).start.y = carElt->priv->wheel[i].relPos.y;
+	carElt->_vect(SIM_WHEEL_SPD+i).start.z = carElt->priv->wheel[i].relPos.z + SIM_Z_OFFSET;
+	carElt->_vect(SIM_WHEEL_SPD+i).end.z = carElt->_vect(SIM_WHEEL_SPD+i).start.z;
+
+	carElt->_vect(SIM_WHEEL_ACCEL+i).type = CAR_VECT_RELATIVE;
+	memcpy(carElt->_vect(SIM_WHEEL_ACCEL+i).color, accelCol, sizeof(collCol));
+	carElt->_vect(SIM_WHEEL_ACCEL+i).start.x = carElt->priv->wheel[i].relPos.x;
+	carElt->_vect(SIM_WHEEL_ACCEL+i).start.y = carElt->priv->wheel[i].relPos.y;
+	carElt->_vect(SIM_WHEEL_ACCEL+i).start.z = carElt->priv->wheel[i].relPos.z + SIM_Z_OFFSET;
+	carElt->_vect(SIM_WHEEL_ACCEL+i).end.z = carElt->_vect(SIM_WHEEL_ACCEL+i).start.z;
+    }
+
+    SimCarCollideConfig(car);
+    sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+}
+
+void
+SimReConfig(tCarElt *carElt)
+{
+    tCar *car = &(SimCarTable[carElt->index]);
+    if (carElt->pitcmd->fuel > 0) {
+	car->fuel += carElt->pitcmd->fuel;
+	if (car->fuel > car->tank) car->fuel = car->tank;
+    }
+}
+
+
+
+void
+SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
+{
+    int		i;
+    int		ncar;
+    tCarElt 	*carElt;
+    tCar 	*car;
+    
+    SimDeltaTime = deltaTime;
+    SimTelemetry = telemetry;
+    for (ncar = 0; ncar < s->_ncars; ncar++) {
+	SimCarTable[ncar].collision = 0;
+	SimCarTable[ncar].blocked = 0;
+    }
+    
+    for (ncar = 0; ncar < s->_ncars; ncar++) {
+	car = &(SimCarTable[ncar]);
+	carElt = car->carElt;
+
+	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	    continue;
+	}
+
+	ctrlCheck(car);
+	SimSteerUpdate(car);
+	SimGearboxUpdate(car);
+	SimEngineUpdateTq(car);
+	SimCarUpdateWheelPos(car);
+	SimBrakeSystemUpdate(car);
+	SimAeroUpdate(car, s);
+	for (i = 0; i < 2; i++){
+	    SimWingUpdate(car, i);
+	}
+	for (i = 0; i < 4; i++){
+	    SimWheelUpdateRide(car, i);
+	}
+	for (i = 0; i < 2; i++){
+	    SimAxleUpdate(car, i);
+	}
+	for (i = 0; i < 4; i++){
+	    SimWheelUpdateForce(car, i);
+	}
+	SimTransmissionUpdate(car);
+	SimWheelUpdateRotation(car);
+	SimCarUpdate(car, s);
+    }
+
+    SimCarCollideCars(s);
+
+    for (ncar = 0; ncar < s->_ncars; ncar++) {
+	car = &(SimCarTable[ncar]);
+	carElt = car->carElt;
+
+	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	    continue;
+	}
+
+	SimCarUpdate2(car, s);
+
+	/* copy back the data to carElt */
+
+	carElt->pub->DynGC = car->DynGC;
+	carElt->pub->DynGCg = car->DynGCg;
+	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+	carElt->_trkPos = car->trkPos;
+	for (i = 0; i < 4; i++) {
+	    carElt->priv->wheel[i].relPos = car->wheel[i].relPos;
+	    carElt->_brakeTemp(i) = car->wheel[i].brake.temp;
+	    carElt->pub->corner[i] = car->corner[i].pos;
+	}
+	carElt->_gear = car->transmission.gearbox.gear;
+	carElt->_enginerpm = car->engine.rads;
+	carElt->_fuel = car->fuel;
+	carElt->priv->collision |= car->collision;
+	
+
+	/* Simulation vectors */
+	if (car->collision > 1) {
+	    carElt->_vect(SIM_VECT_COLL).type = CAR_VECT_ABSOLUTE;
+	    carElt->_vect(SIM_VECT_COLL).start = car->collpos;
+	    carElt->_vect(SIM_VECT_COLL).end.x = car->collpos.x + car->normal.x * 2.0;
+	    carElt->_vect(SIM_VECT_COLL).end.y = car->collpos.y + car->normal.y * 2.0;
+	    carElt->_vect(SIM_VECT_COLL).end.z = carElt->_vect(SIM_VECT_COLL).start.z = car->DynGC.pos.z + SIM_Z_OFFSET;
+	} else {
+	    carElt->_vect(SIM_VECT_COLL).type = CAR_VECT_INVALID;
+	}
+
+	carElt->_vect(SIM_VECT_SPD).end.x = car->DynGC.vel.x/5.0;
+	carElt->_vect(SIM_VECT_SPD).end.y = car->DynGC.vel.y/5.0;
+	carElt->_vect(SIM_VECT_ACCEL).end.x = car->DynGC.acc.x/5.0;
+	carElt->_vect(SIM_VECT_ACCEL).end.y = car->DynGC.acc.y/5.0;
+
+	for (i = 0; i < 4; i++) {
+	    carElt->_vect(SIM_WHEEL_SPD+i).end.x = carElt->_vect(SIM_WHEEL_SPD+i).start.x + car->wheel[i].bodyVel.x/10.0;
+	    carElt->_vect(SIM_WHEEL_SPD+i).end.y = carElt->_vect(SIM_WHEEL_SPD+i).start.y +car->wheel[i].bodyVel.y/10.0;
+	    carElt->_vect(SIM_WHEEL_ACCEL+i).end.x = carElt->_vect(SIM_WHEEL_ACCEL+i).start.x + car->wheel[i].forces.x/500.0;
+	    carElt->_vect(SIM_WHEEL_ACCEL+i).end.y = carElt->_vect(SIM_WHEEL_ACCEL+i).start.y + car->wheel[i].forces.y/500.0;
+	}
+    }
+}
+
+void
+SimInit(int nbcars)
+{
+    SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
+}
+
+void
+SimShutdown(void)
+{
+    //GfParmReleaseHandle(SimCarTable[0].params);
+    free(SimCarTable);   
+}

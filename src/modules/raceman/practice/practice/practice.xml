@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : practice.xml
+    created              : Sun Jan 30 22:53:41 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+
+<!DOCTYPE params SYSTEM "../../../../libs/tgf/params.dtd">
+
+<params name="practice" type="param" mode="mw">
+
+  <section name="Race">
+    <!-- comma separated section of allowed categories ("*" means every categories can race) -->
+    <attstr name="categories" val="*"></attstr>
+    <attstr name="track" val="e-track-3"></attstr>
+    <attnum name="laps"  val="20"></attnum>
+    <attstr name="show race" val="no"></attstr>
+  </section>
+
+  <section name="Starting Grid">
+    <attnum name="rows"                      val="1"></attnum>
+    <attnum name="distance to start"         val="200"></attnum>
+    <attnum name="distance between columns"  val="20"></attnum>
+    <attnum name="offset within a column"    val="10"></attnum>
+    <attnum name="initial speed" unit="km/h" val="0"></attnum>
+    <attnum name="initial height" unit="m"   val="1.0"></attnum>
+  </section>
+
+  <section name="Modules">
+    <attstr name="track"     val="track"></attstr>
+    <attstr name="simu"      val="simuv2"></attstr>
+    <attstr name="graphic"   val="ssggraph"></attstr>
+  </section>
+
+  <section name="Drivers">
+    <attnum name="ndrivers" val="1"></attnum>
+    <section name="drivers">
+      <section name="1">
+	    <attnum name="idx"    val="1"></attnum>
+	    <attstr name="module" val="tanhoj"></attstr>
+      </section>
+    </section>
+  </section>
+
+</params>
+
+
+
