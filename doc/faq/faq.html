@@ -93,12 +93,16 @@
 			<li><h4><a href="#c4_3_10">4.3.10 The cars are flickering.</a></h4></li>
 			<li><h4><a href="#c4_3_11">4.3.11 I use ALSA and TORCS does not start up.</a></h4></li>
 			<li><h4><a href="#c4_3_12">4.3.12 TORCS does not start up and complains about display requirements.</a></h4></li>
+			<li><h4><a href="#c4_3_13">4.3.13 The racetrack mini map is just a blue square.</a></h4></li>
+			<li><h4><a href="#c4_3_14">4.3.14 TORCS runs but without textures.</a></h4></li>
+			<li><h4><a href="#c4_3_15">4.3.15 TORCS on Windows crashes after "new race".</a></h4></li>
 		  </ul>
 
 		  <li><h3><a href="#c4_4">4.4 Other Problems.</a></h3></li>
 		  <ul style="list-style-type:disk; color:black;">
 			<li><h4><a href="#c4_4_1">4.4.1 How do I capture a movie?</a></h4></li>
 			<li><h4><a href="#c4_4_2">4.4.2 Can I develop a robot using Windows?</a></h4></li>
+			<li><h4><a href="#c4_4_3">4.4.3 Is my joystick/steering wheel/gamepad supported?</a></h4></li>
 		  </ul>
 		</ul>
 
@@ -135,7 +139,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-		  Draft, 5.3.2004 (DD.MM.YYYY).
+		  Draft, 6.5.2004 (DD.MM.YYYY).
 		</p>
 
 
@@ -164,8 +168,9 @@
 		  Yes, there is quite a lot of documentation available. Look at the official
 		  <a href="http://torcs.org" target="_parent">TORCS site</a> and on
 		  <a href="http://www.berniw.org" target="_parent">Bernhard's homepage</a>. You can find installation instructions,
-		  the robot tutorial, instructions how to use TORCS and more. What is missing at
-		  the moment is a track and car building tutorial.
+		  the robot tutorial, instructions how to use TORCS and more. A very brief track howto is available
+		  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here</a>.
+		  What is missing at the moment is a car building tutorial.
 		</p>
 
 		<h3><a name="c1_4">1.4 Which features has TORCS?</a></h3>
@@ -507,6 +512,35 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 		</p>
 
 
+		<h4><a name="c4_3_13">4.3.13 The racetrack mini map is just a blue square.</a></h4>
+		<p>
+		  You have probably more than one GLU library installed on your system and TORCS is linked with
+		  a version that does not match the version defined in the header files. Remove all old GLU libraries,
+		  make sure that the header files are matching with the library. Make also sure that you have recent
+		  OpenGL headers installed which define the GL_UNSIGNED_INT_8_8_8_8 symbol, then recompile TORCS.
+		</p>
+
+
+		<h4><a name="c4_3_14">4.3.14 TORCS runs but without textures.</a></h4>
+		<p>
+		  This is probably an OpenGL setup problem, check your installation with bzflag and tuxcart. You have to
+		  reinstall the XFree86 libraries, FreeGLUT and your OpenGL drivers.
+		</p>
+
+
+		<h4><a name="c4_3_15">4.3.15 TORCS on Windows crashes after "new race".</a></h4>
+
+		<p>
+		  The instruction at 0x0043dda5 referenced memory at 0x00000004. The memoy could not be written.
+		</p>
+
+		<p>
+		  TORCS on Windows crashes with the above message after you have choosen "new race". Probably you have
+		  not downloaded all required files or installed them in the wrong place. Please check your TORCS
+		  installation carefully.
+		</p>
+
+
 
 		<h3><a name="c4_4">4.4 Other Problems.</a></h3>
 
@@ -553,7 +587,12 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 		  <li>Now TORCS should pick up your robot.</li>
 		</ul>
 
+		<h4><a name="c4_4_3">4.4.3 Is my joystick/steering wheel/gamepad supported?</a></h4>
 
+		<p>
+		  If your operating system supports your device it will also work within TORCS. To learn how
+		  to setup your input device visit the TORCS site and read the "how to drive" section.
+		</p>
 
 
 
@@ -602,6 +641,7 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			TORCS-users mailing list</a>.</li>
 			<li>TORCS development snapshots <a href="http://torcs.free.fr" target="_parent">torcs.free.fr</a>.</li>
 			<li>Bernhard's site <a href="http://www.berniw.org" target="_parent">www.berniw.org</a>.</li>
+			<li>Christos Dimitrakakis TORCS mods <a href="http://www.idiap.ch/~dimitrak/torcs.html" target="_parent">www.idiap.ch/~dimitrak/torcs.html</a>.</li>
 			<li>The TORCS Garage <a href="http://torcs.long-studios.com/index.html" target="_parent">torcs.long-studios.com/index.html</a>.</li>
 
 		</ul>
@@ -622,7 +662,8 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 		<h3><a name="c6_3">6.3 Other.</a></h3>
 		<ul>
 		  <li>TORCS in research <a href="http://students.cs.byu.edu/~kroundy/research" target="_parent">students.cs.byu.edu/~kroundy/research</a>.</li>
-		  <li>TORCS review <a href="http://www.linuxjournal.com/article.php?sid=7080" target="_parent">www.linuxjournal.com/article.php?sid=7080</a>.</li>
+		  <li>Linux Journal TORCS review <a href="http://www.linuxjournal.com/article.php?sid=7080" target="_parent">www.linuxjournal.com/article.php?sid=7080</a>.</li>
+		  <li>TORCS review at linuxgames.com <a href="http://www.linuxgames.com/?dataloc=/reviews/torcs/" target="_parent">www.linuxgames.com/?dataloc=/reviews/torcs/</a>.</li>
 		  <li>TORCS at the university <a href="http://www1.coe.neu.edu/~mourant/cse270/" target="_parent">www1.coe.neu.edu/~mourant/cse270</a>.</li>
 		</ul>
 		<br/><br/>
