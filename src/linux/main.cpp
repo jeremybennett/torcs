@@ -43,6 +43,10 @@ init_args(int argc, char **argv)
 		SetLocalDir(buf);
 		i++;
 	    }
+	} else if (strncmp(argv[i], "-s", 2) == 0) {
+	    i++;
+	    SetSingleTextureMode ();
+	    
 #ifndef FREEGLUT
 	} else if (strncmp(argv[i], "-m", 2) == 0) {
 	    i++;

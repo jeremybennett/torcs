@@ -237,3 +237,18 @@ SetLocalDir(char *buf)
 {
     localDir = strdup(buf);
 }
+
+
+static int singleTextureMode = 0;
+
+int
+GetSingleTextureMode (void)
+{
+    return singleTextureMode;
+}
+
+void
+SetSingleTextureMode (void)
+{   
+    singleTextureMode = 1;
+}

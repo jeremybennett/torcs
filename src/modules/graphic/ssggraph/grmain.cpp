@@ -82,12 +82,10 @@ PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 // desc: sets up OpenGL for multitexturing support
 bool InitMultiTex(void)
 {
-#ifdef FORCE_SINGLE_TEXTURE
-
-    maxTextureUnits = 1;
-    return true;
-
-#else /* FORCE_SINGLE_TEXTURE */
+    if (GetSingleTextureMode ()) {
+	maxTextureUnits = 1;
+	return true;
+    } else {
 
 	char *extensionStr;			// list of available extensions
 		
@@ -114,9 +112,8 @@ bool InitMultiTex(void)
 	}
 	else
 		return false;
-
-#endif /* FORCE_SINGLE_TEXTURE */
-
+	
+    }
 }
 
 

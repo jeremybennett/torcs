@@ -26,6 +26,22 @@
 
 #include "windowsspec.h"
 
+static void
+init_args(int argc, char **argv)
+{
+    int		i;
+    char	*buf;
+
+    i = 1;
+    while (i < argc) {
+	if ((strncmp(argv[i], "-s", 2) == 0) || (strncmp(argv[i], "/s", 2) == 0)) {
+	    i++;
+	    SetSingleTextureMode ();
+	} else {
+	    i++;		/* ignore bad args */
+	}
+    }
+}
 /*
  * Function
  *	main
@@ -45,6 +61,8 @@
 int 
 main(int argc, char *argv[])
 {
+    init_args(argc, argv);
+
     WindowsSpecInit();		/* init specific windows functions */
     
     GfScrInit(argc, argv);	/* init screen */
