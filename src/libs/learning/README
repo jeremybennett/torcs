@@ -1,0 +1,93 @@
+1. Introduction.
+
+1.1. Contents
+
+This directory provides a set of functions and classes for creating
+adaptive agents. Many types of algorithms are provided, all of which
+are completely generic and can be used very easily with most robots. 
+
+1.2. General guidelines for use 
+
+The complexity of the algorithms is low. Their structural complexity
+is user-defined. The user of the libraries should be able to make a
+good tradeoff between good learning and low structural complexity.
+One should be aware that low-complexity structures are easier to
+learn. Using larger structures makes learning more difficult and
+slower, but can potentially result in better solutions. Using
+extremely large structures makes learning impractical.
+
+1.3. Types of algorithms
+
+Most of the algorithms provided are reinforcement learning. For an
+overview of the reinforcement learning look at Sutton's and Barto's
+great book: http://www-anw.cs.umass.edu/~rich/book/the-book.html
+
+
+2. A detailed look at the classes
+
+policy.h and policy.cpp provide classes for learning adaptive
+policies. Currently the only type of algorithm used is
+Sarsa(lambda). For details look at the class header file and the
+implementation. The book offers a detailed explanation of the
+algorithm. I have had good results with Sarsa in the following
+experiment.
+
+2.1. Experiments with Sarsa
+
+I modified berniw so that the INSANE policy had a GCTime of 0.5 and a
+SPEEDSQR factor of 1.5. I used a state vector with n_track_segments/10
+discrete states. Thus, each 10 segments of the track corresponded to
+the same state. The agent could take two actions, the first
+corresponding to the INSANE and the second to the NORMAL policy. 
+The agent considered a new action every time it entered a new
+state (once every 10 segments). The reward given at each time step was
+-1/(0.1+0.1*current_speed). 
+
+I tried the robot berniw9 with the following parameters: 
+	alpha = 0.1 or 0.01
+	gamma = 0.99
+	lambda = 0.99
+	randomness = 0.1 or 0.01
+	softmax = false
+	init_eval = 0.0
+
+I ran the robot for 10000Km in e-track-3 with the two different
+settings of alpha and randomness and I managed to get a minimum time
+of around 1:17.5 in most cases. With alpha 0.01 learning is a bit slow
+and only converges towards the end of the trial. The figure
+berniw_results.ps shows a smoothed version (over 28 laps) of the time
+of the robot for each parameter set, where this can be seen clearly.
+
+Other values of lambda should work equally well, since this only
+affects the learning and not the quality of the final solution.
+
+I would not reduce gamma below 0.7, however, as then the robot would
+only try to increase time.
+
+A more detailed state vector might theoretically give a better
+performance, but one should keep in mind that for more states a larger
+gamma value should be used. This is because the value that the agent
+maximises is R_t=\sum_{k=0}^{\infty} \gamma^k r_t. So if \gamma=0.9
+and we use 1 state per 10 segments, then the importance of the reward
+that will be received after 100 meters is 0.9^{10} = 0.34868. However,
+if we use 1 state per segment then the importance of the reward after
+100 meters will be 0.9^{100}=.00002656, which is pretty
+insignificant. So one should adjust gamma to be around 0.99 to have
+the same effect.
+
+
+
+3. Future work
+
+A couple of extra RL algorithms are going to be provided. Some classes
+for function approximation will be added, for the case of RL in
+continuous state environments, most probably a simple neural net,
+taken from one of my other projects. However, RL in continuous
+*action* environments is still pretty much a current research topic
+and algorithms are not known to work very efficiently.
+
+If authors of robots require other standard machine learning
+algorithms, they can contact me at dimitrak@idiap.ch for discussion
+and possible implementation. 
+
+Christos Dimitrakakis, 2004
