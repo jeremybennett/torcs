@@ -56,6 +56,7 @@ cGrScreen::cGrScreen(int myid)
     active = 0;
     selectNextFlag = 0;
     selectPrevFlag = 0;
+    mirrorFlag = 1;
     memset(cams, 0, sizeof(cams));
     viewRatio = 1.33;
 }
@@ -108,6 +109,10 @@ void cGrScreen::activate(int x, int y, int w, int h)
     scrw = w;
     scrh = h;
 
+    mirrorCam->setViewport (scrx, scry, scrw, scrh);
+    mirrorCam->setPos (scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
+    curCam->limitFov ();
+    curCam->setZoom (GR_ZOOM_DFLT);
     active = 1;
 }
 
@@ -136,6 +141,12 @@ void cGrScreen::selectBoard(int brd)
 {
     board->selectBoard(brd);
 }
+
+void cGrScreen::switchMirror(void)
+{
+    mirrorFlag = 1 - mirrorFlag;
+}
+
 
 /* Select the camera by number */
 void cGrScreen::selectCamera(int cam)
@@ -171,6 +182,7 @@ void cGrScreen::selectCamera(int cam)
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, curCamHead, curCam->getId());
     curCam->loadDefaults(buf);
     drawCurrent = curCam->getDrawCurrent();
+    curCam->limitFov ();
     GfParmWriteFile(NULL, grHandle, "Graph");
 }
 
@@ -185,7 +197,8 @@ void cGrScreen::camDraw(tSituation *s)
     STOP_PROFILE("dispCam->update*");
 
     if (dispCam->getDrawBackground()) {
-	glDisable(GL_LIGHTING);    
+	glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
 	grDrawBackground(dispCam, bgCam);
 	glClear(GL_DEPTH_BUFFER_BIT);
     }
@@ -254,34 +267,40 @@ void cGrScreen::update(tSituation *s, float Fps)
 
     light = ssgGetLight (0);
 
-    glViewport(scrx, scry, scrw, scrh);
+    /* MIRROR */
+    if (mirrorFlag && curCam->isMirrorAllowed ()) {
+	mirrorCam->activateViewport ();
+	dispCam = mirrorCam;
+	glClear (GL_DEPTH_BUFFER_BIT);
+	camDraw (s);
+	mirrorCam->store ();
+    }
 
+    glViewport(scrx, scry, scrw, scrh);
     dispCam = curCam;
     camDraw(s);
 
-#if MIRROR
-    if (curCam->isMirrorAllowed()) {
-	glViewport(scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
-	dispCam = mirrorCam;
-	glClear(GL_DEPTH_BUFFER_BIT);
-	camDraw(s);
-	glViewport(scrx, scry, scrw, scrh);
-    }
-#endif
-
-    START_PROFILE("boardCam*");
-    boardCam->action();
-    STOP_PROFILE("boardCam*");
-
-    START_PROFILE("grDisp**");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);    
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_ALPHA_TEST);
-    glDisable(GL_TEXTURE_2D);
     glDisable(GL_FOG);
+    glEnable(GL_TEXTURE_2D);
+
+    /* MIRROR */
+    if (mirrorFlag && curCam->isMirrorAllowed ()) {
+	mirrorCam->display ();
+	glViewport (scrx, scry, scrw, scrh);
+    }
+
+    START_PROFILE("boardCam*");
+    boardCam->action();
+    STOP_PROFILE("boardCam*");
+
+    START_PROFILE("grDisp**");
+    glDisable(GL_TEXTURE_2D);
 
     TRACE_GL("cGrScreen::update glDisable(GL_DEPTH_TEST)");
     board->refreshBoard(s, Fps, 0, curCar);

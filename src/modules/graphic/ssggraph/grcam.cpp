@@ -256,6 +256,13 @@ class cGrCarCamInside : public cGrPerspCamera
 };
 
 
+/* MIRROR */
+cGrCarCamMirror::~cGrCarCamMirror ()
+{
+    glDeleteTextures (1, &tex);
+    delete viewCam;
+}
+
 void cGrCarCamMirror::limitFov(void) {
     fovy = 90.0 / screen->getViewRatio();
 }
@@ -286,6 +293,77 @@ void cGrCarCamMirror::update(tCarElt *car, tSituation *s)
     up[1] = car->_posMat[2][1];
     up[2] = car->_posMat[2][2];
 }
+
+void cGrCarCamMirror::setViewport (int x, int y, int w, int h)
+{
+    vpx = x;
+    vpy = y;
+    vpw = GfNearestPow2 (w);
+    vph = GfNearestPow2 (h);
+
+    viewCam = new cGrOrthoCamera (screen, x,  x + w, y, y + h);
+    limitFov ();
+}
+
+void cGrCarCamMirror::setPos (int x, int y, int w, int h)
+{
+    float dx, dy;
+
+    mx = x;
+    my = y;
+    mw = w;
+    mh = h;
+
+    dx = (float)(vpw - w);
+    dy = (float)(vph - h);
+    dx = MAX (0, dx);
+    dy = MAX (0, dy);
+    dx = dx / (float)vpw / 2.0;
+    dy = dy / (float)vph / 2.0;
+    
+    tsu = 1.0 - dx;
+    tsv = dy;
+    teu = dx;
+    tev = 1.0 - dy;
+}
+
+
+void cGrCarCamMirror::activateViewport (void)
+{
+    glViewport (vpx, vpy, vpw, vph);
+}
+
+void cGrCarCamMirror::store (void)
+{
+    glBindTexture (GL_TEXTURE_2D, tex);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glReadBuffer (GL_BACK);
+    glCopyTexImage2D (GL_TEXTURE_2D,
+		      0 /* map level */,
+		      GL_RGB /* internal format */,
+		      vpx, vpy, vpw, vph,
+		      0 /* border */ );
+}
+
+void cGrCarCamMirror::display (void)
+{
+    viewCam->action ();
+    
+    glBindTexture (GL_TEXTURE_2D, tex);
+    glBegin(GL_TRIANGLE_STRIP);
+    {
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glTexCoord2f(tsu, tsv); glVertex2f(mx, my);
+	glTexCoord2f(tsu, tev); glVertex2f(mx, my + mh);
+	glTexCoord2f(teu, tsv); glVertex2f(mx + mw, my);
+	glTexCoord2f(teu, tev); glVertex2f(mx + mw, my + mh);
+    }
+    glEnd();
+}
+
+
+
 
 class cGrCarCamInsideFixedCar : public cGrPerspCamera
 {
@@ -1574,7 +1652,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 				id,
 				1,		/* drawCurr */
 				1,		/* drawBG  */
-				17.0,	/* fovy */
+				9.0,	/* fovy */
 				1.0,		/* fovymin */
 				90.0,	/* fovymax */
 				1.0,		/* near */
@@ -1593,7 +1671,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 				id,
 				1,		/* drawCurr */
 				1,		/* drawBG  */
-				17.0,	/* fovy */
+				9.0,	/* fovy */
 				1.0,		/* fovymin */
 				90.0,	/* fovymax */
 				1.0,		/* near */
@@ -1611,7 +1689,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 				   id,
 				   1,	/* drawCurr */
 				   1,	/* drawBG  */
-				   17.0,	/* fovy */
+				   9.0,	/* fovy */
 				   1.0,	/* fovymin */
 				   90.0,	/* fovymax */
 				   1.0,	/* near */

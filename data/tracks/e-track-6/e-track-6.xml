@@ -40,12 +40,18 @@
   </section>
 
   <section name="Graphic">
-    <attstr name="3d description" val="e-track-6.ac"/>
+    <attstr name="3d description" val="e-track-6.acc"/>
     <attstr name="background image" val="background.png"/>
-    <attnum name="background type" val="2"/>
+    <attnum name="background type" val="4"/>
     <attnum name="background color R" val="0.28125"/>
     <attnum name="background color G" val="0.4375"/>
     <attnum name="background color B" val="0.75"/>
+
+    <attnum name="shininess" val="500"/>
+
+    <attnum name="light position x" val="10000"/>
+    <attnum name="light position y" val="7000"/>
+    <attnum name="light position z" val="2000"/>
 
     <section name="Environment Mapping">
       <section name="1">

@@ -67,7 +67,7 @@ extern void GfInit(void);
 
 #define freez FREEZ
 
-const tdble PI = 3.14159265358979323846;  /**< PI */
+const double PI = 3.14159265358979323846;  /**< PI */
 const tdble G = 9.80665; /**< m/s/s */
 
 /* conversion */
@@ -399,39 +399,7 @@ extern char *GetDataDir(void);
 extern void SetDataDir(char *buf);
 extern int GetSingleTextureMode (void);
 extern void SetSingleTextureMode (void);
-
-#if 0
-/********************************************
- * Ring Lists Interface OBSOLETE DO NOT USE *
- ********************************************/
-
-/** Ring List structure */
-typedef struct tRingList
-{
-    struct tRingList *next;	/**< Next element in the list */
-    struct tRingList *prev;	/**< Previous element in the list */
-} tRingList;
-
-typedef struct tRingListHead
-{
-    tRingList *next;
-    tRingList *prev;
-} tRingListHead;
-
-
-extern void GfRlstInit(tRingListHead *head);
-extern void GfRlstAddFirst(tRingListHead *head, tRingList *elt);
-extern void GfRlstAddLast(tRingListHead *head, tRingList *elt);
-extern tRingList *GfRlstUnlinkFirst(tRingListHead *head);
-extern tRingList *GfRlstUnlinkLast(tRingListHead *head);
-extern tRingList *GfRlstUnlinkElt(tRingList *elt);
-extern tRingList *GfRlstGetFirst(tRingListHead *head);
-extern tRingList *GfRlstGetNext(tRingListHead *head, tRingList *elt);
-extern tRingList *GfRlstGetLast(tRingListHead *head);
-extern tRingList *GfRlstGetPrev(tRingListHead *head, tRingList *elt);
-extern void GfRlstSeekElt(tRingListHead *head, tRingList *elt);
-
-#endif
+extern int GfNearestPow2 (int x);
 
 /*
  * Copyright (c) 1991, 1993

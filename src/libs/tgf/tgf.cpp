@@ -279,3 +279,22 @@ SetSingleTextureMode (void)
 {   
     singleTextureMode = 1;
 }
+
+int
+GfNearestPow2 (int x)
+{
+    int r;
+
+    if (!x) return 0;
+
+    x++;
+    r = 1;
+    while ((1 << r) < x) {
+	r++;
+    }
+    r--;
+
+    return (1 << r);
+}
+
+	

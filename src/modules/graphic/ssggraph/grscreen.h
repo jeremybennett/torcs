@@ -41,7 +41,7 @@ class cGrScreen
     tGrCamHead		cams[10];		/* from F2 to F11 */
 
     class cGrPerspCamera	*curCam;	/* the current camera */
-    class cGrPerspCamera	*mirrorCam;	/* the mirror camera */
+    class cGrCarCamMirror	*mirrorCam;	/* the mirror camera */
     class cGrPerspCamera	*dispCam;	/* the display camera */
     class cGrOrthoCamera	*boardCam;	/* the board camera */
     class cGrBackgroundCam 	*bgCam;		/* the background camera */
@@ -57,6 +57,7 @@ class cGrScreen
 
     int			selectNextFlag;
     int			selectPrevFlag;
+    int			mirrorFlag;
 
     sgVec4		fogColor;		/* fog color... */
 
@@ -93,6 +94,7 @@ class cGrScreen
 
     void selectNextCar(void);
     void selectPrevCar(void);
+    void switchMirror(void);
 
     tCarElt *getCurrentCar(void) {
 	return curCar;
@@ -113,6 +115,19 @@ class cGrScreen
     int getId(void) {
 	return id;
     }
+    int getScrX (void) {
+	return scrx;
+    }
+    int getScrY (void) {
+	return scry;
+    }
+    int getScrW (void) {
+	return scrw;
+    }
+    int getScrH (void) {
+	return scrh;
+    }
+    
 };
 
 

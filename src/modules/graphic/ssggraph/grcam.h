@@ -202,18 +202,34 @@ class cGrBackgroundCam : public cGrPerspCamera
 
 class cGrCarCamMirror : public cGrPerspCamera
 {
+ protected:
+    int		vpx, vpy, vpw, vph;	/* viewport size */
+    int		mx, my, mw, mh;		/* drawing area */
+    float	tsu, tsv, teu, tev;	/* texture coord */
+    GLuint	tex;			/* texture */
+    cGrOrthoCamera *viewCam;
+    
  public:
-    cGrCarCamMirror(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
+    cGrCarCamMirror(cGrScreen *myscreen, int id, int drawCurr, int drawBG,
 		    float myfovy, float myfovymin, float myfovymax,
 		    float myfnear, float myffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
 	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
+	glGenTextures (1, &tex);
 	limitFov();
     }
-    void cGrCarCamMirror::limitFov(void);
-    void update(tCarElt *car, tSituation *s);
+    ~cGrCarCamMirror ();
+
+    void update (tCarElt *car, tSituation *s);
+    void limitFov (void);
+
+    void setViewport (int x, int y, int w, int h);
+    void setPos (int x, int y, int w, int h);
+    void activateViewport (void);
+    void store (void);
+    void display (void);
 };
 
 

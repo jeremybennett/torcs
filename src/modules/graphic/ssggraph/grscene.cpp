@@ -62,7 +62,7 @@ GLuint BackgroundTex2;
 ssgStateSelector	*grEnvSelector;
 grMultiTexState	*grEnvState=NULL;
 grMultiTexState	*grEnvShadowState=NULL;
-#define NB_BG_FACES	20
+#define NB_BG_FACES	36
 #define BG_DIST		1.0
 
 ssgRoot *TheScene = 0;
@@ -575,7 +575,8 @@ initBackground(void)
 {
     int			i;
     float		x, y, z1, z2;
-    float		alpha, texLen;
+    double		alpha;
+    float		texLen;
     tTrackGraphicInfo	*graphic;
     ssgSimpleState	*envst;
     sgVec3		vtx;
@@ -803,7 +804,12 @@ initBackground(void)
 	TheBackground->addKid(bg);
 
 	break;
+
+
     case 4:
+	z1 = -1.0;
+	z2 = 1.0;
+
 	bg_vtx = new ssgVertexArray(NB_BG_FACES + 1);
 	bg_tex = new ssgTexCoordArray(NB_BG_FACES + 1);
 	bg_clr = new ssgColourArray(1);
@@ -812,9 +818,9 @@ initBackground(void)
 	bg_clr->add(clr);
 	bg_nrm->add(nrm);
 
-	for (i = 0; i < NB_BG_FACES / 4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
+	for (i = 0; i < NB_BG_FACES + 1; i++) {
+	    alpha = (double)i * 2 * PI / (double)NB_BG_FACES;
+	    texLen = 1.0 - (float)i / (float)NB_BG_FACES;
 	    
 	    x = BG_DIST * cos(alpha);
 	    y = BG_DIST * sin(alpha);
@@ -823,7 +829,7 @@ initBackground(void)
 	    vtx[1] = y;
 	    vtx[2] = z1;
 	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
+	    tex[0] = texLen;
 	    tex[1] = 0;
 	    bg_tex->add(tex);
 
@@ -831,45 +837,7 @@ initBackground(void)
 	    vtx[1] = y;
 	    vtx[2] = z2;
 	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 0.5;
-	    bg_tex->add(tex);
-	}
-	bg = new ssgVtxTable(GL_TRIANGLE_STRIP, bg_vtx, bg_nrm, bg_tex, bg_clr);
-	bg_st = (ssgSimpleState*)grSsgLoadTexState(graphic->background);
-	bg_st->disable(GL_LIGHTING);
-	bg->setState(bg_st);
-	bg->setCullFace(0);
-	TheBackground->addKid(bg);
-
-	bg_vtx = new ssgVertexArray(NB_BG_FACES + 1);
-	bg_tex = new ssgTexCoordArray(NB_BG_FACES + 1);
-	bg_clr = new ssgColourArray(1);
-	bg_nrm = new ssgNormalArray(1);
-
-	bg_clr->add(clr);
-	bg_nrm->add(nrm);
-
-	for (i = NB_BG_FACES / 4; i < NB_BG_FACES / 2 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z1;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 0.5;
-	    bg_tex->add(tex);
-
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z2;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
+	    tex[0] = texLen;
 	    tex[1] = 1.0;
 	    bg_tex->add(tex);
 	}
@@ -879,84 +847,8 @@ initBackground(void)
 	bg->setState(bg_st);
 	bg->setCullFace(0);
 	TheBackground->addKid(bg);
-
-	bg_vtx = new ssgVertexArray(NB_BG_FACES + 1);
-	bg_tex = new ssgTexCoordArray(NB_BG_FACES + 1);
-	bg_clr = new ssgColourArray(1);
-	bg_nrm = new ssgNormalArray(1);
-
-	bg_clr->add(clr);
-	bg_nrm->add(nrm);
-
-	for (i = NB_BG_FACES / 2; i < 3 * NB_BG_FACES / 4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z1;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 0;
-	    bg_tex->add(tex);
-
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z2;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 0.5;
-	    bg_tex->add(tex);
-	}
-	bg = new ssgVtxTable(GL_TRIANGLE_STRIP, bg_vtx, bg_nrm, bg_tex, bg_clr);
-	bg_st = (ssgSimpleState*)grSsgLoadTexState(graphic->background);
-	bg_st->disable(GL_LIGHTING);
-	bg->setState(bg_st);
-	bg->setCullFace(0);
-	TheBackground->addKid(bg);
-
-	bg_vtx = new ssgVertexArray(NB_BG_FACES + 1);
-	bg_tex = new ssgTexCoordArray(NB_BG_FACES + 1);
-	bg_clr = new ssgColourArray(1);
-	bg_nrm = new ssgNormalArray(1);
-
-	bg_clr->add(clr);
-	bg_nrm->add(nrm);
-
-	for (i = 3 * NB_BG_FACES / 4; i < NB_BG_FACES + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z1;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 0.5;
-	    bg_tex->add(tex);
-
-	    vtx[0] = x;
-	    vtx[1] = y;
-	    vtx[2] = z2;
-	    bg_vtx->add(vtx);
-	    tex[0] = texLen*4.0;
-	    tex[1] = 1.0;
-	    bg_tex->add(tex);
-	}
-	bg = new ssgVtxTable(GL_TRIANGLE_STRIP, bg_vtx, bg_nrm, bg_tex, bg_clr);
-	bg_st = (ssgSimpleState*)grSsgLoadTexState(graphic->background2);
-	bg_st->disable(GL_LIGHTING);
-	bg->setState(bg_st);
-	bg->setCullFace(0);
-	TheBackground->addKid(bg);
-
 	break;
+
     default:
 	break;
     }
