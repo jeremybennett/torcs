@@ -118,6 +118,13 @@ InitFuncPt(int index, void *pt)
     return 0;
 }
 
+
+static char* botname[10] = {"InfHist 1", "InfHist 2", "InfHist 3", "InfHist 4", "InfHist 5",
+							"InfHist 6", "InfHist 7", "InfHist 8", "InfHist 9", "InfHist 10"};
+static char* botdesc[10] = {"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence",
+							"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence"};
+
+
 /*
  * Function
  *	inferno
@@ -138,12 +145,12 @@ extern "C" int
 inferno2(tModInfo *modInfo)
 {
     int		i;
-    char	buf[256];
-    
+    //char	buf[256];
+
     for (i = 0; i < 10; i++) {
-	sprintf(buf, "InfHist %d", i + 1);
-	modInfo[i].name    = strdup(buf);	/* name of the module (short) */
-	modInfo[i].desc    = "For Laurence";	/* description of the module (can be long) */
+	//sprintf(buf, "InfHist %d", i + 1);
+	modInfo[i].name    = botname[i]; //strdup(buf);	/* name of the module (short) */
+	modInfo[i].desc    = botdesc[i];	/* description of the module (can be long) */
 	modInfo[i].fctInit = InitFuncPt;	/* init function */
 	modInfo[i].gfId    = ROB_IDENT;		/* supported framework version */
 	modInfo[i].index   = i + 1;
@@ -157,18 +164,18 @@ tdble	MaxSpeed[10];
 tdble	hold[10] = {0};
 tdble	shiftThld[10][MAX_GEARS+1];
 
-static tdble PGain[10]     = {0.015};
-static tdble AGain[10]     = {0.008};
-static tdble PnGain[10]    = {0.02};
-static tdble Advance[10]   = {3.5};
-static tdble Advance2[10]  = {10.0};
-static tdble AdvStep[10]   = {1.0};
-static tdble VGain[10]     = {0.0005};
-static tdble preDy[10]     = {0};
-static tdble spdtgt[10]    = {250.0};
-static tdble spdtgt2[10]   = {2.0};
-static tdble steerMult[10] = {2.0};
-static tdble Offset[10]    = {0.0};
+static tdble PGain[10]     = {0.015f};
+static tdble AGain[10]     = {0.008f};
+static tdble PnGain[10]    = {0.02f};
+static tdble Advance[10]   = {3.5f};
+static tdble Advance2[10]  = {10.0f};
+static tdble AdvStep[10]   = {1.0f};
+static tdble VGain[10]     = {0.0005f};
+static tdble preDy[10]     = {0.0f};
+static tdble spdtgt[10]    = {250.0f};
+static tdble spdtgt2[10]   = {2.0f};
+static tdble steerMult[10] = {2.0f};
+static tdble Offset[10]    = {0.0f};
 static tdble Trightprev[10];
 tdble DynOffset[10] = {0.0};
 int   PitState[10]  = {0};
@@ -190,7 +197,7 @@ tdble OffsetApproach[10] = {0.0};
 tdble OffsetFinal[10]    = {0.0};
 tdble OffsetExit[10]     = {0.0};
 tdble LgfsFinal[10];
-tdble ConsFactor[10]     = {0.0007};
+tdble ConsFactor[10]     = {0.0007f};
 
 /*
  * Function
@@ -397,8 +404,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble		vtgt1, vtgt2;
     tdble		curAdv, curAdvMax, Amax, Atmp, AdvMax;
 
-    static int		lap[10] = {0};
-    static tdble	lgfsprev[10] = {0.0};
+    static int		lap[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    static tdble	lgfsprev[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     static tdble	adv[10];
     
     

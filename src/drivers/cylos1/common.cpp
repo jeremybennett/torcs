@@ -80,7 +80,7 @@ SpeedStrategy2(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect
 	} else {
 	    RELAXATION(car->_accelCmd, lastAccel[idx], 1.0);
 	}
-	lastBrkCmd[idx] = 0.8;
+	lastBrkCmd[idx] = 0.8f;
     } else {
 	if (car->_speed_x > 0) {
 	    slip = (car->_speed_x - car->_wheelRadius(0) * MIN(car->_wheelSpinVel(0), car->_wheelSpinVel(1))) / car->_speed_x;
@@ -116,10 +116,10 @@ static tdble lastDv[10] = {0};
 void
 SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 {
-    const tdble Dx  = 0.02;
-    const tdble Dxx = 0.01;
-    const tdble Dxb  = 0.05;
-    const tdble Dxxb = 0.01;
+    const tdble Dx  = 0.02f;
+    const tdble Dxx = 0.01f;
+    const tdble Dxb  = 0.05f;
+    const tdble Dxxb = 0.01f;
     tdble	Dv;
     tdble	Dvv;
     tdble 	slip;
@@ -152,7 +152,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	
 	
 	if ((slip > 0.2) && (gear > 1)) {
-	    car->_accelCmd *= 0.4;
+	    car->_accelCmd *= 0.4f;
 	} else {
 	    RELAXATION(car->_accelCmd, lastAccel[idx], 50.0);
 	}

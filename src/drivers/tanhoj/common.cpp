@@ -62,10 +62,10 @@ static tdble lastDv[10] = {0};
 void
 SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 {
-    const tdble Dx  = 0.02;
-    const tdble Dxx = 0.01;
-    const tdble Dxb  = 0.05;
-    const tdble Dxxb = 0.01;
+    const tdble Dx  = 0.02f;
+    const tdble Dxx = 0.01f;
+    const tdble Dxb  = 0.05f;
+    const tdble Dxxb = 0.01f;
     tdble	Dv;
     tdble	Dvv;
     tdble 	slip;

@@ -87,7 +87,7 @@ static tKeyInfo skeyInfo[256];
 static int currentKey[256];
 static int currentSKey[256];
 
-
+static int	firstTime = 0;
 
 #ifdef _WIN32
 /* should be present in mswindows */
@@ -100,7 +100,7 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 static void
 shutdown(int index)
 {
-    static int	firstTime = 1;
+    //static int	firstTime = 1;
     int		idx = index - 1;
 
     free (HCtx[idx]);
@@ -132,7 +132,7 @@ shutdown(int index)
  *	0
  *
  * Remarks
- *	
+ *
  */
 static int
 InitFuncPt(int index, void *pt)
@@ -144,7 +144,20 @@ InitFuncPt(int index, void *pt)
 	masterPlayer = index;
     }
 
-    /* Allocate a new context for that player */
+	if (firstTime < 1) {
+		firstTime = 1;
+		DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+		joyInfo = GfctrlJoyInit();
+		if (joyInfo) {
+			joyPresent = 1;
+		}
+
+		mouseInfo = GfctrlMouseInit();
+
+	}
+
+
+	/* Allocate a new context for that player */
     HCtx[idx] = (tHumanContext *) calloc (1, sizeof (tHumanContext));
 
     HCtx[idx]->ABS = 1.0;
@@ -182,43 +195,51 @@ InitFuncPt(int index, void *pt)
  *	0
  *
  * Remarks
- *	
+ *
  */
+
+#define MAXNAMELEN 100
+
+static char names[10][MAXNAMELEN];
+
 extern "C" int
 human(tModInfo *modInfo)
 {
-    int		i;
-    char	*driver;
+	int i;
+	char *driver;
 
-    memset(modInfo, 0, 10*sizeof(tModInfo));
+	memset(modInfo, 0, 10*sizeof(tModInfo));
 
-    sprintf(buf, "%sdrivers/human/human.xml", GetLocalDir());
-    DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-    
-    if (DrvInfo != NULL) {
-	for (i = 0; i < 10; i++) {
-	    sprintf(sstring, "Robots/index/%d", i+1);
-	    driver = GfParmGetStr(DrvInfo, sstring, "name", "");
-	    if (strlen(driver) == 0) {
-		break;
-	    }
-	    modInfo->name    = driver;	/* name of the module (short) */
-	    modInfo->desc    = "Joystick controlable driver";	/* description of the module (can be long) */
-	    modInfo->fctInit = InitFuncPt;	/* init function */
-	    modInfo->gfId    = ROB_IDENT;	/* supported framework version */
-	    modInfo->index   = i+1;
-	    modInfo++;
+	sprintf(buf, "%sdrivers/human/human.xml", GetLocalDir());
+	DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
+	if (DrvInfo != NULL) {
+		for (i = 0; i < 10; i++) {
+			sprintf(sstring, "Robots/index/%d", i+1);
+			driver = GfParmGetStr(DrvInfo, sstring, "name", "");
+			if (strlen(driver) == 0) {
+				break;
+			}
+			strncpy(names[i], driver, MAXNAMELEN);
+			modInfo->name    = names[i];	/* name of the module (short) */
+			//modInfo->name    = driver;	/* name of the module (short) */
+			modInfo->desc    = "Joystick controlable driver";	/* description of the module (can be long) */
+			modInfo->fctInit = InitFuncPt;	/* init function */
+			modInfo->gfId    = ROB_IDENT;	/* supported framework version */
+			modInfo->index   = i+1;
+			modInfo++;
+		}
 	}
-    }
-    
-    joyInfo = GfctrlJoyInit();
-    if (joyInfo) {
-	joyPresent = 1;
-    }
+/*
+	joyInfo = GfctrlJoyInit();
+	if (joyInfo) {
+		joyPresent = 1;
+	}
 
-    mouseInfo = GfctrlMouseInit();
-
-    return 0;
+	mouseInfo = GfctrlMouseInit();
+*/
+	GfParmReleaseHandle(DrvInfo);
+	return 0;
 }
 
 

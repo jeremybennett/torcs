@@ -32,26 +32,29 @@ static int  InitFuncPt(int index, void *pt);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
 
+static char* botname[BOTS] = {"berniw two 1", "berniw two 2", "berniw two 3", "berniw two 4", "berniw two 5",
+							  "berniw two 6", "berniw two 7", "berniw two 8", "berniw two 9", "berniw two 10"};
+static char* botdesc[BOTS] = {"berniw two 1", "berniw two 2", "berniw two 3", "berniw two 4", "berniw two 5",
+							  "berniw two 6", "berniw two 7", "berniw two 8", "berniw two 9", "berniw two 10"};
 
-static char* botname[BOTS];
-static char* botdesc[BOTS];
 
 /* Module entry point */
 extern "C" int berniw2(tModInfo *modInfo)
 {
-	char	buffer[BUFSIZE];
+	//char	buffer[BUFSIZE];
 
 	for (int i = 0; i < BOTS; i++) {
-		sprintf(buffer, "berniw two %d", i+1);
-		botname[i] = strdup(buffer);
+		//sprintf(buffer, "berniw two %d", i+1);
+		//botname[i] = strdup(buffer);
 		modInfo[i].name = botname[i];			/* name of the module (short) */
-		sprintf(buffer, "berniw two %d", i+1);
-		botdesc[i] = strdup(buffer);
-		modInfo[i].desc    = botdesc[i];		/* description of the module (can be long) */
+		//sprintf(buffer, "berniw two %d", i+1);
+		//botdesc[i] = strdup(buffer);
+		modInfo[i].desc = botdesc[i];			/* description of the module (can be long) */
 		modInfo[i].fctInit = InitFuncPt;		/* init function */
 		modInfo[i].gfId    = ROB_IDENT;			/* supported framework version */
 		modInfo[i].index   = i+1;
 	}
+
 	return 0;
 }
 
@@ -84,8 +87,8 @@ static void shutdown(int index) {
 	if (mycar[i] != NULL) {
 		delete mycar[i];
 		mycar[i] = NULL;
-		free(botdesc[i]);
-		free(botname[i]);
+		//free(botdesc[i]);
+		//free(botname[i]);
 	}
 	if (myTrackDesc != NULL) {
 		delete myTrackDesc;

@@ -96,17 +96,18 @@ Driver::Driver(int index)
 Driver::~Driver()
 {
 	
-	ShowPaths();
+	//ShowPaths();
 
 
 	// Do not save learnt stuff from race itself.
 	// We save only for practice and qualifying.
+/*
 	if (race_type!=RM_TYPE_RACE) {
 		char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->name);
 		learn->saveParameters (fname);
 		free (fname);
 	}
-
+*/
 #if 0
 	printf ("# BEGIN ~Driver() dump\n");
 	for (int i=0; i<track->nseg; i++, seg=seg->next) {
@@ -161,15 +162,15 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 			break;
 	}
 
-	printf ("Trying %s\n", buffer);
+	//printf ("Trying %s\n", buffer);
 	*carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
 
 	if (*carParmHandle == NULL) {
 		snprintf(buffer, BUFSIZE, "drivers/olethros/%d/default.xml", INDEX);
-		printf ("LOADING: %s\n", buffer);
+		//printf ("LOADING: %s\n", buffer);
 		*carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
     } else {
-		printf ("LOADING: %s\n", buffer);
+		//printf ("LOADING: %s\n", buffer);
 	}
 
 	// Create a pit stop strategy object.
@@ -264,12 +265,12 @@ void Driver::drive(tSituation *s)
 	{
 		tTrackSeg* segment = car->_trkPos.seg;
 		if (radius[segment->id]!=FLT_MAX) {
-			printf ("%f ", radius[segment->id]);
-			printf ("%f\n", ideal_radius[segment->id]);
-		}	
+			//printf ("%f ", radius[segment->id]);
+			//printf ("%f\n", ideal_radius[segment->id]);
+		}
 	}
 	//pit->setPitstop(true); // uncomment to test pitstops
-	
+
 	if (isStuck()) {
 		car->_steerCmd = -mycardata->getCarAngle() / car->_steerLock;
 		car->_gearCmd = -1;		// Reverse gear.
@@ -1700,15 +1701,15 @@ void Driver::prepareTrack()
 		C.x[1] = 1;
 		ParametricLine R(&A,&B);
 		for (float r=(sqrt(2*.5*.5))/(1.1); r<5; r*=1.1) {
-			printf ("r=%f =>",r);
+			//printf ("r=%f =>",r);
 			Vector* v = IntersectSphereLine (&R, &C, r);
 			if (v->Size()==0) {
-				printf ("NULL");
+				//printf ("NULL");
 			}
 			for (int i=0; i<v->Size(); i++) {
-				printf (" %f", v->x[i]);
+				//printf (" %f", v->x[i]);
 			}
-			printf("\n");
+			//printf("\n");
 			delete v;
 		}
 

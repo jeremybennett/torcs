@@ -48,12 +48,13 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)
 		pit = true;
 	}
 
+	s1 = e3 = 0;
 	if (isPitAvailable()) {
 		initPit(car);
 		s1 = track->getPitEntryStartId();
-		s1 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITENTRY, (char*)NULL, s1);
+		s1 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITENTRY, (char*)NULL, (float) s1);
 		e3 = track->getPitExitEndId();
-		e3 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITEXIT, (char*)NULL, e3);
+		e3 = (int) GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_PITEXIT, (char*)NULL, (float) e3);
 		pitspeedsqrlimit = t->pits.speedLimit - 0.5;
 		pitspeedsqrlimit *= pitspeedsqrlimit;
 		/* get memory for the pit points */
@@ -1130,7 +1131,8 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	bool out;
 
 	double d = track->distToMiddle(id, myc->getCurrentPos());
-	double factor = MIN(myc->CORRLEN*fabs(d), nPathSeg/2.0);
+//	double factor = MIN(myc->CORRLEN*fabs(d), nPathSeg/2.0);
+	double factor = MIN(MIN(myc->CORRLEN*myc->derror, nPathSeg/2.0), AHEAD);
 	int endid = (id + (int) (factor) + nPathSeg) % nPathSeg;
 
 	if (fabs(d) > (track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0) {

@@ -101,13 +101,13 @@ shutdn(int index)
  *	0
  *
  * Remarks
- *	
+ *
  */
 static int
 InitFuncPt(int index, void *pt)
 {
     tRobotItf *itf = (tRobotItf *)pt;
-    
+
     itf->rbNewTrack = initTrack;			/* give the robot the track view called */
     /* for every track change or new race */
     itf->rbNewRace  = newrace;
@@ -117,6 +117,12 @@ InitFuncPt(int index, void *pt)
     itf->rbShutdown = shutdn;
     return 0;
 }
+
+static char* botname[10] = {"Inferno 1", "Inferno 2", "Inferno 3", "Inferno 4", "Inferno 5",
+							"Inferno 6", "Inferno 7", "Inferno 8", "Inferno 9", "Inferno 10"};
+static char* botdesc[10] = {"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence",
+							"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence"};
+
 
 /*
  * Function
@@ -132,18 +138,18 @@ InitFuncPt(int index, void *pt)
  *	0
  *
  * Remarks
- *	
+ *
  */
 extern "C" int
 inferno(tModInfo *modInfo)
 {
     int		i;
-    char	buf[256];
-    
+    //char	buf[256];
+
     for (i = 0; i < 10; i++) {
-	sprintf(buf, "Inferno %d", i + 1);
-	modInfo[i].name    = strdup(buf);	/* name of the module (short) */
-	modInfo[i].desc    = "For Laurence";	/* description of the module (can be long) */
+	//sprintf(buf, "Inferno %d", i + 1);
+	modInfo[i].name    = botname[i];//strdup(buf);	/* name of the module (short) */
+	modInfo[i].desc    = botdesc[i]; //"For Laurence";	/* description of the module (can be long) */
 	modInfo[i].fctInit = InitFuncPt;	/* init function */
 	modInfo[i].gfId    = ROB_IDENT;		/* supported framework version */
 	modInfo[i].index   = i + 1;
@@ -157,17 +163,17 @@ tdble	MaxSpeed[10];
 tdble	hold[10] = {0};
 tdble	shiftThld[10][MAX_GEARS+1];
 
-static tdble PGain[10]     = {0.015};
-static tdble AGain[10]     = {0.008};
-static tdble PnGain[10]    = {0.02};
-static tdble Advance[10]   = {3.5};
-static tdble Advance2[10]  = {10.0};
-static tdble AdvStep[10]   = {1.0};
-static tdble VGain[10]     = {0.0005};
-static tdble preDy[10]     = {0};
-static tdble spdtgt[10]    = {250.0};
-static tdble spdtgt2[10]   = {2.0};
-static tdble steerMult[10] = {2.0};
+static tdble PGain[10]     = {0.015f};
+static tdble AGain[10]     = {0.008f};
+static tdble PnGain[10]    = {0.02f};
+static tdble Advance[10]   = {3.5f};
+static tdble Advance2[10]  = {10.0f};
+static tdble AdvStep[10]   = {1.0f};
+static tdble VGain[10]     = {0.0005f};
+static tdble preDy[10]     = {0.0f};
+static tdble spdtgt[10]    = {250.0f};
+static tdble spdtgt2[10]   = {2.0f};
+static tdble steerMult[10] = {2.0f};
 static tdble Trightprev[10];
 tdble Offset[10]    = {0.0};
 tdble DynOffset[10] = {0.0};
@@ -190,24 +196,24 @@ tdble OffsetApproach[10] = {0.0};
 tdble OffsetFinal[10]    = {0.0};
 tdble OffsetExit[10]     = {0.0};
 tdble LgfsFinal[10];
-tdble ConsFactor[10]     = {0.0007};
+tdble ConsFactor[10]     = {0.0007f};
 int   damageThld[10]	 = {5000};
 
 /*
  * Function
- *	
+ *
  *
  * Description
- *	
+ *
  *
  * Parameters
- *	
+ *
  *
  * Return
- *	
+ *
  *
  * Remarks
- *	
+ *
  */
 
 #define SIMU_PRMS	"Simulation Parameters"
@@ -249,8 +255,8 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     char	buf[256];
     tdble	fuel;
     tdble	tmpMu;
-    
-    
+
+
     DmTrack = track;
     str = strrchr(track->filename, '/') + 1;
     sprintf(ParamNames, "drivers/inferno/%d/tracksdata/car_%s", index, str);
@@ -264,7 +270,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     }
     ConsFactor[idx] = 0.0007 * DmTrack->length;
     fuel = ConsFactor[idx] * (s->_totLaps + 1);
-    
+
     GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
 
     VM = track->pits.speedLimit;
@@ -320,16 +326,16 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 
 /*
  * Function
- *	
+ *
  *
  * Description
- *	
+ *
  *
  * Parameters
- *	
+ *
  *
  * Return
- *	
+ *
  */
 static int	curidx;
 static tdble	Gear;
@@ -339,7 +345,7 @@ static tdble	InvBrkCmd;
 void newrace(int index, tCarElt* car, tSituation *s)
 {
     int 	idx = index - 1;
-    
+
     Tright[idx] = Trightprev[idx] = car->_trkPos.toRight;
     hold[idx] = 8.0;
     curidx = 0;
@@ -372,19 +378,19 @@ void newrace(int index, tCarElt* car, tSituation *s)
 
 /*
  * Function
- *	
+ *
  *
  * Description
- *	
+ *
  *
  * Parameters
- *	
+ *
  *
  * Return
- *	
+ *
  *
  * Remarks
- *	
+ *
  */
 static void drive(int index, tCarElt* car, tSituation *s)
 {
@@ -401,8 +407,8 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble		curAdv, curAdvMax, Amax, Atmp, AdvMax;
     tdble		TRightRef, step;
 
-    static int		lap[10] = {0};
-    static tdble	lgfsprev[10] = {0.0};
+    static int		lap[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    static tdble	lgfsprev[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     static tdble	adv[10];
 
 
@@ -421,7 +427,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (lgfs < DmTrack->seg->next->length) {
 	curidx = 0;
 	if (lgfsprev[idx] > lgfs) {
-	    lgfsprev[idx] = 0;
+	    lgfsprev[idx] = 0.0;
 	}
     }
 

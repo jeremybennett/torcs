@@ -57,8 +57,8 @@ const double MyCar::LOOKAHEAD_FACTOR = 1.0/3.0; /* [-] */
 
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
-    AEROMAGIC = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_AMAGIC, (char*)NULL, 1.6);
-	CFRICTION = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_FMAGIC, (char*)NULL, 1.0);
+    AEROMAGIC = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_AMAGIC, (char*)NULL, 1.6f);
+	CFRICTION = GfParmGetNum(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_FMAGIC, (char*)NULL, 1.0f);
 
 	/* init pointer to car data */
 	setCarPtr(car);
@@ -132,7 +132,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	};
 
 	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < 12; j++) {
+		for (int j = 0; j < 8; j++) {
 			behaviour[i][j] = ba[i][j];
 		}
 	}
@@ -226,7 +226,7 @@ void MyCar::updateCa()
 	double cl = GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0) + GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
 	double h = 0.0;
 
-	for (int i = 0; i < 4; i++) h += GfParmGetNum(me->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*)NULL, 0.20);
+	for (int i = 0; i < 4; i++) h += GfParmGetNum(me->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*)NULL, 0.20f);
 	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
 	ca = AEROMAGIC*(h*cl + 4.0*wingca);
 }

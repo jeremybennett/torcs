@@ -92,16 +92,16 @@ InitGears(tCarElt* car, int idx)
 }
 
 static tdble lastAccel[10] = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-static tdble lastBrkCmd[10] = {0};
-static tdble lastDv[10] = {0};
+static tdble lastBrkCmd[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+static tdble lastDv[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
 void
 SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 {
-    const tdble Dx  = 0.02;
-    const tdble Dxx = 0.01;
-    const tdble Dxb  = 0.05;
-    const tdble Dxxb = 0.01;
+    const tdble Dx  = 0.02f;
+    const tdble Dxx = 0.01f;
+    const tdble Dxb  = 0.05f;
+    const tdble Dxxb = 0.01f;
     tdble	Dv;
     tdble	Dvv;
     tdble 	slip;
@@ -234,12 +234,12 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
     static tdble	 Start = pits->pitStart->lgfromstart;
     static tdble	 End   = pits->pitEnd->lgfromstart;
     static tdble	 Exit  = pits->pitExit->lgfromstart;
-    
+
 
     switch (PitState[idx]) {
     case PIT_STATE_NONE:
 	break;
-	
+
     case PIT_STATE_ASKED:
     case PIT_STATE_ENTERED:
 	lgfs = GetDistToStart(car);
@@ -258,7 +258,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	if (PitState[idx] == PIT_STATE_ASKED) {
 	    break;
 	}
-	
+
 	/* FALL THROUGH */
     case PIT_STATE_DECEL:
 	if (!lgfs) lgfs = GetDistToStart(car);
@@ -271,7 +271,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
 	    hold[idx] = 0;
 	    break;
 	}
-	
+
 	/* FALL THROUGH */
     case PIT_STATE_PITLANE_BEFORE:
 	if (!lgfs) lgfs = GetDistToStart(car);
@@ -290,7 +290,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
     case PIT_STATE_PIT_ENTRY:
 	if (!lgfs) lgfs = GetDistToStart(car);
 
-	
+
 	if (isBetween(lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx] - OA[idx])) {
 	    //GfOut("PIT_STATE_PIT_ENTRY\n");
 	    PitState[idx] = PIT_STATE_PIT_ENTRY;
@@ -306,7 +306,7 @@ getOffset(int idx, tCarElt* car, tdble *maxSpeed)
     case PIT_STATE_PIT_ALIGN:
 	if (!lgfs) lgfs = GetDistToStart(car);
 
-	
+
 	if (isBetween(lgfs, LgfsFinal[idx] - OA[idx], LgfsFinal[idx])) {
 	    //GfOut("PIT_STATE_PIT_ALIGN\n");
 	    PitState[idx] = PIT_STATE_PIT_ALIGN;
@@ -392,8 +392,8 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     }
 #endif
 
-    if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) && 
-	(((car->_dammage > damageThld[idx]) && ((s->_totLaps - car->_laps) > 2)) || 
+    if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) &&
+	(((car->_dammage > damageThld[idx]) && ((s->_totLaps - car->_laps) > 2)) ||
 	 ((car->_fuel < ConsFactor[idx]) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
@@ -415,7 +415,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	if (dlg < -(DmTrack->length / 2.0)) dlg += DmTrack->length;
 
 	dspd = car->_speed_x - otherCar->_speed_x;
-	if ((car->_laps < otherCar->_laps) && 
+	if ((car->_laps < otherCar->_laps) &&
 	    (dlg > -maxdlg) && (dlg < (car->_dimension_x + 1.0)) &&
 	    (dlg > (dspd * dspd))) {
 	    if ((fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN / 2.0)) &&
@@ -517,6 +517,6 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     } else if (Tright[idx] > seg->width) {
 	Tright[idx] = seg->width;
     }
-    
+
     if (MaxSpeed[idx] < 1.0) MaxSpeed[idx] = 1.0;
 }

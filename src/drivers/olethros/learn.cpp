@@ -40,7 +40,7 @@ inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 	fread(buf->c, sizeof(char), l, f);
 
 	if (strcmp(tag,buf->c)) {
-		fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
+		//fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
 		free(tag);
 		return false;
 	}
@@ -357,7 +357,7 @@ void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, fl
 	float delta = learning_rate * (du-pdu);
 	float der_dm = -SIGN(u)*brake;
 	float der_dm2 = -SIGN(u)*u*u*brake/mass;
-	float der_dm3 = -SIGN(u)*u*u/mass;
+	//float der_dm3 = -SIGN(u)*u*u/mass;
 	dm += delta * der_dm;
 	dm2 += delta* der_dm2;
 	//dm3 += delta* der_dm3;
@@ -386,7 +386,7 @@ void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, fl
 
 void SegLearn::loadParameters (char* fname)
 {
-	std::cout << "Maybe load parameters from " << fname << std::endl;
+	//std::cout << "Maybe load parameters from " << fname << std::endl;
 	FILE* f = fopen(fname,"r");
 	if (!f) { // no error here.
 		return;
@@ -420,14 +420,14 @@ void SegLearn::loadParameters (char* fname)
 	CheckMatchingToken(make_message("END"),rtag, f);
 	FreeStringBuffer(&rtag);
 	fclose(f);
-	std::cout << "Parameters loaded\n";
+	//std::cout << "Parameters loaded\n";
 }
 
 /// Save
 void SegLearn::saveParameters (char* fname)
 {
 	FILE* f = fopen(fname,"w");
-	std::cout << "Maybe save parameters to " << fname << std::endl;
+	//std::cout << "Maybe save parameters to " << fname << std::endl;
 	if (!f) {
 		std::cerr << "Could not open " << fname << " for writing. Check permissions\n";
 		return;
@@ -457,7 +457,7 @@ void SegLearn::saveParameters (char* fname)
 	WriteToken(make_message("END"), f);
 	//FreeStringBuffer(&rtag);
 	fclose(f);
-	std::cout << "Parameters saved\n";
+	//std::cout << "Parameters saved\n";
 }
 
 #ifdef USE_OLETHROS_NAMESPACE

@@ -38,7 +38,11 @@
 #define BUFSIZE 20
 #define NBBOTS 10
 
-static char *botname[NBBOTS];
+static char* botname[NBBOTS] = {"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
+								"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"};
+static char* botdesc[NBBOTS] = {"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
+								"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"};
+
 static Driver *driver[NBBOTS];
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
@@ -53,17 +57,14 @@ static void endRace(int index, tCarElt *car, tSituation *s);
 // Module entry point.
 extern "C" int bt(tModInfo *modInfo)
 {
-	char buffer[BUFSIZE];
 	int i;
 
 	// Clear all structures.
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
 	for (i = 0; i < NBBOTS; i++) {
-		snprintf(buffer, BUFSIZE, "bt %d", i+1);
-		botname[i] = strndup(buffer, BUFSIZE);      // Store pointer to string.
 		modInfo[i].name    = botname[i];  			// name of the module (short).
-		modInfo[i].desc    = "";          			// Description of the module (can be long).
+		modInfo[i].desc    = botdesc[i];			// Description of the module (can be long).
 		modInfo[i].fctInit = InitFuncPt;			// Init function.
 		modInfo[i].gfId    = ROB_IDENT;				// Supported framework version.
 		modInfo[i].index   = i;						// Indices from 0 to 9.
@@ -128,7 +129,6 @@ static void endRace(int index, tCarElt *car, tSituation *s)
 // Called before the module is unloaded.
 static void shutdown(int index)
 {
-	free(botname[index]);
 	delete driver[index];
 }
 

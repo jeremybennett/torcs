@@ -111,17 +111,17 @@ static tdble	MaxSpeed[10];
 static tdble	hold[10] = {0};
 static tdble	shiftThld[10][MAX_GEARS+1];
 
-const  tdble PGain[1]    = {0.016};
-const  tdble AGain[10]    = {0.004};
-const  tdble PnGain[10]   = {0.025};
+const  tdble PGain[1]    = {0.016f};
+const  tdble AGain[10]    = {0.004f};
+const  tdble PnGain[10]   = {0.025f};
 const  tdble Advance[10]  = {50.0};
 const  tdble Advance2[10] = {30.0};
 const  tdble Advance3[10] = {250.0};
 const  tdble AdvStep[10]  = {25.0};
-const  tdble VGain[10]    = {0.0005};
+const  tdble VGain[10]    = {0.0005f};
 static tdble preDy[10]    = {0};
 static tdble spdtgt[10]   = {200.0};
-static tdble spdtgt2[10]  = {0.1};
+static tdble spdtgt2[10]  = {0.1f};
 static tdble Trightprev[10];
 
 #include "common.cpp"
@@ -309,7 +309,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
     CollDet(car, 0, s, Curtime);
     
-    kk = 0.8;
+    kk = 0.8f;
     RELAXATION(Tright[0], Trightprev[0], kk);
 
     adv = 4 * MIN(Tright[0], seg->width - Tright[0]);
@@ -344,7 +344,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (car->_speed_x < 0) {
 	car->_steerCmd *= 1.5;
     } else {
-	car->_steerCmd *= 1.1;
+	car->_steerCmd *= 1.1f;
     }
 
     /*

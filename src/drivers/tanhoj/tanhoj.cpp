@@ -115,17 +115,17 @@ tdble	MaxSpeed[10];
 tdble	hold[10] = {0};
 tdble	shiftThld[10][MAX_GEARS+1];
 
-static tdble PGain[10]    = {0.02};
-static tdble AGain[10]    = {0.008};
-static tdble PnGain[10]   = {0.02};
-static tdble Advance[10]  = {35.0};
-static tdble Advance2[10] = {20.0};
-static tdble AdvStep[10]  = {20.0};
-static tdble VGain[10]    = {0.0005};
-static tdble preDy[10]    = {0};
-static tdble spdtgt[10]   = {115.0};
-static tdble spdtgt2[10]  = {1.0};
-static tdble steerMult[10]  = {2.0};
+static tdble PGain[10]    = {0.02f};
+static tdble AGain[10]    = {0.008f};
+static tdble PnGain[10]   = {0.02f};
+static tdble Advance[10]  = {35.0f};
+static tdble Advance2[10] = {20.0f};
+static tdble AdvStep[10]  = {20.0f};
+static tdble VGain[10]    = {0.0005f};
+static tdble preDy[10]    = {0.0f};
+static tdble spdtgt[10]   = {115.0f};
+static tdble spdtgt2[10]  = {1.0f};
+static tdble steerMult[10]  = {2.0f};
 static tdble Trightprev[10];
 
 /*
@@ -344,10 +344,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
     car->_steerCmd = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
 
-    if (car->_speed_x < 0) {
-	car->_steerCmd *= 1.5;
+    if (car->_speed_x < 0.0f) {
+	car->_steerCmd *= 1.5f;
     } else {
-	car->_steerCmd *= 1.1;
+	car->_steerCmd *= 1.1f;
     }
 
     /*

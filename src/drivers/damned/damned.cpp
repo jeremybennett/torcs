@@ -49,28 +49,28 @@ static tdble lastBrkCmd[10] = {0};
 static tdble lastAccel[10];
 static tdble lastClutch[10];
 
-static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-static tdble AccAngle[10] = {	0.0,	0.0,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3,	0.3 };
-const  tdble PGain[10]   = {	0.2,	0.2,   0.2,	0.1,	0.1,	0.08,	0.2,	0.02,	0.02,	0.1	};
-static tdble AGain[10]   = {	0.30,	-0.08,   0.25,	0.0,	0.0,	0.05,	0.08,	0.08,	0.08,	0.4	};
-static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.1,	0.08,	0.05,	0.02,	0.015,	0.15	};
-const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
-static tdble Advance[10] = {	0.0,	0.0,   0.0,	18.0,	18,	0,	0.0,	0.0,	0.0,	0	};
-static tdble Advance2[10]= {	0.0,	0.0,   0.0,	15.0,	15,	15,	0.0,	0.0,	0.0,	0	};
-static tdble Advance3[10]= {	-5.0,	-5.0,  -16.0,	-6.0,	-6.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
-const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
+static tdble AccSteer[10] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+static tdble AccAngle[10] = {	0.0f,	0.0f,	0.3f,	0.3f,	0.3f,	0.3f,	0.3f,	0.3f,	0.3f,	0.3f };
+const  tdble PGain[10]   = {	0.2f,	0.2f,   0.2f,	0.1f,	0.1f,	0.08f,	0.2f,	0.02f,	0.02f,	0.1f	};
+static tdble AGain[10]   = {	0.30f,	-0.08f,   0.25f,	0.0f,	0.0f,	0.05f,	0.08f,	0.08f,	0.08f,	0.4f	};
+static tdble PnGain[10]  = {	0.10f,	0.1f,   0.08f,	0.1f,	0.1f,	0.08f,	0.05f,	0.02f,	0.015f,	0.15f	};
+const  tdble PnnGain[10] = {	0.0f,	0.00f,   0.00f,	0.00f,	0.00f,	0.005f,	0.0f,	0.00f,	0.00f,	0.00f	};
+static tdble Advance[10] = {	0.0f,	0.0f,   0.0f,	18.0f,	18.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f	};
+static tdble Advance2[10]= {	0.0f,	0.0f,   0.0f,	15.0f,	15.0f,	15.0f,	0.0f,	0.0f,	0.0f,	0.0f	};
+static tdble Advance3[10]= {	-5.0f,	-5.0f,  -16.0f,	-6.0f,	-6.0f,	-10.0f,	0.0f,	0.0f,	0.0f,	5.0f	};
+const  tdble Advance4[10]= {	4.00f,	4.0f,    4.0f,	4.0f,	4.0f,	4.0f,	4.0f,	4.0f,	4.0f,	4.0f	};
 //static tdble Advance5[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
-static tdble VGain[10]   = {	0.0001,	0.0001,	0.01,	0.01,	0.01,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
-static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	6000,	10000,	10000,	10000	};
-static tdble spdtgt2[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
-static tdble spdtgt2ref[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
-static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
-static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble steerk[10] = {	1.0,	1.0,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
-static tdble MaxFuel[10] = {	100.0,	50.0,	60.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
+static tdble VGain[10]   = {	0.0001f,	0.0001f,	0.01f,	0.01f,	0.01f,	0.005f,	0.0002f,	0.0005f,	0.0005f,	0.01f	};
+static tdble preDy[10]   = {	0.0f,	0.0f,      0.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f	};
+static tdble spdtgt[10]  = {	5000.0f,	5000.0f,  	10000.0f,	5000.0f,	5000.0f,	10000.0f,	6000.0f,	10000.0f,	10000.0f,	10000.0f	};
+static tdble spdtgt2[10] = {	10.0f,	10.0f,	0.0f,	10.0f,	10.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f	};
+static tdble spdtgt2ref[10] = {	10.0f,	10.0f,	0.0f,	10.0f,	10.0f,	0.0f,	0.0f,	0.0f,	0.0f,	0.0f	};
+static tdble maxBrk[10]  = {	1.0f,	1.0f,	1.0f,	1.0f,	1.0f,	1.0f,	1.0f,	1.0f,	1.0f,	1.0f	};
+static double hold[10] =    {	0.0,	0.0,	0.0,	0.0,	0.0,	0.0,	0.0,	0.0,	0.0,	0.0	};
+static tdble steerk[10] = {	1.0f,	1.0f,	0.7f,	1.00f,	1.0f,	0.7f, 	1.0f, 	1.0f, 	1.0f, 	0.9f	};
+static tdble MaxFuel[10] = {	100.0f,	50.0f,	60.0f,	70.0f,	80.0f,	100.0f, 	100.0f, 	100.0f, 	100.0f, 	100.0f	};
 static tdble MaxSpeed[10];
-static tdble TgtRpm[10] = {	RPM2RADS(5000.0), RPM2RADS(5888), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0), RPM2RADS(5000.0)	};
+static tdble TgtRpm[10] = {	(float) RPM2RADS(5000.0), (float) RPM2RADS(5888.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0), (float) RPM2RADS(5000.0)	};
 
 #define PIT_STATE_NO            -1
 #define PIT_STATE_NONE           0
@@ -149,6 +149,10 @@ InitFuncPt(int index, void *pt)
     return 0;
 }
 
+static char* botname[10] = {"Damned 1", "Damned 2", "Damned 3", "Damned 4", "Damned 5",
+							"Damned 6", "Damned 7", "Damned 8", "Damned 9", "Damned 10"};
+static char* botdesc[10] = {"EE robot #1", "EE robot #2", "EE robot #3", "EE robot #4", "EE robot #5",
+							"EE robot #6", "EE robot #7", "EE robot #8", "EE robot #9", "EE robot #10"};
 /*
  * Function
  *	damned
@@ -169,13 +173,13 @@ extern "C" int
 damned(tModInfo *modInfo)
 {
     int		i;
-    char	buf[256];
-    
+    //char	buf[256];
+
     for (i = 0; i < 10; i++) {
-	sprintf(buf, "Damned %d", i+1);
-	modInfo[i].name    = strdup(buf);	/* name of the module (short) */
-	sprintf(buf, "EE robot #%d", i+1);
-	modInfo[i].desc    = strdup(buf);	/* description of the module (can be long) */
+	//sprintf(buf, "Damned %d", i+1);
+	modInfo[i].name    = botname[i]; //strdup(buf);	/* name of the module (short) */
+	//sprintf(buf, "EE robot #%d", i+1);
+	modInfo[i].desc    = botdesc[i]; //strdup(buf);	/* description of the module (can be long) */
 	modInfo[i].fctInit = InitFuncPt;	/* init function */
 	modInfo[i].gfId    = ROB_IDENT;		/* supported framework version */
 	modInfo[i].index   = i+1;
@@ -243,7 +247,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     } else {
 	GfOut("%s loaded\n", buf);
     }
-    ConsFactor = 0.00064 * DmTrack->length * GfParmGetNum(carHandle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
+    ConsFactor = 0.00064 * DmTrack->length * GfParmGetNum(carHandle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622f);
     fuel = (s->_totLaps + 1) * ConsFactor + 6.0;
     fuel = MIN(fuel, MaxFuel[index-1]);
     GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
@@ -286,8 +290,8 @@ void newrace(int index, tCarElt* car, tSituation *s)
     tdble spdmult = 1.0;
     
     if (strcmp(DmTrack->category, "dirt") == 0) {
-	width *= 0.65;
-	spdmult = 0.8;
+	width *= 0.65f;
+	spdmult = 0.8f;
     }
     
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
@@ -787,12 +791,12 @@ static void drive(int index, tCarElt* car, tSituation *s)
     car->_clutchCmd = 0.0;
     if ((car->_gearCmd == 1) && (car->_accelCmd > 0.8) && (car->_speed_x < 6.0)) {
 	if (car->_enginerpm < TgtRpm[idx]) {
-	    lastClutch[idx] += 0.01;
+	    lastClutch[idx] += 0.01f;
 	} else if (car->_enginerpm > TgtRpm[idx] + RPM2RADS(100.0)) {
-	    lastClutch[idx] -= 0.01;
+	    lastClutch[idx] -= 0.01f;
 	}
-	if (lastClutch[idx] > 0.9) {
-	    lastClutch[idx] = 0.9;
+	if (lastClutch[idx] > 0.9f) {
+	    lastClutch[idx] = 0.9f;
 	} else if (lastClutch[idx] < 0.0) {
 	    lastClutch[idx] = 0.0;
 	}

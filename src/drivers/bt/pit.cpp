@@ -165,7 +165,7 @@ bool Pit::isTimeout(float distance)
 		pittimer = 0.0;
 		return false;
 	} else {
-		pittimer += RCM_MAX_DT_ROBOTS;
+		pittimer += (float) RCM_MAX_DT_ROBOTS;
 		if (pittimer > 3.0) {
 			pittimer = 0.0;
 			return true;

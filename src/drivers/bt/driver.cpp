@@ -19,37 +19,41 @@
 
 #include "driver.h"
 
+#ifdef WIN32
+#define snprintf _snprintf
+#endif
+
 const float Driver::MAX_UNSTUCK_ANGLE = 15.0/180.0*PI;		// [radians] If the angle of the car on the track is smaller, we assume we are not stuck.
-const float Driver::UNSTUCK_TIME_LIMIT = 2.0;				// [s] We try to get unstuck after this time.
-const float Driver::MAX_UNSTUCK_SPEED = 5.0;				// [m/s] Below this speed we consider being stuck.
-const float Driver::MIN_UNSTUCK_DIST = 3.0;					// [m] If we are closer to the middle we assume to be not stuck.
-const float Driver::G = 9.81;								// [m/(s*s)] Welcome on Earth.
-const float Driver::FULL_ACCEL_MARGIN = 1.0;				// [m/s] Margin reduce oscillation of brake/acceleration.
-const float Driver::SHIFT = 0.9;							// [-] (% of rpmredline) When do we like to shift gears.
-const float Driver::SHIFT_MARGIN = 4.0;						// [m/s] Avoid oscillating gear changes.
-const float Driver::ABS_SLIP = 2.0;							// [m/s] range [0..10]
-const float Driver::ABS_RANGE = 5.0;						// [m/s] range [0..10]
-const float Driver::ABS_MINSPEED = 3.0;						// [m/s] Below this speed the ABS is disabled (numeric, division by small numbers).
-const float Driver::TCL_SLIP = 2.0;							// [m/s] range [0..10]
-const float Driver::TCL_RANGE = 10.0;						// [m/s] range [0..10]
-const float Driver::LOOKAHEAD_CONST = 17.0;					// [m]
-const float Driver::LOOKAHEAD_FACTOR = 0.33;				// [-]
-const float Driver::WIDTHDIV = 3.0;							// [-] Defines the percentage of the track to use (2/WIDTHDIV).
-const float Driver::SIDECOLL_MARGIN = 3.0;					// [m] Distance between car centers to avoid side collisions.
-const float Driver::BORDER_OVERTAKE_MARGIN = 0.5;			// [m]
-const float Driver::OVERTAKE_OFFSET_SPEED = 5.0;			// [m/s] Offset change speed.
-const float Driver::PIT_LOOKAHEAD = 6.0;					// [m] Lookahead to stop in the pit.
-const float Driver::PIT_BRAKE_AHEAD = 200.0;				// [m] Workaround for "broken" pitentries.
-const float Driver::PIT_MU = 0.4;							// [-] Friction of pit concrete.
-const float Driver::MAX_SPEED = 84.0;						// [m/s] Speed to compute the percentage of brake to apply.
-const float Driver::MAX_FUEL_PER_METER = 0.0008;			// [liter/m] fuel consumtion.
-const float Driver::CLUTCH_SPEED = 5.0;						// [m/s]
-const float Driver::CENTERDIV = 0.1;						// [-] (factor) [0.01..0.6].
-const float Driver::DISTCUTOFF = 200.0;						// [m] How far to look, terminate while loops.
-const float Driver::MAX_INC_FACTOR = 5.0;					// [m] Increment faster if speed is slow [1.0..10.0].
-const float Driver::CATCH_FACTOR = 10.0;					// [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake.
-const float Driver::CLUTCH_FULL_MAX_TIME = 2.0;				// [s] Time to apply full clutch.
-const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2;			// [m] if offset < this use the learned stuff
+const float Driver::UNSTUCK_TIME_LIMIT = 2.0f;				// [s] We try to get unstuck after this time.
+const float Driver::MAX_UNSTUCK_SPEED = 5.0f;				// [m/s] Below this speed we consider being stuck.
+const float Driver::MIN_UNSTUCK_DIST = 3.0f;				// [m] If we are closer to the middle we assume to be not stuck.
+const float Driver::G = 9.81f;								// [m/(s*s)] Welcome on Earth.
+const float Driver::FULL_ACCEL_MARGIN = 1.0f;				// [m/s] Margin reduce oscillation of brake/acceleration.
+const float Driver::SHIFT = 0.9f;							// [-] (% of rpmredline) When do we like to shift gears.
+const float Driver::SHIFT_MARGIN = 4.0f;					// [m/s] Avoid oscillating gear changes.
+const float Driver::ABS_SLIP = 2.0f;						// [m/s] range [0..10]
+const float Driver::ABS_RANGE = 5.0f;						// [m/s] range [0..10]
+const float Driver::ABS_MINSPEED = 3.0f;					// [m/s] Below this speed the ABS is disabled (numeric, division by small numbers).
+const float Driver::TCL_SLIP = 2.0f;						// [m/s] range [0..10]
+const float Driver::TCL_RANGE = 10.0f;						// [m/s] range [0..10]
+const float Driver::LOOKAHEAD_CONST = 17.0f;				// [m]
+const float Driver::LOOKAHEAD_FACTOR = 0.33f;				// [-]
+const float Driver::WIDTHDIV = 3.0f;						// [-] Defines the percentage of the track to use (2/WIDTHDIV).
+const float Driver::SIDECOLL_MARGIN = 3.0f;					// [m] Distance between car centers to avoid side collisions.
+const float Driver::BORDER_OVERTAKE_MARGIN = 0.5f;			// [m]
+const float Driver::OVERTAKE_OFFSET_SPEED = 5.0f;			// [m/s] Offset change speed.
+const float Driver::PIT_LOOKAHEAD = 6.0f;					// [m] Lookahead to stop in the pit.
+const float Driver::PIT_BRAKE_AHEAD = 200.0f;				// [m] Workaround for "broken" pitentries.
+const float Driver::PIT_MU = 0.4f;							// [-] Friction of pit concrete.
+const float Driver::MAX_SPEED = 84.0f;						// [m/s] Speed to compute the percentage of brake to apply.
+const float Driver::MAX_FUEL_PER_METER = 0.0008f;			// [liter/m] fuel consumtion.
+const float Driver::CLUTCH_SPEED = 5.0f;					// [m/s]
+const float Driver::CENTERDIV = 0.1f;						// [-] (factor) [0.01..0.6].
+const float Driver::DISTCUTOFF = 200.0f;					// [m] How far to look, terminate while loops.
+const float Driver::MAX_INC_FACTOR = 5.0f;					// [m] Increment faster if speed is slow [1.0..10.0].
+const float Driver::CATCH_FACTOR = 10.0f;					// [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake.
+const float Driver::CLUTCH_FULL_MAX_TIME = 2.0f;			// [s] Time to apply full clutch.
+const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;		// [m] if offset < this use the learned stuff
 
 // Static variables.
 Cardata *Driver::cardata = NULL;
@@ -114,14 +118,14 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 	strategy->setFuelAtRaceStart(t, carParmHandle, s);
 
 	// Load and set parameters.
-	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69);
+	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69f);
 }
 
 
 // Start a new race.
 void Driver::newRace(tCarElt* car, tSituation *s)
 {
-	float deltaTime = RCM_MAX_DT_ROBOTS;
+	float deltaTime = (float) RCM_MAX_DT_ROBOTS;
 	MAX_UNSTUCK_COUNT = int(UNSTUCK_TIME_LIMIT/deltaTime);
 	OVERTAKE_OFFSET_INC = OVERTAKE_OFFSET_SPEED*deltaTime;
 	stuck = 0;
@@ -384,7 +388,7 @@ float Driver::getClutch()
 		clutchtime = MIN(CLUTCH_FULL_MAX_TIME, clutchtime);
 		float clutcht = (CLUTCH_FULL_MAX_TIME - clutchtime)/CLUTCH_FULL_MAX_TIME;
 		if (car->_gear == 1 && car->_accelCmd > 0.0) {
-			clutchtime += RCM_MAX_DT_ROBOTS;
+			clutchtime += (float) RCM_MAX_DT_ROBOTS;
 		}
 
 		if (drpm > 0) {
@@ -673,7 +677,7 @@ void Driver::initCa()
 	float h = 0.0;
 	int i;
 	for (i = 0; i < 4; i++)
-		h += GfParmGetNum(car->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*) NULL, 0.20);
+		h += GfParmGetNum(car->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*) NULL, 0.20f);
 	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
 	CA = h*cl + 4.0*wingca;
 }

@@ -24,7 +24,7 @@
 
 #include "strategy.h"
 
-const float SimpleStrategy::MAX_FUEL_PER_METER = 0.0008;	// [kg/m] fuel consumtion.
+const float SimpleStrategy::MAX_FUEL_PER_METER = 0.0008f;	// [kg/m] fuel consumtion.
 const int SimpleStrategy::PIT_DAMMAGE = 5000;				// [-]
 
 
