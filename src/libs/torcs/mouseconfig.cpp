@@ -40,6 +40,8 @@ static void	*prevHandle = NULL;
 
 static void	*PrefHdle = NULL;
 
+static int	CalButton;
+
 static tCtrlMouseInfo	mouseInfo;
 
 typedef struct
@@ -61,8 +63,8 @@ static tCmdInfo Cmd[] = {
     {HM_ATT_GEAR_N,     {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
     {HM_ATT_UP_SHFT,    {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
     {HM_ATT_DN_SHFT,    {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
-    {HM_ATT_LEFTSTEER,  {1,  GFCTRL_TYPE_MOUSE_AXIS},   0, HM_ATT_LEFTSTEER_MIN, 0, HM_ATT_LEFTSTEER_MAX, 0, HM_ATT_LEFTSTEER_POW, 0, 0},
-    {HM_ATT_RIGHTSTEER, {2,  GFCTRL_TYPE_MOUSE_AXIS},   0, HM_ATT_RIGHTSTEER_MIN, 0, HM_ATT_RIGHTSTEER_MAX, 0, HM_ATT_RIGHTSTEER_POW, 0, 0},
+    {HM_ATT_LEFTSTEER,  {1,  GFCTRL_TYPE_MOUSE_AXIS},   0, HM_ATT_LEFTSTEER_MIN, 0, HM_ATT_LEFTSTEER_MAX, 0, HM_ATT_LEFTSTEER_POW, 0, 1},
+    {HM_ATT_RIGHTSTEER, {2,  GFCTRL_TYPE_MOUSE_AXIS},   0, HM_ATT_RIGHTSTEER_MIN, 0, HM_ATT_RIGHTSTEER_MAX, 0, HM_ATT_RIGHTSTEER_POW, 0, 1},
     {HM_ATT_THROTTLE,   {1,  GFCTRL_TYPE_MOUSE_BUT},    0, HM_ATT_THROTTLE_MIN, 0, HM_ATT_THROTTLE_MAX, 0, HM_ATT_THROTTLE_POW, 0, 1},
     {HM_ATT_BRAKE,      {2,  GFCTRL_TYPE_MOUSE_BUT},    0, HM_ATT_BRAKE_MIN, 0, HM_ATT_BRAKE_MAX, 0, HM_ATT_BRAKE_POW, 0, 1},
     {HM_ATT_ASR_CMD,    {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -155,6 +157,7 @@ updateButtonText(void)
 {
     int		i;
     char	*str;
+    int		displayCal = GFUI_INVISIBLE;
 
     for (i = 0; i < maxCmd; i++) {
 	str = GfctrlGetNameByRef(Cmd[i].ref.type, Cmd[i].ref.index);
@@ -163,6 +166,9 @@ updateButtonText(void)
 	} else {
 	    GfuiButtonSetText (scrHandle, Cmd[i].Id, "---");
 	}
+	if (Cmd[i].ref.type == GFCTRL_TYPE_MOUSE_AXIS) {
+	    displayCal = GFUI_VISIBLE;
+	}
     }
 
     sprintf(buf, "%f", SteerSensVal);
@@ -170,6 +176,8 @@ updateButtonText(void)
 
     sprintf(buf, "%f", DeadZoneVal);
     GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
+
+    GfuiVisiblilitySet(scrHandle, CalButton, displayCal);
 }
 
 static void
@@ -372,8 +380,8 @@ TorcsMouseMenuInit(void *prevMenu)
     GfuiButtonCreate(scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiButtonCreate(scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     scrHandle2, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    CalButton = GfuiButtonCreate(scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				 scrHandle2, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
