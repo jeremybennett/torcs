@@ -310,10 +310,10 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
-    } else if (absolute_speed < 0.00001) {
-		sx = wvx;
-		sy = 0;
-		sa = 0;
+    } else if (absolute_speed < 10.0) {
+		sx = 0.1*wvx;//absolute_speed;
+		sy = 0.1*wvy;//absolute_speed;
+		sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
 		// real solution is to use a first or second-order integration
