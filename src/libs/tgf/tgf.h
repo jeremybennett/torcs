@@ -28,7 +28,7 @@
     <br>When the directory mode is used, the filenames are not known by advance, this
     <br>allow more flexibility at runtime.
     <br>
-    <br>The generic information can be retrieve, without keeping the DLL loaded.
+    <br>The generic information can be retrieved, without keeping the DLL loaded.
     <br>
     <br>The gfid parameter is use to differentiate the modules using different includes.
     <br>This functionality is not used yet.
@@ -82,7 +82,7 @@
 #include <GL/glut.h>
 #include <osspec.h>
 
-/* typedef float tdble; */
+/* typedef double tdble; */
 typedef float tdble;
 
 #ifndef MAX
@@ -252,41 +252,6 @@ extern int GfParmListSeekFirst(void *handle, char *path);
 extern int GfParmListSeekNext(void *handle, char *path);
 extern char *GfParmListGetCurEltName(void *handle, char *path);
 extern int GfParmListClean(void *handle, char *path);
-
-#ifdef NOT_YET
-
-/********************************
- * Process Management Interface *
- ********************************/
-
-/* priority values */
-#define GF_PRI_MAX	0
-#define GF_PRI_HI	1
-#define GF_PRI_MED	2
-#define GF_PRI_LOW	3
-#define GF_PRI_MIN	4
-
-/* process function type */
-#define GF_PROC_CONT	0
-#define GF_PROC_END	-1
-typedef int (*tfProc)(void *);
-
-/*
- * Process Management Functions
- */
-/* initiate a new scheduler */
-extern int  GfProcCreateSched(void);
-/* create a new process */
-extern void *GfProcCreate(tfProc pfct, int privdatasize, int prio, int sched);
-/* kill all the process of a scheduler */
-extern int GfProcKillAll(int sched);
-/* run all the processes of the current scheduler*/
-extern int GfProcDispatch(void);
-/* Select a scheduler to dispatch */
-extern int GfProcSelectSched(int sched);
-
-#endif /* NOT_YET */
-
 
 /******************** 
  * Screen Interface *
@@ -539,6 +504,18 @@ extern void GfTrace(char *szTrc);
 {					\
     char _trc_buff[256];		\
     sprintf(_trc_buff, s, p1, p2, p3);	\
+    GfTrace(_trc_buff);			\
+}
+
+/** Output Trace with n parameters
+    @param	s	string to display
+    @param	args	parameter (ala printf)
+    @fn	 GfTracen(s, args...)
+ */
+#define GfTracen(s, args...)		\
+{					\
+    char _trc_buff[256];		\
+    sprintf(_trc_buff, s, ## args);	\
     GfTrace(_trc_buff);			\
 }
 

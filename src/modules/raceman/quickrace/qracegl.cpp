@@ -42,6 +42,7 @@ qrQuit(void *vflag)
 {
     switch ((int)vflag) {
     case 0:
+/* 	glutSetKeyRepeat(GLUT_KEY_REPEAT_ON); */
 	exit(0);
 	break;
     case 1:

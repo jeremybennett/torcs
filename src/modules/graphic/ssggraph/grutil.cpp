@@ -103,7 +103,7 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     if (mipmap) {
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, mipmap, w, w, GL_RGBA, 
 					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
@@ -113,7 +113,7 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
 	    return 0;
 	}
     } else {
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
     }

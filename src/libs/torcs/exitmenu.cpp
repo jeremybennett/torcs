@@ -26,6 +26,7 @@
 static void 
 endofprog(void *dummy)
 {
+/*     glutSetKeyRepeat(GLUT_KEY_REPEAT_ON); */
     exit(0);
 }
 

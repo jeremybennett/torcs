@@ -34,6 +34,7 @@
 #define HM_ATT_DN_SHFT		"down shift"
 #define HM_ATT_ASR_CMD		"ASR cmd"
 #define HM_ATT_ABS_CMD		"ABS cmd"
+
 #define HM_ATT_GEAR_R		"reverse gear"
 #define HM_ATT_GEAR_N		"neutral gear"
 #define HM_ATT_GEAR_1		"1st gear"
@@ -43,14 +44,23 @@
 #define HM_ATT_GEAR_5		"5th gear"
 #define HM_ATT_GEAR_6		"6th gear"
 
+/* used for RS Shifter controller */
 #define HM_ATT_REL_BUT_NEUTRAL	"release gear button goes neutral"
 
+/* Tell if the sequential shifter can go to neutral */
+#define HM_ATT_SEQSHFT_ALLOW_NEUTRAL "sequential shifter allow neutral"
 
-#define HM_ATT_STEER		"steer"
-#define HM_ATT_STEER_MIN	"steer min"
-#define HM_ATT_STEER_MAX	"steer max"
-#define HM_ATT_STEER_SENS	"steer sensitivity"
-#define HM_ATT_STEER_POW	"steer power"
+#define HM_ATT_LEFTSTEER	"left steer"
+#define HM_ATT_LEFTSTEER_MIN	"left steer min"
+#define HM_ATT_LEFTSTEER_MAX	"left steer max"
+#define HM_ATT_LEFTSTEER_SENS	"left steer sensitivity"
+#define HM_ATT_LEFTSTEER_POW	"left steer power"
+
+#define HM_ATT_RIGHTSTEER	"right steer"
+#define HM_ATT_RIGHTSTEER_MIN	"right steer min"
+#define HM_ATT_RIGHTSTEER_MAX	"right steer max"
+#define HM_ATT_RIGHTSTEER_SENS	"right steer sensitivity"
+#define HM_ATT_RIGHTSTEER_POW	"right steer power"
 
 #define HM_ATT_THROTTLE		"throttle"
 #define HM_ATT_THROTTLE_MIN	"throttle min"
@@ -78,7 +88,6 @@
 
 #define HM_VAL_YES	"yes"
 #define HM_VAL_NO	"no"
-
 
 #endif /* _PLAYERPREF_H_ */ 
 

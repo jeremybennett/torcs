@@ -31,20 +31,28 @@ tdble SimDeltaTime;
 
 int SimTelemetry;
 
+static int SimNbCars;
+
 t3Dd vectStart[16];
 t3Dd vectEnd[16];
 
 #define MEANNB 0
 #define MEANW  1
 
+
+/*
+ * Check the input control from robots
+ */
 static void
 ctrlCheck(tCar *car)
 {
+    /* sanity check */
     if (isnan(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
     if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
     
+    /* When the car is broken try to send it on the track side */
     if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
 	car->ctrl->accelCmd = 0.0;
 	car->ctrl->brakeCmd = 0.1;
@@ -55,14 +63,20 @@ ctrlCheck(tCar *car)
 	    car->ctrl->steer = -0.1;
 	}
     } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
+	/* when the finish line is passed, continue at "slow" pace */
 	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.20);
 	if (car->DynGC.vel.x > 30.0) {
 	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
 	}
     }
+
+    /* try to smooth the robot commands */
+    /* by filtering the vibrations */
     car->ctrl->accelCmd = gfMean(car->ctrl->accelCmd, &car->meanAccel, MEANNB, MEANW);    
     car->ctrl->brakeCmd = gfMean(car->ctrl->brakeCmd, &car->meanBrake, MEANNB, MEANW);
     car->ctrl->steer = gfMean(car->ctrl->steer, &car->meanSteer, MEANNB, MEANW);
+
+    /* check boundaries */
     if (car->ctrl->accelCmd > 1.0) {
 	car->ctrl->accelCmd = 1.0;
     } else if (car->ctrl->accelCmd < 0.0) {
@@ -80,7 +94,7 @@ ctrlCheck(tCar *car)
     }
 }
 
-
+/* Initial configuration */
 void
 SimConfig(tCarElt *carElt)
 {
@@ -101,6 +115,7 @@ SimConfig(tCarElt *carElt)
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 }
 
+/* After pit stop */
 void
 SimReConfig(tCarElt *carElt)
 {
@@ -199,9 +214,10 @@ RemoveCar(tCar *car, tSituation *s)
     carElt->_state |= RM_CAR_STATE_PULLUP;
 
     carElt->priv->collision = car->collision = 0;
-    for(i = 0; i < 3; i++) {
+    for(i = 0; i < 4; i++) {
 	carElt->_skid[i] = 0;
 	carElt->_wheelSpinVel(i) = 0;
+	carElt->_brakeTemp(i) = 0;
     }
     carElt->pub->DynGC = car->DynGC;
     carElt->_speed_x = 0;
@@ -241,9 +257,6 @@ RemoveCar(tCar *car, tSituation *s)
     NORM_PI_PI(dang);
     car->restPos.vel.ay = dang / travelTime;
 
-/*     car->DynGC = carElt->pub->DynGC; */
-/*     sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z, */
-/* 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch)); */
 }
 
 
@@ -335,7 +348,6 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
     }
 }
 
-static int SimNbCars;
 
 void
 SimInit(int nbcars)
@@ -348,8 +360,7 @@ SimInit(int nbcars)
 void
 SimShutdown(void)
 {
-    //GfParmReleaseHandle(SimCarTable[0].params);
     SimCarCollideShutdown(SimNbCars);
-    
     free(SimCarTable);   
 }
+

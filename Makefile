@@ -1,3 +1,4 @@
+
 ##############################################################################
 #
 #    file                 : Makefile
@@ -65,7 +66,7 @@ configure: configure.in aclocal.m4
 aclocal.m4: acinclude.m4
 	aclocal
 
-distclean: doc clean
+distclean: clean
 	rm -f config.status config.log config.cache
 	rm -f Make-config
 	rm -rf ${EXPORTBASE}

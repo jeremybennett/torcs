@@ -42,53 +42,39 @@ void	*PrefHdle;
 
 int	Transmission;
 
-int	NbPitStopProg = 0;
+int	NbPitStopProg		= 0;
 
-int	ParamAsr	 = 0;	/* anti-slip accel */
-int	ParamAbs	 = 1;	/* anti-lock brake */
+int	ParamAsr		= 0;	/* anti-slip accel */
+int	ParamAbs		= 1;	/* anti-lock brake */
+int	RelButNeutral		= 0;
+int	SeqShftAllowNeutral	= 0;
 
-#define NB_CMD	12
+#define NB_CMD	16
 
-int	CmdButton[NB_CMD] = {0, 1, 2, 3, -1, -1, -1, -1, -1, -1, -1, -1};
-
-
-static char	*CmdAttrName[NB_CMD] = {
-    HM_ATT_UP_SHFT,
-    HM_ATT_DN_SHFT,
-    HM_ATT_ASR_CMD,
-    HM_ATT_ABS_CMD,
-    HM_ATT_GEAR_R,
-    HM_ATT_GEAR_N,
-    HM_ATT_GEAR_1,
-    HM_ATT_GEAR_2,
-    HM_ATT_GEAR_3,
-    HM_ATT_GEAR_4,
-    HM_ATT_GEAR_5,
-    HM_ATT_GEAR_6
+tControlCmd	CmdControl[NB_CMD] = {
+    {HM_ATT_UP_SHFT,    CMD_TYPE_JOY_BUT,       0, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_DN_SHFT,    CMD_TYPE_JOY_BUT,       1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_ASR_CMD,    CMD_TYPE_JOY_BUT,       2, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_ABS_CMD,    CMD_TYPE_JOY_BUT,       3, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_R,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_N,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_1,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_2,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_3,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_4,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_5,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_GEAR_6,     CMD_TYPE_NOT_AFFECTED, -1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
+    {HM_ATT_THROTTLE,   CMD_TYPE_ANALOG,        1, HM_ATT_THROTTLE_MIN,   0.0, 0.0, HM_ATT_THROTTLE_MAX,   1.0, HM_ATT_THROTTLE_SENS,   1.0, HM_ATT_THROTTLE_POW,   2.0},
+    {HM_ATT_BRAKE,      CMD_TYPE_ANALOG,        1, HM_ATT_BRAKE_MIN,      0.0, 0.0, HM_ATT_BRAKE_MAX,      1.0, HM_ATT_BRAKE_SENS,      1.0, HM_ATT_BRAKE_POW,      2.0},
+    {HM_ATT_LEFTSTEER,  CMD_TYPE_ANALOG,        0, HM_ATT_LEFTSTEER_MIN,  0.0, 0.0, HM_ATT_LEFTSTEER_MAX,  1.0, HM_ATT_LEFTSTEER_SENS,  2.0, HM_ATT_LEFTSTEER_POW,  1.0},
+    {HM_ATT_RIGHTSTEER, CMD_TYPE_ANALOG,        0, HM_ATT_RIGHTSTEER_MIN, 0.0, 0.0, HM_ATT_RIGHTSTEER_MAX, 1.0, HM_ATT_RIGHTSTEER_SENS, 2.0, HM_ATT_RIGHTSTEER_POW, 1.0}
 };
 
-
-int	RelButNeutral	= 0;
-
-int	CmdSteer	= 0;
-float	SteerSens	= 2.0;
-float	SteerPow	= 1.0;
-int	CmdThrottle	= 1;
-float	ThrMin		= 0.0;
-float	ThrMinVal	= 0;
-float	ThrMax		= 0;
-float	ThrSens		= 1.0;
-float	ThrPow		= 2.0;
-int	CmdBrake	= 1;
-float	BrkMin		= 0;
-float	BrkMinVal	= 0;
-float	BrkMax		= 1.0;
-float	BrkSens		= 1.0;
-float	BrkPow		= 2.0;
 
 static char *Btn[] = {"BTN1", "BTN2", "BTN3", "BTN4", "BTN5", "BTN6", "BTN7", "BTN8", "BTN9", "BTN10", "BTN11", "BTN12", "BTN13", "BTN14", "BTN15", "BTN16",
 		      "BTN17", "BTN18", "BTN19", "BTN20", "BTN21", "BTN22", "BTN23", "BTN24", "BTN25", "BTN26", "BTN27", "BTN28", "BTN29", "BTN30", "BTN31", "BTN32"};
 static char *Axis[] = {"AXIS0", "AXIS1", "AXIS2", "AXIS3", "AXIS4", "AXIS5", "AXIS6", "AXIS7", "AXIS8", "AXIS9", "AXIS10", "AXIS11", "AXIS12"};
+
 
 char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
@@ -101,6 +87,8 @@ HmReadPrefs(int index)
     uint	i, cmd;
     uint	maxButton;
     float	tmp;
+    int		maxAxis;
+    
     
     sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 
@@ -112,7 +100,7 @@ HmReadPrefs(int index)
     } else {
 	Transmission = 1;
     }
-    NbPitStopProg = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0);
+/*     NbPitStopProg = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0); */
     /* Parameters Settings */
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[ParamAbs]);
     if (strcmp(prm, Yn[0]) == 0) {
@@ -127,23 +115,75 @@ HmReadPrefs(int index)
 	ParamAsr = 0;
     }
 
-    maxButton = sizeof(Btn)/sizeof(char*);
+    maxButton = sizeof(Btn) / sizeof(char*);
+    maxAxis = sizeof(Axis) / sizeof(char*);
 
-    /* JOYSTICK SETTINGS */
+    /* Command Settings */
     for (cmd = 0; cmd < NB_CMD; cmd++) {
-	prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, CmdAttrName[cmd], Btn[CmdButton[cmd]]);
-	prm = GfParmGetStr(PrefHdle, sstring, CmdAttrName[cmd], prm);
+	switch (CmdControl[cmd].type) {
+	case CMD_TYPE_ANALOG:
+	    prm = Axis[CmdControl[cmd].val];
+	    break;
+	case CMD_TYPE_JOY_BUT:
+	    prm = Btn[CmdControl[cmd].val];
+	    break;
+	case CMD_TYPE_NOT_AFFECTED:
+	    prm = NULL;
+	    break;
+	}
+	prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].name, prm);
+	prm = GfParmGetStr(PrefHdle, sstring, CmdControl[cmd].name, prm);
+	if (!prm || (strlen(prm) == 0)) {
+	    CmdControl[cmd].type = CMD_TYPE_NOT_AFFECTED;
+	    GfOut("%s -> NONE (-1)\n", CmdControl[cmd].name);
+	    continue;
+	}
+	if (CmdControl[cmd].minName) {
+	    CmdControl[cmd].min = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].minName, (char*)NULL, (tdble)CmdControl[cmd].min);
+	    CmdControl[cmd].min = CmdControl[cmd].minVal = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].minName, (char*)NULL, (tdble)CmdControl[cmd].min);
+	}
+	if (CmdControl[cmd].maxName) {
+	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
+	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
+	}	
+	if (CmdControl[cmd].sensName) {
+	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
+	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
+	}	
+	if (CmdControl[cmd].powName) {
+	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
+	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
+	}
+	if (CmdControl[cmd].min > CmdControl[cmd].max) {
+	    tmp = CmdControl[cmd].min;
+	    CmdControl[cmd].min = CmdControl[cmd].max;
+	    CmdControl[cmd].max = tmp;
+	}
 	for (i = 0; i < maxButton; i++) {
 	    if (strcmp(prm, Btn[i]) == 0) {
-		CmdButton[cmd] = i;
-		GfOut("%s -> %s (%d)\n", CmdAttrName[cmd], Btn[i], i);
+		CmdControl[cmd].val = i;
+		CmdControl[cmd].type = CMD_TYPE_JOY_BUT;
+		GfOut("%s -> %s (%d)\n", CmdControl[cmd].name, Btn[i], i);
 		break;
 	    }
 	}
-	if (i == maxButton) {
-	    CmdButton[cmd] = -1;
-	    GfOut("%s -> NONE (-1)\n", CmdAttrName[cmd]);
+	if (i != maxButton) {
+	    continue;
 	}
+	for (i = 0; i < maxAxis; i++) {
+	    if (strcmp(prm, Axis[i]) == 0) {
+		CmdControl[cmd].val = i;
+		CmdControl[cmd].type = CMD_TYPE_ANALOG;
+		GfOut("%s -> %s (%d)\n", CmdControl[cmd].name, Axis[i], i);
+		break;
+	    }
+	}
+	if (i != maxAxis) {
+	    continue;
+	}
+	
+	CmdControl[cmd].type = CMD_TYPE_NOT_AFFECTED;
+	GfOut("%s -> NONE (-1)\n", CmdControl[cmd].name);
     }
 
     prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_REL_BUT_NEUTRAL, Yn[RelButNeutral]);
@@ -154,72 +194,23 @@ HmReadPrefs(int index)
 	RelButNeutral = 0;
     }
 
-    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER, Axis[CmdSteer]);
-    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_STEER, prm);
-    for (i = 0; i < sizeof(Axis)/sizeof(char*); i++) {
-	if (strcmp(prm, Axis[i]) == 0) {
-	   CmdSteer  = i;
-	}
-    }
-    SteerSens = 1.0/(float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_SENS,
-				      (char*)NULL, (tdble)(1.0/SteerSens));
-    SteerSens = 1.0/(float)GfParmGetNum(PrefHdle, sstring, HM_ATT_STEER_SENS,
-				      (char*)NULL, (tdble)(1.0/SteerSens));
-    SteerPow = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_POW, (char*)NULL, (tdble)SteerPow);
-    SteerPow = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_STEER_POW, (char*)NULL, (tdble)SteerPow);
-
-    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE, Axis[CmdThrottle]);
-    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_THROTTLE, prm);
-    for (i = 0; i < sizeof(Axis)/sizeof(char*); i++) {
-	if (strcmp(prm, Axis[i]) == 0) {
-	   CmdThrottle  = i;
-	}
-    }
-    ThrMin = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MIN, (char*)NULL, (tdble)ThrMin);
-    ThrMinVal = ThrMin = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_THROTTLE_MIN, (char*)NULL, (tdble)ThrMin);
-    ThrMax = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MAX, (char*)NULL, (tdble)ThrMax);
-    ThrMax = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_THROTTLE_MAX, (char*)NULL, (tdble)ThrMax);
-    ThrSens = 1.0/(float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_SENS,
-				      (char*)NULL, (tdble)(1.0/ThrSens));
-    ThrSens = 1.0/(float)GfParmGetNum(PrefHdle, sstring, HM_ATT_THROTTLE_SENS,
-				      (char*)NULL, (tdble)(1.0/ThrSens));
-    ThrPow = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_POW, (char*)NULL, (tdble)ThrPow);
-    ThrPow = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_THROTTLE_POW, (char*)NULL, (tdble)ThrPow);
-    if (ThrMin > ThrMax) {
-	tmp = ThrMin;
-	ThrMin = ThrMax;
-	ThrMax = tmp;
-    }
-    
-    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE, Axis[CmdBrake]);
-    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_BRAKE, prm);
-    for (i = 0; i < sizeof(Axis)/sizeof(char*); i++) {
-	if (strcmp(prm, Axis[i]) == 0) {
-	   CmdBrake  = i;
-	}
-    }
-    BrkMin = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MIN, (char*)NULL, (tdble)BrkMin);
-    BrkMinVal = BrkMin = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_BRAKE_MIN, (char*)NULL, (tdble)BrkMin);
-    BrkMax = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MAX, (char*)NULL, (tdble)BrkMax);
-    BrkMax = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_BRAKE_MAX, (char*)NULL, (tdble)BrkMax);
-    BrkSens = 1.0/(float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_SENS, (char*)NULL, (tdble)(1.0/BrkSens));
-    BrkSens = 1.0/(float)GfParmGetNum(PrefHdle, sstring, HM_ATT_BRAKE_SENS, (char*)NULL, (tdble)(1.0/BrkSens));
-    BrkPow = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_POW, (char*)NULL, (tdble)BrkPow);
-    BrkPow = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_BRAKE_POW, (char*)NULL, (tdble)BrkPow);
-    if (BrkMin > BrkMax) {
-	tmp = BrkMin;
-	BrkMin = BrkMax;
-	BrkMax = tmp;
+    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_SEQSHFT_ALLOW_NEUTRAL, Yn[SeqShftAllowNeutral]);
+    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_SEQSHFT_ALLOW_NEUTRAL, prm);
+    if (strcmp(prm, Yn[0]) == 0) {
+	SeqShftAllowNeutral = 1;
+    } else {
+	SeqShftAllowNeutral = 0;
     }
 
 #if 0
+    GfOut("jsType 	 = %d\n", jsType);
     GfOut("Transmission  = %d\n", Transmission);
     GfOut("NbPitStopProg = %d\n", NbPitStopProg);
     GfOut("ParamAsr      = %d\n", ParamAsr);
     GfOut("ParamAbs      = %d\n", ParamAbs);
-    GfOut("CmdSteer      = %d\n", CmdSteer);
-    GfOut("SteerSens     = %f\n", SteerSens);
-    GfOut("SteerPow      = %f\n", SteerPow);
+    GfOut("CmdLeftSteer  = %d\n", CmdLeftSteer);
+    GfOut("LeftSteerSens = %f\n", LeftSteerSens);
+    GfOut("LeftSteerPow  = %f\n", LeftSteerPow);
     GfOut("CmdThrottle   = %d\n", CmdThrottle);
     GfOut("ThrMin        = %f\n", ThrMin);
     GfOut("ThrMinVal     = %f\n", ThrMinVal);

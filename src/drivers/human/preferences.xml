@@ -22,18 +22,27 @@
     <attstr name="ASR cmd" val="BTN6"></attstr>
     <attstr name="ABS cmd" val="BTN3"></attstr>
     <attstr name="reverse gear" val="BTN4"></attstr>
-    <attstr name="neutral gear" val="BTN2"></attstr>
-    <attstr name="1st gear" val="BTN1"></attstr>
+    <attstr name="neutral gear" val="BTN1"></attstr>
+    <attstr name="1st gear" val=""></attstr>
     <attstr name="2nd gear" val=""></attstr>
     <attstr name="3rd gear" val=""></attstr>
     <attstr name="4th gear" val=""></attstr>
     <attstr name="5th gear" val=""></attstr>
     <attstr name="6th gear" val=""></attstr>
-    <attstr name="release gear button goes neutral" in="yes,no" val="yes"></attstr>
+    <attstr name="release gear button goes neutral" in="yes,no" val="no"></attstr>
+    <attstr name="sequential shifter allow neutral" in="yes,no" val="no"></attstr>
 
-    <attstr name="steer" val="AXIS0"></attstr>
-    <attnum name="steer sensitivity" val="0.5"></attnum>
-    <attnum name="steer power" val="1.0"></attnum>
+    <attstr name="left steer" val="AXIS0"></attstr>
+    <attnum name="left steer min" val="1.0"></attnum>
+    <attnum name="left steer max" val="-1.1"></attnum>
+    <attnum name="left steer sensitivity" val="0.5"></attnum>
+    <attnum name="left steer power" val="1.0"></attnum>
+
+    <attstr name="right steer" val="AXIS0"></attstr>
+    <attnum name="right steer min" val="1.0"></attnum>
+    <attnum name="right steer max" val="-1.1"></attnum>
+    <attnum name="right steer sensitivity" val="0.5"></attnum>
+    <attnum name="right steer power" val="1.0"></attnum>
 
     <attstr name="throttle" val="AXIS1"></attstr>
     <attnum name="throttle min" val="1.0"></attnum>
@@ -179,6 +188,37 @@
     <attnum name="brake max" val="-1.1"></attnum>
     <attnum name="brake sensitivity" val="0.5"></attnum>
     <attnum name="brake power" val="0.8"></attnum>
+  </section>
+
+  <section name="joystick digital (joypad)">
+    <attstr name="up shift" val="BTN3"></attstr>
+    <attstr name="down shift" val="BTN4"></attstr>
+    <attstr name="ASR cmd" val="BTN5"></attstr>
+    <attstr name="ABS cmd" val="BTN6"></attstr>
+    <attstr name="reverse gear" val=""></attstr>
+    <attstr name="neutral gear" val=""></attstr>
+    <attstr name="1st gear" val=""></attstr>
+    <attstr name="2nd gear" val=""></attstr>
+    <attstr name="3rd gear" val=""></attstr>
+    <attstr name="4th gear" val=""></attstr>
+    <attstr name="5th gear" val=""></attstr>
+    <attstr name="6th gear" val=""></attstr>
+    <attstr name="release gear button goes neutral" val="yes"></attstr>
+    <attstr name="steer" val="AXIS0"></attstr>
+    <attnum name="steer sensitivity" val="0.500000"></attnum>
+    <attnum name="steer power" val="1.000000"></attnum>
+    <attstr name="throttle" val="BTN1"></attstr>
+    <attstr name="brake" val="BTN2"></attstr>
+    <attnum name="steer min" val="-1.000000"></attnum>
+    <attnum name="steer max" val="1.000000"></attnum>
+    <attnum name="throttle min" val="0.000000"></attnum>
+    <attnum name="throttle max" val="1.000000"></attnum>
+    <attnum name="brake min" val="0.000000"></attnum>
+    <attnum name="brake max" val="1.000000"></attnum>
+    <attnum name="throttle sensitivity" val="1.0"></attnum>
+    <attnum name="throttle power" val="1.2"></attnum>
+    <attnum name="brake sensitivity" val="0.5"></attnum>
+    <attnum name="brake power" val="1.2"></attnum>
   </section>
 
 </params>

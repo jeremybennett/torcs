@@ -38,9 +38,9 @@ static void	*PrefHdle = NULL;
 static void joyCalMenuInit(void);
 
 
-#define NB_CMD	12
+#define NB_CMD	14
 
-int	CmdButton[NB_CMD] = {-1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3};
+int	CmdButton[NB_CMD] = {-1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, -1, -1};
 
 static char	*CmdAttrName[NB_CMD] = {
     HM_ATT_GEAR_R,
@@ -54,7 +54,9 @@ static char	*CmdAttrName[NB_CMD] = {
     HM_ATT_UP_SHFT,
     HM_ATT_DN_SHFT,
     HM_ATT_ASR_CMD,
-    HM_ATT_ABS_CMD
+    HM_ATT_ABS_CMD,
+    HM_ATT_THROTTLE,
+    HM_ATT_BRAKE
 };
 
 int butId[NB_CMD];
@@ -226,7 +228,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
     joyCalMenuInit();
     
     scrHandle1 = GfuiScreenCreateEx(NULL, NULL, onActivate1, NULL, NULL, 1);
-    #define TITLE1 "Joystick Configuration"
+    #define TITLE1 "Controls"
     GfuiTitleCreate(scrHandle1, TITLE1, strlen(TITLE1));
     GfuiMenuDefaultKeysAdd(scrHandle1);
 
@@ -248,7 +250,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
 	if (i == 7) {
 	    x = 360;
 	    y = 340;
-	} else if (i == 9) {
+	} else if ((i == 9) || (i == 11)) {
 	    y -= dy;
 	}
     }
@@ -330,8 +332,9 @@ JoyCalAutomaton(void)
 	break;
     case 1:
 	axis = getMovedAxis();
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER, Axis[axis]);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_MIN, NULL, ax0[axis]);
+	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER, Axis[axis]);
+	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER_MIN, NULL, ax0[axis]);
+	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER_MAX, NULL, axCenter[axis]);
 	GfuiLabelSetText(scrHandle2, LabAxisId[0], Axis[axis]);
 	sprintf(buf, "%.2f", ax0[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[0], buf);
@@ -339,14 +342,18 @@ JoyCalAutomaton(void)
 	break;
     case 2:
 	axis2 = getMovedAxis();
-	if (axis != axis2) {
-	    CalState = 6;
-	    break;
-	}
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_MAX, NULL, ax0[axis]);
+	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER, Axis[axis]);
+	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER_MAX, NULL, ax0[axis]);
+	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER_MIN, NULL, axCenter[axis]);
 	sprintf(buf, "%.2f", ax0[axis]);
 	GfuiLabelSetText(scrHandle2, LabMaxId[0], buf);
-	CalState = 3;
+	if (CmdButton[12] == -1) {
+	    CalState = 3;
+	} else if (CmdButton[13] == -1) {
+	    CalState = 4;
+	} else {
+	    CalState = 5;
+	}
 	break;
     case 3:
 	axis = getMovedAxis();
@@ -358,7 +365,11 @@ JoyCalAutomaton(void)
 	GfuiLabelSetText(scrHandle2, LabMinId[1], buf);
 	sprintf(buf, "%.2f", ax0[axis]*1.1);
 	GfuiLabelSetText(scrHandle2, LabMaxId[1], buf);
-	CalState = 4;
+	if (CmdButton[13] == -1) {
+	    CalState = 4;
+	} else {
+	    CalState = 5;
+	}
 	break;
     case 4:
 	axis = getMovedAxis();

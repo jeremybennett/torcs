@@ -31,7 +31,7 @@ DATADIR   = drivers/${ROBOT}
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print) $(shell find *.rgb -maxdepth 0 -type f -print)
 
 
-DATASUBDIRS = cg-gt-rwd tracks mclaren-f1
+DATASUBDIRS = cg-gt-rwd tracks
 
 include ${MAKE_DEFAULT}
 

@@ -85,6 +85,8 @@ gfuiInit(void)
     gfuiObjectInit();
     gfuiColorInit();
     gfuiLoadFonts();
+
+/*     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF); */
 }
 
 
@@ -315,6 +317,7 @@ GfuiScreenActivate(void *screen)
     if (GfuiScreen->onActivate) GfuiScreen->onActivate(GfuiScreen->userActData);
     GfuiDisplay();
     glutPostRedisplay();
+
 }
 
 /** Deactivate the current screen.
@@ -673,7 +676,7 @@ GfuiScreenAddBgImg(void *scr, char *filename)
     }
     glGenTextures(1, &screen->bgImage);
     glBindTexture(GL_TEXTURE_2D, screen->bgImage);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
     free(tex);

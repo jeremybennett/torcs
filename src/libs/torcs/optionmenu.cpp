@@ -46,7 +46,7 @@ TorcsOptionOptionInit(void *precMenu)
 			     "Player", "Configure player parameters",
 			     playerHandle, GfuiScreenActivate);
 	GfuiMenuButtonCreate(optionHandle,
-			     "Joystick", "Configure joystick parameters",
+			     "Controls", "Configure control parameters",
 			     JoystickHandle, GfuiScreenActivate);
 	
     }

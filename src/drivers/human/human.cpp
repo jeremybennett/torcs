@@ -116,7 +116,7 @@ InitFuncPt(int index, void *pt)
 	itf->rbDrive    = drive_mt;		/* drive during race */
     }
     itf->rbShutdown = shutdown;
-    itf->rbPitCmd = pitcmd;
+    itf->rbPitCmd   = pitcmd;
     itf->index      = index;
 
     return 0;
@@ -255,7 +255,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
  *	
  */
 static tdble shiftThld[MAX_GEARS+1];
-static tdble	Gear;
+static tdble Gear;
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
@@ -286,7 +286,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 
 static int	 edgeup[32] = {0};
 static int	 edgedn[32] = {0};
-
+static int	 levelup[32]  = {0};
 
 static void common_drive(int index, tCarElt* car, tSituation *s)
 {
@@ -297,9 +297,13 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     static float AntiSlip = 1.0;
     static int	 lap = 0;
     static float ax0[_JS_MAX_AXES];
-    static int	 rawb = 0;
+    static int	 oldb = 0;
+    float	 ax;
     int		 mask;
     float	 brake;
+    float	 throttle;
+    float	 leftSteer;
+    float	 rightSteer;
     
     Gear = (tdble)car->_gear;	/* telemetry */
 
@@ -313,27 +317,32 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
     /* Joystick buttons */
     for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
-	if (((b & mask) != 0) && ((rawb & mask) == 0)) {
+	if (((b & mask) != 0) && ((oldb & mask) == 0)) {
 	    edgeup[i] = 1;
 	} else {
 	    edgeup[i] = 0;
 	}
-	if (((b & mask) == 0) && ((rawb & mask) != 0)) {
+	if (((b & mask) == 0) && ((oldb & mask) != 0)) {
 	    edgedn[i] = 1;
 	} else {
 	    edgedn[i] = 0;
 	}
+	if ((b & mask) != 0) {
+	    levelup[i] = 1;
+	} else {
+	    levelup[i] = 0;
+	}
     }
-    rawb = b;
+    oldb = b;
     
 
-    if ((CmdButton[CMD_BUT_ABS] != -1) && edgeup[CmdButton[CMD_BUT_ABS]]) {
+    if ((CmdControl[CMD_ABS].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_ABS].val]) {
 	ParamAbs = 1 - ParamAbs;
 	sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 	GfParmSetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[1 - ParamAbs]);
 	GfParmWriteFile(HM_PREF_FILE, PrefHdle, "Human", GFPARM_PARAMETER, "../../libs/tgf/params.dtd");
     }
-    if ((CmdButton[CMD_BUT_ASR] != -1) && edgeup[CmdButton[CMD_BUT_ASR]]) {
+    if ((CmdControl[CMD_ASR].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_ASR].val]) {
 	ParamAsr = 1 - ParamAsr;
 	sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 	GfParmSetStr(PrefHdle, sstring, HM_ATT_ASR, Yn[1 - ParamAsr]);
@@ -348,26 +357,61 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     }
     memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
 
-    if (CmdSteer != -1) {
-	car->ctrl->steer = -SIGN(ax0[CmdSteer]) * SteerPow * pow(fabs(ax0[CmdSteer]), SteerSens);
-    } else {
-	car->ctrl->steer = 0;
-    }
-    
-    if (CmdBrake != -1) {
-	brake = ax0[CmdBrake];
-    } else {
-	brake = 0;
-    }
-    
-    if (brake < BrkMin) {
-	brake = BrkMin;
-    } else if (brake > BrkMax) {
-	brake = BrkMax;
+    switch (CmdControl[CMD_LEFTSTEER].type) {
+    case CMD_TYPE_ANALOG:
+	ax = ax0[CmdControl[CMD_LEFTSTEER].val];
+	if (ax > CmdControl[CMD_LEFTSTEER].max) {
+	    ax = CmdControl[CMD_LEFTSTEER].max;
+	} else if (ax < CmdControl[CMD_LEFTSTEER].min) {
+	    ax = CmdControl[CMD_LEFTSTEER].min;
+	}
+	leftSteer = -SIGN(ax) * CmdControl[CMD_LEFTSTEER].pow * pow(fabs(ax), CmdControl[CMD_LEFTSTEER].sens);
+	break;
+    default:
+	leftSteer = 0;
+	break;
     }
 
-    car->ctrl->brakeCmd = fabs(BrkPow * pow(fabs((brake - BrkMinVal)/(BrkMax-BrkMin)), BrkSens));
-    if ((ParamAbs) /* && (car->ctrl->brakeCmd < (0.9 * BrkPow)) */ ) {
+    switch (CmdControl[CMD_RIGHTSTEER].type) {
+    case CMD_TYPE_ANALOG:
+	ax = ax0[CmdControl[CMD_RIGHTSTEER].val];
+	if (ax > CmdControl[CMD_RIGHTSTEER].max) {
+	    ax = CmdControl[CMD_RIGHTSTEER].max;
+	} else if (ax < CmdControl[CMD_RIGHTSTEER].min) {
+	    ax = CmdControl[CMD_RIGHTSTEER].min;
+	}
+	rightSteer = -SIGN(ax) * CmdControl[CMD_RIGHTSTEER].pow * pow(fabs(ax), CmdControl[CMD_RIGHTSTEER].sens);
+	break;
+    default:
+	rightSteer = 0;
+	break;
+    }
+
+    car->ctrl->steer = leftSteer + rightSteer;
+    
+
+    switch (CmdControl[CMD_BRAKE].type) {
+    case CMD_TYPE_ANALOG:
+	brake = ax0[CmdControl[CMD_BRAKE].val];
+	if (brake > CmdControl[CMD_BRAKE].max) {
+	    brake = CmdControl[CMD_BRAKE].max;
+	} else if (brake < CmdControl[CMD_BRAKE].min) {
+	    brake = CmdControl[CMD_BRAKE].min;
+	}
+	car->ctrl->brakeCmd = fabs(CmdControl[CMD_BRAKE].pow *
+				   pow(fabs((brake - CmdControl[CMD_BRAKE].minVal) /
+					    (CmdControl[CMD_BRAKE].max - CmdControl[CMD_BRAKE].min)),
+				       CmdControl[CMD_BRAKE].sens));
+	break;
+    case CMD_TYPE_JOY_BUT:
+	car->ctrl->brakeCmd = levelup[CmdControl[CMD_BRAKE].val];
+	break;
+    default:
+	car->ctrl->brakeCmd = 0;
+	break;
+    }
+
+    if (ParamAbs) {
 	tdble meanSpd = 0;
 	int i;
 
@@ -397,31 +441,46 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 	car->ctrl->brakeCmd = MIN(car->ctrl->brakeCmd, ABS);
     }
-    
-    if (CmdThrottle != -1) {
-	if ((ax0[CmdThrottle] > ThrMin) && (ax0[CmdThrottle] < ThrMax)) {
-	    car->ctrl->accelCmd = fabs(ThrPow * pow(fabs((ax0[CmdThrottle] - ThrMinVal)/(ThrMax-ThrMin)), ThrSens));
-	    if (ParamAsr) {
-		slip = 0;
-		if (car->_speed_x > 0.1)
-		    slip = (car->_wheelRadius(3) * car->_wheelSpinVel(3) - car->_speed_x);
-		
-		if (slip > 1.0) {
-		    AntiSlip *= 0.9;
-		    if (AntiSlip < 0.1)
-			AntiSlip = 0.1;
-		} else {
-		    if (AntiSlip < 0.1)
-			AntiSlip = 0.1;
-		    AntiSlip *= 1.1;
-		    if (AntiSlip > 1.0)
-			AntiSlip = 1.0;
-		}
-		car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, AntiSlip);
-	    }
+
+
+    switch (CmdControl[CMD_THROTTLE].type) {
+    case CMD_TYPE_ANALOG:
+	throttle = ax0[CmdControl[CMD_THROTTLE].val];
+	if (throttle > CmdControl[CMD_THROTTLE].max) {
+	    throttle = CmdControl[CMD_THROTTLE].max;
+	} else if (throttle < CmdControl[CMD_THROTTLE].min) {
+	    throttle = CmdControl[CMD_THROTTLE].min;
 	}
-    } else {
+	car->ctrl->accelCmd = fabs(CmdControl[CMD_THROTTLE].pow *
+				   pow(fabs((throttle - CmdControl[CMD_THROTTLE].minVal) /
+					    (CmdControl[CMD_THROTTLE].max - CmdControl[CMD_THROTTLE].min)),
+				       CmdControl[CMD_THROTTLE].sens));
+	break;
+    case CMD_TYPE_JOY_BUT:
+	car->ctrl->accelCmd = levelup[CmdControl[CMD_THROTTLE].val];
+	break;
+    default:
 	car->ctrl->accelCmd = 0;
+	break;
+    }
+
+    if (ParamAsr) {
+	slip = 0;
+	if (car->_speed_x > 0.1)
+	    slip = (car->_wheelRadius(3) * car->_wheelSpinVel(3) - car->_speed_x);
+
+	if (slip > 1.0) {
+	    AntiSlip *= 0.9;
+	    if (AntiSlip < 0.1)
+		AntiSlip = 0.1;
+	} else {
+	    if (AntiSlip < 0.1)
+		AntiSlip = 0.1;
+	    AntiSlip *= 1.1;
+	    if (AntiSlip > 1.0)
+		AntiSlip = 1.0;
+	}
+	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, AntiSlip);
     }
     
     if (car->_laps == 1) {
@@ -466,23 +525,25 @@ static void drive_mt(int index, tCarElt* car, tSituation *s)
     common_drive(index, car, s);
     car->ctrl->gear = car->_gear;
     /* manual shift sequential */
-    if ((CmdButton[CMD_BUT_UP_SHFT] != -1) && edgeup[CmdButton[CMD_BUT_UP_SHFT]]) {
+    if ((CmdControl[CMD_UP_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_UP_SHFT].val]) {
 	car->ctrl->gear++;
     }
-    if ((CmdButton[CMD_BUT_DN_SHFT] != -1) && edgeup[CmdButton[CMD_BUT_DN_SHFT]]) {
-	car->ctrl->gear--;
+    if ((CmdControl[CMD_DN_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_DN_SHFT].val]) {
+	if (SeqShftAllowNeutral || (car->ctrl->gear > 1)) {
+	    car->ctrl->gear--;
+	}
     }
     /* manual shift direct */
     if (RelButNeutral) {
-	for (i = CMD_BUT_GEAR_R; i <= CMD_BUT_GEAR_6; i++) {
-	    if ((CmdButton[i] != -1) && edgedn[CmdButton[i]]) {
+	for (i = CMD_GEAR_R; i <= CMD_GEAR_6; i++) {
+	    if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgedn[CmdControl[i].val]) {
 		car->ctrl->gear = 0;
 	    }
 	}
     }
-    for (i = CMD_BUT_GEAR_R; i <= CMD_BUT_GEAR_6; i++) {
-	if ((CmdButton[i] != -1) && edgeup[CmdButton[i]]) {
-	    car->ctrl->gear = i - CMD_BUT_GEAR_N;
+    for (i = CMD_GEAR_R; i <= CMD_GEAR_6; i++) {
+	if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[i].val]) {
+	    car->ctrl->gear = i - CMD_GEAR_N;
 	}
     }
     
@@ -521,27 +582,27 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     
     /* manual shift */
     car->ctrl->gear = car->_gear;
-    if (edgeup[CmdButton[CMD_BUT_UP_SHFT]]) {
+    if ((CmdControl[CMD_UP_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_UP_SHFT].val]) {
 	car->ctrl->gear++;
 	manual = 1;
     }
-    if (edgeup[CmdButton[CMD_BUT_DN_SHFT]]) {
+    if ((CmdControl[CMD_DN_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_DN_SHFT].val]) {
 	car->ctrl->gear--;
 	manual = 1;
     }
 
     /* manual shift direct */
     if (RelButNeutral) {
-	for (i = CMD_BUT_GEAR_R; i < CMD_BUT_GEAR_2; i++) {
-	    if ((CmdButton[i] != -1) && edgedn[CmdButton[i]]) {
+	for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
+	    if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgedn[CmdControl[i].val]) {
 		car->ctrl->gear = 0;
 		manual = 1;
 	    }
 	}
     }
-    for (i = CMD_BUT_GEAR_R; i < CMD_BUT_GEAR_2; i++) {
-	if ((CmdButton[i] != -1) && edgeup[CmdButton[i]]) {
-	    car->ctrl->gear = i - CMD_BUT_GEAR_N;
+    for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
+	if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[i].val]) {
+	    car->ctrl->gear = i - CMD_GEAR_N;
 	    manual = 1;
 	}
     }
