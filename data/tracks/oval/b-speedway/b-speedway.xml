@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : b-speedway.xml
+    created              : Sun Mar 19 00:13:46 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "../../../data/tracks/objects.xml">
+]>
+
+<params name="B-Speedway" type="trackdef" mode="mw">
+
+
+  <!-- Surfaces -->
+  <section name="Surfaces">
+      &default-surfaces;
+  </section>
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
+
+  <section name="Header">
+    <attstr name="name"        val="B-Speedway"/>
+    <attstr name="category"    val="oval"/>
+    <attnum name="version"     val="4"/>
+    <attstr name="author"      val="E.Espie"/>
+    <attstr name="description" val="Triangle shaped SpeedWay"/>
+  </section>
+
+  <section name="Graphic">
+    <attstr name="3d description" val="b-speedway.ac"/>
+
+    <attstr name="background image" val="background.png"/>
+    <attnum name="background type" val="4"/>
+
+    <attnum name="background color R" val="0.5"/>
+    <attnum name="background color G" val="0.5"/>
+    <attnum name="background color B" val="0.55"/>
+
+    <attnum name="ambient color R" val="0.7"/>
+    <attnum name="ambient color G" val="0.5"/>
+    <attnum name="ambient color B" val="0.4"/>
+
+    <attnum name="diffuse color R" val="1"/>
+    <attnum name="diffuse color G" val="1"/>
+    <attnum name="diffuse color B" val="1"/>
+
+    <attnum name="specular color R" val="0.3"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.1"/>
+
+    <attnum name="shininess" val="500"/>
+
+    <attnum name="light position x" val="10000"/>
+    <attnum name="light position y" val="7000"/>
+    <attnum name="light position z" val="2000"/>
+
+    <section name="Environment Mapping">
+      <section name="1">
+	<attstr name="env map image" val="env.png"/>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="20"/>
+      <attnum name="border margin" unit="m" val="500"/>
+      <attnum name="border step" unit="m" val="50"/>
+      <attnum name="border height" unit="m" val="40"/>
+      <attstr name="surface" val="grass6"/>
+    </section>
+
+  </section>
+
+
+  <section name="Main Track">
+
+    <attnum name="width" unit="m" val="30.0"/>
+    <attnum name="profil steps length" unit="m" val="10"/>
+
+    <section name="Right Side">
+      <attstr name="surface"  val="concrete"/>
+      <attnum name="width"    val="2.0"/>
+      <attstr name="type" in="tangent,level" val="tangent"/>
+    </section>
+
+    <section name="Left Side">
+      <attstr name="surface"  val="asphalt-pits"/>
+      <attnum name="width"    val="15.0"/>
+      <attstr name="type" in="tangent,level" val="level"/>
+    </section>
+
+    <!-- PITS -->
+    <section name="Pits">
+      <attstr name="type" val="track side"/>
+      <attstr name="side" val="left"/>
+      <attstr name="entry" val="pit entry"/>
+      <attstr name="start" val="last seg"/>
+      <attstr name="end" val="start lane"/>
+      <attstr name="exit" val="pit exit"/>
+      <attnum name="length" unit="m" val="15"/>
+      <attnum name="width" unit="m" val="5"/>
+    </section>  <!-- PITS -->
+
+    <section name="Track Segments">
+
+      <section name="start lane">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="150"/>
+	<attstr name="surface" val="concrete4"/>
+	<attnum name="banking start" unit="deg" val="-15"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+
+	<section name="Right Side">
+	  <attnum name="start width" val="2"/>
+	  <attnum name="end width" val="2"/>
+	  <attstr name="surface" val="concrete"/>
+	  <attstr name="type" in="level,tangent" val="tangent"/>
+	</section>
+
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-concrete4-concrete-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="b-concrete4-concrete-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+
+	<section name="Left Side">
+	  <attnum name="start width" val="15"/>
+	  <attnum name="end width" val="15"/>
+	  <attstr name="surface" val="concrete-pits"/>
+	  <attstr name="type" in="level,tangent" val="level"/>
+	</section>
+      </section>
+
+      <section name="pit exit">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="150"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+
+ 	<section name="Left Border">
+	  <attstr name="surface" val="b-concrete4-concrete-l1p"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="concrete"/>
+	  <attnum name="end width" val="8"/>
+	</section>
+      </section>
+
+      <section name="turn1-1">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-30"/>
+	<attnum name="z end" val="3.88"/>
+
+ 	<section name="Left Border">
+	  <attstr name="surface" val="b-concrete4-concrete-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+      </section>
+
+      <section name="turn1-2">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="300"/>
+	<attnum name="arc" unit="deg" val="60"/>
+      </section>
+
+      <section name="turn1-3">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="line2-1">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="300"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="line2-2">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="300"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+     </section>
+
+      <section name="turn2-1">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-30"/>
+ 	<attnum name="z end" val="3.88"/>
+     </section>
+
+      <section name="turn2-2">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="300"/>
+	<attnum name="arc" unit="deg" val="60"/>
+      </section>
+
+      <section name="turn2-3">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="line3-1">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="300"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="line3-2">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="300"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="turn3-1">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-30"/>
+ 	<attnum name="z end" val="3.88"/>
+      </section>
+
+      <section name="turn3-2">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="300"/>
+	<attnum name="arc" unit="deg" val="60"/>
+      </section>
+
+      <section name="turn3-3">
+        <attstr name="type" val="lft"/>
+	<attnum name="radius" unit="m" val="400"/>
+	<attnum name="arc" unit="deg" val="30"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+      </section>
+
+      <section name="pit entry">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="150"/>
+	<attnum name="banking end" unit="deg" val="-15"/>
+	<attnum name="z end" val="0"/>
+
+ 	<section name="Left Border">
+	  <attstr name="surface" val="b-concrete4-concrete-l1p"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="concrete"/>
+	  <attnum name="end width" val="15"/>
+	</section>
+      </section>
+
+
+      <section name="last seg">
+        <attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="150"/>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="b-concrete4-concrete-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+
+	<section name="Left Side">
+	  <attnum name="end width" val="15"/>
+	  <attstr name="surface" val="concrete-pits"/>
+	  <attstr name="type" in="level,tangent" val="level"/>
+	</section>
+      </section>
+
+
+    </section>
+
+  </section>
+
+</params>
+
