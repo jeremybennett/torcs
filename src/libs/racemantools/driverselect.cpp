@@ -484,6 +484,9 @@ RmDriverSelect(void *vs)
     int		i;
     tDrvElt	*curDrv;
     int		robotIdx;
+    void	*robhdle;
+    struct stat st;
+    char	*carName;
     
     ds = (tRmDrvSelect*)vs;
 
@@ -504,11 +507,20 @@ RmDriverSelect(void *vs)
 		    }
 		    strcpy(dname, sp);
 		    dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
-		    curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
-		    curDrv->index = curmod->modInfo[i].index;
-		    curDrv->dname = strdup(dname);
-		    curDrv->name = strdup(curmod->modInfo[i].name);
-		    GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+		    sprintf(buf, "drivers/%s/%s.xml", dname, dname);
+		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
+		    carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+		    sprintf(path, "cars/%s/%s.xml", carName, carName);
+		    if (!stat(path, &st)) {
+			curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
+			curDrv->index = curmod->modInfo[i].index;
+			curDrv->dname = strdup(dname);
+			curDrv->name = strdup(curmod->modInfo[i].name);
+			GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+		    } else {
+			GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
+		    }
 		}
 	    }
 	} while (curmod != list);
