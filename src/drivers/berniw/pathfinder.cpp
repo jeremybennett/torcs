@@ -700,7 +700,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	int u, v, w;
 	v3d dir;
 
-	int start;
+	int i, start;
 
 	if (myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
 		start = trackSegId;
@@ -714,12 +714,12 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 	/* load precomputed trajectory */
 	if (!pitStop && !inPit) {
-		for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
+		for (i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getOptLoc());
 		}
 	} else {
-		for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
+		for (i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getPitLoc());
 		}
@@ -740,7 +740,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	/* recompute speed and direction of new trajectory */
-	if (changed > 0) {
+	if (changed > 0 || (ps[trackSegId].getSpeedsqr() < 5.0)) {
 		start = trackSegId;
 	}
 
@@ -751,7 +751,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	v = (v + nPathSeg) % nPathSeg;
 	w = (w + nPathSeg) % nPathSeg;
 
-	for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
+	for (i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 		int j = (i+nPathSeg) % nPathSeg;
 		/* taking 2 radiuses to reduce "noise" */
 		double r2 = radius(ps[u].getLoc()->x, ps[u].getLoc()->y,
