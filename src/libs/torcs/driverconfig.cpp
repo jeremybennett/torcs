@@ -168,6 +168,7 @@ GenCarsInfo(void)
 {
     tCarInfo	*curCar;
     tCatInfo	*curCat;
+    tCatInfo	*tmpCat;
     tFList	*files;
     tFList	*curFile;
     char	buf[256];
@@ -234,6 +235,21 @@ GenCarsInfo(void)
 	} while (curFile != files);
     }
     GfDirFreeList(files, NULL);
+
+    /* Remove the empty categories */
+    curCat = (tCatInfo*)GfRlstGetFirst(&CatsInfoList);
+    do {
+	curCar = (tCarInfo*)GfRlstGetFirst(&(curCat->CarsInfoList));
+	tmpCat = curCat;
+	curCat = (tCatInfo*)GfRlstGetNext(&CatsInfoList, (tRingList*)curCat);
+	if (curCar == NULL) {
+	    GfOut("Removing empty category %s\n", tmpCat->_DispName);
+	    GfRlstUnlinkElt((tRingList*)tmpCat);
+	    free(tmpCat->_Name);
+	    free(tmpCat);
+	}
+    } while (curCat  != NULL);
+    
 }
 
 static void
@@ -250,7 +266,6 @@ UpdtScrollList(void)
 	GfuiScrollListInsertElement(scrHandle, scrollList, PlayersInfo[i]._DispName, i, (void*)&(PlayersInfo[i]));
     }
 }
-
 
 static void
 DeletePlayer(void *dummy)
@@ -304,21 +319,19 @@ GenDrvList(void)
 	    }
 	    str = GfParmGetStr(drvinfo, sstring, ROB_ATTR_CAR, "");
 	    found = 0;
-	    PlayersInfo[i].carinfo = (tCarInfo*)GfRlstGetFirst(&(((tCatInfo*)GfRlstGetFirst(&CatsInfoList))->CarsInfoList));
 	    cat = (tCatInfo*)GfRlstGetFirst(&CatsInfoList);
-	    if (cat != NULL) {
-		do {
-		    car = (tCarInfo*)GfRlstGetFirst(&(cat->CarsInfoList));
-		    if (car != NULL) {
-			do {
-			    if (strcmp(car->_Name, str) == 0) {
-				found = 1;
-				PlayersInfo[i].carinfo = car;
-			    }
-			} while (!found && ((car = (tCarInfo*)GfRlstGetNext(&(cat->CarsInfoList), (tRingList*)car)) != NULL));
-		    }
-		} while (!found && ((cat = (tCatInfo*)GfRlstGetNext(&CatsInfoList, (tRingList*)cat)) != NULL));
-	    }
+	    PlayersInfo[i].carinfo = (tCarInfo*)GfRlstGetFirst(&(cat->CarsInfoList));
+	    do {
+		car = (tCarInfo*)GfRlstGetFirst(&(cat->CarsInfoList));
+		if (car != NULL) {
+		    do {
+			if (strcmp(car->_Name, str) == 0) {
+			    found = 1;
+			    PlayersInfo[i].carinfo = car;
+			}
+		    } while (!found && ((car = (tCarInfo*)GfRlstGetNext(&(cat->CarsInfoList), (tRingList*)car)) != NULL));
+		}
+	    } while (!found && ((cat = (tCatInfo*)GfRlstGetNext(&CatsInfoList, (tRingList*)cat)) != NULL));
 	    PlayersInfo[i].racenumber  = (int)GfParmGetNum(drvinfo, sstring, ROB_ATTR_RACENUM, (char*)NULL, 0);
 	    PlayersInfo[i].color[0]    = (float)GfParmGetNum(drvinfo, sstring, ROB_ATTR_RED, (char*)NULL, 1.0);
 	    PlayersInfo[i].color[1]    = (float)GfParmGetNum(drvinfo, sstring, ROB_ATTR_GREEN, (char*)NULL, 1.0);;
