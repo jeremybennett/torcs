@@ -27,10 +27,7 @@ DATA         = trackgen.xml
 
 SOURCES      = trackgen.cpp track.cpp easymesh.cpp linuxspec.cpp relief.cpp
 
-SOLIBS       = 	-lplibssg -lplibsg -lplibul 		\
-		${INSTBASE}/lib/librobottools.so	\
-		${INSTBASE}/lib/libtgf.so          	\
-	   	${INSTBASE}/lib/libtxml.so
+SOLIBS       = -lplibssg -lplibsg -lplibul -lrobottools -ltgf -ltxml
 
 
 include ${MAKE_DEFAULT}

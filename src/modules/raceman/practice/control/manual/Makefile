@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-SOLIBRARY = manual.so
+MODULE    = manual.so
 
-SOLIBDIR  = modules/raceman/practice/control
+MODULEDIR = modules/raceman/practice/control
 
 SOURCES   = manual.cpp
 

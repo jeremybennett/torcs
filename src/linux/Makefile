@@ -22,11 +22,11 @@ SOURCES = main.cpp linuxspec.cpp
 
 LDFLAGS  = -rdynamic
 
-SOLIBS   = ${INSTBASE}/lib/libracemantools.so \
-	   ${INSTBASE}/lib/librobottools.so   \
-	   ${INSTBASE}/lib/libtorcs.so        \
-	   ${INSTBASE}/lib/libtgf.so          \
-	   ${INSTBASE}/lib/libtxml.so	      \
+SOLIBS   = -lracemantools \
+	   -lrobottools   \
+	   -ltorcs        \
+	   -ltgf          \
+	   -ltxml	  \
 	   -lplibul
 
 EXPDIR  = include

@@ -49,7 +49,7 @@ CFLAGS =  @CFLAGS@ ${CFLAGSD}
 GL_LIBNAME = @GL_LIBNAME@
 
 EXT_LIBS = -lpthread -lpng -lz -lglut -l${GL_LIBNAME}GLU -l${GL_LIBNAME}GL @LIBS@
-LDFLAGS =  @LDFLAGS@ @GL_LDFLAGS@ @GLUT_LDFLAGS@ @X_LDFLAGS@ -L/usr/lib -L/usr/local/lib
+LDFLAGS =  @LDFLAGS@ @GL_LDFLAGS@ @GLUT_LDFLAGS@ @X_LDFLAGS@ -L/usr/lib -L/usr/local/lib -L${EXPORTBASE}/lib
 
 INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include @X_INCLUDES@ @GL_INCLUDES@ @GLUT_INCLUDES@
 

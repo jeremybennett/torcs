@@ -19,8 +19,12 @@
 
 DEFAULT_RUNTIME=@prefix@/games/@PACKAGE@
 
+modprobe evdev >/dev/null 2>&1
+modprobe joydev >/dev/null 2>&1
+
 if [ -d $DEFAULT_RUNTIME ]
 then
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@prefix@/lib
     cd $DEFAULT_RUNTIME
     ./torcs
     exit 0

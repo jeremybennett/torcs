@@ -16,11 +16,11 @@
 ##############################################################################
 
 
-ROBOT = tutorial2
+ROBOT     = tutorial2
 
-SOLIBRARY = ${ROBOT}.so
+MODULE    = ${ROBOT}.so
 
-SOLIBDIR  = drivers/${ROBOT}
+MODULEDIR = drivers/${ROBOT}
 
 SOURCES   = ${ROBOT}.cpp
 

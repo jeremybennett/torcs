@@ -18,7 +18,7 @@
 
 SOLIBRARY = librobottools.so
 
-SOLIBDIR  = lib
+SOLIBDIR  = .
 
 SOURCES   = rttrack.cpp rttelem.cpp
 

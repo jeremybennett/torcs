@@ -35,6 +35,7 @@ EXPORTBASE  = ${TORCS_BASE}/export
 DOCBASE     = ${TORCS_BASE}/doc
 INSTBASE    = ${instdir}
 INSTBINBASE = ${bindir}
+INSTLIBBASE = ${prefix}/lib
 
 
 # win32
@@ -69,6 +70,9 @@ endif
 ifdef PROGRAM
 COMPILATION=true
 endif
+ifdef MODULE
+COMPILATION=true
+endif
 ifdef SOLIBRARY
 COMPILATION=true
 endif
@@ -90,13 +94,13 @@ endif
 
 dep:	.depend
 
-compil: subdirs ${LIBRARY} ${SOLIBRARY} ${PROGRAM} dep
+compil: subdirs ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM} dep
 
 else
 
 default: win32start exports tools subdirs win32end
 
-compil: subdirs ${LIBRARY} ${SOLIBRARY} ${PROGRAM}
+compil: subdirs ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM}
 
 endif
 
@@ -126,15 +130,15 @@ exports: expincdirs export
 tools: toolsdirs ${TOOLS} toolsdata
 
 clean: cleancompil cleantools
-	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${GARBAGE} *~
+	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
 cleantools: cleantoolsdirs
 	-rm -f  ${TOOLS} .depend ${GARBAGE} *~
 
 cleancompil: cleansubdirs
-	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${GARBAGE} *~
+	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
-install: installdirs installdata installsolibrary installprogram installtools installtoolsdata win32end
+install: installdirs installdata installsolibrary installmodule installprogram installtools installtoolsdata win32end
 
 
 .SUFFIXES: .cpp
@@ -277,17 +281,18 @@ ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
 	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LIBSPATH} ${LIBS} 
-	@createdir="${INSTBASE}/${SOLIBDIR}" ; \
-	X="${SOLIBRARY}" ;\
+	@D=`pwd` ; \
+	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \
-	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
-	$(INSTALL_DATA) $$X $$createdir/$$X
+	X="${SOLIBRARY}" ; \
+	echo " Exporting $$X to $$createdir/$$X"; \
+	ln -sf $$D/$$X $$createdir/$$X
 
 
 installsolibrary: ${SOLIBRARY}
 	@createdir="runtime/${SOLIBDIR}" ; \
 	${create_dir_win32} ; \
-	createdir="${INSTBASE}/${SOLIBDIR}" ; \
+	createdir="${INSTLIBBASE}" ; \
 	X="${SOLIBRARY}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -297,6 +302,34 @@ installsolibrary: ${SOLIBRARY}
 else
 
 installsolibrary: ;
+
+endif
+
+ifdef MODULE
+
+${MODULE}: ${OBJECTS}
+	${CXX} -shared -o ${MODULE} ${OBJECTS} ${LIBSPATH} ${LIBS} 
+	@D=`pwd` ; \
+	createdir="${EXPORTBASE}/${MODULEDIR}" ; \
+	$(mkinstalldirs) $$createdir ; \
+	X="${MODULE}" ; \
+	echo " Exporting $$X to $$createdir/$$X"; \
+	ln -sf $$D/$$X $$createdir/$$X
+
+
+installmodule: ${MODULE}
+	@createdir="runtime/${MODULEDIR}" ; \
+	${create_dir_win32} ; \
+	createdir="${INSTBASE}/${MODULEDIR}" ; \
+	X="${MODULE}" ;\
+	$(mkinstalldirs) $$createdir ; \
+	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
+	$(INSTALL_DATA) $$X $$createdir/$$X
+
+
+else
+
+installmodule: ;
 
 endif
 

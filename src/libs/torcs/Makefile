@@ -18,7 +18,7 @@
 
 SOLIBRARY = libtorcs.so
 
-SOLIBDIR  = lib
+SOLIBDIR  = .
 
 SOURCES   = entry.cpp mainmenu.cpp splash.cpp raceman.cpp exitmenu.cpp optionmenu.cpp driverconfig.cpp joystickconfig.cpp
 

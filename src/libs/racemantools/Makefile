@@ -18,7 +18,7 @@
 
 SOLIBRARY = libracemantools.so
 
-SOLIBDIR  = lib
+SOLIBDIR  = .
 
 SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp
 

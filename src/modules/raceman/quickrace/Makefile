@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-SOLIBRARY = quickrace.so
+MODULE    = quickrace.so
 
-SOLIBDIR  = modules/raceman
+MODULEDIR = modules/raceman
 
 SOURCES   = quickrace.cpp qracemain.cpp qracegl.cpp qrmenu.cpp
 

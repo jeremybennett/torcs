@@ -18,7 +18,7 @@
 
 SOLIBRARY = libtgf.so
 
-SOLIBDIR  = lib
+SOLIBDIR  = .
 
 SOURCES   = 	guimenu.cpp \
 		module.cpp \

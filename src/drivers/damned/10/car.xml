@@ -24,7 +24,7 @@
     <attnum name="front-rear weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="rear right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="30.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="90.0"></attnum>
   </section>
 
   <section name="Front Wing">

@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-SOLIBRARY = practice.so
+MODULE    = practice.so
 
-SOLIBDIR  = modules/raceman
+MODULEDIR = modules/raceman
 
 SOURCES   = practice.cpp prmenu.cpp prmain.cpp prgl.cpp
 

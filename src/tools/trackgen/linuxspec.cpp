@@ -490,7 +490,6 @@ linuxModFreeInfoList(tModList **modlist)
 {
     tModList		*curMod;
     tModList		*nextMod;
-    int			i;
     
     curMod = *modlist;
     nextMod = curMod->next;

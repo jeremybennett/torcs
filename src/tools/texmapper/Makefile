@@ -20,7 +20,7 @@ PROGRAM   = texmapper
 
 SOURCES   = texmapper.cpp ssgSaveAC.cpp
 
-SOLIBS    = -lplibssg -lplibsg -lplibul ${INSTBASE}/lib/libtgf.so ${INSTBASE}/lib/libtxml.so -lpng
+SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltxml -lpng
 
 
 include ${MAKE_DEFAULT}

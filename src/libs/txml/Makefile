@@ -20,13 +20,13 @@ TOOLSUBDIRS = gennmtab
 
 SOLIBRARY   = libtxml.so
 
-SOLIBDIR    = lib
+SOLIBDIR    = .
 
-SOURCES   = xmltok.c xmlrole.c xmlparse.c hashtable.c xml.cpp
+SOURCES     = xmltok.c xmlrole.c xmlparse.c hashtable.c xml.cpp
 
-EXPDIR  = include
+EXPDIR      = include
 
-EXPORTS = xml.h xmlparse.h
+EXPORTS     = xml.h xmlparse.h
 
 include ${MAKE_DEFAULT}
 

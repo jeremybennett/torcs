@@ -18,9 +18,9 @@
 
 SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp grscene.cpp grutil.cpp
 
-SOLIBRARY = ssggraph.so
+MODULE    = ssggraph.so
 
-SOLIBDIR  = modules/graphic
+MODULEDIR = modules/graphic
 
 LIBS      =  -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
 

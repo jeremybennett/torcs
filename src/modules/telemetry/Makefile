@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-SOLIBRARY = telemetry.so
+MODULE    = telemetry.so
 
-SOLIBDIR  = modules/telemetry
+MODULEDIR = modules/telemetry
 
 SOURCES   = telemetryitf.cpp telemetry.cpp
 

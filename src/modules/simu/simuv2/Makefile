@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-SOLIBRARY	= simuv2.so
+MODULE		= simuv2.so
 
-SOLIBDIR	= modules/simu
+MODULEDIR	= modules/simu
 
 SOURCES		= simu.cpp \
 	   	  simuitf.cpp \
