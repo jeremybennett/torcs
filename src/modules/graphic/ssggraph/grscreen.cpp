@@ -109,10 +109,14 @@ void cGrScreen::activate(int x, int y, int w, int h)
     scrw = w;
     scrh = h;
 
-    mirrorCam->setViewport (scrx, scry, scrw, scrh);
-    mirrorCam->setPos (scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
-    curCam->limitFov ();
-    curCam->setZoom (GR_ZOOM_DFLT);
+    if (mirrorCam) {
+	mirrorCam->setViewport (scrx, scry, scrw, scrh);
+	mirrorCam->setPos (scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
+    }
+    if (curCam) {
+	curCam->limitFov ();
+	curCam->setZoom (GR_ZOOM_DFLT);
+    }
     active = 1;
 }
 
