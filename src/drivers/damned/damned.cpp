@@ -388,10 +388,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
 
     if (idx == 1) {
-	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->kFriction;
-	spdtgt2[0]  = 20.0 * seg->kFriction - 12.0;
-	spdtgt2[1] = spdtgt2ref[1] * (seg->kFriction - .2);
-	spdtgt2[3] = spdtgt2ref[3] * (seg->kFriction - .2);
+	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
+	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
+	spdtgt2[1] = spdtgt2ref[1] * (seg->surface->kFriction - .2);
+	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .2);
     }
 
     vtgt1 = spdtgt[idx];

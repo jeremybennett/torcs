@@ -184,9 +184,9 @@ SimWheelUpdateForce(tCar *car, int index)
     /* load sensitivity */
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * wheel->forces.z / wheel->opLoad));
     
-    F *= wheel->forces.z * mu * wheel->trkPos.seg->kFriction;	/* coeff */
+    F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction;	/* coeff */
 
-    wheel->rollRes = wheel->forces.z * wheel->trkPos.seg->kRollRes;
+    wheel->rollRes = wheel->forces.z * wheel->trkPos.seg->surface->kRollRes;
     
     if (s > 0.000001) {
 	/* wheel axis based */

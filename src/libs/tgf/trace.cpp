@@ -51,6 +51,12 @@ gfTraceInit(void)
 {
 }
 
+void GfFatal(char *szTrc)
+{
+    GfTrace(szTrc);
+    exit(1);
+}
+
 
 /** Print a message in the trace file.
     The file is openned the first time
@@ -63,10 +69,9 @@ void GfTrace(char *szTrc)
     time_t		t;
     char		*s = TraceStr;
 
-#ifdef DEBUG_OUT
     fprintf(stderr, "ERROR: %s", szTrc);
     fflush(stderr);
-#endif
+
     if (outTrace == NULL) {
 	if ((outTrace = fopen("trace.txt", "w+")) == NULL) {
 	    perror("trace.txt");

@@ -23,10 +23,8 @@
 
 
 extern void TrackShutdown(void);
-extern void ReadTrack0(tTrack *theTrack, void *TrackHandle, tRoadCam **camList);
-extern void ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList);
-extern void ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
 extern void ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
+extern void ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext);
 
 extern tTrack *TrackBuildv1(char *trackfile);
 extern tTrack *TrackBuildEx(char *trackfile);

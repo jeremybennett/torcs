@@ -73,6 +73,7 @@ static void initBackground(void);
 static void customizePits(void);
 
 static ssgLoaderOptionsEx	grloaderOptions;
+extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 
 class myLoaderOptions : public ssgLoaderOptions
 {
@@ -96,7 +97,9 @@ int grInitScene(tTrack *track)
     ssgEntity		*desc;
     char		buf[256];
     myLoaderOptions	options;
+    ssgLight *          light;
 
+    light=ssgGetLight(0);
     GLfloat mat_specular[]={0.3,0.3,0.3,1.0};
     GLfloat mat_shininess[] ={5.0};
     GLfloat light_position[]={0,0,200,0.0};
@@ -116,13 +119,17 @@ int grInitScene(tTrack *track)
     light_position[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Z, NULL, light_position[2]);
 
     glShadeModel(GL_SMOOTH);
-    glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv (GL_FRONT, GL_SHININESS, mat_shininess);
-    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+    /*glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
+      glMaterialfv (GL_FRONT, GL_SHININESS, mat_shininess);
+      glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+      glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+      glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+    */
+    light->setPosition(light_position[0],light_position[1],light_position[2]);
+    light->setColour(GL_AMBIENT,lmodel_ambient);
+    light->setColour(GL_DIFFUSE,lmodel_ambient);
+    light->setColour(GL_SPECULAR,mat_specular);
     
-
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
@@ -152,9 +159,8 @@ int grInitScene(tTrack *track)
     ssgTexturePath(buf);
     sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
     ssgModelPath(buf);
-    
-    desc = ssgLoad((const char *)acname /* , (const ssgLoaderOptions *)&grloaderOptions */ );
-
+    /*desc = ssgLoad((const char *)acname*/ /* , (const ssgLoaderOptions *)&grloaderOptions *//* );*/
+    desc=grssgLoadAC3D ( acname , NULL );
     TheScene->addKid(desc);
 
     customizePits();
@@ -168,7 +174,8 @@ void grDrawScene(void)
     TRACE_GL("refresh: ssgCullAndDraw start");
 
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glShadeModel(GL_FLAT); 
+    /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
+    glEnable(GL_DEPTH_TEST);
     ssgCullAndDraw(TheScene);
     
     TRACE_GL("refresh: ssgCullAndDraw");

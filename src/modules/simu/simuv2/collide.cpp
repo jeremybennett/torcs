@@ -23,8 +23,6 @@
 #include "dmalloc.h"
 #endif
 
-#define ROAD_DAMMAGE	10.0
-#define BARRIER_DAMMAGE	10.0
 #define CAR_DAMMAGE	0.1
 
 void
@@ -33,28 +31,30 @@ SimCarCollideZ(tCar *car)
     int 	i;
     t3Dd	normal;
     tdble	dotProd;
+    tWheel	*wheel;
     
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
     }
 
     for (i = 0; i < 4; i++) {
-	if (car->wheel[i].state & SIM_SUSP_COMP) {
-	    car->DynGCg.pos.z += car->wheel[i].susp.x - car->wheel[i].rideHeight;
+	wheel = &(car->wheel[i]);
+	if (wheel->state & SIM_SUSP_COMP) {
+	    car->DynGCg.pos.z += wheel->susp.x - wheel->rideHeight;
 	    
-	    if ((car->DynGCg.vel.ax * car->wheel[i].staticPos.y) < 0) {
+	    if ((car->DynGCg.vel.ax * wheel->staticPos.y) < 0) {
 		car->DynGCg.vel.ax = 0;
 	    }
-	    if ((car->DynGCg.vel.ay * car->wheel[i].staticPos.x) < 0) { 
+	    if ((car->DynGCg.vel.ay * wheel->staticPos.x) < 0) { 
 		car->DynGCg.vel.ay = 0;
 	    }
-	    RtTrackSurfaceNormalL(&(car->trkPos), &normal);
-	    dotProd = car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z;
+	    RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
+	    dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
 	    if (dotProd < 0) {
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
-		car->dammage += (int)(ROAD_DAMMAGE * fabs(dotProd));
+		car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd));
 	    }
 	}
     }
@@ -70,7 +70,8 @@ SimCarCollideXYScene(tCar *car)
     int		i;
     tDynPt	*corner;
     t3Dd	normal;
-    tdble	dotProd, nx, ny;
+    tdble	dotProd, nx, ny, cx, cy, dotprod2;
+    tTrackBarrier *curBarrier;
     
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
@@ -78,11 +79,14 @@ SimCarCollideXYScene(tCar *car)
 
     corner = &(car->corner[0]);
     for (i = 0; i < 4; i++, corner++) {
+	cx = corner->pos.ax - car->DynGCg.pos.x;
+	cy = corner->pos.ay - car->DynGCg.pos.y;
 	seg = car->trkPos.seg;
 	RtTrackGlobal2Local(seg, corner->pos.ax, corner->pos.ay, &trkpos, TR_LPOS_TRACK);
 	seg = trkpos.seg;
 	if (trkpos.toRight < 0.0) {
 	    /* collision with right border */
+	    curBarrier = seg->barrier[0];
 	    if (seg->rside != NULL) {
 		seg = seg->rside;
 		if (seg->rside != NULL) {
@@ -94,6 +98,7 @@ SimCarCollideXYScene(tCar *car)
 	    car->DynGCg.pos.y -= normal.y * trkpos.toRight;	    
 	} else if (trkpos.toLeft < 0.0) {
 	    /* collision with left border */
+	    curBarrier = seg->barrier[1];
 	    if (seg->lside != NULL) {
 		seg = seg->lside;
 		if (seg->lside != NULL) {
@@ -112,13 +117,17 @@ SimCarCollideXYScene(tCar *car)
 	car->collision |= 1;
 	nx = normal.x;
 	ny = normal.y;
-	dotProd = (nx * car->DynGCg.vel.y + ny * car->DynGCg.vel.x) * BorderFriction;
+	dotProd = (nx * corner->vel.y + ny * corner->vel.x) * curBarrier->surface->kFriction;
 	car->DynGCg.vel.x -= ny * dotProd;
 	car->DynGCg.vel.y -= nx * dotProd;
+	dotprod2 = (nx * cy + ny * cx);
+	car->DynGCg.vel.az -= dotprod2 * dotProd / 10.0;
 	
 	/* rebound */
-	dotProd = normal.x * corner->vel.x + normal.y * corner->vel.y;
-	car->dammage += (int)(BARRIER_DAMMAGE * fabs(dotProd));
+	dotProd = (nx * corner->vel.x + ny * corner->vel.y);
+	car->dammage += (int)(curBarrier->surface->kDammage * fabs(dotProd));
+	dotProd *= curBarrier->surface->kRebound;
+	dotprod2 = (nx * cx + ny * cy);
 
 	if (dotProd < 0) {
 	    car->collision |= 2;
@@ -127,11 +136,11 @@ SimCarCollideXYScene(tCar *car)
 	    car->collpos.y = corner->pos.ay;
 	    
 	    /* collision detected */
-	    dotProd = nx * car->DynGCg.vel.x + ny * car->DynGCg.vel.y;
+	    car->DynGCg.vel.x -= nx * dotProd;
+	    car->DynGCg.vel.y -= ny * dotProd;
 
-	    car->DynGCg.vel.x -= nx * dotProd * 1.1;
-	    car->DynGCg.vel.y -= ny * dotProd * 1.1;
-	    car->DynGCg.vel.az = -car->DynGCg.vel.az / 2.0;
+/* 	    car->DynGCg.vel.az -= dotprod2 * dotProd; */
+
 	}
     }
 }

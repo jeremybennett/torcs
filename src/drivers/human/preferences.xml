@@ -17,12 +17,12 @@
 <params mode="mw" type="template" name="Player Pref">
 
   <section name="joystick defaults">
-    <attstr name="up shift"   val="BTN8"></attstr>
-    <attstr name="down shift" val="BTN7"></attstr>
-    <attstr name="ASR cmd" val="BTN6"></attstr>
-    <attstr name="ABS cmd" val="BTN3"></attstr>
-    <attstr name="reverse gear" val="BTN4"></attstr>
-    <attstr name="neutral gear" val="BTN1"></attstr>
+    <attstr name="up shift"   val="BTN1-0"></attstr>
+    <attstr name="down shift" val="BTN2-0"></attstr>
+    <attstr name="ASR cmd" val="BTN6-0"></attstr>
+    <attstr name="ABS cmd" val="BTN3-0"></attstr>
+    <attstr name="reverse gear" val="BTN4-0"></attstr>
+    <attstr name="neutral gear" val="BTN5-0"></attstr>
     <attstr name="1st gear" val=""></attstr>
     <attstr name="2nd gear" val=""></attstr>
     <attstr name="3rd gear" val=""></attstr>
@@ -32,25 +32,25 @@
     <attstr name="release gear button goes neutral" in="yes,no" val="no"></attstr>
     <attstr name="sequential shifter allow neutral" in="yes,no" val="no"></attstr>
 
-    <attstr name="left steer" val="AXIS0"></attstr>
+    <attstr name="left steer" val="AXIS0-0"></attstr>
     <attnum name="left steer min" val="1.0"></attnum>
     <attnum name="left steer max" val="-1.1"></attnum>
     <attnum name="left steer sensitivity" val="0.5"></attnum>
     <attnum name="left steer power" val="1.0"></attnum>
 
-    <attstr name="right steer" val="AXIS0"></attstr>
+    <attstr name="right steer" val="AXIS0-0"></attstr>
     <attnum name="right steer min" val="1.0"></attnum>
     <attnum name="right steer max" val="-1.1"></attnum>
     <attnum name="right steer sensitivity" val="0.5"></attnum>
     <attnum name="right steer power" val="1.0"></attnum>
 
-    <attstr name="throttle" val="AXIS1"></attstr>
+    <attstr name="throttle" val="AXIS1-0"></attstr>
     <attnum name="throttle min" val="1.0"></attnum>
     <attnum name="throttle max" val="-1.1"></attnum>
     <attnum name="throttle sensitivity" val="1.0"></attnum>
     <attnum name="throttle power" val="1.2"></attnum>
 
-    <attstr name="brake" val="AXIS4"></attstr>
+    <attstr name="brake" val="AXIS4-0"></attstr>
     <attnum name="brake min" val="1.0"></attnum>
     <attnum name="brake max" val="-1.1"></attnum>
     <attnum name="brake sensitivity" val="0.2"></attnum>
@@ -182,16 +182,16 @@
   </section>
 
   <section name="joystick analog">
-    <attstr name="up shift"   in="BTN1,BTN2,BTN3,BTN4" val="BTN1"></attstr>
-    <attstr name="down shift" in="BTN1,BTN2,BTN3,BTN4" val="BTN2"></attstr>
-    <attstr name="ASR on/off" in="BTN1,BTN2,BTN3,BTN4" val="BTN3"></attstr>
-    <attstr name="ABS on/off" in="BTN1,BTN2,BTN3,BTN4" val="BTN4"></attstr>
+    <attstr name="up shift"    val="BTN1-0"></attstr>
+    <attstr name="down shift"  val="BTN2-0"></attstr>
+    <attstr name="ASR on/off"  val="BTN3-0"></attstr>
+    <attstr name="ABS on/off"  val="BTN4-0"></attstr>
 
-    <attstr name="steer" in="AXIS0,AXIS1,AXIS2" val="AXIS0"></attstr>
+    <attstr name="steer" val="AXIS0-0"></attstr>
     <attnum name="steer sensitivity" val="0.5" min="0.1" max="2.0"></attnum>
     <attnum name="steer power" val="1.0" min="0.5" max="4.0"></attnum>
 
-    <attstr name="throttle" in="AXIS0,AXIS1,AXIS2" val="AXIS1"></attstr>
+    <attstr name="throttle" val="AXIS1-0"></attstr>
     <attnum name="throttle min" val="0.0" min="-1.0" max="1.0"></attnum>
     <attnum name="throttle max" val="-1.0" min="-1.0" max="1.0"></attnum>
     <!-- Joystick sensitivity -->
@@ -199,7 +199,7 @@
     <!-- Joystick multiplicator -->
     <attnum name="throttle power" val="1.2" min="0.5" max="4.0"></attnum>
 
-    <attstr name="brake" in="AXIS0,AXIS1,AXIS2" val="AXIS1"></attstr>
+    <attstr name="brake" val="AXIS1-0"></attstr>
     <attnum name="brake min" val="0.0" min="-1.0" max="1.0"></attnum>
     <attnum name="brake max" val="1.2" min="-1.0" max="1.0"></attnum>
     <attnum name="brake sensitivity" val="1.0" min="0.1" max="2.0"></attnum>
@@ -207,16 +207,16 @@
   </section>
 
   <section name="joystick USB MsFFWheel">
-    <attstr name="up shift"   in="BTN1,BTN2,BTN3,BTN4" val="BTN8"></attstr>
-    <attstr name="down shift" in="BTN1,BTN2,BTN3,BTN4" val="BTN7"></attstr>
-    <attstr name="ASR cmd" in="BTN1,BTN2,BTN3,BTN4" val="BTN4"></attstr>
-    <attstr name="ABS cmd" in="BTN1,BTN2,BTN3,BTN4" val="BTN1"></attstr>
+    <attstr name="up shift"    val="BTN8-0"></attstr>
+    <attstr name="down shift"  val="BTN7-0"></attstr>
+    <attstr name="ASR cmd"  val="BTN4-0"></attstr>
+    <attstr name="ABS cmd"  val="BTN1-0"></attstr>
 
-    <attstr name="steer" val="AXIS0"></attstr>
+    <attstr name="steer" val="AXIS0-0"></attstr>
     <attnum name="steer sensitivity" val="0.5"></attnum>
     <attnum name="steer power" val="1.0"></attnum>
 
-    <attstr name="throttle" val="AXIS1"></attstr>
+    <attstr name="throttle" val="AXIS1-0"></attstr>
     <attnum name="throttle min" val="1.0"></attnum>
     <attnum name="throttle max" val="-1.1"></attnum>
     <!-- Joystick sensitivity -->
@@ -224,7 +224,7 @@
     <!-- Joystick multiplicator -->
     <attnum name="throttle power" val="1.2"></attnum>
 
-    <attstr name="brake" val="AXIS4"></attstr>
+    <attstr name="brake" val="AXIS4-0"></attstr>
     <attnum name="brake min" val="1.0"></attnum>
     <attnum name="brake max" val="-1.1"></attnum>
     <attnum name="brake sensitivity" val="0.5"></attnum>
@@ -232,10 +232,10 @@
   </section>
 
   <section name="joystick digital (joypad)">
-    <attstr name="up shift" val="BTN3"></attstr>
-    <attstr name="down shift" val="BTN4"></attstr>
-    <attstr name="ASR cmd" val="BTN5"></attstr>
-    <attstr name="ABS cmd" val="BTN6"></attstr>
+    <attstr name="up shift" val="BTN3-0"></attstr>
+    <attstr name="down shift" val="BTN4-0"></attstr>
+    <attstr name="ASR cmd" val="BTN5-0"></attstr>
+    <attstr name="ABS cmd" val="BTN6-0"></attstr>
     <attstr name="reverse gear" val=""></attstr>
     <attstr name="neutral gear" val=""></attstr>
     <attstr name="1st gear" val=""></attstr>
@@ -245,11 +245,11 @@
     <attstr name="5th gear" val=""></attstr>
     <attstr name="6th gear" val=""></attstr>
     <attstr name="release gear button goes neutral" val="yes"></attstr>
-    <attstr name="steer" val="AXIS0"></attstr>
+    <attstr name="steer" val="AXIS0-0"></attstr>
     <attnum name="steer sensitivity" val="0.500000"></attnum>
     <attnum name="steer power" val="1.000000"></attnum>
-    <attstr name="throttle" val="BTN1"></attstr>
-    <attstr name="brake" val="BTN2"></attstr>
+    <attstr name="throttle" val="BTN1-0"></attstr>
+    <attstr name="brake" val="BTN2-0"></attstr>
     <attnum name="steer min" val="-1.000000"></attnum>
     <attnum name="steer max" val="1.000000"></attnum>
     <attnum name="throttle min" val="0.000000"></attnum>

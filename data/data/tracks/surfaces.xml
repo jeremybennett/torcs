@@ -278,7 +278,7 @@
 	<attnum name="texture size" val="10.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="4.0"></attnum>
 
-	<attnum name="friction"           val="0.2"></attnum>
+	<attnum name="friction"           val="0.0"></attnum>
 
 	<attnum name="roughness" val="0.03"></attnum>
 	<attnum name="roughness wavelength" val="4.0"></attnum>
@@ -378,14 +378,14 @@
 	<attnum name="roughness wavelength" val="1.0"></attnum>
       </section>
 
-      <section name="kerb-5cm-r">
+      <section name="curb-5cm-r">
 	<attnum name="color R1" val="0.1"></attnum>
 	<attnum name="color G1" val="0.1"></attnum>
 	<attnum name="color B1" val="0.1"></attnum>
 	<attnum name="color R2" val="0.2"></attnum>
 	<attnum name="color G2" val="0.2"></attnum>
 	<attnum name="color B2" val="0.2"></attnum>
-	<attstr name="texture name" val="tr-kerb-r.rgb"></attstr>
+	<attstr name="texture name" val="tr-curb-r.rgb"></attstr>
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="2.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
@@ -397,14 +397,14 @@
 	<attnum name="roughness wavelength" val="0.3"></attnum>
       </section>
 
-      <section name="kerb-5cm-l">
+      <section name="curb-5cm-l">
 	<attnum name="color R1" val="0.1"></attnum>
 	<attnum name="color G1" val="0.1"></attnum>
 	<attnum name="color B1" val="0.1"></attnum>
 	<attnum name="color R2" val="0.2"></attnum>
 	<attnum name="color G2" val="0.2"></attnum>
 	<attnum name="color B2" val="0.2"></attnum>
-	<attstr name="texture name" val="tr-kerb-l.rgb"></attstr>
+	<attstr name="texture name" val="tr-curb-l.rgb"></attstr>
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="2.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
@@ -431,6 +431,23 @@
 	<attnum name="friction"           val="0.5"></attnum>
       </section>
 
+
+      <section name="tire-wall">
+	<attnum name="color R1" val="0.1"></attnum>
+	<attnum name="color G1" val="0.1"></attnum>
+	<attnum name="color B1" val="0.1"></attnum>
+	<attnum name="color R2" val="0.2"></attnum>
+	<attnum name="color G2" val="0.2"></attnum>
+	<attnum name="color B2" val="0.2"></attnum>
+	<attstr name="texture name" val="tr-tirewall.rgb"></attstr>
+	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+	<attnum name="texture size" val="2.0" unit="m"></attnum>
+	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+	<attnum name="friction"           val="1.0"></attnum>
+	<attnum name="rebound"            val="0.1"></attnum>
+	<attnum name="dammage"            val="1.0"></attnum>
+      </section>
 
       <section name="grass3">
 	<attnum name="color R1" val="0.1"></attnum>

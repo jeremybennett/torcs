@@ -216,8 +216,8 @@
 	<attnum name="lside start width" val="4"></attnum>
 	<attnum name="lborder width" val="1"></attnum>
 	<attnum name="lborder height" val=".05"></attnum>
-	<attstr name="lborder style" val="kerb"></attstr>
-	<attstr name="lborder surface" val="kerb-5cm"></attstr>
+	<attstr name="lborder style" val="curb"></attstr>
+	<attstr name="lborder surface" val="curb-5cm"></attstr>
       </section>
 
       <section name="t5-2">
@@ -231,8 +231,8 @@
 	<attnum name="rside start width" val="4"></attnum>
 	<attnum name="rborder width" val="1.0"></attnum>
 	<attnum name="rborder height" val=".05"></attnum>
-	<attstr name="rborder style" val="kerb"></attstr>
-	<attstr name="rborder surface" val="kerb-5cm"></attstr>
+	<attstr name="rborder style" val="curb"></attstr>
+	<attstr name="rborder surface" val="curb-5cm"></attstr>
       </section>
 
       <section name="s8-1">

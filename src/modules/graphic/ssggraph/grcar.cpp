@@ -354,8 +354,8 @@ grInitShadow(tCarElt *car)
 
     grCarInfo[car->index].shadowAnchor = new ssgBranch();
     
-    clr[0] = clr[1] = clr[2] = 0.2;
-    clr[3] = 0.7;
+    clr[0] = clr[1] = clr[2] = 0.1;
+    clr[3] = 0.6;
     shd_clr->add(clr);
     nrm[0] = nrm[1] = 0.0;
     nrm[2] = 1.0;

@@ -279,7 +279,7 @@ void CK1999Data::SplitTrack(tTrack *ptrack)
    txRight[i] = xPos - dx;
    tyRight[i] = yPos - dy;
    tLane[i] = 0.5;
-   tFriction[i] = psegCurrent->kFriction;
+   tFriction[i] = psegCurrent->surface->kFriction;
    if (tFriction[i] < 1) // ??? ugly trick for dirt
    {
     //tFriction[i] *= 0.90;

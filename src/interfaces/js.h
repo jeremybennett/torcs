@@ -34,6 +34,9 @@
 #  include <InputSprocket.h>
 #endif
 
+#define MAX_AXES 12	/* for TORCS */
+#define NUM_JOY	8	/* for TORCS */
+
 /*
   FreeBSD port - courtesy of Stephen Montgomery-Smith
   <stephen@math.missouri.edu>

@@ -243,6 +243,7 @@ refresh(tSituation *s)
     glDisable(GL_COLOR_MATERIAL);
 
     grCurCam->update(s->cars[s->current], s);
+    glDepthFunc(GL_LEQUAL);
     if (grCurCam->getDrawBackground()) {
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);

@@ -44,10 +44,10 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 		type = s->type;
 		raceType = s->raceInfo;
 		if (type != TR_STR) radius = s->radius; else radius = FLT_MAX;
-		kfriction = s->kFriction;
-		krollres = s->kRollRes;
-		kroughness = s->kRoughness;
-		kroughwavelen = s->kRoughWaveLen;
+		kfriction = s->surface->kFriction;
+		krollres = s->surface->kRollRes;
+		kroughness = s->surface->kRoughness;
+		kroughwavelen = s->surface->kRoughWaveLen;
 		width = distToLeft3D(&r);
 
 		double dz = getRightBorder()->z - getLeftBorder()->z;

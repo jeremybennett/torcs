@@ -20,7 +20,7 @@ MODULE    = track.so
 
 MODULEDIR = modules/track
 
-SOURCES   = track.cpp trackitf.cpp trackutil.cpp track0.cpp track1.cpp track2.cpp track3.cpp
+SOURCES   = track.cpp trackitf.cpp trackutil.cpp track3.cpp track4.cpp
 
 include ${MAKE_DEFAULT}
 

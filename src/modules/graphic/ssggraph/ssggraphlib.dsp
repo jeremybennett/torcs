@@ -107,6 +107,10 @@ SOURCE=.\grcar.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\grloadac.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\grmain.cpp
 # End Source File
 # Begin Source File

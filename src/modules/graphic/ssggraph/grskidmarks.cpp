@@ -76,8 +76,8 @@ void grInitSkidmarks(tCarElt *car)
     }
 
     shd_clr = new ssgColourArray(1);
-    clr[0] = clr[1] = clr[2] = 0.2;
-    clr[3] = 0.7;
+    clr[0] = clr[1] = clr[2] = 0.1;
+    clr[3] = 0.6;
     shd_clr->add(clr);
 
     shd_nrm = new ssgNormalArray(1);
@@ -87,7 +87,7 @@ void grInitSkidmarks(tCarElt *car)
 
     if (skidState == NULL) {
 	skidState = new ssgSimpleState;
-	skidState->disable(GL_LIGHTING);
+	skidState->enable(GL_LIGHTING);
 	skidState->disable(GL_TEXTURE_2D);
 	skidState->disable(GL_COLOR_MATERIAL);
     }

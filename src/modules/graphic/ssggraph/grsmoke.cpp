@@ -167,7 +167,7 @@ void grAddSmoke(tCarElt *car)
 		    tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
 		    vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
 		    vtx[1] = car->priv->wheel[i].relPos.y;
-		    vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1;
+		    vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
 		    shd_vtx->add(vtx);
 		    tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
 		    sprintf(buf, "data/textures;data/img;.");
@@ -288,13 +288,14 @@ void ssgVtxTableSmoke::draw_geometry ()
     /*   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ; */
     sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
 
-    alpha =  1.0-((float)(cur_life/max_life));
+    alpha =  0.9-((float)(cur_life/max_life));
     glDepthMask(GL_FALSE);
     glDisable(GL_LIGHTING);
-
+    glAlphaFunc(GL_GREATER,0.0);
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    /*glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);*/
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 
     /*glPolygonOffset(-5.0f, +10.0f);*/
@@ -339,7 +340,7 @@ void ssgVtxTableSmoke::draw_geometry ()
     B[2] = right[2]-up[2];
 
     glBegin ( gltype ) ;
-    glColor4f(0.9,0.9,0.9,alpha);
+    glColor4f(0.8,0.8,0.8,alpha);
     if ( num_colours == 1 ) glColor4fv  ( cl [ 0 ] ) ;
     if ( num_normals == 1 ) glNormal3fv ( nm [ 0 ] ) ;
     /* the computed coordinates are translated from the smoke position
@@ -356,4 +357,5 @@ void ssgVtxTableSmoke::draw_geometry ()
     glDisable(GL_POLYGON_OFFSET_FILL);
     glDepthMask(GL_TRUE);
     glEnable(GL_LIGHTING);
+    glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 }

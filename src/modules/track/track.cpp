@@ -66,6 +66,9 @@ TrackBuildv1(char *trackfile)
     case 3:
 	ReadTrack3(theTrack, TrackHandle, &theCamList, 0);
 	break;
+    case 4:
+	ReadTrack4(theTrack, TrackHandle, &theCamList, 0);
+	break;
     }
 
     return theTrack;
@@ -91,6 +94,9 @@ TrackBuildEx(char *trackfile)
     case 2:
     case 3:
 	ReadTrack3(theTrack, TrackHandle, &theCamList, 1);
+	break;
+    case 4:
+	ReadTrack4(theTrack, TrackHandle, &theCamList, 1);
 	break;
     }
     
@@ -179,22 +185,66 @@ GetTrackHeader(void *TrackHandle)
     
 }
 
+static void
+freeSeg(tTrackSeg *seg)
+{
+    if (seg->barrier[0]) {
+	free(seg->barrier[0]);
+    }
+    if (seg->barrier[1]) {
+	free(seg->barrier[1]);
+    }
+    if (seg->ext) {
+	free(seg->ext->marks);
+	free(seg->ext);
+    }
+    if (seg->lside) {
+	freeSeg(seg->lside);
+    }
+    if (seg->rside) {
+	freeSeg(seg->rside);
+    }
+    free(seg);
+}
+
 void
 TrackShutdown(void)
 {
     tTrackSeg	*curSeg;
     tTrackSeg	*nextSeg;
-    
+    tTrackSurface *curSurf;
+    tTrackSurface *nextSurf;
+    tRoadCam	*curCam;
+    tRoadCam	*nextCam;
+
     if (!theTrack) {
 	return;
     }
-    
+
     nextSeg = theTrack->seg->next;
     do {
 	curSeg = nextSeg;
 	nextSeg = nextSeg->next;
-	free(curSeg);
+	freeSeg(curSeg);
     } while (curSeg != theTrack->seg);
+
+    curSurf = theTrack->surfaces;
+    while (curSurf) {
+	nextSurf = curSurf->next;
+	free(curSurf);
+	curSurf = nextSurf;
+    }
+
+    curCam = theCamList;
+    if (curCam) {
+	do {
+	    nextCam = curCam->next;
+	    free(curCam);
+	    curCam = nextCam;
+	} while (curCam != theCamList);
+    }
+    theCamList = NULL;
+
     free(theTrack->graphic.env);
     free(theTrack);
     GfParmReleaseHandle(TrackHandle);

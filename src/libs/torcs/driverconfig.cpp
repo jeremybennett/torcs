@@ -163,23 +163,6 @@ onSelect(void *Dummy)
 }
 
 static void
-freeflist(tFList *flist)
-{
-    tFList	*cur;
-    tFList	*next;
-    
-    cur = flist;
-    if (cur != NULL) {
-	do {
-	    next = cur->next;
-	    free(cur);
-	    cur = next;
-	} while (cur != flist);
-    }
-}
-
-
-static void
 GenCarsInfo(void)
 {
     tCarInfo	*curCar;
@@ -193,9 +176,11 @@ GenCarsInfo(void)
     
     /* Empty the lists */
     while ((curCar = (tCarInfo*)GfRlstUnlinkFirst(&CarsInfoList)) != NULL) {
+	free(curCar->_Name);
 	free(curCar);
     }
     while ((curCat = (tCatInfo*)GfRlstUnlinkFirst(&CatsInfoList)) != NULL) {
+	free(curCat->_Name);
 	free(curCat);
     }
 
@@ -205,9 +190,9 @@ GenCarsInfo(void)
 	do {
 	    curFile = curFile->next;
 	    curCat = (tCatInfo*)calloc(1, sizeof(tCatInfo));
-	    curCat->_Name = curFile->name;
 	    str = strchr(curFile->name, '.');
 	    *str = '\0';
+	    curCat->_Name = strdup(curFile->name);
 	    sprintf(buf, "categories/%s.xml", curFile->name);
 	    hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	    if (!hdle) {
@@ -217,7 +202,7 @@ GenCarsInfo(void)
 	    GfRlstAddLast(&CatsInfoList, (tRingList*)curCat);
 	} while (curFile != files);
     }
-    freeflist(files);
+    GfDirFreeList(files, NULL);
     
     files = GfDirGetList("cars");
     curFile = files;
@@ -225,7 +210,7 @@ GenCarsInfo(void)
 	do {
 	    curFile = curFile->next;
 	    curCar = (tCarInfo*)calloc(1, sizeof(tCarInfo));
-	    curCar->_Name = curFile->name;
+	    curCar->_Name = strdup(curFile->name);
 	    sprintf(buf, "cars/%s/%s.xml", curFile->name, curFile->name);
 	    carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	    if (!carparam) {
@@ -246,7 +231,7 @@ GenCarsInfo(void)
 	    curCar->cat = curCat;
 	} while (curFile != files);
     }
-    freeflist(files);
+    GfDirFreeList(files, NULL);
 }
 
 static void
@@ -258,7 +243,6 @@ UpdtScrollList(void)
 
     /* free the previous scrollist elements */
     while((str = GfuiScrollListExtractElement(scrHandle, scrollList, 0, (void**)&tmp)) != NULL) {
-	free(str);
     }
     for (i = 0; i < NB_DRV; i++) {
 	GfuiScrollListInsertElement(scrHandle, scrollList, PlayersInfo[i]._DispName, i, (void*)&(PlayersInfo[i]));

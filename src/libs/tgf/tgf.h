@@ -493,6 +493,7 @@ extern int   GfuiMenuBackQuitButtonCreate(void *menu, char *text, char *tip, voi
  *******************/
 
 extern void GfTrace(char *szTrc);
+extern void GfFatal(char *szTrc);
 
 /** Output Trace with one parameter
     @param	s	string to display

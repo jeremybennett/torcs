@@ -416,20 +416,20 @@ RtTrackHeightL(tTrkLocPos *p)
 	lg = p->toStart * seg->radius;
 	break;
     }
-    if (seg->style == TR_KERB) {
+    if (seg->style == TR_CURB) {
 	if (seg->type2 == TR_RBORDER) {
 	    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 		p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-		seg->kRoughness * sin(seg->kRoughWaveLen * lg) * (seg->width - p->toRight) / seg->width;
+		seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * (seg->width - p->toRight) / seg->width;
 	}
 	
 	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 	    p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-	    seg->kRoughness * sin(seg->kRoughWaveLen * lg) * p->toRight / seg->width;
+	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * p->toRight / seg->width;
     }
     
     return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
-	seg->kRoughness * sin(seg->kRoughWaveLen * p->toRight) * sin(seg->kRoughWaveLen * lg);
+	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * p->toRight) * sin(seg->surface->kRoughWaveLen * lg);
 }
 
 /** Returns the absolute height in meters of the road

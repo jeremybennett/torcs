@@ -64,7 +64,7 @@ rmrpValidate(void * /* dummy */)
 }
 
 static void
-rmdsAddKeys(void)
+rmrpAddKeys(void)
 {
     GfuiAddKey(scrHandle, 27, "Cancel Modifications", NULL, rmrpDeactivate);
     GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen);
@@ -163,6 +163,7 @@ RmRaceParamMenu(void *vrp)
 
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, rmrpDeactivate, NULL, NULL, NULL);
-
+    rmrpAddKeys();
+    
     GfuiScreenActivate(scrHandle);
 }

@@ -435,6 +435,8 @@ copy .\data\data\textures\tr-asphalt-right.rgb .\runtimed\data\textures\tr-aspha
 copy .\data\data\textures\tr-barrier.rgb .\runtimed\data\textures\tr-barrier.rgb
 copy .\data\data\textures\tr-concrete_nmm.rgb .\runtimed\data\textures\tr-concrete_nmm.rgb
 copy .\data\data\textures\tr-concrete.rgb .\runtimed\data\textures\tr-concrete.rgb
+copy .\data\data\textures\tr-curb-l.rgb .\runtimed\data\textures\tr-curb-l.rgb
+copy .\data\data\textures\tr-curb-r.rgb .\runtimed\data\textures\tr-curb-r.rgb
 copy .\data\data\textures\tr-dirtb.rgb .\runtimed\data\textures\tr-dirtb.rgb
 copy .\data\data\textures\tr-dirt.rgb .\runtimed\data\textures\tr-dirt.rgb
 copy .\data\data\textures\tree10.rgb .\runtimed\data\textures\tree10.rgb
@@ -457,11 +459,10 @@ copy .\data\data\textures\tr-grass2.rgb .\runtimed\data\textures\tr-grass2.rgb
 copy .\data\data\textures\tr-grass3.rgb .\runtimed\data\textures\tr-grass3.rgb
 copy .\data\data\textures\tr-grass4.rgb .\runtimed\data\textures\tr-grass4.rgb
 copy .\data\data\textures\tr-grass.rgb .\runtimed\data\textures\tr-grass.rgb
-copy .\data\data\textures\tr-kerb-l.rgb .\runtimed\data\textures\tr-kerb-l.rgb
-copy .\data\data\textures\tr-kerb-r.rgb .\runtimed\data\textures\tr-kerb-r.rgb
 copy .\data\data\textures\tr-sand2.rgb .\runtimed\data\textures\tr-sand2.rgb
 copy .\data\data\textures\tr-sand.rgb .\runtimed\data\textures\tr-sand.rgb
 copy .\data\data\textures\tr-snow.rgb .\runtimed\data\textures\tr-snow.rgb
+copy .\data\data\textures\tr-tirewall.rgb .\runtimed\data\textures\tr-tirewall.rgb
 copy .\data\data\textures\tr-wall.rgb .\runtimed\data\textures\tr-wall.rgb
 copy .\data\data\textures\tr-water.rgb .\runtimed\data\textures\tr-water.rgb
 copy .\data\data\textures\turn100L.rgb .\runtimed\data\textures\turn100L.rgb

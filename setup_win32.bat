@@ -435,6 +435,8 @@ copy .\data\data\textures\tr-asphalt-right.rgb .\runtime\data\textures\tr-asphal
 copy .\data\data\textures\tr-barrier.rgb .\runtime\data\textures\tr-barrier.rgb
 copy .\data\data\textures\tr-concrete_nmm.rgb .\runtime\data\textures\tr-concrete_nmm.rgb
 copy .\data\data\textures\tr-concrete.rgb .\runtime\data\textures\tr-concrete.rgb
+copy .\data\data\textures\tr-curb-l.rgb .\runtime\data\textures\tr-curb-l.rgb
+copy .\data\data\textures\tr-curb-r.rgb .\runtime\data\textures\tr-curb-r.rgb
 copy .\data\data\textures\tr-dirtb.rgb .\runtime\data\textures\tr-dirtb.rgb
 copy .\data\data\textures\tr-dirt.rgb .\runtime\data\textures\tr-dirt.rgb
 copy .\data\data\textures\tree10.rgb .\runtime\data\textures\tree10.rgb
@@ -457,11 +459,10 @@ copy .\data\data\textures\tr-grass2.rgb .\runtime\data\textures\tr-grass2.rgb
 copy .\data\data\textures\tr-grass3.rgb .\runtime\data\textures\tr-grass3.rgb
 copy .\data\data\textures\tr-grass4.rgb .\runtime\data\textures\tr-grass4.rgb
 copy .\data\data\textures\tr-grass.rgb .\runtime\data\textures\tr-grass.rgb
-copy .\data\data\textures\tr-kerb-l.rgb .\runtime\data\textures\tr-kerb-l.rgb
-copy .\data\data\textures\tr-kerb-r.rgb .\runtime\data\textures\tr-kerb-r.rgb
 copy .\data\data\textures\tr-sand2.rgb .\runtime\data\textures\tr-sand2.rgb
 copy .\data\data\textures\tr-sand.rgb .\runtime\data\textures\tr-sand.rgb
 copy .\data\data\textures\tr-snow.rgb .\runtime\data\textures\tr-snow.rgb
+copy .\data\data\textures\tr-tirewall.rgb .\runtime\data\textures\tr-tirewall.rgb
 copy .\data\data\textures\tr-wall.rgb .\runtime\data\textures\tr-wall.rgb
 copy .\data\data\textures\tr-water.rgb .\runtime\data\textures\tr-water.rgb
 copy .\data\data\textures\turn100L.rgb .\runtime\data\textures\turn100L.rgb

@@ -114,19 +114,11 @@ SOURCE=.\track.def
 # End Source File
 # Begin Source File
 
-SOURCE=.\track0.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\track1.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\track2.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\track3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\track4.cpp
 # End Source File
 # Begin Source File
 
