@@ -25,7 +25,7 @@ SOURCES   = ${ROBOT}.cpp
 
 DATADIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml car1.xml logo.rgb
+DATA      = ${ROBOT}.xml car1.xml
 
 DATASUBDIRS = 1 2 3 4 5 6 7 8 9 10
 

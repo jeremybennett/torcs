@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/1
 
-DATA      =  car.xml buggy.rgb
+DATA      =  car.xml buggy.rgb logo.rgb
 
 include ${MAKE_DEFAULT}
 

@@ -19,7 +19,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/5
 
-DATA      =  car.xml acura-nsx-sz.rgb
+DATA      =  car.xml acura-nsx-sz.rgb logo.rgb
 
 include ${MAKE_DEFAULT}
 

@@ -181,7 +181,7 @@ SimWheelUpdateForce(tCar *car, int index)
     } else {
 	wheel->presy = sy;
     }
-    RELAXATION(sx, wheel->presx, 15.0); /* used to stabilize the value when speed is near 0 */
+    RELAXATION(sx, wheel->presx, 1.0 + 99.0 * (1 - exp(-fabs(wheel->spinVel)))); /* used to stabilize the value when speed is near 0 */
     s = sqrt(sx*sx+sy*sy);
     car->carElt->_skid[index] = MAX(0.2, MIN(s, 1.2)) - 0.2;
 

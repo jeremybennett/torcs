@@ -118,9 +118,9 @@ CK1999Data *tpdata[] = {&data1, &data2};
 //
 // Debugging options
 //
-#define VERBOSE
+//#define VERBOSE
 //#define DOLOG
-#define DRAWPATH
+//#define DRAWPATH
 
 #ifdef DOLOG
 ofstream ofsLog("K1999.log", ios::out);

@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/7
 
-DATA      =  viper-gts-r.rgb
+DATA      =  viper-gts-r.rgb logo.rgb
 
 include ${MAKE_DEFAULT}
 

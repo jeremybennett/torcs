@@ -17,8 +17,7 @@
 <params name="NASCAR RWD" type="parameters" mode="mw">
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
-    <attnum name="zpos" unit="m" val="0.1"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="20"></attnum>
   </section>
 
   <section name="Rear Wing">
