@@ -44,7 +44,7 @@ const double MyCar::OVERTAKEDIST = 4.0;			/* planning distance of CG's while ove
 const double MyCar::OVERTAKEMINDIST = 3.5;		/* minimal distance of CG's while overtaking [m] */
 const double MyCar::OVERTAKEANGLE = 0.03;
 const double MyCar::DISTTHRESHOLD = 30.0;
-const double MyCar::OVERTAKEMARGIN = 0.9;
+const double MyCar::OVERTAKEMARGIN = 1.5;
 const double MyCar::MAXALLOWEDPITCH = 0.06;
 const double MyCar::FLYSPEED = 55.0;
 
@@ -116,12 +116,12 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	*/
 
 	double ba[6][12] = {
-		{1.2, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
-		{1.2, 0.9, 20.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.1, 0.5, 1.0, 5.0},
-		{1.2, 0.9, 15.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
+		{1.1, 0.9, 25.0, 0.1, 0.8, 0.78, 0.7, 0.05, 1.2, 0.2, 1.0, 5.0},
+		{1.1, 0.9, 20.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.1, 0.5, 1.0, 5.0},
+		{1.1, 0.9, 15.0, 0.1, 0.85, 0.8, 0.7, 0.05, 1.0, 0.5, 1.0, 5.0},
 		{1.3, 0.9, 15.0, 0.02, 0.9, 0.8, 0.7, 0.05, 0.98, 0.5, 1.0, 5.0},
 		{1.6, 0.9, 15.0, 0.01, 0.9, 0.75, 0.7, 0.05, 0.95, 0.5, 1.0, 5.0},
-		{1.2, 0.9, 45.0, 0.1, 0.35, 0.82, 0.7, 0.05, 1.0, 0.5, 1.0, 1.0}
+		{1.1, 0.9, 45.0, 0.1, 0.35, 0.82, 0.7, 0.05, 1.0, 0.5, 1.0, 1.0}
 	};
 
 	for (int i = 0; i < 6; i++) {
