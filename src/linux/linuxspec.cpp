@@ -569,6 +569,71 @@ linuxDirGetList(char *dir)
     return flist;
 }
 
+/*
+ * Function
+ *	linuxDirGetListFiltered
+ *
+ * Description
+ *	Get a list of entries in a directory
+ *
+ * Parameters
+ *	directory name
+ *
+ * Return
+ *	list of directory entries
+ */
+static tFList *
+linuxDirGetListFiltered(char *dir, char *suffix)
+{
+    DIR			*dp;		/* */
+    struct dirent	*ep;		/* */
+    tFList		*flist = (tFList*)NULL;
+    tFList		*curf;
+    int			suffixLg;
+    int			fnameLg;
+
+    if ((suffix == NULL) || (strlen(suffix) == 0))
+	return linuxDirGetList(dir);
+
+    suffixLg = strlen(suffix);
+
+    /* open the current directory */
+    dp = opendir(dir);
+    if (dp != NULL) {
+	/* some files in it */
+	while ((ep = readdir(dp)) != 0) {
+	    fnameLg = strlen(ep->d_name);
+	    if ((fnameLg > suffixLg) && (strcmp(ep->d_name + fnameLg - suffixLg, suffix) == 0)) {
+		curf = (tFList*)calloc(1, sizeof(tFList));
+		curf->name = strdup(ep->d_name);
+		if (flist == (tFList*)NULL) {
+		    curf->next = curf;
+		    curf->prev = curf;
+		    flist = curf;
+		} else {
+		    /* sort entries... */
+		    if (strcasecmp(curf->name, flist->name) > 0) {
+			do {
+			    flist = flist->next;
+			} while ((strcasecmp(curf->name, flist->name) > 0) && (strcasecmp(flist->name, flist->prev->name) > 0));
+			flist = flist->prev;
+		    } else {
+			do {
+			    flist = flist->prev;
+			} while ((strcasecmp(curf->name, flist->name) < 0) && (strcasecmp(flist->name, flist->next->name) < 0));
+		    }
+		    curf->next = flist->next;
+		    flist->next = curf;
+		    curf->prev = flist;
+		    curf->next->prev = curf;
+		    flist = curf;
+		}
+	    }
+	}
+    }
+    return flist;
+}
+
 static double
 linuxTimeClock(void)
 {
@@ -608,6 +673,7 @@ LinuxSpecInit(void)
     GfOs.modInfoDir = linuxModInfoDir;
     GfOs.modFreeInfoList = linuxModFreeInfoList;
     GfOs.dirGetList = linuxDirGetList;
+    GfOs.dirGetListFiltered = linuxDirGetListFiltered;
     GfOs.timeClock = linuxTimeClock;
 }
 

@@ -560,6 +560,72 @@ windowsDirGetList(char *dir)
     return flist;
 }
 
+/*
+* Function
+*	windowsDirGetListFiltered
+*
+* Description
+*	Get a list of entries in a directory
+*
+* Parameters
+*	directory name
+*
+* Return
+*	list of directory entries
+*/
+static tFList *
+windowsDirGetListFiltered(char *dir, char *suffix)
+{
+    tFList	*flist = NULL;
+    tFList	*curf;
+    int		suffixLg;
+    int		fnameLg;
+
+    if ((suffix == NULL) || (strlen(suffix) == 0))
+	return linuxDirGetList(dir);
+
+    suffixLg = strlen(suffix);
+	
+    _finddata_t FData;
+    char Dir_name[ 1024 ];
+    sprintf( Dir_name, "%s\\*.*", dir );
+    GfOut("trying dir %s\n",dir);
+    long Dirent = _findfirst( Dir_name, &FData );
+    if ( Dirent != -1 ) {
+	do {
+	    fnameLg = strlen(FData.name);
+	    if ((fnameLg > suffixLg) && (strcmp(FData.name + fnameLg - suffixLg, suffix) == 0)) {
+		curf = (tFList*)calloc(1, sizeof(tFList));
+		curf->name = strdup(FData.name);
+		if (flist == (tFList*)NULL) {
+		    curf->next = curf;
+		    curf->prev = curf;
+		    flist = curf;
+		} else {
+		    /* sort entries... */
+		    if (_stricmp(curf->name, flist->name) > 0) {
+			do {
+			    flist = flist->next;
+			} while ((stricmp(curf->name, flist->name) > 0) && (stricmp(flist->name, flist->prev->name) > 0));
+			flist = flist->prev;
+		    } else {
+			do {
+			    flist = flist->prev;
+			} while ((stricmp(curf->name, flist->name) < 0) && (stricmp(flist->name, flist->next->name) < 0));
+		    }
+		    curf->next = flist->next;
+		    flist->next = curf;
+		    curf->prev = curf->next->prev;
+		    curf->next->prev = curf;
+		    flist = curf;
+		}
+	    }
+	} while ( _findnext( Dirent, &FData ) != -1 );
+    }
+    
+    return flist;
+}
+
 static double
 windowsTimeClock(void)
 {
@@ -604,6 +670,7 @@ WindowsSpecInit(void)
     GfOs.modInfoDir = windowsModInfoDir;
     GfOs.modFreeInfoList = windowsModFreeInfoList;
     GfOs.dirGetList = windowsDirGetList;
+    GfOs.dirGetListFiltered = windowsDirGetListFiltered;
     GfOs.timeClock = windowsTimeClock;
 }
 

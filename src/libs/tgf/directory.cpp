@@ -51,6 +51,21 @@ GfDirGetList(char *dir)
     }
 }
 
+/** Get the list of files of a given directory
+    @ingroup	dir
+    @param	dir	directory name
+    @return	The list of files
+ */
+tFList *
+GfDirGetListFiltered(char *dir, char *suffix)
+{
+    if (GfOs.dirGetListFiltered) {
+	return GfOs.dirGetListFiltered(dir, suffix);
+    } else {
+	return (tFList*)NULL;
+    }
+}
+
 /** Free a directory list
     @ingroup	dir
     @param	list	List of files

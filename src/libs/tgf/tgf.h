@@ -240,6 +240,7 @@ typedef struct FList
 } tFList;
 
 extern tFList *GfDirGetList(char *dir);
+extern tFList *GfDirGetListFiltered(char *dir, char *suffix);
 typedef void (*tfDirfreeUserData)(void*);	/**< Function to call for releasing the user data associated with file entry */
 extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
 

@@ -30,6 +30,7 @@ typedef int (*tfModGetInfoDir)(unsigned int, char*, int, tModList **);
 typedef int (*tfModFreeInfoList)(tModList **);
 /* directory interface */
 typedef tFList *(*tfDirGetList)(char *);
+typedef tFList *(*tfDirGetListFiltered)(char *, char *);
 /* time interface */
 typedef double (*tfTimeClock)(void);
 
@@ -41,6 +42,7 @@ typedef struct {
     tfModGetInfoDir		modInfoDir;
     tfModFreeInfoList		modFreeInfoList;
     tfDirGetList		dirGetList;
+    tfDirGetListFiltered	dirGetListFiltered;
     tfTimeClock			timeClock;
 } tGfOs;
 
