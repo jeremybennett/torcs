@@ -62,7 +62,7 @@ double		grDeltaTime;
 int		segIndice	= 0;
 
 static int grWindowRatio = 0;
-int grNbCars;
+int grNbCars = 0;
 
 void *grHandle = NULL;
 void *grTrackHandle = NULL;
@@ -240,62 +240,6 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 
 
 int
-initCars(tSituation *s)
-{
-    char	idx[16];
-    int		index;
-    int		i;
-    tCarElt 	*elt;
-    void	*hdle;
-
-    TRACE_GL("initCars: start");
-
-    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-
-    grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
-    
-    grNbCars = s->_ncars;
-
-    for (i = 0; i < s->_ncars; i++) {
-	elt = s->cars[i];
-	/* Shadow init (Should be done before the cars for display order) */
-	grInitShadow(elt);
-	/* Skidmarks init */
-	grInitSkidmarks(elt);
-    }
-    
-    for (i = 0; i < s->_ncars; i++) {
-	elt = s->cars[i];
-	index = elt->index;
-	hdle = elt->_paramsHandle;
-	sprintf(idx, "Robots/index/%d", elt->_driverIndex);
-	grCarInfo[index].iconColor[0] = GfParmGetNum(hdle, idx, "red",   (char*)NULL, 0);
-	grCarInfo[index].iconColor[1] = GfParmGetNum(hdle, idx, "green", (char*)NULL, 0);
-	grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
-	grCarInfo[index].iconColor[3] = 1.0;
-	grInitCar(elt);
-    }
-    TRACE_GL("initCars: end");
-
-    grInitSound();
-    grInitSmoke(s->_ncars);
-    return 0;
-    
-}
-
-void
-shutdownCars(void)
-{
-    if (grNbCars) {
-	grShutdownSkidmarks();
-	/* TODO delete ssg objects */
-	grShutdownSound();
-	free(grCarInfo);
-    }
-    GfParmReleaseHandle(grHandle);
-}
-
-int
 refresh(tSituation *s)
 {
     int			i;
@@ -378,6 +322,69 @@ refresh(tSituation *s)
 }
 
 int
+initCars(tSituation *s)
+{
+    char	idx[16];
+    int		index;
+    int		i;
+    tCarElt 	*elt;
+    void	*hdle;
+
+    TRACE_GL("initCars: start");
+
+    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
+    
+    grNbCars = s->_ncars;
+
+    for (i = 0; i < s->_ncars; i++) {
+	elt = s->cars[i];
+	/* Shadow init (Should be done before the cars for display order) */
+	grInitShadow(elt);
+	/* Skidmarks init */
+	grInitSkidmarks(elt);
+    }
+    
+    for (i = 0; i < s->_ncars; i++) {
+	elt = s->cars[i];
+	index = elt->index;
+	hdle = elt->_paramsHandle;
+	sprintf(idx, "Robots/index/%d", elt->_driverIndex);
+	grCarInfo[index].iconColor[0] = GfParmGetNum(hdle, idx, "red",   (char*)NULL, 0);
+	grCarInfo[index].iconColor[1] = GfParmGetNum(hdle, idx, "green", (char*)NULL, 0);
+	grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
+	grCarInfo[index].iconColor[3] = 1.0;
+	grInitCar(elt);
+    }
+    TRACE_GL("initCars: end");
+
+    grInitSmoke(s->_ncars);
+
+    grCustomizePits();
+    return 0;
+    
+}
+
+void
+shutdownCars(void)
+{
+    int i;
+
+    if (grNbCars) {
+	grShutdownSkidmarks();
+	/* Delete ssg objects */
+	for (i = 0; i < grNbCars; i++) {
+	    TheScene->removeKid(grCarInfo[i].carTransform);
+	    TheScene->removeKid(grCarInfo[i].shadowAnchor);
+	    TheScene->removeKid(grCarInfo[i].pit);
+	}
+	free(grCarInfo);
+    }
+    GfParmReleaseHandle(grHandle);
+}
+
+int
 initTrack(tTrack *track)
 {
     static int firstTime = 1; /* for persistent implementations ??? */
@@ -390,6 +397,7 @@ initTrack(tTrack *track)
     grContext.makeCurrent();
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     grLoadScene(track);
+    grInitSound();
     return 0;
 }
 
@@ -399,5 +407,6 @@ shutdownTrack(void)
 {
     grShutdownScene();
     grShutdownBoard();
+    grShutdownSound();
 }
 

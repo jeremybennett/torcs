@@ -305,6 +305,17 @@ gfuiPassiveMotion(int x, int y)
     glutPostRedisplay();
 }
 
+/** Tell if the screen is active or not.
+    @ingroup	gui
+    @param	screen	Screen to activate
+    @return	1 if active and 0 if not.
+ */
+int
+GfuiScreenIsActive(void *screen)
+{
+    return (GfuiScreen == screen);
+}
+
 /** Activate a screen and make it current.
     @ingroup	gui
     @param	screen	Screen to activate
@@ -539,7 +550,7 @@ GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallba
     } else {
 	curKey->next = screen->userKeys->next;
 	screen->userKeys->next = curKey;
-	screen->userKeys = curKey;
+	/* screen->userKeys = curKey; */
     }
 }
 /** Add a Keyboard callback to the current screen.

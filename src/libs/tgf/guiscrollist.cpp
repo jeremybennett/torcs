@@ -129,10 +129,12 @@ gfuiScrollListPrevElt (tGfuiObject *object)
 			<br>GFUI_SB_NONE	No scroll bar
 			<br>GFUI_SB_RIGHT	Right scroll bar
 			<br>GFUI_SB_LEFT	Left scroll bar
+    @param	userDataOnSelect	User data to pass to the onSelect callback
+    @param	onSelect		Callback when the selection is done 
     @return	Scroll List Id
  */
 int
-GfuiScrollListCreate(void *scr, int font, int x, int y, int /* align */, int width, int height,
+GfuiScrollListCreate(void *scr, int font, int x, int y, int align, int width, int height,
 		     int scrollBarPos, void *userDataOnSelect, tfuiCallback onSelect)
 {
     tGfuiScrollList	*scrollist;

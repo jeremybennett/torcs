@@ -48,6 +48,7 @@ typedef struct
     ssgColourArray	*brkColor[4];
     ssgSelector		*wheelselector[4];
     ssgState		*wheelTexture;
+    ssgVtxTable		*pit;
     ssgVtxTableShadow	*shadowBase;
     ssgVtxTableShadow	*shadowCurr;
     ssgBranch		*shadowAnchor;

@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-#if 0
+#if 1
 #define TRACE_GL(msg) { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) printf("%s %s\n", msg, gluErrorString(rc)); }
 #else
 #define TRACE_GL(msg)

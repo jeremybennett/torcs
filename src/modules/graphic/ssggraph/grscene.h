@@ -38,6 +38,7 @@ extern int grInitScene(void);
 extern int grLoadScene(tTrack *track);
 extern void grDrawScene(void);
 extern void grShutdownScene(void);
+extern void grCustomizePits(void);
 
 struct Camera;
 extern void grDrawBackground(cGrCamera *);

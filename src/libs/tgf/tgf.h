@@ -86,20 +86,13 @@ typedef int (*tfModPrivInit)(int index, void *);
 
 /** Module information structure  */
 typedef struct ModInfo {
-    /** name of the module (short) (NULL if no module) */
-    char		*name;
-    /** description of the module (can be long) */
-    char		*desc;
-    /** init function */
-    tfModPrivInit	fctInit;
-    /** supported framework version */
-    unsigned int	gfId;
-    /** index if multiple interface in one dll */
-    int			index;
-    /** priority if needed */
-    int			prio;
-    /** magic number for integrity check */
-    int			magic;
+    char		*name;		/**< name of the module (short) (NULL if no module) */
+    char		*desc;		/**< description of the module (can be long) */
+    tfModPrivInit	fctInit;	/**< init function */
+    unsigned int	gfId;		/**< supported framework version */
+    int			index;		/**< index if multiple interface in one dll */
+    int			prio;		/**< priority if needed */
+    int			magic;		/**< magic number for integrity check */
 } tModInfo;
 
 /* module init function interface */
@@ -111,18 +104,14 @@ typedef int (*tfModShut)(void);	/* last function called in the module */
 
 /** list of module interfaces */
 typedef struct ModList {
-    /** module info list for this dll */
-    tModInfo		modInfo[MAX_MOD_ITF];
-    /** handle of loaded module */
+    tModInfo		modInfo[MAX_MOD_ITF];	/**< module info list for this dll */
 #ifdef _WIN32
-    HMODULE		handle;
+    HMODULE		handle;			/**< handle of loaded module */
 #else
-    void		*handle;
+    void		*handle;		/**< handle of loaded module */
 #endif
-    /** path name of file */
-    char		*sopath;
-    /** next module in list */
-    struct ModList	*next;
+    char		*sopath;		/**< path name of file */
+    struct ModList	*next;			/**< next module in list */
 } tModList;
 
 
@@ -142,21 +131,15 @@ extern int GfModFreeInfoList(tModList **modlist);
 */
 typedef struct FList 
 {
-    /** Next entry */
-    struct FList	*next;
-    /** Previous entry */
-    struct FList	*prev;
-    /** File name */
-    char		*name;
-    /** Name to display on screen */
-    char		*dispName;
-    /** User data */
-    void		*userData;
+    struct FList	*next;		/**< Next entry */
+    struct FList	*prev;		/**< Previous entry */
+    char		*name;		/**< File name */
+    char		*dispName;	/**< Name to display on screen */
+    void		*userData;	/**< User data */
 } tFList;
 
 extern tFList *GfDirGetList(char *dir);
-/** Function to call for releasing the user data associated with file entry */
-typedef void (*tfDirfreeUserData)(void*);
+typedef void (*tfDirfreeUserData)(void*);	/**< Function to call for releasing the user data associated with file entry */
 extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
 
 
@@ -171,19 +154,19 @@ extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
 
 
 /* parameters file type */
-#define GFPARM_PARAMETER	0
-#define GFPARM_TEMPLATE		1
+#define GFPARM_PARAMETER	0	/**< Parameter file */
+#define GFPARM_TEMPLATE		1	/**< Template file */
 #define GFPARM_PARAM_STR	"param"
 #define GFPARM_TEMPL_STR	"template"
 
 /* parameters access mode */
-#define GFPARM_MODIFIABLE	1
-#define GFPARM_WRITABLE		2
+#define GFPARM_MODIFIABLE	1	/**< Parameter file allowed to be modified */
+#define GFPARM_WRITABLE		2	/**< Parameter file allowed to be saved on disk */
 
 /* parameter file read */
-#define GFPARM_RMODE_STD	0x01	/* if handle already openned return it */
-#define GFPARM_RMODE_REREAD	0x02	/* reread the parameters from file and release the previous ones */
-#define GFPARM_RMODE_CREAT	0x04	/* Create the file if doesn't exist */
+#define GFPARM_RMODE_STD	0x01	/**< if handle already openned return it */
+#define GFPARM_RMODE_REREAD	0x02	/**< reread the parameters from file and release the previous ones */
+#define GFPARM_RMODE_CREAT	0x04	/**< Create the file if doesn't exist */
 
 extern void *GfParmReadFile(const char *file, int mode);
 /* parameter file write */
@@ -222,10 +205,10 @@ extern tdble GfParmSI2Unit(char *unit, tdble val);
 
 /* compare and merge different handles */
 extern int GfParmCheckHandle(void *ref, void *tgt);
-#define GFPARM_MMODE_SRC	1 /* use ref and modify existing parameters with tgt */
-#define GFPARM_MMODE_DST	2 /* use tgt and verify ref parameters */
-#define GFPARM_MMODE_RELSRC	4 /* release ref after the merge */
-#define GFPARM_MMODE_RELDST	8 /* release tgt after the merge */
+#define GFPARM_MMODE_SRC	1 /**< use ref and modify existing parameters with tgt */
+#define GFPARM_MMODE_DST	2 /**< use tgt and verify ref parameters */
+#define GFPARM_MMODE_RELSRC	4 /**< release ref after the merge */
+#define GFPARM_MMODE_RELDST	8 /**< release tgt after the merge */
 extern void *GfParmMergeHandles(void *ref, void *tgt, int mode);
 extern int GfParmGetNumBoundaries(void *handle, char *path, char *key, tdble *min, tdble *max);
 
@@ -304,10 +287,8 @@ extern void GfScrReinit(void*);
 /** Scroll bar call-back information */
 typedef struct ScrollBarInfo
 {
-    /** Current scroll bar position */
-    int		pos;
-    /** Associated user data */
-    void	*userData;
+    int		pos;		/**< Current scroll bar position */
+    void	*userData;	/**< Associated user data */
 } tScrollBarInfo;
 
 typedef void (*tfuiCallback)(void * /* userdata */);
@@ -350,7 +331,9 @@ typedef struct MouseInfo
 extern tMouseInfo *GfuiMouseInfo(void);
 
 /* all widgets */
-extern void GfuiVisiblilitySet(void *scr, int id, int visible);
+#define	GFUI_VISIBLE	1	/**< Object visibility flag  */
+#define	GFUI_INVISIBLE	0	/**< Object invisibility flag  */
+extern int GfuiVisiblilitySet(void *scr, int id, int visible);
 #define	GFUI_DISABLE	1
 #define	GFUI_ENABLE	0
 extern int GfuiEnable(void *scr, int id, int flag);
@@ -525,9 +508,8 @@ extern char *GfGetTimeStr(void);
 /** Ring List structure */
 typedef struct tRingList
 {
-    /** Next element in the list */
-    struct tRingList *next;
-    struct tRingList *prev;
+    struct tRingList *next;	/**< Next element in the list */
+    struct tRingList *prev;	/**< Previous element in the list */
 } tRingList;
 
 typedef struct tRingListHead

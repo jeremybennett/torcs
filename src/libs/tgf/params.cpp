@@ -509,7 +509,7 @@ GfParmGetName(void *handle)
     @param	file	Filename of the parameter file (local to $BASE/runtime)
     @param	handle	Handle on the parameters
     @param	name	Name of the parameters
-    @param	type	type of the parameter file
+    @param	type	type of the parameter file (GFPARM_TEMPLATE or GFPARM_PARAMETER)
     @param	dtd	Filename of the dtd file
     @return	0	ok
     		<br>-1	failed
@@ -583,7 +583,7 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
 		if (type == GFPARM_TEMPLATE) {
 		    s += sprintf(s, "min=\"%f\" max=\"%f\" ", curkey->min, curkey->max);
 		} 
-		sprintf(s, "val=\"%f\"></attnum>\n", curkey->valnum);
+		sprintf(s, "val=\"%f\"/>\n", curkey->valnum);
 	    } else {
 		s += sprintf(s, "%s<attstr name=\"%s\" ", blank, curkey->n.name);
 		if ((type == GFPARM_TEMPLATE) && (curkey->withins)) {
@@ -596,7 +596,7 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
 		    s--;
 		    s += sprintf(s, "\" ");
 		} 
-		sprintf(s, "val=\"%s\"></attstr>\n", curkey->valstr);
+		sprintf(s, "val=\"%s\"/>\n", curkey->valstr);
 	    }
 	    FW(buf);
 	    break;
@@ -1568,19 +1568,19 @@ evalUnit(char *unit, tdble *dest, int flg)
     @param	val	value in units
     @return	the value in corresponding SI unit
     @warning	The supported units are:
-    			<br><dl><dd><b>feet</b> or <b>ft</b>  converted to <b>m</b>
-			<dd><b>inches</b> or <b>in</b> converted to <b>m</b>
-			<dd><b>lbs</b> converted to <b>kg</b>
-			<dd><b>slug</b> or <b>slugs</b> converted to <b>kg</b>
-			<dd><b>h</b> or <b>hours</b> converted to <b>s</b>
-			<dd><b>day</b> or <b>days</b> converted to <b>s</b>
-			<dd><b>km</b> converted to <b>m</b>
-			<dd><b>cm</b> converted to <b>m</b>
-			<dd><b>mm</b> converted to <b>m</b>
-			<dd><b>kPa</b> converted to <b>Pa</b>
-			<dd><b>deg</b> converted to <b>rad</b>
-			<dd><b>rpm</b> or <b>RPM</b> converted to <b>rad/s</b>
-			<dd><b>percent</b> or <b>%</b> divided by <b>100</b></dl>
+    			<br><ul><li><b>feet</b> or <b>ft</b>  converted to <b>m</b></li>
+			<li><b>inches</b> or <b>in</b> converted to <b>m</b></li>
+			<li><b>lbs</b> converted to <b>kg</b></li>
+			<li><b>slug</b> or <b>slugs</b> converted to <b>kg</b></li>
+			<li><b>h</b> or <b>hours</b> converted to <b>s</b></li>
+			<li><b>day</b> or <b>days</b> converted to <b>s</b></li>
+			<li><b>km</b> converted to <b>m</b></li>
+			<li><b>cm</b> converted to <b>m</b></li>
+			<li><b>mm</b> converted to <b>m</b></li>
+			<li><b>kPa</b> converted to <b>Pa</b></li>
+			<li><b>deg</b> converted to <b>rad</b></li>
+			<li><b>rpm</b> or <b>RPM</b> converted to <b>rad/s</b></li>
+			<li><b>percent</b> or <b>%</b> divided by <b>100</b></li></ul>
     @see	GfParmSI2Unit
  */
 tdble

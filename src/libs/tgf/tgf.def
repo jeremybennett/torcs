@@ -114,3 +114,4 @@ EXPORTS
     	GfuiStaticImageCreate
 	GfuiStaticImageSet
 	GfScrReinit
+	GfuiScreenIsActive

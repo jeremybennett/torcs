@@ -55,9 +55,9 @@ int grWrldZ;
 int grWrldMaxSize;
 tTrack 	 *grTrack;
 
-int    BackgroundType;
-GLuint BackgroundList;
-GLuint BackgroundTex;
+int    BackgroundType = 0;
+GLuint BackgroundList = 0;
+GLuint BackgroundTex = 0;
 GLuint BackgroundList2;
 GLuint BackgroundTex2;
 
@@ -67,11 +67,9 @@ grMultiTexState	*grEnvShadowState=NULL;
 #define NB_BG_FACES	20
 #define BG_DIST		1.0
 
-ssgRoot *TheScene;
+ssgRoot *TheScene = 0;
 
 static void initBackground(void);
-
-static void customizePits(void);
 
 static ssgLoaderOptionsEx	grloaderOptions;
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
@@ -478,7 +476,7 @@ grLoadScene(tTrack *track)
 #ifdef GUIONS
     computeSceneHashing(track);
 #endif /* GUIONS */
-    customizePits();
+    //grCustomizePits();
 
     return 0;
 }
@@ -499,9 +497,18 @@ void grDrawScene(void)
 void grShutdownScene(void)
 {
     grShutdownSmoke ();
-    delete TheScene;
-    glDeleteTextures(1, &BackgroundTex);
-    glDeleteLists(BackgroundList, 1);
+    if (TheScene) {
+	delete TheScene;
+	TheScene = 0;
+    }
+    if (BackgroundTex) {
+	glDeleteTextures(1, &BackgroundTex);
+	BackgroundTex = 0;
+    }
+    if (BackgroundList) {
+	glDeleteLists(BackgroundList, 1);
+	BackgroundList = 0;
+    }
     if (BackgroundType > 2) {
 	glDeleteTextures(1, &BackgroundTex2);
 	glDeleteLists(BackgroundList2, 1);
@@ -738,8 +745,8 @@ void grDrawBackground(cGrCamera *cam)
 
 }
 
-static void
-customizePits(void)
+void
+grCustomizePits(void)
 {
     tTrackPitInfo	*pits;
     int			i;
@@ -823,6 +830,7 @@ customizePits(void)
 	    pit->setState(st);
 	    pit->setCullFace(0);
 	    TheScene->addKid(pit);
+	    grCarInfo[i].pit = pit;
 	}
 	break;
     case TR_PIT_ON_SEPARATE_PATH:

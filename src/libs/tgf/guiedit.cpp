@@ -46,6 +46,7 @@ gfuiEditboxInit(void)
     @param	x		X position on screen
     @param	y		Y position on screen (0 = bottom)
     @param	width		width of the editbox (0 = text size)
+    @param	maxlen		Max lenght of text (0 = text size)
     @param	userDataOnFocus	Parameter to the Focus (and lost) callback
     @param	onFocus		Focus callback function
     @param	onFocusLost	Focus Lost callback function

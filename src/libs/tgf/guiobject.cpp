@@ -383,42 +383,43 @@ gfuiSelectId(void *scr, int id)
     }
 }
 
-/** 
-    @param	
-    @param	
-    @param	
-    @param	
+/** Set/unset the visibility attribute of an object
+    @param	scr	Screen    
+    @param	id	Object id
+    @param	visible	GFUI_VISIBLE or GFUI_INVISIBLE
     @return	<tt>0 ... </tt>Ok
 		<br><tt>-1 .. </tt>Error
-    @error
-    @warning	
-    @bug	
-    @see	
+    @ingroup	gui
  */
-void
+int
 GfuiVisiblilitySet(void *scr, int id, int visible)
 {
     tGfuiObject *curObject;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
     
-    curObject = screen->objects;
-    if (curObject != NULL) {
-	do {
-	    curObject = curObject->next;
-	    if (curObject->id == id) {
-		curObject->visible = visible;
-		break;
-	    }
-	} while (curObject != screen->objects);
+    curObject = gfuiGetObject(scr, id);
+    if (curObject == NULL) {
+	return -1;
     }
+    switch(visible) {
+    case GFUI_VISIBLE:
+	curObject->visible = GFUI_VISIBLE;
+	break;
+    case GFUI_INVISIBLE:
+	curObject->visible = GFUI_INVISIBLE;
+	break;
+    default:
+	return -1;
+    }
+    return 0;
 }
 
 /** Enable / Disable an object
     @param	scr	Screen    
-    @param	id	object id
+    @param	id	Object id
     @param	flag	GFUI_ENABLE or GFUI_DISABLE
     @return	<tt>0 ... </tt>Ok
 		<br><tt>-1 .. </tt>Error
+    @ingroup	gui
  */
 int 
 GfuiEnable(void *scr, int id, int flag)

@@ -22,7 +22,7 @@
 #define _GRMAIN_H_
 
 #include <plib/ssg.h>
-#include <graphic.h>
+#include <raceman.h>
 
 #ifdef WIN32
 #include <windows.h>

@@ -23,7 +23,6 @@
 #include <GL/gl.h>
 
 #include <tgf.h>
-#include <graphic.h>
 
 #include "grmain.h"
 

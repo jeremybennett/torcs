@@ -200,7 +200,7 @@ gfuiSetLabelText(tGfuiObject *curObject, tGfuiLabel *label, char *text)
     @param	scr	Screen where to add the label
     @param	id	Id of the label
     @param	text	Text of the label
-    @caution	The maximum length is set at the label creation
+    @attention	The maximum length is set at the label creation
     @see	GfuiAddLabel
  */
 void

@@ -53,7 +53,7 @@ double grSmokeDeltaT;
 double grSmokeLife;
 
 
-static tgrSmokeManager *smokeManager;
+static tgrSmokeManager *smokeManager = 0;
 ssgCutout * rootSmoke = NULL;
 /** initialize the smoke structure */
 ssgSimpleState	*mst = NULL;
@@ -215,22 +215,24 @@ void grShutdownSmoke ()
 {
     tgrSmoke *tmp, *tmp2;
 
-    tmp = smokeManager->smokeList;
-    while( tmp!=NULL)
-	{
-	    tmp2 = tmp->next;
-	    TheScene->removeKid(tmp->smoke);
-	    free(tmp);
-	    tmp = tmp2;
-	}
-    smokeManager->smokeList = NULL;
-    free(timeSmoke);
-    free(smokeManager);
-    TheScene->removeKid(tsmoke);
-    smokeManager = NULL;
-    tsmoke = NULL;
-    timeSmoke = NULL;
-
+    if (smokeManager) {
+	tmp = smokeManager->smokeList;
+	while( tmp!=NULL)
+	    {
+		tmp2 = tmp->next;
+		TheScene->removeKid(tmp->smoke);
+		free(tmp);
+		tmp = tmp2;
+	    }
+	smokeManager->smokeList = NULL;
+	free(timeSmoke);
+	free(smokeManager);
+	smokeManager = 0;
+	TheScene->removeKid(tsmoke);
+	smokeManager = NULL;
+	tsmoke = NULL;
+	timeSmoke = NULL;
+    }
 }
 
 void ssgVtxTableSmoke::copy_from ( ssgVtxTableSmoke *src, int clone_flags )

@@ -826,12 +826,12 @@ static int do_refs     ( char *s )
     if (isacar==TRUE) {
       mapLevel=LEVELC;
       if (tlist1 && maxTextureUnits>2) {
-	mapLevel=LEVELC2;
-	numMapLevel=2;
+	  mapLevel=LEVELC2;
+	  numMapLevel=2;
       }
-      if (tlist2 && maxTextureUnits>2){
-	mapLevel=LEVELC3;
-	numMapLevel=3;
+      if (tlist2 && maxTextureUnits>2) {
+	  mapLevel=LEVELC3;
+	  numMapLevel=3;
       }
     }
 
@@ -928,12 +928,12 @@ static int do_kids ( char *s )
       if (isacar==TRUE) {
 	mapLevel=LEVELC;
 	if (tlist1 && maxTextureUnits>2) {
-	  mapLevel=LEVELC2;
-	  numMapLevel=2;
+	    mapLevel=LEVELC2;
+	    numMapLevel=2;
 	}
-	if (tlist2 && maxTextureUnits>2){
-	  mapLevel=LEVELC3;
-	  numMapLevel=3;
+	if (tlist2 && maxTextureUnits>2) {
+	    mapLevel=LEVELC3;
+	    numMapLevel=3;
 	}
       }
       /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,

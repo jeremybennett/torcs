@@ -1027,17 +1027,17 @@ grInitCams(void)
     id++;
 
     /* cam F2 = car inside car (no car - road view) */
-    curCam = new cGrCarCamInside(id,
-				 0,	/* drawCurr */
-				 1,	/* drawBG  */
-				 67.5,	/* fovy */
-				 50.0,	/* fovymin */
-				 95.0,	/* fovymax */
-				 0.3,	/* near */
-				 600.0 * fovFactor,	/* far */
-				 300.0 * fovFactor,	/* fog */
-				 600.0 * fovFactor	/* fog */
-				 );
+    curCam = new cGrCarCamInsideFixedCar(id,
+					 0,	/* drawCurr */
+					 1,	/* drawBG  */
+					 67.5,	/* fovy */
+					 50.0,	/* fovymin */
+					 95.0,	/* fovymax */
+					 0.3,	/* near */
+					 600.0 * fovFactor,	/* far */
+					 300.0 * fovFactor,	/* fog */
+					 600.0 * fovFactor	/* fog */
+					 );
     curCam->add(&grCams[c]);
 
     /* F3 */

@@ -277,7 +277,6 @@ void grVtxTable::draw_geometry_multi ()
 
   TRACE_GL("draw_geometry_multi: start");
   glBegin ( gltype ) ;
-  TRACE_GL("draw_geometry_multi: 1");
 
   if ( num_colours == 0 ) glColor4f   ( 1.0f, 1.0f, 1.0f, 1.0f ) ;
   if ( num_colours == 1 ){
@@ -286,7 +285,6 @@ void grVtxTable::draw_geometry_multi ()
       glColor4f ( cl [ 0 ][0]*numMapLevel,cl [ 0 ][1]*numMapLevel,
       cl [ 0 ][2]*numMapLevel,cl [ 0 ][3]);*/
   }
-  TRACE_GL("draw_geometry_multi: 2");
   if ( num_normals == 1 ) glNormal3fv ( nm [ 0 ] ) ;
   for ( int i = 0 ; i < num_vertices ; i++ )
   {
@@ -294,66 +292,27 @@ void grVtxTable::draw_geometry_multi ()
     if ( num_normals   > 1 ) glNormal3fv   ( nm [ i ] ) ;
     if ( num_texcoords > 1 ){ /*glTexCoord2fv ( tx [ i ] ) ;*/
       glMultiTexCoord2fvARB(GL_TEXTURE0_ARB,tx [ i ] );
-      TRACE_GL("draw_geometry_multi: 3");
       if (numMapLevel>1) glMultiTexCoord2fvARB(GL_TEXTURE1_ARB,tx1 [ i ] );
-      TRACE_GL("draw_geometry_multi: 4");
       if (numMapLevel>2) glMultiTexCoord2fvARB(GL_TEXTURE2_ARB,tx2 [ i ] );
-      TRACE_GL("draw_geometry_multi: 5");
     }
     glVertex3fv ( vx [ i ] ) ;
-    TRACE_GL("draw_geometry_multi: 6");
   }
-  TRACE_GL("draw_geometry_multi: 15");
   glEnd () ;
-#if 0
-  {
-      GLenum rc;
-      int z;
-      if ((rc = glGetError()) != GL_NO_ERROR) {
-	  printf("------------draw_geometry_multi------------------------------------\n");
-	  printf("vert=%d norm=%d lev=%d tex=%d\n", num_vertices, num_normals, numMapLevel, num_texcoords);
-	  for (z = 0; z < num_vertices; z++) {
-	      printf("%f %f %f\n", vx [z][0], vx [z][1], vx [z][2]);
-	  }
-	  printf("---\n");
-	  for (z = 0; z < num_normals; z++) {
-	      printf("%f %f %f\n", nm [z][0], nm [z][1], nm [z][2]);
-	  }
-	  printf("---\n");
-	  for (z = 0; z < num_normals; z++) {
-	      printf("%f %f\n", tx [z][0], tx [z][1]);
-	  }
-	  if (numMapLevel>1) {
-	      printf("---\n");
-	      for (z = 0; z < num_normals; z++) {
-		  printf("%f %f\n", tx1 [z][0], tx1 [z][1]);
-	      }
-	  }
-      }
-  }
-#endif
  
-  TRACE_GL("draw_geometry_multi: 7");
   if (numMapLevel>1) {
       glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
-      TRACE_GL("draw_geometry_multi: 8");
       glDisable ( GL_TEXTURE_2D ) ; 
-      TRACE_GL("draw_geometry_multi: 9");
   }
   if (numMapLevel>2) {
       glActiveTextureARB ( GL_TEXTURE2_ARB ) ;
-      TRACE_GL("draw_geometry_multi: 10");
       glDisable ( GL_TEXTURE_2D ) ; 
-      TRACE_GL("draw_geometry_multi: 11");
   }
   if (numMapLevel>3) {
       glActiveTextureARB ( GL_TEXTURE3_ARB ) ;
-      TRACE_GL("draw_geometry_multi: 12");
       glDisable ( GL_TEXTURE_2D ) ; 
-      TRACE_GL("draw_geometry_multi: 13");
   }
   glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
-  TRACE_GL("draw_geometry_multi: 14");
+  TRACE_GL("draw_geometry_multi: end");
 
 }
 
@@ -366,60 +325,37 @@ void grVtxTable::draw_geometry_for_a_car ()
   tdble tty=0;
   tdble ttz=0;
   sgMat4 mat ;
-  /*sgMat4 mat1 ;*/
+  sgVec3 axis;
 
+  TRACE_GL("draw_geometry_for_a_car: start");
   /* GUIONS : first apply the env state */
-  /*if (state1)
-    state1->apply(1);*/
+
   if (mapLevelBitmap<=LEVELC2 )
     {
-      ttx=grCarInfo[indexCar].distFromStart/40;
-      sgMakeTransMat4 ( mat, ttx, tty, ttz ) ;
-      grEnvState->apply(2);
-      glMatrixMode(GL_TEXTURE);
-      glLoadIdentity () ;
-      glMultMatrixf ( (float *)mat ) ;
-      glMatrixMode(GL_MODELVIEW);
+	axis[0]=0;
+	axis[1]=1;
+	axis[2]=0;
 
+	glActiveTextureARB ( GL_TEXTURE2_ARB ) ;
+	sgMakeRotMat4(mat, grCarInfo[indexCar].envAngle, axis) ;
+	grEnvShadowState->apply(2);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity () ;
+	glMultMatrixf ( (float *)mat ) ;
+	glMatrixMode(GL_MODELVIEW);
     }
+ 
 
+  grEnvState->apply(1);
 
-  if (mapLevelBitmap==LEVELC3)
-    {
-      sgVec3 axis;
-      axis[0]=0;
-      axis[1]=0;
-      axis[2]=1;
-      grEnvShadowState->apply(1);
-      glMatrixMode(GL_TEXTURE);
-      /*sgMakeTransMat4 ( mat, ttx, tty, ttz ) ;*/
-      glLoadIdentity () ;
-      /*ttx=grCarInfo[indexCar].distFromStart/200;
-	if (grCarInfo[indexCar].envAngle>180.0)
-	ttx=-ttx;
-	sgMakeTransMat4 ( mat, ttx, tty, ttz ) ;
-	glMultMatrixf ( (float *)mat ) ;*/
-      sgMakeRotMat4 ( mat,grCarInfo[indexCar].envAngle, axis) ;
-      glMultMatrixf ( (float *)mat ) ;
-      /*glMultMatrixf ( (float *)grCarInfo[indexCar].carPos ) ;
-	rrz+=0.001;*/
-      /*glMultMatrixf ( (float *) grCarInfo[indexCar].carPos ) ;*/
-      /*glMultMatrixf ( (float *) mat ) ; */
-      glMatrixMode(GL_MODELVIEW);
-      
-      
-    }
-  else
-    {
-      /*grEnvState->apply(1);*/
-      grEnvShadowState->apply(1);
-
-      glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
-      glEnable ( GL_TEXTURE_2D ) ; 
-      glEnable(GL_TEXTURE_GEN_S);
-      glEnable(GL_TEXTURE_GEN_T);
-    }
-
+  glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
+  glEnable ( GL_TEXTURE_2D ) ;
+  glMatrixMode(GL_TEXTURE);
+  glLoadIdentity() ;
+  ttx=grCarInfo[indexCar].distFromStart/40;
+  sgMakeTransMat4 ( mat, ttx, tty, ttz ) ;
+  glMultMatrixf((float *)mat) ;
+  glMatrixMode(GL_MODELVIEW);
 
   int num_colours   = getNumColours   () ;
   int num_normals   = getNumNormals   () ;
@@ -429,10 +365,10 @@ void grVtxTable::draw_geometry_for_a_car ()
   sgVec3 *vx = (sgVec3 *) vertices  -> get(0) ;
   sgVec3 *nm = (sgVec3 *) normals   -> get(0) ;
   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ;
-  sgVec2 *tx1 = (sgVec2 *) texcoords1 -> get(0) ;
-  sgVec2 *tx2 = (sgVec2 *) texcoords2 -> get(0) ;
+  sgVec2 *tx1 = 0;
+  if (texcoords1) tx1 = (sgVec2 *) texcoords1 -> get(0) ;
+/*   sgVec2 *tx2 = (sgVec2 *) texcoords2 -> get(0) ; */
   sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
-
 
   glBegin ( gltype ) ;
 
@@ -442,65 +378,31 @@ void grVtxTable::draw_geometry_for_a_car ()
 
   for ( int i = 0 ; i < num_vertices ; i++ )
   {
-    /*if ( num_colours   > 1 ) glColor4fv    ( cl [ i ] ) ;*/
     if ( num_normals   > 1 ) glNormal3fv   ( nm [ i ] ) ;
     if ( num_texcoords > 1 ) { 
-      /*glTexCoord2fv ( tx [ i ] ) ;*/
       glMultiTexCoord2fvARB(GL_TEXTURE0_ARB,tx [ i ] );
-      glMultiTexCoord2fvARB(GL_TEXTURE2_ARB,tx1 [ i ] );
-      if (mapLevelBitmap==LEVELC3)
-	glMultiTexCoord2fvARB(GL_TEXTURE1_ARB,tx2 [ i ] );
-
-    }
-    
-    glVertex3fv ( vx [ i ] ) ;
-  }
- 
-  glEnd () ;
-#if 0
-  {
-      GLenum rc;
-      int z;
-      static int GlobCountLap = 0;
-      
-      GlobCountLap++;
-      if ((rc = glGetError()) != GL_NO_ERROR) {
-	  printf("--------------draw_geometry_for_a_car----------------------------------\n");
-	  printf("vert=%d norm=%d lev=%d tex=%d count=%d\n", num_vertices, num_normals, numMapLevel, num_texcoords, GlobCountLap);
-	  printf("---\nvx:\n");
-	  for (z = 0; z < num_vertices; z++) {
-	      printf("%3.3d: %f %f %f\n", z, vx [z][0], vx [z][1], vx [z][2]);
-	  }
-	  printf("---\nnm:\n");
-	  for (z = 0; z < num_normals; z++) {
-	      printf("%3.3d: %f %f %f -> %f\n", z, nm [z][0], nm [z][1], nm [z][2], nm [z][0]*nm [z][0] + nm [z][1]*nm [z][1] + nm [z][2]*nm [z][2]);
-	  }
-	  printf("---\ntx:\n");
-	  for (z = 0; z < num_normals; z++) {
-	      printf("%3.3d: %f %f\n", z, tx [z][0], tx [z][1]);
-	  }
-	  if (numMapLevel>1) {
-	      printf("---\ntx1:\n");
-	      for (z = 0; z < num_normals; z++) {
-		  printf("%3.3d: %f %f\n", z, tx1 [z][0], tx1 [z][1]);
-	      }
-	  }
-	  exit (0);
+      if (mapLevelBitmap<=LEVELC2 ) glMultiTexCoord2fvARB(GL_TEXTURE2_ARB,tx1[i]);
+      if (tx1) {
+	  glMultiTexCoord2fvARB(GL_TEXTURE1_ARB, tx1[i]);
+      } else {
+	  glMultiTexCoord2fvARB(GL_TEXTURE1_ARB, tx[i]);
       }
+    }
+    glVertex3fv(vx[i]);
   }
-#endif
-  TRACE_GL("draw_geometry_for_a_car: 15");
+  glEnd () ;
 
-  glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
-  glDisable ( GL_TEXTURE_2D ) ; 
-  glDisable(GL_TEXTURE_GEN_S);
-  glDisable(GL_TEXTURE_GEN_T);
+  glActiveTextureARB(GL_TEXTURE1_ARB);
+  glDisable(GL_TEXTURE_2D); 
   glMatrixMode(GL_TEXTURE);
-  glLoadIdentity () ;
+  glLoadIdentity() ;
   glMatrixMode(GL_MODELVIEW);
-  glActiveTextureARB ( GL_TEXTURE2_ARB ) ;
-  glDisable ( GL_TEXTURE_2D ) ; 
-  glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
+  if (mapLevelBitmap<=LEVELC2) {
+      glActiveTextureARB(GL_TEXTURE2_ARB);
+      glDisable(GL_TEXTURE_2D);
+  }
+  glActiveTextureARB(GL_TEXTURE0_ARB);
+  TRACE_GL("draw_geometry_for_a_car: end");
 }
 
 
@@ -529,6 +431,8 @@ void grVtxTable::draw_geometry_array ()
     glEnableClientState ( GL_NORMAL_ARRAY ) ;
     glNormalPointer ( GL_FLOAT, 0, normals->get(0) ) ;
   }
+  glClientActiveTextureARB(GL_TEXTURE0_ARB);
+
   if ( num_texcoords > 1 )
   {
     glEnableClientState ( GL_TEXTURE_COORD_ARRAY ) ;
@@ -537,8 +441,6 @@ void grVtxTable::draw_geometry_array ()
   glEnableClientState ( GL_VERTEX_ARRAY ) ;
   glVertexPointer ( 3, GL_FLOAT, 0, vertices->get(0) ) ;
 
-  glClientActiveTextureARB(GL_TEXTURE0_ARB);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
   /*
   glClientActiveTextureARB(GL_TEXTURE1_ARB);

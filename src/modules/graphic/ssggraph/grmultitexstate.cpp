@@ -26,33 +26,27 @@
 
 void grMultiTexState::apply (int unit)
 {
-  if (unit==1)
-    {
+  if (unit==0) {
+      glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
+      glEnable ( GL_TEXTURE_2D ) ;  /* Enables the second texture map. */
+      glBindTexture ( GL_TEXTURE_2D, ssgSimpleState::getTextureHandle() ) ;
+  } else if (unit==1) {
       glActiveTextureARB ( GL_TEXTURE1_ARB ) ;
       glEnable ( GL_TEXTURE_2D ) ;  /* Enables the second texture map. */
       /* glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
       /*glBlendFunc(GL_ZERO, GL_SRC_COLOR);*/
       glBindTexture ( GL_TEXTURE_2D, ssgSimpleState::getTextureHandle() ) ;
-    }
-  if (unit==2)
-    {
+  } else if (unit==2) {
       glActiveTextureARB ( GL_TEXTURE2_ARB ) ;
       glEnable ( GL_TEXTURE_2D ) ;  /* Enables the second texture map. */
       glBindTexture ( GL_TEXTURE_2D, ssgSimpleState::getTextureHandle() ) ;
-    }
-  if (unit==3)
-    {
+  } else if (unit==3) {
       glActiveTextureARB ( GL_TEXTURE3_ARB ) ;
       glEnable ( GL_TEXTURE_2D ) ;  /* Enables the second texture map. */
       glBindTexture ( GL_TEXTURE_2D, ssgSimpleState::getTextureHandle() ) ;
-    }
-  if (unit==0)
-    {
-      glActiveTextureARB ( GL_TEXTURE0_ARB ) ;
-      glEnable ( GL_TEXTURE_2D ) ;  /* Enables the second texture map. */
-      glBindTexture ( GL_TEXTURE_2D, ssgSimpleState::getTextureHandle() ) ;
-    }
-  /*glActiveTextureARB ( GL_TEXTURE0_ARB ) ;*/
-    glBindTexture ( GL_TEXTURE_2D, getTextureHandle() ) ;
-    _ssgCurrentContext->getState()->setTexture ( getTexture () ) ;  
+  } else {
+      /*glActiveTextureARB ( GL_TEXTURE0_ARB ) ;*/
+      glBindTexture ( GL_TEXTURE_2D, getTextureHandle() ) ;
+      _ssgCurrentContext->getState()->setTexture ( getTexture () ) ;  
+  }
 }

@@ -50,6 +50,7 @@
 #endif
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index );
+#if 0
 static int
 preCbEnv(ssgEntity *e)
 {
@@ -73,6 +74,7 @@ postCbEnv(ssgEntity *e)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     return TRUE;
 }
+#endif
 
 class myLoaderOptions : public ssgLoaderOptions
 {
