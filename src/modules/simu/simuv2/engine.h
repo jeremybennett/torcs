@@ -20,8 +20,6 @@
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
 
-#define MAXPTS	40
-
 typedef struct {
     tdble rads;
     tdble a;
@@ -30,7 +28,8 @@ typedef struct {
 
 typedef struct {
     tdble		maxTq;
-    tEngineCurveElem	data[MAXPTS];
+    int			nbPts;
+    tEngineCurveElem	*data;
 } tEngineCurve;
 
 typedef struct

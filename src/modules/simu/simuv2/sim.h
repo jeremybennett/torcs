@@ -85,6 +85,7 @@ extern void SimDifferentialUpdate(tCar *car, tDifferential *differential, int fi
 extern void SimEngineConfig(tCar *car);
 extern void SimEngineUpdateTq(tCar *car);
 extern tdble SimEngineUpdateRpm(tCar *car, tdble axleRpm);
+extern void SimEngineShutdown(tCar *car);
 
 extern void SimCarCollideZ(tCar *car);
 extern void SimCarCollideXYScene(tCar *car);

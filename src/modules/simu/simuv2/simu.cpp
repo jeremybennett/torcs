@@ -381,8 +381,15 @@ SimInit(int nbcars)
 void
 SimShutdown(void)
 {
+    tCar *car;
+    int	 ncar;
+
     SimCarCollideShutdown(SimNbCars);
     if (SimCarTable) {
+	for (ncar = 0; ncar < SimNbCars; ncar++) {
+	    car = &(SimCarTable[ncar]);
+	    SimEngineShutdown(car);
+	}
 	free(SimCarTable);
 	SimCarTable = 0;
     }

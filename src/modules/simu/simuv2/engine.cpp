@@ -28,10 +28,11 @@ SimEngineConfig(tCar *car)
     tdble	rpmMaxTq = 0;
     char	idx[64];
     tEngineCurveElem *data;
-    struct {
+    struct tEdesc {
 	    tdble rpm;
 	    tdble tq;
-    } edesc[MAXPTS + 1];
+    } *edesc;
+
 
     car->engine.revsLimiter = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSLIM, (char*)NULL, 800);
     car->carElt->_enginerpmRedLine = car->engine.revsLimiter;
@@ -41,9 +42,12 @@ SimEngineConfig(tCar *car)
     car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423);
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
     car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
-    
+
     sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
-    for (i = 0; i < MAXPTS; i++) {
+    car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
+    edesc = (struct tEdesc*)malloc((car->engine.curve.nbPts + 1) * sizeof(struct tEdesc));
+    
+    for (i = 0; i < car->engine.curve.nbPts; i++) {
 	sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
 	edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);
 	edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
@@ -52,7 +56,8 @@ SimEngineConfig(tCar *car)
     edesc[i].tq  = edesc[i].tq;
     
     maxTq = 0;
-    for(i = 0; i < MAXPTS; i++) {
+    car->engine.curve.data = (tEngineCurveElem *)malloc(car->engine.curve.nbPts * sizeof(tEngineCurveElem));
+    for(i = 0; i < car->engine.curve.nbPts; i++) {
 	data = &(car->engine.curve.data[i]);
 
 	data->rads = edesc[i+1].rpm;
@@ -66,6 +71,8 @@ SimEngineConfig(tCar *car)
     car->engine.curve.maxTq = maxTq;
     car->carElt->_enginerpmMaxTq = rpmMaxTq;
     car->engine.rads = car->engine.tickover;
+
+    free(edesc);
 }
 
 /* Update torque output with engine rpm and accelerator command */
@@ -86,7 +93,7 @@ SimEngineUpdateTq(tCar *car)
 	engine->rads = engine->revsLimiter;
 	engine->Tq = 0;
     } else {
-	for (i = 0; i < MAXPTS; i++) {
+	for (i = 0; i < car->engine.curve.nbPts; i++) {
 	    if (engine->rads < curve->data[i].rads) {
 		tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
 		tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
@@ -140,4 +147,10 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 	engine->rads += engine->Tq / engine->I * SimDeltaTime;
     }
     return 0.0;
+}
+
+void
+SimEngineShutdown(tCar *car)
+{
+    free(car->engine.curve.data);
 }
