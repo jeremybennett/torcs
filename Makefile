@@ -46,8 +46,9 @@ endif
 PKGLIST		= src src-tools \
 		  src-robots-base src-robots-berniw src-robots-K1999 \
 		  data \
-		  data-cars-gt data-cars-dtm data-cars-Patwo-Design data-cars-misc \
-		  data-cars-Ryuji-Kainoh-WRC data-cars-Ryuji-Kainoh\
+		  data-cars-extra \
+		  data-cars-Patwo-Design \
+		  data-cars-Ryuji-Kainoh \
 		  data-tracks-base data-devel
 
 DATASUBDIRS	= data
@@ -102,3 +103,10 @@ doc:
 
 uninstall:
 	rm -rf ${INSTBASE}
+
+tags:
+	rm -f ${TORCS_BASE}/TAGS
+	find ${TORCS_BASE}/src -name '*.cpp' -exec etags -a {} \;
+	find ${TORCS_BASE}/src -name '*.c' -exec etags -a {} \;
+	find ${TORCS_BASE}/src -name '*.h' -exec etags -a {} \;
+	find /usr/include/plib -name '*.h' -exec etags -a {} \;

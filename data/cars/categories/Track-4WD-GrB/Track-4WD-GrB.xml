@@ -77,7 +77,7 @@
     <attnum name="inertia" unit="kg.m2" val="0.20"/>
 
     <!--absolute delimiter values-->
-    <attnum name="torque min" unit="N.m" val="300.0"/>
+    <attnum name="torque min" unit="N.m" val="0.0"/>
     <attnum name="torque max" unit="N.m" val="750.0"/>
     <attnum name="revs maxi min" unit="rpm" val="1000"/>
     <attnum name="revs maxi max" unit="rpm" val="20000"/>
@@ -92,52 +92,52 @@
 
       <section name="2">
         <attnum name="rpm" unit="rpm" val="1000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="3">
         <attnum name="rpm" unit="rpm" val="2000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="4">
         <attnum name="rpm" unit="rpm" val="3000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="5">
         <attnum name="rpm" unit="rpm" val="4000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="6">
         <attnum name="rpm" unit="rpm" val="5000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="7">
         <attnum name="rpm" unit="rpm" val="6000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="8">
         <attnum name="rpm" unit="rpm" val="7000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="9">
         <attnum name="rpm" unit="rpm" val="8000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="10">
         <attnum name="rpm" unit="rpm" val="9000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="11">
         <attnum name="rpm" unit="rpm" val="10000"/>
-        <attnum name="Tq" unit="N.m" min="300.0" max="750.0" val="750.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="750.0" val="750.0"/>
       </section>
 
       <section name="12">

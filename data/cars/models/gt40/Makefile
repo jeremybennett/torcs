@@ -20,9 +20,9 @@ DATADIR   = cars/gt40
 DATA      = gt40.xml gt40.acc \
 	    tex-wheel.rgb gt40.rgb gt40-src.ac
 
-data-cars-gt_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-gt_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

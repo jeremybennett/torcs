@@ -23,9 +23,9 @@ DATA      = lotus-gt1.xml  lotus-gt1.ac \
 	    lotus-gt1-base.ac texmapper.xml \
 	    tex-wheel.rgb lotus-gt1.rgb lotus-gt1-512.rgb lotus-gt1-src.ac
 
-data-cars-gt_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-gt_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

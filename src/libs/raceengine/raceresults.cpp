@@ -180,7 +180,8 @@ ReUpdateQualifCurRes(tCarElt *car)
     printed = 0;
     sprintf(path, "%s/%s/%s", RE_SECT_RESULTS, race, RE_SECT_RANK);
     nCars = GfParmGetEltNb(results, path);
-    for (i = 1; i < nCars + 1; i++) {
+    nCars = MIN(nCars + 1, maxLines);
+    for (i = 1; i < nCars; i++) {
 	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i);
 	if (!printed) {
 	    if ((car->_bestLapTime != 0.0) && (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {

@@ -8,17 +8,17 @@ call .\create_dir .\export\libd
 if not exist .\src\interfaces goto src_interfaces
 call .\create_dir .\export
 call .\create_dir .\export\include
+if exist .\src\interfaces\car.h copy .\src\interfaces\car.h .\export\include\car.h
 if exist .\src\interfaces\graphic.h copy .\src\interfaces\graphic.h .\export\include\graphic.h
+if exist .\src\interfaces\js.h copy .\src\interfaces\js.h .\export\include\js.h
+if exist .\src\interfaces\playerpref.h copy .\src\interfaces\playerpref.h .\export\include\playerpref.h
 if exist .\src\interfaces\raceman.h copy .\src\interfaces\raceman.h .\export\include\raceman.h
+if exist .\src\interfaces\replay.h copy .\src\interfaces\replay.h .\export\include\replay.h
 if exist .\src\interfaces\robot.h copy .\src\interfaces\robot.h .\export\include\robot.h
 if exist .\src\interfaces\simu.h copy .\src\interfaces\simu.h .\export\include\simu.h
-if exist .\src\interfaces\track.h copy .\src\interfaces\track.h .\export\include\track.h
-if exist .\src\interfaces\car.h copy .\src\interfaces\car.h .\export\include\car.h
-if exist .\src\interfaces\ttypes.h copy .\src\interfaces\ttypes.h .\export\include\ttypes.h
 if exist .\src\interfaces\telemetry.h copy .\src\interfaces\telemetry.h .\export\include\telemetry.h
-if exist .\src\interfaces\practicectrl.h copy .\src\interfaces\practicectrl.h .\export\include\practicectrl.h
-if exist .\src\interfaces\playerpref.h copy .\src\interfaces\playerpref.h .\export\include\playerpref.h
-if exist .\src\interfaces\js.h copy .\src\interfaces\js.h .\export\include\js.h
+if exist .\src\interfaces\track.h copy .\src\interfaces\track.h .\export\include\track.h
+if exist .\src\interfaces\ttypes.h copy .\src\interfaces\ttypes.h .\export\include\ttypes.h
 :src_interfaces
 
 if not exist .\src\libs\txml goto src_libs_txml
@@ -1505,32 +1505,19 @@ call .\create_dir .\runtime\config
 if exist .\src\modules\graphic\ssggraph\graph.xml copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
 :src_modules_graphic_ssggraph
 
-if not exist .\src\modules\raceman\practice\practice goto src_modules_raceman_practice_practice
-call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\practice
-if exist .\src\modules\raceman\practice\practice\practice.xml copy .\src\modules\raceman\practice\practice\practice.xml .\runtime\config\practice\practice.xml
-:src_modules_raceman_practice_practice
-
-if not exist .\src\modules\raceman\quickrace goto src_modules_raceman_quickrace
-call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\quickrace
-if exist .\src\modules\raceman\quickrace\qrace.xml copy .\src\modules\raceman\quickrace\qrace.xml .\runtime\config\quickrace\qrace.xml
-:src_modules_raceman_quickrace
-
-if not exist .\src\modules\raceman\simplerace goto src_modules_raceman_simplerace
-call .\create_dir .\runtime
-call .\create_dir .\runtime\config
-call .\create_dir .\runtime\config\simplerace
-if exist .\src\modules\raceman\simplerace\simplerace.xml copy .\src\modules\raceman\simplerace\simplerace.xml .\runtime\config\simplerace\simplerace.xml
-:src_modules_raceman_simplerace
-
 if not exist .\src\modules\telemetry goto src_modules_telemetry
 call .\create_dir .\runtime
 call .\create_dir .\runtime\telemetry
 if exist .\src\modules\telemetry\telemetry.sh copy .\src\modules\telemetry\telemetry.sh .\runtime\telemetry\telemetry.sh
 :src_modules_telemetry
+
+if not exist .\src\raceman goto src_raceman
+call .\create_dir .\runtime
+call .\create_dir .\runtime\config
+call .\create_dir .\runtime\config\raceman
+if exist .\src\raceman\quickrace.xml copy .\src\raceman\quickrace.xml .\runtime\config\raceman\quickrace.xml
+if exist .\src\raceman\practice.xml copy .\src\raceman\practice.xml .\runtime\config\raceman\practice.xml
+:src_raceman
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -1629,24 +1616,6 @@ call .\create_dir .\runtime\.
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\graphic
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-call .\create_dir .\runtime\modules\raceman\practice
-call .\create_dir .\runtime\modules\raceman\practice\control
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\modules
-call .\create_dir .\runtime\modules\raceman
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules

@@ -13,7 +13,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#if (DEBUG || _DEBUG)
+#ifdef PROFILER
 
 #include <algorithm>
 #include <iostream>
@@ -163,4 +163,4 @@ void Profiler::printProfile() {
   }
 }
 
-#endif /* (DEBUG || _DEBUG) */
+#endif /* PROFILER */

@@ -21,9 +21,9 @@ DATADIR   = cars/baja-bug
 
 DATA      = baja-bug-base.ac baja-bug.ac baja-bug.acc baja-bug.rgb baja-bug.xml texmapper.xml tex-wheel.rgb
 
-data-cars-gt_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-gt_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

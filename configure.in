@@ -42,12 +42,17 @@ CFLAGS="-ansi -Wall -Wstrict-prototypes"
 AC_ARG_ENABLE(debug,
 	[  --enable-debug          set the debug mode], 
 	CFLAGS="$CFLAGS -g -DDEBUG -DDEBUG_OUT",
-	CFLAGS="$CFLAGS -O3 -fstrength-reduce -ffast-math -fomit-frame-pointer")
+	CFLAGS="$CFLAGS -O3")
 
 AC_ARG_ENABLE(ccmalloc,
 	[  --enable-ccmalloc       set the ccmalloc mode (beware path...)], 
 	LDFLAGS="$LDFLAGS /home/torcs/ccmalloc-0.3.9-nco/obj/ccmalloc-g++.o -L/home/torcs/ccmalloc-0.3.9-nco/lib -lccmalloc -ldl",
 	LDFLAGS="$LDFLAGS")
+
+AC_ARG_ENABLE(profiler,
+	[  --enable-profiler       set the profiler mode], 
+	CFLAGS="$CFLAGS -DPROFILER",
+	CFLAGS="$CFLAGS")
 
 CXXFLAGS="$CFLAGS"
 LDFLAGS="$LDFLAGS -L$x_libraries"
@@ -91,9 +96,8 @@ AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. Please check yo
 AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
-	src/tools/package/specfiles/torcs-data-cars-gt.spec \
-	src/tools/package/specfiles/torcs-data-cars-dtm.spec  \
-	src/tools/package/specfiles/torcs-data-cars-misc.spec \
+	src/tools/package/specfiles/torcs-data-cars-Ryuji-Kainoh.spec \
+	src/tools/package/specfiles/torcs-data-cars-extra.spec \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \
 	src/tools/package/specfiles/torcs-robot-base.spec \

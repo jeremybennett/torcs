@@ -389,7 +389,6 @@ if exist .\data\data\img\ruler-pushed.png copy .\data\data\img\ruler-pushed.png 
 if exist .\data\data\img\splash-free1.png copy .\data\data\img\splash-free1.png .\runtime\data\img\splash-free1.png
 if exist .\data\data\img\splash-free4.png copy .\data\data\img\splash-free4.png .\runtime\data\img\splash-free4.png
 if exist .\data\data\img\splash-free5.png copy .\data\data\img\splash-free5.png .\runtime\data\img\splash-free5.png
-if exist .\data\data\img\splash-free7.png copy .\data\data\img\splash-free7.png .\runtime\data\img\splash-free7.png
 if exist .\data\data\img\splash-free.png copy .\data\data\img\splash-free.png .\runtime\data\img\splash-free.png
 if exist .\data\data\img\splash-graphconf.png copy .\data\data\img\splash-graphconf.png .\runtime\data\img\splash-graphconf.png
 if exist .\data\data\img\splash-graphic.png copy .\data\data\img\splash-graphic.png .\runtime\data\img\splash-graphic.png
@@ -407,6 +406,8 @@ if exist .\data\data\img\splash-qrtrk.png copy .\data\data\img\splash-qrtrk.png 
 if exist .\data\data\img\splash-quit.png copy .\data\data\img\splash-quit.png .\runtime\data\img\splash-quit.png
 if exist .\data\data\img\splash-raceopt.png copy .\data\data\img\splash-raceopt.png .\runtime\data\img\splash-raceopt.png
 if exist .\data\data\img\splash-result.png copy .\data\data\img\splash-result.png .\runtime\data\img\splash-result.png
+if exist .\data\data\img\splash-run-practice.png copy .\data\data\img\splash-run-practice.png .\runtime\data\img\splash-run-practice.png
+if exist .\data\data\img\splash-single-player.png copy .\data\data\img\splash-single-player.png .\runtime\data\img\splash-single-player.png
 :data_data_img
 
 if not exist .\data\data\menu goto data_data_menu

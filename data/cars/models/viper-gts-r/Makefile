@@ -22,9 +22,9 @@ DATADIR   = cars/viper-gts-r
 DATA      = viper-gts-r.xml tex-wheel.rgb viper-gts-r.rgb  viper-gts-r.ac \
 	    viper-gts-r-512.rgb viper-gts-r-base.ac texmapper.xml viper-gts-r-src.ac
 
-data-cars-gt_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-gt_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

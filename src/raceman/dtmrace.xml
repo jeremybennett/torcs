@@ -134,7 +134,7 @@
   </section>
 
   <section name="Drivers">
-    <attnum name="maximum number" val="20"/>
+    <attnum name="maximum number" val="50"/>
     <attstr name="focused module" val="human"/>
     <attnum name="focused idx" val="1.000000"/>
 

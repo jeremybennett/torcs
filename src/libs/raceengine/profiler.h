@@ -16,7 +16,7 @@
 #ifndef _PROFILER_H_
 #define _PROFILER_H_
 
-#if (DEBUG || _DEBUG)
+#ifdef PROFILER
 
 #include <vector>
 #include <map>
@@ -60,7 +60,7 @@ class Profiler {
   std::map<ProfileInstance *, void *> mapWarning;
 };
 
-#else /* not DEBUG */
+#else /* PROFILER */
 #define START_PROFILE(a)
 #define STOP_PROFILE(a)
 #define STOP_ACTIVE_PROFILES()

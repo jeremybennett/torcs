@@ -20,9 +20,9 @@ DATADIR   = cars/buggy
 
 DATA      = buggy.xml buggy.ac buggy.rgb tex-wheel.rgb buggy-src.ac
 
-data-cars-misc_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-misc_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

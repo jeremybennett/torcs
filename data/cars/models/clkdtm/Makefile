@@ -21,9 +21,9 @@ DATADIR   = cars/clkdtm
 
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print)  $(shell find *.rgb -maxdepth 0 -type f -print)  $(shell find *.ac -maxdepth 0 -type f -print) $(shell find *.xcf -maxdepth 0 -type f -print)
 
-data-cars-dtm_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-dtm_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 
