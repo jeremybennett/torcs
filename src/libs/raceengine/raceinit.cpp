@@ -660,10 +660,10 @@ ReRaceCleanDrivers(void)
 	    robot->rbShutdown(robot->index);
 	}
 	GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
-	free(ReInfo->s->cars);
-	ReInfo->s->cars = 0;
-	ReInfo->s->_ncars = 0;
     }
+    free(ReInfo->s->cars);
+    ReInfo->s->cars = 0;
+    ReInfo->s->_ncars = 0;
     GfModUnloadList(&ReRaceModList);
 }
 

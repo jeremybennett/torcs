@@ -66,8 +66,7 @@ ReSinglePlayerInit(void *precMenu)
 
     GfuiTitleCreate(singlePlayerHandle, "SELECT RACE", 0);
 
-    // TODO
-    //GfuiScreenAddBgImg(singlePlayerHandle, "data/img/splash-options.png");
+    GfuiScreenAddBgImg(singlePlayerHandle, "data/img/splash-single-player.png");
 
     /* Display the raceman button selection */
     ReAddRacemanListButton(singlePlayerHandle);

@@ -222,7 +222,7 @@ ReHookShutdown(void)
 /*
  * Result only screen
  */
-#define LINES	20
+#define LINES	21
 
 static void	*reResScreenHdle = 0;
 static int	reResTitleId;
@@ -305,7 +305,7 @@ ReResScreenInit(void)
 				     GFUI_ALIGN_HC_VB, 32);
 
     y = 400;
-    dy = 360 / LINES;
+    dy = 378 / LINES;
     for (i = 0; i < LINES; i++) {
 	FREEZ(reResMsg[i]);
 	reResMsgId[i] = GfuiLabelCreateEx(reResScreenHdle,
@@ -379,6 +379,7 @@ ReResShowCont(void)
 		     0, 0, reResCont,
 		     NULL, (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
+    GfuiAddKey(reResScreenHdle, 13,  "Continue", 0, reResCont);
 
     glutDisplayFunc(reContDisplay);
     glutPostRedisplay();
