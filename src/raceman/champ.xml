@@ -185,7 +185,7 @@
   <section name="Drivers">
     <attnum name="maximum number" val="50"/>
     <attstr name="focused module" val="inferno"/>
-    <attnum name="focused idx" val="1.000000"/>
+    <attnum name="focused idx" val="7.000000"/>
 
     <section name="1">
       <attnum name="idx" val="1.000000"/>
@@ -215,6 +215,11 @@
     <section name="6">
       <attnum name="idx" val="1.000000"/>
       <attstr name="module" val="inferno6"/>
+    </section>
+
+    <section name="7">
+      <attnum name="idx" val="7.000000"/>
+      <attstr name="module" val="human"/>
     </section>
 
   </section>
