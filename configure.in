@@ -100,7 +100,7 @@ AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check con
 
 AC_CHECK_LIB(GL, glGetString,,AC_MSG_ERROR([Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(GLU, gluOrtho2D,,AC_MSG_ERROR([Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
-AC_CHECK_LIB(freeglut-1.3, glutSwapBuffers,,AC_CHECK_LIB(glut, glutSwapBuffers,,AC_MSG_ERROR([Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"])))
+AC_CHECK_LIB(glut, glutSwapBuffers,,AC_MSG_ERROR([Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 dnl Checks for plib libraries.
 AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
