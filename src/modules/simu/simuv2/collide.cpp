@@ -69,6 +69,7 @@ SimCarCollideXYScene(tCar *car)
     int		i;
     tDynPt	*corner;
     t3Dd	normal;
+    tdble	initDotProd;
     tdble	dotProd, nx, ny, cx, cy, dotprod2;
     tTrackBarrier *curBarrier;
     
@@ -116,22 +117,23 @@ SimCarCollideXYScene(tCar *car)
 	car->collision |= 1;
 	nx = normal.x;
 	ny = normal.y;
-	dotProd = (nx * corner->vel.y + ny * corner->vel.x) * curBarrier->surface->kFriction;
-	car->DynGCg.vel.x -= ny * dotProd;
-	car->DynGCg.vel.y -= nx * dotProd;
-	dotprod2 = (nx * cy + ny * cx);
+	initDotProd = nx * corner->vel.x + ny * corner->vel.y;
+	dotProd = initDotProd * curBarrier->surface->kFriction;
+	car->DynGCg.vel.x -= nx * dotProd;
+	car->DynGCg.vel.y -= ny * dotProd;
+	dotprod2 = (nx * cx + ny * cy);
 	car->DynGCg.vel.az -= dotprod2 * dotProd / 10.0;
 	if (fabs(car->DynGCg.vel.az) > 6.0) {
 	    car->DynGCg.vel.az = SIGN(car->DynGCg.vel.az) * 6.0;
 	}
 	
 	/* rebound */
-	dotProd = (nx * corner->vel.x + ny * corner->vel.y);
+	dotProd = initDotProd;
 	if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 	    car->dammage += (int)(curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 	}
 	dotProd *= curBarrier->surface->kRebound;
-	dotprod2 = (nx * cx + ny * cy);
+	/* dotprod2 = (nx * cx + ny * cy); */
 
 	if (dotProd < 0) {
 	    car->collision |= 2;
@@ -143,7 +145,7 @@ SimCarCollideXYScene(tCar *car)
 	    car->DynGCg.vel.x -= nx * dotProd;
 	    car->DynGCg.vel.y -= ny * dotProd;
 
-/* 	    car->DynGCg.vel.az -= dotprod2 * dotProd; */
+	    /* car->DynGCg.vel.az -= dotprod2 * dotProd * 0.2; */
 
 	}
     }

@@ -1302,6 +1302,8 @@ GfParmWriteFile (const char *file, void *parmHandle, char *name)
 	fputs (line, fout);
     }    
 
+    GfOut ("GfParmWriteFile: %s file written\n", file);
+    
     fclose (fout);
   
     return 0;

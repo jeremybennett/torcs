@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="torcs" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="client" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=torcs - Win32 Debug
+CFG=client - Win32 Debug
 !MESSAGE This is not a valid makefile. To build this project using NMAKE,
 !MESSAGE use the Export Makefile command and run
 !MESSAGE 
-!MESSAGE NMAKE /f "torcs.mak".
+!MESSAGE NMAKE /f "client.mak".
 !MESSAGE 
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
-!MESSAGE NMAKE /f "torcs.mak" CFG="torcs - Win32 Debug"
+!MESSAGE NMAKE /f "client.mak" CFG="client - Win32 Debug"
 !MESSAGE 
 !MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "torcs - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "torcs - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "client - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "client - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "torcs - Win32 Release"
+!IF  "$(CFG)" == "client - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -54,11 +54,11 @@ LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
 # ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
 # Begin Custom Build
-InputPath=.\Release\torcs.dll
+InputPath=.\Release\client.dll
 SOURCE="$(InputPath)"
 
-"..\..\..\export\include\torcs.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy torcs.h ..\..\..\export\include
+"..\..\..\export\include\client.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy client.h ..\..\..\export\include
 
 # End Custom Build
 # Begin Special Build Tool
@@ -67,7 +67,7 @@ SOURCE="$(InputPath)"
 PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime	copy $(TargetDir)\*.lib $(WkspDir)\export\lib
 # End Special Build Tool
 
-!ELSEIF  "$(CFG)" == "torcs - Win32 Debug"
+!ELSEIF  "$(CFG)" == "client - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -91,13 +91,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib /nologo /dll /debug /machine:I386 /out:"Debug/torcsd.dll" /pdbtype:sept /libpath:"../../../export/lib"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib /nologo /dll /debug /machine:I386 /out:"Debug/clientd.dll" /pdbtype:sept /libpath:"../../../export/lib"
 # Begin Custom Build
-InputPath=.\Debug\torcsd.dll
+InputPath=.\Debug\clientd.dll
 SOURCE="$(InputPath)"
 
-"..\..\..\export\include\torcs.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy torcs.h ..\..\..\export\include
+"..\..\..\export\include\client.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy client.h ..\..\..\export\include
 
 # End Custom Build
 # Begin Special Build Tool
@@ -110,8 +110,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtimed	copy $(TargetDir)\*.lib
 
 # Begin Target
 
-# Name "torcs - Win32 Release"
-# Name "torcs - Win32 Debug"
+# Name "client - Win32 Release"
+# Name "client - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
@@ -145,7 +145,7 @@ SOURCE=.\splash.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\torcs.def
+SOURCE=.\client.def
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -173,7 +173,7 @@ SOURCE=.\splash.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\torcs.h
+SOURCE=.\client.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

@@ -31,6 +31,7 @@
 #define GR_SCT_DISPMODE		"Display Mode"
 #define GR_ATT_CAM		"camera"
 #define GR_ATT_CAM_HEAD		"camera head list"
+#define GR_ATT_MIRROR		"enable mirror"
 #define GR_ATT_FOVY		"fovy"
 #define GR_ATT_BOARD		"driver board"
 #define GR_ATT_COUNTER		"driver counter"
