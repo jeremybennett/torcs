@@ -19,7 +19,7 @@
   <section name="Driver">
 
     <!-- Position of the driver -->
-    <attnum name="xpos" val="-0.1" unit="m"/>
+    <attnum name="xpos" val="0.1" unit="m"/>
     <attnum name="ypos" val="0.0" unit="m"/>
     <attnum name="zpos" val="0.73" unit="m"/>
   </section>
@@ -64,8 +64,8 @@
 
   <section name="Car">
     <attstr name="category" val="F1"/>
-    <attnum name="body length" unit="m" val="4.3"/>
-    <attnum name="body width" unit="m" val="2.0"/>
+    <attnum name="body length" unit="m" val="4.8"/>
+    <attnum name="body width" unit="m" val="1.8"/>
     <attnum name="body height" unit="m" val="1.08"/>
 
     <!-- collision bounding box -->
@@ -130,7 +130,7 @@
     <attnum name="revs maxi" unit="rpm" min="5000" max="20000" val="20000"/>
     <attnum name="revs limiter" unit="rpm" min="3000" max="20000" val="18700"/>
     <attnum name="tickover" unit="rpm" val="5000"/>
-    <attnum name="fuel cons factor" min="1.1" max="1.3" val="1.1"/>
+    <attnum name="fuel cons factor" min="1.1" max="1.3" val="1.3"/>
     <section name="data points">
       <section name="1">
         <attnum name="rpm" unit="rpm" val="0"/>
@@ -326,87 +326,87 @@
   </section>
 
   <section name="Front Axle">
-    <attnum name="xpos" unit="m" val="1.4"/>
+    <attnum name="xpos" unit="m" val="1.6"/>
     <attnum name="inertia" unit="kg.m2" val="0.0056"/>
     <attnum name="roll center height" unit="m" val="0.012"/>
   </section>
 
   <section name="Rear Axle">
-    <attnum name="xpos" unit="m" val="-1.50"/>
+    <attnum name="xpos" unit="m" val="-1.35"/>
     <attnum name="inertia" unit="kg.m2" val="0.0080"/>
     <attnum name="roll center height" unit="m" val="0.04"/>
   </section>
 
   <section name="Front Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.81"/>
-    <attnum name="rim diameter" unit="in" val="15"/>
+    <attnum name="ypos" unit="m" val="-0.70"/>
+    <attnum name="rim diameter" unit="in" val="12"/>
     <attnum name="tire width" unit="mm" val="300"/>
-    <attnum name="tire height-width ratio" val=".54"/>
+    <attnum name="tire height-width ratio" val="0.5"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
 
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="50"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="camber" min="-5" max="0" unit="deg" val="-4"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"/>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"/>
-    <attnum name="rolling resistance" val="0.05"/>
+    <attnum name="rolling resistance" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
   </section>
 
   <section name="Front Left Wheel">
-    <attnum name="ypos" unit="m" val="0.81"/>
-    <attnum name="rim diameter" unit="in" val="15"/>
+    <attnum name="ypos" unit="m" val="0.70"/>
+    <attnum name="rim diameter" unit="in" val="12"/>
     <attnum name="tire width" unit="mm" val="300"/>
-    <attnum name="tire height-width ratio" val=".54"/>
+    <attnum name="tire height-width ratio" val="0.5"/>
 
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="50"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="camber" min="-5" max="0" unit="deg" val="-4"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"/>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"/>
-    <attnum name="rolling resistance" val="0.05"/>
+    <attnum name="rolling resistance" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
   </section>
 
   <section name="Rear Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.82"/>
-    <attnum name="rim diameter" unit="in" val="17"/>
-    <attnum name="tire width" unit="mm" val="400"/>
-    <attnum name="tire height-width ratio" val=".3"/>
+    <attnum name="ypos" unit="m" val="-0.75"/>
+    <attnum name="rim diameter" unit="in" val="13"/>
+    <attnum name="tire width" unit="mm" val="300"/>
+    <attnum name="tire height-width ratio" val=".5"/>
 
      <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="80"/>
     <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
     <attnum name="camber" min="-5" max="0" unit="deg" val="-1.5"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"/>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"/>
-    <attnum name="rolling resistance" val="0.05"/>
+    <attnum name="rolling resistance" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.8"/>
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="ypos" unit="m" val="0.82"/>
-    <attnum name="rim diameter" unit="in" val="17"/>
-    <attnum name="tire width" unit="mm" val="400"/>
-    <attnum name="tire height-width ratio" val=".3"/>
+    <attnum name="ypos" unit="m" val="0.75"/>
+    <attnum name="rim diameter" unit="in" val="13"/>
+    <attnum name="tire width" unit="mm" val="300"/>
+    <attnum name="tire height-width ratio" val=".5"/>
 
     <!-- initial ride height -->
-    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="80"/>
     <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
     <attnum name="camber" min="-5" max="0" unit="deg" val="-1.5"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="20.0" max="50.0" val="20.0"/>
     <attnum name="dynamic friction" unit="%" min="80" max="70" val="80"/>
-    <attnum name="rolling resistance" val="0.05"/>
+    <attnum name="rolling resistance" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.8"/>
   </section>
 
