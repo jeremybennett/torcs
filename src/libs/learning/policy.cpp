@@ -171,4 +171,5 @@ void DiscretePolicy::saveFile (char* f) {
 	for (int i=0; i<n_states; i++) {
 		fwrite((void *) Q[i], sizeof(float), n_actions, fh);
 	}
+	fclose (fh);
 }
