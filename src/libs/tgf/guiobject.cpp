@@ -78,33 +78,35 @@ GfuiDrawCursor()
 {
     float xf = (float)(GfuiMouse.X);
     float yf = (float)(GfuiMouse.Y);
+
+#define SCALE 1.3
     
     glColor4fv(GfuiScreen->mouseColor[0]) ;
     glBegin(GL_TRIANGLES);
     glVertex2f(xf, yf);
-    glVertex2f(xf + 4.8, yf - 10.4);
-    glVertex2f(xf + 6.4, yf - 6.4);
+    glVertex2f(xf + 4.8 * SCALE, yf - 10.4 * SCALE);
+    glVertex2f(xf + 6.4 * SCALE, yf - 6.4 * SCALE);
     glEnd();
 
     glBegin(GL_QUADS);
-    glVertex2f(xf + 5.6, yf - 6.4);
-    glVertex2f(xf + 6, yf - 6);
-    glVertex2f(xf + 12.4, yf - 12.4);
-    glVertex2f(xf + 12, yf - 12.8);
+    glVertex2f(xf + 5.6 * SCALE, yf - 6.4 * SCALE);
+    glVertex2f(xf + 6 * SCALE, yf - 6 * SCALE);
+    glVertex2f(xf + 12.4 * SCALE, yf - 12.4 * SCALE);
+    glVertex2f(xf + 12 * SCALE, yf - 12.8 * SCALE);
     glEnd();
 
     glColor4fv(GfuiScreen->mouseColor[1]) ;
     glBegin(GL_TRIANGLES);
     glVertex2f(xf, yf) ;
-    glVertex2f(xf + 10.4, yf - 4.8);
-    glVertex2f(xf + 6.4, yf - 6.4);
+    glVertex2f(xf + 10.4 * SCALE, yf - 4.8 * SCALE);
+    glVertex2f(xf + 6.4 * SCALE, yf - 6.4 * SCALE);
     glEnd();
 
     glBegin(GL_QUADS);
-    glVertex2f(xf + 6, yf - 6);
-    glVertex2f(xf + 6.4, yf - 4.8);
-    glVertex2f(xf + 12.8, yf - 12);
-    glVertex2f(xf + 12.4, yf - 12.4);  
+    glVertex2f(xf + 6 * SCALE, yf - 6 * SCALE);
+    glVertex2f(xf + 6.4 * SCALE, yf - 4.8 * SCALE);
+    glVertex2f(xf + 12.8 * SCALE, yf - 12 * SCALE);
+    glVertex2f(xf + 12.4 * SCALE, yf - 12.4 * SCALE);  
     glEnd();
 
 }

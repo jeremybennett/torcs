@@ -51,9 +51,7 @@ int	RelButNeutral		= 0;
 int	SeqShftAllowNeutral	= 0;
 int	AutoReverse		= 0;
 
-#define NB_CMD	16
-
-tControlCmd	CmdControl[NB_CMD] = {
+tControlCmd	CmdControl[] = {
     {HM_ATT_UP_SHFT,    GFCTRL_TYPE_JOY_BUT,       0, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
     {HM_ATT_DN_SHFT,    GFCTRL_TYPE_JOY_BUT,       1, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
     {HM_ATT_ASR_CMD,    GFCTRL_TYPE_JOY_BUT,       2, NULL, 0.0, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0, NULL, 0.0},
@@ -93,7 +91,7 @@ static const int nbControl = sizeof(controlList) / sizeof(controlList[0]);
 char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
 extern int joyPresent;
-
+int MouseControlUsed;
 
 void
 HmReadPrefs(int index)
@@ -101,7 +99,7 @@ HmReadPrefs(int index)
     char	*prm;
     char	*defaultSettings;
     char	sstring[1024];
-    uint	cmd;
+    int		cmd;
     float	tmp;
     tCtrlRef	*ref;
     int		i;
@@ -143,10 +141,15 @@ HmReadPrefs(int index)
     if ((i == 0) && !joyPresent) {
 	i = 2;
     }
+    if (i == 2) {
+	MouseControlUsed = 1;
+    } else {
+	MouseControlUsed = 0;
+    }
     defaultSettings = controlList[i].settings;
 
     /* Command Settings */
-    for (cmd = 0; cmd < NB_CMD; cmd++) {
+    for (cmd = 0; cmd < nbCmdControl; cmd++) {
 	prm = GfctrlGetNameByRef(CmdControl[cmd].type, CmdControl[cmd].val);
 	prm = GfParmGetStr(PrefHdle, defaultSettings, CmdControl[cmd].name, prm);
 	prm = GfParmGetStr(PrefHdle, sstring, CmdControl[cmd].name, prm);

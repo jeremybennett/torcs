@@ -300,7 +300,9 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    GfctrlMouseCenter();
+    if (MouseControlUsed) {
+	GfctrlMouseCenter();
+    }
 
     memset(keyInfo, 0, sizeof(keyInfo));
     memset(skeyInfo, 0, sizeof(skeyInfo));
@@ -404,7 +406,10 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     static int	 firstTime = 1;
 
     if (firstTime) {
-	GfctrlMouseInitCenter();
+	if (MouseControlUsed) {
+	    GfuiMouseShow();
+	    GfctrlMouseInitCenter();
+	}
 	GfuiKeyEventRegisterCurrent(onKeyAction);
 	GfuiSKeyEventRegisterCurrent(onSKeyAction);
 	firstTime = 0;

@@ -71,11 +71,14 @@ gfuiColorInit(void)
     }
     GfParmReleaseHandle(hdle);
 
-    if (strstr((const char*)glGetString(GL_RENDERER), "Glide") != NULL) {
-	GfuiMouseVisible = 1;
-    } else {
-	GfuiMouseVisible = 0;
-    }
+    /* Remove the X11/Windows cursor  */
+    glutSetCursor(GLUT_CURSOR_NONE);
+
+/*     if (strstr((const char*)glGetString(GL_RENDERER), "Glide") != NULL) { */
+    GfuiMouseVisible = 1;
+/*     } else { */
+/* 	GfuiMouseVisible = 0; */
+/*     } */
 }
 
 
@@ -182,6 +185,27 @@ GfuiDisplay(void)
     glDisable(GL_BLEND);
     glutSwapBuffers();
 }
+
+/** Hide the mouse cursor
+    @ingroup	gui
+    @return	none
+*/
+void
+GfuiMouseHide(void)
+{
+    GfuiScreen->mouseAllowed = 0;
+}
+
+/** Show the mouse cursor
+    @ingroup	gui
+    @return	none
+*/
+void
+GfuiMouseShow(void)
+{
+    GfuiScreen->mouseAllowed = 1;
+}
+
 
 static void
 gfuiKeyboard(unsigned char key, int /* x */, int /* y */)
@@ -345,7 +369,7 @@ gfuiMouse(int button, int state, int x, int y)
     if (state == GLUT_DOWN) {
 	if (button == GLUT_RIGHT_BUTTON) {
 	    GfuiScreen->mouse = 0;
-	    GfuiMouseVisible = 1 - GfuiMouseVisible;
+	    /* GfuiMouseVisible = 1 - GfuiMouseVisible; */
 	    gfuiUpdateFocus();
 	} else {
 	    GfuiScreen->mouse = 1;

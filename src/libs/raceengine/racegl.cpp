@@ -142,7 +142,7 @@ ReScreenInit(void)
     
     ReScreenShutdown();
 
-    reScreenHandle = GfuiScreenCreateEx(bgcolor, 0, reScreenActivate, 0, 0, 1);
+    reScreenHandle = GfuiScreenCreateEx(bgcolor, 0, reScreenActivate, 0, 0, 0);
 
     reAddKeys();
 
