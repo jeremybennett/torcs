@@ -77,6 +77,8 @@ extern char *Yn[];
 #define CMD_TYPE_ANALOG		1
 #define CMD_TYPE_JOY_BUT	2
 #define CMD_TYPE_KEYBOARD	3
+#define CMD_TYPE_MOUSE_BUT	4
+#define CMD_TYPE_MOUSE_MOVE	5
 
 extern void HmReadPrefs(int index);
 

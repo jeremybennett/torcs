@@ -101,6 +101,8 @@ RmLoadingScreenSetText(char *text)
 {
     int		i, j;
     
+    GfOut("%s\n", text);
+    
     if (menuHandle) {
 	if (rmTextLines[rmCurText]) {
 	    free(rmTextLines[rmCurText]);

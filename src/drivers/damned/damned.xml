@@ -120,7 +120,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
 	<attstr name="team" val="torcs"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-	<attstr name="car name" val="cg-nascar-rwd"></attstr>
+	<attstr name="car name" val="360-modena"></attstr>
 	<attstr name="category" val="torcs-r-a"></attstr>
 	<attnum name="race number" val="9"></attnum>
 	<attnum name="red" val="0.0"></attnum>

@@ -191,10 +191,6 @@ RemoveCar(tCar *car, tSituation *s)
 	if (carElt->_pos_Z < car->restPos.pos.z) {
 	    carElt->_state &= ~RM_CAR_STATE_PULLDN;
 	    carElt->_state |= RM_CAR_STATE_OUT;
-	    
-/* 	    for (i = 0; i < 4; i++) { */
-/* 		carElt->_ride(i) = 0; */
-/* 	    } */
 	}
 	return;
     }
@@ -342,6 +338,7 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->_trkPos = car->trkPos;
 	for (i = 0; i < 4; i++) {
 	    carElt->priv->wheel[i].relPos = car->wheel[i].relPos;
+	    carElt->_wheelSeg(i) = car->wheel[i].trkPos.seg;
 	    carElt->_brakeTemp(i) = car->wheel[i].brake.temp;
 	    carElt->pub->corner[i] = car->corner[i].pos;
 	}

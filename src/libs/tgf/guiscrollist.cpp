@@ -516,7 +516,7 @@ gfuiScrollListAction(int mouse)
 	gfuiScrollListDeselectAll();
 	object = GfuiScreen->hasFocus;
 	scrollist = &(object->u.scrollist);
-	relY = object->ymax - GfuiMouseY;
+	relY = object->ymax - GfuiMouse.Y;
 	relY = scrollist->firstVisible + relY / (scrollist->font->getDescender() + scrollist->font->getHeight()) + 1;
 	if (relY > scrollist->nbElts) {
 	    scrollist->selectedElt = -1;

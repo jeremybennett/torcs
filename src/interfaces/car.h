@@ -168,10 +168,12 @@ typedef struct {
     tdble	spinVel;	/* spin velocity rad/s */
     tdble	brakeTemp;	/* brake temperature from 0 (cool) to 1.0 (hot) */
     int		state;		/* wheel state */
+    tTrackSeg	*seg;
 } tWheelState;
 #define _ride(i)	priv->wheel[i].relPos.z
 #define _brakeTemp(i)	priv->wheel[i].brakeTemp
 #define _wheelSpinVel(i) priv->wheel[i].spinVel
+#define _wheelSeg(i)	priv->wheel[i].seg
 
 #define MAX_GEARS	10	/* including reverse and neutral */
 

@@ -114,7 +114,7 @@ grRefreshSound(tSituation *s)
 
     skvol = 0.0;
     if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
-	for(i = 0; i < 3; i++) {
+	for(i = 0; i < 4; i++) {
 	    if (skvol < car->_skid[i]) {
 		skvol = (float)car->_skid[i];
 	    }

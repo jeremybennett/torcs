@@ -348,10 +348,21 @@ extern void GfuiScreenRelease(void *screen);
 extern void GfuiScreenActivate(void *screen);
 extern void GfuiScreenDeactivate(void);
 extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
+extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
 extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed);
 extern void GfuiHelpScreen(void *prevScreen);
 extern void GfuiScreenShot(void *notused);
 extern void GfuiScreenAddBgImg(void *scr, char *filename);
+
+/* mouse */
+typedef struct MouseInfo
+{
+    int	X;
+    int	Y;
+    int	button[3];
+} tMouseInfo;
+
+extern tMouseInfo *GfuiMouseInfo(void);
 
 /* all widgets */
 extern void GfuiVisiblilitySet(void *scr, int id, int visible);

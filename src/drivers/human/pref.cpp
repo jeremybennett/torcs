@@ -36,6 +36,7 @@
 #include <robottools.h>
 #include <robot.h>
 #include <playerpref.h>
+#include <js.h>
 #include "pref.h"
 
 void	*PrefHdle;
@@ -75,19 +76,26 @@ static char *Btn[] = {"BTN1", "BTN2", "BTN3", "BTN4", "BTN5", "BTN6", "BTN7", "B
 		      "BTN17", "BTN18", "BTN19", "BTN20", "BTN21", "BTN22", "BTN23", "BTN24", "BTN25", "BTN26", "BTN27", "BTN28", "BTN29", "BTN30", "BTN31", "BTN32"};
 static char *Axis[] = {"AXIS0", "AXIS1", "AXIS2", "AXIS3", "AXIS4", "AXIS5", "AXIS6", "AXIS7", "AXIS8", "AXIS9", "AXIS10", "AXIS11", "AXIS12"};
 
+static char *MouseBtn[] = {"MOUSE_LEFT_BTN", "MOUSE_MIDDLE_BTN", "MOUSE_RIGHT_BTN"}; /* glut order */
+static char *MouseAxis[] = {"MOUSE_LEFT", "MOUSE_RIGHT", "MOUSE_UP", "MOUSE_DOWN"};
+
 
 char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
+extern jsJoystick js0;
 
 void
 HmReadPrefs(int index)
 {
     char	*prm;
+    char	*defaultSettings;
     char	sstring[256];
     uint	i, cmd;
-    uint	maxButton;
     float	tmp;
-    int		maxAxis;
+    uint	maxButton;
+    uint	maxAxis;
+    uint	maxMouseButton;
+    uint	maxMouseAxis;
     
     
     sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
@@ -100,7 +108,7 @@ HmReadPrefs(int index)
     } else {
 	Transmission = 1;
     }
-/*     NbPitStopProg = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0); */
+
     /* Parameters Settings */
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[ParamAbs]);
     if (strcmp(prm, Yn[0]) == 0) {
@@ -115,8 +123,16 @@ HmReadPrefs(int index)
 	ParamAsr = 0;
     }
 
-    maxButton = sizeof(Btn) / sizeof(char*);
-    maxAxis = sizeof(Axis) / sizeof(char*);
+    maxButton      = sizeof(Btn)       / sizeof(char*);
+    maxAxis        = sizeof(Axis)      / sizeof(char*);
+    maxMouseButton = sizeof(MouseBtn)  / sizeof(char*);
+    maxMouseAxis   = sizeof(MouseAxis) / sizeof(char*);
+
+    if (!js0.notWorking()) {
+	defaultSettings = HM_SECT_JSPREF;
+    } else {
+	defaultSettings = HM_SECT_MOUSEPREF;
+    }
 
     /* Command Settings */
     for (cmd = 0; cmd < NB_CMD; cmd++) {
@@ -127,11 +143,17 @@ HmReadPrefs(int index)
 	case CMD_TYPE_JOY_BUT:
 	    prm = Btn[CmdControl[cmd].val];
 	    break;
-	case CMD_TYPE_NOT_AFFECTED:
+	case CMD_TYPE_MOUSE_BUT:
+	    prm = MouseBtn[CmdControl[cmd].val];
+	    break;
+	case CMD_TYPE_MOUSE_MOVE:
+	    prm = MouseAxis[CmdControl[cmd].val];
+	    break;
+	default:
 	    prm = NULL;
 	    break;
 	}
-	prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].name, prm);
+	prm = GfParmGetStr(PrefHdle, defaultSettings, CmdControl[cmd].name, prm);
 	prm = GfParmGetStr(PrefHdle, sstring, CmdControl[cmd].name, prm);
 	if (!prm || (strlen(prm) == 0)) {
 	    CmdControl[cmd].type = CMD_TYPE_NOT_AFFECTED;
@@ -139,19 +161,19 @@ HmReadPrefs(int index)
 	    continue;
 	}
 	if (CmdControl[cmd].minName) {
-	    CmdControl[cmd].min = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].minName, (char*)NULL, (tdble)CmdControl[cmd].min);
+	    CmdControl[cmd].min = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].minName, (char*)NULL, (tdble)CmdControl[cmd].min);
 	    CmdControl[cmd].min = CmdControl[cmd].minVal = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].minName, (char*)NULL, (tdble)CmdControl[cmd].min);
 	}
 	if (CmdControl[cmd].maxName) {
-	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
+	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
 	    CmdControl[cmd].max = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].maxName, (char*)NULL, (tdble)CmdControl[cmd].max);
 	}	
 	if (CmdControl[cmd].sensName) {
-	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
+	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
 	    CmdControl[cmd].sens = 1.0f / (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].sensName, (char*)NULL, 1.0 / (tdble)CmdControl[cmd].sens);
 	}	
 	if (CmdControl[cmd].powName) {
-	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
+	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, defaultSettings, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
 	    CmdControl[cmd].pow = (float)GfParmGetNum(PrefHdle, sstring, CmdControl[cmd].powName, (char*)NULL, (tdble)CmdControl[cmd].pow);
 	}
 	if (CmdControl[cmd].min > CmdControl[cmd].max) {
@@ -181,12 +203,34 @@ HmReadPrefs(int index)
 	if (i != maxAxis) {
 	    continue;
 	}
+	for (i = 0; i < maxMouseButton; i++) {
+	    if (strcmp(prm, MouseBtn[i]) == 0) {
+		CmdControl[cmd].val = i;
+		CmdControl[cmd].type = CMD_TYPE_MOUSE_BUT;
+		GfOut("%s -> %s (%d)\n", CmdControl[cmd].name, MouseBtn[i], i);
+		break;
+	    }
+	}
+	if (i != maxMouseButton) {
+	    continue;
+	}
+	for (i = 0; i < maxMouseAxis; i++) {
+	    if (strcmp(prm, MouseAxis[i]) == 0) {
+		CmdControl[cmd].val = i;
+		CmdControl[cmd].type = CMD_TYPE_MOUSE_MOVE;
+		GfOut("%s -> %s (%d)\n", CmdControl[cmd].name, MouseAxis[i], i);
+		break;
+	    }
+	}
+	if (i != maxMouseAxis) {
+	    continue;
+	}
 	
 	CmdControl[cmd].type = CMD_TYPE_NOT_AFFECTED;
 	GfOut("%s -> NONE (-1)\n", CmdControl[cmd].name);
     }
 
-    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_REL_BUT_NEUTRAL, Yn[RelButNeutral]);
+    prm = GfParmGetStr(PrefHdle, defaultSettings, HM_ATT_REL_BUT_NEUTRAL, Yn[RelButNeutral]);
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_REL_BUT_NEUTRAL, prm);
     if (strcmp(prm, Yn[0]) == 0) {
 	RelButNeutral = 1;
@@ -194,7 +238,7 @@ HmReadPrefs(int index)
 	RelButNeutral = 0;
     }
 
-    prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_SEQSHFT_ALLOW_NEUTRAL, Yn[SeqShftAllowNeutral]);
+    prm = GfParmGetStr(PrefHdle, defaultSettings, HM_ATT_SEQSHFT_ALLOW_NEUTRAL, Yn[SeqShftAllowNeutral]);
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_SEQSHFT_ALLOW_NEUTRAL, prm);
     if (strcmp(prm, Yn[0]) == 0) {
 	SeqShftAllowNeutral = 1;

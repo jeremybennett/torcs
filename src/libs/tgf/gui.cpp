@@ -36,7 +36,7 @@
 
 tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
-int		GfuiMouseX, GfuiMouseY;
+tMouseInfo	GfuiMouse;
 
 float		GfuiColor[GFUI_COLORNB][4];
 
@@ -141,7 +141,7 @@ GfuiDisplay(void)
 
     GfScrGetSize(&ScrW, &ScrH, &ViewW, &ViewH);
 
-    glViewport( (ScrW-ViewW)/2, (ScrH-ViewH)/2, ViewW, ViewH);
+    glViewport((ScrW-ViewW) / 2, (ScrH-ViewH) / 2, ViewW, ViewH);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0, GfuiScreen->width, 0, GfuiScreen->height);
@@ -247,11 +247,22 @@ gfuiSpecial(int key, int /* x */, int /* y */)
     glutPostRedisplay();
 }
 
+/** Get the mouse information (position and buttons)
+    @ingroup	gui
+    @return	mouse information
+*/
+tMouseInfo *GfuiMouseInfo(void)
+{
+    return &GfuiMouse;
+}
+
 static void
 gfuiMouse(int button, int state, int x, int y)
 {
-    GfuiMouseX = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
-    GfuiMouseY = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
+    GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
+    GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
+    GfuiMouse.button[button] = 1 - state;
+    
     DelayRepeat = REPEAT1;
     LastTimeClick = GfTimeClock();
     if (state == GLUT_DOWN) {
@@ -277,8 +288,8 @@ gfuiMouse(int button, int state, int x, int y)
 static void
 gfuiMotion(int x, int y)
 {
-    GfuiMouseX = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
-    GfuiMouseY = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
+    GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
+    GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
     gfuiUpdateFocus();
     gfuiMouseAction((void*)(1 - GfuiScreen->mouse));
     glutPostRedisplay();
@@ -288,8 +299,8 @@ gfuiMotion(int x, int y)
 static void
 gfuiPassiveMotion(int x, int y)
 {
-    GfuiMouseX = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
-    GfuiMouseY = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
+    GfuiMouse.X = (x - (ScrW - ViewW)/2) * (int)GfuiScreen->width / ViewW;
+    GfuiMouse.Y = (ViewH - y + (ScrH - ViewH)/2) * (int)GfuiScreen->height / ViewH;
     gfuiUpdateFocus();
     glutPostRedisplay();
 }
@@ -512,6 +523,18 @@ GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallba
 	screen->userKeys->next = curKey;
 	screen->userKeys = curKey;
     }
+}
+/** Add a Keyboard callback to the current screen.
+    @ingroup	gui
+    @param	key		Key code (glut value)
+    @param	descr		Description for help screen
+    @param	userData	Parameter to the callback function
+    @param	onKeyPressed	Callback function called when the specified key is pressed
+ */
+void
+GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed)
+{
+    GfuiAddKey(GfuiScreen, key, descr, userData, onKeyPressed);
 }
 
 /** Add a Special Keyboard shortcut to the screen.

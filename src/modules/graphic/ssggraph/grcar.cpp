@@ -559,9 +559,11 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
     sgCopyMat4(grCarInfo[index].carPos, car->_posMat);
     grCarInfo[index].carTransform->setTransform(grCarInfo[index].carPos);
 
-    grDrawShadow(car);
+    if ((car != curCar) || (dispFlag == 1)) {
+	grDrawShadow(car);
+    }
     
-    /* Env mapping selection */
+    /* Env mapping selection by the position on the track */
     grCarInfo[index].envSelector->selectStep(car->_trkPos.seg->envIndex);
 
     /* wheels */

@@ -259,13 +259,13 @@ TorcsJoystick1MenuInit(void *prevMenu)
     updateButtonText();
 
     GfuiButtonCreate(scrHandle1, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-     NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    
-    GfuiButtonCreate(scrHandle1, "Next", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-     scrHandle2, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		     NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    GfuiButtonCreate(scrHandle1, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     scrHandle2, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiButtonCreate(scrHandle1, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-     prevMenu, onCancel1, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		     prevMenu, onCancel1, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiAddKey(scrHandle1, 27, "Cancel Selection", prevMenu, onCancel1);
 

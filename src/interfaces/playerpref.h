@@ -29,6 +29,7 @@
 #define HM_PREF_FILE		"drivers/human/preferences.xml"
 
 #define	HM_SECT_JSPREF		"joystick defaults"
+#define	HM_SECT_MOUSEPREF	"mouse defaults"
 
 #define HM_ATT_UP_SHFT		"up shift"
 #define HM_ATT_DN_SHFT		"down shift"

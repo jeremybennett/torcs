@@ -47,8 +47,9 @@ typedef struct
 /* Lap based information */
 typedef struct
 {
-    int		drv;		/* driver start index */
+    int		pos;		/* driver position */
     tdble	lapTime;	/* lap time */
+    int		lapsBehind;	/* laps behind leader */
     int		event;		/* special event */
 #define RM_EVENT_PIT_STOP	0x01
     void	*eventData;	/* event specific data */
@@ -90,6 +91,8 @@ extern void RmLoadingScreenSetText(char * /* text */);
 
 extern int RmInitResults(tRmInfo * /* rmInfo */);
 extern void RmShutdownResults(tRmInfo * /* rmInfo */);
+
+extern void RmSaveResults(tRmInfo *rmInfo);
 
 
 #endif /* __RACEMANTOOLS_H__ */

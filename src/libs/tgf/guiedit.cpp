@@ -229,7 +229,7 @@ gfuiEditboxAction(int mouse)
 	editbox = &(object->u.editbox);
 	label = &(editbox->label);
 	/* Set the cursor position */
-	relX = GfuiMouseX - label->x;
+	relX = GfuiMouse.X - label->x;
 	for (i = 0; i < strlen(label->text); i++){
 	    buf[i] = label->text[i];
 	    buf[i+1] = '\0';

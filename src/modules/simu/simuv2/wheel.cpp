@@ -176,12 +176,12 @@ SimWheelUpdateForce(tCar *car, int index)
     /* Damping force */
     Ft = 0;
     Fn = 0;
-    if (fabs(vt) < 1.0) {
-	RELAXATION(sy, wheel->presy, 50.0); /* used to stabilize the value when speed is near 0 */
-    } else {
-	wheel->presy = sy;
-    }
-    RELAXATION(sx, wheel->presx, 1.0 + 99.0 * (1 - exp(-fabs(wheel->spinVel)))); /* used to stabilize the value when speed is near 0 */
+    //if (fabs(vt) < 1.0) {
+    //	RELAXATION(sy, wheel->presy, 50.0); /* used to stabilize the value when speed is near 0 */
+    //} else {
+    //	wheel->presy = sy;
+    //}
+    /* RELAXATION(sx, wheel->presx, 1.0 + 99.0 * (1 - exp(-fabs(wheel->spinVel)))); */ /* used to stabilize the value when speed is near 0 */
     s = sqrt(sx*sx+sy*sy);
     car->carElt->_skid[index] = MAX(0.2, MIN(s, 1.2)) - 0.2;
 
@@ -227,7 +227,7 @@ SimWheelUpdateRotation(tCar *car)
     for (i = 0; i < 4; i++) {
 	wheel = &(car->wheel[i]);
 	wheel->spinVel = wheel->in.spinVel;
-	RELAXATION(wheel->spinVel, wheel->preSpinVel, 50.0);
+/* 	RELAXATION(wheel->spinVel, wheel->preSpinVel, 50.0); */
 	wheel->relPos.ay += wheel->spinVel * SimDeltaTime;
 	//NORM0_2PI(wheel->relPos.ay);
 	car->carElt->_wheelSpinVel(i) = wheel->spinVel;
@@ -251,16 +251,13 @@ SimUpdateFreeWheels(tCar *car, int axlenb)
 	    
 	ndot = SimDeltaTime * wheel->spinTq / I;
 	wheel->spinVel -= ndot;
+
 	BrTq = - SIGN(wheel->spinVel) * wheel->brake.Tq;
-	
 	ndot = SimDeltaTime * BrTq / I;
 
-	if ((ndot * wheel->in.spinVel) < 0.0) {
-	    if (fabs(ndot) > fabs(wheel->spinVel)) {
-		ndot = -wheel->spinVel;
-	    }
+	if (fabs(ndot) > fabs(wheel->spinVel)) {
+	    ndot = -wheel->spinVel;
 	}
-	if ((wheel->spinVel == 0.0) && (ndot < 0.0)) ndot = 0;
 	
 	wheel->spinVel += ndot;
 	wheel->in.spinVel = wheel->spinVel;

@@ -39,6 +39,7 @@ static int RunFl = 1;
 
 void *qrHandle;
 static int qrPauseId;
+static int qrMsgId;
 
 static void
 qrQuit(void *vflag)
@@ -129,14 +130,24 @@ qraceglRun(void)
 /* 		 GFUI_ALIGN_HC_VB, */
 /* 		 strlen(qrTheTrack->name)); */
 
+    qrMsgId = GfuiLabelCreateEx(qrHandle,
+				"                        ",
+				fgcolor2,
+				GFUI_FONT_BIG,
+				320,
+				440,
+				GFUI_ALIGN_HC_VB,
+				0);
+
     qrPauseId = GfuiLabelCreateEx(qrHandle,
-			       "P A U S E",
-			       fgcolor2,
-			       GFUI_FONT_BIG,
-			       320,
-			       400,
-			       GFUI_ALIGN_HC_VB,
-			       0);
+				  "P A U S E",
+				  fgcolor2,
+				  GFUI_FONT_BIG,
+				  320,
+				  400,
+				  GFUI_ALIGN_HC_VB,
+				  0);
+
     GfScrGetSize(&sw, &sh, &vw, &vh);
     qrGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, qrHandle);
 

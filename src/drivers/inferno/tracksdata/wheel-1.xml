@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file                 : e-track-3.xml
+    file                 : wheel-1.xml
     created              : Thu May 10 20:19:12 /etc/localtime 2001
     copyright            : (C) 2001 by Eric Espié                         
     email                : Eric.Espie@torcs.org   
@@ -25,7 +25,7 @@
     <attnum name="AdvStep"   val="5.0"></attnum>
     <attnum name="VGain"     val="0.0005"></attnum>
     <attnum name="preDy"     val="0"></attnum>
-    <attnum name="spdtgt"    val="240.0"></attnum>
+    <attnum name="spdtgt"    val="265.0"></attnum>
     <attnum name="spdtgt2"   val="2.5"></attnum>
     <attnum name="steerMult" val="2.5"></attnum>
   </section>

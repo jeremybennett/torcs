@@ -242,8 +242,14 @@ SimCarUpdateForces(tCar *car)
 static void
 SimCarUpdateSpeed(tCar *car)
 {
-    tdble Cosz, Sinz;
+    tdble	Cosz, Sinz;
+    int		i;
+    tdble	mass;
+    tdble	vel, Rr, Rm;	/* Rolling Resistance */
 
+    mass = car->mass + car->fuel;
+
+    
     Cosz = car->Cosz;
     Sinz = car->Sinz;
 
@@ -252,9 +258,30 @@ SimCarUpdateSpeed(tCar *car)
     car->DynGCg.vel.y += (1.5 * car->DynGCg.acc.y - .5 * car->preDynGC.acc.y) * SimDeltaTime;
     car->DynGCg.vel.z += (1.5 * car->DynGCg.acc.z - .5 * car->preDynGC.acc.z) * SimDeltaTime;
 
+    Rr = 0;
+    for (i = 0; i < 4; i++) {
+	Rr += car->wheel[i].rollRes;
+    }
+    
+    Rm = Rr * car->wheelbase /*  / 2.0 */ * car->Iinv.z * SimDeltaTime;
+    Rr = 2.0 * Rr / mass * SimDeltaTime;
+    vel = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y);
+    if (Rr > vel) {
+	Rr = vel;
+    }
+    if (vel > 0.00001) {
+	car->DynGCg.vel.x -= car->DynGCg.vel.x * Rr / vel * SIGN(car->DynGCg.vel.x);
+	car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel * SIGN(car->DynGCg.vel.y);
+    }
+
     car->DynGCg.vel.ax += (1.5 * car->DynGCg.acc.ax - .5 * car->preDynGC.acc.ax) * SimDeltaTime;
     car->DynGCg.vel.ay += (1.5 * car->DynGCg.acc.ay - .5 * car->preDynGC.acc.ay) * SimDeltaTime;
     car->DynGCg.vel.az += (1.5 * car->DynGCg.acc.az - .5 * car->preDynGC.acc.az) * SimDeltaTime;
+
+    if (Rm > fabs(car->DynGCg.vel.az)) {
+	Rm = fabs(car->DynGCg.vel.az);
+    }
+    car->DynGCg.vel.az -= Rm * SIGN(car->DynGCg.vel.az);
 
     car->DynGC.vel.ax = car->DynGCg.vel.ax;
     car->DynGC.vel.ay = car->DynGCg.vel.ay;
@@ -263,7 +290,7 @@ SimCarUpdateSpeed(tCar *car)
     car->DynGC.vel.x = car->DynGCg.vel.x * Cosz + car->DynGCg.vel.y * Sinz;
     car->DynGC.vel.y = -car->DynGCg.vel.x * Sinz + car->DynGCg.vel.y * Cosz;
     car->DynGC.vel.z = car->DynGCg.vel.z;
-    
+
 }
 
 void
@@ -307,13 +334,13 @@ SimCarUpdatePos(tCar *car)
     accx = car->DynGCg.acc.x;
     accy = car->DynGCg.acc.y;
 
-    car->DynGCg.pos.x += (vx + SimDeltaTime * accx * .5) * SimDeltaTime;
-    car->DynGCg.pos.y += (vy + SimDeltaTime * accy * .5) * SimDeltaTime;
-    car->DynGCg.pos.z += (car->DynGCg.vel.z + SimDeltaTime * car->DynGCg.acc.z * .5) * SimDeltaTime;
+    car->DynGCg.pos.x += (vx /* + SimDeltaTime * accx * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.y += (vy /* + SimDeltaTime * accy * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.z += (car->DynGCg.vel.z /* + SimDeltaTime * car->DynGCg.acc.z * .5 */) * SimDeltaTime;
     
-    car->DynGCg.pos.ax += (car->DynGCg.vel.ax + SimDeltaTime * car->DynGCg.acc.ax * .5) * SimDeltaTime;
-    car->DynGCg.pos.ay += (car->DynGCg.vel.ay + SimDeltaTime * car->DynGCg.acc.ay * .5) * SimDeltaTime;
-    car->DynGCg.pos.az += (car->DynGCg.vel.az + SimDeltaTime * car->DynGCg.acc.az * .5) * SimDeltaTime;
+    car->DynGCg.pos.ax += (car->DynGCg.vel.ax /* + SimDeltaTime * car->DynGCg.acc.ax * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.ay += (car->DynGCg.vel.ay /* + SimDeltaTime * car->DynGCg.acc.ay * .5 */) * SimDeltaTime;
+    car->DynGCg.pos.az += (car->DynGCg.vel.az /* + SimDeltaTime * car->DynGCg.acc.az * .5 */) * SimDeltaTime;
 
     NORM_PI_PI(car->DynGC.pos.az);
     

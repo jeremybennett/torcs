@@ -76,8 +76,8 @@ int GfuiFontWidth(int font, char *text)
 void
 GfuiDrawCursor()
 {
-    float xf = (float)(GfuiMouseX);
-    float yf = (float)(GfuiMouseY);
+    float xf = (float)(GfuiMouse.X);
+    float yf = (float)(GfuiMouse.Y);
     
     glColor4fv(GfuiScreen->mouseColor[0]) ;
     glBegin(GL_TRIANGLES);
@@ -141,10 +141,10 @@ GfuiDraw(tGfuiObject *obj)
 static int
 gfuiMouseIn(tGfuiObject *obj)
 {
-    if ((GfuiMouseX >= obj->xmin) &&
-	(GfuiMouseX <= obj->xmax) &&
-	(GfuiMouseY >= obj->ymin) &&
-	(GfuiMouseY <= obj->ymax)) {
+    if ((GfuiMouse.X >= obj->xmin) &&
+	(GfuiMouse.X <= obj->xmax) &&
+	(GfuiMouse.Y >= obj->ymin) &&
+	(GfuiMouse.Y <= obj->ymax)) {
 	return 1;
     }
     return 0;

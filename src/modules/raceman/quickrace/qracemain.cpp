@@ -50,7 +50,6 @@ int		qrRunning; /* flag to manage the simulation */
 int		qrKeyPressed = 0;
 
 tRmInfo		*qrRaceInfo = (tRmInfo*)NULL;
-
 tqrCarInfo	*qrCarInfo;
 
 static const double dtmax = 0.005;
@@ -132,9 +131,6 @@ qraceRun(void *dummy)
     qrRaceInfo->simItf = &SimItf;
     qrRaceInfo->params = qracecfg;
     qrRaceInfo->modList = &qracemodlist;
-    if (RmInitResults(qrRaceInfo)) {
-	return;
-    }
 
     RmLoadingScreenSetText("Initializing the drivers...");
     if (RmInitCars(qrRaceInfo)) {
@@ -170,6 +166,10 @@ qraceRun(void *dummy)
 	qrCarInfo[i].prevTrkPos = qrTheSituation.cars[i]->_trkPos;
     }
 
+    if (RmInitResults(qrRaceInfo)) {
+	return;
+    }
+
     RmLoadingScreenSetText("Running Prestart...");
     qrPreStart();
 
@@ -189,6 +189,7 @@ qrShutdown(void)
     GfParmWriteFile(QRACE_CFG, qracecfg, "quick race", GFPARM_PARAMETER, "../../dtd/params.dtd");
     GfParmReleaseHandle(qracecfg);
     qraceglShutdown();
+    RmSaveResults(qrRaceInfo);
     qrResults(qrMainMenuHandle);
     for (i = 0; i < qrTheSituation._ncars; i++) {
 	robot = qrTheSituation.cars[i]->robot;
@@ -227,7 +228,7 @@ qrUpdtPitCmd(void *pvcar)
 static void
 qrManage(tCarElt *car)
 {
-    int i /* , evnb */ ;
+    int i, evnb ;
     static float color[] = {0.0, 0.0, 1.0, 1.0};
     
     tqrCarInfo *info = &(qrCarInfo[car->index]);
@@ -278,8 +279,9 @@ qrManage(tCarElt *car)
 		    /* the pit cmd is modified by menu */
 		    qrStop();
 		    RmPitMenuStart(car, (void*)car, qrUpdtPitCmd);
+		} else {
+		    qrUpdtPitTime(car);
 		}
-		qrUpdtPitTime(car);
 	    }
 	}
     }
@@ -312,11 +314,12 @@ qrManage(tCarElt *car)
 			}
 			info->sTime = qrTheSituation.currentTime;
 			/* results history */
-/* 			evnb = qrTheSituation._ncars * (car->_laps - 2) + car->_pos - 1; */
-/* 			qrRaceInfo->lapInfo[evnb].drv = car->_startRank; */
-/* 			qrRaceInfo->lapInfo[evnb].event = car->_event; */
-/* 			car->_event = 0; */
-/* 			qrRaceInfo->lapInfo[evnb].lapTime = car->_lastLapTime; */
+			evnb = qrTheSituation._ncars * (car->_laps - 2) + car->_startRank;
+			qrRaceInfo->lapInfo[evnb].pos = car->_pos;
+			qrRaceInfo->lapInfo[evnb].event = car->_event;
+			qrRaceInfo->lapInfo[evnb].lapsBehind = car->_lapsBehindLeader;
+			car->_event = 0;
+			qrRaceInfo->lapInfo[evnb].lapTime = car->_lastLapTime;
 		    }
 		    if ((car->_remainingLaps < 0) || (qrTheSituation._raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;

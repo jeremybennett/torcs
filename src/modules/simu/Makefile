@@ -20,6 +20,6 @@ SUBDIRS		= $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 DATASUBDIRS	= $(SUBDIRS)
 
-EXPINCDIRS	= simuv2
+EXPINCDIRS	= $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 include ${MAKE_DEFAULT}

@@ -23,11 +23,11 @@
   </section>
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="18"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="6"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="12"></attnum>
   </section>
 
   <section name="Gearbox">

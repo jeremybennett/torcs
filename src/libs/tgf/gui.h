@@ -227,7 +227,7 @@ typedef struct
 
 
 extern tGfuiScreen	*GfuiScreen;
-extern int GfuiMouseX, GfuiMouseY;
+extern tMouseInfo	 GfuiMouse;
 
 extern void gfuiReleaseObject(tGfuiObject *curObject);
 

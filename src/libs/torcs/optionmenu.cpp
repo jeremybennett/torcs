@@ -41,10 +41,11 @@ TorcsOptionOptionInit(void *precMenu)
     JoystickHandle = TorcsJoystick1MenuInit(optionHandle);
     playerHandle = TorcsDriverMenuInit(optionHandle);
 
+    GfuiMenuButtonCreate(optionHandle,
+			 "Player", "Configure player parameters",
+			 playerHandle, GfuiScreenActivate);
+
     if (JoystickHandle) {
-	GfuiMenuButtonCreate(optionHandle,
-			     "Player", "Configure player parameters",
-			     playerHandle, GfuiScreenActivate);
 	GfuiMenuButtonCreate(optionHandle,
 			     "Controls", "Configure control parameters",
 			     JoystickHandle, GfuiScreenActivate);

@@ -57,6 +57,47 @@
     <attnum name="brake power" val="1.2"></attnum>
   </section>
 
+  <section name="mouse defaults">
+    <attstr name="up shift"   val=""></attstr>
+    <attstr name="down shift" val=""></attstr>
+    <attstr name="ASR cmd" val=""></attstr>
+    <attstr name="ABS cmd" val=""></attstr>
+    <attstr name="reverse gear" val="MOUSE_MIDDLE_BTN"></attstr>
+    <attstr name="neutral gear" val=""></attstr>
+    <attstr name="1st gear" val=""></attstr>
+    <attstr name="2nd gear" val=""></attstr>
+    <attstr name="3rd gear" val=""></attstr>
+    <attstr name="4th gear" val=""></attstr>
+    <attstr name="5th gear" val=""></attstr>
+    <attstr name="6th gear" val=""></attstr>
+    <attstr name="release gear button goes neutral" in="yes,no" val="yes"></attstr>
+    <attstr name="sequential shifter allow neutral" in="yes,no" val="no"></attstr>
+
+    <attstr name="left steer" val="MOUSE_LEFT"></attstr>
+    <attnum name="left steer min" val="0"></attnum>
+    <attnum name="left steer max" val="300"></attnum>
+    <attnum name="left steer sensitivity" val="300"></attnum>
+    <attnum name="left steer power" val="0"></attnum>
+
+    <attstr name="right steer" val="MOUSE_RIGHT"></attstr>
+    <attnum name="right steer min" val="0"></attnum>
+    <attnum name="right steer max" val="300"></attnum>
+    <attnum name="right steer sensitivity" val="300"></attnum>
+    <attnum name="right steer power" val="0"></attnum>
+
+    <attstr name="throttle" val="MOUSE_LEFT_BTN"></attstr>
+    <attnum name="throttle min" val="0"></attnum>
+    <attnum name="throttle max" val="1"></attnum>
+    <attnum name="throttle sensitivity" val="0"></attnum>
+    <attnum name="throttle power" val="0"></attnum>
+
+    <attstr name="brake" val="MOUSE_RIGHT_BTN"></attstr>
+    <attnum name="brake min" val="0"></attnum>
+    <attnum name="brake max" val="1"></attnum>
+    <attnum name="brake sensitivity" val="0"></attnum>
+    <attnum name="brake power" val="0"></attnum>
+  </section>
+
   <section name="Preferences">
 
     <section name="Drivers">
@@ -81,7 +122,7 @@
       </section>
 
       <section name="3">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
@@ -89,49 +130,49 @@
       </section>
 
       <section name="4">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="5">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="6">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="7">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="8">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="9">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>
       </section>
 
       <section name="10">
-	<attstr name="transmission" in="auto,manual" val="manual"></attstr>
+	<attstr name="transmission" in="auto,manual" val="auto"></attstr>
 	<attstr name="ABS on" in="yes,no" val="yes"></attstr>
 	<attstr name="ASR on" in="yes,no" val="no"></attstr>
 	<attnum name="programmed pit stops" val="0"></attnum>

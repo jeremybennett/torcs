@@ -159,7 +159,7 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
 int
 RmInitResults(tRmInfo *rmInfo)
 {
-    int nblap = rmInfo->s->_totLaps;
+    int nblap = rmInfo->s->_totLaps + 1;
     int nbdrv = rmInfo->s->_ncars;
 
     rmInfo->lapInfo = (tDrvLapInfo*)calloc(nbdrv * nblap, sizeof(tDrvLapInfo));
@@ -183,17 +183,84 @@ RmShutdownResults(tRmInfo *rmInfo)
 void
 RmSaveResults(tRmInfo *rmInfo)
 {
-    char	buf[256];
     int		*index;
     tCarElt	**cars;
-    int i;
+    int		nb, i, max, ncars;
+    char	buf[1024];
+    FILE	*fout;
+    FILE	*fcmd;
+    char	*filename = "res";
+    int		pos;
 
-    index = (int*)malloc(rmInfo->s->_ncars);
+    GfOut("Saving Results\n");
+
+    index = (int*)malloc(rmInfo->s->_ncars * sizeof(int *));
     cars = rmInfo->s->cars;
 
-    for (i = 0; i < rmInfo->s->_ncars; i++) {
+    ncars = max = rmInfo->s->_ncars;
+    for (i = 0; i < max; i++) {
 	index[cars[i]->_startRank] = i;
     }
+
+    sprintf(buf, "results/%s.cmd", filename);
+    fcmd = fopen(buf, "w");
+    if (fcmd == NULL) {
+	GfTrace1("Error while openning %s\n", buf);
+	return;
+    }
+    fprintf(fcmd, "#!/bin/sh\n");
+    fprintf(fcmd, "gnuplot -persist > results/%s.png <<!!\n", filename);
+    fprintf(fcmd, "#   set yrange [%d:0]\n", -rmInfo->s->_ncars);
+    fprintf(fcmd, "#   set grid\n");
+    fprintf(fcmd, "    set nokey\n");
+    fprintf(fcmd, "    set title \"Race Positions Lap by Lap\"\n");
+    fprintf(fcmd, "    set xlabel \"Laps\"\n");
+    fprintf(fcmd, "    set ylabel \"Drivers\"\n");
+    fprintf(fcmd, "    set size 2.5,1.5\n");
+    fprintf(fcmd, "    set terminal png color\n");
+    fprintf(fcmd, "    set data style lines\n");
+    fprintf(fcmd, "    set xtics border 1\n");
+    fprintf(fcmd, "    set y2tics border mirror 1\n");
+    fprintf(fcmd, "    set ytics border (\"%s\" -1", cars[index[0]]->_name);
+    for (i = 1; i < max; i++) {
+	fprintf(fcmd, ", \"%s\" %d", cars[index[i]]->_name, -i - 1);
+    }
+    fprintf(fcmd, ")\n");    
+
+    fprintf(fcmd, "plot 'results/%s.dat' using 2", filename);
+    for (i = 1; i < max; i++) {
+	fprintf(fcmd, ", '' using %d", i + 2);
+    }
+    fprintf(fcmd, "\n");
+    fprintf(fcmd, "!!\n");
+    fclose(fcmd);
     
-    
+    sprintf(buf, "results/%s.dat", filename);
+    fout = fopen(buf, "w");
+    if (fout == NULL) {
+	GfTrace1("Error while openning %s\n", buf);
+	return;
+    }
+    fprintf(fout, "0 ");
+    for (i = 0; i < max; i++) {
+	fprintf(fout, "%d ", -(cars[index[i]]->_startRank + 1));
+    }
+    fprintf(fout, "\n");
+    for (nb = 0; nb < rmInfo->s->_totLaps + 1; nb++) {
+	fprintf(fout, "%d ", nb + 1);
+	for (i = 0; i < max; i++) {
+	    pos = rmInfo->lapInfo[ncars * nb + i].pos;
+	    if (pos == 0) {
+		fprintf(fout, "- ");
+	    } else {
+		fprintf(fout, "%d ", -pos);
+	    }
+	}
+	fprintf(fout, "\n");
+    }
+    fclose(fout);
+    sprintf(buf, "sh results/%s.cmd", filename);
+    system(buf);
+
+    free (index);
 }

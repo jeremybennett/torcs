@@ -85,7 +85,9 @@ RmDumpTrack(tTrack *track, int verbose)
     if (verbose) {
 	for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
 	    GfOut("	segment %d -------------- \n", seg->id);
-	   /* GfOut("        type    %s\n", stype[seg->type]);*/
+#ifdef DEBUG
+	    GfOut("        type    %s\n", stype[seg->type]);
+#endif
 	    GfOut("        length  %f\n", seg->length);
 	    GfOut("	radius  %f\n", seg->radius);
 	    GfOut("	arc	%f   Zs %f   Ze %f   Zcs %f\n", RAD2DEG(seg->arc), 
