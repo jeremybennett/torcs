@@ -95,10 +95,10 @@ SimCarCollideZ(tCar *car)
 		if (dotProd < 0) {
 		    if (dotProd <-5.0) {
 				car->collision |= 16;
-				wheel->rotational_damage_x -= dotProd*0.01*drand48();
-				wheel->rotational_damage_z -= dotProd*0.01*drand48();
-				wheel->bent_damage_x += 0.1*drand48()-0.05;
-				wheel->bent_damage_z += 0.1*drand48()-0.05;
+				wheel->rotational_damage_x -= dotProd*0.01*rand()/RAND_MAX;
+				wheel->rotational_damage_z -= dotProd*0.01*rand()/RAND_MAX;
+				wheel->bent_damage_x += 0.1*rand()/RAND_MAX-0.05;
+				wheel->bent_damage_z += 0.1*rand()/RAND_MAX-0.05;
 				if (wheel->rotational_damage_x>0.25) {
 					wheel->rotational_damage_x = 0.25;
 				}
@@ -316,7 +316,7 @@ SimCarCollideXYScene(tCar *car)
 		tdble invK = 0.01;
 		force[0] = -invK * nx * dotProd;
 		force[1] = -invK * ny * dotProd;
-		force[2] = invK * (drand48()-0.5)*0.1;
+		force[2] = invK * (rand()/RAND_MAX-0.5)*0.1;
 
 		//printf ("- %f -\n", sgLengthVec3 (force));
 	    /* collision detected */
@@ -328,7 +328,7 @@ SimCarCollideXYScene(tCar *car)
 			sgVec3 poc;
 			poc[0] = corner->pos.x;
 			poc[1] = corner->pos.y;
-			poc[2] = (drand48()-0.5)*2.0;
+			poc[2] = (rand()/RAND_MAX-0.5)*2.0;
 			t3Dd angles;
 			t3Dd original;
 			t3Dd updated;
@@ -493,7 +493,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	force[1] = -invK * v1ab[1] * fabs(n[1]);
 	force[2] = 0;
 	if (sgLengthVec3 (force) > 0.1) {
-		tdble h=drand48()-0.5;
+		tdble h=rand()/RAND_MAX-0.5;
 		p1[2] = h;
 		p2[2] = h;
 		t3Dd angles;

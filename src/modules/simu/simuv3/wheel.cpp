@@ -105,10 +105,10 @@ SimWheelConfig(tCar *car, int index)
     wheel->feedBack.spinVel = 0;
     wheel->feedBack.Tq = 0;
     wheel->feedBack.brkTq = 0;
-	wheel->rotational_damage_x = 0.0;//drand48()*0.25;
-	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
-	wheel->bent_damage_x = drand48();
-	wheel->bent_damage_z = drand48();
+	wheel->rotational_damage_x = 0.0;//0.25*rand()/RAND_MAX;
+	wheel->rotational_damage_z = 0.0;//0.25*rand()/RAND_MAX;
+	wheel->bent_damage_x = rand()/RAND_MAX;
+	wheel->bent_damage_z = rand()/RAND_MAX;
 }
 
 

@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-MODULE		= simuv2.so
+MODULE		= simuv3.so
 
 MODULEDIR	= modules/simu
 
@@ -36,12 +36,6 @@ SOURCES		= simu.cpp \
 		  categories.cpp
 
 LIBS		=  -lplibsg -lplibul -L${EXPORTBASE}/lib -lsolid
-
-SUBDIRS		= SOLID-2.0
-
-EXPINCDIRS	= SOLID-2.0
-
-PKGSUBDIRS	= simuv3#$(SUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

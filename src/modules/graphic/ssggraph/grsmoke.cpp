@@ -238,7 +238,7 @@ void grAddSmoke(tCarElt *car, double t)
 					timeSmoke[car->index*4+i] = t;
 				}
 				
-				if (car->_skid[i]>drand48()+0.1) {// instead of 0.3, to randomize
+				if (car->_skid[i]>rand()/RAND_MAX+0.1) {// instead of 0.3, to randomize
 					char* s = car->priv.wheel[i].seg->surface->material;
 					shd_vtx = new ssgVertexArray(1);
 					//shd_clr = new ssgColourArray(1);
@@ -246,18 +246,18 @@ void grAddSmoke(tCarElt *car, double t)
 					tdble init_speed;
 					if (strstr(s, "sand")) {
 						cur_clr[0] = 0.8;
-						cur_clr[1] = 0.7+drand48()*0.1;
-						cur_clr[2] = 0.4+drand48()*0.2;
+						cur_clr[1] = 0.7+0.1*rand()/RAND_MAX;
+						cur_clr[2] = 0.4+0.2*rand()/RAND_MAX;
 						init_speed = 0.5;
 					} else if (strstr(s, "dirt")) {
-						cur_clr[0] = 0.7+drand48()*0.1;
-						cur_clr[1] = 0.6+drand48()*0.1;
-						cur_clr[2] = 0.5+drand48()*0.1;
+						cur_clr[0] = 0.7+0.1*rand()/RAND_MAX;
+						cur_clr[1] = 0.6+0.1*rand()/RAND_MAX;
+						cur_clr[2] = 0.5+0.1*rand()/RAND_MAX;
 						init_speed = 0.45;
 					} else if (strstr(s,"mud")) {
 						cur_clr[0] = 0.65;
-						cur_clr[1] = 0.4+drand48()*.2;
-						cur_clr[2] = 0.3+drand48()*.2;
+						cur_clr[1] = 0.4+0.2*rand()/RAND_MAX;
+						cur_clr[2] = 0.3+0.2*rand()/RAND_MAX;
 						init_speed = 0.35;
 					} else if (strstr(s,"gravel")) {
 						cur_clr[0] = 0.6;
@@ -265,9 +265,9 @@ void grAddSmoke(tCarElt *car, double t)
 						cur_clr[2] = 0.6;
 						init_speed = 0.3;
 					} else if (strstr(s,"grass")) {
-						cur_clr[0] = 0.4+drand48()*.2;
-						cur_clr[1] = 0.5+drand48()*.1;
-						cur_clr[2] = 0.3+drand48()*.1;
+						cur_clr[0] = 0.4+0.2*rand()/RAND_MAX;
+						cur_clr[1] = 0.5+0.1*rand()/RAND_MAX;
+						cur_clr[2] = 0.3+0.1*rand()/RAND_MAX;
 						init_speed = 0.25;
 					} else {
 						cur_clr[0] = 0.8;

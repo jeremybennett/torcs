@@ -78,7 +78,7 @@ simuInit(int /* index */, void *pt)
  *	
  */
 extern "C" int
-simuv2(tModInfo *modInfo)
+simuv3(tModInfo *modInfo)
 {
     modInfo->name = "simu";		/* name of the module (short) */
     modInfo->desc = "Simulation Engine V2.0";	/* description of the module (can be long) */
