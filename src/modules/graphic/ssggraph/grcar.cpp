@@ -411,6 +411,17 @@ grInitCar(tCarElt *car)
     grCarIndex = index = car->index;	/* current car's index */
     handle = car->_carHandle;
 
+    /* Load visual attributes */
+    car->_exhaustNb = GfParmGetEltNb(handle, SECT_EXHAUST);
+    car->_exhaustNb = MIN(car->_exhaustNb, 2);
+    car->_exhaustPower = GfParmGetNum(handle, SECT_EXHAUST, PRM_POWER, NULL, 1.0);
+    for (i = 0; i < car->_exhaustNb; i++) {
+	sprintf(path, "%s/%d", SECT_EXHAUST, i + 1);
+	car->_exhaustPos[i].x = GfParmGetNum(handle, path, PRM_XPOS, NULL, -car->_dimension_x / 2.0);
+	car->_exhaustPos[i].y = -GfParmGetNum(handle, path, PRM_YPOS, NULL, car->_dimension_y / 2.0);
+	car->_exhaustPos[i].z = GfParmGetNum(handle, path, PRM_ZPOS, NULL, 0.1);
+    }
+
     GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
 
     lg = 0;
@@ -432,10 +443,8 @@ grInitCar(tCarElt *car)
 	grCarInfo[index].wheelTexture = grSsgLoadTexState(param);
     }
     
-    /* BEWARE OF PLIB BUG in 1.2.0 this doesn't work!!! */
     grCarInfo[index].envSelector = (ssgStateSelector*)grEnvSelector->clone();
     grCarInfo[index].envSelector->ref();
-    //grCarInfo[index].envSelector = grEnvSelector; // for PLIB 1.2.0
 
     /* the base transformation of the car (rotation + translation) */
     grCarInfo[index].carTransform = new ssgTransform;

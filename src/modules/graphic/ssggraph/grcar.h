@@ -32,6 +32,7 @@ typedef struct
     tdble		minAngle, maxAngle;
     tdble		*monitored;
     tdble		prevVal;
+    tdble		rawPrev;
 } tgrCarInstrument;
 
 
@@ -56,6 +57,7 @@ typedef struct
     tgrCarInstrument	instrument[2];
     tdble               distFromStart;
     tdble               envAngle;
+    int			fireCount;
 } tgrCarInfo;
 
 extern tgrCarInfo	*grCarInfo;

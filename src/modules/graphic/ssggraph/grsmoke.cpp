@@ -82,8 +82,8 @@ void grInitSmoke(int index)
 	memset(timeSmoke,0,sizeof(double)*index*4);
     }
     if (!timeFire) {
-	timeFire = (double *) malloc(sizeof(double)*index*4);
-	memset(timeFire,0,sizeof(double)*index*4);
+	timeFire = (double *) malloc(sizeof(double)*index);
+	memset(timeFire,0,sizeof(double)*index);
     }
     if (!smokeManager) {
 	smokeManager = (tgrSmokeManager*) malloc(sizeof(tgrSmokeManager));
@@ -271,57 +271,57 @@ void grAddSmoke(tCarElt *car, double t)
     }
 
 
-    if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
+    if (car->_exhaustNb && ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0)) {
 	if (smokeManager->number < grSmokeMaxNumber) {
-	  i=3;
-	  if ((t - timeFire[car->index*4+i]) < grFireDeltaT) {
-
-	  } else {
-	    timeFire[car->index*4+i] = t;
-
-	  
-	  /*	  if (car->_skid[i]>0.3) {
-	  */
 	    index = car->index;	/* current car's index */
-	    curInst = &(grCarInfo[index].instrument[0]);
-	    val = (*(curInst->monitored) - curInst->minValue) / curInst->maxValue;
-	    if (val > 0.75) {
-	      shd_vtx = new ssgVertexArray(1);
-	      tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
-	      vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
-	      vtx[1] = car->priv->wheel[i].relPos.y;
-	      vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE*2;
-	      shd_vtx->add(vtx);
-	      tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE*4,SMOKE_TYPE_ENGINE);
+	    if ((t - timeFire[index+i]) > grFireDeltaT) {
+		timeFire[index+i] = t;
+		curInst = &(grCarInfo[index].instrument[0]);
+		val = ((curInst->rawPrev - curInst->minValue) / curInst->maxValue) - ((*(curInst->monitored) - curInst->minValue) / curInst->maxValue);
+		curInst->rawPrev = *(curInst->monitored);
+		if (val > 0.1) {
+		    grCarInfo[index].fireCount = (int)(10.0 * val * car->_exhaustPower);
+		}
+		if (grCarInfo[index].fireCount) {
+		    grCarInfo[index].fireCount--;
+		    for (i = 0; i < car->_exhaustNb; i++) {
+			shd_vtx = new ssgVertexArray(1);
+			tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
+			vtx[0] = car->_exhaustPos[i].x;
+			vtx[1] = car->_exhaustPos[i].y;
+			vtx[2] = car->_exhaustPos[i].z;
+		    
+			shd_vtx->add(vtx);
+			tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE*4,SMOKE_TYPE_ENGINE);
 	      
-	      tmp->smoke->setState(mstf0);    
-	      tmp->smoke->setCullFace(0);
-	      tmp->smoke->max_life = grSmokeLife/8;
-	      tmp->smoke->step0_max_life =  (grSmokeLife)/50.0;
-	      tmp->smoke->step1_max_life =  (grSmokeLife)/50.0+ tmp->smoke->max_life/2.0;
-	      tmp->smoke->cur_life = 0;
-	      tmp->smoke->sizex = VX_INIT*4;
-	      tmp->smoke->sizey = VY_INIT*4;
-	      tmp->smoke->sizez = VZ_INIT*4;
-	      tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX));
-	      tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
-	      tmp->smoke->smokeTypeStep = 0;
-	      tmp->next = NULL;
-	      tmp->smoke->lastTime = t;
-	      tmp->smoke->transform(grCarInfo[car->index].carPos);
-	      TheScene->addKid(tmp->smoke);
-	      smokeManager->number++;
-	      if (smokeManager->smokeList==NULL) {
-		smokeManager->smokeList = tmp;
-	      } else {
-		tmp->next = smokeManager->smokeList;
-		smokeManager->smokeList = tmp;
-	      }
+			tmp->smoke->setState(mstf0);    
+			tmp->smoke->setCullFace(0);
+			tmp->smoke->max_life = grSmokeLife/8;
+			tmp->smoke->step0_max_life =  (grSmokeLife)/50.0;
+			tmp->smoke->step1_max_life =  (grSmokeLife)/50.0+ tmp->smoke->max_life/2.0;
+			tmp->smoke->cur_life = 0;
+			tmp->smoke->sizex = VX_INIT*4;
+			tmp->smoke->sizey = VY_INIT*4;
+			tmp->smoke->sizez = VZ_INIT*4;
+			tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX)) * car->_exhaustPower / 2.0;
+			tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
+			tmp->smoke->smokeTypeStep = 0;
+			tmp->next = NULL;
+			tmp->smoke->lastTime = t;
+			tmp->smoke->transform(grCarInfo[index].carPos);
+			TheScene->addKid(tmp->smoke);
+			smokeManager->number++;
+			if (smokeManager->smokeList==NULL) {
+			    smokeManager->smokeList = tmp;
+			} else {
+			    tmp->next = smokeManager->smokeList;
+			    smokeManager->smokeList = tmp;
+			}
+		    }
+		}
 	    }
-	  }
 	}
     }
-
 }
 
 /** remove the smoke information for a car */
