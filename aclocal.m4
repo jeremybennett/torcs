@@ -50,10 +50,12 @@ AC_DEFUN(AC_CHECK_COMPILERS,
       AC_PROG_CC_G
       if test $ac_cv_prog_cc_g = yes; then
         CFLAGS="-g -DDEBUG -DDEBUG_OUT"
+	STRIP="echo"
       fi
     else
       if test "$GCC" = "yes"; then
         CFLAGS="-O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
+	STRIP="strip"
       else
         CFLAGS=""
       fi
@@ -98,7 +100,8 @@ dnl dependecies between AC_PROG_CPP and AC_PROG_CC (or is it automake?)
     ac_cv_prog_CPP="$CPP"
   fi
   AC_MSG_RESULT($CPP)
-  AC_SUBST(CPP)dnl
+  AC_SUBST(CPP)
+  AC_SUBST(STRIP)
 
 
   AC_MSG_CHECKING(for a C++-Compiler)

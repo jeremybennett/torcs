@@ -55,6 +55,8 @@ INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include @X_INCLU
 
 CPP = @CPP@ $(CPPFLAGS) -M -D__DEPEND__
 
+STRIP = @STRIP@
+
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 

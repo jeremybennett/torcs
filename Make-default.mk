@@ -33,9 +33,9 @@ endif
 SOURCEBASE  = ${TORCS_BASE}/src
 EXPORTBASE  = ${TORCS_BASE}/export
 DOCBASE     = ${TORCS_BASE}/doc
-INSTBASE    = ${instdir}
-INSTBINBASE = ${bindir}
-INSTLIBBASE = ${prefix}/lib
+INSTBASE    = ${DESTDIR}${instdir}
+INSTBINBASE = ${DESTDIR}${bindir}
+INSTLIBBASE = ${DESTDIR}${prefix}/lib
 
 
 # win32
@@ -158,6 +158,7 @@ ifdef LIBRARY
 ${LIBRARY}: ${OBJECTS}
 	${AR} ${ARFLAGS} ${LIBRARY} ${OBJECTS}
 	${RANLIB} ${LIBRARY}
+	${STRIP} ${LIBRARY}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${LIBDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
@@ -212,6 +213,7 @@ ifdef PROGRAM
 
 ${PROGRAM}: ${OBJECTS} $(subst -l,${EXPORTBASE}/lib/lib, ${LIBS:=.a})
 	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${EXT_LIBS} ${SOLIBS} -o $@
+	${STRIP} $@
 
 installprogram: ${PROGRAM}
 	@ createdir="${INSTBASE}" ; \
@@ -230,6 +232,7 @@ ifdef TOOLS
 
 ${TOOLS}: ${OBJECTS} $(subst -l,${EXPORTBASE}/lib/lib, ${LIBS:=.a})
 	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${EXT_LIBS} ${SOLIBS} -o $@
+	${STRIP} $@
 
 installtools: ${TOOLS}
 	@createdir="${INSTBINBASE}/${TOOLSDIR}" ; \
@@ -281,6 +284,7 @@ ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
 	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LIBSPATH} ${LIBS} 
+	${STRIP} ${SOLIBRARY}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \
@@ -309,6 +313,7 @@ ifdef MODULE
 
 ${MODULE}: ${OBJECTS}
 	${CXX} -shared -o ${MODULE} ${OBJECTS} ${LIBSPATH} ${LIBS} 
+	${STRIP} ${MODULE}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${MODULEDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
