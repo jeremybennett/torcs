@@ -2,7 +2,7 @@
 
     file        : raceengine.cpp
     created     : Sat Nov 23 09:05:23 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002 by Eric EspiÃ©                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -59,6 +59,12 @@ ReUpdtPitTime(tCarElt *car)
 	info->totalPitTime = 2.0 + fabs(car->_pitFuel) / 8.0 + (tdble)(fabs(car->_pitRepair)) * 0.007;
 	car->_scheduledEventTime = s->currentTime + info->totalPitTime;
 	ReInfo->_reSimItf.reconfig(car);
+	for (int i=0; i<4; i++) {
+		car->_tyreCondition(i) = 1.01;
+		car->_tyreT_in(i) = 50.0;
+		car->_tyreT_mid(i) = 50.0;
+		car->_tyreT_out(i) = 50.0;
+	}
 	break;
     case RM_PIT_STOPANDGO:
 	info->totalPitTime = 0.0;

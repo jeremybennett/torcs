@@ -326,7 +326,7 @@ initStartingGrid(void)
 	car->_pos_Z = RtTrackHeightL(&(car->_trkPos)) + heightInit;
 
 	NORM0_2PI(car->_yaw);
-	ReInfo->_reSimItf.config(car);
+	ReInfo->_reSimItf.config(car, ReInfo);
     }
 }
 
