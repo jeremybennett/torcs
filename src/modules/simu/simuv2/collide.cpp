@@ -30,6 +30,10 @@ SimCarCollideZ(tCar *car)
     t3Dd	normal;
     tdble	dotProd;
     
+    if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	return;
+    }
+
     for (i = 0; i < 4; i++) {
 	if (car->wheel[i].state & SIM_SUSP_COMP) {
 	    car->DynGCg.pos.z += car->wheel[i].susp.x - car->wheel[i].rideHeight;
@@ -45,7 +49,7 @@ SimCarCollideZ(tCar *car)
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
-		car->dammage += ROAD_DAMMAGE * fabs(dotProd);
+		car->dammage += (int)(ROAD_DAMMAGE * fabs(dotProd));
 	    }
 	}
     }
@@ -64,6 +68,10 @@ SimCarCollideXYScene(tCar *car)
     tdble	dotProd, nx, ny;
     tWheel	*wheel;
     
+    if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	return;
+    }
+
     corner = &(car->corner[0]);
     for (i = 0; i < 4; i++, corner++) {
 	seg = car->trkPos.seg;
@@ -99,7 +107,7 @@ SimCarCollideXYScene(tCar *car)
 	
 	/* rebound */
 	dotProd = normal.x * corner->vel.x + normal.y * corner->vel.y;
-	car->dammage += BARRIER_DAMMAGE * fabs(dotProd);
+	car->dammage += (int)(BARRIER_DAMMAGE * fabs(dotProd));
 
 	if (dotProd < 0) {
 	    car->collision |= 2;
@@ -142,6 +150,11 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     float	distpab;
 
     float	e = 0.5;	/* energy restitution */
+    
+    if ((car1->carElt->_state & RM_CAR_STATE_NO_SIMU) ||
+	(car2->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
+	return;
+    }
     
     /* vector conversion from double to float */
     p1[0] = (float)collData->point1[0];
@@ -220,8 +233,8 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	((car1->Minv + car2->Minv) +
 	 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
 
-    car1->dammage += CAR_DAMMAGE * fabs(j);
-    car2->dammage += CAR_DAMMAGE * fabs(j);
+    car1->dammage += (int)(CAR_DAMMAGE * fabs(j));
+    car2->dammage += (int)(CAR_DAMMAGE * fabs(j));
 
 /*     if (j < 0) { */
 /* 	return; */
@@ -299,6 +312,8 @@ SimCarCollideConfig(tCar *car)
     car->shape = dtBox(carElt->_dimension_x, carElt->_dimension_y, carElt->_dimension_z);
     dtCreateObject(car, car->shape);
 
+    car->collisionAware = 1;
+    
     dtSetDefaultResponse(SimCarCollideResponse, DT_SMART_RESPONSE, NULL);
 }
 
@@ -329,6 +344,9 @@ SimCarCollideCars(tSituation *s)
 
     for (i = 0; i < s->_ncars; i++) {
 	carElt = s->cars[i];
+	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	    continue;
+	}
 	car = &(SimCarTable[carElt->index]);
 	if (car->collision & 4) {
 	    car->DynGCg.vel.x = car->VelColl.x;

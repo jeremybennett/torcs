@@ -449,7 +449,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (car->_laps == 2) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {
 	    if (lap == 1) {
-		RtTelemStartMonitoring("cylos1.dat");
+		RtTelemStartMonitoring("cylos1");
 	    }
 	    RtTelemUpdate(car->_curLapTime);
 	}

@@ -285,7 +285,9 @@ ${SOLIBRARY}: ${OBJECTS}
 
 
 installsolibrary: ${SOLIBRARY}
-	@createdir="${INSTBASE}/${SOLIBDIR}" ; \
+	@createdir="runtime/${SOLIBDIR}" ; \
+	${create_dir_win32} ; \
+	createdir="${INSTBASE}/${SOLIBDIR}" ; \
 	X="${SOLIBRARY}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \

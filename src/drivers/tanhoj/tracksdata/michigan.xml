@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file                 : michigan.xml
-    created              : Sat Mar 18 23:25:55 CET 2000
-    copyright            : (C) 2000 by Eric Espie                         
-    email                : torcs@free.fr   
+    file                 : e-track-3.xml
+    created              : Thu May 10 20:19:12 /etc/localtime 2001
+    copyright            : (C) 2001 by Eric Espié                         
+    email                : Eric.Espie@torcs.org   
     version              : $Id$                                  
 -->
 
@@ -14,10 +14,22 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="michigan traj" type="template">
+<params name="" type="template">
 
-  <section name="Trajectory">
-    <section name="Points">
-    </section>
+  <section name="Simulation Parameters">
+    <attnum name="PGain"     val="0.022"></attnum>
+    <attnum name="AGain"     val="0.008"></attnum>
+    <attnum name="PnGain"    val="0.02"></attnum>
+    <attnum name="Advance"   val="65.0"></attnum>
+    <attnum name="Advance2"  val="20.0"></attnum>
+    <attnum name="AdvStep"   val="5.0"></attnum>
+    <attnum name="VGain"     val="0.0005"></attnum>
+    <attnum name="preDy"     val="0"></attnum>
+    <attnum name="spdtgt"    val="280.0"></attnum>
+    <attnum name="spdtgt2"   val="2.0"></attnum>
+    <attnum name="steerMult" val="2.5"></attnum>
   </section>
+
 </params>
+
+

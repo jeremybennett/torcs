@@ -20,6 +20,10 @@
 #include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include <telemetry.h>
 #include <tgf.h>
 #include "tlm.h"
@@ -36,6 +40,7 @@ typedef struct Channel
 typedef struct Tlm
 {
     FILE	*file;	/* associated file */
+    char	*cmdfile;
     int		state;
     tdble	ymin;
     tdble	ymax;
@@ -107,35 +112,49 @@ TlmStartMonitoring(const char *filename)
 {
     char	buf[1024];
     FILE	*fout;
+    FILE	*fcmd;
     tChannel	*curChan;
     int		i;
     
-    GfOut("Telemetry: start monitoring");
-    
-    sprintf(buf, "telemetry/%s", filename);
-    fout = TlmData.file = fopen(buf, "w");
-    if (fout == NULL) {
+    GfOut("Telemetry: start monitoring\n");
+
+    sprintf(buf, "telemetry/%s.cmd", filename);
+    fcmd = fopen(buf, "w");
+    if (fcmd == NULL) {
 	return;
     }
-    TlmData.state = 1;
-    fprintf(fout, "# set yrange [%f:%f]\n", TlmData.ymin, TlmData.ymax);
-    fprintf(fout, "# set grid\n");
-    fprintf(fout, "# set data style lines \n");
-    
+    fprintf(fcmd, "#!/bin/sh\n");
+    fprintf(fcmd, "gnuplot -persist > telemetry/%s.png <<!!\n", filename);
+    fprintf(fcmd, "#    set yrange [%f:%f]\n", TlmData.ymin, TlmData.ymax);
+    fprintf(fcmd, "    set grid\n");
+    fprintf(fcmd, "    set size 2.5,1.5\n");
+    fprintf(fcmd, "    set terminal png color\n");
+    fprintf(fcmd, "    set data style lines\n");
     curChan = TlmData.chanList;
     if (curChan != NULL) {
 	i = 2;
 	do {
 	    curChan = curChan->next;
 	    if (i == 2) {
-		fprintf(fout, "# plot '%s' using %d title '%s'", filename, i, curChan->name);
+		fprintf(fcmd, "plot 'telemetry/%s.dat' using %d title '%s'", filename, i, curChan->name);
 	    } else {
-		fprintf(fout, ", '' using %d title '%s'", i, curChan->name);
+		fprintf(fcmd, ", '' using %d title '%s'", i, curChan->name);
 	    }
 	    i++;
 	} while (curChan != TlmData.chanList);
-	fprintf(fout, "\n");
+	fprintf(fcmd, "\n");
     }
+    fprintf(fcmd, "!!\n");
+    fclose(fcmd);
+    
+    TlmData.cmdfile = strdup(buf);
+    
+    sprintf(buf, "telemetry/%s.dat", filename);
+    fout = TlmData.file = fopen(buf, "w");
+    if (fout == NULL) {
+	return;
+    }
+    TlmData.state = 1;
 }
 
 void 
@@ -164,12 +183,18 @@ TlmUpdate(double time)
 void 
 TlmStopMonitoring(void)
 {
+    char	buf[256];
+    
     if (TlmData.state == 1) {
 	fclose(TlmData.file);
     }
     TlmData.file = (FILE*)NULL;
     TlmData.state = 0;
-    GfOut("Telemetry: stop monitoring");
+    GfOut("Telemetry: stop monitoring\n");
+
+    sprintf(buf, "sh %s", TlmData.cmdfile);
+    system(buf);
+    free(TlmData.cmdfile);
 }
 
 /*

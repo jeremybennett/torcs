@@ -52,12 +52,14 @@ typedef struct {
 #define RM_TYPE_PRACTICE	1
 #define RM_TYPE_QUALIF		2
 #define RM_TYPE_RACE		3
+    int                 maxDammage;
     unsigned long	fps;
 } tRaceAdmInfo;
 #define _ncars		raceInfo.ncars
 #define _totLaps	raceInfo.totLaps
 #define _raceState	raceInfo.state
 #define _raceType	raceInfo.type
+#define _maxDammage	raceInfo.maxDammage
 
 /* cars situation used to inform the GUI and the drivers */
 typedef struct {
@@ -99,6 +101,7 @@ typedef struct
 #define RM_ATTR_INITSPEED	"initial speed"
 #define RM_ATTR_INITHEIGHT	"initial height"
 #define RM_ATTR_SHOW_RACE	"show race"
+#define RM_ATTR_MAX_DMG		"maximum dammage"
 #endif /* _RACEMANV1_H_ */ 
 
 

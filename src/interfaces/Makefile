@@ -17,7 +17,7 @@
 
 EXPDIR  = include
 
-EXPORTS = graphic.h raceman.h robot.h simu.h track.h car.h ttypes.h telemetry.h practicectrl.h playerpref.h
+EXPORTS = graphic.h raceman.h robot.h simu.h track.h car.h ttypes.h telemetry.h practicectrl.h playerpref.h js.h
 
 include ${MAKE_DEFAULT}
 

@@ -20,7 +20,7 @@ SOLIBRARY = track.so
 
 SOLIBDIR  = modules/track
 
-SOURCES   = track.cpp trackitf.cpp trackutil.cpp track0.cpp track1.cpp track2.cpp
+SOURCES   = track.cpp trackitf.cpp trackutil.cpp track0.cpp track1.cpp track2.cpp track3.cpp
 
 include ${MAKE_DEFAULT}
 

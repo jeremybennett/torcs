@@ -98,6 +98,9 @@ typedef struct
     int		blocked;
     int		dammage;
     
+    tDynPt	restPos;	/* target rest position after the car is broken */
+
+    int		collisionAware;
 } tCar;
 
 #endif /* _CAR__H_ */ 

@@ -34,12 +34,12 @@ const tdble G = 9.80665; /* m/s/s */
 #define SIGN(x)     ((x) < 0 ? -1.0 : 1.0)
 
 /* normalization */
-#define NORM0_2PI(x) {\
-	while ((x) > 2*PI) { (x) -= 2*PI; } \
+#define NORM0_2PI(x) {				\
+	while ((x) > 2*PI) { (x) -= 2*PI; }	\
 	while ((x) < 0) { (x) += 2*PI; } }
 
-#define NORM_PI_PI(x) {\
-	while ((x) > PI) { (x) -= 2*PI; } \
+#define NORM_PI_PI(x) {				\
+	while ((x) > PI) { (x) -= 2*PI; }	\
 	while ((x) < -PI) { (x) += 2*PI; } }
 
 

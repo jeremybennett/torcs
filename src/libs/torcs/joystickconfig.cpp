@@ -27,7 +27,7 @@
 #include <robot.h>
 #include "driverconfig.h"
 #include <playerpref.h>
-#include <plib/js.h>
+#include <js.h>
 
 static void	*scrHandle1 = NULL;
 static void	*scrHandle2 = NULL;

@@ -201,28 +201,30 @@ InitScene(tTrack *track)
     
 #define	LG_STEP_MAX	50.0
 
-    GfOut("++++++++++++ Track ++++++++++++\n");
-    GfOut("name     = %s\n", track->name);
-    GfOut("author   = %s\n", track->author);
-    GfOut("filename = %s\n", track->filename);
-    GfOut("nseg     = %d\n", track->nseg);
-    GfOut("version  = %d\n", track->version);
-    GfOut("length   = %f\n", track->length);
-    GfOut("width    = %f\n", track->width);
-    GfOut("XSize    = %f\n", track->max.x);
-    GfOut("YSize    = %f\n", track->max.y);
-    GfOut("ZSize    = %f\n", track->max.z);
+    printf("++++++++++++ Track ++++++++++++\n");
+    printf("name      = %s\n", track->name);
+    printf("author    = %s\n", track->author);
+    printf("filename  = %s\n", track->filename);
+    printf("nseg      = %d\n", track->nseg);
+    printf("version   = %d\n", track->version);
+    printf("length    = %f\n", track->length);
+    printf("width     = %f\n", track->width);
+    printf("XSize     = %f\n", track->max.x);
+    printf("YSize     = %f\n", track->max.y);
+    printf("ZSize     = %f\n", track->max.z);
 
     tdble delatx = track->seg->next->vertex[TR_SL].x - track->seg->vertex[TR_EL].x;
     tdble delaty = track->seg->next->vertex[TR_SL].y - track->seg->vertex[TR_EL].y;
     tdble delatz = track->seg->next->vertex[TR_SL].z - track->seg->vertex[TR_EL].z;
+    tdble delata = track->seg->next->angle[TR_ZE] - track->seg->angle[TR_ZS];
     
-    GfOut("Delta X  = %f\n", delatx);
-    GfOut("Delta Y  = %f\n", delaty);
-    GfOut("Delta Z  = %f\n", delatz);
+    printf("Delta X   = %f\n", delatx);
+    printf("Delta Y   = %f\n", delaty);
+    printf("Delta Z   = %f\n", delatz);
+    printf("Delta Ang = %f (%f)\n", delata, RAD2DEG(delata));
 
     if ((fabs(delatx) > 1.0) || (fabs(delaty) > 1.0) || (fabs(delatz) > 1.0)) {
-	exit(0);
+/* 	exit(0); */
     }
 
     width = track->width;
@@ -370,9 +372,9 @@ InitScene(tTrack *track)
     nbvert+=58; /* start bridge */
     nbvert+=12 + 10 * track->pits.driversPitsNb;
     nbvert+=1000;
-    GfOut("=== Indices Array Size   = %d\n", nbvert);
-    GfOut("=== Vertex Array Size    = %d\n", nbvert * 3);
-    GfOut("=== Tex Coord Array Size = %d\n", nbvert * 2);
+    printf("=== Indices Array Size   = %d\n", nbvert);
+    printf("=== Vertex Array Size    = %d\n", nbvert * 3);
+    printf("=== Tex Coord Array Size = %d\n", nbvert * 2);
     trackindices  = (unsigned int*)malloc(sizeof(unsigned int) * nbvert);
     trackvertices = (float*)malloc(sizeof(GLfloat)*(nbvert * 3));
     tracktexcoord = (float*)malloc(sizeof(GLfloat)*(nbvert * 2));
@@ -2032,7 +2034,7 @@ InitScene(tTrack *track)
     CLOSEDISPLIST();
     
 
-    GfOut("=== Indices really used = %d\n", nbvert);
+    printf("=== Indices really used = %d\n", nbvert);
     
     return 0;
 }
@@ -2577,8 +2579,8 @@ GetFilename(char *filename, char *filepath, char *buf)
 	}
     }
     if (!found) {
-	GfOut("File %s not found\n", filename);
-	GfOut("File Path was %s\n", filepath);
+	printf("File %s not found\n", filename);
+	printf("File Path was %s\n", filepath);
 	return 0;
     }
 

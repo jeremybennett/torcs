@@ -91,7 +91,7 @@
 #define TRK_ATT_RSSURF	"rside surface"
 #define TRK_ATT_FINISH	"finish segment"
 #define TRK_ATT_ENVIND	"env map index"
-
+#define TRK_ATT_STEPLEN	"steps length"
 #define TRK_VAL_ST_LEVEL	"level"
 #define TRK_VAL_ST_TANGENT	"tangent"
 
@@ -120,6 +120,7 @@
 #define TRK_ATT_TYPE		"type"
 #define TRK_ATT_LG		"lg"
 #define TRK_ATT_RADIUS		"radius"
+#define TRK_ATT_RADIUSEND	"end radius"
 #define TRK_ATT_ARC		"arc"
 #define TRK_ATT_ZS		"z start"
 #define TRK_ATT_ZE		"z end"
@@ -133,6 +134,7 @@
 #define TRK_ATT_ID		"id"
 #define TRK_ATT_PROFIL		"profil"
 #define TRK_ATT_PROFSTEPS	"profil steps"
+#define TRK_ATT_PROFSTEPSLEN	"profil steps length"
 #define TRK_ATT_PROFTGTS	"profil start tangent"
 #define TRK_ATT_PROFTGTE	"profil end tangent"
 #define TRK_ATT_PROFTGTSL	"profil start tangent left"

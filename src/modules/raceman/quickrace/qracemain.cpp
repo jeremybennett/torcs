@@ -107,6 +107,7 @@ qraceRun(void *dummy)
 
     qrTheSituation._totLaps = (int)GfParmGetNum(qracecfg, "Race", "laps", (char*)NULL, 30);
     qrTheSituation._raceType = RM_TYPE_RACE;
+    qrTheSituation._maxDammage = (int)GfParmGetNum(qracecfg, "Race", RM_ATTR_MAX_DMG, (char*)NULL, 10000);
     
     simudllname    = GfParmGetStr(qracecfg, "Modules", "simu", "");
     graphicdllname = GfParmGetStr(qracecfg, "Modules", "graphic", "");

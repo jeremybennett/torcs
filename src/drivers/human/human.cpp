@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <plib/js.h>
+#include <js.h>
 
 #include <tgf.h>
 
@@ -162,7 +162,7 @@ human(tModInfo *modInfo)
 	    modInfo->index   = i+1;
 	    modInfo++;
 	}
-	GfOut("Joystick: %s\n", js0.getName());
+	/* GfOut("Joystick: %s\n", js0.getName()); */
     } else {
 	GfTrace("JOYSTICK NOT WORKING ! Player not available\n");
     }
@@ -432,7 +432,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     if (car->_laps == 1) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {
 	    if (lap == 0) {
-		RtTelemStartMonitoring("Player.dat");
+		RtTelemStartMonitoring("Player");
 	    }
 	    RtTelemUpdate(car->_curLapTime);
 	}

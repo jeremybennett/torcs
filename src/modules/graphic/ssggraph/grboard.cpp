@@ -279,7 +279,7 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     sprintf(buf, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
     dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
     dx = MAX(dx, (x3-x));
-    lines = 6;
+    lines = 7;
     for (i = 0; i < 4; i++) {
 	if (car->ctrl->msg[i]) {
 	    lines++;
@@ -311,9 +311,19 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     sprintf(buf, "%.1f l", car->_fuel);
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     y -= dy;
-    
-    clr = grWhite;
 
+    if (car->_state & RM_CAR_STATE_BROKEN) {
+	clr = grRed;
+    } else {
+	clr = grWhite;
+    }
+    
+    GfuiPrintString("Dammages:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+    sprintf(buf, "%d", car->_dammage);
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+    clr = grWhite;
+    
     GfuiPrintString("Laps:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
     sprintf(buf, "%d / %d", car->_laps, s->_totLaps);
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
@@ -522,6 +532,19 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
 	}
 	y += dy;
     }
+}
+
+void
+grInitBoardCar(tCarElt *car)
+{
+    int			index;
+    void		*handle;
+    char		*param;
+    
+    index = car->index;	/* current car's index */
+    handle = car->_carHandle;
+
+/*     grCarInfo[index]. */
 }
 
 void

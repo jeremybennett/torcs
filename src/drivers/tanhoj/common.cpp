@@ -126,7 +126,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
     car->ctrl->gear = car->_gear;
     if (car->_speed_x > shiftThld[idx][gear]) {
 	car->ctrl->gear++;
-    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
+    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 10.0))) {
 	car->ctrl->gear--;
     }
     if (car->_gear <= 0) {
@@ -171,7 +171,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
     car->_vect(0).type = CAR_VECT_INVALID;
     for (i = 0; i < s->_ncars; i++) {
 	otherCar = s->cars[i];
-	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_OUT)) {
+	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_NO_SIMU)) {
 	    continue;
 	}
 	lgfs2 = GetDistToStart(otherCar);
@@ -191,7 +191,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 	    car->_vect(0).end.y = otherCar->_pos_Y;
 	    maxdlg = dlg;
 	    /* risk of collision */
-	    tdble MARGIN = /* 0.4 * DmTrack->width */ 4.0;
+	    tdble MARGIN = /* 0.4 * DmTrack->width */ 6.0;
 	    
 	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN) {
 		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
@@ -209,13 +209,13 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime)
 		    } else {
 			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
 			if (dlg > (car->_dimension_x * 2.0)) {
-			    MaxSpeed[idx] = otherCar->_speed_x - 3.0;
+			    MaxSpeed[idx] = otherCar->_speed_x - 5.0;
 			}
 		    }
 		}
 		hold[idx] = Curtime + 1.0;
-		if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 3.0)) {
-		    MaxSpeed[idx] = otherCar->_speed_x - 3.0;
+		if ((dlg > (car->_dimension_x /2.0)) && (dlg < (car->_dimension_x * 3.0)) && (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < 2.0)) {
+		    MaxSpeed[idx] = otherCar->_speed_x - 5.0;
 		}
 	    }
 	}
