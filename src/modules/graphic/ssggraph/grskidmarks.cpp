@@ -85,7 +85,7 @@ void grInitSkidmarks(tCarElt *car)
 			// add texture
 			skidState->enable(GL_TEXTURE_2D);
 			skidState->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-			skidState->setTexture ("data/textures/grey-tracks.rgb", FALSE, TRUE, TRUE);
+			skidState->setTexture ("data/textures/grey-tracks.rgb", TRUE, TRUE, TRUE);
 		}
     }
       
@@ -166,21 +166,21 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 		}
 		char* s = car->priv.wheel[i].seg->surface->material;
 		if (strstr(s, "sand")) {
+			cur_clr[0] = 1.0;
+			cur_clr[1] = 1.0;
+			cur_clr[2] = 0.5;
+		} else if (strstr(s, "dirt")) {
+			cur_clr[0] = 0.8;
+			cur_clr[1] = 0.8;
+			cur_clr[2] = 0.8;
+		} else if (strstr(s,"mud")) {
+			cur_clr[0] = 0.9;
+			cur_clr[1] = 0.7;
+			cur_clr[2] = 0.5;
+		} else if (strstr(s,"gravel")) {
 			cur_clr[0] = 0.6;
 			cur_clr[1] = 0.6;
-			cur_clr[2] = 0.4;
-		} else if (strstr(s, "dirt")) {
-			cur_clr[0] = 0.5;
-			cur_clr[1] = 0.4;
-			cur_clr[2] = 0.3;
-		} else if (strstr(s,"mud")) {
-			cur_clr[0] = 0.5;
-			cur_clr[1] = 0.3;
-			cur_clr[2] = 0.1;
-		} else if (strstr(s,"gravel")) {
-			cur_clr[0] = 0.4;
-			cur_clr[1] = 0.4;
-			cur_clr[2] = 0.4;
+			cur_clr[2] = 0.6;
 		} else {
 			cur_clr[0] = 0.1;
 			cur_clr[1] = 0.1;
@@ -192,16 +192,14 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 				0.9*tmp + 0.1*cur_clr[c];
 			cur_clr[c] = tmp;
 		}
-	if ((t - grCarInfo[car->index].skidmarks->strips[i].timeStrip) < grSkidDeltaT) {
-	    continue;
-	}
+		if ((t - grCarInfo[car->index].skidmarks->strips[i].timeStrip) < grSkidDeltaT) {
+			continue;
+		}
       
 	if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 1.0) {
 	    if (cur_clr[3] > 0.1) {
 
 		basevtx = new ssgVertexArray(4 * 2 + 1);
-
-	   
 		
 		vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
 		vtx[1] = car->priv.wheel[i].relPos.y-car->_tireWidth(i) / 2.0;
@@ -240,11 +238,13 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 
 		TxVtx[1] = 1.0;
 		texcoords->add(TxVtx);
+
+		// maybe add car->_wheelSpinVel(i) instead of 1.0?
 		grCarInfo[car->index].skidmarks->strips[i].tex_state += 1.0;
-		if (grCarInfo[car->index].skidmarks->strips[i].tex_state > 1.5) {
-			grCarInfo[car->index].skidmarks->strips[i].tex_state -=
-				floor (grCarInfo[car->index].skidmarks->strips[i].tex_state);
-		}
+		//		if (grCarInfo[car->index].skidmarks->strips[i].tex_state > 1.5) {
+		//			grCarInfo[car->index].skidmarks->strips[i].tex_state -=
+		//				floor (grCarInfo[car->index].skidmarks->strips[i].tex_state);
+		//		}
 #endif
 		grCarInfo[car->index].skidmarks->base = new ssgVtxTable(GL_TRIANGLE_STRIP, basevtx, NULL, texcoords, NULL);
 #else
