@@ -813,27 +813,42 @@ xmlExternalEntityRefHandler (XML_Parser mainparser,
 			     const XML_Char *systemId,
 			     const XML_Char * /* publicId */)
 {
-    FILE 	*in;
-    char	buf[BUFSIZ];
-    XML_Parser 	parser;
-    int		done;
-    char	*str;
+    FILE 		*in;
+    char		buf[BUFSIZ];
+    XML_Parser 		parser;
+    int			done;
+    char		fin[LINE_SZ];
+    char		*s;
+    struct parmHandle	*parmHandle;
+    struct parmHeader	*conf;
 
+    parmHandle = (struct parmHandle *)XML_GetUserData (mainparser);
+    conf = parmHandle->conf;
 
-    
     parser = XML_ExternalEntityParserCreate (mainparser,
 					     openEntityNames,
 					     (const XML_Char *)NULL);
 
-    /* Skip the leading ../ in the path  */
-    str = (char*)systemId;
-    while (strncmp (str, "../", 3) == 0) {
-	str += 3;
+    if (systemId[0] == '/') {
+	strncpy (fin, systemId, sizeof (fin));
+	fin[LINE_SZ - 1] = 0;
+    } else {
+	/* relative path */
+	strncpy (fin, conf->filename, sizeof (fin));
+	fin[LINE_SZ - 1] = 0;
+	s = strrchr (fin, '/');
+	if (s) {
+	    s++;
+	} else {
+	    s = fin;
+	}
+	strncpy (s, systemId, sizeof (fin) - (s - fin));
+	fin[LINE_SZ - 1] = 0;
     }
     
-    in = fopen (str, "r");
+    in = fopen (fin, "r");
     if (in == NULL) {
-	perror (str);
+	perror (fin);
 	GfError ("GfReadParmFile: file %s has pb\n", systemId);
 	return 0;
     }
@@ -844,7 +859,7 @@ xmlExternalEntityRefHandler (XML_Parser mainparser,
 	done = len < sizeof (buf);
 	if (!XML_Parse (parser, buf, len, done)) {
 	    GfError ("file: %s -> %s at line %d\n",
-		     str,
+		     systemId,
 		     XML_ErrorString(XML_GetErrorCode(parser)),
 		     XML_GetCurrentLineNumber(parser));
 	    fclose (in);

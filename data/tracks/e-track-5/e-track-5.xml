@@ -15,7 +15,7 @@
 
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
-<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+<!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
 ]>
 
 <params name="e-track-5" type="template" mode="mw">

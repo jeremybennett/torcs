@@ -393,6 +393,10 @@ extern void gfMeanReset(tdble v, tMeanVal *pvt);
 /* MISC */
 extern char *GetLocalDir(void);
 extern void SetLocalDir(char *buf);
+extern char *GetLibDir(void);
+extern void SetLibDir(char *buf);
+extern char *GetDataDir(void);
+extern void SetDataDir(char *buf);
 extern int GetSingleTextureMode (void);
 extern void SetSingleTextureMode (void);
 

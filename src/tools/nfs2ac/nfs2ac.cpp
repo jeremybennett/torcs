@@ -67,7 +67,6 @@ int main(int argc, char **argv)
     char c;
     char *p;
     int i;
-    int j;
     int k;
     long magic;
     long VertTblOffset;
@@ -86,7 +85,7 @@ int main(int argc, char **argv)
 
     in=fopen(argv[1],"rb");
   
-    while ( c=getc(in)!= EOF )
+    while ( (c=getc(in)) != EOF )
 	num++;
   
     mem= (char *) malloc(num+1);
@@ -95,7 +94,7 @@ int main(int argc, char **argv)
     in=fopen(argv[1],"rb");
     p=mem;
 
-    if (fread(p,1,num,in)!=num)
+    if ((int)fread(p,1,num,in) != num)
 	exit(-2);
   
     magic         = * ((long *)(mem));
@@ -137,7 +136,7 @@ int main(int argc, char **argv)
 
     printf("OBJECT group\n");
     printf("name \"ouature\"\n");
-    printf("kids %d\n", NumParts);
+    printf("kids %ld\n", NumParts);
 
   
     for (i = 0; i < NumParts; i++) {
@@ -148,13 +147,13 @@ int main(int argc, char **argv)
 	printf("name \"%s\"\n", PartNames + 64 * i);
 	printf("texture \"car00.tga\"\n");
 
-	printf("numvert %d\n",PNumVertices[i]);
+	printf("numvert %ld\n",PNumVertices[i]);
 	vi= (tVector *) vl;
 	for (k=0 ; k<PNumVertices[i]; k++)
 	    {
 		printf("%f %f %f \n", vi[k].z + Parts[i].z, vi[k].y + Parts[i].y, vi[k].x + Parts[i].x);
 	    }
-	printf("numsurf %d\n",PNumTriangles[i]);
+	printf("numsurf %ld\n",PNumTriangles[i]);
 	for (k=0 ; k<PNumTriangles[i]; k ++)
 	    {
 		printf("SURF 0x10\n");
@@ -162,9 +161,9 @@ int main(int argc, char **argv)
 		printf("refs 3\n");
 		tr=(tTriangle *) ( (sizeof(tTriangle)*k) + tl);
 		vi= (tVector *) vl;
-		printf("%d %f %f\n",tr->I1, tr->U1, 1.0 - tr->V1);
-		printf("%d %f %f\n",tr->I2, tr->U2, 1.0 - tr->V2);
-		printf("%d %f %f\n",tr->I3, tr->U3, 1.0 - tr->V3);
+		printf("%ld %f %f\n",tr->I1, tr->U1, 1.0 - tr->V1);
+		printf("%ld %f %f\n",tr->I2, tr->U2, 1.0 - tr->V2);
+		printf("%ld %f %f\n",tr->I3, tr->U3, 1.0 - tr->V3);
 	    }
 	printf("kids 0\n");
     }

@@ -56,7 +56,7 @@ void RtTelemInit(tdble ymin, tdble ymax)
     tModInfo	*curModInfo;
 
     memset(&tlm, 0, sizeof(tTelemItf));
-    sprintf(buf, "modules/telemetry/%s.%s", "telemetry", DLLEXT);
+    sprintf(buf, "%smodules/telemetry/%s.%s", "telemetry", GetLibDir (), DLLEXT);
     if (GfModLoad(TLM_IDENT, buf, &modlist)) return;
     GfOut("--- %s loaded ---\n", modlist->modInfo->name);
     curModInfo = modlist->modInfo;

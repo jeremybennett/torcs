@@ -20,7 +20,7 @@
 # gennmtab tools used to generate the nametab.h include
 #
 
-TOOLS = gennmtab
+LOCALTOOLS = gennmtab
 
 SOURCES = gennmtab.c
 

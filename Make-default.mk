@@ -42,9 +42,16 @@ endif
 SOURCEBASE  = ${TORCS_BASE}/src
 EXPORTBASE  = ${TORCS_BASE}/export
 DOCBASE     = ${TORCS_BASE}/doc
-INSTBASE    = ${DESTDIR}${instdir}
-INSTBINBASE = ${DESTDIR}${bindir}
-INSTLIBBASE = ${DESTDIR}${libdir}
+
+#data
+INSTDATABASE = ${DESTDIR}${datadir}
+#launch scripts
+INSTBINBASE  = ${DESTDIR}${bindir}
+#binaries
+INSTLIBBASE  = ${DESTDIR}${libdir}
+#var
+INSTVARBASE  = ${DESTDIR}${datadir}
+
 
 PACKAGEBASE   = ${TORCS_BASE}/package
 PACKAGESBASE  = ${TORCS_BASE}/RPM/SOURCES
@@ -189,30 +196,31 @@ linuxsetup: linuxconfstart installconfdirs linuxconfend
 userconfinstall: installconfdirs installconfmkdir installconf
 
 .PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil \
- datadirs shipdirs doc win32start win32end installship installships installshipdirs
+ datadirs shipdirs doc win32start win32end installship installships installshipdirs installshipexecdirs installshipexec \
+ installshipexecwin32dirs installshipexecwin32
 
 # Recursive targets
 
 exports: expincdirs export
 
-installships: installshipdirs installship installshipmkdir
+installships: installshipdirs installshipexecdirs installship installshipexec installshipmkdir
 
 exportswin32: expincwin32dirs exportwin32
 
-installshipswin32: installshipwin32dirs installshipwin32 installshipmkdirwin32
+installshipswin32: installshipwin32dirs installshipexecwin32dirs installshipwin32 installshipexecwin32 installshipmkdirwin32
 
-tools: toolsdirs ${TOOLS} toolsdata
+tools: toolsdirs ${TOOLS} ${LOCALTOOLS} toolsdata
 
 clean: cleancompil cleantools
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
 cleantools: cleantoolsdirs
-	-rm -f  ${TOOLS} .depend ${GARBAGE} *~
+	-rm -f  ${TOOLS} ${LOCALTOOLS} .depend ${GARBAGE} *~
 
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
-install: installdirs installship installshipmkdir installsolibrary installmodule installprogram installtools installtoolsdata
+install: installdirs installship installshipexec installshipmkdir installsolibrary installmodule installprogram installtools installtoolsdata
 
 installwin32: installwin32dirs installsolibrarywin32 installmodulewin32
 
@@ -258,7 +266,7 @@ ifdef DATA
 
 installdata: $(DATA)
 	@D=`pwd` ; \
-	createdir="${INSTBASE}/${DATADIR}" ; \
+	createdir="${INSTDATABASE}/${DATADIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -287,7 +295,7 @@ ifdef SHIP
 
 installship: $(SHIP)
 	@D=`pwd` ; \
-	createdir="${INSTBASE}/${SHIPDIR}" ; \
+	createdir="${INSTDATABASE}/${SHIPDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -311,12 +319,40 @@ installshipwin32: ;
 
 endif
 
+ifdef SHIPEXEC
+
+installshipexec: $(SHIPEXEC)
+	@D=`pwd` ; \
+	createdir="${INSTLIBBASE}/${SHIPEXECDIR}" ; \
+	$(mkinstalldirs) $$createdir ; \
+	for X in $? ; \
+	do echo " $(INSTALL_PROGRAM) $$X $$createdir/$$X"; \
+	$(INSTALL_PROGRAM) $$X $$createdir/$$X ; \
+	done
+
+installshipexecwin32: $(SHIPEXEC)
+	@D=`pwd` ; \
+	createdir="runtime/${SHIPEXECDIR}" ; \
+	${create_dir_win32} ; \
+	for X in $? ; \
+	do echo "copy $$D/$$X ./runtime/${SHIPEXECDIR}/$$X" ; \
+	echo "if exist $$D/$$X copy $$D/$$X ./runtime/${SHIPEXECDIR}/$$X" >> ${INIT_WIN32} ; \
+	done ; 
+
+else
+
+installshipexec: ;
+
+installshipexecwin32: ;
+
+endif
+
 ifdef SHIPCREATEDIRS
 
 installshipmkdir:
 	@for D in  $(SHIPCREATEDIRS) ; \
-	do echo " Creating ${INSTBASE}/$$D Directory" ; \
-	$(mkinstalldirs) ${INSTBASE}/$$D ; \
+	do echo " Creating ${INSTVARBASE}/$$D Directory" ; \
+	$(mkinstalldirs) ${INSTVARBASE}/$$D ; \
 	done
 
 installshipmkdirwin32:
@@ -369,7 +405,7 @@ ${PROGRAM}: ${OBJECTS} $(subst -l,${EXPORTBASE}/lib/lib, ${LIBS:=.a})
 	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${SOLIBS} ${EXT_LIBS} -o $@
 
 installprogram: ${PROGRAM}
-	@ createdir="${INSTBASE}" ; \
+	@ createdir="${INSTLIBBASE}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	X="${PROGRAM}" ; \
 	echo " $(INSTALL_PROGRAM) $$X $$createdir/$$X"; \
@@ -378,6 +414,13 @@ installprogram: ${PROGRAM}
 else
 
 installprogram: ;
+
+endif
+
+ifdef LOCALTOOLS
+
+${LOCALTOOLS}: ${OBJECTS} $(subst -l,${EXPORTBASE}/lib/lib, ${LIBS:=.a})
+	${CXX} ${OBJECTS} ${LDFLAGS} ${LIBS} ${EXT_LIBS} ${SOLIBS} -o $@
 
 endif
 
@@ -416,7 +459,7 @@ ifdef TOOLSDATA
 toolsdata: ;
 
 installtoolsdata: $(TOOLSDATA)
-	@createdir="${INSTBASE}/${TOOLSDATADIR}" ; \
+	@createdir="${INSTDATABASE}/${TOOLSDATADIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -445,7 +488,7 @@ ${SOLIBRARY}: ${OBJECTS}
 
 
 installsolibrary: ${SOLIBRARY}
-	@createdir="${INSTLIBBASE}" ; \
+	@createdir="${INSTLIBBASE}/lib" ; \
 	X="${SOLIBRARY}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -476,7 +519,7 @@ ${MODULE}: ${OBJECTS}
 
 
 installmodule: ${MODULE}
-	@createdir="${INSTBASE}/${MODULEDIR}" ; \
+	@createdir="${INSTLIBBASE}/${MODULEDIR}" ; \
 	X="${MODULE}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
@@ -591,6 +634,19 @@ instshipdirs:
 else
 
 instshipdirs: ;
+
+endif
+
+ifdef SHIPEXECSUBDIRS
+
+instshipexecdirs:
+	@RecurseDirs="${SHIPEXECSUBDIRS}" ; \
+	RecurseFlags="install" ; \
+	${recursedirs}
+
+else
+
+instshipexecdirs: ;
 
 endif
 
@@ -781,6 +837,16 @@ installshipdirs:
 	${recursedirs} ; \
 	fi
 
+installshipexecdirs:
+	@if [ -n "${SHIPEXECSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPEXECSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="installships" ; \
+	${recursedirs} ; \
+	fi
+
 installshipwin32dirs:
 	@if [ -n "${SHIPSUBDIRS}" ] ; \
 	then R=`for I in ${SHIPSUBDIRS} ; \
@@ -791,10 +857,20 @@ installshipwin32dirs:
 	${recursedirs} ; \
 	fi
 
+installshipexecwin32dirs:
+	@if [ -n "${SHIPEXECSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPEXECSUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="installshipexecswin32" ; \
+	${recursedirs} ; \
+	fi
+
 
 installconfdirs:
-	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
-	then R=`for I in ${SHIPSUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
+	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SHIPEXECSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ${SHIPEXECSUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
 	do echo $$I ;\
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \

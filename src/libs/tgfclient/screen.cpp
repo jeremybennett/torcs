@@ -247,7 +247,12 @@ saveParams(void)
 void
 GfScrReinit(void *dummy)
 {
-    int retcode;
+    int retcode = 0;
+#ifndef WIN32
+    char	cmd[1024];
+    char	*arg[8];
+    int		curArg;
+#endif
 
     saveParams();
 
@@ -256,19 +261,59 @@ GfScrReinit(void *dummy)
 #else
     GfScrShutdown();
 
-    if (strlen(GetLocalDir()) == 0) {
-	if (GfuiMouseHW) {
-	    retcode = execlp("./torcs", "torcs", "-m", (const char *)NULL);
-	} else {
-	    retcode = execlp("./torcs", "torcs", (const char *)NULL);
-	}
-    } else {
-	if (GfuiMouseHW) {
-	    retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), "-m", (const char *)NULL);
-	} else {
-	    retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), (const char *)NULL);
-	}
+    sprintf (cmd, "%storcs-bin", GetLibDir ());
+    memset (arg, 0, sizeof (arg));
+    curArg = 0;
+    if (GfuiMouseHW) {
+	arg[curArg++] = "-m";
     }
+    
+    if (strlen(GetLocalDir ())) {
+	arg[curArg++] = "-l";
+	arg[curArg++] = GetLocalDir ();
+    }
+
+    if (strlen(GetLibDir ())) {
+	arg[curArg++] = "-L";
+	arg[curArg++] = GetLibDir ();
+    }
+
+    if (strlen(GetDataDir ())) {
+	arg[curArg++] = "-D";
+	arg[curArg++] = GetDataDir ();
+    }
+
+    switch (curArg) {
+    case 0:
+	retcode = execlp (cmd, cmd, (const char *)NULL);
+	break;
+    case 1:
+	retcode = execlp (cmd, cmd, arg[0], (const char *)NULL);
+	break;
+    case 2:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], (const char *)NULL);
+	break;
+    case 3:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], (const char *)NULL);
+	break;
+    case 4:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], arg[3], (const char *)NULL);
+	break;
+    case 5:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], arg[3], arg[4], (const char *)NULL);
+	break;
+    case 6:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], (const char *)NULL);
+	break;
+    case 7:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], (const char *)NULL);
+	break;
+    case 8:
+	retcode = execlp (cmd, cmd, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], (const char *)NULL);
+	break;
+    }
+
+
 #endif
     if (retcode) {
 	perror("torcs");

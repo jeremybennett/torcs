@@ -26,8 +26,9 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 
 bindir = @bindir@
-libdir = @libdir@
-instdir = ${prefix}/share/games/@PACKAGE@
+libdir = @libdir@/torcs
+datadir = @datadir@/games/torcs
+vardir = @localstatedir@/games/torcs
 
 top_builddir = .
 

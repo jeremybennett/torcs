@@ -23,7 +23,7 @@ SHIPSUBDIRS	= drivers modules libs raceman
 
 EXPINCDIRS	= interfaces libs linux modules
 
-TOOLSUBDIRS	= libs tools
+TOOLSUBDIRS	= libs tools linux
 
 SUBDIRS		= libs linux modules drivers tools
 

@@ -105,6 +105,9 @@ void usage(void)
     fprintf(stderr, "                         3: track only\n");
     fprintf(stderr, "                         4: track elevations with height steps\n");
     fprintf(stderr, "       -H <nb>        : nb of height steps for 4th elevation file [30]\n");
+#ifndef WIN32
+    fprintf(stderr, "       -L libDir      : Library directory\n");
+#endif
 }
 
 void init_args(int argc, char **argv)
@@ -129,7 +132,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asSE:h:bB",
+	c = getopt_long(argc, argv, "hvn:c:asSE:h:bBL:",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -187,6 +190,10 @@ void init_args(int argc, char **argv)
 	    break;
 	case 'B':
 	    UseBorder = 0;
+	    break;
+	case 'L':
+	    sprintf(buf, "%s/", optarg);
+	    SetLibDir(buf);
 	    break;
 	default:
 	    usage();
@@ -297,11 +304,11 @@ Generate(void)
     FILE	*outfd = NULL;
 
     /* Get the trackgen paramaters */
-    sprintf(buf, "%s/%s", INSTBASE, CFG_FILE);
+    sprintf(buf, "%s", CFG_FILE);
     CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     trackdllname = GfParmGetStr(CfgHandle, "Modules", "track", "track");
-    sprintf(buf, "%s/modules/track/%s.%s", INSTBASE, trackdllname, DLLEXT);
+    sprintf(buf, "%smodules/track/%s.%s", GetLibDir (), trackdllname, DLLEXT);
     if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
 	GfFatal("Failed to find the track module %s", buf);
     }

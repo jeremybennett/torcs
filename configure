@@ -3555,7 +3555,12 @@ ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "Make-config \
-	src/tools/launcher/torcs \
+	src/linux/torcs \
+	src/tools/accc/accc \
+	src/tools/nfs2ac/nfs2ac \
+	src/tools/nfsperf/nfsperf \
+	src/tools/texmapper/texmapper \
+	src/tools/trackgen/trackgen \
 	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
@@ -3658,7 +3663,12 @@ EOF
 cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Make-config \
-	src/tools/launcher/torcs \
+	src/linux/torcs \
+	src/tools/accc/accc \
+	src/tools/nfs2ac/nfs2ac \
+	src/tools/nfsperf/nfsperf \
+	src/tools/texmapper/texmapper \
+	src/tools/trackgen/trackgen \
 	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \

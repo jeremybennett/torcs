@@ -71,13 +71,13 @@ ReInit(void)
 
     GfOut("Loading Track Loader...\n");
     dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "track", "");
-    sprintf(key, "modules/track/%s.%s", dllname, DLLEXT);
+    sprintf(key, "%smodules/track/%s.%s", GetLibDir (), dllname, DLLEXT);
     if (GfModLoad(0, key, &reEventModList)) return;
     reEventModList->modInfo->fctInit(reEventModList->modInfo->index, &ReInfo->_reTrackItf);
 
     GfOut("Loading Graphic Engine...\n");
     dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "graphic", "");
-    sprintf(key, "modules/graphic/%s.%s", dllname, DLLEXT);
+    sprintf(key, "%smodules/graphic/%s.%s", GetLibDir (), dllname, DLLEXT);
     if (GfModLoad(0, key, &reEventModList)) return;
     reEventModList->modInfo->fctInit(reEventModList->modInfo->index, &ReInfo->_reGraphicItf);
 
@@ -393,7 +393,7 @@ ReInitCars(void)
 	sprintf(path, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 	cardllname = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
 	robotIdx = (int)GfParmGetNum(ReInfo->params, path, RM_ATTR_IDX, NULL, 0);
-	sprintf(path, "drivers/%s/%s.%s", cardllname, cardllname, DLLEXT);
+	sprintf(path, "%sdrivers/%s/%s.%s", GetLibDir (), cardllname, cardllname, DLLEXT);
 	/* load the robot shared library */
 	if (GfModLoad(CAR_IDENT, path, ReInfo->modList)) {
 	    GfTrace("Pb with loading %s driver\n", path);

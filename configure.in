@@ -138,7 +138,12 @@ AC_SUBST(TORCS_BASE)
 TORCS_BASE=$PWD
 
 AC_OUTPUT(Make-config \
-	src/tools/launcher/torcs \
+	src/linux/torcs \
+	src/tools/accc/accc \
+	src/tools/nfs2ac/nfs2ac \
+	src/tools/nfsperf/nfsperf \
+	src/tools/texmapper/texmapper \
+	src/tools/trackgen/trackgen \
 	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \

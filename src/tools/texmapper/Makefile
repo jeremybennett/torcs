@@ -16,15 +16,18 @@
 ##############################################################################
 
 
-PROGRAM   = texmapper
+TOOLSDIR	= 
 
-SOURCES   = texmapper.cpp ssgSaveAC.cpp
+TOOLSCRIPT	= texmapper
 
-SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -ltxml -lpng
+PROGRAM   	= texmapper-bin
+
+SOURCES   	= maintexmapper.cpp ssgSaveAC.cpp
+
+SOLIBS    	= -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -ltxml -lpng
 
 src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
 src-tools_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
 
 include ${MAKE_DEFAULT}

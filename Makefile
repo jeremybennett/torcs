@@ -57,6 +57,8 @@ DATASUBDIRS	= data
 
 SHIPSUBDIRS	= src
 
+SHIPEXECSUBDIRS	= src
+
 EXPINCDIRS	= src
 
 TOOLSUBDIRS	= src
@@ -67,9 +69,9 @@ DATADIR 	= .
 
 DATA    	= CHANGELOG.html COPYING Ticon.png Ticon.ico tux.png logo-skinner.png
 
-SHIPDIR		= .
+SHIPEXECDIR	= .
 
-SHIP		= setup_linux.sh
+SHIPEXEC	= setup_linux.sh
 
 PKGSUBDIRS	= src data
 
@@ -106,9 +108,6 @@ doc:
 	rm -rf ${DOCBASE}/manual/api/*.html
 	mkdir -p ${DOCBASE}/manual/api
 	doxygen ${SOURCEBASE}/doc/torcsdoc.conf
-
-uninstall:
-	rm -rf ${INSTBASE}
 
 tags:
 	rm -f ${TORCS_BASE}/TAGS

@@ -14,14 +14,17 @@
 #
 ##############################################################################
 
-APROGRAM = nfs2ac
+TOOLSDIR	= 
 
-ASOURCES =  nfs2ac.cpp
-ACFLAGS  += -O2
+TOOLSCRIPT	= nfs2ac
 
-$(APROGRAM): $(ASOURCES)
-	gcc $(ACFLAGS) $(ASOURCES)  -o $(APROGRAM)
+PROGRAM		= nfs2ac-bin
 
+SOURCES		= mainnfs2ac.cpp
+
+src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src-tools_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -17,17 +17,19 @@
 
 
 
-PROGRAM      = trackgen
+TOOLSDIR	= 
 
-COMPILFLAGS  = -DINSTBASE="\"${INSTBASE}\""
+TOOLSCRIPT	= trackgen
 
-DATADIR      = tools/trackgen
+PROGRAM      	= trackgen-bin
 
-DATA         = trackgen.xml
+DATADIR      	= tools/trackgen
 
-SOURCES      = trackgen.cpp track.cpp easymesh.cpp ../../linux/linuxspec.cpp relief.cpp elevation.cpp objects.cpp ac3d.cpp util.cpp
+DATA         	= trackgen.xml
 
-SOLIBS       =  -ltgf -ltgfclient -lplibssg -lplibsg -lplibul -lrobottools -ltxml
+SOURCES      	= maintrackgen.cpp track.cpp easymesh.cpp ../../linux/linuxspec.cpp relief.cpp elevation.cpp objects.cpp ac3d.cpp util.cpp
+
+SOLIBS       	= -ltgf -ltgfclient -lplibssg -lplibsg -lplibul -lrobottools -ltxml
 
 src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -17,19 +17,19 @@
 
 
 
-PROGRAM      = accc
+TOOLSDIR	= 
 
-COMPILFLAGS  = -DINSTBASE="\"${INSTBASE}\""
+TOOLSCRIPT	= accc
 
-DATADIR      = tools/accc
+PROGRAM		= accc-bin
 
-LDFLAGS      = -rdynamic
+DATADIR		= tools/accc
 
-SOURCES      = accc.cpp ../../linux/linuxspec.cpp ac3dload.cpp ac3dgroup.cpp
+LDFLAGS		= -rdynamic
 
+SOURCES		= mainaccc.cpp ../../linux/linuxspec.cpp ac3dload.cpp ac3dgroup.cpp
 
-SOLIBS       = 	-ltgf -lplibssg -lplibsg -lplibul \
-		-ltxml
+SOLIBS		= -ltgf -lplibssg -lplibsg -lplibul -ltxml
 
 src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

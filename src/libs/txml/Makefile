@@ -40,7 +40,7 @@ include ${MAKE_DEFAULT}
 
 nametab.h:
 	rm -f $@
-	${TOOLSDIR}/gennmtab >$@
+	gennmtab/gennmtab >$@
 
 xmltok.o: nametab.h
 

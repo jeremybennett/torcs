@@ -43,6 +43,22 @@ init_args(int argc, char **argv)
 		SetLocalDir(buf);
 		i++;
 	    }
+	} else if (strncmp(argv[i], "-L", 2) == 0) {
+	    i++;
+	    if (i < argc) {
+		buf = (char *)malloc(strlen(argv[i]) + 2);
+		sprintf(buf, "%s/", argv[i]);
+		SetLibDir(buf);
+		i++;
+	    }
+	} else if (strncmp(argv[i], "-D", 2) == 0) {
+	    i++;
+	    if (i < argc) {
+		buf = (char *)malloc(strlen(argv[i]) + 2);
+		sprintf(buf, "%s/", argv[i]);
+		SetDataDir(buf);
+		i++;
+	    }
 	} else if (strncmp(argv[i], "-s", 2) == 0) {
 	    i++;
 	    SetSingleTextureMode ();

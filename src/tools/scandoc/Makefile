@@ -15,8 +15,6 @@
 #
 ##############################################################################
 
-TOOLSDATA = scandoc template.html
-
 include ${MAKE_DEFAULT}
 
 

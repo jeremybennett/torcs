@@ -15,8 +15,11 @@
 #
 ##############################################################################
 
+TOOLSDIR    = 
 
-PROGRAM = torcs
+TOOLSCRIPT  = torcs
+
+PROGRAM = torcs-bin
 
 SOURCES = main.cpp linuxspec.cpp
 

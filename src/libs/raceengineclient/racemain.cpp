@@ -174,7 +174,7 @@ reRaceRealStart(void)
 
     RmLoadingScreenSetText("Loading Simulation Engine...");
     dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
-    sprintf(key, "modules/simu/%s.%s", dllname, DLLEXT);
+    sprintf(key, "%smodules/simu/%s.%s", GetLibDir (), dllname, DLLEXT);
     if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
     ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
 

@@ -14,8 +14,8 @@
 
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
-<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
-<!ENTITY default-objects SYSTEM "data/tracks/objects.xml">
+<!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "../../../data/tracks/objects.xml">
 ]>
 
 <params name="dirt 5" type="trackdef" mode="mw">

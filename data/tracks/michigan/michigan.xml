@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
 <!-- general definitions for tracks -->
-<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+<!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
 ]>
 
 <params name="MICHIGAN SPEEDWAY" type="trackdef" mode="mw">

@@ -225,6 +225,8 @@ GfTime2Str(tdble sec, int sgn)
 
 
 static char *localDir = "";
+static char *libDir = "";
+static char *dataDir = "";
 
 char *
 GetLocalDir(void)
@@ -237,6 +239,31 @@ SetLocalDir(char *buf)
 {
     localDir = strdup(buf);
 }
+
+char *
+GetLibDir(void)
+{
+    return libDir;
+}
+
+void
+SetLibDir(char *buf)
+{
+    libDir = strdup(buf);
+}
+
+char *
+GetDataDir(void)
+{
+    return dataDir;
+}
+
+void
+SetDataDir(char *buf)
+{
+    dataDir = strdup(buf);
+}
+
 
 
 static int singleTextureMode = 0;

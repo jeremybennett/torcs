@@ -308,7 +308,8 @@ RmDriversSelect(void *vs)
 		     NULL, rmdsSetFocus, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     
     list = (tModList *)NULL;
-    GfModInfoDir(CAR_IDENT, "drivers", 1, &list);
+    sprintf(buf, "%sdrivers", GetLibDir ());
+    GfModInfoDir(CAR_IDENT, buf, 1, &list);
 
     curmod = list;
     if (curmod != NULL) {
