@@ -410,6 +410,7 @@ grInitScene(void)
 
     ssgaLensFlare      *sun_obj      = NULL ;
     sun_obj  = new ssgaLensFlare () ;
+    sun_obj->ref();
     sun      = new ssgTransform ;
     sun      -> setTransform    ( light_position ) ;
     sun      -> addKid          ( sun_obj  ) ;
