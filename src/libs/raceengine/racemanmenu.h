@@ -27,6 +27,7 @@
 #define _RACEMANMENU_H_
 
 extern int ReRacemanMenu(void);
+extern int ReNewTrackMenu(void);
 
 #endif /* _RACEMANMENU_H_ */ 
 

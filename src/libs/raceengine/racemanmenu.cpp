@@ -32,16 +32,20 @@
 #include "raceengine.h"
 #include "racemain.h"
 #include "raceinit.h"
+#include "racestate.h"
 
 #include "racemanmenu.h"
 
+static float red[4]     = {1.0, 0.0, 0.0, 1.0};
 
 static void		*racemanMenuHdle = NULL;
+static void		*newTrackMenuHdle = NULL;
 static tRmTrackSelect	ts;
 static tRmDrvSelect	ds;
 static tRmRaceParam	rp;
 
 static char		path[1024];
+static char		buf[1024];
 
 
 static void reConfigRunState(void);
@@ -249,3 +253,58 @@ ReRacemanMenu(void)
     return RM_ASYNC | RM_NEXT_STEP;
 }
 
+static void
+reStateManage(void * /* dummy */)
+{
+    ReStateManage();
+}
+
+int
+ReNewTrackMenu(void)
+{
+    char	*str;
+    void	*params = ReInfo->params;
+
+    if (newTrackMenuHdle) {
+	GfuiScreenRelease(newTrackMenuHdle);
+    }
+    newTrackMenuHdle = GfuiScreenCreateEx(NULL, 
+					  NULL, (tfuiCallback)NULL, 
+					  NULL, (tfuiCallback)NULL, 
+					  1);
+
+    str = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_BGIMG, 0);
+    if (str) {
+	GfuiScreenAddBgImg(newTrackMenuHdle, str);
+    }
+    str = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, "");
+    GfuiTitleCreate(newTrackMenuHdle, str, strlen(str));
+
+    GfuiMenuDefaultKeysAdd(newTrackMenuHdle);
+
+    sprintf(buf, "Race Day #%d on %s",
+	    (int)GfParmGetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1),
+	    ReInfo->track->name);
+
+    GfuiLabelCreateEx(newTrackMenuHdle,
+		      buf,
+		      red,
+		      GFUI_FONT_MEDIUM,
+		      320, 420,
+		      GFUI_ALIGN_HC_VB, 50);
+
+    GfuiMenuButtonCreate(newTrackMenuHdle,
+			 "Start Event", "Start The Current Race",
+			 NULL, reStateManage);
+
+    
+    GfuiMenuButtonCreate(newTrackMenuHdle, 
+			 "Abandon", "Abandon The Race",
+			 ReInfo->_reMenuScreen, GfuiScreenActivate);
+
+    GfuiAddKey(newTrackMenuHdle, 27,  "Abandon", ReInfo->_reMenuScreen, GfuiScreenActivate);
+
+    GfuiScreenActivate(newTrackMenuHdle);
+
+    return RM_ASYNC | RM_NEXT_STEP;
+}

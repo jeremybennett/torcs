@@ -598,8 +598,8 @@ reDumpTrack(tTrack *track, int verbose)
 
 
 /** Initialize the track for a race manager.
-    @return	<tt>0 ... </tt>Ok
-		<br><tt>-1 .. </tt>Error
+    @return	<tt>0 ... </tt>Ok<br>
+		<tt>-1 .. </tt>Error
 */
 int
 ReInitTrack(void)
@@ -615,15 +615,6 @@ ReInitTrack(void)
     if (!trackName) return -1;
     catName = GfParmGetStr(params, buf, RM_ATTR_CATEGORY, 0);
     if (!catName) return -1;
-
-    if (curTrkIdx < GfParmGetEltNb(params, RM_SECT_TRACKS)) {
-	/* Next track  */
-	curTrkIdx++;
-    } else {
-	/* Back to the beginning */
-	curTrkIdx = 1;
-    }
-    GfParmSetNum(params, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, curTrkIdx);
 
     sprintf(buf, "Loading Track %s...", trackName);
     RmLoadingScreenSetText(buf);

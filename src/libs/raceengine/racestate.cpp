@@ -138,6 +138,8 @@ ReStateManage(void)
 	    mode = ReEventShutdown();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_SHUTDOWN;
+	    } else if (mode & RM_NEXT_RACE) {
+		ReInfo->_reState = RE_STATE_EVENT_INIT;
 	    }
 	    break;
 

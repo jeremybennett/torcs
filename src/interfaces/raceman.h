@@ -90,8 +90,7 @@ typedef struct Situation {
     tCarElt		**cars;		/**< list of cars */ 
 } tSituation;
 
-/* RACE ENGINE */
-
+/** Race Engine */
 typedef struct 
 {
     tTrackItf	trackItf;
@@ -112,7 +111,7 @@ typedef struct
 #define RE_STATE_ERROR			13
 #define RE_STATE_EXIT			14
 
-/* Race Engine Car Information about the race */
+/** Race Engine Car Information about the race */
 typedef struct 
 {
     tTrkLocPos	prevTrkPos;
@@ -126,7 +125,9 @@ typedef struct
     tdble	fuel;
 } tReCarInfo;
 
-/* Race Engine Information */
+/** Race Engine Information.
+   @image	html raceenginestate.gif
+ */
 typedef struct
 {
     int			state;
@@ -166,17 +167,17 @@ typedef struct
 #define _refreshDisplay	raceEngineInfo.refreshDisplay
 
 
-/*
+/**
  * Race Manager General Info
  */
 typedef struct RmInfo
 {
-    tCarElt		*carList;	/* List of all the cars racing */
-    tSituation		*s;		/* Situation during race */
-    tTrack		*track;		/* Current track */
-    void		*params;	/* Raceman parameters */
-    void		*results;	/* Race results */
-    tModList		**modList;	/* drivers loaded */
+    tCarElt		*carList;	/**< List of all the cars racing */
+    tSituation		*s;		/**< Situation during race */
+    tTrack		*track;		/**< Current track */
+    void		*params;	/**< Raceman parameters */
+    void		*results;	/**< Race results */
+    tModList		**modList;	/**< drivers loaded */
     tRaceEngineInfo	raceEngineInfo;
 } tRmInfo;
 
@@ -251,6 +252,7 @@ typedef struct RmInfo
 
 #define RM_VAL_DRV_LIST_ORDER	"drivers list"
 #define RM_VAL_LAST_RACE_ORDER	"last race"
+#define RM_VAL_LAST_RACE_RORDER	"last race reversed"
 
 #define RM_VAL_RACE		"race"
 #define RM_VAL_QUALIF		"qualifications"
