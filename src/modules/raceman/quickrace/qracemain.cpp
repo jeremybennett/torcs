@@ -226,6 +226,7 @@ static void
 qrManage(tCarElt *car)
 {
     int i /* , evnb */ ;
+    static float color[] = {0.0, 0.0, 1.0, 1.0};
     
     tqrCarInfo *info = &(qrCarInfo[car->index]);
 
@@ -234,35 +235,53 @@ qrManage(tCarElt *car)
     }
 
     /* PIT STOP */
+    if (car->ctrl->raceCmd & RM_CMD_PIT_ASKED) {
+	car->ctrl->msg[3] = "Can Pit";
+	memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
+    }
+    
     if (car->_state & RM_CAR_STATE_PIT) {
 	if (car->_scheduledEventTime < qrTheSituation.currentTime) {
 	    car->_state &= ~RM_CAR_STATE_PIT;
+	} else {
+	    car->ctrl->msg[2] = "In Pits";
+	    memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
 	}
-    } else if ((car->_pit) && (car->ctrl->raceCmd == RM_CMD_PIT_ASKED) &&
-	       (car->_trkPos.seg == car->_pit->pos.seg) && 
-	       (car->_trkPos.toStart > (car->_pit->pos.toStart - qrTheTrack->pits.len / 2.0 + car->_dimension_x/2.0)) &&
-	       (car->_trkPos.toStart < (car->_pit->pos.toStart + qrTheTrack->pits.len / 2.0 - car->_dimension_x/2.0))) {
-	if (((qrTheTrack->pits.side == TR_RGT) &&
-	     ((car->_trkPos.toRight + RtTrackGetWidth(car->_trkPos.seg->rside, car->_trkPos.toStart) <
-	       (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-	      (fabs(car->_speed_x) < 0.1) &&
-	      (fabs(car->_speed_y) < 0.1))) ||
-	    ((qrTheTrack->pits.side != TR_RGT) && 
-	     ((car->_trkPos.toLeft + RtTrackGetWidth(car->_trkPos.seg->lside, car->_trkPos.toStart) <
-	       (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-	      (fabs(car->_speed_x) < 0.1) &&
-	      (fabs(car->_speed_y) < 0.1)))) {
-	    car->_state |= RM_CAR_STATE_PIT;
-	    car->_event |= RM_EVENT_PIT_STOP;
-	    if (car->robot->rbPitCmd(car->robot->index, car, &qrTheSituation) == ROB_PIT_MENU) {
-		/* the pit cmd is modified by menu */
-		qrStop();
-		RmPitMenuStart(car, (void*)car, qrUpdtPitCmd);
+    } else if ((car->_pit) && (car->ctrl->raceCmd & RM_CMD_PIT_ASKED)) {
+	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
+	
+	switch (car->_trkPos.seg->type) {
+	case TR_STR:
+	    lgFromStart += car->_trkPos.toStart;
+	    break;
+	default:
+	    lgFromStart += car->_trkPos.toStart * car->_trkPos.seg->radius;
+	    break;
+	}
+	if ((lgFromStart > (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart - qrTheTrack->pits.len / 2.0 + car->_dimension_x/2.0)) &&
+	    (lgFromStart < (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart + qrTheTrack->pits.len / 2.0 - car->_dimension_x/2.0))) {
+	    if (((qrTheTrack->pits.side == TR_RGT) &&
+		 ((car->_trkPos.toRight + RtTrackGetWidth(car->_trkPos.seg->rside, car->_trkPos.toStart) <
+		   (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
+		  (fabs(car->_speed_x) < 0.1) &&
+		  (fabs(car->_speed_y) < 0.1))) ||
+		((qrTheTrack->pits.side != TR_RGT) && 
+		 ((car->_trkPos.toLeft + RtTrackGetWidth(car->_trkPos.seg->lside, car->_trkPos.toStart) <
+		   (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
+		  (fabs(car->_speed_x) < 0.1) &&
+		  (fabs(car->_speed_y) < 0.1)))) {
+		car->_state |= RM_CAR_STATE_PIT;
+		car->_event |= RM_EVENT_PIT_STOP;
+		if (car->robot->rbPitCmd(car->robot->index, car, &qrTheSituation) == ROB_PIT_MENU) {
+		    /* the pit cmd is modified by menu */
+		    qrStop();
+		    RmPitMenuStart(car, (void*)car, qrUpdtPitCmd);
+		}
+		qrUpdtPitTime(car);
 	    }
-	    qrUpdtPitTime(car);
 	}
     }
-
+    
     /* Start Line Crossing */
     if (info->prevTrkPos.seg != car->_trkPos.seg) {
 	if ((info->prevTrkPos.seg->raceInfo & TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {

@@ -215,7 +215,7 @@ prManage(tCarElt *car, int dispRes)
 	}
     }
     if (info->prevTrkPos.seg != car->_trkPos.seg) {
-	if ((info->prevTrkPos.seg->raceInfo == TR_LAST) && (car->_trkPos.seg->raceInfo == TR_START)) {
+	if ((info->prevTrkPos.seg->raceInfo &TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {
 	    if (info->lapFlag == 0) {
 		/* new lap */
 		car->_laps++;
@@ -262,7 +262,7 @@ prManage(tCarElt *car, int dispRes)
 		info->lapFlag--;
 	    }
 	}
-	if ((info->prevTrkPos.seg->raceInfo == TR_START) && (car->_trkPos.seg->raceInfo == TR_LAST)) {
+	if ((info->prevTrkPos.seg->raceInfo & TR_START) && (car->_trkPos.seg->raceInfo & TR_LAST)) {
 	    /* going backward through the start line */
 	    info->lapFlag++;
 	}

@@ -119,6 +119,7 @@ hookNode(char *s)
 	while (curElt) {
 	    curFace = (tFace*)curElt;
 	    if (!strcmp(s, curFace->faceName)) {
+		printf("Face %s found\n", s);
 		curFace->branch = new ssgTransform();
 		curFace->branch->setName(s);
 		BrNb++;
@@ -556,7 +557,7 @@ void load_params(void)
 	    curFace = (tFace*)calloc(1, sizeof(tFace));
 	    GfRlstAddLast(&(Row[i].faces), (tRingList*)curFace);
 	    curFace->faceName = GfParmGetCurStr(ParamHandle, buf, "face name", NULL);
-	    if (curFace->faceName != 0) {
+	    if ((curFace->faceName != 0) && (strlen(curFace->faceName) != 0)) {
 		curFace->isPresent = true;
 		curFace->xform.hpr[1] =  GfParmGetCurNum(ParamHandle, buf, "rotX", NULL, 0.0);
 		curFace->xform.hpr[2] = -GfParmGetCurNum(ParamHandle, buf, "rotZ", NULL, 0.0);

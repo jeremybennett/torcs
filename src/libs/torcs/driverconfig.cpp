@@ -303,7 +303,7 @@ GenDrvList(void)
 	    PlayersInfo[i].color[2] = 0.5;
 	    PlayersInfo[i].color[3] = 1.0;
 	} else {
-	    PlayersInfo[i]._DispName = driver;
+	    PlayersInfo[i]._DispName = strdup(driver);
 	    PlayersInfo[i]._Name = dllname;
 	    str = GfParmGetStr(drvinfo, sstring, ROB_ATTR_CAR, "");
 	    car = (tCarInfo*)GfRlstGetFirst(&CarsInfoList);

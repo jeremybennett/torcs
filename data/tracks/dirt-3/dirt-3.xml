@@ -38,8 +38,6 @@
     <attstr name="3d description" val="dirt-3.ac"></attstr>
 
     <attstr name="background image"  val="tracks/dirt-3/background.png"></attstr>
-    <attstr name="background image2" val="tracks/dirt-3/background2.png"></attstr>
-    <attnum name="background type" val="4"></attnum>
 
     <attnum name="background color R" val="0.28125"></attnum>
     <attnum name="background color G" val="0.4375"></attnum>
