@@ -116,17 +116,18 @@ tdble	MaxSpeed[10];
 tdble	hold[10] = {0};
 tdble	shiftThld[10][MAX_GEARS+1];
 
-static tdble PGain[10]    = {0.02};
-static tdble AGain[10]    = {0.008};
-static tdble PnGain[10]   = {0.02};
-static tdble Advance[10]  = {35.0};
-static tdble Advance2[10] = {20.0};
-static tdble AdvStep[10]  = {20.0};
-static tdble VGain[10]    = {0.0005};
-static tdble preDy[10]    = {0};
-static tdble spdtgt[10]   = {115.0};
-static tdble spdtgt2[10]  = {1.0};
-static tdble steerMult[10]  = {2.0};
+static tdble PGain[10]     = {0.02};
+static tdble AGain[10]     = {0.008};
+static tdble PnGain[10]    = {0.02};
+static tdble Advance[10]   = {35.0};
+static tdble Advance2[10]  = {20.0};
+static tdble AdvStep[10]   = {20.0};
+static tdble VGain[10]     = {0.0005};
+static tdble preDy[10]     = {0};
+static tdble spdtgt[10]    = {115.0};
+static tdble spdtgt2[10]   = {1.0};
+static tdble steerMult[10] = {2.0};
+static tdble Offset[10]    = {0.0};
 static tdble Trightprev[10];
 
 /*
@@ -158,6 +159,7 @@ static tdble Trightprev[10];
 #define SPDTGT		"spdtgt"
 #define SPDTGT2		"spdtgt2"
 #define STEERMULT	"steerMult"
+#define OFFSET		"offset"
 
 tdble Gmax;
 
@@ -207,6 +209,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	spdtgt[0]    = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT,    NULL, spdtgt[0]);
 	spdtgt2[0]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
 	steerMult[0] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
+	Offset[0]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSET,    NULL, Offset[0]);
 
 	GfParmReleaseHandle(hdle);
     }
@@ -319,7 +322,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     adv = Advance[0] + 5.0 * sqrt(fabs(car->_speed_x));
     
     if (Curtime > hold[0]) {
-	    Tright[0] = seg->width / 2.0;
+	    Tright[0] = seg->width / 2.0 + Offset[0];
     }
 
     
@@ -329,7 +332,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * adv;
     y = Y + (SinA) * adv;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos2, TR_LPOS_MAIN);
-    Dny = seg->width / 2.0 - trkPos2.toRight;
+    Dny = seg->width / 2.0 - trkPos2.toRight + Offset[0];
 
     CollDet(car, 0, s, Curtime, Dny);
     
