@@ -332,7 +332,7 @@
 			if ($myrow = mysql_fetch_array($result)) {
 				$currentnumber = $myrow['racenumber'];
 			}
-			for ($i = 1; $i < 198; $i += 2) {
+			for ($i = 1; $i < 998; $i += 2) {
 				// Number already gone?
 				if ($currentnumber == $i) {
 					// Yes.
