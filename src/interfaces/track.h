@@ -52,6 +52,16 @@
 #define TRK_ATT_BGCLR_B	"background color B"
 #define TRK_LST_ENV	"Environment Mapping"
 #define TRK_ATT_ENVNAME	"env map image"
+#define TRK_ATT_SPEC_R	"specular color R"
+#define TRK_ATT_SPEC_G	"specular color G"
+#define TRK_ATT_SPEC_B	"specular color B"
+#define TRK_ATT_AMBIENT_R	"ambient color R"
+#define TRK_ATT_AMBIENT_G	"ambient color G"
+#define TRK_ATT_AMBIENT_B	"ambient color B"
+#define TRK_ATT_SHIN	"shininess"
+#define TRK_ATT_LIPOS_X	"light position x"
+#define TRK_ATT_LIPOS_Y	"light position y"
+#define TRK_ATT_LIPOS_Z	"light position z"
 
 #define TRK_SECT_TURNMARKS "Graphic/Turn Marks"
 #define TRK_ATT_HSPACE	"horizontal space"
@@ -106,6 +116,19 @@
 #define TRK_ATT_RBW	"rborder width"
 #define TRK_ATT_RBH	"rborder height"
 #define TRK_ATT_RBSURF	"rborder surface"
+
+#define TRK_ATT_LBAS	"lbarrier style"
+#define TRK_ATT_LBAW	"lbarrier width"
+#define TRK_ATT_LBAH	"lbarrier height"
+#define TRK_ATT_LBAFRCT	"lbarrier friction"
+#define TRK_ATT_LBASURF	"lbarrier surface"
+#define TRK_ATT_RBAS	"rbarrier style"
+#define TRK_ATT_RBAW	"rbarrier width"
+#define TRK_ATT_RBAH	"rbarrier height"
+#define TRK_ATT_LBAFRCT	"lbarrier friction"
+#define TRK_ATT_RBASURF	"rbarrier surface"
+
+
 #define TRK_ATT_FINISH	"finish segment"
 #define TRK_ATT_ENVIND	"env map index"
 #define TRK_ATT_STEPLEN	"steps length"
@@ -115,7 +138,8 @@
 
 #define TRK_VAL_ST_PLAN		"plan"
 #define TRK_VAL_ST_WALL		"wall"
-#define TRK_VAL_ST_BUMPER	"bumper"
+#define TRK_VAL_ST_KERB		"kerb"
+#define TRK_VAL_ST_FENCE	"fence"
 
 #define TRK_VAL_YES	"yes"
 #define TRK_VAL_NO	"no"
@@ -208,6 +232,16 @@ typedef struct SegExt
     int		*marks;  
 } tSegExt;
 
+/** Barrier */
+typedef struct trackBarrier {
+    /** barrier style */
+    int		style;
+    tdble	width;
+    tdble	height;
+    tdble	friction;
+    
+} tTrackBarrier;
+
 
 /** Track segment */
 typedef struct trackSeg {
@@ -236,7 +270,7 @@ typedef struct trackSeg {
     /** segment style */
     int style;
 #define TR_PLAN	    0
-#define TR_BUMPER   1
+#define TR_KERB     1
 #define TR_WALL     2
 
     /** length in meters of the middle of the track */
@@ -279,6 +313,7 @@ typedef struct trackSeg {
     tdble kRollRes;	/* rolling resistance */
     tdble kRoughness;
     tdble kRoughWaveLen;
+    tdble height;	/* for walls, kerbs and barriers */
 
     int		envIndex;	/* Environment mapping image index */
 

@@ -93,12 +93,20 @@
       <section name="start lane">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="180"></attnum>
+	<attnum name="rside start width" val="15"></attnum>
+	<attnum name="rside end width" val="15"></attnum>
+	<attstr name="rborder surface" val="concrete"></attstr>
+	<attstr name="rborder style" val="wall"></attstr>
+	<attnum name="rborder width" val="0.5"></attnum>
+	<attnum name="rborder height" val="1.0"></attnum>
       </section>
 
       <section name="s1">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="25"></attnum>
 	<attstr name="rside surface" val="asphalt"></attstr>
+	<attnum name="rborder width" val="0"></attnum>
+	<attnum name="rside start width" val="15.5"></attnum>
 	<attnum name="rside end width" val="10"></attnum>
       </section>
 
@@ -202,10 +210,14 @@
 	<attnum name="grade" val="0" unit="%"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
 	<attnum name="banking end" val="3" unit="deg"></attnum>
-	<attstr name="surface" val="asphalt-l-left"></attstr>
 	<attstr name="marks" val="50;100;150"></attstr>
 	<attstr name="rside surface" val="concrete"></attstr>
 	<attstr name="lside surface" val="concrete"></attstr>
+	<attnum name="lside start width" val="4"></attnum>
+	<attnum name="lborder width" val="1"></attnum>
+	<attnum name="lborder height" val=".05"></attnum>
+	<attstr name="lborder style" val="kerb"></attstr>
+	<attstr name="lborder surface" val="kerb-5cm"></attstr>
       </section>
 
       <section name="t5-2">
@@ -214,13 +226,21 @@
 	<attnum name="arc" unit="deg" val="97"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
 	<attnum name="banking end" val="0" unit="deg"></attnum>
-	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attnum name="lside start width" val="5.0"></attnum>
+	<attnum name="lborder width" val="0"></attnum>
+	<attnum name="rside start width" val="4"></attnum>
+	<attnum name="rborder width" val="1.0"></attnum>
+	<attnum name="rborder height" val=".05"></attnum>
+	<attstr name="rborder style" val="kerb"></attstr>
+	<attstr name="rborder surface" val="kerb-5cm"></attstr>
       </section>
 
       <section name="s8-1">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="50"></attnum>
 	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attnum name="rside start width" val="5"></attnum>
+	<attnum name="rborder width" val="0"></attnum>
       </section>
 
       <section name="s8-2">
@@ -407,13 +427,19 @@
       <section name="s15-3">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="30"></attnum>
-	<attnum name="rside end width" val="15"></attnum>
+	<attnum name="rside end width" val="15.5"></attnum>
       </section>
 
       <section name="last segment">
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="120"></attnum>
 	<attstr name="rside surface"  val="asphalt-pits"></attstr>
+	<attnum name="rside start width" val="15"></attnum>
+	<attnum name="rside end width" val="15"></attnum>
+	<attstr name="rborder surface" val="concrete"></attstr>
+	<attstr name="rborder style" val="wall"></attstr>
+	<attnum name="rborder width" val="0.5"></attnum>
+	<attnum name="rborder height" val="1.0"></attnum>
       </section>
 
     </section>

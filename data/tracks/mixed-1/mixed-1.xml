@@ -40,6 +40,9 @@
     <attnum name="background color R" val="0.59375"></attnum>
     <attnum name="background color G" val="0.75"></attnum>
     <attnum name="background color B" val="0.96875"></attnum>
+    <attnum name="ambient color R" val="0.8"></attnum>
+    <attnum name="ambient color G" val="0.8"></attnum>
+    <attnum name="ambient color B" val="0.8"></attnum>
     <section name="Environment Mapping">
       <section name="1">
 	<attstr name="env map image" val="tracks/mixed-1/env1.png"></attstr>

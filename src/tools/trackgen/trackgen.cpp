@@ -26,9 +26,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #define _GNU_SOURCE
+#ifndef WIN32
 #include <getopt.h>
+#endif
 #include <math.h>
 #include <ttypes.h>
 #include <plib/ul.h>
@@ -62,13 +66,14 @@ void init_args(int argc, char **argv)
     Orientation = CLOCKWISE;
     SceneDraw = 1;
 
+#ifndef WIN32
     while (1) {
 	int option_index = 0;
 	static struct option long_options[] = {
 	    {"help", 0, 0, 0},
 	    {"version", 1, 0, 0}
 	};
-	     
+
 	c = getopt_long(argc, argv, "hvn",
 			long_options, &option_index);
 	if (c == -1)
@@ -107,7 +112,41 @@ void init_args(int argc, char **argv)
 	    break;
 	}
     }
+#else
+    if (argc==1)
+      {
+	usage();
+	exit(1);
+      }
+    if (argc==2)
+      {
+	if (strncmp(argv[1],"-h",2)==0)
+	  {
+	    usage();
+	    exit(0);
+	  }
+	else if (strncmp(argv[1],"-v",2)==0)
+	  {
+	    printf("Terrain generator for tracks $Revision$ \n");
+	    exit(0);
+	  }
+	else if (strncmp(argv[1],"-n",2)==0)
+	  {
+	    SceneDraw=0;
+	  }
+	else
+	  {
+	    InputFileName = strdup(argv[1]);
+	  }
+      }
+    else
+      {
+	usage();
+	exit(1);
+      }
+#endif
 
+#ifndef WIN32
     if (optind < argc) {
 	if (optind == argc - 1) {
 	    InputFileName = strdup(argv[optind]);
@@ -116,22 +155,29 @@ void init_args(int argc, char **argv)
 	    exit(1);
 	}
     }
+#endif
 
     if (!ulFileExists(InputFileName)) {
 	fprintf(stderr, "The Input XML track file is not correct\n");
 	exit(1);
     }
 }
-
+#ifndef WIN32
 extern void LinuxSpecInit(void);
+#else
+extern void WindowsSpecInit(void);
+#endif
 
 int
 main(int argc, char **argv)
 {
 
     init_args(argc, argv);
-
+#ifndef WIN32
     LinuxSpecInit();
+#else
+    WindowsSpecInit();
+#endif
 
     GenerateTrack(InputFileName);
     return 0;

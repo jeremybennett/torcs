@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/4
 
-DATA      =  p406.rgb car.xml torcs.rgb logo.rgb
+DATA      =  p406.rgb car.xml car-dirt.xml torcs.rgb logo.rgb
 
 include ${MAKE_DEFAULT}
 

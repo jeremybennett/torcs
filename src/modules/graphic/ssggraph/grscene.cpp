@@ -97,6 +97,38 @@ int grInitScene(tTrack *track)
     char		buf[256];
     myLoaderOptions	options;
 
+    GLfloat mat_specular[]={0.3,0.3,0.3,1.0};
+    GLfloat mat_shininess[] ={5.0};
+    GLfloat light_position[]={0,0,200,0.0};
+    GLfloat lmodel_ambient[]={0.5,0.5,0.5,1.0};
+
+    hndl = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    mat_specular[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_R, NULL, mat_specular[0]);
+    mat_specular[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_G, NULL, mat_specular[1]);
+    mat_specular[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_B, NULL, mat_specular[2]);
+    lmodel_ambient[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_R, NULL, lmodel_ambient[0]);
+    lmodel_ambient[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_G, NULL, lmodel_ambient[1]);
+    lmodel_ambient[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_B, NULL, lmodel_ambient[2]);
+    mat_shininess[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SHIN, NULL, mat_shininess[0]);
+    light_position[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_X, NULL, light_position[0]);
+    light_position[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Y, NULL, light_position[1]);
+    light_position[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Z, NULL, light_position[2]);
+
+    glShadeModel(GL_SMOOTH);
+    glMaterialfv (GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv (GL_FRONT, GL_SHININESS, mat_shininess);
+    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_position);
+    
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+
     ssgSetCurrentOptions(&options);
     ssgAddTextureFormat(".png", grLoadPngTexture);
     grTrack = track;
@@ -110,8 +142,6 @@ int grInitScene(tTrack *track)
     grWrldY = (int)(track->max.y - track->min.y + 1);
     grWrldZ = (int)(track->max.z - track->min.z + 1);
     grWrldMaxSize = (int)(MAX(MAX(grWrldX, grWrldY), grWrldZ));
-
-    hndl = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     acname = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, "track.ac");
     if (strlen(acname) == 0) {
@@ -137,7 +167,8 @@ void grDrawScene(void)
 {
     TRACE_GL("refresh: ssgCullAndDraw start");
 
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glShadeModel(GL_FLAT); 
     ssgCullAndDraw(TheScene);
     
     TRACE_GL("refresh: ssgCullAndDraw");

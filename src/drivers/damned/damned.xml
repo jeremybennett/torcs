@@ -23,8 +23,8 @@
 	<attstr name="desc" val="first TORCS robot 09/98"></attstr>
 	<attstr name="team" val="torcs"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-	<attstr name="car name" val="buggy"></attstr>
-	<attstr name="category" val="Offroad-RWD-GrA"></attstr>
+	<attstr name="car name" val="FOCW61"></attstr>
+	<attstr name="category" val="free"></attstr>
 	<attnum name="race number" val="1"></attnum>
 	<attnum name="red" val="0.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
@@ -60,7 +60,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"></attstr>
 	<attstr name="team" val="torcs"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-	<attstr name="car name" val="torcs"></attstr>
+	<attstr name="car name" val="EVOWRC61"></attstr>
 	<attstr name="category" val="free"></attstr>
 	<attnum name="race number" val="4"></attnum>
 	<attnum name="red" val="0.0"></attnum>

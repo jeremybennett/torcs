@@ -27,7 +27,11 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#ifndef WIN32
 #include <unistd.h>
+#else
+#include <windows.h>
+#endif
 #include <math.h>
 #include <plib/ssg.h>
 #include <GL/glut.h>

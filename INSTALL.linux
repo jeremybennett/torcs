@@ -2,10 +2,10 @@ TORCS Installation instructions on Linux:
 
 Requisites:
 -----------
-            OpenGl or Mesa 3.1 or later (http://mesa3d.sourceforge.net/)
+            OpenGl or a recent Mesa (http://mesa3d.sourceforge.net/)
             GLUT 3.7 or later (http://reality.sgi.com/mjk/glut3/glut3.html)
             Or FreeGlut (not tested) (http://freeglut.sourceforge.net/)
-            PLIB 1.4.2 (http://plib.sourceforge.net/)
+            PLIB 1.4.2 (http://plib.sourceforge.net/) patched with plib-smoothing.dif
             a driver if you have a 3D card (recommended) (http://www.linux3D.org)
             a joystick driver. (mandatory to drive yourself, don't forget to calibrate !!!)
 	                       (http://atrey.karlin.mff.cuni.cz/~vojtech/joystick)
@@ -26,14 +26,19 @@ Installation:
       $ cd torcs-xxx
       $ ./configure [--prefix PREFIX (default /usr/local)]
       $ make
-      $ make install         # installs in PREFIX/games/torcs
+      $ make install         # installs in PREFIX/games/torcs PREFIX/bin and PREFIX/lib
 
 This should generate the binaries, with no more than few warnings. 
 
 3- run TORCS 
 
+ if PREFIX/bin is not in your $PATH
+
       $ cd PREFIX/games/torcs
-      $ ./torcs
+      $ ./torcs                    
+
+ else
+      $ torcs
 
 4- Enjoy
 

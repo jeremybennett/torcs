@@ -170,6 +170,24 @@ copy .\data\cars\models\corvette\corvette.rgb .\runtime\cars\corvette\corvette.r
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\EVOWRC61
+copy .\data\cars\models\EVOWRC61\EVOWRC61.xml .\runtime\cars\EVOWRC61\EVOWRC61.xml
+copy .\data\cars\models\EVOWRC61\EVOWRC61.rgb .\runtime\cars\EVOWRC61\EVOWRC61.rgb
+copy .\data\cars\models\EVOWRC61\tex-wheel.rgb .\runtime\cars\EVOWRC61\tex-wheel.rgb
+copy .\data\cars\models\EVOWRC61\EVOWRC61.ac .\runtime\cars\EVOWRC61\EVOWRC61.ac
+copy .\data\cars\models\EVOWRC61\readme.txt .\runtime\cars\EVOWRC61\readme.txt
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\FOCW61
+copy .\data\cars\models\FOCW61\FOCW61.xml .\runtime\cars\FOCW61\FOCW61.xml
+copy .\data\cars\models\FOCW61\FOCW61.rgb .\runtime\cars\FOCW61\FOCW61.rgb
+copy .\data\cars\models\FOCW61\tex-wheel.rgb .\runtime\cars\FOCW61\tex-wheel.rgb
+copy .\data\cars\models\FOCW61\FOCW61.ac .\runtime\cars\FOCW61\FOCW61.ac
+copy .\data\cars\models\FOCW61\readme.txt .\runtime\cars\FOCW61\readme.txt
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\lotus-gt1
 copy .\data\cars\models\lotus-gt1\lotus-gt1.xml .\runtime\cars\lotus-gt1\lotus-gt1.xml
 copy .\data\cars\models\lotus-gt1\lotus-gt1.ac .\runtime\cars\lotus-gt1\lotus-gt1.ac
@@ -402,6 +420,8 @@ copy .\data\data\textures\speed360.rgb .\runtime\data\textures\speed360.rgb
 copy .\data\data\textures\torcs-ad1.rgb .\runtime\data\textures\torcs-ad1.rgb
 copy .\data\data\textures\tr-asphalt-both_nmm.rgb .\runtime\data\textures\tr-asphalt-both_nmm.rgb
 copy .\data\data\textures\tr-asphalt-both.rgb .\runtime\data\textures\tr-asphalt-both.rgb
+copy .\data\data\textures\tr-asphalt-grass-l.rgb .\runtime\data\textures\tr-asphalt-grass-l.rgb
+copy .\data\data\textures\tr-asphalt-grass-r.rgb .\runtime\data\textures\tr-asphalt-grass-r.rgb
 copy .\data\data\textures\tr-asphalt-left_nmm.rgb .\runtime\data\textures\tr-asphalt-left_nmm.rgb
 copy .\data\data\textures\tr-asphalt-left.rgb .\runtime\data\textures\tr-asphalt-left.rgb
 copy .\data\data\textures\tr-asphalt-l_nmm.rgb .\runtime\data\textures\tr-asphalt-l_nmm.rgb
@@ -434,10 +454,15 @@ copy .\data\data\textures\tree7.rgb .\runtime\data\textures\tree7.rgb
 copy .\data\data\textures\tree8.rgb .\runtime\data\textures\tree8.rgb
 copy .\data\data\textures\tree9.rgb .\runtime\data\textures\tree9.rgb
 copy .\data\data\textures\tr-grass2.rgb .\runtime\data\textures\tr-grass2.rgb
+copy .\data\data\textures\tr-grass3.rgb .\runtime\data\textures\tr-grass3.rgb
+copy .\data\data\textures\tr-grass4.rgb .\runtime\data\textures\tr-grass4.rgb
 copy .\data\data\textures\tr-grass.rgb .\runtime\data\textures\tr-grass.rgb
+copy .\data\data\textures\tr-kerb-l.rgb .\runtime\data\textures\tr-kerb-l.rgb
+copy .\data\data\textures\tr-kerb-r.rgb .\runtime\data\textures\tr-kerb-r.rgb
 copy .\data\data\textures\tr-sand2.rgb .\runtime\data\textures\tr-sand2.rgb
 copy .\data\data\textures\tr-sand.rgb .\runtime\data\textures\tr-sand.rgb
 copy .\data\data\textures\tr-snow.rgb .\runtime\data\textures\tr-snow.rgb
+copy .\data\data\textures\tr-wall.rgb .\runtime\data\textures\tr-wall.rgb
 copy .\data\data\textures\tr-water.rgb .\runtime\data\textures\tr-water.rgb
 copy .\data\data\textures\turn100L.rgb .\runtime\data\textures\turn100L.rgb
 copy .\data\data\textures\turn100R.rgb .\runtime\data\textures\turn100R.rgb
@@ -974,6 +999,7 @@ call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\damned
 call .\create_dir .\runtime\drivers\damned\2
 copy .\src\drivers\damned\2\car.xml .\runtime\drivers\damned\2\car.xml
+copy .\src\drivers\damned\2\car-dirt.xml .\runtime\drivers\damned\2\car-dirt.xml
 copy .\src\drivers\damned\2\buggy.rgb .\runtime\drivers\damned\2\buggy.rgb
 copy .\src\drivers\damned\2\logo.rgb .\runtime\drivers\damned\2\logo.rgb
 
@@ -991,6 +1017,7 @@ call .\create_dir .\runtime\drivers\damned
 call .\create_dir .\runtime\drivers\damned\4
 copy .\src\drivers\damned\4\p406.rgb .\runtime\drivers\damned\4\p406.rgb
 copy .\src\drivers\damned\4\car.xml .\runtime\drivers\damned\4\car.xml
+copy .\src\drivers\damned\4\car-dirt.xml .\runtime\drivers\damned\4\car-dirt.xml
 copy .\src\drivers\damned\4\torcs.rgb .\runtime\drivers\damned\4\torcs.rgb
 copy .\src\drivers\damned\4\logo.rgb .\runtime\drivers\damned\4\logo.rgb
 

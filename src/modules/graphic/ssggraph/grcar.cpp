@@ -69,7 +69,7 @@ postCbEnv(ssgEntity *e)
     glDepthMask(GL_TRUE);
     glDepthFunc(GL_LESS);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     return TRUE;
 }
 
@@ -605,7 +605,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
 	clr[1] = 0.1 + car->_brakeTemp(i) * 0.3;
 	clr[2] = 0.1 - car->_brakeTemp(i) * 0.3;
     }
-    
+
     TRACE_GL("cggrDrawCar: end");
 }
 

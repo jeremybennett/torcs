@@ -115,4 +115,5 @@ void ssgVtxTableShadow::draw_geometry ()
   glEnd () ;
   glDisable(GL_POLYGON_OFFSET_FILL);
   glDepthMask(GL_TRUE);
+  glEnable(GL_LIGHTING);
 }

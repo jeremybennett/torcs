@@ -41,6 +41,7 @@ SimCarCollideZ(tCar *car)
     for (i = 0; i < 4; i++) {
 	if (car->wheel[i].state & SIM_SUSP_COMP) {
 	    car->DynGCg.pos.z += car->wheel[i].susp.x - car->wheel[i].rideHeight;
+	    
 	    if ((car->DynGCg.vel.ax * car->wheel[i].staticPos.y) < 0) {
 		car->DynGCg.vel.ax = 0;
 	    }
@@ -66,11 +67,10 @@ SimCarCollideXYScene(tCar *car)
 {
     tTrackSeg	*seg = car->trkPos.seg;
     tTrkLocPos	trkpos;
-    int		i, j;
+    int		i;
     tDynPt	*corner;
     t3Dd	normal;
     tdble	dotProd, nx, ny;
-    tWheel	*wheel;
     
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
@@ -85,6 +85,9 @@ SimCarCollideXYScene(tCar *car)
 	    /* collision with right border */
 	    if (seg->rside != NULL) {
 		seg = seg->rside;
+		if (seg->rside != NULL) {
+		    seg = seg->rside;
+		}
 	    }
 	    RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_RGT, &normal);
 	    car->DynGCg.pos.x -= normal.x * trkpos.toRight;
@@ -93,6 +96,9 @@ SimCarCollideXYScene(tCar *car)
 	    /* collision with left border */
 	    if (seg->lside != NULL) {
 		seg = seg->lside;
+		if (seg->lside != NULL) {
+		    seg = seg->lside;
+		}
 	    }
 	    RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_LFT, &normal);
 	    car->DynGCg.pos.x -= normal.x * trkpos.toLeft;
@@ -100,6 +106,7 @@ SimCarCollideXYScene(tCar *car)
 	} else {
 	    continue;
 	}
+
 	car->blocked = 1;
 	/* friction */
 	car->collision |= 1;
@@ -125,9 +132,6 @@ SimCarCollideXYScene(tCar *car)
 	    car->DynGCg.vel.x -= nx * dotProd * 1.1;
 	    car->DynGCg.vel.y -= ny * dotProd * 1.1;
 	    car->DynGCg.vel.az = -car->DynGCg.vel.az / 2.0;
-	}
-	for (j = 0; j < 4; j++) {
-	    wheel = &(car->wheel[j]);
 	}
     }
 }

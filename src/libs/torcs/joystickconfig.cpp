@@ -71,6 +71,7 @@ static char *Axis[] = {"AXIS0", "AXIS1", "AXIS2", "AXIS3", "AXIS4", "AXIS5", "AX
 
 char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
+#define NUM_JOY	32
 static jsJoystick *js0 = NULL;
 
 static void

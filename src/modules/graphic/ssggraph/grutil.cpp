@@ -261,7 +261,7 @@ grSsgLoadTexState(char *img)
     }
 
     st = new ssgSimpleState;
-    st->disable(GL_LIGHTING);
+    st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
     
@@ -308,7 +308,7 @@ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
     }
 
     st = new ssgSimpleState;
-    st->disable(GL_LIGHTING);
+    st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
     

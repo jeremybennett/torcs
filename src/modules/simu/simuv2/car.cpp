@@ -397,7 +397,7 @@ SimTelemetryOut(tCar *car)
     printf("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGC.pos.x, car->DynGC.pos.y, car->DynGC.pos.z);
     printf("As: %f\n---\n", sqrt(car->airSpeed2));
     for (i = 0; i < 4; i++) {
-	printf("wheel %d - RH:%f susp:%f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x);
+	printf("wheel %d - RH:%f susp:%f zr:%.2f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x, car->wheel[i].zRoad);
 	printf("sx:%f sa:%f w:%f ", car->wheel[i].sx, car->wheel[i].sa, car->wheel[i].spinVel);
 	printf("fx:%f fy:%f fz:%f\n", car->wheel[i].forces.x, car->wheel[i].forces.y, car->wheel[i].forces.z);
     }

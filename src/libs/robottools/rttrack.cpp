@@ -222,6 +222,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
     tTrackSeg 	*sseg;
     tdble 	theta, a2;
     int 	depl = 0;
+    tdble	curWidth;
 
     p->type = type;
 
@@ -308,18 +309,18 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
     if (type == TR_LPOS_TRACK) {
 	if (seg->rside != NULL) {
 	    sseg = seg->rside;
-	    p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
+	    p->toRight += RtTrackGetWidth(sseg, p->toStart);
 	    sseg = sseg->rside;
 	    if (sseg) {
-		p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
+		p->toRight += RtTrackGetWidth(sseg, p->toStart);
 	    }
 	}
 	if (seg->lside != NULL) {
 	    sseg = seg->lside;
-	    p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    p->toLeft += RtTrackGetWidth(sseg, p->toStart);
 	    sseg = sseg->lside;
 	    if (sseg) {
-		p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+		p->toLeft += RtTrackGetWidth(sseg, p->toStart);
 	    }
 	}
     }
@@ -329,28 +330,36 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 	if ((p->toRight < 0) && (seg->rside != NULL)) {
 	    sseg = seg->rside;
 	    p->seg = sseg;
-	    p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
-	    p->toLeft += -seg->width;
-	    p->toMiddle += (seg->width + sseg->startWidth) / 2.0;
+	    curWidth = RtTrackGetWidth(sseg, p->toStart);
+	    p->toRight +=  curWidth;
+	    p->toLeft -= seg->width;
+	    p->toMiddle += (seg->width + curWidth) / 2.0;
 	    if ((p->toRight < 0) && (sseg->rside != NULL)) {
-		sseg = sseg->rside;
+		p->toLeft -= curWidth;
+		p->toMiddle += curWidth / 2.0;
+		seg = sseg;
+		sseg = seg->rside;
+		curWidth = RtTrackGetWidth(sseg, p->toStart);
 		p->seg = sseg;
-		p->toRight += sseg->startWidth + sseg->Kyl * p->toStart;
-		p->toLeft += -seg->width;
-		p->toMiddle += (seg->width + sseg->startWidth) / 2.0;
+		p->toRight +=  curWidth;
+		p->toMiddle += curWidth / 2.0;
 	    }
 	} else if ((p->toLeft < 0) && (seg->lside != NULL)) {
 	    sseg = seg->lside;
 	    p->seg = sseg;
+	    curWidth = RtTrackGetWidth(sseg, p->toStart);
 	    p->toRight += -seg->width;
-	    p->toMiddle += -(seg->width + sseg->startWidth) / 2.0;
-	    p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+	    p->toMiddle -= (seg->width + curWidth) / 2.0;
+	    p->toLeft += curWidth;
 	    if ((p->toLeft < 0) && (sseg->lside != NULL)) {
-		sseg = sseg->lside;
+		p->toRight -= curWidth;
+		p->toMiddle -= curWidth / 2.0;
+		seg = sseg;
+		sseg = seg->lside;
+		curWidth = RtTrackGetWidth(sseg, p->toStart);
 		p->seg = sseg;
-		p->toRight += -seg->width;
-		p->toMiddle += -(seg->width + sseg->startWidth) / 2.0;
-		p->toLeft += sseg->startWidth + sseg->Kyl * p->toStart;
+		p->toMiddle -= curWidth / 2.0;
+		p->toLeft += curWidth;
 	    }	
 	}
     }
@@ -389,13 +398,13 @@ RtTrackHeightL(tTrkLocPos *p)
  	p->toRight += seg->width;
 	if ((p->toRight < 0) && (seg->rside != NULL)) {
 	    seg = seg->rside;
-	    p->toRight += seg->width;
+	    p->toRight += RtTrackGetWidth(seg, p->toStart);
 	}   
     } else if ((p->toRight > seg->width) && (seg->lside != NULL)) {
 	p->toRight -= seg->width;
 	seg = seg->lside;
 	if ((p->toRight > seg->width) && (seg->lside != NULL)) {
-	    p->toRight -= seg->width;
+	    p->toRight -= RtTrackGetWidth(seg, p->toStart);
 	    seg = seg->lside;
 	}
     }
@@ -407,6 +416,18 @@ RtTrackHeightL(tTrkLocPos *p)
 	lg = p->toStart * seg->radius;
 	break;
     }
+    if (seg->style == TR_KERB) {
+	if (seg->type2 == TR_RBORDER) {
+	    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
+		p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
+		seg->kRoughness * sin(seg->kRoughWaveLen * lg) * (seg->width - p->toRight) / seg->width;
+	}
+	
+	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
+	    p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
+	    seg->kRoughness * sin(seg->kRoughWaveLen * lg) * p->toRight / seg->width;
+    }
+    
     return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
 	seg->kRoughness * sin(seg->kRoughWaveLen * p->toRight) * sin(seg->kRoughWaveLen * lg);
 }

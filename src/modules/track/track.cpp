@@ -61,14 +61,8 @@ TrackBuildv1(char *trackfile)
     
     switch(theTrack->version) {
     case 0:
-	ReadTrack0(theTrack, TrackHandle, &theCamList);
-	break;
     case 1:
-	ReadTrack1(theTrack, TrackHandle, &theCamList);
-	break;
     case 2:
-	ReadTrack2(theTrack, TrackHandle, &theCamList, 0);
-	break;
     case 3:
 	ReadTrack3(theTrack, TrackHandle, &theCamList, 0);
 	break;
@@ -93,14 +87,8 @@ TrackBuildEx(char *trackfile)
 
     switch(theTrack->version) {
     case 0:
-	ReadTrack0(theTrack, TrackHandle, &theCamList);
-	break;
     case 1:
-	ReadTrack1(theTrack, TrackHandle, &theCamList);
-	break;
     case 2:
-	ReadTrack2(theTrack, TrackHandle, &theCamList, 1);
-	break;
     case 3:
 	ReadTrack3(theTrack, TrackHandle, &theCamList, 1);
 	break;

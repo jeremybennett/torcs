@@ -254,14 +254,12 @@ refresh(tSituation *s)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     grCurCam->action();
+
+    glEnable(GL_LIGHTING);    
     for (i = 0; i < s->_ncars; i++) {
 	grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent());
     }
 
-/*     for (i = 0; i < s->_ncars; i++) { */
-/* 	grDrawShadow(s->cars[i]); */
-/*     } */
-    
     grUpdateSmoke(grDeltaTime, grCurTime);
 
     grDrawScene();
@@ -272,8 +270,8 @@ refresh(tSituation *s)
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    
+    glDisable(GL_LIGHTING);    
+
     TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
     if (grDebugFlag)   grDispDebug(Fps, s->cars[s->current], s);
     if (grGFlag)       grDispGGraph(s->cars[s->current]);
@@ -282,7 +280,8 @@ refresh(tSituation *s)
     if (grCounterFlag) grDispCounterBoard2(s->cars[s->current]);
     TRACE_GL("refresh: display boards");
 
-    //glutSwapBuffers();
+    glEnable(GL_LIGHTING);
+
     return 0;
 }
 

@@ -104,8 +104,8 @@ InitSides(void *TrackHandle, char *section)
 	style = GfParmGetStr(TrackHandle, section, KeyBorderStyle[side], TRK_VAL_ST_PLAN);
 	if (strcmp(style, TRK_VAL_ST_PLAN) == 0) {
 	    borderStyle[side] = TR_PLAN;
-	} else if (strcmp(style, TRK_VAL_ST_BUMPER) == 0) {
-	    borderStyle[side] = TR_BUMPER;
+	} else if (strcmp(style, TRK_VAL_ST_KERB) == 0) {
+	    borderStyle[side] = TR_KERB;
 	} else if (strcmp(style, TRK_VAL_ST_WALL) == 0) {
 	    borderStyle[side] = TR_WALL;
 	}
@@ -166,8 +166,8 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 	    style = GfParmGetCurStr(TrackHandle, path, KeyBorderStyle[side], TRK_VAL_ST_PLAN);
 	    if (strcmp(style, TRK_VAL_ST_PLAN) == 0) {
 		borderStyle[side] = TR_PLAN;
-	    } else if (strcmp(style, TRK_VAL_ST_BUMPER) == 0) {
-		borderStyle[side] = TR_BUMPER;
+	    } else if (strcmp(style, TRK_VAL_ST_KERB) == 0) {
+		borderStyle[side] = TR_KERB;
 	    } else if (strcmp(style, TRK_VAL_ST_WALL) == 0) {
 		borderStyle[side] = TR_WALL;
 	    }
@@ -195,6 +195,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 		curBorder->type2 = TR_RBORDER;
 	    }
 
+	    type = sideBankType[side];
 	    curBorder->startWidth = bw;
 	    curBorder->endWidth = bw;
 	    curBorder->width = bw;
@@ -203,10 +204,12 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 	    curBorder->kFriction = borderkFriction[side];
 	    curBorder->kRollRes = borderkRollRes[side];
 	    curBorder->kRoughness = borderkRoughness[side];
+	    curBorder->height = borderHeight[side];
+	    curBorder->style = borderStyle[side];
 	    curBorder->kRoughWaveLen = borderkRoughWaveLen[side];
 	    curBorder->envIndex = envIndex;
-	    curBorder->angle[TR_XS] = curSeg->angle[TR_XS];
-	    curBorder->angle[TR_XE] = curSeg->angle[TR_XE];
+	    curBorder->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
+	    curBorder->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
 	    curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
 	    curBorder->angle[TR_ZE] = curSeg->angle[TR_ZE];
 	    curBorder->angle[TR_CS] = curSeg->angle[TR_CS];
@@ -219,18 +222,18 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 		case 1:
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * curSeg->rgtSideNormal.x;
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * curSeg->rgtSideNormal.y;
-		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * curSeg->rgtSideNormal.x;	    
 		    y = curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * curSeg->rgtSideNormal.y;
-		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 		    break;
 		case 0:
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * curSeg->rgtSideNormal.x;
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * curSeg->rgtSideNormal.y;
-		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * curSeg->rgtSideNormal.x;	    
 		    y = curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * curSeg->rgtSideNormal.y;
-		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 		    break;
 		}
 		curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z, curBorder->length);
@@ -262,9 +265,9 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x - bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y - bw * sin(curBorder->angle[TR_CS]);
-		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x - bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
-		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
+		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - (tdble)type * bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
 		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
 
 		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
@@ -299,10 +302,10 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x + bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y + bw * sin(curBorder->angle[TR_CS]);
-		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x + bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
 		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y + bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
-		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
 		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
 						    curBorder->arc * curBorder->radiusr);
@@ -343,10 +346,10 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * sin(curBorder->angle[TR_CS]);
-		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
 		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
-		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
 		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
 						    curBorder->arc * curBorder->radiusr);
@@ -380,10 +383,10 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, char *section, int curStep, int s
 
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * sin(curBorder->angle[TR_CS]);
-		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - bw * tan(curSeg->angle[TR_XS]);
+		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
 		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
-		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - bw * tan(curSeg->angle[TR_XE]);
+		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
 		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
 						    curBorder->arc * curBorder->radiusr);
