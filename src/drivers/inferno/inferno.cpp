@@ -140,7 +140,7 @@ inferno(tModInfo *modInfo)
     int		i;
     char	buf[256];
     
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i < 10; i++) {
 	sprintf(buf, "Inferno %d", i + 1);
 	modInfo[i].name    = strdup(buf);	/* name of the module (short) */
 	modInfo[i].desc    = "For Laurence";	/* description of the module (can be long) */

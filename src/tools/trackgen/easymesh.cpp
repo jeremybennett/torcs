@@ -1744,7 +1744,7 @@ groups(void)
 	    if ((node[n].mark == 0) || (node[n].mark == 100000)) {
 		r_node[node[n].new_numb].z = GetElevation(node[n].x, node[n].y, node[n].z);
 	    } else {
-		r_node[node[n].new_numb].z    = node[n].z;
+		r_node[node[n].new_numb].z = node[n].z;
 	    }
 	    r_node[node[n].new_numb].mark = node[n].mark;
 	}

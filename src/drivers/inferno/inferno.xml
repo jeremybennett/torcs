@@ -125,6 +125,18 @@
 	<attnum name="green" val="0.0"/>
 	<attnum name="blue" val="0.0"/>
       </section>
+
+      <section name="10">
+	<attstr name="name" val="Inferno 10"/>
+	<attstr name="team" val="torcs"/>
+	<attstr name="desc" val=""/>
+	<attstr name="author" val="Eric Espie"/>
+	<attstr name="car name" val="vm-x4"/>
+	<attnum name="race number" val="18"/>
+	<attnum name="red" val="1.0"/>
+	<attnum name="green" val="0.0"/>
+	<attnum name="blue" val="0.0"/>
+      </section>
     </section>
   </section>
 </params>

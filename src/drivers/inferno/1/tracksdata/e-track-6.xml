@@ -20,14 +20,15 @@
     <attnum name="PGain"     val="0.019"/>
     <attnum name="AGain"     val="0.008"/>
     <attnum name="PnGain"    val="0.02"/>
-    <attnum name="Advance"   val="10.0"/>
-    <attnum name="Advance2"  val="25.0"/>
-    <attnum name="AdvStep"   val="10.0"/>
+    <attnum name="Advance"   val="15.0"/>
+    <attnum name="Advance2"  val="10.0"/>
+    <attnum name="AdvStep"   val="5.0"/>
     <attnum name="VGain"     val="0.0005"/>
     <attnum name="preDy"     val="0"/>
-    <attnum name="spdtgt"    val="320.0"/>
-    <attnum name="spdtgt2"   val="1.5"/>
-    <attnum name="steerMult" val="3.0"/>
+    <attnum name="spdtgt"    val="250.0"/>
+    <attnum name="spdtgt2"   val="4.0"/>
+    <attnum name="steerMult" val="1.0"/>
+    <attnum name="offset"    val="0.0"/>
 
     <attnum name="offsetApproach" val="26.0"/>
     <attnum name="offsetFinal"    val="38.0"/>
@@ -41,7 +42,7 @@
     <attnum name="len to speed down for pitting" val="30"/>
 
     <attnum name="VMax1" unit="m/s" val="15"/>
-    <attnum name="VMax2" unit="m/s" val="3"/>
+    <attnum name="VMax2" unit="m/s" val="4"/>
     <attnum name="VMax3" unit="m/s" val="25"/>
   </section>
 

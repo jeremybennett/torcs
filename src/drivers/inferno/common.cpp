@@ -127,7 +127,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	    slip = 0;
 	}
 	if (gear == 1) {
-	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 1.0) * exp(-fabs(aspect) * 5.0) + .1;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 0.1) * exp(-fabs(aspect) * 5.0) + .1;
 	} else if ((gear > 1) && (car->_speed_x < 40.0)) {
 	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
 	}
@@ -380,6 +380,11 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     lgfs = GetDistToStart(car);
 
     DynOffset[idx] = 0;
+    /* Automatic pit every lap (test) */
+    /*     if (PitState[idx] == PIT_STATE_NONE) { */
+    /* 	PitState[idx] = PIT_STATE_ASKED; */
+    /*     } */
+
     if ((PitState[idx] == PIT_STATE_NONE) && ((s->_raceState & RM_RACE_FINISHING) == 0) && 
 	(((car->_dammage > 5000) && ((s->_totLaps - car->_laps) > 2)) || 
 	 ((car->_fuel < ConsFactor[idx]) && ((s->_totLaps - car->_laps) > 1)))) {
@@ -414,7 +419,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 
 		if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		    if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
-			if (otherCar->_trkPos.toRight > MARGIN) {
+			if (otherCar->_trkPos.toRight > MARGIN / 2.0) {
 			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0 - 1.0);
 			    if (dny < 0) {
 				if (car->_trkPos.toRight > 2.0) {
@@ -431,7 +436,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 			    }
 			}
 		    } else {
-			if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
+			if (otherCar->_trkPos.toRight < seg->width - MARGIN / 2.0) {
 			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0 - 1.0);
 			    if (dny > 0) {
 				if (car->_trkPos.toRight < (seg->width - 2.0)) {
@@ -455,7 +460,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 		}
 	    } else {
 		/* Stay behind the front car */
-		MaxSpeed[idx] = MIN(MaxSpeed[idx], otherCar->_speed_x);
+		MaxSpeed[idx] = MIN(MaxSpeed[idx], otherCar->_speed_x * .99);
 	    }
 	}
     }
