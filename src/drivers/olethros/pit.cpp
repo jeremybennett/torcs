@@ -20,6 +20,11 @@
 
 #include "pit.h"
 
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
+
 const float Pit::SPEED_LIMIT_MARGIN = 0.5;		// [m/s] savety margin to avoid pit speeding.
 
 
@@ -200,3 +205,6 @@ float Pit::getSpeedLimitBrake(float speedsqr)
 	return (speedsqr-speedlimitsqr)/(pitspeedlimitsqr-speedlimitsqr);
 }
 
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif

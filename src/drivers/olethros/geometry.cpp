@@ -245,11 +245,8 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 	Vector center(d);
 	float r = 1.0;//sphere->r / scale;
 	for (int i=0; i<d; i++) {
-		printf (" %f\n", (*sphere->C)[i]);
-		
 		center[i] =  ((*(sphere->C))[i] - mean[i]) / scale;
 	}
-	printf("(%d)\n", d);
 
 	for (int n=0; n<iter; n++) {
 		float delta_total = 0.0;

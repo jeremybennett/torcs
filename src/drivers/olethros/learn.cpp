@@ -19,6 +19,40 @@
 
 
 #include "learn.h"
+#include "ANN.h"
+#include "string_utils.h"
+#include <iostream>
+
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
+
+/// Check that tags match
+inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
+{
+	int l = 1+strlen(tag);
+	buf = SetStringBufferLength (buf, l);
+	if (buf==NULL) {
+		free(tag);
+		return false;
+	}
+	fread(buf->c, sizeof(char), l, f);
+
+	if (strcmp(tag,buf->c)) {
+		fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
+		free(tag);
+		return false;
+	}
+	free(tag);
+	return true;
+}
+
+/// Write a token
+inline void WriteToken (char* tag, FILE* f)
+{
+	fwrite (tag, sizeof(char), 1+strlen(tag), f);
+}
 
 SegLearn::SegLearn(tTrack* t)
 {
@@ -212,7 +246,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 
 float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm)
 {
-	float alpha = 0.1;
+	float alpha = 0.05;
 	float beta = 1.0;
 	float lambda = 0.9;
 	tTrackSeg* seg = car->_trkPos.seg;
@@ -238,7 +272,7 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 		//printf ("%f g%f\n", dt, gamma);
 		elig[prev_quantum] = 1.0;
 
-		float da = alpha * (taccel-  accel[prev_quantum]);
+		float da = alpha * (taccel - accel[prev_quantum]);
 		float ds = alpha * (dtm + gamma*derror[quantum] - derror[prev_quantum]);
 		for (int i=0; i<n_quantums; i++) {
 			accel[i] += elig[i] * da;
@@ -253,12 +287,18 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 	averages.Measure(taccel, derr, dtm);
 	
 	//printf ("%f %f\n", accel[segid], derror[segid]);
-	return  taccel;//accel[quantum];//+ prev_quantum_accel);
+	return  accel[quantum];//+ prev_quantum_accel);
 }
 
 float SegLearn::predictedError (tCarElt* car)
 {
 	tTrackSeg* seg = car->_trkPos.seg;
+	int segid = seg->id;
+	return derror[segid];
+}
+
+float SegLearn::predictedAccel (tTrackSeg* seg)
+{
 	int segid = seg->id;
 	return derror[segid];
 }
@@ -318,3 +358,85 @@ void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, fl
 	brake=brake_;
 	prevsegid = s->id;
 }
+
+
+
+void SegLearn::loadParameters (char* fname)
+{
+	std::cout << "Maybe load parameters from " << fname << std::endl;
+	FILE* f = fopen(fname,"r");
+	if (!f) { // no error here.
+		return;
+	}
+	
+	StringBuffer* rtag = NewStringBuffer (256);
+	CheckMatchingToken(make_message("OLETHROS_LEARN"), rtag, f);
+	int local_n_quantums;
+	fread (&local_n_quantums, sizeof(int), 1, f);
+	if (local_n_quantums!=n_quantums) {
+		std::cerr << "Number of quantums " << local_n_quantums << " does not agree with current (" << n_quantums << "). Aborting read.\n";
+		fclose(f);
+		return;
+	}
+	CheckMatchingToken(make_message("RADI"), rtag, f);
+	fread (radius, n_seg, sizeof(float), f);
+
+	CheckMatchingToken(make_message("DM FRICTION"), rtag, f);
+	fread (segdm, sizeof(float), n_seg,  f);
+	fread (segdm2, sizeof(float), n_seg, f);
+	fread (segdm3, sizeof(float), n_seg, f);
+	fread (&dm, sizeof(float), 1, f);
+	fread (&dm2, sizeof(float), 1, f);
+	fread (&dm3, sizeof(float), 1, f);
+
+	CheckMatchingToken(make_message("PRED ACCEL"), rtag, f);
+	fread (accel, sizeof(float), n_quantums,  f);
+	CheckMatchingToken(make_message("PRED STEER"), rtag, f);
+	fread (derror, sizeof(float), n_quantums,  f);
+	
+	CheckMatchingToken(make_message("END"),rtag, f);
+	FreeStringBuffer(&rtag);
+	fclose(f);
+	std::cout << "Parameters loaded\n";
+}
+
+/// Save
+void SegLearn::saveParameters (char* fname)
+{
+	FILE* f = fopen(fname,"w");
+	std::cout << "Maybe save parameters to " << fname << std::endl;
+	if (!f) {
+		std::cerr << "Could not open " << fname << " for writing. Check permissions\n";
+		return;
+	}
+
+	//StringBuffer* rtag = NewStringBuffer (256);
+	WriteToken(make_message("OLETHROS_LEARN"), f);
+
+	fwrite (&n_quantums, sizeof(int), 1, f);
+
+	WriteToken(make_message("RADI"), f);
+	fwrite (radius, n_seg, sizeof(float), f);
+
+	WriteToken(make_message("DM FRICTION"), f);
+	fwrite (segdm, sizeof(float), n_seg,  f);
+	fwrite (segdm2, sizeof(float), n_seg, f);
+	fwrite (segdm3, sizeof(float), n_seg, f);
+	fwrite (&dm, sizeof(float), 1, f);
+	fwrite (&dm2, sizeof(float), 1, f);
+	fwrite (&dm3, sizeof(float), 1, f);
+
+	WriteToken(make_message("PRED ACCEL"), f);
+	fwrite (accel, sizeof(float), n_quantums,  f);
+	WriteToken(make_message("PRED STEER"), f);
+	fwrite (derror, sizeof(float), n_quantums,  f);
+	
+	WriteToken(make_message("END"), f);
+	//FreeStringBuffer(&rtag);
+	fclose(f);
+	std::cout << "Parameters saved\n";
+}
+
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif

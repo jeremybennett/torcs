@@ -23,6 +23,12 @@
 
 
 #include "strategy.h"
+#include "opponent.h"
+
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
 
 const float SimpleStrategy::MAX_FUEL_PER_METER = 0.0008;	// [kg/m] fuel consumtion.
 const int SimpleStrategy::PIT_DAMMAGE = 1000;				// [-]
@@ -75,7 +81,7 @@ void SimpleStrategy::update(tCarElt* car, tSituation *s)
 }
 
 
-bool SimpleStrategy::needPitstop(tCarElt* car, tSituation *s)
+bool SimpleStrategy::needPitstop(tCarElt* car, tSituation *s, Opponents* opponents)
 {
 	// Do we need to refuel?
 	int laps = car->_remainingLaps-car->_lapsBehindLeader;
@@ -126,7 +132,7 @@ ManagedStrategy::~ManagedStrategy()
 }
 
 
-bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s)
+bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s, Opponents* opponents)
 {
 	// Do we need to refuel?
 	int laps = car->_remainingLaps-car->_lapsBehindLeader;
@@ -139,36 +145,104 @@ bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s)
 		}
 	}
 
-	return RepairDamage(car);
+	return RepairDamage(car, opponents);
 }
 
-bool ManagedStrategy::RepairDamage(tCarElt* car)
+/**
+   \brief Should we repair the damage or not?
+
+   Calculate the probability of being overtaken (meaning that we lose
+   a position or fail to gain one), given some information
+   about the race. We denote this as \f$P(O=1|\cdot)\f$
+
+   We define the probability of being overtaken given the current
+   damage as \f$P(O=1|D=d) = d/d_{max}\f$. We define the decision to
+   make a pit stop with the random variable \f$S\f$. This allows us to
+   further define \f$E[D|R=0]=d, E[D|R=1]=0\f$. The probability of not
+   being overtaken depending on whether we take a pitstop or not (and
+   disregarding opponents) is
+   
+   \f[
+   P(O=0|D=d, R=0) = 1-d/d_{max}
+   \f]
+
+   \f[
+   P(O=0|D=d, R=1) = 1
+   \f]
+
+   Then we define
+
+
+   \f$P(O=1|T=t_i, L=l, R=1)\f$ as the probability of not losing a
+   position to opponent i if we take a pitstop with l raps remaining as
+
+   \f[
+   P(O=0|t_i, l, R=1) = 1 - e^{-\beta t_i l},
+   \f]
+
+   \f[
+   P(O=0|t_i, l, R=0) = 1
+   \f]
+
+   where \f$\beta\f$ is some variable, which has a constant value of
+   0.01 in this implementation.
+   
+   The probability of not being overtaken by any opponent is
+   \f[
+   P(O=0|\mathcal{T}, l) = \prod_i  \big(P(O=0|t_i,l,R=0) P(R=0) +  P(O=0|t_i,l,R=1) P(R=1)\big)
+   \f]
+
+   We can write that as
+
+   \f[
+   P(O=0|\mathcal{T}, l) = \prod_i \big((1-R) +  (1-e^{-\beta t_i l}) R \big).
+   \f]
+   
+   Finally, we have 
+
+   \f[
+   P(O=1|R=0, d, \mathcal{T}, l) = 1 - (1-d/d_{max}) =  d/d_max
+   \f]
+
+   \f[
+   P(O=1|R=1, d, \mathcal{T}, l) = 1 - \prod_i (1-e^{-\beta t_i l})
+   \f]
+   
+   We then take the decision with the lowest probability of being
+   overtaken.
+
+ */
+bool ManagedStrategy::RepairDamage(tCarElt* car, Opponents* opponents)
 {
 	if (car->_dammage < PIT_DAMMAGE) {
-		return false;
+		//return false;
 	}
 	
-	double P = ((double) car->_dammage - PIT_DAMMAGE)/10000;
-	P = 1 - P;
+	double PR0 = ((double) car->_dammage - PIT_DAMMAGE)/10000;
+	double PR1 = 1;
 	double laps = (double) car->_remainingLaps;
 	double catchtime; 
+
 	if (car->_pos != 1) {
 		catchtime = car->_timeBehindLeader;
-		if (catchtime*laps > 10) {
-			P /= 0.1*catchtime*laps;
-		}
-		catchtime = (double) car->_timeBehindPrev; 
-		if (catchtime*laps > 10) {
-			P /= 0.1*catchtime*laps;
+		PR1 *= (1-exp(-0.01*catchtime*laps));
+		if (car->_pos!=2) {
+			catchtime = (double) car->_timeBehindPrev; 
+			PR1 *= (1-exp(-0.01*catchtime*laps));
 		}
 	}
-	catchtime = car->_timeBehindPrev;
-	if (catchtime*laps > 10) {
-		P /= 0.1*catchtime*laps;
+	if (opponents->getNOpponentsBehind() != 0) {
+		catchtime = car->_timeBeforeNext;
+		PR1 *= (1-exp(-0.01*catchtime*laps));
 	}
-	if (P < 0.1) {
+
+	PR1 = 1 - PR1;
+	if (PR1 < PR0) {
 		return true;
 	} 
 	return false;
 }
 
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif

@@ -32,3 +32,5 @@ src-robots-olethros_PKGFILES = $(shell find * -maxdepth 0 -type f -print)
 src-robots-olethros_PKGDIR   = ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
+
+#CFLAGSD := $(CFLAGSD) -DUSE_OLETHROS_NAMESPACE

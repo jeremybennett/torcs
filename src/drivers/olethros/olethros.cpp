@@ -44,6 +44,11 @@
 
 #include "driver.h"
 
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
+
 #define BUFSIZE 20
 #define NBBOTS 10
 
@@ -144,3 +149,6 @@ static void shutdown(int index)
 	printf ("\n");
 }
 
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif

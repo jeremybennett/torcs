@@ -131,7 +131,7 @@
         <attstr name="desc" val=""></attstr>
         <attstr name="team" val="olethros"></attstr>
         <attstr name="author" val="Christos Dimitrakakis"></attstr>
-        <attstr name="car name" val="lotus-gt1"></attstr>
+        <attstr name="car name" val="sc-f1"></attstr>
         <attnum name="race number" val="80"></attnum>
         <attnum name="red" val="1.0"></attnum>
         <attnum name="green" val="0.0"></attnum>

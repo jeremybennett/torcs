@@ -1,3 +1,4 @@
+// -*- Mode: c++ -*-
 /***************************************************************************
 
     file                 : opponent.h
@@ -44,7 +45,10 @@
 #define OPP_LETPASS		(1<<4)
 #define OPP_FRONT_FAST	(1<<5)
 
-
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
 class Driver;
 
 // Opponent maintains the data for one opponent RELATIVE to the drivers car.
@@ -64,7 +68,6 @@ class Opponent {
 		float getWidth() { return cardata->getWidthOnTrack(); }
 		float getSpeed() { return cardata->getSpeedInTrackDirection(); }
 		float getOverlapTimer() { return overlaptimer; }
-
 		void update(tSituation *s, Driver *driver);
 
 	private:
@@ -104,12 +107,22 @@ class Opponents {
 
 		void update(tSituation *s, Driver *driver);
 		Opponent *getOpponentPtr() { return opponent; }
+		/// Return total number of opponents
 		int getNOpponents() { return nopponents; }
+		/// Return total number of \em racing opponents behind.
+		int getNOpponentsBehind() { return nopponents_behind; }
+		/// Return total number of \em racing opponents in front.
+		int getNOpponentsInFront() { return nopponents_infront;}
+
 
 	private:
 		Opponent *opponent;
 		int nopponents;
+		int nopponents_behind;
+		int nopponents_infront;
 };
-
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 #endif // _OPPONENT_H_

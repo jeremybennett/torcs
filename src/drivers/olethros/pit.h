@@ -22,6 +22,10 @@
 
 #include "driver.h"
 #include "spline.h"
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
 
 class Driver;
 
@@ -76,6 +80,9 @@ class Pit {
 
 		static const float SPEED_LIMIT_MARGIN;
 };
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 #endif // _PIT_H_
 

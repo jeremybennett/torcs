@@ -34,6 +34,10 @@
 #include <robottools.h>
 #include <robot.h>
 
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
 
 /// A class for learning various things about segments.
 class SegLearn {
@@ -48,6 +52,8 @@ public:
 	float updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm);
 	/// Get predicted acceleration error
 	float predictedError (tCarElt* car);
+	/// Get predicted acceleration error
+	float predictedAccel (tTrackSeg* seg);
 	/// Adjust friction model coefficients
 	void AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_, float learning_rate = 1.0);
 	/// Get friction coefficient
@@ -56,6 +62,11 @@ public:
 	float GetFrictionDm2(tTrackSeg* s) {return dm2 + segdm2[s->id];}
 	/// Get friction coefficient
 	float GetFrictionDm3(tTrackSeg* s) {return dm3 + segdm3[s->id];}
+	/// Load
+	void loadParameters (char* fname);
+	/// Save
+	void saveParameters (char* fname);
+
 private:
 	/// Class for computing averages of measured values
 	class Averages {
@@ -119,5 +130,8 @@ private:
 	int n_seg; ///< total number of track segments
 };
 
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 #endif //_SEGLEARN_H_

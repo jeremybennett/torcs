@@ -19,6 +19,9 @@
 
 #include "opponent.h"
 
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros {
+#endif
 
 // class variables and constants.
 tTrack* Opponent::track;
@@ -111,15 +114,16 @@ void Opponent::update(tSituation *s, Driver *driver)
 			}
 		} else
 		// Is opponent behind and faster.
-		if (distance < -SIDECOLLDIST && getSpeed() > driver->getSpeed() - SPEED_PASS_MARGIN) {
+		if (distance < -SIDECOLLDIST
+			&& getSpeed() > driver->getSpeed() - SPEED_PASS_MARGIN) {
 			catchdist = driver->getSpeed()*distance/(getSpeed() - driver->getSpeed());
 			state |= OPP_BACK;
 			distance -= MAX(car->_dimension_x, mycar->_dimension_x);
 			distance -= LENGTH_MARGIN;
 		} else
 		// Is opponent aside.
-		if (distance > -SIDECOLLDIST &&
-			distance < SIDECOLLDIST) {
+		if (distance > -SIDECOLLDIST
+			&& distance < SIDECOLLDIST) {
 			sidedist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			state |= OPP_SIDE;
 		} else
@@ -199,8 +203,22 @@ Opponents::~Opponents()
 void Opponents::update(tSituation *s, Driver *driver)
 {
 	int i;
+	tCarElt* mycar = driver->getCarPtr();
+	nopponents_behind = 0;
+	nopponents_infront = 0;
 	for (i = 0; i < s->_ncars - 1; i++) {
 		opponent[i].update(s, driver);
+		if (opponent[i].getState() != OPP_IGNORE) {
+			tCarElt* ocar = opponent[i].getCarPtr();
+			if (ocar->_pos > mycar->_pos) {
+				nopponents_behind++;
+			} else {
+				nopponents_infront++;
+			}
+		}
 	}
 }
 
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif

@@ -45,6 +45,11 @@
 #define OLETHROS_ATT_FUELPERLAP "fuelperlap"
 #define OLETHROS_ATT_MUFACTOR "mufactor"
 
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
+
 class Opponents;
 class Opponent;
 class Pit;
@@ -121,6 +126,7 @@ protected:
 	void ShowPaths();
 
 	// Per robot global data.
+	int race_type;
 	int stuck;
 	float speedangle;		///< the angle of the speed vector relative to trackangle, > 0.0 points to right.
 	float mass;				///< Mass of car + fuel.
@@ -133,7 +139,7 @@ protected:
 	Pit *pit;						///< Pointer to the pit instance.
 	AbstractStrategy *strategy;		///< Pit stop strategy.
 
-	static Cardata *cardata;		///< Data about all cars shared by all instances.
+	//static Cardata *cardata;		///< Data about all cars shared by all instances.
 	SingleCardata *mycardata;		///< Pointer to "global" data about my car.
 	static double currentsimtime;	///< Store time to avoid useless updates.
 
@@ -147,6 +153,7 @@ protected:
 	float *ideal_radius; ///< ideal radius (according to circle fit)
 	SegLearn *learn; ///< handle to learning module
 	int alone; ///< whether we are alone
+	float prev_steer; ///< for steering filter
 	float prev_toleft; ///< previous left margin
 	float prev_toright; ///< previous right margin
 	float u_toleft; ///< speed to left side
@@ -204,9 +211,14 @@ protected:
 	static const float FILTER_STEER_FEEDBACK;
 	static const float FILTER_PREDICT_FEEDBACK;
 	static const float FILTER_TARGET_FEEDBACK;
+	static const bool USE_NEW_ALPHA;
 	// Track variables.
 	tTrack* track;
 };
+
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 #endif // _DRIVER_H_
 

@@ -33,8 +33,10 @@
 #include <raceman.h>
 
 #include "linalg.h"
-
-
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
 class SingleCardata {
  public:
 	SingleCardata() {
@@ -85,5 +87,9 @@ class Cardata {
 	~Cardata();
 };
 
+
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 #endif // _OLETHROS_CARDATA_H_

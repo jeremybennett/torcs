@@ -18,7 +18,8 @@
  ***************************************************************************/
 
 #include "cardata.h"
-
+namespace olethros
+{
 Cardata* Cardata::Instance()
 {
 	static Cardata obj;
@@ -94,3 +95,4 @@ SingleCardata *Cardata::findCar(tCarElt *car)
 }
 
 
+}

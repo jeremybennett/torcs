@@ -40,6 +40,14 @@
 
 #include "driver.h"
 
+// forward declarations
+class Opponents;
+
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros
+{
+#endif
+
 /** Some type of strategy */
 class AbstractStrategy {
 public:
@@ -48,7 +56,8 @@ public:
 	/// Update internal data at every timestep.
 	virtual void update(tCarElt* car, tSituation *s) = 0;
 	/// Do we need a pit stop? Can be called less frequently.
-	virtual bool needPitstop(tCarElt* car, tSituation *s) = 0;
+	virtual bool needPitstop(tCarElt* car, tSituation *s,
+							 Opponents* opponents) = 0;
 	/// How much to refuel at pit stop.
 	virtual float pitRefuel(tCarElt* car, tSituation *s) = 0;
 	/// How much repair at pit stop.
@@ -63,7 +72,7 @@ public:
 	
 	virtual void setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s);
 	virtual void update(tCarElt* car, tSituation *s);
-	virtual bool needPitstop(tCarElt* car, tSituation *s);
+	virtual bool needPitstop(tCarElt* car, tSituation *s, Opponents* opponents);
 	virtual float pitRefuel(tCarElt* car, tSituation *s);
 	virtual int pitRepair(tCarElt* car, tSituation *s);
 
@@ -78,16 +87,22 @@ protected:
 	static const int PIT_DAMMAGE;			// If damage > we request a pit stop.
 };
 
+
+
 /// A strategy taking into account position and time to decide on pitstops.
 class ManagedStrategy : public SimpleStrategy
 {
 public:
 	ManagedStrategy();
 	virtual ~ManagedStrategy();
-	virtual bool needPitstop(tCarElt* car, tSituation *s);
+	virtual bool needPitstop(tCarElt* car, tSituation *s, Opponents* opponents);
 protected:
-	bool RepairDamage(tCarElt* car);
+	virtual bool RepairDamage(tCarElt* car, Opponents* opponents);
 };
+
+#ifdef USE_OLETHROS_NAMESPACE
+}
+#endif
 
 
 #endif // _STRATEGY_H_
