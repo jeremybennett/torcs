@@ -113,7 +113,7 @@ class MyCar : public AbstractCar
 		double MAXANGLE;								/* biggest allowed angle to the path [deg] */
 		double ACCELINC;								/* increment/decrement for acceleration [-] */
 		double MININVSLIP;								/* 1/slip ==> defines maximum allowed slip [-] */
-		double SFTUPRATIO;								/* rpm/rpmmax ratio for shift up (0.3..0.85) [-] */
+		double SFTUPRATIO;								/* rpm/rpmredline ratio for shift up (0.3..0.95) [-] */
 		double SFTDOWNRATIO;							/* hmmm, more complicated [-] */
 		double SFTDOWNSTEER;							/* max steer value for shift down [-] */
 		double SPEEDSQRFACTOR;							/* multiplier for speedsqr */

@@ -263,15 +263,13 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 				NORM_PI_PI(targetAngle);
 				double toborder = MAX(1.0, myc->currentseg->getWidth()/2.0 - fabs(myTrackDesc->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos())));
 				b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/toborder;
-				//tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
-				//steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
 			}
 		}
 	}
 
 	/* try to control angular velocity */
 	double omega = myc->getSpeed()/myc->currentpathseg->getRadius();
-	steer += 0.1*(omega - myc->getCarPtr()->_yaw_rate); //myc->getSpeed();
+	steer += 0.1*(omega - myc->getCarPtr()->_yaw_rate);
 
 	/* anti blocking and brake code */
 	if (b1 > b2) brake = b1; else brake = b2;
@@ -292,7 +290,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 
 	/* gear changing */
-	tdble rpm = (car->_enginerpm / car->_enginerpmMax);
+	tdble rpm = (car->_enginerpm / car->_enginerpmRedLine);
 
 	if (((car->_gearCmd + car->_gearOffset) <= 1) && (myc->tr_mode == 0) && (myc->count >= 25)) {
 		car->_gearCmd++;
@@ -300,11 +298,11 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	if ((rpm > myc->SFTUPRATIO) && (myc->count >= 25) && (myc->tr_mode == 0)) {
 		if (car->_gearCmd < car->_gearNb - 1) {
-			shiftaccel = myc->getSpeed() / car->_wheelRadius(REAR_RGT) * car->_gearRatio[car->_gearCmd + car->_gearOffset + 1] / car->_enginerpmMax;
+			shiftaccel = myc->getSpeed() / car->_wheelRadius(REAR_RGT) * car->_gearRatio[car->_gearCmd + car->_gearOffset + 1] / car->_enginerpmRedLine;
 			car->_gearCmd++;
 			myc->count = 0;
 		}
-	} else if ((myc->getSpeed() < myc->SFTDOWNRATIO * car->_wheelRadius(REAR_RGT) * car->_enginerpmMax/car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) && (myc->count >= 25) && (myc->tr_mode == 0)) {
+	} else if ((myc->getSpeed() < myc->SFTDOWNRATIO * car->_wheelRadius(REAR_RGT) * car->_enginerpmRedLine/car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) && (myc->count >= 25) && (myc->tr_mode == 0)) {
 		if (car->_gearCmd > 1) {
 			shiftaccel = (myc->getSpeed() * car->_gearRatio[car->_gearCmd + car->_gearOffset - 1]) / (car->_wheelRadius(REAR_RGT) * car->_enginerpm);
 	        if (fabs(steer) < myc->SFTDOWNSTEER) {

@@ -145,7 +145,6 @@
     <attnum name="caero" val="1.0"/>
     <attnum name="cfriction" val="1.2"/>
     <attnum name="pitentry" val="2470"/>
-    <attnum name="pitexit" val="230"/>
   </section>
 
 </params>
