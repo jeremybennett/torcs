@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <racemantools.h>
 #include <osspec.h>

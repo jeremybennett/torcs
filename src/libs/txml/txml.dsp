@@ -43,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /W3 /GX /O2 /Ob2 /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "./" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /YX /FD /c
+# SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -53,15 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng1.lib zlib.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
-# Begin Custom Build
-InputPath=.\Release\txml.dll
-SOURCE="$(InputPath)"
-
-"..\..\..\export\include\xmlparse.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy xmlparse.h ..\..\..\export\include
-
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib zlib.lib /nologo /dll /machine:I386 /libpath:"../../../libpng/lib" /libpath:"../../../zlib/dll32"
 # Begin Special Build Tool
 TargetDir=.\Release
 SOURCE="$(InputPath)"
@@ -82,7 +75,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtime	copy $(TargetDir)\*.lib 
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W3 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "./" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TXML_EXPORTS" /FR /YX /FD /GZ /c
+# SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -92,22 +86,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib zlib.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd"
-# Begin Custom Build
-InputPath=.\Debug\txml.dll
-SOURCE="$(InputPath)"
-
-BuildCmds= \
-	copy xmlparse.h ..\..\..\export\include \
-	copy xml.h ..\..\..\export\include \
-	
-
-"..\..\..\export\include\xmlparse.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"..\..\..\export\include\xml.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib zlib.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:"../../../libpng/lib" /libpath:"../../../zlib/dll32"
 # Begin Special Build Tool
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
@@ -134,6 +113,10 @@ SOURCE=.\gennmtab.c
 # Begin Source File
 
 SOURCE=.\hashtable.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\txml.def
 # End Source File
 # Begin Source File
 

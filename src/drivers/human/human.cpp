@@ -269,7 +269,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	    shiftThld[i] = 10000.0;
 	}
     }
-
+#ifndef WIN32
     if (s->_raceType == RM_TYPE_PRACTICE) {
 	RtTelemInit(-10, 10);
 	RtTelemNewChannel("Ax", &car->_accel_x, -30, 30);
@@ -280,7 +280,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	RtTelemNewChannel("Gear", &Gear, -10, 10);
 	RtTelemNewChannel("Speed", &car->_speed_x, -100, 100);
     }
-
+#endif
 
 }
 
@@ -482,7 +482,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, AntiSlip);
     }
-    
+#ifndef WIN32
     if (car->_laps == 1) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {
 	    if (lap == 0) {
@@ -498,6 +498,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	    }
 	}
     }
+#endif
     lap = car->_laps;
 }
 

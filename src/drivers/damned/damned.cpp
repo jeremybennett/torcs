@@ -303,7 +303,7 @@ static tdble PnGain[10]  = {	0.10,	0.15,   0.08,	0.1,	0.08,	0.01,	0.05,	0.015,	0
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.015,	0.02,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	40,	40.8,	0.0,	40.8,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	40,	0.0,	40.8,	0	};
-const  tdble Advance3[10]= {	-35.0,	-27.0,  -26.0,	-26.0,	-26.0,	-30.0,	-35.0,	-30.0,	-30.0,	-30.0	};
+const  tdble Advance3[10]= {	-15.0,	-17.0,  -16.0,	-5.0,	-26.0,	-30.0,	-35.0,	0.0,	-30.0,	-30.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
 const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.01,	0.005,	0.02,	0.0005,	0.0005,	0.0005	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
@@ -327,7 +327,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
     Advance[4] = Advance2[4] = DmTrack->width * 2.0;
     spdtgt2[5] = DmTrack->width - 5.0;
     spdtgt2[7] = DmTrack->width;
-    Advance[7] = Advance2[7] = DmTrack->width * 2.0;
+    Advance[7] = Advance2[7] = DmTrack->width * 2.0 + 8.0;
     spdtgt2[9] = DmTrack->width + 2.5;
     Advance[9] = Advance2[9] = DmTrack->width * 2.0 + 3.0;
 }
@@ -348,6 +348,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble	vtgt1, vtgt2;
     tdble	dspd = 0;
     tdble	maxdlg;
+    tdble	vang;
     
     memset(car->ctrl, 0, sizeof(tCarCtrl));
 
@@ -467,14 +468,15 @@ static void drive(int index, tCarElt* car, tSituation *s)
     /*
      * speed control
      */
-    CosA = cos(car->_yaw+car->ctrl->steer*1.0);
-    SinA = sin(car->_yaw+car->ctrl->steer*1.0);
+    vang = atan2(car->_speed_Y, car->_speed_X);
+    CosA = cos(vang);
+    SinA = sin(vang);
     x = X + (CosA) * (0.04 * car->_speed_x * car->_speed_x - Advance3[idx]);
     y = Y + (SinA) * (0.04 * car->_speed_x * car->_speed_x - Advance3[idx]);
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
 
     Dny = Advance4[idx] * fabs(trkPos.toRight - seg->width /2.0) / (seg->width * 2.0);
-    Dny = exp(-Dny*Dny);
+    Dny = exp(-Dny * Dny * Dny * Dny);
 
     Db = car->_yaw_rate;
     SpeedStrategy(car, idx, MIN((vtgt1 * Dny  + vtgt2) * 1.8, MaxSpeed[idx]), car->ctrl->steer, maxBrk[idx], s, Db);

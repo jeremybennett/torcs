@@ -23,6 +23,9 @@
 #include <track.h>
 #include <car.h>
 #include <raceman.h>
+#ifdef WIN32
+#include <float.h>
+#endif
 
 extern float grviewRatio;
 struct Camera;
@@ -45,8 +48,8 @@ typedef struct Camera
 	struct
 	{
 	    float fovy;
-	    float near;
-	    float far;
+	    float fnear;
+	    float ffar;
 	    float fovymin, fovymax, fovydflt;
 	    tfcam fcam;
 	    float cfovy;
@@ -57,8 +60,8 @@ typedef struct Camera
 	struct
 	{
 	    float fovy;
-	    float near;
-	    float far;
+	    float fnear;
+	    float ffar;
 	    float fovymin, fovymax, fovydflt;
 	} persp;
 	

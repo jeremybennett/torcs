@@ -21,7 +21,9 @@
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
 */
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include "os.h"
 

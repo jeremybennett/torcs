@@ -25,7 +25,9 @@
 
 #include <stdlib.h>
 #include <math.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <car.h>
 #include <track.h>

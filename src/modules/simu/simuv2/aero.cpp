@@ -40,10 +40,10 @@ SimAeroUpdate(tCar *car, tSituation *s)
 {
     tdble	hm;
     int		i;	    
-    tCarElt	*otherCarElt;
     tCar	*otherCar;
-    tdble	x,y;
+    tdble	x, y;
     tdble	yaw, otherYaw, airSpeed, tmpas, spdang, tmpsdpang;
+    tdble	dragK = 1.0;
 
     x = car->DynGC.pos.x;
     y = car->DynGC.pos.y;
@@ -53,30 +53,37 @@ SimAeroUpdate(tCar *car, tSituation *s)
     
     if (airSpeed > 10.0) {
 	for (i = 0; i < s->_ncars; i++) {
-	    otherCarElt = s->cars[i];
-	    if (otherCarElt == car->carElt) {
+	    if (i == car->carElt->index) {
 		continue;
 	    }
-	    otherCar = &(SimCarTable[otherCarElt->index]);
+	    otherCar = &(SimCarTable[i]);
 	    /* 8 degrees */
 	    otherYaw = otherCar->DynGC.pos.az;
 	    tmpsdpang = spdang - atan2(y - otherCar->DynGC.pos.y, x - otherCar->DynGC.pos.x);
 	    NORM_PI_PI(tmpsdpang);
 	    if ((otherCar->DynGC.vel.x > 10.0) &&
-		(fabs(yaw - otherYaw) < 0.1396) && 
-		(fabs(tmpsdpang) > 3.002)) { 
-		tmpas = car->DynGC.vel.x - otherCar->DynGC.vel.x * 0.5 * 
-		    exp(- 1.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
-			     (otherCar->aero.Cd * otherCar->DynGC.vel.x));
-		if (tmpas < airSpeed) {
-		    airSpeed = tmpas;
+		(fabs(yaw - otherYaw) < 0.1396)) {
+		if (fabs(tmpsdpang) > 3.002) {
+		    /* behind another car */
+		    tmpas = 1.0 - exp(- 1.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+				   (otherCar->aero.Cd * otherCar->DynGC.vel.x));
+		    if (tmpas < dragK) {
+			dragK = tmpas;
+		    }
+		} else if (fabs(tmpsdpang) < 0.1396) {
+		    /* before another car */
+		    tmpas = 1.0 - exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+				      (car->aero.Cd * car->DynGC.vel.x));
+		    if (tmpas < dragK) {
+			dragK = tmpas;
+		    }
 		}
 	    }
 	}
     }
     car->airSpeed2 = airSpeed * airSpeed;
     tdble v2 = car->airSpeed2;
-    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0);
+    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0) * dragK * dragK;
 
     hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
     hm = hm*hm;

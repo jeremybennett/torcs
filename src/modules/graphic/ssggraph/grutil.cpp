@@ -23,7 +23,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glut.h>
 #include <plib/ssg.h>
 
@@ -195,7 +197,7 @@ grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 	info -> depth  = 4;
 	info -> alpha  = true;
     }
-    TRACE_GL("Load: grLoadPngTexture start");
+    TRACE_GL("Load: grLoadPngTexture stop");
 
     return true;
 }

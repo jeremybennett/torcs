@@ -464,8 +464,9 @@ public:
 
   jsJoystick ( int ident = 0 )
   {
+#ifndef WIN32
     alt_fname [ 0 ] = 0;
-
+#endif
 #ifdef WIN32
     switch ( ident )
     {

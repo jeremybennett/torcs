@@ -20,7 +20,7 @@ ROBOT = damned
 
 DATADIR   = drivers/${ROBOT}/8
 
-DATA      =  car.xml logo.rgb
+DATA      =  car.xml logo.rgb mclaren-f1.rgb
 
 include ${MAKE_DEFAULT}
 

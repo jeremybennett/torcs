@@ -21,6 +21,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <memory.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <plib/ssg.h>
@@ -153,7 +156,7 @@ void grSetCamera(tCamera *cam, tCarElt *car)
 	
     case CAM_PERSPEC:
 	grContext.setFOV(grviewRatio * cam->uproj.persp.fovy, cam->uproj.persp.fovy);
-	grContext.setNearFar(cam->uproj.persp.near, cam->uproj.persp.far);
+	grContext.setNearFar(cam->uproj.persp.fnear, cam->uproj.persp.ffar);
 	break;
 
     case CAM_ORTHO:
@@ -317,8 +320,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -334,8 +337,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -351,8 +354,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 67.5;
-    curCam->uproj.persp.near = 0.3;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 0.3;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 50.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -368,8 +371,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 67.5;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -390,8 +393,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 40.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -407,8 +410,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 95.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -430,8 +433,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = MAX(grWrldMaxSize * 2, 1000);
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 50.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -447,8 +450,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = MAX(grWrldMaxSize * 2, 1000);
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 50.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -464,8 +467,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = MAX(grWrldMaxSize * 2, 1000);
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 50.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -481,8 +484,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 30.0;
-    curCam->uproj.persp.near = 1.0;
-    curCam->uproj.persp.far  = MAX(grWrldMaxSize * 2, 1000);
+    curCam->uproj.persp.fnear = 1.0;
+    curCam->uproj.persp.ffar  = MAX(grWrldMaxSize * 2, 1000);
     curCam->uproj.persp.fovymin = 5.0;
     curCam->uproj.persp.fovymax = 50.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -504,8 +507,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 10.0;
-    curCam->uproj.persp.near = 200.0;
-    curCam->uproj.persp.far  = grWrldMaxSize * 2;
+    curCam->uproj.persp.fnear = 200.0;
+    curCam->uproj.persp.ffar  = grWrldMaxSize * 2;
     curCam->uproj.persp.fovymin = 2.0;
     curCam->uproj.persp.fovymax = 90.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -528,8 +531,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamZoompersp;
     curCam->uproj.persp.fovy = 21.0;
-    curCam->uproj.persp.near = 100.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 100.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 2.0;
     curCam->uproj.persp.fovymax = 60.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -551,8 +554,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.near = 10.0;
-    curCam->uproj.persp.far  = grWrldMaxSize;
+    curCam->uproj.persp.fnear = 10.0;
+    curCam->uproj.persp.ffar  = grWrldMaxSize;
     curCam->uproj.persp.fovymin = 1.0;
     curCam->uproj.persp.fovymax = 110.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -576,8 +579,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.near = 10.0;
-    curCam->uproj.persp.far  = 2 * grWrldMaxSize;
+    curCam->uproj.persp.fnear = 10.0;
+    curCam->uproj.persp.ffar  = 2 * grWrldMaxSize;
     curCam->uproj.persp.fovymin = 1.0;
     curCam->uproj.persp.fovymax = 110.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -601,8 +604,8 @@ grInitCams(void)
     GfRlstAddLast(&(grCams[c].cams), &(curCam->l));
     curCam->projtype = CAM_PERSPEC;
     curCam->uproj.persp.fovy = 74.0;
-    curCam->uproj.persp.near = 10.0;
-    curCam->uproj.persp.far  = 2 * grWrldMaxSize;
+    curCam->uproj.persp.fnear = 10.0;
+    curCam->uproj.persp.ffar  = 2 * grWrldMaxSize;
     curCam->uproj.persp.fovymin = 1.0;
     curCam->uproj.persp.fovymax = 110.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -632,8 +635,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamNoZoompersp;
     curCam->uproj.persp.fovy = 10.0;
-    curCam->uproj.persp.near = 300.0;
-    curCam->uproj.persp.far  = FAR_GEN;
+    curCam->uproj.persp.fnear = 300.0;
+    curCam->uproj.persp.ffar  = FAR_GEN;
     curCam->uproj.persp.fovymin = 1.0;
     curCam->uproj.persp.fovymax = 20.0;
     curCam->uproj.persp.fovydflt = curCam->uproj.persp.fovy;
@@ -656,8 +659,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamZoompersp;
     curCam->uproj.fpersp.fovy = 5.0;
-    curCam->uproj.fpersp.near = 300.0;
-    curCam->uproj.fpersp.far  = FAR_GEN;
+    curCam->uproj.fpersp.fnear = 300.0;
+    curCam->uproj.fpersp.ffar  = FAR_GEN;
     curCam->uproj.fpersp.fovymin = 1.0;
     curCam->uproj.fpersp.fovymax = 90.0;
     curCam->uproj.fpersp.fovydflt = 17.0;
@@ -680,8 +683,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamZoompersp;
     curCam->uproj.fpersp.fovy = 22.0;
-    curCam->uproj.fpersp.near = 50.0;
-    curCam->uproj.fpersp.far  = FAR_GEN;
+    curCam->uproj.fpersp.fnear = 50.0;
+    curCam->uproj.fpersp.ffar  = FAR_GEN;
     curCam->uproj.fpersp.fovymin = 1.0;
     curCam->uproj.fpersp.fovymax = 90.0;
     curCam->uproj.fpersp.fovydflt = curCam->uproj.fpersp.fovy;
@@ -698,8 +701,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamZoompersp;
     curCam->uproj.fpersp.fovy = 20.0;
-    curCam->uproj.fpersp.near = 50.0;
-    curCam->uproj.fpersp.far  = FAR_GEN;
+    curCam->uproj.fpersp.fnear = 50.0;
+    curCam->uproj.fpersp.ffar  = FAR_GEN;
     curCam->uproj.fpersp.fovymin = 1.0;
     curCam->uproj.fpersp.fovymax = 90.0;
     curCam->uproj.fpersp.fovydflt = curCam->uproj.fpersp.fovy;
@@ -722,8 +725,8 @@ grInitCams(void)
     curCam->projtype = CAM_FCTPERSPEC;
     curCam->uproj.fpersp.fcam = grCarCamZoompersp;
     curCam->uproj.fpersp.fovy = 5.0;
-    curCam->uproj.fpersp.near = 300.0;
-    curCam->uproj.fpersp.far  = FAR_GEN;
+    curCam->uproj.fpersp.fnear = 300.0;
+    curCam->uproj.fpersp.ffar  = FAR_GEN;
     curCam->uproj.fpersp.fovymin = 1.0;
     curCam->uproj.fpersp.fovymax = 90.0;
     curCam->uproj.fpersp.fovydflt = 17.0;
@@ -1060,7 +1063,7 @@ grCarCam80(tCamera *cam, tCarElt *car)
 static void
 grCarCamNoZoompersp(tCamera *cam, tCarElt *car)
 {
-    tdble	dx, dy, dz, dd, near, far;
+    tdble	dx, dy, dz, dd, fnear, ffar;
 
     dx = grCamPos.x - car->_pos_X;
     dy = grCamPos.y - car->_pos_Y;
@@ -1068,22 +1071,22 @@ grCarCamNoZoompersp(tCamera *cam, tCarElt *car)
     
     dd = sqrt(dx*dx+dy*dy+dz*dz);
     
-    near = dz - 2;
-    if (near < 1) {
-	near = 1;
+    fnear = dz - 2;
+    if (fnear < 1) {
+	fnear = 1;
     }
-    far  = dd + grCurCam->uproj.fpersp.far;
+    ffar  = dd + grCurCam->uproj.fpersp.ffar;
 
     grCurCam->uproj.fpersp.cfovy = grCurCam->uproj.fpersp.fovy;
-    grCurCam->uproj.fpersp.cfar = far;
-    grCurCam->uproj.fpersp.cnear = near;
+    grCurCam->uproj.fpersp.cfar = ffar;
+    grCurCam->uproj.fpersp.cnear = fnear;
 }
 
 
 static void
 grCarCamZoompersp(tCamera *cam, tCarElt *car)
 {
-    tdble	dx, dy, dz, dd, near, far;
+    tdble	dx, dy, dz, dd, fnear, ffar;
 
     dx = grCamPos.x - car->_pos_X;
     dy = grCamPos.y - car->_pos_Y;
@@ -1091,15 +1094,15 @@ grCarCamZoompersp(tCamera *cam, tCarElt *car)
     
     dd = sqrt(dx*dx+dy*dy+dz*dz);
 
-    near = dz - 5;
-    if (near < 1) {
-	near = 1;
+    fnear = dz - 5;
+    if (fnear < 1) {
+	fnear = 1;
     }
-    far  = dd + grCurCam->uproj.fpersp.far;
+    ffar  = dd + grCurCam->uproj.fpersp.ffar;
 
     grCurCam->uproj.fpersp.cfovy = RAD2DEG(atan2(grCurCam->uproj.fpersp.fovy, dd));
-    grCurCam->uproj.fpersp.cfar = far;
-    grCurCam->uproj.fpersp.cnear = near;
+    grCurCam->uproj.fpersp.cfar = ffar;
+    grCurCam->uproj.fpersp.cnear = fnear;
 }
 
 static void

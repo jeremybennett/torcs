@@ -118,10 +118,10 @@
 	<attnum name="blue" val="0.5"></attnum>
       </section>
       <section name="10">
-        <attstr name="name" val="Player-Corvette"></attstr>
+        <attstr name="name" val="Player-360"></attstr>
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-        <attstr name="car name" val="corvette"></attstr>
+        <attstr name="car name" val="360-modena"></attstr>
         <attstr name="category" val="torcs-r-a"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>

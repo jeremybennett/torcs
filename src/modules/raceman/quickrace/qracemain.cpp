@@ -23,7 +23,9 @@
 #include <string.h>
 #include <math.h>
 #include <time.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <osspec.h>
 #include <racemantools.h>

@@ -21,6 +21,11 @@
 #include <stdio.h>
 #include <memory.h>
 #include <math.h>
+#ifdef WIN32
+#include <windows.h>
+#include <float.h>
+#define isnan _isnan
+#endif
 
 #include <tgf.h>
 #include "sim.h"

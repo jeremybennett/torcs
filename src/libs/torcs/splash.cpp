@@ -16,7 +16,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>

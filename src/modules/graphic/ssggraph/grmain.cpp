@@ -22,7 +22,9 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <plib/ssg.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <graphic.h>
 #include <racemantools.h>

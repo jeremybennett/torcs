@@ -76,7 +76,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\telemetry
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TELEMETRY_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TELEMETRY_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TELEMETRY_EXPORTS" /FR /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"

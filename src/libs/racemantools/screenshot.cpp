@@ -21,6 +21,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glut.h>
 #include <tgf.h>
 
@@ -31,7 +34,8 @@ RmScreenShot(void * /* notused */)
 {
     unsigned char	*img;
     char		buf[256];
-    
+
+#ifndef WIN32
     img = (unsigned char*)malloc(GfScrWidth * GfScrHeight * 3);
     if (img == NULL) {
 	return;
@@ -46,4 +50,5 @@ RmScreenShot(void * /* notused */)
     GfImgWritePng(img, buf, GfScrWidth, GfScrHeight);
 
     free(img);
+#endif
 }

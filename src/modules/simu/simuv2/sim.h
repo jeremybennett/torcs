@@ -23,6 +23,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef WIN32
+#include <float.h>
+#endif
 
 #include <ttypes.h>
 #include <tgf.h>

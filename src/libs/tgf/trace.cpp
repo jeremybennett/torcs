@@ -33,7 +33,9 @@
 #include <assert.h>
 #include <string.h>
 #include <time.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 
 static FILE *outTrace = (FILE*)NULL;
@@ -57,7 +59,7 @@ void GfTrace(char *szTrc)
     time_t		t;
     char		*s = TraceStr;
 
-#if DEBUG_OUT
+#ifdef DEBUG_OUT
     fprintf(stderr, "ERROR: %s", szTrc);
     fflush(stderr);
 #endif

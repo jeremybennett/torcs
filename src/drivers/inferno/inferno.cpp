@@ -241,7 +241,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
     curidx = 0;
 
     InitGears(car, 0);
-
+#ifndef WIN32
     if (s->_raceType == RM_TYPE_PRACTICE) {
 	RtTelemInit(-10, 10);
 	RtTelemNewChannel("Ax", &car->_accel_x, -30, 30);
@@ -254,6 +254,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	RtTelemNewChannel("Speed", &car->_speed_x, -100, 100);
 	RtTelemNewChannel("Target Speed", &TargetSpeed, -100, 100);
     }
+#endif
 }
 
 
@@ -399,6 +400,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	car->ctrl->brakeCmd = 1.0;
     }
 
+#ifndef WIN32
     if (car->_laps == 2) {
 	if (s->_raceType == RM_TYPE_PRACTICE) {
 	    if (lap == 1) {
@@ -414,6 +416,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	    }
 	}
     }
+#endif
     lap = car->_laps;
 
     InvBrkCmd = - car->ctrl->brakeCmd;

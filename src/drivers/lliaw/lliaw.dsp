@@ -53,26 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib robottools.lib /nologo /dll /map /machine:I386 /libpath:"../../../export/lib"
-# Begin Custom Build
-WkspDir=.
-InputPath=.\Release\lliaw.dll
-SOURCE="$(InputPath)"
-
-BuildCmds= \
-	copy *.xml $(WkspDir)\runtime\drivers\lliaw \
-	copy *.png $(WkspDir)\runtime\drivers\lliaw \
-	
-
-"$(WkspDir)\runtime\drivers\lliaw\lliaw.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"$(WkspDir)\runtime\drivers\lliaw\car.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"$(WkspDir)\runtime\drivers\lliaw\skin.png" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-# End Custom Build
+# ADD LINK32 sg.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib robottools.lib /nologo /dll /map /machine:I386 /libpath:"../../../export/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
@@ -94,7 +75,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\drivers\lliaw
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LLIAW_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\..\export\include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LLIAW_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W3 /Gm /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "../../../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LLIAW_EXPORTS" /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -104,26 +85,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib /nologo /dll /map /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd"
-# Begin Custom Build
-WkspDir=.
-InputPath=.\Debug\lliaw.dll
-SOURCE="$(InputPath)"
-
-BuildCmds= \
-	copy *.xml $(WkspDir)\runtimed\drivers\lliaw \
-	copy *.png $(WkspDir)\runtimed\drivers\lliaw \
-	
-
-"$(WkspDir)\runtimed\drivers\lliaw\lliaw.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"$(WkspDir)\runtimed\drivers\lliaw\car.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"$(WkspDir)\runtimed\drivers\lliaw\skin.png" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../../libpng/lib" /libpath:"../../../plib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug

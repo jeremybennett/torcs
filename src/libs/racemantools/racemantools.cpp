@@ -26,7 +26,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <osspec.h>
 #include <racemantools.h>
@@ -83,7 +85,7 @@ RmDumpTrack(tTrack *track, int verbose)
     if (verbose) {
 	for (i = 0, seg = track->seg->next; i < track->nseg; i++, seg = seg->next) {
 	    GfOut("	segment %d -------------- \n", seg->id);
-	    GfOut("        type    %s\n", stype[seg->type]);
+	   /* GfOut("        type    %s\n", stype[seg->type]);*/
 	    GfOut("        length  %f\n", seg->length);
 	    GfOut("	radius  %f\n", seg->radius);
 	    GfOut("	arc	%f   Zs %f   Ze %f   Zcs %f\n", RAD2DEG(seg->arc), 

@@ -44,6 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "RACEMANTOOLS_EXPORTS" /YX /FD /c
 # ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "../../../export/include" /I "../../interfaces" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "RACEMANTOOLS_EXPORTS" /YX /FD /c
+# SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -53,15 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib robottools.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
-# Begin Custom Build
-InputPath=.\Release\racemantools.dll
-SOURCE="$(InputPath)"
-
-"..\..\..\export\include\racemantools.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy racemantools.h ..\..\..\export\include
-
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
 # Begin Special Build Tool
 TargetDir=.\Release
 SOURCE="$(InputPath)"
@@ -82,7 +75,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtime	copy $(TargetDir)\*.lib 
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "RACEMANTOOLS_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "RACEMANTOOLS_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "../../../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "RACEMANTOOLS_EXPORTS" /D "DEBUG" /FR /YX /FD /GZ /c
+# SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -92,19 +86,11 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib robottools.lib /nologo /dll /debug /machine:I386 /out:"Debug/racemantoolsd.dll" /pdbtype:sept /libpath:"../../../export/lib"
-# Begin Custom Build
-InputPath=.\Debug\racemantoolsd.dll
-SOURCE="$(InputPath)"
-
-"..\..\..\export\include\racemantools.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy racemantools.h ..\..\..\export\include
-
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sg.lib ul.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../../libpng/lib" /libpath:"../../../plib"
 # Begin Special Build Tool
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtimed	copy $(TargetDir)\*.lib ..\..\..\export\lib
+PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtimed	copy $(TargetDir)\*.lib ..\..\..\export\libd
 # End Special Build Tool
 
 !ENDIF 
@@ -119,6 +105,10 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtimed	copy $(TargetDir)\*.lib
 # Begin Source File
 
 SOURCE=.\driverselect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\loadingscreen.cpp
 # End Source File
 # Begin Source File
 
@@ -152,10 +142,6 @@ SOURCE=.\trackselect.cpp
 
 SOURCE=.\racemantools.h
 # End Source File
-# End Group
-# Begin Group "Resource Files"
-
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # End Group
 # End Target
 # End Project

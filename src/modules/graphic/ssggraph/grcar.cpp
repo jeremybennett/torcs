@@ -22,7 +22,9 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <ctype.h>
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glut.h>
 #include <plib/ssg.h>
 

@@ -53,30 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng1.lib txml.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
-# Begin Custom Build
-InputPath=.\Release\tgf.dll
-SOURCE="$(InputPath)"
-
-BuildCmds= \
-	copy tgf.h ..\..\..\export\include \
-	copy os.h ..\..\..\export\include \
-	copy screen.xml ..\..\..\runtime\config \
-	copy params.dtd ..\..\..\runtime\config \
-	
-
-"..\..\..\export\include\tgf.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"..\..\..\export\include\os.h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"..\..\..\runtime\config\screen.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-
-"..\..\..\runtime\config\params.dtd" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-   $(BuildCmds)
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib txml.lib sg.lib ul.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib"
 # Begin Special Build Tool
 TargetDir=.\Release
 SOURCE="$(InputPath)"
@@ -97,7 +74,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\runtime	copy $(TargetDir)\*.lib 
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TGF_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W4 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "../../interfaces" /I "." /I "../robottools" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TGF_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../../libpng" /I "../../../zlib" /I "../../../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TGF_EXPORTS" /D "DEBUG" /FR /YX /FD /GZ /c
 # SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -108,20 +85,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib txml.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd"
-# Begin Custom Build
-InputPath=.\Debug\tgf.dll
-SOURCE="$(InputPath)"
-
-"-" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy tgf.h ..\..\..\export\include 
-	copy os.h ..\..\..\export\include 
-	copy ..\robottools\robottools.h ..\..\..\export\include 
-	copy ..\racemantools\racemantools.h ..\..\..\export\include 
-	copy screen.xml ..\..\..\runtimed\config 
-	copy params.dtd ..\..\..\runtimed\config 
-	
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib sg.lib ul.lib /nologo /dll /debug /machine:I386 /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../../libpng/lib" /libpath:"../../../plib"
 # Begin Special Build Tool
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
@@ -211,10 +175,6 @@ SOURCE=..\racemantools\pitmenu.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\racemantools\racemantools.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\racemantools\results.cpp
 # End Source File
 # Begin Source File
@@ -232,10 +192,6 @@ SOURCE=..\robottools\rttrack.cpp
 # Begin Source File
 
 SOURCE=.\screen.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\racemantools\screenshot.cpp
 # End Source File
 # Begin Source File
 

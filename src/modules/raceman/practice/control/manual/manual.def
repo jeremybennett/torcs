@@ -1,4 +1,4 @@
 LIBRARY
 SECTIONS .data READ WRITE SHARED
 EXPORTS
-	?manual@@YAHPAUModInfo@@@Z
+	manual

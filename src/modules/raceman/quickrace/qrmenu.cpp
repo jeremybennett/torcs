@@ -20,6 +20,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 #include <racemantools.h>
 #include "qracemain.h"

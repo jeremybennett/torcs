@@ -51,7 +51,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib torcs.lib tgf.lib libpng1.lib txml.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /out:"Release/wtorcs.exe" /libpath:"../../export/lib"
+# ADD LINK32 tgf.lib sl.lib robottools.lib ssggraphlib.lib sg.lib ssg.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /out:"Release/wtorcs.exe" /libpath:"../../export/lib"
+# SUBTRACT LINK32 /debug
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
@@ -74,7 +75,8 @@ PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../export/include" /I "../interfaces" /I "../libs/torcs" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /Gi /GX /ZI /Od /I "../../export/include" /I "../interfaces" /I "../libs/torcs" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /FD /GZ /c
+# SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"
 BSC32=bscmake.exe
@@ -82,8 +84,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib libpng.lib txml.lib /nologo /subsystem:console /map /debug /machine:I386 /libpath:"../../export/libd"
-# SUBTRACT LINK32 /pdb:none /incremental:no
+# ADD LINK32 tgf.lib sl.lib robottools.lib ssggraphlib.lib sg.lib ssg.lib txml.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib /nologo /subsystem:console /pdb:none /map /debug /machine:I386 /libpath:"../../export/libd"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
@@ -112,6 +113,10 @@ SOURCE=..\libs\torcs\entry.cpp
 # Begin Source File
 
 SOURCE=..\libs\torcs\exitmenu.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\libs\torcs\joystickconfig.cpp
 # End Source File
 # Begin Source File
 

@@ -52,6 +52,10 @@ typedef vector<Complex *> ComplexList;
 typedef map<DtObjectRef, Object *> ObjectList;
 typedef set<Encounter> ProxList;
 
+#ifdef WIN32
+#define uint unsigned int
+#endif
+
 PointBuf pointBuf;
 IndexBuf indexBuf;
 PolyList polyList; 

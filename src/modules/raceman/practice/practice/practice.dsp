@@ -54,21 +54,12 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib racemantools.lib txml.lib libpng1.lib robottools.lib /nologo /dll /pdb:none /map /machine:I386 /libpath:"../../../../../export/lib"
-# Begin Custom Build
-WkspDir=.
-InputPath=.\Release\practice.dll
-SOURCE="$(InputPath)"
-
-"$(WkspDir)\runtime\config\practice\practice.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy practice.xml $(WkspDir)\runtime\config\practice
-
-# End Custom Build
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib racemantools.lib txml.lib libpng.lib robottools.lib sg.lib ul.lib /nologo /dll /pdb:none /map /machine:I386 /libpath:"../../../../../export/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman	copy $(TargetDir)\*.dll ..\..\..\..\..\runtime\modules\raceman
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "practice - Win32 Debug"
@@ -85,7 +76,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\raceman
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PRACTICE_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /MDd /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../../../export/include" /I "../../../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PRACTICE_EXPORTS" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W4 /WX /Gm /Gi /GX /ZI /Od /I "../../../../../export/include" /I "../../../../../libpng" /I "../../../zlib" /I "../../../../../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PRACTICE_EXPORTS" /FR /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -95,22 +86,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib tgf.lib txml.lib libpng.lib /nologo /dll /map /debug /machine:I386 /libpath:"../../../../../export/libd"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libpng.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /libpath:"../../../../../export/libd" /libpath:"../../../../../libpng/lib" /libpath:"../../../../../plib"
 # SUBTRACT LINK32 /pdb:none /incremental:no
-# Begin Custom Build
-WkspDir=.
-InputPath=.\Debug\practice.dll
-SOURCE="$(InputPath)"
-
-"$(WkspDir)\runtimed\config\practice\practice.xml" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy practice.xml $(WkspDir)\runtimed\config\practice
-
-# End Custom Build
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\raceman
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\raceman	copy $(TargetDir)\*.dll ..\..\..\..\..\runtimed\modules\raceman
 # End Special Build Tool
 
 !ENDIF 

@@ -332,7 +332,7 @@ void
 SimCarCollideInit(void)
 {
     dtSetDefaultResponse(SimCarCollideResponse, DT_SMART_RESPONSE, NULL);
-    dtEnableCaching();
+    dtDisableCaching();
     dtSetTolerance(0.001);
 }
 
@@ -353,10 +353,12 @@ SimCarCollideCars(tSituation *s)
 	dtMultMatrixf((const float *)(carElt->_posMat));
 	memset(&(car->VelColl), 0, sizeof(tPosd));
     }
+
+    /* dtDisableCaching(); */
     
-	if (dtTest() == 0) {
-	    dtProceed();
-	}
+    if (dtTest() == 0) {
+	dtProceed();
+    }
 
     for (i = 0; i < s->_ncars; i++) {
 	carElt = s->cars[i];

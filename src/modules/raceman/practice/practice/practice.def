@@ -1,4 +1,5 @@
 LIBRARY
 SECTIONS .data READ WRITE SHARED
 EXPORTS
-	?practice@@YAHPAUModInfo@@@Z
+	practice
+

@@ -79,6 +79,9 @@
 #include <sys/param.h>
 #endif /* WIN32 */
 #include <stdlib.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <GL/glut.h>
 #include <osspec.h>
 
@@ -520,9 +523,11 @@ extern void GfTrace(char *szTrc);
 }
 
 #if !(_DEBUG || DEBUG)
-
+#ifdef WIN32
+#define GfOut printf
+#else
 #define GfOut(a, args...)
-
+#endif
 
 #else /* _DEBUG || DEBUG */
 
@@ -531,7 +536,11 @@ extern void GfTrace(char *szTrc);
     @param	args	printf args
     @fn	 GfOut(s, args...)
  */
+#ifdef WIN32
+#define GfOut printf
+#else
 #define GfOut(s, args...)		printf(s, ## args)
+#endif
 
 #endif /* _DEBUG || DEBUG */
 

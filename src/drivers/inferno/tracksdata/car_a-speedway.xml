@@ -59,7 +59,7 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="FREE"></attstr>
-    <attnum name="ratio" val="4.4"></attnum>
+    <attnum name="ratio" val="4.8"></attnum>
   </section>
 
   <section name="Brake System">

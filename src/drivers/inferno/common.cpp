@@ -198,20 +198,20 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	    /* risk of collision */
 	    tdble MARGIN = /* 0.4 * DmTrack->width */ 8.0;
 	    
-	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 1.0)) {
+	    if (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < (MARGIN  - 2.0)) {
 		if (car->_trkPos.toRight < otherCar->_trkPos.toRight) {
 		    if (otherCar->_trkPos.toRight > MARGIN) {
 			Tright[idx] = otherCar->_trkPos.toRight - (MARGIN - 1.0);
-			if (dny > 0) {
-			    if (otherCar->_trkPos.toRight > (2.0*MARGIN)) {
+			if (dny < 0) {
+			    if (car->_trkPos.toRight > 2.0) {
 				MaxSpeed[idx] = otherCar->_speed_x * .99;
 			    } else {
-				Tright[idx] -= MARGIN/2.0;
+				Tright[idx] += MARGIN;
 			    }
 			}
 		    } else {
-			//Tright[idx] = otherCar->_trkPos.toRight + MARGIN;
-			if (dlg > (car->_dimension_x * 2.0)) {
+			if ((dlg > (car->_dimension_x * 2.0)) &&
+			    (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN)) {
 			    MaxSpeed[idx] = otherCar->_speed_x * .99;
 			    Tright[idx] = otherCar->_trkPos.toRight + (MARGIN * 2.0);
 			}
@@ -219,16 +219,16 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 		} else {
 		    if (otherCar->_trkPos.toRight < seg->width - MARGIN) {
 			Tright[idx] = otherCar->_trkPos.toRight + (MARGIN - 1.0);
-			if (dny < 0) {
-			    if (otherCar->_trkPos.toRight < (seg->width - 2.0*MARGIN)) {
+			if (dny > 0) {
+			    if (car->_trkPos.toRight < (seg->width - 2.0)) {
 				MaxSpeed[idx] = otherCar->_speed_x * .99;
 			    } else {
-				Tright[idx] += MARGIN/2.0;
+				Tright[idx] -= MARGIN;
 			    }
 			}
 		    } else {
-			//Tright[idx] = otherCar->_trkPos.toRight - MARGIN;
-			if (dlg > (car->_dimension_x * 2.0)) {
+			if ((dlg > (car->_dimension_x * 2.0)) &&
+			    (fabs(car->_trkPos.toRight - otherCar->_trkPos.toRight) < MARGIN)) {
 			    MaxSpeed[idx] = otherCar->_speed_x * .99;
 			    Tright[idx] = otherCar->_trkPos.toRight - (MARGIN * 2.0);
 			}

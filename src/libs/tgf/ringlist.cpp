@@ -27,7 +27,9 @@
     @version	$Id$
     @ingroup	ringlist
 */
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <tgf.h>
 
 void gfRlstInit(void)

@@ -1,10 +1,15 @@
 LIBRARY
 SECTIONS .data READ WRITE SHARED
 EXPORTS
-	?RmPracticeResults@@YAXPAXPADPAUtRingListHead@@@Z
-	?RmGetTrackName@@YAPADPAD@Z
-	?RmInitCars@@YAHPAUtRmInfo@@@Z
-	?RmDriverSelect@@YAXPAX@Z
-	?RmTrackSelect@@YAXPAX@Z
-	?RmPitMenuStart@@YAXPAUCarElt@@PAXP6AX1@Z@Z
-	?RmDriversSelect@@YAXPAX@Z
+	RmTrackSelect
+	RmGetTrackName
+	RmDumpTrack
+	RmInitCars
+	RmDriversSelect
+	RmDriverSelect
+	RmPracticeResults
+	RmPitMenuStart
+	RmLoadingScreenStart
+	RmLoadingScreenSetText
+	RmInitResults
+	RmShutdownResults

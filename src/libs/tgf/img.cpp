@@ -24,13 +24,17 @@
     @ingroup	img		
 */
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include "png.h"
 
 #include <tgf.h>
 #include <stdlib.h>
 #include <stdio.h>
-#ifdef _WIN32
-	#include <direct.h>
+#ifdef WIN32
+#include <direct.h>
 #endif
 
 #define PNG_BYTES_TO_CHECK 4
