@@ -51,7 +51,7 @@ damperForce(tSuspension *susp)
 	v = SIGN(v) * 10.0;
     }
     
-    if (v > 0) {
+    if (v < 0) {
 	/* rebound */
 	dampdef = &(susp->damper.rebound);
     } else {
