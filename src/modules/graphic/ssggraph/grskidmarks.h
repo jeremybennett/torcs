@@ -18,15 +18,17 @@ typedef struct
 {
   ssgVertexArray	**vtx; /* the strips */
   ssgVtxTableShadow	**vta;
+  ssgTexCoordArray  **tex; 
   ssgColourArray        **clr;
-
-  int			*state;
+	sgVec4 smooth_colour;
+	int			*state;
   int			*size;
   double		timeStrip;
   int			running_skid;
   int			next_skid;
   int			last_state_of_skid;
   int			skid_full;
+  float         tex_state;
 }tgrSkidStrip;
 
 typedef struct 
