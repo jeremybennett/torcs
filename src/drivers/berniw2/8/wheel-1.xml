@@ -137,7 +137,6 @@
   <section name="berniw private">
     <attnum name="caero" val="1.0"/>
     <attnum name="cfriction" val="1.2"/>
-    <attnum name="pitexit" val="250"/>
   </section>
 
 </params>
