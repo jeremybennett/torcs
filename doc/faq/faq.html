@@ -4,7 +4,7 @@
 	file        : faq.html
 	created     : Wed Feb  25 18:27:13 CET 2004
 	copyright   : (C) 2004 by Bernhard Wymann
-	email       : berniw--at--bluewin--d0t--ch
+	email       : berniw@bluewin.ch
 	version     : $Id$
 
 	Permission is granted to copy, distribute and/or modify this document
@@ -49,6 +49,7 @@
 		  <li><h3><a href="#c1_6">1.6 Why do you not...?</a></h3></li>
 		  <li><h3><a href="#c1_7">1.7 What do you mean with robot?</a></h3></li>
 		  <li><h3><a href="#c1_8">1.8 Why do you not replace GLUT with SDL?</a></h3></li>
+		  <li><h3><a href="#c1_9">1.9 Are there official championships?</a></h3></li>
 		</ul>
 
 		<h2>2. Platforms and Requirements.</h2>
@@ -144,11 +145,8 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-		  Draft, 18.8.2004 (DD.MM.YYYY).
+			26.11.2004 (DD.MM.YYYY).
 		</p>
-
-
-
 
 
 		<br/><h2>1. About TORCS in General.</h2>
@@ -254,7 +252,11 @@
 		</p>
 
 
-
+		<h3><a name="c1_9">1.9 Are there official championships?</a></h3>
+		<p>
+			Yes, you can find offline robot championships
+			<a href="http://www.berniw.org/trb" target="_parent">here</a>.
+		</p>
 
 
 		<br/><h2>2. Platforms and Requirements.</h2>
@@ -315,7 +317,7 @@
 			<li>Clean up your old TORCS installation, including old environment settings.</li>
 			<li>Read the installation instructions carefully, double check your steps.</li>
 			<li>Make sure that you have not installed multiple GLU libraries.</li>
-			<li>Make sure that you have installed the latest OpenGL/DRI drivers.</li>
+			<li>Make sure that you have installed the latest OpenGL/DRI and sound drivers.</li>
 			<li>Try to start up TORCS with the "-s" switch to disable multitexturing.</li>
 			<li>Make sure that the version number of your ALSA drivers, libraries and utilities match.</li>
 			<li>Test your OpenGL setup with tuxracer and bzflag.</li>
@@ -494,7 +496,8 @@ WARNING: slScheduler: soundcard init failed.</pre>
 
 		<h4><a name="c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4>
 		<p>
-		  Make sure that the sound device is available for TORCS. Perhaps you have a sound daemon
+		  Make sure that the sound device is available for TORCS and you use the latest drivers. Perhaps you
+		  have a sound daemon
 		  running in the background and you need to start TORCS with a wrapper (e. g. artsdsp of KDE)
 		  or to disable the daemon.
 		</p>
@@ -677,9 +680,11 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			<li>The main TORCS site <a href="http://www.torcs.org" target="_parent">www.torcs.org</a>.</li>
 			<li>The <a href="http://lists.sourceforge.net/lists/listinfo/torcs-users" target="_parent">
 			TORCS-users mailing list</a>.</li>
+			<li>TORCS official championships <a href="http://www.berniw.org/trb" target="_parent">www.berniw.org/trb</a>.
 			<li>TORCS development snapshots <a href="http://torcs.free.fr" target="_parent">torcs.free.fr</a>.</li>
 			<li>Bernhard's site <a href="http://www.berniw.org" target="_parent">www.berniw.org</a>.</li>
 			<li>Christos Dimitrakakis TORCS mods <a href="http://www.idiap.ch/~dimitrak/torcs.html" target="_parent">www.idiap.ch/~dimitrak/torcs.html</a>.</li>
+			<li>Charalampos Alexopoulos track editor <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">katergo.rege.org/projects/trackeditor</a>.</li>
 			<li>The TORCS Garage <a href="http://torcs.long-studios.com/index.html" target="_parent">torcs.long-studios.com/index.html</a>.</li>
 
 		</ul>
