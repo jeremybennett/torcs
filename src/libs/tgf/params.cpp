@@ -506,6 +506,8 @@ GfParmGetName(void *handle)
 }
 
 
+#define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
+#define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
 /** Write a parameter file.
     @ingroup	params
     @param	file	Filename of the parameter file (local to $BASE/runtime)
@@ -518,8 +520,6 @@ GfParmGetName(void *handle)
     @warning	The file is created if necessary	
     @see	GfParmReadFile
  */
-#define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
-#define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
 int
 GfParmWriteFile(const char *file, void* handle, char *name, int type, const char *dtd)
 {
@@ -1062,7 +1062,7 @@ gfGetCurKey(void *handle, char *path, char *key)
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
-    @param	default	default string	
+    @param	deflt	default string	
     @return	parameter value
     @warning	the return value is allocated by the function the caller must free it.
 */
@@ -1093,7 +1093,7 @@ GfParmGetStr(void *handle, char *path, char *key, char *deflt)
     @param	handle	handle of parameters	
     @param	path	path of param
     @param	key	key name	
-    @param	default	default string	
+    @param	deflt	default string	
     @return	parameter value
     @warning	the return value is allocated by the function the caller must free it.
     @see	GfParmListSeekNext
@@ -1122,7 +1122,7 @@ GfParmGetCurStr(void *handle, char *path, char *key, char *deflt)
     @param	path	path of param
     @param	key	key name	
     @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	default	default string	
+    @param	deflt	default string	
     @return	parameter value
  */
 tdble
@@ -1150,7 +1150,7 @@ GfParmGetNum(void *handle, char *path, char *key, char *unit, tdble deflt)
     @param	path	path of param
     @param	key	key name	
     @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	default	default string	
+    @param	deflt	default string	
     @return	parameter value
  */
 tdble

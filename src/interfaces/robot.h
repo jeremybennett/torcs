@@ -1,7 +1,7 @@
 /***************************************************************************
 
     file                 : robot.h
-    created              : Sun Jan 30 22:59:40 CET 2000
+    created              : Sun Jan 30 22:59:40 CET 2000, 2002
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
     version              : $Id$
@@ -17,31 +17,59 @@
  *                                                                         *
  ***************************************************************************/
  
+/** @file   
+    		
+    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    @version	$Id$
+    @ingroup	robotmodint
+*/
+
+/**
+   @defgroup	robotmodint	Robots functions interface.
+   This is the call flow of the robots callbacks during a race event.
+   <br>The square boxes are for the race manager and
+   <br>the ellipses are for the robot.
+   @image	html robot_call.gif
+   @ingroup	modint
+*/
  
 #ifndef _ROBOTV1_H_
 #define _ROBOTV1_H_
 
 #define ROB_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
 
-
+/** Callback prototype */
 typedef void (*tfRbNewTrack)(int index, tTrack *track, void *carHandle, void **myCarSettings, tSituation *s);
+/** Callback prototype */
 typedef void (*tfRbNewRace) (int index, tCarElt *car, tSituation *s);
+/** Callback prototype */
+typedef void (*tfRbEndRace) (int index, tCarElt *car, tSituation *s);
+/** Callback prototype */
 typedef void (*tfRbDrive)   (int index, tCarElt *car, tSituation *s);
+/** Callback prototype */
 typedef void (*tfRbShutdown)(int index);
-
-#define ROB_PIT_IM	0	/* Immediate return from pit command */
-#define ROB_PIT_MENU	1	/* Call the interactive menu for pit command */
+/** Callback prototype */
 typedef int  (*tfRbPitCmd)(int index, tCarElt*, tSituation*);
 
+#define ROB_PIT_IM	0	/**< Immediate return from pit command */
+#define ROB_PIT_MENU	1	/**< Call the interactive menu for pit command */
 
-/* interface for robots */
+
+/** Interface for robots.
+    @ingroup	robotmodint
+*/
 typedef struct RobotItf {
-    tfRbNewTrack	rbNewTrack;	/* give the robot the track view. Called for every track change or new race */
-    tfRbNewRace		rbNewRace;	/* Start a new race */
-    tfRbDrive		rbDrive;	/* drive during race */
-    tfRbShutdown	rbShutdown;	/* called before the dll is unloaded */
-    tfRbPitCmd		rbPitCmd;	/* Get the driver's pit commands */
-    int			index;		/* index used if multiple interfaces */
+    tfRbNewTrack rbNewTrack;	/**< Give the robot the track view. Called for every track change or new race */
+    tfRbNewRace  rbNewRace;	/**< Start a new race */
+    tfRbEndRace  rbEndRace;	/**< End of the current race */
+    tfRbDrive	 rbDrive;	/**< Drive during race */
+    tfRbPitCmd	 rbPitCmd;	/**< Get the driver's pit commands.
+				 <br>Returns:
+				 - ROB_PIT_IM
+				 - ROB_PIT_MENU
+				*/
+    tfRbShutdown rbShutdown;	/**< Called before the dll is unloaded */
+    int		 index;		/**< Index used if multiple interfaces */
 } tRobotItf;
 
 

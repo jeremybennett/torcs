@@ -21,54 +21,7 @@
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
 */
-/**
-    @defgroup	module	Dynamic Modules
-    This is the interface to load/unload the shared libraries (or DLLs).
-    <br>Two modes are allowed, the access by filename, of the access by entire directory.
-    <br>When the directory mode is used, the filenames are not known by advance, this
-    <br>allow more flexibility at runtime.
-    <br>
-    <br>The generic information can be retrieved, without keeping the DLL loaded.
-    <br>
-    <br>The gfid parameter is use to differentiate the modules using different includes.
-    <br>This functionality is not used yet.
-    <br>
-    <br>This API is not used for shared libraries linked staticaly at compilation time.
-*/
-/**
-    @defgroup	gui	GUI Management.
-    This is an interface to manage menus.
 
-*/
-/**
-    @defgroup	img	Image Management.
-    Load and store png images with easy interface.
-*/
-/**
-    @defgroup	dir	Directory Management.
-    This is used for directory manipulation.
-*/
-/**
-    @defgroup	params Parameters file management.
-    The parameters are stored in XML files and accessed only with this API.
-    <br>The parameters are structured in:
-    <br><b>section</b> - containing a familly of parameters on the same topic.
-    <br><b>list</b> - containing <b>elements</b>
-    of <b>numerical attributes</b> and <b>string attributes</b>.
-*/
-/**
-    @defgroup	screen	Screen management.
-*/
-/** 
-    @defgroup	ringlist	Ring Lists Management.
-    The ring lists are linked lists without end, the tail is linked to the head.
-    <br>The list pointer is on the tail, so the access to the head is list->next.
-    <br>The first field of the elements is always next.
- */
-/**
-    @defgroup	trace	Trace management.
-    Allow the trace in the file <tt>trace.txt</tt>
-*/
 
 
 #ifndef __TGF__H__
@@ -88,6 +41,9 @@
 #include <queue.h>
 
 /* typedef double tdble; */
+/** Floating point type used in TORCS.
+    @ingroup definitions
+*/
 typedef float tdble;
 
 #ifndef MAX
@@ -286,6 +242,7 @@ extern void GfScrInit(int argc, char *argv[]);
 extern void *GfScrMenuInit(void *precMenu);
 extern char *GfTime2Str(tdble sec, int sgn);
 extern void GfScrGetSize(int *ScrW, int *ScrH, int *ViewW, int *ViewH);
+extern void GfScrReinit(void*);
 
 
 /*****************************
@@ -515,6 +472,12 @@ GfFatal(char *fmt, ...)
 #define GfOut printf
 #else
 
+
+/** Console output
+    @param	s	string to display
+    @param	args	printf args
+    @fn	 GfOut(s, args...)
+ */
 static inline void
 GfOut(char *fmt, ...)
 {
@@ -524,11 +487,6 @@ GfOut(char *fmt, ...)
 
 #else /* _DEBUG || DEBUG */
 
-/** Console output
-    @param	s	string to display
-    @param	args	printf args
-    @fn	 GfOut(s, args...)
- */
 #define GfOut printf
 
 #endif /* _DEBUG || DEBUG */

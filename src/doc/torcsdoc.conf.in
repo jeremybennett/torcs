@@ -178,6 +178,8 @@ INHERIT_DOCS         = NO
 
 INLINE_INFO          = YES
 
+DETAILS_AT_TOP       = YES
+
 # the TAB_SIZE tag can be used to set the number of spaces in a tab.
 # Doxygen uses this value to replace tabs by spaces in code fragments.
 
@@ -192,14 +194,14 @@ TAB_SIZE             = 8
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                = src/libs/tgf/ src/libs/tgf/tgf.h src/libs/robottools/ src/libs/racemantools/ src/libs/robottools/robottools.h src/libs/racemantools/racemantools.h src/interfaces/track.h
+INPUT                = src/libs/tgf/ src/libs/robottools/ src/libs/racemantools/ src/interfaces/ src/doc/
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
 # and *.h) to filter out the source-files in the directories. If left 
 # blank all files are included.
 
-FILE_PATTERNS        = *.cpp
+FILE_PATTERNS        = *.cpp *.h
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.
@@ -236,7 +238,7 @@ EXAMPLE_PATTERNS     =
 # directories that contain image that are included in the documentation (see 
 # the \image command).
 
-IMAGE_PATH           =
+IMAGE_PATH           = doc/img
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program 

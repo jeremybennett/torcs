@@ -1,5 +1,5 @@
 /***************************************************************************
-                         Os.cpp -- os specific function table                             
+                         os.cpp -- os specific function table                             
                              -------------------                                         
     created              : Fri Aug 13 22:26:42 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
@@ -16,10 +16,10 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @package	OS
-    @packinfo	OS specific function table
+/** @file
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
+    @ingroup OS
 */
 #ifdef WIN32
 #include <windows.h>
@@ -40,6 +40,7 @@ __declspec(dllexport)
 #endif // WIN32
 tGfOs GfOs = {0};
 
+/** Init of the module */
 void
 gfOsInit(void)
 {
@@ -48,7 +49,7 @@ gfOsInit(void)
 
 /** Get the time in seconds
     @return	Time in seconds since the start of the system
- */
+*/
 double
 GfTimeClock(void)
 {

@@ -25,6 +25,12 @@
     @ingroup	robottools
 */
 
+/** @defgroup telemetry		Telemetry tools for robots.
+    The telemetry is only working with Linux.
+    <br>The graphs are build by gnuplot.
+    @ingroup	robottools
+*/
+    
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -43,7 +49,7 @@ static tTelemItf	tlm;
 static tModList		*modlist = (tModList*)NULL;
 
 /** Initialization of a telemetry session.
-    @ingroup	robottools
+    @ingroup	telemetry
     @param	ymin	Minimum value for Y.
     @param	ymax	Maximum value for Y.
     @return	None
@@ -65,7 +71,7 @@ void RtTelemInit(tdble ymin, tdble ymax)
 
 
 /** Create a new telemetry channel.
-    @ingroup	robottools
+    @ingroup	telemetry
     @param	name	Name of the channel.
     @param	var	Address of the variable to monitor.
     @param	min	Minimum value of this variable.
@@ -78,7 +84,7 @@ void RtTelemNewChannel(const char * name, tdble * var, tdble min, tdble max)
 }
 
 /** Start recording into a file.
-    @ingroup	robottools
+    @ingroup	telemetry
     @param	filename	name of the file to use.
     @return	none.
  */
@@ -88,7 +94,7 @@ void RtTelemStartMonitoring(const char * filename)
 }
 
 /** Stop recording and close the file.
-    @ingroup	robottools
+    @ingroup	telemetry
     @return	none
  */
 void RtTelemStopMonitoring(void)
@@ -97,7 +103,7 @@ void RtTelemStopMonitoring(void)
 }
 
 /** Record a new set of values.
-    @ingroup	robottools
+    @ingroup	telemetry
     @param	time	current time.
     @return	None.
  */
@@ -107,7 +113,7 @@ void RtTelemUpdate(double time)
 }
 
 /** Deinstall the telemetry module.
-    @ingroup	robottools
+    @ingroup	telemetry
     @return	none.
  */
 void RtTelemShutdown(void)

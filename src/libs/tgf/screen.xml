@@ -20,7 +20,7 @@
   <section name="Screen Properties">
     <attnum name="x" val="640"></attnum>
     <attnum name="y" val="480"></attnum>
-    <attstr name="fullscreen" in="yes,no" val="no"></attstr>
+    <attstr name="fullscreen" in="yes,no" val="yes"></attstr>
     <attnum name="gamma" val="2.0"></attnum>
   </section>
 

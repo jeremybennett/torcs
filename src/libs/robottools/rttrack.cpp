@@ -23,6 +23,11 @@
     @ingroup	robottools
 */
 
+/** @defgroup tracktools	Track related tools for robots.
+    All the accesses to the track structure, car position...
+    @ingroup	robottools
+*/
+
 #include <stdlib.h>
 #include <math.h>
 #ifdef WIN32
@@ -39,9 +44,12 @@
 #endif
 
 /** Get the track width at the specified point.
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	seg	Segment
-    @param	toStart	Distance from the beginning of the segment
+    @param	toStart	Distance from the beginning of the segment.
+    		<br>The units are:
+		- meters for straights
+		- radians for turns
     @return	Width of the track at this point.
     @note	The Pit lane and the track have different width, and the side segments have variable width.
  */
@@ -53,7 +61,7 @@ RtTrackGetWidth(tTrackSeg *seg, tdble toStart)
 
 
 /** Convert a Local position (segment, toRight, toStart)
-    @ingroup	robottools
+    @ingroup	tracktools
     into a Global one (X, Y)
     The ToStart position refers to the current segment,
     the function will not search for next segment if toStart
@@ -196,7 +204,7 @@ RtTrackLocal2Global(tTrkLocPos *p, tdble *X, tdble *Y, int flag)
 }
 
 /** Convert a Global (segment, X, Y) position into a Local one (segment, toRight, toStart)
-    @ingroup	robottools
+    @ingroup	tracktools
     The segment in the Global position is used to start the search of a good segment
     in term of toStart value.
     The segments are scanned in order to find a toStart value between 0 and the length
@@ -383,7 +391,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 |   |    ||  |
 |    track side
     @endverbatim
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	p	Local position
     @return	Height in meters
  */
@@ -434,7 +442,7 @@ RtTrackHeightL(tTrkLocPos *p)
 
 /** Returns the absolute height in meters of the road
     at the Global position (segment, X, Y)
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	seg	Segment
     @param	X	Global X position
     @param	Y	Global Y position
@@ -457,7 +465,7 @@ RtTrackHeightG(tTrackSeg *seg, tdble X, tdble Y)
     to project the point on the border, it is not necessary
     to give a point directly on the border itself.
     The vector is normalized.
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	seg	Current segment
     @param	X	Global X position
     @param	Y	Global Y position
@@ -512,7 +520,7 @@ RtTrackSideNormalG(tTrackSeg *seg, tdble X, tdble Y, int side, t3Dd *norm)
 /** Used to get the tangent angle for a track position
     The angle is given in radian.
     the angle 0 is parallel to the first segment start.
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	p	Local position
     @return	Tagent angle in radian.
     @note	For side segment, the track side is used for the tangent.
@@ -540,7 +548,7 @@ RtTrackSideTgAngleL(tTrkLocPos *p)
     Local coordinates are used to locate the point where to
     get the road normal vector.
     The vector is normalized. 
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	p	Local position
     @param	norm	Returned normalized road normal vector
  */
@@ -595,7 +603,7 @@ RtTrackSurfaceNormalL(tTrkLocPos *p, t3Dd *norm)
 
 
 /** Get the distance from the start lane.
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	car 	the concerned car.
     @return	The distance between the start lane and the car.
  */
@@ -621,7 +629,7 @@ RtGetDistFromStart(tCarElt *car)
 
 
 /** Get the distance to the pit stop.
-    @ingroup	robottools
+    @ingroup	tracktools
     @param	car 	The concerned car.
     @param	track	The current Track
     @param	dL	Length to the pits

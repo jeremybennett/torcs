@@ -16,7 +16,11 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @package	Race Manager Tools
+/** @file   
+    		
+    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    @version	$Id$
+    @ingroup racemantools
 */
 
 #include <stdlib.h>

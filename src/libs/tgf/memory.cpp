@@ -17,14 +17,6 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @package	Memory
-    @packinfo	Memory allocation and free management per module.
-		This API allows to allocate memory and free all the
-		previously allocated memory at once for a module.
-		This is just to ease the memory management for lazy programmers...
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
-*/
 
 
 #ifdef DMALLOC

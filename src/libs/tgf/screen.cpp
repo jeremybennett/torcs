@@ -76,9 +76,10 @@ void GfScrInit(int argc, char *argv[])
     int		winX, winY;
     void	*handle;
     char	*fscr;
+    int		fullscreen;
+    static char	buf[256];
+    int		i;
     
-    /* Give an initial size and position so user doesn't have to place window */
-    glutInitWindowPosition(0, 0);
     
     handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
@@ -90,22 +91,44 @@ void GfScrInit(int argc, char *argv[])
     GfScrCenX = xw / 2;
     GfScrCenY = yw / 2;
     
-    glutInitWindowSize(winX, winY);
     glutInit(&argc, argv);
 
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-
-    Window = glutCreateWindow(argv[0]);
-    if (!Window) {
-	printf("Error, couldn't open window\n");
-	exit(1);
-    }
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
+    fullscreen = 0;
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	glutFullScreen();
+	for (i = 160; i > 49; i--) {
+	    sprintf(buf, "%dx%d:32@%d", winX, winY, i);
+	    glutGameModeString(buf);
+	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+		glutEnterGameMode();
+		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
+		    fullscreen = 1;
+		    break;
+		} else {
+		    glutLeaveGameMode();
+		}
+	    }
+	}
+    }
+
+    if (!fullscreen) {
+	/* Give an initial size and position so user doesn't have to place window */
+	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(winX, winY);
+	Window = glutCreateWindow(argv[0]);
+	if (!Window) {
+	    printf("Error, couldn't open window\n");
+	    exit(1);
+	}
+    }
+
+    if ((strcmp(fscr, GFSCR_VAL_YES) == 0) && (!fullscreen)) {
+	/* glutFullScreen(); */
     }
     GfParmReleaseHandle(handle);
+
     glutReshapeFunc( Reshape );
 }
 /** Get the screen and viewport sizes.
@@ -122,6 +145,23 @@ void GfScrGetSize(int *scrw, int *scrh, int *vieww, int *viewh)
     *scrh = GfScrHeight;
     *vieww = GfViewWidth;
     *viewh = GfViewHeight;
+}
+
+void
+GfScrReinit(void *dummy)
+{
+#ifdef WIN32
+    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
+#else
+	if (execlp("./torcs", "torcs", (const char *)NULL)) {
+#endif
+	    perror("torcs");
+	    exit(1);
+#ifdef WIN32
+	}
+#else
+    }
+#endif    
 }
 
 
@@ -143,18 +183,7 @@ chgScreenType(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-#ifdef WIN32
-    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
-#else
-	if (execlp("./torcs", "torcs", (const char *)NULL)) {
-#endif
-	    perror("torcs");
-	    exit(1);
-#ifdef WIN32
-	}
-#else
-    }
-#endif
+    GfScrReinit();
 }
 
 static void
@@ -196,9 +225,9 @@ chgScreenSize(void *p)
 	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 960);
 	break;
     case 5:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1200);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 960);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1200);
+	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1280);
+	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 1024);
+	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1280);
 	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 1024);
 	break;
     case 6:
@@ -211,18 +240,7 @@ chgScreenSize(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-#ifdef WIN32
-    if (execlp("wtorcs.exe", "torcs", (const char *)NULL)) {
-#else
-	if (execlp("./torcs", "torcs", (const char *)NULL)) {
-#endif
-	    perror("torcs");
-	    exit(1);
-#ifdef WIN32
-	}    
-#else
-    }
-#endif
+    GfScrReinit();
 }
 
 
@@ -246,7 +264,7 @@ GfScrMenuInit(void *precMenu)
     GfuiMenuButtonCreate(menuHdle, "800x600", "Relaunch TORCS in 800x600 mode", (void*)2, chgScreenSize);
     GfuiMenuButtonCreate(menuHdle, "1024x768", "Relaunch TORCS in 1024x768 mode", (void*)3, chgScreenSize);
     GfuiMenuButtonCreate(menuHdle, "1200x960", "Relaunch TORCS in 1200x960 mode", (void*)4, chgScreenSize);
-    GfuiMenuButtonCreate(menuHdle, "1200x1024", "Relaunch TORCS in 1200x1024 mode", (void*)5, chgScreenSize);
+    GfuiMenuButtonCreate(menuHdle, "1280x1024", "Relaunch TORCS in 1280x1024 mode", (void*)5, chgScreenSize);
     GfuiMenuButtonCreate(menuHdle, "1600x1200", "Relaunch TORCS in 1600x1200 mode", (void*)6, chgScreenSize);
 
     paramHdle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);

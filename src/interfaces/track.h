@@ -21,8 +21,9 @@
     		This is the track structure.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
-    @ingroup	track
+    @ingroup	trackstruct
 */
+
  
 #ifndef _TRACKV1_H_
 #define _TRACKV1_H_
@@ -30,6 +31,8 @@
 #include <ttypes.h>
 
 #define TRK_IDENT	((0x01)<<TRK_IDENT_SHIFT)	/* from 0x01 to 0xFF */
+
+/* Parameters strings for track files */
 
 #define TRK_SECT_HDR	"Header"
 
@@ -212,130 +215,165 @@ typedef struct RoadCam
 /** Extended track segment */
 typedef struct SegExt
 {
-    /** turn marks */
-    int		nbMarks;
-    /** marks array */
-    int		*marks;  
+    int		nbMarks;	/**< turn marks */
+    int		*marks;		/**< marks array */
 } tSegExt;
 
 
 /** Surface */
 typedef struct trackSurface {
-    struct trackSurface *next;
-    
-    char *material;	/* type of material used */
+    struct trackSurface *next;	/**< Next surface in list */
 
-    tdble kFriction;	/* coefficient of friction */
-    tdble kRebound;	/* coefficient of energy restitution */
-    tdble kRollRes;	/* rolling resistance */
-    tdble kRoughness;
-    tdble kRoughWaveLen;
-    tdble kDammage;
+    char *material;		/**< Type of material used */
+
+    tdble kFriction;		/**< Coefficient of friction */
+    tdble kRebound;		/**< Coefficient of energy restitution */
+    tdble kRollRes;		/**< Rolling resistance */
+    tdble kRoughness;		/**< Roughtness in m of the surface (wave height) */
+    tdble kRoughWaveLen;	/**< Wave length in m of the surface */
+    tdble kDammage;		/**< Dammages in case of collision */
+
 } tTrackSurface;
 
 
 
 /** Barrier */
 typedef struct trackBarrier {
-    /** barrier style */
-    int			style;
-    tdble		width;
-    tdble		height;
-    tTrackSurface	*surface;
+    int			style;	/**< Barrier style */
+    tdble		width;	/**< Barrier width */
+    tdble		height;	/**< Barrier height */
+    tTrackSurface	*surface; /**< Barrier surface */
 } tTrackBarrier;
 
 
-/** Track segment */
+/** Track segment (tTrackSeg)
+    The segments can be straights (type TR_STR):
+    @image html straight-desc.png
+    Or can be turn segments (type TR_RGT or TR_LFT):
+    @image html turn-1-desc.png
+    @ingroup trackstruct
+*/
 typedef struct trackSeg {
-    char *name;
-    /** segment number */
-    int	id;
+    char *name;			/**< Segment name */
+    int	id;			/**< Segment number */
 
-    /** Geometry */
-    /** geometrical type */
-    int type;	   
-    /** right curve */     
-#define TR_RGT	    1
-    /** left curve */
-#define TR_LFT	    2
-    /** straight */
-#define TR_STR	    3
+    int type;			/**< Geometrical type:
+				 - TR_RGT
+				 - TR_LFT
+				 - TR_STR
+				*/
+#define TR_RGT	    1		/**< Right curve */
+#define TR_LFT	    2		/**< Left curve */
+#define TR_STR	    3		/**< Straight */
 
-    /** position type */
-    int type2;
-#define TR_MAIN	    1
-#define TR_LSIDE    2
-#define TR_RSIDE    3
-#define TR_LBORDER  4
-#define TR_RBORDER  5
+    int type2;			/**< Position type:
+				   - TR_MAIN
+				   - TR_LSIDE
+				   - TR_RSIDE
+				   - TR_LBORDER
+				   - TR_RBORDER
+				*/
+#define TR_MAIN	    1		/**< Main track segment (ie road part) */
+#define TR_LSIDE    2		/**< Left side segment (outer segment) */
+#define TR_RSIDE    3		/**< Right side segment (outer segment) */
+#define TR_LBORDER  4		/**< Left border segment (inner segment) */
+#define TR_RBORDER  5		/**< Right border segment (inner segment) */
 
-    /** segment style */
-    int style;
-#define TR_PLAN		0	/* border only */
-#define TR_CURB		1	/* border only */
-#define TR_WALL		2
-#define TR_FENCE	3	/* barrier only */
-#define TR_PITBUILDING	4	/* barrier only */
+    int style;			/**< Border and barrier segments style:
+				   - TR_PLAN
+				   - TR_CURB
+				   - TR_WALL
+				   - TR_FENCE
+				   - TR_PITBUILDING
+				 */
+#define TR_PLAN		0	/**< Flat (border only) */
+#define TR_CURB		1	/**< Curb (border only) */
+#define TR_WALL		2	/**< Wall (barrier only) */
+#define TR_FENCE	3	/**< Fence (no width) (barrier only) */
+#define TR_PITBUILDING	4	/**< Pit building wall (barrier only) */
 
-    /** length in meters of the middle of the track */
-    tdble length;
-    tdble width;
-    tdble startWidth;
-    tdble endWidth;
-    tdble lgfromstart;  /* length of begining of segment from starting line (logical not real) */
-    tdble radius;	/* radius in meters of the middle of the track (>0) */
-    tdble radiusr;	/* radius in meters of the right side of the track (>0) */
-    tdble radiusl;	/* radius in meters of the left side of the track (>0) */
-    tdble arc;	        /* arc in rad of the curve (>0) */
-    t3Dd center;	/* center of the curve */
-    t3Dd vertex[4];	/* coord of the 4 corners of the segment */
-#define TR_SL	0	/* Start-Left corner */
-#define TR_SR	1	/* Start-Right corner */
-#define TR_EL	2	/* End-Left corner */
-#define TR_ER	3	/* End_Right corner */
+    tdble length;		/**< Length in meters of the middle of the track */
+    tdble width;		/**< Width of the segment (if constant width) */
+    tdble startWidth;		/**< Width of the beginning of the segment */
+    tdble endWidth;		/**< Width of the end of the segment */
+    tdble lgfromstart;		/**< Length of begining of segment from starting line */
+    tdble radius;		/**< Radius in meters of the middle of the track (>0) */
+    tdble radiusr;		/**< Radius in meters of the right side of the track (>0) */
+    tdble radiusl;		/**< Radius in meters of the left side of the track (>0) */
+    tdble arc;			/**< Arc in rad of the curve (>0) */
+    t3Dd center;		/**< Center of the curve */
+    t3Dd vertex[4];		/**< Coord of the 4 corners of the segment.
+				   <br>Index in:
+				   - TR_SL
+				   - TR_SL
+				   - TR_EL
+				   - TR_ER
+				 */
+#define TR_SL	0		/**< Start-Left corner */
+#define TR_SR	1		/**< Start-Right corner */
+#define TR_EL	2		/**< End-Left corner */
+#define TR_ER	3		/**< End_Right corner */
 
-    tdble angle[7];	/* rotation angles of the track in rad anti-clockwise */
-#define TR_ZS	0	/* Z Start angle */
-#define TR_ZE	1	/* Z End angle */
-#define TR_YL	2	/* Y Left angle */
-#define TR_YR	3	/* Y Right angle */
-#define TR_XS	4	/* X Start angle */
-#define TR_XE	5	/* X End angle */
-#define TR_CS   6       /* Center start angle */
+    tdble angle[7];		/** Rotation angles of the track in rad anti-clockwise:
+				    <br>Index in:
+				   - TR_ZS
+				   - TR_ZE
+				   - TR_YL
+				   - TR_YR
+				   - TR_XS
+				   - TR_XE
+				   - TR_CS
+				 */
+#define TR_ZS	0		/**< Z Start angle */
+#define TR_ZE	1		/**< Z End angle */
+#define TR_YL	2		/**< Y Left angle */
+#define TR_YR	3		/**< Y Right angle */
+#define TR_XS	4		/**< X Start angle */
+#define TR_XE	5		/**< X End angle */
+#define TR_CS   6		/**< Center start angle */
+
     /* constants used to find the height of a point */
-    tdble Kzl;          /* long constant */
-    tdble Kzw;          /* width constant */
+    tdble Kzl;		/* long constant */
+    tdble Kzw;		/* width constant */
     /* constant used to find the width of a segment */
-    tdble Kyl;		/* find y along x */
-    
-    t3Dd rgtSideNormal;   /* normal to the right side in case of straight segment */
-
-    tdble height;	/* for walls, curbs and barriers */
-
+    tdble	Kyl;		/* find y along x */
+    t3Dd	rgtSideNormal;	/* normal to the right side in case of straight segment */
     int		envIndex;	/* Environment mapping image index */
 
-    /* Type of segment regarding the race */
-    unsigned int    raceInfo;
-#define TR_NORMAL	0x00000000	/* normal segment */
-#define TR_LAST		0x00000001	/* segment before start line */
-#define TR_START	0x00000002	/* segment after start line */
-#define TR_PITLANE	0x00000004	/* pit lane segment */
-#define TR_SPEEDLIMIT	0x00000008	/* segment where the speed is limited */
-#define TR_PITENTRY	0x00000010	/* segment where the pit lane cross the main track */
-#define TR_PITEXIT	0x00000020	/* segment where the pit lane cross the main track */
-#define TR_PIT		0x00000040	/* car pit */
+    tdble	height;		/**< Max height for curbs */
+
+    unsigned int raceInfo;	/**< Type of segment regarding the race:
+				   <br>Mask value in:
+				   - TR_NORMAL
+				   - TR_LAST
+				   - TR_START
+				   - TR_PITLANE
+				   - TR_SPEEDLIMIT
+				   - TR_PITENTRY
+				   - TR_PITEXIT
+				   - TR_PIT
+				*/
+#define TR_NORMAL	0x00000000 /**< Normal segment */
+#define TR_LAST		0x00000001 /**< Segment before start line */
+#define TR_START	0x00000002 /**< Segment after start line */
+#define TR_PITLANE	0x00000004 /**< Pit lane segment */
+#define TR_SPEEDLIMIT	0x00000008 /**< Segment where the speed is limited */
+#define TR_PITENTRY	0x00000010 /**< Segment where the pit lane cross the main track */
+#define TR_PITEXIT	0x00000020 /**< Segment where the pit lane cross the main track */
+#define TR_PIT		0x00000040 /**< Car pit */
+
+    /* pointers */
 
     /* optionnal extensions */
     tSegExt		*ext;
 
-    /* pointers */
-    tTrackSurface	*surface; /* segment surface */
-    tTrackBarrier	*barrier[2];
-    tRoadCam        *cam;   /* current camera */
-    struct trackSeg *next;  /* next segment */
-    struct trackSeg *prev;  /* previous segment */
-    struct trackSeg *lside; /* left side */
-    struct trackSeg *rside; /* right side */
+    tTrackSurface	*surface; /**< Segment surface */
+    tTrackBarrier	*barrier[2]; /**< Segment barriers */
+    tRoadCam        *cam;	/* current camera */
+    struct trackSeg *next;	/**< Next segment */
+    struct trackSeg *prev;	/**< Previous segment */
+    struct trackSeg *lside;	/**< Segment on the left */
+    struct trackSeg *rside;	/**< Segment on the right */
 } tTrackSeg;
 
 /* selection for local position structure */
@@ -346,30 +384,21 @@ typedef struct trackSeg {
 /** Location on the track in local coordinates */
 typedef struct
 {
-    /** Track segment */
-    tTrackSeg	*seg;
-    int		type;
-    /** Relative to the main segment 
-	@see	tTrkLocPos
-     */
-#define TR_LPOS_MAIN	0
-    /** If the point is on a side, relative to this side 
-	@see	tTrkLocPos
-     */
-#define TR_LPOS_SEGMENT	1
-    /** Local pos includes all the track width 
-	@see	tTrkLocPos
-     */
-#define TR_LPOS_TRACK	2
+    tTrackSeg	*seg;		/**< Track segment */
+    int		type;		/**< Type of description:
+				   - TR_LPOS_MAIN
+				   - TR_LPOS_SEGMENT
+				   - TR_LPOS_TRACK
+				 */
 
-    /** Distance to start of segment (or arc if turn) */
-    tdble	toStart;
-    /** Distance to right side of segment (+ to inside of track - to outside) */
-    tdble	toRight;
-    /** Distance to middle of segment (+ to left - to right) */
-    tdble	toMiddle;
-    /** Distance to left side of segment (+ to inside of track - to outside) */
-    tdble	toLeft;
+#define TR_LPOS_MAIN	0	/**< Relative to the main segment */
+#define TR_LPOS_SEGMENT	1	/**< If the point is on a side, relative to this side */
+#define TR_LPOS_TRACK	2	/**< Local pos includes all the track width */
+
+    tdble	toStart;	/**< Distance to start of segment (or arc if turn) */
+    tdble	toRight;	/**< Distance to right side of segment (+ to inside of track - to outside) */
+    tdble	toMiddle;	/**< Distance to middle of segment (+ to left - to right) */
+    tdble	toLeft;		/**< Distance to left side of segment (+ to inside of track - to outside) */
 } tTrkLocPos;
 
 struct CarElt;
@@ -377,40 +406,42 @@ struct CarElt;
 /** Driver's pit */
 typedef struct TrackOwnPit
 {
-    /** Center of the pit position */
-    tTrkLocPos		pos;
-    int			state;
+    tTrkLocPos		pos;	/**< Center of the pit position */
+
+    int			state;	/* not yet used (will be used for pit sharing within teams) */
 #define TR_PIT_STATE_FREE	0
 #define TR_PIT_STATE_USED	1
 #define TR_PIT_STATE_ASKED	2
-    tdble		lmin;	/* Pitting area */
-    tdble		lmax;
-    struct CarElt	*car;
+    tdble		lmin;	/**< Pitting area length min */
+    tdble		lmax;	/**< Pitting area length max */
+    struct CarElt	*car;	/**< Driver's car link */
 } tTrackOwnPit;
 
 /** Pits Info Structure */
 typedef struct 
 {
-    int		type;
-#define TR_PIT_NONE		0
-#define TR_PIT_ON_TRACK_SIDE	1
-#define TR_PIT_ON_SEPARATE_PATH	2
-    /** number max of pits */
-    int		nMaxPits;
-    /** actual number of pits */
-    int		nPitSeg;
-    /** TR_RGT or TR_LFT */
-    int		side;
-    tdble	len;
-    tdble	width;
-    tdble	speedLimit;
-    /** Pit lane */
-    tTrackSeg	*pitEntry;
-    tTrackSeg	*pitExit;
-    tTrackSeg	*pitStart;
-    tTrackSeg	*pitEnd;
-    tTrackOwnPit *driversPits;
-    int		driversPitsNb;
+    int		type;		/**< Type of Pit:
+				   - TR_PIT_NONE
+				   - TR_PIT_ON_TRACK_SIDE
+				 */
+#define TR_PIT_NONE		0 /**< No pits for that tracks */
+#define TR_PIT_ON_TRACK_SIDE	1 /**< The pits are on the track side */
+#define TR_PIT_ON_SEPARATE_PATH 2
+    int		nMaxPits;	/**< number max of pits */
+    int		nPitSeg;	/**< actual number of pits */
+    int		side;		/**< Pits side:
+				   - TR_RGT
+				   - TR_LFT
+				*/
+    tdble	len;		/**< Lenght of each pit stop */
+    tdble	width;		/**< Width of each pit stop */
+    tdble	speedLimit;	/**< Speed limit between pitStart and pitEnd */
+    tTrackSeg	*pitEntry;	/**< Pit lane segment */
+    tTrackSeg	*pitStart;	/**< Pit lane segment */
+    tTrackSeg	*pitEnd;	/**< Pit lane segment */
+    tTrackSeg	*pitExit;	/**< Pit lane segment */
+    tTrackOwnPit *driversPits;	/**< List of pits by driver */
+    int		driversPitsNb;	/**< Number of drivers */
 } tTrackPitInfo;
 
 typedef struct
@@ -432,33 +463,23 @@ typedef struct
     tTurnMarksInfo	turnMarksInfo;
 } tTrackGraphicInfo;
 
-/** Track structure */
+/** Track structure
+    @ingroup trackstruct
+*/
 typedef struct
 {
-    /** Name of the track */
-    char		*name;
-    /** Author's name */
-    char		*author;
-    /** Filename of the track description */
-    char		*filename;
-    /** Internal name of the track */
-    char		*internalname;
-    /** Category of the track */
-    char		*category;
-    /** Number of segments */
-    int			nseg;
-    /** Version of the track type */
-    int			version;
-    /** main track length */
-    tdble		length;
-    /** main track width */
-    tdble		width;
-    /** Pits information */
-    tTrackPitInfo	pits;
-    
-    /** Main track */
-    tTrackSeg		*seg;
-    tTrackSurface	*surfaces; /* segment surface list */
+    char	  *name;	/**< Name of the track */
+    char	  *author;	/**< Author's name */
+    char	  *filename;	/**< Filename of the track description */
+    char	  *internalname; /**< Internal name of the track */
+    char	  *category;	/**< Category of the track */
+    int		  nseg;		/**< Number of segments */
+    int		  version;	/**< Version of the track type */
+    tdble	  length;	/**< main track length */
+    tdble	  width;	/**< main track width */
+    tTrackPitInfo pits;		/**< Pits information */
+    tTrackSeg	  *seg;		/**< Main track */
+    tTrackSurface *surfaces;	/**< Segment surface list */
 
     t3Dd		min;
     t3Dd		max;

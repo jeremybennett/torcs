@@ -599,8 +599,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	 ((car->_fuel < (ConsFactor + 5.0)) && ((s->_totLaps - car->_laps) > 1)))) {
 	PitState[idx] = PIT_STATE_ASKED;
     }
-    offset = getOffset(index, car, &trkPos, &MaxSpeed[idx]);
-
+    if (PitState[idx] != PIT_STATE_NO) {
+	offset = getOffset(index, car, &trkPos, &MaxSpeed[idx]);
+    }
+    
     if (idx == 1) {
 	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;

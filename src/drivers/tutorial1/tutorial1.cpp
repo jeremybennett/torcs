@@ -30,10 +30,6 @@
 #include <robottools.h>
 #include <robot.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static void	*DrvInfo;
 static char	sstring[256];
 static tTrack	*curTrack;

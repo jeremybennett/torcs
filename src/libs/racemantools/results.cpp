@@ -163,18 +163,22 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
     }
 
     GfuiButtonCreate(hdle,
-		  "Continue",
-		  GFUI_FONT_LARGE,
-		  320,
-		  40,
-		  GFUI_BTNSZ,
-		  GFUI_ALIGN_HC_VB,
-		  0,
-		  prevHdle,
-		  GfuiScreenActivate,
-		  NULL,
-		  (tfuiCallback)NULL,
-		  (tfuiCallback)NULL);
+		     "Continue",
+		     GFUI_FONT_LARGE,
+		     320,
+		     40,
+		     GFUI_BTNSZ,
+		     GFUI_ALIGN_HC_VB,
+		     0,
+		     prevHdle,
+#ifndef WIN32
+		     GfuiScreenActivate,
+#else
+		     GfScrReinit,
+#endif
+		     NULL,
+		     (tfuiCallback)NULL,
+		     (tfuiCallback)NULL);
 
     GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenActivate);
     GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenActivate);

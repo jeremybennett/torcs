@@ -16,70 +16,79 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
+/** @file
+    		This is the car structure.
+    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+    @version	$Id$
+    @ingroup	carstruct
+    @note	Short cuts are to be used with the carElt structure.
+*/
+
 
 #ifndef __CARV1_H__
 #define __CARV1_H__
 
 #include <ttypes.h>
 #include <track.h>
-
 #include <plib/sg.h>
 
 #define CAR_IDENT	((0x01)<<CAR_IDENT_SHIFT)
 
+/** Wheels Specifications */
 typedef struct
 {
-    tdble	rimRadius;
-    tdble	tireHeight;
-    tdble	tireWidth;
-    tdble	brakeDiskRadius;
-    tdble	wheelRadius;
+    tdble	rimRadius;	/**< Rim radius */
+    tdble	tireHeight;	/**< Tire height  */
+    tdble	tireWidth;	/**< Tire width */
+    tdble	brakeDiskRadius; /**< Brake disk radius */
+    tdble	wheelRadius;	/**< Overall wheel radius */
 } tWheelSpec;
-#define _rimRadius(i) info->wheel[i].rimRadius
-#define _tireHeight(i) info->wheel[i].tireHeight
-#define _tireWidth(i) info->wheel[i].tireWidth
-#define _brakeDiskRadius(i) info->wheel[i].brakeDiskRadius
-#define _wheelRadius(i) info->wheel[i].wheelRadius
+/* structure access short cuts */
+#define _rimRadius(i) info->wheel[i].rimRadius 			/**< short cut to tWheelSpec#rimRadius */
+#define _tireHeight(i) info->wheel[i].tireHeight		/**< short cut to tWheelSpec#tireHeight */
+#define _tireWidth(i) info->wheel[i].tireWidth			/**< short cut to tWheelSpec#tireWidth */
+#define _brakeDiskRadius(i) info->wheel[i].brakeDiskRadius	/**< short cut to tWheelSpec#brakeDiskRadius */
+#define _wheelRadius(i) info->wheel[i].wheelRadius		/**< short cut to tWheelSpec#wheelRadius */
 
 
-/* Static Public info */
+/** Static Public info */
 typedef struct {
-    char	*name;	    	/* driver's name */
-    char	*carName;	/* car object name */
-    char	*category;	/* car's category */
-    int		raceNumber;	/* car's race number */
-    int		startRank;	/* car's starting position */
-    tdble	iconColor[3];	/* car color in leaders board */
-    t3Dd	dimension;	/* car's mesures */
-    t3Dd	drvPos;		/* driver's position */
-    tdble	tank;		/* fuel tank capa */
-    tdble	steerLock;
-    t3Dd	statGC;		/* static pos of GC (should be the origin of car axis) */
-    tWheelSpec	wheel[4];	/* wheels specif */
+    char	*name;	    	/**< Driver's name */
+    char	*carName;	/**< Car object name */
+    char	*category;	/**< Car's category */
+    int		raceNumber;	/**< Car's race number */
+    int		startRank;	/**< Car's starting position */
+    tdble	iconColor[3];	/**< Car color in leaders board */
+    t3Dd	dimension;	/**< Car's mesures */
+    t3Dd	drvPos;		/**< Driver's position */
+    tdble	tank;		/**< Fuel tank capa */
+    tdble	steerLock;	/**< Steer lock angle */
+    t3Dd	statGC;		/**< Static pos of GC (should be the origin of car axis) */
+    tWheelSpec	wheel[4];	/**< Wheels specifications */
 } tInitCar;
-/* structure access */
-#define _name		info->name
-#define _carName	info->carName
-#define _category	info->cartegory
-#define _raceNumber	info->raceNumber
-#define _startRank	info->startRank
-#define _dimension	info->dimension
-#define _dimension_x	info->dimension.x
-#define _dimension_y	info->dimension.y
-#define _dimension_z	info->dimension.z
-#define _drvPos_x	info->drvPos.x
-#define _drvPos_y	info->drvPos.y
-#define _drvPos_z	info->drvPos.z
-#define _statGC		info->statGC
-#define _statGC_x	info->statGC.x
-#define _statGC_y	info->statGC.y
-#define _statGC_z	info->statGC.z
-#define _iconColor	info->iconColor
-#define _tank		info->tank
-#define _steerLock	info->steerLock
+/* structure access short cuts */
+#define _name		info->name		/**< short cut to tInitCar#name */
+#define _carName	info->carName		/**< short cut to tInitCar#carName */
+#define _category	info->cartegory		/**< short cut to tInitCar#cartegory */
+#define _raceNumber	info->raceNumber	/**< short cut to tInitCar#raceNumber */
+#define _startRank	info->startRank		/**< short cut to tInitCar#startRank */
+#define _dimension	info->dimension		/**< short cut to tInitCar#dimension */
+#define _dimension_x	info->dimension.x	/**< short cut to tInitCar#dimension.x */
+#define _dimension_y	info->dimension.y	/**< short cut to tInitCar#dimension.y */
+#define _dimension_z	info->dimension.z	/**< short cut to tInitCar#dimension.z */
+#define _drvPos_x	info->drvPos.x		/**< short cut to tInitCar#drvPos.x */
+#define _drvPos_y	info->drvPos.y		/**< short cut to tInitCar#drvPos.y */
+#define _drvPos_z	info->drvPos.z		/**< short cut to tInitCar#drvPos.z */
+#define _statGC		info->statGC		/**< short cut to tInitCar#statGC */
+#define _statGC_x	info->statGC.x		/**< short cut to tInitCar#statGC.x */
+#define _statGC_y	info->statGC.y		/**< short cut to tInitCar#statGC.y */
+#define _statGC_z	info->statGC.z		/**< short cut to tInitCar#statGC.z */
+#define _iconColor	info->iconColor		/**< short cut to tInitCar#iconColor */
+#define _tank		info->tank		/**< short cut to tInitCar#tank */
+#define _steerLock	info->steerLock		/**< short cut to tInitCar#steerLock */
 
-/* Race Administrative info */
+/** Race Administrative info */
 typedef struct {
     double	bestLapTime;
     double	deltaBestLapTime;
@@ -120,24 +129,36 @@ typedef struct {
 #define _scheduledEventTime	race->scheduledEventTime
 #define _event			race->event
 
-/* public info on the cars */
+/** Public info on the cars */
 typedef struct {
-    tDynPt	DynGC;		/* GC data (car axis) */    
-    tDynPt	DynGCg;		/* GC data (world axis) */    
-    sgMat4	posMat;		/* position matrix */
-    tTrkLocPos	trkPos;		/* current track position */
-    int		state;	    	/* state of the car */
+    tDynPt	DynGC;		/**< GC data (car axis) */    
+    tDynPt	DynGCg;		/**< GC data (world axis) */    
+    sgMat4	posMat;		/**< position matrix */
+    tTrkLocPos	trkPos;		/**< current track position */
+    int		state;	    	/**< state of the car.
+				   <br>The states are:
+				   - RM_CAR_STATE_FINISH
+				   - RM_CAR_STATE_PIT
+				   - RM_CAR_STATE_DNF
+				   - RM_CAR_STATE_PULLUP
+				   - RM_CAR_STATE_PULLSIDE
+				   - RM_CAR_STATE_PULLDN
+				   - RM_CAR_STATE_OUT
+				   - RM_CAR_STATE_NO_SIMU
+				   - RM_CAR_STATE_BROKEN
+				   - RM_CAR_STATE_OUTOFGAS
+				*/
+#define RM_CAR_STATE_FINISH	 0x00000100				/**< Car having passed the finish line */
+#define RM_CAR_STATE_PIT	 0x00000001				/**< Car currently stopped in pits */
+#define RM_CAR_STATE_DNF	 0x00000002				/**< Car did not finish */
+#define RM_CAR_STATE_PULLUP	 0x00000004				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLSIDE	 0x00000008				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLDN	 0x00000010				/**< Car pulled out in the air */
+#define RM_CAR_STATE_OUT	(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/**< Car out of race */
+#define RM_CAR_STATE_NO_SIMU	 0x000000FF				/**< Do not simulate the car */
+#define RM_CAR_STATE_BROKEN	 0x00000200				/**< Engine no more working */
+#define RM_CAR_STATE_OUTOFGAS	 0x00000400				/**< Out of Gas */
     tPosd	corner[4];
-#define RM_CAR_STATE_FINISH	 0x00000100				/* Car having passed the finish line */
-#define RM_CAR_STATE_PIT	 0x00000001				/* Car currently stopped in pits */
-#define RM_CAR_STATE_DNF	 0x00000002				/* Car did not finish */
-#define RM_CAR_STATE_PULLUP	 0x00000004				/* Car pulled out in the air */
-#define RM_CAR_STATE_PULLSIDE	 0x00000008				/* Car pulled out in the air */
-#define RM_CAR_STATE_PULLDN	 0x00000010				/* Car pulled out in the air */
-#define RM_CAR_STATE_OUT	(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/* Car out of race */
-#define RM_CAR_STATE_NO_SIMU	 0x000000FF				/* Do not simulate the car */
-#define RM_CAR_STATE_BROKEN	 0x00000200				/* Engine no more working */
-#define RM_CAR_STATE_OUTOFGAS	 0x00000400				/* Out of Gas */
 
 } tPublicCar;
 /* structure access */
@@ -163,12 +184,13 @@ typedef struct {
 #define _corner_y(i)	pub->corner[i].ay
 #define _posMat		pub->posMat
 
+/** Dynamic wheel information */
 typedef struct {
-    tPosd	relPos;		/* position relative to GC */
-    tdble	spinVel;	/* spin velocity rad/s */
-    tdble	brakeTemp;	/* brake temperature from 0 (cool) to 1.0 (hot) */
-    int		state;		/* wheel state */
-    tTrackSeg	*seg;
+    tPosd	relPos;		/**< position relative to GC */
+    tdble	spinVel;	/**< spin velocity rad/s */
+    tdble	brakeTemp;	/**< brake temperature from 0 (cool) to 1.0 (hot) */
+    int		state;		/**< wheel state */
+    tTrackSeg	*seg;		/**< Track segment where the wheel is */
 } tWheelState;
 #define _ride(i)	priv->wheel[i].relPos.z
 #define _brakeTemp(i)	priv->wheel[i].brakeTemp
@@ -177,25 +199,25 @@ typedef struct {
 
 #define MAX_GEARS	10	/* including reverse and neutral */
 
-/* data known only by the driver */
+/** Data known only by the driver */
 typedef struct {
-    void	*paramsHandle;	/* accessible parameters for modules */
-    void	*carHandle;	/* parameters for car caracteristics */
-    int		driverIndex;	/* index when multiple drivers are in the same dll */
-    char	*modName;	/* dll name */
+    void	*paramsHandle;	/**< accessible parameters for modules */
+    void	*carHandle;	/**< parameters for car caracteristics */
+    int		driverIndex;	/**< index when multiple drivers are in the same dll */
+    char	*modName;	/**< dll name */
     tWheelState	wheel[4];
-    tPosd	corner[4];	/* car's corners position */
-    int		gear;	    	/* current gear */
-    tdble	fuel;	    	/* remaining fuel (liters) */
+    tPosd	corner[4];	/**< car's corners position */
+    int		gear;	    	/**< current gear */
+    tdble	fuel;	    	/**< remaining fuel (liters) */
     tdble	enginerpm;
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
     tdble	enginerpmMaxTq;
-    tdble	gearRatio[MAX_GEARS];	/* including final drive */
-    int		gearNb;			/* incl reverse and neutral */
-    int		gearOffset;		/* gearRatio[gear + gearOffset] is the ratio for gear */
+    tdble	gearRatio[MAX_GEARS];	/**< including final drive */
+    int		gearNb;			/**< incl reverse and neutral */
+    int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
 
-    tdble	skid[4];		/* skid intensity */
+    tdble	skid[4];		/**< skid intensity */
     int		collision;
     t3Dd	normal;
     t3Dd	collpos;
@@ -220,38 +242,41 @@ typedef struct {
 #define _skid		priv->skid
 #define _dammage	priv->dammage
 
-/* Info returned by driver during the race */
+/** Info returned by driver during the race */
 typedef struct {
-    tdble	steer;	    /* Steer command [-1.0, 1.0]  */
-    tdble	accelCmd;   /* Accelerator command [0.0, 1.0] */
-    tdble	brakeCmd;   /* Brake command [0.0, 1.0] */
-    int		gear;  	    /* [-1,6] for gear selection */
-    int		raceCmd;    /* command issued by the driver */
-#define RM_CMD_NONE		0
-#define RM_CMD_PIT_ASKED	1
-    char	*msg[4];     /* 4 lines of 12 characters from car */
-    float	msgColor[4]; /* RGBA of text */
+    tdble	steer;	    /**< Steer command [-1.0, 1.0]  */
+    tdble	accelCmd;   /**< Accelerator command [0.0, 1.0] */
+    tdble	brakeCmd;   /**< Brake command [0.0, 1.0] */
+    int		gear;  	    /**< [-1,6] for gear selection */
+    int		raceCmd;    /**< command issued by the driver */
+#define RM_CMD_NONE		0	/**< No race command */
+#define RM_CMD_PIT_ASKED	1	/**< Race command: Pit asked */
+    char	*msg[4];     /**< 4 lines of 12 characters from car */
+    float	msgColor[4]; /**< RGBA of text */
 } tCarCtrl;
 
 struct RobotItf;
 
+/** Command issued by the car during pit stop */
 typedef struct 
 {
     tdble		fuel;
     int			repair;
 } tCarPitCmd;
 
-/* Element of list of car info */
+/** Car structure (tCarElt).
+    This is the main car structure, used everywhere in the code.
+*/
 typedef struct CarElt
 {
-    int			index;	/* car index */
-    tInitCar		*info;	/* public */
-    tPublicCar		*pub;	/* public */
-    tCarRaceInfo	*race;	/* public */
-    tPrivCar		*priv;	/* private */
-    tCarCtrl		*ctrl;	/* private */
-    tCarPitCmd		*pitcmd;/* private */
-    struct RobotItf	*robot; /* private */
+    int			index;	/**< car index */
+    tInitCar		*info;	/**< public */
+    tPublicCar		*pub;	/**< public */
+    tCarRaceInfo	*race;	/**< public */
+    tPrivCar		*priv;	/**< private */
+    tCarCtrl		*ctrl;	/**< private */
+    tCarPitCmd		*pitcmd;/**< private */
+    struct RobotItf	*robot; /**< private */
     struct CarElt	*next;
 } tCarElt;
 

@@ -16,11 +16,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
-/**
-    @defgroup	robottools	Tools for robots.
-    This is a collection of useful functions for programming a robot.
 
+/** @file   
+    		Robots Tools
+    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    @version	$Id$
 */
 
 #ifndef _ROBOTTOOLS_H_
