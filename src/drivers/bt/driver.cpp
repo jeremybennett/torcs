@@ -53,6 +53,7 @@ const float Driver::DISTCUTOFF = 200.0;						/* [m] */
 const float Driver::MAX_INC_FACTOR = 5.0;					/* [m] increment faster if speed is slow [1.0..10.0] */
 const float Driver::CATCH_FACTOR = 10.0;					/* [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake */
 
+
 Driver::Driver(int index)
 {
 	INDEX = index;
@@ -145,9 +146,10 @@ void Driver::drive(tSituation *s)
 	} else {
 		car->_steerCmd = filterSColl(getSteer());
 		car->_gearCmd = getGear();
-		car->_brakeCmd = filterABS(filterBrakeSpeed(filterTurnSpeed(filterBColl(filterBPit(getBrake())))));
+		//car->_brakeCmd = filterABS(filterBrakeSpeed(filterTurnSpeed(filterBColl(filterBPit(getBrake())))));
+		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
 		if (car->_brakeCmd == 0.0) {
-			car->_accelCmd = filterTCL(filterTrk(getAccel()));
+			car->_accelCmd = filterTCL(filterTrk(filterOverlap(getAccel())));
 		} else {
 			car->_accelCmd = 0.0;
 		}
@@ -232,6 +234,19 @@ float Driver::getAccel()
 	} else {
 		return 1.0;
 	}
+}
+
+
+/* If we get lapped reduce accelerator */
+float Driver::filterOverlap(float accel)
+{
+	int i;
+	for (i = 0; i < opponents->getNOpponents(); i++) {
+		if (opponent[i].getState() & OPP_LETPASS) {
+			return MIN(accel, 0.5);
+		}
+	}
+	return accel;
 }
 
 
@@ -337,7 +352,7 @@ v2d Driver::getTargetPoint()
 	tTrackSeg *seg = car->_trkPos.seg;
 	float lookahead = LOOKAHEAD_CONST + car->_speed_x*LOOKAHEAD_FACTOR;
 	float length = getDistToSegEnd();
-	float offset = getOvertakeOffset();
+	float offset = getOffset();
 
 	if (pit->getInPit()) {
 		if (currentspeedsqr > pit->getSpeedlimitSqr()) {
@@ -385,13 +400,46 @@ v2d Driver::getTargetPoint()
 }
 
 
-/* Compute offset to normal target point for overtaking */
-float Driver::getOvertakeOffset()
+/* Compute offset to normal target point for overtaking or let pass an opponent. */
+// TODO: Rename to getoffset.
+float Driver::getOffset()
 {
 	int i;
-	float catchdist, mincatchdist = FLT_MAX;
+	float catchdist, mincatchdist = FLT_MAX, mindist = -1000.0;
 	Opponent *o = NULL;
 
+	// Increment speed dependent.
+	float incfactor = MAX_INC_FACTOR - MIN(fabs(car->_speed_x)/MAX_INC_FACTOR, (MAX_INC_FACTOR-1.0));
+
+	// Let overlap.
+	for (i = 0; i < opponents->getNOpponents(); i++) {
+		if (opponent[i].getState() & OPP_LETPASS) {
+			// behind, larger distances are smaller ("more negative").
+			if (opponent[i].getDistance() > mindist) {
+				mindist = opponent[i].getDistance();
+				o = &opponent[i];
+			}
+		}
+	}
+
+	if (o != NULL) {
+		tCarElt *ocar = o->getCarPtr();
+		float side = car->_trkPos.toMiddle - ocar->_trkPos.toMiddle;
+		float w = car->_trkPos.seg->width/WIDTHDIV-BORDER_OVERTAKE_MARGIN;
+		if (side > 0.0) {
+			if (myoffset < w) {
+				myoffset += OVERTAKE_OFFSET_INC*incfactor;
+			}
+		} else {
+			if (myoffset > -w) {
+				myoffset -= OVERTAKE_OFFSET_INC*incfactor;
+			}
+		}
+		return myoffset;
+	}
+
+
+	// Overtake.
 	for (i = 0; i < opponents->getNOpponents(); i++) {
 		if (opponent[i].getState() & OPP_FRONT) {
 			catchdist = MIN(opponent[i].getCatchDist(), opponent[i].getDistance()*CATCH_FACTOR);
@@ -401,10 +449,6 @@ float Driver::getOvertakeOffset()
 			}
 		}
 	}
-
-	// Increment speed dependent.
-	float incfactor = MAX_INC_FACTOR - MIN(fabs(car->_speed_x)/MAX_INC_FACTOR, (MAX_INC_FACTOR-1.0));
-
 
 	if (o != NULL) {
 		// Compute the width around the middle which we can use for overtaking.

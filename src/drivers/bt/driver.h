@@ -69,8 +69,9 @@ class Driver {
 		float getSteer();
 		float getClutch();
 		v2d getTargetPoint();
-		float getOvertakeOffset();
+		float getOffset();
 		float brakedist(float allowedspeed, float mu);
+		float filterOverlap(float accel);
 
 		float filterBColl(float brake);
 		float filterABS(float brake);
