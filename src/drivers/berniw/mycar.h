@@ -42,7 +42,39 @@
 class Pathfinder;
 class PathSeg;
 
-class MyCar
+class AbstractCar
+{
+	public:
+		AbstractCar() {};
+		~AbstractCar() {};
+		inline tCarElt* getCarPtr() { return me; }
+		inline t3Dd* getCurrentPos() { return &currentpos; }
+		inline t3Dd* getDir() { return &dir; }
+		inline tdble getSpeedSqr() { return speedsqr; }
+		inline tdble getSpeed() { return speed; }
+		inline int getCurrentSegId() { return currentsegid; }
+
+	protected:
+		inline void setCarPtr(tCarElt* car) { me = car; }
+		inline void updateDir() { dir.x = cos(me->_yaw); dir.y = sin(me->_yaw); dir.z = 0.0; }
+		inline void updatePos() { currentpos.x = me->_pos_X; currentpos.y = me->_pos_Y; currentpos.z = me->_pos_Z - cgh; }
+		inline void updateSpeedSqr() { speedsqr = (me->_speed_x)*(me->_speed_x) + (me->_speed_y)*(me->_speed_y) + (me->_speed_z)*(me->_speed_z); }
+		inline void updateSpeed() { speed = sqrt(speedsqr); }
+		inline void initCGh() { cgh = GfParmGetNum(me->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0); }
+
+		tCarElt* me;
+		t3Dd currentpos;
+		t3Dd dir;
+		tdble speedsqr;
+		tdble speed;
+
+		int currentsegid;
+
+	private:
+		tdble cgh;
+};
+
+class MyCar : public AbstractCar
 {
 	public:
 		/* possible behaviours */
@@ -79,7 +111,6 @@ class MyCar
 		void loadBehaviour(int id);
 		tdble queryInverseSlip(tCarElt * car, tdble speed);
 		tdble queryAcceleration(tCarElt * car, tdble speed);
-		inline tCarElt* getCarPtr() { return mycar; }
 
 		Pathfinder* pf;
 
@@ -104,7 +135,6 @@ class MyCar
 		tdble wheelbase;
 		tdble wheeltrack;
 		tdble cgcorr_b;
-		tdble cgh;
 		tdble carmass;
 		tdble ca;
 		tdble cw;
@@ -112,7 +142,6 @@ class MyCar
 
 		/* dynamic data */
 		tdble mass;
-		int currentsegid;
 		int destsegid;
 		double trtime;
 
@@ -133,33 +162,20 @@ class MyCar
 		bool fuelchecked;
 		bool startmode;
 
-		t3Dd currentpos;
-		t3Dd dir;
-		tdble speed;
-		tdble speedsqr;
 		tdble derror;			/* distance to desired trajectory */
-
 	private:
-		tCarElt* mycar;
 };
 
 
-class OtherCar
+class OtherCar: public AbstractCar
 {
 	public:
-		TrackDesc* track;
-		tCarElt* me;
-		tdble dt;
-		int id;
-		int currentsegid;
-		t3Dd currentpos;
-		t3Dd dir;
-		tdble speedsqr;
-		tdble speed;
-
 		void init(TrackDesc* itrack, tCarElt* car, tSituation *situation);
 		void update(void);
 
+	private:
+		TrackDesc* track;
+		tdble dt;
 };
 
 #endif // _MYCAR_H_

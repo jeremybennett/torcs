@@ -27,17 +27,11 @@
 MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
 	/* init pointer to car data */
-	mycar = car;
+	setCarPtr(car);
 
-
-	cgh = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0);
-	currentpos.x = car->_pos_X;
-	currentpos.y = car->_pos_Y;
-	currentpos.z = car->_pos_Z - cgh;
-
-	dir.x = cos(car->_yaw);
-	dir.y = sin(car->_yaw);
-	dir.z = 0.0;
+	initCGh();
+	updatePos();
+	updateDir();
 
 	/* damage and fuel status */
 	lastfuel = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_FUEL, NULL, 100.0);
@@ -136,15 +130,15 @@ void MyCar::info(void)
 	printf("wheelbase: %f\n", wheelbase);
 	printf("wheeltrack: %f\n", wheeltrack);
 	for (int i = 0; i < MAX_GEARS; i++) {
-			printf("%d\t%f\n", i, mycar->_gearRatio[i]);
+			printf("%d\t%f\n", i, getCarPtr()->_gearRatio[i]);
 	}
-	printf("Offset: %d\n", mycar->_gearOffset);
-	printf("#gears: %d\n", mycar->_gearNb);
-	printf("gear: %d\n", mycar->_gear);
-	printf("steerlock: %f rad, %f°\n", mycar->_steerLock, mycar->_steerLock * 180 / PI);
+	printf("Offset: %d\n", getCarPtr()->_gearOffset);
+	printf("#gears: %d\n", getCarPtr()->_gearNb);
+	printf("gear: %d\n", getCarPtr()->_gear);
+	printf("steerlock: %f rad, %f°\n", getCarPtr()->_steerLock, getCarPtr()->_steerLock * 180 / PI);
 	printf("cgcorr_b: %f\n", cgcorr_b);
-	printf("car index: %d\n", mycar->index);
-	printf("race nb: %d\n", mycar->_raceNumber);
+	printf("car index: %d\n", getCarPtr()->index);
+	printf("race nb: %d\n", getCarPtr()->_raceNumber);
 }
 
 
@@ -155,13 +149,8 @@ void MyCar::info(void)
 void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
 	/* update current position */
-	currentpos.x = car->_pos_X;
-	currentpos.y = car->_pos_Y;
-	currentpos.z = car->_pos_Z - cgh;
-
-	dir.x = cos(car->_yaw);
-	dir.y = sin(car->_yaw);
-	dir.z = 0.0;
+	updatePos();
+	updateDir();
 
 	/* compute current speed */
 	speedsqr = (car->_speed_x)*(car->_speed_x) + (car->_speed_y)*(car->_speed_y) + (car->_speed_z)*(car->_speed_z);
@@ -265,37 +254,25 @@ void OtherCar::init(TrackDesc* itrack, tCarElt* car, tSituation *situation)
 {
 	track = itrack;
 	dt = situation->deltaTime;
-	me = car;
-	currentsegid = track->getCurrentSegment(me);
-	id = me->index;
+	setCarPtr(car);
+	currentsegid = track->getCurrentSegment(car);
 
-	currentpos.x = me->_pos_X;
-	currentpos.y = me->_pos_Y;
-	currentpos.z = me->_pos_Z;
-
-	dir.x = cos(me->_yaw);
-	dir.y = sin(me->_yaw);
-	dir.z = 0.0;
-
-	speedsqr = (me->_speed_x)*(me->_speed_x) + (me->_speed_y)*(me->_speed_y) + (me->_speed_z)*(me->_speed_z);
-	speed = sqrt(speedsqr);
+	initCGh();
+	updatePos();
+	updateDir();
+	updateSpeedSqr();
+	updateSpeed();
 }
 
 
 void OtherCar::update()
 {
-	currentpos.x = me->_pos_X;
-	currentpos.y = me->_pos_Y;
-	currentpos.z = me->_pos_Z;
-
-	dir.x = cos(me->_yaw);
-	dir.y = sin(me->_yaw);
-	dir.z = 0.0;
-
-	speedsqr = (me->_speed_x)*(me->_speed_x) + (me->_speed_y)*(me->_speed_y) + (me->_speed_z)*(me->_speed_z);
-	speed = sqrt(speedsqr);
+	updatePos();
+	updateDir();
+	updateSpeedSqr();
+	updateSpeed();
 
     int searchrange = MAX((int) ceil(dt*speed+1.0) * 2, 4);
-	currentsegid = track->getCurrentSegment(me, currentsegid, searchrange);
+	currentsegid = track->getCurrentSegment(getCarPtr(), currentsegid, searchrange);
 }
 

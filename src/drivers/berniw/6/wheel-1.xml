@@ -22,11 +22,11 @@
   </section>
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="20"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="23"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="15"></attnum>
   </section>
 
   <section name="Gearbox">
@@ -48,23 +48,23 @@
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="4">
-	<attnum name="ratio" min="0" max="5" val="1.28"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.2"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val="0.96"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.9"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.7"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.63"></attnum>
 	<attnum name="efficiency" val="1.0"></attnum>
       </section>
     </section>
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.45"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="11000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.47"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="7000"></attnum>
   </section>
 
 
@@ -124,6 +124,7 @@
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"></attnum>
   </section>
 </params>
+
 
 
 
