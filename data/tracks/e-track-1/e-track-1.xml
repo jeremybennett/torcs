@@ -1162,7 +1162,7 @@
 			<attnum name="color B2" val="1.0"/>
 			<attstr name="texture name" val="tr-barrier-bw.rgb"/>
 			<attstr name="texture type" in="discrete, continuous" val="continuous"/>
-			<attnum name="texture size" val="10.0" unit="m"/>
+			<attnum name="texture size" val="30.0" unit="m"/>
 			<attnum name="texture mipmap" val="4.0"/>
 
 			<attstr name="bump name" val=""/>
