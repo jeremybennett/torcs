@@ -6,7 +6,7 @@
 
     <section name="Race">
       <attstr name="categories" val="*"></attstr>
-      <attstr name="track" val="e-track-4"></attstr>
+      <attstr name="track" val="wheel-1"></attstr>
       <attnum name="laps" val="25.000000"></attnum>
     </section>
 
@@ -27,8 +27,8 @@
 
     <section name="Drivers">
       <attnum name="ndrivers" val="10.000000"></attnum>
-      <attstr name="focused module" val="inferno"></attstr>
-      <attnum name="focused idx" val="1.000000"></attnum>
+      <attstr name="focused module" val="berniw"></attstr>
+      <attnum name="focused idx" val="9.000000"></attnum>
 
       <section name="drivers">
 
