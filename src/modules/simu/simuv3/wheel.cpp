@@ -125,7 +125,7 @@ SimWheelUpdateRide(tCar *car, int index)
  	angles.z = car->DynGC.pos.az + waz;
 	NaiveRotate (normal, angles, &rel_normal);
 	if (rel_normal.z > 0) {
-	    wheel->susp.x = wheel->rideHeight = dZ*normal_z/rel_normal.z;
+	    wheel->susp.x = wheel->rideHeight = dZ*normal.z/rel_normal.z;
 	}
     } else {
 	wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
