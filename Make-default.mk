@@ -76,7 +76,7 @@ CurDir='.' ; \
 echo "" >> ${INIT_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "if exist $$D call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
+echo "if exist $$D\\*.* call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
 done
 endef
 
@@ -86,7 +86,7 @@ CurDir='.' ; \
 echo "" >> ${DATA_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "if exist $$D call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
+echo "if exist $$D\\*.* call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
 done
 endef
 
@@ -155,7 +155,7 @@ win32start:
 
 
 win32end:
-	@sed -e "s:${TORCS_BASE}:\.:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
+	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:/src/linux/:/src/windows/:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}

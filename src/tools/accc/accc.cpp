@@ -1,10 +1,9 @@
 /***************************************************************************
 
-    file                 : ac3dto3ds.cpp
-    created              : Sat Mar 31 09:27:43 CET 2001
-    copyright            : cg
-    email                : 
-    version              : $Id$
+    file        : accc.cpp
+    created     : Fri Apr 18 23:10:53 CEST 2003
+    copyright   : (C) 2003 by Christophe Guionneau
+    version     : $Id$                                  
 
  ***************************************************************************/
 
@@ -19,9 +18,10 @@
 
 /** @file   
     		
-    @author	
+    @author	Christophe Guionneau
     @version	$Id$
 */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,7 +53,8 @@ int isobjectacar=0;
 int extendedTriangles=0;
 int notexturesplit=0;
 int typeConvertion =0;
-int far_dist=100;
+int far_dist=10000;
+int normalMapping=0;
 extern double smooth_angle;
 
 void usage(void)
@@ -73,6 +74,7 @@ void usage(void)
     fprintf(stderr, "    (computed normals) angle is in degrees : example : +es 80.0 clkdtm_o.ac clkdtm.ac  \n");
     fprintf(stderr, "    the output file will also contains the secondary textcoord for the env sliding \n");
     fprintf(stderr, "+et: ac3d to ac3d with triangles (used for cars) and extended ac3d file output (normals normals) \n");
+    fprintf(stderr, "+shad: ac3d to ac3d with triangles, create a new ac3d file used for track shading\n   vertical mapping of a single texture \n");
     fprintf(stderr, "<inputfile>: \n");
     fprintf(stderr, "<oututfile>: \n");
     fprintf(stderr, "-g <outputfile>: for grouping multilayer ac3d track \n");
@@ -115,10 +117,17 @@ void init_args(int argc, char **argv)
       OutputFileName = strdup(argv[4]);
     } 
     else  if (!strcmp(argv[1],"+et")) {
-      typeConvertion=_AC3DTOAC3DS;
+      typeConvertion=_AC3DTOAC3D;
       extendedStrips=0;
       isobjectacar=1;
       extendedTriangles=1;
+    } 
+    else  if (!strcmp(argv[1],"+shad")) {
+      typeConvertion=_AC3DTOAC3D;
+      extendedStrips=0;
+      isobjectacar=0;
+      extendedTriangles=0;
+      normalMapping=1;
     } 
     else  if (!strcmp(argv[1],"-g")) {
       typeConvertion=_AC3DTOAC3DGROUP;
