@@ -16,19 +16,6 @@
 
 <params name="NASCAR RWD" type="template">
 
-  <section name="Graphic Objects">
-    <attstr name="env" val="cg-nascar-rwd.ac"></attstr>
-    <attstr name="wheel texture" val="tex-wheel.rgb"></attstr>
-
-    <section name="Ranges">
-      <section name="1">
-	<attnum name="distance" val="500" unit="km"></attnum>
-	<attstr name="car" val="cg-nascar-rwd.ac"></attstr>
-      </section>
-    </section>
-  </section>
-
-
   <section name="Car">
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="61.0"></attnum>
   </section>
@@ -36,8 +23,6 @@
   <section name="Rear Wing">
     <attnum name="angle" unit="deg" min="0" max="30" val="18"></attnum>
   </section>
-
-  <!-- Same engine for every one -->
 
   <section name="Gearbox">
     <attnum name="shift time" val="0.25" unit="s"></attnum>
@@ -66,7 +51,6 @@
     </section>
   </section>
 
-
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"></attstr>
@@ -75,8 +59,8 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.50"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="11000"></attnum>
   </section>
-
 
   <section name="Front Anti-Roll Bar">
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
@@ -135,6 +119,7 @@
   </section>
 
 </params>
+
 
 
 

@@ -690,8 +690,6 @@ void Pathfinder::plan(MyCar* myc)
 
 	/* add path to pit to pit-path */
 	if (isPitAvailable()) initPitStopPath();
-
-	//plotPath("/home/berni/path.dat");
 }
 
 
@@ -1242,7 +1240,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	/* is he on my trajectory */
 	PathSeg* opseg = getPathSeg(nearestCar->getCurrentSegId());
 	/* compute minimal space requred */
-	double carwidth = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1-sqr(o[minIndex].cosalpha)) + myc->OVERTAKEMARGIN + fabs(myc->derror);
+	double carwidth = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1-sqr(o[minIndex].cosalpha)) + myc->OVERTAKEMARGIN + myc->derror;
 	/* compute distance to path */
 	double dtp = dist(opseg->getLoc(), nearestCar->getCurrentPos());
 
@@ -1269,9 +1267,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 			double paralleldist = o[minIndex].cosalpha*dist(myc->getCurrentPos(), nearestCar->getCurrentPos());
 			if (paralleldist > 1.5*myc->CARLEN) {
 				double pathtocarsgn = sign(pathtomiddle - d);
-				y[1] = d + myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
-					y[1] = d - myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+					y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
 				}
 
 				double ocdp = (*nearestCar->getDir())*(*track->getSegmentPtr(trackSegId)->getToRight());
@@ -1291,16 +1289,16 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				}
 
 				double cartocarsgn = sign(mydisttomiddle - d);
-				y[1] = d + myc->OVERTAKEFACTOR*cartocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				y[1] = d + myc->OVERTAKEDIST*cartocarsgn;
 				if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
 					y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
 				}
 			}
 		} else {
 			double pathtocarsgn = sign(pathtomiddle - d);
-			y[1] = d + myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+			y[1] = d + myc->OVERTAKEDIST*pathtocarsgn;
 			if (fabs(y[1]) > w - (1.5*myc->CARWIDTH)) {
-				y[1] = d - myc->OVERTAKEFACTOR*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				y[1] = d - myc->OVERTAKEDIST*pathtocarsgn;
 			}
 		}
 
@@ -1330,31 +1328,18 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 			s[2] = s[1] + (double) (nPathSeg - trackSegId1 + trackSegId2);
 		}
 
-		/* compute path */
-		/*int i, j;
-		double l = 0.0; v3d q, *pp, *qq;
-		for (i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
-			d = spline(3, l, s, y, ys);
-			pp = track->getSegmentPtr(j)->getMiddle();
-			qq = track->getSegmentPtr(j)->getToRight();
-			q = *pp + (*qq)*d;
-			ps[j].setLoc(&q);
-
-			l += TRACKRES;
-		}*/
-
-
+		/* check path for leaving to track */
 		double newdisttomiddle[AHEAD];
 		int i, j;
 		double l = 0.0; v3d q, *pp, *qq;
 		for (i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			d = spline(3, l, s, y, ys);
 			if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0) return 0;
-			//if (fabs(track->distToMiddle(j, ps[j].getLoc()) - d) > 4.0) return 0;
 			newdisttomiddle[i - trackSegId] = d;
 			l += TRACKRES;
 		}
 
+		/* set up the path */
 		for (i = trackSegId; (j = (i + nPathSeg) % nPathSeg) != trackSegId2; i++) {
 			pp = track->getSegmentPtr(j)->getMiddle();
 			qq = track->getSegmentPtr(j)->getToRight();
@@ -1413,4 +1398,15 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 		}
 	}
 	return n;
+}
+
+
+double Pathfinder::pathSide(int trackSegId, v3d* p)
+{
+	int previd = (trackSegId - 1 + nPathSeg) % nPathSeg;
+ 	v3d *prev = getPathSeg(previd)->getLoc();
+	v3d *dir = getPathSeg(trackSegId)->getDir();
+	v3d res, dir2 = *p - *prev;
+	dir2.crossProduct(dir, &res);
+	return sign(res.z);
 }

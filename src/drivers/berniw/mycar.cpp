@@ -37,15 +37,14 @@ const double MyCar::TURNSPEED = 3.0;			/* if speed lower than this you can back 
 const double MyCar::MARGIN = 0.3;				/* security margin from track border [m] */
 const double MyCar::AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
 const double MyCar::STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
-const double MyCar::TIMETOCATCH = 1.5;			/* when do we start thinking about overtaking [s]*/
+const double MyCar::TIMETOCATCH = 3.0;			/* when do we start thinking about overtaking [s]*/
 const double MyCar::MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
 const double MyCar::OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
 const double MyCar::OVERTAKEDIST = 3.5;			/* minimal distance of CG's while overtaking [m] */
-const double MyCar::OVERTAKEFACTOR = OVERTAKEDIST / (CARWIDTH + MARGIN);
 const double MyCar::OVERTAKEANGLE = 0.03;
 const double MyCar::DISTTHRESHOLD = 30.0;
 const double MyCar::OVERTAKEMARGIN = 0.9;
-const double MyCar::MAXALLOWEDPITCH = 0.03;
+const double MyCar::MAXALLOWEDPITCH = 0.06;
 const double MyCar::FLYSPEED = 55.0;
 
 
@@ -189,7 +188,9 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	destpathseg = pf->getPathSeg(destsegid);
 
 	mass = carmass + car->priv->fuel;
-	derror =  track->distGFromPoint(pf->getPathSeg(currentsegid)->getLoc(), pf->getPathSeg(currentsegid)->getDir(), &currentpos);
+	updateDError(track);
+	//derror =  track->distGFromPoint(pf->getPathSeg(currentsegid)->getLoc(), pf->getPathSeg(currentsegid)->getDir(), &currentpos);
+	derrorsgn = pf->pathSide(getCurrentSegId(), getCurrentPos());
 	trtime += situation->deltaTime;
 	deltapitch = fabs(track->getSegmentPtr(currentsegid)->getKgamma() + me->_pitch);
 }
@@ -304,4 +305,14 @@ void OtherCar::update()
     int searchrange = MAX((int) ceil(dt*speed+1.0) * 2, 4);
 	currentsegid = track->getCurrentSegment(getCarPtr(), currentsegid, searchrange);
 }
+
+void MyCar::updateDError(TrackDesc* track)
+{
+	v3d loc = *(pf->getPathSeg(currentsegid)->getLoc());
+	v3d dir = *(pf->getPathSeg(currentsegid)->getDir());
+	v3d pos = currentpos;
+	loc.z = 0.0; dir.z = 0.0; pos.z = 0.0;
+	derror =  track->distGFromPoint(&loc, &dir, &pos);
+}
+
 

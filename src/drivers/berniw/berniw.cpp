@@ -255,17 +255,20 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		b4 = 1.0;
 	}
 
+	steer = steer + MIN(0.1, myc->derror*0.05)*myc->getErrorSgn();
+	if (fabs(steer) > 1.0) steer/=fabs(steer);
+
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
 		targetAngle = atan2(myc->destpathseg->getDir()->y, myc->destpathseg->getDir()->x);
 		targetAngle -= car->_yaw;
 		NORM_PI_PI(targetAngle);
 		if (myc->derror > myc->PATHERR) {
-			//b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
+			b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
 			tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
 			steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
-			if (acos(back) > PI*myc->MAXANGLE/180.0) {
-				b3 += (myc->getSpeed()/myc->STABLESPEED)*acos(back-PI*myc->MAXANGLE/180.0);
-			}
+		}
+		if (acos(back) > PI*myc->MAXANGLE/180.0) {
+			b3 += (myc->getSpeed()/myc->STABLESPEED)*acos(back-PI*myc->MAXANGLE/180.0);
 		}
 	}
 

@@ -97,7 +97,6 @@ class MyCar : public AbstractCar
 		static const double MINOVERTAKERANGE;	/* minimum length for overtaking [m] */
 		static const double OVERTAKERADIUS;		/* min allowed radius to start overtaking [m] */
 		static const double OVERTAKEDIST;		/* minimal distance of CG's while overtaking [m] */
-		static const double OVERTAKEFACTOR;
 		static const double OVERTAKEANGLE;
 		static const double DISTTHRESHOLD;
 		static const double OVERTAKEMARGIN;
@@ -162,7 +161,9 @@ class MyCar : public AbstractCar
 		inline double getDeltaPitch() { return deltapitch; }
 		inline double getWheelBase() { return wheelbase; }
 		inline double getWheelTrack() { return wheeltrack; }
+		inline double getErrorSgn() { return derrorsgn; }
 		inline Pathfinder* getPathfinderPtr() { return pf; }
+
 
 	private:
 		enum {
@@ -174,10 +175,12 @@ class MyCar : public AbstractCar
 		double deltapitch;		/* angle between road and car */
 		double wheelbase;
 		double wheeltrack;
+		double derrorsgn;		/* on which side of the trajectory am i left -1 or 1 right */
+		
 		Pathfinder* pf;
 
 		void updateCa();
-
+		void updateDError(TrackDesc* track);
 };
 
 

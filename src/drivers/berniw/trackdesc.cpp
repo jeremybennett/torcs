@@ -221,8 +221,6 @@ TrackDesc::TrackDesc(const tTrack* track)
 		p1 = ts[(i+nTrackSegments+3) % nTrackSegments].getMiddle();
 		ts[i].setKgamma(atan((p1->z - p0->z)/6.0));
 	}
-
-
 }
 
 TrackDesc::~TrackDesc()

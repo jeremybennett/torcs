@@ -157,6 +157,7 @@ class Pathfinder
 		int getCurrentSegment(tCarElt* car);
 		int getCurrentSegment(tCarElt* car, int range);
 		inline int getnPathSeg() { return nPathSeg; }
+		double pathSide(int trackSegId, v3d* p);
 
 	private:
 		static const double COLLDIST;	/* up to this distance do we consider other cars as dangerous */
