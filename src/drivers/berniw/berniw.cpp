@@ -313,7 +313,6 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		if (brake > 0.0) {
 			myc->accel = 0.0;
 			car->ctrl->accelCmd = myc->accel;
-			//car->ctrl->brakeCmd = brake;
 			car->ctrl->brakeCmd = brake*cerror;
 		} else {
 			tdble invslip = myc->queryInverseSlip(car, myc->getSpeed());
@@ -334,7 +333,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
     }
 
 	/* check if we are stuck, try to get unstuck */
-	tdble bx = cos(car->_yaw), by = sin(car->_yaw);
+	tdble bx = myc->getDir()->x, by = myc->getDir()->y;
 	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
 	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 

@@ -81,7 +81,7 @@ typedef struct {
 	double cosalpha;		/* cos(alpha) from angle between my ond opponent */
 	double disttomiddle;	/* distance to middle (for prediction) */
 	int catchseg;			/* segment, where i expect (or better guess!) to catch opponent */
-	int dist;				/* #segments from me to the other car */
+	double dist;			/* #segments from me to the other car */
 	OtherCar* collcar;		/* pointers to the cars */
 	bool overtakee;			/* is this the guy to overtake? */
 } tOCar;
