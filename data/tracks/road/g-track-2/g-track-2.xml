@@ -1,0 +1,1594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : g-track-2.xml
+    created              : Sun Mar 19 00:18:38 CET 2000
+    copyright            : (C) 2000 C.guionneau                       
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+]>
+
+<params name="CG SPEEDWAY 2" type="trackdef" mode="mw">
+
+  <section name="Surfaces">
+    &default-surfaces;
+    <section name="gsand">
+      <attnum name="color R1" val="0.3"></attnum>
+      <attnum name="color G1" val="0.3"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.4"></attnum>
+      <attnum name="color G2" val="0.4"></attnum>
+      <attnum name="color B2" val="0.1"></attnum>
+      <attstr name="texture name" val="gsand.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="20.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="0.6"></attnum>
+      <attnum name="rolling resistance" val="0.03"></attnum>
+
+      <attnum name="roughness" val="0.03"></attnum>
+      <attnum name="roughness wavelength" val="4.0"></attnum>
+    </section>
+
+    <section name="g-sand-r">
+      <attnum name="color R1" val="0.3"></attnum>
+      <attnum name="color G1" val="0.3"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.4"></attnum>
+      <attnum name="color G2" val="0.4"></attnum>
+      <attnum name="color B2" val="0.1"></attnum>
+      <attstr name="texture name" val="assandr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="5.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="0.6"></attnum>
+      <attnum name="rolling resistance" val="0.03"></attnum>
+
+      <attnum name="roughness" val="0.03"></attnum>
+      <attnum name="roughness wavelength" val="4.0"></attnum>
+    </section>
+
+      <section name="ggrass">
+	<attnum name="color R1" val="0.1"></attnum>
+	<attnum name="color G1" val="0.4"></attnum>
+	<attnum name="color B1" val="0.1"></attnum>
+	<attnum name="color R2" val="0.2"></attnum>
+	<attnum name="color G2" val="0.5"></attnum>
+	<attnum name="color B2" val="0.2"></attnum>
+	<attstr name="texture name" val="grassg1.rgb"></attstr>
+	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+	<attnum name="texture size" val="5.0" unit="m"></attnum>
+	<attnum name="texture mipmap" val="4.0"></attnum>
+
+	<attnum name="friction"           val="0.4"></attnum>
+	<attnum name="rolling resistance" val="0.01"></attnum>
+
+	<attnum name="roughness" val="0.05"></attnum>
+	<attnum name="roughness wavelength" val="0.5"></attnum>
+      </section>
+
+    <section name="gtire-wall">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="gtirewall.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="2.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rebound"            val="0.1"></attnum>
+      <attnum name="dammage"            val="1.0"></attnum>
+    </section>
+
+    <section name="g-grass3-l">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.4"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.5"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asgrassr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="5" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rolling resistance" val="0.005"></attnum>
+
+      <attnum name="roughness" val="0.01"></attnum>
+      <attnum name="roughness wavelength" val="0.2"></attnum>
+    </section>
+
+    <section name="g-grass3-r">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.4"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.5"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asgrassr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="5" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rolling resistance" val="0.005"></attnum>
+
+      <attnum name="roughness" val="0.01"></attnum>
+      <attnum name="roughness wavelength" val="0.2"></attnum>
+    </section>
+
+    <section name="g-conc-r">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.4"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.5"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asconcr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="5" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rolling resistance" val="0.005"></attnum>
+
+      <attnum name="roughness" val="0.01"></attnum>
+      <attnum name="roughness wavelength" val="0.2"></attnum>
+    </section>
+
+    <section name="gconcrete">
+      <attnum name="color R1" val="0.3"></attnum>
+      <attnum name="color G1" val="0.3"></attnum>
+      <attnum name="color B1" val="0.3"></attnum>
+      <attnum name="color R2" val="0.4"></attnum>
+      <attnum name="color G2" val="0.4"></attnum>
+      <attnum name="color B2" val="0.4"></attnum>
+      <attstr name="texture name" val="gconcrete.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="15.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rolling resistance" val="0.002"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="as-pits">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asp_n.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attstr name="texture link with previous" val="yes"></attstr>
+      <attstr name="texture start on boundary" val="yes"></attstr>
+      <attnum name="texture size" val="15.0001" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.05"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="asphalt2">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asphalt.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="asphaltl">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asphalt4.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="asphaltr">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asphalt4.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+    <section name="g-asphalt-r">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asasphr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="5" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0.0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="asb2l">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asb2l.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+    <section name="asb2r">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asb2r.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.2"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+
+    <section name="asphalt3">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="asphalt3.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
+      <attnum name="texture size" val="100.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.0"></attnum>
+      <attnum name="rolling resistance" val="0.001"></attnum>
+
+      <attnum name="roughness" val="0"></attnum>
+      <attnum name="roughness wavelength" val="1.0"></attnum>
+    </section>
+
+    <section name="barrierg1">
+      <attnum name="color R1" val="1.0"></attnum>
+      <attnum name="color G1" val="0.0"></attnum>
+      <attnum name="color B1" val="0.0"></attnum>
+      <attnum name="color R2" val="1.0"></attnum>
+      <attnum name="color G2" val="1.0"></attnum>
+      <attnum name="color B2" val="1.0"></attnum>
+      <attstr name="texture name" val="barg1_n.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="10.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="0.4"></attnum>
+
+      <attnum name="roughness" val="0.03"></attnum>
+      <attnum name="roughness wavelength" val="4.0"></attnum>
+    </section>
+
+    <section name="barrierg2">
+      <attnum name="color R1" val="1.0"></attnum>
+      <attnum name="color G1" val="0.0"></attnum>
+      <attnum name="color B1" val="0.0"></attnum>
+      <attnum name="color R2" val="1.0"></attnum>
+      <attnum name="color G2" val="1.0"></attnum>
+      <attnum name="color B2" val="1.0"></attnum>
+      <attstr name="texture name" val="barg2.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="10.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="0.4"></attnum>
+
+      <attnum name="roughness" val="0.03"></attnum>
+      <attnum name="roughness wavelength" val="4.0"></attnum>
+    </section>
+    <section name="barrierg3">
+      <attnum name="color R1" val="1.0"></attnum>
+      <attnum name="color G1" val="0.0"></attnum>
+      <attnum name="color B1" val="0.0"></attnum>
+      <attnum name="color R2" val="1.0"></attnum>
+      <attnum name="color G2" val="1.0"></attnum>
+      <attnum name="color B2" val="1.0"></attnum>
+      <attstr name="texture name" val="barg3.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="10.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="4.0"></attnum>
+
+      <attnum name="friction"           val="0.4"></attnum>
+
+      <attnum name="roughness" val="0.03"></attnum>
+      <attnum name="roughness wavelength" val="4.0"></attnum>
+    </section>
+
+    <section name="gcurb-5cm-r">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="trcurbr.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="2.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.4"></attnum>
+      <attnum name="rolling resistance" val="0.0025"></attnum>
+
+      <attnum name="roughness" val="0.05"></attnum>
+      <attnum name="roughness wavelength" val="0.3"></attnum>
+    </section>
+
+    <section name="gcurb-5cm-l">
+      <attnum name="color R1" val="0.1"></attnum>
+      <attnum name="color G1" val="0.1"></attnum>
+      <attnum name="color B1" val="0.1"></attnum>
+      <attnum name="color R2" val="0.2"></attnum>
+      <attnum name="color G2" val="0.2"></attnum>
+      <attnum name="color B2" val="0.2"></attnum>
+      <attstr name="texture name" val="trcurbl.rgb"></attstr>
+      <attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
+      <attnum name="texture size" val="2.0" unit="m"></attnum>
+      <attnum name="texture mipmap" val="0.0" unit="m"></attnum>
+
+      <attnum name="friction"           val="1.4"></attnum>
+      <attnum name="rolling resistance" val="0.0025"></attnum>
+
+      <attnum name="roughness" val="0.05"></attnum>
+      <attnum name="roughness wavelength" val="0.3"></attnum>
+    </section>
+
+
+  </section>
+
+  <section name="Header">
+    <attstr name="name"              val="CG track 2"></attstr>
+    <attstr name="category"          val="road"></attstr>
+    <attnum name="version"           val="4"></attnum>
+    <attstr name="author"            val="CG"></attstr>
+    <attstr name="description"       val="High speed track"></attstr>
+  </section>
+
+
+
+  <section name="Graphic">
+    <attstr name="3d description" val="g-track-2.ac"></attstr>
+    <attstr name="background image" val="background.png"></attstr>
+    <attnum name="background color R" val="0.28"></attnum>
+    <attnum name="background color G" val="0.44"></attnum>
+    <attnum name="background color B" val="0.75"></attnum>
+
+    <attnum name="ambient color R" val="0.5"></attnum>
+    <attnum name="ambient color G" val="0.5"></attnum>
+    <attnum name="ambient color B" val="0.5"></attnum>
+
+    <attnum name="light position x" val="-50"></attnum>
+    <attnum name="light position y" val="-50"></attnum>
+    <attnum name="light position z" val="5000"></attnum>
+
+    <section name="Environment Mapping">
+      <section name="general">
+	<attstr name="env map image" val="env.png"></attstr>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="20"></attnum>
+      <attnum name="border step" unit="m" val="60"></attnum>
+      <attnum name="border height" unit="m" val="20"></attnum>
+      <attnum name="border margin" unit="m" val="500"></attnum>
+      <attstr name="relief file" val="g-track-2-relief.ac"></attstr>
+      <attnum name="maximum altitude" val="20"></attnum>
+    </section>
+
+    <section name="Turn Marks">
+      <attnum name="width" val="2.0" unit="m"></attnum>
+      <attnum name="height" val="2.0" unit="m"></attnum>
+      <attnum name="vertical space" val="1.0" unit="m"></attnum>
+      <attnum name="horizontal space" val="6.0" unit="m"></attnum>
+    </section>
+
+  </section> <!-- Graphic -->
+
+
+
+
+  <section name="Main Track">
+
+    <attstr name="surface" val="asphalt2"></attstr>
+    <attnum name="width" unit="m" val="15.0"></attnum>
+    <attnum name="profil steps length" val="10" unit="m"></attnum>
+
+    <section name="Right Border">
+      <attnum name="width" val="1.0"></attnum>
+      <attstr name="surface" val="g-conc-r"></attstr>
+    </section>
+
+    <section name="Right Side">
+      <attstr name="surface"  val="as-pits"></attstr>
+      <attnum name="width"    val="15.0"></attnum>
+      <attstr name="banking type" in="level,tangent" val="tangent"></attstr>
+    </section>
+  
+
+     <section name="Left Border">
+       <attnum name="width" val="1.0"></attnum>
+       <attstr name="surface" val="g-asphalt-r"></attstr>
+       <attstr name="style" val="plan"></attstr>
+     </section>
+
+    <section name="Left Side">
+      <attstr name="surface"  val="asphaltl"></attstr>
+      <attnum name="width"    val="5.0"></attnum>
+      <attstr name="banking type" in="level,tangent" val="tangent"></attstr>
+    </section>
+
+    <section name="Pits">
+      <attstr name="side"   val="right"></attstr>
+      <attstr name="entry"  val="segment line 6"></attstr>
+      <attstr name="start"  val="last segment"></attstr>
+      <attstr name="end"    val="start lane"></attstr>
+      <attstr name="exit"   val="s3"></attstr>
+      <attnum name="length" val="15" unit="m"></attnum>
+      <attnum name="width"  val="5" unit="m"></attnum>
+    </section>  <!-- PITS -->
+
+
+
+
+    <section name="Track Segments">
+
+      <!-- -->
+      <section name="start lane">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="45"></attnum>
+
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="5.0"></attnum>	  
+	  <attstr name="surface" val="barrierg1"></attstr>
+	</section>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="5.0"></attnum>	
+	  <attstr name="surface" val="barrierg1"></attstr>  
+	</section>
+
+      </section>
+
+
+
+      <!-- -->
+      <section name="s3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="55"></attnum>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="asphaltr"></attstr>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-asphalt-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+
+      </section>
+
+      <!-- -->
+      <section name="segment line1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="86.01"></attnum>
+	<attnum name="z end" val="-4.0" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="asphaltr"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-asphalt-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+        <attnum name="texture size"    val="100.0"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="z end" val="-5.0" unit="m"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>	
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="asphaltr"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-asphalt-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="1.0"></attnum>	
+	  <attstr name="surface" val="barrierg2"></attstr>  
+	</section>
+
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+        <attnum name="texture size"    val="100.0"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="segment line2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Side">	
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+        <attnum name="texture size"    val="50.0"></attnum>
+      </section>
+
+
+      <!-- -->
+      <section name="turn 2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="90"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+        <section name="Right Border">
+	  <attstr name="surface" val="gcurb-5cm-r"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	  <attnum name="width" val="1"></attnum>
+        </section>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="1.0"></attnum>	
+	  <attstr name="surface" val="barrierg2"></attstr>  
+	</section>
+	<attnum name="banking end" val="+3" unit="deg"></attnum>
+        <attnum name="texture size"    val="50.0"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="segment line 3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attnum name="z end" val="-12" unit="m"></attnum>
+	<attnum name="banking end" val="-6" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gsand"></attstr>
+	  <attnum name="width" val="10"></attnum>
+	</section>
+
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-sand-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="gsand"></attstr>
+	  <attnum name="width" val="20"></attnum>
+	</section>
+
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-sand-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Barrier">
+	  <attstr name="surface" val="gtire-wall"></attstr>
+	  <attstr name="style" val="wall"></attstr>
+	  <attnum name="width" val="2.0"></attnum>
+	  <attnum name="height" val="2.0"></attnum>	  
+	</section>
+
+      </section>
+
+
+
+      <!-- -->
+      <section name="turn 3">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="z end" val="-12" unit="m"></attnum>
+	<attnum name="banking end" val="-2" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="gsand"></attstr>
+	  <attnum name="width" val="20"></attnum>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-sand-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="gcurb-5cm-l"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 3b">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="z end" val="-12" unit="m"></attnum>
+	<attnum name="banking end" val="-1" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+	<section name="Left Side">
+	  <attnum name="width" val="3"></attnum>
+	  <attnum name="end width" val="6"></attnum>
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="end width" val="0"></attnum>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="segment line 4">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="z end" val="-13" unit="m"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="6"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="0"></attnum>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="1.0"></attnum>	
+	  <attstr name="surface" val="barrierg2"></attstr>  
+	</section>
+
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 4">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="z end" val="-13" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="6"></attnum>
+	  <attnum name="end width" val="6"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="end width" val="5"></attnum>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="gcurb-5cm-l"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+      </section>
+
+      <section name="segment line 5-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="z end" val="-6" unit="m"></attnum>
+	<section name="Left Side">
+	  <attnum name="width" val="6"></attnum>
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="end width" val="25"></attnum>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="segment line 5b">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="200"></attnum>
+	<attnum name="z end" val="-13" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="6"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="10"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="40"></attnum>
+      </section>
+
+      <section name="segment line 5bb">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="6"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="10"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="segment line 5c">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="10"></attnum>
+	</section>
+	<attnum name="banking end" val="+1" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="2.0"></attnum>	
+	  <attstr name="surface" val="barrierg3"></attstr>  
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 4x">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<attstr name="marks" val="50;100"></attstr>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="10"></attnum>
+	</section>	
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="25"></attnum>
+	</section>
+	<attnum name="banking end" val="+2" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="gcurb-5cm-r"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	  <attnum name="width" val="1"></attnum>
+	</section>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="2.0"></attnum>	
+	  <attstr name="surface" val="barrierg3"></attstr>  
+	</section>
+
+      </section>
+
+
+      <!-- -->
+      <section name="turn 5">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="50"></attnum>
+	<attnum name="arc" unit="deg" val="40"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="8"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="gcurb-5cm-l"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	  <attnum name="width" val="1"></attnum>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="2.0"></attnum>	
+	  <attstr name="surface" val="barrierg3"></attstr>  
+	</section>
+
+	<attnum name="banking end" val="-2" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+      </section>
+
+
+
+      <!-- -->
+      <section name="turn 6">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="90"></attnum>
+	<attnum name="arc" unit="deg" val="80"></attnum>
+	<attnum name="z end" val="-8" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="8"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+	<attnum name="banking end" val="-4" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="1.0"></attnum>	
+	  <attstr name="surface" val="barrierg2"></attstr>  
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 7">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="z end" val="-9" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="width" val="4"></attnum>
+	  <attnum name="end width" val="2"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 7b">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="20"></attnum>
+	<attnum name="z end" val="-10" unit="m"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="start width" val="2"></attnum>
+	  <attnum name="end width" val="5"></attnum>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="end width" val="15"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+      </section>
+
+      <!-- -->
+      <section name="segment line 51a">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="z end" val="-12" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	  <attnum name="start width" val="5"></attnum>
+	  <attnum name="end width" val="5"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="segment line 51b">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="350"></attnum>
+	<attnum name="z end" val="-4" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+
+	<section name="Left Side">
+	  <attnum name="start width" val="5"></attnum>
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+
+        <section name="Left Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 8">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="150"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="z end" val="-4" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="gcurb-5cm-l"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="turn 9">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="z end" val="-4" unit="m"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 10-3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="z end" val="-4" unit="m"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+
+        <section name="Left Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<section name="Right Border">
+	  <attstr name="surface" val="gcurb-5cm-r"></attstr>
+	  <attstr name="style" val="curb"></attstr>
+	  <attnum name="height" val="0.05"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+
+      </section>
+
+      <!-- -->
+      <section name="segment line 5-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="147.90"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="gconcrete"></attstr>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"></attnum>
+	  <attstr name="surface" val="g-conc-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-grass3-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="turn 10-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="asphaltl"></attstr>
+	</section>
+     <section name="Left Border">
+       <attnum name="width" val="1.0"></attnum>
+       <attstr name="surface" val="g-asphalt-r"></attstr>
+       <attstr name="style" val="plan"></attstr>
+     </section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="45"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+      </section>
+
+
+      <!-- -->
+      <section name="turn 10-1-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="50"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+	<section name="Left Side">
+	  <attstr name="surface" val="asphaltl"></attstr>
+	</section>
+     <section name="Left Border">
+       <attnum name="width" val="1.0"></attnum>
+       <attstr name="surface" val="g-asphalt-r"></attstr>
+       <attstr name="style" val="plan"></attstr>
+     </section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="45"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="turn 10-2">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="asphaltl"></attstr>
+	</section>
+     <section name="Left Border">
+       <attnum name="width" val="1.0"></attnum>
+       <attstr name="surface" val="g-asphalt-r"></attstr>
+       <attstr name="style" val="plan"></attstr>
+     </section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="ggrass"></attstr>
+	  <attnum name="width" val="5"></attnum>
+	</section>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+      </section>
+
+      <!-- -->
+      <section name="segment line 6">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="155"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="asphaltl"></attstr>
+	</section>
+
+	<section name="Left Border">
+	   <attnum name="width" val="1.0"></attnum>
+	   <attstr name="surface" val="g-asphalt-r"></attstr>
+	   <attstr name="style" val="plan"></attstr>
+        </section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="asphaltr"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+        <section name="Right Border">
+          <attnum name="width" val="1.0"></attnum>
+          <attstr name="surface" val="g-asphalt-r"></attstr>
+	  <attstr name="style" val="plan"></attstr>
+        </section>
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="5.0"></attnum>	
+	  <attstr name="surface" val="barrierg1"></attstr>  
+	</section>
+
+      </section>
+
+      <!-- -->
+      <section name="last segment">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="195"></attnum>
+	<attnum name="z end" val="0" unit="m"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+
+	<section name="Left Side">
+	  <attstr name="surface" val="asphaltl"></attstr>
+	</section>
+	<section name="Left Border">
+	   <attnum name="width" val="1.0"></attnum>
+	   <attstr name="surface" val="g-asphalt-r"></attstr>
+	   <attstr name="style" val="plan"></attstr>
+        </section>
+
+	<section name="Right Side">
+	  <attstr name="surface" val="as-pits"></attstr>
+	  <attnum name="width" val="15"></attnum>
+	</section>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"></attstr>
+	  <attnum name="height" val="5.0"></attnum>	
+	  <attstr name="surface" val="barrierg1"></attstr>  
+	</section>
+
+      </section>
+
+    </section> <!-- Track segments -->
+  </section> <!-- Main Track -->
+
+  <section name="Cameras">
+    <section name="cam 0">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="start lane"></attstr>
+      <attnum name="to right"  val="-10.0"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="4"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="last segment"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line1"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 2">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line1"></attstr>
+      <attnum name="to right"  val="-12.0"></attnum>
+      <attnum name="to start"  val="40"></attnum>
+      <attnum name="height"    val="4"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="s3"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line2"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 3">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line2"></attstr>
+      <attnum name="to right"  val="+20.0"></attnum>
+      <attnum name="to start"  val="75"></attnum>
+      <attnum name="height"    val="2"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 1"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 2"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 4">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line 3"></attstr>
+      <attnum name="to right"  val="+20.0"></attnum>
+      <attnum name="to start"  val="75"></attnum>
+      <attnum name="height"    val="2"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 2"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 3"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 5">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 3b"></attstr>
+      <attnum name="to right"  val="-20.0"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 3"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line 4"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 6">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 4"></attstr>
+      <attnum name="to right"  val="-0.0"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="1.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="segment line 4"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line 5-1"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 7">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line 5b"></attstr>
+      <attnum name="to right"  val="-0.5"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="1.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="segment line 5-1"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line 5bb"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 8">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 4x"></attstr>
+      <attnum name="to right"  val="+20"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="segment line 5bb"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 4x"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 9">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 6"></attstr>
+      <attnum name="to right"  val="-15"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.0"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 4x"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 7"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 10">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 7b"></attstr>
+      <attnum name="to right"  val="-15"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 7"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="segment line 51a"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 11">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line 51b"></attstr>
+      <attnum name="to right"  val="-5"></attnum>
+      <attnum name="to start"  val="130"></attnum>
+      <attnum name="height"    val="4.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="segment line 51a"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 8"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 12">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 9"></attstr>
+      <attnum name="to right"  val="-5"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 8"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 10-3"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 13">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="segment line 5-2"></attstr>
+      <attnum name="to right"  val="-5"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 10-3"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 10-1"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 14">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 10-1-1"></attstr>
+      <attnum name="to right"  val="-30"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 10-1"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="turn 10-2"></attstr> <!-- excluded -->
+    </section>
+
+    <section name="cam 15">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment"   val="turn 10-2"></attstr>
+      <attnum name="to right"  val="-5"></attnum>
+      <attnum name="to start"  val="0"></attnum>
+      <attnum name="height"    val="2.5"></attnum>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="turn 10-2"></attstr> <!-- included  -->
+      <attstr name="fov end"   val="last segment"></attstr> <!-- excluded -->
+    </section>
+
+
+
+  </section>
+
+</params>
+
+
+
+
+
+
+
