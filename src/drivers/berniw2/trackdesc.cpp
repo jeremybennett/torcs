@@ -59,15 +59,15 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 	double d = getWidth();
 	if (type == TR_LFT) {
 		if (dz > 0.0) {
-			kalpha = 1.0; // /cos(asin(fabs(dz/d)));
+			kalpha = 1.0;
 		} else {
-			kalpha = 1.0*cos(asin(fabs(dz/d)));
+			kalpha = cos(asin(fabs(dz/d)));
 		}
 	} else if (type == TR_RGT) {
 		if (dz < 0.0) {
-			kalpha = 1.0; // /cos(asin(fabs(dz/d)));
+			kalpha = 1.0;
 		} else {
-			kalpha = 1.0*cos(asin(fabs(dz/d)));
+			kalpha = cos(asin(fabs(dz/d)));
 		}
 	} else {
 		kalpha = 1.0;

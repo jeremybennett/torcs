@@ -25,7 +25,6 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" val="0.25" unit="s"></attnum>
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"></attnum>
