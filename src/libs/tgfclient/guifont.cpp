@@ -26,7 +26,7 @@
 #ifdef WIN32
 #include <windows.h>
 #elif defined(__FreeBSD__)
-#include <sys/endian.h>
+#include <machine/endian.h>
 #else
 #include <endian.h>
 #endif

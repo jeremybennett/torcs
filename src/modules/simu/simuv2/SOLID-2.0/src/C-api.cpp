@@ -40,6 +40,9 @@
 #include "Polyhedron.h"
 #include "Response.h"
 #include "RespTable.h"
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#  include <sys/types.h>
+#endif
 
 #include <map>
 #include <set>
