@@ -69,7 +69,6 @@ class MyCar
 		static const tdble TIMETOCATCH = 5.0;		/* when do we start thinking about overtaking [s]*/
 		static const tdble MINOVERTAKERANGE = 250.0;/* minimum length for overtaking [m] */
 		static const tdble OVERTAKERADIUS = 100.0;	/* min allowd radius to start overtaking [m] */
-		static const tdble OVERTAKESPEED = 1.0;		/* sould be at least > 50/FLT_MAX !, greater values cause more optimistic overtaking [m/s] */
 		static const tdble OVERTAKEDIST = 3.0;		/* minimal distance of CG's while overtaking */
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);

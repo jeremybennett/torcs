@@ -712,7 +712,7 @@ void Pathfinder::plan(MyCar* myc)
 
 		tdble mu = track->getSegmentPtr(i)->getKfriction()*track->getSegmentPtr(i)->getKalpha();
 		tdble b = track->getSegmentPtr(i)->getKbeta();
-		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(0.9999, (mu*myc->ca*r/myc->mass)) + mu*r*b);
+		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 
 		dir.x = ps[w].getLoc()->x - ps[u].getLoc()->x;
 		dir.y = ps[w].getLoc()->y - ps[u].getLoc()->y;
@@ -799,7 +799,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 		/* compute allowed speedsqr */
 		tdble mu = track->getSegmentPtr(j)->getKfriction()*track->getSegmentPtr(j)->getKalpha();
 		tdble b = track->getSegmentPtr(j)->getKbeta();
-		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(0.9999, (mu*myc->ca*r/myc->mass)) + mu*r*b);
+		speedsqr = myc->SPEEDSQRFACTOR*r*g*mu/(1.0 - MIN(1.0, (mu*myc->ca*r/myc->mass)) + mu*r*b);
 		if (pitStop && track->isBetween(s3, pitSegId, j)) {
 			tdble speedsqrpit = ((tdble) segmentsToPit(j) / TRACKRES) *2.0*g*track->getSegmentPtr(j)->getKfriction()*myc->cgcorr_b;
 			if (speedsqr > speedsqrpit) speedsqr = speedsqrpit;
@@ -970,8 +970,9 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 		/* is it me ? */
 		if (car != mycar) {
 			/* is it near enough to care about ? */
+			tdble cosa = track->cosalpha(&myc->dir, &ocar[i].dir);
 			seg = ocar[i].currentsegid;
-			tspeed = ocar[i].speed*track->cosalpha(&myc->dir, &ocar[i].dir);
+			tspeed = ocar[i].speed*cosa;
 
 			if (track->isBetween(trackSegId, end, seg) && myc->speed > tspeed) {
 				dists[norder] = track->diffSegId(trackSegId, seg);
@@ -996,7 +997,8 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 					 collcar[i]->dir.y * opseg->getDir()->y +
 					 collcar[i]->dir.z * opseg->getDir()->z;
 		/* compute minimal space requred */
-		tdble d = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosa)) + myc->DIST + fabs(myc->derror);
+		//tdble velmargin = 1.0 + (myc->speed - speed[i]) / myc->speed*0.5;
+		tdble d = myc->CARWIDTH + myc->CARLEN/2.0*sin(acos(cosa)) + myc->DIST/* *velmargin*/ + fabs(myc->derror);
 		/* compute distance to path */
 		tdble dtp = dist(opseg->getLoc(), &collcar[i]->currentpos);
 
@@ -1005,7 +1007,6 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 			tdble gm = otseg->getKfriction();
 			tdble qs = speedsqr[i];
 			tdble s = (myc->speedsqr - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca + myc->cw)));
-			//tdble s = (myc->speed - speed[i])*(myc->speed - speed[i])*(myc->speed + speed[i]) / ( myc->speed*2.0 * g * otseg->getKfriction());
 
 			if (s <= dists[i] + myc->CARLEN + myc->DIST) {
 				if (spseg->getSpeedsqr() > speedsqr[i]) {
@@ -1028,7 +1029,6 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 				tdble gm = otseg->getKfriction();
 				tdble qs = speedsqr[i];
 				tdble s = (myc->speedsqr - speedsqr[i])*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca + myc->cw)));
-				//tdble s = (myc->speed - speed[i])*(myc->speed - speed[i])*(myc->speed + speed[i]) / ( myc->speed*2.0 * g * otseg->getKfriction());
 
 				if (s <= dists[i] + myc->CARLEN + myc->DIST) {
 					if (spseg->getSpeedsqr() > speedsqr[i]) {
@@ -1304,7 +1304,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 				dists[norder] = track->diffSegId(trackSegId, seg);
 				collcar[norder] = &ocar[i];
 				cosalpha[norder] = cosa;
-				time[norder] = dists[norder]/(myc->speed + myc->OVERTAKESPEED - tspeed);
+				time[norder] = dists[norder]/(myc->speed - tspeed);
 
 				if (time[norder] < minTime) {
 					minTime = time[norder];
@@ -1444,8 +1444,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		}
 
 		/* reload old trajectory where needed */
-		for (int i = trackSegId2; i < trackSegId+AHEAD; i ++) {
-			int j = (i+nPathSeg) % nPathSeg;
+		int j;
+		for (int i = trackSegId2; (j = (i+nPathSeg) % nPathSeg) != (trackSegId+AHEAD) % nPathSeg; i ++) {
 			ps[j].setLoc(ps[j].getOptLoc());
 		}
 
