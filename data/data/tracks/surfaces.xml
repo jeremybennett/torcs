@@ -562,7 +562,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.5"/>
+	<attnum name="friction"           val="0.05"/>
       </section>
 
 

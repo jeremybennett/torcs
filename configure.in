@@ -134,7 +134,12 @@ int main() {
   AC_MSG_RESULT(yes)
 )
 
-AC_OUTPUT(Make-config src/tools/launcher/torcs src/doc/torcsdoc.conf \
+AC_SUBST(TORCS_BASE)
+TORCS_BASE=$PWD
+
+AC_OUTPUT(Make-config \
+	src/tools/launcher/torcs \
+	src/doc/torcsdoc.conf \
 	src/tools/package/specfiles/torcs-data.spec \
 	src/tools/package/specfiles/torcs-data-cars-Patwo-Design.spec \
 	src/tools/package/specfiles/torcs-data-cars-extra.spec \

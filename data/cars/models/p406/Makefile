@@ -19,7 +19,7 @@
 DATADIR   = cars/p406
 
 DATA      = 	$(shell find *.xml -maxdepth 0 -type f -print) \
-		$(shell find *.ac -maxdepth 0 -type f -print) \
+		$(shell find *.acc -maxdepth 0 -type f -print) \
 		$(shell find *.rgb -maxdepth 0 -type f -print)
 
 include ${MAKE_DEFAULT}
