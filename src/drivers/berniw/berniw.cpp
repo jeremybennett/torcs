@@ -132,6 +132,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 {
 	tdble angle;
 	tdble brake;
+	tdble b1;							/* brake value in case we are to fast HERE and NOW */
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
 	tdble b4;							/* brake value for avoiding high angle of attack */
@@ -140,9 +141,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	MyCar* myc = mycar[index-1];
 	Pathfinder* mpf = myc->getPathfinderPtr();
 
-	b2 = 0.0;
-	b3 = 0.0;
-	b4 = 0.0;
+	b1 = b2 = b3 = b4 = 0.0;
 	shiftaccel = 0.0;
 
 	/* update some values needed */
@@ -238,6 +237,10 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		i = (i + 1 + mpf->getnPathSeg()) % mpf->getnPathSeg();
 	}
 
+	if (myc->getSpeedSqr() > myc->currentpathseg->getSpeedsqr()) {
+		b1 = (myc->getSpeedSqr() - myc->currentpathseg->getSpeedsqr()) / (myc->getSpeedSqr());
+	}
+
 	/* try to avoid flying */
 	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
 		b4 = 1.0;
@@ -261,7 +264,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 
 	/* anti blocking and brake code */
-	brake = b2;
+	if (b1 > b2) brake = b1; else brake = b2;
 	if (brake < b3) brake = b3;
 	if (brake < b4) {
 		brake = b4;

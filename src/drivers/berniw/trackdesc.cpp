@@ -46,11 +46,11 @@ void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp
 
 	if (s->type == TR_LFT) {
 		if (s->lside->style == TR_CURB) l = l - 1.5*tr;
-		else if ((s->lside->style == TR_PLAN) && (strcmp(s->lside->surface->material, TRK_VAL_CONCRETE) == 0)) l = l - 3.0*tr;
+		//else if ((s->lside->style == TR_PLAN) && (strcmp(s->lside->surface->material, TRK_VAL_CONCRETE) == 0)) l = l - 3.0*tr;
 	}
 	if (s->type == TR_RGT) {
 		if (s->rside->style == TR_CURB) r = r + 1.5*tr;
-		else if ((s->rside->style == TR_PLAN) && (strcmp(s->rside->surface->material, TRK_VAL_CONCRETE) == 0)) r = r + 3.0*tr;
+		//else if ((s->rside->style == TR_PLAN) && (strcmp(s->rside->surface->material, TRK_VAL_CONCRETE) == 0)) r = r + 3.0*tr;
 	}
 
 	width = distToLeft3D(&r);
