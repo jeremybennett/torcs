@@ -65,7 +65,7 @@
 
   <section name="Main Track">
 
-    <attnum name="width" unit="m" val="15"/>
+    <attnum name="width" unit="m" val="13"/>
     <attnum name="profil steps length" val="10" unit="m"/>
 
     <!-- PITS -->
