@@ -213,6 +213,14 @@ TrackDesc::TrackDesc(const tTrack* track)
 			ts[i].setKbeta(0.0);
 		}
 	}
+
+	for (int i = 0; i < nTrackSegments; i++) {
+		p0 = ts[(i+nTrackSegments-3) % nTrackSegments].getMiddle();
+		p1 = ts[(i+nTrackSegments+3) % nTrackSegments].getMiddle();
+		ts[i].setKgamma(atan((p1->z - p0->z)/6.0));
+	}
+
+
 }
 
 TrackDesc::~TrackDesc()

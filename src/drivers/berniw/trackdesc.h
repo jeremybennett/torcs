@@ -56,6 +56,7 @@ class TrackSegment
 		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);
 		inline void setLength(double len) { length = len; }
 		inline void setKbeta(double b) { kbeta = b; }
+		inline void setKgamma(double c) { kgamma = c; } 
 
 		inline int getSegmentId() { return segID; }
 		inline int getType() { return type; }
@@ -68,6 +69,7 @@ class TrackSegment
 		inline double getWidth() { return width; }
 		inline double getKalpha() { return kalpha; }
 		inline double getKbeta() { return kbeta; }
+		inline double getKgamma() { return kgamma; }
 		inline double getLength() { return length; }
 
 		inline v3d* getLeftBorder() { return &l; }
@@ -97,8 +99,9 @@ class TrackSegment
 		double kroughness;		/* roughness */
 		double kroughwavelen;	/* wavelen */
 		double width;			/* width of the track segment*/
-		double kalpha;			/* factor for the angle (like michigan) */
-		double kbeta;			/* factor for bumps (e-track-3) */
+		double kalpha;			/* (roll)factor for the angle (like michigan) */
+		double kbeta;			/* (curvature)factor for bumps (e-track-3) */
+		double kgamma;			/* (pitch)factor of road */
 		double length;			/* distance to the next segment (2-D, not 3-D!) */
 };
 

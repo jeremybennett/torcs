@@ -96,7 +96,7 @@ class MyCar : public AbstractCar
 		static const double MARGIN = 0.3;				/* security margin from track border [m] */
 		static const double AEROMAGIC = 1.6;			/* aerodynamic lift factor [-] */
 		static const double STABLESPEED = 80.0;			/* we brake currentspeed/stablespeed if car seems unstable [m/s] */
-		static const double TIMETOCATCH = 5.0;			/* when do we start thinking about overtaking [s]*/
+		static const double TIMETOCATCH = 1.0;			/* when do we start thinking about overtaking [s]*/
 		static const double MINOVERTAKERANGE = 250.0;	/* minimum length for overtaking [m] */
 		static const double OVERTAKERADIUS = 100.0;		/* min allowed radius to start overtaking [m] */
 		static const double OVERTAKEDIST = 3.5;			/* minimal distance of CG's while overtaking [m] */
@@ -104,6 +104,8 @@ class MyCar : public AbstractCar
 		static const double OVERTAKEANGLE = 0.03;//0.0175;
 		static const double DISTTHRESHOLD = 30.0;
 		static const double OVERTAKEMARGIN = 0.9;
+		static const double MAXALLOWEDPITCH = 0.03;
+		static const double FLYSPEED = 55.0;
 
 		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);
 		~MyCar();
@@ -113,6 +115,7 @@ class MyCar : public AbstractCar
 		void loadBehaviour(int id);
 		double queryInverseSlip(tCarElt * car, double speed);
 		double queryAcceleration(tCarElt * car, double speed);
+		inline double getDeltaPitch() { return deltapitch; }
 
 		Pathfinder* pf;
 
@@ -171,6 +174,7 @@ class MyCar : public AbstractCar
 
 		int drivetrain;			/* RWD, FWD or 4WD */
 		double carmass;			/* mass of car without fuel */
+		double deltapitch;		/* angle between road and car */
 		void updateCa();
 
 };

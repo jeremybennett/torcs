@@ -730,16 +730,17 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	}
 
 	/* are we on the trajectory or do i need a correction */
-	if (!inPit && myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
+	if (!inPit && (myc->derror > myc->PATHERR*myc->PATHERRFACTOR ||
+		(myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED))) {
 		changed += correctPath(trackSegId, car, myc);
 	}
+
+	collcars = updateOCar(trackSegId, situation, myc, ocar, o);
 
 	/* overtaking */
 	if (!inPit && (!pitStop || track->isBetween(e3, (s1 - AHEAD + nPathSeg) % nPathSeg, trackSegId)) && changed == 0) {
 		changed += overtake(trackSegId, situation, myc, ocar);
 	}
-
-	collcars = updateOCar(trackSegId, situation, myc, ocar, o);
 
 	/* recompute speed and direction of new trajectory */
 	if (changed > 0) {
@@ -918,7 +919,7 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 			/* compute cosalpha of angle between path and other car */
 			double cosa = (*o[i].collcar->getDir()) * (*opseg->getDir());
 			/* compute minimal space requred, sin(arccos(x)) == sqrt(1-sqr(x)) */
-			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST + fabs(myc->derror) + 1/50.0*MAX(0.0, (myc->getSpeed() - o[i].collcar->getSpeed()));
+			double d = myc->CARWIDTH + myc->CARLEN/2.0*sqrt(1.0-sqr(cosa)) + myc->DIST + myc->derror + 1/50.0*MAX(0.0, (myc->getSpeed() - o[i].collcar->getSpeed()));
 			/* compute distance to path */
 			double dtp = dist(opseg->getLoc(), o[i].collcar->getCurrentPos());
 
@@ -927,7 +928,6 @@ int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* 
 				double gm = otseg->getKfriction();
 				double qs = o[i].speedsqr;
 				double s = (myc->getSpeedSqr() - o[i].speedsqr)*(myc->mass/(2.0*gm*g*myc->mass + (qs)*(gm*myc->ca)));
-
 				double cmpdist = o[i].dist + myc->CARLEN + myc->DIST;
 
 				if (s <= cmpdist) {

@@ -147,11 +147,8 @@ void MyCar::info(void)
 */
 void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 {
-	/* update current position */
 	updatePos();
 	updateDir();
-
-	/* compute current speed */
 	updateSpeedSqr();
 	updateSpeed();
 
@@ -171,11 +168,9 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	destpathseg = pf->getPathSeg(destsegid);
 
 	mass = carmass + car->priv->fuel;
-
-	/* compute the distance from the current position to the trajectory */
 	derror =  track->distGFromPoint(pf->getPathSeg(currentsegid)->getLoc(), pf->getPathSeg(currentsegid)->getDir(), &currentpos);
-
 	trtime += situation->deltaTime;
+	deltapitch = fabs(track->getSegmentPtr(currentsegid)->getKgamma() + me->_pitch);
 }
 
 
@@ -199,13 +194,12 @@ void MyCar::loadBehaviour(int id) {
 void MyCar::updateCa()
 {
 	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
-	/* guess aerodynamic downforce coefficient from the wings */
 	double rearwingarea = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
     double rearwingangle = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
 	double wingca = 1.23*rearwingarea*sin(rearwingangle);
 	double cl = GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0) + GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
-
 	double h = 0.0;
+
 	for (int i = 0; i < 4; i++) h += GfParmGetNum(me->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*)NULL, 0.20);
 	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
 	ca = AEROMAGIC*(h*cl + 4.0*wingca);

@@ -101,7 +101,6 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	}
 	if (myTrackDesc == NULL) {
 		myTrackDesc = new TrackDesc(track);
-		//myTrackDesc->plot("/home/berni/new.dat");
 	}
 
 	char buffer[BUFSIZE];
@@ -246,12 +245,17 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	tdble bx = cos(car->_yaw), by = sin(car->_yaw);
 	tdble back = (ax*bx + ay*by) / (sqrt(ax*ax + ay*ay)*sqrt(bx*bx + by*by));
 
+	/* try to avoid flying */
+	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
+		b3 = 1.0;
+	}
+
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
 		targetAngle = atan2(myc->destpathseg->getDir()->y, myc->destpathseg->getDir()->x);
 		targetAngle -= car->_yaw;
 		NORM_PI_PI(targetAngle);
 		if (myc->derror > myc->PATHERR) {
-			b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
+			//b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/myc->currentseg->getWidth();
 			tdble de = (myc->derror-myc->PATHERR) > myc->MAXRELAX ? -myc->MAXRELAX : -(myc->derror-myc->PATHERR);
 			steer = steer * exp(de) + (1.0 - exp(de)) * targetAngle / car->_steerLock;
 			if (acos(back) > PI*myc->MAXANGLE/180.0) {
@@ -260,14 +264,20 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		}
 	}
 
+	/* anti blocking and brake code */
 	if (b1 > b2) tmp = b1; else tmp = b2;
-	if (tmp < b3) tmp = b3;
-
-	/* anti blocking code */
-	tdble abs_mean = 0.0;
-	for (int i = 0; i < 4; i++) abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->getSpeed();
-	abs_mean /= 4.0;
-    tmp = tmp * abs_mean * abs_mean;
+	if (tmp < b3) {
+		tmp = b3;
+		tdble abs_mean;
+		abs_mean = (car->_wheelSpinVel(REAR_LFT) + car->_wheelSpinVel(REAR_RGT))*car->_wheelRadius(REAR_LFT)/myc->getSpeed();
+		abs_mean /= 2.0;
+    	tmp = tmp * abs_mean;
+	} else {
+		tdble abs_mean = 0.0;
+		for (int i = 0; i < 4; i++) abs_mean += (car->_wheelSpinVel(i) * car->_wheelRadius(i)) / myc->getSpeed();
+		abs_mean /= 4.0;
+    	tmp = tmp * abs_mean;
+	}
 
 	/* gear changing */
 	rpm = (car->_enginerpm / car->_enginerpmMax);
