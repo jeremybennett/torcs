@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    file                 : berniw.xml
+    created              : Mon Apr 17 13:51:00 CET 2000
+    copyright            : (C) 2000 by Bernhard Wymann
+    email                : berniw@bluewin.ch
+    version              : $Id$
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
+
+<params name="berniw" type="robotdef">
+  <section name="Robots">
+    <section name="index">
+
+	  <section name="1">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 1"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 1"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="138"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="2">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 2"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 2"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="139"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="3">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 3"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 3"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="140"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="4">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 4"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 4"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="141"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="5">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 5"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 5"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="142"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="6">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 6"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 6"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="143"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="7">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 7"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 7"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="144"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="8">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 8"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 8"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="145"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="9">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 9"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 9"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="146"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	  <section name="10">
+		<!-- Driver's name (short please) -->
+		<attstr name="name" val="berniw 10"></attstr>
+		<!-- Description (can be long) -->
+		<attstr name="desc" val="Berni's first Bot 10"></attstr>
+		<!-- Author's name -->
+		<attstr name="author" val="Bernhard Wymann"></attstr>
+		<!-- Car used to race -->
+		<attstr name="car name" val="cg-nascar-rwd"></attstr>
+		<!-- Car category -->
+		<attstr name="category" val="torcs-r-a"></attstr>
+		<!-- Race number, should be unique for TORCS... -->
+		<attnum name="race number" val="147"></attnum>
+		<!-- Your color for car and board -->
+		<attnum name="red" val="0.0"></attnum>
+		<attnum name="green" val="1.0"></attnum>
+		<attnum name="blue" val="1.0"></attnum>
+      </section>
+
+	</section>
+  </section>
+</params>

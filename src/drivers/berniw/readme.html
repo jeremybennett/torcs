@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>berniw torcs driver readme</title>
+             
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<h2>berniw development snapshot for torcs-1.0.0-pre7</h2>
+<h3>1.0 what is berniw?</h3>
+  berniw is a car driver for the open racing car simulator, look at <a href="http://torcs.org">
+ torcs.org</a>. at this place i would like to thank the developers of torcs, 
+i had a lot of fun during the development of this driver, they do a great 
+job:-)  
+<h3>1.1 license and download</h3>
+  gnu general public license 2. anyway, please don't look too hard in the 
+code yet, or my reputation will be lost...;-). download it <a href="download/berniw.tar.bz2">
+ here</a>.  
+<h3>1.2 how do i install berniw?</h3>
+  so, first you need a working version of torcs 1.0.0-pre7 under linux with
+ sources installed. i assume in this instructions the following:<br>
+  you have the permisson on the system to do the needed tasks. the torcs
+sources  are in /usr/src/torcs/torcs-1.0.0-pre7 and the installation is in
+/usr/local/games/torcs.  in case you use other directories, just replace
+this directories with the  ones on your system. i also assume that the <a href="download/berniw.tar.bz2">
+ berniw.tar.bz2</a> is in your home directory.<br>
+<br>
+  first export the following environment variables (for bash):<br>
+  export TORCS_BASE=/usr/src/torcs/torcs-1.0.0-pre7<br>
+  export MAKE_DEFAULT=/usr/src/torcs/torcs-1.0.0-pre7/Make-default.mk<br>
+<br>
+  now change to the drivers directory:<br>
+  cd $TORCS_BASE/src/drivers<br>
+<br>
+  unpack the berniw package:<br>
+  tar xfvI ~/berniw.tar.bz2<br>
+<br>
+  compile and install:<br>
+  cd berniw<br>
+  make<br>
+  make install<br>
+  if you discover trouble send me a mail to berni4you@gmx.ch.<br>
+<br>
+  run it:<br>
+  cd /usr/local/games/torcs<br>
+  ./torcs<br>
+  now choose a berniw, have fun.<br>
+<h3>1.3 features</h3>
+ - pit stop<br>
+  - simple collision avoidance<br>
+  - stays quite good on various tracks<br>
+<h3>1.4 TODO</h3>
+ - bug fixing<br>
+ - just compute things if neccessary, not always.<br>
+  - MUCH better trajectory (race and pit, the current one is a big mess)<br>
+  - better collision avoidance<br>
+  - overtaking<br>
+  - artwork / different cars<br>
+  - setups for the different tracks<br>
+  - better strategy<br>
+  - communication between berniw's (save fuel behind team mate, block opponents,
+ let pass team mates, etc.)<br>
+  - improve behavior model<br>
+  - clean up code<br>
+<br>
+</body>
+</html>
