@@ -16,7 +16,7 @@
 
 <params name="Tanhoj" type="template">
   <section name="Car">
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="63.0"></attnum>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="70.0"></attnum>
   </section>
 
   <section name="Rear Wing">
