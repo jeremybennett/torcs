@@ -1,3 +1,5 @@
+# @configure_input@
+
 ##############################################################################
 #
 #    file                 : torcsdoc.conf
@@ -121,7 +123,7 @@ FULL_PATH_NAMES      = YES
 # only done if one of the specified strings matches the left-hand part of
 # the path.
 
-STRIP_FROM_PATH      = /home/torcs/sb3/torcs/
+STRIP_FROM_PATH      = @TORCS_BASE@/
 
 # The INTERNAL_DOCS tag determines if documentation
 # that is typed after a \internal command is included. If the tag is set 
@@ -134,7 +136,7 @@ INTERNAL_DOCS        = NO
 # generate a class diagram (in Html and LaTeX) for classes with base or
 # super classes. Setting the tag to NO turns the diagrams off.
 
-CLASS_DIAGRAMS       = NO
+CLASS_DIAGRAMS       = YES
 
 # If the SOURCE_BROWSER tag is set to YES then a list of source files will
 # be generated. Documented entities will be cross-referenced with these sources.

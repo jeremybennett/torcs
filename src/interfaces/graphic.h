@@ -55,6 +55,9 @@
 #define GR_ATT_SKIDDELTAT	"skid interval"
 #define GR_ATT_FOVFACT		"fov factor"
 
+#define GR_ATT_NB_SCREENS	"number of screens"
+#define GR_ATT_CUR_DRV		"current driver"
+
 #define GR_SCT_PLAYABLE_DOV     "Playable Cameras Distance of Views"
 #define GR_ATT_FRONT_GLOBAL     "Front Level Group Global"
 #define GR_ATT_FRONT_LEVEL3     "Front Level Group 3"

@@ -111,12 +111,12 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
     x6 = offset + 400;
     
     y = 400;
-    GfuiLabelCreateEx(rmScrHdle, "Lap",       fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_LARGE_C, x2+20, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_LARGE_C, x3+20, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Min Spd",   fgcolor, GFUI_FONT_LARGE_C, x5, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Dammages",  fgcolor, GFUI_FONT_LARGE_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Lap",       fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_MEDIUM_C, x2+20, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_MEDIUM_C, x3+20, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Min Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Dammages",  fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
     y -= 20;
     
     sprintf(path, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -257,14 +257,14 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
     x8 = 595;
     
     y = 400;
-    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_LARGE_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Total",     fgcolor, GFUI_FONT_LARGE_C, x3, y, GFUI_ALIGN_HR_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HR_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Laps",      fgcolor, GFUI_FONT_LARGE_C, x5, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_LARGE_C, x6, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Dammages",  fgcolor, GFUI_FONT_LARGE_C, x7, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Pit Stops", fgcolor, GFUI_FONT_LARGE_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_MEDIUM_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Total",     fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Laps",      fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Dammages",  fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Pit Stops", fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
     y -= 20;
     
     sprintf(path, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -427,9 +427,9 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
     x3 = offset + 240;
     
     y = 400;
-    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_LARGE_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_LARGE_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_MEDIUM_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
     y -= 20;
     
     sprintf(path, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -551,9 +551,9 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
     x3 = offset + 240;
     
     y = 400;
-    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_LARGE_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(rmScrHdle, "Points",      fgcolor, GFUI_FONT_LARGE_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_MEDIUM_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Points",      fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
     y -= 20;
     
     nbCars = (int)GfParmGetEltNb(results, RE_SECT_STANDINGS);

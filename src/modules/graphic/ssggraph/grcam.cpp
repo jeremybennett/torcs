@@ -40,6 +40,7 @@
 #include "grmain.h"
 #include <tgfclient.h>
 
+static char path[1024];
 
 static void
 grMakeLookAtMat4 ( sgMat4 dst, const sgVec3 eye, const sgVec3 center, const sgVec3 up )
@@ -80,10 +81,10 @@ grMakeLookAtMat4 ( sgMat4 dst, const sgVec3 eye, const sgVec3 center, const sgVe
 }
 
 
-cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
+cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG, int mirrorAllowed,
 			       float myfovy, float myfovymin, float myfovymax,
 			       float myfnear, float myffar, float myfogstart, float myfogend)
-    : cGrCamera(myscreen, id, drawCurr, drawBG)
+    : cGrCamera(myscreen, id, drawCurr, drawBG, mirrorAllowed)
 {
     fovy     = myfovy;
     fovymin  = myfovymin;
@@ -94,7 +95,6 @@ cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, 
     fogstart = myfogstart;
     fogend   = myfogend;
     
-    limitFov();
 }
 
 void cGrPerspCamera::setProjection(void)
@@ -113,16 +113,12 @@ void cGrPerspCamera::setModelView(void)
 
 void cGrPerspCamera::loadDefaults(char *attr)
 {
-    fovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+    sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+    fovy = (float)GfParmGetNum(grHandle, path,
 			       attr, (char*)NULL, fovydflt);
     limitFov();
 }
 
-void cGrPerspCamera::limitFov(void) {
-    if ((screen->getViewRatio() * fovy) > 90.0) {
-	fovy = 90.0 / screen->getViewRatio();
-    }
-}
 
 /* Give the height in pixels of 1 m high object on the screen at this point */
 float cGrPerspCamera::getLODFactor(float x, float y, float z) {
@@ -186,7 +182,8 @@ void cGrPerspCamera::setZoom(int cmd)
     limitFov();
 
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, screen->getCurCamHead(), getId());
-    GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf, (char*)NULL, (tdble)fovy);
+    sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+    GfParmSetNum(grHandle, path, buf, (char*)NULL, (tdble)fovy);
     GfParmWriteFile(NULL, grHandle, "Graph",
 		    GFPARM_PARAMETER, "../dtd/params.dtd");
 }
@@ -222,12 +219,18 @@ class cGrCarCamInside : public cGrPerspCamera
 		    float myfovy, float myfovymin, float myfovymax,
 		    float myfnear, float myffar = 1500.0,
 		    float myfogstart = 800.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
+    }
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -254,6 +257,37 @@ class cGrCarCamInside : public cGrPerspCamera
 };
 
 
+void cGrCarCamMirror::limitFov(void) {
+    fovy = 90.0 / screen->getViewRatio();
+}
+
+void cGrCarCamMirror::update(tCarElt *car, tSituation *s)
+{
+    sgVec3 P, p;
+
+    P[0] = car->_drvPos_x;
+    P[1] = car->_drvPos_y;
+    P[2] = car->_drvPos_z;
+    sgXformPnt3(P, car->_posMat);
+	
+    eye[0] = P[0];
+    eye[1] = P[1];
+    eye[2] = P[2];
+	
+    p[0] = car->_drvPos_x - 30.0;
+    p[1] = car->_drvPos_y;
+    p[2] = car->_drvPos_z;
+    sgXformPnt3(p, car->_posMat);
+
+    center[0] = p[0];
+    center[1] = p[1];
+    center[2] = p[2];
+
+    up[0] = car->_posMat[2][0];
+    up[1] = car->_posMat[2][1];
+    up[2] = car->_posMat[2][2];
+}
+
 class cGrCarCamInsideFixedCar : public cGrPerspCamera
 {
  public:
@@ -261,9 +295,15 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
 			    float myfovy, float myfovymin, float myfovymax,
 			    float myfnear, float myffar = 1500.0,
 			    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
+    }
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -306,7 +346,7 @@ class cGrCarCamBehind : public cGrPerspCamera
 		    float fovy, float fovymin, float fovymax,
 		    float mydist, float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	PreA = 0.0;
@@ -314,7 +354,13 @@ class cGrCarCamBehind : public cGrPerspCamera
 	up[1] = 0;
 	up[2] = 1;
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tdble A;
 	tdble CosA;
@@ -356,7 +402,7 @@ class cGrCarCamBehind2 : public cGrPerspCamera
 		    float fovy, float fovymin, float fovymax,
 		    float mydist, float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	PreA = 0.0;
@@ -364,7 +410,13 @@ class cGrCarCamBehind2 : public cGrPerspCamera
 	up[1] = 0;
 	up[2] = 1;
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tdble A;
 	tdble CosA;
@@ -404,14 +456,20 @@ class cGrCarCamFront : public cGrPerspCamera
 		   float fovy, float fovymin, float fovymax,
 		   float mydist, float fnear, float ffar = 1500.0,
 		   float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	dist = mydist;
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tdble CosA = cos(car->_yaw);
 	tdble SinA = sin(car->_yaw);
@@ -441,7 +499,7 @@ protected:
 		  float mydistx, float mydisty, float mydistz,
 		  float fnear, float ffar = 1500.0,
 		  float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distx = mydistx;
 	disty = mydisty;
@@ -451,7 +509,13 @@ protected:
 	up[1] = 0;
 	up[2] = 1;
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tdble x = car->_pos_X + distx;
 	tdble y = car->_pos_Y + disty;
@@ -477,7 +541,7 @@ class cGrCarCamUp : public cGrPerspCamera
 		float mydistz, int axis,
 		float fnear, float ffar = 1500.0,
 		float myfogstart = 1600.0, float myfogend = 1700.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distz = mydistz;
 	up[2] = 0;
@@ -504,7 +568,13 @@ class cGrCarCamUp : public cGrPerspCamera
 	    break;
 	}
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tdble x = car->_pos_X;
 	tdble y = car->_pos_Y;
@@ -532,7 +602,7 @@ class cGrCarCamCenter : public cGrPerspCamera
 		    float mydistz,
 		    float fnear, float ffar = 1500.0,
 		    float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	distz = mydistz;
 	locfar = ffar;
@@ -547,8 +617,15 @@ class cGrCarCamCenter : public cGrPerspCamera
 	up[2] = 1;
     }
 
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void loadDefaults(char *attr) {
-	locfovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+	sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+	locfovy = (float)GfParmGetNum(grHandle, path,
 				   attr, (char*)NULL, fovydflt);
     }
 
@@ -593,7 +670,7 @@ class cGrCarCamLookAt : public cGrPerspCamera
 		    float centerx, float centery, float centerz,
 		    float fnear, float ffar = 1500.0,
 		    float myfogstart = 1600.0, float myfogend = 1700.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 
 	eye[0] = eyex;
@@ -642,7 +719,13 @@ class cGrCarCamLookAt : public cGrPerspCamera
 	    break;
 	}
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
     }
 };
@@ -657,13 +740,19 @@ class cGrCarCamRoadNoZoom : public cGrPerspCamera
 			float fovy, float fovymin, float fovymax,
 			float fnear, float ffar = 1500.0,
 			float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
     }
-    
+
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void update(tCarElt *car, tSituation *s) {
 	tRoadCam *curCam;
 
@@ -696,7 +785,7 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 		      float fovy, float fovymin, float fovymax,
 		      float fnear, float ffar = 1500.0,
 		      float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, fovy, fovymin,
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 0, fovy, fovymin,
 			 fovymax, fnear, ffar, myfogstart, myfogend) {
 	locfar = ffar;
 	locfovy = fovy;
@@ -706,8 +795,15 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 	up[2] = 1;
     }
 
+    void limitFov(void) {
+	if ((screen->getViewRatio() * fovy) > 90.0) {
+	    fovy = 90.0 / screen->getViewRatio();
+	}
+    }
+
     void loadDefaults(char *attr) {
-	locfovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+	sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+	locfovy = (float)GfParmGetNum(grHandle, path,
 				   attr, (char*)NULL, fovydflt);
     }
 
@@ -839,13 +935,13 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 
 	    memset(schedView, 0, grNbCars * sizeof(tSchedView));
 	    for (i = 0; i < grNbCars; i++) {
-		schedView[car->index].prio = 0;
+		schedView[i].viewable = 1;
 	    }
 	    
 	    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
 		if ((screen != grScreens[i]) && grScreens[i]->isActive()) {
 		    car = grScreens[i]->getCurrentCar();
-		    schedView[car->index].prio = -10000;
+		    schedView[car->index].viewable = 0;
 		}
 	    }
 	    
@@ -855,17 +951,11 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 		car = s->cars[i];
 		schedView[car->index].prio += grNbCars - i;
 		fs = GetDistToStart(car);
-		if (i == 0) {
-		    if ((car->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-			schedView[car->index].viewable = 1;
-			if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
-			    schedView[car->index].prio += 5 * grNbCars;
-			    event = 1;
-			}
-		    }
+		if ((car->_state & RM_CAR_STATE_NO_SIMU) != 0) {
+		    schedView[car->index].viewable = 0;
 		} else {
-		    if ((fs > (grTrack->length - 100.0)) && (car->_remainingLaps == 0)) {
-			schedView[car->index].prio += grNbCars;
+		    if ((fs > (grTrack->length - 200.0)) && (car->_remainingLaps == 0)) {
+			schedView[car->index].prio += 5 * grNbCars;
 			event = 1;
 		    }
 		}
@@ -875,7 +965,6 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 		    /* out of track */
 		    if (dist > 0) {
 			schedView[car->index].prio += grNbCars;
-			schedView[car->index].viewable |= 8;
 			if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
 			    schedView[car->index].prio += grNbCars;
 			    event = 1;
@@ -892,8 +981,6 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 				d = proximityThld - d;
 				schedView[car->index].prio  += d * grNbCars / proximityThld;
 				schedView[car2->index].prio += d * (grNbCars - 1) / proximityThld;
-				schedView[car->index].viewable  |= 2;
-				schedView[car2->index].viewable |= 2;
 				if (i == 0) {
 				    event = 1;
 				}
@@ -903,11 +990,10 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 
 		    if (car->priv.collision) {
 			schedView[car->index].prio += grNbCars;
-			schedView[car->index].viewable |= 4;
 			event = 1;
 		    }
 		} else {
-		    if (i == /* s->current */ 0) {
+		    if (i == current) {
 			event = 1;	/* update view */
 		    }
 		}

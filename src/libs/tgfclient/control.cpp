@@ -73,27 +73,27 @@ typedef struct
 } tgfKeyBinding;
 
 static tgfKeyBinding GfSKey[] = {
-    {"F1", GLUT_KEY_F1},
-    {"F1", GLUT_KEY_F2},
-    {"F1", GLUT_KEY_F3},
-    {"F1", GLUT_KEY_F4},
-    {"F1", GLUT_KEY_F5},
-    {"F1", GLUT_KEY_F6},
-    {"F1", GLUT_KEY_F7},
-    {"F1", GLUT_KEY_F8},
-    {"F1", GLUT_KEY_F9},
-    {"F1", GLUT_KEY_F10},
-    {"F1", GLUT_KEY_F11},
-    {"F1", GLUT_KEY_F12},
-    {"Left Arrow",  GLUT_KEY_LEFT},
-    {"Up Arrow",    GLUT_KEY_UP},
-    {"Right Arrow", GLUT_KEY_RIGHT},
-    {"Down Arrow",  GLUT_KEY_DOWN},
-    {"Page Up",     GLUT_KEY_PAGE_UP},
-    {"Page Down",   GLUT_KEY_PAGE_DOWN},
-    {"Home",        GLUT_KEY_HOME},
-    {"End",         GLUT_KEY_END},
-    {"Insert",      GLUT_KEY_INSERT}
+    {"F1",		GLUT_KEY_F1},
+    {"F2",		GLUT_KEY_F2},
+    {"F3",		GLUT_KEY_F3},
+    {"F4",		GLUT_KEY_F4},
+    {"F5",		GLUT_KEY_F5},
+    {"F6",		GLUT_KEY_F6},
+    {"F7",		GLUT_KEY_F7},
+    {"F8",		GLUT_KEY_F8},
+    {"F9",		GLUT_KEY_F9},
+    {"F10",		GLUT_KEY_F10},
+    {"F11",		GLUT_KEY_F11},
+    {"F12",		GLUT_KEY_F12},
+    {"Left Arrow",	GLUT_KEY_LEFT},
+    {"Up Arrow",	GLUT_KEY_UP},
+    {"Right Arrow",	GLUT_KEY_RIGHT},
+    {"Down Arrow",	GLUT_KEY_DOWN},
+    {"Page Up",		GLUT_KEY_PAGE_UP},
+    {"Page Down",	GLUT_KEY_PAGE_DOWN},
+    {"Home",		GLUT_KEY_HOME},
+    {"End",		GLUT_KEY_END},
+    {"Insert",		GLUT_KEY_INSERT}
 };
 
 static tgfKeyBinding GfKey[] = {

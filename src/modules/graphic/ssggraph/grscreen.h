@@ -40,6 +40,8 @@ class cGrScreen
     tGrCamHead		cams[10];		/* from F2 to F11 */
 
     class cGrPerspCamera	*curCam;	/* the current camera */
+    class cGrPerspCamera	*mirrorCam;	/* the mirror camera */
+    class cGrPerspCamera	*dispCam;	/* the display camera */
     class cGrOrthoCamera	*boardCam;	/* the board camera */
     class cGrBackgroundCam 	*bgCam;		/* the background camera */
 
@@ -71,7 +73,9 @@ class cGrScreen
     int  isInScreen(int x, int y);
 
     void update(tSituation *s, float Fps);
-    
+
+    void cGrScreen::camDraw(tSituation *s);
+
     void updateCurrent(tSituation *s);
 
     void selectCamera(int cam);
@@ -97,6 +101,10 @@ class cGrScreen
 
     int isActive(void) {
 	return active;
+    }
+
+    int getId(void) {
+	return id;
     }
 };
 

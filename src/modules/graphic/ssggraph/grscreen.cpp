@@ -38,12 +38,16 @@
 #include "grscreen.h"
 
 static char buf[1024];
+static char path[1024];
+static char path2[1024];
 
 cGrScreen::cGrScreen(int myid)
 {
     id = myid;
     curCar = NULL;
     curCam = NULL;
+    mirrorCam = NULL;
+    dispCam = NULL;
     boardCam = NULL;
     bgCam = NULL;
     curCamHead = 0;
@@ -128,8 +132,6 @@ void cGrScreen::selectPrevCar(void)
 /* Select the camera by number */
 void cGrScreen::selectCamera(int cam)
 {
-    char	buf[256];
-
     if (cam == curCamHead) {
 	/* Same camera list, choose the next one */
 	curCam = curCam->next();
@@ -146,14 +148,63 @@ void cGrScreen::selectCamera(int cam)
 	curCamHead = 0;
 	curCam = (cGrPerspCamera*)GF_TAILQ_FIRST(&cams[curCamHead]);
     }
-    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)curCam->getId());
-    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)curCamHead);    
-    
+    sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
+    GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
+    GfParmSetNum(grHandle, path, GR_ATT_CAM, (char*)NULL, (tdble)curCam->getId());
+    GfParmSetNum(grHandle, path, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)curCamHead);
+
+    /* save also as user's preference if human */
+    if (curCar->_driverType == RM_DRV_HUMAN) {
+	sprintf(path2, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
+	GfParmSetNum(grHandle, path2, GR_ATT_CAM, (char*)NULL, (tdble)curCam->getId());
+	GfParmSetNum(grHandle, path2, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)curCamHead);
+    }
+
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, curCamHead, curCam->getId());
     curCam->loadDefaults(buf);
     drawCurrent = curCam->getDrawCurrent();
     GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 }
+
+void cGrScreen::camDraw(tSituation *s)
+{
+    int		i;
+
+    glDisable(GL_COLOR_MATERIAL);
+
+    START_PROFILE("dispCam->update*");
+    dispCam->update(curCar, s);
+    STOP_PROFILE("dispCam->update*");
+
+    if (dispCam->getDrawBackground()) {
+	glDisable(GL_LIGHTING);    
+	grDrawBackground(dispCam, bgCam);
+	glClear(GL_DEPTH_BUFFER_BIT);
+    }
+    glEnable(GL_DEPTH_TEST);
+
+    START_PROFILE("dispCam->action*");
+    dispCam->action();
+    STOP_PROFILE("dispCam->action*");
+
+    START_PROFILE("grDrawCar*");
+    glFogf(GL_FOG_START, dispCam->getFogStart());
+    glFogf(GL_FOG_END, dispCam->getFogEnd());
+    glEnable(GL_FOG);
+
+    for (i = 0; i < s->_ncars; i++) {
+	/* FIXME: sort the cars by distance for transparent windows */
+	grDrawCar(s->cars[i], curCar, dispCam->getDrawCurrent(), s->currentTime, dispCam);
+    } 
+    STOP_PROFILE("grDrawCar*");
+	
+    START_PROFILE("grDrawScene*");
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    grDrawScene();
+    STOP_PROFILE("grDrawScene*");
+}
+
 
 /* Update screen display */
 void cGrScreen::update(tSituation *s, float Fps)
@@ -173,6 +224,9 @@ void cGrScreen::update(tSituation *s, float Fps)
 		break;
 	    }
 	}
+	sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
+	GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
+	GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 	selectNextFlag = 0;
     }
     if (selectPrevFlag) {
@@ -183,6 +237,9 @@ void cGrScreen::update(tSituation *s, float Fps)
 		break;
 	    }
 	}
+	sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
+	GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
+	GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
 	selectPrevFlag = 0;
     }
 
@@ -191,39 +248,18 @@ void cGrScreen::update(tSituation *s, float Fps)
 
     glViewport(scrx, scry, scrw, scrh);
 
-    glDisable(GL_COLOR_MATERIAL);
+    dispCam = curCam;
+    camDraw(s);
 
-    START_PROFILE("curCam->update*");
-    curCam->update(curCar, s);
-    STOP_PROFILE("curCam->update*");
-
-    if (curCam->getDrawBackground()) {
-	glDisable(GL_LIGHTING);    
-	grDrawBackground(curCam, bgCam);
+#if 0
+    if (curCam->isMirrorAllowed()) {
+	glViewport(scrx + scrw / 4, scry +  5 * scrh / 6 - scrh / 10, scrw / 2, scrh / 6);
+	dispCam = mirrorCam;
 	glClear(GL_DEPTH_BUFFER_BIT);
+	camDraw(s);
+	glViewport(scrx, scry, scrw, scrh);
     }
-    glEnable(GL_DEPTH_TEST);
-
-    START_PROFILE("curCam->action*");
-    curCam->action();
-    STOP_PROFILE("curCam->action*");
-
-    START_PROFILE("grDrawCar*");
-    glFogf(GL_FOG_START, curCam->getFogStart());
-    glFogf(GL_FOG_END, curCam->getFogEnd());
-    glEnable(GL_FOG);
-
-    for (i = 0; i < s->_ncars; i++) {
-	/* FIXME: sort the cars by distance for transparent windows */
-	grDrawCar(s->cars[i], curCar, curCam->getDrawCurrent(), s->currentTime, curCam);
-    } 
-    STOP_PROFILE("grDrawCar*");
-	
-    START_PROFILE("grDrawScene*");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    grDrawScene();
-    STOP_PROFILE("grDrawScene*");
+#endif
 
     START_PROFILE("boardCam*");
     boardCam->action();
@@ -249,18 +285,25 @@ void cGrScreen::update(tSituation *s, float Fps)
 void cGrScreen::loadParams(tSituation *s)
 {
     int			camNum;
+    int			i;
     class cGrCamera	*cam;
+    char		*carName;
 
-    curCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, NULL, 9);
+    sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
     if (curCar) {
-	curCamHead = (int)GfParmGetNum(curCar->_paramsHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, NULL, curCamHead);
+	sprintf(path2, "%s/%s", GR_SCT_DISPMODE, curCar->_name);
     }
     
+    curCamHead = (int)GfParmGetNum(grHandle, path, GR_ATT_CAM_HEAD, NULL, 9);
+    if (curCar) {
+	curCamHead = (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
+    }
+
     cam = GF_TAILQ_FIRST(&cams[curCamHead]);
     curCam = NULL;
-    camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, NULL, 0);
+    camNum = (int)GfParmGetNum(grHandle, path, GR_ATT_CAM, NULL, 0);
     if (curCar) {
-	camNum = (int)GfParmGetNum(curCar->_paramsHandle, GR_SCT_DISPMODE, GR_ATT_CAM, NULL, camNum);
+	camNum = (int)GfParmGetNum(grHandle, path2, GR_ATT_CAM, NULL, (tdble)camNum);
     }
 
     while (cam) {
@@ -274,20 +317,24 @@ void cGrScreen::loadParams(tSituation *s)
 	/* back to default camera */
 	curCamHead = 0;
 	curCam = (cGrPerspCamera*)GF_TAILQ_FIRST(&cams[curCamHead]);
-	if (curCar) {
-	    GfParmSetNum(curCar->_paramsHandle, GR_SCT_DISPMODE, GR_ATT_CAM, NULL, (tdble)curCam->getId());
-	    GfParmSetNum(curCar->_paramsHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
-	} else {
-	    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, NULL, (tdble)curCam->getId());
-	    GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
-	}
+	GfParmSetNum(grHandle, path, GR_ATT_CAM, NULL, (tdble)curCam->getId());
+	GfParmSetNum(grHandle, path, GR_ATT_CAM_HEAD, NULL, (tdble)curCamHead);
     }
 
     if (!curCar) {
-	/* FIXME: select a car from params */
-	curCar = s->cars[0];
+	carName = GfParmGetStr(grHandle, path, GR_ATT_CUR_DRV, "");
+	for (i = 0; i < s->_ncars; i++) {
+	    if (!strcmp(s->cars[i]->_name, carName)) {
+		break;
+	    }
+	}
+	if (i < s->_ncars) {
+	    curCar = s->cars[i];
+	} else {
+	    curCar = s->cars[0];
+	}
     }
-    
+
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, curCamHead, curCam->getId());
     curCam->loadDefaults(buf);
     drawCurrent = curCam->getDrawCurrent();
@@ -316,6 +363,21 @@ void cGrScreen::initCams(tSituation *s)
 
     if (bgCam == NULL) {
 	bgCam = new cGrBackgroundCam(this);
+    }
+
+    if (mirrorCam == NULL) {
+	mirrorCam = new cGrCarCamMirror(this,
+					-1,
+					0,			/* drawCurr */
+					1,			/* drawBG  */
+					90.0,			/* fovy */
+					0.0,			/* fovymin */
+					360.0,			/* fovymax */
+					0.3,			/* near */
+					300.0 * fovFactor,	/* far */
+					200.0 * fovFactor,	/* fog */
+					300.0 * fovFactor	/* fog */
+					);
     }
     
     /* Scene Cameras */

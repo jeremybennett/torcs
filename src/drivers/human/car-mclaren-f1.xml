@@ -28,7 +28,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="8"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="9"/>
   </section>
 
   <section name="Engine">
@@ -43,12 +43,12 @@
 	<attnum name="efficiency" val="0.957"/>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="2.66"/>
+	<attnum name="ratio" min="0" max="5" val="2.0"/>
 	<attnum name="inertia" val="0.003"/>
 	<attnum name="efficiency" val="0.955"/>
       </section>
       <section name="2">
-	<attnum name="ratio" min="0" max="5" val="1.78"/>
+	<attnum name="ratio" min="0" max="5" val="1.6"/>
 	<attnum name="inertia" val="0.0037"/>
 	<attnum name="efficiency" val="0.957"/>
       </section>
@@ -58,17 +58,17 @@
 	<attnum name="efficiency" val="0.950"/>
       </section>
       <section name="4">
-	<attnum name="ratio" min="0" max="5" val="1.00"/>
+	<attnum name="ratio" min="0" max="5" val="1.1"/>
 	<attnum name="inertia" val="0.0064"/>
 	<attnum name="efficiency" val="0.983"/>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val=".85"/>
+	<attnum name="ratio" min="0" max="5" val="0.9"/>
 	<attnum name="inertia" val="0.0107"/>
 	<attnum name="efficiency" val="0.948"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.75"/>
+	<attnum name="ratio" min="0" max="5" val="0.8"/>
 	<attnum name="inertia" val="0.0150"/>
 	<attnum name="efficiency" val="0.940"/>
       </section>

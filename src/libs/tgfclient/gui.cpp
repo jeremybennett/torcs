@@ -206,18 +206,10 @@ GfuiMouseShow(void)
     GfuiScreen->mouseAllowed = 1;
 }
 
-/** 
-    @ingroup	
-    @param	
-    @param	
-    @param	
-    @param	
+/** Force the hardware mouse pointer
+    @ingroup	ctrl
     @return	<tt>0 ... </tt>Ok
 		<br><tt>-1 .. </tt>Error
-    @warning	
-    @bug	
-    @see	
-    @note		
 */
 void
 GfuiMouseSetHWPresent(void)

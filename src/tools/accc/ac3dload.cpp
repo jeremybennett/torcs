@@ -68,10 +68,10 @@ void mapTextureEnv(ob_t * object);
 ob_t   ob[10000];
 /*mat_t  material[10000];*/
 mat_t * root_material=NULL;
-point_t tmpPoint[10000];
-tcoord_t     tmpva[10000];
-double   tmptexa[20000];
-int     tmpsurf[10000];  
+point_t tmpPoint[100000];
+tcoord_t     tmpva[100000];
+double   tmptexa[200000];
+int     tmpsurf[100000];  
 ob_t * root_ob;
 int refs=0;
 char *shadowtexture="shadow2.rgb";

@@ -429,14 +429,16 @@ grInitCar(tCarElt *car)
     GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
 
     lg = 0;
-    lg += sprintf(buf, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(buf, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
+    lg += sprintf(buf, "drivers/%s/%d;", car->_modName, car->_driverIndex);
+    lg += sprintf(buf, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(buf, "drivers/%s;", car->_modName);
     lg += sprintf(buf, "cars/%s;", car->_carName);
     grFilePath = (char*)malloc(lg);
     lg = 0;
-    lg += sprintf(grFilePath + lg, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(grFilePath + lg, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
+    lg += sprintf(grFilePath + lg, "drivers/%s/%d;", car->_modName, car->_driverIndex);
+    lg += sprintf(grFilePath + lg, "drivers/%s/%s;", car->_modName, car->_carName);
     lg += sprintf(grFilePath + lg, "drivers/%s;", car->_modName);
     lg += sprintf(grFilePath + lg, "cars/%s", car->_carName);
 

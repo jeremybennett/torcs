@@ -40,6 +40,7 @@ class cGrCamera
     int			id;		/* Camera Id */
     int			drawCurrent;	/* flag to draw the current car */
     int			drawBackground;	/* flag to draw the background */
+    int			mirrorAllowed;	/* flag to allox the display of mirror */
 
  protected:
     sgVec3 eye;
@@ -48,11 +49,12 @@ class cGrCamera
     class cGrScreen	*screen;	/* screen where the camera is attached */
     
  public:
-    cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0) {
+    cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0, int mymirrorAllowed = 0) {
 	screen = myscreen;
 	id = myid;
 	drawCurrent = mydrawCurrent;
 	drawBackground = mydrawBackground;
+	mirrorAllowed = mymirrorAllowed;
     }
     
     virtual void update(tCarElt *car, tSituation *s) = 0;	/* Change the camera if necessary */
@@ -73,6 +75,8 @@ class cGrCamera
     int getId(void)		{ return id; }
     int getDrawCurrent(void)	{ return drawCurrent; }
     int getDrawBackground(void)	{ return drawBackground; }
+    int isMirrorAllowed(void)	{ return mirrorAllowed; }
+
     t3Dd *getPos(void) {
 	static t3Dd pos;
 	pos.x = eye[0];
@@ -133,7 +137,7 @@ class cGrPerspCamera : public cGrCamera
     float fogend;
     
  public:
-    cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
+    cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG, int mirrorAllowed,
 		   float myfovy, float myfovymin, float myfovymax,
 		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
@@ -149,7 +153,7 @@ class cGrPerspCamera : public cGrCamera
 	return (cGrPerspCamera *)cGrCamera::next();
     }
 
-    void limitFov(void);
+    virtual void limitFov(void) = 0;
     
 };
 
@@ -185,7 +189,7 @@ class cGrBackgroundCam : public cGrPerspCamera
 {
  public:
     cGrBackgroundCam(class cGrScreen *myscreen)
-	: cGrPerspCamera(myscreen, 0, 0, 1,
+	: cGrPerspCamera(myscreen, 0, 0, 1, 0,
 			 67.5, 67.5, 67.5,
 			 0.1, 2000.0, 1000, 1000) {
     }
@@ -193,6 +197,23 @@ class cGrBackgroundCam : public cGrPerspCamera
     void update(tCarElt *car, tSituation *s) {}
 
     void update(cGrCamera *curCam);
+    void limitFov(void) { }
+};
+
+class cGrCarCamMirror : public cGrPerspCamera
+{
+ public:
+    cGrCarCamMirror(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
+		    float myfovy, float myfovymin, float myfovymax,
+		    float myfnear, float myffar = 1500.0,
+		    float myfogstart = 1400.0, float myfogend = 1500.0)
+	: cGrPerspCamera(myscreen, id, drawCurr, drawBG, 1,
+			 myfovy, myfovymin, myfovymax,
+			 myfnear, myffar, myfogstart, myfogend) {
+	limitFov();
+    }
+    void cGrCarCamMirror::limitFov(void);
+    void update(tCarElt *car, tSituation *s);
 };
 
 

@@ -40,6 +40,7 @@ typedef struct
     tdble		tickover;
     tdble		I;
     tdble		rads;   /* revs in rad/s ... */
+    tdble		freerads;   /* revs in rad/s if free ... */
     tdble		Tq;	/* output torque */
     tdble		fuelcons;
     tdble		brakeCoeff;

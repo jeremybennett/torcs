@@ -176,7 +176,7 @@ damned(tModInfo *modInfo)
 	sprintf(buf, "EE robot #%d", i+1);
 	modInfo[i].desc    = strdup(buf);	/* description of the module (can be long) */
 	modInfo[i].fctInit = InitFuncPt;	/* init function */
-	modInfo[i].gfId    = ROB_IDENT;	/* supported framework version */
+	modInfo[i].gfId    = ROB_IDENT;		/* supported framework version */
 	modInfo[i].index   = i+1;
     }
     return 0;

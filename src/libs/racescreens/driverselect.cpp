@@ -58,6 +58,7 @@ typedef struct DrvElt
     char	*name;
     int		sel;
     int		human;
+    void	*car;
     GF_TAILQ_ENTRY(struct DrvElt)	link;
 } tDrvElt;
 
@@ -150,8 +151,8 @@ rmdsClickOnDriver(void *dummy)
 	}
 	if (robhdle != NULL) {
 	    sprintf(buf, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curDrv->index);
-	    GfuiLabelSetText(scrHandle, PickDrvCarLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CAR, ""));
-	    GfuiLabelSetText(scrHandle, PickDrvCategoryLabelId, GfParmGetStr(robhdle, buf, ROB_ATTR_CATEGORY, ""));
+	    GfuiLabelSetText(scrHandle, PickDrvCarLabelId, GfParmGetName(curDrv->car));
+	    GfuiLabelSetText(scrHandle, PickDrvCategoryLabelId, GfParmGetStr(curDrv->car, SECT_CAR, PRM_CATEGORY, ""));
 	    GfParmReleaseHandle(robhdle);
 	}
     }
@@ -255,6 +256,7 @@ RmDriversSelect(void *vs)
     void	*robhdle;
     struct stat st;
     char	*carName;
+    void	*carhdle;
     int		human;
 
 #define B_BASE  380
@@ -337,16 +339,22 @@ RmDriversSelect(void *vs)
 		    }
 		    sprintf(path, "cars/%s/%s.xml", carName, carName);
 		    if (!stat(path, &st)) {
-			curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
-			curDrv->index = curmod->modInfo[i].index;
-			curDrv->dname = strdup(dname);
-			curDrv->name = strdup(curmod->modInfo[i].name);
-			if (human) {
-			    curDrv->human = 1;
-			    GF_TAILQ_INSERT_HEAD(&DrvList, curDrv, link);
+			carhdle = GfParmReadFile(path, GFPARM_RMODE_STD);
+			if (carhdle) {
+			    curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
+			    curDrv->index = curmod->modInfo[i].index;
+			    curDrv->dname = strdup(dname);
+			    curDrv->name = strdup(curmod->modInfo[i].name);
+			    curDrv->car = carhdle;
+			    if (human) {
+				curDrv->human = 1;
+				GF_TAILQ_INSERT_HEAD(&DrvList, curDrv, link);
+			    } else {
+				curDrv->human = 0;
+				GF_TAILQ_INSERT_TAIL(&DrvList, curDrv, link);
+			    }
 			} else {
-			    curDrv->human = 0;
-			    GF_TAILQ_INSERT_TAIL(&DrvList, curDrv, link);
+			    GfOut("Driver %s not selected because car %s is not readable\n", curmod->modInfo[i].name, carName);
 			}
 		    } else {
 			GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
@@ -436,6 +444,7 @@ rmFreeDrvList(void)
     while ((cur = GF_TAILQ_FIRST(&DrvList)) != NULL) {
 	GF_TAILQ_REMOVE(&DrvList, cur, link);
 	free(cur->name);
+	GfParmReleaseHandle(cur->car);
 	free(cur);
     }
 }
