@@ -264,7 +264,7 @@ inline double Pathfinder::pathSlope(int id) {
 	v3d dir = *ps[nextid].getLoc() - *ps[id].getLoc();
 	double dp = dir*(*track->getSegmentPtr(id)->getToRight())/dir.len();
 	double alpha = PI/2.0 - acos(dp);
-	return sin(alpha);
+	return tan(alpha);
 }
 
 

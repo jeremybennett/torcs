@@ -1113,6 +1113,7 @@ void Pathfinder::smooth(int Step)
 int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 {
 	double s[2], y[2], ys[2];
+	bool out;
 
 	double d = track->distToMiddle(id, myc->getCurrentPos());
 	double factor = MIN(myc->CORRLEN*fabs(d), nPathSeg/2.0);
@@ -1120,13 +1121,22 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 
 	if (fabs(d) > (track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0) {
 		d = d/fabs(d)*(track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0;
+    	ys[0] = 0.0;
+		out = true;
+	} else {
+		v3d pathdir = *ps[id].getDir();
+	    pathdir.z = 0.0;
+	    pathdir.normalize();
+	    double alpha = PI/2.0 - acos((*myc->getDir())*(*track->getSegmentPtr(id)->getToRight()));
+        ys[0] = tan(alpha);
+		out = false;
 	}
 
 	double ed = track->distToMiddle(endid, ps[endid].getLoc());
 
+
 	/* set up points */
 	y[0] = d;
-	ys[0] = 0.0;
 
 	y[1] = ed;
 	ys[1] = pathSlope(endid);
@@ -1137,23 +1147,40 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 	/* modify path */
 	double l = 0.0;
 	v3d q, *pp, *qq;
-	int i;
+	int i, j;
 
-	for (i = id; (i + nPathSeg) % nPathSeg != endid; i++) {
-		int j = (i + nPathSeg) % nPathSeg;
-		d = spline(2, l, s, y, ys);
+    if (out == true) {
+	    for (i = id; (j = (i + nPathSeg) % nPathSeg) != endid; i++) {
+	        d = spline(2, l, s, y, ys);
 
-		if (fabs(d) > (track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0) {
-			d = d/fabs(d)*(track->getSegmentPtr(id)->getWidth() - myc->CARWIDTH)/2.0;
-		}
+		    if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH)/2.0) {
+		        d = sign(d)*((track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH)/2.0 - myc->MARGIN);
+		    }
 
-		pp = track->getSegmentPtr(j)->getMiddle();
-		qq = track->getSegmentPtr(j)->getToRight();
+		    pp = track->getSegmentPtr(j)->getMiddle();
+		    qq = track->getSegmentPtr(j)->getToRight();
+		    q = (*pp) + (*qq)*d;
+		    ps[j].setLoc(&q);
+		    l += TRACKRES;
+	    }
+	} else {
+        /* check path for leaving to track */
+        double newdisttomiddle[AHEAD];
+	    for (i = id; (j = (i + nPathSeg) % nPathSeg) != endid; i++) {
+	        d = spline(2, l, s, y, ys);
+		    if (fabs(d) > (track->getSegmentPtr(j)->getWidth() - myc->CARWIDTH) / 2.0 - myc->MARGIN) {
+			    return 0;
+		    }
+		    newdisttomiddle[i - id] = d;
+		    l += TRACKRES;
+	    }
 
-		q = (*pp) + (*qq)*d;
-
-		ps[j].setLoc(&q);
-		l += TRACKRES;
+	    for (i = id; (j = (i + nPathSeg) % nPathSeg) != endid; i++) {
+	        pp = track->getSegmentPtr(j)->getMiddle();
+	        qq = track->getSegmentPtr(j)->getToRight();
+	        q = *pp + (*qq)*newdisttomiddle[i - id];
+	        ps[j].setLoc(&q);
+	    }
 	}
 
 	/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */

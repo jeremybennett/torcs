@@ -166,7 +166,7 @@ class MyCar : public AbstractCar
 		inline double getWheelTrack() { return wheeltrack; }
 		inline double getErrorSgn() { return derrorsgn; }
 		inline Pathfinder* getPathfinderPtr() { return pf; }
-
+        void updateSpeedDir();
 
 	private:
 		enum { DRWD = 0, DFWD = 1, D4WD = 2 };

@@ -218,7 +218,7 @@ void MyCar::updateCa()
 	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 	double rearwingarea = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
     double rearwingangle = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
-	double wingca = 1.23*rearwingarea*sin(rearwingangle);
+    double wingca = 1.23*rearwingarea*sin(rearwingangle);
 	double cl = GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0) + GfParmGetNum(me->_carHandle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
 	double h = 0.0;
 
@@ -266,7 +266,7 @@ double MyCar::queryAcceleration(tCarElt * car, double speed)
 	switch (drivetrain) {
 		case DRWD:
 			a = speed / car->_wheelRadius(REAR_RGT) * gr / rm;
-			break;
+	        break;
 		case DFWD:
 			a = speed / car->_wheelRadius(FRNT_RGT) * gr / rm;
 			break;
@@ -314,7 +314,6 @@ void MyCar::updateDError()
 	derrorsgn = (derror >= 0.0) ? 1.0 : -1.0;
 	derror = fabs(derror);
 }
-
 
 void MyCar::initCarGeometry()
 {
