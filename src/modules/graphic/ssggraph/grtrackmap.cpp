@@ -344,6 +344,23 @@ cGrTrackMap::cGrTrackMap()
 		glReadBuffer(GL_BACK);
 		glReadPixels(0, 0, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
 
+		// Check if the color buffer has alpha, if not fix the texture. Black gets
+		// replaced by transparent black, so don't draw black in the texture, you
+		// won't see anything.
+		if (glutGet(GLUT_WINDOW_ALPHA_SIZE) == 0) {
+			// There is no alpha, so we fix it manually. Because we added a little border
+			// around the track map the first pixel should always contain the
+			// clearcolor.
+			GLuint clearcolor = trackImage[0];
+			int i;
+			for (i = 0; i < texturesize*texturesize; i++) {
+				if (trackImage[i] == clearcolor) {
+					// Assumption: transparent black is 0, portable?
+					trackImage[i] = 0;
+				}
+			}
+		}
+
 		// Finally copy the created image of the track from the framebuffer into the texture.
 		glGenTextures (1, &mapTexture);
 		glBindTexture(GL_TEXTURE_2D, mapTexture);
