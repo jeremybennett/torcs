@@ -54,7 +54,7 @@ SaveGraphicOptions(void *prevMenu)
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, SmokeValue);
     GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, SkidValue);
-    GfParmWriteFile(NULL, grHandle, "graph", GFPARM_PARAMETER, "../../../libs/tgf/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "graph");
     ExitGraphicOptions(prevMenu);
 }
 

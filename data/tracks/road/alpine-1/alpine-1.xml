@@ -153,7 +153,7 @@
 	<attnum name="profil end tangent" unit="%" val="2"/>
       </section>
 
-      <section name="t1-1">
+      <section name="t1-12">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="30"/>
 	<attnum name="end radius" unit="m" val="80"/>
@@ -162,7 +162,7 @@
 	<attnum name="profil end tangent" unit="%" val="2"/>
       </section>
 
-      <section name="t1-1">
+      <section name="t1-13">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="40"/>
 	<attnum name="arc" unit="deg" val="10"/>
@@ -225,7 +225,7 @@
 	<attnum name="profil end tangent" unit="%" val="5"/>
       </section>
 
-      <section name="t3-3">
+      <section name="t3-5">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="30"/>
 	<attnum name="arc" unit="deg" val="140"/>
@@ -522,7 +522,7 @@
 	<attnum name="profil end tangent" unit="%" val="-10"/>
       </section>
 
-      <section name="t20-1">
+      <section name="t20-12">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="40"/>
 	<attnum name="arc" unit="deg" val="60"/>

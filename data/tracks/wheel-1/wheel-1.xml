@@ -480,7 +480,7 @@
 	<attnum name="profil steps length" val="10" unit="m"/>
       </section>
 
-      <section name="t15-1">
+      <section name="t15-2">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" val="120" unit="m"/>
 	<attnum name="arc" val=".499861" unit="deg"/>

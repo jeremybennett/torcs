@@ -269,6 +269,12 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 		if (*carParmHandle != NULL) {
 		    GfOut("Player: %s Loaded\n", sstring);
+		} else {
+		    sprintf(sstring, "%sdrivers/human/car.xml", GetLocalDir ());
+		    *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
+		    if (*carParmHandle != NULL) {
+			GfOut("Player: %s Loaded\n", sstring);
+		    }
 		}
 	    }
 	}
@@ -466,7 +472,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	HCtx[idx]->ParamAbs = 1 - HCtx[idx]->ParamAbs;
 	sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 	GfParmSetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[1 - HCtx[idx]->ParamAbs]);
-	GfParmWriteFile(HM_PREF_FILE, PrefHdle, "Human", GFPARM_PARAMETER, "../../libs/tgf/params.dtd");
+	GfParmWriteFile(HM_PREF_FILE, PrefHdle, "Human");
     }
     if (((cmd[CMD_ASR].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_ASR].val]) ||
 	((cmd[CMD_ASR].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_ASR].val].edgeUp) ||
@@ -474,7 +480,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	HCtx[idx]->ParamAsr = 1 - HCtx[idx]->ParamAsr;
 	sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 	GfParmSetStr(PrefHdle, sstring, HM_ATT_ASR, Yn[1 - HCtx[idx]->ParamAsr]);
-	GfParmWriteFile(HM_PREF_FILE, PrefHdle, "Human", GFPARM_PARAMETER, "../../libs/tgf/params.dtd");
+	GfParmWriteFile(HM_PREF_FILE, PrefHdle, "Human");
     }
 
     if (HCtx[idx]->ParamAbs) {

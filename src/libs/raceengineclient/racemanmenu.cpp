@@ -122,7 +122,7 @@ reConfigRunState(void)
     curConf = (int)GfParmGetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1);
     if (curConf > GfParmGetEltNb(params, RM_SECT_CONF)) {
 	GfOut("End of configuration\n");
-	GfParmWriteFile(NULL, ReInfo->params, ReInfo->_reName, GFPARM_PARAMETER, "../params.dtd");
+	GfParmWriteFile(NULL, ReInfo->params, ReInfo->_reName);
 	goto menuback;
     }
     

@@ -186,7 +186,7 @@ ReUpdateStandings(void)
 	GfParmSetNum(results, path, RE_ATTR_POINTS, NULL, standings[i].points);
     }
     free(standings);
-    GfParmWriteFile(0, results, "Results", GFPARM_PARAMETER, "../config/params.dtd");
+    GfParmWriteFile(0, results, "Results");
 }
 
 

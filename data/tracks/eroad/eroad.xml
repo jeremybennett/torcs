@@ -285,7 +285,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="t19-1">
+      <section name="t19-2">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="40"/>
 	<attnum name="arc" unit="deg" val="47"/>

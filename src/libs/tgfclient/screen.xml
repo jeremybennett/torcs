@@ -120,12 +120,6 @@
 	<attnum name="blue" val="0.0"/>
 	<attnum name="alpha" val="1.0"/>
       </section>
-      <section name="background scroll list">
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="0.0"/>
-	<attnum name="blue" val="0.0"/>
-	<attnum name="alpha" val="0.01"/>
-      </section>
       <section name="background selected scroll list">
 	<attnum name="red" val="0.1"/>
 	<attnum name="green" val="0.1"/>

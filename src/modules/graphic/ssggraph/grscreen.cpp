@@ -171,7 +171,7 @@ void cGrScreen::selectCamera(int cam)
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, curCamHead, curCam->getId());
     curCam->loadDefaults(buf);
     drawCurrent = curCam->getDrawCurrent();
-    GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "Graph");
 }
 
 void cGrScreen::camDraw(tSituation *s)
@@ -234,7 +234,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	}
 	sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
 	GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
-	GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+	GfParmWriteFile(NULL, grHandle, "Graph");
 	selectNextFlag = 0;
     }
     if (selectPrevFlag) {
@@ -247,7 +247,7 @@ void cGrScreen::update(tSituation *s, float Fps)
 	}
 	sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
 	GfParmSetStr(grHandle, path, GR_ATT_CUR_DRV, curCar->_name);
-	GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+	GfParmWriteFile(NULL, grHandle, "Graph");
 	selectPrevFlag = 0;
     }
 

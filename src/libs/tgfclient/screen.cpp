@@ -240,7 +240,7 @@ saveParams(void)
     } else {
 	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
     }
-    GfParmWriteFile(NULL, paramHdle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, paramHdle, "Screen");
 }
 
 

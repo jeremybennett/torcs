@@ -23,7 +23,7 @@
     <section name="List">
       &default-surfaces;
 
-      <section name="asphalt2">
+      <section name="asphalt22">
 	<attnum name="color R1" val="0.1"/>
 	<attnum name="color G1" val="0.1"/>
 	<attnum name="color B1" val="0.1"/>
@@ -102,7 +102,7 @@
 
   <section name="Main Track">
 
-    <attstr name="surface" in="asphalt,grass,sand" val="asphalt2"/>
+    <attstr name="surface" in="asphalt,grass,sand" val="asphalt22"/>
     <attnum name="width" unit="m" val="15.0"/>
 
     <attstr name="rside surface"  val="asphalt3"/>

@@ -94,7 +94,9 @@ ReShutdown(void)
 
 	GfModUnloadList(&reEventModList);
 
-	GfParmReleaseHandle(ReInfo->results);
+	if (ReInfo->results) {
+	    GfParmReleaseHandle(ReInfo->results);
+	}
 
 	FREEZ(ReInfo->s);
 	FREEZ(ReInfo);
@@ -480,7 +482,7 @@ ReInitCars(void)
 			    handle = carhdle;
 			}
 			elt->_carHandle = handle;
-			//GfParmWriteFile("toto.xml", handle, "toto", GFPARM_PARAMETER, "toto.dtd");
+			//GfParmWriteFile("toto.xml", handle, "toto");
 		    } else {
 			GfTrace("Bad Car category for driver %s\n", elt->_name);
 			break;

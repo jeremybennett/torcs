@@ -184,8 +184,7 @@ void cGrPerspCamera::setZoom(int cmd)
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, screen->getCurCamHead(), getId());
     sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
     GfParmSetNum(grHandle, path, buf, (char*)NULL, (tdble)fovy);
-    GfParmWriteFile(NULL, grHandle, "Graph",
-		    GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "Graph");
 }
 
 void cGrOrthoCamera::setProjection(void)

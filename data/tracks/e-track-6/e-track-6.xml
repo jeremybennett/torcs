@@ -32,10 +32,10 @@
 
 
   <section name="Header">
-    <attstr name="name"        val="E-Track 6"/>
-    <attstr name="category"    val="road"/>
-    <attnum name="version"     val="4"/>
-    <attstr name="author"      val="E.Espie"/>
+    <attstr name="name" val="E-Track 6"/>
+    <attstr name="category" val="road"/>
+    <attnum name="version" val="4"/>
+    <attstr name="author" val="E.Espie"/>
     <attstr name="description" val=""/>
   </section>
 
@@ -66,18 +66,18 @@
   <section name="Main Track">
 
     <attnum name="width" unit="m" val="13"/>
-    <attnum name="profil steps length" val="10" unit="m"/>
+    <attnum name="profil steps length" unit="m" val="10"/>
 
     <!-- PITS -->
     <section name="Pits">
-      <attstr name="type"   val="track side"/>
-      <attstr name="side"   val="left"/>
-      <attstr name="entry"  val="pit entry"/>
-      <attstr name="start"  val="last seg"/>
-      <attstr name="end"    val="start lane"/>
-      <attstr name="exit"   val="pit exit"/>
-      <attnum name="length" val="15" unit="m"/>
-      <attnum name="width"  val="5" unit="m"/>
+      <attstr name="type" val="track side"/>
+      <attstr name="side" val="left"/>
+      <attstr name="entry" val="pit entry"/>
+      <attstr name="start" val="last seg"/>
+      <attstr name="end" val="start lane"/>
+      <attstr name="exit" val="pit exit"/>
+      <attnum name="length" unit="m" val="15"/>
+      <attnum name="width" unit="m" val="5"/>
     </section>  <!-- PITS -->
 
 
@@ -92,7 +92,7 @@
 	<section name="Right Side">
 	  <attnum name="start width" val="10"/>
 	  <attnum name="end width" val="10"/>
-	  <attstr name="surface"  val="grass6"/>
+	  <attstr name="surface" val="grass6"/>
 	  <attstr name="type" in="level,tangent" val="level"/>
 	</section>
 
@@ -111,7 +111,7 @@
 	<section name="Left Side">
 	  <attnum name="start width" val="15"/>
 	  <attnum name="end width" val="15"/>
-	  <attstr name="surface"  val="road1-pits"/>
+	  <attstr name="surface" val="road1-pits"/>
 	  <attstr name="type" in="level,tangent" val="level"/>
 	</section>
 
@@ -120,10 +120,10 @@
       <section name="pit exit">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="83.333333"/>
-	<attnum name="grade" val="4" unit="%"/>
-	<attnum name="profil start tangent" val="0" unit="%"/>
-	<attnum name="profil end tangent" val="4" unit="%"/>
-	<attnum name="banking end" val="3" unit="deg"/>
+	<attnum name="grade" unit="%" val="4"/>
+	<attnum name="profil start tangent" unit="%" val="0"/>
+	<attnum name="profil end tangent" unit="%" val="4"/>
+	<attnum name="banking end" unit="deg" val="3"/>
 
  	<section name="Left Border">
 	  <attstr name="surface" val="b-road1-l2p"/>
@@ -141,9 +141,9 @@
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="66.666666"/>
 	<attnum name="arc" unit="deg" val="28"/>
-	<attnum name="grade" val="2" unit="%"/>
-	<attnum name="profil end tangent" val="2" unit="%"/>
-	<attnum name="banking end" val="1" unit="deg"/>
+	<attnum name="grade" unit="%" val="2"/>
+	<attnum name="profil end tangent" unit="%" val="2"/>
+	<attnum name="banking end" unit="deg" val="1"/>
 
 	<section name="Right Border">
 	  <attstr name="surface" val="curb-5cm-r"/>
@@ -166,9 +166,9 @@
       <section name="s2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="133.333333"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -193,9 +193,9 @@
       <section name="s3">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="61.22176107"/>
-	<attnum name="grade" val="3" unit="%"/>
-	<attnum name="profil end tangent" val="3" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="3"/>
+	<attnum name="profil end tangent" unit="%" val="3"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -219,9 +219,9 @@
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="66.666666"/>
 	<attnum name="arc" unit="deg" val="61"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="-1" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="-1"/>
 
 	<section name="Right Side">
 	  <attstr name="surface" val="sand3"/>
@@ -245,9 +245,9 @@
       <section name="s4">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Side">
 	  <attstr name="surface" val="sand3"/>
@@ -269,9 +269,9 @@
       <section name="s4-2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="66.666666"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="5" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="5"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -280,8 +280,8 @@
 	</section>
 
 	<section name="Right Side">
-	  <attstr name="surface"  val="grass6"/>
-	  <attnum name="end width"    val="10.0"/>
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="10.0"/>
 	  <attstr name="type" val="tangent"/>
 	</section>
 
@@ -324,9 +324,9 @@
       <section name="s5-1">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="60"/>
-	<attnum name="grade" val="4" unit="%"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="4"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -349,9 +349,9 @@
       <section name="s5-2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="73.3333333"/>
-	<attnum name="grade" val="-5" unit="%"/>
-	<attnum name="profil end tangent" val="-5" unit="%"/>
-	<attnum name="banking end" val="1" unit="deg"/>
+	<attnum name="grade" unit="%" val="-5"/>
+	<attnum name="profil end tangent" unit="%" val="-5"/>
+	<attnum name="banking end" unit="deg" val="1"/>
      </section>
 
       <section name="t5">
@@ -374,9 +374,9 @@
       <section name="s7">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
-	<attnum name="grade" val="-4" unit="%"/>
-	<attnum name="profil end tangent" val="-4" unit="%"/>
-	<attnum name="banking end" val="4" unit="deg"/>
+	<attnum name="grade" unit="%" val="-4"/>
+	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<attnum name="banking end" unit="deg" val="4"/>
       </section>
 
       <section name="t7">
@@ -406,9 +406,9 @@
       <section name="s8">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="33.333333"/>
-	<attnum name="grade" val="-4" unit="%"/>
-	<attnum name="profil end tangent" val="-4" unit="%"/>
-	<attnum name="banking end" val="2" unit="deg"/>
+	<attnum name="grade" unit="%" val="-4"/>
+	<attnum name="profil end tangent" unit="%" val="-4"/>
+	<attnum name="banking end" unit="deg" val="2"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -433,9 +433,9 @@
       <section name="s9">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="33.333333"/>
-	<attnum name="grade" val="-2" unit="%"/>
-	<attnum name="profil end tangent" val="-2" unit="%"/>
-	<attnum name="banking end" val="-2" unit="deg"/>
+	<attnum name="grade" unit="%" val="-2"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
+	<attnum name="banking end" unit="deg" val="-2"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -506,9 +506,9 @@
       <section name="s11-1">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
-	<attnum name="grade" val="-1" unit="%"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="-1"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
  	<section name="Left Border">
 	  <attstr name="surface" val="b-road1-grass6-l2"/>
@@ -520,9 +520,9 @@
       <section name="s11-2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="-3" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="-3"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -531,8 +531,8 @@
 	</section>
 
 	<section name="Right Side">
-	  <attstr name="surface"  val="grass6"/>
-	  <attnum name="end width"    val="10.0"/>
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="10.0"/>
 	  <attstr name="type" val="tangent"/>
 	</section>
       </section>
@@ -546,9 +546,9 @@
       <section name="s12">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="166.666666"/>
-	<attnum name="grade" val="6" unit="%"/>
-	<attnum name="profil end tangent" val="6" unit="%"/>
-	<attnum name="banking end" val="1" unit="deg"/>
+	<attnum name="grade" unit="%" val="6"/>
+	<attnum name="profil end tangent" unit="%" val="6"/>
+	<attnum name="banking end" unit="deg" val="1"/>
       </section>
 
       <section name="t12">
@@ -571,17 +571,17 @@
       <section name="s14-1">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
-	<attnum name="grade" val="5" unit="%"/>
-	<attnum name="profil end tangent" val="5" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="banking end" unit="deg" val="0"/>
       </section>
 
       <section name="s14-2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="150"/>
-	<attnum name="grade" val="1" unit="%"/>
-	<attnum name="profil end tangent" val="1" unit="%"/>
-	<attnum name="banking end" val="5" unit="deg"/>
+	<attnum name="grade" unit="%" val="1"/>
+	<attnum name="profil end tangent" unit="%" val="1"/>
+	<attnum name="banking end" unit="deg" val="5"/>
       </section>
 
       <section name="t14">
@@ -611,9 +611,9 @@
       <section name="s15">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="133.333333"/>
-	<attnum name="grade" val="-6" unit="%"/>
-	<attnum name="profil end tangent" val="-6" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="-6"/>
+	<attnum name="profil end tangent" unit="%" val="-6"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -730,9 +730,9 @@
       <section name="s20">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="33.333333"/>
-	<attnum name="grade" val="-2" unit="%"/>
-	<attnum name="profil end tangent" val="-2" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="-2"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -757,9 +757,9 @@
       <section name="s21">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="33.333333"/>
-	<attnum name="grade" val="0" unit="%"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="0"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 
 	<section name="Right Border">
 	  <attnum name="width" val="1.0"/>
@@ -838,8 +838,8 @@
       <section name="s23-1">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="200"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 	<attnum name="z end" val="0"/>
 
  	<section name="Left Border">
@@ -1030,7 +1030,7 @@
       <attstr name="fov end" val="t16"/> <!-- excluded -->
     </section>
 
-    <section name="cam 12">
+    <section name="cam 125">
       <!-- Camera's position relative to a segment -->
       <attstr name="segment" val="t16"/>
       <attnum name="to right" val="-5.0"/>

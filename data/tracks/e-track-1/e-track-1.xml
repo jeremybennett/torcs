@@ -27,10 +27,10 @@
   </section>
 
   <section name="Header">
-    <attstr name="name"        val="E-Track 1"/>
-    <attstr name="category"    val="road"/>
-    <attnum name="version"     val="3"/>
-    <attstr name="author"      val="E. Espie"/>
+    <attstr name="name" val="E-Track 1"/>
+    <attstr name="category" val="road"/>
+    <attnum name="version" val="3"/>
+    <attstr name="author" val="E. Espie"/>
     <attstr name="description" val="Track with a 'Bus Stop' like chicane"/>
   </section>
 
@@ -64,18 +64,18 @@
     <attstr name="surface" in="asphalt,concrete,grass,sand,dirt" val="asphalt-lines"/>
     <attnum name="lside width" val="7"/>
     <attnum name="rside width" val="7"/>
-    <attstr name="rside surface"  val="grass"/>
-    <attstr name="lside surface"  val="grass"/>
+    <attstr name="rside surface" val="grass"/>
+    <attstr name="lside surface" val="grass"/>
 
     <!-- PITS -->
-    <attstr name="pit type"   val="track side"/>
-    <attstr name="pit side"   val="left"/>
-    <attstr name="pit entry"  val="s1"/>
-    <attstr name="pit exit"   val="s3"/>
-    <attstr name="pit start"  val="s2"/>
-    <attstr name="pit end"    val="s2"/>
-    <attnum name="pit length" val="15" unit="m"/>
-    <attnum name="pit width"  val="5" unit="m"/>
+    <attstr name="pit type" val="track side"/>
+    <attstr name="pit side" val="left"/>
+    <attstr name="pit entry" val="s1"/>
+    <attstr name="pit exit" val="s3"/>
+    <attstr name="pit start" val="s2"/>
+    <attstr name="pit end" val="s2"/>
+    <attnum name="pit length" unit="m" val="15"/>
+    <attnum name="pit width" unit="m" val="5"/>
 
     <section name="segments">
 
@@ -83,184 +83,184 @@
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
 	<attnum name="lside end width" val="15"/>
-	<attstr name="lside surface"  val="asphalt"/>
+	<attstr name="lside surface" val="asphalt"/>
       </section>
 
       <section name="s2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="300"/>
-	<attstr name="lside surface"  val="asphalt-pits"/>
+	<attstr name="lside surface" val="asphalt-pits"/>
       </section>
 
       <section name="s3">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
 	<attnum name="lside end width" val="7"/>
-	<attstr name="lside surface"  val="asphalt"/>
+	<attstr name="lside surface" val="asphalt"/>
       </section>
 
-      <section name="turn">
+      <section name="turn0">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-l-left"/>
 	<attnum name="radius" unit="m" val="40"/>
 	<attnum name="arc" unit="deg" val="90"/>
 
-	<attnum name="grade" val="3" unit="%"/>
-	<attnum name="banking end" val="-2.0" unit="deg"/>
+	<attnum name="grade" unit="%" val="3"/>
+	<attnum name="banking end" unit="deg" val="-2.0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="12"/>
-	<attnum name="profil end tangent" val="3" unit="%"/>
-	<attstr name="lside surface"  val="grass"/>
+	<attnum name="profil end tangent" unit="%" val="3"/>
+	<attstr name="lside surface" val="grass"/>
       </section>
 
-      <section name="turn">
+      <section name="turn1">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-lines"/>
 	<attnum name="radius" unit="m" val="200"/>
 	<attnum name="arc" unit="deg" val="120"/>
 
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="50"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="segment">
+      <section name="segment2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="200"/>
 
-	<attnum name="grade" val="0" unit="%"/>
+	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="z end" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="40"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="turn">
+      <section name="turn3">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="100"/>
 	<attnum name="arc" unit="deg" val="30"/>
 
-	<attnum name="banking end" val="3" unit="deg"/>
+	<attnum name="banking end" unit="deg" val="3"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="10"/>
       </section>
 
-      <section name="turn">
+      <section name="turn4">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="100"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment5">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="20"/>
       </section>
 
-      <section name="turn">
+      <section name="turn6">
         <attstr name="type" val="rgt"/>
 	<attstr name="surface" val="asphalt-l-right"/>
 	<attnum name="radius" unit="m" val="30"/>
 	<attnum name="arc" unit="deg" val="90"/>
 
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="10"/>
       </section>
 
-      <section name="segment">
+      <section name="segment7">
         <attstr name="type" val="str"/>
 	<attstr name="surface" val="asphalt-lines"/>
 	<attnum name="lg" unit="m" val="200"/>
 
-	<attnum name="grade" val="3" unit="%"/>
+	<attnum name="grade" unit="%" val="3"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="40"/>
-	<attnum name="profil end tangent" val="3" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="3"/>
       </section>
 
-      <section name="turn">
+      <section name="turn8">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-l-left"/>
 	<attnum name="radius" unit="m" val="50"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment9">
         <attstr name="type" val="str"/>
 	<attstr name="surface" val="asphalt-l-both"/>
 	<attnum name="lg" unit="m" val="20"/>
       </section>
 
-      <section name="turn">
+      <section name="turn10">
         <attstr name="type" val="rgt"/>
 	<attstr name="surface" val="asphalt-l-right"/>
 	<attnum name="radius" unit="m" val="50"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment11">
         <attstr name="type" val="str"/>
 	<attstr name="surface" val="asphalt-lines"/>
 	<attnum name="lg" unit="m" val="100"/>
       </section>
 
-      <section name="segment">
+      <section name="segment12">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
 
-	<attnum name="banking end" val="-5" unit="deg"/>
+	<attnum name="banking end" unit="deg" val="-5"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="20"/>
       </section>
 
-      <section name="turn">
+      <section name="turn13">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-l-left"/>
 	<attnum name="radius" unit="m" val="40"/>
 	<attnum name="arc" unit="deg" val="90"/>
 
-	<attnum name="grade" val="0" unit="%"/>
+	<attnum name="grade" unit="%" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="10"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="turn">
+      <section name="turn14">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="25"/>
 	<attnum name="arc" unit="deg" val="90"/>
 
-	<attnum name="grade" val="-2" unit="%"/>
+	<attnum name="grade" unit="%" val="-2"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="8"/>
-	<attnum name="profil end tangent" val="-2" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
       </section>
 
-      <section name="segment">
+      <section name="segment15">
         <attstr name="type" val="str"/>
 	<attstr name="surface" val="asphalt-lines"/>
 	<attnum name="lg" unit="m" val="100"/>
 
-	<attnum name="grade" val="0" unit="%"/>
-	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="0"/>
+	<attnum name="banking end" unit="deg" val="0"/>
 	<attnum name="z end" val="10"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="20"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="segment">
+      <section name="segment16">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
 
 	<attnum name="z end" val="12"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="10"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="segment">
+      <section name="segment17">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
 
@@ -268,20 +268,20 @@
 	<attnum name="z end" val="8"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="10"/>
-	<attnum name="profil end tangent" val="-8" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="-8"/>
       </section>
 
-      <section name="segment">
+      <section name="segment18">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
 
 	<attnum name="z end" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="20"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="turn">
+      <section name="turn19">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="500"/>
 	<attnum name="arc" unit="deg" val="30"/>
@@ -289,27 +289,27 @@
 	<attnum name="z end" val="15"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="40"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
-      <section name="turn">
+      <section name="turn20">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="200"/>
 	<attnum name="arc" unit="deg" val="30"/>
 
-	<attnum name="grade" val="-1" unit="%"/>
+	<attnum name="grade" unit="%" val="-1"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="20"/>
-	<attnum name="profil end tangent" val="-1" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="-1"/>
       </section>
 
-      <section name="turn">
+      <section name="turn21">
         <attstr name="type" val="lft"/>
 	<attnum name="radius" unit="m" val="100"/>
 	<attnum name="arc" unit="deg" val="30"/>
       </section>
 
-      <section name="turn">
+      <section name="turn22">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-l-left"/>
 	<attnum name="radius" unit="m" val="15"/>
@@ -318,49 +318,49 @@
 	<attstr name="lside surface" val="concrete"/>
        </section>
 
-      <section name="turn">
+      <section name="turn23">
         <attstr name="type" val="rgt"/>
 	<attstr name="surface" val="asphalt-l-right"/>
 	<attnum name="radius" unit="m" val="15"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment24">
         <attstr name="type" val="str"/>
 	<attstr name="surface" val="asphalt-l-both"/>
 	<attnum name="lg" unit="m" val="30"/>
       </section>
 
-      <section name="turn">
+      <section name="turn25">
         <attstr name="type" val="rgt"/>
 	<attstr name="surface" val="asphalt-l-right"/>
 	<attnum name="radius" unit="m" val="15"/>
 	<attnum name="arc" unit="deg" val="90"/>
      </section>
 
-      <section name="turn">
+      <section name="turn26">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-l-left"/>
 	<attnum name="radius" unit="m" val="15"/>
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="turn">
+      <section name="turn27">
         <attstr name="type" val="lft"/>
 	<attstr name="surface" val="asphalt-lines"/>
 	<attnum name="radius" unit="m" val="154.61524227"/>
 	<attnum name="arc" unit="deg" val="90"/>
 
-	<attnum name="grade" val="0" unit="%"/>
+	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="z end" val="0"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
 	<attnum name="profil steps" val="20"/>
-	<attnum name="profil end tangent" val="0" unit="%"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
 	<attstr name="rside surface" val="grass"/>
 	<attstr name="lside surface" val="grass"/>
       </section>
 
-      <section name="segment">
+      <section name="segment28">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="20.19237887"/>
       </section>

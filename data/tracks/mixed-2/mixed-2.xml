@@ -132,7 +132,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="t4-3">
+      <section name="t4-32">
         <attstr name="type" val="rgt"/>
 	<attnum name="radius" unit="m" val="20"/>
 	<attnum name="arc" unit="deg" val="90"/>

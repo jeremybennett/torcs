@@ -133,7 +133,7 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="segment">
+      <section name="segment1">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="70"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -150,7 +150,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment2">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="10"/>
       </section>
@@ -161,7 +161,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment3">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="10"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -181,7 +181,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment4">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="40"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -195,7 +195,7 @@
 	<attnum name="arc" unit="deg" val="180"/>
       </section>
 
-      <section name="segment">
+      <section name="segment5">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -209,7 +209,7 @@
 	<attnum name="arc" unit="deg" val="45"/>
       </section>
 
-      <section name="segment">
+      <section name="segment6">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="50"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -223,7 +223,7 @@
 	<attnum name="arc" unit="deg" val="180"/>
       </section>
 
-      <section name="segment">
+      <section name="segment7">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -237,7 +237,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment8">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
       </section>
@@ -248,7 +248,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment9">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="30"/>
 	<attstr name="profil" in="linear,spline" val="spline"/>
@@ -256,7 +256,7 @@
  	<attnum name="z end" unit="m" val="0"/>
       </section>
 
-      <section name="segment">
+      <section name="segment10">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="40"/>
 	<attstr name="surface" in="asphalt,concrete,grass,sand,dirt" val="asphalt-lines"/>
@@ -270,7 +270,7 @@
 	<attnum name="arc" unit="deg" val="90"/>
       </section>
 
-      <section name="segment">
+      <section name="segment11">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="112.426559"/>
       </section>

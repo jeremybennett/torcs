@@ -30,6 +30,7 @@
 #include <stdio.h>
 #ifndef WIN32
 #include <sys/param.h>
+#include <assert.h>
 #endif /* WIN32 */
 #include <stdlib.h>
 #ifdef WIN32
@@ -39,6 +40,7 @@
 #include <string.h>
 #include <math.h>
 #include <osspec.h>
+
 
 /* typedef double tdble; */
 /** Floating point type used in TORCS.
@@ -62,6 +64,8 @@ extern void GfInit(void);
 	x = 0;					\
     }						\
 } while (0)
+
+#define freez FREEZ
 
 const tdble PI = 3.14159265358979323846;  /**< PI */
 const tdble G = 9.80665; /**< m/s/s */
@@ -264,10 +268,11 @@ extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData);
 #define GFPARM_RMODE_STD	0x01	/**< if handle already openned return it */
 #define GFPARM_RMODE_REREAD	0x02	/**< reread the parameters from file and release the previous ones */
 #define GFPARM_RMODE_CREAT	0x04	/**< Create the file if doesn't exist */
+#define GFPARM_RMODE_PRIVATE	0x08
 
 extern void *GfParmReadFile(const char *file, int mode);
 /* parameter file write */
-extern int GfParmWriteFile(const char *file, void* handle, char *name, int type, const char *dtd);
+extern int GfParmWriteFile(const char *file, void* handle, char *name);
 
 extern char *GfParmGetName(void *handle);
 extern char *GfParmGetFileName(void *handle);
@@ -292,9 +297,9 @@ extern int GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdbl
 
 
 /* clean all the parameters of a set */
-extern int GfParmClean(void *handle);
+extern void GfParmClean(void *handle);
 /* clean the parms and release the handle without updating the file */
-extern int GfParmReleaseHandle(void *handle);
+extern void GfParmReleaseHandle(void *handle);
 
 /* Convert a value in "units" into SI */
 extern tdble GfParmUnit2SI(char *unit, tdble val);
@@ -336,9 +341,12 @@ GfFatal(char *fmt, ...)
     vprintf(fmt, ap);
     va_end(ap);
     /* GfScrShutdown(); */
-    exit(1);
+    assert (0);
+    exit (1);
 }
 #endif
+
+#define GfError printf
 
 #if !(_DEBUG || DEBUG)
 #ifdef WIN32
@@ -356,7 +364,7 @@ GfOut(char *fmt, ...)
 {
 }
 
-#endif
+#endif /* WIN32 */
 
 #else /* _DEBUG || DEBUG */
 
@@ -625,7 +633,7 @@ class Profiler {
 typedef void (*tfHashFree)(void*);	/**< Function to call for releasing the user data associated with hash table */
 
 void *GfHashCreate(int type);
-void GfHashAddStr(void *hash, char *key, void *data);
+int GfHashAddStr(void *hash, char *key, void *data);
 void *GfHashRemStr(void *hash, char *key);
 void *GfHashGetStr(void *hash, char *key);
 void GfHashAddBuf(void *hash, char *key, size_t sz, void *data);

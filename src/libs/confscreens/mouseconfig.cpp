@@ -155,7 +155,7 @@ onSave(void * /* dummy */)
 	}
     }
 
-    GfParmWriteFile(NULL, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, PrefHdle, "preferences");
     GfuiScreenActivate(prevHandle);
 }
 

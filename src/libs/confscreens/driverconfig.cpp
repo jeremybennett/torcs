@@ -414,7 +414,7 @@ SaveDrvList(void *dummy)
 	    GfParmSetStr(drvinfo, str, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skilllevel]);
 	}
     }
-    GfParmWriteFile(NULL, drvinfo, dllname, GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, drvinfo, dllname);
 
     sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -424,7 +424,7 @@ SaveDrvList(void *dummy)
 	GfParmSetNum(PrefHdle, str, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
 	GfParmSetStr(PrefHdle, str, HM_ATT_AUTOREVERSE, Yn[PlayersInfo[i].autoreverse]);
     }
-    GfParmWriteFile(NULL, PrefHdle, "preferences", GFPARM_PARAMETER, "../../config/params.dtd");
+    GfParmWriteFile(NULL, PrefHdle, "preferences");
     GfParmReleaseHandle(PrefHdle);
     PrefHdle = NULL;
     GfuiScreenActivate(prevHandle);

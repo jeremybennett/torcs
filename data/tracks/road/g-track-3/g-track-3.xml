@@ -540,12 +540,6 @@
 	  <attstr name="style" val="plan"/>
 	  <attnum name="width" val="2.0"/>
 	</section>
-
-        <section name="Right Border">
-          <attnum name="width" val="2.0"/>
-          <attstr name="surface" val="g-grass3-r"/>
-	  <attstr name="style" val="plan"/>
-	</section>
       </section>
 
       <!-- -->

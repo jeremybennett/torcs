@@ -164,9 +164,9 @@ gfIncreaseHash(tHashHeader *curHeader)
     @param	hash	Current hash table handle.
     @param	key	key string to hash.
     @param	data	user data.
-    @return	none
+    @return	0 OK, 1 NOK.
 */
-void
+int
 GfHashAddStr(void *hash, char *key, void *data)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -174,7 +174,7 @@ GfHashAddStr(void *hash, char *key, void *data)
     unsigned int	index;
     
     if (curHeader->type != GF_HASH_TYPE_STR) {
-	return;
+	return 1;
     }
 
     if ((curHeader->nbElem + 1) > (2 * curHeader->size)) {
@@ -183,11 +183,16 @@ GfHashAddStr(void *hash, char *key, void *data)
 
     index = hash_str(curHeader, key);
     newElem = (tHashElem*)malloc(sizeof(tHashElem));
+    if (!newElem) {
+	return 1;
+    }
     newElem->key = strdup(key);
     newElem->size = strlen(key) + 1;
     newElem->data = data;
     GF_TAILQ_INSERT_TAIL(&(curHeader->hashHead[index]), newElem, link);
     curHeader->nbElem++;
+
+    return 0;
 }
 
 /* Remove a table element */

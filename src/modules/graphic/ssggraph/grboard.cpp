@@ -107,7 +107,7 @@ cGrBoard::selectBoard(int val)
 		     (char*)NULL, (tdble)arcadeFlag);
 	break;	
     }
-    GfParmWriteFile(NULL, grHandle, "graph", GFPARM_PARAMETER, "../dtd/params.dtd");    
+    GfParmWriteFile(NULL, grHandle, "graph");    
 }
 
 

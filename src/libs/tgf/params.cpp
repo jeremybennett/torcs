@@ -18,11 +18,6 @@
 
 /** @file   
     		This is the parameters manipulation API.
-    		The parameters are stored in XML files and accessed only with this API.
-		<br>The parameters are structured in:
-		<br><b>section</b> - containing a familly of parameters on the same topic.
-		<br><b>list</b> - containing <b>elements</b>
-		<br>of <b>numerical attributes</b> and <b>string attributes</b>.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$
     @ingroup	params
@@ -43,1629 +38,1380 @@
 #endif
 #include <tgf.h>
 
-#include "params.h"
+#include <assert.h>
 
-/* All the lists are organized circularly */
-/* and the pointer is on the last element */
-static tParm *TheParms = (tParm*)NULL;
 
-static tParm		*CurParm;
-static tParmNode	*TheCurNode;
+#define LINE_SZ		1024
 
-void
-gfParamInit(void)
+#define PARAM_CREATE	0x01
+
+struct within
 {
+    char				*val;
+    GF_TAILQ_ENTRY (struct within)	linkWithin;
+};
+
+GF_TAILQ_HEAD (withinHead, struct within);
+
+#define P_NUM 0
+#define P_STR 1
+
+/** Parameter header structure */
+struct param
+{
+    char				*name;		/**< Name of the parameter  */
+    char				*fullName;	/**< Name of the parameter including the full section name ('/' separated) */
+    char				*value;		/**< Value of the parameter */
+    tdble				valnum;
+    int					type;
+    char				*unit;		/* for output only */
+    tdble				min;
+    tdble				max;
+    struct withinHead			withinList;
+    GF_TAILQ_ENTRY (struct param)	linkParam;	/**< Next parameter in the same section */
+};
+
+GF_TAILQ_HEAD (paramHead, struct param);
+struct section;
+GF_TAILQ_HEAD (sectionHead, struct section);
+
+
+/** Section header structure */
+struct section
+{
+    char				*fullName;	/**< Name of the section including full path ('/' separated) */
+    struct paramHead			paramList;	/**< List of the parameters of this section */
+    GF_TAILQ_ENTRY (struct section)	linkSection;	/**< Next section at the same level */
+    struct sectionHead			subSectionList;	/**< List of sub-sections (linked by linkSection)*/
+    struct section			*curSubSection;
+    struct section			*parent;	/**< Upper section */
+};
+
+
+#define PARM_MAGIC	0x20030815
+
+/** Configuration header structure */
+struct parmHeader 
+{
+    char				*filename;	/**< Name of the configuration file */
+    char				*name;		/**< Name of the data */
+    int					refcount;	/**< Use counter (number of conf handle) */
+    struct section			*rootSection;	/**< List of sections at the first level */
+    void				*paramHash;	/**< Hash table for parameter access */
+    void				*sectionHash;	/**< Hash table for section access */
+};
+
+#define PARM_HANDLE_FLAG_PRIVATE	0x01
+#define PARM_HANDLE_FLAG_PARSE_ERROR	0x02
+
+
+/** Ouput control structure */
+struct parmOutput
+{
+    int			state;
+    struct section	*curSection;
+    struct param	*curParam;
+    char		*filename;	/**< Name of the output configuration file */
+    char		*indent;
+};
+
+/** Configuration handle structure */
+struct parmHandle
+{
+    int					magic;
+    struct parmHeader			*conf;
+    char				*val;
+    int					flag;
+    XML_Parser				parser;
+    struct section			*curSection;
+    struct parmOutput			outCtrl;
+    GF_TAILQ_ENTRY (struct parmHandle)	linkHandle;	/**< Next configuration handle */
+};
+
+
+GF_TAILQ_HEAD (parmHead, struct parmHandle);
+
+static struct parmHead	parmHandleList;
+
+static char *getFullName(char *sectionName, const char *paramName);
+static struct param *getParamByName (struct parmHeader *conf, char *sectionName, const char *paramName, int flag);
+static void removeParamByName (struct parmHeader *conf, char *sectionName, char *paramName);
+static void removeParam (struct parmHeader *conf, struct section *section, struct param *param);
+static struct param *addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value);
+static void removeSection (struct parmHeader *conf, struct section *section);
+static struct section *addSection (struct parmHeader *conf, char *sectionName);
+static void parmClean (struct parmHeader *conf);
+static void parmReleaseHandle (struct parmHandle *parmHandle);
+static void parmReleaseHeader (struct parmHeader *conf);
+static struct section *getParent (struct parmHeader *conf, char *sectionName);
+static void cleanUnusedSection (struct parmHeader *conf, struct section *section);
+
+
+/** Configuration initialization.
+    @ingroup	conf
+    @return	none.
+*/
+void
+gfParamInit (void)
+{
+    GF_TAILQ_INIT (&parmHandleList);
 }
 
+/** Configuration shutdown.
+    @ingroup	conf
+    @return	none
+*/
+void
+GfParmShutdown (void)
+{
+    struct parmHandle	*parmHandle;
+
+    while ((parmHandle = GF_TAILQ_FIRST (&parmHandleList)) != GF_TAILQ_END (&parmHandleList)) {
+	parmReleaseHandle (parmHandle);
+    }
+}
+
+/* Compute parameter full name           */
+/* Caller must release the returned name */
+static char *
+getFullName (char *sectionName, const char *paramName)
+{
+    char		*fullName;
+
+    fullName = (char *) malloc (strlen (sectionName) + strlen (paramName) + 2);
+    if (!fullName) {
+	GfError ("getFullName: malloc (%d) failed", strlen (sectionName) + strlen (paramName) + 2);
+	return NULL;
+    }
+    sprintf (fullName, "%s/%s", sectionName, paramName);
+
+    return fullName;
+}
+
+/* Get a parameter by section/param names */
+static struct param *
+getParamByName (struct parmHeader *conf, char *sectionName, const char *paramName, int flag)
+{
+    char		*fullName;
+    struct param	*param;
+    struct section	*section;
+
+    fullName = getFullName (sectionName, paramName);
+    if (!fullName) {
+	GfError ("getParamByName: getFullName failed\n");
+	return NULL;
+    }
+
+    param = (struct param *)GfHashGetStr (conf->paramHash, fullName);
+    free (fullName);
+    if (param || ((flag & PARAM_CREATE) == 0)) {
+	return param;
+    }
+
+    /* Parameter not found CREATE it */
+    section = (struct section *)GfHashGetStr (conf->sectionHash, sectionName);
+    if (!section) {
+	section = addSection (conf, sectionName);
+	if (!section) {
+	    GfError ("getParamByName: addSection failed\n");
+	    return NULL;
+	}
+    }
+    param = addParam (conf, section, paramName, "");
+
+    return param;
+}
+
+/* Remove a parameter */
+static void
+removeParamByName (struct parmHeader *conf, char *sectionName, char *paramName)
+{
+    char		*fullName;
+    struct param	*param;
+    struct section	*section;
+
+    section = (struct section *)GfHashGetStr (conf->sectionHash, sectionName);
+    if (!section) {
+	return;
+    }
+
+    fullName = getFullName (sectionName, paramName);
+    if (!fullName) {
+	GfError ("removeParamByName: getFullName failed\n");
+	return;
+    }
+
+    param = (struct param *)GfHashGetStr (conf->paramHash, fullName);
+    freez (fullName);
+    if (param) {
+	removeParam (conf, section, param);
+    }
+
+    cleanUnusedSection (conf, section);
+}
+
+/* Clean up unused sections and parents */
+static void
+cleanUnusedSection (struct parmHeader *conf, struct section *section)
+{
+    struct section	*parent;
+
+    if (!section->fullName ||
+	(!GF_TAILQ_FIRST (&(section->paramList)) &&
+	 !GF_TAILQ_FIRST (&(section->subSectionList)))) {
+	parent = section->parent;
+	removeSection (conf, section);
+	if (parent) {
+	    /* check if the parent is unused */
+	    cleanUnusedSection (conf, parent);
+	}
+    }
+}
+
+/* Remove a parameter */
+static void
+removeParam (struct parmHeader *conf, struct section *section, struct param *param)
+{
+    GfHashRemStr (conf->paramHash, param->fullName);
+    GF_TAILQ_REMOVE (&(section->paramList), param, linkParam);
+    freez (param->name);
+    freez (param->fullName);
+    freez (param->value);
+    freez (param);
+}
+
+/* Add a parameter anywhere, does not check for duplicate. */
+static struct param *
+addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
+{
+    char		*fullName;
+    struct param	*param = NULL;
+    char		*tmpVal = NULL;
+
+    tmpVal = strdup (value);
+    if (!tmpVal) {
+	GfError ("addParam: strdup (%s) failed\n", value);
+	goto bailout;
+    }
+
+    param = (struct param *) calloc (1, sizeof (struct param));
+    if (!param) {
+	GfError ("addParam: calloc (1, %d) failed\n", sizeof (struct param));
+	goto bailout;
+    }
+    param->name = strdup (paramName);
+    if (!param->name) {
+	GfError ("addParam: strdup (%s) failed\n", paramName);
+	goto bailout;
+    }
+
+    fullName = getFullName (section->fullName, paramName);
+    if (!fullName) {
+	GfError ("addParam: getFullName failed\n");
+	goto bailout;
+    }
+    param->fullName = fullName;
+    if (GfHashAddStr (conf->paramHash, param->fullName, param)) {
+	goto bailout;
+    }
+
+    GF_TAILQ_INIT (&(param->withinList));
+
+    /* Attach to section */
+    GF_TAILQ_INSERT_TAIL (&(section->paramList), param, linkParam);
+
+    freez (param->value);
+    param->value = tmpVal;
+
+    return param;
+
+ bailout:
+    if (param) {
+	freez (param->name);
+	freez (param->fullName);
+	freez (param->value);
+	free  (param);
+    }
+    freez (tmpVal);
+
+    return NULL;
+}
+
+/* Remove a section */
+static void
+removeSection (struct parmHeader *conf, struct section *section)
+{
+    struct param	*param;
+    struct section	*subSection;
+    
+    while ((subSection = GF_TAILQ_FIRST (&(section->subSectionList))) != NULL) {
+	removeSection (conf, subSection);
+    }
+
+    if (section->fullName) {
+	/* not the root section */
+	GfHashRemStr (conf->sectionHash, section->fullName);
+	GF_TAILQ_REMOVE (&(section->parent->subSectionList), section, linkSection);
+	while ((param = GF_TAILQ_FIRST (&(section->paramList))) != GF_TAILQ_END (&(section->paramList))) {
+	    removeParam (conf, section, param);
+	}
+	freez (section->fullName);
+    }
+    freez (section);
+}
+
+/* Get or create parent section */
+static struct section *
+getParent (struct parmHeader *conf, char *sectionName)
+{
+    struct section	*section;
+    char		*tmpName;
+    char		*s;
+
+    tmpName = strdup (sectionName);
+    if (!tmpName) {
+	GfError ("getParent: strdup (\"%s\") failed\n", sectionName);
+	return NULL;
+    }
+    s = strrchr (tmpName, '/');
+    if (s) {
+	*s = '\0';
+	section = (struct section *)GfHashGetStr (conf->sectionHash, tmpName);
+	if (section) {
+	    goto end;
+	}
+	section = addSection (conf, tmpName);
+	goto end;
+    } else {
+	section = conf->rootSection;
+	goto end;
+    }
+
+ end:
+    free (tmpName);
+    return section;
+}
+
+/* Add a new section */
+static struct section *
+addSection (struct parmHeader *conf, char *sectionName)
+{
+    struct section	*section;
+    struct section	*parent;
+
+    if (GfHashGetStr (conf->sectionHash, sectionName)) {
+	GfError ("addSection: duplicate section [%s]\n", sectionName);
+	return NULL;
+    }
+
+    parent = getParent(conf, sectionName);
+    if (!parent) {
+	GfError ("addSection: Problem with getParent for section [%s]\n", sectionName);
+	return NULL;
+    }
+
+    section = (struct section *) calloc (1, sizeof (struct section));
+    if (!section) {
+	GfError ("addSection: calloc (1, %d) failed\n", sizeof (struct section));
+	return NULL;
+    }
+
+    section->fullName = strdup(sectionName);
+    if (!section->fullName) {
+	GfError ("addSection: strdup (%s) failed\n", sectionName);
+	goto bailout;
+    }
+
+    if (GfHashAddStr (conf->sectionHash, sectionName, section)) {
+	GfError ("addSection: GfHashAddStr failed\n");
+	goto bailout;
+    }
+
+    /* no more bailout call */
+    section->parent = parent;
+    GF_TAILQ_INIT (&(section->paramList));
+    GF_TAILQ_INIT (&(section->subSectionList));
+    GF_TAILQ_INSERT_TAIL (&(parent->subSectionList), section, linkSection);
+
+    return section;
+
+ bailout:
+    freez (section->fullName);
+    freez (section);
+    return NULL;
+}
+
+static struct parmHeader *
+getSharedHeader (const char *file, int mode)
+{
+    struct parmHeader	*conf = NULL;
+    struct parmHandle	*parmHandle;
+
+    /* Search for existing conf */
+    if ((mode & GFPARM_RMODE_PRIVATE) == 0) {
+
+	for (parmHandle = GF_TAILQ_FIRST (&parmHandleList);
+	     parmHandle != GF_TAILQ_END (&parmHandleList);
+	     parmHandle = GF_TAILQ_NEXT (parmHandle, linkHandle)) {
+
+	    if ((parmHandle->flag & PARM_HANDLE_FLAG_PRIVATE) == 0) {
+		conf = parmHandle->conf;
+		if (!strcmp(conf->filename, file)) {
+		    if (mode & GFPARM_RMODE_REREAD) {
+			parmClean (conf);
+		    }
+		    conf->refcount++;
+		    return conf;
+		}
+	    }
+	}
+    }
+
+    return NULL;
+}
+
+/* Conf header creation */
+static struct parmHeader *
+createParmHeader (const char *file)
+{
+    struct parmHeader	*conf = NULL;
+
+    conf = (struct parmHeader *) calloc (1, sizeof (struct parmHeader));
+    if (!conf) {
+	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct parmHeader));
+	return NULL;
+    }
+
+    conf->refcount = 1;
+
+    conf->rootSection = (struct section *) calloc (1, sizeof (struct section));
+    if (!conf->rootSection) {
+	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct section));
+	goto bailout;
+    }
+    GF_TAILQ_INIT (&(conf->rootSection->paramList));
+    GF_TAILQ_INIT (&(conf->rootSection->subSectionList));
+
+    conf->paramHash = GfHashCreate (GF_HASH_TYPE_STR);
+    if (!conf->paramHash) {
+	GfError ("gfParmReadFile: GfHashCreate (paramHash) failed\n");
+	goto bailout;
+    }
+
+    conf->sectionHash = GfHashCreate (GF_HASH_TYPE_STR);
+    if (!conf->sectionHash) {
+	GfError ("gfParmReadFile: GfHashCreate (sectionHash) failed\n");
+	goto bailout;
+    }
+
+    conf->filename = strdup (file);
+    if (!conf->filename) {
+	GfError ("gfParmReadFile: strdup (%s) failed\n", file);
+	goto bailout;
+    }
+
+    return conf;
+
+ bailout:
+    freez (conf->rootSection);
+    if (conf->paramHash) {
+	GfHashRelease (conf->paramHash, NULL);
+    }
+    if (conf->sectionHash) {
+	GfHashRelease (conf->sectionHash, NULL);
+    }
+    freez (conf->filename);
+    freez (conf);
+
+    return NULL;
+}
+
+static void
+addWithin (struct param *curParam, char *s1)
+{
+    struct within	*curWithin;
+
+    if (!s1 || ! strlen (s1)) {
+	return;
+    }
+    
+    curWithin = (struct within *) calloc (1, sizeof (struct within));
+    curWithin->val = strdup (s1);
+    GF_TAILQ_INSERT_TAIL (&(curParam->withinList), curWithin, linkWithin);
+}
+
+
+/* XML Processing */
 static int
-mystrcmp(const void *s1, const void * s2)
+myStrcmp(const void *s1, const void * s2)
 {
     return strcmp((const char *)s1, (const char *)s2);
 }
 
-static void
-gfParmAddKid(tParmNode *node, tParmNode *newNode)
-{
-    if (node->type & PARM_NODE_BRANCH) {
-	if (node->kids == NULL) {
-	    node->kids = newNode;
-	    newNode->next = newNode;
-	    newNode->prev = newNode;
-	} else {
-	    newNode->next = node->kids;
-	    newNode->prev = newNode->next->prev;
-	    newNode->next->prev = newNode;
-	    newNode->prev->next = newNode;
-	}
-	newNode->parent = node;
-    } else {
-	GfTrace("file: %s -> Grammar Error %s not allowed in %s\n", CurParm->file, newNode->name, node->name);
-	GfParmReleaseHandle((void*)CurParm);
-	/* GfScrShutdown(); */
-	exit(1);
-    }
-}
-
-
-/*
- * Function
- *	startElement
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- *
- * Remarks
- *	
- */
+/* XML Processing */
 static void 
-startElement(void * /* userData */, const char *name, const char **atts)
+xmlStartElement(void *userData , const char *name, const char **atts)
 {
-    int		nAtts;
-    const char	**p;
-    const char	*s1, *s2;
-    char	*stk, *stk1;
-    int		minflg, maxflg, found;
-    tParmWithin	*curWithin;
+    struct parmHandle	*parmHandle = (struct parmHandle *)userData;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*curParam;
+
+    int			nAtts;
+    int			len;
+    const char		**p;
+    const char		*s1, *s2;
+    char		*fullName;
+    const char		*shortName;
+    const char		*val;
+    const char		*min;
+    const char		*max;
+    const char		*unit;
+    char		*within;
+    char		*sa, *sb;
+
+    if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
+	/* parse error occured, ignore */
+	return;
+    }
 
     p = atts;
     while (*p)
 	++p;
     nAtts = (p - atts) >> 1;
     if (nAtts > 1) {
-	qsort((void *)atts, nAtts, sizeof(char *) * 2, mystrcmp);
+	qsort ((void *)atts, nAtts, sizeof(char *) * 2, myStrcmp);
     }
 
     if (!strcmp(name, "params")) {
-	TheCurNode = (tParmNode*)calloc(1, sizeof(tParmNode));
-	CurParm->n.kids = TheCurNode;
-	TheCurNode->type = PARM_NODE_PARM;
-	TheCurNode->next = TheCurNode;
-	TheCurNode->prev = TheCurNode;
-	TheCurNode->parent = (tParmNode*)CurParm;
-	while (*atts) {
-	    s1 = *atts++;
-	    s2 = *atts++;
-	    if (!strcmp(s1, "name")) {
-		TheCurNode->name = strdup(s2);
-	    }
-	    if (!strcmp(s1, "type")) {
-		if (!strcmp(s2, GFPARM_TEMPL_STR)) {
-		    CurParm->type = GFPARM_TEMPLATE;
-		} else {
-		    CurParm->type = GFPARM_PARAMETER;
-		}
-	    }
-	    if (!strcmp(s1, "mode")) {
-		if (strchr(s2, 'M') || strchr(s2, 'm')) {
-		    CurParm->mode |= GFPARM_MODIFIABLE;
-		}
-		if (strchr(s2, 'W') || strchr(s2, 'w')) {
-		    CurParm->mode |= GFPARM_WRITABLE;
-		}
-	    }
-	}
-    }
-    
-    if (!strcmp(name, "section")) {
-	tParmSect *cursect = (tParmSect*)calloc(1, sizeof(tParmSect));
 
-	cursect->n.type = PARM_NODE_SECT;
-	gfParmAddKid(TheCurNode, (tParmNode*)cursect);
-	TheCurNode = (tParmNode*)cursect;
+	parmHandle->curSection = conf->rootSection;
+	parmHandle->curSection->fullName = strdup ("");
 	
+	if (!parmHandle->curSection->fullName) {
+	    GfError ("xmlStartElement: strdup (\"\") failed\n");
+	    goto bailout;
+	}
+
 	while (*atts) {
 	    s1 = *atts++;
 	    s2 = *atts++;
 	    if (!strcmp(s1, "name")) {
-		cursect->n.name = strdup(s2);
+		FREEZ (conf->name);
+		conf->name = strdup (s2);
+		if (!conf->name) {
+		    GfError ("xmlStartElement: strdup (\"%s\") failed\n", s2);
+		    goto bailout;
+		}
+		break;
 	    }
 	}
-    }
-    
-    
-    if (!strcmp(name, "attnum")) {
-	tParmKey *curkey = (tParmKey*)calloc(1, sizeof(tParmKey));
 
-	curkey->n.type = PARM_NODE_KEY;
-	gfParmAddKid(TheCurNode, (tParmNode*)curkey);
-	TheCurNode = (tParmNode*)curkey;
+	if (!conf->name) {
+	    GfOut ("xmlStartElement: Syntax error, missing \"name\" field in params definition\n");
+	    goto bailout;
+	}
+
+    } else if (!strcmp(name, "section")) {
+
+	if (!parmHandle->curSection) {
+	    GfError ("xmlStartElement: Syntax error, missing \"params\" tag\n");
+	    goto bailout;
+	}
+
+	shortName = NULL;
+
+	while (*atts) {
+	    s1 = *atts++;
+	    s2 = *atts++;
+	    if (!strcmp(s1, "name")) {
+		shortName = s2;
+		break;
+	    }
+	}
+
+	if (!shortName) {
+	    GfError ("xmlStartElement: Syntax error, missing \"name\" field in section definition\n");
+	    goto bailout;
+	}
+
+	if (strlen (parmHandle->curSection->fullName)) {
+	    len = strlen (shortName) + strlen (parmHandle->curSection->fullName) + 2;
+	    fullName = (char *) malloc (len);
+	    if (!fullName) {
+		GfError ("xmlStartElement: malloc (%d) failed\n", len);
+		goto bailout;
+	    }
+
+	    sprintf (fullName, "%s/%s", parmHandle->curSection->fullName, shortName);
+	} else {
+	    fullName = strdup (shortName);
+	}
+
+	parmHandle->curSection = addSection (conf, fullName);
+	free (fullName);
+	if (!parmHandle->curSection) {
+	    GfError ("xmlStartElement: addSection failed\n");
+	    goto bailout;
+	}
+
+    } else if (!strcmp(name, "attnum")) {
+
+	if ((!parmHandle->curSection) || (!strlen (parmHandle->curSection->fullName))) {
+	    GfError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+	    goto bailout;
+	}
+
+	shortName = NULL;
+	val = NULL;
+	min = max = unit = NULL;
+
+	while (*atts) {
+	    s1 = *atts++;
+	    s2 = *atts++;
+	    if (!strcmp(s1, "name")) {
+		shortName = s2;
+	    } else if (!strcmp(s1, "val")) {
+		val = s2;
+	    } else if (!strcmp(s1, "min")) {
+		min = s2;
+	    } else if (!strcmp(s1, "max")) {
+		max = s2;
+	    } else if (!strcmp(s1, "unit")) {
+		unit = s2;
+	    }
+	    
+	}
+
+	if (!shortName) {
+	    GfError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+	    goto bailout;
+	}
+
+	if (!val) {
+	    GfError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+	    goto bailout;
+	}
+
+	if (!min) {
+	    min = val;
+	}
 	
-	minflg = maxflg = 0;
-	curkey->type = P_NUM;
+	if (!max) {
+	    max = val;
+	}
+
+	curParam = addParam (conf, parmHandle->curSection, shortName, val);
+	if (!curParam) {
+	    GfError ("xmlStartElement: addParam failed\n");
+	    goto bailout;
+	}
+
+	curParam->type = P_NUM;
+	sscanf (val, "%g", &(curParam->valnum));
+	sscanf (min, "%g", &(curParam->min));
+	sscanf (max, "%g", &(curParam->max));
+
+	if (curParam->min > curParam->valnum) {
+	    curParam->min = curParam->valnum;
+	}
+
+	if (curParam->max < curParam->valnum) {
+	    curParam->max = curParam->valnum;
+	}
+
+	if (unit) {
+	    curParam->unit = strdup (unit);
+	    curParam->valnum = GfParmUnit2SI ((char*)unit, curParam->valnum);
+	    curParam->min = GfParmUnit2SI ((char*)unit, curParam->min);
+	    curParam->max = GfParmUnit2SI ((char*)unit, curParam->max);
+	}
+
+    } else if (!strcmp(name, "attstr")) {
+
+	if ((!parmHandle->curSection) || (!strlen (parmHandle->curSection->fullName))) {
+	    GfError ("xmlStartElement: Syntax error, missing \"section\" tag\n");
+	    goto bailout;
+	}
+
+	shortName = NULL;
+	val = NULL;
+	within = NULL;
+
 	while (*atts) {
 	    s1 = *atts++;
 	    s2 = *atts++;
 	    if (!strcmp(s1, "name")) {
-		curkey->n.name = strdup(s2);
-	    }
-	    if (!strcmp(s1, "unit")) {
-		curkey->unit = strdup(s2);
-	    }
-	    if (!strcmp(s1, "val")) {
-		if (strncasecmp(s2, "0x", 2) == 0) {
-		    curkey->valnum = (tdble)strtoul(s2, (char**)NULL, 0);
-		} else {
-		    curkey->valnum = (tdble)strtod(s2, (char**)NULL);
-		}
-	    }
-	    if (!strcmp(s1, "min")) {
-		minflg = 1;
-		curkey->min = (tdble)strtod(s2, (char**)NULL);
-	    }
-	    if (!strcmp(s1, "max")) {
-		maxflg = 1;
-		curkey->max = (tdble)strtod(s2, (char**)NULL);
+		shortName = s2;
+	    } else if (!strcmp(s1, "val")) {
+		val = s2;
+	    } else if (!strcmp(s1, "in")) {
+		within = (char *)s2;
 	    }
 	}
-	if (minflg == 0) {
-	    curkey->min = curkey->valnum;
-	}
-	if (maxflg == 0) {
-	    curkey->max = curkey->valnum;
-	}
-	if (curkey->unit) {
-	    curkey->valnum = GfParmUnit2SI(curkey->unit, curkey->valnum);
-	    curkey->min = GfParmUnit2SI(curkey->unit, curkey->min);
-	    curkey->max = GfParmUnit2SI(curkey->unit, curkey->max);
-	}
-	if (curkey->min > curkey->valnum) {
-	    curkey->min = curkey->valnum;
-	}
-	if (curkey->max < curkey->valnum) {
-	    curkey->max = curkey->valnum;
-	}
-    }
-    
-    if (!strcmp(name, "attstr")) {
-	tParmKey *curkey = (tParmKey*)calloc(1, sizeof(tParmKey));
 
-	curkey->n.type = PARM_NODE_KEY;
-	gfParmAddKid(TheCurNode, (tParmNode*)curkey);
-	TheCurNode = (tParmNode*)curkey;
+	if (!shortName) {
+	    GfError ("xmlStartElement: Syntax error, missing \"name\" field in %s definition\n", name);
+	    goto bailout;
+	}
 
-	curkey->type = P_STR;
-	while (*atts) {
-	    s1 = *atts++;
-	    s2 = *atts++;
-	    if (!strcmp(s1, "name")) {
-		curkey->n.name = strdup(s2);
-	    }
-	    if (!strcmp(s1, "val")) {
-		curkey->valstr = strdup(s2);
-	    }
-	    if (!strcmp(s1, "in")) {
-		stk = strdup(s2);
-		stk1 = strtok(stk, ",");
-		while (stk1) {
-		    curWithin = (tParmWithin*)calloc(1, sizeof(tParmWithin));
-		    curWithin->val = strdup(stk1);
-		    if (curkey->withins == NULL) {
-			curkey->withins = curWithin;
-			curWithin->next = curWithin;
-		    } else {
-			curWithin->next = curkey->withins->next;
-			curkey->withins->next = curWithin;
-			curkey->withins = curWithin;
-		    }
-		    stk1 = strtok((char*)NULL, ",");
-		}
-		free(stk);
-	    }
+	if (!val) {
+	    GfError ("xmlStartElement: Syntax error, missing \"val\" field in %s definition\n", name);
+	    goto bailout;
 	}
-	found = 0;
-	if (curkey->withins != NULL) {
-	    curWithin = curkey->withins;
-	    do {
-		curWithin = curWithin->next;
-		if (strcmp(curWithin->val, curkey->valstr) == 0) {
-		    found = 1;
-		    break;
-		}
-	    } while (curWithin != curkey->withins);
+
+	curParam = addParam (conf, parmHandle->curSection, shortName, val);
+	if (!curParam) {
+	    GfError ("xmlStartElement: addParam failed\n");
+	    goto bailout;
 	}
-	if (!found) {
-	    curWithin = (tParmWithin*)calloc(1, sizeof(tParmWithin));
-	    curWithin->val = strdup(curkey->valstr);
-	    if (curkey->withins == NULL) {
-		curkey->withins = curWithin;
-		curWithin->next = curWithin;
-	    } else {
-		curWithin->next = curkey->withins->next;
-		curkey->withins->next = curWithin;
-		curkey->withins = curWithin;
+
+	curParam->type = P_STR;
+	if (within) {
+	    sa = within;
+	    sb = strchr (sa, ',');
+	    while (sb) {
+		*sb = 0;
+		addWithin (curParam, sa);
+		sa = sb + 1;
+		sb = strchr (sa, ',');
 	    }
+	    addWithin (curParam, sa);
 	}
+	
     }
+
+    return;
+
+ bailout:
+    parmHandle->flag |= PARM_HANDLE_FLAG_PARSE_ERROR;
+    return;
 }
 
-/*
- * Function
- *	endElement
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- *
- * Remarks
- *	
- */
-static void 
-endElement(void * /* userData */, const char * /* name */)
+static void
+xmlEndElement (void *userData, const XML_Char *name)
 {
-    TheCurNode = TheCurNode->parent;
+    struct parmHandle	*parmHandle = (struct parmHandle *)userData;
+
+    if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
+	/* parse error occured, ignore */
+	return;
+    }
+
+    if (!strcmp(name, "section")) {
+	if ((!parmHandle->curSection) || (!parmHandle->curSection->parent)) {
+	    GfError ("xmlEndElement: Syntax error in \"%s\"\n", name);
+	    return;
+	}
+	parmHandle->curSection = parmHandle->curSection->parent;
+    }
 }
 
-/*
- * Function
- *	
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- */
-static int 
-externalEntityRefHandler(XML_Parser mainparser,
-			 const XML_Char *openEntityNames,
-			 const XML_Char * /* base */,
-			 const XML_Char *systemId,
-			 const XML_Char * /* publicId */)
+static int
+xmlExternalEntityRefHandler (XML_Parser mainparser,
+			     const XML_Char *openEntityNames,
+			     const XML_Char * /* base */,
+			     const XML_Char *systemId,
+			     const XML_Char * /* publicId */)
 {
     FILE 	*in;
     char	buf[BUFSIZ];
     XML_Parser 	parser;
     int		done;
     char	*str;
+
+
     
-    parser = XML_ExternalEntityParserCreate(mainparser,
-					    openEntityNames,
-					    (const XML_Char *)NULL);
+    parser = XML_ExternalEntityParserCreate (mainparser,
+					     openEntityNames,
+					     (const XML_Char *)NULL);
 
     /* Skip the leading ../ in the path  */
     str = (char*)systemId;
-    while (strncmp(str, "../", 3) == 0) {
+    while (strncmp (str, "../", 3) == 0) {
 	str += 3;
     }
     
-    in = fopen(systemId, "r");
+    in = fopen (str, "r");
     if (in == NULL) {
-	perror(systemId);
-	GfTrace("GfReadParmFile: file %s has pb\n", systemId);
+	perror (str);
+	GfError ("GfReadParmFile: file %s has pb\n", systemId);
 	return 0;
     }
 
-    XML_SetElementHandler(parser, startElement, endElement);
+    XML_SetElementHandler (parser, xmlStartElement, xmlEndElement);
     do {
-	size_t len = fread(buf, 1, sizeof(buf), in);
-	done = len < sizeof(buf);
-	if (!XML_Parse(parser, buf, len, done)) {
-	    GfTrace("file: %s -> %s at line %d\n",
-		     systemId,
+	size_t len = fread (buf, 1, sizeof(buf), in);
+	done = len < sizeof (buf);
+	if (!XML_Parse (parser, buf, len, done)) {
+	    GfError ("file: %s -> %s at line %d\n",
+		     str,
 		     XML_ErrorString(XML_GetErrorCode(parser)),
 		     XML_GetCurrentLineNumber(parser));
-	    GfParmReleaseHandle((void*)CurParm);
-	    fclose(in);
+	    fclose (in);
 	    return 0;
 	}
     } while (!done);
-    XML_ParserFree(parser);
-    return 1;
+    XML_ParserFree (parser);
+
+    return 1; /* ok (0 for failure) */
 }
 
-static tParm *
-gfCheckParmWithFile(const char *file, int mode, int *toload)
+/* xml type parameters line parser */
+static int
+parseXml (struct parmHandle *parmHandle, char *buf, int len, int done)
 {
-    /* Verify if the file has already been read */
-    if (TheParms != NULL) {
-	CurParm = TheParms; /* last element */
-	do {
-	    CurParm = (tParm*)CurParm->n.next;
-	    if ((CurParm->file != NULL) && (strcmp(CurParm->file, file) == 0)) {
-		if (!(mode & GFPARM_RMODE_REREAD)) {
-		    CurParm->refcount++;
-		    //GfOut("GfReadParmFile: file %s already loaded, use it (ref = %d)\n", file, CurParm->refcount);
-		    *toload = 0;
-		    return CurParm;
-		} else {
-		    //GfOut("GfReadParmFile: file %s already loaded, force reload (ref = %d)\n", file, CurParm->refcount);
-		    GfParmClean((void*)CurParm);
-		    *toload = 1;
-		    return CurParm;
-		}
-	    }
-	} while (CurParm != TheParms);
-	//GfOut("GfReadParmFile: file %s not loaded, load (ref = 1)\n", file);
-	CurParm = (tParm*)calloc(1, sizeof(tParm));
-	CurParm->refcount = 1;
-	CurParm->n.type = PARM_NODE_ROOT;
-	CurParm->n.next = TheParms->n.next;
-	CurParm->n.prev = (tParmNode*)TheParms;
-	CurParm->n.next->prev = (tParmNode*)CurParm;
-	CurParm->n.prev->next = (tParmNode*)CurParm;
-	TheParms = CurParm;
-    } else {
-	//GfOut("GfReadParmFile: file %s not loaded, load (ref = 1)\n", file);
-	CurParm = (tParm*)calloc(1, sizeof(tParm));
-	CurParm->refcount = 1;
-	CurParm->n.type = PARM_NODE_ROOT;
-	CurParm->n.next = (tParmNode*)CurParm;
-	CurParm->n.prev = (tParmNode*)CurParm;
-	TheParms = CurParm;
+    if (!XML_Parse(parmHandle->parser, buf, len, done)) {
+	GfError ("parseXml: %s at line %d\n",
+		 (char*)XML_ErrorString (XML_GetErrorCode (parmHandle->parser)),
+		 XML_GetCurrentLineNumber (parmHandle->parser));
+	return 1;
     }
-    *toload = 1;
-    return CurParm;
+
+    if (done) {
+	XML_ParserFree(parmHandle->parser);
+	parmHandle->parser = 0;
+    }
+
+    return 0;
 }
 
-/** Read a parameter file.
-    @ingroup	paramsfile
-    @param	file	Name of the parameter file
-    @param	mode	GFPARM_RMODE_STD Open the parameter file only once
-    			<br>GFPARM_RMODE_REREAD Force the re-read of the file and release the previous one
-			<br>GFPARM_RMODE_CREAT Force the creation of the file
-    @return	handle on the parameters
-	        <br>NULL if file does not exist and not GFPARM_RMODE_CREAT.
- */
+
+static int
+parserXmlInit (struct parmHandle *parmHandle)
+{
+    parmHandle->parser = XML_ParserCreate((XML_Char*)NULL);
+    XML_SetElementHandler(parmHandle->parser, xmlStartElement, xmlEndElement);
+    XML_SetExternalEntityRefHandler(parmHandle->parser, xmlExternalEntityRefHandler);
+    XML_SetUserData(parmHandle->parser, parmHandle);
+
+    return 0;
+}
+
+/** Read a configuration buffer.
+    @ingroup	conf
+    @param	logHandle	log handle
+    @param	buf		input buffer.
+    @return	handle on the configuration data
+    <br>0 if Error
+*/
 void *
-GfParmReadFile(const char *file, int mode)
+GfParmReadBuf (char *buffer)
 {
-    FILE	*in;
-    char	buf[BUFSIZ];
-    XML_Parser	parser;
-    int		done;
-    struct stat st;
-    int		toload;
-    int		fileExists;
+    struct parmHeader	*conf;
+    struct parmHandle	*parmHandle = NULL;
 
-    if (stat(file, &st)) {
-	if (!(mode & GFPARM_RMODE_CREAT)) {
-	    return NULL;
-	}
-	fileExists = 0;
-    } else {
-	fileExists = 1;
+    /* Conf Header creation */
+    conf = createParmHeader ("");
+    if (!conf) {
+	GfError ("gfParmReadBuf: conf header creation failed\n");
+	goto bailout;
     }
 
-    /* Verify if the file has already been read */
-    CurParm = gfCheckParmWithFile(file, mode, &toload);
-    if (toload == 0) {
-	return (void*)CurParm;
-    }
-    
-    /* CurParm contains a free tParm slot */
-    CurParm->file = strdup(file);
-    CurParm->mode = 0;
-    CurParm->n.type = PARM_NODE_ROOT;
-    CurParm->n.parent = (tParmNode*)CurParm;
-
-    if (!fileExists) {
-	CurParm->mode = GFPARM_WRITABLE | GFPARM_MODIFIABLE;
-	GfOut("GfReadParmFile: file %s not existing\n", file);
-	TheCurNode = (tParmNode*)calloc(1, sizeof(tParmNode));
-	CurParm->n.kids = TheCurNode;
-	TheCurNode->type = PARM_NODE_PARM;
-	TheCurNode->next = TheCurNode;
-	TheCurNode->prev = TheCurNode;
-	TheCurNode->parent = (tParmNode*)CurParm;
-	return (void*)CurParm;
-    }
-    
-    
-    if ((in = fopen(file, "r")) == NULL) {
-	perror(file);
-	GfTrace("GfReadParmFile: file %s has pb\n", file);
-	GfParmReleaseHandle((void*)CurParm);
-	return NULL;
-    }
-    
-    parser = XML_ParserCreate((XML_Char*)NULL);
-    XML_SetElementHandler(parser, startElement, endElement);
-    XML_SetExternalEntityRefHandler(parser, externalEntityRefHandler);
-    do {
-	size_t len = fread(buf, 1, sizeof(buf), in);
-	done = len < sizeof(buf);
-	if (!XML_Parse(parser, buf, len, done)) {
-	    GfTrace("GfReadParmFile: %s -> %s at line %d\n",
-		     file,
-		     XML_ErrorString(XML_GetErrorCode(parser)),
-		     XML_GetCurrentLineNumber(parser));
-	    GfParmReleaseHandle((void*)CurParm);
-	    fclose(in);
-	    return NULL;
-	}
-    } while (!done);
-    XML_ParserFree(parser);
-
-    fclose(in);
-    return (void*)CurParm;
-}
-
-
-/** Get the pararmeters name
-    @ingroup	paramsdata
-    @param	handle	Handle on the parameters
-    @return	Name
-*/
-char *
-GfParmGetName(void *handle)
-{
-    return ((tParm*)handle)->n.kids->name;
-}
-
-/** Get the pararmeters file name
-    @ingroup	paramsfile
-    @param	handle	Handle on the parameters
-    @return	File Name
-*/
-char *
-GfParmGetFileName(void *handle)
-{
-    return ((tParm*)handle)->file;
-}
-
-
-#define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
-#define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
-/** Write a parameter file.
-    @ingroup	paramsfile
-    @param	file	Filename of the parameter file (local to $BASE/runtime).
-    		<br>If file is NULL the current filenane is used.
-    @param	handle	Handle on the parameters
-    @param	name	Name of the parameters
-    @param	type	type of the parameter file (GFPARM_TEMPLATE or GFPARM_PARAMETER)
-    @param	dtd	Filename of the dtd file
-    @return	0	ok
-    		<br>-1	failed
-    @warning	The file is created if necessary	
-    @see	GfParmReadFile
- */
-int
-GfParmWriteFile(const char *file, void* handle, char *name, int type, const char *dtd)
-{
-    static	char *typeStr[2] = {GFPARM_PARAM_STR, GFPARM_TEMPL_STR};
-    char	buf[BUFMAX];
-    char	blank[BUFMAX];
-    int		indent, i, nb;
-    char	*s;
-    FILE	*out;
-    tParmWithin	*curWithin;
-    tParmSect	*curSect;
-    tParmNode	*curNode;
-
-    CurParm = (tParm*)handle;
-    if (CurParm == NULL) return -1;
-
-#ifndef DEBUG
-    if ((CurParm->mode & GFPARM_WRITABLE) == 0) {
-	GfTrace("GfParmWriteFile: file %s is not allowed to be rewrited\n", file);
-	/* return -1; */
-    }
-#endif
-
-    if (!file) {
-	file = CurParm->file;
-	if (!file) {
-	    return -1;
-	}
-    } else {
-	if (CurParm->file) free(CurParm->file);
-	CurParm->file = strdup(file);
+    /* Handle creation */
+    parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
+    if (!parmHandle) {
+	GfError ("gfParmReadBuf: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	goto bailout;
     }
 
-    if ((out = fopen(file, "w")) == NULL) {
-	perror(file);
-	GfTrace("GfParmWriteFile: file %s has pb\n", file);
-	return -1;
+    parmHandle->magic = PARM_MAGIC;
+    parmHandle->conf = conf;
+    parmHandle->val = NULL;
+    parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
+
+    /* Parsers Initialization */
+    if (parserXmlInit (parmHandle)) {
+	GfError ("gfParmReadBuf: parserInit failed\n");
+	goto bailout;
     }
 
-    
-    sprintf(buf, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    FW(buf);
-    sprintf(buf, "\n<!DOCTYPE params SYSTEM \"%s\">\n", dtd);
-    FW(buf);
-    
-    indent = 1;
-    if (CurParm->n.kids->name) free(CurParm->n.kids->name);
-    CurParm->n.kids->name = strdup(name);
-    CurParm->type = type;
-
-    curNode = CurParm->n.kids;
-
-    do {
-	switch (curNode->type) {
-	case PARM_NODE_PARM:
-	    sprintf(buf, "\n<params name=\"%s\" type=\"%s\" mode=\"mw\">\n", name, typeStr[type]);
-	    FW(buf);
-	    break;
-		
-	case PARM_NODE_SECT:
-	    curSect = (tParmSect*)curNode;
-	    BLANK;
-	    sprintf(buf, "\n%s<section name=\"%s\">\n", blank, curSect->n.name);
-	    FW(buf);
-	    break;
-
-	case PARM_NODE_KEY:
-	    tParmKey *curkey = (tParmKey*)curNode;
-	    BLANK;
-	    s = buf;
-	    if (curkey->type == P_NUM) {
-		s += sprintf(s, "%s<attnum name=\"%s\" ", blank, curkey->n.name);
-		if ((type == GFPARM_TEMPLATE) &&
-		    ((curkey->min != curkey->valnum) || (curkey->max != curkey->valnum))) {
-		    if (curkey->unit) {
-			s += sprintf(s, "min=\"%g\" max=\"%g\" ",
-				     GfParmSI2Unit(curkey->unit, curkey->min),
-				     GfParmSI2Unit(curkey->unit, curkey->max));
-		    } else {
-			s += sprintf(s, "min=\"%g\" max=\"%g\" ", curkey->min, curkey->max);
-		    }
-		}
-		if (curkey->unit) {
-		    sprintf(s, "val=\"%g\" unit=\"%s\"/>\n", GfParmSI2Unit(curkey->unit, curkey->valnum), curkey->unit);
-		} else {
-		    sprintf(s, "val=\"%g\"/>\n", curkey->valnum);
-		}
-	    } else {
-		s += sprintf(s, "%s<attstr name=\"%s\" ", blank, curkey->n.name);
-		if ((type == GFPARM_TEMPLATE) && (curkey->withins)) {
-		    nb = 0;
-		    curWithin = curkey->withins;
-		    do {
-			nb++;
-			curWithin = curWithin->next;
-		    } while (curWithin != curkey->withins);
-
-		    if (nb > 1) {
-			s += sprintf(s, "in=\"");
-			curWithin = curkey->withins;
-			do {
-			    curWithin = curWithin->next;
-			    s += sprintf(s, "%s,", curWithin->val);
-			} while (curWithin != curkey->withins);
-			s--;
-			s += sprintf(s, "\" ");
-		    }
-		} 
-		sprintf(s, "val=\"%s\"/>\n", curkey->valstr);
-	    }
-	    FW(buf);
-	    break;
-	}
-
-
-	if (curNode->kids != NULL) {
-	    curNode = curNode->kids;
-	    indent++;
-	} else {
-	    /* No kids, this should be an attr... so it is self terminated */
-	    curNode = curNode->next;
-	    while ((curNode->type != PARM_NODE_PARM) && (curNode == curNode->parent->kids)) {
-		/* end of kids list go back to the parent and write the end tag */
-		curNode = curNode->parent;
-		indent--;
-		switch (curNode->type) {
-		case PARM_NODE_PARM:
-		    sprintf(buf, "\n</params>\n");
-		    FW(buf);
-		    break;
-		case PARM_NODE_SECT:
-		    BLANK;
-		    sprintf(buf, "%s</section>\n", blank);
-		    FW(buf);	    
-		    break;
-		}
-		curNode = curNode->next;
-	    }
-	}
-
-    } while (curNode->type != PARM_NODE_PARM);
-    fclose(out);
-    return 0;
-}
-
-
-
-/*
- * Search the node with the path...
- * the path is / separated.
- */
-static tParmNode *
-gfParmGetNode(tParm *curParm, char *path)
-{
-    tParmNode	*curNode = NULL;
-    tParmNode	*kidNode = NULL;
-    char	*wpath;
-    char	*s1, *s2;
-    int		found;
-
-    if (curParm == NULL) {
-	return NULL;
-    }
-    if ((path == NULL) || (strlen(path) == 0)) {
-	return curParm->n.kids;
-    }
-    curNode = curParm->n.kids;
-    wpath = strdup(path);
-    s1 = wpath;
-    while (*s1 == '/' && *s1 != 0) {
-	s1++;
-    }
-    if (*s1 != 0) {
-	do {
-	    s2 = strchr(s1, '/');
-	    if (s2 != NULL) {
-		*s2 = 0;
-	    }
-	    kidNode = curNode->kids;
-	    if (kidNode == NULL) { /* not found */
-		free(wpath);
-		return NULL;
-	    }
-	    found = 0;
-	    do {
-		if (strcmp(s1, kidNode->name)) {
-		    kidNode = kidNode->next;
-		} else {
-		    found = 1;
-		    break;
-		}
-	    } while (kidNode != curNode->kids);
-	    if (!found) { /* not found */
-		free(wpath);
-		return NULL;
-	    }
-	    curNode = kidNode;
-	    if (s2 != NULL) {
-		/* search for the next level */
-		s1 = s2 + 1;
-		while (*s1 == '/' && *s1 != 0) {
-		    s1++;
-		}
-		if (*s1 == 0) {
-		    s2 = s1 = NULL;
-		}
-	    }
-	} while (s2 != NULL);
+    /* Parameters reading in buffer */
+    if (parseXml (parmHandle, buffer, strlen (buffer), 1)) {
+	GfError ("gfParmReadBuf: Parse failed for buffer\n");
+	goto bailout;
     }
 
-    free(wpath);
-    return curNode;
-}
+    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
 
+    return parmHandle;
 
-/** Count the number of section elements of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	element count
- */
-int
-GfParmGetEltNb(void *handle, char *path)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    int		count;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (curNode->kids == NULL)) {
-	return 0;
+ bailout:
+    freez (parmHandle);
+    if (conf) {
+	parmReleaseHeader (conf);
     }
-
-    kidNode = curNode->kids;
-    count = 0;
-    do {
-	kidNode = kidNode->next;
-	if (kidNode->type == PARM_NODE_SECT) {
-	    count++;
-	}
-    } while (kidNode != curNode->kids);
-
-    return count;
-}
-
-/** Seek the first section element of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	list path
-    @return	0 Ok
-    		<br>-1 Failed
-    @see	GfParmListSeekNext
-    @see	GfParmListGetCurEltName
- */
-int
-GfParmListSeekFirst(void *handle, char *path)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (curNode->kids == NULL)) {
-	return -1;
-    }
-    kidNode = curNode->kids;
-    do {
-	if (kidNode->type == PARM_NODE_SECT) {
-	    ((tParmSect*)curNode)->current = kidNode;
-	    return 0;
-	}
-	kidNode = kidNode->next;
-    } while (kidNode != curNode->kids);
-	
-    return -1;
-}
-
-static void
-gfRemoveNode(tParmNode *node)
-{
-    tParm	*curParm;
-
-    if (node == NULL) {
-	return;
-    }
-    if (node->next == node) {
-	node->parent->kids = NULL;
-    } else {
-	node->next->prev = node->prev;
-	node->prev->next = node->next;
-	if (node->parent && (node->parent->kids == node)) {
-	    node->parent->kids = node->next;
-	}
-    }
-    
-    switch (node->type) {
-    case PARM_NODE_ROOT:
-	curParm = (tParm*)node;
-	if (curParm->file) free(curParm->file);
-	curParm->file = NULL;
-	free(node);
-	break;	
-    case PARM_NODE_PARM:
-    case PARM_NODE_SECT:
-	free(node->name);
-	free(node);
-	break;
-    case PARM_NODE_KEY:
-	tParmKey *curKey = (tParmKey*)node;
-
-	free(node->name);
-	if (curKey->unit) free (curKey->unit);
-	if (curKey->valstr != NULL) free(curKey->valstr);
-	if (curKey->withins != NULL) {
-	    ParmWithin *curWithin = curKey->withins;
-	    ParmWithin *nextWithin = curWithin->next;
-	    do {
-		curWithin = nextWithin;
-		nextWithin = curWithin->next;
-		free(curWithin->val);
-		free(curWithin);
-	    } while (curWithin != curKey->withins);
-	}
-	free(node);
-	break;
-    }
-}
-
-
-/*
- * Clean all the nodes
- */
-static void
-gfCleanNode(tParmNode *node)
-{
-    if (node == NULL) {
-	return;
-    }
-    while (node->kids != NULL) {
-	/* deep first */
-	gfCleanNode(node->kids);
-    }
-    /* no more kids remove the node */
-    gfRemoveNode(node);
-}
-
-
-/** Remove all the section elements of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	0 Ok
-		<br>-1 Error
- */
-int
-GfParmListClean(void *handle, char *path)
-{
-    tParmNode	*curNode;
-    tParmNode	*curKid;
-    int		restartLoop;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if (curNode == NULL) {
-	return -1;
-    }
-    /* removes only the sections */
-    curKid = curNode->kids;
-    do {
-	restartLoop = 0;
-	curKid = curKid->next;
-	if (curKid->type == PARM_NODE_SECT) {
-	    gfCleanNode(curKid);
-	    /* back to the beginning */
-	    if (curNode->kids) {
-		curKid = curNode->kids;
-		restartLoop = 1;
-	    } else {
-		curKid = NULL;
-	    }
-	}
-    } while (curKid && (restartLoop || (curKid != curNode->kids)));
-    
-    ((tParmSect*)curNode)->current = NULL;
-    if (curNode->kids == NULL) {
-	/* don't keep empty nodes */
-	gfCleanNode(curNode);
-    }
-
-    return 0;
-}
-
-/** Go to the next section element in the current list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	0 Ok
-    		<br>1 End of list reached
-    		<br>-1 Failed
-    @see	GfParmListSeekFirst	
-    @see	GfParmListGetCurEltName
- */
-int
-GfParmListSeekNext(void *handle, char *path)
-{
-    tParmNode	*curNode;
-    tParmNode	*curElt;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (curNode->kids == NULL)) {
-	return -1;
-    }
-    
-    curElt = ((tParmSect*)curNode)->current->next;
-    while (curElt != curNode->kids) {
-	if (curElt->type == PARM_NODE_SECT) {
-	    ((tParmSect*)curNode)->current = curElt;
-	    return 0;
-	}
-	curElt = curElt->next;
-    }
-    return 1;
-}
-
-/** Get The current element name.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	Name of the current element in the list
-		<br>NULL if failed
-    @see	GfParmListSeekFirst	
-    @see	GfParmListSeekNext
- */
-char *
-GfParmListGetCurEltName(void *handle, char *path)
-{
-    tParmNode	*curNode;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (((tParmSect*)curNode)->current == NULL)) {
-	return NULL;
-    }
-    
-    return strdup(((tParmSect*)curNode)->current->name);
-}
-
-static tParmKey *
-GetKey(void *handle, char *path, char *key)
-{
-    char	Buf[BUFMAX];
-    tParmNode	*curNode;
-
-    sprintf(Buf, "%s/%s", path, key);
-    curNode = gfParmGetNode((tParm *)handle, Buf);
-    return (tParmKey*)curNode;
-}
-
-
-/*
- * Create the path under the node
- */
-static tParmNode *
-gfCreatePath(tParmNode *curNode, char *path)
-{
-    char	*s1, *s2;
-    char	*wpath;
-    int		found;
-    tParmSect	*cursect;
-    tParmNode	*kidNode;
-    
-    if ((path == NULL) || (strlen(path) == 0)) {
-	return curNode;
-    }
-
-    wpath = strdup(path);
-    s1 = wpath;
-    while (*s1 == '/' && *s1 != 0) {
-	s1++;
-    }
-    if (*s1 != 0) {
-	do {
-	    s2 = strchr(s1, '/');
-	    if (s2 != NULL) {
-		*s2 = 0;
-	    }
-	    kidNode = curNode->kids;
-	    if (kidNode == NULL) { /* not found */
-		if (s2 != NULL) {
-		    *s2 = '/'; /* back to the full remaining path */
-		}
-		break;
-	    }
-	    found = 0;
-	    do {
-		if (strcmp(s1, kidNode->name)) {
-		    kidNode = kidNode->next;
-		} else {
-		    found = 1;
-		    break;
-		}
-	    } while (kidNode != curNode->kids);
-	    if (!found) { /* not found */
-		if (s2 != NULL) {
-		    *s2 = '/'; /* back to the full remaining path */
-		}
-		break;
-	    }
-	    curNode = kidNode;
-	    if (s2 != NULL) {
-		/* search for the next level */
-		s1 = s2 + 1;
-		while (*s1 == '/' && *s1 != 0) {
-		    s1++;
-		}
-		if (*s1 == 0) {
-		    s2 = s1 = NULL;
-		}
-	    } else {
-		s1 = NULL;
-	    }
-	} while (s2 != NULL);
-    }
-    
-    if (s1 != NULL) {
-	/* path not complete create */
-	while (*s1 == '/' && *s1 != 0) {
-	    s1++;
-	}
-	if (*s1 != 0) {
-	    do {
-		s2 = strchr(s1, '/');
-		if (s2 != NULL) {
-		    *s2 = 0;
-		}
-
-		cursect = (tParmSect*)calloc(1, sizeof(tParmSect));
-		cursect->n.type = PARM_NODE_SECT;
-		gfParmAddKid(curNode, (tParmNode*)cursect);
-		curNode = (tParmNode*)cursect;
-		curNode->name = strdup(s1);
-
-		if (s2 != NULL) {
-		    /* search for the next level */
-		    s1 = s2 + 1;
-		    while (*s1 == '/' && *s1 != 0) {
-			s1++;
-		    }
-		    if (*s1 == 0) {
-			s2 = s1 = NULL;
-		    }
-		}
-	    } while (s2 != NULL);
-	}
-    }
-    free(wpath);
-    return curNode;
-}
-
-static tParmNode *
-gfParmGetCurPath(void *handle, char *path)
-{
-    tParmNode	*curNode;
-
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (curNode->kids == NULL)) {
-	return NULL;
-    }
-    
-    return ((tParmSect*)curNode)->current;
-
-}
-
-static tParmKey *
-gfGetCurKey(void *handle, char *path, char *key)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    
-    curNode = gfParmGetNode((tParm *)handle, path);
-    if ((curNode == NULL) || (curNode->kids == NULL)) {
-	return NULL;
-    }
-    curNode = ((tParmSect*)curNode)->current;
-    if (curNode == NULL) {
-	return NULL;
-    }
-    kidNode = curNode->kids;
-    if (kidNode == NULL) { /* not found */
-	return NULL;
-    }
-    do {
-	if (strcmp(key, kidNode->name)) {
-	    kidNode = kidNode->next;
-	} else {
-	    return (tParmKey *)kidNode;
-	}
-    } while (kidNode != curNode->kids);
 
     return NULL;
 }
 
-
-/** Get a string parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	deflt	default string	
-    @return	parameter value
-    @warning	the return value is allocated by the function the caller must free it.
+/** Read a configuration file.
+    @note	Called by #gfInitThread
+    @ingroup	conf
+    @param	logHandle	log handle
+    @param	file		name of the file to read or content if input is a buffer.
+    @param	mode		openning mode is a mask of:
+    				#GF_PARM_RMODE_STD
+    				#GF_PARM_RMODE_REREAD
+    				#GF_PARM_RMODE_CREAT
+    				#GF_PARM_RMODE_PRIVATE
+    @return	handle on the configuration data
+    <br>0 if Error
 */
-char *
-GfParmGetStr(void *handle, char *path, char *key, char *deflt)
+void *
+GfParmReadFile (const char *file, int mode)
 {
-    char	Buf[BUFMAX];
-    tParmKey	*curKey;
-    tParmNode	*curNode;
+    FILE		*in = NULL;
+    struct parmHeader	*conf;
+    struct parmHandle	*parmHandle = NULL;
+    char		buf[LINE_SZ];
+    int			len;
+    int			done;
 
-    sprintf(Buf, "%s/%s", path, key);
-    curNode = gfParmGetNode((tParm *)handle, Buf);
-    curKey = (tParmKey*)curNode;
-    
-    if ((curNode == NULL)  || (curNode->type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	return deflt;
-    }	
+    /* search for an already openned header & clean the conf if necessary */
+    conf = getSharedHeader (file, mode);
 
-    /* key found, return value */
-    return curKey->valstr;
-}
-
-
-/** Get a string parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	deflt	default string	
-    @return	parameter value
-    @warning	the return value is allocated by the function the caller must free it.
-    @see	GfParmListSeekNext
-*/
-char *
-GfParmGetCurStr(void *handle, char *path, char *key, char *deflt)
-{
-    tParmKey	*curKey;
-
-    curKey = gfGetCurKey(handle, path, key);
-
-    if ((curKey == NULL)  || (curKey->n.type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	return deflt;
-    }	
-
-    /* key found, return value */
-    return curKey->valstr;
-}
-
-
-/** Get a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	deflt	default string	
-    @return	parameter value
- */
-tdble
-GfParmGetNum(void *handle, char *path, char *key, char *unit, tdble deflt)
-{
-    char	Buf[BUFMAX];
-    tParmKey	*curKey;
-    tParmNode	*curNode;
-
-    sprintf(Buf, "%s/%s", path, key);
-    curNode = gfParmGetNode((tParm *)handle, Buf);
-    curKey = (tParmKey*)curNode;
-    
-    if ((curNode == NULL)  || (curNode->type != PARM_NODE_KEY) ||  (curKey->type != P_NUM)) {
-	return deflt;
-    }	
-
-    /* key found, return value */
-    return GfParmSI2Unit(unit, curKey->valnum);
-}
-
-/** Get a numerical parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	deflt	default string	
-    @return	parameter value
- */
-tdble
-GfParmGetCurNum(void *handle, char *path, char *key, char *unit, tdble deflt)
-{
-    tParmKey	*curKey;
-
-    curKey = gfGetCurKey(handle, path, key);
-
-    if ((curKey == NULL)  || (curKey->n.type != PARM_NODE_KEY) ||  (curKey->type != P_NUM)) {
-	return deflt;
-    }	
-
-    /* key found, return value */
-    return GfParmSI2Unit(unit, curKey->valnum);
-}
-
-
-/** Set a string parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	val	value	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary	
- */
-int
-GfParmSetStr(void *handle, char *path, char *key, char *val)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    tParm	*curParm;
-    tParmKey	*curkey;
-    int		found;
-    
-    curParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return -1;
-    }
-
-#ifdef DEBUG
-    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
-	/* return -1; */
-    }
-#endif
-
-    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
-	return -1;
-    }
-    curNode = curParm->n.kids;
-    curNode = gfCreatePath(curNode, path);
-    kidNode = curNode->kids;
-    found = 0;
-    if (kidNode != NULL) {
-	do {
-	    if (strcmp(key, kidNode->name)) {
-		kidNode = kidNode->next;
-	    } else {
-		curNode = kidNode;
-		found = 1;
-		break;
-	    }
-	} while (kidNode != curNode->kids);
-    }
-    if (!found) {
-	/* Create Key */
-	curkey = (tParmKey*)calloc(1, sizeof(tParmKey));
-	curkey->n.name = strdup(key);
-	curkey->n.type = PARM_NODE_KEY;
-	curkey->type = P_STR;
-	gfParmAddKid(curNode, (tParmNode*)curkey);
-	if (val) curkey->valstr = strdup(val);
-    } else {
-	curkey = (tParmKey*)curNode;
-	if (curkey->valstr) free(curkey->valstr);
-	if (val) curkey->valstr = strdup(val);
-    }
-    return 0;
-}
-
-/** Set a string parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	val	value	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary	
- */
-int
-GfParmSetCurStr(void *handle, char *path, char *key, char *val)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    tParm	*curParm;
-    tParmKey	*curkey;
-    int		found;
-    
-    curParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return -1;
-    }
-
-#ifdef DEBUG
-    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
-	/* return -1; */
-    }
-#endif
-
-    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
-	return -1;
-    }
-    curNode = gfParmGetCurPath(handle, path);
-    if (curNode == NULL) {
-	return -1;
-    }
-    kidNode = curNode->kids;
-    found = 0;
-    if (kidNode != NULL) {
-	do {
-	    if (strcmp(key, kidNode->name)) {
-		kidNode = kidNode->next;
-	    } else {
-		curNode = kidNode;
-		found = 1;
-		break;
-	    }
-	} while (kidNode != curNode->kids);
-    }
-    if (!found) {
-	/* Create Key */
-	curkey = (tParmKey*)calloc(1, sizeof(tParmKey));
-	curkey->n.name = strdup(key);
-	curkey->n.type = PARM_NODE_KEY;
-	curkey->type = P_STR;
-	gfParmAddKid(curNode, (tParmNode*)curkey);
-	if (val) curkey->valstr = strdup(val);
-    } else {
-	curkey = (tParmKey*)curNode;
-	if (curkey->valstr) free(curkey->valstr);
-	if (val) curkey->valstr = strdup(val);
-    }
-    return 0;
-}
-
-
-/** Set a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
- */
-int
-GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    tParm	*curParm;
-    tParmKey	*curKey;
-    int		found;
-    
-    curParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return -1;
-    }
-
-#ifdef DEBUG
-    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	//GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
-	/* return -1; */
-    }
-#endif
-
-    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
-	return -1;
-    }
-    curNode = curParm->n.kids;
-    curNode = gfCreatePath(curNode, path);
-    kidNode = curNode->kids;
-    found = 0;
-    if (kidNode != NULL) {
-	do {
-	    if (strcmp(key, kidNode->name)) {
-		kidNode = kidNode->next;
-	    } else {
-		curNode = kidNode;
-		found = 1;
-		break;
-	    }
-	} while (kidNode != curNode->kids);
-    }
-    if (!found) {
-	/* Create Key */
-	curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
-	curKey->n.name = strdup(key);
-	curKey->n.type = PARM_NODE_KEY;
-	gfParmAddKid(curNode, (tParmNode*)curKey);	
-	curKey->type = P_NUM;
-    } else {
-	/* key found, modify it */
-	curKey = (tParmKey*)curNode;
-    }
-    if (unit) {
-	if (curKey->unit) free (curKey->unit);
-	curKey->unit = strdup(unit);
-    }
-    val = GfParmUnit2SI(unit, val);
-    curKey->valnum = val;
-    curKey->min = val;
-    curKey->max = val;
-    return 0;
-}
-
-/** Set a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
- */
-int
-GfParmSetNumEx(void *handle, char *path, char *key, char *unit, tdble val, tdble min, tdble max)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    tParm	*curParm;
-    tParmKey	*curKey;
-    int		found;
-    
-    curParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return -1;
-    }
-
-#ifdef DEBUG
-    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
-	/* return -1; */
-    }
-#endif
-
-    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
-	return -1;
-    }
-    curNode = curParm->n.kids;
-    curNode = gfCreatePath(curNode, path);
-    kidNode = curNode->kids;
-    found = 0;
-    if (kidNode != NULL) {
-	do {
-	    if (strcmp(key, kidNode->name)) {
-		kidNode = kidNode->next;
-	    } else {
-		curNode = kidNode;
-		found = 1;
-		break;
-	    }
-	} while (kidNode != curNode->kids);
-    }
-    if (!found) {
-	/* Create Key */
-	curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
-	curKey->n.name = strdup(key);
-	curKey->n.type = PARM_NODE_KEY;
-	gfParmAddKid(curNode, (tParmNode*)curKey);	
-	curKey->type = P_NUM;
-    } else {
-	/* key found, modify it */
-	curKey = (tParmKey*)curNode;
-    }
-    if (unit) {
-	curKey->unit = strdup(unit);
-    }
-    curKey->valnum = GfParmUnit2SI(unit, val);
-    curKey->min = GfParmUnit2SI(unit, min);
-    curKey->max = GfParmUnit2SI(unit, max);
-    return 0;
-}
-
-/** Set a numerical parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
- */
-int
-GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
-{
-    tParmNode	*curNode;
-    tParmNode	*kidNode;
-    tParm	*curParm;
-    tParmKey	*curKey;
-    int		found;
-    
-    curParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return -1;
-    }
-
-#ifdef DEBUG
-    if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
-	/* return -1; */
-    }
-#endif
-
-    if ((path == NULL) || (strlen(path) == 0) || (key == NULL) || (strlen(key) == 0)) {
-	return -1;
-    }
-    curNode = gfParmGetCurPath(handle, path);
-    if (curNode == NULL) {
-	return -1;
-    }
-    kidNode = curNode->kids;
-    found = 0;
-    if (kidNode != NULL) {
-	do {
-	    if (strcmp(key, kidNode->name)) {
-		kidNode = kidNode->next;
-	    } else {
-		curNode = kidNode;
-		found = 1;
-		break;
-	    }
-	} while (kidNode != curNode->kids);
-    }
-    if (!found) {
-	/* Create Key */
-	curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
-	curKey->n.name = strdup(key);
-	curKey->n.type = PARM_NODE_KEY;
-	gfParmAddKid(curNode, (tParmNode*)curKey);	
-	curKey->type = P_NUM;
-    } else {
-	/* key found, modify it */
-	curKey = (tParmKey*)curNode;
-    }
-    if (unit) {
-	curKey->unit = strdup(unit);
-    }
-    val = GfParmUnit2SI(unit, val);
-    curKey->valnum = GfParmUnit2SI(unit, val);
-    curKey->min = val;
-    curKey->max = val;
-    return 0;
-}
-
-/** Free all Parameters for a handle.
-    @ingroup	paramsfile
-    @param	handle	handle of parameters
-    @return	<tt>0 ... </tt>Ok
-		<br><tt>-1 .. </tt>Error
-    @warning	The handle is kept existing, a WriteParmFile will clean the file.
-    @see	GfParmWriteFile
- */
-int
-GfParmClean(void *handle)
-{
-    tParm	*curParm;
-    tParmNode	*node;
-    
-    if (handle == NULL) {
-	return 0;
-    }
-    curParm = (tParm*)handle;
-    if (curParm->file) free(curParm->file);
-    curParm->file = NULL;
-    node = curParm->n.kids;
-    while (node->kids != NULL) {
-	/* deep first */
-	gfCleanNode(node->kids);
-    }
-
-    return 0;
-    
-}
-
-
-/** Release the parameters handle without removing data from the file.
-    @ingroup	paramsfile
-    @param	handle handle on the parameters
-    @return	0 Ok
-		<br>-1 Error
-    @warning	The handle must not be used anymore.
-    @see	GfParmClean
- */
-int
-GfParmReleaseHandle(void *handle)
-{
-    tParm	*rmParm = (tParm*)handle;
-
-    if (handle == NULL) {
-	return 0;
-    }
-    
-    rmParm->refcount--;
-
-    if (rmParm->refcount > 0) {
-	return 0;
-    }
-    
-    GfParmClean(handle);
-    
-    /* Remove the handle in the list */
-    if (TheParms != NULL) {
-	if (rmParm->n.next == (tParmNode*)rmParm) {
-	    /* only one element */
-	    TheParms = NULL;
-	} else if (TheParms == rmParm) {
-	    TheParms = (tParm*)rmParm->n.next;
+    /* Conf Header creation */
+    if (conf == NULL) {
+	conf = createParmHeader (file);
+	if (!conf) {
+	    GfError ("gfParmReadFile: conf header creation failed\n");
+	    goto bailout;
 	}
-	//gfRemoveNode(rmParm->n.kids);
-	gfRemoveNode((tParmNode*)rmParm);
+	mode |= GFPARM_RMODE_REREAD;
     }
+
+    /* Handle creation */
+    parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
+    if (!parmHandle) {
+	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	goto bailout;
+    }
+
+    parmHandle->magic = PARM_MAGIC;
+    parmHandle->conf = conf;
+    parmHandle->val = NULL;
+    if (mode & GFPARM_RMODE_PRIVATE) {
+	parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
+    }
+
+    /* File openning */
+    if (mode & GFPARM_RMODE_REREAD) {
+	in = fopen (file, "r");
+	if (!in && ((mode & GFPARM_RMODE_CREAT) == 0)) {
+	    GfOut ("gfParmReadFile: fopen \"%s\" failed\n", file);
+	    goto bailout;
+	}
+
+	if (in) {
+	    /* Parsers Initialization */
+	    if (parserXmlInit (parmHandle)) {
+		GfError ("gfParmReadBuf: parserInit failed for file \"%s\"\n", file);
+		goto bailout;
+	    }
+	    /* Parameters reading */
+	    do {
+		len = fread (buf, 1, sizeof(buf), in);
+		done = len < (int)sizeof(buf);
+		if (parseXml (parmHandle, buf, len, done)) {
+		    GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
+		    goto bailout;
+		}
+		if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
+		    /* parse error occured, ignore */
+		    GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
+		    goto bailout;
+		}
+	    } while (!done);
+      
+	    fclose (in);
+	    in = NULL;
+	}
+    }
+
+    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
+
+    GfOut ("GfParmReadFile: Openning \"%s\" (%p)\n", file, parmHandle);
+
+    return parmHandle;
+
+ bailout:
+    if (in) {
+	fclose (in);
+    }
+    freez (parmHandle);
+    if (conf) {
+	parmReleaseHeader (conf);
+    }
+
+    return NULL;
+}
+
+/**
+ *	@image html output-state.png
+ */
+static int
+xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
+{
+    struct parmOutput	*outCtrl = &(parmHandle->outCtrl);
+    struct section	*curSection;
+    struct param	*curParam;
+    struct within	*curWithin;
+    char		*s;
+
+    while (1) {
+	switch (outCtrl->state) {
+	case 0:
+	    snprintf (buffer, size, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+	    outCtrl->indent = (char *) malloc (LINE_SZ);
+	    if (!outCtrl->indent) {
+		GfError ("xmlGetOuputLine: malloc (%d) failed\n", LINE_SZ);
+		return 0;
+	    }
+	    outCtrl->state = 1;
+	    return 1;
+
+	case 1:
+	    snprintf (buffer, size, "<!DOCTYPE params SYSTEM \"params.dtd\">\n");
+	    *outCtrl->indent = 0;
+	    outCtrl->state = 2;
+	    return 1;
+
+	case 2:			/* Start Params */
+	    outCtrl->curSection = parmHandle->conf->rootSection;
+	    snprintf (buffer, size, "\n<params name=\"%s\">\n", parmHandle->conf->name);
+	    curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
+	    if (curSection) {
+		outCtrl->curSection = curSection;
+		sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
+		outCtrl->state = 4;
+	    } else {     
+		outCtrl->state = 3;
+	    }
+	    return 1;
+
+	case 3:			/* End Params */
+	    snprintf (buffer, size, "</params>\n");
+	    free (outCtrl->indent);
+	    outCtrl->state = 9;
+	    return 1;
+
+	case 4:			/* Parse section attributes list */
+	    outCtrl->curParam = GF_TAILQ_FIRST (&(outCtrl->curSection->paramList));
+	    s = strrchr (outCtrl->curSection->fullName, '/');
+	    if (!s) {
+		s = outCtrl->curSection->fullName;
+	    } else {
+		s++;
+	    }
+	    snprintf (buffer, size, "%s<section name=\"%s\">\n", outCtrl->indent, s);
+	    sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
+	    outCtrl->state = 5;
+	    return 1;
+
+	case 5:			/* Parse one attribute */
+	    if (!outCtrl->curParam) {
+		outCtrl->state = 6;
+		break;
+	    }
+	    curParam = outCtrl->curParam;
+	    if (curParam->type == P_STR) {
+		s = buffer;
+		s += snprintf (s, size, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
+		curWithin = GF_TAILQ_FIRST (&(curParam->withinList));
+		if (curWithin) {
+		    s += snprintf (s, size + (buffer - s), " in=\"%s", curWithin->val);
+		    while ((curWithin = GF_TAILQ_NEXT (curWithin, linkWithin)) != NULL) {
+			s += snprintf (s, size, ",%s", curWithin->val);
+		    }
+		    s += snprintf (s, size + (buffer - s), "\"");
+		}
+		snprintf (s, size + (buffer - s), " val=\"%s\"/>\n", curParam->value);
+		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+		return 1;
+
+	    } else {
+
+		s = buffer;
+		s += snprintf (s, size, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
+		if (curParam->unit) {
+		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+			s += snprintf (s, size + (buffer - s), " min=\"%g\" max=\"%g\"", 
+				       GfParmSI2Unit (curParam->unit, curParam->min),
+				       GfParmSI2Unit (curParam->unit, curParam->max));
+		    }
+		    s += snprintf (s, size + (buffer - s), " unit=\"%s\" val=\"%g\"/>\n",
+				   curParam->unit, GfParmSI2Unit (curParam->unit, curParam->valnum));
+		} else {
+		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+			s += snprintf (s, size + (buffer - s), " min=\"%g\" max=\"%g\"", 
+				       curParam->min, curParam->max);
+		    }
+		    s += snprintf (s, size + (buffer - s), " val=\"%g\"/>\n", curParam->valnum);
+		}
+
+		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+		return 1;
+	    }
+
+	case 6:			/* Parse sub-section list */
+	    curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
+	    if (curSection) {
+		outCtrl->curSection = curSection;
+		outCtrl->state = 4;
+		break;
+	    }
+	    outCtrl->state = 7;
+	    break;
+
+	case 7:			/* End Section */
+	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
+	    snprintf (buffer, size, "%s</section>\n", outCtrl->indent);
+	    outCtrl->state = 8;
+	    return 1;
+
+	case 8:			/* Parse next section at the same level */
+	    curSection = GF_TAILQ_NEXT (outCtrl->curSection, linkSection);
+	    if (curSection) {
+		outCtrl->curSection = curSection;
+		outCtrl->state = 4;
+		break;
+	    }
+	    curSection = outCtrl->curSection->parent;
+	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
+	    if (curSection->parent) {
+		outCtrl->curSection = curSection;
+		snprintf (buffer, size, "%s</section>\n", outCtrl->indent);
+		return 1;
+	    }
+	    outCtrl->state = 3;
+	    break;
+	case 9:
+	    return 0;
+	}
+    }
+}
+
+/** Write a configuration buffer.
+    @ingroup	conf
+    @param	logHandle	log handle
+    @param	parmHandle	Configuration handle
+    @param	buf		buffer to write the configuration
+    @param	size		buffer size
+    @return	0 if OK
+    		<br>1 if Error
+*/
+int
+GfParmWriteBuf (void *handle, char *buf, int size)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf;
+    char		line[LINE_SZ];
+    int			len;
+    int			curSize;
+    char		*s;
+
+    conf = parmHandle->conf;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmWriteBuf: bad handle (%p)\n", parmHandle);
+	return 1;
+    }
+
+    parmHandle->outCtrl.state = 0;
+    parmHandle->outCtrl.curSection = NULL;
+    parmHandle->outCtrl.curParam = NULL;
+    curSize = size;
+    s = buf;
+
+    while (curSize && xmlGetOuputLine (parmHandle, line, sizeof (line))) {
+	len = strlen (line);
+	if (len > curSize) {
+	    len = curSize;
+	}
+	memcpy (s, line, len);
+	s += len;
+	curSize -= len;
+    }
+    buf [size - 1] = 0;
+    
     return 0;
+}
+
+
+/** Write a configuration file.
+    @ingroup	conf
+    @param	parmHandle	Configuration handle
+    @param	file		Name of the file to write (NULL if previously read file)
+    @param	name	Name of the parameters
+    @return	0 if OK
+    <br>1 if Error
+*/
+int
+GfParmWriteFile (const char *file, void *parmHandle, char *name)
+{
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+    struct parmHeader	*conf = handle->conf;
+    char		line[LINE_SZ];
+    FILE		*fout;
+
+    conf = handle->conf;
+
+    if (handle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmWriteFile: bad handle (%p)\n", parmHandle);
+	return 1;
+    }
+
+    if (!file) {
+	file = conf->filename;
+	if (!file) {
+	    GfError ("gfParmWriteFile: bad file name\n");
+	    return 1;
+	}
+    }
+    fout = fopen (file, "wb");
+    if (!fout) {
+	GfError ("gfParmSetStr: fopen (%s, \"wb\") failed\n", file);
+	return 1;
+    }
+
+    if (name) {
+	FREEZ (conf->name);
+	conf->name = strdup (name);
+    }
+
+    handle->outCtrl.state = 0;
+    handle->outCtrl.curSection = NULL;
+    handle->outCtrl.curParam = NULL;
+
+    while (xmlGetOuputLine (handle, line, sizeof (line))) {
+	fputs (line, fout);
+    }    
+
+    fclose (fout);
+  
+    return 0;
+}
+
+/** Remove a parameter.
+    @ingroup	conf
+    @param	parmHandle	Configuration handle
+    @param	sectionName	Parameter section name
+    @param	paramName	Parameter name
+    @return	none
+*/
+void
+GfParmRemove (void *parmHandle, char *sectionName, char *paramName)
+{
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+    struct parmHeader	*conf;
+
+    conf = handle->conf;
+
+    if (handle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmRemove: bad handle (%p)\n", parmHandle);
+	return;
+    }
+  
+    removeParamByName (conf, sectionName, paramName);
 }
 
 static void
-evalUnit(char *unit, tdble *dest, int flg)
+parmClean (struct parmHeader *conf)
+{
+    struct section	*section;
+
+    while ((section = GF_TAILQ_FIRST (&(conf->rootSection->subSectionList))) !=
+	   GF_TAILQ_END (&(conf->rootSection->subSectionList))) {
+	removeSection (conf, section);
+    }
+}
+
+
+/** Clean all the parameters of a set.
+    @ingroup	conf
+    @param	parmHandle	Configuration handle
+    @return	0 if OK
+    		<br>-1 if Error
+*/
+void
+GfParmClean (void *parmHandle)
+{
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+    struct parmHeader	*conf;
+
+    conf = handle->conf;
+
+    if (handle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmClean: bad handle (%p)\n", parmHandle);
+	return;
+    }
+
+    parmClean (conf);
+}
+
+static void
+parmReleaseHeader (struct parmHeader *conf)
+{
+    conf->refcount--;
+    if (conf->refcount > 0) {
+	return;
+    }
+
+    GfOut ("parmReleaseHeader: refcount null free \"%s\"\n", conf->filename);
+
+    parmClean (conf);
+
+    freez (conf->filename);
+    if (conf->paramHash) {
+	GfHashRelease (conf->paramHash, NULL);
+    }
+    if (conf->sectionHash) {
+	GfHashRelease (conf->sectionHash, NULL);
+    }
+    freez (conf->rootSection);
+    freez (conf);
+}
+
+static void
+parmReleaseHandle (struct parmHandle *parmHandle)
+{
+    struct parmHeader	*conf = parmHandle->conf;
+
+    GfOut ("parmReleaseHandle: release \"%s\" (%p)\n", conf->filename, parmHandle);
+    
+    GF_TAILQ_REMOVE (&parmHandleList, parmHandle, linkHandle);
+    parmHandle->magic = 0;
+    freez (parmHandle->val);
+    freez (parmHandle);
+
+    parmReleaseHeader (conf);
+  
+}
+
+
+/** Clean the parms and release the handle without updating the file
+    @note	Called by #gfShutdownThread
+    @ingroup	conf
+    @param	logHandle	log handle
+    @param	parmHandle	Configuration handle
+    @return	none
+*/
+void
+GfParmReleaseHandle (void *parmHandle)
+{
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+
+    if (handle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmReleaseHandle: bad handle (%p)\n", parmHandle);
+	return;
+    }
+
+    parmReleaseHandle (handle);
+}
+
+
+static void
+evalUnit (char *unit, tdble *dest, int flg)
 {
     tdble coeff = 1.0;
     
@@ -1738,7 +1484,7 @@ evalUnit(char *unit, tdble *dest, int flg)
     @see	GfParmSI2Unit
  */
 tdble
-GfParmUnit2SI(char *unit, tdble val)
+GfParmUnit2SI (char *unit, tdble val)
 {
     char buf[256];
     int  idx;
@@ -1791,7 +1537,7 @@ GfParmUnit2SI(char *unit, tdble val)
     @see	GfParmUnit2SI
  */
 tdble
-GfParmSI2Unit(char *unit, tdble val)
+GfParmSI2Unit (char *unit, tdble val)
 {
     char buf[256];
     int  idx;
@@ -1837,72 +1583,580 @@ GfParmSI2Unit(char *unit, tdble val)
 }
 
 
-/*
- * Function
- *	CheckParm
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	0  - ok
- *	-1 - nok
- */
-static int
-CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
+
+/** Get the pararmeters name
+    @ingroup	paramsdata
+    @param	handle	Handle on the parameters
+    @return	Name
+*/
+char *
+GfParmGetName (void *handle)
 {
-    char	Buf[BUFMAX];
-    tParmKey	*curKey;
-    tParmNode	*curNode;
-    tParmWithin	*curWithin;
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
 
-    sprintf(Buf, "%s/%s", path, key);
-    curNode = gfParmGetNode((tParm *)handle, Buf);
-    curKey = (tParmKey*)curNode;
-    
-    if ((curNode == NULL)  || (curNode->type != PARM_NODE_KEY)) {
-	return 0;
-    }	
-
-    if (curKey->type == P_NUM) {
-	if (testKey->valnum > curKey->max) { 
-	    GfTrace("bad path: %s  key: %s\n", path, curKey->n.name);
-	    GfTrace("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
-	    testKey->valnum = curKey->max;
-	    return 0;
-	} else if (testKey->valnum < curKey->min) {
-	    GfTrace("bad path: %s  key: %s\n", path, curKey->n.name);
-	    GfTrace("min: %f  max: %f  value: %f\n", curKey->min, curKey->max, testKey->valnum);
-	    testKey->valnum = curKey->min;
-	    return 0;
-	} else {
-	    return 0;
-	}
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetName: bad handle (%p)\n", parmHandle);
+	return NULL;
     }
+
+    return conf->name;
+}
+
+
+/** Get the pararmeters file name
+    @ingroup	paramsfile
+    @param	handle	Handle on the parameters
+    @return	File Name
+*/
+char *
+GfParmGetFileName (void *handle)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetFileName: bad handle (%p)\n", parmHandle);
+	return NULL;
+    }
+
+    return conf->filename;
+}
+
+
+/** Count the number of section elements of a list.
+    @ingroup	paramslist
+    @param	handle	handle of parameters
+    @param	path	path of list
+    @return	element count
+ */
+int
+GfParmGetEltNb (void *handle, char *path)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    int			count;
     
-    /* not a numerical value */
-    if (curKey->withins != NULL) {
-	curWithin = curKey->withins;
-	do {
-	    curWithin = curWithin->next;
-	    if (strcmp(testKey->valstr, curWithin->val) == 0) {
-		return 0;
-	    }
-	} while (curWithin != curKey->withins);
-	GfTrace("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetEltNb: bad handle (%p)\n", parmHandle);
+	return 0;
+    }
+
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if (!section) {
+	return 0;
+    }
+
+    count = 0;
+    section = GF_TAILQ_FIRST (&(section->subSectionList));
+    while (section) {
+	count++;
+	section = GF_TAILQ_NEXT (section, linkSection);
+    }
+
+    return count;
+}
+
+
+
+/** Seek the first section element of a list.
+    @ingroup	paramslist
+    @param	handle	handle of parameters
+    @param	path	list path
+    @return	0 Ok
+    		<br>-1 Failed
+    @see	GfParmListSeekNext
+    @see	GfParmListGetCurEltName
+ */
+int
+GfParmListSeekFirst (void *handle, char *path)
+{
+
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmListSeekFirst: bad handle (%p)\n", parmHandle);
 	return -1;
     }
-   
-    /* no min/max/unit nor list provided, just check the value string */
-    if (strcmp(curKey->valstr, testKey->valstr) == 0) {
+
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if (!section) {
+	return -1;
+    }
+
+    section->curSubSection = GF_TAILQ_FIRST (&(section->subSectionList));
+    return 0;
+}
+
+/** Go to the next section element in the current list.
+    @ingroup	paramslist
+    @param	handle	handle of parameters
+    @param	path	path of list
+    @return	0 Ok
+    		<br>1 End of list reached
+    		<br>-1 Failed
+    @see	GfParmListSeekFirst	
+    @see	GfParmListGetCurEltName
+ */
+int
+GfParmListSeekNext (void *handle, char *path)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmListSeekNext: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return -1;
+    }
+
+    section->curSubSection = GF_TAILQ_NEXT (section->curSubSection, linkSection);
+    
+    if (section->curSubSection) {
 	return 0;
     }
-    GfTrace("bad key: %s/%s = %s\n", path, curKey->n.name, testKey->valstr);
-    return -1;
+    return 1;			/* EOL reached */
 }
+
+
+/** Remove all the section elements of a list.
+    @ingroup	paramslist
+    @param	handle	handle of parameters
+    @param	path	path of list
+    @return	0 Ok
+		<br>-1 Error
+ */
+int
+GfParmListClean (void *handle, char *path)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*listSection;
+    struct section	*section;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmListSeekNext: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+    listSection = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if (!listSection) {
+	GfOut ("GfParmListClean: \"%s\" not found\n", path);
+	return -1;
+    }
+    while ((section = GF_TAILQ_FIRST (&(listSection->subSectionList))) != NULL) {
+	removeSection (conf, section);
+    }
+    return 0;
+}
+
+
+/** Get The current element name.
+    @ingroup	paramslist
+    @param	handle	handle of parameters
+    @param	path	path of list
+    @return	Name of the current element in the list
+		<br>NULL if failed
+    @see	GfParmListSeekFirst	
+    @see	GfParmListSeekNext
+    @note	String MUST be released by called.
+ */
+char *
+GfParmListGetCurEltName (void *handle, char *path)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    char		*s;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmListGetCurEltName: bad handle (%p)\n", parmHandle);
+	return NULL;
+    }
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return NULL;
+    }
+    s = strrchr (section->curSubSection->fullName, '/');
+    if (s) {
+	s++;
+	return strdup (s);
+    }
+	
+    return strdup (section->curSubSection->fullName);
+}
+
+
+/** Get string parameter value.
+    @ingroup	paramsdata
+    @param	parmHandle	Configuration handle
+    @param	path		Parameter section name
+    @param	key		Parameter name
+    @param	deflt		Default value if parameter not existing
+    @return	Parameter value
+    <br>deflt if Error or not found
+    @note	The pointer returned is for immediate use, if you plan
+    		to keep the value for a long time, it is necessary to
+    		copy it elsewhere, because removing the attribute will
+    		produce incoherent pointer.
+*/
+char *
+GfParmGetStr (void *parmHandle, char *path, char *key, char *deflt)
+{
+    struct param	*param;
+    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
+    struct parmHeader	*conf;
+    char                *val;
+
+    conf = handle->conf;
+
+    if (handle->magic != PARM_MAGIC) {
+	GfFatal ("gfParmGetStr: bad handle (%p)\n", parmHandle);
+	return deflt;
+    }
+
+    param = getParamByName (conf, path, key, 0);
+    if (!param || !(param->value) || !strlen (param->value) || (param->type != P_STR)) {
+	return deflt;
+    }
+
+    val = param->value;
+
+    return val;
+}
+
+/** Get a string parameter in a config file.
+    @ingroup	paramslist
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	deflt	default string	
+    @return	parameter value
+    @warning	the return value is allocated by the function the caller must free it.
+    @see	GfParmListSeekNext
+*/
+char *
+GfParmGetCurStr (void *handle, char *path, char *key, char *deflt)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetCurStr: bad handle (%p)\n", parmHandle);
+	return deflt;
+    }
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return deflt;
+    }
+
+    param = getParamByName (conf, section->curSubSection->fullName, key, 0);
+    if (!param || !(param->value) || !strlen (param->value) || (param->type != P_STR)) {
+	return deflt;
+    }
+
+    return param->value;
+}
+
+/** Get a numerical parameter in a config file.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	deflt	default string	
+    @return	parameter value
+ */
+tdble
+GfParmGetNum (void *handle, char *path, char *key, char *unit, tdble deflt)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetNum: bad handle (%p)\n", parmHandle);
+	return deflt;
+    }
+
+    param = getParamByName (conf, path, key, 0);
+    if (!param ||  (param->type != P_NUM)) {
+	return deflt;
+    }
+
+    if (unit) {
+	return GfParmSI2Unit(unit, param->valnum);
+    }
+    return  param->valnum;
+}
+
+
+
+/** Get a numerical parameter in a config file.
+    @ingroup	paramslist
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	deflt	default string	
+    @return	parameter value
+ */
+tdble
+GfParmGetCurNum (void *handle, char *path, char *key, char *unit, tdble deflt)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetCurNum: bad handle (%p)\n", parmHandle);
+	return deflt;
+    }
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return deflt;
+    }
+
+    param = getParamByName (conf, section->curSubSection->fullName, key, 0);
+    if (!param || (param->type != P_NUM)) {
+	return deflt;
+    }
+
+    if (unit) {
+	return GfParmSI2Unit(unit, param->valnum);
+    }
+    return  param->valnum;
+}
+
+
+/** Set a string parameter in a config file.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	val	value (NULL or empty string to remove the parameter)	
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary	
+ */
+int
+GfParmSetStr(void *handle, char *path, char *key, char *val)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmSetStr: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+
+    if (!val || !strlen (val)) {
+	/* Remove the entry */
+	removeParamByName (conf, path, key);
+	return 0;
+    }
+  
+    param = getParamByName (conf, path, key, PARAM_CREATE);
+    if (!param) {
+	return -1;
+    }
+    param->type = P_STR;
+    freez (param->value);
+    param->value = strdup (val);
+    if (!param->value) {
+	GfError ("gfParmSetStr: strdup (%s) failed\n", val);
+	removeParamByName (conf, path, key);
+	return -1;
+    }
+
+    return 0;
+}
+
+/** Set a string parameter in a config file.
+    @ingroup	paramslist
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	val	value	
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary	
+ */
+int
+GfParmSetCurStr(void *handle, char *path, char *key, char *val)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmSetCurStr: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return -1;
+    }
+
+    param = getParamByName (conf, section->curSubSection->fullName, key, PARAM_CREATE);
+    if (!param) {
+	return -1;
+    }
+    param->type = P_STR;
+    freez (param->value);
+    param->value = strdup (val);
+    if (!param->value) {
+	GfError ("gfParmSetStr: strdup (%s) failed\n", val);
+	removeParamByName (conf, path, key);
+	return -1;
+    }
+
+    return 0;
+}
+
+
+/** Set a numerical parameter in a config file.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	val	value to set	
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary
+ */
+int
+GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmSetNum: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+
+    param = getParamByName (conf, path, key, PARAM_CREATE);
+    if (!param) {
+	return -11;
+    }
+    param->type = P_NUM;
+    FREEZ (param->unit);
+    if (unit) {
+	param->unit = strdup (unit);
+    }
+
+    val = GfParmUnit2SI (unit, val);
+    param->valnum = val;
+    param->min = val;
+    param->max = val;
+
+    return 0;
+}
+
+/** Set a numerical parameter in a config file.
+    @ingroup	paramsdata
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	val	value to set
+    @param	min	min value
+    @param	max	max value
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary
+ */
+int
+GfParmSetNumEx(void *handle, char *path, char *key, char *unit, tdble val, tdble min, tdble max)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmSetNumEx: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+
+    param = getParamByName (conf, path, key, PARAM_CREATE);
+    if (!param) {
+	return -1;
+    }
+    param->type = P_NUM;
+    FREEZ (param->unit);
+    if (unit) {
+	param->unit = strdup (unit);
+    }
+
+    param->valnum = GfParmUnit2SI (unit, val);
+    param->min = GfParmUnit2SI (unit, min);
+    param->max = GfParmUnit2SI (unit, max);
+
+    return 0;
+}
+
+/** Set a numerical parameter in a config file.
+    @ingroup	paramslist
+    @param	handle	handle of parameters	
+    @param	path	path of param
+    @param	key	key name	
+    @param	unit	unit to convert the result to (NULL if SI wanted)	
+    @param	val	value to set	
+    @return	0	ok
+    		<br>-1	error
+    @warning	The key is created is necessary
+ */
+int
+GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
+{
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*section;
+    struct param	*param;
+
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmSetCurNum: bad handle (%p)\n", parmHandle);
+	return -1;
+    }
+    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+    if ((!section) || (!section->curSubSection)) {
+	return -1;
+    }
+
+    param = getParamByName (conf, section->curSubSection->fullName, key, PARAM_CREATE);
+    if (!param) {
+	return -1;
+    }
+    param->type = P_NUM;
+    FREEZ (param->unit);
+    if (unit) {
+	param->unit = strdup (unit);
+    }
+
+    val = GfParmUnit2SI (unit, val);
+    param->valnum = val;
+    param->min = val;
+    param->max = val;
+
+    return 0;
+}
+
+
 
 /** Check a parameter set against another.
     @ingroup	paramsfile
@@ -1910,307 +2164,325 @@ CheckParm(void *handle, char *path, char *key, tParmKey *testKey)
     @param	tgt	Contains the parameters to check.
     @return	0 Match
 		<br>-1 Values are out of bounds
-    @warning	<b>ref</b> must be a template file (type: GFPARM_TEMPLATE)
     @warning	Only the parameters present in tgt and in ref are tested.
     @see	GfParmMergeHandles
  */
 int
 GfParmCheckHandle(void *ref, void *tgt)
 {
-    char	Buf[BUFMAX];
-    tParm	*parm = (tParm*)tgt;
-    tParm	*parmref = (tParm*)ref;
-    tParmNode	*curNode;
-    char	*s1;
+    struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
+    struct parmHandle	*parmHandle = (struct parmHandle *)tgt;
+    struct parmHeader	*confRef = parmHandleRef->conf;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct section	*curSectionRef;
+    struct section	*nextSectionRef;
+    struct param	*curParamRef;
+    struct param	*curParam;
+    struct within	*curWithinRef;
+    int			found;
+    int			error = 0;
 
-    if ((ref == NULL) || (tgt == NULL)) {
-	GfTrace("Null parameters cannot fit\n");
+    if ((parmHandleRef->magic != PARM_MAGIC) || (parmHandle->magic != PARM_MAGIC)) {
+	GfFatal ("GfParmCheckHandle: bad handle (%p)\n", parmHandle);
 	return -1;
     }
-    
-    if (parmref->type != GFPARM_TEMPLATE) {
-	/* only compare with a template file */
-	GfTrace("The file is not a template file\n");
-	return -1;
-    }
-    
-    s1 = Buf;
-    curNode = parm->n.kids;
-    do {
-	if (curNode->kids != NULL) {
-	    curNode = curNode->kids;
-	    s1 += sprintf(s1, "/%s", curNode->name);
-	} else {
-	    s1 = strrchr(Buf, '/');
-	    if (s1 == NULL) {
+
+    /* Traverse all the reference tree */
+    curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
+    while (curSectionRef) {
+	curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
+	while (curParamRef) {
+	    /* compare params */
+	    curParam = getParamByName (conf, curSectionRef->fullName, curParamRef->name, 0);
+	    if (curParam) {
+		if (curParamRef->type != curParam->type) {
+		    GfError("GfParmCheckHandle: type mismatch for parameter \"%s\" in (\"%s\" - \"%s\")\n",
+			    curParamRef->fullName, conf->name, conf->filename);
+		    error = -1;
+		} else if (curParamRef->type == P_NUM) {
+		    if ((curParam->valnum < curParamRef->min) || (curParam->valnum > curParamRef->max)) {
+			GfError("GfParmCheckHandle: parameter \"%s\" out of bounds: min:%g max:%g val:%g in (\"%s\" - \"%s\")\n",
+				curParamRef->fullName, curParamRef->min, curParamRef->max, curParam->valnum, conf->name, conf->filename);
+			//error = -1;
+		    }
+		} else {
+		    curWithinRef = GF_TAILQ_FIRST (&(curParamRef->withinList));
+		    found = 0;
+		    while (!found && curWithinRef) {
+			if (!strcmp (curWithinRef->val, curParam->value)) {
+			    found = 1;
+			} else {
+			    curWithinRef = GF_TAILQ_NEXT (curWithinRef, linkWithin);
+			}
+		    }
+		    if (!found && strcmp (curParamRef->value, curParam->value)) {
+			GfError("GfParmCheckHandle: parameter \"%s\" value:\"%s\" not allowed in (\"%s\" - \"%s\")\n",
+				curParamRef->fullName, curParam->value, conf->name, conf->filename);
+			//error = -1;
+		    }
+		}
+	    }
+	    curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
+	}
+	nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+	while (!nextSectionRef) {
+	    nextSectionRef = curSectionRef->parent;
+	    if (!nextSectionRef) {
+		/* Reached the root */
 		break;
 	    }
-	    *s1 = 0;
-	    /* No kids, this should be an attr... so it is self terminated */
-	    if (CheckParm(parmref, Buf, s1+1, (tParmKey*)curNode)) {
-		return -1;
-	    }
-	    curNode = curNode->next;
-	    s1 += sprintf(s1, "/%s", curNode->name);
-	    while ((curNode->type != PARM_NODE_PARM) && (curNode == curNode->parent->kids)) {
-		/* end of kids list go back to the parent and write the end tag */
-		s1 = strrchr(Buf, '/');
-		*s1 = 0;
-		curNode = curNode->parent;
-		s1 = strrchr(Buf, '/');
-		if (s1) *s1 = 0;
-		curNode = curNode->next;
-		if (s1) s1 += sprintf(s1, "/%s", curNode->name);
-	    }
+	    curSectionRef = nextSectionRef;
+	    nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
 	}
-    } while (curNode->type != PARM_NODE_PARM);
-
-
-    return 0;
-}
-
-
-static void
-mergekeys(tParmKey *newKey,
-	  tParmKey *refKey,
-	  tParmKey *tgtKey)
-{
-    tParmWithin	*curWithin;
-    tParmWithin	*refWithin;
-    tParmWithin	*newWithin;
-    int		found;
-
-    if ((tgtKey == NULL) || (refKey == NULL)) {
-	if (tgtKey == NULL) {
-	    tgtKey = refKey;
-	}
-	/* just copy */
-	newKey->n.name = strdup(tgtKey->n.name);
-	newKey->type = tgtKey->type;
-	if (tgtKey->type == P_NUM) {
-	    newKey->valnum = tgtKey->valnum;
-	    newKey->min    = tgtKey->min;
-	    newKey->max    = tgtKey->max;
-	} else {
-	    newKey->valstr = strdup(tgtKey->valstr);
-	    if (tgtKey->withins != NULL) {
-		curWithin = tgtKey->withins;
-		do {
-		    curWithin = curWithin->next;
-		    newWithin = (tParmWithin*)calloc(1, sizeof(tParmWithin));
-		    newWithin->val = strdup(curWithin->val);
-		    if (newKey->withins == NULL) {
-			newWithin->next = newWithin;
-			newKey->withins = newWithin;
-		    } else {
-			newWithin->next = newKey->withins->next;
-			newKey->withins->next = newWithin;
-			newKey->withins = newWithin;
-		    }
-		} while (curWithin != tgtKey->withins);
-	    }
-	}
-	return;
+	curSectionRef = nextSectionRef;
     }
     
-    /* merge now, we assume that GfCheckHandles was called before */
-    /* so the target value is a subset of the reference */
-    if (refKey->type == P_NUM) {
-	newKey->valnum = tgtKey->valnum;
-	newKey->min    = MAX(tgtKey->min, refKey->min);
-	newKey->max    = MIN(tgtKey->max, refKey->max);
-	newKey->type   = P_NUM;
+    return error;
+}
+
+static void
+insertParamMerge (struct parmHandle *parmHandle, char *path, struct param *paramRef, struct param *param)
+{
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*paramNew;
+    struct within	*withinRef;
+    struct within	*within;
+    tdble		num;
+    char		*str;
+ 
+    paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
+    if (!paramNew) {
+	return;
+    }
+    if (param->type == P_NUM) {
+	paramNew->type = P_NUM;
+	FREEZ (paramNew->unit);
+	if (param->unit) {
+	    paramNew->unit = strdup (param->unit);
+	}
+	if (param->min < paramRef->min) {
+	    num = paramRef->min;
+	} else {
+	    num = param->min;
+	}
+	paramNew->min = num;
+	if (param->max > paramRef->max) {
+	    num = paramRef->max;
+	} else {
+	    num = param->max;
+	}
+	paramNew->max = num;
+	num = param->valnum;
+	if (num < paramNew->min) {
+	    num = paramNew->min;
+	}
+	if (num > paramNew->max) {
+	    num = paramNew->max;
+	}
+	paramNew->valnum = num;
     } else {
-	newKey->type   = P_STR;
-	newKey->valstr = strdup(tgtKey->valstr);
-	if ((tgtKey->withins != NULL) && (refKey->withins != NULL)) {
-	    curWithin = tgtKey->withins;
-	    do {
-		curWithin = curWithin->next;
-		found = 0;
-		refWithin = refKey->withins;
-		do {
-		    refWithin = refWithin->next;
-		    if (strcmp(curWithin->val, refWithin->val) == 0) {
-			found = 1;
-			break;
-		    }
-		} while (refWithin != refKey->withins);
-		if (found) {
-		    newWithin = (tParmWithin*)calloc(1, sizeof(tParmWithin));
-		    newWithin->val = strdup(curWithin->val);
-		    if (newKey->withins == NULL) {
-			newWithin->next = newWithin;
-			newKey->withins = newWithin;
-		    } else {
-			newWithin->next = newKey->withins->next;
-			newKey->withins->next = newWithin;
-			newKey->withins = newWithin;
-		    }
-		}		
-	    } while (curWithin != tgtKey->withins);
+	paramNew->type = P_STR;
+	FREEZ (paramNew->value);
+	within = GF_TAILQ_FIRST (&(param->withinList));
+	while (within) {
+	    withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
+	    while (withinRef) {
+		if (!strcmp (withinRef->val, within->val)) {
+		    addWithin (paramNew, within->val);
+		    break;
+		}
+		withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
+	    }
+	    within = GF_TAILQ_NEXT (within, linkWithin);
+	}
+	str = NULL;
+	withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
+	while (withinRef) {
+	    if (!strcmp (withinRef->val, param->value)) {
+		str = param->value;
+		break;
+	    }
+	    withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
+	}
+	if (!str) {
+	    str = paramRef->value;
+	}
+	paramNew->value = strdup (str);
+    }
+}
+
+static void
+insertParam (struct parmHandle *parmHandle, char *path, struct param *param)
+{
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*paramNew;
+    struct within	*within;
+
+    paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
+    if (!paramNew) {
+	return;
+    }
+    if (param->type == P_NUM) {
+	paramNew->type = P_NUM;
+	FREEZ (paramNew->unit);
+	if (param->unit) {
+	    paramNew->unit = strdup (param->unit);
+	}
+	paramNew->valnum = param->valnum;
+	paramNew->min = param->min;
+	paramNew->max = param->max;
+    } else {
+	paramNew->type = P_STR;
+	FREEZ (paramNew->value);
+	paramNew->value = strdup (param->value);
+	within = GF_TAILQ_FIRST (&(param->withinList));
+	while (within) {
+	    addWithin (paramNew, within->val);
+	    within = GF_TAILQ_NEXT (within, linkWithin);
 	}
     }
 }
+
 
 /** Merge two parameters sets into a new one.
     @ingroup	paramsfile
     @param	ref	reference handle
     @param	tgt	target handle for merge
     @param	mode	merge mode, can be any combination of:
-		<br>GFPARM_MMODE_SRC Use ref and modify existing parameters with tgt
-		<br>GFPARM_MMODE_DST Use tgt and verify ref parameters
-		<br>GFPARM_MMODE_RELSRC Release ref after the merge
-		<br>GFPARM_MMODE_RELDST Release tgt after the merge
+		<br>#GFPARM_MMODE_SRC Use ref and modify existing parameters with tgt
+		<br>#GFPARM_MMODE_DST Use tgt and verify ref parameters
+		<br>#GFPARM_MMODE_RELSRC Release ref after the merge
+		<br>#GFPARM_MMODE_RELDST Release tgt after the merge
     @return	The new handle containing the merge.
-    @warning	No test is done, GfParmCheckHandle must be called before to verify thst the parameters are compatible.
     @see	GfParmCheckHandle
  */
 void *
 GfParmMergeHandles(void *ref, void *tgt, int mode)
 {
-    char	Buf[BUFMAX];
-    tParm	*newCurParm;
-    tParmNode	*curNode;
-    char	*s1;
+    struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
+    struct parmHandle	*parmHandleTgt = (struct parmHandle *)tgt;
+    struct parmHandle	*parmHandleOut;
+    struct parmHeader	*confRef = parmHandleRef->conf;
+    struct parmHeader	*confTgt = parmHandleTgt->conf;
+    struct parmHeader	*confOut;
+    struct section	*curSectionRef;
+    struct section	*nextSectionRef;
+    struct section	*curSectionTgt;
+    struct section	*nextSectionTgt;
+    struct param	*curParamRef;
+    struct param	*curParamTgt;
 
-    tParm	*parmref = (tParm*)ref;
-    tParm	*parmtgt = (tParm*)tgt;
-    tParmKey	*curKey;
+    GfOut ("Merging \"%s\" and \"%s\" (%s - %s)\n", confRef->filename, confTgt->filename, ((mode & GFPARM_MMODE_SRC) ? "SRC" : ""), ((mode & GFPARM_MMODE_DST) ? "DST" : ""));
 
+    if (parmHandleRef->magic != PARM_MAGIC) {
+	GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleRef);
+	return NULL;
+    }
+    if (parmHandleTgt->magic != PARM_MAGIC) {
+	GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleTgt);
+	return NULL;
+    }
 
-    char	buf[256];
+        /* Conf Header creation */
+    confOut = createParmHeader ("");
+    if (!confOut) {
+	GfError ("gfParmReadBuf: conf header creation failed\n");
+	return NULL;
+    }
+
+    /* Handle creation */
+    parmHandleOut = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
+    if (!parmHandleOut) {
+	GfError ("gfParmReadBuf: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	parmReleaseHeader (confOut);
+	return NULL;
+    }
+
+    parmHandleOut->magic = PARM_MAGIC;
+    parmHandleOut->conf = confOut;
+    parmHandleOut->flag = PARM_HANDLE_FLAG_PRIVATE;
     
-    if ((ref == NULL) || (tgt == NULL)) {
-	return NULL;
-    }
-
-    if (TheParms == NULL) {
-	return NULL;
-    }
-
-    if (parmref->type != GFPARM_TEMPLATE) {
-	return NULL;
-    }
-
-    newCurParm = (tParm*)calloc(1, sizeof(tParm));
-    newCurParm->refcount = 1;
-    newCurParm->file = strdup("Merged");
-    newCurParm->n.type = PARM_NODE_ROOT;
-    newCurParm->n.next = TheParms->n.next;
-    newCurParm->n.prev = newCurParm->n.next->prev;
-    newCurParm->n.next->prev = (tParmNode*)newCurParm;
-    newCurParm->n.prev->next = (tParmNode*)newCurParm;
-    TheParms = newCurParm;
-    
-    if (parmtgt->type == GFPARM_TEMPLATE) {
-	newCurParm->type = GFPARM_TEMPLATE;
-    } else {
-	newCurParm->type = GFPARM_PARAMETER;
-    }
-    newCurParm->mode = parmtgt->mode;
-
-    sprintf(buf, "%s-%s", parmtgt->n.kids->name, parmref->n.kids->name);
-    newCurParm->n.name = strdup(buf);
-
-    tParmNode *newNode = (tParmNode*)calloc(1, sizeof(tParmNode));
-    newCurParm->n.kids = newNode;
-    newNode->type = PARM_NODE_PARM;
-    newNode->next = newNode;
-    newNode->prev = newNode;
-    newNode->parent = (tParmNode*)newCurParm;
-
     if (mode & GFPARM_MMODE_SRC) {
-	curNode = parmref->n.kids;
-
-	s1 = Buf;
-	do {
-	    if (curNode->kids != NULL) {
-		curNode = curNode->kids;
-		s1 += sprintf(s1, "/%s", curNode->name);
-	    } else {
-		/* No kids, this should be an attr */
-		s1 = strrchr(Buf, '/');
-		*s1 = 0;
-		/* create the new path */
-		newNode = gfCreatePath(newCurParm->n.kids, Buf);
-		/* allocate an empty key */
-		curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
-		curKey->n.type = PARM_NODE_KEY;
-		curKey->n.name = strdup(s1+1);
-		gfParmAddKid(newNode, (tParmNode*)curKey);
-		/* merge keys */
-		mergekeys(curKey, (tParmKey*)curNode, GetKey(tgt, Buf, curNode->name));
-		/* Next node same level */
-		curNode = curNode->next;
-		s1 += sprintf(s1, "/%s", curNode->name);
-		while ((curNode->type != PARM_NODE_PARM) && (curNode == curNode->parent->kids)) {
-		    /* end of kids list go back to the parent */
-		    s1 = strrchr(Buf, '/');
-		    *s1 = 0;
-		    curNode = curNode->parent;
-		    s1 = strrchr(Buf, '/');
-		    if (s1) *s1 = 0;
-		    curNode = curNode->next;
-		    if (s1) s1 += sprintf(s1, "/%s", curNode->name);
-		}
-	    }
-	} while (curNode->type != PARM_NODE_PARM);
-    }
-
-    if (mode & GFPARM_MMODE_DST) {
-	curNode = parmtgt->n.kids;
-	s1 = Buf;
-	if (curNode->kids != NULL) {
-	    
-	    do {
-		if (curNode->kids != NULL) {
-		    curNode = curNode->kids;
-		    s1 += sprintf(s1, "/%s", curNode->name);
+	/* Traverse all the reference tree */
+	curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
+	while (curSectionRef) {
+	    curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
+	    while (curParamRef) {
+		/* compare params */
+		curParamTgt = getParamByName (confTgt, curSectionRef->fullName, curParamRef->name, 0);
+		if (curParamTgt) {
+		    insertParamMerge (parmHandleOut, curSectionRef->fullName, curParamRef, curParamTgt);
 		} else {
-		    /* No kids, this should be an attr */
-		    newNode = gfParmGetNode(newCurParm, Buf);
-		    s1 = strrchr(Buf, '/');
-		    *s1 = 0;
-		    if (newNode == NULL) {
-			/* create the new path */
-			newNode = gfCreatePath(newCurParm->n.kids, Buf);
-			/* allocate an empty key */
-			curKey = (tParmKey*)calloc(1, sizeof(tParmKey));
-			curKey->n.type = PARM_NODE_KEY;
-			curKey->n.name = strdup(s1+1);
-			gfParmAddKid(newNode, (tParmNode*)curKey);
-			/* merge keys */
-			mergekeys(curKey, GetKey(ref, Buf, curNode->name), (tParmKey*)curNode);
-		    }
-		    /* Next node same level */
-		    curNode = curNode->next;
-		    s1 += sprintf(s1, "/%s", curNode->name);
-		    while ((curNode->type != PARM_NODE_PARM) && (curNode == curNode->parent->kids)) {
-			/* end of kids list go back to the parent */
-			s1 = strrchr(Buf, '/');
-			*s1 = 0;
-			curNode = curNode->parent;
-			s1 = strrchr(Buf, '/');
-			if (s1) *s1 = 0;
-			curNode = curNode->next;
-			if (s1) s1 += sprintf(s1, "/%s", curNode->name);
-		    }
+		    insertParam (parmHandleOut, curSectionRef->fullName, curParamRef);
 		}
-	    } while (curNode->type != PARM_NODE_PARM);
+		curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
+	    }
+	    nextSectionRef = GF_TAILQ_FIRST (&(curSectionRef->subSectionList));
+	    if (nextSectionRef) {
+		curSectionRef = nextSectionRef;
+	    } else {
+		nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+		while (!nextSectionRef) {
+		    nextSectionRef = curSectionRef->parent;
+		    if (!nextSectionRef) {
+			/* Reached the root */
+			break;
+		    }
+		    curSectionRef = nextSectionRef;
+		    nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+		}
+		curSectionRef = nextSectionRef;
+	    }
 	}
     }
-
+    
+    if (mode & GFPARM_MMODE_DST) {
+	/* Traverse all the target tree */
+	curSectionTgt = GF_TAILQ_FIRST (&(confTgt->rootSection->subSectionList));
+	while (curSectionTgt) {
+	    curParamTgt = GF_TAILQ_FIRST (&(curSectionTgt->paramList));
+	    while (curParamTgt) {
+		/* compare params */
+		curParamRef = getParamByName (confRef, curSectionTgt->fullName, curParamTgt->name, 0);
+		if (curParamRef) {
+		    insertParamMerge (parmHandleOut, curSectionTgt->fullName, curParamRef, curParamTgt);
+		} else {
+		    insertParam (parmHandleOut, curSectionTgt->fullName, curParamTgt);
+		}
+		curParamTgt = GF_TAILQ_NEXT (curParamTgt, linkParam);
+	    }
+	    nextSectionTgt = GF_TAILQ_FIRST (&(curSectionTgt->subSectionList));
+	    if (nextSectionTgt) {
+		curSectionTgt = nextSectionTgt;
+	    } else {
+		nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
+		while (!nextSectionTgt) {
+		    nextSectionTgt = curSectionTgt->parent;
+		    if (!nextSectionTgt) {
+			/* Reached the root */
+			break;
+		    }
+		    curSectionTgt = nextSectionTgt;
+		    nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
+		}
+		curSectionTgt = nextSectionTgt;
+	    }
+	}
+    }
 
     if (mode & GFPARM_MMODE_RELSRC) {
 	GfParmReleaseHandle(ref);
     }
+
     if (mode & GFPARM_MMODE_RELDST) {
 	GfParmReleaseHandle(tgt);
     }
-    
-    return (void*)newCurParm;
+
+    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandleOut, linkHandle);
+ 
+    return (void*)parmHandleOut;
 }
+
 
 /** Get the min and max of a numerical parameter.
     @ingroup	paramsdata
@@ -2225,16 +2497,22 @@ GfParmMergeHandles(void *ref, void *tgt, int mode)
 int
 GfParmGetNumBoundaries(void *handle, char *path, char *key, tdble *min, tdble *max)
 {
-    tParmKey	*curKey;
+    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+    struct parmHeader	*conf = parmHandle->conf;
+    struct param	*param;
 
-    curKey = GetKey(handle, path, key);
-    if ((curKey == NULL) || (curKey->type != P_NUM)) {
+    if (parmHandle->magic != PARM_MAGIC) {
+	GfFatal ("GfParmGetNumBoundaries: bad handle (%p)\n", parmHandle);
 	return -1;
     }
-    
-    /* key found, return boundaries */
-    *min = curKey->min;
-    *max = curKey->max;
+
+    param = getParamByName (conf, path, key, 0);
+    if (!param || (param->type != P_NUM)) {
+	return -1;
+    }
+
+    *min = param->min;
+    *max = param->max;
 
     return 0;
 }

@@ -48,7 +48,7 @@ TrackBuildv1(char *trackfile)
     theTrack = (tTrack*)calloc(1, sizeof(tTrack));
     theCamList = (tRoadCam*)NULL;
 
-    theTrack->params = TrackHandle = GfParmReadFile(trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    theTrack->params = TrackHandle = GfParmReadFile (trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT | GFPARM_RMODE_PRIVATE);
     
     theTrack->filename = strdup(trackfile);
 
@@ -78,7 +78,7 @@ TrackBuildEx(char *trackfile)
     theTrack = (tTrack*)calloc(1, sizeof(tTrack));
     theCamList = (tRoadCam*)NULL;
 
-    theTrack->params = TrackHandle = GfParmReadFile(trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    theTrack->params = TrackHandle = GfParmReadFile (trackfile, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT | GFPARM_RMODE_PRIVATE);
     
     theTrack->filename = strdup(trackfile);
 

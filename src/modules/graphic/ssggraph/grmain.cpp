@@ -169,7 +169,7 @@ grSplitScreen(void *vp)
 	break;
     }
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NB_SCREENS, NULL, grNbScreen);
-    GfParmWriteFile(NULL, grHandle, "Graph", GFPARM_PARAMETER, "../dtd/params.dtd");
+    GfParmWriteFile(NULL, grHandle, "Graph");
     grAdaptScreenSize();
 }
 
