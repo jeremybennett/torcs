@@ -118,7 +118,7 @@ runState(tRmInfo *rmInfo)
 
     case RE_STATE_POST_RACE:
 	GfOut("QuickRace runState: RE_STATE_POST_RACE\n");
-	RmShowResults(rmInfo->_reGameScreen, rmInfo);
+	RmShowResults(rmInfo->_reGameScreen, rmInfo, RE_SECT_FINAL);
 	return RM_ASYNC | RM_NEXT_STEP /* | RM_NEXT_RACE */;
 
     default:

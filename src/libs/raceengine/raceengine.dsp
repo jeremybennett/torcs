@@ -123,6 +123,10 @@ SOURCE=.\racemain.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\raceresults.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\racestate.cpp
 # End Source File
 # Begin Source File

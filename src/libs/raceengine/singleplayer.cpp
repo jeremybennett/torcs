@@ -28,6 +28,7 @@
 #include <tgf.h>
 #include <raceman.h>
 
+#include "raceengine.h"
 #include "racemain.h"
 #include "raceinit.h"
 #include "racestate.h"
@@ -48,7 +49,7 @@ static void
 singlePLayerShutdown(void *precMenu)
 {
     GfuiScreenActivate(precMenu);
-    ReShutdown(1);
+    ReShutdown();
 }
 
 

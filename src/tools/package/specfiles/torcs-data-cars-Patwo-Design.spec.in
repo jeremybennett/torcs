@@ -1,7 +1,7 @@
 Summary: TORCS - Patwo Design Car Pack
 Name: TORCS-data-cars-Patwo-Design
 Version: @VERSION@
-Release: 2
+Release: 1
 Epoch: 1
 Source: TORCS-%{version}-data-cars-Patwo-Design.tgz
 Group: Amusements/Games
@@ -33,6 +33,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/games/torcs/*
 
 %changelog
+* Thu Jan 2 2003 Eric Espié <Eric.Espie@free.fr> 1.2.0
+- cars compiled
+
 * Mon Jul 15 2002 Eric Espié <Eric.Espie@free.fr> 1.1.0-2
 - improved specfile
 

@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="" type="template">
+<params name="" type="template" mode="mw">
 
   <section name="Simulation Parameters">
     <attnum name="PGain"     val="0.028"/>

@@ -41,12 +41,70 @@
 
 tRmInfo *RmInfo = 0;
 
+static int srQualLaps;
+static int srEventProgress;
+
+#define SR_QUALIFS	1
+#define SR_RACE		2
+
 #ifdef _WIN32
 BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 {
     return TRUE;
 }
 #endif
+
+static void
+eventInit(tRmInfo *rmInfo)
+{
+    srQualLaps = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_QUAL_LAPS, (char*)NULL, 0);
+
+    if (srQualLaps) {
+	srEventProgress = SR_QUALIFS;
+	
+    } else {
+	srEventProgress = SR_RACE;
+    }
+}
+
+static void
+preRace(tRmInfo *rmInfo)
+{
+    tdble	dist;
+    void	*params = rmInfo->params;
+
+    switch (srEventProgress) {
+    case SR_QUALIFS:
+	rmInfo->s->_totLaps = srQualLaps;
+	rmInfo->s->_raceType = RM_TYPE_QUALIF;
+	rmInfo->s->_maxDammage = (int)GfParmGetNum(params, RM_SECT_QUALIF, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
+	break;
+
+    case SR_RACE:
+	dist = GfParmGetNum(params, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
+	if (dist== 0.0) {
+	    rmInfo->s->_totLaps = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
+	} else {
+	    rmInfo->s->_totLaps = ((int)(dist / rmInfo->track->length)) + 1;
+	}
+	rmInfo->s->_raceType = RM_TYPE_RACE;
+	rmInfo->s->_maxDammage = (int)GfParmGetNum(params, RM_SECT_RACE, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
+	break;
+    }
+}
+
+static void
+postRace(tRmInfo *rmInfo)
+{
+    switch (srEventProgress) {
+    case SR_QUALIFS:
+	break;
+
+    case SR_RACE:
+	RmShowResults(SrRaceAgainHookInit(), rmInfo, RE_SECT_FINAL);
+	break;
+    }
+}
 
 /* Run state from Race Engine */
 static int
@@ -61,22 +119,12 @@ runState(tRmInfo *rmInfo)
 
     case RE_STATE_EVENT_INIT:
 	GfOut("SimpleRace runState: RE_STATE_EVENT_INIT\n");
+	eventInit(rmInfo);
 	return RM_SYNC | RM_NEXT_STEP;
 
     case RE_STATE_PRE_RACE:
 	GfOut("SimpleRace runState: RE_STATE_PRE_RACE\n");
-	{
-	    tdble	dist;
-
-	    dist = GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
-	    if (dist== 0.0) {
-		rmInfo->s->_totLaps = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
-	    } else {
-		rmInfo->s->_totLaps = ((int)(dist / rmInfo->track->length)) + 1;
-	    }
-	    rmInfo->s->_raceType = RM_TYPE_RACE;
-	    rmInfo->s->_maxDammage = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
-	}
+	preRace(rmInfo);
 	return RM_SYNC | RM_NEXT_STEP;
 
     case RE_STATE_RACE_START:
@@ -99,7 +147,7 @@ runState(tRmInfo *rmInfo)
 
     case RE_STATE_POST_RACE:
 	GfOut("SimpleRace runState: RE_STATE_POST_RACE\n");
-	RmShowResults(SrRaceAgainHookInit(), rmInfo);
+	postRace(rmInfo);
 	return RM_ASYNC | RM_NEXT_STEP /* | RM_NEXT_RACE */;
 
     case RE_STATE_EVENT_SHUTDOWN:

@@ -20,8 +20,8 @@ SOLIBRARY    = libraceengine.so
 
 SOLIBDIR     = .
 
-SOURCES      = singleplayer.cpp raceinit.cpp racemain.cpp racestate.cpp racegl.cpp \
-	       raceengine.cpp
+SOURCES      = singleplayer.cpp raceinit.cpp racemain.cpp racemanmenu.cpp racestate.cpp racegl.cpp \
+	       raceengine.cpp raceresults.cpp
 
 EXPDIR       = include
 

@@ -36,6 +36,8 @@
 #include <robottools.h>
 #include <robot.h>
 
+static int	rmSaveId;
+static void	*rmScrHdle = NULL;
 
 /** Display the Practice session results.
     @param	prevHdle	Handle to return to.
@@ -180,210 +182,126 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
     GfuiScreenActivate(hdle);
 }
 
-int
-RmInitResults(tRmInfo *rmInfo)
-{
-    int nblap = rmInfo->s->_totLaps + 1;
-    int nbdrv = rmInfo->s->_ncars;
-
-    RmShutdownResults(rmInfo);
-    rmInfo->lapInfo = (tDrvLapInfo*)calloc(nbdrv * nblap, sizeof(tDrvLapInfo));
-    if (rmInfo->lapInfo == NULL) {
-	return -1;
-    }
-
-    return 0;
-}
-
 void
-RmShutdownResults(tRmInfo *rmInfo)
+rmSaveRes(void *vInfo)
 {
-    if (rmInfo->lapInfo) {
-	free(rmInfo->lapInfo);
-	rmInfo->lapInfo = NULL;
-    }
+    tRmInfo *info = (tRmInfo *)vInfo;
+
+    GfParmWriteFile(0, info->results, "Results", GFPARM_PARAMETER, "../config/params.dtd");
+
+    GfuiVisiblilitySet(rmScrHdle, rmSaveId, GFUI_INVISIBLE);
 }
 
 
+/* Not more that 21 cars... */
 void
-RmSaveResults(tRmInfo *rmInfo)
+RmShowResults(void *prevHdle, tRmInfo *info, char *race)
 {
-#ifndef WIN32
-    int		*index;
-    tCarElt	**cars;
-    int		nb, i, max, ncars;
-    char	buf[1024];
-    FILE	*fout;
-    FILE	*fcmd;
-    char	*filename = "res";
-    int		pos;
-
-    GfOut("Saving Results\n");
-
-    index = (int*)malloc(rmInfo->s->_ncars * sizeof(int *));
-    cars = rmInfo->s->cars;
-
-    ncars = max = rmInfo->s->_ncars;
-    for (i = 0; i < max; i++) {
-	index[cars[i]->_startRank] = i;
-    }
-
-    sprintf(buf, "results/%s.cmd", filename);
-    fcmd = fopen(buf, "w");
-    if (fcmd == NULL) {
-	GfTrace("Error while openning %s\n", buf);
-	return;
-    }
-    fprintf(fcmd, "#!/bin/sh\n");
-    fprintf(fcmd, "gnuplot -persist > results/%s.png <<!!\n", filename);
-    fprintf(fcmd, "#   set grid\n");
-    fprintf(fcmd, "    set nokey\n");
-    fprintf(fcmd, "    set title \"Race Positions Lap by Lap\"\n");
-    fprintf(fcmd, "    set xlabel \"Laps\"\n");
-    fprintf(fcmd, "    set ylabel \"Drivers\"\n");
-    fprintf(fcmd, "    set y2label \"Positions\"\n");
-    fprintf(fcmd, "    set yrange [* : *] reverse\n");
-    fprintf(fcmd, "    set y2range [* : *] reverse\n");
-    fprintf(fcmd, "    set size 2.5,1.5\n");
-    fprintf(fcmd, "    set terminal png color\n");
-    fprintf(fcmd, "    set data style lines\n");
-    fprintf(fcmd, "    set xtics border 1\n");
-    fprintf(fcmd, "    set y2tics border mirror 1\n");
-    fprintf(fcmd, "    set ytics border (\"%s\" 1", cars[index[0]]->_name);
-    for (i = 1; i < max; i++) {
-	fprintf(fcmd, ", \"%s\" %d", cars[index[i]]->_name, i + 1);
-    }
-    fprintf(fcmd, ")\n");    
-
-    fprintf(fcmd, "plot 'results/%s.dat' using 2", filename);
-    for (i = 1; i < max; i++) {
-	fprintf(fcmd, ", '' using %d", i + 2);
-    }
-    fprintf(fcmd, "\n");
-    fprintf(fcmd, "!!\n");
-    fclose(fcmd);
-    
-    sprintf(buf, "results/%s.dat", filename);
-    fout = fopen(buf, "w");
-    if (fout == NULL) {
-	GfTrace("Error while openning %s\n", buf);
-	return;
-    }
-    fprintf(fout, "0 ");
-    for (i = 0; i < max; i++) {
-	fprintf(fout, "%d ", cars[index[i]]->_startRank + 1);
-    }
-    fprintf(fout, "\n");
-    for (nb = 0; nb < rmInfo->s->_totLaps + 1; nb++) {
-	fprintf(fout, "%d ", nb + 1);
-	for (i = 0; i < max; i++) {
-	    pos = rmInfo->lapInfo[ncars * nb + i].pos;
-	    if (pos == 0) {
-		fprintf(fout, "- ");
-	    } else {
-		fprintf(fout, "%d ", pos);
-	    }
-	}
-	fprintf(fout, "\n");
-    }
-    fclose(fout);
-    sprintf(buf, "sh results/%s.cmd", filename);
-    system(buf);
-
-    free (index);
-#endif
-}
-
-
-
-void
-RmShowResults(void *prevHdle, tRmInfo *info)
-{
-    tSituation 		*s = info->s;
+    void		*results = info->results;
     int			i;
-    tCarElt		*car;
-    void		*hdle;
-    int			x1, x2, x3, x4, x5, x6;
+    int			x1, x2, x3, x4, x5, x6, x7, x8;
     int			dlap;
     int			y;
-    char		buf[256];
+    static char		buf[256];
+    static char		path[1024];
     char		*str;
     static float	fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
+    int			laps, totLaps;
+    tdble		refTime;
+    int			nbCars;
     
-    hdle = GfuiScreenCreate();
+    rmScrHdle = GfuiScreenCreate();
     sprintf(buf, "Race Results");
-    GfuiTitleCreate(hdle, buf, strlen(buf));
+    GfuiTitleCreate(rmScrHdle, buf, strlen(buf));
     sprintf(buf, "%s", info->track->name);
-    GfuiLabelCreate(hdle, buf, GFUI_FONT_LARGE,
+    GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_LARGE,
 		    320, 420, GFUI_ALIGN_HC_VB, 0);
-    GfuiScreenAddBgImg(hdle, "data/img/splash-result.png");
+    GfuiScreenAddBgImg(rmScrHdle, "data/img/splash-result.png");
     
-    x1 = 80;
-    x2 = 110;
-    x3 = 290;
-    x4 = 380;
-    x5 = 410;
-    x6 = 470;
+    x1 = 30;
+    x2 = 60;
+    x3 = 240;
+    x4 = 330;
+    x5 = 360;
+    x6 = 420;
+    x7 = 510;
+    x8 = 595;
     
     y = 400;
-    GfuiLabelCreateEx(hdle, "Rank",    fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(hdle, "Driver",  fgcolor, GFUI_FONT_LARGE_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiLabelCreateEx(hdle, "Total",   fgcolor, GFUI_FONT_LARGE_C, x3, y, GFUI_ALIGN_HR_VB, 0);
-    GfuiLabelCreateEx(hdle, "Best",    fgcolor, GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HR_VB, 0);
-    GfuiLabelCreateEx(hdle, "Laps",    fgcolor, GFUI_FONT_LARGE_C, x5, y, GFUI_ALIGN_HC_VB, 0);
-    GfuiLabelCreateEx(hdle, "Top Spd", fgcolor, GFUI_FONT_LARGE_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_LARGE_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_LARGE_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Total",     fgcolor, GFUI_FONT_LARGE_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HR_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Laps",      fgcolor, GFUI_FONT_LARGE_C, x5, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_LARGE_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Dammages",  fgcolor, GFUI_FONT_LARGE_C, x7, y, GFUI_ALIGN_HC_VB, 0);
+    GfuiLabelCreateEx(rmScrHdle, "Pit Stops", fgcolor, GFUI_FONT_LARGE_C, x8, y, GFUI_ALIGN_HC_VB, 0);
     y -= 20;
     
-    for (i = 0; i < s->_ncars; i++) {
-	car = s->cars[i];
-	if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
+    sprintf(path, "%s/%s", RE_SECT_RESULTS, race);
+    totLaps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
+    sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, 1);
+    refTime = GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0);
+    sprintf(path, "%s/%s/%s", RE_SECT_RESULTS, race, RE_SECT_RANK);
+    nbCars = (int)GfParmGetEltNb(results, path);
+    for (i = 0; i < nbCars; i++) {
+	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+	laps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
 
 	sprintf(buf, "%d", i+1);
-	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C,
+	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 			x1, y, GFUI_ALIGN_HC_VB, 0);
 
-	GfuiLabelCreate(hdle, car->_name, GFUI_FONT_MEDIUM_C,
+	GfuiLabelCreate(rmScrHdle, GfParmGetStr(results, path, RE_ATTR_NAME, ""), GFUI_FONT_MEDIUM_C,
 			x2, y, GFUI_ALIGN_HL_VB, 0);
 
-	if (car->_laps == s->cars[0]->_laps) {
+	if (laps == totLaps) {
 	    if (i == 0) {
-		str = GfTime2Str(car->_curTime, 0);
+		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
 	    } else {
-		str = GfTime2Str(car->_curTime - s->cars[0]->_curTime, 1);
+		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) - refTime, 1);
 	    }
 	} else {
-	    dlap = s->cars[0]->_laps - car->_laps;
+	    dlap = totLaps - laps;
 	    if (dlap == 1) {
 		sprintf(buf,"+1 Lap");
 	    } else {
-		sprintf(buf,"+%d Laps", s->cars[0]->_laps - car->_laps);
+		sprintf(buf,"+%d Laps", dlap);
 	    }
 	    str = buf;
 	}
-	GfuiLabelCreate(hdle, str, GFUI_FONT_MEDIUM_C,
+	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
 			x3, y, GFUI_ALIGN_HR_VB, 0);
 	
 
-	str = GfTime2Str(car->_bestLapTime, 0);
-	GfuiLabelCreate(hdle, str, GFUI_FONT_MEDIUM_C,
+	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
 			x4, y, GFUI_ALIGN_HR_VB, 0);
 
-	sprintf(buf, "%d", car->_laps-1);
-	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C,
+	sprintf(buf, "%d", laps);
+	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 			x5, y, GFUI_ALIGN_HC_VB, 0);
 
-	sprintf(buf, "%d", (int)(car->_topSpeed * 3.6));
-	GfuiLabelCreate(hdle, buf, GFUI_FONT_MEDIUM_C,
+	sprintf(buf, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_TOP_SPEED, NULL, 0) * 3.6));
+	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 			x6, y, GFUI_ALIGN_HC_VB, 0);
+
+	sprintf(buf, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_DAMMAGES, NULL, 0)));
+	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+			x7, y, GFUI_ALIGN_HC_VB, 0);
+
+	sprintf(buf, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
+	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+			x8, y, GFUI_ALIGN_HC_VB, 0);
 	y -= 15;
     }
 
-    GfuiButtonCreate(hdle,
+    GfuiButtonCreate(rmScrHdle,
 		     "Continue",
 		     GFUI_FONT_LARGE,
-		     320,
+		     210,
 		     40,
-		     GFUI_BTNSZ,
+		     150,
 		     GFUI_ALIGN_HC_VB,
 		     0,
 		     prevHdle,
@@ -392,10 +310,24 @@ RmShowResults(void *prevHdle, tRmInfo *info)
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);
 
-    GfuiAddKey(hdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
-    GfuiAddKey(hdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
-    GfuiAddSKey(hdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+    rmSaveId = GfuiButtonCreate(rmScrHdle,
+				"Save",
+				GFUI_FONT_LARGE,
+				430,
+				40,
+				150,
+				GFUI_ALIGN_HC_VB,
+				0,
+				info,
+				rmSaveRes,
+				NULL,
+				(tfuiCallback)NULL,
+				(tfuiCallback)NULL);
 
-    GfuiScreenActivate(hdle);
+    GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace);
+    GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace);
+    GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot);
+
+    GfuiScreenActivate(rmScrHdle);
 }
 

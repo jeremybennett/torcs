@@ -170,6 +170,7 @@ qrConfigRunState(void * /* dummy */)
 	rp.prevScreen = qrConfigBackHookInit();
 	rp.param = RmInfo->params;
 	rp.title = "Quick Race Options";
+	rp.confMask = RM_CONF_RACE_LEN;
 	RmRaceParamMenu(&rp);
 	qrConfigState = QR_CONFIG_END;
 	break;

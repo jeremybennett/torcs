@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="GT3" type="parameter">
+<params name="GT3" type="parameter" mode="mw">
 
   <section name="Car">
     <!-- weight bias -->

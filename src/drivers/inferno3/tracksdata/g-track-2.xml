@@ -26,7 +26,7 @@
     <attnum name="VGain"     val="0.0005"/>
     <attnum name="preDy"     val="0"/>
     <attnum name="spdtgt"    val="380.0"/>
-    <attnum name="spdtgt2"   val="15.0"/>
+    <attnum name="spdtgt2"   val="18.0"/>
     <attnum name="steerMult" val="2.0"/>
     <attnum name="offset"    val="0"/>
 

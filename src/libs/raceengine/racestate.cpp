@@ -35,6 +35,8 @@
 #include "raceinit.h"
 #include "raceengine.h"
 #include "racegl.h"
+#include "raceresults.h"
+#include "racemanmenu.h"
 
 #include "racestate.h"
 
@@ -48,119 +50,96 @@ ReStateInit(void *prevMenu)
 }
 
 
-/* State Automaton Management */
+/* State Automaton Management         */
+/* Called when a race menu is entered */
 void
 ReStateManage(void)
 {
-    int mode = RM_SYNC;
+    int mode = RM_SYNC | RM_NEXT_STEP;
     
     do {
 	switch (ReInfo->_reState) {
-	case RE_STATE_CONFIG:	/* raceman */
+	case RE_STATE_CONFIG:
 	    GfOut("RaceEngine: state = RE_STATE_CONFIG\n");
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
+	    /* Display the race specific menu */
+	    mode = ReRacemanMenu();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_EVENT_INIT;
 	    }
 	    break;
 
-	case RE_STATE_EVENT_INIT: /* raceman */
+	case RE_STATE_EVENT_INIT:
 	    GfOut("RaceEngine: state = RE_STATE_EVENT_INIT\n");
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
+	    /* Load the event description (track and drivers list) */
+	    mode = ReRaceEventInit();
 	    if (mode & RM_NEXT_STEP) {
-		ReInfo->_reState = RE_STATE_INT_TRACK_INIT;
+		ReInfo->_reState = RE_STATE_PRE_RACE;
 	    }
 	    break;
 
-	case RE_STATE_INT_TRACK_INIT: /* internal */
-	    GfOut("RaceEngine: state = RE_STATE_INT_TRACK_INIT\n");
-	    RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
-	    RmInitTrack(ReInfo);
-	    RmLoadingScreenSetText("Loading Track 3D Description...");
-	    ReInfo->_reGraphicItf.inittrack(ReInfo->track);
-	    ReInfo->_reState = RE_STATE_PRE_RACE;
-	    break;
-
-	case RE_STATE_PRE_RACE:	/* raceman */
+	case RE_STATE_PRE_RACE:
 	    GfOut("RaceEngine: state = RE_STATE_PRE_RACE\n");
-	    ReRaceCleanDrivers();
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
-	    if (mode & RM_NEXT_STEP) {
-		ReInfo->_reState = RE_STATE_INT_CARS_INIT;
-	    }
-	    break;
-
-	case RE_STATE_INT_CARS_INIT: /* internal */
-	    GfOut("RaceEngine: state = RE_STATE_INT_CARS_INIT\n");
-	    RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
-	    mode = ReRacePrepare();
+	    mode = RePreRace();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_RACE_START;
 	    }
 	    break;
 
 	case RE_STATE_RACE_START:
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
+	    GfOut("RaceEngine: state = RE_STATE_RACE_START\n");
+	    mode = ReRaceStart();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_RACE;
 	    }
 	    break;
 
 	case RE_STATE_RACE:
-	    ReUpdate();
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
-	    if ((mode & RM_END_RACE) || (ReInfo->s->_raceState == RM_RACE_ENDED)) {
+	    mode = ReUpdate();
+	    if (ReInfo->s->_raceState == RM_RACE_ENDED) {
+		/* race finished */
+		ReInfo->_reState = RE_STATE_RACE_END;
+	    } else if (mode & RM_END_RACE) {
+		/* interrupt by player */
+		ReInfo->_reState = RE_STATE_RACE_STOP;
+	    }
+	    break;
+
+	case RE_STATE_RACE_STOP:
+	    GfOut("RaceEngine: state = RE_STATE_RACE_STOP\n");
+	    mode = ReRaceStop();
+	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_RACE_END;
 	    }
 	    break;
 
 	case RE_STATE_RACE_END:
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
-	    if (mode & RM_NEXT_STEP) {
-		ReInfo->_reState = RE_STATE_INT_RACE_END;
-	    } else if (mode & RM_CONTINUE_RACE) {
-		ReInfo->_reState = RE_STATE_RACE;
-	    }
-	    break;
-
-	case RE_STATE_INT_RACE_END: /* internal */
-	    GfOut("RaceEngine: state = RE_STATE_INT_CARS_SHUTDOWN\n");
+	    GfOut("RaceEngine: state = RE_STATE_RACE_END\n");
 	    mode = ReRaceEnd();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_POST_RACE;
 	    }
 	    break;
 
-	case RE_STATE_POST_RACE: /* raceman */
+	case RE_STATE_POST_RACE:
 	    GfOut("RaceEngine: state = RE_STATE_POST_RACE\n");
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
+	    mode = RePostRace();
 	    if (mode & RM_NEXT_STEP) {
-		ReInfo->_reState = RE_STATE_INT_TRACK_SHUTDOWN;
+		ReInfo->_reState = RE_STATE_EVENT_SHUTDOWN;
 	    } else if (mode & RM_NEXT_RACE) {
 		ReInfo->_reState = RE_STATE_PRE_RACE;
 	    }
 	    break;
 
-	case RE_STATE_INT_TRACK_SHUTDOWN: /* internal */
-	    GfOut("RaceEngine: state = RE_STATE_INT_TRACK_SHUTDOWN\n");
-	    ReInfo->_reState = RE_STATE_EVENT_SHUTDOWN;
-	    mode = RM_SYNC;
-	    break;
-
-	case RE_STATE_EVENT_SHUTDOWN: /* raceman */
+	case RE_STATE_EVENT_SHUTDOWN:
 	    GfOut("RaceEngine: state = RE_STATE_EVENT_SHUTDOWN\n");
-	    mode = ReInfo->_reRacemanItf.runState(ReInfo);
-	    if (mode & RM_NEXT_STEP) {
-		ReInfo->_reState = RE_STATE_SHUTDOWN;
-	    } else if (mode & RM_NEXT_EVENT) {
-		ReInfo->_reState = RE_STATE_EVENT_INIT;
-	    }
+	    ReInfo->_reState = RE_STATE_SHUTDOWN;
+	    mode = RM_SYNC;
 	    break;
 
 	case RE_STATE_SHUTDOWN:
 	case RE_STATE_ERROR:
 	    GfOut("RaceEngine: state = RE_STATE_SHUTDOWN\n");
-	    ReShutdown(0);
+	    ReShutdown();
 	    GfuiScreenActivate(mainMenu);
 	    return;
 

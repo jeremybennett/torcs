@@ -73,6 +73,16 @@ ReBoardInfo(void *vboard)
 }
 
 static void
+reSkipPreStart(void * /* dummy */)
+{
+    if (ReInfo->s->currentTime < 0) {
+	ReInfo->s->currentTime = - RCM_MAX_DT_SIMU;
+	ReInfo->_reLastTime = 0;
+    }
+}
+
+
+static void
 reAddKeys(void)
 {
     GfuiAddSKey(reScreenHandle, GLUT_KEY_F1,   "Help", reScreenHandle, GfuiHelpScreen);
@@ -84,9 +94,9 @@ reAddKeys(void)
     GfuiAddKey(reScreenHandle, '+', "Accelerate Time", (void*)1, ReTimeMod);
     GfuiAddKey(reScreenHandle, '.', "Real Time",       (void*)2, ReTimeMod);
     GfuiAddKey(reScreenHandle, 'p', "Pause Race",      (void*)0, ReBoardInfo);
-    GfuiAddKey(reScreenHandle, 27, "End Current Race", (void*)RE_STATE_RACE_END, ReStateApply);
+    GfuiAddKey(reScreenHandle, 27, "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply);
     GfuiAddKey(reScreenHandle, 'q', "Exit of TORCS",   (void*)RE_STATE_EXIT, ReStateApply);
-    GfuiAddKey(reScreenHandle, ' ', "One Step Debug",  (void*)1, ReOneStep);
+    GfuiAddKey(reScreenHandle, ' ', "One Step Debug",  (void*)0, reSkipPreStart);
     GfuiAddSKey(reScreenHandle, GLUT_KEY_F12,   "Screen Shot", NULL, GfuiScreenShot);
     
 }

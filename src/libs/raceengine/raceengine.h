@@ -26,17 +26,17 @@
 #ifndef _RACEENGINE_H_
 #define _RACEENGINE_H_
 
-extern int  ReRacePrepare(void);
-extern int  ReRaceEnd(void);
-extern int  ReRaceCleanDrivers(void);
+
 
 extern void ReStart(void);
 extern void ReStop(void);
-extern void ReUpdate(void);
+extern int  ReUpdate(void);
 extern void ReNextCar(void *dummy);
 extern void RePrevCar(void *dummy);
 extern void ReTimeMod (void *vcmd);
 extern void ReOneStep(void *telem);
+
+extern tRmInfo	*ReInfo;
 
 #endif /* _RACEENGINE_H_ */ 
 

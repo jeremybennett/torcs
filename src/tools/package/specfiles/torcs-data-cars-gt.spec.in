@@ -1,9 +1,9 @@
-Summary: TORCS - GT car pack
-Name: TORCS-data-cars-gt
+Summary: TORCS - Extra car pack
+Name: TORCS-data-cars-extra
 Version: @VERSION@
 Release: 2
 Epoch: 1
-Source: TORCS-%{version}-data-cars-gt.tgz
+Source: TORCS-%{version}-data-cars-extra.tgz
 Group: Amusements/Games
 BuildRoot: %{_tmppath}/%{name}-buildroot
 Copyright: GPL
@@ -12,7 +12,7 @@ URL: http://torcs.org
 Packager: Eric Espié <Eric.Espie@free.fr>
 
 %description
-GT car pack for TORCS
+Extra car pack for TORCS
 
 %prep
 %setup -c

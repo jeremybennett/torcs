@@ -9,8 +9,6 @@ SECTIONS .data READ WRITE
 EXPORTS
 	RmTrackSelect
 	RmGetTrackName
-	RmDumpTrack
-	RmInitCars
 	RmDriversSelect
 	RmDriverSelect
 	RmPracticeResults
@@ -23,4 +21,3 @@ EXPORTS
 	RmRaceParamMenu
 	RmShowResults
 	RmConfirmScreen
-	RmInitTrack

@@ -23,7 +23,6 @@
 #include <string.h>
 #include <tgf.h>
 #include <track.h>
-#include <raceman.h>
 #include <robot.h>
 #include "driverconfig.h"
 #include <playerpref.h>

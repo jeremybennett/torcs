@@ -480,6 +480,7 @@ typedef struct
     char	  *name;	/**< Name of the track */
     char	  *author;	/**< Author's name */
     char	  *filename;	/**< Filename of the track description */
+    void	  *params;	/**< Parameters handle */
     char	  *internalname; /**< Internal name of the track */
     char	  *category;	/**< Category of the track */
     int		  nseg;		/**< Number of segments */

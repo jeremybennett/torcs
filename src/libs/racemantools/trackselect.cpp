@@ -47,7 +47,8 @@ static int		WidthId;
 static int		DescId;
 static int		PitsId;
 static tRmTrackSelect	*ts;
-static char		buf[256];
+static char		buf[1024];
+static char		path[1024];
 
 static void
 rmtsActivate(void * /* dummy */)
@@ -145,9 +146,12 @@ rmCatPrevNext(void *vsel)
  void
 rmtsSelect(void *dummy)
 {
+    int		curTrkIdx;
 
-    GfParmSetStr(ts->param, "Race/Track", "category", CategoryList->name);
-    GfParmSetStr(ts->param, "Race/Track", "name", ((tFList*)CategoryList->userData)->name);
+    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
+    sprintf(path, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
+    GfParmSetStr(ts->param, path, RM_ATTR_CATEGORY, CategoryList->name);
+    GfParmSetStr(ts->param, path, RM_ATTR_NAME, ((tFList*)CategoryList->userData)->name);
 
     rmtsDeactivate(ts->nextScreen);
 }
@@ -224,6 +228,7 @@ RmTrackSelect(void *vs)
     tFList	*CatCur;
     tFList	*TrList, *TrCur;
     int		Xpos, Ypos, DX, DY;
+    int		curTrkIdx;
     
     ts = (tRmTrackSelect*)vs;
     
@@ -262,9 +267,11 @@ RmTrackSelect(void *vs)
 	CatCur = CatCur->next;
     } while (CatCur != CategoryList);
 
-    defaultCategory = GfParmGetStr(ts->param, "Race/Track", "category", CategoryList->name);
+    curTrkIdx = (int)GfParmGetNum(ts->param, RM_SECT_TRACKS, RM_ATTR_CUR_TRACK, NULL, 1);
+    sprintf(path, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
+    defaultCategory = GfParmGetStr(ts->param, path, RM_ATTR_CATEGORY, CategoryList->name);
     /* XXX coherency check */
-    defaultTrack = GfParmGetStr(ts->param, "Race/Track", "name", ((tFList*)CategoryList->userData)->name);
+    defaultTrack = GfParmGetStr(ts->param, path, RM_ATTR_NAME, ((tFList*)CategoryList->userData)->name);
 
     CatCur = CategoryList;
     do {

@@ -22,9 +22,9 @@ MODULEDIR = modules/raceman
 
 SOURCES   = quickrace.cpp qracemain.cpp qrmenu.cpp
 
-SHIPDIR   = config/quickrace
+SHIPDIR   = config/raceman
 
-SHIP      = qrace.xml
+SHIP      = quickrace.xml
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

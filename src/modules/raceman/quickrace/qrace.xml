@@ -16,41 +16,64 @@
 
 <params name="quick race" type="param" mode="mw">
 
-    <section name="Race">
-      <attstr name="categories" val="*"/>
-      <section name="Track">
-        <attstr name="category" val="road"/>
-        <attstr name="name" val="e-track-2"/>
-      </section>
-      <attnum name="distance" val="100" unit="km"/>
+  <section name="Header">
+    <attstr name="name" val="Quick Race"/>
+  </section>
+
+  <section name="Tracks">
+    <attnum name="maximum number" val="1"/>
+
+    <section name="1">
+      <attstr name="name" val="g-track-3"/>
+      <attstr name="category" val="road"/>
+    </section>
+  </section>
+
+  <section name="Races">
+
+    <section name="1">
+      <attstr name="name" val="Race"/>
+    </section>
+  </section>
+
+  <section name="Race">
+    <attnum name="distance" val="50" unit="km"/>
+    <attstr name="starting order" val="drivers list"/>
+    <attstr name="categories" val="*"/>
+
+    <section name="Track">
+      <attstr name="category" val="road"/>
+      <attstr name="name" val="e-track-2"/>
+    </section>
+  </section>
+
+  <section name="Drivers">
+
+    <section name="1">
+      <attnum name="idx" val="1.000000"/>
+      <attstr name="module" val="human"/>
+      <attnum name="focused" val="1"/>
     </section>
 
-    <section name="Starting Grid">
-      <attnum name="rows" val="2.000000"/>
-      <attnum name="distance to start" val="25.000000"/>
-      <attnum name="distance between columns" val="20.000000"/>
-      <attnum name="offset within a column" val="10.000000"/>
-      <attnum name="initial speed" val="0.000000"/>
-      <attnum name="initial height" val="1.000000"/>
+    <section name="2">
+      <attnum name="idx" val="2.000000"/>
+      <attstr name="module" val="damned"/>
     </section>
+  </section>
 
-    <section name="Modules">
-      <attstr name="track" val="track"/>
-      <attstr name="simu" val="simuv2"/>
-      <attstr name="graphic" val="ssggraph"/>
-    </section>
+  <section name="Starting Grid">
+    <attnum name="rows" val="2.000000"/>
+    <attnum name="distance to start" val="25.000000"/>
+    <attnum name="distance between columns" val="20.000000"/>
+    <attnum name="offset within a column" val="10.000000"/>
+    <attnum name="initial speed" val="0.000000"/>
+    <attnum name="initial height" val="1.000000"/>
+  </section>
 
-    <section name="Drivers">
-      <attnum name="ndrivers" val="1.000000"/>
-      <attstr name="focused module" val="human"/>
-      <attnum name="focused idx" val="1.000000"/>
-
-      <section name="drivers">
-        <section name="1">
-          <attnum name="idx" val="1.000000"/>
-          <attstr name="module" val="human"/>
-        </section>
-      </section>
-    </section>
+  <section name="Modules">
+    <attstr name="track" val="track"/>
+    <attstr name="simu" val="simuv2"/>
+    <attstr name="graphic" val="ssggraph"/>
+  </section>
 
 </params>

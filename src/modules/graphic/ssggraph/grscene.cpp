@@ -496,9 +496,6 @@ grLoadScene(tTrack *track)
 void grDrawScene(void)
 {
     TRACE_GL("refresh: ssgCullAndDraw start");
-    /*glEnable(GL_DEPTH_TEST);*/
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    /*glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);*/
 
     //fprintf(stderr, "=========== grDrawScene ===================\n");
     //TheScene->print (stderr, "", 4 ) ;
@@ -546,7 +543,7 @@ initBackground(void)
     BackgroundTex = BackgroundTex2 = 0;
 
     z1 = -0.5;
-    z2 = 0.8;
+    z2 = 1.0;
     BackgroundType = graphic->bgtype;
     switch (BackgroundType) {
     case 0:

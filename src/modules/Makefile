@@ -15,13 +15,13 @@
 #
 ##############################################################################
 
-SUBDIRS		= raceman simu track graphic telemetry
+SUBDIRS		= simu track graphic telemetry
 
-SHIPSUBDIRS	= raceman telemetry graphic
+SHIPSUBDIRS	= telemetry graphic
 
 EXPINCDIRS      = simu
 
-PKGSUBDIRS	= track raceman simu graphic telemetry
+PKGSUBDIRS	= track simu graphic telemetry
 
 src_PKGFILES	= Makefile
 

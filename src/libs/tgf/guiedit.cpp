@@ -348,7 +348,7 @@ gfuiEditboxKey(tGfuiObject *obj, int key, int modifier)
 
 /** Get the string
     @ingroup	gui
-    @param	scr		Screen
+     @param	scr		Screen
     @param	id		Edit box Id
     @return	Corresponding string.
  */

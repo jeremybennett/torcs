@@ -18,11 +18,12 @@
 
     <section name="Race">
       <attstr name="categories" val="*"/>
+
       <section name="Track">
         <attstr name="category" val="road"/>
         <attstr name="name" val="e-track-2"/>
       </section>
-      <attnum name="distance" val="100" unit="km"/>
+      <attnum name="distance" val="50" unit="km"/>
     </section>
 
     <section name="Starting Grid">
@@ -40,6 +41,7 @@
       <attnum name="focused idx" val="1.000000"/>
 
       <section name="drivers">
+
         <section name="1">
           <attnum name="idx" val="1.000000"/>
           <attstr name="module" val="human"/>

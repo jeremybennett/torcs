@@ -266,12 +266,17 @@ refresh(tSituation *s)
     glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
     glEnable(GL_FOG);
 
-    glEnable(GL_LIGHTING);    
+    glEnable(GL_LIGHTING);
     for (i = 0; i < s->_ncars; i++) {
       grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
     } 
     segIndice = (s->cars[s->current])->_trkPos.seg->id;
     grUpdateSmoke(s->currentTime);
+
+    /*glEnable(GL_DEPTH_TEST);*/
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     grDrawScene();
 

@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
 
-<params name="Tanhoj" type="template">
+<params name="Tanhoj" type="template" mode="mw">
   <section name="Car">
     <!-- weight bias -->
     <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"/>

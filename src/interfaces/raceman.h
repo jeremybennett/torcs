@@ -36,12 +36,6 @@
 
 #define RCM_IDENT 0
 
-#define RM_PRIO_QUICKRACE	10
-#define RM_PRIO_SIMPLERACE	20
-#define RM_PRIO_CHAMPIONSHIP	30
-#define RM_PRIO_PRACTICE	90
-
-#define RM_MAGIC	161102	/* Should be chaged every time the tRacemanItf structure is modified */
 struct RmInfo;
 
 typedef int (*tfRmRunState) (struct RmInfo *);
@@ -60,15 +54,6 @@ typedef int (*tfRmRunState) (struct RmInfo *);
 #define RM_QUIT			0x40000000
 
 
-/** Race manager module interface  */
-typedef struct
-{
-    tfRmRunState	runState;
-    tfuiCallback	start;
-} tRacemanItf;
-
-
-
 #define RCM_MAX_DT_SIMU		0.002
 #define RCM_MAX_DT_ROBOTS	0.02
 
@@ -80,6 +65,7 @@ typedef struct {
 #define RM_RACE_RUNNING		0X00000001
 #define RM_RACE_FINISHING	0X00000002
 #define RM_RACE_ENDED		0X00000004
+#define RM_RACE_STARTING	0X00000008
 #define RM_RACE_PAUSED		0X40000000
     int			type;		/**< Race type */
 #define RM_TYPE_PRACTICE	1
@@ -111,20 +97,16 @@ typedef struct
     tTrackItf	trackItf;
     tGraphicItf	graphicItf;
     tSimItf	simItf;
-    tRacemanItf	racemanItf;
 } tRaceModIft;
 
 #define RE_STATE_CONFIG			0
 #define RE_STATE_EVENT_INIT		1
-#define RE_STATE_INT_TRACK_INIT		2
 #define RE_STATE_PRE_RACE		3
-#define RE_STATE_INT_CARS_INIT		4
 #define RE_STATE_RACE_START		5
 #define RE_STATE_RACE			6
 #define RE_STATE_RACE_END		7
-#define RE_STATE_INT_RACE_END		8
+#define RE_STATE_RACE_STOP		8
 #define RE_STATE_POST_RACE		9
-#define RE_STATE_INT_TRACK_SHUTDOWN	10
 #define RE_STATE_EVENT_SHUTDOWN		11
 #define RE_STATE_SHUTDOWN		12
 #define RE_STATE_ERROR			13
@@ -139,6 +121,9 @@ typedef struct
     char	*raceMsg;
     double	totalPitTime;
     double	startPitTime;
+    tdble	topSpd;
+    tdble	botSpd;
+    tdble	fuel;
 } tReCarInfo;
 
 /* Race Engine Information */
@@ -155,6 +140,9 @@ typedef struct
     double		lastTime;
     double		timeMult;
     int			running;
+#define RM_DISP_MODE_NORMAL	0
+#define RM_DISP_MODE_NONE	1
+    int			displayMode;
 } tRaceEngineInfo;
 
 #define _reState	raceEngineInfo.state
@@ -171,17 +159,7 @@ typedef struct
 #define _reTimeMult	raceEngineInfo.timeMult
 #define _reRunning	raceEngineInfo.running
 #define _reLastTime	raceEngineInfo.lastTime
-
-/* Lap based information */
-typedef struct
-{
-    int		pos;		/* driver position */
-    tdble	lapTime;	/* lap time */
-    int		lapsBehind;	/* laps behind leader */
-    int		event;		/* special event */
-#define RM_EVENT_PIT_STOP	0x01
-    void	*eventData;	/* event specific data */
-} tDrvLapInfo;
+#define _displayMode	raceEngineInfo.displayMode
 
 
 /*
@@ -193,22 +171,39 @@ typedef struct RmInfo
     tSituation		*s;		/* Situation during race */
     tTrack		*track;		/* Current track */
     void		*params;	/* Raceman parameters */
+    void		*results;	/* Race results */
     tModList		**modList;	/* drivers loaded */
-    tDrvLapInfo 	*lapInfo;	/* per lap driver info using start index */
     tRaceEngineInfo	raceEngineInfo;
 } tRmInfo;
 
 /*
  * Parameters name definitions for Race Managers
  */
+#define RM_SECT_HEADER		"Header"
 #define RM_SECT_DRIVERS		"Drivers"
 #define RM_SECT_STARTINGGRID	"Starting Grid"
-#define RM_SECT_RACE		"Race"
-#define RM_SECT_SIMUL		"Simulation"
+#define RM_SECT_RACES		"Races"
+#define RM_SECT_TRACKS		"Tracks"
+#define RM_SECT_CONF		"Configuration"
+#define RM_SECT_OPTIONS		"Options"
 
-#define RM_LIST_DRIVERS		"drivers"
+#define RM_SECT_DRIVERS_RACING	"Drivers Start List"
 
-#define RM_ATTR_NDRIVERS	"ndrivers"
+#define RM_ATTR_CUR_RACE	"current race"
+#define RM_ATTR_CUR_TRACK	"current track"
+#define RM_ATTR_CUR_CONF	"current configuration"
+#define RM_ATTR_START_ORDER	"starting order"
+#define RM_ATTR_ALLOW_RESTART	"restart"
+
+#define RM_ATTR_MAXNUM		"maximum number"
+
+#define RM_ATTR_PRIO		"priority"
+#define RM_ATTR_NAME		"name"
+#define RM_ATTR_CATEGORY	"category"
+#define RM_ATTR_DESCR		"description"
+#define RM_ATTR_BGIMG		"menu image"
+#define RM_ATTR_RUNIMG		"run image"
+
 #define RM_ATTR_MODULE		"module"
 #define RM_ATTR_IDX		"idx"
 #define RM_ATTR_FOCUSED		"focused module"
@@ -217,6 +212,7 @@ typedef struct RmInfo
 #define RM_ATTR_TIMESTEP	"time step"
 
 #define RM_ATTR_TYPE		"type"
+#define RM_ATTR_RACE		"race"
 #define RM_ATTR_ROWS		"rows"
 #define RM_ATTR_TOSTART		"distance to start"
 #define RM_ATTR_COLDIST		"distance between columns"
@@ -227,7 +223,53 @@ typedef struct RmInfo
 #define RM_ATTR_MAX_DMG		"maximum dammage"
 #define RM_ATTR_DISTANCE	"distance"
 #define RM_ATTR_LAPS		"laps"
+#define RM_ATTR_QUAL_LAPS	"Qualification laps"
 #define RM_ATTR_POLE		"pole position side"
+
+#define RM_VAL_TRACKSEL		"track select"
+#define RM_VAL_DRVSEL		"drivers select"
+#define RM_VAL_RACECONF		"race config"
+#define RM_VAL_CONFRACELEN	"race length"
+
+#define RM_VAL_DRV_LIST_ORDER	"drivers list"
+
+#define RM_VAL_RACE		"race"
+#define RM_VAL_QUALIF		"qualifications"
+#define RM_VAL_PRACTICE		"practice"
+
+#define RM_VAL_YES		"yes"
+#define RM_VAL_NO		"no"
+
+/* RESULTS */
+
+#define RE_SECT_HEADER		"Header"
+#define RE_ATTR_TRACK		"track"
+#define RE_ATTR_DATE		"date"
+#define RE_ATTR_TYPE		"race"
+
+#define RE_SECT_DRIVERS		"Drivers"
+#define RE_SECT_DRIVER		"Driver"
+#define RE_ATTR_DLL_NAME	"dll name"
+#define RE_ATTR_INDEX		"index"
+
+#define RE_SECT_RESULTS		"Results"
+#define RE_SECT_STARTINGGRID	"Starting Grid"
+
+#define RE_SECT_QUALIF		"Qualifications"
+
+#define RE_SECT_FINAL		"Final"
+
+#define RE_SECT_RANK		"Rank"		
+
+#define RE_ATTR_NAME		"name"
+#define RE_ATTR_LAPS		"laps"
+#define RE_ATTR_BEST_LAP_TIME	"best lap time"
+#define RE_ATTR_TIME		"time"
+#define RE_ATTR_TOP_SPEED	"top speed"
+#define RE_ATTR_DAMMAGES	"dammages"
+#define RE_ATTR_NB_PIT_STOPS	"pits stops"
+#define RE_ATTR_POINTS		"points"
+
 #endif /* _RACEMANV1_H_ */ 
 
 

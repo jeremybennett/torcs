@@ -33,6 +33,7 @@
 #include "racemain.h"
 #include "racegl.h"
 #include "raceinit.h"
+#include "raceresults.h"
 
 #include "raceengine.h"
 
@@ -40,108 +41,8 @@ static char	buf[256];
 static double	msgDisp;
 static double	bigMsgDisp;
 
-/* return state mode */
-int
-ReRacePrepare(void)
-{
-    int		i, j;
-    int		sw, sh, vw, vh;
-    char	*dllname;
-    char	key[256];
-    tRobotItf	*robot;
-    tReCarInfo	*carInfo;
-    tSituation	*s = ReInfo->s;
+tRmInfo	*ReInfo = 0;
 
-
-    GfOut("Loading Simulation Engine...\n");
-    dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
-    sprintf(key, "modules/simu/%s.%s", dllname, DLLEXT);
-    if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
-    ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
-
-    if (RmInitCars(ReInfo)) {
-	return RM_QUIT;
-    }
-
-    carInfo = (tReCarInfo*)calloc(s->_ncars, sizeof(tReCarInfo));
-    ReInfo->_reCarInfo = carInfo;
-
-    for (i = 0; i < s->_ncars; i++) {
-	sprintf(buf, "Initializing Driver %s...", s->cars[i]->_name);
-	RmLoadingScreenSetText(buf);
-	robot = s->cars[i]->robot;
-	robot->rbNewRace(robot->index, s->cars[i], s);
-    }
-    
-    ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
-    for (i = 0; i < s->_ncars; i++) {
-	carInfo[i].prevTrkPos = s->cars[i]->_trkPos;
-    }
-
-    if (RmInitResults(ReInfo)) {
-	return RM_QUIT;
-    }
-
-    RmLoadingScreenSetText("Running Prestart...");
-    for (i = 0; i < s->_ncars; i++) {
-	memset(&(s->cars[i]->ctrl), 0, sizeof(tCarCtrl));
-	s->cars[i]->ctrl.brakeCmd = 1.0;
-    }    
-    for (j = 0; j < ((int)(1.0 / RCM_MAX_DT_SIMU)); j++) {
-	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
-    }
-
-    RmLoadingScreenSetText("Loading Cars 3D Objects...");
-    ReInfo->_reGraphicItf.initcars(s);
-
-    RmLoadingScreenSetText("Ready.");
-
-    ReInfo->_reTimeMult = 1.0;
-    ReInfo->_reLastTime = 0.0;
-    ReInfo->s->currentTime = -2.0;
-    
-    ReInfo->_reGameScreen = ReScreenInit();
-    ReInfo->s->_raceState = RM_RACE_RUNNING;
-
-    GfScrGetSize(&sw, &sh, &vw, &vh);
-    ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
-
-    GfuiScreenActivate(ReInfo->_reGameScreen);
-
-    return RM_SYNC | RM_NEXT_STEP;
-}
-
-int
-ReRaceEnd(void)
-{
-    ReInfo->_reGameScreen = ReHookInit();
-    ReInfo->_reSimItf.shutdown();
-    ReInfo->_reGraphicItf.shutdowncars(); 
-
-    return RM_SYNC | RM_NEXT_STEP;
-}
-
-int
-ReRaceCleanDrivers(void)
-{
-    int i;
-    tRobotItf *robot;
-
-    for (i = 0; i < ReInfo->s->_ncars; i++) {
-	robot = ReInfo->s->cars[i]->robot;
-	if (robot->rbShutdown) {
-	    robot->rbShutdown(robot->index);
-	}
-	GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
-	free(ReInfo->s->cars[i]->_modName);
-	free(ReInfo->s->cars);
-	ReInfo->s->cars = 0;
-	ReInfo->s->_ncars = 0;
-    }
-    GfModUnloadList(&ReRaceModList);
-
-    return RM_SYNC | RM_NEXT_STEP;
-}
 
 
 /* Compute Pit stop time */
@@ -197,7 +98,7 @@ ReRaceBigMsgSet(char *msg, double life)
 static void
 ReManage(tCarElt *car)
 {
-    int		i, evnb, pitok;
+    int		i, pitok;
     tTrackSeg	*sseg;
     tdble	wseg;
     static float color[] = {0.0, 0.0, 1.0, 1.0};
@@ -205,9 +106,10 @@ ReManage(tCarElt *car)
 
     tReCarInfo *info = &(ReInfo->_reCarInfo[car->index]);
 
-    if (car->_speed_x > car->_topSpeed) {
-	car->_topSpeed = car->_speed_x;
-    }
+    if (car->_speed_x > car->_topSpeed) car->_topSpeed = car->_speed_x;
+
+    if (car->_speed_x > info->topSpd) info->topSpd = car->_speed_x;
+    if (car->_speed_x < info->botSpd) info->botSpd = car->_speed_x;
 
     /* PIT STOP */
     if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
@@ -271,7 +173,7 @@ ReManage(tCarElt *car)
 	    }
 	    if (pitok) {
 		car->_state |= RM_CAR_STATE_PIT;
-		car->_event |= RM_EVENT_PIT_STOP;
+		car->_nbPitStops++;
 		info->startPitTime = s->currentTime;
 		sprintf(buf, "%s in pits", car->_name);
 		ReRaceMsgSet(buf, 5);
@@ -313,13 +215,6 @@ ReManage(tCarElt *car)
 			    car->_timeBehindPrev = 0;
 			}
 			info->sTime = s->currentTime;
-			/* results history */
-			evnb = s->_ncars * (car->_laps - 2) + car->_startRank;
-			ReInfo->lapInfo[evnb].pos = car->_pos;
-			ReInfo->lapInfo[evnb].event = car->_event;
-			ReInfo->lapInfo[evnb].lapsBehind = car->_lapsBehindLeader;
-			car->_event = 0;
-			ReInfo->lapInfo[evnb].lapTime = car->_lastLapTime;
 		    }
 		    if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;
@@ -426,8 +321,18 @@ ReOneStep(void *telem)
 	ReRaceBigMsgSet("Go !", 1.0);
     }
 
-    ReInfo->_reCurTime += RCM_MAX_DT_SIMU * ReInfo->_reTimeMult;
-    s->currentTime += RCM_MAX_DT_SIMU;
+    ReInfo->_reCurTime += RCM_MAX_DT_SIMU * ReInfo->_reTimeMult; /* "Real" time */
+    s->currentTime += RCM_MAX_DT_SIMU; /* Simulated time */
+
+    if (s->currentTime < 0) {
+	/* no simu yet */
+	return;
+    }
+    
+    if (ReInfo->s->_raceState & RM_RACE_STARTING) {
+	ReInfo->s->_raceState = RM_RACE_RUNNING;
+	s->currentTime = 0.0; /* resynchronize */
+    }
     
     if ((s->currentTime - ReInfo->_reLastTime) >= RCM_MAX_DT_ROBOTS) {
 	s->deltaTime = s->currentTime - ReInfo->_reLastTime;
@@ -439,8 +344,6 @@ ReOneStep(void *telem)
 	}
 	ReInfo->_reLastTime = s->currentTime;
     }
-
-    s->deltaTime = RCM_MAX_DT_SIMU;
 
     if (telem) {
 	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, s->cars[s->current]->index);
@@ -469,18 +372,31 @@ ReStop(void)
 }
 
 
-void
+int
 ReUpdate(void)
 {
-    double t = GfTimeClock();
+    double t;
 
-    while (ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) {
+    switch (ReInfo->_displayMode) {
+    case RM_DISP_MODE_NORMAL:
+	t = GfTimeClock();
+
+	while (ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) {
+	    ReOneStep(NULL);
+	}
+
+	GfuiDisplay();
+	ReInfo->_reGraphicItf.refresh(ReInfo->s);
+	glutPostRedisplay();	/* Callback -> reDisplay */
+	break;
+	
+    case RM_DISP_MODE_NONE:
 	ReOneStep(NULL);
+	glutPostRedisplay();	/* Callback -> reDisplay */
+	break;
     }
 
-    GfuiDisplay();
-    ReInfo->_reGraphicItf.refresh(ReInfo->s);
-    glutPostRedisplay();	/* Ensure that 100% of the CPU is used ;-) */
+    return RM_ASYNC;
 }
 
 void

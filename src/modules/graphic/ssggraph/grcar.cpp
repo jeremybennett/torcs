@@ -614,14 +614,13 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime)
 	grCarInfo[index].LODSelector->select(grCarInfo[index].LODSelectMask[i]);
     }
 
-
     sgCopyMat4(grCarInfo[index].carPos, car->_posMat);
     grCarInfo[index].carTransform->setTransform(grCarInfo[index].carPos);
 
-    if ((car != curCar) || (dispFlag == 1)) {
-	grDrawShadow(car, 1);
-    } else {
+    if ((car == curCar) && (dispFlag != 1)) {
 	grDrawShadow(car, 0);
+    } else {
+	grDrawShadow(car, 1);
     }
     grUpdateSkidmarks(car, curTime); 
     grDrawSkidmarks(car);

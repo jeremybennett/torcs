@@ -26,9 +26,12 @@
 #ifndef _RACEMAIN_H_
 #define _RACEMAIN_H_
 
-#define RACE_ENG_CFG	"config/raceengine.xml"
-
-extern tRmInfo	*ReInfo;
+extern int  ReRaceEventInit(void);
+extern int  RePreRace(void);
+extern int  ReRaceStart(void);
+extern int  ReRaceStop(void);
+extern int  ReRaceEnd(void);
+extern int  RePostRace(void);
 
 #endif /* _RACEMAIN_H_ */ 
 

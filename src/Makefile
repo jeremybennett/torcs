@@ -19,7 +19,7 @@
 # #### The Open Racing Car Simulator ####
 
 
-SHIPSUBDIRS	= drivers modules libs
+SHIPSUBDIRS	= drivers modules libs raceman
 
 EXPINCDIRS	= interfaces libs linux modules
 

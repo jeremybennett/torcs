@@ -28,61 +28,62 @@
 
 #include <racemantools.h>
 
-static void *confirmHdle = 0;
+static void *twoStateHdle = 0;
+static void *triStateHdle = 0;
 
-/** Confirmation (yes/no) screen.
-    @param	question	Screen title.
-    @param	yesLabel	Label string for the "yes" button.
-    @param	yesTip		Tip string for the "yes" button.
-    @param	yesScreen	Screen to activate if "yes" is choosen.
-    @param	noLabel		Label string for the "no" button.
-    @param	noTip		Tip string for the "no" button.	
-    @param	noScreen	Screen to activate if "no" is choosen.
-    @param	yesFirst	if set to "1" the order is yes/no else it is no/yes.
-*/
+
 void
-RmConfirmScreen(char *question,
-		char *yesLabel, char *yesTip, void *yesScreen,
-		char *noLabel, char *noTip, void *noScreen,
-		int yesFirst)
+RmTwoStateScreen(char *title,
+		 char *label1, char *tip1, void *screen1,
+		 char *label2, char *tip2, void *screen2)
 {
-    if (confirmHdle) {
-	GfuiScreenRelease(confirmHdle);
+    if (twoStateHdle) {
+	GfuiScreenRelease(twoStateHdle);
     }
+    twoStateHdle = GfuiMenuScreenCreate(title);
+    GfuiScreenAddBgImg(twoStateHdle, "data/img/splash-quit.png");
 
-    confirmHdle = GfuiMenuScreenCreate(question);
-    GfuiScreenAddBgImg(confirmHdle, "data/img/splash-quit.png");
+    GfuiMenuButtonCreate(twoStateHdle,
+			 label1, tip1, screen1,
+			 GfuiScreenActivate);
 
-    if (yesFirst) {
-	GfuiMenuButtonCreate(confirmHdle,
-			     yesLabel,
-			     yesTip,
-			     yesScreen,
-			     GfuiScreenActivate);
-    
-	GfuiMenuButtonCreate(confirmHdle,
-			     noLabel,
-			     noTip,
-			     noScreen,
-			     GfuiScreenActivate);
-	GfuiAddKey(confirmHdle, 27, noTip, noScreen, GfuiScreenActivate);
+    GfuiMenuButtonCreate(twoStateHdle,
+			 label2, tip2, screen2,
+			 GfuiScreenActivate);
 
-    } else {
+    GfuiAddKey(twoStateHdle, 27, tip2, screen2, GfuiScreenActivate);
 
-	GfuiMenuButtonCreate(confirmHdle,
-			     noLabel,
-			     noTip,
-			     noScreen,
-			     GfuiScreenActivate);
+    GfuiScreenActivate(twoStateHdle);
+}
 
-	GfuiMenuButtonCreate(confirmHdle,
-			     yesLabel,
-			     yesTip,
-			     yesScreen,
-			     GfuiScreenActivate);
-	GfuiAddKey(confirmHdle, 27, yesTip, yesScreen, GfuiScreenActivate);
+
+void
+RmTriStateScreen(char *title,
+		 char *label1, char *tip1, void *screen1,
+		 char *label2, char *tip2, void *screen2,
+		 char *label3, char *tip3, void *screen3)
+{
+    if (triStateHdle) {
+	GfuiScreenRelease(triStateHdle);
     }
+    triStateHdle = GfuiMenuScreenCreate(title);
+    GfuiScreenAddBgImg(triStateHdle, "data/img/splash-quit.png");
+
+    GfuiMenuButtonCreate(triStateHdle,
+			 label1, tip1, screen1,
+			 GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(triStateHdle,
+			 label2, tip2, screen2,
+			 GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(triStateHdle,
+			 label3, tip3, screen3,
+			 GfuiScreenActivate);
     
 
-    GfuiScreenActivate(confirmHdle);
+
+    GfuiAddKey(triStateHdle, 27, tip3, screen3, GfuiScreenActivate);
+
+    GfuiScreenActivate(triStateHdle);
 }

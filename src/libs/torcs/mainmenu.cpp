@@ -24,7 +24,6 @@
 
 #include "mainmenu.h"
 #include "exitmenu.h"
-#include "raceman.h"
 #include "optionmenu.h"
 
 
@@ -78,8 +77,6 @@ TorcsMainMenuInit(void)
     GfuiMenuButtonCreate(menuHandle,
 			 "Single Player", "Play in single player mode",
 			 ReSinglePlayerInit(menuHandle), GfuiScreenActivate);
-
-    /* TorcsLoadRaceMan(); */
 
     GfuiMenuButtonCreate(menuHandle,
 			 "Options", "Configure",

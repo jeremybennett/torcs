@@ -48,10 +48,12 @@ typedef struct
 
 typedef struct
 {
-    void        *param;
-    void        *prevScreen;
-    void        *nextScreen;	/* Race manager screen to go after select */
-    char	*title;
+    void        	*param;
+    void        	*prevScreen;
+    void        	*nextScreen;	/* Race manager screen to go after select */
+    char		*title;
+    unsigned int	confMask;	/* Tell what to configure */
+#define RM_CONF_RACE_LEN	0x00000001
 } tRmRaceParam;
 
 
@@ -59,10 +61,6 @@ typedef struct
 
 extern void RmTrackSelect(void * /* vs */);
 extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
-
-extern void RmDumpTrack(tTrack * /* track */, int /* verbose */);
-extern int RmInitCars(tRmInfo * /* raceInfo */);
-extern int RmInitTrack(tRmInfo * /* raceInfo */);
 
 extern void RmDriversSelect(void * /* vs */);
 extern void RmDriverSelect(void * /* vs */);
@@ -74,15 +72,16 @@ extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallb
 extern void RmLoadingScreenStart(char * /* text */, char * /* bgimg */);
 extern void RmLoadingScreenSetText(char * /* text */);
 
-extern int RmInitResults(tRmInfo * /* rmInfo */);
-extern void RmShutdownResults(tRmInfo * /* rmInfo */);
-extern void RmSaveResults(tRmInfo *rmInfo);
-extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
+extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */, char * /* race */);
 
-extern void RmConfirmScreen(char *question,
-			    char *yesLabel, char *yesTip, void *yesScreen,
-			    char *noLabel, char *noTip, void *noScreen,
-			    int yesFirst);
+extern void RmTwoStateScreen(char *title,
+			     char *label1, char *tip1, void *screen1,
+			     char *label2, char *tip2, void *screen2);
+extern void RmTriStateScreen(char *title,
+			     char *label1, char *tip1, void *screen1,
+			     char *label2, char *tip2, void *screen2,
+			     char *label3, char *tip3, void *screen3);
+
 
 extern void RmRaceParamMenu(void *vrp);
 

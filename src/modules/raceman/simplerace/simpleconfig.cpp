@@ -84,6 +84,7 @@ SrConfigRunState(void)
 	rp.prevScreen = SrConfigBackHookInit();
 	rp.param = RmInfo->params;
 	rp.title = SR_RACE_PARAM_MENU_TITLE;
+	rp.confMask = RM_CONF_RACE_LEN | RM_CONF_QUALIFS;
 	RmRaceParamMenu(&rp);
 	srConfigState = SR_CONFIG_END;
 	break;

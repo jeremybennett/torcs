@@ -141,10 +141,6 @@ SOURCE=.\optionmenu.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\raceman.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\splash.cpp
 # End Source File
 # Begin Source File
@@ -170,10 +166,6 @@ SOURCE=.\mainmenu.h
 # Begin Source File
 
 SOURCE=.\optionmenu.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\raceman.h
 # End Source File
 # Begin Source File
 

@@ -1243,7 +1243,7 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 
     } while (GfParmListSeekNext(TrackHandle, path) == 0);
 
-    printf("\n");
+    /* printf("\n"); */
     
 
     theTrack->seg = root;

@@ -54,6 +54,13 @@ typedef float tdble;
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
 #endif
 
+#define FREEZ(x) do {				\
+    if (x) {					\
+	free(x);				\
+	x = 0;					\
+    }						\
+} while (0)
+
 // <esppat>
 #ifdef WIN32
 #define malloc _tgf_win_malloc

@@ -67,7 +67,7 @@ static tdble spdtgt2ref[10] = {	10,	10,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
 static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble steerk[10] = {	1.0,	1.0,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
-static tdble MaxFuel[10] = {	30.0,	50.0,	100.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
+static tdble MaxFuel[10] = {	100.0,	50.0,	60.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
 static tdble MaxSpeed[10];
 
 #define PIT_STATE_NO            -1

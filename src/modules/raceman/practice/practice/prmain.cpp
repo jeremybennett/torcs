@@ -232,6 +232,7 @@ prManage(tCarElt *car, int dispRes)
 
     if (car->_speed_x > info->topSpd) info->topSpd = car->_speed_x;
     if (car->_speed_x < info->botSpd) info->botSpd = car->_speed_x;
+
     if ((car->_speed_x < 0.1) && (car->_fuel == 0)) {
 	return 1;
     }

@@ -513,7 +513,8 @@ GfParmGetName(void *handle)
 #define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
 /** Write a parameter file.
     @ingroup	params
-    @param	file	Filename of the parameter file (local to $BASE/runtime)
+    @param	file	Filename of the parameter file (local to $BASE/runtime).
+    		<br>If file is NULL the current filenane is used.
     @param	handle	Handle on the parameters
     @param	name	Name of the parameters
     @param	type	type of the parameter file (GFPARM_TEMPLATE or GFPARM_PARAMETER)
@@ -546,14 +547,22 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
     }
 #endif
 
+    if (!file) {
+	file = CurParm->file;
+	if (!file) {
+	    return -1;
+	}
+    } else {
+	if (CurParm->file) free(CurParm->file);
+	CurParm->file = strdup(file);
+    }
+
     if ((out = fopen(file, "w")) == NULL) {
 	perror(file);
 	GfTrace("GfParmWriteFile: file %s has pb\n", file);
 	return -1;
     }
 
-    if (CurParm->file) free(CurParm->file);
-    CurParm->file = strdup(file);
     
     sprintf(buf, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     FW(buf);
@@ -740,7 +749,7 @@ GfParmGetEltNb(void *handle, char *path)
     return count;
 }
 
-/** Seek the first element of a list.
+/** Seek the first section element of a list.
     @ingroup	params
     @param	handle	handle of parameters
     @param	path	list path
@@ -753,13 +762,22 @@ int
 GfParmListSeekFirst(void *handle, char *path)
 {
     tParmNode	*curNode;
+    tParmNode	*kidNode;
 
     curNode = gfParmGetNode((tParm *)handle, path);
     if ((curNode == NULL) || (curNode->kids == NULL)) {
 	return -1;
     }
-    ((tParmSect*)curNode)->current = curNode->kids;
-    return 0;
+    kidNode = curNode->kids;
+    do {
+	if (kidNode->type == PARM_NODE_SECT) {
+	    ((tParmSect*)curNode)->current = kidNode;
+	    return 0;
+	}
+	kidNode = kidNode->next;
+    } while (kidNode != curNode->kids);
+	
+    return -1;
 }
 
 static void
@@ -831,7 +849,7 @@ gfCleanNode(tParmNode *node)
 }
 
 
-/** Remove all the elements of a list.
+/** Remove all the section elements of a list.
     @ingroup	params
     @param	handle	handle of parameters
     @param	path	path of list
@@ -842,20 +860,33 @@ int
 GfParmListClean(void *handle, char *path)
 {
     tParmNode	*curNode;
+    tParmNode	*curKid;
 
     curNode = gfParmGetNode((tParm *)handle, path);
     if (curNode == NULL) {
 	return -1;
     }
+    /* removes only the sections */
+    curKid = curNode->kids;
+    do {
+	curKid = curKid->next;
+	if (curKid->type == PARM_NODE_SECT) {
+	    gfCleanNode(curKid);
+	    /* back to the beginning */
+	    if (curNode->kids) {
+		curKid = curNode->kids->next;
+	    } else {
+		curKid = NULL;
+	    }
+	}
+    } while (curKid && (curKid != curNode->kids));
     
-    gfCleanNode(curNode->kids);
-    curNode->kids = NULL;
     ((tParmSect*)curNode)->current = NULL;
 
     return 0;
 }
 
-/** Go to the next element in the current list.
+/** Go to the next section element in the current list.
     @param	handle	handle of parameters
     @param	path	path of list
     @return	0 Ok
@@ -876,12 +907,14 @@ GfParmListSeekNext(void *handle, char *path)
     }
     
     curElt = ((tParmSect*)curNode)->current->next;
-    ((tParmSect*)curNode)->current = curElt;
-    if (curElt == curNode->kids) {
-	return 1;
+    while (curElt != curNode->kids) {
+	if (curElt->type == PARM_NODE_SECT) {
+	    ((tParmSect*)curNode)->current = curElt;
+	    return 0;
+	}
+	curElt = curElt->next;
     }
-    
-    return 0;
+    return 1;
 }
 
 /** Get The current element name.
