@@ -36,9 +36,9 @@ SimTransmissionConfig(tCar *car)
     tdble		gearI;
     char		path[256];
 
-    clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12);
+    clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
     transType		= GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
-    clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2);
+    clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2f);
 
     fRatio = 0;
     gEff   = 0;
@@ -181,8 +181,8 @@ SimGearboxUpdate(tCar *car)
 	    if (clutch->transferValue > 0.99) {
 		clutch->transferValue = 0.0;
 		trans->curI = trans->freeI[gearbox->gear +  1];
-		if (car->ctrl->accelCmd > 0.1) {
-		    car->ctrl->accelCmd = 0.1;
+		if (car->ctrl->accelCmd > 0.1f) {
+		    car->ctrl->accelCmd = 0.1f;
 		}
 	    }
 	}
@@ -218,9 +218,9 @@ SimGearboxUpdate(tCar *car)
 	if (car->ctrl->gear >= gearbox->gearMin) {
 	    gearbox->gear = car->ctrl->gear;
 	    if (gearbox->gear > 0) {
-		clutch->plip = 0.8;
+		clutch->plip = 0.8f;
 	    } else {
-		clutch->plip = 1.0;
+		clutch->plip = 1.0f;
 	    }
 	    clutch->state = CLUTCH_RELEASING;
 	    if (gearbox->gear != 0) {

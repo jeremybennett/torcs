@@ -27,6 +27,6 @@
 #include "sim.h"
 
 
-tdble simDammageFactor[] = {0.0, 0.5, 0.8, 1.0, 1.0};
+tdble simDammageFactor[] = {0.0f, 0.5f, 0.8f, 1.0f, 1.0f};
 
-tdble simSkidFactor[] = {0.40, 0.35, 0.3, 0.0, 0.0};
+tdble simSkidFactor[] = {0.40f, 0.35f, 0.3f, 0.0f, 0.0f};

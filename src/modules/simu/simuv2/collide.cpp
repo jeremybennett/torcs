@@ -29,7 +29,7 @@ SimCarCollideZ(tCar *car)
     t3Dd	normal;
     tdble	dotProd;
     tWheel	*wheel;
-    
+
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
     }
@@ -39,7 +39,7 @@ SimCarCollideZ(tCar *car)
 	if (wheel->state & SIM_SUSP_COMP) {
 	    //car->DynGCg.pos.z += wheel->susp.x - wheel->rideHeight;
 	    car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
-	    
+
 /* 	    if ((car->DynGCg.vel.ax * wheel->staticPos.y) < 0) { */
 /* 		car->DynGCg.vel.ax = 0; */
 /* 	    } */
@@ -74,85 +74,119 @@ SimCarCollideXYScene(tCar *car)
     tdble	dotProd, nx, ny, cx, cy, dotprod2;
     tTrackBarrier *curBarrier;
     tdble	dmg;
-    
+
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
-	return;
+		return;
     }
 
-    corner = &(car->corner[0]);
-    for (i = 0; i < 4; i++, corner++) {
-	cx = corner->pos.ax - car->DynGCg.pos.x;
-	cy = corner->pos.ay - car->DynGCg.pos.y;
-	seg = car->trkPos.seg;
-	RtTrackGlobal2Local(seg, corner->pos.ax, corner->pos.ay, &trkpos, TR_LPOS_TRACK);
-	seg = trkpos.seg;
-	if (trkpos.toRight < 0.0) {
-	    /* collision with right border */
-	    curBarrier = seg->barrier[0];
-	    if (seg->rside != NULL) {
-		seg = seg->rside;
-		if (seg->rside != NULL) {
-		    seg = seg->rside;
+	//int segtype = seg->type;
+
+	corner = &(car->corner[0]);
+	for (i = 0; i < 4; i++, corner++) {
+		cx = corner->pos.ax - car->DynGCg.pos.x;
+		cy = corner->pos.ay - car->DynGCg.pos.y;
+		seg = car->trkPos.seg;
+		RtTrackGlobal2Local(seg, corner->pos.ax, corner->pos.ay, &trkpos, TR_LPOS_TRACK);
+		seg = trkpos.seg;
+		if (trkpos.toRight < 0.0) {
+			/* collision with right border */
+			curBarrier = seg->barrier[0];
+			if (seg->rside != NULL) {
+				seg = seg->rside;
+				if (seg->rside != NULL) {
+					seg = seg->rside;
+				}
+			}
+			// TODO: Does not work, always parallel to track (fix in trackX.cpp?)!
+			//RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_RGT, &normal);
+			// Temporary fix:
+			tdble nx = seg->vertex[TR_ER].x - seg->vertex[TR_SR].x;
+			tdble ny = seg->vertex[TR_ER].y - seg->vertex[TR_SR].y;
+			normal.x = -ny;
+			normal.y = nx;
+			tdble len = sqrt(normal.x*normal.x + normal.y*normal.y);
+			normal.x /= len;
+			normal.y /= len;
+
+			car->DynGCg.pos.x -= normal.x * trkpos.toRight;
+			car->DynGCg.pos.y -= normal.y * trkpos.toRight;
+		} else if (trkpos.toLeft < 0.0) {
+			/* collision with left border */
+			curBarrier = seg->barrier[1];
+			if (seg->lside != NULL) {
+				seg = seg->lside;
+				if (seg->lside != NULL) {
+					seg = seg->lside;
+				}
+			}
+			// TODO: Does not work, always parallel to track(fix in trackX.cpp?)!
+			//RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_LFT, &normal);
+			// Temporary fix:
+			tdble nx = seg->vertex[TR_EL].x - seg->vertex[TR_SL].x;
+			tdble ny = seg->vertex[TR_EL].y - seg->vertex[TR_SL].y;
+			normal.x = ny;
+			normal.y = -nx;
+			tdble len = sqrt(normal.x*normal.x + normal.y*normal.y);
+			normal.x /= len;
+			normal.y /= len;
+
+			car->DynGCg.pos.x -= normal.x * trkpos.toLeft;
+			car->DynGCg.pos.y -= normal.y * trkpos.toLeft;
+		} else {
+			continue;
 		}
-	    }
-	    RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_RGT, &normal);
-	    car->DynGCg.pos.x -= normal.x * trkpos.toRight;
-	    car->DynGCg.pos.y -= normal.y * trkpos.toRight;	    
-	} else if (trkpos.toLeft < 0.0) {
-	    /* collision with left border */
-	    curBarrier = seg->barrier[1];
-	    if (seg->lside != NULL) {
-		seg = seg->lside;
-		if (seg->lside != NULL) {
-		    seg = seg->lside;
+
+		car->blocked = 1;
+		/* friction */
+		car->collision |= 1;
+		nx = normal.x;
+		ny = normal.y;
+
+		// Impact speed perpendicular to barrier (of corner).
+		initDotProd = nx * corner->vel.x + ny * corner->vel.y;
+
+		tdble absvel = MAX(1.0, sqrt(car->DynGCg.vel.x*car->DynGCg.vel.x + car->DynGCg.vel.y*car->DynGCg.vel.y));
+		tdble GCgnormvel = car->DynGCg.vel.x*normal.x + car->DynGCg.vel.y*normal.y;
+		tdble cosa = GCgnormvel/absvel;
+		tdble dmgDotProd = GCgnormvel*cosa;
+
+		dotProd = initDotProd * curBarrier->surface->kFriction;
+		car->DynGCg.vel.x -= nx * dotProd;
+		car->DynGCg.vel.y -= ny * dotProd;
+		dotprod2 = (nx * cx + ny * cy);
+		car->DynGCg.vel.az -= dotprod2 * dotProd / 10.0;
+		if (fabs(car->DynGCg.vel.az) > 6.0) {
+			car->DynGCg.vel.az = SIGN(car->DynGCg.vel.az) * 6.0;
 		}
-	    }
-	    RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_LFT, &normal);
-	    car->DynGCg.pos.x -= normal.x * trkpos.toLeft;
-	    car->DynGCg.pos.y -= normal.y * trkpos.toLeft;	    
-	} else {
-	    continue;
-	}
 
-	car->blocked = 1;
-	/* friction */
-	car->collision |= 1;
-	nx = normal.x;
-	ny = normal.y;
-	initDotProd = nx * corner->vel.x + ny * corner->vel.y;
-	dotProd = initDotProd * curBarrier->surface->kFriction;
-	car->DynGCg.vel.x -= nx * dotProd;
-	car->DynGCg.vel.y -= ny * dotProd;
-	dotprod2 = (nx * cx + ny * cy);
-	car->DynGCg.vel.az -= dotprod2 * dotProd / 10.0;
-	if (fabs(car->DynGCg.vel.az) > 6.0) {
-	    car->DynGCg.vel.az = SIGN(car->DynGCg.vel.az) * 6.0;
-	}
-	
-	/* rebound */
-	dotProd = initDotProd;
-	dmg = 0;
-	if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-	    dmg = curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel];
-	    car->dammage += (int)dmg;
-	}
-	dotProd *= curBarrier->surface->kRebound;
-	/* dotprod2 = (nx * cx + ny * cy); */
+		/* rebound */
+		dotProd = initDotProd;
+		dmg = 0;
+		if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
+			dmg = curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel];
+			tdble dmg2 = curBarrier->surface->kDammage * fabs(dmgDotProd) * simDammageFactor[car->carElt->_skillLevel];
+			//car->dammage += (int)dmg;
+			car->dammage += (int)dmg2;
+		}
+		dotProd *= curBarrier->surface->kRebound;
+		/* dotprod2 = (nx * cx + ny * cy); */
 
-	if (dotProd < 0) {
-	    car->collision |= 2;
-	    car->normal.x = normal.x * dmg;
-	    car->normal.y = normal.y * dmg;
-	    car->collpos.x = corner->pos.ax;
-	    car->collpos.y = corner->pos.ay;
-	    
-	    /* collision detected */
-	    car->DynGCg.vel.x -= nx * dotProd;
-	    car->DynGCg.vel.y -= ny * dotProd;
+		// If the car moves toward the barrier, rebound.
+		if (dotProd < 0) {
+			car->collision |= 2;
+			car->normal.x = normal.x * dmg;
+			car->normal.y = normal.y * dmg;
+			car->collpos.x = corner->pos.ax;
+			car->collpos.y = corner->pos.ay;
 
-	    /* car->DynGCg.vel.az -= dotprod2 * dotProd * 0.2; */
+			//printf("nx: %f, ny: %f\n", nx, ny);
 
-	}
+			/* collision detected */
+			car->DynGCg.vel.x -= nx * dotProd;
+			car->DynGCg.vel.y -= ny * dotProd;
+			/* car->DynGCg.vel.az -= dotprod2 * dotProd * 0.2; */
+
+		}
     }
 }
 

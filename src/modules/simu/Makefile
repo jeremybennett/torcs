@@ -17,7 +17,7 @@
 
 
 #SUBDIRS		= $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
-SUBDIRS		= simuv2 simuv3
+SUBDIRS		= simuv2
 
 DATASUBDIRS	= $(SUBDIRS)
 
