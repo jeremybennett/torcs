@@ -87,6 +87,70 @@ typedef struct
     int		collisionAware;
 } tCar;
 
+#define CHECK_VAR(_var_, _msg_) do {						\
+    if (isnan(_var_) || isinf(_var_)) {						\
+	printf("%s = %f  in %s line %d\n", _msg_, _var_, __FILE__, __LINE__);	\
+	exit(0);								\
+    }										\
+} while (0)
+
+
+#define CHECK(_car_) do {													\
+    if (isnan((_car_)->DynGC.acc.x) || isinf((_car_)->DynGC.acc.x)) {								\
+	printf("DynGC.acc.x = %f for %s in %s line %d\n", (_car_)->DynGC.acc.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.acc.y) || isinf((_car_)->DynGC.acc.y)) {								\
+	printf("DynGC.acc.y = %f for %s in %s line %d\n", (_car_)->DynGC.acc.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.vel.x) || isinf((_car_)->DynGC.vel.x)) {								\
+	printf("DynGC.vel.x = %f for %s in %s line %d\n", (_car_)->DynGC.vel.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.vel.y) || isinf((_car_)->DynGC.vel.y)) {								\
+	printf("DynGC.vel.y = %f for %s in %s line %d\n", (_car_)->DynGC.vel.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.pos.x) || isinf((_car_)->DynGC.pos.x)) {								\
+	printf("DynGC.pos.x = %f for %s in %s line %d\n", (_car_)->DynGC.pos.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.pos.y) || isinf((_car_)->DynGC.pos.y)) {								\
+	printf("DynGC.pos.y = %f for %s in %s line %d\n", (_car_)->DynGC.pos.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGC.acc.x) || isinf((_car_)->DynGC.acc.x)) {								\
+	printf("DynGCg.acc.x = %f for %s in %s line %d\n", (_car_)->DynGCg.acc.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGCg.acc.y) || isinf((_car_)->DynGCg.acc.y)) {								\
+	printf("DynGCg.acc.y = %f for %s in %s line %d\n", (_car_)->DynGCg.acc.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGCg.vel.x) || isinf((_car_)->DynGCg.vel.x)) {								\
+	printf("DynGCg.vel.x = %f for %s in %s line %d\n", (_car_)->DynGCg.vel.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGCg.vel.y) || isinf((_car_)->DynGCg.vel.y)) {								\
+	printf("DynGCg.vel.y = %f for %s in %s line %d\n", (_car_)->DynGCg.vel.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGCg.pos.x) || isinf((_car_)->DynGCg.pos.x)) {								\
+	printf("DynGCg.pos.x = %f for %s in %s line %d\n", (_car_)->DynGCg.pos.x, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->DynGCg.pos.y) || isinf((_car_)->DynGCg.pos.y)) {								\
+	printf("DynGCg.pos.y = %f for %s in %s line %d\n", (_car_)->DynGCg.pos.y, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+    if (isnan((_car_)->aero.drag) || isinf((_car_)->aero.drag)) {								\
+	printf("aero.drag = %f for %s in %s line %d\n", (_car_)->aero.drag, (_car_)->carElt->_name, __FILE__, __LINE__);	\
+	exit(0);														\
+    }																\
+} while (0)
+
+
 #endif /* _CAR__H_ */ 
 
 

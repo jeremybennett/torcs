@@ -98,7 +98,6 @@ typedef float tdble;
 #define MIN(x,y) ((x) < (y) ? (x) : (y))
 #endif
 
-
 /*********************************
  * Interface For Dynamic Modules *
  *********************************/

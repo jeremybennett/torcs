@@ -187,7 +187,7 @@ SimCarUpdateForces(tCar *car)
 
     /* Aero Drag */
     F.F.x += car->aero.drag;
-
+    
     /* Wings & Aero Downforce */
     for (i = 0; i < 2; i++) {
 	/* forces */
@@ -249,7 +249,6 @@ SimCarUpdateSpeed(tCar *car)
     Cosz = car->Cosz;
     Sinz = car->Sinz;
 
-
     car->DynGCg.vel.x += car->DynGCg.acc.x * SimDeltaTime;
     car->DynGCg.vel.y += car->DynGCg.acc.y * SimDeltaTime;
     car->DynGCg.vel.z += car->DynGCg.acc.z * SimDeltaTime;
@@ -262,6 +261,7 @@ SimCarUpdateSpeed(tCar *car)
     Rm = Rr * car->wheelbase /*  / 2.0 */ * car->Iinv.z * SimDeltaTime;
     Rr = 2.0 * Rr / mass * SimDeltaTime;
     vel = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y);
+    
     if (Rr > vel) {
 	Rr = vel;
     }
@@ -323,7 +323,7 @@ SimCarUpdatePos(tCar *car)
 {
     tdble vx, vy;
     tdble accx, accy;
-    
+
     vx = car->DynGCg.vel.x;
     vy = car->DynGCg.vel.y;
     

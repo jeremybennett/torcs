@@ -57,10 +57,10 @@ static void
 ctrlCheck(tCar *car)
 {
     /* sanity check */
-    if (isnan(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
-    if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
-    if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
-    if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
+    if (isnan(car->ctrl->accelCmd) || isinf(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
+    if (isnan(car->ctrl->brakeCmd) || isinf(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
+    if (isnan(car->ctrl->steer) || isinf(car->ctrl->steer)) car->ctrl->steer = 0;
+    if (isnan(car->ctrl->gear) || isinf(car->ctrl->gear)) car->ctrl->gear = 0;
 
     /* RELAXATION2(car->ctrl->accelCmd, car->preCtrl.accelCmd, 50.0); */
     /* RELAXATION2(car->ctrl->brakeCmd, car->preCtrl.brakeCmd, 50.0); */
@@ -294,8 +294,7 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 		continue;
 	    }
 	}
-
-
+	
 	ctrlCheck(car);
 	SimSteerUpdate(car);
 	SimGearboxUpdate(car);

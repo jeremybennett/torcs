@@ -176,15 +176,16 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 	    }
 	    break;
 	case DIFF_VISCOUS_COUPLER:
-	    if (spinVel0 >= spinVel0) {
+	    if (spinVel0 >= spinVel1) {
 		DrTq0 = DrTq * differential->dTqMin;
 		DrTq1 = DrTq * (1 - differential->dTqMin);
 	    } else {
-		deltaTq = differential->dTqMin + (1.0 - exp(-differential->viscosity * spinVel0 - spinVel1)) /
+		deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * spinVel0 - spinVel1))) /
 						  differential->viscomax * differential->dTqMax;
 		DrTq0 = DrTq * deltaTq;
 		DrTq1 = DrTq * (1 - deltaTq);
 	    }
+	
 	    break;
 	default: /* NONE ? */
 	    DrTq0 = DrTq1 = 0;

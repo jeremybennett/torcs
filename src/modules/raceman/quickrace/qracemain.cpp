@@ -497,10 +497,8 @@ qrOneStep(void *telem)
 	qrManage(qrTheSituation.cars[i]);
     }
 
+    qrRaceMsgUpdate();
     qrSortCars();
-    if (qrRunning) {
-	qrRaceMsgUpdate();
-    }
 }
 
 void

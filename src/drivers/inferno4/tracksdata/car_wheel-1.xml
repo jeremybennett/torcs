@@ -14,11 +14,9 @@
 
 <!DOCTYPE params SYSTEM "../../../libs/tgf/params.dtd">
 
-<params name="Tanhoj" type="template" mode="mw">
+<params name="inferno4" type="template" mode="mw">
+
   <section name="Car">
-    <!-- weight bias -->
-    <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
-    <attnum name="rear right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"></attnum>
   </section>
 

@@ -23,8 +23,8 @@
 	<attstr name="team" val="torcs"></attstr>
 	<attstr name="desc" val=""></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-	<attstr name="car name" val="xj-220"></attstr>
-	<attstr name="category" val="Track-RWD-GrA"></attstr>
+	<attstr name="car name" val="clkdtm"></attstr>
+	<attstr name="category" val="Track-RWD-GrB"></attstr>
 	<attnum name="race number" val="19"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="0.0"></attnum>

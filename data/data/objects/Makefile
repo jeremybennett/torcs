@@ -20,6 +20,10 @@ DATADIR      = data/objects
 
 DATA         = $(shell find *.ac -maxdepth 0 -print)
 
+data-devel_PKGFILES	= $(DATA)
+
+data-devel_PKGDIR	= $(DATADIR)
+
 
 include ${MAKE_DEFAULT}
 

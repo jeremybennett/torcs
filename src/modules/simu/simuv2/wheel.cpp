@@ -169,7 +169,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	sx = (vt - wrl) / v; /* target */
 	sy = sin(sa);
     }
-    
+
     Ft = 0;
     Fn = 0;
     s = sqrt(sx*sx+sy*sy);

@@ -227,7 +227,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
     p->type = type;
 
     while (segnotfound) {
-	
+    
 	switch(seg->type) {
 	case TR_STR:
 	    /* rotation */

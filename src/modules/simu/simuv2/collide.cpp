@@ -164,7 +164,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     float	rapn, rbpn;
     float	distpab;
 
-    float	e = 0.5;	/* energy restitution */
+    float	e = 1.0;	/* energy restitution */
     
     if ((car1->carElt->_state & RM_CAR_STATE_NO_SIMU) ||
 	(car2->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
@@ -190,7 +190,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	n[0]  = -(float)collData->normal[0];
 	n[1]  = -(float)collData->normal[1];
     }
-
+    
     sgNormalizeVec2(n);
 
 /*     printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)\n", */
@@ -272,6 +272,9 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
 #define ROT_K	0.5
 
+/*     printf("Vel %d : %f (%f, %f, %f) -> ", car1->carElt->index, j, */
+/* 	   car1->DynGCg.vel.x, car1->DynGCg.vel.y, car1->DynGCg.vel.az); */
+
     sgScaleVec2(tmpv, n, j * car1->Minv);
     if (car1->collision & 4) {
 	sgAddVec2(v2a, (const float*)&(car1->VelColl.x), tmpv);
@@ -290,10 +293,13 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     carElt = car1->carElt;
     sgMakeCoordMat4(carElt->pub->posMat, car1->DynGCg.pos.x, car1->DynGCg.pos.y, car1->DynGCg.pos.z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+
     dtSelectObject(car1);
     dtLoadIdentity();
     dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0);
     dtMultMatrixf((const float *)(carElt->_posMat));
+
+/*     printf("(%f, %f, %f)\n", car1->DynGCg.vel.x, car1->DynGCg.vel.y, car1->DynGCg.vel.az); */
 
 /*     printf("Vel %d : %f (%f, %f, %f) -> ", car2->carElt->index, j, */
 /* 	   car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az); */
@@ -319,7 +325,6 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     dtLoadIdentity();
     dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0);
     dtMultMatrixf((const float *)(carElt->_posMat));
-
 
 /*     printf("(%f, %f, %f)\n", car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az); */
     

@@ -47,7 +47,7 @@ PKGLIST		= src src-tools \
 		  src-robots-base src-robots-berniw src-robots-K1999 \
 		  data \
 		  data-cars-gt data-cars-dtm data-cars-Patwo-Design data-cars-misc \
-		  data-tracks-base
+		  data-tracks-base data-devel
 
 DATASUBDIRS	= data
 

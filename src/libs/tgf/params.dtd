@@ -31,8 +31,8 @@
           name CDATA #REQUIRED
 	  min  CDATA #IMPLIED
 	  max  CDATA #IMPLIED
-          val  CDATA #REQUIRED
 	  unit CDATA #IMPLIED
+          val  CDATA #REQUIRED
 >
 
 <!ELEMENT attstr (#PCDATA)>
