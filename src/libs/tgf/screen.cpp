@@ -46,11 +46,34 @@ static int GfViewHeight;
 static int GfScrCenX;
 static int GfScrCenY;
 
-void	*scrMenuHdle = NULL;
+void	*scrHandle = NULL;
 static char buf[1024];
 
 static int usedFG = 0;
+#if !defined(FREEGLUT) && !defined(WIN32)
 static int usedGM = 0;
+#endif
+
+static char	*Res[] = {"640x480", "800x600", "1024x768", "1200x960", "1280x1024", "1600x1200", "320x200"};
+static char	*Mode[] = {"Full-screen mode", "Window mode"};
+static char	*Depth[] = {"24", "32", "8", "16"};
+
+static int	nbRes = sizeof(Res) / sizeof(Res[0]);
+static int	nbMode = sizeof(Mode) / sizeof(Mode[0]);
+static int	nbDepth = sizeof(Depth) / sizeof(Depth[0]);
+
+static int	curRes = 0;
+static int	curMode = 0;
+static int	curDepth = 0;
+
+static int	ResLabelId;
+static int	DepthLabelId;
+static int	ModeLabelId;
+
+static void	*paramHdle;
+
+static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
+
 
 void
 gfScreenInit(void)
@@ -72,8 +95,6 @@ static void Reshape(int width, int height)
     GfScrCenY = height / 2;
 }
 
-static int DepthList[] = { 24, 24, 16, 8, 0};
-
 void GfScrInit(int argc, char *argv[])
 {
     int		Window;
@@ -90,29 +111,30 @@ void GfScrInit(int argc, char *argv[])
     yw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 480);
     winX = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, xw);
     winY = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, yw);
+    depth = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, 32);
     GfViewWidth = xw;
     GfViewHeight = yw;
     GfScrCenX = xw / 2;
     GfScrCenY = yw / 2;
 
+#if !defined(FREEGLUT) && !defined(WIN32)
+    /* Resize the screen */
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	depth = 0;
-	while (!usedFG && DepthList[depth]) {
-	    for (i = 160; i > 49; i--) {
-		sprintf(buf, "%dx%d:%d@%d", winX, winY, DepthList[depth], i);
-		printf("Trying %s mode\n", buf);
-		fglutGameModeString(buf);
-		if (fglutEnterGameMode()) {
-		    printf("OK done for %s\n", buf);
-		    usedFG = 1;
-		    break;
-		}
+	for (i = 160; i > 59; i--) {
+	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+	    GfOut("Trying %s mode\n", buf);
+	    fglutGameModeString(buf);
+	    if (fglutEnterGameMode()) {
+		GfOut("OK done for %s\n", buf);
+		usedFG = 1;
+		break;
 	    }
-	    depth++;
 	}
     }
-   
+    /* End of resize the screen */
+#endif
+
     glutInit(&argc, argv);
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
@@ -120,22 +142,18 @@ void GfScrInit(int argc, char *argv[])
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;
     if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-	depth = 0;
-	while (!fullscreen && DepthList[depth]) {
-	    for (i = 160; i > 49; i--) {
-		sprintf(buf, "%dx%d:%d@%d", winX, winY, DepthList[depth], i);
-		glutGameModeString(buf);
-		if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
-		    glutEnterGameMode();
-		    if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
-			usedGM = 1;
-			fullscreen = 1;
-			break;
-		    } else {
-			glutLeaveGameMode();
-		    }
+	for (i = 160; i > 59; i--) {
+	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+	    glutGameModeString(buf);
+	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+		glutEnterGameMode();
+		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
+		    usedGM = 1;
+		    fullscreen = 1;
+		    break;
+		} else {
+		    glutLeaveGameMode();
 		}
-		depth++;
 	    }
 	}
     }
@@ -171,9 +189,11 @@ void GfScrShutdown(void)
     if (usedGM) {
 	glutLeaveGameMode();
     }
+#if !defined(FREEGLUT) && !defined(WIN32)
     if (usedFG) {
 	fglutLeaveGameMode();
     }
+#endif
 }
 
 
@@ -193,11 +213,36 @@ void GfScrGetSize(int *scrw, int *scrh, int *vieww, int *viewh)
     *viewh = GfViewHeight;
 }
 
+static void
+saveParams(void)
+{
+    int x, y, bpp;
+
+    sscanf(Res[curRes], "%dx%d", &x, &y);
+    sscanf(Depth[curDepth], "%d", &bpp);
+
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, x);
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, y);
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, x);
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, y);
+    GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, (char*)NULL, bpp);
+
+    if (curMode == 0) {
+	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
+    } else {
+	GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
+    }
+    GfParmWriteFile(NULL, paramHdle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
+}
+
+
 void
 GfScrReinit(void *dummy)
 {
     int retcode;
-    
+
+    saveParams();
+
 #ifdef WIN32
     retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
 #else
@@ -214,85 +259,101 @@ GfScrReinit(void *dummy)
     }
 }
 
-
 static void
-chgScreenType(void *p)
+updateLabelText(void)
 {
-    void	*handle;
-    int i = (int)p;
-    
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
-    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    switch(i){
-    case 0:
-	GfParmSetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes");
-	break;
-    case 1:
-	GfParmSetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
-	break;
-    }
-    GfParmWriteFile(NULL, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
-    GfParmReleaseHandle(handle);
-
-    GfScrReinit(NULL);
+    GfuiLabelSetText (scrHandle, ResLabelId, Res[curRes]);
+    GfuiLabelSetText (scrHandle, DepthLabelId, Depth[curDepth]);
+    GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
 }
 
 static void
-chgScreenSize(void *p)
+ResPrevNext(void *vdelta)
 {
-    void	*handle;
-    int i = (int)p;
-    
-    sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
-    handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    switch(i){
-    case 0:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 320);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 200);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 320);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 200);
-	break;
-    case 1:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 480);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 640);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 480);
-	break;
-    case 2:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 800);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 600);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 800);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 600);
-	break;
-    case 3:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1024);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 768);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1024);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 768);
-	break;
-    case 4:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1200);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 960);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1200);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 960);
-	break;
-    case 5:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1280);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 1024);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1280);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 1024);
-	break;
-    case 6:
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 1600);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 1200);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_X, (char*)NULL, 1600);
-	GfParmSetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_WIN_Y, (char*)NULL, 1200);
-	break;
-    }
-    GfParmWriteFile(NULL, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
-    GfParmReleaseHandle(handle);
+    int delta = (int)vdelta;
 
-    GfScrReinit(NULL);
+    curRes += delta;
+    if (curRes < 0) {
+	curRes = nbRes - 1;
+    } else {
+	if (curRes >= nbRes) {
+	    curRes = 0;
+	}
+    }
+    updateLabelText();
+}
+
+static void
+DepthPrevNext(void *vdelta)
+{
+    int delta = (int)vdelta;
+
+    curDepth += delta;
+    if (curDepth < 0) {
+	curDepth = nbDepth - 1;
+    } else {
+	if (curDepth >= nbDepth) {
+	    curDepth = 0;
+	}
+    }
+    updateLabelText();
+}
+
+static void
+ModePrevNext(void *vdelta)
+{
+    int delta = (int)vdelta;
+
+    curMode += delta;
+    if (curMode < 0) {
+	curMode = nbMode - 1;
+    } else {
+	if (curMode >= nbMode) {
+	    curMode = 0;
+	}
+    }
+    updateLabelText();
+}
+
+static void
+initFromConf(void)
+{
+    int x, y, bpp;
+    int i;
+
+    x = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, NULL, 640);
+    y = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, NULL, 480);
+
+    sprintf(buf, "%dx%d", x, y);
+    for (i = 0; i < nbRes; i++) {
+	if (!strcmp(buf, Res[i])) {
+	    curRes = i;
+	    break;
+	}
+    }
+
+    if (!strcmp("yes", GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "yes"))) {
+	curMode = 0;
+    } else {
+	curMode = 1;
+    }
+
+    bpp = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, NULL, 24);
+    sprintf(buf, "%d", bpp);
+    for (i = 0; i < nbDepth; i++) {
+	if (!strcmp(buf, Depth[i])) {
+	    curDepth = i;
+	    break;
+	}
+    }
+}
+
+
+static void
+onActivate(void *dummy)
+{
+    initFromConf();
+    updateLabelText();
 }
 
 
@@ -303,80 +364,126 @@ chgScreenSize(void *p)
 void *
 GfScrMenuInit(void *precMenu)
 {
-    void	*paramHdle;
-    char	*fullscreen;
+    int		y, x1, x2;
     
-    if (scrMenuHdle) return scrMenuHdle;
-    scrMenuHdle = GfuiMenuScreenCreate("Screen configuration");
-    GfuiScreenAddBgImg(scrMenuHdle, "data/img/splash-graphic.png");
-
-    GfuiMenuButtonCreate(scrMenuHdle, "320x200", "Relaunch TORCS in 320x200 mode", (void*)0, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "640x480", "Relaunch TORCS in 640x480 mode", (void*)1, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "800x600", "Relaunch TORCS in 800x600 mode", (void*)2, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "1024x768", "Relaunch TORCS in 1024x768 mode", (void*)3, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "1200x960", "Relaunch TORCS in 1200x960 mode", (void*)4, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "1280x1024", "Relaunch TORCS in 1280x1024 mode", (void*)5, chgScreenSize);
-    GfuiMenuButtonCreate(scrMenuHdle, "1600x1200", "Relaunch TORCS in 1600x1200 mode", (void*)6, chgScreenSize);
-
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    fullscreen = GfParmGetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
-    if (strcmp(fullscreen, GFSCR_VAL_NO) == 0) {
-	GfuiMenuButtonCreate(scrMenuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode", (void*)0, chgScreenType);
-	GfuiEnable(scrMenuHdle, GfuiMenuButtonCreate(scrMenuHdle, "Window mode", "Relaunch TORCS in window mode",
-						  (void*)1, chgScreenType),
-		   GFUI_DISABLE);
-    } else {
-	GfuiEnable(scrMenuHdle, GfuiMenuButtonCreate(scrMenuHdle, "Full-screen mode", "Relaunch TORCS in full-screen mode",
-						  (void*)0, chgScreenType),
-		   GFUI_DISABLE);
-	GfuiMenuButtonCreate(scrMenuHdle, "Window mode", "Relaunch TORCS in window mode", (void*)1, chgScreenType);
-    }
-    GfParmReleaseHandle(paramHdle);
- 
-    GfuiMenuBackQuitButtonCreate(scrMenuHdle, "Back", "", precMenu, GfuiScreenActivate);
- 
-    return scrMenuHdle;
-}
 
-/** Convert a time in seconds (float) to an ascii string.
-    @ingroup	screen
-    @param	sec	Time to convert
-    @param	sgn	Flag to indicate if the sign (+) is to be displayed for positive values of time.
-    @return	Time string.
-    @warning	The returned string has to be free by the caller.
- */
-char * 
-GfTime2Str(tdble sec, int sgn)
-{
-    char  buf[256];
-    char* sign;
+    if (scrHandle) return scrHandle;
 
-    if (sec < 0.0) {
-	sec = -sec;
-	sign = "-";
-    } else {
-	if (sgn) {
-	    sign = "+";
-	} else {
-	    sign = "  ";
-	}
-    }
-    int h = (int)(sec / 3600.0);
-    sec -= 3600 * h;
-    int m = (int)(sec / 60.0);
-    sec -= 60 * m;
-    int s = (int)(sec);
-    sec -= s;
-    int c = (int)floor((sec) * 100.0);
-    if (h) {
-	(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
-    } else if (m) {
-	(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
-    } else {
-	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
-    }
-    return strdup(buf);
+    scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
+    GfuiTitleCreate(scrHandle, "Screen configuration", 0);
+    GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphic.png");
+
+    x1 = 200;
+    x2 = 440;
+    y = 400;
+    GfuiLabelCreate(scrHandle,
+		    "Screen Resolution",
+		    GFUI_FONT_LARGE,
+		    320, y, GFUI_ALIGN_HC_VB,
+		    0);   
+
+    y -= 30;
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left-pushed.png",
+		       x1, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)-1, ResPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    ResLabelId = GfuiLabelCreate(scrHandle,
+				 "",
+				 GFUI_FONT_LARGE_C,
+				 320, y, GFUI_ALIGN_HC_VB,
+				 30);
+    GfuiLabelSetColor(scrHandle, ResLabelId, LabelColor);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right-pushed.png",
+		       x2, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)1, ResPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    y -= 60;
+    GfuiLabelCreate(scrHandle,
+		    "Color Depth",
+		    GFUI_FONT_LARGE,
+		    320, y, GFUI_ALIGN_HC_VB,
+		    0);   
+    y -= 30;
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left-pushed.png",
+		       x1, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)-1, DepthPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    DepthLabelId = GfuiLabelCreate(scrHandle,
+				   "",
+				   GFUI_FONT_LARGE_C,
+				   320, y, GFUI_ALIGN_HC_VB,
+				   30);
+    GfuiLabelSetColor(scrHandle, DepthLabelId, LabelColor);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right-pushed.png",
+		       x2, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)1, DepthPrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    y -= 60;
+    GfuiLabelCreate(scrHandle,
+		    "Display Mode",
+		    GFUI_FONT_LARGE,
+		    320, y, GFUI_ALIGN_HC_VB,
+		    0);   
+    y -= 30;
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left.png",
+		       "data/img/arrow-left-pushed.png",
+		       x1, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)-1, ModePrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    ModeLabelId = GfuiLabelCreate(scrHandle,
+				  "",
+				  GFUI_FONT_LARGE_C,
+				  320, y, GFUI_ALIGN_HC_VB,
+				  30);
+    GfuiLabelSetColor(scrHandle, ModeLabelId, LabelColor);
+
+    GfuiGrButtonCreate(scrHandle,
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right.png",
+		       "data/img/arrow-right-pushed.png",
+		       x2, y, GFUI_ALIGN_HC_VB, 0,
+		       (void*)1, ModePrevNext,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+    
+    GfuiAddKey(scrHandle, 13, "Select Mode", NULL, GfScrReinit, NULL);
+    GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     NULL, GfScrReinit, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    
+    GfuiAddKey(scrHandle, 27, "Cancel", precMenu, GfuiScreenActivate, NULL);
+    GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     precMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+ 
+    return scrHandle;
 }
 
 

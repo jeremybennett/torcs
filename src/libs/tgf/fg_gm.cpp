@@ -270,6 +270,14 @@ static void fghRestoreState( void )
                 displayModes[ i ]
             );
 
+	    /* apply the modifs */
+	    XF86VidModeGetAllModeLines(
+		fgDisplay.display,
+		fgDisplay.Screen,
+		&displayModesCount,
+		&displayModes
+	    );
+
             return;
         }
     }
@@ -334,6 +342,14 @@ static int fghChangeDisplayMode( int haveToTest )
                 (fgDisplay.ScreenWidth - fgState.GameModeSize.X) / 2,
                 (fgDisplay.ScreenHeight - fgState.GameModeSize.Y) / 2
             );
+
+	    /* apply the modifs */
+	    XF86VidModeGetAllModeLines(
+		fgDisplay.display,
+		fgDisplay.Screen,
+		&displayModesCount,
+		&displayModes
+	    );
 
 	    /*
              * Return successfull...
@@ -404,7 +420,6 @@ int fglutEnterGameMode( void )
         GfOut( "failed to change screen settings" );
         return( FALSE );
     }
-    fghRestoreState();		/* Why ? */
     
     /*
      * Return successfull

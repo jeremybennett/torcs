@@ -191,8 +191,6 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
 				(char*)NULL, grGFlag);
 
-    GfuiAddSKey(screen, GLUT_KEY_UP,   "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_DOWN, "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
     GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
     GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
     GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom, NULL);
@@ -208,11 +206,13 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera, NULL);
     GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera, NULL);
 
-    GfuiAddKey(screen, 'b',            "Driver Board",     (void*)0, grSelectBoard, NULL);
-    GfuiAddKey(screen, 'c',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
-    GfuiAddKey(screen, 'l',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
-    GfuiAddKey(screen, 'f',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
-    GfuiAddKey(screen, 'g',            "Debug Info",       (void*)4, grSelectBoard, NULL);
+    GfuiAddKey(screen, '5',            "G/Cmd Graph",      (void*)4, grSelectBoard, NULL);
+    GfuiAddKey(screen, '4',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
+    GfuiAddKey(screen, '3',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
+    GfuiAddKey(screen, '2',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
+    GfuiAddKey(screen, '1',            "Driver Board",     (void*)0, grSelectBoard, NULL);
+    GfuiAddKey(screen, '>',            "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
+    GfuiAddKey(screen, '<',            "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
 
     grInitScene();
 
@@ -256,8 +256,8 @@ refresh(tSituation *s)
     START_PROFILE("grDrawBackground/glClear");
     glDepthFunc(GL_LEQUAL);
     if (grCurCam->getDrawBackground()) {
-	glDisable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_LIGHTING);    
 	grDrawBackground(grCurCam);
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);

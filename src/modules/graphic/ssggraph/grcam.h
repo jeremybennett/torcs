@@ -77,12 +77,18 @@ class cGrCamera
 	pos.z = eye[2];
 	return &pos;
     }
+    sgVec3 *getPosv(void) {
+	return &eye;
+    }
     t3Dd *getCenter(void) {
 	static t3Dd pos;
 	pos.x = center[0];
 	pos.y = center[1];
 	pos.z = center[2];
 	return &pos;
+    }
+    sgVec3 *getCenterv(void) {
+	return &center;
     }
     t3Dd *getUp(void) {
 	static t3Dd pos;
@@ -91,7 +97,9 @@ class cGrCamera
 	pos.z = up[2];
 	return &pos;
     }
-    
+    sgVec3 *getUpv(void) {
+	return &up;
+    }
     
     /* Add the camera in the corresponding list */
     void add(tGrCamHead *head) {
@@ -172,10 +180,25 @@ class cGrOrthoCamera : public cGrCamera
     void setZoom(int cmd) { }
 };
 
+class cGrBackgroundCam : public cGrPerspCamera
+{
+ public:
+    cGrBackgroundCam()
+	: cGrPerspCamera(0, 0, 1,
+			 67.5, 67.5, 67.5,
+			 0.1, 2000.0, 1000, 1000) {
+    }
+    
+    void update(tCarElt *car, tSituation *s) {}
+
+    void update(cGrCamera *curCam);
+};
+
 extern int	grScissorflag;
 extern int	grCurCamHead;
 extern tGrCamHead grCams[];		/* from F1 to F12 */
 extern cGrCamera *grCurCam;		/* the current camera */
+extern cGrBackgroundCam *grBgCam;		/* the Background camera */
 extern cGrOrthoCamera *grBoardCam;	/* the board camera */
 extern float grviewRatio;
 

@@ -114,8 +114,6 @@ splashDisplay( void )
     
     glClear( GL_COLOR_BUFFER_BIT );
 
-    //glRasterPos2i((GfScrWidth - ImgWidth)/2, (GfScrHeight - ImgHeight)/2);
-    
     glRasterPos2i(0,0);
     GfScrGetSize(&sw, &sh, &w, &h);
     glPixelZoom((float)w / (float)ImgWidth, (float)h / (float)ImgHeight);

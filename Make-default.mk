@@ -73,6 +73,7 @@ endef
 define create_dir_win32
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
 Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+Label=$$Label"_"$$ext ; \
 CurDir='.' ; \
 echo "" >> ${INIT_WIN32} ; \
 echo "if not exist $$D goto $$Label" >> ${INIT_WIN32} ; \
@@ -84,12 +85,14 @@ endef
 
 define end_win32
 Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+Label=$$Label"_"$$ext ; \
 echo ":$$Label" >> ${INIT_WIN32}
 endef
 
 define create_dir_win32_data
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
 Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+Label=$$Label"_"$$ext ; \
 CurDir='.' ; \
 echo "" >> ${DATA_WIN32} ; \
 echo "if not exist $$D goto $$Label" >> ${DATA_WIN32} ; \
@@ -101,6 +104,7 @@ endef
 
 define end_win32_data
 Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+Label=$$Label"_"$$ext ; \
 echo ":$$Label" >> ${DATA_WIN32}
 endef
 
@@ -282,6 +286,7 @@ installdata: $(DATA)
 installwin32data: $(DATA)
 	@D=`pwd` ; \
 	createdir="runtime/${DATADIR}" ; \
+	ext="0" ; \
 	${create_dir_win32_data} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${DATADIR}/$$X"; \
@@ -311,6 +316,7 @@ installship: $(SHIP)
 installshipwin32: $(SHIP)
 	@D=`pwd` ; \
 	createdir="runtime/${SHIPDIR}" ; \
+	ext="1" ; \
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" ; \
@@ -337,6 +343,7 @@ installshipmkdir:
 installshipmkdirwin32:
 	@for D in  $(SHIPCREATEDIRS) ; \
 	do createdir="runtime/$$D" ; \
+	ext="2" ; \
 	${create_dir_win32} ; \
 	${end_win32} ;\
 	done ;
@@ -363,6 +370,7 @@ export: $(EXPORTS)
 exportwin32: $(EXPORTS)
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${EXPDIR}" ;\
+	ext="3" ; \
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X $$createdir/$$X" ; \

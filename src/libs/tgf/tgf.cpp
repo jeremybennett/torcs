@@ -194,3 +194,43 @@ GfGetTimeStr(void)
     return bufstr;
 }
 
+
+/** Convert a time in seconds (float) to an ascii string.
+    @ingroup	screen
+    @param	sec	Time to convert
+    @param	sgn	Flag to indicate if the sign (+) is to be displayed for positive values of time.
+    @return	Time string.
+    @warning	The returned string has to be free by the caller.
+ */
+char * 
+GfTime2Str(tdble sec, int sgn)
+{
+    char  buf[256];
+    char* sign;
+
+    if (sec < 0.0) {
+	sec = -sec;
+	sign = "-";
+    } else {
+	if (sgn) {
+	    sign = "+";
+	} else {
+	    sign = "  ";
+	}
+    }
+    int h = (int)(sec / 3600.0);
+    sec -= 3600 * h;
+    int m = (int)(sec / 60.0);
+    sec -= 60 * m;
+    int s = (int)(sec);
+    sec -= s;
+    int c = (int)floor((sec) * 100.0);
+    if (h) {
+	(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
+    } else if (m) {
+	(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
+    } else {
+	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
+    }
+    return strdup(buf);
+}

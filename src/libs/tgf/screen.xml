@@ -20,6 +20,7 @@
   <section name="Screen Properties">
     <attnum name="x" val="640"/>
     <attnum name="y" val="480"/>
+    <attnum name="bpp" val="24"/>
     <attstr name="fullscreen" in="yes,no" val="yes"/>
     <attnum name="gamma" val="2.0"/>
   </section>
@@ -177,3 +178,20 @@
   </section>
 
 </params>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

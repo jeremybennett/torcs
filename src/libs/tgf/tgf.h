@@ -238,6 +238,7 @@ extern int GfParmListClean(void *handle, char *path);
 #define GFSCR_SECT_PROP	"Screen Properties"
 #define GFSCR_ATT_X	"x"
 #define GFSCR_ATT_Y	"y"
+#define GFSCR_ATT_BPP	"bpp"
 #define GFSCR_ATT_WIN_X	"window width"
 #define GFSCR_ATT_WIN_Y	"window height"
 #define GFSCR_ATT_FSCR	"fullscreen"
@@ -285,6 +286,10 @@ extern void GfScrReinit(void*);
 #define GFUI_MOUSE_UP	0
 #define GFUI_MOUSE_DOWN	1
 
+/* Keyboard action */
+#define GFUI_KEY_UP	0
+#define GFUI_KEY_DOWN	1
+
 /* Scroll Bar position */
 #define GFUI_SB_NONE	0
 #define GFUI_SB_RIGHT	1
@@ -305,8 +310,8 @@ typedef struct ScrollBarInfo
 
 typedef void (*tfuiCallback)(void * /* userdata */);
 typedef void (*tfuiSBCallback)(tScrollBarInfo *);
-typedef void (*tfuiKeyCallback)(char *key, int state);
-typedef void (*tfuiSKeyCallback)(int key, int state);
+typedef int (*tfuiKeyCallback)(unsigned char key, int modifier, int state); /**< return 1 to prevent normal key computing */
+typedef int (*tfuiSKeyCallback)(int key, int modifier, int state);  /**< return 1 to prevent normal key computing */
 
 
 /* GLUT Callback functions                  */
@@ -336,6 +341,8 @@ extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCal
 extern void GfuiHelpScreen(void *prevScreen);
 extern void GfuiScreenShot(void *notused);
 extern void GfuiScreenAddBgImg(void *scr, char *filename);
+extern void GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction);
+extern void GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction);
 
 /* mouse */
 typedef struct MouseInfo
@@ -568,6 +575,21 @@ extern void gfMeanReset(tdble v, tMeanVal *pvt);
  * Control interface *
  *********************/
 
+#define GFCTRL_TYPE_NOT_AFFECTED	0
+#define GFCTRL_TYPE_JOY_AXIS		1
+#define GFCTRL_TYPE_JOY_BUT		2
+#define GFCTRL_TYPE_KEYBOARD		3
+#define GFCTRL_TYPE_MOUSE_BUT		4
+#define GFCTRL_TYPE_MOUSE_AXIS		5
+#define GFCTRL_TYPE_SKEYBOARD		6
+
+typedef struct
+{
+    int		type;
+    int		index;
+} tCtrlRef;
+
+
 #define GFCTRL_JOY_UNTESTED	-1
 #define GFCTRL_JOY_NONE		0
 #define GFCTRL_JOY_PRESENT	1
@@ -604,6 +626,8 @@ extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseCalibrate(void);
+extern tCtrlRef *GfctrlGetRefByName(char *name);
+extern char *GfctrlGetNameByRef(int type, int index);
 
 #endif /* __TGF__H__ */
 

@@ -296,7 +296,7 @@ RmTrackSelect(void *vs)
 
     rmtsAddKeys();
 
-    GfuiTitleCreate(scrHandle, "Select Track", strlen("Select Track"));
+    GfuiTitleCreate(scrHandle, "Select Track", 0);
 
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-left.png",

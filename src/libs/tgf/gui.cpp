@@ -191,7 +191,12 @@ gfuiKeyboard(unsigned char key, int /* x */, int /* y */)
     tGfuiObject	*obj;
     
     modifier = glutGetModifiers();
-    
+
+    /* user preempt key */
+    if (GfuiScreen->onKeyAction && GfuiScreen->onKeyAction(key, modifier, GFUI_KEY_DOWN)) {
+	return;
+    }
+	
     /* now see the user's defined keys */
     if (GfuiScreen->userKeys != NULL) {
 	curKey = GfuiScreen->userKeys;
@@ -224,6 +229,11 @@ gfuiSpecial(int key, int /* x */, int /* y */)
     
     modifier = glutGetModifiers();
 
+    /* user preempt key */
+    if (GfuiScreen->onSKeyAction && GfuiScreen->onSKeyAction(key, modifier, GFUI_KEY_DOWN)) {
+	return;
+    }
+
     /* now see the user's defined keys */
     if (GfuiScreen->userSpecKeys != NULL) {
 	curKey = GfuiScreen->userSpecKeys;
@@ -253,7 +263,12 @@ gfuiKeyboardUp(unsigned char key, int /* x */, int /* y */)
     int		modifier;
     
     modifier = glutGetModifiers();
-    
+
+    /* user preempt key */
+    if (GfuiScreen->onKeyAction && GfuiScreen->onKeyAction(key, modifier, GFUI_KEY_UP)) {
+	return;
+    }
+
     /* now see the user's defined keys */
     if (GfuiScreen->userKeys != NULL) {
 	curKey = GfuiScreen->userKeys;
@@ -276,6 +291,11 @@ gfuiSpecialUp(int key, int /* x */, int /* y */)
     int		modifier;
     
     modifier = glutGetModifiers();
+
+    /* user preempt key */
+    if (GfuiScreen->onSKeyAction && GfuiScreen->onSKeyAction(key, modifier, GFUI_KEY_UP)) {
+	return;
+    }
 
     /* now see the user's defined keys */
     if (GfuiScreen->userSpecKeys != NULL) {
@@ -592,6 +612,22 @@ GfuiHookRelease(void *hook)
     free(hook);
 }
 
+void
+GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction)
+{
+    tGfuiScreen	*screen = (tGfuiScreen*)scr;
+
+    screen->onKeyAction = onKeyAction;
+}
+
+
+void
+GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction)
+{
+    tGfuiScreen	*screen = (tGfuiScreen*)scr;
+
+    screen->onSKeyAction = onSKeyAction;
+}
 
 
 /** Add a Keyboard callback to a screen.
@@ -646,9 +682,9 @@ GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallba
     } else {
 	curKey->next = screen->userKeys->next;
 	screen->userKeys->next = curKey;
-	/* screen->userKeys = curKey; */
     }
 }
+
 /** Add a Keyboard callback to the current screen.
     @ingroup	gui
     @param	key		Key code (glut value)

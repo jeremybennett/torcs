@@ -50,6 +50,7 @@ int		grCurCamHead = 0;			/* the current camera list */
 tGrCamHead	grCams[10];				/* from F2 to F11 */
 cGrCamera	*grCurCam = (cGrCamera*)NULL;		/* the current camera */
 cGrOrthoCamera	*grBoardCam = (cGrOrthoCamera*)NULL;	/* the board camera */
+cGrBackgroundCam *grBgCam = (cGrBackgroundCam*)NULL;		/* the background camera */
 
 int scrx, scry, scrw, scrh;
 
@@ -210,6 +211,16 @@ void cGrOrthoCamera::setModelView(void)
     glLoadIdentity();
 }
 
+void cGrBackgroundCam::update(cGrCamera *curCam)
+{
+    memcpy(&eye, curCam->getPosv(), sizeof(eye));
+    memcpy(&center, curCam->getCenterv(), sizeof(center));
+    sgSubVec3(center, center, eye);
+    sgSetVec3(eye, 0, 0, 0);
+    memcpy(&up, curCam->getUpv(), sizeof(up));
+}
+
+
 void
 grSelectCamera(void *vp)
 {
@@ -278,6 +289,7 @@ class cGrCarCamInside : public cGrPerspCamera
 	center[2] = P[2];
     }
 };
+
 
 class cGrCarCamInsideFixedCar : public cGrPerspCamera
 {
@@ -964,6 +976,10 @@ grInitCams(void)
     if (grBoardCam == NULL) {
 	//grBoardCam = new cGrOrthoCamera(scrx, scrx + scrw, scry, scry + scrh);
 	grBoardCam = new cGrOrthoCamera(0, 800, 0, 600);
+    }
+
+    if (grBgCam == NULL) {
+	grBgCam = new cGrBackgroundCam();
     }
     
     /* Scene Cameras */
