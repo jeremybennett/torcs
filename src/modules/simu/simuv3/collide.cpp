@@ -306,7 +306,20 @@ SimCarCollideXYScene(tCar *car)
 					seg = seg->rside;
 				}
 			}
-			RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_RGT, &normal);
+			// TODO: Does not work, always parallel to track (fix in trackX.cpp?)!
+#if 0
+				RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_RGT, &normal);
+#else
+				// Temporary fix:
+				tdble nx = seg->vertex[TR_ER].x - seg->vertex[TR_SR].x;
+				tdble ny = seg->vertex[TR_ER].y - seg->vertex[TR_SR].y;
+				normal.x = -ny;
+				normal.y = nx;
+				tdble len = sqrt(normal.x*normal.x + normal.y*normal.y);
+				normal.x /= len;
+				normal.y /= len;
+#endif
+				
 			car->DynGCg.pos.x -= normal.x * trkpos.toRight;
 			car->DynGCg.pos.y -= normal.y * trkpos.toRight;	    
 		} else if (trkpos.toLeft < 0.0) {
@@ -318,7 +331,20 @@ SimCarCollideXYScene(tCar *car)
 					seg = seg->lside;
 				}
 			}
+			// TODO: Does not work, always parallel to track(fix in trackX.cpp?)!
+#if 0
 			RtTrackSideNormalG(seg, corner->pos.ax, corner->pos.ay, TR_LFT, &normal);
+#else
+			// Temporary fix:
+			tdble nx = seg->vertex[TR_EL].x - seg->vertex[TR_SL].x;
+			tdble ny = seg->vertex[TR_EL].y - seg->vertex[TR_SL].y;
+			normal.x = ny;
+			normal.y = -nx;
+			tdble len = sqrt(normal.x*normal.x + normal.y*normal.y);
+			normal.x /= len;
+			normal.y /= len;
+#endif
+
 			car->DynGCg.pos.x -= normal.x * trkpos.toLeft;
 			car->DynGCg.pos.y -= normal.y * trkpos.toLeft;	    
 		} else {

@@ -536,7 +536,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		RELAXATION2(wheel->forces.y, wheel->preFt, 50.0);
 
 		wheel->forces.z = f_z;
-		car->carElt->_wheelFy(index) = wheel->forces.y;
+		//car->carElt->_wheelFy(index) = wheel->forces.y;
 		car->carElt->_wheelFz(index) = wheel->forces.z;
 
 #if 0
