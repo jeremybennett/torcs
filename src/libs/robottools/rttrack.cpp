@@ -395,24 +395,26 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 tdble
 RtTrackHeightL(tTrkLocPos *p)
 {
-    tdble lg;
-    
-    tTrackSeg *seg = p->seg;
-    if ((p->toRight < 0) && (seg->rside != NULL)) {
+    tdble	lg;
+    tdble	tr = p->toRight;
+    tTrackSeg	*seg = p->seg;
+
+    if ((tr < 0) && (seg->rside != NULL)) {
 	seg = seg->rside;
- 	p->toRight += seg->width;
-	if ((p->toRight < 0) && (seg->rside != NULL)) {
+ 	tr += seg->width;
+	if ((tr < 0) && (seg->rside != NULL)) {
 	    seg = seg->rside;
-	    p->toRight += RtTrackGetWidth(seg, p->toStart);
+	    tr += RtTrackGetWidth(seg, p->toStart);
 	}   
-    } else if ((p->toRight > seg->width) && (seg->lside != NULL)) {
-	p->toRight -= seg->width;
+    } else if ((tr > seg->width) && (seg->lside != NULL)) {
+	tr -= seg->width;
 	seg = seg->lside;
-	if ((p->toRight > seg->width) && (seg->lside != NULL)) {
-	    p->toRight -= RtTrackGetWidth(seg, p->toStart);
+	if ((tr > seg->width) && (seg->lside != NULL)) {
+	    tr -= RtTrackGetWidth(seg, p->toStart);
 	    seg = seg->lside;
 	}
     }
+    
     switch (seg->type) {
     case TR_STR:
 	lg = p->toStart;
@@ -424,17 +426,42 @@ RtTrackHeightL(tTrkLocPos *p)
     if (seg->style == TR_CURB) {
 	if (seg->type2 == TR_RBORDER) {
 	    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
-		p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-		seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * (seg->width - p->toRight) / seg->width;
+		tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
+		seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * (seg->width - tr) / seg->width;
 	}
 	
 	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
-	    p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * p->toRight / seg->width;
+	    tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
+	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * tr / seg->width;
     }
     
-    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + p->toRight * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
-	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * p->toRight) * sin(seg->surface->kRoughWaveLen * lg);
+    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
+	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * tr) * sin(seg->surface->kRoughWaveLen * lg);
+}
+
+/* get the real segment */
+tTrackSeg *
+RtTrackGetSeg(tTrkLocPos *p)
+{
+    tdble tr = p->toRight;
+    tTrackSeg *seg = p->seg;
+
+    if ((tr < 0) && (seg->rside != NULL)) {
+	seg = seg->rside;
+ 	tr += seg->width;
+	if ((tr < 0) && (seg->rside != NULL)) {
+	    seg = seg->rside;
+	    tr += RtTrackGetWidth(seg, p->toStart);
+	}   
+    } else if ((tr > seg->width) && (seg->lside != NULL)) {
+	tr -= seg->width;
+	seg = seg->lside;
+	if ((tr > seg->width) && (seg->lside != NULL)) {
+	    tr -= RtTrackGetWidth(seg, p->toStart);
+	    seg = seg->lside;
+	}
+    }
+    return seg;
 }
 
 /** Returns the absolute height in meters of the road

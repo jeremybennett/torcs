@@ -370,6 +370,8 @@ typedef struct trackSeg {
 #define TR_PITENTRY	0x00000010 /**< Segment where the pit lane cross the main track */
 #define TR_PITEXIT	0x00000020 /**< Segment where the pit lane cross the main track */
 #define TR_PIT		0x00000040 /**< Car pit */
+#define TR_PITSTART	0x00000080 /**< Car pit Star */
+#define TR_PITEND	0x00000100 /**< Car pit End */
 
     tdble DoVfactor;            /* the factor to use in calculating DoV for this Seg */
 

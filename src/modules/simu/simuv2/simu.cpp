@@ -80,6 +80,15 @@ ctrlCheck(tCar *car)
 	} else {
 	    car->ctrl->steer = -0.1;
 	}
+    } else if (car->carElt->_state & RM_CAR_STATE_ELIMINATED) {
+	car->ctrl->accelCmd = 0.0;
+	car->ctrl->brakeCmd = 0.1;
+	car->ctrl->gear = 0;
+	if (car->trkPos.toRight >  car->trkPos.seg->width / 2.0) {
+	    car->ctrl->steer = 0.1;
+	} else {
+	    car->ctrl->steer = -0.1;
+	}
     } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
 	/* when the finish line is passed, continue at "slow" pace */
 	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.20);
@@ -300,7 +309,8 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	    RemoveCar(car, s);
 	    continue;
 	} else if (((s->_maxDammage) && (car->dammage > s->_maxDammage)) ||
-		   (car->fuel == 0)) {
+		   (car->fuel == 0) ||
+		   (car->carElt->_state & RM_CAR_STATE_ELIMINATED))  {
 	    RemoveCar(car, s);
 	    if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 		continue;

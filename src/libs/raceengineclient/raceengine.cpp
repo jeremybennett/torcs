@@ -44,6 +44,7 @@ static double	bigMsgDisp;
 
 tRmInfo	*ReInfo = 0;
 
+static void ReRaceRules(tCarElt *car);
 
 
 /* Compute Pit stop time */
@@ -53,9 +54,17 @@ ReUpdtPitTime(tCarElt *car)
     tSituation	*s = ReInfo->s;
     tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
 
-    info->totalPitTime = 2.0 + fabs(car->pitcmd.fuel) / 8.0 + (tdble)(fabs(car->pitcmd.repair)) * 0.007;
-    car->_scheduledEventTime = s->currentTime + info->totalPitTime;
-    ReInfo->_reSimItf.reconfig(car);    
+    switch (car->_pitStopType) {
+    case RM_PIT_REPAIR:
+	info->totalPitTime = 2.0 + fabs(car->_pitFuel) / 8.0 + (tdble)(fabs(car->_pitRepair)) * 0.007;
+	car->_scheduledEventTime = s->currentTime + info->totalPitTime;
+	ReInfo->_reSimItf.reconfig(car);
+	break;
+    case RM_PIT_STOPANDGO:
+	info->totalPitTime = 0.0;
+	car->_scheduledEventTime = s->currentTime;
+	break;
+    }
 }
 
 /* Return from interactive pit information */
@@ -115,7 +124,7 @@ ReManage(tCarElt *car)
 
     /* PIT STOP */
     if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
-	car->ctrl.msg[3] = "Can Pit";
+	snprintf(car->ctrl.msg[2], RM_MSG_LEN, "Can Pit");
 	memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
     }
     
@@ -126,12 +135,7 @@ ReManage(tCarElt *car)
 	    sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
 	    ReRaceMsgSet(buf, 5);
 	} else {
-	    car->ctrl.msg[2] = "In Pits";
-	    memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
-/* 	    if (car == s->cars[s->current]) { */
-/* 		sprintf(buf, "%s in pits %.1fs", car->_name, s->currentTime - info->startPitTime); */
-/* 		ReRaceMsgSet(buf, .1); */
-/* 	    } */
+	    snprintf(car->ctrl.msg[2], RM_MSG_LEN, "in pits %.1fs", s->currentTime - info->startPitTime);
 	}
     } else if ((car->_pit) && (car->ctrl.raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
@@ -286,6 +290,8 @@ ReManage(tCarElt *car)
 	    info->lapFlag++;
 	}
     }
+    ReRaceRules(car);
+
     info->prevTrkPos = car->_trkPos;
     car->_curLapTime = s->currentTime - info->sTime;
     car->_distFromStartLine = car->_trkPos.seg->lgfromstart +
@@ -330,6 +336,137 @@ ReSortCars(void)
 	ReInfo->s->_raceState = RM_RACE_ENDED;
     }
 }
+
+/* Compute the race rules and penalties */
+static void
+ReRaceRules(tCarElt *car)
+{
+    tCarPenalty		*penalty;
+    tTrack		*track = ReInfo->track;
+    tRmCarRules		*rules = &(ReInfo->rules[car->index]);
+    tTrackSeg		*seg = RtTrackGetSeg(&(car->_trkPos));
+    tReCarInfo		*info = &(ReInfo->_reCarInfo[car->index]);
+    tTrackSeg		*prevSeg = RtTrackGetSeg(&(info->prevTrkPos));
+    static float	color[] = {0.0, 0.0, 1.0, 1.0};
+
+    if (car->_skillLevel < 3) {
+	/* only for the pros */
+	return;
+    }
+    
+    penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+    if (penalty) {
+	if (car->_laps > penalty->lapToClear) {
+	    /* too late to clear the penalty, out of race */
+	    car->_state |= RM_CAR_STATE_ELIMINATED;
+	    return;
+	}
+	switch (penalty->penalty) {
+	case RM_PENALTY_DRIVETHROUGH:
+	    snprintf(car->ctrl.msg[3], RM_MSG_LEN, "Drive Through Penalty");
+	    break;
+	case RM_PENALTY_STOPANDGO:
+	    snprintf(car->ctrl.msg[3], RM_MSG_LEN, "Stop And Go Penalty");
+	    break;
+	default:
+	    *(car->ctrl.msg[3]) = 0;
+	    break;
+	}
+	memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
+    }
+    
+
+    if (prevSeg->raceInfo & TR_PITSTART) {
+	/* just entered the pit lane */
+	if (seg->raceInfo & TR_PIT) {
+	    /* may be a penalty can be cleaned up */
+	    if (penalty) {
+		switch (penalty->penalty) {
+		case RM_PENALTY_DRIVETHROUGH:
+		    sprintf(buf, "%s DRIVE THROUGH PENALTY CLEANING", car->_name);
+		    ReRaceMsgSet(buf, 5);
+		    rules->ruleState |= RM_PNST_DRIVETHROUGH;
+		    break;
+		case RM_PENALTY_STOPANDGO:
+		    sprintf(buf, "%s STOP&GO PENALTY CLEANING", car->_name);
+		    ReRaceMsgSet(buf, 5);
+		    rules->ruleState |= RM_PNST_STOPANDGO;
+		    break;
+		}
+	    }
+	}
+    } else if (prevSeg->raceInfo & TR_PIT) {
+	if (seg->raceInfo & TR_PIT) {
+	    /* the car stopped in pits */
+	    if (car->_state & RM_CAR_STATE_PIT) {
+		if (rules->ruleState & RM_PNST_DRIVETHROUGH) {
+		    /* it's not more a drive through */
+		    rules->ruleState &= ~RM_PNST_DRIVETHROUGH;
+		} else if (rules->ruleState & RM_PNST_STOPANDGO) {
+		    if (car->_pitStopType == RM_PIT_STOPANDGO) {
+			/* the driver wants to clean the stop and go */
+			rules->ruleState |= RM_PNST_STOPANDGO_OK;
+		    } else {
+			/* a refuel pit stop does not count as stop and go */
+			rules->ruleState &= ~RM_PNST_STOPANDGO;
+		    }
+		}
+	    }
+	} else if (seg->raceInfo & TR_PITEND) {
+	    /* went out of the pit lane, check if the current penalty is cleared */
+	    if (rules->ruleState & (RM_PNST_DRIVETHROUGH | RM_PNST_STOPANDGO_OK)) {
+		/* clear the penalty */
+		sprintf(buf, "%s penalty cleared", car->_name);
+		ReRaceMsgSet(buf, 5);
+		penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+		GF_TAILQ_REMOVE(&(car->_penaltyList), penalty, link);
+		FREEZ(penalty);
+	    }
+	    rules->ruleState = 0;
+	} else {
+	    /* went out of the pit lane illegally... */
+	    /* it's a new stop and go... */
+	    if (!(rules->ruleState & RM_PNST_STNGO)) {
+		sprintf(buf, "%s STOP&GO PENALTY", car->_name);
+		ReRaceMsgSet(buf, 5);
+		penalty = (tCarPenalty*)calloc(1, sizeof(tCarPenalty));
+		penalty->penalty = RM_PENALTY_STOPANDGO;
+		penalty->lapToClear = car->_laps + 5;
+		GF_TAILQ_INSERT_TAIL(&(car->_penaltyList), penalty, link);
+		rules->ruleState = RM_PNST_STNGO;
+	    }
+	}
+    } else if (seg->raceInfo & TR_PITEND) {
+	rules->ruleState = 0;
+    } else if (seg->raceInfo & TR_PIT) {
+	/* entrered the pits not from the pit entry... */
+	/* it's a new stop and go... */
+	if (!(rules->ruleState & RM_PNST_STNGO)) {
+	    sprintf(buf, "%s STOP&GO PENALTY", car->_name);
+	    ReRaceMsgSet(buf, 5);
+	    penalty = (tCarPenalty*)calloc(1, sizeof(tCarPenalty));
+	    penalty->penalty = RM_PENALTY_STOPANDGO;
+	    penalty->lapToClear = car->_laps + 5;
+	    GF_TAILQ_INSERT_TAIL(&(car->_penaltyList), penalty, link);
+	    rules->ruleState = RM_PNST_STNGO;
+	}
+    }
+
+    if (seg->raceInfo & TR_SPEEDLIMIT) {
+	if (!(rules->ruleState & (RM_PNST_SPD | RM_PNST_STNGO)) && (car->_speed_x > track->pits.speedLimit)) {
+	    sprintf(buf, "%s DRIVE THROUGH PENALTY", car->_name);
+	    ReRaceMsgSet(buf, 5);
+	    rules->ruleState |= RM_PNST_SPD;
+	    penalty = (tCarPenalty*)calloc(1, sizeof(tCarPenalty));
+	    penalty->penalty = RM_PENALTY_DRIVETHROUGH;
+	    penalty->lapToClear = car->_laps + 5;
+	    GF_TAILQ_INSERT_TAIL(&(car->_penaltyList), penalty, link);
+	}
+    }
+
+
+}
+
 
 void
 ReOneStep(void * /* dummy */)

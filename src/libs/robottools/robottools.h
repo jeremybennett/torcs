@@ -160,6 +160,11 @@ extern tdble RtGetDistFromStart2(tTrkLocPos *p);
  */
 extern void RtTelemInit(tdble ymin, tdble ymax);
 
+/** Get the current segment
+ */
+tTrackSeg *RtTrackGetSeg(tTrkLocPos *p);
+
+
 
 /** Create a new telemetry channel.
     @param	name	Name of the channel.

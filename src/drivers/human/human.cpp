@@ -62,13 +62,17 @@ static char	buf[1024];
 static tTrack	*curTrack;
 static void	*DrvInfo;
 
-static float color[] = {1.0, 1.0, 1.0, 1.0};
+static float color[] = {0.0, 0.0, 1.0, 1.0};
 
 static tCtrlJoyInfo	*joyInfo = NULL;
 static tCtrlMouseInfo	*mouseInfo = NULL;
 static int		masterPlayer = -1;
 
 tHumanContext *HCtx[10] = {0};
+
+static int speedLimiter	= 0;
+static tdble Vtarget;
+
 
 typedef struct 
 {
@@ -82,6 +86,7 @@ static tKeyInfo skeyInfo[256];
 
 static int currentKey[256];
 static int currentSKey[256];
+
 
 
 #ifdef _WIN32
@@ -288,7 +293,8 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	HCtx[idx]->NbPitStopProg = 0;
     }
     fuel = 0.0008 * curTrack->length * (s->_totLaps + 1) / (1.0 + ((tdble)HCtx[idx]->NbPitStopProg)) + 20.0;
-    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);    
+    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+    Vtarget = curTrack->pits.speedLimit;
 }
 
 
@@ -428,10 +434,10 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     float	leftSteer;
     float	rightSteer;
     int		scrw, scrh, dummy;
-
     int		idx = index - 1;
     tControlCmd	*cmd = HCtx[idx]->CmdControl;
-
+    char	*str;
+    
     static int	firstTime = 1;
 
     if (firstTime) {
@@ -487,13 +493,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	GfParmWriteFile(NULL, PrefHdle, "Human");
     }
 
-    if (HCtx[idx]->ParamAbs) {
-	car->_msgCmd[0] = "ABS";
-    }
-    if (HCtx[idx]->ParamAsr) {
-	car->_msgCmd[1] = "ASR";
-    }
+    snprintf(car->_msgCmd[0], RM_MSG_LEN, "%s %s", (HCtx[idx]->ParamAbs ? "ABS" : ""), (HCtx[idx]->ParamAsr ? "ASR" : ""));
     memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
+
+    if (((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_JOY_BUT) && (joyInfo->levelup[cmd[CMD_SPDLIM].val] == 0)) ||
+	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_KEYBOARD) && (keyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)) ||
+	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_SKEYBOARD) && (skeyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN))) {
+	speedLimiter = 1;
+	snprintf(car->_msgCmd[1], RM_MSG_LEN, "Speed Limiter On");
+    } else {
+	speedLimiter = 0;
+	snprintf(car->_msgCmd[1], RM_MSG_LEN, "Speed Limiter Off");
+    }
+	
 
     if (((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_LIGHT1].val]) ||
 	((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_LIGHT1].val].edgeUp) ||
@@ -779,6 +791,20 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 	car->_accelCmd = MIN(car->_accelCmd, HCtx[idx]->AntiSlip);
     }
+
+    if (speedLimiter) {
+	tdble	Dv;
+
+	Dv = Vtarget - car->_speed_x;
+
+	if (Dv > 0.0) {
+	    car->_accelCmd = MIN(car->_accelCmd, fabs(Dv/6.0));
+	} else {
+	    car->_brakeCmd = MAX(car->_brakeCmd, fabs(Dv/5.0));
+	    car->_accelCmd = 0;
+	}
+    }
+    
 
 #ifndef WIN32
 #ifdef TELEMETRY

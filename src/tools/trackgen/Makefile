@@ -31,9 +31,9 @@ SOURCES      	= maintrackgen.cpp track.cpp easymesh.cpp ../../linux/linuxspec.cp
 
 SOLIBS       	= -ltgf -ltgfclient -lplibssg -lplibsg -lplibul -lrobottools -ltxml
 
-src-tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-tools_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -99,6 +99,8 @@ ReShutdown(void)
 	}
 
 	FREEZ(ReInfo->s);
+	FREEZ(ReInfo->carList);
+	FREEZ(ReInfo->rules);
 	FREEZ(ReInfo);
     }
 }
@@ -385,6 +387,8 @@ ReInitCars(void)
 
     FREEZ(ReInfo->carList);
     ReInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
+    FREEZ(ReInfo->rules);
+    ReInfo->rules = (tRmCarRules*)calloc(nCars, sizeof(tRmCarRules));
     focused = GfParmGetStr(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, "");
     focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
     index = 0;
@@ -416,7 +420,8 @@ ReInitCars(void)
 		}
 		if (robhdle != NULL) {
 		    elt = &(ReInfo->carList[index]);
-		    
+		    GF_TAILQ_INIT(&(elt->_penaltyList));
+
 		    elt->index = index;
 		    elt->robot = curRobot;
 		    elt->_paramsHandle = robhdle;

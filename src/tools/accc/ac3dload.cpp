@@ -47,6 +47,8 @@
 #define SURF     "SURF"
 #define MAT      "mat"
 #define REFS     "refs"
+#define CREASE   "crease"
+
 #define SetPoint(p, a, b, c) (p).x = a; (p).y = b; (p).z = c;
 
 #ifndef M_PI
@@ -112,6 +114,7 @@ int doNumsurf(char *Line, ob_t *object, mat_t *material);
 int doSurf(char *Line, ob_t *object, mat_t *material);
 int doMat(char *Line, ob_t *object, mat_t *material);
 int doRefs(char *Line, ob_t *object, mat_t *material);
+int doCrease(char *Line, ob_t *object, mat_t *material);
 
 #ifdef _3DS
 void saveObin3DS( char * OutputFilename, ob_t * object);
@@ -136,6 +139,7 @@ verbaction_t verbTab[]={
     {SURF     , doSurf},
     {MAT      , doMat},
     {REFS     , doRefs},
+    {CREASE   , doCrease},
     {"END"    , NULL}
 };
 
@@ -258,7 +262,9 @@ int doObject(char *Line, ob_t *object, mat_t *material)
     t1=object->next;
     object->next=objectt;
     objectt->next=t1;
-
+    object->next->texrep_x = 1.0;
+    object->next->texrep_y = 1.0;
+    
     return (0);
 }
 
@@ -867,6 +873,11 @@ int doData(char *Line, ob_t *object, mat_t *material)
     return (0);
 }
 
+int doCrease(char *Line, ob_t *object, mat_t *material)
+{
+    return (0);
+}
+
 int doTexture(char *Line, ob_t *object, mat_t *material)
 {
     char * p;
@@ -972,8 +983,8 @@ int doGetSurf(char *Line, ob_t *object, mat_t *material)
     /*fprintf(stderr,"numrefs = %d \n",numrefs);*/
     /*printf("%.2lf %.2lf \n",tmpva[numvertice].u,tmpva[numvertice].v);*/
     tmpva[numvertice].saved=0;
-    tmptexa[tmpva[numvertice].indice*2]=tmpva[numvertice].u;
-    tmptexa[tmpva[numvertice].indice*2+1]=tmpva[numvertice].v;
+    tmptexa[tmpva[numvertice].indice*2]=tmpva[numvertice].u * object->next->texrep_x;
+    tmptexa[tmpva[numvertice].indice*2+1]=tmpva[numvertice].v * object->next->texrep_y;
     numvertice++;
     return (0);
 }

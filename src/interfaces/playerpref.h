@@ -43,6 +43,7 @@
 #define HM_ATT_ABS_CMD		"ABS cmd"
 
 #define HM_ATT_LIGHT1_CMD	"Light1 cmd"
+#define HM_ATT_SPDLIM_CMD	"Speed Limiter"
 
 #define HM_ATT_AUTOREVERSE	"auto reverse"
 

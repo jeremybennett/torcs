@@ -122,27 +122,41 @@ typedef struct {
 #define RM_DRV_ROBOT	2
 
 
+#define RM_PENALTY_DRIVETHROUGH	1
+#define RM_PENALTY_STOPANDGO	2
+
+/** One penalty */
+typedef struct CarPenalty
+{
+    int penalty;
+    int lapToClear;
+    GF_TAILQ_ENTRY(struct CarPenalty) link;
+} tCarPenalty;
+
+GF_TAILQ_HEAD(CarPenaltyHead, struct CarPenalty);
+
 /** Race Administrative info */
 typedef struct {
-    double	bestLapTime;
-    double	deltaBestLapTime;
-    double	curLapTime;
-    double	lastLapTime;
-    double	curTime;
-    tdble	topSpeed;
-    int		laps;
-    int		nbPitStops;
-    int		remainingLaps;
-    int		pos;
-    double	timeBehindLeader;
-    int		lapsBehindLeader;
-    double	timeBehindPrev;
-    double	timeBeforeNext;
-    tdble	distRaced;
-    tdble	distFromStartLine;
-    double	scheduledEventTime;
-    tTrackOwnPit *pit;
-    int		event;
+    double		bestLapTime;
+    double		deltaBestLapTime;
+    double		curLapTime;
+    double		lastLapTime;
+    double		curTime;
+    tdble		topSpeed;
+    int			laps;
+    int			nbPitStops;
+    int			remainingLaps;
+    int			pos;
+    double		timeBehindLeader;
+    int			lapsBehindLeader;
+    double		timeBehindPrev;
+    double		timeBeforeNext;
+    tdble		distRaced;
+    tdble		distFromStartLine;
+    double		scheduledEventTime;
+    tTrackOwnPit 	*pit;
+    int			event;
+    tCarPenaltyHead	penaltyList;	/**< List of current penalties */
 } tCarRaceInfo;
 /* structure access */
 #define _bestLapTime		race.bestLapTime
@@ -164,13 +178,14 @@ typedef struct {
 #define _pit			race.pit
 #define _scheduledEventTime	race.scheduledEventTime
 #define _event			race.event
+#define _penaltyList		race.penaltyList
 
 /** Public info on the cars */
 typedef struct {
     tDynPt	DynGC;		/**< GC data (car axis) */    
     tDynPt	DynGCg;		/**< GC data (world axis) */    
     sgMat4	posMat;		/**< position matrix */
-    tTrkLocPos	trkPos;		/**< current track position */
+    tTrkLocPos	trkPos;		/**< current track position. The segment is the track segment (not sides)*/
     int		state;	    	/**< state of the car.
 				   <br>The states are:
 				   - RM_CAR_STATE_FINISH
@@ -194,6 +209,7 @@ typedef struct {
 #define RM_CAR_STATE_NO_SIMU	 	0x000000FF				/**< Do not simulate the car */
 #define RM_CAR_STATE_BROKEN	 	0x00000200				/**< Engine no more working */
 #define RM_CAR_STATE_OUTOFGAS	 	0x00000400				/**< Out of Gas */
+#define RM_CAR_STATE_ELIMINATED	 	0x00000800				/**< Eliminated due to rules infringement */
 #define RM_CAR_STATE_SIMU_NO_MOVE	0x00010000 				/**< Simulation without car move (i.e. clutch applied and no wheel move)  */
     tPosd	corner[4];
 
@@ -288,7 +304,8 @@ typedef struct {
     int		raceCmd;    /**< command issued by the driver */
 #define RM_CMD_NONE		0	/**< No race command */
 #define RM_CMD_PIT_ASKED	1	/**< Race command: Pit asked */
-    char	*msg[4];     /**< 4 lines of 12 characters from car */
+    char	msg[4][32];     /**< 4 lines of 31 characters 0-1 from car 2-3 from race engine */
+#define RM_MSG_LEN	31
     float	msgColor[4]; /**< RGBA of text */
     int		lightCmd;    /**< Lights command */
 #define RM_LIGHT_HEAD1		0x00000001	/**< head light 1 */
@@ -311,9 +328,14 @@ typedef struct
 {
     tdble		fuel;
     int			repair;
+    int			stopType;
 } tCarPitCmd;
 #define _pitFuel	pitcmd.fuel
 #define _pitRepair	pitcmd.repair
+#define _pitStopType	pitcmd.stopType
+
+#define RM_PIT_REPAIR		0
+#define RM_PIT_STOPANDGO	1
 
 /** Car structure (tCarElt).
     This is the main car structure, used everywhere in the code.

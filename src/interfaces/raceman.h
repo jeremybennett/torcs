@@ -168,6 +168,16 @@ typedef struct
 #define _displayMode	raceEngineInfo.displayMode
 #define _refreshDisplay	raceEngineInfo.refreshDisplay
 
+#define RM_PNST_DRIVETHROUGH	0x00000001
+#define RM_PNST_STOPANDGO	0x00000002
+#define RM_PNST_STOPANDGO_OK	0x00000004
+#define RM_PNST_SPD		0x00010000
+#define RM_PNST_STNGO		0x00020000
+
+typedef struct RmCarRules
+{
+    int			ruleState;
+} tRmCarRules;
 
 /**
  * Race Manager General Info
@@ -180,6 +190,7 @@ typedef struct RmInfo
     void		*params;	/**< Raceman parameters */
     void		*results;	/**< Race results */
     tModList		**modList;	/**< drivers loaded */
+    tRmCarRules		*rules;		/**< by car rules */
     tRaceEngineInfo	raceEngineInfo;
 } tRmInfo;
 

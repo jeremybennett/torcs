@@ -83,7 +83,7 @@ SimEngineUpdateTq(tCar *car)
     tEngine	*engine = &(car->engine);
     tEngineCurve *curve = &(engine->curve);
     
-    if ((car->fuel <= 0.0) || (car->carElt->_state & RM_CAR_STATE_BROKEN)) {
+    if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {
 	engine->rads = 0;
 	engine->Tq = 0;
 	return;

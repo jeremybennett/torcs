@@ -60,7 +60,8 @@ static tCmdInfo Cmd[] = {
     {HM_ATT_THROTTLE,   {1,  GFCTRL_TYPE_MOUSE_BUT},    0, HM_ATT_THROTTLE_MIN,   0, HM_ATT_THROTTLE_MAX,   0, HM_ATT_THROTTLE_POW,   1.0, 1},
     {HM_ATT_BRAKE,      {2,  GFCTRL_TYPE_MOUSE_BUT},    0, HM_ATT_BRAKE_MIN,      0, HM_ATT_BRAKE_MAX,      0, HM_ATT_BRAKE_POW,      1.0, 1},
     {HM_ATT_CLUTCH,     {3,  GFCTRL_TYPE_MOUSE_BUT},    0, HM_ATT_CLUTCH_MIN,     0, HM_ATT_CLUTCH_MAX,     0, HM_ATT_CLUTCH_POW,     1.0, 1},
-    {HM_ATT_ABS_CMD,    {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1}
+    {HM_ATT_ABS_CMD,    {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
+    {HM_ATT_SPDLIM_CMD, {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1}
 };
 
 static int maxCmd = sizeof(Cmd) / sizeof(Cmd[0]);
@@ -440,7 +441,7 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 
     GfuiMenuDefaultKeysAdd(scrHandle);
 
-    x = 30;
+    x = 10;
     x2 = 210;
     y = 340;
     dy = 30;
@@ -451,9 +452,9 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 					   (void*)i, onPush, NULL, (tfuiCallback)NULL, onFocusLost);
 	y -= dy;
 	if (i == (maxCmd / 2 - 1)) {
-	    x = 340;
+	    x = 320;
 	    y = 340;
-	    x2 = 200;
+	    x2 = 220;
 	}
     }
 

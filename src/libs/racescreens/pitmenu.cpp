@@ -59,6 +59,17 @@ rmUpdtRepair(void * /* dummy */)
     GfuiEditboxSetString(menuHandle, repairId, buf);
 }
 
+static tfuiCallback rmCallback;
+static void *rmUserData;
+
+static void
+rmStopAndGo(void * /* dummy */)
+{
+    rmCar->_pitStopType = RM_PIT_STOPANDGO;
+    rmCallback(rmUserData);
+}
+
+
 void
 RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
 {
@@ -102,7 +113,14 @@ RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
 				 x + GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Fuel amount (liters):") + 20, y,
 				 0, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
     
-    GfuiMenuBackQuitButtonCreate(menuHandle, "Proceed", "Return to race", userdata, callback);
+    //GfuiMenuBackQuitButtonCreate(menuHandle, "Repair", "Return to race", userdata, callback);
+
+    GfuiButtonCreate(menuHandle, "Repair", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     userdata, callback, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    rmCallback = callback;
+    rmUserData = userdata;
+    GfuiButtonCreate(menuHandle, "Stop & Go", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     NULL, rmStopAndGo, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiScreenActivate(menuHandle);
 }
