@@ -16,7 +16,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="SWRC62" type="template">
+<params name="Subaru 555 1999" type="template">
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
@@ -67,8 +67,8 @@
     <attnum name="power" val="1.0"/>
     <section name="1">
       <attnum name="xpos" val="-2.0"/>
-      <attnum name="ypos" val="-0.58"/>
-      <attnum name="zpos" val="0.15"/>
+      <attnum name="ypos" val="-0.60"/>
+      <attnum name="zpos" val="0.11"/>
     </section>
   </section>
 

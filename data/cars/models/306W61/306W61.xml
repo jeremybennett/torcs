@@ -16,7 +16,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="306W61" type="template">
+<params name="Peugeot 306 Maxi WRC" type="template">
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
@@ -66,9 +66,9 @@
     <!-- for flames -->
     <attnum name="power" val="1.0"/>
     <section name="1">
-      <attnum name="xpos" val="-1.8"/>
-      <attnum name="ypos" val="0.67"/>
-      <attnum name="zpos" val="0.09"/>
+      <attnum name="xpos" val="-1.90"/>
+      <attnum name="ypos" val="0.54"/>
+      <attnum name="zpos" val="0.13"/>
     </section>
   </section>
 

@@ -16,7 +16,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="EVOWRC61" type="template">
+<params name="Mitsubishi Lancer EVO VI WRC 1999" type="template">
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
@@ -66,9 +66,9 @@
     <!-- for flames -->
     <attnum name="power" val="1.0"/>
     <section name="1">
-      <attnum name="xpos" val="-2.0"/>
-      <attnum name="ypos" val="0.67"/>
-      <attnum name="zpos" val="0.20"/>
+      <attnum name="xpos" val="-2.05"/>
+      <attnum name="ypos" val="0.65"/>
+      <attnum name="zpos" val="0.19"/>
     </section>
   </section>
 

@@ -16,7 +16,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="206W10" type="template">
+<params name="Peugeot 206 WRC" type="template">
 
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
@@ -66,9 +66,9 @@
     <!-- for flames -->
     <attnum name="power" val="1.0"/>
     <section name="1">
-      <attnum name="xpos" val="-1.8"/>
+      <attnum name="xpos" val="-1.9"/>
       <attnum name="ypos" val="0.67"/>
-      <attnum name="zpos" val="0.09"/>
+      <attnum name="zpos" val="0.07"/>
     </section>
   </section>
 
