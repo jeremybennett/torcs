@@ -99,6 +99,9 @@ void init_args(int argc, char **argv)
 {
     int		c;
     
+#ifdef WIN32
+    int i=0;
+#endif
     TrackOnly = 1;
     MergeAll = 1;
     MergeTerrain = 1;
@@ -162,9 +165,11 @@ void init_args(int argc, char **argv)
 	    break;
 	case 'e':
 	    saveElevation = 1;
+	    TrackOnly = 0;
 	    break;
 	case 'E':
 	    saveElevation = 2;
+	    TrackOnly = 0;
 	    break;
 	default:
 	    usage();
@@ -193,18 +198,20 @@ void init_args(int argc, char **argv)
 	    MergeTerrain = 0;
 	} else if (strncmp(argv[i], "-n", 2) == 0) {
 	    if (i + 1 < argc) {
-		TrackName = strdup(argv[i++]);
+		TrackName = strdup(argv[++i]);
 	    } else {
 		usage();
 		exit(0);
 	    }
 	} else if (strncmp(argv[i], "-e", 2) == 0) {
 	    saveElevation = 1;
+	    TrackOnly = 0;
 	} else if (strncmp(argv[i], "-E", 2) == 0) {
 	    saveElevation = 2;
+	    TrackOnly = 0;
 	} else if (strncmp(argv[i], "-c", 2) == 0) {
 	    if (i + 1 < argc) {
-		TrackCategory = strdup(argv[i++]);
+		TrackCategory = strdup(argv[++i]);
 	    } else {
 		usage();
 		exit(0);

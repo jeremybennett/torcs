@@ -179,7 +179,7 @@ RemoveCar(tCar *car, tSituation *s)
 	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
-	if ((fabs(car->restPos.pos.x - carElt->_pos_X) < 0.1) && (fabs(car->restPos.pos.y - carElt->_pos_Y) < 0.1)) {
+	if ((fabs(car->restPos.pos.x - carElt->_pos_X) < 0.5) && (fabs(car->restPos.pos.y - carElt->_pos_Y) < 0.5)) {
 	    carElt->_state &= ~RM_CAR_STATE_PULLSIDE;
 	    carElt->_state |= RM_CAR_STATE_PULLDN;
 	}
@@ -228,14 +228,14 @@ RemoveCar(tCar *car, tSituation *s)
 
     /* compute the target zone for the wrecked car */
     trkPos = car->trkPos;
-    if (car->trkPos.toRight >  car->trkPos.seg->width / 2.0) {
-	if (trkPos.seg->lside != 0) {
+    if (trkPos.toRight >  trkPos.seg->width / 2.0) {
+	while (trkPos.seg->lside != 0) {
 	    trkPos.seg = trkPos.seg->lside;
 	}
 	trkPos.toLeft = -3.0;
 	trkFlag = TR_TOLEFT;
     } else {
-	if (trkPos.seg->rside != 0) {
+	while (trkPos.seg->rside != 0) {
 	    trkPos.seg = trkPos.seg->rside;
 	}
 	trkPos.toRight = -3.0;

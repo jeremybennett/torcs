@@ -20,15 +20,13 @@
 <params name="aalborg" type="param" mode="mw">
 
   <section name="Surfaces">
-    <section name="List">
       &default-surfaces;
-    </section>
   </section>
 
   <section name="Header">
     <attstr name="name"        val="Aalborg"></attstr>
     <attstr name="category"    val="road"></attstr>
-    <attnum name="version"     val="3"></attnum>
+    <attnum name="version"     val="4"></attnum>
     <attstr name="author"      val="Torben Thellefsen"></attstr>
     <attstr name="description" val="This track is from RARS"></attstr>
   </section>
@@ -49,18 +47,24 @@
   <section name="Main Track">
     <attnum name="width"   val="12.0"></attnum>
     <attstr name="surface" val="asphalt2-lines"></attstr>
-    <attnum name="lside width" val="3.0" unit="m"></attnum>
-    <attstr name="lside surface" val="asphalt"></attstr>
-    <attnum name="rside width" val="3.0" unit="m"></attnum>
-    <attstr name="rside surface" val="asphalt"></attstr>
-
     <attnum name="profil steps length" val="4" unit="m"></attnum>
 
-    <section name="segments">
+    <section name="Left Side">
+      <attnum name="width" val="3.0" unit="m"></attnum>
+      <attstr name="surface" val="asphalt"></attstr>
+    </section>
+
+    <section name="Right Side">
+      <attnum name="width" val="3.0" unit="m"></attnum>
+      <attstr name="surface" val="asphalt"></attstr>
+    </section>
+
+
+    <section name="Track Segments">
       <!-- first segment -->
       <section name="10">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="feet" val="300"></attnum>
+	<attnum name="lg" unit="feet" val="300.35844"></attnum>
 	<attnum name="z start" val="0"></attnum>
 	<attnum name="z end" val="0"></attnum>
       </section>
@@ -157,7 +161,7 @@
 
       <section name="140">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="feet" val="60"></attnum>
+	<attnum name="lg" unit="feet" val="60.32579945"></attnum>
 	<attnum name="z end" val="0"></attnum>
       </section>
 

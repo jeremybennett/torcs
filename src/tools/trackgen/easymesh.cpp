@@ -149,7 +149,7 @@ struct group
 #define VTX_INCR	100
 
 static struct group	*Groups;
-static int		ActiveGoups;
+static int		ActiveGroups;
 static float		GroupSize;
 static float		XGroupOffset;
 static float		YGroupOffset;
@@ -1696,7 +1696,7 @@ insert_elem_in_group(struct ele *elem, struct nod *nods)
     /* insert the surface */
     if (curGrp->nbsurf == curGrp->maxsurf) {
 	if (curGrp->nbsurf == 0) {
-	    ActiveGoups++;
+	    ActiveGroups++;
 	}
 	curGrp->maxsurf += SURF_INCR;
 	curGrp->surfaces = (struct surf	*)realloc(curGrp->surfaces, curGrp->maxsurf * sizeof (struct surf));
@@ -1816,7 +1816,7 @@ draw_ac(FILE *ac_file, char *name)
     int			i, j, k;
     struct group	*curGrp;
 
-    Ac3dGroup(ac_file, name, ActiveGoups);
+    Ac3dGroup(ac_file, name, ActiveGroups);
 
     for (i = 0; i < GroupNb; i++) {
 	curGrp = &(Groups[i]);
@@ -1863,7 +1863,7 @@ generate_mesh(void)
 	Nn0 = Nn;
 	new_node();
 	classify();
-	if (Nn == MAX_NODES - 1) {
+	if (Nn == (MAX_NODES - 1)) {
 	    break;
 	}
 	if (Nn == Nn0) {
@@ -2202,7 +2202,7 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
     GroupNb = XGroupNb * ((int)((track->max.y + Margin - (track->min.y - Margin)) / GroupSize) + 1);
     
     Groups = (struct group *)calloc(GroupNb, sizeof (struct group));
-    ActiveGoups = 0;
+    ActiveGroups = 0;
     
     
 

@@ -498,21 +498,29 @@ extern int   GfuiMenuBackQuitButtonCreate(void *menu, char *text, char *tip, voi
 #define GfFatal printf
 #else
 
-#define GfTrace(s, args...) printf(s, ## args)
+#define GfTrace printf
 
-#define GfFatal(s, args...)			\
-do {						\
-    printf(s, ## args);				\
-    exit(1);					\
-} while (0)
-
+static inline void
+GfFatal(char *fmt, ...)
+{
+    va_list ap;
+    va_start(ap, fmt);
+    vprintf(fmt, ap);
+    va_end(ap);
+    exit(1);
+}
 #endif
 
 #if !(_DEBUG || DEBUG)
 #ifdef WIN32
 #define GfOut printf
 #else
-#define GfOut(a, args...)
+
+static inline void
+GfOut(char *fmt, ...)
+{
+}
+
 #endif
 
 #else /* _DEBUG || DEBUG */
@@ -522,11 +530,7 @@ do {						\
     @param	args	printf args
     @fn	 GfOut(s, args...)
  */
-#ifdef WIN32
 #define GfOut printf
-#else
-#define GfOut(s, args...)		printf(s, ## args)
-#endif
 
 #endif /* _DEBUG || DEBUG */
 

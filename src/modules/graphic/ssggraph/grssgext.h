@@ -114,6 +114,16 @@ class ssgLoaderOptionsEx : public ssgLoaderOptions
 	    return ssgLoaderOptions::createTexture(tfname, wrapu, wrapv, mipmap) ;
 	}
 
+    virtual void makeModelPath ( char* path, const char *fname ) const
+	{
+	    ulFindFile ( path, model_dir, fname, NULL ) ;
+	}
+    
+    virtual void makeTexturePath ( char* path, const char *fname ) const
+	{
+	    ulFindFile ( path, texture_dir, fname, NULL ) ;
+	}
+
 };
 
 

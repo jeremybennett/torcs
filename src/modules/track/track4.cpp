@@ -28,17 +28,20 @@
 
 static tdble	xmin, xmax, ymin, ymax, zmin, zmax;
 
-#define TSTX(x)			\
-    if (xmin > (x)) xmin = (x);	\
-    if (xmax < (x)) xmax = (x);
+#define TSTX(x)	do {				\
+    if (xmin > (x)) xmin = (x);			\
+    if (xmax < (x)) xmax = (x);			\
+    } while (0)
 
-#define TSTY(y)			\
-    if (ymin > (y)) ymin = (y);	\
-    if (ymax < (y)) ymax = (y);
+#define TSTY(y)	do {				\
+    if (ymin > (y)) ymin = (y);			\
+    if (ymax < (y)) ymax = (y);			\
+    } while (0)
 
-#define TSTZ(z)			\
-    if (zmin > (z)) zmin = (z);	\
-    if (zmax < (z)) zmax = (z);
+#define TSTZ(z)	do {				\
+    if (zmin > (z)) zmin = (z);			\
+    if (zmax < (z)) zmax = (z);			\
+    } while (0)
 
 /*
  * Sides global variables
@@ -101,7 +104,7 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, char *material)
     curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0) /  2.0;
     curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0);
     curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0);
-    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 1.0);
+    curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 0.5);
 
     curSurf->next = theTrack->surfaces;
     theTrack->surfaces = curSurf;
@@ -324,8 +327,8 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y - bw * sin(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
 		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x - bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
-		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - (tdble)type * bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
-		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
+		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
+		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
 		    curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
 						    curBorder->arc * curBorder->radiusr);
@@ -337,13 +340,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->Kyl = 0;
 
 		    /* to find the boundary */
-		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
-		    alfl = curBorder->angle[TR_ZS];
+		    al = curBorder->arc / 36.0;
+		    alfl = curBorder->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
 			alfl += al;
-			x1 = curBorder->center.x + (curBorder->radiusl) * sin(alfl);   /* location of end */
-			y1 = curBorder->center.y - (curBorder->radiusl) * cos(alfl);
+			x1 = curBorder->center.x + (curBorder->radiusl) * cos(alfl);   /* location of end */
+			y1 = curBorder->center.y + (curBorder->radiusl) * sin(alfl);
 			TSTX(x1);
 			TSTY(y1);
 		    }
@@ -374,13 +377,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->Kyl = 0;
 
 		    /* to find the boundary */
-		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
-		    alfl = curBorder->angle[TR_ZS];
+		    al = curBorder->arc / 36.0;
+		    alfl = curBorder->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
 			alfl += al;
-			x2 = curBorder->center.x + (curBorder->radiusr) * sin(alfl);   /* location of end */
-			y2 = curBorder->center.y - (curBorder->radiusr) * cos(alfl);
+			x2 = curBorder->center.x + (curBorder->radiusr) * cos(alfl);   /* location of end */
+			y2 = curBorder->center.y + (curBorder->radiusr) * sin(alfl);
 			TSTX(x2);
 			TSTY(y2);
 		    }
@@ -418,13 +421,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->Kyl = 0;
 
 		    /* to find the boundary */
-		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
-		    alfl = curBorder->angle[TR_ZS];
+		    al = curBorder->arc / 36.0;
+		    alfl = curBorder->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
-			alfl += al;
-			x1 = curBorder->center.x - (curBorder->radiusl) * sin(alfl);   /* location of end */
-			y1 = curBorder->center.y + (curBorder->radiusl) * cos(alfl);
+			alfl -= al;
+			x1 = curBorder->center.x + (curBorder->radiusl) * cos(alfl);   /* location of end */
+			y1 = curBorder->center.y + (curBorder->radiusl) * sin(alfl);
 			TSTX(x1);
 			TSTY(y1);
 		    }
@@ -455,13 +458,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->Kyl = 0;
 
 		    /* to find the boundary */
-		    al = (curBorder->angle[TR_ZE] - curBorder->angle[TR_ZS])/36.0;
-		    alfl = curBorder->angle[TR_ZS];
+		    al = curBorder->arc / 36.0;
+		    alfl = curBorder->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
-			alfl += al;
-			x2 = curBorder->center.x - (curBorder->radiusr) * sin(alfl);   /* location of end */
-			y2 = curBorder->center.y - (curBorder->radiusr) * cos(alfl);
+			alfl -= al;
+			x2 = curBorder->center.x + (curBorder->radiusr) * cos(alfl);   /* location of end */
+			y2 = curBorder->center.y + (curBorder->radiusr) * sin(alfl);
 			TSTX(x2);
 			TSTY(y2);
 		    }
@@ -570,15 +573,15 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->Kyl = (ew - sw) / curSide->arc;
 
 		    /* to find the boundary */
-		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		    alfl = curSide->angle[TR_ZS];
+		    al = curSide->arc / 36.0;
+		    alfl = curSide->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
 			alfl += al;
-			x1 = curSide->center.x + (curSide->radiusl) * sin(alfl);   /* location of end */
-			y1 = curSide->center.y - (curSide->radiusl) * cos(alfl);
-			TSTX(x1);
-			TSTY(y1);
+			x2 = curSide->center.x + (curSide->radiusl) * cos(alfl);
+			y2 = curSide->center.y + (curSide->radiusl) * sin(alfl);
+			TSTX(x2);
+			TSTY(y2);
 		    }
 		    TSTZ(z);
 		    break;
@@ -607,13 +610,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->Kyl = (ew - sw) / curSide->arc;
 
 		    /* to find the boundary */
-		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		    alfl = curSide->angle[TR_ZS];
+		    al = curSide->arc / 36.0;
+		    alfl = curSide->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
 			alfl += al;
-			x2 = curSide->center.x + (curSide->radiusr) * sin(alfl);   /* location of end */
-			y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
+			x2 = curSide->center.x + (curSide->radiusr) * cos(alfl);
+			y2 = curSide->center.y + (curSide->radiusr) * sin(alfl);
 			TSTX(x2);
 			TSTY(y2);
 		    }
@@ -651,13 +654,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->Kyl = (ew - sw) / curSide->arc;
 
 		    /* to find the boundary */
-		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		    alfl = curSide->angle[TR_ZS];
+		    al = curSide->arc / 36.0;
+		    alfl = curSide->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
-			alfl += al;
-			x1 = curSide->center.x - (curSide->radiusl) * sin(alfl);   /* location of end */
-			y1 = curSide->center.y + (curSide->radiusl) * cos(alfl);
+			alfl -= al;
+			x1 = curSide->center.x + (curSide->radiusl) * cos(alfl);   /* location of end */
+			y1 = curSide->center.y + (curSide->radiusl) * sin(alfl);
 			TSTX(x1);
 			TSTY(y1);
 		    }
@@ -688,13 +691,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->Kyl = (ew - sw) / curSide->arc;
 
 		    /* to find the boundary */
-		    al = (curSide->angle[TR_ZE] - curSide->angle[TR_ZS])/36.0;
-		    alfl = curSide->angle[TR_ZS];
+		    al = curSide->arc / 36.0;
+		    alfl = curSide->angle[TR_CS];
 
 		    for (j = 0; j < 36; j++) {
-			alfl += al;
-			x2 = curSide->center.x - (curSide->radiusr) * sin(alfl);   /* location of end */
-			y2 = curSide->center.y - (curSide->radiusr) * cos(alfl);
+			alfl -= al;
+			x2 = curSide->center.x + (curSide->radiusr) * cos(alfl);   /* location of end */
+			y2 = curSide->center.y + (curSide->radiusr) * sin(alfl);
 			TSTX(x2);
 			TSTY(y2);
 		    }
@@ -1134,15 +1137,15 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 		curSeg->Kyl = 0;
 	    
 		/* to find the boundary */
-		al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
-		alfl = curSeg->angle[TR_ZS];
+		al = curArc / 36.0;
+		alfl = curSeg->angle[TR_CS];
 
 		for (j = 0; j < 36; j++) {
 		    alfl += al;
-		    x1 = curSeg->center.x + (innerradius) * sin(alfl);   /* location of end */
-		    y1 = curSeg->center.y - (innerradius) * cos(alfl);
-		    x2 = curSeg->center.x + (innerradius + width) * sin(alfl);   /* location of end */
-		    y2 = curSeg->center.y - (innerradius + width) * cos(alfl);
+		    x1 = curSeg->center.x + (innerradius) * cos(alfl);   /* location of end */
+		    y1 = curSeg->center.y + (innerradius) * sin(alfl);
+		    x2 = curSeg->center.x + (innerradius + width) * cos(alfl);   /* location of end */
+		    y2 = curSeg->center.y + (innerradius + width) * sin(alfl);
 		    TSTX(x1); TSTX(x2);
 		    TSTY(y1); TSTY(y2);
 		}
@@ -1200,15 +1203,15 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 		curSeg->Kyl = 0;
 
 		/* to find the boundaries */
-		al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
-		alfl = curSeg->angle[TR_ZS];
+		al = curSeg->arc / 36.0;
+		alfl = curSeg->angle[TR_CS];
 
 		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x1 = curSeg->center.x - (innerradius + width) * sin(alfl);   /* location of end */
-		    y1 = curSeg->center.y + (innerradius + width) * cos(alfl);
-		    x2 = curSeg->center.x - innerradius * sin(alfl);   /* location of end */
-		    y2 = curSeg->center.y + innerradius * cos(alfl);
+		    alfl -= al;
+		    x1 = curSeg->center.x + (innerradius + width) * cos(alfl);   /* location of end */
+		    y1 = curSeg->center.y + (innerradius + width) * sin(alfl);
+		    x2 = curSeg->center.x + innerradius * cos(alfl);   /* location of end */
+		    y2 = curSeg->center.y + innerradius * sin(alfl);
 		    TSTX(x1); TSTX(x2);
 		    TSTY(y1); TSTY(y2);
 		}
@@ -1232,6 +1235,9 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	}
 
     } while (GfParmListSeekNext(TrackHandle, path) == 0);
+
+    printf("\n");
+    
 
     theTrack->seg = root;
     theTrack->length = totLength;

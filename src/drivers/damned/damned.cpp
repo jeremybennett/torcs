@@ -316,7 +316,7 @@ static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.15,	0.05,	0.08,	0.015,	0.02,	0
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
-const  tdble Advance3[10]= {	-15.0,	0.0,  -16.0,	5.0,	0.0,	-15.0,	0.0,	0.0,	0.0,	5.0	};
+static tdble Advance3[10]= {	-15.0,	0.0,  -16.0,	5.0,	0.0,	-15.0,	0.0,	0.0,	0.0,	5.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
 const  tdble VGain[10]   = {	0.010,	0.04,   0.01,	0.04,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
@@ -406,6 +406,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
 	spdtgt2[1] = spdtgt2ref[1] * (seg->surface->kFriction - .2);
+	Advance3[1] = (seg->surface->kFriction - 1.4) * 10.0;
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .2);
 	spdtgt2[4] = spdtgt2ref[4] * (seg->surface->kFriction - .3);
 	spdtgt2[5] = spdtgt2ref[5] * (seg->surface->kFriction - .3);

@@ -425,7 +425,7 @@
 	<attnum name="color R2" val="0.2"></attnum>
 	<attnum name="color G2" val="0.2"></attnum>
 	<attnum name="color B2" val="0.2"></attnum>
-	<attstr name="texture name" val="tr-wall.rgb"></attstr>
+	<attstr name="texture name" val="tr-wall_nmm.rgb"></attstr>
 	<attstr name="texture type" in="discrete, continuous" val="continuous"></attstr>
 	<attnum name="texture size" val="3.0" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>

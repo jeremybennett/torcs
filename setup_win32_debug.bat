@@ -112,6 +112,8 @@ copy .\data\cars\models\206W10\206W10.xml .\runtimed\cars\206W10\206W10.xml
 copy .\data\cars\models\206W10\206W10.rgb .\runtimed\cars\206W10\206W10.rgb
 copy .\data\cars\models\206W10\tex-wheel.rgb .\runtimed\cars\206W10\tex-wheel.rgb
 copy .\data\cars\models\206W10\206W10.ac .\runtimed\cars\206W10\206W10.ac
+copy .\data\cars\models\206W10\206W10-int.ac .\runtimed\cars\206W10\206W10-int.ac
+copy .\data\cars\models\206W10\206W10-noint.ac .\runtimed\cars\206W10\206W10-noint.ac
 copy .\data\cars\models\206W10\readme.txt .\runtimed\cars\206W10\readme.txt
 
 call .\create_dir .\runtimed
@@ -121,6 +123,8 @@ copy .\data\cars\models\306W61\306W61.xml .\runtimed\cars\306W61\306W61.xml
 copy .\data\cars\models\306W61\306W61.rgb .\runtimed\cars\306W61\306W61.rgb
 copy .\data\cars\models\306W61\tex-wheel.rgb .\runtimed\cars\306W61\tex-wheel.rgb
 copy .\data\cars\models\306W61\306W61.ac .\runtimed\cars\306W61\306W61.ac
+copy .\data\cars\models\306W61\306W61-int.ac .\runtimed\cars\306W61\306W61-int.ac
+copy .\data\cars\models\306W61\306W61-noint.ac .\runtimed\cars\306W61\306W61-noint.ac
 copy .\data\cars\models\306W61\readme.txt .\runtimed\cars\306W61\readme.txt
 
 call .\create_dir .\runtimed
@@ -184,6 +188,8 @@ copy .\data\cars\models\CORW61\CORW61.xml .\runtimed\cars\CORW61\CORW61.xml
 copy .\data\cars\models\CORW61\CORW61.rgb .\runtimed\cars\CORW61\CORW61.rgb
 copy .\data\cars\models\CORW61\tex-wheel.rgb .\runtimed\cars\CORW61\tex-wheel.rgb
 copy .\data\cars\models\CORW61\CORW61.ac .\runtimed\cars\CORW61\CORW61.ac
+copy .\data\cars\models\CORW61\CORW61-int.ac .\runtimed\cars\CORW61\CORW61-int.ac
+copy .\data\cars\models\CORW61\CORW61-noint.ac .\runtimed\cars\CORW61\CORW61-noint.ac
 copy .\data\cars\models\CORW61\readme.txt .\runtimed\cars\CORW61\readme.txt
 
 call .\create_dir .\runtimed
@@ -193,6 +199,8 @@ copy .\data\cars\models\EVOWRC61\EVOWRC61.xml .\runtimed\cars\EVOWRC61\EVOWRC61.
 copy .\data\cars\models\EVOWRC61\EVOWRC61.rgb .\runtimed\cars\EVOWRC61\EVOWRC61.rgb
 copy .\data\cars\models\EVOWRC61\tex-wheel.rgb .\runtimed\cars\EVOWRC61\tex-wheel.rgb
 copy .\data\cars\models\EVOWRC61\EVOWRC61.ac .\runtimed\cars\EVOWRC61\EVOWRC61.ac
+copy .\data\cars\models\EVOWRC61\EVOWRC61-int.ac .\runtimed\cars\EVOWRC61\EVOWRC61-int.ac
+copy .\data\cars\models\EVOWRC61\EVOWRC61-noint.ac .\runtimed\cars\EVOWRC61\EVOWRC61-noint.ac
 copy .\data\cars\models\EVOWRC61\readme.txt .\runtimed\cars\EVOWRC61\readme.txt
 
 call .\create_dir .\runtimed
@@ -202,6 +210,8 @@ copy .\data\cars\models\FOCW61\FOCW61.xml .\runtimed\cars\FOCW61\FOCW61.xml
 copy .\data\cars\models\FOCW61\FOCW61.rgb .\runtimed\cars\FOCW61\FOCW61.rgb
 copy .\data\cars\models\FOCW61\tex-wheel.rgb .\runtimed\cars\FOCW61\tex-wheel.rgb
 copy .\data\cars\models\FOCW61\FOCW61.ac .\runtimed\cars\FOCW61\FOCW61.ac
+copy .\data\cars\models\FOCW61\FOCW61-int.ac .\runtimed\cars\FOCW61\FOCW61-int.ac
+copy .\data\cars\models\FOCW61\FOCW61-noint.ac .\runtimed\cars\FOCW61\FOCW61-noint.ac
 copy .\data\cars\models\FOCW61\readme.txt .\runtimed\cars\FOCW61\readme.txt
 
 call .\create_dir .\runtimed
@@ -260,6 +270,8 @@ copy .\data\cars\models\SWRC62\SWRC62.xml .\runtimed\cars\SWRC62\SWRC62.xml
 copy .\data\cars\models\SWRC62\SWRC62.rgb .\runtimed\cars\SWRC62\SWRC62.rgb
 copy .\data\cars\models\SWRC62\tex-wheel.rgb .\runtimed\cars\SWRC62\tex-wheel.rgb
 copy .\data\cars\models\SWRC62\SWRC62.ac .\runtimed\cars\SWRC62\SWRC62.ac
+copy .\data\cars\models\SWRC62\SWRC62-int.ac .\runtimed\cars\SWRC62\SWRC62-int.ac
+copy .\data\cars\models\SWRC62\SWRC62-noint.ac .\runtimed\cars\SWRC62\SWRC62-noint.ac
 copy .\data\cars\models\SWRC62\readme.txt .\runtimed\cars\SWRC62\readme.txt
 
 call .\create_dir .\runtimed
@@ -491,6 +503,7 @@ copy .\data\data\textures\tr-sand2.rgb .\runtimed\data\textures\tr-sand2.rgb
 copy .\data\data\textures\tr-sand.rgb .\runtimed\data\textures\tr-sand.rgb
 copy .\data\data\textures\tr-snow.rgb .\runtimed\data\textures\tr-snow.rgb
 copy .\data\data\textures\tr-tirewall.rgb .\runtimed\data\textures\tr-tirewall.rgb
+copy .\data\data\textures\tr-wall_nmm.rgb .\runtimed\data\textures\tr-wall_nmm.rgb
 copy .\data\data\textures\tr-wall.rgb .\runtimed\data\textures\tr-wall.rgb
 copy .\data\data\textures\tr-water.rgb .\runtimed\data\textures\tr-water.rgb
 copy .\data\data\textures\turn100L.rgb .\runtimed\data\textures\turn100L.rgb
@@ -743,7 +756,7 @@ copy .\data\tracks\road\g-track-2\asphalt.rgb .\runtimed\tracks\road\g-track-2\a
 copy .\data\tracks\road\g-track-2\asphaltr.rgb .\runtimed\tracks\road\g-track-2\asphaltr.rgb
 copy .\data\tracks\road\g-track-2\asp_nmm.rgb .\runtimed\tracks\road\g-track-2\asp_nmm.rgb
 copy .\data\tracks\road\g-track-2\assandr.rgb .\runtimed\tracks\road\g-track-2\assandr.rgb
-copy .\data\tracks\road\g-track-2\barg1.rgb .\runtimed\tracks\road\g-track-2\barg1.rgb
+copy .\data\tracks\road\g-track-2\barg1_nmm.rgb .\runtimed\tracks\road\g-track-2\barg1_nmm.rgb
 copy .\data\tracks\road\g-track-2\barg2.rgb .\runtimed\tracks\road\g-track-2\barg2.rgb
 copy .\data\tracks\road\g-track-2\barg3.rgb .\runtimed\tracks\road\g-track-2\barg3.rgb
 copy .\data\tracks\road\g-track-2\concdal.rgb .\runtimed\tracks\road\g-track-2\concdal.rgb
@@ -765,7 +778,6 @@ copy .\data\tracks\road\g-track-2\tent.rgb .\runtimed\tracks\road\g-track-2\tent
 copy .\data\tracks\road\g-track-2\texte1.rgb .\runtimed\tracks\road\g-track-2\texte1.rgb
 copy .\data\tracks\road\g-track-2\torcs0.rgb .\runtimed\tracks\road\g-track-2\torcs0.rgb
 copy .\data\tracks\road\g-track-2\torcs1.rgb .\runtimed\tracks\road\g-track-2\torcs1.rgb
-copy .\data\tracks\road\g-track-2\tr-barrier.rgb .\runtimed\tracks\road\g-track-2\tr-barrier.rgb
 copy .\data\tracks\road\g-track-2\trcurbl.rgb .\runtimed\tracks\road\g-track-2\trcurbl.rgb
 copy .\data\tracks\road\g-track-2\trcurbr.rgb .\runtimed\tracks\road\g-track-2\trcurbr.rgb
 

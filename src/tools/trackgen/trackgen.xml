@@ -20,27 +20,6 @@
     <attstr name="track"     val="track"></attstr>
   </section>
 
-  <section name="Files">
-    <attstr name="track" val="trk"></attstr>
-    <attstr name="exterior" val="ext"></attstr>
-    <attstr name="interior" val="int"></attstr>
-    <attstr name="object" val="obj"></attstr>
-    <attstr name="terrain" val="ter"></attstr>
-  </section>
-
-  <section name="Objects Name">
-    <attstr name="main track" val="tkMn "></attstr>
-    <attstr name="right border" val="tkRtBr "></attstr>
-    <attstr name="right side" val="tkRtSd "></attstr>
-    <attstr name="left border" val="tkLtBr "></attstr>
-    <attstr name="left side" val="tkLtSd "></attstr>
-    <attstr name="right barrier" val="BrRt "></attstr>
-    <attstr name="left barrier" val="BrLt "></attstr>
-    <attstr name="turn marks" val="TuMk "></attstr>
-    <attstr name="start bridge" val="StBg "></attstr>
-    <attstr name="pits" val="pits "></attstr>
-  </section>
-
 </params>
 
 

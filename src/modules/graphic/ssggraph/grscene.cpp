@@ -74,32 +74,17 @@ static void customizePits(void);
 
 static ssgLoaderOptionsEx	grloaderOptions;
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
-int preScene(ssgEntity *e);
-
-class myLoaderOptions : public ssgLoaderOptions
-{
-public:
-  virtual void makeModelPath ( char* path, const char *fname ) const
-  {
-    ulFindFile ( path, model_dir, fname, NULL ) ;
-  }
-
-  virtual void makeTexturePath ( char* path, const char *fname ) const
-  {
-    ulFindFile ( path, texture_dir, fname, NULL ) ;
-  }
-} ;
 
 #define DISTG 80
 
- int preScene(ssgEntity *e)
+int preScene(ssgEntity *e)
 {
   char *p=NULL ;
   int id=0;
   char *q=NULL;
   int max=0;
 
-  p=( ((ssgBranchCb*)e)->getKid(0))->getName();
+  p=(((ssgBranchCb*)e)->getKid(0))->getName();
   if (p==NULL)
     return TRUE;
   q=strstr(p,"TKMN");
@@ -157,7 +142,7 @@ int grInitScene(tTrack *track)
     char		*acname;
     ssgEntity		*desc;
     char		buf[256];
-    myLoaderOptions	options;
+    ssgLoaderOptionsEx	options;
     ssgLight *          light;
 
     light=ssgGetLight(0);

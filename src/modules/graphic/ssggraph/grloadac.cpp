@@ -23,6 +23,8 @@
 
 #include <plib/ssg.h>
 /*#include "ssgLocal.h"*/
+#include "grssgext.h"
+int inGroup=0;
 
 static FILE *loader_fd ;
 
@@ -69,10 +71,12 @@ static int do_mat      ( char *s ) ;
 static int do_refs     ( char *s ) ;
 static int do_kids     ( char *s ) ;
 
+#if NOTYET
 static int do_obj_world ( char *s ) ;
 static int do_obj_poly  ( char *s ) ;
 static int do_obj_group ( char *s ) ;
 static int do_obj_light ( char *s ) ;
+#endif
 
 #define PARSE_CONT   0
 #define PARSE_POP    1
@@ -170,25 +174,28 @@ static Tag surface_tags [] =
   { NULL, NULL }
 } ;
 
-/* static Tag obj_type_tags [] = */
-/* { */
-/*   { "world", do_obj_world }, */
-/*   { "poly" , do_obj_poly  }, */
-/*   { "group", do_obj_group }, */
-/*   { "light", do_obj_light }, */
-/*   { NULL, NULL } */
-/* } ; */
-
+#if NOTYET
+static Tag obj_type_tags [] = 
+ { 
+   { "world", do_obj_world }, 
+   { "poly" , do_obj_poly  }, 
+   { "group", do_obj_group }, 
+   { "light", do_obj_light }, 
+   { NULL, NULL } 
+ } ; 
+#endif
 
 #define OBJ_WORLD  0
 #define OBJ_POLY   1
 #define OBJ_GROUP  2
 #define OBJ_LIGHT  3
 
+#if NOTYET
 static int do_obj_world ( char * ) { return OBJ_WORLD ; } 
 static int do_obj_poly  ( char * ) { return OBJ_POLY  ; }
 static int do_obj_group ( char * ) { return OBJ_GROUP ; }
 static int do_obj_light ( char * ) { return OBJ_LIGHT ; }
+#endif
 static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* options );
 
 
@@ -296,10 +303,11 @@ static int do_material ( char *s )
 
 static int do_object   ( char * s  )
 {
+#if NOTYET
+  ssgBranch  *current_branch_g   = NULL ;
+  int obj_type = search ( obj_type_tags, s ) ;
+#endif
 
-  /*  ssgBranch  *current_branch_g   = NULL ;
-      int obj_type = search ( obj_type_tags, s ) ;  */
-  
   delete current_tfname ;
   current_tfname = NULL ;
 
@@ -312,19 +320,20 @@ static int do_object   ( char * s  )
 
   ssgEntity *old_cb = current_branch ;
 
-  /*
-    if (obj_type==OBJ_GROUP)
+#if NOTYET
+  if (obj_type==OBJ_GROUP)
     {
-    printf("found a group \n");
-    inGroup=1;
-    current_branch_g = new ssgTransform () ;
-    current_branch->addKid(current_branch_g);
-    trArrayTmp[numtrArray++]=current_branch_g;
-    current_branch=current_branch_g;
+      inGroup=1;
+      current_branch_g=new ssgBranchCb();
+      current_branch->addKid(current_branch_g);
+      current_branch= (ssgTransform*)current_branch_g;
+
+      extern int preScene(ssgEntity *e);
+      current_branch_g->setCallback(SSG_CALLBACK_PREDRAW, preScene);
     }
-    else
+  else
+#endif
     inGroup=0;
-  */
 
   ssgTransform *tr = new ssgTransform () ;
 
@@ -352,13 +361,24 @@ static int do_object   ( char * s  )
 
 static int do_name ( char *s )
 {
+  char *q=NULL;
   skip_quotes ( &s ) ;
 
-  current_branch -> setName ( s ) ;
-  /*if (inGroup!=0)
-    {
-      printf("ingroup =%s\n",s);
-      }*/
+  if (!strncmp(s, "TKMN",4))
+      {
+	q=strstr(s,"_g");
+	if (q!=NULL)
+	  *q='\0';
+	current_branch -> setName ( s ) ;
+/* 	if (inGroup!=0) */
+/* 	  { */
+/* 	    printf("ingroup =%s\n",s); */
+/* 	  } */
+      }
+    else
+      {
+	current_branch -> setName ( s ) ;
+      }
   return PARSE_CONT ;
 }
 
@@ -602,6 +622,7 @@ static int do_refs     ( char *s )
 
     ssgLeaf* leaf = current_options -> createLeaf ( vtab, 0 ) ;
 
+
     if ( leaf )
        current_branch -> addKid ( leaf ) ;
   }
@@ -617,6 +638,31 @@ static int do_kids ( char *s )
 }
 
 
+void myssgFlatten(ssgEntity *obj)
+{
+
+ if ( obj -> isAKindOf ( ssgTypeBranch() ) )
+  {
+    ssgBranch *br = (ssgBranch *) obj ;
+#ifdef WIN32
+    if (!strnicmp(br->getKid(0)->getName(), "tkmn",4))
+#else
+    if (!strncasecmp(br->getKid(0)->getName(), "tkmn",4))
+#endif
+      {
+	ssgFlatten(br->getKid(0));
+      }
+    else
+      {
+	for ( int i = 0 ; i < br -> getNumKids () ; i++ )
+	  ssgFlatten( br -> getKid ( i ) );
+      }
+  }
+ return ;
+
+}
+
+
 ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 {
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
@@ -628,7 +674,8 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 
   ssgBranch *model = new ssgBranch () ;
   model -> addKid ( obj ) ;
-  ssgFlatten      ( obj ) ;
+  /*myssgFlatten(obj);*/
+  /*ssgFlatten      ( obj ) ;*/
   ssgStripify   ( model ) ;
   return model ;
 }
