@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : e-track-3.xml
+    created              : Wed Jan 19 19:07:30 CET 2000
+    copyright            : (C) 1999 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+]>
+
+<params name="E-Track 3" type="trackdef" mode="m">
+
+  <section name="Surfaces">
+    <section name="List">
+      &default-surfaces;
+    </section>
+  </section>
+
+  <section name="Header">
+    <attstr name="name"        val="E-Track 3"></attstr>
+    <attnum name="version"     val="2"></attnum>
+    <attstr name="author"      val="E.Espie"></attstr>
+    <attstr name="description" val="Another Track"></attstr>
+  </section>
+
+  <section name="Graphic">
+    <attstr name="3d description" val="e-track-3.ac"></attstr>
+
+    <attstr name="background image" val="background.png"></attstr>
+    <attnum name="background color R" val="0.28125"></attnum>
+    <attnum name="background color G" val="0.4375"></attnum>
+    <attnum name="background color B" val="0.75"></attnum>
+
+    <section name="Environment Mapping">
+      <section name="1">
+	<attstr name="env map image" val="env.rgb"></attstr>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="8"></attnum>
+      <attnum name="border margin" unit="m" val="100"></attnum>
+      <attnum name="border step" unit="m" val="30"></attnum>
+      <attnum name="border height" unit="m" val="0"></attnum>
+      <attstr name="orientation" val="clockwise"></attstr>
+      <attstr name="relief file" val="e-track-3-relief.ac"></attstr>
+    </section>
+
+    <section name="Turn Marks">
+      <attnum name="width" val="1.0" unit="m"></attnum>
+      <attnum name="height" val="1.0" unit="m"></attnum>
+      <attnum name="vertical space" val="0" unit="m"></attnum>
+      <attnum name="horizontal space" val="0.5" unit="m"></attnum>
+    </section>
+  </section>
+
+  <section name="Main Track">
+
+    <attstr name="surface" in="asphalt,grass,sand" val="asphalt-lines"></attstr>
+    <attnum name="width" unit="m" val="18.0"></attnum>
+
+    <attstr name="lside surface"  val="grass"></attstr>
+    <attnum name="lside width"    val="5.0"></attnum>
+    <attstr name="lside type" in="tangent,level" val="tangent"></attstr>
+
+    <attstr name="rside surface"  val="asphalt-pits"></attstr>
+    <attnum name="rside width"    val="15.0"></attnum>
+    <attstr name="rside type" in="tangent,level" val="tangent"></attstr>
+
+    <!-- PITS -->
+    <attstr name="pit type"   val="track side"></attstr>
+    <attstr name="pit side"   val="right"></attstr>
+    <attstr name="pit entry"  val="s15-1"></attstr>
+    <attstr name="pit exit"   val="s3"></attstr>
+    <attstr name="pit start"  val="last segment"></attstr>
+    <attstr name="pit end"    val="start lane"></attstr>
+    <attnum name="pit length" val="15" unit="m"></attnum>
+    <attnum name="pit width"  val="5" unit="m"></attnum>
+
+    <section name="segments">
+
+      <section name="start lane">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="180"></attnum>
+	<attnum name="profil steps" val="12"></attnum>
+      </section>
+
+      <section name="s1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="25"></attnum>
+	<attstr name="rside surface" val="asphalt"></attstr>
+	<attnum name="rside end width" val="10"></attnum>
+      </section>
+
+      <section name="s2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="45"></attnum>
+     </section>
+
+      <section name="s3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attnum name="rside end width" val="0"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+	<attnum name="banking end" val="-3" unit="deg"></attnum>
+      </section>
+
+      <section name="t1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="30"></attnum>
+	<attstr name="rside surface" val="grass"></attstr>
+	<attnum name="rside end width" val="5"></attnum>
+	<attstr name="surface" val="asphalt-l-left"></attstr>
+      </section>
+
+      <section name="s4">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="200"></attnum>
+	<attnum name="grade" val="4" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="40"></attnum>
+	<attnum name="profil end tangent" val="4" unit="%"></attnum>
+	<attnum name="banking end" val="3" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="t2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="70"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="marks" val="50;100"></attstr>
+      </section>
+
+      <section name="s5">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="grade" val="4" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="t3">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="75"></attnum>
+	<attnum name="grade" val="0" unit="%"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="marks" val="50"></attstr>
+      </section>
+
+      <section name="s6">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="grade" val="-10" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+	<attnum name="profil end tangent" val="-10" unit="%"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="t4">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="60"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+      </section>
+
+      <section name="s7-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attnum name="grade" val="-10" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="s7-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="grade" val="5" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>
+	<attnum name="banking end" val="-3" unit="deg"></attnum>
+      </section>
+
+      <section name="t5-1">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="110"></attnum>
+	<attnum name="grade" val="0" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+	<attnum name="banking end" val="3" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="marks" val="50;100;150"></attstr>
+	<attstr name="rside surface" val="concrete"></attstr>
+	<attstr name="lside surface" val="concrete"></attstr>
+      </section>
+
+      <section name="t5-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="30"></attnum>
+	<attnum name="arc" unit="deg" val="97"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+      </section>
+
+      <section name="s8-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="s8-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="200"></attnum>
+	<attnum name="grade" val="4" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="50"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="rside surface" val="grass"></attstr>
+	<attstr name="lside surface" val="grass"></attstr>
+      </section>
+
+      <section name="t6">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="400"></attnum>
+	<attnum name="arc" unit="deg" val="17"></attnum>
+	<attnum name="grade" val="0" unit="%"></attnum>
+      </section>
+
+      <section name="s9">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="600"></attnum>
+	<attnum name="grade" val="-3" unit="%"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="120"></attnum>
+	<attnum name="banking end" val="3" unit="deg"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>
+      </section>
+
+      <section name="t7-1">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="200"></attnum>
+	<attnum name="arc" unit="deg" val="65"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="25"></attnum>
+	<attnum name="grade" val="3" unit="%"></attnum>
+	<attnum name="profil end tangent" val="3" unit="%"></attnum>
+      </section>
+
+      <section name="t7-2">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="100"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="20"></attnum>
+ 	<attnum name="banking end" val="0" unit="deg"></attnum>
+  	<attnum name="profil end tangent" val="3" unit="%"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="marks" val="50;100"></attstr>
+    </section>
+
+      <section name="s10-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+	<attnum name="z end" unit="m" val="0"></attnum>
+  	<attnum name="profil end tangent" val="0" unit="%"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="s10-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+	<attnum name="grade" val="0" unit="%"></attnum>
+	<attnum name="banking end" val="3" unit="deg"></attnum>
+      </section>
+
+      <section name="t8">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="75"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="7"></attnum>
+	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="marks" val="50"></attstr>
+      </section>
+
+      <section name="s11">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+	<attnum name="banking end" val="-3" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="t9">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="65"></attnum>
+	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="marks" val="50"></attstr>
+      </section>
+
+      <section name="s12">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="228.8885"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+      </section>
+
+      <section name="t10">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="135"></attnum>
+	<attstr name="surface" val="asphalt-l-left"></attstr>
+	<attstr name="marks" val="50;100;150"></attstr>
+	<attstr name="lside surface" val="concrete"></attstr>
+      </section>
+
+      <section name="s13-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+ 	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attnum name="z end" unit="m" val="1.0"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="lside surface" val="grass"></attstr>
+      </section>
+
+      <section name="s13-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+ 	<attnum name="z end" unit="m" val="-0.5"></attnum>
+      </section>
+
+      <section name="s13-3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="10"></attnum>
+ 	<attnum name="banking end" val="2" unit="deg"></attnum>
+ 	<attnum name="z end" unit="m" val="0"></attnum>
+      </section>
+
+      <section name="t11">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="15"></attnum>
+      </section>
+
+      <section name="s14">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="15"></attnum>
+ 	<attnum name="banking end" val="4" unit="deg"></attnum>
+      </section>
+
+      <section name="t12">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="40"></attnum>
+	<attnum name="arc" unit="deg" val="135"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+	<attstr name="marks" val="50;100;150"></attstr>
+	<attstr name="rside surface" val="concrete"></attstr>
+      </section>
+
+      <section name="s15">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="200"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+	<attstr name="rside surface" val="grass"></attstr>
+      </section>
+
+      <section name="t13">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="m" val="60"></attnum>
+	<attnum name="arc" unit="deg" val="35"></attnum>
+	<attnum name="rside end width" val="0"></attnum>
+	<attstr name="surface" val="asphalt-l-right"></attstr>
+      </section>
+
+      <section name="s15-1">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="146.654"></attnum>
+	<attnum name="rside end width" val="10"></attnum>
+	<attstr name="rside surface"  val="asphalt"></attstr>
+	<attstr name="profil" in="linear,spline" val="spline"></attstr>
+	<attnum name="profil steps" val="30"></attnum>
+ 	<attnum name="banking end" val="0" unit="deg"></attnum>
+	<attstr name="surface" val="asphalt-lines"></attstr>
+       </section>
+
+      <section name="s15-2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="160"></attnum>
+      </section>
+
+      <section name="s15-3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="30"></attnum>
+	<attnum name="rside end width" val="15"></attnum>
+      </section>
+
+      <section name="last segment">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="120"></attnum>
+	<attstr name="rside surface"  val="asphalt-pits"></attstr>
+	<attnum name="profil steps" val="8"></attnum>
+      </section>
+
+    </section>
+
+  </section>
+
+  <section name="Cameras">
+    <section name="list">
+
+
+      <section name="cam0">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s3"></attstr>
+	<attnum name="to right"  val="0.0"></attnum>
+	<attnum name="to start"  val="50"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="last segment"></attstr>
+	<attstr name="fov end"   val="t1"></attstr>	
+      </section>
+
+
+      <section name="cam 1">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t1"></attstr>
+	<attnum name="to right"  val="-5.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t1"></attstr>
+	<attstr name="fov end"   val="t2"></attstr>	
+      </section>
+
+      <section name="cam 2">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t3"></attstr>
+	<attnum name="to right"  val="0.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="3"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t2"></attstr>
+	<attstr name="fov end"   val="s6"></attstr>	
+      </section>
+
+      <section name="cam 3">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t4"></attstr>
+	<attnum name="to right"  val="-5.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s6"></attstr>
+	<attstr name="fov end"   val="s7-2"></attstr>	
+      </section>
+
+      <section name="cam 4">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s7-2"></attstr>
+	<attnum name="to right"  val="0.0"></attnum>
+	<attnum name="to start"  val="100"></attnum>
+	<attnum name="height"    val="6"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s7-2"></attstr>
+	<attstr name="fov end"   val="t5-1"></attstr>	
+      </section>
+
+      <section name="cam 4">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t5-2"></attstr>
+	<attnum name="to right"  val="23.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="6"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t5-1"></attstr>
+	<attstr name="fov end"   val="s8-2"></attstr>	
+      </section>
+
+      <section name="cam 5">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t6"></attstr>
+	<attnum name="to right"  val="-5.0"></attnum>
+	<attnum name="to start"  val="8" unit="deg"></attnum>
+	<attnum name="height"    val="5"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s8-2"></attstr>
+	<attstr name="fov end"   val="s9"></attstr>	
+      </section>
+
+      <section name="cam 6">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t7-1"></attstr>
+	<attnum name="to right"  val="25.0"></attnum>
+	<attnum name="to start"  val="0" unit="deg"></attnum>
+	<attnum name="height"    val="5"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s9"></attstr>
+	<attstr name="fov end"   val="t7-2"></attstr>	
+      </section>
+
+      <section name="cam 7">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t7-2"></attstr>
+	<attnum name="to right"  val="25.0"></attnum>
+	<attnum name="to start"  val="60" unit="deg"></attnum>
+	<attnum name="height"    val="5"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="t7-2"></attstr>
+	<attstr name="fov end"   val="s10-1"></attstr>	
+      </section>
+
+      <section name="cam 8">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="s10-2"></attstr>
+	<attnum name="to right"  val="25.0"></attnum>
+	<attnum name="to start"  val="0"></attnum>
+	<attnum name="height"    val="10"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s10-1"></attstr>
+	<attstr name="fov end"   val="s11"></attstr>	
+      </section>
+
+      <section name="cam 9">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t9"></attstr>
+	<attnum name="to right"  val="23.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s11"></attstr>
+	<attstr name="fov end"   val="s12"></attstr>	
+      </section>
+
+      <section name="cam 10">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t10"></attstr>
+	<attnum name="to right"  val="23.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s12"></attstr>
+	<attstr name="fov end"   val="s13-2"></attstr>	
+      </section>
+
+      <section name="cam 11">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t11"></attstr>
+	<attnum name="to right"  val="23.0"></attnum>
+	<attnum name="to start"  val="0" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s13-2"></attstr>
+	<attstr name="fov end"   val="s14"></attstr>	
+      </section>
+
+      <section name="cam 12">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t12"></attstr>
+	<attnum name="to right"  val="-5.0"></attnum>
+	<attnum name="to start"  val="30" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s14"></attstr>
+	<attstr name="fov end"   val="s15"></attstr>	
+      </section>
+
+      <section name="cam 13">
+	<!-- Camera's position relative to a segment -->
+	<attstr name="segment"   val="t13"></attstr>
+	<attnum name="to right"  val="-5.0"></attnum>
+	<attnum name="to start"  val="0" unit="deg"></attnum>
+	<attnum name="height"    val="2"></attnum>
+	<!-- Camera field of view, indicates the first and last segment viewed -->
+	<attstr name="fov start" val="s15"></attstr>
+	<attstr name="fov end"   val="last segment"></attstr>	
+      </section>
+
+    </section>
+  </section>
+
+</params>
+
+

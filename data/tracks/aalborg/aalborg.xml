@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    file                 : aalborg.xml
+    created              : Sun Mar 19 00:14:31 CET 2000
+    copyright            : (C) 2000 by Eric Espie                         
+    email                : torcs@free.fr   
+    version              : $Id$                                  
+-->
+
+<!--    This program is free software; you can redistribute it and/or modify  -->
+<!--    it under the terms of the GNU General Public License as published by  -->
+<!--    the Free Software Foundation; either version 2 of the License, or     -->
+<!--    (at your option) any later version.                                   -->
+
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "data/tracks/surfaces.xml">
+]>
+
+<params name="aalborg" type="param" mode="mw">
+
+  <section name="Surfaces">
+    <section name="List">
+      &default-surfaces;
+    </section>
+  </section>
+
+  <section name="Header">
+    <attstr name="name"    val="Aalborg"></attstr>
+    <attnum name="version" val="2"></attnum>
+    <attstr name="author"  val="Torben Thellefsen"></attstr>
+    <attstr name="description" val="This track is from RARS"></attstr>
+  </section>
+
+  <section name="Graphic">
+    <attstr name="3d description" val="aalborg.ac"></attstr>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="4"></attnum>
+      <attnum name="border margin" unit="m" val="100"></attnum>
+      <attnum name="border step" unit="m" val="30"></attnum>
+      <attnum name="border height" unit="m" val="40"></attnum>
+      <attstr name="orientation" val="clockwise"></attstr>
+    </section>
+  </section>
+
+
+  <section name="Main Track">
+    <attnum name="width"   val="12.0"></attnum>
+    <attstr name="surface" val="asphalt-lines"></attstr>
+    <attnum name="lside width" val="3.0" unit="m"></attnum>
+    <attstr name="lside surface" val="asphalt"></attstr>
+    <attnum name="rside width" val="3.0" unit="m"></attnum>
+    <attstr name="rside surface" val="asphalt"></attstr>
+
+    <section name="segments">
+      <!-- first segment -->
+      <section name="10">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="300"></attnum>
+	<attnum name="z start" val="0"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="11">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="290"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="20">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="40.0"></attnum>
+	<attnum name="arc" unit="deg" val="75"></attnum>
+      </section>
+
+      <section name="30">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="150"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="31">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="150"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="40">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="630.0"></attnum>
+	<attnum name="arc" unit="deg" val="15"></attnum>
+      </section>
+
+      <section name="50">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="90"></attnum>
+	<attnum name="z end right" val="0"></attnum>
+      </section>
+
+      <section name="60">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+      </section>
+
+      <section name="70">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="100"></attnum>
+	<attnum name="z end right" val="0"></attnum>
+      </section>
+
+      <section name="71">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="125"></attnum>
+	<attnum name="z end left" val="0.0"></attnum>
+      </section>
+
+      <section name="80">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc" unit="deg" val="135"></attnum>
+      </section>
+
+      <section name="90">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="150"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="100">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="40.0"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+      </section>
+
+      <section name="110">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="120.0"></attnum>
+	<attnum name="arc" unit="deg" val="45"></attnum>
+	<attnum name="z end right" val="0"></attnum>
+      </section>
+
+      <section name="120">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="20"></attnum>
+      </section>
+
+      <section name="130">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="40.0"></attnum>
+	<attnum name="arc" unit="deg" val="90"></attnum>
+      </section>
+
+      <section name="140">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="feet" val="60"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="150">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="120.0"></attnum>
+	<attnum name="arc"    unit="deg" val="40"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="160">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="900.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="20"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="170">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="120"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="180">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="60.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="90"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="190">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="2055.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="27"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="200">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="1230.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="15"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="210">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="480"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="220">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="40.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="90"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="230">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="90"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="240">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="540.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="30"></attnum>
+      </section>
+
+      <section name="250">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="120"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="260">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="210.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="52"></attnum>
+      </section>
+
+      <section name="270">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="90"></attnum>
+      </section>
+
+      <section name="280">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="630"></attnum>
+	<attnum name="z end" val="0"></attnum>
+      </section>
+
+      <section name="290">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="130.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="80"></attnum>
+      </section>
+
+      <section name="300">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="100"></attnum>
+      </section>
+
+      <section name="310">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="95"></attnum>
+      </section>
+
+      <section name="320">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="150"></attnum>
+      </section>
+      <section name="325">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="330">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="430.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="45"></attnum>
+	<attnum name="z end left" val="0.0"></attnum>
+      </section>
+
+      <section name="340">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="345">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="70"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="350">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="405.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="17"></attnum>
+      </section>
+
+      <section name="360">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="140"></attnum>
+      </section>
+
+      <section name="362">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="364">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="370">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="50.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="114"></attnum>
+      </section>
+
+      <section name="380">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="382">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="384">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="30"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="386">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="70"></attnum>
+	<attnum name="z end left" val="0"></attnum>
+      </section>
+
+      <section name="390">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="300.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="20"></attnum>
+	<attnum name="z end"                 val="0"></attnum>
+      </section>
+
+      <section name="400">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg"   unit="feet" val="300"></attnum>
+	<attnum name="z end"               val="0"></attnum>
+      </section>
+
+      <section name="410">
+        <attstr name="type" val="rgt"></attstr>
+	<attnum name="radius" unit="feet" val="255.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="20"></attnum>
+	<attnum name="z end"                 val="0"></attnum>
+      </section>
+
+      <section name="420">
+        <attstr name="type" val="lft"></attstr>
+	<attnum name="radius" unit="feet" val="330.0"></attnum>
+	<attnum name="arc"    unit="deg"  val="47"></attnum>
+	<attnum name="z end"                 val="0"></attnum>
+      </section>
+
+    </section>
+  </section>
+</params>
