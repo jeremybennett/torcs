@@ -1,0 +1,203 @@
+2005-04-04  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.cpp: Added aero factor.
+	Added aeroflow model.
+
+	* simu.cpp: Added some profiling stuff for the wheels.
+
+	* collide.cpp: Added upside_down_timer.
+	Changed to quaternions.
+
+	* differential.cpp: Changed DIFF_FREE to what I think it should be.
+
+	* engine.cpp: Changed auto-clutch code.
+	Rearranged calculations.
+	Adjusted fuel consumption to match simuv2 more or less.
+
+	* wheel.cpp: Changed some things to quaternions.
+
+	* car.cpp: Changed to quaternions.
+
+	* SimulationOptions.cpp: Set aeroflow model to SIMPLE always.
+
+	* Options.h, SimulationOptions.h: New file.
+
+	* carstruct.h, sim.h: t2sg3() and sg2t3() - new functions.
+
+2005-03-30  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* collide.cpp: Final version of simple collision model
+
+	* car.cpp, collide.cpp: Fixed corner velocity and collisions
+
+2005-03-30  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* collide.cpp: Final version of simple collision model
+
+	* car.cpp, collide.cpp: Fixed corner velocity and collisions
+
+2005-03-30  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* car.cpp, collide.cpp: Fixed corner velocity and collisions
+
+2005-03-29  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.cpp, car.cpp, collide.cpp, engine.cpp, engine.h, simuitf.cpp, susp.cpp, wheel.cpp:
+	Cleanup and bugfixes
+
+	* SimulationOptions.cpp: New file.
+
+2005-03-29  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.cpp, car.cpp, collide.cpp, engine.cpp, engine.h, simuitf.cpp, susp.cpp, wheel.cpp:
+	Cleanup and bugfixes.
+
+	* SimulationOptions.cpp: New file.
+
+2005-03-01  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.cpp, aero.h, car.cpp, carstruct.h, collide.cpp, engine.cpp, engine.h, sim.h, simu.cpp, susp.cpp, susp.h, transmission.cpp, wheel.cpp:
+	bugfixes
+
+2004-11-26  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* susp.cpp, susp.h: Added option for suspension.
+
+	* simu.cpp: Added pit repairs for bent damage.
+
+	* aero.cpp: Ground effects is not reduced as much when slipstreaming.
+
+	* car.cpp: Kept direction..
+
+	* engine.cpp: Nothing.
+
+	* collide.cpp: Removed printf()s
+
+	* wheel.cpp, wheel.h: Slightly stabilised static friction.
+
+2004-11-09  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* simuitf.cpp: *** empty log message ***
+
+	* collide.cpp, engine.cpp, engine.h: Now works.
+
+2004-11-07  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* collide.cpp: Correct?
+
+2004-11-06  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* car.cpp, carstruct.h, collide.cpp, engine.cpp, sim.h, simu.cpp, wheel.cpp, wheel.h:
+	Worling collisions(?)
+
+2004-09-30  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.cpp: Eddy reduction for car in front was too much.
+
+	* engine.cpp: Fixed a bug when clutch was half-applied.
+
+2004-09-22  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* carstruct.h: Added fuel consumption measurements.
+
+	* engine.cpp: Fixed a torque bug.
+
+	* car.cpp: Fixed a torque bug.
+	Added fuel consumption measurements.
+
+	* car.cpp: Added compressed state for suspension when upside down.
+
+	* engine.cpp: Fixed a bug with engine torque curves.
+	(SimEngineUpdateTq) Fixed consumption code.
+
+	* engine.h: Fixed a bug with torque curves.
+
+	* wheel.cpp:
+	Limited inverse normal force to fix instability. Does not work.
+	Must fix collision code.
+
+	* collide.cpp: Many changes.
+	Still need to do it with quaternions or rotation matrices.
+
+2004-08-03  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* collide.cpp: More changes.
+
+	* collide.cpp: ADded stuff.
+
+	* engine.cpp, engine.h, transmission.cpp:
+	Added effects of engine inertia.
+
+	* collide.cpp: Many changes.
+
+	* wheel.cpp: Minor changes.
+
+	* car.cpp: inconsequential
+
+2004-05-02  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* wheel.h, car.cpp, collide.cpp, differential.cpp, engine.cpp, transmission.cpp, wheel.cpp:
+	Better transmission and clutch.
+
+2004-04-05  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* wheel.cpp: Fixed bugs, added damge.
+
+	* simu.cpp: Fixed eulers.
+	Added structural damage.
+
+	* collide.cpp: Added structural damage.
+
+	* wheel.h: Added damage to wheels.
+
+	* sim.h: Added reinfo argument to simconfig.
+
+	* carstruct.h: Added ReInfo.
+
+2004-03-25  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* wheel.cpp: Reduced wheel damage. Removed Ft relations to normal_xz.
+	Removed the transmission of reaction forces because they cause infinites.
+
+2004-03-04  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* car.cpp, carstruct.h, collide.cpp, sim.h, simu.cpp, wheel.cpp, wheel.h:
+	Now works with quaternions.
+	Slight problem with conversion back to euler.
+	Narrowed down problem with huge forces to the wheels code (large angle).
+
+2004-02-27  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* car.cpp, collide.cpp, simu.cpp, susp.cpp, wheel.cpp:
+	Rotation now works with quaternions. Dunno what to do with Euler angles.
+
+	* aero.cpp: Slipstream now affects ground effect.
+
+2004-01-15  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* wheel.cpp: Re-added division by Rz for reaction.
+
+	* car.cpp: Working quaternion implementation.
+
+	* susp.cpp, susp.h: Added geometry for suspension.
+
+	* collide.cpp: Minor modifications.
+
+	* wheel.cpp:
+	Radius calculation and use of suspension geometry position.
+
+	* car.cpp: Now uses quaternions.
+
+2004-01-12  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* wheel.cpp: Cleanup.
+
+	* wheel.cpp: Final.
+
+	* car.cpp, collide.cpp, wheel.cpp: Better-working version.
+
+2004-01-07  Christos Dimitrakakis  <olethros@localhost.localdomain>
+
+	* aero.h, axle.h, brake.h, carstruct.h, differential.h, engine.h, sim.h, steer.h, susp.h, transmission.h, wheel.h, aero.cpp, axle.cpp, brake.cpp, car.cpp, categories.cpp, collide.cpp, differential.cpp, engine.cpp, simu.cpp, simuitf.cpp, steer.cpp, susp.cpp, transmission.cpp, wheel.cpp:
+	New file.
+
