@@ -38,8 +38,11 @@ extern int grGFlag;
 extern int grVectFlag;
 extern int grVectDispFlag[];
 
+extern double grCurTime;
+
 extern void *grHandle;
 extern ssgContext grContext;
+extern int grNbCars;
 
 extern int  initView(int x, int y, int width, int height, int flag, void *screen);
 extern int  initCars(tSituation *s);
@@ -58,6 +61,11 @@ extern void shutdownTrack(void);
 #define GR_ATT_DEBUG		"debug info"
 #define GR_ATT_GGRAPH		"G graph"
 #define GR_ATT_NBLEADER		"Max leaders entries"
+
+#define GR_SCT_TVDIR		"TV Director View"
+#define GR_ATT_CHGCAMINT	"change camera interval"
+#define GR_ATT_EVTINT		"event interval"
+#define GR_ATT_PROXTHLD		"proximity threshold"
 
 #endif /* _GRMAIN_H_ */ 
 

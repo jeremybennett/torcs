@@ -24,6 +24,10 @@ SOLIBDIR  = modules/graphic
 
 LIBS      =  -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
 
+DATADIR   = config
+
+DATA      = graph.xml
+
 include ${MAKE_DEFAULT}
 
 

@@ -22,11 +22,13 @@
 
 #include <track.h>
 #include <car.h>
+#include <raceman.h>
 
 extern float grviewRatio;
 struct Camera;
 
 typedef void (*tfcam)(struct Camera *, tCarElt *);
+typedef void (*tfcams)(struct Camera *, tCarElt *, tSituation *);
 
 typedef struct Camera
 {
@@ -70,6 +72,7 @@ typedef struct Camera
 #define CAM_INIT   0
 #define CAM_LOOKAT 1
 #define CAM_FCT    3
+#define CAM_FCTS   2
     union 
     {
 	struct 
@@ -84,8 +87,16 @@ typedef struct Camera
 	    sgVec3 eye;
 	    sgVec3 center;
 	    sgVec3 up;
-	    tfcam fcam;
+	    tfcam  fcam;
 	} fcam;
+	
+	struct 
+	{
+	    sgVec3 eye;
+	    sgVec3 center;
+	    sgVec3 up;
+	    tfcams fcams;
+	} fcams;
 	
     } ucam;
 
@@ -113,13 +124,13 @@ extern int scrx, scry, scrw, scrh; /* screen size */
 
 
 extern void grSetView(int x, int y, int w, int h);
-extern void grUpdateCamera(tCamera *cam, tCarElt *car);
+extern void grUpdateCamera(tCamera *cam, tCarElt *car, tSituation *s);
 extern void grSetCamera(tCamera *cam, tCarElt *car);
 extern void grInitCams(void);
 extern void grShutdownCams(void);
 extern void grSelectCamera(void *vp);
 extern void grSetZoom(void *vp);
-
+extern void grInitTVDirectorView(tSituation *s);
 
 #endif /* _GRCAM_H_ */ 
 

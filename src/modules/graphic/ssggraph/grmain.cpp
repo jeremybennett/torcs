@@ -42,12 +42,13 @@ int grCounterFlag		= 1;
 int grGFlag			= 0;
 int grDrawCurrent		= 0;
 
-static double OldTime;
-static int   nFrame;
-static float Fps;
+static double	OldTime;
+static int	nFrame;
+static float	Fps;
+double		grCurTime;
 
 static int grWindowRatio = 0;
-static int grNbCars;
+int grNbCars;
 
 void *grHandle = NULL;
 int grWinx, grWiny, grWinw, grWinh;
@@ -100,7 +101,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
 			       (char*)NULL, 0);
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
-			       (char*)NULL, 7);
+			       (char*)NULL, 9);
     cam = GfRlstGetFirst(&(grCams[grCurCamHead].cams));
     grCurCam = NULL;
     while (cam) {
@@ -175,6 +176,8 @@ initCars(tSituation *s)
 
     TRACE_GL("initCars: start");
 
+    grHandle = GfParmReadFile("config/graph.xml", GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
     
     grNbCars = s->_ncars;
@@ -193,7 +196,7 @@ initCars(tSituation *s)
     TRACE_GL("initCars: end");
 
     grInitSound();
-    
+    grInitTVDirectorView(s);
     return 0;
     
 }
@@ -206,21 +209,22 @@ shutdownCars(void)
 	grShutdownSound();
 	free(grCarInfo);
     }
+    GfParmReleaseHandle(grHandle);
+    GfParmReleaseHandle(grHandle);
 }
 
 int
 refresh(tSituation *s)
 {
-    double	curTime;
     int		i;
     
     nFrame++;
-    curTime = GfTimeClock();
-    if ((curTime - OldTime) > 1.0) {
+    grCurTime = GfTimeClock();
+    if ((grCurTime - OldTime) > 1.0) {
 	/* The Frames Per Second (FPS) display is refresh every second */
-	Fps = (tdble)nFrame / (curTime - OldTime);
+	Fps = (tdble)nFrame / (grCurTime - OldTime);
 	nFrame = 0;
-	OldTime = curTime;
+	OldTime = grCurTime;
     }
 
     TRACE_GL("refresh: start");
@@ -231,7 +235,7 @@ refresh(tSituation *s)
 
     glDisable(GL_COLOR_MATERIAL);
 
-    grUpdateCamera(grCurCam, s->cars[s->current]);
+    grUpdateCamera(grCurCam, s->cars[s->current], s);
     if (grCurCam->drawBackground) {
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);

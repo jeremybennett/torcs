@@ -243,8 +243,8 @@ prManage(tCarElt *car, int dispRes)
 		    GfRlstAddLast(&prCurResults, (tRingList*)curRes);
 		    if (dispRes) {
 			s = GfTime2Str(curRes->lapTime, 0);
-			sprintf(bufRes,"lap: %2d   time: %s  top spd: %.2f    min spd: %.2f", 
-				curRes->lap, s, curRes->topSpeed * 3.6, curRes->bottomSpeed * 3.6);
+			sprintf(bufRes,"lap: %2d   time: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
+				curRes->lap, s, curRes->topSpeed * 3.6, curRes->bottomSpeed * 3.6, car->_dammage);
 			RmLoadingScreenSetText(bufRes);
 		    }
 		} else {

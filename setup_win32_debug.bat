@@ -2,61 +2,13 @@
 echo Checking directories ...
 
 
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\interfaces\graphic.h .\export\include\graphic.h
-copy .\src\interfaces\raceman.h .\export\include\raceman.h
-copy .\src\interfaces\robot.h .\export\include\robot.h
-copy .\src\interfaces\simu.h .\export\include\simu.h
-copy .\src\interfaces\track.h .\export\include\track.h
-copy .\src\interfaces\car.h .\export\include\car.h
-copy .\src\interfaces\ttypes.h .\export\include\ttypes.h
-copy .\src\interfaces\telemetry.h .\export\include\telemetry.h
-copy .\src\interfaces\practicectrl.h .\export\include\practicectrl.h
-copy .\src\interfaces\playerpref.h .\export\include\playerpref.h
-copy .\src\interfaces\js.h .\export\include\js.h
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\config
+copy .\src\modules\graphic\ssggraph\graph.xml .\runtimed\config\graph.xml
 
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\txml\xml.h .\export\include\xml.h
-copy .\src\libs\txml\xmlparse.h .\export\include\xmlparse.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\tgf\tgf.h .\export\include\tgf.h
-copy .\src\libs\tgf\os.h .\export\include\os.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\torcs\torcs.h .\export\include\torcs.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\racemantools\racemantools.h .\export\include\racemantools.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\libs\robottools\robottools.h .\export\include\robottools.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-copy .\src\windows\osspec.h .\export\include\osspec.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-call .\create_dir .\export\include\3D
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Basic.h .\export\include\3D\Basic.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Matrix.h .\export\include\3D\Matrix.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Point.h .\export\include\3D\Point.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Quaternion.h .\export\include\3D\Quaternion.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple3.h .\export\include\3D\Tuple3.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Tuple4.h .\export\include\3D\Tuple4.h
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\3D\Vector.h .\export\include\3D\Vector.h
-
-call .\create_dir .\export
-call .\create_dir .\export\include
-call .\create_dir .\export\include\SOLID
-copy .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\modules
+call .\create_dir .\runtimed\modules\graphic
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\categories
@@ -1319,6 +1271,10 @@ call .\create_dir .\runtimed\lib
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\lib
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\config
+copy .\src\modules\graphic\ssggraph\graph.xml .\runtimed\config\graph.xml
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
