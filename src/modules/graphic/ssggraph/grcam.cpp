@@ -282,9 +282,11 @@ cGrCarCamMirror::~cGrCarCamMirror ()
     delete viewCam;
 }
 
+
 void cGrCarCamMirror::limitFov(void) {
     fovy = 90.0 / screen->getViewRatio();
 }
+
 
 void cGrCarCamMirror::update(tCarElt *car, tSituation * /* s */)
 {
@@ -313,76 +315,80 @@ void cGrCarCamMirror::update(tCarElt *car, tSituation * /* s */)
     up[2] = car->_posMat[2][2];
 }
 
-void cGrCarCamMirror::setViewport (int x, int y, int w, int h)
+
+void cGrCarCamMirror::setViewport(int x, int y, int w, int h)
 {
 	vpx = x;
 	vpy = y;
-	vpw = GfNearestPow2 (w);
-	vph = GfNearestPow2 (h);
-
-	// Create texture object.
-	glBindTexture (GL_TEXTURE_2D, tex);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glReadBuffer (GL_BACK);
-
-	glCopyTexImage2D (GL_TEXTURE_2D,
-			0, // map level,
-			GL_RGB, // internal format,
-			vpx, vpy, vpw, vph,
-			0 ); // border
+	vpw = w;
+	vph = h;
 
 	if (viewCam) {
 		delete viewCam;
 	}
-	viewCam = new cGrOrthoCamera (screen, x,  x + w, y, y + h);
-	limitFov ();
+	viewCam = new cGrOrthoCamera(screen, x,  x + w, y, y + h);
+	limitFov();
 }
+
 
 void cGrCarCamMirror::setPos (int x, int y, int w, int h)
 {
-    float dx, dy;
-
     mx = x;
     my = y;
     mw = w;
     mh = h;
 
-    dx = (float)(vpw - w);
-    dy = (float)(vph - h);
-    dx = MAX (0, dx);
-    dy = MAX (0, dy);
-    dx = dx / (float)vpw / 2.0;
-    dy = dy / (float)vph / 2.0;
+    // round up texture size to next power of two
+    tw = GfNearestPow2(w);
+    th = GfNearestPow2(h);
+    if (tw < w) {
+		tw *= 2;
+	}
+    if (th < h) {
+		th *= 2;
+	}
 
-    tsu = 1.0 - dx;
-    tsv = dy;
-    teu = dx;
-    tev = 1.0 - dy;
+    // Create texture object.
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glReadBuffer(GL_BACK);
+
+    glCopyTexImage2D(GL_TEXTURE_2D,
+		      0, // map level,
+		      GL_RGB, // internal format,
+		      0, 0, tw, th,
+		      0 ); // border
+
+    tsu = (float) mw / tw;
+    teu = 0.0;
+    tsv = 0.0;
+    tev = (float) mh / th;
 }
 
 
 void cGrCarCamMirror::activateViewport (void)
 {
-    glViewport (vpx, vpy, vpw, vph);
+    glViewport(vpx, vpy, vpw, vph);
+
+    // Enable scissor test to conserve graphics memory bandwidth.
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(vpx + (vpw - mw)/2, vpy + (vph - mh)/2, mw, mh);
 }
 
 void cGrCarCamMirror::store (void)
 {
-	glBindTexture (GL_TEXTURE_2D, tex);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glReadBuffer (GL_BACK);
+	glDisable(GL_SCISSOR_TEST);
 
-	/*glCopyTexImage2D (GL_TEXTURE_2D,
-			0, // map level,
-			GL_RGB, // internal format,
-			vpx, vpy, vpw, vph,
-			0 ); // border
-*/
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glReadBuffer(GL_BACK);
+
 	// NVidia recommends to NOT use glCopyTexImage2D for performance reasons.
-	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, vpx, vpy, vpw, vph);
+	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+			    vpx + (vpw - mw)/2,
+			    vpy + (vph - mh)/2, mw, mh);
 }
+
 
 void cGrCarCamMirror::display (void)
 {

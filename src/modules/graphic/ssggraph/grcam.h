@@ -225,6 +225,7 @@ class cGrCarCamMirror : public cGrPerspCamera
 {
  protected:
     int		vpx, vpy, vpw, vph;	/* viewport size */
+    int		tw, th;			/* texture size */
     int		mx, my, mw, mh;		/* drawing area */
     float	tsu, tsv, teu, tev;	/* texture coord */
     GLuint	tex;			/* texture */
