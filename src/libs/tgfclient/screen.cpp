@@ -40,6 +40,18 @@
 #include "gui.h"
 #include "fg_gm.h"
 
+#ifndef WIN32
+#define USE_RANDR_EXT
+#endif // WIN32
+
+#ifdef USE_RANDR_EXT
+#include <GL/glx.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/keysym.h>
+#include <X11/extensions/Xrandr.h>
+#endif // USE_RANDR_EXT
+
 static int GfScrWidth;
 static int GfScrHeight;
 static int GfViewWidth;
@@ -55,13 +67,20 @@ static int usedGM = 0;
 static int usedFG = 0;
 #endif
 
+#ifdef USE_RANDR_EXT
+static char	**Res = NULL;
+static int nbRes = 0;
+#else // USE_RANDR_EXT
 static char	*Res[] = {"640x480", "800x600", "1024x768", "1152x864", "1200x960", "1280x1024", "1600x1200", "320x200"};
-static char	*Mode[] = {"Full-screen mode", "Window mode"};
-static char	*Depth[] = {"24", "32", "8", "16"};
-
 static const int nbRes = sizeof(Res) / sizeof(Res[0]);
+#endif // USE_RANDR_EXT
+
+static char	*Mode[] = {"Full-screen mode", "Window mode"};
+static char	*Depthlist[] = {"24", "32", "8", "16"};
+
+//static const int nbRes = sizeof(Res) / sizeof(Res[0]);
 static const int nbMode = sizeof(Mode) / sizeof(Mode[0]);
-static const int nbDepth = sizeof(Depth) / sizeof(Depth[0]);
+static const int nbDepth = sizeof(Depthlist) / sizeof(Depthlist[0]);
 
 static int	curRes = 0;
 static int	curMode = 0;
@@ -84,6 +103,81 @@ static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 void
 gfScreenInit(void)
 {
+#ifdef USE_RANDR_EXT
+	// Get display, screen and root window handles.
+	char *displayname = getenv("DISPLAY");
+	if (displayname == NULL) {
+		displayname = ":0.0";
+	}
+
+	Display *display = XOpenDisplay(displayname);
+
+	if( display != NULL) {
+		// If we have a display fill in the resolutions advertised by Xrandr.
+		int screen = DefaultScreen(display);
+    	Window root = RootWindow(display, screen);
+
+		XRRScreenConfiguration *screenconfig = XRRGetScreenInfo (display, root);
+		if (screenconfig != NULL) {
+			int i, nsize;
+			XRRScreenSize *sizes = XRRConfigSizes(screenconfig, &nsize);
+
+			const int bufsize = 20;
+			char buffer[bufsize];
+			Res = (char**) malloc(sizeof(char *)*nsize);
+			int resx[nsize];
+			int resy[nsize];
+			for (i = 0; i < nsize; i++) {
+				snprintf(buffer, bufsize, "%dx%d", sizes[i].width, sizes[i].height);
+				Res[i] = strndup(buffer, bufsize);
+				resx[i] = sizes[i].width;
+				resy[i] = sizes[i].height;
+
+				// Stupid sorting (not much elements, don't worry). 
+				int j;
+				for (j = i; j > 0; j--) {
+					if ((resx[j] > resx[j-1]) ||
+						(resx[j] == resx[j-1] && resy[j] > resy[j-1]))
+					{
+						int tx, ty;
+						char *tc;
+						tx = resx[j-1];
+						ty = resy[j-1];
+						resx[j-1] = resx[j];
+						resy[j-1] = resy[j];
+						resx[j] = tx;
+						resy[j] = ty;
+						tc = Res[j-1];
+						Res[j-1] = Res[j];
+						Res[j] = tc;
+					} else {
+						break;
+					}
+				}
+
+			}
+
+			nbRes = nsize;
+			XRRFreeScreenConfigInfo(screenconfig);
+		}
+		XCloseDisplay(display);
+	}
+
+	if (Res == NULL || nbRes == 0) {
+		// We failed to get a handle to the display, so fill in some defaults.
+		GfOut("Failed to initialize resolutions for display '%s'", XDisplayName(displayname));
+		nbRes = 8;
+		Res = (char **) malloc(sizeof(char *)*nbRes);
+		Res[0] = strdup("640x480");
+		Res[1] = strdup("800x600");
+		Res[2] = strdup("1024x768");
+		Res[3] = strdup("1152x864");
+		Res[4] = strdup("1200x960");
+		Res[5] = strdup("1280x1024");
+		Res[6] = strdup("1600x1200");
+		Res[7] = strdup("320x200");
+	}
+#endif // USE_RANDR_EXT
 }
 
 static void Reshape(int width, int height)
@@ -124,6 +218,25 @@ void GfScrInit(int argc, char *argv[])
     GfViewHeight = yw;
     GfScrCenX = xw / 2;
     GfScrCenY = yw / 2;
+
+	// The fullscreen hack must be run before glutInit, such that glut gets the right screen size, etc.
+	fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
+	fullscreen = 0;
+#if !defined(FREEGLUT) && !defined(WIN32)
+	if (strcmp(fscr, GFSCR_VAL_YES) == 0) {	// Resize the screen
+		GfOut ("Freeglut not detected...\n");
+		for (i = maxfreq; i > 59; i--) {
+			sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+			GfOut("Trying %s mode\n", buf);
+			fglutGameModeString(buf);
+			if (fglutEnterGameMode()) {
+				GfOut("OK done for %s\n", buf);
+				usedFG = 1;
+				break;
+			}
+		}
+	}
+#endif
 
     glutInit(&argc, argv);
 
@@ -182,12 +295,15 @@ void GfScrInit(int argc, char *argv[])
 	if (!glutGet(GLUT_DISPLAY_MODE_POSSIBLE)) {
 		// All failed.
 		printf("The minimum display requirements are not fulfilled.\n");
-		printf("We need a double buffered RGBA visual with a 16 bit depth buffer at least.\n");
+		printf("We need a double buffered RGB visual with a 16 bit depth buffer at least.\n");
+		// Try fallback as last resort.
+		printf("Trying generic initialization, fallback.\n");
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	} else {
 		// We have got a mode, report the properties.
-		printf("z-buffer depth: %d\n", visualDepthBits);
-		printf("alpha channel : %s\n", visualSupportsAlpha ? "enabled" : "disabled");
-		printf("antialiasing  : %s\n", visualSupportsMultisample ? "enabled" : "disabled");
+		printf("z-buffer depth: %d (%s)\n", visualDepthBits, visualDepthBits < 24 ? "bad" : "good");
+		printf("multisampling : %s\n", visualSupportsMultisample ? "available" : "no");
+		printf("alpha bits    : %s\n", visualSupportsAlpha ? "available" : "no");
 		if (visualDepthBits < 24) {
 			// Show a hint if the z-buffer depth is not optimal.
 			printf("The z-buffer resolution is below 24 bit, you will experience rendering\n");
@@ -196,58 +312,42 @@ void GfScrInit(int argc, char *argv[])
 		}
 	}
 
-    fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
-    fullscreen = 0;
-    if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
-#if !defined(FREEGLUT) && !defined(WIN32)
-    /* Resize the screen */
-	GfOut ("Freeglut not detected...\n");
-	for (i = maxfreq; i > 59; i--) {
-	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
-	    GfOut("Trying %s mode\n", buf);
-	    fglutGameModeString(buf);
-	    if (fglutEnterGameMode()) {
-		GfOut("OK done for %s\n", buf);
-		usedFG = 1;
-		break;
-	    }
-	}
-#endif
-	for (i = maxfreq; i > 59; i--) {
-	    sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
-	    glutGameModeString(buf);
-	    GfOut("2 - Trying %s mode\n", buf);
-	    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
-		GfOut("2- %s mode Possible\n", buf);
-		glutEnterGameMode();
-		if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
-		    GfOut("Use GameMode %s\n", buf);
-		    usedGM = 1;
-		    fullscreen = 1;
-		    break;
-		} else {
-		    glutLeaveGameMode();
+	if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
+		for (i = maxfreq; i > 59; i--) {
+			sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+			glutGameModeString(buf);
+			GfOut("2 - Trying %s mode\n", buf);
+			if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
+				GfOut("2- %s mode Possible\n", buf);
+				glutEnterGameMode();
+				if (glutGameModeGet(GLUT_GAME_MODE_DISPLAY_CHANGED)) {
+					GfOut("Use GameMode %s\n", buf);
+					usedGM = 1;
+					fullscreen = 1;
+					break;
+				} else {
+					glutLeaveGameMode();
+				}
+			}
 		}
-	    }
 	}
-    }
 
-    if (!fullscreen) {
+	if (!fullscreen) {
 	/* Give an initial size and position so user doesn't have to place window */
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(winX, winY);
-	Window = glutCreateWindow(argv[0]);
-	if (!Window) {
-	    printf("Error, couldn't open window\n");
-	    GfScrShutdown();
-	    exit(1);
+		glutInitWindowPosition(0, 0);
+		glutInitWindowSize(winX, winY);
+		Window = glutCreateWindow(argv[0]);
+		if (!Window) {
+			printf("Error, couldn't open window\n");
+			GfScrShutdown();
+			exit(1);
+		}
 	}
-    }
 
-    if ((strcmp(fscr, GFSCR_VAL_YES) == 0) && (!fullscreen)) {
-	/* glutVideoResize(0, 0, winX, winY); */
-	glutFullScreen();
-    }
+	if ((strcmp(fscr, GFSCR_VAL_YES) == 0) && (!fullscreen)) {
+		/* glutVideoResize(0, 0, winX, winY); */
+		glutFullScreen();
+	}
 
     GfParmReleaseHandle(handle);
 
@@ -268,6 +368,14 @@ void GfScrShutdown(void)
 	fglutLeaveGameMode();
     }
 #endif
+
+#ifdef USE_RANDR_EXT
+	int i;
+	for (i = 0; i < nbRes; i++) {
+		free(Res[i]);
+	}
+	free(Res);
+#endif // USE_RANDR_EXT
 }
 
 
@@ -293,7 +401,7 @@ saveParams(void)
     int x, y, bpp;
 
     sscanf(Res[curRes], "%dx%d", &x, &y);
-    sscanf(Depth[curDepth], "%d", &bpp);
+    sscanf(Depthlist[curDepth], "%d", &bpp);
 
     GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, x);
     GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, y);
@@ -392,7 +500,7 @@ static void
 updateLabelText(void)
 {
     GfuiLabelSetText (scrHandle, ResLabelId, Res[curRes]);
-    GfuiLabelSetText (scrHandle, DepthLabelId, Depth[curDepth]);
+    GfuiLabelSetText (scrHandle, DepthLabelId, Depthlist[curDepth]);
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
 #if WIN32
     sprintf(buf, "%d", curMaxFreq);
@@ -474,7 +582,7 @@ initFromConf(void)
     bpp = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, NULL, 24);
     sprintf(buf, "%d", bpp);
     for (i = 0; i < nbDepth; i++) {
-	if (!strcmp(buf, Depth[i])) {
+	if (!strcmp(buf, Depthlist[i])) {
 	    curDepth = i;
 	    break;
 	}
@@ -564,7 +672,7 @@ GfScrMenuInit(void *precMenu)
 		    "Color Depth",
 		    GFUI_FONT_LARGE,
 		    320, y, GFUI_ALIGN_HC_VB,
-		    0);   
+		    0);
     y -= 30;
     GfuiGrButtonCreate(scrHandle,
 		       "data/img/arrow-left.png",
