@@ -29,6 +29,7 @@ SimCarCollideZ(tCar *car)
     t3Dd	normal;
     tdble	dotProd;
     tWheel	*wheel;
+	const float CRASH_THRESHOLD = -5.0f;
 
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
@@ -49,6 +50,8 @@ SimCarCollideZ(tCar *car)
 	    RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 	    dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
 	    if (dotProd < 0) {
+	    if (dotProd < CRASH_THRESHOLD) {car->collision |= 16;}		
+		car->collision |=9;
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
