@@ -103,27 +103,12 @@ SimWheelUpdateRide(tCar *car, int index)
     tWheel *wheel = &(car->wheel[index]);
     tdble Zroad;
     tdble prex;
-    static int wcnt = 0;
+
     /* compute suspension travel */
     RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
     wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
     prex = wheel->susp.x;
-    if (1) {
-	t3Dd angles;
-	t3Dd normal;
-	t3Dd rel_normal;
-	tdble waz = wheel->steer + wheel->staticPos.az;
-	RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
-
-	angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
-	angles.y = car->DynGC.pos.ay;
-	angles.z = car->DynGC.pos.az + waz;
-	NaiveRotate (normal, angles, &rel_normal);
-	wheel->susp.x = wheel->rideHeight = ( wheel->pos.z - Zroad)*rel_normal.z;
-
-    } else {
-	wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
-    }
+    wheel->susp.x = wheel->rideHeight = wheel->pos.z - Zroad;
     /* verify the suspension travel */
     SimSuspCheckIn(&(wheel->susp));
     wheel->susp.v = (prex - wheel->susp.x) / SimDeltaTime;
@@ -143,65 +128,28 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble	s, sa, sx, sy; /* slip vector */
     tdble	stmp, F, Bx;
     tdble	mu;
-    t3Dd rel_normal;
-
-
-    waz = wheel->steer + wheel->staticPos.az;
-    /* Get normal of road relative to the wheel's axis 
-     This should help take into account the camber.*/
-    if (1) {
-	t3Dd angles;
-	t3Dd normal;
-
-	RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
-
-	angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
-	angles.y = car->DynGC.pos.ay;
-	angles.z = car->DynGC.pos.az + waz;
-	NaiveRotate (normal, angles, &rel_normal);
-    }
 
     wheel->state = 0;
 
-    Ft = 0.0;
-    Fn = 0.0;
-    wheel->forces.x = 0.0;
-    wheel->forces.y = 0.0;
-    wheel->forces.z = 0.0;
-	
     /* VERTICAL STUFF CONSIDERING SMALL PITCH AND ROLL ANGLES */
-    /* Now uses the normal, so it should work */
     /* update suspension force */
     SimSuspUpdate(&(wheel->susp));
     /* check suspension state */
     wheel->state |= wheel->susp.state;
     if ((wheel->state & SIM_SUSP_EXT) == 0) {
-	tdble f_z  = axleFz + wheel->susp.force;
-	
-	if ((f_z < 0)) {
-	    f_z = 0;
+	wheel->forces.z = axleFz + wheel->susp.force;
+	if (wheel->forces.z < 0) {
+	    wheel->forces.z = 0;
 	}
-	
-	/* project the reaction force. Only wheel->forces.z is
-	   actually interesting for friction. The rest is just
-	   reaction. Now we have included the reaction from the sides
-	   which is fake. */
-	if (rel_normal.z>0.0) {
-	    Ft = rel_normal.x * f_z;
-	    Fn = rel_normal.y * f_z;
-
-	    wheel->forces.x = 0;
-	    wheel->forces.y = 0;
-	    wheel->forces.z = f_z;//&rel_normal.z;
-	}
+    } else {
+	wheel->forces.z = 0;
     }
-
 
     /* update wheel coord */
     wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
 
     /* HORIZONTAL FORCES */
-
+    waz = wheel->steer + wheel->staticPos.az;
     CosA = cos(waz);
     SinA = sin(waz);
 
@@ -229,10 +177,11 @@ SimWheelUpdateForce(tCar *car, int index)
 	sy = sin(sa);
     }
 
-
+    Ft = 0;
+    Fn = 0;
     s = sqrt(sx*sx+sy*sy);
     car->carElt->_skid[index] = MAX(0.2, MIN(s, 1.2)) - 0.2;
-    car->carElt->_reaction[index] = wheel->forces.z;
+
     stmp = MIN(s, 1.5);
 
     /* MAGIC FORMULA */
@@ -256,17 +205,9 @@ SimWheelUpdateForce(tCar *car, int index)
     RELAXATION2(Ft, wheel->preFt, 50.0);
     
     wheel->relPos.az = waz;
-
-    if (rel_normal.z > 0.0) {
-	wheel->forces.x += Ft * CosA - Fn * SinA;
-	wheel->forces.y += Ft * SinA + Fn * CosA;
-    } else {
-	Ft = 0.0;
-	Fn = 0.0;
-	wheel->forces.x = 0.0;
-	wheel->forces.y = 0.0;
-	wheel->forces.z = 0.0;
-    }
+    
+    wheel->forces.x = Ft * CosA - Fn * SinA;
+    wheel->forces.y = Ft * SinA + Fn * CosA;
     wheel->spinTq = Ft * wheel->radius;
     wheel->sa = sa;
     wheel->sx = sx;
@@ -274,7 +215,6 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->feedBack.spinVel = wheel->spinVel;
     wheel->feedBack.Tq = wheel->spinTq;
     wheel->feedBack.brkTq = wheel->brake.Tq;
-
 }
 
 

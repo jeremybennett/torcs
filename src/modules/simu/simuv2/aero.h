@@ -25,8 +25,6 @@ typedef struct
     /* dynamic */
     tdble	drag;		/* drag force along car x axis */
     tdble	lift[2];	/* front & rear lift force along car z axis */
-    tdble       lateral_drag;
-    tdble       vertical_drag;
 
     /* static */
     tdble	SCx2;

@@ -340,7 +340,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	    SimAeroUpdate(car, s);
 	    CHECK(car);
 	    for (i = 0; i < 2; i++){
-		SimWingUpdate(car, i, s);
+		SimWingUpdate(car, i);
 	    }
 	    CHECK(car);
 	    for (i = 0; i < 4; i++){
