@@ -19,16 +19,16 @@
 
     <section name="index">
       <section name="1">
-	<attstr name="name" val="Inferno"></attstr>
-	<attstr name="team" val="torcs"></attstr>
-	<attstr name="desc" val=""></attstr>
-	<attstr name="author" val="Eric Espie"></attstr>
-	<attstr name="car name" val="mclaren-f1"></attstr>
-	<attstr name="category" val="Track-RWD-GrA"></attstr>
-	<attnum name="race number" val="16"></attnum>
-	<attnum name="red" val="1.0"></attnum>
-	<attnum name="green" val="0.0"></attnum>
-	<attnum name="blue" val="0.0"></attnum>
+	<attstr name="name" val="Inferno"/>
+	<attstr name="team" val="torcs"/>
+	<attstr name="desc" val=""/>
+	<attstr name="author" val="Eric Espie"/>
+	<attstr name="car name" val="mclaren-f1"/>
+	<attstr name="category" val="Track-RWD-GrA"/>
+	<attnum name="race number" val="16"/>
+	<attnum name="red" val="1.0"/>
+	<attnum name="green" val="0.0"/>
+	<attnum name="blue" val="0.0"/>
       </section>
     </section>
   </section>

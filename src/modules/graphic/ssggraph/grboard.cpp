@@ -45,6 +45,11 @@ static float grBlue[4] = {0.0, 0.0, 1.0, 1.0};
 
 #define NB_BOARDS	3
 
+int grBoardWinx = 0;
+int grBoardWinw = 800;
+int grBoardWiny = 0;
+int grBoardWinh = 600;
+
 void
 grSelectBoard(void *vp)
 {
@@ -123,8 +128,8 @@ grDispDebug(float fps, tCarElt *car, tSituation * /* s */)
 
     curCam = car->_trkPos.seg->cam;
     
-    x = grWinx + grWinw - 100;
-    y = grWiny + grWinh - 30;
+    x = grBoardWinx + grBoardWinw - 100;
+    y = grBoardWiny + grBoardWinh - 30;
     
     sprintf(buf, "FPS: %.1f", fps);
     GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
@@ -147,8 +152,8 @@ grDispGGraph(tCarElt *car)
 {
     tdble X1, Y1, X2, Y2;    
 
-    X1 = (tdble)(grWinx + grWinw - 100);
-    Y1 = (tdble)(grWiny + 100);
+    X1 = (tdble)(grBoardWinx + grBoardWinw - 100);
+    Y1 = (tdble)(grBoardWiny + 100);
    
     X2 = -car->_DynGC.acc.y / 9.81 * 25.0 + X1;
     Y2 = car->_DynGC.acc.x / 9.81 * 25.0 + Y1;
@@ -199,7 +204,7 @@ grDispCarBoard1(tCarElt *car, tSituation *s)
     x2 = 110;
     dy = GfuiFontHeight(GFUI_FONT_MEDIUM_C);
     dy2 = GfuiFontHeight(GFUI_FONT_SMALL_C);
-    y = grWiny + grWinh - dy - 5;
+    y = grBoardWiny + grBoardWinh - dy - 5;
     sprintf(buf, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
     dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
     dx = MAX(dx, (x2-x));
@@ -284,7 +289,7 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     dy = GfuiFontHeight(GFUI_FONT_MEDIUM_C);
     dy2 = GfuiFontHeight(GFUI_FONT_SMALL_C);
 
-    y = grWiny + grWinh - dy - 5;
+    y = grBoardWiny + grBoardWinh - dy - 5;
 
     sprintf(buf, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
     dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
@@ -424,14 +429,14 @@ grDispCounterBoard(tCarElt *car)
     int ledRed    = (int)((car->_enginerpmRedLine / car->_enginerpmMax) * (tdble)ledNb);
     int ledLit	  = (int)((car->_enginerpm / car->_enginerpmMax) * (tdble)ledNb);
     
-    x = grWinx + grWinw / 2 - ((ledNb * ledWidth) + (ledNb - 1) * ledSpace) / 2;
-    y = grWiny + MAX(GfuiFontHeight(GFUI_FONT_BIG_C), GfuiFontHeight(GFUI_FONT_DIGIT));
+    x = grBoardWinx + grBoardWinw / 2 - ((ledNb * ledWidth) + (ledNb - 1) * ledSpace) / 2;
+    y = grBoardWiny + MAX(GfuiFontHeight(GFUI_FONT_BIG_C), GfuiFontHeight(GFUI_FONT_DIGIT));
     glBegin(GL_QUADS);
     glColor3f(0.1, 0.1, 0.1);
     glVertex2f(x - ledSpace, y + ledHeight + ledSpace);
     glVertex2f(x + ledNb * (ledWidth+ ledSpace), y + ledHeight + ledSpace);
-    glVertex2f(x + ledNb * (ledWidth+ ledSpace), grWiny);
-    glVertex2f(x - ledSpace, grWiny);
+    glVertex2f(x + ledNb * (ledWidth+ ledSpace), grBoardWiny);
+    glVertex2f(x - ledSpace, grBoardWiny);
     for (i = 0; i < ledRed; i++) {
 	if (i <= ledLit) {
 	    glColor3fv(ledcolg[1]);
@@ -459,12 +464,12 @@ grDispCounterBoard(tCarElt *car)
     glEnd();
 
 
-    x = grWinx + grWinw/2;
-    y = grWiny;
+    x = grBoardWinx + grBoardWinw/2;
+    y = grBoardWiny;
     sprintf(buf, " kph %s", gearStr[car->_gear+car->_gearOffset]);
     GfuiPrintString(buf, grBlue, GFUI_FONT_BIG_C, x, y, GFUI_ALIGN_HL_VB);
 
-    x = grWinx + grWinw/2;
+    x = grBoardWinx + grBoardWinw/2;
     sprintf(buf, "%3d", abs((int)(car->_speed_x * 3.6)));
     GfuiPrintString(buf, grBlue, GFUI_FONT_DIGIT, x, y, GFUI_ALIGN_HR_VB);
 }
@@ -479,18 +484,18 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     int dy;
     int drawCurrent;
 
-    x = grWinx + 5;
-    x2 = grWinx + 170;
-    y = grWiny + 10;
+    x = grBoardWinx + 5;
+    x2 = grBoardWinx + 170;
+    y = grBoardWiny + 10;
     dy = GfuiFontHeight(GFUI_FONT_SMALL_C);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
     glBegin(GL_QUADS);
     glColor4f(0.1, 0.1, 0.1, 0.8);
-    glVertex2f(x, grWiny + 5);
-    glVertex2f(grWinx + 180, grWiny + 5);
-    glVertex2f(grWinx + 180, y+ dy*maxi);
+    glVertex2f(x, grBoardWiny + 5);
+    glVertex2f(grBoardWinx + 180, grBoardWiny + 5);
+    glVertex2f(grBoardWinx + 180, y+ dy*maxi);
     glVertex2f(x, y+ dy*maxi);
     glEnd();
     glDisable(GL_BLEND);
@@ -570,11 +575,9 @@ grInitBoardCar(tCarElt *car)
     tgrCarInstrument	*curInst;
     tdble		xSz, ySz, xpos, ypos;
     tdble		needlexSz, needleySz;
-    int			sw, sh, vw, vh;
     
     ssgSetCurrentOptions ( &options ) ;    
-    GfScrGetSize(&sw, &sh, &vw, &vh);
-
+    
     index = car->index;	/* current car's index */
     carInfo = &grCarInfo[index];
     handle = car->_carHandle;
@@ -592,7 +595,7 @@ grInitBoardCar(tCarElt *car)
     /* Load the intrument placement */
     xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XSZ, (char*)NULL, 128);
     ySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YSZ, (char*)NULL, 128);
-    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XPOS, (char*)NULL, sw / 2.0 - xSz);
+    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XPOS, (char*)NULL, grBoardWinw / 2.0 - xSz);
     ypos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_YPOS, (char*)NULL, 0);
     needlexSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_NDLXSZ, (char*)NULL, 50);
     needleySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_NDLYSZ, (char*)NULL, 2);
@@ -647,7 +650,7 @@ grInitBoardCar(tCarElt *car)
     /* Load the intrument placement */
     xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XSZ, (char*)NULL, 128);
     ySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YSZ, (char*)NULL, 128);
-    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XPOS, (char*)NULL, sw / 2.0);
+    xpos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XPOS, (char*)NULL, grBoardWinw / 2.0);
     ypos = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_YPOS, (char*)NULL, 0);
     needlexSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_NDLXSZ, (char*)NULL, 50);
     needleySz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_NDLYSZ, (char*)NULL, 2);

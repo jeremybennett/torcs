@@ -16,7 +16,7 @@
 
 <params name="Oval" type="parameter">
   <section name="Header">
-    <attstr name="name" val="Oval Tracks"></attstr>
+    <attstr name="name" val="Oval Tracks"/>
   </section>
 </params>
 

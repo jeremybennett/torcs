@@ -16,7 +16,7 @@
 
 <params name="Dirt" type="parameter">
   <section name="Header">
-    <attstr name="name" val="Dirt Tracks"></attstr>
+    <attstr name="name" val="Dirt Tracks"/>
   </section>
 </params>
 

@@ -19,161 +19,161 @@
   <section name="Trajectory">
     <section name="Points">
       <section name="1">
-	<attnum name="to start line" val="0"></attnum>
-	<attnum name="speed" val="400" unit="km/h"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="0"/>
+	<attnum name="speed" val="400" unit="km/h"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="50"></attnum>
-	<attnum name="speed" val="170" unit="km/h"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="50"/>
+	<attnum name="speed" val="170" unit="km/h"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="100"></attnum>
-	<attnum name="speed" val="150" unit="km/h"></attnum>
-	<attnum name="to right" val="10" unit="m"></attnum>
+	<attnum name="to start line" val="100"/>
+	<attnum name="speed" val="150" unit="km/h"/>
+	<attnum name="to right" val="10" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="120"></attnum>
-	<attnum name="speed" val="130" unit="km/h"></attnum>
-	<attnum name="to left" val="8" unit="m"></attnum>
+	<attnum name="to start line" val="120"/>
+	<attnum name="speed" val="130" unit="km/h"/>
+	<attnum name="to left" val="8" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="150"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="150"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="230"></attnum>
-	<attnum name="speed" val="180" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="230"/>
+	<attnum name="speed" val="180" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="320"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="320"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="400"></attnum>
-	<attnum name="speed" val="180" unit="km/h"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="400"/>
+	<attnum name="speed" val="180" unit="km/h"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="410"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="410"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="480"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="480"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="550"></attnum>
-	<attnum name="speed" val="110" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="550"/>
+	<attnum name="speed" val="110" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="600"></attnum>
-	<attnum name="speed" val="100" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="600"/>
+	<attnum name="speed" val="100" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="630"></attnum>
-	<attnum name="speed" val="400" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="630"/>
+	<attnum name="speed" val="400" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="665"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="665"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="700"></attnum>
-	<attnum name="to right" val="10" unit="m"></attnum>
+	<attnum name="to start line" val="700"/>
+	<attnum name="to right" val="10" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="750"></attnum>
-	<attnum name="speed" val="175" unit="km/h"></attnum>
-	<attnum name="to left" val="7.5" unit="m"></attnum>
+	<attnum name="to start line" val="750"/>
+	<attnum name="speed" val="175" unit="km/h"/>
+	<attnum name="to left" val="7.5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="800"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="800"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="905"></attnum>
-	<attnum name="speed" val="300" unit="km/h"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="905"/>
+	<attnum name="speed" val="300" unit="km/h"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="950"></attnum>
-	<attnum name="to right" val="10" unit="m"></attnum>
+	<attnum name="to start line" val="950"/>
+	<attnum name="to right" val="10" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="980"></attnum>
-	<attnum name="to right" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="980"/>
+	<attnum name="to right" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1105"></attnum>
-	<attnum name="speed" val="105" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="1105"/>
+	<attnum name="speed" val="105" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1200"></attnum>
-	<attnum name="speed" val="130" unit="km/h"></attnum>
-	<attnum name="to left" val="5" unit="m"></attnum>
+	<attnum name="to start line" val="1200"/>
+	<attnum name="speed" val="130" unit="km/h"/>
+	<attnum name="to left" val="5" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1250"></attnum>
-	<attnum name="to left" val="10" unit="m"></attnum>
+	<attnum name="to start line" val="1250"/>
+	<attnum name="to left" val="10" unit="m"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1280"></attnum>
-	<attnum name="speed" val="110" unit="km/h"></attnum>
+	<attnum name="to start line" val="1280"/>
+	<attnum name="speed" val="110" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1380"></attnum>
-	<attnum name="speed" val="400" unit="km/h"></attnum>
+	<attnum name="to start line" val="1380"/>
+	<attnum name="speed" val="400" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1565"></attnum>
-	<attnum name="speed" val="80" unit="km/h"></attnum>
+	<attnum name="to start line" val="1565"/>
+	<attnum name="speed" val="80" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1670"></attnum>
-	<attnum name="speed" val="150" unit="km/h"></attnum>
+	<attnum name="to start line" val="1670"/>
+	<attnum name="speed" val="150" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1830"></attnum>
-	<attnum name="speed" val="130" unit="km/h"></attnum>
+	<attnum name="to start line" val="1830"/>
+	<attnum name="speed" val="130" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="1970"></attnum>
-	<attnum name="speed" val="100" unit="km/h"></attnum>
+	<attnum name="to start line" val="1970"/>
+	<attnum name="speed" val="100" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2080"></attnum>
-	<attnum name="speed" val="180" unit="km/h"></attnum>
+	<attnum name="to start line" val="2080"/>
+	<attnum name="speed" val="180" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2240"></attnum>
-	<attnum name="speed" val="140" unit="km/h"></attnum>
+	<attnum name="to start line" val="2240"/>
+	<attnum name="speed" val="140" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2300"></attnum>
-	<attnum name="speed" val="230" unit="km/h"></attnum>
+	<attnum name="to start line" val="2300"/>
+	<attnum name="speed" val="230" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2535"></attnum>
-	<attnum name="speed" val="110" unit="km/h"></attnum>
+	<attnum name="to start line" val="2535"/>
+	<attnum name="speed" val="110" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2700"></attnum>
-	<attnum name="speed" val="400" unit="km/h"></attnum>
+	<attnum name="to start line" val="2700"/>
+	<attnum name="speed" val="400" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2860"></attnum>
-	<attnum name="speed" val="400" unit="km/h"></attnum>
+	<attnum name="to start line" val="2860"/>
+	<attnum name="speed" val="400" unit="km/h"/>
       </section>
       <section name="1">
-	<attnum name="to start line" val="2880"></attnum>
-	<attnum name="to right" val="5" unit="km/h"></attnum>
+	<attnum name="to start line" val="2880"/>
+	<attnum name="to right" val="5" unit="km/h"/>
       </section>
     </section>
   </section>

@@ -17,7 +17,7 @@
 <params name="" type="template" mode="mw">
 
   <section name="Modules">
-    <attstr name="track"     val="track"></attstr>
+    <attstr name="track"     val="track"/>
   </section>
 
 </params>

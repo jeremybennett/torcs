@@ -952,7 +952,8 @@ grInitCams(void)
     fovFactor *= GfParmGetNum(grTrackHandle, TRK_SECT_GRAPH, TRK_ATT_FOVFACT, (char*)NULL, 1.0);
 
     if (grBoardCam == NULL) {
-	grBoardCam = new cGrOrthoCamera(scrx, scrx + scrw, scry, scry + scrh);
+	//grBoardCam = new cGrOrthoCamera(scrx, scrx + scrw, scry, scry + scrh);
+	grBoardCam = new cGrOrthoCamera(0, 800, 0, 600);
     }
     
     /* Scene Cameras */

@@ -305,9 +305,33 @@ void grVtxTable::draw_geometry_multi ()
   }
   TRACE_GL("draw_geometry_multi: 15");
   glEnd () ;
-/*   { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) printf("vert=%d norm=%d lev=%d tex=%d\n", num_vertices, num_normals, numMapLevel, num_texcoords); */
-/*   } */
-  
+#if 0
+  {
+      GLenum rc;
+      int z;
+      if ((rc = glGetError()) != GL_NO_ERROR) {
+	  printf("------------draw_geometry_multi------------------------------------\n");
+	  printf("vert=%d norm=%d lev=%d tex=%d\n", num_vertices, num_normals, numMapLevel, num_texcoords);
+	  for (z = 0; z < num_vertices; z++) {
+	      printf("%f %f %f\n", vx [z][0], vx [z][1], vx [z][2]);
+	  }
+	  printf("---\n");
+	  for (z = 0; z < num_normals; z++) {
+	      printf("%f %f %f\n", nm [z][0], nm [z][1], nm [z][2]);
+	  }
+	  printf("---\n");
+	  for (z = 0; z < num_normals; z++) {
+	      printf("%f %f\n", tx [z][0], tx [z][1]);
+	  }
+	  if (numMapLevel>1) {
+	      printf("---\n");
+	      for (z = 0; z < num_normals; z++) {
+		  printf("%f %f\n", tx1 [z][0], tx1 [z][1]);
+	      }
+	  }
+      }
+  }
+#endif
  
   TRACE_GL("draw_geometry_multi: 7");
   if (numMapLevel>1) {
@@ -433,6 +457,38 @@ void grVtxTable::draw_geometry_for_a_car ()
   }
  
   glEnd () ;
+#if 0
+  {
+      GLenum rc;
+      int z;
+      static int GlobCountLap = 0;
+      
+      GlobCountLap++;
+      if ((rc = glGetError()) != GL_NO_ERROR) {
+	  printf("--------------draw_geometry_for_a_car----------------------------------\n");
+	  printf("vert=%d norm=%d lev=%d tex=%d count=%d\n", num_vertices, num_normals, numMapLevel, num_texcoords, GlobCountLap);
+	  printf("---\nvx:\n");
+	  for (z = 0; z < num_vertices; z++) {
+	      printf("%3.3d: %f %f %f\n", z, vx [z][0], vx [z][1], vx [z][2]);
+	  }
+	  printf("---\nnm:\n");
+	  for (z = 0; z < num_normals; z++) {
+	      printf("%3.3d: %f %f %f -> %f\n", z, nm [z][0], nm [z][1], nm [z][2], nm [z][0]*nm [z][0] + nm [z][1]*nm [z][1] + nm [z][2]*nm [z][2]);
+	  }
+	  printf("---\ntx:\n");
+	  for (z = 0; z < num_normals; z++) {
+	      printf("%3.3d: %f %f\n", z, tx [z][0], tx [z][1]);
+	  }
+	  if (numMapLevel>1) {
+	      printf("---\ntx1:\n");
+	      for (z = 0; z < num_normals; z++) {
+		  printf("%3.3d: %f %f\n", z, tx1 [z][0], tx1 [z][1]);
+	      }
+	  }
+	  exit (0);
+      }
+  }
+#endif
   TRACE_GL("draw_geometry_for_a_car: 15");
 
   glActiveTextureARB ( GL_TEXTURE1_ARB ) ;

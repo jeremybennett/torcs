@@ -17,14 +17,14 @@
 <params name="" type="template">
 
   <section name="Team">
-    <attstr name="name"        val="TORCS"></attstr>
-    <attstr name="code"        val="torcs"></attstr>
-    <attstr name="responsible" val="Eric Espie"></attstr>
-    <attstr name="logo"        val="torcs-logo.png"></attstr>
-    <attstr name="pit-img"     val="torcs-pit.png"></attstr>
-    <attnum name="red"         val="1.0"></attnum>
-    <attnum name="green"       val="1.0"></attnum>
-    <attnum name="blue"        val="0.0"></attnum>
+    <attstr name="name"        val="TORCS"/>
+    <attstr name="code"        val="torcs"/>
+    <attstr name="responsible" val="Eric Espie"/>
+    <attstr name="logo"        val="torcs-logo.png"/>
+    <attstr name="pit-img"     val="torcs-pit.png"/>
+    <attnum name="red"         val="1.0"/>
+    <attnum name="green"       val="1.0"/>
+    <attnum name="blue"        val="0.0"/>
   </section>
 
 </params>

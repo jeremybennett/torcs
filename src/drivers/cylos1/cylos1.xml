@@ -9,15 +9,15 @@
 
     <section name="index">
       <section name="1">
-	<attstr name="name" val="cylos1"></attstr>
-	<attstr name="desc" val=""></attstr>
-	<attstr name="author" val="Eric Espie /C Guionneau"></attstr>
-	<attstr name="car name" val="cg-nascar-rwd"></attstr>
-	<attstr name="category" val="Track-RWD-GrA"></attstr>
-	<attnum name="race number" val="15"></attnum>
-	<attnum name="red" val="1.0"></attnum>
-	<attnum name="green" val="1.0"></attnum>
-	<attnum name="blue" val="0.0"></attnum>
+	<attstr name="name" val="cylos1"/>
+	<attstr name="desc" val=""/>
+	<attstr name="author" val="Eric Espie /C Guionneau"/>
+	<attstr name="car name" val="cg-nascar-rwd"/>
+	<attstr name="category" val="Track-RWD-GrA"/>
+	<attnum name="race number" val="15"/>
+	<attnum name="red" val="1.0"/>
+	<attnum name="green" val="1.0"/>
+	<attnum name="blue" val="0.0"/>
       </section>
     </section>
   </section>

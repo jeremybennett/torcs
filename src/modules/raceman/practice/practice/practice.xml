@@ -19,36 +19,36 @@
 
   <section name="Race">
     <!-- comma separated section of allowed categories ("*" means every categories can race) -->
-    <attstr name="categories" val="*"></attstr>
+    <attstr name="categories" val="*"/>
     <section name="Track">
-      <attstr name="name" val="e-track-4"></attstr>
-      <attstr name="category" val="road"></attstr>
+      <attstr name="name" val="e-track-4"/>
+      <attstr name="category" val="road"/>
     </section>
-    <attnum name="laps"  val="20"></attnum>
-    <attstr name="show race" val="no"></attstr>
+    <attnum name="laps"  val="20"/>
+    <attstr name="show race" val="no"/>
   </section>
 
   <section name="Starting Grid">
-    <attnum name="rows"                      val="1"></attnum>
-    <attnum name="distance to start"         val="200"></attnum>
-    <attnum name="distance between columns"  val="20"></attnum>
-    <attnum name="offset within a column"    val="10"></attnum>
-    <attnum name="initial speed" unit="km/h" val="0"></attnum>
-    <attnum name="initial height" unit="m"   val="1.0"></attnum>
+    <attnum name="rows"                      val="1"/>
+    <attnum name="distance to start"         val="200"/>
+    <attnum name="distance between columns"  val="20"/>
+    <attnum name="offset within a column"    val="10"/>
+    <attnum name="initial speed" unit="km/h" val="0"/>
+    <attnum name="initial height" unit="m"   val="1.0"/>
   </section>
 
   <section name="Modules">
-    <attstr name="track"     val="track"></attstr>
-    <attstr name="simu"      val="simuv2"></attstr>
-    <attstr name="graphic"   val="ssggraph"></attstr>
+    <attstr name="track"     val="track"/>
+    <attstr name="simu"      val="simuv2"/>
+    <attstr name="graphic"   val="ssggraph"/>
   </section>
 
   <section name="Drivers">
-    <attnum name="ndrivers" val="1"></attnum>
+    <attnum name="ndrivers" val="1"/>
     <section name="drivers">
       <section name="1">
-	    <attnum name="idx"    val="1"></attnum>
-	    <attstr name="module" val="tanhoj"></attstr>
+	    <attnum name="idx"    val="1"/>
+	    <attstr name="module" val="tanhoj"/>
       </section>
     </section>
   </section>

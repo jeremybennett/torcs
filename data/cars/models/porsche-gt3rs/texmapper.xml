@@ -17,29 +17,29 @@
 <params name="mapper" type="template">
 
   <section name="image">
-    <attnum name="size" val="1024"></attnum>
+    <attnum name="size" val="1024"/>
   </section>
 
   <section name="faces">
 
     <section name="raw 0"> <!-- raw name is whatever you want provided it is unique -->
-      <attnum name="height" val="0"></attnum> <!-- automatic height -->
+      <attnum name="height" val="0"/> <!-- automatic height -->
 
       <section name="col">
 
 	<section name="col 0">
-	  <attstr name="face name" val="right-wing"></attstr> <!-- Mandatory to have at least one attr -->
+	  <attstr name="face name" val="right-wing"/> <!-- Mandatory to have at least one attr -->
 	</section>
 
 	<section name="col 1"> 
-	  <attstr name="face name" val="right-side"></attstr>
-	  <attnum name="width" val="0"></attnum> <!-- automatic width -->
-	  <attstr name="align" in="X,Y,Z" val="X"></attstr>
+	  <attstr name="face name" val="right-side"/>
+	  <attnum name="width" val="0"/> <!-- automatic width -->
+	  <attstr name="align" in="X,Y,Z" val="X"/>
 	</section>
 
 	<section name="col 2">
-	  <attstr name="face name" val="left-wing"></attstr> <!-- Mandatory to have at least one attr -->
-	  <attnum name="rotY" val="180"></attnum>
+	  <attstr name="face name" val="left-wing"/> <!-- Mandatory to have at least one attr -->
+	  <attnum name="rotY" val="180"/>
 	</section>
 
       </section>
@@ -50,21 +50,21 @@
       <section name="col">
 
 	<section name="col 0">
-	  <attstr name="face name" val="back"></attstr>
-	  <attnum name="rotX" val="90"></attnum>
-	  <attnum name="rotY" val="90"></attnum>
+	  <attstr name="face name" val="back"/>
+	  <attnum name="rotX" val="90"/>
+	  <attnum name="rotY" val="90"/>
 	</section>
 
 	<section name="col 1">
-	  <attstr name="face name" val="top"></attstr>
-	  <attstr name="align" val="X"></attstr>
-	  <attnum name="rotX" val="90"></attnum>
+	  <attstr name="face name" val="top"/>
+	  <attstr name="align" val="X"/>
+	  <attnum name="rotX" val="90"/>
 	</section>
 
 	<section name="col 2">
-	  <attstr name="face name" val="front"></attstr>
-	  <attnum name="rotX" val="90"></attnum>
-	  <attnum name="rotY" val="-90"></attnum>
+	  <attstr name="face name" val="front"/>
+	  <attnum name="rotX" val="90"/>
+	  <attnum name="rotY" val="-90"/>
 	</section>
 
       </section>
@@ -74,20 +74,20 @@
       <section name="col">
 
 	<section name="col 0">
-	  <attstr name="face name" val="left-support"></attstr> <!-- Mandatory to have at least one attr -->
-	  <attnum name="rotX" val="180"></attnum>
+	  <attstr name="face name" val="left-support"/> <!-- Mandatory to have at least one attr -->
+	  <attnum name="rotX" val="180"/>
 	</section>
 
 	<section name="col 1">
-	  <attstr name="face name" val="left-side"></attstr>
-	  <attstr name="align" val="X"></attstr>
-	  <attnum name="rotX" val="180"></attnum>
+	  <attstr name="face name" val="left-side"/>
+	  <attstr name="align" val="X"/>
+	  <attnum name="rotX" val="180"/>
 	</section>
 
 	<section name="col 2">
-	  <attstr name="face name" val="right-support"></attstr> <!-- Mandatory to have at least one attr -->
-	  <attnum name="rotX" val="180"></attnum>
-	  <attnum name="rotY" val="180"></attnum>
+	  <attstr name="face name" val="right-support"/> <!-- Mandatory to have at least one attr -->
+	  <attnum name="rotX" val="180"/>
+	  <attnum name="rotY" val="180"/>
 	</section>
 
       </section>
@@ -97,14 +97,14 @@
       <section name="col">
 
 	<section name="col 0">
-	  <attstr name="face name" val="wing"></attstr> <!-- Mandatory to have at least one attr -->
-	  <attnum name="rotX" val="90"></attnum>
+	  <attstr name="face name" val="wing"/> <!-- Mandatory to have at least one attr -->
+	  <attnum name="rotX" val="90"/>
 	</section>
 
 	<section name="col 1">
-	  <attstr name="face name" val="bottom"></attstr>
-	  <attstr name="align" val="X"></attstr>
-	  <attnum name="rotX" val="-90"></attnum>
+	  <attstr name="face name" val="bottom"/>
+	  <attstr name="align" val="X"/>
+	  <attnum name="rotX" val="-90"/>
 	</section>
 
       </section>

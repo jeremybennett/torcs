@@ -26,7 +26,7 @@
           name CDATA #REQUIRED
 >
 
-<!ELEMENT attnum (#PCDATA)>
+<!ELEMENT attnum EMPTY>
 <!ATTLIST attnum 
           name CDATA #REQUIRED
 	  min  CDATA #IMPLIED
@@ -35,7 +35,7 @@
           val  CDATA #REQUIRED
 >
 
-<!ELEMENT attstr (#PCDATA)>
+<!ELEMENT attstr EMPTY>
 <!ATTLIST attstr 
           name CDATA #REQUIRED
 	  in   CDATA #IMPLIED

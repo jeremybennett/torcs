@@ -17,7 +17,7 @@
 
 <params name="Road" type="parameter">
   <section name="Header">
-    <attstr name="name" val="Road Tracks"></attstr>
+    <attstr name="name" val="Road Tracks"/>
   </section>
 </params>
 
