@@ -751,7 +751,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	v = (v + nPathSeg) % nPathSeg;
 	w = (w + nPathSeg) % nPathSeg;
 
-	for (int i = start; i < trackSegId+AHEAD; i++) {
+	for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 		int j = (i+nPathSeg) % nPathSeg;
 		/* taking 2 radiuses to reduce "noise" */
 		double r2 = radius(ps[u].getLoc()->x, ps[u].getLoc()->y,
