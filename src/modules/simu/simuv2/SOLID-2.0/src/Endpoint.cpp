@@ -45,9 +45,9 @@ public:
 
   EndpointList() {
     head.succ = &tail;
-    head.pos = -INFINITY;
+    head.pos = -INFINITY_;
     tail.pred = &head;
-    tail.pos = INFINITY;
+    tail.pos = INFINITY_;
   }
 };
 
@@ -77,7 +77,7 @@ inline void update(const Endpoint& a, const Endpoint& b) {
 Endpoint::Endpoint(int axis, Side s, const Object *obj) : 
   side(s), 
   objPtr(obj), 
-  pos(INFINITY) 
+  pos(INFINITY_) 
 { insert(&endpointList[axis].tail); }
 
 void Endpoint::move(Scalar x) {

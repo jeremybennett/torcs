@@ -108,7 +108,7 @@ extern "C" int
 tita(tModInfo *modInfo)
 {
     modInfo->name    = "Tita";	/* name of the module (short) */
-    modInfo->desc    = "For Jonathan";	/* description of the module (can be long) */
+    modInfo->desc    = "For Tristan";	/* description of the module (can be long) */
     modInfo->fctInit = InitFuncPt;	/* init function */
     modInfo->gfId    = ROB_IDENT;	/* supported framework version */
     modInfo->index   = 1;

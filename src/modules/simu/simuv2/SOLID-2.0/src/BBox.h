@@ -57,7 +57,7 @@ public:
 
   void setEmpty() { 
     center.setValue(0, 0, 0); 
-    extent.setValue(-INFINITY, -INFINITY, -INFINITY);
+    extent.setValue(-INFINITY_, -INFINITY_, -INFINITY_);
   }
 
   void include (const Point& p) {

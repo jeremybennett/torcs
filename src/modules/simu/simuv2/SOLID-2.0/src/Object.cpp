@@ -38,8 +38,8 @@
 Object::Object(DtObjectRef obj, ShapePtr shape) : 
   ref(obj), 
   shapePtr(shape),
-  bbox(Point(INFINITY, INFINITY, INFINITY), 
-       Point(INFINITY, INFINITY, INFINITY))
+  bbox(Point(INFINITY_, INFINITY_, INFINITY_), 
+       Point(INFINITY_, INFINITY_, INFINITY_))
 {
   curr.setIdentity();
   new (&lower[X]) Endpoint(X, MIN, this);    

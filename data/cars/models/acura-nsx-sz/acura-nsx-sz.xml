@@ -26,7 +26,6 @@
   </section>
 
   <section name="Graphic Objects">
-    <attstr name="env" val="acura-nsx-sz.ac"></attstr>
     <attstr name="wheel texture" val="cars/acura-nsx-sz/tex-wheel.rgb"></attstr>
     <attstr name="tachometer texture" val="rpm8500.rgb"></attstr>
     <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
@@ -49,21 +48,21 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"></attstr>    
-    <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.56"></attnum>
-    <attnum name="body width" unit="m" min="0.8" max="2.1" val="2.08"></attnum>
-    <attnum name="body height" unit="m" min="1.1" max="1.7" val="1.12"></attnum>
+    <attnum name="body length" unit="m" val="4.56"></attnum>
+    <attnum name="body width" unit="m" val="2.08"></attnum>
+    <attnum name="body height" unit="m" val="1.12"></attnum>
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" min="4.5" max="5.0" val="4.56"></attnum>
-    <attnum name="overall width"  unit="m" min="1.2" max="2.1" val="2.08"></attnum>
-    <attnum name="mass" unit="kg" min="900.0" max="1500" val="1200.0"></attnum>
-    <attnum name="GC height" unit="m" min="0.15" max="0.5" val="0.20"></attnum>
+    <attnum name="overall length" unit="m" val="4.56"></attnum>
+    <attnum name="overall width"  unit="m" val="2.08"></attnum>
+    <attnum name="mass" unit="kg" val="1200.0"></attnum>
+    <attnum name="GC height" unit="m" val="0.20"></attnum>
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="rear right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
     <!-- used for inertia, indicates the good mass centering -->
-    <attnum name="mass repartition coefficient" min="0.2" max="1.0" val="0.9"></attnum>
-    <attnum name="fuel tank" unit="l" min="30.0" max="100.0" val="100.0"></attnum>
+    <attnum name="mass repartition coefficient" val="0.9"></attnum>
+    <attnum name="fuel tank" unit="l" val="100.0"></attnum>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="30.0"></attnum>
   </section>
 
@@ -88,94 +87,94 @@
   <!-- Engine Max curve -->
   <section name="Engine">
     <attnum name="inertia"      unit="kg.m2" val="0.20"></attnum>
-    <attnum name="revs limiter" min="3000" max="9000" val="8500" unit="rpm"></attnum>
+    <attnum name="revs limiter" val="8500" unit="rpm"></attnum>
     <attnum name="revs maxi"  unit="rpm" val="10000"></attnum>
     <attnum name="tickover" min="500" max="5000" unit="rpm" val="2000"></attnum>
-    <attnum name="fuel cons factor" min="1.0" max="2.0" val="1.2"></attnum>
+    <attnum name="fuel cons factor" val="1.2"></attnum>
     <section name="data points">
       <section name="1">
 	<attnum name="rpm" unit="rpm" val="0"></attnum>
-	<attnum name="Tq" min="0" max="280" unit="N.m" val="280"></attnum>
+	<attnum name="Tq" unit="N.m" val="280"></attnum>
       </section>
       <section name="2">
 	<attnum name="rpm" unit="rpm" val="500"></attnum>
-	<attnum name="Tq" min="0" max="300" unit="N.m" val="300"></attnum>
+	<attnum name="Tq" unit="N.m" val="300"></attnum>
       </section>
       <section name="3">
 	<attnum name="rpm" unit="rpm" val="1000"></attnum>
-	<attnum name="Tq" min="0" max="350" unit="N.m" val="350"></attnum>
+	<attnum name="Tq" unit="N.m" val="350"></attnum>
       </section>
       <section name="4">
 	<attnum name="rpm" unit="rpm" val="1500"></attnum>
-	<attnum name="Tq" min="0" max="390" unit="N.m" val="390"></attnum>
+	<attnum name="Tq" unit="N.m" val="390"></attnum>
       </section>
       <section name="5">
 	<attnum name="rpm" unit="rpm" val="2000"></attnum>
-	<attnum name="Tq" min="0" max="430" unit="N.m" val="430"></attnum>
+	<attnum name="Tq" unit="N.m" val="430"></attnum>
       </section>
       <section name="6">
 	<attnum name="rpm" unit="rpm" val="2500"></attnum>
-	<attnum name="Tq" min="0" max="430" unit="N.m" val="430"></attnum>
+	<attnum name="Tq" unit="N.m" val="430"></attnum>
       </section>
       <section name="7">
 	<attnum name="rpm" unit="rpm" val="3000"></attnum>
-	<attnum name="Tq" min="0" max="450" unit="N.m" val="450"></attnum>
+	<attnum name="Tq" unit="N.m" val="450"></attnum>
       </section>
       <section name="8">
 	<attnum name="rpm" unit="rpm" val="3500"></attnum>
-	<attnum name="Tq" min="0" max="450" unit="N.m" val="450"></attnum>
+	<attnum name="Tq" unit="N.m" val="450"></attnum>
       </section>
       <section name="9">
 	<attnum name="rpm" unit="rpm" val="4000"></attnum>
-	<attnum name="Tq" min="0" max="460" unit="N.m" val="460"></attnum>
+	<attnum name="Tq" unit="N.m" val="460"></attnum>
       </section>
       <section name="10">
 	<attnum name="rpm" unit="rpm" val="4500"></attnum>
-	<attnum name="Tq" min="0" max="460" unit="N.m" val="460"></attnum>
+	<attnum name="Tq" unit="N.m" val="460"></attnum>
       </section>
       <section name="11">
 	<attnum name="rpm" unit="rpm" val="5000"></attnum>
-	<attnum name="Tq" min="0" max="460" unit="N.m" val="460"></attnum>
+	<attnum name="Tq" unit="N.m" val="460"></attnum>
       </section>
       <section name="12">
 	<attnum name="rpm" unit="rpm" val="5500"></attnum>
-	<attnum name="Tq" min="0" max="440" unit="N.m" val="440"></attnum>
+	<attnum name="Tq" unit="N.m" val="440"></attnum>
       </section>
       <section name="13">
 	<attnum name="rpm" unit="rpm" val="6000"></attnum>
-	<attnum name="Tq" min="0" max="420" unit="N.m" val="420"></attnum>
+	<attnum name="Tq" unit="N.m" val="420"></attnum>
       </section>
       <section name="14">
 	<attnum name="rpm" unit="rpm" val="6500"></attnum>
-	<attnum name="Tq" min="0" max="390" unit="N.m" val="390"></attnum>
+	<attnum name="Tq" unit="N.m" val="390"></attnum>
       </section>
       <section name="15">
 	<attnum name="rpm" unit="rpm" val="7000"></attnum>
-	<attnum name="Tq" min="0" max="360" unit="N.m" val="360"></attnum>
+	<attnum name="Tq" unit="N.m" val="360"></attnum>
       </section>
       <section name="16">
 	<attnum name="rpm" unit="rpm" val="7500"></attnum>
-	<attnum name="Tq" min="0" max="350" unit="N.m" val="350"></attnum>
+	<attnum name="Tq" unit="N.m" val="350"></attnum>
       </section>
       <section name="17">
 	<attnum name="rpm" unit="rpm" val="8000"></attnum>
-	<attnum name="Tq" min="0" max="340" unit="N.m" val="340"></attnum>
+	<attnum name="Tq" unit="N.m" val="340"></attnum>
       </section>
       <section name="18">
 	<attnum name="rpm" unit="rpm" val="8500"></attnum>
-	<attnum name="Tq" min="0" max="320" unit="N.m" val="320"></attnum>
+	<attnum name="Tq"  unit="N.m" val="320"></attnum>
       </section>
       <section name="19">
 	<attnum name="rpm" unit="rpm" val="9000"></attnum>
-	<attnum name="Tq" min="0" max="300" unit="N.m" val="300"></attnum>
+	<attnum name="Tq" unit="N.m" val="300"></attnum>
       </section>
       <section name="20">
 	<attnum name="rpm" unit="rpm" val="9500"></attnum>
-	<attnum name="Tq" min="0" max="280" unit="N.m" val="280"></attnum>
+	<attnum name="Tq" unit="N.m" val="280"></attnum>
       </section>
       <section name="21">
 	<attnum name="rpm" unit="rpm" val="10000"></attnum>
-	<attnum name="Tq" min="0" max="250" unit="N.m" val="250"></attnum>
+	<attnum name="Tq" unit="N.m" val="250"></attnum>
       </section>
     </section>
   </section>

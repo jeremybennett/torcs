@@ -179,7 +179,7 @@ inline bool closest(Vector& v) {
 
 #ifdef USE_BACKUP_PROCEDURE
 
-  Scalar min_dist2 = INFINITY;
+  Scalar min_dist2 = INFINITY_;
   for (int s = all_bits; s; --s) {
     if ((s & all_bits) == s) {
       if (proper(s)) {

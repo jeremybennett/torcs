@@ -212,6 +212,7 @@ prShutdown(void)
     free(prCarInfo);
     prTrackItf.trkShutdown();
     SimItf.shutdown();
+    prGraphicItf.shutdowncars();
     GfModUnloadList(&pracemodlist);
     pracemodlist = (tModList*)NULL;
     prCtrlItf->results(&prCurResults);

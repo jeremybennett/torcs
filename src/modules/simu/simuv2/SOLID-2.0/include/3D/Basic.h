@@ -37,7 +37,7 @@ const Scalar RADS_PER_DEG =  0.01745329251994329547;
 const Scalar TWO_PI =        6.28318530717958623200;
 const Scalar EPSILON =       1.0e-10;
 const Scalar EPSILON2 =      1.0e-20;
-const Scalar INFINITY =      1.0e50;
+const Scalar INFINITY_ =      1.0e50;
 
 
 inline Scalar abs(Scalar x) { return x < 0 ? -x : x; }

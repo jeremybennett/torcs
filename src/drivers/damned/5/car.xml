@@ -30,12 +30,12 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="80" val="1"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="80" val="3"></attnum>
   </section>
 
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.55"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.65"></attnum>
     <attnum name="max pressure" unit="kPa" min="100" max="150000" val="14000"></attnum>
   </section>
 

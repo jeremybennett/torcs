@@ -55,7 +55,7 @@ static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.05,	0.05,	0.08,	0.2,	0.02,	0.02,	0.1	};
-const  tdble AGain[10]   = {	0.30,	0.00,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
+static tdble AGain[10]   = {	0.30,	0.00,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
 static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.05,	0.05,	0.08,	0.015,	0.02,	0.015,	0.15	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
@@ -63,7 +63,7 @@ static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
 static tdble Advance3[10]= {	-5.0,	0.0,  -16.0,	0.0,	0.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
 //static tdble Advance5[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
-const  tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
+static tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	10000,	10000,	10000,	10000	};
 static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
@@ -284,40 +284,46 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
+    tdble width = DmTrack->width;
+    
+    if (strcmp(DmTrack->category, "dirt") == 0) {
+	width *= 0.8;
+    }
+    
     Tright[index-1] = Trightprev[index-1] = car->_trkPos.toRight;
     hold[index-1] = 10.0;
     InitGears(car, index);
 
-    spdtgt2[0] = DmTrack->width - 4.0;
-    Advance[0] = Advance2[0] = DmTrack->width * 2.0;
+    spdtgt2[0] = width - 4.0;
+    Advance[0] = Advance2[0] = width * 2.0;
 
-    spdtgt2ref[1] = spdtgt2[1] = DmTrack->width / 2.0 - 1.0;
-    Advance[1] = DmTrack->width * 1.88 + 5.0;
-    Advance2[1] = DmTrack->width * 2.8 + 5.0;
+    spdtgt2ref[1] = spdtgt2[1] = width / 2.0 - 1.0;
+    Advance[1] = width * 1.88 + 5.0;
+    Advance2[1] = width * 2.8 + 5.0;
 
-    spdtgt2ref[2] = spdtgt2[2] = DmTrack->width * .8 + 7.5;
-    Advance[2] = Advance2[2] = DmTrack->width * 2.0 + 3.0;
+    spdtgt2ref[2] = spdtgt2[2] = width * .8 + 7.5;
+    Advance[2] = Advance2[2] = width * 2.0 + 3.0;
 
-    spdtgt2ref[3] = spdtgt2[3] = DmTrack->width + 3.0;
-    Advance[3] = Advance2[3] = DmTrack->width * 2.0 + 6.0;
+    spdtgt2ref[3] = spdtgt2[3] = width / 2.0 - 1.0;
+    Advance[3] = Advance2[3] = width * 2.0 + 6.0;
 
-    spdtgt2ref[4] = spdtgt2[4] = DmTrack->width + 3.0;
-    Advance[4] = Advance2[4] = DmTrack->width * 2.0 + 6.0;
+    spdtgt2ref[4] = spdtgt2[4] = width + 3.0;
+    Advance[4] = Advance2[4] = width * 2.0 + 6.0;
 
-    spdtgt2ref[5] = spdtgt2[5] = DmTrack->width + 3.0;
-    Advance[5] = Advance2[5] = DmTrack->width * 2.0 + 6.0;
+    spdtgt2ref[5] = spdtgt2[5] = width + 3.0;
+    Advance[5] = Advance2[5] = width * 2.0 + 6.0;
 
-    spdtgt2[6] = DmTrack->width + 3.0;
-    Advance[6] = Advance2[6] = DmTrack->width * 2.0 + 15.0;
+    spdtgt2[6] = width + 3.0;
+    Advance[6] = Advance2[6] = width * 2.0 + 15.0;
 
-    spdtgt2[7] = DmTrack->width + 3.0;
-    Advance[7] = Advance2[7] = DmTrack->width * 2.0 + 8.0;
+    spdtgt2[7] = width + 3.0;
+    Advance[7] = Advance2[7] = width * 2.0 + 8.0;
 
-    spdtgt2[8] = DmTrack->width + 3.0;
-    Advance[8] = Advance2[8] = DmTrack->width * 2.0 + 8.0;
+    spdtgt2[8] = width + 3.0;
+    Advance[8] = Advance2[8] = width * 2.0 + 8.0;
 
-    spdtgt2[9] = (DmTrack->width + 2.5) * 1.1;
-    Advance[9] = Advance2[9] = DmTrack->width * 2.0 - 1.0;
+    spdtgt2[9] = (width + 2.5) * 1.1;
+    Advance[9] = Advance2[9] = width * 2.0 - 1.0;
 
     if (car->_pit) {
 	LgfsFinal[index - 1] = dmGetDistToStart(&car->_pit->pos);
@@ -608,10 +614,12 @@ static void drive(int index, tCarElt* car, tSituation *s)
     
 	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
+
 	//Advance[1] = Advance5[1] / seg->surface->kFriction;
 	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction * seg->surface->kFriction;
-	Advance3[1] = (seg->surface->kFriction - 1.5) * 12.0;
-	steerk[1] = 1.0 + (seg->surface->kFriction - 1.4);
+	Advance3[1] = (seg->surface->kFriction - 1.5) * 20.0;
+	steerk[1] = 1.0 - (seg->surface->kFriction - 1.4);
+
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .3);
 	spdtgt2[4] = spdtgt2ref[4] * (seg->surface->kFriction - .3);
 	spdtgt2[5] = spdtgt2ref[5] * (seg->surface->kFriction - .3);
@@ -729,8 +737,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     vang = atan2(car->_speed_Y, car->_speed_X);
     CosA = cos(vang);
     SinA = sin(vang);
-    dist = (0.04 * car->_speed_x * car->_speed_x - (Advance3[idx] / ((seg->surface->kFriction - 0.4) * (seg->surface->kFriction - 0.4))))
-	    * (seg->surface->kFriction - 0.2);
+    dist = (0.04 * car->_speed_x * car->_speed_x - (Advance3[idx] / ((seg->surface->kFriction - 0.4) * (seg->surface->kFriction - 0.4))));
     x = X + (CosA) * dist;
     y = Y + (SinA) * dist;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
