@@ -59,9 +59,6 @@ extern bool InStr(char *searchStr, char *str);
 extern bool InitMultiTex();
 extern int grWinx, grWiny, grWinw, grWinh;
 
-extern int grDrawCurrent;
-extern int grDrawCurrent;
-
 extern int grVectFlag;
 extern int grVectDispFlag[];
 extern int segIndice;
@@ -83,6 +80,7 @@ extern void shutdownTrack(void);
 extern int maxTextureUnits;
 extern tdble grMaxDammage;
 
+extern class cGrScreen *grScreens[];
 
 #define GR_SPLIT_ADD	0
 #define GR_SPLIT_REM	1

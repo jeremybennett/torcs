@@ -28,6 +28,7 @@
 #endif
 
 class cGrCamera;
+class cGrScreen;
 
 GF_TAILQ_HEAD(GrCamHead, cGrCamera);
 
@@ -36,17 +37,19 @@ class cGrCamera
 {
  private:
     GF_TAILQ_ENTRY(cGrCamera) link;
-    int id;		/* Camera Id */
-    int drawCurrent;	/* flag to draw the current car */
-    int drawBackground;	/* flag to draw the background */    
+    int			id;		/* Camera Id */
+    int			drawCurrent;	/* flag to draw the current car */
+    int			drawBackground;	/* flag to draw the background */
 
  protected:
     sgVec3 eye;
     sgVec3 center;
     sgVec3 up;
+    class cGrScreen	*screen;	/* screen where the camera is attached */
     
  public:
-    cGrCamera(int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0) {
+    cGrCamera(class cGrScreen *myscreen, int myid = 0, int mydrawCurrent = 0, int mydrawBackground = 0) {
+	screen = myscreen;
 	id = myid;
 	drawCurrent = mydrawCurrent;
 	drawBackground = mydrawBackground;
@@ -130,19 +133,9 @@ class cGrPerspCamera : public cGrCamera
     float fogend;
     
  public:
-    cGrPerspCamera(int id, int drawCurr, int drawBG,
+    cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
 		   float myfovy, float myfovymin, float myfovymax,
-		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0)
-	: cGrCamera(id, drawCurr, drawBG) {
-	fovy     = myfovy;
-	fovymin  = myfovymin;
-	fovymax  = myfovymax;
-	fnear    = myfnear;
-	ffar     = myffar;
-	fovydflt = myfovy;
-	fogstart = myfogstart;
-	fogend   = myfogend;
-    }
+		   float myfnear, float myffar = 1500.0, float myfogstart = 1400.0, float myfogend = 1500.0);
     
     void setProjection(void);
     void setModelView(void);
@@ -151,6 +144,13 @@ class cGrPerspCamera : public cGrCamera
     float getLODFactor(float x, float y, float z);
     float getFogStart(void) { return fogstart; }
     float getFogEnd(void) { return fogend; }
+
+    cGrPerspCamera *next(void) {
+	return (cGrPerspCamera *)cGrCamera::next();
+    }
+
+    void limitFov(void);
+    
 };
 
 
@@ -164,7 +164,8 @@ class cGrOrthoCamera : public cGrCamera
     float top;
 
  public:
-    cGrOrthoCamera(float myleft, float myright, float mybottom, float mytop) {
+    cGrOrthoCamera(class cGrScreen *myscreen, float myleft, float myright, float mybottom, float mytop)
+	: cGrCamera(myscreen) {
 	left   = myleft;
 	right  = myright;
 	bottom = mybottom;
@@ -183,8 +184,8 @@ class cGrOrthoCamera : public cGrCamera
 class cGrBackgroundCam : public cGrPerspCamera
 {
  public:
-    cGrBackgroundCam()
-	: cGrPerspCamera(0, 0, 1,
+    cGrBackgroundCam(class cGrScreen *myscreen)
+	: cGrPerspCamera(myscreen, 0, 0, 1,
 			 67.5, 67.5, 67.5,
 			 0.1, 2000.0, 1000, 1000) {
     }
@@ -194,27 +195,14 @@ class cGrBackgroundCam : public cGrPerspCamera
     void update(cGrCamera *curCam);
 };
 
-extern int	grScissorflag;
-extern int	grCurCamHead;
-extern tGrCamHead grCams[];		/* from F1 to F12 */
-extern cGrCamera *grCurCam;		/* the current camera */
-extern cGrBackgroundCam *grBgCam;		/* the Background camera */
-extern cGrOrthoCamera *grBoardCam;	/* the board camera */
-extern float grviewRatio;
-
-extern int scrx, scry, scrw, scrh; /* screen size */
-
-extern void grSetView(int x, int y, int w, int h);
-extern void grSetView2(int x, int y, int w, int h);
-extern void grSelectCamera(void *vp);
-extern void grInitCams(void);
-extern void grSetZoom(void *vp);
 
 #define GR_ZOOM_IN 	0
 #define GR_ZOOM_OUT 	1
 #define GR_ZOOM_MAX 	2
 #define GR_ZOOM_MIN 	3
 #define GR_ZOOM_DFLT    4
+
+void grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fovFactor);
 
 #endif /* _GRCAM_H_ */ 
 

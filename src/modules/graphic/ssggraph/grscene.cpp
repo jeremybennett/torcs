@@ -45,9 +45,7 @@
 #include "grutil.h"
 #include "grssgext.h"
 #include "win32_glext.h"
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+
 
 int grWrldX;
 int grWrldY;
@@ -570,240 +568,6 @@ void grShutdownScene(void)
     }
 }
 
-#if OLD
-static void
-initBackground(void)
-{
-    int			i;
-    float		x, y, z1, z2;
-    float		alpha, texLen;
-    tTrackGraphicInfo	*graphic;
-    ssgSimpleState	*envst;
-    char		buf[256];
-
-    sprintf(buf, "tracks/%s/%s;data/img;data/textures;.", grTrack->category, grTrack->internalname);
-
-    graphic = &grTrack->graphic;
-    glClearColor(graphic->bgColor[0], graphic->bgColor[1], graphic->bgColor[2], 1.0);
-    BackgroundTex = BackgroundTex2 = 0;
-
-    z1 = -0.5;
-    z2 = 1.0;
-    BackgroundType = graphic->bgtype;
-    switch (BackgroundType) {
-    case 0:
-	GfOut("Loading texture %s\n", graphic->background);
-	BackgroundTex = grLoadTexture(graphic->background, buf, 1.8, 0);
-	BackgroundList = glGenLists(1);
-	glNewList(BackgroundList, GL_COMPILE);
-	glBegin(GL_QUAD_STRIP);
-	for (i = 0; i < NB_BG_FACES + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 1.0); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glEndList();
-	break;
-    case 2:
-	GfOut("Loading texture %s\n", graphic->background);
-	BackgroundTex = grLoadTexture(graphic->background, buf, 1.8, 0);
-	BackgroundList = glGenLists(1);
-	glNewList(BackgroundList, GL_COMPILE);
-	glBegin(GL_QUAD_STRIP);
-	for (i = 0; i < NB_BG_FACES/4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.0);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 0.5); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glBegin(GL_QUAD_STRIP);
-	for (i = NB_BG_FACES/4; i < NB_BG_FACES/2 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.5);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 1.0); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glBegin(GL_QUAD_STRIP);
-	for (i = NB_BG_FACES/2; i < 3*NB_BG_FACES/4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.0);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 0.5); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glBegin(GL_QUAD_STRIP);
-	for (i = 3*NB_BG_FACES/4; i < NB_BG_FACES + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.5);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 1.0); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glEndList();
-	break;
-    case 4:
-	GfOut("Loading texture %s\n", graphic->background);
-	BackgroundTex = grLoadTexture(graphic->background, buf, 1.8, 0);
-	BackgroundList = glGenLists(1);
-	glNewList(BackgroundList, GL_COMPILE);
-	glBegin(GL_QUAD_STRIP);
-	for (i = 0; i < NB_BG_FACES/4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.0);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 0.5); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glBegin(GL_QUAD_STRIP);
-	for (i = NB_BG_FACES/4; i < NB_BG_FACES/2 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.5);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 1.0); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glEndList();
-	GfOut("Loading texture %s\n", graphic->background2);
-	BackgroundTex2 = grLoadTexture(graphic->background2, buf, 1.8, 0);
-	BackgroundList2 = glGenLists(1);
-	glNewList(BackgroundList2, GL_COMPILE);	
-	glBegin(GL_QUAD_STRIP);
-	for (i = NB_BG_FACES/2; i < 3*NB_BG_FACES/4 + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.0);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 0.5); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glBegin(GL_QUAD_STRIP);
-	for (i = 3*NB_BG_FACES/4; i < NB_BG_FACES + 1; i++) {
-	    alpha = (float)i * 2 * PI / (float)NB_BG_FACES;
-	    texLen = (float)i / (float)NB_BG_FACES;
-	    
-	    x = BG_DIST * cos(alpha);
-	    y = BG_DIST * sin(alpha);
-	    
-	    glTexCoord2f(texLen*4.0, 0.5);   glVertex3f(x, y, z1);
-	    glTexCoord2f(texLen*4.0, 1.0); glVertex3f(x, y, z2);
-	}
-	glEnd();
-	glEndList();
-	break;
-    default:
-	break;
-    }
-
-    /* Environment Mapping Settings */
-    grEnvSelector = new ssgStateSelector(graphic->envnb);
-    grGammaValue = 1.8;
-    grMipMap = 0;
-    grFilePath = buf;
-    for (i = 0; i < graphic->envnb; i++) {
-      GfOut("Loading Environment Mapping Image %s\n", graphic->env[i]);
-      envst = (ssgSimpleState*)grSsgLoadTexState(graphic->env[i]);
-      envst->enable(GL_BLEND);
-      grEnvSelector->setStep(i, envst);
-    }
-    grEnvSelector->selectStep(0); /* mandatory !!! */
-    grEnvState=(grMultiTexState*)grSsgEnvTexState(graphic->env[0]);
-    grEnvShadowState=(grMultiTexState*)grSsgEnvTexState("envshadow.png");
-    if (grEnvShadowState==NULL)
-      {
-	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open envshadow.png for reading") ;
-	ulSetError ( UL_WARNING, "        mandatory for top env mapping ") ;
-	ulSetError ( UL_WARNING, "        should be in the .xml !! ") ;
-	ulSetError ( UL_WARNING, "        copy the envshadow.png from g-track-2 to the track you selected ") ;
-	ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
-	GfScrShutdown();
-	exit(-1);
-      }
-}
-
-void grDrawBackground(cGrCamera *cam)
-{
-    t3Dd *camPos;
-    t3Dd *camCenter;
-    t3Dd *camUp;
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    gluPerspective(67.5, grviewRatio, 0.1, 100000);
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    camPos = cam->getPos();
-    camCenter = cam->getCenter();
-    camUp = cam->getUp();
-   
-    gluLookAt(camPos->x, camPos->y, camPos->z, 
-	      camCenter->x, camCenter->y, camCenter->z,
-	      camUp->x, camUp->y, camUp->z);
-    
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-    glPushMatrix();
-    glTranslatef(camPos->x, camPos->y, camPos->z);
-    glBindTexture(GL_TEXTURE_2D, BackgroundTex);
-    glCallList(BackgroundList);
-    if (BackgroundType > 2) {
-	glBindTexture(GL_TEXTURE_2D, BackgroundTex2);
-	glCallList(BackgroundList2);
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glPopMatrix();
-
-/*     GLfloat fogColor[4]={0.4,0.4,0.5,0.5}; */
-/*     glFogi(GL_FOG_MODE,GL_EXP2); */
-/*     glFogfv(GL_FOG_COLOR,fogColor); */
-/*     glFogf(GL_FOG_DENSITY,0.002); */
-/*     glHint(GL_FOG_HINT,GL_DONT_CARE); */
-/*     glFogf(GL_FOG_START,8000.0); */
-/*     glFogf(GL_FOG_END, 10000); */
-/*     glEnable(GL_FOG); */
-
-}
-
-#endif
-
-
 static ssgRoot *TheBackground;
 
 static void
@@ -1221,12 +985,12 @@ initBackground(void)
 }
 
 
-void grDrawBackground(cGrCamera *cam)
+void grDrawBackground(class cGrCamera *cam, class cGrBackgroundCam *bgCam)
 {
     TRACE_GL("grDrawBackground: ssgCullAndDraw start");
 
-    grBgCam->update(cam);
-    grBgCam->action();
+    bgCam->update(cam);
+    bgCam->action();
 
     ssgCullAndDraw(TheBackground);
 

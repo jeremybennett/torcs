@@ -85,7 +85,6 @@ typedef struct Situation {
     tRaceAdmInfo	raceInfo;
     double		deltaTime;
     double		currentTime;	/**< current time in sec since the beginning of the simulation */
-    int			current;	/**< current car */
     int			nbPlayers;	/**< number of human player in local (splitted screen) */
     tCarElt		**cars;		/**< list of cars */ 
 } tSituation;

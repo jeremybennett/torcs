@@ -36,9 +36,7 @@
 #include <robottools.h>
 #include <tgfclient.h>
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
+#include "grboard.h"
 
 static float grWhite[4] = {1.0, 1.0, 1.0, 1.0};
 static float grRed[4] = {1.0, 0.0, 0.0, 1.0};
@@ -62,7 +60,7 @@ static int grLeaderFlag		= 1;
 static int grLeaderNb		= 10;
 static int grCounterFlag	= 1;
 static int grGFlag		= 0;
-static int grArcadeFlag		= 1;
+static int grArcadeFlag		= 0;
 
 void
 grLoadBoardParams(void)
@@ -579,19 +577,19 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     glEnd();
     glDisable(GL_BLEND);
 
-    if (s->current+1 > maxi) {
+    if (/* s->current */ 0+1 > maxi) {
 	drawCurrent = 1;
     } else {
 	drawCurrent = 0;
     }
     for (j = maxi; j > 0; j--) {
 	if (drawCurrent) {
-	    i = s->current+1;
+	    i = /* s->current */ 0+1;
 	    drawCurrent = 0;
 	} else {
 	    i = j;
 	}
-	if (i == s->current+1) {
+	if (i == /* s->current */ 0+1) {
 	    clr = grCarInfo[car->index].iconColor;
 	    drawCurrent = 0;
 	} else {
@@ -911,15 +909,15 @@ grDispArcade(tCarElt *car, tSituation *s)
 }
 
 void
-grRefreshBoard(tSituation *s, float Fps, int forceArcade, int curr)
+grRefreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr)
 {
     if (grArcadeFlag || forceArcade) {
-	grDispArcade(s->cars[curr], s);
+	grDispArcade(curr, s);
     } else {
-	if (grDebugFlag)   grDispDebug(Fps, s->cars[curr], s);
-	if (grGFlag)       grDispGGraph(s->cars[curr]);
-	if (grBoardFlag)   grDispCarBoard(s->cars[curr], s);
-	if (grLeaderFlag)  grDispLeaderBoard(s->cars[curr], s);
-	if (grCounterFlag) grDispCounterBoard2(s->cars[curr]);
+	if (grDebugFlag)   grDispDebug(Fps, curr, s);
+	if (grGFlag)       grDispGGraph(curr);
+	if (grBoardFlag)   grDispCarBoard(curr, s);
+	if (grLeaderFlag)  grDispLeaderBoard(curr, s);
+	if (grCounterFlag) grDispCounterBoard2(curr);
     }
 }

@@ -117,6 +117,10 @@
    @defgroup hash	Hash tables Management
    This is the hash computation API.
 */
+/**
+   @defgroup ctrl	Control Device Management
+   This is the API to use control devices (Keyboard, mouse and joysticks).
+*/
 
 /**
     @mainpage	Welcome to the TORCS documentation !

@@ -34,7 +34,7 @@ extern void grSelectBoard(void *vp);
 extern void grDispGGraph(tCarElt *car);
 extern void grInitBoardCar(tCarElt *car);
 
-extern void grRefreshBoard(tSituation *s, float Fps, int forceArcade, int curr);
+extern void grRefreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr);
 extern void grLoadBoardParams(void);
 
 #endif /* _GRBOARD_H_ */ 

@@ -90,8 +90,6 @@ static void
 reAddKeys(void)
 {
     GfuiAddSKey(reScreenHandle, GLUT_KEY_F1,        "Help", reScreenHandle, GfuiHelpScreen, NULL);
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, RePrevCar, NULL);
-    GfuiAddSKey(reScreenHandle, GLUT_KEY_PAGE_DOWN, "Select Next Car", (void*)0, ReNextCar, NULL);
     GfuiAddSKey(reScreenHandle, GLUT_KEY_F12,       "Screen Shot", NULL, GfuiScreenShot, NULL);
 
 

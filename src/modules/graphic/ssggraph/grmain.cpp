@@ -34,17 +34,12 @@
 #include "grskidmarks.h"
 #include "grsmoke.h"
 #include "grcar.h"
+#include "grscreen.h"
 #include "grcam.h"
 #include "grscene.h"
 #include "grsound.h"
 #include "grboard.h"
 #include "grutil.h"
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
-int grDrawCurrent		= 0;
 
 int maxTextureUnits = 0;
 static double	OldTime;
@@ -55,7 +50,6 @@ double		grDeltaTime;
 int		segIndice	= 0;
 
 tdble grMaxDammage = 10000.0;
-static int grWindowRatio = 0;
 int grNbCars = 0;
 
 void *grHandle = NULL;
@@ -63,18 +57,15 @@ void *grTrackHandle = NULL;
 
 int grWinx, grWiny, grWinw, grWinh;
 
+static float grMouseRatioX, grMouseRatioY;
+
 tgrCarInfo	*grCarInfo;
 ssgContext	grContext;
 
-/* splitted screen */
-int winX[4];
-int winY[4];
-int winW;
-int winH;
-float winR;
-int currCurrent[4] = {0};
 
-int nbScreen = 1;
+class cGrScreen *grScreens[GR_NB_MAX_SCREEN];
+
+int grNbScreen = 1;
 
 
 static char buf[1024];
@@ -85,35 +76,6 @@ PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
 PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB =NULL;
 PFNGLACTIVETEXTUREARBPROC   glActiveTextureARB = NULL;
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
-
-// InStr
-// desc: returns true if searchStr is in str, which is a list of
-//       strings separated by spaces
-bool InStr(char *searchStr, char *str)
-{
-	char *endOfStr;				// pointer to last string element
-	int idx = 0;
-
-	endOfStr = str + strlen(str);	// find the last character in str
-
-	// loop while we haven't reached the end of the string
-	while (str < endOfStr)
-	{
-		// find where a space is located
-		idx = strcspn(str, " ");
-
-		// we found searchStr
-		if ( (strlen(searchStr) == idx) && (strncmp(searchStr, str, idx) == 0))
-		{
-			return true;
-		}
-
-		// we didn't find searchStr, move pointer to the next string to search
-		str += (idx + 1);
-	}
-
-	return false;
-}
 #endif
 
 // InitMultiTex
@@ -147,56 +109,35 @@ bool InitMultiTex(void)
 		return false;
 }
 
+
 static void
 grAdaptScreenSize(void)
 {
-    switch (nbScreen) {
+    switch (grNbScreen) {
     case 0:
     case 1:
-	winX[0] = grWinx;
-	winY[0] = grWiny;
-	winW = grWinw;
-	winH = grWinh;
-	winR = winW / winH;
+	grScreens[0]->activate(grWinx, grWiny, grWinw, grWinh);
+	grScreens[1]->desactivate();
+	grScreens[2]->desactivate();
+	grScreens[3]->desactivate();
 	break;
     case 2:
-	winX[0] = grWinx;
-	winY[0] = grWiny + grWinh / 2;
-	winW = grWinw;
-	winH = grWinh / 2;
-
-	winX[1] = grWinx;
-	winY[1] = grWiny;
-	winR = winW / winH;
+	grScreens[0]->activate(grWinx, grWiny + grWinh / 2, grWinw, grWinh / 2);
+	grScreens[1]->activate(grWinx, grWiny,              grWinw, grWinh / 2);
+	grScreens[2]->desactivate();
+	grScreens[3]->desactivate();
 	break;
     case 3:
-	winX[0] = grWinx;
-	winY[0] = grWiny + grWinh / 2;
-	winW = grWinw / 2;
-	winH = grWinh / 2;
-
-	winX[1] = grWinx + grWinw / 2;
-	winY[1] = grWiny + grWinh / 2;
-
-	winX[2] = grWinx + grWinw / 4;
-	winY[2] = grWiny;
-	winR = winW / winH;
+	grScreens[0]->activate(grWinx,              grWiny + grWinh / 2, grWinw / 2, grWinh / 2);
+	grScreens[1]->activate(grWinx + grWinw / 2, grWiny + grWinh / 2, grWinw / 2, grWinh / 2);
+	grScreens[2]->activate(grWinx + grWinw / 4, grWiny,              grWinw / 2, grWinh / 2);
+	grScreens[3]->desactivate();
 	break;
     case 4:
-	winX[0] = grWinx;
-	winY[0] = grWiny + grWinh / 2;
-	winW = grWinw / 2;
-	winH = grWinh / 2;
-
-	winX[1] = grWinx + grWinw / 2;
-	winY[1] = grWiny + grWinh / 2;
-
-	winX[2] = grWinx;
-	winY[2] = grWiny;
-
-	winX[3] = grWinx + grWinw / 2;
-	winY[3] = grWiny;
-	winR = winW / winH;
+	grScreens[0]->activate(grWinx,              grWiny + grWinh / 2, grWinw / 2, grWinh / 2);
+	grScreens[1]->activate(grWinx + grWinw / 2, grWiny + grWinh / 2, grWinw / 2, grWinh / 2);
+	grScreens[2]->activate(grWinx,              grWiny,              grWinw / 2, grWinh / 2);
+	grScreens[3]->activate(grWinx + grWinw / 2, grWiny,              grWinw / 2, grWinh / 2);
 	break;
     }
 }
@@ -208,19 +149,61 @@ grSplitScreen(void *vp)
 
     switch (p) {
     case GR_SPLIT_ADD:
-	nbScreen++;
-	if (nbScreen > GR_NB_MAX_SCREEN) {
-	    nbScreen = GR_NB_MAX_SCREEN;
+	grNbScreen++;
+	if (grNbScreen > GR_NB_MAX_SCREEN) {
+	    grNbScreen = GR_NB_MAX_SCREEN;
 	}
 	break;
     case GR_SPLIT_REM:
-	nbScreen--;
-	if (nbScreen < 1) {
-	    nbScreen = 1;
+	grNbScreen--;
+	if (grNbScreen < 1) {
+	    grNbScreen = 1;
 	}
 	break;
     }
     grAdaptScreenSize();
+}
+
+static class cGrScreen *
+grGetcurrentScreen(void)
+{
+    tMouseInfo	*mouse;
+    int		i;
+    int		x, y;
+
+    mouse = GfuiMouseInfo();
+    x = (int)(mouse->X * grMouseRatioX);
+    y = (int)(mouse->Y * grMouseRatioY);
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	if (grScreens[i]->isInScreen(x, y)) {
+	    return grScreens[i];
+	}
+    }
+    return grScreens[0];
+}
+
+static void
+grSetZoom(void *vp)
+{
+    grGetcurrentScreen()->setZoom((int)vp);
+}
+
+static void
+grSelectCamera(void *vp)
+{
+    grGetcurrentScreen()->selectCamera((int)vp);
+}
+
+static void
+grPrevCar(void * /* dummy */)
+{
+    grGetcurrentScreen()->selectPrevCar();
+}
+
+static void
+grNextCar(void * /* dummy */)
+{
+    grGetcurrentScreen()->selectNextCar();
 }
 
 int
@@ -230,27 +213,19 @@ initView(int x, int y, int width, int height, int flag, void *screen)
       {
 	InitMultiTex();    
       }
-    switch (flag) {
-    case GR_VIEW_STD:
-	grScissorflag = 0;
-	break;
-    case GR_VIEW_PART:
-	grScissorflag = 1;
-	break;
-    }
     
     grWinx = x;
     grWiny = y;
     grWinw = width;
     grWinh = height;
-    grSetView(x, y, width, height);
-    /* GfuiMouseSetPos(x + width / 2, y + height / 2); */
+
+    grMouseRatioX = width / 640.0;
+    grMouseRatioY = height / 480.0;
 
     grInitBoard();
     OldTime = GfTimeClock();
     nFrame = 0;
     Fps = 0;
-    grWindowRatio = 0;
 
     sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -260,6 +235,9 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
     GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
     GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom, NULL);
+
+    GfuiAddSKey(screen, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, grPrevCar, NULL);
+    GfuiAddSKey(screen, GLUT_KEY_PAGE_DOWN, "Select Next Car",     (void*)0, grNextCar, NULL);
 
     GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera, NULL);
     GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera, NULL);
@@ -294,18 +272,15 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 int
 refresh(tSituation *s)
 {
-    int			i, j, player;
-    ssgLight *          light;
-    sgVec4		fogColor;
+    int			i;
 
     START_PROFILE("refresh");
-    light=ssgGetLight(0);
 
     nFrame++;
     grCurTime = GfTimeClock();
     grDeltaTime = grCurTime - OldTime;
     if ((grCurTime - OldTime) > 1.0) {
-	/* The Frames Per Second (FPS) display is refresh every second */
+	/* The Frames Per Second (FPS) display is refreshed every second */
 	Fps = (tdble)nFrame / (grCurTime - OldTime);
 	nFrame = 0;
 	OldTime = grCurTime;
@@ -322,153 +297,11 @@ refresh(tSituation *s)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     STOP_PROFILE("grDrawBackground/glClear");
 
-
-    if (nbScreen < 2) {
-	if (grCurCam->getDrawBackground()) {
-	    glDisable(GL_LIGHTING);    
-	    grDrawBackground(grCurCam);
-	    glEnable(GL_DEPTH_TEST);
-	    glClear(GL_DEPTH_BUFFER_BIT);
-	} else {
-	    glEnable(GL_DEPTH_TEST);
-	}
-
-	grSetView(scrx, scry, scrw, scrh);
-
-	glDisable(GL_COLOR_MATERIAL);
-
-	START_PROFILE("grCurCam->update*");
-	grCurCam->update(s->cars[s->current], s);
-	STOP_PROFILE("grCurCam->update*");
-
-	START_PROFILE("grCurCam->action*");
-	grCurCam->action();
-	STOP_PROFILE("grCurCam->action*");
-
-	START_PROFILE("grDrawCar*");
-	light->getColour(GL_AMBIENT, fogColor);
-	sgScaleVec4(fogColor, 0.8);
-	fogColor[3] = 0.5;
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogfv(GL_FOG_COLOR, fogColor);
-	glFogf(GL_FOG_DENSITY, 0.05);
-	glHint(GL_FOG_HINT, GL_DONT_CARE);
-	glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
-	glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
-	glEnable(GL_FOG);
-
-	for (i = 0; i < s->_ncars; i++) {
-	    grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
-	} 
-	/* segIndice = (s->cars[s->current])->_trkPos.seg->id; */
-	grUpdateSmoke(s->currentTime);
-	STOP_PROFILE("grDrawCar*");
-
-	START_PROFILE("grDrawScene*");
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	grDrawScene();
-	STOP_PROFILE("grDrawScene*");
-
-	START_PROFILE("grBoardCam*");
-	glViewport(grWinx, grWiny, grWinw, grWinh);
-	grBoardCam->action();
-	STOP_PROFILE("grBoardCam*");
-
-	START_PROFILE("grDisp**");
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);    
-	glDisable(GL_COLOR_MATERIAL);
-	glDisable(GL_ALPHA_TEST);
-	glDisable(GL_TEXTURE_2D);
-
-	TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
-	grRefreshBoard(s, Fps, 0, s->current);
-	TRACE_GL("refresh: display boards");
-	STOP_PROFILE("grDisp**");
-    } else {
-	for (player = 0; player < nbScreen; player++) {
-	    grviewRatio = winR;
-	    glViewport(winX[player], winY[player], winW, winH);
-
-	    if (s->cars[currCurrent[player]]->_startRank != player) {
-		for (j = 0; j < s->_ncars; j++) {
-		    if (s->cars[j]->_startRank == player) {
-			currCurrent[player] = j;
-			break;
-		    }
-		}
-	    }
-	    
-	    glDisable(GL_COLOR_MATERIAL);
-
-	    START_PROFILE("grCurCam->update*");
-	    grCurCam->update(s->cars[currCurrent[player]], s);
-	    STOP_PROFILE("grCurCam->update*");
-
-	    if (grCurCam->getDrawBackground()) {
-		glDisable(GL_LIGHTING);    
-		grDrawBackground(grCurCam);
-		glEnable(GL_DEPTH_TEST);
-		glClear(GL_DEPTH_BUFFER_BIT);
-	    } else {
-		glEnable(GL_DEPTH_TEST);
-	    }
-
-	    START_PROFILE("grCurCam->action*");
-	    grCurCam->action();
-	    STOP_PROFILE("grCurCam->action*");
-
-	    START_PROFILE("grDrawCar*");
-	    light->getColour(GL_AMBIENT, fogColor);
-	    sgScaleVec4(fogColor, 0.8);
-	    fogColor[3] = 0.5;
-	    glFogi(GL_FOG_MODE, GL_LINEAR);
-	    glFogfv(GL_FOG_COLOR, fogColor);
-	    glFogf(GL_FOG_DENSITY, 0.05);
-	    glHint(GL_FOG_HINT, GL_DONT_CARE);
-	    glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
-	    glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
-	    glEnable(GL_FOG);
-
-	    for (i = 0; i < s->_ncars; i++) {
-		grDrawCar(s->cars[i], s->cars[currCurrent[player]], grCurCam->getDrawCurrent(), s->currentTime);
-	    } 
-	    STOP_PROFILE("grDrawCar*");
-	
-	    /* segIndice = (s->cars[currCurrent[player]])->_trkPos.seg->id; */
-	    if (player == 0) {
-		grUpdateSmoke(s->currentTime);
-	    }
-
-	    START_PROFILE("grDrawScene*");
-	    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	    grDrawScene();
-	    STOP_PROFILE("grDrawScene*");
-
-	    START_PROFILE("grBoardCam*");
-	    //glViewport(grWinx, grWiny, grWinw, grWinh);
-	    grBoardCam->action();
-	    STOP_PROFILE("grBoardCam*");
-
-	    START_PROFILE("grDisp**");
-	    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	    glDisable(GL_CULL_FACE);
-	    glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_LIGHTING);    
-	    glDisable(GL_COLOR_MATERIAL);
-	    glDisable(GL_ALPHA_TEST);
-	    glDisable(GL_TEXTURE_2D);
-
-	    TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
-	    grRefreshBoard(s, Fps, 1, currCurrent[player]);
-	    TRACE_GL("refresh: display boards");
-	    STOP_PROFILE("grDisp**");
-	}
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	grScreens[i]->update(s, Fps);
     }
+
+    grUpdateSmoke(s->currentTime);
 
     STOP_PROFILE("refresh");
     return 0;
@@ -482,8 +315,6 @@ initCars(tSituation *s)
     int		i;
     tCarElt 	*elt;
     void	*hdle;
-    int		camNum;
-    cGrCamera	*cam;
 
     TRACE_GL("initCars: start");
 
@@ -494,30 +325,6 @@ initCars(tSituation *s)
 
     grMaxDammage = (tdble)s->_maxDammage;
     grNbCars = s->_ncars;
-    grInitCams();
-    grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
-				     (char*)NULL, 9);
-    cam = GF_TAILQ_FIRST(&grCams[grCurCamHead]);
-    grCurCam = NULL;
-    camNum = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM,
-			       (char*)NULL, 0);
-    while (cam) {
-	if (cam->getId() == camNum) {
-	    grCurCam = cam;
-	    break;
-	}
-	cam = cam->next();
-    }
-    if (grCurCam == NULL) {
-	/* back to default camera */
-	grCurCamHead = 0;
-	grCurCam = GF_TAILQ_FIRST(&grCams[grCurCamHead]);
-	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
-	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
-    }
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->getId());
-    grCurCam->loadDefaults(buf);
-    grDrawCurrent = grCurCam->getDrawCurrent();
 
     grCustomizePits();
 
@@ -531,7 +338,7 @@ initCars(tSituation *s)
 	grInitSkidmarks(elt);
     }
     
-    nbScreen = 0;
+    grNbScreen = 0;
     
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
@@ -543,17 +350,23 @@ initCars(tSituation *s)
 	grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
 	grCarInfo[index].iconColor[3] = 1.0;
 	grInitCar(elt);
-	if (elt->_driverType == RM_DRV_HUMAN) {
-	    nbScreen++;
+	if ((elt->_driverType == RM_DRV_HUMAN) && (grNbScreen < GR_NB_MAX_SCREEN)) {
+	    grScreens[grNbScreen]->setCurrentCar(elt);
+	    grNbScreen++;
 	}
     }
-    if (nbScreen > 4) {
-	nbScreen = 4;
+
+    if (grNbScreen == 0) {
+	grNbScreen = 1;
     }
+
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	grScreens[i]->initCams(s);
+    }
+
     TRACE_GL("initCars: end");
 
     grInitSmoke(s->_ncars);
-
 
     //int nb = grPruneTree(TheScene, true);
     //GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);
@@ -590,7 +403,8 @@ shutdownCars(void)
 int
 initTrack(tTrack *track)
 {
-    static int firstTime = 1; /* for persistent implementations ??? */
+    int		i;
+    static int	firstTime = 1; /* for persistent implementations ??? */
     
     if (firstTime) {
 	ssgInit();
@@ -601,6 +415,11 @@ initTrack(tTrack *track)
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     grLoadScene(track);
     grInitSound();
+
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	grScreens[i] = new cGrScreen(i);
+    }
+
     return 0;
 }
 
@@ -608,9 +427,16 @@ initTrack(tTrack *track)
 void
 shutdownTrack(void)
 {
+    int		i;
+
     grShutdownScene();
     grShutdownBoard();
     grShutdownSound();
     grShutdownState();
+
+    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+	delete grScreens[i];
+    }
+
 }
 

@@ -35,9 +35,9 @@ graphInit(int idx, void *pt)
 {
     tGraphicItf *itf = (tGraphicItf*)pt;
     
-    itf->initview      = initView;
     itf->inittrack     = initTrack;
     itf->initcars      = initCars;
+    itf->initview      = initView;
     itf->refresh       = refresh;
     itf->shutdowncars  = shutdownCars;
     itf->shutdowntrack = shutdownTrack;

@@ -128,10 +128,10 @@ ReManage(tCarElt *car)
 	} else {
 	    car->ctrl.msg[2] = "In Pits";
 	    memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
-	    if (car == s->cars[s->current]) {
-		sprintf(buf, "%s in pits %.1fs", car->_name, s->currentTime - info->startPitTime);
-		ReRaceMsgSet(buf, .1);
-	    }
+/* 	    if (car == s->cars[s->current]) { */
+/* 		sprintf(buf, "%s in pits %.1fs", car->_name, s->currentTime - info->startPitTime); */
+/* 		ReRaceMsgSet(buf, .1); */
+/* 	    } */
 	}
     } else if ((car->_pit) && (car->ctrl.raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
@@ -317,11 +317,6 @@ ReSortCars(void)
 		    car = s->cars[j];
 		    s->cars[j] = s->cars[j-1];
 		    s->cars[j-1] = car;
-		    if (s->current == j) {
-			s->current = j-1;
-		    } else if (s->current == j-1) {
-			s->current = j;
-		    }
 		    s->cars[j]->_pos = j+1;
 		    s->cars[j-1]->_pos = j;
 		    j--;
@@ -378,11 +373,7 @@ ReOneStep(void *telem)
     STOP_PROFILE("rbDrive*");
 
     START_PROFILE("_reSimItf.update*");
-    if (telem) {
-	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, s->cars[s->current]->index);
-    } else {
-	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
-    }
+    ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
     for (i = 0; i < s->_ncars; i++) {
 	ReManage(s->cars[i]);
     }
@@ -438,38 +429,6 @@ ReUpdate(void)
     STOP_PROFILE("ReUpdate");
 
     return RM_ASYNC;
-}
-
-void
-ReNextCar(void *dummy)
-{
-    tSituation	*s = ReInfo->s;
-
-    s->current++;
-    if (s->current == s->_ncars) {
-	s->current--;
-    }
-    GfParmSetStr(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSED,
-		 s->cars[s->current]->_modName);
-    GfParmSetNum(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL,
-		 (tdble)(s->cars[s->current]->_driverIndex));
-    s->cars[s->current]->priv.collision = 0;
-}
-
-void
-RePrevCar(void *dummy)
-{
-    tSituation	*s = ReInfo->s;
-
-    s->current--;
-    if (s->current < 0) {
-	s->current = 0;
-    }
-    GfParmSetStr(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSED,
-		 s->cars[s->current]->_modName);
-    GfParmSetNum(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL,
-		 (tdble)(s->cars[s->current]->_driverIndex));
-    s->cars[s->current]->priv.collision = 0;
 }
 
 void

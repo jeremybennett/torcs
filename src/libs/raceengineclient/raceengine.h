@@ -31,8 +31,6 @@
 extern void ReStart(void);
 extern void ReStop(void);
 extern int  ReUpdate(void);
-extern void ReNextCar(void *dummy);
-extern void RePrevCar(void *dummy);
 extern void ReTimeMod (void *vcmd);
 extern void ReOneStep(void *telem);
 

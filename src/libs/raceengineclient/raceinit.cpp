@@ -383,7 +383,6 @@ ReInitCars(void)
 
     FREEZ(ReInfo->carList);
     ReInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
-    ReInfo->s->current = -1;
     focused = GfParmGetStr(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, "");
     focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
     index = 0;
@@ -392,9 +391,6 @@ ReInitCars(void)
 	sprintf(path, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 	cardllname = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
 	robotIdx = (int)GfParmGetNum(ReInfo->params, path, RM_ATTR_IDX, NULL, 0);
-	if ((strcmp(focused, cardllname) == 0) && (focusedIdx == robotIdx)) {
-	    ReInfo->s->current = i - 1;
-	}
 	sprintf(path, "drivers/%s/%s.%s", cardllname, cardllname, DLLEXT);
 	/* load the robot shared library */
 	if (GfModLoad(CAR_IDENT, path, ReInfo->modList)) {
@@ -502,9 +498,6 @@ ReInitCars(void)
     }
     
     ReInfo->s->_ncars = nCars;
-    if ((ReInfo->s->current > (nCars - 1)) || (ReInfo->s->current < 0)) {
-	ReInfo->s->current = 0;
-    }
     FREEZ(ReInfo->s->cars);
     ReInfo->s->cars = (tCarElt **)calloc(nCars, sizeof(tCarElt *));
     for (i = 0; i < nCars; i++) {
