@@ -103,6 +103,8 @@ shutdown(int index)
 	GfParmReleaseHandle(PrefHdle);
 	GfctrlJoyRelease(joyInfo);
 	GfctrlMouseRelease(mouseInfo);
+	GfuiKeyEventRegisterCurrent(NULL);
+	GfuiSKeyEventRegisterCurrent(NULL);
 	firstTime = 0;
     }
 }
@@ -484,10 +486,13 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	break;
     case GFCTRL_TYPE_KEYBOARD:
     case GFCTRL_TYPE_SKEYBOARD:
+    case GFCTRL_TYPE_JOY_BUT:
 	if (CmdControl[CMD_LEFTSTEER].type == GFCTRL_TYPE_KEYBOARD) {
 	    ax0 = keyInfo[CmdControl[CMD_LEFTSTEER].val].state;
-	} else {
+	} else if (CmdControl[CMD_LEFTSTEER].type == GFCTRL_TYPE_SKEYBOARD) {
 	    ax0 = skeyInfo[CmdControl[CMD_LEFTSTEER].val].state;
+	} else {
+	    ax0 = joyInfo->levelup[CmdControl[CMD_LEFTSTEER].val];
 	}
 	ax0 = 2 * ax0 - 1;
 	leftSteer = prevLeftSteer + ax0 * CmdControl[CMD_LEFTSTEER].sens * s->deltaTime / (1.0 + CmdControl[CMD_LEFTSTEER].spdSens * car->_speed_x / 10.0);
@@ -522,10 +527,13 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	break;
     case GFCTRL_TYPE_KEYBOARD:
     case GFCTRL_TYPE_SKEYBOARD:
+    case GFCTRL_TYPE_JOY_BUT:
 	if (CmdControl[CMD_RIGHTSTEER].type == GFCTRL_TYPE_KEYBOARD) {
 	    ax0 = keyInfo[CmdControl[CMD_RIGHTSTEER].val].state;
-	} else {
+	} else  if (CmdControl[CMD_RIGHTSTEER].type == GFCTRL_TYPE_SKEYBOARD) {
 	    ax0 = skeyInfo[CmdControl[CMD_RIGHTSTEER].val].state;
+	} else {
+	    ax0 = joyInfo->levelup[CmdControl[CMD_RIGHTSTEER].val];
 	}
 	ax0 = 2 * ax0 - 1;
 	rightSteer = prevRightSteer - ax0 * CmdControl[CMD_RIGHTSTEER].sens * s->deltaTime/ (1.0 + CmdControl[CMD_RIGHTSTEER].spdSens * car->_speed_x / 10.0);

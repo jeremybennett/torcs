@@ -31,6 +31,7 @@
 #include <track.h>
 #include <robot.h>
 #include <playerpref.h>
+#include <js.h>
 
 #include "mouseconfig.h"
 
@@ -72,6 +73,10 @@ static tCmdInfo Cmd[] = {
 };
 
 static int maxCmd = sizeof(Cmd) / sizeof(Cmd[0]);
+
+static jsJoystick	*js[NUM_JOY] = {NULL};
+static float		ax[MAX_AXES * NUM_JOY] = {0};
+static int		rawb[NUM_JOY] = {0};
 
 static float SteerSensVal;
 static float DeadZoneVal;
@@ -238,8 +243,10 @@ onSKeyAction(int key, int modifier, int state)
 static void
 Idle(void)
 {
-    int			i;
-    char		*str;
+    int		mask;
+    int		b, i;
+    int		index;
+    char	*str;
 
     GfctrlMouseGetCurrent(&mouseInfo);
 
@@ -270,12 +277,37 @@ Idle(void)
 	    return;
 	}
     }
+
+    /* Check for a Joystick button pressed */
+    for (index = 0; index < NUM_JOY; index++) {
+	if (js[index]) {
+	    js[index]->read(&b, &ax[index * MAX_AXES]);
+
+	    /* Joystick buttons */
+	    for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
+		if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
+		    /* Button i fired */
+		    glutIdleFunc(GfuiIdle);
+		    InputWaited = 0;
+		    str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
+		    Cmd[CurrentCmd].ref.index = i + 32 * index;
+		    Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_BUT;
+		    GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+		    glutPostRedisplay();
+		    rawb[index] = b;
+		    return;
+		}
+	    }
+	    rawb[index] = b;
+	}
+    }
 }
 
 static void
 onPush(void *vi)
 {
-    int			i = (int)vi;
+    int	index;    
+    int	i = (int)vi;
     
     CurrentCmd = i;
     GfuiButtonSetText (scrHandle, Cmd[i].Id, "");
@@ -289,6 +321,12 @@ onPush(void *vi)
     GfctrlMouseInitCenter();
     memset(&mouseInfo, 0, sizeof(mouseInfo));
     GfctrlMouseGetCurrent(&mouseInfo);
+
+    for (index = 0; index < NUM_JOY; index++) {
+	if (js[index]) {
+	    js[index]->read(&rawb[index], &ax[index * MAX_AXES]); /* initial value */
+	}
+    }
 }
 
 static void
@@ -333,6 +371,7 @@ void *
 TorcsMouseMenuInit(void *prevMenu)
 {
     int		x, y, x2, dy, i;
+    int		index;
 
     prevHandle = prevMenu;
     sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
@@ -342,9 +381,20 @@ TorcsMouseMenuInit(void *prevMenu)
 	return scrHandle;
     }
     mouseCalMenuInit();
+
+    for (index = 0; index < NUM_JOY; index++) {
+	if (js[index] == NULL) {
+	    js[index] = new jsJoystick(index);
+	}
+    
+	if (js[index]->notWorking()) {
+	    /* don't configure the joystick */
+	    js[index] = NULL;
+	}
+    }
     
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
-    GfuiTitleCreate(scrHandle, "Mouse Configuration", 0);
+    GfuiTitleCreate(scrHandle, "Mouse/Keyboard/Pad Configuration", 0);
 
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-mouseconf.png");
 
