@@ -31,6 +31,7 @@ typedef struct
 {
     tDamperDef bump;
     tDamperDef rebound;
+	tdble efficiency;
 } tDamper;
     
 typedef struct 

@@ -107,10 +107,10 @@ SimWheelConfig(tCar *car, int index)
     wheel->feedBack.spinVel = 0;
     wheel->feedBack.Tq = 0;
     wheel->feedBack.brkTq = 0;
-	wheel->rotational_damage_x = 0.0;//drand48()*0.25;
-	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
-	wheel->bent_damage_x = drand48();
-	wheel->bent_damage_z = drand48();
+	wheel->rotational_damage_x = 0.0;//urandom()*0.25;
+	wheel->rotational_damage_z = 0.0;//urandom()*0.25;
+	wheel->bent_damage_x = urandom();
+	wheel->bent_damage_z = urandom();
 
 	wheel->Em = 1.0;
 	wheel->s_old = 0.0;
@@ -158,7 +158,7 @@ SimWheelUpdateRide(tCar *car, int index)
     } else {
 		wheel->relPos.ax =  wheel->staticPos.ax;
     }
-	if (wheel->rotational_damage_x>0.0) {
+	if (car->options->alignment_damage && wheel->rotational_damage_x>0.0) {
 		wheel->relPos.ax += wheel->rotational_damage_x*sin(wheel->relPos.ay + wheel->bent_damage_x);
 		wheel->relPos.az += wheel->rotational_damage_z*cos(wheel->relPos.ay + wheel->bent_damage_z);
 	}
@@ -424,10 +424,10 @@ SimWheelUpdateForce(tCar *car, int index)
 		wheel->T_current = T_current;
 	
     }
-    if ((s>0.01)&&(car->carElt->_skillLevel>2)) {
+    if (s>0.01) {
 		tdble compound_melt_point = wheel->T_operating + wheel->T_range;
 		tdble adherence = wheel->Ca * 500.0; 
-		tdble melt = (exp (2.0*(wheel->T_current - compound_melt_point)/compound_melt_point)) ;
+		tdble melt = (exp (2.0*(wheel->T_current - compound_melt_point)/compound_melt_point)) * car->options->tyre_damage;
 		tdble removal = exp (2.0*(F - adherence)/adherence);
 		tdble wheel_damage = 0.001* melt * relative_speed * removal / (2.0 * M_PI * wheel->radius * wheel->width * wheel->Ca);
 

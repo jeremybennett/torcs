@@ -34,6 +34,13 @@ initDamper(tSuspension *susp)
     damp->rebound.b2 = (damp->rebound.C1 - damp->rebound.C2) * damp->rebound.v1 + damp->rebound.b1;
 }
 
+void SimSuspDamage(tSuspension* susp, tdble dmg)
+{
+	susp->damper.efficiency *= exp(0.1*dmg);
+	//printf ("Leak: %f -> %f\n", exp(dmg), susp->damper.efficiency);
+}
+
+
 /*
  * get damper force
  */
@@ -66,7 +73,7 @@ damperForce(tSuspension *susp)
 	f = (dampdef->C2 * av + dampdef->b2);
     }
 
-    f *= SIGN(v);
+    f *= SIGN(v) * susp->damper.efficiency;
 
     return f;
 }
@@ -171,6 +178,8 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0);
     susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, 0);
     susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0);
+	susp->damper.efficiency = 1.0;
+
 	char* suspension_type = GfParmGetStr(hdle, section, PRM_SUSPENSION_TYPE, "Wishbone");
 
     susp->spring.x0 = susp->spring.bellcrank * X0;

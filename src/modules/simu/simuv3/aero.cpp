@@ -33,6 +33,16 @@ SimAeroConfig(tCar *car)
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
     car->aero.Cd += car->aero.SCx2;
+	car->aero.rot_front[0] = 0.0;
+	car->aero.rot_front[1] = 0.0;
+	car->aero.rot_front[2] = 0.0;
+	car->aero.rot_lateral[0] = 0.0;
+	car->aero.rot_lateral[1] = 0.0;
+	car->aero.rot_lateral[2] = 0.0;
+	car->aero.rot_vertical[0] = 0.0;
+	car->aero.rot_vertical[1] = 0.0;
+	car->aero.rot_vertical[2] = 0.0;
+
 }
 
 
@@ -88,7 +98,9 @@ SimAeroUpdate(tCar *car, tSituation *s)
     car->airSpeed2 = airSpeed * airSpeed;
     
     tdble v2 = car->airSpeed2;
-    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + (tdble)car->dammage / 10000.0) * dragK * dragK;
+	tdble dmg_coef = ((tdble)car->dammage / 10000.0);
+
+    car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + dmg_coef) * dragK * dragK;
 
 
     // Since we have the forces ready, we just multiply. 
@@ -96,12 +108,57 @@ SimAeroUpdate(tCar *car, tSituation *s)
     // Also, no torque is produced since the effect can be
     // quite dramatic. Interesting idea to make all drags produce
     // torque when the car is damaged.
+	car->aero.Mx = car->aero.drag * dmg_coef * car->aero.rot_front[0];
+	car->aero.My = car->aero.drag * dmg_coef * car->aero.rot_front[1];
+	car->aero.Mz = car->aero.drag * dmg_coef * car->aero.rot_front[2];
+
+
     v2 = car->DynGC.vel.y;
     car->aero.lateral_drag = -SIGN(v2)*v2*v2*0.7;
+	car->aero.Mx += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[0];
+	car->aero.My += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[1];
+	car->aero.Mz += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[2];
 
     v2 = car->DynGC.vel.z;
     car->aero.vertical_drag = -SIGN(v2)*v2*v2*1.5;
+	car->aero.Mx += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[0];
+	car->aero.My += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[1];
+	car->aero.Mz += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[2];
+
+
+
     
+
+}
+
+void SimAeroDamage(tCar *car, sgVec3 poc, tdble F)
+{
+	tAero* aero = &car->aero;
+	tdble dmg = F*0.0001;
+
+	aero->rot_front[0] += dmg*(urandom()-.5);
+	aero->rot_front[1] += dmg*(urandom()-.5);
+	aero->rot_front[2] += dmg*(urandom()-.5);
+	if (sgLengthVec3(car->aero.rot_front) > 1.0) {
+		sgNormaliseVec3 (car->aero.rot_front);
+	}
+	aero->rot_lateral[0] += dmg*(urandom()-.5);
+	aero->rot_lateral[1] += dmg*(urandom()-.5);
+	aero->rot_lateral[2] += dmg*(urandom()-.5);
+	if (sgLengthVec3(car->aero.rot_lateral) > 1.0) {
+		sgNormaliseVec3 (car->aero.rot_lateral);
+	}
+	aero->rot_vertical[0] += dmg*(urandom()-.5);
+	aero->rot_vertical[1] += dmg*(urandom()-.5);
+	aero->rot_vertical[2] += dmg*(urandom()-.5);
+	if (sgLengthVec3(car->aero.rot_vertical) > 1.0) {
+		sgNormaliseVec3 (car->aero.rot_vertical);
+	}
+
+	//printf ("aero damage:%f (->%f %f %f)\n", dmg, sgLengthVec3(car->aero.rot_front),
+	//			sgLengthVec3(car->aero.rot_lateral), sgLengthVec3(car->aero.rot_vertical));
+
+
 
 }
 

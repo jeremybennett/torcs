@@ -113,12 +113,12 @@ SimEngineConfig(tCar *car)
     car->carElt->_engineMaxPw = car->engine.curve.maxPw;
     car->carElt->_enginerpmMaxPw = car->engine.curve.rpmMaxPw;
 	//printf ("%fNm@%frpm, %fKW@%f rpm\n",
-	//car->carElt->_engineMaxTq,
-	//car->carElt->_enginerpmMaxTq * (30.0 / M_PI),
-	//car->carElt->_engineMaxPw * 0.001,
-	//car->carElt->_enginerpmMaxPw * (30.0 / M_PI)
-	//); 
-	float X=drand48();
+	//  car->carElt->_engineMaxTq,
+	//	car->carElt->_enginerpmMaxTq * (30.0 / M_PI),
+	//	car->carElt->_engineMaxPw * 0.001,
+	//	car->carElt->_enginerpmMaxPw * (30.0 / M_PI)
+	//	); 
+	float X=urandom();
     car->engine.rads = X*car->engine.tickover+(1-X)*car->engine.revsMax;
 
 #if 0
@@ -236,7 +236,7 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 	engine->pressure = engine->pressure*.9 + .1*engine->Tq;
 	dp = (0.001*fabs(engine->pressure - dp));
 	dp = fabs(dp);
-	tdble rth = drand48();
+	tdble rth = urandom();
 	if (dp>rth) {
 		engine->exhaust_pressure += rth;
 	}

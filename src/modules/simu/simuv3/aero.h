@@ -25,9 +25,12 @@ typedef struct
     /* dynamic */
     tdble	drag;		/* drag force along car x axis */
     tdble	lift[2];	/* front & rear lift force along car z axis */
-    tdble       lateral_drag;
-    tdble       vertical_drag;
-
+    tdble   lateral_drag; /* drag force along car y axis */
+    tdble   vertical_drag; /* drag force along car z axis */
+	tdble   Mx, My, Mz; /* torques (only with aero damage) */
+	sgVec3   rot_front;
+	sgVec3   rot_lateral; 
+	sgVec3   rot_vertical;
     /* static */
     tdble	SCx2;
     tdble	Clift[2];	/* front & rear lift due to body not wings */
@@ -42,7 +45,7 @@ typedef struct
     tdble	Kx;
     tdble	Kz;
 	tdble	angle;
-    
+    tdble efficiency;
     /* static */
     t3Dd	staticPos;
     

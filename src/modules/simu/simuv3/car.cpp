@@ -40,6 +40,10 @@ SimCarConfig(tCar *car)
     int		i;
     tCarElt	*carElt = car->carElt;
 
+	car->options = new SimulationOptions;
+	car->options->SetFromSkill (carElt->_skillLevel);
+	car->options->LoadFromFile (hdle);
+
 	car->fuel_time = 0.0;
 	car->fuel_consumption = 0.0;
     car->carElt->_fuelTotal = 0.0;
@@ -240,6 +244,11 @@ SimCarUpdateForces(tCar *car)
 		F.M.z += direction.z*(-wheel->forces.x * susp_pos_y +
 							  wheel->forces.y * wheel->staticPos.x);
     }
+
+	F.M.x += car->aero.Mx;
+	F.M.y += car->aero.My;
+	F.M.z += car->aero.Mz;
+
 #else
     for (i = 0; i < 4; i++) {
 		car->wheel[i].state=SIM_SUSP_COMP;
@@ -256,10 +265,15 @@ SimCarUpdateForces(tCar *car)
 		F.F.z += car->wing[i].forces.z + car->aero.lift[i];
 		F.F.x += car->wing[i].forces.x;
 		/* moments */
-		F.M.y -= (car->wing[i].forces.z + car->aero.lift[i]) * car->wing[i].staticPos.x +
-			car->wing[i].forces.x * car->wing[i].staticPos.z;
+		float My = (car->wing[i].forces.z + car->aero.lift[i]) * car->wing[i].staticPos.x
+			+ car->wing[i].forces.x * car->wing[i].staticPos.z;
+		F.M.y -= My;
+		//printf ("%f ", My);
     }
-
+	//printf ("%f %f %f\n",
+	//			car->aero.Mx,
+	//			car->aero.My,
+	//	car->aero.Mz);
     /* Rolling Resistance */
     if (1) {
 		v = sqrt(car->DynGC.vel.x * car->DynGC.vel.x + car->DynGC.vel.y * car->DynGC.vel.y);

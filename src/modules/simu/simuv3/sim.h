@@ -52,6 +52,7 @@ extern void SimCarUpdate2(tCar *car, tSituation*);
 extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
 extern void SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0);
+extern void SimSuspDamage(tSuspension* susp, tdble dmg);
 
 extern void SimWheelConfig(tCar *car, int index);
 extern void SimWheelUpdateRide(tCar *car, int index);
@@ -69,6 +70,7 @@ extern void SimBrakeSystemUpdate(tCar *car);
 
 extern void SimAeroConfig(tCar *car);
 extern void SimAeroUpdate(tCar *car, tSituation *s);
+extern void SimAeroDamage(tCar *car, sgVec3 poc, tdble F);
 extern void SimWingConfig(tCar *car, int index);
 extern void SimWingUpdate(tCar *car, int index, tSituation *s);
 
@@ -112,6 +114,23 @@ extern t3Dd vectEnd[];
 
 extern tdble simDammageFactor[];
 extern tdble simSkidFactor[];
+
+/// return a number drawn uniformly from [0,1]
+inline float urandom() {
+	//return (((float)rand()/(1.0+(float)RAND_MAX)));
+	return ((((float)rand()-1)/((float)RAND_MAX)));
+}
+
+/// Due to numerical precision we sometimes get 1 or greater
+/// using urandom() or indeed, drand48().
+/// This 
+inline float safe_urandom() {
+	float X;
+	do {
+		X = urandom();
+	} while (X>=1);
+	return X;
+}
 
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13
