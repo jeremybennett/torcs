@@ -98,37 +98,38 @@ grInitCommonState(void)
 static ssgTransform *
 initWheel(tCarElt *car, int wheel_index)
 {
-    int		i, j, k;
-    float	alpha;
-    sgVec3	vtx;
-    sgVec4	clr;
-    sgVec3	nrm;
-    sgVec2	tex;
-    float	b_offset = 0;
-    tdble	curAngle = 0.0;
-    
-    
+	int		i, j, k;
+	float	alpha;
+	sgVec3	vtx;
+	sgVec4	clr;
+	sgVec3	nrm;
+	sgVec2	tex;
+	float	b_offset = 0;
+	tdble	curAngle = 0.0;
+
+
 #define BRK_BRANCH	16
 #define BRK_ANGLE	(2.0 * M_PI / (tdble)BRK_BRANCH)
 #define BRK_OFFSET	0.1
-    switch(wheel_index) {
-    case FRNT_RGT:
-	curAngle = -(M_PI / 2.0 + BRK_ANGLE);
-	b_offset = BRK_OFFSET - car->_tireWidth(wheel_index) / 2.0;
-	break;
-    case FRNT_LFT:
-	curAngle = -(M_PI / 2.0 + BRK_ANGLE);
-	b_offset = car->_tireWidth(wheel_index) / 2.0 - BRK_OFFSET;
-	break;
-    case REAR_RGT:
-	curAngle = (M_PI / 2.0 - BRK_ANGLE);
-	b_offset = BRK_OFFSET - car->_tireWidth(wheel_index) / 2.0;
-	break;
-    case REAR_LFT:
-	curAngle = (M_PI / 2.0 - BRK_ANGLE);
-	b_offset = car->_tireWidth(wheel_index) / 2.0 - BRK_OFFSET;
-	break;
-    }
+
+	switch(wheel_index) {
+		case FRNT_RGT:
+			curAngle = -(M_PI / 2.0 + BRK_ANGLE);
+			b_offset = BRK_OFFSET - car->_tireWidth(wheel_index) / 2.0;
+			break;
+		case FRNT_LFT:
+			curAngle = -(M_PI / 2.0 + BRK_ANGLE);
+			b_offset = car->_tireWidth(wheel_index) / 2.0 - BRK_OFFSET;
+			break;
+		case REAR_RGT:
+			curAngle = (M_PI / 2.0 - BRK_ANGLE);
+			b_offset = BRK_OFFSET - car->_tireWidth(wheel_index) / 2.0;
+			break;
+		case REAR_LFT:
+			curAngle = (M_PI / 2.0 - BRK_ANGLE);
+			b_offset = car->_tireWidth(wheel_index) / 2.0 - BRK_OFFSET;
+			break;
+	}
 
     /* hub */
     ssgVertexArray	*brk_vtx = new ssgVertexArray(BRK_BRANCH + 1);
@@ -141,23 +142,35 @@ initWheel(tCarElt *car, int wheel_index)
     vtx[1] = b_offset;
     brk_vtx->add(vtx);
     
-    hubRadius = car->_brakeDiskRadius(wheel_index) * 0.6;
-    for (i = 0; i < BRK_BRANCH; i++) {
-	alpha = (float)i * 2.0 * M_PI / (float)(BRK_BRANCH - 1);
-	vtx[0] = hubRadius * cos(alpha);
-	vtx[1] = b_offset;
-	vtx[2] = hubRadius * sin(alpha);
-	brk_vtx->add(vtx);
-    }
+	hubRadius = car->_brakeDiskRadius(wheel_index) * 0.6;
+	for (i = 0; i < BRK_BRANCH; i++) {
+		alpha = (float)i * 2.0 * M_PI / (float)(BRK_BRANCH - 1);
+		vtx[0] = hubRadius * cos(alpha);
+		vtx[1] = b_offset;
+		vtx[2] = hubRadius * sin(alpha);
+		brk_vtx->add(vtx);
+	}
     
 
     clr[0] = clr[1] = clr[2] = 0.0;
     clr[3] = 1.0;
     brk_clr->add(clr);
     nrm[0] = nrm[2] = 0.0;
-    nrm[1] = 1.0;
+
+	// Make normal point outside to have proper lighting.
+	switch(wheel_index) {
+    	case FRNT_RGT:
+		case REAR_RGT:
+			nrm[1] = -1.0;
+			break;
+		case FRNT_LFT:
+		case REAR_LFT:
+			nrm[1] = 1.0;
+			break;
+	}
+
     brk_nrm->add(nrm);
-    
+
     ssgVtxTable *brk = new ssgVtxTable(GL_TRIANGLE_FAN, brk_vtx, brk_nrm, NULL, brk_clr);
     brk->setCullFace(0);
     brk->setState(commonState);
@@ -186,8 +199,8 @@ initWheel(tCarElt *car, int wheel_index)
     clr[0] = clr[1] = clr[2] = 0.1;
     clr[3] = 1.0;
     brk_clr->add(clr);
-    nrm[0] = nrm[2] = 0.0;
-    nrm[1] = 1.0;
+    //nrm[0] = nrm[2] = 0.0;
+    //nrm[1] = 1.0;
     brk_nrm->add(nrm);
     
     brk = new ssgVtxTable(GL_TRIANGLE_STRIP, brk_vtx, brk_nrm, NULL, brk_clr);
@@ -220,10 +233,10 @@ initWheel(tCarElt *car, int wheel_index)
     clr[2] = 0.2;
     clr[3] = 1.0;
     brk_clr->add(clr);
-    nrm[0] = nrm[2] = 0.0;
-    nrm[1] = 1.0;
+    //nrm[0] = nrm[2] = 0.0;
+    //nrm[1] = 1.0;
     brk_nrm->add(nrm);
-    
+
     brk = new ssgVtxTable(GL_TRIANGLE_STRIP, brk_vtx, brk_nrm, NULL, brk_clr);
     brk->setCullFace(0);
     brk->setState(commonState);
@@ -241,93 +254,112 @@ initWheel(tCarElt *car, int wheel_index)
     ssgSelector *whselector = new ssgSelector;
     whrotation->addKid(whselector);
     grCarInfo[grCarIndex].wheelselector[wheel_index] = whselector;
-    
+
     float	wheelRadius = car->_rimRadius(wheel_index) + car->_tireHeight(wheel_index);
 
+	// Create wheels for 4 speeds (stillstanding - fast --> motion blur, look at the texture).
     for (j = 0; j < 4; j++) {
-	static sgVec2	toffset[4] = { {0.0, 0.5}, {0.5, 0.5}, {0.0, 0.0}, {0.5, 0.0} };
-	ssgBranch	*whl_branch = new ssgBranch;
+		static sgVec2	toffset[4] = { {0.0, 0.5}, {0.5, 0.5}, {0.0, 0.0}, {0.5, 0.0} };
+		ssgBranch	*whl_branch = new ssgBranch;
 
 #define WHL_BRANCH	16
 
-	/* Tread */
-	{
-	    ssgVertexArray	*whl_vtx = new ssgVertexArray(2 * WHL_BRANCH);
-	    ssgColourArray	*whl_clr = new ssgColourArray(2 * WHL_BRANCH);
-	    ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
+		/* Tread */
+		{
+			ssgVertexArray	*whl_vtx = new ssgVertexArray(2 * WHL_BRANCH);
+			ssgColourArray	*whl_clr = new ssgColourArray(2 * WHL_BRANCH);
+			ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
 
-	    whl_nrm->add(nrm);
-	    clr[3] = 1.0;
-	    for (i = 0; i < WHL_BRANCH; i++) {
-		alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
-		vtx[0] = wheelRadius * cos(alpha);
-		vtx[2] = wheelRadius * sin(alpha);
-		vtx[1] = - car->_tireWidth(wheel_index) / 2.0;
-		whl_vtx->add(vtx);
-		vtx[1] = car->_tireWidth(wheel_index) / 2.0;
-		whl_vtx->add(vtx);
-		if (i % 2) {
-		    clr[0] = clr[1] = clr[2] = 0.15;
-		} else {
-		    clr[0] = clr[1] = clr[2] = 0.0;
+			whl_nrm->add(nrm);
+			clr[3] = 1.0;
+			for (i = 0; i < WHL_BRANCH; i++) {
+				alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
+				vtx[0] = wheelRadius * cos(alpha);
+				vtx[2] = wheelRadius * sin(alpha);
+				vtx[1] = - car->_tireWidth(wheel_index) / 2.0;
+				whl_vtx->add(vtx);
+				vtx[1] = car->_tireWidth(wheel_index) / 2.0;
+				whl_vtx->add(vtx);
+				if (i % 2) {
+					clr[0] = clr[1] = clr[2] = 0.15;
+				} else {
+					clr[0] = clr[1] = clr[2] = 0.0;
+				}
+				whl_clr->add(clr);
+				whl_clr->add(clr);
+			}
+			ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_STRIP, whl_vtx, whl_nrm, NULL, whl_clr);
+			whl->setState(commonState);
+			whl->setCullFace(0);
+			whl_branch->addKid(whl);
 		}
-		whl_clr->add(clr);
-		whl_clr->add(clr);		
-	    }
-	    ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_STRIP, whl_vtx, whl_nrm, NULL, whl_clr);
-	    whl->setState(commonState);
-	    whl->setCullFace(0);
-	    whl_branch->addKid(whl);
-	}
-	    
-    
-    /* Rim */
-	switch(wheel_index) {
-	case FRNT_RGT:
-	case REAR_RGT:
-	    b_offset = -0.05;
-	    break;
-	case FRNT_LFT:
-	case REAR_LFT:
-	    b_offset = 0.05;
-	    break;
-	}
-	for (k = 0; k < 2; k++) {
-	    ssgVertexArray	*whl_vtx = new ssgVertexArray(WHL_BRANCH + 1);
-	    ssgTexCoordArray	*whl_tex = new ssgTexCoordArray(WHL_BRANCH + 1);
-	    ssgColourArray	*whl_clr = new ssgColourArray(1);
-	    ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
 
-	    clr[0] = .8;
-	    clr[1] = .8;
-	    clr[2] = .8;
-	    clr[3] = 1.0;
-	
-	    whl_clr->add(clr);
-	    whl_nrm->add(nrm);
-	    vtx[0] = vtx[2] = 0.0;
-	    vtx[1] = (float)(2 * k - 1) * car->_tireWidth(wheel_index) / 2.0 - b_offset;
-	    whl_vtx->add(vtx);
-	    tex[0] = 0.25 + toffset[j][0];
-	    tex[1] = 0.25 + toffset[j][1];
-	    whl_tex->add(tex);
-	    vtx[1] = (float)(2 * k - 1) * car->_tireWidth(wheel_index) / 2.0;
-	    for (i = 0; i < WHL_BRANCH; i++) {
-		alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
-		vtx[0] = wheelRadius * cos(alpha);
-		vtx[2] = wheelRadius * sin(alpha);
-		whl_vtx->add(vtx);
-		tex[0] = 0.25 + 0.25 * cos(alpha) + toffset[j][0];
-		tex[1] = 0.25 + 0.25 * sin(alpha) + toffset[j][1];
-		whl_tex->add(tex);
-	    }
-	    ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_FAN, whl_vtx, whl_nrm, whl_tex, whl_clr);
-	    whl->setState(grCarInfo[grCarIndex].wheelTexture);
-	    whl->setCullFace(0);
-	    whl_branch->addKid(whl);
-	}
 
-	whselector->addKid(whl_branch);
+		/* Rim */
+		switch(wheel_index) {
+		case FRNT_RGT:
+		case REAR_RGT:
+			b_offset = -0.05;
+			break;
+		case FRNT_LFT:
+		case REAR_LFT:
+			b_offset = 0.05;
+			break;
+		}
+
+		// Make inside rim very dark and take care of normals.
+		float colorfactor[2];
+		float norm_orig = nrm[1];
+
+		if (nrm[1] > 0.0f) {
+			colorfactor[0] = 0.3f;
+			colorfactor[1] = 1.0f;
+			nrm[1] *= -1.0f;
+		} else {
+			colorfactor[0] = 1.0f;
+			colorfactor[1] = 0.3f;
+		}
+
+		for (k = 0; k < 2; k++) {
+			ssgVertexArray	*whl_vtx = new ssgVertexArray(WHL_BRANCH + 1);
+			ssgTexCoordArray	*whl_tex = new ssgTexCoordArray(WHL_BRANCH + 1);
+			ssgColourArray	*whl_clr = new ssgColourArray(1);
+			ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
+
+			clr[0] = 0.8f*colorfactor[k];
+			clr[1] = 0.8f*colorfactor[k];
+			clr[2] = 0.8f*colorfactor[k];
+			clr[3] = 1.0f;
+
+			whl_clr->add(clr);
+			whl_nrm->add(nrm);
+			vtx[0] = vtx[2] = 0.0;
+			vtx[1] = (float)(2 * k - 1) * car->_tireWidth(wheel_index) / 2.0 - b_offset;
+			whl_vtx->add(vtx);
+			tex[0] = 0.25 + toffset[j][0];
+			tex[1] = 0.25 + toffset[j][1];
+			whl_tex->add(tex);
+			vtx[1] = (float)(2 * k - 1) * car->_tireWidth(wheel_index) / 2.0;
+			for (i = 0; i < WHL_BRANCH; i++) {
+				alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
+				vtx[0] = wheelRadius * cos(alpha);
+				vtx[2] = wheelRadius * sin(alpha);
+				whl_vtx->add(vtx);
+				tex[0] = 0.25 + 0.25 * cos(alpha) + toffset[j][0];
+				tex[1] = 0.25 + 0.25 * sin(alpha) + toffset[j][1];
+				whl_tex->add(tex);
+			}
+			ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_FAN, whl_vtx, whl_nrm, whl_tex, whl_clr);
+			whl->setState(grCarInfo[grCarIndex].wheelTexture);
+			whl->setCullFace(0);
+			whl_branch->addKid(whl);
+
+			// Swap normal for "inside" rim face.
+			nrm[1] *= -1.0;
+		}
+
+		nrm[1] = norm_orig;
+		whselector->addKid(whl_branch);
     }
 
 /*     if (wheel_index == 1) { */
