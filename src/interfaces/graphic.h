@@ -28,6 +28,12 @@
 
 #define GR_PARAM_FILE		"config/graph.xml"
 
+#define GR_SOUND_PARM_CFG			"config/sound.xml"
+#define GR_SCT_SOUND				"Sound Settings"
+#define GR_ATT_SOUND_STATE			"state"
+#define GR_ATT_SOUND_STATE_ENABLED	"enabled"
+#define GR_ATT_SOUND_STATE_DISABLED	"disabled"
+
 #define GR_SCT_DISPMODE		"Display Mode"
 #define GR_ATT_CAM		"camera"
 #define GR_ATT_CAM_HEAD		"camera head list"
@@ -104,7 +110,7 @@ typedef struct {
     tfGraphicRefresh	    refresh;	    /* Graphic refresh function */
     tfGraphicShutdwnCars    shutdowncars;   /* Graphic shutdown function */
     tfGraphicShutdwnTrack   shutdowntrack;  /* Graphic shutdown function */
-	tfGraphicBendCar        bendcar;
+	//tfGraphicBendCar        bendcar;
 } tGraphicItf;
 
 
