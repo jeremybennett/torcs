@@ -21,7 +21,6 @@
 
 #define CAR_DAMMAGE	0.1
 
-
 void
 SimCarCollideZ(tCar *car)
 {
@@ -41,9 +40,9 @@ SimCarCollideZ(tCar *car)
 
     RtTrackSurfaceNormalL(&(car->trkPos), &normal);
     
-    angles.x = car->DynGC.pos.ax;
-    angles.y = car->DynGC.pos.ay;
-    angles.z = car->DynGC.pos.az;
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;
     NaiveRotate (normal, angles, &rel_normal);
     
     if (rel_normal.z > 0) {
@@ -60,6 +59,7 @@ SimCarCollideZ(tCar *car)
 	    t3Dd delta;
 
 	    t3Dd corner;
+
 	    bool flag = false;
 	    corner.z = -1.0;
 	    if (rel_normal.z <= 0) {
@@ -72,17 +72,18 @@ SimCarCollideZ(tCar *car)
 		orig.z = wheel->susp.spring.packers - wheel->rideHeight;
 		flag = true;
 	    }
-	    angles.x = car->DynGC.pos.ax;
-	    angles.y = car->DynGC.pos.ay;
-	    angles.z = car->DynGC.pos.az;
+	    angles.x = car->DynGCg.pos.ax;
+	    angles.y = car->DynGCg.pos.ay;
+	    angles.z = car->DynGCg.pos.az;
 	    NaiveInverseRotate (orig, angles, &delta);
-	    if (((rel_normal.z <0)
+	    if (((rel_normal.z <=0)
 		&& (car->DynGCg.pos.z - delta.z < wheel->zRoad))
 		|| (rel_normal.z > 0)) {
 
+		car->collision |= 1;
+		//printf ("C[%d] %f (%f)\n", i, rel_normal.z, delta.z);
 		if (rel_normal.z <= 0) {
 		    delta.z =  -(car->DynGCg.pos.z - delta.z - wheel->zRoad);
-		    car->collision |= 1;
 		}
 		car->DynGCg.pos.z += delta.z;
 
@@ -107,12 +108,12 @@ SimCarCollideZ(tCar *car)
 		//	    printf ("%f\n", dotProd);
 		if (rel_normal.z <= 0) {
 		    t3Dd forces;
-		    forces.x = 0.5 *dotProd * rel_normal.x;
-		    forces.y = 0.5 *dotProd * rel_normal.y;
-		    forces.z = 0.5 *dotProd * rel_normal.z;
+		    forces.x = 0.25*dotProd * rel_normal.x;
+		    forces.y = 0.25*dotProd * rel_normal.y;
+		    forces.z = 0.25*dotProd * rel_normal.z;
 
 
-		    car->DynGCg.vel.ax -=
+		    car->DynGCg.vel.ax +=
 			(car->mass * car->Iinv.x) *
 		    (forces.z * wheel->relPos.y +
 		     forces.y * corner.z);
@@ -122,7 +123,7 @@ SimCarCollideZ(tCar *car)
 			(forces.z * wheel->relPos.x +
 			 forces.x * corner.z);
 		    
-		    car->DynGCg.vel.az -=
+		    car->DynGCg.vel.az +=
 			(car->mass * car->Iinv.z) *
 			(-forces.x * wheel->relPos.y +
 			 forces.y * wheel->relPos.x);
@@ -137,16 +138,16 @@ SimCarCollideZ(tCar *car)
 
 		} else {
 		    t3Dd forces;
-		    forces.x = 0.1*dotProd * rel_normal.x;
-		    forces.y = 0.1*dotProd * rel_normal.y;
-		    forces.z = 0.1*dotProd * rel_normal.z;
+		    forces.x = 0.25*dotProd * rel_normal.x;
+		    forces.y = 0.25*dotProd * rel_normal.y;
+		    forces.z = 0.25*dotProd * rel_normal.z;
 
 		    car->DynGCg.vel.ax +=
 			(car->mass * car->Iinv.x) *
 			(forces.z * wheel->relPos.y +
 			 forces.y*(car->statGC.z + wheel->rideHeight));
 		    
-		    car->DynGCg.vel.ay -=
+		    car->DynGCg.vel.ay +=
 			(car->mass * car->Iinv.y) *
 			(forces.z * wheel->relPos.x +
 			 forces.x * (car->statGC.z + wheel->rideHeight));
@@ -156,12 +157,6 @@ SimCarCollideZ(tCar *car)
 			(-forces.x * wheel->relPos.y +
 			 forces.y * wheel->relPos.x);
 
-		    car->DynGCg.vel.x*=.99;
-		    car->DynGCg.vel.y*=.99;
-		    car->DynGCg.vel.z*=.99;
-		    car->DynGCg.vel.ax*=.99;
-		    car->DynGCg.vel.ay*=.99;
-		    car->DynGCg.vel.az*=.99;
 		}
 	    }
 	}

@@ -98,7 +98,7 @@ SimWheelConfig(tCar *car, int index)
 }
 
 
-#define MIN_NORMAL_Z 0.01
+#define MIN_NORMAL_Z 0.0
 void
 SimWheelUpdateRide(tCar *car, int index)
 {
@@ -122,33 +122,43 @@ SimWheelUpdateRide(tCar *car, int index)
     
     dZ = wheel->pos.z - Zroad;
     // Transform from world to suspension FOR
-    angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
-    angles.y = car->DynGC.pos.ay;
-    angles.z = car->DynGC.pos.az;
+    if (index % 2) {
+	wheel->relPos.ax = -wheel->staticPos.ax;
+    } else {
+	wheel->relPos.ax = wheel->staticPos.ax;
+    }
+    angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;
     NaiveRotate (normal, angles, &rel_normal);
     //NaiveRotate (d, angles, &d);
     if (rel_normal.z > MIN_NORMAL_Z) {
 	tdble dist = dZ*normal.z/rel_normal.z;
 	// add a factor as we want to take the *real* wheelpos
 	// also used to bounce.
-	if (dist*wheel->susp.spring.bellcrank < wheel->susp.spring.xMax) {
-	    wheel->susp.fx = wheel->radius - wheel->radius/rel_normal.z;
-	} else {
-	    wheel->susp.fx = 0.0;
-	}
+	wheel->susp.fx = wheel->radius - wheel->radius/rel_normal.z;
+	wheel->susp.fy = 0.0;
 	wheel->susp.x = wheel->rideHeight =
-	    dist + wheel->susp.fx;
+	   wheel->radius + ((dZ)*normal.z - wheel->radius)/rel_normal.z;
     } else {
 	//wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
 	//	wheel->susp.x = wheel->rideHeight = wheel->susp.spring.packers; 
 	wheel->susp.fx = 0.0;
     }
 
+    //wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
     /* verify the suspension travel */
     SimSuspCheckIn(&(wheel->susp));
+    if (index % 2) {
+	wheel->relPos.ax -= wheel->susp.dynamic_angles.x;
+    } else {
+	wheel->relPos.ax += wheel->susp.dynamic_angles.x;
+    }
+
     wheel->susp.v = (prex - wheel->susp.x) / SimDeltaTime;
     /* update wheel brake */
     SimBrakeUpdate(car, wheel, &(wheel->brake));
+    
 }
 
 void
@@ -180,9 +190,9 @@ SimWheelUpdateForce(tCar *car, int index)
     
     RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
     
-    angles.x = car->DynGC.pos.ax + wheel->relPos.ax;
-    angles.y = car->DynGC.pos.ay;
-    angles.z = car->DynGC.pos.az + waz;
+    angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az + waz;
     NaiveRotate (normal, angles, &rel_normal);
 
 
@@ -208,7 +218,7 @@ SimWheelUpdateForce(tCar *car, int index)
     reaction_force = 0.0;
     if ((wheel->state & SIM_SUSP_EXT) == 0) {
 	f_z  = axleFz + wheel->susp.force;
-	
+
 	if ((f_z < 0)) {
 	    f_z = 0;
 	}
@@ -345,8 +355,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	right_way_up = false;
     }
 
-    //    wheel->forces.x += Ft;// Ft* CosA - Fn * SinA;
-    //    wheel->forces.y += Fn;//* SinA + Fn * CosA;
+
     if (right_way_up==false) {
 	Fn = 0;
 	Ft = 0;
@@ -358,16 +367,24 @@ SimWheelUpdateForce(tCar *car, int index)
     } else {
 	t3Dd f;
 	// send friction and reaction forces to the car
-	f.x = wheel->forces.x + Ft;
-	f.y = wheel->forces.y + Fn;
+	f.x = wheel->forces.x;
+	f.y = wheel->forces.y;
 	f.z = 0.0;
-	angles.x = wheel->relPos.ax;
+	angles.x = wheel->relPos.ax + asin(rel_normal.x);
 	angles.y = asin(rel_normal.y);
 	angles.z = waz;
 	NaiveInverseRotate (f, angles, &wheel->forces);
 	// transmit reaction forces to the car
+	
+	wheel->forces.x +=(Ft* CosA - Fn * SinA);
+	wheel->forces.y +=(Ft* SinA + Fn * CosA);
 	wheel->forces.z = f_z;
 
+#if 0
+	wheel->forces.x =0.0;
+	wheel->forces.y =0.0;
+	wheel->forces.z =0.0;//f_z;
+#endif
 	wheel->spinTq = Ft2 * wheel->radius;
 	wheel->sa = sa;
 	wheel->sx = sx;

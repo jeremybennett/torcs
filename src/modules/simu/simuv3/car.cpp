@@ -143,13 +143,10 @@ SimCarUpdateForces(tCar *car)
     tForces	F;
     int		i;
     tdble	m, w, minv;
-    tdble	Cosz, Sinz;
     tdble	v, R, Rv, Rm, Rx, Ry;
     t3Dd original;
     t3Dd updated;
     t3Dd angles;
-    Cosz = car->Cosz = cos(car->DynGCg.pos.az);
-    Sinz = car->Sinz = sin(car->DynGCg.pos.az);
 
     car->preDynGC = car->DynGCg;
  
@@ -172,7 +169,32 @@ SimCarUpdateForces(tCar *car)
 
     F.M.x = F.M.y = F.M.z = 0;
 
-
+    /* axis of car can be inverted in some cases 
+       For example a positive vel.ax will have the
+       opposite effect when pos.ay=pi, since the order
+       of rotation is Z/X/Y, i.e. the rotation on X
+       is followed by that of Y.
+     */
+    t3Dd direction;
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = 0.0;
+    original.x = 1.0;
+    original.y = 0.0;
+    original.z = 0.0;
+    NaiveInverseRotate (original, angles, &updated);
+    direction.x = SIGN(updated.x);
+    direction.y = 1.0;
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;
+    original.x = 0.0;
+    original.y = 0.0;
+    original.z = 1.0;
+    NaiveInverseRotate (original, angles, &updated);
+    direction.z = SIGN(updated.z);
+    
+    //printf ("%f %f %f\n", direction.x, direction.y, direction.z);
     /* Wheels */
     for (i = 0; i < 4; i++) {
 	/* forces */
@@ -180,14 +202,14 @@ SimCarUpdateForces(tCar *car)
 	F.F.y += car->wheel[i].forces.y;
 	F.F.z += car->wheel[i].forces.z;
 	/* moments */
-	F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * //* (car->wheel[i].rollCenter);
-	    (car->statGC.z + car->wheel[i].rideHeight);
-	F.M.y -= car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
+	F.M.x += (car->wheel[i].forces.z * car->wheel[i].staticPos.y +
+	    car->wheel[i].forces.y *// car->wheel[i].relPos.z;
+	(car->statGC.z + car->wheel[i].rideHeight));
+	F.M.y -= (car->wheel[i].forces.z * car->wheel[i].staticPos.x + 
 	    car->wheel[i].forces.x * //car->wheel[i].relPos.z;
-	    (car->statGC.z + car->wheel[i].rideHeight);
-	F.M.z += -car->wheel[i].forces.x * car->wheel[i].staticPos.y +
-	    car->wheel[i].forces.y * car->wheel[i].staticPos.x;
+	    (car->statGC.z + car->wheel[i].rideHeight));
+	F.M.z += (-car->wheel[i].forces.x * car->wheel[i].staticPos.y +
+	    car->wheel[i].forces.y * car->wheel[i].staticPos.x);
     }
 
     /* Aero Drag */
@@ -254,17 +276,27 @@ SimCarUpdateForces(tCar *car)
 	car->DynGCg.acc.x = updated.x;
 	car->DynGCg.acc.y = updated.y;
 	car->DynGCg.acc.z = updated.z;
+	// update angular accel in this way too...
+	car->DynGC.acc.ax =  F.M.x * car->Iinv.x;
+	car->DynGC.acc.ay =  F.M.y * car->Iinv.y;
+	car->DynGC.acc.az = (F.M.z - Rm) * car->Iinv.z;
+	original.x = car->DynGC.acc.ax;
+	original.y = car->DynGC.acc.ay;
+	original.z = car->DynGC.acc.az;
+	NaiveInverseRotate (original, angles, &updated);
+	car->DynGCg.acc.ax = updated.x;
+	car->DynGCg.acc.ay = updated.y;
+	car->DynGCg.acc.az = updated.z;
     }
-    car->DynGCg.acc.ax = car->DynGC.acc.ax = F.M.x * car->Iinv.x;
-    car->DynGCg.acc.ay = car->DynGC.acc.ay = F.M.y * car->Iinv.y;
-    car->DynGCg.acc.az = car->DynGC.acc.az = (F.M.z - Rm) * car->Iinv.z;
 }
 
 
 static void
 SimCarUpdateSpeed(tCar *car)
 {
-    tdble	Cosz, Sinz;
+    t3Dd original;
+    t3Dd updated;
+    t3Dd angles;
     int		i;
     tdble	mass;
     tdble	vel, Rr, Rm;	/* Rolling Resistance */
@@ -272,9 +304,10 @@ SimCarUpdateSpeed(tCar *car)
     mass = car->mass + car->fuel;
 
     
-    Cosz = car->Cosz;
-    Sinz = car->Sinz;
-
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;	
+    
     car->DynGCg.vel.x += car->DynGCg.acc.x * SimDeltaTime;
     car->DynGCg.vel.y += car->DynGCg.acc.y * SimDeltaTime;
     car->DynGCg.vel.z += car->DynGCg.acc.z * SimDeltaTime;
@@ -296,45 +329,43 @@ SimCarUpdateSpeed(tCar *car)
 	car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel * SIGN(car->DynGCg.vel.y);
     }
 
-    car->DynGCg.vel.ax += car->DynGCg.acc.ax * SimDeltaTime;
-    car->DynGCg.vel.ay += car->DynGCg.acc.ay * SimDeltaTime;
-    car->DynGCg.vel.az += car->DynGCg.acc.az * SimDeltaTime;
+    /* We need to get the speed on the actual frame of reference
+       for the car. Now we don't need to worry about the world's
+       coordinates anymore when we calculate stuff. I.E check
+       aero.cpp*/
 
+    original.x = car->DynGCg.vel.x;
+    original.y = car->DynGCg.vel.y;
+    original.z = car->DynGCg.vel.z;
+    NaiveRotate (original, angles, &updated);
+    car->DynGC.vel.x = updated.x;
+    car->DynGC.vel.y = updated.y;
+    car->DynGC.vel.z = updated.z;
+
+
+
+    // ANGULAR VELOCITIES
+
+#if 0
+    car->DynGC.vel.ax = 1.0;
+    car->DynGC.vel.ay = 0.0;
+    car->DynGC.vel.az = 0.0;
+#else
+
+    // use quaternions for the rotation
+    car->DynGC.vel.ax += car->DynGC.acc.ax * SimDeltaTime;
+    car->DynGC.vel.ay += car->DynGC.acc.ay * SimDeltaTime;
+    car->DynGC.vel.az += car->DynGC.acc.az * SimDeltaTime;
+#endif
     if (Rm > fabs(car->DynGCg.vel.az)) {
 	Rm = fabs(car->DynGCg.vel.az);
     }
-    car->DynGCg.vel.az -= Rm * SIGN(car->DynGCg.vel.az);
 
-    car->DynGC.vel.ax = car->DynGCg.vel.ax;
-    car->DynGC.vel.ay = car->DynGCg.vel.ay;
-    car->DynGC.vel.az = car->DynGCg.vel.az;
+    car->DynGC.vel.az -= Rm * SIGN(car->DynGC.vel.az);
 
-
-    if (1) {
-	/* We need to get the speed on the actual frame of reference
-	   for the car. Now we don't need to worry about the world's
-	   coordinates anymore when we calculate stuff. I.E check
-	   aero.cpp*/
-	t3Dd original;
-	t3Dd updated;
-	t3Dd angles;
-	original.x = car->DynGCg.vel.x;
-	original.y = car->DynGCg.vel.y;
-	original.z = car->DynGCg.vel.z;
-	angles.x = car->DynGCg.pos.ax;
-	angles.y = car->DynGCg.pos.ay;
-	angles.z = car->DynGCg.pos.az;	
-	NaiveRotate (original, angles, &updated);
-	car->DynGC.vel.x = updated.x;
-	car->DynGC.vel.y = updated.y;
-	car->DynGC.vel.z = updated.z;
-    } else {
-	car->DynGC.vel.x = car->DynGCg.vel.x * Cosz + car->DynGCg.vel.y * Sinz;
-	car->DynGC.vel.y = -car->DynGCg.vel.x * Sinz + car->DynGCg.vel.y * Cosz;
-	car->DynGC.vel.z = car->DynGCg.vel.z;
-    }
-
-
+    car->DynGCg.vel.ax = car->DynGC.vel.ax;
+    car->DynGCg.vel.ay = car->DynGC.vel.ay;
+    car->DynGCg.vel.az = car->DynGC.vel.az;
 }
 
 void
@@ -358,9 +389,9 @@ SimCarUpdateWheelPos(tCar *car)
 	    pos.x = wheel->staticPos.x;
 	    pos.y = wheel->staticPos.y;
 	    pos.z = -car->statGC.z; // or wheel->staticPos.z; ??
-	    angles.x = car->DynGC.pos.ax;
-	    angles.y = car->DynGC.pos.ay;
-	    angles.z = car->DynGC.pos.az;
+	    angles.x = car->DynGCg.pos.ax;
+	    angles.y = car->DynGCg.pos.ay;
+	    angles.z = car->DynGCg.pos.az;
 	    NaiveInverseRotate (pos, angles, &wheel->pos);
 	    wheel->pos.x += car->DynGC.pos.x;
 	    wheel->pos.y += car->DynGC.pos.y;
@@ -384,7 +415,7 @@ SimCarUpdateWheelPos(tCar *car)
 	    
 	    car->wheel[i].pos.x = car->DynGC.pos.x + dx;
 	    car->wheel[i].pos.y = car->DynGC.pos.y + dy;
-	    car->wheel[i].pos.z = car->DynGC.pos.z - car->statGC.z - x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);
+	    car->wheel[i].pos.z = car->DynGC.pos.z - car->statGC.z - x * sin(car->DynGCg.pos.ay) + y * sin(car->DynGCg.pos.ax);
 	    
 	    car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * y;
 	    car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * x;
@@ -408,54 +439,93 @@ SimCarUpdatePos(tCar *car)
     car->DynGCg.pos.x += vx * SimDeltaTime;
     car->DynGCg.pos.y += vy * SimDeltaTime;
     car->DynGCg.pos.z += car->DynGCg.vel.z * SimDeltaTime;
-    
-    car->DynGCg.pos.ax += car->DynGCg.vel.ax * SimDeltaTime;
-    car->DynGCg.pos.ay += car->DynGCg.vel.ay * SimDeltaTime;
-    car->DynGCg.pos.az += car->DynGCg.vel.az * SimDeltaTime;
-
-    NORM_PI_PI(car->DynGCg.pos.ax);
-    NORM_PI_PI(car->DynGCg.pos.ay);
-    NORM_PI_PI(car->DynGCg.pos.az);
-    
-    //    if (car->DynGCg.pos.ax > aMax) car->DynGCg.pos.ax = aMax;
-    //    if (car->DynGCg.pos.ax < -aMax) car->DynGCg.pos.ax = -aMax;
-    //    if (car->DynGCg.pos.ay > aMax) car->DynGCg.pos.ay = aMax;
-    //    if (car->DynGCg.pos.ay < -aMax) car->DynGCg.pos.ay = -aMax;
 
     car->DynGC.pos.x = car->DynGCg.pos.x;
     car->DynGC.pos.y = car->DynGCg.pos.y;
     car->DynGC.pos.z = car->DynGCg.pos.z;
 
-    car->DynGC.pos.ax = car->DynGCg.pos.ax;
-    car->DynGC.pos.ay = car->DynGCg.pos.ay;
-    car->DynGC.pos.az = car->DynGCg.pos.az;
+    // use quaternions for the rotation
+    sgQuat angular_velocity;
+    sgQuat angular_position;
+    sgVec3 new_position;
+    sgEulerToQuat (angular_velocity,
+		   RAD2DEG(car->DynGCg.vel.az * SimDeltaTime),
+		   RAD2DEG(car->DynGCg.vel.ay * SimDeltaTime),
+		   RAD2DEG(car->DynGCg.vel.ax * SimDeltaTime));
+    sgEulerToQuat (angular_position,
+		   RAD2DEG(car->DynGCg.pos.az),
+		   RAD2DEG(car->DynGCg.pos.ay),
+		   RAD2DEG(car->DynGCg.pos.ax));
+    sgPostMultQuat (angular_position, angular_velocity);
+    sgNormaliseQuat(angular_position);
+    // sgInvertQuat(angular_position);
+    sgQuatToEuler (new_position, angular_position);
 
+    car->DynGC.pos.ax = DEG2RAD(new_position[0]);
+    car->DynGC.pos.ay = DEG2RAD(new_position[1]);
+    car->DynGC.pos.az = DEG2RAD(new_position[2]);
+
+    //printf ("%f %f %f\n",  car->DynGC.pos.ax,  car->DynGC.pos.ay,  car->DynGC.pos.az);
+    if (0) {
+	t3Dd direction;
+	t3Dd angles, original, updated;
+	angles.x = car->DynGCg.pos.ax;
+	angles.y = car->DynGCg.pos.ay;
+	angles.z = 0.0;
+	original.x = 1.0;
+	original.y = 0.0;
+	original.z = 0.0;
+	NaiveInverseRotate (original, angles, &updated);
+	direction.x = SIGN(updated.x);
+	if (direction.x < 0.0) {
+	    car->DynGC.pos.ax -= M_PI;
+	    car->DynGC.pos.ay -= M_PI;
+	    car->DynGC.pos.az -= M_PI;
+	}
+    }
+    NORM_PI_PI(car->DynGC.pos.ax);
+    NORM_PI_PI(car->DynGC.pos.ay);
+    NORM_PI_PI(car->DynGC.pos.az);
+
+    car->DynGCg.pos.ax = car->DynGC.pos.ax;
+    car->DynGCg.pos.ay = car->DynGC.pos.ay;
+    car->DynGCg.pos.az = car->DynGC.pos.az;    
+    //printf ("a %f %f %f\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);
     RtTrackGlobal2Local(car->trkPos.seg, car->DynGCg.pos.x, car->DynGCg.pos.y, &(car->trkPos), TR_LPOS_MAIN);
 }
 
 static void
 SimCarUpdateCornerPos(tCar *car)
 {
-    tdble Cosz = car->Cosz;
-    tdble Sinz = car->Sinz;
     tdble vx = car->DynGCg.vel.x;
     tdble vy = car->DynGCg.vel.y;
+    t3Dd pos;
+    t3Dd angles;
     int i;
 
+    angles.x = car->DynGCg.pos.ax;
+    angles.y = car->DynGCg.pos.ay;
+    angles.z = car->DynGCg.pos.az;
+    
     for (i = 0; i < 4; i++) {
-	tdble x = car->corner[i].pos.x;
-	tdble y = car->corner[i].pos.y;
-	
-	tdble dx = x * Cosz - y * Sinz;
-	tdble dy = x * Sinz + y * Cosz;
-	
-	car->corner[i].pos.ax = car->DynGCg.pos.x + dx;
-	car->corner[i].pos.ay = car->DynGCg.pos.y + dy;
-	/*car->corner[i].pos.az = car->DynGC.pos.z - car->statGC.z + x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);*/
+	tDynPt *corner = &(car->corner[i]);
+	pos.x = corner->pos.x;
+	pos.y = corner->pos.y;
+	pos.z = -car->statGC.z; 
 
-	car->corner[i].vel.x = vx - car->DynGCg.vel.az * y;
-	car->corner[i].vel.y = vy + car->DynGCg.vel.az * x;
+	NaiveInverseRotate (pos, angles, &pos);
+	corner->pos.ax = car->DynGCg.pos.x + pos.x;
+	corner->pos.ay = car->DynGCg.pos.y + pos.y;
+	corner->pos.az = car->DynGCg.pos.z + pos.z;
+
+	corner->vel.x = vx
+	    - car->DynGC.vel.az * corner->pos.y
+	    + car->DynGC.vel.ay * corner->pos.x;
+	corner->vel.y = vy
+	    + car->DynGC.vel.az * corner->pos.x
+	    - car->DynGC.vel.ax * corner->pos.y;
     }
+	    
 }
 
 void 
@@ -515,22 +585,33 @@ SimCarUpdate2(tCar *car, tSituation * /* s */)
    bit faster too. */
 void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0)
 {
+
     tdble cosx = cos(u.x);
     tdble cosy = cos(u.y);
     tdble cosz = cos(u.z);
     tdble sinx = sin(u.x);
     tdble siny = sin(u.y);
     tdble sinz = sin(u.z);
+#if 0 //rotation order yaw/pitch/roll
     tdble vx_z = v.x * cosz + v.y * sinz;
     tdble vy_z = v.y * cosz - v.x * sinz;
     tdble vx_0 = vx_z * cosy - v.z * siny;
     tdble vz_y = v.z * cosy + vx_z * siny;
     tdble vy_0 = vy_z * cosx + vz_y * sinx;
     tdble vz_0 = vz_y * cosx - vy_z * sinx;
+#else // rotation order yaw/roll/pitch 
+    tdble vx_z = v.x * cosz + v.y * sinz;
+    tdble vy_z = v.y * cosz - v.x * sinz;
+    tdble vy_0 = vy_z * cosx + v.z * sinx;
+    tdble vz_x = v.z * cosx - vy_z * sinx;
+    tdble vx_0 = vx_z * cosy - vz_x * siny;
+    tdble vz_0 = vz_x * cosy + vx_z * siny;
+#endif
     v0->x = vx_0;
     v0->y = vy_0;
     v0->z = vz_0;
 }
+
 
 /* Original coords, angle, new coords */
 /* This is a naive implementation. It should also work with A(BxC),
@@ -544,14 +625,21 @@ void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0)
     tdble sinx = sin(-u.x);
     tdble siny = sin(-u.y);
     tdble sinz = sin(-u.z);
-
+#if 0
     tdble vy_x = v.y * cosx + v.z* sinx;
     tdble vz_x = v.z * cosx - v.y * sinx;
     tdble vx_y = v.x * cosy - vz_x * siny;
     tdble vz_0 = vz_x * cosy + v.x * siny;
     tdble vx_0 = vx_y * cosz + vy_x * sinz;
     tdble vy_0 = vy_x * cosz - vx_y * sinz;
-
+#else
+    tdble vx_y = v.x * cosy - v.z * siny;
+    tdble vz_y = v.z * cosy + v.x * siny;
+    tdble vy_x = v.y * cosx + vz_y* sinx;
+    tdble vz_0 = vz_y * cosx - v.y * sinx;
+    tdble vx_0 = vx_y * cosz + vy_x * sinz;
+    tdble vy_0 = vy_x * cosz - vx_y * sinz;
+#endif
     v0->x = vx_0;
     v0->y = vy_0;
     v0->z = vz_0;

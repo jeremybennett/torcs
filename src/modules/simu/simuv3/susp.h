@@ -44,6 +44,11 @@ typedef struct
 } tSpring;
 
 
+typedef enum SuspensionType {
+    Ideal, Simple, Wishbone
+} eSuspensionType;
+
+
 typedef struct Suspension
 {
     tSpring spring;
@@ -53,7 +58,9 @@ typedef struct Suspension
     tdble v; /* suspension travel speed */
     tdble fx; // pure elastic collision 
     tdble fy; // pure elastic collision
-
+    eSuspensionType type;
+    t3Dd dynamic_angles;
+    t3Dd link;
     tdble force;        /* generated force */
     int    state;        /* indicate the state of the suspension */
 #define SIM_SUSP_COMP   1  	/* the suspension is fully compressed */
