@@ -34,6 +34,8 @@ static void	*prevHandle = NULL;
 
 static void	*PrefHdle = NULL;
 
+static char	CurrentSection[256];
+
 static void joyCalMenuInit(void);
 
 static char buf[1024];
@@ -86,6 +88,7 @@ updateButtonText(void)
     }
 
     fv = GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_SENS, NULL, 0);
+    fv = GfParmGetNum(PrefHdle, CurrentSection, HM_ATT_STEER_SENS, NULL, fv);
     sprintf(buf, "%f", fv);
     GfuiEditboxSetString(scrHandle1, SteerSensEditId, buf);
 
@@ -110,12 +113,12 @@ onKeyAction(unsigned char key, int modifier, int state)
 	/* escape */
 	Cmd[CurrentCmd].ref.index = -1;
 	Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, Cmd[CurrentCmd].name, "");
+	GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, "");
     } else {
 	name = GfctrlGetNameByRef(GFCTRL_TYPE_KEYBOARD, (int)key);
 	Cmd[CurrentCmd].ref.index = (int)key;
 	Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_KEYBOARD;
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, Cmd[CurrentCmd].name, name);
+	GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, name);
     }
 
     glutIdleFunc(GfuiIdle);
@@ -136,7 +139,7 @@ onSKeyAction(int key, int modifier, int state)
     name = GfctrlGetNameByRef(GFCTRL_TYPE_SKEYBOARD, key);
     Cmd[CurrentCmd].ref.index = key;
     Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_SKEYBOARD;
-    GfParmSetStr(PrefHdle, HM_SECT_JSPREF, Cmd[CurrentCmd].name, name);
+    GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, name);
 
     glutIdleFunc(GfuiIdle);
     InputWaited = 0;
@@ -168,7 +171,7 @@ Idle1(void)
 		    GfuiButtonSetText (scrHandle1, Cmd[CurrentCmd].Id, str);
 		    Cmd[CurrentCmd].ref.index = i + 32 * index;
 		    Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_BUT;
-		    GfParmSetStr(PrefHdle, HM_SECT_JSPREF, Cmd[CurrentCmd].name, str);
+		    GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, str);
 		    glutPostRedisplay();
 		    rawb[index] = b;
 		    return;
@@ -190,7 +193,7 @@ onPush1(void *vi)
     GfuiButtonSetText (scrHandle1, Cmd[i].Id, "");
     Cmd[i].ref.index = -1;
     Cmd[i].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-    GfParmSetStr(PrefHdle, HM_SECT_JSPREF, Cmd[i].name, "");
+    GfParmSetStr(PrefHdle, CurrentSection, Cmd[i].name, "");
     glutIdleFunc(Idle1);
     InputWaited = 1;
 
@@ -232,6 +235,7 @@ onActivate1(void * /* dummy */)
 	    prm = "---";
 	}
 	prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, Cmd[cmd].name, prm);
+	prm = GfParmGetStr(PrefHdle, CurrentSection, Cmd[cmd].name, prm);
 	ref = GfctrlGetRefByName(prm);
 	Cmd[cmd].ref.type = ref->type;
 	Cmd[cmd].ref.index = ref->index;
@@ -256,7 +260,7 @@ onSteerSensChange(void * /* dummy */)
     if (sscanf(val, "%f", &fv) == 1) {
 	sprintf(buf, "%f", fv);
 	GfuiEditboxSetString(scrHandle1, SteerSensEditId, buf);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_SENS, NULL, fv);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_STEER_SENS, NULL, fv);
     } else {
 	GfuiEditboxSetString(scrHandle1, SteerSensEditId, "");
     }
@@ -264,7 +268,7 @@ onSteerSensChange(void * /* dummy */)
 }
 
 void *
-TorcsJoystick1MenuInit(void *prevMenu)
+TorcsJoystick1MenuInit(void *prevMenu, int idx)
 {
     int		x, y, x2, dy, i;
     int		cmd;
@@ -272,6 +276,8 @@ TorcsJoystick1MenuInit(void *prevMenu)
     int		index;
     tCtrlRef	*ref;
     int		joyPresent = 0;
+
+    sprintf(CurrentSection, "%s/%d", HM_SECT_DRVPREF, idx);
 
     for (index = 0; index < NUM_JOY; index++) {
 	if (js[index] == NULL) {
@@ -300,6 +306,7 @@ TorcsJoystick1MenuInit(void *prevMenu)
 	    prm = "---";
 	}
 	prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, Cmd[cmd].name, prm);
+	prm = GfParmGetStr(PrefHdle, CurrentSection, Cmd[cmd].name, prm);
 	ref = GfctrlGetRefByName(prm);
 	Cmd[cmd].ref.type = ref->type;
 	Cmd[cmd].ref.index = ref->index;
@@ -425,9 +432,9 @@ JoyCalAutomaton(void)
     case 1:
 	axis = getMovedAxis();
 	str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, axis);
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER, str);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER_MIN, NULL, ax[axis]);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_LEFTSTEER_MAX, NULL, axCenter[axis]);
+	GfParmSetStr(PrefHdle, CurrentSection, HM_ATT_LEFTSTEER, str);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_LEFTSTEER_MIN, NULL, ax[axis]);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_LEFTSTEER_MAX, NULL, axCenter[axis]);
 	GfuiLabelSetText(scrHandle2, LabAxisId[0], str);
 	sprintf(buf, "%.2f", ax[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[0], buf);
@@ -436,9 +443,9 @@ JoyCalAutomaton(void)
     case 2:
 	axis2 = getMovedAxis();
 	str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, axis);
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER, str);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER_MAX, NULL, ax[axis]);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_RIGHTSTEER_MIN, NULL, axCenter[axis]);
+	GfParmSetStr(PrefHdle, CurrentSection, HM_ATT_RIGHTSTEER, str);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_RIGHTSTEER_MAX, NULL, ax[axis]);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_RIGHTSTEER_MIN, NULL, axCenter[axis]);
 	sprintf(buf, "%.2f", ax[axis]);
 	GfuiLabelSetText(scrHandle2, LabMaxId[0], buf);
 	if ((Cmd[12].ref.type == GFCTRL_TYPE_NOT_AFFECTED) ||
@@ -456,9 +463,9 @@ JoyCalAutomaton(void)
     case 3:
 	axis = getMovedAxis();
 	str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, axis);
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE, str);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MIN, NULL, axCenter[axis]);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MAX, NULL, ax[axis]*1.1);
+	GfParmSetStr(PrefHdle, CurrentSection, HM_ATT_THROTTLE, str);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_THROTTLE_MIN, NULL, axCenter[axis]);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_THROTTLE_MAX, NULL, ax[axis]*1.1);
 	GfuiLabelSetText(scrHandle2, LabAxisId[1], str);
 	sprintf(buf, "%.2f", axCenter[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[1], buf);
@@ -474,9 +481,9 @@ JoyCalAutomaton(void)
     case 4:
 	axis = getMovedAxis();
 	str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, axis);
-	GfParmSetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE, str);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MIN, NULL, axCenter[axis]);
-	GfParmSetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MAX, NULL, ax[axis]*1.1);
+	GfParmSetStr(PrefHdle, CurrentSection, HM_ATT_BRAKE, str);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_BRAKE_MIN, NULL, axCenter[axis]);
+	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_BRAKE_MAX, NULL, ax[axis]*1.1);
 	GfuiLabelSetText(scrHandle2, LabAxisId[2], str);
 	sprintf(buf, "%.2f", axCenter[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[2], buf);

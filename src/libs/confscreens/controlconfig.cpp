@@ -37,7 +37,8 @@
 
 #include "controlconfig.h"
 
-static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
+static float	LabelColor[] = {1.0, 0.0, 1.0, 1.0};
+static char	CurrentSection[256];
 
 typedef struct
 {
@@ -97,6 +98,7 @@ initFromConf(void)
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
     ctrl = GfParmGetStr(PrefHdle, HM_SECT_PREF, HM_ATT_CONTROL, HM_VAL_MOUSE);
+    ctrl = GfParmGetStr(PrefHdle, CurrentSection, HM_ATT_CONTROL, ctrl);
     for (curControl = 0; curControl < nbControl; curControl++) {
 	if ((!strcmp(controlList[curControl].parmName, ctrl)) &&
 	    controlList[curControl].handle) {
@@ -111,21 +113,26 @@ initFromConf(void)
 static void
 saveAndConf(void * /* dummy */)
 {
-    GfParmSetStr(PrefHdle, HM_SECT_PREF, HM_ATT_CONTROL, controlList[curControl].parmName);
+    GfParmSetStr(PrefHdle, CurrentSection, HM_ATT_CONTROL, controlList[curControl].parmName);
     GfuiScreenActivate(controlList[curControl].handle);
 }
 
 static void
-onActivate(void * /* dummy */)
+onActivate(void *vindex)
 {
     initFromConf();
     updateLabelText();
 }
 
 void *
-TorcsControlMenuInit(void *prevMenu)
+TorcsControlMenuInit(void *prevMenu, int idx)
 {
     int		y, x1, x2;
+
+    controlList[0].handle = TorcsJoystick1MenuInit(prevMenu, idx);
+    controlList[1].handle = TorcsMouseMenuInit(prevMenu, idx);
+
+    sprintf(CurrentSection, "%s/%d", HM_SECT_DRVPREF, idx);
 
     if (scrHandle) {
 	return scrHandle;
@@ -186,8 +193,6 @@ TorcsControlMenuInit(void *prevMenu)
 		     prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
 
-    controlList[0].handle = TorcsJoystick1MenuInit(prevMenu);
-    controlList[1].handle = TorcsMouseMenuInit(prevMenu);
 
     return scrHandle;
 }

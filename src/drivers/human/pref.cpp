@@ -137,6 +137,7 @@ HmReadPrefs(int index)
     }
 
     prm = GfParmGetStr(PrefHdle, HM_SECT_PREF, HM_ATT_CONTROL, controlList[2].parmName);
+    prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_CONTROL, prm);
     for (i = 0; i < nbControl; i++) {
 	if (!strcmp(prm, controlList[i].parmName)) {
 	    break;

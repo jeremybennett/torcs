@@ -360,7 +360,7 @@ refresh(tSituation *s)
 	for (i = 0; i < s->_ncars; i++) {
 	    grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
 	} 
-	segIndice = (s->cars[s->current])->_trkPos.seg->id;
+	/* segIndice = (s->cars[s->current])->_trkPos.seg->id; */
 	grUpdateSmoke(s->currentTime);
 	STOP_PROFILE("grDrawCar*");
 
@@ -437,6 +437,11 @@ refresh(tSituation *s)
 		grDrawCar(s->cars[i], s->cars[currCurrent[player]], grCurCam->getDrawCurrent(), s->currentTime);
 	    } 
 	    STOP_PROFILE("grDrawCar*");
+	
+	    /* segIndice = (s->cars[currCurrent[player]])->_trkPos.seg->id; */
+	    if (player == 0) {
+		grUpdateSmoke(s->currentTime);
+	    }
 
 	    START_PROFILE("grDrawScene*");
 	    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -526,6 +531,8 @@ initCars(tSituation *s)
 	grInitSkidmarks(elt);
     }
     
+    nbScreen = 0;
+    
     for (i = 0; i < s->_ncars; i++) {
 	elt = s->cars[i];
 	index = elt->index;
@@ -536,6 +543,9 @@ initCars(tSituation *s)
 	grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
 	grCarInfo[index].iconColor[3] = 1.0;
 	grInitCar(elt);
+	if (elt->_driverType == RM_DRV_HUMAN) {
+	    nbScreen++;
+	}
     }
     TRACE_GL("initCars: end");
 

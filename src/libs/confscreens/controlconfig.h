@@ -26,7 +26,7 @@
 #ifndef _CONTROLCONFIG_H_
 #define _CONTROLCONFIG_H_
 
-extern void *TorcsControlMenuInit(void *prevMenu);
+extern void *TorcsControlMenuInit(void *prevMenu, int index);
 
 
 #endif /* _CONTROLCONFIG_H_ */ 

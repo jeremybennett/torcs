@@ -24,6 +24,7 @@
 #include <track.h>
 #include <robot.h>
 #include <playerpref.h>
+#include <controlconfig.h>
 
 #include "driverconfig.h"
 
@@ -284,6 +285,17 @@ DeletePlayer(void *dummy)
 	curPlayer->_DispName = strdup(NO_DRV);
 	refreshEditVal();
 	UpdtScrollList();
+    }
+}
+
+static void
+ConfControls(void * /* dummy */ )
+{
+    int index;
+    
+    if (curPlayer) {
+	index = curPlayer - PlayersInfo + 1;
+	GfuiScreenActivate(TorcsControlMenuInit(scrHandle, index));
     }
 }
 
@@ -608,6 +620,10 @@ TorcsDriverMenuInit(void *prevMenu)
 		     140, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     NULL, DeletePlayer, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+    GfuiButtonCreate(scrHandle, "Controls", GFUI_FONT_LARGE, 496, 340 - NB_DRV * GfuiFontHeight(GFUI_FONT_MEDIUM_C) - 30,
+		     140, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		     NULL, ConfControls, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
     GenCarsInfo();
     if (GenDrvList()) {
 	GfuiScreenRelease(scrHandle);
@@ -714,7 +730,7 @@ TorcsDriverMenuInit(void *prevMenu)
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
      prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle, 13, "Select Track", NULL, SaveDrvList, NULL);
+    GfuiAddKey(scrHandle, 13, "Save Drivers", NULL, SaveDrvList, NULL);
     GfuiAddKey(scrHandle, 27, "Cancel Selection", prevMenu, GfuiScreenActivate, NULL);
     GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
     GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Car", (void*)0, ChangeCar, NULL);

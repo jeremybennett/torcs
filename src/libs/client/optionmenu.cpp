@@ -20,19 +20,13 @@
 #include <stdio.h>
 #include <tgfclient.h>
 #include "optionmenu.h"
-#include <driverconfig.h>
 #include <graphconfig.h>
-#include <joystickconfig.h>
-#include <controlconfig.h>
 
 static void *optionHandle = NULL;
 
 void *
 TorcsOptionOptionInit(void *precMenu)
 {
-    void *playerHandle;
-    void *controlHandle;
-
     if (optionHandle) return optionHandle;
 
     optionHandle = GfuiMenuScreenCreate("OPTIONS");
@@ -46,16 +40,6 @@ TorcsOptionOptionInit(void *precMenu)
     GfuiMenuButtonCreate(optionHandle,
 			 "Display", "Configure display parameters",
 			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
-
-    playerHandle = TorcsDriverMenuInit(optionHandle);
-    GfuiMenuButtonCreate(optionHandle,
-			 "Player", "Configure player parameters",
-			 playerHandle, GfuiScreenActivate);
-
-    controlHandle = TorcsControlMenuInit(optionHandle);
-    GfuiMenuButtonCreate(optionHandle,
-			 "Controls", "Configure control parameters",
-			 controlHandle, GfuiScreenActivate);
 
     GfuiMenuBackQuitButtonCreate(optionHandle,
 				 "Back",

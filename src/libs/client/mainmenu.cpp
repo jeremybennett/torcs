@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <tgfclient.h>
 #include <singleplayer.h>
+#include <driverconfig.h>
 
 #include "mainmenu.h"
 #include "exitmenu.h"
@@ -75,8 +76,12 @@ TorcsMainMenuInit(void)
 		    0);
 
     GfuiMenuButtonCreate(menuHandle,
-			 "Single Player", "Play in single player mode",
+			 "Race", "Races Menu",
 			 ReSinglePlayerInit(menuHandle), GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(menuHandle,
+			 "Configure Players", "Players configuration menu",
+			 TorcsDriverMenuInit(menuHandle), GfuiScreenActivate);
 
     GfuiMenuButtonCreate(menuHandle,
 			 "Options", "Configure",

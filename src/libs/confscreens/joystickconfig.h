@@ -26,7 +26,7 @@
 #ifndef _JOYSTICKCONFIG_H_
 #define _JOYSTICKCONFIG_H_
 
-extern void *TorcsJoystick1MenuInit(void *prevMenu);
+extern void *TorcsJoystick1MenuInit(void *prevMenu, int idx);
 
 
 #endif /* _JOYSTICKCONFIG_H_ */ 
