@@ -386,6 +386,8 @@ if exist .\data\data\img\arrow-up.png copy .\data\data\img\arrow-up.png .\runtim
 if exist .\data\data\img\arrow-up-pushed.png copy .\data\data\img\arrow-up-pushed.png .\runtime\data\img\arrow-up-pushed.png
 if exist .\data\data\img\ruler.png copy .\data\data\img\ruler.png .\runtime\data\img\ruler.png
 if exist .\data\data\img\ruler-pushed.png copy .\data\data\img\ruler-pushed.png .\runtime\data\img\ruler-pushed.png
+if exist .\data\data\img\splash-dtm.png copy .\data\data\img\splash-dtm.png .\runtime\data\img\splash-dtm.png
+if exist .\data\data\img\splash-dtmstart.png copy .\data\data\img\splash-dtmstart.png .\runtime\data\img\splash-dtmstart.png
 if exist .\data\data\img\splash-free1.png copy .\data\data\img\splash-free1.png .\runtime\data\img\splash-free1.png
 if exist .\data\data\img\splash-free4.png copy .\data\data\img\splash-free4.png .\runtime\data\img\splash-free4.png
 if exist .\data\data\img\splash-free5.png copy .\data\data\img\splash-free5.png .\runtime\data\img\splash-free5.png

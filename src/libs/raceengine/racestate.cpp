@@ -106,6 +106,7 @@ ReStateManage(void)
 
 	case RE_STATE_RACE_STOP:
 	    GfOut("RaceEngine: state = RE_STATE_RACE_STOP\n");
+	    /* Interrupted by player */
 	    mode = ReRaceStop();
 	    if (mode & RM_NEXT_STEP) {
 		ReInfo->_reState = RE_STATE_RACE_END;
@@ -143,8 +144,7 @@ ReStateManage(void)
 	case RE_STATE_SHUTDOWN:
 	case RE_STATE_ERROR:
 	    GfOut("RaceEngine: state = RE_STATE_SHUTDOWN\n");
-	    /* ReShutdown(); */
-	    /* GfuiScreenActivate(mainMenu); */
+	    /* Back to race menu */
 	    ReInfo->_reState = RE_STATE_CONFIG;
 	    mode = RM_SYNC;
 	    break;

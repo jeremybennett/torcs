@@ -58,6 +58,7 @@ if not exist .\src\libs\raceengine goto src_libs_raceengine
 call .\create_dir .\export
 call .\create_dir .\export\include
 if exist .\src\libs\raceengine\singleplayer.h copy .\src\libs\raceengine\singleplayer.h .\export\include\singleplayer.h
+if exist .\src\libs\raceengine\profiler.h copy .\src\libs\raceengine\profiler.h .\export\include\profiler.h
 :src_libs_raceengine
 
 if not exist .\src\linux goto src_linux
@@ -928,6 +929,7 @@ call .\create_dir .\runtimed\drivers
 call .\create_dir .\runtimed\drivers\human
 call .\create_dir .\runtimed\drivers\human\tracks
 call .\create_dir .\runtimed\drivers\human\tracks\dirt-6
+if exist .\src\drivers\human\tracks\dirt-6\car-porsche-gt3rs.xml copy .\src\drivers\human\tracks\dirt-6\car-porsche-gt3rs.xml .\runtimed\drivers\human\tracks\dirt-6\car-porsche-gt3rs.xml
 if exist .\src\drivers\human\tracks\dirt-6\car-torcs.xml copy .\src\drivers\human\tracks\dirt-6\car-torcs.xml .\runtimed\drivers\human\tracks\dirt-6\car-torcs.xml
 :src_drivers_human_tracks_dirt_6
 
@@ -1515,8 +1517,9 @@ if not exist .\src\raceman goto src_raceman
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
 call .\create_dir .\runtimed\config\raceman
-if exist .\src\raceman\quickrace.xml copy .\src\raceman\quickrace.xml .\runtimed\config\raceman\quickrace.xml
+if exist .\src\raceman\dtmrace.xml copy .\src\raceman\dtmrace.xml .\runtimed\config\raceman\dtmrace.xml
 if exist .\src\raceman\practice.xml copy .\src\raceman\practice.xml .\runtimed\config\raceman\practice.xml
+if exist .\src\raceman\quickrace.xml copy .\src\raceman\quickrace.xml .\runtimed\config\raceman\quickrace.xml
 :src_raceman
 
 call .\create_dir .\runtimed

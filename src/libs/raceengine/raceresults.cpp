@@ -139,7 +139,8 @@ ReStoreRaceResults(char *race)
 	nCars = GfParmGetEltNb(results, path);
 	for (i = nCars; i > 0; i--) {
 	    sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i);
-	    if (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0)) {
+	    if ((car->_bestLapTime != 0.0) && 
+		(car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {
 		/* shift */
 		sprintf(path2, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 		GfParmSetStr(results, path2, RE_ATTR_NAME, GfParmGetStr(results, path, RE_ATTR_NAME, ""));

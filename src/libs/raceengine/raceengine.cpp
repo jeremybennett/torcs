@@ -248,25 +248,27 @@ ReManage(tCarElt *car)
 		    if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;
 			s->_raceState = RM_RACE_FINISHING;
-			if (car->_pos == 1) {
-			    sprintf(buf, "Winner %s", car->_name);
-			    ReRaceBigMsgSet(buf, 10);
-			} else {
-			    switch (car->_pos % 10) {
-			    case 1:
-				sprintf(buf, "%s Finished %dst", car->_name, car->_pos);
-				break;
-			    case 2:
-				sprintf(buf, "%s Finished %dnd", car->_name, car->_pos);
-				break;
-			    case 3:
-				sprintf(buf, "%s Finished %drd", car->_name, car->_pos);
-				break;
-			    default:
-				sprintf(buf, "%s Finished %dth", car->_name, car->_pos);
-				break;
+			if (ReInfo->s->_raceType == RM_TYPE_RACE) {
+			    if (car->_pos == 1) {
+				sprintf(buf, "Winner %s", car->_name);
+				ReRaceBigMsgSet(buf, 10);
+			    } else {
+				switch (car->_pos % 10) {
+				case 1:
+				    sprintf(buf, "%s Finished %dst", car->_name, car->_pos);
+				    break;
+				case 2:
+				    sprintf(buf, "%s Finished %dnd", car->_name, car->_pos);
+				    break;
+				case 3:
+				    sprintf(buf, "%s Finished %drd", car->_name, car->_pos);
+				    break;
+				default:
+				    sprintf(buf, "%s Finished %dth", car->_name, car->_pos);
+				    break;
+				}
+				ReRaceMsgSet(buf, 5);
 			    }
-			    ReRaceMsgSet(buf, 5);
 			}
 		    }
 		} else {
