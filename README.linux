@@ -15,3 +15,19 @@ in the files:
 torcs/runtime/drivers/human/car*.xml
 
 depending on the car used.
+
+
+RedHat Users:
+~~~~~~~~~~~~~
+
+Known problems with OpenGL like:
+
+	FATAL: ssgInit called without a valid OpenGL context
+
+can be solved by intalling an updated Mesa rpm:
+
+RedHat 7.1:
+ftp://ftp.redhat.com/pub/redhat/linux/updates/7.1/en/os/i386/Mesa-3.4.2-10.i386.rpm
+
+RedHat 7.2:
+ftp://ftp.redhat.com/pub/redhat/linux/updates/7.1/en/os/i386/Mesa-3.4.2-10.i386.rpm

@@ -63,10 +63,10 @@
 	<attnum name="blue" val="0.5"></attnum>
       </section>
       <section name="5">
-	<attstr name="name" val="Player-Viper"></attstr>
+	<attstr name="name" val="Player-XJ220"></attstr>
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-        <attstr name="car name" val="viper-gts-r"></attstr>
+        <attstr name="car name" val="xj-220"></attstr>
         <attstr name="category" val="Track-RWD-GrA"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
@@ -107,11 +107,11 @@
 	<attnum name="blue" val="0.5"></attnum>
       </section>
       <section name="9">
-	<attstr name="name" val="Player-Nascar-fwd"></attstr>
+	<attstr name="name" val="Player-P406"></attstr>
 	<attstr name="desc" val="Human driver"></attstr>
 	<attstr name="author" val="Eric Espie"></attstr>
-        <attstr name="car name" val="cg-nascar-fwd"></attstr>
-        <attstr name="category" val="Track-FWD-GrA"></attstr>
+        <attstr name="car name" val="p406"></attstr>
+        <attstr name="category" val="Track-FWD-GrB"></attstr>
 	<attnum name="race number" val="20"></attnum>
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
