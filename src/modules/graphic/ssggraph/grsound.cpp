@@ -90,11 +90,13 @@ grShutdownSound(void)
 {
     int i;
 
-    GfOut("-- grShutdownSound\n");
+    GfOut("-- grShutdownSound... ");
     
     if (!soundInitialized) {
+	GfOut ("NOT initialized\n");
 	return;
     }
+    
     soundInitialized = 0;
     sched->stopSample(skidSample);
     sched->stopSample(engSample);
@@ -115,6 +117,8 @@ grShutdownSound(void)
     if (__slPendingError) {
 	GfOut("!!! error ignored: %s\n", __slPendingError);
 	__slPendingError = 0;	/* ARG!!! ugly ugly bad thing... but should not occur anymore now */
+    } else {
+	GfOut ("normaly stopped\n");
     }
 }
 
