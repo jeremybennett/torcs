@@ -43,11 +43,16 @@ init_args(int argc, char **argv)
 		SetLocalDir(buf);
 		i++;
 	    }
+#ifndef FREEGLUT
 	} else if (strncmp(argv[i], "-m", 2) == 0) {
 	    i++;
 	    GfuiMouseSetHWPresent(); /* allow the hardware cursor */
+#endif
 	}
     }
+#ifdef FREEGLUT
+    GfuiMouseSetHWPresent(); /* allow the hardware cursor (freeglut pb ?) */
+#endif
 }
 
 /*

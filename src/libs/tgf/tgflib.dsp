@@ -139,6 +139,10 @@ SOURCE=.\guiscrollist.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\hash.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\img.cpp
 # End Source File
 # Begin Source File

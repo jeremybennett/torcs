@@ -638,6 +638,168 @@ extern char *GetLocalDir(void);
 extern void SetLocalDir(char *buf);
 
 
+/*
+ * Copyright (c) 1991, 1993
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *	This product includes software developed by the University of
+ *	California, Berkeley and its contributors.
+ * 4. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *	@(#)queue.h	8.5 (Berkeley) 8/20/94
+ */
+
+/*
+ * Tail queue definitions.
+ */
+/** Head type definition
+    @ingroup tailq */
+#define GF_TAILQ_HEAD(name, type)					\
+typedef struct name {							\
+	type *tqh_first;	/* first element */			\
+	type **tqh_last;	/* addr of last next element */		\
+} t ## name
+
+/** Entry in structure
+    @ingroup tailq */
+#define GF_TAILQ_ENTRY(type)						\
+struct {								\
+	type *tqe_next;	/* next element */				\
+	type **tqe_prev;	/* address of previous next element */	\
+}
+
+/** First element of a TAILQ
+    @ingroup tailq */
+#define	GF_TAILQ_FIRST(head)		((head)->tqh_first)
+/** Next element of a TAILQ
+    @ingroup tailq */
+#define	GF_TAILQ_NEXT(elm, field)	((elm)->field.tqe_next)
+/** End of a TAILQ
+    @ingroup tailq */
+#define	GF_TAILQ_END(head)		NULL
+/** Last element of a TAILQ
+    @ingroup tailq */
+#define GF_TAILQ_LAST(head, headname) 					\
+	(*(((struct headname *)((head)->tqh_last))->tqh_last))
+/** Previous element of a TAILQ
+    @ingroup tailq */
+#define GF_TAILQ_PREV(elm, headname, field) 				\
+	(*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
+
+/*
+ * Tail queue functions.
+ */
+/** Head initialization (Mandatory)
+    @ingroup tailq */
+#define	GF_TAILQ_INIT(head) do {					\
+	(head)->tqh_first = NULL;					\
+	(head)->tqh_last = &(head)->tqh_first;				\
+} while (0)
+
+/** Entry initialization (optionnal if inserted)
+    @ingroup tailq */
+#define GF_TAILQ_INIT_ENTRY(elm, field) do {	\
+  (elm)->field.tqe_next = 0;			\
+  (elm)->field.tqe_prev = 0;			\
+} while (0)
+
+/** Insert an element at the head
+    @ingroup tailq */
+#define GF_TAILQ_INSERT_HEAD(head, elm, field) do {			\
+	if (((elm)->field.tqe_next = (head)->tqh_first) != NULL)	\
+		(head)->tqh_first->field.tqe_prev =			\
+		    &(elm)->field.tqe_next;				\
+	else								\
+		(head)->tqh_last = &(elm)->field.tqe_next;		\
+	(head)->tqh_first = (elm);					\
+	(elm)->field.tqe_prev = &(head)->tqh_first;			\
+} while (0)
+
+/** Insert an element at the tail
+    @ingroup tailq */
+#define GF_TAILQ_INSERT_TAIL(head, elm, field) do {			\
+	(elm)->field.tqe_next = NULL;					\
+	(elm)->field.tqe_prev = (head)->tqh_last;			\
+	*(head)->tqh_last = (elm);					\
+	(head)->tqh_last = &(elm)->field.tqe_next;			\
+} while (0)
+
+/** Insert an element after another element
+    @ingroup tailq */
+#define GF_TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
+	if (((elm)->field.tqe_next = (listelm)->field.tqe_next) != NULL)\
+		(elm)->field.tqe_next->field.tqe_prev = 		\
+		    &(elm)->field.tqe_next;				\
+	else								\
+		(head)->tqh_last = &(elm)->field.tqe_next;		\
+	(listelm)->field.tqe_next = (elm);				\
+	(elm)->field.tqe_prev = &(listelm)->field.tqe_next;		\
+} while (0)
+
+/** Insert an element before another element
+    @ingroup tailq */
+#define	GF_TAILQ_INSERT_BEFORE(listelm, elm, field) do {		\
+	(elm)->field.tqe_prev = (listelm)->field.tqe_prev;		\
+	(elm)->field.tqe_next = (listelm);				\
+	*(listelm)->field.tqe_prev = (elm);				\
+	(listelm)->field.tqe_prev = &(elm)->field.tqe_next;		\
+} while (0)
+
+/** Remove an element
+    @ingroup tailq */
+#define GF_TAILQ_REMOVE(head, elm, field) do {				\
+	if (((elm)->field.tqe_next) != NULL)				\
+		(elm)->field.tqe_next->field.tqe_prev = 		\
+		    (elm)->field.tqe_prev;				\
+	else								\
+		(head)->tqh_last = (elm)->field.tqe_prev;		\
+	*(elm)->field.tqe_prev = (elm)->field.tqe_next;			\
+} while (0)
+
+
+/*******************/
+/*   Hash Tables   */
+/*******************/
+#define GF_HASH_TYPE_STR	0	/**< String key based hash table */
+#define GF_HASH_TYPE_BUF	1	/**< Memory buffer key based hash table */
+
+typedef void (*tfHashFree)(void*);	/**< Function to call for releasing the user data associated with hash table */
+
+void *GfHashCreate(int type);
+void GfHashAddStr(void *hash, char *key, void *data);
+void *GfHashRemStr(void *hash, char *key);
+void *GfHashGetStr(void *hash, char *key);
+void GfHashAddBuf(void *hash, char *key, size_t sz, void *data);
+void *GfHashRemBuf(void *hash, char *key, size_t sz);
+void *GfHashGetBuf(void *hash, char *key, size_t sz);
+void GfHashRelease(void *hash, tfHashFree hashFree);
+void *GfHashGetFirst(void *hash);
+void *GfHashGetNext(void *hash);
+
 #endif /* __TGF__H__ */
 
 

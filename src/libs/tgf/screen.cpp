@@ -261,9 +261,9 @@ GfScrReinit(void *dummy)
 	}
     } else {
 	if (GfuiMouseHW) {
-	    retcode = execlp("./torcs", buf, "-l", GetLocalDir(), "-m", (const char *)NULL);
+	    retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), "-m", (const char *)NULL);
 	} else {
-	    retcode = execlp("./torcs", buf, "-l", GetLocalDir(), (const char *)NULL);
+	    retcode = execlp("./torcs", "torcs", "-l", GetLocalDir(), (const char *)NULL);
 	}
     }
 #endif

@@ -41,7 +41,8 @@ SOURCES   = 	guimenu.cpp \
 		guiimage.cpp \
 		control.cpp \
 		fg_gm.cpp \
-		ringlist.cpp
+		ringlist.cpp \
+		hash.cpp
 
 
 EXPDIR  = include

@@ -143,3 +143,13 @@ EXPORTS
 	GfctrlJoyGetCurrent
 	GetLocalDir
 	SetLocalDir
+	GfHashCreate
+	GfHashAddStr
+	GfHashRemStr
+	GfHashGetStr
+	GfHashAddBuf
+	GfHashRemBuf
+	GfHashGetBuf
+	GfHashRelease
+	GfHashGetFirst
+	GfHashGetNext
