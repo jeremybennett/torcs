@@ -1,0 +1,404 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "TORCS"=".\TORCS.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name lliaw
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name manual
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name practice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name racemantools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name telemetry
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wtorcs
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name txml
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name simuv2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name solid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name quickrace
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ssggraphlib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgflib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SSGGRAPH
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cylos1
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name damned
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name inferno
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name track
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "K1999"=".\SRC\DRIVERS\K1999\K1999.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SSGGRAPH"=".\src\modules\graphic\ssggraph\SSGGRAPH.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "cylos1"=".\src\drivers\cylos1\cylos1.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "damned"=".\src\drivers\damned\damned.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "human"=".\src\drivers\human\human.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "inferno"=".\src\drivers\inferno\inferno.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "lliaw"=".\SRC\DRIVERS\LLIAW\lliaw.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "manual"=".\SRC\MODULES\RACEMAN\PRACTICE\CONTROL\MANUAL\manual.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name racemantools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "practice"=".\SRC\MODULES\RACEMAN\PRACTICE\PRACTICE\practice.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name racemantools
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "quickrace"=".\SRC\MODULES\RACEMAN\quickrace\quickrace.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "racemantools"=".\src\libs\racemantools\racemantools.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "robottools"=".\src\libs\robottools\robottools.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "simuv2"=".\SRC\MODULES\SIMU\simuv2\simuv2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name solid
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "solid"=".\src\modules\simu\simuv2\SOLID-2.0\solid.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ssggraphlib"=".\src\modules\graphic\ssggraph\ssggraphlib.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "telemetry"=".\SRC\MODULES\TELEMETRY\telemetry.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tgf"=".\src\libs\tgf\tgf.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name txml
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "tgflib"=".\src\libs\tgf\tgflib.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wtorcs"=".\src\windows\wtorcs.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name txml
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name quickrace
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name racemantools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name simuv2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name solid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ssggraphlib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "track"=".\src\modules\track\track.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "txml"=".\src\libs\txml\txml.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
