@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="trackgen" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
 CFG=trackgen - Win32 Debug
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "trackgen.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "trackgen.mak" CFG="trackgen - Win32 Debug"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "trackgen - Win32 Release" (based on "Win32 (x86) Application")
-!MESSAGE "trackgen - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE "trackgen - Win32 Release" (basierend auf  "Win32 (x86) Application")
+!MESSAGE "trackgen - Win32 Debug" (basierend auf  "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -43,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /Od /Ob2 /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -53,7 +54,14 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib tgf.lib /nologo /subsystem:windows /map /machine:I386 /libpath:"../../../export/lib" /libpath:"../../windows/lib"
+# ADD LINK32 sl.lib client.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib tgf.lib /nologo /subsystem:console /map /machine:I386 /libpath:"../../../export/lib" /libpath:"../../windows/lib"
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+WkspDir=.
+TargetDir=.\Release
+SOURCE="$(InputPath)"
+PostBuild_Cmds=copy $(TargetDir)\trackgen.exe $(WkspDir)\runtime
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "trackgen - Win32 Debug"
 
