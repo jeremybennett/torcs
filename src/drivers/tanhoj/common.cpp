@@ -178,7 +178,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
     maxdlg = 200.0;
     seg = car->_trkPos.seg;
     lgfs = GetDistToStart(car);
-    car->_vect(0).type = CAR_VECT_INVALID;
+
     for (i = 0; i < s->_ncars; i++) {
 	otherCar = s->cars[i];
 	if ((otherCar == car) || (otherCar->_state & RM_CAR_STATE_NO_SIMU)) {
@@ -193,12 +193,7 @@ CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny)
 	if (((dlg < maxdlg) && (dlg > -(car->_dimension_x + 1.0))) &&
 	    ((dlg < (dspd*4.5)) ||
 	    (dlg < (car->_dimension_x * 4.0)))) {
-	    car->_vect(0).type = CAR_VECT_ABSOLUTE;
-	    car->_vect(0).start.x = car->_pos_X;
-	    car->_vect(0).start.y = car->_pos_Y;
-	    car->_vect(0).start.z = car->_vect(0).end.z = car->_pos_Z+ 2.0;
-	    car->_vect(0).end.x = otherCar->_pos_X;
-	    car->_vect(0).end.y = otherCar->_pos_Y;
+
 	    maxdlg = dlg;
 	    /* risk of collision */
 	    tdble MARGIN = /* 0.4 * DmTrack->width */ 7.0;

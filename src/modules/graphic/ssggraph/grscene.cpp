@@ -89,6 +89,7 @@ int grInitScene(tTrack *track)
     myLoaderOptions	options;
 
     ssgSetCurrentOptions(&options);
+    ssgAddTextureFormat(".png", grLoadPngTexture);
     grTrack = track;
     TheScene = new ssgRoot;
     initBackground();

@@ -124,6 +124,83 @@ grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
     return image;
 }
 
+
+bool
+grLoadPngTexture (const char *fname, ssgTextureInfo* info)
+{
+    GLbyte	*tex;
+    int		w, h;
+    GLenum	gluerr = (GLenum) 0;
+    char 	*buf;
+    char	*s;
+    int		mipmap = 1;
+    
+    TRACE_GL("Load: grLoadPngTexture start");
+
+    buf = strdup(fname);
+
+    GfOut("Loading %s\n", buf);
+
+    /* find the filename extension */
+    s = strrchr(buf, '.');
+    if (s) {
+	*s = 0;
+    }
+    
+    /* search for the texture parameters */
+    s = strrchr(buf, '_');
+      
+    if (s) {
+	/* no mipmap */
+	if (strncmp(s, "_nmm", 4) == 0) {
+	    mipmap = 0;
+	}
+    }
+    free(buf);
+
+    tex = (GLbyte*)GfImgReadPng(fname, &w, &h, 2.0);
+    if (!tex) {
+	return false;
+    }
+    /* build the OPENGL texture */
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    if (mipmap) {
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, GL_RGBA, 
+					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+	if(gluerr) {
+	    GfTrace2("grLoadTexture: %s %s\n", fname, gluErrorString(gluerr));
+	    free(tex);
+	    return false;
+	}
+    } else {
+	/* XXX Not working: why ? */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+    }
+    
+    free(tex);
+
+    if (info) {
+	info -> width  = w;
+	info -> height = h;
+	info -> depth  = 4;
+	info -> alpha  = true;
+    }
+    TRACE_GL("Load: grLoadPngTexture start");
+
+    return true;
+}
+
+
 typedef struct stlist
 {
     struct stlist	*next;

@@ -23,8 +23,6 @@
 
 #include <plib/ssg.h>
 
-#define TRACE_GL(msg) { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) printf("%s %s\n", msg, gluErrorString(rc)); }
-
 extern int grWinx, grWiny, grWinw, grWinh;
 
 extern int grDrawCurrent;

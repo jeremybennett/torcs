@@ -173,18 +173,6 @@ typedef struct {
 #define _brakeTemp(i)	priv->wheel[i].brakeTemp
 #define _wheelSpinVel(i) priv->wheel[i].spinVel
 
-typedef struct 
-{
-    int		type;
-#define CAR_VECT_INVALID	0
-#define CAR_VECT_ABSOLUTE	1
-#define CAR_VECT_RELATIVE	2
-    t3Dd	start;
-    t3Dd	end;
-    float	color[3];
-} tDebugVect;
-
-#define CAR_NVECT	24	/* the first 12 are for user, the others are for simu */
 #define MAX_GEARS	10	/* including reverse and neutral */
 
 /* data known only by the driver */
@@ -211,7 +199,6 @@ typedef struct {
     t3Dd	collpos;
     int		dammage;
     int		debug;
-    tDebugVect	vect[CAR_NVECT];
 } tPrivCar;
 /* structure access */
 #define _driverIndex	priv->driverIndex
@@ -228,7 +215,6 @@ typedef struct {
 #define _fuel		priv->fuel
 #define _gear		priv->gear
 #define _debug		priv->debug
-#define _vect(i)	priv->vect[i]
 #define _skid		priv->skid
 #define _dammage	priv->dammage
 

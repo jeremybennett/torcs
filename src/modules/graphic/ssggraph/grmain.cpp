@@ -33,6 +33,7 @@
 #include "grscene.h"
 #include "grsound.h"
 #include "grboard.h"
+#include "grutil.h"
 
 int grDebugFlag			= 1;
 int grBoardFlag			= 1;

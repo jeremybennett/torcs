@@ -87,6 +87,9 @@ extern void SimCarCollideZ(tCar *car);
 extern void SimCarCollideXYScene(tCar *car);
 extern void SimCarCollideCars(tSituation*);
 extern void SimCarCollideConfig(tCar *car);
+extern void SimCarCollideShutdown(int nbcars);
+extern void SimCarCollideInit(void);
+
 
 extern tdble SimDeltaTime;
 extern int SimTelemetry;

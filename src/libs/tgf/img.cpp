@@ -53,7 +53,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     png_infop		info_ptr;
     png_uint_32		width, height;
     int			bit_depth, color_type, interlace_type;
-    png_color_16p	image_background;
+/*     png_color_16p	image_background; */
     double		gamma;
     png_bytep		*row_pointers;
     unsigned char	*image_ptr, *cur_ptr;
@@ -119,8 +119,8 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand(png_ptr);
     if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_expand(png_ptr);
     if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) png_set_gray_to_rgb(png_ptr);
-    if (png_get_bKGD(png_ptr, info_ptr, &image_background))
-        png_set_background(png_ptr, image_background, PNG_BACKGROUND_GAMMA_FILE, 1, 1.0);
+/*     if (png_get_bKGD(png_ptr, info_ptr, &image_background)) */
+/*         png_set_background(png_ptr, image_background, PNG_BACKGROUND_GAMMA_FILE, 1, 1.0); */
     if (bit_depth == 8 && color_type == PNG_COLOR_TYPE_RGB) png_set_filler(png_ptr, 0xff, PNG_FILLER_AFTER);
     if (png_get_gAMA(png_ptr, info_ptr, &gamma))
 	png_set_gamma(png_ptr, screen_gamma, gamma);
@@ -130,7 +130,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     rowbytes = png_get_rowbytes(png_ptr, info_ptr);
     /* RGBA expected... */
     if (rowbytes != (4 * width)) {
-	GfTrace2("bad byte count... %ld instead of %ld\n", rowbytes, 4 * width);
+	GfTrace3("%s bad byte count... %ld instead of %ld\n", filename, rowbytes, 4 * width);
 	fclose(fp);
 	png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 	return (unsigned char *)NULL;
@@ -157,13 +157,13 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
     free(row_pointers);
 
     /* set the transparent color to magenta */
-    for (i = 0; i < height * rowbytes; i += 4) {
-	if ((image_ptr[i+0] == 255) &&
-	    (image_ptr[i+1] == 0) &&
-	    (image_ptr[i+2] == 255)) {
-	    image_ptr[i+3] = 0;
-	}
-    }
+/*     for (i = 0; i < height * rowbytes; i += 4) { */
+/* 	if ((image_ptr[i+0] == 255) && */
+/* 	    (image_ptr[i+1] == 0) && */
+/* 	    (image_ptr[i+2] == 255)) { */
+/* 	    image_ptr[i+3] = 0; */
+/* 	} */
+/*     } */
     fclose(fp);
     return image_ptr;
 }

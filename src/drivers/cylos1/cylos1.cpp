@@ -229,11 +229,6 @@ void newrace(int index, tCarElt* car, tSituation *s)
     hold[0] = 8.0;
     curidx = 0;
 
-    car->_vect(0).type = CAR_VECT_INVALID;
-    car->_vect(0).color[0] = .5;
-    car->_vect(0).color[1] = .5;
-    car->_vect(0).color[2] = .5;
-
     InitGears(car, 0);
 
     if (s->_raceType == RM_TYPE_PRACTICE) {

@@ -85,11 +85,7 @@ void
 SimConfig(tCarElt *carElt)
 {
     tCar *car = &(SimCarTable[carElt->index]);
-    int		i;
-    float	collCol[3]  = {1.0, 1.0, 0.0};
-    float	spdCol[3]   = {0.2, 0.2, 1.0};
-    float	accelCol[3] = {1.0, 0.0, 0.0};
-    
+
     memset(car, 0, sizeof(tCar));
 
     car->carElt = carElt;
@@ -99,33 +95,6 @@ SimConfig(tCarElt *carElt)
     car->params = carElt->_carHandle;
     
     SimCarConfig(car);
-
-    /* vectors config */
-/*     memcpy(carElt->_vect(SIM_VECT_COLL).color, collCol, sizeof(collCol)); */
-/*     carElt->_vect(SIM_VECT_SPD).type = CAR_VECT_RELATIVE; */
-/*     memcpy(carElt->_vect(SIM_VECT_SPD).color, spdCol, sizeof(collCol)); */
-/*     carElt->_vect(SIM_VECT_SPD).start.z = SIM_Z_OFFSET; */
-/*     carElt->_vect(SIM_VECT_SPD).end.z = SIM_Z_OFFSET; */
-/*     carElt->_vect(SIM_VECT_ACCEL).type = CAR_VECT_RELATIVE; */
-/*     memcpy(carElt->_vect(SIM_VECT_ACCEL).color, accelCol, sizeof(collCol)); */
-/*     carElt->_vect(SIM_VECT_ACCEL).start.z = SIM_Z_OFFSET; */
-/*     carElt->_vect(SIM_VECT_ACCEL).end.z = SIM_Z_OFFSET; */
-
-/*     for (i = 0; i < 4; i++) { */
-/* 	carElt->_vect(SIM_WHEEL_SPD+i).type = CAR_VECT_RELATIVE; */
-/* 	memcpy(carElt->_vect(SIM_WHEEL_SPD+i).color, spdCol, sizeof(collCol)); */
-/* 	carElt->_vect(SIM_WHEEL_SPD+i).start.x = carElt->priv->wheel[i].relPos.x; */
-/* 	carElt->_vect(SIM_WHEEL_SPD+i).start.y = carElt->priv->wheel[i].relPos.y; */
-/* 	carElt->_vect(SIM_WHEEL_SPD+i).start.z = carElt->priv->wheel[i].relPos.z + SIM_Z_OFFSET; */
-/* 	carElt->_vect(SIM_WHEEL_SPD+i).end.z = carElt->_vect(SIM_WHEEL_SPD+i).start.z; */
-
-/* 	carElt->_vect(SIM_WHEEL_ACCEL+i).type = CAR_VECT_RELATIVE; */
-/* 	memcpy(carElt->_vect(SIM_WHEEL_ACCEL+i).color, accelCol, sizeof(collCol)); */
-/* 	carElt->_vect(SIM_WHEEL_ACCEL+i).start.x = carElt->priv->wheel[i].relPos.x; */
-/* 	carElt->_vect(SIM_WHEEL_ACCEL+i).start.y = carElt->priv->wheel[i].relPos.y; */
-/* 	carElt->_vect(SIM_WHEEL_ACCEL+i).start.z = carElt->priv->wheel[i].relPos.z + SIM_Z_OFFSET; */
-/* 	carElt->_vect(SIM_WHEEL_ACCEL+i).end.z = carElt->_vect(SIM_WHEEL_ACCEL+i).start.z; */
-/*     } */
 
     SimCarCollideConfig(car);
     sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
@@ -363,41 +332,24 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->_fuel = car->fuel;
 	carElt->priv->collision |= car->collision;
 	carElt->_dammage = car->dammage;
-
-	/* Simulation vectors */
-	if (car->collision > 1) {
-	    carElt->_vect(SIM_VECT_COLL).type = CAR_VECT_ABSOLUTE;
-	    carElt->_vect(SIM_VECT_COLL).start = car->collpos;
-	    carElt->_vect(SIM_VECT_COLL).end.x = car->collpos.x + car->normal.x * 2.0;
-	    carElt->_vect(SIM_VECT_COLL).end.y = car->collpos.y + car->normal.y * 2.0;
-	    carElt->_vect(SIM_VECT_COLL).end.z = carElt->_vect(SIM_VECT_COLL).start.z = car->DynGC.pos.z + SIM_Z_OFFSET;
-	} else {
-	    carElt->_vect(SIM_VECT_COLL).type = CAR_VECT_INVALID;
-	}
-
-	carElt->_vect(SIM_VECT_SPD).end.x = car->DynGC.vel.x/5.0;
-	carElt->_vect(SIM_VECT_SPD).end.y = car->DynGC.vel.y/5.0;
-	carElt->_vect(SIM_VECT_ACCEL).end.x = car->DynGC.acc.x/5.0;
-	carElt->_vect(SIM_VECT_ACCEL).end.y = car->DynGC.acc.y/5.0;
-
-	for (i = 0; i < 4; i++) {
-	    carElt->_vect(SIM_WHEEL_SPD+i).end.x = carElt->_vect(SIM_WHEEL_SPD+i).start.x + car->wheel[i].bodyVel.x/10.0;
-	    carElt->_vect(SIM_WHEEL_SPD+i).end.y = carElt->_vect(SIM_WHEEL_SPD+i).start.y +car->wheel[i].bodyVel.y/10.0;
-	    carElt->_vect(SIM_WHEEL_ACCEL+i).end.x = carElt->_vect(SIM_WHEEL_ACCEL+i).start.x + car->wheel[i].forces.x/500.0;
-	    carElt->_vect(SIM_WHEEL_ACCEL+i).end.y = carElt->_vect(SIM_WHEEL_ACCEL+i).start.y + car->wheel[i].forces.y/500.0;
-	}
     }
 }
+
+static int SimNbCars;
 
 void
 SimInit(int nbcars)
 {
+    SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
+    SimCarCollideInit();
 }
 
 void
 SimShutdown(void)
 {
     //GfParmReleaseHandle(SimCarTable[0].params);
+    SimCarCollideShutdown(SimNbCars);
+    
     free(SimCarTable);   
 }

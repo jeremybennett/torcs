@@ -23,6 +23,8 @@
 
 #include <stdio.h>
 
+#define TRACE_GL(msg) { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) printf("%s %s\n", msg, gluErrorString(rc)); }
+
 #ifdef DEBUG
 #define DBG_SET_NAME(base, name, index, subindex)		\
 {								\
@@ -53,6 +55,7 @@ extern ssgState *grSsgLoadTexState(char *img);
 extern ssgState *grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap);
 extern int grPruneTree(ssgEntity *start, bool init);
 extern void grForceState(ssgEntity *start, ssgState *state);
+extern bool grLoadPngTexture (const char *fname, ssgTextureInfo* info);
 
 #endif /* _GRUTIL_H_ */ 
 

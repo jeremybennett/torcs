@@ -667,6 +667,10 @@ GfuiScreenAddBgImg(void *scr, char *filename)
     handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
     tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);
+    if (!tex) {
+	GfParmReleaseHandle(handle);
+	return;
+    }
     glGenTextures(1, &screen->bgImage);
     glBindTexture(GL_TEXTURE_2D, screen->bgImage);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

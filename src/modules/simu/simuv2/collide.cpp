@@ -301,6 +301,19 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
 }
 
+void
+SimCarCollideShutdown(int nbcars)
+{
+    int  i;
+    
+    for (i = 0; i < nbcars; i++) {
+	dtDeleteShape(SimCarTable[i].shape);
+	dtDeleteObject(&(SimCarTable[i]));
+    }
+    dtClearDefaultResponse();
+    dtDisableCaching();
+}
+
 
 void 
 SimCarCollideConfig(tCar *car)
@@ -313,8 +326,14 @@ SimCarCollideConfig(tCar *car)
     dtCreateObject(car, car->shape);
 
     car->collisionAware = 1;
-    
+}
+
+void
+SimCarCollideInit(void)
+{
     dtSetDefaultResponse(SimCarCollideResponse, DT_SMART_RESPONSE, NULL);
+    dtEnableCaching();
+    dtSetTolerance(0.001);
 }
 
 
@@ -335,12 +354,9 @@ SimCarCollideCars(tSituation *s)
 	memset(&(car->VelColl), 0, sizeof(tPosd));
     }
     
-/*     for (i = 0; i < 5; i++) { */
 	if (dtTest() == 0) {
 	    dtProceed();
-/* 	    break; */
 	}
-/*     } */
 
     for (i = 0; i < s->_ncars; i++) {
 	carElt = s->cars[i];
