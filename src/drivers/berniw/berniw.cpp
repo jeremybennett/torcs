@@ -135,7 +135,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	tdble b1;							/* brake value in case we are to fast HERE and NOW */
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
-	tdble b4;
+	tdble b4;							/* brake value for avoiding high angle of attack */
 	tdble rpm;
 	tdble steer, targetAngle, shiftaccel;
 
@@ -252,11 +252,12 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		b4 = 1.0;
 	}
 
-	steer = steer + MIN(0.1, myc->derror*0.05)*myc->getErrorSgn();
-	if (fabs(steer) > 1.0) steer/=fabs(steer);
+	if (!mpf->getPitStop()) {
+		steer = steer + MIN(0.1, myc->derror*0.02)*myc->getErrorSgn();
+		if (fabs(steer) > 1.0) steer/=fabs(steer);
+	}
 
 	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
-		//targetAngle = atan2(myc->destpathseg->getDir()->y, myc->destpathseg->getDir()->x);
 		targetAngle = atan2(myc->currentpathseg->getDir()->y, myc->currentpathseg->getDir()->x);
 		targetAngle -= car->_yaw;
 		NORM_PI_PI(targetAngle);

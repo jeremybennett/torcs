@@ -224,7 +224,10 @@ class Pathfinder
 		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);
 
 		inline double pathSlope(int id) {
-			double dp = (*ps[id].getDir())*(*track->getSegmentPtr(id)->getToRight());
+			int nextid = (id + 1) % nPathSeg;
+			v3d dir = *ps[nextid].getLoc() - *ps[id].getLoc();
+			dir.normalize();
+			double dp = dir*(*track->getSegmentPtr(id)->getToRight());
 			double alpha = PI/2.0 - acos(dp);
 			return sin(alpha);
 		}

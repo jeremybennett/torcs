@@ -21,7 +21,6 @@
 #include "berniw.h"
 
 const double Pathfinder::COLLDIST = 200.0;
-//const int Pathfinder::NTPARAMS = 1001;				/* # entries in dat files */
 const double Pathfinder::TPRES = PI/(NTPARAMS - 1);	/* resolution of the steps */
 
 
@@ -707,7 +706,7 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 	if (myc->derror > myc->PATHERR*myc->PATHERRFACTOR) {
 		start = trackSegId;
 	} else {
-		start = lastPlan+lastPlanRange-SEGRANGE;
+		start = lastPlan+lastPlanRange;
 	}
 
 	if (track->isBetween(e3, s1, trackSegId)) inPit = false;
@@ -716,12 +715,12 @@ void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar
 
 	/* load precomputed trajectory */
 	if (!pitStop && !inPit) {
-		for (int i = start; i < trackSegId+AHEAD+3; i++) {
+		for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getOptLoc());
 		}
 	} else {
-		for (int i = start; i < trackSegId+AHEAD+3; i++) {
+		for (int i = start; i < trackSegId+AHEAD+SEGRANGE; i++) {
 			int j = (i+nPathSeg) % nPathSeg;
 			ps[j].setLoc(ps[j].getPitLoc());
 		}
@@ -1186,10 +1185,6 @@ int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)
 		l += TRACKRES;
 	}
 
-	for (i = 5; i > 0; i--) {
-		optimize(id, l+i, 1.0);
-	}
-
 	/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */
 	double p = (id - 1 + nPathSeg) % nPathSeg;
 	double e = (id + 1 + nPathSeg) % nPathSeg;
@@ -1361,10 +1356,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 		/* reload old trajectory where needed */
 		for (i = trackSegId2; (j = (i+nPathSeg) % nPathSeg) != (trackSegId+AHEAD) % nPathSeg; i ++) {
 			ps[j].setLoc(ps[j].getOptLoc());
-		}
-
-		for (i = 20; i > 0; i--) {
-			optimize((trackSegId2-i+nPathSeg) % nPathSeg, 2*i, 1.0);
 		}
 
 		/* align previos point for getting correct speedsqr in Pathfinder::plan(...) */

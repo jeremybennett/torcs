@@ -95,7 +95,7 @@ class TrackSegment
 		v3d tr;					/* normalized direction vector to the right side */
 		double radius;			/* radius */
 		double kfriction;		/* friction */
-		double krollres;			/* rolling resistance */
+		double krollres;		/* rolling resistance */
 		double kroughness;		/* roughness */
 		double kroughwavelen;	/* wavelen */
 		double width;			/* width of the track segment*/

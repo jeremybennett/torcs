@@ -163,9 +163,6 @@ class MyCar : public AbstractCar
 		inline double getWheelBase() { return wheelbase; }
 		inline double getWheelTrack() { return wheeltrack; }
 		inline double getErrorSgn() { return derrorsgn; }
-		//inline double getIderror() { return iderror; }
-		//inline double getAerror() { return aerror; }
-		//inline double getIaerror() { return aerror; }
 		inline Pathfinder* getPathfinderPtr() { return pf; }
 
 
@@ -180,15 +177,11 @@ class MyCar : public AbstractCar
 		double wheelbase;
 		double wheeltrack;
 		double derrorsgn;		/* on which side of the trajectory am i left -1 or 1 right */
-		//double iderror;
-		//double aerror;			/* error of angle to path */
-		//double iaerror;			/* integrated aerror */
 
 		Pathfinder* pf;
 
 		void updateCa();
 		void updateDError(TrackDesc* track);
-		//void updateAError();
 };
 
 
