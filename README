@@ -73,6 +73,17 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.2.3
+-------------------
+- Reworked eroad (Bernhard).
+- New sounds/sound adjustments (Christos).
+- Bugfix in transmission (Christos).
+- Introduced additional sound effects for simuv2 (Christos).
+- Reworked cg-nascar-rwd (holes, dark lod, better lighting) (Bernhard).
+- Max Torque as well for simuv2 (Christophe Baegert, Christos).
+- More efficient rear mirror (Felix Kühling, Bernhard).
+
+
 
 Changes since 1.2.2
 -------------------
@@ -94,7 +105,7 @@ Changes since 1.2.3-bw-unofficial-test1
 - Fix/Retest track selection crash (Bernhard).
 - Hunting lost open filehandles (done, all I have found so far and are caused
   by TORCS) (Bernhard).
-- Updated open wheel car (Speedychonchon, Benrhard).
+- Updated open wheel car (Speedychonchon, Bernhard).
 - Fixed championship saving bug (Bernhard, SF report by Eugen).
 - Fixed mouse-scrolling crash (Bernhard, SF report by Frieder).
 - Collision (wall of death), not perfect, but good enough for now (Bernhard).
@@ -145,7 +156,8 @@ Changes since 1.2.3-bw-unofficial-test4
 ---------------------------------------
 - Disabled Olethros track_* file writing (Bernhard).
 - Reworked Viper (new bottom, 1 sided polygons, fixed holes) (Bernhard).
-- Some changes in Makefiles etc.
+- Some changes in Makefiles etc (Bernhard).
+- Fixed crash bug in human.cpp (Bernhard).
 - released as 1.2.3.
 
 
@@ -176,11 +188,24 @@ TODO for unofficial 1.2.4
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
+- add RtBarrierNormalG() and use it in simuv*.
+- fix sound in split screen multiplayer.
+- add more races to championship.
+- Fix non ending races because of failing virtual crane.
+- Problem when driver list changes during championship.
+- Investigate non reproducable (so far) crash after changing properties in
+  multiple players (human) and then doing a race with 2 players. Happend just
+  after a fresh install and just once so far (is one of the shipped xml files
+  broken)?
+- downsize grey-tracks.rgb texture.
+- in long races car-to-car collisions fail somehow sometimes -> investigate
+
+
 
 TODO for unofficial 1.2.5
 -------------------------
 - All the new and postponed stuff.
-- make use of pbuffers to render mirror/trackmap if available.
+- make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
 - (Automate GL features verification).
@@ -190,7 +215,8 @@ TODO for unofficial 1.2.5
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-
+- (Problem with BRD Sim-pro in windows, investigate)
+- pit wall collision
 
 TODO LATER
 ----------
@@ -205,7 +231,7 @@ TODO LATER
 - Networking (2.0).
 - SDL Port.
 - Sound OpenAL.
-- Installer/packages.
+- Installer/packages (done).
 - Redesign/Reimplement multitexturing and fileformat.
 - Apply light maps to skid marks, smoke and wheels, etc.
 - Phong specular highlights (optional env, cube or GLSL).
@@ -246,6 +272,9 @@ TODO LATER
 - More driving aids, switch to AI and back.
 - localization (e.g English, French, German, ...).
 - add compatibility lib for strndup etc. on win32.
+- New GUI.
+- driving/races in reverse track direction.
+
 
 IDEAS FOR MUCH LATER
 --------------------
