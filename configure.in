@@ -62,6 +62,14 @@ AC_ARG_ENABLE(profiler,
 CXXFLAGS="$CFLAGS"
 LDFLAGS="$LDFLAGS -L$x_libraries"
 
+dnl Checks for includes (devel part of packages)
+AC_CHECK_HEADER(GL/glut.h,, AC_MSG_ERROR([Can't find GL/glut.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_HEADER(GL/glx.h,, AC_MSG_ERROR([Can't find GL/glx.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_HEADER(X11/Xlib.h,, AC_MSG_ERROR([Can't find X11/Xlib.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_HEADER(X11/Xatom.h,, AC_MSG_ERROR([Can't find X11/Xatom.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_HEADER(X11/keysym.h,, AC_MSG_ERROR([Can't find X11/keysym.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_HEADER(plib/ssg.h,, AC_MSG_ERROR([Can't find plib/ssg.h. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+
 dnl Checks for libraries.
 
 dnl Replace `main' with a function in -lm:
@@ -82,16 +90,17 @@ dnl Replace `main' with a function in -lXmu:
 AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(Xxf86vm, XF86VidModeSetViewPort,,AC_MSG_ERROR([Can't find libXxf86vm. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
-AC_CHECK_LIB(dl, dlopen,,AC_MSG_ERROR([Can't find libdl. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(dl, dlopen)
+AC_CHECK_FUNC(dlopen,,AC_MSG_ERROR([Can't find dlopen function. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
 dnl Replace `main' with a function in -lz:
 AC_CHECK_LIB(z, crc32,,AC_MSG_ERROR([Can't find libz. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lpng:
 AC_CHECK_LIB(png, png_init_io,,AC_MSG_ERROR([Can't find libpng. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
 
-AC_CHECK_LIB(GL, main,,AC_MSG_ERROR([Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
-AC_CHECK_LIB(GLU, main,,AC_MSG_ERROR([Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
-AC_CHECK_LIB(glut, main,,AC_MSG_ERROR([Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(GL, glGetString,,AC_MSG_ERROR([Can't find libGL. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(GLU, gluOrtho2D,,AC_MSG_ERROR([Can't find libGLU. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(freeglut-1.3, glutSwapBuffers,,AC_CHECK_LIB(glut, glutSwapBuffers,,AC_MSG_ERROR([Can't find libglut. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"])))
 
 dnl Checks for plib libraries.
 AC_CHECK_LIB(plibul, main,,AC_MSG_ERROR([Can't find libplibul. Please check config.log and if you can't solve the problem send the file to eric.espie@free.fr with the subject \"torcs compilation problem\"]))

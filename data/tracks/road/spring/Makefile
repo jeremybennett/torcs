@@ -19,7 +19,7 @@
 
 DATADIR   = tracks/road/spring
 
-DATA      = spring.xml spring.ac
+DATA      = spring.xml spring.ac spring.png
 
 data-tracks-base_PKGFILES	= $(DATA)
 

@@ -76,7 +76,7 @@ CurDir='.' ; \
 echo "" >> ${INIT_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "if exist $$D call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
+echo "if exist $$D\\*.* call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
 done
 endef
 
@@ -86,7 +86,7 @@ CurDir='.' ; \
 echo "" >> ${DATA_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "if exist $$D call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
+echo "if exist $$D\\*.* call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
 done
 endef
 
@@ -155,7 +155,7 @@ win32start:
 
 
 win32end:
-	@sed -e "s:${TORCS_BASE}:\.:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
+	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:/src/linux/:/src/windows/:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
@@ -401,8 +401,8 @@ installtools: ${TOOLSCRIPT}
 	@createdir="${INSTBINBASE}/${TOOLSDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
 	X="${TOOLSCRIPT}" ; \
-	echo " $(INSTALL_PROGRAM) $$X $$createdir/$$X"; \
-	$(INSTALL_PROGRAM) $$X $$createdir/$$X
+	echo " $(INSTALL_SCRIPT) $$X $$createdir/$$X"; \
+	$(INSTALL_SCRIPT) $$X $$createdir/$$X
 
 else
 
@@ -435,7 +435,7 @@ endif
 ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
-	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
+	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LDFLAGS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \
@@ -466,7 +466,7 @@ endif
 ifdef MODULE
 
 ${MODULE}: ${OBJECTS}
-	${CXX} -shared -o ${MODULE} ${OBJECTS} ${LIBSPATH} ${LIBS} 
+	${CXX} -shared -o ${MODULE} ${OBJECTS} ${LDFLAGS} ${LIBSPATH} ${LIBS} 
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${MODULEDIR}" ; \
 	$(mkinstalldirs) $$createdir ; \
@@ -719,6 +719,7 @@ installconf:
 	echo "        cp -f \$$1/${SHIPDIR}/$$C \$$1/${SHIPDIR}/$$C.old" >> ${SETUP_LINUX} ; \
 	echo "    fi" >> ${SETUP_LINUX} ; \
 	echo "    cp -f ${SHIPDIR}/$$C \$$1/${SHIPDIR}/$$C" >> ${SETUP_LINUX} ; \
+	echo "    chmod 640 \$$1/${SHIPDIR}/$$C" >> ${SETUP_LINUX} ; \
 	echo "fi" >> ${SETUP_LINUX} ; \
 	done
 
