@@ -61,14 +61,16 @@ void grSetView(int x, int y, int w, int h)
     grviewRatio = (float)w / (float)h;
     glViewport(x, y, w, h);
 
-    if (grScissorflag) {
-	glScissor(x, y, w, h);
-    }
-
     scrx = x;
     scry = y;
     scrw = w;
     scrh = h;
+}
+
+void grSetView2(int x, int y, int w, int h)
+{
+    grviewRatio = (float)w / (float)h / 1.5;
+    glViewport(x, y, w, h);
 }
 
 void grSetZoom(void *vp) 
@@ -1262,7 +1264,7 @@ grInitCams(void)
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
 			     1.0,	/* fovymin */
-			     60.0,	/* fovymax */
+			     90.0,	/* fovymax */
 			     300.0,	/* distz */
 			     0,		/* axis */
 			     200.0,	/* near */
@@ -1279,7 +1281,7 @@ grInitCams(void)
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
 			     1.0,	/* fovymin */
-			     60.0,	/* fovymax */
+			     90.0,	/* fovymax */
 			     300.0,	/* distz */
 			     1,		/* axis */
 			     200.0,	/* near */
@@ -1296,7 +1298,7 @@ grInitCams(void)
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
 			     1.0,	/* fovymin */
-			     60.0,	/* fovymax */
+			     90.0,	/* fovymax */
 			     300.0,	/* distz */
 			     2,		/* axis */
 			     200.0,	/* near */
@@ -1313,7 +1315,7 @@ grInitCams(void)
 			     1,	/* drawBG  */
 			     30.0,	/* fovy */
 			     1.0,	/* fovymin */
-			     60.0,	/* fovymax */
+			     90.0,	/* fovymax */
 			     300.0,	/* distz */
 			     3,		/* axis */
 			     200.0,	/* near */

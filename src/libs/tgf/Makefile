@@ -27,7 +27,7 @@ SOURCES   = 	module.cpp \
 		trace.cpp \
 		directory.cpp \
 		profiler.cpp \
-		ringlist.cpp
+		hash.cpp
 
 
 EXPDIR  = include

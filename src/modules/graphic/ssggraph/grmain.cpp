@@ -28,7 +28,6 @@
 
 #include <tgfclient.h>
 #include <graphic.h>
-#include <racemantools.h>
 
 #include "grmain.h"
 #include "grshadow.h"
@@ -45,12 +44,6 @@
 #include "dmalloc.h"
 #endif
 
-int grDebugFlag			= 1;
-int grBoardFlag			= 1;
-int grLeaderFlag		= 1;
-int grLeaderNb			= 10;
-int grCounterFlag		= 1;
-int grGFlag			= 0;
 int grDrawCurrent		= 0;
 
 int maxTextureUnits = 0;
@@ -72,6 +65,17 @@ int grWinx, grWiny, grWinw, grWinh;
 
 tgrCarInfo	*grCarInfo;
 ssgContext	grContext;
+
+/* splitted screen */
+int winX[4];
+int winY[4];
+int winW;
+int winH;
+float winR;
+int currCurrent[4] = {0};
+
+int nbScreen = 1;
+
 
 static char buf[1024];
 
@@ -143,6 +147,82 @@ bool InitMultiTex(void)
 		return false;
 }
 
+static void
+grAdaptScreenSize(void)
+{
+    switch (nbScreen) {
+    case 0:
+    case 1:
+	winX[0] = grWinx;
+	winY[0] = grWiny;
+	winW = grWinw;
+	winH = grWinh;
+	winR = winW / winH;
+	break;
+    case 2:
+	winX[0] = grWinx;
+	winY[0] = grWiny + grWinh / 2;
+	winW = grWinw;
+	winH = grWinh / 2;
+
+	winX[1] = grWinx;
+	winY[1] = grWiny;
+	winR = winW / winH;
+	break;
+    case 3:
+	winX[0] = grWinx;
+	winY[0] = grWiny + grWinh / 2;
+	winW = grWinw / 2;
+	winH = grWinh / 2;
+
+	winX[1] = grWinx + grWinw / 2;
+	winY[1] = grWiny + grWinh / 2;
+
+	winX[2] = grWinx + grWinw / 4;
+	winY[2] = grWiny;
+	winR = winW / winH;
+	break;
+    case 4:
+	winX[0] = grWinx;
+	winY[0] = grWiny + grWinh / 2;
+	winW = grWinw / 2;
+	winH = grWinh / 2;
+
+	winX[1] = grWinx + grWinw / 2;
+	winY[1] = grWiny + grWinh / 2;
+
+	winX[2] = grWinx;
+	winY[2] = grWiny;
+
+	winX[3] = grWinx + grWinw / 2;
+	winY[3] = grWiny;
+	winR = winW / winH;
+	break;
+    }
+}
+
+static void
+grSplitScreen(void *vp)
+{
+    int p = (int)vp;
+
+    switch (p) {
+    case GR_SPLIT_ADD:
+	nbScreen++;
+	if (nbScreen > GR_NB_MAX_SCREEN) {
+	    nbScreen = GR_NB_MAX_SCREEN;
+	}
+	break;
+    case GR_SPLIT_REM:
+	nbScreen--;
+	if (nbScreen < 1) {
+	    nbScreen = 1;
+	}
+	break;
+    }
+    grAdaptScreenSize();
+}
+
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
@@ -175,18 +255,7 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
-				    (char*)NULL, grDebugFlag);
-    grBoardFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_BOARD,
-				    (char*)NULL, grBoardFlag);
-    grLeaderFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_LEADER,
-				     (char*)NULL, grLeaderFlag);
-    grLeaderNb = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NBLEADER,
-				   (char*)NULL, grLeaderNb);
-    grCounterFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_COUNTER,
-				      (char*)NULL, grCounterFlag);
-    grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
-				(char*)NULL, grGFlag);
+    grLoadBoardParams();
 
     GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
     GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
@@ -203,13 +272,18 @@ initView(int x, int y, int width, int height, int flag, void *screen)
     GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera, NULL);
     GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera, NULL);
 
-    GfuiAddKey(screen, '5',            "G/Cmd Graph",      (void*)4, grSelectBoard, NULL);
-    GfuiAddKey(screen, '4',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
+    GfuiAddKey(screen, '5',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
+    GfuiAddKey(screen, '4',            "G/Cmd Graph",      (void*)4, grSelectBoard, NULL);
     GfuiAddKey(screen, '3',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
     GfuiAddKey(screen, '2',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
     GfuiAddKey(screen, '1',            "Driver Board",     (void*)0, grSelectBoard, NULL);
+    GfuiAddKey(screen, '0',            "Arcade Board",     (void*)5, grSelectBoard, NULL);
     GfuiAddKey(screen, '>',            "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
     GfuiAddKey(screen, '<',            "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
+    GfuiAddKey(screen, '[',            "Split Screen",     (void*)GR_SPLIT_ADD,	grSplitScreen, NULL);
+    GfuiAddKey(screen, ']',            "UnSplit Screen",   (void*)GR_SPLIT_REM,	grSplitScreen, NULL);
+
+    grAdaptScreenSize();
 
     grInitScene();
 
@@ -220,8 +294,9 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 int
 refresh(tSituation *s)
 {
-    int			i;
+    int			i, j, player;
     ssgLight *          light;
+    sgVec4		fogColor;
 
     START_PROFILE("refresh");
     light=ssgGetLight(0);
@@ -242,83 +317,153 @@ refresh(tSituation *s)
     grRefreshSound(s);
     STOP_PROFILE("grRefreshSound*");
 
-    grSetView(scrx, scry, scrw, scrh);
-
-    glDisable(GL_COLOR_MATERIAL);
-
-    START_PROFILE("grCurCam->update*");
-    grCurCam->update(s->cars[s->current], s);
-    STOP_PROFILE("grCurCam->update*");
-
     START_PROFILE("grDrawBackground/glClear");
     glDepthFunc(GL_LEQUAL);
-    if (grCurCam->getDrawBackground()) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable(GL_LIGHTING);    
-	grDrawBackground(grCurCam);
-	glEnable(GL_DEPTH_TEST);
-	glClear(GL_DEPTH_BUFFER_BIT);
-    } else {
-	glEnable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     STOP_PROFILE("grDrawBackground/glClear");
 
-    START_PROFILE("grCurCam->action*");
-    grCurCam->action();
-    STOP_PROFILE("grCurCam->action*");
 
-    START_PROFILE("grDrawCar*");
-    sgVec4 fogColor;
-    light->getColour(GL_AMBIENT, fogColor);
-    sgScaleVec4(fogColor, 0.8);
-    fogColor[3] = 0.5;
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_DENSITY, 0.05);
-    glHint(GL_FOG_HINT, GL_DONT_CARE);
-    glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
-    glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
-    glEnable(GL_FOG);
+    if (nbScreen < 2) {
+	if (grCurCam->getDrawBackground()) {
+	    glDisable(GL_LIGHTING);    
+	    grDrawBackground(grCurCam);
+	    glEnable(GL_DEPTH_TEST);
+	    glClear(GL_DEPTH_BUFFER_BIT);
+	} else {
+	    glEnable(GL_DEPTH_TEST);
+	}
 
-    for (i = 0; i < s->_ncars; i++) {
-      grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
-    } 
-    segIndice = (s->cars[s->current])->_trkPos.seg->id;
-    grUpdateSmoke(s->currentTime);
-    STOP_PROFILE("grDrawCar*");
+	grSetView(scrx, scry, scrw, scrh);
 
-    START_PROFILE("grDrawScene*");
-    /*glEnable(GL_DEPTH_TEST);*/
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_COLOR_MATERIAL);
 
-    /* glDisable(GL_LIGHTING); */
-    grDrawScene();
-    STOP_PROFILE("grDrawScene*");
+	START_PROFILE("grCurCam->update*");
+	grCurCam->update(s->cars[s->current], s);
+	STOP_PROFILE("grCurCam->update*");
 
-    START_PROFILE("grBoardCam*");
-    glViewport(grWinx, grWiny, grWinw, grWinh);
-    grBoardCam->action();
-    STOP_PROFILE("grBoardCam*");
+	START_PROFILE("grCurCam->action*");
+	grCurCam->action();
+	STOP_PROFILE("grCurCam->action*");
 
-    START_PROFILE("grDisp**");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);    
-    glDisable(GL_COLOR_MATERIAL);
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_TEXTURE_2D);
+	START_PROFILE("grDrawCar*");
+	light->getColour(GL_AMBIENT, fogColor);
+	sgScaleVec4(fogColor, 0.8);
+	fogColor[3] = 0.5;
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, 0.05);
+	glHint(GL_FOG_HINT, GL_DONT_CARE);
+	glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
+	glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
+	glEnable(GL_FOG);
 
-    TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
-    if (grDebugFlag)   grDispDebug(Fps, s->cars[s->current], s);
-    if (grGFlag)       grDispGGraph(s->cars[s->current]);
-    if (grBoardFlag)   grDispCarBoard(s->cars[s->current], s);
-    if (grLeaderFlag)  grDispLeaderBoard(s->cars[s->current], s);
-    if (grCounterFlag) grDispCounterBoard2(s->cars[s->current]);
-    TRACE_GL("refresh: display boards");
-    STOP_PROFILE("grDisp**");
+	for (i = 0; i < s->_ncars; i++) {
+	    grDrawCar(s->cars[i], s->cars[s->current], grCurCam->getDrawCurrent(), s->currentTime);
+	} 
+	segIndice = (s->cars[s->current])->_trkPos.seg->id;
+	grUpdateSmoke(s->currentTime);
+	STOP_PROFILE("grDrawCar*");
+
+	START_PROFILE("grDrawScene*");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	grDrawScene();
+	STOP_PROFILE("grDrawScene*");
+
+	START_PROFILE("grBoardCam*");
+	glViewport(grWinx, grWiny, grWinw, grWinh);
+	grBoardCam->action();
+	STOP_PROFILE("grBoardCam*");
+
+	START_PROFILE("grDisp**");
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);    
+	glDisable(GL_COLOR_MATERIAL);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
+
+	TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
+	grRefreshBoard(s, Fps, 0, s->current);
+	TRACE_GL("refresh: display boards");
+	STOP_PROFILE("grDisp**");
+    } else {
+	for (player = 0; player < nbScreen; player++) {
+	    grviewRatio = winR;
+	    glViewport(winX[player], winY[player], winW, winH);
+
+	    if (s->cars[currCurrent[player]]->_startRank != player) {
+		for (j = 0; j < s->_ncars; j++) {
+		    if (s->cars[j]->_startRank == player) {
+			currCurrent[player] = j;
+			break;
+		    }
+		}
+	    }
+	    
+	    glDisable(GL_COLOR_MATERIAL);
+
+	    START_PROFILE("grCurCam->update*");
+	    grCurCam->update(s->cars[currCurrent[player]], s);
+	    STOP_PROFILE("grCurCam->update*");
+
+	    if (grCurCam->getDrawBackground()) {
+		glDisable(GL_LIGHTING);    
+		grDrawBackground(grCurCam);
+		glEnable(GL_DEPTH_TEST);
+		glClear(GL_DEPTH_BUFFER_BIT);
+	    } else {
+		glEnable(GL_DEPTH_TEST);
+	    }
+
+	    START_PROFILE("grCurCam->action*");
+	    grCurCam->action();
+	    STOP_PROFILE("grCurCam->action*");
+
+	    START_PROFILE("grDrawCar*");
+	    light->getColour(GL_AMBIENT, fogColor);
+	    sgScaleVec4(fogColor, 0.8);
+	    fogColor[3] = 0.5;
+	    glFogi(GL_FOG_MODE, GL_LINEAR);
+	    glFogfv(GL_FOG_COLOR, fogColor);
+	    glFogf(GL_FOG_DENSITY, 0.05);
+	    glHint(GL_FOG_HINT, GL_DONT_CARE);
+	    glFogf(GL_FOG_START, ((cGrPerspCamera*)grCurCam)->getFogStart());
+	    glFogf(GL_FOG_END, ((cGrPerspCamera*)grCurCam)->getFogEnd());
+	    glEnable(GL_FOG);
+
+	    for (i = 0; i < s->_ncars; i++) {
+		grDrawCar(s->cars[i], s->cars[currCurrent[player]], grCurCam->getDrawCurrent(), s->currentTime);
+	    } 
+	    STOP_PROFILE("grDrawCar*");
+
+	    START_PROFILE("grDrawScene*");
+	    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	    grDrawScene();
+	    STOP_PROFILE("grDrawScene*");
+
+	    START_PROFILE("grBoardCam*");
+	    //glViewport(grWinx, grWiny, grWinw, grWinh);
+	    grBoardCam->action();
+	    STOP_PROFILE("grBoardCam*");
+
+	    START_PROFILE("grDisp**");
+	    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	    glDisable(GL_CULL_FACE);
+	    glDisable(GL_DEPTH_TEST);
+	    glDisable(GL_LIGHTING);    
+	    glDisable(GL_COLOR_MATERIAL);
+	    glDisable(GL_ALPHA_TEST);
+	    glDisable(GL_TEXTURE_2D);
+
+	    TRACE_GL("refresh: glDisable(GL_DEPTH_TEST)");
+	    grRefreshBoard(s, Fps, 1, currCurrent[player]);
+	    TRACE_GL("refresh: display boards");
+	    STOP_PROFILE("grDisp**");
+	}
+    }
 
     STOP_PROFILE("refresh");
     return 0;

@@ -25,7 +25,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="7"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="10"/>
   </section>
 
 
@@ -47,10 +47,10 @@
 	<attnum name="ratio" min="0" max="5" val="1.00"/>
       </section>
       <section name="5">
-	<attnum name="ratio" min="0" max="5" val=".74"/>
+	<attnum name="ratio" min="0" max="5" val=".80"/>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.60"/>
+	<attnum name="ratio" min="0" max="5" val="0.70"/>
       </section>
     </section>
   </section>
@@ -95,13 +95,13 @@
 
   <section name="Front Anti-Roll Bar">
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0"/>
     <attnum name="bellcrank" min="1" max="5" val="2.5"/>
   </section>
 
   <section name="Rear Anti-Roll Bar">
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0"/>
     <attnum name="bellcrank" min="1" max="5" val="2.5"/>
   </section>
 

@@ -68,11 +68,11 @@ ReBoardInfo(void *vboard)
     if (ReInfo->s->_raceState & RM_RACE_PAUSED) {
 	ReInfo->s->_raceState &= ~RM_RACE_PAUSED;
 	ReStart();
-	GfuiVisiblilitySet(reScreenHandle, rePauseId, 0);
+	GfuiVisibilitySet(reScreenHandle, rePauseId, 0);
     } else {
 	ReInfo->s->_raceState |= RM_RACE_PAUSED;
 	ReStop();
-	GfuiVisiblilitySet(reScreenHandle, rePauseId, 1);
+	GfuiVisibilitySet(reScreenHandle, rePauseId, 1);
     }
 }
 
@@ -102,7 +102,9 @@ reAddKeys(void)
     GfuiAddKey(reScreenHandle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply, NULL);
     /* GfuiAddKey(reScreenHandle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply, NULL); */
     GfuiAddKey(reScreenHandle, ' ', "Skip Pre Start",    (void*)0, reSkipPreStart, NULL);
-    
+#ifdef DEBUG
+    //GfuiAddKey(reScreenHandle, '0', "One step simulation",    (void*)1, reOneStep, NULL);
+#endif
 }
 
 
@@ -149,31 +151,31 @@ ReScreenInit(void)
     reMsgId = GfuiLabelCreateEx(reScreenHandle,
 				"",
 				red,
-				GFUI_FONT_MEDIUM,
+				GFUI_FONT_LARGE_C,
 				320,
-				440,
+				400,
 				GFUI_ALIGN_HC_VB,
 				32);
 
     rePauseId = GfuiLabelCreateEx(reScreenHandle,
 				  "P A U S E",
 				  red,
-				  GFUI_FONT_BIG,
+				  GFUI_FONT_BIG_C,
 				  320,
-				  400,
+				  420,
 				  GFUI_ALIGN_HC_VB,
 				  0);
 
     reBigMsgId = GfuiLabelCreateEx(reScreenHandle,
 				   "",
 				   red,
-				   GFUI_FONT_BIG,
+				   GFUI_FONT_BIG_C,
 				   320,
 				   360,
 				   GFUI_ALIGN_HC_VB,
 				   32);
 
-    GfuiVisiblilitySet(reScreenHandle, rePauseId, 0);
+    GfuiVisibilitySet(reScreenHandle, rePauseId, 0);
 
     return reScreenHandle;
 }
@@ -240,7 +242,7 @@ reAddResKeys(void)
     GfuiAddSKey(reResScreenHdle, GLUT_KEY_F12, "Screen Shot", NULL, GfuiScreenShot, NULL);
 
     GfuiAddKey(reResScreenHdle, 27,  "Stop Current Race", (void*)RE_STATE_RACE_STOP, ReStateApply, NULL);
-    GfuiAddKey(reResScreenHdle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply, NULL);
+    /* GfuiAddKey(reResScreenHdle, 'q', "Exit of TORCS",     (void*)RE_STATE_EXIT, ReStateApply, NULL); */
 }
 
 static void
@@ -302,7 +304,7 @@ ReResScreenInit(void)
     reResTitleId = GfuiLabelCreateEx(reResScreenHdle,
 				     "",
 				     red,
-				     GFUI_FONT_MEDIUM,
+				     GFUI_FONT_LARGE_C,
 				     320, 420,
 				     GFUI_ALIGN_HC_VB, 50);
 
@@ -398,7 +400,7 @@ ReResShowCont(void)
 
     GfuiButtonCreate(reResScreenHdle,
 		     "Continue",
-		     GFUI_FONT_LARGE,
+		     GFUI_FONT_LARGE_C,
 		     320, 15, GFUI_BTNSZ,
 		     GFUI_ALIGN_HC_VB,
 		     0, 0, reResCont,

@@ -21,7 +21,7 @@
 #include <GL/glut.h>
 
 #include <tgfclient.h>
-#include <torcs.h>
+#include <client.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -43,11 +43,18 @@ init_args(int argc, char **argv)
 		SetLocalDir(buf);
 		i++;
 	    }
+#ifndef FREEGLUT
 	} else if (strncmp(argv[i], "-m", 2) == 0) {
 	    i++;
 	    GfuiMouseSetHWPresent(); /* allow the hardware cursor */
+#endif
+	} else {
+	    i++;		/* ignore bad args */
 	}
     }
+#ifdef FREEGLUT
+    GfuiMouseSetHWPresent(); /* allow the hardware cursor (freeglut pb ?) */
+#endif
 }
 
 /*

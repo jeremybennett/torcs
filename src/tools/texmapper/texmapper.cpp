@@ -44,9 +44,9 @@ int	ImgSize;
 
 ssgEntity	*Root;
 
-typedef struct 
+typedef struct Face
 {
-    tRingList	lnk;
+    GF_TAILQ_ENTRY(struct Face) link;
 
     ssgTransform	*branch;
     char	*faceName;
@@ -75,6 +75,8 @@ typedef struct
 int	NbRows;
 int	NbMaxCols;
 float	*ColWidth;
+
+GF_TAILQ_HEAD(RingListHead, struct Face);
 
 typedef struct
 {
@@ -119,13 +121,11 @@ static ssgBranch *
 hookNode(char *s)
 {
     int		i;
-    tRingList	*curElt;
     tFace	*curFace;
     
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
-	while (curElt) {
-	    curFace = (tFace*)curElt;
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
+	while (curFace) {
 	    if (!strcmp(s, curFace->faceName)) {
 		printf("Face %s found\n", s);
 		curFace->branch = new ssgTransform();
@@ -133,7 +133,7 @@ hookNode(char *s)
 		BrNb++;
 		return (ssgBranch*)curFace->branch;
 	    }
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
     }
     
@@ -166,7 +166,6 @@ void saveSkin(void)
 void draw(void)
 {
     int i;
-    tRingList	*curElt;
     tFace	*curFace;
     sgVec3	cam;
     
@@ -177,16 +176,15 @@ void draw(void)
 
     ssgSetOrtho(ImgSize, ImgSize);
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
-	while (curElt) {
-	    curFace = (tFace*)curElt;
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
+	while (curFace) {
 	    if (curFace->isPresent) {
 		printf("Drawing face %s\n", curFace->faceName);
 		ssgSetNearFar(MIN(curFace->sbbmin[1], curFace->sbbmax[1]) - 1, 
 			      MAX(curFace->sbbmin[1], curFace->sbbmax[1]) + 1);
 		ssgCullAndDraw((ssgRoot*)curFace->branch);
 	    }
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
     }
     //saveSkin();
@@ -289,7 +287,6 @@ void updt_bbox(ssgEntity *start, sgVec3 min, sgVec3 max)
 void calc_bbox(void)
 {
     int		i, j;
-    tRingList	*curElt;
     tFace	*curFace;
     ssgEntity	*e;
     sgVec3	min, max;
@@ -298,11 +295,10 @@ void calc_bbox(void)
     fprintf(stderr, "Bounding boxes:\n");
     NbMaxCols = 0;
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
 	nbcol = 0;
-	while (curElt) {
+	while (curFace) {
 	    nbcol++;
-	    curFace = (tFace*)curElt;
 	    if (curFace->isPresent) {
 		e = curFace->branch;
 		min[0] = min[1] = min[2] = INT_MAX;
@@ -314,7 +310,7 @@ void calc_bbox(void)
 		}
 		fprintf(stderr, "      Face %s : %f %f %f  ---  %f %f %f\n", curFace->faceName, min[0], min[1], min[2], max[0], max[1], max[2]);
 	    }
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
 	NbMaxCols = MAX(NbMaxCols, nbcol);
     }
@@ -324,7 +320,6 @@ void calc_coord(void)
 {
     sgMat4	m, m2;
     int		i, j;
-    tRingList	*curElt;
     tFace	*curFace;
     float	width, height;
     float	scale, offX, offY;
@@ -339,10 +334,8 @@ void calc_coord(void)
     largerRow = 0;
     maxWidth = 0;
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
-	while (curElt) {
-	    curFace = (tFace*)curElt;
-
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
+	while (curFace) {
 	    if (curFace->isPresent) {
 		branch = curFace->branch->getParent(0);
 		if (branch->isAKindOf(_SSG_TYPE_BASETRANSFORM)) {
@@ -379,7 +372,7 @@ void calc_coord(void)
 		Row[i].lwidth += curFace->lwidth;
 		Row[i].lheight = MAX(Row[i].lheight, curFace->lheight);
 	    }
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
 	if (Row[i].lwidth > maxWidth) {
 	    maxWidth = Row[i].lwidth;
@@ -395,14 +388,13 @@ void calc_coord(void)
     width = maxWidth;
     scale = (float)ImgSize / MAX(width, height);
 
-    curElt = GfRlstGetFirst(&(Row[largerRow].faces));
+    curFace = GF_TAILQ_FIRST(&(Row[largerRow].faces));
     i = 0;
     fprintf(stderr, "Columns : ");
-    while (curElt) {
-	curFace = (tFace*)curElt;
+    while (curFace) {
 	ColWidth[i] = curFace->lwidth * scale;
 	fprintf(stderr, "%.2f  ", ColWidth[i]);
-	curElt = GfRlstGetNext(&(Row[largerRow].faces), curElt);
+	curFace = GF_TAILQ_NEXT(curFace, link);
 	i++;
     }
     fprintf(stderr, "\n");
@@ -412,13 +404,11 @@ void calc_coord(void)
 
     offY = - (float)ImgSize / 2.0;
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
 	offY += Row[i].lheight*scale / 2.0;
 	col = 0;
 	offX = - (float)ImgSize / 2.0;
-	while (curElt) {
-	    curFace = (tFace*)curElt;
-
+	while (curFace) {
 	    if (curFace->isPresent) {
 		sgCopyMat4(m, curFace->mat);
 		curFace->texScale = scale;
@@ -443,7 +433,7 @@ void calc_coord(void)
 	    }
 	    col++;
 
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
 	offY += Row[i].lheight*scale / 2.0;
     }
@@ -482,20 +472,16 @@ void set_texcoord(ssgEntity *start, sgMat4 m)
 void set_texture_coord(void)
 {
     int		i;
-    tRingList	*curElt;
     tFace	*curFace;
 
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
-	while (curElt) {
-	    curFace = (tFace*)curElt;
-
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
+	while (curFace) {
 	    if (curFace->isPresent) {
 		/* now apply the matrix to the vertices */
 		set_texcoord(curFace->branch, curFace->mat);
 	    }
-
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
     }
     
@@ -522,7 +508,6 @@ void load_database(void)
 void save_database(void)
 {
     int i;
-    tRingList	*curElt;
     tFace	*curFace;
     sgMat4	m;
     ssgBranch	*b = new ssgBranch();
@@ -530,15 +515,14 @@ void save_database(void)
 
     sgMakeIdentMat4(m);
     for (i = 0; i < NbRows; i++) {
-	curElt = GfRlstGetFirst(&(Row[i].faces));
-	while (curElt) {
-	    curFace = (tFace*)curElt;
+	curFace = GF_TAILQ_FIRST(&(Row[i].faces));
+	while (curFace) {
 	    if (curFace->isPresent) {
 		curFace->branch->setTransform(m);
 		ssgFlatten(curFace->branch);
 		ssgStripify(curFace->branch);
 	    }
-	    curElt = GfRlstGetNext(&(Row[i].faces), curElt);
+	    curFace = GF_TAILQ_NEXT(curFace, link);
 	}
     }
     
@@ -568,13 +552,13 @@ void load_params(void)
     GfParmListSeekFirst(ParamHandle, "faces");
     for (i = 0; i < NbRows; i++) {
 	col = GfParmListGetCurEltName(ParamHandle, "faces");
-	GfRlstInit(&(Row[i].faces));
+	GF_TAILQ_INIT(&(Row[i].faces));
 	sprintf(buf, "faces/%s/col", col);
 	nbcol = GfParmGetEltNb(ParamHandle, buf);
 	GfParmListSeekFirst(ParamHandle, buf);
 	for (j = 0; j < nbcol; j++) {
 	    curFace = (tFace*)calloc(1, sizeof(tFace));
-	    GfRlstAddLast(&(Row[i].faces), (tRingList*)curFace);
+	    GF_TAILQ_INSERT_TAIL(&(Row[i].faces), curFace, link);
 	    curFace->faceName = GfParmGetCurStr(ParamHandle, buf, "face name", NULL);
 	    if ((curFace->faceName != 0) && (strlen(curFace->faceName) != 0)) {
 		curFace->isPresent = true;

@@ -784,6 +784,8 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
     tdble	curzel, curzer, curArc, curLength, curzsl, curzsr;
     tdble	grade;
 
+    void	*segNameHash = NULL;
+
     static char	path[256];
 #define MAX_TMP_INTS	256
     int		mi[MAX_TMP_INTS];
@@ -836,6 +838,9 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
     DoVfactor =1.0;
     InitSides(TrackHandle, theTrack);
     
+    if (ext) {
+	segNameHash = GfHashCreate(GF_HASH_TYPE_STR);
+    }
     segread = 0;
     curindex = 0;
     GfParmListSeekFirst(TrackHandle, path);
@@ -895,6 +900,13 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	    length = (radius + radiusend) / 2.0 * arc;
 	}
 	segName = GfParmListGetCurEltName(TrackHandle, path);
+	if (ext) {
+	    if (GfHashGetStr(segNameHash, segName)) {
+		printf(">>>>>>>>> DUPLICATED SEGMENT NAME \"%s\" PLEASE CHANGE IT !!!!\n", segName);
+		exit(1);
+	    }
+	    GfHashAddStr(segNameHash, segName, segName);
+	}
 
 	/* elevation and banking */
 	zsl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZSL, (char*)NULL, zsl);
@@ -1242,6 +1254,10 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	}
 
     } while (GfParmListSeekNext(TrackHandle, path) == 0);
+
+    if (ext) {
+	GfHashRelease(segNameHash, NULL);
+    }
 
     /* printf("\n"); */
     

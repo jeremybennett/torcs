@@ -18,6 +18,8 @@
 
 TOOLSUBDIRS = gennmtab
 
+SUBDIRS = gennmtab
+
 SOLIBRARY   = libtxml.so
 
 SOLIBDIR    = .

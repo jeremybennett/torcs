@@ -386,6 +386,7 @@ extern void gfMeanReset(tdble v, tMeanVal *pvt);
 extern char *GetLocalDir(void);
 extern void SetLocalDir(char *buf);
 
+#if 0
 /********************************************
  * Ring Lists Interface OBSOLETE DO NOT USE *
  ********************************************/
@@ -415,6 +416,8 @@ extern tRingList *GfRlstGetNext(tRingListHead *head, tRingList *elt);
 extern tRingList *GfRlstGetLast(tRingListHead *head);
 extern tRingList *GfRlstGetPrev(tRingListHead *head, tRingList *elt);
 extern void GfRlstSeekElt(tRingListHead *head, tRingList *elt);
+
+#endif
 
 /*
  * Copyright (c) 1991, 1993
@@ -454,40 +457,59 @@ extern void GfRlstSeekElt(tRingListHead *head, tRingList *elt);
 /*
  * Tail queue definitions.
  */
+/** Head type definition
+    @ingroup tailq */
 #define GF_TAILQ_HEAD(name, type)					\
 typedef struct name {							\
 	type *tqh_first;	/* first element */			\
 	type **tqh_last;	/* addr of last next element */		\
 } t ## name
 
+/** Entry in structure
+    @ingroup tailq */
 #define GF_TAILQ_ENTRY(type)						\
 struct {								\
 	type *tqe_next;	/* next element */				\
 	type **tqe_prev;	/* address of previous next element */	\
 }
 
-
+/** First element of a TAILQ
+    @ingroup tailq */
 #define	GF_TAILQ_FIRST(head)		((head)->tqh_first)
+/** Next element of a TAILQ
+    @ingroup tailq */
 #define	GF_TAILQ_NEXT(elm, field)	((elm)->field.tqe_next)
+/** End of a TAILQ
+    @ingroup tailq */
 #define	GF_TAILQ_END(head)		NULL
-#define GF_TAILQ_LAST(head, headname) \
+/** Last element of a TAILQ
+    @ingroup tailq */
+#define GF_TAILQ_LAST(head, headname) 					\
 	(*(((struct headname *)((head)->tqh_last))->tqh_last))
-#define GF_TAILQ_PREV(elm, headname, field) \
+/** Previous element of a TAILQ
+    @ingroup tailq */
+#define GF_TAILQ_PREV(elm, headname, field) 				\
 	(*(((struct headname *)((elm)->field.tqe_prev))->tqh_last))
 
 /*
  * Tail queue functions.
  */
+/** Head initialization (Mandatory)
+    @ingroup tailq */
 #define	GF_TAILQ_INIT(head) do {					\
 	(head)->tqh_first = NULL;					\
 	(head)->tqh_last = &(head)->tqh_first;				\
 } while (0)
 
+/** Entry initialization (optionnal if inserted)
+    @ingroup tailq */
 #define GF_TAILQ_INIT_ENTRY(elm, field) do {	\
   (elm)->field.tqe_next = 0;			\
   (elm)->field.tqe_prev = 0;			\
 } while (0)
 
+/** Insert an element at the head
+    @ingroup tailq */
 #define GF_TAILQ_INSERT_HEAD(head, elm, field) do {			\
 	if (((elm)->field.tqe_next = (head)->tqh_first) != NULL)	\
 		(head)->tqh_first->field.tqe_prev =			\
@@ -498,6 +520,8 @@ struct {								\
 	(elm)->field.tqe_prev = &(head)->tqh_first;			\
 } while (0)
 
+/** Insert an element at the tail
+    @ingroup tailq */
 #define GF_TAILQ_INSERT_TAIL(head, elm, field) do {			\
 	(elm)->field.tqe_next = NULL;					\
 	(elm)->field.tqe_prev = (head)->tqh_last;			\
@@ -505,6 +529,8 @@ struct {								\
 	(head)->tqh_last = &(elm)->field.tqe_next;			\
 } while (0)
 
+/** Insert an element after another element
+    @ingroup tailq */
 #define GF_TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
 	if (((elm)->field.tqe_next = (listelm)->field.tqe_next) != NULL)\
 		(elm)->field.tqe_next->field.tqe_prev = 		\
@@ -515,6 +541,8 @@ struct {								\
 	(elm)->field.tqe_prev = &(listelm)->field.tqe_next;		\
 } while (0)
 
+/** Insert an element before another element
+    @ingroup tailq */
 #define	GF_TAILQ_INSERT_BEFORE(listelm, elm, field) do {		\
 	(elm)->field.tqe_prev = (listelm)->field.tqe_prev;		\
 	(elm)->field.tqe_next = (listelm);				\
@@ -522,6 +550,8 @@ struct {								\
 	(listelm)->field.tqe_prev = &(elm)->field.tqe_next;		\
 } while (0)
 
+/** Remove an element
+    @ingroup tailq */
 #define GF_TAILQ_REMOVE(head, elm, field) do {				\
 	if (((elm)->field.tqe_next) != NULL)				\
 		(elm)->field.tqe_next->field.tqe_prev = 		\
@@ -583,6 +613,25 @@ class Profiler {
 #define STOP_ACTIVE_PROFILES()
 #define PRINT_PROFILE()
 #endif
+
+/*******************/
+/*   Hash Tables   */
+/*******************/
+#define GF_HASH_TYPE_STR	0	/**< String key based hash table */
+#define GF_HASH_TYPE_BUF	1	/**< Memory buffer key based hash table */
+
+typedef void (*tfHashFree)(void*);	/**< Function to call for releasing the user data associated with hash table */
+
+void *GfHashCreate(int type);
+void GfHashAddStr(void *hash, char *key, void *data);
+void *GfHashRemStr(void *hash, char *key);
+void *GfHashGetStr(void *hash, char *key);
+void GfHashAddBuf(void *hash, char *key, size_t sz, void *data);
+void *GfHashRemBuf(void *hash, char *key, size_t sz);
+void *GfHashGetBuf(void *hash, char *key, size_t sz);
+void GfHashRelease(void *hash, tfHashFree hashFree);
+void *GfHashGetFirst(void *hash);
+void *GfHashGetNext(void *hash);
 
 #endif /* __TGF__H__ */
 

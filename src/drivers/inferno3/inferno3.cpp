@@ -65,7 +65,7 @@ pitCmd(int index, tCarElt *car, tSituation *s)
     //fuel = MIN(fuel, MaxFuel[idx]);
     car->_pitFuel = MAX(fuel - car->_fuel, 0);
     car->_pitFuel = MIN(car->_pitFuel, car->_tank - car->_fuel);
-    if (remainLaps > 20) {
+    if ((remainLaps * DmTrack->length) > 80) {
 	car->_pitRepair = (int)(car->_dammage);
     } else {
 	car->_pitRepair = (int)(car->_dammage / 2.0);
@@ -460,6 +460,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if (tgtSpeed < 0) {
 	tgtSpeed = (vtgt1 * Amax  + vtgt2) *
 	    (1.0 + tan(fabs(car->_trkPos.seg->angle[TR_XE] + car->_trkPos.seg->angle[TR_XS])));
+	tgtSpeed -= (car->_dammage / s->_maxDammage) * 0.2;
 	tgtSpeed = MIN(tgtSpeed, MaxSpeed[0] / 1.15);
     }
     TargetSpeed = tgtSpeed * 1.15;

@@ -45,6 +45,7 @@ static float grRed[4] = {1.0, 0.0, 0.0, 1.0};
 static float grBlue[4] = {0.0, 0.0, 1.0, 1.0};
 static float grGreen[4] = {0.0, 1.0, 0.0, 1.0};
 static float grBlack[4] = {0.0, 0.0, 0.0, 1.0};
+static float grDefaultClr[4] = {0.9, 0.9, 0.15, 1.0};
 
 #define NB_BOARDS	3
 #define NB_LBOARDS	3
@@ -54,6 +55,35 @@ int grBoardWinx = 0;
 int grBoardWinw = 800;
 int grBoardWiny = 0;
 int grBoardWinh = 600;
+
+static int grDebugFlag		= 1;
+static int grBoardFlag		= 1;
+static int grLeaderFlag		= 1;
+static int grLeaderNb		= 10;
+static int grCounterFlag	= 1;
+static int grGFlag		= 0;
+static int grArcadeFlag		= 1;
+
+void
+grLoadBoardParams(void)
+{
+    grDebugFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_DEBUG,
+				    (char*)NULL, grDebugFlag);
+    grBoardFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_BOARD,
+				    (char*)NULL, grBoardFlag);
+    grLeaderFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_LEADER,
+				     (char*)NULL, grLeaderFlag);
+    grLeaderNb = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NBLEADER,
+				   (char*)NULL, grLeaderNb);
+    grCounterFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_COUNTER,
+				      (char*)NULL, grCounterFlag);
+    grGFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
+				(char*)NULL, grGFlag);
+    grArcadeFlag = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_ARCADE,
+				     (char*)NULL, grArcadeFlag);
+    
+}
+
 
 void
 grSelectBoard(void *vp)
@@ -85,6 +115,11 @@ grSelectBoard(void *vp)
 	grGFlag = 1 - grGFlag;
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_GGRAPH,
 		     (char*)NULL, (tdble)grGFlag);
+	break;	
+    case 5:
+	grArcadeFlag = 1 - grArcadeFlag;
+	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_ARCADE,
+		     (char*)NULL, (tdble)grArcadeFlag);
 	break;	
     }
     GfParmWriteFile("config/graph.xml", grHandle, "graph", GFPARM_PARAMETER, "../dtd/params.dtd");    
@@ -295,7 +330,7 @@ grDispCarBoard1(tCarElt *car, tSituation *s)
 	clr = grWhite;
     }
     
-    GfuiPrintString("Dammages:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+    GfuiPrintString("Damage:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
     sprintf(buf, "%d", car->_dammage);
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     y -= dy;
@@ -778,7 +813,7 @@ grDispCounterBoard2(tCarElt *car)
     glCallList(curInst->needleList);
     glPopMatrix();
 
-    GfuiPrintString((char*)(gearStr[car->_gear+car->_gearOffset]), grRed, GFUI_FONT_BIG_C,
+    GfuiPrintString((char*)(gearStr[car->_gear+car->_gearOffset]), grRed, GFUI_FONT_LARGE_C,
 		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
 
    
@@ -826,4 +861,65 @@ grShutdownBoard(void)
 {
 }
 
+static void
+grDispArcade(tCarElt *car, tSituation *s)
+{
+    int  x, y;
+    int  dy;
+    char buf[256];
+    float *clr;
 
+#define XM	15
+#define YM	10
+
+    x = XM;
+    dy = GfuiFontHeight(GFUI_FONT_BIG_C);
+    y = grBoardWiny + grBoardWinh - YM - dy;
+    sprintf(buf, "%d/%d", car->_pos, s->_ncars);
+    GfuiPrintString(buf, grDefaultClr, GFUI_FONT_BIG_C, x, y, GFUI_ALIGN_HL_VB);
+
+    x = grBoardWinx + grBoardWinw - XM;
+    dy = GfuiFontHeight(GFUI_FONT_LARGE_C);
+    y = grBoardWiny + grBoardWinh - YM - dy;
+    sprintf(buf, "Lap: %d/%d", car->_laps, s->_totLaps);
+    GfuiPrintString(buf, grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HR_VB);
+    
+
+    x = grBoardWinx + grBoardWinw / 2;
+    y = YM;
+    sprintf(buf, "%s", car->_name);
+    GfuiPrintString(buf, grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HC_VB);
+
+
+    if (car->_fuel < 5.0) {
+	clr = grRed;
+    } else {
+	clr = grWhite;
+    }
+    grDrawGauge(XM, 20.0, 80.0, clr, grBlack, car->_fuel / car->_tank, "F");
+    grDrawGauge(XM + 15, 20.0, 80.0, grRed, grGreen, (tdble)(car->_dammage) / grMaxDammage, "D");
+
+    x = grBoardWinx + grBoardWinw - XM;
+    dy = GfuiFontHeight(GFUI_FONT_LARGE_C);
+    y = YM + dy;
+    sprintf(buf, "%3d km/h", abs((int)(car->_speed_x * 3.6)));
+    GfuiPrintString(buf, grDefaultClr, GFUI_FONT_BIG_C, x, y, GFUI_ALIGN_HR_VB);
+    y = YM;
+    sprintf(buf, "%s", gearStr[car->_gear+car->_gearOffset]);
+    GfuiPrintString(buf, grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HR_VB);
+
+}
+
+void
+grRefreshBoard(tSituation *s, float Fps, int forceArcade, int curr)
+{
+    if (grArcadeFlag || forceArcade) {
+	grDispArcade(s->cars[curr], s);
+    } else {
+	if (grDebugFlag)   grDispDebug(Fps, s->cars[curr], s);
+	if (grGFlag)       grDispGGraph(s->cars[curr]);
+	if (grBoardFlag)   grDispCarBoard(s->cars[curr], s);
+	if (grLeaderFlag)  grDispLeaderBoard(s->cars[curr], s);
+	if (grCounterFlag) grDispCounterBoard2(s->cars[curr]);
+    }
+}

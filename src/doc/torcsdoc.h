@@ -43,6 +43,7 @@
 /**
    @defgroup gui		GUI Management.
    This is an interface to manage menus.
+   @note	The screen size is fiwed to 640x480 and the origin is in the lower-left corner.
 */
 /**
    @defgroup img		Image Management.
@@ -108,8 +109,14 @@
    @defgroup modint	Modules interfaces
    This is the interfaces for the dynamic modules.
 */
-
-
+/**
+   @defgroup tailq	Tail Queue Management
+   This is the management of tail queues.
+*/
+/**
+   @defgroup hash	Hash tables Management
+   This is the hash computation API.
+*/
 
 /**
     @mainpage	Welcome to the TORCS documentation !

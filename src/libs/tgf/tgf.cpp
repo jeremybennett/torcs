@@ -123,7 +123,6 @@ GfInit(void)
     gfModInit();
     gfOsInit();
     gfParamInit();
-    gfRlstInit();
 }
 
 void

@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <tgfclient.h>
 #include <raceman.h>
-#include <racemantools.h>
+#include <racescreens.h>
 
 #include "raceengine.h"
 #include "racemain.h"
@@ -325,7 +325,7 @@ ReNewTrackMenu(void)
     GfuiLabelCreateEx(newTrackMenuHdle,
 		      buf,
 		      red,
-		      GFUI_FONT_MEDIUM,
+		      GFUI_FONT_MEDIUM_C,
 		      320, 420,
 		      GFUI_ALIGN_HC_VB, 50);
 

@@ -37,6 +37,7 @@
 #define GR_ATT_LEADER		"leader board"
 #define GR_ATT_DEBUG		"debug info"
 #define GR_ATT_GGRAPH		"G graph"
+#define GR_ATT_ARCADE		"arcade"
 #define GR_ATT_NBLEADER		"Max leaders entries"
 
 #define GR_SCT_TVDIR		"TV Director View"

@@ -205,6 +205,7 @@ extern float grviewRatio;
 extern int scrx, scry, scrw, scrh; /* screen size */
 
 extern void grSetView(int x, int y, int w, int h);
+extern void grSetView2(int x, int y, int w, int h);
 extern void grSelectCamera(void *vp);
 extern void grInitCams(void);
 extern void grSetZoom(void *vp);

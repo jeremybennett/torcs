@@ -68,7 +68,7 @@
     <attnum name="light position y" val="-50"/>
     <attnum name="light position z" val="40"/>
 
-    <attnum name="fov factor" val="0.8"/>
+    <attnum name="fov factor" val="1.2"/>
 
     <section name="Environment Mapping">
       <section name="general">
@@ -79,9 +79,10 @@
     <!-- Terrain Generation -->
     <section name="Terrain Generation">
       <attnum name="track step" unit="m" val="20"/>
-      <attnum name="border margin" unit="m" val="100"/>
-      <attnum name="border step" unit="m" val="20"/>
+      <attnum name="border margin" unit="m" val="1000"/>
+      <attnum name="border step" unit="m" val="30"/>
       <attstr name="surface" val="grass"/>
+      <attstr name="relief file" val="spring-relief.ac"/>
 
       <attnum name="group size" val="100"/>
     </section>
@@ -101,7 +102,7 @@
 
     <attstr name="surface" val="asphalt2"/>
     <attnum name="width" unit="m" val="12.0"/>
-    <attnum name="profil steps length" unit="m" val="6"/>
+    <attnum name="profil steps length" unit="m" val="8"/>
 
     <!-- PITS -->
     <section name="Pits">
@@ -339,6 +340,7 @@
 	<attnum name="grade" unit="%" val="-2"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
+
       <section name="P1-S6-4">
 	<attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
@@ -348,6 +350,7 @@
 	<attnum name="grade" unit="%" val="-3"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
+
       <section name="P1-S6-5">
 	<attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="100"/>
@@ -357,14 +360,56 @@
 	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
+
       <section name="P1-S6-6">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="100"/>
+	<attnum name="lg" unit="m" val="60"/>
+
+	<attstr name="surface" val="asphalt2"/>
+	<attnum name="banking end" val="0" unit="deg"/>
+	<attnum name="grade" unit="%" val="-1"/>
+	<attnum name="profil end tangent" unit="%" val="-1"/>
+      </section>
+
+      <section name="P1-S6-7">
+	<attstr name="type" val="str"/>
+	<attnum name="lg" unit="m" val="40"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="-1"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="25"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.01"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="10"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+
       </section>
 
       <!-- P1-TR7 -->
@@ -380,15 +425,30 @@
 
 	<section name="Left Barrier">
 	  <attstr name="style" val="fence"/>
-	  <attnum name="height" val="1.0"/>	
+	  <attnum name="height" val="2.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="sand3"/>
+	  <attnum name="end width" val="25"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-sand3-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
 	</section>
       </section>
 
       <!-- P2-S1 -->
       <section name="P2-S1-1">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="100"/>
+	<attnum name="lg" unit="m" val="50"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
@@ -400,15 +460,57 @@
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier2"/>  
 	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.01"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
+
       <section name="P2-S1-2">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="100"/>
+	<attnum name="lg" unit="m" val="150"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="5.0"/>	
+	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="5.0"/>	
+	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+
       </section>
       <section name="P2-S1-3">
 	<attstr name="type" val="str"/>
@@ -430,6 +532,17 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P2-TL2 -->
@@ -489,6 +602,35 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="10"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="25"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P2-TL4 -->
@@ -502,9 +644,24 @@
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
 
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-5cm-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface" val="sand3"/>
+	  <attnum name="end width" val="25"/>
+	</section>
+	<section name="Right Border">
+	  <attstr name="surface" val="b-asphalt-sand3-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
-	  <attnum name="height" val="1.0"/>	
+	  <attnum name="height" val="2.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
 	</section>
       </section>
@@ -657,6 +814,15 @@
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
 	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="5"/>
+	</section>
       </section>
 
       <!-- P2-TR11 -->
@@ -671,6 +837,29 @@
 	<attnum name="profil end tangent" unit="%" val="8"/>
 
 	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier2"/>  
@@ -706,6 +895,15 @@
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
 	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="5"/>
+	</section>
       </section>
 
       <!-- P2-TL14 -->
@@ -725,6 +923,29 @@
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier2"/>  
 	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P2-TL15 -->
@@ -739,6 +960,15 @@
 	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="5"/>
 
+	<section name="Left Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -758,6 +988,29 @@
 	<attnum name="grade" unit="%" val="3"/>
 	<attnum name="profil end tangent" unit="%" val="1"/>
 
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -968,6 +1221,15 @@
 	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="5"/>
 
+	<section name="Left Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -986,6 +1248,29 @@
 	<attnum name="grade" unit="%" val="6"/>
 	<attnum name="profil end tangent" unit="%" val="6"/>
 
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -1120,8 +1405,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="5"/>
-	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="grade" unit="%" val="-1"/>
+	<attnum name="profil end tangent" unit="%" val="-1"/>
       </section>
 
       <!-- P3-TL26 -->
@@ -1133,8 +1418,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="4"/>
-	<attnum name="profil end tangent" unit="%" val="4"/>
+	<attnum name="grade" unit="%" val="-2"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
       </section>
 
       <!-- P3-TR27 -->
@@ -1146,8 +1431,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="3"/>
-	<attnum name="profil end tangent" unit="%" val="3"/>
+	<attnum name="grade" unit="%" val="-3"/>
+	<attnum name="profil end tangent" unit="%" val="-3"/>
       </section>
 
       <!-- P3-TR28 -->
@@ -1158,8 +1443,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="2"/>
-	<attnum name="profil end tangent" unit="%" val="2"/>
+	<attnum name="grade" unit="%" val="-2"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
       </section>
 
       <!-- P3-TL29 -->
@@ -1170,7 +1455,7 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="1"/>
+	<attnum name="grade" unit="%" val="-1"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
@@ -1326,8 +1611,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="2"/>
-	<attnum name="profil end tangent" unit="%" val="2"/>
+	<attnum name="grade" unit="%" val="0"/>
+	<attnum name="profil end tangent" unit="%" val="0"/>
       </section>
 
       <!-- P3-S41 -->
@@ -1337,8 +1622,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="3"/>
-	<attnum name="profil end tangent" unit="%" val="3"/>
+	<attnum name="grade" unit="%" val="-1"/>
+	<attnum name="profil end tangent" unit="%" val="-1"/>
       </section>
 
       <!-- P3-TL42 -->
@@ -1349,8 +1634,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="5"/>
-	<attnum name="profil end tangent" unit="%" val="5"/>
+	<attnum name="grade" unit="%" val="-2"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
       </section>
 
       <!-- P3-TR43 -->
@@ -1362,8 +1647,8 @@
 
 	<attstr name="surface" val="road1"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="3"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="-3"/>
+	<attnum name="profil end tangent" unit="%" val="-2"/>
       </section>
 
       <!-- P3-TL44 -->
@@ -1545,6 +1830,15 @@
 	<attnum name="grade" unit="%" val="1"/>
 	<attnum name="profil end tangent" unit="%" val="1"/>
 
+	<section name="Left Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -1563,6 +1857,29 @@
 	<attnum name="grade" unit="%" val="3"/>
 	<attnum name="profil end tangent" unit="%" val="3"/>
 
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
@@ -1729,8 +2046,31 @@
 
 	<section name="Left Barrier">
 	  <attstr name="style" val="fence"/>
-	  <attnum name="height" val="1.0"/>	
+	  <attnum name="height" val="2.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="10"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="10"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
 	</section>
       </section>
 
@@ -1993,8 +2333,31 @@
 
 	<section name="Left Barrier">
 	  <attstr name="style" val="fence"/>
-	  <attnum name="height" val="1.0"/>	
+	  <attnum name="height" val="2.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
 	</section>
       </section>
 
@@ -2167,6 +2530,35 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="0"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="1"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P5-TR15 -->
@@ -2179,6 +2571,32 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="-5"/>
 	<attnum name="profil end tangent" unit="%" val="-3"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="wall"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attnum name="width" val="0.5"/>
+	  <attstr name="surface" val="wall2"/>  
+	</section>
+	<section name="Left Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-gravel-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="gravel"/>
+	  <attnum name="end width" val="1"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier"/>  
+	</section>
       </section>
 
       <!-- P5-TL16 -->
@@ -2564,6 +2982,35 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="-4"/>
 	<attnum name="profil end tangent" unit="%" val="-4"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-road1-grass6-l2"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass6"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P5-TL47 -->
@@ -2795,6 +3242,13 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-S1 -->
@@ -2804,8 +3258,38 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="1"/>
+	<attnum name="profil end tangent" unit="%" val="1"/>
+
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TR2 -->
@@ -2816,8 +3300,15 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="1"/>
+	<attnum name="profil end tangent" unit="%" val="1"/>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-TL3 -->
@@ -2828,8 +3319,38 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="2"/>
+	<attnum name="profil end tangent" unit="%" val="2"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-5cm-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-S4 -->
@@ -2839,8 +3360,37 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="3"/>
+	<attnum name="profil end tangent" unit="%" val="3"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TL5 -->
@@ -2851,8 +3401,15 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="4"/>
+	<attnum name="profil end tangent" unit="%" val="4"/>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-5cm-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-TR6 -->
@@ -2863,8 +3420,38 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-S7 -->
@@ -2874,8 +3461,37 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="6"/>
+	<attnum name="profil end tangent" unit="%" val="6"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TR8 -->
@@ -2886,8 +3502,15 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-S9 -->
@@ -2899,6 +3522,35 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TR10 -->
@@ -2909,8 +3561,15 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
-	<attnum name="profil end tangent" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="5"/>
+	<attnum name="profil end tangent" unit="%" val="5"/>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-TL11 -->
@@ -2921,14 +3580,43 @@
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
-	<attnum name="grade" unit="%" val="0"/>
+	<attnum name="grade" unit="%" val="5"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-S12 -->
       <section name="P6-S12">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="105.218994"/>
+	<attnum name="lg" unit="m" val="100"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
@@ -2946,17 +3634,53 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-5cm-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-S14 -->
       <section name="P6-S14">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="168.460938"/>
+	<attnum name="lg" unit="m" val="165.731934"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TR15 -->
@@ -2969,17 +3693,53 @@
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-S16 -->
       <section name="P6-S16">
 	<attstr name="type" val="str"/>
-	<attnum name="lg" unit="m" val="200"/>
+	<attnum name="lg" unit="m" val="200.822998"/>
 
 	<attstr name="surface" val="asphalt2"/>
 	<attnum name="banking end" val="0" unit="deg"/>
 	<attnum name="grade" unit="%" val="0"/>
 	<attnum name="profil end tangent" unit="%" val="0"/>
+
+	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
       </section>
 
       <!-- P6-TR17 -->
@@ -2998,6 +3758,13 @@
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
 	</section>
+
+	<section name="Right Border">
+	  <attstr name="surface" val="curb-5cm-r"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
+	</section>
       </section>
 
       <!-- P6-S18 -->
@@ -3012,6 +3779,29 @@
 	<attnum name="profil end tangent" unit="%" val="0"/>
 
 	<section name="Left Barrier">
+	  <attstr name="style" val="fence"/>
+	  <attnum name="height" val="1.0"/>	
+	  <attstr name="surface" val="barrier2"/>  
+	</section>
+	<section name="Left Side">
+	  <attstr name="surface" val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Border">
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="surface" val="b-asphalt-grass7-l1"/>
+	  <attstr name="style" val="plan"/>
+	</section>
+	<section name="Right Side">
+	  <attstr name="surface"  val="grass7"/>
+	  <attnum name="end width" val="5"/>
+	</section>
+	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier2"/>  
@@ -3033,6 +3823,12 @@
 	  <attstr name="style" val="fence"/>
 	  <attnum name="height" val="1.0"/>	
 	  <attstr name="surface" val="barrier-turn"/>  
+	</section>
+	<section name="Left Border">
+	  <attstr name="surface" val="curb-5cm-l"/>
+	  <attnum name="width" val="1.0"/>
+	  <attstr name="style" val="curb"/>
+	  <attnum name="height" val="0.05"/>
 	</section>
       </section>
 
@@ -3199,14 +3995,14 @@
 	  <attstr name="style" val="wall"/>
 	  <attnum name="height" val="1.5"/>	
 	  <attnum name="width" val="0.5"/>
-	  <attstr name="surface" val="barrierw1"/>  
+	  <attstr name="surface" val="wall2"/>  
 	</section>
 
 	<section name="Right Barrier">
 	  <attstr name="style" val="wall"/>
 	  <attnum name="height" val="1.5"/>	
 	  <attnum name="width" val="0.5"/>
-	  <attstr name="surface" val="barrierw1"/>  
+	  <attstr name="surface" val="wall2"/>  
 	</section>
     </section>
 

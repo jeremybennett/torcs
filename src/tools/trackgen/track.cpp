@@ -314,7 +314,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 		Groups[_id].nb++;							\
 		ActiveGroups++;								\
 	    }										\
-	fprintf(stderr, "%s %d (%s)\n", _name, _id, curTexElt->name);				\
+	/* fprintf(stderr, "%s %d (%s)\n", _name, _id, curTexElt->name); */				\
 	}										\
     } while (0)
 
@@ -2595,7 +2595,7 @@ GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int
     FILE *curFd;
     
     TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
-    GfOut("Track step: %.2f", TrackStep);
+    GfOut("Track step: %.2f ", TrackStep);
 
     InitScene(Track, TrackHandle, bump);
 

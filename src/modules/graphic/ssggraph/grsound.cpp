@@ -23,13 +23,8 @@
 
 #include <tgfclient.h>
 #include <graphic.h>
-#include <racemantools.h>
 
 #include "grsound.h"
-
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
 
 #ifndef M_PI
 #define EX_PI 3.1415926535
