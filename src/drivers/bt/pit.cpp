@@ -146,8 +146,8 @@ bool Pit::isBetween(float fromstart)
 			return false;
 		}
 	} else {
-		if ((fromstart >= 0.0 && fromstart <= pitexit) ||
-			(fromstart >= pitentry && fromstart <= track->length))
+		if ((/*fromstart >= 0.0 &&*/ fromstart <= pitexit) ||
+			(fromstart >= pitentry /*&& fromstart <= track->length*/))
 		{
 			return true;
 		} else {
