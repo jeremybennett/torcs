@@ -19,9 +19,9 @@ DATADIR   = tracks/dirt/dirt-1
 
 DATA      = dirt-1.xml background.png dirt-1.ac dirt-1.png elevation-map.png dirt-1-relief.ac objects-map1.png objects-map2.png
 
-base-tracks_PKGFILES	= $(DATA)
+data-tracks-base_PKGFILES	= $(DATA)
 
-base-tracks_PKGDIR		= $(DATADIR)
+data-tracks-base_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

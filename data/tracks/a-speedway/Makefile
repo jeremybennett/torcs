@@ -20,9 +20,9 @@ DATADIR   = tracks/oval/a-speedway
 
 DATA      = a-speedway.xml background.png a-speedway.ac a-speedway-relief.ac a-speedway.png
 
-base-tracks_PKGFILES	= $(DATA)
+data-tracks-base_PKGFILES	= $(DATA)
 
-base-tracks_PKGDIR		= $(DATADIR)
+data-tracks-base_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

@@ -22,9 +22,9 @@ SHIPDIR   = drivers/${ROBOT}/4
 
 SHIP      =  p406.rgb car.xml car-dirt.xml torcs.rgb logo.rgb
 
-e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

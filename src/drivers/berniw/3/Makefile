@@ -22,9 +22,9 @@ SHIPDIR   = drivers/${ROBOT}/3
 
 SHIP      = porsche-gt1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
-berniw-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-berniw_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-berniw-robots_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-berniw_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -22,9 +22,9 @@ SHIPDIR   = drivers/${ROBOT}/7
 
 SHIP      =  porsche-gt1.rgb logo.rgb car.xml
 
-e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

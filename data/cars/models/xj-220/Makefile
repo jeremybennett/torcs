@@ -20,9 +20,9 @@ DATADIR      = cars/xj-220
 
 DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb xj-220-base.ac texmapper.xml
 
-gt-cars_PKGFILES	= $(DATA)
+data-cars-gt_PKGFILES	= $(DATA)
 
-gt-cars_PKGDIR	= $(DATADIR)
+data-cars-gt_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

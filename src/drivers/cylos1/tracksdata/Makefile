@@ -5,13 +5,13 @@
 #
 
 
-SHIPDIR   = drivers/cylos1/tracksship
+SHIPDIR   = drivers/cylos1/tracksdata
 
 SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
-g-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-cg_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-g-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-cg_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -41,6 +41,7 @@
 GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };
 
+#ifndef WIN32
 #if BYTE_ORDER == BIG_ENDIAN
 void swap32(unsigned int *p, unsigned int size)
 {
@@ -54,6 +55,7 @@ void swap32(unsigned int *p, unsigned int size)
 		p++;
 	}
 }
+#endif
 #endif
 
 void
@@ -119,8 +121,10 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     //fread(font, sizeof(GLFONT), 1, Input);
     fread(font, 24, 1, Input); // for IA64...
 
+#ifndef WIN32
 #if BYTE_ORDER == BIG_ENDIAN
 	swap32((unsigned int *) font, 24);
+#endif
 #endif
 
 
@@ -138,8 +142,10 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     //Read glFont characters
     fread(font->Char, sizeof(GLFONTCHAR), Num, Input);
 
+#ifndef WIN32
 #if BYTE_ORDER == BIG_ENDIAN
 	swap32((unsigned int *) font->Char, sizeof(GLFONTCHAR) * Num);
+#endif
 #endif
 
     //Get texture size

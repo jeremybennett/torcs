@@ -43,11 +43,11 @@ restart2:
 
 endif
 
-PKGLIST		= src data \
-		  gt-cars dtm-cars patwo-cars cg-cars misc-cars \
-		  base-tracks g-tracks \
-		  e-robots berniw-robots K1999-robots g-robots \
-		  tools
+PKGLIST		= src src-tools \
+		  src-robots-e src-robots-berniw src-robots-K1999 src-robots-cg \
+		  data \
+		  data-cars-gt data-cars-dtm data-cars-Patwo-Design data-cars-cg data-cars-misc \
+		  data-tracks-base data-tracks-cg
 
 DATASUBDIRS	= data
 

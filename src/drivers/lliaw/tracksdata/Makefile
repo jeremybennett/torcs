@@ -20,9 +20,9 @@ SHIPDIR   = drivers/lliaw/tracksship
 
 SHIP      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
 
-e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

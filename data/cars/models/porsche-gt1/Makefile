@@ -23,9 +23,9 @@ DATADIR   = cars/porsche-gt1
 DATA      = porsche-gt1.xml  porsche-gt1.ac porsche-gt1-lod1.ac \
 	    tex-wheel.rgb porsche-gt1.rgb
 
-gt-cars_PKGFILES	= $(DATA)
+data-cars-gt_PKGFILES	= $(DATA)
 
-gt-cars_PKGDIR	= $(DATADIR)
+data-cars-gt_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

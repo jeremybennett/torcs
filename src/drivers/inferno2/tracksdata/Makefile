@@ -17,13 +17,13 @@
 
 
 
-SHIPDIR   = drivers/inferno2/tracksship
+SHIPDIR   = drivers/inferno2/tracksdata
 
 SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
-e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+src-robots-e_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-e_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

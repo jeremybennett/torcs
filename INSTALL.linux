@@ -15,19 +15,11 @@ Requisites:
 Installation:
 -------------
 
-1 - decompress the main sources tar ball: 
+1 - decompress the sources tar ball: 
 
-      $ tar xzvf torcs-xxx-src.tgz
-	Or
-      $ tar xjvf torcs-xxx-src.tar.bz2
+      $ tar xzvf torcs-xxx-src*.tgz
 
-2 - decompress the robots sources tar balls:
-
-      $ tar xzvf torcs-xxx-yyy-robots.tgz
-	Or
-      $ tar xjvf torcs-xxx-yyy-robots.tar.bz2
-
-3- build the executables 
+2 - build the executables 
 
       $ cd torcs-xxx
       $ ./configure [--prefix=PREFIX (default /usr/local)]
@@ -43,8 +35,7 @@ This should generate the binaries, with no more than few warnings.
 
 5 - decompress the optionnal data:
 
-      $ tar xzvf torcs-xxx-...-cars.tgz
-      $ tar xzvf torcs-xxx-...-tracks.tgz
+      $ tar xzvf torcs-xxx-data-*.tgz
 
 6- run TORCS 
 

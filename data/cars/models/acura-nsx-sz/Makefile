@@ -21,9 +21,9 @@ DATADIR   = cars/acura-nsx-sz
 
 DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-lod1.ac
 
-gt-cars_PKGFILES	= $(DATA)
+data-cars-gt_PKGFILES	= $(DATA)
 
-gt-cars_PKGDIR	= $(DATADIR)
+data-cars-gt_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 
