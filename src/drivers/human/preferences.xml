@@ -59,8 +59,8 @@
   <section name="mouse">
     <attstr name="up shift"   val=""/>
     <attstr name="down shift" val=""/>
-    <attstr name="ASR cmd" val=""/>
-    <attstr name="ABS cmd" val=""/>
+    <attstr name="ASR cmd" val="z"/>
+    <attstr name="ABS cmd" val="a"/>
     <attstr name="reverse gear" val="MOUSE_MIDDLE_BTN"/>
     <attstr name="neutral gear" val=""/>
     <attstr name="1st gear" val=""/>
@@ -72,7 +72,7 @@
     <attstr name="release gear button goes neutral" in="yes,no" val="yes"/>
     <attstr name="sequential shifter allow neutral" in="yes,no" val="no"/>
 
-    <attnum name="steer sensitivity" val="1.0"/>
+    <attnum name="steer sensitivity" val="0.8"/>
     <attnum name="steer speed sensitivity" val="0.7"/>
     <attnum name="steer dead zone" unit="%" val="4.0"/>
 
