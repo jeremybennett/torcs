@@ -218,7 +218,7 @@ HmReadPrefs(int index)
 	    CmdControl[cmd].min = CmdControl[cmd].max;
 	    CmdControl[cmd].max = tmp;
 	}
-	CmdControl[cmd].deadZone = (CmdControl[cmd].max - CmdControl[cmd].min) * CmdControl[cmd].deadZone / 100.0;
+	CmdControl[cmd].deadZone = (CmdControl[cmd].max - CmdControl[cmd].min) * CmdControl[cmd].deadZone;
 	for (i = 0; i < maxButton; i++) {
 	    if (strcmp(prm, Btn[i]) == 0) {
 		CmdControl[cmd].val = i;
