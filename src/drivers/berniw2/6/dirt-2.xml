@@ -22,6 +22,10 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"/>
   </section>
 
+  <section name="Front Wing">
+    <attnum name="angle" unit="deg" min="0" max="80" val="60"/>
+  </section>
+
   <section name="Rear Wing">
     <attnum name="angle" unit="deg" min="0" max="80" val="45"/>
   </section>
@@ -53,18 +57,18 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.4"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="17000"/>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.35"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="60000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="10000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="0"/>
     <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.2"/>
     <attnum name="bellcrank" min="0.5" max="5" val="2.5"/>
   </section>
 
   <section name="Rear Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="10000"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="0"/>
     <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.2"/>
     <attnum name="bellcrank" min="0.5" max="5" val="2.5"/>
   </section>
@@ -139,7 +143,7 @@
 
   <section name="berniw private">
     <attnum name="caero" val="1.0"/>
-    <attnum name="cfriction" val="1.25"/>
+    <attnum name="cfriction" val="1.15"/>
   </section>
 
 </params>
