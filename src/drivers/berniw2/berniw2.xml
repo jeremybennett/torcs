@@ -102,8 +102,8 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 7"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="cg-nascar-fwd"/>
-		<attstr name="category" val="Track-FWD-GrA"/>
+		<attstr name="car name" val="porsche-gt3rs"/>
+		<attstr name="category" val="Track-RWD-GrA"/>
 		<attnum name="race number" val="154"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
