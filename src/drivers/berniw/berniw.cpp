@@ -33,6 +33,9 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
 
 
+static char* botname[BOTS];
+static char* botdesc[BOTS];
+
 /* Module entry point */
 extern "C" int berniw(tModInfo *modInfo)
 {
@@ -40,9 +43,11 @@ extern "C" int berniw(tModInfo *modInfo)
 
 	for (int i = 0; i < BOTS; i++) {
 		sprintf(buffer, "berniw %d", i+1);
-		modInfo[i].name = strdup(buffer);		/* name of the module (short) */
+		botname[i] = strdup(buffer);
+		modInfo[i].name = botname[i];			/* name of the module (short) */
 		sprintf(buffer, "berniw %d", i+1);
-		modInfo[i].desc    = strdup(buffer);	/* description of the module (can be long) */
+		botdesc[i] = strdup(buffer);
+		modInfo[i].desc = botdesc[i];			/* description of the module (can be long) */
 		modInfo[i].fctInit = InitFuncPt;		/* init function */
 		modInfo[i].gfId    = ROB_IDENT;			/* supported framework version */
 		modInfo[i].index   = i+1;
@@ -80,6 +85,8 @@ static void shutdown(int index) {
 		if (mycar[i] != NULL) {
 			delete mycar[i];
 			mycar[i] = NULL;
+			free(botdesc[i]);
+			free(botname[i]);
 		}
 	}
 	if (myTrackDesc != NULL) {
