@@ -428,6 +428,7 @@ GfScrMenuInit(void *precMenu)
 		       x1, y, GFUI_ALIGN_HC_VB, 0,
 		       (void*)-1, ResPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Resolution", (void*)-1, ResPrevNext, NULL);
 
     ResLabelId = GfuiLabelCreate(scrHandle,
 				 "",
@@ -444,6 +445,7 @@ GfScrMenuInit(void *precMenu)
 		       x2, y, GFUI_ALIGN_HC_VB, 0,
 		       (void*)1, ResPrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Resolution", (void*)1, ResPrevNext, NULL);
 
     y -= 60;
     GfuiLabelCreate(scrHandle,
@@ -508,6 +510,7 @@ GfScrMenuInit(void *precMenu)
 		       x2, y, GFUI_ALIGN_HC_VB, 0,
 		       (void*)1, ModePrevNext,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    GfuiAddKey(scrHandle, 'f', "Display Mode", (void*)1, ModePrevNext, NULL);
 
 #if WIN32
     y -= 60;

@@ -311,13 +311,13 @@
   <section name="Front Axle">
     <attnum name="xpos" min="0.5" max="2.5" val="1.28"/>
     <attnum name="inertia" unit="kg.m2" val="0.0056"/>
-    <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.02"/>
+    <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.04"/>
   </section>
 
   <section name="Rear Axle">
     <attnum name="xpos" min="-2.5" max="-0.5" val="-1.50"/>
     <attnum name="inertia" unit="kg.m2" val="0.0080"/>
-    <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.06"/>
+    <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.04"/>
   </section>
 
   <section name="Front Differential">

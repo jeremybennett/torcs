@@ -17,6 +17,14 @@
 <params name="Peugeot 406" type="parameter">
 
 
+  <section name="Rear Right Wheel">
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+  </section>
+
+  <section name="Rear Left Wheel">
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+  </section>
+
 </params>
 
 

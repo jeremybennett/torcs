@@ -5,6 +5,10 @@ if exist .\data\cars\categories\free\*.* call .\create_dir .\runtimed
 if exist .\data\cars\categories\free\*.* call .\create_dir .\runtimed\categories
 if exist .\data\cars\categories\free\free.xml copy .\data\cars\categories\free\free.xml .\runtimed\categories\free.xml
 
+if exist .\data\cars\categories\Historic\*.* call .\create_dir .\runtimed
+if exist .\data\cars\categories\Historic\*.* call .\create_dir .\runtimed\categories
+if exist .\data\cars\categories\Historic\Historic.xml copy .\data\cars\categories\Historic\Historic.xml .\runtimed\categories\Historic.xml
+
 if exist .\data\cars\categories\Nascar\*.* call .\create_dir .\runtimed
 if exist .\data\cars\categories\Nascar\*.* call .\create_dir .\runtimed\categories
 if exist .\data\cars\categories\Nascar\Nascar.xml copy .\data\cars\categories\Nascar\Nascar.xml .\runtimed\categories\Nascar.xml
@@ -191,6 +195,24 @@ if exist .\data\cars\models\FOCW61\tex-wheel.rgb copy .\data\cars\models\FOCW61\
 if exist .\data\cars\models\FOCW61\FOCW61.acc copy .\data\cars\models\FOCW61\FOCW61.acc .\runtimed\cars\FOCW61\FOCW61.acc
 if exist .\data\cars\models\FOCW61\readme.txt copy .\data\cars\models\FOCW61\readme.txt .\runtimed\cars\FOCW61\readme.txt
 
+if exist .\data\cars\models\fs-02h2\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\fs-02h2\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\fs-02h2\*.* call .\create_dir .\runtimed\cars\fs-02h2
+if exist .\data\cars\models\fs-02h2\fs-02h2.xml copy .\data\cars\models\fs-02h2\fs-02h2.xml .\runtimed\cars\fs-02h2\fs-02h2.xml
+if exist .\data\cars\models\fs-02h2\Readme.txt copy .\data\cars\models\fs-02h2\Readme.txt .\runtimed\cars\fs-02h2\Readme.txt
+if exist .\data\cars\models\fs-02h2\fs-02h2.rgb copy .\data\cars\models\fs-02h2\fs-02h2.rgb .\runtimed\cars\fs-02h2\fs-02h2.rgb
+if exist .\data\cars\models\fs-02h2\tex-wheel.rgb copy .\data\cars\models\fs-02h2\tex-wheel.rgb .\runtimed\cars\fs-02h2\tex-wheel.rgb
+if exist .\data\cars\models\fs-02h2\shadow.rgb copy .\data\cars\models\fs-02h2\shadow.rgb .\runtimed\cars\fs-02h2\shadow.rgb
+if exist .\data\cars\models\fs-02h2\fs-02h2.acc copy .\data\cars\models\fs-02h2\fs-02h2.acc .\runtimed\cars\fs-02h2\fs-02h2.acc
+if exist .\data\cars\models\fs-02h2\fs-02h2-lod1.acc copy .\data\cars\models\fs-02h2\fs-02h2-lod1.acc .\runtimed\cars\fs-02h2\fs-02h2-lod1.acc
+if exist .\data\cars\models\fs-02h2\fs-02h2-lod2.acc copy .\data\cars\models\fs-02h2\fs-02h2-lod2.acc .\runtimed\cars\fs-02h2\fs-02h2-lod2.acc
+if exist .\data\cars\models\fs-02h2\fs-02h2-lod3.acc copy .\data\cars\models\fs-02h2\fs-02h2-lod3.acc .\runtimed\cars\fs-02h2\fs-02h2-lod3.acc
+
+if exist .\data\cars\models\fs-zonda-c12s\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\fs-zonda-c12s\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\fs-zonda-c12s\*.* call .\create_dir .\runtimed\cars\fs-zonda-c12s
+if exist .\data\cars\models\fs-zonda-c12s\fs-zonda-c12s.ac copy .\data\cars\models\fs-zonda-c12s\fs-zonda-c12s.ac .\runtimed\cars\fs-zonda-c12s\fs-zonda-c12s.ac
+
 if exist .\data\cars\models\gt40\*.* call .\create_dir .\runtimed
 if exist .\data\cars\models\gt40\*.* call .\create_dir .\runtimed\cars
 if exist .\data\cars\models\gt40\*.* call .\create_dir .\runtimed\cars\gt40
@@ -202,6 +224,109 @@ if exist .\data\cars\models\gt40\gt40.acc copy .\data\cars\models\gt40\gt40.acc 
 if exist .\data\cars\models\gt40\gt40-lod1.acc copy .\data\cars\models\gt40\gt40-lod1.acc .\runtimed\cars\gt40\gt40-lod1.acc
 if exist .\data\cars\models\gt40\gt40-lod2.acc copy .\data\cars\models\gt40\gt40-lod2.acc .\runtimed\cars\gt40\gt40-lod2.acc
 if exist .\data\cars\models\gt40\gt40-lod3.acc copy .\data\cars\models\gt40\gt40-lod3.acc .\runtimed\cars\gt40\gt40-lod3.acc
+
+if exist .\data\cars\models\kc-2000gt\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\kc-2000gt\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\kc-2000gt\*.* call .\create_dir .\runtimed\cars\kc-2000gt
+if exist .\data\cars\models\kc-2000gt\carp.txt copy .\data\cars\models\kc-2000gt\carp.txt .\runtimed\cars\kc-2000gt\carp.txt
+if exist .\data\cars\models\kc-2000gt\k-2000gt.ac copy .\data\cars\models\kc-2000gt\k-2000gt.ac .\runtimed\cars\kc-2000gt\k-2000gt.ac
+if exist .\data\cars\models\kc-2000gt\kc-2000gt.ac copy .\data\cars\models\kc-2000gt\kc-2000gt.ac .\runtimed\cars\kc-2000gt\kc-2000gt.ac
+if exist .\data\cars\models\kc-2000gt\kc-2000gt.acc copy .\data\cars\models\kc-2000gt\kc-2000gt.acc .\runtimed\cars\kc-2000gt\kc-2000gt.acc
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod1.ac copy .\data\cars\models\kc-2000gt\kc-2000gt-lod1.ac .\runtimed\cars\kc-2000gt\kc-2000gt-lod1.ac
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod1.acc copy .\data\cars\models\kc-2000gt\kc-2000gt-lod1.acc .\runtimed\cars\kc-2000gt\kc-2000gt-lod1.acc
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod2.ac copy .\data\cars\models\kc-2000gt\kc-2000gt-lod2.ac .\runtimed\cars\kc-2000gt\kc-2000gt-lod2.ac
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod2.acc copy .\data\cars\models\kc-2000gt\kc-2000gt-lod2.acc .\runtimed\cars\kc-2000gt\kc-2000gt-lod2.acc
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod3.ac copy .\data\cars\models\kc-2000gt\kc-2000gt-lod3.ac .\runtimed\cars\kc-2000gt\kc-2000gt-lod3.ac
+if exist .\data\cars\models\kc-2000gt\kc-2000gt-lod3.acc copy .\data\cars\models\kc-2000gt\kc-2000gt-lod3.acc .\runtimed\cars\kc-2000gt\kc-2000gt-lod3.acc
+if exist .\data\cars\models\kc-2000gt\kc-2000gt.rgb copy .\data\cars\models\kc-2000gt\kc-2000gt.rgb .\runtimed\cars\kc-2000gt\kc-2000gt.rgb
+if exist .\data\cars\models\kc-2000gt\kc-2000gt.xml copy .\data\cars\models\kc-2000gt\kc-2000gt.xml .\runtimed\cars\kc-2000gt\kc-2000gt.xml
+if exist .\data\cars\models\kc-2000gt\Makefile copy .\data\cars\models\kc-2000gt\Makefile .\runtimed\cars\kc-2000gt\Makefile
+if exist .\data\cars\models\kc-2000gt\readme.txt copy .\data\cars\models\kc-2000gt\readme.txt .\runtimed\cars\kc-2000gt\readme.txt
+if exist .\data\cars\models\kc-2000gt\shadow.rgb copy .\data\cars\models\kc-2000gt\shadow.rgb .\runtimed\cars\kc-2000gt\shadow.rgb
+if exist .\data\cars\models\kc-2000gt\tex-wheel.rgb copy .\data\cars\models\kc-2000gt\tex-wheel.rgb .\runtimed\cars\kc-2000gt\tex-wheel.rgb
+
+if exist .\data\cars\models\kc-5300gt\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\kc-5300gt\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\kc-5300gt\*.* call .\create_dir .\runtimed\cars\kc-5300gt
+if exist .\data\cars\models\kc-5300gt\car00.tga copy .\data\cars\models\kc-5300gt\car00.tga .\runtimed\cars\kc-5300gt\car00.tga
+if exist .\data\cars\models\kc-5300gt\carp.txt copy .\data\cars\models\kc-5300gt\carp.txt .\runtimed\cars\kc-5300gt\carp.txt
+if exist .\data\cars\models\kc-5300gt\kc-5300gt2.ac copy .\data\cars\models\kc-5300gt\kc-5300gt2.ac .\runtimed\cars\kc-5300gt\kc-5300gt2.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt3.ac copy .\data\cars\models\kc-5300gt\kc-5300gt3.ac .\runtimed\cars\kc-5300gt\kc-5300gt3.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt.ac copy .\data\cars\models\kc-5300gt\kc-5300gt.ac .\runtimed\cars\kc-5300gt\kc-5300gt.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt.acc copy .\data\cars\models\kc-5300gt\kc-5300gt.acc .\runtimed\cars\kc-5300gt\kc-5300gt.acc
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-full.ac copy .\data\cars\models\kc-5300gt\kc-5300gt-full.ac .\runtimed\cars\kc-5300gt\kc-5300gt-full.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod1.ac copy .\data\cars\models\kc-5300gt\kc-5300gt-lod1.ac .\runtimed\cars\kc-5300gt\kc-5300gt-lod1.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod1.acc copy .\data\cars\models\kc-5300gt\kc-5300gt-lod1.acc .\runtimed\cars\kc-5300gt\kc-5300gt-lod1.acc
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod2.ac copy .\data\cars\models\kc-5300gt\kc-5300gt-lod2.ac .\runtimed\cars\kc-5300gt\kc-5300gt-lod2.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod2.acc copy .\data\cars\models\kc-5300gt\kc-5300gt-lod2.acc .\runtimed\cars\kc-5300gt\kc-5300gt-lod2.acc
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod3.ac copy .\data\cars\models\kc-5300gt\kc-5300gt-lod3.ac .\runtimed\cars\kc-5300gt\kc-5300gt-lod3.ac
+if exist .\data\cars\models\kc-5300gt\kc-5300gt-lod3.acc copy .\data\cars\models\kc-5300gt\kc-5300gt-lod3.acc .\runtimed\cars\kc-5300gt\kc-5300gt-lod3.acc
+if exist .\data\cars\models\kc-5300gt\kc-5300gt.rgb copy .\data\cars\models\kc-5300gt\kc-5300gt.rgb .\runtimed\cars\kc-5300gt\kc-5300gt.rgb
+if exist .\data\cars\models\kc-5300gt\kc-5300gt.xml copy .\data\cars\models\kc-5300gt\kc-5300gt.xml .\runtimed\cars\kc-5300gt\kc-5300gt.xml
+if exist .\data\cars\models\kc-5300gt\Makefile copy .\data\cars\models\kc-5300gt\Makefile .\runtimed\cars\kc-5300gt\Makefile
+if exist .\data\cars\models\kc-5300gt\readme.txt copy .\data\cars\models\kc-5300gt\readme.txt .\runtimed\cars\kc-5300gt\readme.txt
+if exist .\data\cars\models\kc-5300gt\shadow.rgb copy .\data\cars\models\kc-5300gt\shadow.rgb .\runtimed\cars\kc-5300gt\shadow.rgb
+if exist .\data\cars\models\kc-5300gt\tex-wheel.rgb copy .\data\cars\models\kc-5300gt\tex-wheel.rgb .\runtimed\cars\kc-5300gt\tex-wheel.rgb
+
+if exist .\data\cars\models\kc-cobra\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\kc-cobra\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\kc-cobra\*.* call .\create_dir .\runtimed\cars\kc-cobra
+if exist .\data\cars\models\kc-cobra\carp.txt copy .\data\cars\models\kc-cobra\carp.txt .\runtimed\cars\kc-cobra\carp.txt
+if exist .\data\cars\models\kc-cobra\cobra2.ac copy .\data\cars\models\kc-cobra\cobra2.ac .\runtimed\cars\kc-cobra\cobra2.ac
+if exist .\data\cars\models\kc-cobra\kc-cobra.ac copy .\data\cars\models\kc-cobra\kc-cobra.ac .\runtimed\cars\kc-cobra\kc-cobra.ac
+if exist .\data\cars\models\kc-cobra\kc-cobra.acc copy .\data\cars\models\kc-cobra\kc-cobra.acc .\runtimed\cars\kc-cobra\kc-cobra.acc
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod1.ac copy .\data\cars\models\kc-cobra\kc-cobra-lod1.ac .\runtimed\cars\kc-cobra\kc-cobra-lod1.ac
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod1.acc copy .\data\cars\models\kc-cobra\kc-cobra-lod1.acc .\runtimed\cars\kc-cobra\kc-cobra-lod1.acc
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod2.ac copy .\data\cars\models\kc-cobra\kc-cobra-lod2.ac .\runtimed\cars\kc-cobra\kc-cobra-lod2.ac
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod2.acc copy .\data\cars\models\kc-cobra\kc-cobra-lod2.acc .\runtimed\cars\kc-cobra\kc-cobra-lod2.acc
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod3.ac copy .\data\cars\models\kc-cobra\kc-cobra-lod3.ac .\runtimed\cars\kc-cobra\kc-cobra-lod3.ac
+if exist .\data\cars\models\kc-cobra\kc-cobra-lod3.acc copy .\data\cars\models\kc-cobra\kc-cobra-lod3.acc .\runtimed\cars\kc-cobra\kc-cobra-lod3.acc
+if exist .\data\cars\models\kc-cobra\kc-cobra.rgb copy .\data\cars\models\kc-cobra\kc-cobra.rgb .\runtimed\cars\kc-cobra\kc-cobra.rgb
+if exist .\data\cars\models\kc-cobra\kc-cobra.xml copy .\data\cars\models\kc-cobra\kc-cobra.xml .\runtimed\cars\kc-cobra\kc-cobra.xml
+if exist .\data\cars\models\kc-cobra\Makefile copy .\data\cars\models\kc-cobra\Makefile .\runtimed\cars\kc-cobra\Makefile
+if exist .\data\cars\models\kc-cobra\readme.txt copy .\data\cars\models\kc-cobra\readme.txt .\runtimed\cars\kc-cobra\readme.txt
+if exist .\data\cars\models\kc-cobra\shadow.rgb copy .\data\cars\models\kc-cobra\shadow.rgb .\runtimed\cars\kc-cobra\shadow.rgb
+if exist .\data\cars\models\kc-cobra\tex-wheel.rgb copy .\data\cars\models\kc-cobra\tex-wheel.rgb .\runtimed\cars\kc-cobra\tex-wheel.rgb
+
+if exist .\data\cars\models\kc-conrero\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\kc-conrero\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\kc-conrero\*.* call .\create_dir .\runtimed\cars\kc-conrero
+if exist .\data\cars\models\kc-conrero\car00.tga copy .\data\cars\models\kc-conrero\car00.tga .\runtimed\cars\kc-conrero\car00.tga
+if exist .\data\cars\models\kc-conrero\carp.txt copy .\data\cars\models\kc-conrero\carp.txt .\runtimed\cars\kc-conrero\carp.txt
+if exist .\data\cars\models\kc-conrero\kc-conrero.ac copy .\data\cars\models\kc-conrero\kc-conrero.ac .\runtimed\cars\kc-conrero\kc-conrero.ac
+if exist .\data\cars\models\kc-conrero\kc-conrero.acc copy .\data\cars\models\kc-conrero\kc-conrero.acc .\runtimed\cars\kc-conrero\kc-conrero.acc
+if exist .\data\cars\models\kc-conrero\kc-conrero-full.ac copy .\data\cars\models\kc-conrero\kc-conrero-full.ac .\runtimed\cars\kc-conrero\kc-conrero-full.ac
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod1.ac copy .\data\cars\models\kc-conrero\kc-conrero-lod1.ac .\runtimed\cars\kc-conrero\kc-conrero-lod1.ac
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod1.acc copy .\data\cars\models\kc-conrero\kc-conrero-lod1.acc .\runtimed\cars\kc-conrero\kc-conrero-lod1.acc
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod2.ac copy .\data\cars\models\kc-conrero\kc-conrero-lod2.ac .\runtimed\cars\kc-conrero\kc-conrero-lod2.ac
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod2.acc copy .\data\cars\models\kc-conrero\kc-conrero-lod2.acc .\runtimed\cars\kc-conrero\kc-conrero-lod2.acc
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod3.ac copy .\data\cars\models\kc-conrero\kc-conrero-lod3.ac .\runtimed\cars\kc-conrero\kc-conrero-lod3.ac
+if exist .\data\cars\models\kc-conrero\kc-conrero-lod3.acc copy .\data\cars\models\kc-conrero\kc-conrero-lod3.acc .\runtimed\cars\kc-conrero\kc-conrero-lod3.acc
+if exist .\data\cars\models\kc-conrero\kc-conrero.rgb copy .\data\cars\models\kc-conrero\kc-conrero.rgb .\runtimed\cars\kc-conrero\kc-conrero.rgb
+if exist .\data\cars\models\kc-conrero\kc-conrero.xml copy .\data\cars\models\kc-conrero\kc-conrero.xml .\runtimed\cars\kc-conrero\kc-conrero.xml
+if exist .\data\cars\models\kc-conrero\Makefile copy .\data\cars\models\kc-conrero\Makefile .\runtimed\cars\kc-conrero\Makefile
+if exist .\data\cars\models\kc-conrero\readme.txt copy .\data\cars\models\kc-conrero\readme.txt .\runtimed\cars\kc-conrero\readme.txt
+if exist .\data\cars\models\kc-conrero\shadow.rgb copy .\data\cars\models\kc-conrero\shadow.rgb .\runtimed\cars\kc-conrero\shadow.rgb
+if exist .\data\cars\models\kc-conrero\tex-wheel.rgb copy .\data\cars\models\kc-conrero\tex-wheel.rgb .\runtimed\cars\kc-conrero\tex-wheel.rgb
+
+if exist .\data\cars\models\kc-gt40\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\kc-gt40\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\kc-gt40\*.* call .\create_dir .\runtimed\cars\kc-gt40
+if exist .\data\cars\models\kc-gt40\car00.tga copy .\data\cars\models\kc-gt40\car00.tga .\runtimed\cars\kc-gt40\car00.tga
+if exist .\data\cars\models\kc-gt40\carp.txt copy .\data\cars\models\kc-gt40\carp.txt .\runtimed\cars\kc-gt40\carp.txt
+if exist .\data\cars\models\kc-gt40\kc-gt40.ac copy .\data\cars\models\kc-gt40\kc-gt40.ac .\runtimed\cars\kc-gt40\kc-gt40.ac
+if exist .\data\cars\models\kc-gt40\kc-gt40.acc copy .\data\cars\models\kc-gt40\kc-gt40.acc .\runtimed\cars\kc-gt40\kc-gt40.acc
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod1.ac copy .\data\cars\models\kc-gt40\kc-gt40-lod1.ac .\runtimed\cars\kc-gt40\kc-gt40-lod1.ac
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod1.acc copy .\data\cars\models\kc-gt40\kc-gt40-lod1.acc .\runtimed\cars\kc-gt40\kc-gt40-lod1.acc
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod2.ac copy .\data\cars\models\kc-gt40\kc-gt40-lod2.ac .\runtimed\cars\kc-gt40\kc-gt40-lod2.ac
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod2.acc copy .\data\cars\models\kc-gt40\kc-gt40-lod2.acc .\runtimed\cars\kc-gt40\kc-gt40-lod2.acc
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod3.ac copy .\data\cars\models\kc-gt40\kc-gt40-lod3.ac .\runtimed\cars\kc-gt40\kc-gt40-lod3.ac
+if exist .\data\cars\models\kc-gt40\kc-gt40-lod3.acc copy .\data\cars\models\kc-gt40\kc-gt40-lod3.acc .\runtimed\cars\kc-gt40\kc-gt40-lod3.acc
+if exist .\data\cars\models\kc-gt40\kc-gt40.rgb copy .\data\cars\models\kc-gt40\kc-gt40.rgb .\runtimed\cars\kc-gt40\kc-gt40.rgb
+if exist .\data\cars\models\kc-gt40\kc-gt40.xml copy .\data\cars\models\kc-gt40\kc-gt40.xml .\runtimed\cars\kc-gt40\kc-gt40.xml
+if exist .\data\cars\models\kc-gt40\Makefile copy .\data\cars\models\kc-gt40\Makefile .\runtimed\cars\kc-gt40\Makefile
+if exist .\data\cars\models\kc-gt40\shadow.rgb copy .\data\cars\models\kc-gt40\shadow.rgb .\runtimed\cars\kc-gt40\shadow.rgb
+if exist .\data\cars\models\kc-gt40\tex-wheel.rgb copy .\data\cars\models\kc-gt40\tex-wheel.rgb .\runtimed\cars\kc-gt40\tex-wheel.rgb
 
 if exist .\data\cars\models\lotus-gt1\*.* call .\create_dir .\runtimed
 if exist .\data\cars\models\lotus-gt1\*.* call .\create_dir .\runtimed\cars
@@ -224,6 +349,18 @@ if exist .\data\cars\models\mclaren-f1\shadow.rgb copy .\data\cars\models\mclare
 if exist .\data\cars\models\mclaren-f1\mclaren-f1.acc copy .\data\cars\models\mclaren-f1\mclaren-f1.acc .\runtimed\cars\mclaren-f1\mclaren-f1.acc
 if exist .\data\cars\models\mclaren-f1\mclaren-f1-lod1.acc copy .\data\cars\models\mclaren-f1\mclaren-f1-lod1.acc .\runtimed\cars\mclaren-f1\mclaren-f1-lod1.acc
 if exist .\data\cars\models\mclaren-f1\mclaren-f1-lod2.acc copy .\data\cars\models\mclaren-f1\mclaren-f1-lod2.acc .\runtimed\cars\mclaren-f1\mclaren-f1-lod2.acc
+
+if exist .\data\cars\models\ml-vanquish\*.* call .\create_dir .\runtimed
+if exist .\data\cars\models\ml-vanquish\*.* call .\create_dir .\runtimed\cars
+if exist .\data\cars\models\ml-vanquish\*.* call .\create_dir .\runtimed\cars\ml-vanquish
+if exist .\data\cars\models\ml-vanquish\Makefile copy .\data\cars\models\ml-vanquish\Makefile .\runtimed\cars\ml-vanquish\Makefile
+if exist .\data\cars\models\ml-vanquish\ml-vanquish.ac copy .\data\cars\models\ml-vanquish\ml-vanquish.ac .\runtimed\cars\ml-vanquish\ml-vanquish.ac
+if exist .\data\cars\models\ml-vanquish\ml-vanquish.acc copy .\data\cars\models\ml-vanquish\ml-vanquish.acc .\runtimed\cars\ml-vanquish\ml-vanquish.acc
+if exist .\data\cars\models\ml-vanquish\ml-vanquish.rgb copy .\data\cars\models\ml-vanquish\ml-vanquish.rgb .\runtimed\cars\ml-vanquish\ml-vanquish.rgb
+if exist .\data\cars\models\ml-vanquish\ml-vanquish.xml copy .\data\cars\models\ml-vanquish\ml-vanquish.xml .\runtimed\cars\ml-vanquish\ml-vanquish.xml
+if exist .\data\cars\models\ml-vanquish\readme.txt copy .\data\cars\models\ml-vanquish\readme.txt .\runtimed\cars\ml-vanquish\readme.txt
+if exist .\data\cars\models\ml-vanquish\shadow.rgb copy .\data\cars\models\ml-vanquish\shadow.rgb .\runtimed\cars\ml-vanquish\shadow.rgb
+if exist .\data\cars\models\ml-vanquish\tex-wheel.rgb copy .\data\cars\models\ml-vanquish\tex-wheel.rgb .\runtimed\cars\ml-vanquish\tex-wheel.rgb
 
 if exist .\data\cars\models\p406\*.* call .\create_dir .\runtimed
 if exist .\data\cars\models\p406\*.* call .\create_dir .\runtimed\cars

@@ -79,6 +79,22 @@ if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\*.* call .\create_dir
 if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include\SOLID
 if exist .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h copy .\src\modules\simu\simuv2\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
 
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export\include
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\*.* call .\create_dir .\export\include\3D
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Basic.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Basic.h .\export\include\3D\Basic.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Matrix.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Matrix.h .\export\include\3D\Matrix.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Point.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Point.h .\export\include\3D\Point.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Quaternion.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Quaternion.h .\export\include\3D\Quaternion.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple3.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple3.h .\export\include\3D\Tuple3.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple4.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Tuple4.h .\export\include\3D\Tuple4.h
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Vector.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\3D\Vector.h .\export\include\3D\Vector.h
+
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\*.* call .\create_dir .\export\include\SOLID
+if exist .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\solid.h copy .\src\modules\simu\simuv3\SOLID-2.0\include\SOLID\solid.h .\export\include\SOLID\solid.h
+
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\runtime\drivers\berniw
@@ -967,6 +983,7 @@ if exist .\src\drivers\human\car-cg-nascar-fwd.xml copy .\src\drivers\human\car-
 if exist .\src\drivers\human\car-cg-nascar-rwd.xml copy .\src\drivers\human\car-cg-nascar-rwd.xml .\runtime\drivers\human\car-cg-nascar-rwd.xml
 if exist .\src\drivers\human\car-clkdtm.xml copy .\src\drivers\human\car-clkdtm.xml .\runtime\drivers\human\car-clkdtm.xml
 if exist .\src\drivers\human\car-corvette.xml copy .\src\drivers\human\car-corvette.xml .\runtime\drivers\human\car-corvette.xml
+if exist .\src\drivers\human\car-fs-02h2.xml copy .\src\drivers\human\car-fs-02h2.xml .\runtime\drivers\human\car-fs-02h2.xml
 if exist .\src\drivers\human\car-lotus-gt1.xml copy .\src\drivers\human\car-lotus-gt1.xml .\runtime\drivers\human\car-lotus-gt1.xml
 if exist .\src\drivers\human\car-mclaren-f1.xml copy .\src\drivers\human\car-mclaren-f1.xml .\runtime\drivers\human\car-mclaren-f1.xml
 if exist .\src\drivers\human\car-p406.xml copy .\src\drivers\human\car-p406.xml .\runtime\drivers\human\car-p406.xml
@@ -1451,6 +1468,19 @@ if exist .\src\drivers\lliaw\car.xml copy .\src\drivers\lliaw\car.xml .\runtime\
 if exist .\src\drivers\lliaw\viper-gts-r.rgb copy .\src\drivers\lliaw\viper-gts-r.rgb .\runtime\drivers\lliaw\viper-gts-r.rgb
 if exist .\src\drivers\lliaw\logo.rgb copy .\src\drivers\lliaw\logo.rgb .\runtime\drivers\lliaw\logo.rgb
 
+if exist .\src\drivers\sparkle\0\*.* call .\create_dir .\runtime
+if exist .\src\drivers\sparkle\0\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\sparkle\0\*.* call .\create_dir .\runtime\drivers\sparkle
+if exist .\src\drivers\sparkle\0\*.* call .\create_dir .\runtime\drivers\sparkle\0
+if exist .\src\drivers\sparkle\0\baja-bug.rgb copy .\src\drivers\sparkle\0\baja-bug.rgb .\runtime\drivers\sparkle\0\baja-bug.rgb
+if exist .\src\drivers\sparkle\0\default.xml copy .\src\drivers\sparkle\0\default.xml .\runtime\drivers\sparkle\0\default.xml
+
+if exist .\src\drivers\sparkle\*.* call .\create_dir .\runtime
+if exist .\src\drivers\sparkle\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\sparkle\*.* call .\create_dir .\runtime\drivers\sparkle
+if exist .\src\drivers\sparkle\sparkle.xml copy .\src\drivers\sparkle\sparkle.xml .\runtime\drivers\sparkle\sparkle.xml
+if exist .\src\drivers\sparkle\logo.rgb copy .\src\drivers\sparkle\logo.rgb .\runtime\drivers\sparkle\logo.rgb
+
 if exist .\src\drivers\tanhoj\tracksdata\*.* call .\create_dir .\runtime
 if exist .\src\drivers\tanhoj\tracksdata\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\tanhoj\tracksdata\*.* call .\create_dir .\runtime\drivers\tanhoj
@@ -1641,6 +1671,10 @@ call .\create_dir .\runtime\drivers\K1999
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\lliaw
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\sparkle
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers

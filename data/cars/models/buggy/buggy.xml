@@ -264,12 +264,12 @@
 
   <section name="Front Axle">
     <attnum name="xpos" val="1.20"/>
-    <attnum name="roll center height" val="0.1"/>
+    <attnum name="roll center height" val="0.3"/>
   </section>
 
   <section name="Rear Axle">
     <attnum name="xpos" val="-1.27"/>
-    <attnum name="roll center height" unit="m" val="0.3"/>
+    <attnum name="roll center height" unit="m" val="0.25"/>
   </section>
 
   <section name="Rear Differential">

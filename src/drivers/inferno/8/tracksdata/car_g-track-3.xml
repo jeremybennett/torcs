@@ -54,9 +54,9 @@
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="1000"/>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
-    <attnum name="bellcrank" min="1" max="5" val="1"/>
+    <attnum name="bellcrank" min="1" max="5" val="2"/>
   </section>
 
   <section name="Rear Anti-Roll Bar">
