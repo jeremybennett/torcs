@@ -226,6 +226,7 @@ GfHashRemStr(void *hash, char *key)
     curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[index]));
     while (curElem) {
 	if (!strcmp(curElem->key, key)) {
+	    curHeader->nbElem--;
 	    return gfRemElem(&(curHeader->hashHead[index]), curElem);
 	}
 	curElem = GF_TAILQ_NEXT(curElem, link);
@@ -310,6 +311,7 @@ GfHashRemBuf(void *hash, char *key, size_t sz)
     curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[index]));
     while (curElem) {
 	if (!memcmp(curElem->key, key, sz)) {
+	    curHeader->nbElem--;
 	    return gfRemElem(&(curHeader->hashHead[index]), curElem);
 	}
 	curElem = GF_TAILQ_NEXT(curElem, link);
