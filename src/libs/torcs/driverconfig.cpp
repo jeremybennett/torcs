@@ -579,19 +579,6 @@ TorcsDriverMenuInit(void *prevMenu)
     NameEditId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
 				    x2+10, y, 180, 16, NULL, (tfuiCallback)NULL, ChangeName);
     y -= dy;
-    GfuiLabelCreate(scrHandle, "Car:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-    GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
-		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
-		       x2, y, GFUI_ALIGN_HL_VB, 1,
-		       (void*)0, ChangeCar,
-		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
-    GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
-		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
-		       (void*)1, ChangeCar,
-		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    CarEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
-    y -= dy;
     GfuiLabelCreate(scrHandle, "Category:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
 		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
@@ -604,6 +591,19 @@ TorcsDriverMenuInit(void *prevMenu)
 		       (void*)1, ChangeCat,
 		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     CatEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
+    y -= dy;
+    GfuiLabelCreate(scrHandle, "Car:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+		       x2, y, GFUI_ALIGN_HL_VB, 1,
+		       (void*)0, ChangeCar,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
+    GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+		       x2 + 170, y, GFUI_ALIGN_HL_VB, 1,
+		       (void*)1, ChangeCar,
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+    CarEditId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x2 + 30, y, GFUI_ALIGN_HL_VB, 32);
     y -= dy;
     GfuiLabelCreate(scrHandle, "Race Number:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     RaceNumEditId = GfuiEditboxCreate(scrHandle, "0", GFUI_FONT_MEDIUM_C,

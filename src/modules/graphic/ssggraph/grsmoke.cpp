@@ -223,9 +223,9 @@ void grAddSmoke(tCarElt *car, double t)
 		    shd_vtx = new ssgVertexArray(1);
 
 		    tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
-		    vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
-		    vtx[1] = car->priv->wheel[i].relPos.y;
-		    vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
+		    vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
+		    vtx[1] = car->priv.wheel[i].relPos.y;
+		    vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
 		    shd_vtx->add(vtx);
 		    tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
 		    /*

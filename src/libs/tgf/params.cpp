@@ -1083,12 +1083,10 @@ GfParmGetStr(void *handle, char *path, char *key, char *deflt)
     curKey = (tParmKey*)curNode;
     
     if ((curNode == NULL)  || (curNode->type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	/* return strdup(deflt); */
 	return deflt;
     }	
 
     /* key found, return value */
-    /* return strdup(curKey->valstr); */
     return curKey->valstr;
 }
 
@@ -1111,12 +1109,10 @@ GfParmGetCurStr(void *handle, char *path, char *key, char *deflt)
     curKey = gfGetCurKey(handle, path, key);
 
     if ((curKey == NULL)  || (curKey->n.type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	/* return strdup(deflt); */
 	return deflt;
     }	
 
     /* key found, return value */
-    /* return strdup(curKey->valstr); */
     return curKey->valstr;
 }
 

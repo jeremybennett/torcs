@@ -80,8 +80,8 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
     
     if (Dv > 0.0) {
 	/* speed management */
-	car->ctrl->accelCmd = MIN(Dv * Dx + Dvv * Dxx, 1.0);
-	car->ctrl->accelCmd = 1.0;
+	car->_accelCmd = MIN(Dv * Dx + Dvv * Dxx, 1.0);
+	car->_accelCmd = 1.0;
 	
 	/* anti-slip */
 	/* assume SPOOL differential and rwd */
@@ -91,18 +91,18 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	    slip = 0;
 	}
 	if (gear == 1) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(car->ctrl->steer) * 1.0) * exp(-fabs(aspect) * 4.0) + .1;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 1.0) * exp(-fabs(aspect) * 4.0) + .1;
 	} else if ((gear > 1) && (car->_speed_x < 40.0)) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
 	}
 	
 	
 	if ((slip > 0.5) && (gear > 1)) {
-	    car->ctrl->accelCmd *= 0.5;
+	    car->_accelCmd *= 0.5;
 	} else {
-	    RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 50.0);
+	    RELAXATION(car->_accelCmd, lastAccel[idx], 50.0);
 	}
-	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, fabs(Dv/6.0));
+	car->_accelCmd = MIN(car->_accelCmd, fabs(Dv/6.0));
 	//lastBrkCmd[idx] = 0.8;
     } else {
 	tdble meanSpd = 0;
@@ -121,26 +121,26 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 		}
 	    }
 	}
-	car->ctrl->brakeCmd = MIN(-Dv * Dxb + Dvv * Dxxb, 1.0);
+	car->_brakeCmd = MIN(-Dv * Dxb + Dvv * Dxxb, 1.0);
 	if (slip > 0.2) {
-	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd - slip * 0.5, 0);
+	    car->_brakeCmd = MAX(car->_brakeCmd - slip * 0.5, 0);
 	} else {
-	    RELAXATION(car->ctrl->brakeCmd, lastBrkCmd[idx], 50.0);
+	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 50.0);
 	}
-	car->ctrl->brakeCmd = MIN(car->ctrl->brakeCmd, fabs(Dv/5.0));
+	car->_brakeCmd = MIN(car->_brakeCmd, fabs(Dv/5.0));
 	//lastAccel[idx] = 1.0;
     }
 
     /* shift */
     gear += car->_gearOffset;
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     if (car->_speed_x > shiftThld[idx][gear]) {
-	car->ctrl->gear++;
-    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 10.0))) {
-	car->ctrl->gear--;
+	car->_gearCmd++;
+    } else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 10.0))) {
+	car->_gearCmd--;
     }
     if (car->_gear <= 0) {
-	car->ctrl->gear++;
+	car->_gearCmd++;
     }
 }
 

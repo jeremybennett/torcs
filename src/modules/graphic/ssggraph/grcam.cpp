@@ -875,7 +875,7 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 		    if (dist > 0) {
 			schedView[car->index].prio += grNbCars;
 			schedView[car->index].viewable |= 8;
-			if (car->ctrl->raceCmd & RM_CMD_PIT_ASKED) {
+			if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
 			    schedView[car->index].prio += grNbCars;
 			    event = 1;
 			}
@@ -900,7 +900,7 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 			}
 		    }
 
-		    if (car->priv->collision) {
+		    if (car->priv.collision) {
 			schedView[car->index].prio += grNbCars;
 			schedView[car->index].viewable |= 4;
 			event = 1;
@@ -937,7 +937,7 @@ class cGrCarCamRoadZoomTVD : public cGrCarCamRoadZoom
 		    lastViewTime = s->currentTime;
 
 		    for (i = 0; i < grNbCars; i++) {
-			s->cars[i]->priv->collision = 0;
+			s->cars[i]->priv.collision = 0;
 		    }
 		}
 	    }

@@ -59,7 +59,7 @@ SpeedStrategy2(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect
     gear = car->_gear;
     if (Vtarget > car->_speed_x) {
 	/* speed management */
-	accelTgt = car->ctrl->accelCmd = MIN((Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
+	accelTgt = car->_accelCmd = MIN((Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
     
 	/* anti-slip */
 	/* assume SPOOL differential and rwd */
@@ -69,16 +69,16 @@ SpeedStrategy2(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect
 	    slip = 0;
 	}
 	if (gear == 1) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(car->ctrl->steer) * 4.0) * exp(-fabs(aspect) * 4.0) + 0.2;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 4.0) * exp(-fabs(aspect) * 4.0) + 0.2;
 	} else if ((gear > 1) && (car->_speed_x < 40.0)) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
 	}
 	
 	
 	if ((slip > 0.2) && (gear > 1)) {
-	    car->ctrl->accelCmd *= 0.5;
+	    car->_accelCmd *= 0.5;
 	} else {
-	    RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 1.0);
+	    RELAXATION(car->_accelCmd, lastAccel[idx], 1.0);
 	}
 	lastBrkCmd[idx] = 0.8;
     } else {
@@ -87,11 +87,11 @@ SpeedStrategy2(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect
 	} else {
 	    slip = 0;
 	}
-	car->ctrl->brakeCmd = MIN(-(Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
+	car->_brakeCmd = MIN(-(Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
 	if (slip > 0.3) {
-	    car->ctrl->brakeCmd = 0.0;
+	    car->_brakeCmd = 0.0;
 	} else {
-	    RELAXATION(car->ctrl->brakeCmd, lastBrkCmd[idx], 1.0);
+	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 1.0);
 	}
 	lastAccel[idx] = 1.0;
     }
@@ -99,14 +99,14 @@ SpeedStrategy2(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect
     /* shift */
     gear += car->_gearOffset;
 
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     if (car->_speed_x > shiftThld[idx][gear]) {
-	car->ctrl->gear++;
-    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
-	car->ctrl->gear--;
+	car->_gearCmd++;
+    } else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
+	car->_gearCmd--;
     }
-    if (car->_gear <= 0) {
-	car->ctrl->gear++;
+    if (car->_gearCmd <= 0) {
+	car->_gearCmd++;
     }
 }
 
@@ -134,8 +134,8 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
     
     if (Dv > 0.0) {
 	/* speed management */
-	car->ctrl->accelCmd = MIN(Dv * Dx + Dvv * Dxx, 1.0);
-	car->ctrl->accelCmd = 1.0;
+	car->_accelCmd = MIN(Dv * Dx + Dvv * Dxx, 1.0);
+	car->_accelCmd = 1.0;
 	
 	/* anti-slip */
 	/* assume SPOOL differential and rwd */
@@ -145,16 +145,16 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	    slip = 0;
 	}
 	if (gear == 1) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(car->ctrl->steer) * 4.0) * exp(-fabs(aspect) * 4.0) + 0.2;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(car->_steerCmd) * 4.0) * exp(-fabs(aspect) * 4.0) + 0.2;
 	} else if ((gear > 1) && (car->_speed_x < 40.0)) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 4.0) + 0.15;
 	}
 	
 	
 	if ((slip > 0.2) && (gear > 1)) {
-	    car->ctrl->accelCmd *= 0.4;
+	    car->_accelCmd *= 0.4;
 	} else {
-	    RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 50.0);
+	    RELAXATION(car->_accelCmd, lastAccel[idx], 50.0);
 	}
 	//lastBrkCmd[idx] = 0.8;
     } else {
@@ -163,25 +163,25 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect)
 	} else {
 	    slip = 0;
 	}
-	car->ctrl->brakeCmd = MIN(-Dv * Dxb + Dvv * Dxxb, 1.0);
+	car->_brakeCmd = MIN(-Dv * Dxb + Dvv * Dxxb, 1.0);
 	if (slip > 0.2) {
-	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd - slip * 0.5, 0);
+	    car->_brakeCmd = MAX(car->_brakeCmd - slip * 0.5, 0);
 	} else {
-	    RELAXATION(car->ctrl->brakeCmd, lastBrkCmd[idx], 50.0);
+	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 50.0);
 	}
 	//lastAccel[idx] = 1.0;
     }
 
     /* shift */
     gear += car->_gearOffset;
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     if (car->_speed_x > shiftThld[idx][gear]) {
-	car->ctrl->gear++;
-    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
-	car->ctrl->gear--;
+	car->_gearCmd++;
+    } else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
+	car->_gearCmd--;
     }
-    if (car->_gear <= 0) {
-	car->ctrl->gear++;
+    if (car->_gearCmd <= 0) {
+	car->_gearCmd++;
     }
 }
 

@@ -145,13 +145,13 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 	    
 		cur_clr[3] = car->_skid[i];
 		
-		vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
-		vtx[1] = car->priv->wheel[i].relPos.y-car->_tireWidth(i) / 2.0;
-		vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
+		vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
+		vtx[1] = car->priv.wheel[i].relPos.y-car->_tireWidth(i) / 2.0;
+		vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 		basevtx->add(vtx);
-		vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
-		vtx[1] = car->priv->wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
-		vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
+		vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
+		vtx[1] = car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
+		vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 		basevtx->add(vtx);
 		grCarInfo[car->index].skidmarks->base = new ssgVtxTable(GL_TRIANGLE_STRIP, basevtx, NULL, NULL, NULL);
 		grCarInfo[car->index].skidmarks->base->transform(grCarInfo[car->index].carPos);

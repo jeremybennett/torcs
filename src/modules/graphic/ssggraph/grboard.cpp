@@ -174,18 +174,18 @@ grDispGGraph(tCarElt *car)
     glColor4f(0.0, 0.0, 1.0, 1.0);
     glVertex2f(X1 - THNSS, Y1);
     glVertex2f(X1 + THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1 + car->ctrl->accelCmd * 50.0);
-    glVertex2f(X1 - THNSS, Y1 + car->ctrl->accelCmd * 50.0);
+    glVertex2f(X1 + THNSS, Y1 + car->ctrl.accelCmd * 50.0);
+    glVertex2f(X1 - THNSS, Y1 + car->ctrl.accelCmd * 50.0);
 
     glVertex2f(X1 - THNSS, Y1);
     glVertex2f(X1 + THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1 - car->ctrl->brakeCmd * 50.0);
-    glVertex2f(X1 - THNSS, Y1 - car->ctrl->brakeCmd * 50.0);
+    glVertex2f(X1 + THNSS, Y1 - car->ctrl.brakeCmd * 50.0);
+    glVertex2f(X1 - THNSS, Y1 - car->ctrl.brakeCmd * 50.0);
 
     glVertex2f(X1, Y1 - THNSS);
     glVertex2f(X1, Y1 + THNSS);
-    glVertex2f(X1 - car->ctrl->steer * 100.0, Y1 + THNSS);
-    glVertex2f(X1 - car->ctrl->steer * 100.0, Y1 - THNSS);
+    glVertex2f(X1 - car->ctrl.steer * 100.0, Y1 + THNSS);
+    glVertex2f(X1 - car->ctrl.steer * 100.0, Y1 - THNSS);
     glEnd();
 
     glBegin(GL_LINES);
@@ -349,7 +349,7 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     dx = MAX(dx, (x3-x));
     lines = 6;
     for (i = 0; i < 4; i++) {
-	if (car->ctrl->msg[i]) {
+	if (car->ctrl.msg[i]) {
 	    lines++;
 	}
     }
@@ -424,8 +424,8 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     }
     y -= dy;
     for (i = 0; i < 4; i++) {
-	if (car->ctrl->msg[i]) {
-	    GfuiPrintString(car->ctrl->msg[i], car->ctrl->msgColor, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	if (car->ctrl.msg[i]) {
+	    GfuiPrintString(car->ctrl.msg[i], car->ctrl.msgColor, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 	    y -= dy;
 	}
     }

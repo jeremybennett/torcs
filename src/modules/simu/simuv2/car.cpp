@@ -102,7 +102,7 @@ SimCarConfig(tCar *car)
     carElt->_statGC = car->statGC;
     carElt->_tank = car->tank;
     for (i = 0; i < 4; i++) {
-	carElt->priv->wheel[i].relPos = car->wheel[i].relPos;
+	carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
     }
 
     for (i = 0; i < 4; i++) {
@@ -406,11 +406,17 @@ void
 SimCarUpdate(tCar *car, tSituation * /* s */)
 {
     SimCarUpdateForces(car);
+    CHECK(car);
     SimCarUpdateSpeed(car);
+    CHECK(car);
     SimCarUpdateCornerPos(car);
+    CHECK(car);
     SimCarUpdatePos(car);
+    CHECK(car);
     SimCarCollideZ(car);
+    CHECK(car);
     SimCarCollideXYScene(car);
+    CHECK(car);
 }
 
 void

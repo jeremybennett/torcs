@@ -112,7 +112,7 @@ GfRlstUnlinkLast(tRingListHead *head)
     @param	elt  Element to unlink
     @return	Unlinked element
 */
-inline tRingList *
+tRingList *
 GfRlstUnlinkElt(tRingList *elt)
 {
     elt->prev->next = elt->next;

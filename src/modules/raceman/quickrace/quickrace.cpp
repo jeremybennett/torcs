@@ -92,7 +92,7 @@ runState(tRmInfo *rmInfo)
 	    tdble	dist;
 
 	    dist = GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
-	    if (dist== 0.0) {
+	    if (dist == 0.0) {
 		rmInfo->s->_totLaps = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
 	    } else {
 		rmInfo->s->_totLaps = ((int)(dist / rmInfo->track->length)) + 1;

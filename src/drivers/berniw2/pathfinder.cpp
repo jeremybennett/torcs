@@ -1412,7 +1412,7 @@ inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, Oth
 				o[n].mincorner = FLT_MAX;
 				o[n].minorthdist = FLT_MAX;
 				for (j = 0; j < 4; j++) {
-					v3d e(car->pub->corner[j].ax, car->pub->corner[j].ay, car->_pos_Z);
+					v3d e(car->pub.corner[j].ax, car->pub.corner[j].ay, car->_pos_Z);
 					double corner = fabs(distToPath(seg, &e));
 					double orthdist = track->distGFromPoint(myc->getCurrentPos(), myc->getDir(), &e) - myc->CARWIDTH/2.0;
 					if (corner < o[n].mincorner) o[n].mincorner = corner;
@@ -1439,7 +1439,7 @@ inline void Pathfinder::updateOverlapTimer(int trackSegId, tSituation *s, MyCar*
 		tCarElt* car = ocar[i].getCarPtr();
 		tCarElt* me = myc->getCarPtr();
 		/* is it me, and in case not, has the opponent more laps than me? */
-		if ((car != me) && (car->race->laps > me->race->laps) &&
+		if ((car != me) && (car->race.laps > me->race.laps) &&
 		!(car->_state & (RM_CAR_STATE_DNF | RM_CAR_STATE_PULLUP | RM_CAR_STATE_PULLSIDE | RM_CAR_STATE_PULLDN))) {
 			int seg = ocar[i].getCurrentSegId();
 			if (track->isBetween(start, end, seg)) {

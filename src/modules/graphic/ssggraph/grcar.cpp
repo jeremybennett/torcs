@@ -634,10 +634,10 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime)
     for (i = 0; i < 4; i++) {
 	float	*clr;
 
-	sgSetCoord(&wheelpos, car->priv->wheel[i].relPos.x, car->priv->wheel[i].relPos.y, car->priv->wheel[i].relPos.z,
-		   RAD2DEG(car->priv->wheel[i].relPos.az), RAD2DEG(car->priv->wheel[i].relPos.ax), 0);
+	sgSetCoord(&wheelpos, car->priv.wheel[i].relPos.x, car->priv.wheel[i].relPos.y, car->priv.wheel[i].relPos.z,
+		   RAD2DEG(car->priv.wheel[i].relPos.az), RAD2DEG(car->priv.wheel[i].relPos.ax), 0);
 	grCarInfo[index].wheelPos[i]->setTransform(&wheelpos);
-	sgSetCoord(&wheelpos, 0, 0, 0, 0, 0, RAD2DEG(car->priv->wheel[i].relPos.ay));
+	sgSetCoord(&wheelpos, 0, 0, 0, 0, 0, RAD2DEG(car->priv.wheel[i].relPos.ay));
 	grCarInfo[index].wheelRot[i]->setTransform(&wheelpos);
 	for (j = 0; j < 3; j++) {
 	    if (fabs(car->_wheelSpinVel(i)) < maxVel[j]) 

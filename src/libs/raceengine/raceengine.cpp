@@ -84,10 +84,8 @@ ReRacePrepare(void)
 
     RmLoadingScreenSetText("Running Prestart...");
     for (i = 0; i < s->_ncars; i++) {
-	memset(s->cars[i]->ctrl, 0, sizeof(tCarCtrl));
-	s->cars[i]->ctrl->brakeCmd = 1.0;
-	s->cars[i]->ctrl->accelCmd = 0.0;
-	s->cars[i]->ctrl->gear = 0;
+	memset(&(s->cars[i]->ctrl), 0, sizeof(tCarCtrl));
+	s->cars[i]->ctrl.brakeCmd = 1.0;
     }    
     for (j = 0; j < ((int)(1.0 / RCM_MAX_DT_SIMU)); j++) {
 	ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
@@ -153,7 +151,7 @@ ReUpdtPitTime(tCarElt *car)
     tSituation	*s = ReInfo->s;
     tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
 
-    info->totalPitTime = 2.0 + fabs(car->pitcmd->fuel) / 8.0 + (tdble)(fabs(car->pitcmd->repair)) * 0.007;
+    info->totalPitTime = 2.0 + fabs(car->pitcmd.fuel) / 8.0 + (tdble)(fabs(car->pitcmd.repair)) * 0.007;
     car->_scheduledEventTime = s->currentTime + info->totalPitTime;
     ReInfo->_reSimItf.reconfig(car);    
 }
@@ -212,26 +210,26 @@ ReManage(tCarElt *car)
     }
 
     /* PIT STOP */
-    if (car->ctrl->raceCmd & RM_CMD_PIT_ASKED) {
-	car->ctrl->msg[3] = "Can Pit";
-	memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
+    if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
+	car->ctrl.msg[3] = "Can Pit";
+	memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
     }
     
     if (car->_state & RM_CAR_STATE_PIT) {
-	car->ctrl->raceCmd &= ~RM_CMD_PIT_ASKED; /* clear the flag */
+	car->ctrl.raceCmd &= ~RM_CMD_PIT_ASKED; /* clear the flag */
 	if (car->_scheduledEventTime < s->currentTime) {
 	    car->_state &= ~RM_CAR_STATE_PIT;
 	    sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
 	    ReRaceMsgSet(buf, 5);
 	} else {
-	    car->ctrl->msg[2] = "In Pits";
-	    memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
+	    car->ctrl.msg[2] = "In Pits";
+	    memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
 	    if (car == s->cars[s->current]) {
 		sprintf(buf, "%s in pits %.1fs", car->_name, s->currentTime - info->startPitTime);
 		ReRaceMsgSet(buf, .1);
 	    }
 	}
-    } else if ((car->_pit) && (car->ctrl->raceCmd & RM_CMD_PIT_ASKED)) {
+    } else if ((car->_pit) && (car->ctrl.raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
 	
 	switch (car->_trkPos.seg->type) {
@@ -498,7 +496,7 @@ ReNextCar(void *dummy)
 		 s->cars[s->current]->_modName);
     GfParmSetNum(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL,
 		 (tdble)(s->cars[s->current]->_driverIndex));
-    s->cars[s->current]->priv->collision = 0;
+    s->cars[s->current]->priv.collision = 0;
 }
 
 void
@@ -514,7 +512,7 @@ RePrevCar(void *dummy)
 		 s->cars[s->current]->_modName);
     GfParmSetNum(ReInfo->_reParam, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL,
 		 (tdble)(s->cars[s->current]->_driverIndex));
-    s->cars[s->current]->priv->collision = 0;
+    s->cars[s->current]->priv.collision = 0;
 }
 
 void

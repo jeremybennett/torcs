@@ -275,6 +275,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 static tdble shiftThld[MAX_GEARS+1];
 static tdble Gear;
 static tMouseInfo refMouse;
+static tdble	distToStart;
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
@@ -293,16 +294,19 @@ void newrace(int index, tCarElt* car, tSituation *s)
     memcpy(&refMouse, GfuiMouseInfo(), sizeof (tMouseInfo));
 
 #ifndef WIN32
-    if (s->_raceType == RM_TYPE_PRACTICE) {
+#ifdef TELEMETRY
+    //if (s->_raceType == RM_TYPE_PRACTICE) {
 	RtTelemInit(-10, 10);
-	RtTelemNewChannel("Ax", &car->_accel_x, -30, 30);
-	RtTelemNewChannel("Ay", &car->_accel_y, -30, 30);
-	RtTelemNewChannel("Steer", &car->ctrl->steer, -1, 1);
-	RtTelemNewChannel("Throttle", &car->ctrl->accelCmd, -1, 1);
-	RtTelemNewChannel("Brake", &car->ctrl->brakeCmd, -1, 1);
-	RtTelemNewChannel("Gear", &Gear, -10, 10);
-	RtTelemNewChannel("Speed", &car->_speed_x, -100, 100);
-    }
+	RtTelemNewChannel("Dist", &distToStart, 0, 0);
+	RtTelemNewChannel("Ax", &car->_accel_x, 0, 0);
+	RtTelemNewChannel("Ay", &car->_accel_y, 0, 0);
+	RtTelemNewChannel("Steer", &car->ctrl->steer, 0, 0);
+	RtTelemNewChannel("Throttle", &car->ctrl->accelCmd, 0, 0);
+	RtTelemNewChannel("Brake", &car->ctrl->brakeCmd, 0, 0);
+	RtTelemNewChannel("Gear", &Gear, 0, 0);
+	RtTelemNewChannel("Speed", &car->_speed_x, 0, 0);
+	//}
+#endif
 #endif
 
 }
@@ -337,15 +341,17 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     float	 mouseMove;
     int		 scrw, dummy;
     int		 ind;
+
+    distToStart = RtGetDistFromStart(car);
     
     Gear = (tdble)car->_gear;	/* telemetry */
 
     GfScrGetSize(&scrw, &dummy, &dummy, &dummy);
 
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&(car->ctrl), 0, sizeof(tCarCtrl));
 
     if (car->_laps != LastPitStopLap) {
-	car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
+	car->_raceCmd = RM_CMD_PIT_ASKED;
     }
 
     if (joyPresent) {
@@ -431,12 +437,12 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     }
 
     if (ParamAbs) {
-	car->ctrl->msg[0] = "ABS";
+	car->_msgCmd[0] = "ABS";
     }
     if (ParamAsr) {
-	car->ctrl->msg[1] = "ASR";
+	car->_msgCmd[1] = "ASR";
     }
-    memcpy(car->ctrl->msgColor, color, sizeof(car->ctrl->msgColor));
+    memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
 
     switch (CmdControl[CMD_LEFTSTEER].type) {
     case CMD_TYPE_ANALOG:
@@ -486,7 +492,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	break;
     }
 
-    car->ctrl->steer = leftSteer + rightSteer;
+    car->_steerCmd = leftSteer + rightSteer;
     
 
     switch (CmdControl[CMD_BRAKE].type) {
@@ -497,19 +503,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (brake < CmdControl[CMD_BRAKE].min) {
 	    brake = CmdControl[CMD_BRAKE].min;
 	}
-	car->ctrl->brakeCmd = fabs(CmdControl[CMD_BRAKE].pow *
+	car->_brakeCmd = fabs(CmdControl[CMD_BRAKE].pow *
 				   pow(fabs((brake - CmdControl[CMD_BRAKE].minVal) /
 					    (CmdControl[CMD_BRAKE].max - CmdControl[CMD_BRAKE].min)),
 				       CmdControl[CMD_BRAKE].sens));
 	break;
     case CMD_TYPE_JOY_BUT:
-	car->ctrl->brakeCmd = levelup[CmdControl[CMD_BRAKE].val];
+	car->_brakeCmd = levelup[CmdControl[CMD_BRAKE].val];
 	break;
     case CMD_TYPE_MOUSE_BUT:
-	car->ctrl->brakeCmd = mouse->button[CmdControl[CMD_BRAKE].val];
+	car->_brakeCmd = mouse->button[CmdControl[CMD_BRAKE].val];
 	break;
     default:
-	car->ctrl->brakeCmd = 0;
+	car->_brakeCmd = 0;
 	break;
     }
 
@@ -541,7 +547,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	    if (ABS > 1.0)
 		ABS = 1.0;
 	}
-	car->ctrl->brakeCmd = MIN(car->ctrl->brakeCmd, ABS);
+	car->_brakeCmd = MIN(car->_brakeCmd, ABS);
     }
 
 
@@ -553,19 +559,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	} else if (throttle < CmdControl[CMD_THROTTLE].min) {
 	    throttle = CmdControl[CMD_THROTTLE].min;
 	}
-	car->ctrl->accelCmd = fabs(CmdControl[CMD_THROTTLE].pow *
+	car->_accelCmd = fabs(CmdControl[CMD_THROTTLE].pow *
 				   pow(fabs((throttle - CmdControl[CMD_THROTTLE].minVal) /
 					    (CmdControl[CMD_THROTTLE].max - CmdControl[CMD_THROTTLE].min)),
 				       CmdControl[CMD_THROTTLE].sens));
 	break;
     case CMD_TYPE_JOY_BUT:
-	car->ctrl->accelCmd = levelup[CmdControl[CMD_THROTTLE].val];
+	car->_accelCmd = levelup[CmdControl[CMD_THROTTLE].val];
 	break;
     case CMD_TYPE_MOUSE_BUT:
-	car->ctrl->accelCmd = mouse->button[CmdControl[CMD_THROTTLE].val];
+	car->_accelCmd = mouse->button[CmdControl[CMD_THROTTLE].val];
 	break;
     default:
-	car->ctrl->accelCmd = 0;
+	car->_accelCmd = 0;
 	break;
     }
 
@@ -585,24 +591,22 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	    if (AntiSlip > 1.0)
 		AntiSlip = 1.0;
 	}
-	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, AntiSlip);
+	car->_accelCmd = MIN(car->_accelCmd, AntiSlip);
     }
 #ifndef WIN32
-    if (car->_laps == 1) {
-	if (s->_raceType == RM_TYPE_PRACTICE) {
-	    if (lap == 0) {
+#ifdef TELEMETRY
+    if ((car->_laps > 1) && (car->_laps < 5)) {
+	    if (lap == 1) {
 		RtTelemStartMonitoring("Player");
 	    }
 	    RtTelemUpdate(car->_curLapTime);
-	}
     }
-    if (car->_laps == 2) {
-	if (s->_raceType == RM_TYPE_PRACTICE) {
-	    if (lap == 1) {
+    if (car->_laps == 5) {
+	    if (lap == 4) {
 		RtTelemShutdown();
 	    }
-	}
     }
+#endif
 #endif
     lap = car->_laps;
 }
@@ -629,27 +633,27 @@ static void drive_mt(int index, tCarElt* car, tSituation *s)
     int		i;
     
     common_drive(index, car, s);
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     /* manual shift sequential */
     if ((CmdControl[CMD_UP_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_UP_SHFT].val]) {
-	car->ctrl->gear++;
+	car->_gearCmd++;
     }
     if ((CmdControl[CMD_DN_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_DN_SHFT].val]) {
-	if (SeqShftAllowNeutral || (car->ctrl->gear > 1)) {
-	    car->ctrl->gear--;
+	if (SeqShftAllowNeutral || (car->_gearCmd > 1)) {
+	    car->_gearCmd--;
 	}
     }
     /* manual shift direct */
     if (RelButNeutral) {
 	for (i = CMD_GEAR_R; i <= CMD_GEAR_6; i++) {
 	    if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgedn[CmdControl[i].val]) {
-		car->ctrl->gear = 0;
+		car->_gearCmd = 0;
 	    }
 	}
     }
     for (i = CMD_GEAR_R; i <= CMD_GEAR_6; i++) {
 	if ((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[i].val]) {
-	    car->ctrl->gear = i - CMD_GEAR_N;
+	    car->_gearCmd = i - CMD_GEAR_N;
 	}
     }
     
@@ -687,13 +691,13 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     gear += car->_gearOffset;
     
     /* manual shift */
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     if ((CmdControl[CMD_UP_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_UP_SHFT].val]) {
-	car->ctrl->gear++;
+	car->_gearCmd++;
 	manual = 1;
     }
     if ((CmdControl[CMD_DN_SHFT].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[CMD_DN_SHFT].val]) {
-	car->ctrl->gear--;
+	car->_gearCmd--;
 	manual = 1;
     }
 
@@ -702,7 +706,7 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 	for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
 	    if (((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgedn[CmdControl[i].val]) ||
 		((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseEdgeup[CmdControl[i].val])) {
-		car->ctrl->gear = 0;
+		car->_gearCmd = 0;
 		/* return to auto-shift */
 		manual = 0;
 	    }
@@ -711,7 +715,7 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     for (i = CMD_GEAR_R; i < CMD_GEAR_2; i++) {
 	if (((CmdControl[i].type == CMD_TYPE_JOY_BUT) && edgeup[CmdControl[i].val]) ||
 	    ((CmdControl[i].type == CMD_TYPE_MOUSE_BUT) && mouseEdgedn[CmdControl[i].val])) {
-	    car->ctrl->gear = i - CMD_GEAR_N;
+	    car->_gearCmd = i - CMD_GEAR_N;
 	    manual = 1;
 	}
     }
@@ -719,12 +723,12 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
     /* auto shift */
     if (!manual) {
 	if (car->_speed_x > shiftThld[gear]) {
-	    car->ctrl->gear++;
-	} else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[gear-1] - 4.0))) {
-	    car->ctrl->gear--;
+	    car->_gearCmd++;
+	} else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[gear-1] - 4.0))) {
+	    car->_gearCmd--;
 	}
-	if (car->_gear <= 0) {
-	    car->ctrl->gear++;
+	if (car->_gearCmd <= 0) {
+	    car->_gearCmd++;
 	}
     }
 
@@ -747,11 +751,11 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
     
     f2 = 0.00065 * (curTrack->length * car->_remainingLaps + car->_trkPos.seg->lgfromstart) / ns - car->_fuel;
 
-    car->pitcmd->fuel = MAX(MIN(f1, f2), 0);
+    car->_pitFuel = MAX(MIN(f1, f2), 0);
 
     LastPitStopLap = car->_laps;
 
-    car->pitcmd->repair = (int)car->_dammage;
+    car->_pitRepair = (int)car->_dammage;
 
     return ROB_PIT_MENU; /* The player is able to modify the value by menu */
 }

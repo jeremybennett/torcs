@@ -448,7 +448,7 @@ getOffset(int index, tCarElt* car, tTrkLocPos *trkPos, tdble *maxSpeed)
 	    offset = OffsetFinal + SIGN(OffsetFinal) * OW[idx];
 	    *maxSpeed = Spline(VM2[idx], 0, lgfs, LgfsFinal[idx] - OP[idx], LgfsFinal[idx]);
 	    hold[idx] = 0;
-	    car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
+	    car->_raceCmd = RM_CMD_PIT_ASKED;
 	    break;
 	}
 
@@ -506,7 +506,7 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 
     if (Vtarget > car->_speed_x) {
 	/* speed management */
-	accelTgt = car->ctrl->accelCmd = MIN((Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
+	accelTgt = car->_accelCmd = MIN((Vtarget+1.0 - car->_speed_x) / Dx, 1.0);
     
 	/* anti-slip */
 	/* assume SPOOL differential and rwd */
@@ -515,18 +515,18 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	} else {
 	    slip = 0;
 	}
-	if ((car->_gear == 1) && (idx != 2) && (idx != 3)) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(steer) * AccSteer[idx]) * exp(-fabs(aspect) * AccAngle[idx]) + 0.1;
+	if ((car->_gearCmd == 1) && (idx != 2) && (idx != 3)) {
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(steer) * AccSteer[idx]) * exp(-fabs(aspect) * AccAngle[idx]) + 0.1;
 	} else if (car->_gear > 1) {
-	    car->ctrl->accelCmd = car->ctrl->accelCmd * exp(-fabs(aspect) * 0.3) ; //+ 0.15;
+	    car->_accelCmd = car->_accelCmd * exp(-fabs(aspect) * 0.3) ; //+ 0.15;
 	}
 	
 	
 	if ((slip > 1.0) && (car->_gear > 1)) {
-	    car->ctrl->accelCmd /= 2.0;
+	    car->_accelCmd /= 2.0;
 	    //lastAccel = 0.0;
 	} else {
-	    //RELAXATION(car->ctrl->accelCmd, lastAccel[idx], 30.0);
+	    //RELAXATION(car->_accelCmd, lastAccel[idx], 30.0);
 	}
 	
     } else {
@@ -535,11 +535,11 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 	} else {
 	    slip = 0;
 	}
-	car->ctrl->brakeCmd = MIN(MIN((car->_speed_x - Vtarget) / 20.0, 1.0)  * maxBrk, maxBrk);
+	car->_brakeCmd = MIN(MIN((car->_speed_x - Vtarget) / 20.0, 1.0)  * maxBrk, maxBrk);
 	if (slip > 0.3) {
-	    car->ctrl->brakeCmd = 0.0;
+	    car->_brakeCmd = 0.0;
 	} else {
-	    RELAXATION(car->ctrl->brakeCmd, lastBrkCmd[idx], 3.0);
+	    RELAXATION(car->_brakeCmd, lastBrkCmd[idx], 3.0);
 	}
 	
 	lastAccel[idx] = 0;
@@ -548,15 +548,15 @@ SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tdble steer, tdble maxBrk, t
 
     /* shift */
     gear += car->_gearOffset;
-    car->ctrl->gear = car->_gear;
+    car->_gearCmd = car->_gear;
     
     if (car->_speed_x > shiftThld[idx][gear]) {
-	car->ctrl->gear++;
-    } else if ((car->_gear > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
-	car->ctrl->gear--;
+	car->_gearCmd++;
+    } else if ((car->_gearCmd > 1) && (car->_speed_x < (shiftThld[idx][gear-1] - 4.0))) {
+	car->_gearCmd--;
     }
-    if (car->_gear <= 0) {
-	car->ctrl->gear++;
+    if (car->_gearCmd <= 0) {
+	car->_gearCmd++;
     }
 
 }
@@ -582,7 +582,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble	offset = 0;
     tdble	dist;
 
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&(car->ctrl), 0, sizeof(tCarCtrl));
     
     MaxSpeed[idx] = 10000;
     trkPos = car->_trkPos;
@@ -723,12 +723,12 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	Dy = -Dy * Dy;
     }
     
-    car->ctrl->steer = PGain[idx] * Dy + VGain[idx] * Vy + PnGain[idx] * Dny + AGain[idx] * Da * Da;
+    car->_steerCmd = PGain[idx] * Dy + VGain[idx] * Vy + PnGain[idx] * Dny + AGain[idx] * Da * Da;
 
     if (car->_speed_x < 0) {
-	car->ctrl->steer *= 1.5;
+	car->_steerCmd *= 1.5;
     } else {
-	car->ctrl->steer *= steerk[idx];
+	car->_steerCmd *= steerk[idx];
     }
 	
 
@@ -751,21 +751,21 @@ static void drive(int index, tCarElt* car, tSituation *s)
     Dny = exp(-Dny * Dny * Dny * Dny);
 
     Db = car->_yaw_rate;
-    SpeedStrategy(car, idx, MIN((vtgt1 * Dny  + vtgt2) * 1.8, MaxSpeed[idx]), car->ctrl->steer, maxBrk[idx], s, Db);
+    SpeedStrategy(car, idx, MIN((vtgt1 * Dny  + vtgt2) * 1.8, MaxSpeed[idx]), car->_steerCmd, maxBrk[idx], s, Db);
 
 #define AMARG 0.6
     if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||
 	 ((Da < (AMARG-PI/2.0)) && (car->_trkPos.toRight > seg->width-seg->width/3.0))) && 
 	(car->_gear < 2) && (car->_speed_x < 3.5)) {
-	car->ctrl->steer = -car->ctrl->steer * 2.0;
-	car->ctrl->gear = -1;
+	car->_steerCmd = -car->_steerCmd * 2.0;
+	car->_gearCmd = -1;
     } else if ((fabs(Da) > (PI - (PI/4.0))) &&
 	       ((car->_trkPos.toRight < 0) ||
 		(car->_trkPos.toRight > seg->width))) {
-	car->ctrl->steer = car->ctrl->steer * 6.0;
+	car->_steerCmd = car->_steerCmd * 6.0;
     }
     if ((car->_speed_x < -0.5) && (car->_gear > 0)) {
-	car->ctrl->brakeCmd = 1.0;
+	car->_brakeCmd = 1.0;
     }
 }
 
@@ -779,11 +779,11 @@ pitCmd(int index, tCarElt *car, tSituation *s)
     PitState[idx] = PIT_STATE_PIT_EXIT;
     fuel = ConsFactor * (remainLaps + 1);
     fuel = MIN(fuel, MaxFuel[idx]);
-    car->pitcmd->fuel = fuel - car->_fuel;
+    car->_pitFuel = fuel - car->_fuel;
     if (remainLaps > 20) {
-	car->pitcmd->repair = (int)(car->_dammage);
+	car->_pitRepair = (int)(car->_dammage);
     } else {
-	car->pitcmd->repair = (int)(car->_dammage / 2.0);
+	car->_pitRepair = (int)(car->_dammage / 2.0);
     }
 
     return ROB_PIT_IM;

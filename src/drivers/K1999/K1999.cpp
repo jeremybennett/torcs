@@ -625,14 +625,14 @@ static void newrace(int index, tCarElt* car, tSituation *s)
 
 void CK1999Data::NewRace(tCarElt* car, tSituation *s)
 {
- wheelbase = (car->priv->wheel[FRNT_RGT].relPos.x +
-              car->priv->wheel[FRNT_LFT].relPos.x -
-              car->priv->wheel[REAR_RGT].relPos.x -
-              car->priv->wheel[REAR_LFT].relPos.x) / 2;
- wheeltrack = (car->priv->wheel[FRNT_LFT].relPos.y +
-               car->priv->wheel[REAR_LFT].relPos.y -
-               car->priv->wheel[FRNT_RGT].relPos.y -
-               car->priv->wheel[REAR_RGT].relPos.y) / 2;
+ wheelbase = (car->priv.wheel[FRNT_RGT].relPos.x +
+              car->priv.wheel[FRNT_LFT].relPos.x -
+              car->priv.wheel[REAR_RGT].relPos.x -
+              car->priv.wheel[REAR_LFT].relPos.x) / 2;
+ wheeltrack = (car->priv.wheel[FRNT_LFT].relPos.y +
+               car->priv.wheel[REAR_LFT].relPos.y -
+               car->priv.wheel[FRNT_RGT].relPos.y -
+               car->priv.wheel[REAR_RGT].relPos.y) / 2;
  OUTPUT("wheelbase = " << wheelbase);
  OUTPUT("wheeltrack = " << wheeltrack);
 
@@ -651,7 +651,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 
 void CK1999Data::Drive(tCarElt* car, tSituation *s)
 {
- memset(car->ctrl, 0, sizeof(tCarCtrl));
+ memset(&(car->ctrl), 0, sizeof(tCarCtrl));
 
  // 
  // Find index in data arrays
@@ -721,7 +721,7 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
   //
   {
    double s = atan(wheelbase * TargetCurvature) / car->_steerLock;
-   car->ctrl->steer = s;
+   car->_steerCmd = s;
   }
 
   //
@@ -751,7 +751,7 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
   if (cError < 0)
    VnError = PI - VnError;
 
-  car->ctrl->steer -= (atan(Error * (300 / (speed + 300)) / 15) + VnError) / car->_steerLock;
+  car->_steerCmd -= (atan(Error * (300 / (speed + 300)) / 15) + VnError) / car->_steerLock;
 
   //
   // Steer into the skid
@@ -767,33 +767,33 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
    Skid = 0.9;
   if (Skid < -0.9)
    Skid = -0.9;
-  car->ctrl->steer += asin(Skid) / car->_steerLock;
+  car->_steerCmd += asin(Skid) / car->_steerLock;
 
   double yr = speed * TargetCurvature;
   double diff = car->_yaw_rate - yr;
-  car->ctrl->steer -= (SteerSkid * (1 + fDirt) * (100 / (speed + 100)) * diff) / car->_steerLock;
+  car->_steerCmd -= (SteerSkid * (1 + fDirt) * (100 / (speed + 100)) * diff) / car->_steerLock;
  }
 
  //
  // Throttle and brake command
  //
- car->ctrl->accelCmd = 0;
- car->ctrl->brakeCmd = 0;
+ car->_accelCmd = 0;
+ car->_brakeCmd = 0;
 
  double x = (10 + car->_speed_x) * (TargetSpeed - car->_speed_x) / 200;
  if (fDirt && x > 0)
   x = 1;
 
  if (x > 0)
-  car->ctrl->accelCmd = Min(x, TractionHelp);
+  car->_accelCmd = Min(x, TractionHelp);
  else
-  car->ctrl->brakeCmd = Min(-10 * x, ABS);
+  car->_brakeCmd = Min(-10 * x, ABS);
  
  if (car->_speed_x > 30 && fabs(Error) * car->_speed_x > 60)
-  car->ctrl->accelCmd = 0;
+  car->_accelCmd = 0;
 
- if (car->ctrl->accelCmd > 0)
-  car->ctrl->brakeCmd = 0;
+ if (car->_accelCmd > 0)
+  car->_brakeCmd = 0;
 
  //
  // Traction help
@@ -849,20 +849,20 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
  // 
  // Gearbox command
  //
- car->ctrl->gear = car->_gear;
+ car->_gearCmd = car->_gear;
  if (car->_gear <= 0)
-  car->ctrl->gear = 1;
+  car->_gearCmd = 1;
  else
  {
   float *tRatio = car->_gearRatio + car->_gearOffset;
   double rpm = (car->_speed_x + SlipLimit) * tRatio[car->_gear] / car->_wheelRadius(2);
 
   if (rpm > car->_enginerpmRedLine * 0.95)
-   car->ctrl->gear = car->_gear + 1;
+   car->_gearCmd = car->_gear + 1;
     
   if (car->_gear > 1 &&
       rpm / tRatio[car->_gear] * tRatio[car->_gear - 1] < car->_enginerpmRedLine * 0.70 + 2 * car->_gear)
-   car->ctrl->gear = car->_gear - 1;
+   car->_gearCmd = car->_gear - 1;
  }
 
  //
@@ -874,29 +874,29 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
      SinAngleError * Error > 0)
  {
   fStuck = 1;
-  car->ctrl->gear = car->_gear -1;
+  car->_gearCmd = car->_gear -1;
   if (car->_speed_x < 0)
   {
    if (SinAngleError > 0)
-    car->ctrl->steer = 1;
+    car->_steerCmd = 1;
    else
-    car->ctrl->steer = -1;
+    car->_steerCmd = -1;
   }
  }
  else
   fStuck = 0;
 
  if (car->_speed_x * car->_gear < -0.5)
-  car->ctrl->brakeCmd = 1.0;
+  car->_brakeCmd = 1.0;
 
  //
  // Special race commands
  //
- car->ctrl->raceCmd = RM_CMD_NONE;
+ car->_raceCmd = RM_CMD_NONE;
 #if 0
  if (0)
  {
-  car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
+  car->_raceCmd = RM_CMD_PIT_ASKED;
   car->pitcmd->fuel = 1;
  }
 #endif
@@ -905,9 +905,9 @@ void CK1999Data::Drive(tCarElt* car, tSituation *s)
  LOG(car->_trkPos.toLeft);
  LOG(TargetLane);
  LOG(Error);
- LOG(car->ctrl->accelCmd);
- LOG(car->ctrl->brakeCmd);
- LOG(car->ctrl->steer);
+ LOG(car->_accelCmd);
+ LOG(car->_brakeCmd);
+ LOG(car->_steerCmd);
  LOG(SegId % 2);
  {
   static double PrevD = 0;

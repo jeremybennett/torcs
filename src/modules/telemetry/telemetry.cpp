@@ -103,8 +103,11 @@ TlmNewChannel(const char *name, tdble *var, tdble min, tdble max)
 
     curChan->name = name;
     curChan->val = var;
-    
-    curChan->scale = TlmData.ymax / max;
+    if ((min == 0) && (max == 0)) {
+	curChan->scale = 1.0;
+    } else {
+	curChan->scale = TlmData.ymax / max;
+    }
 }
 
 void 
@@ -154,6 +157,16 @@ TlmStartMonitoring(const char *filename)
     if (fout == NULL) {
 	return;
     }
+    curChan = TlmData.chanList;
+    fprintf(fout, "time");
+    if (curChan != NULL) {
+	do {
+	    curChan = curChan->next;
+	    fprintf(fout, "	%s", curChan->name);
+	} while (curChan != TlmData.chanList);
+	fprintf(fout, "\n");
+    }
+    
     TlmData.state = 1;
 }
 

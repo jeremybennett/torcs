@@ -267,7 +267,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     static int   disp = 0;
     
     
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&(car->ctrl), 0, sizeof(tCarCtrl));
 
     Curtime += s->deltaTime;
 
@@ -339,19 +339,19 @@ static void drive(int index, tCarElt* car, tSituation *s)
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
     Dny = Tright[0] - trkPos.toRight;
 
-    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
+    car->_steerCmd = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
 
     if (car->_speed_x < 0) {
-	car->ctrl->steer *= 1.5;
+	car->_steerCmd *= 1.5;
     } else {
-	car->ctrl->steer *= 1.1;
+	car->_steerCmd *= 1.1;
     }
 
     /*
      * speed control
      */
-    CosA = cos(car->_yaw + car->ctrl->steer*2.0);
-    SinA = sin(car->_yaw + car->ctrl->steer*2.0);
+    CosA = cos(car->_yaw + car->_steerCmd*2.0);
+    SinA = sin(car->_yaw + car->_steerCmd*2.0);
     curAdv = Advance2[0];
     AdvMax = car->_speed_x * 5.0;
     Amax = 0;
@@ -381,15 +381,15 @@ static void drive(int index, tCarElt* car, tSituation *s)
     if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||
 	 ((Da < (AMARG-PI/2.0)) && (car->_trkPos.toRight > (seg->width - seg->width/3.0)))) && 
 	(car->_gear < 2) && (car->_speed_x < 1.0)) {
-	car->ctrl->steer = -car->ctrl->steer * 3.0;
-	car->ctrl->gear= -1;
+	car->_steerCmd = -car->_steerCmd * 3.0;
+	car->_gearCmd = -1;
     } else if ((fabs(Da) > (PI - (PI/4.0))) &&
 	       ((car->_trkPos.toRight < 0) ||
 		(car->_trkPos.toRight > seg->width))) {
-	car->ctrl->steer = -car->ctrl->steer * 3.0;
+	car->_steerCmd = -car->_steerCmd * 3.0;
     }
     if ((car->_speed_x < -0.5) && (car->_gear > 0)) {
-	car->ctrl->brakeCmd = 1.0;
+	car->_brakeCmd = 1.0;
     }
     
 }

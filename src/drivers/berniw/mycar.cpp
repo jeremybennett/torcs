@@ -69,8 +69,8 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	lastpitfuel = 0.0;
 
 	/* set up some car properties */
-	wheelbase = car->priv->wheel[FRNT_RGT].relPos.x - car->priv->wheel[REAR_RGT].relPos.x;
-	wheeltrack = 2* fabs(car->priv->wheel[REAR_RGT].relPos.y);
+	wheelbase = car->priv.wheel[FRNT_RGT].relPos.x - car->priv.wheel[REAR_RGT].relPos.x;
+	wheeltrack = 2* fabs(car->priv.wheel[REAR_RGT].relPos.y);
 
 	carmass = GfParmGetNum(car->_carHandle, SECT_CAR, PRM_MASS, NULL, 0.0);
 	mass = carmass + lastfuel;
@@ -189,7 +189,7 @@ void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)
 	currentpathseg = pf->getPathSeg(currentsegid);
 	destpathseg = pf->getPathSeg(destsegid);
 
-	mass = carmass + car->priv->fuel;
+	mass = carmass + car->priv.fuel;
 	updateDError();
 	trtime += situation->deltaTime;
 	deltapitch = MAX(-track->getSegmentPtr(currentsegid)->getKgamma() - me->_pitch, 0.0);

@@ -83,12 +83,12 @@ SimTransmissionConfig(tCar *car)
 	    trans->gearbox.gearMax = i - 1;
 	}
 	if (gRatio == 0.0) {
-	    carElt->priv->gearRatio[i] = trans->overallRatio[i] = 0;
+	    carElt->priv.gearRatio[i] = trans->overallRatio[i] = 0;
 	    trans->freeI[i] = trans->driveI[i] = 0;
 	    trans->gearEff[i] = 1.0;
 	    continue;
 	}
-	carElt->priv->gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
+	carElt->priv.gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
 	gEff = GfParmGetNum(hdle, path, PRM_EFFICIENCY, (char*)NULL, 1.0);
 	if (gEff > 1.0) gEff = 1.0;
 	if (gEff < 0.0) gEff = 0.0;
@@ -100,12 +100,12 @@ SimTransmissionConfig(tCar *car)
     if (gRatio == 0) {
 	/* no reverse */
 	trans->gearbox.gearMin = 0;
-	carElt->priv->gearOffset = 0;
+	carElt->priv.gearOffset = 0;
     } else {
 	trans->gearbox.gearMin = -1;
-	carElt->priv->gearOffset = 1;
+	carElt->priv.gearOffset = 1;
     }
-    carElt->priv->gearNb = trans->gearbox.gearMax + 1;
+    carElt->priv.gearNb = trans->gearbox.gearMax + 1;
 
     /* initial state */
     trans->clutch.state = CLUTCH_RELEASED;
@@ -187,8 +187,8 @@ SimGearboxUpdate(tCar *car)
 	    }
 	} else {
 	    //car->carElt->ctrl->accelCmd = clutch->plip;
-	    if (car->carElt->ctrl->accelCmd > car->engine.brakeCoeff) {
-		car->carElt->ctrl->accelCmd = car->engine.brakeCoeff;
+	    if (car->carElt->ctrl.accelCmd > car->engine.brakeCoeff) {
+		car->carElt->ctrl.accelCmd = car->engine.brakeCoeff;
 	    }
 	}
 	

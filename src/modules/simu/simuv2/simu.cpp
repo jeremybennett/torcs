@@ -116,13 +116,13 @@ SimConfig(tCarElt *carElt)
     car->carElt = carElt;
     car->DynGCg = car->DynGC = carElt->_DynGC;
     car->trkPos = carElt->_trkPos;
-    car->ctrl = carElt->ctrl;
+    car->ctrl   = &carElt->ctrl;
     car->params = carElt->_carHandle;
     
     SimCarConfig(car);
 
     SimCarCollideConfig(car);
-    sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+    sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 }
 
@@ -131,12 +131,12 @@ void
 SimReConfig(tCarElt *carElt)
 {
     tCar *car = &(SimCarTable[carElt->index]);
-    if (carElt->pitcmd->fuel > 0) {
-	car->fuel += carElt->pitcmd->fuel;
+    if (carElt->pitcmd.fuel > 0) {
+	car->fuel += carElt->pitcmd.fuel;
 	if (car->fuel > car->tank) car->fuel = car->tank;
     }
-    if (carElt->pitcmd->repair > 0) {
-	car->dammage -= carElt->pitcmd->repair;
+    if (carElt->pitcmd.repair > 0) {
+	car->dammage -= carElt->pitcmd.repair;
 	if (car->dammage < 0) car->dammage = 0;
     }
 }
@@ -161,7 +161,7 @@ RemoveCar(tCar *car, tSituation *s)
 	carElt->_yaw += car->restPos.vel.az * SimDeltaTime;
 	carElt->_roll += car->restPos.vel.ax * SimDeltaTime;
 	carElt->_pitch += car->restPos.vel.ay * SimDeltaTime;
-	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+	sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 	if (carElt->_pos_Z > (car->restPos.pos.z + PULL_Z_OFFSET)) {
@@ -179,7 +179,7 @@ RemoveCar(tCar *car, tSituation *s)
     if (carElt->_state & RM_CAR_STATE_PULLSIDE) {
 	carElt->_pos_X += car->restPos.vel.x * SimDeltaTime;
 	carElt->_pos_Y += car->restPos.vel.y * SimDeltaTime;
-	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+	sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 	if ((fabs(car->restPos.pos.x - carElt->_pos_X) < 0.5) && (fabs(car->restPos.pos.y - carElt->_pos_Y) < 0.5)) {
@@ -191,7 +191,7 @@ RemoveCar(tCar *car, tSituation *s)
 
     if (carElt->_state & RM_CAR_STATE_PULLDN) {
 	carElt->_pos_Z -= car->restPos.vel.z * SimDeltaTime;
-	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+	sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 	if (carElt->_pos_Z < car->restPos.pos.z) {
@@ -220,13 +220,13 @@ RemoveCar(tCar *car, tSituation *s)
     }
     carElt->_state |= RM_CAR_STATE_PULLUP;
 
-    carElt->priv->collision = car->collision = 0;
+    carElt->priv.collision = car->collision = 0;
     for(i = 0; i < 4; i++) {
 	carElt->_skid[i] = 0;
 	carElt->_wheelSpinVel(i) = 0;
 	carElt->_brakeTemp(i) = 0;
     }
-    carElt->pub->DynGC = car->DynGC;
+    carElt->pub.DynGC = car->DynGC;
     carElt->_speed_x = 0;
 
     /* compute the target zone for the wrecked car */
@@ -299,28 +299,43 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	    }
 	}
 	
+    CHECK(car);
 	ctrlCheck(car);
+    CHECK(car);
 	SimSteerUpdate(car);
+    CHECK(car);
 	SimGearboxUpdate(car);
+    CHECK(car);
 	SimEngineUpdateTq(car);
+    CHECK(car);
 	SimCarUpdateWheelPos(car);
+    CHECK(car);
 	SimBrakeSystemUpdate(car);
+    CHECK(car);
 	SimAeroUpdate(car, s);
+    CHECK(car);
 	for (i = 0; i < 2; i++){
 	    SimWingUpdate(car, i);
 	}
+    CHECK(car);
 	for (i = 0; i < 4; i++){
 	    SimWheelUpdateRide(car, i);
 	}
+    CHECK(car);
 	for (i = 0; i < 2; i++){
 	    SimAxleUpdate(car, i);
 	}
+    CHECK(car);
 	for (i = 0; i < 4; i++){
 	    SimWheelUpdateForce(car, i);
 	}
+    CHECK(car);
 	SimTransmissionUpdate(car);
+    CHECK(car);
 	SimWheelUpdateRotation(car);
+    CHECK(car);
 	SimCarUpdate(car, s);
+    CHECK(car);
     }
 
     SimCarCollideCars(s);
@@ -329,31 +344,33 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
     
     for (ncar = 0; ncar < s->_ncars; ncar++) {
 	car = &(SimCarTable[ncar]);
+    CHECK(car);
 	carElt = car->carElt;
 
 	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	    continue;
 	}
 
+    CHECK(car);
 	SimCarUpdate2(car, s);
 
 	/* copy back the data to carElt */
 
-	carElt->pub->DynGC = car->DynGC;
-	carElt->pub->DynGCg = car->DynGCg;
-	sgMakeCoordMat4(carElt->pub->posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+	carElt->pub.DynGC = car->DynGC;
+	carElt->pub.DynGCg = car->DynGCg;
+	sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 	carElt->_trkPos = car->trkPos;
 	for (i = 0; i < 4; i++) {
-	    carElt->priv->wheel[i].relPos = car->wheel[i].relPos;
+	    carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
 	    carElt->_wheelSeg(i) = car->wheel[i].trkPos.seg;
 	    carElt->_brakeTemp(i) = car->wheel[i].brake.temp;
-	    carElt->pub->corner[i] = car->corner[i].pos;
+	    carElt->pub.corner[i] = car->corner[i].pos;
 	}
 	carElt->_gear = car->transmission.gearbox.gear;
 	carElt->_enginerpm = car->engine.rads;
 	carElt->_fuel = car->fuel;
-	carElt->priv->collision |= car->collision;
+	carElt->priv.collision |= car->collision;
 	carElt->_dammage = car->dammage;
 
 	P[0] = -carElt->_statGC_x;
@@ -364,7 +381,7 @@ SimUpdate(tSituation *s, tdble deltaTime, int telemetry)
 	carElt->_pos_Y = P[1];
 	carElt->_pos_Z = P[2];
 	
-	/* printf ("(%f / %f)  ", carElt->_pos_X, carElt->_pos_Y); */
+	/* printf ("(%f / %f) ", carElt->_pos_X, carElt->_pos_Y); */
     }
     /* printf("\n"); */
 }

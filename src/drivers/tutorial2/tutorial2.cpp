@@ -84,29 +84,29 @@ drive(int index, tCarElt* car, tSituation *s)
     tdble	X, Y;
     tTrkLocPos	trkPos;
 
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&car->ctrl, 0, sizeof(tCarCtrl));
     /* steer control */
     /* get the difference between the tangent to the track and the car yaw */
     angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
     /* normalize to -PI +PI */
     NORM_PI_PI(angle);
-    car->ctrl->steer = angle;
+    car->_steerCmd = angle;
     /* get the normalized distance to the middle of the track */
     centerControl = car->_trkPos.toMiddle / car->_trkPos.seg->width;
-    car->ctrl->steer -= centerControl;
+    car->_steerCmd -= centerControl;
     /* anticipate the car's position */
     X = car->_pos_X + cos(car->_yaw) * Kadvance;
     Y = car->_pos_Y + sin(car->_yaw) * Kadvance;
     /* convert global position into local position */
     RtTrackGlobal2Local(car->_trkPos.seg, X, Y, &trkPos, TR_LPOS_MAIN);
     centerControl = trkPos.toMiddle / trkPos.seg->width;
-    car->ctrl->steer -= centerControl;
+    car->_steerCmd -= centerControl;
     
 
     /* throttle control */
-    car->ctrl->gear = car->_gear;
-    if (car->_gear == 0) {
-	car->ctrl->gear++;
+    car->_gearCmd = car->_gear;
+    if (car->_gearCmd == 0) {
+	car->_gearCmd++;
     }
-    car->ctrl->accelCmd = 0.3; /* apply 30% of throttle */
+    car->_accelCmd = 0.3; /* apply 30% of throttle */
 } 

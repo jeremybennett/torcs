@@ -591,7 +591,12 @@ RtTrackSurfaceNormalL(tTrkLocPos *p, t3Dd *norm)
     norm->x = v1.y * v2.z - v2.y * v1.z;
     norm->y = v2.x * v1.z - v1.x * v2.z;
     norm->z = v1.x * v2.y - v2.x * v1.y;
-    lg = 1.0 / sqrt(norm->x * norm->x + norm->y * norm->y + norm->z * norm->z);
+    lg = sqrt(norm->x * norm->x + norm->y * norm->y + norm->z * norm->z);
+    if (lg == 0.0) {
+	lg = 1.0;
+    } else {
+	lg = 1.0 / lg;
+    }
     norm->x *= lg;
     norm->y *= lg;
     norm->z *= lg;

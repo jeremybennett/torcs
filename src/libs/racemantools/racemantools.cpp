@@ -223,19 +223,16 @@ RmInitCars(tRmInfo *raceInfo)
 		    
 		    elt->index = index;
 		    elt->robot = curRobot;
-		    elt->info = (tInitCar*)calloc(1, sizeof(tInitCar));
-		    elt->pub  = (tPublicCar*)calloc(1, sizeof(tPublicCar));
-		    elt->race = (tCarRaceInfo*)calloc(1, sizeof(tCarRaceInfo));
-		    elt->priv = (tPrivCar*)calloc(1, sizeof(tPrivCar));
-		    elt->ctrl = (tCarCtrl*)calloc(1, sizeof(tCarCtrl));
-		    elt->pitcmd = (tCarPitCmd*)calloc(1, sizeof(tCarPitCmd));
 		    elt->_paramsHandle = robhdle;
 		    elt->_driverIndex = robotIdx;
-		    elt->_modName = strdup(cardllname);
+		    strncpy(elt->_modName, cardllname, MAX_NAME_LEN - 1);
+		    elt->_modName[MAX_NAME_LEN - 1] = 0;
 
 		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, robotIdx);
-		    elt->_name       = GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>");
-		    elt->_carName    = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+		    strncpy(elt->_name, GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>"), MAX_NAME_LEN - 1);
+		    elt->_name[MAX_NAME_LEN - 1] = 0;
+		    strncpy(elt->_carName, GfParmGetStr(robhdle, path, ROB_ATTR_CAR, ""), MAX_NAME_LEN - 1);
+		    elt->_carName[MAX_NAME_LEN - 1] = 0;
 		    elt->_raceNumber = (int)GfParmGetNum(robhdle, path, ROB_ATTR_RACENUM, (char*)NULL, 0);
 		    elt->_skillLevel = 0;
 		    str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);

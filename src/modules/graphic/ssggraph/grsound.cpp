@@ -136,13 +136,13 @@ grRefreshSound(tSituation *s)
     }
     volEnv->setStep(0, 0.0, skvol);
 
-    if (car->priv->collision) {
+    if (car->priv.collision) {
 	curCrashSnd++;
 	if (curCrashSnd == NB_CRASH_SOUND) {
 	    curCrashSnd = 0;
 	}
 	sched->playSample(crashSample[curCrashSnd]);
-	car->priv->collision = 0;
+	car->priv.collision = 0;
     }
 
     sched->update();

@@ -306,7 +306,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
     /* Move the car for the collision lib */
     carElt = car1->carElt;
-    sgMakeCoordMat4(carElt->pub->posMat, car1->DynGCg.pos.x, car1->DynGCg.pos.y, car1->DynGCg.pos.z - carElt->_statGC_z,
+    sgMakeCoordMat4(carElt->pub.posMat, car1->DynGCg.pos.x, car1->DynGCg.pos.y, car1->DynGCg.pos.z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
     dtSelectObject(car1);
@@ -334,7 +334,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 
     /* Move the car for the collision lib */
     carElt = car2->carElt;
-    sgMakeCoordMat4(carElt->pub->posMat, car2->DynGCg.pos.x, car2->DynGCg.pos.y, car2->DynGCg.pos.z - carElt->_statGC_z,
+    sgMakeCoordMat4(carElt->pub.posMat, car2->DynGCg.pos.x, car2->DynGCg.pos.y, car2->DynGCg.pos.z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
     dtSelectObject(car2);
     dtLoadIdentity();

@@ -111,13 +111,13 @@ newrace(int index, tCarElt* car, tSituation *s)
 static void  
 drive1(int index, tCarElt* car, tSituation *s) 
 { 
-    memset(car->ctrl, 0, sizeof(tCarCtrl)); 
-    car->ctrl->brakeCmd = 1.0; /* all brakes on ... */ 
+    memset(&car->ctrl, 0, sizeof(tCarCtrl)); 
+    car->_brakeCmd = 1.0; /* all brakes on ... */ 
     /*  
      * add the driving code here to modify the 
-     * car->ctrl.steer 
-     * car->ctrl.accelCmd 
-     * car->ctrl.brakeCmd 
+     * car->_steerCmd 
+     * car->_accelCmd 
+     * car->_brakeCmd 
      */ 
 } 
 
@@ -134,18 +134,18 @@ drive2(int index, tCarElt* car, tSituation *s)
 #define STEER_GAIN	0.1
 #define DAMP_GAIN	0.1
     
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&car->ctrl, 0, sizeof(tCarCtrl));
     
     /* throttle control */
-    car->ctrl->gear = car->_gear;
-    if (car->_gear == 0) {
-	car->ctrl->gear++;
+    car->_gearCmd = car->_gear;
+    if (car->_gearCmd == 0) {
+	car->_gearCmd++;
     }
-    car->ctrl->accelCmd = 0.3; /* apply 30% of throttle */
+    car->_accelCmd = 0.3; /* apply 30% of throttle */
 
     /* steer control */
     deltaLane = lane - car->_trkPos.toMiddle;
-    car->ctrl->steer = STEER_GAIN * deltaLane + DAMP_GAIN * (deltaLane - lastDeltaLane) / s->deltaTime;
+    car->_steerCmd = STEER_GAIN * deltaLane + DAMP_GAIN * (deltaLane - lastDeltaLane) / s->deltaTime;
     lastDeltaLane = deltaLane;
     
 } 
@@ -197,7 +197,7 @@ drive3(int index, tCarElt* car, tSituation *s)
 #define DAMP_GAIN	0.1
 #define DIST_FROM_INSIDE 2.0
     
-    memset(car->ctrl, 0, sizeof(tCarCtrl));
+    memset(&car->ctrl, 0, sizeof(tCarCtrl));
     
     /* steer control */
     
@@ -216,7 +216,7 @@ drive3(int index, tCarElt* car, tSituation *s)
     }
 
     deltaLane = lane - car->_trkPos.toMiddle;
-    car->ctrl->steer = STEER_GAIN * deltaLane + DAMP_GAIN * (deltaLane - lastDeltaLane) / s->deltaTime;
+    car->_steerCmd = STEER_GAIN * deltaLane + DAMP_GAIN * (deltaLane - lastDeltaLane) / s->deltaTime;
     lastDeltaLane = deltaLane;
     
     /* throttle control */
@@ -285,22 +285,22 @@ drive3(int index, tCarElt* car, tSituation *s)
 	    lastAccel -= CMD_STEP / 10.0;
 	}
     }
-    car->ctrl->accelCmd = lastAccel;
-    car->ctrl->brakeCmd = lastBrake;
+    car->_accelCmd = lastAccel;
+    car->_brakeCmd = lastBrake;
 
     /* Gear Selection */
-    car->ctrl->gear = car->_gear;
-    if (car->_gear == 0) {
-	car->ctrl->gear++;
+    car->_gearCmd = car->_gear;
+    if (car->_gearCmd == 0) {
+	car->_gearCmd++;
     } else {
 	if (car->_enginerpm > car->_enginerpmRedLine * 0.95)
-	    car->ctrl->gear++;
+	    car->_gearCmd++;
 	if (car->_gear > 1 &&
 	    car->_enginerpm /
 	    car->_gearRatio[car->_gear + car->_gearOffset] *
 	    car->_gearRatio[car->_gear - 1 + car->_gearOffset] <
 	    car->_enginerpmRedLine * 0.80)
-	    car->ctrl->gear++;
+	    car->_gearCmd++;
     }
     
 } 

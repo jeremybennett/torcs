@@ -311,8 +311,8 @@ prPreStart(void)
     int i,j;
     for (j = 0; j < ((int)(1.0 / dtmax)); j++) {
 	for (i = 0; i < prTheSituation._ncars; i++) {
-	    memset(prTheSituation.cars[i]->ctrl, 0, sizeof(tCarCtrl));
-	    prTheSituation.cars[i]->ctrl->brakeCmd = 1.0;
+	    memset(&(prTheSituation.cars[i]->ctrl), 0, sizeof(tCarCtrl));
+	    prTheSituation.cars[i]->ctrl.brakeCmd = 1.0;
 	}
 	SimItf.update(&prTheSituation, dtmax, -1);
     }
