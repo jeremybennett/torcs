@@ -67,7 +67,7 @@ RePreRace(void)
     char	*gridType;
     void	*params = ReInfo->params;
     
-    raceName = ReGetCurrentRaceName();
+    ReInfo->_reRaceName = raceName = ReGetCurrentRaceName();
     if (!raceName) {
 	return RM_QUIT;
     }
@@ -116,7 +116,6 @@ ReRaceStart(void)
     int		foundHuman;
     char	*dllname;
     char	key[256];
-    char	*raceName;
     tRobotItf	*robot;
     tReCarInfo	*carInfo = ReInfo->_reCarInfo;;
     tSituation	*s = ReInfo->s;
@@ -168,8 +167,7 @@ ReRaceStart(void)
 	}
     }
     if (!foundHuman) {
-	raceName = ReGetCurrentRaceName();
-	if (!strcmp(GfParmGetStr(params, raceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+	if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
 	    ReInfo->_displayMode = RM_DISP_MODE_NONE;
 	    ReInfo->_reGameScreen = ReResScreenInit();
 	    sprintf(buf, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
@@ -251,15 +249,9 @@ RestartRaceHookInit(void)
 int
 ReRaceStop(void)
 {
-    char	*raceName;
     void	*params = ReInfo->params;
 
-    raceName = ReGetCurrentRaceName();
-    if (!raceName) {
-	return RM_QUIT;
-    }
-
-    if (!strcmp(GfParmGetStr(params, raceName, RM_ATTR_ALLOW_RESTART, RM_VAL_NO), RM_VAL_NO)) {
+    if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_ALLOW_RESTART, RM_VAL_NO), RM_VAL_NO)) {
 	RmTwoStateScreen("Race Stopped",
 			 "Abandon Race", "Abort current race", ReInfo->_reGameScreen,
 			 "Resume Race", "Return to Race", BackToRaceHookInit());

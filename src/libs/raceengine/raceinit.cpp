@@ -635,15 +635,12 @@ ReInitTrack(void)
 void
 ReRaceCleanup(void)
 {
-    char	*raceName;
-    
     ReInfo->_reGameScreen = ReHookInit();
     ReInfo->_reSimItf.shutdown();
     if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
 	ReInfo->_reGraphicItf.shutdowncars();
     }
-    raceName = ReGetCurrentRaceName();
-    ReStoreRaceResults(raceName);
+    ReStoreRaceResults(ReInfo->_reRaceName);
     ReRaceCleanDrivers();
 }
 

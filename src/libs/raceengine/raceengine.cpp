@@ -216,11 +216,15 @@ ReManage(tCarElt *car)
 			    car->_timeBehindPrev = 0;
 			}
 			info->sTime = s->currentTime;
-			if ((ReInfo->s->_raceType == RM_TYPE_PRACTICE) && (ReInfo->_displayMode == RM_DISP_MODE_NONE)) {
-			    ReInfo->_refreshDisplay = 1;
-			    sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
-				    car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0), info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
-			    ReResScreenAddText(buf);
+			if (ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+			    if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
+				ReInfo->_refreshDisplay = 1;
+				sprintf(buf,"lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    dammage: %d", 
+					car->_laps - 1, GfTime2Str(car->_lastLapTime, 0), GfTime2Str(car->_bestLapTime, 0), info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
+				ReResScreenAddText(buf);
+			    }
+			    /* save the lap result */
+			    ReSavePracticeLap(car);
 			}
 		    }
 		    info->topSpd = car->_speed_x;

@@ -313,7 +313,7 @@ ReResScreenInit(void)
 					  white,
 					  GFUI_FONT_MEDIUM_C,
 					  20, y, 
-					  GFUI_ALIGN_HL_VB, 100);
+					  GFUI_ALIGN_HL_VB, 120);
 	y -= dy;
     }
 

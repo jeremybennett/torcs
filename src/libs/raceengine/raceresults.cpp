@@ -83,43 +83,58 @@ ReStoreRaceResults(char *race)
     void	*results = ReInfo->results;
 
     /* Store the number of laps of the race */
-    car = s->cars[0];
-    if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
-    sprintf(path, "%s/%s", RE_SECT_RESULTS, race);
-    GfParmListClean(results, path);
-    GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
-    
-    for (i = 0; i < s->_ncars; i++) {
-	sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
-	car = s->cars[i];
+    if (ReInfo->s->_raceType == RM_TYPE_RACE) {
+	car = s->cars[0];
 	if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
-
-	GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
-	GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
-
+	sprintf(path, "%s/%s", RE_SECT_RESULTS, race);
+	GfParmListClean(results, path);
 	GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
-	GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
-	GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
-	GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, car->_topSpeed);
-	GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
-	GfParmSetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, car->_nbPitStops);
+    
+	for (i = 0; i < s->_ncars; i++) {
+	    sprintf(path, "%s/%s/%s/%d", RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+	    car = s->cars[i];
+	    if (car->_laps > s->_totLaps) car->_laps = s->_totLaps + 1;
+
+	    GfParmSetStr(results, path, RE_ATTR_NAME, car->_name);
+	    GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
+
+	    GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
+	    GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
+	    GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
+	    GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, car->_topSpeed);
+	    GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
+	    GfParmSetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, car->_nbPitStops);
+	}
     }
+}
+
+void
+ReSavePracticeLap(tCarElt *car)
+{
+    void	*results = ReInfo->results;
+    tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
+
+    sprintf(path, "%s/%s/%d", RE_SECT_RESULTS, ReInfo->_reRaceName, car->_laps - 1);
+    GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
+    GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
+    GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, info->topSpd);
+    GfParmSetNum(results, path, RE_ATTR_BOT_SPEED, NULL, info->botSpd);
+    GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
+    
 }
 
 int
 ReDisplayResults(void)
 {
-    char	*raceName;
     void	*params = ReInfo->params;
 
-    raceName = ReGetCurrentRaceName();
-
-    if ((!strcmp(GfParmGetStr(params, raceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
+    if ((!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
 	(ReInfo->_displayMode == RM_DISP_MODE_NORMAL)) {
-	RmShowResults(ReInfo->_reGameScreen, ReInfo, raceName);
+	RmShowResults(ReInfo->_reGameScreen, ReInfo, ReInfo->_reRaceName);
     } else {
 	ReResShowCont();
     }
 
     return RM_ASYNC | RM_NEXT_STEP;
 }
+
