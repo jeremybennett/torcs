@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
 
-<params name="car1" type="template" mode="mw">
+<params name="car" type="template" mode="mw">
 
 </params>
 

@@ -166,7 +166,7 @@ refreshEditVal(void)
 }
 
 static void
-onSelect(void *Dummy)
+onSelect(void * /* Dummy */)
 {
     GfuiScrollListGetSelectedElement(scrHandle, scrollList, (void**)&curPlayer);
     refreshEditVal();
@@ -279,7 +279,7 @@ UpdtScrollList(void)
 }
 
 static void
-DeletePlayer(void *dummy)
+DeletePlayer(void * /* dummy */)
 {
     if (curPlayer) {
 	curPlayer->_DispName = strdup(NO_DRV);
@@ -388,7 +388,7 @@ GenDrvList(void)
 }
 
 static void
-SaveDrvList(void *dummy)
+SaveDrvList(void * /* dummy */)
 {
     void	*drvinfo;
     char	str[32];
@@ -433,7 +433,7 @@ SaveDrvList(void *dummy)
 
 
 static void
-ChangeName(void *dummy)
+ChangeName(void * /* dummy */)
 {
     char	*val;
 
@@ -452,7 +452,7 @@ ChangeName(void *dummy)
 }
 
 static void
-ChangeNum(void *dummy)
+ChangeNum(void * /* dummy */)
 {
     char	*val;
     char	buf[32];
@@ -466,7 +466,7 @@ ChangeNum(void *dummy)
 }
 
 static void
-ChangePits(void *dummy)
+ChangePits(void * /* dummy */)
 {
     char	*val;
     char	buf[32];
@@ -558,10 +558,12 @@ ChangeLevel(void *vp)
 static void
 ChangeReverse(void *vdelta)
 {
+    long delta = (long)vdelta;
+    
     if (curPlayer == NULL) {
 	return;
     }
-    curPlayer->autoreverse += (int)vdelta;
+    curPlayer->autoreverse += (int)delta;
     if (curPlayer->autoreverse < 0) {
 	curPlayer->autoreverse = 1;
     } else if (curPlayer->autoreverse > 1) {
@@ -572,7 +574,7 @@ ChangeReverse(void *vdelta)
 }
 
 static void
-ChangeTrans(void *dummy)
+ChangeTrans(void * /* dummy */)
 {
     if (curPlayer == NULL) {
 	return;

@@ -72,9 +72,9 @@ updateLabelText(void)
 static void
 ctrlPrevNext(void *vdelta)
 {
-    int delta = (int)vdelta;
+    long delta = (long)vdelta;
 
-    curControl += delta;
+    curControl += (int)delta;
     if (curControl < 0) {
 	curControl = nbControl - 1;
     } else {
@@ -118,7 +118,7 @@ saveAndConf(void * /* dummy */)
 }
 
 static void
-onActivate(void *vindex)
+onActivate(void * /* dummy */)
 {
     initFromConf();
     updateLabelText();

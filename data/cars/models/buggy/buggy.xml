@@ -46,6 +46,24 @@
       </section>
     </section>
 
+    <section name="Light">
+      <section name="1">
+	<attstr name="type" val="brake2"/>
+	<attnum name="xpos" val="-1.96"/>
+	<attnum name="ypos" val="0.76"/>
+	<attnum name="zpos" val="0.43"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+      <section name="2">
+	<attstr name="type" val="brake2"/>
+	<attnum name="xpos" val="-1.96"/>
+	<attnum name="ypos" val="-0.76"/>
+	<attnum name="zpos" val="0.43"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+    </section>
+
+
   </section>
 
   <section name="Driver">

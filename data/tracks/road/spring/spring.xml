@@ -64,9 +64,9 @@
     <attnum name="shininess" val="5"/>
 
 
-    <attnum name="light position x" val="-50"/>
-    <attnum name="light position y" val="-50"/>
-    <attnum name="light position z" val="40"/>
+    <attnum name="light position x" val="-5000"/>
+    <attnum name="light position y" val="-5000"/>
+    <attnum name="light position z" val="4000"/>
 
     <attnum name="fov factor" val="1.2"/>
 
@@ -3923,13 +3923,222 @@
 
     <section name="cam 0">
       <!-- Camera's position relative to a segment -->
-      <attstr name="segment" val="pit-exit"/>
-      <attnum name="to right" val="6.0"/>
-      <attnum name="to start" val="150"/>
-      <attnum name="height" val="5"/>
+      <attstr name="segment" val="start-lane"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" val="-150"/>
+      <attnum name="height" val="2"/>
       <!-- Camera field of view, indicates the first and last segment viewed -->
       <attstr name="fov start" val="pit-start"/> <!-- included  -->
-      <attstr name="fov end" val="turn 1.1"/> <!-- excluded -->
+      <attstr name="fov end" val="start-lane"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 1">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="start-lane"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" val="150"/>
+      <attnum name="height" val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="start-lane"/> <!-- included  -->
+      <attstr name="fov end" val="pit-exit"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 2">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="pit-exit"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" val="50"/>
+      <attnum name="height" val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="pit-exit"/> <!-- included  -->
+      <attstr name="fov end" val="P1-TL1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 3">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-TR2"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" val="0"/>
+      <attnum name="height" val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-TL1"/> <!-- included  -->
+      <attstr name="fov end" val="P1-TL3"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 4">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-TR4"/>
+      <attnum name="to right" val="16.5"/>
+      <attnum name="to start" unit="deg" val="15"/>
+      <attnum name="height" val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-TL3"/> <!-- included  -->
+      <attstr name="fov end" val="P1-S4"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 5">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-TR5"/>
+      <attnum name="to right" val="16.5"/>
+      <attnum name="to start" unit="deg" val="15"/>
+      <attnum name="height" val="2"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-S4"/> <!-- included  -->
+      <attstr name="fov end" val="P1-TL6"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 6">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-TL6"/>
+      <attnum name="to right" val="26.5"/>
+      <attnum name="to start" unit="deg" val="45"/>
+      <attnum name="height" val="10"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-TL6"/> <!-- included  -->
+      <attstr name="fov end" val="P1-S6-3"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 7">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-S6-4"/>
+      <attnum name="to right" val="16.5"/>
+      <attnum name="to start"  val="0"/>
+      <attnum name="height" val="10"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-S6-3"/> <!-- included  -->
+      <attstr name="fov end" val="P1-S6-6"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 8">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P1-TR7"/>
+      <attnum name="to right" val="26.5"/>
+      <attnum name="to start" unit="deg" val="80"/>
+      <attnum name="height" val="10"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P1-S6-6"/> <!-- included  -->
+      <attstr name="fov end" val="P2-S1-3"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 9">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TL2-2"/>
+      <attnum name="to right" val="16.5"/>
+      <attnum name="to start" unit="deg" val="0"/>
+      <attnum name="height" val="10"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-S1-3"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL3"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 10">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TL3"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="20"/>
+      <attnum name="height" val="5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL3"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL4"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 11">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TL4"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="20"/>
+      <attnum name="height" val="5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL4"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL6"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 12">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TL8"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="10"/>
+      <attnum name="height" val="5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL6"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TR9"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 13">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TR10"/>
+      <attnum name="to right" val="30"/>
+      <attnum name="to start" unit="deg" val="50"/>
+      <attnum name="height" val="4"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TR9"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL12"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 14">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TR13"/>
+      <attnum name="to right" val="20"/>
+      <attnum name="to start" unit="deg" val="80"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL12"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL15"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 15">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TL15"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="80"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL15"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TR17"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 16">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TR17"/>
+      <attnum name="to right" val="20.5"/>
+      <attnum name="to start" unit="deg" val="30"/>
+      <attnum name="height" val="20"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TR17"/> <!-- included  -->
+      <attstr name="fov end" val="P2-TL18-2"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 16-2">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P2-TR19"/>
+      <attnum name="to right" val="20.5"/>
+      <attnum name="to start" unit="deg" val="40"/>
+      <attnum name="height" val="25"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P2-TL18-2"/> <!-- included  -->
+      <attstr name="fov end" val="P3-TR1"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 17">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P3-TR1"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="0"/>
+      <attnum name="height" val="5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P3-TR1"/> <!-- included  -->
+      <attstr name="fov end" val="P3-TL2"/> <!-- excluded -->
+    </section>
+
+    <section name="cam 18">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="P3-TL2"/>
+      <attnum name="to right" val="-4.5"/>
+      <attnum name="to start" unit="deg" val="20"/>
+      <attnum name="height" val="5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="P3-TL2"/> <!-- included  -->
+      <attstr name="fov end" val="P3-TR3"/> <!-- excluded -->
     </section>
 
   </section>  <!-- Cameras -->

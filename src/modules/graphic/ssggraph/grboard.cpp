@@ -828,7 +828,9 @@ cGrBoard::refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr)
 	if (boardFlag)   grDispCarBoard(curr, s);
 	if (leaderFlag)	 grDispLeaderBoard(curr, s);
 	if (counterFlag) grDispCounterBoard2(curr);
+#ifndef NO_ALPHA_DISPLAY
 	trackMap->display(curr, s, Winx, Winy, Winw, Winh);
+#endif
     }
 }
 

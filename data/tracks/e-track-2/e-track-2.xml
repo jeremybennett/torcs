@@ -44,17 +44,19 @@
     <attstr name="3d description" val="e-track-2.acc"/>
 
     <attstr name="background image" val="background.png"/>
-    <attnum name="background color R" val="0.96"/>
-    <attnum name="background color G" val="0.84"/>
-    <attnum name="background color B" val="0.64"/>
+    <attnum name="background type" val="4"/>
+
+    <attnum name="background color R" val="0.30"/>
+    <attnum name="background color G" val="0.11"/>
+    <attnum name="background color B" val="0.08"/>
 
     <attnum name="ambient color R" val="1.0"/>
     <attnum name="ambient color G" val="0.5"/>
     <attnum name="ambient color B" val="0.0"/>
 
-    <attnum name="light position x" val="-50"/>
-    <attnum name="light position y" val="-50"/>
-    <attnum name="light position z" val="80"/>
+    <attnum name="light position x" val="5000"/>
+    <attnum name="light position y" val="2000"/>
+    <attnum name="light position z" val="3000"/>
 
     <attnum name="fov factor" val="0.8"/>
 

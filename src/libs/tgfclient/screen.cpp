@@ -47,8 +47,8 @@ static int GfViewHeight;
 static int GfScrCenX;
 static int GfScrCenY;
 
-void	*scrHandle = NULL;
-static char buf[1024];
+static void	*scrHandle = NULL;
+static char 	buf[1024];
 
 static int usedGM = 0;
 #if !defined(FREEGLUT) && !defined(WIN32)
@@ -127,7 +127,11 @@ void GfScrInit(int argc, char *argv[])
 
     glutInit(&argc, argv);
 
+#ifndef NO_ALPHA_DISPLAY
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE | GLUT_ALPHA);
+#else
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+#endif
 
     fscr = GfParmGetStr(handle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, GFSCR_VAL_NO);
     fullscreen = 0;
@@ -245,7 +249,7 @@ saveParams(void)
 
 
 void
-GfScrReinit(void *dummy)
+GfScrReinit(void * /* dummy */)
 {
     int retcode = 0;
 #ifndef WIN32
@@ -336,9 +340,9 @@ updateLabelText(void)
 static void
 ResPrevNext(void *vdelta)
 {
-    int delta = (int)vdelta;
+    long delta = (long)vdelta;
 
-    curRes += delta;
+    curRes += (int)delta;
     if (curRes < 0) {
 	curRes = nbRes - 1;
     } else {
@@ -352,9 +356,9 @@ ResPrevNext(void *vdelta)
 static void
 DepthPrevNext(void *vdelta)
 {
-    int delta = (int)vdelta;
+    long delta = (long)vdelta;
 
-    curDepth += delta;
+    curDepth += (int)delta;
     if (curDepth < 0) {
 	curDepth = nbDepth - 1;
     } else {
@@ -368,9 +372,9 @@ DepthPrevNext(void *vdelta)
 static void
 ModePrevNext(void *vdelta)
 {
-    int delta = (int)vdelta;
+    long delta = (long)vdelta;
 
-    curMode += delta;
+    curMode += (int)delta;
     if (curMode < 0) {
 	curMode = nbMode - 1;
     } else {
@@ -418,7 +422,7 @@ initFromConf(void)
 
 #if WIN32
 static void
-ChangeMaxFreq(void *dummy)
+ChangeMaxFreq(void * /* dummy */)
 {
     char	*val;
     
@@ -430,7 +434,7 @@ ChangeMaxFreq(void *dummy)
 #endif
 
 static void
-onActivate(void *dummy)
+onActivate(void * /* dummy */)
 {
     initFromConf();
     updateLabelText();

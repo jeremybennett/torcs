@@ -72,6 +72,7 @@ SimCarCollideXYScene(tCar *car)
     tdble	initDotProd;
     tdble	dotProd, nx, ny, cx, cy, dotprod2;
     tTrackBarrier *curBarrier;
+    tdble	dmg;
     
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 	return;
@@ -129,15 +130,18 @@ SimCarCollideXYScene(tCar *car)
 	
 	/* rebound */
 	dotProd = initDotProd;
+	dmg = 0;
 	if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-	    car->dammage += (int)(curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
+	    dmg = curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel];
+	    car->dammage += (int)dmg;
 	}
 	dotProd *= curBarrier->surface->kRebound;
 	/* dotprod2 = (nx * cx + ny * cy); */
 
 	if (dotProd < 0) {
 	    car->collision |= 2;
-	    car->normal = normal;
+	    car->normal.x = normal.x * dmg;
+	    car->normal.y = normal.y * dmg;
 	    car->collpos.x = corner->pos.ax;
 	    car->collpos.y = corner->pos.ay;
 	    

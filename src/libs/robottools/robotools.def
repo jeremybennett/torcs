@@ -17,3 +17,4 @@ EXPORTS
 	RtTrackSurfaceNormalL
 	RtGetDistFromStart
 	RtGetDistFromStart2
+	RtDistToPit

@@ -34,16 +34,17 @@ extern tdble O3[];
 extern tdble O4[];
 extern tdble O5[];
 extern tdble OP[];
+extern tdble OA[];
 extern tdble OW[];
 extern tdble VM;
 extern tdble VM1[];
 extern tdble VM2[];
 extern tdble VM3[];
 
-extern tdble ConsFactor;
-extern tdble OffsetApproach;
-extern tdble OffsetFinal;
-extern tdble OffsetExit;
+extern tdble ConsFactor[];
+extern tdble OffsetApproach[];
+extern tdble OffsetFinal[];
+extern tdble OffsetExit[];
 extern tdble LgfsFinal[];
 
 
@@ -53,10 +54,11 @@ extern tdble LgfsFinal[];
 #define PIT_STATE_ENTERED        2
 #define PIT_STATE_PITLANE_BEFORE 3
 #define PIT_STATE_PIT_ENTRY      4
-#define PIT_STATE_PIT_EXIT       5
-#define PIT_STATE_PITLANE_AFTER  6
-#define PIT_STATE_EXIT           7
-#define PIT_STATE_DECEL          8
+#define PIT_STATE_PIT_ALIGN      5
+#define PIT_STATE_PIT_EXIT       6
+#define PIT_STATE_PITLANE_AFTER  7
+#define PIT_STATE_EXIT           8
+#define PIT_STATE_DECEL          9
 
 extern void InitGears(tCarElt* car, int idx);
 extern void SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect);

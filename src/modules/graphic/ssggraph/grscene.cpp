@@ -62,6 +62,7 @@ GLuint BackgroundTex2;
 ssgStateSelector	*grEnvSelector;
 grMultiTexState	*grEnvState=NULL;
 grMultiTexState	*grEnvShadowState=NULL;
+grMultiTexState	*grEnvShadowStateOnCars=NULL;
 #define NB_BG_FACES	36
 #define BG_DIST		1.0
 
@@ -75,6 +76,7 @@ ssgBranch *ShadowAnchor = 0;
 ssgBranch *PitsAnchor = 0;
 ssgBranch *SmokeAnchor = 0;
 ssgBranch *SkidAnchor = 0;
+ssgBranch *CarlightAnchor = 0;
 
 ssgBranch *ThePits = 0;
 ssgTransform *sun = NULL ;
@@ -487,6 +489,10 @@ grLoadScene(tTrack *track)
     SkidAnchor = new ssgBranch;
     TheScene->addKid(SkidAnchor);
 
+    /* Car lights */
+    CarlightAnchor = new ssgBranch;
+    TheScene->addKid(CarlightAnchor);
+
     /* Cars */
     CarsAnchor = new ssgBranch;
     TheScene->addKid(CarsAnchor);
@@ -498,6 +504,7 @@ grLoadScene(tTrack *track)
     /* Lens Flares */
     SunAnchor = new ssgBranch;
     TheScene->addKid(SunAnchor);
+
 
     initBackground();
     
@@ -858,6 +865,7 @@ initBackground(void)
     grEnvSelector->selectStep(0); /* mandatory !!! */
     grEnvState=(grMultiTexState*)grSsgEnvTexState(graphic->env[0]);
     grEnvShadowState=(grMultiTexState*)grSsgEnvTexState("envshadow.png");
+    grEnvShadowStateOnCars=(grMultiTexState*)grSsgEnvTexState("shadow2.rgb");
     if (grEnvShadowState==NULL)
       {
 	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open envshadow.png for reading") ;
@@ -867,6 +875,11 @@ initBackground(void)
 	ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
 	GfScrShutdown();
 	exit(-1);
+      }
+    if (grEnvShadowStateOnCars==NULL)
+      {
+	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open shadow2.rgb for reading") ;
+	ulSetError ( UL_WARNING, "        no shadow mapping on cars for this track ") ;
       }
 }
 

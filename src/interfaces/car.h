@@ -360,6 +360,7 @@ typedef struct CarElt
 #define SECT_DRIVER		"Driver"
 #define SECT_GROBJECTS		"Graphic Objects"
 #define SECT_EXHAUST		"Exhaust"
+#define SECT_LIGHT		"Light"
 
 /* parameters names */
 #define PRM_CATEGORY		"category"
@@ -379,6 +380,7 @@ typedef struct CarElt
 #define PRM_INERTIA		"inertia"
 #define PRM_EFFICIENCY		"efficiency"
 #define PRM_TYPE		"type"
+#define PRM_SIZE		"size"
 
 /* Tires */
 #define PRM_MU			"mu"
@@ -505,6 +507,15 @@ typedef struct CarElt
 #define PRM_SPEEDO_MAXVAL	"speedometer max value"
 #define PRM_SPEEDO_MINANG	"speedometer min angle"
 #define PRM_SPEEDO_MAXANG	"speedometer max angle"
+
+/* Lights */
+#define	VAL_LIGHT_HEAD1		"head1"
+#define	VAL_LIGHT_HEAD2		"head2"
+#define	VAL_LIGHT_BRAKE		"brake"
+#define	VAL_LIGHT_BRAKE2	"brake2"
+#define	VAL_LIGHT_REVERSE	"reverse"
+#define	VAL_LIGHT_REAR		"rear"
+
 
 #endif /* __CARV1_H__ */ 
 

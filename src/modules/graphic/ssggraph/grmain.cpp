@@ -41,6 +41,7 @@
 #include "grboard.h"
 #include "grutil.h"
 #include "grtrackmap.h"
+#include "grcarlight.h"
 
 int maxTextureUnits = 0;
 static double	OldTime;
@@ -67,6 +68,8 @@ ssgContext	grContext;
 class cGrScreen *grScreens[GR_NB_MAX_SCREEN];
 
 int grNbScreen = 1;
+
+tdble	grLodFactorValue = 1.0;
 
 
 static char buf[1024];
@@ -298,6 +301,8 @@ initView(int x, int y, int width, int height, int flag, void *screen)
 
     grInitScene();
 
+    grLodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
+
     return 0;
 }
 
@@ -355,7 +360,7 @@ initCars(tSituation *s)
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grInitCommonState();
-
+    grInitCarlight(s->_ncars);
     grMaxDammage = (tdble)s->_maxDammage;
     grNbCars = s->_ncars;
 
@@ -399,6 +404,7 @@ initCars(tSituation *s)
     TRACE_GL("initCars: end");
 
     grInitSmoke(s->_ncars);
+
 
     grAdaptScreenSize();
 

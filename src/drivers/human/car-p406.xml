@@ -18,11 +18,11 @@
 
 
   <section name="Rear Right Wheel">
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
   </section>
 
 </params>

@@ -25,6 +25,9 @@
 #ifndef _ACCC_H_
 #define _ACCC_H_
 
+#define FALSE 0
+#define TRUE 1
+
 extern char	*OutputFileName;
 extern char	*ReliefFileName;
 extern char * fileL0;
@@ -42,6 +45,7 @@ extern int notexturesplit;
 extern int isobjectacar;
 extern int normalMapping;
 extern char *OrderString;
+extern int  collapseObject;
 extern void loadAndGroup( char *OutputFileName);
 extern int loadAC( char * inputFilename, char * outputFilename, int saveIn);
 

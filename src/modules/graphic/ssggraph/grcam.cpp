@@ -1270,16 +1270,34 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
     cam->add(&cams[c]);
     id++;
 
+    /* cam F3 = car behind*/
+    cam = new cGrCarCamBehind(myscreen,
+			      id,
+			      1,	/* drawCurr */
+			      1,	/* drawBG  */
+			      40.0,	/* fovy */
+			      5.0,	/* fovymin */
+			      95.0,	/* fovymax */
+			      8.0,	/* dist */
+			      .50,	/* height */
+			      .50,	/* near */
+			      600.0 * fovFactor,	/* far */
+			      300.0 * fovFactor,	/* fog */
+			      600.0 * fovFactor	/* fog */
+			      );
+    cam->add(&cams[c]);
+    id++;
+
     /* cam F3 = car reverse*/
     cam = new cGrCarCamFront(myscreen,
 			     id,
 			     1,	/* drawCurr */
 			     1,	/* drawBG  */
-			     30.0,	/* fovy */
+			     40.0,	/* fovy */
 			     5.0,	/* fovymin */
 			     95.0,	/* fovymax */
-			     20.0,	/* dist */
-			     1.0,	/* near */
+			     8.0,	/* dist */
+			     0.5,	/* near */
 			     1000.0 * fovFactor,	/* far */
 			     500.0 * fovFactor,	/* fog */
 			     1000.0 * fovFactor	/* fog */

@@ -36,6 +36,19 @@ int inGroup=0;
 #define FOPEN(path, mode) gzopen(path, mode)
 #define FCLOSE(fd) gzclose(fd)
 
+static double t_xmax;
+static double t_ymax;
+static double t_xmin;
+static double t_ymin;
+
+double shad_xmax;
+double shad_ymax;
+double shad_xmin;
+double shad_ymin;
+double carTrackRatioX=0;
+double carTrackRatioY=0;
+
+
 static gzFile loader_fd ;
 
 
@@ -67,6 +80,8 @@ static int              usegroup=TRUE;
 static int              mapLevel;
 static int              numMapLevel;
 static int              indexCar;
+
+static int		isaWindow;
 
 static ssgLoaderOptions	*current_options  = NULL ;
 static _ssgMaterial	*current_material = NULL ;
@@ -108,7 +123,7 @@ static int do_obj_world ( char *s ) ;
 static int do_obj_poly  ( char *s ) ;
 static int do_obj_group ( char *s ) ;
 static int do_obj_light ( char *s ) ;
-
+/*static void myssgStripify ( ssgEntity *ent );*/
 #define PARSE_CONT   0
 #define PARSE_POP    1
 
@@ -231,12 +246,14 @@ static int current_flags    = -1 ;
 
 static ssgState *get_state ( _ssgMaterial *mat )
 {
+#if EEE_PAS_COMPRIS
   if (current_tfname != NULL) {
     ssgState *st = current_options -> createState ( current_tfname ) ;
     /* printf("creating texture : %s\n",current_tfname); */
     if ( st != NULL )
       return st ;
   }
+#endif
 
   ssgSimpleState *st = new ssgSimpleState () ;
 
@@ -253,24 +270,25 @@ static ssgState *get_state ( _ssgMaterial *mat )
   st -> setShadeModel ( GL_SMOOTH ) ;
   st -> setAlphaClamp(0);
 
-  if ( mat -> rgb[3] < 0.99 )
-  {
-    st -> enable ( GL_ALPHA_TEST ) ;
-    st -> enable  ( GL_BLEND ) ;
-    st -> setTranslucent () ;
-  }
-  else
-  {
-    st -> disable ( GL_BLEND ) ;
-    st -> setOpaque () ;
+  if (isaWindow) {
+      st -> enable  ( GL_BLEND );
+      st -> setTranslucent () ;
+  } else if (isacar) {
+      st -> enable  ( GL_BLEND );
+      st -> setOpaque () ;
+  } else if ( mat -> rgb[3] < 0.99 ) {
+      st -> enable ( GL_ALPHA_TEST ) ;
+      st -> enable  ( GL_BLEND ) ;
+      st -> setTranslucent () ;
+  } else {
+      st -> disable ( GL_BLEND ) ;
+      st -> setOpaque () ;
   }
 
   if (current_tfname != NULL) {
     st -> setTexture( current_options -> createTexture(current_tfname) ) ;
     st -> enable( GL_TEXTURE_2D ) ;
-    if (isacar==TRUE) {
-	st -> enable  ( GL_BLEND );
-    }
+
     if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
       {
 	st->setAlphaClamp(0.65);
@@ -420,6 +438,13 @@ static int do_name ( char *s )
 {
   char *q=NULL;
   skip_quotes ( &s ) ;
+
+  /* Window flag */
+  if (!strncmp(s, "WI", 2)) {
+      isaWindow = TRUE;
+  } else {
+      isaWindow = FALSE;
+  }
 
   if (strstr(s,"__TKMN"))
     usegroup=TRUE;
@@ -674,6 +699,17 @@ static int do_numvert  ( char *s )
     float tmp  =  vtab[i][1] ;
     vtab[i][1] = -vtab[i][2] ;
     vtab[i][2] = tmp ;
+
+    if (vtab[i][0] >t_xmax)
+      t_xmax=vtab[i][0];
+    if (vtab[i][0] <t_xmin)
+      t_xmin=vtab[i][0];
+
+    if (vtab[i][1] >t_ymax)
+      t_ymax=vtab[i][1];
+    if (vtab[i][1] <t_ymin)
+      t_ymin=vtab[i][1];
+    
   }
 
   return PARSE_CONT ;
@@ -778,8 +814,8 @@ static int do_refs     ( char *s )
     t2tab[vtx][0]=tc2[0];
     t2tab[vtx][1]=tc2[1];
 
-    t3tab[vtx][0]=tc2[0];
-    t3tab[vtx][1]=tc2[1];
+    t3tab[vtx][0]=tc3[0];
+    t3tab[vtx][1]=tc3[1];
 
     if (numMapLevel>1)
       tlist1 -> add ( tc1 ) ;
@@ -1054,6 +1090,10 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
   isacar=TRUE;
   usestrip=FALSE;
   indexCar=index;
+  t_xmax=-999999.0;
+  t_ymax=-999999.0;
+  t_xmin=+999999.0;
+  t_ymin=+999999.0;
 
   GfOut("CarLoadAC3D loading %s\n", fname);
 
@@ -1068,10 +1108,12 @@ ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options
   model -> addKid ( obj ) ;
   if(usestrip==FALSE)
     {
-  /*myssgFlatten(obj);*/
+      /*myssgFlatten(obj);*/
       ssgFlatten    ( obj ) ;
       ssgStripify   ( model ) ;
     }
+  carTrackRatioX= (t_xmax-t_xmin)/(shad_xmax-shad_xmin);
+  carTrackRatioY= (t_ymax-t_ymin)/(shad_ymax-shad_ymin);
   return model ;
 
 }
@@ -1081,6 +1123,11 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
   isacar=FALSE;
   usegroup=FALSE;
   usestrip=FALSE;
+
+  t_xmax=-999999.0;
+  t_ymax=-999999.0;
+  t_xmin=+999999.0;
+  t_ymin=+999999.0;
 
   GfOut("LoadAC3D loading %s\n", fname);
 
@@ -1099,10 +1146,11 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 	ssgFlatten    ( obj ) ;
 	ssgStripify   ( model ) ;
     }
-  if(usestrip==FALSE)
-    {
-	ssgStripify   ( model ) ;
-    }
+  shad_xmax=t_xmax;
+  shad_ymax=t_ymax;
+  shad_xmin=t_xmin;
+  shad_ymin=t_ymin;
+
   return model ;
 }
 
@@ -1185,3 +1233,4 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
   return current_branch ;
 
 }
+

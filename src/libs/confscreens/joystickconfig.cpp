@@ -187,7 +187,7 @@ static void
 onPush1(void *vi)
 {
     int	index;    
-    int i = (int)vi;
+    long i = (long)vi;
     
     CurrentCmd = i;
     GfuiButtonSetText (scrHandle1, Cmd[i].Id, "");

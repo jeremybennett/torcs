@@ -56,6 +56,7 @@
 #define GR_ATT_MAXPOINTBYSTRIP	"skid length"
 #define GR_ATT_SKIDDELTAT	"skid interval"
 #define GR_ATT_FOVFACT		"fov factor"
+#define GR_ATT_LODFACTOR	"LOD Factor"
 
 #define GR_ATT_NB_SCREENS	"number of screens"
 #define GR_ATT_CUR_DRV		"current driver"

@@ -168,8 +168,10 @@ ReStateManage(void)
 
 /* Change and Execute a New State  */
 void
-ReStateApply(void *state)
+ReStateApply(void *vstate)
 {
+    long	state = (long)vstate;
+    
     ReInfo->_reState = (int)state;
     ReStateManage();
 }

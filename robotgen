@@ -268,8 +268,8 @@ echo '/* Drive during race. */' >> $CPPFILE || exit 1
 echo 'static void  ' >> $CPPFILE || exit 1
 echo 'drive(int index, tCarElt* car, tSituation *s) ' >> $CPPFILE || exit 1
 echo '{ ' >> $CPPFILE || exit 1
-echo '    memset(car->ctrl, 0, sizeof(tCarCtrl)); ' >> $CPPFILE || exit 1
-echo '    car->ctrl->brakeCmd = 1.0; /* all brakes on ... */ ' >> $CPPFILE || exit 1
+echo '    memset((void *)&car.ctrl, 0, sizeof(tCarCtrl)); ' >> $CPPFILE || exit 1
+echo '    car->ctrl.brakeCmd = 1.0; /* all brakes on ... */ ' >> $CPPFILE || exit 1
 echo '    /*  ' >> $CPPFILE || exit 1
 echo '     * add the driving code here to modify the ' >> $CPPFILE || exit 1
 echo '     * car->ctrl.steer ' >> $CPPFILE || exit 1

@@ -35,7 +35,7 @@
   </section>
 
   <section name="Graphic">
-    <attstr name="3d description" val="mixed-1.ac"/>
+    <attstr name="3d description" val="mixed-1.acc"/>
     <attstr name="background image" val="background.png"/>
     <attnum name="background type" val="4"/>
     <attnum name="background color R" val="0.59375"/>

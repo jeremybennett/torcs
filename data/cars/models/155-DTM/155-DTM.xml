@@ -55,6 +55,24 @@
         <attstr name="car" val="155-DTM-lod2.acc"/>
       </section>
     </section>
+
+    <section name="Light">
+      <section name="1">
+	<attstr name="type" val="brake2"/>
+	<attnum name="xpos" val="-2.18"/>
+	<attnum name="ypos" val="0.66"/>
+	<attnum name="zpos" val="0.65"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+      <section name="2">
+	<attstr name="type" val="brake2"/>
+	<attnum name="xpos" val="-2.18"/>
+	<attnum name="ypos" val="-0.66"/>
+	<attnum name="zpos" val="0.65"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+    </section>
+
   </section>
 
   <section name="Car">

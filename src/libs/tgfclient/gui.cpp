@@ -853,7 +853,7 @@ GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyP
     @ingroup	screen
  */
 void
-GfuiScreenShot(void *notused)
+GfuiScreenShot(void * /* notused */)
 {
     unsigned char	*img;
     char		buf[256];

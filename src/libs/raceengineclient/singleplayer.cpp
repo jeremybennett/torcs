@@ -37,7 +37,7 @@ static void *singlePlayerHandle = NULL;
 
 /* Called when the menu is activated */
 static void
-singlePlayerMenuActivate(void *dummy)
+singlePlayerMenuActivate(void * /* dummy */)
 {
     /* Race engine init */
     ReInit();

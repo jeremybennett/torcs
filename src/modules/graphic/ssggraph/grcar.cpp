@@ -44,10 +44,12 @@
 #include "grboard.h"
 #include "grssgext.h"
 #include "grutil.h"
-
+#include "grcarlight.h"
 
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options,int index );
+extern double carTrackRatioX;
+extern double carTrackRatioY;
 
 ssgBranch *CarsAnchorTmp = 0;
 
@@ -405,6 +407,11 @@ grInitCar(tCarElt *car)
     int			lg;
     char		path[256];
     myLoaderOptions	options ;
+    sgVec3		lightPos;
+    int			lightNum;
+    char		*lightType;
+    int			lightTypeNum;
+    
 
     if (!CarsAnchorTmp) {
 	CarsAnchorTmp = new ssgBranch();
@@ -428,6 +435,29 @@ grInitCar(tCarElt *car)
 	car->_exhaustPos[i].x = GfParmGetNum(handle, path, PRM_XPOS, NULL, -car->_dimension_x / 2.0);
 	car->_exhaustPos[i].y = -GfParmGetNum(handle, path, PRM_YPOS, NULL, car->_dimension_y / 2.0);
 	car->_exhaustPos[i].z = GfParmGetNum(handle, path, PRM_ZPOS, NULL, 0.1);
+    }
+
+    sprintf(path, "%s/%s", SECT_GROBJECTS, SECT_LIGHT);
+    lightNum = GfParmGetEltNb(handle, path);
+    for (i = 0; i < lightNum; i++) {
+	sprintf(path, "%s/%s/%d", SECT_GROBJECTS, SECT_LIGHT, i + 1);
+	lightPos[0] = GfParmGetNum(handle, path, PRM_XPOS, NULL, 0);
+	lightPos[1] = GfParmGetNum(handle, path, PRM_YPOS, NULL, 0);
+	lightPos[2] = GfParmGetNum(handle, path, PRM_ZPOS, NULL, 0);
+	lightType = GfParmGetStr(handle, path, PRM_TYPE, "");
+	lightTypeNum = LIGHT_NO_TYPE;
+	if (!strcmp(lightType, VAL_LIGHT_HEAD1)) {
+	    lightTypeNum = LIGHT_TYPE_FRONT;
+	} else if (!strcmp(lightType, VAL_LIGHT_HEAD2)) {
+	    lightTypeNum = LIGHT_TYPE_FRONT2;
+	} else if (!strcmp(lightType, VAL_LIGHT_BRAKE)) {
+	    lightTypeNum = LIGHT_TYPE_BRAKE;
+	} else if (!strcmp(lightType, VAL_LIGHT_BRAKE2)) {
+	    lightTypeNum = LIGHT_TYPE_BRAKE2;
+	} else if (!strcmp(lightType, VAL_LIGHT_REAR)) {
+	    lightTypeNum = LIGHT_TYPE_REAR;
+	}
+	grAddCarlight(car, lightTypeNum, lightPos, GfParmGetNum(handle, path, PRM_SIZE, NULL, 0.2));
     }
 
     GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
@@ -501,6 +531,8 @@ grInitCar(tCarElt *car)
     }
     grCarInfo[index].LODSelectMask[0] = 1 << selIndex; /* car mask */
     selIndex++;
+    grCarInfo[index].sx=carTrackRatioX;
+    grCarInfo[index].sy=carTrackRatioY;
 
     /* Other LODs */
     for (i = 2; i < nranges; i++) {
@@ -604,7 +636,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     } else {
 	lod = curCam->getLODFactor(car->_pos_X, car->_pos_Y, car->_pos_Z);
 	i = 0;
-	while (lod < grCarInfo[index].LODThreshold[i]) {
+	while (lod < grCarInfo[index].LODThreshold[i] * grLodFactorValue) {
 	    i++;
 	}
 	if ((car->_state & RM_CAR_STATE_DNF) && (grCarInfo[index].LODThreshold[i] > 0.0)) {
@@ -614,6 +646,9 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     }
 
     sgCopyMat4(grCarInfo[index].carPos, car->_posMat);
+    grCarInfo[index].px=car->_pos_X;
+    grCarInfo[index].py=car->_pos_Y;
+    
     grCarInfo[index].carTransform->setTransform(grCarInfo[index].carPos);
 
     if ((car == curCar) && (dispFlag != 1)) {
@@ -624,6 +659,11 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag, double curTime, class cGr
     grUpdateSkidmarks(car, curTime); 
     grDrawSkidmarks(car);
     grAddSmoke(car, curTime);
+    if ((car == curCar) && (dispFlag != 1)) {
+	grUpdateCarlight(car, curCam, 0);
+    } else {
+	grUpdateCarlight(car, curCam, 1);
+    }
 
     /* Env mapping selection by the position on the track */
     grCarInfo[index].envSelector->selectStep(car->_trkPos.seg->envIndex);

@@ -188,7 +188,7 @@ updateButtonText(void)
 }
 
 static void
-onFocusLost(void *dummy)
+onFocusLost(void * /* dummy */)
 {
     updateButtonText();
 }
@@ -308,8 +308,8 @@ Idle(void)
 static void
 onPush(void *vi)
 {
-    int	index;    
-    int	i = (int)vi;
+    int		index;    
+    long	i = (long)vi;
     
     CurrentCmd = i;
     GfuiButtonSetText (scrHandle, Cmd[i].Id, "");

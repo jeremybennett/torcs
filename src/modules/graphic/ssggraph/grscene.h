@@ -40,6 +40,7 @@ extern ssgBranch *ShadowAnchor;
 extern ssgBranch *PitsAnchor;
 extern ssgBranch *SmokeAnchor;
 extern ssgBranch *SkidAnchor;
+extern ssgBranch *CarlightAnchor;
 
 extern ssgBranch *ThePits;
 
@@ -56,6 +57,7 @@ extern ssgStateSelector	*grEnvSelector;
 #include "grmultitexstate.h"
 extern grMultiTexState	*grEnvState;
 extern grMultiTexState	*grEnvShadowState;
+extern grMultiTexState	*grEnvShadowStateOnCars;
 
 #ifdef GUIONS
 typedef struct DoV 

@@ -33,8 +33,6 @@
 #include "accc.h"
 
 
-#define FALSE 0
-#define TRUE 1
 #define AC3D     "AC3Db"
 #define MATERIAL "MATERIAL"
 #define OBJECT   "OBJECT"
@@ -705,7 +703,7 @@ int splitOb (ob_t **object)
 	}
       tob->name=(char *) malloc(strlen((*object)->name)+10);
       tob->texture=strdup((*object)->texture);
-      sprintf(tob->name,"%ss%d",(*object)->name,numob++);
+      sprintf(tob->name,"%s_s_%d",(*object)->name,numob++);
       tob->numsurf=numtri;
       tob->numvert=n;
       tob->numvertice=n;
@@ -784,12 +782,14 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 		  }
 	    }
 	}
-      if(typeConvertion==_AC3DTOAC3DS && (extendedStrips==1 || extendedTriangles==1) ||  typeConvertion==_AC3DTOAC3DGROUP)
+      if( (typeConvertion==_AC3DTOAC3DS && (extendedStrips==1 || extendedTriangles==1)) ||
+	  typeConvertion==_AC3DTOAC3DGROUP ||
+	  (typeConvertion==_AC3DTOAC3D && (extendedTriangles==1)))
 	{
 	  printf ("Computing normals for %s \n",object->next->name);
 	  computeObjectTriNorm(object->next );
 	}
-      if (needSplit!=0 && notexturesplit==0)
+      if ( (needSplit!=0 && notexturesplit==0) || ( notexturesplit==0 && collapseObject))
 	{
 	  printf ("found in %s , a duplicate coord with not the same u,v, split is required\n",
 		  object->next->name);
@@ -1330,7 +1330,7 @@ void  saveIn3DSsubObject(ob_t * object,database3ds *db)
 	  mobj->facearray[j].flag=FaceABVisable3ds|FaceBCVisable3ds|FaceCAVisable3ds;
 	  mobj->facearray[j].v2=object->vertexarray[j*3+1].indice;
 	  mobj->facearray[j].v3=object->vertexarray[j*3+2].indice;
-
+	  
 	}
   
 
@@ -1649,6 +1649,7 @@ int printOb(ob_t * ob)
   if (ob->numsurf==0)
     return 0;
   if (extendedStrips==0 && normalMapping!=1)  
+    if (!(isobjectacar && collapseObject))
     stripifyOb(ob,0);
   ob->saved=1;
   fprintf(ofile,"OBJECT poly\n");
@@ -1677,7 +1678,9 @@ int printOb(ob_t * ob)
   fprintf(ofile,"numvert %d\n", ob->numvert);
   for (i=0 ; i<ob->numvert ; i++)
     {
-      if(typeConvertion==_AC3DTOAC3DS && (extendedStrips==1 || extendedTriangles==1) || typeConvertion==_AC3DTOAC3DGROUP  )
+      if( (typeConvertion==_AC3DTOAC3DS && (extendedStrips==1  || extendedTriangles==1)) ||
+	  typeConvertion==_AC3DTOAC3DGROUP ||
+	  (typeConvertion==_AC3DTOAC3D && (extendedTriangles==1)))
 	{
 	  fprintf(ofile,"%lf %lf %lf %lf %lf %lf\n", ob->vertex[i].x, ob->vertex[i].z, -ob->vertex[i].y,
 		  ob->snorm[i].x, ob->snorm[i].z, -ob->snorm[i].y);
@@ -1714,16 +1717,23 @@ int printOb(ob_t * ob)
 	    }
 	  else
 	    {
-	      fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3].indice,
-		       /*ob->vertexarray[i*3].u,
-			 ob->vertexarray[i*3].v);*/
-		       ob->textarray[ob->vertexarray[i*3].indice*2],
-		       ob->textarray[ob->vertexarray[i*3].indice*2+1]);
+	      /*if (extendedTriangles)
+		{
+		  fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3].indice,
+			   ob->vertexarray[i*3].u,
+			   ob->vertexarray[i*3].v);
+		}
+		else*/
+		fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3].indice,
+			 /*ob->vertexarray[i*3].u,
+			   ob->vertexarray[i*3].v);*/
+			 ob->textarray[ob->vertexarray[i*3].indice*2],
+			 ob->textarray[ob->vertexarray[i*3].indice*2+1]);
 
 	      if (ob->texture1)
-		fprintf (ofile,"%.5f %.5f ",
-			 ob->textarray1[ob->vertexarray[i*3].indice*2],
-			 ob->textarray1[ob->vertexarray[i*3].indice*2+1]);
+		  fprintf (ofile,"%.5f %.5f ",
+			   ob->textarray1[ob->vertexarray[i*3].indice*2],
+			   ob->textarray1[ob->vertexarray[i*3].indice*2+1]);
 	      
 	      if (ob->texture2)
 		fprintf (ofile,"%.5f %.5f ",
@@ -1735,9 +1745,17 @@ int printOb(ob_t * ob)
 			 ob->textarray3[ob->vertexarray[i*3].indice*2+1]);
 	      fprintf (ofile,"\n");
 	      
-	      fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+1].indice,
-		       ob->textarray[ob->vertexarray[i*3+1].indice*2],
-		       ob->textarray[ob->vertexarray[i*3+1].indice*2+1]);
+
+	      /*if (extendedTriangles)
+		{
+		  fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+1].indice,
+			   ob->vertexarray[i*3+1].u,
+			   ob->vertexarray[i*3+1].v);
+		}
+		else*/
+		fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+1].indice,
+			 ob->textarray[ob->vertexarray[i*3+1].indice*2],
+			 ob->textarray[ob->vertexarray[i*3+1].indice*2+1]);
 	      if (ob->texture1)
 		fprintf (ofile,"%.5f %.5f ",
 			 ob->textarray1[ob->vertexarray[i*3+1].indice*2],
@@ -1753,10 +1771,17 @@ int printOb(ob_t * ob)
 			 ob->textarray3[ob->vertexarray[i*3+1].indice*2+1]);
 	      fprintf (ofile,"\n");
 	      
-	      
-	      fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+2].indice,
-		       ob->textarray[ob->vertexarray[i*3+2].indice*2],
-		       ob->textarray[ob->vertexarray[i*3+2].indice*2+1]);
+
+	      /*if (extendedTriangles)
+		{
+		  fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+2].indice,
+			   ob->vertexarray[i*3+2].u,
+			   ob->vertexarray[i*3+2].v);
+		}
+		else*/
+		fprintf (ofile,"%d %.5f %.5f ",ob->vertexarray[i*3+2].indice,
+			 ob->textarray[ob->vertexarray[i*3+2].indice*2],
+			 ob->textarray[ob->vertexarray[i*3+2].indice*2+1]);
 	      if (ob->texture1)
 		fprintf (ofile,"%.5f %.5f ",
 			 ob->textarray1[ob->vertexarray[i*3+2].indice*2],
@@ -2102,13 +2127,23 @@ void smoothTriNorm(ob_t * object )
 	ny=tmpob->norm[i].y;
 	nz=tmpob->norm[i].z;
 	dd=sqrt(nx*nx+ny*ny+nz*nz);
-	tmpob->snorm[i].x=nx/dd;
-	tmpob->snorm[i].y=ny/dd;
-	tmpob->snorm[i].z=nz/dd;
+	if (dd != 0.0) {
+	    tmpob->snorm[i].x=nx/dd;
+	    tmpob->snorm[i].y=ny/dd;
+	    tmpob->snorm[i].z=nz/dd;
 
-	tmpob->norm[i].x=nx/dd;
-	tmpob->norm[i].y=ny/dd;
-	tmpob->norm[i].z=nz/dd;
+	    tmpob->norm[i].x=nx/dd;
+	    tmpob->norm[i].y=ny/dd;
+	    tmpob->norm[i].z=nz/dd;
+	} else {
+	    tmpob->snorm[i].x=0;
+	    tmpob->snorm[i].y=0;
+	    tmpob->snorm[i].z=1;
+
+	    tmpob->norm[i].x=0;
+	    tmpob->norm[i].y=0;
+	    tmpob->norm[i].z=1;
+	}
       }
     tmpob=tmpob->next;
    }
@@ -2216,9 +2251,15 @@ void smoothTriNorm(ob_t * object )
 	ny=tmpob->snorm[i].y;
 	nz=tmpob->snorm[i].z;
 	dd=sqrt(nx*nx+ny*ny+nz*nz);
-	tmpob->snorm[i].x=nx/dd;
-	tmpob->snorm[i].y=ny/dd;
-	tmpob->snorm[i].z=nz/dd;
+	if (dd != 0.0) {
+	    tmpob->snorm[i].x=nx/dd;
+	    tmpob->snorm[i].y=ny/dd;
+	    tmpob->snorm[i].z=nz/dd;
+	} else {
+	    tmpob->snorm[i].x=0;
+	    tmpob->snorm[i].y=0;
+	    tmpob->snorm[i].z=1;
+	}
       }
     tmpob=tmpob->next;
    }
@@ -2265,6 +2306,7 @@ void smoothTriNorm(ob_t * object )
 	    continue;
 	  }
 
+#if EEE_CODE_INUTILE
 	if (tmpob1!=tmpob )
 	  {
 	  for (i=0; i<tmpob->numvert; i++)
@@ -2278,14 +2320,15 @@ void smoothTriNorm(ob_t * object )
 			  tmpob->snorm[i].y!=tmpob1->snorm[j].y ||
 			  tmpob->snorm[i].z!=tmpob1->snorm[j].z )
 			{
-			  /*printf("object %s found vertex not smoothed with %s\n",tmpob->name, tmpob1->name);*/
+			  /* printf("object %s found vertex not smoothed with %s\n",tmpob->name, tmpob1->name); */
 			}
 		      
 		    }
 		}
 	    }
 	  }
-	
+#endif
+
 	tmpob1=tmpob1->next;
       }
     tmpob=tmpob->next;
@@ -2347,9 +2390,15 @@ void smoothFaceTriNorm(ob_t * object )
       ny=tmpob->snorm[i].y;
       nz=tmpob->snorm[i].z;
       dd=sqrt(nx*nx+ny*ny+nz*nz);
-      tmpob->snorm[i].x=nx/dd;
-      tmpob->snorm[i].y=ny/dd;
-      tmpob->snorm[i].z=nz/dd;
+      if (dd == 0.0) {
+	  tmpob->snorm[i].x=nx/dd;
+	  tmpob->snorm[i].y=ny/dd;
+	  tmpob->snorm[i].z=nz/dd;
+      } else {
+	  tmpob->snorm[i].x=0;
+	  tmpob->snorm[i].y=0;
+	  tmpob->snorm[i].z=1;
+      }
     }
   return ;
 }
@@ -2380,6 +2429,17 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
       fprintf(stderr,"failed to open %s\n", OutputFilename);
       return ;
     }
+  if (extendedTriangles)
+    {
+      smoothTriNorm(object);
+      if (isobjectacar)
+	mapNormalToSphere2(object);
+      if (isobjectacar && extendedEnvCoord)
+	mapTextureEnv(object);
+      if (collapseObject)
+	mergeSplitted(&object);
+    }
+  
   fprintf(ofile,"AC3Db\n");
   tmat=root_material;
   while (tmat!=NULL)
@@ -2443,11 +2503,29 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
 	tmpob=tmpob->next;
 	continue;
       }
-      if (strnicmp(tmpob->name, "tkmn",4)==0){
-	tmpob=tmpob->next;
-	numg++;
-	continue;
-      }
+      if (isobjectacar==0) 
+	{
+	  if (strnicmp(tmpob->name, "tkmn",4)==0){
+	    tmpob=tmpob->next;
+	    numg++;
+	    continue;
+	  }
+	}
+      else 
+	{
+	  if (tmpob->type)
+	    if (!strcmp(tmpob->type,"group"))
+	      {
+		tmpob=tmpob->next;
+		continue;
+	      }
+	  if (!strcmp(tmpob->name, "root"))
+	    {
+	      tmpob=tmpob->next;
+	      continue;
+	    }
+	  numg++;
+	}
       tmpob=tmpob->next;
     }
 
@@ -3783,13 +3861,14 @@ void mapNormalToSphere2(ob_t *object)
 void normalMap( ob_t * object)
 {
   ob_t * tmpob =NULL;
-  double xmin=99999;
-  double ymin=99999;
-  double zmin=99999;
-  double xmax=-99999;
-  double ymax=-99999;
-  double zmax=-99999;
+  double x_min=99999;
+  double y_min=99999;
+  double z_min=99999;
+  double x_max=-99999;
+  double y_max=-99999;
+  double z_max=-99999;
   int i=0;
+  int j=0;
 
   tmpob=object;
   while (tmpob!=NULL) {
@@ -3805,20 +3884,24 @@ void normalMap( ob_t * object)
       tmpob=tmpob->next;
       continue;
     }
-    if (tmpob->x_min<xmin)
-      xmin=tmpob->x_min;
-    if (tmpob->y_min<ymin)
-      ymin=tmpob->y_min;
-    if (tmpob->z_min<zmin)
-      zmin=tmpob->z_min;
 
-    if (tmpob->x_max>xmax)
-      xmax=tmpob->x_max;
-    if (tmpob->y_max>ymax)
-      ymax=tmpob->y_max;
-    if (tmpob->z_max>zmax)
-      zmax=tmpob->z_max;
-
+    for (j=0; j<tmpob->numvert; j++)
+      {
+	if (tmpob->vertex[j].x>x_max)
+	  x_max=tmpob->vertex[j].x;
+	if (tmpob->vertex[j].x<x_min)
+	  x_min=tmpob->vertex[j].x;
+	
+	if (tmpob->vertex[j].y>y_max)
+	  y_max=tmpob->vertex[j].y;
+	if (tmpob->vertex[j].y<y_min)
+	  y_min=tmpob->vertex[j].y;
+	
+	if (tmpob->vertex[j].z>z_max)
+	  z_max=tmpob->vertex[j].z;
+	if (tmpob->vertex[j].z<z_min)
+	  z_min=tmpob->vertex[j].z;
+      }
     tmpob=tmpob->next;
    }
   tmpob=object;
@@ -3839,8 +3922,8 @@ void normalMap( ob_t * object)
     printf("normalMap : handling %s \n",tmpob->name);
     for (i=0; i<tmpob->numvert; i++)
       {
-	tmpob->textarray[i*2]= (tmpob->vertex[i].x-xmin)/(xmax-xmin) ;
-	tmpob->textarray[i*2+1]= (tmpob->vertex[i].y-ymin)/(ymax-ymin);
+	tmpob->textarray[i*2]= (tmpob->vertex[i].x-x_min)/(x_max-x_min) ;
+	tmpob->textarray[i*2+1]= (tmpob->vertex[i].y-y_min)/(y_max-y_min);
       }
     tmpob->texture=shadowtexture;
     tmpob=tmpob->next;
@@ -3848,6 +3931,82 @@ void normalMap( ob_t * object)
 
 
 }
+
+
+void normalMap01( ob_t * object)
+{
+  ob_t * tmpob =NULL;
+  double x_min=99999;
+  double y_min=99999;
+  double z_min=99999;
+  double x_max=-99999;
+  double y_max=-99999;
+  double z_max=-99999;
+  int i=0;
+  int j=0;
+
+  tmpob=object;
+  while (tmpob!=NULL) {
+    if (tmpob->name==NULL)  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "root"))  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "world")){
+      tmpob=tmpob->next;
+      continue;
+    }
+    for (j=0; j<tmpob->numvert; j++)
+      {
+	if (tmpob->vertex[j].x>x_max)
+	  x_max=tmpob->vertex[j].x;
+	if (tmpob->vertex[j].x<x_min)
+	  x_min=tmpob->vertex[j].x;
+	
+	if (tmpob->vertex[j].y>y_max)
+	  y_max=tmpob->vertex[j].y;
+	if (tmpob->vertex[j].y<y_min)
+	  y_min=tmpob->vertex[j].y;
+	
+	if (tmpob->vertex[j].z>z_max)
+	  z_max=tmpob->vertex[j].z;
+	if (tmpob->vertex[j].z<z_min)
+	  z_min=tmpob->vertex[j].z;
+      }
+
+    tmpob=tmpob->next;
+   }
+  tmpob=object;
+
+  while (tmpob!=NULL) {
+    if (tmpob->name==NULL)  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "root"))  {
+      tmpob=tmpob->next;
+      continue;
+    }
+    if (!strcmp(tmpob->name, "world")){
+      tmpob=tmpob->next;
+      continue;
+    }
+    tmpob->textarray3=(double *) malloc(sizeof(double)*tmpob->numvert*2);
+    printf("normalMap : handling %s \n",tmpob->name);
+    for (i=0; i<tmpob->numvert; i++)
+      {
+	tmpob->textarray3[i*2]= (tmpob->vertex[i].x-x_min)/(x_max-x_min)-0.5;
+	tmpob->textarray3[i*2+1]= (tmpob->vertex[i].y-y_min)/(y_max-y_min)-0.5;
+      }
+    tmpob->texture3=tmpob->texture;
+    tmpob=tmpob->next;
+   }
+}
+
+
 
 
 /*
@@ -3859,6 +4018,7 @@ void normalMap( ob_t * object)
 
 
 void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
+
 {
 
   int i =0;
@@ -3880,9 +4040,15 @@ void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
   /*computeTriNorm(object );*/
   smoothTriNorm(object);
   if (isobjectacar)
-    mapNormalToSphere2(object);
+    {
+      mapNormalToSphere2(object);
+      normalMap01(object);
+    }
   if (isobjectacar && extendedEnvCoord)
     mapTextureEnv(object);
+  if (isobjectacar && collapseObject)
+    mergeSplitted(&object);
+  
   fprintf(ofile,"AC3Db\n");
   tmat=root_material;
   while (tmat!=NULL)
@@ -4105,7 +4271,7 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
   int j=0;
 
   int numtri =(ob1)->numsurf+(ob2)->numsurf;;
-
+  printf("merging %s with %s  tri=%d\n",ob1->name, ob2->name,numtri);
   memset(oldva1,-1,sizeof(oldva1));
   memset(oldva2,-1,sizeof(oldva2));
   tobS=(ob_t *)malloc(sizeof(ob_t ));
@@ -4127,8 +4293,8 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
   tobS->attrSurf=ob1->attrSurf;
   tobS->name=(char *) malloc(strlen(nameS)+1);
   tobS->texture=strdup(nameS);
-  tobS->type=strdup(ob1->type);
-  tobS->data=strdup(ob1->data);
+  tobS->type= ob1->type ? strdup(ob1->type) : NULL;
+  tobS->data= ob1->data ? strdup(ob1->data) : NULL;
   
 
 
@@ -4160,7 +4326,9 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
 	{
 	  if (ob2->vertex[i].x==ob1->vertex[j].x
 	      && ob2->vertex[i].y==ob1->vertex[j].y
-	      && ob2->vertex[i].z==ob1->vertex[j].z)
+	      && ob2->vertex[i].z==ob1->vertex[j].z
+	      && ob2->textarray[i*2]==ob1->textarray[j*2]
+	      && ob2->textarray[i*2+1]==ob1->textarray[j*2+1])
 	    {
 	      oldva1[i]=j;
 	    }
@@ -4225,15 +4393,24 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
 	}
     }
 
+
   ob1->numsurf=tobS->numsurf;
   ob1->numvert=tobS->numvert;
+  freez(ob1->vertexarray);
   ob1->vertexarray=tobS->vertexarray;
+  freez(ob1->norm);
   ob1->norm=tobS->norm;
+  freez(ob1->snorm);
   ob1->snorm=tobS->snorm;
+  freez(ob1->vertex);
   ob1->vertex=tobS->vertex;
+  freez(ob1->textarray);
   ob1->textarray=tobS->textarray;
+  freez(ob1->textarray1);
   ob1->textarray1=tobS->textarray1;
+  freez(ob1->textarray2);
   ob1->textarray2=tobS->textarray2;
+  freez(ob1->textarray3);
   ob1->textarray3=tobS->textarray3;
   return ob1;
 }
@@ -4253,36 +4430,83 @@ int mergeSplitted (ob_t **object)
   tob=*object;
   while (tob)
     {
-      if (strstr(tob->name,"__split__")==NULL)
+      if (isobjectacar)
 	{
-	  tob=tob->next; 
-	  continue;
+	  if (tob->name==NULL)
+	    {
+	      tob=tob->next; 
+	      continue;
+	    }
+	  if (strstr(tob->name,"_s_")==NULL)
+	    {
+	      tob=tob->next; 
+	      continue;
+	    }
 	}
+      else
+	if (strstr(tob->name,"__split__")==NULL)
+	  {
+	    tob=tob->next; 
+	    continue;
+	  }
       tobP=tob;
       tob0=tob->next;
       sprintf(nameS,"%s",tob->name);
-      p=strstr(nameS,"__split__");
+      if (isobjectacar)
+	{
+	  p=strstr(nameS,"_s_");
+	}
+      else
+	p=strstr(nameS,"__split__");
       if (p==NULL)
 	{
 	  tob=tob->next; 
 	  continue;
 	}
       printf("looking for merge : %s\n",nameS);
-      p=p+strlen("__split__");
+      if (isobjectacar)
+	p=p+strlen("_s_");
+      else
+	p=p+strlen("__split__");
       *p='\0';
       k=0;
       numtri=0;
       numtri=tob->numsurf;
       while (tob0)
 	{
-	  
+	  if(tob0->name==NULL )
+	    {
+	      tobP=tob0;
+	      tob0=tob0->next;
+	      continue;
+	    }
+	  if (!strcmp(tob0->name, "world") ||
+	      !strcmp(tob0->name, "root"))
+	    {
+	      tobP=tob0;
+	      tob0=tob0->next;
+	      continue;
+	    }
+	  if (tob0->type !=NULL)
+	    if (!strcmp(tob0->type, "group"))
+	      {
+		tobP=tob0;
+		tob0=tob0->next;
+		continue;
+	      }
+
 	  if (!strnicmp(tob0->name,nameS,strlen(nameS)))
 	    {
+	      ob_t *oo;
 	      mergeObject (tob,tob0, nameS)	      ;
-	      printf("merging %s with %s\n",nameS, tob0->name);
+	      /*printf("merging %s with %s\n",nameS, tob0->name);*/
 	      reduced ++;
 	      tobP->next=tob0->next;
+	      oo=tob0;
+	      tob0=tob0->next;
+	      freeobject(oo);
 	      k++;
+	      continue;
 	    }
 	  tobP=tob0;
 	  tob0=tob0->next;
@@ -4315,7 +4539,7 @@ int mergeSplitted (ob_t **object)
       tobS->attrSurf=tob->attrSurf;
       tobS->name=(char *) malloc(strlen(nameS)+1);
       tobS->texture=strdup(nameS);
-      tobS->type=strdup(tob->type);
+      tobS->type= tob->type ? strdup(tob->type) : NULL;
       tobS->data=strdup(tob->data);
       
       memcpy(tobS->vertex, tob->vertex,tob->numvert*sizeof(point_t));      
@@ -4414,9 +4638,9 @@ int freeobject(ob_t *o)
   freez(o->name);
   freez(o->type);
   freez(o->texture);
-  freez(o->texture1);
-  freez(o->texture2);
-  freez(o->texture3);
+  /*  freez(o->texture1);
+      freez(o->texture2);
+      freez(o->texture3);*/
   freez(o->vertex);
   freez(o->norm);
   freez(o->snorm);

@@ -195,7 +195,7 @@ class cGrBackgroundCam : public cGrPerspCamera
     cGrBackgroundCam(class cGrScreen *myscreen)
 	: cGrPerspCamera(myscreen, 0, 0, 1, 0,
 			 67.5, 67.5, 67.5,
-			 0.1, 2000.0, 1000, 1000) {
+			 0.1, 2000.0, 100000, 100000) {
     }
     
     void update(tCarElt *car, tSituation *s) {}

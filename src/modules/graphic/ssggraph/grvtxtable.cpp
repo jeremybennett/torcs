@@ -33,6 +33,13 @@
 #include "grutil.h"
 #include <GL/glu.h>
 
+/* from grloadac.cpp (beuark!) */
+extern double shad_xmax;
+extern double shad_ymax;
+extern double shad_xmin;
+extern double shad_ymin;
+
+
 void grVtxTable::copy_from (grVtxTable *src, int clone_flags)
 {
   ssgVtxTable::copy_from (src, clone_flags);
@@ -52,7 +59,7 @@ void grVtxTable::copy_from (grVtxTable *src, int clone_flags)
     texcoords3 = src -> texcoords3;
   numMapLevel=src->numMapLevel;
   mapLevelBitmap=src->mapLevelBitmap;
-  internalType=src->mapLevelBitmap;
+  internalType=src->internalType;
 
   if (src->internalType==ARRAY)
     {
@@ -397,6 +404,7 @@ void grVtxTable::draw_geometry_array ()
   sgVec4 *cl = (sgVec4 *) colours   -> get(0);
 
   if (numMapLevel>1)state1->apply(1);
+  if (numMapLevel>2)state2->apply(2);
 
   glActiveTextureARB (GL_TEXTURE0_ARB);
   glEnable (GL_TEXTURE_2D); 
@@ -423,6 +431,12 @@ void grVtxTable::draw_geometry_array ()
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer (2, GL_FLOAT, 0, texcoords1->get(0));
       }
+    if (numMapLevel>2)
+      {
+	glClientActiveTextureARB(GL_TEXTURE2_ARB);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer (2, GL_FLOAT, 0, texcoords2->get(0));
+      }
 
   }
   glEnableClientState (GL_VERTEX_ARRAY);
@@ -430,6 +444,7 @@ void grVtxTable::draw_geometry_array ()
 
   glClientActiveTextureARB(GL_TEXTURE0_ARB);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 
   int i=0; 
   short *ii = NULL;
@@ -448,6 +463,11 @@ void grVtxTable::draw_geometry_array ()
       glActiveTextureARB (GL_TEXTURE1_ARB);
       glDisable (GL_TEXTURE_2D);
   }
+  if (numMapLevel>2) {
+      glActiveTextureARB (GL_TEXTURE2_ARB);
+      glDisable (GL_TEXTURE_2D);
+  }
+
   glActiveTextureARB (GL_TEXTURE0_ARB);
 }
 
@@ -461,6 +481,8 @@ void grVtxTable::draw_geometry_for_a_car_array ()
   tdble tty=0;
   tdble ttz=0;
   sgMat4 mat;
+  sgMat4 mat2;
+  sgMat4 mat4;
   sgVec3 axis;
 
   sgVec3 *nm = (sgVec3 *) normals   -> get(0);
@@ -481,6 +503,58 @@ void grVtxTable::draw_geometry_for_a_car_array ()
 	glMatrixMode(GL_MODELVIEW);
 	grEnvShadowState->apply(2);
     }
+  if (mapLevelBitmap <= LEVELC3 && grEnvShadowStateOnCars)
+    {
+      tdble xxx= (grCarInfo[indexCar].px-shad_xmin)/(shad_xmax-shad_xmin);
+      tdble yyy= (grCarInfo[indexCar].py-shad_ymin)/(shad_ymax-shad_ymin);
+      
+	/* UP Vector for OpenGl */
+	axis[0]=0;
+	axis[1]=0;
+	axis[2]=1;
+
+	mat2[0][0] = grCarInfo[indexCar].sx;
+	mat2[0][1] = 0;
+	mat2[0][2] = 0;
+	mat2[0][3] = 0 ;
+
+	mat2[1][0] = 0;
+	mat2[1][1] = grCarInfo[indexCar].sy;
+	mat2[1][2] = 0;
+	mat2[1][3] = 0 ;
+
+	mat2[2][0] = 0;
+	mat2[2][1] = 0;
+	mat2[2][2] = 1;
+	mat2[2][3] = 0 ;
+
+
+	mat2[3][0] = 0;
+	mat2[3][1] = 0;
+	mat2[3][2] = 0;
+	mat2[3][3] = 1;
+
+
+	glActiveTextureARB (GL_TEXTURE3_ARB);
+	sgMakeRotMat4(mat, grCarInfo[indexCar].envAngle, axis);
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity ();
+	/*sgMultMat4(mat,mat,mat3);*/
+
+	/*sgMakeTransMat4(mat3,0.5,0.5,0); *//* ok */
+	/*glMultMatrixf ((float *)mat3);*/
+
+	sgMakeTransMat4(mat4,xxx,yyy,0);
+	  glMultMatrixf ((float *)mat4);
+
+	  glMultMatrixf ((float *)mat); /* ok */
+	  glMultMatrixf ((float *)mat2); /* ok */
+
+
+	glMatrixMode(GL_MODELVIEW);
+	grEnvShadowStateOnCars->apply(3);
+    }
+
 
   grEnvState->apply(1);
   glActiveTextureARB (GL_TEXTURE1_ARB);
@@ -521,6 +595,13 @@ void grVtxTable::draw_geometry_for_a_car_array ()
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 	glTexCoordPointer (2, GL_FLOAT, 0, texcoords2->get(0));
       }
+    if (mapLevelBitmap <= LEVELC3)
+      {
+	glClientActiveTextureARB (GL_TEXTURE3_ARB);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer (2, GL_FLOAT, 0, texcoords3->get(0));
+      }
+
   }
   glEnableClientState (GL_VERTEX_ARRAY);
   glVertexPointer (3, GL_FLOAT, 0, vertices->get(0));
@@ -548,7 +629,19 @@ void grVtxTable::draw_geometry_for_a_car_array ()
   glMatrixMode(GL_MODELVIEW);
   if (mapLevelBitmap <= LEVELC2) {
       glActiveTextureARB (GL_TEXTURE2_ARB);
+      glMatrixMode(GL_TEXTURE);
+      glLoadIdentity ();
+      glMatrixMode(GL_MODELVIEW);
       glDisable (GL_TEXTURE_2D); 
   }
+  if (mapLevelBitmap <= LEVELC3 && grEnvShadowStateOnCars) {
+      glActiveTextureARB (GL_TEXTURE3_ARB);
+      glMatrixMode(GL_TEXTURE);
+      glLoadIdentity ();
+      glMatrixMode(GL_MODELVIEW);
+      glDisable (GL_TEXTURE_2D); 
+  }
+
+
   glActiveTextureARB (GL_TEXTURE0_ARB);
 }

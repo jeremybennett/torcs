@@ -51,7 +51,7 @@ static char path2[1024];
 static void *AbandonRaceHookHandle = 0;
 
 static void
-AbandonRaceHookActivate(void *vforce)
+AbandonRaceHookActivate(void * /* vforce */)
 {
     /* Return to race menu */
     ReInfo->_reState = RE_STATE_CONFIG;

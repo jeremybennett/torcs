@@ -120,7 +120,7 @@ rmUpdateTrackInfo(void)
 static void
 rmtsPrevNext(void *vsel)
 {
-    if ((int)vsel == 0) {
+    if (vsel == 0) {
 	CategoryList->userData = (void*)(((tFList*)CategoryList->userData)->prev);
     } else {
 	CategoryList->userData = (void*)(((tFList*)CategoryList->userData)->next);
@@ -133,7 +133,7 @@ rmtsPrevNext(void *vsel)
 static void
 rmCatPrevNext(void *vsel)
 {
-    if ((int)vsel == 0) {
+    if (vsel == 0) {
 	CategoryList = CategoryList->prev;
     } else {
 	CategoryList = CategoryList->next;
@@ -145,7 +145,7 @@ rmCatPrevNext(void *vsel)
 }
 
  void
-rmtsSelect(void *dummy)
+rmtsSelect(void * /* dummy */)
 {
     int		curTrkIdx;
 

@@ -63,7 +63,7 @@ reScreenActivate(void * /* dummy */)
 }
 
 static void
-ReBoardInfo(void *vboard)
+ReBoardInfo(void * /* vboard */)
 {
     if (ReInfo->s->_raceState & RM_RACE_PAUSED) {
 	ReInfo->s->_raceState &= ~RM_RACE_PAUSED;

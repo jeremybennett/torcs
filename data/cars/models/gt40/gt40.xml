@@ -62,6 +62,65 @@
       </section>
     </section>
 
+    <section name="Light">
+      <section name="1">
+	<attstr name="type" val="head1"/>
+	<attnum name="xpos" val="1.94"/>
+	<attnum name="ypos" val="0.60"/>
+	<attnum name="zpos" val="0.47"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+      <section name="2">
+	<attstr name="type" val="head1"/>
+	<attnum name="xpos" val="1.94"/>
+	<attnum name="ypos" val="-0.60"/>
+	<attnum name="zpos" val="0.47"/>
+	<attnum name="size" val="0.3"/>
+      </section>
+      <section name="3">
+	<attstr name="type" val="head2"/>
+	<attnum name="xpos" val="2.18"/>
+	<attnum name="ypos" val="0.57"/>
+	<attnum name="zpos" val="0.20"/>
+	<attnum name="size" val="0.1"/>
+      </section>
+      <section name="4">
+	<attstr name="type" val="head2"/>
+	<attnum name="xpos" val="2.18"/>
+	<attnum name="ypos" val="-0.57"/>
+	<attnum name="zpos" val="0.20"/>
+	<attnum name="size" val="0.1"/>
+      </section>
+      <section name="5">
+	<attstr name="type" val="rear"/>
+	<attnum name="xpos" val="-2.29"/>
+	<attnum name="ypos" val="0.60"/>
+	<attnum name="zpos" val="0.52"/>
+	<attnum name="size" val="0.1"/>
+      </section>
+      <section name="6">
+	<attstr name="type" val="rear"/>
+	<attnum name="xpos" val="-2.29"/>
+	<attnum name="ypos" val="-0.60"/>
+	<attnum name="zpos" val="0.52"/>
+	<attnum name="size" val="0.1"/>
+      </section>
+      <section name="7">
+	<attstr name="type" val="brake"/>
+	<attnum name="xpos" val="-2.29"/>
+	<attnum name="ypos" val="0.60"/>
+	<attnum name="zpos" val="0.52"/>
+	<attnum name="size" val="0.15"/>
+      </section>
+      <section name="8">
+	<attstr name="type" val="brake"/>
+	<attnum name="xpos" val="-2.29"/>
+	<attnum name="ypos" val="-0.60"/>
+	<attnum name="zpos" val="0.52"/>
+	<attnum name="size" val="0.15"/>
+      </section>
+    </section>
+
   </section>
 
   <section name="Car">

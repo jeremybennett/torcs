@@ -44,7 +44,7 @@ gfuiScrollPlus(void *idv)
     tGfuiScrollBar	*scrollbar;
     tScrollBarInfo	info;
 
-    object = gfuiGetObject(GfuiScreen, (int)idv);
+    object = gfuiGetObject(GfuiScreen, (long)idv);
     if (object == NULL) {
 	return;
     }
@@ -66,7 +66,7 @@ gfuiScrollMinus(void *idv)
     tGfuiScrollBar	*scrollbar;
     tScrollBarInfo	info;
 
-    object = gfuiGetObject(GfuiScreen, (int)idv);
+    object = gfuiGetObject(GfuiScreen, (long)idv);
     if (object == NULL) {
 	return;
     }

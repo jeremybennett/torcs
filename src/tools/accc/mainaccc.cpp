@@ -53,6 +53,7 @@ int extendedEnvCoord=0;
 int isobjectacar=0;
 int extendedTriangles=0;
 int notexturesplit=0;
+int collapseObject=0;
 int typeConvertion =0;
 int far_dist=10000;
 int normalMapping=0;
@@ -75,10 +76,11 @@ void usage(void)
     fprintf(stderr, "    (computed normals) angle is in degrees : example : +es 80.0 clkdtm_o.ac clkdtm.ac  \n");
     fprintf(stderr, "    the output file will also contains the secondary textcoord for the env sliding \n");
     fprintf(stderr, "+et: ac3d to ac3d with triangles (used for cars) and extended ac3d file output (normals normals) \n");
+    fprintf(stderr, "+etn: ac3d to ac3d with triangles no split and extended ac3d file output (normals normals) \n");
     fprintf(stderr, "+shad: ac3d to ac3d with triangles, create a new ac3d file used for track shading\n   vertical mapping of a single texture \n");
     fprintf(stderr, "<inputfile>: \n");
     fprintf(stderr, "<oututfile>: \n");
-    fprintf(stderr, "-order \"orderstring\": only used with +es , +s and (not yet +et)  \n");
+    fprintf(stderr, "-order \"orderstring\": only used with +es , +s and  +et  \n");
     fprintf(stderr, "       \"orderstring\" is the order of the objects during the save\n");
     fprintf(stderr, "        for example : \"HB;OB;OBM\" is the names of the objet separate\n");
     fprintf(stderr, "        by a semicolon\n");
@@ -119,6 +121,7 @@ void init_args(int argc, char **argv)
       isobjectacar=1;
       extendedStrips=1;
       extendedEnvCoord=1;
+      collapseObject=1;
       sscanf(argv[2],"%lf",&smooth_angle);
       InputFileName = strdup(argv[3]);
       OutputFileName = strdup(argv[4]);
@@ -127,6 +130,17 @@ void init_args(int argc, char **argv)
       typeConvertion=_AC3DTOAC3D;
       extendedStrips=0;
       isobjectacar=1;
+      extendedEnvCoord=1;
+      extendedTriangles=1;
+      collapseObject=1;
+    } 
+    else  if (!strcmp(argv[1],"+etn")) {
+      typeConvertion=_AC3DTOAC3D;
+      extendedStrips=0;
+      isobjectacar=1;
+      extendedEnvCoord=1;
+      notexturesplit=0;
+      collapseObject=1;
       extendedTriangles=1;
     } 
     else  if (!strcmp(argv[1],"+shad")) {

@@ -332,7 +332,7 @@ ReSortCars(void)
 }
 
 void
-ReOneStep(void *telem)
+ReOneStep(void * /* dummy */)
 {
     int i;
     tRobotItf *robot;
@@ -434,7 +434,9 @@ ReUpdate(void)
 void
 ReTimeMod (void *vcmd)
 {
-    switch ((int)vcmd) {
+    long cmd = (long)vcmd;
+    
+    switch ((int)cmd) {
     case 0:
 	ReInfo->_reTimeMult *= 2.0;
 	if (ReInfo->_reTimeMult > 64.0) {

@@ -32,9 +32,6 @@
 #include <math.h>
 #ifdef WIN32
 #include <windows.h>
-#else
-#define TRUE	1
-#define FALSE	0
 #endif
 #include "accc.h"
 
@@ -109,11 +106,12 @@ void loadAndGroup( char *OutputFileName)
       tmpob=tmpob->next;
       continue;
     }
-    if (!strcmp(tmpob->type,"group"))
-      {
-	tmpob=tmpob->next;
-	continue;
-      }
+    if (tmpob->type!=NULL)
+      if (!strcmp(tmpob->type,"group"))
+	{
+	  tmpob=tmpob->next;
+	  continue;
+	}
      
     tmpob2=ob1;
     while (tmpob2!=NULL) {
@@ -129,10 +127,11 @@ void loadAndGroup( char *OutputFileName)
 	tmpob2=tmpob2->next;
 	continue;
       }
-      if (!strcmp(tmpob->type,"group")){
-	tmpob2=tmpob2->next;
-	continue;
-      }
+      if (tmpob->type!=NULL)
+	if (!strcmp(tmpob->type,"group")){
+	  tmpob2=tmpob2->next;
+	  continue;
+	}
       notinsameorder=FALSE;
       if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
@@ -172,11 +171,11 @@ void loadAndGroup( char *OutputFileName)
 	tmpob2=tmpob2->next;
 	continue;
       }
-
-      if (!strcmp(tmpob->type,"group")){
-	tmpob2=tmpob2->next;
-	continue;
-      }
+      if (tmpob->type!=NULL)
+	if (!strcmp(tmpob->type,"group")){
+	  tmpob2=tmpob2->next;
+	  continue;
+	}
 
       if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
@@ -203,10 +202,11 @@ void loadAndGroup( char *OutputFileName)
 	tmpob2=tmpob2->next;
 	continue;
       }
-      if (!strcmp(tmpob->type,"group")){
-	tmpob2=tmpob2->next;
-	continue;
-      }
+      if (tmpob->type!=NULL)
+	if (!strcmp(tmpob->type,"group")){
+	  tmpob2=tmpob2->next;
+	  continue;
+	}
       if (!strcmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert)
 	{
 	  /* found an ob in ob2 */

@@ -124,12 +124,12 @@ rmdsSelect(void * /* dummy */)
 static void
 rmMove(void *vd)
 {
-    GfuiScrollListMoveSelectedElement(scrHandle, selectedScrollList, (int)vd);
-    GfuiScrollListMoveSelectedElement(scrHandle, unselectedScrollList, (int)vd);
+    GfuiScrollListMoveSelectedElement(scrHandle, selectedScrollList, (long)vd);
+    GfuiScrollListMoveSelectedElement(scrHandle, unselectedScrollList, (long)vd);
 }
 
 static void
-rmdsClickOnDriver(void *dummy)
+rmdsClickOnDriver(void * /* dummy */)
 {
     char	*name;
     tDrvElt	*curDrv;
@@ -159,7 +159,7 @@ rmdsClickOnDriver(void *dummy)
 }
 
 static void
-rmSelectDeselect(void * dummy )
+rmSelectDeselect(void * /* dummy */ )
 {
     char	*name;
     int		src, dst;

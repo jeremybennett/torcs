@@ -301,7 +301,7 @@ gfuiUpdateFocus(void)
 }
 
 void
-gfuiSelectNext(void *dummy)
+gfuiSelectNext(void * /* dummy */)
 {
     tGfuiObject *startObject;
     tGfuiObject *curObject;
@@ -334,7 +334,7 @@ gfuiSelectNext(void *dummy)
 }
 
 void
-gfuiSelectPrev(void *dummy)
+gfuiSelectPrev(void * /* dummy */)
 {
     tGfuiObject *startObject;
     tGfuiObject *curObject;
@@ -446,9 +446,10 @@ GfuiEnable(void *scr, int id, int flag)
 }
 
 void
-gfuiMouseAction(void *action)
+gfuiMouseAction(void *vaction)
 {
     tGfuiObject *curObject;
+    long	action = (long)vaction;
 
     curObject = GfuiScreen->hasFocus;
     if (curObject != NULL) {

@@ -58,6 +58,10 @@ typedef struct
     tdble               distFromStart;
     tdble               envAngle;
     int			fireCount;
+    tdble               px;
+    tdble               py;
+    tdble               sx;
+    tdble               sy;
 } tgrCarInfo;
 
 extern tgrCarInfo	*grCarInfo;
