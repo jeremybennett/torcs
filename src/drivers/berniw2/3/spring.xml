@@ -65,8 +65,8 @@
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.65"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="14000"/>
+    <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.63"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="25000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -112,8 +112,8 @@
     <attnum name="packers" unit="mm" min="0" max="100" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Front Left Suspension">
@@ -123,8 +123,8 @@
     <attnum name="packers" unit="mm" min="0" max="100" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Rear Right Suspension">
@@ -134,8 +134,8 @@
     <attnum name="packers" unit="mm" min="0" max="100" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="Rear Left Suspension">
@@ -145,8 +145,8 @@
     <attnum name="packers" unit="mm" min="0" max="100" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
     <attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="50"/>
-    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="50"/>
+    <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="30"/>
+    <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="30"/>
   </section>
 
   <section name="berniw private">
