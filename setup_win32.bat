@@ -984,6 +984,75 @@ if exist .\src\drivers\berniw2\parameter.dat copy .\src\drivers\berniw2\paramete
 if exist .\src\drivers\berniw2\intsinsqr.dat copy .\src\drivers\berniw2\intsinsqr.dat .\runtime\drivers\berniw2\intsinsqr.dat
 if exist .\src\drivers\berniw2\intcossqr.dat copy .\src\drivers\berniw2\intcossqr.dat .\runtime\drivers\berniw2\intcossqr.dat
 
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers\berniw3\1
+if exist .\src\drivers\berniw3\1\default.xml copy .\src\drivers\berniw3\1\default.xml .\runtime\drivers\berniw3\1\default.xml
+
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers\berniw3\10
+if exist .\src\drivers\berniw3\10\default.xml copy .\src\drivers\berniw3\10\default.xml .\runtime\drivers\berniw3\10\default.xml
+
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers\berniw3\2
+if exist .\src\drivers\berniw3\2\default.xml copy .\src\drivers\berniw3\2\default.xml .\runtime\drivers\berniw3\2\default.xml
+
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers\berniw3\3
+if exist .\src\drivers\berniw3\3\default.xml copy .\src\drivers\berniw3\3\default.xml .\runtime\drivers\berniw3\3\default.xml
+
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers\berniw3\4
+if exist .\src\drivers\berniw3\4\default.xml copy .\src\drivers\berniw3\4\default.xml .\runtime\drivers\berniw3\4\default.xml
+
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers\berniw3\5
+if exist .\src\drivers\berniw3\5\default.xml copy .\src\drivers\berniw3\5\default.xml .\runtime\drivers\berniw3\5\default.xml
+
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers\berniw3\6
+if exist .\src\drivers\berniw3\6\default.xml copy .\src\drivers\berniw3\6\default.xml .\runtime\drivers\berniw3\6\default.xml
+
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers\berniw3\7
+if exist .\src\drivers\berniw3\7\default.xml copy .\src\drivers\berniw3\7\default.xml .\runtime\drivers\berniw3\7\default.xml
+
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers\berniw3\8
+if exist .\src\drivers\berniw3\8\default.xml copy .\src\drivers\berniw3\8\default.xml .\runtime\drivers\berniw3\8\default.xml
+
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers\berniw3\9
+if exist .\src\drivers\berniw3\9\default.xml copy .\src\drivers\berniw3\9\default.xml .\runtime\drivers\berniw3\9\default.xml
+
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\berniw3.xml copy .\src\drivers\berniw3\berniw3.xml .\runtime\drivers\berniw3\berniw3.xml
+if exist .\src\drivers\berniw3\logo.rgb copy .\src\drivers\berniw3\logo.rgb .\runtime\drivers\berniw3\logo.rgb
+if exist .\src\drivers\berniw3\parameter.dat copy .\src\drivers\berniw3\parameter.dat .\runtime\drivers\berniw3\parameter.dat
+if exist .\src\drivers\berniw3\intsinsqr.dat copy .\src\drivers\berniw3\intsinsqr.dat .\runtime\drivers\berniw3\intsinsqr.dat
+if exist .\src\drivers\berniw3\intcossqr.dat copy .\src\drivers\berniw3\intcossqr.dat .\runtime\drivers\berniw3\intcossqr.dat
+
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime\drivers\billy
@@ -1017,6 +1086,122 @@ if exist .\src\drivers\billy\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\billy\*.* call .\create_dir .\runtime\drivers\billy
 if exist .\src\drivers\billy\billy.xml copy .\src\drivers\billy\billy.xml .\runtime\drivers\billy\billy.xml
 if exist .\src\drivers\billy\logo.rgb copy .\src\drivers\billy\logo.rgb .\runtime\drivers\billy\logo.rgb
+
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt\0\practice
+if exist .\src\drivers\bt\0\practice\g-track-3.xml copy .\src\drivers\bt\0\practice\g-track-3.xml .\runtime\drivers\bt\0\practice\g-track-3.xml
+if exist .\src\drivers\bt\0\practice\michigan.xml copy .\src\drivers\bt\0\practice\michigan.xml .\runtime\drivers\bt\0\practice\michigan.xml
+if exist .\src\drivers\bt\0\practice\wheel-1.xml copy .\src\drivers\bt\0\practice\wheel-1.xml .\runtime\drivers\bt\0\practice\wheel-1.xml
+
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt\0\qualifying
+if exist .\src\drivers\bt\0\qualifying\g-track-3.xml copy .\src\drivers\bt\0\qualifying\g-track-3.xml .\runtime\drivers\bt\0\qualifying\g-track-3.xml
+
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt\0\race
+if exist .\src\drivers\bt\0\race\g-track-3.xml copy .\src\drivers\bt\0\race\g-track-3.xml .\runtime\drivers\bt\0\race\g-track-3.xml
+if exist .\src\drivers\bt\0\race\wheel-1.xml copy .\src\drivers\bt\0\race\wheel-1.xml .\runtime\drivers\bt\0\race\wheel-1.xml
+
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\default.xml copy .\src\drivers\bt\0\default.xml .\runtime\drivers\bt\0\default.xml
+if exist .\src\drivers\bt\0\cg-nascar-rwd.rgb copy .\src\drivers\bt\0\cg-nascar-rwd.rgb .\runtime\drivers\bt\0\cg-nascar-rwd.rgb
+
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt\1\practice
+if exist .\src\drivers\bt\1\practice\g-track-3.xml copy .\src\drivers\bt\1\practice\g-track-3.xml .\runtime\drivers\bt\1\practice\g-track-3.xml
+if exist .\src\drivers\bt\1\practice\michigan.xml copy .\src\drivers\bt\1\practice\michigan.xml .\runtime\drivers\bt\1\practice\michigan.xml
+if exist .\src\drivers\bt\1\practice\wheel-1.xml copy .\src\drivers\bt\1\practice\wheel-1.xml .\runtime\drivers\bt\1\practice\wheel-1.xml
+
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt\1\qualifying
+if exist .\src\drivers\bt\1\qualifying\g-track-3.xml copy .\src\drivers\bt\1\qualifying\g-track-3.xml .\runtime\drivers\bt\1\qualifying\g-track-3.xml
+
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt\1\race
+if exist .\src\drivers\bt\1\race\g-track-3.xml copy .\src\drivers\bt\1\race\g-track-3.xml .\runtime\drivers\bt\1\race\g-track-3.xml
+if exist .\src\drivers\bt\1\race\wheel-1.xml copy .\src\drivers\bt\1\race\wheel-1.xml .\runtime\drivers\bt\1\race\wheel-1.xml
+
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\default.xml copy .\src\drivers\bt\1\default.xml .\runtime\drivers\bt\1\default.xml
+if exist .\src\drivers\bt\1\cg-nascar-rwd.rgb copy .\src\drivers\bt\1\cg-nascar-rwd.rgb .\runtime\drivers\bt\1\cg-nascar-rwd.rgb
+
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers\bt\2
+if exist .\src\drivers\bt\2\default.xml copy .\src\drivers\bt\2\default.xml .\runtime\drivers\bt\2\default.xml
+
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers\bt\3
+if exist .\src\drivers\bt\3\default.xml copy .\src\drivers\bt\3\default.xml .\runtime\drivers\bt\3\default.xml
+
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers\bt\4
+if exist .\src\drivers\bt\4\default.xml copy .\src\drivers\bt\4\default.xml .\runtime\drivers\bt\4\default.xml
+
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers\bt\5
+if exist .\src\drivers\bt\5\default.xml copy .\src\drivers\bt\5\default.xml .\runtime\drivers\bt\5\default.xml
+
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers\bt\6
+if exist .\src\drivers\bt\6\default.xml copy .\src\drivers\bt\6\default.xml .\runtime\drivers\bt\6\default.xml
+
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers\bt\7
+if exist .\src\drivers\bt\7\default.xml copy .\src\drivers\bt\7\default.xml .\runtime\drivers\bt\7\default.xml
+
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers\bt\8
+if exist .\src\drivers\bt\8\default.xml copy .\src\drivers\bt\8\default.xml .\runtime\drivers\bt\8\default.xml
+
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers\bt\9
+if exist .\src\drivers\bt\9\default.xml copy .\src\drivers\bt\9\default.xml .\runtime\drivers\bt\9\default.xml
+
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\bt.xml copy .\src\drivers\bt\bt.xml .\runtime\drivers\bt\bt.xml
+if exist .\src\drivers\bt\logo.rgb copy .\src\drivers\bt\logo.rgb .\runtime\drivers\bt\logo.rgb
 
 if exist .\src\drivers\cylos1\tracksdata\*.* call .\create_dir .\runtime
 if exist .\src\drivers\cylos1\tracksdata\*.* call .\create_dir .\runtime\drivers
@@ -1144,11 +1329,19 @@ if exist .\src\drivers\damned\*.* call .\create_dir .\runtime\drivers\damned
 if exist .\src\drivers\damned\damned.xml copy .\src\drivers\damned\damned.xml .\runtime\drivers\damned\damned.xml
 if exist .\src\drivers\damned\car1.xml copy .\src\drivers\damned\car1.xml .\runtime\drivers\damned\car1.xml
 
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human\tracks
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human\tracks\b-speedway
+if exist .\src\drivers\human\tracks\b-speedway\car-porsche-gt1.xml copy .\src\drivers\human\tracks\b-speedway\car-porsche-gt1.xml .\runtime\drivers\human\tracks\b-speedway\car-porsche-gt1.xml
+
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human\tracks\dirt-1
+if exist .\src\drivers\human\tracks\dirt-1\car-pw-206wrc.xml copy .\src\drivers\human\tracks\dirt-1\car-pw-206wrc.xml .\runtime\drivers\human\tracks\dirt-1\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\dirt-1\car-torcs.xml copy .\src\drivers\human\tracks\dirt-1\car-torcs.xml .\runtime\drivers\human\tracks\dirt-1\car-torcs.xml
 
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime
@@ -1156,6 +1349,7 @@ if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drive
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human\tracks\dirt-2
+if exist .\src\drivers\human\tracks\dirt-2\car-pw-206wrc.xml copy .\src\drivers\human\tracks\dirt-2\car-pw-206wrc.xml .\runtime\drivers\human\tracks\dirt-2\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\dirt-2\car-torcs.xml copy .\src\drivers\human\tracks\dirt-2\car-torcs.xml .\runtime\drivers\human\tracks\dirt-2\car-torcs.xml
 
 if exist .\src\drivers\human\tracks\dirt-3\*.* call .\create_dir .\runtime
@@ -1199,7 +1393,6 @@ if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\dr
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human\tracks\e-track-2
-if exist .\src\drivers\human\tracks\e-track-2\car-206W10.xml copy .\src\drivers\human\tracks\e-track-2\car-206W10.xml .\runtime\drivers\human\tracks\e-track-2\car-206W10.xml
 if exist .\src\drivers\human\tracks\e-track-2\car-pw-206wrc.xml copy .\src\drivers\human\tracks\e-track-2\car-pw-206wrc.xml .\runtime\drivers\human\tracks\e-track-2\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\e-track-2\car-torcs.xml copy .\src\drivers\human\tracks\e-track-2\car-torcs.xml .\runtime\drivers\human\tracks\e-track-2\car-torcs.xml
 
@@ -1255,7 +1448,6 @@ if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\dr
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human\tracks\g-track-3
-if exist .\src\drivers\human\tracks\g-track-3\car-206W10.xml copy .\src\drivers\human\tracks\g-track-3\car-206W10.xml .\runtime\drivers\human\tracks\g-track-3\car-206W10.xml
 if exist .\src\drivers\human\tracks\g-track-3\car-pw-206wrc.xml copy .\src\drivers\human\tracks\g-track-3\car-pw-206wrc.xml .\runtime\drivers\human\tracks\g-track-3\car-pw-206wrc.xml
 
 if exist .\src\drivers\human\tracks\mixed-1\*.* call .\create_dir .\runtime
@@ -1277,7 +1469,6 @@ if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drive
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human\tracks\spring
-if exist .\src\drivers\human\tracks\spring\car-206W10.xml copy .\src\drivers\human\tracks\spring\car-206W10.xml .\runtime\drivers\human\tracks\spring\car-206W10.xml
 
 if exist .\src\drivers\human\tracks\wheel-1\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\tracks\wheel-1\*.* call .\create_dir .\runtime\drivers
@@ -1291,7 +1482,6 @@ if exist .\src\drivers\human\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\human\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\car-155-DTM.xml copy .\src\drivers\human\car-155-DTM.xml .\runtime\drivers\human\car-155-DTM.xml
-if exist .\src\drivers\human\car-206W10.xml copy .\src\drivers\human\car-206W10.xml .\runtime\drivers\human\car-206W10.xml
 if exist .\src\drivers\human\car-360-modena.xml copy .\src\drivers\human\car-360-modena.xml .\runtime\drivers\human\car-360-modena.xml
 if exist .\src\drivers\human\car-acura-nsx-sz.xml copy .\src\drivers\human\car-acura-nsx-sz.xml .\runtime\drivers\human\car-acura-nsx-sz.xml
 if exist .\src\drivers\human\car-alpha-156-rk.xml copy .\src\drivers\human\car-alpha-156-rk.xml .\runtime\drivers\human\car-alpha-156-rk.xml
@@ -1307,7 +1497,9 @@ if exist .\src\drivers\human\car-mclaren-f1.xml copy .\src\drivers\human\car-mcl
 if exist .\src\drivers\human\car-p406.xml copy .\src\drivers\human\car-p406.xml .\runtime\drivers\human\car-p406.xml
 if exist .\src\drivers\human\car-porsche-gt1.xml copy .\src\drivers\human\car-porsche-gt1.xml .\runtime\drivers\human\car-porsche-gt1.xml
 if exist .\src\drivers\human\car-porsche-gt3rs.xml copy .\src\drivers\human\car-porsche-gt3rs.xml .\runtime\drivers\human\car-porsche-gt3rs.xml
-if exist .\src\drivers\human\car-pw206wrc.xml copy .\src\drivers\human\car-pw206wrc.xml .\runtime\drivers\human\car-pw206wrc.xml
+if exist .\src\drivers\human\car-pw-206wrc.xml copy .\src\drivers\human\car-pw-206wrc.xml .\runtime\drivers\human\car-pw-206wrc.xml
+if exist .\src\drivers\human\car-pw-evovwrc-k.xml copy .\src\drivers\human\car-pw-evovwrc-k.xml .\runtime\drivers\human\car-pw-evovwrc-k.xml
+if exist .\src\drivers\human\car-pw-evovwrc.xml copy .\src\drivers\human\car-pw-evovwrc.xml .\runtime\drivers\human\car-pw-evovwrc.xml
 if exist .\src\drivers\human\car-torcs.xml copy .\src\drivers\human\car-torcs.xml .\runtime\drivers\human\car-torcs.xml
 if exist .\src\drivers\human\car-viper-gts-r.xml copy .\src\drivers\human\car-viper-gts-r.xml .\runtime\drivers\human\car-viper-gts-r.xml
 if exist .\src\drivers\human\car-vm-x2.xml copy .\src\drivers\human\car-vm-x2.xml .\runtime\drivers\human\car-vm-x2.xml
@@ -1326,6 +1518,7 @@ if exist .\src\drivers\inferno\1\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\1\tracksdata\aalborg.xml copy .\src\drivers\inferno\1\tracksdata\aalborg.xml .\runtime\drivers\inferno\1\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\1\tracksdata\alpine-1.xml copy .\src\drivers\inferno\1\tracksdata\alpine-1.xml .\runtime\drivers\inferno\1\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\a-speedway.xml copy .\src\drivers\inferno\1\tracksdata\a-speedway.xml .\runtime\drivers\inferno\1\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\b-speedway.xml copy .\src\drivers\inferno\1\tracksdata\b-speedway.xml .\runtime\drivers\inferno\1\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\1\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\1\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\1\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\1\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_eroad.xml copy .\src\drivers\inferno\1\tracksdata\car_eroad.xml .\runtime\drivers\inferno\1\tracksdata\car_eroad.xml
@@ -1335,6 +1528,7 @@ if exist .\src\drivers\inferno\1\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\1\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\1\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\1\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\1\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\1\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\1\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\1\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_michigan.xml copy .\src\drivers\inferno\1\tracksdata\car_michigan.xml .\runtime\drivers\inferno\1\tracksdata\car_michigan.xml
@@ -1342,13 +1536,18 @@ if exist .\src\drivers\inferno\1\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\1\tracksdata\car_test-1.xml copy .\src\drivers\inferno\1\tracksdata\car_test-1.xml .\runtime\drivers\inferno\1\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\1\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\1\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\city-1.xml copy .\src\drivers\inferno\1\tracksdata\city-1.xml .\runtime\drivers\inferno\1\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\1\tracksdata\c-speedway.xml copy .\src\drivers\inferno\1\tracksdata\c-speedway.xml .\runtime\drivers\inferno\1\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\d-speedway.xml copy .\src\drivers\inferno\1\tracksdata\d-speedway.xml .\runtime\drivers\inferno\1\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\eroad.xml copy .\src\drivers\inferno\1\tracksdata\eroad.xml .\runtime\drivers\inferno\1\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\1\tracksdata\e-speedway.xml copy .\src\drivers\inferno\1\tracksdata\e-speedway.xml .\runtime\drivers\inferno\1\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-1.xml copy .\src\drivers\inferno\1\tracksdata\e-track-1.xml .\runtime\drivers\inferno\1\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-2.xml copy .\src\drivers\inferno\1\tracksdata\e-track-2.xml .\runtime\drivers\inferno\1\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-3.xml copy .\src\drivers\inferno\1\tracksdata\e-track-3.xml .\runtime\drivers\inferno\1\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-4.xml copy .\src\drivers\inferno\1\tracksdata\e-track-4.xml .\runtime\drivers\inferno\1\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-5.xml copy .\src\drivers\inferno\1\tracksdata\e-track-5.xml .\runtime\drivers\inferno\1\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-6.xml copy .\src\drivers\inferno\1\tracksdata\e-track-6.xml .\runtime\drivers\inferno\1\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\1\tracksdata\f-speedway.xml copy .\src\drivers\inferno\1\tracksdata\f-speedway.xml .\runtime\drivers\inferno\1\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\g-speedway.xml copy .\src\drivers\inferno\1\tracksdata\g-speedway.xml .\runtime\drivers\inferno\1\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\g-track-1.xml copy .\src\drivers\inferno\1\tracksdata\g-track-1.xml .\runtime\drivers\inferno\1\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\g-track-2.xml copy .\src\drivers\inferno\1\tracksdata\g-track-2.xml .\runtime\drivers\inferno\1\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\michigan.xml copy .\src\drivers\inferno\1\tracksdata\michigan.xml .\runtime\drivers\inferno\1\tracksdata\michigan.xml
@@ -1372,18 +1571,25 @@ if exist .\src\drivers\inferno\10\tracksdata\*.* call .\create_dir .\runtime\dri
 if exist .\src\drivers\inferno\10\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\10\tracksdata
 if exist .\src\drivers\inferno\10\tracksdata\aalborg.xml copy .\src\drivers\inferno\10\tracksdata\aalborg.xml .\runtime\drivers\inferno\10\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\10\tracksdata\a-speedway.xml copy .\src\drivers\inferno\10\tracksdata\a-speedway.xml .\runtime\drivers\inferno\10\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\b-speedway.xml copy .\src\drivers\inferno\10\tracksdata\b-speedway.xml .\runtime\drivers\inferno\10\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\10\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\10\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\10\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\10\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\10\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\10\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\10\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\10\tracksdata\c-speedway.xml copy .\src\drivers\inferno\10\tracksdata\c-speedway.xml .\runtime\drivers\inferno\10\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\d-speedway.xml copy .\src\drivers\inferno\10\tracksdata\d-speedway.xml .\runtime\drivers\inferno\10\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\eroad.xml copy .\src\drivers\inferno\10\tracksdata\eroad.xml .\runtime\drivers\inferno\10\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\10\tracksdata\e-speedway.xml copy .\src\drivers\inferno\10\tracksdata\e-speedway.xml .\runtime\drivers\inferno\10\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-1.xml copy .\src\drivers\inferno\10\tracksdata\e-track-1.xml .\runtime\drivers\inferno\10\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-2.xml copy .\src\drivers\inferno\10\tracksdata\e-track-2.xml .\runtime\drivers\inferno\10\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-3.xml copy .\src\drivers\inferno\10\tracksdata\e-track-3.xml .\runtime\drivers\inferno\10\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-4.xml copy .\src\drivers\inferno\10\tracksdata\e-track-4.xml .\runtime\drivers\inferno\10\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-5.xml copy .\src\drivers\inferno\10\tracksdata\e-track-5.xml .\runtime\drivers\inferno\10\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-6.xml copy .\src\drivers\inferno\10\tracksdata\e-track-6.xml .\runtime\drivers\inferno\10\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\10\tracksdata\f-speedway.xml copy .\src\drivers\inferno\10\tracksdata\f-speedway.xml .\runtime\drivers\inferno\10\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\g-speedway.xml copy .\src\drivers\inferno\10\tracksdata\g-speedway.xml .\runtime\drivers\inferno\10\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\g-track-1.xml copy .\src\drivers\inferno\10\tracksdata\g-track-1.xml .\runtime\drivers\inferno\10\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\g-track-2.xml copy .\src\drivers\inferno\10\tracksdata\g-track-2.xml .\runtime\drivers\inferno\10\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\michigan.xml copy .\src\drivers\inferno\10\tracksdata\michigan.xml .\runtime\drivers\inferno\10\tracksdata\michigan.xml
@@ -1406,6 +1612,7 @@ if exist .\src\drivers\inferno\2\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\2\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\2\tracksdata
 if exist .\src\drivers\inferno\2\tracksdata\aalborg.xml copy .\src\drivers\inferno\2\tracksdata\aalborg.xml .\runtime\drivers\inferno\2\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\2\tracksdata\a-speedway.xml copy .\src\drivers\inferno\2\tracksdata\a-speedway.xml .\runtime\drivers\inferno\2\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\b-speedway.xml copy .\src\drivers\inferno\2\tracksdata\b-speedway.xml .\runtime\drivers\inferno\2\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\2\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\2\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\2\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\2\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_eroad.xml copy .\src\drivers\inferno\2\tracksdata\car_eroad.xml .\runtime\drivers\inferno\2\tracksdata\car_eroad.xml
@@ -1415,19 +1622,25 @@ if exist .\src\drivers\inferno\2\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\2\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\2\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\2\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\2\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\2\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\2\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\2\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_michigan.xml copy .\src\drivers\inferno\2\tracksdata\car_michigan.xml .\runtime\drivers\inferno\2\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_s2.xml copy .\src\drivers\inferno\2\tracksdata\car_s2.xml .\runtime\drivers\inferno\2\tracksdata\car_s2.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_test-1.xml copy .\src\drivers\inferno\2\tracksdata\car_test-1.xml .\runtime\drivers\inferno\2\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\2\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\2\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\2\tracksdata\c-speedway.xml copy .\src\drivers\inferno\2\tracksdata\c-speedway.xml .\runtime\drivers\inferno\2\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\d-speedway.xml copy .\src\drivers\inferno\2\tracksdata\d-speedway.xml .\runtime\drivers\inferno\2\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\eroad.xml copy .\src\drivers\inferno\2\tracksdata\eroad.xml .\runtime\drivers\inferno\2\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\2\tracksdata\e-speedway.xml copy .\src\drivers\inferno\2\tracksdata\e-speedway.xml .\runtime\drivers\inferno\2\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-1.xml copy .\src\drivers\inferno\2\tracksdata\e-track-1.xml .\runtime\drivers\inferno\2\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-2.xml copy .\src\drivers\inferno\2\tracksdata\e-track-2.xml .\runtime\drivers\inferno\2\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-3.xml copy .\src\drivers\inferno\2\tracksdata\e-track-3.xml .\runtime\drivers\inferno\2\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-4.xml copy .\src\drivers\inferno\2\tracksdata\e-track-4.xml .\runtime\drivers\inferno\2\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-5.xml copy .\src\drivers\inferno\2\tracksdata\e-track-5.xml .\runtime\drivers\inferno\2\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-6.xml copy .\src\drivers\inferno\2\tracksdata\e-track-6.xml .\runtime\drivers\inferno\2\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\2\tracksdata\f-speedway.xml copy .\src\drivers\inferno\2\tracksdata\f-speedway.xml .\runtime\drivers\inferno\2\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\g-speedway.xml copy .\src\drivers\inferno\2\tracksdata\g-speedway.xml .\runtime\drivers\inferno\2\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\g-track-1.xml copy .\src\drivers\inferno\2\tracksdata\g-track-1.xml .\runtime\drivers\inferno\2\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\g-track-2.xml copy .\src\drivers\inferno\2\tracksdata\g-track-2.xml .\runtime\drivers\inferno\2\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\michigan.xml copy .\src\drivers\inferno\2\tracksdata\michigan.xml .\runtime\drivers\inferno\2\tracksdata\michigan.xml
@@ -1453,30 +1666,44 @@ if exist .\src\drivers\inferno\3\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\3\tracksdata\aalborg.xml copy .\src\drivers\inferno\3\tracksdata\aalborg.xml .\runtime\drivers\inferno\3\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\3\tracksdata\alpine-1.xml copy .\src\drivers\inferno\3\tracksdata\alpine-1.xml .\runtime\drivers\inferno\3\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\a-speedway.xml copy .\src\drivers\inferno\3\tracksdata\a-speedway.xml .\runtime\drivers\inferno\3\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\b-speedway.xml copy .\src\drivers\inferno\3\tracksdata\b-speedway.xml .\runtime\drivers\inferno\3\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\3\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\3\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_alpine-1.xml copy .\src\drivers\inferno\3\tracksdata\car_alpine-1.xml .\runtime\drivers\inferno\3\tracksdata\car_alpine-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_a-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_b-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_b-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_b-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_c-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_c-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_c-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_d-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_d-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_d-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_eroad.xml copy .\src\drivers\inferno\3\tracksdata\car_eroad.xml .\runtime\drivers\inferno\3\tracksdata\car_eroad.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_e-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_e-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_e-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-1.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-1.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-3.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-3.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-3.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_f-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_f-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_f-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\3\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\3\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\3\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\3\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_h-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_h-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_h-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_michigan.xml copy .\src\drivers\inferno\3\tracksdata\car_michigan.xml .\runtime\drivers\inferno\3\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_spring.xml copy .\src\drivers\inferno\3\tracksdata\car_spring.xml .\runtime\drivers\inferno\3\tracksdata\car_spring.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\3\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\3\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\3\tracksdata\c-speedway.xml copy .\src\drivers\inferno\3\tracksdata\c-speedway.xml .\runtime\drivers\inferno\3\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\d-speedway.xml copy .\src\drivers\inferno\3\tracksdata\d-speedway.xml .\runtime\drivers\inferno\3\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\eroad.xml copy .\src\drivers\inferno\3\tracksdata\eroad.xml .\runtime\drivers\inferno\3\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\3\tracksdata\e-speedway.xml copy .\src\drivers\inferno\3\tracksdata\e-speedway.xml .\runtime\drivers\inferno\3\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-1.xml copy .\src\drivers\inferno\3\tracksdata\e-track-1.xml .\runtime\drivers\inferno\3\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-2.xml copy .\src\drivers\inferno\3\tracksdata\e-track-2.xml .\runtime\drivers\inferno\3\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-3.xml copy .\src\drivers\inferno\3\tracksdata\e-track-3.xml .\runtime\drivers\inferno\3\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-4.xml copy .\src\drivers\inferno\3\tracksdata\e-track-4.xml .\runtime\drivers\inferno\3\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-5.xml copy .\src\drivers\inferno\3\tracksdata\e-track-5.xml .\runtime\drivers\inferno\3\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-6.xml copy .\src\drivers\inferno\3\tracksdata\e-track-6.xml .\runtime\drivers\inferno\3\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\3\tracksdata\f-speedway.xml copy .\src\drivers\inferno\3\tracksdata\f-speedway.xml .\runtime\drivers\inferno\3\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\g-speedway.xml copy .\src\drivers\inferno\3\tracksdata\g-speedway.xml .\runtime\drivers\inferno\3\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\g-track-1.xml copy .\src\drivers\inferno\3\tracksdata\g-track-1.xml .\runtime\drivers\inferno\3\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\g-track-2.xml copy .\src\drivers\inferno\3\tracksdata\g-track-2.xml .\runtime\drivers\inferno\3\tracksdata\g-track-2.xml
+if exist .\src\drivers\inferno\3\tracksdata\h-speedway.xml copy .\src\drivers\inferno\3\tracksdata\h-speedway.xml .\runtime\drivers\inferno\3\tracksdata\h-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\michigan.xml copy .\src\drivers\inferno\3\tracksdata\michigan.xml .\runtime\drivers\inferno\3\tracksdata\michigan.xml
 if exist .\src\drivers\inferno\3\tracksdata\spring.xml copy .\src\drivers\inferno\3\tracksdata\spring.xml .\runtime\drivers\inferno\3\tracksdata\spring.xml
 if exist .\src\drivers\inferno\3\tracksdata\wheel-1.xml copy .\src\drivers\inferno\3\tracksdata\wheel-1.xml .\runtime\drivers\inferno\3\tracksdata\wheel-1.xml
@@ -1499,6 +1726,7 @@ if exist .\src\drivers\inferno\4\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\4\tracksdata\aalborg.xml copy .\src\drivers\inferno\4\tracksdata\aalborg.xml .\runtime\drivers\inferno\4\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\4\tracksdata\alpine-1.xml copy .\src\drivers\inferno\4\tracksdata\alpine-1.xml .\runtime\drivers\inferno\4\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\a-speedway.xml copy .\src\drivers\inferno\4\tracksdata\a-speedway.xml .\runtime\drivers\inferno\4\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\4\tracksdata\b-speedway.xml copy .\src\drivers\inferno\4\tracksdata\b-speedway.xml .\runtime\drivers\inferno\4\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\4\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\4\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\4\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\4\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_eroad.xml copy .\src\drivers\inferno\4\tracksdata\car_eroad.xml .\runtime\drivers\inferno\4\tracksdata\car_eroad.xml
@@ -1508,20 +1736,26 @@ if exist .\src\drivers\inferno\4\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\4\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\4\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\4\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_michigan.xml copy .\src\drivers\inferno\4\tracksdata\car_michigan.xml .\runtime\drivers\inferno\4\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_test-1.xml copy .\src\drivers\inferno\4\tracksdata\car_test-1.xml .\runtime\drivers\inferno\4\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\4\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\4\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\4\tracksdata\c-speedway.xml copy .\src\drivers\inferno\4\tracksdata\c-speedway.xml .\runtime\drivers\inferno\4\tracksdata\c-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\dirt-2.xml copy .\src\drivers\inferno\4\tracksdata\dirt-2.xml .\runtime\drivers\inferno\4\tracksdata\dirt-2.xml
+if exist .\src\drivers\inferno\4\tracksdata\d-speedway.xml copy .\src\drivers\inferno\4\tracksdata\d-speedway.xml .\runtime\drivers\inferno\4\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\eroad.xml copy .\src\drivers\inferno\4\tracksdata\eroad.xml .\runtime\drivers\inferno\4\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\4\tracksdata\e-speedway.xml copy .\src\drivers\inferno\4\tracksdata\e-speedway.xml .\runtime\drivers\inferno\4\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-1.xml copy .\src\drivers\inferno\4\tracksdata\e-track-1.xml .\runtime\drivers\inferno\4\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-2.xml copy .\src\drivers\inferno\4\tracksdata\e-track-2.xml .\runtime\drivers\inferno\4\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-3.xml copy .\src\drivers\inferno\4\tracksdata\e-track-3.xml .\runtime\drivers\inferno\4\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-4.xml copy .\src\drivers\inferno\4\tracksdata\e-track-4.xml .\runtime\drivers\inferno\4\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-5.xml copy .\src\drivers\inferno\4\tracksdata\e-track-5.xml .\runtime\drivers\inferno\4\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-6.xml copy .\src\drivers\inferno\4\tracksdata\e-track-6.xml .\runtime\drivers\inferno\4\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\4\tracksdata\f-speedway.xml copy .\src\drivers\inferno\4\tracksdata\f-speedway.xml .\runtime\drivers\inferno\4\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\4\tracksdata\g-speedway.xml copy .\src\drivers\inferno\4\tracksdata\g-speedway.xml .\runtime\drivers\inferno\4\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-1.xml copy .\src\drivers\inferno\4\tracksdata\g-track-1.xml .\runtime\drivers\inferno\4\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-2.xml copy .\src\drivers\inferno\4\tracksdata\g-track-2.xml .\runtime\drivers\inferno\4\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-3.xml copy .\src\drivers\inferno\4\tracksdata\g-track-3.xml .\runtime\drivers\inferno\4\tracksdata\g-track-3.xml
@@ -1545,18 +1779,25 @@ if exist .\src\drivers\inferno\5\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\5\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\5\tracksdata
 if exist .\src\drivers\inferno\5\tracksdata\aalborg.xml copy .\src\drivers\inferno\5\tracksdata\aalborg.xml .\runtime\drivers\inferno\5\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\5\tracksdata\a-speedway.xml copy .\src\drivers\inferno\5\tracksdata\a-speedway.xml .\runtime\drivers\inferno\5\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\b-speedway.xml copy .\src\drivers\inferno\5\tracksdata\b-speedway.xml .\runtime\drivers\inferno\5\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\5\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\5\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\5\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\5\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\5\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\5\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\5\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\5\tracksdata\c-speedway.xml copy .\src\drivers\inferno\5\tracksdata\c-speedway.xml .\runtime\drivers\inferno\5\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\d-speedway.xml copy .\src\drivers\inferno\5\tracksdata\d-speedway.xml .\runtime\drivers\inferno\5\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\eroad.xml copy .\src\drivers\inferno\5\tracksdata\eroad.xml .\runtime\drivers\inferno\5\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\5\tracksdata\e-speedway.xml copy .\src\drivers\inferno\5\tracksdata\e-speedway.xml .\runtime\drivers\inferno\5\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-1.xml copy .\src\drivers\inferno\5\tracksdata\e-track-1.xml .\runtime\drivers\inferno\5\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-2.xml copy .\src\drivers\inferno\5\tracksdata\e-track-2.xml .\runtime\drivers\inferno\5\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-3.xml copy .\src\drivers\inferno\5\tracksdata\e-track-3.xml .\runtime\drivers\inferno\5\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-4.xml copy .\src\drivers\inferno\5\tracksdata\e-track-4.xml .\runtime\drivers\inferno\5\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-5.xml copy .\src\drivers\inferno\5\tracksdata\e-track-5.xml .\runtime\drivers\inferno\5\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-6.xml copy .\src\drivers\inferno\5\tracksdata\e-track-6.xml .\runtime\drivers\inferno\5\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\5\tracksdata\f-speedway.xml copy .\src\drivers\inferno\5\tracksdata\f-speedway.xml .\runtime\drivers\inferno\5\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\g-speedway.xml copy .\src\drivers\inferno\5\tracksdata\g-speedway.xml .\runtime\drivers\inferno\5\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\g-track-1.xml copy .\src\drivers\inferno\5\tracksdata\g-track-1.xml .\runtime\drivers\inferno\5\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\g-track-2.xml copy .\src\drivers\inferno\5\tracksdata\g-track-2.xml .\runtime\drivers\inferno\5\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\michigan.xml copy .\src\drivers\inferno\5\tracksdata\michigan.xml .\runtime\drivers\inferno\5\tracksdata\michigan.xml
@@ -1579,20 +1820,33 @@ if exist .\src\drivers\inferno\6\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\6\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\6\tracksdata
 if exist .\src\drivers\inferno\6\tracksdata\aalborg.xml copy .\src\drivers\inferno\6\tracksdata\aalborg.xml .\runtime\drivers\inferno\6\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\6\tracksdata\a-speedway.xml copy .\src\drivers\inferno\6\tracksdata\a-speedway.xml .\runtime\drivers\inferno\6\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\b-speedway.xml copy .\src\drivers\inferno\6\tracksdata\b-speedway.xml .\runtime\drivers\inferno\6\tracksdata\b-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_b-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_b-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_b-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_c-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_c-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_c-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_d-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_d-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_d-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_e-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_e-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_e-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_f-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_f-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_f-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-3.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_michigan.xml copy .\src\drivers\inferno\6\tracksdata\car_michigan.xml .\runtime\drivers\inferno\6\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\6\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\6\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\6\tracksdata\c-speedway.xml copy .\src\drivers\inferno\6\tracksdata\c-speedway.xml .\runtime\drivers\inferno\6\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\d-speedway.xml copy .\src\drivers\inferno\6\tracksdata\d-speedway.xml .\runtime\drivers\inferno\6\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\eroad.xml copy .\src\drivers\inferno\6\tracksdata\eroad.xml .\runtime\drivers\inferno\6\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\6\tracksdata\e-speedway.xml copy .\src\drivers\inferno\6\tracksdata\e-speedway.xml .\runtime\drivers\inferno\6\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-1.xml copy .\src\drivers\inferno\6\tracksdata\e-track-1.xml .\runtime\drivers\inferno\6\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\e-track-2.xml .\runtime\drivers\inferno\6\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-3.xml copy .\src\drivers\inferno\6\tracksdata\e-track-3.xml .\runtime\drivers\inferno\6\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\e-track-4.xml .\runtime\drivers\inferno\6\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-5.xml copy .\src\drivers\inferno\6\tracksdata\e-track-5.xml .\runtime\drivers\inferno\6\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\e-track-6.xml .\runtime\drivers\inferno\6\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\6\tracksdata\f-speedway.xml copy .\src\drivers\inferno\6\tracksdata\f-speedway.xml .\runtime\drivers\inferno\6\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\g-speedway.xml copy .\src\drivers\inferno\6\tracksdata\g-speedway.xml .\runtime\drivers\inferno\6\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\g-track-1.xml .\runtime\drivers\inferno\6\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\g-track-2.xml .\runtime\drivers\inferno\6\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\g-track-3.xml .\runtime\drivers\inferno\6\tracksdata\g-track-3.xml
@@ -1617,6 +1871,7 @@ if exist .\src\drivers\inferno\7\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\7\tracksdata\aalborg.xml copy .\src\drivers\inferno\7\tracksdata\aalborg.xml .\runtime\drivers\inferno\7\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\7\tracksdata\alpine-1.xml copy .\src\drivers\inferno\7\tracksdata\alpine-1.xml .\runtime\drivers\inferno\7\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\a-speedway.xml copy .\src\drivers\inferno\7\tracksdata\a-speedway.xml .\runtime\drivers\inferno\7\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\b-speedway.xml copy .\src\drivers\inferno\7\tracksdata\b-speedway.xml .\runtime\drivers\inferno\7\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\7\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\7\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\7\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\7\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_eroad.xml copy .\src\drivers\inferno\7\tracksdata\car_eroad.xml .\runtime\drivers\inferno\7\tracksdata\car_eroad.xml
@@ -1626,6 +1881,7 @@ if exist .\src\drivers\inferno\7\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\7\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\7\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\7\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\7\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\7\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\7\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\7\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_michigan.xml copy .\src\drivers\inferno\7\tracksdata\car_michigan.xml .\runtime\drivers\inferno\7\tracksdata\car_michigan.xml
@@ -1633,13 +1889,18 @@ if exist .\src\drivers\inferno\7\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\7\tracksdata\car_test-1.xml copy .\src\drivers\inferno\7\tracksdata\car_test-1.xml .\runtime\drivers\inferno\7\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\7\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\7\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\city-1.xml copy .\src\drivers\inferno\7\tracksdata\city-1.xml .\runtime\drivers\inferno\7\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\7\tracksdata\c-speedway.xml copy .\src\drivers\inferno\7\tracksdata\c-speedway.xml .\runtime\drivers\inferno\7\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\d-speedway.xml copy .\src\drivers\inferno\7\tracksdata\d-speedway.xml .\runtime\drivers\inferno\7\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\eroad.xml copy .\src\drivers\inferno\7\tracksdata\eroad.xml .\runtime\drivers\inferno\7\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\7\tracksdata\e-speedway.xml copy .\src\drivers\inferno\7\tracksdata\e-speedway.xml .\runtime\drivers\inferno\7\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-1.xml copy .\src\drivers\inferno\7\tracksdata\e-track-1.xml .\runtime\drivers\inferno\7\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-2.xml copy .\src\drivers\inferno\7\tracksdata\e-track-2.xml .\runtime\drivers\inferno\7\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-3.xml copy .\src\drivers\inferno\7\tracksdata\e-track-3.xml .\runtime\drivers\inferno\7\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-4.xml copy .\src\drivers\inferno\7\tracksdata\e-track-4.xml .\runtime\drivers\inferno\7\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-5.xml copy .\src\drivers\inferno\7\tracksdata\e-track-5.xml .\runtime\drivers\inferno\7\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-6.xml copy .\src\drivers\inferno\7\tracksdata\e-track-6.xml .\runtime\drivers\inferno\7\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\7\tracksdata\f-speedway.xml copy .\src\drivers\inferno\7\tracksdata\f-speedway.xml .\runtime\drivers\inferno\7\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\g-speedway.xml copy .\src\drivers\inferno\7\tracksdata\g-speedway.xml .\runtime\drivers\inferno\7\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\g-track-1.xml copy .\src\drivers\inferno\7\tracksdata\g-track-1.xml .\runtime\drivers\inferno\7\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\g-track-2.xml copy .\src\drivers\inferno\7\tracksdata\g-track-2.xml .\runtime\drivers\inferno\7\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\michigan.xml copy .\src\drivers\inferno\7\tracksdata\michigan.xml .\runtime\drivers\inferno\7\tracksdata\michigan.xml
@@ -1664,6 +1925,7 @@ if exist .\src\drivers\inferno\8\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\8\tracksdata\aalborg.xml copy .\src\drivers\inferno\8\tracksdata\aalborg.xml .\runtime\drivers\inferno\8\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\8\tracksdata\alpine-1.xml copy .\src\drivers\inferno\8\tracksdata\alpine-1.xml .\runtime\drivers\inferno\8\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\a-speedway.xml copy .\src\drivers\inferno\8\tracksdata\a-speedway.xml .\runtime\drivers\inferno\8\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\b-speedway.xml copy .\src\drivers\inferno\8\tracksdata\b-speedway.xml .\runtime\drivers\inferno\8\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-1.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-1.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-2.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-2.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-3.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-3.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-3.xml
@@ -1673,13 +1935,18 @@ if exist .\src\drivers\inferno\8\tracksdata\car_dirt-6.xml copy .\src\drivers\in
 if exist .\src\drivers\inferno\8\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\8\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\8\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_mixed-1.xml copy .\src\drivers\inferno\8\tracksdata\car_mixed-1.xml .\runtime\drivers\inferno\8\tracksdata\car_mixed-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_mixed-2.xml copy .\src\drivers\inferno\8\tracksdata\car_mixed-2.xml .\runtime\drivers\inferno\8\tracksdata\car_mixed-2.xml
+if exist .\src\drivers\inferno\8\tracksdata\c-speedway.xml copy .\src\drivers\inferno\8\tracksdata\c-speedway.xml .\runtime\drivers\inferno\8\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\d-speedway.xml copy .\src\drivers\inferno\8\tracksdata\d-speedway.xml .\runtime\drivers\inferno\8\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\eroad.xml copy .\src\drivers\inferno\8\tracksdata\eroad.xml .\runtime\drivers\inferno\8\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\8\tracksdata\e-speedway.xml copy .\src\drivers\inferno\8\tracksdata\e-speedway.xml .\runtime\drivers\inferno\8\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-1.xml copy .\src\drivers\inferno\8\tracksdata\e-track-1.xml .\runtime\drivers\inferno\8\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-2.xml copy .\src\drivers\inferno\8\tracksdata\e-track-2.xml .\runtime\drivers\inferno\8\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-3.xml copy .\src\drivers\inferno\8\tracksdata\e-track-3.xml .\runtime\drivers\inferno\8\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-4.xml copy .\src\drivers\inferno\8\tracksdata\e-track-4.xml .\runtime\drivers\inferno\8\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-5.xml copy .\src\drivers\inferno\8\tracksdata\e-track-5.xml .\runtime\drivers\inferno\8\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-6.xml copy .\src\drivers\inferno\8\tracksdata\e-track-6.xml .\runtime\drivers\inferno\8\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\8\tracksdata\f-speedway.xml copy .\src\drivers\inferno\8\tracksdata\f-speedway.xml .\runtime\drivers\inferno\8\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\g-speedway.xml copy .\src\drivers\inferno\8\tracksdata\g-speedway.xml .\runtime\drivers\inferno\8\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-1.xml copy .\src\drivers\inferno\8\tracksdata\g-track-1.xml .\runtime\drivers\inferno\8\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-2.xml copy .\src\drivers\inferno\8\tracksdata\g-track-2.xml .\runtime\drivers\inferno\8\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-3.xml copy .\src\drivers\inferno\8\tracksdata\g-track-3.xml .\runtime\drivers\inferno\8\tracksdata\g-track-3.xml
@@ -1705,6 +1972,7 @@ if exist .\src\drivers\inferno\9\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\9\tracksdata\aalborg.xml copy .\src\drivers\inferno\9\tracksdata\aalborg.xml .\runtime\drivers\inferno\9\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\9\tracksdata\alpine-1.xml copy .\src\drivers\inferno\9\tracksdata\alpine-1.xml .\runtime\drivers\inferno\9\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\a-speedway.xml copy .\src\drivers\inferno\9\tracksdata\a-speedway.xml .\runtime\drivers\inferno\9\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\b-speedway.xml copy .\src\drivers\inferno\9\tracksdata\b-speedway.xml .\runtime\drivers\inferno\9\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\9\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\9\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\9\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\9\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_eroad.xml copy .\src\drivers\inferno\9\tracksdata\car_eroad.xml .\runtime\drivers\inferno\9\tracksdata\car_eroad.xml
@@ -1714,6 +1982,7 @@ if exist .\src\drivers\inferno\9\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\9\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\9\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\9\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\9\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\9\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\9\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\9\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_michigan.xml copy .\src\drivers\inferno\9\tracksdata\car_michigan.xml .\runtime\drivers\inferno\9\tracksdata\car_michigan.xml
@@ -1721,13 +1990,18 @@ if exist .\src\drivers\inferno\9\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\9\tracksdata\car_test-1.xml copy .\src\drivers\inferno\9\tracksdata\car_test-1.xml .\runtime\drivers\inferno\9\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\9\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\9\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\city-1.xml copy .\src\drivers\inferno\9\tracksdata\city-1.xml .\runtime\drivers\inferno\9\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\9\tracksdata\c-speedway.xml copy .\src\drivers\inferno\9\tracksdata\c-speedway.xml .\runtime\drivers\inferno\9\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\d-speedway.xml copy .\src\drivers\inferno\9\tracksdata\d-speedway.xml .\runtime\drivers\inferno\9\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\eroad.xml copy .\src\drivers\inferno\9\tracksdata\eroad.xml .\runtime\drivers\inferno\9\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\9\tracksdata\e-speedway.xml copy .\src\drivers\inferno\9\tracksdata\e-speedway.xml .\runtime\drivers\inferno\9\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-1.xml copy .\src\drivers\inferno\9\tracksdata\e-track-1.xml .\runtime\drivers\inferno\9\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-2.xml copy .\src\drivers\inferno\9\tracksdata\e-track-2.xml .\runtime\drivers\inferno\9\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-3.xml copy .\src\drivers\inferno\9\tracksdata\e-track-3.xml .\runtime\drivers\inferno\9\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-4.xml copy .\src\drivers\inferno\9\tracksdata\e-track-4.xml .\runtime\drivers\inferno\9\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-5.xml copy .\src\drivers\inferno\9\tracksdata\e-track-5.xml .\runtime\drivers\inferno\9\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-6.xml copy .\src\drivers\inferno\9\tracksdata\e-track-6.xml .\runtime\drivers\inferno\9\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\9\tracksdata\f-speedway.xml copy .\src\drivers\inferno\9\tracksdata\f-speedway.xml .\runtime\drivers\inferno\9\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\g-speedway.xml copy .\src\drivers\inferno\9\tracksdata\g-speedway.xml .\runtime\drivers\inferno\9\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\g-track-1.xml copy .\src\drivers\inferno\9\tracksdata\g-track-1.xml .\runtime\drivers\inferno\9\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\g-track-2.xml copy .\src\drivers\inferno\9\tracksdata\g-track-2.xml .\runtime\drivers\inferno\9\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\michigan.xml copy .\src\drivers\inferno\9\tracksdata\michigan.xml .\runtime\drivers\inferno\9\tracksdata\michigan.xml
@@ -2985,6 +3259,75 @@ if exist .\src\drivers\berniw2\parameter.dat copy .\src\drivers\berniw2\paramete
 if exist .\src\drivers\berniw2\intsinsqr.dat copy .\src\drivers\berniw2\intsinsqr.dat .\runtime\drivers\berniw2\intsinsqr.dat
 if exist .\src\drivers\berniw2\intcossqr.dat copy .\src\drivers\berniw2\intcossqr.dat .\runtime\drivers\berniw2\intcossqr.dat
 
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\1\*.* call .\create_dir .\runtime\drivers\berniw3\1
+if exist .\src\drivers\berniw3\1\default.xml copy .\src\drivers\berniw3\1\default.xml .\runtime\drivers\berniw3\1\default.xml
+
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\10\*.* call .\create_dir .\runtime\drivers\berniw3\10
+if exist .\src\drivers\berniw3\10\default.xml copy .\src\drivers\berniw3\10\default.xml .\runtime\drivers\berniw3\10\default.xml
+
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\2\*.* call .\create_dir .\runtime\drivers\berniw3\2
+if exist .\src\drivers\berniw3\2\default.xml copy .\src\drivers\berniw3\2\default.xml .\runtime\drivers\berniw3\2\default.xml
+
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\3\*.* call .\create_dir .\runtime\drivers\berniw3\3
+if exist .\src\drivers\berniw3\3\default.xml copy .\src\drivers\berniw3\3\default.xml .\runtime\drivers\berniw3\3\default.xml
+
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\4\*.* call .\create_dir .\runtime\drivers\berniw3\4
+if exist .\src\drivers\berniw3\4\default.xml copy .\src\drivers\berniw3\4\default.xml .\runtime\drivers\berniw3\4\default.xml
+
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\5\*.* call .\create_dir .\runtime\drivers\berniw3\5
+if exist .\src\drivers\berniw3\5\default.xml copy .\src\drivers\berniw3\5\default.xml .\runtime\drivers\berniw3\5\default.xml
+
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\6\*.* call .\create_dir .\runtime\drivers\berniw3\6
+if exist .\src\drivers\berniw3\6\default.xml copy .\src\drivers\berniw3\6\default.xml .\runtime\drivers\berniw3\6\default.xml
+
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\7\*.* call .\create_dir .\runtime\drivers\berniw3\7
+if exist .\src\drivers\berniw3\7\default.xml copy .\src\drivers\berniw3\7\default.xml .\runtime\drivers\berniw3\7\default.xml
+
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\8\*.* call .\create_dir .\runtime\drivers\berniw3\8
+if exist .\src\drivers\berniw3\8\default.xml copy .\src\drivers\berniw3\8\default.xml .\runtime\drivers\berniw3\8\default.xml
+
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\9\*.* call .\create_dir .\runtime\drivers\berniw3\9
+if exist .\src\drivers\berniw3\9\default.xml copy .\src\drivers\berniw3\9\default.xml .\runtime\drivers\berniw3\9\default.xml
+
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\berniw3\*.* call .\create_dir .\runtime\drivers\berniw3
+if exist .\src\drivers\berniw3\berniw3.xml copy .\src\drivers\berniw3\berniw3.xml .\runtime\drivers\berniw3\berniw3.xml
+if exist .\src\drivers\berniw3\logo.rgb copy .\src\drivers\berniw3\logo.rgb .\runtime\drivers\berniw3\logo.rgb
+if exist .\src\drivers\berniw3\parameter.dat copy .\src\drivers\berniw3\parameter.dat .\runtime\drivers\berniw3\parameter.dat
+if exist .\src\drivers\berniw3\intsinsqr.dat copy .\src\drivers\berniw3\intsinsqr.dat .\runtime\drivers\berniw3\intsinsqr.dat
+if exist .\src\drivers\berniw3\intcossqr.dat copy .\src\drivers\berniw3\intcossqr.dat .\runtime\drivers\berniw3\intcossqr.dat
+
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\billy\0\practice\*.* call .\create_dir .\runtime\drivers\billy
@@ -3018,6 +3361,122 @@ if exist .\src\drivers\billy\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\billy\*.* call .\create_dir .\runtime\drivers\billy
 if exist .\src\drivers\billy\billy.xml copy .\src\drivers\billy\billy.xml .\runtime\drivers\billy\billy.xml
 if exist .\src\drivers\billy\logo.rgb copy .\src\drivers\billy\logo.rgb .\runtime\drivers\billy\logo.rgb
+
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\runtime\drivers\bt\0\practice
+if exist .\src\drivers\bt\0\practice\g-track-3.xml copy .\src\drivers\bt\0\practice\g-track-3.xml .\runtime\drivers\bt\0\practice\g-track-3.xml
+if exist .\src\drivers\bt\0\practice\michigan.xml copy .\src\drivers\bt\0\practice\michigan.xml .\runtime\drivers\bt\0\practice\michigan.xml
+if exist .\src\drivers\bt\0\practice\wheel-1.xml copy .\src\drivers\bt\0\practice\wheel-1.xml .\runtime\drivers\bt\0\practice\wheel-1.xml
+
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\runtime\drivers\bt\0\qualifying
+if exist .\src\drivers\bt\0\qualifying\g-track-3.xml copy .\src\drivers\bt\0\qualifying\g-track-3.xml .\runtime\drivers\bt\0\qualifying\g-track-3.xml
+
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\runtime\drivers\bt\0\race
+if exist .\src\drivers\bt\0\race\g-track-3.xml copy .\src\drivers\bt\0\race\g-track-3.xml .\runtime\drivers\bt\0\race\g-track-3.xml
+if exist .\src\drivers\bt\0\race\wheel-1.xml copy .\src\drivers\bt\0\race\wheel-1.xml .\runtime\drivers\bt\0\race\wheel-1.xml
+
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\0\*.* call .\create_dir .\runtime\drivers\bt\0
+if exist .\src\drivers\bt\0\default.xml copy .\src\drivers\bt\0\default.xml .\runtime\drivers\bt\0\default.xml
+if exist .\src\drivers\bt\0\cg-nascar-rwd.rgb copy .\src\drivers\bt\0\cg-nascar-rwd.rgb .\runtime\drivers\bt\0\cg-nascar-rwd.rgb
+
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\runtime\drivers\bt\1\practice
+if exist .\src\drivers\bt\1\practice\g-track-3.xml copy .\src\drivers\bt\1\practice\g-track-3.xml .\runtime\drivers\bt\1\practice\g-track-3.xml
+if exist .\src\drivers\bt\1\practice\michigan.xml copy .\src\drivers\bt\1\practice\michigan.xml .\runtime\drivers\bt\1\practice\michigan.xml
+if exist .\src\drivers\bt\1\practice\wheel-1.xml copy .\src\drivers\bt\1\practice\wheel-1.xml .\runtime\drivers\bt\1\practice\wheel-1.xml
+
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\runtime\drivers\bt\1\qualifying
+if exist .\src\drivers\bt\1\qualifying\g-track-3.xml copy .\src\drivers\bt\1\qualifying\g-track-3.xml .\runtime\drivers\bt\1\qualifying\g-track-3.xml
+
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\runtime\drivers\bt\1\race
+if exist .\src\drivers\bt\1\race\g-track-3.xml copy .\src\drivers\bt\1\race\g-track-3.xml .\runtime\drivers\bt\1\race\g-track-3.xml
+if exist .\src\drivers\bt\1\race\wheel-1.xml copy .\src\drivers\bt\1\race\wheel-1.xml .\runtime\drivers\bt\1\race\wheel-1.xml
+
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\1\*.* call .\create_dir .\runtime\drivers\bt\1
+if exist .\src\drivers\bt\1\default.xml copy .\src\drivers\bt\1\default.xml .\runtime\drivers\bt\1\default.xml
+if exist .\src\drivers\bt\1\cg-nascar-rwd.rgb copy .\src\drivers\bt\1\cg-nascar-rwd.rgb .\runtime\drivers\bt\1\cg-nascar-rwd.rgb
+
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\2\*.* call .\create_dir .\runtime\drivers\bt\2
+if exist .\src\drivers\bt\2\default.xml copy .\src\drivers\bt\2\default.xml .\runtime\drivers\bt\2\default.xml
+
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\3\*.* call .\create_dir .\runtime\drivers\bt\3
+if exist .\src\drivers\bt\3\default.xml copy .\src\drivers\bt\3\default.xml .\runtime\drivers\bt\3\default.xml
+
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\4\*.* call .\create_dir .\runtime\drivers\bt\4
+if exist .\src\drivers\bt\4\default.xml copy .\src\drivers\bt\4\default.xml .\runtime\drivers\bt\4\default.xml
+
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\5\*.* call .\create_dir .\runtime\drivers\bt\5
+if exist .\src\drivers\bt\5\default.xml copy .\src\drivers\bt\5\default.xml .\runtime\drivers\bt\5\default.xml
+
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\6\*.* call .\create_dir .\runtime\drivers\bt\6
+if exist .\src\drivers\bt\6\default.xml copy .\src\drivers\bt\6\default.xml .\runtime\drivers\bt\6\default.xml
+
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\7\*.* call .\create_dir .\runtime\drivers\bt\7
+if exist .\src\drivers\bt\7\default.xml copy .\src\drivers\bt\7\default.xml .\runtime\drivers\bt\7\default.xml
+
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\8\*.* call .\create_dir .\runtime\drivers\bt\8
+if exist .\src\drivers\bt\8\default.xml copy .\src\drivers\bt\8\default.xml .\runtime\drivers\bt\8\default.xml
+
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\9\*.* call .\create_dir .\runtime\drivers\bt\9
+if exist .\src\drivers\bt\9\default.xml copy .\src\drivers\bt\9\default.xml .\runtime\drivers\bt\9\default.xml
+
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\bt\*.* call .\create_dir .\runtime\drivers\bt
+if exist .\src\drivers\bt\bt.xml copy .\src\drivers\bt\bt.xml .\runtime\drivers\bt\bt.xml
+if exist .\src\drivers\bt\logo.rgb copy .\src\drivers\bt\logo.rgb .\runtime\drivers\bt\logo.rgb
 
 if exist .\src\drivers\cylos1\tracksdata\*.* call .\create_dir .\runtime
 if exist .\src\drivers\cylos1\tracksdata\*.* call .\create_dir .\runtime\drivers
@@ -3145,11 +3604,19 @@ if exist .\src\drivers\damned\*.* call .\create_dir .\runtime\drivers\damned
 if exist .\src\drivers\damned\damned.xml copy .\src\drivers\damned\damned.xml .\runtime\drivers\damned\damned.xml
 if exist .\src\drivers\damned\car1.xml copy .\src\drivers\damned\car1.xml .\runtime\drivers\damned\car1.xml
 
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human\tracks
+if exist .\src\drivers\human\tracks\b-speedway\*.* call .\create_dir .\runtime\drivers\human\tracks\b-speedway
+if exist .\src\drivers\human\tracks\b-speedway\car-porsche-gt1.xml copy .\src\drivers\human\tracks\b-speedway\car-porsche-gt1.xml .\runtime\drivers\human\tracks\b-speedway\car-porsche-gt1.xml
+
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\dirt-1\*.* call .\create_dir .\runtime\drivers\human\tracks\dirt-1
+if exist .\src\drivers\human\tracks\dirt-1\car-pw-206wrc.xml copy .\src\drivers\human\tracks\dirt-1\car-pw-206wrc.xml .\runtime\drivers\human\tracks\dirt-1\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\dirt-1\car-torcs.xml copy .\src\drivers\human\tracks\dirt-1\car-torcs.xml .\runtime\drivers\human\tracks\dirt-1\car-torcs.xml
 
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime
@@ -3157,6 +3624,7 @@ if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drive
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\dirt-2\*.* call .\create_dir .\runtime\drivers\human\tracks\dirt-2
+if exist .\src\drivers\human\tracks\dirt-2\car-pw-206wrc.xml copy .\src\drivers\human\tracks\dirt-2\car-pw-206wrc.xml .\runtime\drivers\human\tracks\dirt-2\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\dirt-2\car-torcs.xml copy .\src\drivers\human\tracks\dirt-2\car-torcs.xml .\runtime\drivers\human\tracks\dirt-2\car-torcs.xml
 
 if exist .\src\drivers\human\tracks\dirt-3\*.* call .\create_dir .\runtime
@@ -3200,7 +3668,6 @@ if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\dr
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\e-track-2\*.* call .\create_dir .\runtime\drivers\human\tracks\e-track-2
-if exist .\src\drivers\human\tracks\e-track-2\car-206W10.xml copy .\src\drivers\human\tracks\e-track-2\car-206W10.xml .\runtime\drivers\human\tracks\e-track-2\car-206W10.xml
 if exist .\src\drivers\human\tracks\e-track-2\car-pw-206wrc.xml copy .\src\drivers\human\tracks\e-track-2\car-pw-206wrc.xml .\runtime\drivers\human\tracks\e-track-2\car-pw-206wrc.xml
 if exist .\src\drivers\human\tracks\e-track-2\car-torcs.xml copy .\src\drivers\human\tracks\e-track-2\car-torcs.xml .\runtime\drivers\human\tracks\e-track-2\car-torcs.xml
 
@@ -3256,7 +3723,6 @@ if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\dr
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\g-track-3\*.* call .\create_dir .\runtime\drivers\human\tracks\g-track-3
-if exist .\src\drivers\human\tracks\g-track-3\car-206W10.xml copy .\src\drivers\human\tracks\g-track-3\car-206W10.xml .\runtime\drivers\human\tracks\g-track-3\car-206W10.xml
 if exist .\src\drivers\human\tracks\g-track-3\car-pw-206wrc.xml copy .\src\drivers\human\tracks\g-track-3\car-pw-206wrc.xml .\runtime\drivers\human\tracks\g-track-3\car-pw-206wrc.xml
 
 if exist .\src\drivers\human\tracks\mixed-1\*.* call .\create_dir .\runtime
@@ -3278,7 +3744,6 @@ if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drive
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human\tracks
 if exist .\src\drivers\human\tracks\spring\*.* call .\create_dir .\runtime\drivers\human\tracks\spring
-if exist .\src\drivers\human\tracks\spring\car-206W10.xml copy .\src\drivers\human\tracks\spring\car-206W10.xml .\runtime\drivers\human\tracks\spring\car-206W10.xml
 
 if exist .\src\drivers\human\tracks\wheel-1\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\tracks\wheel-1\*.* call .\create_dir .\runtime\drivers
@@ -3292,7 +3757,6 @@ if exist .\src\drivers\human\*.* call .\create_dir .\runtime
 if exist .\src\drivers\human\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\human\*.* call .\create_dir .\runtime\drivers\human
 if exist .\src\drivers\human\car-155-DTM.xml copy .\src\drivers\human\car-155-DTM.xml .\runtime\drivers\human\car-155-DTM.xml
-if exist .\src\drivers\human\car-206W10.xml copy .\src\drivers\human\car-206W10.xml .\runtime\drivers\human\car-206W10.xml
 if exist .\src\drivers\human\car-360-modena.xml copy .\src\drivers\human\car-360-modena.xml .\runtime\drivers\human\car-360-modena.xml
 if exist .\src\drivers\human\car-acura-nsx-sz.xml copy .\src\drivers\human\car-acura-nsx-sz.xml .\runtime\drivers\human\car-acura-nsx-sz.xml
 if exist .\src\drivers\human\car-alpha-156-rk.xml copy .\src\drivers\human\car-alpha-156-rk.xml .\runtime\drivers\human\car-alpha-156-rk.xml
@@ -3308,7 +3772,9 @@ if exist .\src\drivers\human\car-mclaren-f1.xml copy .\src\drivers\human\car-mcl
 if exist .\src\drivers\human\car-p406.xml copy .\src\drivers\human\car-p406.xml .\runtime\drivers\human\car-p406.xml
 if exist .\src\drivers\human\car-porsche-gt1.xml copy .\src\drivers\human\car-porsche-gt1.xml .\runtime\drivers\human\car-porsche-gt1.xml
 if exist .\src\drivers\human\car-porsche-gt3rs.xml copy .\src\drivers\human\car-porsche-gt3rs.xml .\runtime\drivers\human\car-porsche-gt3rs.xml
-if exist .\src\drivers\human\car-pw206wrc.xml copy .\src\drivers\human\car-pw206wrc.xml .\runtime\drivers\human\car-pw206wrc.xml
+if exist .\src\drivers\human\car-pw-206wrc.xml copy .\src\drivers\human\car-pw-206wrc.xml .\runtime\drivers\human\car-pw-206wrc.xml
+if exist .\src\drivers\human\car-pw-evovwrc-k.xml copy .\src\drivers\human\car-pw-evovwrc-k.xml .\runtime\drivers\human\car-pw-evovwrc-k.xml
+if exist .\src\drivers\human\car-pw-evovwrc.xml copy .\src\drivers\human\car-pw-evovwrc.xml .\runtime\drivers\human\car-pw-evovwrc.xml
 if exist .\src\drivers\human\car-torcs.xml copy .\src\drivers\human\car-torcs.xml .\runtime\drivers\human\car-torcs.xml
 if exist .\src\drivers\human\car-viper-gts-r.xml copy .\src\drivers\human\car-viper-gts-r.xml .\runtime\drivers\human\car-viper-gts-r.xml
 if exist .\src\drivers\human\car-vm-x2.xml copy .\src\drivers\human\car-vm-x2.xml .\runtime\drivers\human\car-vm-x2.xml
@@ -3327,6 +3793,7 @@ if exist .\src\drivers\inferno\1\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\1\tracksdata\aalborg.xml copy .\src\drivers\inferno\1\tracksdata\aalborg.xml .\runtime\drivers\inferno\1\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\1\tracksdata\alpine-1.xml copy .\src\drivers\inferno\1\tracksdata\alpine-1.xml .\runtime\drivers\inferno\1\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\a-speedway.xml copy .\src\drivers\inferno\1\tracksdata\a-speedway.xml .\runtime\drivers\inferno\1\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\b-speedway.xml copy .\src\drivers\inferno\1\tracksdata\b-speedway.xml .\runtime\drivers\inferno\1\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\1\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\1\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\1\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\1\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_eroad.xml copy .\src\drivers\inferno\1\tracksdata\car_eroad.xml .\runtime\drivers\inferno\1\tracksdata\car_eroad.xml
@@ -3336,6 +3803,7 @@ if exist .\src\drivers\inferno\1\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\1\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\1\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\1\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\1\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\1\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\1\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\1\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\1\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\1\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_michigan.xml copy .\src\drivers\inferno\1\tracksdata\car_michigan.xml .\runtime\drivers\inferno\1\tracksdata\car_michigan.xml
@@ -3343,13 +3811,18 @@ if exist .\src\drivers\inferno\1\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\1\tracksdata\car_test-1.xml copy .\src\drivers\inferno\1\tracksdata\car_test-1.xml .\runtime\drivers\inferno\1\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\1\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\1\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\city-1.xml copy .\src\drivers\inferno\1\tracksdata\city-1.xml .\runtime\drivers\inferno\1\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\1\tracksdata\c-speedway.xml copy .\src\drivers\inferno\1\tracksdata\c-speedway.xml .\runtime\drivers\inferno\1\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\d-speedway.xml copy .\src\drivers\inferno\1\tracksdata\d-speedway.xml .\runtime\drivers\inferno\1\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\eroad.xml copy .\src\drivers\inferno\1\tracksdata\eroad.xml .\runtime\drivers\inferno\1\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\1\tracksdata\e-speedway.xml copy .\src\drivers\inferno\1\tracksdata\e-speedway.xml .\runtime\drivers\inferno\1\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-1.xml copy .\src\drivers\inferno\1\tracksdata\e-track-1.xml .\runtime\drivers\inferno\1\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-2.xml copy .\src\drivers\inferno\1\tracksdata\e-track-2.xml .\runtime\drivers\inferno\1\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-3.xml copy .\src\drivers\inferno\1\tracksdata\e-track-3.xml .\runtime\drivers\inferno\1\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-4.xml copy .\src\drivers\inferno\1\tracksdata\e-track-4.xml .\runtime\drivers\inferno\1\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-5.xml copy .\src\drivers\inferno\1\tracksdata\e-track-5.xml .\runtime\drivers\inferno\1\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\1\tracksdata\e-track-6.xml copy .\src\drivers\inferno\1\tracksdata\e-track-6.xml .\runtime\drivers\inferno\1\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\1\tracksdata\f-speedway.xml copy .\src\drivers\inferno\1\tracksdata\f-speedway.xml .\runtime\drivers\inferno\1\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\1\tracksdata\g-speedway.xml copy .\src\drivers\inferno\1\tracksdata\g-speedway.xml .\runtime\drivers\inferno\1\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\1\tracksdata\g-track-1.xml copy .\src\drivers\inferno\1\tracksdata\g-track-1.xml .\runtime\drivers\inferno\1\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\1\tracksdata\g-track-2.xml copy .\src\drivers\inferno\1\tracksdata\g-track-2.xml .\runtime\drivers\inferno\1\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\1\tracksdata\michigan.xml copy .\src\drivers\inferno\1\tracksdata\michigan.xml .\runtime\drivers\inferno\1\tracksdata\michigan.xml
@@ -3373,18 +3846,25 @@ if exist .\src\drivers\inferno\10\tracksdata\*.* call .\create_dir .\runtime\dri
 if exist .\src\drivers\inferno\10\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\10\tracksdata
 if exist .\src\drivers\inferno\10\tracksdata\aalborg.xml copy .\src\drivers\inferno\10\tracksdata\aalborg.xml .\runtime\drivers\inferno\10\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\10\tracksdata\a-speedway.xml copy .\src\drivers\inferno\10\tracksdata\a-speedway.xml .\runtime\drivers\inferno\10\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\b-speedway.xml copy .\src\drivers\inferno\10\tracksdata\b-speedway.xml .\runtime\drivers\inferno\10\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\10\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\10\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\10\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\10\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\10\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\10\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\10\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\10\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\10\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\10\tracksdata\c-speedway.xml copy .\src\drivers\inferno\10\tracksdata\c-speedway.xml .\runtime\drivers\inferno\10\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\d-speedway.xml copy .\src\drivers\inferno\10\tracksdata\d-speedway.xml .\runtime\drivers\inferno\10\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\eroad.xml copy .\src\drivers\inferno\10\tracksdata\eroad.xml .\runtime\drivers\inferno\10\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\10\tracksdata\e-speedway.xml copy .\src\drivers\inferno\10\tracksdata\e-speedway.xml .\runtime\drivers\inferno\10\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-1.xml copy .\src\drivers\inferno\10\tracksdata\e-track-1.xml .\runtime\drivers\inferno\10\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-2.xml copy .\src\drivers\inferno\10\tracksdata\e-track-2.xml .\runtime\drivers\inferno\10\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-3.xml copy .\src\drivers\inferno\10\tracksdata\e-track-3.xml .\runtime\drivers\inferno\10\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-4.xml copy .\src\drivers\inferno\10\tracksdata\e-track-4.xml .\runtime\drivers\inferno\10\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-5.xml copy .\src\drivers\inferno\10\tracksdata\e-track-5.xml .\runtime\drivers\inferno\10\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\10\tracksdata\e-track-6.xml copy .\src\drivers\inferno\10\tracksdata\e-track-6.xml .\runtime\drivers\inferno\10\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\10\tracksdata\f-speedway.xml copy .\src\drivers\inferno\10\tracksdata\f-speedway.xml .\runtime\drivers\inferno\10\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\10\tracksdata\g-speedway.xml copy .\src\drivers\inferno\10\tracksdata\g-speedway.xml .\runtime\drivers\inferno\10\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\10\tracksdata\g-track-1.xml copy .\src\drivers\inferno\10\tracksdata\g-track-1.xml .\runtime\drivers\inferno\10\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\10\tracksdata\g-track-2.xml copy .\src\drivers\inferno\10\tracksdata\g-track-2.xml .\runtime\drivers\inferno\10\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\10\tracksdata\michigan.xml copy .\src\drivers\inferno\10\tracksdata\michigan.xml .\runtime\drivers\inferno\10\tracksdata\michigan.xml
@@ -3407,6 +3887,7 @@ if exist .\src\drivers\inferno\2\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\2\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\2\tracksdata
 if exist .\src\drivers\inferno\2\tracksdata\aalborg.xml copy .\src\drivers\inferno\2\tracksdata\aalborg.xml .\runtime\drivers\inferno\2\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\2\tracksdata\a-speedway.xml copy .\src\drivers\inferno\2\tracksdata\a-speedway.xml .\runtime\drivers\inferno\2\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\b-speedway.xml copy .\src\drivers\inferno\2\tracksdata\b-speedway.xml .\runtime\drivers\inferno\2\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\2\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\2\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\2\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\2\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_eroad.xml copy .\src\drivers\inferno\2\tracksdata\car_eroad.xml .\runtime\drivers\inferno\2\tracksdata\car_eroad.xml
@@ -3416,19 +3897,25 @@ if exist .\src\drivers\inferno\2\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\2\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\2\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\2\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\2\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\2\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\2\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\2\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\2\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\2\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_michigan.xml copy .\src\drivers\inferno\2\tracksdata\car_michigan.xml .\runtime\drivers\inferno\2\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_s2.xml copy .\src\drivers\inferno\2\tracksdata\car_s2.xml .\runtime\drivers\inferno\2\tracksdata\car_s2.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_test-1.xml copy .\src\drivers\inferno\2\tracksdata\car_test-1.xml .\runtime\drivers\inferno\2\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\2\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\2\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\2\tracksdata\c-speedway.xml copy .\src\drivers\inferno\2\tracksdata\c-speedway.xml .\runtime\drivers\inferno\2\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\d-speedway.xml copy .\src\drivers\inferno\2\tracksdata\d-speedway.xml .\runtime\drivers\inferno\2\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\eroad.xml copy .\src\drivers\inferno\2\tracksdata\eroad.xml .\runtime\drivers\inferno\2\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\2\tracksdata\e-speedway.xml copy .\src\drivers\inferno\2\tracksdata\e-speedway.xml .\runtime\drivers\inferno\2\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-1.xml copy .\src\drivers\inferno\2\tracksdata\e-track-1.xml .\runtime\drivers\inferno\2\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-2.xml copy .\src\drivers\inferno\2\tracksdata\e-track-2.xml .\runtime\drivers\inferno\2\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-3.xml copy .\src\drivers\inferno\2\tracksdata\e-track-3.xml .\runtime\drivers\inferno\2\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-4.xml copy .\src\drivers\inferno\2\tracksdata\e-track-4.xml .\runtime\drivers\inferno\2\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-5.xml copy .\src\drivers\inferno\2\tracksdata\e-track-5.xml .\runtime\drivers\inferno\2\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\2\tracksdata\e-track-6.xml copy .\src\drivers\inferno\2\tracksdata\e-track-6.xml .\runtime\drivers\inferno\2\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\2\tracksdata\f-speedway.xml copy .\src\drivers\inferno\2\tracksdata\f-speedway.xml .\runtime\drivers\inferno\2\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\2\tracksdata\g-speedway.xml copy .\src\drivers\inferno\2\tracksdata\g-speedway.xml .\runtime\drivers\inferno\2\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\2\tracksdata\g-track-1.xml copy .\src\drivers\inferno\2\tracksdata\g-track-1.xml .\runtime\drivers\inferno\2\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\2\tracksdata\g-track-2.xml copy .\src\drivers\inferno\2\tracksdata\g-track-2.xml .\runtime\drivers\inferno\2\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\2\tracksdata\michigan.xml copy .\src\drivers\inferno\2\tracksdata\michigan.xml .\runtime\drivers\inferno\2\tracksdata\michigan.xml
@@ -3454,30 +3941,44 @@ if exist .\src\drivers\inferno\3\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\3\tracksdata\aalborg.xml copy .\src\drivers\inferno\3\tracksdata\aalborg.xml .\runtime\drivers\inferno\3\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\3\tracksdata\alpine-1.xml copy .\src\drivers\inferno\3\tracksdata\alpine-1.xml .\runtime\drivers\inferno\3\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\a-speedway.xml copy .\src\drivers\inferno\3\tracksdata\a-speedway.xml .\runtime\drivers\inferno\3\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\b-speedway.xml copy .\src\drivers\inferno\3\tracksdata\b-speedway.xml .\runtime\drivers\inferno\3\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\3\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\3\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_alpine-1.xml copy .\src\drivers\inferno\3\tracksdata\car_alpine-1.xml .\runtime\drivers\inferno\3\tracksdata\car_alpine-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_a-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_b-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_b-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_b-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_c-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_c-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_c-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_d-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_d-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_d-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_eroad.xml copy .\src\drivers\inferno\3\tracksdata\car_eroad.xml .\runtime\drivers\inferno\3\tracksdata\car_eroad.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_e-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_e-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_e-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-1.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-1.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-3.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-3.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-3.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\3\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\3\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_f-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_f-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_f-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\3\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\3\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\3\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\3\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\3\tracksdata\car_h-speedway.xml copy .\src\drivers\inferno\3\tracksdata\car_h-speedway.xml .\runtime\drivers\inferno\3\tracksdata\car_h-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_michigan.xml copy .\src\drivers\inferno\3\tracksdata\car_michigan.xml .\runtime\drivers\inferno\3\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_spring.xml copy .\src\drivers\inferno\3\tracksdata\car_spring.xml .\runtime\drivers\inferno\3\tracksdata\car_spring.xml
 if exist .\src\drivers\inferno\3\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\3\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\3\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\3\tracksdata\c-speedway.xml copy .\src\drivers\inferno\3\tracksdata\c-speedway.xml .\runtime\drivers\inferno\3\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\d-speedway.xml copy .\src\drivers\inferno\3\tracksdata\d-speedway.xml .\runtime\drivers\inferno\3\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\eroad.xml copy .\src\drivers\inferno\3\tracksdata\eroad.xml .\runtime\drivers\inferno\3\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\3\tracksdata\e-speedway.xml copy .\src\drivers\inferno\3\tracksdata\e-speedway.xml .\runtime\drivers\inferno\3\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-1.xml copy .\src\drivers\inferno\3\tracksdata\e-track-1.xml .\runtime\drivers\inferno\3\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-2.xml copy .\src\drivers\inferno\3\tracksdata\e-track-2.xml .\runtime\drivers\inferno\3\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-3.xml copy .\src\drivers\inferno\3\tracksdata\e-track-3.xml .\runtime\drivers\inferno\3\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-4.xml copy .\src\drivers\inferno\3\tracksdata\e-track-4.xml .\runtime\drivers\inferno\3\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-5.xml copy .\src\drivers\inferno\3\tracksdata\e-track-5.xml .\runtime\drivers\inferno\3\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\3\tracksdata\e-track-6.xml copy .\src\drivers\inferno\3\tracksdata\e-track-6.xml .\runtime\drivers\inferno\3\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\3\tracksdata\f-speedway.xml copy .\src\drivers\inferno\3\tracksdata\f-speedway.xml .\runtime\drivers\inferno\3\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\3\tracksdata\g-speedway.xml copy .\src\drivers\inferno\3\tracksdata\g-speedway.xml .\runtime\drivers\inferno\3\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\g-track-1.xml copy .\src\drivers\inferno\3\tracksdata\g-track-1.xml .\runtime\drivers\inferno\3\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\3\tracksdata\g-track-2.xml copy .\src\drivers\inferno\3\tracksdata\g-track-2.xml .\runtime\drivers\inferno\3\tracksdata\g-track-2.xml
+if exist .\src\drivers\inferno\3\tracksdata\h-speedway.xml copy .\src\drivers\inferno\3\tracksdata\h-speedway.xml .\runtime\drivers\inferno\3\tracksdata\h-speedway.xml
 if exist .\src\drivers\inferno\3\tracksdata\michigan.xml copy .\src\drivers\inferno\3\tracksdata\michigan.xml .\runtime\drivers\inferno\3\tracksdata\michigan.xml
 if exist .\src\drivers\inferno\3\tracksdata\spring.xml copy .\src\drivers\inferno\3\tracksdata\spring.xml .\runtime\drivers\inferno\3\tracksdata\spring.xml
 if exist .\src\drivers\inferno\3\tracksdata\wheel-1.xml copy .\src\drivers\inferno\3\tracksdata\wheel-1.xml .\runtime\drivers\inferno\3\tracksdata\wheel-1.xml
@@ -3500,6 +4001,7 @@ if exist .\src\drivers\inferno\4\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\4\tracksdata\aalborg.xml copy .\src\drivers\inferno\4\tracksdata\aalborg.xml .\runtime\drivers\inferno\4\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\4\tracksdata\alpine-1.xml copy .\src\drivers\inferno\4\tracksdata\alpine-1.xml .\runtime\drivers\inferno\4\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\a-speedway.xml copy .\src\drivers\inferno\4\tracksdata\a-speedway.xml .\runtime\drivers\inferno\4\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\4\tracksdata\b-speedway.xml copy .\src\drivers\inferno\4\tracksdata\b-speedway.xml .\runtime\drivers\inferno\4\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\4\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\4\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\4\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\4\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_eroad.xml copy .\src\drivers\inferno\4\tracksdata\car_eroad.xml .\runtime\drivers\inferno\4\tracksdata\car_eroad.xml
@@ -3509,20 +4011,26 @@ if exist .\src\drivers\inferno\4\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\4\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\4\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\4\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\4\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\4\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\4\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\4\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_michigan.xml copy .\src\drivers\inferno\4\tracksdata\car_michigan.xml .\runtime\drivers\inferno\4\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_test-1.xml copy .\src\drivers\inferno\4\tracksdata\car_test-1.xml .\runtime\drivers\inferno\4\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\4\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\4\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\4\tracksdata\c-speedway.xml copy .\src\drivers\inferno\4\tracksdata\c-speedway.xml .\runtime\drivers\inferno\4\tracksdata\c-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\dirt-2.xml copy .\src\drivers\inferno\4\tracksdata\dirt-2.xml .\runtime\drivers\inferno\4\tracksdata\dirt-2.xml
+if exist .\src\drivers\inferno\4\tracksdata\d-speedway.xml copy .\src\drivers\inferno\4\tracksdata\d-speedway.xml .\runtime\drivers\inferno\4\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\eroad.xml copy .\src\drivers\inferno\4\tracksdata\eroad.xml .\runtime\drivers\inferno\4\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\4\tracksdata\e-speedway.xml copy .\src\drivers\inferno\4\tracksdata\e-speedway.xml .\runtime\drivers\inferno\4\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-1.xml copy .\src\drivers\inferno\4\tracksdata\e-track-1.xml .\runtime\drivers\inferno\4\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-2.xml copy .\src\drivers\inferno\4\tracksdata\e-track-2.xml .\runtime\drivers\inferno\4\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-3.xml copy .\src\drivers\inferno\4\tracksdata\e-track-3.xml .\runtime\drivers\inferno\4\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-4.xml copy .\src\drivers\inferno\4\tracksdata\e-track-4.xml .\runtime\drivers\inferno\4\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-5.xml copy .\src\drivers\inferno\4\tracksdata\e-track-5.xml .\runtime\drivers\inferno\4\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\4\tracksdata\e-track-6.xml copy .\src\drivers\inferno\4\tracksdata\e-track-6.xml .\runtime\drivers\inferno\4\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\4\tracksdata\f-speedway.xml copy .\src\drivers\inferno\4\tracksdata\f-speedway.xml .\runtime\drivers\inferno\4\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\4\tracksdata\g-speedway.xml copy .\src\drivers\inferno\4\tracksdata\g-speedway.xml .\runtime\drivers\inferno\4\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-1.xml copy .\src\drivers\inferno\4\tracksdata\g-track-1.xml .\runtime\drivers\inferno\4\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-2.xml copy .\src\drivers\inferno\4\tracksdata\g-track-2.xml .\runtime\drivers\inferno\4\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\4\tracksdata\g-track-3.xml copy .\src\drivers\inferno\4\tracksdata\g-track-3.xml .\runtime\drivers\inferno\4\tracksdata\g-track-3.xml
@@ -3546,18 +4054,25 @@ if exist .\src\drivers\inferno\5\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\5\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\5\tracksdata
 if exist .\src\drivers\inferno\5\tracksdata\aalborg.xml copy .\src\drivers\inferno\5\tracksdata\aalborg.xml .\runtime\drivers\inferno\5\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\5\tracksdata\a-speedway.xml copy .\src\drivers\inferno\5\tracksdata\a-speedway.xml .\runtime\drivers\inferno\5\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\b-speedway.xml copy .\src\drivers\inferno\5\tracksdata\b-speedway.xml .\runtime\drivers\inferno\5\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\5\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\5\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\5\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\5\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\5\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\5\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\5\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\5\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\5\tracksdata\car_g-track-2.xml
+if exist .\src\drivers\inferno\5\tracksdata\c-speedway.xml copy .\src\drivers\inferno\5\tracksdata\c-speedway.xml .\runtime\drivers\inferno\5\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\d-speedway.xml copy .\src\drivers\inferno\5\tracksdata\d-speedway.xml .\runtime\drivers\inferno\5\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\eroad.xml copy .\src\drivers\inferno\5\tracksdata\eroad.xml .\runtime\drivers\inferno\5\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\5\tracksdata\e-speedway.xml copy .\src\drivers\inferno\5\tracksdata\e-speedway.xml .\runtime\drivers\inferno\5\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-1.xml copy .\src\drivers\inferno\5\tracksdata\e-track-1.xml .\runtime\drivers\inferno\5\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-2.xml copy .\src\drivers\inferno\5\tracksdata\e-track-2.xml .\runtime\drivers\inferno\5\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-3.xml copy .\src\drivers\inferno\5\tracksdata\e-track-3.xml .\runtime\drivers\inferno\5\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-4.xml copy .\src\drivers\inferno\5\tracksdata\e-track-4.xml .\runtime\drivers\inferno\5\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-5.xml copy .\src\drivers\inferno\5\tracksdata\e-track-5.xml .\runtime\drivers\inferno\5\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\5\tracksdata\e-track-6.xml copy .\src\drivers\inferno\5\tracksdata\e-track-6.xml .\runtime\drivers\inferno\5\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\5\tracksdata\f-speedway.xml copy .\src\drivers\inferno\5\tracksdata\f-speedway.xml .\runtime\drivers\inferno\5\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\5\tracksdata\g-speedway.xml copy .\src\drivers\inferno\5\tracksdata\g-speedway.xml .\runtime\drivers\inferno\5\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\5\tracksdata\g-track-1.xml copy .\src\drivers\inferno\5\tracksdata\g-track-1.xml .\runtime\drivers\inferno\5\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\5\tracksdata\g-track-2.xml copy .\src\drivers\inferno\5\tracksdata\g-track-2.xml .\runtime\drivers\inferno\5\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\5\tracksdata\michigan.xml copy .\src\drivers\inferno\5\tracksdata\michigan.xml .\runtime\drivers\inferno\5\tracksdata\michigan.xml
@@ -3580,20 +4095,33 @@ if exist .\src\drivers\inferno\6\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\6\tracksdata\*.* call .\create_dir .\runtime\drivers\inferno\6\tracksdata
 if exist .\src\drivers\inferno\6\tracksdata\aalborg.xml copy .\src\drivers\inferno\6\tracksdata\aalborg.xml .\runtime\drivers\inferno\6\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\6\tracksdata\a-speedway.xml copy .\src\drivers\inferno\6\tracksdata\a-speedway.xml .\runtime\drivers\inferno\6\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\b-speedway.xml copy .\src\drivers\inferno\6\tracksdata\b-speedway.xml .\runtime\drivers\inferno\6\tracksdata\b-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_b-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_b-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_b-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_c-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_c-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_c-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_d-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_d-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_d-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_e-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_e-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_e-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-2.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\6\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_f-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_f-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_f-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\6\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\6\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\6\tracksdata\car_g-track-3.xml
+if exist .\src\drivers\inferno\6\tracksdata\car_michigan.xml copy .\src\drivers\inferno\6\tracksdata\car_michigan.xml .\runtime\drivers\inferno\6\tracksdata\car_michigan.xml
 if exist .\src\drivers\inferno\6\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\6\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\6\tracksdata\car_wheel-1.xml
+if exist .\src\drivers\inferno\6\tracksdata\c-speedway.xml copy .\src\drivers\inferno\6\tracksdata\c-speedway.xml .\runtime\drivers\inferno\6\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\d-speedway.xml copy .\src\drivers\inferno\6\tracksdata\d-speedway.xml .\runtime\drivers\inferno\6\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\eroad.xml copy .\src\drivers\inferno\6\tracksdata\eroad.xml .\runtime\drivers\inferno\6\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\6\tracksdata\e-speedway.xml copy .\src\drivers\inferno\6\tracksdata\e-speedway.xml .\runtime\drivers\inferno\6\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-1.xml copy .\src\drivers\inferno\6\tracksdata\e-track-1.xml .\runtime\drivers\inferno\6\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-2.xml copy .\src\drivers\inferno\6\tracksdata\e-track-2.xml .\runtime\drivers\inferno\6\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-3.xml copy .\src\drivers\inferno\6\tracksdata\e-track-3.xml .\runtime\drivers\inferno\6\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-4.xml copy .\src\drivers\inferno\6\tracksdata\e-track-4.xml .\runtime\drivers\inferno\6\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-5.xml copy .\src\drivers\inferno\6\tracksdata\e-track-5.xml .\runtime\drivers\inferno\6\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\6\tracksdata\e-track-6.xml copy .\src\drivers\inferno\6\tracksdata\e-track-6.xml .\runtime\drivers\inferno\6\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\6\tracksdata\f-speedway.xml copy .\src\drivers\inferno\6\tracksdata\f-speedway.xml .\runtime\drivers\inferno\6\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\6\tracksdata\g-speedway.xml copy .\src\drivers\inferno\6\tracksdata\g-speedway.xml .\runtime\drivers\inferno\6\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-1.xml copy .\src\drivers\inferno\6\tracksdata\g-track-1.xml .\runtime\drivers\inferno\6\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-2.xml copy .\src\drivers\inferno\6\tracksdata\g-track-2.xml .\runtime\drivers\inferno\6\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\6\tracksdata\g-track-3.xml copy .\src\drivers\inferno\6\tracksdata\g-track-3.xml .\runtime\drivers\inferno\6\tracksdata\g-track-3.xml
@@ -3618,6 +4146,7 @@ if exist .\src\drivers\inferno\7\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\7\tracksdata\aalborg.xml copy .\src\drivers\inferno\7\tracksdata\aalborg.xml .\runtime\drivers\inferno\7\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\7\tracksdata\alpine-1.xml copy .\src\drivers\inferno\7\tracksdata\alpine-1.xml .\runtime\drivers\inferno\7\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\a-speedway.xml copy .\src\drivers\inferno\7\tracksdata\a-speedway.xml .\runtime\drivers\inferno\7\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\b-speedway.xml copy .\src\drivers\inferno\7\tracksdata\b-speedway.xml .\runtime\drivers\inferno\7\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\7\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\7\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\7\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\7\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_eroad.xml copy .\src\drivers\inferno\7\tracksdata\car_eroad.xml .\runtime\drivers\inferno\7\tracksdata\car_eroad.xml
@@ -3627,6 +4156,7 @@ if exist .\src\drivers\inferno\7\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\7\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\7\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\7\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\7\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\7\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\7\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\7\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\7\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\7\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_michigan.xml copy .\src\drivers\inferno\7\tracksdata\car_michigan.xml .\runtime\drivers\inferno\7\tracksdata\car_michigan.xml
@@ -3634,13 +4164,18 @@ if exist .\src\drivers\inferno\7\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\7\tracksdata\car_test-1.xml copy .\src\drivers\inferno\7\tracksdata\car_test-1.xml .\runtime\drivers\inferno\7\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\7\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\7\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\city-1.xml copy .\src\drivers\inferno\7\tracksdata\city-1.xml .\runtime\drivers\inferno\7\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\7\tracksdata\c-speedway.xml copy .\src\drivers\inferno\7\tracksdata\c-speedway.xml .\runtime\drivers\inferno\7\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\d-speedway.xml copy .\src\drivers\inferno\7\tracksdata\d-speedway.xml .\runtime\drivers\inferno\7\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\eroad.xml copy .\src\drivers\inferno\7\tracksdata\eroad.xml .\runtime\drivers\inferno\7\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\7\tracksdata\e-speedway.xml copy .\src\drivers\inferno\7\tracksdata\e-speedway.xml .\runtime\drivers\inferno\7\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-1.xml copy .\src\drivers\inferno\7\tracksdata\e-track-1.xml .\runtime\drivers\inferno\7\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-2.xml copy .\src\drivers\inferno\7\tracksdata\e-track-2.xml .\runtime\drivers\inferno\7\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-3.xml copy .\src\drivers\inferno\7\tracksdata\e-track-3.xml .\runtime\drivers\inferno\7\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-4.xml copy .\src\drivers\inferno\7\tracksdata\e-track-4.xml .\runtime\drivers\inferno\7\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-5.xml copy .\src\drivers\inferno\7\tracksdata\e-track-5.xml .\runtime\drivers\inferno\7\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\7\tracksdata\e-track-6.xml copy .\src\drivers\inferno\7\tracksdata\e-track-6.xml .\runtime\drivers\inferno\7\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\7\tracksdata\f-speedway.xml copy .\src\drivers\inferno\7\tracksdata\f-speedway.xml .\runtime\drivers\inferno\7\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\7\tracksdata\g-speedway.xml copy .\src\drivers\inferno\7\tracksdata\g-speedway.xml .\runtime\drivers\inferno\7\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\7\tracksdata\g-track-1.xml copy .\src\drivers\inferno\7\tracksdata\g-track-1.xml .\runtime\drivers\inferno\7\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\7\tracksdata\g-track-2.xml copy .\src\drivers\inferno\7\tracksdata\g-track-2.xml .\runtime\drivers\inferno\7\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\7\tracksdata\michigan.xml copy .\src\drivers\inferno\7\tracksdata\michigan.xml .\runtime\drivers\inferno\7\tracksdata\michigan.xml
@@ -3665,6 +4200,7 @@ if exist .\src\drivers\inferno\8\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\8\tracksdata\aalborg.xml copy .\src\drivers\inferno\8\tracksdata\aalborg.xml .\runtime\drivers\inferno\8\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\8\tracksdata\alpine-1.xml copy .\src\drivers\inferno\8\tracksdata\alpine-1.xml .\runtime\drivers\inferno\8\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\a-speedway.xml copy .\src\drivers\inferno\8\tracksdata\a-speedway.xml .\runtime\drivers\inferno\8\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\b-speedway.xml copy .\src\drivers\inferno\8\tracksdata\b-speedway.xml .\runtime\drivers\inferno\8\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-1.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-1.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-2.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-2.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_dirt-3.xml copy .\src\drivers\inferno\8\tracksdata\car_dirt-3.xml .\runtime\drivers\inferno\8\tracksdata\car_dirt-3.xml
@@ -3674,13 +4210,18 @@ if exist .\src\drivers\inferno\8\tracksdata\car_dirt-6.xml copy .\src\drivers\in
 if exist .\src\drivers\inferno\8\tracksdata\car_g-track-3.xml copy .\src\drivers\inferno\8\tracksdata\car_g-track-3.xml .\runtime\drivers\inferno\8\tracksdata\car_g-track-3.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_mixed-1.xml copy .\src\drivers\inferno\8\tracksdata\car_mixed-1.xml .\runtime\drivers\inferno\8\tracksdata\car_mixed-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\car_mixed-2.xml copy .\src\drivers\inferno\8\tracksdata\car_mixed-2.xml .\runtime\drivers\inferno\8\tracksdata\car_mixed-2.xml
+if exist .\src\drivers\inferno\8\tracksdata\c-speedway.xml copy .\src\drivers\inferno\8\tracksdata\c-speedway.xml .\runtime\drivers\inferno\8\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\d-speedway.xml copy .\src\drivers\inferno\8\tracksdata\d-speedway.xml .\runtime\drivers\inferno\8\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\eroad.xml copy .\src\drivers\inferno\8\tracksdata\eroad.xml .\runtime\drivers\inferno\8\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\8\tracksdata\e-speedway.xml copy .\src\drivers\inferno\8\tracksdata\e-speedway.xml .\runtime\drivers\inferno\8\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-1.xml copy .\src\drivers\inferno\8\tracksdata\e-track-1.xml .\runtime\drivers\inferno\8\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-2.xml copy .\src\drivers\inferno\8\tracksdata\e-track-2.xml .\runtime\drivers\inferno\8\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-3.xml copy .\src\drivers\inferno\8\tracksdata\e-track-3.xml .\runtime\drivers\inferno\8\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-4.xml copy .\src\drivers\inferno\8\tracksdata\e-track-4.xml .\runtime\drivers\inferno\8\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-5.xml copy .\src\drivers\inferno\8\tracksdata\e-track-5.xml .\runtime\drivers\inferno\8\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\8\tracksdata\e-track-6.xml copy .\src\drivers\inferno\8\tracksdata\e-track-6.xml .\runtime\drivers\inferno\8\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\8\tracksdata\f-speedway.xml copy .\src\drivers\inferno\8\tracksdata\f-speedway.xml .\runtime\drivers\inferno\8\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\8\tracksdata\g-speedway.xml copy .\src\drivers\inferno\8\tracksdata\g-speedway.xml .\runtime\drivers\inferno\8\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-1.xml copy .\src\drivers\inferno\8\tracksdata\g-track-1.xml .\runtime\drivers\inferno\8\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-2.xml copy .\src\drivers\inferno\8\tracksdata\g-track-2.xml .\runtime\drivers\inferno\8\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\8\tracksdata\g-track-3.xml copy .\src\drivers\inferno\8\tracksdata\g-track-3.xml .\runtime\drivers\inferno\8\tracksdata\g-track-3.xml
@@ -3706,6 +4247,7 @@ if exist .\src\drivers\inferno\9\tracksdata\*.* call .\create_dir .\runtime\driv
 if exist .\src\drivers\inferno\9\tracksdata\aalborg.xml copy .\src\drivers\inferno\9\tracksdata\aalborg.xml .\runtime\drivers\inferno\9\tracksdata\aalborg.xml
 if exist .\src\drivers\inferno\9\tracksdata\alpine-1.xml copy .\src\drivers\inferno\9\tracksdata\alpine-1.xml .\runtime\drivers\inferno\9\tracksdata\alpine-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\a-speedway.xml copy .\src\drivers\inferno\9\tracksdata\a-speedway.xml .\runtime\drivers\inferno\9\tracksdata\a-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\b-speedway.xml copy .\src\drivers\inferno\9\tracksdata\b-speedway.xml .\runtime\drivers\inferno\9\tracksdata\b-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_aalborg.xml copy .\src\drivers\inferno\9\tracksdata\car_aalborg.xml .\runtime\drivers\inferno\9\tracksdata\car_aalborg.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_a-speedway.xml copy .\src\drivers\inferno\9\tracksdata\car_a-speedway.xml .\runtime\drivers\inferno\9\tracksdata\car_a-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_eroad.xml copy .\src\drivers\inferno\9\tracksdata\car_eroad.xml .\runtime\drivers\inferno\9\tracksdata\car_eroad.xml
@@ -3715,6 +4257,7 @@ if exist .\src\drivers\inferno\9\tracksdata\car_e-track-3.xml copy .\src\drivers
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-4.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-4.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-4.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-5.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-5.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-5.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_e-track-6.xml copy .\src\drivers\inferno\9\tracksdata\car_e-track-6.xml .\runtime\drivers\inferno\9\tracksdata\car_e-track-6.xml
+if exist .\src\drivers\inferno\9\tracksdata\car_g-speedway.xml copy .\src\drivers\inferno\9\tracksdata\car_g-speedway.xml .\runtime\drivers\inferno\9\tracksdata\car_g-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_g-track-1.xml copy .\src\drivers\inferno\9\tracksdata\car_g-track-1.xml .\runtime\drivers\inferno\9\tracksdata\car_g-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_g-track-2.xml copy .\src\drivers\inferno\9\tracksdata\car_g-track-2.xml .\runtime\drivers\inferno\9\tracksdata\car_g-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_michigan.xml copy .\src\drivers\inferno\9\tracksdata\car_michigan.xml .\runtime\drivers\inferno\9\tracksdata\car_michigan.xml
@@ -3722,13 +4265,18 @@ if exist .\src\drivers\inferno\9\tracksdata\car_s2.xml copy .\src\drivers\infern
 if exist .\src\drivers\inferno\9\tracksdata\car_test-1.xml copy .\src\drivers\inferno\9\tracksdata\car_test-1.xml .\runtime\drivers\inferno\9\tracksdata\car_test-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\car_wheel-1.xml copy .\src\drivers\inferno\9\tracksdata\car_wheel-1.xml .\runtime\drivers\inferno\9\tracksdata\car_wheel-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\city-1.xml copy .\src\drivers\inferno\9\tracksdata\city-1.xml .\runtime\drivers\inferno\9\tracksdata\city-1.xml
+if exist .\src\drivers\inferno\9\tracksdata\c-speedway.xml copy .\src\drivers\inferno\9\tracksdata\c-speedway.xml .\runtime\drivers\inferno\9\tracksdata\c-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\d-speedway.xml copy .\src\drivers\inferno\9\tracksdata\d-speedway.xml .\runtime\drivers\inferno\9\tracksdata\d-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\eroad.xml copy .\src\drivers\inferno\9\tracksdata\eroad.xml .\runtime\drivers\inferno\9\tracksdata\eroad.xml
+if exist .\src\drivers\inferno\9\tracksdata\e-speedway.xml copy .\src\drivers\inferno\9\tracksdata\e-speedway.xml .\runtime\drivers\inferno\9\tracksdata\e-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-1.xml copy .\src\drivers\inferno\9\tracksdata\e-track-1.xml .\runtime\drivers\inferno\9\tracksdata\e-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-2.xml copy .\src\drivers\inferno\9\tracksdata\e-track-2.xml .\runtime\drivers\inferno\9\tracksdata\e-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-3.xml copy .\src\drivers\inferno\9\tracksdata\e-track-3.xml .\runtime\drivers\inferno\9\tracksdata\e-track-3.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-4.xml copy .\src\drivers\inferno\9\tracksdata\e-track-4.xml .\runtime\drivers\inferno\9\tracksdata\e-track-4.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-5.xml copy .\src\drivers\inferno\9\tracksdata\e-track-5.xml .\runtime\drivers\inferno\9\tracksdata\e-track-5.xml
 if exist .\src\drivers\inferno\9\tracksdata\e-track-6.xml copy .\src\drivers\inferno\9\tracksdata\e-track-6.xml .\runtime\drivers\inferno\9\tracksdata\e-track-6.xml
+if exist .\src\drivers\inferno\9\tracksdata\f-speedway.xml copy .\src\drivers\inferno\9\tracksdata\f-speedway.xml .\runtime\drivers\inferno\9\tracksdata\f-speedway.xml
+if exist .\src\drivers\inferno\9\tracksdata\g-speedway.xml copy .\src\drivers\inferno\9\tracksdata\g-speedway.xml .\runtime\drivers\inferno\9\tracksdata\g-speedway.xml
 if exist .\src\drivers\inferno\9\tracksdata\g-track-1.xml copy .\src\drivers\inferno\9\tracksdata\g-track-1.xml .\runtime\drivers\inferno\9\tracksdata\g-track-1.xml
 if exist .\src\drivers\inferno\9\tracksdata\g-track-2.xml copy .\src\drivers\inferno\9\tracksdata\g-track-2.xml .\runtime\drivers\inferno\9\tracksdata\g-track-2.xml
 if exist .\src\drivers\inferno\9\tracksdata\michigan.xml copy .\src\drivers\inferno\9\tracksdata\michigan.xml .\runtime\drivers\inferno\9\tracksdata\michigan.xml
@@ -4099,7 +4647,15 @@ call .\create_dir .\runtime\drivers\berniw2
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\berniw3
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\billy
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\drivers
+call .\create_dir .\runtime\drivers\bt
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -4180,6 +4736,10 @@ call .\create_dir .\runtime\.
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\graphic
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\modules
+call .\create_dir .\runtime\modules\simu
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules

@@ -23,9 +23,9 @@ DATADIR   = tracks/$(CATEGORY)/$(TRACK)
 
 DATA      = $(shell find * -maxdepth 0 -type f -print)
 
-data-tracks-base_PKGFILES	= $(DATA)
+data-tracks-oval_PKGFILES	= $(DATA)
 
-data-tracks-base_PKGDIR		= $(DATADIR)
+data-tracks-oval_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

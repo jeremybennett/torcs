@@ -20,11 +20,11 @@ DATADIR   = tracks/road/alpine-1
 
 DATA      = $(shell find * -maxdepth 0 -type f -print)
 
-DATA_PKG      = alpine-1.xml alpine-1.ac alpine-1.png background.png
+DATA_PKG      = $(DATA)
 
-data-tracks-base_PKGFILES	= $(DATA_PKG)
+data-tracks-road_PKGFILES	= $(DATA_PKG)
 
-data-tracks-base_PKGDIR	= $(DATADIR)
+data-tracks-road_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

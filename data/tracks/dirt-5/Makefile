@@ -20,9 +20,9 @@ DATADIR   = tracks/dirt/dirt-5
 
 DATA      = dirt-5.xml background.png dirt-5.ac dirt-5.png
 
-data-tracks-base_PKGFILES	= $(DATA)
+data-tracks-dirt_PKGFILES	= $(DATA)
 
-data-tracks-base_PKGDIR		= $(DATADIR)
+data-tracks-dirt_PKGDIR		= $(DATADIR)
 
 
 include ${MAKE_DEFAULT}

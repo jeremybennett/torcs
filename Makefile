@@ -54,7 +54,11 @@ PKGLIST		= src \
 		  data-cars-kcendra-gt \
 		  data-cars-kcendra-sport \
 		  data-cars-kcendra-roadsters \
-		  data-tracks-base data-devel \
+		  data-tracks-road \
+		  data-tracks-oval \
+		  data-tracks-dirt \
+		  data-devel \
+		  src-robots-bt \
 		  src-robots-astigot \
 		  src-robots-billy
 

@@ -61,7 +61,7 @@ INCFLAGS =  -I${EXPORTBASE}/include
 CPP = gcc -E -march=i686 -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.2.2
+VERSION = 1.2.2-rc1
 
 TAR = gtar
 GZIP_ENV = --best

@@ -20,9 +20,9 @@ DATADIR   = tracks/road/g-track-3
 
 DATA      = g-track-3.xml g-track-3.acc $(shell find * -maxdepth 0 -type f -name '*.png') $(shell find * -maxdepth 0 -type f -name '*.rgb')
 
-data-tracks-base_PKGFILES	= $(DATA)
+data-tracks-road_PKGFILES	= $(DATA)
 
-data-tracks-base_PKGDIR	= $(DATADIR)
+data-tracks-road_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

@@ -124,7 +124,7 @@ ReManage(tCarElt *car)
 
     /* PIT STOP */
     if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
-	snprintf(car->ctrl.msg[2], RM_MSG_LEN, "Can Pit");
+	sprintf(car->ctrl.msg[2], "Can Pit");
 	memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
     }
     
@@ -135,7 +135,7 @@ ReManage(tCarElt *car)
 	    sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
 	    ReRaceMsgSet(buf, 5);
 	} else {
-	    snprintf(car->ctrl.msg[2], RM_MSG_LEN, "in pits %.1fs", s->currentTime - info->startPitTime);
+	    sprintf(car->ctrl.msg[2], "in pits %.1fs", s->currentTime - info->startPitTime);
 	}
     } else if ((car->_pit) && (car->ctrl.raceCmd & RM_CMD_PIT_ASKED)) {
 	tdble lgFromStart = car->_trkPos.seg->lgfromstart;
@@ -363,10 +363,10 @@ ReRaceRules(tCarElt *car)
 	}
 	switch (penalty->penalty) {
 	case RM_PENALTY_DRIVETHROUGH:
-	    snprintf(car->ctrl.msg[3], RM_MSG_LEN, "Drive Through Penalty");
+	    sprintf(car->ctrl.msg[3], "Drive Through Penalty");
 	    break;
 	case RM_PENALTY_STOPANDGO:
-	    snprintf(car->ctrl.msg[3], RM_MSG_LEN, "Stop And Go Penalty");
+	    sprintf(car->ctrl.msg[3], "Stop And Go Penalty");
 	    break;
 	default:
 	    *(car->ctrl.msg[3]) = 0;

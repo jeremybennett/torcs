@@ -492,17 +492,17 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	GfParmWriteFile(NULL, PrefHdle, "Human");
     }
 
-    snprintf(car->_msgCmd[0], RM_MSG_LEN, "%s %s", (HCtx[idx]->ParamAbs ? "ABS" : ""), (HCtx[idx]->ParamAsr ? "ASR" : ""));
+    sprintf(car->_msgCmd[0], "%s %s", (HCtx[idx]->ParamAbs ? "ABS" : ""), (HCtx[idx]->ParamAsr ? "ASR" : ""));
     memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
 
     if (((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_JOY_BUT) && (joyInfo->levelup[cmd[CMD_SPDLIM].val] == 1)) ||
 	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_KEYBOARD) && (keyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)) ||
 	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_SKEYBOARD) && (skeyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN))) {
 	speedLimiter = 1;
-	snprintf(car->_msgCmd[1], RM_MSG_LEN, "Speed Limiter On");
+	sprintf(car->_msgCmd[1], "Speed Limiter On");
     } else {
 	speedLimiter = 0;
-	snprintf(car->_msgCmd[1], RM_MSG_LEN, "Speed Limiter Off");
+	sprintf(car->_msgCmd[1], "Speed Limiter Off");
     }
 	
 

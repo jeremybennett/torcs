@@ -18,3 +18,4 @@ EXPORTS
 	RtGetDistFromStart
 	RtGetDistFromStart2
 	RtDistToPit
+	RtTrackGetSeg
