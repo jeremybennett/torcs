@@ -55,12 +55,12 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="LIMITED SLIP"/>
-    <attnum name="ratio" val="3.5"/>
+    <attnum name="ratio" val="4.5"/>
   </section>
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.52"/>
-    <attnum name="max pressure" unit="kPa" val="25000"/>
+    <attnum name="max pressure" unit="kPa" val="35000"/>
   </section>
 
   <section name="Front Right Wheel">

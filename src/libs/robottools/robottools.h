@@ -147,6 +147,7 @@ extern void RtTrackSurfaceNormalL(tTrkLocPos *p, t3Dd *norm);
 extern int RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW);
 
 extern tdble RtGetDistFromStart(tCarElt *car);
+extern tdble RtGetDistFromStart2(tTrkLocPos *p);
 
 /****************
  * Telemetry    *

@@ -262,6 +262,7 @@ grSsgLoadTexState(char *img)
     }
 
     st = new ssgSimpleState;
+    st->ref();			/* cannot be removed */
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
@@ -306,6 +307,7 @@ grSsgEnvTexState(char *img)
     }
     
     st = new grMultiTexState;
+    st->ref();			/* cannot be removed */
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);
@@ -330,7 +332,7 @@ grSsgEnvTexState(char *img)
 
 
 ssgState *
-grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
+ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
 {
     char		buf[256];
     char		*s;
@@ -355,6 +357,7 @@ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
     }
 
     st = new ssgSimpleState;
+    st->ref();			/* cannot be removed */
     st->enable(GL_LIGHTING);
     st->enable(GL_TEXTURE_2D);
     st->enable(GL_BLEND);

@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "TORCS"=.\TORCS.dsp - Package Owner=<4>
+Project: "TORCS"=".\TORCS.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -89,53 +89,41 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name berniw2
     End Project Dependency
-}}}
-
-###############################################################################
-
-Project: "berniw"=.\src\drivers\berniw\berniw.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "berniw2"=.\src\drivers\berniw2\berniw2.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "cylos1"=.\src\drivers\cylos1\cylos1.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
     Begin Project Dependency
-    Project_Dep_Name tgf
+    Project_Dep_Name inferno5
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name robottools
+    Project_Dep_Name inferno6
     End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "damned"=.\src\drivers\damned\damned.dsp - Package Owner=<4>
+Project: "berniw"=".\src\drivers\berniw\berniw.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "berniw2"=".\src\drivers\berniw2\berniw2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "cylos1"=".\src\drivers\cylos1\cylos1.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -153,7 +141,19 @@ Package=<4>
 
 ###############################################################################
 
-Project: "human"=.\src\drivers\human\human.dsp - Package Owner=<4>
+Project: "cylos2"=".\src\drivers\cylos2\cylos2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "damned"=".\src\drivers\damned\damned.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -171,7 +171,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "inferno"=.\src\drivers\inferno\inferno.dsp - Package Owner=<4>
+Project: "human"=".\src\drivers\human\human.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -189,7 +189,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "inferno2"=.\src\drivers\inferno2\inferno2.dsp - Package Owner=<4>
+Project: "inferno"=".\src\drivers\inferno\inferno.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -207,7 +207,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "inferno3"=.\src\drivers\inferno3\inferno3.dsp - Package Owner=<4>
+Project: "inferno2"=".\src\drivers\inferno2\inferno2.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -225,7 +225,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "inferno4"=.\src\drivers\inferno4\inferno4.dsp - Package Owner=<4>
+Project: "inferno3"=".\src\drivers\inferno3\inferno3.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -243,7 +243,49 @@ Package=<4>
 
 ###############################################################################
 
-Project: "k1999"=.\src\drivers\K1999\K1999.dsp - Package Owner=<4>
+Project: "inferno4"=".\src\drivers\inferno4\inferno4.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "inferno5"=".\src\drivers\inferno5\inferno5.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "inferno6"=".\src\drivers\inferno6\inferno6.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "k1999"=".\src\drivers\K1999\K1999.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -258,7 +300,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "lliaw"=.\src\drivers\lliaw\lliaw.dsp - Package Owner=<4>
+Project: "lliaw"=".\src\drivers\lliaw\lliaw.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -276,7 +318,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "manual"=.\src\modules\raceman\practice\control\manual\manual.dsp - Package Owner=<4>
+Project: "manual"=".\src\modules\raceman\practice\control\manual\manual.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -294,7 +336,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "practice"=.\src\modules\raceman\practice\practice\practice.dsp - Package Owner=<4>
+Project: "practice"=".\src\modules\raceman\practice\practice\practice.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -312,7 +354,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "quickrace"=.\src\modules\raceman\quickrace\quickrace.dsp - Package Owner=<4>
+Project: "quickrace"=".\src\modules\raceman\quickrace\quickrace.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -324,7 +366,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "racemantools"=.\src\libs\racemantools\racemantools.dsp - Package Owner=<4>
+Project: "racemantools"=".\src\libs\racemantools\racemantools.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -342,7 +384,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "robottools"=.\src\libs\robottools\robottools.dsp - Package Owner=<4>
+Project: "robottools"=".\src\libs\robottools\robottools.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -357,7 +399,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "simuv2"=.\src\modules\simu\simuv2\simuv2.dsp - Package Owner=<4>
+Project: "simuv2"=".\src\modules\simu\simuv2\simuv2.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -384,7 +426,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "ssggraphlib"=.\src\modules\graphic\ssggraph\ssggraphlib.dsp - Package Owner=<4>
+Project: "ssggraphlib"=".\src\modules\graphic\ssggraph\ssggraphlib.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -396,7 +438,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "tanhoj"=.\src\drivers\tanhoj\tanhoj.dsp - Package Owner=<4>
+Project: "tanhoj"=".\src\drivers\tanhoj\tanhoj.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -408,7 +450,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "telemetry"=.\src\modules\telemetry\telemetry.dsp - Package Owner=<4>
+Project: "telemetry"=".\src\modules\telemetry\telemetry.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -420,7 +462,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "tgf"=.\src\libs\tgf\tgf.dsp - Package Owner=<4>
+Project: "tgf"=".\src\libs\tgf\tgf.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -435,7 +477,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "tita"=.\src\drivers\tita\tita.dsp - Package Owner=<4>
+Project: "tita"=".\src\drivers\tita\tita.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -447,7 +489,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "track"=.\src\modules\track\track.dsp - Package Owner=<4>
+Project: "track"=".\src\modules\track\track.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -459,7 +501,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "txml"=.\src\libs\txml\txml.dsp - Package Owner=<4>
+Project: "txml"=".\src\libs\txml\txml.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -471,7 +513,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "wtorcs"=.\src\windows\wtorcs.dsp - Package Owner=<4>
+Project: "wtorcs"=".\src\windows\wtorcs.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

@@ -18,6 +18,8 @@ typedef struct
 {
   ssgVertexArray	**vtx; /* the strips */
   ssgVtxTableShadow	**vta;
+  ssgColourArray        **clr;
+
   int			*state;
   int			*size;
   double		timeStrip;

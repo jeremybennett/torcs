@@ -20,9 +20,7 @@
 
 #include <stdio.h>
 #include <tgf.h>
-#ifdef RACE_ENGINE
 #include <singleplayer.h>
-#endif
 
 #include "mainmenu.h"
 #include "exitmenu.h"
@@ -77,13 +75,11 @@ TorcsMainMenuInit(void)
 		    GFUI_ALIGN_HC_VB,
 		    0);
 
-#ifdef RACE_ENGINE
     GfuiMenuButtonCreate(menuHandle,
 			 "Single Player", "Play in single player mode",
 			 ReSinglePlayerInit(menuHandle), GfuiScreenActivate);
-#endif
 
-    TorcsLoadRaceMan();
+    /* TorcsLoadRaceMan(); */
 
     GfuiMenuButtonCreate(menuHandle,
 			 "Options", "Configure",

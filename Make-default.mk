@@ -15,6 +15,15 @@
 #
 ##############################################################################
 
+# targets:
+#	 distclean
+#	 clean
+#	 default
+#	 install
+#	 datainstall
+#	 win32setup
+#	 packages
+
 ifndef TORCS_BASE
 
 -include ${HOME}/.torcs
@@ -48,7 +57,7 @@ DATA_WIN32       = ${TORCS_BASE}/setup_win32-data-from-CVS.bat
 DATA_WIN32_D     = ${TORCS_BASE}/setup_win32-data-from-CVS_debug.bat
 
 
-define create_dir_win32
+define create_dir_win32_
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
 CurDir='.' ; \
 echo "" >> ${INIT_WIN32} ; \
@@ -58,14 +67,38 @@ echo "call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
 done
 endef
 
+define create_dir_win32
+TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
+Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+CurDir='.' ; \
+echo "" >> ${INIT_WIN32} ; \
+echo "if not exist $$D goto $$Label" >> ${INIT_WIN32} ; \
+for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
+do CurDir=$$CurDir/$$Dir ; \
+echo "call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
+done
+endef
+
+define end_win32
+Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+echo ":$$Label" >> ${INIT_WIN32}
+endef
+
 define create_dir_win32_data
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
+Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
 CurDir='.' ; \
 echo "" >> ${DATA_WIN32} ; \
+echo "if not exist $$D goto $$Label" >> ${DATA_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
 echo "call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
 done
+endef
+
+define end_win32_data
+Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
+echo ":$$Label" >> ${DATA_WIN32}
 endef
 
 
@@ -227,8 +260,9 @@ installwin32data: $(DATA)
 	${create_dir_win32_data} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${DATADIR}/$$X"; \
-	echo "copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${DATA_WIN32} ; \
-	done
+	echo "if exist $$D/$$X copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${DATA_WIN32} ; \
+	done ; \
+	${end_win32_data}
 
 else
 
@@ -255,8 +289,9 @@ installshipwin32: $(SHIP)
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" ; \
-	echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" >> ${INIT_WIN32} ; \
-	done
+	echo "if exist $$D/$$X copy $$D/$$X ./runtime/${SHIPDIR}/$$X" >> ${INIT_WIN32} ; \
+	done ; \
+	${end_win32}
 
 else
 
@@ -283,8 +318,9 @@ exportwin32: $(EXPORTS)
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X $$createdir/$$X" ; \
-	echo "copy $$D/$$X $$createdir/$$X" >> ${INIT_WIN32} ; \
-	done
+	echo "if exist $$D/$$X copy $$D/$$X $$createdir/$$X" >> ${INIT_WIN32} ; \
+	done ; \
+	${end_win32}
 
 else
 
@@ -386,7 +422,7 @@ installsolibrary: ${SOLIBRARY}
 
 installsolibrarywin32:
 	@createdir="runtime/${SOLIBDIR}" ; \
-	${create_dir_win32}
+	${create_dir_win32_}
 
 else
 
@@ -417,7 +453,7 @@ installmodule: ${MODULE}
 
 installmodulewin32:
 	@createdir="runtime/${MODULEDIR}" ; \
-	${create_dir_win32}
+	${create_dir_win32_}
 
 
 else

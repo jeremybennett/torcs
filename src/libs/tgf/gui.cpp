@@ -325,22 +325,28 @@ GfuiScreenActivate(void *screen)
 
     GfuiScreen = (tGfuiScreen*)screen;
     
-    if (GfuiScreen->hasFocus == NULL) {
-	gfuiSelectNext(NULL);
-    }
-
     glutKeyboardFunc(gfuiKeyboard);
     glutSpecialFunc(gfuiSpecial);
     glutMouseFunc(gfuiMouse);
     glutMotionFunc(gfuiMotion);
     glutPassiveMotionFunc(gfuiPassiveMotion);
-    glutDisplayFunc(GfuiDisplay);
     glutIdleFunc(GfuiIdle);
+
+    if (GfuiScreen->onlyCallback == 0) {
+	if (GfuiScreen->hasFocus == NULL) {
+	    gfuiSelectNext(NULL);
+	}
+	glutDisplayFunc(GfuiDisplay);
+    } else {
+	glutDisplayFunc(GfuiDisplayNothing);
+    }
     
     if (GfuiScreen->onActivate) GfuiScreen->onActivate(GfuiScreen->userActData);
-    GfuiDisplay();
-    glutPostRedisplay();
 
+    if (GfuiScreen->onlyCallback == 0) {
+	GfuiDisplay();
+	glutPostRedisplay();
+    }
 }
 
 
@@ -493,6 +499,37 @@ GfuiScreenRelease(void *scr)
     }
     free(screen);
 }
+
+/** Create a callback hook.
+    @ingroup	gui
+    @param	userDataOnActivate	Parameter to the activate function
+    @param	onActivate		Function called when the screen is activated
+    @return	New hook instance
+		<br>NULL if Error
+ */
+void *
+GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate)
+{
+    tGfuiScreen	*screen;
+    
+    screen = (tGfuiScreen*)calloc(1, sizeof(tGfuiScreen));
+    screen->onActivate = onActivate;
+    screen->userActData = userDataOnActivate;
+    screen->onlyCallback = 1;
+    
+    return (void*)screen;
+}
+
+/** Release the given hook.
+    @ingroup	gui
+    @param	hook	Hook to release
+ */
+void
+GfuiHookRelease(void *hook)
+{
+    free(hook);
+}
+
 
 
 /** Add a Keyboard callback to a screen.

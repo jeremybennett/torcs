@@ -93,6 +93,18 @@ typedef struct RobotItf {
 #define ROB_ATTR_GREEN		"green"
 #define ROB_ATTR_BLUE		"blue"
 
+#define ROB_ATTR_TYPE		"type"
+
+#define ROB_VAL_HUMAN		"human"
+#define ROB_VAL_ROBOT		"robot"
+
+#define ROB_ATTR_LEVEL		"skill level"
+
+#define ROB_VAL_ROOKIE		"rookie"
+#define ROB_VAL_AMATEUR		"amateur"
+#define ROB_VAL_SEMI_PRO	"semi-pro"
+#define ROB_VAL_PRO		"pro"
+
 #endif /* _ROBOTV1_H_ */ 
 
 

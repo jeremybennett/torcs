@@ -60,6 +60,7 @@ typedef struct DrvElt
     char		*dname;
     char		*name;
     int			sel;
+    int			human;
 } tDrvElt;
 
 static tRingListHead DrvList = {(tRingList*)&DrvList, (tRingList*)&DrvList};
@@ -174,7 +175,11 @@ rmSelectDeselect(void * dummy )
 	name = GfuiScrollListExtractSelectedElement(scrHandle, src, (void**)&curDrv);
 	if (name) {
 	    dst = unselectedScrollList;
-	    GfuiScrollListInsertElement(scrHandle, dst, name, 100, (void*)curDrv);
+	    if (curDrv->human) {
+		GfuiScrollListInsertElement(scrHandle, dst, name, 0, (void*)curDrv);
+	    } else {
+		GfuiScrollListInsertElement(scrHandle, dst, name, 100, (void*)curDrv);
+	    }
 	} else {
 	    return;
 	}
@@ -199,7 +204,7 @@ rmSelectDeselect(void * dummy )
 	    }
 	}
     } else {
-	if (strlen(cardllname) == 0) {
+	if ((strlen(cardllname) == 0) || (curDrv->human)) {
 	    GfParmSetStr(ds->param, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, curDrv->dname);
 	    GfParmSetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL, curDrv->index);
 	    GfuiLabelSetText(scrHandle, FocDrvLabelId, curDrv->name);
@@ -240,6 +245,7 @@ RmDriversSelect(void *vs)
     void	*robhdle;
     struct stat st;
     char	*carName;
+    int		human;
 
 #define B_BASE  380
 #define B_HT    30
@@ -308,13 +314,24 @@ RmDriversSelect(void *vs)
 		    robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 		    sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, curmod->modInfo[i].index);
 		    carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+		    if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {
+			human = 1;
+		    } else {
+			human = 0;
+		    }
 		    sprintf(path, "cars/%s/%s.xml", carName, carName);
 		    if (!stat(path, &st)) {
 			curDrv = (tDrvElt*)calloc(1, sizeof(tDrvElt));
 			curDrv->index = curmod->modInfo[i].index;
 			curDrv->dname = strdup(dname);
 			curDrv->name = strdup(curmod->modInfo[i].name);
-			GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+			if (human) {
+			    curDrv->human = 1;
+			    GfRlstAddFirst(&DrvList, (tRingList*)curDrv);
+			} else {
+			    curDrv->human = 0;
+			    GfRlstAddLast(&DrvList, (tRingList*)curDrv);
+			}
 		    } else {
 			GfOut("Driver %s not selected because car %s is not present\n", curmod->modInfo[i].name, carName);
 		    }

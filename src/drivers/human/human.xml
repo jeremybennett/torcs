@@ -28,6 +28,8 @@
         <attnum name="red" val="1.0"/>
         <attnum name="green" val="1.0"/>
         <attnum name="blue" val="0.5"/>
+	<attstr name="type" val="human"/>
+	<attstr name="skill level" val="rookie"/>
       </section>
 
     </section>

@@ -27,6 +27,10 @@
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
   </section>
 
+  <section name="Front Wing">
+    <attnum name="angle" unit="deg" min="0" max="20" val="4"/>
+  </section>
+
   <section name="Rear Wing">
     <attnum name="angle" unit="deg" min="0" max="30" val="12"/>
   </section>
@@ -84,7 +88,7 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE" val="LIMITED SLIP"/>
-    <attnum name="ratio" min="0" max="5" val="4.8"/>
+    <attnum name="ratio" min="0" max="5" val="4.5"/>
   </section>
 
   <section name="Front Right Wheel">

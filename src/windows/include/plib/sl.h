@@ -1,6 +1,6 @@
 /*
      PLIB - A Suite of Portable Game Libraries
-     Copyright (C) 2001  Steve Baker
+     Copyright (C) 1998,2002  Steve Baker
  
      This library is free software; you can redistribute it and/or
      modify it under the terms of the GNU Library General Public
@@ -13,7 +13,7 @@
      Library General Public License for more details.
  
      You should have received a copy of the GNU Library General Public
-     License along with this library; if not, write to the Free
+     License along with this library; if not, write to the Free Software
      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  
      For further information visit http://plib.sourceforge.net
@@ -37,7 +37,7 @@
 #define SLDSP_DEFAULT_DEVICE "dsp"		// dummy ...
 #elif defined(SOLARIS)
 #define SLDSP_DEFAULT_DEVICE "/dev/audio"
-#elif defined(macintosh)
+#elif defined(macintosh) || defined(__APPLE__)
 #define SLDSP_DEFAULT_DEVICE "dsp" // dummy
 #else
 #error "Port me !"
@@ -58,7 +58,7 @@ class slEnvelope     ;
 class slScheduler    ;
 class slDSP          ;
 
-extern char *__slPendingError ;
+extern const char *__slPendingError ;
 
 class slDSP
 {
@@ -83,7 +83,7 @@ private:
 #elif defined(sgi)
   ALconfig        config;       // configuration stuff
   ALport          port;         // .. we are here 
-#elif defined(macintosh)
+#elif defined(macintosh) || defined(__APPLE__)
 
 // Size of the data chunks written with write().
 // This should be a multiple of 1024.
@@ -146,7 +146,7 @@ private:
 
 #endif
 
-  void open ( char *device, int _rate, int _stereo, int _bps ) ;
+  void open ( const char *device, int _rate, int _stereo, int _bps ) ;
   void close () ;
   void getBufferInfo () ;
   void write ( void *buffer, size_t length ) ;
@@ -164,7 +164,7 @@ public:
     open ( SLDSP_DEFAULT_DEVICE, _rate, _stereo, _bps ) ;
   } 
 
-  slDSP ( char *device, int _rate = SL_DEFAULT_SAMPLING_RATE,
+  slDSP ( const char *device, int _rate = SL_DEFAULT_SAMPLING_RATE,
           int _stereo = SL_FALSE, int _bps = 8 )
   {
     open ( device, _rate, _stereo, _bps ) ;
@@ -177,12 +177,14 @@ public:
 
   void play ( void *buffer, size_t length ) { write ( buffer, length ) ; } 
 
-  int not_working() { return error ; } /* This was a typo - but people use it */
-  int notWorking () { return error ; }
+  /* This was a typo - but people use it */
+  int not_working() const { return error ; }
 
-  int getBps   () { return bps    ; }
-  int getRate  () { return rate   ; }
-  int getStereo() { return stereo ; }
+  int notWorking () const { return error ; }
+
+  int getBps   () const { return bps    ; }
+  int getRate  () const { return rate   ; }
+  int getStereo() const { return stereo ; }
 
   void sync () ;
   void stop () ;
@@ -217,13 +219,13 @@ public:
 
   slSample () { init () ; }
 
-  slSample ( Uchar *buff, int leng )
+  slSample ( const Uchar *buff, int leng )
   {
     init () ;
     setBuffer ( buff, leng ) ;
   }
 
-  slSample ( char *fname, class slDSP *dsp = NULL )
+  slSample ( const char *fname, const class slDSP *dsp = NULL )
   {
     if ( dsp != NULL && dsp->notWorking () )
       dsp = NULL ;
@@ -239,31 +241,31 @@ public:
       __slPendingError =
         "slSample: FATAL ERROR - Application deleted a sample while it was playing." ;
 
-    delete buffer ;
+    delete [] buffer ;
   }
   
   void ref   () { ref_count++ ; }
   void unRef () { ref_count-- ; }
 
-  int getPlayCount () { return ref_count ; }
+  int getPlayCount () const { return ref_count ; }
 
-  char  *getComment () { return comment ; }
+  char  *getComment () const { return comment ; }
 
-  void   setComment ( char *nc )
+  void   setComment ( const char *nc )
   {
-    delete comment ;
+    delete [] comment ;
     comment = new char [ strlen ( nc ) + 1 ] ;
     strcpy ( comment, nc ) ;
   }
 
-  Uchar *getBuffer () { return buffer ; }
-  int    getLength () { return length ; }
+  Uchar *getBuffer () const { return buffer ; }
+  int    getLength () const { return length ; }
 
-  void  autoMatch ( slDSP *dsp ) ;
+  void  autoMatch ( const slDSP *dsp ) ;
 
-  void   setBuffer ( Uchar *buff, int leng )
+  void   setBuffer ( const Uchar *buff, int leng )
   {
-    delete buffer ;
+    delete [] buffer ;
 
     buffer = new Uchar [ leng ] ;
 
@@ -279,19 +281,19 @@ public:
   void setBps    ( int b ) { bps    = b ; }
   void setStereo ( int s ) { stereo = s ; }
 
-  int  getRate   ()        { return rate   ; }
-  int  getBps    ()        { return bps    ; }
-  int  getStereo ()        { return stereo ; }
+  int  getRate   () const  { return rate   ; }
+  int  getBps    () const  { return bps    ; }
+  int  getStereo () const  { return stereo ; }
 
-  float getDuration ()     { return (float) getLength() /
-                                    (float) ( (getStereo()?2.0f:1.0f)*
-                                              (getBps()/8.0f)*getRate() ) ; }
+  float getDuration () const { return (float) getLength() /
+                                      (float) ( (getStereo()?2.0f:1.0f)*
+                                                (getBps()/8.0f)*getRate() ) ; }
 
-  int loadFile    ( char *fname ) ;
+  int loadFile    ( const char *fname ) ;
 
-  int loadRawFile ( char *fname ) ;
-  int loadAUFile  ( char *fname ) ;
-  int loadWavFile ( char *fname ) ;
+  int loadRawFile ( const char *fname ) ;
+  int loadAUFile  ( const char *fname ) ;
+  int loadWavFile ( const char *fname ) ;
 
   void changeRate       ( int r ) ;
   void changeBps        ( int b ) ;
@@ -300,7 +302,7 @@ public:
 
   void adjustVolume ( float vol ) ;
 
-  void print ( FILE *fd )
+  void print ( FILE *fd ) const
   {
     if ( buffer == NULL )
     {
@@ -355,7 +357,7 @@ typedef void (*slCallBack) ( slSample *, slEvent, int ) ;
 
 class slEnvelope
 {
-public:  /* SJB TESTING! */
+protected:
 
   float *time  ;
   float *value ;
@@ -364,7 +366,7 @@ public:  /* SJB TESTING! */
 
   slReplayMode replay_mode ;
 
-  int getStepDelta ( float *_time, float *delta ) ;
+  int getStepDelta ( float *_time, float *delta ) const ;
 
 public:
 
@@ -400,14 +402,14 @@ public:
       __slPendingError =
       "slEnvelope: FATAL ERROR - Application deleted an envelope while it was playing.\n" ;
 
-    delete time ;
-    delete value ;
+    delete [] time ;
+    delete [] value ;
   }
 
   void ref   () { ref_count++ ; }
   void unRef () { ref_count-- ; }
 
-  int getPlayCount () { return ref_count ; }
+  int getPlayCount () const { return ref_count ; }
 
   void setStep ( int n, float _time, float _value )
   {
@@ -418,12 +420,12 @@ public:
     }
   }
 
-  float getStepValue ( int s ) { return value [ s ] ; }
-  float getStepTime  ( int s ) { return time  [ s ] ; }
+  float getStepValue ( int s ) const { return value [ s ] ; }
+  float getStepTime  ( int s ) const { return time  [ s ] ; }
 
-  int   getNumSteps  () { return nsteps ; }
+  int   getNumSteps  () const { return nsteps ; }
 
-  float getValue ( float _time ) ;
+  float getValue ( float _time ) const ;
 
   void applyToPitch     ( Uchar *dst, slPlayer *src, int nframes, int start, int next_env ) ;
   void applyToInvPitch  ( Uchar *dst, slPlayer *src, int nframes, int start, int next_env ) ;
@@ -435,6 +437,7 @@ public:
 #define SL_MAX_SAMPLES   16
 #define SL_MAX_CALLBACKS (SL_MAX_SAMPLES * 2)
 #define SL_MAX_ENVELOPES 4
+#define SL_MAX_MIXERINPUTS 10
 
 enum slEnvelopeType
 {
@@ -497,9 +500,9 @@ public:
 
   virtual ~slPlayer () ;
 
-  slPreemptMode getPreemptMode () { return preempt_mode ; }
+  slPreemptMode getPreemptMode () const { return preempt_mode ; }
 
-  int getPriority ()
+  int getPriority () const
   {
     return ( isRunning() &&
              preempt_mode == SL_SAMPLE_CONTINUE ) ? (SL_MAX_PRIORITY+1) :
@@ -535,15 +538,15 @@ public:
     status = SL_SAMPLE_DONE ;
   } 
 
-  int getMagic  () { return magic  ; }
-  int isWaiting () { return status == SL_SAMPLE_WAITING ; } 
-  int isPaused  () { return status == SL_SAMPLE_PAUSED  ; } 
-  int isRunning () { return status == SL_SAMPLE_RUNNING ; } 
-  int isDone    () { return status == SL_SAMPLE_DONE    ; }
+  int getMagic  () const { return magic  ; }
+  int isWaiting () const { return status == SL_SAMPLE_WAITING ; } 
+  int isPaused  () const { return status == SL_SAMPLE_PAUSED  ; } 
+  int isRunning () const { return status == SL_SAMPLE_RUNNING ; } 
+  int isDone    () const { return status == SL_SAMPLE_DONE    ; }
 
   virtual int preempt ( int delay ) ;
   
-  virtual slSample *getSample () = 0 ;
+  virtual slSample *getSample () const = 0 ;
 
   void read ( int nframes, Uchar *dest, int next_env = 0 ) ;
 } ;
@@ -556,10 +559,10 @@ class slMODPlayer : public slPlayer
   MODfile *mf ;
 
   void  low_read ( int nframes, Uchar *dest ) ;
-  void  init ( char *fname ) ;
+  void  init ( const char *fname ) ;
 public:
 
-  slMODPlayer ( char *fname, slReplayMode  rp_mode = SL_SAMPLE_ONE_SHOT, 
+  slMODPlayer ( const char *fname, slReplayMode rp_mode = SL_SAMPLE_ONE_SHOT, 
 		int pri = 0, slPreemptMode pr_mode = SL_SAMPLE_DELAY,
                 int _magic = 0, slCallBack cb = NULL ) :
                 slPlayer ( rp_mode, pri, pr_mode, _magic, cb )
@@ -571,7 +574,7 @@ public:
   ~slMODPlayer () ;
 
   int preempt ( int delay ) ;
-  virtual slSample *getSample () { return NULL ; }
+  virtual slSample *getSample () const { return NULL ; }
 
   void skip ( int nframes ) ;
 } ;
@@ -627,7 +630,7 @@ public:
     bufferPos       = NULL ;
   } 
 
-  slSample *getSample () { return sample ; }
+  slSample *getSample () const { return sample ; }
 
   void skip ( int nframes ) ;
 } ;
@@ -640,12 +643,10 @@ class slScheduler : public slDSP
 
   float safety_margin ;
 
-  int mixer_buffer_size ;
+  int mixer_buffer_size, mixer_gain ;
 
   Uchar *mixer_buffer  ;
-  Uchar *spare_buffer0 ;
-  Uchar *spare_buffer1 ;
-  Uchar *spare_buffer2 ;
+  Uchar *mixer_inputs [ SL_MAX_MIXERINPUTS + 1 ] ;
   
   Uchar *mixer ;
   int amount_left ;
@@ -654,24 +655,6 @@ class slScheduler : public slDSP
   slPlayer *music ;
 
   void init () ;
-
-  void mixBuffer ( slPlayer *a, slPlayer *b ) ;
-
-  void mixBuffer ( slPlayer *a, slPlayer *b, slPlayer *c ) ;
-
-  Uchar mix ( Uchar a, Uchar b )
-  {
-    register int r = a + b - 0x80 ;
-    return ( r > 255 ) ? 255 :
-           ( r <  0  ) ?  0  : r ;
-  }
-
-  Uchar mix ( Uchar a, Uchar b, Uchar c )
-  {
-    register int r = a + b + c - 0x80 - 0x80 ;
-    return ( r > 255 ) ? 255 :
-           ( r <  0  ) ?  0  : r ;
-  }
 
   void realUpdate ( int dump_first = SL_FALSE ) ;
 
@@ -684,17 +667,17 @@ class slScheduler : public slDSP
 public:
 
   slScheduler ( int _rate = SL_DEFAULT_SAMPLING_RATE ) : slDSP ( _rate, SL_FALSE, 8 ) { init () ; }
-  slScheduler ( char *device,
+  slScheduler ( const char *device,
                 int _rate = SL_DEFAULT_SAMPLING_RATE ) : slDSP ( device, _rate, SL_FALSE, 8 ) { init () ; }
  ~slScheduler () ;
 
   static slScheduler *getCurrent () { return current ; }
 
-  int   getTimeNow     () { return now ; }
-  float getElapsedTime ( int then ) { return (float)(now-then)/(float)getRate() ; }
+  int   getTimeNow     () const { return now ; }
+  float getElapsedTime ( int then ) const { return (float)(now-then)/(float)getRate() ; }
 
-  void setMaxConcurrent ( int mc ) { /* Stubbed out until PLIB 1.5.0 */ }
-  int  getMaxConcurrent () { return 3 ; /* Stubbed out until PLIB 1.5.0 */ }
+  void setMaxConcurrent ( int mc );
+  int  getMaxConcurrent () const ;
 
   void flushCallBacks () ;
   void addCallBack    ( slCallBack c, slSample *s, slEvent e, int m ) ;
@@ -718,13 +701,13 @@ public:
   int  loopSample        ( slSample *s, int pri = 0,
                            slPreemptMode mode = SL_SAMPLE_MUTE,
                            int magic = 0, slCallBack cb = NULL ) ;
-  int  loopMusic         ( char *fname, int pri = 0,
+  int  loopMusic         ( const char *fname, int pri = 0,
                            slPreemptMode mode = SL_SAMPLE_MUTE,
                            int magic = 0, slCallBack cb = NULL ) ;
   int  playSample        ( slSample *s, int pri = 1,
                            slPreemptMode mode = SL_SAMPLE_ABORT,
                            int magic = 0, slCallBack cb = NULL ) ;
-  int  playMusic         ( char *fname, int pri = 1,
+  int  playMusic         ( const char *fname, int pri = 1,
                            slPreemptMode mode = SL_SAMPLE_ABORT,
                            int magic = 0, slCallBack cb = NULL ) ;
 

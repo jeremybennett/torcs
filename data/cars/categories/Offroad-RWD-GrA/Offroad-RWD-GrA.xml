@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="OFFROAD GrA" type="template">
+<params name="Offroad-RWD-GrA" type="template">
 
 
   <section name="Car">

@@ -19,8 +19,8 @@
 
 DATADIR   = cars/porsche-gt3rs
 
-DATA      = porsche-gt3rs.xml porsche-gt3rs.ac porsche-gt3rs.rgb tex-wheel.rgb porsche-gt3rs-src.ac
-# texmapper.xml porsche-gt3rs-base.ac
+DATA      = porsche-gt3rs.xml porsche-gt3rs.ac porsche-gt3rs.rgb tex-wheel.rgb porsche-gt3rs-src.ac porsche-gt3rs-lod1.acc
+# texmapper.xml porsche-gt3rs-base.ac porsche-gt3rs-lod1.ac
 
 data-cars-gt_PKGFILES	= $(DATA)
 

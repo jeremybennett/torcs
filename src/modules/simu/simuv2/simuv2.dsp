@@ -121,6 +121,10 @@ SOURCE=.\car.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\categories.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\collide.cpp
 # End Source File
 # Begin Source File

@@ -28,7 +28,7 @@
 #endif
 #include <GL/glut.h>
 #include <plib/ssg.h>
-
+#include <plib/ssgAux.h>
 #include <tgf.h>
 #include <track.h>
 #include <car.h>
@@ -69,6 +69,7 @@ grMultiTexState	*grEnvShadowState=NULL;
 
 ssgRoot *TheScene = 0;
 ssgBranch *ThePits = 0;
+ssgTransform *sun = NULL ;
 
 static void initBackground(void);
 
@@ -407,6 +408,15 @@ grInitScene(void)
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
+    ssgaLensFlare      *sun_obj      = NULL ;
+    sun_obj  = new ssgaLensFlare () ;
+    sun      = new ssgTransform ;
+    sun      -> setTransform    ( light_position ) ;
+    sun      -> addKid          ( sun_obj  ) ;
+    TheScene    -> addKid( sun) ;
+
+
+
     /* GUIONS GL_TRUE */
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_FALSE);
 
@@ -417,8 +427,6 @@ grInitScene(void)
     glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL_EXT,GL_SEPARATE_SPECULAR_COLOR_EXT);
 #endif
 #endif
-    
-    
 
     return 0;
 }
@@ -791,6 +799,7 @@ grCustomizePits(void)
 	    }
 	    
 	    st = grSsgLoadTexStateEx("logo.rgb", buf, FALSE, FALSE);
+	    ((ssgSimpleState*)st)->setShininess(50);
 	    
 	    RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
 	    RtTrackSideNormalG(pits->driversPits[i].pos.seg, x, y, pits->side, &normalvector);

@@ -623,6 +623,31 @@ RtGetDistFromStart(tCarElt *car)
     return lg;
 }
 
+/** Get the distance from the start lane.
+    @ingroup	tracktools
+    @param	p	Local position
+    @return	The distance between the start lane and the car.
+ */
+tdble
+RtGetDistFromStart2(tTrkLocPos *p)
+{
+    tTrackSeg	*seg;
+    tdble	lg;
+    
+    seg = p->seg;
+    lg = seg->lgfromstart;
+    
+    switch (seg->type) {
+    case TR_STR:
+	lg += p->toStart;
+	break;
+    default:
+	lg += p->toStart * seg->radius;
+	break;
+    }
+    return lg;
+}
+
 
 /** Get the distance to the pit stop.
     @ingroup	tracktools

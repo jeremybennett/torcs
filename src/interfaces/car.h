@@ -59,6 +59,7 @@ typedef struct {
     char	*category;	/**< Car's category */
     int		raceNumber;	/**< Car's race number */
     int		startRank;	/**< Car's starting position */
+    int		skillLevel;	/**< Driver's skill level (0=rookie -> 3=pro) */
     tdble	iconColor[3];	/**< Car color in leaders board */
     t3Dd	dimension;	/**< Car's mesures */
     t3Dd	drvPos;		/**< Driver's position */
@@ -71,6 +72,7 @@ typedef struct {
 #define _name		info->name		/**< short cut to tInitCar#name */
 #define _carName	info->carName		/**< short cut to tInitCar#carName */
 #define _category	info->cartegory		/**< short cut to tInitCar#cartegory */
+#define _skillLevel	info->skillLevel	/**< short cut to tInitCar#skillLevel */
 #define _raceNumber	info->raceNumber	/**< short cut to tInitCar#raceNumber */
 #define _startRank	info->startRank		/**< short cut to tInitCar#startRank */
 #define _dimension	info->dimension		/**< short cut to tInitCar#dimension */

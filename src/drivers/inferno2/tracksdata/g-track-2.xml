@@ -25,9 +25,9 @@
     <attnum name="AdvStep"   val="5.0"/>
     <attnum name="VGain"     val="0.0005"/>
     <attnum name="preDy"     val="0"/>
-    <attnum name="spdtgt"    val="260.0"/>
-    <attnum name="spdtgt2"   val="2.0"/>
-    <attnum name="steerMult" val="2.2"/>
+    <attnum name="spdtgt"    val="300.0"/>
+    <attnum name="spdtgt2"   val="1.0"/>
+    <attnum name="steerMult" val="1.0"/>
     <attnum name="offset"    val="1.0"/>
   </section>
 

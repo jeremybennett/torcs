@@ -461,17 +461,21 @@ gfuiGrButtonAction(int action)
 		button->onPush(button->userDataOnPush);
 	    }
 	} else if (action == 1) { /* mouse up */
-	    button->state = GFUI_BTN_RELEASED;
-	    if (button->mouseBehaviour == GFUI_MOUSE_UP) {
-		if (button->onPush != NULL) {
-		    button->onPush(button->userDataOnPush);
+	    if (button->state != GFUI_BTN_RELEASED) {
+		button->state = GFUI_BTN_RELEASED;
+		if (button->mouseBehaviour == GFUI_MOUSE_UP) {
+		    if (button->onPush != NULL) {
+			button->onPush(button->userDataOnPush);
+		    }
 		}
 	    }
 	} else { /* mouse down */
-	    button->state = GFUI_BTN_PUSHED;
-	    if (button->mouseBehaviour == GFUI_MOUSE_DOWN) {
-		if (button->onPush != NULL) {
-		    button->onPush(button->userDataOnPush);
+	    if (button->state != GFUI_BTN_PUSHED) {
+		button->state = GFUI_BTN_PUSHED;
+		if (button->mouseBehaviour == GFUI_MOUSE_DOWN) {
+		    if (button->onPush != NULL) {
+			button->onPush(button->userDataOnPush);
+		    }
 		}
 	    }
 	}

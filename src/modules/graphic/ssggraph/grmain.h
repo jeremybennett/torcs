@@ -79,6 +79,7 @@ extern void shutdownCars(void);
 extern int  initTrack(tTrack *track);
 extern void shutdownTrack(void);
 extern int maxTextureUnits;
+extern tdble grMaxDammage;
 
 
 #endif /* _GRMAIN_H_ */ 

@@ -21,6 +21,7 @@
 
 #define CAR_DAMMAGE	0.1
 
+
 void
 SimCarCollideZ(tCar *car)
 {
@@ -50,7 +51,7 @@ SimCarCollideZ(tCar *car)
 		car->DynGCg.vel.x -= normal.x * dotProd;
 		car->DynGCg.vel.y -= normal.y * dotProd;
 		car->DynGCg.vel.z -= normal.z * dotProd;
-		car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd));
+		car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 	    }
 	}
     }
@@ -124,7 +125,7 @@ SimCarCollideXYScene(tCar *car)
 	
 	/* rebound */
 	dotProd = (nx * corner->vel.x + ny * corner->vel.y);
-	car->dammage += (int)(curBarrier->surface->kDammage * fabs(dotProd));
+	car->dammage += (int)(curBarrier->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 	dotProd *= curBarrier->surface->kRebound;
 	dotprod2 = (nx * cx + ny * cy);
 
@@ -266,7 +267,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	damFactor = 1.0;
     }
     /* printf("Coll %d -> %f - %f %f %f \n", car1->carElt->index, damFactor, atan2(rap[1], rap[0]), car1->carElt->_yaw, atmp); */
-    car1->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor);
+    car1->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor * simDammageFactor[car1->carElt->_skillLevel]);
 
     atmp = atan2(rbp[1], rbp[0]);
     if (fabs(atmp) < (PI / 3.0)) {
@@ -275,7 +276,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	damFactor = 1.0;
     }
     /* printf("Coll %d -> %f - %f %f %f \n---\n", car2->carElt->index, damFactor, atan2(rbp[1], rbp[0]), car2->carElt->_yaw, atmp); */
-    car2->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor);
+    car2->dammage += (int)(CAR_DAMMAGE * fabs(j) * damFactor * simDammageFactor[car2->carElt->_skillLevel]);
 
 /*     if (j < 0) { */
 /* 	return; */

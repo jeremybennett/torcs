@@ -100,6 +100,9 @@ extern tCar *SimCarTable;
 extern t3Dd vectStart[];
 extern t3Dd vectEnd[];
 
+extern tdble simDammageFactor[];
+extern tdble simSkidFactor[];
+
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13
 #define SIM_VECT_ACCEL	14

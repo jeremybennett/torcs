@@ -21,18 +21,47 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-extern tdble Tright[10];
-extern tdble MaxSpeed[10];
-extern tdble hold[10];
+extern tdble Tright[];
+extern tdble MaxSpeed[];
+extern tdble hold[];
+extern int   PitState[];
+extern tdble DynOffset[];
 extern tdble shiftThld[10][MAX_GEARS+1];
 extern tTrack *DmTrack;
+extern tdble O1[];
+extern tdble O2[];
+extern tdble O3[];
+extern tdble O4[];
+extern tdble O5[];
+extern tdble OP[];
+extern tdble OW[];
+extern tdble VM;
+extern tdble VM1[];
+extern tdble VM2[];
+extern tdble VM3[];
 
+extern tdble ConsFactor;
+extern tdble OffsetApproach;
+extern tdble OffsetFinal;
+extern tdble OffsetExit;
+extern tdble LgfsFinal[];
+
+
+#define PIT_STATE_NO            -1
+#define PIT_STATE_NONE           0
+#define PIT_STATE_ASKED          1
+#define PIT_STATE_ENTERED        2
+#define PIT_STATE_PITLANE_BEFORE 3
+#define PIT_STATE_PIT_ENTRY      4
+#define PIT_STATE_PIT_EXIT       5
+#define PIT_STATE_PITLANE_AFTER  6
+#define PIT_STATE_EXIT           7
+#define PIT_STATE_DECEL          8
 
 extern void InitGears(tCarElt* car, int idx);
 extern void SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect);
 extern tdble GetDistToStart(tCarElt *car);
 extern void CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny);
-extern tdble GetDistToStart2(tTrkLocPos *trkPos);
 
 
 #endif /* _COMMON_H_ */ 

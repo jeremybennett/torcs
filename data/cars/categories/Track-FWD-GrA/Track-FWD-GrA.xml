@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="TORCS GrA" type="template">
+<params name="Track-FWD-GrA" type="template">
 
   <section name="Car">
     <attstr name="category" val="Track-FWD-GrA"/>

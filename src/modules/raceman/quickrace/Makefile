@@ -20,7 +20,7 @@ MODULE    = quickrace.so
 
 MODULEDIR = modules/raceman
 
-SOURCES   = quickrace.cpp qracemain.cpp qracegl.cpp qrmenu.cpp
+SOURCES   = quickrace.cpp qracemain.cpp qrmenu.cpp
 
 SHIPDIR   = config/quickrace
 

@@ -36,11 +36,96 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 }
 #endif
 
+tRmInfo *RmInfo;
+
+/***************************************************************/
+/* BACK TO RACE HOOK */
+
+static void	*BackToRaceHookHandle = 0;
+
 static void
-qrStart2(void *backmenu)
+BackToRaceHookActivate(void * /* dummy */)
 {
-    GfuiScreenDeactivate();
-    qrMenuRun(backmenu);
+    RmInfo->_reState = RE_STATE_RACE;
+    GfuiScreenActivate(RmInfo->_reGameScreen);
+}
+
+static void *
+qrBackToRaceHookInit(void)
+{
+    if (BackToRaceHookHandle) {
+	return BackToRaceHookHandle;
+    }
+
+    BackToRaceHookHandle = GfuiHookCreate(0, BackToRaceHookActivate);
+
+    return BackToRaceHookHandle;
+}
+
+void
+qrBackToRaceHookShutdown(void)
+{
+    if (BackToRaceHookHandle) {
+	GfuiHookRelease(BackToRaceHookHandle);
+	BackToRaceHookHandle = 0;
+    }
+}
+
+/* Run state from Race Engine */
+static int
+runState(tRmInfo *rmInfo)
+{
+    switch (rmInfo->_reState) {
+    case RE_STATE_CONFIG:
+	RmInfo = rmInfo;
+	GfOut("QuickRace runState: RE_STATE_CONFIG\n");
+	qrConfigInit();
+	return RM_ASYNC | RM_NEXT_STEP;	/* Race engine will be called back later */
+
+    case RE_STATE_EVENT_INIT:
+	GfOut("QuickRace runState: RE_STATE_EVENT_INIT\n");
+	return RM_SYNC | RM_NEXT_STEP;
+
+    case RE_STATE_PRE_RACE:
+	GfOut("QuickRace runState: RE_STATE_PRE_RACE\n");
+	{
+	    tdble	dist;
+
+	    dist = GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_DISTANCE, (char*)NULL, 0);
+	    if (dist== 0.0) {
+		rmInfo->s->_totLaps = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_LAPS, (char*)NULL, 30);
+	    } else {
+		rmInfo->s->_totLaps = ((int)(dist / rmInfo->track->length)) + 1;
+	    }
+	    rmInfo->s->_raceType = RM_TYPE_RACE;
+	    rmInfo->s->_maxDammage = (int)GfParmGetNum(rmInfo->params, RM_SECT_RACE, RM_ATTR_MAX_DMG, (char*)NULL, 10000);
+	}
+	return RM_SYNC | RM_NEXT_STEP;
+	
+    case RE_STATE_RACE:
+	return RM_ASYNC /* | RM_END_RACE */;
+
+    case RE_STATE_RACE_END:
+	GfOut("QuickRace runState: RE_STATE_RACE_END\n");
+	if (rmInfo->s->_raceState != RM_RACE_ENDED) {
+	    RmConfirmScreen("End Race ?",
+			    "Yes", "Back to Main Menu", rmInfo->_reGameScreen,
+			    "No", "Return to Race", qrBackToRaceHookInit(),
+			    1);
+	    return RM_ASYNC | RM_NEXT_STEP;	    
+	}
+	return RM_SYNC | RM_NEXT_STEP;
+
+    case RE_STATE_POST_RACE:
+	GfOut("QuickRace runState: RE_STATE_POST_RACE\n");
+	RmShowResults(rmInfo->_reGameScreen, rmInfo);
+	return RM_ASYNC | RM_NEXT_STEP /* | RM_NEXT_RACE */;
+
+    default:
+	return RM_SYNC | RM_NEXT_STEP;
+    }
+    rmInfo->_reState = RE_STATE_SHUTDOWN;
+    return RM_SYNC;
 }
 
 
@@ -65,7 +150,7 @@ qraceInit(int index, void *p)
 {
     tRacemanItf *itf = (tRacemanItf*)p;
     
-    itf->start = qrStart2;
+    itf->runState = runState;
     
     return 0;
 }
@@ -94,6 +179,7 @@ quickrace(tModInfo *modInfo)
     modInfo->gfId = 0;			/* always loaded  */
     modInfo->index = 0;
     modInfo->prio = 10;			/* First */
+    modInfo->magic = RM_MAGIC;
     
     return 0;
 }

@@ -50,22 +50,22 @@ static tdble lastAccel[10];
 static tdble AccSteer[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-const  tdble PGain[10]   = {	0.08,	0.10,   0.2,	0.05,	0.05,	0.08,	0.2,	0.02,	0.02,	0.1	};
-static tdble AGain[10]   = {	0.30,	0.00,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
+const  tdble PGain[10]   = {	0.08,	0.1,   0.2,	0.05,	0.05,	0.08,	0.2,	0.02,	0.02,	0.1	};
+static tdble AGain[10]   = {	0.30,	0.0,   0.25,	0.01,	0.01,	0.05,	0.08,	0.08,	0.08,	0.4	};
 static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.05,	0.05,	0.08,	0.015,	0.02,	0.015,	0.15	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
-static tdble Advance[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
+static tdble Advance[10] = {	18.0,	18.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	0.0,	0,	15,	0.0,	0.0,	0.0,	0	};
-static tdble Advance3[10]= {	-5.0,	0.0,  -16.0,	0.0,	0.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
+static tdble Advance3[10]= {	-5.0,	-5.0,  -16.0,	0.0,	0.0,	-10.0,	0.0,	0.0,	0.0,	5.0	};
 const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0	};
 //static tdble Advance5[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
-static tdble VGain[10]   = {	0.010,	0.02,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
+static tdble VGain[10]   = {	0.010,	0.01,   0.01,	0.02,	0.02,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	10000,	10000,	10000,	10000	};
-static tdble spdtgt2[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble spdtgt2ref[10] = {	10,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
+static tdble spdtgt2[10] = {	10,	10,	0,	0,	0,	0,	0,	0,	0,	0	};
+static tdble spdtgt2ref[10] = {	10,	10,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
-static double hold[10] =    {	0,	5,	0,	0,	0,	0,	0,	0,	0,	0	};
+static double hold[10] =    {	0,	0,	0,	0,	0,	0,	0,	0,	0,	0	};
 static tdble steerk[10] = {	1.0,	1.0,	0.7,	1.00,	1.0,	0.7, 	1.0, 	1.0, 	1.0, 	0.9	};
 static tdble MaxFuel[10] = {	30.0,	50.0,	100.0,	70.0,	80.0,	100.0, 	100.0, 	100.0, 	100.0, 	100.0	};
 static tdble MaxSpeed[10];
@@ -293,9 +293,12 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2[0] = width - 4.0;
     Advance[0] = Advance2[0] = width * 2.0;
 
-    spdtgt2ref[1] = spdtgt2[1] = width / 2.0 - 1.0;
-    Advance[1] = width * 1.88 + 5.0;
-    Advance2[1] = width * 2.8 + 5.0;
+    spdtgt2[1] = width - 4.0;
+    Advance[1] = Advance2[1] = width * 2.0;
+
+/*     spdtgt2ref[1] = spdtgt2[1] = width / 2.0 - 1.0; */
+/*     Advance[1] = width * 1.88 + 5.0; */
+/*     Advance2[1] = width * 2.8 + 5.0; */
 
     spdtgt2ref[2] = spdtgt2[2] = width * .8 + 7.5;
     Advance[2] = Advance2[2] = width * 2.0 + 3.0;
@@ -610,10 +613,13 @@ static void drive(int index, tCarElt* car, tSituation *s)
     
 	Advance[0] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
+    
+	Advance[1] = (0.3 * car->_speed_x + 10.0) * seg->surface->kFriction;
+	spdtgt2[1]  = 20.0 * seg->surface->kFriction - 12.0;
 
 	//Advance[1] = Advance5[1] / seg->surface->kFriction;
-	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction;
-	Advance3[1] = (seg->surface->kFriction - 1.5) * 25.0;
+/* 	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction; */
+/* 	Advance3[1] = (seg->surface->kFriction - 1.5) * 25.0; */
 	//steerk[1] = 1.0 - (seg->surface->kFriction - 1.4);
 
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .3);

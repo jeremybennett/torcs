@@ -50,15 +50,20 @@
 
 int grSmokeMaxNumber;
 double grSmokeDeltaT;
+double grFireDeltaT;
 double grSmokeLife;
 
 
 static tgrSmokeManager *smokeManager = 0;
-ssgCutout * rootSmoke = NULL;
 /** initialize the smoke structure */
 ssgSimpleState	*mst = NULL;
+ssgSimpleState	*mstf0 = NULL;
+ssgSimpleState	*mstf1 = NULL;
 ssgVtxTable * tsmoke = 0 ;
+ssgVtxTable * tfire0 = 0 ;
+ssgVtxTable * tfire1 = 0 ;
 double * timeSmoke = 0;
+double * timeFire = 0;
 
 void grInitSmoke(int index)
 {
@@ -70,16 +75,23 @@ void grInitSmoke(int index)
 					 (char*)NULL, DELTAT);
     grSmokeLife = (double)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKEDLIFE,
 				       (char*)NULL, MAX_SMOKE_LIFE);
-    
+    grFireDeltaT=grSmokeDeltaT*8;
+
     if (!timeSmoke) {
 	timeSmoke = (double *) malloc(sizeof(double)*index*4);
 	memset(timeSmoke,0,sizeof(double)*index*4);
+    }
+    if (!timeFire) {
+	timeFire = (double *) malloc(sizeof(double)*index*4);
+	memset(timeFire,0,sizeof(double)*index*4);
     }
     if (!smokeManager) {
 	smokeManager = (tgrSmokeManager*) malloc(sizeof(tgrSmokeManager));
 	smokeManager->smokeList = NULL;
 	smokeManager->number = 0;
     }
+
+    /* add temp object to get a reference on the states */
     if (!mst) {
 	tsmoke = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
 	sprintf(buf, "data/textures;data/img;.");
@@ -88,10 +100,42 @@ void grInitSmoke(int index)
 	    mst->disable(GL_LIGHTING);
 	    mst->disable(GL_COLOR_MATERIAL);
 	    mst->enable(GL_BLEND);
+	    mst->disable(GL_CULL_FACE);
 	    mst->setTranslucent();
+	    mst->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
 	    tsmoke->setState(mst);    
 	}
 	TheScene->addKid(tsmoke);
+    }
+    if (!mstf0) {
+      tfire0 = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
+      sprintf(buf, "data/textures;data/img;.");
+      mstf0 = (ssgSimpleState*)grSsgLoadTexStateEx("fire0.rgb", buf, FALSE, FALSE);
+      if (mst!=NULL) {
+	mstf0->disable(GL_LIGHTING);
+	mstf0->disable(GL_COLOR_MATERIAL);
+	mstf0->enable(GL_BLEND);
+	mstf0->disable(GL_CULL_FACE);
+	mstf0->setTranslucent();
+	mstf0->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+	tfire0->setState(mstf0);    
+      }
+      TheScene->addKid(tfire0);
+    }
+    if (!mstf1) {
+      tfire1 = new ssgVtxTable(GL_TRIANGLE_STRIP, NULL, NULL, NULL, NULL);
+      sprintf(buf, "data/textures;data/img;.");
+      mstf1 = (ssgSimpleState*)grSsgLoadTexStateEx("fire1.rgb", buf, FALSE, FALSE);
+      if (mst!=NULL) {
+	mstf1->disable(GL_LIGHTING);
+	mstf1->disable(GL_COLOR_MATERIAL);
+	mstf1->enable(GL_BLEND);
+	mstf1->disable(GL_CULL_FACE);
+	mstf1->setTranslucent();
+	mstf1->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+	tfire1->setState(mstf1);    
+      }
+      TheScene->addKid(tfire1);
     }
 }
 
@@ -126,6 +170,24 @@ void grUpdateSmoke(double t)
 	tmp->smoke->sizey += tmp->smoke->dt*tmp->smoke->vexp*2.0;
 	tmp->smoke->sizez += tmp->smoke->dt*tmp->smoke->vexp;
 	tmp->smoke->sizex += tmp->smoke->dt*tmp->smoke->vexp*2.0;
+	if (tmp->smoke->smokeType==SMOKE_TYPE_ENGINE)
+	  {
+	    if (tmp->smoke->smokeTypeStep==0)
+	      if (tmp->smoke->cur_life>=tmp->smoke->step0_max_life)
+		{
+		  /* changing from fire to smoke */
+		  tmp->smoke->smokeTypeStep=1;
+		  tmp->smoke->setState(mstf1);    
+		}
+	    else
+	      if (tmp->smoke->smokeTypeStep==1)
+		if (tmp->smoke->cur_life>=tmp->smoke->step1_max_life)
+		  {
+		    /* changing from fire to smoke */
+		    tmp->smoke->smokeTypeStep=2;
+		    tmp->smoke->setState(mst);    
+		}
+	  }
 	/* expand the Z value */
 	/*vtx[2][2]+=tmp->vexp*dt2;
 	  vtx[3][2]+=tmp->vexp*dt2;
@@ -142,9 +204,10 @@ void grAddSmoke(tCarElt *car, double t)
     int i = 0;
     tgrSmoke * tmp;
     sgVec3	vtx;
-    char		buf[256];
-    ssgSimpleState	*st = NULL;
     ssgVertexArray	*shd_vtx ;
+    tgrCarInstrument	*curInst;
+    tdble		val;
+    int			index;
 
     if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
 	if (smokeManager->number < grSmokeMaxNumber) {
@@ -164,23 +227,24 @@ void grAddSmoke(tCarElt *car, double t)
 		    vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
 		    shd_vtx->add(vtx);
 		    tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
-		    sprintf(buf, "data/textures;data/img;.");
-		    st = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
-		    if (st!=NULL) {
-			st->disable(GL_LIGHTING);
-			st->disable(GL_COLOR_MATERIAL);
-			st->enable(GL_BLEND);
-			st->disable(GL_CULL_FACE);
-			st->setTranslucent();
-			st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-			tmp->smoke->setState(st);    
-		    }
-		    else
-			{
-			    printf("error loading smoke.rgb\n");
-			}
-	    
-		    tmp->smoke->setState(st);    
+		    /*
+		      sprintf(buf, "data/textures;data/img;.");
+		      st = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
+		      if (st!=NULL) {
+		      st->disable(GL_LIGHTING);
+		      st->disable(GL_COLOR_MATERIAL);
+		      st->enable(GL_BLEND);
+		      st->disable(GL_CULL_FACE);
+		      st->setTranslucent();
+		      st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+		      tmp->smoke->setState(st);    
+		      }
+		      else
+		      {
+		      printf("error loading smoke.rgb\n");
+		      }
+		    */
+		    tmp->smoke->setState(mst);    
 		    tmp->smoke->setCullFace(0);
 		    tmp->smoke->max_life = grSmokeLife * car->_skid[i];
 		    tmp->smoke->cur_life = 0;
@@ -189,6 +253,7 @@ void grAddSmoke(tCarElt *car, double t)
 		    tmp->smoke->sizez = VZ_INIT;
 		    tmp->smoke->vexp = V_EXPANSION+car->_skid[i]*2.0*(((float)rand()/(float)RAND_MAX));
 		    tmp->smoke->smokeType = SMOKE_TYPE_TIRE;
+		    tmp->smoke->smokeTypeStep = 0;
 		    tmp->next = NULL;
 		    tmp->smoke->lastTime = t;
 		    tmp->smoke->transform(grCarInfo[car->index].carPos);
@@ -204,6 +269,59 @@ void grAddSmoke(tCarElt *car, double t)
 	    }
 	}
     }
+
+
+    if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 10.0) {
+	if (smokeManager->number < grSmokeMaxNumber) {
+	  i=3;
+	  if ((t - timeFire[car->index*4+i]) < grFireDeltaT) {
+
+	  } else {
+	    timeFire[car->index*4+i] = t;
+
+	  
+	  /*	  if (car->_skid[i]>0.3) {
+	  */
+	    index = car->index;	/* current car's index */
+	    curInst = &(grCarInfo[index].instrument[0]);
+	    val = (*(curInst->monitored) - curInst->minValue) / curInst->maxValue;
+	    if (val > 0.75) {
+	      shd_vtx = new ssgVertexArray(1);
+	      tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
+	      vtx[0] = car->priv->wheel[i].relPos.x-car->_tireHeight(i);
+	      vtx[1] = car->priv->wheel[i].relPos.y;
+	      vtx[2] = car->priv->wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE*2;
+	      shd_vtx->add(vtx);
+	      tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE*4,SMOKE_TYPE_ENGINE);
+	      
+	      tmp->smoke->setState(mstf0);    
+	      tmp->smoke->setCullFace(0);
+	      tmp->smoke->max_life = grSmokeLife/8;
+	      tmp->smoke->step0_max_life =  (grSmokeLife)/50.0;
+	      tmp->smoke->step1_max_life =  (grSmokeLife)/50.0+ tmp->smoke->max_life/2.0;
+	      tmp->smoke->cur_life = 0;
+	      tmp->smoke->sizex = VX_INIT*4;
+	      tmp->smoke->sizey = VY_INIT*4;
+	      tmp->smoke->sizez = VZ_INIT*4;
+	      tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX));
+	      tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
+	      tmp->smoke->smokeTypeStep = 0;
+	      tmp->next = NULL;
+	      tmp->smoke->lastTime = t;
+	      tmp->smoke->transform(grCarInfo[car->index].carPos);
+	      TheScene->addKid(tmp->smoke);
+	      smokeManager->number++;
+	      if (smokeManager->smokeList==NULL) {
+		smokeManager->smokeList = tmp;
+	      } else {
+		tmp->next = smokeManager->smokeList;
+		smokeManager->smokeList = tmp;
+	      }
+	    }
+	  }
+	}
+    }
+
 }
 
 /** remove the smoke information for a car */
@@ -222,12 +340,17 @@ void grShutdownSmoke ()
 	    }
 	smokeManager->smokeList = NULL;
 	free(timeSmoke);
+	free(timeFire);
 	free(smokeManager);
 	smokeManager = 0;
 	TheScene->removeKid(tsmoke);
+	TheScene->removeKid(tfire0);
+	TheScene->removeKid(tfire1);
 	smokeManager = NULL;
 	tsmoke = NULL;
+	tfire0=NULL;
 	timeSmoke = NULL;
+	timeFire=NULL;
     }
 }
 
@@ -301,7 +424,7 @@ void ssgVtxTableSmoke::draw_geometry ()
     /* the principle is to have a right and up verctor 
        to determine how the points of the quadri should be placed
        orthoganly to the view, paralel to the screen.
-       This alogo is inspired from the Cutout in Plib 
+       This algo is inspired from the Cutout in Plib 
        and from the cutout in racer code */
 
     /* get the matrix */
@@ -327,7 +450,7 @@ void ssgVtxTableSmoke::draw_geometry ()
     D[0] = -right[0]+up[0];
     D[1] = -right[1]+up[1];
     D[2] = -right[2]+up[2];
-    /* down and up */
+    /* down and left */
     A[0] = -right[0]-up[0];
     A[1] = -right[1]-up[1];
     A[2] = -right[2]-up[2];

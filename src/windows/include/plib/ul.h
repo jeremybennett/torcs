@@ -1,21 +1,21 @@
 /*
      PLIB - A Suite of Portable Game Libraries
-     Copyright (C) 2001  Steve Baker
- 
+     Copyright (C) 1998,2002  Steve Baker
+
      This library is free software; you can redistribute it and/or
      modify it under the terms of the GNU Library General Public
      License as published by the Free Software Foundation; either
      version 2 of the License, or (at your option) any later version.
- 
+
      This library is distributed in the hope that it will be useful,
      but WITHOUT ANY WARRANTY; without even the implied warranty of
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
      Library General Public License for more details.
- 
+
      You should have received a copy of the GNU Library General Public
-     License along with this library; if not, write to the Free
+     License along with this library; if not, write to the Free Software
      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- 
+
      For further information visit http://plib.sourceforge.net
 
      $Id$
@@ -29,6 +29,8 @@
 //  - basic types
 //  - error message routines
 //  - high performance clocks
+//  - ulList
+//  - ulLinkedList
 //  - more to come (endian support, version ID)
 //
 
@@ -42,6 +44,11 @@
 #include <ctype.h>
 #include <assert.h>
 
+#if !defined(WIN32) && (defined(_WIN32) || defined(__WIN32__) || \
+    defined(__CYGWIN__) || defined(_MSC_VER))
+#  define WIN32
+#endif
+
 #if defined (WIN32)
 #  include <windows.h>
 #  ifdef __CYGWIN__
@@ -50,8 +57,11 @@
 #elif defined (__BEOS__)
 #    include <be/kernel/image.h>
 #elif defined (macintosh)
-#  include <CodeFragments.h>
-#  else
+#    include <CodeFragments.h>
+#elif defined (__APPLE__)
+/* Mac OS X: Not implemented (needs to use dyld)  */
+#    include <unistd.h>
+#else
 #    include <unistd.h>
 #    include <dlfcn.h>
 #  endif
@@ -78,8 +88,16 @@
 // or mail me (w_kuss@rz-online.de)
 #include <float.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+
+/* PLIB version macros */
+
+#define PLIB_MAJOR_VERSION 1
+#define PLIB_MINOR_VERSION 6
+#define PLIB_TINY_VERSION 0
+
+#define PLIB_VERSION (PLIB_MAJOR_VERSION*100 \
+                     +PLIB_MINOR_VERSION*10 \
+                     +PLIB_TINY_VERSION)
 
 /* SGI machines seem to suffer from a lack of FLT_EPSILON so... */
 
@@ -157,21 +175,27 @@ public:
 
 inline void ulSleep ( int seconds )
 {
+  if ( seconds >= 0 )
+  {
 #ifdef WIN32
-  Sleep ( 1000 * seconds ) ;
+    Sleep ( 1000 * seconds ) ;
 #else
-  sleep ( seconds ) ;
+    sleep ( seconds ) ;
 #endif
+  }
 }
 
 
 inline void ulMilliSecondSleep ( int milliseconds )
 {
+  if ( milliseconds >= 0 )
+  {
 #ifdef WIN32
-  Sleep ( milliseconds ) ;
+    Sleep ( milliseconds ) ;
 #else
-  usleep ( milliseconds * 1000 ) ;
+    usleep ( milliseconds * 1000 ) ;
 #endif
+  }
 }
 
 
@@ -214,6 +238,9 @@ struct ulDirEnt
   char d_name [ UL_NAME_MAX+1 ];
   bool d_isdir ;
 } ;
+
+int ulIsAbsolutePathName ( const char *pathname ) ;
+char *ulGetCWD ( char *result, int maxlength ) ;
 
 ulDir* ulOpenDir ( const char* dirname ) ;
 ulDirEnt* ulReadDir ( ulDir* dir ) ;
@@ -470,23 +497,23 @@ class ulDynamicLibrary
     OSStatus          error;
 
 public:
-        
+
     ulDynamicLibrary ( const char *libname )
     {
         Str63    pstr;
         int        sz;
-        
+
         sz = strlen (libname);
-     
+
         if (sz < 64) {
-        
+
             pstr[0] = sz;
             memcpy (pstr+1, libname, sz);
-            
+
             error = GetSharedLibrary (pstr, kPowerPCCFragArch, kReferenceCFrag,
-                                      &connection, NULL, NULL);                              
+                                      &connection, NULL, NULL);
         }
-        else 
+        else
             error = 1;
     }
 
@@ -494,20 +521,19 @@ public:
     {
         if ( ! error )
             CloseConnection (&connection);
-    
     }
-        
-    void* getFuncAddress (const char *funcname)
+
+    void* getFuncAddress ( const char *funcname )
     {
         if ( ! error ) {
-        
+
             char*  addr;
             Str255 sym;
             int    sz;
-            
+
             sz = strlen (funcname);
             if (sz < 256) {
-                
+
                 sym[0] = sz;
                 memcpy (sym+1, funcname, sz);
 
@@ -516,8 +542,32 @@ public:
                     return addr;
             }
         }
-        
+
         return NULL;
+    }
+};
+
+#elif defined (__APPLE__)
+
+/* Mac OS X */
+
+class ulDynamicLibrary
+{
+
+ public:
+
+    ulDynamicLibrary ( const char *libname )
+    {
+    }
+
+    ~ulDynamicLibrary ()
+    {
+    }
+
+    void* getFuncAddress ( const char *funcname )
+    {
+      ulSetError ( UL_WARNING, "ulDynamicLibrary unsuppored on Mac OS X" );
+      return NULL;
     }
 };
 
@@ -604,11 +654,122 @@ public:
 #endif /* if defined(WIN32) */
 
 
+class ulList
+{
+protected:
+  unsigned int total ;  /* The total number of entities in the list */
+  unsigned int limit ;  /* The current limit on number of entities  */
+  unsigned int next  ;  /* The next entity when we are doing getNext ops */
+ 
+  void **entity_list ;  /* The list. */
+ 
+  void sizeChk (void) ;
+ 
+public:
+ 
+  ulList ( int init_max = 1 ) ;
+  virtual ~ulList (void) ;
+ 
+  void *getEntity ( unsigned int n )
+  {
+    next = n + 1 ;
+    return ( n >= total ) ? (void *) NULL : entity_list [ n ] ;
+  }
+ 
+  virtual void addEntity ( void *entity ) ;
+  virtual void addEntityBefore ( int n, void *entity ) ;
+  virtual void removeEntity ( unsigned int n ) ;
+ 
+  void removeAllEntities () ;
+ 
+  void removeEntity ( void *entity )
+  {
+    removeEntity ( searchForEntity ( entity ) ) ;
+  }
+ 
+  virtual void replaceEntity ( unsigned int n, void *new_entity ) ;
+ 
+  void replaceEntity ( void *old_entity, void *new_entity )
+  {
+    replaceEntity ( searchForEntity ( old_entity ), new_entity ) ;
+  }
+ 
+  void *getNextEntity   (void) { return getEntity ( next ) ; }
+
+  int   getNumEntities  (void) const { return total ; }
+  int   searchForEntity ( void *entity ) const ;
+} ;
+
+
+typedef bool (*ulIterateFunc)( const void *data, void *user_data ) ;
+typedef int  (*ulCompareFunc)( const void *data1, const void *data2 ) ;
+
+/*
+  Linked list.
+*/
+
+class ulListNode ;
+
+class ulLinkedList
+{
+protected:
+
+  ulListNode *head ;
+  ulListNode *tail ;
+
+  int nnodes ;
+  bool sorted ;
+
+  void unlinkNode ( ulListNode *prev, ulListNode *node ) ;
+
+  bool isValidPosition ( int pos ) const
+  {
+    if ( ( pos < 0 ) || ( pos >= nnodes ) )
+    {
+      ulSetError ( UL_WARNING, "ulLinkedList: Invalid 'pos' %u", pos ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+public:
+
+  ulLinkedList ()
+  {
+    head = tail = NULL ;
+    nnodes = 0 ;
+    sorted = true ;
+  }
+
+  ~ulLinkedList () { empty () ; }
+
+  int  getNumNodes ( void ) const { return nnodes ; }
+  bool isSorted    ( void ) const { return sorted ; }
+
+  int  getNodePosition ( void *data ) const ;
+
+  void insertNode ( void *data, int pos ) ;
+  void prependNode ( void *data ) { insertNode ( data, 0 ) ; }
+  void appendNode ( void *data ) ;
+
+  int  insertSorted ( void *data, ulCompareFunc comparefn ) ;
+
+  void removeNode ( void *data ) ;
+  void * removeNode ( int pos ) ;
+
+  void * getNodeData ( int pos ) const ;
+
+  void * forEach ( ulIterateFunc fn, void *user_data = NULL ) const ;
+
+  void empty ( ulIterateFunc destroyfn = NULL, void *user_data = NULL ) ;
+} ;
+
+
+extern char *ulStrDup ( const char *s ) ;
 extern int ulStrNEqual ( const char *s1, const char *s2, int len );
 extern int ulStrEqual ( const char *s1, const char *s2 );
 
 //lint -restore
 
 #endif
-
 

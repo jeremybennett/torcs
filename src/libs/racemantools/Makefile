@@ -1,4 +1,4 @@
-##############################################################################
+ ##############################################################################
 #
 #    file                 : Makefile
 #    created              : Sat Mar 18 23:32:07 CET 2000
@@ -20,7 +20,7 @@ SOLIBRARY = libracemantools.so
 
 SOLIBDIR  = .
 
-SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp
+SOURCES   = trackselect.cpp racemantools.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp
 
 EXPDIR    = include
 

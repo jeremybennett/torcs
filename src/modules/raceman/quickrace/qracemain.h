@@ -31,39 +31,13 @@
 
 #define QRACE_CFG	"config/quickrace/qrace.xml"
 
-typedef struct 
-{
-    tTrkLocPos	prevTrkPos;
-    tdble	sTime;
-    int		lapFlag;
-    char	*raceMsg;
-    double	totalPitTime;
-    double	startPitTime;
-} tqrCarInfo;
-
-extern tqrCarInfo *qrCarInfo;
-extern void *qrMainMenuHandle;
+extern tRmInfo	*RmInfo;
+extern void	*qrMainMenuHandle;
 
 
-extern tGraphicItf	qrGraphicItf;
-extern tTrackItf	qrTrackItf;
-extern tTrack		*qrTheTrack;
-extern tSituation	qrTheSituation;
-extern int		qrKeyPressed;
-extern tModList		*qracemodlist;
-
-extern void qrLoadTrackModule(void);
-extern void qraceRun(void* dummy);
-extern void qrStart(void);
-extern void qrStop(void);
-extern void qrUpdate(void);
-extern void qrOneStep(void *);
-extern void qrPrevCar(void *);
-extern void qrNextCar(void *);
-extern void qrShutdown(void);
-extern void qrTimeMod (void *vcmd);
-
-extern void qrMenuRun(void *backmenu);
+extern void qrConfigInit(void);
+extern void qrConfigRunState(void * /* dummy */);
+extern void qrMenuRun(void);
 
 #endif /* _QRACEMAIN_H_ */ 
 

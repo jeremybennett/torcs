@@ -110,6 +110,7 @@ initWheel(tCarElt *car, int wheel_index)
     /* brake */
     if (brakeState == NULL) {
 	brakeState = new ssgSimpleState;
+	brakeState->ref();
 	brakeState->disable(GL_LIGHTING);
 	brakeState->disable(GL_TEXTURE_2D);
 	brakeState->disable(GL_COLOR_MATERIAL);
@@ -471,7 +472,7 @@ grInitCar(tCarElt *car)
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
     /*carEntity = ssgLoad(param);*/
-    carEntity = grssgCarLoadAC3D(param, NULL,index);
+    carEntity = grssgCarLoadAC3D(param, NULL, index);
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
     /* add wheels */
@@ -498,7 +499,8 @@ grInitCar(tCarElt *car)
 	sprintf(buf, "%s/%s/%d", SECT_GROBJECTS, LST_RANGES, i);
 	param = GfParmGetStr(handle, buf, PRM_CAR, "");
 	grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, buf, PRM_THRESHOLD, NULL, 0.0);
-	carEntity = ssgLoad(param);
+	/* carEntity = ssgLoad(param); */
+	carEntity = grssgCarLoadAC3D(param, NULL, index);;
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
 	carBody->addKid(carEntity);
 	/* env map car */

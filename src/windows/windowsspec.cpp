@@ -443,6 +443,9 @@ windowsModUnloadList(tModList **modlist)
     tModList	*nextMod;
     
     curMod = *modlist;
+    if (curMod == 0) {
+	return 0;
+    }
     nextMod = curMod->next;
     do {
 	curMod = nextMod;

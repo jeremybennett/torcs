@@ -9,7 +9,8 @@
 #define VY_INIT 0.1f
 #define VX_INIT 0.1f
 #define V_EXPANSION 0.4f
-#define SMOKE_TYPE_TIRE 1
+#define SMOKE_TYPE_TIRE   1
+#define SMOKE_TYPE_ENGINE 2
 
 class ssgVtxTableSmoke : public ssgVtxTable
 {
@@ -18,10 +19,14 @@ protected:
   
 public:
   double max_life;
+  double step0_max_life;
+  double step1_max_life;
+  double step2_max_life;
   double cur_life;
   tdble vvx, vvy,vvz;
   tdble vexp;
   int smokeType;
+  int smokeTypeStep;
   double dt;
   double lastTime;
   float sizex;
@@ -39,10 +44,10 @@ public:
   virtual void pick ( int baseName )  { ssgVtxTable::pick(baseName);}
   virtual void transform ( const sgMat4 m )  { ssgVtxTable::transform(m);}
 
-  void setVertices  ( ssgVertexArray   *vl ) ;
-  void setNormals   ( ssgNormalArray   *nl ) ;
-  void setTexCoords ( ssgTexCoordArray *tl ) ;
-  void setColours   ( ssgColourArray   *cl ) ;
+  virtual void setVertices  ( ssgVertexArray   *vl ) {  ssgVtxTable::setVertices(vl);}
+  virtual void setNormals   ( ssgNormalArray   *nl ) {  ssgVtxTable::setNormals(nl);}
+  virtual void setTexCoords ( ssgTexCoordArray *tl ) {  ssgVtxTable::setTexCoords(tl);}
+  virtual void setColours   ( ssgColourArray   *cl ) {  ssgVtxTable::setColours(cl);}
 
   int getNumVertices  () { return vertices  -> getNum () ; }
   int getNumNormals   () { return normals   -> getNum () ; }
@@ -57,7 +62,7 @@ public:
 
   virtual ~ssgVtxTableSmoke (void);
 
-  virtual char *getTypeName(void)  { return ssgVtxTable::getTypeName();}
+  virtual const char *getTypeName(void)  { return ssgVtxTable::getTypeName();}
 
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2) { ssgVtxTable::print(fd,indent,how_much);}
   virtual int load ( FILE *fd )  {return  ssgVtxTable::load(fd);}

@@ -332,11 +332,18 @@ externalEntityRefHandler(XML_Parser mainparser,
     char	buf[BUFSIZ];
     XML_Parser 	parser;
     int		done;
-
+    char	*str;
+    
     parser = XML_ExternalEntityParserCreate(mainparser,
 					    openEntityNames,
 					    (const XML_Char *)NULL);
 
+    /* Skip the leading ../ in the path  */
+    str = (char*)systemId;
+    while (strncmp(str, "../", 3) == 0) {
+	str += 3;
+    }
+    
     in = fopen(systemId, "r");
     if (in == NULL) {
 	perror(systemId);

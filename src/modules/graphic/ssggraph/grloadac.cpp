@@ -260,7 +260,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
   if (current_tfname != NULL) {
     st -> setTexture( current_options -> createTexture(current_tfname) ) ;
     st -> enable( GL_TEXTURE_2D ) ;
-    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL)
+    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
       {
 	st -> enable  ( GL_BLEND );
 	st->setAlphaClamp(0.65);
@@ -285,7 +285,7 @@ static ssgState *get_state_ext ( char * name)
   if (name != NULL) {
     st -> setTexture( current_options -> createTexture(name) ) ;
     st -> enable( GL_TEXTURE_2D ) ;
-    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL)
+    if (strstr(current_tfname,"tree")!=NULL || strstr(current_tfname,"trans-")!=NULL || strstr(current_tfname,"arbor")!=NULL)
       {
 	st -> enable  ( GL_BLEND );
 	st->setAlphaClamp(0.7);

@@ -22,7 +22,7 @@
 
     <attnum name="skid value" val="20"/>
     <attnum name="skid length" val="300"/>
-    <attnum name="skid interval" val="0.3"/>
+    <attnum name="skid interval" val="0.05"/>
 
     <attnum name="fov factor" val="1.0"/>
   </section>
@@ -33,7 +33,7 @@
     <attnum name="driver counter" val="1"/>
     <attnum name="debug info" val="1"/>
     <attnum name="camera" val="0"/>
-    <attnum name="camera head list" val="9"/>
+    <attnum name="camera head list" val="0"/>
     <attnum name="G graph" val="1"/>
   </section>
 

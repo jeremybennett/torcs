@@ -1,6 +1,6 @@
 /*
      PLIB - A Suite of Portable Game Libraries
-     Copyright (C) 2001  Steve Baker
+     Copyright (C) 1998,2002  Steve Baker
  
      This library is free software; you can redistribute it and/or
      modify it under the terms of the GNU Library General Public
@@ -13,7 +13,7 @@
      Library General Public License for more details.
  
      You should have received a copy of the GNU Library General Public
-     License along with this library; if not, write to the Free
+     License along with this library; if not, write to the Free Software
      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  
      For further information visit http://plib.sourceforge.net
@@ -25,8 +25,14 @@
 #ifndef _INCLUDED_SSG_H_
 #define _INCLUDED_SSG_H_
 
-#include "ul.h"
 #include "sg.h"
+
+#ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#else
+#  include <GL/gl.h>
+#endif
+
 #include "ssgconf.h"
 
 #ifndef _SSG_PUBLIC
@@ -47,72 +53,77 @@ enum ssgCullResult
 #define SSGTRAV_CULL   1
 #define SSGTRAV_ISECT  2
 #define SSGTRAV_HOT    4
+#define SSGTRAV_LOS    8
 
-class ssgList          ;
-class ssgKidList       ;
-class ssgBase          ;
-class ssgEntity        ;
-class ssgLeaf          ;
-class ssgVTable        ;
-class ssgVtxTable      ;
-class ssgVtxArray      ;
-class ssgBranch        ;
-class ssgInvisible     ;
-class ssgBaseTransform ;
-class ssgTransform     ;
-class ssgTexTrans      ;
-class ssgCutout        ;
-class ssgSelector      ;
-class ssgRangeSelector ;
-class ssgTimedSelector ;
-class ssgRoot          ;
+class ssgList            ;
+class ssgKidList         ;
+class ssgBase            ;
+class ssgEntity          ;
+class ssgLeaf            ;
+class ssgVTable          ;
+class ssgVtxTable        ;
+class ssgVtxArray        ;
+class ssgTween           ;
+class ssgBranch          ;
+class ssgInvisible       ;
+class ssgBaseTransform   ;
+class ssgTransform       ;
+class ssgTexTrans        ;
+class ssgCutout          ;
+class ssgSelector        ;
+class ssgRangeSelector   ;
+class ssgTimedSelector   ;
+class ssgTweenController ;
+class ssgRoot            ;
 
 void  ssgDeRefDelete ( ssgBase *br ) ;
 
-/* 
+/*
   Think twice before assigning new type bits, it is rather complicated.
   Perhaps some kind of automatic assignment would be good?
  */
 
 #define _SSG_BACKWARDS_REFERENCE 0x0000000  /* For SSG format files */
 
-#define _SSG_TYPE_BASE          0x00000001
+#define _SSG_TYPE_BASE             0x00000001
 
 /* ssgEntities */
-#define _SSG_TYPE_ENTITY        0x00000002
-#define _SSG_TYPE_LEAF          0x00000020
-#define _SSG_TYPE_VTABLE        0x00000080
-#define _SSG_TYPE_VTXTABLE      0x00000100
-#define _SSG_TYPE_VTXARRAY      0x00000200
-#define _SSG_TYPE_BRANCH        0x00000040
-#define _SSG_TYPE_BASETRANSFORM 0x00000080
-#define _SSG_TYPE_TRANSFORM     0x00001000
-#define _SSG_TYPE_TEXTRANS      0x00002000
-#define _SSG_TYPE_AXISTRANSFORM 0x00004000
-#define _SSG_TYPE_SELECTOR      0x00000100
-#define _SSG_TYPE_RANGESELECTOR 0x00001000
-#define _SSG_TYPE_TIMEDSELECTOR 0x00002000
-#define _SSG_TYPE_ROOT          0x00000200
-#define _SSG_TYPE_CUTOUT        0x00000400
-#define _SSG_TYPE_INVISIBLE     0x00000800
+#define _SSG_TYPE_ENTITY           0x00000002
+#define _SSG_TYPE_LEAF             0x00000020
+#define _SSG_TYPE_VTABLE           0x00000080
+#define _SSG_TYPE_VTXTABLE         0x00000100
+#define _SSG_TYPE_VTXARRAY         0x00000200
+#define _SSG_TYPE_BRANCH           0x00000040
+#define _SSG_TYPE_BASETRANSFORM    0x00000080
+#define _SSG_TYPE_TRANSFORM        0x00001000
+#define _SSG_TYPE_TEXTRANS         0x00002000
+#define _SSG_TYPE_AXISTRANSFORM    0x00004000
+#define _SSG_TYPE_SELECTOR         0x00000100
+#define _SSG_TYPE_RANGESELECTOR    0x00001000
+#define _SSG_TYPE_TIMEDSELECTOR    0x00002000
+#define _SSG_TYPE_TWEEN            0x00008000
+#define _SSG_TYPE_TWEENCONTROLLER  0x00010000
+#define _SSG_TYPE_ROOT             0x00000200
+#define _SSG_TYPE_CUTOUT           0x00000400
+#define _SSG_TYPE_INVISIBLE        0x00000800
 
 /* ssgStates */
-#define _SSG_TYPE_STATE         0x00000004
-#define _SSG_TYPE_SIMPLESTATE   0x00000020
-#define _SSG_TYPE_STATESELECTOR 0x00000040
+#define _SSG_TYPE_STATE            0x00000004
+#define _SSG_TYPE_SIMPLESTATE      0x00000020
+#define _SSG_TYPE_STATESELECTOR    0x00000040
 
 /* ssgSimpleLists */
-#define _SSG_TYPE_SIMPLELIST    0x00000008
-#define _SSG_TYPE_VERTEXARRAY   0x00000020
-#define _SSG_TYPE_NORMALARRAY   0x00000040
-#define _SSG_TYPE_TEXCOORDARRAY 0x00000080
-#define _SSG_TYPE_COLOURARRAY   0x00000100
-#define _SSG_TYPE_INDEXARRAY    0x00000200
-#define _SSG_TYPE_TRANSFORMARRAY 0x0000400
-#define _SSG_TYPE_INTERLEAVEDARRAY 0x00800
+#define _SSG_TYPE_SIMPLELIST       0x00000008
+#define _SSG_TYPE_VERTEXARRAY      0x00000020
+#define _SSG_TYPE_NORMALARRAY      0x00000040
+#define _SSG_TYPE_TEXCOORDARRAY    0x00000080
+#define _SSG_TYPE_COLOURARRAY      0x00000100
+#define _SSG_TYPE_INDEXARRAY       0x00000200
+#define _SSG_TYPE_TRANSFORMARRAY   0x00000400
+#define _SSG_TYPE_INTERLEAVEDARRAY 0x00000800
 
 /* ssgTextures */
-#define _SSG_TYPE_TEXTURE       0x00000010
+#define _SSG_TYPE_TEXTURE          0x00000010
 
 #define SSG_FILE_VERSION       0x01
 #define SSG_FILE_MAGIC_NUMBER  (('S'<<24)+('S'<<16)+('G'<<8)+SSG_FILE_VERSION)
@@ -125,11 +136,13 @@ inline int ssgTypeLeaf         () { return _SSG_TYPE_LEAF      | ssgTypeEntity  
 inline int ssgTypeVTable       () { return _SSG_TYPE_VTABLE    | ssgTypeLeaf    () ; }
 inline int ssgTypeVtxTable     () { return _SSG_TYPE_VTXTABLE  | ssgTypeLeaf    () ; }
 inline int ssgTypeVtxArray     () { return _SSG_TYPE_VTXARRAY  | ssgTypeVtxTable() ; }
+inline int ssgTypeTween        () { return _SSG_TYPE_TWEEN     | ssgTypeVtxTable() ; }
 inline int ssgTypeBranch       () { return _SSG_TYPE_BRANCH    | ssgTypeEntity  () ; }
+inline int ssgTypeTweenController(){ return _SSG_TYPE_TWEENCONTROLLER | ssgTypeBranch() ; }
 inline int ssgTypeBaseTransform() { return _SSG_TYPE_BASETRANSFORM | ssgTypeBranch () ; }
 inline int ssgTypeTransform    () { return _SSG_TYPE_TRANSFORM | ssgTypeBaseTransform () ; }
 inline int ssgTypeTexTrans     () { return _SSG_TYPE_TEXTRANS  | ssgTypeBaseTransform () ; }
-inline int ssgTypeAxisTransform() { return _SSG_TYPE_AXISTRANSFORM  | ssgTypeBaseTransform () ; }
+inline int ssgTypeAxisTransform() { return _SSG_TYPE_AXISTRANSFORM  | ssgTypeTransform () ; }
 inline int ssgTypeSelector     () { return _SSG_TYPE_SELECTOR  | ssgTypeBranch  () ; }
 inline int ssgTypeRangeSelector() { return _SSG_TYPE_RANGESELECTOR | ssgTypeSelector () ; }
 inline int ssgTypeTimedSelector() { return _SSG_TYPE_TIMEDSELECTOR | ssgTypeSelector () ; }
@@ -203,7 +216,7 @@ public:
 
   ssgEntity *getEntity ( unsigned int n )
   {
-    next = n ;
+    next = n + 1 ;
     return ( n >= total ) ? (ssgEntity *) NULL : entity_list [ n ] ;
   }
 
@@ -225,7 +238,7 @@ public:
   }
 
   int        getNumEntities    (void) { return total ; }
-  ssgEntity *getNextEntity     (void) { return getEntity ( next+1 ) ; }
+  ssgEntity *getNextEntity     (void) { return getEntity ( next ) ; }
   int        searchForEntity   ( ssgEntity *entity ) ;
 } ;
 
@@ -268,13 +281,11 @@ protected :
   ssgBase *user_data ;
   virtual void copy_from ( ssgBase *src, int clone_flags ) ;
 
-_SSG_PUBLIC:
-
-  void deadBeefCheck () { assert ( type != (int) 0xDeadBeef ) ; }
-
 public:
   void *operator new  ( size_t size ) ;
   void  operator delete ( void *ptr ) ;
+
+  void deadBeefCheck () { assert ( type != (int) 0xDeadBeef ) ; }
 
   virtual void zeroSpareRecursive ();
   virtual void zeroSpare ()         ;
@@ -295,7 +306,7 @@ public:
 
   /* Type checking mechanism */
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   int   getType    (void)     { return type ; }
   int   isA        ( int ty ) { return getType() == ty ; }
@@ -438,6 +449,11 @@ public:
   int getSizeOf (void) { return size_of ; }
   int getNum (void) { return total ; }
 
+  void rawSetNum ( unsigned int n ) /* Better know what you're doing!! */
+  {
+    total = n ;
+  }
+
   void setNum ( unsigned int n )
   {
     if ( total < n )
@@ -451,7 +467,7 @@ public:
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -469,7 +485,7 @@ public:
   void   add ( sgVec3   thing ) { raw_add ( (char *) thing ) ; } ;
   void   set ( sgVec3   thing, unsigned int n ) { raw_set ( (char *) thing, n ) ; } ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -487,7 +503,7 @@ public:
   void   add ( sgVec3   thing ) { raw_add ( (char *) thing ) ; } ;
   void   set ( sgVec3   thing, unsigned int n ) { raw_set ( (char *) thing, n ) ; } ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -505,7 +521,7 @@ public:
   void   add ( sgVec2   thing ) { raw_add ( (char *) thing ) ; } ;
   void   set ( sgVec2   thing, unsigned int n ) { raw_set ( (char *) thing, n ) ; } ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -523,7 +539,7 @@ public:
   void   add ( sgVec4   thing ) { raw_add ( (char *) thing ) ; } ;
   void   set ( sgVec4   thing, unsigned int n ) { raw_set ( (char *) thing, n ) ; } ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -536,10 +552,11 @@ public:
   {
     type = ssgTypeIndexArray () ;
   }
+  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   short *get ( unsigned int n ) { return (short *) raw_get ( n ) ; }
   void   add ( short    thing ) { raw_add ( (char *) &thing ) ; } ;
   void   set ( short    thing, unsigned int n ) { raw_set ( (char *) &thing, n ) ; } ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -556,7 +573,7 @@ public:
   } 
   sgMat4 *get ( unsigned int n ) { return (sgMat4 *) raw_get ( n ) ; }
   void   add ( sgMat4  thing ) { raw_add ( (char *) thing ) ; } ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -631,7 +648,7 @@ public:
   void add ( ssgInterleavedArrayElement *thing ) { raw_add ( (char *)  thing ) ; } ;
   void set ( ssgInterleavedArrayElement  thing, unsigned int n ) { raw_set ( (char *) &thing, n ) ; } ;
   void set ( ssgInterleavedArrayElement *thing, unsigned int n ) { raw_set ( (char *)  thing, n ) ; } ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
 
@@ -706,7 +723,7 @@ public:
 
   void  setFilename(const char *fname)
   {
-    delete filename ;
+    delete [] filename ;
 
     if ( fname == NULL )
       filename = NULL ;
@@ -720,9 +737,22 @@ public:
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 } ;
 
+typedef int (*ssgCallback)( ssgEntity * ) ;
+#define SSG_CALLBACK_PREDRAW   1
+#define SSG_CALLBACK_POSTDRAW  2
+
+typedef int (*ssgTravCallback)( ssgEntity *entity, int traversal_mask ) ;
+#define SSG_CALLBACK_PRETRAV   1
+#define SSG_CALLBACK_POSTTRAV  2
+
+class ssgState ;
+
+typedef int (*ssgStateCallback)( ssgState *entity ) ;
+
+#define SSG_CALLBACK_PREAPPLY   3
 
 class ssgState : public ssgBase
 {
@@ -730,14 +760,41 @@ class ssgState : public ssgBase
 
   int external_property_index ;
 
+  ssgStateCallback preApplyCB ;
+  ssgStateCallback preDrawCB  ;
+  ssgStateCallback postDrawCB ;
+
+
 protected:
 
+  void preApply () ;
+  void preDraw  () ;
+
 public:
+
   virtual void copy_from ( ssgState *src, int clone_flags ) ;
   ssgState (void) ;
   virtual ~ssgState (void) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
+
+  ssgStateCallback getStateCallback ( int cb_type )
+  {
+    return ( cb_type == SSG_CALLBACK_PREAPPLY ) ? preApplyCB :
+           ( cb_type == SSG_CALLBACK_PREDRAW  ) ? preDrawCB :
+                                                  postDrawCB ;
+  }
+ 
+  void setStateCallback ( int cb_type, ssgStateCallback cb )
+  {
+    if ( cb_type == SSG_CALLBACK_PREAPPLY )
+      preApplyCB = cb ;
+    else
+    if ( cb_type == SSG_CALLBACK_PREDRAW )
+      preDrawCB = cb ;
+    else
+      postDrawCB = cb ;
+  }
 
   int  getExternalPropertyIndex (void) { return external_property_index ; }
   void setExternalPropertyIndex ( int i ) { external_property_index = i ; }
@@ -784,7 +841,7 @@ public:
   virtual ssgBase *clone ( int clone_flags = 0 ) ;
   ssgSimpleState (void) ;
   virtual ~ssgSimpleState (void) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   virtual void force (void) ;
   virtual void apply (void) ;
@@ -833,7 +890,7 @@ public:
     }
   }
 
-  virtual void  setTexture ( char *fname,
+  virtual void  setTexture ( const char *fname,
     int _wrapu = TRUE, int _wrapv = TRUE, int _mipmap = TRUE )
   {
     mipmap = _mipmap ;
@@ -969,7 +1026,7 @@ public:
   ssgStateSelector ( int ns ) ;
 
   virtual ~ssgStateSelector (void) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   int             getNumSteps ( void ) { return nstates ; }
   void            selectStep ( unsigned int s ) ;
@@ -1031,14 +1088,6 @@ struct ssgEntityBinding
 } ;
 
 
-typedef int (*ssgCallback)( ssgEntity * ) ;
-#define SSG_CALLBACK_PREDRAW   1
-#define SSG_CALLBACK_POSTDRAW  2
-
-typedef int (*ssgTravCallback)( ssgEntity *entity, int traversal_mask ) ;
-#define SSG_CALLBACK_PRETRAV   1
-#define SSG_CALLBACK_POSTTRAV  2
-
 class ssgEntity : public ssgBase
 {
   ssgList parents ;
@@ -1060,6 +1109,7 @@ protected:
   virtual ssgCullResult cull_test  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual ssgCullResult isect_test ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual ssgCullResult hot_test   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual ssgCullResult los_test   ( sgVec3     s, sgMat4 m, int test_needed ) ;
 
   virtual void copy_from ( ssgEntity *src, int clone_flags ) ;
 public:
@@ -1115,11 +1165,12 @@ public:
   void addParent    ( ssgEntity *entity ) { parents.addEntity    ( entity ) ; }
   void removeParent ( ssgEntity *entity ) { parents.removeEntity ( entity ) ; }
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) = 0 ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) = 0 ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) = 0 ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) = 0 ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
@@ -1169,7 +1220,7 @@ public:
 
   ssgState *getState () { return state ; }
   void      setState ( ssgState *st ); //~~ T.G. Body extended & moved into CXX file
- 
+
   virtual ssgCallback getCallback ( int cb_type )
   {
     return ( cb_type == SSG_CALLBACK_PREDRAW ) ? preDrawCB : postDrawCB ;
@@ -1209,7 +1260,7 @@ public:
   int  getCullFace () { return cull_face ; }
 
   virtual void recalcBSphere () = 0 ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
@@ -1217,8 +1268,10 @@ public:
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
   virtual void isect_triangles ( sgSphere *s, sgMat4 m, int test_needed ) = 0 ;
   virtual void hot_triangles   ( sgVec3    s, sgMat4 m, int test_needed ) = 0 ;
+  virtual void los_triangles   ( sgVec3    s, sgMat4 m, int test_needed ) = 0 ;
   virtual void draw  () = 0 ;
 } ;
 
@@ -1315,12 +1368,13 @@ public:
 
   virtual ~ssgVTable (void) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual void recalcBSphere () ;
   virtual void draw () ;
 
   virtual void isect_triangles ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot_triangles   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los_triangles   ( sgVec3     s, sgMat4 m, int test_needed ) ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
@@ -1356,17 +1410,25 @@ public:
   virtual void pick ( int baseName ) ;
   virtual void transform ( const sgMat4 m ) ;
 
-  void setVertices  ( ssgVertexArray   *vl ) ;
-  void setNormals   ( ssgNormalArray   *nl ) ;
-  void setTexCoords ( ssgTexCoordArray *tl ) ;
-  void setColours   ( ssgColourArray   *cl ) ;
+  ssgVertexArray   *getVertices  () { return vertices  ; }
+  ssgNormalArray   *getNormals   () { return normals   ; }
+  ssgTexCoordArray *getTexCoords () { return texcoords ; }
+  ssgColourArray   *getColours   () { return colours   ; }
+
+  virtual void setVertices  ( ssgVertexArray   *vl ) ;
+  virtual void setNormals   ( ssgNormalArray   *nl ) ;
+  virtual void setTexCoords ( ssgTexCoordArray *tl ) ;
+  virtual void setColours   ( ssgColourArray   *cl ) ;
 
   int getNumVertices  () { return vertices  -> getNum () ; }
   int getNumNormals   () { return normals   -> getNum () ; }
   int getNumColours   () { return colours   -> getNum () ; }
   int getNumTexCoords () { return texcoords -> getNum () ; }
 
-  int getNumTriangles () ;
+  /* Don't call this unless you know what you are doing!! */
+  void rawSetNumVertices ( unsigned int n ) { vertices -> rawSetNum ( n ) ; }
+
+  int  getNumTriangles () ;
   void getTriangle ( int n, short *v1, short *v2, short *v3 ) ;
   int  getNumLines () ;
   void getLine ( int n, short *v1, short *v2 ) ;
@@ -1391,16 +1453,68 @@ public:
 
   virtual ~ssgVtxTable (void) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual void recalcBSphere () ;
   virtual void draw () ;
 
   virtual void isect_triangles ( sgSphere *s, sgMat4 m, int test_needed ) ;
   virtual void hot_triangles   ( sgVec3    s, sgMat4 m, int test_needed ) ;
+  virtual void los_triangles   ( sgVec3    s, sgMat4 m, int test_needed ) ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2);
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
 
+} ;
+
+
+class ssgTween : public ssgVtxTable
+{
+  virtual void copy_from ( ssgTween *src, int clone_flags ) ;
+  void init () ;
+protected:
+_SSG_PUBLIC:
+
+  int curr_bank ;
+
+  ssgVertexArray   *render_vertices  ;
+  ssgNormalArray   *render_normals   ;
+  ssgTexCoordArray *render_texcoords ;
+  ssgColourArray   *render_colours   ;
+
+  ulList *banked_vertices  ;
+  ulList *banked_normals   ;
+  ulList *banked_texcoords ;
+  ulList *banked_colours   ;
+
+public:
+  virtual ssgBase *clone ( int clone_flags = 0 ) ;
+
+  ssgTween () ;
+  ssgTween ( GLenum ty ) ;
+
+  virtual void setVertices  ( ssgVertexArray   *vl ) ;
+  virtual void setNormals   ( ssgNormalArray   *nl ) ;
+  virtual void setTexCoords ( ssgTexCoordArray *tl ) ;
+  virtual void setColours   ( ssgColourArray   *cl ) ;
+
+  virtual void recalcBSphere () ;
+  virtual void draw () ;
+  virtual void transform ( const sgMat4 m ) ;
+
+  virtual const char *getTypeName(void) ;
+  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2);
+  virtual int load ( FILE *fd ) ;
+  virtual int save ( FILE *fd ) ;
+
+  int getNumBanks () { return banked_vertices -> getNumEntities () ; }
+
+  int  newBank ( ssgVertexArray   *vl, ssgNormalArray   *nl,
+                 ssgTexCoordArray *tl, ssgColourArray   *cl ) ;
+  int  newBank ( int newVertices , int newNormals,
+                 int newTexCoords, int newColours ) ;
+  void setBank ( int bank ) ;
+
+  virtual ~ssgTween (void) ;
 } ;
 
 
@@ -1442,9 +1556,10 @@ public:
                              return (getNumIndices()<=0) ?
 				      &_ssgIndex0 : indices->get(i);}
 
+	void removeUnusedVertices();
   virtual ~ssgVtxArray (void) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
@@ -1485,15 +1600,43 @@ public:
   virtual ssgEntity *getByName ( char *match ) ;
   virtual ssgEntity *getByPath ( char *path  ) ;
  
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual void cull          ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect         ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot           ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los           ( sgVec3     s, sgMat4 m, int test_needed ) ;
   virtual void print         ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void recalcBSphere () ;
 } ;
+
+
+class ssgTweenController : public ssgBranch
+{
+  float curr_bank ;
+
+protected:
+
+  virtual void copy_from ( ssgTweenController *src, int clone_flags ) ;
+
+public:
+
+  virtual ssgBase *clone ( int clone_flags = 0 ) ;
+  ssgTweenController (void) ;
+  virtual ~ssgTweenController (void) ;
+
+  void  selectBank ( float f ) { curr_bank = f ; }
+  float getCurrBank () { return curr_bank ; }
+
+  virtual void cull ( sgFrustum *f, sgMat4 m, int test_needed ) ;
+  virtual const char *getTypeName(void) ;
+  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
+  virtual int load ( FILE *fd ) ;
+  virtual int save ( FILE *fd ) ;
+} ;
+
+
 
 class ssgInvisible : public ssgBranch
 {
@@ -1572,12 +1715,13 @@ public:
   
   int getMaxKids (void) const { return max_kids ; }
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
 } ;
 
 
@@ -1622,12 +1766,13 @@ public:
   void setAdditive ( int add ) { additive = add ; }
   int  isAdditive  () { return additive ; }
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
 } ;
 
 
@@ -1677,7 +1822,7 @@ public:
   ssgTimedSelector ( int max_kids = 32 ) ;
   virtual ~ssgTimedSelector (void) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
 
   int getStep () ;	
 
@@ -1745,6 +1890,7 @@ public:
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
 } ;
 
 
@@ -1797,13 +1943,13 @@ public:
 
   virtual void setTransform ( sgVec3 xyz ) = 0 ;
   virtual void setTransform ( sgCoord *xform ) = 0 ;
-  virtual void setTransform ( sgCoord *xform, float sx, float sy, float sz ) = 0 ;
+  virtual void setTransform ( sgCoord *xform, float sx, float sy, float sz )=0;
   virtual void setTransform ( sgMat4 xform ) = 0 ;
 
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
 } ;
 
@@ -1824,12 +1970,13 @@ public:
   virtual void setTransform ( sgCoord *xform, float sx, float sy, float sz ) ;
   virtual void setTransform ( sgMat4 xform ) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
   virtual void recalcBSphere () ;
 } ;
 
@@ -1858,7 +2005,7 @@ public:
   virtual void setRotationLimits ( float low, float high ) ;
   virtual void setLinearRotation ( float rot ) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
 };
@@ -1880,7 +2027,7 @@ public:
   virtual void setTransform ( sgCoord *xform, float sx, float sy, float sz ) ;
   virtual void setTransform ( sgMat4 xform ) ;
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
@@ -1900,12 +2047,13 @@ public:
 
   int isPointRotate (void) { return point_rotate ; }
 
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
   virtual void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) ;
   virtual void isect ( sgSphere  *s, sgMat4 m, int test_needed ) ;
   virtual void hot   ( sgVec3     s, sgMat4 m, int test_needed ) ;
+  virtual void los   ( sgVec3     s, sgMat4 m, int test_needed ) ;
 } ;
 
 
@@ -1918,7 +2066,7 @@ public:
   virtual ssgBase *clone ( int clone_flags = 0 ) ;
   ssgRoot (void) ;
   virtual ~ssgRoot (void) ;
-  virtual char *getTypeName(void) ;
+  virtual const char *getTypeName(void) ;
   virtual int load ( FILE *fd ) ;
   virtual int save ( FILE *fd ) ;
 } ;
@@ -2091,6 +2239,8 @@ public:
 
 class ssgContext
 {
+ protected:
+
   int enabledClipPlanes ;
   sgVec4 clipPlane [ 6 ] ;
   ssgSimpleState *currentState ;
@@ -2389,19 +2539,19 @@ public:
   {
     if (model_dir)
     {
-      delete model_dir;
+      delete [] model_dir;
       model_dir = 0;
     }
   
     if (texture_dir)
     {
-      delete texture_dir;
+      delete [] texture_dir;
       texture_dir = 0;
     }
   }
 
-  const char* getModelDir ( void ) { return model_dir ; }
-  const char* getTextureDir ( void ) { return texture_dir ; }
+  const char* getModelDir ( void ) const { return model_dir ; }
+  const char* getTextureDir ( void ) const { return texture_dir ; }
   void setModelDir ( const char *s ) ;
   void setTextureDir ( const char *s ) ;
 
@@ -2418,6 +2568,7 @@ public:
 			      int mipmap = TRUE ) ;
   virtual ssgTransform* createTransform ( ssgTransform* tr,
       ssgTransformArray* ta ) const ;
+  virtual ssgSelector* createSelector ( ssgSelector* s ) const ;
   virtual ssgBranch* createBranch ( char* text ) const
   {
     if ( create_branch_cb != NULL )
@@ -2484,6 +2635,7 @@ int        ssgSaveOFF  ( const char *fname, ssgEntity *ent ) ;
 int        ssgSaveQHI  ( const char *fname, ssgEntity *ent ) ;
 int        ssgSave3ds  ( const char *fname, ssgEntity *ent ) ;
 int        ssgSaveATG  ( const char *fname, ssgEntity *ent ) ;
+int        ssgSaveVRML1( const char *fname, ssgEntity *ent ) ;
 
 
 ssgEntity *ssgLoad     ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
@@ -2496,13 +2648,14 @@ ssgEntity *ssgLoadTRI  ( const char *fname, const ssgLoaderOptions *options = NU
 ssgEntity *ssgLoadOBJ  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadMD2  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadMDL  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
-//ssgEntity *ssgLoadBGL  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadX    ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadFLT  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadM    ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadStrip( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadOFF  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadATG  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
+ssgEntity *ssgLoadVRML1( const char *fname, const ssgLoaderOptions* options = NULL ) ;
+ssgEntity *ssgLoadIV( const char *fname, const ssgLoaderOptions* options = NULL ) ;
 
 
 typedef ssgEntity *ssgLoadFunc ( const char *, const ssgLoaderOptions * ) ;
@@ -2554,6 +2707,10 @@ ssgEntity *ssgLoadAC   ( const char *fname, const ssgLoaderOptions *options = NU
 
 void ssgGetValuesFromLastATGFile(double *x, double *y, double *z, double *r);
 
+ bool ssgConvertTexture( char * fname_output, char * fname_input ) ;
+
+
+
 /* scene walkers */
 
 void ssgFlatten  ( ssgEntity *ent ) ;
@@ -2566,7 +2723,7 @@ ssgLight *ssgGetLight ( int i ) ;
 
 char *ssgShowStats () ;
 void  ssgDelete ( ssgBranch *br ) ;
-char *ssgGetVersion () ;
+const char *ssgGetVersion () ;
 
 void ssgSetLoadOFFTranslucent ( int i );
 

@@ -27,9 +27,8 @@ SOLIBS  =  -lracemantools \
 	   -ltorcs        \
 	   -ltgf          \
 	   -ltxml	  \
-	   -lplibul
-
-#	   -lraceengine   \
+	   -lplibul	  \
+	   -lraceengine
 
 EXPDIR  = include
 

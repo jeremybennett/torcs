@@ -189,13 +189,12 @@ void cGrPerspCamera::setZoom(int cmd)
     case GR_ZOOM_DFLT:
 	fovy = fovydflt;
 	break;
+    }
 
     sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, getId());
     GfParmSetNum(grHandle, GR_SCT_DISPMODE, buf, (char*)NULL, (tdble)fovy);
     GfParmWriteFile(GR_PARAM_FILE, grHandle, "Graph",
 		    GFPARM_PARAMETER, "../dtd/params.dtd");
-    
-    }
 }
 
 void cGrOrthoCamera::setProjection(void)
@@ -573,6 +572,11 @@ protected:
 	up[2] = 1;
     }
 
+    void loadDefaults(char *attr) {
+	locfovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+				   attr, (char*)NULL, fovydflt);
+    }
+
     void setZoom(int cmd) {
 	fovy = locfovy;
 	cGrPerspCamera::setZoom(cmd);
@@ -725,6 +729,11 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
+    }
+
+    void loadDefaults(char *attr) {
+	locfovy = (float)GfParmGetNum(grHandle, GR_SCT_DISPMODE,
+				   attr, (char*)NULL, fovydflt);
     }
 
     void setZoom(int cmd) {

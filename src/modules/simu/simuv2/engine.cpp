@@ -42,6 +42,7 @@ SimEngineConfig(tCar *car)
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
     car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
     
+    sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
     for (i = 0; i < MAXPTS; i++) {
 	sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
 	edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);

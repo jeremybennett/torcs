@@ -42,8 +42,12 @@
 static float grWhite[4] = {1.0, 1.0, 1.0, 1.0};
 static float grRed[4] = {1.0, 0.0, 0.0, 1.0};
 static float grBlue[4] = {0.0, 0.0, 1.0, 1.0};
+static float grGreen[4] = {0.0, 1.0, 0.0, 1.0};
+static float grBlack[4] = {0.0, 0.0, 0.0, 1.0};
 
 #define NB_BOARDS	3
+#define NB_LBOARDS	3
+#define NB_CBOARDS	3
 
 int grBoardWinx = 0;
 int grBoardWinw = 800;
@@ -62,12 +66,12 @@ grSelectBoard(void *vp)
 		     (char*)NULL, (tdble)grBoardFlag);
 	break;
     case 1:
-	grCounterFlag = 1 - grCounterFlag;
+	grCounterFlag = (grCounterFlag + 1) % NB_BOARDS;
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_COUNTER,
 		     (char*)NULL, (tdble)grCounterFlag);
 	break;
     case 2:
-	grLeaderFlag = 1 - grLeaderFlag;
+	grLeaderFlag = (grLeaderFlag + 1) % NB_LBOARDS;
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_LEADER,
 		     (char*)NULL, (tdble)grLeaderFlag);
 	break;
@@ -157,8 +161,8 @@ grDispGGraph(tCarElt *car)
    
     X2 = -car->_DynGC.acc.y / 9.81 * 25.0 + X1;
     Y2 = car->_DynGC.acc.x / 9.81 * 25.0 + Y1;
-    glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_LINES);
+    glColor4f(1.0, 1.0, 1.0, 1.0);
     glVertex2f(X1-50, Y1);
     glVertex2f(X1+50, Y1);
     glVertex2f(X1, Y1-50);
@@ -167,7 +171,7 @@ grDispGGraph(tCarElt *car)
 
 #define THNSS	2.0
     glBegin(GL_QUADS);
-    glColor3f(0.0, 0.0, 1.0);
+    glColor4f(0.0, 0.0, 1.0, 1.0);
     glVertex2f(X1 - THNSS, Y1);
     glVertex2f(X1 + THNSS, Y1);
     glVertex2f(X1 + THNSS, Y1 + car->ctrl->accelCmd * 50.0);
@@ -185,11 +189,60 @@ grDispGGraph(tCarElt *car)
     glEnd();
 
     glBegin(GL_LINES);
-    glColor3f(1.0, 0.0, 0.0);
+    glColor4f(1.0, 0.0, 0.0, 1.0);
     glVertex2f(X1, Y1);
     glVertex2f(X2, Y2);
     glEnd();
 
+}
+
+
+static void
+grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, char *title)
+{
+    tdble curH;
+
+    curH = MIN(val, 1.0);
+    curH = MAX(curH, 0.0);
+    curH *= H;
+    
+#define THNSSBG	2.0
+#define THNSSFG	2.0
+    glBegin(GL_QUADS);
+    glColor4fv(grBlack);
+    glVertex2f(X1 - (THNSSBG + THNSSFG), Y1 - THNSSBG);
+    glVertex2f(X1 + (THNSSBG + THNSSFG), Y1 - THNSSBG);
+    glVertex2f(X1 + (THNSSBG + THNSSFG), Y1 + H + THNSSBG);
+    glVertex2f(X1 - (THNSSBG + THNSSFG), Y1 + H + THNSSBG);
+
+    glColor4fv(clr2);
+    glVertex2f(X1 - THNSSFG, Y1 + curH);
+    glVertex2f(X1 + THNSSFG, Y1 + curH);
+    glVertex2f(X1 + THNSSFG, Y1 + H);
+    glVertex2f(X1 - THNSSFG, Y1 + H);
+
+    glColor4fv(clr1);
+    glVertex2f(X1 - THNSSFG, Y1);
+    glVertex2f(X1 + THNSSFG, Y1);
+    glVertex2f(X1 + THNSSFG, Y1 + curH);
+    glVertex2f(X1 - THNSSFG, Y1 + curH);
+    glEnd();
+    GfuiPrintString(title, grBlue, GFUI_FONT_MEDIUM, (int)X1, (int)(Y1 - THNSSBG - GfuiFontHeight(GFUI_FONT_MEDIUM)), GFUI_ALIGN_HC_VB);
+}
+
+static void 
+grDispMisc(tCarElt *car)
+{
+    float *clr;
+
+    if (car->_fuel < 5.0) {
+	clr = grRed;
+    } else {
+	clr = grWhite;
+    }
+    grDrawGauge(535.0, 20.0, 80.0, clr, grBlack, car->_fuel / car->_tank, "F");
+    grDrawGauge(550.0, 20.0, 80.0, grRed, grGreen, (tdble)(car->_dammage) / grMaxDammage, "D");
+    
 }
 
 static void
@@ -294,7 +347,7 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     sprintf(buf, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
     dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
     dx = MAX(dx, (x3-x));
-    lines = 7;
+    lines = 6;
     for (i = 0; i < 4; i++) {
 	if (car->ctrl->msg[i]) {
 	    lines++;
@@ -327,16 +380,6 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     y -= dy;
 
-    if (car->_state & RM_CAR_STATE_BROKEN) {
-	clr = grRed;
-    } else {
-	clr = grWhite;
-    }
-    
-    GfuiPrintString("Dammages:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
-    sprintf(buf, "%d", car->_dammage);
-    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
-    y -= dy;
     clr = grWhite;
     
     GfuiPrintString("Laps:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
@@ -386,7 +429,6 @@ grDispCarBoard2(tCarElt *car, tSituation *s)
 	    y -= dy;
 	}
     }
-    
 }
 
 void
@@ -483,6 +525,7 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     float *clr;
     int dy;
     int drawCurrent;
+    int drawLaps = grLeaderFlag - 1;
 
     x = grBoardWinx + 5;
     x2 = grBoardWinx + 170;
@@ -495,8 +538,8 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
     glColor4f(0.1, 0.1, 0.1, 0.8);
     glVertex2f(x, grBoardWiny + 5);
     glVertex2f(grBoardWinx + 180, grBoardWiny + 5);
-    glVertex2f(grBoardWinx + 180, y+ dy*maxi);
-    glVertex2f(x, y+ dy*maxi);
+    glVertex2f(grBoardWinx + 180, y + dy * (maxi + drawLaps));
+    glVertex2f(x, y + dy * (maxi + drawLaps));
     glEnd();
     glDisable(GL_BLEND);
 
@@ -546,6 +589,11 @@ grDispLeaderBoard(tCarElt *car, tSituation *s)
 	    }
 	}
 	y += dy;
+    }
+    if (drawLaps) {
+	GfuiPrintString(" Lap:", grWhite, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%d / %d", s->cars[0]->_laps, s->_totLaps);
+	GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     }
 }
 
@@ -762,7 +810,9 @@ grDispCounterBoard2(tCarElt *car)
     sprintf(buf, "%3d", abs((int)(car->_speed_x * 3.6)));
     GfuiPrintString(buf, grBlue, GFUI_FONT_DIGIT,
 		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
-   
+    if (grCounterFlag == 1){
+	grDispMisc(car);
+    }
 }
 
 void

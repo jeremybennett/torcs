@@ -1,6 +1,6 @@
 /*
      PLIB - A Suite of Portable Game Libraries
-     Copyright (C) 2001  Steve Baker
+     Copyright (C) 1998,2002  Steve Baker
  
      This library is free software; you can redistribute it and/or
      modify it under the terms of the GNU Library General Public
@@ -13,7 +13,7 @@
      Library General Public License for more details.
  
      You should have received a copy of the GNU Library General Public
-     License along with this library; if not, write to the Free
+     License along with this library; if not, write to the Free Software
      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  
      For further information visit http://plib.sourceforge.net
@@ -65,7 +65,7 @@ private:
     return param ;
   }
 #endif
-  void open ( char *device ) ;
+  void open ( const char *device ) ;
   void close () ;
 
 public:
@@ -73,11 +73,11 @@ public:
   /* Tom */
 
   smMixer ();
-  smMixer ( char *device );
+  smMixer ( const char *device );
  ~smMixer ();
   
-  int notWorking ();
-  int not_working ()  { return notWorking () ; }  /* Originally a typo! */
+  int notWorking () const ;
+  int not_working () const { return notWorking () ; }  /* Originally a typo! */
 
   /* Volume controls are in integer percentages */
 

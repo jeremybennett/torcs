@@ -45,12 +45,19 @@
 struct RmInfo;
 
 typedef int (*tfRmRunState) (struct RmInfo *);
-#define RM_SYNC		0x01
-#define RM_ASYNC	0x02
-#define RM_NEXT_STEP	0x04
-#define RM_END_RACE	0x08
-#define RM_NEXT_RACE	0x10
-#define RM_NEXT_EVENT	0x20
+
+#define RM_SYNC			0x00000001
+#define RM_ASYNC		0x00000002
+
+#define RM_END_RACE		0x00000010
+#define RM_CONTINUE_RACE	0x00000020
+
+#define RM_NEXT_STEP		0x00000100
+#define RM_NEXT_RACE		0x00000200
+#define RM_NEXT_EVENT		0x00000400
+
+#define RM_ACTIVGAMESCR		0x01000000
+#define RM_QUIT			0x40000000
 
 
 /** Race manager module interface  */
@@ -70,8 +77,10 @@ typedef struct {
     int			ncars;		/**< number of cars */
     int			totLaps;	/**< total laps */
     int			state;
-#define RM_RACE_FINISHING	1
-#define RM_RACE_PAUSED		2
+#define RM_RACE_RUNNING		0X00000001
+#define RM_RACE_FINISHING	0X00000002
+#define RM_RACE_ENDED		0X00000004
+#define RM_RACE_PAUSED		0X40000000
     int			type;		/**< Race type */
 #define RM_TYPE_PRACTICE	1
 #define RM_TYPE_QUALIF		2
@@ -106,17 +115,20 @@ typedef struct
 } tRaceModIft;
 
 #define RE_STATE_CONFIG			0
-#define RE_STATE_RACE_EVENT_INIT	1
-#define RE_STATE_RACE_TRACK_INIT	2
+#define RE_STATE_EVENT_INIT		1
+#define RE_STATE_INT_TRACK_INIT		2
 #define RE_STATE_PRE_RACE		3
-#define RE_STATE_RACE_CARS_INIT		4
-#define RE_STATE_RACE			5
-#define RE_STATE_RACE_CARS_SHUTDOWN	6
-#define RE_STATE_POST_RACE		7
-#define RE_STATE_RACE_TRACK_SHUTDOWN	8
-#define RE_STATE_RACE_EVENT_SHUTDOWN	9
-#define RE_STATE_SHUTDOWN		10
-#define RE_STATE_ERROR			11
+#define RE_STATE_INT_CARS_INIT		4
+#define RE_STATE_RACE_START		5
+#define RE_STATE_RACE			6
+#define RE_STATE_RACE_END		7
+#define RE_STATE_INT_RACE_END		8
+#define RE_STATE_POST_RACE		9
+#define RE_STATE_INT_TRACK_SHUTDOWN	10
+#define RE_STATE_EVENT_SHUTDOWN		11
+#define RE_STATE_SHUTDOWN		12
+#define RE_STATE_ERROR			13
+#define RE_STATE_EXIT			14
 
 /* Race Engine Car Information about the race */
 typedef struct 
@@ -133,7 +145,6 @@ typedef struct
 typedef struct
 {
     int			state;
-    tTrack		*track;
     void		*param;
     tRaceModIft		itf;
     void		*gameScreen;
@@ -147,7 +158,6 @@ typedef struct
 } tRaceEngineInfo;
 
 #define _reState	raceEngineInfo.state
-#define _reTrack	raceEngineInfo.track
 #define _reParam	raceEngineInfo.param
 #define _reRacemanItf	raceEngineInfo.itf.racemanItf
 #define _reTrackItf	raceEngineInfo.itf.trackItf

@@ -23,7 +23,7 @@ MODULE    = ssggraph.so
 
 MODULEDIR = modules/graphic
 
-LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
+LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul -lplibssgaux
 
 SHIPDIR   = config
 

@@ -18,7 +18,6 @@
  ***************************************************************************/
 
 
-
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -53,6 +52,26 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 }
 #endif
 
+static int
+pitCmd(int index, tCarElt *car, tSituation *s)
+{
+    int 	idx = index - 1;
+    int		remainLaps = s->_totLaps - car->_laps;
+    tdble	fuel;
+
+    PitState[idx] = PIT_STATE_PIT_EXIT;
+    fuel = ConsFactor * (remainLaps + 1);
+    //fuel = MIN(fuel, MaxFuel[idx]);
+    car->pitcmd->fuel = MAX(fuel - car->_fuel, 0);
+    if (remainLaps > 20) {
+	car->pitcmd->repair = (int)(car->_dammage);
+    } else {
+	car->pitcmd->repair = (int)(car->_dammage / 2.0);
+    }
+
+    return ROB_PIT_IM;
+}
+
 /* #define RELAXATION(target, prev, gain) {(target) = (prev) + gain * ((target) - (prev)) * s->deltaTime; (prev) = (target);} */
 
 /*
@@ -81,6 +100,7 @@ InitFuncPt(int index, void *pt)
     itf->rbNewRace  = newrace;
     itf->rbDrive    = drive;			/* drive during race */
     itf->index      = index;
+    itf->rbPitCmd   = pitCmd;
     return 0;
 }
 
@@ -104,7 +124,7 @@ extern "C" int
 inferno(tModInfo *modInfo)
 {
     modInfo->name    = "Inferno";	/* name of the module (short) */
-    modInfo->desc    = "For Jonathan";	/* description of the module (can be long) */
+    modInfo->desc    = "For Laurence";	/* description of the module (can be long) */
     modInfo->fctInit = InitFuncPt;	/* init function */
     modInfo->gfId    = ROB_IDENT;	/* supported framework version */
     modInfo->index   = 1;
@@ -118,9 +138,7 @@ tdble	shiftThld[10][MAX_GEARS+1];
 static tdble PGain[10]     = {0.02};
 static tdble AGain[10]     = {0.008};
 static tdble PnGain[10]    = {0.02};
-static tdble DPnGain[10]    = {0.1};
 static tdble Advance[10]   = {35.0};
-static tdble AdvSpd[10]    = {5.0};
 static tdble Advance2[10]  = {20.0};
 static tdble AdvStep[10]   = {20.0};
 static tdble VGain[10]     = {0.0005};
@@ -129,10 +147,27 @@ static tdble spdtgt[10]    = {115.0};
 static tdble spdtgt2[10]   = {1.0};
 static tdble steerMult[10] = {2.0};
 static tdble Offset[10]    = {0.0};
-static tdble VxnGain[10]   = {0.0};
-static tdble VxnGain2[10]   = {1.0};
-
 static tdble Trightprev[10];
+tdble DynOffset[10] = {0.0};
+int   PitState[10]  = {0};
+
+tdble O1[10] = {60.0};
+tdble O2[10] = {60.0};
+tdble O3[10] = {0.0};
+tdble O4[10] = {0.0};
+tdble O5[10] = {20.0};
+tdble OP[10] = {15.0};
+tdble OW[10] = {2.0};
+tdble VM;
+tdble VM1[10] = {15.0};
+tdble VM2[10] = {0.0};
+tdble VM3[10] = {25.0};
+
+tdble OffsetApproach = {0.0};
+tdble OffsetFinal    = {0.0};
+tdble OffsetExit     = {0.0};
+tdble LgfsFinal[10];
+tdble ConsFactor     = 0.0007;
 
 /*
  * Function
@@ -156,7 +191,6 @@ static tdble Trightprev[10];
 #define AGAIN		"AGain"
 #define PNGAIN		"PnGain"
 #define ADVANCE		"Advance"
-#define ADVSPD		"AdvSpd"
 #define ADVANCE2	"Advance2"
 #define ADVSTEP		"AdvStep"
 #define VGAIN		"VGain"
@@ -165,9 +199,21 @@ static tdble Trightprev[10];
 #define SPDTGT2		"spdtgt2"
 #define STEERMULT	"steerMult"
 #define OFFSET		"offset"
-#define DPNGAIN		"DPnGain"
-#define VNXGAIN		"VnxGain"
-#define VNXGAIN2	"VnxGain2"
+#define OFFSETAPPROACH	"offsetApproach"
+#define OFFSETFINAL	"offsetFinal"
+#define OFFSETEXIT	"offsetExit"
+#define PITOFFSET1	"len before pit entry"
+#define PITOFFSET2	"len before pit start"
+#define PITOFFSETP	"len around pit stop"
+#define PITOFFSET3	"len after pit end"
+#define PITOFFSET4	"len after pit exit"
+#define PITOFFSET5	"len to speed down for pitting"
+#define VMAX1		"VMax1"
+#define VMAX2		"VMax2"
+#define VMAX3		"VMax3"
+
+tdble Gmax;
+
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
@@ -175,7 +221,9 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     char	*str;
     char	buf[256];
     tdble	fuel;
-
+    tdble	tmpMu;
+    
+    
     DmTrack = track;
     str = strrchr(track->filename, '/') + 1;
     sprintf(ParamNames, "drivers/inferno/tracksdata/car_%s", str);
@@ -187,10 +235,20 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
     } else {
 	GfOut("%s Loaded\n", ParamNames);
     }
-    if (s->_raceType != RM_TYPE_PRACTICE) {
-	fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
-	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
-    }
+    ConsFactor = 0.0007 * DmTrack->length;
+    fuel = ConsFactor * (s->_totLaps + 1);
+    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+
+    VM = track->pits.speedLimit;
+
+    Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
 
     sprintf(buf, "drivers/inferno/tracksdata/%s", str);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
@@ -198,9 +256,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	PGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, PGAIN,     NULL, PGain[0]);
 	AGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
 	PnGain[0]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
-	DPnGain[0]   = GfParmGetNum(hdle, SIMU_PRMS, DPNGAIN,   NULL, DPnGain[0]);
 	Advance[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
-	AdvSpd[0]    = GfParmGetNum(hdle, SIMU_PRMS, ADVSPD,    NULL, AdvSpd[0]);
 	Advance2[0]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
 	AdvStep[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVSTEP,   NULL, AdvStep[0]);
 	VGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, VGAIN,     NULL, VGain[0]);
@@ -209,9 +265,19 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	spdtgt2[0]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
 	steerMult[0] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
 	Offset[0]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSET,    NULL, Offset[0]);
-	VxnGain[0]   = GfParmGetNum(hdle, SIMU_PRMS, VNXGAIN,   NULL, VxnGain[0]);
-	VxnGain2[0]  = GfParmGetNum(hdle, SIMU_PRMS, VNXGAIN2,  NULL, VxnGain2[0]);
-	
+
+	OffsetApproach = GfParmGetNum(hdle, SIMU_PRMS, OFFSETAPPROACH, NULL, OffsetApproach);
+	OffsetFinal    = GfParmGetNum(hdle, SIMU_PRMS, OFFSETFINAL,    NULL, OffsetFinal);
+	OffsetExit     = GfParmGetNum(hdle, SIMU_PRMS, OFFSETEXIT,     NULL, OffsetExit);
+	O1[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET1,     NULL, O1[0]);
+	O2[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET2,     NULL, O2[0]);
+	OP[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETP,     NULL, OP[0]);
+	O3[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET3,     NULL, O3[0]);
+	O4[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET4,     NULL, O4[0]);
+	O4[0]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET5,     NULL, O5[0]);
+	VM1[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX1,          NULL, VM1[0]);
+	VM2[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX2,          NULL, VM2[0]);
+	VM3[0]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX3,          NULL, VM3[0]);
 	GfParmReleaseHandle(hdle);
     }
 }
@@ -242,6 +308,13 @@ void newrace(int index, tCarElt* car, tSituation *s)
     curidx = 0;
 
     InitGears(car, 0);
+
+    if (car->_pit) {
+	LgfsFinal[0] = RtGetDistFromStart2(&car->_pit->pos);
+    } else {
+	PitState[0] = PIT_STATE_NO;
+    }
+
 #ifndef WIN32
     if (s->_raceType == RM_TYPE_PRACTICE) {
 	RtTelemInit(-10, 10);
@@ -316,10 +389,10 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	}
     }
 
-    adv = Advance[0] + AdvSpd[0] * sqrt(fabs(car->_speed_x));
+    adv = Advance[0] + 5.0 * sqrt(fabs(car->_speed_x));
     
     if (Curtime > hold[0]) {
-	    Tright[0] = seg->width / 2.0 + Offset[0];
+	    Tright[0] = seg->width / 2.0 + Offset[0] + DynOffset[0];
     }
 
     
@@ -329,7 +402,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     x = X + (CosA) * adv;
     y = Y + (SinA) * adv;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos2, TR_LPOS_MAIN);
-    Dny = seg->width / 2.0 + DPnGain[0] * (Tright[0] - seg->width / 2.0) - trkPos2.toRight + Offset[0];
+    Dny = seg->width / 2.0 - trkPos2.toRight + Offset[0] + DynOffset[0];
 
     CollDet(car, 0, s, Curtime, Dny);
     
@@ -346,12 +419,12 @@ static void drive(int index, tCarElt* car, tSituation *s)
     NORM_PI_PI(Da);
     
 
-    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny * (VxnGain[0] * fabs(car->_speed_x) + VxnGain2[0]) + AGain[0] * Da * Da;
+    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
 
     if (car->_speed_x < 0) {
 	car->ctrl->steer *= 1.5;
-    } else {
-	car->ctrl->steer *= 1.1;
+    } else if (car->_speed_x < 10) {
+	car->ctrl->steer *= 2.0;
     }
 
     /*

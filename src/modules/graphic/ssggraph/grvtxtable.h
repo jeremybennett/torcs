@@ -146,10 +146,6 @@ public:
   virtual void pick ( int baseName )  { ssgVtxTable::pick(baseName);}
   virtual void transform ( const sgMat4 m )  { ssgVtxTable::transform(m);}
 
-  void setVertices  ( ssgVertexArray   *vl ) ;
-  void setNormals   ( ssgNormalArray   *nl ) ;
-  void setTexCoords ( ssgTexCoordArray *tl ) ;
-  void setColours   ( ssgColourArray   *cl ) ;
 
   int getNumVertices  () { return vertices  -> getNum () ; }
   int getNumNormals   () { return normals   -> getNum () ; }
@@ -165,7 +161,12 @@ public:
 
   virtual ~grVtxTable (void);
 
-  virtual char *getTypeName(void)  { return ssgVtxTable::getTypeName();}
+  virtual const char *getTypeName(void)  { return ssgVtxTable::getTypeName();}
+
+  virtual void setVertices  ( ssgVertexArray   *vl ) {  ssgVtxTable::setVertices(vl);}
+  virtual void setNormals   ( ssgNormalArray   *nl ) {  ssgVtxTable::setNormals(nl);}
+  virtual void setTexCoords ( ssgTexCoordArray *tl ) {  ssgVtxTable::setTexCoords(tl);}
+  virtual void setColours   ( ssgColourArray   *cl ) {  ssgVtxTable::setColours(cl);}
 
   /* the following functions doesn't work with arrays */
   virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2) { ssgVtxTable::print(fd,indent,how_much);}

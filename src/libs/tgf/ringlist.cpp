@@ -21,7 +21,7 @@
     		Ring list management.
 		The ring lists are linked lists without end, the tail is linked to the head.
 		The list pointer is on the tail, so the access to the head is list->next.
-		The first field of the elements is always next.
+		The first two fields of the elements are always next and prev.
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
     @version	$Id$

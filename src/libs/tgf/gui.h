@@ -230,6 +230,9 @@ typedef struct
 
     /* menu specific */
     int			nbItems;
+
+    /* Screen type */
+    int			onlyCallback;
 } tGfuiScreen;
 
 

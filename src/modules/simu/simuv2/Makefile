@@ -32,7 +32,8 @@ SOURCES		= simu.cpp \
 	  	  wheel.cpp \
 	  	  transmission.cpp \
 	  	  differential.cpp \
-	  	  collide.cpp
+	  	  collide.cpp \
+		  categories.cpp
 
 LIBS		=  -lplibsg -lplibul -L${EXPORTBASE}/lib -lsolid
 

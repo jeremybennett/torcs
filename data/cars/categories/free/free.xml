@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="FREE" type="template">
+<params name="free" type="template">
 
   <section name="Car">
     <attstr name="category" val="free"/>

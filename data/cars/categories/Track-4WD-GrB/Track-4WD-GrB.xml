@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="TORCS GrB" type="template">
+<params name="Track-4WD-GrB" type="template">
 
   <section name="Car">
     <attstr name="category" val="Track-4WD-GrB"/>
@@ -64,6 +64,9 @@
     <attnum name="revs maxi" min="3000" max="10000" unit="rpm" val="10000"/>
     <attnum name="tickover" min="500" max="5000" unit="rpm" val="2000"/>
     <attnum name="fuel cons factor" min="1.0" max="2.0" val="1.2"/>
+    <attnum name="torque min" val="300" unit="N.m"/>
+    <attnum name="torque max" val="750" unit="N.m"/>
+    <attnum name="torque def step" unit="rpm" val="500"/>
     <section name="data points">
       <section name="1">
 	<attnum name="rpm" unit="rpm" val="0"/>

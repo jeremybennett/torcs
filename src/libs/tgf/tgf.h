@@ -313,6 +313,8 @@ extern void GfuiScreenActivate(void *screen);
 extern int  GfuiScreenIsActive(void *screen);
 extern void GfuiScreenReplace(void *screen);
 extern void GfuiScreenDeactivate(void);
+extern void *GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate);
+extern void GfuiHookRelease(void *hook);
 extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
 extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed);
 extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed);
@@ -544,6 +546,7 @@ typedef struct
 
 extern tdble gfMean(tdble v, tMeanVal *pvt, int n, int w);
 extern void gfMeanReset(tdble v, tMeanVal *pvt);
+
 
 #endif /* __TGF__H__ */
 

@@ -35,6 +35,8 @@
 #include <robottools.h>
 #include <robot.h>
 
+static char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+
 static void initStartingGrid(tRmInfo *raceInfo);
 static void initPits(tRmInfo *raceInfo);
 static char buf[256];
@@ -166,7 +168,7 @@ RmInitCars(tRmInfo *raceInfo)
 {
     int		nCars;
     int		index;
-    int		i, j;
+    int		i, j, k;
     char	*cardllname;
     int		robotIdx;
     tModInfo	*curModInfo;
@@ -178,12 +180,14 @@ RmInitCars(tRmInfo *raceInfo)
     void	*robhdle;
     tCarElt	*elt;
     char	*focused;
+    char	*str;
     int		focusedIdx;
     
     /* Get the number of cars racing */
     nCars = (int)GfParmGetNum(raceInfo->params, RM_SECT_DRIVERS, RM_ATTR_NDRIVERS, (char*)NULL, 0);
     GfOut("loading %d cars\n", nCars);
 
+    if (raceInfo->carList) free(raceInfo->carList);
     raceInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
     raceInfo->s->current = -1;
     focused = GfParmGetStr(raceInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, "");
@@ -233,6 +237,14 @@ RmInitCars(tRmInfo *raceInfo)
 		    elt->_name       = GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>");
 		    elt->_carName    = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
 		    elt->_raceNumber = (int)GfParmGetNum(robhdle, path, ROB_ATTR_RACENUM, (char*)NULL, 0);
+		    elt->_skillLevel = 0;
+		    str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);
+		    for(k = 0; k < (int)(sizeof(level_str)/sizeof(char*)); k++) {
+			if (strcmp(level_str[k], str) == 0) {
+			    elt->_skillLevel = k;
+			    break;
+			}
+		    }
 		    elt->_startRank  = index;
 		    elt->_pos        = index+1;
 		    elt->_remainingLaps = raceInfo->s->_totLaps;
@@ -243,7 +255,7 @@ RmInitCars(tRmInfo *raceInfo)
 		    GfOut("Car Specification: %s\n", buf);
 		    carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 		    category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
-		    sprintf(buf, "Loading Driver %s... Car: %s  Category %s", curModInfo->name, elt->_carName, category);
+		    sprintf(buf, "Loading Driver %-20s... Car: %s", curModInfo->name, elt->_carName);
 		    RmLoadingScreenSetText(buf);
 		    if (category != 0) {
 			/* Read Car Category specifications */

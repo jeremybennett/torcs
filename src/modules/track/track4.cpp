@@ -1267,7 +1267,7 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     tTrackSeg		*pitExitSeg = NULL;
     tTrackSeg		*pitStart = NULL;
     tTrackSeg		*pitEnd = NULL;
-    tTrackSeg		*curPitSeg;
+    tTrackSeg		*curPitSeg = NULL;
     tTrackPitInfo	*pits;
     char		*segName;
     int			segId;
@@ -1278,7 +1278,7 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     static char		path[256];
     static char		path2[256];
     int			changeSeg;
-    tdble		offset;
+    tdble		offset = 0;
     tdble		toStart;
 
     xmin = xmax = ymin = ymax = zmin = zmax = 0.0;

@@ -61,6 +61,7 @@ double		grCurTime;
 double		grDeltaTime;
 int		segIndice	= 0;
 
+tdble grMaxDammage = 10000.0;
 static int grWindowRatio = 0;
 int grNbCars = 0;
 
@@ -312,6 +313,9 @@ initCars(tSituation *s)
 
     TRACE_GL("initCars: start");
 
+    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+    grMaxDammage = (tdble)s->_maxDammage;
     grNbCars = s->_ncars;
     grInitCams();
     grCurCamHead = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD,
@@ -334,11 +338,9 @@ initCars(tSituation *s)
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM, (char*)NULL, (tdble)grCurCam->getId());
 	GfParmSetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_CAM_HEAD, (char*)NULL, (tdble)grCurCamHead);    
     }
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, camNum);
+    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, grCurCamHead, grCurCam->getId());
     grCurCam->loadDefaults(buf);
     grDrawCurrent = grCurCam->getDrawCurrent();
-
-    grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
 
@@ -378,9 +380,10 @@ void
 shutdownCars(void)
 {
     int i;
-
+    
     if (grNbCars) {
 	grShutdownSkidmarks();
+	grShutdownSmoke();
 	/* Delete ssg objects */
 	for (i = 0; i < grNbCars; i++) {
 	    TheScene->removeKid(grCarInfo[i].carTransform);
