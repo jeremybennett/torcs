@@ -411,7 +411,9 @@ float Driver::getOvertakeOffset()
 			tTrackSeg *seg = car->_trkPos.seg;
 			float length = getDistToSegEnd();
 			float oldlen, seglen = length;
-			float lenright = 0.0, lenleft = 0.0; //, lenstraight = 0.0;
+			float lenright = 0.0, lenleft = 0.0;
+			mincatchdist = MIN(mincatchdist, 200.0);
+
 			do {
 				switch (seg->type) {
 				case TR_LFT:
@@ -420,11 +422,8 @@ float Driver::getOvertakeOffset()
 				case TR_RGT:
 					lenright += seglen;
 					break;
-				case TR_STR:
-					// lenstraight += seglen;
-					break;
 				default:
-					// If we end up here its a bug!
+					// Do nothing.
 					break;
 				}
 				seg = seg->next;
