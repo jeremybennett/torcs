@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 #include "sim.h"
+extern tRmInfo ReInfo;
 
 #define CAR_DAMMAGE	0.1
 
@@ -86,8 +87,6 @@ SimCarCollideZ(tCar *car)
 		}
 		car->DynGCg.pos.z += delta.z;
 
-		    
-		
 		RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 		dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
 		if (rel_normal.z < 0) {
@@ -95,7 +94,17 @@ SimCarCollideZ(tCar *car)
 		}
 		if (dotProd < 0) {
 		    if (dotProd <-5.0) {
-			car->collision |= 16;
+				car->collision |= 16;
+				wheel->rotational_damage_x -= dotProd*0.01*drand48();
+				wheel->rotational_damage_z -= dotProd*0.01*drand48();
+				wheel->bent_damage_x += 0.1*drand48()-0.05;
+				wheel->bent_damage_z += 0.1*drand48()-0.05;
+				if (wheel->rotational_damage_x>0.25) {
+					wheel->rotational_damage_x = 0.25;
+				}
+				if (wheel->rotational_damage_z>0.25) {
+					wheel->rotational_damage_z = 0.25;
+				}
 		    }
 		    car->collision |= 9;
 
@@ -121,11 +130,11 @@ SimCarCollideZ(tCar *car)
 				car->DynGCg.vel.x = ConstantFriction (car->DynGCg.vel.x, c*dotProd*SIGN(car->DynGCg.vel.x));
 				car->DynGCg.vel.y = ConstantFriction (car->DynGCg.vel.y, c*dotProd*SIGN(car->DynGCg.vel.y));
 				car->DynGCg.vel.z = ConstantFriction (car->DynGCg.vel.z, c*dotProd*SIGN(car->DynGCg.vel.z));
-
+				
 			}
-
+			
 		    if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-			car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
+				car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 		    }
 
 		NaiveRotate (normal, angles, &rel_normal);
@@ -274,6 +283,7 @@ SimCarCollideXYScene(tCar *car)
 	nx = normal.x;
 	ny = normal.y;
 	initDotProd = nx * corner->vel.x + ny * corner->vel.y;
+
 	dotProd = initDotProd * curBarrier->surface->kFriction;
 	car->DynGCg.vel.x -= nx * dotProd;
 	car->DynGCg.vel.y -= ny * dotProd;
@@ -299,13 +309,41 @@ SimCarCollideXYScene(tCar *car)
 	    car->normal.y = normal.y * dmg;
 	    car->collpos.x = corner->pos.ax;
 	    car->collpos.y = corner->pos.ay;
-	    
+		sgVec3 force;
+
+		tdble invK = 0.01;
+		force[0] = -invK * nx * dotProd;
+		force[1] = -invK * ny * dotProd;
+		force[2] = invK * (drand48()-0.5)*0.1;
+
+		//printf ("- %f -\n", sgLengthVec3 (force));
 	    /* collision detected */
 	    car->DynGCg.vel.x -= nx * dotProd;
 	    car->DynGCg.vel.y -= ny * dotProd;
 
 	    /* car->DynGCg.vel.az -= dotprod2 * dotProd * 0.2; */
-
+		if (sgLengthVec3 (force) > 0.01) {
+			sgVec3 poc;
+			poc[0] = corner->pos.x;
+			poc[1] = corner->pos.y;
+			poc[2] = (drand48()-0.5)*2.0;
+			t3Dd angles;
+			t3Dd original;
+			t3Dd updated;
+			angles.x = car->DynGCg.pos.ax;
+			angles.y = car->DynGCg.pos.ay;
+			angles.z = car->DynGCg.pos.az;	
+			
+			original.x = force[0];
+			original.y = force[1];
+			original.z = force[2];
+			NaiveRotate (original, angles, &updated);
+			force[0] = updated.x;
+			force[1] = updated.y;
+			force[2] = updated.z;
+			car->ReInfo->_reGraphicItf.bendcar(car->carElt->index, poc, force, 0);
+			//grPropagateDamage (grCarInfo[car->carElt->index].carEntity, poc, force, 0);
+		}
 	}
     }
 }
@@ -318,7 +356,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     tCarElt	*carElt;
     tdble	damFactor, atmp;
 
-    sgVec2	n, p1, p2;
+    sgVec3	n, p1, p2;
     sgVec2	v1ap, v1bp, v1ab;
     sgVec2	rap, rbp;
     sgVec2	v2a, v2b;
@@ -443,6 +481,48 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
     
     assert (!isnan(j));
+
+
+
+
+	sgVec3 force;
+	tdble invK = 0.005;
+	force[0] = -invK * v1ab[0];
+	force[1] = -invK * v1ab[1];
+	force[2] = 0;
+	if (sgLengthVec3 (force) > 0.1) {
+		tdble h=drand48()-0.5;
+		p1[2] = h;
+		p2[2] = h;
+		t3Dd angles;
+		t3Dd original;
+		t3Dd updated;
+		sgVec3 f;
+		angles.x = car1->DynGCg.pos.ax;
+		angles.y = car1->DynGCg.pos.ay;
+		angles.z = car1->DynGCg.pos.az;	
+		original.x = force[0];
+		original.y = force[1];
+		original.z = force[2];
+		NaiveRotate (original, angles, &updated);
+		f[0] = updated.x;
+		f[1] = updated.y;
+		f[2] = updated.z;
+		//printf ("* %f *\n", sgLengthVec3 (force));
+		car1->ReInfo->_reGraphicItf.bendcar(car1->carElt->index, p1, f, 0);
+		sgNegateVec3 (force);
+		angles.x = car2->DynGCg.pos.ax;
+		angles.y = car2->DynGCg.pos.ay;
+		angles.z = car2->DynGCg.pos.az;	
+		original.x = force[0];
+		original.y = force[1];
+		original.z = force[2];
+		NaiveRotate (original, angles, &updated);
+		f[0] = updated.x;
+		f[1] = updated.y;
+		f[2] = updated.z;
+		car1->ReInfo->_reGraphicItf.bendcar(car2->carElt->index, p2, f, 0);
+	}
     
     atmp = atan2(rap[1], rap[0]);
     if (fabs(atmp) < (PI / 3.0)) {

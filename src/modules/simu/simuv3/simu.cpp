@@ -124,7 +124,7 @@ ctrlCheck(tCar *car)
 
 /* Initial configuration */
 void
-SimConfig(tCarElt *carElt)
+SimConfig(tCarElt *carElt, tRmInfo* ReInfo)
 {
     tCar *car = &(SimCarTable[carElt->index]);
 
@@ -135,7 +135,7 @@ SimConfig(tCarElt *carElt)
     car->trkPos = carElt->_trkPos;
     car->ctrl   = &carElt->ctrl;
     car->params = carElt->_carHandle;
-    
+    car->ReInfo = ReInfo;
     SimCarConfig(car);
 
     SimCarCollideConfig(car);

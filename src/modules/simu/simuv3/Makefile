@@ -41,7 +41,7 @@ SUBDIRS		= SOLID-2.0
 
 EXPINCDIRS	= SOLID-2.0
 
-PKGSUBDIRS	= $(SUBDIRS)
+PKGSUBDIRS	= simuv3#$(SUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

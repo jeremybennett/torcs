@@ -82,6 +82,12 @@ typedef struct
     tdble	camber;		/* camber, negative toward exterior on both sides */
     tdble	pressure;	/* tire pressure */
 
+
+	/* axis damage */
+	tdble rotational_damage_x;
+	tdble rotational_damage_z;
+	tdble bent_damage_x;
+	tdble bent_damage_z;
     tDynAxis	in;
     tDynAxis	feedBack;
 

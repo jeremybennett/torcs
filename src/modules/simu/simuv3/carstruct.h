@@ -85,7 +85,7 @@ typedef struct
     int		dammage;
     
     tDynPt	restPos;	/* target rest position after the car is broken */
-
+	tRmInfo *ReInfo;
     int		collisionAware;
 } tCar;
 

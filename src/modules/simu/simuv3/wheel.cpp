@@ -105,6 +105,10 @@ SimWheelConfig(tCar *car, int index)
     wheel->feedBack.spinVel = 0;
     wheel->feedBack.Tq = 0;
     wheel->feedBack.brkTq = 0;
+	wheel->rotational_damage_x = 0.0;//drand48()*0.25;
+	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
+	wheel->bent_damage_x = drand48();
+	wheel->bent_damage_z = drand48();
 }
 
 
@@ -125,18 +129,24 @@ SimWheelUpdateRide(tCar *car, int index)
     t3Dd normal;
     t3Dd rel_normal;
     
-    tdble waz = wheel->steer + wheel->staticPos.az;
+
     tdble dZ;
     // Find normal of track.
     RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
     
     dZ = wheel->pos.z - Zroad;
+	wheel->relPos.az = wheel->steer + wheel->staticPos.az;
     // Transform from world to suspension FOR
     if (index % 2) {
 		wheel->relPos.ax = -wheel->staticPos.ax;
     } else {
-		wheel->relPos.ax = wheel->staticPos.ax;
+		wheel->relPos.ax =  wheel->staticPos.ax;
     }
+	if (wheel->rotational_damage_x>0.0) {
+		wheel->relPos.ax += wheel->rotational_damage_x*sin(wheel->relPos.ay + wheel->bent_damage_x);
+		wheel->relPos.az += wheel->rotational_damage_z*cos(wheel->relPos.ay + wheel->bent_damage_z);
+	}
+    tdble waz = wheel->relPos.az;
     angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
     angles.y = car->DynGCg.pos.ay;
     angles.z = car->DynGCg.pos.az;
@@ -197,7 +207,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	wheel->T_current = car->carElt->_tyreT_mid(index);
 	wheel->condition = car->carElt->_tyreCondition(index);
 
-    waz = wheel->steer + wheel->staticPos.az;
+    waz = wheel->relPos.az;//wheel->steer + wheel->staticPos.az;
     /* Get normal of road relative to the wheel's axis 
 	   This should help take into account the camber.*/
 
@@ -301,7 +311,7 @@ SimWheelUpdateForce(tCar *car, int index)
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
     } else if (absolute_speed < 0.00001) {
-		sx = wrl;
+		sx = wvx;
 		sy = 0;
 		sa = 0;
     } else {
@@ -380,8 +390,8 @@ SimWheelUpdateForce(tCar *car, int index)
 		if (rel_normal.z > MIN_NORMAL_Z) {
 			// When the tyre is tilted there is less surface
 			// touching the road. Modelling effect simply with rel_normal_xz
-			Ft2 = - /*rel_normal_xz*/F*sx/s;
-			Fn2 = - /*rel_normal_xz*/F*sy/s;
+			Ft2 = - rel_normal_xz*F*sx/s;
+			Fn2 = - rel_normal_xz*F*sy/s;
 		} else {
 			Ft2 = 0.0;
 			Fn2 = 0.0;
@@ -444,6 +454,8 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->feedBack.brkTq = wheel->brake.Tq;
 	car->carElt->_tyreT_mid(index) = wheel->T_current;
 	car->carElt->_tyreCondition(index) = wheel->condition;
+	car->carElt->_wheelSlipSide(index) = wvy;
+	car->carElt->_wheelSlipAccel(index) = wvx;
 }
 
 
