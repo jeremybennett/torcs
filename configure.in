@@ -16,7 +16,7 @@
 ##############################################################################
 
 AC_INIT(Make-config.in)
-AM_INIT_AUTOMAKE(torcs, 1.1.0)
+AM_INIT_AUTOMAKE(torcs, 1.1.0-rc18)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -42,7 +42,7 @@ CFLAGS="-ansi -Wall -Wstrict-prototypes"
 AC_ARG_ENABLE(debug,
 	[  --enable-debug         set the debug mode], 
 	CFLAGS="$CFLAGS -g -DDEBUG -DDEBUG_OUT",
-	CFLAGS="$CFLAGS -O3 -fstrength-reduce -fomit-frame-pointer")
+	CFLAGS="$CFLAGS -O3 -fstrength-reduce -ffast-math -fomit-frame-pointer")
 
 CXXFLAGS="$CFLAGS"
 LDFLAGS="$LDFLAGS -L$x_libraries"

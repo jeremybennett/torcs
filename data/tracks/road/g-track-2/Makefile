@@ -20,7 +20,6 @@ DATADIR   = tracks/road/g-track-2
 
 DATA      = g-track-2.xml g-track-2.ac g-track-2-relief.ac g-track-2.png background.png $(shell find * -maxdepth 0 -type f -name '*.rgb')
 
-
 g-tracks_PKGFILES	= $(DATA)
 
 g-tracks_PKGDIR		= $(DATADIR)

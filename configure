@@ -695,7 +695,7 @@ fi
 
 PACKAGE=torcs
 
-VERSION=1.1.0
+VERSION=1.1.0-rc18
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -1966,7 +1966,7 @@ if test "${enable_debug+set}" = set; then
   enableval="$enable_debug"
   CFLAGS="$CFLAGS -g -DDEBUG -DDEBUG_OUT"
 else
-  CFLAGS="$CFLAGS -O3 -fstrength-reduce -fomit-frame-pointer"
+  CFLAGS="$CFLAGS -O3 -fstrength-reduce -ffast-math -fomit-frame-pointer"
 fi
 
 
