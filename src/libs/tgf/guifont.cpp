@@ -23,11 +23,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef WIN32
+#if defined(WIN32)
 #include <windows.h>
-#elif defined(__FreeBSD__)
-#include <sys/endian.h>
-#else
+#elif !defined(__FreeBSD__)
 #include <endian.h>
 #endif
 
@@ -41,7 +39,7 @@ static char buf[1024];
 GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };
 
-#ifndef WIN32
+#if !defined(WIN32)
 #if BYTE_ORDER == BIG_ENDIAN
 void swap32(unsigned int *p, unsigned int size)
 {
@@ -121,7 +119,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     //fread(font, sizeof(GLFONT), 1, Input);
     fread(font, 24, 1, Input); // for IA64...
 
-#ifndef WIN32
+#if !defined(WIN32)
 #if BYTE_ORDER == BIG_ENDIAN
 	swap32((unsigned int *) font, 24);
 #endif
@@ -142,7 +140,7 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     //Read glFont characters
     fread(font->Char, sizeof(GLFONTCHAR), Num, Input);
 
-#ifndef WIN32
+#if !defined(WIN32)
 #if BYTE_ORDER == BIG_ENDIAN
 	swap32((unsigned int *) font->Char, sizeof(GLFONTCHAR) * Num);
 #endif
