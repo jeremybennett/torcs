@@ -64,7 +64,7 @@
     <attnum name="focused idx" val="1.000000"/>
 
     <section name="1">
-      <attnum name="idx" val="1.000000"/>
+      <attnum name="idx" val="5.000000"/>
       <attstr name="module" val="human"/>
     </section>
   </section>
