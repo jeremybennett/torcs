@@ -14,8 +14,15 @@
 ////////////////////////////////////////////////////////////////////////////
 #include <iostream.h>
 #ifndef WIN32
+
+#if defined(__GNUC__) && __GNUC__ > 2
+#include <strstream>
+#else
 #include <strstream.h>
-#endif
+#endif // __GNUC__
+
+#endif // WIN32
+
 #include <iomanip.h>
 #include <math.h>
 #include <stdlib.h>
@@ -24,7 +31,7 @@
 
 #include "tgf.h" 
 #include "track.h" 
-#include "car.h" 
+#include "car.h"
 #include "raceman.h" 
 #include "robot.h" 
 #include "robottools.h"
@@ -515,7 +522,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
  OUTPUT("initTrack(" << index << ")");
  char szSettings[100];
 #ifndef WIN32
- ostrstream os(szSettings, sizeof(szSettings));
+ std::ostrstream os(szSettings, sizeof(szSettings));
  os << "drivers/K1999/" << index << "/settings.xml" << ends;
 #else
  sprintf(szSettings, "drivers/K1999/%d/settings.xml", index);
