@@ -1,0 +1,10 @@
+;
+; raceengine.def
+;
+
+LIBRARY
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	ReSinglePlayerInit
