@@ -214,7 +214,6 @@ RmInitCars(tRmInfo *raceInfo)
 		    elt->_pos        = index+1;
 		    elt->_remainingLaps = raceInfo->s->_totLaps;
 
-		    curRobot->rbNewTrack(robotIdx, raceInfo->track, &handle, raceInfo->s);
 		    /* handle contains the drivers modifications to the car */
 		    /* Read Car model specifications */
 		    sprintf(buf, "cars/%s/%s.xml", elt->_carName, elt->_carName);
@@ -232,7 +231,7 @@ RmInitCars(tRmInfo *raceInfo)
 			}
 			carhdle = GfParmMergeHandles(cathdle, carhdle,
 						     GFPARM_MMODE_SRC | GFPARM_MMODE_DST | GFPARM_MMODE_RELSRC | GFPARM_MMODE_RELDST);
-			//GfParmWriteFile("merge.xml", carhdle, "merged", GFPARM_TEMPLATE, "config/params.dtd");
+			curRobot->rbNewTrack(robotIdx, raceInfo->track, carhdle, &handle, raceInfo->s);
 			if (handle != NULL) {
 			    if (GfParmCheckHandle(carhdle, handle)) {
 				GfTrace("Bad Car parameters for driver %s\n", elt->_name);
@@ -453,8 +452,18 @@ static void initPits(tRmInfo *raceInfo)
 	    }
 	    pits->driversPits[i].pos = curPos;
 	    if (i < raceInfo->s->_ncars) {
-		pits->driversPits[i].car = &(raceInfo->carList[i]);
-		raceInfo->carList[i]._pit = &(pits->driversPits[i]);
+		tCarElt *car = &(raceInfo->carList[i]);
+		tTrackOwnPit *pit = &(pits->driversPits[i]);
+		pits->driversPits[i].car = car;
+		raceInfo->carList[i]._pit = pit;
+		pit->lmin = pit->pos.seg->lgfromstart + pit->pos.toStart - pits->len / 2.0 + car->_dimension_x / 2.0;
+		if (pit->lmin > raceInfo->track->length) {
+		    pit->lmin -= raceInfo->track->length;
+		}
+		pit->lmax = pit->pos.seg->lgfromstart + pit->pos.toStart + pits->len / 2.0 - car->_dimension_x / 2.0;
+		if (pit->lmax > raceInfo->track->length) {
+		    pit->lmax -= raceInfo->track->length;
+		}
 	    }
 	    
 	    toStart += pits->len;

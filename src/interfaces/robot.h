@@ -24,9 +24,9 @@
 #define ROB_IDENT	(TRK_IDENT|RCM_IDENT|CAR_IDENT)
 
 
-typedef void (*tfRbNewTrack)(int index, tTrack*, void **carParmHandle, tSituation*);
-typedef void (*tfRbNewRace) (int index, tCarElt*, tSituation*);
-typedef void (*tfRbDrive)   (int index, tCarElt*, tSituation*);
+typedef void (*tfRbNewTrack)(int index, tTrack *track, void *carHandle, void **myCarSettings, tSituation *s);
+typedef void (*tfRbNewRace) (int index, tCarElt *car, tSituation *s);
+typedef void (*tfRbDrive)   (int index, tCarElt *car, tSituation *s);
 typedef void (*tfRbShutdown)(int index);
 
 #define ROB_PIT_IM	0	/* Immediate return from pit command */

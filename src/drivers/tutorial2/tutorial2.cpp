@@ -34,7 +34,7 @@
 #include "dmalloc.h"
 #endif
 
-static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s); 
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s); 
 static void drive(int index, tCarElt* car, tSituation *s); 
 static void newrace(int index, tCarElt* car, tSituation *s); 
 static int  InitFuncPt(int index, void *pt); 
@@ -68,7 +68,7 @@ InitFuncPt(int index, void *pt)
 } 
 
 static void  
-initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s) 
+initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s) 
 { 
     *carParmHandle = NULL; 
 } 

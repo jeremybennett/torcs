@@ -1355,6 +1355,7 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	} else {
 	    theTrack->pits.side = TR_LFT;
 	}
+	theTrack->pits.speedLimit = GfParmGetNum(TrackHandle, path2, TRK_ATT_SPD_LIM, (char*)NULL, 25.0);
 	if ((pitEntrySeg != NULL) && (pitExitSeg != NULL) && (pitStart != NULL) && (pitEnd != NULL)) {
 	    theTrack->pits.pitEntry = pitEntrySeg;
 	    theTrack->pits.pitExit  = pitExitSeg;

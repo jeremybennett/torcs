@@ -158,6 +158,7 @@
 #define TRK_ATT_END		"end"
 #define TRK_ATT_SIDE		"side"
 #define TRK_ATT_LEN		"length"
+#define TRK_ATT_SPD_LIM		"speed limit"
 
 #define TRK_SECT_LSIDE		"Left Side"
 #define TRK_SECT_RSIDE		"Right Side"
@@ -382,6 +383,8 @@ typedef struct TrackOwnPit
 #define TR_PIT_STATE_FREE	0
 #define TR_PIT_STATE_USED	1
 #define TR_PIT_STATE_ASKED	2
+    tdble		lmin;	/* Pitting area */
+    tdble		lmax;
     struct CarElt	*car;
 } tTrackOwnPit;
 
@@ -397,9 +400,10 @@ typedef struct
     /** actual number of pits */
     int		nPitSeg;
     /** TR_RGT or TR_LFT */
-    int		side;			
+    int		side;
     tdble	len;
     tdble	width;
+    tdble	speedLimit;
     /** Pit lane */
     tTrackSeg	*pitEntry;
     tTrackSeg	*pitExit;

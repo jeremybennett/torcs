@@ -25,7 +25,7 @@
 #endif
 
 /* function prototypes */
-static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation);
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);
 static void drive(int index, tCarElt* car, tSituation *situation);
 static void newRace(int index, tCarElt* car, tSituation *situation);
 static int  InitFuncPt(int index, void *pt);
@@ -94,7 +94,7 @@ static void shutdown(int index) {
 
 
 /* initialize track data, called for every selected driver */
-static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation * situation)
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
 {
 	if ((myTrackDesc != NULL) && (myTrackDesc->getTorcsTrack() != track)) {
 		delete myTrackDesc;

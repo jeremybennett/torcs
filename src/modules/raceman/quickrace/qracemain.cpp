@@ -304,8 +304,7 @@ qrManage(tCarElt *car)
 	    lgFromStart += car->_trkPos.toStart * car->_trkPos.seg->radius;
 	    break;
 	}
-	if ((lgFromStart > (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart - qrTheTrack->pits.len / 2.0 + car->_dimension_x/2.0)) &&
-	    (lgFromStart < (car->_pit->pos.seg->lgfromstart + car->_pit->pos.toStart + qrTheTrack->pits.len / 2.0 - car->_dimension_x/2.0))) {
+	if ((lgFromStart > car->_pit->lmin) && (lgFromStart < car->_pit->lmax)) {
 	    pitok = 0;
 	    if (qrTheTrack->pits.side == TR_RGT) {
 		sseg = car->_trkPos.seg->rside;
@@ -316,8 +315,8 @@ qrManage(tCarElt *car)
 		}
 		if (((car->_trkPos.toRight + wseg) <
 		     (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-		    (fabs(car->_speed_x) < 0.1) &&
-		    (fabs(car->_speed_y) < 0.1)) {
+		    (fabs(car->_speed_x) < 1.0) &&
+		    (fabs(car->_speed_y) < 1.0)) {
 		    pitok = 1;
 		}
 	    } else {
@@ -329,8 +328,8 @@ qrManage(tCarElt *car)
 		}
 		if (((car->_trkPos.toLeft + wseg) <
 		     (qrTheTrack->pits.width - car->_dimension_y / 2.0)) &&
-		    (fabs(car->_speed_x) < 0.1) &&
-		    (fabs(car->_speed_y) < 0.1)) {
+		    (fabs(car->_speed_x) < 1.0) &&
+		    (fabs(car->_speed_y) < 1.0)) {
 		    pitok = 1;
 		}
 	    }

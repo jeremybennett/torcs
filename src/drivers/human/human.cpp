@@ -50,7 +50,7 @@
 #endif
 
 
-static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s);
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
 static void drive_mt(int index, tCarElt* car, tSituation *s);
 static void drive_at(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
@@ -214,7 +214,7 @@ human(tModInfo *modInfo)
  * Remarks
  *	
  */
-static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s)
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
     char	*carname;
     char	*s1, *s2;
