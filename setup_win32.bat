@@ -1240,6 +1240,9 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\.
 
 call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
 call .\create_dir .\runtime\config
 copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
 
@@ -1286,6 +1289,261 @@ call .\create_dir .\runtime\modules\telemetry
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\track
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\categories
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\155-DTM
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\206W10
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\306W61
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\360-modena
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\acura-nsx-sz
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\buggy
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\cg-nascar-fwd
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\cg-nascar-rwd
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\clkdtm
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\corvette
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\CORW61
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\EVOWRC61
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\FOCW61
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\lotus-gt1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\mclaren-f1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\p406
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\porsche-55
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\porsche-gt1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\SWRC62
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\torcs
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\viper-gts-r
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\xj-220
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\fonts
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\img
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\menu
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\objects
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\sound
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\textures
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\data
+call .\create_dir .\runtime\data\tracks
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\aalborg
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\a-speedway
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-3
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-4
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-5
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\dirt-6
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\eroad
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-3
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-4
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\e-track-5
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\e-track-6
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\g-track-1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\michigan
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\mixed-1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\dirt
+call .\create_dir .\runtime\tracks\dirt\mixed-2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\oval
+call .\create_dir .\runtime\tracks\oval\daytona
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\g-track-2
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\tracks
+call .\create_dir .\runtime\tracks\road
+call .\create_dir .\runtime\tracks\road\wheel-1
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\.
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -2465,6 +2723,9 @@ call .\create_dir .\runtime
 call .\create_dir .\runtime\.
 
 call .\create_dir .\runtime
+call .\create_dir .\runtime\.
+
+call .\create_dir .\runtime
 call .\create_dir .\runtime\config
 copy .\src\modules\graphic\ssggraph\graph.xml .\runtime\config\graph.xml
 
@@ -2511,258 +2772,3 @@ call .\create_dir .\runtime\modules\telemetry
 call .\create_dir .\runtime
 call .\create_dir .\runtime\modules
 call .\create_dir .\runtime\modules\track
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/categories
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/155-DTM
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/206W10
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/306W61
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/360-modena
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/acura-nsx-sz
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/buggy
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/cg-nascar-fwd
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/cg-nascar-rwd
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/clkdtm
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/corvette
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/CORW61
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/EVOWRC61
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/FOCW61
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/lotus-gt1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/mclaren-f1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/p406
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/porsche-55
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/porsche-gt1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/SWRC62
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/torcs
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/viper-gts-r
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/cars
-call .\create_dir ./runtime/cars/xj-220
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/fonts
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/img
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/menu
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/objects
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/sound
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/textures
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/data
-call .\create_dir ./runtime/data/tracks
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/aalborg
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/oval
-call .\create_dir ./runtime/tracks/oval/a-speedway
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-2
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-3
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-4
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-5
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/dirt-6
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/eroad
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/e-track-1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/e-track-2
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/e-track-3
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/e-track-4
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/oval
-call .\create_dir ./runtime/tracks/oval/e-track-5
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/e-track-6
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/oval
-call .\create_dir ./runtime/tracks/oval/g-track-1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/oval
-call .\create_dir ./runtime/tracks/oval/michigan
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/mixed-1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/dirt
-call .\create_dir ./runtime/tracks/dirt/mixed-2
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/oval
-call .\create_dir ./runtime/tracks/oval/daytona
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/g-track-2
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/tracks
-call .\create_dir ./runtime/tracks/road
-call .\create_dir ./runtime/tracks/road/wheel-1
-
-call .\create_dir ./runtime
-call .\create_dir ./runtime/.

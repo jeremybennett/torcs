@@ -267,11 +267,7 @@ qrResults(void *prevHdle)
 		     GFUI_ALIGN_HC_VB,
 		     0,
 		     prevHdle,
-#ifndef WIN32
 		     GfuiScreenActivate,
-#else
-		     GfScrReinit,
-#endif
 		     NULL,
 		     (tfuiCallback)NULL,
 		     (tfuiCallback)NULL);

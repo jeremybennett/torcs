@@ -1240,6 +1240,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\.
 
 call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
+
+call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
 copy .\src\modules\graphic\ssggraph\graph.xml .\runtimed\config\graph.xml
 
@@ -1286,6 +1289,261 @@ call .\create_dir .\runtimed\modules\telemetry
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\modules
 call .\create_dir .\runtimed\modules\track
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\categories
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\155-DTM
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\206W10
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\306W61
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\360-modena
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\acura-nsx-sz
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\buggy
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\cg-nascar-fwd
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\cg-nascar-rwd
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\clkdtm
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\corvette
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\CORW61
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\EVOWRC61
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\FOCW61
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\lotus-gt1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\mclaren-f1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\p406
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\porsche-55
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\porsche-gt1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\SWRC62
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\torcs
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\viper-gts-r
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\cars
+call .\create_dir .\runtimed\cars\xj-220
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\fonts
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\img
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\menu
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\objects
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\sound
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\textures
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\data
+call .\create_dir .\runtimed\data\tracks
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\aalborg
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\oval
+call .\create_dir .\runtimed\tracks\oval\a-speedway
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-3
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-4
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-5
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\dirt-6
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\eroad
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\e-track-1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\e-track-2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\e-track-3
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\e-track-4
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\oval
+call .\create_dir .\runtimed\tracks\oval\e-track-5
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\e-track-6
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\oval
+call .\create_dir .\runtimed\tracks\oval\g-track-1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\oval
+call .\create_dir .\runtimed\tracks\oval\michigan
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\mixed-1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\dirt
+call .\create_dir .\runtimed\tracks\dirt\mixed-2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\oval
+call .\create_dir .\runtimed\tracks\oval\daytona
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\g-track-2
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\tracks
+call .\create_dir .\runtimed\tracks\road
+call .\create_dir .\runtimed\tracks\road\wheel-1
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\drivers
@@ -2457,6 +2715,9 @@ call .\create_dir .\runtimed
 call .\create_dir .\runtimed\config
 copy .\src\libs\tgf\screen.xml .\runtimed\config\screen.xml
 copy .\src\libs\tgf\params.dtd .\runtimed\config\params.dtd
+
+call .\create_dir .\runtimed
+call .\create_dir .\runtimed\.
 
 call .\create_dir .\runtimed
 call .\create_dir .\runtimed\.

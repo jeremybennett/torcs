@@ -183,7 +183,7 @@ chgScreenType(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-    GfScrReinit();
+    GfScrReinit(NULL);
 }
 
 static void
@@ -240,7 +240,7 @@ chgScreenSize(void *p)
     GfParmWriteFile(GFSCR_CONF_FILE, handle, "Screen", GFPARM_PARAMETER, "../dtd/params.dtd");
     GfParmReleaseHandle(handle);
 
-    GfScrReinit();
+    GfScrReinit(NULL);
 }
 
 

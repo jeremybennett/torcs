@@ -112,3 +112,4 @@ EXPORTS
 	gfuiReleaseImage
     	GfuiStaticImageCreate
 	GfuiStaticImageSet
+	GfScrReinit

@@ -46,7 +46,8 @@ CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM
 CXXFLAGS =  @CXXFLAGS@ ${CFLAGSD}
 CFLAGS =  @CFLAGS@ ${CFLAGSD}
 
-EXT_LIBS = -lpthread @LIBS@
+#EXT_LIBS = -lpthread @LIBS@
+EXT_LIBS = @LIBS@
 LDFLAGS =  @LDFLAGS@ -L/usr/lib -L/usr/local/lib -L${EXPORTBASE}/lib
 
 INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
