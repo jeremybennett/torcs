@@ -70,6 +70,7 @@
 		<h2>4. Problems and Solutions.</h2>
 		<ul style="list-style-type:disk; color:black;">
 		  <li><h3><a href="#c4_1">4.1 General problem solving approach.</a></h3></li>
+
 		  <li><h3><a href="#c4_2">4.2 Build Problems.</a></h3></li>
 		  <ul style="list-style-type:disk; color:black;">
 			<li><h4><a href="#c4_2_1">4.2.1 ./configure reports "configure: error: Can't find GL/glut.h".</a></h4></li>
@@ -77,6 +78,7 @@
 			<li><h4><a href="#c4_2_3">4.2.3 TORCS does not compile on Windows.</a></h4></li>
 			<li><h4><a href="#c4_2_4">4.2.4 FreeGLUT compilation fails with NVidia OpenGL driver.</a></h4></li>
 			<li><h4><a href="#c4_2_5">4.2.5 TORCS does not compile with make: 'Make-config' is up to date.</a></h4></li>
+			<li><h4><a href="#c4_2_6">4.2.6 Compiling stops with "error: `GL_TEXTURE0_ARB' undeclared".</a></h4></li>
 		  </ul>
 
 		  <li><h3><a href="#c4_3">4.3 Startup and Runtime Problems.</a></h3></li>
@@ -103,6 +105,7 @@
 			<li><h4><a href="#c4_4_1">4.4.1 How do I capture a movie?</a></h4></li>
 			<li><h4><a href="#c4_4_2">4.4.2 Can I develop a robot using Windows?</a></h4></li>
 			<li><h4><a href="#c4_4_3">4.4.3 Is my joystick/steering wheel/gamepad supported?</a></h4></li>
+			<li><h4><a href="#c4_4_4">4.4.4 How do I set up a multiplayer game?</a></h4></li>
 		  </ul>
 		</ul>
 
@@ -139,7 +142,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-		  Draft, 6.5.2004 (DD.MM.YYYY).
+		  Draft, 18.8.2004 (DD.MM.YYYY).
 		</p>
 
 
@@ -364,6 +367,15 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		  suitable for the new directories.
 		</p>
 
+		<h4><a name="c4_2_6">4.2.6 Compiling stops with "error: `GL_TEXTURE0_ARB' undeclared".</a></h4>
+		<p>
+		  If the compiler stops with the above message you have probably OpenGL header files installed which do
+		  not define the GL_TEXTURE0_ARB and other symbols. If you have updated your NVidia drivers to 6xxx
+		  you will experience this error (NVidia removed those definitions...). To fix it for TORCS 1.2.2 you
+		  need to install
+		  a gl.h which defines the missing symbols. You can get it from your old (5xxx) NVidia drivers or from
+		  Mesa (the problem is not the driver itself).
+		</p>
 
 
 		<h3><a name="c4_3">4.3 Startup and Runtime Problems.</a></h3>
@@ -588,12 +600,26 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 		</ul>
 
 		<h4><a name="c4_4_3">4.4.3 Is my joystick/steering wheel/gamepad supported?</a></h4>
-
 		<p>
 		  If your operating system supports your device it will also work within TORCS. To learn how
 		  to setup your input device visit the TORCS site and read the "how to drive" section.
 		</p>
 
+
+		<h4><a name="c4_4_4">4.4.4 How do I set up a multiplayer game?</a></h4>
+		<p>
+		  TORCS supports split screen multiplayer games with up to four players. Setup:
+		  <ul>
+			<li>Set up the players in the "Configure Players" screen.</li>
+			<li>If more than one player uses the keyboard, read <a href="http://www.sjbaker.org/steve/omniv/keyboards_are_evil.html" target="_parent">this</a>.</li>
+			<li>Now choose a race, select the players in the configuration screen.</li>
+			<li>Start the race, stop it with "p" to pause.</li>
+			<li>Now create the split screens with "]", or remove them with "[".
+			<li>If you want to change the view of a "mini screen" point with the mouse on it and set it up as usual (F1-F11, "&gt;", "&lt;", ...).
+			<li>When you have set up all views press "p" to end the pause and start the race.</li>
+			<li>Have fun;-)</li>
+		  </ul>
+		</p>
 
 
 		<br/><h2>5. Problem reporting.</h2>
