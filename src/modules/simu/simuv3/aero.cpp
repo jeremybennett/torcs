@@ -32,6 +32,12 @@ SimAeroConfig(tCar *car)
     car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
+	//car->aero.Clift[0] *= 0.5*Cx*FrntArea;
+	//car->aero.Clift[1] *= 0.5*Cx*FrntArea;
+	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
+	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
+    //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
+	printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
     car->aero.Cd += car->aero.SCx2;
 	car->aero.rot_front[0] = 0.0;
 	car->aero.rot_front[1] = 0.0;
@@ -49,7 +55,7 @@ SimAeroConfig(tCar *car)
 void 
 SimAeroUpdate(tCar *car, tSituation *s)
 {
-    tdble	hm;
+    //tdble	hm;
     int		i;	    
     tdble	airSpeed;
     tdble	dragK = 1.0;
@@ -241,19 +247,20 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 	    }
 	}
     }
-	if (index==1) {
+	//if (index==1) { -- thrown away so that we have different downforce
+	// reduction for front and rear parts.
+	if (1) {
 		// downforce due to body and ground effect.
-		// assume half and half, i_flow does not affect
-		// ground effect downforce.
-		tdble alpha = 0.5;
+		tdble alpha = 0.9;
 		tdble vt2b = vt2 * (alpha+(1-alpha)*i_flow);
 		vt2b = vt2b * vt2b;
 		tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
 		hm = hm*hm;
 		hm = hm*hm;
-		hm = 2 * exp(-3.0*hm);
-		car->aero.lift[0] = - car->aero.Clift[0] * vt2b * hm;
-		car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
+		hm = 2.0 * exp(-3.0*hm);
+		car->aero.lift[index] = - car->aero.Clift[index] * vt2b * hm;
+		//car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
+		//printf ("%f\n", car->aero.lift[0]+car->aero.lift[1]);
 	}
 
 

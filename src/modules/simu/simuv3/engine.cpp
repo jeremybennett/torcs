@@ -67,10 +67,10 @@ SimEngineConfig(tCar *car)
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
     car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
 	car->engine.jointI = car->engine.I;
-	car->engine.pressure = 0.0;
-	car->engine.exhaust_pressure = 0.0;
-	car->engine.exhaust_refract = 0.1;
-	car->engine.responseTq = 0.0;
+	car->engine.pressure = 0.0f;
+	car->engine.exhaust_pressure = 0.0f;
+	car->engine.exhaust_refract = 0.1f;
+	car->engine.responseTq = 0.0f;
 
     sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
     car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
@@ -140,25 +140,30 @@ SimEngineUpdateTq(tCar *car)
     tTransmission	*trans = &(car->transmission);
     tClutch		*clutch = &(trans->clutch);
 
+
 #if 1
 	// set clutch on when engine revs too low
 	if (engine->rads < engine->tickover) {
 		clutch->state = CLUTCH_APPLIED;
 		//tdble d = exp(0.01*(engine->rads-engine->tickover))*engine->rads/engine->tickover;
-		tdble d = .5 + .6 * (tanh(4.0*engine->rads/engine->tickover-2));
-		if (car->ctrl->brakeCmd>0) d=0.0;
-		if (d>1.0) d = 1.0;
-		if (d<0.0) d = 0.0;
+		tdble d = 0.5f + 0.6f*(tanh(4.0f*engine->rads/engine->tickover - 2.0f));
+
+		if (car->ctrl->brakeCmd>0) {
+			d=0.0f;
+		}
+		if (d>1.0) {d = 1.0f;}
+		if (d<0.0) {d = 0.0f;}
 		if (d<clutch->transferValue) {
 			clutch->transferValue = d;
 		}
-		tdble ac =  3.0*(1-engine->rads/engine->tickover);
-		if (ac>1.0) ac = 1.0;
+		tdble ac =  3.0f*(1-engine->rads/engine->tickover);
+		if (ac>1.0f) {ac = 1.0f;}
 		if (ac>car->ctrl->accelCmd) {
 			car->ctrl->accelCmd = ac;
 		}
-		if (engine->rads<0) engine->rads = 0.01;
-	}
+		if (engine->rads<0) {
+			engine->rads = 0.01f;
+		}
 #endif
 
     if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {

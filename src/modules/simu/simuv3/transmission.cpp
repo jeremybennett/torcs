@@ -36,9 +36,9 @@ SimTransmissionConfig(tCar *car)
     tdble		gearI;
     char		path[256];
 
-    clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12);
+    clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
     transType		= GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
-    clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2);
+    clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2f);
 
     fRatio = 0;
     gEff   = 0;
@@ -81,21 +81,21 @@ SimTransmissionConfig(tCar *car)
     //printf ("engine I %f\n", car->engine.I);
     for (i = MAX_GEARS - 1; i >= 0; i--) {
 		sprintf(path, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
-		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0);
-		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0)) {
+		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0f);
+		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0f)) {
 			trans->gearbox.gearMax = i - 1;
 		}
-		if (gRatio == 0.0) {
+		if (gRatio == 0.0f) {
 			carElt->priv.gearRatio[i] = trans->overallRatio[i] = 0;
 			trans->freeI[i] = trans->driveI[i] = 0;
-			trans->gearEff[i] = 1.0;
+			trans->gearEff[i] = 1.0f;
 			continue;
 		}
 		carElt->priv.gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
-		gEff = GfParmGetNum(hdle, path, PRM_EFFICIENCY, (char*)NULL, 1.0);
-		if (gEff > 1.0) gEff = 1.0;
-		if (gEff < 0.0) gEff = 0.0;
-		gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0);
+		gEff = GfParmGetNum(hdle, path, PRM_EFFICIENCY, (char*)NULL, 1.0f);
+		if (gEff > 1.0f) gEff = 1.0f;
+		if (gEff < 0.0f) gEff = 0.0f;
+		gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0f);
 		trans->driveI[i] = (car->engine.I + gearI) * (gRatio * gRatio * fRatio * fRatio);
 		//printf ("drivetrain %d = %f %f\n", i, trans->driveI[i], gearI);
 		trans->freeI[i] = gearI * (gRatio * gRatio * fRatio * fRatio);
@@ -114,38 +114,38 @@ SimTransmissionConfig(tCar *car)
     /* initial state */
     clutch->state = CLUTCH_RELEASING;
     clutch->timeToRelease = 0;
-    clutch->plip = 1.0;
+    clutch->plip = 1.0f;
     trans->gearbox.gear = 0; /* neutral */
     trans->curI = trans->freeI[1];
     switch(trans->type) {
     case TRANS_RWD:
 		differential = &(trans->differential[TRANS_REAR_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
-		differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[0]->I = trans->curI / 2.0f + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[1]->I = trans->curI / 2.0f + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
 		differential->outAxis[0]->Tq = 0;
 		differential->outAxis[1]->Tq = 0;
 		break;
     case TRANS_FWD:
 		differential = &(trans->differential[TRANS_FRONT_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
-		differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[0]->I = trans->curI / 2.0f + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[1]->I = trans->curI / 2.0f + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
 		differential->outAxis[0]->Tq = 0;
 		differential->outAxis[1]->Tq = 0;
 		break;
     case TRANS_4WD:
 		differential = &(trans->differential[TRANS_FRONT_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
-		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[0]->I = trans->curI / 4.0f + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0f + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
 		differential->outAxis[0]->Tq = 0;
 		differential->outAxis[1]->Tq = 0;
 		differential = &(trans->differential[TRANS_REAR_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
-		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[0]->I = trans->curI / 4.0f + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0f + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
 		differential->outAxis[0]->Tq = 0;
 		differential->outAxis[1]->Tq = 0;
 		differential = &(trans->differential[TRANS_CENTRAL_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
-		differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[0]->I = trans->curI / 2.0f + differential->inAxis[0]->I / trans->gearEff[trans->gearbox.gear+1];
+		differential->outAxis[1]->I = trans->curI / 2.0f + differential->inAxis[1]->I / trans->gearEff[trans->gearbox.gear+1];
 		differential->outAxis[0]->Tq = 0;
 		differential->outAxis[1]->Tq = 0;
 		break;
@@ -174,17 +174,17 @@ SimGearboxUpdate(tCar *car)
 		break;
     }
 
-    trans->curI = trans->driveI[gearbox->gear + 1] * clutch->transferValue + trans->freeI[gearbox->gear +  1] * (1.0 - clutch->transferValue);
+    trans->curI = trans->driveI[gearbox->gear + 1] * clutch->transferValue + trans->freeI[gearbox->gear +  1] * (1.0f - clutch->transferValue);
     if (clutch->state == CLUTCH_RELEASING) {
 		clutch->timeToRelease -= SimDeltaTime;
-		if (clutch->timeToRelease <= 0.0) {
+		if (clutch->timeToRelease <= 0.0f) {
 			clutch->state = CLUTCH_RELEASED;
 		} else  {
-			if (clutch->transferValue > 0.99) {
-				clutch->transferValue = 0.0;
+			if (clutch->transferValue > 0.99f) {
+				clutch->transferValue = 0.0f;
 				trans->curI = trans->freeI[gearbox->gear +  1];
-				if (car->ctrl->accelCmd > 0.1) {
-					car->ctrl->accelCmd = 0.1;
+				if (car->ctrl->accelCmd > 0.1f) {
+					car->ctrl->accelCmd = 0.1f;
 				}
 			}
 		}
@@ -192,9 +192,9 @@ SimGearboxUpdate(tCar *car)
 		if (car->ctrl->gear <= gearbox->gearMax) {
 			gearbox->gear = car->ctrl->gear;
 			if (gearbox->gear > 0) {
-				clutch->plip = 0.5;
+				clutch->plip = 0.5f;
 			} else {
-				clutch->plip = 1.0;
+				clutch->plip = 1.0f;
 			}
 			clutch->state = CLUTCH_RELEASING;
 			if (gearbox->gear != 0) {
@@ -209,9 +209,9 @@ SimGearboxUpdate(tCar *car)
 		if (car->ctrl->gear >= gearbox->gearMin) {
 			gearbox->gear = car->ctrl->gear;
 			if (gearbox->gear > 0) {
-				clutch->plip = 0.8;
+				clutch->plip = 0.8f;
 			} else {
-				clutch->plip = 1.0;
+				clutch->plip = 1.0f;
 			}
 			clutch->state = CLUTCH_RELEASING;
 			if (gearbox->gear != 0) {
@@ -224,19 +224,19 @@ SimGearboxUpdate(tCar *car)
 		}
     }
 
-#if 1
+
 	differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
-	differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-	differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+	differential->outAxis[0]->I = trans->curI / 2.0f + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+	differential->outAxis[1]->I = trans->curI / 2.0f + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 	if (trans->type == TRANS_4WD) {
 		differential = &(trans->differential[TRANS_FRONT_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[0]->I = trans->curI / 4.0f + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0f + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 		differential = &(trans->differential[TRANS_REAR_DIFF]);
-		differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-		differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[0]->I = trans->curI / 4.0f + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
+		differential->outAxis[1]->I = trans->curI / 4.0f + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
 	}
-#endif
+
 }
 
 void
@@ -245,7 +245,7 @@ SimTransmissionUpdate(tCar *car)
     tTransmission	*trans = &(car->transmission);
     tClutch		*clutch = &(trans->clutch);
     tDifferential	*differential, *differential0, *differential1;
-    tdble		transfer = MIN(clutch->transferValue * 3.0, 1.0);
+    tdble		transfer = MIN(clutch->transferValue * 3.0f, 1.0f);
 
     switch(trans->type) {
     case TRANS_RWD:
@@ -274,8 +274,8 @@ SimTransmissionUpdate(tCar *car)
 		differential1 = &(trans->differential[TRANS_REAR_DIFF]);
 
 		differential->in.Tq = (car->engine.responseTq + car->engine.Tq) * trans->curOverallRatio * transfer;
-		differential->inAxis[0]->spinVel = (differential0->inAxis[0]->spinVel + differential0->inAxis[1]->spinVel) / 2.0;
-		differential->inAxis[1]->spinVel = (differential1->inAxis[0]->spinVel + differential1->inAxis[1]->spinVel) / 2.0;
+		differential->inAxis[0]->spinVel = (differential0->inAxis[0]->spinVel + differential0->inAxis[1]->spinVel) / 2.0f;
+		differential->inAxis[1]->spinVel = (differential1->inAxis[0]->spinVel + differential1->inAxis[1]->spinVel) / 2.0f;
 		differential->inAxis[0]->Tq = (differential0->inAxis[0]->Tq + differential0->inAxis[1]->Tq) / differential->ratio;
 		differential->inAxis[1]->Tq = (differential1->inAxis[0]->Tq + differential1->inAxis[1]->Tq) / differential->ratio;
 		differential->inAxis[0]->brkTq = (differential0->inAxis[0]->brkTq + differential0->inAxis[1]->brkTq) / differential->ratio;

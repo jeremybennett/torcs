@@ -166,7 +166,7 @@ SimCarUpdateForces(tCar *car)
     tForces	F;
     int		i;
     tdble	m, w, minv;
-    tdble	v, R, Rv, Rm, Rx, Ry;
+    tdble	v, R, Rv, Rm, Rx, Ry, Rz;
     t3Dd original;
     t3Dd updated;
     t3Dd angles;
@@ -276,7 +276,9 @@ SimCarUpdateForces(tCar *car)
 	//	car->aero.Mz);
     /* Rolling Resistance */
     if (1) {
-		v = sqrt(car->DynGC.vel.x * car->DynGC.vel.x + car->DynGC.vel.y * car->DynGC.vel.y);
+		v = sqrt(car->DynGC.vel.x * car->DynGC.vel.x
+				 + car->DynGC.vel.y * car->DynGC.vel.y
+				 + car->DynGC.vel.z * car->DynGC.vel.z);
 	
 		R = 0;
 		for (i = 0; i < 4; i++) {
@@ -292,6 +294,7 @@ SimCarUpdateForces(tCar *car)
 		}
 		Rx = Rv * car->DynGC.vel.x; //car->DynGCg.vel.x; 
 		Ry = Rv * car->DynGC.vel.y; //car->DynGCg.vel.x; 
+		Rz = Rv * car->DynGC.vel.z; //car->DynGCg.vel.x; 
 	
 		if ((R * car->wheelbase / 2.0 * car->Iinv.z) > fabs(car->DynGCg.vel.az)) {
 			Rm = car->DynGCg.vel.az / car->Iinv.z;
@@ -312,7 +315,7 @@ SimCarUpdateForces(tCar *car)
 
 		car->DynGC.acc.x = (F.F.x - Rx) * minv;
 		car->DynGC.acc.y = (F.F.y - Ry) * minv;
-		car->DynGC.acc.z = F.F.z * minv;
+		car->DynGC.acc.z = (F.F.z - Rz) * minv;
 
 		original.x = car->DynGC.acc.x;
 		original.y = car->DynGC.acc.y;
@@ -386,14 +389,15 @@ SimCarUpdateSpeed(tCar *car)
     
     Rm = Rr * car->wheelbase /*  / 2.0 */ * car->Iinv.z * SimDeltaTime;
     Rr = 2.0 * Rr / mass * SimDeltaTime;
-    vel = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y);
+    vel = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y + car->DynGCg.vel.z * car->DynGCg.vel.z);
     
     if (Rr > vel) {
 		Rr = vel;
     }
     if (vel > 0.00001) {
-		car->DynGCg.vel.x -= car->DynGCg.vel.x * Rr / vel * SIGN(car->DynGCg.vel.x);
-		car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel * SIGN(car->DynGCg.vel.y);
+		car->DynGCg.vel.x -= (car->DynGCg.vel.x) * Rr / vel;
+		car->DynGCg.vel.y -= (car->DynGCg.vel.y) * Rr / vel;
+		car->DynGCg.vel.z -= (car->DynGCg.vel.z) * Rr / vel;
     }
 
     /* We need to get the speed on the actual frame of reference
