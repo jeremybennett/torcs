@@ -53,7 +53,7 @@ static tdble AccAngle[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 const  tdble PGain[10]   = {	0.08,	0.1,   0.2,	0.1,	0.1,	0.08,	0.2,	0.02,	0.02,	0.1	};
 static tdble AGain[10]   = {	0.30,	0.05,   0.25,	0.0,	0.0,	0.05,	0.08,	0.08,	0.08,	0.4	};
-static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.1,	0.08,	0.015,	0.02,	0.015,	0.15	};
+static tdble PnGain[10]  = {	0.10,	0.1,   0.08,	0.1,	0.1,	0.08,	0.05,	0.02,	0.015,	0.15	};
 const  tdble PnnGain[10] = {	0.0,	0.00,   0.00,	0.00,	0.00,	0.005,	0.0,	0.00,	0.00,	0.00	};
 static tdble Advance[10] = {	18.0,	18.0,   0.0,	18.0,	18,	0,	0.0,	0.0,	0.0,	0	};
 static tdble Advance2[10]= {	15.0,	15.0,   0.0,	15.0,	15,	15,	0.0,	0.0,	0.0,	0	};
@@ -62,7 +62,7 @@ const  tdble Advance4[10]= {	4.00,	4.0,    4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.0,	4.
 //static tdble Advance5[10] = {	18.0,	15.0,   0.0,	0.0,	0,	0,	0.0,	0.0,	0.0,	0	};
 static tdble VGain[10]   = {	0.010,	0.01,   0.01,	0.01,	0.01,	0.005,	0.0002,	0.0005,	0.0005,	0.01	};
 static tdble preDy[10]   = {	0.0,	0,      0,	0,	0,	0,	0,	0,	0,	0	};
-static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	10000,	10000,	10000,	10000	};
+static tdble spdtgt[10]  = {	5000,	5000,  	10000,	5000,	5000,	10000,	6000,	10000,	10000,	10000	};
 static tdble spdtgt2[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
 static tdble spdtgt2ref[10] = {	10,	10,	0,	10,	10,	0,	0,	0,	0,	0	};
 static tdble maxBrk[10]  = {	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0	};
@@ -317,8 +317,8 @@ void newrace(int index, tCarElt* car, tSituation *s)
     spdtgt2ref[5] = spdtgt2[5] = width + 3.0;
     Advance[5] = Advance2[5] = width * 2.0 + 6.0;
 
-    spdtgt2[6] = width + 3.0;
-    Advance[6] = Advance2[6] = width * 2.0 + 15.0;
+    spdtgt2[6] = width + 2.0;
+    Advance[6] = Advance2[6] = width * 2.0 + 10.0;
 
     spdtgt2[7] = width + 3.0;
     Advance[7] = Advance2[7] = width * 2.0 + 8.0;

@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
+# ADD CPP /nologo /G5 /W2 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
 # ADD RSC /l 0x409 /fo"Release/tocs.res" /d "NDEBUG"
@@ -75,7 +75,7 @@ PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime	copy dll\glut32.d
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W4 /Gi /GX /ZI /Od /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /FD /GZ /c
+# ADD CPP /nologo /G5 /W2 /Gi /GX /ZI /Od /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR /FD /GZ /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"

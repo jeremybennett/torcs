@@ -15,6 +15,17 @@
 #
 ##############################################################################
 
+ROBOT     = inferno2
+
+MODULE    = ${ROBOT}.so
+
+MODULEDIR = drivers/${ROBOT}
+
+SOURCES   = ${ROBOT}.cpp common.cpp
+
+SHIPDIR   = drivers/${ROBOT}
+
+SHIP      = ${ROBOT}.xml car1.xml logo.rgb
 
 
 include ${MAKE_DEFAULT}

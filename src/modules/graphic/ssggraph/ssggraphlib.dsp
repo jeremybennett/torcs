@@ -207,6 +207,10 @@ SOURCE=.\grssgext.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\grtrackmap.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\grutil.h
 # End Source File
 # Begin Source File

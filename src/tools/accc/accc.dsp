@@ -94,7 +94,7 @@ SOURCE=.\ac3dload.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\accc.cpp
+SOURCE=.\mainaccc.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"

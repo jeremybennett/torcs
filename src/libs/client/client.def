@@ -8,6 +8,7 @@ SECTIONS .data READ WRITE
 
 EXPORTS
 	?TorcsEntry@@YAXXZ
+	TorcsExitMenuInit
 	RmTrackSelect
 	RmGetTrackName
 	RmDriversSelect
@@ -16,6 +17,7 @@ EXPORTS
 	RmLoadingScreenSetText
 	RmRaceParamMenu
 	RmShowResults
+	RmFourStateScreen
 	RmTriStateScreen
 	RmTwoStateScreen
 	RmShutdownLoadingScreen

@@ -23,7 +23,7 @@
 	<attstr name="desc" val="first TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="FOCW61"/>
+	<attstr name="car name" val="pw-focuswrc"/>
 	<attnum name="race number" val="1"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -35,7 +35,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="206W10"/>
+	<attstr name="car name" val="pw-206wrc"/>
 	<attnum name="race number" val="2"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -46,7 +46,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="306W61"/>
+	<attstr name="car name" val="pw-306wrc"/>
 	<attnum name="race number" val="3"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -57,7 +57,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="EVOWRC61"/>
+	<attstr name="car name" val="pw-evoviwrc"/>
 	<attnum name="race number" val="4"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -68,7 +68,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="SWRC62"/>
+	<attstr name="car name" val="pw-imprezawrc"/>
 	<attnum name="race number" val="5"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -79,7 +79,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="CORW61"/>
+	<attstr name="car name" val="pw-corollawrc"/>
 	<attnum name="race number" val="6"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>
@@ -90,7 +90,7 @@
 	<attstr name="desc" val="Second TORCS robot 09/98"/>
 	<attstr name="team" val="torcs"/>
 	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="porsche-gt1"/>
+	<attstr name="car name" val="pw-evovwrc"/>
 	<attnum name="race number" val="7"/>
 	<attnum name="red" val="0.0"/>
 	<attnum name="green" val="1.0"/>

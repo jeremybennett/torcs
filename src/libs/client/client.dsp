@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "../../../export/include" /I "../../interfaces" /I "../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G5 /W2 /GX /O2 /Ob2 /I "../../../export/include" /I "../../interfaces" /I "../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -76,7 +76,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime	copy $(TargetDir)\*.li
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W4 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /D "DEBUG" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /G5 /W2 /Gm /Gi /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /I "../../interfaces" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "CLIENT_EXPORTS" /D "DEBUG" /FR /YX /FD /GZ /c
 # SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
