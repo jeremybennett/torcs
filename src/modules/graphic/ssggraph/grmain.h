@@ -91,6 +91,11 @@ extern class cGrScreen *grScreens[];
 extern tdble grLodFactorValue;
 extern double grDeltaTime;
 
+inline float urandom() {
+	return (((float)rand()/(1.0+(float)RAND_MAX)));
+}
+
+
 #endif /* _GRMAIN_H_ */ 
 
 

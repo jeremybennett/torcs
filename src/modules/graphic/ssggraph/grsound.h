@@ -1,8 +1,9 @@
+// -*- Mode: c++ -*-
 /***************************************************************************
 
     file                 : grsound.h
     created              : Thu Aug 17 23:57:35 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2004 by Eric Espie, Christos Dimitrakakis
     email                : torcs@free.fr
     version              : $Id$
 
@@ -44,23 +45,40 @@ typedef struct SoundPri_ {
     float a; //amplitude
     float f; //freq
     float lp; //low pass (1.0 pass all, 0.0 cut all)
+	float rpm;
     int id; // car ID.
     enum SoundPriState state;
 } SoundPri;
 
-
 class SoundInterface {
  public:
     SoundInterface();
-    ~SoundInterface();
+    virtual ~SoundInterface();
+};
+
+class PlibSoundInterface : public SoundInterface {
+protected:
+	slScheduler* sched;
+public:
+	PlibSoundInterface();
+	virtual ~PlibSoundInterface();
+};
+
+class OpenalSoundInterface : public SoundInterface {
+protected:
+	slScheduler* sched;
+public:
+    OpenalSoundInterface();
+	virtual ~OpenalSoundInterface();
 };
 
 class SampleInterface {
- public:
-    slSample* sample;
-    slEnvelope* volume;
-    slEnvelope* pitch;
-
+protected:
+	float filter;
+	float volume;
+	float pitch;
+	SoundInterface* scheduler;
+public:
     SampleInterface();
     ~SampleInterface();
     void loop();

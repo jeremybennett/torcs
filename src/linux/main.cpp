@@ -106,6 +106,8 @@ main(int argc, char *argv[])
     
     glutMainLoop();		/* event loop of glut */
     
+	DiscretePolicy dummy;
+
     return 0;			/* just for the compiler, never reached */
 }
 

@@ -105,14 +105,14 @@ SimWheelConfig(tCar *car, int index)
     wheel->feedBack.spinVel = 0;
     wheel->feedBack.Tq = 0;
     wheel->feedBack.brkTq = 0;
-	wheel->rotational_damage_x = 0.0;//0.25*rand()/RAND_MAX;
-	wheel->rotational_damage_z = 0.0;//0.25*rand()/RAND_MAX;
-	wheel->bent_damage_x = rand()/(RAND_MAX+1.0);
-	wheel->bent_damage_z = rand()/(RAND_MAX+1.0);
+	wheel->rotational_damage_x = 0.0;//drand48()*0.25;
+	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
+	wheel->bent_damage_x = drand48();
+	wheel->bent_damage_z = drand48();
 }
 
 
-#define MIN_NORMAL_Z 0.001
+#define MIN_NORMAL_Z 0.1
 void
 SimWheelUpdateRide(tCar *car, int index)
 {
@@ -164,6 +164,7 @@ SimWheelUpdateRide(tCar *car, int index)
 		//wheel->susp.x = wheel->rideHeight = (wheel->pos.z - Zroad);
 		//	wheel->susp.x = wheel->rideHeight = wheel->susp.spring.packers; 
 		wheel->susp.fx = 0.0;
+		wheel->state = wheel->state | SIM_SUSP_COMP;
     }
 
     //wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
@@ -261,7 +262,16 @@ SimWheelUpdateForce(tCar *car, int index)
 		  // but we're ignoring a lot of things, such
 		  // as the reaction forces from the immovable axis of
 		  // the suspension. We make an assumption that:
-		  reaction_force = f_z/  rel_normal.z;
+			tdble invrel_normal = 1.0/rel_normal.z;
+			if (invrel_normal>=2.0) {
+				invrel_normal = 2.0;
+			} else if (invrel_normal<=-2.0) {
+				invrel_normal = -2.0;
+			}
+			reaction_force = f_z * invrel_normal;
+				//  rel_normal.z;
+			//reaction_force = f_z;// more stable -  rel_normal.z;
+		   //reaction_force = f_z * rel_normal.z;// much more stable -  rel_normal.z;
 		  // the other reactions are then:
 		  Ft = reaction_force* rel_normal.x;
 		  Fn = reaction_force* rel_normal.y;
@@ -366,7 +376,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		wheel->T_current = T_current;
 	
     }
-    if (s>0.01) {
+    if ((s>0.01)&&(car->carElt->_skillLevel>2)) {
 		tdble compound_melt_point = wheel->T_operating + wheel->T_range;
 		tdble adherence = wheel->Ca * 500.0; 
 		tdble melt = (exp (2.0*(wheel->T_current - compound_melt_point)/compound_melt_point)) ;

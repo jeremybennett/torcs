@@ -61,6 +61,9 @@ typedef struct
 
     /* dynamic */
     tdble	fuel;		/* current fuel load */
+	tdble   fuel_consumption; /* average fuel consumption */
+	tdble   fuel_prev; /* average fuel consumption */
+	tdble   fuel_time; /* average fuel consumption */
     tDynPt	DynGC;		/* GC local data except position */
     tDynPt	DynGCg;		/* GC global data */
     tPosd	VelColl;	/* resulting velocity after collision */

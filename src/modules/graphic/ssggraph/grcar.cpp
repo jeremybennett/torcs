@@ -155,16 +155,7 @@ initWheel(tCarElt *car, int wheel_index)
     clr[3] = 1.0;
     brk_clr->add(clr);
     nrm[0] = nrm[2] = 0.0;
-    switch(wheel_index) {
-    case FRNT_RGT:
-    case REAR_RGT:
-	nrm[1] = -1.0;
-	break;
-    case FRNT_LFT:
-    case REAR_LFT:
-	nrm[1] = 1.0;
-	break;
-    }
+    nrm[1] = 1.0;
     brk_nrm->add(nrm);
     
     ssgVtxTable *brk = new ssgVtxTable(GL_TRIANGLE_FAN, brk_vtx, brk_nrm, NULL, brk_clr);
@@ -263,10 +254,10 @@ initWheel(tCarElt *car, int wheel_index)
 	{
 	    ssgVertexArray	*whl_vtx = new ssgVertexArray(2 * WHL_BRANCH);
 	    ssgColourArray	*whl_clr = new ssgColourArray(2 * WHL_BRANCH);
-	    ssgNormalArray	*whl_nrm = new ssgNormalArray(2 * WHL_BRANCH);
+	    ssgNormalArray	*whl_nrm = new ssgNormalArray(1);
 
+	    whl_nrm->add(nrm);
 	    clr[3] = 1.0;
-	    nrm[1] = 1.0;
 	    for (i = 0; i < WHL_BRANCH; i++) {
 		alpha = (float)i * 2.0 * M_PI / (float)(WHL_BRANCH - 1);
 		vtx[0] = wheelRadius * cos(alpha);
@@ -281,11 +272,7 @@ initWheel(tCarElt *car, int wheel_index)
 		    clr[0] = clr[1] = clr[2] = 0.0;
 		}
 		whl_clr->add(clr);
-		whl_clr->add(clr);
-		nrm[0] = cos(alpha);
-		nrm[2] = sin(alpha);
-		whl_nrm->add(nrm);
-		whl_nrm->add(nrm);
+		whl_clr->add(clr);		
 	    }
 	    ssgVtxTable *whl = new ssgVtxTable(GL_TRIANGLE_STRIP, whl_vtx, whl_nrm, NULL, whl_clr);
 	    whl->setState(commonState);
@@ -295,17 +282,14 @@ initWheel(tCarElt *car, int wheel_index)
 	    
     
     /* Rim */
-	nrm[0] = nrm[2] = 0.0;
 	switch(wheel_index) {
 	case FRNT_RGT:
 	case REAR_RGT:
 	    b_offset = -0.05;
-	    nrm[1] = -1.0;
 	    break;
 	case FRNT_LFT:
 	case REAR_LFT:
 	    b_offset = 0.05;
-	    nrm[1] = 1.0;
 	    break;
 	}
 	for (k = 0; k < 2; k++) {
@@ -431,14 +415,14 @@ void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt)
 		Nv = vt->getNumVertices();
 		vt->getVertexList ((void**) &v);
 		tdble sigma = sgLengthVec3 (force);
-		tdble invSigma = 10.0;
+		tdble invSigma = 5.0;
 		//		if (sigma < 0.1) 
 		//			invSigma = 10.0;
 		//		else
 		//			invSigma = 1.0/sigma;
 		for (int i=0; i<Nv; i++) {
 			tdble r =  sgDistanceSquaredVec3 (poc, v[i]);
-			tdble f = exp(-r*invSigma)*10.0;
+			tdble f = exp(-r*invSigma)*5.0;
 			v[i][0] += force[0]*f;
 			v[i][1] += force[1]*f;
 			// use sigma as a random number generator (!)
@@ -572,9 +556,9 @@ grInitCar(tCarElt *car)
     sprintf(path, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
-
+    /*carEntity = ssgLoad(param);*/
     carEntity = grssgCarLoadAC3D(param, NULL, index);
-    grCarInfo[index].carEntity = carEntity;
+	grCarInfo[index].carEntity = carEntity;
     /* Set a selector on the driver */
     ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
     grCarInfo[index].driverSelector = new ssgSelector;
@@ -691,7 +675,16 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispCarFlag, int dispDrvFlag, doubl
     TRACE_GL("cggrDrawCar: start");
 
     index = car->index;
-  
+	if (car->priv.collision_state.collision_count > 0) {
+		tCollisionState* collision_state = &car->priv.collision_state;
+		grPropagateDamage (grCarInfo[index].carEntity, collision_state->pos, collision_state->force, 0);
+		printf("%d: ",collision_state->collision_count );
+		for (int i=0; i<3; i++) {
+			printf ("(%f %f) ", collision_state->pos[i], collision_state->force[i]);
+		}
+		printf("\n");
+		collision_state->collision_count = 0;
+	}
     grCarInfo[index].distFromStart=grGetDistToStart(car);
     grCarInfo[index].envAngle=RAD2DEG(car->_yaw);
 

@@ -449,6 +449,12 @@ int
 initTrack(tTrack *track)
 {
     int		i;
+    static int	firstTime = 1; /* for persistent implementations ??? */
+    
+    if (firstTime) {
+	ssgInit();
+	firstTime = 0;
+    }
 
     grContext.makeCurrent();
     grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -478,6 +484,6 @@ shutdownTrack(void)
 
 void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)
 {
-	if (grCarInfo)
+	if (grCarInfo) 
 		grPropagateDamage (grCarInfo[index].carEntity, poc, force, cnt);
 }

@@ -264,6 +264,12 @@ typedef struct {
 
 #define MAX_GEARS	10	/* including reverse and neutral */
 
+typedef struct tCollisionState_ {
+	int collision_count;
+	sgVec3 pos;
+	sgVec3 force;
+} tCollisionState;
+
 /** Data known only by the driver */
 typedef struct {
     void	*paramsHandle;	/**< accessible parameters for modules */
@@ -274,6 +280,8 @@ typedef struct {
     tPosd	corner[4];	/**< car's corners position */
     int		gear;	    	/**< current gear */
     tdble	fuel;	    	/**< remaining fuel (liters) */
+	tdble   fuel_consumption_total; // l
+	tdble   fuel_consumption_instant; // l/100km (>100 means infinity)
     tdble	enginerpm;
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
@@ -282,14 +290,18 @@ typedef struct {
     int		gearNb;			/**< incl reverse and neutral */
     int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
     tdble	skid[4];		/**< skid intensity */
-    tdble	reaction[4];
+    tdble	reaction[4];    /**< reaction on wheels */
     int		collision;
+	float   smoke;
     t3Dd	normal;
-    t3Dd	collpos;
+    t3Dd	collpos;        /**< Collision position, useful for sound*/
     int		dammage;
     int		debug;
+	tCollisionState collision_state; /**< collision state */
 } tPrivCar;
 /* structure access */
+#define _fuelTotal priv.fuel_consumption_total
+#define _fuelInstant priv.fuel_consumption_instant
 #define _driverIndex	priv.driverIndex
 #define _paramsHandle	priv.paramsHandle
 #define _carHandle	priv.carHandle

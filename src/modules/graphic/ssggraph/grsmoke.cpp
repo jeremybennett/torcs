@@ -62,6 +62,8 @@ ssgSimpleState	*mstf1 = NULL;
 double * timeSmoke = 0;
 double * timeFire = 0;
 
+
+
 void grInitSmoke(int index)
 {
     char		buf[256];
@@ -162,7 +164,7 @@ void grUpdateSmoke(double t)
 		tmp->smoke->dt = t-tmp->smoke->lastTime;
 		/* expand the Y value */
 		tmp->smoke->sizey += tmp->smoke->dt*tmp->smoke->vexp*2.0;
-		tmp->smoke->sizez += tmp->smoke->dt*tmp->smoke->vexp;
+		tmp->smoke->sizez += tmp->smoke->dt*tmp->smoke->vexp*.25;
 		tmp->smoke->sizex += tmp->smoke->dt*tmp->smoke->vexp*2.0;
 		if (tmp->smoke->smokeType==SMOKE_TYPE_ENGINE)
 			{
@@ -191,9 +193,13 @@ void grUpdateSmoke(double t)
 		tdble dt = tmp->smoke->dt;
 
 		tdble damp = 0.2;
+		tdble rWalk = 0.1;
 		tmp->smoke->vvx -= damp*tmp->smoke->vvx*fabs(tmp->smoke->vvx) * dt;
 		tmp->smoke->vvy -= damp*tmp->smoke->vvy*fabs(tmp->smoke->vvy) * dt;
 		tmp->smoke->vvz -= damp*tmp->smoke->vvz*fabs(tmp->smoke->vvz) * dt;
+		//tdble dz = grGetHOT(vx[0][0], vx[0][1]) + 1.0 - vx[0][2];
+		tmp->smoke->vvz += 0.0001;//*dz;
+
 		vx[0][0] += tmp->smoke->vvx * dt;
 		vx[0][1] += tmp->smoke->vvy * dt;
 		vx[0][2] += tmp->smoke->vvz * dt;
@@ -238,69 +244,98 @@ void grAddSmoke(tCarElt *car, double t)
 					timeSmoke[car->index*4+i] = t;
 				}
 				
-				if (car->_skid[i]>rand()/(RAND_MAX+1.0)+0.1) {// instead of 0.3, to randomize
-					char* s = car->priv.wheel[i].seg->surface->material;
+				char* surface = car->priv.wheel[i].seg->surface->material;
+				sgVec3 cur_clr;
+				tdble init_speed;
+				tdble threshold = .1;
+				tdble smoke_life_coefficient = 30.0;
+				tdble smoke_speed_coefficient = 0.0;
+				if (strstr(surface, "sand")) {
+					cur_clr[0] = 0.8;
+					cur_clr[1] = 0.7+urandom()*0.1;
+					cur_clr[2] = 0.4+urandom()*0.2;
+					init_speed = .5;
+					threshold=.05;
+					smoke_life_coefficient = 12.5;
+					smoke_speed_coefficient = 0.25;
+				} else if (strstr(surface, "dirt")) {
+					cur_clr[0] = 0.7+urandom()*0.1;
+					cur_clr[1] = 0.6+urandom()*0.1;
+					cur_clr[2] = 0.5+urandom()*0.1;
+					init_speed = 0.45;
+					threshold=0.0;
+					smoke_life_coefficient = 10.0;
+					smoke_speed_coefficient = 0.5;
+				} else if (strstr(surface,"mud")) {
+					cur_clr[0] = 0.65;
+					cur_clr[1] = 0.4+urandom()*.2;
+					cur_clr[2] = 0.3+urandom()*.2;
+					init_speed = 0.4;
+					threshold=.2;
+					smoke_speed_coefficient = 0.05;
+				} else if (strstr(surface,"gravel")) {
+					cur_clr[0] = 0.6;
+					cur_clr[1] = 0.6;
+					cur_clr[2] = 0.6;
+					init_speed = 0.35;
+					smoke_life_coefficient = 20.0;
+					smoke_speed_coefficient = 0.1;
+				} else if (strstr(surface,"grass")) {
+					cur_clr[0] = 0.4+urandom()*.2;
+					cur_clr[1] = 0.5+urandom()*.1;
+					cur_clr[2] = 0.3+urandom()*.1;
+					init_speed = 0.3;
+					smoke_life_coefficient = 25.0;
+				} else {
+					cur_clr[0] = 0.8;
+					cur_clr[1] = 0.8;
+					cur_clr[2] = 0.8;
+					init_speed = 0.01;
+				}
+				smoke_life_coefficient = smoke_life_coefficient * (1.0 - urandom()*urandom());
+				tdble spd_fx=tanh(0.001*car->_reaction[i])*smoke_speed_coefficient*sqrt(spd2);
+				if (car->_skid[i]+0.025*urandom()*spd_fx>urandom()+threshold) {// instead of 0.3, to randomize
+
+
 					shd_vtx = new ssgVertexArray(1);
 					//shd_clr = new ssgColourArray(1);
-					sgVec3 cur_clr;
-					tdble init_speed;
-					if (strstr(s, "sand")) {
-						cur_clr[0] = 0.8;
-						cur_clr[1] = 0.7+0.1*rand()/(RAND_MAX+1.0);
-						cur_clr[2] = 0.4+0.2*rand()/(RAND_MAX+1.0);
-						init_speed = 0.5;
-					} else if (strstr(s, "dirt")) {
-						cur_clr[0] = 0.7+0.1*rand()/(RAND_MAX+1.0);
-						cur_clr[1] = 0.6+0.1*rand()/(RAND_MAX+1.0);
-						cur_clr[2] = 0.5+0.1*rand()/(RAND_MAX+1.0);
-						init_speed = 0.45;
-					} else if (strstr(s,"mud")) {
-						cur_clr[0] = 0.65;
-						cur_clr[1] = 0.4+0.2*rand()/(RAND_MAX+1.0);
-						cur_clr[2] = 0.3+0.2*rand()/(RAND_MAX+1.0);
-						init_speed = 0.35;
-					} else if (strstr(s,"gravel")) {
-						cur_clr[0] = 0.6;
-						cur_clr[1] = 0.6;
-						cur_clr[2] = 0.6;
-						init_speed = 0.3;
-					} else if (strstr(s,"grass")) {
-						cur_clr[0] = 0.4+0.2*rand()/(RAND_MAX+1.0);
-						cur_clr[1] = 0.5+0.1*rand()/(RAND_MAX+1.0);
-						cur_clr[2] = 0.3+0.1*rand()/(RAND_MAX+1.0);
-						init_speed = 0.25;
-					} else {
-						cur_clr[0] = 0.8;
-						cur_clr[1] = 0.8;
-						cur_clr[2] = 0.8;
-						init_speed = 0.2;
-					}
-						tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
+
+					tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
 					vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
 					vtx[1] = car->priv.wheel[i].relPos.y;
 					vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1+SMOKE_INIT_SIZE;
 					
 					shd_vtx->add(vtx);
 					tmp->smoke = new ssgVtxTableSmoke(shd_vtx,SMOKE_INIT_SIZE,SMOKE_TYPE_TIRE);
-					
-					tmp->smoke->vvx = -init_speed*sin(car->_yaw) * car->_wheelSlipSide(i);
-					tmp->smoke->vvy = init_speed*cos(car->_yaw) * car->_wheelSlipSide(i);
-					tmp->smoke->vvx += init_speed*cos(car->_yaw) * car->_wheelSlipAccel(i);
-					tmp->smoke->vvy += init_speed*sin(car->_yaw) * car->_wheelSlipAccel(i);
-					tmp->smoke->vvz = 0.0;
-
-					
+					init_speed = urandom()*init_speed;
+					tdble sinCarYaw = sin(car->_yaw);
+					tdble cosCarYaw = cos(car->_yaw);
+					tmp->smoke->vvx = -sinCarYaw * car->_wheelSlipSide(i);
+					tmp->smoke->vvy = cosCarYaw * car->_wheelSlipSide(i);
+					tmp->smoke->vvx += cosCarYaw * car->_wheelSlipAccel(i);
+					tmp->smoke->vvy += sinCarYaw * car->_wheelSlipAccel(i);
+					tmp->smoke->vvz = 0.1;
+					tdble stretchX=fabs(0.5*(car->_speed_X));// + tmp->smoke->vvx));
+					tdble stretchY=fabs(0.5*(car->_speed_Y));//+ tmp->smoke->vvy));
+					tmp->smoke->vvx *= init_speed;
+					tmp->smoke->vvy *= init_speed;
 					tmp->smoke->setState(mst);    
 					tmp->smoke->setCullFace(0);
-					tmp->smoke->max_life = grSmokeLife * car->_skid[i] * sqrt(wspd2) / 30.0;
+
+					//printf("%f\n", car->_reaction[i]);
+					tmp->smoke->max_life = grSmokeLife *
+						(car->_skid[i]*sqrt(wspd2)+urandom()*spd_fx)/ smoke_life_coefficient;
 					for (int c=0; c<3; c++) {
 						tmp->smoke->cur_col[c] = cur_clr[c];
 					}
+
 					tmp->smoke->cur_life = 0;
-					tmp->smoke->sizex = VX_INIT;
-					tmp->smoke->sizey = VY_INIT;
-					tmp->smoke->sizez = VZ_INIT;
-					tmp->smoke->vexp = V_EXPANSION+car->_skid[i]*2.0*rand()/(RAND_MAX+1.0);
+					tmp->smoke->sizex = VX_INIT + .1*(spd_fx + stretchX);
+					tmp->smoke->sizey = VY_INIT + .1*(spd_fx + stretchY);
+					tmp->smoke->sizez = VZ_INIT + .1*spd_fx;
+
+					tmp->smoke->init_alpha = 1.0/(1.0+0.1*spd_fx);
+					tmp->smoke->vexp = V_EXPANSION+(car->_skid[i]+.1*spd_fx)*(((float)rand()/(float)RAND_MAX));
 					tmp->smoke->smokeType = SMOKE_TYPE_TIRE;
 					tmp->smoke->smokeTypeStep = 0;
 					tmp->next = NULL;
@@ -330,8 +365,11 @@ void grAddSmoke(tCarElt *car, double t)
 				if (val > 0.1) {
 					grCarInfo[index].fireCount = (int)(10.0 * val * car->_exhaustPower);
 				}
-				if (grCarInfo[index].fireCount) {
-					grCarInfo[index].fireCount--;
+				//				if (grCarInfo[index].fireCount) {
+				//					grCarInfo[index].fireCount--;
+				if (car->priv.smoke>urandom()) {
+			
+					//car->priv.smoke = val * car->_exhaustPower;
 					for (i = 0; i < car->_exhaustNb; i++) {
 						shd_vtx = new ssgVertexArray(1);
 						tmp = (tgrSmoke *) malloc(sizeof(tgrSmoke));
@@ -348,10 +386,11 @@ void grAddSmoke(tCarElt *car, double t)
 						tmp->smoke->step0_max_life =  (grSmokeLife)/50.0;
 						tmp->smoke->step1_max_life =  (grSmokeLife)/50.0+ tmp->smoke->max_life/2.0;
 						tmp->smoke->cur_life = 0;
+						tmp->smoke->init_alpha = 0.9;
 						tmp->smoke->sizex = VX_INIT*4;
 						tmp->smoke->sizey = VY_INIT*4;
 						tmp->smoke->sizez = VZ_INIT*4;
-						tmp->smoke->vexp = V_EXPANSION+5.0*rand()/(RAND_MAX+1.0) * car->_exhaustPower / 2.0;
+						tmp->smoke->vexp = V_EXPANSION+5.0*(((float)rand()/(float)RAND_MAX)) * car->_exhaustPower / 2.0;
 						tmp->smoke->smokeType = SMOKE_TYPE_ENGINE;
 						tmp->smoke->smokeTypeStep = 0;
 						tmp->next = NULL;
@@ -436,6 +475,7 @@ ssgVtxTableSmoke:: ssgVtxTableSmoke (ssgVertexArray	*shd_vtx , float initsize, i
     colours   -> ref () ;
 	cur_col[0] = cur_col[1] = cur_col[2] = 0.8;
 	vvx = vvy = vvz = 0.0;
+	init_alpha = 0.9;
     recalcBSphere () ;
 }
 
@@ -458,8 +498,8 @@ void ssgVtxTableSmoke::draw_geometry ()
     sgVec3 *nm = (sgVec3 *) normals   -> get(0) ;
     /*   sgVec2 *tx = (sgVec2 *) texcoords -> get(0) ; */
     sgVec4 *cl = (sgVec4 *) colours   -> get(0) ;
-
-    alpha =  0.9-((float)(cur_life/max_life));
+	float a_c =  ((float)(cur_life/max_life));
+    alpha =  init_alpha*(1.0-a_c);
     glDepthMask(GL_FALSE);
     glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
 

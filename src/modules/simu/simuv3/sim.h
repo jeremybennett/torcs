@@ -92,7 +92,7 @@ extern void SimCarCollideCars(tSituation*);
 extern void SimCarCollideConfig(tCar *car);
 extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(void);
-
+extern void SimCarCollideAddDeformation(tCar* car, sgVec3 pos, sgVec3 force);
 extern void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void QuatToEuler (sgVec3 hpr, const sgQuat quat);

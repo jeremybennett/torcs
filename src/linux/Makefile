@@ -27,6 +27,7 @@ LDFLAGS = -rdynamic
 
 SOLIBS  =  -lracescreens  \
 	   -lrobottools   \
+	   -llearning   \
 	   -lclient       \
 	   -lconfscreens  \
 	   -ltgf          \

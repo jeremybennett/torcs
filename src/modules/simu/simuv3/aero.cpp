@@ -77,7 +77,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		    airSpeed = airSpeed * tmpas;
 		} else if (fabs(tmpsdpang) < 0.1396) {	    /* 8 degrees */
 		    /* before another car - breaks down rear eddies, reduces only drag*/
-		    tmpas = 1.0 - exp(- 4.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
+		    tmpas = 1.0 - exp(- 8.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
 				      (car->aero.Cd * car->DynGC.vel.x));
 		    dragK = dragK * tmpas;
 		}

@@ -283,8 +283,8 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
     glColor4f(0.1, 0.1, 0.1, 0.8);
     glVertex2f(x-5, y + dy);
     glVertex2f(x+dx+5, y + dy);
-    glVertex2f(x+dx+5, y-5 - dy2 * 8 /* lines */);
-    glVertex2f(x-5, y-5 - dy2 * 8 /* lines */);
+    glVertex2f(x+dx+5, y-5 - dy2 * 14 /* lines */);
+    glVertex2f(x-5, y-5 - dy2 * 14 /* lines */);
     glEnd();
     glDisable(GL_BLEND);
 
@@ -340,6 +340,41 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
     sprintf(buf, "%d", (int)(car->_topSpeed * 3.6));
     GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
     y -= dy;
+
+	GfuiPrintString("FR:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1foC %d%%", car->_tyreT_mid(0), (int) (100.0*car->_tyreCondition(0)));
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
+	GfuiPrintString("FL:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1foC %d%%", (car->_tyreT_mid(1)), (int) (100.0*car->_tyreCondition(1)));
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
+	GfuiPrintString("RR:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1foC %d%%", (car->_tyreT_mid(2)), (int) (100.0*car->_tyreCondition(2)));
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
+	GfuiPrintString("RL:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1foC %d%%", (car->_tyreT_mid(3)), (int) (100.0*car->_tyreCondition(3)));
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
+	float avf = 99.9;
+	if (car->_distRaced>1.0) {
+		avf = 100000.0 * car->_fuelTotal / car->_distRaced;
+	}
+	GfuiPrintString("~:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1fl/100k", avf);
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
+	GfuiPrintString("^:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	sprintf(buf, "%.1fl/100k", car->_fuelInstant);
+    GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
+    y -= dy;
+
 }
 
 void

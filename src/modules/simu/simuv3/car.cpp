@@ -6,7 +6,6 @@
     email                : torcs@free.fr
     version              : $Id$
 
-
  ***************************************************************************/
 
 /***************************************************************************
@@ -40,7 +39,18 @@ SimCarConfig(tCar *car)
     tdble	overallwidth;
     int		i;
     tCarElt	*carElt = car->carElt;
-    
+
+	car->fuel_time = 0.0;
+	car->fuel_consumption = 0.0;
+    car->carElt->_fuelTotal = 0.0;
+    car->carElt->_fuelInstant = 10.0;
+
+	car->carElt->priv.collision_state.collision_count = 0;
+	for (int i=0; i<3; i++) {
+		car->carElt->priv.collision_state.pos[0] = 0.0;
+		car->carElt->priv.collision_state.force[0] = 0.0;
+	}
+
     car->dimension.x = GfParmGetNum(hdle, SECT_CAR, PRM_LEN, (char*)NULL, 4.7);
     car->dimension.y = GfParmGetNum(hdle, SECT_CAR, PRM_WIDTH, (char*)NULL, 1.9);
     overallwidth     = GfParmGetNum(hdle, SECT_CAR, PRM_OVERALLWIDTH, (char*)NULL, car->dimension.y);
@@ -66,6 +76,7 @@ SimCarConfig(tCar *car)
     if (car->fuel > car->tank) {
 		car->fuel = car->tank;
     }
+	car->fuel_prev = car->fuel;
     k = k * k;
     car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
     car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
@@ -223,6 +234,10 @@ SimCarUpdateForces(tCar *car)
 		F.M.z += direction.z*(-wheel->forces.x * susp_pos_y +
 							  wheel->forces.y * wheel->staticPos.x);
     }
+#else
+    for (i = 0; i < 4; i++) {
+		car->wheel[i].state=SIM_SUSP_COMP;
+	}
 #endif // wheels
 
     /* Aero Drag */
@@ -316,7 +331,20 @@ SimCarUpdateSpeed(tCar *car)
 
     mass = car->mass + car->fuel;
 
-    
+	{
+		tdble delta_fuel = car->fuel_prev - car->fuel;
+		car->fuel_prev = car->fuel;
+		car->carElt->_fuelTotal += delta_fuel;
+		tdble fi;
+		tdble as = sqrt(car->airSpeed2);
+		if (as<0.1) {
+			fi = 99.9;
+		} else {
+			fi = 100000 * delta_fuel / (as*SimDeltaTime);
+		}
+		tdble alpha = 0.1;
+		car->carElt->_fuelInstant = (1.0-alpha)*car->carElt->_fuelInstant + alpha*fi;
+	}
     angles.x = car->DynGCg.pos.ax;
     angles.y = car->DynGCg.pos.ay;
     angles.z = car->DynGCg.pos.az;	
@@ -421,7 +449,7 @@ SimCarUpdateWheelPos(tCar *car)
 			  + car->DynGC.vel.ay * pos.z;//wheel->staticPos.x;
 			wheel->bodyVel.y = vy
 			  + car->DynGC.vel.az * wheel->staticPos.x
-			  - car->DynGC.vel.ax * pos.z;//wheel->staticPos.y;
+			  - car->DynGC.vel.ax * pos.z;//wheel->staticPos.y; //+ or-?
 		}
     } else {
 		for (i = 0; i < 4; i++) {

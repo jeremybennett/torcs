@@ -204,19 +204,6 @@ SimGearboxUpdate(tCar *car)
 			}
 			trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
 			trans->curI = trans->freeI[gearbox->gear+1];
-#if 0
-			differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-			if (trans->type == TRANS_4WD) {
-				differential = &(trans->differential[TRANS_FRONT_DIFF]);
-				differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-				differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-				differential = &(trans->differential[TRANS_REAR_DIFF]);
-				differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-				differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-			}
-#endif
 		}
     } else if ((car->ctrl->gear < gearbox->gear)) {
 		if (car->ctrl->gear >= gearbox->gearMin) {
@@ -234,19 +221,6 @@ SimGearboxUpdate(tCar *car)
 			}
 			trans->curOverallRatio = trans->overallRatio[gearbox->gear+1];
 			trans->curI = trans->freeI[gearbox->gear+1];
-#if 0
-			differential->in.I = trans->curI + differential->feedBack.I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[0]->I = trans->curI / 2.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-			differential->outAxis[1]->I = trans->curI / 2.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-			if (trans->type == TRANS_4WD) {
-				differential = &(trans->differential[TRANS_FRONT_DIFF]);
-				differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-				differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-				differential = &(trans->differential[TRANS_REAR_DIFF]);
-				differential->outAxis[0]->I = trans->curI / 4.0 + differential->inAxis[0]->I / trans->gearEff[gearbox->gear+1];
-				differential->outAxis[1]->I = trans->curI / 4.0 + differential->inAxis[1]->I / trans->gearEff[gearbox->gear+1];
-			}
-#endif
 		}
     }
 
@@ -276,7 +250,7 @@ SimTransmissionUpdate(tCar *car)
     switch(trans->type) {
     case TRANS_RWD:
 		differential = &(trans->differential[TRANS_REAR_DIFF]);
-		differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
+		differential->in.Tq = (car->engine.responseTq + car->engine.Tq) * trans->curOverallRatio * transfer;
 		SimDifferentialUpdate(car, differential, 1);
 		SimUpdateFreeWheels(car, 0);
 		/* 	printf("s0 %f - s1 %f (%f)	inTq %f -- Tq0 %f - Tq1 %f (%f)\n", */
@@ -286,7 +260,7 @@ SimTransmissionUpdate(tCar *car)
 		break;
     case TRANS_FWD:
 		differential = &(trans->differential[TRANS_FRONT_DIFF]);
-		differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
+		differential->in.Tq = (car->engine.responseTq + car->engine.Tq) * trans->curOverallRatio * transfer;
 		SimDifferentialUpdate(car, differential, 1);
 		SimUpdateFreeWheels(car, 1);
 		/* 	printf("s0 %f - s1 %f (%f)	inTq %f -- Tq0 %f - Tq1 %f (%f)\n", */
@@ -299,7 +273,7 @@ SimTransmissionUpdate(tCar *car)
 		differential0 = &(trans->differential[TRANS_FRONT_DIFF]);
 		differential1 = &(trans->differential[TRANS_REAR_DIFF]);
 
-		differential->in.Tq = car->engine.Tq * trans->curOverallRatio * transfer;
+		differential->in.Tq = (car->engine.responseTq + car->engine.Tq) * trans->curOverallRatio * transfer;
 		differential->inAxis[0]->spinVel = (differential0->inAxis[0]->spinVel + differential0->inAxis[1]->spinVel) / 2.0;
 		differential->inAxis[1]->spinVel = (differential1->inAxis[0]->spinVel + differential1->inAxis[1]->spinVel) / 2.0;
 		differential->inAxis[0]->Tq = (differential0->inAxis[0]->Tq + differential0->inAxis[1]->Tq) / differential->ratio;

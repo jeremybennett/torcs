@@ -33,6 +33,7 @@ public:
   float sizex;
   float sizey;
   float sizez;
+  float init_alpha;
   int stype;
   virtual ssgBase *clone ( int clone_flags = 0 ) ;
   ssgVtxTableSmoke () ;

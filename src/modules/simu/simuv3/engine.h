@@ -22,8 +22,8 @@
 
 typedef struct {
     tdble rads;
-    tdble a;
-    tdble b;
+    tdble Tq;
+    //tdble b;
 } tEngineCurveElem;
 
 typedef struct {
@@ -41,8 +41,13 @@ typedef struct
     tdble		I;
     tdble		rads;   /* revs in rad/s ... */
     tdble		Tq;	/* output torque */
+	tdble       responseTq; /* response Tq due to mismatch */
+	tdble       jointI; /* jointI */
     tdble		fuelcons;
     tdble		brakeCoeff;
+	tdble       pressure;
+	tdble       exhaust_pressure;
+	tdble       exhaust_refract;
 } tEngine;
 
 #endif /* _ENGINE_H_ */ 
