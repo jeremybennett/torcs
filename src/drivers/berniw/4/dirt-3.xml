@@ -16,10 +16,8 @@
 
 <params name="Viper GTS-R" type="template">
 
-<!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->
-
   <section name="Car">
-    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="70.0"/>
+    <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"/>
   </section>
 
   <section name="Rear Wing">
@@ -27,7 +25,6 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" unit="s" val="0.15"/>
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"/>
@@ -55,23 +52,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.44"/>
-    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="15000"/>
-  </section>
-
-  <section name="Front Right Wheel">
-    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
-  </section>
-
-  <section name="Front Left Wheel">
-    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
-  </section>
-
-  <section name="Rear Right Wheel">
-    <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
-  </section>
-
-  <section name="Rear Left Wheel">
-    <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
+    <attnum name="max pressure" unit="kPa" min="100" max="150000" val="25000"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
@@ -84,6 +65,30 @@
     <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
     <attnum name="bellcrank" min="1" max="5" val="2.5"/>
+  </section>
+
+  <section name="Front Right Wheel">
+    <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+  </section>
+
+  <section name="Front Left Wheel">
+    <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+  </section>
+
+  <section name="Rear Right Wheel">
+    <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
+  </section>
+
+  <section name="Rear Left Wheel">
+    <attnum name="ride height" unit="mm" min="100" max="200" val="100"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+    <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
   </section>
 
   <section name="Front Right Suspension">
@@ -129,6 +134,12 @@
     <attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="100"/>
     <attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="100"/>
   </section>
+
+  <section name="berniw private">
+    <attnum name="caero" val="1.0"/>
+    <attnum name="cfriction" val="1.2"/>
+  </section>
+
 </params>
 
 
