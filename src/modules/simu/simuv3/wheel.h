@@ -107,6 +107,9 @@ typedef struct
     tDynAxis	feedBack;
 
     tdble	preFn, preFt;
+	tdble   Em; // estimate of mass
+	tdble   s_old;
+	tdble   F_old;
 } tWheel;
 
     

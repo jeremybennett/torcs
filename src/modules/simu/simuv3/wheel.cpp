@@ -111,6 +111,11 @@ SimWheelConfig(tCar *car, int index)
 	wheel->rotational_damage_z = 0.0;//drand48()*0.25;
 	wheel->bent_damage_x = drand48();
 	wheel->bent_damage_z = drand48();
+
+	wheel->Em = 1.0;
+	wheel->s_old = 0.0;
+	wheel->F_old = 0.0;
+
 #ifdef USE_THICKNESS
 	//wheel->thickness = malloc(sizeof(tdble)*N_THICKNESS_SEGMENTS);
 	for (int i=0; i<N_THICKNESS_SEGMENTS; i++) {
@@ -313,9 +318,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
     }
 
-
     wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + adjRadius; /* center relative to GC */
-
 
     /* HORIZONTAL FORCES */
 
@@ -336,7 +339,6 @@ SimWheelUpdateForce(tCar *car, int index)
     wheel->bodyVel.z = 0.0;
 #endif
     wrl = (wheel->spinVel + car->DynGC.vel.ay) * adjRadius;
-
     {
 		t3Dd angles = {wheel->relPos.ax, 0.0, waz};
 		NaiveRotate (wheel->bodyVel, angles, &wheel->bodyVel);
@@ -353,12 +355,9 @@ SimWheelUpdateForce(tCar *car, int index)
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 		sx = sy = sa = 0;
-    } else if (absolute_speed < 5.0) {
-		//		sx = wvx;
-		//		sy = 0;//wvy;
-		//		sa = 0;//atan2(wvy,wvx);
-		sx = wvx/5.0;//absolute_speed;
-		sy = wvy/5.0;//absolute_speed;
+    } else if (absolute_speed < 10.0) {
+		sx = wvx/10.0;//absolute_speed;
+		sy = wvy/10.0;//absolute_speed;
 		sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
@@ -464,7 +463,8 @@ SimWheelUpdateForce(tCar *car, int index)
     // Calculate friction forces
     Ft2 = 0.0;
     tdble Fn2 = 0.0;
-	if (s > 0.000001) {
+	tdble epsilon = 0.00001;
+	if (s > epsilon) {
 		/* wheel axis based - no control after an angle*/
 	  if (rel_normal.z > MIN_NORMAL_Z) {
 	    // When the tyre is tilted there is less surface
@@ -476,16 +476,31 @@ SimWheelUpdateForce(tCar *car, int index)
 	    //Ft2 = -F*sx/s;
 	    //Fn2 = -F*sy/s;
 	  } else {
-	    Ft2 = 0.0;
-	    Fn2 = 0.0;
+		  Ft2 = 0.0;
+		  Fn2 = 0.0;
+	    //Ft2 = -F*sx/s;
 	  }
 		wheel->forces.x = Ft2 * rel_normal_yz;
 		wheel->forces.y = Fn2 * rel_normal_xz; 
 		wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;
 		
-    }
+    } else {
+		  tdble sur_f = rel_normal_xz;
+		  Ft2 = - sur_f*F*sx/epsilon;
+		  Fn2 = - sur_f*F*sy/epsilon;
+	}
 
-    
+	if (1)
+    {
+		// experimental code - estimate 'mass'
+		tdble Ftot = sqrt(Ft2*Ft2 + Fn2*Fn2);
+		tdble ds = wheel->s_old-s;
+		tdble EF = wheel->Em * ds;
+		tdble dF = wheel->F_old - EF;
+		wheel->Em += 0.1 * dF*ds;
+		wheel->F_old = Ftot;
+		wheel->s_old = s;
+	}
     wheel->relPos.az = waz;
     if (rel_normal.z > MIN_NORMAL_Z) {
 		right_way_up = true;
