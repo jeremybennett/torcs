@@ -22,56 +22,45 @@ during the development of this driver, they do a great job:-)
 
 <p>
 gnu general public license 2. anyway, please don't look too hard in the code yet, or my reputation
-will be lost...;-). download it <a href="download/berniw.tar.bz2">  here</a>. if you get the CVS
+will be lost...;-). download the latest version <a href="download/berniw20011225.tar.bz2">berniw20011225.tar.bz2</a> here (it's more recent than the one included in 1.0.0). if you get the CVS
 version of torcs, you don't need this package, berniw is already included.
+</p>
+
+<h4>1.1.1 older versions</h4>
+<p>
+- <a href="download/berniw20011103.tar.bz2">berniw20011103.tar.bz2</a> for torcs 1.0.0-pre7.<br>
 </p>
 
 <h3>1.2 how do i install berniw?</h3>
 
 <p>
 so, first you need a working version of torcs 1.0.0 under linux with sources installed. i
-assume in this instructions the following:<br>   you have the permisson on the system to do the
-needed tasks. the torcs sources  are in /usr/src/torcs/torcs and the installation is in
+assume in this instructions the following:<br>
+you have the permisson on the system to do the needed tasks. the torcs sources  are in /usr/src/torcs/torcs and the installation is in
 /usr/local/games/torcs.  in case you use other directories, just replace this directories with the
-ones on your system. i also assume that the <a  href="download/berniw.tar.bz2">  berniw.tar.bz2</a>
-is in your home directory.
+ones on your system. i also assume that the <a  href="download/berniw20011225.tar.bz2">berniw20011225.tar.bz2</a>
+is in your home directory.<br>
 <br>
+first export the following environment variables (for bash):<br>
+export TORCS_BASE=/usr/src/torcs/torcs<br>
+export MAKE_DEFAULT=/usr/src/torcs/torcs/Make-default.mk<br>
 <br>
-first export the following environment variables (for bash):
+now change to the drivers directory:<br>
+cd $TORCS_BASE/src/drivers<br>
 <br>
-export TORCS_BASE=/usr/src/torcs/torcs
+unpack the berniw package (where YYYYMMDD means the version you got, eg. 20011225):<br>
+tar xfvI ~/berniwYYYYMMDD.tar.bz2<br>
 <br>
-export MAKE_DEFAULT=/usr/src/torcs/torcs/Make-default.mk
-<br>
-<br>
-now change to the drivers directory:
-<br>
-cd $TORCS_BASE/src/drivers
-<br>
-<br>
-unpack the berniw package:
-<br>
-tar xfvI ~/berniw.tar.bz2
-<br>
-<br>
-compile and install:
-<br>
-cd berniw
-<br>
-make
-<br>
-make install
-<br>
+compile and install:<br>
+cd berniw<br>
+make<br>
+make install<br>
 if you discover trouble send me a mail to berni4you@gmx.ch.<br>
 <br>
-run it:
-<br>
-cd /usr/local/games/torcs
-<br>
-./torcs
-<br>
-now choose a berniw, have fun.
-<br>
+run it:<br>
+cd /usr/local/games/torcs<br>
+./torcs<br>
+now choose a berniw, have fun.<br>
 </p>
 
 <h3>1.3 features</h3>
@@ -109,6 +98,12 @@ if you are interested, you can tune the setups for the cars. they are in the ber
 </p>
 
 <h3>1.7 changes</h3>
+
+<h4>26. dec. 2001</h4>
+<p>
+- improved and changed overtake() a bit.<br>
+- setups for acura-nsx and viper on e-track-1.<br>
+</p>
 
 <h4>23-25. dec. 2001</h4>
 <p>

@@ -1270,7 +1270,7 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	tCarElt* car;
 	int seg;
 	const int start = (trackSegId - (int) (1.0 + myc->CARLEN/2.0) + nPathSeg) % nPathSeg;
-	const int nearend = (trackSegId + (int) (2.0*myc->CARLEN)) % nPathSeg;
+	const int nearend = (trackSegId + (int) (3.0*myc->CARLEN)) % nPathSeg;
 	const int end = (trackSegId + (int) colldist/3 + nPathSeg) % nPathSeg;
 
 	tdble dst;
@@ -1285,8 +1285,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 	OtherCar* collcar[s->_ncars];
 	tdble cosalpha[s->_ncars];
 
-	tdble mineukdist = FLT_MAX;		/* near in space */
-	int mineukdistindex = 0;
+	tdble minorthdist = FLT_MAX;		/* near in space */
+	int minorthdistindex = 0;
 
 	int norder = 0;
 
@@ -1313,9 +1313,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 				dst = track->distGFromPoint(&myc->currentpos, &myc->dir, &ocar[i].currentpos);
 
-				if (dst < mineukdist && track->isBetween(start, nearend, seg)) {
-					mineukdist = dst;
-					mineukdistindex = norder;
+				if (dst < minorthdist && track->isBetween(start, nearend, seg)) {
+					minorthdist = dst;
+					minorthdistindex = norder;
 				}
 				norder++;
 			}
@@ -1326,9 +1326,9 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 	bool sidechangeallowed;
 
-	if (mineukdist <= myc->OVERTAKEDIST) {
-		minIndex = mineukdistindex;
-		nearestCar = collcar[mineukdistindex];
+	if (minorthdist <= myc->OVERTAKEDIST) {
+		minIndex = minorthdistindex;
+		nearestCar = collcar[minorthdistindex];
 		sidechangeallowed = false;
 	} else if (minTime < FLT_MAX){
 		nearestCar = collcar[minIndex];
@@ -1348,13 +1348,6 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 	/* not enough space, so we try to overtake */
 	if ((dtp < carwidth && minTime < myc->TIMETOCATCH) || !sidechangeallowed) {
-		/* reload old trajectory */
-		int start = (trackSegId+nPathSeg-SEGRANGE) % nPathSeg;
-		for (int i = start; i < trackSegId+AHEAD; i ++) {
-			int j = (i+nPathSeg) % nPathSeg;
-			ps[j].setLoc(ps[j].getOptLoc());
-		}
-
 		/* compute estimate to catch up */
 		int overtakerange = (int) MIN(MAX((3*minTime*myc->speed), myc->MINOVERTAKERANGE), AHEAD-50);
 
@@ -1364,40 +1357,55 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		tdble y[3], ys[3], s[3];
 
-		/* set up point 0 */
+		/* set up point 0 and 1 */
 		y[0] = track->distToMiddle(trackSegId, &myc->currentpos);
 		tdble mydp = track->dotProduct(&myc->dir, track->getSegmentPtr(trackSegId)->getToRight());
 		tdble alpha = PI/2.0 - acos(mydp);
-
-		if (!sidechangeallowed) {
-			tdble ocdp = track->dotProduct(&nearestCar->dir, track->getSegmentPtr(trackSegId)->getToRight());
-			tdble beta = PI/2.0 - acos(ocdp);
-			if (mydisttomiddle - d >= 0.0) {
-				if (alpha < beta + 0.0175) alpha = beta + 0.0175;
-			} else {
-				if (alpha > beta - 0.0175) alpha = beta - 0.0175;
-			}
-		}
-		ys[0] = sin(alpha);
-
-		/* set up point 1 */
 		int trackSegId1 = (trackSegId + overtakerange/2) % nPathSeg;
 		tdble w = track->getSegmentPtr(nearestCar->currentsegid)->getWidth() / 2;
 
-		if (sidechangeallowed) {
+		if (!sidechangeallowed) {
+			tdble paralleldist = cosalpha[minIndex]*dist(&myc->currentpos, &nearestCar->currentpos);
+			if (paralleldist > 1.5*myc->CARLEN) {
+				tdble pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
+				tdble pathtocarsgn = sign(pathtomiddle - d);
+				y[1] = d + 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				if (fabs(y[1]) > w - carwidth) {
+					y[1] = d - 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				}
+
+				tdble ocdp = track->dotProduct(&nearestCar->dir, track->getSegmentPtr(trackSegId)->getToRight());
+				tdble beta = PI/2.0 - acos(ocdp);
+				if (y[1] - mydisttomiddle >= 0.0) {
+					if (alpha < beta + 0.0175) alpha = alpha + 0.0175;
+				} else {
+					if (alpha > beta - 0.0175) alpha = alpha - 0.0175;
+				}
+			} else {
+				tdble ocdp = track->dotProduct(&nearestCar->dir, track->getSegmentPtr(trackSegId)->getToRight());
+				tdble beta = PI/2.0 - acos(ocdp);
+				if (mydisttomiddle - d >= 0.0) {
+					if (alpha < beta + 0.0175) alpha = beta + 0.0175;
+				} else {
+					if (alpha > beta - 0.0175) alpha = beta - 0.0175;
+				}
+
+				tdble cartocarsgn = sign(mydisttomiddle - d);
+				y[1] = d + 2.0*cartocarsgn*(myc->CARWIDTH + myc->MARGIN);
+				if (fabs(y[1]) > w - (myc->CARWIDTH + myc->MARGIN)) {
+					y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
+				}
+			}
+		} else {
 			tdble pathtomiddle = track->distToMiddle(trackSegId1, ps[trackSegId1].getLoc());
 			tdble pathtocarsgn = sign(pathtomiddle - d);
 			y[1] = d + 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
 			if (fabs(y[1]) > w - carwidth) {
 				y[1] = d - 2.0*pathtocarsgn*(myc->CARWIDTH + myc->MARGIN);
 			}
-		} else {
-			tdble cartocarsgn = sign(mydisttomiddle - d);
-			y[1] = d + 2.0*cartocarsgn*(myc->CARWIDTH + myc->MARGIN);
-			if (fabs(y[1]) > w - (myc->CARWIDTH + myc->MARGIN)) {
-				y[1] = cartocarsgn*(w - (myc->CARWIDTH + myc->MARGIN));
-			}
 		}
+
+		ys[0] = sin(alpha);
 		ys[1] = 0.0;
 
 		/* set up point 2 */
@@ -1433,6 +1441,12 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 			ps[j].setLoc(&q);
 			l += TRACKRES;
+		}
+
+		/* reload old trajectory where needed */
+		for (int i = trackSegId2; i < trackSegId+AHEAD; i ++) {
+			int j = (i+nPathSeg) % nPathSeg;
+			ps[j].setLoc(ps[j].getOptLoc());
 		}
 
 		for (int i = 20; i > 0; i--) {
