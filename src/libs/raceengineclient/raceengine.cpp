@@ -263,7 +263,7 @@ ReManage(tCarElt *car)
 				sprintf(buf, "Winner %s", car->_name);
 				ReRaceBigMsgSet(buf, 10);
 			    } else {
- 				numSuffix = "th";
+ 				char *numSuffix = "th";
  				if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
 				    switch (car->_pos % 10) {
 				    case 1:
