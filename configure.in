@@ -103,6 +103,7 @@ AC_CHECK_LIB(plibssgaux, main,,AC_MSG_ERROR([Can't find libplibssgaux. Please ch
 dnl Taken from FlightGear
 AC_MSG_CHECKING([for plib 1.6.0 or newer])
 AC_TRY_RUN([
+#include <unistd.h>
 #include <plib/ul.h>
 
 #define MIN_PLIB_VERSION 160

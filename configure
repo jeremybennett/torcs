@@ -3080,6 +3080,7 @@ else
 extern "C" void exit(int) throw ();
 #endif
 
+#include <unistd.h>
 #include <plib/ul.h>
 
 #define MIN_PLIB_VERSION 160
@@ -3096,7 +3097,7 @@ int main() {
 
 
 EOF
-if { (eval echo configure:3100: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:3101: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   echo "$ac_t""yes" 1>&6
 else
