@@ -149,6 +149,7 @@ SimWheelUpdateRide(tCar *car, int index)
     //wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius; /* center relative to GC */
     /* verify the suspension travel */
     SimSuspCheckIn(&(wheel->susp));
+	wheel->rideHeight=wheel->susp.x/wheel->susp.spring.bellcrank;
     if (index % 2) {
 	wheel->relPos.ax -= wheel->susp.dynamic_angles.x;
     } else {
