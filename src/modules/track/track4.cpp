@@ -1310,24 +1310,26 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    pitEntrySeg = NULL;
 	}
 
+	/* Pits Exit */
 	segName = GfParmGetStr(TrackHandle, path2, TRK_ATT_EXIT, NULL);
 	if (segName != 0) {
-	    pitExitSeg = theTrack->seg->next;
+	    /* Search backward the last segment with that name */
+	    pitExitSeg = theTrack->seg; /* last track segment */
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		/* set the flag on the last segment of pit_exit */
 		if (!strcmp(segName, pitExitSeg->name)) {
 		    found = 1;
-		} else if (found) {
-		    pitExitSeg = pitExitSeg->prev;
 		    break;
 		}
-		pitExitSeg = pitExitSeg->next;
+		pitExitSeg = pitExitSeg->prev;
 	    }
 	    if (!found) {
 		pitExitSeg = NULL;
 	    }
 	}
+
+	/* Pits Start */
 	segName = GfParmGetStr(TrackHandle, path2, TRK_ATT_START, NULL);
 	if (segName != 0) {
 	    pitStart = theTrack->seg;
@@ -1345,18 +1347,19 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 		pitStart = NULL;
 	    }
 	}
+
+	/* Pits End */
 	segName = GfParmGetStr(TrackHandle, path2, TRK_ATT_END, NULL);
 	if (segName != 0) {
-	    pitEnd = theTrack->seg->next;
+	    /* Search backward the last segment with that name */
+	    pitEnd = theTrack->seg; /* last track segment */
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		if (!strcmp(segName, pitEnd->name)) {
 		    found = 1;
-		} else if (found) {
-		    pitEnd = pitEnd->prev;
 		    break;
 		}
-		pitEnd = pitEnd->next;
+		pitEnd = pitEnd->prev;
 	    }
 	    if (!found) {
 		pitEnd = NULL;
@@ -1389,10 +1392,10 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	pits->nPitSeg  = 0;
 	if (pitStart->lgfromstart > pitEnd->lgfromstart) {
 	    pits->nMaxPits = (int)((theTrack->length - pitStart->lgfromstart +
-					     pitEnd->lgfromstart + pitEnd->length + pits->len / 2.0) / pits->len);
+				    pitEnd->lgfromstart + pitEnd->length + pits->len / 2.0) / pits->len);
 	} else {
-	    pits->nMaxPits = (int)((- pitStart->lgfromstart + pitEnd->lgfromstart +
-					     pitEnd->length + pits->len / 2.0) / pits->len);
+	    pits->nMaxPits = (int)((pitEnd->lgfromstart + pitEnd->length
+				    - pitStart->lgfromstart + pits->len / 2.0) / pits->len);
 	}
 	pits->driversPits = (tTrackOwnPit*)calloc(pits->nMaxPits, sizeof(tTrackOwnPit));
 
