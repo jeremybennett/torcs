@@ -53,7 +53,7 @@ LIB32=link.exe -lib
 # Begin Special Build Tool
 TargetDir=.\Release
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll ..\..\..\..\..\runtime\lib	copy $(TargetDir)\*.lib ..\..\..\..\..\export\lib
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\lib	copy $(TargetDir)\*.lib $(WkspDir)\export\lib
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "solid - Win32 Debug"
