@@ -21,6 +21,7 @@
 #include <tgfclient.h>
 #include "optionmenu.h"
 #include <graphconfig.h>
+#include <simuconfig.h>
 
 static void *optionHandle = NULL;
 
@@ -40,6 +41,10 @@ TorcsOptionOptionInit(void *precMenu)
     GfuiMenuButtonCreate(optionHandle,
 			 "Display", "Configure display parameters",
 			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(optionHandle,
+			 "Simulation", "Configure simulation parameters",
+			 SimuMenuInit(optionHandle), GfuiScreenActivate);
 
     GfuiMenuBackQuitButtonCreate(optionHandle,
 				 "Back",

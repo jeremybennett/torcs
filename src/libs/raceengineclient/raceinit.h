@@ -41,6 +41,8 @@ extern char *ReGetPrevRaceName(void);
 
 extern tModList *ReRaceModList;
 
+
+
 #endif /* _RACEINIT_H_ */ 
 
 

@@ -20,11 +20,11 @@ SOLIBRARY = libconfscreens.so
 
 SOLIBDIR  = .
 
-SOURCES   = controlconfig.cpp  graphconfig.cpp mouseconfig.cpp driverconfig.cpp joystickconfig.cpp
+SOURCES   = controlconfig.cpp  graphconfig.cpp mouseconfig.cpp driverconfig.cpp joystickconfig.cpp simuconfig.cpp
 
 EXPDIR    = include
 
-EXPORTS   = confscreens.h driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h
+EXPORTS   = confscreens.h driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h simuconfig.h
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

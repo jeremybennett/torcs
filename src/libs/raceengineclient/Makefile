@@ -25,7 +25,7 @@ SOURCES      = singleplayer.cpp raceinit.cpp racemain.cpp racemanmenu.cpp racest
 
 EXPDIR       = include
 
-EXPORTS      = singleplayer.h
+EXPORTS      = singleplayer.h raceinit.h
 
 SHIPDIR      = config
 

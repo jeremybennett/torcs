@@ -600,7 +600,7 @@ TorcsDriverMenuInit(void *prevMenu)
 	return scrHandle;
     }
     prevHandle = prevMenu;
-    
+
     scrHandle = GfuiScreenCreate();
     GfuiTitleCreate(scrHandle, "Player Configuration", 0);
 
