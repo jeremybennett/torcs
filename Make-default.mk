@@ -96,7 +96,7 @@ endif
 
 dep:	.depend
 
-compil: subdirs ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM} dep
+compil: subdirs dep ${LIBRARY} ${SOLIBRARY} ${MODULE} ${PROGRAM}
 
 else
 
@@ -384,10 +384,10 @@ packagefiles: ;
 
 endif
 
-ifdef PKGSUBDIR
+ifdef PKGSUBDIRS
 
 packagedirs:
-	@RecurseDirs="${PKGSUBDIR}" ; \
+	@RecurseDirs="${PKGSUBDIRS}" ; \
 	RecurseFlags="onepackage PKG=${PKG}" ; \
 	${recursedirs}
 

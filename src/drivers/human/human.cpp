@@ -80,10 +80,15 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 #endif
 
 static void
-shutdown(void)
+shutdown(int index)
 {
-    GfParmReleaseHandle(DrvInfo);
-    GfParmReleaseHandle(PrefHdle);
+    static int firstTime = 1;
+    
+    if (firstTime) {
+	GfParmReleaseHandle(DrvInfo);
+	GfParmReleaseHandle(PrefHdle);
+	firstTime = 0;
+    }
 }
 
 

@@ -29,7 +29,7 @@ DATA      = ${ROBOT}.xml car1.xml
 
 DATASUBDIRS = 1 2 3 4 5 6 7 8 9 10
 
-PKGSUBDIR	= $(DATASUBDIRS)
+PKGSUBDIRS	= $(DATASUBDIRS)
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

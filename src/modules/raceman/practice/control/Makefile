@@ -20,7 +20,7 @@ SUBDIRS     = manual
 
 DATASUBDIRS =
 
-PKGSUBDIR	= $(SUBDIRS)
+PKGSUBDIRS	= $(SUBDIRS)
 
 src_PKGFILES	= Makefile
 

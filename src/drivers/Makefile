@@ -19,7 +19,7 @@ SUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 DATASUBDIRS = $(SUBDIRS)
 
-PKGSUBDIR	= $(SUBDIRS)
+PKGSUBDIRS	= $(SUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

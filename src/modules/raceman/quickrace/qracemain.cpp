@@ -207,7 +207,9 @@ qrShutdown(void)
     qrResults(qrMainMenuHandle);
     for (i = 0; i < qrTheSituation._ncars; i++) {
 	robot = qrTheSituation.cars[i]->robot;
-	if (robot->rbShutdown) robot->rbShutdown();
+	if (robot->rbShutdown) {
+	    robot->rbShutdown(robot->index);
+	}
 	GfParmReleaseHandle(qrTheSituation.cars[i]->_paramsHandle);
 	free(qrTheSituation.cars[i]->_modName);
     }
@@ -496,7 +498,9 @@ qrOneStep(void *telem)
     }
 
     qrSortCars();
-    qrRaceMsgUpdate();
+    if (qrRunning) {
+	qrRaceMsgUpdate();
+    }
 }
 
 void

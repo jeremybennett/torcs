@@ -20,6 +20,10 @@ DATADIR   = cars/cg-nascar-rwd
 
 DATA      = cg-nascar-rwd.xml cg-nascar-rwd.ac cg-nascar-rwd-lod1.ac cg-nascar-rwd.rgb tex-wheel.rgb
 
+cg-cars_PKGFILES= $(DATA)
+
+cg-cars_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

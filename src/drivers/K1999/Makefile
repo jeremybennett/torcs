@@ -29,4 +29,10 @@ DATA      = ${ROBOT}.xml logo.rgb
 
 DATASUBDIRS = 1 2
 
+PKGSUBDIRS	= $(DATASUBDIRS)
+
+K1999-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+K1999-robots_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}

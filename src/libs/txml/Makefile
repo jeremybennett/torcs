@@ -28,7 +28,7 @@ EXPDIR      = include
 
 EXPORTS     = xml.h xmlparse.h
 
-PKGSUBDIR	= gennmtab
+PKGSUBDIRS	= gennmtab
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -21,6 +21,9 @@ DATADIR   = drivers/tita/tracksdata
 
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
 
+e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

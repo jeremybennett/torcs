@@ -30,7 +30,7 @@ static void drive(int index, tCarElt* car, tSituation *situation);
 static void newRace(int index, tCarElt* car, tSituation *situation);
 static int  InitFuncPt(int index, void *pt);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
-static void shutdown(void);
+static void shutdown(int index);
 
 
 /* Module entry point */
@@ -74,7 +74,8 @@ static const tdble waitToTurn = 1.0; /* how long should i wait till i try to tur
 
 
 /* release resources when the module gets unloaded */
-static void shutdown(void) {
+static void shutdown(int index) {
+    printf("Berniw shutdown %d !!!\n", index);
 	for (int i = 0; i < BOTS; i++) {
 		if (mycar[i] != NULL) {
 			delete mycar[i];

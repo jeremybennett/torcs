@@ -24,7 +24,7 @@ TOOLSUBDIRS	= txml
 
 SUBDIRS		= racemantools robottools txml tgf torcs
 
-PKGSUBDIR	= $(SUBDIRS)
+PKGSUBDIRS	= $(SUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

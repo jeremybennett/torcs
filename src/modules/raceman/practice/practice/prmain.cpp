@@ -196,12 +196,18 @@ void
 prShutdown(void)
 {
     int i;
+    tRobotItf *robot;
     
     GfParmWriteFile(PRACTICE_CFG, pracecfg, "practice", GFPARM_PARAMETER, "../../dtd/params.dtd");
     GfParmReleaseHandle(pracecfg);
     praceglShutdown();
     for (i = 0; i < prTheSituation._ncars; i++) {
+	robot = prTheSituation.cars[i]->robot;
+	if (robot->rbShutdown) {
+	    robot->rbShutdown(robot->index);
+	}
 	GfParmReleaseHandle(prTheSituation.cars[i]->_paramsHandle);
+	free(prTheSituation.cars[i]->_modName);
     }
     free(prCarInfo);
     prTrackItf.trkShutdown();

@@ -20,6 +20,10 @@ DATADIR   = drivers/lliaw/tracksdata
 
 DATA      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
 
+e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

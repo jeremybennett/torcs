@@ -47,7 +47,7 @@
 
     <section name="Environment Mapping">
       <section name="1">
-	<attstr name="env map image" val="env.rgb"></attstr>
+	<attstr name="env map image" val="env.png"></attstr>
       </section>
     </section>
 

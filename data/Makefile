@@ -18,7 +18,7 @@
 
 DATASUBDIRS	= data cars tracks
 
-PKGSUBDIR	= data cars
+PKGSUBDIRS	= $(DATASUBDIRS)
 
 
 include ${MAKE_DEFAULT}

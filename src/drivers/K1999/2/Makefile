@@ -22,6 +22,10 @@ DATADIR   = drivers/${ROBOT}/2
 
 DATA      =  cg-nascar-rwd.rgb settings.xml
 
+K1999-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+K1999-robots_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

@@ -21,7 +21,7 @@ DATASUBDIRS	= raceman telemetry
 
 EXPINCDIRS      = simu
 
-PKGSUBDIR	= track raceman simu graphic telemetry
+PKGSUBDIRS	= track raceman simu graphic telemetry
 
 src_PKGFILES	= Makefile
 

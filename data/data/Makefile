@@ -18,8 +18,7 @@
 
 DATASUBDIRS = img menu fonts textures sound objects tracks
 
-
-PKGSUBDIR	= img menu fonts textures sound tracks
+PKGSUBDIRS	= $(DATASUBDIRS)
 
 include ${MAKE_DEFAULT}
 

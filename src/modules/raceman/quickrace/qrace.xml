@@ -41,24 +41,14 @@
     </section>
 
     <section name="Drivers">
-      <attnum name="ndrivers" val="3.000000"></attnum>
-      <attstr name="focused module" val="damned"></attstr>
+      <attnum name="ndrivers" val="1.000000"></attnum>
+      <attstr name="focused module" val="human"></attstr>
       <attnum name="focused idx" val="1.000000"></attnum>
 
       <section name="drivers">
         <section name="1">
           <attnum name="idx" val="1.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="2">
-          <attnum name="idx" val="2.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="3">
-          <attnum name="idx" val="4.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
+          <attstr name="module" val="human"></attstr>
         </section>
       </section>
     </section>

@@ -21,6 +21,10 @@ DATADIR   = drivers/${ROBOT}/tracks/dirt-5
 
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
 
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}
+
 include ${MAKE_DEFAULT}
 
 

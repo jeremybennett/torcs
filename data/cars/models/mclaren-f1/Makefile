@@ -24,6 +24,10 @@ DATA      = mclaren-f1.xml  mclaren-f1.ac \
 	    mclaren-f1-lod1.ac texmapper.xml \
 	    tex-wheel.rgb mclaren-f1.rgb mclaren-f1-512.rgb 
 
+gt-cars_PKGFILES	= $(DATA)
+
+gt-cars_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

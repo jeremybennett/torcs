@@ -30,8 +30,13 @@ DATADIR   = drivers/${ROBOT}
 
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print) $(shell find *.rgb -maxdepth 0 -type f -print)
 
+DATASUBDIRS = tracks
 
-DATASUBDIRS = cg-gt-rwd tracks
+PKGSUBDIRS	= $(DATASUBDIRS)
+
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

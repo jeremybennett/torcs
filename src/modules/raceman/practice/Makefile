@@ -20,7 +20,7 @@ SUBDIRS     = practice control
 
 DATASUBDIRS = practice
 
-PKGSUBDIR	= $(SUBDIRS)
+PKGSUBDIRS	= $(SUBDIRS)
 
 src_PKGFILES	= Makefile
 

@@ -27,7 +27,7 @@
 typedef void (*tfRbNewTrack)(int index, tTrack*, void **carParmHandle, tSituation*);
 typedef void (*tfRbNewRace) (int index, tCarElt*, tSituation*);
 typedef void (*tfRbDrive)   (int index, tCarElt*, tSituation*);
-typedef void (*tfRbShutdown)(void);
+typedef void (*tfRbShutdown)(int index);
 
 #define ROB_PIT_IM	0	/* Immediate return from pit command */
 #define ROB_PIT_MENU	1	/* Call the interactive menu for pit command */

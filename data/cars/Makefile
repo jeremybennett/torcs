@@ -18,7 +18,7 @@
 
 DATASUBDIRS	= categories models
 
-PKGSUBDIR	= categories
+PKGSUBDIRS	= $(DATASUBDIRS)
 
 
 include ${MAKE_DEFAULT}

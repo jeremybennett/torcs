@@ -18,6 +18,8 @@
 
 DATASUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
+PKGSUBDIRS	= $(DATASUBDIRS)
+
 include ${MAKE_DEFAULT}
 
 

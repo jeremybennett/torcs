@@ -24,6 +24,10 @@ DATA      = 360-modena.xml  360-modena.ac \
 	    360-modena-lod1.ac texmapper.xml \
 	    tex-wheel.rgb 360-modena.rgb
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

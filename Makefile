@@ -43,6 +43,10 @@ restart2:
 
 endif
 
+PKGLIST		= src data \
+		  gt-cars dtm-cars patwo-cars cg-cars misc-cars \
+		  e-robots berniw-robots K1999-robots
+
 DATASUBDIRS	= data src
 
 EXPINCDIRS	= src
@@ -55,9 +59,7 @@ DATADIR 	= .
 
 DATA    	= CHANGELOG.html COPYING
 
-PKGLIST		= src data e-robots
-
-PKGSUBDIR	= src data
+PKGSUBDIRS	= src data
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

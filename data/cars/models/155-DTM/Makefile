@@ -21,6 +21,10 @@ DATADIR   = cars/155-DTM
 
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print)  $(shell find *.rgb -maxdepth 0 -type f -print)  $(shell find *.ac -maxdepth 0 -type f -print)
 
+dtm-cars_PKGFILES	= $(DATA)
+
+dtm-cars_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 
