@@ -71,6 +71,7 @@
 #define TRK_ATT_TEXTYPE  "texture type"
 #define TRK_ATT_TEXLINK  "texture link with previous"
 #define TRK_ATT_TEXSIZE  "texture size"
+#define TRK_ATT_TEXSTARTBOUNDARY "texture start on boundary"
 #define TRK_ATT_TEXMIPMAP "texture mipmap"
 #define TRK_ATT_R1	 "color R1"
 #define TRK_ATT_G1	 "color G1"

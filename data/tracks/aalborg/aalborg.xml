@@ -27,7 +27,7 @@
 
   <section name="Header">
     <attstr name="name"    val="Aalborg"></attstr>
-    <attnum name="version" val="2"></attnum>
+    <attnum name="version" val="3"></attnum>
     <attstr name="author"  val="Torben Thellefsen"></attstr>
     <attstr name="description" val="This track is from RARS"></attstr>
   </section>
@@ -36,7 +36,7 @@
     <attstr name="3d description" val="aalborg.ac"></attstr>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="4"></attnum>
+      <attnum name="track step" unit="m" val="20"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="40"></attnum>
@@ -52,6 +52,8 @@
     <attstr name="lside surface" val="asphalt"></attstr>
     <attnum name="rside width" val="3.0" unit="m"></attnum>
     <attstr name="rside surface" val="asphalt"></attstr>
+
+    <attnum name="profil steps length" val="4" unit="m"></attnum>
 
     <section name="segments">
       <!-- first segment -->

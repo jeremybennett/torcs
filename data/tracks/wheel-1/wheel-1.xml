@@ -80,10 +80,10 @@
     <!-- PITS -->
     <attstr name="pit type"   val="track side"></attstr>
     <attstr name="pit side"   val="right"></attstr>
-    <attstr name="pit entry"  val="s1-2b"></attstr>
-    <attstr name="pit exit"   val="s1-6"></attstr>
+    <attstr name="pit entry"  val="s1-2a"></attstr>
     <attstr name="pit start"  val="s1-3"></attstr>
     <attstr name="pit end"    val="s1-3"></attstr>
+    <attstr name="pit exit"   val="s1-6"></attstr>
     <attnum name="pit length" val="15" unit="m"></attnum>
     <attnum name="pit width"  val="5" unit="m"></attnum>
 

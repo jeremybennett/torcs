@@ -28,7 +28,7 @@
 
   <section name="Header">
     <attstr name="name" val="Dirt 2"></attstr>
-    <attnum name="version" val="2"></attnum>
+    <attnum name="version" val="3"></attnum>
     <attstr name="author" val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>

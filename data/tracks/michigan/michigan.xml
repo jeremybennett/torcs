@@ -27,7 +27,7 @@
 
   <section name="Header">
     <attstr name="name"              val="Michigan Speedway"></attstr>
-    <attnum name="version"           val="2"></attnum>
+    <attnum name="version"           val="3"></attnum>
     <attstr name="author"            val="E.Espie"></attstr>
     <attstr name="description"       val="This is an D-shaped oval with banking"></attstr>
   </section>

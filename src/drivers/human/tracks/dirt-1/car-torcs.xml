@@ -16,11 +16,14 @@
 
 <params name="TORCS FREE" type="template" mode="mw">
 
-  <section name="Driver">
-    <!-- Position of the driver -->
-    <attnum name="xpos" val="0.8" unit="m"></attnum>
-    <attnum name="ypos" val="0.0" unit="m"></attnum>
-    <attnum name="zpos" val="1.1" unit="m"></attnum>
+
+  <section name="Graphic Objects">
+    <attstr name="tachometer texture" val="rpm7000.rgb"></attstr>
+    <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="8000" unit="rpm"></attnum>
+    <attstr name="speedometer texture" val="speed240.rgb"></attstr>
+    <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
+    <attnum name="speedometer max value" val="240" unit="km/h"></attnum>
   </section>
 
   <section name="Car">
@@ -154,7 +157,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.6"></attnum>
-    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="20000"></attnum>
+    <attnum name="max pressure" unit="kPa" min="100" max="1500000" val="3000"></attnum>
   </section>
 
   <section name="Front Axle">

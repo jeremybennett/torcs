@@ -27,7 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="Dirt 6"></attstr>
-    <attnum name="version"     val="2"></attnum>
+    <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>
@@ -47,7 +47,7 @@
     </section>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="10"></attnum>
+      <attnum name="track step" unit="m" val="30"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="15"></attnum>
@@ -60,15 +60,17 @@
   <section name="Main Track">
 
     <attstr name="surface" val="dirt"></attstr>
-    <attnum name="width" unit="m" val="12.0"></attnum>
+    <attnum name="width" unit="m" val="15.0"></attnum>
 
     <attstr name="rside surface"  val="dirt-b"></attstr>
-    <attnum name="rside width"    val="10.0"></attnum>
+    <attnum name="rside width"    val="5.0"></attnum>
     <attstr name="rside type" in="tangent,level" val="tangent"></attstr>
 
     <attstr name="lside surface"  val="dirt-b"></attstr>
-    <attnum name="lside width"    val="10.0"></attnum>
+    <attnum name="lside width"    val="5.0"></attnum>
     <attstr name="lside type" in="tangent,level" val="tangent"></attstr>
+
+    <attnum name="profil steps length" val="7" unit="m"></attnum>
 
     <section name="segments">
 
@@ -82,7 +84,6 @@
 	<attnum name="lg" unit="m" val="200"></attnum>
 	<attnum name="grade" val="4" unit="%"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="30"></attnum>
 	<attnum name="profil end tangent" val="4" unit="%"></attnum>	
       </section>
 
@@ -122,7 +123,6 @@
 	<attnum name="lg" unit="m" val="50"></attnum>
 	<attnum name="grade" val="2" unit="%"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="10"></attnum>
 	<attnum name="profil end tangent" val="0" unit="%"></attnum>	
       </section>
 
@@ -141,7 +141,6 @@
 	<attnum name="profile steps" val="10"></attnum>
 	<attnum name="grade" val="-2" unit="%"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="10"></attnum>
 	<attnum name="profil end tangent" val="-2" unit="%"></attnum>	
       </section>
 
@@ -236,9 +235,41 @@
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
-      <section name="s12">
+      <section name="s12a">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="450"></attnum>
+	<attnum name="lg" unit="m" val="100"></attnum>
+      </section>
+      <section name="s12b">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="z end" val="8" unit="m"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>	
+      </section>
+      <section name="s12c">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="z end" val="5" unit="m"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>	
+      </section>
+      <section name="s12d">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="z end" val="3" unit="m"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>	
+      </section>
+      <section name="s12e">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+	<attnum name="z end" val="5" unit="m"></attnum>
+	<attnum name="profil end tangent" val="0" unit="%"></attnum>	
+      </section>
+      <section name="s12f">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="50"></attnum>
+      </section>
+      <section name="s12g">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
       </section>
 
       <section name="turn 13">
@@ -295,7 +326,6 @@
         <attstr name="type" val="str"></attstr>
 	<attnum name="lg" unit="m" val="189.01632434"></attnum>
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
-	<attnum name="profil steps" val="20"></attnum>
 	<attnum name="profil end tangent" val="0" unit="%"></attnum>
  	<attnum name="z end" unit="m" val="0"></attnum>
       </section>

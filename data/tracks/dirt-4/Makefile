@@ -18,7 +18,7 @@
 
 DATADIR   = tracks/dirt-4
 
-DATA      = dirt-4.xml background.png dirt-4.ac
+DATA      = dirt-4.xml background.png dirt-4.ac dirt-4-relief.ac
 
 
 include ${MAKE_DEFAULT}

@@ -16,6 +16,16 @@
 
 
 <params name="Human" type="parameters">
+
+  <section name="Graphic Objects">
+    <attstr name="tachometer texture" val="rpm7000.rgb"></attstr>
+    <attnum name="tachometer min value" val="0" unit="rpm"></attnum>
+    <attnum name="tachometer max value" val="8000" unit="rpm"></attnum>
+    <attstr name="speedometer texture" val="speed240.rgb"></attstr>
+    <attnum name="speedometer min value" val="0" unit="km/h"></attnum>
+    <attnum name="speedometer max value" val="240" unit="km/h"></attnum>
+  </section>
+
   <section name="Car">
     <!-- weight bias -->
     <attnum name="front-rear weight repartition" val="0.45"></attnum>
@@ -42,7 +52,7 @@
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.65"></attnum>
-    <attnum name="max pressure" unit="kPa" val="15000"></attnum>
+    <attnum name="max pressure" unit="kPa" val="3000"></attnum>
   </section>
 
   <section name="Steer">

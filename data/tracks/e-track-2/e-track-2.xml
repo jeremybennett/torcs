@@ -27,7 +27,7 @@
 
   <section name="Header">
     <attstr name="name"        val="E-Track 2"></attstr>
-    <attnum name="version"     val="2"></attnum>
+    <attnum name="version"     val="3"></attnum>
     <attstr name="author"      val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>
@@ -47,7 +47,7 @@
     </section>
 
     <section name="Terrain Generation">
-      <attnum name="track step" unit="m" val="6"></attnum>
+      <attnum name="track step" unit="m" val="20"></attnum>
       <attnum name="border margin" unit="m" val="100"></attnum>
       <attnum name="border step" unit="m" val="30"></attnum>
       <attnum name="border height" unit="m" val="5"></attnum>
@@ -70,6 +70,8 @@
     <attnum name="lside width"    val="10.0"></attnum>
     <attstr name="lside type" in="tangent,level" val="tangent"></attstr>
 
+    <attnum name="profil steps length" val="6" unit="m"></attnum>
+
     <section name="segments">
 
       <section name="start lane">
@@ -85,6 +87,7 @@
 	<attnum val="50.0" name="rside end width"></attnum>
 	<attstr val="sand" name="rside surface"></attstr>
       </section>
+
       <section name="turn 1.2">
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>

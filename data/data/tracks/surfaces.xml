@@ -100,7 +100,8 @@
 	<attnum name="color B2" val="0.2"></attnum>
 	<attstr name="texture name" val="tr-asphalt-p_nmm.rgb"></attstr>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"></attstr>
-	<attstr name="texture link with previous" val="no"></attstr>
+	<attstr name="texture link with previous" val="yes"></attstr>
+	<attstr name="texture start on boundary" val="yes"></attstr>
 	<attnum name="texture size" val="15.0001" unit="m"></attnum>
 	<attnum name="texture mipmap" val="0.0" unit="m"></attnum>
 

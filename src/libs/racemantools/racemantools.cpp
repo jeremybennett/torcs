@@ -383,7 +383,9 @@ static void initPits(tRmInfo *raceInfo)
 	curPos.type = TR_LPOS_MAIN;
 	curMainSeg = pits->pitStart->prev;
 	changeSeg = 1;
-	for (i =  0; i < pits->nMaxPits; i++) {
+	toStart = 0;
+	i =  0;
+	while (i < pits->nMaxPits) {
 	    if (changeSeg) {
 		changeSeg = 0;
 		curMainSeg = curMainSeg->next;
@@ -395,8 +397,12 @@ static void initPits(tRmInfo *raceInfo)
 		    curPitSeg = curMainSeg->lside;
 		    break;
 		}
-		toStart = 0;
 		curPos.seg = curMainSeg;
+		if (toStart >= curMainSeg->length) {
+		    toStart -= curMainSeg->length;
+		    changeSeg = 1;
+		    continue;
+		}
 	    }
 	    curPos.toStart = toStart + pits->len / 2.0;
 	    switch (pits->side) {
@@ -419,8 +425,10 @@ static void initPits(tRmInfo *raceInfo)
 	    
 	    toStart += pits->len;
 	    if (toStart >= curMainSeg->length) {
+		toStart -= curMainSeg->length;
 		changeSeg = 1;
 	    }
+	    i++;
 	}
 	break;
     case TR_PIT_ON_SEPARATE_PATH:

@@ -28,7 +28,7 @@
 
   <section name="Header">
     <attstr name="name" val="E-Track 1"></attstr>
-    <attnum name="version" val="2"></attnum>
+    <attnum name="version" val="3"></attnum>
     <attstr name="author" val="E.Espie"></attstr>
     <attstr name="description" val=""></attstr>
   </section>
@@ -67,11 +67,36 @@
     <attstr name="rside surface"  val="grass"></attstr>
     <attstr name="lside surface"  val="grass"></attstr>
 
+    <!-- PITS -->
+    <attstr name="pit type"   val="track side"></attstr>
+    <attstr name="pit side"   val="left"></attstr>
+    <attstr name="pit entry"  val="s1"></attstr>
+    <attstr name="pit exit"   val="s3"></attstr>
+    <attstr name="pit start"  val="s2"></attstr>
+    <attstr name="pit end"    val="s2"></attstr>
+    <attnum name="pit length" val="15" unit="m"></attnum>
+    <attnum name="pit width"  val="5" unit="m"></attnum>
+
     <section name="segments">
 
-      <section name="segment">
+      <section name="s1">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="500"></attnum>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="lside end width" val="15"></attnum>
+	<attstr name="lside surface"  val="asphalt"></attstr>
+      </section>
+
+      <section name="s2">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="300"></attnum>
+	<attstr name="lside surface"  val="asphalt-pits"></attstr>
+      </section>
+
+      <section name="s3">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="lside end width" val="7"></attnum>
+	<attstr name="lside surface"  val="asphalt"></attstr>
       </section>
 
       <section name="turn">
@@ -85,6 +110,7 @@
 	<attstr name="profil" in="linear,spline" val="spline"></attstr>
 	<attnum name="profil steps" val="12"></attnum>
 	<attnum name="profil end tangent" val="3" unit="%"></attnum>
+	<attstr name="lside surface"  val="grass"></attstr>
       </section>
 
       <section name="turn">
