@@ -22,6 +22,10 @@ DATADIR   = drivers/${ROBOT}/8
 
 DATA      =  car.xml logo.rgb mclaren-f1.rgb
 
+e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

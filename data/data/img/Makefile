@@ -16,10 +16,14 @@
 ##############################################################################
 
 
-DATADIR   = data/img
+DATADIR   	= data/img
 
-DATA      = 	$(shell find *.png -maxdepth 0 -type f)
-		
+DATA      	= $(shell find *.png -maxdepth 0 -type f)
+
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 
 include ${MAKE_DEFAULT}
 

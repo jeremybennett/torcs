@@ -243,7 +243,7 @@ class cGrCarCamInside : public cGrPerspCamera
     cGrCarCamInside(int id, int drawCurr, int drawBG,
 		    float myfovy, float myfovymin, float myfovymax,
 		    float myfnear, float myffar = 1500.0,
-		    float myfogstart = 1400.0, float myfogend = 1500.0)
+		    float myfogstart = 800.0, float myfogend = 1500.0)
 	: cGrPerspCamera(id, drawCurr, drawBG,
 			 myfovy, myfovymin, myfovymax,
 			 myfnear, myffar, myfogstart, myfogend) {
@@ -969,7 +969,7 @@ grInitCams(void)
 				 10.0,	/* dist */
 				 1.0,	/* near */
 				 600.0 * fovFactor,	/* far */
-				 400.0 * fovFactor,	/* fog */
+				 300.0 * fovFactor,	/* fog */
 				 600.0 * fovFactor	/* fog */
 				 );
     curCam->add(&grCams[c]);
@@ -985,7 +985,7 @@ grInitCams(void)
 				 20.0,	/* dist */
 				 1.0,	/* near */
 				 600.0 * fovFactor,	/* far */
-				 400.0 * fovFactor,	/* fog */
+				 300.0 * fovFactor,	/* fog */
 				 600.0 * fovFactor	/* fog */
 				 );
     curCam->add(&grCams[c]);
@@ -1000,7 +1000,7 @@ grInitCams(void)
 				 95.0,	/* fovymax */
 				 0.3,	/* near */
 				 600.0 * fovFactor,	/* far */
-				 400.0 * fovFactor,	/* fog */
+				 300.0 * fovFactor,	/* fog */
 				 600.0 * fovFactor	/* fog */
 				 );
     curCam->add(&grCams[c]);
@@ -1015,7 +1015,7 @@ grInitCams(void)
 					 95.0,	/* fovymax */
 					 0.3,	/* near */
 					 600.0 * fovFactor,	/* far */
-					 400.0 * fovFactor,	/* fog */
+					 300.0 * fovFactor,	/* fog */
 					 600.0 * fovFactor	/* fog */
 					 );
     curCam->add(&grCams[c]);
@@ -1030,7 +1030,7 @@ grInitCams(void)
 				 95.0,	/* fovymax */
 				 0.3,	/* near */
 				 600.0 * fovFactor,	/* far */
-				 400.0 * fovFactor,	/* fog */
+				 300.0 * fovFactor,	/* fog */
 				 600.0 * fovFactor	/* fog */
 				 );
     curCam->add(&grCams[c]);
@@ -1050,7 +1050,7 @@ grInitCams(void)
 				  30.0,	/* dist */
 				  1.0,	/* near */
 				  1000.0 * fovFactor,	/* far */
-				  800.0 * fovFactor,	/* fog */
+				  500.0 * fovFactor,	/* fog */
 				  1000.0 * fovFactor	/* fog */
 				  );
     curCam->add(&grCams[c]);
@@ -1066,7 +1066,7 @@ grInitCams(void)
 				20.0,	/* dist */
 				1.0,	/* near */
 				1000.0 * fovFactor,	/* far */
-				800.0 * fovFactor,	/* fog */
+				500.0 * fovFactor,	/* fog */
 				1000.0 * fovFactor	/* fog */
 				);
     curCam->add(&grCams[c]);
@@ -1088,7 +1088,7 @@ grInitCams(void)
 			       3.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1106,7 +1106,7 @@ grInitCams(void)
 			       3.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1124,7 +1124,7 @@ grInitCams(void)
 			       3.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1142,7 +1142,7 @@ grInitCams(void)
 			       3.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1160,7 +1160,7 @@ grInitCams(void)
 			       6.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1178,7 +1178,7 @@ grInitCams(void)
 			       6.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1196,7 +1196,7 @@ grInitCams(void)
 			       6.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1214,7 +1214,7 @@ grInitCams(void)
 			       6.0,	/* distz */
 			       1.0,	/* near */
 			       1000.0 * fovFactor,	/* far */
-			       800.0 * fovFactor,	/* fog */
+			       500.0 * fovFactor,	/* fog */
 			       1000.0 * fovFactor	/* fog */
 			       );
     curCam->add(&grCams[c]);
@@ -1235,7 +1235,7 @@ grInitCams(void)
 			     0,		/* axis */
 			     200.0,	/* near */
 			     1000.0 * fovFactor,/* far */
-			     800.0 * fovFactor,	/* fog */
+			     500.0 * fovFactor,	/* fog */
 			     1000.0 * fovFactor	/* fog */
 			     );
     curCam->add(&grCams[c]);
@@ -1252,7 +1252,7 @@ grInitCams(void)
 			     1,		/* axis */
 			     200.0,	/* near */
 			     1000.0 * fovFactor,/* far */
-			     800.0 * fovFactor,	/* fog */
+			     500.0 * fovFactor,	/* fog */
 			     1000.0 * fovFactor	/* fog */
 			     );
     curCam->add(&grCams[c]);
@@ -1269,7 +1269,7 @@ grInitCams(void)
 			     2,		/* axis */
 			     200.0,	/* near */
 			     1000.0 * fovFactor,/* far */
-			     800.0 * fovFactor,	/* fog */
+			     500.0 * fovFactor,	/* fog */
 			     1000.0 * fovFactor	/* fog */
 			     );
     curCam->add(&grCams[c]);
@@ -1286,7 +1286,7 @@ grInitCams(void)
 			     3,		/* axis */
 			     200.0,	/* near */
 			     1000.0 * fovFactor,/* far */
-			     800.0 * fovFactor,	/* fog */
+			     500.0 * fovFactor,	/* fog */
 			     1000.0 * fovFactor	/* fog */
 			     );
     curCam->add(&grCams[c]);
@@ -1441,7 +1441,7 @@ grInitCams(void)
 				     60.0,	/* fovymax */
 				     1.0,	/* near */
 				     1000.0 * fovFactor,/* far */
-				     800.0 * fovFactor,	/* fog */
+				     500.0 * fovFactor,	/* fog */
 				     1000.0 * fovFactor	/* fog */
 				     );
     curCam->add(&grCams[c]);
@@ -1460,7 +1460,7 @@ grInitCams(void)
 				   90.0,	/* fovymax */
 				   1.0,		/* near */
 				   1000.0 * fovFactor,	/* far */
-				   800.0 * fovFactor,	/* fog */
+				   500.0 * fovFactor,	/* fog */
 				   1000.0 * fovFactor	/* fog */
 				   );
     curCam->add(&grCams[c]);
@@ -1482,7 +1482,7 @@ grInitCams(void)
 				      90.0,	/* fovymax */
 				      1.0,	/* near */
 				      1000.0 * fovFactor,	/* far */
-				      800.0 * fovFactor,	/* fog */
+				      500.0 * fovFactor,	/* fog */
 				      1000.0 * fovFactor	/* fog */
 				      );
     curCam->add(&grCams[c]);

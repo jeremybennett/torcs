@@ -21,6 +21,9 @@ EXPORTS      = Basic.h  Matrix.h  Point.h  Quaternion.h  Tuple3.h  Tuple4.h  Vec
 
 EXPDIR       = include/3D
 
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -420,6 +420,10 @@
         <attstr name="type" val="rgt"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="50"></attnum>
+	<section name="Left Side">
+	  <attnum name="end width" val="10"></attnum>
+	  <attstr name="surface" val="sand"></attstr>
+	</section>
 	<section name="Right Border">
 	  <attstr name="surface" val="curb-5cm-r"></attstr>
 	  <attstr name="style" val="curb"></attstr>
@@ -443,6 +447,10 @@
         <attstr name="type" val="lft"></attstr>
 	<attnum name="radius" unit="m" val="70"></attnum>
 	<attnum name="arc" unit="deg" val="30"></attnum>
+	<section name="Left Side">
+	  <attnum name="end width" val="5"></attnum>
+	  <attstr name="surface" val="grass3"></attstr>
+	</section>
 	<section name="Right Side">
 	  <attnum name="end width" val="19.0"></attnum>
 	  <attstr name="surface" val="sand"></attstr>

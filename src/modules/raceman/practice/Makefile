@@ -20,6 +20,12 @@ SUBDIRS     = practice control
 
 DATASUBDIRS = practice
 
+PKGSUBDIR	= $(SUBDIRS)
+
+src_PKGFILES	= Makefile
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 
 include ${MAKE_DEFAULT}
 

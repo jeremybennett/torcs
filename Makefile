@@ -55,6 +55,13 @@ DATADIR 	= .
 
 DATA    	= CHANGELOG.html COPYING
 
+PKGLIST		= src data e-robots
+
+PKGSUBDIR	= src data
+
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}
 
 -include ${MAKE_DEFAULT}
 

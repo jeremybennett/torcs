@@ -26,6 +26,10 @@ DATADIR   = config/quickrace
 
 DATA      = qrace.xml
 
+src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

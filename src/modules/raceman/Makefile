@@ -20,7 +20,11 @@ SUBDIRS     = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 DATASUBDIRS = $(SUBDIRS)
 
+PKGSUBDIR	= $(SUBDIRS)
 
+src_PKGFILES	= Makefile
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

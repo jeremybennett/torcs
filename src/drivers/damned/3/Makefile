@@ -22,6 +22,10 @@ DATADIR   = drivers/${ROBOT}/3
 
 DATA      =  p406.rgb car.xml car-dirt.xml logo.rgb
 
+e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

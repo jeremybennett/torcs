@@ -21,6 +21,10 @@ DATADIR   = data/fonts
 DATA      = $(shell find * -maxdepth 0 -type f -print)
 
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

@@ -21,6 +21,10 @@ DATADIR   = data/tracks
 DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 
 include ${MAKE_DEFAULT}
 

@@ -105,7 +105,7 @@ class ssgLoaderOptionsEx : public ssgLoaderOptions
       
 	    if (s) {
 		/* no mipmap */
-		if (strncmp(s, "_nmm", 4) == 0) {
+		if (strncmp(s, "_n", 4) == 0) {
 		    mipmap = FALSE;
 		}
 	    }

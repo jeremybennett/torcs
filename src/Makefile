@@ -29,5 +29,12 @@ SUBDIRS		= libs linux modules drivers tools
 
 SRCDOC		= yes
 
+PKGSUBDIR	= interfaces libs linux modules windows tools drivers doc
+
+src_PKGFILES	= Makefile
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
+
 

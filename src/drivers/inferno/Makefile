@@ -31,6 +31,12 @@ DATA      = ${ROBOT}.xml car1.xml logo.rgb mclaren-f1.rgb
 
 DATASUBDIRS = tracksdata
 
+PKGSUBDIRS		= ${DATASUBDIRS}
+
+e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+e-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

@@ -20,6 +20,9 @@ DATADIR   = categories
 
 DATA      = $(shell find * -maxdepth 0 -type f -name '*.xml')
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

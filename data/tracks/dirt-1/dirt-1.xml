@@ -128,7 +128,7 @@
  	<attnum name="banking end" val="0" unit="deg"></attnum>
 	<attstr name="profil" val="spline"></attstr>
 	<attnum name="profil steps" val="8"></attnum>
-	<attnum name="grade" val="-5" unit="%"></attnum>
+	<attnum name="grade" val="-2" unit="%"></attnum>
 	<attnum name="profil end tangent" val="0" unit="%"></attnum>
       </section>
 

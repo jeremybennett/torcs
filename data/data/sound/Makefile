@@ -20,6 +20,10 @@ DATADIR   = data/sound
 
 DATA      = $(shell find *.wav -maxdepth 0 -print)
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 
 include ${MAKE_DEFAULT}
 

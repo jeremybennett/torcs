@@ -20,6 +20,10 @@ DATADIR   = menu
 
 DATA      = entry.xml
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 include ${MAKE_DEFAULT}
 
 

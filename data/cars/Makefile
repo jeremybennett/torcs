@@ -16,7 +16,9 @@
 ##############################################################################
 
 
-DATASUBDIRS = categories models
+DATASUBDIRS	= categories models
+
+PKGSUBDIR	= categories
 
 
 include ${MAKE_DEFAULT}

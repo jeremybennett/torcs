@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #ifndef WIN32
 #include <unistd.h>
 #endif
@@ -101,16 +102,46 @@ GetElevation(tdble x, tdble y, tdble z)
     return z;
 }
 
+/* Use the texture name to select options like mipmap */
+class ssgLoaderOptionsEx : public ssgLoaderOptions
+{
+ public:
+    ssgLoaderOptionsEx()
+	: ssgLoaderOptions() 
+	{}
+
+    virtual void makeModelPath ( char* path, const char *fname ) const
+	{
+	    ulFindFile ( path, model_dir, fname, NULL ) ;
+	}
+    
+    virtual void makeTexturePath ( char* path, const char *fname ) const
+	{
+	    ulFindFile ( path, texture_dir, fname, NULL ) ;
+	}
+
+};
+
 void
 SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
 {
+    ssgLoaderOptionsEx	options;
     float	zmin, zmax;
     float	xmin, xmax, ymin, ymax;
     float	x, y, z;
     int		clr;
-    int		i, j;
+    int		i, j, k, l;
     ssgRoot	*root;
-
+    int		columns;
+    static char	buf[1024];
+    char	*s;
+    
+    s = getenv("COLUMNS");
+    if (s) {
+	columns = strtol(getenv("COLUMNS"), NULL, 0);
+    } else {
+	columns = 80;
+    }
     
     Margin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
     
@@ -123,14 +154,13 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
     height = (int)((ymax - ymin) * width / (xmax - xmin));
 
     printf("Generating Elevation Map %s (%d, %d)\n", imgFile, width, height);
-
     kX = (xmax - xmin) / width;
     dX = xmin;
     kY = (ymax - ymin) / height;
     dY = ymin;
 
     zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
-    zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z);
+    zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z * 1.2);
 
     kZ = MAX_CLR / (zmax - dZ);
     dZ = - zmin * MAX_CLR / (zmax - dZ);
@@ -140,10 +170,27 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile)
 	return;
     }
 
+    ssgSetCurrentOptions(&options);
+    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
+    ssgTexturePath(buf);
+    sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
+    ssgModelPath(buf);
     root = (ssgRoot*)ssgLoadAC(meshFile);
-    
+
+    l = columns - 18;
     for (j = 0; j < height; j++) {
-	printf("\rrow %d", j);
+	s = buf;
+	s += sprintf(buf, "%4d%% |", (j+1) * 100 / height);
+	for (k = s - buf; k < s - buf + l; k++) {
+	    if ((k - (s - buf)) > (l * (j+1) / height)) {
+		buf[k] = ' ';
+	    } else {
+		buf[k] = '*';
+	    }
+	}
+	s += l;
+	sprintf(s, "| row %4d", j+1);
+	printf("\r%s", buf);
 	fflush(stdout);
 	for (i = 0; i < width; i++) {
 	    x = i * kX + dX;

@@ -262,7 +262,7 @@ refresh(tSituation *s)
 
     sgVec4 fogColor;
     light->getColour(GL_AMBIENT, fogColor);
-    sgScaleVec4(fogColor, 0.5);
+    sgScaleVec4(fogColor, 0.8);
     fogColor[3] = 0.5;
     glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogfv(GL_FOG_COLOR, fogColor);

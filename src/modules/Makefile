@@ -21,6 +21,12 @@ DATASUBDIRS	= raceman telemetry
 
 EXPINCDIRS      = simu
 
+PKGSUBDIR	= track raceman simu graphic telemetry
+
+src_PKGFILES	= Makefile
+
+src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 

@@ -16,7 +16,9 @@
 ##############################################################################
 
 
-DATASUBDIRS = data cars tracks
+DATASUBDIRS	= data cars tracks
+
+PKGSUBDIR	= data cars
 
 
 include ${MAKE_DEFAULT}

@@ -345,7 +345,7 @@ ifdef PKGLIST
 
 packagelist:
 	@for Pkg in ${PKGLIST} ;\
-	do ${MAKE} onepackage PKG=$$Pkg ;\
+	do ${MAKE} onepackage PKG=$$Pkg  TORCS_BASE=${TORCS_BASE} MAKE_DEFAULT=${MAKE_DEFAULT};\
 	createdir="${PACKAGESBASE}" ;\
 	$(mkinstalldirs) $$createdir ; \
 	archive="TORCS-${VERSION}-$$Pkg".tgz ;\

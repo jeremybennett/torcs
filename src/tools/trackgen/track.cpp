@@ -218,6 +218,7 @@ InitScene(tTrack *Track, void *TrackHandle)
     tdble delaty = Track->seg->next->vertex[TR_SL].y - Track->seg->vertex[TR_EL].y;
     tdble delatz = Track->seg->next->vertex[TR_SL].z - Track->seg->vertex[TR_EL].z;
     tdble delata = Track->seg->next->angle[TR_ZS] - Track->seg->angle[TR_ZE];
+    NORM_PI_PI(delata);
     
     printf("Delta X   = %f\n", delatx);
     printf("Delta Y   = %f\n", delaty);

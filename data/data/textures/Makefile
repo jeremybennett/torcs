@@ -21,6 +21,10 @@ DATADIR   = data/textures
 
 DATA      = $(shell find *.png -maxdepth 0 -print) $(shell find *.rgb -maxdepth 0 -print)
 
+data_PKGFILES	= $(DATA)
+
+data_PKGDIR	= $(DATADIR)
+
 
 include ${MAKE_DEFAULT}
 

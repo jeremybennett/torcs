@@ -16,7 +16,9 @@
 ##############################################################################
 
 
-DATASUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+DATASUBDIRS	= $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+
+PKGSUBDIR	= $(DATASUBDIRS)
 
 include ${MAKE_DEFAULT}
 
