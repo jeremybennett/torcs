@@ -68,6 +68,7 @@ typedef struct Suspension
 
 } tSuspension;
 
+#define PRM_SUSPENSION_TYPE "suspension type"
 
 #endif /* _SUSP_H__ */ 
 

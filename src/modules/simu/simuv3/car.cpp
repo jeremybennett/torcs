@@ -229,9 +229,11 @@ SimCarUpdateForces(tCar *car)
 		F.F.x += wheel->forces.x;
 		F.F.y += wheel->forces.y;
 		F.F.z += wheel->forces.z;
+
 		car->carElt->_wheelFx(i) = wheel->forces.x;
 		car->carElt->_wheelFy(i) = wheel->forces.y;
 		car->carElt->_wheelFz(i) = wheel->forces.z;
+
 		/* moments */
 		//		direction.x = 1.0;
 		//		direction.y = 1.0;

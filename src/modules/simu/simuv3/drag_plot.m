@@ -1,5 +1,5 @@
-psi=-1;
-theta=-0.1*pi;
+psi=-.75;
+theta=-0.4;#*pi;
 d_psi = 0.005;
 for i=1:200
   f(i,1)=psi;
@@ -31,9 +31,9 @@ endfor
 
 clearplot
 hold on
-plot (f(:,1),f(:,2),'1')
-plot (f(:,1),f(:,3),'2')
-plot (f(:,1),f(:,4),'3')
+#plot (f(:,1),f(:,2),'1')
+#plot (f(:,1),f(:,3),'2')
+#plot (f(:,1),f(:,4),'3')
 plot (f(:,1),f(:,5),'1@')
 plot (f(:,1),f(:,6),'2@')
 plot (f(:,1),f(:,7),'3@')

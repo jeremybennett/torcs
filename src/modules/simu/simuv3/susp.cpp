@@ -171,6 +171,7 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0);
     susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, 0);
     susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0);
+	char* suspension_type = GfParmGetStr(hdle, section, PRM_SUSPENSION_TYPE, "Wishbone");
 
     susp->spring.x0 = susp->spring.bellcrank * X0;
     susp->spring.F0 = F0 / susp->spring.bellcrank;
@@ -179,7 +180,16 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->damper.rebound.b1 = 0;
     susp->damper.bump.v1 = 0.5;
     susp->damper.rebound.v1 = 0.5;
-    susp->type = Wishbone;//Simple;
+	if (!strcmp(suspension_type,"Simple")) {
+		susp->type = Simple;
+	} else if (!strcmp(suspension_type,"Wishbone")) {
+		susp->type = Wishbone;
+	} else if (!strcmp(suspension_type,"Ideal")) {
+		susp->type = Ideal;
+	} else {
+		fprintf (stderr, "Warning: unknown suspension type %s\n", suspension_type);
+		susp->type = Wishbone;
+	}
     susp->dynamic_angles.x = 0.0;
     susp->dynamic_angles.y = 0.0;
     susp->dynamic_angles.z = 0.0;

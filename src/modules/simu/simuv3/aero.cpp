@@ -146,8 +146,9 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
     // angles of attack.  (so it won't produce lift because it will be
     // completely shielded by the car's bottom)
     // The value -0.4 should depend on the positioning of the wing. 
+	// we also make this be like that.
     if (index==1) {
-	i_flow = PartialFlowSmooth (-0.4, aoa);
+		i_flow = PartialFlowSmooth (-0.4, aoa);
     } 
     // Flow to the wings gets cut off by other cars.
     tdble airSpeed = car->DynGC.vel.x;
@@ -181,6 +182,20 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 	    }
 	}
     }
+	if (index==1) {
+		// downforce due to body and ground effect.
+		// assume half and half, i_flow does not affect
+		// ground effect downforce.
+		tdble alpha = 0.5;
+		tdble vt2b = vt2 * (alpha+(1-alpha)*i_flow);
+		vt2b = vt2b * vt2b;
+		tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
+		hm = hm*hm;
+		hm = hm*hm;
+		hm = 2 * exp(-3.0*hm);
+		car->aero.lift[0] = - car->aero.Clift[0] * vt2b * hm;
+		car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
+	}
 
 
     vt2=vt2*i_flow;
@@ -189,12 +204,7 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 
     // the sinus of the angle of attack
     tdble sinaoa = sin(aoa);
-    tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
-    hm = hm*hm;
-    hm = hm*hm;
-    hm = 2 * exp(-3.0*hm);
-    car->aero.lift[0] = - car->aero.Clift[0] * vt2 * hm;
-    car->aero.lift[1] = - car->aero.Clift[1] * vt2 * hm;
+
 
     if (car->DynGC.vel.x > 0.0) {
 	wing->forces.x = wing->Kx * vt2 * (1.0 + (tdble)car->dammage / 10000.0) * sinaoa;

@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include "sim.h"
 
+#undef FREE_MOVING_WHEELS
+
 static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
@@ -311,8 +313,9 @@ SimWheelUpdateForce(tCar *car, int index)
 
     }
 
-    
+
     wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + adjRadius; /* center relative to GC */
+
 
     /* HORIZONTAL FORCES */
 
@@ -328,13 +331,17 @@ SimWheelUpdateForce(tCar *car, int index)
 								+ rel_normal.y*rel_normal.y);
     tdble rel_normal_xy = sqrt (rel_normal.x*rel_normal.x
 								+ rel_normal.y*rel_normal.y);
-    wheel->bodyVel.z = 0.0;
 
+#ifndef FREE_MOVING_WHEELS
+    wheel->bodyVel.z = 0.0;
+#endif
     wrl = (wheel->spinVel + car->DynGC.vel.ay) * adjRadius;
+
     {
 		t3Dd angles = {wheel->relPos.ax, 0.0, waz};
 		NaiveRotate (wheel->bodyVel, angles, &wheel->bodyVel);
     }
+
     tdble wvx = wheel->bodyVel.x * rel_normal_yz;
     tdble wvy = wheel->bodyVel.y * rel_normal_xz;
     tdble absolute_speed = sqrt(wvx*wvx + wvy*wvy);
@@ -397,6 +404,10 @@ SimWheelUpdateForce(tCar *car, int index)
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad));
     
     F *= wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
+	{
+		tdble Bx = wheel->mfB * sa;
+		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) *  wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad)) * wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
+	}
     {
     	// heat transfer function with air
 		tdble htrf = (0.002 + fabs(absolute_speed)*0.0005)*SimDeltaTime;
@@ -510,7 +521,8 @@ SimWheelUpdateForce(tCar *car, int index)
 		RELAXATION2(wheel->forces.y, wheel->preFt, 50.0);
 
 		wheel->forces.z = f_z;
-
+		car->carElt->_wheelFy(index) = wheel->forces.y;
+		car->carElt->_wheelFz(index) = wheel->forces.z;
 
 #if 0
 		wheel->forces.x =0.0;
