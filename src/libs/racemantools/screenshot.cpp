@@ -21,7 +21,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include <GL/glut.h>
 #include <tgf.h>
 
@@ -32,8 +31,6 @@ RmScreenShot(void * /* notused */)
 {
     unsigned char	*img;
     char		buf[256];
-    struct tm		*stm;
-    time_t		t;
     
     img = (unsigned char*)malloc(GfScrWidth * GfScrHeight * 3);
     if (img == NULL) {
@@ -45,15 +42,7 @@ RmScreenShot(void * /* notused */)
     glReadBuffer(GL_FRONT);
     glReadPixels(0, 0, GfScrWidth, GfScrHeight, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)img);
 
-    t = time(NULL);
-    stm = localtime(&t);
-    sprintf(buf, "torcs-%4d%02d%02d%02d%02d%02d.png",
-	    stm->tm_year+1900,
-	    stm->tm_mon+1,
-	    stm->tm_mday,
-	    stm->tm_hour,
-	    stm->tm_min,
-	    stm->tm_sec);
+    sprintf(buf, "torcs-%s.png", GfGetTimeStr());
     GfImgWritePng(img, buf, GfScrWidth, GfScrHeight);
 
     free(img);

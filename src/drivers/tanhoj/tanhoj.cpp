@@ -42,7 +42,6 @@
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s);
 static void drive(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
-static int pitcmd(int index, tCarElt* car, tSituation *s);
 
 tTrack		*DmTrack;
 static char	ParamNames[256];
@@ -83,7 +82,6 @@ InitFuncPt(int index, void *pt)
     itf->rbNewRace  = newrace;
     itf->rbDrive    = drive;			/* drive during race */
     itf->index      = index;
-    itf->rbPitCmd   = pitcmd;
     return 0;
 }
 
@@ -113,46 +111,23 @@ tanhoj(tModInfo *modInfo)
     modInfo->index   = 1;
     return 0;
 }
-tdble	Tright[1];
-tdble	TRightMin[1];
-tdble	TRightMax[1];
-tdble	MaxSpeed[1];
-tdble	hold[1] = {0};
-tdble	shiftThld[1][MAX_GEARS+1];
-int     LookForward = 0;
+tdble	Tright[10];
+tdble	MaxSpeed[10];
+tdble	hold[10] = {0};
+tdble	shiftThld[10][MAX_GEARS+1];
 
-static tdble PGain[1]		= {0.02};
-static tdble AGain[1]		= {0.008};
-static tdble Advance[1]		= {35.0};
-static tdble Advance2[1]	= {20.0};
-static tdble AdvStep[1]		= {20.0};
-static tdble VGain[1]		= {0.0005};
-static tdble preDy[1]		= {0};
-static tdble spdtgt[1]		= {115.0};
-static tdble spdtgt2[1]		= {1.0};
-static tdble steerMult[1]	= {2.0};
-static tdble Trightprev[1];
-
-static tdble PitPGain[1]	= {0.05};
-static tdble PitAGain[1]	= {0.008};
-static tdble PitVGain[1]	= {0.01};
-
-static tdble PitEntry = -1;
-static tdble PitStart;
-static tdble DistEntry = 50.0;
-static tdble DistFullStop = 2.5;
-static tdble FrontMu = 1.0;
-static tdble MaxDammage = 1000;
-static tdble PitOffset = 0.5;
-static tdble D1 = 15.0;
-static tdble O1 = 0.5;
-static tdble D2 = 10.0;
-static tdble O2 = 0.0;
-static tdble D3 = 60.0;
-static tdble KSteer = 1.0;
-
-
-
+static tdble PGain[10]    = {0.02};
+static tdble AGain[10]    = {0.008};
+static tdble PnGain[10]   = {0.02};
+static tdble Advance[10]  = {35.0};
+static tdble Advance2[10] = {20.0};
+static tdble AdvStep[10]  = {20.0};
+static tdble VGain[10]    = {0.0005};
+static tdble preDy[10]    = {0};
+static tdble spdtgt[10]   = {115.0};
+static tdble spdtgt2[10]  = {1.0};
+static tdble steerMult[10]  = {2.0};
+static tdble Trightprev[10];
 
 /*
  * Function
@@ -174,27 +149,17 @@ static tdble KSteer = 1.0;
 #define SIMU_PRMS	"Simulation Parameters"
 #define PGAIN		"PGain"
 #define AGAIN		"AGain"
+#define PNGAIN		"PnGain"
 #define ADVANCE		"Advance"
 #define ADVANCE2	"Advance2"
 #define ADVSTEP		"AdvStep"
 #define VGAIN		"VGain"
+#define PREDY		"preDy"
 #define SPDTGT		"spdtgt"
 #define SPDTGT2		"spdtgt2"
 #define STEERMULT	"steerMult"
-#define FUEL		"fuel"
-#define DISTENTRY	"dist to prepare pit entry"
-#define DISTFSTOP	"dist to full stop"
-#define PITPGAIN	"PitPGain"
-#define PITAGAIN	"PitAGain"
-#define PITVGAIN	"PitVGain"
-#define MAXDAMMAGE	"Max Dammage"
-#define PITOFFSET	"Pit Offset"
-#define DIST1		"dist1"
-#define DIST2		"dist2"
-#define DIST3		"dist3"
-#define OFF1		"off1"
-#define OFF2		"off2"
-#define KSTEER		"KSteer"
+
+tdble Gmax;
 
 static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation *s)
 {
@@ -202,13 +167,10 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     char	*str;
     char	buf[256];
     tdble	fuel;
+    tdble	tmpMu;
+    
     
     DmTrack = track;
-    if (DmTrack->pits.type == TR_PIT_ON_TRACK_SIDE) {
-	PitEntry = DmTrack->pits.pitEntry->lgfromstart;
-	PitStart = DmTrack->pits.pitStart->lgfromstart;
-    }
-    
     str = strrchr(track->filename, '/') + 1;
     sprintf(ParamNames, "drivers/tanhoj/tracksdata/car_%s", str);
     *carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_STD);
@@ -220,38 +182,34 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
 	GfOut("%s Loaded\n", ParamNames);
     }
     fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
-    
+    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+
+    Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+    Gmax = MIN(Gmax, tmpMu);
+/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
+
     sprintf(buf, "drivers/tanhoj/tracksdata/%s", str);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (hdle) {
 	PGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, PGAIN,     NULL, PGain[0]);
 	AGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
+	PnGain[0]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
 	Advance[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
 	Advance2[0]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
 	AdvStep[0]   = GfParmGetNum(hdle, SIMU_PRMS, ADVSTEP,   NULL, AdvStep[0]);
 	VGain[0]     = GfParmGetNum(hdle, SIMU_PRMS, VGAIN,     NULL, VGain[0]);
+	preDy[0]     = GfParmGetNum(hdle, SIMU_PRMS, PREDY,     NULL, preDy[0]);
 	spdtgt[0]    = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT,    NULL, spdtgt[0]);
 	spdtgt2[0]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
 	steerMult[0] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
-	fuel         = GfParmGetNum(hdle, SIMU_PRMS, FUEL,	NULL, fuel);
-	DistEntry    = GfParmGetNum(hdle, SIMU_PRMS, DISTENTRY,	NULL, DistEntry);
-	DistFullStop = GfParmGetNum(hdle, SIMU_PRMS, DISTFSTOP,	NULL, DistEntry);
-	PitPGain[0]  = GfParmGetNum(hdle, SIMU_PRMS, PITPGAIN,  NULL, PGain[0]);
-	PitAGain[0]  = GfParmGetNum(hdle, SIMU_PRMS, PITAGAIN,  NULL, AGain[0]);
-	PitVGain[0]  = GfParmGetNum(hdle, SIMU_PRMS, PITVGAIN,  NULL, VGain[0]);
-	MaxDammage   = GfParmGetNum(hdle, SIMU_PRMS, MAXDAMMAGE,NULL, MaxDammage);
-	PitOffset    = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET, NULL, PitOffset);
-	D1           = GfParmGetNum(hdle, SIMU_PRMS, DIST1,     NULL, D1);
-	D2           = GfParmGetNum(hdle, SIMU_PRMS, DIST2,     NULL, D2);
-	D3           = GfParmGetNum(hdle, SIMU_PRMS, DIST3,     NULL, D3);
-	O1           = GfParmGetNum(hdle, SIMU_PRMS, OFF1,      NULL, O1);
-	O2           = GfParmGetNum(hdle, SIMU_PRMS, OFF2,      NULL, O2);
-	KSteer       = GfParmGetNum(hdle, SIMU_PRMS, KSTEER,    NULL, KSteer);
+
 	GfParmReleaseHandle(hdle);
     }
-    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
-    FrontMu = (GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, NULL, FrontMu) +
-	       GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, NULL, FrontMu)) / 2.0;
 }
 
 /*
@@ -267,6 +225,7 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
  * Return
  *	
  */
+static int	curidx;
 static tdble	Gear;
 static tdble	TargetSpeed;
 static tdble	InvBrkCmd;
@@ -276,6 +235,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
     
     Tright[0] = Trightprev[0] = car->_trkPos.toRight;
     hold[0] = 8.0;
+    curidx = 0;
 
     car->_vect(0).type = CAR_VECT_INVALID;
     car->_vect(0).color[0] = .5;
@@ -299,14 +259,6 @@ void newrace(int index, tCarElt* car, tSituation *s)
 }
 
 
-static int lastpit = 0;
-static int PitState = 0;
-#define NONE			0
-#define BEFORE_PIT_ENTRY	1
-#define PIT_ENTRY_PASSED	2
-#define NEAR_PIT		3
-#define OUT_OF_PITS		4
-#define EXITING_PITS		5
 
 /*
  * Function
@@ -326,270 +278,80 @@ static int PitState = 0;
  */
 static void drive(int index, tCarElt* car, tSituation *s)
 {
-    tdble 	Dy, Dny;
-    tdble 	Vy;
-    tTrkLocPos	trkPos;
-    tdble 	X, Y, x, y, CosA, SinA;
-    tTrackSeg	*seg;
-    tTrackSeg	*curSeg = 0;
-    tdble	Da, Db;
-    tdble	tgtSpeed = -1.0;
-    tdble	lgfs;
-    tdble	vtgt1, vtgt2;
-    tdble	curAdv, curAdvMax, Amax, Atmp, AdvMax;
-    tdble	aGain = AGain[0];
-    tdble	vGain = VGain[0];
-    tdble	pGain = PGain[0];
-    tdble	KK = 2.0;
-    tdble	dL, dW;
-    tdble	dst;
-    int		lastState;
-
-    static tdble	Curtime = 0;
+    static tdble Curtime = 0;
+    tdble 		Dy, Dny;
+    tdble 		Vy;
+    tTrkLocPos		trkPos, trkPos2;
+    tdble 		X, Y, x, y, CosA, SinA;
+    tTrackSeg		*seg;
+    tdble		Da, Db;
+    tdble		tgtSpeed = -1.0;
+    tdble		lgfs;
+    tdble		vtgt1, vtgt2;
+    static tdble	lgfsprev = 0.0;
     static tdble	adv;
+    tdble		curAdv, curAdvMax, Amax, Atmp, AdvMax;
+
     static int		lap = 0;
     
+    
     Gear = (tdble)car->_gear;
-    LookForward = 1;
-
+    
     memset(car->ctrl, 0, sizeof(tCarCtrl));
 
     Curtime += s->deltaTime;
+
+    MaxSpeed[0] = 10000.0;
     trkPos = car->_trkPos;
     X = car->_pos_X;
     Y = car->_pos_Y;
     seg = trkPos.seg;
-    lgfs = GetDistToStart(car);
-    MaxSpeed[0] = 10000.0;
-
-    TRightMin[0] = 0.0;
-    TRightMax[0] = DmTrack->width;
-
-    /*
-     * Pit-stop management
-     */
-    if (PitEntry != -1) {
-	RtDistToPit(car, DmTrack, &dL, &dW);
-	do {
-	    lastState = PitState;
-
-	    switch (PitState) {
-	
-	    case BEFORE_PIT_ENTRY:
-
-		dst = PitEntry - lgfs;
-		if (dst < 0) {
-		    dst += DmTrack->length;
-		}
-		if (dst < DistEntry) {
-		    /* Before Pit Entry */
-		    hold[0] = Curtime;
-		    LookForward = 1;
-		    MaxSpeed[0] = sqrt(2.0 * G * dst * FrontMu + 1100.0) * .78;
-		    if (dW > 0) {
-			Tright[0] = DmTrack->width - 2.0;
-		    } else {
-			Tright[0] = 2.0;
-		    }
-		    TRightMin[0] = TRightMax[0] = Tright[0];
-		    KK = 0.05;
-		} else if (trkPos.seg->raceInfo & TR_PITENTRY) {
-		    PitState = PIT_ENTRY_PASSED;
-		}
-		break;
-	
-	    case PIT_ENTRY_PASSED:
-
-		switch(DmTrack->pits.side) {
-		case TR_RGT:
-		    curSeg = trkPos.seg->rside;
-		    Tright[0] = -2.0;
-		    break;
-		case TR_LFT:
-		    curSeg = trkPos.seg->lside;
-		    Tright[0] = DmTrack->width + 2.0;
-		    break;
-		}
-
-		/* Pit Entry */
-		if ((curSeg->raceInfo & TR_PIT) || (dL < D3)) {
-		    PitState = NEAR_PIT;
-		} else {
-		    hold[0] = Curtime;
-		    LookForward = 0;
-		    MaxSpeed[0] = sqrt(2.0 * G * dL * FrontMu) * .78;
-		    if (dW > 0) {
-			Tright[0] = DmTrack->width + 2.0;
-		    } else {
-			Tright[0] = -2.0;
-		    }
-		    TRightMin[0] = TRightMax[0] = Tright[0];
-		    KK = 10.0;
-		}
-		
-		break;
-
-	    case NEAR_PIT:
-
-		aGain = PitAGain[0];
-		vGain = PitVGain[0];
-		pGain = PitPGain[0];
-		/* on the pit lane */
-		hold[0] = Curtime;
-		LookForward = 0;
-		car->ctrl->raceCmd = RM_CMD_PIT_ASKED;
-		MaxSpeed[0] = sqrt(2.0 * G * dL * FrontMu) * .75;
-
-		if (dL > D2) {
-		    Tright[0] = trkPos.toRight + (fabs(dW) - O2) * SIGN(dW);
-		    KK = 50.0;
-		} else if (dL > D1) {
-		    Tright[0] = trkPos.toRight + (fabs(dW) - O1) * SIGN(dW);
-		    KK = 100.0;
-		} else {
-		    Tright[0] = trkPos.toRight + (fabs(dW) - PitOffset) * SIGN(dW);
-		    if (dL < DistFullStop) {
-			MaxSpeed[0] = 0.0;
-		    } else {
-			MaxSpeed[0] = 5.0;
-		    }
-		    KK = 100.0;
-		}
-		TRightMin[0] = TRightMax[0] = Tright[0];
-		break;
-
-	    case OUT_OF_PITS:
-		hold[0] = Curtime + 3.0;
-		PitState = EXITING_PITS;
-		break;
-
-	    case EXITING_PITS:
-		if (hold[0] > Curtime) {
-		    aGain = PitAGain[0];
-		    vGain = PitVGain[0];
-		    pGain = PitPGain[0];
-		    Tright[0] = trkPos.toRight + (fabs(dW) - 5.0) * SIGN(dW);
-		    LookForward = 0;
-		    if (trkPos.toRight < Tright[0]) {
-			TRightMin[0] = trkPos.toRight;
-			TRightMax[0] = Tright[0];
-		    } else {
-			TRightMax[0] = trkPos.toRight;
-			TRightMin[0] = Tright[0];
-		    }
-		    KK = 0.5;
-		} else {
-		    switch(DmTrack->pits.side) {
-		    case TR_RGT:
-			curSeg = trkPos.seg->rside;
-			Tright[0] = -2.0;
-			break;
-		    case TR_LFT:
-			curSeg = trkPos.seg->lside;
-			Tright[0] = DmTrack->width + 2.0;
-			break;
-		    }
-		
-		    if (curSeg->raceInfo & TR_PIT) {
-			/* on the pit lane */
-			hold[0] = Curtime;
-			LookForward = 0;
-			if (trkPos.toRight < Tright[0]) {
-			    TRightMin[0] = trkPos.toRight;
-			    TRightMax[0] = Tright[0];
-			} else {
-			    TRightMax[0] = trkPos.toRight;
-			    TRightMin[0] = Tright[0];
-			}
-			KK = 0.5;
-		    } else if (trkPos.seg->raceInfo & TR_PITEXIT) {
-			PitState = NONE;
-		    } else {
-			switch(DmTrack->pits.side) {
-			case TR_RGT:
-			    curSeg = trkPos.seg->rside;
-			    Tright[0] = 2.0;
-			    break;
-			case TR_LFT:
-			    curSeg = trkPos.seg->lside;
-			    Tright[0] = DmTrack->width - 2.0;
-			    break;
-			}
-			hold[0] = Curtime;
-			LookForward = 0;
-			KK = 0.1;
-		    }
-		}
-		break;
-
-	    default:
-		if (car->_dammage > MaxDammage) {
-		    PitState = BEFORE_PIT_ENTRY;
-		}
-		if ((car->_fuel <  0.0007 * DmTrack->length * 2) && (s->_totLaps - s->cars[0]->_laps > 2)) {
-		    PitState = BEFORE_PIT_ENTRY;
-		}
-		break;
-	    }
-	} while (lastState != PitState);
-    }
-
     CosA = cos(car->_yaw);
     SinA = sin(car->_yaw);
+    lgfs = GetDistToStart(car) + fabs(preDy[0]);
+    if (lgfs < DmTrack->seg->next->length) {
+	curidx = 0;
+	if (lgfsprev > lgfs) {
+	    lgfsprev = 0;
+	}
+    }
 
-    adv = Advance[0];
+    adv = Advance[0] + 5.0 * sqrt(fabs(car->_speed_x));
+    
+    if (Curtime > hold[0]) {
+	    Tright[0] = seg->width / 2.0;
+    }
+
     
     vtgt1 = spdtgt[0];
     vtgt2 = spdtgt2[0];
 
-    CollDet(car, 0, s, Curtime);
+    x = X + (CosA) * adv;
+    y = Y + (SinA) * adv;
+    RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos2, TR_LPOS_MAIN);
+    Dny = seg->width / 2.0 - trkPos2.toRight;
+
+    CollDet(car, 0, s, Curtime, Dny);
     
+    RELAXATION(Tright[0], Trightprev[0], 2.0);
 
     /* proportionnal */
-    Dy = trkPos.toRight;
-
-    Da = RtTrackSideTgAngleL(&trkPos) - car->_yaw;
-    NORM_PI_PI(Da);
-    
-    
-    if (Curtime > hold[0]) {
-	//Tright[0] = seg->width / 2.0;
-	Tright[0] = Dy;
-    }
-    
-    if (LookForward) {
-	x = X + (CosA) * adv;
-	y = Y + (SinA) * adv;
-	RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
-	Dny = seg->width / 2.0 - trkPos.toRight;
-
-	Tright[0] += Dny;
-    }
-    
-    RELAXATION(Tright[0], Trightprev[0], KK);
-
-    if (Tright[0] < TRightMin[0]) {
-	Tright[0] = TRightMin[0];
-    } else if (Tright[0] > TRightMax[0]) {
-	Tright[0] = TRightMax[0];
-    }
-
-/*     printf("TRt=%f  TR=%f", Tright[0], Dy); */
-
-    Dy = Tright[0] - Dy;
+    Dy = Tright[0] - trkPos.toRight;
 
     /* derivation */
     Vy = (Dy - preDy[0]) / s->deltaTime;
     preDy[0] = Dy;
 
+    Da = RtTrackSideTgAngleL(&trkPos) - car->_yaw;
+    NORM_PI_PI(Da);
+    
 
-    car->ctrl->steer = pGain * Dy + vGain * Vy - aGain * Da * Da * SIGN(Da);
-    car->ctrl->steer *= steerMult[0] * (1 - exp(-fabs(car->_speed_x) * KSteer));
-    
-/*     printf("  Dy=%f  Vy=%f  Da=%f  Steer=%f\n", Dy, Vy, Da, car->ctrl->steer); */
-    
+    car->ctrl->steer = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
+
     if (car->_speed_x < 0) {
 	car->ctrl->steer *= 1.5;
+    } else {
+	car->ctrl->steer *= 1.1;
     }
 
     /*
@@ -598,13 +360,13 @@ static void drive(int index, tCarElt* car, tSituation *s)
     CosA = cos(car->_yaw + car->ctrl->steer*2.0);
     SinA = sin(car->_yaw + car->ctrl->steer*2.0);
     curAdv = Advance2[0];
-    AdvMax = car->_speed_x * 5.0;
+    AdvMax = fabs(car->_speed_x) * 5.0 + 1.0;
     Amax = 0;
     while (curAdv < AdvMax) {
 	x = X + CosA * curAdv;
 	y = Y + SinA * curAdv;
 	RtTrackGlobal2Local(seg, x, y, &trkPos, TR_LPOS_MAIN);
-	Atmp = fabs(trkPos.toRight - Tright[0]) / curAdv;
+	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / AdvMax;
 	if (Amax < Atmp) {
 	    Amax = Atmp;
 	    curAdvMax = curAdv;
@@ -624,7 +386,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
     SpeedStrategy(car, 0, TargetSpeed, s, Db);
 
 
-#define AMARG 0.9
+#define AMARG 0.6
     if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||
 	 ((Da < (AMARG-PI/2.0)) && (car->_trkPos.toRight > (seg->width - seg->width/3.0)))) && 
 	(car->_gear < 2) && (car->_speed_x < 1.0)) {
@@ -659,22 +421,3 @@ static void drive(int index, tCarElt* car, tSituation *s)
     InvBrkCmd = - car->ctrl->brakeCmd;
 }
 
-static int pitcmd(int index, tCarElt* car, tSituation *s)
-{
-    tdble	f1, f2;
-
-    f1 = car->_tank - car->_fuel;
-    
-    f2 = 0.0007 * (DmTrack->length * s->cars[0]->_remainingLaps + car->_trkPos.seg->lgfromstart) - car->_fuel;
-
-    car->pitcmd->fuel = MAX(MIN(f1, f2), 0);
-
-    car->pitcmd->repair = (int)car->_dammage;
-    
-    lastpit = car->_laps;
-    PitState = OUT_OF_PITS; /* next state */
-
-    printf("PIT STOP: fuel %f / repair %d\n", car->pitcmd->fuel, car->pitcmd->repair);
-    
-    return ROB_PIT_IM; /* The player is able to modify the value by menu */
-}

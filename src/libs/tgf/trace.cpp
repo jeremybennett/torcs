@@ -32,10 +32,13 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 
 #include <tgf.h>
 
 static FILE *outTrace = (FILE*)NULL;
+
+static char TraceStr[1024];
 
 void
 gfTraceInit(void)
@@ -50,8 +53,12 @@ gfTraceInit(void)
 */
 void GfTrace(char *szTrc)
 {
+    struct tm		*stm;
+    time_t		t;
+    char		*s = TraceStr;
+
 #if DEBUG_OUT
-    fprintf(stderr, "**********************************\n%s**********************************\n", szTrc);
+    fprintf(stderr, "ERROR: %s", szTrc);
     fflush(stderr);
 #endif
     if (outTrace == NULL) {
@@ -60,7 +67,14 @@ void GfTrace(char *szTrc)
 	    return;
 	}
     }
-    fwrite(szTrc, strlen(szTrc), 1, outTrace);
+    t = time(NULL);
+    stm = localtime(&t);
+    s += sprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ",
+		 stm->tm_year+1900, stm->tm_mon+1, stm->tm_mday,
+		 stm->tm_hour, stm->tm_min, stm->tm_sec);
+
+    strncpy(s, szTrc, 1023 - strlen(TraceStr));
+    fwrite(TraceStr, strlen(TraceStr), 1, outTrace);
     fflush(outTrace);
 }
 

@@ -154,3 +154,44 @@ RmPracticeResults(void *prevHdle, char *trackname, tRingListHead *reshead)
     GfuiScreenActivate(hdle);
 }
 
+int
+RmInitResults(tRmInfo *rmInfo)
+{
+    int nblap = rmInfo->s->_totLaps;
+    int nbdrv = rmInfo->s->_ncars;
+
+    rmInfo->lapInfo = (tDrvLapInfo*)calloc(nbdrv * nblap, sizeof(tDrvLapInfo));
+    if (rmInfo->lapInfo == NULL) {
+	return -1;
+    }
+
+    return 0;
+}
+
+void
+RmShutdownResults(tRmInfo *rmInfo)
+{
+    if (rmInfo->lapInfo) {
+	free(rmInfo->lapInfo);
+	rmInfo->lapInfo = NULL;
+    }
+}
+
+
+void
+RmSaveResults(tRmInfo *rmInfo)
+{
+    char	buf[256];
+    int		*index;
+    tCarElt	**cars;
+    int i;
+
+    index = (int*)malloc(rmInfo->s->_ncars);
+    cars = rmInfo->s->cars;
+
+    for (i = 0; i < rmInfo->s->_ncars; i++) {
+	index[cars[i]->_startRank] = i;
+    }
+    
+    
+}

@@ -34,8 +34,6 @@
 #include <track.h>
 #include <robottools.h>
 
-#include <plib/ul.h>
-
 #include "easymesh.h"
 
 #include "trackgen.h"
@@ -147,7 +145,7 @@ LoadTrackModule(void)
     trackdllname = GfParmGetStr(cfg, "Modules", "track", "track");
     sprintf(buf, "%s/modules/track/%s.%s", INSTBASE, trackdllname, DLLEXT);
     if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
-	ulSetError(UL_FATAL, "Failed to find the track module %s", buf);
+	GfOut("Failed to find the track module %s", buf);
 	return -1;
     }
     return modlist->modInfo->fctInit(modlist->modInfo->index, &TrackItf);
@@ -2048,7 +2046,7 @@ StartOutputFile(char *filename)
     save_fd = fopen(filename, "wa");
 
     if (save_fd == NULL) {
-	    ulSetError(UL_WARNING, "Failed to open '%s' for writing", filename);
+	    GfOut("Failed to open '%s' for writing", filename);
 	    return -1;
     }
 
@@ -2543,7 +2541,7 @@ GenerateMesh(tTrack *track, int rightside, int reverse, int exterior)
 	Fl = Nc;
 	GenRelief(1);
     }
-    ulSetError(UL_DEBUG, "Output filename: %s", buf);
+    GfOut("Output filename: %s", buf);
     generate_mesh(buf);
 }
 
@@ -2598,7 +2596,7 @@ GenerateTrack(char *trackname)
     char	buf[256];
 
     if (LoadTrackModule()) {
-	ulSetError(UL_FATAL, "Track Module Loading Failure.");
+	GfOut("Track Module Loading Failure.");
 	return;
     }
     track = TrackItf.trkBuildEx(trackname);
@@ -2607,35 +2605,35 @@ GenerateTrack(char *trackname)
 
     OutputFileName = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, "");
     if (strlen(OutputFileName) == 0) {
-	ulSetError(UL_FATAL, "Missing \"%s\" parameter in section \"%s\" of trackfile", TRK_ATT_3DDESC, TRK_SECT_GRAPH);
+	GfOut("Missing \"%s\" parameter in section \"%s\" of trackfile", TRK_ATT_3DDESC, TRK_SECT_GRAPH);
 	return;
     }
     sprintf(outfile, "tracks/%s/%s", track->internalname, OutputFileName);
-    ulSetError(UL_DEBUG, "Output file: %s", outfile);
+    GfOut("Output file: %s", outfile);
     OutputFileName = strdup(outfile);
     
     TrackStep = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
-    ulSetError(UL_DEBUG, "Track step: %.2f", TrackStep);
+    GfOut("Track step: %.2f", TrackStep);
     Margin    = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
     GridStep  = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BSTEP, NULL, GridStep);
     ExtHeight = GfParmGetNum(hndl, TRK_SECT_TERRAIN, TRK_ATT_BHEIGHT, NULL, ExtHeight);
-    ulSetError(UL_DEBUG, "Border margin: %.2f    step: %.2f    height: %.2f", Margin, GridStep, ExtHeight);
+    GfOut("Border margin: %.2f    step: %.2f    height: %.2f", Margin, GridStep, ExtHeight);
     
     if (strncmp(TRK_VAL_CLOCK,
 		GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_ORIENT, TRK_VAL_CLOCK),
 		strlen(TRK_VAL_CLOCK)) == 0) {
 	Orientation = CLOCKWISE;
-	ulSetError(UL_DEBUG, "Orientation: clockwise");
+	GfOut("Orientation: clockwise");
     } else {
 	Orientation = ANTICLOCKWISE;
-	ulSetError(UL_DEBUG, "Orientation: counter-clockwise");
+	GfOut("Orientation: counter-clockwise");
     }
 
     ReliefFileName = GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, "");
     if (strlen(ReliefFileName)) {
 	sprintf(buf, "tracks/%s;.", track->internalname);
 	if (GetFilename(ReliefFileName, buf, reliefFile)) {
-	    ulSetError(UL_DEBUG, "Relief file: %s", reliefFile);
+	    GfOut("Relief file: %s", reliefFile);
 	    LoadRelief(reliefFile);
 	}
     }

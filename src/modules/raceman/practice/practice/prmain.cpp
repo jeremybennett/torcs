@@ -86,6 +86,9 @@ prRun(void)
     tRingList	*lm;
     char	*name;
 
+    RmLoadingScreenStart("Practice Loading", "data/img/splash-qrloading.png");
+    RmLoadingScreenSetText("Race Configuration...");
+
     while ((lm = GfRlstUnlinkFirst(&prCurResults)) != NULL) free(lm);
     
     prBonusTime = 0;
@@ -115,30 +118,38 @@ prRun(void)
 	prShowRace = 0;
     }
 
+    RmLoadingScreenSetText("Loading Simulation Engine...");
     sprintf(key, "modules/simu/%s.%s", simudllname, DLLEXT);
     if (GfModLoad(SIM_IDENT, key, &pracemodlist)) return;
     pracemodlist->modInfo->fctInit(pracemodlist->modInfo->index, &SimItf);
 
+    RmLoadingScreenSetText("Loading Graphic Engine...");
     sprintf(key, "modules/graphic/%s.%s", graphicdllname, DLLEXT);
     if (GfModLoad(GRX_IDENT, key, &pracemodlist)) return;
     curModInfo = pracemodlist->modInfo;
     curModInfo->fctInit(curModInfo->index, &prGraphicItf);
 
+    RmLoadingScreenSetText("Initializing Race Information...");
     prRaceInfo = (tRmInfo*)calloc(1, sizeof(tRmInfo));
     prRaceInfo->s = &prTheSituation;
     prRaceInfo->track = prTheTrack;
     prRaceInfo->simItf = &SimItf;
     prRaceInfo->params = pracecfg;
     prRaceInfo->modList = &pracemodlist;
+    
+    RmLoadingScreenSetText("Initializing the driver...");
     RmInitCars(prRaceInfo);
     TheCarList = prRaceInfo->carList;
     
     prCarInfo = (tprCarInfo*)calloc(prTheSituation._ncars, sizeof(tprCarInfo));
     prRunning = 0;    
 
+    RmLoadingScreenSetText("Loading Track 3D Description...");
     prGraphicItf.inittrack(prTheTrack);
+    RmLoadingScreenSetText("Loading Cars 3D Objects...");
     prGraphicItf.initcars(&prTheSituation);
 
+    RmLoadingScreenSetText("Initializing the driver...");
     for (i = 0; i < prTheSituation._ncars; i++) {
 	robot = prTheSituation.cars[i]->robot;
 	robot->rbNewRace(robot->index, prTheSituation.cars[i], &prTheSituation);
@@ -148,8 +159,10 @@ prRun(void)
 	prCarInfo[i].prevTrkPos = prTheSituation.cars[i]->_trkPos;
     }
 
+    RmLoadingScreenSetText("Running Prestart...");
     prPreStart();
 
+    RmLoadingScreenSetText("Ready.");
     praceglRun();
     
     return;
@@ -177,9 +190,11 @@ prShutdown(void)
 
 
 static int
-prManage(tCarElt *car)
+prManage(tCarElt *car, int dispRes)
 {
     tPractResults *curRes;
+    char bufRes[1024];
+    char *s;
     
     tprCarInfo *info = &(prCarInfo[car->index]);
 
@@ -227,6 +242,12 @@ prManage(tCarElt *car)
 		    curRes->fuel = info->fuel - car->_fuel;
 		    info->fuel = car->_fuel;
 		    GfRlstAddLast(&prCurResults, (tRingList*)curRes);
+		    if (dispRes) {
+			s = GfTime2Str(curRes->lapTime, 0);
+			sprintf(bufRes,"lap: %2d   time: %s  top spd: %.2f    min spd: %.2f", 
+				curRes->lap, s, curRes->topSpeed * 3.6, curRes->bottomSpeed * 3.6);
+			RmLoadingScreenSetText(bufRes);
+		    }
 		} else {
 		    /* first lap starting */
 		    info->sTime = prTheSituation.currentTime;
@@ -302,7 +323,7 @@ prUpdate(void)
 	    SimItf.update(&prTheSituation, dtmax, -1);
 	    SimItf.update(&prTheSituation, dtmax, -1);
 	    for (i = 0; i < prTheSituation._ncars; i++) {
-		if (prManage(prTheSituation.cars[i])) {
+		if (prManage(prTheSituation.cars[i], 0)) {
 		    prShutdown();
 		    return;
 		}
@@ -321,14 +342,16 @@ prUpdateBlind(void)
     tRobotItf *robot;
     
     while (1) {
+	prTheSituation.deltaTime = 2 * dtmax;
 	for (i = 0; i < prTheSituation._ncars; i++) {
 	    robot = prTheSituation.cars[i]->robot;
 	    robot->rbDrive(robot->index, prTheSituation.cars[i], &prTheSituation);
 	}
+	prTheSituation.deltaTime = dtmax;
 	SimItf.update(&prTheSituation, dtmax, -1);
 	SimItf.update(&prTheSituation, dtmax, -1);
 	for (i = 0; i < prTheSituation._ncars; i++) {
-	    if (prManage(prTheSituation.cars[i])) {
+	    if (prManage(prTheSituation.cars[i], 1)) {
 		prShutdown();
 		return;
 	    }

@@ -23,11 +23,11 @@
   </section>
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="13"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="20"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="8"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
   </section>
 
   <section name="Gearbox">
@@ -36,7 +36,7 @@
 	<attnum name="ratio" min="-3" max="0" val="-2.0"></attnum>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="3.5"></attnum>
+	<attnum name="ratio" min="0" max="5" val="3.0"></attnum>
       </section>
       <section name="2">
 	<attnum name="ratio" min="0" max="5" val="2.15"></attnum>
@@ -51,7 +51,7 @@
 	<attnum name="ratio" min="0" max="5" val="0.97"></attnum>
       </section>
       <section name="6">
-	<attnum name="ratio" min="0" max="5" val="0.75"></attnum>
+	<attnum name="ratio" min="0" max="5" val="0.80"></attnum>
       </section>
     </section>
   </section>
@@ -59,12 +59,12 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="FREE"></attstr>
-    <attnum name="ratio" val="4.4"></attnum>
+    <attnum name="ratio" val="4.5"></attnum>
   </section>
 
   <section name="Brake System">
-    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.52"></attnum>
-    <attnum name="max pressure" unit="kPa" val="20000"></attnum>
+    <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.50"></attnum>
+    <attnum name="max pressure" unit="kPa" val="25000"></attnum>
   </section>
 
   <section name="Front Right Wheel">
@@ -90,7 +90,7 @@
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="1000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="0"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="1.0" val="0.2"></attnum>
     <attnum name="bellcrank" min="0.5" max="5" val="1"></attnum>
   </section>
@@ -146,7 +146,6 @@
   </section>
 
 </params>
-
 
 
 

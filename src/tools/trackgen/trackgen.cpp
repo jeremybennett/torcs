@@ -30,10 +30,8 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 #include <math.h>
-
-#include <plib/ul.h>
-
 #include <ttypes.h>
+#include <plib/ul.h>
 
 #include "trackgen.h"
 

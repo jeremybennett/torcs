@@ -562,6 +562,8 @@ extern void GfTrace(char *szTrc);
  * Time  Interface *
  *******************/
 extern double GfTimeClock(void);
+extern char *GfGetTimeStr(void);
+
 
 /************************
  * Ring Lists Interface *

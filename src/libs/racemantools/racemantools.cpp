@@ -202,6 +202,7 @@ RmInitCars(tRmInfo *raceInfo)
 		    elt->_name       = GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>");
 		    elt->_carName    = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
 		    elt->_raceNumber = (int)GfParmGetNum(robhdle, path, ROB_ATTR_RACENUM, (char*)NULL, 0);
+		    elt->_startRank  = index;
 		    elt->_pos        = index+1;
 		    elt->_remainingLaps = raceInfo->s->_totLaps;
 

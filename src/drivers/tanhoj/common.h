@@ -21,19 +21,17 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-extern tdble Tright[1];
-extern tdble TRightMin[1];
-extern tdble TRightMax[1];
-extern tdble MaxSpeed[1];
-extern tdble hold[1];
-extern tdble shiftThld[1][MAX_GEARS+1];
+extern tdble Tright[10];
+extern tdble MaxSpeed[10];
+extern tdble hold[10];
+extern tdble shiftThld[10][MAX_GEARS+1];
 extern tTrack *DmTrack;
 
 
 extern void InitGears(tCarElt* car, int idx);
 extern void SpeedStrategy(tCarElt* car, int idx, tdble Vtarget, tSituation *s, tdble aspect);
 extern tdble GetDistToStart(tCarElt *car);
-extern void CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime);
+extern void CollDet(tCarElt* car, int idx, tSituation *s, tdble Curtime, tdble dny);
 
 
 #endif /* _COMMON_H_ */ 

@@ -31,7 +31,7 @@ SimEngineConfig(tCar *car)
     struct {
 	    tdble rpm;
 	    tdble tq;
-    } 		edesc[MAXPTS];
+    } edesc[MAXPTS + 1];
 
     car->engine.revsLimiter = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSLIM, (char*)NULL, 800);
     car->carElt->_enginerpmRedLine = car->engine.revsLimiter;
@@ -47,13 +47,15 @@ SimEngineConfig(tCar *car)
 	edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);
 	edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
     }
-
+    edesc[i].rpm = edesc[i - 1].rpm;
+    edesc[i].tq  = edesc[i].tq;
+    
     maxTq = 0;
     for(i = 0; i < MAXPTS; i++) {
 	data = &(car->engine.curve.data[i]);
 
 	data->rads = edesc[i+1].rpm;
-	if(edesc[i+1].tq > maxTq) {
+	if (edesc[i+1].tq > maxTq) {
 	    maxTq = edesc[i+1].tq;
 	    rpmMaxTq = data->rads;
 	}

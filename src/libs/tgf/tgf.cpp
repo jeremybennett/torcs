@@ -18,6 +18,8 @@
 
 
 #include <tgf.h>
+#include <time.h>
+
 #include "gui.h"
 
 extern void gfDirInit(void);
@@ -79,3 +81,23 @@ gfMean(tdble v, tMeanVal *pvt, int n, int w)
     return sum;
 }
 
+static char bufstr[1024];
+
+char *
+GfGetTimeStr(void)
+{
+    struct tm		*stm;
+    time_t		t;
+
+    t = time(NULL);
+    stm = localtime(&t);
+    sprintf(bufstr, "%4d%02d%02d%02d%02d%02d",
+	    stm->tm_year+1900,
+	    stm->tm_mon+1,
+	    stm->tm_mday,
+	    stm->tm_hour,
+	    stm->tm_min,
+	    stm->tm_sec);
+
+    return bufstr;
+}

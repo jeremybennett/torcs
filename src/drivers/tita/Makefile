@@ -22,11 +22,13 @@ SOLIBRARY = ${ROBOT}.so
 
 SOLIBDIR  = drivers/${ROBOT}
 
-SOURCES   = ${ROBOT}.cpp
+SOURCES   = ${ROBOT}.cpp common.cpp
 
 DATADIR   = drivers/${ROBOT}
 
 DATA      = ${ROBOT}.xml car.xml logo.rgb lotus-gt1.rgb
+
+DATASUBDIRS = tracksdata
 
 include ${MAKE_DEFAULT}
 

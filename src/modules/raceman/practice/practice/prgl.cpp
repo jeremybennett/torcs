@@ -93,6 +93,7 @@ prActivate(void *dummy)
 	    prStart();
 	}
     } else {
+	RmLoadingScreenStart("Practice", "data/img/splash-qrloading.png");
 	prUpdateBlind();
     }
 }

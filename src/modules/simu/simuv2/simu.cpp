@@ -40,6 +40,11 @@ t3Dd vectEnd[16];
 static void
 ctrlCheck(tCar *car)
 {
+    if (isnan(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
+    if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
+    if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
+    if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
+    
     if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
 	car->ctrl->accelCmd = 0.0;
 	car->ctrl->brakeCmd = 0.1;
@@ -50,7 +55,7 @@ ctrlCheck(tCar *car)
 	    car->ctrl->steer = -0.1;
 	}
     } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
-	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.05);
+	car->ctrl->accelCmd = MIN(car->ctrl->accelCmd, 0.15);
 	if (car->DynGC.vel.x > 20.0) {
 	    car->ctrl->brakeCmd = MAX(car->ctrl->brakeCmd, 0.05);
 	}

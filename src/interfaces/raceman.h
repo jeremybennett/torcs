@@ -27,24 +27,11 @@
 
 #define RCM_IDENT	((0x01)<<RCM_IDENT_SHIFT)	/* allowed from 0x01 to 0xFF */
 
-/* Race records structure */
-typedef struct {
-    char	*driver;
-    char	*car;
-    char	*category;
-    tdble	time;
-} tRaceRecord;
-#define _bestDriver	raceInfo.curRaceRecord.driver
-#define _bestCar	raceInfo.curRaceRecord.car
-#define _bestCategory	raceInfo.curRaceRecord.category
-#define _bestTime	raceInfo.curRaceRecord.time
-    
-    
+
 /* General info on current race */
 typedef struct {
     int			ncars;		/* number of cars */
     int			totLaps;	/* total laps */
-    tRaceRecord		curRaceRecord;	/* current race record */
     int			state;
 #define RM_RACE_FINISHING	1
 #define RM_RACE_PAUSED		2
@@ -69,6 +56,8 @@ typedef struct {
     int			current;	/* current car */
     tCarElt		**cars;		/* list of cars */ 
 } tSituation;
+
+    
 
 typedef struct 
 {

@@ -269,7 +269,7 @@
 
   <section name="Front Right Wheel">
     <attnum name="ypos" unit="m" val="-0.81"></attnum>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="335" val="285"></attnum>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".40"></attnum>
     <attnum name="inertia" unit="kg.m2" val="1.2200"></attnum>
@@ -285,7 +285,7 @@
 
   <section name="Front Left Wheel">
     <attnum name="ypos" unit="m" val="0.81"></attnum>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="335" val="285"></attnum>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".40"></attnum>
     <attnum name="inertia" unit="kg.m2" val="1.2200"></attnum>
@@ -301,7 +301,7 @@
 
   <section name="Rear Right Wheel">
     <attnum name="ypos" unit="m" val="-0.82"></attnum>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="18.0"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="335" val="330"></attnum>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".35"></attnum>
     <attnum name="inertia" unit="kg.m2" val="1.2200"></attnum>
@@ -317,7 +317,7 @@
 
   <section name="Rear Left Wheel">
     <attnum name="ypos" unit="m" val="0.82"></attnum>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="18.0"></attnum>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"></attnum>
     <attnum name="tire width" unit="mm" min="135" max="335" val="330"></attnum>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".35"></attnum>
     <attnum name="inertia" unit="kg.m2" val="1.2200"></attnum>

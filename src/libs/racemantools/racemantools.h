@@ -43,8 +43,22 @@ typedef struct
     void        *prevScreen;
 } tRmDrvSelect;
 
+
+/* Lap based information */
+typedef struct
+{
+    int		drv;		/* driver start index */
+    tdble	lapTime;	/* lap time */
+    int		event;		/* special event */
+#define RM_EVENT_PIT_STOP	0x01
+    void	*eventData;	/* event specific data */
+} tDrvLapInfo;
+
+
 /*
  * Race Manager General Info
+ * can't be in interface/raceman.h because
+ * of circular reference...
  */
 typedef struct
 {
@@ -54,9 +68,8 @@ typedef struct
     tSimItf	*simItf;	/* Simulation interface */
     void	*params;	/* Raceman parameters */
     tModList	**modList;	/* drivers loaded */
+    tDrvLapInfo *lapInfo;	/* per lap driver info using start index */
 } tRmInfo;
-
-
 
 
 extern void RmTrackSelect(void * /* vs */);
@@ -70,10 +83,13 @@ extern void RmDriverSelect(void * /* vs */);
 
 extern void RmPracticeResults(void * /* prevHdle */, char * /* trackname */, tRingListHead * /* res */);
 
-extern void RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback);
+extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallback /* callback */);
 
-extern void RmLoadingScreenStart(char *text, char *bgimg);
-extern void RmLoadingScreenSetText(char *text);
+extern void RmLoadingScreenStart(char * /* text */, char * /* bgimg */);
+extern void RmLoadingScreenSetText(char * /* text */);
+
+extern int RmInitResults(tRmInfo * /* rmInfo */);
+extern void RmShutdownResults(tRmInfo * /* rmInfo */);
 
 
 #endif /* __RACEMANTOOLS_H__ */

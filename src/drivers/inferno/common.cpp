@@ -41,10 +41,10 @@ InitGears(tCarElt* car, int idx)
 	j = i + 1;
 	if (j < MAX_GEARS) {
 	    if ((car->_gearRatio[j] != 0) && (car->_gearRatio[i] != 0)) {
-		rpm = car->_enginerpmMaxTq * car->_gearRatio[i] / car->_gearRatio[j];
-		if (rpm > car->_enginerpmRedLine) {
+/* 		rpm = car->_enginerpmMaxTq * car->_gearRatio[i] / car->_gearRatio[j]; */
+/* 		if (rpm > car->_enginerpmRedLine) { */
 		    rpm = car->_enginerpmRedLine;
-		}
+/* 		} */
 		shiftThld[idx][i] = rpm * .95  * car->_wheelRadius(2) / car->_gearRatio[i];
 	    } else {
 		shiftThld[idx][i] = 10000.0;

@@ -17,55 +17,41 @@
 <params name="Tanhoj" type="template" mode="m">
   <section name="Car">
     <!-- weight bias -->
-    <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.45"></attnum>
-    <attnum name="rear right-left weight repartition"  min="0.4" max="0.6" val="0.45"></attnum>
+    <attnum name="front right-left weight repartition" min="0.4" max="0.6" val="0.5"></attnum>
+    <attnum name="rear right-left weight repartition"  min="0.4" max="0.6" val="0.5"></attnum>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="100.0"></attnum>
   </section>
 
   <section name="Front Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="30"></attnum>
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="10"></attnum>
+    <attnum name="angle" unit="deg" min="0" max="30" val="16"></attnum>
   </section>
 
   <section name="Gearbox">
     <section name="gears">
       <section name="r">
 	<attnum name="ratio" min="-3" max="0" val="-2.0"></attnum>
-	<attnum name="inertia" val="0.0037"></attnum>
-	<attnum name="efficiency" val="0.957"></attnum>
       </section>
       <section name="1">
-	<attnum name="ratio" min="0" max="5" val="3.0"></attnum>
-	<attnum name="inertia" val="0.003"></attnum>
-	<attnum name="efficiency" val="0.955"></attnum>
+	<attnum name="ratio" min="0" max="5" val="2.2"></attnum>
       </section>
       <section name="2">
-	<attnum name="ratio" min="0" max="5" val="2.15"></attnum>
-	<attnum name="inertia" val="0.0037"></attnum>
-	<attnum name="efficiency" val="0.957"></attnum>
+	<attnum name="ratio" min="0" max="5" val="1.8"></attnum>
       </section>
       <section name="3">
 	<attnum name="ratio" min="0" max="5" val="1.56"></attnum>
-	<attnum name="inertia" val="0.0048"></attnum>
-	<attnum name="efficiency" val="0.950"></attnum>
       </section>
       <section name="4">
 	<attnum name="ratio" min="0" max="5" val="1.21"></attnum>
-	<attnum name="inertia" val="0.0064"></attnum>
-	<attnum name="efficiency" val="0.983"></attnum>
       </section>
       <section name="5">
 	<attnum name="ratio" min="0" max="5" val="0.97"></attnum>
-	<attnum name="inertia" val="0.0107"></attnum>
-	<attnum name="efficiency" val="0.948"></attnum>
       </section>
       <section name="6">
 	<attnum name="ratio" min="0" max="5" val="0.80"></attnum>
-	<attnum name="inertia" val="0.0150"></attnum>
-	<attnum name="efficiency" val="0.940"></attnum>
       </section>
     </section>
   </section>
@@ -73,12 +59,12 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" val="FREE"></attstr>
-    <attnum name="ratio" val="4.644"></attnum>
+    <attnum name="ratio" val="4.6"></attnum>
   </section>
 
   <section name="Brake System">
     <attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.51"></attnum>
-    <attnum name="max pressure" unit="kPa" val="20000"></attnum>
+    <attnum name="max pressure" unit="kPa" val="30000"></attnum>
   </section>
 
   <section name="Front Right Wheel">
@@ -92,7 +78,7 @@
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="2000"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1"></attnum>
   </section>
@@ -126,7 +112,7 @@
   </section>
 
   <section name="Rear Right Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -137,7 +123,7 @@
   </section>
 
   <section name="Rear Left Suspension">
-    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2500"></attnum>
+    <attnum name="spring" unit="lbs/in" min="0" max="10000" val="3000"></attnum>
     <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"></attnum>
     <attnum name="bellcrank" min="1" max="5" val="1.5"></attnum>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"></attnum>
@@ -148,7 +134,6 @@
   </section>
 
 </params>
-
 
 
 

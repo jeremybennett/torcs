@@ -7,7 +7,7 @@
     <section name="Race">
       <attstr name="categories" val="*"></attstr>
       <attstr name="track" val="wheel-1"></attstr>
-      <attnum name="laps" val="20.000000"></attnum>
+      <attnum name="laps" val="25.000000"></attnum>
     </section>
 
     <section name="Starting Grid">
@@ -38,77 +38,57 @@
         </section>
 
         <section name="2">
-          <attnum name="idx" val="2.000000"></attnum>
-          <attstr name="module" val="K1999"></attstr>
-        </section>
-
-        <section name="3">
           <attnum name="idx" val="1.000000"></attnum>
           <attstr name="module" val="tanhoj"></attstr>
         </section>
 
+        <section name="3">
+          <attnum name="idx" val="2.000000"></attnum>
+          <attstr name="module" val="K1999"></attstr>
+        </section>
+
         <section name="4">
+          <attnum name="idx" val="1.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
+        </section>
+
+        <section name="5">
+          <attnum name="idx" val="2.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
+        </section>
+
+        <section name="6">
+          <attnum name="idx" val="9.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
+        </section>
+
+        <section name="7">
+          <attnum name="idx" val="10.000000"></attnum>
+          <attstr name="module" val="berniw"></attstr>
+        </section>
+
+        <section name="8">
           <attnum name="idx" val="1.000000"></attnum>
           <attstr name="module" val="tita"></attstr>
         </section>
 
-        <section name="5">
+        <section name="9">
           <attnum name="idx" val="1.000000"></attnum>
           <attstr name="module" val="lliaw"></attstr>
         </section>
 
-        <section name="6">
+        <section name="10">
           <attnum name="idx" val="1.000000"></attnum>
           <attstr name="module" val="cylos1"></attstr>
         </section>
 
-        <section name="7">
+        <section name="11">
           <attnum name="idx" val="8.000000"></attnum>
           <attstr name="module" val="damned"></attstr>
         </section>
 
-        <section name="8">
-          <attnum name="idx" val="5.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="9">
-          <attnum name="idx" val="9.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="10">
-          <attnum name="idx" val="6.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="11">
-          <attnum name="idx" val="7.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
         <section name="12">
-          <attnum name="idx" val="10.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="13">
-          <attnum name="idx" val="4.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="14">
-          <attnum name="idx" val="3.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="15">
-          <attnum name="idx" val="1.000000"></attnum>
-          <attstr name="module" val="damned"></attstr>
-        </section>
-
-        <section name="16">
-          <attnum name="idx" val="2.000000"></attnum>
+          <attnum name="idx" val="5.000000"></attnum>
           <attstr name="module" val="damned"></attstr>
         </section>
       </section>

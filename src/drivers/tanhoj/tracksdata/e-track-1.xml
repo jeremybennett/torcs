@@ -20,7 +20,7 @@
     <attnum name="PGain"     val="0.022"></attnum>
     <attnum name="AGain"     val="0.008"></attnum>
     <attnum name="PnGain"    val="0.02"></attnum>
-    <attnum name="Advance"   val="36.0"></attnum>
+    <attnum name="Advance"   val="10.0"></attnum>
     <attnum name="Advance2"  val="20.0"></attnum>
     <attnum name="AdvStep"   val="5.0"></attnum>
     <attnum name="VGain"     val="0.0005"></attnum>
@@ -31,6 +31,5 @@
   </section>
 
 </params>
-
 
 

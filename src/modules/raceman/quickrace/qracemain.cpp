@@ -123,12 +123,16 @@ qraceRun(void *dummy)
     curModInfo = qracemodlist->modInfo;
     curModInfo->fctInit(curModInfo->index, &qrGraphicItf);
 
+    RmLoadingScreenSetText("Initializing Race Information...");
     qrRaceInfo = (tRmInfo*)calloc(1, sizeof(tRmInfo));
     qrRaceInfo->s = &qrTheSituation;
     qrRaceInfo->track = qrTheTrack;
     qrRaceInfo->simItf = &SimItf;
     qrRaceInfo->params = qracecfg;
     qrRaceInfo->modList = &qracemodlist;
+    if (RmInitResults(qrRaceInfo)) {
+	return;
+    }
 
     RmLoadingScreenSetText("Initializing the drivers...");
     if (RmInitCars(qrRaceInfo)) {
@@ -195,6 +199,7 @@ qrShutdown(void)
     SimItf.shutdown();
     GfModUnloadList(&qracemodlist);
     qracemodlist = (tModList*)NULL;
+    RmShutdownResults(qrRaceInfo);
     curTime = GfTimeClock();
 }
 
@@ -220,7 +225,7 @@ qrUpdtPitCmd(void *pvcar)
 static void
 qrManage(tCarElt *car)
 {
-    int i;
+    int i, evnb;
     
     tqrCarInfo *info = &(qrCarInfo[car->index]);
 
@@ -248,6 +253,7 @@ qrManage(tCarElt *car)
 	      (fabs(car->_speed_x) < 0.1) &&
 	      (fabs(car->_speed_y) < 0.1)))) {
 	    car->_state |= RM_CAR_STATE_PIT;
+	    car->_event |= RM_EVENT_PIT_STOP;
 	    if (car->robot->rbPitCmd(car->robot->index, car, &qrTheSituation) == ROB_PIT_MENU) {
 		/* the pit cmd is modified by menu */
 		qrStop();
@@ -284,6 +290,12 @@ qrManage(tCarElt *car)
 			    car->_timeBehindPrev = 0;
 			}
 			info->sTime = qrTheSituation.currentTime;
+			/* results history */
+/* 			evnb = qrTheSituation._ncars * (car->_laps - 2) + car->_pos - 1; */
+/* 			qrRaceInfo->lapInfo[evnb].drv = car->_startRank; */
+/* 			qrRaceInfo->lapInfo[evnb].event = car->_event; */
+/* 			car->_event = 0; */
+/* 			qrRaceInfo->lapInfo[evnb].lapTime = car->_lastLapTime; */
 		    }
 		    if ((car->_remainingLaps < 0) || (qrTheSituation._raceState == RM_RACE_FINISHING)) {
 			car->_state |= RM_CAR_STATE_FINISH;

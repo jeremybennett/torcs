@@ -49,6 +49,7 @@ typedef struct {
     char	*carName;	/* car object name */
     char	*category;	/* car's category */
     int		raceNumber;	/* car's race number */
+    int		startRank;	/* car's starting position */
     tdble	iconColor[3];	/* car color in leaders board */
     t3Dd	dimension;	/* car's mesures */
     t3Dd	drvPos;		/* driver's position */
@@ -62,6 +63,7 @@ typedef struct {
 #define _carName	info->carName
 #define _category	info->cartegory
 #define _raceNumber	info->raceNumber
+#define _startRank	info->startRank
 #define _dimension	info->dimension
 #define _dimension_x	info->dimension.x
 #define _dimension_y	info->dimension.y
@@ -96,6 +98,7 @@ typedef struct {
     tdble	distFromStartLine;
     double	scheduledEventTime;
     tTrackOwnPit *pit;
+    int		event;
 } tCarRaceInfo;
 /* structure access */
 #define _bestLapTime		race->bestLapTime
@@ -115,6 +118,7 @@ typedef struct {
 #define _distFromStartLine	race->distFromStartLine
 #define _pit			race->pit
 #define _scheduledEventTime	race->scheduledEventTime
+#define _event			race->event
 
 /* public info on the cars */
 typedef struct {
