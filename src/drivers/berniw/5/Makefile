@@ -22,6 +22,10 @@ DATADIR   = drivers/${ROBOT}/5
 
 DATA      = cg-nascar-rwd.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
+berniw-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+berniw-robots_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 include ${MAKE_DEFAULT}
 
 
