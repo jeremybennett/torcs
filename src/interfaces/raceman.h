@@ -333,7 +333,7 @@ typedef struct RmInfo
 #define RE_ATTR_TOP_SPEED	"top speed"
 #define RE_ATTR_BOT_SPEED	"bottom speed"
 #define RE_ATTR_DAMMAGES	"dammages"
-#define RE_ATTR_NB_PIT_STOPS	"pits stops"
+#define RE_ATTR_NB_PIT_STOPS	"pit stops"
 #define RE_ATTR_POINTS		"points"
 
 #endif /* _RACEMANV1_H_ */ 
