@@ -20,11 +20,11 @@
 
 DATADIR   = cars/mclaren-f1
 
-DATA      = mclaren-f1.xml  mclaren-f1.ac \
-	    mclaren-f1-lod1.ac texmapper.xml \
-	    tex-wheel.rgb mclaren-f1.rgb mclaren-f1-512.rgb mclaren-f1-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) mclaren-f1-512.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

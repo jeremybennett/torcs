@@ -36,12 +36,19 @@
 
     <section name="Ranges">
       <section name="1">
-	<attnum name="threshold" val="10"/>
-	<attstr name="car" val="acura-nsx-sz.ac"/>
+	<attnum name="threshold" val="20"/>
+	<attstr name="car" val="acura-nsx-sz.acc"/>
+	<attstr name="wheels" val="yes"/>
       </section>
       <section name="2">
+	<attnum name="threshold" val="10"/>
+	<attstr name="car" val="acura-nsx-sz-lod1.acc"/>
+	<attstr name="wheels" val="yes"/>
+      </section>
+      <section name="3">
 	<attnum name="threshold" val="0"/>
-	<attstr name="car" val="acura-nsx-sz-lod1.ac"/>
+	<attstr name="car" val="acura-nsx-sz-lod2.acc"/>
+	<attstr name="wheels" val="no"/>
       </section>
     </section>
   </section>

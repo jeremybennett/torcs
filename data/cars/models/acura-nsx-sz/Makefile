@@ -19,9 +19,11 @@
 
 DATADIR   = cars/acura-nsx-sz
 
-DATA      = acura-nsx-sz.xml acura-nsx-sz.ac tex-wheel.rgb acura-nsx-sz.rgb acura-nsx-sz-lod1.ac acura-nsx-sz-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) acura-nsx-sz-512.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR		= $(DATADIR)
 

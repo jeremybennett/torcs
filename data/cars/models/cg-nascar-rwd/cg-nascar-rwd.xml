@@ -32,17 +32,27 @@
     <attstr name="tachometer texture" val="rpm8500.rgb"/>
     <attnum name="tachometer min value" val="0" unit="rpm"/>
     <attnum name="tachometer max value" val="10000" unit="rpm"/>
+
     <section name="Ranges">
       <section name="1">
-        <attnum name="threshold" val="10"/>
-        <attstr name="car" val="cg-nascar-rwd.ac"/>
+        <attnum name="threshold" val="20"/>
+        <attstr name="car" val="cg-nascar-rwd.acc"/>
+	<attstr name="wheels" val="yes"/>
       </section>
 
       <section name="2">
+        <attnum name="threshold" val="10"/>
+        <attstr name="car" val="cg-nascar-rwd-lod1.acc"/>
+	<attstr name="wheels" val="yes"/>
+      </section>
+
+      <section name="3">
         <attnum name="threshold" val="0"/>
-        <attstr name="car" val="cg-nascar-rwd-lod1.ac"/>
+        <attstr name="car" val="cg-nascar-rwd-lod2.acc"/>
+	<attstr name="wheels" val="no"/>
       </section>
     </section>
+
   </section>
 
   <section name="Car">

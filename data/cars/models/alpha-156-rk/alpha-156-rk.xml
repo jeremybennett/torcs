@@ -25,11 +25,11 @@
     <section name="Ranges">
       <section name="1">
 	<attnum name="threshold" val="10"/>
-	<attstr name="car" val="alpha-156-rk.ac"/>
+	<attstr name="car" val="alpha-156-rk.acc"/>
       </section>
       <section name="2">
 	<attnum name="threshold" val="0"/>
-	<attstr name="car" val="alpha-156-rk-lod.ac"/>
+	<attstr name="car" val="alpha-156-rk-lod.acc"/>
       </section>
     </section>
   </section>

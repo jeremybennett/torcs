@@ -19,9 +19,11 @@
 
 DATADIR   = cars/baja-bug
 
-DATA      = baja-bug-base.ac baja-bug.ac baja-bug.acc baja-bug.rgb baja-bug.xml texmapper.xml tex-wheel.rgb
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) baja-bug.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

@@ -35,12 +35,24 @@
     <attstr name="speedometer texture" val="speed360.rgb"/>
     <attnum name="speedometer min value" unit="km/h" val="0"/>
     <attnum name="speedometer max value" unit="km/h" val="360"/>
+
     <section name="Ranges">
       <section name="1">
+        <attnum name="threshold" val="20"/>
+        <attstr name="car" val="clkdtm.acc"/>
+	<attstr name="wheels" val="yes"/>
+      </section>
+      <section name="2">
+        <attnum name="threshold" val="10"/>
+        <attstr name="car" val="clkdtm-lod1.acc"/>
+	<attstr name="wheels" val="yes"/>
+      </section>
+      <section name="3">
         <attnum name="threshold" val="0"/>
-        <attstr name="car" val="clkdtm.ac"/>
+        <attstr name="car" val="clkdtm-lod2.acc"/>
       </section>
     </section>
+
   </section>
 
   <section name="Car">

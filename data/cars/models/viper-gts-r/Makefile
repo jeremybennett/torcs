@@ -19,10 +19,11 @@
 
 DATADIR   = cars/viper-gts-r
 
-DATA      = viper-gts-r.xml tex-wheel.rgb viper-gts-r.rgb  viper-gts-r.ac \
-	    viper-gts-r-512.rgb viper-gts-r-base.ac texmapper.xml viper-gts-r-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

@@ -18,9 +18,11 @@
 
 DATADIR   = cars/cg-nascar-rwd
 
-DATA      = cg-nascar-rwd.xml cg-nascar-rwd.ac cg-nascar-rwd-lod1.ac cg-nascar-rwd.rgb tex-wheel.rgb cg-nascar-rwd-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES = $(DATA)
+data-cars-extra_PKGFILES = $(DATA) $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

@@ -18,9 +18,11 @@
 
 DATADIR      = cars/xj-220
 
-DATA         = xj-220.xml xj-220.rgb xj-220.ac tex-wheel.rgb xj-220-base.ac texmapper.xml xj-220-src.ac
+DATA         = $(shell find *.xml -maxdepth 0 -type f -print) \
+	       $(shell find *.rgb -maxdepth 0 -type f -print) \
+               $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) xj-220.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 

@@ -20,11 +20,11 @@
 
 DATADIR   = cars/360-modena
 
-DATA      = 360-modena.xml  360-modena.ac \
-	    360-modena-lod1.ac texmapper.xml \
-	    tex-wheel.rgb 360-modena.rgb 360-modena-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data_PKGFILES	= $(DATA)
+data_PKGFILES	= $(DATA) 360-modena.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data_PKGDIR	= $(DATADIR)
 

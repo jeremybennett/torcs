@@ -20,10 +20,11 @@
 
 DATADIR   = cars/porsche-gt1
 
-DATA      = porsche-gt1.xml  porsche-gt1.ac porsche-gt1-lod1.ac \
-	    tex-wheel.rgb porsche-gt1.rgb porsche-gt1-src.ac
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) \
+            $(shell find *.rgb -maxdepth 0 -type f -print) \
+            $(shell find *.acc -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGFILES	= $(DATA)
+data-cars-extra_PKGFILES	= $(DATA) porsche-gt1.xcf $(shell find *.ac -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGDIR	= $(DATADIR)
 
