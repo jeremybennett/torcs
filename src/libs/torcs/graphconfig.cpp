@@ -97,6 +97,9 @@ GraphMenuInit(void *prevMenu)
 {
     int		x, y, x2, dy;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     /* screen already created */
     if (scrHandle) {
 	return scrHandle;

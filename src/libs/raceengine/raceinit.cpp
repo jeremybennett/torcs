@@ -135,6 +135,9 @@ reSelectRaceman(void *params)
 static void
 reRegisterRaceman(tFList *racemanCur)
 {
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%sconfig/raceman/%s", LocalDir, racemanCur->name);
     racemanCur->userData = GfParmReadFile(buf, GFPARM_RMODE_STD);
     racemanCur->dispName = GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_NAME, 0);
@@ -377,6 +380,9 @@ ReInitCars(void)
     int		focusedIdx;
     void	*params = ReInfo->params;
     
+#ifdef WIN32
+    LocalDir = "";
+#endif
     /* Get the number of cars racing */
     nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS_RACING);
     GfOut("loading %d cars\n", nCars);

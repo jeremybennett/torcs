@@ -222,6 +222,9 @@ onActivate1(void * /* dummy */)
     char	*prm;
     tCtrlRef	*ref;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, HM_PREF_FILE);
     PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
@@ -273,6 +276,9 @@ TorcsJoystick1MenuInit(void *prevMenu)
     tCtrlRef	*ref;
     int		joyPresent = 0;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     for (index = 0; index < NUM_JOY; index++) {
 	if (js[index] == NULL) {
 	    js[index] = new jsJoystick(index);
@@ -548,7 +554,7 @@ joyCalMenuInit(void)
     
     scrHandle2 = GfuiScreenCreateEx(NULL, NULL, onActivate2, NULL, NULL, 1);
     #define TITLE2 "Joystick Calibration"
-    GfuiTitleCreate(scrHandle2, TITLE2, strlen(TITLE2));
+    GfuiTitleCreate(scrHandle2, TITLE2, 0);
     GfuiMenuDefaultKeysAdd(scrHandle2);
 
     GfuiScreenAddBgImg(scrHandle2, "data/img/splash-joycal.png");

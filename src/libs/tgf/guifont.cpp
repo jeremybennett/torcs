@@ -64,6 +64,9 @@ gfuiLoadFonts(void)
     int		size;
     int		i;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     param = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 

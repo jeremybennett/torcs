@@ -118,8 +118,24 @@ EXPORTS
 	GfuiHookRelease
 	GfuiHookCreate
 	GfParmGetFileName
+	GfScrShutdown
+	LocalDir
 	_tgf_win_malloc
 	_tgf_win_calloc
 	_tgf_win_realloc
 	_tgf_win_free
 	_tgf_win_strdup
+	GfuiSKeyEventRegister
+	GfuiKeyEventRegister
+	GfuiKeyEventRegisterCurrent
+	GfuiSKeyEventRegisterCurrent
+	GfctrlGetRefByName
+	GfctrlGetNameByRef
+	GfctrlMouseInit
+	GfctrlJoyInit
+	GfctrlMouseRelease
+	GfctrlJoyRelease
+	GfctrlMouseCenter
+	GfctrlMouseGetCurrent
+	GfctrlJoyGetCurrent
+	GfctrlMouseCalibrate

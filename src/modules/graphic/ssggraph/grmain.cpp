@@ -149,6 +149,9 @@ bool InitMultiTex(void)
 int
 initView(int x, int y, int width, int height, int flag, void *screen)
 {
+#ifdef WIN32
+    LocalDir = "";
+#endif
     if (maxTextureUnits==0)
       {
 	InitMultiTex();    
@@ -340,6 +343,9 @@ initCars(tSituation *s)
 
     TRACE_GL("initCars: start");
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, GR_PARAM_FILE);
     grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 

@@ -72,29 +72,30 @@
     <attstr name="release gear button goes neutral" in="yes,no" val="yes"/>
     <attstr name="sequential shifter allow neutral" in="yes,no" val="no"/>
 
-    <attnum name="steer sensitivity" val="0"/>
-    <attnum name="steer power" val="0.250"/>
+    <attnum name="steer sensitivity" val="1.0"/>
     <attnum name="steer speed sensitivity" val="0.7"/>
     <attnum name="steer dead zone" unit="%" val="4.0"/>
 
     <attstr name="left steer" val="MOUSE_LEFT"/>
     <attnum name="left steer min" val="0"/>
     <attnum name="left steer max" val="300"/>
+    <attnum name="left steer power" val="0.0034"/>
 
     <attstr name="right steer" val="MOUSE_RIGHT"/>
     <attnum name="right steer min" val="0"/>
     <attnum name="right steer max" val="300"/>
+    <attnum name="right steer power" val="0.0034"/>
 
     <attstr name="throttle" val="MOUSE_LEFT_BTN"/>
     <attnum name="throttle min" val="0"/>
     <attnum name="throttle max" val="1"/>
-    <attnum name="throttle sensitivity" val="0"/>
+    <attnum name="throttle sensitivity" val="1.0"/>
     <attnum name="throttle power" val="0"/>
 
     <attstr name="brake" val="MOUSE_RIGHT_BTN"/>
     <attnum name="brake min" val="0"/>
     <attnum name="brake max" val="1"/>
-    <attnum name="brake sensitivity" val="0"/>
+    <attnum name="brake sensitivity" val="1.0"/>
     <attnum name="brake power" val="0"/>
   </section>
 

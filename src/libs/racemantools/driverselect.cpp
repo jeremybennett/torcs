@@ -134,6 +134,9 @@ rmdsClickOnDriver(void *dummy)
     tDrvElt	*curDrv;
     void	*robhdle;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     name = GfuiScrollListGetSelectedElement(scrHandle, selectedScrollList, (void**)&curDrv);
     if (!name) {
 	name = GfuiScrollListGetSelectedElement(scrHandle, unselectedScrollList, (void**)&curDrv);
@@ -260,6 +263,9 @@ RmDriversSelect(void *vs)
 #define B_BASE  380
 #define B_HT    30
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     ds = (tRmDrvSelect*)vs;
 
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmdsActivate, NULL, (tfuiCallback)NULL, 1);

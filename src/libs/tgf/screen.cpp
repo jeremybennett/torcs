@@ -49,9 +49,9 @@ static int GfScrCenY;
 void	*scrHandle = NULL;
 static char buf[1024];
 
-static int usedFG = 0;
-#if !defined(FREEGLUT) && !defined(WIN32)
 static int usedGM = 0;
+#if !defined(FREEGLUT) && !defined(WIN32)
+static int usedFG = 0;
 #endif
 
 static char	*Res[] = {"640x480", "800x600", "1024x768", "1200x960", "1280x1024", "1600x1200", "320x200"};
@@ -105,6 +105,9 @@ void GfScrInit(int argc, char *argv[])
     int		fullscreen;
     int		i, depth;
     
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
@@ -366,6 +369,9 @@ GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
     
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 

@@ -21,9 +21,6 @@ Package=<4>
     Project_Dep_Name robottools
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name telemetry
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name tgf
     End Project Dependency
     Begin Project Dependency
@@ -403,18 +400,6 @@ Package=<4>
 ###############################################################################
 
 Project: "tanhoj"=".\src\drivers\tanhoj\tanhoj.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
-Project: "telemetry"=".\src\modules\telemetry\telemetry.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

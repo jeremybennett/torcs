@@ -343,6 +343,8 @@ extern void GfuiScreenShot(void *notused);
 extern void GfuiScreenAddBgImg(void *scr, char *filename);
 extern void GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction);
 extern void GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction);
+extern void GfuiKeyEventRegisterCurrent(tfuiKeyCallback onKeyAction);
+extern void GfuiSKeyEventRegisterCurrent(tfuiSKeyCallback onSKeyAction);
 
 /* mouse */
 typedef struct MouseInfo
@@ -585,8 +587,8 @@ extern void gfMeanReset(tdble v, tMeanVal *pvt);
 
 typedef struct
 {
-    int		type;
     int		index;
+    int		type;
 } tCtrlRef;
 
 
@@ -625,7 +627,7 @@ extern tCtrlMouseInfo *GfctrlMouseInit(void);
 extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseCenter(void);
-extern void GfctrlMouseCalibrate(void);
+extern void GfctrlMouseInitCenter(void);
 extern tCtrlRef *GfctrlGetRefByName(char *name);
 extern char *GfctrlGetNameByRef(int type, int index);
 

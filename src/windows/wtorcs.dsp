@@ -104,6 +104,10 @@ PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed	copy dll\glut32.
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\libs\torcs\controlconfig.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\libs\torcs\driverconfig.cpp
 # End Source File
 # Begin Source File
@@ -129,6 +133,10 @@ SOURCE=.\main.cpp
 # Begin Source File
 
 SOURCE=..\libs\torcs\mainmenu.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\libs\torcs\mouseconfig.cpp
 # End Source File
 # Begin Source File
 

@@ -61,6 +61,9 @@ gfuiColorInit(void)
 	GFSCR_ELT_EDITCURSORCLR
     };
     
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, GFSCR_CONF_FILE);
     hdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     for (i = 0; i < GFUI_COLORNB; i++) {
@@ -629,6 +632,19 @@ GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction)
     screen->onSKeyAction = onSKeyAction;
 }
 
+void
+GfuiKeyEventRegisterCurrent(tfuiKeyCallback onKeyAction)
+{
+    GfuiScreen->onKeyAction = onKeyAction;
+}
+
+
+void
+GfuiSKeyEventRegisterCurrent(tfuiSKeyCallback onSKeyAction)
+{
+    GfuiScreen->onSKeyAction = onSKeyAction;
+}
+
 
 /** Add a Keyboard callback to a screen.
     @ingroup	gui
@@ -851,6 +867,9 @@ GfuiScreenAddBgImg(void *scr, char *filename)
     GLbyte	*tex;
     int		w,h;
     
+#ifdef WIN32
+    LocalDir = "";
+#endif
     if (screen->bgImage != 0) {
 	glDeleteTextures(1, &screen->bgImage);
     }

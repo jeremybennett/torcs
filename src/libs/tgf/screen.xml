@@ -21,7 +21,7 @@
     <attnum name="x" val="640"/>
     <attnum name="y" val="480"/>
     <attnum name="bpp" val="24"/>
-    <attstr name="fullscreen" in="yes,no" val="yes"/>
+    <attstr name="fullscreen" in="yes,no" val="no"/>
     <attnum name="gamma" val="2.0"/>
   </section>
 

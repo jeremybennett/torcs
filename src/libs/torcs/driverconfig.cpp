@@ -292,6 +292,9 @@ GenDrvList(void)
     char	*str;
     int		found;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (drvinfo == NULL) {
@@ -374,6 +377,9 @@ SaveDrvList(void *dummy)
     char	str[32];
     int		i;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     sprintf(buf, "%s%s", LocalDir, HM_DRV_FILE);
     drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (drvinfo == NULL) {

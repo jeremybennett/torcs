@@ -57,6 +57,9 @@ extern int	AutoReverse;
 
 extern tControlCmd CmdControl[];
 
+extern const int nbCmdControl;
+
+
 
 extern char *Yn[];
 

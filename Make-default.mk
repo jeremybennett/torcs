@@ -72,40 +72,22 @@ endef
 
 define create_dir_win32
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
-Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
-Label=$$Label"_"$$ext ; \
 CurDir='.' ; \
 echo "" >> ${INIT_WIN32} ; \
-echo "if not exist $$D goto $$Label" >> ${INIT_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
+echo "if exist $$D call .\\create_dir $$CurDir" >> ${INIT_WIN32} ; \
 done
-endef
-
-define end_win32
-Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
-Label=$$Label"_"$$ext ; \
-echo ":$$Label" >> ${INIT_WIN32}
 endef
 
 define create_dir_win32_data
 TotDir=`echo $$createdir | sed -e "s:${TORCS_BASE}/::g" ` ; \
-Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
-Label=$$Label"_"$$ext ; \
 CurDir='.' ; \
 echo "" >> ${DATA_WIN32} ; \
-echo "if not exist $$D goto $$Label" >> ${DATA_WIN32} ; \
 for Dir in `echo $$TotDir | sed -e 's:/: :g' ` ; \
 do CurDir=$$CurDir/$$Dir ; \
-echo "call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
+echo "if exist $$D call .\\create_dir $$CurDir" >> ${DATA_WIN32} ; \
 done
-endef
-
-define end_win32_data
-Label=`echo $$D | sed -e "s:${TORCS_BASE}/::g" | sed -e "s:/:_:g" | sed -e "s:-:_:g" ` ; \
-Label=$$Label"_"$$ext ; \
-echo ":$$Label" >> ${DATA_WIN32}
 endef
 
 
@@ -238,7 +220,7 @@ datainstall: installdatadirs installdata
 
 win32datainstall: installwin32datadirs installwin32data
 
-packages: win32setup specfiles packagelist
+packages: win32setup linuxsetup specfiles packagelist
 
 onepackage: packagedirs packagefiles
 
@@ -291,8 +273,7 @@ installwin32data: $(DATA)
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${DATADIR}/$$X"; \
 	echo "if exist $$D/$$X copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${DATA_WIN32} ; \
-	done ; \
-	${end_win32_data}
+	done ;
 
 else
 
@@ -316,13 +297,11 @@ installship: $(SHIP)
 installshipwin32: $(SHIP)
 	@D=`pwd` ; \
 	createdir="runtime/${SHIPDIR}" ; \
-	ext="1" ; \
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" ; \
 	echo "if exist $$D/$$X copy $$D/$$X ./runtime/${SHIPDIR}/$$X" >> ${INIT_WIN32} ; \
-	done ; \
-	${end_win32}
+	done ; 
 
 else
 
@@ -343,9 +322,7 @@ installshipmkdir:
 installshipmkdirwin32:
 	@for D in  $(SHIPCREATEDIRS) ; \
 	do createdir="runtime/$$D" ; \
-	ext="2" ; \
-	${create_dir_win32} ; \
-	${end_win32} ;\
+	${create_dir_win32_} ; \
 	done ;
 
 else
@@ -370,13 +347,11 @@ export: $(EXPORTS)
 exportwin32: $(EXPORTS)
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/${EXPDIR}" ;\
-	ext="3" ; \
 	${create_dir_win32} ; \
 	for X in $? ; \
 	do echo "copy $$D/$$X $$createdir/$$X" ; \
 	echo "if exist $$D/$$X copy $$D/$$X $$createdir/$$X" >> ${INIT_WIN32} ; \
-	done ; \
-	${end_win32}
+	done ;
 
 else
 

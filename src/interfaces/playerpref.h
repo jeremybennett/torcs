@@ -65,22 +65,28 @@
 #define HM_ATT_LEFTSTEER	"left steer"
 #define HM_ATT_LEFTSTEER_MIN	"left steer min"
 #define HM_ATT_LEFTSTEER_MAX	"left steer max"
+#define HM_ATT_LEFTSTEER_POW	"left steer power"
+#define HM_ATT_LEFTSTEER_DEAD	"left steer dead zone"
 
 #define HM_ATT_RIGHTSTEER	"right steer"
 #define HM_ATT_RIGHTSTEER_MIN	"right steer min"
 #define HM_ATT_RIGHTSTEER_MAX	"right steer max"
+#define HM_ATT_RIGHTSTEER_POW	"right steer power"
+#define HM_ATT_RIGHTSTEER_DEAD	"right steer dead zone"
 
 #define HM_ATT_THROTTLE		"throttle"
 #define HM_ATT_THROTTLE_MIN	"throttle min"
 #define HM_ATT_THROTTLE_MAX	"throttle max"
 #define HM_ATT_THROTTLE_SENS	"throttle sensitivity"
 #define HM_ATT_THROTTLE_POW	"throttle power"
+#define HM_ATT_THROTTLE_DEAD	"throttle dead zone"
 
 #define HM_ATT_BRAKE		"brake"
 #define HM_ATT_BRAKE_MIN	"brake min"
 #define HM_ATT_BRAKE_MAX	"brake max"
 #define HM_ATT_BRAKE_SENS	"brake sensitivity"
 #define HM_ATT_BRAKE_POW	"brake power"
+#define HM_ATT_BRAKE_DEAD	"brake dead zone"
 
 #define	HM_SECT_PREF	"Preferences"
 

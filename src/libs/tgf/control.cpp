@@ -430,11 +430,11 @@ GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
     }
     mouseMove = (float)(refMouse.Y - mouse->Y);
     if (mouseMove < 0) {
-	mouseInfo->ax[3] = -mouseMove;
-	mouseInfo->ax[2] = 0;
-    } else {
-	mouseInfo->ax[2] = mouseMove;
+	mouseInfo->ax[2] = -mouseMove;
 	mouseInfo->ax[3] = 0;
+    } else {
+	mouseInfo->ax[3] = mouseMove;
+	mouseInfo->ax[2] = 0;
     }
     for (i = 0; i < 3; i++) {
 	if (mouseInfo->button[i] != mouse->button[i]) {
@@ -455,7 +455,7 @@ GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
 }
 
 
-/** Recentre the mouse on the screen and get the reference position.
+/** Recentre the mouse on the screen.
     @ingroup	ctrl
     @return	none
 */
@@ -468,12 +468,12 @@ GfctrlMouseCenter(void)
     GfuiMouseSetPos(sw / 2, sh / 2);
 }
 
-/** Recentre the mouse on the screen and get the reference position.
+/** Get the reference position.
     @ingroup	ctrl
     @return	none
 */
 void
-GfctrlMouseCalibrate(void)
+GfctrlMouseInitCenter(void)
 {
     memcpy(&refMouse, GfuiMouseInfo(), sizeof(refMouse));
 }

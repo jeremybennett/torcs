@@ -138,6 +138,9 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
     void		*params = info->params;
     char		*race = info->_reRaceName;
 
+#ifdef WIN32
+    LocalDir = "";
+#endif
     rmScrHdle = GfuiScreenCreate();
     GfuiTitleCreate(rmScrHdle, race, strlen(race));
 
