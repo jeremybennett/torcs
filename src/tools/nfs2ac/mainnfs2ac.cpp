@@ -22,12 +22,14 @@
 #include <io.h>
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <memory.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 
 char  * mem;
 typedef struct {
@@ -38,19 +40,19 @@ typedef struct {
 
 
 typedef struct {
-    long h;
-    long s;
-    long b;
-    long t;
+    int h;
+    int s;
+    int b;
+    int t;
 } tColor;
 
 typedef struct {
-    long    TexPage;
-    long    I1 ;
-    long    I2 ;
-    long    I3 ;
+    int    TexPage;
+    int    I1 ;
+    int    I2 ;
+    int    I3 ;
     char  unknown [12];
-    long    Smoothing;
+    int    Smoothing;
     float   U1;
     float   U2 ;
     float   U3;
@@ -68,61 +70,65 @@ int main(int argc, char **argv)
     char *p;
     int i;
     int k;
-    long magic;
-    long VertTblOffset;
-    long TriaTblOffset;
-    long NormTblOffset;
-    long         NumParts ;
+    int magic;
+    int VertTblOffset;
+    int TriaTblOffset;
+    int NormTblOffset;
+    int         NumParts ;
     tVector  * Parts;
-    long     * P1stVertices;
-    long     * PNumVertices;
-    long     * P1stTriangle;
-    long     * PNumTriangles;
+    int     * P1stVertices;
+    int     * PNumVertices;
+    int     * P1stTriangle;
+    int     * PNumTriangles;
     char     * PartNames;
     char     * vl, * tl;
     tTriangle * tr;
     tVector   *vi;
-
-    in=fopen(argv[1],"rb");
-  
-    while ( (c=getc(in)) != EOF )
-	num++;
-  
+    struct stat fstat;
+    
+    if (stat(argv[1], &fstat)) {
+	perror(argv[1]);
+	return -1;
+    }
+    
+    num = fstat.st_size;
+    printf("size = %d\n", num);
+    
+    
     mem= (char *) malloc(num+1);
 
-    fclose(in);
     in=fopen(argv[1],"rb");
     p=mem;
 
     if ((int)fread(p,1,num,in) != num)
 	exit(-2);
   
-    magic         = * ((long *)(mem));
+    magic         = * ((int *)(mem));
 
     if (magic == 0x00101014) {
 	ver = 4;			/* NFS 4 */
-	VertTblOffset = * ((long *)(mem + 0x0014));
-	NormTblOffset = * ((long *)(mem + 0x0018));
-	TriaTblOffset = * ((long *)(mem + 0x001C));
-	NumParts      = * ((long *)(mem + 0x011C));
+	VertTblOffset = * ((int *)(mem + 0x0014));
+	NormTblOffset = * ((int *)(mem + 0x0018));
+	TriaTblOffset = * ((int *)(mem + 0x001C));
+	NumParts      = * ((int *)(mem + 0x011C));
 	Parts         = (tVector *)(mem + 0x0120);
-	P1stVertices  =    (long *)(mem + 0x0420);
-	PNumVertices  =    (long *)(mem + 0x0520);
-	P1stTriangle  =    (long *)(mem + 0x0620);
-	PNumTriangles =    (long *)(mem + 0x0720);
+	P1stVertices  =    (int *)(mem + 0x0420);
+	PNumVertices  =    (int *)(mem + 0x0520);
+	P1stTriangle  =    (int *)(mem + 0x0620);
+	PNumTriangles =    (int *)(mem + 0x0720);
 	PartNames     =    (char *)(mem + 0x0E28);
 	p             =             mem + 0x2038;
     } else {
 	ver = 3;			/* NFS 3 */
-	VertTblOffset = * ((long *)(mem + 0x0010));
-	NormTblOffset = * ((long *)(mem + 0x0014));
-	TriaTblOffset = * ((long *)(mem + 0x0018));
-	NumParts      = * ((long *)(mem + 0x00F8));
+	VertTblOffset = * ((int *)(mem + 0x0010));
+	NormTblOffset = * ((int *)(mem + 0x0014));
+	TriaTblOffset = * ((int *)(mem + 0x0018));
+	NumParts      = * ((int *)(mem + 0x00F8));
 	Parts         = (tVector *)(mem + 0x00FC);
-	P1stVertices  =    (long *)(mem + 0x03FC);
-	PNumVertices  =    (long *)(mem + 0x04FC);
-	P1stTriangle  =    (long *)(mem + 0x05FC);
-	PNumTriangles =    (long *)(mem + 0x06FC);
+	P1stVertices  =    (int *)(mem + 0x03FC);
+	PNumVertices  =    (int *)(mem + 0x04FC);
+	P1stTriangle  =    (int *)(mem + 0x05FC);
+	PNumTriangles =    (int *)(mem + 0x06FC);
 	PartNames     =    (char *)(mem + 0x0E04);
 	p             =             mem + 0x1F04;
     }
@@ -135,7 +141,7 @@ int main(int argc, char **argv)
     printf("kids 1\n");
 
     printf("OBJECT group\n");
-    printf("name \"ouature\"\n");
+    printf("name \"ouature%d\"\n", ver);
     printf("kids %ld\n", NumParts);
 
   
