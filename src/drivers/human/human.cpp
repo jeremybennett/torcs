@@ -794,13 +794,15 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
     if (speedLimiter) {
 	tdble	Dv;
 
-	Dv = Vtarget - car->_speed_x;
+	if (Vtarget != 0) {
+	    Dv = Vtarget - car->_speed_x;
 
-	if (Dv > 0.0) {
-	    car->_accelCmd = MIN(car->_accelCmd, fabs(Dv/6.0));
-	} else {
-	    car->_brakeCmd = MAX(car->_brakeCmd, fabs(Dv/5.0));
-	    car->_accelCmd = 0;
+	    if (Dv > 0.0) {
+		car->_accelCmd = MIN(car->_accelCmd, fabs(Dv/6.0));
+	    } else {
+		car->_brakeCmd = MAX(car->_brakeCmd, fabs(Dv/5.0));
+		car->_accelCmd = 0;
+	    }
 	}
     }
     
