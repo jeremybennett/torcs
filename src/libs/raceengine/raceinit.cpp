@@ -651,10 +651,12 @@ ReRaceCleanup(void)
 void
 ReRaceCleanDrivers(void)
 {
-    int i;
-    tRobotItf *robot;
+    int		i;
+    tRobotItf	*robot;
+    int		nCars;
 
-    for (i = 0; i < ReInfo->s->_ncars; i++) {
+    nCars = ReInfo->s->_ncars;
+    for (i = 0; i < nCars; i++) {
 	robot = ReInfo->s->cars[i]->robot;
 	if (robot->rbShutdown) {
 	    robot->rbShutdown(robot->index);
