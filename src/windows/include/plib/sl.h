@@ -25,19 +25,24 @@
 #ifndef __SL_H__
 #define __SL_H__ 1
 
+#include <stdio.h>
 #include "slPortability.h"
 
 #ifdef SL_USING_OSS_AUDIO
 #define SLDSP_DEFAULT_DEVICE "/dev/dsp"
-#elif defined(WIN32)
+#elif defined(UL_WIN32)
 #define SLDSP_DEFAULT_DEVICE "dsp"	
-#elif defined(BSD)
+#elif defined(UL_BSD)
 #define SLDSP_DEFAULT_DEVICE "/dev/audio"
-#elif defined(sgi)
+#elif defined(UL_IRIX)
 #define SLDSP_DEFAULT_DEVICE "dsp"		// dummy ...
-#elif defined(SOLARIS)
+#elif defined(UL_AIX)
+#define SLDSP_DEFAULT_DEVICE "dsp"		// dummy ...
+#elif defined(UL_SOLARIS)
 #define SLDSP_DEFAULT_DEVICE "/dev/audio"
-#elif defined(macintosh) || defined(__APPLE__)
+#elif defined(UL_HPUX)
+#define SLDSP_DEFAULT_DEVICE "/dev/audio"
+#elif defined(UL_MACINTOSH) || defined(UL_MAC_OSX)
 #define SLDSP_DEFAULT_DEVICE "dsp" // dummy
 #else
 #error "Port me !"
@@ -71,19 +76,19 @@ private:
   int error ;
   int fd ;
 
-#if defined (__NetBSD__) || defined(__OpenBSD__)
+#if defined(SL_USING_OSS_AUDIO)
+  audio_buf_info buff_info ;
+#elif defined(UL_BSD)
   audio_info_t    ainfo;        // ioctl structure
   audio_offset_t  audio_offset; // offset in audiostream
   long            counter;      // counter-written packets
-#elif defined(SOLARIS)
+#elif defined(UL_SOLARIS)
   audio_info_t	  ainfo;
   long            counter;
-#elif defined(SL_USING_OSS_AUDIO)
-  audio_buf_info buff_info ;
-#elif defined(sgi)
+#elif defined(UL_IRIX)
   ALconfig        config;       // configuration stuff
   ALport          port;         // .. we are here 
-#elif defined(macintosh) || defined(__APPLE__)
+#elif defined(UL_MACINTOSH) || defined(UL_MAC_OSX)
 
 // Size of the data chunks written with write().
 // This should be a multiple of 1024.
@@ -115,7 +120,7 @@ private:
 #endif
 
 
-#if !defined(WIN32) && !defined(macintosh)
+#if !defined(UL_WIN32) && !defined(UL_MACINTOSH) && !defined(UL_MAC_OSX)
   int ioctl ( int cmd, int param = 0 )
   {
     if ( error ) return param ;
@@ -129,7 +134,7 @@ private:
     return param ;
   }
 
-#elif defined(WIN32)
+#elif defined(UL_WIN32)
 
 #define BUFFER_COUNT (3*8)
 #define BUFFER_SIZE  (1024*1)
@@ -254,8 +259,7 @@ public:
   void   setComment ( const char *nc )
   {
     delete [] comment ;
-    comment = new char [ strlen ( nc ) + 1 ] ;
-    strcpy ( comment, nc ) ;
+    comment = ulStrDup ( nc ) ;
   }
 
   Uchar *getBuffer () const { return buffer ; }
@@ -359,12 +363,13 @@ class slEnvelope
 {
 protected:
 
-  float *time  ;
-  float *value ;
-  int   nsteps ;
-  int   ref_count ;
-
-  slReplayMode replay_mode ;
+  float        *time           ;
+  float        *value          ;
+  int           nsteps         ;
+  int           ref_count      ;
+  float         previous_value ;
+  unsigned char prev_pitchenv  ;
+  slReplayMode  replay_mode    ;
 
   int getStepDelta ( float *_time, float *delta ) const ;
 
@@ -378,7 +383,8 @@ public:
     value = new float [ nsteps ] ;
     memcpy ( time , _times , sizeof(float) * nsteps ) ;
     memcpy ( value, _values, sizeof(float) * nsteps ) ;
-
+    prev_pitchenv = 0x80 ;
+    previous_value = 0.0f ;
     replay_mode = _rm ;
   }
 
@@ -389,6 +395,8 @@ public:
     nsteps = _nsteps ;
     time  = new float [ nsteps ] ;
     value = new float [ nsteps ] ;
+    prev_pitchenv = 0x80 ;
+    previous_value = 0.0f ;
 
     for ( int i = 0 ; i < nsteps ; i++ )
       time [ i ] = value [ i ] = 0.0 ;
@@ -410,6 +418,10 @@ public:
   void unRef () { ref_count-- ; }
 
   int getPlayCount () const { return ref_count ; }
+
+  void applyToLPFilter ( unsigned char *dst,
+                         unsigned char *src,
+                         int nframes, int start ) ;
 
   void setStep ( int n, float _time, float _value )
   {
@@ -434,10 +446,10 @@ public:
 } ;
 
 #define SL_MAX_PRIORITY  16
-#define SL_MAX_SAMPLES   16
+#define SL_MAX_SAMPLES   32
 #define SL_MAX_CALLBACKS (SL_MAX_SAMPLES * 2)
-#define SL_MAX_ENVELOPES 4
-#define SL_MAX_MIXERINPUTS 10
+#define SL_MAX_ENVELOPES 32
+#define SL_MAX_MIXERINPUTS 16
 
 enum slEnvelopeType
 {
@@ -644,6 +656,7 @@ class slScheduler : public slDSP
   float safety_margin ;
 
   int mixer_buffer_size, mixer_gain ;
+  float seconds_per_buffer;
 
   Uchar *mixer_buffer  ;
   Uchar *mixer_inputs [ SL_MAX_MIXERINPUTS + 1 ] ;

@@ -44,56 +44,115 @@
 #include <ctype.h>
 #include <assert.h>
 
-#if !defined(WIN32) && (defined(_WIN32) || defined(__WIN32__) || \
-    defined(__CYGWIN__) || defined(_MSC_VER))
-#  define WIN32
+/**********************\
+*                      *
+*  Determine OS type   *
+*                      *
+\**********************/
+
+#if defined(__CYGWIN__)
+
+#define UL_WIN32     1
+#define UL_CYGWIN    1    /* Windoze AND Cygwin. */
+
+#elif defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER)
+
+#define UL_WIN32     1
+#define UL_MSVC      1    /* Windoze AND MSVC. */
+
+#elif defined(__BEOS__)
+
+#define UL_BEOS      1
+
+#elif defined( macintosh )
+
+#define UL_MACINTOSH 1
+
+#elif defined(__APPLE__)
+
+#define UL_MAC_OSX   1 
+
+#elif defined(__linux__)
+
+#define UL_LINUX     1
+
+#elif defined(__sgi)
+
+#define UL_IRIX      1
+
+#elif defined(_AIX)
+
+#define UL_AIX       1
+
+#elif defined(SOLARIS) || defined(sun)
+
+#define UL_SOLARIS   1
+
+#elif defined(hpux)
+
+#define UL_HPUX      1
+
+#elif (defined(__unix__) || defined(unix)) && !defined(USG)
+
+#define UL_BSD       1
+
 #endif
 
-#if defined (WIN32)
-#  include <windows.h>
-#  ifdef __CYGWIN__
-#    include <unistd.h>
-#  endif
-#elif defined (__BEOS__)
-#    include <be/kernel/image.h>
-#elif defined (macintosh)
-#    include <CodeFragments.h>
-#elif defined (__APPLE__)
-/* Mac OS X: Not implemented (needs to use dyld)  */
-#    include <unistd.h>
-#else
-#    include <unistd.h>
-#    include <dlfcn.h>
-#  endif
+/*
+  Add specialised includes/defines...
+*/
 
-//lint -save -e506 -e1023
+#ifdef UL_WIN32
+#include <windows.h>
+#include <mmsystem.h>
+#include <regstr.h>
+#define  UL_WGL     1
+#endif
 
+#ifdef UL_CYGWIN
+#include <unistd.h>
+#define  UL_WGL     1
+#endif
+
+#ifdef UL_BEOS
+#include <be/kernel/image.h>
+#define  UL_GLX     1
+#endif
+
+#ifdef UL_MACINTOSH
+#include <CodeFragments.h>
+#include <unistd.h>
+#define  UL_AGL     1
+#endif
+
+#ifdef UL_MAC_OSX
+#include <unistd.h>
+#define  UL_CGL     1
+#endif
+
+#if defined(UL_LINUX) || defined(UL_BSD) || defined(UL_IRIX) || defined(UL_SOLARIS) || defined(UL_AIX)
+#include <unistd.h>
+#include <dlfcn.h>
+#include <fcntl.h>
+#define  UL_GLX     1
+#endif
+
+#if defined(UL_BSD)
+#include <sys/param.h>
+#define  UL_GLX     1
+#endif
 
 #include <assert.h>
-
 #include <limits.h>
 #include <math.h>
-
-/* the next lines are to define BSD */
-/* see http://www.freebsd.org/handbook/porting.html for why we do this */
-
-#if (defined(__unix__) || defined(unix)) && !defined(USG)
-#include <sys/param.h>
-#endif
-
-// Wk: Originally this was only included for BSD, WIN32,  __MWERKS__ (Macintosh) 
-// and __CYGWIN__. However, some Linux people couldn't compile because it was 
-// missing (see fgfs-User Mailing list). Should you, on the other hand get 
-// problems because of this line, then mail to the PLIB mailing list
-// or mail me (w_kuss@rz-online.de)
 #include <float.h>
-
+#include <errno.h>
 
 /* PLIB version macros */
 
 #define PLIB_MAJOR_VERSION 1
-#define PLIB_MINOR_VERSION 6
-#define PLIB_TINY_VERSION 0
+#define PLIB_MINOR_VERSION 8
+#define PLIB_TINY_VERSION  3
 
 #define PLIB_VERSION (PLIB_MAJOR_VERSION*100 \
                      +PLIB_MINOR_VERSION*10 \
@@ -140,7 +199,7 @@ class ulClock
   double last_time ;
   double max_delta ;
   
-#ifdef WIN32
+#ifdef UL_WIN32
   static double res ;
   static int perf_timer ;
   void initPerformanceTimer () ;
@@ -154,8 +213,8 @@ public:
 
   void reset ()
   {
-#ifdef WIN32
-	  initPerformanceTimer () ;
+#ifdef UL_WIN32
+    initPerformanceTimer () ;
 #endif
     start     = getRawTime () ;
     now       = start ;
@@ -177,7 +236,7 @@ inline void ulSleep ( int seconds )
 {
   if ( seconds >= 0 )
   {
-#ifdef WIN32
+#ifdef UL_WIN32
     Sleep ( 1000 * seconds ) ;
 #else
     sleep ( seconds ) ;
@@ -190,7 +249,7 @@ inline void ulMilliSecondSleep ( int milliseconds )
 {
   if ( milliseconds >= 0 )
   {
-#ifdef WIN32
+#ifdef UL_WIN32
     Sleep ( milliseconds ) ;
 #else
     usleep ( milliseconds * 1000 ) ;
@@ -263,23 +322,33 @@ void ulFindFile( char *filenameOutput, const char *path,
 static const int _ulEndianTest = 1;
 #define ulIsLittleEndian (*((char *) &_ulEndianTest ) != 0)
 #define ulIsBigEndian    (*((char *) &_ulEndianTest ) == 0)
-static inline void _ulEndianSwap(unsigned int *x) {
+
+inline void ulEndianSwap(unsigned int *x)
+{
   *x = (( *x >> 24 ) & 0x000000FF ) | 
-    (( *x >>  8 ) & 0x0000FF00 ) | 
-    (( *x <<  8 ) & 0x00FF0000 ) | 
-    (( *x << 24 ) & 0xFF000000 ) ;
+       (( *x >>  8 ) & 0x0000FF00 ) | 
+       (( *x <<  8 ) & 0x00FF0000 ) | 
+       (( *x << 24 ) & 0xFF000000 ) ;
 }
+
   
-static inline void _ulEndianSwap(unsigned short *x) {
+inline void ulEndianSwap(unsigned short *x)
+{
   *x = (( *x >>  8 ) & 0x00FF ) | 
-    (( *x <<  8 ) & 0xFF00 ) ;
+       (( *x <<  8 ) & 0xFF00 ) ;
 }
   
+
+inline void ulEndianSwap(float *x) { ulEndianSwap((unsigned int   *)x); }
+inline void ulEndianSwap(int   *x) { ulEndianSwap((unsigned int   *)x); }
+inline void ulEndianSwap(short *x) { ulEndianSwap((unsigned short *)x); }
+
+
 inline unsigned short ulEndianLittle16(unsigned short x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -288,7 +357,7 @@ inline unsigned int ulEndianLittle32(unsigned int x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -297,7 +366,7 @@ inline float ulEndianLittleFloat(float x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap((unsigned int*)&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -307,7 +376,7 @@ inline void ulEndianLittleArray16(unsigned short *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -317,7 +386,7 @@ inline void ulEndianLittleArray32(unsigned int *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -327,7 +396,7 @@ inline void ulEndianLittleArrayFloat(float *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap((unsigned int*)x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -337,7 +406,7 @@ inline void ulEndianBigArray16(unsigned short *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -347,7 +416,7 @@ inline void ulEndianBigArray32(unsigned int *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -357,7 +426,7 @@ inline void ulEndianBigArrayFloat(float *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap((unsigned int*)x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -366,7 +435,7 @@ inline unsigned short ulEndianBig16(unsigned short x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -375,7 +444,7 @@ inline unsigned int ulEndianBig32(unsigned int x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -384,7 +453,7 @@ inline float ulEndianBigFloat(float x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap((unsigned int*)&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -461,7 +530,7 @@ inline size_t ulEndianWriteBigFloat(FILE *f, float x) {
 */
 
 
-#if defined (WIN32)
+#ifdef UL_WIN32
 
 class ulDynamicLibrary
 {
@@ -489,7 +558,7 @@ public:
   }
 } ;
 
-#elif defined (macintosh)
+#elif defined (UL_MACINTOSH)
 
 class ulDynamicLibrary
 {
@@ -547,9 +616,8 @@ public:
     }
 };
 
-#elif defined (__APPLE__)
+#elif defined (UL_MAC_OSX)
 
-/* Mac OS X */
 
 class ulDynamicLibrary
 {
@@ -651,7 +719,7 @@ public:
   }
 } ;
 
-#endif /* if defined(WIN32) */
+#endif
 
 
 class ulList

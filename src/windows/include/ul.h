@@ -1,21 +1,21 @@
 /*
      PLIB - A Suite of Portable Game Libraries
-     Copyright (C) 2001  Steve Baker
- 
+     Copyright (C) 1998,2002  Steve Baker
+
      This library is free software; you can redistribute it and/or
      modify it under the terms of the GNU Library General Public
      License as published by the Free Software Foundation; either
      version 2 of the License, or (at your option) any later version.
- 
+
      This library is distributed in the hope that it will be useful,
      but WITHOUT ANY WARRANTY; without even the implied warranty of
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
      Library General Public License for more details.
- 
+
      You should have received a copy of the GNU Library General Public
-     License along with this library; if not, write to the Free
+     License along with this library; if not, write to the Free Software
      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- 
+
      For further information visit http://plib.sourceforge.net
 
      $Id$
@@ -29,6 +29,8 @@
 //  - basic types
 //  - error message routines
 //  - high performance clocks
+//  - ulList
+//  - ulLinkedList
 //  - more to come (endian support, version ID)
 //
 
@@ -42,44 +44,119 @@
 #include <ctype.h>
 #include <assert.h>
 
-#if defined (WIN32)
-#  include <windows.h>
-#  ifdef __CYGWIN__
-#    include <unistd.h>
-#  endif
-#elif defined (__BEOS__)
-#    include <be/kernel/image.h>
-#elif defined (macintosh)
-#  include <CodeFragments.h>
-#  else
-#    include <unistd.h>
-#    include <dlfcn.h>
-#  endif
+/**********************\
+*                      *
+*  Determine OS type   *
+*                      *
+\**********************/
 
-//lint -save -e506 -e1023
+#if defined(__CYGWIN__)
 
+#define UL_WIN32     1
+#define UL_CYGWIN    1    /* Windoze AND Cygwin. */
 
-#include <assert.h>
+#elif defined(_WIN32) || defined(__WIN32__) || defined(_MSC_VER)
 
-#include <limits.h>
-#include <math.h>
+#define UL_WIN32     1
+#define UL_MSVC      1    /* Windoze AND MSVC. */
 
-/* the next lines are to define BSD */
-/* see http://www.freebsd.org/handbook/porting.html for why we do this */
+#elif defined(__BEOS__)
 
-#if (defined(__unix__) || defined(unix)) && !defined(USG)
-#include <sys/param.h>
+#define UL_BEOS      1
+
+#elif defined( macintosh )
+
+#define UL_MACINTOSH 1
+
+#elif defined(__APPLE__)
+
+#define UL_MAC_OSX   1 
+
+#elif defined(__linux__)
+
+#define UL_LINUX     1
+
+#elif defined(__sgi)
+
+#define UL_IRIX      1
+
+#elif defined(_AIX)
+
+#define UL_AIX       1
+
+#elif defined(SOLARIS) || defined(sun)
+
+#define UL_SOLARIS   1
+
+#elif defined(hpux)
+
+#define UL_HPUX      1
+
+#elif (defined(__unix__) || defined(unix)) && !defined(USG)
+
+#define UL_BSD       1
+
 #endif
 
-// Wk: Originally this was only included for BSD, WIN32,  __MWERKS__ (Macintosh) 
-// and __CYGWIN__. However, some Linux people couldn't compile because it was 
-// missing (see fgfs-User Mailing list). Should you, on the other hand get 
-// problems because of this line, then mail to the PLIB mailing list
-// or mail me (w_kuss@rz-online.de)
-#include <float.h>
+/*
+  Add specialised includes/defines...
+*/
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef UL_WIN32
+#include <windows.h>
+#include <mmsystem.h>
+#include <regstr.h>
+#define  UL_WGL     1
+#endif
+
+#ifdef UL_CYGWIN
+#include <unistd.h>
+#define  UL_WGL     1
+#endif
+
+#ifdef UL_BEOS
+#include <be/kernel/image.h>
+#define  UL_GLX     1
+#endif
+
+#ifdef UL_MACINTOSH
+#include <CodeFragments.h>
+#include <unistd.h>
+#define  UL_AGL     1
+#endif
+
+#ifdef UL_MAC_OSX
+#include <unistd.h>
+#define  UL_CGL     1
+#endif
+
+#if defined(UL_LINUX) || defined(UL_BSD) || defined(UL_IRIX) || defined(UL_SOLARIS) || defined(UL_AIX)
+#include <unistd.h>
+#include <dlfcn.h>
+#include <fcntl.h>
+#define  UL_GLX     1
+#endif
+
+#if defined(UL_BSD)
+#include <sys/param.h>
+#define  UL_GLX     1
+#endif
+
+#include <assert.h>
+#include <limits.h>
+#include <math.h>
+#include <float.h>
+#include <errno.h>
+
+/* PLIB version macros */
+
+#define PLIB_MAJOR_VERSION 1
+#define PLIB_MINOR_VERSION 8
+#define PLIB_TINY_VERSION  3
+
+#define PLIB_VERSION (PLIB_MAJOR_VERSION*100 \
+                     +PLIB_MINOR_VERSION*10 \
+                     +PLIB_TINY_VERSION)
 
 /* SGI machines seem to suffer from a lack of FLT_EPSILON so... */
 
@@ -122,7 +199,7 @@ class ulClock
   double last_time ;
   double max_delta ;
   
-#ifdef WIN32
+#ifdef UL_WIN32
   static double res ;
   static int perf_timer ;
   void initPerformanceTimer () ;
@@ -136,8 +213,8 @@ public:
 
   void reset ()
   {
-#ifdef WIN32
-	  initPerformanceTimer () ;
+#ifdef UL_WIN32
+    initPerformanceTimer () ;
 #endif
     start     = getRawTime () ;
     now       = start ;
@@ -157,21 +234,27 @@ public:
 
 inline void ulSleep ( int seconds )
 {
-#ifdef WIN32
-  Sleep ( 1000 * seconds ) ;
+  if ( seconds >= 0 )
+  {
+#ifdef UL_WIN32
+    Sleep ( 1000 * seconds ) ;
 #else
-  sleep ( seconds ) ;
+    sleep ( seconds ) ;
 #endif
+  }
 }
 
 
 inline void ulMilliSecondSleep ( int milliseconds )
 {
-#ifdef WIN32
-  Sleep ( milliseconds ) ;
+  if ( milliseconds >= 0 )
+  {
+#ifdef UL_WIN32
+    Sleep ( milliseconds ) ;
 #else
-  usleep ( milliseconds * 1000 ) ;
+    usleep ( milliseconds * 1000 ) ;
 #endif
+  }
 }
 
 
@@ -215,6 +298,9 @@ struct ulDirEnt
   bool d_isdir ;
 } ;
 
+int ulIsAbsolutePathName ( const char *pathname ) ;
+char *ulGetCWD ( char *result, int maxlength ) ;
+
 ulDir* ulOpenDir ( const char* dirname ) ;
 ulDirEnt* ulReadDir ( ulDir* dir ) ;
 void ulCloseDir ( ulDir* dir ) ;
@@ -236,23 +322,33 @@ void ulFindFile( char *filenameOutput, const char *path,
 static const int _ulEndianTest = 1;
 #define ulIsLittleEndian (*((char *) &_ulEndianTest ) != 0)
 #define ulIsBigEndian    (*((char *) &_ulEndianTest ) == 0)
-static inline void _ulEndianSwap(unsigned int *x) {
+
+inline void ulEndianSwap(unsigned int *x)
+{
   *x = (( *x >> 24 ) & 0x000000FF ) | 
-    (( *x >>  8 ) & 0x0000FF00 ) | 
-    (( *x <<  8 ) & 0x00FF0000 ) | 
-    (( *x << 24 ) & 0xFF000000 ) ;
+       (( *x >>  8 ) & 0x0000FF00 ) | 
+       (( *x <<  8 ) & 0x00FF0000 ) | 
+       (( *x << 24 ) & 0xFF000000 ) ;
 }
+
   
-static inline void _ulEndianSwap(unsigned short *x) {
+inline void ulEndianSwap(unsigned short *x)
+{
   *x = (( *x >>  8 ) & 0x00FF ) | 
-    (( *x <<  8 ) & 0xFF00 ) ;
+       (( *x <<  8 ) & 0xFF00 ) ;
 }
   
+
+inline void ulEndianSwap(float *x) { ulEndianSwap((unsigned int   *)x); }
+inline void ulEndianSwap(int   *x) { ulEndianSwap((unsigned int   *)x); }
+inline void ulEndianSwap(short *x) { ulEndianSwap((unsigned short *)x); }
+
+
 inline unsigned short ulEndianLittle16(unsigned short x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -261,7 +357,7 @@ inline unsigned int ulEndianLittle32(unsigned int x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -270,7 +366,7 @@ inline float ulEndianLittleFloat(float x) {
   if (ulIsLittleEndian) {
     return x;
   } else {
-    _ulEndianSwap((unsigned int*)&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -280,7 +376,7 @@ inline void ulEndianLittleArray16(unsigned short *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -290,7 +386,7 @@ inline void ulEndianLittleArray32(unsigned int *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -300,7 +396,7 @@ inline void ulEndianLittleArrayFloat(float *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap((unsigned int*)x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -310,7 +406,7 @@ inline void ulEndianBigArray16(unsigned short *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -320,7 +416,7 @@ inline void ulEndianBigArray32(unsigned int *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap(x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -330,7 +426,7 @@ inline void ulEndianBigArrayFloat(float *x, int length) {
     return;
   } else {
     for (int i = 0; i < length; i++) {
-      _ulEndianSwap((unsigned int*)x++);
+      ulEndianSwap(x++);
     }
   }
 }
@@ -339,7 +435,7 @@ inline unsigned short ulEndianBig16(unsigned short x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -348,7 +444,7 @@ inline unsigned int ulEndianBig32(unsigned int x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap(&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -357,7 +453,7 @@ inline float ulEndianBigFloat(float x) {
   if (ulIsBigEndian) {
     return x;
   } else {
-    _ulEndianSwap((unsigned int*)&x);
+    ulEndianSwap(&x);
     return x;
   }
 }
@@ -434,7 +530,7 @@ inline size_t ulEndianWriteBigFloat(FILE *f, float x) {
 */
 
 
-#if defined (WIN32)
+#ifdef UL_WIN32
 
 class ulDynamicLibrary
 {
@@ -462,7 +558,7 @@ public:
   }
 } ;
 
-#elif defined (macintosh)
+#elif defined (UL_MACINTOSH)
 
 class ulDynamicLibrary
 {
@@ -470,23 +566,23 @@ class ulDynamicLibrary
     OSStatus          error;
 
 public:
-        
+
     ulDynamicLibrary ( const char *libname )
     {
         Str63    pstr;
         int        sz;
-        
+
         sz = strlen (libname);
-     
+
         if (sz < 64) {
-        
+
             pstr[0] = sz;
             memcpy (pstr+1, libname, sz);
-            
+
             error = GetSharedLibrary (pstr, kPowerPCCFragArch, kReferenceCFrag,
-                                      &connection, NULL, NULL);                              
+                                      &connection, NULL, NULL);
         }
-        else 
+        else
             error = 1;
     }
 
@@ -494,20 +590,19 @@ public:
     {
         if ( ! error )
             CloseConnection (&connection);
-    
     }
-        
-    void* getFuncAddress (const char *funcname)
+
+    void* getFuncAddress ( const char *funcname )
     {
         if ( ! error ) {
-        
+
             char*  addr;
             Str255 sym;
             int    sz;
-            
+
             sz = strlen (funcname);
             if (sz < 256) {
-                
+
                 sym[0] = sz;
                 memcpy (sym+1, funcname, sz);
 
@@ -516,8 +611,31 @@ public:
                     return addr;
             }
         }
-        
+
         return NULL;
+    }
+};
+
+#elif defined (UL_MAC_OSX)
+
+
+class ulDynamicLibrary
+{
+
+ public:
+
+    ulDynamicLibrary ( const char *libname )
+    {
+    }
+
+    ~ulDynamicLibrary ()
+    {
+    }
+
+    void* getFuncAddress ( const char *funcname )
+    {
+      ulSetError ( UL_WARNING, "ulDynamicLibrary unsuppored on Mac OS X" );
+      return NULL;
     }
 };
 
@@ -601,14 +719,125 @@ public:
   }
 } ;
 
-#endif /* if defined(WIN32) */
+#endif
 
 
+class ulList
+{
+protected:
+  unsigned int total ;  /* The total number of entities in the list */
+  unsigned int limit ;  /* The current limit on number of entities  */
+  unsigned int next  ;  /* The next entity when we are doing getNext ops */
+ 
+  void **entity_list ;  /* The list. */
+ 
+  void sizeChk (void) ;
+ 
+public:
+ 
+  ulList ( int init_max = 1 ) ;
+  virtual ~ulList (void) ;
+ 
+  void *getEntity ( unsigned int n )
+  {
+    next = n + 1 ;
+    return ( n >= total ) ? (void *) NULL : entity_list [ n ] ;
+  }
+ 
+  virtual void addEntity ( void *entity ) ;
+  virtual void addEntityBefore ( int n, void *entity ) ;
+  virtual void removeEntity ( unsigned int n ) ;
+ 
+  void removeAllEntities () ;
+ 
+  void removeEntity ( void *entity )
+  {
+    removeEntity ( searchForEntity ( entity ) ) ;
+  }
+ 
+  virtual void replaceEntity ( unsigned int n, void *new_entity ) ;
+ 
+  void replaceEntity ( void *old_entity, void *new_entity )
+  {
+    replaceEntity ( searchForEntity ( old_entity ), new_entity ) ;
+  }
+ 
+  void *getNextEntity   (void) { return getEntity ( next ) ; }
+
+  int   getNumEntities  (void) const { return total ; }
+  int   searchForEntity ( void *entity ) const ;
+} ;
+
+
+typedef bool (*ulIterateFunc)( const void *data, void *user_data ) ;
+typedef int  (*ulCompareFunc)( const void *data1, const void *data2 ) ;
+
+/*
+  Linked list.
+*/
+
+class ulListNode ;
+
+class ulLinkedList
+{
+protected:
+
+  ulListNode *head ;
+  ulListNode *tail ;
+
+  int nnodes ;
+  bool sorted ;
+
+  void unlinkNode ( ulListNode *prev, ulListNode *node ) ;
+
+  bool isValidPosition ( int pos ) const
+  {
+    if ( ( pos < 0 ) || ( pos >= nnodes ) )
+    {
+      ulSetError ( UL_WARNING, "ulLinkedList: Invalid 'pos' %u", pos ) ;
+      return false ;
+    }
+    return true ;
+  }
+
+public:
+
+  ulLinkedList ()
+  {
+    head = tail = NULL ;
+    nnodes = 0 ;
+    sorted = true ;
+  }
+
+  ~ulLinkedList () { empty () ; }
+
+  int  getNumNodes ( void ) const { return nnodes ; }
+  bool isSorted    ( void ) const { return sorted ; }
+
+  int  getNodePosition ( void *data ) const ;
+
+  void insertNode ( void *data, int pos ) ;
+  void prependNode ( void *data ) { insertNode ( data, 0 ) ; }
+  void appendNode ( void *data ) ;
+
+  int  insertSorted ( void *data, ulCompareFunc comparefn ) ;
+
+  void removeNode ( void *data ) ;
+  void * removeNode ( int pos ) ;
+
+  void * getNodeData ( int pos ) const ;
+
+  void * forEach ( ulIterateFunc fn, void *user_data = NULL ) const ;
+
+  void empty ( ulIterateFunc destroyfn = NULL, void *user_data = NULL ) ;
+} ;
+
+
+extern char *ulStrDup ( const char *s ) ;
 extern int ulStrNEqual ( const char *s1, const char *s2, int len );
 extern int ulStrEqual ( const char *s1, const char *s2 );
 
 //lint -restore
 
 #endif
-
 

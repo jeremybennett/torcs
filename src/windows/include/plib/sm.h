@@ -29,7 +29,7 @@
 
 #ifdef SL_USING_OSS_AUDIO
 #define SMMIXER_DEFAULT_DEVICE "/dev/mixer"
-#elif defined(WIN32)
+#elif defined(UL_WIN32)
 #define SMMIXER_DEFAULT_DEVICE "mixer"
 #else
 #endif

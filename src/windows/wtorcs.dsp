@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="wtorcs" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** DO NOT EDIT **
+# ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Console Application" 0x0103
 
 CFG=wtorcs - Win32 Debug
-!MESSAGE This is not a valid makefile. To build this project using NMAKE,
-!MESSAGE use the Export Makefile command and run
+!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
+!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
 !MESSAGE NMAKE /f "wtorcs.mak".
 !MESSAGE 
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
+!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
 !MESSAGE NMAKE /f "wtorcs.mak" CFG="wtorcs - Win32 Debug"
 !MESSAGE 
-!MESSAGE Possible choices for configuration are:
+!MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "wtorcs - Win32 Release" (based on "Win32 (x86) Console Application")
-!MESSAGE "wtorcs - Win32 Debug" (based on "Win32 (x86) Console Application")
+!MESSAGE "wtorcs - Win32 Release" (basierend auf  "Win32 (x86) Console Application")
+!MESSAGE "wtorcs - Win32 Debug" (basierend auf  "Win32 (x86) Console Application")
 !MESSAGE 
 
 # Begin Project
@@ -42,8 +42,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /G5 /W2 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# SUBTRACT CPP /WX
+# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /FD /c
+# SUBTRACT CPP /WX /YX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
 # ADD RSC /l 0x409 /fo"Release/tocs.res" /d "NDEBUG"
 BSC32=bscmake.exe
@@ -51,7 +51,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 client.lib ssgAux.lib sl.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /nodefaultlib:"LIBCD" /libpath:"../../export/lib" /libpath:"../windows/lib"
+# ADD LINK32 client.lib txml.lib libpng.lib /nologo /subsystem:console /pdb:none /map /machine:I386 /nodefaultlib:"LIBCD" /libpath:"../../export/lib" /libpath:"../windows/lib"
 # SUBTRACT LINK32 /debug
 # Begin Special Build Tool
 WkspDir=.

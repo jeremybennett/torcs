@@ -30,7 +30,7 @@ static void
 init_args(int argc, char **argv)
 {
     int		i;
-    char	*buf;
+    //char	*buf;
 
     i = 1;
     while (i < argc) {

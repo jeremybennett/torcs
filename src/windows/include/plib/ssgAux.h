@@ -31,6 +31,7 @@
 #include "ssgaFire.h"
 #include "ssgaWaveSystem.h"
 #include "ssgaLensFlare.h"
+#include "ssgaScreenDump.h"
 
 
 #define _SSGA_TYPE_SHAPE          0x00008000

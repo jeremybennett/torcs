@@ -25,6 +25,7 @@
 #ifndef SG_H
 #define SG_H  1
 
+#include <stdio.h>
 #include "ul.h"
 
 #define sgFloat float
@@ -35,6 +36,7 @@
 #define SG_ONE   1.0f
 #define SG_TWO   2.0f
 #define SG_THREE 3.0f
+#define SG_FOUR  4.0f
 #define SG_45    45.0f
 #define SG_60    60.0f
 #define SG_90    90.0f
@@ -63,6 +65,8 @@
 inline SGfloat sgSqrt   ( const SGfloat x ) { return (SGfloat) sqrt ( x ) ; }
 inline SGfloat sgSquare ( const SGfloat x ) { return x * x ; }
 inline SGfloat sgAbs    ( const SGfloat a ) { return (a<SG_ZERO) ? -a : a ; }
+inline SGfloat sgHypot  ( const SGfloat x, const SGfloat y ) { return sgSqrt( sgSquare(x) + sgSquare(y) ); }
+
 
 /* 
   Type-casted sin/cos/tan/asin/acos/atan2 ANGLES IN DEGREES
@@ -853,6 +857,9 @@ inline void sgReflectInPlaneVec3 ( sgVec3 dst, const sgVec4 plane )
   sgReflectInPlaneVec3 ( dst, dst, plane ) ;
 }
 
+extern void sgMakeNormal    ( sgVec2 dst, const sgVec3 a, const sgVec3 b ) ;
+
+
 extern void sgMakeNormal    ( sgVec3 dst, const sgVec3 a, const sgVec3 b, const sgVec3 c ) ;
 
 
@@ -887,28 +894,35 @@ inline void sgMakePlane ( sgVec4 dst, const sgVec3 a, const sgVec3 b, const sgVe
 float sgTriArea( sgVec3 p0, sgVec3 p1, sgVec3 p2 );
 
 
-// Fast code. Result is in the range  0..pi:
+// Fast code. Result is in the range  0..180:
 inline SGfloat sgAngleBetweenNormalizedVec3 ( sgVec3 v1, sgVec3 v2 )
 {
   float f = sgScalarProductVec3 ( v1, v2 ) ;
   
-  return (float)(acos((f>=1.0f)?1.0f:(f<=-1.0f)?-1.0f:f)*SG_RADIANS_TO_DEGREES) ;
+  return (float) acos ( ( f >=  1.0f ) ?  1.0f :
+                        ( f <= -1.0f ) ? -1.0f : f ) * 
+                                 SG_RADIANS_TO_DEGREES ;
 }
 
-// Fast code. Result is in the range  0..pi:
+// Fast code. Result is in the range  0..180:
+
 SGfloat sgAngleBetweenVec3 ( sgVec3 v1, sgVec3 v2 );
 
-// all three have to be normalized. Slow code. Result is in the range  0..2*pi:
+// All three have to be normalized. Slow code. Result is in the range  0..360:
+
 SGfloat sgAngleBetweenNormalizedVec3 (sgVec3 first, sgVec3 second, sgVec3 normal);
 
-// normal has to be normalized. Slow code. Result is in the range  0..2*pi:
+// Normal has to be normalized. Slow code. Result is in the range  0..360:
+
 SGfloat sgAngleBetweenVec3 ( sgVec3 v1, sgVec3 v2, sgVec3 normal );
 
 class sgSphere
 {
+public:
   sgVec3  center ;
   SGfloat radius ;
-public:
+  
+
   sgSphere () { empty () ; }
 
   const SGfloat *getCenter (void) const { return center ; }
@@ -956,10 +970,11 @@ public:
 
 class sgBox
 {
+public:
   sgVec3 min ;
   sgVec3 max ;
 
-public:
+
   sgBox () { empty () ; }
 
   const SGfloat *getMin (void) const { return min ; }
@@ -1017,31 +1032,36 @@ public:
   int intersects ( const sgVec4 plane ) const ;
 } ;
 
-#define SG_NEAR       0x10
-#define SG_FAR        0x20
-#define SG_TOP        0x30
-#define SG_BOT        0x40
-#define SG_LEFT       0x50
-#define SG_RIGHT      0x60
+
+#define SG_LEFT_PLANE   0
+#define SG_RIGHT_PLANE  1
+#define SG_BOT_PLANE    2
+#define SG_TOP_PLANE    3
+#define SG_NEAR_PLANE   4
+#define SG_FAR_PLANE    5
 
 class sgFrustum
 {
-  /* The parameters for a glFrustum or pfMakePerspFrust */
+  /* Is the projection orthographic (or perspective)? */
+  int ortho ;
+
+  /* The parameters for glFrustum/glOrtho */
   
-  SGfloat left, right, top, bot, nnear, ffar ;
+  SGfloat left, right, bot, top, nnear, ffar ;
 
-  /* The A,B,C terms of the plane equations of the four sloping planes */
-
-  sgVec3 top_plane, bot_plane, left_plane, right_plane ;
-
-  /* A GL/PF-style perspective matrix for this frustum */
+  /* The computed projection matrix for this frustum */
 
   sgMat4 mat ;
 
+  /* The A,B,C,D terms of the plane equations of the clip planes */
+  /* A point (x,y,z) is inside the frustum iff  Ax + By + Cz + D >= 0  for all planes */
+
+  sgVec4 plane [ 6 ] ;
+
   /* These two are only valid for simple frusta */
 
-  SGfloat hfov ;    /* Horizontal Field of View */
-  SGfloat vfov ;    /* Vertical   Field of View */
+  SGfloat hfov ;    /* Horizontal Field of View  -or-  Orthographic Width  */
+  SGfloat vfov ;    /* Vertical   Field of View  -or-  Orthographic Height */
 
   void update (void) ;
   int getOutcode ( const sgVec4 src ) const ;
@@ -1050,6 +1070,7 @@ public:
 
   sgFrustum (void)
   {
+    ortho = FALSE ;
     nnear = SG_ONE ;
     ffar  = 1000000.0f ;
     hfov  = SG_45 ;
@@ -1061,23 +1082,45 @@ public:
                     const SGfloat b, const SGfloat t,
                     const SGfloat n, const SGfloat f )
   {
-    left  = l ; right = r ;
-    top   = t ; bot   = b ;
-    nnear = n ; ffar  = f ;
+    ortho = FALSE ;
+    left  = l ; 
+    right = r ;
+    bot   = b ; 
+    top   = t ; 
+    nnear = n ; 
+    ffar  = f ;
+    hfov = vfov = SG_ZERO ;
+    update () ;
+  } 
+
+  void setOrtho   ( const SGfloat l, const SGfloat r,
+                    const SGfloat b, const SGfloat t,
+                    const SGfloat n, const SGfloat f )
+  {
+    ortho = TRUE ;
+    left  = l ; 
+    right = r ;
+    bot   = b ; 
+    top   = t ; 
+    nnear = n ; 
+    ffar  = f ;
     hfov = vfov = SG_ZERO ;
     update () ;
   } 
 
   void     getMat4 ( sgMat4 dst ) { sgCopyMat4 ( dst, mat ) ; }
 
-  SGfloat  getHFOV (void) const { return hfov  ; }
-  SGfloat  getVFOV (void) const { return vfov  ; }
-  SGfloat  getNear (void) const { return nnear ; }
-  SGfloat  getFar  (void) const { return ffar  ; }
   SGfloat  getLeft (void) const { return left  ; }
   SGfloat  getRight(void) const { return right ; }
-  SGfloat  getTop  (void) const { return top   ; }
   SGfloat  getBot  (void) const { return bot   ; }
+  SGfloat  getTop  (void) const { return top   ; }
+  SGfloat  getNear (void) const { return nnear ; }
+  SGfloat  getFar  (void) const { return ffar  ; }
+  
+  const SGfloat *getPlane ( int i ) const { return plane [ i ] ; }
+
+  SGfloat  getHFOV (void) const { return hfov  ; }
+  SGfloat  getVFOV (void) const { return vfov  ; }
 
   void getFOV ( SGfloat *h, SGfloat *v ) const 
   {
@@ -1087,8 +1130,23 @@ public:
 
   void setFOV ( const SGfloat h, const SGfloat v )
   {
-    hfov = ( h <= 0 ) ? ( v * SG_THREE / SG_TWO ) : h ;
-    vfov = ( v <= 0 ) ? ( h * SG_TWO / SG_THREE ) : v ;
+    ortho = FALSE ;
+    hfov = ( h <= 0 ) ? ( v * SG_FOUR / SG_THREE ) : h ;
+    vfov = ( v <= 0 ) ? ( h * SG_THREE / SG_FOUR ) : v ;
+    update () ;
+  }
+
+  void getOrtho ( SGfloat *w, SGfloat *h ) const
+  {
+    if ( w != (SGfloat *) 0 ) *w = right - left ;
+    if ( h != (SGfloat *) 0 ) *h = top   - bot  ;
+  }
+
+  void setOrtho ( const SGfloat w, const SGfloat h )
+  {
+    ortho = TRUE ;
+    hfov = ( w <= 0 ) ? ( h * SG_FOUR / SG_THREE ) : w ;
+    vfov = ( h <= 0 ) ? ( w * SG_FOUR / SG_THREE ) : h ;
     update () ;
   }
 
@@ -1105,8 +1163,11 @@ public:
     update () ;
   }
 
+  int  isOrtho (void) const { return ortho ; }
+
   int  contains ( const sgVec3 p ) const ;
   int  contains ( const sgSphere *s ) const ;
+  int  contains ( const sgBox *b ) const ;
 } ;
 
 
@@ -1115,6 +1176,7 @@ public:
   Kevin B. Thompson <kevinbthompson@yahoo.com>
   Modified by Sylvan W. Clebsch <sylvan@stanford.edu>
   Largely rewritten by "Negative0" <negative0@earthlink.net>
+  Added to by John Fay
 */
 
 /*
@@ -1228,6 +1290,7 @@ inline void sgHPRToQuat ( sgQuat dst, const sgVec3 hpr )
   sgEulerToQuat ( dst, tmp ) ;
 }
 
+
 /* Multiply quaternions together (concatenate rotations) */
 
 void sgMultQuat ( sgQuat dst, const sgQuat a, const sgQuat b ) ;
@@ -1322,8 +1385,14 @@ int sgIsectInfLineInfLine   ( sgVec3 dst,
 SGfloat sgIsectLinesegPlane ( sgVec3 dst,
                               sgVec3 v1, sgVec3 v2,
                               sgVec4 plane ) ;
-bool sgPointInTriangle      ( sgVec3 point, sgVec3 tri[3] );
 
+bool sgPointInTriangle3     ( sgVec3 point, sgVec3 tri[3] ) ;
+bool sgPointInTriangle2     ( sgVec2 point, sgVec2 tri[3] ) ;
+
+inline bool sgPointInTriangle ( sgVec3 point, sgVec3 tri[3] )
+{
+  return sgPointInTriangle3 ( point, tri ) ;
+}
 
 
 
@@ -1337,6 +1406,7 @@ bool sgPointInTriangle      ( sgVec3 point, sgVec3 tri[3] );
 #define SGD_ONE   1.0
 #define SGD_TWO   2.0
 #define SGD_THREE 3.0
+#define SGD_FOUR  4.0
 #define SGD_45    45.0
 #define SGD_60    60.0
 #define SGD_90    90.0
@@ -2059,18 +2129,62 @@ inline void sgdMakeIdentMat4 ( sgdMat4 dst )
   sgdSetVec4 ( dst[3], SGD_ZERO, SGD_ZERO, SGD_ZERO, SGD_ONE  ) ;
 }
 
-extern int  sgdCompare3DSqdDist ( const sgdVec3 a, const sgdVec3 b, const SGDfloat sqd_dist ) ;
+
 extern void sgdMakeTransMat4 ( sgdMat4 m, const SGDfloat x, const SGDfloat y, const SGDfloat z ) ;
 extern void sgdMakeTransMat4 ( sgdMat4 m, const sgdVec3 xyz ) ;
 extern void sgdMakeCoordMat4 ( sgdMat4 m, const SGDfloat x, const SGDfloat y, const SGDfloat z,
                                           const SGDfloat h, const SGDfloat p, const SGDfloat r ) ;
 extern void sgdMakeCoordMat4 ( sgdMat4 m, const sgdCoord *c ) ;
 
+extern int  sgdCompare3DSqdDist ( const sgdVec3 a, const sgdVec3 b, const SGDfloat sqd_dist ) ;
+
 inline SGDfloat sgdDistToLineVec2 ( const sgdVec3 line, const sgdVec2 pnt )
 {
   return sgdScalarProductVec2 ( line, pnt ) + line[2] ;
 }
  
+
+struct sgdLineSegment3   /* Bounded line segment */
+{
+  sgdVec3 a ;
+  sgdVec3 b ;
+} ;
+
+struct sgdLine3    /* Infinite line */
+{
+  sgdVec3 point_on_line ;
+  sgdVec3 direction_vector ;  /* Should be a unit vector */
+} ;
+
+
+inline void sgdLineSegment3ToLine3 ( sgdLine3 *line,
+                                   const sgdLineSegment3 lineseg )
+{
+  sgdCopyVec3      ( line->point_on_line   , lineseg.a ) ;
+  sgdSubVec3       ( line->direction_vector, lineseg.b, lineseg.a ) ;
+  sgdNormaliseVec3 ( line->direction_vector ) ;
+}
+
+
+SGDfloat sgdDistSquaredToLineVec3        ( const sgdLine3 line,
+                                         const sgdVec3 pnt ) ;
+SGDfloat sgdDistSquaredToLineSegmentVec3 ( const sgdLineSegment3 line,
+                                         const sgdVec3 pnt ) ;
+
+
+inline SGDfloat sgdDistToLineVec3 ( const sgdLine3 line,
+                                  const sgdVec3 pnt )
+{
+  return sgdSqrt ( sgdDistSquaredToLineVec3 ( line, pnt ) );
+}
+
+
+inline SGDfloat sgdDistToLineSegmentVec3 ( const sgdLineSegment3 line,
+                                         const sgdVec3 pnt )
+{
+  return sgdSqrt ( sgdDistSquaredToLineSegmentVec3(line,pnt) ) ;
+}
+
 inline SGDfloat sgdDistToPlaneVec3 ( const sgdVec4 plane, const sgdVec3 pnt )
 {
   return sgdScalarProductVec3 ( plane, pnt ) + plane[3] ;
@@ -2118,14 +2232,39 @@ inline void sgdMakePlane ( sgdVec4 dst, const sgdVec3 a, const sgdVec3 b, const 
   dst [ 3 ] = - sgdScalarProductVec3 ( dst, a ) ;
 }
 
+SGDfloat sgdTriArea( sgdVec3 p0, sgdVec3 p1, sgdVec3 p2 );
+
+
+// Fast code. Result is in the range  0..180:
+inline SGDfloat sgdAngleBetweenNormalizedVec3 ( sgdVec3 v1, sgdVec3 v2 )
+{
+  SGDfloat f = sgdScalarProductVec3 ( v1, v2 ) ;
+
+  return (float) acos ( ( f >=  1.0f ) ?  1.0f :
+                        ( f <= -1.0f ) ? -1.0f : f ) *
+                                 SGD_RADIANS_TO_DEGREES ;
+}
+
+// Fast code. Result is in the range  0..180:
+
+SGDfloat sgdAngleBetweenVec3 ( sgdVec3 v1, sgdVec3 v2 );
+
+// All three have to be normalized. Slow code. Result is in the range  0..360:
+
+SGDfloat sgdAngleBetweenNormalizedVec3 (sgdVec3 first, sgdVec3 second, sgdVec3 normal);
+
+// Normal has to be normalized. Slow code. Result is in the range  0..360:
+
+SGDfloat sgdAngleBetweenVec3 ( sgdVec3 v1, sgdVec3 v2, sgdVec3 normal );
 
 
 
 class sgdSphere
 {
+public:
   sgdVec3  center ;
   SGDfloat radius ;
-public:
+
 
   const SGDfloat *getCenter (void) const { return center ; }
 
@@ -2172,10 +2311,10 @@ public:
 
 class sgdBox
 {
+public:
   sgdVec3 min ;
   sgdVec3 max ;
 
-public:
 
   const SGDfloat *getMin (void) const { return min ; }
   const SGDfloat *getMax (void) const { return max ; }
@@ -2232,31 +2371,29 @@ public:
   int intersects ( const sgdVec4 plane ) const ;
 } ;
 
-#define SGD_NEAR       0x10
-#define SGD_FAR        0x20
-#define SGD_TOP        0x30
-#define SGD_BOT        0x40
-#define SGD_LEFT       0x50
-#define SGD_RIGHT      0x60
 
 class sgdFrustum
 {
-  /* The parameters for a glFrustum or pfMakePerspFrust */
-  
-  SGDfloat left, right, top, bot, nnear, ffar ;
+  /* Is the projection orthographic (or perspective)? */
+  int ortho ;
 
-  /* The A,B,C terms of the plane equations of the four sloping planes */
+  /* The parameters for glFrustum/glOrtho */
 
-  sgdVec3 top_plane, bot_plane, left_plane, right_plane ;
+  SGDfloat left, right, bot, top, nnear, ffar ;
 
-  /* A GL/PF-style perspective matrix for this frustum */
+  /* The computed projection matrix for this frustum */
 
   sgdMat4 mat ;
 
+  /* The A,B,C,D terms of the plane equations of the clip planes */
+  /* A point (x,y,z) is inside the frustum iff  Ax + By + Cz + D >= 0  for all planes */
+
+  sgdVec4 plane [ 6 ] ;
+
   /* These two are only valid for simple frusta */
 
-  SGDfloat hfov ;    /* Horizontal Field of View */
-  SGDfloat vfov ;    /* Vertical   Field of View */
+  SGDfloat hfov ;    /* Horizontal Field of View  -or-  Orthographic Width  */
+  SGDfloat vfov ;    /* Vertical   Field of View  -or-  Orthographic Height */
 
   void update (void) ;
   int getOutcode ( const sgdVec4 src ) const ;
@@ -2265,6 +2402,7 @@ public:
 
   sgdFrustum (void)
   {
+    ortho = FALSE ;
     nnear = SGD_ONE ;
     ffar  = 1000000.0f ;
     hfov  = SGD_45 ;
@@ -2276,21 +2414,45 @@ public:
                     const SGDfloat b, const SGDfloat t,
                     const SGDfloat n, const SGDfloat f )
   {
-    left  = l ; right = r ;
-    top   = t ; bot   = b ;
-    nnear = n ; ffar  = f ;
+    ortho = FALSE ;
+    left  = l ;
+    right = r ;
+    bot   = b ;
+    top   = t ;
+    nnear = n ;
+    ffar  = f ;
     hfov = vfov = SGD_ZERO ;
     update () ;
   } 
 
-  SGDfloat  getHFOV (void) const { return hfov  ; }
-  SGDfloat  getVFOV (void) const { return vfov  ; }
-  SGDfloat  getNear (void) const { return nnear ; }
-  SGDfloat  getFar  (void) const { return ffar  ; }
+  void setOrtho   ( const SGDfloat l, const SGDfloat r,
+                    const SGDfloat b, const SGDfloat t,
+                    const SGDfloat n, const SGDfloat f )
+  {
+    ortho = TRUE ;
+    left  = l ;
+    right = r ;
+    bot   = b ;
+    top   = t ;
+    nnear = n ;
+    ffar  = f ;
+    hfov = vfov = SGD_ZERO ;
+    update () ;
+  }
+
+  void     getMat4 ( sgdMat4 dst ) { sgdCopyMat4 ( dst, mat ) ; }
+
   SGDfloat  getLeft (void) const { return left  ; }
   SGDfloat  getRight(void) const { return right ; }
-  SGDfloat  getTop  (void) const { return top   ; }
   SGDfloat  getBot  (void) const { return bot   ; }
+  SGDfloat  getTop  (void) const { return top   ; }
+  SGDfloat  getNear (void) const { return nnear ; }
+  SGDfloat  getFar  (void) const { return ffar  ; }
+
+  const SGDfloat *getPlane ( int i ) const { return plane [ i ] ; }
+
+  SGDfloat  getHFOV (void) const { return hfov  ; }
+  SGDfloat  getVFOV (void) const { return vfov  ; }
 
   void getFOV ( SGDfloat *h, SGDfloat *v ) const 
   {
@@ -2300,8 +2462,23 @@ public:
 
   void setFOV ( const SGDfloat h, const SGDfloat v )
   {
-    hfov = ( h <= 0 ) ? ( v * SGD_THREE / SGD_TWO ) : h ;
-    vfov = ( v <= 0 ) ? ( h * SGD_TWO / SGD_THREE ) : v ;
+    ortho = FALSE ;
+    hfov = ( h <= 0 ) ? ( v * SGD_FOUR / SGD_THREE ) : h ;
+    vfov = ( v <= 0 ) ? ( h * SGD_THREE / SGD_FOUR ) : v ;
+    update () ;
+  }
+
+  void getOrtho ( SGDfloat *w, SGDfloat *h ) const
+  {
+    if ( w != (SGDfloat *) 0 ) *w = right - left ;
+    if ( h != (SGDfloat *) 0 ) *h = top   - bot  ;
+  }
+
+  void setOrtho ( const SGDfloat w, const SGDfloat h )
+  {
+    ortho = TRUE ;
+    hfov = ( w <= 0 ) ? ( h * SGD_FOUR / SGD_THREE ) : w ;
+    vfov = ( h <= 0 ) ? ( w * SGD_FOUR / SGD_THREE ) : h ;
     update () ;
   }
 
@@ -2318,8 +2495,11 @@ public:
     update () ;
   }
 
+  int  isOrtho (void) const { return ortho ; }
+
   int  contains ( const sgdVec3 p ) const ;
   int  contains ( const sgdSphere *s ) const ;
+  int  contains ( const sgdBox *b ) const ;
 } ;
 
 
@@ -2582,6 +2762,27 @@ inline void sgdSetQuat ( sgdQuat dst, sgQuat src )
 }
 
 
+/* Function to rotate a vector through a given quaternion using the formula
+ * R = Q r Q-1 -- this gives the components of a ROTATED vector in a STATIONARY
+ * coordinate system.  We assume that Q is a unit quaternion.
+ */
+
+void sgRotateVecQuat ( sgVec3 vec, sgQuat q ) ;
+void sgdRotateVecQuat ( sgdVec3 vec, sgdQuat q ) ;
+
+/* Function to rotate a vector through a given quaternion using the formula
+ * R = Q-1 r Q -- this gives the components of a STATIONARY vector in a ROTATED
+ * coordinate system.  We assume that Q is a unit quaternion.
+ */
+
+void sgRotateCoordQuat ( sgVec3 vec, sgQuat q ) ;
+void sgdRotateCoordQuat ( sgdVec3 vec, sgdQuat q ) ;
+
+sgFloat sgDistSquaredToLineLineSegment ( const sgLineSegment3 seg, const sgLine3 line ) ;
+sgdFloat sgdDistSquaredToLineLineSegment ( const sgdLineSegment3 seg, const sgdLine3 line ) ;
+
+
+
 /*
   Intersection testing.
 */
@@ -2629,22 +2830,24 @@ void sgTriangleSolver_ASStoSAA ( SGfloat  angB, SGfloat  lenA, SGfloat  lenB,
                                  SGfloat *lenC, SGfloat *angA, SGfloat *angC ) ;
 
 
-SGDfloat sgdTriangleSolver_ASAtoArea(SGDfloat angA,SGDfloat lenB,SGDfloat angC);
-SGDfloat sgdTriangleSolver_SAStoArea(SGDfloat lenA,SGDfloat angB,SGDfloat lenC);
-SGDfloat sgdTriangleSolver_SSStoArea(SGDfloat lenA,SGDfloat lenB,SGDfloat lenC);
-SGDfloat sgdTriangleSolver_ASStoArea(SGDfloat angB,SGDfloat lenA,SGDfloat lenB);
-SGDfloat sgdTriangleSolver_SAAtoArea(SGDfloat lenA,SGDfloat angB,SGDfloat angA);
+SGDfloat sgdTriangleSolver_ASAtoArea ( SGDfloat angA, SGDfloat lenB, SGDfloat angC );
+SGDfloat sgdTriangleSolver_SAStoArea ( SGDfloat lenA, SGDfloat angB, SGDfloat lenC );
+SGDfloat sgdTriangleSolver_SSStoArea ( SGDfloat lenA, SGDfloat lenB, SGDfloat lenC );
+SGDfloat sgdTriangleSolver_SAAtoArea ( SGDfloat lenA, SGDfloat angB, SGDfloat angA );
+SGDfloat sgdTriangleSolver_ASStoArea ( SGDfloat angB, SGDfloat lenA, SGDfloat lenB,
+                                     int angA_is_obtuse );
 
-void sgdTriangleSolver_SSStoAAA(SGDfloat  lenA,SGDfloat  lenB, SGDfloat  lenC, 
-                                SGDfloat *angA,SGDfloat *angB,SGDfloat *angC ) ;
-void sgdTriangleSolver_SAStoASA(SGDfloat  lenA,SGDfloat  angB,SGDfloat  lenC,
-                                SGDfloat *angA,SGDfloat *lenB,SGDfloat *angC ) ;
-void sgdTriangleSolver_ASAtoSAS(SGDfloat  angA,SGDfloat  lenB,SGDfloat  angC,
-                                SGDfloat *lenA,SGDfloat *angB,SGDfloat *lenC ) ;
-void sgdTriangleSolver_ASStoSAA(SGDfloat  angB,SGDfloat  lenA,SGDfloat  lenB,
-                                SGDfloat *lenC,SGDfloat *angA,SGDfloat *angC ) ;
-void sgdTriangleSolver_SAAtoASS(SGDfloat  lenA,SGDfloat  angB,SGDfloat  angA,
-                                SGDfloat *angC,SGDfloat *lenB,SGDfloat *lenC ) ;
+void sgdTriangleSolver_SSStoAAA ( SGDfloat  lenA, SGDfloat  lenB, SGDfloat  lenC,
+                                 SGDfloat *angA, SGDfloat *angB, SGDfloat *angC ) ;
+void sgdTriangleSolver_SAStoASA ( SGDfloat  lenA, SGDfloat  angB, SGDfloat  lenC,
+                                 SGDfloat *angA, SGDfloat *lenB, SGDfloat *angC ) ;
+void sgdTriangleSolver_ASAtoSAS ( SGDfloat  angA, SGDfloat  lenB, SGDfloat  angC,
+                                 SGDfloat *lenA, SGDfloat *angB, SGDfloat *lenC ) ;
+void sgdTriangleSolver_SAAtoASS ( SGDfloat  lenA, SGDfloat  angB, SGDfloat  angA,
+                                 SGDfloat *angC, SGDfloat *lenB, SGDfloat *lenC ) ;
+void sgdTriangleSolver_ASStoSAA ( SGDfloat  angB, SGDfloat  lenA, SGDfloat  lenB,
+                                 int angA_is_obtuse,
+                                 SGDfloat *lenC, SGDfloat *angA, SGDfloat *angC ) ;
 
 /*
   SPRING-MASS-DAMPER (with simple Euler integrator)
@@ -2684,9 +2887,14 @@ public:
     sgZeroVec3 ( force ) ;
   }
 
-  float *getPos         () { return pos      ; }
-  float *getVel         () { return vel      ; }
-  float *getForce       () { return force    ; }
+  SGfloat *getPos   () { return pos      ; }
+  SGfloat *getVel   () { return vel      ; }
+  SGfloat *getForce () { return force    ; }
+
+  const SGfloat *getPos   () const { return pos      ; }
+  const SGfloat *getVel   () const { return vel      ; }
+  const SGfloat *getForce () const { return force    ; }
+
   float  getOneOverMass () { return ooMass   ; }
   float  getMass        () { return 1.0f / ooMass ; }
 

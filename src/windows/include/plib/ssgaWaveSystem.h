@@ -65,6 +65,7 @@ class ssgaWaveSystem : public ssgaShape
 {
   ssgaWSDepthCallback gridGetter ;
 
+  sgVec2  offset    ;
   sgVec3 *normals   ;
   sgVec4 *colours   ;
   sgVec2 *texcoords ;
@@ -121,6 +122,8 @@ public:
   void  setWindDirn      ( float dirn             ) { windHeading = dirn  ; }
   void  setEdgeFlatten   ( float dist             ) { edgeFlatten = dist ; }
   void  setTexScale      ( float u, float v       ) { tu = u ; tv = v ; }
+
+  void  setOffset ( sgVec2 _offset ) { sgCopyVec2 ( offset, _offset ) ; }
 
   void updateAnimation ( float t ) ;
 } ;

@@ -33,7 +33,7 @@
 #include <windows.h>
 #include <string.h>
 #ifdef _WIN32
-#	pragma warning( disable : 4514 4100 4130 4611 4115 4189 4505 4127 4244 4701 4706 4711 4702 )
+//#	pragma warning( disable : 4514 4100 4130 4611 4115 4189 4505 4127 4244 4701 4706 4711 4702)
 #	define uint unsigned int
 #	define uchar unsigned char
 #	define execlp _execlp
