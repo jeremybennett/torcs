@@ -110,7 +110,7 @@ SimWheelUpdateRide(tCar *car, int index)
     wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
     prex = wheel->susp.x;
 	
-	if (1) {	// This is not correct for 3D
+	if (0) {	// This is not correct for 3D
 		wheel->susp.x = wheel->rideHeight = wheel->pos.z - Zroad;
 	} else { // experimental 3d support.. not fully tested.
 		RtTrackSurfaceNormalL(&(wheel->trkPos), &normal); 
