@@ -24,6 +24,11 @@
     <attnum name="zpos" val="0.73" unit="m"/>
   </section>
 
+  <section name="Sound">
+	<attstr name="engine sample" val="renault-v10.wav"/>
+	<attnum name="rpm scale" val="0.35"/>
+  </section>
+
   <section name="Graphic Objects">
     <attstr name="env" val="sc-f1.acc"/>
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
