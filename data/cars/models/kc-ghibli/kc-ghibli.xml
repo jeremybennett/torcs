@@ -14,8 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="Maserati Ghibli">
-
+<params name="Maserati Ghibli" type="template">
 
   <section name="Bonnet">
     <!-- Position of the driver -->
@@ -100,7 +99,7 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.38"/>
+    <attnum name="Cx" val="0.53"/>
     <attnum name="front area" unit="m2" val="2.0"/>
     <attnum name="front Clift" val="0.243"/>
     <attnum name="rear Clift" val="0.2025"/>

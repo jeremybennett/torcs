@@ -25,7 +25,7 @@ DATA         = $(CAR).xml \
 
 data-cars-extra_PKGFILES	= $(DATA)
 
-data-cars-extra_PKGDIR	= $(DATADIR)
+data-cars-extra_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

@@ -144,8 +144,8 @@
     <attnum name="initial fuel" min="1" max="38" unit="l" val="38"/>
   </section>
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.35"/>
-    <attnum name="front area" unit="m2" val="1.0"/>
+    <attnum name="Cx" val="0.45"/>
+    <attnum name="front area" unit="m2" val="1.4"/>
     <attnum name="front Clift" val="0.1254"/>
     <attnum name="rear Clift" val="0.1045"/>
   </section>

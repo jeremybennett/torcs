@@ -35,12 +35,19 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
-    <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed240.rgb"/>
-    <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="240"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
+    <attnum name="tachometer min angle" unit="deg" val="217"/>
+    <attnum name="tachometer min value" unit="rpm" val="500"/>
+    <attnum name="tachometer max angle" unit="deg" val="-44"/>
+    <attnum name="tachometer max value" unit="rpm" val="6250"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
+    <attnum name="speedometer min angle" unit="deg" val="225"/>
+    <attnum name="speedometer min value" unit="km/h" val="10"/>
+    <attnum name="speedometer max angle" unit="deg" val="-48"/>
+    <attnum name="speedometer max value" unit="km/h" val="250"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">
@@ -146,8 +153,8 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" min="0.2" max="5" val="0.38"/>
-    <attnum name="front area" min="0.75" max="12" unit="m2" val="1.6"/>
+    <attnum name="Cx" min="0.2" max="5" val="0.45"/>
+    <attnum name="front area" min="0.75" max="12" unit="m2" val="1.8"/>
     <attnum name="front Clift" val="0.243"/>
     <attnum name="rear Clift" val="0.2025"/>
   </section>
@@ -163,7 +170,7 @@
   <section name="Engine">
     <attnum name="inertia" min="0.1" max="0.5" unit="kg.m2" val="0.2423"/>
     <attnum name="revs limiter" unit="rpm" val="6000"/>
-    <attnum name="revs maxi" unit="rpm" val="7000"/>
+    <attnum name="revs maxi" unit="rpm" val="6250"/>
     <attnum name="tickover" unit="rpm" val="900"/>
     <attnum name="fuel cons factor" min="0.5" max="5" val="1"/>
 

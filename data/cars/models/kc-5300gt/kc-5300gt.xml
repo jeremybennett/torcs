@@ -35,12 +35,19 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
+    <attnum name="tachometer min angle" unit="deg" val="231"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed360.rgb"/>
+    <attnum name="tachometer max angle" unit="deg" val="-32"/>
+    <attnum name="tachometer max value" unit="rpm" val="6500"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
+    <attnum name="speedometer min angle" unit="deg" val="221"/>
     <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="360"/>
+    <attnum name="speedometer max angle" unit="deg" val="-44"/>
+    <attnum name="speedometer max value" unit="km/h" val="316"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">
@@ -131,8 +138,8 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" min="0.2" max="5" val="0.38"/>
-    <attnum name="front area" unit="m2" val="1.6"/>
+    <attnum name="Cx" min="0.2" max="5" val="0.50"/>
+    <attnum name="front area" unit="m2" val="1.9"/>
     <attnum name="front Clift" val="0.2574"/>
     <attnum name="rear Clift" val="0.2145"/>
   </section>
@@ -270,9 +277,13 @@
 	<attnum name="inertia" min="0.001" max="0.1" val="0.0064"/>
 	<attnum name="efficiency" val="0.94"/>
       </section>
+
       <section name="5">
-	<attnum name="ratio" val="0"/>
+        <attnum name="ratio" val="0.75"/>
+        <attnum name="inertia" min="0.001" max="0.1" val="0.0107"/>
+        <attnum name="efficiency" val="1"/>
       </section>
+
       <section name="6">
 	<attnum name="ratio" val="0"/>
       </section>

@@ -128,8 +128,8 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" min="0.2" max="5" val="0.38"/>
-    <attnum name="front area" min="0.75" max="12" unit="m2" val="1.6"/>
+    <attnum name="Cx" min="0.2" max="5" val="0.55"/>
+    <attnum name="front area" min="0.75" max="12" unit="m2" val="1.7"/>
     <attnum name="front Clift" val="0.1182"/>
     <attnum name="rear Clift" val="0.0985"/>
   </section>

@@ -34,12 +34,19 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
+    <attnum name="tachometer min angle" unit="deg" val="240"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed360.rgb"/>
-    <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="360"/>
+    <attnum name="tachometer max angle" unit="deg" val="-60"/>
+    <attnum name="tachometer max value" unit="rpm" val="6500"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
+    <attnum name="speedometer min angle" unit="deg" val="240"/>
+    <attnum name="speedometer min value" unit="mph" val="0"/>
+    <attnum name="speedometer max angle" unit="deg" val="-60"/>
+    <attnum name="speedometer max value" unit="mph" val="200"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">
@@ -129,8 +136,8 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.35"/>
-    <attnum name="front area" unit="m2" val="1.45"/>
+    <attnum name="Cx" val="0.45"/>
+    <attnum name="front area" unit="m2" val="1.6"/>
     <attnum name="front Clift" val="0.8"/>
     <attnum name="rear Clift" val="0.6"/>
   </section>
@@ -148,8 +155,8 @@
 
   <section name="Engine">
     <attnum name="inertia" unit="kg.m2" val="0.35"/>
-    <attnum name="revs limiter" unit="rpm" val="7500"/>
-    <attnum name="revs maxi" unit="rpm" val="8500"/>
+    <attnum name="revs limiter" unit="rpm" val="6000"/>
+    <attnum name="revs maxi" unit="rpm" val="6500"/>
     <attnum name="tickover" unit="rpm" val="850"/>
     <attnum name="fuel cons factor" min="0.5" max="5" val="1"/>
 

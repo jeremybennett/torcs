@@ -268,6 +268,8 @@ static ssgState *get_state ( _ssgMaterial *mat )
   st -> enable  ( GL_LIGHTING ) ;
 
   st -> setShadeModel ( GL_SMOOTH ) ;
+  //st -> setShadeModel ( GL_FLAT ) ;
+
   st -> setAlphaClamp(0);
 
   if (isaWindow) {

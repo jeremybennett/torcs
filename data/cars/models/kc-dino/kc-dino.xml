@@ -32,12 +32,19 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
-    <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed240.rgb"/>
-    <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="240"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
+    <attnum name="tachometer min angle" unit="deg" val="228"/>
+    <attnum name="tachometer min value" unit="rpm" val="2000"/>
+    <attnum name="tachometer max angle" unit="deg" val="-48"/>
+    <attnum name="tachometer max value" unit="rpm" val="10000"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
+    <attnum name="speedometer min angle" unit="deg" val="228"/>
+    <attnum name="speedometer min value" unit="km/h" val="30"/>
+    <attnum name="speedometer max angle" unit="deg" val="-48"/>
+    <attnum name="speedometer max value" unit="km/h" val="270"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">
@@ -122,7 +129,7 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.38"/>
+    <attnum name="Cx" val="0.45"/>
     <attnum name="front area" unit="m2" val="1.6"/>
     <attnum name="front Clift" val="0.1254"/>
     <attnum name="rear Clift" val="0.1045"/>

@@ -542,6 +542,7 @@ typedef struct CarElt
 #define PRM_SPEEDO_MAXVAL	"speedometer max value"
 #define PRM_SPEEDO_MINANG	"speedometer min angle"
 #define PRM_SPEEDO_MAXANG	"speedometer max angle"
+#define PRM_SPEEDO_DIGITAL	"speedometer digital"
 
 /* Lights */
 #define	VAL_LIGHT_HEAD1		"head1"

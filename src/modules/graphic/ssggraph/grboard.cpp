@@ -738,9 +738,12 @@ cGrBoard::grDispCounterBoard2(tCarElt *car)
     glCallList(curInst->needleList);
     glPopMatrix();
 
-    sprintf(buf, "%3d", abs((int)(car->_speed_x * 3.6)));
-    GfuiPrintString(buf, grBlue, GFUI_FONT_DIGIT,
-		    (int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
+    if (curInst->digital) {
+	sprintf(buf, "%3d", abs((int)(car->_speed_x * 3.6)));
+	GfuiPrintString(buf, grBlue, GFUI_FONT_DIGIT,
+			(int)curInst->digitXCenter, (int)(curInst->digitYCenter), GFUI_ALIGN_HC_VB);
+    }
+    
     if (counterFlag == 1){
 	grDispMisc(car);
     }
@@ -828,10 +831,10 @@ cGrBoard::refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *curr)
 	if (boardFlag)   grDispCarBoard(curr, s);
 	if (leaderFlag)	 grDispLeaderBoard(curr, s);
 	if (counterFlag) grDispCounterBoard2(curr);
+    }
 #ifndef NO_ALPHA_DISPLAY
 	trackMap->display(curr, s, Winx, Winy, Winw, Winh);
 #endif
-    }
 }
 
 void
@@ -935,6 +938,9 @@ grInitBoardCar(tCarElt *car)
     curInst->maxAngle = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_MAXANG, "deg", -45) - curInst->minAngle;
     curInst->monitored = &(car->_speed_x);
     curInst->prevVal = curInst->minAngle;
+    if (strcmp(GfParmGetStr(handle, SECT_GROBJECTS, PRM_SPEEDO_DIGITAL, "yes"), "yes") == 0) {
+	curInst->digital = 1;
+    }
     
     curInst->CounterList = glGenLists(1);
     glNewList(curInst->CounterList, GL_COMPILE);

@@ -33,6 +33,7 @@ typedef struct
     tdble		*monitored;
     tdble		prevVal;
     tdble		rawPrev;
+    int			digital;
 } tgrCarInstrument;
 
 

@@ -65,6 +65,8 @@ typedef struct point {
   double y;
   double z;
 } point_t;
+
+
 typedef struct tcoord {
   int indice;
   double u;

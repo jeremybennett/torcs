@@ -1485,6 +1485,8 @@ evalUnit (char *unit, tdble *dest, int flg)
 	coeff = 0.104719755; /* rad/s */
     } else if ((strcmp(unit, "percent") == 0) || (strcmp(unit, "%") == 0)) {
 	coeff = 0.01;
+    } else if ((strcmp(unit, "mph") == 0) || (strcmp(unit, "MPH") == 0)) {
+	coeff = 0.44704; /* m/s */
     }
 
     if (flg) {

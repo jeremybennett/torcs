@@ -50,13 +50,22 @@
     <attnum name="background color G" val="0.11"/>
     <attnum name="background color B" val="0.08"/>
 
-    <attnum name="ambient color R" val="1.0"/>
-    <attnum name="ambient color G" val="0.5"/>
-    <attnum name="ambient color B" val="0.0"/>
+    <attnum name="ambient color R" val="0.2"/>
+    <attnum name="ambient color G" val="0.2"/>
+    <attnum name="ambient color B" val="0.2"/>
 
-    <attnum name="light position x" val="5000"/>
-    <attnum name="light position y" val="2000"/>
-    <attnum name="light position z" val="3000"/>
+    <attnum name="diffuse color R" val="1"/>
+    <attnum name="diffuse color G" val="0.6"/>
+    <attnum name="diffuse color B" val="0.3"/>
+
+    <attnum name="specular color R" val="0.2"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.2"/>
+
+
+    <attnum name="light position x" val="500"/>
+    <attnum name="light position y" val="-200"/>
+    <attnum name="light position z" val="100"/>
 
     <attnum name="fov factor" val="0.8"/>
 

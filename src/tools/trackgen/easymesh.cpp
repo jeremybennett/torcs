@@ -332,11 +332,12 @@ int insert_node(double x, double y, double z, int spac,
     }
 
     if ((x < xmin) || (x > xmax) || (y < ymin) || (y > ymax)) {
-	printf("\nInsert %f %f\n", x, y);
-	if (x < xmin) x = xmin;
-	if (x > xmax) x = xmax;
-	if (y < ymin) y = ymin;
-	if (y > ymax) y = ymax;
+	printf("\nDon't Insert %f %f\n", x, y);
+	return 0;
+/* 	if (x < xmin) x = xmin; */
+/* 	if (x > xmax) x = xmax; */
+/* 	if (y < ymin) y = ymin; */
+/* 	if (y > ymax) y = ymax; */
     }
  
     node[Nn-1].x = x;

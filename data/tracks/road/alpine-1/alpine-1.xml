@@ -155,17 +155,17 @@
     <attnum name="background color G" val="0.44"/>
     <attnum name="background color B" val="0.75"/>
 
-    <attnum name="ambient color R" val="0.8"/>
-    <attnum name="ambient color G" val="0.8"/>
-    <attnum name="ambient color B" val="0.6"/>
+    <attnum name="ambient color R" val="0.1"/>
+    <attnum name="ambient color G" val="0.1"/>
+    <attnum name="ambient color B" val="0.05"/>
 
-    <attnum name="diffuse color R" val="0"/>
-    <attnum name="diffuse color G" val="0"/>
-    <attnum name="diffuse color B" val="0"/>
+    <attnum name="diffuse color R" val="1"/>
+    <attnum name="diffuse color G" val="1"/>
+    <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.4"/>
-    <attnum name="specular color G" val="0.4"/>
-    <attnum name="specular color B" val="0.4"/>
+    <attnum name="specular color R" val="0.1"/>
+    <attnum name="specular color G" val="0.1"/>
+    <attnum name="specular color B" val="0.1"/>
 
 
     <attnum name="light position x" val="-0"/>
@@ -1225,6 +1225,17 @@
 
   <!-- Cameras -->
   <section name="Cameras">
+
+    <section name="cam -1">
+      <!-- Camera's position relative to a segment -->
+      <attstr name="segment" val="start lane"/>
+      <attnum name="to right" val="-6"/>
+      <attnum name="to start" val="30"/>
+      <attnum name="height" val="1.5"/>
+      <!-- Camera field of view, indicates the first and last segment viewed -->
+      <attstr name="fov start" val="pit-entry"/> <!-- included  -->
+      <attstr name="fov end" val="start lane"/> <!-- excluded -->
+    </section>
 
     <section name="cam 0">
       <!-- Camera's position relative to a segment -->

@@ -35,12 +35,21 @@
   <section name="Graphic Objects">
     <attstr name="wheel texture" val="tex-wheel.rgb"/>
     <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm7000.rgb"/>
+    <attstr name="tachometer texture" val="rpm1.rgb"/>
     <attnum name="tachometer min value" unit="rpm" val="0"/>
+    <attnum name="tachometer min angle" unit="deg" val="224"/>
     <attnum name="tachometer max value" unit="rpm" val="8000"/>
-    <attstr name="speedometer texture" val="speed360.rgb"/>
+    <attnum name="tachometer max angle" unit="deg" val="-39"/>
+    <attnum name="tachometer needle y center" val="53"/>
+    <attnum name="tachometer digit x center" val="128"/>
+    <attnum name="tachometer digit y center" val="5"/>
+    <attstr name="speedometer texture" val="kmh1.rgb"/>
     <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="360"/>
+    <attnum name="speedometer min angle" unit="deg" val="221"/>
+    <attnum name="speedometer max value" unit="km/h" val="180"/>
+    <attnum name="speedometer max angle" unit="deg" val="-37"/>
+    <attnum name="speedometer needle y center" val="52"/>
+    <attstr name="speedometer digital" val="no"/>
 
     <section name="Ranges">
       <section name="1">
@@ -171,8 +180,8 @@
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.40"/>
-    <attnum name="front area" unit="m2" val="1.6"/>
+    <attnum name="Cx" val="0.50"/>
+    <attnum name="front area" unit="m2" val="1.8"/>
     <attnum name="front Clift" val="0.1"/>
     <attnum name="rear Clift" val="0.15"/>
   </section>
@@ -405,7 +414,7 @@
     <attnum name="camber" min="-3" max="0" unit="deg" val="0"/>
     <attnum name="stiffness" min="10" max="30" val="20"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" val="0.02"/>
+    <attnum name="rolling resistance" val="0.023"/>
     <attnum name="mu" val="1.524"/>
   </section>
 
@@ -420,7 +429,7 @@
     <attnum name="camber" min="-3" max="0" unit="deg" val="0"/>
     <attnum name="stiffness" min="10" max="30" val="20"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" val="0.02"/>
+    <attnum name="rolling resistance" val="0.023"/>
     <attnum name="mu" val="1.524"/>
   </section>
 
@@ -435,7 +444,7 @@
     <attnum name="camber" min="-3" max="0" unit="deg" val="-3"/>
     <attnum name="stiffness" min="10" max="30" val="20"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" val="0.02"/>
+    <attnum name="rolling resistance" val="0.023"/>
     <attnum name="mu" val="1.524"/>
   </section>
 
@@ -450,7 +459,7 @@
     <attnum name="camber" min="-3" max="0" unit="deg" val="-3"/>
     <attnum name="stiffness" min="10" max="30" val="20"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" val="0.02"/>
+    <attnum name="rolling resistance" val="0.023"/>
     <attnum name="mu" val="1.524"/>
   </section>
 

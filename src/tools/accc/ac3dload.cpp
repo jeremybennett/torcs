@@ -59,6 +59,7 @@ void computeTriNorm(ob_t * object );
 void smoothTriNorm(ob_t * object );
 void computeObjectTriNorm(ob_t * object );
 void smoothFaceTriNorm(ob_t * object );
+void smoothObjectTriNorm(ob_t * object );
 void normalize(point_t *t );
 int checkMustSmoothVector(point_t *n1,point_t *n2, point_t *t1, point_t *t2);
 void mapNormalToSphere(ob_t * object);
@@ -491,11 +492,11 @@ int terrainSplitOb (ob_t **object)
 
 int splitOb (ob_t **object)
 {
-    tcoord_t vatmp[10000];
-    point_t pttmp[10000];
-    int  oldva[10000];
-    point_t snorm[10000];
-    double  text[10000];
+    tcoord_t *vatmp = 0;
+    point_t *pttmp = 0;
+    int  *oldva = 0;
+    point_t *snorm;
+    double  *text;
     int i=0;
     int j=0;
     int n=0;
@@ -515,10 +516,15 @@ int splitOb (ob_t **object)
     ob_t * tobnext=(*object)->next;
     int atleastone=0;
 
-    num=(*object)->numsurf;
+    num = (*object)->numsurf;
   
-    tri=(int *) malloc(sizeof(int)*num);
-    memset(tri,0,sizeof(int)*num);
+    tri   = (int *) calloc(num, sizeof(int));
+    vatmp = (tcoord_t *) calloc(4 * num, sizeof(tcoord_t));
+    pttmp = (point_t *) calloc(4 * num, sizeof(point_t));
+    oldva = (int *) calloc(4 * num, sizeof(int));
+    snorm = (point_t *) calloc(4 * num, sizeof(point_t));
+    text  = (double *) calloc(3 * num, sizeof(double));
+    
 
     while (mustcontinue==1) {
 	numtri=0; /* number of triangle stored in the object */
@@ -686,6 +692,14 @@ int splitOb (ob_t **object)
 	printf("numtri = %d on num =%d \n",numtri,num);
     }
     *object=tob0;
+
+    freez(tri);
+    freez(vatmp);
+    freez(pttmp);
+    freez(oldva);
+    freez(snorm);
+    freez(text);
+
     return 0;
 }
 
@@ -742,6 +756,7 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 	    (typeConvertion==_AC3DTOAC3D && (extendedTriangles==1))) {
 	    printf ("Computing normals for %s \n",object->next->name);
 	    computeObjectTriNorm(object->next );
+	    //smoothObjectTriNorm(object->next );
 	}
 	if ( ((needSplit!=0) && (notexturesplit==0)) || ((notexturesplit==0) && collapseObject)) {
 	    printf ("found in %s , a duplicate coord with not the same u,v, split is required\n",
@@ -1767,7 +1782,6 @@ void computeTriNorm(ob_t * object )
     ob_t * tmpob=NULL;
     int i=0;
     point_t norm ;
-    double dd;
 
     tmpob=object;
     while (tmpob!=NULL) {
@@ -1789,27 +1803,24 @@ void computeTriNorm(ob_t * object )
 			&tmpob->vertex[tmpob->vertexarray[i*3+1].indice],
 			&tmpob->vertex[tmpob->vertexarray[i*3+2].indice],
 			&norm);
-	    dd=sqrt(norm.x*norm.x + norm.y*norm.y + norm.z*norm.z);
-	    if (dd != 0.0) {
-		tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
-		tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
-		tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x;
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y;
+	    tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z;
 
-		tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
-		tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
-		tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y;
+	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z;
 	
-		tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
-		tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
-		tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
-	    }
-	
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x;
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y;
+	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z;
 	}
 	for (i=0; i<tmpob->numsurf; i++) {
 	    normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);
 	    normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);
 	    normalize(&tmpob->norm[tmpob->vertexarray[i*3+2].indice]);
 	}
+
 	tmpob=tmpob->next;
     }
     return ;
@@ -1820,7 +1831,6 @@ void computeObjectTriNorm(ob_t * object )
     ob_t * tmpob=NULL;
     int i=0;
     point_t norm ;
-    double dd;
 
     tmpob=object;
     if (tmpob->name==NULL)  {
@@ -1841,28 +1851,25 @@ void computeObjectTriNorm(ob_t * object )
 		    &tmpob->vertex[tmpob->vertexarray[i*3+1].indice],
 		    &tmpob->vertex[tmpob->vertexarray[i*3+2].indice],
 		    &norm);
-	dd=sqrt(norm.x*norm.x + norm.y*norm.y + norm.z*norm.z);
-	if (dd != 0.0) {
-	    tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z/dd;
+	
+	tmpob->norm[tmpob->vertexarray[i*3].indice].x+=norm.x;
+	tmpob->norm[tmpob->vertexarray[i*3].indice].y+=norm.y;
+	tmpob->norm[tmpob->vertexarray[i*3].indice].z+=norm.z;
       
-	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z/dd;
+	tmpob->norm[tmpob->vertexarray[i*3+1].indice].x+=norm.x;
+	tmpob->norm[tmpob->vertexarray[i*3+1].indice].y+=norm.y;
+	tmpob->norm[tmpob->vertexarray[i*3+1].indice].z+=norm.z;
       
-	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y/dd;
-	    tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z/dd;
-	}
+	tmpob->norm[tmpob->vertexarray[i*3+2].indice].x+=norm.x;
+	tmpob->norm[tmpob->vertexarray[i*3+2].indice].y+=norm.y;
+	tmpob->norm[tmpob->vertexarray[i*3+2].indice].z+=norm.z;
     }
     for (i=0; i<tmpob->numsurf; i++) {
-      
 	normalize(&tmpob->norm[tmpob->vertexarray[i*3].indice]);
 	normalize(&tmpob->norm[tmpob->vertexarray[i*3+1].indice]);
 	normalize(&tmpob->norm[tmpob->vertexarray[i*3+2].indice]);
     }
-
+    
     return ;
 }
 
@@ -1893,7 +1900,7 @@ void smoothTriNorm(ob_t * object )
     double nx,ny,nz;
     int j=0;
 
-
+    printf("Smooth called on %s\n", object->name);
     tmpob=object;
     while (tmpob!=NULL) {
 	if (tmpob->name==NULL)  {
@@ -1910,30 +1917,13 @@ void smoothTriNorm(ob_t * object )
 	}
 	for (i=0; i<tmpob->numvert; i++) {
 	    /* compute the same normal for each points in the surface */
-	    nx=tmpob->norm[i].x;
-	    ny=tmpob->norm[i].y;
-	    nz=tmpob->norm[i].z;
-	    dd=sqrt(nx*nx+ny*ny+nz*nz);
-	    if (dd != 0.0) {
-		tmpob->snorm[i].x=nx/dd;
-		tmpob->snorm[i].y=ny/dd;
-		tmpob->snorm[i].z=nz/dd;
-
-		tmpob->norm[i].x=nx/dd;
-		tmpob->norm[i].y=ny/dd;
-		tmpob->norm[i].z=nz/dd;
-	    } else {
-		tmpob->snorm[i].x=0;
-		tmpob->snorm[i].y=0;
-		tmpob->snorm[i].z=1;
-
-		tmpob->norm[i].x=0;
-		tmpob->norm[i].y=0;
-		tmpob->norm[i].z=1;
-	    }
+	    tmpob->snorm[i].x=tmpob->norm[i].x;
+	    tmpob->snorm[i].y=tmpob->norm[i].y;
+	    tmpob->snorm[i].z=tmpob->norm[i].z;
 	}
 	tmpob=tmpob->next;
     }
+
 
     tmpob=object;
     tmpob1=object;
@@ -1980,13 +1970,28 @@ void smoothTriNorm(ob_t * object )
 	    for (i=0; i<tmpob->numvert; i++) {
 		for (j=0; j<tmpob1->numvert; j++) {
 		    if( checkMustSmoothVector( &tmpob->norm[i],&tmpob1->norm[j],&tmpob->vertex[i],&tmpob1->vertex[j] )) {
-			tmpob->snorm[i].x+=tmpob1->norm[j].x;
-			tmpob->snorm[i].y+=tmpob1->norm[j].y;
-			tmpob->snorm[i].z+=tmpob1->norm[j].z;
+			
+			point_t p;
+			p.x = tmpob1->norm[j].x + tmpob->norm[i].x;
+			p.y = tmpob1->norm[j].y + tmpob->norm[i].y;
+			p.z = tmpob1->norm[j].z + tmpob->norm[i].z;
+			normalize(&p);
+			
+			tmpob->snorm[i].x = p.x;
+			tmpob->snorm[i].y = p.y;
+			tmpob->snorm[i].z = p.z;
 
-			tmpob1->snorm[j].x+=tmpob->norm[i].x;
-			tmpob1->snorm[j].y+=tmpob->norm[i].y;
-			tmpob1->snorm[j].z+=tmpob->norm[i].z;
+			tmpob1->snorm[j].x = p.x;
+			tmpob1->snorm[j].y = p.y;
+			tmpob1->snorm[j].z = p.z;
+
+/* 			tmpob->snorm[i].x+=tmpob1->norm[j].x; */
+/* 			tmpob->snorm[i].y+=tmpob1->norm[j].y; */
+/* 			tmpob->snorm[i].z+=tmpob1->norm[j].z; */
+
+/* 			tmpob1->snorm[j].x+=tmpob->norm[i].x; */
+/* 			tmpob1->snorm[j].y+=tmpob->norm[i].y; */
+/* 			tmpob1->snorm[j].z+=tmpob->norm[i].z; */
 		    }
 		}
 	    }
@@ -2083,8 +2088,6 @@ void smoothFaceTriNorm(ob_t * object )
 {
     ob_t * tmpob=NULL;
     int i=0;
-    double dd;
-    double nx,ny,nz;
     int j=0;
 
     tmpob=object;
@@ -2120,22 +2123,38 @@ void smoothFaceTriNorm(ob_t * object )
     }
   
 
+    for (i=0; i<tmpob->numvert; i++) {
+	normalize(&tmpob->snorm[i]);
+    }
+    return ;
+}
+
+void smoothObjectTriNorm(ob_t * object )
+{
+    ob_t * tmpob=NULL;
+    int i=0;
+    int j=0;
+
     tmpob=object;
+
     for (i=0; i<tmpob->numvert; i++) {
 	/* compute the same normal for each points in the surface */
-	nx=tmpob->snorm[i].x;
-	ny=tmpob->snorm[i].y;
-	nz=tmpob->snorm[i].z;
-	dd=sqrt(nx*nx+ny*ny+nz*nz);
-	if (dd == 0.0) {
-	    tmpob->snorm[i].x=nx/dd;
-	    tmpob->snorm[i].y=ny/dd;
-	    tmpob->snorm[i].z=nz/dd;
-	} else {
-	    tmpob->snorm[i].x=0;
-	    tmpob->snorm[i].y=0;
-	    tmpob->snorm[i].z=1;
+	for (j=0; j<tmpob->numvert; j++) {
+	    if ( (tmpob->vertex[i].x - tmpob->vertex[j].x)<=0.001 &&
+		 (tmpob->vertex[i].y - tmpob->vertex[j].y)<=0.001 &&
+		 (tmpob->vertex[i].z - tmpob->vertex[j].z)<=0.001) {
+		/*same point */
+		tmpob->snorm[i].x+=tmpob->norm[j].x;
+		tmpob->snorm[i].y+=tmpob->norm[j].y;
+		tmpob->snorm[i].z+=tmpob->norm[j].z;
+		tmpob->snorm[j].x=tmpob->snorm[i].x;
+		tmpob->snorm[j].y=tmpob->snorm[i].y;
+		tmpob->snorm[j].z=tmpob->snorm[i].z;
+	    }
 	}
+    }
+    for (i=0; i<tmpob->numvert; i++) {
+	normalize(&tmpob->snorm[i]);
     }
     return ;
 }
@@ -3228,7 +3247,6 @@ void mapNormalToSphere(ob_t *object)
     double xmax=-9999;
     double ymax=-9999;
     double zmax=-9999;
-    double radius=0;
     double pospt=0;
     double ddmax=0;
     double ddmin=10000;
@@ -3274,10 +3292,6 @@ void mapNormalToSphere(ob_t *object)
 	    }
 	tmpob=tmpob->next;
     }
-    radius=sqrt( (xmax-xmin)*(xmax-xmin) +
-		 (ymax-ymin)*(ymax-ymin) +
-		 (zmax-zmin)*(zmax-zmin) )/2;
-    
     ddmin=(ddmax-ddmin)/2+ddmin;
     tmpob=object;
     while (tmpob!=NULL) {
@@ -3313,8 +3327,95 @@ void mapNormalToSphere(ob_t *object)
 
 
 }
-
 void mapTextureEnv(ob_t *object)
+{
+    ob_t * tmpob =NULL;
+    double x,y,z,zt,lg;
+    double z_min=10000;
+    double z_max=-10000;
+    int i, j;
+    
+    
+    tmpob=object;
+    while (tmpob!=NULL) {
+	if (tmpob->name==NULL)  {
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	if (!strcmp(tmpob->name, "root"))  {
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	if (!strcmp(tmpob->name, "world")){
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	for (j=0; j<tmpob->numvert; j++)
+	    {
+		z = tmpob->vertex[j].z + tmpob->snorm[j].z / 3.0;
+		if (z>z_max)
+		    z_max=z;
+		if (z<z_min)
+		    z_min=z;
+	    }
+	tmpob=tmpob->next;
+    }
+
+    tmpob=object;
+    while (tmpob!=NULL) {
+	if (tmpob->name==NULL)  {
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	if (!strcmp(tmpob->name, "root"))  {
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	if (!strcmp(tmpob->name, "world")){
+	    tmpob=tmpob->next;
+	    continue;
+	}
+	/* create the new vertex array */
+	tmpob->textarray1=(double *) malloc(sizeof(double)*tmpob->numvert*2);
+	tmpob->textarray2=(double *) malloc(sizeof(double)*tmpob->numvert*2);
+	memcpy(tmpob->textarray1, tmpob->textarray,tmpob->numvert*sizeof(double )*2); 
+	memcpy(tmpob->textarray2, tmpob->textarray,tmpob->numvert*sizeof(double )*2); 
+	tmpob->texture1=tmpob->texture;
+	tmpob->texture2=tmpob->texture;
+	for (i=0; i<tmpob->numvert; i++)
+	    {
+		x = tmpob->vertex[i].x;
+		y = tmpob->vertex[i].y;
+		z = tmpob->vertex[i].z;
+		lg = sqrt(x*x+y*y+z*z);
+		if (lg != 0.0) {
+		    x /= lg;
+		    y /= lg;
+		    z /= lg;
+		} else {
+		    x = 0;
+		    y = 0;
+		    z = 1;
+		}
+		//z_min = 0;
+		tmpob->textarray1[i*2] =  0.5 + x / 2.0;
+		zt = (z + tmpob->snorm[i].z / 3.0 - z_min) / (z_max - z_min);
+		tmpob->textarray1[i*2+1] = zt;
+
+		if (tmpob->textarray1[i*2+1] > 1.0)
+		    tmpob->textarray1[i*2+1] = 0.999;
+		else if (tmpob->textarray1[i*2+1] < 0.0)
+		    tmpob->textarray1[i*2+1] = 0.001;
+
+		tmpob->textarray2[i*2] = 0.5 + y / 2.0;
+		tmpob->textarray2[i*2+1] = z;
+
+	    }
+	tmpob=tmpob->next;
+    }
+}
+
+void mapTextureEnvOld(ob_t *object)
 {
     ob_t * tmpob =NULL;
     int i=0;
@@ -3460,7 +3561,6 @@ void mapTextureEnv(ob_t *object)
 void mapNormalToSphere2(ob_t *object)
 {
     ob_t * tmpob =NULL;
-    double pospt=0;
     int i=0;
 
     tmpob=object;
@@ -3481,15 +3581,13 @@ void mapNormalToSphere2(ob_t *object)
 	for (i=0; i<tmpob->numvert; i++)
 	    {
 		/* compute the same normal for each points in the surface */
-		pospt= sqrt( tmpob->vertex[i].x*tmpob->vertex[i].x + tmpob->vertex[i].y*tmpob->vertex[i].y +
-			     tmpob->vertex[i].z*tmpob->vertex[i].z);
-		tmpob->norm[i].x=tmpob->vertex[i].x;
-		tmpob->norm[i].y=tmpob->vertex[i].y;
-		tmpob->norm[i].z=tmpob->vertex[i].z;
-		normalize(&tmpob->norm[i]);
-		tmpob->snorm[i].x+=tmpob->norm[i].x;
-		tmpob->snorm[i].y+=tmpob->norm[i].y;
-		tmpob->snorm[i].z+=tmpob->norm[i].z;
+/* 		tmpob->norm[i].x = tmpob->vertex[i].x; */
+/* 		tmpob->norm[i].y = tmpob->vertex[i].y; */
+/* 		tmpob->norm[i].z = tmpob->vertex[i].z; */
+/* 		normalize(&tmpob->norm[i]); */
+/* 		tmpob->snorm[i].x += tmpob->norm[i].x; */
+/* 		tmpob->snorm[i].y += tmpob->norm[i].y; */
+/* 		tmpob->snorm[i].z += tmpob->norm[i].z; */
 		normalize(&tmpob->snorm[i]);
 	    }
 	tmpob=tmpob->next;

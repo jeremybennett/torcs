@@ -4,10 +4,13 @@ OBJECT world
 kids 80
 OBJECT group
 name "TKMN477_g"
-kids 2
+kids 3
+OBJECT group
+name "%___TKMN477_gl2"
+kids 19
 OBJECT group
 name "___TKMN477_gl1"
-kids 50
+kids 31
 OBJECT poly
 name "MESH"
 texture "torcsad1.rgb"

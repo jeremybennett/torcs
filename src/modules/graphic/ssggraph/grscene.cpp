@@ -414,10 +414,15 @@ grInitScene(void)
     light_position[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Z, NULL, light_position[2]);
 
     glShadeModel(GL_SMOOTH);
+    //glShadeModel(GL_FLAT);
+
     light->setPosition(light_position[0],light_position[1],light_position[2]);
     light->setColour(GL_AMBIENT,lmodel_ambient);
     light->setColour(GL_DIFFUSE,lmodel_diffuse);
     light->setColour(GL_SPECULAR,mat_specular);
+/*     light->setSpotlight(1); */
+/*     light->setHeadlight(0); */
+    light->setSpotAttenuation(0.0, 0.0, 0.0);
 
     sgCopyVec3 (fog_clr,  grTrack->graphic.bgColor);
     sgScaleVec3 (fog_clr, 0.8);
