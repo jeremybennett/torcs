@@ -14,7 +14,7 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="Ford GT40 Concept" type="parameter">
+<params name="Ford GT40 Concept" type="param" mode="mw">
 
   <section name="Car">
     <!-- weight bias -->
