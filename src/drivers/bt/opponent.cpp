@@ -24,9 +24,9 @@
 tTrack* Opponent::track;
 float Opponent::FRONTCOLLDIST = 200.0;	/* [m] distance on the track to check other cars */
 float Opponent::BACKCOLLDIST = 50.0;	/* [m] distance on the track to check other cars */
-float Opponent::LENGTH_MARGIN = 2.0;	/* [m] savety margin */
+float Opponent::LENGTH_MARGIN = 3.0;	/* [m] savety margin */
 float Opponent::SIDE_MARGIN = 1.0;		/* [m] savety margin */
-
+float Opponent::EXACT_DIST = 12.0;		/* [m] if the estimated distance is smaller, compute it more accurate */
 
 Opponent::Opponent()
 {
@@ -72,7 +72,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 			distance -= LENGTH_MARGIN;
 
 			/* if the distance is small we compute it more accurate */
-			if (distance < 7.0) {
+			if (distance < EXACT_DIST) {
 				Straight carFrontLine(
 					mycar->_corner_x(FRNT_LFT),
 					mycar->_corner_y(FRNT_LFT),

@@ -148,6 +148,8 @@ class Driver {
 		static const float CLUTCH_SPEED;
 		static const float CENTERDIV;
 		static const float DISTCUTOFF;
+		static const float MAX_INC_FACTOR;
+		static const float CATCH_FACTOR;
 
 		/* track variables */
 		tTrack* track;

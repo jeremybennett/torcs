@@ -39,7 +39,7 @@ const float Driver::TCL_RANGE = 5.0;						/* [m/s] range [0..10] */
 const float Driver::LOOKAHEAD_CONST = 17.0;					/* [m] */
 const float Driver::LOOKAHEAD_FACTOR = 0.33;				/* [-] */
 const float Driver::WIDTHDIV = 3.0;							/* [-] */
-const float Driver::SIDECOLL_MARGIN = 2.0;					/* [m] */
+const float Driver::SIDECOLL_MARGIN = 3.0;					/* [m] */
 const float Driver::BORDER_OVERTAKE_MARGIN = 0.5;			/* [m] */
 const float Driver::OVERTAKE_OFFSET_SPEED = 5.0;			/* [m/s] */
 const float Driver::PIT_LOOKAHEAD = 6.0;					/* [m] */
@@ -50,6 +50,8 @@ const float Driver::MAX_FUEL_PER_METER = 0.0008;			/* [liter/m] fuel consumtion 
 const float Driver::CLUTCH_SPEED = 5.0;						/* [m/s] */
 const float Driver::CENTERDIV = 0.1;						/* [-] (factor) [0.01..0.6] */
 const float Driver::DISTCUTOFF = 200.0;						/* [m] */
+const float Driver::MAX_INC_FACTOR = 5.0;					/* [m] increment faster if speed is slow [1.0..10.0] */
+const float Driver::CATCH_FACTOR = 10.0;					/* [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake */
 
 Driver::Driver(int index)
 {
@@ -146,11 +148,11 @@ void Driver::drive(tSituation *s)
 		car->_brakeCmd = filterABS(filterBrakeSpeed(filterTurnSpeed(filterBColl(filterBPit(getBrake())))));
 		if (car->_brakeCmd == 0.0) {
 			car->_accelCmd = filterTCL(filterTrk(getAccel()));
-			car->_clutchCmd = getClutch();
 		} else {
 			car->_accelCmd = 0.0;
-			car->_clutchCmd = getClutch();
 		}
+		car->_clutchCmd = getClutch();
+
 	}
 }
 
@@ -392,13 +394,17 @@ float Driver::getOvertakeOffset()
 
 	for (i = 0; i < opponents->getNOpponents(); i++) {
 		if (opponent[i].getState() & OPP_FRONT) {
-			catchdist = opponent[i].getCatchDist();
+			catchdist = MIN(opponent[i].getCatchDist(), opponent[i].getDistance()*CATCH_FACTOR);
 			if (catchdist < mincatchdist) {
 				mincatchdist = catchdist;
 				o = &opponent[i];
 			}
 		}
 	}
+
+	// Increment speed dependent.
+	float incfactor = MAX_INC_FACTOR - MIN(fabs(car->_speed_x)/MAX_INC_FACTOR, (MAX_INC_FACTOR-1.0));
+
 
 	if (o != NULL) {
 		// Compute the width around the middle which we can use for overtaking.
@@ -409,9 +415,9 @@ float Driver::getOvertakeOffset()
 		float wm = o->getCarPtr()->_trkPos.seg->width*CENTERDIV;
 
 		if (otm > wm && myoffset > -w) {
-			myoffset -= OVERTAKE_OFFSET_INC;
+			myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 		} else if (otm < -wm && myoffset < w) {
-			myoffset += OVERTAKE_OFFSET_INC;
+			myoffset += OVERTAKE_OFFSET_INC*incfactor;
 		} else {
 			// If the opponent is near the middle we try to move the offset toward
 			// the inside of the expected turn.
@@ -457,11 +463,11 @@ float Driver::getOvertakeOffset()
 			float maxoff = (o->getCarPtr()->_trkPos.seg->width - car->_dimension_y)/2.0-BORDER_OVERTAKE_MARGIN;
 			if (lenleft > lenright) {
 				if (myoffset < maxoff) {
-					myoffset += OVERTAKE_OFFSET_INC;
+					myoffset += OVERTAKE_OFFSET_INC*incfactor;
 				}
 			} else {
 				if (myoffset > -maxoff) {
-					myoffset -= OVERTAKE_OFFSET_INC;
+					myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 				}
 			}
 		}
@@ -677,14 +683,30 @@ float Driver::filterSColl(float steer)
 				d = d - c;
 				if (d < 0.0) d = 0.0;
 				float psteer = diffangle/car->_steerLock;
-
 				myoffset = car->_trkPos.toMiddle;
+
 				float w = o->getCarPtr()->_trkPos.seg->width/WIDTHDIV-BORDER_OVERTAKE_MARGIN;
 				if (fabs(myoffset) > w) {
 					myoffset = (myoffset > 0) ? w : -w;
 				}
 
-				psteer = steer*(d/c) + 2.0*psteer*(1.0-d/c);
+				// Who is outside?
+				if (car->_trkPos.seg->type == TR_STR) {
+					if (fabs(car->_trkPos.toMiddle) > fabs(ocar->_trkPos.toMiddle)) {
+						psteer = steer*(d/c) + 1.5*psteer*(1.0-d/c);
+					} else {
+						psteer = steer*(d/c) + 2.0*psteer*(1.0-d/c);
+					}
+				} else {
+					float outside = car->_trkPos.toMiddle - ocar->_trkPos.toMiddle;
+					float sign = (car->_trkPos.seg->type == TR_RGT) ? 1.0 : -1.0;
+					if (outside*sign > 0.0) {
+						psteer = steer*(d/c) + 1.5*psteer*(1.0-d/c);
+					} else {
+						psteer = steer*(d/c) + 2.0*psteer*(1.0-d/c);
+					}
+				}
+
 				if (psteer*steer > 0.0 && fabs(steer) > fabs(psteer)) {
 					return steer;
 				} else {

@@ -83,6 +83,7 @@ class Opponent {
 		static float SIDECOLLDIST;
 		static float LENGTH_MARGIN;
 		static float SIDE_MARGIN;
+		static float EXACT_DIST;
 };
 
 
