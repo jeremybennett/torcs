@@ -82,7 +82,10 @@ Changes since 1.2.3
 - Reworked cg-nascar-rwd (holes, dark lod, better lighting) (Bernhard).
 - Max Torque as well for simuv2 (Christophe Baegert, Christos).
 - More efficient rear mirror (Felix Kühling, Bernhard).
-
+- Reworked e-track-1 (Bernhard).
+- Reworked Aalborg track (Bernhard).
+- Reworked g-track-2 (Bernhard).
+- Fixed wheel normals (Bernhard).
 
 
 Changes since 1.2.2
@@ -165,6 +168,9 @@ TODO for unofficial 1.2.4
 -------------------------
 - Fix new introduced bugs.
 - Fix more memory leaks (already hunt down a LOT there are still more).
+- Fix XSLT/DTD for viewing results (Report by Eugen)
+- Fix (windows) trackgen.
+- Fix strdup (for FreeBSD).
 - (Improve collision).
 - Hunting lost open filehandles if any left.
 - S3TC Option for all textures (with option).
@@ -173,7 +179,7 @@ TODO for unofficial 1.2.4
 - Bugfixes and cleanup.
 - (Add billy, astigot).
 - Add cameras/update track format on/for several tracks (spring, alpine,
-  e-track-1, aalborg, eroad, ...).
+  aalborg, ...).
 - solution for varying gl headers (include mesa headers into the source?)
 - Smoke starts too high above ground, review?
 - Sound performance problem (no facts, just a feeling at the moment, wait for
@@ -184,7 +190,6 @@ TODO for unofficial 1.2.4
 - (Sound did not work well with 40 cars, investigate).
 - Integrate documentation into distribution?
 - try to resolve "(null)" texture problem (seems to be in the model files).
-- Make all sounds work (backport simuv3 -> v2, backfire, etc.).
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
@@ -217,6 +222,7 @@ TODO for unofficial 1.2.5
   pit door, pits are quite dark around the logo).
 - (Problem with BRD Sim-pro in windows, investigate)
 - pit wall collision
+
 
 TODO LATER
 ----------
@@ -265,7 +271,6 @@ TODO LATER
 - Timed races (e.g. 24h).
 - Allow more mouse events /suggested by Frieder -> mouse wheel for gear
   switching).
-- lighting of wheels broken on right side (check normals)?
 - Start position marks on track (same technique like fake shadow, skids).
 - Start procedures (pace car, etc).
 - Better transparency for track objects.
