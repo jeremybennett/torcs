@@ -227,7 +227,10 @@ specfiles: installspecfiles specfilesdirs
 .SUFFIXES: .c
 
 .c.o:
-	${CC} $(INCFLAGS) $(CFLAGS) $(COMPILFLAGS) -c $<
+	${CXX} $(INCFLAGS) $(CXXFLAGS) $(COMPILFLAGS) -c $<
+
+
+#	${CC} $(INCFLAGS) $(CFLAGS) $(COMPILFLAGS) -c $<
 
 
 ifdef LIBRARY
