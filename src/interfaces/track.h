@@ -61,6 +61,9 @@
 #define TRK_ATT_AMBIENT_R	"ambient color R"
 #define TRK_ATT_AMBIENT_G	"ambient color G"
 #define TRK_ATT_AMBIENT_B	"ambient color B"
+#define TRK_ATT_DIFFUSE_R	"diffuse color R"
+#define TRK_ATT_DIFFUSE_G	"diffuse color G"
+#define TRK_ATT_DIFFUSE_B	"diffuse color B"
 #define TRK_ATT_SHIN	"shininess"
 #define TRK_ATT_LIPOS_X	"light position x"
 #define TRK_ATT_LIPOS_Y	"light position y"
@@ -152,6 +155,7 @@
 #define TRK_ATT_PROFTGTER	"profil end tangent right"
 #define TRK_ATT_MARKS		"marks"
 #define TRK_ATT_ENVMAP		"env map"
+#define TRK_ATT_DOVFACTOR	"DoV factor"
 
 #define TRK_SECT_PITS		"Pits"
 
@@ -362,6 +366,8 @@ typedef struct trackSeg {
 #define TR_PITENTRY	0x00000010 /**< Segment where the pit lane cross the main track */
 #define TR_PITEXIT	0x00000020 /**< Segment where the pit lane cross the main track */
 #define TR_PIT		0x00000040 /**< Car pit */
+
+    tdble DoVfactor;            /* the factor to use in calculating DoV for this Seg */
 
     /* pointers */
 

@@ -77,8 +77,193 @@ extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* opt
 
 #define DISTG 80
 
+
+
+#ifdef GUIONS
+DoV_t  PlayableDistanceOfView;
+DoV_t  UnPlayableDistanceOfView;
+DoV_t * currentDistanceOfView=&PlayableDistanceOfView;
+DistanceOfViewHashing_t * SceneHashing=NULL;
+
+
+int computeSceneHashing(tTrack *track)
+{
+  tTrackSeg *seg1=track->seg;
+  tTrackSeg *seg=NULL;
+  tTrackSeg *seg2=NULL;
+  int i=0;
+  int j=0;
+  int dist=0;
+  int lmap=0;
+  tdble length=0;
+  tdble rearlength=0;
+  /* allocate enough space for the hash */
+  printf("computescenehashing 0\n");
+  if(SceneHashing!=NULL)
+    free(SceneHashing);
+
+  SceneHashing=(DistanceOfViewHashing_t *)(malloc(sizeof(DistanceOfViewHashing_t)*track->nseg));
+  printf("computescenehashing %d\n",track->nseg);
+  printf("front global= %f\n",PlayableDistanceOfView.FrontLevelGroupGlobal);
+  printf("front level1= %f\n",PlayableDistanceOfView.FrontLevelGroup1);
+  printf("front level2= %f\n",PlayableDistanceOfView.FrontLevelGroup2);
+  printf("front level3= %f\n",PlayableDistanceOfView.FrontLevelGroup3);
+  printf("rear global= %f\n",PlayableDistanceOfView.RearLevelGroupGlobal);
+  printf("rear level1= %f\n",PlayableDistanceOfView.RearLevelGroup1);
+  printf("rear level2= %f\n",PlayableDistanceOfView.RearLevelGroup2);
+  printf("rear level3= %f\n",PlayableDistanceOfView.RearLevelGroup3);
+  for (i = 0, seg = track->seg; i < track->nseg; i++, seg = seg->next)
+    {
+      /*if (i==0)printf("%d,",seg->id);*/
+      SceneHashing[i].name=seg->name;
+      SceneHashing[i].ViewGroup=g_hash_table_new (g_str_hash, g_str_equal);
+      SceneHashing[i].ViewGroup_num=0;
+      SceneHashing[i].ViewGroupMap1_num=0;
+      SceneHashing[i].ViewGroupMap2_num=0;
+      SceneHashing[i].ViewGroupMap3_num=0;
+      /* now setup the hash for each entry */
+      /*printf("dealing with TKMN%d factor=%f\n",seg->id,seg->DoVfactor);*/
+      dist=0;
+      length=0;
+      for (j=0, seg2=seg; j<track->nseg; j++, seg2=seg2->next)
+	{
+	  hashMapElement * helt;
+	  char  buf[256];
+	  length+=seg2->length;
+	  if (length>PlayableDistanceOfView.FrontLevelGroupGlobal*seg->DoVfactor)
+	    break;
+	  helt=(hashMapElement *)malloc(sizeof(hashMapElement ));
+	  if (length<PlayableDistanceOfView.FrontLevelGroup1*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl1",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl1 %f\n",seg2->id,length);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  if (length<PlayableDistanceOfView.FrontLevelGroup2*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl2",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl2 %f\n",seg2->id,length);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  if (length<PlayableDistanceOfView.FrontLevelGroup3*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl3",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl3 %f\n",seg2->id,length);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  sprintf(buf,"___TKMN%d_gl0",seg2->id);
+	  /*printf("inserting ___TKMN%d_gl0 %f\n",seg2->id,length);*/
+	  helt->name=strdup(buf);
+	  helt->numberOfMapToApply=0;
+	  g_hash_table_insert(SceneHashing[i].ViewGroup,
+			      helt->name,
+			      helt);
+	  SceneHashing[i].ViewGroup_num++;
+
+	  sprintf(buf,"TKMN%d",seg2->id);
+	  /*printf("inserting TKMN%d %f\n",seg2->id,length);*/
+	  helt->name=strdup(buf);
+	  helt->numberOfMapToApply=0;
+	  g_hash_table_insert(SceneHashing[i].ViewGroup,
+			      helt->name,
+			      helt);
+	  SceneHashing[i].ViewGroup_num++;
+	}
+
+      dist=0;
+      /*printf("dealing with TKMN%d in rear side\n",seg->id);*/
+      rearlength=0;
+      for (j=0, seg2=seg; j<track->nseg; j++, seg2=seg2->prev)
+	{
+	  hashMapElement * helt;
+	  char  buf[256];
+	  rearlength+=seg2->length;
+	  if (rearlength>PlayableDistanceOfView.RearLevelGroupGlobal*seg->DoVfactor)
+	    break;
+	  helt=(hashMapElement *)malloc(sizeof(hashMapElement ));
+	  if (rearlength<PlayableDistanceOfView.RearLevelGroup1*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl1",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl1 %f\n",seg2->id,rearlength);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  if (rearlength<PlayableDistanceOfView.RearLevelGroup2*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl2",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl2 %f\n",seg2->id,rearlength);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  if (rearlength<PlayableDistanceOfView.RearLevelGroup3*seg->DoVfactor)
+	    {
+	      sprintf(buf,"___TKMN%d_gl3",seg2->id);
+	      /*printf("inserting ___TKMN%d_gl3 %f\n",seg2->id,rearlength);*/
+	      helt->name=strdup(buf);
+	      helt->numberOfMapToApply=0;
+	      g_hash_table_insert(SceneHashing[i].ViewGroup,
+                                             helt->name,
+				  helt);
+	      SceneHashing[i].ViewGroup_num++;
+	    }
+	  sprintf(buf,"___TKMN%d_gl0",seg2->id);
+	  /*printf("inserting ___TKMN%d_gl0 %f\n",seg2->id,rearlength);*/
+	  helt->name=strdup(buf);
+	  helt->numberOfMapToApply=0;
+	  g_hash_table_insert(SceneHashing[i].ViewGroup,
+			      helt->name,
+			      helt);
+	  SceneHashing[i].ViewGroup_num++;
+
+	  sprintf(buf,"TKMN%d",seg2->id);
+	  /*printf("inserting TKMN%d %f\n",seg2->id,rearlength);*/
+	  helt->name=strdup(buf);
+	  helt->numberOfMapToApply=0;
+	  g_hash_table_insert(SceneHashing[i].ViewGroup,
+			      helt->name,
+			      helt);
+	  SceneHashing[i].ViewGroup_num++;
+	}
+
+
+
+
+      /*printf("TKMN%d %d\n",seg->id,SceneHashing[i].ViewGroup_num);*/
+
+    }
+  
+  /*printf("\n");*/
+  return 0;
+}
+#endif /* GUIONS */
+
+
 int preScene(ssgEntity *e)
 {
+#ifdef GUIONS
   char *p=NULL ;
   int id=0;
   char *q=NULL;
@@ -88,49 +273,63 @@ int preScene(ssgEntity *e)
   if (p==NULL)
     return TRUE;
   q=strstr(p,"TKMN");
+  id=segIndice;
   if (q)
     {
-      q=q+strlen("TKMN");
-      id=atoi(q);
-      max=grTrack->seg->prev->id;
-      if (max-segIndice<DISTG)
+      if (g_hash_table_lookup(SceneHashing[segIndice].ViewGroup,p)!=NULL)
 	{
-	  if (id>segIndice)
-	    {
-	      return TRUE;
-	    }
-	  if (id< (DISTG-(max-segIndice)))
-	    {
-	      return TRUE;
-	    }
-	  if (id>(segIndice-DISTG))
-	    {
-	      return TRUE;
-	    }
-	  return FALSE;
-	}
-      if (segIndice<DISTG)
-	{
-	  if (id<segIndice)
-	    {
-	      return TRUE;
-	    }
-	  if (id>(max-(DISTG-segIndice)))
-	    {
-	      return TRUE;
-	    }
-	  if (id<segIndice+DISTG)
-	    {
-	      return TRUE;
-	    }
-	  return FALSE;
-	}
-      if (id<(segIndice+DISTG) && id>(segIndice-DISTG))
-	{
+	  /*printf("%d accepting %s\n",segIndice,p);*/
 	  return TRUE;
 	}
-      return (FALSE);
+      else
+	{
+	  /*printf("rejecting %s\n",p);*/
+	  return FALSE;
+	}
+      /*q=q+strlen("TKMN");
+	id=atoi(q);
+	max=grTrack->seg->prev->id;
+	if (max-segIndice<DISTG)
+	{
+	if (id>segIndice)
+	{
+	return TRUE;
+	}
+	if (id< (DISTG-(max-segIndice)))
+	{
+	return TRUE;
+	}
+	if (id>(segIndice-DISTG))
+	{
+	return TRUE;
+	}
+	return FALSE;
+	}
+	if (segIndice<DISTG)
+	{
+	if (id<segIndice)
+	{
+	return TRUE;
+	}
+	if (id>(max-(DISTG-segIndice)))
+	{
+	return TRUE;
+	}
+	if (id<segIndice+DISTG)
+	{
+	return TRUE;
+	}
+	return FALSE;
+	}
+	if (id<(segIndice+DISTG) && id>(segIndice-DISTG))
+	{
+	return TRUE;
+	}
+	return (FALSE);
+      */
     }
+  /* printf("%d accepting %s\n",segIndice,p);*/
+#endif /* GUIONS */
 
   return TRUE;
 }
@@ -147,16 +346,51 @@ int grInitScene(tTrack *track)
 
     light=ssgGetLight(0);
     GLfloat mat_specular[]={0.3,0.3,0.3,1.0};
-    GLfloat mat_shininess[] ={5.0};
+    GLfloat mat_shininess[] ={50.0};
     GLfloat light_position[]={0,0,200,0.0};
-    GLfloat lmodel_ambient[]={0.8,0.8,0.8,1.0};
+    GLfloat lmodel_ambient[]={0.2,0.2,0.2,1.0};
+    GLfloat lmodel_diffuse[]={0.8,0.8,0.8,1.0};
 
+    if (grHandle==NULL)
+      grHandle = GfParmReadFile(GR_PARAM_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+#ifdef GUIONS
+
+    PlayableDistanceOfView.FrontLevelGroupGlobal=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_FRONT_GLOBAL,
+							      (char*)NULL, 600);
+    PlayableDistanceOfView.FrontLevelGroup3=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_FRONT_LEVEL3,
+							      (char*)NULL, 150);
+    PlayableDistanceOfView.FrontLevelGroup2=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_FRONT_LEVEL2,
+							      (char*)NULL, 300);
+    PlayableDistanceOfView.FrontLevelGroup1=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_FRONT_LEVEL1,
+							      (char*)NULL, 500);
+
+    PlayableDistanceOfView.RearLevelGroupGlobal=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_REAR_GLOBAL,
+							      (char*)NULL, 350);
+    PlayableDistanceOfView.RearLevelGroup3=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_REAR_LEVEL3,
+							      (char*)NULL, 100);
+    PlayableDistanceOfView.RearLevelGroup2=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_REAR_LEVEL2,
+							      (char*)NULL, 200);
+    PlayableDistanceOfView.RearLevelGroup1=GfParmGetNum(grHandle, GR_SCT_PLAYABLE_DOV,
+							      GR_ATT_REAR_LEVEL1,
+							      (char*)NULL, 300);
+#endif /* GUIONS */
+    GfParmReleaseHandle(grHandle);
     mat_specular[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_R, NULL, mat_specular[0]);
     mat_specular[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_G, NULL, mat_specular[1]);
     mat_specular[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_B, NULL, mat_specular[2]);
     lmodel_ambient[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_R, NULL, lmodel_ambient[0]);
     lmodel_ambient[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_G, NULL, lmodel_ambient[1]);
     lmodel_ambient[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_AMBIENT_B, NULL, lmodel_ambient[2]);
+    lmodel_diffuse[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_DIFFUSE_R, NULL, lmodel_diffuse[0]);
+    lmodel_diffuse[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_DIFFUSE_G, NULL, lmodel_diffuse[1]);
+    lmodel_diffuse[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_DIFFUSE_B, NULL, lmodel_diffuse[2]);
     mat_shininess[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SHIN, NULL, mat_shininess[0]);
     light_position[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_X, NULL, light_position[0]);
     light_position[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_LIPOS_Y, NULL, light_position[1]);
@@ -171,15 +405,18 @@ int grInitScene(tTrack *track)
     */
     light->setPosition(light_position[0],light_position[1],light_position[2]);
     light->setColour(GL_AMBIENT,lmodel_ambient);
-    light->setColour(GL_DIFFUSE,lmodel_ambient);
+    light->setColour(GL_DIFFUSE,lmodel_diffuse);
     light->setColour(GL_SPECULAR,mat_specular);
     
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
 
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+    /* GUIONS GL_TRUE */
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_FALSE);
 
+    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,GL_SEPARATE_SPECULAR_COLOR);
+    
     ssgSetCurrentOptions(&options);
     ssgAddTextureFormat(".png", grLoadPngTexture);
     grTrack = track;
@@ -188,7 +425,9 @@ int grInitScene(tTrack *track)
 
     glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
     glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-
+    /*glTexGeni (GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+      glTexGeni (GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);*/
+    
     grWrldX = (int)(track->max.x - track->min.x + 1);
     grWrldY = (int)(track->max.y - track->min.y + 1);
     grWrldZ = (int)(track->max.z - track->min.z + 1);
@@ -207,7 +446,11 @@ int grInitScene(tTrack *track)
     desc = grssgLoadAC3D(acname, NULL);
     TheScene->addKid(desc);
     /* TheScene->setCallback(SSG_CALLBACK_PREDRAW, preScene); */
+#ifdef GUIONS
+    computeSceneHashing(track);
+#endif /* GUIONS */
     customizePits();
+
 
     return 0;
 }

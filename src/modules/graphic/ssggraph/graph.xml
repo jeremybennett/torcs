@@ -37,6 +37,53 @@
     <attnum name="G graph" val="1"></attnum>
   </section>
 
+  <section name="Playable Cameras Distance of Views">
+    <attnum name="Front Level Group Global" val="600"></attnum>
+    <attnum name="Front Level Group 1" val="400"></attnum>
+    <attnum name="Front Level Group 2" val="300"></attnum>
+    <attnum name="Front Level Group 3" val="200"></attnum>
+
+    <attnum name="Rear Level Group Global" val="700"></attnum>
+    <attnum name="Rear Level Group 1" val="500"></attnum>
+    <attnum name="Rear Level Group 2" val="300"></attnum>
+    <attnum name="Rear Level Group 3" val="150"></attnum>
+
+    <attnum name="Front Level Map 1" val="300"></attnum>
+    <attnum name="Front Level Map 2" val="200"></attnum>
+    <attnum name="Front Level Map 3" val="100"></attnum>
+
+    <attnum name="Rear Level Map 1" val="300"></attnum>
+    <attnum name="Rear Level Map 2" val="200"></attnum>
+    <attnum name="Rear Level Map 3" val="100"></attnum>
+
+    <attnum name="Level Factor" val="1.0"></attnum>
+    <attnum name="Map Factor" val="1.0"></attnum>
+  </section>
+
+  <section name="UnPlayable Cameras Distance of Views">
+    <attnum name="Front Level Group Global" val="400"></attnum>
+    <attnum name="Front Level Group 1" val="350"></attnum>
+    <attnum name="Front Level Group 2" val="300"></attnum>
+    <attnum name="Front Level Group 3" val="200"></attnum>
+
+    <attnum name="Rear Level Group Global" val="400"></attnum>
+    <attnum name="Rear Level Group 1" val="350"></attnum>
+    <attnum name="Rear Level Group 2" val="300"></attnum>
+    <attnum name="Rear Level Group 3" val="200"></attnum>
+
+    <attnum name="Front Level Map 1" val="300"></attnum>
+    <attnum name="Front Level Map 2" val="250"></attnum>
+    <attnum name="Front Level Map 3" val="200"></attnum>
+
+    <attnum name="Rear Level Map 1" val="300"></attnum>
+    <attnum name="Rear Level Map 2" val="250"></attnum>
+    <attnum name="Rear Level Map 3" val="200"></attnum>
+
+    <attnum name="Level Factor" val="1.0"></attnum>
+    <attnum name="Map Factor" val="1.0"></attnum>
+  </section>
+
+
   <section name="TV Director View">
     <attnum name="change camera interval" val="30"></attnum>
     <attnum name="event interval" val="5"></attnum>

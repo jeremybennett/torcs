@@ -36,15 +36,19 @@ struct _ssgMaterial
   float  shi  ;
 } ;
 
-static int num_materials = 0 ;
-static sgVec3 *vtab = NULL ;
+static int		num_materials = 0 ;
+static sgVec3		*vtab = NULL ;
+static sgVec3		*ntab = NULL ;
+static int		usenormal = 0;
+static int		nv;
+static int		isacar = TRUE;
 
-static ssgLoaderOptions* current_options = NULL ;
-static _ssgMaterial    *current_material = NULL ;
-static sgVec4          *current_colour   = NULL ;
-static ssgBranch       *current_branch   = NULL ;
-static char            *current_tfname   = NULL ;
-static char            *current_data     = NULL ;
+static ssgLoaderOptions	*current_options  = NULL ;
+static _ssgMaterial	*current_material = NULL ;
+static sgVec4		*current_colour   = NULL ;
+static ssgBranch	*current_branch   = NULL ;
+static char		*current_tfname   = NULL ;
+static char		*current_data     = NULL ;
 
 #define MAX_MATERIALS 1000    /* This *ought* to be enough! */
 static _ssgMaterial   *mlist    [ MAX_MATERIALS ] ;
@@ -71,12 +75,10 @@ static int do_mat      ( char *s ) ;
 static int do_refs     ( char *s ) ;
 static int do_kids     ( char *s ) ;
 
-#if NOTYET
 static int do_obj_world ( char *s ) ;
 static int do_obj_poly  ( char *s ) ;
 static int do_obj_group ( char *s ) ;
 static int do_obj_light ( char *s ) ;
-#endif
 
 #define PARSE_CONT   0
 #define PARSE_POP    1
@@ -174,7 +176,6 @@ static Tag surface_tags [] =
   { NULL, NULL }
 } ;
 
-#if NOTYET
 static Tag obj_type_tags [] = 
  { 
    { "world", do_obj_world }, 
@@ -183,19 +184,16 @@ static Tag obj_type_tags [] =
    { "light", do_obj_light }, 
    { NULL, NULL } 
  } ; 
-#endif
 
 #define OBJ_WORLD  0
 #define OBJ_POLY   1
 #define OBJ_GROUP  2
 #define OBJ_LIGHT  3
 
-#if NOTYET
 static int do_obj_world ( char * ) { return OBJ_WORLD ; } 
 static int do_obj_poly  ( char * ) { return OBJ_POLY  ; }
 static int do_obj_group ( char * ) { return OBJ_GROUP ; }
 static int do_obj_light ( char * ) { return OBJ_LIGHT ; }
-#endif
 static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* options );
 
 
@@ -220,6 +218,7 @@ static ssgState *get_state ( _ssgMaterial *mat )
   st -> setColourMaterial ( GL_AMBIENT_AND_DIFFUSE ) ;
 
   st -> enable  ( GL_LIGHTING ) ;
+
   st -> setShadeModel ( GL_SMOOTH ) ;
 
   if ( mat -> rgb[3] < 0.99 )
@@ -303,10 +302,8 @@ static int do_material ( char *s )
 
 static int do_object   ( char * s  )
 {
-#if NOTYET
   ssgBranch  *current_branch_g   = NULL ;
   int obj_type = search ( obj_type_tags, s ) ;
-#endif
 
   delete current_tfname ;
   current_tfname = NULL ;
@@ -320,7 +317,6 @@ static int do_object   ( char * s  )
 
   ssgEntity *old_cb = current_branch ;
 
-#if NOTYET
   if (obj_type==OBJ_GROUP)
     {
       inGroup=1;
@@ -332,7 +328,6 @@ static int do_object   ( char * s  )
       current_branch_g->setCallback(SSG_CALLBACK_PREDRAW, preScene);
     }
   else
-#endif
     inGroup=0;
 
   ssgTransform *tr = new ssgTransform () ;
@@ -489,21 +484,35 @@ static int do_numvert  ( char *s )
 {
   char buffer [ 1024 ] ;
 
-  int nv = strtol ( s, NULL, 0 ) ;
+  nv = strtol ( s, NULL, 0 ) ;
  
   delete [] vtab ;
+  delete [] ntab ;
 
   vtab = new sgVec3 [ nv ] ;
+  ntab = new sgVec3 [ nv ] ;
 
   for ( int i = 0 ; i < nv ; i++ )
   {
     fgets ( buffer, 1024, loader_fd ) ;
 
-    if ( sscanf ( buffer, "%f %f %f",
-                          &vtab[i][0], &vtab[i][1], &vtab[i][2] ) != 3 )
-    {
-      ulSetError ( UL_FATAL, "ac_to_gl: Illegal vertex record." ) ;
-    }
+    if ( sscanf ( buffer, "%f %f %f %f %f %f",
+                          &vtab[i][0], &vtab[i][1], &vtab[i][2],&ntab[i][0], &ntab[i][1], &ntab[i][2] ) != 6 )
+      {
+	usenormal=0;
+	if ( sscanf ( buffer, "%f %f %f",
+		      &vtab[i][0], &vtab[i][1], &vtab[i][2] ) != 3 )
+	  {
+	    ulSetError ( UL_FATAL, "ac_to_gl: Illegal vertex record." ) ;
+	  }
+      }
+    else
+      {
+	usenormal=1;
+	float tmp  =  ntab[i][1] ;
+	ntab[i][1] = -ntab[i][2] ;
+	ntab[i][2] = tmp ;
+      }
 
     float tmp  =  vtab[i][1] ;
     vtab[i][1] = -vtab[i][2] ;
@@ -563,7 +572,9 @@ static int do_refs     ( char *s )
 
   ssgVertexArray   *vlist = new ssgVertexArray ( nrefs ) ;
   ssgTexCoordArray *tlist = new ssgTexCoordArray ( nrefs ) ;
- 
+  ssgIndexArray	   *vindices = new ssgIndexArray(nrefs);
+  ssgNormalArray   *nrm = new ssgNormalArray ( nrefs ) ;
+
   for ( int i = 0 ; i < nrefs ; i++ )
   {
     fgets ( buffer, 1024, loader_fd ) ;
@@ -585,24 +596,36 @@ static int do_refs     ( char *s )
 
     tlist -> add ( tc ) ;
     vlist -> add ( vtab[vtx] ) ;
+    if (usenormal==1)
+      nrm -> add ( ntab[vtx] ) ;
+    vindices-> add (i);
   }
+#ifdef GUIONS
+  if (usenormal==1)
+    {
+      printf("use normal\n");
+    }
+#endif /* GUIONS */
 
-  ssgNormalArray *nrm = new ssgNormalArray ( 1 ) ;
   ssgColourArray *col = new ssgColourArray ( 1 ) ;
 
   col -> add ( *current_colour ) ;
 
   sgVec3 nm ;
 
-  if ( nrefs < 3 )
-    sgSetVec3 ( nm, 0.0f, 0.0f, 1.0f ) ;
-  else
-    sgMakeNormal ( nm, vlist->get(0), vlist->get(1), vlist->get(2) ) ;
+  if (usenormal==0)
+    {
+      if ( nrefs < 3 )
+	sgSetVec3 ( nm, 0.0f, 0.0f, 1.0f ) ;
+      else
+	sgMakeNormal ( nm, vlist->get(0), vlist->get(1), vlist->get(2) ) ;
+      nrm -> add ( nm ) ;
+      
+    }
 
-  nrm -> add ( nm ) ;
 
   int type = ( current_flags & 0x0F ) ;
-  if ( type >= 0 && type <= 2 )
+  if ( type >= 0 && type <= 4 )
   {
     GLenum gltype = GL_TRIANGLES ;
     switch ( type )
@@ -613,10 +636,41 @@ static int do_refs     ( char *s )
                break ;
       case 2 : gltype = GL_LINE_STRIP ;
                break ;
+      case 4 : gltype = GL_TRIANGLE_STRIP ;
+               break ;
     }
+    /* GUIONS TEST */
+#ifdef NORMAL_TEST
+    if(  isacar==TRUE)
+      {
+	ssgVertexArray   *vlinelist = new ssgVertexArray ( nv*2 ) ;
+	for (i=0; i<nv; i++)
+	  {
+	    sgVec3 tv;
+	    tv[0]=ntab[i][0]*0.2 +vtab[i][0]  ;
+	    tv[1]=ntab[i][1]*0.2 +vtab[i][1] ;
+	    tv[2]=ntab[i][2]*0.2 +vtab[i][2];
+	    
+	    vlinelist -> add ( vtab[i] ) ;
+	    vlinelist -> add ( tv ) ;
+	    
+	  }
+	ssgVtxTable * vline=new ssgVtxTable(GL_LINES,vlinelist,NULL,NULL,NULL   );
+	current_branch -> addKid ( current_options -> createLeaf (vline,0)  );
+      }
+#endif
+    /*ssgVertexArray * va=  new   ssgVertexArray(nv,vtab);*/
+    /*va->set(vtab,nv);*/
+    /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+      va, nrm, tlist, col , vindices) ;*/
+
+    /* good */
+    /*ssgVtxArray* vtab = new ssgVtxArray ( gltype,
+      vlist, nrm, tlist, col , vindices) ;*/
 
     ssgVtxTable* vtab = new ssgVtxTable ( gltype,
-      vlist, nrm, tlist, col ) ;
+					  vlist, nrm, tlist, col ) ;
+
     vtab -> setState ( get_state ( current_material ) ) ;
     vtab -> setCullFace ( ! ( (current_flags>>4) & 0x02 ) ) ;
 
@@ -625,6 +679,7 @@ static int do_refs     ( char *s )
 
     if ( leaf )
        current_branch -> addKid ( leaf ) ;
+
   }
 
   return PARSE_POP ;
@@ -662,9 +717,10 @@ void myssgFlatten(ssgEntity *obj)
 
 }
 
-
-ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
+ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
 {
+
+  isacar=TRUE;
   ssgEntity *obj = myssgLoadAC ( fname, options ) ;
 
   if ( obj == NULL )
@@ -675,7 +731,26 @@ ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
   ssgBranch *model = new ssgBranch () ;
   model -> addKid ( obj ) ;
   /*myssgFlatten(obj);*/
-  /*ssgFlatten      ( obj ) ;*/
+  /*ssgFlatten      ( obj ) ;
+    ssgStripify   ( model ) ;*/
+  return model ;
+
+}
+
+ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options )
+{
+  isacar=FALSE;
+  ssgEntity *obj = myssgLoadAC ( fname, options ) ;
+
+  if ( obj == NULL )
+    return NULL ;
+
+  /* Do some simple optimisations */
+
+  ssgBranch *model = new ssgBranch () ;
+  model -> addKid ( obj ) ;
+  /*myssgFlatten(obj);*/
+  ssgFlatten      ( obj ) ;
   ssgStripify   ( model ) ;
   return model ;
 }

@@ -45,7 +45,7 @@ RSC=rc.exe
 # ADD CPP /nologo /G5 /W4 /GX /O2 /Ob2 /I "..\..\export\include" /I "..\windows\include" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
-# ADD RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x409 /fo"U:\tocs.res" /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -144,6 +144,10 @@ SOURCE=..\libs\torcs\splash.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\torcs.rc
+# End Source File
+# Begin Source File
+
 SOURCE=.\windowsspec.cpp
 # End Source File
 # End Group
@@ -187,5 +191,9 @@ SOURCE=..\libs\torcs\torcs.h
 SOURCE=.\windowsspec.h
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=..\..\Ticon.ico
+# End Source File
 # End Target
 # End Project

@@ -61,6 +61,7 @@ static tTrackSurface *sideSurface[2];
 
 
 static int envIndex;
+static tdble DoVfactor=1.0;
 
 static tdble borderWidth[2];
 static tdble borderHeight[2];
@@ -268,6 +269,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	    curBorder->height = borderHeight[side];
 	    curBorder->style = borderStyle[side];
 	    curBorder->envIndex = envIndex;
+	    curBorder->DoVfactor = DoVfactor;
 	    curBorder->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
 	    curBorder->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
 	    curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
@@ -501,6 +503,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	    curSide->type = curSeg->type;
 	    curSide->surface = sideSurface[side];
 	    curSide->envIndex = envIndex;
+	    curSide->DoVfactor = DoVfactor;
 	    curSide->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
 	    curSide->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
 	    curSide->angle[TR_ZS] = curSeg->angle[TR_ZS];
@@ -829,7 +832,7 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
     material = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_SURF, TRK_VAL_ASPHALT);
     surface = AddTrackSurface(TrackHandle, theTrack, material);
     envIndex = 0;
-
+    DoVfactor =1.0;
     InitSides(TrackHandle, theTrack);
     
     segread = 0;
@@ -867,6 +870,7 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
 	surface = AddTrackSurface(TrackHandle, theTrack, material);
 	envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, envIndex+1) - 1;
+	DoVfactor = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_DOVFACTOR, (char*)NULL, 1.0) ;
 
 	/* get segment type and lenght */
 	if (strcmp(segtype, TRK_VAL_STR) == 0) {
@@ -1026,6 +1030,8 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	    curSeg->width = curSeg->startWidth = curSeg->endWidth = width;
 	    curSeg->surface = surface;
 	    curSeg->envIndex = envIndex;
+	    curSeg->DoVfactor = DoVfactor;
+	    /*printf("curseg id =%d factor =%f\n",curSeg->id,curSeg->DoVfactor);*/
 	    curSeg->lgfromstart = totLength;
 	    
 	    if (ext && ind) {

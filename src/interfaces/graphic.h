@@ -56,6 +56,24 @@
 #define GR_ATT_SKIDDELTAT	"skid interval"
 #define GR_ATT_FOVFACT		"fov factor"
 
+#define GR_SCT_PLAYABLE_DOV     "Playable Cameras Distance of Views"
+#define GR_ATT_FRONT_GLOBAL     "Front Level Group Global"
+#define GR_ATT_FRONT_LEVEL3     "Front Level Group 3"
+#define GR_ATT_FRONT_LEVEL2     "Front Level Group 2"
+#define GR_ATT_FRONT_LEVEL1     "Front Level Group 1"
+#define GR_ATT_REAR_GLOBAL      "Rear Level Group Global"
+#define GR_ATT_REAR_LEVEL3      "Rear Level Group 3"
+#define GR_ATT_REAR_LEVEL2      "Rear Level Group 2"
+#define GR_ATT_REAR_LEVEL1      "Rear Level Group 1"
+
+#define GR_ATT_FRONT_MAP1       "Front Level Map 1" 
+#define GR_ATT_FRONT_MAP2       "Front Level Map 2"
+#define GR_ATT_FRONT_MAP3       "Front Level Map 3"
+#define GR_ATT_REAR_MAP1        "Rear Level Map 1"
+#define GR_ATT_REAR_MAP2        "Rear Level Map 2"
+#define GR_ATT_REAR_MAP3        "Rear Level Map 3"
+
+
 /* graphic functions prototypes */
 
 typedef int (*tfGraphicInitTrack)(tTrack *);

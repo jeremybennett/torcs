@@ -447,7 +447,7 @@
 
     <attnum name="light position x" val="-50"></attnum>
     <attnum name="light position y" val="-50"></attnum>
-    <attnum name="light position z" val="5000"></attnum>
+    <attnum name="light position z" val="600"></attnum>
 
     <section name="Environment Mapping">
       <section name="general">

@@ -48,7 +48,8 @@
 #ifdef DMALLOC
 #include "dmalloc.h"
 #endif
-
+extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
+extern ssgEntity *grssgCarLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 static int
 preCbEnv(ssgEntity *e)
 {
@@ -466,7 +467,8 @@ grInitCar(tCarElt *car)
     sprintf(path, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
-    carEntity = ssgLoad(param);
+    /*carEntity = ssgLoad(param);*/
+    carEntity = grssgCarLoadAC3D(param, NULL);
     DBG_SET_NAME(carEntity, "Body", index, -1);
     carBody->addKid(carEntity);
     /* add wheels */
@@ -589,7 +591,7 @@ grDrawCar(tCarElt *car, tCarElt *curCar, int dispFlag)
     /* wheels */
     for (i = 0; i < 4; i++) {
 	float	*clr;
-	
+
 	sgSetCoord(&wheelpos, car->priv->wheel[i].relPos.x, car->priv->wheel[i].relPos.y, car->priv->wheel[i].relPos.z,
 		   RAD2DEG(car->priv->wheel[i].relPos.az), RAD2DEG(car->priv->wheel[i].relPos.ax), 0);
 	grCarInfo[index].wheelPos[i]->setTransform(&wheelpos);

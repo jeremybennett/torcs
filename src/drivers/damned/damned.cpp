@@ -616,9 +616,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	spdtgt2[0]  = 20.0 * seg->surface->kFriction - 12.0;
 
 	//Advance[1] = Advance5[1] / seg->surface->kFriction;
-	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction * seg->surface->kFriction;
-	Advance3[1] = (seg->surface->kFriction - 1.5) * 20.0;
-	steerk[1] = 1.0 - (seg->surface->kFriction - 1.4);
+	spdtgt2[1] = spdtgt2ref[1] * seg->surface->kFriction;
+	Advance3[1] = (seg->surface->kFriction - 1.5) * 25.0;
+	//steerk[1] = 1.0 - (seg->surface->kFriction - 1.4);
 
 	spdtgt2[3] = spdtgt2ref[3] * (seg->surface->kFriction - .3);
 	spdtgt2[4] = spdtgt2ref[4] * (seg->surface->kFriction - .3);
@@ -737,11 +737,14 @@ static void drive(int index, tCarElt* car, tSituation *s)
     vang = atan2(car->_speed_Y, car->_speed_X);
     CosA = cos(vang);
     SinA = sin(vang);
-    dist = (0.04 * car->_speed_x * car->_speed_x - (Advance3[idx] / ((seg->surface->kFriction - 0.4) * (seg->surface->kFriction - 0.4))));
+    dist = (0.04 * car->_speed_x * car->_speed_x - (Advance3[idx] / (seg->surface->kFriction - 0.4)));
     x = X + (CosA) * dist;
     y = Y + (SinA) * dist;
     RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
 
+    if (dist < (DmTrack->width / 2.0)) {
+	dist = DmTrack->width / 2.0;
+    }
     Dny = Advance4[idx] * fabs(trkPos.toRight - seg->width /2.0) / dist;
     Dny = exp(-Dny * Dny * Dny * Dny);
 
