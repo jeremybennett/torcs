@@ -80,14 +80,12 @@ static const tdble waitToTurn = 1.0; /* how long should i wait till i try to tur
 
 /* release resources when the module gets unloaded */
 static void shutdown(int index) {
-	int i;
-	for (i = 0; i < BOTS; i++) {
-		if (mycar[i] != NULL) {
-			delete mycar[i];
-			mycar[i] = NULL;
-			free(botdesc[i]);
-			free(botname[i]);
-		}
+	int i = index - 1;
+	if (mycar[i] != NULL) {
+		delete mycar[i];
+		mycar[i] = NULL;
+		free(botdesc[i]);
+		free(botname[i]);
 	}
 	if (myTrackDesc != NULL) {
 		delete myTrackDesc;
