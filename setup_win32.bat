@@ -194,6 +194,13 @@ copy .\data\cars\models\p406\tex-wheel.rgb .\runtime\cars\p406\tex-wheel.rgb
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\cars
+call .\create_dir .\runtime\cars\porsche-55
+copy .\data\cars\models\porsche-55\porsche-55.xml .\runtime\cars\porsche-55\porsche-55.xml
+copy .\data\cars\models\porsche-55\porsche-55.ac .\runtime\cars\porsche-55\porsche-55.ac
+copy .\data\cars\models\porsche-55\tex-wheel.rgb .\runtime\cars\porsche-55\tex-wheel.rgb
+
+call .\create_dir .\runtime
+call .\create_dir .\runtime\cars
 call .\create_dir .\runtime\cars\porsche-gt1
 copy .\data\cars\models\porsche-gt1\porsche-gt1.xml .\runtime\cars\porsche-gt1\porsche-gt1.xml
 copy .\data\cars\models\porsche-gt1\porsche-gt1.ac .\runtime\cars\porsche-gt1\porsche-gt1.ac

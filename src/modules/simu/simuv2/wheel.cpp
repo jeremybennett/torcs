@@ -20,10 +20,6 @@
 #include <stdio.h>
 #include "sim.h"
 
-#ifdef DMALLOC
-#include "dmalloc.h"
-#endif
-
 static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
@@ -183,7 +179,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
     /* MAGIC FORMULA */
     Bx = wheel->mfB * stmp;
-    F = sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx)));
+    F = sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) + stmp * .3;
 
     /* load sensitivity */
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * wheel->forces.z / wheel->opLoad));

@@ -54,6 +54,13 @@
       <attstr name="orientation" val="counter-clockwise"></attstr>
     </section>
 
+    <section name="Turn Marks">
+      <attnum name="width" val="1.0" unit="m"></attnum>
+      <attnum name="height" val="1.0" unit="m"></attnum>
+      <attnum name="vertical space" val="0.0" unit="m"></attnum>
+      <attnum name="horizontal space" val="2.0" unit="m"></attnum>
+    </section>
+
   </section>
 
 
@@ -67,16 +74,34 @@
     <attstr name="rside type" in="tangent,level" val="tangent"></attstr>
 
     <attstr name="lside surface"  val="grass"></attstr>
-    <attnum name="lside width"    val="10.0"></attnum>
+    <attnum name="lside width"    val="15.0"></attnum>
     <attstr name="lside type" in="tangent,level" val="tangent"></attstr>
 
     <attnum name="profil steps length" val="6" unit="m"></attnum>
+
+    <!-- PITS -->
+    <attstr name="pit type"   val="track side"></attstr>
+    <attstr name="pit side"   val="left"></attstr>
+    <attstr name="pit entry"  val="pit-entry"></attstr>
+    <attstr name="pit start"  val="pit-start"></attstr>
+    <attstr name="pit end"    val="start lane"></attstr>
+    <attstr name="pit exit"   val="pit-exit"></attstr>
+    <attnum name="pit length" val="15" unit="m"></attnum>
+    <attnum name="pit width"  val="5" unit="m"></attnum>
 
     <section name="segments">
 
       <section name="start lane">
         <attstr name="type" val="str"></attstr>
-	<attnum name="lg" unit="m" val="250"></attnum>
+	<attnum name="lg" unit="m" val="150"></attnum>
+	<attstr name="lside surface"  val="asphalt-pits"></attstr>
+      </section>
+
+      <section name="pit-exit">
+        <attstr name="type" val="str"></attstr>
+	<attnum name="lg" unit="m" val="100"></attnum>
+	<attnum name="lside end width"    val="5.0"></attnum>
+	<attstr name="lside surface" val="asphalt"></attstr>
       </section>
 
       <section name="turn 1.1">
@@ -84,9 +109,11 @@
 	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="35"></attnum>
-	<attnum val="50.0" name="rside end width"></attnum>
-	<attstr val="sand" name="rside surface"></attstr>
-      </section>
+	<attnum name="rside end width" val="50.0"></attnum>
+	<attstr name="rside surface" val="sand"></attstr>
+ 	<attstr name="lside surface" val="grass"></attstr>
+	<attstr name="marks" val="50;100"></attstr>
+     </section>
 
       <section name="turn 1.2">
         <attstr name="type" val="lft"></attstr>
@@ -176,7 +203,8 @@
 	<attstr name="surface" val="asphalt2-l-right"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="90"></attnum>
-      </section>
+	<attstr name="marks" val="50"></attstr> 
+     </section>
 
       <section name="s7">
         <attstr name="type" val="str"></attstr>
@@ -189,6 +217,7 @@
 	<attstr name="surface" val="asphalt2-l-left"></attstr>
 	<attnum name="radius" unit="m" val="30"></attnum>
 	<attnum name="arc" unit="deg" val="110"></attnum>
+	<attstr name="marks" val="50"></attstr>
       </section>
 
       <section name="turn 9">
@@ -242,6 +271,7 @@
 	<attnum name="arc" unit="deg" val="90"></attnum>
 	<attstr name="rside surface" val="concrete"></attstr>
 	<attstr name="lside surface" val="concrete"></attstr>
+	<attstr name="marks" val="50;100"></attstr>
       </section>
 
       <section name="turn 12b">
@@ -266,6 +296,7 @@
 	<attnum name="arc" unit="deg" val="45"></attnum>
 	<attnum val="30" name="rside end width"></attnum>
 	<attstr val="sand" name="rside surface"></attstr>
+	<attstr name="marks" val="50;100;150"></attstr>
       </section>
 
       <section name="s13">
@@ -326,10 +357,19 @@
 	<attnum name="arc" unit="deg" val="90"></attnum>
       </section>
 
-      <section name="s17">
+      <section name="pit-entry">
         <attstr name="type" val="str"></attstr>
 	<attstr name="surface" val="asphalt2-lines"></attstr>
-	<attnum name="lg" unit="m" val="189.01632434"></attnum>
+	<attnum name="lg" unit="m" val="114.01632434"></attnum>
+	<attnum name="lside end width"    val="15.0"></attnum>
+	<attstr name="lside surface" val="asphalt"></attstr>
+      </section>
+
+      <section name="pit-start">
+        <attstr name="type" val="str"></attstr>
+	<attstr name="surface" val="asphalt2-lines"></attstr>
+	<attnum name="lg" unit="m" val="75"></attnum>
+	<attstr name="lside surface"  val="asphalt-pits"></attstr>
       </section>
 
     </section>
