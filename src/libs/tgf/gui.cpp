@@ -429,6 +429,10 @@ GfuiScreenActivate(void *screen)
 	GfuiDisplay();
 	glutPostRedisplay();
     }
+    if (GfuiScreen->mouseAllowed == 0) {
+	/* erase the cursor */
+	/* glutSetCursor(GLUT_CURSOR_NONE); */
+    }
 }
 
 
@@ -466,6 +470,7 @@ GfuiScreenDeactivate(void)
     glutPassiveMotionFunc((void(*)(int,int))NULL);
     glutIdleFunc((void(*)(void))NULL);
     glutDisplayFunc(GfuiDisplayNothing);
+    /* glutSetCursor(GLUT_CURSOR_LEFT_ARROW); */
 }
 
 /** Create a new screen.
