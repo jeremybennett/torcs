@@ -515,12 +515,11 @@ GfParmGetName(void *handle)
     @warning	The file is created if necessary	
     @see	GfParmReadFile
  */
+#define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfParmWriteFile: error\n");return -1;}
+#define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
 int
 GfParmWriteFile(const char *file, void* handle, char *name, int type, const char *dtd)
 {
-#define FW(buf)	if(fwrite((const void*)buf,strlen(buf),1,out)!=1){perror(file);GfTrace("GfWriteParmFile: error\n");return -1;}
-#define BLANK for(i = 0; i < indent*2; i++) blank[i] = ' '; blank[i] = 0;
-
     static	char *typeStr[2] = {GFPARM_PARAM_STR, GFPARM_TEMPL_STR};
     char	buf[BUFMAX];
     char	blank[BUFMAX];
@@ -536,14 +535,14 @@ GfParmWriteFile(const char *file, void* handle, char *name, int type, const char
 
 #ifndef DEBUG
     if ((CurParm->mode & GFPARM_WRITABLE) == 0) {
-	GfTrace1("GfWriteParmFile: file %s is not allowed to be rewrited\n", file);
+	GfTrace1("GfParmWriteFile: file %s is not allowed to be rewrited\n", file);
 	/* return -1; */
     }
 #endif
 
     if ((out = fopen(file, "w")) == NULL) {
 	perror(file);
-	GfTrace1("GfWriteParmFile: file %s has pb\n", file);
+	GfTrace1("GfParmWriteFile: file %s has pb\n", file);
 	return -1;
     }
 
@@ -1076,11 +1075,13 @@ GfParmGetStr(void *handle, char *path, char *key, char *deflt)
     curKey = (tParmKey*)curNode;
     
     if ((curNode == NULL)  || (curNode->type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	return strdup(deflt);
+	/* return strdup(deflt); */
+	return deflt;
     }	
 
     /* key found, return value */
-    return strdup(curKey->valstr);
+    /* return strdup(curKey->valstr); */
+    return curKey->valstr;
 }
 
 
@@ -1102,12 +1103,13 @@ GfParmGetCurStr(void *handle, char *path, char *key, char *deflt)
     curKey = gfGetCurKey(handle, path, key);
 
     if ((curKey == NULL)  || (curKey->n.type != PARM_NODE_KEY) ||  (curKey->type != P_STR)) {
-	return strdup(deflt);
+	/* return strdup(deflt); */
+	return deflt;
     }	
 
     /* key found, return value */
-    return strdup(curKey->valstr);
-    
+    /* return strdup(curKey->valstr); */
+    return curKey->valstr;
 }
 
 
@@ -1191,7 +1193,7 @@ GfParmSetStr(void *handle, char *path, char *key, char *val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfWriteParmFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1257,7 +1259,7 @@ GfParmSetCurStr(void *handle, char *path, char *key, char *val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfWriteParmFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1327,7 +1329,7 @@ GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfWriteParmFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1396,7 +1398,7 @@ GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
 
 #ifdef DEBUG
     if ((curParm->mode & GFPARM_MODIFIABLE) == 0) {
-	GfTrace1("GfWriteParmFile: file %s is not allowed to be modified\n", curParm->file);
+	GfTrace1("GfParmWriteFile: file %s is not allowed to be modified\n", curParm->file);
 	/* return -1; */
     }
 #endif
@@ -1445,7 +1447,7 @@ GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val)
     @return	<tt>0 ... </tt>Ok
 		<br><tt>-1 .. </tt>Error
     @warning	The handle is kept existing, a WriteParmFile will clean the file.
-    @see	GfWriteParmFile
+    @see	GfParmWriteFile
  */
 int
 GfParmClean(void *handle)

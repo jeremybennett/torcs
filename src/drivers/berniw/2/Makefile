@@ -20,7 +20,7 @@ ROBOT = berniw
 
 DATADIR   = drivers/${ROBOT}/2
 
-DATA      = car.xml $(shell find *.xml -maxdepth 0 -type f -print)
+DATA      = $(shell find *.xml -maxdepth 0 -type f -print) cg-nascar-rwd.rgb
 
 include ${MAKE_DEFAULT}
 

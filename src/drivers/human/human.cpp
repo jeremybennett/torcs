@@ -210,26 +210,22 @@ static void initTrack(int index, tTrack* track, void **carParmHandle, tSituation
     *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
     if (*carParmHandle != NULL) {
 	GfOut("Player: %s Loaded\n", sstring);
-	free(carname);
     } else {
 	sprintf(sstring, "drivers/human/car-%s-%d.xml", carname, index);
 	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	if (*carParmHandle != NULL) {
 	    GfOut("Player: %s Loaded\n", sstring);
-	    free(carname);
 	} else {
 	    sprintf(sstring, "drivers/human/tracks/%s/car-%s.xml", trackname, carname);
 	    *carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	    if (*carParmHandle != NULL) {
 		GfOut("Player: %s Loaded\n", sstring);
-		free(carname);
 	    } else {
 		sprintf(sstring, "drivers/human/car-%s.xml", carname);
 		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 		if (*carParmHandle != NULL) {
 		    GfOut("Player: %s Loaded\n", sstring);
 		}
-		free(carname);
 	    }
 	}
     }

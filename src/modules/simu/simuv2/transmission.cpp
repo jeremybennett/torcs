@@ -74,7 +74,6 @@ SimTransmissionConfig(tCar *car)
 	fRatio = trans->differential[TRANS_CENTRAL_DIFF].ratio;
 	fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency * trans->differential[TRANS_CENTRAL_DIFF].efficiency * trans->differential[TRANS_REAR_DIFF].efficiency;
     }
-    free(transType);
 
     trans->gearbox.gearMax = 0;
     for (i = MAX_GEARS - 1; i >= 0; i--) {

@@ -112,7 +112,6 @@ HmReadPrefs(int index)
     } else {
 	Transmission = 1;
     }
-    free(prm);
     NbPitStopProg = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0);
     /* Parameters Settings */
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[ParamAbs]);
@@ -121,14 +120,12 @@ HmReadPrefs(int index)
     } else {
 	ParamAbs = 0;
     }
-    free(prm);
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_ASR, Yn[ParamAsr]);
     if (strcmp(prm, Yn[0]) == 0) {
 	ParamAsr = 1;
     } else {
 	ParamAsr = 0;
     }
-    free(prm);
 
     maxButton = sizeof(Btn)/sizeof(char*);
 
@@ -143,7 +140,6 @@ HmReadPrefs(int index)
 		break;
 	    }
 	}
-	free(prm);
 	if (i == maxButton) {
 	    CmdButton[cmd] = -1;
 	    GfOut("%s -> NONE (-1)\n", CmdAttrName[cmd]);
@@ -157,7 +153,6 @@ HmReadPrefs(int index)
     } else {
 	RelButNeutral = 0;
     }
-    free(prm);
 
     prm = GfParmGetStr(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER, Axis[CmdSteer]);
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_STEER, prm);
@@ -166,7 +161,6 @@ HmReadPrefs(int index)
 	   CmdSteer  = i;
 	}
     }
-    free(prm);
     SteerSens = 1.0/(float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_STEER_SENS,
 				      (char*)NULL, (tdble)(1.0/SteerSens));
     SteerSens = 1.0/(float)GfParmGetNum(PrefHdle, sstring, HM_ATT_STEER_SENS,
@@ -181,7 +175,6 @@ HmReadPrefs(int index)
 	   CmdThrottle  = i;
 	}
     }
-    free(prm);
     ThrMin = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MIN, (char*)NULL, (tdble)ThrMin);
     ThrMinVal = ThrMin = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_THROTTLE_MIN, (char*)NULL, (tdble)ThrMin);
     ThrMax = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_THROTTLE_MAX, (char*)NULL, (tdble)ThrMax);
@@ -205,7 +198,6 @@ HmReadPrefs(int index)
 	   CmdBrake  = i;
 	}
     }
-    free(prm);
     BrkMin = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MIN, (char*)NULL, (tdble)BrkMin);
     BrkMinVal = BrkMin = (float)GfParmGetNum(PrefHdle, sstring, HM_ATT_BRAKE_MIN, (char*)NULL, (tdble)BrkMin);
     BrkMax = (float)GfParmGetNum(PrefHdle, HM_SECT_JSPREF, HM_ATT_BRAKE_MAX, (char*)NULL, (tdble)BrkMax);

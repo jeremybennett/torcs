@@ -5,7 +5,7 @@ kids 1
 OBJECT poly
 name "closedline"
 loc -0.000822186 0.000822186 0
-texture "/home/torcs/runtime3/games/torcs/eee/forest3.rgb"
+texture "forest3.rgb"
 numvert 15
 -0.321472 -0.321472 0
 -0.319828 0.254054 0

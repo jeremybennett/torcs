@@ -581,7 +581,6 @@ grInitBoardCar(tCarElt *car)
     grFilePath = strdup(buf);
     curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
     free(grFilePath);
-    free(param);
 
     /* Load the intrument placement */
     xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XSZ, (char*)NULL, 128);
@@ -637,7 +636,6 @@ grInitBoardCar(tCarElt *car)
     grFilePath = strdup(buf);
     curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
     free(grFilePath);
-    free(param);
 
     /* Load the intrument placement */
     xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XSZ, (char*)NULL, 128);

@@ -212,8 +212,8 @@ RmInitCars(tRmInfo *raceInfo)
 		    sprintf(buf, "cars/%s/%s.xml", elt->_carName, elt->_carName);
 		    GfOut("Car Specification: %s\n", buf);
 		    carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-		    category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, "");
-		    if (strlen(category) != 0) {
+		    category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
+		    if (category != 0) {
 			/* Read Car Category specifications */
 			sprintf(buf, "categories/%s.xml", category);
 			GfOut("Category Specification: %s\n", buf);

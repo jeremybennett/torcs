@@ -385,9 +385,8 @@ ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList)
     sprintf(path, "%s/%s", TRK_SECT_CAM, TRK_LST_CAM);
     GfParmListSeekFirst(TrackHandle, path);
     do {
-	if (segtype) free(segtype);
-	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, "");
-	if (strlen(segtype) == 0) {
+	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, NULL);
+	if (segtype == 0) {
 	    continue;
 	}
 	segread++;
@@ -654,8 +653,8 @@ ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList)
 		*camList = curCam;
 	    }
 	    curCam->name = GfParmListGetCurEltName(TrackHandle, path);
-	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SEGMENT, "");
-	    if (strlen(segName) == 0) {
+	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SEGMENT, NULL);
+	    if (segName == 0) {
 		GfTrace2("Bad Track Definition: in Camera %s %s is missing\n", curCam->name, TRK_ATT_SEGMENT);
 		exit(1);
 	    }
@@ -675,8 +674,8 @@ ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList)
 	    TrackLocal2Global(&trkPos, &(curCam->pos.x), &(curCam->pos.y));
 	    curCam->pos.z = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, 0);
 
-	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_CAM_FOV, "");
-	    if (strlen(segName) == 0) {
+	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_CAM_FOV, NULL);
+	    if (segName == 0) {
 		GfTrace2("Bad Track Definition: in Camera %s %s is missing\n", curCam->name, TRK_ATT_CAM_FOV);
 		exit(1);
 	    }
@@ -689,8 +688,8 @@ ReadTrack1(tTrack *theTrack, void *TrackHandle, tRoadCam **camList)
 		}
 		curSeg = curSeg->next;
 	    }
-	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_CAM_FOVE, "");
-	    if (strlen(segName) == 0) {
+	    segName = GfParmGetCurStr(TrackHandle, path, TRK_ATT_CAM_FOVE, NULL);
+	    if (segName == 0) {
 		GfTrace2("Bad Track Definition: in Camera %s %s is missing\n", curCam->name, TRK_ATT_CAM_FOVE);
 		exit(1);
 	    }

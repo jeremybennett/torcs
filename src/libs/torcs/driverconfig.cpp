@@ -193,13 +193,9 @@ GenCarsInfo(void)
     
     /* Empty the lists */
     while ((curCar = (tCarInfo*)GfRlstUnlinkFirst(&CarsInfoList)) != NULL) {
-	free(curCar->_Name);
-	free(curCar->_DispName);
 	free(curCar);
     }
     while ((curCat = (tCatInfo*)GfRlstUnlinkFirst(&CatsInfoList)) != NULL) {
-	free(curCat->_Name);
-	free(curCat->_DispName);
 	free(curCat);
     }
 
@@ -344,7 +340,6 @@ GenDrvList(void)
 	} else {
 	    PlayersInfo[i].transmission = HM_VAL_MANUAL;
 	}
-	free(str);
 	PlayersInfo[i].nbpitstops = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0);
     }
     return 0;

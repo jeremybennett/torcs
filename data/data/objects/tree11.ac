@@ -5,7 +5,7 @@ kids 1
 OBJECT poly
 name "rect"
 loc 0 10 0
-texture "/home/torcs/runtime3/games/torcs/eee/tree11.rgb"
+texture "tree11.rgb"
 numvert 8
 -10 10 0
 10 10 0

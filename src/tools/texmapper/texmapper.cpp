@@ -555,8 +555,8 @@ void load_params(void)
 	for (j = 0; j < nbcol; j++) {
 	    curFace = (tFace*)calloc(1, sizeof(tFace));
 	    GfRlstAddLast(&(Row[i].faces), (tRingList*)curFace);
-	    curFace->faceName = GfParmGetCurStr(ParamHandle, buf, "face name", "");
-	    if (strlen(curFace->faceName) != 0) {
+	    curFace->faceName = GfParmGetCurStr(ParamHandle, buf, "face name", NULL);
+	    if (curFace->faceName != 0) {
 		curFace->isPresent = true;
 		curFace->xform.hpr[1] =  GfParmGetCurNum(ParamHandle, buf, "rotX", NULL, 0.0);
 		curFace->xform.hpr[2] = -GfParmGetCurNum(ParamHandle, buf, "rotZ", NULL, 0.0);

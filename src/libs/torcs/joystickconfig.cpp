@@ -164,7 +164,6 @@ onActivate1(void * /* dummy */)
 		break;
 	    }
 	}
-	free(prm);
 	if (i == maxButton) {
 	    CmdButton[cmd] = -1;
 	}
@@ -213,7 +212,6 @@ TorcsJoystick1MenuInit(void *prevMenu)
 		break;
 	    }
 	}
-	free(prm);
 	if (i == maxButton) {
 	    CmdButton[cmd] = -1;
 	}

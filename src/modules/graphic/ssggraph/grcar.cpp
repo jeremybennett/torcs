@@ -414,7 +414,6 @@ grInitCar(tCarElt *car)
 	grMipMap = 0;
 	grCarInfo[index].wheelTexture = grSsgLoadTexState(param);
     }
-    free(param);
     
     /* BEWARE OF PLIB BUG in 1.2.0 this doesn't work!!! */
     grCarInfo[index].envSelector = (ssgStateSelector*)grEnvSelector->clone();
@@ -456,7 +455,6 @@ grInitCar(tCarElt *car)
     param = GfParmGetStr(handle, path, PRM_CAR, buf);
     carEntity = ssgLoad(param);
     DBG_SET_NAME(carEntity, "Body", index, -1);
-    free(param);
     carBody->addKid(carEntity);
     /* add wheels */
     for (i = 0; i < 4; i++){
@@ -482,7 +480,6 @@ grInitCar(tCarElt *car)
 	param = GfParmGetStr(handle, buf, PRM_CAR, "");
 	carEntity = ssgLoad(param);
 	DBG_SET_NAME(carEntity, "LOD", index, i-1);
-	free(param);
 	carBody->addKid(carEntity);
 	/* env map car */
 	carEntity = (ssgEntity*)carEntity->clone(SSG_CLONE_RECURSIVE | SSG_CLONE_GEOMETRY);

@@ -92,10 +92,10 @@ ReadTrack0(tTrack *theTrack, void *TrackHandle, tRoadCam **camList)
     sprintf(path , "%s/%s", TRK_SECT_MAIN, TRK_LST_SEG);
     GfParmListSeekFirst(TrackHandle, path);
     do {
-	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, "");
+	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, NULL);
 	
 	curindex++;
-	if (strlen(segtype) == 0) {
+	if (segtype == 0) {
 	    continue;
 	}
 	segread++;

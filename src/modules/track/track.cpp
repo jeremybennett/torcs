@@ -30,8 +30,10 @@
 
 const tdble DEGPRAD = 180.0 / PI;   /* degrees per radian */
 
-static tTrack *theTrack;
+static tTrack	*theTrack;
 static tRoadCam *theCamList;
+static void	*TrackHandle;
+
 
 /*
  * External function used to (re)build a track
@@ -40,8 +42,6 @@ static tRoadCam *theCamList;
 tTrack *
 TrackBuildv1(char *trackfile)
 {
-    void	*TrackHandle;
-    
     theTrack = (tTrack*)calloc(1, sizeof(tTrack));
     theCamList = (tRoadCam*)NULL;
 
@@ -67,7 +67,6 @@ TrackBuildv1(char *trackfile)
 	break;
     }
 
-    GfParmReleaseHandle(TrackHandle);
     return theTrack;
 }
 
@@ -100,7 +99,6 @@ TrackBuildEx(char *trackfile)
 	break;
     }
     
-    GfParmReleaseHandle(TrackHandle);
     return theTrack;
 }
 
@@ -192,7 +190,6 @@ TrackShutdown(void)
 {
     tTrackSeg	*curSeg;
     tTrackSeg	*nextSeg;
-    int		i;
     
     nextSeg = theTrack->seg->next;
     do {
@@ -200,12 +197,7 @@ TrackShutdown(void)
 	nextSeg = nextSeg->next;
 	free(curSeg);
     } while (curSeg != theTrack->seg);
-    free(theTrack->name);
-    free(theTrack->filename);
-    free(theTrack->author);
-    for (i = 0; i < theTrack->graphic.envnb; i++) {
-	free(theTrack->graphic.env[i]);
-    }
     free(theTrack->graphic.env);
     free(theTrack);
+    GfParmReleaseHandle(TrackHandle);
 }

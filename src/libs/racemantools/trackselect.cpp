@@ -101,7 +101,7 @@ RmGetTrackName(char *trackName)
     trackHandle = GfParmReadFile(buf, GFPARM_RMODE_STD);
     if (trackHandle) {
 	name = GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_NAME, trackName);
-	GfParmReleaseHandle(trackHandle);
+/* 	GfParmReleaseHandle(trackHandle); */
     } else {
 	GfTrace1("File %s has pb\n", buf);
 	return "";

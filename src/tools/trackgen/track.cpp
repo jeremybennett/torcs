@@ -57,6 +57,7 @@ typedef struct dispElt
 {
     int			start;
     int			nb;
+    int			surfType;
     char		*name;
     int			id;
     tTexElt		*texture;
@@ -280,6 +281,7 @@ InitScene(tTrack *track)
 	aDispElt->id = _id;					\
 	aDispElt->texture = curTexElt;				\
 	aDispElt->next = aDispElt;				\
+	aDispElt->surfType = 0;					\
 	DispList = aDispElt;					\
     } else {							\
 	startNeeded = texchange;				\
@@ -292,15 +294,17 @@ InitScene(tTrack *track)
 	    aDispElt->id = _id;					\
 	    aDispElt->texture = curTexElt;			\
 	    aDispElt->next = DispList->next;			\
+	    aDispElt->surfType = 0;				\
 	    DispList->next = aDispElt;				\
 	    DispList = aDispElt;				\
 	} else {						\
 	    aDispElt->texture = curTexElt;			\
+	    aDispElt->surfType = 0;				\
 	}							\
     }								\
 }
 
-#define CHECKDISPLIST(mat, name, id, off) {						\
+#define CHECKDISPLIST(mat, name, id, off) do {						\
 	char *texname;									\
 	int  mipmap;									\
 	char path_[256];								\
@@ -308,7 +312,6 @@ InitScene(tTrack *track)
 	texname = GfParmGetStr(hndl, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");		\
 	mipmap = (int)GfParmGetNum(hndl, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);	\
 	SETTEXTURE(texname, mipmap);							\
-	free(texname);									\
 	if ((curTexId != prevTexId) || (startNeeded)) {					\
 	    char *textype;								\
 	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXTYPE, "continuous"); 	\
@@ -316,24 +319,21 @@ InitScene(tTrack *track)
 		curTexType = 1;								\
 	    else									\
 		curTexType = 0;								\
-	    free(textype);								\
 	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXLINK, TRK_VAL_YES);		\
 	    if (strcmp(textype, TRK_VAL_YES) == 0)					\
 		curTexLink = 1;								\
 	    else									\
 		curTexLink = 0;								\
-	    free(textype);								\
 	    textype = GfParmGetStr(hndl, path_, TRK_ATT_TEXSTARTBOUNDARY, TRK_VAL_NO);	\
 	    if (strcmp(textype, TRK_VAL_YES) == 0)					\
 		curTexOffset = -off;							\
 	    else									\
 		curTexOffset = 0;							\
-	    free(textype);								\
 	    curTexSize = GfParmGetNum(hndl, path_, TRK_ATT_TEXSIZE, (char*)NULL, 20.0); \
 	    prevTexId = curTexId;							\
 	    NEWDISPLIST(1, name, id);							\
 	}										\
-    }
+    } while (0)
 
 #define CHECKDISPLIST2(texture, mipmap, name, id) {		\
 	char texname[256];					\
@@ -1222,6 +1222,7 @@ InitScene(tTrack *track)
 	    for (j = 0; j < nbMarks; j++) {
 		uniqueId++;
 		NEWDISPLIST(0, "TuMk", uniqueId);
+		aDispElt->surfType = 0x10;
 		/* find the segment */
 		tdble lgfs = seg->lgfromstart - (tdble)marks[j];
 		if (lgfs < 0) {
@@ -1256,6 +1257,7 @@ InitScene(tTrack *track)
 		}
 		uniqueId++;
 		CHECKDISPLIST2(buf, 0, "TuMk", uniqueId);
+		aDispElt->surfType = 0x10;
 		tracktexcoord[2*nbvert]   = 0.0;
 		tracktexcoord[2*nbvert+1] = 0.0;
 		trackvertices[3*nbvert]   = x;
@@ -1281,6 +1283,37 @@ InitScene(tTrack *track)
 		tracktexcoord[2*nbvert+1] = 1.0;
 		trackvertices[3*nbvert]   = x + tmWidth * normvec.x;
 		trackvertices[3*nbvert+1] = y + tmWidth * normvec.y;
+		trackvertices[3*nbvert+2] = z + tmHeight;
+		trackindices[nbvert]      = nbvert++;
+
+		uniqueId++;
+		CHECKDISPLIST2("back-sign", 0, "TuMk", uniqueId);
+		aDispElt->surfType = 0x10;
+		tracktexcoord[2*nbvert]   = 0.0;
+		tracktexcoord[2*nbvert+1] = 0.0;
+		trackvertices[3*nbvert]   = x + tmWidth * normvec.x;
+		trackvertices[3*nbvert+1] = y + tmWidth * normvec.y;
+		trackvertices[3*nbvert+2] = z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = 1.0;
+		tracktexcoord[2*nbvert+1] = 0.0;
+		trackvertices[3*nbvert]   = x;
+		trackvertices[3*nbvert+1] = y;
+		trackvertices[3*nbvert+2] = z;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = 0.0;
+		tracktexcoord[2*nbvert+1] = 1.0;
+		trackvertices[3*nbvert]   = x + tmWidth * normvec.x;
+		trackvertices[3*nbvert+1] = y + tmWidth * normvec.y;
+		trackvertices[3*nbvert+2] = z + tmHeight;
+		trackindices[nbvert]      = nbvert++;
+
+		tracktexcoord[2*nbvert]   = 1.0;
+		tracktexcoord[2*nbvert+1] = 1.0;
+		trackvertices[3*nbvert]   = x;
+		trackvertices[3*nbvert+1] = y;
 		trackvertices[3*nbvert+2] = z + tmHeight;
 		trackindices[nbvert]      = nbvert++;
 
@@ -2108,7 +2141,7 @@ CountMainTrack(void)
 
 
 static void
-saveObject(int nb, int start, char *texture, char *name)
+saveObject(int nb, int start, char *texture, char *name, int surfType)
 {
     int	i, index;
     
@@ -2123,7 +2156,11 @@ saveObject(int nb, int start, char *texture, char *name)
     }
 
     fprintf(save_fd, "numsurf %d\n", nb - 2);
-    fprintf(save_fd, "SURF 0x30\n");
+    if (surfType) {
+	fprintf(save_fd, "SURF 0x10\n");
+    } else {
+	fprintf(save_fd, "SURF 0x30\n");
+    }
     fprintf(save_fd, "mat 0\n");
     fprintf(save_fd, "refs 3\n");
     fprintf(save_fd, "%d %f %f\n", 0, tracktexcoord[2*start], tracktexcoord[2*start+1]);
@@ -2132,7 +2169,11 @@ saveObject(int nb, int start, char *texture, char *name)
    
     /* triangle strip conversion to triangles */
     for (i = 2; i < nb-1; i++) {
-	fprintf(save_fd, "SURF 0x30\n");
+	if (surfType) {
+	    fprintf(save_fd, "SURF 0x10\n");
+	} else {
+	    fprintf(save_fd, "SURF 0x30\n");
+	}
 	fprintf(save_fd, "mat 0\n");
 	fprintf(save_fd, "refs 3\n");
 	if ((i % 2) == 0) {
@@ -2167,7 +2208,7 @@ SaveMainTrack(void)
 	    aDispElt = aDispElt->next;
 	    if (aDispElt->nb != 0) {
 		sprintf(buf, "%s %d", aDispElt->name, aDispElt->id);
-		saveObject(aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf);
+		saveObject(aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
 	    }
 	} while (aDispElt != DispList);
     }
@@ -2622,8 +2663,8 @@ GenerateTrack(char *trackname)
 
     hndl = GfParmReadFile(trackname, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    OutputFileName = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, "");
-    if (strlen(OutputFileName) == 0) {
+    OutputFileName = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, NULL);
+    if (OutputFileName == 0) {
 	GfOut("Missing \"%s\" parameter in section \"%s\" of trackfile", TRK_ATT_3DDESC, TRK_SECT_GRAPH);
 	return;
     }
@@ -2648,8 +2689,8 @@ GenerateTrack(char *trackname)
 	GfOut("Orientation: counter-clockwise");
     }
 
-    ReliefFileName = GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, "");
-    if (strlen(ReliefFileName)) {
+    ReliefFileName = GfParmGetStr(hndl, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
+    if (ReliefFileName) {
 	sprintf(buf, "tracks/%s;.", track->internalname);
 	if (GetFilename(ReliefFileName, buf, reliefFile)) {
 	    GfOut("Relief file: %s", reliefFile);

@@ -178,7 +178,6 @@ prShutdown(void)
     praceglShutdown();
     for (i = 0; i < prTheSituation._ncars; i++) {
 	GfParmReleaseHandle(prTheSituation.cars[i]->_paramsHandle);
-	free(prTheSituation.cars[i]->_modName);
     }
     free(prCarInfo);
     prTrackItf.trkShutdown();

@@ -496,12 +496,6 @@ linuxModFreeInfoList(tModList **modlist)
     nextMod = curMod->next;
     do {
 	curMod = nextMod;
-	for (i = 0; i < MAX_MOD_ITF; i++) {
-	    if (curMod->modInfo[i].name) {
-		free(curMod->modInfo[i].name);
-		free(curMod->modInfo[i].desc);
-	    }
-	}
 	free(curMod->sopath);
 	free(curMod);
     } while (curMod != *modlist);
