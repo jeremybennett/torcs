@@ -1318,7 +1318,8 @@ int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* oc
 
 		/* set up point 2 */
 		int trackSegId2 = (trackSegId + overtakerange) % nPathSeg;
-		y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getLoc());
+		//y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getLoc());
+		y[2] = track->distToMiddleOnSeg(trackSegId2, ps[trackSegId2].getOptLoc());
 		ys[2] = pathSlope(trackSegId2);
 
 		/* set up parameter s */
