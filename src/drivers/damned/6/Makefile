@@ -18,9 +18,9 @@
 
 ROBOT = damned
 
-DATADIR   = drivers/${ROBOT}/6
+SHIPDIR   = drivers/${ROBOT}/6
 
-DATA      =  acura-nsx-sz.rgb car.xml logo.rgb
+SHIP      =  acura-nsx-sz.rgb car.xml logo.rgb
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

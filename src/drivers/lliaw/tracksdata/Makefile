@@ -16,9 +16,9 @@
 ##############################################################################
 
 
-DATADIR   = drivers/lliaw/tracksdata
+SHIPDIR   = drivers/lliaw/tracksship
 
-DATA      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
+SHIP      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -15,9 +15,9 @@
 #
 ##############################################################################
 
-DATASUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
-PKGSUBDIRS	= $(DATASUBDIRS)
+PKGSUBDIRS	= $(SHIPSUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

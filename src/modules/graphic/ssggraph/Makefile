@@ -25,9 +25,9 @@ MODULEDIR = modules/graphic
 
 LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul
 
-DATADIR   = config
+SHIPDIR   = config
 
-DATA      = graph.xml
+SHIP      = graph.xml
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -126,7 +126,7 @@ win32end:
 	@sed -e "s:runtime:runtimed:g" ${INIT_WIN32} > ${INIT_WIN32_D}
 
 
-.PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil datadirs doc win32start win32end
+.PHONY : clean tools toolsdirs subdirs expincdirs exports export compil cleantools cleancompil datadirs shipdirs doc win32start win32end
 
 # Recursive targets
 
@@ -143,7 +143,9 @@ cleantools: cleantoolsdirs
 cleancompil: cleansubdirs
 	-rm -f ${LIBRARY} ${OBJECTS} ${PROGRAM} .depend ${SOLIBRARY} ${MODULE} ${GARBAGE} *~
 
-install: installdirs installdata installsolibrary installmodule installprogram installtools installtoolsdata win32end
+install: installdirs installship installsolibrary installmodule installprogram installtools installtoolsdata win32end
+
+datainstall: installdatadirs installdata
 
 packages: packagelist
 
@@ -186,12 +188,31 @@ installdata: $(DATA)
 	for X in $? ; \
 	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
 	$(INSTALL_DATA) $$X $$createdir/$$X ; \
-	echo "copy $$D/$$X ./runtime/${DATADIR}/$$X" >> ${INIT_WIN32} ; \
 	done
 
 else
 
 installdata: ;
+
+endif
+
+ifdef SHIP
+
+installship: $(SHIP)
+	@D=`pwd` ; \
+	createdir="runtime/${SHIPDIR}" ; \
+	${create_dir_win32} ; \
+	createdir="${INSTBASE}/${SHIPDIR}" ; \
+	$(mkinstalldirs) $$createdir ; \
+	for X in $? ; \
+	do echo " $(INSTALL_DATA) $$X $$createdir/$$X"; \
+	$(INSTALL_DATA) $$X $$createdir/$$X ; \
+	echo "copy $$D/$$X ./runtime/${SHIPDIR}/$$X" >> ${INIT_WIN32} ; \
+	done
+
+else
+
+installship: ;
 
 endif
 
@@ -410,6 +431,19 @@ instdatadirs: ;
 
 endif
 
+ifdef SHIPSUBDIRS
+
+instshipdirs:
+	@RecurseDirs="${SHIPSUBDIRS}" ; \
+	RecurseFlags="install" ; \
+	${recursedirs}
+
+else
+
+instshipdirs: ;
+
+endif
+
 
 ifdef EXPINCDIRS
 
@@ -498,11 +532,21 @@ endif
 
 
 installdirs:
-	@if [ -n "${DATASUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
-	then R=`for I in ${DATASUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
+	@if [ -n "${SHIPSUBDIRS}" ] || [ -n "${SUBDIRS}" ] || [ -n "${TOOLSUBDIRS}" ] ; \
+	then R=`for I in ${SHIPSUBDIRS} ${SUBDIRS} ${TOOLSUBDIRS} ; \
 	do echo $$I ;\
 	done | sort -u` ; \
 	RecurseDirs="$$R" ; \
 	RecurseFlags="install" ; \
+	${recursedirs} ; \
+	fi
+
+installdatadirs:
+	@if [ -n "${DATASUBDIRS}" ] ; \
+	then R=`for I in ${DATASUBDIRS} ; \
+	do echo $$I ;\
+	done | sort -u` ; \
+	RecurseDirs="$$R" ; \
+	RecurseFlags="datainstall" ; \
 	${recursedirs} ; \
 	fi

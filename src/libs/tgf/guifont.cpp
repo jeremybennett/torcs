@@ -42,7 +42,6 @@ GfuiFontClass	*gfuiFont[FONT_NB];
 char		*keySize[4] = { "size big", "size large", "size medium", "size small" };
 
 #if BYTE_ORDER == BIG_ENDIAN
-#warning big endian
 void swap32(unsigned int *p, unsigned int size)
 {
 	unsigned int i, t;
@@ -121,7 +120,6 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     fread(font, 24, 1, Input); // for IA64...
 
 #if BYTE_ORDER == BIG_ENDIAN
-#warning big endian
 	swap32((unsigned int *) font, 24);
 #endif
 
@@ -141,7 +139,6 @@ GfuiFontClass::GfuiFontClass(char *FileName)
     fread(font->Char, sizeof(GLFONTCHAR), Num, Input);
 
 #if BYTE_ORDER == BIG_ENDIAN
-#warning big endian
 	swap32((unsigned int *) font->Char, sizeof(GLFONTCHAR) * Num);
 #endif
 

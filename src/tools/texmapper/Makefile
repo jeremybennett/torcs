@@ -22,5 +22,9 @@ SOURCES   = texmapper.cpp ssgSaveAC.cpp
 
 SOLIBS    = -lplibssg -lplibsg -lplibul -ltgf -ltxml -lpng
 
+tools_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+tools_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+
 
 include ${MAKE_DEFAULT}

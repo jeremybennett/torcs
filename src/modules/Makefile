@@ -17,7 +17,7 @@
 
 SUBDIRS		= raceman simu track graphic telemetry
 
-DATASUBDIRS	= raceman telemetry
+SHIPSUBDIRS	= raceman telemetry graphic
 
 EXPINCDIRS      = simu
 

@@ -26,13 +26,13 @@ LIBS      =  -lplibul
 
 SOURCES   = ${ROBOT}.cpp pref.cpp
 
-DATADIR   = drivers/${ROBOT}
+SHIPDIR   = drivers/${ROBOT}
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print) $(shell find *.rgb -maxdepth 0 -type f -print)
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print) $(shell find *.rgb -maxdepth 0 -type f -print)
 
-DATASUBDIRS = tracks
+SHIPSUBDIRS = tracks
 
-PKGSUBDIRS	= $(DATASUBDIRS)
+PKGSUBDIRS	= $(SHIPSUBDIRS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

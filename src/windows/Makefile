@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    file                 : Makefile<33>
+#    file                 : Makefile
 #    created              : Tue Jun 25 00:02:31 CEST 2002
 #    copyright            : (C) 2001 by Eric Espié                        
 #    email                : Eric.Espie@torcs.org   
@@ -15,6 +15,8 @@
 #
 ##############################################################################
 
+
+PKGSUBDIRS	= $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -22,9 +22,9 @@ MODULEDIR = modules/raceman
 
 SOURCES   = practice.cpp prmenu.cpp prmain.cpp prgl.cpp
 
-DATADIR   = config/practice
+SHIPDIR   = config/practice
 
-DATA      = practice.xml
+SHIP      = practice.xml
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -18,7 +18,7 @@
 
 SUBDIRS     = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
-DATASUBDIRS = $(SUBDIRS)
+SHIPSUBDIRS = $(SUBDIRS)
 
 PKGSUBDIRS	= $(SUBDIRS)
 

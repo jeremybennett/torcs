@@ -18,7 +18,7 @@
 
 SUBDIRS     = practice control
 
-DATASUBDIRS = practice
+SHIPSUBDIRS = practice
 
 PKGSUBDIRS	= $(SUBDIRS)
 

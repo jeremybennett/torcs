@@ -24,14 +24,13 @@ MODULEDIR = drivers/${ROBOT}
 
 SOURCES   = ${ROBOT}.cpp common.cpp
 
-DATADIR   = drivers/${ROBOT}
+SHIPDIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml car1.xml logo.rgb mclaren-f1.rgb
+SHIP      = ${ROBOT}.xml car1.xml logo.rgb mclaren-f1.rgb
 
+SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
-DATASUBDIRS = tracksdata
-
-PKGSUBDIRS		= ${DATASUBDIRS}
+PKGSUBDIRS		= ${SHIPSUBDIRS}
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

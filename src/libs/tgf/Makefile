@@ -46,9 +46,9 @@ EXPDIR  = include
 
 EXPORTS = tgf.h os.h queue.h
 
-DATADIR = config
+SHIPDIR = config
 
-DATA    = screen.xml params.dtd
+SHIP    = screen.xml params.dtd
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

@@ -17,9 +17,9 @@
 
 ROBOT = human
 
-DATADIR   = drivers/${ROBOT}/tracks/dirt-5
+SHIPDIR   = drivers/${ROBOT}/tracks/dirt-5
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

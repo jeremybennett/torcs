@@ -17,9 +17,9 @@
 
 
 
-DATADIR   = drivers/tita/tracksdata
+SHIPDIR   = drivers/tita/tracksship
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

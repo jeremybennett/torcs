@@ -24,9 +24,9 @@ MODULEDIR = drivers/${ROBOT}
 
 SOURCES   = ${ROBOT}.cpp
 
-DATADIR   = drivers/${ROBOT}
+SHIPDIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml
+SHIP      = ${ROBOT}.xml
 
 # Mandatory Line Do Not Remove 
 include ${MAKE_DEFAULT}

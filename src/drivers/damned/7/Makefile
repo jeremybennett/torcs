@@ -18,9 +18,9 @@
 
 ROBOT = damned
 
-DATADIR   = drivers/${ROBOT}/7
+SHIPDIR   = drivers/${ROBOT}/7
 
-DATA      =  porsche-gt1.rgb logo.rgb car.xml
+SHIP      =  porsche-gt1.rgb logo.rgb car.xml
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

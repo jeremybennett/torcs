@@ -23,13 +23,13 @@ MODULEDIR = drivers/${ROBOT}
 
 SOURCES   = ${ROBOT}.cpp
 
-DATADIR   = drivers/${ROBOT}
+SHIPDIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml car1.xml
+SHIP      = ${ROBOT}.xml car1.xml
 
-DATASUBDIRS = 1 2 3 4 5 6 7 8 9 10
+SHIPSUBDIRS = 1 2 3 4 5 6 7 8 9 10
 
-PKGSUBDIRS	= $(DATASUBDIRS)
+PKGSUBDIRS	= $(SHIPSUBDIRS)
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

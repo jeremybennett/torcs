@@ -46,9 +46,12 @@ endif
 PKGLIST		= src data \
 		  gt-cars dtm-cars patwo-cars cg-cars misc-cars \
 		  base-tracks g-tracks \
-		  e-robots berniw-robots K1999-robots
+		  e-robots berniw-robots K1999-robots g-robots \
+		  tools
 
-DATASUBDIRS	= data src
+DATASUBDIRS	= data
+
+SHIPSUBDIRS	= src
 
 EXPINCDIRS	= src
 

@@ -17,9 +17,9 @@
 
 
 
-DATADIR   = drivers/inferno2/tracksdata
+SHIPDIR   = drivers/inferno2/tracksship
 
-DATA      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 e-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

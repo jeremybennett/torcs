@@ -19,7 +19,7 @@
 # #### The Open Racing Car Simulator ####
 
 
-DATASUBDIRS	= drivers modules libs
+SHIPSUBDIRS	= drivers modules libs
 
 EXPINCDIRS	= interfaces libs linux modules
 

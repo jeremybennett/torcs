@@ -22,9 +22,9 @@ MODULEDIR = modules/telemetry
 
 SOURCES   = telemetryitf.cpp telemetry.cpp
 
-DATADIR   = telemetry
+SHIPDIR   = telemetry
 
-DATA      = telemetry.sh
+SHIP      = telemetry.sh
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

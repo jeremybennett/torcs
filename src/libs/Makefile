@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATASUBDIRS	= tgf
+SHIPSUBDIRS	= tgf
 
 EXPINCDIRS	= txml tgf torcs racemantools robottools
 

@@ -18,9 +18,9 @@
 
 ROBOT = berniw
 
-DATADIR   = drivers/${ROBOT}/3
+SHIPDIR   = drivers/${ROBOT}/3
 
-DATA      = porsche-gt1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = porsche-gt1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 berniw-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

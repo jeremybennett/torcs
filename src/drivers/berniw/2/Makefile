@@ -18,9 +18,9 @@
 
 ROBOT = berniw
 
-DATADIR   = drivers/${ROBOT}/2
+SHIPDIR   = drivers/${ROBOT}/2
 
-DATA      = cg-nascar-rwd.rgb $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = cg-nascar-rwd.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 berniw-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

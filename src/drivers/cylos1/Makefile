@@ -1,5 +1,5 @@
 #
-# Tanhoj Driver
+# Cylos Driver
 #
 # @(#) $Id$
 #
@@ -12,11 +12,17 @@ MODULEDIR = drivers/${ROBOT}
 
 SOURCES   = ${ROBOT}.cpp common.cpp
 
-DATADIR   = drivers/${ROBOT}
+SHIPDIR   = drivers/${ROBOT}
 
-DATA      = ${ROBOT}.xml car1.xml cg-nascar-rwd.rgb logo.rgb
+SHIP      = ${ROBOT}.xml car1.xml cg-nascar-rwd.rgb logo.rgb
 
-DATASUBDIRS = tracksdata
+SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+
+PKGSUBDIRS		= ${SHIPSUBDIRS}
+
+g-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
+
+g-robots_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
 

@@ -18,9 +18,9 @@
 
 ROBOT = K1999
 
-DATADIR   = drivers/${ROBOT}/1
+SHIPDIR   = drivers/${ROBOT}/1
 
-DATA      =  buggy.rgb settings.xml
+SHIP      =  buggy.rgb settings.xml
 
 K1999-robots_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
