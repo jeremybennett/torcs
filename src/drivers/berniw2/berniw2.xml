@@ -24,8 +24,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 1"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="FOCW61"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-focuswrc"/>
 		<attnum name="race number" val="148"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -37,8 +36,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 2"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="206W10"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-206wrc"/>
 		<attnum name="race number" val="149"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -50,8 +48,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 3"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="306W61"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-306wrc"/>
 		<attnum name="race number" val="150"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -63,8 +60,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 4"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="EVOWRC61"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-evoviwrc"/>
 		<attnum name="race number" val="151"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -76,8 +72,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 5"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="SWRC62"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-imprezawrc"/>
 		<attnum name="race number" val="152"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -89,8 +84,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 6"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="CORW61"/>
-		<attstr name="category" val="Offroad-4WD-GrA"/>
+		<attstr name="car name" val="pw-corollawrc"/>
 		<attnum name="race number" val="153"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -103,7 +97,6 @@
 		<attstr name="desc" val="Berni's second Bot 7"/>
 		<attstr name="author" val="Bernhard Wymann"/>
 		<attstr name="car name" val="porsche-gt3rs"/>
-		<attstr name="category" val="Track-RWD-GrA"/>
 		<attnum name="race number" val="154"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -116,7 +109,6 @@
 		<attstr name="desc" val="Berni's second Bot 8"/>
 		<attstr name="author" val="Bernhard Wymann"/>
 		<attstr name="car name" val="clkdtm"/>
-		<attstr name="category" val="Track-RWD-GrB"/>
 		<attnum name="race number" val="155"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -129,7 +121,6 @@
 		<attstr name="desc" val="Berni's second Bot 9"/>
 		<attstr name="author" val="Bernhard Wymann"/>
 		<attstr name="car name" val="mclaren-f1"/>
-		<attstr name="category" val="Track-RWD-GrA"/>
 		<attnum name="race number" val="156"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -142,7 +133,6 @@
 		<attstr name="desc" val="Berni's second Bot 10"/>
 		<attstr name="author" val="Bernhard Wymann"/>
 		<attstr name="car name" val="360-modena"/>
-		<attstr name="category" val="Track-RWD-GrA"/>
 		<attnum name="race number" val="157"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
