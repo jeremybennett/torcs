@@ -16,7 +16,7 @@
 
 <params name="Porsche GT3 RS" type="template">
 
-<!-- The car 3D model is used with the authorization of ViPeR (viper@mttestdriver.com) -->
+<!--  3D model by Eric Espie -->
 
   <section name="Driver">
     <!-- Position of the driver -->
@@ -76,7 +76,7 @@
     <attnum name="area" unit="m2" val="0.2"/>
     <attnum name="angle" unit="deg" min="0" max="20" val="2"/>
     <attnum name="xpos" unit="m" val="2.15"/>
-    <attnum name="zpos" unit="m" val="0.0"/>
+    <attnum name="zpos" unit="m" val="0.1"/>
   </section>
 
   <section name="Rear Wing">
