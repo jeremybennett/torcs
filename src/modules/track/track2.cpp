@@ -900,7 +900,7 @@ ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	if (strlen(segName) != 0) {
 	    sprintf(path, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEG, segName);
 	    segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
-	    pitExitSeg = theTrack->seg;
+	    pitExitSeg = theTrack->seg->next;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
 		if (pitExitSeg->id == segId) {
@@ -921,11 +921,12 @@ ReadTrack2(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    pitStart = theTrack->seg;
 	    found = 0;
 	    for(i = 0; i < theTrack->nseg; i++)  {
+		/* set the flag on the last segment of pit_exit */
 		if (pitStart->id == segId) {
 		    found = 1;
 		    break;
 		}
-		pitStart = pitStart->next;
+		pitStart = pitStart->prev; /* go back in the list */
 	    }
 	    if (!found) {
 		pitStart = NULL;
