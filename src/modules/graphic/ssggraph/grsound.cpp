@@ -525,6 +525,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			src_sound.f = 1.0;//mpitch;
 			src_sound.a = 1.0;
 			DopplerShift (&src_sound, p_car, u_car, *p_camera, *u_camera);
+			tdble atten = MIN(src_sound.a, 1.0);
 			tdble gear_ratio = car->_gearRatio[car->_gear + car->_gearOffset];
 
 			axlevol = 0.1*(tanh(100.0*(fabs(pre_axle[car->index]- mpitch))));//*fabs(gear_ratio));
@@ -542,7 +543,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 			//float sa2 = sa*sa;
 			float lp = (rev_cor*rev_cor*.75+.25)*sa
 				+ (1.0-sa)*rev_cor*rev_cor*.25;
-			engpri[car_i].lp = lp;//engpri[car_i].lp*.9+.1*lp;
+			engpri[car_i].lp = lp * exp(atten - 1.0);//engpri[car_i].lp*.9+.1*lp;
 
 		}
 
@@ -643,8 +644,8 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		backfireLoopvol = engine_backfire[car_i];
 		//printf ("%f %f %f #XH\n", exp(-mpitch), engine_backfire[car_i], car->priv.smoke);
 
-		if (car->_gear != prev_gear[car_i]) {
-			prev_gear[car_i] = car->_gear;
+		if (car->_gear != prev_gear[car->index]) {
+			prev_gear[car->index] = car->_gear;
 			if (src_sound.a>1.0) {
 				sched->playSample(gearchangeSample);
 			}
