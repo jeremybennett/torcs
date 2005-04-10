@@ -149,6 +149,69 @@ void ParametricLine::PointCoords (float t, Vector* X)
 	}
 }
 
+
+Vector* GetNormalToLine(Vector* R)
+{
+	int N = R->Size();
+
+	Vector* Q = new Vector(N);
+
+	int index = 0;
+	for (int i=0; i<N; i++) {
+		if ((*R)[i]!=0.0f) {
+			index = i;
+			break;
+		}
+	}
+	
+	float sum = 0.0f;
+	
+	for (int i=0; i<N; i++) {
+		if (i!=index) {
+			sum += (*R)[i];
+			(*Q)[i] = 1.0f;
+		}
+	}
+	(*Q)[index] = -sum/(*R)[index];
+	float Z = sqrt(DotProd (Q,Q));
+	for (int i=0; i<N; i++) {
+		(*Q)[i] /= Z;
+	}
+	return Q;
+}
+
+
+float IntersectLineLine(ParametricLine* A, ParametricLine* B)
+{
+	int N = A->R->n;
+	assert(B->R->n==N);
+	Vector b(N);
+	Sub (B->R, A->R, &b);
+	Vector* a = A->Q;
+	//Vector* b = D;
+	Vector* c = B->Q;
+
+	for (int i=0; i<N; i++) {
+		for (int j=0; j<N; j++) {
+			if (i!=j) {
+				if ((*c)[i]==0.0f) {
+					if ((*a)[i]!=0.0f) {
+						float t = -b[i]/(*a)[i];
+						return t;
+					}
+				} else {
+					float d = (*c)[j]*(*a)[i] - (*c)[i]*(*a)[j];
+					if (d!=0.0f) {
+						float t = ((*c)[j]*b[i] - (*c)[i]*b[j]) / d;
+						return t;
+					}
+				} // ci==0
+			} // i!=j
+		} // for j
+	} // for i
+	return 0.0f;
+}
+
 Vector* IntersectSphereLine(ParametricLine* line, Vector* C, float r)
 {
 	int N=C->n;
@@ -177,6 +240,45 @@ Vector* IntersectSphereLine(ParametricLine* line, Vector* C, float r)
 		}
 	}
 	return t;
+}
+
+float CalculateRadiusPoints (std::vector<Vector> P)
+{
+	int K = P.size();
+	if (K!=3) {
+		printf ("K=%d\n", K);
+		throw std::invalid_argument ("P has size !=3");
+	}
+	int N = P[0].Size();
+
+	ParametricLine W(&P[0], &P[1]);
+	Vector* A = GetNormalToLine (W.Q);
+	delete W.Q;
+	W.Q = A;
+	ParametricLine Z = ParametricLine(&P[1], &P[2]);
+	Vector* B = GetNormalToLine (Z.Q);
+	delete Z.Q;
+	Z.Q = B;
+	for (int i=0; i<N; i++) {
+		(*W.R)[i] = (P[0][i] + P[1][i])/2.0f;
+		(*Z.R)[i] = (P[1][i] + P[2][i])/2.0f;
+	}
+	float t = IntersectLineLine (&W, &Z);
+	Vector C(N);
+	for (int i=0; i<N; i++) {
+		C[i] = t*(*W.Q)[i] + (*W.R)[i];
+	}
+	float r = 0.0f;
+	for (int k=0; k<K; k++) {
+		float l = 0.0f;
+		for (int i=0; i<N; i++) {
+			float d = P[k][i] - C[i];
+			l += d*d;
+		}
+		r += sqrt(l);
+	}
+	r /= (float) K;
+	return r;
 }
 
 

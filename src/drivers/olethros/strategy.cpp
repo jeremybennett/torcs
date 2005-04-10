@@ -128,10 +128,15 @@ int SimpleStrategy::pitRepair(tCarElt* car, tSituation *s)
 	return car->_dammage;
 }
 
+float SimpleStrategy::getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opponents)
+{
+	return 1.0f;
+}
+
 
 ManagedStrategy::ManagedStrategy() : SimpleStrategy()
 {
-
+	speed_factor = 0.0f;
 }
 
 
@@ -223,33 +228,83 @@ bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s, Opponents* oppone
 bool ManagedStrategy::RepairDamage(tCarElt* car, Opponents* opponents)
 {
 	if (car->_dammage < PIT_DAMMAGE) {
-		//return false;
+		return false;
 	}
 	
-	double PR0 = ((double) car->_dammage - PIT_DAMMAGE)/10000;
-	double PR1 = 1;
-	double laps = (double) car->_remainingLaps;
+	double PR0 = ((double) car->_dammage - PIT_DAMMAGE)/10000.0f;
+	double PR1 = 1.0f;
+	double laps = (double) (car->_remainingLaps - car->_lapsBehindLeader);
 	double catchtime; 
+	
+	if (laps < 1.0f) {
+		return false;
+	}
 
+	double margin = 30.0f / laps;
+	
 	if (car->_pos != 1) {
 		catchtime = car->_timeBehindLeader;
-		PR1 *= (1-exp(-0.01*catchtime*laps));
+		PR1 *= 1.0f/(1.0f + exp(-0.1f*(catchtime-margin)));
+		//PR1 *= (1-exp(-0.01*(catchtime+laps)));
 		if (car->_pos!=2) {
 			catchtime = (double) car->_timeBehindPrev; 
-			PR1 *= (1-exp(-0.01*catchtime*laps));
+			PR1 *= 1.0f/(1.0f + exp(-0.1f*(catchtime-margin)));
 		}
 	}
 	if (opponents->getNOpponentsBehind() != 0) {
 		catchtime = car->_timeBeforeNext;
-		PR1 *= (1-exp(-0.01*catchtime*laps));
+		PR1 *= 1.0f/(1.0f + exp(-0.1f*(catchtime-margin)));
+	}
+	
+
+	PR1 = 1.0 - PR1; // convert to prob. of getting passed
+
+	// Do we need to refuel?
+	if (laps > 0) {
+		float cmpfuel = (fuelperlap == 0.0) ? expectedfuelperlap : fuelperlap;
+		cmpfuel *= laps; // needed fuel.
+		int needed_pitstops = (int) (1.0f + floor (cmpfuel-car->_fuel)/car->_tank);
+		int needed_pitstops_now = (int) (2.0f + floor (cmpfuel-car->_tank)/car->_tank);
+		// if by stopping now we get same number of pitstops,
+		// lower the probability of getting passed.
+		if (needed_pitstops_now==needed_pitstops) {
+			//printf ("stops: %d %d %f\n", needed_pitstops, needed_pitstops_now, cmpfuel);
+			PR1 *= 0.1f;
+		}
 	}
 
-	PR1 = 1 - PR1;
+
+
 	if (PR1 < PR0) {
+		//printf ("%f %f %d %d %d\n", PR1, PR0, opponents->getNOpponentsBehind(), opponents->getNOpponentsInFront(), opponents->getNOpponents());
+
 		return true;
 	} 
 	return false;
 }
+
+float ManagedStrategy::getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opponents)
+{
+	float new_speed_factor = speed_factor;
+
+	if (car->_pos == 1 && opponents->getNOpponentsBehind() != 0) {
+		float catchtime = (float) car->_timeBeforeNext;
+		float margin = 30.0f;
+		if (catchtime > margin) {
+			float d = 0.02f * (margin - catchtime);
+			float a = exp(-d*d);
+			new_speed_factor = a + 0.9f * (1.0f-a);
+		}
+		
+		if (fabs (new_speed_factor - speed_factor) > 0.01f) {
+			//printf ("SF: %f -> %f\n", speed_factor, new_speed_factor);
+			speed_factor = new_speed_factor;
+		}
+	}
+
+	return speed_factor;
+}
+
 
 #ifdef USE_OLETHROS_NAMESPACE
 }

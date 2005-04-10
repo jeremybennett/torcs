@@ -29,7 +29,7 @@ const float Opponent::FRONTCOLLDIST = 200.0;			// [m] distance on the track to c
 const float Opponent::BACKCOLLDIST = 70.0;				// [m] distance on the track to check other cars.
 const float Opponent::LENGTH_MARGIN = 3.0;				// [m] safety margin.
 const float Opponent::SIDE_MARGIN = 1.0;				// [m] safety margin.
-const float Opponent::TIME_MARGIN = 1.0;				// [s] safety margin.
+const float Opponent::TIME_MARGIN = 2.0;				// [s] safety margin.
 const float Opponent::EXACT_DIST = 12.0;				// [m] if the estimated distance is smaller, compute it more accurate
 const float Opponent::LAP_BACK_TIME_PENALTY = -30.0;	// [s]
 const float Opponent::OVERLAP_WAIT_TIME = 5.0;			// [s] overlaptimer must reach this time before we let the opponent pass.
@@ -38,6 +38,7 @@ const float Opponent::SPEED_PASS_MARGIN = 5.0;			// [m/s] avoid overlapping oppo
 
 Opponent::Opponent()
 {
+	brake_overtake_filter = 1.0f;
 }
 
 
@@ -53,6 +54,10 @@ void Opponent::update(tSituation *s, Driver *driver)
 		return;
 	}
 
+	// update brake fiter
+	float dt = s->deltaTime;
+	brake_overtake_filter *= exp(-dt*.5);
+	
 	// Updating distance along the middle.
 	float oppToStart = car->_trkPos.seg->lgfromstart + getDistToSegStart();
 	distance = oppToStart - mycar->_distFromStartLine;
@@ -111,6 +116,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 			if (cardist < SIDE_MARGIN
 				&& t_impact < TIME_MARGIN) {
 				state |= OPP_COLL;
+				//printf ("OPP_COLL\n");
 			}
 		} else
 		// Is opponent behind and faster.
@@ -126,10 +132,12 @@ void Opponent::update(tSituation *s, Driver *driver)
 			&& distance < SIDECOLLDIST) {
 			sidedist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			state |= OPP_SIDE;
+			//printf ("OPP_SIDE\n");
 		} else
 		// Opponent is in front and faster.
 		if (distance > SIDECOLLDIST && getSpeed() > driver->getSpeed()) {
 			state |= OPP_FRONT_FAST;
+			//printf ("OPP_FRONT_FAST\n");
 		}
 	}
 
@@ -137,6 +145,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 	updateOverlapTimer(s, mycar);
 	if (overlaptimer > OVERLAP_WAIT_TIME) {
 		state |= OPP_LETPASS;
+		//printf ("OPP_LETPASS\n");
 	}
 }
 
@@ -206,9 +215,9 @@ void Opponents::update(tSituation *s, Driver *driver)
 	tCarElt* mycar = driver->getCarPtr();
 	nopponents_behind = 0;
 	nopponents_infront = 0;
-	for (i = 0; i < s->_ncars - 1; i++) {
+	for (i = 0; i < nopponents; i++) {
 		opponent[i].update(s, driver);
-		if (opponent[i].getState() != OPP_IGNORE) {
+		if (1) {//opponent[i].getState() != OPP_IGNORE) {
 			tCarElt* ocar = opponent[i].getCarPtr();
 			if (ocar->_pos > mycar->_pos) {
 				nopponents_behind++;

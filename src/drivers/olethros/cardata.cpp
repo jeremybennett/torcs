@@ -18,8 +18,9 @@
  ***************************************************************************/
 
 #include "cardata.h"
-namespace olethros
-{
+#ifdef USE_OLETHROS_NAMESPACE
+namespace olethros {
+#endif
 Cardata* Cardata::Instance()
 {
 	static Cardata obj;
@@ -54,6 +55,7 @@ Cardata::Cardata()
 }
 void Cardata::initialise(tSituation* s)
 {
+	printf ("Cardata: init\n");
 	if (data) {
 		return;
 	}
@@ -69,6 +71,7 @@ void Cardata::initialise(tSituation* s)
 
 Cardata::~Cardata()
 {
+	printf ("Cardata: destroying\n");
 	if (data) {
 		delete [] data;
 	}
@@ -96,5 +99,6 @@ SingleCardata *Cardata::findCar(tCarElt *car)
 	return NULL;
 }
 
-
+#ifdef USE_OLETHROS_NAMESPACE
 }
+#endif

@@ -72,9 +72,9 @@ SegLearn::SegLearn(tTrack* t)
 	segdm = new float[t->nseg];
 	segdm2 = new float[t->nseg];
 	segdm3 = new float[t->nseg];
-	dm = 0.0;
-	dm2 = 0.0;
-	dm3 = 0.0;
+	dm = 0.0f;
+	dm2 = 0.0f;
+	dm3 = 0.0f;
 
 	tTrackSeg *seg = t->seg;
 
@@ -115,9 +115,13 @@ SegLearn::SegLearn(tTrack* t)
 	CW = 0.5;
 	u = 0.0;
 	brake = 0.0;
+	delta_time = 0.0f;
 	previous_time = 0;
 	prev_time = 0;
 	prevsegid = 0;
+	time_since_accident = 0.0f;
+	time_since_left_turn = 10.0;
+	time_since_right_turn = 10.0;
 }
 
 
@@ -135,27 +139,50 @@ SegLearn::~SegLearn()
 }
 
 
-void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha)
+void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha, float speed, float limit)
 {
 	bool local_update = true;
-	float risk_factor = 100.0;
+	float risk_factor = 100.0f;
 	// Still on the same segment, alone, offset near 0, check.
 	tTrackSeg *seg = car->_trkPos.seg;
 	if (prev_time!=s->currentTime) {
 		delta_time = s->currentTime - prev_time;
 		prev_time = s->currentTime;
 	}
+
+	if (time_since_accident < 2.0f) {
+		time_since_accident += delta_time;
+		return;
+	}
+
 	tTrackSeg *prev_seg = seg;
 	bool term = false;
-	float dist = 0;
+	float dist = 0.0f;
 	while (term == false) {
 		prev_seg = prev_seg->prev;
 		dist += prev_seg->length;
 		if ((prev_seg->type != seg->type)
-			|| (dist > 100)) {
+			|| (dist > 100.0f)) {
 			term = true;
 		}
 	}
+
+	switch(seg->type) {
+	case TR_LFT:
+		time_since_left_turn = 0.0f;
+		break;
+	case TR_RGT:
+		time_since_right_turn = 0.0f;
+		break;
+	}
+
+	if (time_since_left_turn < 10.0f) {
+		time_since_left_turn += delta_time;
+	}
+	if (time_since_right_turn < 10.0f) {
+		time_since_right_turn += delta_time;
+	}
+
 	if (seg->type == lastturn || seg->type == TR_STR) {
 		if (fabs(offset) < 0.2 &&
 			check == true 
@@ -183,55 +210,83 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 			// theta is a simple threshold
 			float target_error = fabs(target_toLeft - car->_trkPos.toLeft);
 			float theta = 0.5*seg->width;//car->_dimension_y;
+			float dtheta = theta-target_error;
+			//if (dtheta > 0.0f) {
+			//				if (speed < safety_threshold * limit) {
+			//					dtheta = 0.0;
+			//				}
+			//			}
+			if (dtheta < 0) dtheta -= 1;
 			if (lastturn == TR_RGT) {
-				float dtheta = theta-target_error;
 				if (target_toRight > car->_trkPos.toRight) {
-					if (prev_seg->type == TR_LFT) {
-						if (car->_trkPos.toRight - car->_dimension_y < 0) {
-							dtheta = -1;
+					//if (prev_seg->type == TR_LFT || time_since_left_turn < 1.0f) {
+					if (time_since_left_turn < 1.0f) {
+						float drisk = car->_trkPos.toRight - car->_dimension_y;
+						if (drisk < 0.0f) {
+							if (dtheta>0) {
+								dtheta = 2.0f * drisk - 1.0f;
+							} else {
+								dtheta += 2.0f * drisk - 1.0f;
+							}
 						}
 					} else {
-						dtheta = theta;
+						dtheta += 1.0;//theta;
 					}
 				}
-				if (car->_trkPos.toLeft < 1.5*car->_dimension_y) {
+				if (car->_trkPos.toLeft < 1.5*car->_dimension_y
+					&& dtheta > 0) {
 					float a = 1.5*car->_dimension_y - car->_trkPos.toLeft;
 					dtheta = (1-a) * dtheta;
 				}
 				if (car->_trkPos.toLeft - car->_dimension_y<0) {
-					dtheta = risk_factor * (car->_trkPos.toLeft - car->_dimension_y);// - 1;
+					float d = risk_factor * (car->_trkPos.toLeft - car->_dimension_y);// - 1;
+					if (d<dtheta) {
+						dtheta = d;
+					}
 				}
 				if ((car->_trkPos.toLeft - .5*car->_dimension_y<0)
 					|| (car->_speed_x < 0)) {
  					dtheta = - risk_factor;
 					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
+					time_since_accident = 0.0f;
 					//printf ("DTH %d\n ", seg->id);
 				}
 
 				dr = (1-beta) * (outside - tomiddle)
 					+ beta * (dtheta);
 			} else if (lastturn == TR_LFT) {
-				float dtheta = theta - target_error;
-				if (prev_seg->type == TR_RGT) {
+
+				//if (prev_seg->type == TR_RGT || time_since_right_turn < 1.0f) {
+				if (time_since_right_turn < 1.0f) {
 					if (target_toLeft > car->_trkPos.toLeft) {
-						if (car->_trkPos.toLeft - car->_dimension_y < 0) {
-							dtheta = -1;
+						float drisk = car->_trkPos.toLeft - car->_dimension_y;
+						if (drisk < 0.0f) {
+							if (dtheta>0) {
+								dtheta = 2.0f * drisk - 1.0f;
+							} else {
+								dtheta += 2.0f * drisk - 1.0f;
+							}
 						}
 					}
 				} else {
-					dtheta = theta;
+					dtheta += 1.0;//theta;
 				}
-				if (car->_trkPos.toRight < 1.5*car->_dimension_y) {
+				if (car->_trkPos.toRight < 1.5*car->_dimension_y
+					&& dtheta > 0) {
 					float a = 1.5*car->_dimension_y - car->_trkPos.toRight;
 					dtheta = (1-a) * dtheta;
 				}
 				if (car->_trkPos.toRight - car->_dimension_y<0) {
-					dtheta = risk_factor *(car->_trkPos.toRight - car->_dimension_y);// - 1;
+					float d = risk_factor *(car->_trkPos.toRight - car->_dimension_y);// - 1;
+					if (d<dtheta) {
+						dtheta = d;
+					}
 				}
 				if ((car->_trkPos.toRight - .5*car->_dimension_y < 0)
 					|| (car->_speed_x < 0)) {
 					dtheta = - risk_factor;
 					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
+					time_since_accident = 0.0f;
 					//printf ("DTH %d\n", seg->id);
 				}
 				dr = (1-beta) * (outside + tomiddle)
@@ -242,7 +297,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 				if (dr<0) {
 					PropagateUpdateBackwards (seg->prev, 0.01*dr, 0.005, 400.0);
 				} else {
-					PropagateUpdateBackwards (seg, 0.01*dr, 0.02, 200.0);
+					PropagateUpdateBackwards (seg, 0.01*dr, 0.05, 100.0);
 				}
 
 			}
@@ -300,7 +355,7 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 {
 	float alpha = 0.05;
 	float beta = 1.0;
-	float lambda = 0.9;
+	float lambda = 1.0;
 	tTrackSeg* seg = car->_trkPos.seg;
 	
 	float in_track = 1.0;
@@ -340,11 +395,11 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 		prev_quantum = quantum;
 		prev_accel = taccel;
 		averages.k = 0;
+		//printf ("%f %f\n", accel[segid], derror[segid]);
 	} 
 		
 	averages.Measure(taccel, derr, dtm);
 	
-	//printf ("%f %f\n", accel[segid], derror[segid]);
 	return  accel[quantum];//+ prev_quantum_accel);
 }
 

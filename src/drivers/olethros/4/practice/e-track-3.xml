@@ -28,7 +28,7 @@
   </section>
 
   <section name="Rear Wing">
-    <attnum name="angle" unit="deg" min="0" max="30" val="9"/>
+    <attnum name="angle" unit="deg" min="0" max="30" val="4"/>
   </section>
 
   <section name="Engine">

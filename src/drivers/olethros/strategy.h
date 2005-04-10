@@ -62,6 +62,8 @@ public:
 	virtual float pitRefuel(tCarElt* car, tSituation *s) = 0;
 	/// How much repair at pit stop.
 	virtual int pitRepair(tCarElt* car, tSituation *s) = 0;
+	/// Speed factor can depend on fuel economy needs, overtaking.. etc.
+	virtual float getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opponents) = 0;
 };
 
 /// A naive strategy
@@ -75,6 +77,7 @@ public:
 	virtual bool needPitstop(tCarElt* car, tSituation *s, Opponents* opponents);
 	virtual float pitRefuel(tCarElt* car, tSituation *s);
 	virtual int pitRepair(tCarElt* car, tSituation *s);
+	virtual float getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opponents);
 
 protected:
 	bool fuelchecked;				// Fuel statistics updated.
@@ -96,8 +99,11 @@ public:
 	ManagedStrategy();
 	virtual ~ManagedStrategy();
 	virtual bool needPitstop(tCarElt* car, tSituation *s, Opponents* opponents);
+	virtual float getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opponents);
 protected:
+	float speed_factor;
 	virtual bool RepairDamage(tCarElt* car, Opponents* opponents);
+
 };
 
 #ifdef USE_OLETHROS_NAMESPACE

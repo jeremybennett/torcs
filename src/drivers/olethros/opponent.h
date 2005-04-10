@@ -3,11 +3,11 @@
 
     file                 : opponent.h
     created              : Thu Apr 22 01:20:19 CET 2003
-    copyright            : (C) 2003-2004 Bernhard Wymann
+    copyright            : (C) 2003-2005 Bernhard Wymann, Christos Dimitrakakis
     email                : berniw@bluewin.ch
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -49,10 +49,10 @@
 namespace olethros
 {
 #endif
-class Driver;
+	class Driver;
 
-// Opponent maintains the data for one opponent RELATIVE to the drivers car.
-class Opponent {
+	// Opponent maintains the data for one opponent RELATIVE to the drivers car.
+	class Opponent {
 	public:
 		Opponent();
 
@@ -69,16 +69,19 @@ class Opponent {
 		float getSpeed() { return cardata->getSpeedInTrackDirection(); }
 		float getOverlapTimer() { return overlaptimer; }
 		void update(tSituation *s, Driver *driver);
+		float getBrakeOvertake () { return brake_overtake_filter; }
+		void brakeForCollision () { brake_overtake_filter = 1.0; }
 
 	private:
 		float getDistToSegStart();
 		void updateOverlapTimer(tSituation *s, tCarElt *mycar);
 
-		float distance;		// approximation of the real distance, negative if the opponent is behind.
-		float catchdist;	// distance needed to catch the opponent (linear estimate).
-		float sidedist;		// approx distance of center of gravity of the cars.
-		int state;			// State variable to characterize the relation to the opponent, e. g. opponent is behind.
+		float distance;		///< approximation of the real distance, negative if the opponent is behind.
+		float catchdist;	///< distance needed to catch the opponent (linear estimate).
+		float sidedist;		///< approx distance of center of gravity of the cars.
+		int state;			///< State variable to characterize the relation to the opponent, e. g. opponent is behind.
 		float overlaptimer;
+		float brake_overtake_filter; ///< Check to see.
 
 		tCarElt *car;
 		SingleCardata *cardata;		// Pointer to global data about this opponent.
@@ -96,11 +99,11 @@ class Opponent {
 		static const float OVERLAP_WAIT_TIME;
 		static const float SPEED_PASS_MARGIN;
 		static const float TIME_MARGIN;
-};
+	};
 
 
-// The Opponents class holds an array of all Opponents.
-class Opponents {
+	// The Opponents class holds an array of all Opponents.
+	class Opponents {
 	public:
 		Opponents(tSituation *s, Driver *driver, Cardata *cardata);
 		~Opponents();
@@ -120,7 +123,7 @@ class Opponents {
 		int nopponents;
 		int nopponents_behind;
 		int nopponents_infront;
-};
+	};
 #ifdef USE_OLETHROS_NAMESPACE
 }
 #endif

@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/6
-SHIP        = default.xml
+SHIP        = default.xml clkdtm.rgb
 SHIPSUBDIRS = 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}

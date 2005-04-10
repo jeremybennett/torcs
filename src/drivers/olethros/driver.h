@@ -73,6 +73,7 @@ public:
 
 	tCarElt *getCarPtr() { return car; }
 	tTrack *getTrackPtr() { return track; }
+	float* max_speed_list;
 	float getSpeed() { return mycardata->getSpeedInTrackDirection(); /*speed;*/ }
 
 protected:
@@ -119,6 +120,7 @@ protected:
 
 	float computeOptimalTarget(tTrackSeg* seg, FILE* f);
 	void FindBestCircle(tTrackSeg* seg, Vector* C, float& rmax);
+	float EstimateRadius2 (tTrackSeg* seg);
 	float EstimateRadius (tTrackSeg* seg, tTrackSeg* prev_seg, tTrackSeg* next_seg);
 	float FindCurveTarget(tTrackSeg* seg, Vector* C, float rmax);
 	float FindStraightTarget(tTrackSeg* curve, tTrackSeg* seg, Vector* C, float rmax, bool& flag);
@@ -126,6 +128,7 @@ protected:
 	void AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi);
 	void ShowPaths();
 
+	float current_allowed_speed;
 	// Per robot global data.
 	int race_type;
 	int stuck;
@@ -148,12 +151,15 @@ protected:
 	float clutchtime;		///< Clutch timer.
 	float oldlookahead;		///< Lookahead for steering in the previous step.
 
+	float speed_factor; ///< speed factor to use.
+
 	float *seg_alpha; ///< targets for segments
 	float *seg_alpha_new; ///< new targets for segments
 	float *radius; ///< segment radi
 	float *ideal_radius; ///< ideal radius (according to circle fit)
 	SegLearn *learn; ///< handle to learning module
 	int alone; ///< whether we are alone
+	bool overtaking; ///< are we overtaking?
 	float prev_steer; ///< for steering filter
 	float prev_toleft; ///< previous left margin
 	float prev_toright; ///< previous right margin
@@ -162,6 +168,7 @@ protected:
 	float dt; ///< delta time
 	float my_pitch;
 	float TCL_status; ///< traction control
+	float alone_count; 
 
 	// Data that should stay constant after first initialization.
 	int MAX_UNSTUCK_COUNT;
@@ -193,6 +200,7 @@ protected:
 	static const float SIDECOLL_MARGIN;
 	static const float BORDER_OVERTAKE_MARGIN;
 	static const float OVERTAKE_OFFSET_SPEED;
+	static const float OVERTAKE_TIME;
 	static const float PIT_LOOKAHEAD;
 	static const float PIT_BRAKE_AHEAD;
 	static const float PIT_MU;

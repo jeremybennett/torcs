@@ -47,7 +47,7 @@ public:
 	/// Ge the inferred radius of segment \c s
 	float getRadius(tTrackSeg *s) { return radius[s->id]; }
 	/// Update track radius offset
-	void update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha=0.5);
+	void update(tSituation *s, tTrack *t, tCarElt *car, int alone, float offset, float outside, float *r, float alpha, float speed, float limit);
 	/// Update acceleration and steering prediction
 	float updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm);
 	/// Get predicted acceleration error
@@ -66,9 +66,11 @@ public:
 	void loadParameters (char* fname);
 	/// Save
 	void saveParameters (char* fname);
-
+	void SetSafetyThreshold (float st) {safety_threshold = st;}
 private:
+	float safety_threshold;
 	void PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, float max_length);
+	float time_since_accident;
 	/// Class for computing averages of measured values
 	class Averages {
 	public:
@@ -105,7 +107,7 @@ private:
 	float* accel; ///< Accelerations for each quantum
 	float* derror; ///< Steering control for each quantum
 	float* elig; ///< Eligibility of previously visited quantums for updates
-	
+
 	// estimates for friction
 	float* segdm; ///< friction coefficient 1
 	float* segdm2; ///< friction coefficient 2
@@ -122,7 +124,8 @@ private:
 	float brake; ///< brake input
 	double prev_time; ///< time of previous friction estimate
 	double delta_time; ///< dt for friction estimate
-
+	double time_since_left_turn;
+	double time_since_right_turn;
 	bool check; ///< whether we should update radius
 	float rmin; ///< current estimated minimum radius
 	int lastturn; ///< type of last turn entered

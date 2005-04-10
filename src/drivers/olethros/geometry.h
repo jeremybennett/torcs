@@ -68,6 +68,9 @@ class ParametricSphere
 };
 
 
+Vector* GetNormalToLine(Vector* R);
+float IntersectLineLine(ParametricLine* A, ParametricLine* B);
+float CalculateRadiusPoints (std::vector<Vector> P);
 Vector* IntersectSphereLine(ParametricLine* line, Vector* C, float r);
 
 void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere);
