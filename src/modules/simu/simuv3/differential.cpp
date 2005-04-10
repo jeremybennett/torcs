@@ -48,7 +48,6 @@ SimDifferentialConfig(void *hdle, char *section, tDifferential *differential)
 		differential->type = DIFF_NONE; 
     }
 
-    
     differential->feedBack.I = differential->I * differential->ratio * differential->ratio +
 		(differential->inAxis[0]->I + differential->inAxis[1]->I) / differential->efficiency;
 }
@@ -142,16 +141,55 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 				DrTq1 = DrTq - DrTq0;
 			} else {
 				if (SIGN(DrTq) == SIGN(inTq0)) {
-					DrTq1 = MIN(DrTq, inTq0 * 2.0) * (0.5 + differential->bias);
+					DrTq1 = MIN(DrTq, inTq0 * 2.0f) * (0.5f + differential->bias);
 				} else {
-					DrTq1 = MIN(DrTq, -inTq0 * 2.0) * (0.5 + differential->bias);
+					DrTq1 = MIN(DrTq, -inTq0 * 2.0f) * (0.5f + differential->bias);
 				}
 				DrTq0 = DrTq - DrTq1;
 			}
 #else
-			/* I don't understand the above code. I would think that the following is what a FREE differential should look like, with both wheels independent.*/
-			DrTq0 = DrTq/2.0f;
-			DrTq1 = DrTq0;
+			// I would think that the following is what a FREE
+			// differential should look like, with both wheels
+			// independent and linked through a spider gear.
+			//
+			// The reaction from each wheel is transmitted back to the
+			// spider gear. If both wheels react equally, then the
+			// spider gear does not turn. If one of the wheel is
+			// immobile, so that DrTq/2=inTq0 for example, then the
+			// reaction does not act against the drivetrain, but since
+			// the spider gear can turn freely, it acts on the other wheel.
+			// 
+			// This system is equivalent to a rotating gear attached
+			// in between two parallel surfaces, with DrTq being
+			// equivalent to a force acting in the center of the
+			// gear. If one surface is fixed, only the other surface
+			// moves and all the force is 'transferred' to the moving
+			// surface. Or, the way I like to think of it, the
+			// immobile surface reacts with an equal and opposite
+			// force[1] that cancels DrTq/2 exactly and which is
+			// transmitted directly with the rotating gear to the
+			// other, free, surface.
+			//
+			//
+			// A lot of explanation for 3 lines of code..  TODO: Check
+			// what bias would mean in such a system. Would it be
+			// implemented between the spider and the wheels?  Or
+			// between the spider and the drivetrain? If the latter
+			// then it meanst the spider would always be turning, even
+			// under an even load. I think in this case it is safest
+			// to ignore it completely because it is frequently used
+			// in cars with just FWD or RWD, and very frequently in
+			// just the front part of 4WD cars, while the default
+			// differential bias setting is 0.1...
+			//
+			// [1] For an object to remain at rest, all forces acting
+			// on it must sum to 0.
+			
+			{
+				float spiderTq = inTq1 - inTq0;
+				DrTq0 = DrTq*0.5f + spiderTq;
+				DrTq1 = DrTq*0.5f - spiderTq;
+			}
 #endif
 			break;
 		case DIFF_LIMITED_SLIP:
