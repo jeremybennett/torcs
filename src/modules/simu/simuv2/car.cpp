@@ -260,13 +260,13 @@ SimCarUpdateSpeed(tCar *car)
     Rm = Rr * car->wheelbase /*  / 2.0 */ * car->Iinv.z * SimDeltaTime;
     Rr = 2.0 * Rr / mass * SimDeltaTime;
     vel = sqrt(car->DynGCg.vel.x * car->DynGCg.vel.x + car->DynGCg.vel.y * car->DynGCg.vel.y);
-    
+
     if (Rr > vel) {
 	Rr = vel;
     }
     if (vel > 0.00001) {
-	car->DynGCg.vel.x -= car->DynGCg.vel.x * Rr / vel;
-	car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel;
+		car->DynGCg.vel.x -= car->DynGCg.vel.x * Rr / vel * SIGN(car->DynGCg.vel.x);
+		car->DynGCg.vel.y -= car->DynGCg.vel.y * Rr / vel * SIGN(car->DynGCg.vel.y);
     }
 
     car->DynGCg.vel.ax += car->DynGCg.acc.ax * SimDeltaTime;
