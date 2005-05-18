@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
     file                 : porsche-gt3rs.xml
     created              : Sat Mar  3 18:46:37 CET 2001
-    copyright            : (C) 2001 by Eric Espi                        
-    email                : Eric.Espie@torcs.org   
-    version              : $Id$                                  
+    copyright            : (C) 2001 by Eric Espi
+    email                : Eric.Espie@torcs.org
+    version              : $Id$
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -19,72 +19,141 @@
 
 <params name="Porsche GT3 RS" type="template">
 
-  <!--  3D model by Eric Espie -->
-  <section name="Driver">
+	<!--  3D model by Eric Espie -->
+	<section name="Driver">
+		<!-- Position of the driver -->
+		<attnum name="xpos" val="-0.09" unit="m"/>
+		<attnum name="ypos" val="0.3" unit="m"/>
+		<attnum name="zpos" val="0.89" unit="m"/>
+	</section>
 
-    <!-- Position of the driver -->
-    <attnum name="xpos" val="0.5" unit="m"/>
-    <attnum name="ypos" val="0.0" unit="m"/>
-    <attnum name="zpos" val="1.0" unit="m"/>
-  </section>
 
-  <section name="Sound">
-	<attstr name="engine sample" val="porsche_engine.wav"/>
-	<attnum name="rpm scale" val="1.06"/>
-  </section>
+	<section name="Sound">
+		<attstr name="engine sample" val="porsche_engine.wav"/>
+		<attnum name="rpm scale" val="1.06"/>
+	</section>
 
-  <section name="Graphic Objects">
-    <attstr name="wheel texture" val="tex-wheel.rgb"/>
-    <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm8500.rgb"/>
-    <attnum name="tachometer min value" val="0" unit="rpm"/>
-    <attnum name="tachometer max value" val="10000" unit="rpm"/>
-    <attstr name="speedometer texture" val="speed360.rgb"/>
-    <attnum name="speedometer min value" val="0" unit="km/h"/>
-    <attnum name="speedometer max value" val="360" unit="km/h"/>
 
-    <section name="Ranges">
-      <section name="1">
-        <attnum name="threshold" val="30"/>
-        <attstr name="car" val="porsche-gt3rs.acc"/>
-	<attstr name="wheels" val="yes"/>
-      </section>
-      <section name="2">
-        <attnum name="threshold" val="20"/>
-        <attstr name="car" val="porsche-gt3rs-lod1.acc"/>
-	<attstr name="wheels" val="yes"/>
-      </section>
-      <section name="3">
-        <attnum name="threshold" val="10"/>
-        <attstr name="car" val="porsche-gt3rs-lod2.acc"/>
-	<attstr name="wheels" val="yes"/>
-      </section>
-      <section name="4">
-        <attnum name="threshold" val="0"/>
-        <attstr name="car" val="porsche-gt3rs-lod3.acc"/>
-	<attstr name="wheels" val="no"/>
-      </section>
-    </section>
+	<section name="Graphic Objects">
+		<attstr name="wheel texture" val="tex-wheel.rgb"/>
+		<attstr name="shadow texture" val="shadow.rgb"/>
+		<attstr name="tachometer texture" val="rpm8500.rgb"/>
+		<attnum name="tachometer min value" val="0" unit="rpm"/>
+		<attnum name="tachometer max value" val="10000" unit="rpm"/>
+		<attstr name="speedometer texture" val="speed360.rgb"/>
+		<attnum name="speedometer min value" val="0" unit="km/h"/>
+		<attnum name="speedometer max value" val="360" unit="km/h"/>
 
-    <section name="Light">
-      <section name="1">
-	<attstr name="type" val="brake2"/>
-	<attnum name="xpos" val="-2.13"/>
-	<attnum name="ypos" val="0.40"/>
-	<attnum name="zpos" val="0.50"/>
-	<attnum name="size" val="0.3"/>
-      </section>
-      <section name="2">
-	<attstr name="type" val="brake2"/>
-	<attnum name="xpos" val="-2.13"/>
-	<attnum name="ypos" val="-0.40"/>
-	<attnum name="zpos" val="0.50"/>
-	<attnum name="size" val="0.3"/>
-      </section>
-    </section>
+		<section name="Ranges">
+			<section name="1">
+				<attnum name="threshold" val="30"/>
+				<attstr name="car" val="porsche-gt3rs.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
 
-  </section>
+			<section name="2">
+				<attnum name="threshold" val="20"/>
+				<attstr name="car" val="porsche-gt3rs-lod1.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
 
+			<section name="3">
+				<attnum name="threshold" val="10"/>
+				<attstr name="car" val="porsche-gt3rs-lod2.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
+
+			<section name="4">
+				<attnum name="threshold" val="0"/>
+				<attstr name="car" val="porsche-gt3rs-lod3.acc"/>
+				<attstr name="wheels" val="no"/>
+			</section>
+		</section>
+
+		<section name="Light">
+			<section name="1">
+				<attstr name="type" val="brake"/>
+				<attnum name="xpos" val="-2.14"/>
+				<attnum name="ypos" val="0.50"/>
+				<attnum name="zpos" val="0.50"/>
+				<attnum name="size" val="0.2"/>
+			</section>
+
+			<section name="2">
+				<attstr name="type" val="brake"/>
+				<attnum name="xpos" val="-2.14"/>
+				<attnum name="ypos" val="-0.50"/>
+				<attnum name="zpos" val="0.50"/>
+				<attnum name="size" val="0.2"/>
+			</section>
+
+			<section name="3">
+				<attstr name="type" val="rear"/>
+				<attnum name="xpos" val="-2.12"/>
+				<attnum name="ypos" val="-0.50"/>
+				<attnum name="zpos" val="0.50"/>
+				<attnum name="size" val="0.15"/>
+			</section>
+
+			<section name="4">
+				<attstr name="type" val="rear"/>
+				<attnum name="xpos" val="-2.12"/>
+				<attnum name="ypos" val="0.50"/>
+				<attnum name="zpos" val="0.50"/>
+				<attnum name="size" val="0.15"/>
+			</section>
+
+			<section name="5">
+				<attstr name="type" val="rear"/>
+				<attnum name="xpos" val="-2.06"/>
+				<attnum name="ypos" val="0.70"/>
+				<attnum name="zpos" val="0.53"/>
+				<attnum name="size" val="0.13"/>
+			</section>
+
+			<section name="6">
+				<attstr name="type" val="rear"/>
+				<attnum name="xpos" val="-2.06"/>
+				<attnum name="ypos" val="-0.70"/>
+				<attnum name="zpos" val="0.53"/>
+				<attnum name="size" val="0.13"/>
+			</section>
+
+			<section name="7">
+				<attstr name="type" val="head1"/>
+				<attnum name="xpos" val="1.82"/>
+				<attnum name="ypos" val="-0.67"/>
+				<attnum name="zpos" val="0.60"/>
+				<attnum name="size" val="0.15"/>
+			</section>
+
+			<section name="8">
+				<attstr name="type" val="head1"/>
+				<attnum name="xpos" val="1.82"/>
+				<attnum name="ypos" val="0.67"/>
+				<attnum name="zpos" val="0.60"/>
+				<attnum name="size" val="0.15"/>
+			</section>
+
+			<section name="9">
+				<attstr name="type" val="head1"/>
+				<attnum name="xpos" val="1.95"/>
+				<attnum name="ypos" val="-0.5"/>
+				<attnum name="zpos" val="0.48"/>
+				<attnum name="size" val="0.1"/>
+			</section>
+
+			<section name="10">
+				<attstr name="type" val="head1"/>
+				<attnum name="xpos" val="1.95"/>
+				<attnum name="ypos" val="0.5"/>
+				<attnum name="zpos" val="0.48"/>
+				<attnum name="size" val="0.1"/>
+			</section>
+		</section>
+	</section>
+
+	
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrB"/>
     <attnum name="body length" unit="m" val="4.43"/>
