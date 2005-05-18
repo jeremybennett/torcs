@@ -17,7 +17,7 @@ readme.txt for details:
 
 Linux Installation from Source
 -------------------------------
-- requires plib 1.8.3, FreeGLUT or GLUT.
+- requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC on AMD64.
 - untar the archive
 - cd into the torcs-1.2.4 directory
 - ./configure (use --help for showing the options, of interest might be
@@ -87,6 +87,8 @@ Changes since 1.2.3
 - Fixed wheel normals (Bernhard).
 - Bugfixes in menus (Christos).
 - Improvments in simuv2 (Christos, Bernhard)
+- Updated porsche-gt3rs (Olaf Sassnick, Bernhard).
+- Fixed weird (new introduced, post 1.2.3, car.cpp) bug in simuv2 (Bernhard).
 
 
 Changes since 1.2.2
@@ -174,14 +176,12 @@ TODO for 1.2.4 (estimate: early July)
 - Fix strdup (for FreeBSD).
 - Apply useful patches from debian maintainer.
 - Update clkdtm if ready (Speedy).
-- Update porsche-gt3rs if ready (Olaf).
 - (Improve collision).
 - OpenAL (plib causes too much trouble on Windows).
 - Hunting lost open filehandles if any left.
 - S3TC Option for all textures (with option).
 - Scale down for all textures on load (user adjustable to improve performance).
 - Bugfixes and cleanup.
-- Rework eroad (mainly artwork).
 - Rework g-track-1 (format version 4, add pits on straight, update artwork).
 - Fix fence transparency (g-track-3, spring).
 - Add cameras (alpine, spring)
@@ -235,6 +235,8 @@ TODO for 1.2.5
 - SDL port (or 1.3.0 or 1.4.0, not decided finally)
 - review simuv2
 - possibility of one pit for 2 cars of one module.
+- fix tools (accc, trackgen, etc, these are way too touchy).
+- make trackgen generate two sides for barriers (better diffuse lighting).
 
 
 TODO LATER
@@ -317,4 +319,5 @@ IDEAS FOR MUCH LATER
 - Force feedback.
 - (Compressed data files?)
 - Story mode with message.
+- Traffic simulator
 
