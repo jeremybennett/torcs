@@ -71,7 +71,7 @@ static int usedFG = 0;
 static char	**Res = NULL;
 static int nbRes = 0;
 #else // USE_RANDR_EXT
-static char	*Res[] = {"640x480", "800x600", "1024x768", "1152x864", "1200x960", "1280x1024", "1600x1200", "320x200"};
+static char	*Res[] = {"640x480", "800x600", "1024x768", "1152x768", "1152x864", "1200x854", "1200x960", "1280x1024", "1600x1200", "320x200"};
 static const int nbRes = sizeof(Res) / sizeof(Res[0]);
 #endif // USE_RANDR_EXT
 

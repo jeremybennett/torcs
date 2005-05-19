@@ -2,9 +2,9 @@
 #
 #    file                 : Makefile
 #    created              : Mon Dec 11 22:30:53 CET 2000
-#    copyright            : (C) 2000 by Eric Espié                        
-#    email                : Eric.Espie@torcs.org   
-#    version              : $Id$                                  
+#    copyright            : (C) 2000 by Eric Espié
+#    email                : Eric.Espie@torcs.org
+#    version              : $Id$
 #
 ##############################################################################
 #
@@ -22,7 +22,7 @@ ifndef TORCS_BASE
 
 TORCS_BASE = $(shell pwd)
 MAKE_DEFAULT = ${TORCS_BASE}/Make-default.mk
-TORCS_RC = ${HOME}/.torcs.rc
+TORCS_RC = ${TORCS_BASE}/.torcs.rc
 
 -include Make-config
 
@@ -97,8 +97,9 @@ Make-config: configure Make-config.in
 	./configure
 	rm -f config.status config.log config.cache
 
-configure: configure.in aclocal.m4
+configure: configure.in config.h.in aclocal.m4
 	rm -f config.status config.log config.cache
+	autoheader
 	autoconf
 
 aclocal.m4: acinclude.m4

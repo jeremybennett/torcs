@@ -1632,7 +1632,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=torcs
- VERSION=1.2.3
+ VERSION=1.2.4-test1
 
 
 cat >>confdefs.h <<_ACEOF
@@ -4952,7 +4952,7 @@ fi;
 # Check whether --enable-ccmalloc or --disable-ccmalloc was given.
 if test "${enable_ccmalloc+set}" = set; then
   enableval="$enable_ccmalloc"
-  LDFLAGS="$LDFLAGS /home/torcs/ccmalloc-0.3.9-nco/obj/ccmalloc-g++.o -L/home/torcs/ccmalloc-0.3.9-nco/lib -lccmalloc -ldl"
+  LDFLAGS="$LDFLAGS $LDFLAGS ccmalloc-g++.o -lccmalloc -ldl"
 else
   LDFLAGS="$LDFLAGS"
 fi;

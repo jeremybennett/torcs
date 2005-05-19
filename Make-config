@@ -62,7 +62,7 @@ INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
 CPP = gcc -E -march=athlon-mp -O2 -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.2.3
+VERSION = 1.2.4-test1
 
 TAR = gtar
 GZIP_ENV = --best
