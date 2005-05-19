@@ -90,6 +90,7 @@ Changes since 1.2.3
 - Updated porsche-gt3rs (Olaf Sassnick, Bernhard).
 - Fixed weird (new introduced, post 1.2.3, car.cpp) bug in simuv2 (Bernhard).
 - Applied patches from Debian maintainer (Rudy Godoy, Bernhard).
+- Skidmarks code cleanup, backface culling (Christos, Bernhard).
 
 
 
@@ -214,7 +215,7 @@ TODO for 1.2.4 (estimate: early July)
 - before/at release: credits update
   Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
   Christophe Macours -> sound samples -> ???
-  Charalampos Alexopoulos -> track editor -> babis@rege.org
+  Charalampos Alexopoulos -> track editor ->  http://katergo.rege.org/projects/trackeditor/
 
 
 TODO for 1.2.5
