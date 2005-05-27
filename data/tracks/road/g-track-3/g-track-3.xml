@@ -2241,7 +2241,7 @@
       <attnum name="color R2" val="1.0"/>
       <attnum name="color G2" val="1.0"/>
       <attnum name="color B2" val="1.0"/>
-      <attstr name="texture name" val="barg1_n.rgb"/>
+      <attstr name="texture name" val="arbor2_n.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="continuous"/>
       <attnum name="texture size" val="10.0" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
@@ -2330,7 +2330,7 @@
       <attnum name="color R2" val="1.0"/>
       <attnum name="color G2" val="1.0"/>
       <attnum name="color B2" val="1.0"/>
-      <attstr name="texture name" val="barg4.rgb"/>
+      <attstr name="texture name" val="arbor-wood_n.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="continuous"/>
       <attnum name="texture size" val="20.0" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>

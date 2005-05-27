@@ -1683,7 +1683,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0LT327"
-texture "barg1_n.rgb" base
+texture "arbor2_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -2458,7 +2458,7 @@ refs 18
 kids 0
 OBJECT poly
 name "B0LT319"
-texture "barg1_n.rgb" base
+texture "arbor2_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -10918,7 +10918,7 @@ refs 26
 kids 0
 OBJECT poly
 name "B0RT236"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -11075,7 +11075,7 @@ refs 26
 kids 0
 OBJECT poly
 name "B0RT220"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -12365,7 +12365,7 @@ refs 18
 kids 0
 OBJECT poly
 name "B0RT214"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -13895,7 +13895,7 @@ name "___TKMN205_gl1"
 kids 7
 OBJECT poly
 name "B0RT208"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -14476,7 +14476,7 @@ refs 18
 kids 0
 OBJECT poly
 name "B0RT200"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -14814,7 +14814,7 @@ refs 16
 kids 0
 OBJECT poly
 name "B0RT193"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -15214,7 +15214,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT186"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -15370,7 +15370,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT182"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -15877,7 +15877,7 @@ refs 10
 kids 0
 OBJECT poly
 name "B0RT178"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -16122,7 +16122,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT174"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -16335,7 +16335,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT170"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -16584,7 +16584,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT166"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -17054,7 +17054,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT162"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -17738,7 +17738,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT158"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -18531,7 +18531,7 @@ refs 12
 kids 0
 OBJECT poly
 name "B0RT153"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -18936,7 +18936,7 @@ name "___TKMN143_gl1"
 kids 4
 OBJECT poly
 name "B0RT147"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -19249,7 +19249,7 @@ name "___TKMN136_gl1"
 kids 4
 OBJECT poly
 name "B0RT140"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
@@ -19546,7 +19546,7 @@ refs 18
 kids 0
 OBJECT poly
 name "B0RT133"
-texture "barg4.rgb" base
+texture "arbor-wood_n.rgb" base
 texture "shadow2.rgb" tiled
 texture empty_texture_no_mapping skids
 texture empty_texture_no_mapping shad
