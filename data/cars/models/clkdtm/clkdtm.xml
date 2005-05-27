@@ -18,46 +18,56 @@
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
 <params name="Mercedes CLK DTM" type="template">
-  <section name="Driver">
+	<section name="Driver">
 
-    <!-- Position of the driver -->
-    <attnum name="xpos" unit="m" val="0.65"/>
-    <attnum name="ypos" unit="m" val="0.0"/>
-    <attnum name="zpos" unit="m" val="1.0"/>
-  </section>
+		<!-- Position of the driver -->
+		<attnum name="xpos" unit="m" val="0.65"/>
+		<attnum name="ypos" unit="m" val="0.0"/>
+		<attnum name="zpos" unit="m" val="1.0"/>
+	</section>
 
-  <section name="Sound">
-	<attstr name="engine sample" val="clkdtmb2.wav"/>
-	<attnum name="rpm scale" val="0.7"/>
-  </section>
+	<section name="Sound">
+		<attstr name="engine sample" val="clkdtmb2.wav"/>
+		<attnum name="rpm scale" val="0.7"/>
+	</section>
 
-  <section name="Graphic Objects">
-    <attstr name="env" val="clkdtm.ac"/>
-    <attstr name="wheel texture" val="tex-wheel.rgb"/>
-    <attstr name="shadow texture" val="shadow.rgb"/>
-    <attstr name="tachometer texture" val="rpm8500.rgb"/>
-    <attnum name="tachometer min value" unit="rpm" val="0"/>
-    <attnum name="tachometer max value" unit="rpm" val="10000"/>
-    <attstr name="speedometer texture" val="speed360.rgb"/>
-    <attnum name="speedometer min value" unit="km/h" val="0"/>
-    <attnum name="speedometer max value" unit="km/h" val="360"/>
+	<section name="Graphic Objects">
+		<attstr name="env" val="clkdtm.ac"/>
+		<attstr name="wheel texture" val="tex-wheel.rgb"/>
+		<attstr name="shadow texture" val="shadow.rgb"/>
+		<attstr name="tachometer texture" val="rpm8500.rgb"/>
+		<attnum name="tachometer min value" unit="rpm" val="0"/>
+		<attnum name="tachometer max value" unit="rpm" val="10000"/>
+		<attstr name="speedometer texture" val="speed360.rgb"/>
+		<attnum name="speedometer min value" unit="km/h" val="0"/>
+		<attnum name="speedometer max value" unit="km/h" val="360"/>
 
-    <section name="Ranges">
-      <section name="1">
-        <attnum name="threshold" val="20"/>
-        <attstr name="car" val="clkdtm.acc"/>
-	<attstr name="wheels" val="yes"/>
-      </section>
-      <section name="2">
-        <attnum name="threshold" val="10"/>
-        <attstr name="car" val="clkdtm-lod1.acc"/>
-	<attstr name="wheels" val="yes"/>
-      </section>
-      <section name="3">
-        <attnum name="threshold" val="0"/>
-        <attstr name="car" val="clkdtm-lod2.acc"/>
-      </section>
-    </section>
+		<section name="Ranges">
+			<section name="1">
+				<attnum name="threshold" val="30"/>
+				<attstr name="car" val="clkdtm.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
+
+			<section name="2">
+				<attnum name="threshold" val="20"/>
+				<attstr name="car" val="clkdtm-lod1.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
+
+			<section name="3">
+				<attnum name="threshold" val="10"/>
+				<attstr name="car" val="clkdtm-lod2.acc"/>
+				<attstr name="wheels" val="yes"/>
+			</section>
+
+			<section name="4">
+				<attnum name="threshold" val="0"/>
+				<attstr name="car" val="clkdtm-lod3.acc"/>
+				<attstr name="wheels" val="no"/>
+			</section>
+
+		</section>
 
     <section name="Light">
       <section name="1">
