@@ -90,7 +90,11 @@ Changes since 1.2.3
 - Updated porsche-gt3rs (Olaf Sassnick, Bernhard).
 - Fixed weird (new introduced, post 1.2.3, car.cpp) bug in simuv2 (Bernhard).
 - Applied patches from Debian maintainer (Rudy Godoy, Bernhard).
-- Skidmarks code cleanup, backface culling (Christos, Bernhard).
+- Skidmarks code cleanup and improvment, backface culling (Christos, Bernhard).
+- Applied more patches from Debian for AMD64 (Rudy Godoy, Bernhard).
+- Smoke code cleanup and improvment (Christos, Bernhard).
+- grey-tracks.rgb downsized (Bernhard).
+- Updated clkdtm (Eliam Speedychonchon, Bernhard).
 
 
 
@@ -173,11 +177,9 @@ Changes since 1.2.3-bw-unofficial-test4
 TODO for 1.2.4 (estimate: early July)
 --------------
 - Fix new introduced bugs.
-- Fix more memory leaks (already hunt down a LOT there are still more).
 - Fix XSLT/DTD for viewing results (Report by Eugen)
 - Fix (windows) trackgen.
 - Fix strdup (for FreeBSD).
-- Update clkdtm if ready (Speedy).
 - (Improve collision).
 - OpenAL (plib causes too much trouble on Windows).
 - Hunting lost open filehandles if any left.
@@ -188,7 +190,6 @@ TODO for 1.2.4 (estimate: early July)
 - Fix fence transparency (g-track-3, spring).
 - Add cameras (alpine, spring)
 - solution for varying gl headers (include mesa headers into the source?)
-- Smoke starts too high above ground, review? [done, updating CVS soon - C.]
 - Sound performance problem (no facts, just a feeling at the moment, wait for
   feedback), review?
 - likewise olethros_2005 to olethros.
@@ -209,18 +210,18 @@ TODO for 1.2.4 (estimate: early July)
   after a fresh install and just once so far (is one of the shipped xml files
   broken)? [note there are many other crashes when using the menus, seemingly
   at random times].
-- downsize grey-tracks.rgb texture.
 - in long races car-to-car collisions fail somehow sometimes -> investigate
 - pit wall collision
 - before/at release: credits update
   Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
-  Christophe Macours -> sound samples -> ???
+  Christophe Macours -> sound samples -> http://users.belgacom.net/samples/
   Charalampos Alexopoulos -> track editor ->  http://katergo.rege.org/projects/trackeditor/
 
 
 TODO for 1.2.5
 --------------
 - All the new and postponed stuff.
+- Fix more memory leaks (already hunt down a LOT there are still more).
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.

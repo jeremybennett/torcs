@@ -4952,7 +4952,7 @@ fi;
 # Check whether --enable-ccmalloc or --disable-ccmalloc was given.
 if test "${enable_ccmalloc+set}" = set; then
   enableval="$enable_ccmalloc"
-  LDFLAGS="$LDFLAGS $LDFLAGS ccmalloc-g++.o -lccmalloc -ldl"
+  LDFLAGS="$LDFLAGS ccmalloc-g++.o -lccmalloc -ldl"
 else
   LDFLAGS="$LDFLAGS"
 fi;

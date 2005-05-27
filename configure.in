@@ -2,9 +2,9 @@
 #
 #    file                 : configure.in
 #    created              : Mon Dec 11 22:34:38 CET 2000
-#    copyright            : (C) 2000 by Eric Espié                        
-#    email                : Eric.Espie@torcs.org   
-#    version              : $Id$                                  
+#    copyright            : (C) 2000 by Eric Espié
+#    email                : Eric.Espie@torcs.org
+#    version              : $Id$
 #
 ##############################################################################
 #
@@ -46,24 +46,24 @@ AC_PATH_X
 #CFLAGS="-ansi -Wall -Wstrict-prototypes -W"
 ADDCFLAGS="-Wall -fPIC"
 AC_ARG_ENABLE(debug,
-	[  --enable-debug          set the debug mode], 
+	[  --enable-debug          set the debug mode],
 	ADDCFLAGS="$ADDCFLAGS -g -DDEBUG -DDEBUG_OUT",
 	ADDCFLAGS="$ADDCFLAGS -O2")
 
 AC_ARG_ENABLE(xrandr,
-	[  --disable-xrandr	   reset the XRANDR mode],	   
+	[  --disable-xrandr	   reset the XRANDR mode],
 	if test "$enableval" = "yes";
 	then ADDCFLAGS="$ADDCFLAGS -DUSE_RANDR_EXT"
 	fi,
 	ADDCFLAGS="$ADDCFLAGS -DUSE_RANDR_EXT")
 
 AC_ARG_ENABLE(ccmalloc,
-	[  --enable-ccmalloc       set the ccmalloc mode (beware path...)], 
-	LDFLAGS="$LDFLAGS $LDFLAGS ccmalloc-g++.o -lccmalloc -ldl",
+	[  --enable-ccmalloc       set the ccmalloc mode (beware path...)],
+	LDFLAGS="$LDFLAGS ccmalloc-g++.o -lccmalloc -ldl",
 	LDFLAGS="$LDFLAGS")
 
 AC_ARG_ENABLE(profiler,
-	[  --enable-profiler       set the profiler mode], 
+	[  --enable-profiler       set the profiler mode],
 	ADDCFLAGS="$ADDCFLAGS -DPROFILER",
 	ADDCFLAGS="$ADDCFLAGS")
 
