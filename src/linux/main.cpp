@@ -24,7 +24,6 @@
 
 #include <tgfclient.h>
 #include <client.h>
-#include <policy.h>
 
 #include "linuxspec.h"
 
@@ -110,8 +109,6 @@ main(int argc, char *argv[])
     
     glutMainLoop();		/* event loop of glut */
 
-    DiscretePolicy *dummy = new DiscretePolicy(0,0,0,0,0,0,0);	/* learning lib */
-    
     return 0;			/* just for the compiler, never reached */
 }
 

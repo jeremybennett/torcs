@@ -156,7 +156,7 @@ grAdaptScreenSize(void)
 static void
 grSplitScreen(void *vp)
 {
-    int p = (int)vp;
+    long p = (long)vp;
 
     switch (p) {
     case GR_SPLIT_ADD:
@@ -198,19 +198,19 @@ grGetcurrentScreen(void)
 static void
 grSetZoom(void *vp)
 {
-    grGetcurrentScreen()->setZoom((int)vp);
+    grGetcurrentScreen()->setZoom((long)vp);
 }
 
 static void
 grSelectCamera(void *vp)
 {
-    grGetcurrentScreen()->selectCamera((int)vp);
+    grGetcurrentScreen()->selectCamera((long)vp);
 }
 
 static void
 grSelectBoard(void *vp)
 {
-    grGetcurrentScreen()->selectBoard((int)vp);
+    grGetcurrentScreen()->selectBoard((long)vp);
 }
 
 static void

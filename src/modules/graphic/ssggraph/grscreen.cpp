@@ -139,7 +139,7 @@ void cGrScreen::desactivate(void)
 }
 
 /* Set camera zoom value */
-void cGrScreen::setZoom(int zoom) 
+void cGrScreen::setZoom(long zoom)
 {
     curCam->setZoom(zoom);
 }
@@ -154,7 +154,7 @@ void cGrScreen::selectPrevCar(void)
     selectPrevFlag = 1;
 }
 
-void cGrScreen::selectBoard(int brd)
+void cGrScreen::selectBoard(long brd)
 {
     board->selectBoard(brd);
 }
@@ -192,7 +192,7 @@ void cGrScreen::switchMirror(void)
 
 
 /* Select the camera by number */
-void cGrScreen::selectCamera(int cam)
+void cGrScreen::selectCamera(long cam)
 {
     if (cam == curCamHead) {
 	/* Same camera list, choose the next one */

@@ -72,7 +72,7 @@ public:
     void activate(int x, int y, int w, int h);
     void desactivate(void);
 
-    void setZoom(int zoom);
+    void setZoom(long zoom);
 
     int  isInScreen(int x, int y);
 
@@ -82,9 +82,9 @@ public:
 
     void updateCurrent(tSituation *s);
 
-    void selectCamera(int cam);
+    void selectCamera(long cam);
 
-    void selectBoard(int brd);
+    void selectBoard(long brd);
 
 	void selectTrackMap();
 

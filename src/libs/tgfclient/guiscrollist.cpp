@@ -45,7 +45,7 @@ gfuiScroll(tScrollBarInfo *sinfo)
     tGfuiObject		*object;
     tGfuiScrollList	*scrollist;
     
-    object = gfuiGetObject(GfuiScreen, (int)(sinfo->userData));
+    object = gfuiGetObject(GfuiScreen, (long)(sinfo->userData));
     if (object == NULL) {
 	return;
     }
