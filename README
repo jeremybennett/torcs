@@ -95,7 +95,7 @@ Changes since 1.2.3
 - Smoke code cleanup and improvment (Christos, Bernhard).
 - grey-tracks.rgb downsized (Bernhard).
 - Updated clkdtm (Eliam Speedychonchon, Bernhard).
-
+- Fixed fence transparency of g-track-3 and spring (Bernhard).
 
 
 Changes since 1.2.2
@@ -187,7 +187,6 @@ TODO for 1.2.4 (estimate: early July)
 - Scale down for all textures on load (user adjustable to improve performance).
 - Bugfixes and cleanup.
 - Rework g-track-1 (format version 4, add pits on straight, update artwork).
-- Fix fence transparency (g-track-3, spring).
 - Add cameras (alpine, spring)
 - solution for varying gl headers (include mesa headers into the source?)
 - Sound performance problem (no facts, just a feeling at the moment, wait for
