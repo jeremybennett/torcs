@@ -163,51 +163,62 @@ cGrBoard::grDispDebug(float fps, tCarElt *car)
 	GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 	y -= 15;
     }
-	
+
 }
 
-void 
+void
 cGrBoard::grDispGGraph(tCarElt *car)
 {
-    tdble X1, Y1, X2, Y2;    
+	tdble X1, Y1, X2, Y2, xc, yc;
 
-    X1 = (tdble)(Winx + Winw - 100);
-    Y1 = (tdble)(Winy + 100);
-   
-    X2 = -car->_DynGC.acc.y / 9.81 * 25.0 + X1;
-    Y2 = car->_DynGC.acc.x / 9.81 * 25.0 + Y1;
-    glBegin(GL_LINES);
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    glVertex2f(X1-50, Y1);
-    glVertex2f(X1+50, Y1);
-    glVertex2f(X1, Y1-50);
-    glVertex2f(X1, Y1+50);
-    glEnd();
+	X1 = (tdble)(Winx + Winw - 100);
+	Y1 = (tdble)(Winy + 100);
+	xc = (tdble)(Winx + Winw - 30);
+	yc = (tdble)(Y1 - 50);
 
-#define THNSS	2.0
-    glBegin(GL_QUADS);
-    glColor4f(0.0, 0.0, 1.0, 1.0);
-    glVertex2f(X1 - THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1 + car->ctrl.accelCmd * 50.0);
-    glVertex2f(X1 - THNSS, Y1 + car->ctrl.accelCmd * 50.0);
+	X2 = -car->_DynGC.acc.y / 9.81f * 25.0f + X1;
+	Y2 = car->_DynGC.acc.x / 9.81f * 25.0f + Y1;
+	glBegin(GL_LINES);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glVertex2f(X1-50, Y1);
+	glVertex2f(X1+50, Y1);
+	glVertex2f(X1, Y1-50);
+	glVertex2f(X1, Y1+50);
+	glVertex2f(xc, yc);
+	glVertex2f(xc, yc+100);
+	glEnd();
 
-    glVertex2f(X1 - THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1);
-    glVertex2f(X1 + THNSS, Y1 - car->ctrl.brakeCmd * 50.0);
-    glVertex2f(X1 - THNSS, Y1 - car->ctrl.brakeCmd * 50.0);
+	const tdble THNSS = 2.0f;
 
-    glVertex2f(X1, Y1 - THNSS);
-    glVertex2f(X1, Y1 + THNSS);
-    glVertex2f(X1 - car->ctrl.steer * 100.0, Y1 + THNSS);
-    glVertex2f(X1 - car->ctrl.steer * 100.0, Y1 - THNSS);
-    glEnd();
+	glBegin(GL_QUADS);
+	glColor4f(0.0, 0.0, 1.0, 1.0);
+	glVertex2f(X1 - THNSS, Y1);
+	glVertex2f(X1 + THNSS, Y1);
+	glVertex2f(X1 + THNSS, Y1 + car->ctrl.accelCmd * 50.0f);
+	glVertex2f(X1 - THNSS, Y1 + car->ctrl.accelCmd * 50.0f);
 
-    glBegin(GL_LINES);
-    glColor4f(1.0, 0.0, 0.0, 1.0);
-    glVertex2f(X1, Y1);
-    glVertex2f(X2, Y2);
-    glEnd();
+	glVertex2f(X1 - THNSS, Y1);
+	glVertex2f(X1 + THNSS, Y1);
+	glVertex2f(X1 + THNSS, Y1 - car->ctrl.brakeCmd * 50.0f);
+	glVertex2f(X1 - THNSS, Y1 - car->ctrl.brakeCmd * 50.0f);
+
+	glVertex2f(X1, Y1 - THNSS);
+	glVertex2f(X1, Y1 + THNSS);
+	glVertex2f(X1 - car->ctrl.steer * 100.0f, Y1 + THNSS);
+	glVertex2f(X1 - car->ctrl.steer * 100.0f, Y1 - THNSS);
+
+	glVertex2f(xc - THNSS, yc);
+	glVertex2f(xc + THNSS, yc);
+	glVertex2f(xc + THNSS, yc + car->ctrl.clutchCmd * 100.0f);
+	glVertex2f(xc - THNSS, yc + car->ctrl.clutchCmd * 100.0f);
+
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor4f(1.0, 0.0, 0.0, 1.0);
+	glVertex2f(X1, Y1);
+	glVertex2f(X2, Y2);
+	glEnd();
 
 }
 
