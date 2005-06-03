@@ -39,6 +39,7 @@
 #include <tgfclient.h>
 #include "gui.h"
 #include "fg_gm.h"
+#include "glfeatures.h"
 
 //#ifndef WIN32
 //#define USE_RANDR_EXT
@@ -407,6 +408,8 @@ void GfScrInit(int argc, char *argv[])
     GfParmReleaseHandle(handle);
 
     glutReshapeFunc( Reshape );
+
+	checkGLFeatures();
 }
 
 /** Shutdown the screen

@@ -394,30 +394,43 @@ grInitShadow(tCarElt *car)
     shdTexName = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_SHADOW_TEXTURE, "");
 
     grCarInfo[car->index].shadowAnchor = new ssgBranch();
-    
+
     clr[0] = clr[1] = clr[2] = 1.0;
     clr[3] = 1.0;
     shd_clr->add(clr);
     nrm[0] = nrm[1] = 0.0;
     nrm[2] = 1.0;
     shd_nrm->add(nrm);
-    
+
     /* vertices */
 #define MULT	1.1
     vtx[2] = 0.0;
-    for (i = 0, x = car->_dimension_x * MULT / 2.0; i < GR_SHADOW_POINTS / 2; i++, x -= car->_dimension_x * MULT / (float)(GR_SHADOW_POINTS - 2) * 2.0) {
-	vtx[0] = x;
-	vtx[1] = car->_dimension_y * MULT / 2.0;
-	shd_vtx->add(vtx);
-	tex[0] = 1.0 - (float)i / (float)((GR_SHADOW_POINTS - 2) / 2.0);
-	tex[1] = 1.0;
-	shd_tex->add(tex);
+	for (i = 0, x = car->_dimension_x * MULT / 2.0; i < GR_SHADOW_POINTS / 2; i++, x -= car->_dimension_x * MULT / (float)(GR_SHADOW_POINTS - 2) * 2.0) {
+		/*vtx[0] = x;
+		vtx[1] = car->_dimension_y * MULT / 2.0;
+		shd_vtx->add(vtx);
+		tex[0] = 1.0 - (float)i / (float)((GR_SHADOW_POINTS - 2) / 2.0);
+		tex[1] = 1.0;
+		shd_tex->add(tex);
 
-	vtx[1] = -car->_dimension_y * MULT / 2.0;
-	shd_vtx->add(vtx);
-	tex[1] = 0.0;
-	shd_tex->add(tex);
-    };
+		vtx[1] = -car->_dimension_y * MULT / 2.0;
+		shd_vtx->add(vtx);
+		tex[1] = 0.0;
+		shd_tex->add(tex);*/
+		vtx[0] = x;
+		tex[0] = 1.0 - (float)i / (float)((GR_SHADOW_POINTS - 2) / 2.0);
+
+		vtx[1] = -car->_dimension_y * MULT / 2.0;
+		shd_vtx->add(vtx);
+		tex[1] = 0.0;
+		shd_tex->add(tex);
+
+		vtx[1] = car->_dimension_y * MULT / 2.0;
+		shd_vtx->add(vtx);
+		tex[1] = 1.0;
+		shd_tex->add(tex);
+
+	};
 
     grCarInfo[car->index].shadowBase = new ssgVtxTableShadow(GL_TRIANGLE_STRIP, shd_vtx, shd_nrm, shd_tex, shd_clr);
 	grMipMap = 0;
@@ -429,7 +442,7 @@ grInitShadow(tCarElt *car)
 
 }
 
-void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt) 
+void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt)
 {
 	//showEntityType (l);
 	if (l->isAKindOf (ssgTypeBranch())) {
@@ -659,29 +672,29 @@ grInitCar(tCarElt *car)
 static void
 grDrawShadow(tCarElt *car, int visible)
 {
-    int		i;
-    ssgVtxTableShadow	*shadow;
-    sgVec3	*vtx;
+	int		i;
+	ssgVtxTableShadow	*shadow;
+	sgVec3	*vtx;
 
-    if (grCarInfo[car->index].shadowAnchor->getNumKids() != 0) {
-	grCarInfo[car->index].shadowAnchor->removeKid(grCarInfo[car->index].shadowCurr);
-    }
-
-    if (visible) {
-	shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
-	/* shadow->setState(shadowState); */
-	shadow->setCullFace(0);
-	shadow->getVertexList((void**)&vtx);
-
-	shadow->transform(grCarInfo[car->index].carPos);
-
-	for (i = 0; i < GR_SHADOW_POINTS; i++) {
-	    vtx[i][2] = RtTrackHeightG(car->_trkPos.seg, vtx[i][0], vtx[i][1]) + 0.00;
+	if (grCarInfo[car->index].shadowAnchor->getNumKids() != 0) {
+		grCarInfo[car->index].shadowAnchor->removeKid(grCarInfo[car->index].shadowCurr);
 	}
 
-	grCarInfo[car->index].shadowCurr = shadow;
-	grCarInfo[car->index].shadowAnchor->addKid(shadow);
-    }
+	if (visible) {
+		shadow = (ssgVtxTableShadow *)grCarInfo[car->index].shadowBase->clone(SSG_CLONE_GEOMETRY);
+		/* shadow->setState(shadowState); */
+		shadow->setCullFace(TRUE);
+		shadow->getVertexList((void**)&vtx);
+
+		shadow->transform(grCarInfo[car->index].carPos);
+
+		for (i = 0; i < GR_SHADOW_POINTS; i++) {
+			vtx[i][2] = RtTrackHeightG(car->_trkPos.seg, vtx[i][0], vtx[i][1]) + 0.00;
+		}
+
+		grCarInfo[car->index].shadowCurr = shadow;
+		grCarInfo[car->index].shadowAnchor->addKid(shadow);
+	}
 }
 
 

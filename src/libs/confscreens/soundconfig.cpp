@@ -45,9 +45,6 @@ static int SoundOptionId;
 static void	*scrHandle = NULL;
 static void	*prevHandle = NULL;
 
-// parameters to configure.
-static void	*paramHandle = NULL;
-
 
 // Read sound configuration.
 static void readSoundCfg(void)
@@ -57,7 +54,7 @@ static void readSoundCfg(void)
 	char buf[1024];
 
 	sprintf(buf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
-	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[0]);
 
 	for (i = 0; i < nbOptions; i++) {
@@ -68,7 +65,6 @@ static void readSoundCfg(void)
 	}
 
 	GfParmReleaseHandle(paramHandle);
-	paramHandle = NULL;
 
 	GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
 }
@@ -79,11 +75,10 @@ static void saveSoundOption(void *)
 {
 	char buf[1024];
 	sprintf(buf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
-	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	GfParmSetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[curOption]);
 	GfParmWriteFile(NULL, paramHandle, "sound");
 	GfParmReleaseHandle(paramHandle);
-	paramHandle = NULL;
 
 	// Return to previous screen.
 	GfuiScreenActivate(prevHandle);
@@ -108,6 +103,13 @@ static void changeSoundState(void *vp)
     GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
 }
 
+
+static void onActivate(void * /* dummy */)
+{
+	readSoundCfg();
+}
+
+
 // Sound menu
 void * SoundMenuInit(void *prevMenu)
 {
@@ -120,7 +122,7 @@ void * SoundMenuInit(void *prevMenu)
 
 	prevHandle = prevMenu;
 
-	scrHandle = GfuiScreenCreate();
+	scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
 	GfuiTitleCreate(scrHandle, "Sound Configuration", 0);
 	GfuiScreenAddBgImg(scrHandle, "data/img/splash-simucfg.png");
 

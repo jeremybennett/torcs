@@ -34,6 +34,13 @@
 #define GR_ATT_SOUND_STATE_ENABLED	"enabled"
 #define GR_ATT_SOUND_STATE_DISABLED	"disabled"
 
+#define GR_SCT_GLFEATURES					"OpenGL Features"
+#define GR_ATT_TEXTURECOMPRESSION			"texture compression ARB"
+#define GR_ATT_TEXTURECOMPRESSION_ENABLED	"enabled"
+#define GR_ATT_TEXTURECOMPRESSION_DISABLED	"disabled"
+
+#define GR_ATT_TEXTURESIZE					"user texture sizelimit"
+
 #define GR_SCT_DISPMODE		"Display Mode"
 #define GR_ATT_CAM		"camera"
 #define GR_ATT_CAM_HEAD		"camera head list"

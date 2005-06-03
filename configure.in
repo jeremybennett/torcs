@@ -72,6 +72,7 @@ CXXFLAGS="$CXXFLAGS $ADDCFLAGS"
 LDFLAGS="$LDFLAGS -L$x_libraries"
 
 dnl Checks for includes (devel part of packages)
+AC_CHECK_HEADER(GL/gl.h,, AC_MSG_ERROR([Can't find GL/gl.h. Look for Mesa devel packages for your distro.]))
 AC_CHECK_HEADER(GL/glut.h,, AC_MSG_ERROR([Can't find GL/glut.h. freeglut can be found on http://freeglut.sourceforge.net/]))
 AC_CHECK_HEADER(GL/glx.h,, AC_MSG_ERROR([Can't find GL/glx.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(X11/Xlib.h,, AC_MSG_ERROR([Can't find X11/Xlib.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
@@ -127,28 +128,63 @@ AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. PLIB can be found
 AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. PLIB can be found on http://plib.sourceforge.net/]))
 AC_CHECK_LIB(plibssgaux, main,,AC_MSG_ERROR([Can't find libplibssgaux. PLIB can be found on http://plib.sourceforge.net/]))
 
+
+
 dnl Taken from FlightGear
 AC_MSG_CHECKING([for plib 1.8.3 or newer])
-AC_TRY_RUN([
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <unistd.h>
 #include <plib/ul.h>
-
 #define MIN_PLIB_VERSION 183
-
 int main() {
-
     if ( PLIB_VERSION < MIN_PLIB_VERSION ) {
 	 return -1;
     }
-
     return 0;
 }
-
-],
+]])],
   AC_MSG_RESULT(yes),
   [AC_MSG_RESULT([PLIB 1.8.3 was not detected. TORCS can run only with PLIB 1.8.3, so verify that the PLIB 1.8.3 is really the version installed on your system.])],
   AC_MSG_RESULT(yes)
 )
+
+
+
+AC_MSG_CHECKING([for GL_VERSION_1_3])
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
+#include <GL/gl.h>
+int main() {
+#ifdef GL_VERSION_1_3
+	return 0;
+#else
+	return -1;
+#endif
+}
+]])],
+  AC_MSG_RESULT(yes),
+  [AC_MSG_ERROR([GL_VERSION_1_3 not defined via gl.h. Please get the GL header files from mesa3d.org.])],
+  AC_MSG_RESULT(yes)
+)
+
+
+
+AC_MSG_CHECKING([for GL_ARB_texture_compression])
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
+#include <GL/gl.h>
+int main() {
+#ifdef GL_ARB_texture_compression
+	return 0;
+#else
+	return -1;
+#endif
+}
+]])],
+  AC_MSG_RESULT(yes),
+  [AC_MSG_ERROR([GL_ARB_texture_compression not defined via gl.h. Please get the GL header files from mesa3d.org.])],
+  AC_MSG_RESULT(yes)
+)
+
+
 
 CFLAGS="$CFLAGS $ADDCFLAGS"
 CXXFLAGS="$CXXFLAGS $ADDCFLAGS"

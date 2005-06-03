@@ -28,6 +28,7 @@
 #include "grvtxtable.h"
 #include "grmultitexstate.h"
 #include "grmain.h"
+#include "grtexture.h"
 int inGroup=0;
 
 
@@ -256,7 +257,8 @@ static ssgState *get_state ( _ssgMaterial *mat )
   }
 #endif
 
-  ssgSimpleState *st = new ssgSimpleState () ;
+  //ssgSimpleState *st = new ssgSimpleState () ;
+  grManagedState *st = grStateFactory();
 
   st -> setMaterial ( GL_SPECULAR, mat -> spec ) ;
   st -> setMaterial ( GL_EMISSION, mat -> emis ) ;

@@ -35,12 +35,13 @@ SOURCES   = 	guimenu.cpp \
 		guiimage.cpp \
 		control.cpp \
 		fg_gm.cpp \
-		tgfclient.cpp
+		tgfclient.cpp \
+		glfeatures.cpp
 
 
 EXPDIR  = include
 
-EXPORTS = tgfclient.h screen_properties.h
+EXPORTS = tgfclient.h screen_properties.h glfeatures.h
 
 SHIPDIR = config
 

@@ -91,6 +91,7 @@ void ssgVtxTableShadow::draw_geometry ()
   glDepthMask(GL_FALSE);
   glPolygonOffset(-15.0f, -20.0f);
   glEnable(GL_POLYGON_OFFSET_FILL);
+  //glEnable(GL_CULL_FACE);
 
   glBegin ( gltype ) ;
 

@@ -225,24 +225,26 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 				sling_right = sling_mud;
 				sling_left = -sling_mud;
 
+
 				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-				vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
+				vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;//car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
 				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 				basevtx->add(vtx);
 				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-				vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;//car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
+				vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
 				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 				basevtx->add(vtx);
 
 				texcoords = new ssgTexCoordArray();
 
-
 				TxVtx[0] = grCarInfo[car->index].skidmarks->strips[i].tex_state;
-				TxVtx[1] =  0.25f+sling_left*0.25f;
-				texcoords->add(TxVtx);
 
 				TxVtx[1] = 0.75f + sling_right*0.25f;
 				texcoords->add(TxVtx);
+
+				TxVtx[1] =  0.25f+sling_left*0.25f;
+				texcoords->add(TxVtx);
+
 
 				float dt = 0.01f; // should get it from somewhere else really. I could also account for radius, but that's a bit of an overkill.
 				grCarInfo[car->index].skidmarks->strips[i].tex_state += dt*car->_wheelSpinVel(i);
@@ -280,6 +282,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 					grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->recalcBSphere();
 					grCarInfo[car->index].skidmarks->strips[i].size[grCarInfo[car->index].skidmarks->strips[i].running_skid] = 2;
 					grCarInfo[car->index].skidmarks->strips[i].timeStrip=t;
+					grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->setCullFace(TRUE);
 				} else {
 					/* continue case */
 					grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[0]);

@@ -1,9 +1,10 @@
 /***************************************************************************
 
-    file                 : grmultitexstate.h
-    created              : Fri Mar 22 23:16:44 CET 2002
-    copyright            : (C) 2001 by Christophe Guionneau
-    version              : $Id$
+    file        : openglconfig.cpp
+    created     : Fri Jun 3 12:52:07 CET 2004
+    copyright   : (C) 2005 Bernhard Wymann
+    email       : berniw@bluewin.ch
+    version     : $Id$
 
  ***************************************************************************/
 
@@ -16,16 +17,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __GRMULTI
-#define __GRMULTI
+/** @file
 
-#include "grtexture.h"
+    @version	$Id$
+*/
 
-class grMultiTexState : public grManagedState
-{
-	public:
-		~grMultiTexState() {}
-		virtual void apply (int unit) ;
-};
+#ifndef _OPENGLCONFIG_H_
+#define _OPENGLCONFIG_H_
 
-#endif // __GRMULTI
+extern void *OpenGLMenuInit(void *prevMenu);
+
+
+#endif // _OPENGLCONFIG_H_

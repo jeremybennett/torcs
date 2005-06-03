@@ -96,6 +96,21 @@ Changes since 1.2.3
 - grey-tracks.rgb downsized (Bernhard).
 - Updated clkdtm (Eliam Speedychonchon, Bernhard).
 - Fixed fence transparency of g-track-3 and spring (Bernhard).
+- Visualize clutch command value (Bernhard).
+- Simplyfied conditional compiling in grtrackmap.cpp, it requires now OpenGL
+  1.3 compatible header files. (Bernhard).
+- Added configure test for GL_ARB_texture_compression (Bernhard).
+- Added configure test for GL_VERSION_1_3 (Bernhard).
+- Disabled mipmapping of "*shadow*" texture files (Bernhard).
+- Backface culling for car shadow (Bernhard).
+- Added texture compression (Bernhard).
+- Added texture downscaling (Bernhard).
+- Fixed an issue in sound/simu config screen (after changing values and hitting
+  cancel the fields did not represent the current settings) (Bernhard).
+- Added OpenGL configuration screen (Bernhard).
+- Fixed inconsistency of texture loaders, "_nmm" is now obsolete, use "_n"
+  (Bernhard).
+
 
 
 Changes since 1.2.2
@@ -183,15 +198,11 @@ TODO for 1.2.4 (estimate: early July)
 - (Improve collision).
 - OpenAL (plib causes too much trouble on Windows).
 - Hunting lost open filehandles if any left.
-- S3TC Option for all textures (with option).
-- Scale down for all textures on load (user adjustable to improve performance).
 - Bugfixes and cleanup.
 - Rework g-track-1 (format version 4, add pits on straight, update artwork).
 - Add cameras (alpine, spring)
-- solution for varying gl headers (include mesa headers into the source?)
 - Sound performance problem (no facts, just a feeling at the moment, wait for
   feedback), review?
-- likewise olethros_2005 to olethros.
 - Add validation for the case no driver selected, do not exit to
   console.
 - (Sound did not work well with 40 cars, investigate). [probably due to plib]
@@ -211,6 +222,7 @@ TODO for 1.2.4 (estimate: early July)
   at random times].
 - in long races car-to-car collisions fail somehow sometimes -> investigate
 - pit wall collision
+- update faq (->AMD64, remove outdated stuff).
 - before/at release: credits update
   Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
   Christophe Macours -> sound samples -> http://users.belgacom.net/samples/

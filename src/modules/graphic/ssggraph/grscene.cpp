@@ -44,6 +44,7 @@
 #include "grscene.h"
 #include "grutil.h"
 #include "grssgext.h"
+#include "grtexture.h"
 #include "win32_glext.h"
 
 
@@ -474,6 +475,8 @@ grLoadScene(tTrack *track)
 
     ssgSetCurrentOptions(&options);
     ssgAddTextureFormat(".png", grLoadPngTexture);
+	grRegisterCustomSGILoader();
+	
     grTrack = track;
     TheScene = new ssgRoot;
 

@@ -44,41 +44,35 @@ static int SimuVersionId;
 static void	*scrHandle = NULL;
 static void	*prevHandle = NULL;
 
-/* parameters to configure */
-static void	*paramHandle = NULL;
 
-static void
-ReadSimuCfg(void)
+static void ReadSimuCfg(void)
 {
-    char	*versionName;
-    int		i;
+	char *versionName;
+	int i;
 
-    paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-    versionName = GfParmGetStr(paramHandle, "Modules", "simu", simuVersionList[0]);
+	void *paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	versionName = GfParmGetStr(paramHandle, "Modules", "simu", simuVersionList[0]);
 
-    for (i = 0; i < nbVersions; i++) {
-	if (strcmp(versionName, simuVersionList[i]) == 0) {
-	    curVersion = i;
-	    break;
+	for (i = 0; i < nbVersions; i++) {
+		if (strcmp(versionName, simuVersionList[i]) == 0) {
+			curVersion = i;
+			break;
+		}
 	}
-    }
 
-    GfParmReleaseHandle(paramHandle);
-    paramHandle = NULL;
+	GfParmReleaseHandle(paramHandle);
 
-    GfuiLabelSetText(scrHandle, SimuVersionId, simuVersionList[curVersion]);
+	GfuiLabelSetText(scrHandle, SimuVersionId, simuVersionList[curVersion]);
 }
 
 
 /* Save the choosen values in the corresponding parameter file */
-static void
-SaveSimuVersion(void * /* dummy */)
+static void SaveSimuVersion(void * /* dummy */)
 {
-    paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+    void *paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
     GfParmSetStr(paramHandle, "Modules", "simu", simuVersionList[curVersion]);
     GfParmWriteFile(NULL, paramHandle, "raceengine");
     GfParmReleaseHandle(paramHandle);
-    paramHandle = NULL;
 
     /* return to previous screen */
     GfuiScreenActivate(prevHandle);
@@ -103,6 +97,13 @@ ChangeSimuVersion(void *vp)
     GfuiLabelSetText(scrHandle, SimuVersionId, simuVersionList[curVersion]);
 }
 
+
+static void onActivate(void * /* dummy */)
+{
+        ReadSimuCfg();
+}
+
+
 /* Menu creation */
 void *
 SimuMenuInit(void *prevMenu)
@@ -115,7 +116,7 @@ SimuMenuInit(void *prevMenu)
     }
     prevHandle = prevMenu;
 
-    scrHandle = GfuiScreenCreate();
+    scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
     GfuiTitleCreate(scrHandle, "Simulation Configuration", 0);
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-simucfg.png");
 
@@ -132,7 +133,7 @@ SimuMenuInit(void *prevMenu)
 		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 		       x2, y, GFUI_ALIGN_HL_VB, 1,
 		       (void*)-1, ChangeSimuVersion,
-		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
+		       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 		       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 		       x4, y, GFUI_ALIGN_HR_VB, 1,

@@ -27,6 +27,7 @@
 #ifndef _GRSSGEXT_H_
 #define _GRSSGEXT_H_
 
+#include "grtexture.h"
 
 /*
  * An ssgBranch with pre and post draw callbacks.
@@ -41,27 +42,27 @@ class ssgBranchCb : public ssgBranch
 
   ssgCallback  preDrawCB;
   ssgCallback postDrawCB;
-  
+
  public:
 
   ssgBranchCb(void):ssgBranch() {
     preDrawCB = NULL;
     postDrawCB = NULL;
   }
-  
-  void cull  ( sgFrustum *f, sgMat4 m, int test_needed ) 
+
+  void cull  ( sgFrustum *f, sgMat4 m, int test_needed )
     {
       int cull_result = cull_test ( f, m, test_needed ) ;
-      
+
       if ( cull_result == SSG_OUTSIDE )
 	return ;
-      
+
       if ( preDrawCB != NULL && ! (*preDrawCB)(this) )
 	return ;
-      
+
       for ( ssgEntity *e = getKid ( 0 ) ; e != NULL ; e = getNextKid() )
 	e -> cull ( f, m, cull_result != SSG_INSIDE ) ;
-      
+
       if ( postDrawCB != NULL )
 	(*postDrawCB)(this) ;
     }
@@ -77,53 +78,24 @@ class ssgBranchCb : public ssgBranch
 
 
 /* Use the texture name to select options like mipmap */
-class ssgLoaderOptionsEx : public ssgLoaderOptions
-{
- public:
-    ssgLoaderOptionsEx()
-	: ssgLoaderOptions() 
-	{}
+class ssgLoaderOptionsEx : public ssgLoaderOptions {
+	public:
+		ssgLoaderOptionsEx():ssgLoaderOptions() {}
 
-    ssgTexture* createTexture(char* tfname, 
-			      int wrapu  = TRUE, int wrapv = TRUE, 
-			      int mipmap = TRUE)
-	{
-	    char *buf;
-	    char *s;
-
-	    buf = (char *)malloc(strlen(tfname)+1);
-	    strcpy(buf, tfname);
-
-	    /* find the filename extension */
-	    s = strrchr(buf, '.');
-	    if (s) {
-		*s = 0;
-	    }
-      
-	    /* search for the texture parameters */
-	    s = strrchr(buf, '_');
-      
-	    if (s) {
-		/* no mipmap */
-		if (strncmp(s, "_n", 4) == 0) {
-		    mipmap = FALSE;
+		ssgTexture* createTexture(char* tfname, int wrapu = TRUE, int wrapv = TRUE, int mipmap = TRUE) {
+			mipmap = doMipMap(tfname, mipmap);
+			return ssgLoaderOptions::createTexture(tfname, wrapu, wrapv, mipmap) ;
 		}
-	    }
-	    free(buf);
-      
-	    return ssgLoaderOptions::createTexture(tfname, wrapu, wrapv, mipmap) ;
-	}
 
-    virtual void makeModelPath ( char* path, const char *fname ) const
-	{
-	    ulFindFile ( path, model_dir, fname, NULL ) ;
-	}
-    
-    virtual void makeTexturePath ( char* path, const char *fname ) const
-	{
-	    ulFindFile ( path, texture_dir, fname, NULL ) ;
-	}
+		virtual void makeModelPath ( char* path, const char *fname ) const
+		{
+			ulFindFile ( path, model_dir, fname, NULL ) ;
+		}
 
+		virtual void makeTexturePath ( char* path, const char *fname ) const
+		{
+			ulFindFile ( path, texture_dir, fname, NULL ) ;
+		}
 };
 
 

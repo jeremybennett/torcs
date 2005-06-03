@@ -87,24 +87,6 @@ cGrTrackMap::cGrTrackMap()
 		tTrackSeg* first = track->seg;
 		tTrackSeg* seg = first;
 
-
-// If the OpenGL ARB texture comression extension is defined in the gl.h header file of
-// the build host, include support for GL_ARB_texture_compression.
-#ifdef GL_ARB_texture_compression
-		// Query if the extension is avaiable at the runtime system (true, if > 0).
-		int compressARB = GfuiGlutExtensionSupported("GL_ARB_texture_compression");
-		// Check if at least one internal format is vailable. This is a workaround for
-		// driver problems and not a bugfix. According to the specification OpenGL should
-		// choose an uncompressed alternate format if it can't provide the requested
-		// compressed one... but it does not on all cards/drivers.
-		int numformats;
-		glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS_ARB, &numformats);
-		if (numformats == 0) {
-			compressARB = 0;
-		}
-#endif //GL_ARB_texture_compression
-
-
 		// Search the maximum/minimum x/y values of the track (axis aligned bounding box),
 		// to compute later the texture parameters and to be able to place the cars (dots)
 		// correct. The impementation is inefficient, but it's just executed one time per
@@ -342,24 +324,16 @@ cGrTrackMap::cGrTrackMap()
 		}
 		glEnd();
 
-// Fix weird bug in Windows version. The problem is the glu version of vc++ 6.0, it's just 1.2,
-// not 1.3, so it can't handle the GL_UNSIGNED_INT_8_8_8_8 type in gluBuild2DMipmaps correctly.
-#ifdef GLU_VERSION_1_3
-#define THE_GL_PIXEL_TYPE	GL_UNSIGNED_INT_8_8_8_8
-#else
-#define	THE_GL_PIXEL_TYPE	GL_BYTE
-#endif
-
 		// Read track picture into memory to be able to generate mipmaps. I read back an RGBA
 		// image because I don't know yet what people want to add to the map, so RGBA is most
 		// flexible to add things like start line, elevation coloring etc.
-		// If it turns out that we leave it white a more efficient solution is possible with
-		// GL_ALPHA or GL_LUMINANCE.
+		// Do not use GL_ALPHA or GL_LUMINANCE to save memory, somehow this leads to a
+		// performance penalty (at least on NVidia cards).
 		GLuint *trackImage = (GLuint*) malloc(texturesize*texturesize*sizeof(GLuint));
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glPixelStorei(GL_PACK_ALIGNMENT, 1);
 		glReadBuffer(GL_BACK);
-		glReadPixels(0, 0, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
+		glReadPixels(0, 0, texturesize, texturesize, GL_RGBA, GL_BYTE, trackImage);
 
 		// Check if the color buffer has alpha, if not fix the texture. Black gets
 		// replaced by transparent black, so don't draw black in the texture, you
@@ -387,17 +361,14 @@ cGrTrackMap::cGrTrackMap()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 
-// If the OpenGL ARB texture comression extension is defined in the gl.h header file of
-// the build host, include code which tries to use it.
-#ifdef GL_ARB_texture_compression
 		// If GL_ARB_texture_compression is available at runtime, (try to) compress the
 		// texture. This is done with the specification of the internal format to
 		// GL_COMPRESSED_RGBA_ARB.
-		if (compressARB) {
+		if (isCompressARBAvailable()) {
 			// This texture contains mostly the clear color value and should therefore
 			// compress well even with high quality.
 			glHint(GL_TEXTURE_COMPRESSION_HINT_ARB, GL_NICEST);
-			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_COMPRESSED_RGBA_ARB, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_COMPRESSED_RGBA_ARB, texturesize, texturesize, GL_RGBA, GL_BYTE, trackImage);
 			// The following commented code is just for testing purposes.
 			/*int compressed;
 			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED_ARB, &compressed);
@@ -409,14 +380,8 @@ cGrTrackMap::cGrTrackMap()
 			}*/
 		} else {
 			// GL_ARB_texture_compression not available at runtime, fallback.
-			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
+			gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, GL_BYTE, trackImage);
 		}
-#else // GL_ARB_texture_compression
-// The build host has not GL_ARB_texture_compression defined in gl.h or in another header file.
-		gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, texturesize, texturesize, GL_RGBA, THE_GL_PIXEL_TYPE, trackImage);
-#endif // GL_ARB_texture_compression
-
-#undef THE_GL_PIXEL_TYPE
 
 		// Free the memory of the initial texture.
 		free(trackImage);

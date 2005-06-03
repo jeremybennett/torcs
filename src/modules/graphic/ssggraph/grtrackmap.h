@@ -38,6 +38,7 @@
 #include "win32_glext.h"
 #endif
 #include <math.h>
+#include <glfeatures.h>
 
 #define TRACK_MAP_NONE							(1<<0)
 #define TRACK_MAP_NORMAL						(1<<1)

@@ -42,14 +42,15 @@
 #include "grutil.h"
 #include "grtrackmap.h"
 #include "grcarlight.h"
+#include <glfeatures.h>
 
 int maxTextureUnits = 0;
-static double	OldTime;
-static int	nFrame;
-float		grFps;
-double		grCurTime;
-double		grDeltaTime;
-int		segIndice	= 0;
+static double OldTime;
+static int nFrame;
+float grFps;
+double grCurTime;
+double grDeltaTime;
+int segIndice = 0;
 
 tdble grMaxDammage = 10000.0;
 int grNbCars = 0;
@@ -61,15 +62,11 @@ int grWinx, grWiny, grWinw, grWinh;
 
 static float grMouseRatioX, grMouseRatioY;
 
-tgrCarInfo	*grCarInfo;
-ssgContext	grContext;
-
-
+tgrCarInfo *grCarInfo;
+ssgContext grContext;
 class cGrScreen *grScreens[GR_NB_MAX_SCREEN] = {NULL, NULL, NULL, NULL};
-
 int grNbScreen = 1;
-
-tdble	grLodFactorValue = 1.0;
+tdble grLodFactorValue = 1.0;
 
 
 static char buf[1024];
@@ -77,52 +74,44 @@ static char buf[1024];
 #ifdef WIN32
 #include "win32_glext.h"
 PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
-PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB =NULL;
-PFNGLACTIVETEXTUREARBPROC   glActiveTextureARB = NULL;
+PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB = NULL;
+PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
 PFNGLCLIENTACTIVETEXTUREARBPROC glClientActiveTextureARB = NULL;
 #endif
+
 
 // InitMultiTex
 // desc: sets up OpenGL for multitexturing support
 bool InitMultiTex(void)
 {
-    if (GetSingleTextureMode ()) {
-	maxTextureUnits = 1;
-	return true;
-    } else {
-
-	char *extensionStr;			// list of available extensions
-		
-	extensionStr = (char*)glGetString(GL_EXTENSIONS);
-
-	if (extensionStr == NULL)
-		return false;
-
-	/* printf("glextensionstr: %s\n", extensionStr); */
-
-	if (strstr(extensionStr, "GL_ARB_multitexture"))
-	{
-		// retrieve the maximum number of texture units allowed
-		glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &maxTextureUnits);
-		/* printf("\nfound number of texture units : %d\n", maxTextureUnits); */
-#ifdef WIN32
-		// retrieve addresses of multitexturing functions
-		glMultiTexCoord2fARB = (PFNGLMULTITEXCOORD2FARBPROC) wglGetProcAddress("glMultiTexCoord2fARB");
-		glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
-		glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
-		glMultiTexCoord2fvARB = (PFNGLMULTITEXCOORD2FVARBPROC) wglGetProcAddress("glMultiTexCoord2fvARB");
-#endif
+	if (GetSingleTextureMode ()) {
+		maxTextureUnits = 1;
 		return true;
-	}
-	else
-		return false;
-	
+    } else {
+		// list of available extensions
+		char *extensionStr = (char*)glGetString(GL_EXTENSIONS);
+		if (extensionStr == NULL)
+			return false;
+
+		if (strstr(extensionStr, "GL_ARB_multitexture")) {
+			// retrieve the maximum number of texture units allowed
+			glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &maxTextureUnits);
+#ifdef WIN32
+			// retrieve addresses of multitexturing functions
+			glMultiTexCoord2fARB = (PFNGLMULTITEXCOORD2FARBPROC) wglGetProcAddress("glMultiTexCoord2fARB");
+			glActiveTextureARB = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
+			glClientActiveTextureARB = (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
+			glMultiTexCoord2fvARB = (PFNGLMULTITEXCOORD2FVARBPROC) wglGetProcAddress("glMultiTexCoord2fvARB");
+#endif
+			return true;
+		} else {
+			return false;
+		}
     }
 }
 
 
-static void
-grAdaptScreenSize(void)
+static void grAdaptScreenSize(void)
 {
     switch (grNbScreen) {
     case 0:
@@ -244,7 +233,7 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
 
     if (maxTextureUnits==0)
       {
-	InitMultiTex();    
+	InitMultiTex();
       }
     
     grWinx = x;
@@ -460,7 +449,10 @@ initTrack(tTrack *track)
 {
 	int i;
 
+	// The inittrack does as well init the context, that is highly inconsistent, IMHO.
+	// TODO: Find a solution to init the graphics first independent of objects.
 	grContext.makeCurrent();
+
 	grTrackHandle = GfParmReadFile(track->filename, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	grLoadScene(track);
 

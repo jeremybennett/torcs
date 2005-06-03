@@ -34,7 +34,7 @@
 #include "grutil.h"
 #include "grmultitexstate.h"
 #include "grscene.h"
-
+#include "grtexture.h"
 
 float grGammaValue = 1.8;
 int grMipMap = 0;
@@ -43,171 +43,74 @@ char *grFilePath;			// Multiple path (';' separated) used to search for files.
 char *grTexturePath = NULL;	// Default ssg path.
 
 
-int
-grGetFilename(char *filename, char *filepath, char *buf)
+int grGetFilename(char *filename, char *filepath, char *buf)
 {
-    char	*c1, *c2;
-    int		found = 0;
-    int		lg;
+	char *c1, *c2;
+	int found = 0;
+	int lg;
 
-    if (filepath) {
-	c1 = filepath;
-	c2 = c1;
-	while ((!found) && (c2 != NULL)) {
-	    c2 = strchr(c1, ';');
-	    if (c2 == NULL) {
-		sprintf(buf, "%s/%s", c1, filename);
-	    } else {
-		lg = c2 - c1;
-		strncpy(buf, c1, lg);
-		buf[lg] = '/';
-		strcpy(buf + lg + 1, filename);
-	    }
-	    if (ulFileExists(buf)) {
-		found = 1;
-	    }
-	    c1 = c2 + 1;
-	}
-    } else {
-	strcpy(buf, filename);
-	if (ulFileExists(buf)) {
-	    found = 1;
-	}
-    }
-    if (!found) {
-	GfOut("File %s not found\n", filename);
-	GfOut("File Path was %s\n", filepath);
-	return 0;
-    }
-
-    return 1;
-}
-
-
-GLuint
-grLoadTexture(char *filename, char *filepath, float screen_gamma, int mipmap)
-{
-	GLbyte *tex;
-	int w, h;
-	GLuint image;
-	GLenum gluerr = (GLenum) 0;
-	char buf[256];
-
-	if (!grGetFilename(filename, filepath, buf)) {
-		return 0;
-	}
-	GfOut("Loading %s\n", buf);
-
-	tex = (GLbyte*)GfImgReadPng(buf, &w, &h, screen_gamma);
-	glGenTextures(1, &image);
-	glBindTexture(GL_TEXTURE_2D, image);
-
-	/* build the OPENGL texture */
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	if (mipmap) {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, mipmap, w, w, GL_RGBA,
-		GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-		if(gluerr) {
-			GfTrace("grLoadTexture: %s %s\n", buf, gluErrorString(gluerr));
-			free(tex);
-			return 0;
+	if (filepath) {
+		c1 = filepath;
+		c2 = c1;
+		while ((!found) && (c2 != NULL)) {
+			c2 = strchr(c1, ';');
+			if (c2 == NULL) {
+				sprintf(buf, "%s/%s", c1, filename);
+			} else {
+				lg = c2 - c1;
+				strncpy(buf, c1, lg);
+				buf[lg] = '/';
+				strcpy(buf + lg + 1, filename);
+			}
+			if (ulFileExists(buf)) {
+				found = 1;
+			}
+			c1 = c2 + 1;
 		}
 	} else {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
+		strcpy(buf, filename);
+		if (ulFileExists(buf)) {
+			found = 1;
+		}
+	}
+	if (!found) {
+		GfOut("File %s not found\n", filename);
+		GfOut("File Path was %s\n", filepath);
+		return 0;
 	}
 
-//#ifndef WIN32
-	free(tex);
-//#endif
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	return image;
+	return 1;
 }
 
 
-bool
-grLoadPngTexture (const char *fname, ssgTextureInfo* info)
+bool grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 {
-    GLbyte	*tex;
-    int		w, h;
-    GLenum	gluerr = (GLenum) 0;
-    char 	*buf;
-    char	*s;
-    int		mipmap = 1;
-    
-    TRACE_GL("Load: grLoadPngTexture start");
+	GLubyte *tex;
+	int w, h;
+	int mipmap = 1;
 
-    buf = strdup(fname);
+	TRACE_GL("Load: grLoadPngTexture start");
 
-    GfOut("Loading %s\n", buf);
-
-    /* find the filename extension */
-    s = strrchr(buf, '.');
-    if (s) {
-	*s = 0;
+	tex = (GLubyte*)GfImgReadPng(fname, &w, &h, 2.0);
+	if (!tex) {
+		return false;
     }
-    
-    /* search for the texture parameters */
-    s = strrchr(buf, '_');
-      
-    if (s) {
-	/* no mipmap */
-	if (strncmp(s, "_nmm", 4) == 0) {
-	    mipmap = 0;
-	}
-    }
-    free(buf);
 
-    tex = (GLbyte*)GfImgReadPng(fname, &w, &h, 2.0);
-    if (!tex) {
-	return false;
+	if (info) {
+		info -> width  = w;
+		info -> height = h;
+		info -> depth  = 4;
+		info -> alpha  = true;
     }
-    /* build the OPENGL texture */
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    if (mipmap) {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	gluerr=(GLenum)gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, w, h, GL_RGBA, 
-					 GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-	if(gluerr) {
-	    GfTrace("grLoadTexture: %s %s\n", fname, gluErrorString(gluerr));
-	    free(tex);
-	    return false;
-	}
-    } else {
-	/* XXX Not working: why ? */
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)(tex));
-    }
-    
-	// TODO: Whats up with this?
-    /* free(tex); */
-	free(tex);
+	TRACE_GL("Load: grLoadPngTexture stop");
 
-    if (info) {
-	info -> width  = w;
-	info -> height = h;
-	info -> depth  = 4;
-	info -> alpha  = true;
-    }
-    TRACE_GL("Load: grLoadPngTexture stop");
+	// TODO: Check if tex is freed.
+	// 		 Check/fix potential problems related to malloc/delete mixture
+	//       (instead of malloc/free or new/delete).
 
-    return true;
+	mipmap = doMipMap(fname, mipmap);
+	return grMakeMipMaps(tex, w, h, 4, mipmap);
 }
 
 
@@ -224,7 +127,7 @@ static ssgSimpleState *
 grGetState(char *img)
 {
     stlist	*curr;
-  
+
     curr = stateList;
     while (curr != NULL) {
 	if (strcmp(curr->name, img) == 0) {
@@ -253,16 +156,14 @@ grShutdownState(void)
 }
 
 
-ssgState *
-grSsgLoadTexState(char *img)
+ssgState * grSsgLoadTexState(char *img)
 {
 	char buf[256];
 	char *s;
-	GLuint tex;
 	ssgSimpleState *st;
 	stlist *curr;
 
-	/* remove the directory */
+	// remove the directory
 	s = strrchr(img, '/');
 	if (s == NULL) {
 		s = img;
@@ -280,8 +181,8 @@ grSsgLoadTexState(char *img)
 		return (ssgState*)st;
 	}
 
-	st = new ssgSimpleState;
-	st->ref();			/* cannot be removed */
+	st = grStateFactory();
+	st->ref();			// cannot be removed
 	st->enable(GL_LIGHTING);
 	st->enable(GL_TEXTURE_2D);
 	st->enable(GL_BLEND);
@@ -293,104 +194,94 @@ grSsgLoadTexState(char *img)
 	curr->state = st;
 	curr->name = strdup(buf);
 
+	GfOut("Loading %s\n", buf);
+	st->setTexture(buf);
 
-	if (strcmp(buf + strlen(buf) - 4, ".png") == 0) {
-		tex = grLoadTexture(buf, NULL, grGammaValue, grMipMap);
-		st->setTexture(tex);
-	} else {
-		GfOut("Loading %s\n", buf);
-		st->setTexture(buf);
-	}
 	return (ssgState*)st;
 }
 
-ssgState *
-grSsgEnvTexState(char *img)
+ssgState * grSsgEnvTexState(char *img)
 {
-    char		buf[256];
-    char		*s;
-    GLuint		tex;
-    grMultiTexState    	*st;
-    stlist		*curr;
+	char buf[256];
+	char *s;
+	grMultiTexState *st;
+	stlist *curr;
 
-    /* remove the directory */
-    s = strrchr(img, '/');
-    if (s == NULL) {
-	s = img;
-    } else {
-	s++;
+	// remove the directory
+	s = strrchr(img, '/');
+	if (s == NULL) {
+		s = img;
+	} else {
+		s++;
     }
-    if (!grGetFilename(s, grFilePath, buf)) {
-	GfOut("grSsgLoadTexState: File %s not found\n", s);
-	return NULL;
-    }
-    
-    st = new grMultiTexState;
-    st->ref();			/* cannot be removed */
-    st->enable(GL_LIGHTING);
-    st->enable(GL_TEXTURE_2D);
-    st->enable(GL_BLEND);
-    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-    
-    curr = (stlist*)calloc(sizeof(stlist), 1);
-    curr->next = stateList;
-    stateList = curr;
-    curr->state = st;
-    curr->name = strdup(buf);
 
-    if (strcmp(buf + strlen(buf) - 4, ".png") == 0) {
-	tex = grLoadTexture(buf, NULL, grGammaValue, grMipMap);
-	st->setTexture(tex);
-    } else {
+	if (!grGetFilename(s, grFilePath, buf)) {
+		GfOut("grSsgLoadTexState: File %s not found\n", s);
+		return NULL;
+    }
+
+	st = new grMultiTexState;
+	st->ref();			// cannot be removed
+	st->enable(GL_LIGHTING);
+	st->enable(GL_TEXTURE_2D);
+	st->enable(GL_BLEND);
+	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+
+	curr = (stlist*)calloc(sizeof(stlist), 1);
+	curr->next = stateList;
+	stateList = curr;
+	curr->state = st;
+	curr->name = strdup(buf);
+
 	GfOut("Loading %s\n", buf);
 	st->setTexture(buf);
-    }
-    return (ssgState*)st;
+
+	return (ssgState*)st;
 }
 
 ssgState *
 grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
 {
-    char		buf[256];
-    char		*s;
-    ssgSimpleState	*st;
-    stlist		*curr;
+	char buf[256];
+	char *s;
+	ssgSimpleState *st;
+	stlist *curr;
 
-    /* remove the directory */
-    s = strrchr(img, '/');
-    if (s == NULL) {
-	s = img;
-    } else {
-	s++;
-    }
-    if (!grGetFilename(s, filepath, buf)) {
-	GfOut("File %s not found\n", s);
-	return NULL;
-    }
-    
-    st = grGetState(buf);
-    if (st != NULL) {
+	// remove the directory
+	s = strrchr(img, '/');
+	if (s == NULL) {
+		s = img;
+	} else {
+		s++;
+	}
+
+	if (!grGetFilename(s, filepath, buf)) {
+		GfOut("File %s not found\n", s);
+		return NULL;
+	}
+
+	st = grGetState(buf);
+	if (st != NULL) {
+		return (ssgState*)st;
+	}
+
+	st = grStateFactory();
+	st->ref();			// cannot be removed.
+	st->enable(GL_LIGHTING);
+	st->enable(GL_TEXTURE_2D);
+	st->enable(GL_BLEND);
+	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+
+	curr = (stlist*)calloc(sizeof(stlist), 1);
+	curr->next = stateList;
+	stateList = curr;
+	curr->state = st;
+	curr->name = strdup(buf);
+
+	GfOut("Loading %s\n", buf);
+	st->setTexture(buf, wrap, wrap, mipmap);
+
 	return (ssgState*)st;
-    }
-
-    st = new ssgSimpleState;
-    st->ref();			/* cannot be removed */
-    st->enable(GL_LIGHTING);
-    st->enable(GL_TEXTURE_2D);
-    st->enable(GL_BLEND);
-    st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-    
-    curr = (stlist*)calloc(sizeof(stlist), 1);
-    curr->next = stateList;
-    stateList = curr;
-    curr->state = st;
-    curr->name = strdup(buf);
-
-
-    GfOut("Loading %s\n", buf);
-    st->setTexture(buf, wrap, wrap, mipmap);
-    
-    return (ssgState*)st;
 }
 
 int
@@ -509,3 +400,6 @@ grGetHOT(float x, float y)
 
   return hot;
 }
+
+
+
