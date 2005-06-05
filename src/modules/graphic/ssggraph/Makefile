@@ -16,15 +16,15 @@
 ##############################################################################
 
 
-SOURCES   = grmain.cpp grboard.cpp grsound.cpp ssggraph.cpp grcam.cpp grcar.cpp grscreen.cpp\
+SOURCES   = grmain.cpp grboard.cpp ssggraph.cpp grcam.cpp grcar.cpp grscreen.cpp\
 	    grscene.cpp grutil.cpp grshadow.cpp grsmoke.cpp grskidmarks.cpp grloadac.cpp\
-		grmultitexstate.cpp grvtxtable.cpp grtrackmap.cpp grcarlight.cpp grtexture.cpp
+		grmultitexstate.cpp grvtxtable.cpp grtrackmap.cpp grtexture.cpp grcarlight.cpp CarSoundData.cpp TorcsSound.cpp PlibSoundInterface.cpp OpenalSoundInterface.cpp grsound.cpp
 
 MODULE    = ssggraph.so
 
 MODULEDIR = modules/graphic
 
-LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul -lplibssgaux
+LIBS      = -lplibsl -lplibsm -lplibsg -lplibssg -lplibul -lplibssgaux -lopenal
 
 SHIPDIR   = config
 
