@@ -34,12 +34,18 @@
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 // list of options.
-static char *soundOptionList[] = {GR_ATT_SOUND_STATE_ENABLED, GR_ATT_SOUND_STATE_DISABLED};
+static char *soundOptionList[] = {GR_ATT_SOUND_STATE_OPENAL,
+								  GR_ATT_SOUND_STATE_PLIB,
+								  GR_ATT_SOUND_STATE_DISABLED};
 static const int nbOptions = sizeof(soundOptionList) / sizeof(soundOptionList[0]);
 static int curOption = 0;
 
 // gui label id.
 static int SoundOptionId;
+
+// volume
+static float VolumeValue = 100.0f;
+static int VolumeValueId;
 
 // gui screen handles.
 static void	*scrHandle = NULL;
@@ -64,6 +70,14 @@ static void readSoundCfg(void)
 		}
 	}
 
+    VolumeValue = GfParmGetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", 100.0f);
+	if (VolumeValue>100.0f) {
+		VolumeValue = 100.0f;
+	} 
+	if (VolumeValue < 0.0f) {
+		VolumeValue = 0.0f;
+	}
+
 	GfParmReleaseHandle(paramHandle);
 
 	GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
@@ -77,6 +91,7 @@ static void saveSoundOption(void *)
 	sprintf(buf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	GfParmSetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[curOption]);
+	GfParmSetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", VolumeValue);
 	GfParmWriteFile(NULL, paramHandle, "sound");
 	GfParmReleaseHandle(paramHandle);
 
@@ -86,7 +101,7 @@ static void saveSoundOption(void *)
 }
 
 
-// Toggle sound state enabled/disabled.
+// Toggle sound state openal/plib/disabled.
 static void changeSoundState(void *vp)
 {
 	if (vp == 0) {
@@ -103,6 +118,17 @@ static void changeSoundState(void *vp)
     GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
 }
 
+// Volume
+static void changeVolume(void * /* dummy */)
+{
+    char	*val;
+	char buf[1024];
+    val = GfuiEditboxGetString(scrHandle, VolumeValueId);
+    sscanf(val, "%g", &VolumeValue);
+    sprintf(buf, "%g", VolumeValue);
+    GfuiEditboxSetString(scrHandle, VolumeValueId, buf);
+}
+
 
 static void onActivate(void * /* dummy */)
 {
@@ -114,6 +140,8 @@ static void onActivate(void * /* dummy */)
 void * SoundMenuInit(void *prevMenu)
 {
 	int x, y, x2, x3, x4, dy;
+	char buf[1024];
+	
 
 	// Has screen already been created?
 	if (scrHandle) {
@@ -149,6 +177,17 @@ void * SoundMenuInit(void *prevMenu)
 
 	SoundOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HC_VB, 32);
 	GfuiLabelSetColor(scrHandle, SoundOptionId, LabelColor);
+
+
+    y -= dy;
+    GfuiLabelCreate(scrHandle, "Volume:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+
+	
+    sprintf(buf, "%f", VolumeValue);
+    VolumeValueId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+				    x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, changeVolume);
+
+
 
 	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 	NULL, saveSoundOption, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
