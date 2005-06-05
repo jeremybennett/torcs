@@ -31,8 +31,10 @@
 #define GR_SOUND_PARM_CFG			"config/sound.xml"
 #define GR_SCT_SOUND				"Sound Settings"
 #define GR_ATT_SOUND_STATE			"state"
-#define GR_ATT_SOUND_STATE_ENABLED	"enabled"
+#define GR_ATT_SOUND_STATE_PLIB     "plib"
+#define GR_ATT_SOUND_STATE_OPENAL	"openal"
 #define GR_ATT_SOUND_STATE_DISABLED	"disabled"
+#define GR_ATT_SOUND_VOLUME	        "volume"
 
 #define GR_SCT_GLFEATURES					"OpenGL Features"
 #define GR_ATT_TEXTURECOMPRESSION			"texture compression ARB"
