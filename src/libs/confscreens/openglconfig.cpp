@@ -69,7 +69,9 @@ static void readOpenGLCfg(void)
 			break;
 		}
 	}
-	GfuiLabelSetText(scrHandle, TextureCompressOptionId, textureCompressOptionList[curOptionTextComp]);
+	if (isCompressARBAvailable()) {
+		GfuiLabelSetText(scrHandle, TextureCompressOptionId, textureCompressOptionList[curOptionTextComp]);
+	}
 
 	// Read texture sizing parameters.
 	int maxsizenb = 0;
@@ -122,10 +124,11 @@ static void saveOpenGLOption(void *)
 
 	// Texture compression.
 	GfParmSetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, textureCompressOptionList[curOptionTextComp]);
+	// Texture sizing.
 	GfParmSetNum(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURESIZE, (char*)NULL, (tdble) textureSizeOptionList[curOptionTextSize]);
+
 	GfParmWriteFile(NULL, paramHandle, "graph");
 	GfParmReleaseHandle(paramHandle);
-	paramHandle = NULL;
 
 	// Return to previous screen.
 	GfuiScreenActivate(prevHandle);
@@ -240,7 +243,6 @@ void * OpenGLMenuInit(void *prevMenu)
 
 	TextureSizeOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_LARGE_C, xright, y, GFUI_ALIGN_HC_VB, 32);
 	GfuiLabelSetColor(scrHandle, TextureSizeOptionId, LabelColor);
-
 
 
 	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
