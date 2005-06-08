@@ -15,10 +15,16 @@
 #
 ##############################################################################
 
+TRACK     = g-track-3
 
 DATADIR   = tracks/road/g-track-3
 
-DATA      = g-track-3.xml g-track-3.acc $(shell find * -maxdepth 0 -type f -name '*.png') $(shell find * -maxdepth 0 -type f -name '*.rgb') readme.txt
+DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png arbor-wood_n.rgb arbor01.rgb asasphr.rgb \
+			asconcr.rgb asgrassr_n.rgb asp_n.rgb asphalt4.rgb assandr.rgb barg2.rgb barg3.rgb \
+			concdal.rgb gconcrete.rgb ggrass3.rgb gsand.rgb gtirewall.rgb house.rgb \
+			mur2.rgb road1.rgb road2.rgb road3.rgb road4.rgb road5.rgb rockg0.rgb torcs1.rgb \
+			torcs2.rgb treebui1.rgb treeg10.rgb truck0.rgb truck1.rgb walls.rgb walls2.rgb \
+			readme.txt background.png shadow2.rgb skid_m2.rgb 
 
 data-tracks-road_PKGFILES	= $(DATA)
 
