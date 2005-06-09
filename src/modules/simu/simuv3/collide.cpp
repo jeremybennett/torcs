@@ -72,7 +72,7 @@ SimCarCollideZ(tCar *car)
 
 	// TODO: possibly use this for a better implementation.
 	//float corner_reactions[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-	
+
     for (i = 0; i < 4; i++) {
 		wheel = &(car->wheel[i]);
 		if ((wheel->state & SIM_SUSP_COMP)
@@ -187,9 +187,9 @@ SimCarCollideZ(tCar *car)
 						tdble sum_v = sqrt(cvx*cvx + cvy*cvy + cvz*cvz);
 						if (sum_v>1.0) {
 							t3Dd fr_loc;
-							friction.x = -cvx/sum_v;
-							friction.y = -cvy/sum_v;
-							friction.z = -cvz/sum_v;
+							friction.x = cvx/sum_v;
+							friction.y = cvy/sum_v;
+							friction.z = cvz/sum_v;
 							NaiveRotate(friction, angles, &fr_loc);
 							tdble C = 0.5f * dotProd;
 
@@ -203,7 +203,7 @@ SimCarCollideZ(tCar *car)
 
 						}
 
-						car->rot_mom[SG_X] +=
+						car->rot_mom[SG_X] -=
 							(forces.z * wheel->relPos.y
 							 + forces.y * corner.z);
 
@@ -211,7 +211,7 @@ SimCarCollideZ(tCar *car)
 							(forces.z * wheel->relPos.x
 							 + forces.x * corner.z);
 
-						car->rot_mom[SG_Z] +=
+						car->rot_mom[SG_Z] -=
 							(-forces.x * wheel->relPos.y +
 							 forces.y * wheel->relPos.x);
 
@@ -335,13 +335,12 @@ SimCarCollideXYScene(tCar *car)
 			car->carElt->_accel_x -= rel_normal.x * dotProd/SimDeltaTime;
 			car->carElt->_accel_y -= rel_normal.y * dotProd/SimDeltaTime;
 		} else {
-			t3Dd rel_normal;
 			sgVec3 v = {normal.x, normal.y, normal.z};
 			sgRotateVecQuat (v, car->posQuat);
-			car->DynGC.acc.x -= rel_normal.x * dotProd/SimDeltaTime;
-			car->DynGC.acc.y -= rel_normal.y * dotProd/SimDeltaTime;
-			car->carElt->_accel_x -= rel_normal.x * dotProd/SimDeltaTime;
-			car->carElt->_accel_y -= rel_normal.y * dotProd/SimDeltaTime;
+			car->DynGC.acc.x -= v[SG_X] * dotProd/SimDeltaTime;
+			car->DynGC.acc.y -= v[SG_Y] * dotProd/SimDeltaTime;
+			car->carElt->_accel_x -= v[SG_X] * dotProd/SimDeltaTime;
+			car->carElt->_accel_y -= v[SG_Y] * dotProd/SimDeltaTime;
 		}
 		
 		dotprod2 = (nx * cx + ny * cy);
@@ -398,13 +397,12 @@ SimCarCollideXYScene(tCar *car)
 				car->carElt->_accel_x -= rel_normal.x * dotProd/SimDeltaTime;
 				car->carElt->_accel_y -= rel_normal.y * dotProd/SimDeltaTime;
 			} else {
-				t3Dd rel_normal;
 				sgVec3 v = {normal.x, normal.y, normal.z};
 				sgRotateVecQuat (v, car->posQuat);
-				car->DynGC.acc.x -= rel_normal.x * dotProd/SimDeltaTime;
-				car->DynGC.acc.y -= rel_normal.y * dotProd/SimDeltaTime;
-				car->carElt->_accel_x -= rel_normal.x * dotProd/SimDeltaTime;
-				car->carElt->_accel_y -= rel_normal.y * dotProd/SimDeltaTime;
+				car->DynGC.acc.x -= v[SG_X] * dotProd/SimDeltaTime;
+				car->DynGC.acc.y -= v[SG_Y] * dotProd/SimDeltaTime;
+				car->carElt->_accel_x -= v[SG_X] * dotProd/SimDeltaTime;
+				car->carElt->_accel_y -= v[SG_Y] * dotProd/SimDeltaTime;
 			}
 			/* car->DynGCg.vel.az -= dotprod2 * dotProd * 0.2; */
 			if (sgLengthVec3 (force) > 0.01) {
@@ -480,6 +478,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 		p2[1] = (float)collData->point2[1];
 		n[0]  = (float)collData->normal[0];
 		n[1]  = (float)collData->normal[1];
+		//printf ("SWAP\n");
     } else {
 		/* swap the cars (not the same for the simu) */
 		car1 = (tCar*)obj2;
@@ -490,6 +489,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 		p2[1] = (float)collData->point1[1];
 		n[0]  = -(float)collData->normal[0];
 		n[1]  = -(float)collData->normal[1];
+		//printf ("NO SWAP\n");
     }
 
     if ((isnan(p1[0]) ||
@@ -510,26 +510,54 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     }
 
     sgNormaliseVec2 (n);
-
-	/*     printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)\n", */
-	/* 	   car1->carElt->index, car2->carElt->index, */
-	/* 	   p1[0], p1[1], */
-	/* 	   p2[0], p2[1], */
-	/* 	   n[0], n[1]); */
+	
+	/*
+	printf("Coll %d <> %d : (%f, %f) - (%f, %f) - (%f, %f)\n", 
+	 	   car1->carElt->index, car2->carElt->index,
+	 	   p1[0], p1[1], 
+	 	   p2[0], p2[1], 
+	 	   n[0], n[1]); 
+	*/
 
     /* vector GP */
     sgSubVec2(rap, p1, (const float*)&(car1->statGC));
     sgSubVec2(rbp, p2, (const float*)&(car2->statGC));
     
     /* speed of collision points */
-    v1ap[0] = car1->DynGCg.vel.x - car1->DynGCg.vel.az * rap[1];
-    v1ap[1] = car1->DynGCg.vel.y + car1->DynGCg.vel.az * rap[0];
-    v1bp[0] = car2->DynGCg.vel.x - car2->DynGCg.vel.az * rbp[1];
-    v1bp[1] = car2->DynGCg.vel.y + car2->DynGCg.vel.az * rbp[0];
+
+	if (0) {
+		//  frame of reference mix up, as in Corners
+		v1ap[0] = car1->DynGCg.vel.x - car1->DynGCg.vel.az * rap[1];
+		v1ap[1] = car1->DynGCg.vel.y + car1->DynGCg.vel.az * rap[0];
+		v1bp[0] = car2->DynGCg.vel.x - car2->DynGCg.vel.az * rbp[1];
+		v1bp[1] = car2->DynGCg.vel.y + car2->DynGCg.vel.az * rbp[0];
+	} else {
+		// assuming we want the global frame for both speeds??? 
+		// car 1
+		float Cosz = car1->Cosz;
+		float Sinz = car1->Sinz;
+		float x = rap[0];//*Cosz + rap[1] * Sinz;
+		float y = rap[1];//*Cosz - rap[0] * Sinz;
+		float vx = - car1->DynGC.vel.az * x;
+		float vy = car1->DynGC.vel.az * y;
+
+		v1ap[0] = car1->DynGCg.vel.x + vx*Cosz - vy*Sinz;
+		v1ap[1] = car1->DynGCg.vel.y + vx*Sinz + vy*Cosz;
+		// car 2
+		Cosz = car2->Cosz;
+		Sinz = car2->Sinz;
+
+		x = rbp[0];//*Cosz + rbp[1]*Sinz;
+		y = rbp[1];//*Cosz - rbp[0]*Sinz;
+		vx = - car2->DynGC.vel.az * x;
+		vy = car2->DynGC.vel.az * y;
+		v1bp[0] = car2->DynGCg.vel.x + vx*Cosz - vy*Sinz;
+		v1bp[1] = car2->DynGCg.vel.y + vx*Sinz + vy*Cosz;
+	} 
     
     /* relative speed */
     sgSubVec2(v1ab, v1ap, v1bp);
-	printf("Coll %d <> %d : vab = %f\n", car1->carElt->index, car2->carElt->index, sgLengthVec2(v1ab));
+	//printf("Coll %d <> %d : vab = %f\n", car1->carElt->index, car2->carElt->index, sgLengthVec2(v1ab));
 
     /* try to separate the cars */
     sgCopyVec2(pa, rap);
@@ -539,11 +567,13 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     sgFullXformPnt3(pb, car2->carElt->_posMat);
     sgSubVec2(pab, pb, pa);
     distpab = sgLengthVec2(pab);
+	/*
 	printf("Coll %d <> %d : (%f, %f) - (%f, %f) dist = %f\n",
 	 	   car1->carElt->index, car2->carElt->index,
 	 	   pa[0], pa[1], pb[0], pb[1],
 	 	   distpab);
 	printf("Coll %d <> %d : dist = %f\n", car1->carElt->index, car2->carElt->index, distpab);
+	*/
 	if (distpab > 1.0) { 
 	 	return;
 	}
@@ -574,7 +604,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     rbpn = sgScalarProductVec2(rbp, n);
     
     
-    j = -(1 + e) * sgScalarProductVec2(v1ab, n) /
+    j = -(1 + e)  * sgScalarProductVec2(v1ab, n) /
 		((car1->Minv + car2->Minv) +
 		 rapn * rapn * car1->Iinv.z + rbpn * rbpn * car2->Iinv.z);
     
@@ -590,7 +620,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     } else {
 		damFactor = 1.0;
     }
-    /* printf("Coll %d -> %f - %f %f %f \n", car1->carElt->index, damFactor, atan2(rap[1], rap[0]), car1->carElt->_yaw, atmp); */
+	//printf("Coll %d -> %f - %f %f %f \n", car1->carElt->index, damFactor, atan2(rap[1], rap[0]), car1->carElt->_yaw, atmp);
 	float dmg1 = 0.0;
     if ((car1->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 		dmg1 = (CAR_DAMMAGE * (0.0002*j*j) * damFactor * simDammageFactor[car1->carElt->_skillLevel]);
@@ -604,7 +634,7 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     } else {
 		damFactor = 1.0;
     }
-    /* printf("Coll %d -> %f - %f %f %f \n---\n", car2->carElt->index, damFactor, atan2(rbp[1], rbp[0]), car2->carElt->_yaw, atmp); */
+    //printf("Coll %d -> %f - %f %f %f \n---\n", car2->carElt->index, damFactor, atan2(rbp[1], rbp[0]), car2->carElt->_yaw, atmp);
 	float dmg2=0.0;
     if ((car2->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 		dmg2 = (CAR_DAMMAGE * (0.0002*j*j) * damFactor * simDammageFactor[car2->carElt->_skillLevel]);
@@ -688,8 +718,8 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
 	/*     } */
     
     
-	/*     printf("Coll %d <> %d : j = %f\n", car1->carElt->index, car2->carElt->index, j); */
-
+	//printf("Coll %d <> %d : j = %f\n", car1->carElt->index, car2->carElt->index, j); 
+		 
 #define ROT_K	0.5
 
 	/*     printf("Vel %d : %f (%f, %f, %f) -> ", car1->carElt->index, j, */
@@ -719,10 +749,12 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0);
     dtMultMatrixf((const float *)(carElt->_posMat));
 
-	/*     printf("(%f, %f, %f)\n", car1->DynGCg.vel.x, car1->DynGCg.vel.y, car1->DynGCg.vel.az); */
-
-	/*     printf("Vel %d : %f (%f, %f, %f) -> ", car2->carElt->index, j, */
-	/* 	   car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az); */
+	/*
+	printf("(%f, %f, %f)\n", car1->DynGCg.vel.x, car1->DynGCg.vel.y, car1->DynGCg.vel.az);
+	
+	printf("Vel %d : %f (%f, %f, %f) -> ", car2->carElt->index, j,
+		   car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az);
+	*/
     
     sgScaleVec2(tmpv, n, -j * car2->Minv);
     if (car2->collision & 4) {
@@ -746,7 +778,9 @@ SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, cons
     dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0);
     dtMultMatrixf((const float *)(carElt->_posMat));
 
-	/*     printf("(%f, %f, %f)\n", car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az); */
+	/*
+	  printf("(%f, %f, %f)\n", car2->DynGCg.vel.x, car2->DynGCg.vel.y, car2->DynGCg.vel.az);
+	*/
     
     car1->collision |= 4;
     car2->collision |= 4;

@@ -467,7 +467,7 @@ SimCarUpdateWheelPos(tCar *car)
 			+ car->DynGC.vel.ax * wheel->staticPos.y
 			- car->DynGC.vel.ay * wheel->staticPos.x;
 
-    } 
+	}
 }
 
 

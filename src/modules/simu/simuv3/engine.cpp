@@ -141,36 +141,12 @@ SimEngineUpdateTq(tCar *car)
     tClutch		*clutch = &(trans->clutch);
 
 
-#if 1
 	// set clutch on when engine revs too low
 	if (engine->rads < engine->tickover) {
 		clutch->state = CLUTCH_APPLIED;
-		//tdble d = exp(0.01*(engine->rads-engine->tickover))*engine->rads/engine->tickover;
-		tdble d = tanh(10.0f*(engine->rads/engine->tickover-0.85f));
-
-
-		if (d>1.0) {d = 1.0f;}
-		tdble ac = 0.0f;
-		if (d<0.0) {
-			ac =  -d;
-			d = 0.0f;
-		}
-		if (car->ctrl->brakeCmd>0) {
-			d=0.0f;
-		}
-		if (d<clutch->transferValue) {
-			clutch->transferValue = d;
-		}
-
-		if (ac>1.0f) {ac = 1.0f;}
-		if (ac>car->ctrl->accelCmd && d == 0.0) {
-			car->ctrl->accelCmd = ac;
-		}
-		if (engine->rads<0) {
-			engine->rads = 0.01f;
-		}
+		clutch->transferValue = 0.0f;
+		engine->rads = engine->tickover;
 	}
-#endif
 
     if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {
 		car->ctrl->accelCmd = 0.0;
@@ -179,6 +155,7 @@ SimEngineUpdateTq(tCar *car)
 
 	if (engine->rads > engine->revsMax) {
 		engine->rads = engine->revsMax;
+	printf ("Limiting\n");
 	}
 	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
 	if (engine->rads > engine->revsLimiter) {
@@ -235,6 +212,9 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 
     freerads = engine->rads;
 	freerads +=engine->Tq / (  engine->I) * SimDeltaTime;
+	if (freerads > engine->revsMax) {
+	  freerads = engine->revsMax;
+        }
 	tdble dp = engine->pressure;
 	engine->pressure = engine->pressure*.9 + .1*engine->Tq;
 	dp = (0.001*fabs(engine->pressure - dp));
@@ -286,6 +266,12 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
     } else {
 		engine->rads = freerads;
     }
+	if (engine->rads < engine->tickover) {
+	    engine->rads = engine->tickover;
+	} else if (engine->rads > engine->revsMax) {
+            engine->rads = engine->revsMax;
+            return engine->revsMax / trans->curOverallRatio;
+        }
 
     if ((trans->curOverallRatio!=0.0) && (responseI > 0)) {
 		return axleRpm - sdI * ttq * trans->curOverallRatio   * SimDeltaTime / ( responseI);
