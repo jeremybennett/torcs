@@ -114,8 +114,10 @@ Changes since 1.2.3
 - New sound architecture/implementation with a plib and OpenAL backend
   (Christos).
 - Changes in sound menu for new sound implementation, added volume (Christos).
-
-
+- Optimized ole-road-1 (Christos).
+- Updated pit door (Speedychonchon).
+- Fixed Windows version memory management bugs in tgf.cpp (malloc, realloc),
+  this should solve some trackgen/accc problems in Windows (Bernhard).
 
 
 
@@ -195,7 +197,7 @@ Changes since 1.2.3-bw-unofficial-test4
 - released as 1.2.3.
 
 
-TODO for 1.2.4 (estimate: early July)
+TODO for 1.2.4 (estimate test-1: early July)
 --------------
 - Fix new introduced bugs.
 - Fix XSLT/DTD for viewing results (Report by Eugen)
@@ -228,6 +230,7 @@ TODO for 1.2.4 (estimate: early July)
 - in long races car-to-car collisions fail somehow sometimes -> investigate
 - pit wall collision
 - align widgets in sound config screen.
+- check for ssgSimpleStates and replace with grManagedState where appropriate.
 - update faq (->AMD64, remove outdated stuff).
 - before/at release: credits update
   Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
