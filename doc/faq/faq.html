@@ -30,7 +30,7 @@
       <td class="maincontent">
 
         <a name="topofthepage">
-		   <h1>The Official TORCS 1.2.3 FAQ</h1>
+		   <h1>The Official TORCS 1.2.4 FAQ</h1>
 		</a>
 
 		<h2>0. About this Document.</h2>
@@ -50,6 +50,7 @@
 		  <li><h3><a href="#c1_7">1.7 What do you mean with robot?</a></h3></li>
 		  <li><h3><a href="#c1_8">1.8 Why do you not replace GLUT with SDL?</a></h3></li>
 		  <li><h3><a href="#c1_9">1.9 Are there official championships?</a></h3></li>
+		  <li><h3><a href="#c1_10">1.10 Should I start my own racing sim project?</a></h3></li>
 		</ul>
 
 		<h2>2. Platforms and Requirements.</h2>
@@ -93,6 +94,7 @@
 			<li><h4><a href="#c4_3_5">4.3.5 My screen resolution is not supported.</a></h4></li>
 			<li><h4><a href="#c4_3_6">4.3.6 I have a problem with the fullscreen mode.</a></h4></li>
 			<li><h4><a href="#c4_3_7">4.3.7 TORCS graphics is slow and it crashes on "READY!"</a></h4></li>
+			<li><h4><a href="#c4_3_8">4.3.8 TORCS on Windows hangs after &quot;READY!&quot;</a></h4>
 			<li><h4><a href="#c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4></li>
 			<li><h4><a href="#c4_3_10">4.3.10 The cars are flickering.</a></h4></li>
 			<li><h4><a href="#c4_3_11">4.3.11 I use ALSA and TORCS does not start up.</a></h4></li>
@@ -259,6 +261,22 @@
 		</p>
 
 
+		<h3><a name="c1_10">1.10 Should I start my own racing sim project?</a></h3>
+		<p>
+			Definitively not, no! Why? Do a search on sf.net and Google,
+			you will find between 15 and 40 open source car/driving/racing sim
+			projects, and most of them have been &quot;promising&quot; and
+			died. Instead of starting another dead project contribute to the
+			few existing successful ones.
+		</p>
+		<p>
+			Believe it or not, but your project will very likely be a dead
+			one as well. The reason is quite simple, people underestimate the
+			required effort and the change of their lives during the project lifespan, think
+			about it. Just that you get an idea, TORCS turns now 8...
+		</p>
+
+
 		<br/><h2>2. Platforms and Requirements.</h2>
 
 		<h3><a name="c2_1">2.1 On which operating systems runs TORCS?</a></h3>
@@ -285,7 +303,10 @@
 		  You need recent, working and properly configured OpenGL/DRI drivers. You need also several
 		  libraries. To avoid problems you should prefer
 		  <a href="http://FreeGLUT.sourceforge.net" target="_parent">FreeGLUT</a> over GLUT. Make
-		  sure that you use exactly plib version 1.8.3.
+		  sure that you use exactly plib version 1.8.3. For
+		  AMD64 you need to set the &quot;-fPIC&quot; compiler switch when
+		  compiling plib (export CFLAGS=&quot;-fPIC&quot;, export
+		  CPPFLAGS=&quot;-fPIC&quot;, export CXXFLAGS=&quot;-fPIC&quot;).
 		</p>
 
 
@@ -375,7 +396,7 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		<p>
 		  If the compiler stops with the above message you have probably OpenGL header files installed which do
 		  not define the GL_TEXTURE0_ARB and other symbols. If you have updated your NVidia drivers to 6xxx
-		  you will experience this error (NVidia removed those definitions...). To fix it for TORCS 1.2.2 you
+		  you will experience this error (NVidia removed those definitions...). To fix it for TORCS 1.2.4 you
 		  need to install
 		  a gl.h which defines the missing symbols. You can get it from your old (5xxx) NVidia drivers or from
 		  Mesa (the problem is not the driver itself).
@@ -385,8 +406,8 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4>
 		<p>
 			You have probably installed your sources in a path which contains blanks or other
-			special characters, e.g. on the desktop. Move your torcs-1.2.2 folder to a location with a
-			"clean" path, a drive is the best bet (e.g. D:\torcs-1.2.2).
+			special characters, e.g. on the desktop. Move your torcs-1.2.4 folder to a location with a
+			"clean" path, a drive is the best bet (e.g. D:\torcs-1.2.4).
 		</p>
 
 
@@ -482,6 +503,15 @@ exception$LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
 		  Select in the TORCS display menu a color depth of 24 or 32 bpp, even if your display runs
 		  at 16 bpp.
 		</p>
+
+		<h4><a name="c4_3_8">4.3.8 TORCS on Windows hangs after &quot;READY!&quot;</a></h4>
+		<p>
+			Shutdown TORCS and restart it, go to the sound menu and disable the
+			sound or try the other backend. The problem is likely caused by
+			some library we use, but it never happened to us, so we could not
+			fix it.
+		</p>
+
 
 		<h4><a name="c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4>
 		<p>
