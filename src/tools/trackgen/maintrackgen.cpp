@@ -299,107 +299,111 @@ main(int argc, char **argv)
 static void
 Generate(void)
 {
-    char	*trackdllname;
-    char	*extName;
-    FILE	*outfd = NULL;
+	char *trackdllname;
+	char *extName;
+	FILE *outfd = NULL;
 
-    /* Get the trackgen paramaters */
-    sprintf(buf, "%s", CFG_FILE);
-    CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	// Get the trackgen paramaters.
+	sprintf(buf, "%s", CFG_FILE);
+	CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    trackdllname = GfParmGetStr(CfgHandle, "Modules", "track", "track");
-    sprintf(buf, "%smodules/track/%s.%s", GetLibDir (), trackdllname, DLLEXT);
-    if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
-	GfFatal("Failed to find the track module %s", buf);
-    }
-    if (modlist->modInfo->fctInit(modlist->modInfo->index, &TrackItf)) {
-	GfFatal("Failed to init the track module %s", buf);
-    }
-
-    /* This is the track definition */
-    sprintf(trackdef, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
-    TrackHandle = GfParmReadFile(trackdef, GFPARM_RMODE_STD);
-    if (!TrackHandle) {
-	fprintf(stderr, "Cannot find %s\n", trackdef);
-	exit(1);
-    }
-
-    /* build the track structure with graphic extensions */
-    Track = TrackItf.trkBuildEx(trackdef);
-
-    /* Get the output file radix */
-    sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
-    OutputFileName = strdup(buf2);
-
-    /* Number of goups for the complete track */
-    if (TrackOnly) {
-	sprintf(buf2, "%s.ac", OutputFileName);
-	/* track */
-	outfd = Ac3dOpen(buf2, 1);
-    } else if (MergeAll) {
-	sprintf(buf2, "%s.ac", OutputFileName);
-	/* track + terrain + objects */
-	outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
-    }
-
-    /* Main Track */
-    if (bump) {
-	extName = "trk-bump";
-    } else {
-	extName = "trk";
-    }
-    sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
-    OutTrackName = strdup(buf2);
-
-    GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump);
-
-    if (TrackOnly) {
-	return;
-    }
-    
-    /* Terrain */
-    if (MergeTerrain && !MergeAll) {
-	sprintf(buf2, "%s.ac", OutputFileName);
-	/* terrain + objects  */
-	outfd = Ac3dOpen(buf2, 1 + GetObjectsNb(TrackHandle));
-    }
-
-    extName = "msh";
-    sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
-    OutMeshName = strdup(buf2);
-    
-    GenerateTerrain(Track, TrackHandle, OutMeshName, outfd, saveElevation);
-
-    if (saveElevation != -1) {
-	Ac3dClose(outfd);
-	switch (saveElevation) {
-	case 0:
-	case 1:
-	    sprintf(buf2, "%s.ac", OutputFileName);
-	    sprintf(buf, "%s-elv.png", OutputFileName);
-	    SaveElevation(Track, TrackHandle, buf, buf2, 1);
-	    if (saveElevation) {
-		break;
-	    }
-	case 2:
-	    sprintf(buf, "%s-elv2.png", OutputFileName);
-	    SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
-	    if (saveElevation) {
-		break;
-	    }
-	case 3:
-	    sprintf(buf, "%s-elv3.png", OutputFileName);
-	    SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
-	    if (saveElevation) {
-		break;
-	    }
-	case 4:
-	    sprintf(buf, "%s-elv4.png", OutputFileName);
-	    SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
-	    break;
+	trackdllname = GfParmGetStr(CfgHandle, "Modules", "track", "track");
+	sprintf(buf, "%smodules/track/%s.%s", GetLibDir (), trackdllname, DLLEXT);
+	if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
+		GfFatal("Failed to find the track module %s", buf);
 	}
-	return;
+
+	if (modlist->modInfo->fctInit(modlist->modInfo->index, &TrackItf)) {
+		GfFatal("Failed to init the track module %s", buf);
+	}
+
+	// This is the track definition.
+	sprintf(trackdef, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
+	TrackHandle = GfParmReadFile(trackdef, GFPARM_RMODE_STD);
+	if (!TrackHandle) {
+		fprintf(stderr, "Cannot find %s\n", trackdef);
+		exit(1);
+	}
+
+	// Build the track structure with graphic extensions.
+	Track = TrackItf.trkBuildEx(trackdef);
+
+    // Get the output file radix.
+	sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+	OutputFileName = strdup(buf2);
+
+	// Number of goups for the complete track.
+	if (TrackOnly) {
+		sprintf(buf2, "%s.ac", OutputFileName);
+		// Track.
+		outfd = Ac3dOpen(buf2, 1);
+	} else if (MergeAll) {
+		sprintf(buf2, "%s.ac", OutputFileName);
+		// track + terrain + objects.
+		outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
+	}
+
+	// Main Track.
+	if (bump) {
+		extName = "trk-bump";
+	} else {
+		extName = "trk";
     }
-    
-    GenerateObjects(Track, TrackHandle, CfgHandle, outfd, OutMeshName);
+
+	sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+	OutTrackName = strdup(buf2);
+
+	GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump);
+
+	if (TrackOnly) {
+		return;
+	}
+
+	// Terrain.
+	if (MergeTerrain && !MergeAll) {
+		sprintf(buf2, "%s.ac", OutputFileName);
+		/* terrain + objects  */
+		outfd = Ac3dOpen(buf2, 1 + GetObjectsNb(TrackHandle));
+	}
+
+	extName = "msh";
+	sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+	OutMeshName = strdup(buf2);
+
+	GenerateTerrain(Track, TrackHandle, OutMeshName, outfd, saveElevation);
+
+	if (saveElevation != -1) {
+		if (outfd) {
+			Ac3dClose(outfd);
+		}
+		switch (saveElevation) {
+		case 0:
+		case 1:
+			sprintf(buf2, "%s.ac", OutputFileName);
+			sprintf(buf, "%s-elv.png", OutputFileName);
+			SaveElevation(Track, TrackHandle, buf, buf2, 1);
+			if (saveElevation) {
+			break;
+			}
+		case 2:
+			sprintf(buf, "%s-elv2.png", OutputFileName);
+			SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
+			if (saveElevation) {
+			break;
+			}
+		case 3:
+			sprintf(buf, "%s-elv3.png", OutputFileName);
+			SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
+			if (saveElevation) {
+			break;
+			}
+		case 4:
+			sprintf(buf, "%s-elv4.png", OutputFileName);
+			SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
+			break;
+		}
+		return;
+	}
+
+	GenerateObjects(Track, TrackHandle, CfgHandle, outfd, OutMeshName);
 }
