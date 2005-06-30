@@ -2263,9 +2263,11 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
 	}
     }
     
-    if (outfile) {
-	curFd = Ac3dOpen(outfile, 2);
-    }
+	if (outfile) {
+		// Attempt to fix AC3D (the application) segfault on opening the msh file.
+		//curFd = Ac3dOpen(outfile, 2);
+		curFd = Ac3dOpen(outfile, 1);
+	}
 
     if (GetTrackOrientation(track) == CLOCKWISE) {
 
