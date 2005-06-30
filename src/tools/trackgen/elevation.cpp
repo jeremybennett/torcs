@@ -164,6 +164,12 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, i
     ssgModelPath(buf);
     root = (ssgRoot*)ssgLoadAC(meshFile);
 
+	if (root == NULL) {
+		printf("Could not load tracks/%s/%s, ", track->category, track->internalname);
+		printf("please generate it with \"trackgen -c %s -n %s -a\"\n", track->category, track->internalname);
+		return;
+	}
+
     l = columns - 18;
     for (j = 0; j < height; j++) {
 	s = buf;
