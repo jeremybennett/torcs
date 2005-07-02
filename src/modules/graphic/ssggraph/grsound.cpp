@@ -25,6 +25,7 @@
 
 #include <tgfclient.h>
 #include <graphic.h>
+#include <car.h>
 
 #include "grsound.h"
 #include "grmain.h"
@@ -95,15 +96,33 @@ void grInitSound(tSituation* s, int ncars)
 		tCarElt	*car = s->cars[i];
 		char* param;
 		char filename[512];
+
+		// ENGINE PARAMS
 		tdble rpm_scale;
 		param = GfParmGetStr(handle, "Sound", "engine sample", "engine-1.wav");
 		rpm_scale = GfParmGetNum(handle, "Sound", "rpm scale", NULL, 1.0);
 		sprintf (filename, "data/sound/%s", param);
 
-		car_sound_data[car->index]
-			= new CarSoundData (car->index, sound_interface);
+		car_sound_data[car->index] = new CarSoundData (car->index, sound_interface);
 		TorcsSound* engine_sound = sound_interface->addSample(filename, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true);
 		car_sound_data[i]->setEngineSound (engine_sound, rpm_scale);
+
+		// TURBO PARAMS
+		float default_turbo_rpm = 100.0f;//0.5f*car->_enginerpmMaxTq;
+		bool turbo_on;
+		param = GfParmGetStr(handle, SECT_ENGINE, PRM_TURBO, "false");
+		if (!strcmp(param, "true")) {
+			turbo_on = true;
+		} else {
+			if (strcmp(param, "false")) {
+				fprintf (stderr, "expected true or false, found %s\n", param);
+			}
+			turbo_on = false;
+		}
+		
+		float turbo_rpm = GfParmGetNum(handle, SECT_ENGINE, PRM_TURBO_RPM, NULL, default_turbo_rpm);
+		float turbo_lag = GfParmGetNum(handle, SECT_ENGINE, PRM_TURBO_LAG, NULL, 1.0f);
+		car_sound_data[i]->setTurboParameters (turbo_on, turbo_rpm, turbo_lag);
 	}
 
 

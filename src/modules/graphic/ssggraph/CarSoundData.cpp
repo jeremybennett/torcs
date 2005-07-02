@@ -20,7 +20,6 @@
 #include "SoundInterface.h"
 #include "CarSoundData.h"
 
-
 CarSoundData::CarSoundData(int id, SoundInterface* sound_interface)
 {
 	eng_pri.id = id;
@@ -42,6 +41,9 @@ CarSoundData::CarSoundData(int id, SoundInterface* sound_interface)
 	bottom_crash = false;
 	bang = false;
 	crash = false;
+	turbo_on = false;
+	turbo_ilag = 0.05f;
+	turbo_rpm = 0.0f;
 	this->sound_interface = sound_interface;
 	for (int i=0; i<4; i++) {
 		for (int j=0; j<3; j++) {
@@ -59,6 +61,17 @@ void CarSoundData::setEngineSound (TorcsSound* engine_sound, float rpm_scale)
 {
 	this->engine_sound = engine_sound;
 	base_frequency = rpm_scale;
+}
+
+void CarSoundData::setTurboParameters (bool turbo_on, float turbo_rpm, float turbo_lag)
+{
+	this->turbo_on = turbo_on;
+	this->turbo_rpm = turbo_rpm;
+	if (turbo_lag > 0.0f) {
+		this->turbo_ilag = exp(-3.0f*turbo_lag);
+	} else {
+		fprintf (stderr, "warning: turbo lag %f <= 0\n", turbo_lag);
+	}
 }
 void CarSoundData::update (tCarElt* car)
 {
@@ -109,23 +122,26 @@ void CarSoundData::calculateEngineSound (tCarElt* car)
 	//assert(car->index == eng_pri.id);
 
 	float gear_ratio = car->_gearRatio[car->_gear + car->_gearOffset];
-	axle.a = 0.1f*(tanh(100.0f*(fabs(pre_axle - mpitch))));
+	axle.a = 0.2f*(tanh(100.0f*(fabs(pre_axle - mpitch))));
 	axle.f = (pre_axle + mpitch)*0.05f*fabs(gear_ratio);
 	pre_axle = (pre_axle + mpitch)*.5;
 
-	float turbo_target = 0.1f;
-	float turbo_target_vol = 0.0f;
-	if (car->_enginerpm > 0.5f*car->_enginerpmMaxTq) {
-		turbo_target = 0.1f + 0.9f * smooth_accel;
-		turbo_target_vol = 0.1f * smooth_accel;
+	if (turbo_on) {
+		float turbo_target = 0.1f;
+		float turbo_target_vol = 0.0f;
+		if (car->_enginerpm > turbo_rpm) {
+			turbo_target = 0.1f + 0.9f * smooth_accel;
+			turbo_target_vol = 0.1f * smooth_accel;
+		}
+		
+		turbo.a += 0.1f * (turbo_target_vol - turbo.a) * (0.1f + smooth_accel);
+		float turbo_target_pitch = turbo_target * car->_enginerpm / 600.0f;
+		turbo.f += turbo_ilag * (turbo_target_pitch - turbo.f) * (smooth_accel);
+		turbo.f -= turbo.f * 0.01f * (1.0-smooth_accel);//.99f;
+	} else {
+		turbo.a = 0.0;
 	}
-			
-	turbo.a += 0.1f * (turbo_target_vol - turbo.a) * (0.1f + smooth_accel);
-	float turbo_target_pitch = turbo_target * car->_enginerpm / 600.0f;
-	turbo.f += 0.05f * (turbo_target_pitch - turbo.f) * (smooth_accel);
-	turbo.f *=.99f;
-
-	smooth_accel = smooth_accel*0.5f + 0.5*(car->ctrl.accelCmd*.99f+0.01f);
+		smooth_accel = smooth_accel*0.5f + 0.5*(car->ctrl.accelCmd*.99f+0.01f);
 
 	// engine filter proportional to revcor2.
 	// when accel = 0, lp \in [0.0, 0.25]

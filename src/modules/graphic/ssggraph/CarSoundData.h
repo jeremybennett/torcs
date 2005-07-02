@@ -43,6 +43,9 @@ public:
 	float base_frequency; ///< engine base frequency for ~ 6000 rpm
 	float smooth_accel; ///< smoothed acceleration input
 	float pre_axle; ///< axle related
+	bool turbo_on; ///< use turbo sound
+	float turbo_rpm; ///< when turbo comes in
+	float turbo_ilag; ///< how fast turbo catches up with engine
 	QSoundChar engine;
 	QSoundChar drag_collision;
 	QSoundChar turbo;
@@ -56,6 +59,7 @@ public:
 
 	CarSoundData (int id, SoundInterface* sound_interface);
 	void setEngineSound (TorcsSound* engine_sound, float rpm_scale);
+	void setTurboParameters (bool turbo_on, float turbo_rpm, float turbo_lag);
 	TorcsSound* getEngineSound () {return engine_sound;}
 	void copyEngPri (SoundPri& epri) 	{epri = eng_pri;}
 	void setCarPosition (sgVec3 p)

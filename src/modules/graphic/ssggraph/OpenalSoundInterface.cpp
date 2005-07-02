@@ -142,10 +142,6 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		}
 	}
 	
-	float max_grass_vol = 0.0;
-	int max_grass_id = 0;
-	float max_grass_skid_vol = 0.0;
-	int max_grass_skid_id = 0;
 
 	for (int id=0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
@@ -249,7 +245,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 			car_sound_data[id]->getCarPosition(p);
 			car_sound_data[id]->getCarSpeed(u);
 			gear_change_sound->setSource (p, u);
-			gear_change_sound->setReferenceDistance (0.5f);
+			gear_change_sound->setReferenceDistance (1.0f);
 			gear_change_sound->setVolume (1.0f);
 			gear_change_sound->setPitch (1.0f);
 			gear_change_sound->update();
