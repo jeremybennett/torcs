@@ -509,7 +509,10 @@ typedef struct CarElt
 #define PRM_FUELCONS		"fuel cons factor"
 #define PRM_ENGBRKCOEFF		"brake coefficient"
 #define PRM_POWER		"power"
-
+#define PRM_TURBO               "turbo"
+#define PRM_TURBO_RPM           "turbo rpm"
+#define PRM_TURBO_FACTOR        "turbo factor"
+#define PRM_TURBO_LAG           "turbo lag"
 
 #define PRM_RATIO		"ratio"
 #define PRM_BIAS		"bias"
