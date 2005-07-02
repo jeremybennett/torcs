@@ -178,7 +178,11 @@ SimWheelUpdateForce(tCar *car, int index)
 		sx = wrl;
 		sy = 0;
 	} else {
-		sx = (vt - wrl) / v; /* target */
+		if (v>10.0f) { // avoid overflow
+			sx = (vt - wrl) / v; /* target */
+		} else {
+			sx = (vt - wrl) / 10.0f;
+		}
 		// TODO
 		// Commented out and reset because sometimes robots apply full throttle and the engine does not rev up
 		// nor do the wheels move. I'm not sure if that is the cause, but its actually the only visible candidate
@@ -191,6 +195,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	Fn = 0;
 	s = sqrt(sx*sx+sy*sy);
 	car->carElt->_skid[index] =  MIN(1.0, (s*reaction_force*0.0002));//MAX(0.2, MIN(s, 1.2)) - 0.2;
+	car->carElt->_reaction[index] = reaction_force;
 
 	stmp = MIN(s, 1.5);
 
