@@ -127,6 +127,11 @@ Changes since 1.2.3
 - Fixed non working trackgen -H option in Linux (Bernhard).
 - Fixed gamma value in image loader of elevation map loader of trackgen,
   must currently match with the default in img.cpp (Bernhard).
+- reviewed "(null)" texture problem and found it harmless, no immediate action
+  needed. Its actually a "bug" of the ac files and happend on retexturing/
+  "untexturing" objects. Perhaps it is not anymore the case with newer
+  versions (Bernhard).
+
 
 
 Changes since 1.2.2
@@ -215,25 +220,15 @@ TODO for 1.2.4 (estimate test-1: early July)
 - Bugfixes and cleanup.
 - Rework g-track-1 (format version 4, add pits on straight, update artwork).
 - Add cameras (alpine, spring)
-- Sound performance problem (no facts, just a feeling at the moment, wait for
-  feedback), review?
 - Add validation for the case no driver selected, do not exit to
   console.
-- (Sound did not work well with 40 cars, investigate). [probably due to plib]
-- try to resolve "(null)" texture problem (seems to be in the model files).
 - rework free car models (several holes, no emmissive color of lod (model
   becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
 - add RtBarrierNormalG() and use it in simuv*.
-- fix sound in split screen multiplayer. [in progress]
 - add more races to championship.
 - Fix non ending races because of failing virtual crane.
 - Problem when driver list changes during championship.
-- Investigate non reproducable (so far) crash after changing properties in
-  multiple players (human) and then doing a race with 2 players. Happend just
-  after a fresh install and just once so far (is one of the shipped xml files
-  broken)? [note there are many other crashes when using the menus, seemingly
-  at random times].
 - in long races car-to-car collisions fail somehow sometimes -> investigate
 - pit wall collision
 - align widgets in sound config screen.
@@ -270,6 +265,14 @@ TODO for 1.2.5
 - possibility of one pit for 2 cars of one module.
 - fix tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers (better diffuse lighting).
+- fix sound in split screen multiplayer. [in progress]
+- Investigate non reproducable (so far) crash after changing properties in
+  multiple players (human) and then doing a race with 2 players. Happend just
+  after a fresh install and just once so far (is one of the shipped xml files
+  broken)? [note there are many other crashes when using the menus, seemingly
+  at random times].
+
+
 
 
 TODO LATER
