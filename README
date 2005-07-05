@@ -124,6 +124,7 @@ Changes since 1.2.3
   crash (Bernhard).
 - Fixed missing check if model file could be loaded in elevation.cpp
   (Bernhard).
+- Fixed non working trackgen -H option in Linux (Bernhard).
 
 
 Changes since 1.2.2
