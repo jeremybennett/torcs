@@ -54,115 +54,115 @@ static int	width, height;
 void
 LoadElevation(tTrack *track, void *TrackHandle, char *imgFile)
 {
-    tdble	zmin, zmax;
-    tdble	xmin, xmax, ymin, ymax;
+	tdble zmin, zmax;
+	tdble xmin, xmax, ymin, ymax;
 
-    ElvImage = GfImgReadPng(imgFile, &width, &height, 2.2);
-    if (!ElvImage) {
-	return;
-    }
+	ElvImage = GfImgReadPng(imgFile, &width, &height, 2.0);
+	if (!ElvImage) {
+		return;
+	}
 
-    printf("Loading Elevation Map %s\n", imgFile);
-    
-    Margin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
-    
-    xmin = track->min.x - Margin;
-    xmax = track->max.x + Margin;
-    ymin = track->min.y - Margin;
-    ymax = track->max.y + Margin;
-    
-    kX = (tdble)(width - 1) / (xmax - xmin);
-    dX = -xmin * kX;
-    kY = (tdble)(height - 1) / (ymax - ymin);
-    dY = -ymin * kY;
-    ElvOk = 1;
+	printf("Loading Elevation Map %s\n", imgFile);
 
-    zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
-    zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z);
+	Margin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
 
-    dZ = zmin;
-    kZ = (zmax - dZ) / MAX_CLR;
+	xmin = track->min.x - Margin;
+	xmax = track->max.x + Margin;
+	ymin = track->min.y - Margin;
+	ymax = track->max.y + Margin;
+
+	kX = (tdble)(width - 1) / (xmax - xmin);
+	dX = -xmin * kX;
+	kY = (tdble)(height - 1) / (ymax - ymin);
+	dY = -ymin * kY;
+	ElvOk = 1;
+
+	zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
+	zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z);
+
+	dZ = zmin;
+	kZ = (zmax - dZ) / MAX_CLR;
 }
 
 
 tdble
 GetElevation(tdble x, tdble y, tdble z)
 {
-    int iX, iY;
-    int clr;
-    
-    if (ElvOk) {
-	iX = (int)(x * kX + dX);
-	iY = (int)(y * kY + dY);
-	/* RGBA */
-	clr = ElvImage[4 * (iY * width + iX)];
-	return (tdble)clr * kZ + dZ;
-    }
-    
-    return z;
+	int iX, iY;
+	int clr;
+
+	if (ElvOk) {
+		iX = (int)(x * kX + dX);
+		iY = (int)(y * kY + dY);
+		/* RGBA */
+		clr = ElvImage[4 * (iY * width + iX)];
+		return (tdble)clr * kZ + dZ;
+	}
+
+	return z;
 }
 
 
 void
 SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int dispf)
 {
-    ssgLoaderOptionsEx	options;
-    float	zmin, zmax;
-    float	xmin, xmax, ymin, ymax;
-    float	x, y, z;
-    int		clr;
-    int		i, j, k, l;
-    ssgRoot	*root;
-    int		columns;
-    static char	buf[1024];
-    char	*s;
-    float	heightStep;
-    
-    s = getenv("COLUMNS");
-    if (s) {
-	columns = strtol(getenv("COLUMNS"), NULL, 0);
-    } else {
-	columns = 80;
-    }
-    
-    Margin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
-    
-    xmin = track->min.x - Margin;
-    xmax = track->max.x + Margin;
-    ymin = track->min.y - Margin;
-    ymax = track->max.y + Margin;
-    
-    width = 1024;
-    height = (int)((ymax - ymin) * width / (xmax - xmin));
+	ssgLoaderOptionsEx options;
+	float zmin, zmax;
+	float xmin, xmax, ymin, ymax;
+	float x, y, z;
+	int clr;
+	int i, j, k, l;
+	ssgRoot	*root;
+	int columns;
+	static char	buf[1024];
+	char *s;
+	float heightStep;
 
-    printf("Generating Elevation Map %s (%d, %d)\n", imgFile, width, height);
-    kX = (xmax - xmin) / width;
-    dX = xmin;
-    kY = (ymax - ymin) / height;
-    dY = ymin;
+	s = getenv("COLUMNS");
+	if (s) {
+		columns = strtol(getenv("COLUMNS"), NULL, 0);
+	} else {
+		columns = 80;
+	}
 
-    zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
-    zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z * 1.2);
+	Margin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_BMARGIN, NULL, Margin);
 
-    heightStep = (float)(zmax - zmin) / (float)HeightSteps;
-    if (dispf == 2) {
-	printf("Height of steps = %f\n", heightStep);
-    }
+	xmin = track->min.x - Margin;
+	xmax = track->max.x + Margin;
+	ymin = track->min.y - Margin;
+	ymax = track->max.y + Margin;
 
-    kZ = MAX_CLR / (zmax - zmin);
-    dZ = - zmin * MAX_CLR / (zmax - zmin);
+	width = 1024;
+	height = (int)((ymax - ymin) * width / (xmax - xmin));
 
-    ElvImage = (unsigned char*)calloc(width * height, 3);
-    if (!ElvImage) {
-	return;
-    }
+	printf("Generating Elevation Map %s (%d, %d)\n", imgFile, width, height);
+	kX = (xmax - xmin) / width;
+	dX = xmin;
+	kY = (ymax - ymin) / height;
+	dY = ymin;
 
-    ssgSetCurrentOptions(&options);
-    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
-    ssgTexturePath(buf);
-    sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
-    ssgModelPath(buf);
-    root = (ssgRoot*)ssgLoadAC(meshFile);
+	zmin = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MIN, NULL, track->min.z);
+	zmax = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ALT_MAX, NULL, track->max.z);
+
+	heightStep = (float)(zmax - zmin) / (float)HeightSteps;
+	if (dispf == 2) {
+		printf("Height of steps = %f\n", heightStep);
+	}
+
+	kZ = MAX_CLR / (zmax - zmin);
+	dZ = - zmin * MAX_CLR / (zmax - zmin);
+
+	ElvImage = (unsigned char*)calloc(width * height, 3);
+	if (!ElvImage) {
+		return;
+	}
+
+	ssgSetCurrentOptions(&options);
+	sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
+	ssgTexturePath(buf);
+	sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
+	ssgModelPath(buf);
+	root = (ssgRoot*)ssgLoadAC(meshFile);
 
 	if (root == NULL) {
 		printf("Could not load %s, ", meshFile);
@@ -172,46 +172,52 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, i
 
     l = columns - 18;
     for (j = 0; j < height; j++) {
-	s = buf;
-	s += sprintf(buf, "%4d%% |", (j+1) * 100 / height);
-	for (k = s - buf; k < s - buf + l; k++) {
-	    if ((k - (s - buf)) > (l * (j+1) / height)) {
-		buf[k] = ' ';
-	    } else {
-		buf[k] = '*';
-	    }
-	}
-	s += l;
-	sprintf(s, "| row %4d", j+1);
-	printf("\r%s", buf);
-	fflush(stdout);
-	for (i = 0; i < width; i++) {
-	    x = i * kX + dX;
-	    y = j * kY + dY;
-	    z = getHOT(root, x, y);
-	    if (z != -1000000.0f) {
-		switch (dispf) {
-		case 0:
-		    clr = 0;
-		    break;
-		case 1:
-		    clr = (int)(z * kZ + dZ);
-		    break;
-		case 2:
-		    clr = (int)(floor((z + heightStep / 2.0) / heightStep) * heightStep * kZ + dZ);
-		    break;
-		default:
-		    clr = 0;
-		    break;
+		s = buf;
+		s += sprintf(buf, "%4d%% |", (j+1) * 100 / height);
+		for (k = s - buf; k < s - buf + l; k++) {
+			if ((k - (s - buf)) > (l * (j+1) / height)) {
+				buf[k] = ' ';
+			} else {
+				buf[k] = '*';
+			}
 		}
-	    } else {
-		clr = (int)MAX_CLR;
-	    }
+		s += l;
+		sprintf(s, "| row %4d", j+1);
+		printf("\r%s", buf);
+		fflush(stdout);
+		for (i = 0; i < width; i++) {
+			x = i * kX + dX;
+			y = j * kY + dY;
 
-	    ElvImage[3 * (i + width * j)]     = (unsigned char)clr;
-	    ElvImage[3 * (i + width * j) + 1] = (unsigned char)clr;
-	    ElvImage[3 * (i + width * j) + 2] = (unsigned char)clr;
-	}
+			switch (dispf) {
+			case 0:
+				clr = 0;
+				break;
+			case 1:
+				z = getHOT(root, x, y);
+				if (z != -1000000.0f) {
+					clr = (int)(z * kZ + dZ);
+				} else {
+					clr = (int)MAX_CLR;
+				}
+				break;
+			case 2:
+				z = getHOT(root, x, y);
+				if (z != -1000000.0f) {
+					clr = (int)(floor((z + heightStep / 2.0) / heightStep) * heightStep * kZ + dZ);
+				} else {
+					clr = (int)MAX_CLR;
+				}
+				break;
+			default:
+				clr = 0;
+				break;
+			}
+
+			ElvImage[3 * (i + width * j)]     = (unsigned char)clr;
+			ElvImage[3 * (i + width * j) + 1] = (unsigned char)clr;
+			ElvImage[3 * (i + width * j) + 2] = (unsigned char)clr;
+		}
     }
 
     printf("\n");
