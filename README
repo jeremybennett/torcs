@@ -125,6 +125,8 @@ Changes since 1.2.3
 - Fixed missing check if model file could be loaded in elevation.cpp
   (Bernhard).
 - Fixed non working trackgen -H option in Linux (Bernhard).
+- Fixed gamma value in image loader of elevation map loader of trackgen,
+  must currently match with the default in img.cpp (Bernhard).
 
 
 Changes since 1.2.2
