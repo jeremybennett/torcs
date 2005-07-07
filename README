@@ -131,7 +131,7 @@ Changes since 1.2.3
   needed. Its actually a "bug" of the ac files and happend on retexturing/
   "untexturing" objects. Perhaps it is not anymore the case with newer
   versions (Bernhard).
-
+- Reworked g-track-1 (Bernhard).
 
 
 Changes since 1.2.2
@@ -218,7 +218,6 @@ TODO for 1.2.4 (estimate test-1: early July)
 - (Improve collision).
 - Hunting lost open filehandles if any left.
 - Bugfixes and cleanup.
-- Rework g-track-1 (format version 4, add pits on straight, update artwork).
 - Add cameras (alpine, spring)
 - Add validation for the case no driver selected, do not exit to
   console.
@@ -246,17 +245,14 @@ TODO for 1.2.5
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
-- (Automate GL features verification).
-- (Free camera controlled with mouse and keys).
 - (Fix parallel build with make -j n, breaks currently in SOLID).
-- Improve visual quality of some existing tracks (e.g. e-track-1, alborg, ...).
+- Improve visual quality of some existing tracks (e-track-3, michigan, wheel-1,
+  e-track-2).
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-- (Problem with BRD Sim-pro in windows, investigate)
 - pit wall collision
 - check and merge Christos camera code.
-- (Add billy, astigot).
 - Integrate documentation into CVS/distribution
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
   not hurt).
@@ -334,6 +330,8 @@ TODO LATER
 - optimise simuv3.
 - Fix engine inertia/s of F1 cars, check/fix all other cars as well.
 - Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
+- Free camera controlled with mouse and keys.
+- Automate GL features verification (hopefully obsolete).
 
 IDEAS FOR MUCH LATER
 --------------------
