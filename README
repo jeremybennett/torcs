@@ -132,6 +132,10 @@ Changes since 1.2.3
   "untexturing" objects. Perhaps it is not anymore the case with newer
   versions (Bernhard).
 - Reworked g-track-1 (Bernhard).
+- Fixed lighting (material) properties of some models to fix the "darkening
+  on LOD switch problem". On some models it helps, other models need to
+  be rewoked later (the problem there seems to be the model itself -> normals)
+  (Bernhard).
 
 
 Changes since 1.2.2
@@ -221,11 +225,10 @@ TODO for 1.2.4 (estimate test-1: early July)
 - Add cameras (alpine, spring)
 - Add validation for the case no driver selected, do not exit to
   console.
-- rework free car models (several holes, no emmissive color of lod (model
-  becomes dark at a certain distance), single sided).
 - fix driver list with more than 100 entries (number cut).
 - add RtBarrierNormalG() and use it in simuv*.
 - add more races to championship.
+- OpenAL: include it in TORCS -> configure scripts?
 - Fix non ending races because of failing virtual crane.
 - Problem when driver list changes during championship.
 - in long races car-to-car collisions fail somehow sometimes -> investigate
@@ -246,8 +249,11 @@ TODO for 1.2.5
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
 - (Fix parallel build with make -j n, breaks currently in SOLID).
-- Improve visual quality of some existing tracks (e-track-3, michigan, wheel-1,
-  e-track-2).
+- Ongoing for every release: rework free car models (several holes, no
+  emmissive color of lod (model becomes dark at a certain distance), single
+  sided, add cockpit).
+- Ongoing for every release: Improve visual quality of some existing tracks
+  (e.g. e-track-3, michigan, eventually wheel-1, e-track-2).
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
