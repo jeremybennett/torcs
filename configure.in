@@ -111,6 +111,8 @@ AC_CHECK_LIB(Xrandr, XRRQueryVersion,,AC_MSG_ERROR([Can't find libXrandr. Please
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_FUNC(dlopen,,AC_MSG_ERROR([Can't find dlopen function. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 
+AC_CHECK_FUNCS(strndup,,)
+
 dnl Replace `main' with a function in -lz:
 AC_CHECK_LIB(z, crc32,,AC_MSG_ERROR([Can't find libz. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lpng:
