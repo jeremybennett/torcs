@@ -33,6 +33,7 @@
 #include <robot.h>
 #include <racescreens.h>
 #include <robottools.h>
+#include <portability.h>
 
 #include "raceengine.h"
 #include "racemain.h"

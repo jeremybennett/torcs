@@ -37,6 +37,7 @@
 #endif /* WIN32 */
 
 #include <tgfclient.h>
+#include <portability.h>
 #include "gui.h"
 #include "fg_gm.h"
 #include "glfeatures.h"
