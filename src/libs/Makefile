@@ -18,11 +18,13 @@
 
 SHIPSUBDIRS	= tgf tgfclient raceengineclient learning
 
-EXPINCDIRS	= txml tgf tgfclient client confscreens racescreens robottools raceengineclient learning
+EXPINCDIRS	= txml tgf tgfclient client confscreens racescreens robottools raceengineclient learning \
+			  portability
 
 TOOLSUBDIRS	= txml
 
-SUBDIRS		= confscreens racescreens robottools txml tgf tgfclient client raceengineclient learning
+SUBDIRS		= confscreens racescreens robottools txml tgf tgfclient client raceengineclient learning \
+			  portability
 
 PKGSUBDIRS	= $(SUBDIRS)
 
