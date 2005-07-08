@@ -136,6 +136,7 @@ Changes since 1.2.3
   on LOD switch problem". On some models it helps, other models need to
   be rewoked later (the problem there seems to be the model itself -> normals)
   (Bernhard).
+- Tried to fix strndup for FreeBSD, will need testing (Bernhard).
 
 
 Changes since 1.2.2
@@ -218,7 +219,6 @@ TODO for 1.2.4 (estimate test-1: early July)
 --------------
 - Fix new introduced bugs.
 - Fix XSLT/DTD for viewing results (Report by Eugen)
-- Fix strdup (for FreeBSD).
 - (Improve collision).
 - Hunting lost open filehandles if any left.
 - Bugfixes and cleanup.
