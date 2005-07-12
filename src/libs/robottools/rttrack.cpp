@@ -432,11 +432,11 @@ RtTrackHeightL(tTrkLocPos *p)
 	
 	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 	    tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * tr / seg->width;
+		seg->surface->kRoughness * (1.0f + sin(seg->surface->kRoughWaveLen * lg)) * tr / seg->width;
     }
     
     return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
-	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * tr) * sin(seg->surface->kRoughWaveLen * lg);
+	    seg->surface->kRoughness * (1.0f + sin(seg->surface->kRoughWaveLen * tr) * sin(seg->surface->kRoughWaveLen * lg));
 }
 
 /* get the real segment */
