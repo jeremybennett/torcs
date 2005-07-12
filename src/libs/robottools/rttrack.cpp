@@ -427,7 +427,7 @@ RtTrackHeightL(tTrkLocPos *p)
 	if (seg->type2 == TR_RBORDER) {
 	    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
 		(seg->width - tr) * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw + atan2(seg->height, seg->width)) +
-		seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * (seg->width - tr) / seg->width;
+		    seg->surface->kRoughness * (1.0f +sin(seg->surface->kRoughWaveLen * lg)) * (seg->width - tr) / seg->width;
 	}
 	
 	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
