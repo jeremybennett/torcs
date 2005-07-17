@@ -24,6 +24,10 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
+#define ABSOLUTE_SPEED_CUTOFF 2.0f
+#define SKID_SCALE 0.0002f
+#define SKID_THRESHOLD 0.01f
+
 void
 SimWheelConfig(tCar *car, int index)
 {
@@ -178,10 +182,10 @@ SimWheelUpdateForce(tCar *car, int index)
 		sx = wrl;
 		sy = 0;
 	} else {
-		if (v>10.0f) { // avoid overflow
+		if (v>ABSOLUTE_SPEED_CUTOFF) { // avoid overflow
 			sx = (vt - wrl) / v; /* target */
 		} else {
-			sx = (vt - wrl) / 10.0f;
+			sx = (vt - wrl) / ABSOLUTE_SPEED_CUTOFF;
 		}
 		// TODO
 		// Commented out and reset because sometimes robots apply full throttle and the engine does not rev up
@@ -194,8 +198,18 @@ SimWheelUpdateForce(tCar *car, int index)
 	Ft = 0;
 	Fn = 0;
 	s = sqrt(sx*sx+sy*sy);
-	car->carElt->_skid[index] =  MIN(1.0, (s*reaction_force*0.0002));//MAX(0.2, MIN(s, 1.2)) - 0.2;
-	car->carElt->_reaction[index] = reaction_force;
+	
+	{
+		// calculate _skid and _reaction
+		float tmp_skid = (MAX(MIN(1.0f + SKID_THRESHOLD, (s*reaction_force*SKID_SCALE)), SKID_THRESHOLD) - SKID_THRESHOLD);
+		if (v < 1.0f && fabs(wrl) < 1.0f) {
+			tmp_skid = 0.0f;
+		}
+		float alpha = 0.9f;
+		car->carElt->_skid[index] = alpha * car->carElt->_skid[index] + (1.0f - alpha) * tmp_skid;
+		
+		car->carElt->_reaction[index] = reaction_force;
+	}
 
 	stmp = MIN(s, 1.5);
 
