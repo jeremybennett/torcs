@@ -36,6 +36,7 @@ Pit::Pit(tSituation *s, Driver *driver)
 	pitinfo = &track->pits;
 	pitstop = inpitlane = false;
 	pittimer = 0.0;
+	pit_state = NONE;
 
 	if (mypit != NULL) {
 		speedlimit = pitinfo->speedLimit - SPEED_LIMIT_MARGIN;

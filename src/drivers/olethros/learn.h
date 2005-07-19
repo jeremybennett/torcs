@@ -57,18 +57,39 @@ public:
 	/// Adjust friction model coefficients
 	void AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_, float learning_rate = 1.0);
 	/// Get friction coefficient
-	float GetFrictionDm(tTrackSeg* s) {return dm + segdm[s->id];}
+	float GetFrictionDm(tTrackSeg* s) {return (dm + segdm[s->id]);}
 	/// Get friction coefficient
-	float GetFrictionDm2(tTrackSeg* s) {return dm2 + segdm2[s->id];}
+	float GetFrictionDm2(tTrackSeg* s) {return (dm2 + segdm2[s->id]);}
 	/// Get friction coefficient
-	float GetFrictionDm3(tTrackSeg* s) {return dm3 + segdm3[s->id];}
+	float GetFrictionDm3(tTrackSeg* s) {return (dm3 + segdm3[s->id]);}
 	/// Load
 	void loadParameters (char* fname);
 	/// Save
 	void saveParameters (char* fname);
+
 	void SetSafetyThreshold (float st) {safety_threshold = st;}
 private:
+	float tand(float x)
+	{
+		if (x>1.0) {
+			return 1.0;
+		} else if (x<-1.0) {
+			return -1.0;
+		}
+		return x;
+	}
+
+	float tand_der(float x)
+	{
+		if (x>1.0) {
+			return 0.0;
+		} else if (x<-1.0) {
+			return 0.0;
+		}
+		return 1.0;
+	}
 	float safety_threshold;
+
 	void PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, float max_length);
 	float time_since_accident;
 	/// Class for computing averages of measured values
@@ -113,6 +134,8 @@ private:
 	float* segdm2; ///< friction coefficient 2
 	float* segdm3; ///< friction coefficient 3
 	int prevsegid; ///< id of previous segment
+	float W_brake;
+	float W_accel;
 	float dm; ///< global friction coefficient 1
 	float dm2; ///< gloabal friction coefficient 2
 	float dm3; ///< global friction coefficient 3
@@ -130,9 +153,13 @@ private:
 	float rmin; ///< current estimated minimum radius
 	int lastturn; ///< type of last turn entered
 	int prevtype;  ///< type of previous segment
-
 	int n_seg; ///< total number of track segments
+	bool new_lap; ///< we made a new lap
+	int remaining_laps; ///< remaining_laps
+    int lap; ///< current lap
 };
+
+
 
 #ifdef USE_OLETHROS_NAMESPACE
 }

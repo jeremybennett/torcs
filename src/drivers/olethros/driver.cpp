@@ -76,6 +76,11 @@ const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;			///< [m] if offset < this
 const float Driver::ACCELERATOR_LETGO_TIME = 0.1f;           ///< [s] Time to let go of accelerator before braking.
 const float Driver::MIN_BRAKE_FOLLOW_DISTANCE = 1.0f;        ///< [m] Predicted minimum distance from next opponent to apply full brake
 const float Driver::MAX_BRAKE_FOLLOW_DISTANCE = 2.0f;        ///< [m] Predicted minimum distance from next opponent to start applying brake.
+const float Driver::STEER_DIRECTION_GAIN = 1.0f; ///< [-] Gain to apply for basic steerin
+const float Driver::STEER_DRIFT_GAIN = 0.01f; ///< [-] Gain for drift compensation
+const float Driver::STEER_PREDICT_GAIN = 0.1f; ///< [-] Predictive gain, multiplied with yaw rate.
+const float Driver::STEER_AVOIDANCE_GAIN = 0.2f; ///< [lograd/m] Gain for border avoidance steering
+const float Driver::STEER_EMERGENCY_GAIN = 0.01f; ///< [-] Gain for emergency steering
 const float Driver::FILTER_STEER_FEEDBACK = 0.8f;        ///< [-] Feedback from steering to steer filter.
 const float Driver::FILTER_PREDICT_FEEDBACK = 0.0f;        ///< [-] Feedback from prediction error to steer filter.
 const float Driver::FILTER_TARGET_FEEDBACK = 0.2f;        ///< [-] Feedback from target error to steer filter.
@@ -99,18 +104,19 @@ Driver::Driver(int index)
 	prev_steer = 0.0f;
 	speed_factor = 1.0f;
 	dt = 0.0f;
+	pit_exit_timer = 1.0f;
 }
 
 
 Driver::~Driver()
 {
 	
-	ShowPaths();
-
-
 	// Do not save learnt stuff from race itself.
-	// We save only for practice and qualifying.
+
+	// We save only for practice and qualifying
 	if (race_type!=RM_TYPE_RACE) {
+		// We save only for practice
+		//if (race_type==RM_TYPE_PRACTICE) {
 		char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->internalname);
 		learn->saveParameters (fname);
 		free (fname);
@@ -230,6 +236,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	//radius = new float[track->nseg];
 	ideal_radius = new float[track->nseg];
 	prepareTrack();
+	//ShowPaths();
 
 	// Create just one instance of cardata shared by all drivers.
 #if 0
@@ -375,14 +382,13 @@ void Driver::drive(tSituation *s)
 			car->priv.collision = 0;
 		} else if (alone) {
 			if (car->_accelCmd > 0) {
-				float ratio =  0.0001*car->_engineMaxTq*car->_gearRatio[car->_gear + car->_gearOffset];
-				//printf ("%f %f\n", car->_engineMaxTq, ratio);
-				learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), -car->_accelCmd * ratio, 0.1);
+				//float ratio =  0.0001*car->_engineMaxTq*car->_gearRatio[car->_gear + car->_gearOffset];
+				learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), -car->_accelCmd, 0.001f);
 			} else {
-				learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), car->_brakeCmd, 1.0);
+				learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), car->_brakeCmd, 0.001f);
 			}
 		} else {
-			learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), car->_brakeCmd, 0.0);
+			learn->AdjustFriction(car->_trkPos.seg, G, mass,CA, CW,getSpeed(), car->_brakeCmd, 0.0f);
 		}
 		//printf ("%f %f\n", car->_steerCmd, learn->predictedError(car));
 		int segid = car->_trkPos.seg->id;
@@ -497,9 +503,8 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	float r = radius[segment->id];
 	float dr = learn->getRadius(segment);
 
-	if (((alone > 0) && (fabs(myoffset) < USE_LEARNED_OFFSET_RANGE))
-		|| pit->getInPit()) {
-		if (dr>-.5*r) {
+	if ((alone > 0) && (fabs(myoffset) < USE_LEARNED_OFFSET_RANGE)) {
+		if (dr>-.5*r && !pit->getInPit()) {
 				r += dr;
 		}
 	} else {
@@ -755,7 +760,7 @@ float Driver::EstimateTorque (float rpm)
 #endif
 	float rpmMax = car->_enginerpmMax;
 	float TqAtMaxPw = MaxPw/rpmMaxPw;
-	float PwAtMaxRevs = .8*MaxPw;
+	float PwAtMaxRevs = .5*MaxPw;
 	float TqAtMaxRevs = PwAtMaxRevs/rpmMax;
 	//printf ("pw-estimated Tq at maxrevs: %f@%f\n", TqAtMaxRevs, car->_enginerpmMax);
 	
@@ -793,27 +798,34 @@ float Driver::EstimateTorque (float rpm)
 /// Compute steer value.
 float Driver::getSteer()
 {
-	float targetAngle;
-	float avoidance = 0.0;
-	
+	float avoidance = 0.0f;
 	if (!pit->getInPit()) {
 		if (car->_trkPos.toRight < car->_dimension_y) {
-			avoidance = tanh(0.2*(car->_dimension_y - car->_trkPos.toRight));
+			avoidance = tanh(STEER_AVOIDANCE_GAIN*(car->_dimension_y - car->_trkPos.toRight));
 		} else 	if (car->_trkPos.toLeft < car->_dimension_y) {
-			avoidance = tanh(0.2*(car->_trkPos.toLeft - car->_dimension_y));
+			avoidance = tanh(STEER_AVOIDANCE_GAIN*(car->_trkPos.toLeft - car->_dimension_y));
 		}
 	}
 
-	//avoidance = 0.0f;
 	v2d target = getTargetPoint();
-	//printf ("%f %f %f %f #TARGET\n", target.x, target.y, car->_pos_X, car->_pos_Y);
+	float targetAngle = atan2(target.y - car->_pos_Y, target.x - car->_pos_X);
+	float steer_direction = STEER_DIRECTION_GAIN * (targetAngle - car->_yaw - STEER_PREDICT_GAIN * car->_yaw_rate);
 
-	targetAngle = atan2(target.y - car->_pos_Y, target.x - car->_pos_X);
-	targetAngle = 1.0*(targetAngle - car->_yaw);
-	float correct_drift = -0.001f*atan2(car->_speed_Y, car->_speed_X);
-	//printf ("%f %f\n", targetAngle, correct_drift);
-	NORM_PI_PI(targetAngle);
-	return avoidance + correct_drift + targetAngle / car->_steerLock;
+	// over steer correction a la berniw
+	tTrackSeg *seg = car->_trkPos.seg;
+	float omega = 0.0;
+	if (seg->type==TR_LFT) {
+		omega = getSpeed()/radius[seg->id];
+	} else if (seg->type == TR_RGT) {
+		omega = -getSpeed()/radius[seg->id];
+	}
+	float correct_oversteer = 0.0f;//STEER_PREDICT_GAIN * (omega - car->_yaw_rate);
+
+
+	float correct_drift = - STEER_DRIFT_GAIN * atan2(car->_speed_Y, car->_speed_X);
+
+	NORM_PI_PI(steer_direction);
+	return avoidance + correct_oversteer + correct_drift + steer_direction/car->_steerLock;
 }
 
 
@@ -900,10 +912,14 @@ v2d Driver::getTargetPoint()
 
 	float beta = length/seg->length;
 	//printf ("%f %f %f\n", beta, length, seg->length);
-	if (pit->getInPit()) {
+
+	//if (pit->getInPit()) {
+	//if (0) {//pit_exit_timer < 0.2f) {
+	if (pit->getState() == IN_LANE) {
 		alpha = 0.5;
 		nalpha = 0.5;
 		beta  = 0.0;
+		//printf ("t: %f\n", pit_exit_timer);
 	}
 
 	// Compute the target point.
@@ -1221,6 +1237,12 @@ void Driver::update(tSituation *s)
 		pit->setPitstop(strategy->needPitstop(car, s, opponents));
 	}
 	pit->update();
+	if (pit->getInPit()) {
+		pit_exit_timer = 0.0f;
+	} else {
+		pit_exit_timer += dt;
+	}
+
 	alone = isAlone();
 
 	if (race_type != RM_TYPE_RACE) {
@@ -1361,6 +1383,7 @@ float Driver::filterBPit(float brake)
 		float dl, dw;
 		RtDistToPit(car, track, &dl, &dw);
 		if (dl < PIT_BRAKE_AHEAD) {
+			pit->setState (APPROACHING);
 			float mu = car->_trkPos.seg->surface->kFriction*TIREMU*PIT_MU;
 			float bd = brakedist(0.0, mu);
 			if (bd > dl) {
@@ -1374,6 +1397,7 @@ float Driver::filterBPit(float brake)
 	}
 
 	if (pit->getInPit()) {
+		pit->setState (IN_LANE);
 		float s = pit->toSplineCoord(car->_distFromStartLine);
 		// Pit entry.
 		if (pit->getPitstop()) {
@@ -1418,6 +1442,7 @@ float Driver::filterBPit(float brake)
 				}
 			}
 		} else {
+			pit->setState (PIT_EXIT);
 			// Pit exit.
 			if (s < pit->getNPitEnd()) {
 				// Pit speed limit.
@@ -1431,6 +1456,8 @@ float Driver::filterBPit(float brake)
 			}
 		}
 	}
+
+	pit->setState (NONE);
 
 	return brake;
 }
@@ -1780,10 +1807,10 @@ float Driver::filterTrk(tSituation* s, float accel)
 	if (danger>0) {
 		if (danger<0.5) {
 			danger_accel = -0.5 - 2*(0.5-danger);
-			car->_steerCmd += STEER_EMERGENCY * steer_adjust;
+			car->_steerCmd += STEER_EMERGENCY_GAIN * steer_adjust;
 		} else if (danger<1.0) {
 			danger_accel = 0.5*(danger-1);
-			car->_steerCmd += STEER_EMERGENCY * (danger-2) * steer_adjust;
+			car->_steerCmd += STEER_EMERGENCY_GAIN * (danger-2) * steer_adjust;
 		} 
 	}
 	float Kgamma = car->_pitch;
@@ -1842,9 +1869,11 @@ float Driver::brakedist(float allowedspeed, float mu)
 		//float dm=learn->GetFrictionDm(car->_trkPos.seg);
 		//float dm2=learn->GetFrictionDm2(car->_trkPos.seg);
 	} else {
+		//printf ("%f %f\n", learn->GetFrictionDm(car->_trkPos.seg)
+		//, learn->GetFrictionDm2(car->_trkPos.seg));
 		c = mu*G + learn->GetFrictionDm(car->_trkPos.seg);
-		d = (CA*mu + CW
-			 + learn->GetFrictionDm2(car->_trkPos.seg))/mass;
+		d = (CA*mu + CW)/mass;
+		//+ learn->GetFrictionDm2(car->_trkPos.seg))/mass;
 		//+ learn->GetFrictionDm3(car->_trkPos.seg))/mass;
 	}
 	float v1sqr = currentspeedsqr;
@@ -1882,7 +1911,9 @@ void Driver::prepareTrack()
 
 
 	// first make sure we are in the proper range.
-	int n_iter = 1000;
+	int n_iter = 500;
+	float lr = 0.001f; // learning rate
+
 	tTrackSeg* seg = track->seg;
 
 	seg = track->seg;
@@ -1893,7 +1924,6 @@ void Driver::prepareTrack()
 	//printf ("Optimising targets\n");
 	for (int iter=1; iter<n_iter; iter++) {
 		seg=track->seg;
-		float lr = 0.001f; // learning rate
 		float curve = 0.0; // estimated curvature
 		for (int i=0; i<N; i++, seg=seg->next) {
 			int id = seg->id;
@@ -1928,7 +1958,12 @@ void Driver::prepareTrack()
 			m.y = 0.5f * (p.y + n.y);
 			float dx = m.x - c.x;
 			float dy = m.y - c.y;
-			curve += dx*dx+dy*dy;
+			{
+				float lx = (n.x - p.x);
+				float ly = (n.y - p.y);
+				float l = sqrt(lx*lx+ly*ly);
+				curve += (dx*dx+dy*dy)/l;
+			}
 			float dPx = seg->vertex[TR_SL].x - seg->vertex[TR_SR].x;
 			float dPy = seg->vertex[TR_SL].y - seg->vertex[TR_SR].y;
 			float dA  = 0.0;
@@ -1999,9 +2034,8 @@ void Driver::prepareTrack()
 			s.x = c.x - p.x;
 			s.y = c.y - p.y;
 			float lt = sqrt(s.x*s.x + s.y*s.y);
-			float init_trace = 0.002f;
-			float trace = init_trace;
-			float trace_decay = 0.9f;
+			float trace = 0.003f;
+			float trace_decay = .9f;
 			for (int k0=0; k0<10; k0++, nseg=nseg->next) {
 				trace *= trace_decay;
 				float An = seg_alpha[nseg->id];
@@ -2026,7 +2060,7 @@ void Driver::prepareTrack()
 			s.x = c.x - n.x;
 			s.y = c.y - n.y;
 			lt = sqrt(s.x*s.x + s.y*s.y);
-			trace = init_trace;
+			trace = 0.003f;
 			for (int k0=0; k0<10; k0++, pseg=pseg->prev) {
 				trace *= trace_decay;
 				float Ap = seg_alpha[pseg->id];
@@ -2046,12 +2080,12 @@ void Driver::prepareTrack()
 				if (A<0.05f) A = 0.05f;
 				if (A>0.95f) A = 0.95f;
 				seg_alpha[pseg->id] = A;
-			}
 #endif			
 
 			
 		}
-		//printf ("%f\n", curve/((float)N));
+		//float curve_average = curve/((float) N);
+		//printf ("%f %f #CURV\n", curve_average, curve);
 	}
 
 
@@ -2156,35 +2190,35 @@ void Driver::ShowPaths()
 	
 	FILE* fplan = fopen("/tmp/track_plan", "w");
 	FILE* fpath = fopen("/tmp/track_path", "w");
-	FILE* fpathnew = fopen("/tmp/track_path_new", "w");
+	//FILE* fpathnew = fopen("/tmp/track_path_new", "w");
 	seg = track->seg;
 	for (int i=0; i<N; i++, seg=seg->next) {
 		int id = seg->id;
-		float xle = seg->vertex[TR_EL].x;
-		float yle = seg->vertex[TR_EL].y;
-		float xre = seg->vertex[TR_ER].x;
-		float yre = seg->vertex[TR_ER].y;
+		//float xle = seg->vertex[TR_EL].x;
+		//float yle = seg->vertex[TR_EL].y;
+		//float xre = seg->vertex[TR_ER].x;
+		//float yre = seg->vertex[TR_ER].y;
 		float xls = seg->vertex[TR_SL].x;
 		float yls = seg->vertex[TR_SL].y;
 		float xrs = seg->vertex[TR_SR].x;
 		float yrs = seg->vertex[TR_SR].y;
-		float xlm = 0.5*(xls+xle);
-		float ylm = 0.5*(yls+yle);
-		float xrm = 0.5*(xrs+xre);
-		float yrm = 0.5*(yrs+yre);
+		//float xlm = 0.5*(xls+xle);
+		//float ylm = 0.5*(yls+yle);
+		//float xrm = 0.5*(xrs+xre);
+		//float yrm = 0.5*(yrs+yre);
 		fprintf (fplan, "%f %f %f %f %d\n", xls, yls, xrs, yrs, id);
-		fprintf (fplan, "%f %f %f %f %d\n", xlm, ylm, xrm, yrm, id);
-		fprintf (fplan, "%f %f %f %f %d\n", xle, yle, xre, yre, id);
+		//fprintf (fplan, "%f %f %f %f %d\n", xlm, ylm, xrm, yrm, id);
+		//fprintf (fplan, "%f %f %f %f %d\n", xle, yle, xre, yre, id);
 		float a = seg_alpha[seg->id];
 		fprintf (fpath, "%f %f %d\n", xls*a+(1-a)*xrs, yls*a+(1-a)*yrs, id);
-		fprintf (fpath, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
-		fprintf (fpath, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
+		//fprintf (fpath, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
+		//fprintf (fpath, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
 		a = seg_alpha_new[seg->id];
-		fprintf (fpathnew, "%f %f %d\n", xls*a+(1-a)*xrs, yls*a+(1-a)*yrs, id);
-		fprintf (fpathnew, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
-		fprintf (fpathnew, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
+		//fprintf (fpathnew, "%f %f %d\n", xls*a+(1-a)*xrs, yls*a+(1-a)*yrs, id);
+		//fprintf (fpathnew, "%f %f %d\n", xlm*a+(1-a)*xrm, ylm*a+(1-a)*yrm, id);
+		//fprintf (fpathnew, "%f %f %d\n", xle*a+(1-a)*xre, yle*a+(1-a)*yre, id);
 	}
-	fclose(fpathnew);
+	//fclose(fpathnew);
 	fclose(fpath);
 	fclose(fplan);
 }

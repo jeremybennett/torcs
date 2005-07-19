@@ -29,11 +29,18 @@ namespace olethros
 
 class Driver;
 
+enum PitState {
+	NONE=0x0, APPROACHING, IN_LANE, PIT_EXIT
+};
+
+
 class Pit {
 	public:
 		Pit(tSituation *s, Driver *driver);
 		~Pit();
 
+		void setState (enum PitState state) {pit_state = state;}
+		enum PitState getState (void) {return pit_state;}
 		void setPitstop(bool pitstop);
 		bool getPitstop() { return pitstop; }
 
@@ -58,6 +65,7 @@ class Pit {
 		void update();
 
 	private:
+		enum PitState pit_state;
 		tTrack *track;
 		tCarElt *car;
 		tTrackOwnPit *mypit;			// Pointer to my pit.

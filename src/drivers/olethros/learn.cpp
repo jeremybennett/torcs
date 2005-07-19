@@ -75,6 +75,9 @@ SegLearn::SegLearn(tTrack* t)
 	dm = 0.0f;
 	dm2 = 0.0f;
 	dm3 = 0.0f;
+	W_brake = -1.0;
+	W_accel = 1.0;
+	lap = 0;
 
 	tTrackSeg *seg = t->seg;
 
@@ -122,6 +125,9 @@ SegLearn::SegLearn(tTrack* t)
 	time_since_accident = 0.0f;
 	time_since_left_turn = 10.0;
 	time_since_right_turn = 10.0;
+	new_lap = false;
+	lap = 0;
+	remaining_laps = 1;
 }
 
 
@@ -143,6 +149,17 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 {
 	bool local_update = true;
 	float risk_factor = 100.0f;
+
+	remaining_laps = car->_remainingLaps;
+
+	if (car->_laps != lap) {
+		lap = car->_laps;
+		new_lap = true;
+	} else {
+		new_lap = false;
+	}
+
+
 	// Still on the same segment, alone, offset near 0, check.
 	tTrackSeg *seg = car->_trkPos.seg;
 	if (prev_time!=s->currentTime) {
@@ -436,36 +453,58 @@ int SegLearn::segQuantum (int segid)
 void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, float CW_, float u_, float brake_, float learning_rate)
 {
 
+	if (delta_time<=0.0) {
+		delta_time = 0.02f;
+	}
 	float mu_ = s->surface->kFriction;
-	float du = (u_ - u)*delta_time;
-	float pdu = -delta_time*(SIGN(u)*(
-									  brake*(mu*G + dm+segdm[prevsegid]+
-											 ((CA*mu+CW+dm2+segdm2[prevsegid])/mass)*u*u)
-									  //+ u*u*(CW+dm3+segdm3[prevsegid])/mass
-									  )
-							 );
-	float delta = learning_rate * (du-pdu);
-	float der_dm = -SIGN(u)*brake;
-	float der_dm2 = -SIGN(u)*u*u*brake/mass;
-	//float der_dm3 = -SIGN(u)*u*u/mass;
-	dm += delta * der_dm;
-	dm2 += delta* der_dm2;
-	//dm3 += delta* der_dm3;
-	segdm[prevsegid] += delta * der_dm;
-	segdm2[prevsegid] += delta* der_dm2;
-	//segdm3[prevsegid] += delta* der_dm3;
-	mu=0.5*mu_; 
+	float du = (u_ - u)/delta_time;//delta_time;
+	float x_brake = 0.0f;
+	float x_accel = 0.0f;
+	if (brake<0) {
+		x_accel = -brake;
+	} else {
+		x_brake = brake;
+	}
+	float brake_factor = W_brake*x_brake;
+	float accel_factor = W_accel*x_accel;
+	if (fabs(u)>10.0f) {
+		accel_factor /= fabs(u); 
+	} else {
+		accel_factor /= 10.0f; 
+	}
+	float car_factor = tand (brake_factor + accel_factor);
+	float car_factor_der = tand_der (brake_factor + accel_factor);
+	//mu = 1.0;
+	float N = G;// +(.5*CA*u*u/mass);
+	//printf ("%f %f\n", G, N);
+	float friction_factor = (mu + dm+segdm[prevsegid])*N;
+	float friction_factor_der = N;
+	float aero_factor = CW/mass*u*fabs(u);
+	float pdu = car_factor * friction_factor - aero_factor;
+	float delta_a = (du - pdu);
+	float delta = learning_rate * delta_a;
+	float der_dm = 0.05f*delta * friction_factor_der * car_factor;
+	float der_acc = delta * car_factor_der * friction_factor;
+	W_brake += der_acc * x_brake * car_factor_der * friction_factor;
+	W_accel += der_acc * x_accel * car_factor_der * friction_factor;
+	//float der_dm2 = -SIGN(u)*u*u*brake/mass;
+
+	dm += 0.1*der_dm;
+	segdm[prevsegid] += der_dm;
+
+	mu=mu_; 
 	mass=mass_;
-	CA=0.5*CA_; 
-	CW=0.5*CW_; 
+	CA=CA_; 
+	CW=CW_; 
 	u=u_;
 #if 0
-	if (1) {
-		printf ("%f | %f %f | %f %f | %f %f | %f\n", brake,
+	if ((new_lap) ||
+		(remaining_laps==0 && prevsegid!=s->id)) {
+		printf ("%f %f %f %f %f %f %f %f #DM\n", brake,
 				dm, segdm[prevsegid],
-				dm2, segdm2[prevsegid],
-				dm3, segdm3[prevsegid],
-				delta);
+				W_brake, W_accel,
+				//dm3, segdm3[prevsegid],
+				du, pdu, pdu-du);
 	}
 #endif
 	brake=brake_;

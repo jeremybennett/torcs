@@ -141,6 +141,7 @@ protected:
 	Opponent *opponent;		///< The array of opponents.
 
 	Pit *pit;						///< Pointer to the pit instance.
+	float pit_exit_timer;
 	AbstractStrategy *strategy;		///< Pit stop strategy.
 
 	//static Cardata *cardata;		///< Data about all cars shared by all instances.
@@ -217,6 +218,11 @@ protected:
 	static const float ACCELERATOR_LETGO_TIME;
 	static const float MIN_BRAKE_FOLLOW_DISTANCE;
 	static const float MAX_BRAKE_FOLLOW_DISTANCE;
+	static const float STEER_DIRECTION_GAIN;
+	static const float STEER_PREDICT_GAIN;
+	static const float STEER_DRIFT_GAIN;
+	static const float STEER_AVOIDANCE_GAIN;
+	static const float STEER_EMERGENCY_GAIN;
 	static const float FILTER_STEER_FEEDBACK;
 	static const float FILTER_PREDICT_FEEDBACK;
 	static const float FILTER_TARGET_FEEDBACK;
