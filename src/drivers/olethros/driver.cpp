@@ -1687,7 +1687,6 @@ float Driver::filterTCL_4WD()
  */
 float Driver::filterTrk(tSituation* s, float accel)
 {
-	float STEER_EMERGENCY = 0.01f;
 	tTrackSeg* seg = car->_trkPos.seg;
 	int id = seg->id;
 	float target_x;  // target toLeft
@@ -1904,8 +1903,7 @@ void Driver::prepareTrack()
 		seg_alpha[i] = 0.5;
 		seg_alpha_new[i] = 0.0;
 		targets[i] = 0.0;
-		radi[i] = 1.0; // set to 1, so that we get something useful
-					   // even if we don't call AdjustRadi()
+		radi[i] = 1.0; // set to 1, so that we get something useful even if we don't call AdjustRadi()
 	}
 
 
@@ -2080,6 +2078,7 @@ void Driver::prepareTrack()
 				if (A<0.05f) A = 0.05f;
 				if (A>0.95f) A = 0.95f;
 				seg_alpha[pseg->id] = A;
+			}
 #endif			
 
 			

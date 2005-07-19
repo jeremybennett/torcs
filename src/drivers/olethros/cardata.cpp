@@ -55,7 +55,7 @@ Cardata::Cardata()
 }
 void Cardata::initialise(tSituation* s)
 {
-	printf ("Cardata: init\n");
+	//printf ("Cardata: init\n");
 	if (data) {
 		return;
 	}
@@ -71,7 +71,7 @@ void Cardata::initialise(tSituation* s)
 
 Cardata::~Cardata()
 {
-	printf ("Cardata: destroying\n");
+	//printf ("Cardata: destroying\n");
 	if (data) {
 		delete [] data;
 	}
