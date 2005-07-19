@@ -179,7 +179,7 @@ reRaceRealStart(void)
     dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
     sprintf(key, "%smodules/simu/%s.%s", GetLibDir (), dllname, DLLEXT);
     if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
-    ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
+	ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
 
     if (ReInitCars()) {
 	return RM_QUIT;
@@ -214,7 +214,7 @@ reRaceRealStart(void)
 	robot->rbNewRace(robot->index, s->cars[i], s);
     }
     carInfo = ReInfo->_reCarInfo;
-    
+
     ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
     for (i = 0; i < s->_ncars; i++) {
 	carInfo[i].prevTrkPos = s->cars[i]->_trkPos;

@@ -598,6 +598,14 @@ typedef struct CarElt
 #define PRM_MODEL_AERO_FACTOR "model/aero/factor"
 #define PRM_MODEL_TYRE_TEMPERATURE "model/tyre/temperature"
 
+// Collision constants.
+#define SEM_COLLISION			0x01
+#define SEM_COLLISION_XYSCENE	0x02
+#define SEM_COLLISION_CAR		0x04
+#define SEM_COLLISION_Z			0x08
+#define SEM_COLLISION_Z_CRASH	0x10
+
+
 #endif /* __CARV1_H__ */ 
 
 

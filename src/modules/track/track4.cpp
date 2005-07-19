@@ -721,7 +721,34 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	curBarrier->width = barrierWidth[side];
 	curBarrier->height = barrierHeight[side];
 	curBarrier->surface = barrierSurface[side];
-	
+
+	// Compute normal of barrier for side collisions.
+	tTrackSeg *bseg = mSeg;
+	int bstart, bend;
+	float bsign;
+
+	if (side == TR_SIDE_LFT) {
+		bstart = TR_SL;
+		bend = TR_EL;
+		bsign = -1.0f;
+	} else {
+		bstart = TR_SR;
+		bend = TR_ER;
+		bsign = 1.0f;
+	}
+
+	while (bseg->side[side] != NULL) {
+		bseg = bseg->side[side];
+	}
+
+	vec2f n(
+		-(bseg->vertex[bend].y - bseg->vertex[bstart].y)*bsign,
+		 (bseg->vertex[bend].x - bseg->vertex[bstart].x)*bsign
+	);
+
+	n.normalize();
+	curBarrier->normal = n;
+
 	mSeg->barrier[side] = curBarrier;
     }
 }

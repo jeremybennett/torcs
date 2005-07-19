@@ -477,76 +477,82 @@ GfuiScrollListInsertElement(void *scr, int Id, char *element, int index, void *u
 void
 gfuiDrawScrollist(tGfuiObject *obj)
 {
-    tGfuiScrollList	*scrollist;
-    tGfuiListElement	*elt;
-    float		*fgColor;
-    float		*bgColor;
-    char		buf[256];
-    int			w, h, x, y;
-    int			index;
+	tGfuiScrollList	*scrollist;
+	tGfuiListElement	*elt;
+	float		*fgColor;
+	float		*bgColor;
+	char		buf[256];
+	int			w, h, x, y;
+	int			index;
 
-    scrollist = &(obj->u.scrollist);
+	scrollist = &(obj->u.scrollist);
 
-    fgColor = scrollist->fgColor[0];
-    bgColor = scrollist->bgColor[0];
+	fgColor = scrollist->fgColor[0];
+	bgColor = scrollist->bgColor[0];
 
-    if (bgColor[3] != 0.0) {
-	glBegin(GL_QUADS);
-	glColor4fv(bgColor);
+	if (bgColor[3] != 0.0) {
+		glBegin(GL_QUADS);
+		glColor4fv(bgColor);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glEnd();
+	}
+
+	glBegin(GL_LINE_STRIP);
+	glColor4fv(fgColor);
 	glVertex2i(obj->xmin, obj->ymin);
 	glVertex2i(obj->xmin, obj->ymax);
 	glVertex2i(obj->xmax, obj->ymax);
 	glVertex2i(obj->xmax, obj->ymin);
+	glVertex2i(obj->xmin, obj->ymin);
 	glEnd();
-    }
-    glBegin(GL_LINE_STRIP);
-    glColor4fv(fgColor);
-    glVertex2i(obj->xmin, obj->ymin);
-    glVertex2i(obj->xmin, obj->ymax);
-    glVertex2i(obj->xmax, obj->ymax);
-    glVertex2i(obj->xmax, obj->ymin);
-    glVertex2i(obj->xmin, obj->ymin);
-    glEnd();	
-    
 
-    h = scrollist->font->getDescender() + scrollist->font->getHeight();
-    sprintf(buf, " 00 ");
-    w = scrollist->font->getWidth((const char *)buf);
-    x = obj->xmin;
-    y = obj->ymax;
-    index = 0;
-    elt = scrollist->elts;
-    if (elt != NULL) {
-	do {
-	    elt = elt->next;
-	    if (index < scrollist->firstVisible) {
-		index++;
-		continue;
-	    }
-	    if (index == scrollist->selectedElt) {
-		glColor4fv(scrollist->fgSelectColor[0]);
-	    } else {
-		glColor4fv(scrollist->fgColor[0]);
-	    }
-	    index++;
-	    if (index > (scrollist->firstVisible + scrollist->nbVisible)) {
-		break;
-	    }
-	    y -= h;
-	    sprintf(buf, " %d", index);
-	    gfuiPrintString(x, y, scrollist->font, buf);
-	    gfuiPrintString(x + w, y, scrollist->font, elt->label);
-	} while (elt != scrollist->elts);
-    }
-    
-	    
+
+	h = scrollist->font->getDescender() + scrollist->font->getHeight();
+	x = obj->xmin;
+	y = obj->ymax;
+	index = 0;
+	elt = scrollist->elts;
+	if (elt != NULL) {
+		if (scrollist->nbElts < 100) {
+			sprintf(buf, " 00 ");
+		} else {
+			sprintf(buf, " 000 ");
+		}
+		w = scrollist->font->getWidth((const char *)buf);
+
+		do {
+			elt = elt->next;
+			if (index < scrollist->firstVisible) {
+				index++;
+				continue;
+			}
+			if (index == scrollist->selectedElt) {
+				glColor4fv(scrollist->fgSelectColor[0]);
+			} else {
+				glColor4fv(scrollist->fgColor[0]);
+			}
+			index++;
+			if (index > (scrollist->firstVisible + scrollist->nbVisible)) {
+				break;
+			}
+			y -= h;
+			sprintf(buf, " %d", index);
+			gfuiPrintString(x, y, scrollist->font, buf);
+			gfuiPrintString(x + w, y, scrollist->font, elt->label);
+		} while (elt != scrollist->elts);
+	}
+
+
 }
 
 void
 gfuiScrollListDeselectAll(void)
 {
     tGfuiObject *curObject;
-    
+
     curObject = GfuiScreen->objects;
     if (curObject != NULL) {
 	do {

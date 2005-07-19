@@ -558,7 +558,11 @@ ReInitCars(void)
 	ReInfo->s->cars[i] = &(ReInfo->carList[i]);
     }
 
-    ReInfo->_reSimItf.init(nCars);
+	// TODO: reconsider splitting the call into one for cars, track and maybe other objects.
+	// I stuff for now anything into one call because collision detection works with the same
+	// library on all objects, so it is a bit dangerous to distribute the handling to various
+	// locations (because the library maintains global state like a default collision handler etc.).
+    ReInfo->_reSimItf.init(nCars, ReInfo->track);
 
     initStartingGrid();
 

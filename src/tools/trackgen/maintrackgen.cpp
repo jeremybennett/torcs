@@ -70,6 +70,7 @@ tTrack		*Track;
 tTrackItf	TrackItf;
 
 int		TrackOnly;
+int		JustCalculate;
 int		MergeAll;
 int		MergeTerrain;
 
@@ -96,6 +97,7 @@ void usage(void)
     fprintf(stderr, "       -b             : draw bump track\n");
     fprintf(stderr, "       -B             : Don't use terrain border (relief supplied int clockwise, ext CC)\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
+    fprintf(stderr, "       -z             : Just calculate track parameters and exit\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
     fprintf(stderr, "       -E <n>         : save elevation file n\n");
@@ -118,6 +120,7 @@ void init_args(int argc, char **argv)
     int	c;    
 #endif
     TrackOnly = 1;
+	JustCalculate = 0;
     MergeAll = 1;
     MergeTerrain = 1;
     TrackName = NULL;
@@ -132,7 +135,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:asSE:H:bBL:",
+	c = getopt_long(argc, argv, "hvn:c:azsSE:h:bBL:",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -166,6 +169,9 @@ void init_args(int argc, char **argv)
 	    break;
 	case 'a':
 	    TrackOnly = 0;
+	    break;
+	case 'z':
+	    JustCalculate = 1;
 	    break;
 	case 'b':
 	    bump = 1;
@@ -214,6 +220,8 @@ void init_args(int argc, char **argv)
 	}
 	if (strncmp(argv[i], "-a", 2) == 0) {
 	    TrackOnly = 0;
+	} else if (strncmp(argv[i], "-z", 2) == 0) {
+	    JustCalculate = 1;
 	} else if (strncmp(argv[i], "-s", 2) == 0) {
 	    MergeAll = 0;
 	    MergeTerrain = 1;
@@ -328,30 +336,37 @@ Generate(void)
 	// Build the track structure with graphic extensions.
 	Track = TrackItf.trkBuildEx(trackdef);
 
-    // Get the output file radix.
-	sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
-	OutputFileName = strdup(buf2);
+	if (!JustCalculate) {
+		// Get the output file radix.
+		sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+		OutputFileName = strdup(buf2);
 
-	// Number of goups for the complete track.
-	if (TrackOnly) {
-		sprintf(buf2, "%s.ac", OutputFileName);
-		// Track.
-		outfd = Ac3dOpen(buf2, 1);
-	} else if (MergeAll) {
-		sprintf(buf2, "%s.ac", OutputFileName);
-		// track + terrain + objects.
-		outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
+		// Number of goups for the complete track.
+		if (TrackOnly) {
+			sprintf(buf2, "%s.ac", OutputFileName);
+			// Track.
+			outfd = Ac3dOpen(buf2, 1);
+		} else if (MergeAll) {
+			sprintf(buf2, "%s.ac", OutputFileName);
+			// track + terrain + objects.
+			outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
+		}
+
+		// Main Track.
+		if (bump) {
+			extName = "trk-bump";
+		} else {
+			extName = "trk";
+		}
+
+		sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+		OutTrackName = strdup(buf2);
 	}
 
-	// Main Track.
-	if (bump) {
-		extName = "trk-bump";
-	} else {
-		extName = "trk";
-    }
-
-	sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
-	OutTrackName = strdup(buf2);
+	if (JustCalculate){
+		CalculateTrack(Track, TrackHandle, bump);
+		return;
+	}
 
 	GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump);
 

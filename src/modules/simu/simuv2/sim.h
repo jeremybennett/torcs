@@ -39,7 +39,7 @@
 extern void SimConfig(tCarElt *carElt, RmInfo *);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
-extern void SimInit(int nbcars);
+extern void SimInit(int nbcars, tTrack* track);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);
@@ -90,10 +90,10 @@ extern void SimEngineShutdown(tCar *car);
 extern void SimCarCollideZ(tCar *car);
 extern void SimCarCollideXYScene(tCar *car);
 extern void SimCarCollideCars(tSituation*);
-extern void SimCarCollideConfig(tCar *car);
+extern void SimCarCollideConfig(tCar *car, tTrack *track);
 extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(void);
-
+extern void SimCollideRemoveCar(tCar *car, int nbcars);
 
 extern tdble SimDeltaTime;
 extern int SimTelemetry;

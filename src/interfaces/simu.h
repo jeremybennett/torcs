@@ -29,7 +29,7 @@
 struct Situation;
 struct RmInfo;
 
-typedef void (*tfSimInit)(int);
+typedef void (*tfSimInit)(int, tTrack*);
 typedef void (*tfSimConfig)(tCarElt*, struct RmInfo*);
 typedef void (*tfSimReConfig)(tCarElt*);
 typedef void (*tfSimUpdate)(struct Situation*, double, int);

@@ -91,7 +91,7 @@ static tTrackSurface*
 AddTrackSurface(void *TrackHandle, tTrack *theTrack, char *material)
 {
     tTrackSurface	*curSurf;
-    
+
     /* search within existing surfaces */
     curSurf = theTrack->surfaces;
     while (curSurf) {
@@ -128,7 +128,7 @@ InitSides(void *TrackHandle, tTrack *theTrack)
 {
     int side;
     char *style;
-    
+
     for (side = 0; side < 2; side++) {
 	sideMaterial[side] = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, KeySideSurface[side], TRK_VAL_GRASS);
 	sideSurface[side] = AddTrackSurface(TrackHandle, theTrack, sideMaterial[side]);
@@ -190,7 +190,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 
     x = y = z = 0;
     mSeg = curSeg;
-    
+
     sprintf(path, "%s/%s", TRK_SECT_MAIN, TRK_LST_SEG);
     for (side = 0; side < 2; side++) {
 	curSeg = mSeg;
@@ -278,7 +278,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * curSeg->rgtSideNormal.x;
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * curSeg->rgtSideNormal.y;
 		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * curSeg->rgtSideNormal.x;	    
+		    x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * curSeg->rgtSideNormal.x;
 		    y = curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * curSeg->rgtSideNormal.y;
 		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 		    break;
@@ -286,7 +286,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * curSeg->rgtSideNormal.x;
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * curSeg->rgtSideNormal.y;
 		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * curSeg->rgtSideNormal.x;	    
+		    x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * curSeg->rgtSideNormal.x;
 		    y = curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * curSeg->rgtSideNormal.y;
 		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 		    break;
@@ -321,7 +321,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x - bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y - bw * sin(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x - bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
+		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x - bw * cos(curBorder->angle[TR_CS] + curBorder->arc);
 		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - (tdble)type * bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
 		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + bw * tan(curSeg->angle[TR_XE]);
 
@@ -358,7 +358,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x + bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y + bw * sin(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x + bw * cos(curBorder->angle[TR_CS] + curBorder->arc);	    
+		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x + bw * cos(curBorder->angle[TR_CS] + curBorder->arc);
 		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y + bw * sin(curBorder->angle[TR_CS] + curBorder->arc);
 		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
@@ -402,7 +402,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * sin(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
+		    curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * cos(curBorder->angle[TR_CS] - curBorder->arc);
 		    curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
 		    z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
@@ -439,7 +439,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * cos(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * sin(curBorder->angle[TR_CS]);
 		    curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * cos(curBorder->angle[TR_CS] - curBorder->arc);	    
+		    curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * cos(curBorder->angle[TR_CS] - curBorder->arc);
 		    curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * sin(curBorder->angle[TR_CS] - curBorder->arc);
 		    z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
 
@@ -511,7 +511,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * curSeg->rgtSideNormal.x;
 		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * curSeg->rgtSideNormal.y;
 		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    x = curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * curSeg->rgtSideNormal.x;	    
+		    x = curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * curSeg->rgtSideNormal.x;
 		    y = curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * curSeg->rgtSideNormal.y;
 		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 		    break;
@@ -519,7 +519,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * curSeg->rgtSideNormal.x;
 		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * curSeg->rgtSideNormal.y;
 		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    x = curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * curSeg->rgtSideNormal.x;	    
+		    x = curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * curSeg->rgtSideNormal.x;
 		    y = curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * curSeg->rgtSideNormal.y;
 		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 		    break;
@@ -554,7 +554,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x - sw * cos(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y - sw * sin(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x - ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
+		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x - ew * cos(curSide->angle[TR_CS] + curSide->arc);
 		    curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y - ew * sin(curSide->angle[TR_CS] + curSide->arc);
 		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 
@@ -591,7 +591,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x + sw * cos(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y + sw * sin(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x + ew * cos(curSide->angle[TR_CS] + curSide->arc);	    
+		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x + ew * cos(curSide->angle[TR_CS] + curSide->arc);
 		    curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y + ew * sin(curSide->angle[TR_CS] + curSide->arc);
 		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 
@@ -635,7 +635,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * cos(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * sin(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
+		    curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * cos(curSide->angle[TR_CS] - curSide->arc);
 		    curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * sin(curSide->angle[TR_CS] - curSide->arc);
 		    z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 
@@ -672,7 +672,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		    curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * cos(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * sin(curSide->angle[TR_CS]);
 		    curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * cos(curSide->angle[TR_CS] - curSide->arc);	    
+		    curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * cos(curSide->angle[TR_CS] - curSide->arc);
 		    curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * sin(curSide->angle[TR_CS] - curSide->arc);
 		    z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
 
@@ -712,7 +712,34 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	curBarrier->width = barrierWidth[side];
 	curBarrier->height = barrierHeight[side];
 	curBarrier->surface = barrierSurface[side];
-	
+
+	// Compute normal of barrier for side collisions.
+	tTrackSeg *bseg = mSeg;
+	int bstart, bend;
+	float bsign;
+
+	if (side == TR_SIDE_LFT) {
+		bstart = TR_SL;
+		bend = TR_EL;
+		bsign = -1.0f;
+	} else {
+		bstart = TR_SR;
+		bend = TR_ER;
+		bsign = 1.0f;
+	}
+
+	while (bseg->side[side] != NULL) {
+		bseg = bseg->side[side];
+	}
+
+	vec2f n(
+		-(bseg->vertex[bend].y - bseg->vertex[bstart].y)*bsign,
+		 (bseg->vertex[bend].x - bseg->vertex[bstart].x)*bsign
+	);
+
+	n.normalize();
+	curBarrier->normal = n;
+
 	mSeg->barrier[side] = curBarrier;
     }
 }
@@ -792,33 +819,35 @@ CreateSegRing3(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg 
     totLength = 0;
     
     sprintf(path, "%s/%s", TRK_SECT_MAIN, TRK_LST_SEG);
-    if (start == NULL) {
-	xr = xl = 0.0;
-	yr = 0.0;
-	yl = width;
-	alf = 0.0;
-	zsl = zsr = zel = zer = zs = ze = 0.0;
-	stgt = etgt = 0.0;
-	stgtl = etgtl = 0.0;
-	stgtr = etgtr = 0.0;
-    } else {
-	GfParmListSeekFirst(TrackHandle, path);
-	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, "");
-	if (strcmp(segtype, TRK_VAL_STR) == 0) {
-	} else if (strcmp(segtype, TRK_VAL_LFT) == 0) {
-	} else if (strcmp(segtype, TRK_VAL_RGT) == 0) {
-	    xr = start->vertex[TR_SR].x;
-	    yr = start->vertex[TR_SR].y;
-	    zsl = zsr = zel = zer = zs = ze = start->vertex[TR_SR].z;
-	    alf = start->angle[TR_ZS];
-	    xl = xr - width * sin(alf);
-	    yl = yr + width * cos(alf);
-	    stgt = etgt = 0.0;
-	    stgtl = etgtl = 0.0;
-	    stgtr = etgtr = 0.0;	    
+	if (start == NULL) {
+		xr = xl = 0.0;
+		yr = 0.0;
+		yl = width;
+		alf = 0.0;
+		zsl = zsr = zel = zer = zs = ze = 0.0;
+		stgt = etgt = 0.0;
+		stgtl = etgtl = 0.0;
+		stgtr = etgtr = 0.0;
+	} else {
+		GfParmListSeekFirst(TrackHandle, path);
+		segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, "");
+		if (strcmp(segtype, TRK_VAL_STR) == 0) {
+
+		} else if (strcmp(segtype, TRK_VAL_LFT) == 0) {
+
+		} else if (strcmp(segtype, TRK_VAL_RGT) == 0) {
+			xr = start->vertex[TR_SR].x;
+			yr = start->vertex[TR_SR].y;
+			zsl = zsr = zel = zer = zs = ze = start->vertex[TR_SR].z;
+			alf = start->angle[TR_ZS];
+			xl = xr - width * sin(alf);
+			yl = yr + width * cos(alf);
+			stgt = etgt = 0.0;
+			stgtl = etgtl = 0.0;
+			stgtr = etgtr = 0.0;
+		}
 	}
-    }
-    
+
 
     /* Main Track */
     material = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_SURF, TRK_VAL_ASPHALT);
@@ -826,408 +855,409 @@ CreateSegRing3(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg 
     envIndex = 0;
 
     InitSides(TrackHandle, theTrack);
-    
+
     segread = 0;
     curindex = 0;
     GfParmListSeekFirst(TrackHandle, path);
     do {
-	segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, NULL);
-	if (segtype == 0) {
-	    continue;
-	}
-	segread++;
-	
-	zsl = zel;
-	zsr = zer;
-	TSTZ(zsl);
-	TSTZ(zsr);
-	
-	/* Turn Marks */
-	if (ext) {
-	    char *marks = GfParmGetCurStr(TrackHandle, path, TRK_ATT_MARKS, NULL);
-	    ind = 0;
-	    if (marks) {
-		marks = strdup(marks);
-		char *s = strtok(marks, ";");
-		while ((s != NULL) && (ind < MAX_TMP_INTS)) {
-		    mi[ind] = (int)strtol(s, NULL, 0);
-		    ind++;
-		    s = strtok(NULL, ";");
+		segtype = GfParmGetCurStr(TrackHandle, path, TRK_ATT_TYPE, NULL);
+		if (segtype == 0) {
+	    	continue;
 		}
-		free(marks);
-	    }
-	}
-	
-	/* surface change */
-	material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
-	surface = AddTrackSurface(TrackHandle, theTrack, material);
-	envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, (float) (envIndex+1)) - 1;
+		segread++;
 
-	/* get segment type and lenght */
-	if (strcmp(segtype, TRK_VAL_STR) == 0) {
-	    /* straight */
-	    length = GfParmGetCurNum(TrackHandle, path, TRK_ATT_LG, (char*)NULL, 0);
-	    type = TR_STR;
-	    radius = radiusend = 0;
-	} else if (strcmp(segtype, TRK_VAL_LFT) == 0) {
-	    /* left curve */
-	    radius = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUS, (char*)NULL, 0);
-	    radiusend = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUSEND, (char*)NULL, radius);
-	    arc = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ARC, (char*)NULL, 0);
-	    type = TR_LFT;
-	    length = (radius + radiusend) / 2.0 * arc;
-	} else if (strcmp(segtype, TRK_VAL_RGT) == 0) {
-	    /* right curve */
-	    radius = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUS, (char*)NULL, 0);
-	    radiusend = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUSEND, (char*)NULL, radius);
-	    arc = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ARC, (char*)NULL, 0);
-	    type = TR_RGT;
-	    length = (radius + radiusend) / 2.0 * arc;
-	}
-	segName = GfParmListGetCurEltName(TrackHandle, path);
-	
-	/* elevation and banking */
-	zsl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZSL, (char*)NULL, zsl);
-	zsr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZSR, (char*)NULL, zsr);
-	zel = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZEL, (char*)NULL, zel);
-	zer = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZER, (char*)NULL, zer);
-	ze = zs = -100000.0;
-	ze = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZE, (char*)NULL, ze);
-	zs = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZS, (char*)NULL, zs);
-	grade = GfParmGetCurNum(TrackHandle, path, TRK_ATT_GRADE, (char*)NULL, grade);
-	if (zs != -100000.0) {
-	    zsr = zsl = zs;
-	} else {
-	    zs = (zsl + zsr) / 2.0;
-	}
-	if (ze != -100000.0) {
-	    zer = zel = ze;
-	} else if (grade != -100000.0) {
-	    ze = zs + length * grade;
-	} else {
-	    ze = (zel + zer) / 2.0;
-	}
-	bankings = atan2(zsl - zsr, width);
-	bankinge = atan2(zel - zer, width);
-	bankings = GfParmGetCurNum(TrackHandle, path, TRK_ATT_BKS, (char*)NULL, bankings);
-	bankinge = GfParmGetCurNum(TrackHandle, path, TRK_ATT_BKE, (char*)NULL, bankinge);
-	dz = tan(bankings) * width / 2.0;
-	zsl = zs + dz;
-	zsr = zs - dz;
-	dz = tan(bankinge) * width / 2.0;
-	zel = ze + dz;
-	zer = ze - dz;
+		zsl = zel;
+		zsr = zer;
+		TSTZ(zsl);
+		TSTZ(zsr);
 
-	TSTZ(zsl);
-	TSTZ(zsr);
+		/* Turn Marks */
+		if (ext) {
+			char *marks = GfParmGetCurStr(TrackHandle, path, TRK_ATT_MARKS, NULL);
+			ind = 0;
+			if (marks) {
+				marks = strdup(marks);
+				char *s = strtok(marks, ";");
+				while ((s != NULL) && (ind < MAX_TMP_INTS)) {
+					mi[ind] = (int)strtol(s, NULL, 0);
+					ind++;
+					s = strtok(NULL, ";");
+				}
+				free(marks);
+			}
+		}
 
-	/* Get segment profil */
-	profil = GfParmGetCurStr(TrackHandle, path, TRK_ATT_PROFIL, TRK_VAL_SPLINE);
-	stgtl = etgtl;
-	stgtr = etgtr;
-	if (strcmp(profil, TRK_VAL_SPLINE) == 0) {
-	    steps = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPS, (char*)NULL, 1.0);
-	    if (steps == 1) {
-		stepslg = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPSLEN, (char*)NULL, GlobalStepLen);
-		if (stepslg) {
-		    steps = (int)(length / stepslg) + 1;
+		/* surface change */
+		material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
+		surface = AddTrackSurface(TrackHandle, theTrack, material);
+		envIndex = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, (float) (envIndex+1)) - 1;
+
+		/* get segment type and lenght */
+		if (strcmp(segtype, TRK_VAL_STR) == 0) {
+			/* straight */
+			length = GfParmGetCurNum(TrackHandle, path, TRK_ATT_LG, (char*)NULL, 0);
+			type = TR_STR;
+			radius = radiusend = 0;
+		} else if (strcmp(segtype, TRK_VAL_LFT) == 0) {
+			/* left curve */
+			radius = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUS, (char*)NULL, 0);
+			radiusend = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUSEND, (char*)NULL, radius);
+			arc = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ARC, (char*)NULL, 0);
+			type = TR_LFT;
+			length = (radius + radiusend) / 2.0 * arc;
+		} else if (strcmp(segtype, TRK_VAL_RGT) == 0) {
+			/* right curve */
+			radius = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUS, (char*)NULL, 0);
+			radiusend = GfParmGetCurNum(TrackHandle, path, TRK_ATT_RADIUSEND, (char*)NULL, radius);
+			arc = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ARC, (char*)NULL, 0);
+			type = TR_RGT;
+			length = (radius + radiusend) / 2.0 * arc;
+		}
+
+		segName = GfParmListGetCurEltName(TrackHandle, path);
+
+		/* elevation and banking */
+		zsl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZSL, (char*)NULL, zsl);
+		zsr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZSR, (char*)NULL, zsr);
+		zel = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZEL, (char*)NULL, zel);
+		zer = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZER, (char*)NULL, zer);
+		ze = zs = -100000.0;
+		ze = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZE, (char*)NULL, ze);
+		zs = GfParmGetCurNum(TrackHandle, path, TRK_ATT_ZS, (char*)NULL, zs);
+		grade = GfParmGetCurNum(TrackHandle, path, TRK_ATT_GRADE, (char*)NULL, grade);
+		if (zs != -100000.0) {
+			zsr = zsl = zs;
 		} else {
-		    steps = 1;
+			zs = (zsl + zsr) / 2.0;
 		}
-	    }
-	    stgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTSL, (char*)NULL, stgtl);
-	    etgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTEL, (char*)NULL, etgtl);
-	    stgtr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTSR, (char*)NULL, stgtr);
-	    etgtr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTER, (char*)NULL, etgtr);
-	    stgt = etgt = -100000.0;
-	    stgt = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTS, (char*)NULL, stgt);
-	    etgt = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTE, (char*)NULL, etgt);
-	    if (stgt != -100000.0) {
-		stgtl = stgtr = stgt;
-	    }
-	    if (etgt != -100000.0) {
-		etgtl = etgtr = etgt;
-	    }
-	} else {
-	    steps = 1;
-	    stgtl = etgtl = (zel - zsl) / length;
-	    stgtr = etgtr = (zer - zsr) / length;
-	}
-	GfParmSetCurNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, (tdble)curindex);
-	
-	dzl = zel - zsl;
-	dzr = zer - zsr;
-	T1l = stgtl * length;
-	T2l = etgtl * length;
-	tl = 0.0;
-	dtl = 1.0 / (tdble)steps;
-	T1r = stgtr * length;
-	T2r = etgtr * length;
-	tr = 0.0;
-	dtr = 1.0 / (tdble)steps;
-
-	curStep = 0;
-	curzel = zsl;
-	curzer = zsr;
-	curArc = arc / (tdble)steps;
-	curLength = length / (tdble)steps;
-	dradius = (radiusend - radius) / (tdble)steps;
-	if (radiusend != radius) {
-	    /* Compute the correct curLength... */
-	    if (steps != 1) {
-		dradius = (radiusend - radius) / (tdble)(steps - 1);
-		tdble tmpAngle = 0;
-		tdble tmpRadius = radius;
-		for (curStep = 0; curStep < steps; curStep++) {
-		    tmpAngle += curLength / tmpRadius;
-		    tmpRadius += dradius;
+		if (ze != -100000.0) {
+			zer = zel = ze;
+		} else if (grade != -100000.0) {
+			ze = zs + length * grade;
+		} else {
+			ze = (zel + zer) / 2.0;
 		}
-		curLength *= arc / tmpAngle;
-	    }
-	}
-	curStep = 0;
+		bankings = atan2(zsl - zsr, width);
+		bankinge = atan2(zel - zer, width);
+		bankings = GfParmGetCurNum(TrackHandle, path, TRK_ATT_BKS, (char*)NULL, bankings);
+		bankinge = GfParmGetCurNum(TrackHandle, path, TRK_ATT_BKE, (char*)NULL, bankinge);
+		dz = tan(bankings) * width / 2.0;
+		zsl = zs + dz;
+		zsr = zs - dz;
+		dz = tan(bankinge) * width / 2.0;
+		zel = ze + dz;
+		zer = ze - dz;
 
-	while (curStep < steps) {
-	    
-	    tl += dtl;
-	    tr += dtr;
+		TSTZ(zsl);
+		TSTZ(zsr);
 
-	    curzsl = curzel;
-	    curzel = TrackSpline(zsl, zel, T1l, T2l, tl);
-	    
-	    curzsr = curzer;
-	    curzer = TrackSpline(zsr, zer, T1r, T2r, tr);
-	    
-	    if (dradius != 0) {
-		curArc = curLength / radius;
-	    }
-	    
-	    /* allocate a new segment */
-	    curSeg = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
-	    if (root == NULL) {
-		root = curSeg;
-		curSeg->next = curSeg;
-		curSeg->prev = curSeg;
-	    } else {
-		curSeg->next = root->next;
-		curSeg->next->prev = curSeg;
-		curSeg->prev = root;
-		root->next = curSeg;
-		root = curSeg;
-	    }
-	    curSeg->type2 = TR_MAIN;
-	    curSeg->name = segName;
-	    curSeg->id = curindex;
-	    curSeg->width = curSeg->startWidth = curSeg->endWidth = width;
-	    curSeg->surface = surface;
-	    curSeg->envIndex = envIndex;
-	    curSeg->lgfromstart = totLength;
-	    
-	    if (ext && ind) {
-		int	*mrks = (int*)calloc(ind, sizeof(int));
-		tSegExt	*segExt = (tSegExt*)calloc(1, sizeof(tSegExt));
-
-		memcpy(mrks, mi, ind*sizeof(int));
-		segExt->nbMarks = ind;
-		segExt->marks = mrks;
-		curSeg->ext = segExt;
-		ind = 0;
-	    }
-		
-
-	    switch (type) {
-	    case TR_STR:
-		/* straight */
-		curSeg->type = TR_STR;
-		curSeg->length = curLength;
-
-		newxr = xr + curLength * cos(alf);      /* find end coordinates */
-		newyr = yr + curLength * sin(alf);
-		newxl = xl + curLength * cos(alf);
-		newyl = yl + curLength * sin(alf);
-
-		curSeg->vertex[TR_SR].x = xr;
-		curSeg->vertex[TR_SR].y = yr;
-		curSeg->vertex[TR_SR].z = curzsr;
-
-		curSeg->vertex[TR_SL].x = xl;
-		curSeg->vertex[TR_SL].y = yl;
-		curSeg->vertex[TR_SL].z = curzsl;
-
-		curSeg->vertex[TR_ER].x = newxr;
-		curSeg->vertex[TR_ER].y = newyr;
-		curSeg->vertex[TR_ER].z = curzer;
-
-		curSeg->vertex[TR_EL].x = newxl;
-		curSeg->vertex[TR_EL].y = newyl;
-		curSeg->vertex[TR_EL].z = curzel;
-
-		curSeg->angle[TR_ZS] = alf;
-		curSeg->angle[TR_ZE] = alf;
-		curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curLength);
-		curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curLength);
-		curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
-		curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
-	    
-		curSeg->Kzl = tan(curSeg->angle[TR_YR]);
-		curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curLength;
-		curSeg->Kyl = 0;
-
-		curSeg->rgtSideNormal.x = -sin(alf);
-		curSeg->rgtSideNormal.y = cos(alf);
-
-		TSTX(newxr); TSTX(newxl);
-		TSTY(newyr); TSTY(newyl);
-
-		break;
-	    
-	    case TR_LFT:
-		/* left curve */
-		curSeg->type = TR_LFT;
-		curSeg->radius = radius;
-		curSeg->radiusr = radius + wi2;
-		curSeg->radiusl = radius - wi2;
-		curSeg->arc = curArc;
-		curSeg->length = curLength;
-	    
-		innerradius = radius - wi2; /* left side aligned */
-		cenx = xl - innerradius * sin(alf);  /* compute center location: */
-		ceny = yl + innerradius * cos(alf);
-		curSeg->center.x = cenx;
-		curSeg->center.y = ceny;
-
-		curSeg->angle[TR_ZS] = alf;
-		curSeg->angle[TR_CS] = alf - PI / 2.0;
-		alf += curArc;
-		curSeg->angle[TR_ZE] = alf;
-
-		newxl = cenx + innerradius * sin(alf);   /* location of end */
-		newyl = ceny - innerradius * cos(alf);
-		newxr = cenx + (innerradius + width) * sin(alf);   /* location of end */
-		newyr = ceny - (innerradius + width) * cos(alf);
-
-		curSeg->vertex[TR_SR].x = xr;
-		curSeg->vertex[TR_SR].y = yr;
-		curSeg->vertex[TR_SR].z = curzsr;
-
-		curSeg->vertex[TR_SL].x = xl;
-		curSeg->vertex[TR_SL].y = yl;
-		curSeg->vertex[TR_SL].z = curzsl;
-
-		curSeg->vertex[TR_ER].x = newxr;
-		curSeg->vertex[TR_ER].y = newyr;
-		curSeg->vertex[TR_ER].z = curzer;
-
-		curSeg->vertex[TR_EL].x = newxl;
-		curSeg->vertex[TR_EL].y = newyl;
-		curSeg->vertex[TR_EL].z = curzel;
-
-		curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curArc * (innerradius + width));
-		curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curArc * innerradius);
-		curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
-		curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
-
-		curSeg->Kzl = tan(curSeg->angle[TR_YR]) * (innerradius + width);
-		curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curArc;
-		curSeg->Kyl = 0;
-	    
-		/* to find the boundary */
-		al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
-		alfl = curSeg->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x1 = curSeg->center.x + (innerradius) * sin(alfl);   /* location of end */
-		    y1 = curSeg->center.y - (innerradius) * cos(alfl);
-		    x2 = curSeg->center.x + (innerradius + width) * sin(alfl);   /* location of end */
-		    y2 = curSeg->center.y - (innerradius + width) * cos(alfl);
-		    TSTX(x1); TSTX(x2);
-		    TSTY(y1); TSTY(y2);
+		/* Get segment profil */
+		profil = GfParmGetCurStr(TrackHandle, path, TRK_ATT_PROFIL, TRK_VAL_SPLINE);
+		stgtl = etgtl;
+		stgtr = etgtr;
+		if (strcmp(profil, TRK_VAL_SPLINE) == 0) {
+			steps = (int)GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPS, (char*)NULL, 1.0);
+			if (steps == 1) {
+				stepslg = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFSTEPSLEN, (char*)NULL, GlobalStepLen);
+			if (stepslg) {
+				steps = (int)(length / stepslg) + 1;
+			} else {
+				steps = 1;
+			}
+			}
+			stgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTSL, (char*)NULL, stgtl);
+			etgtl = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTEL, (char*)NULL, etgtl);
+			stgtr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTSR, (char*)NULL, stgtr);
+			etgtr = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTER, (char*)NULL, etgtr);
+			stgt = etgt = -100000.0;
+			stgt = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTS, (char*)NULL, stgt);
+			etgt = GfParmGetCurNum(TrackHandle, path, TRK_ATT_PROFTGTE, (char*)NULL, etgt);
+			if (stgt != -100000.0) {
+				stgtl = stgtr = stgt;
+			}
+			if (etgt != -100000.0) {
+				etgtl = etgtr = etgt;
+			}
+		} else {
+			steps = 1;
+			stgtl = etgtl = (zel - zsl) / length;
+			stgtr = etgtr = (zer - zsr) / length;
 		}
+		GfParmSetCurNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, (tdble)curindex);
 
-		break;
-	    
-	    case TR_RGT:
-		/* right curve */
-		curSeg->type = TR_RGT;
-		curSeg->radius = radius;
-		curSeg->radiusr = radius - wi2;
-		curSeg->radiusl = radius + wi2;
-		curSeg->arc = curArc;
-		curSeg->length = curLength;
+		dzl = zel - zsl;
+		dzr = zer - zsr;
+		T1l = stgtl * length;
+		T2l = etgtl * length;
+		tl = 0.0;
+		dtl = 1.0 / (tdble)steps;
+		T1r = stgtr * length;
+		T2r = etgtr * length;
+		tr = 0.0;
+		dtr = 1.0 / (tdble)steps;
 
-		innerradius = radius - wi2; /* right side aligned */
-		cenx = xr + innerradius * sin(alf);  /* compute center location */
-		ceny = yr - innerradius * cos(alf);
-		curSeg->center.x = cenx;
-		curSeg->center.y = ceny;
-
-		curSeg->angle[TR_ZS] = alf;
-		curSeg->angle[TR_CS] = alf + PI / 2.0;
-		alf -= curSeg->arc;
-		curSeg->angle[TR_ZE] = alf;
-
-		newxl = cenx - (innerradius + width) * sin(alf);   /* location of end */
-		newyl = ceny + (innerradius + width) * cos(alf);
-		newxr = cenx - innerradius * sin(alf);   /* location of end */
-		newyr = ceny + innerradius * cos(alf);
-
-		curSeg->vertex[TR_SR].x = xr;
-		curSeg->vertex[TR_SR].y = yr;
-		curSeg->vertex[TR_SR].z = curzsr;
-
-		curSeg->vertex[TR_SL].x = xl;
-		curSeg->vertex[TR_SL].y = yl;
-		curSeg->vertex[TR_SL].z = curzsl;
-
-		curSeg->vertex[TR_ER].x = newxr;
-		curSeg->vertex[TR_ER].y = newyr;
-		curSeg->vertex[TR_ER].z = curzer;
-
-		curSeg->vertex[TR_EL].x = newxl;
-		curSeg->vertex[TR_EL].y = newyl;
-		curSeg->vertex[TR_EL].z = curzel;
-
-		curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curArc * innerradius);
-		curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curArc * (innerradius + width));
-		curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
-		curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
-
-		curSeg->Kzl = tan(curSeg->angle[TR_YR]) * innerradius;
-		curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curArc;
-		curSeg->Kyl = 0;
-
-		/* to find the boundaries */
-		al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
-		alfl = curSeg->angle[TR_ZS];
-
-		for (j = 0; j < 36; j++) {
-		    alfl += al;
-		    x1 = curSeg->center.x - (innerradius + width) * sin(alfl);   /* location of end */
-		    y1 = curSeg->center.y + (innerradius + width) * cos(alfl);
-		    x2 = curSeg->center.x - innerradius * sin(alfl);   /* location of end */
-		    y2 = curSeg->center.y + innerradius * cos(alfl);
-		    TSTX(x1); TSTX(x2);
-		    TSTY(y1); TSTY(y2);
+		curStep = 0;
+		curzel = zsl;
+		curzer = zsr;
+		curArc = arc / (tdble)steps;
+		curLength = length / (tdble)steps;
+		dradius = (radiusend - radius) / (tdble)steps;
+		if (radiusend != radius) {
+			/* Compute the correct curLength... */
+			if (steps != 1) {
+			dradius = (radiusend - radius) / (tdble)(steps - 1);
+			tdble tmpAngle = 0;
+			tdble tmpRadius = radius;
+			for (curStep = 0; curStep < steps; curStep++) {
+				tmpAngle += curLength / tmpRadius;
+				tmpRadius += dradius;
+			}
+			curLength *= arc / tmpAngle;
+			}
 		}
-		break;
+		curStep = 0;
 
-	    }
+		while (curStep < steps) {
 
-	    AddSides(curSeg, TrackHandle, theTrack, curStep, steps);
+			tl += dtl;
+			tr += dtr;
 
-	    totLength += curSeg->length;
-	    xr = newxr;
-	    yr = newyr;
-	    xl = newxl;
-	    yl = newyl;
-	    curindex++;
-	    curStep++;
-	    if (type != TR_STR) {
-/* 		printf("radius = %f arc = %f steps %d, length %f, stepslg %f\n", radius, RAD2DEG(curArc), steps, length, curLength); */
-		radius += dradius;
-	    }
-	}
+			curzsl = curzel;
+			curzel = TrackSpline(zsl, zel, T1l, T2l, tl);
+
+			curzsr = curzer;
+			curzer = TrackSpline(zsr, zer, T1r, T2r, tr);
+
+			if (dradius != 0) {
+				curArc = curLength / radius;
+			}
+
+			/* allocate a new segment */
+			curSeg = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
+			if (root == NULL) {
+				root = curSeg;
+				curSeg->next = curSeg;
+				curSeg->prev = curSeg;
+			} else {
+				curSeg->next = root->next;
+				curSeg->next->prev = curSeg;
+				curSeg->prev = root;
+				root->next = curSeg;
+				root = curSeg;
+			}
+			curSeg->type2 = TR_MAIN;
+			curSeg->name = segName;
+			curSeg->id = curindex;
+			curSeg->width = curSeg->startWidth = curSeg->endWidth = width;
+			curSeg->surface = surface;
+			curSeg->envIndex = envIndex;
+			curSeg->lgfromstart = totLength;
+
+			if (ext && ind) {
+				int	*mrks = (int*)calloc(ind, sizeof(int));
+				tSegExt	*segExt = (tSegExt*)calloc(1, sizeof(tSegExt));
+
+				memcpy(mrks, mi, ind*sizeof(int));
+				segExt->nbMarks = ind;
+				segExt->marks = mrks;
+				curSeg->ext = segExt;
+				ind = 0;
+			}
+
+
+			switch (type) {
+			case TR_STR:
+			/* straight */
+			curSeg->type = TR_STR;
+			curSeg->length = curLength;
+
+			newxr = xr + curLength * cos(alf);      /* find end coordinates */
+			newyr = yr + curLength * sin(alf);
+			newxl = xl + curLength * cos(alf);
+			newyl = yl + curLength * sin(alf);
+
+			curSeg->vertex[TR_SR].x = xr;
+			curSeg->vertex[TR_SR].y = yr;
+			curSeg->vertex[TR_SR].z = curzsr;
+
+			curSeg->vertex[TR_SL].x = xl;
+			curSeg->vertex[TR_SL].y = yl;
+			curSeg->vertex[TR_SL].z = curzsl;
+
+			curSeg->vertex[TR_ER].x = newxr;
+			curSeg->vertex[TR_ER].y = newyr;
+			curSeg->vertex[TR_ER].z = curzer;
+
+			curSeg->vertex[TR_EL].x = newxl;
+			curSeg->vertex[TR_EL].y = newyl;
+			curSeg->vertex[TR_EL].z = curzel;
+
+			curSeg->angle[TR_ZS] = alf;
+			curSeg->angle[TR_ZE] = alf;
+			curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curLength);
+			curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curLength);
+			curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
+			curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
+
+			curSeg->Kzl = tan(curSeg->angle[TR_YR]);
+			curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curLength;
+			curSeg->Kyl = 0;
+
+			curSeg->rgtSideNormal.x = -sin(alf);
+			curSeg->rgtSideNormal.y = cos(alf);
+
+			TSTX(newxr); TSTX(newxl);
+			TSTY(newyr); TSTY(newyl);
+
+			break;
+
+			case TR_LFT:
+			/* left curve */
+			curSeg->type = TR_LFT;
+			curSeg->radius = radius;
+			curSeg->radiusr = radius + wi2;
+			curSeg->radiusl = radius - wi2;
+			curSeg->arc = curArc;
+			curSeg->length = curLength;
+
+			innerradius = radius - wi2; /* left side aligned */
+			cenx = xl - innerradius * sin(alf);  /* compute center location: */
+			ceny = yl + innerradius * cos(alf);
+			curSeg->center.x = cenx;
+			curSeg->center.y = ceny;
+
+			curSeg->angle[TR_ZS] = alf;
+			curSeg->angle[TR_CS] = alf - PI / 2.0;
+			alf += curArc;
+			curSeg->angle[TR_ZE] = alf;
+
+			newxl = cenx + innerradius * sin(alf);   /* location of end */
+			newyl = ceny - innerradius * cos(alf);
+			newxr = cenx + (innerradius + width) * sin(alf);   /* location of end */
+			newyr = ceny - (innerradius + width) * cos(alf);
+
+			curSeg->vertex[TR_SR].x = xr;
+			curSeg->vertex[TR_SR].y = yr;
+			curSeg->vertex[TR_SR].z = curzsr;
+
+			curSeg->vertex[TR_SL].x = xl;
+			curSeg->vertex[TR_SL].y = yl;
+			curSeg->vertex[TR_SL].z = curzsl;
+
+			curSeg->vertex[TR_ER].x = newxr;
+			curSeg->vertex[TR_ER].y = newyr;
+			curSeg->vertex[TR_ER].z = curzer;
+
+			curSeg->vertex[TR_EL].x = newxl;
+			curSeg->vertex[TR_EL].y = newyl;
+			curSeg->vertex[TR_EL].z = curzel;
+
+			curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curArc * (innerradius + width));
+			curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curArc * innerradius);
+			curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
+			curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
+
+			curSeg->Kzl = tan(curSeg->angle[TR_YR]) * (innerradius + width);
+			curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curArc;
+			curSeg->Kyl = 0;
+
+			/* to find the boundary */
+			al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
+			alfl = curSeg->angle[TR_ZS];
+
+			for (j = 0; j < 36; j++) {
+				alfl += al;
+				x1 = curSeg->center.x + (innerradius) * sin(alfl);   /* location of end */
+				y1 = curSeg->center.y - (innerradius) * cos(alfl);
+				x2 = curSeg->center.x + (innerradius + width) * sin(alfl);   /* location of end */
+				y2 = curSeg->center.y - (innerradius + width) * cos(alfl);
+				TSTX(x1); TSTX(x2);
+				TSTY(y1); TSTY(y2);
+			}
+
+			break;
+
+			case TR_RGT:
+			/* right curve */
+			curSeg->type = TR_RGT;
+			curSeg->radius = radius;
+			curSeg->radiusr = radius - wi2;
+			curSeg->radiusl = radius + wi2;
+			curSeg->arc = curArc;
+			curSeg->length = curLength;
+
+			innerradius = radius - wi2; /* right side aligned */
+			cenx = xr + innerradius * sin(alf);  /* compute center location */
+			ceny = yr - innerradius * cos(alf);
+			curSeg->center.x = cenx;
+			curSeg->center.y = ceny;
+
+			curSeg->angle[TR_ZS] = alf;
+			curSeg->angle[TR_CS] = alf + PI / 2.0;
+			alf -= curSeg->arc;
+			curSeg->angle[TR_ZE] = alf;
+
+			newxl = cenx - (innerradius + width) * sin(alf);   /* location of end */
+			newyl = ceny + (innerradius + width) * cos(alf);
+			newxr = cenx - innerradius * sin(alf);   /* location of end */
+			newyr = ceny + innerradius * cos(alf);
+
+			curSeg->vertex[TR_SR].x = xr;
+			curSeg->vertex[TR_SR].y = yr;
+			curSeg->vertex[TR_SR].z = curzsr;
+
+			curSeg->vertex[TR_SL].x = xl;
+			curSeg->vertex[TR_SL].y = yl;
+			curSeg->vertex[TR_SL].z = curzsl;
+
+			curSeg->vertex[TR_ER].x = newxr;
+			curSeg->vertex[TR_ER].y = newyr;
+			curSeg->vertex[TR_ER].z = curzer;
+
+			curSeg->vertex[TR_EL].x = newxl;
+			curSeg->vertex[TR_EL].y = newyl;
+			curSeg->vertex[TR_EL].z = curzel;
+
+			curSeg->angle[TR_YR] = atan2(curSeg->vertex[TR_ER].z - curSeg->vertex[TR_SR].z, curArc * innerradius);
+			curSeg->angle[TR_YL] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_SL].z, curArc * (innerradius + width));
+			curSeg->angle[TR_XS] = atan2(curSeg->vertex[TR_SL].z - curSeg->vertex[TR_SR].z, width);
+			curSeg->angle[TR_XE] = atan2(curSeg->vertex[TR_EL].z - curSeg->vertex[TR_ER].z, width);
+
+			curSeg->Kzl = tan(curSeg->angle[TR_YR]) * innerradius;
+			curSeg->Kzw = (curSeg->angle[TR_XE] - curSeg->angle[TR_XS]) / curArc;
+			curSeg->Kyl = 0;
+
+			/* to find the boundaries */
+			al = (curSeg->angle[TR_ZE] - curSeg->angle[TR_ZS])/36.0;
+			alfl = curSeg->angle[TR_ZS];
+
+			for (j = 0; j < 36; j++) {
+				alfl += al;
+				x1 = curSeg->center.x - (innerradius + width) * sin(alfl);   /* location of end */
+				y1 = curSeg->center.y + (innerradius + width) * cos(alfl);
+				x2 = curSeg->center.x - innerradius * sin(alfl);   /* location of end */
+				y2 = curSeg->center.y + innerradius * cos(alfl);
+				TSTX(x1); TSTX(x2);
+				TSTY(y1); TSTY(y2);
+			}
+			break;
+
+			}
+
+			AddSides(curSeg, TrackHandle, theTrack, curStep, steps);
+
+			totLength += curSeg->length;
+			xr = newxr;
+			yr = newyr;
+			xl = newxl;
+			yl = newyl;
+			curindex++;
+			curStep++;
+			if (type != TR_STR) {
+	/* 		printf("radius = %f arc = %f steps %d, length %f, stepslg %f\n", radius, RAD2DEG(curArc), steps, length, curLength); */
+			radius += dradius;
+			}
+		}
 
     } while (GfParmListSeekNext(TrackHandle, path) == 0);
 

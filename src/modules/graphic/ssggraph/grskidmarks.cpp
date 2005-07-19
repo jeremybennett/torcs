@@ -227,11 +227,22 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 
 
 				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-				vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;//car->priv.wheel[i].relPos.y+car->_tireWidth(i) / 2.0;
+				// Because of backface culling the winding of the triangles matters.
+				if (car->_speed_x > 0.0f) {
+					vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;
+				} else {
+					vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
+				}
 				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 				basevtx->add(vtx);
+
 				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
-				vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
+				// Because of backface culling the winding of the triangles matters.
+				if (car->_speed_x > 0.0f) {
+					vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
+				} else {
+					vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;
+				}
 				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
 				basevtx->add(vtx);
 

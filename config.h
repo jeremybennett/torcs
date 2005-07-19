@@ -22,6 +22,9 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #define HAVE_LIBM 1
 
+/* Define to 1 if you have the `openal' library (-lopenal). */
+#define HAVE_LIBOPENAL 1
+
 /* Define to 1 if you have the `plibsg' library (-lplibsg). */
 #define HAVE_LIBPLIBSG 1
 
@@ -89,7 +92,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strndup' function. */
-#undef HAVE_STRNDUP
+#ubdef HAVE_STRNDUP
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1

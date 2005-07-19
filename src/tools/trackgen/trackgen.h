@@ -33,6 +33,7 @@
 
 
 extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump);
+extern void CalculateTrack(tTrack * Track, void *TrackHandle, int bump);
 
 extern char	*OutputFileName;
 extern int	HeightSteps;

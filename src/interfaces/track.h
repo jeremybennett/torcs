@@ -29,6 +29,7 @@
 #define _TRACKV1_H_
 
 #include <tgf.h>
+#include <linalg_t.h>
 
 #define TRK_IDENT	0	/* from 0x01 to 0xFF */
 
@@ -251,6 +252,7 @@ typedef struct trackBarrier {
     tdble		width;	/**< Barrier width */
     tdble		height;	/**< Barrier height */
     tTrackSurface	*surface; /**< Barrier surface */
+	vec2f normal;	// Normal on the vertical track inside pointing towards the track middle.
 } tTrackBarrier;
 
 
@@ -381,12 +383,21 @@ typedef struct trackSeg {
     tSegExt		*ext;
 
     tTrackSurface	*surface; /**< Segment surface */
-    tTrackBarrier	*barrier[2]; /**< Segment barriers */
+	tTrackBarrier	*barrier[2]; /**< Segment barriers */
     tRoadCam        *cam;	/* current camera */
     struct trackSeg *next;	/**< Next segment */
     struct trackSeg *prev;	/**< Previous segment */
-    struct trackSeg *lside;	/**< Segment on the left */
-    struct trackSeg *rside;	/**< Segment on the right */
+
+	// Union to avoid code duplication for left/right side cases and to
+	// keep compatibility of code. The side definition is so ugly to
+	// match the one of the barrier[].
+#define TR_SIDE_LFT 1
+#define TR_SIDE_RGT 0
+	union {
+		struct { struct trackSeg *rside, *lside; };
+		struct trackSeg* side[2];
+	};
+
 } tTrackSeg;
 
 /* selection for local position structure */

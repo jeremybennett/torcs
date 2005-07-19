@@ -432,7 +432,8 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     nbvert *= 30;
     nbvert+=58; /* start bridge */
     nbvert+=12 + 10 * Track->pits.driversPitsNb;
-    nbvert+=1000; /* safety margin */
+	// TODO: Investigate if this is a feasible solution, nbvert was perviously += 1000.
+    nbvert+=10000; /* safety margin */
     printf("=== Indices Array Size   = %d\n", nbvert);
     printf("=== Vertex Array Size    = %d\n", nbvert * 3);
     printf("=== Tex Coord Array Size = %d\n", nbvert * 2);
@@ -2579,6 +2580,21 @@ SaveMainTrack(FILE *curFd, int bump)
 	    } while (aDispElt != Groups[i].dispList);
 	}
     }
+}
+
+
+/** Calculate track parameters and exit without any file creation
+    It is for information only, mainly for use from TrackEditor.
+    @param	Track	track structure
+    @param	TrackHandle	handle on the track description
+    @return	none
+*/
+void CalculateTrack(tTrack * Track, void *TrackHandle, int bump)
+{
+	TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
+	GfOut("Track step: %.2f ", TrackStep);
+	InitScene(Track, TrackHandle, bump);
+	printf("Calculation finished\n");
 }
 
 

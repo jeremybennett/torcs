@@ -18,6 +18,7 @@ readme.txt for details:
 Linux Installation from Source
 -------------------------------
 - requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC on AMD64.
+- requires OpenAL from www.torcs.org for best sound quality.
 - untar the archive
 - cd into the torcs-1.2.4 directory
 - ./configure (use --help for showing the options, of interest might be
@@ -58,8 +59,6 @@ Please pick bugs below and retest them (you can find the original reports on
 http://sourceforge.net/tracker/?group_id=3777&atid=103777, select "any" bugs to
 see as well the closed ones). If you find problems which should be already
 fixed or new ones please report them to the torcs-users mailing list.
-Additionally it would be interesting to know if PPC and AMD64 builds compile
-and run (I have no such boxes to try).
 
 Getting Help
 ------------
@@ -136,105 +135,51 @@ Changes since 1.2.3
   on LOD switch problem". On some models it helps, other models need to
   be rewoked later (the problem there seems to be the model itself -> normals)
   (Bernhard).
-- Tried to fix strndup for FreeBSD, will need testing (Bernhard).
+- Fixed strndup for FreeBSD (Thierry Thomas, Bernhard).
+- Fixed a bug in collision detection which happend when 2 wrecks where
+  overlapping. This caused permanent collisions, which in turn avoided to call
+  dtProceed and therefore avoided the needed update of the data (Bernhard).
+- Fixed: non ending races because of failing virtual crane, was a floating
+  point error accumulation problem in simu.cpp (Bernhard).
+- Barrier has now a field with normal used for barrier collision detection,
+  reworked SimCarCollideXYScene, collide.cpp (Bernhard).
+- Added vector classes, such that all berniw/bt derivates can use the same
+  copy, instead of having a copy in each bot (Bernhard).
+- Collision code refactoring/cleanup, removed doubled code, etc. (Bernhard).
+- Initial wall collision support, good enough for now, but needs
+  improvment and more testing. The damage is currently set very low, such
+  that the robots have some time to adopt (Bernhard).
+- Fixed skid sound at low speeds (Christos, Bernhard).
+- Fixed scroll lists numbering with more than 100 entries (Bernhard).
+- Enabled configure checking for OpenAL (Bernhard).
+- Fixed skidmarks when driving in reverse, bug introduced by me when enabling
+  backface-culling for skids (Christos, Bernhard).
+- Added trackgen option to just calculate the track parameters (Charalampos).
+- Increased a "margin" in trackgens track.cpp, will need further inverstigation
+  (Charalampos).
 
 
-Changes since 1.2.2
--------------------
-- Better sound (Christos).
-- New track (Christos).
-- New and updated robots (Christos, Bernhard).
-- New car (SpeedyChonChon).
-- Lots of bugfixes (Eric, Bernhard).
-- Option to disable sound (Bernhard).
-- Optional "Compatibility" video init for broken GLUT/GLX/OpenGL drivers
-  (Bernhard).
-- Added -fPIC, are AMD64 builds now working out of the box (Bernhard)?
-- ...
-
-
-Changes since 1.2.3-bw-unofficial-test1
----------------------------------------
-- Reintroduced gear switching flames (Bernhard).
-- Fix/Retest track selection crash (Bernhard).
-- Hunting lost open filehandles (done, all I have found so far and are caused
-  by TORCS) (Bernhard).
-- Updated open wheel car (Speedychonchon, Bernhard).
-- Fixed championship saving bug (Bernhard, SF report by Eugen).
-- Fixed mouse-scrolling crash (Bernhard, SF report by Frieder).
-- Collision (wall of death), not perfect, but good enough for now (Bernhard).
-- Timelimit in qualification (for robots only) (Bernhard).
-- Remove too slow cars from races (for robots only) (Bernhard).
-
-
-Changes since 1.2.3-bw-unofficial-test2
----------------------------------------
-- Disabled outdated barrier normal computation in collide.cpp (Bernhard).
-- Replaced glCopyTexImage2D with glCopyTexSubImage2D for mirror cam (suggested
-  in NVidia's performance slides) (Bernhard).
-- Fixed broken env map animation (caused by experimental changes in
-  grvtxtable.cpp 1.12) (Bernhard, report by Eric).
-- Add resolutions for windowed mode, so 320x240, 640x480 and 800x600 are always
-  in the list if you have enabled xrandr (Bernhard).
-- Set default optimization to -O2, was -O3 before (Bernhard).
-- Updated Windows plib to 1.8.3 without multithreading (replaced /MT with /ML)
-  (Bernhard).
-- Fixed all warnings (level W2) for the windows build (please add "f" to
-  constants if you mean float) (Bernhard).
-- Update Windows project files/make it work in Windows (Bernhard).
-- Backported a fix from berniw_2004 to berniw's (Bernhard).
-- Fixed broken P406 counters (Bernhard).
-- nfs2ac: Catched segfault if no argument is given (Bernhard).
-- Added nfsperf project, fixes (Bernhard).
-- Update windows bat files (add sounds, track, car, etc) (Bernhard).
-- Compressed all RGB's to RLE compressed RGB's (disk usage -90MB!) with
-  "find . -name "*.rgb" -exec convert -compress RLE {} {} \;"
-- Reduced the resolution of a few textures (Bernhard).
-- Fixed Formula 1 camera (Reported by Speedychonchon, Bernhard).
-
-
-Changes since 1.2.3-bw-unofficial-test3
----------------------------------------
-- Removed ssggraph_old dir (Bernhard).
-- Preselect valid drivers for practice, non championship race, endurance race,
-  etc (Bernhard).
-- remove Olethros and grsound printf's (Bernhard).
-- sorted out currently unneeded textures (Bernhard).
-- removed corvette for now (would need major rework) (Bernhard).
-- changed suspension and weight distribution settings of p406 (Bernhard).
-- Fixed some "first time uninitialized values" for inferno 2-10 (Bernhard).
-- Reviewed Inferno/Inferno 2004, no crash bug found (Bernhard).
-- sorted out unneeded sounds (Bernhard).
-
-Changes since 1.2.3-bw-unofficial-test4
----------------------------------------
-- Disabled Olethros track_* file writing (Bernhard).
-- Reworked Viper (new bottom, 1 sided polygons, fixed holes) (Bernhard).
-- Some changes in Makefiles etc (Bernhard).
-- Fixed crash bug in human.cpp (Bernhard).
-- released as 1.2.3.
-
-
-TODO for 1.2.4 (estimate test-1: early July)
+TODO for 1.2.4
 --------------
-- Fix new introduced bugs.
 - Fix XSLT/DTD for viewing results (Report by Eugen)
-- (Improve collision).
 - Hunting lost open filehandles if any left.
 - Bugfixes and cleanup.
 - Add cameras (alpine, spring)
-- Add validation for the case no driver selected, do not exit to
-  console.
-- fix driver list with more than 100 entries (number cut).
-- add RtBarrierNormalG() and use it in simuv*.
-- add more races to championship.
-- OpenAL: include it in TORCS -> configure scripts?
-- Fix non ending races because of failing virtual crane.
-- Problem when driver list changes during championship.
-- in long races car-to-car collisions fail somehow sometimes -> investigate
-- pit wall collision
 - align widgets in sound config screen.
 - check for ssgSimpleStates and replace with grManagedState where appropriate.
+- Check for lost open filehandles in Windows module loader.
+- Olethros bot: disable writing, init mem leak, textures, warning in learning lib.
+- plib backend, missing sound effects (would be nice)?
+- Update sound maximum 30-50 times a second (perhaps this helps with the plib
+  timing problem).
+- Does sound stop in menus?
+- grep for strndups not guarded by portability.h.
+- Windows port.
+- Windows installer.
+- All-in-one.
+- Linux installer.
+- Separated packages.
+- Prepare docs (Robot tutorial -> OpenAL section, installation etc).
 - before/at release: credits update
   Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
   Christophe Macours -> sound samples -> http://users.belgacom.net/samples/
@@ -243,21 +188,19 @@ TODO for 1.2.4 (estimate test-1: early July)
 
 TODO for 1.2.5
 --------------
-- All the new and postponed stuff.
-- Fix more memory leaks (already hunt down a LOT there are still more).
+- Check for memory leaks.
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
 - (Fix parallel build with make -j n, breaks currently in SOLID).
 - Ongoing for every release: rework free car models (several holes, no
   emmissive color of lod (model becomes dark at a certain distance), single
-  sided, add cockpit).
+  sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
   (e.g. e-track-3, michigan, eventually wheel-1, e-track-2).
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-- pit wall collision
 - check and merge Christos camera code.
 - Integrate documentation into CVS/distribution
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
@@ -266,20 +209,32 @@ TODO for 1.2.5
 - review simuv2
 - possibility of one pit for 2 cars of one module.
 - fix tools (accc, trackgen, etc, these are way too touchy).
-- make trackgen generate two sides for barriers (better diffuse lighting).
+- make trackgen generate two sides for barriers and use just one sided
+  polygons (better diffuse lighting).
 - fix sound in split screen multiplayer. [in progress]
 - Investigate non reproducable (so far) crash after changing properties in
   multiple players (human) and then doing a race with 2 players. Happend just
   after a fresh install and just once so far (is one of the shipped xml files
   broken)? [note there are many other crashes when using the menus, seemingly
   at random times].
-
-
+- Add remaining kcendra cars.
+- Ongoing: Replace some defines with "static const" to be able to see the
+  symbol name when debugging.
+- berniw/bt/sparkle: make use of classes in lib/math.
+- Investigate/fix crash on rainbowroad (happens as well with 1.2.3). RtTrackGlobal2Local
+  seems to deliver nonsense, could be caused by trackloader through unusual turn
+  angles (e.g. > 180deg). Check if this problem just occurs on version 3 tracks.
+- Problem when driver list changes during championship.
+- add more races to championship.
+- move berniw/bt spline code into math to share it.
 
 
 TODO LATER
 ----------
+- Add validation for the case no driver selected, do not exit to
+  console.
 - Fix more memory leaks (already hunt down a LOT there are still more).
+- Networking (2.0).
 - Replace vector/matrix oprations with an efficient implementation (-> use
   SIMD, e.g. enhanced version of v2/v3d.h with SIMD alternatives if compilers
   are not more clever at this time (currently they suck on useful vectorizing)).
@@ -289,7 +244,6 @@ TODO LATER
   about the location or a file handle for its setup file, perhaps a
   close function is needed as well).
 - Telemetry recorder/viewer.
-- Networking (2.0).
 - Redesign/Reimplement multitexturing and fileformat.
 - Apply light maps to skid marks, smoke and wheels, etc.
 - Phong specular highlights (optional env, cube or GLSL).
@@ -318,7 +272,6 @@ TODO LATER
 - Avoid cameras cutting the landscape.
 - Rework models (holes, just single sided polygons for culling, etc.)
 - Check (and fix if neccessary) screenshots on Windows, still wrong gamma?
-- Fix border transparency (fences, pit barrier -> rename "trans-*"?).
 - API to change setup during the practice mode.
 - Timed races (e.g. 24h).
 - Allow more mouse events /suggested by Frieder -> mouse wheel for gear
@@ -338,6 +291,8 @@ TODO LATER
 - Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
 - Free camera controlled with mouse and keys.
 - Automate GL features verification (hopefully obsolete).
+- Investigate the oscillation and roughness problems reported by Christos.
+
 
 IDEAS FOR MUCH LATER
 --------------------

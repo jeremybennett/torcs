@@ -160,7 +160,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		WheelSoundData* sound_data = car_sound_data[id]->wheel;
 		skid_sound[i]->setSource (sound_data[i].p, sound_data[i].u);
 		skid_sound[i]->setVolume (sound_data[i].skid.a);
-		skid_sound[i]->setPitch (sound_data[i].skid.f);
+		skid_sound[i]->setPitch (MIN(sound_data[i].skid.f, 1.0f));
 		skid_sound[i]->update();
 		if (sound_data[i].skid.a > VOLUME_CUTOFF) {
 			skid_sound[i]->start();
