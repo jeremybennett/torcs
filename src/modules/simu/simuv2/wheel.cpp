@@ -24,10 +24,6 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-#define ABSOLUTE_SPEED_CUTOFF 2.0f
-#define SKID_SCALE 0.0002f
-#define SKID_THRESHOLD 0.01f
-
 void
 SimWheelConfig(tCar *car, int index)
 {
@@ -71,34 +67,34 @@ SimWheelConfig(tCar *car, int index)
 
 	patchLen = wheel->weight0 / (tirewidth * pressure);
 
-	wheel->radius = rimdiam / 2.0 + tirewidth * tireratio;
-	wheel->tireSpringRate = wheel->weight0 / (wheel->radius * (1.0 - cos(asin(patchLen / (2.0 * wheel->radius)))));
+	wheel->radius = rimdiam / 2.0f + tirewidth * tireratio;
+	wheel->tireSpringRate = wheel->weight0 / (wheel->radius * (1.0f - cos(asin(patchLen / (2.0f * wheel->radius)))));
 	wheel->relPos.x = wheel->staticPos.x = car->axle[index/2].xpos;
 	wheel->relPos.y = wheel->staticPos.y;
 	wheel->relPos.z = wheel->radius - wheel->susp.spring.x0;
-	wheel->relPos.ay = wheel->relPos.az = 0;
-	wheel->steer = 0;
+	wheel->relPos.ay = wheel->relPos.az = 0.0f;
+	wheel->steer = 0.0f;
 
 	/* components */
 	SimSuspConfig(hdle, SuspSect[index], &(wheel->susp), wheel->weight0, x0);
 	SimBrakeConfig(hdle, BrkSect[index], &(wheel->brake));
 
-	carElt->_rimRadius(index) = rimdiam / 2.0;
+	carElt->_rimRadius(index) = rimdiam / 2.0f;
 	carElt->_tireHeight(index) = tirewidth * tireratio;
 	carElt->_tireWidth(index) = tirewidth;
 	carElt->_brakeDiskRadius(index) = wheel->brake.radius;
 	carElt->_wheelRadius(index) = wheel->radius;
 
-	wheel->mfC = 2.0 - asin(RFactor) * 2.0 / PI;
+	wheel->mfC = 2.0f - asin(RFactor) * 2.0f / PI;
 	wheel->mfB = Ca / wheel->mfC;
 	wheel->mfE = EFactor;
 
-	wheel->lfK = log((1.0 - wheel->lfMin) / (wheel->lfMax - wheel->lfMin));
+	wheel->lfK = log((1.0f - wheel->lfMin) / (wheel->lfMax - wheel->lfMin));
 
 	wheel->feedBack.I += wheel->I;
-	wheel->feedBack.spinVel = 0;
-	wheel->feedBack.Tq = 0;
-	wheel->feedBack.brkTq = 0;
+	wheel->feedBack.spinVel = 0.0f;
+	wheel->feedBack.Tq = 0.0f;
+	wheel->feedBack.brkTq = 0.0f;
 }
 
 
@@ -135,7 +131,7 @@ SimWheelUpdateForce(tCar *car, int index)
 	tdble s, sa, sx, sy; // slip vector
 	tdble stmp, F, Bx;
 	tdble mu;
-	tdble reaction_force = 0;
+	tdble reaction_force = 0.0f;
 	wheel->state = 0;
 
 	// VERTICAL STUFF CONSIDERING SMALL PITCH AND ROLL ANGLES
@@ -147,11 +143,11 @@ SimWheelUpdateForce(tCar *car, int index)
 	if ((wheel->state & SIM_SUSP_EXT) == 0) {
 		wheel->forces.z = axleFz + wheel->susp.force;
 		reaction_force = wheel->forces.z;
-		if (wheel->forces.z < 0) {
-			wheel->forces.z = 0;
+		if (wheel->forces.z < 0.0f) {
+			wheel->forces.z = 0.0f;
 		}
 	} else {
-		wheel->forces.z = 0;
+		wheel->forces.z = 0.0f;
 	}
 
 	// update wheel coord, center relative to GC
@@ -168,8 +164,8 @@ SimWheelUpdateForce(tCar *car, int index)
 	v = sqrt(v2);
 
 	// slip angle
-	if (v < 0.000001) {
-		sa = 0;
+	if (v < 0.000001f) {
+		sa = 0.0f;
 	} else {
 		sa = atan2(wheel->bodyVel.y, wheel->bodyVel.x) - waz;
 	}
@@ -177,16 +173,12 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	wrl = wheel->spinVel * wheel->radius;
 	if ((wheel->state & SIM_SUSP_EXT) != 0) {
-		sx = sy = 0;
-	} else if (v < 0.000001) {
+		sx = sy = 0.0f;
+	} else if (v < 0.000001f) {
 		sx = wrl;
-		sy = 0;
+		sy = 0.0f;
 	} else {
-		if (v>ABSOLUTE_SPEED_CUTOFF) { // avoid overflow
-			sx = (vt - wrl) / v; /* target */
-		} else {
-			sx = (vt - wrl) / ABSOLUTE_SPEED_CUTOFF;
-		}
+		sx = (vt - wrl) / v; /* target */
 		// TODO
 		// Commented out and reset because sometimes robots apply full throttle and the engine does not rev up
 		// nor do the wheels move. I'm not sure if that is the cause, but its actually the only visible candidate
@@ -195,43 +187,41 @@ SimWheelUpdateForce(tCar *car, int index)
 		sy = sin(sa);
 	}
 
-	Ft = 0;
-	Fn = 0;
+	Ft = 0.0f;
+	Fn = 0.0f;
 	s = sqrt(sx*sx+sy*sy);
-	
+
 	{
 		// calculate _skid and _reaction
-		float tmp_skid = (MAX(MIN(1.0f + SKID_THRESHOLD, (s*reaction_force*SKID_SCALE)), SKID_THRESHOLD) - SKID_THRESHOLD);
-		if (v < 1.0f && fabs(wrl) < 1.0f) {
-			tmp_skid = 0.0f;
+		if (v < 4.0f && fabs(wrl) < 1.0f) {
+			car->carElt->_skid[index] = 0.0f;
+		} else {
+			car->carElt->_skid[index] =  MIN(1.0f, (s*reaction_force*0.0002f));
 		}
-		float alpha = 0.9f;
-		car->carElt->_skid[index] = alpha * car->carElt->_skid[index] + (1.0f - alpha) * tmp_skid;
-		
 		car->carElt->_reaction[index] = reaction_force;
 	}
 
-	stmp = MIN(s, 1.5);
+	stmp = MIN(s, 1.5f);
 
 	// MAGIC FORMULA
 	Bx = wheel->mfB * stmp;
-	F = sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]);
+	F = sin(wheel->mfC * atan(Bx * (1.0f - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0f + stmp * simSkidFactor[car->carElt->_skillLevel]);
 
 	// load sensitivity
 	mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * wheel->forces.z / wheel->opLoad));
 
-	F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction * (1.0 + 0.05 * sin(-wheel->staticPos.ax * 18.0));	/* coeff */
+	F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin(-wheel->staticPos.ax * 18.0f));	/* coeff */
 
 	wheel->rollRes = wheel->forces.z * wheel->trkPos.seg->surface->kRollRes;
 
-	if (s > 0.000001) {
+	if (s > 0.000001f) {
 		// wheel axis based
 		Ft -= F * sx / s;
 		Fn -= F * sy / s;
 	}
 
-	RELAXATION2(Fn, wheel->preFn, 50.0);
-	RELAXATION2(Ft, wheel->preFt, 50.0);
+	RELAXATION2(Fn, wheel->preFn, 50.0f);
+	RELAXATION2(Ft, wheel->preFt, 50.0f);
 
 	wheel->relPos.az = waz;
 
@@ -261,7 +251,7 @@ SimWheelUpdateRotation(tCar *car)
 		wheel = &(car->wheel[i]);
 		wheel->spinVel = wheel->in.spinVel;
 
-		RELAXATION2(wheel->spinVel, wheel->prespinVel, 50.0);
+		RELAXATION2(wheel->spinVel, wheel->prespinVel, 50.0f);
 
 		wheel->relPos.ay += wheel->spinVel * SimDeltaTime;
 		NORM_PI_PI(wheel->relPos.ay);
@@ -282,7 +272,7 @@ SimUpdateFreeWheels(tCar *car, int axlenb)
 	for (i = axlenb * 2; i < axlenb * 2 + 2; i++) {
 		wheel = &(car->wheel[i]);
 
-		I = wheel->I + car->axle[axlenb].I / 2.0;
+		I = wheel->I + car->axle[axlenb].I / 2.0f;
 
 		ndot = SimDeltaTime * wheel->spinTq / I;
 		wheel->spinVel -= ndot;
