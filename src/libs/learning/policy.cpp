@@ -35,17 +35,17 @@ void empty_log(char* s, ...)
 /// \arg randomness Amount of randomness.
 /// \arg init_eval Initial evaluation of actions.
 DiscretePolicy::DiscretePolicy (int n_states, int n_actions, real alpha,
-								real gamma, real lambda, bool softmax,
-								real randomness, real init_eval)
+				real gamma, real lambda, bool softmax,
+				real randomness, real init_eval)
 {
-	if (lambda<0.0) lambda = 0.0;
-	if (lambda>0.99) lambda = 0.99;
+	if (lambda<0.0f) lambda = 0.0f;
+	if (lambda>0.99f) lambda = 0.99f;
 
-	if (gamma<0.0) gamma = 0.0;
-	if (gamma>0.99) gamma = 0.99;
+	if (gamma<0.0f) gamma = 0.0f;
+	if (gamma>0.99f) gamma = 0.99f;
 
-	if (alpha<0.0) alpha = 0.0;
-	if (alpha>1.0) alpha = 1.0;
+	if (alpha<0.0f) alpha = 0.0f;
+	if (alpha>1.0f) alpha = 1.0f;
 
 	this->n_states = n_states;
 	this->n_actions = n_actions;
@@ -56,14 +56,14 @@ DiscretePolicy::DiscretePolicy (int n_states, int n_actions, real alpha,
 	temp = randomness;
 	//logmsg ("RR:%f", temp);
 	if (smax) {
-		if (temp<0.1) 
-			temp = 0.1;
+		if (temp<0.1f) 
+			temp = 0.1f;
 	} else {
-		if (temp<0.0) { 
-			temp = 0.0;
+		if (temp<0.0f) { 
+			temp = 0.0f;
 		}
-		if (temp>1.0) {
-			temp = 1.0;
+		if (temp>1.0f) {
+			temp = 1.0f;
 		}
 	}
 	learning_method = Sarsa;
@@ -322,7 +322,7 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 		a = -1;
 		for (int j=0; j<n_actions; j++) {
 			sum += P[s][j];
-			assert (P[s][j]>=0.0);
+			SMART_ASSERT (P[s][j]>=0.0)(P[s][j])(s)(j);
 		}
 		real X = urandom()*sum;
 		real dsum=0.0;

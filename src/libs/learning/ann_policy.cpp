@@ -25,9 +25,12 @@ ANN_Policy::ANN_Policy (int n_states, int n_actions, int n_hidden, real alpha, r
 		message ("Separate actions");
 		J = NULL;
 		Ja = new ANN* [n_actions];
+		SMART_ASSERT (Ja);
 		JQs = new real [n_actions];
+		SMART_ASSERT (JQs);
 		for (int i=0; i<n_actions; i++) {
 			Ja[i] = NewANN (n_states, 1);
+			SMART_ASSERT (Ja[i]);
 			if (n_hidden > 0) {
 				ANN_AddHiddenLayer (Ja[i], n_hidden);
 			}
@@ -42,6 +45,7 @@ ANN_Policy::ANN_Policy (int n_states, int n_actions, int n_hidden, real alpha, r
 		JQs = NULL;
 		Ja = NULL;
 		J = NewANN (n_states, n_actions);
+		SMART_ASSERT (J);
 		if (n_hidden > 0) {
 			ANN_AddHiddenLayer (J, n_hidden);
 		}
