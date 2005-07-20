@@ -263,7 +263,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
 				//skpitch[i] = 0.7+0.3*roughnessFreq;
 				wheel[i].skid.a = (float)car->_skid[i]-0.05f;
 				float wsa = tanh((car->_wheelSlipAccel(i)+10.0f)*0.01f);
-				wheel[i].skid.f = (0.3f -wsa + 0.3f*roughnessFreq)/(1.0f+tanh(car->_reaction[i]*0.0001f));
+				wheel[i].skid.f = (0.3f - 0.3f*wsa + 0.3f*roughnessFreq)/(1.0f+0.5f*tanh(car->_reaction[i]*0.0001f));
 			} else {
 				wheel[i].skid.a = 0.0f;
 				wheel[i].skid.f = 1.0f;

@@ -6,7 +6,7 @@
     email                : dimitrak@idiap.ch
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -22,6 +22,18 @@
 
 #define USE_OPENAL 1
 
+#undef SOUND_LOG
+
+
+#ifdef SOUND_LOG
+#define logmsg printf ("# "); printf
+#else
+#define logmsg empty_log
+static void empty_log(char* s, ...)
+{
+}
+#endif
+
 
 
 #include <plib/sl.h>
@@ -33,6 +45,10 @@
 //#include "grsound.h"
 #include "QSoundChar.h"
 
+
+#define VOLUME_CUTOFF 0.001f
+
+
 class CarSoundData;
 
 typedef struct QueueSoundMap_ {
@@ -43,16 +59,16 @@ typedef struct QueueSoundMap_ {
 } QueueSoundMap;
 
 enum SoundPriState {
-    None=0x0, Loaded, Playing, Paused, Stopped, Cleared
+	None=0x0, Loaded, Playing, Paused, Stopped, Cleared
 };
 
 typedef struct SoundPri_ {
-    float a; ///< amplitude
-    int id; ///< car ID.
+	float a; ///< amplitude
+	int id; ///< car ID.
 } SoundPri;
 
 class SoundInterface {
-protected:
+ protected:
 	float sampling_rate;
 	int n_channels;
 	int n_engine_sounds;
@@ -70,42 +86,30 @@ protected:
 	TorcsSound* bottom_crash_sound;
 	TorcsSound* backfire_sound;
 	TorcsSound* gear_change_sound;
-public:
-    SoundInterface(float sampling_rate, int n_channels)
-	{
-		this->sampling_rate = sampling_rate;
-		this->n_channels = n_channels;
-		for (int i=0; i<4; i++) {
-			skid_sound[i]=NULL;
-		}
-		road_ride_sound=NULL;
-		grass_ride_sound=NULL;
-		grass_skid_sound=NULL;
-		metal_skid_sound=NULL;
-		axle_sound=NULL;
-		turbo_sound=NULL;
-		backfire_loop_sound=NULL;
-		for (int i=0; i<NB_CRASH_SOUND; i++) {
-			crash_sound[i]=NULL;
-		}
-		curCrashSnd = 0;
-		bang_sound=NULL;
-		bottom_crash_sound=NULL;
-		gear_change_sound=NULL;
-		n_engine_sounds = n_channels - 11;
-		int MAX_N_ENGINE_SOUNDS = 8;
-		if (n_engine_sounds<1) {
-			n_engine_sounds = 1;
-			fprintf (stderr, "Warning: maybe insufficient channels\n");
-		} else if (n_engine_sounds > MAX_N_ENGINE_SOUNDS) {
-			n_engine_sounds = MAX_N_ENGINE_SOUNDS;
-		}
-	}
-    virtual ~SoundInterface() {}
+
+	std::vector<TorcsSound*> sound_list;
+	SoundPri* engpri;
+	QueueSoundMap road;
+	QueueSoundMap grass;
+	QueueSoundMap grass_skid;
+	QueueSoundMap metal_skid;
+	QueueSoundMap backfire_loop;
+	QueueSoundMap turbo;
+	QueueSoundMap axle;
+
+	void SortSingleQueue (CarSoundData** car_sound_data, 
+			      QueueSoundMap* smap,
+			      int n_cars);
+	void SetMaxSoundCar(CarSoundData** car_sound_data,
+			    QueueSoundMap* smap);
+	
+ public:
+	SoundInterface(float sampling_rate, int n_channels);
+	virtual ~SoundInterface() {}
 	virtual void setNCars(int n_cars) = 0;
 	virtual TorcsSound* addSample (const char* filename,
-								   int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-								   bool loop = false) = 0;
+				       int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
+				       bool loop = false) = 0;
 	void setSkidSound (const char* sound_name)
 	{
 		for (int i=0; i<4; i++) {
@@ -181,8 +185,8 @@ public:
 	}
 	/// Update sound for a given observer.
 	virtual void update(CarSoundData** car_sound_data,
-						int n_cars, sgVec3 p_obs, sgVec3 u_obs, 
-						sgVec3 c_obs = NULL, sgVec3 a_obs = NULL)
+			    int n_cars, sgVec3 p_obs, sgVec3 u_obs, 
+			    sgVec3 c_obs = NULL, sgVec3 a_obs = NULL)
 	{
 		// do nothing
 	}
@@ -194,104 +198,63 @@ public:
 
 };
 
+
+
+/// PLIB interface
 class PlibSoundInterface : public SoundInterface {
 	typedef struct SoundChar_ {
 		float f; //frequency modulation
 		float a; //amplitude modulation
 	} SoundChar;
-protected:
+ protected:
 	slScheduler* sched;
 	std::vector<TorcsSound*> sound_list;
 	SoundPri* engpri;
 	PlibSoundSource* car_src;
 	PlibSoundSource tyre_src[4];
 	void DopplerShift (SoundChar* sound, float* p_src, float* u_src, float* p, float* u);
-	
-public:
-	PlibSoundInterface(float sampling_rate, int n_channels) : SoundInterface (sampling_rate, n_channels)
-	{
-		sched = new slScheduler ((int) sampling_rate);
-		sched->setSafetyMargin (0.128f);
-		sched->setMaxConcurrent (n_channels);
-		engpri = NULL;
-		car_src = NULL;
-	}
-	virtual ~PlibSoundInterface()
-	{
-		for (unsigned int i=0; i<sound_list.size(); i++) {
-			delete sound_list[i];
-		}
-		delete [] engpri;
-		delete sched;
-
-		if (car_src) {
-			delete [] car_src;
-		}
-
-	}
-
-	virtual void setNCars(int n_cars)
-	{
-		engpri = new SoundPri[n_cars];
-		car_src = new PlibSoundSource[n_cars];
-	}
-	virtual slScheduler* getScheduler()
-	{
-		return sched;
-	}
-	virtual TorcsSound* addSample (const char* filename,
-							int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-							bool loop = false)
-	{
-		TorcsSound* sound = new PlibTorcsSound (sched, filename, flags, loop);
-		sound_list.push_back (sound);
-		return sound;
-	}
-	
+	void SetMaxSoundCar(CarSoundData** car_sound_data, QueueSoundMap* smap);
+ public:
+	PlibSoundInterface(float sampling_rate, int n_channels);
+	virtual ~PlibSoundInterface();
+	virtual void setNCars(int n_cars);
+	virtual slScheduler* getScheduler();
+	virtual TorcsSound* addSample (const char* filename, int flags = (ACTIVE_VOLUME|ACTIVE_PITCH), bool loop = false);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs = NULL, sgVec3 a_obs = NULL);
 
 };
 
+
+
+/// Open AL interface
 
 class OpenalSoundInterface : public SoundInterface {
 	typedef struct SoundChar_ {
 		float f; //frequency modulation
 		float a; //amplitude modulation
 	} SoundChar;
-protected:
+ protected:
 	void* cc;
 	ALCdevice* dev;
 	float global_gain;
-	std::vector<TorcsSound*> sound_list;
-	SoundPri* engpri;
-	QueueSoundMap road;
-	QueueSoundMap grass;
-	QueueSoundMap grass_skid;
-	QueueSoundMap metal_skid;
-	QueueSoundMap backfire_loop;
-	QueueSoundMap turbo;
-	QueueSoundMap axle;
+
 	//OpenalSoundSource* cars;
 	//OpenalSoundSource tyres[4];
 	void DopplerShift (SoundChar* sound, float* p_src, float* u_src, float* p, float* u);
-	void SortSingleQueue (CarSoundData** car_sound_data, 
-						  QueueSoundMap* smap,
-						  int n_cars);
-	void SetMaxSoundCar(CarSoundData** car_sound_data,
-						QueueSoundMap* smap);
-public:
+
+ public:
 	OpenalSoundInterface(float sampling_rate, int n_channels);
 	virtual ~OpenalSoundInterface();
 	virtual void setNCars(int n_cars);
 	virtual TorcsSound* addSample (const char* filename,
-								   int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-								   bool loop = false);
+				       int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
+				       bool loop = false);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs, sgVec3 a_obs);
 	virtual float getGlobalGain() {return global_gain;}
 	virtual void setGlobalGain(float g)
 	{
 		global_gain = 0.5f*g;
-		printf("Setting gain to %f\n", global_gain);
+		logmsg ("Setting gain to %f\n", global_gain);
 	}
 
 

@@ -21,7 +21,6 @@
 #include "CarSoundData.h"
 #include "TorcsSound.h"
 
-#define VOLUME_CUTOFF 0.001f
 
 
 
@@ -119,9 +118,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 
 	qsort ((void*) engpri, n_cars, sizeof(SoundPri), &sortSndPriority);
 
-	float max_skid_vol[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-	int max_skid_id[4] = {0,0,0,0};
-    for (int i=0; i<n_cars; i++) {
+	for (int i=0; i<n_cars; i++) {
 		int id = engpri[i].id;
 		sgVec3 p;
 		sgVec3 u;
@@ -143,6 +140,8 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	}
 	
 
+	float max_skid_vol[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+	int max_skid_id[4] = {0,0,0,0};
 	for (int id=0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
 		for (int j=0; j<4; j++) {
@@ -256,48 +255,4 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 }
 
 
-void OpenalSoundInterface::SortSingleQueue (CarSoundData** car_sound_data, 
-											QueueSoundMap* smap,
-											int n_cars)
-{
-	float max_vol = 0.0f;
-	int max_id = 0;
-	for (int id=0; id<n_cars; id++) {
-		CarSoundData* sound_data = car_sound_data[id];
-		QSoundChar CarSoundData::*p2schar = smap->schar;
-		QSoundChar* schar = &(sound_data->*p2schar);
-		float vol = sound_data->attenuation * schar->a;
-		if (vol > max_vol) {
-			max_vol = vol;
-			max_id = id;
-		}
-	}
-	smap->id = max_id;
-	smap->max_vol = max_vol;
-}
-
-void OpenalSoundInterface::SetMaxSoundCar(CarSoundData** car_sound_data,
-										  QueueSoundMap* smap)
-{
-	int id = smap->id;
-	float max_vol = smap->max_vol;
-	QSoundChar CarSoundData::*p2schar = smap->schar;
-	QSoundChar* schar = &(car_sound_data[id]->*p2schar);
-	TorcsSound* snd = smap->snd;
-
-	sgVec3 p;
-	sgVec3 u;
-
-	car_sound_data[id]->getCarPosition(p);
-	car_sound_data[id]->getCarSpeed(u);
-	snd->setSource (p, u);
-	snd->setVolume (schar->a);
-	snd->setPitch (schar->f);
-	snd->update();
-	if (max_vol > VOLUME_CUTOFF) {
-		snd->start();
-	} else {
-		snd->stop();
-	}
-}
 

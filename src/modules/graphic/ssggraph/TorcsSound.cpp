@@ -35,9 +35,9 @@ void TorcsSound::setLPFilter(float lp)
 
 
 PlibTorcsSound::PlibTorcsSound(slScheduler* sched,
-							   const char* filename,
-							   int flags,
-							   bool loop) : TorcsSound (flags)
+			       const char* filename,
+			       int flags,
+			       bool loop) : TorcsSound (flags)
 {
 	this->sched = sched;
 	this->loop = loop;
@@ -57,15 +57,15 @@ PlibTorcsSound::PlibTorcsSound(slScheduler* sched,
 	}
 	if (flags & ACTIVE_VOLUME) {
 		sched->addSampleEnvelope (sample, 0, VOLUME_SLOT, volume_env,
-								  SL_VOLUME_ENVELOPE);
+					  SL_VOLUME_ENVELOPE);
 	}
 	if (flags & ACTIVE_PITCH) {
 		sched->addSampleEnvelope (sample, 0, PITCH_SLOT, pitch_env,
-								  SL_PITCH_ENVELOPE);
+					  SL_PITCH_ENVELOPE);
 	}
 	if (flags & ACTIVE_LP_FILTER) {
 		sched->addSampleEnvelope(sample, 0, FILTER_SLOT, lowpass_env,
-								 SL_FILTER_ENVELOPE);
+					 SL_FILTER_ENVELOPE);
 	}
 	if (flags & ACTIVE_VOLUME) {
 		volume_env->setStep(0, 0.0f, 0.0f);
@@ -88,17 +88,17 @@ PlibTorcsSound::~PlibTorcsSound()
 	sched->stopSample(sample);
 	if (flags & ACTIVE_VOLUME) {
 		sched->addSampleEnvelope(sample, 0, VOLUME_SLOT, NULL,
-								 SL_NULL_ENVELOPE);
+					 SL_NULL_ENVELOPE);
 		delete volume_env;
 	}
 	if (flags & ACTIVE_PITCH) {
 		sched->addSampleEnvelope(sample, 0, PITCH_SLOT, NULL,
-								 SL_NULL_ENVELOPE);
+					 SL_NULL_ENVELOPE);
 		delete pitch_env;
 	}
 	if (flags & ACTIVE_LP_FILTER) {
 		sched->addSampleEnvelope(sample, 0, FILTER_SLOT, NULL,
-								 SL_NULL_ENVELOPE);
+					 SL_NULL_ENVELOPE);
 		delete lowpass_env;
 	}
 	delete sample;
