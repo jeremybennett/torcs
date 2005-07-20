@@ -16,6 +16,7 @@
 
 <params name="sound" type="param" mode="mw">
 	<section name="Sound Settings">
-		<attstr name="state" in="enabled,disabled" val="enabled"/>
+		<attstr name="state" val="openal"/>
+		<attnum name="volume" unit="%" val="100"/>
 	</section>
 </params>
