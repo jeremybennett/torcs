@@ -30,6 +30,7 @@ PlibSoundInterface::PlibSoundInterface(float sampling_rate, int n_channels) : So
 	sched->setMaxConcurrent (n_channels);
 	engpri = NULL;
 	car_src = NULL;
+	global_gain = 1.0f;
 
 	// initialise mappings
 	grass.schar = &CarSoundData::grass;
@@ -106,7 +107,7 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 			engine->resume();
 			engine->setLPFilter(car_src[id].lp*car_sound_data[id]->engine.lp);
 			engine->setPitch(car_src[id].f*car_sound_data[id]->engine.f);
-			engine->setVolume(car_src[id].a*car_sound_data[id]->engine.a);
+			engine->setVolume(global_gain*car_src[id].a*car_sound_data[id]->engine.a);
 			engine->update();
 		}
 	}
@@ -129,7 +130,7 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 		WheelSoundData* sound_data = car_sound_data[id]->wheel;
 		float mod_a = car_src[id].a;
 		float mod_f = car_src[id].f;
-		skid_sound[i]->setVolume (sound_data[i].skid.a * mod_a);
+		skid_sound[i]->setVolume (global_gain*sound_data[i].skid.a * mod_a);
 		skid_sound[i]->setPitch (sound_data[i].skid.f * mod_f);
 		skid_sound[i]->update();
 #if 0
@@ -236,7 +237,7 @@ void PlibSoundInterface::SetMaxSoundCar(CarSoundData** car_sound_data, QueueSoun
 	QSoundChar* schar = &(car_sound_data[id]->*p2schar);
 	TorcsSound* snd = smap->snd;
 
-	snd->setVolume (schar->a * car_src[id].a);
+	snd->setVolume (global_gain * schar->a * car_src[id].a);
 	snd->setPitch (schar->f * car_src[id].f);
 	snd->update();
 #if 0

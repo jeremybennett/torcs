@@ -190,13 +190,13 @@ void PlibSoundSource::update()
 		p_rel += p[i]*p[i];
 	}
     
-    a = 1.0;
+	a = 1.0;
 	f = 1.0f;
 	lp = 1.0f;
 
 	// Only the vector component on the LOV is significant
 	//    u_rel = sqrt(u_rel);
-	p_rel = 1.0 + sqrt(p_rel);
+	p_rel = 0.01f + sqrt(p_rel);
 	float p_cosx = p[0]/p_rel;
 	float p_cosy = p[1]/p_rel;
 	float p_cosz = p[2]/p_rel;
@@ -220,7 +220,9 @@ void PlibSoundSource::update()
 	} else {
 		// attenuate and filter sound with distance
 		// and shift pitch with speed
-		float atten = 10.0f/p_rel;
+		float ref = 5.0f;
+		float rolloff = 0.5f;
+		float atten = ref / ( ref + rolloff * (p_rel - ref));
 		//f = SPEED_OF_SOUND/(SPEED_OF_SOUND+u_rel);
 		f = (SPEED_OF_SOUND - u_rel_src)/(SPEED_OF_SOUND - u_rel_lis);
 		a = atten;

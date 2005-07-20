@@ -214,6 +214,7 @@ class PlibSoundInterface : public SoundInterface {
 	PlibSoundSource tyre_src[4];
 	void DopplerShift (SoundChar* sound, float* p_src, float* u_src, float* p, float* u);
 	void SetMaxSoundCar(CarSoundData** car_sound_data, QueueSoundMap* smap);
+	float global_gain;
  public:
 	PlibSoundInterface(float sampling_rate, int n_channels);
 	virtual ~PlibSoundInterface();
@@ -221,6 +222,12 @@ class PlibSoundInterface : public SoundInterface {
 	virtual slScheduler* getScheduler();
 	virtual TorcsSound* addSample (const char* filename, int flags = (ACTIVE_VOLUME|ACTIVE_PITCH), bool loop = false);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs = NULL, sgVec3 a_obs = NULL);
+	virtual float getGlobalGain() {return global_gain;}
+	virtual void setGlobalGain(float g)
+	{
+		global_gain = 0.5f*g;
+		logmsg ("Setting gain to %f\n", global_gain);
+	}
 
 };
 

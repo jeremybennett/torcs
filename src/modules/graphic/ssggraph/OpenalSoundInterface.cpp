@@ -83,9 +83,7 @@ void OpenalSoundInterface::setNCars(int n_cars)
 	engpri = new SoundPri[n_cars];
 	//cars = new OpenalSoundSource[n_cars];
 }
-TorcsSound* OpenalSoundInterface::addSample (const char* filename,
-											 int flags,
-											 bool loop)
+TorcsSound* OpenalSoundInterface::addSample (const char* filename, int flags, bool loop)
 {
 	TorcsSound* sound = new OpenalTorcsSound (filename, flags, loop);
 	sound_list.push_back (sound);

@@ -215,7 +215,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 			continue;
 		}
 
-		if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 1.0f) {
+		if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 0.001f) {
 	    	if (cur_clr[3] > 0.1f) {
 
 				basevtx = new ssgVertexArray(4 * 2 + 1);
@@ -293,7 +293,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 					grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->recalcBSphere();
 					grCarInfo[car->index].skidmarks->strips[i].size[grCarInfo[car->index].skidmarks->strips[i].running_skid] = 2;
 					grCarInfo[car->index].skidmarks->strips[i].timeStrip=t;
-					grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->setCullFace(TRUE);
+					//grCarInfo[car->index].skidmarks->strips[i].vta[grCarInfo[car->index].skidmarks->strips[i].running_skid]->setCullFace(TRUE);
 				} else {
 					/* continue case */
 					grCarInfo[car->index].skidmarks->strips[i].vtx[grCarInfo[car->index].skidmarks->strips[i].running_skid]->add(tvtx[0]);

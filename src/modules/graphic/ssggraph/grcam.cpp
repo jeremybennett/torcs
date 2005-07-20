@@ -112,6 +112,9 @@ cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, 
 void cGrPerspCamera::setProjection(void)
 {
     grContext.setFOV(screen->getViewRatio() * fovy, fovy);
+	//float ratio = 1.2f;//(float) screen->getScrW() / (float) screen->getScrH();
+	//grContext.setFOV(ratio * fovy, fovy);
+    //grContext.setFOV(fovy, fovy);
     grContext.setNearFar(fnear, ffar);
 }
 
@@ -216,6 +219,13 @@ void cGrBackgroundCam::update(cGrCamera *curCam)
 {
     memcpy(&eye, curCam->getPosv(), sizeof(eye));
     memcpy(&center, curCam->getCenterv(), sizeof(center));
+
+	fovy = curCam->getFOV();
+
+	if ((screen->getViewRatio() * fovy) < 33.0f) {
+	    fovy = 33.0f / screen->getViewRatio();
+	}
+
     sgSubVec3(center, center, eye);
     sgSetVec3(eye, 0, 0, 0);
     speed[0]=0.0;
@@ -228,50 +238,139 @@ void cGrBackgroundCam::update(cGrCamera *curCam)
 
 class cGrCarCamInside : public cGrPerspCamera
 {
- public:
+public:
+	tdble nod, roll;
+	tdble dnod, droll;
+	tdble inod, iroll;
+	tdble pspeed_x, pspeed_y;
+	double dt;
+	double currenttime;
+	int current;
     cGrCarCamInside(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
-		    float myfovy, float myfovymin, float myfovymax,
-		    float myfnear, float myffar = 1500.0,
-		    float myfogstart = 800.0, float myfogend = 1500.0)
-	: cGrPerspCamera(myscreen, id, drawCurr, 0, drawBG, 1,
-			 myfovy, myfovymin, myfovymax,
-			 myfnear, myffar, myfogstart, myfogend) {
-	up[0] = 0;
-	up[1] = 0;
-	up[2] = 1;
+					float myfovy, float myfovymin, float myfovymax,
+					float myfnear, float myffar = 1500.0,
+					float myfogstart = 800.0, float myfogend = 1500.0)
+		: cGrPerspCamera(myscreen, id, drawCurr, 0, drawBG, 1,
+						 myfovy, myfovymin, myfovymax,
+						 myfnear, myffar, myfogstart, myfogend) {
+		up[0] = 0;
+		up[1] = 0;
+		up[2] = 1;
+		nod = 0.0;
+		dnod = 0.0;
+		inod = 0.0;
+		roll = 0.0;
+		droll = 0.0;
+		iroll = 0.0;
+		pspeed_x = 0.0;
+		pspeed_y = 0.0;
+		currenttime = 0.0;
+		dt = 0.01;
+		current = -1;
     }
 
     void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
+		if ((screen->getViewRatio() * fovy) > 90.0) {
+			fovy = 90.0 / screen->getViewRatio();
+		}
     }
 
     void update(tCarElt *car, tSituation *s) {
-	sgVec3 P, p;
+		sgVec3 P, p, q;
 	
-	p[0] = car->_drvPos_x;
-	p[1] = car->_drvPos_y;
-	p[2] = car->_drvPos_z;
-	sgXformPnt3(p, car->_posMat);
+
+
+		if (currenttime == 0.0) {
+			currenttime = s->currentTime;
+		}
+		if (currenttime == s->currentTime) {
+			return;
+		}
+		dt = s->currentTime - currenttime;
+		currenttime = s->currentTime;
+		if ((current!=car->index)||(dt>0.5)) {
+			nod = 0.0;
+			dnod = 0.0;
+			inod = 0.0;
+			roll = 0.0;
+			droll = 0.0;
+			iroll = 0.0;
+			if (dt>0.5) {
+				dt = 0.5;
+			}
+			current = car->index;
+		}
+
+		tdble accel_x = car->_accel_x;//(car->_speed_x - pspeed_x);
+		tdble accel_y = car->_accel_y;//(car->_speed_y - pspeed_y);
+		tdble accel_z = car->_accel_z;//(car->_speed_y - pspeed_y);
+		pspeed_x = car->_speed_x;
+		pspeed_y = car->_speed_y;
+
+		// Driver head
+		tdble C_prop = 4.0f; // PID controller P parameter
+		tdble C_intg = 4.0f; // PID controller I parameter
+		tdble C_diff = 0.2f; // PID controller D parameter
+		tdble C_int_freq = 0.9f; // determines integration frequency
+		tdble C_int_leak = 0.7f; // integration leakage (1=no leak, 0=all leak)
+		// actual controller output
+		tdble C_nod = -C_intg*inod -C_prop*nod -C_diff*dnod;
+		//tdble steering = -(5.0ff+.2*car->_speed_x)*tanh(car->_steerCmd);
+		tdble steering = - tanh(car->_steerCmd*(1.0f + car->_speed_x));
+		tdble C_roll =
+			- C_prop * (roll - 5.0f*steering)
+			- C_intg * iroll
+			- C_diff * droll;
+		// leaky integrators for controller
+		inod += dt * (inod * (C_int_freq * C_int_leak - 1.0f)
+					  + (1.0f - C_int_freq) * dnod);
+		iroll += dt * (iroll * (C_int_freq * C_int_leak - 1.0f)
+					   + (1.0f - C_int_freq) * droll);
+		// simulation of head
+		dnod += dt*40.0*((-accel_z+accel_x) + C_nod);
+		droll += dt*40.0*((accel_y) + C_roll);
+		nod += dt*dnod;
+		roll += dt*droll;
+		tdble u_roll = -0.01*tanh(steering) -.5*tanh(0.04*roll);
+		tdble u_nod = -.5*tanh(0.04*nod);
+		tdble neck2eyes = .3;
+		p[0] = car->_drvPos_x + neck2eyes*sin(u_nod);
+		p[1] = car->_drvPos_y + neck2eyes*sin(u_roll);
+		tdble dznodroll= neck2eyes*cos(u_nod)*cos(u_roll);
+		p[2] = car->_drvPos_z-neck2eyes+dznodroll;
+		sgXformPnt3(p, car->_posMat);
 	
-	eye[0] = p[0];
-	eye[1] = p[1];
-	eye[2] = p[2];
+		eye[0] = p[0];
+		eye[1] = p[1];
+		eye[2] = p[2];
 
-	P[0] = car->_drvPos_x + 30.0;
-	P[1] = car->_drvPos_y;
-	P[2] = car->_drvPos_z;
-	sgXformPnt3(P, car->_posMat);
 
-	center[0] = P[0];
-	center[1] = P[1];
-	center[2] = P[2];
+		P[0] = car->_drvPos_x + 30.0*cos(u_nod);
+		P[1] = car->_drvPos_y;
+		P[2] = car->_drvPos_z - 30*sin(u_nod);
 
-	speed[0] =car->pub.DynGCg.vel.x;  
-	speed[1] =car->pub.DynGCg.vel.y;  
-	speed[2] =car->pub.DynGCg.vel.z;
+		sgXformPnt3(P, car->_posMat);
+
+		center[0] = P[0];
+		center[1] = P[1];
+		center[2] = P[2];
+
+		speed[0] =car->pub.DynGCg.vel.x;  
+		speed[1] =car->pub.DynGCg.vel.y;  
+		speed[2] =car->pub.DynGCg.vel.z;
+
+		q[0] = u_roll * (cos(car->_yaw) - sin(car->_yaw));
+		q[1] = u_roll * (sin(car->_yaw) + cos(car->_yaw));
+		q[2] = 1.0;
+		
+		//sgXformPnt3(q, car->_posMat);
+
+		up[0] =  (up[0] + car->_posMat[2][0]+q[0])*.5;
+		up[1] =  (up[1] + car->_posMat[2][1]+q[1])*.5;
+		up[2] =  (up[2] + car->_posMat[2][2])*.5;
+
     }
+
 };
 
 
@@ -948,6 +1047,7 @@ class cGrCarCamRoadFly : public cGrPerspCamera
     float gain;
     float damp;
     float offset[3];
+	float follow;
     double currenttime;
  public:
     cGrCarCamRoadFly(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
@@ -965,56 +1065,147 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	offset[2]=60.0;
 	current = -1;
 	currenttime = 0.0;
+	follow = 0.1;
 	speed[0] = 0.0;
 	speed[1] = 0.0;
 	speed[2] = 0.0;
     }
     
     void update(tCarElt *car, tSituation *s) {
-	tRoadCam *curCam;
-	float height;
-	float dt;
+		tRoadCam *curCam;
+		float height;
+		float dt;
 
-	curCam = car->_trkPos.seg->cam;
+		curCam = car->_trkPos.seg->cam;
 
-	if (currenttime == 0.0) {
-	    currenttime = s->currentTime;
-	}
+		if (currenttime == 0.0) {
+			currenttime = s->currentTime;
+		}
 	
-	if (currenttime != s->currentTime) {
+		if (currenttime==s->currentTime) {
+			return;
+		}
 	    dt = s->currentTime - currenttime;
 	    currenttime = s->currentTime;
 
 	    timer--;
 	    if (timer<0) {
-		eye[0] = car->_pos_X + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
-		eye[1] = car->_pos_Y + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
-		eye[2] = car->_pos_Z + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
+			eye[0] = car->_pos_X + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
+			eye[1] = car->_pos_Y + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
+			eye[2] = car->_pos_Z + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
+			follow =((rand()/(RAND_MAX+1.0f)));
+			gain = (rand()/(RAND_MAX+1.0f))*2.0f + 1.0f;
+			damp = 0.02;
+			//printf ("FLYCAM: Random change\n");
 	    }
-
+		if (dt>0.5) {
+			dt = 0.1;
+			float X = 10*rand()/(RAND_MAX+1.0);
+			eye[0] = car->_pos_X + X*car->_speed_X;
+			eye[1] = car->_pos_Y + X*car->_speed_Y;
+			eye[1] = car->_pos_Z;
+			speed[0] = 0.0;
+			speed[1] = 0.0;
+			speed[2] = 0.0;
+			//printf ("FLYCAM: dt > 0.5\n");
+		}
 	    if (current != car->index) {
-		/* the target car changed */
-		zOffset = 50.0;
-		current = car->index;
+			/* the target car changed */
+			zOffset = 40.0;
+			current = car->index;
+			timer = -1;
 	    } else {
-		zOffset = 0.0;
+			zOffset = 0.0;
 	    }
 
-	    if ((timer <= 0) || (zOffset > 0.0)) {
-		timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
-		offset[0] = -0.5 + (rand()/(RAND_MAX+1.0));
-		offset[1] = -0.5 + (rand()/(RAND_MAX+1.0));
-		offset[2] = 30 + (30.0*rand()/(RAND_MAX+1.0)) + zOffset;
-		offset[0] = offset[0]*(offset[2]+1.0);
-		offset[1] = offset[1]*(offset[2]+1.0);
-		gain = 5.0;
-		damp = 5.0;
+		if ((fabs(eye[0]-car->_pos_X)>200.0f)
+			||(fabs(eye[1]-car->_pos_Y)>200.0f)
+			||(fabs(eye[2]-car->_pos_Z)>200.0f)) {
+			float X = rand()/(RAND_MAX+1.0f);
+			eye[0] = car->_pos_X + X*car->_speed_X;
+			eye[1] = car->_pos_Y + X*car->_speed_Y;
+			eye[2] = car->_pos_Z;
+			speed[0] = car->_speed_X;
+			speed[1] = car->_speed_Y;
+			speed[2] = 0.0f;
+			follow +=0.5f;//((rand()/(RAND_MAX+1.0f)));
+			gain += 0.5f;//(rand()/(RAND_MAX+1.0f))*2.0f + 1.0f;
+			damp = 0.02;
+			//printf ("FLYCAM: Changing (too far away)\n");
+		}
+		//printf ("%d %f\n", timer, zOffset);
+
+			if ((timer <= 0)) {//|| (zOffset > 0.0f)) {
+			timer = 200 + (int)(500.0f*rand()/(RAND_MAX+1.0f));
+
+			follow =((rand()/(RAND_MAX+1.0f)));
+			gain = (rand()/(RAND_MAX+1.0f))*2.0f + 1.0f;
+			damp = 0.02;
+
+			if (rand()%2) {
+				tTrkLocPos* pos = &car->_trkPos;
+				tTrackSeg* seg = pos->seg;
+				int n=rand()%20;
+				timer = 300;
+				for (int i=0; i<n; i++) {
+					if (seg->next) {
+						seg = seg->next;
+					} else {
+						break;
+					}
+				}
+				eye[0] = seg->vertex[0].x;
+				eye[1] = seg->vertex[0].y;
+				eye[2] = seg->vertex[0].z;
+				if (rand()%2) {
+					follow = 0.0f;
+					gain = 0.0f;
+					speed[0] = 0.0f;//car->_speed_X;
+					speed[1] = 0.0f;//car->_speed_Y;
+					speed[2] = 0.0f;
+				} else {
+					speed[0] = car->_speed_X;
+					speed[1] = car->_speed_Y;
+					speed[2] = 0.0f;
+				}
+				printf ("FLYCAM: Changing to track\n");
+			}
+			offset[0] = (-0.5f + (rand()/(RAND_MAX+1.0f)));
+			offset[1] = (-0.5f + (rand()/(RAND_MAX+1.0f)));
+			offset[2] = -5.0f + (30.0f*rand()/(RAND_MAX+1.0f)) + zOffset;
+			offset[0] = offset[0]*(offset[2]+1.0f);
+			offset[1] = offset[1]*(offset[2]+1.0f);
+
 	    }
 	
-	    speed[0] += (gain*(offset[0]+car->_pos_X - eye[0]) - speed[0]*damp)*dt;
-	    speed[1] += (gain*(offset[1]+car->_pos_Y - eye[1]) - speed[1]*damp)*dt;
-	    speed[2] += (gain*(offset[2]+car->_pos_Z - eye[2]) - speed[2]*damp)*dt;
+		sgVec3 dx = {offset[0]+car->_pos_X + follow * car->_speed_X- eye[0],
+					 offset[1]+car->_pos_Y + follow * car->_speed_Y- eye[1],
+					 offset[2]+car->_pos_Z - eye[2]};
+		for (int i=0; i<3; i++) {
+			dx[i] *= gain;
+		}
+		
+		tdble max_accel = 100.0;//max accel 10g
+		if (sgLengthVec3(dx) > max_accel) { 
+			tdble l = sgLengthVec3(dx);
+			for (int i=0; i<3; i++) {
+				dx[i] *= max_accel/l;
+			}
+		}
 
+		for (int i=0; i<3; i++) {
+			speed[i] += (dx[i] - damp * speed[i]*fabs(speed[i])) * dt;
+		}
+		// go higher when far away.
+		{
+
+			sgVec2 delta = {offset[0]+car->_pos_X - eye[0],
+							offset[1]+car->_pos_Y - eye[1]};
+			tdble l = sgLengthVec2 (delta);
+			if (l>100.0) {
+				speed[2] += (0.1f*sgLengthVec2(delta)- 2*damp*speed[2]*fabs(speed[2]))*dt;
+			}
+		}
 	    eye[0] = eye[0] + speed[0]*dt;
 	    eye[1] = eye[1] + speed[1]*dt;
 	    eye[2] = eye[2] + speed[2]*dt;
@@ -1024,16 +1215,31 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	    center[2] = (car->_pos_Z);
 
 	    // avoid going under the scene
-	    height = grGetHOT(eye[0], eye[1]) + 1.0;
-	    if (eye[2] < height) {
-		timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
-		offset[2] = height - car->_pos_Z + 1.0;
-		eye[2] = height;
-	    }
-	
-	}
+	    height = grGetHOT(eye[0], eye[1]) + 2.0;
+		tdble pred_height= grGetHOT(eye[0]+speed[0], eye[1]+speed[1]);
 
-    }
+		if (pred_height>eye[2]) {
+			// move up
+			tdble diff = dt*(pred_height-eye[2]);
+			eye[2] += diff;
+			offset[2] += diff;
+			speed[2] += diff;
+			// move towards the car, proportional to subdifferential
+			// in order to avoid hiding it from view
+			sgVec2 direction;
+			direction[0]=center[0]-eye[0];
+			direction[1]=center[1]-eye[1];
+			sgNormaliseVec2(direction);
+			speed[0] += diff * direction[0];
+			speed[1] += diff * direction[1];
+		}
+	    if (eye[2] < height) {
+			timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
+			offset[2] = height - car->_pos_Z + 1.0;
+			eye[2] = height;
+	    }
+	} // void udpdate()
+
 
     void onSelect(tCarElt *car, tSituation *s)
     {
@@ -1048,7 +1254,14 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
  protected:
     float locfar;
     float locfovy;
-    
+    sgVec3 cspeed;
+	sgVec3 dcenter;
+	float gain;
+	float prv_fovy;
+	double current_time;
+	tRoadCam* prvCam;
+	float* W;
+	int nW;
  public:
     cGrCarCamRoadZoom(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
 		      float fovy, float fovymin, float fovymax,
@@ -1062,7 +1275,21 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
+	cspeed[0] = 0.0f;
+	cspeed[1] = 0.0f;
+	cspeed[2] = 0.0f;
+	dcenter[0] = dcenter[1] = dcenter[2] = 0.0f;
+	current_time = 0.0f;
+	gain = 5.0f;
+	prv_fovy = 90.0f;
+	nW = grNbCars;
+	W = (float*) malloc (nW*sizeof(float));
     }
+
+	~cGrCarCamRoadZoom()
+	{
+		free (W);
+	}
 
     void limitFov(void) {
 	if ((screen->getViewRatio() * fovy) > 90.0) {
@@ -1085,36 +1312,153 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
     void update(tCarElt *car, tSituation *s) {
 	tdble	dx, dy, dz, dd;
 	tRoadCam *curCam;
-
+	float dt;
+	bool reset_view = false;
 	curCam = car->_trkPos.seg->cam;
-    
+	if (grNbCars != nW) {
+		nW = grNbCars;
+		W = (float*) realloc (W, nW*sizeof(float));
+	}
+	if (curCam != prvCam) {
+		reset_view = true;
+	}
+
+	prvCam = curCam;
 	if (curCam == NULL) {
+		// no designated cameras, just put it near the center
 	    eye[0] = grWrldX * 0.5;
 	    eye[1] = grWrldY * 0.6;
 	    eye[2] = 120;
-
 	} else {
 	    eye[0] = curCam->pos.x;
 	    eye[1] = curCam->pos.y;
 	    eye[2] = curCam->pos.z;
 	}
-	
-	center[0] = car->_pos_X;
-	center[1] = car->_pos_Y;
-	center[2] = car->_pos_Z;
 
+	if (current_time == 0.0) {
+		current_time = s->currentTime;
+	}
+	
+	if (current_time==s->currentTime) {
+		return;
+	}
+	dt = s->currentTime - current_time;
+	current_time = s->currentTime;
+
+	sgVec3 tcenter;
+	tcenter[0] = car->_pos_X + 0.1f * car->_speed_X;// - eye[0];
+	tcenter[1] = car->_pos_Y + 0.1f * car->_speed_Y;// - eye[1];
+	tcenter[2] = car->_pos_Z;// - eye[2];
+	//sgNormaliseVec3 (tcenter);
+
+	sgVec3 orcenter;
+	orcenter[0] = car->_pos_X + 0.1f * car->_speed_X;
+	orcenter[1] = car->_pos_Y + 0.1f * car->_speed_Y;
+	orcenter[2] = car->_pos_Z;
+
+	sgVec3 scenter;
+
+	float sumW = 0.0f;
+
+	for (int i = 0; i < grNbCars; i++) {
+		scenter[0] = s->cars[i]->_pos_X + 0.1f * s->cars[i]->_speed_X;// - eye[0];
+		scenter[1] = s->cars[i]->_pos_Y + 0.1f * s->cars[i]->_speed_Y;// - eye[1];
+		scenter[2] = s->cars[i]->_pos_Z;// - eye[2];
+		//sgNormaliseVec3(scenter);
+
+		float sharpness = 0.001f;
+		float d = sgDistanceSquaredVec3 (scenter, orcenter);
+		W[i] += exp(-sharpness * d);
+		sumW+=W[i];
+	}
+	float isumW = 100.0f;
+	if (sumW>0.01f) {
+		isumW = 1.0f/sumW;
+	}
+	for (int i = 0; i < grNbCars; i++) {W[i] *= isumW;}
+
+	// calculate new tcenter.
+
+	for (int i=0; i<3; i++) {tcenter[i] = 0.0f;}
+	for (int i = 0; i < grNbCars; i++) {
+		scenter[0] = s->cars[i]->_pos_X + 0.1f * s->cars[i]->_speed_X;// -eye[0];
+		scenter[1] = s->cars[i]->_pos_Y + 0.1f * s->cars[i]->_speed_Y;// -eye[1];
+		scenter[2] = s->cars[i]->_pos_Z;// - eye[2];
+		//sgNormaliseVec3(scenter);
+		for (int j=0; j<3; j++) {
+			tcenter[j] += W[i]*scenter[j];// + eye[j];
+		}
+	}
+
+	// try to fit in all the cars.
+	float pan_out = 0.0f;
+	for (int i=0; i< grNbCars; i++) {
+		scenter[0] = s->cars[i]->_pos_X + 0.1f * s->cars[i]->_speed_X;// -eye[0];
+		scenter[1] = s->cars[i]->_pos_Y + 0.1f * s->cars[i]->_speed_Y;// -eye[1];
+		scenter[2] = s->cars[i]->_pos_Z;
+		//float d = 2.0f * sgDistanceVec3 (scenter, orcenter);
+		float d = sgDistanceVec3 (scenter, tcenter);
+		pan_out += d * W[i];
+		//printf ("%d %f %f\n", i, d, W[i]);
+	}
+	//sgSubVec3 (center, eye);
+	//sgNormaliseVec3 (center);
+	//sgAddVec3 (center, eye);
+	for (int i=0; i<3; i++) {
+		float delta =  (tcenter[i] - center[i]);
+		dcenter[i] += dt * (tcenter[i] - center[i] - 0.9f * dcenter[i]);
+		center[i] += dt * gain * (dcenter[i] + delta);
+		if (fabs(delta)>100.0f) {
+			reset_view = true;
+			break;
+		}
+	}
+	
+
+	if (reset_view) {
+		center[0] = car->_pos_X;
+		center[1] = car->_pos_Y;
+		center[2] = car->_pos_Z;
+		dcenter[0] = dcenter[1] = dcenter[2] = 0.0f;
+	}
 	dx = center[0] - eye[0];
 	dy = center[1] - eye[1];
 	dz = center[2] - eye[2];
-    
+	
 	dd = sqrt(dx*dx+dy*dy+dz*dz);
+
+	dx = center[0] - tcenter[0];
+	dy = center[1] - tcenter[1];
+	dz = center[2] - tcenter[2];	
+	//dd = MINsqrt(dx*dx+dy*dy+dz*dz);
+
+	dx = center[0] + car->_speed_X - eye[0];
+	dy = center[1] + car->_speed_Y - eye[1];
+	dz = center[2] + car->_speed_z - eye[2];
+	dd = MIN (dd, sqrt(dx*dx+dy*dy+dz*dz));
+
 
 	fnear = dz - 5;
 	if (fnear < 1) {
 	    fnear = 1;
 	}
 	ffar  = dd + locfar;
-	fovy = RAD2DEG(atan2(locfovy, dd));
+
+	reset_view = false;
+	if (!reset_view) {
+		float tfovy = RAD2DEG(atan2(locfovy + pan_out, dd));
+		if (tfovy<fovymin) tfovy = fovymin;
+		if (tfovy>fovymax) tfovy = fovymax;
+		fovy += dt * (tfovy - fovy);
+		if (fovy<fovymin) fovy = fovymin;
+		if (fovy>fovymax) fovy = fovymax;
+	}
+
+	if (reset_view) {
+		fovy = RAD2DEG(atan2(locfovy, dd));
+	}
+
+
 	limitFov();
 
 	speed[0] = 0.0;
