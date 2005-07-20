@@ -171,6 +171,44 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 	SortSingleQueue (car_sound_data, &axle, n_cars);
 	SetMaxSoundCar (car_sound_data, &axle);
 
+
+	// One-off sounds
+	for (int id=0; id<n_cars; id++) {
+		float crash_threshold = 0.5f;
+		float gear_threshold = 0.75;
+
+		CarSoundData* sound_data = car_sound_data[id];
+
+		if (sound_data->crash) {
+			if (++curCrashSnd>=NB_CRASH_SOUND) {
+				
+				curCrashSnd = 0;
+			}
+			if (car_src[id].a > crash_threshold) {
+				crash_sound[curCrashSnd]->start();
+			}
+		}
+
+		if (sound_data->bang) {
+			if (car_src[id].a > crash_threshold) {
+				bang_sound->start();
+			}
+		}
+
+		if (sound_data->bottom_crash) {
+			if (car_src[id].a > crash_threshold) {
+				bottom_crash_sound->start();
+			}
+		}
+
+		if (sound_data->gear_changing) {
+			if (car_src[id].a > gear_threshold) {
+				gear_change_sound->start();
+			}
+		}
+	}
+
+
 	sched->update();
 }
 
