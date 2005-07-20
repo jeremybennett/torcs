@@ -113,6 +113,8 @@ Driver::~Driver()
 	
 	// Do not save learnt stuff from race itself.
 
+#if 0 // Do not write on users HD for release
+
 	// We save only for practice and qualifying
 	if (race_type!=RM_TYPE_RACE) {
 		// We save only for practice
@@ -121,6 +123,8 @@ Driver::~Driver()
 		learn->saveParameters (fname);
 		free (fname);
 	}
+#endif
+
 
 #if 0
 	printf ("# BEGIN ~Driver() dump\n");
