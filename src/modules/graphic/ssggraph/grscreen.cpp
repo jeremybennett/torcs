@@ -113,7 +113,7 @@ void cGrScreen::setCurrentCar(tCarElt *newCurCar)
 /* Set Screen size & position */
 void cGrScreen::activate(int x, int y, int w, int h)
 {
-    viewRatio = 1.25;//(float)w / (float)h;
+    viewRatio = (float)w / (float)h;
 
     if (viewRatio > 2.3) viewRatio = 2.3;
     
