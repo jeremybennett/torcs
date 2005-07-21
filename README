@@ -157,23 +157,29 @@ Changes since 1.2.3
 - Added trackgen option to just calculate the track parameters (Charalampos).
 - Increased a "margin" in trackgens track.cpp, will need further inverstigation
   (Charalampos).
+- Finished plib backend (Christos).
+- Fixed Olethros module discovery memory leak (Bernhard).
+- Olethros textures for gt3rs and clkdtm (Christos).
+- Various fixes found with valgrind: potential crash bug in new smoke code,
+  a few leaks in other places (Bernhard).
+- Olethros writes data files to correct location (Christos).
+
 
 
 TODO for 1.2.4
 --------------
 - Fix XSLT/DTD for viewing results (Report by Eugen)
-- Hunting lost open filehandles if any left.
 - Bugfixes and cleanup.
 - Add cameras (alpine, spring)
-- align widgets in sound config screen.
-- check for ssgSimpleStates and replace with grManagedState where appropriate.
+- + align widgets in sound config screen.
+- + check for ssgSimpleStates and replace with grManagedState where appropriate.
 - Check for lost open filehandles in Windows module loader.
-- Olethros bot: disable writing, init mem leak, textures, warning in learning lib.
-- plib backend, missing sound effects (would be nice)?
-- Update sound maximum 30-50 times a second (perhaps this helps with the plib
+- + Update sound maximum 30-50 times a second (perhaps this helps with the plib
   timing problem).
-- Does sound stop in menus?
-- grep for strndups not guarded by portability.h.
+- + Does sound stop in menus?
+- + grep for strndups not guarded by portability.h.
+- + There was a rpoblem regarding sqrt and vc++ .NET, search mail and fix.
+- + Have a look at Andrews sf report.
 - Windows port.
 - Windows installer.
 - All-in-one.
@@ -186,8 +192,8 @@ TODO for 1.2.4
   Charalampos Alexopoulos -> track editor ->  http://katergo.rege.org/projects/trackeditor/
 
 
-TODO for 1.2.5
---------------
+TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
+---------------------------------
 - Check for memory leaks.
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
@@ -205,6 +211,7 @@ TODO for 1.2.5
 - Integrate documentation into CVS/distribution
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
   not hurt).
+- merge bt_2004 into bt.
 - SDL port (or 1.3.0 or 1.4.0, not decided finally)
 - review simuv2
 - possibility of one pit for 2 cars of one module.
@@ -227,6 +234,13 @@ TODO for 1.2.5
 - Problem when driver list changes during championship.
 - add more races to championship.
 - move berniw/bt spline code into math to share it.
+- hunt down all glGet* crap during the simulation.
+
+
+TODO for 1.3.0
+--------------
+- SDL port (SDL required anyway for portable sockets and threads).
+
 
 
 TODO LATER
@@ -235,6 +249,8 @@ TODO LATER
   console.
 - Fix more memory leaks (already hunt down a LOT there are still more).
 - Networking (2.0).
+- Rework the whole AC file loaders and state management (most of the remaining
+  memory leaks).
 - Replace vector/matrix oprations with an efficient implementation (-> use
   SIMD, e.g. enhanced version of v2/v3d.h with SIMD alternatives if compilers
   are not more clever at this time (currently they suck on useful vectorizing)).
