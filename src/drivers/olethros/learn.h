@@ -89,6 +89,7 @@ private:
 		return 1.0;
 	}
 	float safety_threshold;
+	bool LoadParameter (float* p, int n, FILE* f);
 
 	void PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, float max_length);
 	float time_since_accident;

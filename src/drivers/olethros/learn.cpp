@@ -512,6 +512,25 @@ void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, fl
 }
 
 
+bool SegLearn::LoadParameter (float* p, int n, FILE* f)
+{
+	assert (n>0);
+	assert (f);
+	assert (p);
+	fread (p, sizeof(float), n, f);
+	bool flag = false;
+	int i;
+	for (i=0; i<n; i++) {
+		if (!finite (p[i])) {
+			p[i] = 0.0f;
+			flag = true;
+		}
+	}
+	if (flag) {
+		fprintf (stderr, "warning: olethros/learn.cpp: infinite parameters, setting to 0.");
+	}
+	return flag;
+}
 
 void SegLearn::loadParameters (char* fname)
 {
@@ -534,17 +553,17 @@ void SegLearn::loadParameters (char* fname)
 	fread (radius, n_seg, sizeof(float), f);
 
 	CheckMatchingToken(make_message("DM FRICTION"), rtag, f);
-	fread (segdm, sizeof(float), n_seg,  f);
-	fread (segdm2, sizeof(float), n_seg, f);
-	fread (segdm3, sizeof(float), n_seg, f);
-	fread (&dm, sizeof(float), 1, f);
-	fread (&dm2, sizeof(float), 1, f);
-	fread (&dm3, sizeof(float), 1, f);
+	LoadParameter (segdm, n_seg,  f);
+	LoadParameter (segdm2,  n_seg, f);
+	LoadParameter (segdm3,  n_seg, f);
+	LoadParameter (&dm, 1, f);
+	LoadParameter (&dm2, 1, f);
+	LoadParameter (&dm3, 1, f);
 
 	CheckMatchingToken(make_message("PRED ACCEL"), rtag, f);
-	fread (accel, sizeof(float), n_quantums,  f);
+	LoadParameter (accel, n_quantums,  f);
 	CheckMatchingToken(make_message("PRED STEER"), rtag, f);
-	fread (derror, sizeof(float), n_quantums,  f);
+	LoadParameter (derror, n_quantums,  f);
 	
 	CheckMatchingToken(make_message("END"),rtag, f);
 	FreeStringBuffer(&rtag);

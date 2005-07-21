@@ -113,13 +113,17 @@ Driver::~Driver()
 	
 	// Do not save learnt stuff from race itself.
 
-#if 0 // Do not write on users HD for release
+#if 1 // Do not write on users HD for release ?
 
 	// We save only for practice and qualifying
 	if (race_type!=RM_TYPE_RACE) {
 		// We save only for practice
 		//if (race_type==RM_TYPE_PRACTICE) {
-		char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->internalname);
+		char* fname = make_message("%s%s%d/%s.brain",
+								   GetLocalDir(),
+								   "drivers/olethros/",
+								   INDEX, track->internalname);
+		//char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->internalname);
 		learn->saveParameters (fname);
 		free (fname);
 	}
@@ -272,8 +276,10 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	// If we are not practicing, we read old parameters,
 	// otherwise we start from scratch.
 	if (race_type!=RM_TYPE_PRACTICE) {
-		char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->internalname);
-		//char* fname = make_message("%s.brain", track->name);
+		char* fname = make_message("%s%s%d/%s.brain",
+								   GetLocalDir(),
+								   "drivers/olethros/",
+								   INDEX, track->internalname);
 		learn->loadParameters (fname);
 		free (fname);
 		learn->SetSafetyThreshold (0.0f);

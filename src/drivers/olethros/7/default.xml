@@ -28,7 +28,7 @@
   </section>
 
   <section name="Engine">
-    <attnum name="tickover" min="1000" max="5000" val="3000" unit="rpm"/>
+    <attnum name="tickover" min="1000" max="5000" val="1000" unit="rpm"/>
   </section>
 
   <section name="Gearbox">
