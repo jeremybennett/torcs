@@ -516,16 +516,19 @@ void ssgVtxTableSmoke::draw_geometry ()
 	// orthogonaly to the view, parallel to the screen.
 
 	/* get the matrix */
+	// TODO: replace that, glGet stalls rendering pipeline (forces flush).
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelView);
 
 	// get the up and right vector from the matrice view
 
 	offset[0] = offset[1] = offset[2] = 0.0f;
 
-	for (int i=0; i<4; i++) {
+	int i;
+	for (i = 0; i < 3; i++) {
 		int j = i;
-		for (int k=0; k<4; k++, j+=4) {
-			if (k!=3) {
+		int k;
+		for (k = 0; k < 4; k++, j+=4) {
+			if (k != 3) {
 				offset[i] += modelView[j] * vx[0][k];
 			} else {
 				offset[i] += modelView[j];

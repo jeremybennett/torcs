@@ -46,7 +46,7 @@ static void rmShowStandings(void *prevHdle, tRmInfo *info, int start);
 
 #define MAX_LINES	20
 
-typedef struct 
+typedef struct
 {
     void	*prevHdle;
     tRmInfo	*info;
@@ -311,6 +311,7 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
 	GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
 			x4, y, GFUI_ALIGN_HR_VB, 0);
+	free(str);
 
 	sprintf(buf, "%d", laps);
 	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,

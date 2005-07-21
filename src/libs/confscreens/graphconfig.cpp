@@ -32,7 +32,6 @@
 #include "graphconfig.h"
 
 static void	*scrHandle = NULL;
-static void	*grHandle = NULL;
 static char	buf[1024];
 static int	FovEditId;
 static int	FovFactorValue = 100;
@@ -53,12 +52,18 @@ ExitGraphicOptions(void *prevMenu)
 static void
 SaveGraphicOptions(void *prevMenu)
 {
-    GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
-    GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, SmokeValue);
-    GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, SkidValue);
-    GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, LodFactorValue);
-    GfParmWriteFile(NULL, grHandle, "graph");
-    ExitGraphicOptions(prevMenu);
+	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
+	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, SmokeValue);
+	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, SkidValue);
+	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, LodFactorValue);
+	GfParmWriteFile(NULL, grHandle, "graph");
+
+	GfParmReleaseHandle(grHandle);
+
+	ExitGraphicOptions(prevMenu);
 }
 
 static void
@@ -121,7 +126,7 @@ GraphMenuInit(void *prevMenu)
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 
     sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     x = 50;
     x2 = 200;
@@ -154,8 +159,8 @@ GraphMenuInit(void *prevMenu)
     sprintf(buf, "%g", LodFactorValue);
     LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeLodFactor);
-    
-    
+
+
     GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     prevMenu, SaveGraphicOptions, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
@@ -163,6 +168,8 @@ GraphMenuInit(void *prevMenu)
 		     prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
     GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
+
+	GfParmReleaseHandle(grHandle);
 
     return scrHandle;
 }

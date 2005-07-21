@@ -775,7 +775,7 @@ static int do_refs( char *s )
 	ssgTexCoordArray *tlist1 = NULL;
 	ssgTexCoordArray *tlist2 = NULL;
 	ssgTexCoordArray *tlist3 = NULL;
-	ssgIndexArray *vindices = new ssgIndexArray(nrefs);
+	//ssgIndexArray *vindices = new ssgIndexArray(nrefs);
 	ssgNormalArray *nrm = new ssgNormalArray(nrefs);
 
 	if (numMapLevel > 1) {
@@ -840,7 +840,7 @@ static int do_refs( char *s )
 		if (usenormal == 1) {
 			nrm->add(ntab[vtx]);
 		}
-		vindices-> add (i);
+		//vindices-> add (i);
 		vertlist->add(vtx);
 	}
 	#ifdef GUIONS
@@ -973,8 +973,8 @@ static int do_refs( char *s )
 		tlist2 = 0;
 		delete tlist3;
 		tlist3 = 0;
-		delete vindices;
-		vindices = 0;
+		/*delete vindices;
+		vindices = 0;*/
 		delete nrm;
 		nrm = 0;
 		}
