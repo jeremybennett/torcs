@@ -127,6 +127,7 @@ protected:
 	// Misc functions
 	void AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi);
 	void ShowPaths();
+	void MakeDir (char* s);
 
 	float current_allowed_speed;
 	// Per robot global data.

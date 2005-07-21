@@ -107,6 +107,48 @@ Driver::Driver(int index)
 	pit_exit_timer = 1.0f;
 }
 
+void Driver::MakeDir (char* s)
+{
+	
+	if (s==NULL) {
+		return;
+	}
+	
+	int err = mkdir(s,
+					S_IRUSR|S_IWUSR|S_IXUSR|
+					S_IRGRP|S_IWGRP|S_IXGRP|
+					S_IROTH|S_IXOTH);
+
+	if (err) {
+		if (errno==ENOENT) { // try again
+		    char* p = strRemoveSuffix (s, '/');
+			MakeDir (p);
+			free (p);
+			err = mkdir(s,
+					S_IRUSR|S_IWUSR|S_IXUSR|
+					S_IRGRP|S_IWGRP|S_IXGRP|
+					S_IROTH|S_IXOTH);
+		}
+	}
+
+	if (err) {
+		switch (errno) {
+		case EPERM: Serror ("Filesystem does not support mkdir.\n"); break;
+		case 0:
+		case EEXIST: /* No problem */ break;
+		case EFAULT: Serror ("EFAULT.\n"); break;
+		case EACCES: Serror ("Incorrect permissions.\n"); break;
+		case ENAMETOOLONG: Serror ("Name too long.\n"); break;
+		case ENOENT: Serror ("Inexistent path component.\n"); break;
+		case ENOTDIR: Serror ("Path component not director.\n"); break;
+		case ENOMEM: Serror ("ENOMEM.\n"); break;
+		case EROFS: Serror ("Read-Only File System.\n"); break;
+		case ELOOP: Serror ("Loop.\n"); break;
+		case ENOSPC: Serror ("No space.\n"); break;
+		default: Serror ("Unknown error\n"); break;
+		}
+	}
+}
 
 Driver::~Driver()
 {
@@ -123,7 +165,12 @@ Driver::~Driver()
 								   GetLocalDir(),
 								   "drivers/olethros/",
 								   INDEX, track->internalname);
-		//char* fname = make_message("drivers/olethros/%d/%s.brain", INDEX, track->internalname);
+		char* path = make_message("%s%s%d",
+								   GetLocalDir(),
+								  "drivers/olethros/", INDEX);
+
+		MakeDir (path);
+
 		learn->saveParameters (fname);
 		free (fname);
 	}
