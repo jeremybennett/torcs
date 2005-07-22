@@ -158,7 +158,7 @@ void SimCarCollideXYScene(tCar *car)
 
 static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, const DtCollData *collData)
 {
-	sgVec2 n;		// Collision normal delivered by solid.
+	sgVec2 n;		// Collision normal delivered by solid: Global(point1) - Global(point2)
 	tCar *car[2];	// The cars.
 	sgVec2 p[2];	// Collision points delivered by solid, in body local coordinates.
 	sgVec2 r[2];	// Collision point relative to center of gravity.
@@ -198,7 +198,10 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 	// TODO: find out if that (the isnan tests and length test) is still needed. If yes, add
 	// it as well in the wall collision code.
-
+	// HYPOTHESIS: Perhaps this code was needed before dtProcees has been guarded by dtTest?
+	// Remember dtProceed just works correct if all objects are disjoint.
+	// I will let people test this wihout the guards, see what happens...
+/*
 	if ((isnan(p[0][0]) ||
 		isnan(p[0][1]) ||
 		isnan(p[0][0]) ||
@@ -215,8 +218,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 		GfOut ("Collide failed 2 (%s - %s)\n", car[0]->carElt->_name, car[1]->carElt->_name);
 		return;
 	}
-
+*/
 	sgNormaliseVec2(n);
+
+	sgVec2 rg[2];	// raduis oriented in global coordinates, still relative to CG (rotated aroung CG).
+	tCarElt *carElt;
 
 	for (i = 0; i < 2; i++) {
 		// vector GP (Center of gravity to collision point). p1 and p2 are delivered from solid as
@@ -225,17 +231,22 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 		// Speed of collision points, linear motion of center of gravity (CG) plus rotational
 		// motion around the CG.
-		vp[i][0] = car[i]->DynGCg.vel.x - car[i]->DynGCg.vel.az * r[i][1];
-		vp[i][1] = car[i]->DynGCg.vel.y + car[i]->DynGCg.vel.az * r[i][0];
+		carElt = car[i]->carElt;
+		float sina = sin(carElt->_yaw);
+		float cosa = cos(carElt->_yaw);
+		rg[i][0] = r[i][0]*cosa - r[i][1]*sina;
+		rg[i][1] = r[i][0]*sina + r[i][1]*cosa;
+
+		vp[i][0] = car[i]->DynGCg.vel.x - car[i]->DynGCg.vel.az * rg[i][1];
+		vp[i][1] = car[i]->DynGCg.vel.y + car[i]->DynGCg.vel.az * rg[i][0];
 	}
 
 	// Relative speed of collision points.
 	sgVec2 v1ab;
 	sgSubVec2(v1ab, vp[0], vp[1]);
 
-	// try to separate the cars.
-	// TODO: Check if distpab below is really necessary or if the length of the normal from solid
-	// would work as well.
+	// try to separate the cars. The computation is necessary because dtProceed is not called till
+	// the collision is resolved. 
 	for (i = 0; i < 2; i++) {
 		sgCopyVec2(pt[i], r[i]);
 		pt[i][2] = 0.0f;
@@ -249,6 +260,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 	float distpab = sgLengthVec2(pab);
 
 	sgVec2 tmpv;
+	/*
+	static const float CAR_MIN_MOVEMENT = 0.02f;
+	static const float CAR_MAX_MOVEMENT = 0.05f;
+	sgScaleVec2(tmpv, n, MIN(MAX(distpab, CAR_MIN_MOVEMENT), CAR_MAX_MOVEMENT));
+	*/
 	sgScaleVec2(tmpv, n, MIN(distpab, 0.05));
 	if (car[0]->blocked == 0) {
 		sgAddVec2((float*)&(car[0]->DynGCg.pos), tmpv);
@@ -266,8 +282,14 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 	// impulse.
 	float rpn[2];
-	rpn[0] = sgScalarProductVec2(r[0], n);
-	rpn[1] = sgScalarProductVec2(r[1], n);
+	rpn[0] = sgScalarProductVec2(rg[0], n);
+	rpn[1] = sgScalarProductVec2(rg[1], n);
+
+	// Pesudo cross product to find out if we are left or right.
+	// TODO: SIGN, scrap value?
+	float rpsign[2];
+	rpsign[0] =  n[0]*rg[0][1] - n[1]*rg[0][0];
+	rpsign[1] = -n[0]*rg[1][1] + n[1]*rg[1][0];
 
 	const float e = 1.0f;	// energy restitution
 
@@ -276,7 +298,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 		rpn[0] * rpn[0] * car[0]->Iinv.z + rpn[1] * rpn[1] * car[1]->Iinv.z);
 
 	// TODO: check that, eventually remove assert... should not go to production, IMHO.
-	assert (!isnan(j));
+	//assert (!isnan(j));
 
 	for (i = 0; i < 2; i++) {
 		// Damage.
@@ -295,7 +317,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 		}
 
 		// Compute collision velocity.
-		const float ROT_K = 0.5f;
+		const float ROT_K = 1.0f;
 
 		float js = (i == 0) ? j : -j;
 		sgScaleVec2(tmpv, n, js * car[i]->Minv);
@@ -303,10 +325,10 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 		if (car[i]->collision & SEM_COLLISION_CAR) {
 			sgAddVec2(v2a, (const float*)&(car[i]->VelColl.x), tmpv);
-			car[i]->VelColl.az = car[i]->VelColl.az + js * rpn[i] * car[i]->Iinv.z * ROT_K;
+			car[i]->VelColl.az = car[i]->VelColl.az + js * rpsign[i] * rpn[i] * car[i]->Iinv.z * ROT_K;
 		} else {
 			sgAddVec2(v2a, (const float*)&(car[i]->DynGCg.vel), tmpv);
-			car[i]->VelColl.az = car[i]->DynGCg.vel.az + js * rpn[i] * car[i]->Iinv.z * ROT_K;
+			car[i]->VelColl.az = car[i]->DynGCg.vel.az + js * rpsign[i] * rpn[i] * car[i]->Iinv.z * ROT_K;
 		}
 
 		static float VELMAX = 3.0f;
@@ -366,7 +388,7 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	tCarElt *carElt = car->carElt;
 
 	sgVec2 vp;		// Speed of car collision point in global frame of reference.
-	sgVec2 rg;		// raduis oriented in global coordinates, still relative to CG.
+	sgVec2 rg;		// raduis oriented in global coordinates, still relative to CG (rotated aroung CG).
 
 	float sina = sin(carElt->_yaw);
 	float cosa = cos(carElt->_yaw);
@@ -393,6 +415,7 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	float rp = sgScalarProductVec2(rg, n);
 
 	// Pesudo cross product to find out if we are left or right.
+	// TODO: SIGN, scrap value?
 	float rpsign = n[0]*rg[1] - n[1]*rg[0];
 
 	const float e = 1.0f;	// energy restitution
