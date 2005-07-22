@@ -152,30 +152,31 @@ void * SoundMenuInit(void *prevMenu)
 
 	scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
 	GfuiTitleCreate(scrHandle, "Sound Configuration", 0);
-	GfuiScreenAddBgImg(scrHandle, "data/img/splash-simucfg.png");
+	GfuiScreenAddBgImg(scrHandle, "data/img/splash-qrdrv.png");
 
 	x = 20;
 	x2 = 200;
-	x3 = 440;
+	x3 = 340;
 	x4 = (x2+x3)/2;
-	y = 370;
+	y = 400;
 	dy = 30;
 
 	y -= dy;
-	GfuiLabelCreate(scrHandle, "Sound System State", GFUI_FONT_LARGE, 320, 400, GFUI_ALIGN_HC_VB, 0);
+
+	GfuiLabelCreate(scrHandle, "Sound System:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
-			x2, y, GFUI_ALIGN_HC_VB, 1,
+			x2, y-5, GFUI_ALIGN_HL_VB, 1,
 			(void*)-1, changeSoundState,
 			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
 	GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-			x3, y, GFUI_ALIGN_HC_VB, 1,
+			x3, y-5, GFUI_ALIGN_HR_VB, 1,
 			(void*)1, changeSoundState,
 			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-	SoundOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_LARGE_C, x4, y, GFUI_ALIGN_HC_VB, 32);
+	SoundOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
 	GfuiLabelSetColor(scrHandle, SoundOptionId, LabelColor);
 
 
@@ -185,7 +186,7 @@ void * SoundMenuInit(void *prevMenu)
 	
     sprintf(buf, "%f", VolumeValue);
     VolumeValueId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				    x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, changeVolume);
+				    x2+10, y+2, x4-x2+20, 16, NULL, (tfuiCallback)NULL, changeVolume);
 
 
 
