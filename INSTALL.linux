@@ -19,6 +19,7 @@ Requisites
 - Working OpenGL Driver and header files
 - FreeGLUT or GLUT (http://freeglut.sourceforge.net/)
 - PLIB 1.8.3 (http://plib.sourceforge.net/)
+- OpenAL from www.torcs.org for optimal sound.
 - libpng
 - zlib
 
