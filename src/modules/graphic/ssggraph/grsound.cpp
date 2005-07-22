@@ -35,7 +35,7 @@
 
 
 static int soundInitialized = 0;
-
+static double lastUpdated;
 
 static SoundInterface* sound_interface = NULL;
 static CarSoundData** car_sound_data = NULL;
@@ -71,7 +71,7 @@ void grInitSound(tSituation* s, int ncars)
 	GfParmReleaseHandle(paramHandle);
 	paramHandle = NULL;
 
-
+	lastUpdated = -1000.0;
 	
 	switch (sound_mode) {
 	case OPENAL_MODE:
@@ -179,8 +179,15 @@ float
 grRefreshSound(tSituation *s, cGrCamera	*camera)
 {
 	if (sound_mode == DISABLED) {
-		return 0.0;
+		return 0.0f;
 	}
+
+	// Update sound at most 50 times a second.
+	const double UPDATE_DT = 0.02;
+	if (s->currentTime - lastUpdated < UPDATE_DT) {
+		return 0.0f;
+	}
+	lastUpdated = s->currentTime;
 
     tCarElt	*car;//= s->cars[s->current];
 
