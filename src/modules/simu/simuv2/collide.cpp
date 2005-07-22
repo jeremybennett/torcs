@@ -332,10 +332,6 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 
 // Collision response for walls.
-// TODO: In a weird way the response is not the same in all directions. Reproduce: drive forward in
-// track direction along the wall and drive forward against the track direction along the wall.
-// The rotational response is somehow bigger against the usual direction...
-// The reason seems to be that bigger distance delivered by solid, do I setup something wrong?
 // TODO: Separate common code with car-car collision response.
 static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObjectRef obj2, const DtCollData *collData)
 {
@@ -367,9 +363,18 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	sgVec2 r;
 	sgSubVec2(r, p, (const float*)&(car->statGC));
 
+	tCarElt *carElt = car->carElt;
+
 	sgVec2 vp;		// Speed of car collision point in global frame of reference.
-	vp[0] = car->DynGCg.vel.x - car->DynGCg.vel.az * r[1];
-	vp[1] = car->DynGCg.vel.y + car->DynGCg.vel.az * r[0];
+	sgVec2 rg;		// raduis oriented in global coordinates, still relative to CG.
+
+	float sina = sin(carElt->_yaw);
+	float cosa = cos(carElt->_yaw);
+	rg[0] = r[0]*cosa - r[1]*sina;
+	rg[1] = r[0]*sina + r[1]*cosa;
+
+	vp[0] = car->DynGCg.vel.x - car->DynGCg.vel.az * rg[1];
+	vp[1] = car->DynGCg.vel.y + car->DynGCg.vel.az * rg[0];
 
 	sgVec2 tmpv;
 	static const float CAR_MIN_MOVEMENT = 0.02f;
@@ -385,9 +390,10 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 		return;
 	}
 
-	float rp = sgScalarProductVec2(r, n);
+	float rp = sgScalarProductVec2(rg, n);
+
 	// Pesudo cross product to find out if we are left or right.
-	float rpsign = n[0]*r[1] - n[1]*r[0];
+	float rpsign = n[0]*rg[1] - n[1]*rg[0];
 
 	const float e = 1.0f;	// energy restitution
 	float j = -(1.0f + e) * sgScalarProductVec2(vp, n) / (car->Minv + rp * rp * car->Iinv.z);
@@ -428,7 +434,6 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	sgCopyVec2((float*)&(car->VelColl.x), v2a);
 
 	// Move the car for the collision lib.
-	tCarElt *carElt = car->carElt;
 	sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x, car->DynGCg.pos.y,
 					car->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
 					RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
