@@ -28,7 +28,7 @@
 
 	<section name="Sound">
 		<attstr name="engine sample" val="clkdtmb2.wav"/>
-		<attnum name="rpm scale" val="0.7"/>
+		<attnum name="rpm scale" val="0.9"/>
 	</section>
 
 	<section name="Graphic Objects">
@@ -221,6 +221,10 @@
     <attnum name="tickover" unit="rpm" val="2000"/>
     <attnum name="fuel cons factor" min="1.0" max="2.0" val="1.1"/>
     <section name="data points">
+    <attstr name="turbo" val="true"/>
+    <attnum name="turbo rpm" unit="rpm" val="3000"/>
+    <attnum name="turbo factor" val="1.0"/>
+    <attnum name="turbo lag" val="0.75"/>
       <section name="1">
         <attnum name="rpm" unit="rpm" val="0"/>
         <attnum name="Tq" unit="N.m" val="2000.0"/>
