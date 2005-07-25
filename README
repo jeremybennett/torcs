@@ -73,6 +73,12 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.2.3-test1
+-------------------------
+- Tried to fix problem with GL headers differences (Bernhard).
+- Car sound adjustments and new samples (Christos).
+
+
 Changes since 1.2.3
 -------------------
 - Reworked eroad (Bernhard).

@@ -867,6 +867,7 @@ Optional Features:
   --disable-xrandr	   reset the XRANDR mode
   --enable-ccmalloc       set the ccmalloc mode (beware path...)
   --enable-profiler       set the profiler mode
+  --disable-glextprototypes       disable prototypes in glext.h
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -1632,7 +1633,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=torcs
- VERSION=1.2.4-test1
+ VERSION=1.2.4-test2
 
 
 cat >>confdefs.h <<_ACEOF
@@ -4964,6 +4965,17 @@ if test "${enable_profiler+set}" = set; then
 else
   ADDCFLAGS="$ADDCFLAGS"
 fi;
+
+# Check whether --enable-glextprototypes or --disable-glextprototypes was given.
+if test "${enable_glextprototypes+set}" = set; then
+  enableval="$enable_glextprototypes"
+  if test "$enableval" = "yes";
+	then ADDCFLAGS="$ADDCFLAGS -DGL_GLEXT_PROTOTYPES"
+	fi
+else
+  ADDCFLAGS="$ADDCFLAGS -DGL_GLEXT_PROTOTYPES"
+fi;
+
 
 CFLAGS="$CFLAGS $ADDCFLAGS"
 CXXFLAGS="$CXXFLAGS $ADDCFLAGS"
