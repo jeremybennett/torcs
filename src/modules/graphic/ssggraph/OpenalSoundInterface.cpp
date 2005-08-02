@@ -126,7 +126,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		TorcsSound* engine = sound_data->getEngineSound();
 		engine->setSource(p, u);
 		engine->setPitch (sound_data->engine.f);
-		engine->setVolume (sound_data->engine.a);
+		engine->setVolume (sound_data->engine.a*(0.2f + 0.8f*sound_data->engine.lp));
 		//engine->setLPFilter(sound_data->engine.lp);
 
 		engine->update();

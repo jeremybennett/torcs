@@ -111,7 +111,7 @@ void CarSoundData::calculateEngineSound (tCarElt* car)
 {
 	float mpitch = base_frequency * (float)(car->_enginerpm) / 600.0;
 	engine.f = mpitch;
-	engine.a = 1.0f;
+	engine.a = 2.0f;
 	if (car->_state & RM_CAR_STATE_NO_SIMU) {
 		engine.a = 0.0f;
 		engine.lp = 1.0;
