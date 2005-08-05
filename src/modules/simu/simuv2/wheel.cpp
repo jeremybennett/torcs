@@ -193,7 +193,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	{
 		// calculate _skid and _reaction for sound.
-		if (v < 2.0f && fabs(wrl) < 2.0f) {
+		if (v < 2.0f) {
 			car->carElt->_skid[index] = 0.0f;
 		} else {
 			car->carElt->_skid[index] =  MIN(1.0f, (s*reaction_force*0.0002f));
