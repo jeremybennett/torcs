@@ -29,7 +29,7 @@
 #define _TRACKV1_H_
 
 #include <tgf.h>
-#include <linalg_t.h>
+#include <tmath/linalg_t.h>
 
 #define TRK_IDENT	0	/* from 0x01 to 0xFF */
 
