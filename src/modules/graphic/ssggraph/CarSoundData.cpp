@@ -56,6 +56,9 @@ CarSoundData::CarSoundData(int id, SoundInterface* sound_interface)
 	sgVec3 zeroes = {0.0f, 0.0f, 0.0f};
 	setCarPosition(zeroes);
 	setCarSpeed(zeroes);
+	setListenerPosition(zeroes);
+
+	attenuation = 0.0f;
 }
 void CarSoundData::setEngineSound (TorcsSound* engine_sound, float rpm_scale)
 {
@@ -111,7 +114,7 @@ void CarSoundData::calculateEngineSound (tCarElt* car)
 {
 	float mpitch = base_frequency * (float)(car->_enginerpm) / 600.0;
 	engine.f = mpitch;
-	engine.a = 2.0f;
+	engine.a = 1.0f;
 	if (car->_state & RM_CAR_STATE_NO_SIMU) {
 		engine.a = 0.0f;
 		engine.lp = 1.0;
@@ -181,14 +184,16 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
 	road.f = 0.0f;
 	float car_speed2 = car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y;
 	bool flag = false;
-	for (int i=0; i<4; i++) {
+	int i;
+	for (i = 0; i<4; i++) {
 		wheel[i].skid.a = 0.0f;
 		wheel[i].skid.f = 1.0f;
 	}
 	if (car->_state & RM_CAR_STATE_NO_SIMU) {
 		return;
 	}
-	for (int i=0; i<4; i++) {
+
+	for (i = 0; i<4; i++) {
 		if (car->_wheelSpinVel(i) > 0.1f) {
 			flag = true;
 			break;
@@ -201,7 +206,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
 		return;
 	}
 
-	for (int i=0; i<4; i++) {
+	for (i = 0; i<4; i++) {
 		char* s = NULL;
 		tdble roughness = 0.0f;
 		tdble roughnessFreq = 1.0f;
@@ -286,7 +291,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
 
 	}
 
-	for (int i=0; i<4; i++) {
+	for (i = 0; i<4; i++) {
 		tdble az = car->_yaw;
 		tdble Sinz = sin(az);
 		tdble Cosz = cos(az);

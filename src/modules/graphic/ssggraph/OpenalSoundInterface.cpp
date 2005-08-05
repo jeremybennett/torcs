@@ -40,11 +40,11 @@ OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels):
 	}
 
 	alcMakeContextCurrent( cc );
-	// - these are LOKI extensions
-	//fixup_function_pointers();
-	//talBombOnError();
+	alGetError();
+
 	alDistanceModel ( AL_INVERSE_DISTANCE );
-	//alDopplerFactor (?);
+	alDopplerFactor (1.0f);
+	//alSpeedOfSound (SPEED_OF_SOUND); // not defined in linux yet.
 	alDopplerVelocity (SPEED_OF_SOUND);
 
 	alListenerfv(AL_POSITION, far_away );
@@ -97,26 +97,27 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	ALfloat listener_speed[3];
 	ALfloat listener_orientation[6];
 	
-	for (int i=0; i<3; i++) {
+	int i;
+	for (i = 0; i<3; i++) {
 		listener_pos[i] = p_obs[i];
 		listener_speed[i] = u_obs[i];
 		listener_orientation[i] = c_obs[i];
 		listener_orientation[i+3] = a_obs[i];
 	}
-
+	
 	alListenerfv(AL_POSITION, listener_pos );
 	alListenerfv(AL_VELOCITY, listener_speed );
 	alListenerfv(AL_ORIENTATION, listener_orientation );
 	alListenerf(AL_GAIN, getGlobalGain());
 
-	for (int i=0; i<n_cars; i++) {
+	for (i = 0; i<n_cars; i++) {
 		car_sound_data[i]->copyEngPri(engpri[i]);
 	}
 
 
 	qsort ((void*) engpri, n_cars, sizeof(SoundPri), &sortSndPriority);
 
-	for (int i=0; i<n_cars; i++) {
+	for (i = 0; i<n_cars; i++) {
 		int id = engpri[i].id;
 		sgVec3 p;
 		sgVec3 u;
@@ -126,7 +127,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		TorcsSound* engine = sound_data->getEngineSound();
 		engine->setSource(p, u);
 		engine->setPitch (sound_data->engine.f);
-		engine->setVolume (sound_data->engine.a*(0.2f + 0.8f*sound_data->engine.lp));
+		engine->setVolume (sound_data->engine.a);
 		//engine->setLPFilter(sound_data->engine.lp);
 
 		engine->update();
@@ -140,7 +141,8 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 
 	float max_skid_vol[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	int max_skid_id[4] = {0,0,0,0};
-	for (int id=0; id<n_cars; id++) {
+	int id;
+	for (id = 0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
 		for (int j=0; j<4; j++) {
 			float skvol=sound_data->attenuation*sound_data->wheel[j].skid.a;
@@ -152,7 +154,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	}
 
 
-	for (int i=0; i<4; i++) {
+	for (i = 0; i<4; i++) {
 		int id = max_skid_id[i];
 		WheelSoundData* sound_data = car_sound_data[id]->wheel;
 		skid_sound[i]->setSource (sound_data[i].p, sound_data[i].u);
@@ -201,7 +203,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	SetMaxSoundCar (car_sound_data, &axle);
 
 	// One-off sounds
-	for (int id=0; id<n_cars; id++) {
+	for (id = 0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
 		sgVec3 p;
 		sgVec3 u;
