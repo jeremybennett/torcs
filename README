@@ -1,10 +1,10 @@
 Introduction
 ------------
-
 This is an all in one package of TORCS. Be aware that some included
 artwork has non free (in the GPL sense) licenses, you will find a "readme.txt"
 in those directories. The rest is either licenced under the GPL or the Free
 Art license.
+
 
 Non-Free content (in GPL sense)
 -------------------------------
@@ -17,8 +17,9 @@ readme.txt for details:
 
 Linux Installation from Source
 -------------------------------
-- requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC on AMD64.
-  Be aware that maybe just 1.8.3 works.
+- Requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC
+  on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
+  1.8.3 works.
 - Requires OpenAL from www.torcs.org for best sound quality.
 - Untar the archive
 - cd into the torcs-1.2.4 directory
@@ -30,23 +31,44 @@ Linux Installation from Source
 - start with "torcs"
 
 Command line arguments:
--s do not use multitexturing.
--d start with gdb and show a backtrace on crash (helps most combined with
-   --enable-debug at configure time).
+* -l list the dynamically linked libraries
+* -d run under gdb and print stack trace on exit, makes most sense when compile
+     with --enable-debug
+* -e display the commands to issue when you want to run under gdb
+* -s disable multitexturing, imortant for older graphics cards
+* -m use X mouse cursor and do not hide it during races
 
-Windows Installation from Source
---------------------------------
-- requires VC++ 6.0
+
+Windows Installation from Source (Release)
+------------------------------------------
+- hint: you can have a release and a debug build side by side, the release
+  version goes to "runtime" and the debug to "runtimed".
+- requires VC++ 6.0 (tested with sp6)
 - untar the archive into a path without whitespaces and special characters.
 - cd into the torcs-1.2.4 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
-- open "TORCS.dsw" with VC++ 6.0, hit cancel for the missing projects.
-- do not try to build a debug version, the projects are not set up!
 - select the TORCS project and the w32-Release version
-- compile project
+- compile project (0 warnings)
 - cd into the "runtime" directory.
 - run "wtorcs.exe"
+
+
+Windows Installation from Source (Debug version)
+------------------------------------------------
+- hint: you can have a debug and a release build side by side, the debug
+  version goes to "runtimed" and the release to "runtime".
+- requires VC++ 6.0 (tested with sp6)
+- untar the archive into a path without whitespaces and special characters.
+- cd into the torcs-1.2.4 directory
+- run setup_win32_debug.bat
+- run setup_win32-data-from-CVS_debug.bat
+- select the TORCS project and the w32-Debug version
+- compile project (131 warnings about debug symbols too long, safe to ignore
+  those)
+- cd into the "runtimed" directory.
+- run "wtorcs.exe"
+
 
 Windows Binary Installation
 ---------------------------
@@ -54,12 +76,14 @@ Windows Binary Installation
 - cd into the torcs-1.2.4 directory
 - run "wtorcs.exe"
 
+
 Testing
 -------
 Please pick bugs below and retest them (you can find the original reports on
 http://sourceforge.net/tracker/?group_id=3777&atid=103777, select "any" bugs to
 see as well the closed ones). If you find problems which should be already
 fixed or new ones please report them to the torcs-users mailing list.
+
 
 Getting Help
 ------------
@@ -73,10 +97,70 @@ Have fun, bye
 Bernhard.
 
 
+
+
+
 Changes since 1.2.3-test1
 -------------------------
-- Tried to fix problem with GL headers differences (Bernhard).
+- Tried to fix problem with GL headers differences in Linux (Bernhard).
 - Car sound adjustments and new samples (Christos).
+- Moved learning and math headers in subdirectories to stop the upcoming
+  chaos, updated dependent files (Bernhard).
+- Updated Windows project preparation bat files (Bernhard).
+- Ported the project to Windows, except olethros and learning (Bernhard).
+- Fixed resident texture problem in Windows (Bernhard).
+- Updated gl headers for Windows, oss.sgi.com (Bernhard).
+- Resolved some OpenAL compatibility issues (Bernhard).
+- Fixed XSLT problem in Windows, was a combination of wrong dtd filename,
+  missing GetLocalDir and GetDataDir setup (Bernhard).
+- Fixed weird bug in screen.cpp, execlp had wrong arguments, therefore
+  the XML results headers become formatted wrong when you changed the
+  display properties... yikes. Currently it does now work when the full path
+  is given in argv[0], so a bit more work is needed (Bernhard).
+- Make gcc 4.0.1 compile the code (warnings in trackgen are scheduled for
+  1.2.5) (Bernhard).
+- Removed unused code in various places (Bernhard).
+- Fixed virtual constructor in olethros (Bernhard).
+- Removed volume setting from sound menu (Bernhard).
+- Ported learning to Windows (Bernhard).
+- Ported olethros to Windows (Bernhard).
+- Windows version result generation now correct if either started with full
+  path or with wtorcs[.exe], current working directory must be the directory
+  containing wtorcs.exe, there is no reason to improve this more (people
+  start via desktop icon/menu entry anyway) (Bernhard).
+- Added GfCreateDir in tgf (Christos, Bernhard).
+- Fixed olethros clkdtm texture (Christos).
+- Changed some code according to mail of Steven Gutknecht, did not look at the
+  sqrt problem (if you want to have TORCS compile for a certain non free
+  compiler send me patches or the money to buy it) (Steven Gutknecht,
+  Bernhard).
+- Kicked out SmartAssert.h for 2 reasons: 1. I want to get rid of this "clever"
+  preprocessor tricks (because I think it is really silly to do such things),
+  2. Assertions simply do never belong into any code which a third person can
+  look at (if the user runs the software to code must deal with its problems by
+  itself, the messages will be meaningless for the user anyway) (Bernhard).
+- Removed assertions from Olethros (Bernhard).
+- Fixed various memory leaks in Olethros caused by sloppy use of make_message
+  (a comment regarding that: if possible do not allocate heap memory inside
+  a called function, it is better to allocate it before calling and pass the
+  buffer and its size as parameter, because the allocation is then visible on
+  the first glimpse) (Bernhard).
+- Fixed crash bug in Olethros (the proposed singleton does not work, reverted
+  to working version) (Bernhard).
+- Fixed a possible crash bug in gui.cpp, added deactivation of
+  glutKeyboardUpFunc and glutSpecialUpFunc in GfuiScreenDeactivate (Bernhard).
+- removed make_message and replaced it (Bernhard).
+- Created a debug project for Windows, needed to remove make_message, enhanced
+  custom realloc for debug versions of cutom malloc/free, added a workaround
+  for clean allocator/deallocator pair in img.cpp, etc, huh... that was a lot
+  of work (Bernhard).
+- Fixed one more olethros bug, linker (in Linux) was confused about which
+  CheckMatchingToken to use, added static to those in ANN.cpp -> file scope
+  (Bernhard).
+- Tested, build and debug build work with: gcc 3.3.1 (0 warnings), gcc 3.4.3
+  (0 warnings), gcc 4.0.1 (a lot of warnings, but just in trackgen, otherwise
+  0 warnings), vc++ 6.0sp6 (release build 0 warnings, debug 131 warnings which
+  one can safely ignore) (Bernhard).
 
 
 Changes since 1.2.3
@@ -180,46 +264,46 @@ Changes since 1.2.3
 
 TODO for 1.2.4
 --------------
-- Fix XSLT/DTD for viewing results (Report by Eugen)
 - Bugfixes and cleanup.
-- Add cameras (alpine, spring)
-- Check for lost open filehandles in Windows module loader.
-- There was a problem regarding sqrt and vc++ .NET, search mail and fix it.
-- Have a look at Andrews sf report. I already investigated this with no result,
-  but it is obvious that something is wrong. I checked so far all values up to
-  SimConfig, and they match in every run... weird. I guess it must be a problem
-  in raceengineclient, because if I comment out the simu call in ReOneStep the
-  result is the same.
-- Windows port.
 - Windows installer.
 - All-in-one.
 - Linux installer.
 - Separated packages.
 - Prepare docs (Robot tutorial -> OpenAL section, installation etc).
 - before/at release: credits update
-  Olaf Sassnick -> porsche improvment -> the_penguin@gmx.at
+  Olaf Sassnick -> porsche improvement -> the_penguin@gmx.at
   Christophe Macours -> sound samples -> http://users.belgacom.net/samples/
   Charalampos Alexopoulos -> track editor ->  http://katergo.rege.org/projects/trackeditor/
 
 
 TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
 ---------------------------------
-- SDL port (or 1.3.0 or 1.4.0, not decided finally)
+- Fix sound volume option (ask Christos).
+- Have a look at Andrews sf report. I already investigated this with no result,
+  but it is obvious that something is wrong. I checked so far all values up to
+  SimConfig, and they match in every run... weird. I guess it must be a problem
+  in raceengineclient, because if I comment out the simu call in ReOneStep the
+  result is the same.
+- fix temporary sound volume jump when changing camera with OpenAL (plib not
+  tested, verify) (ask Christos).
+- Missing doppler on Windows, investigate.
+- SDL port (or 1.3.0 or 1.4.0, not decided finally).
 - Check for memory leaks.
 - make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
-- (Fix parallel build with make -j n, breaks currently in SOLID).
+- (Fix parallel build with make -j n, breaks currently in SOLID) (Bernhard).
 - Ongoing for every release: rework free car models (several holes, no
   emmissive color of lod (model becomes dark at a certain distance), single
   sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
   (e.g. e-track-3, michigan, eventually wheel-1, e-track-2).
+- Add cameras (alpine, spring)
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
 - check and merge Christos camera code.
-- Integrate documentation into CVS/distribution
+- Integrate documentation into CVS/distribution.
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
   not hurt).
 - merge bt_2004 into bt.
@@ -228,7 +312,7 @@ TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
 - fix tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers and use just one sided
   polygons (better diffuse lighting).
-- fix sound in split screen multiplayer. [in progress]
+- fix sound in split screen multiplayer. [in progress] (ask Christos).
 - Investigate non reproducable (so far) crash after changing properties in
   multiple players (human) and then doing a race with 2 players. Happend just
   after a fresh install and just once so far (is one of the shipped xml files
@@ -247,11 +331,15 @@ TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
 - hunt down all glGet* crap during the simulation.
 - verify gear switching flames for car, e.g for the 360.
 - check all textures for the user selectable cars, they should be nicer.
+- get/write raceengine.xml to users local dir.
 
 
 TODO for 1.3.0
 --------------
 - SDL port (SDL required anyway for portable sockets and threads).
+- add proper init/shutdown to every module which is not bound to anything else
+  but the loading/init/shutdown/unloading process.
+
 
 TODO for 1.9.x (pre 2.0 series, no release)
 --------------
