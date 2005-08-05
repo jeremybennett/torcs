@@ -463,17 +463,9 @@ linuxModUnloadList(tModList **modlist)
 	    fModShut();
 	}
 
-
-
-
-
-// Comment out for valgrind runs.
-dlclose(curMod->handle);
-
-
-
-
-
+	// Comment out for valgrind runs, be aware that the driving with the keyboard does
+	// just work to first time this way.
+	dlclose(curMod->handle);
 
 	free(curMod->sopath);
 	free(curMod);
