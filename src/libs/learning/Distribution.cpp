@@ -12,8 +12,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include "Distribution.h"
-#include "SmartAssert.h"
+#include <learning/Distribution.h>
+
+static const double PI = 3.14159265358979323846;
 
 void setRandomSeed(unsigned int seed)
 {
@@ -62,16 +63,16 @@ real NormalDistribution::generate()
 	}
 	
 	if (cache) {
-		return normal_rho * cos(2.0 * M_PI * normal_x) * s + m;
+		return normal_rho * cos(2.0 * PI * normal_x) * s + m;
 	} else {
-		return normal_rho * sin(2.0 * M_PI * normal_x) * s + m;	
+		return normal_rho * sin(2.0 * PI * normal_x) * s + m;	
 	}
 }
 
 real NormalDistribution::pdf(real x)
 {
 	real d = (m-x)/s;
-	return exp(-0.5 * d*d)/(sqrt(2.0 * M_PI) * s);
+	return exp(-0.5 * d*d)/(sqrt(2.0 * PI) * s);
 }
 
 real LaplacianDistribution::generate()
@@ -117,7 +118,6 @@ DiscreteDistribution::DiscreteDistribution() {
 DiscreteDistribution::DiscreteDistribution(int N) {
 	p = NULL;
 	n_outcomes = 0;
-	SMART_ASSERT (N>0)(N);
 	p = (real*) malloc (sizeof(real) * N);
 	n_outcomes = N;
 	real invN = 1.0/((real) N);
@@ -140,7 +140,6 @@ real DiscreteDistribution::generate()
 			return (real) i;
 		}
 	}
-	SMART_ASSERT (0)(sum);
 	return 0.0;
 }
 

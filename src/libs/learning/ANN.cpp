@@ -10,8 +10,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "ANN.h"
-#include "string_utils.h"
+#include <learning/ANN.h>
+#include <learning/string_utils.h>
+#include <learning/Distribution.h>
 
 
 #undef ANN_DBUG
@@ -182,7 +183,8 @@ Layer *ANN_AddLayer(ANN * ann, int n_inputs, int n_outputs, real * x)
 		ANN_FreeLayer(l);
 		return NULL;
 	}
-	for (int i=0; i<n_outputs; i++) {
+	int i;
+	for (i=0; i<n_outputs; i++) {
 		l->y[i] = 0.0;
 	}
 
@@ -191,7 +193,7 @@ Layer *ANN_AddLayer(ANN * ann, int n_inputs, int n_outputs, real * x)
 		ANN_FreeLayer(l);
 		return NULL;
 	}
-	for (int i=0; i<n_outputs; i++) {
+	for (i=0; i<n_outputs; i++) {
 		l->z[i] = 0.0;
 	}
 	if (!(l->d = AllocM(real, n_inputs + 1 /*bias */ ))) {
@@ -199,7 +201,7 @@ Layer *ANN_AddLayer(ANN * ann, int n_inputs, int n_outputs, real * x)
 		ANN_FreeLayer(l);
 		return NULL;
 	}
-	for (int i=0; i<n_inputs+1; i++) {
+	for (i=0; i<n_inputs+1; i++) {
 		l->d[i] = 0.0;
 	}
 
@@ -214,10 +216,10 @@ Layer *ANN_AddLayer(ANN * ann, int n_inputs, int n_outputs, real * x)
 	l->rbf = NULL;
 
 	real bound = 2.0f / sqrt((real) n_inputs);
-	for (int i = 0; i < n_inputs + 1 /*bias */ ; i++) {
+	for (i = 0; i < n_inputs + 1 /*bias */ ; i++) {
 		Connection *c = &l->c[i * n_outputs];
 		for (int j = 0; j < n_outputs; j++) {
-			c->w = (drand48() - 0.5f)* bound;;
+			c->w = (urandom() - 0.5f)* bound;;
 			c->c = 1;
 			c->e = 0.0f;
 			c->dw = 0.0f;
@@ -293,8 +295,8 @@ Layer *ANN_AddRBFLayer(ANN * ann, int n_inputs, int n_outputs, real * x)
 	for (int i = 0; i < n_inputs + 1 /*bias */ ; i++) {
 		RBFConnection *c = &l->rbf[i * n_outputs];
 		for (int j = 0; j < n_outputs; j++) {
-			c->w = (drand48() - 0.5f) * bound;;
-			c->m = (drand48() - 0.5f) * 2.0f;
+			c->w = (urandom() - 0.5f) * bound;;
+			c->m = (urandom() - 0.5f) * 2.0f;
 			c++;
 		}
 	}
@@ -461,7 +463,7 @@ void ANN_CalculateLayerOutputs(Layer * current_layer, bool stochastic)
 		for (i = 0; i < n_inputs; i++) {
 			for (j = 0; j < n_outputs; j++) {
 				// using uniform bounded.. 
-				real w = c->w + (drand48()-0.5)*c->v ;
+				real w = c->w + (urandom()-0.5f)*c->v ;
 				z[j] += x[i] * w;
 				c++;
 			}
@@ -469,7 +471,7 @@ void ANN_CalculateLayerOutputs(Layer * current_layer, bool stochastic)
 		
 		// bias
 		for (j = 0; j < n_outputs; j++) {
-			real w = c->w + (drand48()-0.5)*c->v ;
+			real w = c->w + (urandom()-0.5f)*c->v ;
 			z[j] += w;
 			c++;
 		}
@@ -618,7 +620,7 @@ real ANN_Backpropagate(LISTITEM * p, real * d, bool use_eligibility, real TD)
 		//message ("and to prev");
 		back_layer = (Layer *) back->obj;
 		for (i = 0; i < l->n_inputs; i++) {
-			real der = 0.0;
+			real der = 0.0f;
 
 			Connection *c = &l->c[i * l->n_outputs];
 			for (j = 0; j < l->n_outputs; j++) {
@@ -653,13 +655,13 @@ real ANN_Backpropagate(LISTITEM * p, real * d, bool use_eligibility, real TD)
 				if (use_eligibility) {
 					c->e = c->e * l->lambda + l->x[i]* d[j];
 					delta = a * c->e * TD; //better?
-					c->v += (1.0 - l->zeta)*c->v+(l->zeta)*delta*delta;
+					c->v += (1.0f - l->zeta)*c->v+(l->zeta)*delta*delta;
 				} else {
 					delta = dx * d[j];
 				}
 				c->dw += delta;
-				c->v = (1.0 - l->zeta)*c->v + (l->zeta)*fabs(delta);
-				if (c->v < 0.01) c->v = 0.01;
+				c->v = (1.0f - l->zeta)*c->v + (l->zeta)*fabs(delta);
+				if (c->v < 0.01f) c->v = 0.01f;
 				c++;
 			}
 		} else {
@@ -673,9 +675,9 @@ real ANN_Backpropagate(LISTITEM * p, real * d, bool use_eligibility, real TD)
 				}
 				c->w += delta;
 				delta /= a;
-				c->v = (1.0 - l->zeta)*c->v + (l->zeta)*fabs(delta);
+				c->v = (1.0f - l->zeta)*c->v + (l->zeta)*fabs(delta);
 				//printf("%f\n", c->v);
-				if (c->v < 0.01) c->v = 0.01;
+				if (c->v < 0.01f) c->v = 0.01f;
 				c++;
 			}
 		}
@@ -694,7 +696,7 @@ real ANN_Backpropagate(LISTITEM * p, real * d, bool use_eligibility, real TD)
 				}
 				c->dw += delta;
 				c->v = (1.0 - l->zeta)*c->v + (l->zeta)*fabs(delta);
-				if (c->v < 0.01) c->v = 0.01;
+				if (c->v < 0.01f) c->v = 0.01f;
 				c++;
 			}
 		} else {
@@ -707,8 +709,8 @@ real ANN_Backpropagate(LISTITEM * p, real * d, bool use_eligibility, real TD)
 					delta = a * d[j];
 				}
 				c->w += delta;
-				c->v = (1.0 - l->zeta)*c->v + (l->zeta)*fabs(delta);
-				if (c->v < 0.01) c->v = 0.01;
+				c->v = (1.0f - l->zeta)*c->v + (l->zeta)*fabs(delta);
+				if (c->v < 0.01f) c->v = 0.01f;
 				c++;
 			}
 		}
@@ -834,7 +836,7 @@ real ANN_GetError(ANN * ann)
 	real e = ann->error[i];
 	sum += e*e;
     }
-    return sqrt(sum);
+    return (real) sqrt(sum);
 }
 
 //==========================================================
@@ -1064,7 +1066,7 @@ void ANN_SetOutputsToTanH(ANN * ann)
 /// Exponential hook
 real Exp(real x)
 {
-	return exp(x);
+	return (real) exp(x);
 }
 
 //==========================================================
@@ -1082,7 +1084,7 @@ real Exp_d(real x)
 /// Hyperbolic tangent hook
 real htan(real x)
 {
-	return tanh(x);
+	return (real) tanh(x);
 }
 
 //==========================================================
@@ -1091,8 +1093,8 @@ real htan(real x)
 /// Hyperbolic tangent derivative hook
 real htan_d(real x)
 {
-	real f = tanh(x);
-	return (1.0 - f * f);
+	real f = (real) tanh(x);
+	return (real) (1.0 - f * f);
 }
 
 //==========================================================
@@ -1142,27 +1144,24 @@ real linear_d(real x)
 }
 
 /// Check that tags match
-inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
+static inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 {
 	int l = 1+strlen(tag);
 	buf = SetStringBufferLength (buf, l);
 	if (buf==NULL) {
-		free(tag);
 		return false;
 	}
 	fread(buf->c, sizeof(char), l, f);
 
 	if (strcmp(tag,buf->c)) {
 		fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
-		free(tag);
 		return false;
 	}
-	free(tag);
 	return true;
 }
 
 /// Write a token
-inline void WriteToken (char* tag, FILE* f)
+static inline void WriteToken (char* tag, FILE* f)
 {
 	fwrite (tag, sizeof(char), 1+strlen(tag), f);
 }
@@ -1197,21 +1196,21 @@ ANN* LoadANN(FILE* f)
 		return NULL;
 	}
 	StringBuffer* rtag = NewStringBuffer (256);
-	CheckMatchingToken(make_message("VSOUND_ANN"), rtag, f);
+	CheckMatchingToken("VSOUND_ANN", rtag, f);
 	int n_inputs;
 	int n_outputs;
 	fread(&n_inputs, sizeof(int), 1, f);
 	fread(&n_outputs, sizeof(int), 1, f);
 	ANN* ann = NewANN (n_inputs, n_outputs);
-	CheckMatchingToken(make_message("Layer Data"), rtag, f);
+	CheckMatchingToken("Layer Data", rtag, f);
 	int n_layers;
 	fread(&n_layers, sizeof(int), 1, f);
 	for (int i=0; i<n_layers-1; i++) {
 		int layer_type;
-		CheckMatchingToken(make_message("TYPE"), rtag, f);
+		CheckMatchingToken("TYPE", rtag, f);
 		fread(&layer_type, sizeof(int), 1, f);
 		int nhu;
-		CheckMatchingToken(make_message("UNITS"), rtag, f);
+		CheckMatchingToken("UNITS", rtag, f);
 		fread(&nhu, sizeof(int), 1, f);
 		if (layer_type==0) {
 			ANN_AddHiddenLayer(ann, nhu);
@@ -1222,7 +1221,7 @@ ANN* LoadANN(FILE* f)
 	{
 		int layer_type =0;
 		ANN_Init(ann);
-		CheckMatchingToken(make_message("Output Type"), rtag, f);
+		CheckMatchingToken("Output Type", rtag, f);
 		fread(&layer_type, sizeof(int), 1, f);
 		if (layer_type==0) {
 			ANN_SetOutputsToLinear(ann);	
@@ -1234,12 +1233,12 @@ ANN* LoadANN(FILE* f)
 	LISTITEM* list_item = FirstListItem(ann->c);
 	while (list_item) {
 		Layer* l = (Layer*) list_item->obj;
-		CheckMatchingToken(make_message("Connections"), rtag, f);
+		CheckMatchingToken("Connections", rtag, f);
 		int size = (l->n_inputs + 1 /*bias*/) * l->n_outputs;
 		fread(l->c, size, sizeof(Connection), f);
 		list_item = NextListItem (ann->c);
 	}
-	CheckMatchingToken(make_message("END"), rtag, f);
+	CheckMatchingToken("END", rtag, f);
 
 	FreeStringBuffer (&rtag);
 	return ann;
@@ -1254,10 +1253,10 @@ int SaveANN(ANN* ann, FILE* f)
 	
 	StringBuffer* rtag = NewStringBuffer (256);
 
-	WriteToken(make_message("VSOUND_ANN"), f);
+	WriteToken("VSOUND_ANN", f);
 	fwrite(&ann->n_inputs, sizeof(int), 1, f);
 	fwrite(&ann->n_outputs, sizeof(int), 1, f);
-	WriteToken(make_message("Layer Data"), f);
+	WriteToken("Layer Data", f);
 	int n_layers = 0;
 	LISTITEM* list_item = FirstListItem(ann->c);
 	while (list_item) {
@@ -1270,15 +1269,15 @@ int SaveANN(ANN* ann, FILE* f)
 		Layer* l = (Layer*) list_item->obj;
 
 		int layer_type = 0;
-		WriteToken(make_message("TYPE"), f);
+		WriteToken("TYPE", f);
 		fwrite(&layer_type, sizeof(int), 1, f);
 
 		int nhu = l->n_outputs;
-		WriteToken(make_message("UNITS"), f);
+		WriteToken("UNITS", f);
 		fwrite(&nhu, sizeof(int), 1, f);
 		list_item = NextListItem (ann->c);
 	}
-	WriteToken(make_message("Output Type"), f);
+	WriteToken("Output Type", f);
 	{
 		int layer_type = 0;
 		LISTITEM *c;
@@ -1296,12 +1295,12 @@ int SaveANN(ANN* ann, FILE* f)
 	list_item = FirstListItem(ann->c); 
 	while(list_item) {
 		Layer* l = (Layer*) list_item->obj;
-		WriteToken(make_message("Connections"), f);
+		WriteToken("Connections", f);
 		int size = (l->n_inputs + 1 /*bias*/) * l->n_outputs;
 		fwrite(l->c, size, sizeof(Connection), f);
 		list_item = NextListItem(ann->c);
 	}
-	WriteToken(make_message("END"), f);
+	WriteToken("END", f);
 
 	FreeStringBuffer (&rtag);
 	return 0;

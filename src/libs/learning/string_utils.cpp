@@ -13,10 +13,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "string_utils.h"
+#include <learning/string_utils.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <portability.h>
 
 static char msgbuf[10000];
 static FILE* msgport = stderr;
@@ -52,7 +53,8 @@ char *strConcat(int n, ...)
   int taille = 0;
   va_list args;
   va_start(args, n);
-  for(int i = 0; i < n; i++)
+  int i;
+  for(i = 0; i < n; i++)
   {
     strs[i] = va_arg(args, char *);
     taille += strlen(strs[i]);
@@ -63,7 +65,7 @@ char *strConcat(int n, ...)
   char *the_concat = (char *)malloc(sizeof(char)*taille);
   the_concat[0] = '\0';
 
-  for(int i = 0; i < n; i++)
+  for(i = 0; i < n; i++)
     strcat(the_concat, strs[i]);
 
   free(strs);
@@ -84,50 +86,6 @@ void message(const char* msg, ...)
 }
 #define INIT_MSG_LEN 100
 
-//==================================================================== 
-// make_message () -                       Dynamically create a string
-//--------------------------------------------------------------------
-//
-// This function has the same functionality as printf(), in that it
-// allows to print a string using a format string and a variable
-// number of arguments. The result is written into a dynamically
-// allocated buffer, which should be freed by the caller.
-//
-// ARGUMENTS
-// - Format string and varargs, just like printf()
-//
-// RETURNS
-// - A pointer to the new string.
-//
-// NOTE
-// - Code taken from manpages: PRINTF(3)
-
-char *make_message (const char *fmt, ...)
-{
-     /* Guess we need no more than INIT_MSG_LEN bytes. */
-     int n, size = INIT_MSG_LEN;
-     char *p;
-     va_list ap;
-     if ((p = (char *) malloc (size)) == NULL)
-	  return NULL;
-     while (1)
-     {
-	  /* Try to print in the allocated space. */
-	  va_start (ap, fmt);
-	  n = vsnprintf (p, size, fmt, ap);
-	  va_end (ap);
-	  /* If that worked, return the string. */
-	  if (n > -1 && n < size)
-	       return p;
-	  /* Else try again with more space. */
-	  if (n > -1) /* glibc 2.1 */
-	       size = n + 1; /* precisely what is needed */
-	  else	/* glibc 2.0 */
-	       size *= 2; /* twice the old size */
-	  if ((p = (char *) realloc (p, size)) == NULL)
-	       return NULL;
-     }
-}
 
 //==================================================================== 
 // read_string()                             Dynamically read a string

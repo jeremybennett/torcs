@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "learn_debug.h"
+#include <learning/learn_debug.h>
 
 /** 
 	\file string_utils.h
@@ -40,37 +40,35 @@ typedef struct StringBuffer_ {
 } StringBuffer;
 
 /// Make a new stringbuffer
-StringBuffer* NewStringBuffer (int length);
+extern StringBuffer* NewStringBuffer (int length);
 
 /// Given a pointer to a stringbuffer pointer, free it and clear it
-void FreeStringBuffer (StringBuffer** s);
+extern void FreeStringBuffer (StringBuffer** s);
 
-StringBuffer* SetStringBufferLength (StringBuffer* s, unsigned int l);
+extern StringBuffer* SetStringBufferLength (StringBuffer* s, unsigned int l);
 
 /** Returns the name of a file without leading pathname.
     (It's not a new string, but a pointer in the given string)
  */
-char *strBaseName(char *filename);
+extern char *strBaseName(char *filename);
 
 /** Returns a fresh copy of the name of a file without suffix.
     (Trailing chars after c) You have to free the memory!
 */
-char *strRemoveSuffix(char *filename, char c='.');
+extern char *strRemoveSuffix(char *filename, char c='.');
 
 /** Returns the concatenation #n# strings.
     The strings are the parameters given after #n#;
     You have to free the memory!
 */
-char *strConcat(int n, ...);
+extern char *strConcat(int n, ...);
 
 /** Prints a message */
-void message(const char* msg, ...);
-/** Creates a message string dynamically */
-char* make_message (const char *fmt, ...);
+extern void message(const char* msg, ...);
 /** Reads a string dynamically */
-StringBuffer* read_string (FILE* f, StringBuffer* s);
+extern StringBuffer* read_string (FILE* f, StringBuffer* s);
 /** copies a string */
-char* string_copy (char* c);
+extern char* string_copy (char* c);
 //@}
 
 

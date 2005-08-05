@@ -13,8 +13,7 @@
 #ifndef DISTRIBUTION_H
 #define DISTRIBUTION_H
 
-#include "real.h"
-#include "SmartAssert.h"
+#include <learning/real.h>
 #include <cmath>
 #include <iostream>
 

@@ -12,19 +12,19 @@
 #ifndef MATH_FUNCTIONS_H
 #define MATH_FUNCTIONS_H
 
-#include "real.h"
+#include <learning/real.h>
 
-int ArgMin (int n, real* x);
-int ArgMax (int n, real* x);
-real SmoothMaxGamma (real f1, real f2, real lambda, real c);
-real SmoothMaxPNorm (real f1, real f2, real p);
-void SoftMax (int n, real* Q, real* p, real beta);
-void SoftMin (int n, real* Q, real* p, real beta);
-void Normalise (real* src, real* dst, int n_elements);
-real EuclideanNorm (real* a, real* b, int n);
-real SquareNorm (real* a, real* b, int n);
-real LNorm (real* a, real* b, int n, real p);
-real Sum (real* a, int n);
+extern int ArgMin (int n, real* x);
+extern int ArgMax (int n, real* x);
+extern real SmoothMaxGamma (real f1, real f2, real lambda, real c);
+extern real SmoothMaxPNorm (real f1, real f2, real p);
+extern void SoftMax (int n, real* Q, real* p, real beta);
+extern void SoftMin (int n, real* Q, real* p, real beta);
+extern void Normalise (real* src, real* dst, int n_elements);
+extern real EuclideanNorm (real* a, real* b, int n);
+extern real SquareNorm (real* a, real* b, int n);
+extern real LNorm (real* a, real* b, int n, real p);
+extern real Sum (real* a, int n);
 
 template<class T>
 inline const T sign(const T& x)

@@ -17,10 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "learn_debug.h"
-#include "string_utils.h"
-#include "List.h"
-#include "real.h"
+#include <learning/learn_debug.h>
+#include <learning/string_utils.h>
+#include <learning/List.h>
+#include <learning/real.h>
 
 /** \file ANN.h
     \brief A neural network implementation.
@@ -105,65 +105,65 @@ typedef struct ANN_ {
 
 /**************** User-level API ******************/
 /* Object Management Interface */
-ANN* NewANN(int n_inputs, int n_outputs);
-int DeleteANN(ANN* ann);
-ANN* LoadANN(char* filename);
-ANN* LoadANN(FILE* f);
-int SaveANN(ANN* ann, char* filename);
-int SaveANN(ANN* ann, FILE* f);
+extern ANN* NewANN(int n_inputs, int n_outputs);
+extern int DeleteANN(ANN* ann);
+extern ANN* LoadANN(char* filename);
+extern ANN* LoadANN(FILE* f);
+extern int SaveANN(ANN* ann, char* filename);
+extern int SaveANN(ANN* ann, FILE* f);
 
 /* Setup Inteface */
-int ANN_AddHiddenLayer(ANN* ann, int n_nodes);
-int ANN_AddRBFHiddenLayer (ANN* ann, int n_nodes);
-int ANN_Init(ANN* ann);
-void ANN_SetOutputsToTanH(ANN* ann);
-void ANN_SetOutputsToLinear(ANN* ann);
-void ANN_SetLearningRate(ANN* ann, real a);
-void ANN_SetLambda(ANN * ann, real lambda);
-void ANN_SetZeta(ANN * ann, real lambda);
-void ANN_Reset(ANN* ann);
+extern int ANN_AddHiddenLayer(ANN* ann, int n_nodes);
+extern int ANN_AddRBFHiddenLayer (ANN* ann, int n_nodes);
+extern int ANN_Init(ANN* ann);
+extern void ANN_SetOutputsToTanH(ANN* ann);
+extern void ANN_SetOutputsToLinear(ANN* ann);
+extern void ANN_SetLearningRate(ANN* ann, real a);
+extern void ANN_SetLambda(ANN * ann, real lambda);
+extern void ANN_SetZeta(ANN * ann, real lambda);
+extern void ANN_Reset(ANN* ann);
 
 /* Functionality Interface */
-real ANN_Input(ANN* ann, real* x);
-real ANN_StochasticInput(ANN * ann, real * x);
-real ANN_Train(ANN* ann, real* x, real* t);
-real ANN_Delta_Train(ANN * ann, real* delta, real TD = 0.0);
-void ANN_SetBatchMode(ANN* ann, bool batch);
-void ANN_BatchAdapt(ANN* ann);
-real ANN_Test(ANN* ann, real* x, real* t);
-real* ANN_GetOutput(ANN* ann);
-real ANN_GetError(ANN* ann);
-real* ANN_GetErrorVector(ANN* ann);
+extern real ANN_Input(ANN* ann, real* x);
+extern real ANN_StochasticInput(ANN * ann, real * x);
+extern real ANN_Train(ANN* ann, real* x, real* t);
+extern real ANN_Delta_Train(ANN * ann, real* delta, real TD = 0.0);
+extern void ANN_SetBatchMode(ANN* ann, bool batch);
+extern void ANN_BatchAdapt(ANN* ann);
+extern real ANN_Test(ANN* ann, real* x, real* t);
+extern real* ANN_GetOutput(ANN* ann);
+extern real ANN_GetError(ANN* ann);
+extern real* ANN_GetErrorVector(ANN* ann);
 
 /********* Low-level code **********/
 
 /* Sub-object management functions */
-Layer* ANN_AddLayer (ANN* ann, int n_inputs, int n_outputs, real* x);
-Layer* ANN_AddRBFLayer (ANN* ann, int n_inputs, int n_outputs, real* x);
-void ANN_FreeLayer (void* l);
-void ANN_FreeLayer (Layer* l);
+extern Layer* ANN_AddLayer (ANN* ann, int n_inputs, int n_outputs, real* x);
+extern Layer* ANN_AddRBFLayer (ANN* ann, int n_inputs, int n_outputs, real* x);
+extern void ANN_FreeLayer (void* l);
+extern void ANN_FreeLayer (Layer* l);
 
 /* Calculations */
-void ANN_CalculateLayerOutputs (Layer* current_layer, bool stochastic=false);
-real ANN_Backpropagate (LISTITEM* p, real* d, bool use_eligibility=false, real TD = 0.0);
-void ANN_RBFCalculateLayerOutputs (Layer* current_layer, bool stochastic=false);
-real ANN_RBFBackpropagate (LISTITEM* p, real* d, bool use_eligibility=false, real TD = 0.0);
-void ANN_LayerBatchAdapt (Layer* l);
+extern void ANN_CalculateLayerOutputs (Layer* current_layer, bool stochastic=false);
+extern real ANN_Backpropagate (LISTITEM* p, real* d, bool use_eligibility=false, real TD = 0.0);
+extern void ANN_RBFCalculateLayerOutputs (Layer* current_layer, bool stochastic=false);
+extern real ANN_RBFBackpropagate (LISTITEM* p, real* d, bool use_eligibility=false, real TD = 0.0);
+extern void ANN_LayerBatchAdapt (Layer* l);
 
 /* Output functions and derivatives */
-real Exp (real x);
-real Exp_d (real x);
-real htan (real x);
-real htan_d (real x);
-real dtan (real x);
-real dtan_d (real x);
-real linear (real x);
-real linear_d (real x);
+extern real Exp (real x);
+extern real Exp_d (real x);
+extern real htan (real x);
+extern real htan_d (real x);
+extern real dtan (real x);
+extern real dtan_d (real x);
+extern real linear (real x);
+extern real linear_d (real x);
 
 /* Debugging functions */
-real ANN_LayerShowWeights (Layer* l);
-real ANN_ShowWeights(ANN* ann);
-void ANN_ShowOutputs(ANN* ann);
-real ANN_ShowInputs(ANN* ann);
-real ANN_LayerShowInputs(Layer* l);
+extern real ANN_LayerShowWeights (Layer* l);
+extern real ANN_ShowWeights(ANN* ann);
+extern void ANN_ShowOutputs(ANN* ann);
+extern real ANN_ShowInputs(ANN* ann);
+extern real ANN_LayerShowInputs(Layer* l);
 #endif /* ANN_H */

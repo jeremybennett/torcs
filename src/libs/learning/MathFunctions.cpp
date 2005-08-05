@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "MathFunctions.h"
+#include <learning/MathFunctions.h>
 #include <cmath>
 #include <cassert>
 
@@ -49,25 +49,27 @@ int ArgMax (int n, real* x)
 void SoftMax (int n, real* Q, real* p, real beta)
 {
 	real sum = 0.0;
-	for (int i=0; i<n; i++) {
-		p[i] = exp (beta * Q[i]);
+	int i;
+	for (i=0; i<n; i++) {
+		p[i] = (real) exp (beta * Q[i]);
 		sum += p[i];
 	}
-	sum = 1.0/sum;
-	for (int i=0; i<n; i++) {
+	sum = 1.0f/sum;
+	for (i=0; i<n; i++) {
 		p[i] *= sum;
 	}
 }
 	
 void SoftMin (int n, real* Q, real* p, real beta)
 {
-	real sum = 0.0;
-	for (int i=0; i<n; i++) {
-		p[i] = exp (-beta * Q[i]);
+	real sum = 0.0f;
+	int i;
+	for (i=0; i<n; i++) {
+		p[i] = (real) exp (-beta * Q[i]);
 		sum += p[i];
 	}
-	sum = 1.0/sum;
-	for (int i=0; i<n; i++) {
+	sum = 1.0f/sum;
+	for (i=0; i<n; i++) {
 		p[i] *= sum;
 	}
 }
@@ -145,7 +147,7 @@ real SmoothMaxGamma (real f1, real f2, real lambda, real c)
 real SmoothMaxPNorm (real f1, real f2, real p)
 {
 	assert(p>0);
-	return pow(pow(f1,p)+pow(f2,p),1/p);
+	return (real) pow(pow(f1,p)+pow(f2,p),1/p);
 }
 	
 /// Normalise a vector to a destination vector (low level)
@@ -157,18 +159,19 @@ real SmoothMaxPNorm (real f1, real f2, real p)
 /// It is safe for src and dst to point at the same vector.
 void Normalise (real* src, real* dst, int n_elements)
 {
-	real sum = 0;
-	for (int i=0; i<n_elements; i++) {
+	real sum = 0.0f;
+	int i;
+	for (i=0; i<n_elements; i++) {
 		sum += src[i];
 	}
 	if (sum==0) {
-		for (int i=0; i<n_elements; i++) {
+		for (i=0; i<n_elements; i++) {
 			dst[i] = src[i];
 		}
 		return;
 	}
 	assert(sum>0);
-	for (int i=0; i<n_elements; i++) {
+	for (i=0; i<n_elements; i++) {
 		dst[i] = src[i]/sum;
 	}
 }
@@ -190,7 +193,7 @@ real EuclideanNorm (real* a, real* b, int n)
 		register real d = (*a++) - (*b++);
 		sum += d*d;
 	}
-	return sqrt(sum);
+	return (real) sqrt(sum);
 }
 
 real LNorm (real* a, real* b, int n, real p)
@@ -198,9 +201,9 @@ real LNorm (real* a, real* b, int n, real p)
 	real sum = 0;
 	for (int i=0; i<n; i++) {
 		register real d = (*a++) - (*b++);
-		sum += pow(d,p);
+		sum += (real) pow(d,p);
 	}
-	return pow(sum,1.0/p);
+	return (real) pow(sum,1.0/p);
 }
 
 real Sum (real* a, int n)

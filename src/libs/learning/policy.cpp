@@ -12,9 +12,14 @@
  ***************************************************************************/
 
 #include <cstring>
-#include "learn_debug.h"
-#include "policy.h"
-#include "MathFunctions.h"
+#include <learning/learn_debug.h>
+#include <learning/policy.h>
+#include <learning/MathFunctions.h>
+#ifdef WIN32
+#include <float.h>
+#define isnan _isnan
+#endif // WIN32
+
 #undef POLICY_LOG
 
 #ifndef POLICY_LOG
@@ -108,10 +113,10 @@ DiscretePolicy::DiscretePolicy (int n_states, int n_actions, real alpha,
 	confidence = false;
 	confidence_uses_gibbs = true;
 	confidence_distribution = SINGULAR;
-	zeta = 0.01;
-	tdError = 0.0;
-	expected_r = 0.0;
-	expected_V = 0.0;
+	zeta = 0.01f;
+	tdError = 0.0f;
+	expected_r = 0.0f;
+	expected_V = 0.0f;
 	n_samples = 0;
 	replacing_traces = false;
 }
@@ -128,16 +133,17 @@ void DiscretePolicy::saveState(FILE* f)
 		
 		//softMax(Q[s]);
 		real sum2=0.0;
-		for (int a=0; a<n_actions; a++) {
+		int a;
+		for (a=0; a<n_actions; a++) {
 			sum2 += eval[a];
 		}
-		for (int a=0; a<n_actions; a++) {
+		for (a=0; a<n_actions; a++) {
 			fprintf (f, "%f ", Q[s][a]);
 		}
-		for (int a=0; a<n_actions; a++) {
+		for (a=0; a<n_actions; a++) {
 			fprintf (f, "%f ", P[s][a]);
 		}
-		for (int a=0; a<n_actions; a++) {
+		for (a=0; a<n_actions; a++) {
 			fprintf (f, "%f ", vQ[s][a]);
 		}
 	}
@@ -151,21 +157,23 @@ DiscretePolicy::~DiscretePolicy()
 	real sum = 0.0;
 	FILE* f = fopen ("/tmp/discrete","w");
 
-	for (int s=0; s<n_states; s++) {
+	int s;
+	for (s=0; s<n_states; s++) {
 		sum += Q[s][argMax(Q[s])];
 		if (f) {
 			//softMax(Q[s]);
 			real sum2=0.0;
-			for (int a=0; a<n_actions; a++) {
+			int a;
+			for (a=0; a<n_actions; a++) {
 				sum2 += eval[a];
 			}
-			for (int a=0; a<n_actions; a++) {
+			for (a=0; a<n_actions; a++) {
 				fprintf (f, "%f ", Q[s][a]);
 			}
-			for (int a=0; a<n_actions; a++) {
+			for (a=0; a<n_actions; a++) {
 				fprintf (f, "%f ", P[s][a]);
 			}
-			for (int a=0; a<n_actions; a++) {
+			for (a=0; a<n_actions; a++) {
 				fprintf (f, "%f ", vQ[s][a]);
 			}
 			fprintf (f, "\n");
@@ -178,7 +186,7 @@ DiscretePolicy::~DiscretePolicy()
 
 	logmsg ("#Expected return of greedy policy over random distribution of states: %f\n", sum/((real) n_states));
 
-	for (int s=0; s<n_states; s++) {
+	for (s=0; s<n_states; s++) {
 		delete [] P[s];
 		delete [] Q[s];
 		delete [] e[s];
@@ -320,13 +328,13 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 	} else if (pursuit) {
 		real sum = 0.0;
 		a = -1;
-		for (int j=0; j<n_actions; j++) {
+		int j;
+		for (j=0; j<n_actions; j++) {
 			sum += P[s][j];
-			SMART_ASSERT (P[s][j]>=0.0)(P[s][j])(s)(j);
 		}
 		real X = urandom()*sum;
 		real dsum=0.0;
-		for (int j=0; j<n_actions; j++) {
+		for (j=0; j<n_actions; j++) {
 			dsum += P[s][j];
 			if (X<=dsum) {
 				a = j;
@@ -364,6 +372,7 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 	}
 
 	real EQ_s = 0.0;
+	int i;
 
 	switch (learning_method) {
 		
@@ -379,7 +388,7 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 		amax = a; //? correct ? 
 		Normalise(eval, eval, n_actions);
 		EQ_s = 0.0;
-		for (int i=0; i<n_actions; i++) {
+		for (i=0; i<n_actions; i++) {
 			EQ_s += eval[i] * Q[s][i];
 		}
 		break;
@@ -398,7 +407,7 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 		}
 		real ad = alpha*delta;
 		real gl = gamma * lambda;
-		real variance_threshold = 0.0001;		
+		real variance_threshold = 0.0001f;		
 		if  (confidence_eligibility == false) {
 			vQ[ps][pa] = (1.0 - zeta)*vQ[ps][pa] + zeta*(ad*ad);
 			if (vQ[ps][pa]<variance_threshold) {
@@ -409,7 +418,7 @@ int DiscretePolicy::SelectAction (int s, real r, int forced_a)
 		if (ps>max_el_state) max_el_state = ps;
 		
 
-		for (int i=0; i<n_states; i++) {
+		for (i=0; i<n_states; i++) {
 			//for (int i=min_el_state; i<=max_el_state; i++) {
 			bool el=true;
 			for (int j=0; j<n_actions; j++) {
@@ -498,18 +507,19 @@ void DiscretePolicy::loadFile (char* f)
 		fclose(fh);
 		return;
 	}
-		
-	for (int i=0; i<n_states; i++) {
+
+	int i, j;
+	for (i=0; i<n_states; i++) {
 		fread((void *) Q[i], sizeof(real), n_actions, fh);
-		for (int j=0; j<n_actions; j++) {
+		for (j=0; j<n_actions; j++) {
 			if ((fabs (Q[i][j])>100.0)||(isnan(Q[i][j]))) {
 				printf ("l: %d %d %f\n", i,j,Q[i][j]);
 				Q[i][j] = 0.0;
 			}
 		}
 	}
-	for (int i=0; i<n_states; i++) {
-		for (int j=0; j<n_actions; j++) {
+	for (i=0; i<n_states; i++) {
+		for (j=0; j<n_actions; j++) {
 			{
 				P[i][j] = 1.0/((real) n_actions);
 			}
@@ -704,13 +714,14 @@ void DiscretePolicy::useGibbsConfidence (bool gibbs)
 // ---------- action selection helpers -------------
 int DiscretePolicy::confMax(real* Qs, real* vQs, real p) {
 	real sum=0.0;
+	int a;
 #if 0
-	for (int a=0; a<n_actions; a++) {
+	for (a=0; a<n_actions; a++) {
 		eval[a] = exp(pow(Qs[a]/sqrt(vQs[a]), p));
 		sum += eval[a];
 	}
 #else
-	for (int a=0; a<n_actions; a++) {
+	for (a=0; a<n_actions; a++) {
 		real Q = Qs[a];
 		real cum = 1.0;
 		//real v = sqrt(vQs[a]);
@@ -725,7 +736,7 @@ int DiscretePolicy::confMax(real* Qs, real* vQs, real p) {
 #endif
 	real X = urandom()*sum;
 	real dsum = 0.0;
-	for (int a=0; a<n_actions; a++) {
+	for (a=0; a<n_actions; a++) {
 		dsum += eval[a];
 		if (X<=dsum) 
 			return a;
@@ -770,15 +781,16 @@ int DiscretePolicy::confSample(real* Qs, real* vQs) {
 }
 
 int DiscretePolicy::softMax(real* Qs) {
-	real sum=0.0;
-	real beta = 1.0/temp;
-	for (int a=0; a<n_actions; a++) {
+	real sum=0.0f;
+	real beta = 1.0f/temp;
+	int a;
+	for (a=0; a<n_actions; a++) {
 		eval[a] = exp(beta * Qs[a]);
 		sum += eval[a];
 	}
 	real X = urandom()*sum;
 	real dsum = 0.0;
-	for (int a=0; a<n_actions; a++) {
+	for (a=0; a<n_actions; a++) {
 		dsum += eval[a];
 		if (X<=dsum) 
 			return a;

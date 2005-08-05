@@ -15,7 +15,7 @@
 #ifndef ANN_POLICY_H
 #define ANN_POLICY_H
 
-#include "policy.h"
+#include <learning/policy.h>
 /** 
 	A type of discrete action policy using a neural network for function approximation.
 	
@@ -57,10 +57,11 @@ public:
 	/// \deprecated Get the probabilities of all actions - call after SelectAction().
 	virtual real* getActionProbabilities () {
 		real sum = 0.0;
-		for (int i=0; i<n_actions; i++) {
+		int i;
+		for (i=0; i<n_actions; i++) {
 			sum += eval[i];
 		}
-		for (int i=0; i<n_actions; i++) {
+		for (i=0; i<n_actions; i++) {
 			eval[i] = eval[i]/sum;
 		}
 		return eval;

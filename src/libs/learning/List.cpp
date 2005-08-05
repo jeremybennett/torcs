@@ -10,8 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "List.h"
-#include "learn_debug.h"
+#include <learning/List.h>
+#include <learning/learn_debug.h>
 
 LIST* List(void)
 {

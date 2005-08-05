@@ -22,9 +22,9 @@ SOLIBDIR     = .
 
 SOURCES      = policy.cpp ann_policy.cpp List.cpp string_utils.cpp Distribution.cpp MathFunctions.cpp ANN.cpp
 
-EXPORTS      = policy.h ann_policy.h ANN.h learn_debug.h real.h string_utils.h List.h MathFunctions.h Distribution.h SmartAssert.h
+EXPORTS      = policy.h ann_policy.h ANN.h learn_debug.h real.h string_utils.h List.h MathFunctions.h Distribution.h
 
-EXPDIR       = include
+EXPDIR       = include/learning
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

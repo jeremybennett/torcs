@@ -1,10 +1,17 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "real.h"
+#include <learning/real.h>
 
+#ifdef _MSC_VER
+#define Serror   printf("# ERROR (%s:  %d) ", __FILE__, __LINE__); printf
+#define Swarning  printf("# WARNING (%s:  %d) ", __FILE__, __LINE__); printf
+#else // _MSC_VER
 #define Serror   printf("# ERROR (%s - %s:  %d) ", __FUNCTION__,__FILE__, __LINE__); printf
 #define Swarning  printf("# WARNING (%s - %s:  %d) ", __FUNCTION__,__FILE__, __LINE__); printf
+#endif // _MSC_VER
+
+
 //#define logmsg (void)
 //#define dbgmsg (void)
 #define logmsg printf ("# "); printf
