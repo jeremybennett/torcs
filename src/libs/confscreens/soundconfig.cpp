@@ -45,7 +45,7 @@ static int SoundOptionId;
 
 // volume
 static float VolumeValue = 100.0f;
-static int VolumeValueId;
+//static int VolumeValueId;
 
 // gui screen handles.
 static void	*scrHandle = NULL;
@@ -119,7 +119,8 @@ static void changeSoundState(void *vp)
 }
 
 // Volume
-static void changeVolume(void * /* dummy */)
+/*
+static void changeVolume(void * )
 {
     char	*val;
 	char buf[1024];
@@ -128,7 +129,7 @@ static void changeVolume(void * /* dummy */)
     sprintf(buf, "%g", VolumeValue);
     GfuiEditboxSetString(scrHandle, VolumeValueId, buf);
 }
-
+*/
 
 static void onActivate(void * /* dummy */)
 {
@@ -140,7 +141,7 @@ static void onActivate(void * /* dummy */)
 void * SoundMenuInit(void *prevMenu)
 {
 	int x, y, x2, x3, x4, dy;
-	char buf[1024];
+//	char buf[1024];
 	
 
 	// Has screen already been created?
@@ -179,7 +180,7 @@ void * SoundMenuInit(void *prevMenu)
 	SoundOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
 	GfuiLabelSetColor(scrHandle, SoundOptionId, LabelColor);
 
-
+/*
     y -= dy;
     GfuiLabelCreate(scrHandle, "Volume:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 
@@ -189,7 +190,7 @@ void * SoundMenuInit(void *prevMenu)
 				    x2+10, y+2, x4-x2+20, 16, NULL, (tfuiCallback)NULL, changeVolume);
 
 
-
+*/
 	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 	NULL, saveSoundOption, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
