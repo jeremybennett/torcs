@@ -42,8 +42,8 @@ SimEngineConfig(tCar *car)
     car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423f);
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622f);
     car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33f);
-	car->engine.exhaust_pressure = 0.0;
-	car->engine.exhaust_refract = 0.1;
+	car->engine.exhaust_pressure = 0.0f;
+	car->engine.exhaust_refract = 0.1f;
 
 
     sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
@@ -170,9 +170,9 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 		if (dp>rth) {
 			engine->exhaust_pressure += rth;
 		}
-		engine->exhaust_pressure *= 0.9;
-		car->carElt->priv.smoke += 5.0*engine->exhaust_pressure;
-		car->carElt->priv.smoke *= 0.99;
+		engine->exhaust_pressure *= 0.9f;
+		car->carElt->priv.smoke += 5.0f*engine->exhaust_pressure;
+		car->carElt->priv.smoke *= 0.99f;
 	}
 
     if ((clutch->transferValue > 0.01) && (trans->gearbox.gear)) {

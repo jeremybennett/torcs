@@ -581,7 +581,7 @@ void buildWalls(tTrackSeg *start, int side) {
 			t3Dd svr = s->vertex[TR_SR];
 			t3Dd evl = s->vertex[TR_EL];
 			t3Dd evr = s->vertex[TR_ER];
-			static float weps = 0.01;
+			static float weps = 0.01f;
 
 			// Close the start with a ploygon?
 			if (p == NULL || p->style != TR_WALL ||
