@@ -21,7 +21,7 @@
 #define _LINALG_H_
 
 inline float sign(float d) {
-	return (d >= 0.0) ? 1.0 : -1.0;
+	return (d >= 0.0f) ? 1.0f : -1.0f;
 }
 
 
@@ -116,7 +116,7 @@ inline float v2d::cosalpha(const v2d &p2, const v2d &c) const
 inline v2d v2d::rotate(const v2d &c, float arc) const
 {
 	v2d d = *this-c;
-	float sina = sin(arc), cosa = cos(arc);
+	float sina = (float) sin(arc), cosa = (float) cos(arc);
 	return c + v2d(d.x*cosa-d.y*sina, d.x*sina+d.y*cosa);
 }
 
@@ -124,14 +124,14 @@ inline v2d v2d::rotate(const v2d &c, float arc) const
 /* compute the length of the vector */
 inline float v2d::len(void) const
 {
-	return sqrt(x*x+y*y);
+	return (float) sqrt(x*x+y*y);
 }
 
 
 /* distance between *this and p */
 inline float v2d::dist(const v2d &p) const
 { 
-	return sqrt((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y));
+	return (float) sqrt((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y));
 }
 
 

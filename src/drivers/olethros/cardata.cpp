@@ -21,18 +21,14 @@
 #ifdef USE_OLETHROS_NAMESPACE
 namespace olethros {
 #endif
-Cardata* Cardata::Instance()
-{
-	static Cardata obj;
-	return &obj;
-}
+
 void SingleCardata::update()
 {
 	trackangle = RtTrackSideTgAngleL(&(car->_trkPos));
 	speed = getSpeed(car, trackangle);
 	angle = trackangle - car->_yaw;
 	NORM_PI_PI(angle);
-	width = car->_dimension_x*sin(angle) + car->_dimension_y*cos(angle);
+	width = car->_dimension_x* (float)sin(angle) + car->_dimension_y* (float)cos(angle);
 }
 
 
@@ -42,23 +38,14 @@ float SingleCardata::getSpeed(tCarElt *car, float ltrackangle)
 	v2d speed, dir;
 	speed.x = car->_speed_X;
 	speed.y = car->_speed_Y;
-	dir.x = cos(ltrackangle);
-	dir.y = sin(ltrackangle);
+	dir.x = (float) cos(ltrackangle);
+	dir.y = (float) sin(ltrackangle);
 	return speed*dir;
 }
 
 
-
-Cardata::Cardata()
+Cardata::Cardata(tSituation* s)
 {
-	data = NULL;
-}
-void Cardata::initialise(tSituation* s)
-{
-	//printf ("Cardata: init\n");
-	if (data) {
-		return;
-	}
 	ncars = s->_ncars;
 
 	data = new SingleCardata[ncars];
@@ -72,10 +59,7 @@ void Cardata::initialise(tSituation* s)
 Cardata::~Cardata()
 {
 	//printf ("Cardata: destroying\n");
-	if (data) {
-		delete [] data;
-	}
-	data = NULL;
+	delete [] data;
 }
 
 

@@ -51,6 +51,8 @@ namespace olethros
 /** Some type of strategy */
 class AbstractStrategy {
 public:
+
+	virtual ~AbstractStrategy() {};
 	/// Set Initial fuel at race start.
 	virtual void setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s) = 0;
 	/// Update internal data at every timestep.
@@ -70,8 +72,8 @@ public:
 class SimpleStrategy : public AbstractStrategy {
 public:
 	SimpleStrategy();
-	virtual ~SimpleStrategy();
-	
+	~SimpleStrategy();
+
 	virtual void setFuelAtRaceStart(tTrack* t, void **carParmHandle, tSituation *s);
 	virtual void update(tCarElt* car, tSituation *s);
 	virtual bool needPitstop(tCarElt* car, tSituation *s, Opponents* opponents);

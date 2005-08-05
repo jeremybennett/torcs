@@ -22,9 +22,13 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstdio>
-#include <cassert>
 #include <exception>
 #include <stdexcept>
+#ifdef WIN32
+#include <float.h>
+#define isnan _isnan
+#endif
+
 
 Vector::Vector(int N_, enum BoundsCheckingStatus check)
 {
@@ -107,7 +111,6 @@ void Vector::Resize(int N_)
 
 float DotProd(Vector* A, Vector* B)
 {
-	assert (A->n==B->n);
 	int n = A->n;
 	float sum = 0.0;
 	for (int i=0; i<n; i++) {
@@ -117,8 +120,6 @@ float DotProd(Vector* A, Vector* B)
 }
 void Sub (Vector* A, Vector* B, Vector* R)
 {
-	assert (A->n==B->n);
-	assert (B->n==R->n);
 	for (int i=0; i<A->n; i++) {
 		R->x[i] = A->x[i] - B->x[i];
 	}
@@ -126,7 +127,6 @@ void Sub (Vector* A, Vector* B, Vector* R)
 ParametricLine::ParametricLine (Vector* A, Vector* B)
 {
 	int N = A->n;
-	assert(N==B->n);
     R = new Vector(N);
     Q = new Vector(N);
 	for (int i=0; i<N; i++) {
@@ -143,7 +143,6 @@ ParametricLine::~ParametricLine()
 
 void ParametricLine::PointCoords (float t, Vector* X)
 {
-	assert(X->n==Q->n);
 	for (int i=0; i<X->n; i++) {
 		X->x[i] = Q->x[i] + t*R->x[i];
 	}
@@ -155,18 +154,18 @@ Vector* GetNormalToLine(Vector* R)
 	int N = R->Size();
 
 	Vector* Q = new Vector(N);
-
+	int i;
 	int index = 0;
-	for (int i=0; i<N; i++) {
+	for (i=0; i<N; i++) {
 		if ((*R)[i]!=0.0f) {
 			index = i;
 			break;
 		}
 	}
-	
+
 	float sum = 0.0f;
-	
-	for (int i=0; i<N; i++) {
+
+	for (i=0; i<N; i++) {
 		if (i!=index) {
 			sum += (*R)[i];
 			(*Q)[i] = 1.0f;
@@ -174,7 +173,7 @@ Vector* GetNormalToLine(Vector* R)
 	}
 	(*Q)[index] = -sum/(*R)[index];
 	float Z = sqrt(DotProd (Q,Q));
-	for (int i=0; i<N; i++) {
+	for (i=0; i<N; i++) {
 		(*Q)[i] /= Z;
 	}
 	return Q;
@@ -184,7 +183,6 @@ Vector* GetNormalToLine(Vector* R)
 float IntersectLineLine(ParametricLine* A, ParametricLine* B)
 {
 	int N = A->R->n;
-	assert(B->R->n==N);
 	Vector b(N);
 	Sub (B->R, A->R, &b);
 	Vector* a = A->Q;
@@ -215,7 +213,6 @@ float IntersectLineLine(ParametricLine* A, ParametricLine* B)
 Vector* IntersectSphereLine(ParametricLine* line, Vector* C, float r)
 {
 	int N=C->n;
-	assert(line->R->n==N);
 	Vector D(N);
 	Sub (line->R, C, &D);
 	float a = DotProd (line->Q, line->Q);
@@ -259,13 +256,14 @@ float CalculateRadiusPoints (std::vector<Vector> P)
 	Vector* B = GetNormalToLine (Z.Q);
 	delete Z.Q;
 	Z.Q = B;
-	for (int i=0; i<N; i++) {
+	int i;
+	for (i=0; i<N; i++) {
 		(*W.R)[i] = (P[0][i] + P[1][i])/2.0f;
 		(*Z.R)[i] = (P[1][i] + P[2][i])/2.0f;
 	}
 	float t = IntersectLineLine (&W, &Z);
 	Vector C(N);
-	for (int i=0; i<N; i++) {
+	for (i=0; i<N; i++) {
 		C[i] = t*(*W.Q)[i] + (*W.R)[i];
 	}
 	float r = 0.0f;
@@ -311,26 +309,27 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 	
 	int d=P[0].n;
 	int iter = 1000;
-	float a = 0.001;
+	float a = 0.001f;
 	float delta_prev = 100;
 	float converge = 1.0;
 	Vector mean(d);
 	float** Q = new float* [N];
 	float* Q_buffer = new float[N*d];
-	for (int j=0; j<N; j++) {
+	int i, j;
+	for (j=0; j<N; j++) {
 		Q[j] = &Q_buffer[j*d];
 	}
-	for (int i=0; i<d; i++) {
+	for (i=0; i<d; i++) {
 		mean[i] = 0.0;
-		for (int j=0; j<N; j++) {
+		for (j=0; j<N; j++) {
 			mean[i] += P[j][i];
 		}
 		mean[i] /= (float) N;
 	}
 	
 	float scale = 0;
-	for (int i=0; i<d; i++) {
-		for (int j=0; j<N; j++) {
+	for (i=0; i<d; i++) {
+		for (j=0; j<N; j++) {
 			Q[j][i] = P[j][i] - mean[i];
 			if (fabs(Q[j][i]) > scale) {
 				scale = fabs(Q[j][i]);
@@ -338,30 +337,30 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 		}
 	}
 
-	for (int i=0; i<d; i++) {
-		for (int j=0; j<N; j++) {
+	for (i=0; i<d; i++) {
+		for (j=0; j<N; j++) {
 			Q[j][i] /= scale;
 		}
 	}
 
 	Vector center(d);
 	float r = 1.0;//sphere->r / scale;
-	for (int i=0; i<d; i++) {
+	for (i=0; i<d; i++) {
 		center[i] =  ((*(sphere->C))[i] - mean[i]) / scale;
 	}
 
 	for (int n=0; n<iter; n++) {
 		float delta_total = 0.0;
 		for (int m=0; m<N; m++) {
-			for (int i=0; i<N; i++) {
+			for (i=0; i<N; i++) {
 				float delta = 0;
 				float Er = 0;
-				for (int j=0; j<d; j++) {
+				for (j=0; j<d; j++) {
 					float de = (Q[i][j]-center[j]);
 					Er += de*de;
 				}
 				delta = a*(Er-r*r);
-				for (int j=0; j<d; j++) {
+				for (j=0; j<d; j++) {
 					center[j] += delta*center[j];
 					center[j] += Q[i][j]*delta;
 					r += 2*r*delta;
@@ -369,7 +368,7 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 				delta_total += delta;
 			}
 			if (isnan(r)) {
-				for (int i=0; i<d; i++) {
+				for (i=0; i<d; i++) {
 					center[i] =  ((*(sphere->C))[i] - mean[i]) / scale;
 				}
 				r = 1.0;
@@ -380,13 +379,13 @@ void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 		float aconv=0.5;
 		converge = aconv*converge + (1-aconv) * fabs(delta_total-delta_prev)/a;
 		delta_prev = delta_total;
-		if (converge < 0.0001) {
+		if (converge < 0.0001f) {
 			break;
 		}
 	}
 			
 	sphere->r = r * scale;
-	for (int i=0; i<d; i++) {
+	for (i=0; i<d; i++) {
 		(*(sphere->C))[i] = center[i]*scale + mean[i];
 	}
 	delete [] Q_buffer;

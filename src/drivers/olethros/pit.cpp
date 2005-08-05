@@ -168,12 +168,12 @@ bool Pit::isBetween(float fromstart)
 bool Pit::isTimeout(float distance)
 {
 	if (car->_speed_x > 1.0 || distance > 3.0 || !getPitstop()) {
-		pittimer = 0.0;
+		pittimer = 0.0f;
 		return false;
 	} else {
-		pittimer += RCM_MAX_DT_ROBOTS;
-		if (pittimer > 3.0) {
-			pittimer = 0.0;
+		pittimer += (float) RCM_MAX_DT_ROBOTS;
+		if (pittimer > 3.0f) {
+			pittimer = 0.0f;
 			return true;
 		} else {
 			return false;

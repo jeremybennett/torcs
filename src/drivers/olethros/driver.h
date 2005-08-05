@@ -127,7 +127,6 @@ protected:
 	// Misc functions
 	void AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi);
 	void ShowPaths();
-	void MakeDir (char* s);
 
 	float current_allowed_speed;
 	// Per robot global data.
@@ -145,7 +144,7 @@ protected:
 	float pit_exit_timer;
 	AbstractStrategy *strategy;		///< Pit stop strategy.
 
-	//static Cardata *cardata;		///< Data about all cars shared by all instances.
+	static Cardata *cardata;		///< Data about all cars shared by all instances.
 	SingleCardata *mycardata;		///< Pointer to "global" data about my car.
 	static double currentsimtime;	///< Store time to avoid useless updates.
 

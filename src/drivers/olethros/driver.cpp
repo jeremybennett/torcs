@@ -30,10 +30,16 @@
    smoother.
 */
 #include "driver.h"
-#include "ann_policy.h"
-#include "MathFunctions.h"
+#include <learning/ann_policy.h>
+#include <learning/MathFunctions.h>
 #include "geometry.h"
 #include <math.h>
+#include <portability.h>
+
+#ifdef WIN32
+#include <float.h>
+#define isnan _isnan
+#endif
 
 #undef TEST_PITSTOPS
 
@@ -85,11 +91,11 @@ const float Driver::FILTER_STEER_FEEDBACK = 0.8f;        ///< [-] Feedback from 
 const float Driver::FILTER_PREDICT_FEEDBACK = 0.0f;        ///< [-] Feedback from prediction error to steer filter.
 const float Driver::FILTER_TARGET_FEEDBACK = 0.2f;        ///< [-] Feedback from target error to steer filter.
 const bool Driver::USE_NEW_ALPHA=false;  ///< Use actual trajectory..
-#if 0
+
 Cardata *Driver::cardata = NULL;
-#endif
 double Driver::currentsimtime;
 
+static const int SBSIZE = 1024;
 
 Driver::Driver(int index)
 {
@@ -107,48 +113,6 @@ Driver::Driver(int index)
 	pit_exit_timer = 1.0f;
 }
 
-void Driver::MakeDir (char* s)
-{
-	
-	if (s==NULL) {
-		return;
-	}
-	
-	int err = mkdir(s,
-					S_IRUSR|S_IWUSR|S_IXUSR|
-					S_IRGRP|S_IWGRP|S_IXGRP|
-					S_IROTH|S_IXOTH);
-
-	if (err) {
-		if (errno==ENOENT) { // try again
-		    char* p = strRemoveSuffix (s, '/');
-			MakeDir (p);
-			free (p);
-			err = mkdir(s,
-					S_IRUSR|S_IWUSR|S_IXUSR|
-					S_IRGRP|S_IWGRP|S_IXGRP|
-					S_IROTH|S_IXOTH);
-		}
-	}
-
-	if (err) {
-		switch (errno) {
-		case EPERM: Serror ("Filesystem does not support mkdir.\n"); break;
-		case 0:
-		case EEXIST: /* No problem */ break;
-		case EFAULT: Serror ("EFAULT.\n"); break;
-		case EACCES: Serror ("Incorrect permissions.\n"); break;
-		case ENAMETOOLONG: Serror ("Name too long.\n"); break;
-		case ENOENT: Serror ("Inexistent path component.\n"); break;
-		case ENOTDIR: Serror ("Path component not director.\n"); break;
-		case ENOMEM: Serror ("ENOMEM.\n"); break;
-		case EROFS: Serror ("Read-Only File System.\n"); break;
-		case ELOOP: Serror ("Loop.\n"); break;
-		case ENOSPC: Serror ("No space.\n"); break;
-		default: Serror ("Unknown error\n"); break;
-		}
-	}
-}
 
 Driver::~Driver()
 {
@@ -161,18 +125,16 @@ Driver::~Driver()
 	if (race_type!=RM_TYPE_RACE) {
 		// We save only for practice
 		//if (race_type==RM_TYPE_PRACTICE) {
-		char* fname = make_message("%s%s%d/%s.brain",
-								   GetLocalDir(),
-								   "drivers/olethros/",
-								   INDEX, track->internalname);
-		char* path = make_message("%s%s%d",
-								   GetLocalDir(),
-								  "drivers/olethros/", INDEX);
-
-		MakeDir (path);
-
-		learn->saveParameters (fname);
-		free (fname);
+		char fname[SBSIZE];
+		snprintf(fname, SBSIZE, "%s%s%d/%s.brain", GetLocalDir(),
+				 "drivers/olethros/", INDEX, track->internalname);
+		
+		char path[SBSIZE];
+		snprintf(path, SBSIZE, "%s%s%d", GetLocalDir(), "drivers/olethros/", INDEX);
+		
+		if (GfCreateDir(path) == GF_DIR_CREATED) {
+			learn->saveParameters (fname);
+		}
 	}
 #endif
 
@@ -198,12 +160,11 @@ Driver::~Driver()
 	delete [] max_speed_list;
 	delete learn;
 	delete strategy;
-#if 0
+
 	if (cardata != NULL) {
 		delete cardata;
 		cardata = NULL;
 	}
-#endif
 }
 
 
@@ -262,7 +223,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 /// Start a new race.
 void Driver::newRace(tCarElt* car, tSituation *s)
 {
-	float deltaTime = RCM_MAX_DT_ROBOTS;
+	float deltaTime = (float) RCM_MAX_DT_ROBOTS;
 	MAX_UNSTUCK_COUNT = int(UNSTUCK_TIME_LIMIT/deltaTime);
 	OVERTAKE_OFFSET_INC = OVERTAKE_OFFSET_SPEED*deltaTime;
 	stuck = 0;
@@ -294,18 +255,14 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	//ShowPaths();
 
 	// Create just one instance of cardata shared by all drivers.
-#if 0
 	if (cardata == NULL) {
 		cardata = new Cardata(s);
 	}
-#else
-	Cardata::Instance()->initialise(s);
-#endif
-	mycardata = Cardata::Instance()->findCar(car);
+	mycardata = cardata->findCar(car);
 	currentsimtime = s->currentTime;
 
 	// initialize the list of opponents.
-	opponents = new Opponents(s, this, Cardata::Instance());
+	opponents = new Opponents(s, this, cardata);
 	opponent = opponents->getOpponentPtr();
 
 	// Initialize radius of segments.
@@ -323,12 +280,10 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	// If we are not practicing, we read old parameters,
 	// otherwise we start from scratch.
 	if (race_type!=RM_TYPE_PRACTICE) {
-		char* fname = make_message("%s%s%d/%s.brain",
-								   GetLocalDir(),
-								   "drivers/olethros/",
-								   INDEX, track->internalname);
+		char fname[SBSIZE];
+		snprintf(fname, SBSIZE, "%s%s%d/%s.brain", GetLocalDir(),
+				 "drivers/olethros/", INDEX, track->internalname);
 		learn->loadParameters (fname);
-		free (fname);
 		learn->SetSafetyThreshold (0.0f);
 	} else {
 		learn->SetSafetyThreshold (0.5f);
@@ -897,7 +852,7 @@ float Driver::getClutch()
 		clutchtime = MIN(CLUTCH_FULL_MAX_TIME, clutchtime);
 		float clutcht = (CLUTCH_FULL_MAX_TIME - clutchtime)/CLUTCH_FULL_MAX_TIME;
 		if (car->_gear == 1 && car->_accelCmd > 0.0) {
-			clutchtime += RCM_MAX_DT_ROBOTS;
+			clutchtime += (float) RCM_MAX_DT_ROBOTS;
 		}
 
 		if (drpm > 0) {
@@ -1279,7 +1234,7 @@ void Driver::update(tSituation *s)
 		dt = s->currentTime - currentsimtime;
 		if (dt<0.0) dt = 0.0;
 		currentsimtime = s->currentTime;
-		Cardata::Instance()->update();
+		cardata->update();
 	}
 
 	// Update the local data rest.
@@ -1361,7 +1316,7 @@ void Driver::initCa()
 	float h = 0.0;
 	int i;
 	for (i = 0; i < 4; i++)
-		h += GfParmGetNum(car->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*) NULL, 0.20);
+		h += GfParmGetNum(car->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*) NULL, 0.20f);
 	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
 	CA = h*cl + 4.0*wingca;
 }
@@ -1843,7 +1798,7 @@ float Driver::filterTrk(tSituation* s, float accel)
 			//printf ("LCR: %fs %d\n", danger, seg->id);
 		} else if (u_toright>0) {
 			danger = -2.0*car->_trkPos.toRight/u_toright;
-			steer_adjust = 0.1;//(1.0 + fabs(danger));
+			steer_adjust = 0.1f;//(1.0 + fabs(danger));
 			//printf ("RCR: %fs %d\n", danger, seg->id);
 		}
 	}
@@ -1851,11 +1806,11 @@ float Driver::filterTrk(tSituation* s, float accel)
 		//printf ("LEFT: %f\n", car->_steerCmd);
 		if (u_toright<0) {
 			danger = -car->_trkPos.toRight/u_toright;
-			steer_adjust = 1.0/(1.0+fabs(danger));
+			steer_adjust = 1.0f/(1.0f+fabs(danger));
 			//printf ("RCL: %fs %d\n", danger, seg->id);
 		} else if (u_toleft<0) {
-			danger = -2.0*car->_trkPos.toLeft/u_toleft;
-			steer_adjust = -0.1;//(1.0+fabs(danger));
+			danger = -2.0f*car->_trkPos.toLeft/u_toleft;
+			steer_adjust = -0.1f;//(1.0+fabs(danger));
 			//printf ("LCL: %fs %d\n", danger, seg->id);
 		}
 	}
@@ -1956,7 +1911,8 @@ void Driver::prepareTrack()
 	seg_alpha_new = new float [N];
 	float* targets = new float [N];
 	float* radi = new float [N];
-	for (int i=0; i<N; i++) {
+	int i;
+	for (i=0; i<N; i++) {
 		seg_alpha[i] = 0.5;
 		seg_alpha_new[i] = 0.0;
 		targets[i] = 0.0;
@@ -1972,7 +1928,7 @@ void Driver::prepareTrack()
 	tTrackSeg* seg = track->seg;
 
 	seg = track->seg;
-	for (int i=0; i<N; i++, seg=seg->next) {
+	for (i=0; i<N; i++, seg=seg->next) {
 		seg_alpha[seg->id] = 0.5;
 	}
 
@@ -2091,7 +2047,8 @@ void Driver::prepareTrack()
 			float lt = sqrt(s.x*s.x + s.y*s.y);
 			float trace = 0.003f;
 			float trace_decay = .9f;
-			for (int k0=0; k0<10; k0++, nseg=nseg->next) {
+			int k0;
+			for (k0=0; k0<10; k0++, nseg=nseg->next) {
 				trace *= trace_decay;
 				float An = seg_alpha[nseg->id];
 				float xk = (An*nseg->vertex[TR_SL].x + (1-An)*nseg->vertex[TR_SR].x);
@@ -2116,7 +2073,7 @@ void Driver::prepareTrack()
 			s.y = c.y - n.y;
 			lt = sqrt(s.x*s.x + s.y*s.y);
 			trace = 0.003f;
-			for (int k0=0; k0<10; k0++, pseg=pseg->prev) {
+			for (k0=0; k0<10; k0++, pseg=pseg->prev) {
 				trace *= trace_decay;
 				float Ap = seg_alpha[pseg->id];
 				float xk = (Ap*pseg->vertex[TR_SL].x + (1-Ap)*pseg->vertex[TR_SR].x);
@@ -2214,7 +2171,6 @@ void Driver::prepareTrack()
 			}
 			
 			//printf ("%d %d %d\n", prev_seg->id, seg->id, next_seg->id);
-			SMART_ASSERT (prev_seg!=next_seg);
 			if (next_eval == seg) {
 				if (seg->type==TR_STR) {
 					for (tTrackSeg* s = prev_seg->next; s != next_seg; s=s->next) {
@@ -2585,7 +2541,8 @@ void Driver::AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi)
 {
 	float sum = 0.0;
 	float max = 0.0;
-	for (tTrackSeg* aseg = cs->next; 
+	tTrackSeg* aseg;
+	for (aseg = cs->next; 
 		 aseg != ce;
 		 aseg = aseg->next) {
 		int id = aseg->id;
@@ -2595,7 +2552,7 @@ void Driver::AdjustRadi(tTrackSeg* cs, tTrackSeg* ce, float* radi)
 	}
 	//ideal_radius[i] = seg->radius;// * radi[i]/sum;
 
-	for (tTrackSeg* aseg = cs->next; 
+	for (aseg = cs->next; 
 		 aseg != ce;
 		 aseg = aseg->next) {
 		int id = aseg->id;

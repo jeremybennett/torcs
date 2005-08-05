@@ -71,23 +71,16 @@ class SingleCardata {
 };
 
 
-// TODO: use singleton pattern.
 class Cardata {
  public:
-	static Cardata* Instance();
-	void initialise(tSituation* s);
-	
+	Cardata(tSituation* s);
+	~Cardata();
 	void update();
 	SingleCardata *findCar(tCarElt *car);
 
  protected:
 	SingleCardata *data;	// Array with car data.
 	int ncars;				// # of elements in data.
- private:
-	Cardata();
-	Cardata(const Cardata&);
-	Cardata& operator=(const Cardata&);
-	~Cardata();
 };
 
 

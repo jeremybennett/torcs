@@ -109,7 +109,7 @@ private:
 		void Measure(float taccel_, float derr_, float dtm_)
 		{
 			float r = (float) k;
-			float d = 1.0/(1.0 + (float) k);
+			float d = 1.0f/(1.0f + (float) k);
 			taccel = d *(taccel * r + taccel_);
 			derr = d *(derr * r + derr_);
 			dtm = d *(dtm * r + dtm_);

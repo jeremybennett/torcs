@@ -19,9 +19,14 @@
 
 
 #include "learn.h"
-#include "ANN.h"
-#include "string_utils.h"
+#include <learning/ANN.h>
+#include <learning/string_utils.h>
 #include <iostream>
+
+#ifdef WIN32
+#include <float.h>
+#define finite _finite
+#endif
 
 #ifdef USE_OLETHROS_NAMESPACE
 namespace olethros
@@ -34,17 +39,14 @@ inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 	int l = 1+strlen(tag);
 	buf = SetStringBufferLength (buf, l);
 	if (buf==NULL) {
-		free(tag);
 		return false;
 	}
 	fread(buf->c, sizeof(char), l, f);
 
 	if (strcmp(tag,buf->c)) {
 		fprintf (stderr, "Expected tag <%s>, found <%s>.\n", tag, buf->c);
-		free(tag);
 		return false;
 	}
-	free(tag);
 	return true;
 }
 
@@ -264,7 +266,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 				if ((car->_trkPos.toLeft - .5*car->_dimension_y<0)
 					|| (car->_speed_x < 0)) {
  					dtheta = - risk_factor;
-					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
+					PropagateUpdateBackwards (seg->prev, -0.1f, 0.01f, 200.0f);
 					time_since_accident = 0.0f;
 					//printf ("DTH %d\n ", seg->id);
 				}
@@ -302,7 +304,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 				if ((car->_trkPos.toRight - .5*car->_dimension_y < 0)
 					|| (car->_speed_x < 0)) {
 					dtheta = - risk_factor;
-					PropagateUpdateBackwards (seg->prev, -0.1, 0.01, 200.0);
+					PropagateUpdateBackwards (seg->prev, -0.1f, 0.01f, 200.0f);
 					time_since_accident = 0.0f;
 					//printf ("DTH %d\n", seg->id);
 				}
@@ -312,9 +314,9 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 			if (local_update) {
 				//radius[updateid[seg->id]] += 0.01*dr;
 				if (dr<0) {
-					PropagateUpdateBackwards (seg->prev, 0.01*dr, 0.005, 400.0);
+					PropagateUpdateBackwards (seg->prev, 0.01f*dr, 0.005f, 400.0f);
 				} else {
-					PropagateUpdateBackwards (seg, 0.01*dr, 0.05, 100.0);
+					PropagateUpdateBackwards (seg, 0.01f*dr, 0.05f, 100.0f);
 				}
 
 			}
@@ -370,9 +372,9 @@ void SegLearn::PropagateUpdateBackwards (tTrackSeg* pseg, float d, float beta, f
 
 float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float derr, float dtm)
 {
-	float alpha = 0.05;
-	float beta = 1.0;
-	float lambda = 1.0;
+	float alpha = 0.05f;
+	float beta = 1.0f;
+	float lambda = 1.0f;
 	tTrackSeg* seg = car->_trkPos.seg;
 	
 	float in_track = 1.0;
@@ -436,7 +438,6 @@ float SegLearn::predictedAccel (tTrackSeg* seg)
 int SegLearn::segQuantum (int segid)
 {
 	int q = segid/segments_per_quantum;
-	assert (q<n_quantums);
 	return q;
 }
 
@@ -514,9 +515,6 @@ void SegLearn::AdjustFriction (tTrackSeg* s, float G, float mass_, float CA_, fl
 
 bool SegLearn::LoadParameter (float* p, int n, FILE* f)
 {
-	assert (n>0);
-	assert (f);
-	assert (p);
 	fread (p, sizeof(float), n, f);
 	bool flag = false;
 	int i;
@@ -541,7 +539,7 @@ void SegLearn::loadParameters (char* fname)
 	}
 	
 	StringBuffer* rtag = NewStringBuffer (256);
-	CheckMatchingToken(make_message("OLETHROS_LEARN"), rtag, f);
+	CheckMatchingToken("OLETHROS_LEARN", rtag, f);
 	int local_n_quantums;
 	fread (&local_n_quantums, sizeof(int), 1, f);
 	if (local_n_quantums!=n_quantums) {
@@ -549,10 +547,10 @@ void SegLearn::loadParameters (char* fname)
 		fclose(f);
 		return;
 	}
-	CheckMatchingToken(make_message("RADI"), rtag, f);
+	CheckMatchingToken("RADI", rtag, f);
 	fread (radius, n_seg, sizeof(float), f);
 
-	CheckMatchingToken(make_message("DM FRICTION"), rtag, f);
+	CheckMatchingToken("DM FRICTION", rtag, f);
 	LoadParameter (segdm, n_seg,  f);
 	LoadParameter (segdm2,  n_seg, f);
 	LoadParameter (segdm3,  n_seg, f);
@@ -560,12 +558,12 @@ void SegLearn::loadParameters (char* fname)
 	LoadParameter (&dm2, 1, f);
 	LoadParameter (&dm3, 1, f);
 
-	CheckMatchingToken(make_message("PRED ACCEL"), rtag, f);
+	CheckMatchingToken("PRED ACCEL", rtag, f);
 	LoadParameter (accel, n_quantums,  f);
-	CheckMatchingToken(make_message("PRED STEER"), rtag, f);
+	CheckMatchingToken("PRED STEER", rtag, f);
 	LoadParameter (derror, n_quantums,  f);
 	
-	CheckMatchingToken(make_message("END"),rtag, f);
+	CheckMatchingToken("END",rtag, f);
 	FreeStringBuffer(&rtag);
 	fclose(f);
 	//std::cout << "Parameters loaded\n";
@@ -582,14 +580,13 @@ void SegLearn::saveParameters (char* fname)
 	}
 
 	//StringBuffer* rtag = NewStringBuffer (256);
-	WriteToken(make_message("OLETHROS_LEARN"), f);
-
+	WriteToken("OLETHROS_LEARN", f);
 	fwrite (&n_quantums, sizeof(int), 1, f);
 
-	WriteToken(make_message("RADI"), f);
+	WriteToken("RADI", f);
 	fwrite (radius, n_seg, sizeof(float), f);
 
-	WriteToken(make_message("DM FRICTION"), f);
+	WriteToken("DM FRICTION", f);
 	fwrite (segdm, sizeof(float), n_seg,  f);
 	fwrite (segdm2, sizeof(float), n_seg, f);
 	fwrite (segdm3, sizeof(float), n_seg, f);
@@ -597,12 +594,13 @@ void SegLearn::saveParameters (char* fname)
 	fwrite (&dm2, sizeof(float), 1, f);
 	fwrite (&dm3, sizeof(float), 1, f);
 
-	WriteToken(make_message("PRED ACCEL"), f);
+	WriteToken("PRED ACCEL", f);
 	fwrite (accel, sizeof(float), n_quantums,  f);
-	WriteToken(make_message("PRED STEER"), f);
+
+	WriteToken("PRED STEER", f);
 	fwrite (derror, sizeof(float), n_quantums,  f);
-	
-	WriteToken(make_message("END"), f);
+
+	WriteToken("END", f);
 	//FreeStringBuffer(&rtag);
 	fclose(f);
 	//std::cout << "Parameters saved\n";
