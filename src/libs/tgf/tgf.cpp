@@ -18,10 +18,16 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif
+#include <errno.h>
 
 #include <tgf.h>
 #include <time.h>
+#include <string.h>
 
 extern void gfDirInit(void);
 extern void gfModInit(void);
@@ -76,7 +82,11 @@ void * _tgf_win_realloc(void * memblock, size_t size)
 	}
 
 	if (memblock != NULL) {
+#ifdef _DEBUG
+		memcpy(p, memblock, min(*(int*)((char*)memblock-2*sizeof(int)), (int)size));
+#else // _DEBUG
 		memcpy(p, memblock, min(*(int*)((char*)memblock-sizeof(int)), (int)size));
+#endif // _DEBUG
 		_tgf_win_free(memblock);
 	}
 	return p;
@@ -309,4 +319,53 @@ int GfNearestPow2 (int x)
 	return (1 << r);
 }
 
+
+int GfCreateDir(char *path)
+{
+	if (path == NULL) {
+		return GF_DIR_CREATION_FAILED;
+	}
+
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	strncpy(buf, path, BUFSIZE);
+	path = buf;
+
+#ifdef WIN32
+#define mkdir(x) _mkdir(x)
+
+	// Translate path.
+	const char DELIM = '\\';
+	int i;
+	for (i = 0; i < BUFSIZE && buf[i] != '\0'; i++) {
+		if (buf[i] == '/') {
+			buf[i] = DELIM;
+		}
+	}
+	
+#else // WIN32
+#define mkdir(x) mkdir((x), S_IRWXU);
+
+	const char DELIM = '/';
+
+#endif // WIN32
+
+	int err = mkdir(buf);
+	if (err == -1) {
+		if (errno == ENOENT) {
+			char *end = strrchr(buf, DELIM);
+			*end = '\0';
+			GfCreateDir(buf);
+			*end = DELIM;
+			err = mkdir(buf);
+
+		}
+	}
+
+	if (err == -1 && errno != EEXIST) {
+		return GF_DIR_CREATION_FAILED;
+	} else {
+		return GF_DIR_CREATED;
+	}
+}
 

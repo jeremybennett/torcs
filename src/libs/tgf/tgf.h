@@ -404,6 +404,7 @@ extern void SetDataDir(char *buf);
 extern int GetSingleTextureMode (void);
 extern void SetSingleTextureMode (void);
 extern int GfNearestPow2 (int x);
+extern int GfCreateDir(char *path);
 
 /*
  * Copyright (c) 1991, 1993
@@ -618,6 +619,9 @@ void *GfHashGetBuf(void *hash, char *key, size_t sz);
 void GfHashRelease(void *hash, tfHashFree hashFree);
 void *GfHashGetFirst(void *hash);
 void *GfHashGetNext(void *hash);
+
+#define GF_DIR_CREATION_FAILED 0
+#define GF_DIR_CREATED 1
 
 #endif /* __TGF__H__ */
 
