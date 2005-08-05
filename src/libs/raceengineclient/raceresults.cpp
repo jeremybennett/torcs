@@ -177,22 +177,22 @@ ReUpdateStandings(void)
     }
 
     /* Store the standing back */
-    for (i = 0; i < curDrv; i++) {
-	sprintf(path, "%s/%d", RE_SECT_STANDINGS, i + 1);
-	GfParmSetStr(results, path, RE_ATTR_NAME, standings[i].carName);
-	free(standings[i].carName);
-	GfParmSetStr(results, path, RE_ATTR_MODULE, standings[i].modName);
-	free(standings[i].modName);
-	GfParmSetNum(results, path, RE_ATTR_IDX, NULL, standings[i].drvIdx);
-	GfParmSetNum(results, path, RE_ATTR_POINTS, NULL, standings[i].points);
-    }
-    free(standings);
+	for (i = 0; i < curDrv; i++) {
+		sprintf(path, "%s/%d", RE_SECT_STANDINGS, i + 1);
+		GfParmSetStr(results, path, RE_ATTR_NAME, standings[i].carName);
+		free(standings[i].carName);
+		GfParmSetStr(results, path, RE_ATTR_MODULE, standings[i].modName);
+		free(standings[i].modName);
+		GfParmSetNum(results, path, RE_ATTR_IDX, NULL, standings[i].drvIdx);
+		GfParmSetNum(results, path, RE_ATTR_POINTS, NULL, standings[i].points);
+	}
+	free(standings);
 
-    sprintf(str1, "%sconfig/param.dtd", GetDataDir());
-    sprintf(str2, "<?xml-stylesheet type=\"text/xsl\" href=\"%sconfig/style.xsl\"?>", GetDataDir());
-    
-    GfParmSetDTD (results, str1, str2);
-    GfParmWriteFile(0, results, "Results");
+	sprintf(str1, "%sconfig/params.dtd", GetDataDir());
+	sprintf(str2, "<?xml-stylesheet type=\"text/xsl\" href=\"%sconfig/style.xsl\"?>", GetDataDir());
+
+	GfParmSetDTD (results, str1, str2);
+	GfParmWriteFile(0, results, "Results");
 }
 
 

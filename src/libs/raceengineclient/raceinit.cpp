@@ -145,27 +145,8 @@ static void reSelectRaceman(void *params)
 	}
 
 	e = strstr(s, PARAMEXT);
-#ifndef WIN32
 	ReInfo->_reFilename = strndup(s, e-s+1);
-#else // WIN32
-	ReInfo->_reFilename = strdup(s);
-#endif // WIN32
 	ReInfo->_reFilename[e-s] = '\0';
-/*
-
-
-
-	ReInfo->_reFilename = strdup(GfParmGetFileName(params));
-
-	while ((p = strstr(ReInfo->_reFilename, "/")) != 0) {
-		ReInfo->_reFilename = p + 1;
-	}
-
-	p = ReInfo->_reFilename;
-	p = strstr(p, PARAMEXT);
-	if (p) {
-		*p = '\0';
-	}*/
 	ReInfo->_reName = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_NAME, "");
 	ReStateApply(RE_STATE_CONFIG);
 }
