@@ -672,5 +672,7 @@ WindowsSpecInit(void)
     GfOs.dirGetList = windowsDirGetList;
     GfOs.dirGetListFiltered = windowsDirGetListFiltered;
     GfOs.timeClock = windowsTimeClock;
+
+
 }
 
