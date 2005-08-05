@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="simuv2" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="olethros" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
 
-CFG=simuv2 - Win32 Debug
+CFG=olethros - Win32 Debug
 !MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
 !MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
-!MESSAGE NMAKE /f "simuv2.mak".
+!MESSAGE NMAKE /f "olethros.mak".
 !MESSAGE 
 !MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
 !MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
-!MESSAGE NMAKE /f "simuv2.mak" CFG="simuv2 - Win32 Debug"
+!MESSAGE NMAKE /f "olethros.mak" CFG="olethros - Win32 Debug"
 !MESSAGE 
 !MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "simuv2 - Win32 Release" (basierend auf  "Win32 (x86) Dynamic-Link Library")
-!MESSAGE "simuv2 - Win32 Debug" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "olethros - Win32 Release" (basierend auf  "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "olethros - Win32 Debug" (basierend auf  "Win32 (x86) Dynamic-Link Library")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "simuv2 - Win32 Release"
+!IF  "$(CFG)" == "olethros - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -40,30 +40,29 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
-# PROP Ignore_Export_Lib 1
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "../../../export/include" /I "../../windows/include" /I "../../.." /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x40c /d "NDEBUG"
-# ADD RSC /l 0x40c /d "NDEBUG"
+# ADD BASE RSC /l 0x807 /d "NDEBUG"
+# ADD RSC /l 0x807 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 solid.lib tgf.lib robottools.lib sg.lib ul.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /map /machine:I386 /libpath:"../../../../export/lib" /libpath:"../../../windows/lib"
-# SUBTRACT LINK32 /pdb:none /nodefaultlib
+# ADD LINK32 learning.lib tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /machine:I386 /libpath:"../../../export/lib" /libpath:"../../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Release
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\simu
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\drivers\olethros
 # End Special Build Tool
 
-!ELSEIF  "$(CFG)" == "simuv2 - Win32 Debug"
+!ELSEIF  "$(CFG)" == "olethros - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -74,148 +73,119 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\simu
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
-# PROP Ignore_Export_Lib 1
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /W2 /Gm- /GX /ZI /Od /I "../../../../export/include" /I "../../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SIMUV2_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /G6 /W2 /Gm- /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /I "../../.." /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x40c /d "_DEBUG"
-# ADD RSC /l 0x40c /d "_DEBUG"
+# ADD BASE RSC /l 0x807 /d "_DEBUG"
+# ADD RSC /l 0x807 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 solid.lib tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pdbtype:sept /libpath:"../../../../export/libd" /libpath:"../../../windows/lib"
-# SUBTRACT LINK32 /pdb:none /incremental:no /nodefaultlib
+# ADD LINK32 learning.lib tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\modules\simu
+PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\drivers\olethros
 # End Special Build Tool
 
 !ENDIF 
 
 # Begin Target
 
-# Name "simuv2 - Win32 Release"
-# Name "simuv2 - Win32 Debug"
-# Begin Group "Source Files"
+# Name "olethros - Win32 Release"
+# Name "olethros - Win32 Debug"
+# Begin Group "Quellcodedateien"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\aero.cpp
+SOURCE=.\cardata.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\axle.cpp
+SOURCE=.\driver.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\brake.cpp
+SOURCE=.\geometry.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\car.cpp
+SOURCE=.\learn.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\categories.cpp
+SOURCE=.\olethros.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\collide.cpp
+SOURCE=.\olethros.def
 # End Source File
 # Begin Source File
 
-SOURCE=.\differential.cpp
+SOURCE=.\opponent.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\engine.cpp
+SOURCE=.\pit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\simu.cpp
+SOURCE=.\spline.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\simuitf.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\simuv2.def
-# End Source File
-# Begin Source File
-
-SOURCE=.\steer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\susp.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\transmission.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\wheel.cpp
+SOURCE=.\strategy.cpp
 # End Source File
 # End Group
-# Begin Group "Header Files"
+# Begin Group "Header-Dateien"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=.\aero.h
+SOURCE=.\cardata.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\axle.h
+SOURCE=.\driver.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\brake.h
+SOURCE=.\geometry.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\carstruct.h
+SOURCE=.\learn.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\differential.h
+SOURCE=.\linalg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\engine.h
+SOURCE=.\opponent.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\sim.h
+SOURCE=.\pit.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\steer.h
+SOURCE=.\spline.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\susp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\transmission.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\wheel.h
+SOURCE=.\strategy.h
 # End Source File
 # End Group
-# Begin Group "Resource Files"
+# Begin Group "Ressourcendateien"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # End Group

@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /G6 /W2 /GX /O2 /I "../../../../../export/include" /I "../../../../libs/torcs" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# ADD CPP /nologo /G6 /W2 /GX /O2 /Ob2 /I "../../../../../export/include" /I "../../../../libs/torcs" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
 # ADD RSC /l 0x40c /d "NDEBUG"
@@ -71,7 +71,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.lib $(WkspDir)\export\lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /G5 /W2 /Gm /GX /ZI /Od /I "../../../../../export/include" /I "../../../../libs/torcs" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /G6 /W2 /Gm- /GX /ZI /Od /Ob0 /I "../../../../../export/include" /I "../../../../libs/torcs" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"
 BSC32=bscmake.exe
@@ -84,7 +85,7 @@ LIB32=link.exe -lib
 WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
-PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\lib	copy $(TargetDir)\*.lib $(WkspDir)\export\libd
+PostBuild_Cmds=copy $(TargetDir)\*.lib $(WkspDir)\export\libd
 # End Special Build Tool
 
 !ENDIF 
