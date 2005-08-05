@@ -500,6 +500,8 @@ GfuiScreenDeactivate(void)
 
     glutKeyboardFunc((void(*)(unsigned char,int,int))NULL);
     glutSpecialFunc((void(*)(int,int,int))NULL);
+	glutKeyboardUpFunc((void(*)(unsigned char,int,int))NULL);
+    glutSpecialUpFunc((void(*)(int,int,int))NULL);
     glutMouseFunc((void(*)(int,int,int,int))NULL);
     glutMotionFunc((void(*)(int,int))NULL);
     glutPassiveMotionFunc((void(*)(int,int))NULL);

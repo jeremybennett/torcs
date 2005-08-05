@@ -484,8 +484,10 @@ void
 GfScrReinit(void * /* dummy */)
 {
     int retcode = 0;
+	static const int CMDSIZE = 1024;
+	char cmd[CMDSIZE];
+
 #ifndef WIN32
-    char	cmd[1024];
     char	*arg[8];
     int		curArg;
 #endif
@@ -493,7 +495,15 @@ GfScrReinit(void * /* dummy */)
     saveParams();
 
 #ifdef WIN32
-    retcode = execlp("wtorcs.exe", "torcs", (const char *)NULL);
+	snprintf(cmd, CMDSIZE, "%swtorcs.exe", GetLocalDir());
+    int i;
+	for (i = 0; i < CMDSIZE && cmd[i] != NULL; i++) {
+		if (cmd[i] == '/') {
+			cmd[i] = '\\';
+		}
+	}
+	
+	retcode = execlp(cmd, cmd, (const char *)NULL);
 #else
     GfScrShutdown();
 

@@ -26,7 +26,7 @@
 	to another part eventually.
 */
 
-#include "glfeatures.h"
+#include <glfeatures.h>
 
 /*
 	----------------------- Texture Compression
