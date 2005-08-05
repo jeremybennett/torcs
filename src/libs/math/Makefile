@@ -24,7 +24,7 @@
 
 EXPORTS      = linalg_t.h  v2_t.h  v3_t.h  v4_t.h straight2_t.h
 
-EXPDIR       = include
+EXPDIR       = include/tmath
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

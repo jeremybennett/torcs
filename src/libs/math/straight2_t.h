@@ -29,7 +29,7 @@
 #ifndef _STRAIGHT_2T_H_
 #define _STRAIGHT_2T_H_
 
-#include <v2_t.h>
+#include <tmath/v2_t.h>
 
 template<class T> class straight2t {
 	public:

@@ -29,8 +29,21 @@
 #define _LINALG_V3_T_H_
 
 
+template<class T> class v3t;
+#ifndef _MSC_VER
+template<class T> v3t<T> operator*(const T s, const v3t<T> & src);
+template<class T> v3t<T> crossProduct(const v3t<T> &a, const v3t<T> &b);
+#endif //_MSC_VER
+
+
 template<class T> class v3t {
 	public:
+		// Friends.
+#ifndef _MSC_VER
+		friend v3t<T> operator*<>(const T s, const v3t<T> & src);	// Multiply by scalar.
+		friend v3t<T> crossProduct<>(const v3t<T> &a, const v3t<T> &b); // return a X b
+#endif //_MSC_VER
+
 		// Constructors.
 		v3t() {}
 		v3t(const v3t<T> &src):x(src.x), y(src.y), z(src.z) {}
@@ -48,18 +61,18 @@ template<class T> class v3t {
 		v3t<T> operator+(const v3t<T> &src) const;					// Addition.
 		v3t<T> operator-(const v3t<T> &src) const;					// Subtraction.
 
+
 		v3t<T> operator*(const T s) const;							// Multiply by scalar.
 		T operator*(const v3t<T> &src) const;						// Dot product.
 		v3t<T> operator/(const T s) const;							// Divide by scalar.
 		int operator==(const v3t<T> &src) const;					// all fields equal?
 		int operator!=(const v3t<T> &src) const;					// not all fields equal?
-		friend v3t<T> operator*<>(const T s, const v3t<T> & src);	// Multiply by scalar.
+
 
 		// Other methods.
 		T len(void);
 		void normalize(void);
 		void crossProduct(const v3t<T> &b, v3t<T> &r) const;		// r := this X b
-		//friend v3t<T> crossProduct<>(const v3t<T> &a, const v3t<T> &b); // return a X b
 
 		void dirVector(const v3t<T>* b, v3t<T>* r);					// r := this - b
 		int approxEquals(const v3t<T> &cmp, T eps);					// Approximately equality per component, eps > 0.0. TODO: Test
@@ -206,15 +219,15 @@ template<class T> inline void v3t<T>::dirVector(const v3t<T>* b, v3t<T>* r)
 
 
 // Friends.
+
+// Friend, scalar*vector.
 template<class T> inline v3t<T> operator*(const T s, const v3t<T> & src)
 {
 	return v3t<T>(s*src.x, s*src.y, s*src.z);
 }
 
 
-// Does not work as friend, why? TODO: friend of v3t<t>, the only implementation which compiles
-// properly is inline in the class definition, forward declarations and "<>" did not help, maybe
-// a compiler problem of gcc <= 3.4.3?
+// Friend, Vector cross product.
 template<class T> inline v3t<T> crossProduct(const v3t<T>& a, const v3t<T>& b)
 {
 	return v3t<T>(a.y*b.z - a.z*b.y,

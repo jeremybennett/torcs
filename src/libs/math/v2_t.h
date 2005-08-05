@@ -29,10 +29,21 @@
 #ifndef _LINALG_V2_T_H_
 #define _LINALG_V2_T_H_
 
-#include <v3_t.h>
+#include <tmath/v3_t.h>
+
+
+template<class T> class v2t;
+#ifndef _MSC_VER
+template<class T> v2t<T> operator*(const T s, const v2t<T> & src);
+#endif // _MSC_VER
 
 template<class T> class v2t {
 	public:
+		// Friends.
+#ifndef _MSC_VER
+		friend v2t<T> operator*<>(const T s, const v2t<T> &src);	// Multiply by scalar.
+#endif // _MSC_VER
+
 		// Constructors.
 		v2t() {}
 		v2t(const v2t<T> &src):x(src.x), y(src.y) {}
@@ -56,7 +67,7 @@ template<class T> class v2t {
 		v2t<T> operator/(const T s) const;							// Divide by scalar.
 		int operator==(const v2t<T> &src) const;					// all fields equal?
 		int operator!=(const v2t<T> &src) const;					// not all fields equal?
-		friend v2t<T> operator*<>(const T s, const v2t<T> &src);	// Multiply by scalar.
+
 
 		// Other methods.
 		T len(void) const;

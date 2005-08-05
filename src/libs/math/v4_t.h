@@ -29,8 +29,19 @@
 #define _LINALG_V4_T_H_
 
 
+template<class T> class v4t;
+#ifndef _MSC_VER
+template<class T> v4t<T> operator* (const T s, const v4t<T> & src);
+#endif //_MSC_VER
+
+
 template<class T> class v4t {
 	public:
+		// Friends.
+#ifndef _MSC_VER
+		friend v4t<T> operator* <>(const T s, const v4t<T> &src);	// Multiply by scalar.
+#endif //_MSC_VER
+
 		// Constructors.
 		v4t() {}
 		v4t(const v4t<T> &src):x(src.x), y(src.y), z(src.z), w(src.w) {}
@@ -50,10 +61,10 @@ template<class T> class v4t {
 
 		v4t<T> operator*(const T s) const;							// Multiply with scalar.
 		T operator*(const v4t<T> &src) const;						// Dot product.
+
 		v4t<T> operator/(const T s) const;							// Divide by scalar.
 		int operator==(const v4t<T> &src) const;					// all fields equal?
 		int operator!=(const v4t<T> &src) const;					// not all fields equal?
-		friend v4t<T> operator*<>(const T s, const v4t<T> &src);	// Multiply by scalar.
 
 		// Other methods.
 		T len(void) const;
@@ -175,7 +186,7 @@ template<class T> inline v4t<T> v4t<T>::operator*(const T s) const
 }
 
 
-// Multiply scalar with vector (T*v4t).
+// friend, Multiply scalar with vector (T*v4t).
 template<class T> inline v4t<T> operator*(const T s, const v4t<T> & src)
 {
     return v4t<T>(s*src.x, s*src.y, s*src.z, s*src.w);
