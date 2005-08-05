@@ -17,11 +17,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TORCS_PORATBILITY_H_
-#define _TORCS_PORATBILITY_H_
+#ifndef _TORCS_PORTABILITY_H_
+#define _TORCS_PORTABILITY_H_
 
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef WIN32
+#define HAVE_CONFIG_H
+#endif
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -53,5 +57,12 @@ static char *strndup(const char *str, int len)
 #endif
 
 
-#endif // _TORCS_PORATBILITY_H_
+#ifdef WIN32
+#define snprintf _snprintf
+#define vsnprintf _vsnprintf
+#endif
+
+
+
+#endif // _TORCS_PORTABILITY_H_
 
