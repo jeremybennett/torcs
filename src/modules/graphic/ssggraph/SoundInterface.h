@@ -241,7 +241,7 @@ class OpenalSoundInterface : public SoundInterface {
 		float a; //amplitude modulation
 	} SoundChar;
  protected:
-	void* cc;
+	ALCcontext* cc;
 	ALCdevice* dev;
 	float global_gain;
 

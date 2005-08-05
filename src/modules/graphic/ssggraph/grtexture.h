@@ -32,10 +32,12 @@
 
 bool doMipMap(const char *tfname, int mipmap);
 
+
 // This state does currently not manage anything!
 // TODO: manage shared textures, obsolete grutil.cpp parts.
 class grManagedState : public ssgSimpleState {
 	public:
+		
 		virtual void setTexture(ssgTexture *tex) {
 			ssgSimpleState::setTexture(tex);
 		}

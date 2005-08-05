@@ -26,7 +26,7 @@
 #include "dmalloc.h"
 #endif
 #ifdef WIN32
-#include "win32_glext.h"
+#include <GL/glext.h>
 #endif
 #include "grscene.h"
 #include "grcar.h"

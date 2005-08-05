@@ -110,21 +110,31 @@ bool grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 	//       (instead of malloc/free or new/delete).
 
 	mipmap = doMipMap(fname, mipmap);
+
+#ifdef WIN32
+	GLubyte* tex2 = new GLubyte[w*h*4];
+	memcpy(tex2, tex, w*h*4);
+	free(tex);
+	tex = tex2;
+#endif // WIN32
+	
 	return grMakeMipMaps(tex, w, h, 4, mipmap);
 }
+
 
 
 typedef struct stlist
 {
     struct stlist	*next;
-    ssgSimpleState	*state;
+    grManagedState *state;
     char		*name;
 } stlist;
 
+
 static stlist * stateList = NULL;
 
-static ssgSimpleState *
-grGetState(char *img)
+
+static grManagedState * grGetState(char *img)
 {
     stlist	*curr;
 
@@ -138,8 +148,8 @@ grGetState(char *img)
     return NULL;
 }
 
-void
-grShutdownState(void)
+
+void grShutdownState(void)
 {
 	stlist *curr;
 	stlist *next;
@@ -147,8 +157,9 @@ grShutdownState(void)
 	curr = stateList;
 	while (curr != NULL) {
 		next = curr->next;
+		//printf("Still in list : %s\n", curr->name);
 		free(curr->name);
-		//curr->state->deRef(); // it's already deleted
+		//ssgDeRefDelete(curr->state);
 		free(curr);
 		curr = next;
 	}
@@ -156,12 +167,29 @@ grShutdownState(void)
 }
 
 
+static void grSetupState(grManagedState *st, char *buf)
+{
+	st->ref();			// cannot be removed
+	st->enable(GL_LIGHTING);
+	st->enable(GL_TEXTURE_2D);
+	st->enable(GL_BLEND);
+	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);	
+
+	stlist *curr = (stlist*)calloc(sizeof(stlist), 1);
+	curr->next = stateList;
+	stateList = curr;
+	curr->state = st;
+	curr->name = strdup(buf);
+
+	GfOut("Loading %s\n", buf);
+}
+
+
 ssgState * grSsgLoadTexState(char *img)
 {
 	char buf[256];
 	char *s;
-	ssgSimpleState *st;
-	stlist *curr;
+	grManagedState *st; 
 
 	// remove the directory
 	s = strrchr(img, '/');
@@ -182,21 +210,9 @@ ssgState * grSsgLoadTexState(char *img)
 	}
 
 	st = grStateFactory();
-	st->ref();			// cannot be removed
-	st->enable(GL_LIGHTING);
-	st->enable(GL_TEXTURE_2D);
-	st->enable(GL_BLEND);
-	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-
-	curr = (stlist*)calloc(sizeof(stlist), 1);
-	curr->next = stateList;
-	stateList = curr;
-	curr->state = st;
-	curr->name = strdup(buf);
-
-	GfOut("Loading %s\n", buf);
+	grSetupState(st, buf);
 	st->setTexture(buf);
-
+	
 	return (ssgState*)st;
 }
 
@@ -205,7 +221,6 @@ ssgState * grSsgEnvTexState(char *img)
 	char buf[256];
 	char *s;
 	grMultiTexState *st;
-	stlist *curr;
 
 	// remove the directory
 	s = strrchr(img, '/');
@@ -221,19 +236,7 @@ ssgState * grSsgEnvTexState(char *img)
     }
 
 	st = new grMultiTexState;
-	st->ref();			// cannot be removed
-	st->enable(GL_LIGHTING);
-	st->enable(GL_TEXTURE_2D);
-	st->enable(GL_BLEND);
-	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-
-	curr = (stlist*)calloc(sizeof(stlist), 1);
-	curr->next = stateList;
-	stateList = curr;
-	curr->state = st;
-	curr->name = strdup(buf);
-
-	GfOut("Loading %s\n", buf);
+	grSetupState(st, buf);
 	st->setTexture(buf);
 
 	return (ssgState*)st;
@@ -244,8 +247,7 @@ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
 {
 	char buf[256];
 	char *s;
-	ssgSimpleState *st;
-	stlist *curr;
+	grManagedState *st; 
 
 	// remove the directory
 	s = strrchr(img, '/');
@@ -266,91 +268,29 @@ grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap)
 	}
 
 	st = grStateFactory();
-	st->ref();			// cannot be removed.
-	st->enable(GL_LIGHTING);
-	st->enable(GL_TEXTURE_2D);
-	st->enable(GL_BLEND);
-	st->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
-
-	curr = (stlist*)calloc(sizeof(stlist), 1);
-	curr->next = stateList;
-	stateList = curr;
-	curr->state = st;
-	curr->name = strdup(buf);
-
-	GfOut("Loading %s\n", buf);
+	grSetupState(st, buf);
 	st->setTexture(buf, wrap, wrap, mipmap);
 
 	return (ssgState*)st;
 }
 
-int
-grPruneTree(ssgEntity *start, bool init)
+
+void  grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
 {
-    int		i;
-    static int	nb;
+	char  buf[256];
+	char* sign;
 
-    if (init == TRUE) {
-	nb = 0;
-    }
-
-    for (i = start->getNumKids() - 1; i >= 0; i--) {
-	ssgEntity *k = ((ssgBranch*)start)->getKid(i);
-	if (k->getNumKids() != 0) {
-	    grPruneTree(k, FALSE);
-	}
-	/* pruning can remove all the kids... */
-	if (k->getNumKids() == 0) {
-	    if (k->isAKindOf(ssgTypeBranch())) {
-		((ssgBranch*)start)->removeKid(i);
-		nb++;
-#ifdef AGGRESSIVE_PRUNING
-	    } else if (k->isAKindOf(ssgTypeVtxTable())) {
-		if (((ssgVtxTable*)k)->getNumVertices() == 0) {
-		    ((ssgBranch*)start)->removeKid(i);
-		    nb++;
-		}
-#endif
-	    }
-	}
-    }
-    return nb;
-}
-
-void
-grForceState(ssgEntity *start, ssgState *state)
-{
-    int i;
-    
-    for (i = start->getNumKids() - 1; i >= 0; i--) {
-	ssgEntity *k = ((ssgBranch*)start)->getKid(i);
-	if (k->getNumKids() != 0) {
-	    grForceState(k, state);
-	} else {
-	    if (k->isAKindOf(_SSG_TYPE_VTXTABLE)) {
-		((ssgVtxTable*)k)->setState(state);
-	    }
-	}
-    }
-}
-
-
-void 
-grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
-{
-    char  buf[256];
-    char* sign;
-
-    if (sec < 0.0) {
-	sec = -sec;
-	sign = "-";
+	if (sec < 0.0) {
+		sec = -sec;
+		sign = "-";
     } else {
-	if (sgn) {
-	    sign = "+";
-	} else {
-	    sign = "  ";
-	}
+		if (sgn) {
+			sign = "+";
+		} else {
+			sign = "  ";
+		}
     }
+
     int h = (int)(sec / 3600.0);
     sec -= 3600 * h;
     int m = (int)(sec / 60.0);
@@ -359,46 +299,47 @@ grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
     sec -= s;
     int c = (int)floor((sec) * 100.0);
     if (h) {
-	(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
+		(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
     } else if (m) {
-	(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
+		(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
     } else {
-	(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
+		(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
     }
+
     GfuiPrintString(buf, color, font, x, y, GFUI_ALIGN_HR_VB);
 }
 
-float
-grGetHOT(float x, float y)
+
+// TODO: more efficient solution, this one is slow.
+float grGetHOT(float x, float y)
 {
-  sgVec3 test_vec;
-  sgMat4 invmat;
-  sgMakeIdentMat4(invmat);
+	sgVec3 test_vec;
+	sgMat4 invmat;
+	sgMakeIdentMat4(invmat);
 
-  invmat[3][0] = -x;
-  invmat[3][1] = -y;
-  invmat[3][2] =  0.0f         ;
+	invmat[3][0] = -x;
+	invmat[3][1] = -y;
+	invmat[3][2] =  0.0f         ;
 
-  test_vec [0] = 0;
-  test_vec [1] = 0;
-  test_vec [2] = 100000.0f;
+	test_vec [0] = 0;
+	test_vec [1] = 0;
+	test_vec [2] = 100000.0f;
 
-  ssgHit *results;
-  int num_hits = ssgHOT (TheScene, test_vec, invmat, &results);
+	ssgHit *results;
+	int num_hits = ssgHOT (TheScene, test_vec, invmat, &results);
+	float hot = -1000000.0f;
 
-  float hot = -1000000.0f;
+	for (int i = 0; i < num_hits; i++) {
+		ssgHit *h = &results[i];
 
-  for (int i = 0; i < num_hits; i++)
-  {
-    ssgHit *h = &results[i];
+		float hgt = (h->plane[2] == 0.0 ? 0.0 : - h->plane[3] / h->plane[2]);
 
-    float hgt = (h->plane[2] == 0.0 ? 0.0 : - h->plane[3] / h->plane[2]);
+		if (hgt >= hot) {
+			hot = hgt;
+		}
+	}
 
-    if (hgt >= hot)
-      hot = hgt;
-  }
-
-  return hot;
+	return hot;
 }
 
 

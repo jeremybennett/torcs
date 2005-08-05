@@ -17,9 +17,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//#include <AL/al.h>
-//#include <AL/alc.h>
-//#include <AL/alut.h>
 
 #include <math.h>
 
@@ -91,7 +88,8 @@ void grInitSound(tSituation* s, int ncars)
 
 	car_sound_data = new CarSoundData* [ncars];
 
-	for (int i=0; i<ncars; i++) {
+	int i;
+	for (i = 0; i<ncars; i++) {
 		void* handle = s->cars[i]->_carHandle;
 		tCarElt	*car = s->cars[i];
 		char* param;
@@ -136,7 +134,7 @@ void grInitSound(tSituation* s, int ncars)
 	sound_interface->setTurboSound("data/sound/turbo1.wav");
 	sound_interface->setBackfireLoopSound("data/sound/backfire_loop.wav");
 
-    for (int i = 0; i < NB_CRASH_SOUND; i++) {
+    for (i = 0; i < NB_CRASH_SOUND; i++) {
 		sprintf(buf, "data/sound/crash%d.wav", i+1);
 		sound_interface->setCrashSound(buf, i);
     }
@@ -200,15 +198,15 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 		sgVec3* u_camera = camera->getSpeedv();
 		sgVec3 c_camera;
 		sgVec3* a_camera = camera->getUpv();
-
-		for (int i=0; i<3; i++) {
+		int i;
+		for (i = 0; i<3; i++) {
 			c_camera[i] = (*camera->getCenterv())[i] - (*camera->getPosv())[i];
 		}
 
 		//sgNormaliseVec3 (c_camera);
 
 		sound_interface->update (car_sound_data, s->_ncars, *p_camera, *u_camera, c_camera, *a_camera);
-		for (int i = 0; i < s->_ncars; i++) {
+		for (i = 0; i < s->_ncars; i++) {
 			car = s->cars[i];
 			car_sound_data[car->index]->setListenerPosition(*p_camera);
 			car_sound_data[car->index]->update(car);

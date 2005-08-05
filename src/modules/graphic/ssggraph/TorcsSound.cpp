@@ -264,27 +264,35 @@ OpenalTorcsSound::OpenalTorcsSound(const char* filename, int flags, bool loop)
 	REFERENCE_DISTANCE = 5.0f;
 	ROLLOFF_FACTOR = 0.5f;
 
-	for (int i=0; i<3; i++) {
+	int i;
+	for (i = 0; i<3; i++) {
 		source_position[i] = 0.0f;
 		source_velocity[i] = 0.0f;
 		zeroes[i] = 0.0f;
 	}
-	alGenBuffers (1, &buffer);
-	void* wave = NULL;
-	ALsizei size;
-	ALsizei bits;
-	ALsizei freq;
-	ALsizei format;
 
-	ALboolean err = alutLoadWAV (filename, &wave, &format, &size, &bits, &freq);
-	if (err == AL_FALSE) {
-		fprintf (stderr, "Could not load %f\n", filename);
+	alGenBuffers (1, &buffer);
+	if (alGetError() != AL_NO_ERROR) {
+		fprintf (stderr, "alGenBuffers failed %s\n", filename);
+		exit(1);
+	}
+
+	ALvoid *wave = NULL;
+	ALsizei size;
+	ALsizei freq;
+	ALenum format;
+	ALboolean srcloop;
+
+	alutLoadWAVFile((ALbyte *) filename, &format, &wave, &size, &freq, &srcloop);
+	if (alGetError() != AL_NO_ERROR) {
+		fprintf (stderr, "Could not load %s\n", filename);
+		alDeleteBuffers(1, &buffer);
 		exit(1);
 	}
 	
 	alBufferData (buffer, format, wave, size, freq);
-	free (wave);
-	
+	alutUnloadWAV(format, wave, size, freq);
+
 	alGenSources (1, &source);
 	alSourcefv (source, AL_POSITION, source_position);
 	alSourcefv (source, AL_VELOCITY, source_velocity);
@@ -328,7 +336,7 @@ void OpenalTorcsSound::setReferenceDistance(float dist)
 void OpenalTorcsSound::setSource (sgVec3 p, sgVec3 u)
 {
 	for (int i=0; i<3; i++) {
-		source_position[i] = p[i];//*0.1f;
+		source_position[i] = p[i];
 		source_velocity[i] = u[i];
 	}
 }
@@ -380,7 +388,6 @@ void OpenalTorcsSound::pause()
 
 void OpenalTorcsSound::update ()
 {
-
 	alSourcefv (source, AL_POSITION, source_position);
 	alSourcefv (source, AL_VELOCITY, source_velocity);
 	alSourcef (source, AL_PITCH, pitch);

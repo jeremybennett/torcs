@@ -24,7 +24,8 @@ SoundInterface::SoundInterface(float sampling_rate, int n_channels)
 {
 	this->sampling_rate = sampling_rate;
 	this->n_channels = n_channels;
-	for (int i=0; i<4; i++) {
+	int i;
+	for (i = 0; i<4; i++) {
 		skid_sound[i]=NULL;
 	}
 	road_ride_sound=NULL;
@@ -34,7 +35,7 @@ SoundInterface::SoundInterface(float sampling_rate, int n_channels)
 	axle_sound=NULL;
 	turbo_sound=NULL;
 	backfire_loop_sound=NULL;
-	for (int i=0; i<NB_CRASH_SOUND; i++) {
+	for (i = 0; i<NB_CRASH_SOUND; i++) {
 		crash_sound[i]=NULL;
 	}
 	curCrashSnd = 0;

@@ -1779,20 +1779,20 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      id,
 			      1,		/* drawCurr */
 			      0,		/* drawBG  */
-			      74.0,		/* fovy */
-			      1.0,		/* fovymin */
-			      110.0,		/* fovymax */
+			      74.0f,		/* fovy */
+			      1.0f,		/* fovymin */
+			      110.0f,		/* fovymax */
 			      4,		/* up axis */
-			      -grWrldX/2,	/* eyex */
-			      -grWrldY/2,	/* eyey */
-			      0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
-			      grWrldX/2,	/* centerx */
-			      grWrldY/2,	/* centery */
-			      0,		/* centerz */
-			      10.0,		/* near */
-			      2 * grWrldMaxSize,	/* far */
-			      10 * grWrldMaxSize,	/* fog */
-			      20 * grWrldMaxSize	/* fog */
+			      -grWrldX/2.0f,	/* eyex */
+			      -grWrldY/2.0f,	/* eyey */
+			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      grWrldX/2.0f,	/* centerx */
+			      grWrldY/2.0f,	/* centery */
+			      0.0f,		/* centerz */
+			      10.0f,		/* near */
+			      2.0f * grWrldMaxSize,	/* far */
+			      10.0f * grWrldMaxSize,	/* fog */
+			      20.0f * grWrldMaxSize	/* fog */
 			      );
     cam->add(&cams[c]);
     id++;
@@ -1802,20 +1802,20 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      id,
 			      1,		/* drawCurr */
 			      0,		/* drawBG  */
-			      74.0,		/* fovy */
-			      1.0,		/* fovymin */
-			      110.0,		/* fovymax */
+			      74.0f,		/* fovy */
+			      1.0f,		/* fovymin */
+			      110.0f,		/* fovymax */
 			      4,		/* up axis */
-			      -grWrldX/2,	/* eyex */
-			      grWrldY * 3/2,	/* eyey */
-			      0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
-			      grWrldX/2,	/* centerx */
-			      grWrldY/2,	/* centery */
-			      0,		/* centerz */
-			      10.0,		/* near */
-			      2 * grWrldMaxSize,	/* far */
-			      10 * grWrldMaxSize,	/* fog */
-			      20 * grWrldMaxSize	/* fog */
+			      -grWrldX/2.0f,	/* eyex */
+			      grWrldY * 3.0f/2.0f,	/* eyey */
+			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      grWrldX/2.0f,	/* centerx */
+			      grWrldY/2.0f,	/* centery */
+			      0.0f,		/* centerz */
+			      10.0f,		/* near */
+			      2.0f * grWrldMaxSize,	/* far */
+			      10.0f * grWrldMaxSize,	/* fog */
+			      20.0f * grWrldMaxSize	/* fog */
 			      );
     cam->add(&cams[c]);
     id++;
@@ -1825,20 +1825,20 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      id,
 			      1,		/* drawCurr */
 			      0,		/* drawBG  */
-			      74.0,		/* fovy */
-			      1.0,		/* fovymin */
-			      110.0,		/* fovymax */
+			      74.0f,		/* fovy */
+			      1.0f,		/* fovymin */
+			      110.0f,		/* fovymax */
 			      4,		/* up axis */
-			      grWrldX * 3/2,	/* eyex */
-			      grWrldY * 3/2,	/* eyey */
-			      0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
-			      grWrldX/2,	/* centerx */
-			      grWrldY/2,	/* centery */
-			      0,		/* centerz */
-			      10.0,		/* near */
-			      2 * grWrldMaxSize,	/* far */
-			      10 * grWrldMaxSize,	/* fog */
-			      20 * grWrldMaxSize	/* fog */
+			      grWrldX * 3.0f/2.0f,	/* eyex */
+			      grWrldY * 3.0f/2.0f,	/* eyey */
+			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      grWrldX/2.0f,	/* centerx */
+			      grWrldY/2.0f,	/* centery */
+			      0.0f,		/* centerz */
+			      10.0f,		/* near */
+			      2.0f * grWrldMaxSize,	/* far */
+			      10.0f * grWrldMaxSize,	/* fog */
+			      20.0f * grWrldMaxSize	/* fog */
 			      );
     cam->add(&cams[c]);
     id++;
@@ -1848,20 +1848,20 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      id,
 			      1,		/* drawCurr */
 			      0,		/* drawBG  */
-			      74.0,		/* fovy */
-			      1.0,		/* fovymin */
-			      110.0,		/* fovymax */
+			      74.0f,		/* fovy */
+			      1.0f,		/* fovymin */
+			      110.0f,		/* fovymax */
 			      4,		/* up axis */
-			      grWrldX * 3/2,	/* eyex */
-			      -grWrldY/2,	/* eyey */
-			      0.25 * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
-			      grWrldX/2,	/* centerx */
-			      grWrldY/2,	/* centery */
-			      0,		/* centerz */
-			      10.0,		/* near */
-			      2 * grWrldMaxSize,	/* far */
-			      10 * grWrldMaxSize,	/* fog */
-			      20 * grWrldMaxSize	/* fog */
+			      grWrldX * 3.0f/2.0f,	/* eyex */
+			      -grWrldY/2.0f,	/* eyey */
+			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      grWrldX/2.0f,	/* centerx */
+			      grWrldY/2.0f,	/* centery */
+			      0.0f,		/* centerz */
+			      10.0f,		/* near */
+			      2.0f * grWrldMaxSize,	/* far */
+			      10.0f * grWrldMaxSize,	/* fog */
+			      20.0f * grWrldMaxSize	/* fog */
 			      );
     cam->add(&cams[c]);
     id++;

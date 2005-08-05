@@ -72,7 +72,7 @@ tdble grLodFactorValue = 1.0;
 static char buf[1024];
 
 #ifdef WIN32
-#include "win32_glext.h"
+#include <GL/glext.h>
 PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
 PFNGLMULTITEXCOORD2FVARBPROC glMultiTexCoord2fvARB = NULL;
 PFNGLACTIVETEXTUREARBPROC glActiveTextureARB = NULL;
@@ -397,9 +397,6 @@ initCars(tSituation *s)
 
     grAdaptScreenSize();
 
-    //int nb = grPruneTree(TheScene, true);
-    //GfOut("PRUNE SSG TREE: removed %d empty branches\n", nb);
-
     return 0;
     
 }
@@ -427,12 +424,7 @@ shutdownCars(void)
 			}
 		}
 
-		/* for (i = 0; i < grNbCars; i++) { */
-		/*     CarsAnchor->removeKid(grCarInfo[i].carTransform); */
-		/*     ShadowAnchor->removeKid(grCarInfo[i].shadowAnchor); */
-		/* } */
 		PitsAnchor->removeAllKids();
-		/* if (grTrack->pits.type == TR_PIT_ON_TRACK_SIDE) PitsAnchor->removeKid(ThePits); */
 		ThePits = 0;
 		free(grCarInfo);
 	}
@@ -478,7 +470,6 @@ shutdownTrack(void)
 			grScreens[i] = NULL;
 		}
 	}
-
 }
 
 /*void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)

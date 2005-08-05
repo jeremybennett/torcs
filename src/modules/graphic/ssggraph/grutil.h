@@ -22,6 +22,7 @@
 #define _GRUTIL_H_
 
 #include <stdio.h>
+#include "grtexture.h"
 
 #if 1
 #define TRACE_GL(msg) { GLenum rc; if ((rc = glGetError()) != GL_NO_ERROR) printf("%s %s\n", msg, gluErrorString(rc)); }
@@ -56,8 +57,6 @@ extern int grGetFilename(char *filename, char *filepath, char *buf);
 ssgState * grSsgEnvTexState(char *img);
 extern ssgState *grSsgLoadTexState(char *img);
 extern ssgState *grSsgLoadTexStateEx(char *img, char *filepath, int wrap, int mipmap);
-extern int grPruneTree(ssgEntity *start, bool init);
-extern void grForceState(ssgEntity *start, ssgState *state);
 extern bool grLoadPngTexture (const char *fname, ssgTextureInfo* info);
 extern void grShutdownState(void);
 extern void grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn);

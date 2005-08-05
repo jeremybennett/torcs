@@ -78,11 +78,12 @@ TorcsSound* PlibSoundInterface::addSample (const char* filename, int flags, bool
 void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs, sgVec3 a_obs)
 {
 	// Copy car ID basically.
-	for (int i=0; i<n_cars; i++) {
+	int i;
+	for (i = 0; i<n_cars; i++) {
 		car_sound_data[i]->copyEngPri(engpri[i]);
 	}
 
-	for (int i=0; i<n_cars; i++) {
+	for (i = 0; i<n_cars; i++) {
 		int id = engpri[i].id;
 		sgVec3 p;
 		sgVec3 u;
@@ -96,7 +97,7 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 
 	qsort ((void*) engpri, n_cars, sizeof(SoundPri), &sortSndPriority);
 
-	for (int i=0; i<n_cars; i++) {
+	for (i = 0; i<n_cars; i++) {
 		int id = engpri[i].id;
 		TorcsSound* engine = car_sound_data[id]->getEngineSound();
 		if (i>=NB_ENGINE_SOUND) {
@@ -114,7 +115,8 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 
 	float max_skid_vol[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	int max_skid_id[4] = {0,0,0,0};
-	for (int id=0; id<n_cars; id++) {
+	int id;
+	for (id = 0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
 		for (int j=0; j<4; j++) {
 			float skvol=sound_data->attenuation*sound_data->wheel[j].skid.a;
@@ -125,7 +127,7 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 		}
 	}
 
-	for (int i=0; i<4; i++) {
+	for (i = 0; i<4; i++) {
 		int id = max_skid_id[i];
 		WheelSoundData* sound_data = car_sound_data[id]->wheel;
 		float mod_a = car_src[id].a;
@@ -174,7 +176,7 @@ void PlibSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgVec
 
 
 	// One-off sounds
-	for (int id=0; id<n_cars; id++) {
+	for (id = 0; id<n_cars; id++) {
 		float crash_threshold = 0.5f;
 		float gear_threshold = 0.75;
 
