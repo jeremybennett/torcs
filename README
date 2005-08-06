@@ -161,6 +161,8 @@ Changes since 1.2.3-test1
   (0 warnings), gcc 4.0.1 (a lot of warnings, but just in trackgen, otherwise
   0 warnings), vc++ 6.0sp6 (release build 0 warnings, debug 131 warnings which
   one can safely ignore) (Bernhard).
+- Updated Windows installer, checks now for already installed versions, works
+  with 1.2.3 or later (Bernhard). Trackeditor is not yet included.
 
 
 Changes since 1.2.3
@@ -265,8 +267,7 @@ Changes since 1.2.3
 TODO for 1.2.4
 --------------
 - Bugfixes and cleanup.
-- Windows installer.
-- All-in-one.
+- Put trackeditor into Windows installer when ready.
 - Linux installer.
 - Separated packages.
 - Prepare docs (Robot tutorial -> OpenAL section, installation etc).
