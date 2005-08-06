@@ -2447,6 +2447,40 @@ Section "Developer Tools" SEC02
   File "base\nfsperf.exe"
   File "base\nfs2ac.exe"
   File "base\trackgen.exe"
+
+
+; trackeditor files to install
+  File "base\trackeditor.bat"
+
+  SetOutPath "$INSTDIR\trackeditor\doc"
+  File "base\trackeditor\doc\miniHowTo.html"
+  File "base\trackeditor\doc\miniHowTo_html_e23635.png"
+  File "base\trackeditor\doc\miniHowTo_html_m16f0000f.jpg"
+  File "base\trackeditor\doc\miniHowTo_html_m51961386.png"
+  File "base\trackeditor\doc\snapshot1.png"
+  File "base\trackeditor\doc\snapshot10.png"
+  File "base\trackeditor\doc\snapshot2.png"
+  File "base\trackeditor\doc\snapshot3.png"
+  File "base\trackeditor\doc\snapshot4.png"
+  File "base\trackeditor\doc\snapshot5.png"
+  File "base\trackeditor\doc\snapshot6.png"
+  File "base\trackeditor\doc\snapshot7.png"
+  File "base\trackeditor\doc\snapshot8.png"
+  File "base\trackeditor\doc\snapshot9.png"
+
+  SetOutPath "$INSTDIR\trackeditor"
+  File "base\trackeditor\icon.png"
+  
+  SetOutPath "$INSTDIR\trackeditor\lib"
+  File "base\trackeditor\lib\bsh-2.0b2.jar"
+  File "base\trackeditor\lib\jdom.jar"
+  File "base\trackeditor\lib\looks-1.2.2.jar"
+  File "base\trackeditor\lib\trackeditor-0.6.2c.jar"
+  File "base\trackeditor\lib\xercesImpl.jar"
+
+  CreateShortCut "$SMPROGRAMS\TORCS\Track Editor.lnk" "$INSTDIR\trackeditor.bat"
+  CreateShortCut "$SMPROGRAMS\TORCS\Track Editor Manual.lnk" "$INSTDIR\trackeditor\doc\miniHowTo.html"
+
 SectionEnd
 
 Section "Non Free - Rally Cars" SEC03
@@ -5224,6 +5258,35 @@ Section Uninstall
   Delete "$INSTDIR\tracks\road\g-track-3\readme.txt"
   Delete "$INSTDIR\tracks\road\ole-road-1\readme.txt"
 
+; Trackeditor cleanup
+  Delete "$INSTDIR\trackeditor\doc\miniHowTo.html"
+  Delete "$INSTDIR\trackeditor\doc\miniHowTo_html_e23635.png"
+  Delete "$INSTDIR\trackeditor\doc\miniHowTo_html_m16f0000f.jpg"
+  Delete "$INSTDIR\trackeditor\doc\miniHowTo_html_m51961386.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot1.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot10.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot2.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot3.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot4.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot5.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot6.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot7.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot8.png"
+  Delete "$INSTDIR\trackeditor\doc\snapshot9.png"
+  Delete "$INSTDIR\trackeditor\lib\bsh-2.0b2.jar"
+  Delete "$INSTDIR\trackeditor\lib\jdom.jar"
+  Delete "$INSTDIR\trackeditor\lib\looks-1.2.2.jar"
+  Delete "$INSTDIR\trackeditor\lib\trackeditor-0.6.2c.jar"
+  Delete "$INSTDIR\trackeditor\lib\xercesImpl.jar"
+  Delete "$INSTDIR\trackeditor\icon.png"
+  Delete "$INSTDIR\trackeditor.bat"
+
+  RMDir "$INSTDIR\trackeditor\doc"
+  RMDir "$INSTDIR\trackeditor\lib"
+  RMDir "$INSTDIR\trackeditor"
+
+  Delete "$SMPROGRAMS\TORCS\Track Editor.lnk"
+  Delete "$SMPROGRAMS\TORCS\Track Editor Manual.lnk"
 
   Delete "$SMPROGRAMS\TORCS\Uninstall.lnk"
   Delete "$SMPROGRAMS\TORCS\Website.lnk"
