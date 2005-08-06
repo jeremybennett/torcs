@@ -11,8 +11,15 @@
 ;        (at your option) any later version.
 
 ; HM NIS Edit Wizard helper defines
+
+!define VER_MAJOR 1
+!define VER_MINOR 2
+!define VER_REVISION 4
+!define VER_EXTRA -test2
+!define VER_RELDATE 20050806
+
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
-!define PRODUCT_VERSION "1.2.3"
+!define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
 !define PRODUCT_PUBLISHER "The TORCS Team"
 !define PRODUCT_WEB_SITE "http://www.torcs.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\wtorcs.exe"
@@ -37,6 +44,10 @@ SetCompressor lzma
 ; License page
 !define MUI_LICENSEPAGE_CHECKBOX
 !insertmacro MUI_PAGE_LICENSE "base\COPYING"
+
+; Old version installed page
+Page custom PageReinstall PageLeaveReinstall
+
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
@@ -55,8 +66,13 @@ SetCompressor lzma
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
 
-; Reserve files
-!insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
+;--------------------------------
+;Reserve Files
+
+  ;These files should be inserted before other files in the data block
+
+  ReserveFile "torcs.ini"
+  !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
 
 ; MUI end ------
 
@@ -68,6 +84,7 @@ ShowInstDetails show
 ShowUnInstDetails show
 
 Section "Base System" SEC01
+  SectionIn RO
   SetOutPath "$INSTDIR\cars\155-DTM"
   SetOverwrite try
   File "base\cars\155-DTM\155-DTM-lod1.acc"
@@ -126,6 +143,7 @@ Section "Base System" SEC01
   SetOutPath "$INSTDIR\cars\clkdtm"
   File "base\cars\clkdtm\clkdtm-lod1.acc"
   File "base\cars\clkdtm\clkdtm-lod2.acc"
+  File "base\cars\clkdtm\clkdtm-lod3.acc"
   File "base\cars\clkdtm\clkdtm.acc"
   File "base\cars\clkdtm\clkdtm.rgb"
   File "base\cars\clkdtm\clkdtm.xml"
@@ -363,6 +381,19 @@ Section "Base System" SEC01
   File "base\data\sound\skid_metal.wav"
   File "base\data\sound\skid_tyres.wav"
   File "base\data\sound\viper2.wav"
+  File "base\data\sound\935.wav"
+  File "base\data\sound\944.wav"
+  File "base\data\sound\alpha-romeo.wav"
+  File "base\data\sound\clkdtmb2.wav"
+  File "base\data\sound\f360.wav"
+  File "base\data\sound\gt40.wav"
+  File "base\data\sound\lotus.wav"
+  File "base\data\sound\nsx.wav"
+  File "base\data\sound\renault-v10.wav"
+  File "base\data\sound\turbo1.wav"
+  File "base\data\sound\viper_long.wav"
+  File "base\data\sound\xj220.wav"
+  
   SetOutPath "$INSTDIR\data\textures"
   File "base\data\textures\back-sign.rgb"
   File "base\data\textures\background.png"
@@ -535,6 +566,8 @@ Section "Base System" SEC01
   File "base\data\textures\turn300R.rgb"
   File "base\data\textures\turn50L.rgb"
   File "base\data\textures\turn50R.rgb"
+  File "base\data\textures\arbor2_n.rgb"
+
   SetOutPath "$INSTDIR\data\tracks"
   File "base\data\tracks\dirt.xml"
   File "base\data\tracks\objects.xml"
@@ -1898,8 +1931,140 @@ Section "Base System" SEC01
   File "base\drivers\tita\tracksdata\michigan.xml"
   File "base\drivers\tita\tracksdata\s2.xml"
   File "base\drivers\tita\tracksdata\wheel-1.xml"
+  
+  SetOutPath "$INSTDIR\drivers\olethros"
+  File "base\drivers\olethros\logo.rgb"
+  File "base\drivers\olethros\olethros.dll"
+  File "base\drivers\olethros\olethros.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\0"
+  File "base\drivers\olethros\0\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\0\practice"
+  File "base\drivers\olethros\0\practice\aalborg.xml"
+  File "base\drivers\olethros\0\practice\alpine-1.xml"
+  File "base\drivers\olethros\0\practice\dirt-2.xml"
+  File "base\drivers\olethros\0\practice\dirt-3.xml"
+  File "base\drivers\olethros\0\practice\e-track-2.xml"
+  File "base\drivers\olethros\0\practice\g-track-3.xml"
+  File "base\drivers\olethros\0\practice\michigan.xml"
+  File "base\drivers\olethros\0\practice\mixed-1.xml"
+  File "base\drivers\olethros\0\practice\mixed-2.xml"
+  File "base\drivers\olethros\0\practice\wheel-1.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\0\qualifying"
+  File "base\drivers\olethros\0\qualifying\aalborg.xml"
+  File "base\drivers\olethros\0\qualifying\alpine-1.xml"
+  File "base\drivers\olethros\0\qualifying\dirt-2.xml"
+  File "base\drivers\olethros\0\qualifying\dirt-3.xml"
+  File "base\drivers\olethros\0\qualifying\e-track-2.xml"
+  File "base\drivers\olethros\0\qualifying\g-track-3.xml"
+  File "base\drivers\olethros\0\qualifying\mixed-1.xml"
+  File "base\drivers\olethros\0\qualifying\mixed-2.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\0\race"
+  File "base\drivers\olethros\0\race\aalborg.xml"
+  File "base\drivers\olethros\0\race\alpine-1.xml"
+  File "base\drivers\olethros\0\race\dirt-2.xml"
+  File "base\drivers\olethros\0\race\dirt-3.xml"
+  File "base\drivers\olethros\0\race\e-track-2.xml"
+  File "base\drivers\olethros\0\race\g-track-3.xml"
+  File "base\drivers\olethros\0\race\mixed-1.xml"
+  File "base\drivers\olethros\0\race\mixed-2.xml"
+  File "base\drivers\olethros\0\race\wheel-1.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\1"
+  File "base\drivers\olethros\1\cg-nascar-rwd.rgb"
+  File "base\drivers\olethros\1\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\1\practice"
+  File "base\drivers\olethros\1\practice\g-track-3.xml"
+  File "base\drivers\olethros\1\practice\michigan.xml"
+  File "base\drivers\olethros\1\practice\wheel-1.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\1\qualifying"
+  File "base\drivers\olethros\1\qualifying\g-track-3.xml"
+  File "base\drivers\olethros\1\qualifying\wheel-1.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\1\race"
+  File "base\drivers\olethros\1\race\g-track-3.xml"
+  File "base\drivers\olethros\1\race\wheel-1.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\2"
+  File "base\drivers\olethros\2\default.xml"
+  File "base\drivers\olethros\2\porsche-gt1.rgb"
+  SetOutPath "$INSTDIR\drivers\olethros\2\practice"
+  File "base\drivers\olethros\2\practice\e-track-3.xml"
+  File "base\drivers\olethros\2\practice\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\2\qualifying"
+  File "base\drivers\olethros\2\qualifying\e-track-3.xml"
+  File "base\drivers\olethros\2\qualifying\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\2\race"
+  File "base\drivers\olethros\2\race\e-track-3.xml"
+  File "base\drivers\olethros\2\race\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\3"
+  File "base\drivers\olethros\3\155-DTM.rgb"
+  File "base\drivers\olethros\3\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\3\practice"
+  SetOutPath "$INSTDIR\drivers\olethros\3\qualifying"
+  SetOutPath "$INSTDIR\drivers\olethros\3\race"
+  SetOutPath "$INSTDIR\drivers\olethros\4"
+  File "base\drivers\olethros\4\default.xml"
+  File "base\drivers\olethros\4\mclaren-f1.rgb"
+  SetOutPath "$INSTDIR\drivers\olethros\4\practice"
+  File "base\drivers\olethros\4\practice\e-track-3.xml"
+  File "base\drivers\olethros\4\practice\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\4\qualifying"
+  File "base\drivers\olethros\4\qualifying\e-track-3.xml"
+  File "base\drivers\olethros\4\qualifying\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\4\race"
+  File "base\drivers\olethros\4\race\e-track-3.xml"
+  File "base\drivers\olethros\4\race\e-track-4.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\5"
+  File "base\drivers\olethros\5\default.xml"
+  File "base\drivers\olethros\5\porsche-gt3rs.rgb"
+  SetOutPath "$INSTDIR\drivers\olethros\5\practice"
+  SetOutPath "$INSTDIR\drivers\olethros\5\qualifying"
+  SetOutPath "$INSTDIR\drivers\olethros\5\race"
+  SetOutPath "$INSTDIR\drivers\olethros\6"
+  File "base\drivers\olethros\6\clkdtm.rgb"
+  File "base\drivers\olethros\6\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\6\practice"
+  SetOutPath "$INSTDIR\drivers\olethros\6\qualifying"
+  SetOutPath "$INSTDIR\drivers\olethros\6\race"
+  SetOutPath "$INSTDIR\drivers\olethros\7"
+  File "base\drivers\olethros\7\360-modena.rgb"
+  File "base\drivers\olethros\7\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\7\practice"
+  File "base\drivers\olethros\7\practice\b-speedway.xml"
+  File "base\drivers\olethros\7\practice\e-track-1.xml"
+  File "base\drivers\olethros\7\practice\e-track-3.xml"
+  File "base\drivers\olethros\7\practice\eroad.xml"
+  File "base\drivers\olethros\7\practice\g-track-2.xml"
+  File "base\drivers\olethros\7\practice\michigan.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\7\qualifying"
+  File "base\drivers\olethros\7\qualifying\b-speedway.xml"
+  File "base\drivers\olethros\7\qualifying\e-track-1.xml"
+  File "base\drivers\olethros\7\qualifying\e-track-3.xml"
+  File "base\drivers\olethros\7\qualifying\eroad.xml"
+  File "base\drivers\olethros\7\qualifying\g-track-2.xml"
+  File "base\drivers\olethros\7\qualifying\michigan.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\7\race"
+  File "base\drivers\olethros\7\race\b-speedway.xml"
+  File "base\drivers\olethros\7\race\e-track-1.xml"
+  File "base\drivers\olethros\7\race\e-track-3.xml"
+  File "base\drivers\olethros\7\race\eroad.xml"
+  File "base\drivers\olethros\7\race\g-track-2.xml"
+  File "base\drivers\olethros\7\race\michigan.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\8"
+  File "base\drivers\olethros\8\default.xml"
+  File "base\drivers\olethros\8\xj-220.rgb"
+  SetOutPath "$INSTDIR\drivers\olethros\8\practice"
+  SetOutPath "$INSTDIR\drivers\olethros\8\qualifying"
+  SetOutPath "$INSTDIR\drivers\olethros\8\race"
+  SetOutPath "$INSTDIR\drivers\olethros\9"
+  File "base\drivers\olethros\9\default.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\9\practice"
+  File "base\drivers\olethros\9\practice\michigan.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\9\qualifying"
+  File "base\drivers\olethros\9\qualifying\michigan.xml"
+  SetOutPath "$INSTDIR\drivers\olethros\9\race"
+  File "base\drivers\olethros\9\race\michigan.xml"
+  
   SetOutPath "$INSTDIR"
   File "base\glut32.dll"
+  File "base\OpenAL32.dll"
   File "base\logo-skinner.png"
   SetOutPath "$INSTDIR\menu"
   File "base\menu\entry.xml"
@@ -1910,6 +2075,8 @@ Section "Base System" SEC01
   SetOutPath "$INSTDIR"
   File "base\robottools.dll"
   File "base\tgf.dll"
+  File "base\learning.dll"
+  
   SetOutPath "$INSTDIR\tracks\dirt\dirt-1"
   File "base\tracks\dirt\dirt-1\background.png"
   File "base\tracks\dirt\dirt-1\dirt-1.ac"
@@ -2000,9 +2167,35 @@ Section "Base System" SEC01
   File "base\tracks\oval\michigan\michigan.png"
   File "base\tracks\oval\michigan\michigan.xml"
   SetOutPath "$INSTDIR\tracks\road\aalborg"
-  File "base\tracks\road\aalborg\aalborg.ac"
   File "base\tracks\road\aalborg\aalborg.png"
   File "base\tracks\road\aalborg\aalborg.xml"
+  File "base\tracks\road\aalborg\aalborg.acc"
+  File "base\tracks\road\aalborg\allborg-trees_n.rgb"
+  File "base\tracks\road\aalborg\background.png"
+  File "base\tracks\road\aalborg\barr1.rgb"
+  File "base\tracks\road\aalborg\grass-aa.rgb"
+  File "base\tracks\road\aalborg\poutre4.rgb"
+  File "base\tracks\road\aalborg\readme.txt"
+  File "base\tracks\road\aalborg\shadow2.rgb"
+  File "base\tracks\road\aalborg\spectator.rgb"
+  File "base\tracks\road\aalborg\tarmac-wall-1-g2.rgb"
+  File "base\tracks\road\aalborg\tarmac-wall-2-g2.rgb"
+  File "base\tracks\road\aalborg\torcs1.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-2-aa-r_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-bw1_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-bw2-e_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-bw2-s_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-bw2_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-l_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-pe-bw1_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-pt-bw1_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-aa-ro-bw1_n.rgb"
+  File "base\tracks\road\aalborg\tr-asphalt-to-g-aa-l_n.rgb"
+  File "base\tracks\road\aalborg\tr-barrier-aa-1.rgb"
+  File "base\tracks\road\aalborg\tr-curb-bw-aa-r.rgb"
+  File "base\tracks\road\aalborg\tr-g-to-asphalt-aa-l_n.rgb"
+  File "base\tracks\road\aalborg\tr-grass-aa-l_n.rgb"
+  
   SetOutPath "$INSTDIR\tracks\road\alpine-1"
   File "base\tracks\road\alpine-1\alpine-1.ac"
   File "base\tracks\road\alpine-1\alpine-1.png"
@@ -2032,9 +2225,22 @@ Section "Base System" SEC01
   File "base\tracks\road\alpine-1\walls2.rgb"
   SetOutPath "$INSTDIR\tracks\road\e-track-1"
   File "base\tracks\road\e-track-1\background.png"
-  File "base\tracks\road\e-track-1\e-track-1.ac"
   File "base\tracks\road\e-track-1\e-track-1.png"
   File "base\tracks\road\e-track-1\e-track-1.xml"
+  File "base\tracks\road\e-track-1\e-track-1.acc"
+  File "base\tracks\road\e-track-1\geo-bw1.rgb"
+  File "base\tracks\road\e-track-1\readme.txt"
+  File "base\tracks\road\e-track-1\shadow2.rgb"
+  File "base\tracks\road\e-track-1\tr-asphalt-bw3-pit-e_n.rgb"
+  File "base\tracks\road\e-track-1\tr-asphalt-bw3-pit-l_n.rgb"
+  File "base\tracks\road\e-track-1\tr-asphalt-bw3-pit_n.rgb"
+  File "base\tracks\road\e-track-1\tr-asphalt-bw3_n.rgb"
+  File "base\tracks\road\e-track-1\tr-barrier-bw.rgb"
+  File "base\tracks\road\e-track-1\tr-curb-bw-l.rgb"
+  File "base\tracks\road\e-track-1\tr-curb-bw-r.rgb"
+  File "base\tracks\road\e-track-1\tr-grass-bw1.rgb"
+  File "base\tracks\road\e-track-1\tr-grass-bw2.rgb"
+
   SetOutPath "$INSTDIR\tracks\road\e-track-2"
   File "base\tracks\road\e-track-2\background.png"
   File "base\tracks\road\e-track-2\e-track-2.acc"
@@ -2061,111 +2267,117 @@ Section "Base System" SEC01
   File "base\tracks\road\e-track-6\object-map1.png"
   SetOutPath "$INSTDIR\tracks\road\eroad"
   File "base\tracks\road\eroad\background.png"
-  File "base\tracks\road\eroad\eroad.ac"
   File "base\tracks\road\eroad\eroad.png"
   File "base\tracks\road\eroad\eroad.xml"
+  File "base\tracks\road\eroad\eroad.acc"
+  File "base\tracks\road\eroad\readme.txt"
+  File "base\tracks\road\eroad\shadow2.rgb"
+  File "base\tracks\road\eroad\tr-asphalt-bw1-pits_n.rgb"
+  File "base\tracks\road\eroad\tr-asphalt-l2bw1-pe_n.rgb"
+  File "base\tracks\road\eroad\tr-asphalt-l2bw1-pl_n.rgb"
+  File "base\tracks\road\eroad\tr-asphalt-l2bw1_n.rgb"
+  File "base\tracks\road\eroad\tr-barrier-bw2.rgb"
+  File "base\tracks\road\eroad\tr-wall-torcs1-left.rgb"
+  File "base\tracks\road\eroad\tr-wall-torcs1-right.rgb"
+
   SetOutPath "$INSTDIR\tracks\road\g-track-1"
-  File "base\tracks\road\g-track-1\alltree.rgb"
-  File "base\tracks\road\g-track-1\alltree2.rgb"
-  File "base\tracks\road\g-track-1\asphalt2.rgb"
-  File "base\tracks\road\g-track-1\asphalt3.rgb"
   File "base\tracks\road\g-track-1\background.png"
-  File "base\tracks\road\g-track-1\env.rgb"
-  File "base\tracks\road\g-track-1\g-track-1.ac"
   File "base\tracks\road\g-track-1\g-track-1.png"
   File "base\tracks\road\g-track-1\g-track-1.xml"
-  File "base\tracks\road\g-track-1\grassg1.rgb"
-  File "base\tracks\road\g-track-1\grassg2.rgb"
-  File "base\tracks\road\g-track-1\grassg3.rgb"
-  File "base\tracks\road\g-track-1\rock2.rgb"
-  File "base\tracks\road\g-track-1\rock3.rgb"
-  File "base\tracks\road\g-track-1\texte1.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-1_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-patch-1_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-patch-2_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-patch-3_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-pit_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-pitentry-side_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-pitentry_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-sidel-end_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-sidel-start_n.rgb"
+  File "base\tracks\road\g-track-1\asphalt-bw-g1-sidel_n.rgb"
+  File "base\tracks\road\g-track-1\barr1.rgb"
+  File "base\tracks\road\g-track-1\earth_and_grass.rgb"
+  File "base\tracks\road\g-track-1\facade1-512.rgb"
+  File "base\tracks\road\g-track-1\facade6-512.rgb"
+  File "base\tracks\road\g-track-1\facade7.rgb"
+  File "base\tracks\road\g-track-1\fence-arbor_n.rgb"
+  File "base\tracks\road\g-track-1\g-track-1.acc"
+  File "base\tracks\road\g-track-1\grass-g1.rgb"
+  File "base\tracks\road\g-track-1\poutre3_arbor_n.rgb"
+  File "base\tracks\road\g-track-1\poutre4.rgb"
+  File "base\tracks\road\g-track-1\readme.txt"
+  File "base\tracks\road\g-track-1\roof1.rgb"
+  File "base\tracks\road\g-track-1\roof3.rgb"
+  File "base\tracks\road\g-track-1\shadow2.rgb"
+  File "base\tracks\road\g-track-1\spectator.rgb"
+  File "base\tracks\road\g-track-1\std.rgb"
+  File "base\tracks\road\g-track-1\tarmac-wall-2-g2.rgb"
+  File "base\tracks\road\g-track-1\tent.rgb"
+  File "base\tracks\road\g-track-1\torcs0_arbor_n.rgb"
+  File "base\tracks\road\g-track-1\torcs1.rgb"
+  File "base\tracks\road\g-track-1\tr-asphalt-aa-bw1_n.rgb"
+  File "base\tracks\road\g-track-1\tree53_n.rgb"
+  File "base\tracks\road\g-track-1\truck_arbor_berniw_n.rgb"
+  File "base\tracks\road\g-track-1\truck_arbor_bt_n.rgb"
+  File "base\tracks\road\g-track-1\truck_arbor_inferno_n.rgb"
+  File "base\tracks\road\g-track-1\truck_arbor_speedy_n.rgb"
+  File "base\tracks\road\g-track-1\truck_arbor_tita_n.rgb"
+  File "base\tracks\road\g-track-1\wall-green-yellow.rgb"
+  File "base\tracks\road\g-track-1\wall-grey.rgb"
+  File "base\tracks\road\g-track-1\wall4.rgb"
+
   SetOutPath "$INSTDIR\tracks\road\g-track-2"
   File "base\tracks\road\g-track-2\alltree.rgb"
-  File "base\tracks\road\g-track-2\alltree2.rgb"
   File "base\tracks\road\g-track-2\arbor01.rgb"
-  File "base\tracks\road\g-track-2\asasphr.rgb"
-  File "base\tracks\road\g-track-2\asb2l.rgb"
-  File "base\tracks\road\g-track-2\asb2r.rgb"
-  File "base\tracks\road\g-track-2\asbl.rgb"
   File "base\tracks\road\g-track-2\asconcr.rgb"
-  File "base\tracks\road\g-track-2\asgrassl.rgb"
-  File "base\tracks\road\g-track-2\asgrassr.rgb"
   File "base\tracks\road\g-track-2\asphalt.rgb"
-  File "base\tracks\road\g-track-2\asphalt2.rgb"
-  File "base\tracks\road\g-track-2\asphalt3.rgb"
   File "base\tracks\road\g-track-2\asphalt4.rgb"
-  File "base\tracks\road\g-track-2\asphaltr.rgb"
   File "base\tracks\road\g-track-2\asp_n.rgb"
-  File "base\tracks\road\g-track-2\asp_nmm.rgb"
-  File "base\tracks\road\g-track-2\assandr.rgb"
-  File "base\tracks\road\g-track-2\astiled.rgb"
   File "base\tracks\road\g-track-2\background.png"
-  File "base\tracks\road\g-track-2\barg1_n.rgb"
   File "base\tracks\road\g-track-2\barg2.rgb"
   File "base\tracks\road\g-track-2\barg3.rgb"
   File "base\tracks\road\g-track-2\barr1.rgb"
   File "base\tracks\road\g-track-2\concdal.rgb"
-  File "base\tracks\road\g-track-2\env.rgb"
   File "base\tracks\road\g-track-2\g-track-2.acc"
   File "base\tracks\road\g-track-2\g-track-2.png"
   File "base\tracks\road\g-track-2\g-track-2.xml"
   File "base\tracks\road\g-track-2\gconcrete.rgb"
   File "base\tracks\road\g-track-2\grassg1.rgb"
-  File "base\tracks\road\g-track-2\grassg2.rgb"
   File "base\tracks\road\g-track-2\grassg3.rgb"
-  File "base\tracks\road\g-track-2\grtiled.rgb"
   File "base\tracks\road\g-track-2\gsand.rgb"
-  File "base\tracks\road\g-track-2\gsandtiled.rgb"
   File "base\tracks\road\g-track-2\gtirewall.rgb"
-  File "base\tracks\road\g-track-2\gwall.rgb"
-  File "base\tracks\road\g-track-2\poutre3.rgb"
   File "base\tracks\road\g-track-2\poutre4.rgb"
-  File "base\tracks\road\g-track-2\reflect.rgb"
-  File "base\tracks\road\g-track-2\rock2.rgb"
-  File "base\tracks\road\g-track-2\rock3.rgb"
   File "base\tracks\road\g-track-2\rock4.rgb"
   File "base\tracks\road\g-track-2\spec.rgb"
   File "base\tracks\road\g-track-2\std.rgb"
   File "base\tracks\road\g-track-2\tent.rgb"
-  File "base\tracks\road\g-track-2\texte1.rgb"
-  File "base\tracks\road\g-track-2\torcs0.rgb"
   File "base\tracks\road\g-track-2\torcs1.rgb"
   File "base\tracks\road\g-track-2\torcs2.rgb"
   File "base\tracks\road\g-track-2\trcurbl.rgb"
   File "base\tracks\road\g-track-2\trcurbr.rgb"
-  File "base\tracks\road\g-track-2\treecl1.rgb"
   File "base\tracks\road\g-track-2\treewate.rgb"
+  File "base\tracks\road\g-track-2\poutre3_arbor_n.rgb"
+  File "base\tracks\road\g-track-2\readme.txt"
+  File "base\tracks\road\g-track-2\shadow2.rgb"
+  File "base\tracks\road\g-track-2\torcs0_arbor_n.rgb"
+  
   SetOutPath "$INSTDIR\tracks\road\g-track-3"
   File "base\tracks\road\g-track-3\arbor01.rgb"
   File "base\tracks\road\g-track-3\asasphr.rgb"
-  File "base\tracks\road\g-track-3\asb2l.rgb"
   File "base\tracks\road\g-track-3\asconcr.rgb"
   File "base\tracks\road\g-track-3\asgrassr_n.rgb"
-  File "base\tracks\road\g-track-3\asp.rgb"
   File "base\tracks\road\g-track-3\asphalt4.rgb"
   File "base\tracks\road\g-track-3\asp_n.rgb"
   File "base\tracks\road\g-track-3\assandr.rgb"
-  File "base\tracks\road\g-track-3\astiled.rgb"
   File "base\tracks\road\g-track-3\background.png"
-  File "base\tracks\road\g-track-3\barg1_n.rgb"
   File "base\tracks\road\g-track-3\barg2.rgb"
   File "base\tracks\road\g-track-3\barg3.rgb"
-  File "base\tracks\road\g-track-3\barg4.rgb"
-  File "base\tracks\road\g-track-3\barr1.rgb"
   File "base\tracks\road\g-track-3\concdal.rgb"
-  File "base\tracks\road\g-track-3\env.png"
-  File "base\tracks\road\g-track-3\envshadow.png"
   File "base\tracks\road\g-track-3\g-track-3.acc"
   File "base\tracks\road\g-track-3\g-track-3.png"
   File "base\tracks\road\g-track-3\g-track-3.xml"
   File "base\tracks\road\g-track-3\gconcrete.rgb"
   File "base\tracks\road\g-track-3\ggrass3.rgb"
-  File "base\tracks\road\g-track-3\ground0.rgb"
-  File "base\tracks\road\g-track-3\ground1.rgb"
-  File "base\tracks\road\g-track-3\grtiled.rgb"
   File "base\tracks\road\g-track-3\gsand.rgb"
-  File "base\tracks\road\g-track-3\gsandtiled.rgb"
   File "base\tracks\road\g-track-3\gtirewall.rgb"
   File "base\tracks\road\g-track-3\house.rgb"
   File "base\tracks\road\g-track-3\mur2.rgb"
@@ -2177,17 +2389,17 @@ Section "Base System" SEC01
   File "base\tracks\road\g-track-3\rockg0.rgb"
   File "base\tracks\road\g-track-3\shadow2.rgb"
   File "base\tracks\road\g-track-3\skid_m2.rgb"
-  File "base\tracks\road\g-track-3\torcs0.rgb"
   File "base\tracks\road\g-track-3\torcs1.rgb"
   File "base\tracks\road\g-track-3\torcs2.rgb"
-  File "base\tracks\road\g-track-3\trcurbl.rgb"
-  File "base\tracks\road\g-track-3\trcurbr.rgb"
   File "base\tracks\road\g-track-3\treebui1.rgb"
   File "base\tracks\road\g-track-3\treeg10.rgb"
   File "base\tracks\road\g-track-3\truck0.rgb"
   File "base\tracks\road\g-track-3\truck1.rgb"
   File "base\tracks\road\g-track-3\walls.rgb"
   File "base\tracks\road\g-track-3\walls2.rgb"
+  File "base\tracks\road\g-track-3\arbor-wood_n.rgb"
+  File "base\tracks\road\g-track-3\readme.txt"
+  
   SetOutPath "$INSTDIR\tracks\road\ole-road-1"
   File "base\tracks\road\ole-road-1\background.png"
   File "base\tracks\road\ole-road-1\close-bush.rgb"
@@ -2202,6 +2414,8 @@ Section "Base System" SEC01
   File "base\tracks\road\ole-road-1\patched-asphalt-2.png"
   File "base\tracks\road\ole-road-1\shadow2.rgb"
   File "base\tracks\road\ole-road-1\tr-asphalt-l_nmm.rgb"
+  File "base\tracks\road\ole-road-1\readme.txt"
+
   SetOutPath "$INSTDIR\tracks\road\spring"
   File "base\tracks\road\spring\spring.ac"
   File "base\tracks\road\spring\spring.png"
@@ -2550,6 +2764,10 @@ SectionEnd
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
   WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\wtorcs.exe"
+  WriteRegDword HKLM "${PRODUCT_DIR_REGKEY}" "VersionMajor" "${VER_MAJOR}"
+  WriteRegDword HKLM "${PRODUCT_DIR_REGKEY}" "VersionMinor" "${VER_MINOR}"
+  WriteRegDword HKLM "${PRODUCT_DIR_REGKEY}" "VersionRevision" "${VER_REVISION}"
+  WriteRegDword HKLM "${PRODUCT_DIR_REGKEY}" "VersionDate" "${VER_RELDATE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\wtorcs.exe"
@@ -5023,10 +5241,117 @@ Section Uninstall
   RMDir "$INSTDIR\cars\acura-nsx-sz"
   RMDir "$INSTDIR\cars\360-modena"
   RMDir "$INSTDIR\cars\155-DTM"
-  RMDir /r "$INSTDIR\results"
-  RMDir /r "$INSTDIR"
+  RMDir "$INSTDIR\results"
+  RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
 SectionEnd
+
+
+;--------------------------------
+;Installer Functions, derived from makensis.nsi
+
+Function .onInit
+
+  !insertmacro MUI_INSTALLOPTIONS_EXTRACT "torcs.ini"
+
+FunctionEnd
+
+
+Function PageReinstall
+
+  ReadRegStr $R0 HKLM "${PRODUCT_DIR_REGKEY}" ""
+
+  StrCmp $R0 "" 0 other_version_present
+    Abort
+
+  other_version_present:
+
+  ;Detect version
+    ReadRegDWORD $R0 HKLM "${PRODUCT_DIR_REGKEY}" "VersionMajor"
+    IntCmp $R0 ${VER_MAJOR} minor_check new_version older_version
+  minor_check:
+    ReadRegDWORD $R0 HKLM "${PRODUCT_DIR_REGKEY}" "VersionMinor"
+    IntCmp $R0 ${VER_MINOR} revision_check new_version older_version
+  revision_check:
+    ReadRegDWORD $R0 HKLM "${PRODUCT_DIR_REGKEY}" "VersionRevision"
+    IntCmp $R0 ${VER_REVISION} build_check new_version older_version
+  build_check:
+    ReadRegDWORD $R0 HKLM "${PRODUCT_DIR_REGKEY}" "VersionDate"
+    IntCmp $R0 ${VER_RELDATE} same_version new_version older_version
+
+  new_version:
+
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 1" "Text" "An older version of TORCS is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 2" "Text" "Uninstall before installing"
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 3" "Text" "Do not uninstall"
+   !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose how you want to install TORCS."
+   StrCpy $R0 "1"
+   Goto reinst_start
+
+  older_version:
+
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 1" "Text" "A newer version of TORCS is already installed! It is not recommended that you install an older version. If you really want to install this older version, it's better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 2" "Text" "Uninstall before installing"
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 3" "Text" "Do not uninstall"
+   !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose how you want to install TORCS."
+   StrCpy $R0 "1"
+   Goto reinst_start
+
+  same_version:
+
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 1" "Text" "TORCS ${PRODUCT_VERSION} is already installed. Select the operation you want to perform and click Next to continue."
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 2" "Text" "Add/Reinstall components"
+   !insertmacro MUI_INSTALLOPTIONS_WRITE "torcs.ini" "Field 3" "Text" "Uninstall TORCS"
+   !insertmacro MUI_HEADER_TEXT "Already Installed" "Choose the maintenance option to perform."
+   StrCpy $R0 "2"
+
+  reinst_start:
+
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "torcs.ini"
+
+FunctionEnd
+
+
+
+Function PageLeaveReinstall
+
+  !insertmacro MUI_INSTALLOPTIONS_READ $R1 "torcs.ini" "Field 2" "State"
+
+  StrCmp $R0 "1" 0 +2
+    StrCmp $R1 "1" reinst_uninstall reinst_done
+
+  StrCmp $R0 "2" 0 +3
+    StrCmp $R1 "1" reinst_done reinst_uninstall
+
+  reinst_uninstall:
+  ReadRegStr $R1 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+
+  ;Run uninstaller
+  HideWindow
+
+    ClearErrors
+    ExecWait '$R1 _?=$INSTDIR'
+
+    IfErrors no_remove_uninstaller
+    IfFileExists "$INSTDIR\wtorcs.exe" no_remove_uninstaller
+
+      Delete $R1
+      RMDir $INSTDIR
+
+    no_remove_uninstaller:
+
+  StrCmp $R0 "2" 0 +2
+    Quit
+
+  BringToFront
+
+  reinst_done:
+
+FunctionEnd
+
+
+
+
