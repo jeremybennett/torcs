@@ -268,8 +268,7 @@ Changes since 1.2.3
 
 TODO for 1.2.4
 --------------
-- Bugfixes and cleanup.
-- Put trackeditor into Windows installer when ready.
+- Critical bugfixes if problems come up.
 - Linux installer.
 - Separated packages.
 - Prepare docs (Robot tutorial -> OpenAL section, installation etc).
