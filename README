@@ -163,6 +163,8 @@ Changes since 1.2.3-test1
   one can safely ignore) (Bernhard).
 - Updated Windows installer, checks now for already installed versions, works
   with 1.2.3 or later (Bernhard). Trackeditor is not yet included.
+- Windows deinstaller does not delete generated files anymore (Bernhard).
+- Integrated trackeditor into Windows installer (Bernhard).
 
 
 Changes since 1.2.3
