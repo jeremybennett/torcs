@@ -2478,6 +2478,7 @@ Section "Developer Tools" SEC02
   File "base\trackeditor\lib\trackeditor-0.6.2c.jar"
   File "base\trackeditor\lib\xercesImpl.jar"
 
+  SetOutPath "$INSTDIR"
   CreateShortCut "$SMPROGRAMS\TORCS\Track Editor.lnk" "$INSTDIR\trackeditor.bat"
   CreateShortCut "$SMPROGRAMS\TORCS\Track Editor Manual.lnk" "$INSTDIR\trackeditor\doc\miniHowTo.html"
 
