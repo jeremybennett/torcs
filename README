@@ -102,6 +102,7 @@ Bernhard.
 Changes since 1.2.3-test2
 -------------------------
 - Fixed wrong CWD set by installer for trackeditor.bat (Bernhard).
+- Fixed OpenAL backend design flaw (run out of sources) (Bernhard).
 
 
 Changes since 1.2.3-test1
