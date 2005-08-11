@@ -103,8 +103,10 @@ Changes since 1.2.3-test2
 -------------------------
 - Fixed wrong CWD set by installer for trackeditor.bat (Bernhard).
 - Fixed OpenAL backend design flaw (run out of sources) (Bernhard).
+- Reviewed and applied penalty clearing/pit stop patches from Mart Kelder
+  (Mart Kelder, Bernhard).
 
-
+  
 Changes since 1.2.3-test1
 -------------------------
 - Tried to fix problem with GL headers differences in Linux (Bernhard).
