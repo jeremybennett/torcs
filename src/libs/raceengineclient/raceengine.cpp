@@ -431,13 +431,11 @@ ReRaceRules(tCarElt *car)
 		    /* it's not more a drive through */
 		    rules->ruleState &= ~RM_PNST_DRIVETHROUGH;
 		} else if (rules->ruleState & RM_PNST_STOPANDGO) {
-		    if (car->_pitStopType == RM_PIT_STOPANDGO) {
-			/* the driver wants to clean the stop and go */
-			rules->ruleState |= RM_PNST_STOPANDGO_OK;
-		    } else {
-			/* a refuel pit stop does not count as stop and go */
-			rules->ruleState &= ~RM_PNST_STOPANDGO;
-		    }
+		    rules->ruleState |= RM_PNST_STOPANDGO_OK;
+		}
+	    } else {
+                if(rules->ruleState & RM_PNST_STOPANDGO_OK && car->_pitStopType != RM_PIT_STOPANDGO) {
+		    rules->ruleState &= ~ ( RM_PNST_STOPANDGO | RM_PNST_STOPANDGO_OK );
 		}
 	    }
 	} else if (seg->raceInfo & TR_PITEND) {
