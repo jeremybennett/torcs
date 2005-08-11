@@ -69,6 +69,13 @@ rmStopAndGo(void * /* dummy */)
     rmCallback(rmUserData);
 }
 
+static void
+rmRepair(void* /* dummy */)
+{
+   rmCar->_pitStopType = RM_PIT_REPAIR;
+   rmCallback(rmUserData);
+}
+
 
 void
 RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
@@ -116,7 +123,7 @@ RmPitMenuStart(tCarElt *car, void *userdata, tfuiCallback callback)
     //GfuiMenuBackQuitButtonCreate(menuHandle, "Repair", "Return to race", userdata, callback);
 
     GfuiButtonCreate(menuHandle, "Repair", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     userdata, callback, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		     NULL, rmRepair, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
     rmCallback = callback;
     rmUserData = userdata;
     GfuiButtonCreate(menuHandle, "Stop & Go", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
