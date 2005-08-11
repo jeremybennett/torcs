@@ -2,7 +2,7 @@
 
     file                 : PlibSoundInterface.cpp
     created              : Thu Apr 7 04:21 CEST 2005
-    copyright            : (C) 2005 Christos Dimitrakakis
+    copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
     version              : $Id$
 
@@ -22,6 +22,7 @@
 #include "TorcsSound.h"
 
 
+const int OpenalSoundInterface::OSI_MIN_DYNAMIC_SOURCES = 4;
 
 
 OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels): SoundInterface (sampling_rate, n_channels)
@@ -32,7 +33,9 @@ OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels):
 	if( dev == NULL ) {
 		throw ("Could not open device");
 	}
-		
+	
+	// Last zero is termination of the array, I think the current official beat SDK ignores that.
+	// ALCint attr[] = { ALC_MONO_SOURCES, 1024, ALC_STEREO_SOURCES, 0, 0};
 	cc = alcCreateContext( dev, NULL);
 	if(cc == NULL) {
 		alcCloseDevice( dev );
@@ -40,16 +43,86 @@ OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels):
 	}
 
 	alcMakeContextCurrent( cc );
+	alcGetError(dev);
 	alGetError();
 
+	// Figure out the number of possible sources, watch out for an API update, perhaps
+	// one can get that easier later with al(c)GetInteger (I'm sure that there is no way to
+	// query this now) or even request a number with the context.
+	const int MAX_SOURCES = 1024;
+	int sources;
+	ALuint sourcelist[MAX_SOURCES];
+	for (sources = 0; sources < MAX_SOURCES; sources++) {
+		alGenSources(1, &sourcelist[sources]);
+		if (alGetError() != AL_NO_ERROR) {
+			break;
+		}
+	}
+
+	int clear;
+	for (clear = 0; clear < sources; clear++) {
+		if (alIsSource(sourcelist[clear])) {
+			alDeleteSources(1, &sourcelist[clear]);
+			if (alGetError() != AL_NO_ERROR) {
+				printf("Error in probing OpenAL sources.\n");
+			}
+		} else {
+			printf("Error in probing OpenAL sources.\n");
+		}
+	}
+
+	OSI_MAX_SOURCES = sources;
+	OSI_MAX_STATIC_SOURCES = MAX(0, OSI_MAX_SOURCES - OSI_MIN_DYNAMIC_SOURCES);
+
+	// Figure out the number of buffers.
+	int buffers;
+	ALuint bufferlist[MAX_SOURCES];
+	for (buffers = 0; buffers < MAX_SOURCES; buffers++) {
+		alGenBuffers(1, &bufferlist[buffers]);
+		if (alGetError() != AL_NO_ERROR) {
+			break;
+		}
+	}
+
+	for (clear = 0; clear < buffers; clear++) {
+		if (alIsBuffer(bufferlist[clear])) {
+			alDeleteBuffers(1, &bufferlist[clear]);
+			if (alGetError() != AL_NO_ERROR) {
+				printf("Error in probing OpenAL buffers.\n");
+			}
+		} else {
+			printf("Error in probing OpenAL buffers.\n");
+		}
+	}
+
+	OSI_MAX_BUFFERS = buffers;
+
+	printf("OpenAL backend info:\n  Vendor: %s\n  Renderer: %s\n  Version: %s\n", alGetString(AL_VENDOR), alGetString(AL_RENDERER), alGetString(AL_VERSION));
+	printf("  Available sources: %d%s\n", OSI_MAX_SOURCES, (sources >= MAX_SOURCES) ? " or more" : "");
+	printf("  Available buffers: %d%s\n", OSI_MAX_BUFFERS, (buffers >= MAX_SOURCES) ? " or more" : "");
+	
 	alDistanceModel ( AL_INVERSE_DISTANCE );
+	int error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d alDistanceModel\n", error);
+	}
+
 	alDopplerFactor (1.0f);
 	//alSpeedOfSound (SPEED_OF_SOUND); // not defined in linux yet.
 	alDopplerVelocity (SPEED_OF_SOUND);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d alDopplerX\n", error);
+	}
+
 
 	alListenerfv(AL_POSITION, far_away );
 	alListenerfv(AL_VELOCITY, far_away );
 	alListenerfv(AL_ORIENTATION, front );
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d alListenerfv\n", error);
+	}
 	
 	engpri = NULL;
 	global_gain = 1.0f;
@@ -63,17 +136,16 @@ OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels):
 	turbo.schar = &CarSoundData::turbo;
 	axle.schar = &CarSoundData::axle;
 
-
-	//cars = NULL;
+	n_static_sources_in_use = 0;
 }
 
 OpenalSoundInterface::~OpenalSoundInterface()
 {
+	delete sourcepool;
 	for (unsigned int i=0; i<sound_list.size(); i++) {
 		delete sound_list[i];
 	}
 	delete [] engpri;
-	//delete [] cars;
 	alcDestroyContext (cc);
 	alcCloseDevice (dev);
 }
@@ -81,11 +153,12 @@ OpenalSoundInterface::~OpenalSoundInterface()
 void OpenalSoundInterface::setNCars(int n_cars)
 {
 	engpri = new SoundPri[n_cars];
-	//cars = new OpenalSoundSource[n_cars];
 }
-TorcsSound* OpenalSoundInterface::addSample (const char* filename, int flags, bool loop)
+
+
+TorcsSound* OpenalSoundInterface::addSample (const char* filename, int flags, bool loop, bool static_pool)
 {
-	TorcsSound* sound = new OpenalTorcsSound (filename, flags, loop);
+	TorcsSound* sound = new OpenalTorcsSound (filename, this, flags, loop, static_pool);
 	sound_list.push_back (sound);
 	return sound;
 }
@@ -117,7 +190,12 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 
 	qsort ((void*) engpri, n_cars, sizeof(SoundPri), &sortSndPriority);
 
-	for (i = 0; i<n_cars; i++) {
+
+	int nsrc = MIN(sourcepool->getNbSources(), n_engine_sounds);
+
+	// Reverse order is important to gain free sources from stopped engine sounds
+	// before attempting to start new ones.
+	for (i = n_cars - 1; i >= 0; i--) {
 		int id = engpri[i].id;
 		sgVec3 p;
 		sgVec3 u;
@@ -131,14 +209,13 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		//engine->setLPFilter(sound_data->engine.lp);
 
 		engine->update();
-		if (i < n_engine_sounds) {
+		if (i < nsrc) {
 			engine->start();
 		} else {
 			engine->stop();
 		}
 	}
 	
-
 	float max_skid_vol[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 	int max_skid_id[4] = {0,0,0,0};
 	int id;
@@ -152,7 +229,6 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 			}
 		}
 	}
-
 
 	for (i = 0; i<4; i++) {
 		int id = max_skid_id[i];
@@ -255,4 +331,28 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 }
 
 
+void OpenalSoundInterface::initSharedSourcePool(void)
+{
+	int nbdynsources = OSI_MAX_SOURCES - n_static_sources_in_use;
+	sourcepool = new SharedSourcePool(nbdynsources);
+	printf("  #static sources: %d\n", n_static_sources_in_use);
+	printf("  #dyn sources   : %d\n", sourcepool->getNbSources());
+}
 
+
+bool OpenalSoundInterface::getStaticSource(ALuint *source)
+{
+	// Do we have a source left for static assigned sources?
+	if (n_static_sources_in_use < OSI_MAX_STATIC_SOURCES - 1) {
+		alGenSources (1, source);
+		int error = alGetError();
+		if (error != AL_NO_ERROR) {
+			return false;
+		} else {
+			n_static_sources_in_use++;
+			return true;
+		}
+	} else {
+		return false;
+	}
+}

@@ -42,7 +42,9 @@ SoundInterface::SoundInterface(float sampling_rate, int n_channels)
 	bang_sound=NULL;
 	bottom_crash_sound=NULL;
 	gear_change_sound=NULL;
+	
 	n_engine_sounds = n_channels - 11;
+
 	int MAX_N_ENGINE_SOUNDS = 8;
 	if (n_engine_sounds<1) {
 		n_engine_sounds = 1;

@@ -2,7 +2,7 @@
 /***************************************************************************
     file                 : TorcsSound.cpp
     created              : Tue Apr 5 19:57:35 CEST 2005
-    copyright            : (C) 2005 Christos Dimitrakakis
+    copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
     version              : $Id$
 
@@ -250,19 +250,25 @@ void PlibSoundSource::setListener (sgVec3 p, sgVec3 u)
 }
 
 
-OpenalTorcsSound::OpenalTorcsSound(const char* filename, int flags, bool loop)
+OpenalTorcsSound::OpenalTorcsSound(const char* filename, OpenalSoundInterface* sitf, int flags, bool loop, bool static_pool)
 {
 
 	this->loop = loop;
 	this->flags = flags;
+	this->static_pool = static_pool;
 	volume = 0.0f;
 	pitch = 1.0f;
 	lowpass = 1.0f;
+	poolindex = -1;
+	itf = sitf;
 
 	MAX_DISTANCE = 10000.0f;
 	MAX_DISTANCE_LOW = 5.0f;
 	REFERENCE_DISTANCE = 5.0f;
 	ROLLOFF_FACTOR = 0.5f;
+
+	playing = false;
+	paused = false;
 
 	int i;
 	for (i = 0; i<3; i++) {
@@ -271,10 +277,19 @@ OpenalTorcsSound::OpenalTorcsSound(const char* filename, int flags, bool loop)
 		zeroes[i] = 0.0f;
 	}
 
+	//printf("SOUND, create source: %s -> %s\n", filename, (static_pool == true) ? "static" : "dynamic");
+
+	int error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("Uncatched OpenAL Error on entry: %d with file %s\n", error, filename);
+	}
+	
 	alGenBuffers (1, &buffer);
-	if (alGetError() != AL_NO_ERROR) {
-		fprintf (stderr, "alGenBuffers failed %s\n", filename);
-		exit(1);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alGenBuffers failed %s\n", error, filename);
+		is_enabled = false;
+		return;
 	}
 
 	ALvoid *wave = NULL;
@@ -284,31 +299,105 @@ OpenalTorcsSound::OpenalTorcsSound(const char* filename, int flags, bool loop)
 	ALboolean srcloop;
 
 	alutLoadWAVFile((ALbyte *) filename, &format, &wave, &size, &freq, &srcloop);
-	if (alGetError() != AL_NO_ERROR) {
-		fprintf (stderr, "Could not load %s\n", filename);
-		alDeleteBuffers(1, &buffer);
-		exit(1);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, could not load %s\n", error, filename);
+		if (alIsBuffer(buffer)) {
+			alDeleteBuffers(1, &buffer);
+			alGetError();
+		}
+		is_enabled = false;
+		return;
 	}
 	
 	alBufferData (buffer, format, wave, size, freq);
-	alutUnloadWAV(format, wave, size, freq);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alBufferData %s\n", error, filename);
+		if (alIsBuffer(buffer)) {
+			alDeleteBuffers(1, &buffer);
+			alGetError();
+		}
+		is_enabled = false;
+		return;
+	}
 
-	alGenSources (1, &source);
+	alutUnloadWAV(format, wave, size, freq);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alutUnloadWAV %s\n", error, filename);
+	}
+	
+	if (!static_pool) {
+		is_enabled = true;
+		return;
+	}
+	
+	if (!sitf->getStaticSource(&source)) {
+		is_enabled = false;
+		printf("    No static sources left: %s\n", filename);
+		if (alIsBuffer(buffer)) {
+			alDeleteBuffers(1, &buffer);
+			alGetError();
+		}
+		return;
+	} else {
+		is_enabled = true;	
+	}
+
 	alSourcefv (source, AL_POSITION, source_position);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcefv AL_POSITION %s\n", error, filename);
+	}
+
 	alSourcefv (source, AL_VELOCITY, source_velocity);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcefv AL_VELOCITY %s\n", error, filename);
+	}
+
 	alSourcei (source, AL_BUFFER, buffer);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcei AL_BUFFER %s\n", error, filename);
+	}
+
 	alSourcei (source, AL_LOOPING, loop);
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcei AL_LOOPING %s\n", error, filename);
+	}
+
 	alSourcef (source, AL_MAX_DISTANCE, MAX_DISTANCE);
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcef AL_MAX_DISTANCE %s\n", error, filename);
+	}
+
 	alSourcef (source, AL_REFERENCE_DISTANCE, REFERENCE_DISTANCE);
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcef AL_REFERENCE_DISTANCE %s\n", error, filename);
+	}
+
 	alSourcef (source, AL_ROLLOFF_FACTOR, ROLLOFF_FACTOR);
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcef AL_ROLLOFF_FACTOR %s\n", error, filename);
+	}
+
 	alSourcef (source, AL_GAIN, 0.0f);
-	playing = false;
-	paused = false;
+	if (error != AL_NO_ERROR) {
+		printf("OpenAL Error: %d, alSourcef AL_GAIN %s\n", error, filename);
+	}
 }
 
 OpenalTorcsSound::~OpenalTorcsSound()
 {
-	alSourceStop (source);
+	if (alIsSource(source)) {
+		alSourceStop (source);
+		alDeleteSources(1, &source);
+	}
+	if (alIsBuffer(buffer)) {
+		alDeleteBuffers(1, &buffer);
+	}
 }
 
 void OpenalTorcsSound::setVolume (float vol)
@@ -329,7 +418,16 @@ void OpenalTorcsSound::setLPFilter(float lp)
 
 void OpenalTorcsSound::setReferenceDistance(float dist)
 {
-	alSourcef (source, AL_REFERENCE_DISTANCE, dist);
+	if (static_pool) {
+		if (is_enabled) {
+			alSourcef (source, AL_REFERENCE_DISTANCE, dist);
+		}
+	} else {
+		if (itf->getSourcePool()->isSourceActive(this, &poolindex)) {
+			alSourcef (source, AL_REFERENCE_DISTANCE, dist);		
+			REFERENCE_DISTANCE = dist;
+		}
+	}
 }
 
 
@@ -358,18 +456,60 @@ void OpenalTorcsSound::play()
 
 void OpenalTorcsSound::start()
 {
-	if (playing==false) {
-		if (loop) {playing = true;}
-		//printf ("alSourcePlay()\n");
-		alSourcePlay (source);
+	if (static_pool) {
+		if (is_enabled) {
+			if (playing==false) {
+				if (loop) {
+					playing = true;
+				}
+				alSourcePlay (source);
+			}
+		}
+	} else {
+		// shared source.
+		bool needs_init;
+		if (itf->getSourcePool()->getSource(this, &source, &needs_init, &poolindex)) {
+			if (needs_init) {
+				// Setup source.
+				alSourcefv (source, AL_POSITION, source_position);
+				alSourcefv (source, AL_VELOCITY, source_velocity);
+				alSourcei (source, AL_BUFFER, buffer);
+				alSourcei (source, AL_LOOPING, loop);
+				alSourcef (source, AL_MAX_DISTANCE, MAX_DISTANCE);
+				alSourcef (source, AL_REFERENCE_DISTANCE, REFERENCE_DISTANCE);
+				alSourcef (source, AL_ROLLOFF_FACTOR, ROLLOFF_FACTOR);
+				alSourcef (source, AL_GAIN, 0.0f);
+			}
+
+			// play
+			if (playing==false) {
+				if (loop) {
+					playing = true;
+				}
+				alSourcePlay (source);
+			}
+		}
 	}
 }
+
+
 void OpenalTorcsSound::stop()
 {
-	if (playing==true) {
-		playing = false;
-		//printf ("alSourceStop()\n");
-		alSourceStop (source);
+	if (static_pool) {
+		if (is_enabled) {
+			if (playing==true) {
+				playing = false;
+				alSourceStop (source);
+			}
+		}
+	} else {
+		// Shared source.	
+		if (itf->getSourcePool()->releaseSource(this, &poolindex)) {
+			if (playing==true) {
+				playing = false;
+				alSourceStop (source);
+			}
+		}
 	}
 }
 
@@ -379,6 +519,8 @@ void OpenalTorcsSound::resume()
 		paused = false;
 	}
 }
+
+
 void OpenalTorcsSound::pause()
 {
 	if (paused==false) {
@@ -388,10 +530,21 @@ void OpenalTorcsSound::pause()
 
 void OpenalTorcsSound::update ()
 {
-	alSourcefv (source, AL_POSITION, source_position);
-	alSourcefv (source, AL_VELOCITY, source_velocity);
-	alSourcef (source, AL_PITCH, pitch);
-	alSourcef (source, AL_GAIN, volume);
+	if (static_pool) {
+		if (is_enabled) {
+			alSourcefv (source, AL_POSITION, source_position);
+			alSourcefv (source, AL_VELOCITY, source_velocity);
+			alSourcef (source, AL_PITCH, pitch);
+			alSourcef (source, AL_GAIN, volume);
+		}
+	} else {
+		if (itf->getSourcePool()->isSourceActive(this, &poolindex)) {
+			alSourcefv (source, AL_POSITION, source_position);
+			alSourcefv (source, AL_VELOCITY, source_velocity);
+			alSourcef (source, AL_PITCH, pitch);
+			alSourcef (source, AL_GAIN, volume);		
+		}
+	}
 }
 
 

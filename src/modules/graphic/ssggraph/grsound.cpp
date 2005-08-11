@@ -102,7 +102,7 @@ void grInitSound(tSituation* s, int ncars)
 		sprintf (filename, "data/sound/%s", param);
 
 		car_sound_data[car->index] = new CarSoundData (car->index, sound_interface);
-		TorcsSound* engine_sound = sound_interface->addSample(filename, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true);
+		TorcsSound* engine_sound = sound_interface->addSample(filename, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true, false);
 		car_sound_data[i]->setEngineSound (engine_sound, rpm_scale);
 
 		// TURBO PARAMS
@@ -146,6 +146,8 @@ void grInitSound(tSituation* s, int ncars)
 
 	sound_interface->setNCars(ncars);
     soundInitialized = 1;
+	// Must happen after all static non-shared have been allocated. 
+	sound_interface->initSharedSourcePool();
 }
 
 

@@ -2,7 +2,7 @@
 /***************************************************************************
     file                 : SoundInterface.h
     created              : Tue Apr 5 19:57:35 CEST 2005
-    copyright            : (C) 2005 Christos Dimitrakakis
+    copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
     version              : $Id$
 
@@ -109,7 +109,8 @@ class SoundInterface {
 	virtual void setNCars(int n_cars) = 0;
 	virtual TorcsSound* addSample (const char* filename,
 				       int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-				       bool loop = false) = 0;
+				       bool loop = false, bool static_pool = true) = 0;
+	virtual void initSharedSourcePool() {}
 	void setSkidSound (const char* sound_name)
 	{
 		for (int i=0; i<4; i++) {
@@ -220,7 +221,7 @@ class PlibSoundInterface : public SoundInterface {
 	virtual ~PlibSoundInterface();
 	virtual void setNCars(int n_cars);
 	virtual slScheduler* getScheduler();
-	virtual TorcsSound* addSample (const char* filename, int flags = (ACTIVE_VOLUME|ACTIVE_PITCH), bool loop = false);
+	virtual TorcsSound* addSample (const char* filename, int flags = (ACTIVE_VOLUME|ACTIVE_PITCH), bool loop = false, bool static_pool = true);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs = NULL, sgVec3 a_obs = NULL);
 	virtual float getGlobalGain() {return global_gain;}
 	virtual void setGlobalGain(float g)
@@ -235,6 +236,8 @@ class PlibSoundInterface : public SoundInterface {
 
 /// Open AL interface
 
+class SharedSourcePool;
+
 class OpenalSoundInterface : public SoundInterface {
 	typedef struct SoundChar_ {
 		float f; //frequency modulation
@@ -244,9 +247,13 @@ class OpenalSoundInterface : public SoundInterface {
 	ALCcontext* cc;
 	ALCdevice* dev;
 	float global_gain;
+	int OSI_MAX_BUFFERS;
+	int OSI_MAX_SOURCES;
+	int OSI_MAX_STATIC_SOURCES;
+	int n_static_sources_in_use;
+	SharedSourcePool* sourcepool;
+	static const int OSI_MIN_DYNAMIC_SOURCES;
 
-	//OpenalSoundSource* cars;
-	//OpenalSoundSource tyres[4];
 	void DopplerShift (SoundChar* sound, float* p_src, float* u_src, float* p, float* u);
 
  public:
@@ -255,18 +262,123 @@ class OpenalSoundInterface : public SoundInterface {
 	virtual void setNCars(int n_cars);
 	virtual TorcsSound* addSample (const char* filename,
 				       int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-				       bool loop = false);
+				       bool loop = false, bool static_pool = true);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs, sgVec3 a_obs);
-	virtual float getGlobalGain() {return global_gain;}
+	virtual float getGlobalGain() { return global_gain; }
+	virtual void initSharedSourcePool();
 	virtual void setGlobalGain(float g)
 	{
 		global_gain = 0.5f*g;
 		logmsg ("Setting gain to %f\n", global_gain);
 	}
+	virtual bool getStaticSource(ALuint *source);
+	virtual SharedSourcePool* getSourcePool(void) { return sourcepool; } 
 
 
 };
 
+
 int sortSndPriority(const void* a, const void* b);
+
+
+struct sharedSource {
+	ALuint source;
+	TorcsSound* currentOwner;
+	bool in_use;
+};
+
+
+class SharedSourcePool {
+	public:
+		SharedSourcePool(int nbsources):nbsources(nbsources) {
+			pool = new sharedSource[nbsources];
+			int i;
+			for (i = 0; i < nbsources; i++) {
+				pool[i].currentOwner = NULL;
+				pool[i].in_use = false;
+				alGenSources(1, &(pool[i].source));
+				int error = alGetError();
+				if (error != AL_NO_ERROR) {
+					printf("OpenAL error, allocating dynamic source index %d\n", i);
+					this->nbsources = i;
+					break;
+				}
+			}
+			printf("  Dynamic Sources: requested: %d, created: %d\n", nbsources, this->nbsources);
+		}
+		
+		virtual ~SharedSourcePool() {
+			int i;
+			for (i = 0; i < nbsources; i++) {
+				alDeleteSources(1, &(pool[i].source));
+				alGetError();
+			}			
+			delete [] pool;
+		}
+
+		bool getSource(TorcsSound* sound, ALuint* source, bool* needs_init, int* index) {
+			if (*index >= 0 && *index < nbsources) {
+				if (sound == pool[*index].currentOwner) {
+					// Resurrect source from pool.
+					*source = pool[*index].source;
+					*needs_init = false;
+					pool[*index].in_use = true;
+					return true;
+				}
+			}
+			
+			// TODO: Implement free list with ring buffer or whatever data structure
+			// to go from O(n) to O(1). If the ordering is done well it will automatically
+			// result in LRU (least recently used).
+			int i, firstfree = -1;
+			for (i = 0; i < nbsources; i++) {
+				if (pool[i].in_use == false && firstfree < 0) {
+					firstfree = i;
+					break;
+				}
+			}
+			
+			if (firstfree < 0) {
+				// No free source.
+				return false;
+			}
+
+			pool[firstfree].currentOwner = sound;
+			pool[firstfree].in_use = true;
+			*source = pool[firstfree].source;
+			*needs_init = true;
+			*index = firstfree;
+			return true;
+		}
+
+		bool releaseSource(TorcsSound* sound, int* index) {
+			if (*index >= 0 && *index < nbsources) {
+				if (sound == pool[*index].currentOwner) {
+					pool[*index].in_use = false;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		bool isSourceActive(TorcsSound* sound, int* index) {
+			if (*index >= 0 && *index < nbsources &&
+				sound == pool[*index].currentOwner &&
+				true == pool[*index].in_use)
+			{
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		int getNbSources(void) { return nbsources; }
+
+	protected:
+		int nbsources;
+		sharedSource *pool;
+};
+
+
 
 #endif /* SOUND_INTERFACE_H */

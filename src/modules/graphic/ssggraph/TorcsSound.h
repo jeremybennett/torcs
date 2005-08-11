@@ -32,6 +32,7 @@
 #include "sound_defines.h"
 
 class SoundInterface;
+class OpenalSoundInterface;
 
 class TorcsSound {
 protected:
@@ -131,10 +132,15 @@ protected:
 	ALfloat MAX_DISTANCE_LOW;
 	ALfloat REFERENCE_DISTANCE;
 	ALfloat ROLLOFF_FACTOR;
+	int poolindex;
+	OpenalSoundInterface* itf;
+	bool static_pool;	// dynamic or static source assignment?
+	bool is_enabled;	// is it available at all?
 public:
 	OpenalTorcsSound(const char* filename,
+					 OpenalSoundInterface* sitf,
 					 int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
-					 bool loop = false);
+					 bool loop = false, bool static_pool = true);
 	virtual ~OpenalTorcsSound();
 	virtual void setVolume(float vol);
 	virtual void setPitch(float pitch);
