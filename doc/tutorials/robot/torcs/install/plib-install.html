@@ -30,7 +30,7 @@ Free Documentation License".
         <h1>Plib Installation</h1>
         <h3>Checking Plib</h3>
         <p>First we check if there is already the required plib version installed (TORCS
-        1.2.3 has been tested with plib version 1.8.3):</p>
+        1.2.4 has been tested with plib version 1.8.3):</p>
         <p><tt>$ rpm -qa | grep plib</tt></p>
         <p>In case we find plib 1.8.3 everything is fine and you can
         <a href="./torcs-install.html">skip</a> the rest of this
@@ -70,7 +70,20 @@ Free Documentation License".
         </p>
 
         <h3>Compiling and Installing Plib</h3>
-        <p>You are still root and in /usr/src/torcs/plib-1.8.3:</p>
+        <p>
+			You are still root and in /usr/src/torcs/plib-1.8.3, if you run a 64 bit version
+			of Linux export the following variables:</p>
+        <p>
+          <tt>
+            # export CFLAGS="-fPIC"<br/>
+            # export CPPFLAGS=$CFLAGS<br/>
+            # export CXXFLAGS=$CFLAGS<br/>
+          </tt>
+        </p>
+
+		<p>
+			Now for all platforms run:
+		</p>
         <p>
           <tt>
             # ./configure<br/>
@@ -78,6 +91,18 @@ Free Documentation License".
             # make install<br/>
           </tt>
         </p>
+        <p>
+			Just to play safe clear the above defined variables:
+		</p>
+        <p>
+          <tt>
+            # export CFLAGS=<br/>
+            # export CPPFLAGS=<br/>
+            # export CXXFLAGS=<br/>
+          </tt>
+        </p>
+
+
         <p>
           If something fails you need to resolve it. In case the configure script complained
           about something you can find some additional information in the file config.log. The
@@ -96,8 +121,8 @@ Free Documentation License".
         </a>
       </td>
       <td class="navigation_foot">
-        <a href="./torcs-install.html">
-          <p style="text-align:right;">I want to race, hurry up, let's build TORCS.</p>
+        <a href="./openal-install.html">
+          <p style="text-align:right;">Now lets hop to OpenAL.</p>
         </a>
       </td>
     </tr>

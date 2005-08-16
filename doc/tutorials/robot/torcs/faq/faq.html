@@ -4,7 +4,7 @@
 	file        : faq.html
 	created     : Wed Feb  25 18:27:13 CET 2004
 	copyright   : (C) 2004 by Bernhard Wymann
-	email       : berniw--at--bluewin--d0t--ch
+	email       : berniw@bluewin.ch
 	version     : $Id$
 
 	Permission is granted to copy, distribute and/or modify this document
@@ -30,7 +30,7 @@
       <td class="maincontent">
 
         <a name="topofthepage">
-		   <h1>The Official TORCS 1.2.2 FAQ</h1>
+		   <h1>The Official TORCS 1.2.4 FAQ</h1>
 		</a>
 
 		<h2>0. About this Document.</h2>
@@ -49,6 +49,8 @@
 		  <li><h3><a href="#c1_6">1.6 Why do you not...?</a></h3></li>
 		  <li><h3><a href="#c1_7">1.7 What do you mean with robot?</a></h3></li>
 		  <li><h3><a href="#c1_8">1.8 Why do you not replace GLUT with SDL?</a></h3></li>
+		  <li><h3><a href="#c1_9">1.9 Are there official championships?</a></h3></li>
+		  <li><h3><a href="#c1_10">1.10 Should I start my own racing sim project?</a></h3></li>
 		</ul>
 
 		<h2>2. Platforms and Requirements.</h2>
@@ -92,7 +94,7 @@
 			<li><h4><a href="#c4_3_5">4.3.5 My screen resolution is not supported.</a></h4></li>
 			<li><h4><a href="#c4_3_6">4.3.6 I have a problem with the fullscreen mode.</a></h4></li>
 			<li><h4><a href="#c4_3_7">4.3.7 TORCS graphics is slow and it crashes on "READY!"</a></h4></li>
-			<li><h4><a href="#c4_3_8">4.3.8 I have no sound with Linux on PPC.</a></h4></li>
+			<li><h4><a href="#c4_3_8">4.3.8 TORCS on Windows hangs after &quot;READY!&quot;</a></h4>
 			<li><h4><a href="#c4_3_9">4.3.9 TORCS does not start and reports slDSP:.</a></h4></li>
 			<li><h4><a href="#c4_3_10">4.3.10 The cars are flickering.</a></h4></li>
 			<li><h4><a href="#c4_3_11">4.3.11 I use ALSA and TORCS does not start up.</a></h4></li>
@@ -144,7 +146,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-			18.10.2004 (DD.MM.YYYY).
+			2005-08-12.
 		</p>
 
 
@@ -160,7 +162,8 @@
 
 		<h3><a name="c1_2">1.2 Who develops TORCS?</a></h3>
 		<p>
-          TORCS is developed by Eric Espié, Christophe Guionneau and other contributors in their spare time.
+          The TORCS project has been created by Eric Espié and Christophe Guionneau. Currently Bernhard Wymann,
+		  Christos Dimitrakakis and other contributors continue to develop the project.
 		  Visit the official <a href="http://torcs.org" target="_parent">TORCS site</a> for more information.
 		</p>
 
@@ -171,7 +174,8 @@
 		  <a href="http://torcs.org" target="_parent">TORCS site</a> and on
 		  <a href="http://www.berniw.org" target="_parent">Bernhard's homepage</a>. You can find installation instructions,
 		  the robot tutorial, instructions how to use TORCS and more. A very brief track howto is available
-		  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here</a>.
+		  <a href="http://www.idiap.ch/~dimitrak/torcs/track-howto.html" target="_parent">here</a>, there is as
+		  well a <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">track editor</a> available.
 		  What is missing at the moment is a car building tutorial.
 		</p>
 
@@ -251,14 +255,34 @@
 		</p>
 
 
+		<h3><a name="c1_9">1.9 Are there official championships?</a></h3>
+		<p>
+			Yes, you can find offline robot championships
+			<a href="http://www.berniw.org/trb" target="_parent">here</a>.
+		</p>
 
+
+		<h3><a name="c1_10">1.10 Should I start my own racing sim project?</a></h3>
+		<p>
+			Definitively not, no! Why? Do a search on sf.net and Google,
+			you will find between 15 and 40 open source car/driving/racing sim
+			projects, and most of them have been &quot;promising&quot; and
+			died. Instead of starting another dead project contribute to the
+			few existing successful ones.
+		</p>
+		<p>
+			Believe it or not, but your project will very likely be a dead
+			one as well. The reason is quite simple, people underestimate the
+			required effort and the change of their lives during the project lifespan, think
+			about it. Just that you get an idea, TORCS turns now 8...
+		</p>
 
 
 		<br/><h2>2. Platforms and Requirements.</h2>
 
 		<h3><a name="c2_1">2.1 On which operating systems runs TORCS?</a></h3>
 		<p>
-		  Linux (x86 and ppc are known to work), FreeBSD, Windows 98/2000/XP.
+		  Linux (x86, AMD64 and ppc are known to work), FreeBSD, Windows 98/2000/XP.
 		</p>
 
 		<h3><a name="c2_2">2.2 What are the hardware requirements?</a></h3>
@@ -280,7 +304,10 @@
 		  You need recent, working and properly configured OpenGL/DRI drivers. You need also several
 		  libraries. To avoid problems you should prefer
 		  <a href="http://FreeGLUT.sourceforge.net" target="_parent">FreeGLUT</a> over GLUT. Make
-		  sure that you use exactly plib version 1.6.0.
+		  sure that you use exactly plib version 1.8.3. For
+		  AMD64 you need to set the &quot;-fPIC&quot; compiler switch when
+		  compiling plib (export CFLAGS=&quot;-fPIC&quot;, export
+		  CPPFLAGS=&quot;-fPIC&quot;, export CXXFLAGS=&quot;-fPIC&quot;).
 		</p>
 
 
@@ -335,7 +362,7 @@
 
 		<h4><a name="c4_2_2">4.2.2 ./configure reports "configure: error: Can't find plib/ssg.h" or "plib/ul.h".</a></h4>
 		<p>
-		  TORCS requires <a href="http://plib.sourceforge.net" target="_parent">plib</a> 1.6.0 and its
+		  TORCS requires <a href="http://plib.sourceforge.net" target="_parent">plib</a> 1.8.3 and its
 		  header files. Download and install plib.
 		</p>
 
@@ -370,7 +397,7 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		<p>
 		  If the compiler stops with the above message you have probably OpenGL header files installed which do
 		  not define the GL_TEXTURE0_ARB and other symbols. If you have updated your NVidia drivers to 6xxx
-		  you will experience this error (NVidia removed those definitions...). To fix it for TORCS 1.2.2 you
+		  you will experience this error (NVidia removed those definitions...). To fix it for TORCS 1.2.4 you
 		  need to install
 		  a gl.h which defines the missing symbols. You can get it from your old (5xxx) NVidia drivers or from
 		  Mesa (the problem is not the driver itself).
@@ -380,8 +407,8 @@ TORCS - 1 error(s), 0 warning(s)</pre>
 		the command is incorrect.  Error executing c:\winnt\system32\cmd.exe".</a></h4>
 		<p>
 			You have probably installed your sources in a path which contains blanks or other
-			special characters, e.g. on the desktop. Move your torcs-1.2.2 folder to a location with a
-			"clean" path, a drive is the best bet (e.g. D:\torcs-1.2.2).
+			special characters, e.g. on the desktop. Move your torcs-1.2.4 folder to a location with a
+			"clean" path, a drive is the best bet (e.g. D:\torcs-1.2.4).
 		</p>
 
 
@@ -478,14 +505,12 @@ exception$LIBDIR/torcs-bin -l $LOCAL_CONF -L $LIBDIR -D $DATADIR $*</pre>
 		  at 16 bpp.
 		</p>
 
-		<h4><a name="c4_3_8">4.3.8 I have no sound with Linux on PPC.</a></h4>
-
-		<pre>slDSP: open: Device or resource busy
-WARNING: slScheduler: soundcard init failed.</pre>
-
+		<h4><a name="c4_3_8">4.3.8 TORCS on Windows hangs after &quot;READY!&quot;</a></h4>
 		<p>
-		  You can apply <a href="./downloads/plib-1.6-scheduler.patch">this patch</a> to plib 1.6.0.
-		  After that you need to recompile and reinstall plib and TORCS.
+			Shutdown TORCS and restart it, go to the sound menu and disable the
+			sound or try the other backend. The problem is likely caused by
+			some library we use, but it never happened to us, so we could not
+			fix it.
 		</p>
 
 
@@ -624,8 +649,8 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			<li>If more than one player uses the keyboard, read <a href="http://www.sjbaker.org/steve/omniv/keyboards_are_evil.html" target="_parent">this</a>.</li>
 			<li>Now choose a race, select the players in the configuration screen.</li>
 			<li>Start the race, stop it with "p" to pause.</li>
-			<li>Now create the split screens with "]", or remove them with "[".
-			<li>If you want to change the view of a "mini screen" point with the mouse on it and set it up as usual (F1-F11, "&gt;", "&lt;", ...).
+			<li>Now create the split screens with "]", or remove them with "[".</li>
+			<li>If you want to change the view of a "mini screen" point with the mouse on it and set it up as usual (F1-F11, "&gt;", "&lt;", ...).</li>
 			<li>When you have set up all views press "p" to end the pause and start the race.</li>
 			<li>Have fun;-)</li>
 		  </ul>
@@ -675,9 +700,11 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			<li>The main TORCS site <a href="http://www.torcs.org" target="_parent">www.torcs.org</a>.</li>
 			<li>The <a href="http://lists.sourceforge.net/lists/listinfo/torcs-users" target="_parent">
 			TORCS-users mailing list</a>.</li>
+			<li>TORCS official championships <a href="http://www.berniw.org/trb" target="_parent">www.berniw.org/trb</a>.</li>
 			<li>TORCS development snapshots <a href="http://torcs.free.fr" target="_parent">torcs.free.fr</a>.</li>
 			<li>Bernhard's site <a href="http://www.berniw.org" target="_parent">www.berniw.org</a>.</li>
 			<li>Christos Dimitrakakis TORCS mods <a href="http://www.idiap.ch/~dimitrak/torcs.html" target="_parent">www.idiap.ch/~dimitrak/torcs.html</a>.</li>
+			<li>Charalampos Alexopoulos track editor <a href="http://katergo.rege.org/projects/trackeditor" target="_parent">katergo.rege.org/projects/trackeditor</a>.</li>
 			<li>The TORCS Garage <a href="http://torcs.long-studios.com/index.html" target="_parent">torcs.long-studios.com/index.html</a>.</li>
 
 		</ul>
