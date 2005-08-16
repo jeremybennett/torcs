@@ -102,10 +102,12 @@ Bernhard.
 Changes since 1.2.4-test2
 -------------------------
 - Fixed wrong CWD set by installer for trackeditor.bat (Bernhard).
-- Fixed OpenAL backend design flaw (run out of sources) (Bernhard).
+- Fixed OpenAL backend design flaw (run out of sources) (Bernhard, Christos).
 - Reviewed and applied penalty clearing/pit stop patches from Mart Kelder
   (Mart Kelder, Bernhard).
 - Prepared installation instructions for 1.2.4 (Bernhard).
+- Prepared credits for 1.2.4 (Bernhard).
+- Updated robot tutorial for 1.2.4 (Bernhard).
 
 
 
@@ -280,11 +282,8 @@ TODO for 1.2.4
 - Critical bugfixes if problems come up.
 - Linux installer.
 - Separated packages.
-- Prepare docs (Robot tutorial -> OpenAL section, installation etc).
-- before/at release: credits update
-  Olaf Sassnick -> porsche improvement -> the_penguin@gmx.at
-  Christophe Macours -> sound samples -> http://users.belgacom.net/samples/
-  Charalampos Alexopoulos -> track editor ->  http://katergo.rege.org/projects/trackeditor/
+- before/at release: upload docs/credits
+
 
 
 TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
