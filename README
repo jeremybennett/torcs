@@ -108,6 +108,8 @@ Changes since 1.2.4-test2
 - Prepared installation instructions for 1.2.4 (Bernhard).
 - Prepared credits for 1.2.4 (Bernhard).
 - Updated robot tutorial for 1.2.4 (Bernhard).
+- Applied reverse gear patch from Mart Kelder (Mart Kelder, Bernhard).
+- Make engine consume fuel on negative torque (Bernhard).
 
 
 
