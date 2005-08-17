@@ -117,8 +117,11 @@ SimEngineUpdateTq(tCar *car)
 				tdble Tmax = engine->rads * curve->data[i].a + curve->data[i].b;
 				tdble EngBrkK = engine->brakeCoeff * (engine->rads - engine->tickover) / (engine->revsMax - engine->tickover);
 		
-				engine->Tq =  Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
-				car->fuel -= engine->Tq * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
+				engine->Tq = Tmax * (car->ctrl->accelCmd * (1.0 + EngBrkK) - EngBrkK);
+				// Engines comsume always fuel (needed for keeping the process running, inner friction,
+				// braking, accelerating pistons, etc.
+				// TODO: Evaluate if it is worth implementing it.
+				car->fuel -= fabs(engine->Tq) * engine->rads * engine->fuelcons * 0.0000001 * SimDeltaTime;
 				if (car->fuel <= 0.0) {
 					car->fuel = 0.0;
 				}
