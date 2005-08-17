@@ -51,64 +51,64 @@ static void ReRaceRules(tCarElt *car);
 static void
 ReUpdtPitTime(tCarElt *car)
 {
-    tSituation	*s = ReInfo->s;
-    tReCarInfo	*info = &(ReInfo->_reCarInfo[car->index]);
-    int		i;
+	tSituation *s = ReInfo->s;
+	tReCarInfo *info = &(ReInfo->_reCarInfo[car->index]);
+	int i;
 
-    switch (car->_pitStopType) {
-    case RM_PIT_REPAIR:
-	info->totalPitTime = 2.0f + fabs(car->_pitFuel) / 8.0f + (tdble)(fabs(car->_pitRepair)) * 0.007f;
-	car->_scheduledEventTime = s->currentTime + info->totalPitTime;
-	ReInfo->_reSimItf.reconfig(car);
-	for (i=0; i<4; i++) {
-		car->_tyreCondition(i) = 1.01;
-		car->_tyreT_in(i) = 50.0;
-		car->_tyreT_mid(i) = 50.0;
-		car->_tyreT_out(i) = 50.0;
+	switch (car->_pitStopType) {
+		case RM_PIT_REPAIR:
+			info->totalPitTime = 2.0f + fabs(car->_pitFuel) / 8.0f + (tdble)(fabs(car->_pitRepair)) * 0.007f;
+			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
+			ReInfo->_reSimItf.reconfig(car);
+			for (i=0; i<4; i++) {
+				car->_tyreCondition(i) = 1.01;
+				car->_tyreT_in(i) = 50.0;
+				car->_tyreT_mid(i) = 50.0;
+				car->_tyreT_out(i) = 50.0;
+			}
+			break;
+		case RM_PIT_STOPANDGO:
+			info->totalPitTime = 0.0;
+			car->_scheduledEventTime = s->currentTime;
+			break;
 	}
-	break;
-    case RM_PIT_STOPANDGO:
-	info->totalPitTime = 0.0;
-	car->_scheduledEventTime = s->currentTime;
-	break;
-    }
 }
 
 /* Return from interactive pit information */
 static void
 ReUpdtPitCmd(void *pvcar)
 {
-    tCarElt *car = (tCarElt*)pvcar;
-    
-    ReUpdtPitTime(car);
-    //ReStart(); /* resynchro */
-    GfuiScreenActivate(ReInfo->_reGameScreen);
+	tCarElt *car = (tCarElt*)pvcar;
+
+	ReUpdtPitTime(car);
+	//ReStart(); /* resynchro */
+	GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
 static void
 ReRaceMsgUpdate(void)
 {
-    if (ReInfo->_reCurTime > msgDisp) {
-	ReSetRaceMsg("");
-    }
-    if (ReInfo->_reCurTime > bigMsgDisp) {
-	ReSetRaceBigMsg("");
-    }
+	if (ReInfo->_reCurTime > msgDisp) {
+		ReSetRaceMsg("");
+	}
+	if (ReInfo->_reCurTime > bigMsgDisp) {
+		ReSetRaceBigMsg("");
+	}
 }
 
 static void
 ReRaceMsgSet(char *msg, double life)
 {
-    ReSetRaceMsg(msg);
-    msgDisp = ReInfo->_reCurTime + life;
+	ReSetRaceMsg(msg);
+	msgDisp = ReInfo->_reCurTime + life;
 }
 
 
 static void
 ReRaceBigMsgSet(char *msg, double life)
 {
-    ReSetRaceBigMsg(msg);
-    bigMsgDisp = ReInfo->_reCurTime + life;
+	ReSetRaceBigMsg(msg);
+	bigMsgDisp = ReInfo->_reCurTime + life;
 }
 
 
@@ -497,52 +497,52 @@ ReRaceRules(tCarElt *car)
 static void
 ReOneStep(double deltaTimeIncrement)
 {
-    int i;
-    tRobotItf *robot;
-    tSituation	*s = ReInfo->s;
+	int i;
+	tRobotItf *robot;
+	tSituation *s = ReInfo->s;
 
-    if (floor(s->currentTime) == -2.0) {
-	ReRaceBigMsgSet("Ready", 1.0);
-    } else if (floor(s->currentTime) == -1.0) {
-	ReRaceBigMsgSet("Set", 1.0);
-    } else if (floor(s->currentTime) == 0.0) {
-	ReRaceBigMsgSet("Go", 1.0);
-    }
-
-    ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
-    s->currentTime += deltaTimeIncrement; /* Simulated time */
-
-    if (s->currentTime < 0) {
-	/* no simu yet */
-	ReInfo->s->_raceState = RM_RACE_PRESTART;
-    } else if (ReInfo->s->_raceState == RM_RACE_PRESTART) {
-	ReInfo->s->_raceState = RM_RACE_RUNNING;
-	s->currentTime = 0.0; /* resynchronize */
-	ReInfo->_reLastTime = 0.0;
-    }
-    
-    START_PROFILE("rbDrive*");
-    if ((s->currentTime - ReInfo->_reLastTime) >= RCM_MAX_DT_ROBOTS) {
-	s->deltaTime = s->currentTime - ReInfo->_reLastTime;
-	for (i = 0; i < s->_ncars; i++) {
-	    if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
-		robot = s->cars[i]->robot;
-		robot->rbDrive(robot->index, s->cars[i], s);
-	    }
+	if (floor(s->currentTime) == -2.0) {
+		ReRaceBigMsgSet("Ready", 1.0);
+	} else if (floor(s->currentTime) == -1.0) {
+		ReRaceBigMsgSet("Set", 1.0);
+	} else if (floor(s->currentTime) == 0.0) {
+		ReRaceBigMsgSet("Go", 1.0);
 	}
-	ReInfo->_reLastTime = s->currentTime;
-    }
-    STOP_PROFILE("rbDrive*");
 
-    START_PROFILE("_reSimItf.update*");
-    ReInfo->_reSimItf.update(s, deltaTimeIncrement, -1);
-    for (i = 0; i < s->_ncars; i++) {
-	ReManage(s->cars[i]);
-    }
-    STOP_PROFILE("_reSimItf.update*");
+	ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
+	s->currentTime += deltaTimeIncrement; /* Simulated time */
 
-    ReRaceMsgUpdate();
-    ReSortCars();
+	if (s->currentTime < 0) {
+		/* no simu yet */
+		ReInfo->s->_raceState = RM_RACE_PRESTART;
+	} else if (ReInfo->s->_raceState == RM_RACE_PRESTART) {
+		ReInfo->s->_raceState = RM_RACE_RUNNING;
+		s->currentTime = 0.0; /* resynchronize */
+		ReInfo->_reLastTime = 0.0;
+	}
+
+	START_PROFILE("rbDrive*");
+	if ((s->currentTime - ReInfo->_reLastTime) >= RCM_MAX_DT_ROBOTS) {
+		s->deltaTime = s->currentTime - ReInfo->_reLastTime;
+		for (i = 0; i < s->_ncars; i++) {
+			if ((s->cars[i]->_state & RM_CAR_STATE_NO_SIMU) == 0) {
+				robot = s->cars[i]->robot;
+				robot->rbDrive(robot->index, s->cars[i], s);
+			}
+		}
+		ReInfo->_reLastTime = s->currentTime;
+	}
+	STOP_PROFILE("rbDrive*");
+
+	START_PROFILE("_reSimItf.update*");
+	ReInfo->_reSimItf.update(s, deltaTimeIncrement, -1);
+	for (i = 0; i < s->_ncars; i++) {
+		ReManage(s->cars[i]);
+	}
+	STOP_PROFILE("_reSimItf.update*");
+
+	ReRaceMsgUpdate();
+	ReSortCars();
 }
 
 void
