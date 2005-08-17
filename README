@@ -110,7 +110,8 @@ Changes since 1.2.4-test2
 - Updated robot tutorial for 1.2.4 (Bernhard).
 - Applied reverse gear patch from Mart Kelder (Mart Kelder, Bernhard).
 - Make engine consume fuel on negative torque (Bernhard).
-
+- Fixed cars starting at odd heights, reported by Andrew Sumner (Bernhard).
+- Commited some more docs from the website into the CVS (Bernhard).
 
 
 Changes since 1.2.4-test1
