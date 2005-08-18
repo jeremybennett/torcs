@@ -15,8 +15,8 @@
 !define VER_MAJOR 1
 !define VER_MINOR 2
 !define VER_REVISION 4
-!define VER_EXTRA -test2
-!define VER_RELDATE 20050806
+!define VER_EXTRA -test3
+!define VER_RELDATE 20050818
 
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
 !define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
