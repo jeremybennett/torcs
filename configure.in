@@ -17,7 +17,7 @@
 
 AC_INIT(Make-config.in)
 AC_CONFIG_HEADERS(config.h)
-AM_INIT_AUTOMAKE(torcs, 1.2.4-test2)
+AM_INIT_AUTOMAKE(torcs, 1.2.4-test3)
 
 dnl Checks for programs.
 AC_PROG_CC
