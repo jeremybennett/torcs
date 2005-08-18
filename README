@@ -289,20 +289,16 @@ TODO for 1.2.4
 
 
 
-TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
----------------------------------
+TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
+--------------
 - Fix sound volume option (ask Christos).
-- Have a look at Andrews sf report. I already investigated this with no result,
-  but it is obvious that something is wrong. I checked so far all values up to
-  SimConfig, and they match in every run... weird. I guess it must be a problem
-  in raceengineclient, because if I comment out the simu call in ReOneStep the
-  result is the same.
+- Fix and reenable -s option in Windows (car rendering ignores missing multitex
+  extension).
 - fix temporary sound volume jump when changing camera with OpenAL (plib not
   tested, verify) (ask Christos).
 - Missing doppler on Windows, investigate.
-- SDL port (or 1.3.0 or 1.4.0, not decided finally).
+- SDL port.
 - Check for memory leaks.
-- make use of pbuffers to render trackmap if available.
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
 - (Fix parallel build with make -j n, breaks currently in SOLID) (Bernhard).
@@ -315,12 +311,12 @@ TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-- check and merge Christos camera code.
+- check and merge Christos camera code if useful.
 - Integrate documentation into CVS/distribution.
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
   not hurt).
 - merge bt_2004 into bt.
-- review simuv2 (e.g. rollres).
+- review/comment simuv2 (e.g. rollres, fuel, collision, more).
 - possibility of one pit for 2 cars of one module.
 - fix tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers and use just one sided
@@ -332,26 +328,26 @@ TODO for 1.2.5 (or 1.3.0 for SDL) (estimate: goal 12.2005, real 2.2006)
   broken)? [note there are many other crashes when using the menus, seemingly
   at random times].
 - Add remaining kcendra cars.
+- Check and add Andrews tracks.
+- Check and add Andrews car improvements.
+- Check and add Erics new car class.
 - Ongoing: Replace some defines with "static const" to be able to see the
   symbol name when debugging.
 - berniw/bt/sparkle: make use of classes in lib/math.
 - Investigate/fix crash on rainbowroad (happens as well with 1.2.3). RtTrackGlobal2Local
   seems to deliver nonsense, could be caused by trackloader through unusual turn
   angles (e.g. > 180deg). Check if this problem just occurs on version 3 tracks.
-- Problem when driver list changes during championship.
 - add more races to championship.
 - move berniw/bt spline code into math to share it.
 - hunt down all glGet* crap during the simulation.
 - verify gear switching flames for car, e.g for the 360.
 - check all textures for the user selectable cars, they should be nicer.
-- get/write raceengine.xml to users local dir.
 
-
-TODO for 1.3.0
---------------
-- SDL port (SDL required anyway for portable sockets and threads).
-- add proper init/shutdown to every module which is not bound to anything else
-  but the loading/init/shutdown/unloading process.
+- (get/write raceengine.xml to users local dir.)
+- (Problem when driver list changes during championship.)
+- (add proper init/shutdown to every module which is not bound to anything else
+  but the loading/init/shutdown/unloading process.)
+- (make use of pbuffers to render trackmap if available.)
 
 
 TODO for 1.9.x (pre 2.0 series, no release)
