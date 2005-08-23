@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="yes"?>
-<install product="torcs" desc="TORCS - The Open Racing Car Simulator" version="1.2.3" binarypath="/usr/bin"
+<install product="torcs" desc="TORCS - The Open Racing Car Simulator" version="1.2.4" binarypath="/usr/bin"
          promptbinaries="yes" express="no">
 
 	<readme>
@@ -10,7 +10,7 @@
 		LICENSE
 	</eula>
 
-	<component name="Default" version="1.2.3" default="yes">
+	<component name="Default" version="1.2.4" default="yes">
 		<option arch="x86" install="true" required="true">
 			TORCS Base System
 			<help>TORCS base system, contains the application, cars, tracks and opponents.</help>
