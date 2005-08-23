@@ -53,8 +53,8 @@ CFLAGS   =   -Wall -fPIC -O2 -DUSE_RANDR_EXT -DGL_GLEXT_PROTOTYPES -Wall -fPIC -
 
 #EXT_LIBS = -lpthread -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lopenal -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
 EXT_LIBS = -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lopenal -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
-#LDFLAGS =  -L/usr/local/gcc401/lib -L/usr/X11R6/lib -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
-LDFLAGS =  -L${EXPORTBASE}/lib -L/usr/local/gcc401/lib -L/usr/X11R6/lib -L/usr/lib
+#LDFLAGS =  -L/usr/local/gcc343/lib -L/usr/X11R6/lib -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
+LDFLAGS =  -L${EXPORTBASE}/lib -L/usr/local/gcc343/lib -L/usr/X11R6/lib -L/usr/lib
 
 #INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
 INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
@@ -62,7 +62,7 @@ INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
 CPP = gcc -E  -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.2.4-test2
+VERSION = 1.2.4
 
 TAR = gtar
 GZIP_ENV = --best
