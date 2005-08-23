@@ -13,15 +13,15 @@
 !define VER_MAJOR 1
 !define VER_MINOR 2
 !define VER_REVISION 4
-!define VER_EXTRA -test3
-!define VER_RELDATE 20050818
+!define VER_EXTRA
+!define VER_RELDATE 20050823
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\wtorcs.exe"
 
 ; The name of the installer
-Name "TORCS 1.2.4-test2 to 1.2.4-test3 Patch"
+Name "TORCS 1.2.4-test3 to 1.2.4 Release Patch"
 
 ; The file to write
-OutFile "patch_1_2_4_test2_test3.exe"
+OutFile "patch_1_2_4_test2_to_release.exe"
 
 ; The default installation directory
 ; Get from registry
@@ -29,7 +29,7 @@ InstallDir "$PROGRAMFILES\torcs\"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 
 ; The text to prompt the user to enter a directory
-DirText "Choose your TORCS 1.2.4-test2 folder"
+DirText "Choose your TORCS 1.2.4-test3 folder"
 
 ; Show details
 ShowInstDetails show
@@ -315,7 +315,6 @@ Section ""
   WriteRegDword HKLM "${PRODUCT_DIR_REGKEY}" "VersionDate" "${VER_RELDATE}"
 
   SetOutPath "$INSTDIR"
-  Delete "$SMPROGRAMS\TORCS\Track Editor.lnk"
-  CreateShortCut "$SMPROGRAMS\TORCS\Track Editor.lnk" "$INSTDIR\trackeditor.bat"
+  File "uninst.exe"
 
 SectionEnd
