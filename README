@@ -97,6 +97,9 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.2.4-test3
+-------------------------
+- Version number 1.2.4 (Bernhard).
 
 
 Changes since 1.2.4-test2
@@ -282,7 +285,6 @@ Changes since 1.2.3
 
 TODO for 1.2.4
 --------------
-- Critical bugfixes if problems come up.
 - Linux installer.
 - Separated packages.
 - before/at release: upload docs/credits
@@ -296,6 +298,12 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
   extension).
 - fix temporary sound volume jump when changing camera with OpenAL (plib not
   tested, verify) (ask Christos).
+- Olethros data file interpreting fails on Windows, reports "Expected tag <bla>,
+  found <RADI>", where bla in "DM_FRICTION, PRED_ACCEL, PRED_STEER, END".
+  The file has been written and is in place, gets as well opened fine.
+  E.g. for e-track-6 the file is 20 bytes larger than the one which is created
+  on Linux... Arghhh.
+- Investigate funny steering bug (?) reported by Eugen.
 - Missing doppler on Windows, investigate.
 - SDL port.
 - Check for memory leaks.
