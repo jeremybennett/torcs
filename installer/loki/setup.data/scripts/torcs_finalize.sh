@@ -2,6 +2,8 @@
 #
 # Set up path in torcs startup script.
 
+shopt -s extglob
+
 fn=${SETUP_INSTALLPATH}torcs
 
 # rip off last "/"
