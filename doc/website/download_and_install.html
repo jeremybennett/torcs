@@ -22,7 +22,7 @@
 		<li><a href="#linux-src">For Linux from sources (separated packages)</a></li>
 		<li><a href="#linux-cvs">For Linux from CVS</a></li>
 		<li><a href="#linux-vendor">TORCS for your Linux distribution</a></li>
-		<li><a href="#linux-lokiinstaller">Experimental Linux binary with installer</a></li>
+		<li><a href="#linux-lokiinstaller">Linux binary with installer</a></li>
 		<li><a href="#win32-bin">Binary installer for Windows</a></li>
 	</ul>
 
@@ -251,8 +251,8 @@ $ make datainstall
 
 	<h2><a name="linux-vendor"></a>TORCS for your Linux distribution</h2>
 	<p>
-		TORCS has been adopted from a lot of distributions (e.g. SuSE, Debian, Fedora, Mandriva, Gentoo, ...), have a look at you installation CD's/DVD's or
-		online repositories. Be aware that some of these versions have been stripped down to reduce the
+		TORCS has been adopted from a lot of distributions (e.g. SuSE, Debian, Fedora, Mandriva, Gentoo, ...), have a look at your installation CD's/DVD's or
+		online repositories. Be aware that some of these versions are quite old or have been stripped down to reduce the
 		package size.
 	</p>
 
@@ -263,12 +263,14 @@ $ make datainstall
 
 
 	<p><hr noshade="noshade" size="2" width="100%"></p>
-    <h2><a name="linux-lokiinstaller"></a>Experimental Linux Binary with Installer</h2>
+    <h2><a name="linux-lokiinstaller"></a>Linux Binary with Installer</h2>
 	<p>
-		This binary is dynamically linked and will probably not run on your system, just try it if
-		you have bandwith and time to waste. Please share your experiences with us. You can get it
-		<a href="http://prdownloads.sourceforge.net/torcs/torcs-1.2.4-linux-i686-experimental.bz2.run?download">here</a>.
-		Install it with "sh torcs-1.2.4-linux-i686-experimental.bz2.run". To resolve missing dynamic libraries you
+		This binary is dynamically linked, just try it if
+		you have a system with glibc 2.3. Be aware that it is possible that this does not work on your system.
+		If you try it anyway please report any problems or as well successful installs, such that we can improve it
+		(without feedback this is not possible, of course the installer works on our systems). You can get it
+		<a href="http://prdownloads.sourceforge.net/torcs/torcs-1.2.4-linux-glibc-2.3-i686.bz2.run?download">here</a>.
+		Install it with "sh torcs-1.2.4-linux-glibc-2.3-i686.bz2.run". To resolve missing dynamic libraries you
 		can run "torcs -l" (have a look at <a href="#commandlineopts">the command line options</a>).
 		It requires at least an i686 compatible CPU to run.
 	</p>
