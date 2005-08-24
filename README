@@ -100,6 +100,9 @@ Bernhard.
 Changes since 1.2.4-test3
 -------------------------
 - Version number 1.2.4 (Bernhard).
+- Linux installer (Bernhard).
+- Windows installer (Bernhard).
+- Windows patch for test3 (Bernhard).
 
 
 Changes since 1.2.4-test2
@@ -285,7 +288,6 @@ Changes since 1.2.3
 
 TODO for 1.2.4
 --------------
-- Linux installer.
 - Separated packages.
 - before/at release: upload docs/credits
 
