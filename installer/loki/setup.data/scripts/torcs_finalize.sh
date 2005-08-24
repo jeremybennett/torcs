@@ -4,7 +4,7 @@
 
 shopt -s extglob
 
-fn=${SETUP_INSTALLPATH}torcs
+fn=${SETUP_INSTALLPATH}/torcs
 
 # rip off last "/"
 ip=${SETUP_INSTALLPATH/%\//}

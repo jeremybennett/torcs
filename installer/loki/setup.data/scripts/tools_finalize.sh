@@ -5,7 +5,7 @@
 shopt -s extglob
 
 function updatepath () {
-	fn=${SETUP_INSTALLPATH}$1
+	fn=${SETUP_INSTALLPATH}/$1
 
 	# rip off last "/"
 	ip=${SETUP_INSTALLPATH/%\//}
