@@ -3,7 +3,7 @@ Introduction
 This is an all in one package of TORCS. Be aware that some included
 artwork has non free (in the GPL sense) licenses, you will find a "readme.txt"
 in those directories. The rest is either licenced under the GPL or the Free
-Art license.
+Art License.
 
 
 Non-Free content (in GPL sense)
@@ -70,13 +70,6 @@ Windows Installation from Source (Debug version)
 - run "wtorcs.exe"
 
 
-Windows Binary Installation
----------------------------
-- unzip the archive
-- cd into the torcs-1.2.4 directory
-- run "wtorcs.exe"
-
-
 Testing
 -------
 Please pick bugs below and retest them (you can find the original reports on
@@ -103,6 +96,7 @@ Changes since 1.2.4-test3
 - Updated Linux installer (Bernhard).
 - Updated Windows installer (Bernhard).
 - Windows patch for test3 (Bernhard).
+- Released as 1.2.4 (Bernhard).
 
 
 Changes since 1.2.4-test2
@@ -284,13 +278,6 @@ Changes since 1.2.3
   timing problem) (Bernhard).
 - Improved car-car collisions (Bernhard).
 - Alignd widgets in sound config screen (Bernhard).
-
-
-TODO for 1.2.4
---------------
-- Separated packages.
-- before/at release: upload docs/credits
-
 
 
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
