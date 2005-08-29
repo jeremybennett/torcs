@@ -43,23 +43,25 @@ SimSteerUpdate(tCar *car)
     stdelta = steer - car->steer.steer;
     
     if ((fabs(stdelta) / SimDeltaTime) > car->steer.maxSpeed) {
-	steer = SIGN(stdelta) * car->steer.maxSpeed * SimDeltaTime + car->steer.steer;
+		steer = SIGN(stdelta) * car->steer.maxSpeed * SimDeltaTime + car->steer.steer;
     }
     car->steer.steer = steer;
-    if (fabs(steer) > 0.01) {
-	//steer2 = atan2((car->wheelbase * tanSteer) , (car->wheelbase - tanSteer * car->wheeltrack));
-	tanSteer = tan(steer);
-	steer2 = atan2(car->wheelbase , fabs(car->wheelbase / tanSteer) - car->wheeltrack);
-    } else {
-	steer2 = steer;
+    if (fabs(steer) > 0.01f) {
+		tanSteer = tan(steer);
+		steer2 = atan2(car->wheelbase , fabs(car->wheelbase / tanSteer) - car->wheeltrack);
+    } else if (steer < 0.0f) {
+		steer2 = -steer;
+	} else {
+		steer2 = steer;
     }
-    
+	
+	//printf ("%f %f\n", steer2, steer);
     if (steer > 0) {
-	car->wheel[FRNT_RGT].steer = steer2;
-	car->wheel[FRNT_LFT].steer = steer;
+		car->wheel[FRNT_RGT].steer = steer2;
+		car->wheel[FRNT_LFT].steer = steer;
     } else {
-	car->wheel[FRNT_RGT].steer = steer;
-	car->wheel[FRNT_LFT].steer = -steer2;
+		car->wheel[FRNT_RGT].steer = steer;
+		car->wheel[FRNT_LFT].steer = -steer2;
     }
 }
 
