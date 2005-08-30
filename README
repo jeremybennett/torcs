@@ -110,7 +110,6 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
   E.g. for e-track-6 the file is 20 bytes larger than the one which is created
   on Linux... Arghhh. Hypotesis: fopen need to be set to binary "rb", "wb" to
   avoid translation of some chars.
-- Investigate funny steering bug (?) reported by Eugen.
 - Missing doppler on Windows, investigate.
 - SDL port.
 - Check for memory leaks.
