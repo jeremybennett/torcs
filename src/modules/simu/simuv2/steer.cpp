@@ -22,45 +22,41 @@
 void 
 SimSteerConfig(tCar *car)
 {
-    void *hdle = car->params;
+	void *hdle = car->params;
 
-    car->steer.steerLock = GfParmGetNum(hdle, SECT_STEER, PRM_STEERLOCK, (char*)NULL, 0.43f);
-    car->steer.maxSpeed  = GfParmGetNum(hdle, SECT_STEER, PRM_STEERSPD, (char*)NULL, 1.0f);
-    car->carElt->_steerLock = car->steer.steerLock;
+	car->steer.steerLock = GfParmGetNum(hdle, SECT_STEER, PRM_STEERLOCK, (char*)NULL, 0.43f);
+	car->steer.maxSpeed  = GfParmGetNum(hdle, SECT_STEER, PRM_STEERSPD, (char*)NULL, 1.0f);
+	car->carElt->_steerLock = car->steer.steerLock;
 }
 
 
-void 
+void
 SimSteerUpdate(tCar *car)
 {
-    tdble steer, steer2;
-    tdble stdelta;
-    tdble tanSteer;
+	tdble steer, steer2;
+	tdble stdelta;
+	tdble tanSteer;
 
-    /* input control */
-    steer = car->ctrl->steer;
-    steer *= car->steer.steerLock;
-    stdelta = steer - car->steer.steer;
-    
-    if ((fabs(stdelta) / SimDeltaTime) > car->steer.maxSpeed) {
-	steer = SIGN(stdelta) * car->steer.maxSpeed * SimDeltaTime + car->steer.steer;
-    }
-    car->steer.steer = steer;
-    if (fabs(steer) > 0.01) {
-	//steer2 = atan2((car->wheelbase * tanSteer) , (car->wheelbase - tanSteer * car->wheeltrack));
-	tanSteer = tan(steer);
-	steer2 = atan2(car->wheelbase , fabs(car->wheelbase / tanSteer) - car->wheeltrack);
-    } else {
-	steer2 = steer;
-    }
-    
-    if (steer > 0) {
-	car->wheel[FRNT_RGT].steer = steer2;
-	car->wheel[FRNT_LFT].steer = steer;
-    } else {
-	car->wheel[FRNT_RGT].steer = steer;
-	car->wheel[FRNT_LFT].steer = -steer2;
-    }
+	/* input control */
+	steer = car->ctrl->steer;
+	steer *= car->steer.steerLock;
+	stdelta = steer - car->steer.steer;
+
+	if ((fabs(stdelta) / SimDeltaTime) > car->steer.maxSpeed) {
+		steer = SIGN(stdelta) * car->steer.maxSpeed * SimDeltaTime + car->steer.steer;
+	}
+
+	car->steer.steer = steer;
+	tanSteer = fabs(tan(steer));
+	steer2 = atan2((car->wheelbase * tanSteer) , (car->wheelbase - tanSteer * car->wheeltrack));
+
+	if (steer > 0) {
+		car->wheel[FRNT_RGT].steer = steer2;
+		car->wheel[FRNT_LFT].steer = steer;
+	} else {
+		car->wheel[FRNT_RGT].steer = steer;
+		car->wheel[FRNT_LFT].steer = -steer2;
+	}
 }
 
-	
+
