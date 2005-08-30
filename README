@@ -90,6 +90,13 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.2.4
+-------------------
+- Fixed very little steering error around the center discovered by Eugen (Eugen,
+  Christos, Bernhard).
+
+
+
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
 --------------
 - Fix sound volume option (ask Christos).
