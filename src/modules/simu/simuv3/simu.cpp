@@ -144,6 +144,7 @@ SimConfig(tCarElt *carElt, tRmInfo* ReInfo)
 
     car->carElt = carElt;
     car->DynGCg = car->DynGC = carElt->_DynGC;
+
     car->trkPos = carElt->_trkPos;
     car->ctrl   = &carElt->ctrl;
     car->params = carElt->_carHandle;
@@ -464,7 +465,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 
 void
-SimInit(int nbcars)
+SimInit(int nbcars, tTrack* track)
 {
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));

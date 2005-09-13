@@ -34,6 +34,10 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
+#define ABSOLUTE_SPEED_CUTOFF 1.0f
+#define SKID_SCALE 0.0002f
+#define SKID_THRESHOLD 0.01f
+
 double timer_coordinate_transform = 0.0f;
 double timer_reaction = 0.0f;
 double timer_angles = 0.0f;
@@ -341,10 +345,10 @@ SimWheelUpdateForce(tCar *car, int index)
 			} else if (invrel_normal<=-4.0) {
 				invrel_normal = -4.0;
 			}
-			reaction_force = f_z;
+			reaction_force = f_z * invrel_normal;
 			// the other reactions are then:
-			Ft = reaction_force*rel_normal.x*invrel_normal;
-			Fn = reaction_force*rel_normal.y*invrel_normal;
+			Ft = reaction_force*rel_normal.x;//*invrel_normal;
+			Fn = reaction_force*rel_normal.y;//*invrel_normal;
 		} else {
 			f_z = 0;
 			wheel->susp.force = 0;
@@ -398,11 +402,11 @@ SimWheelUpdateForce(tCar *car, int index)
 	BEGIN_PROFILE(timer_friction);
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
-		sx = sy = sa = 0;
-    } else if (absolute_speed < 10.0f) {
-		sx = wvx/10.0f;//absolute_speed;
-		sy = wvy/10.0f;//absolute_speed;
-		sa = atan2(wvy, wvx);
+	    sx = sy = sa = 0;
+    } else if (absolute_speed < ABSOLUTE_SPEED_CUTOFF) {
+	    sx = wvx/ABSOLUTE_SPEED_CUTOFF;
+	    sy = wvy/ABSOLUTE_SPEED_CUTOFF;
+	    sa = atan2(wvy, wvx);
     } else {
 		// the division with absolute_speed is a bit of a hack. The
 		// real solution is to use a first or second-order integration
@@ -432,12 +436,16 @@ SimWheelUpdateForce(tCar *car, int index)
 	}
 
     if (right_way_up) {
-		car->carElt->_skid[index] = MIN(1.0, (s*reaction_force*0.0002));
+		if (fabs(absolute_speed) < 2.0f && fabs(wrl) < 2.0f) {
+			car->carElt->_skid[index] = 0.0f;
+		} else {
+			car->carElt->_skid[index] =  MIN(1.0f, (s*reaction_force*0.0002f));
+		}
 		//0.0002*(MAX(0.2, MIN(s, 1.2)) - 0.2)*reaction_force;
 		car->carElt->_reaction[index] = reaction_force;
     } else {
-		car->carElt->_skid[index] = 0.0;
-		car->carElt->_reaction[index] = 0.0;
+		car->carElt->_skid[index] = 0.0f;
+		car->carElt->_reaction[index] = 0.0f;
     }
     
     stmp = MIN(s, 1.5);
@@ -515,7 +523,7 @@ SimWheelUpdateForce(tCar *car, int index)
 			// touching the road. Modelling effect simply with rel_normal_xz.
 			// Constant 1.05f for equality with simuv2.
 			tdble sur_f = 1.05f * rel_normal_xz;
-			//sur_f = 1.0;
+			sur_f = 1.0;
 			Ft2 = - sur_f*F*sx/s;
 			Fn2 = - sur_f*F*sy/s;
 		} else {
@@ -527,7 +535,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		Ft2 = - sur_f*F*sx/epsilon;
 		Fn2 = - sur_f*F*sy/epsilon;
 	}
-
+	Ft2 -= tanh(wrl) * fabs(wheel->rollRes);
 	wheel->forces.x = Ft2 * rel_normal_yz;
 	wheel->forces.y = Fn2 * rel_normal_xz; 
 	wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;

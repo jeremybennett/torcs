@@ -262,7 +262,7 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 	// reduction for front and rear parts.
 	if (1) {
 		// downforce due to body and ground effect.
-		tdble alpha = 0.9;
+		tdble alpha = 0.0f;
 		tdble vt2b = vt2 * (alpha+(1-alpha)*i_flow);
 		vt2b = vt2b * vt2b;
 		tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
