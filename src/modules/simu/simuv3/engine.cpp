@@ -145,7 +145,7 @@ SimEngineUpdateTq(tCar *car)
 	if (engine->rads < engine->tickover) {
 		clutch->state = CLUTCH_APPLIED;
 		clutch->transferValue = 0.0f;
-		engine->rads = engine->tickover;
+		//		engine->rads = engine->tickover;
 	}
 
     if ((car->fuel <= 0.0) || (car->carElt->_state & (RM_CAR_STATE_BROKEN | RM_CAR_STATE_ELIMINATED))) {
@@ -155,18 +155,21 @@ SimEngineUpdateTq(tCar *car)
 
 	if (engine->rads > engine->revsMax) {
 		engine->rads = engine->revsMax;
-	printf ("Limiting\n");
 	}
 	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
 	if (engine->rads > engine->revsLimiter) {
 		engine->Tq = -EngBrkK*(tanh(engine->rads - engine->revsLimiter)+1.0f);
-    } else if (engine->rads < 0) {
-		engine->Tq = 0.0;
+    } else if (engine->rads < engine->tickover) {
+		engine->Tq = 0.0f;
+		engine->rads = engine->tickover;
 	} else {
 		tdble Tq_max = CalculateTorque(engine, engine->rads);
 		tdble alpha = car->ctrl->accelCmd;
 		tdble Tq_cur = (Tq_max + EngBrkK)* alpha;
-		engine->Tq =  Tq_cur - EngBrkK;
+		engine->Tq =  Tq_cur;
+		if (engine->rads > engine->tickover) {
+			engine->Tq -= EngBrkK;
+		}
 		tdble cons = Tq_cur * 0.75f;
 
 		if (cons > 0) {
@@ -268,6 +271,7 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
     }
 	if (engine->rads < engine->tickover) {
 	    engine->rads = engine->tickover;
+		engine->Tq = 0.0;
 	} else if (engine->rads > engine->revsMax) {
             engine->rads = engine->revsMax;
             return engine->revsMax / trans->curOverallRatio;
