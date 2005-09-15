@@ -180,7 +180,7 @@ SimGearboxUpdate(tCar *car)
 	} else  {
 	    if (clutch->transferValue > 0.99) {
 		clutch->transferValue = 1.0;
-		trans->curI = trans->freeI[gearbox->gear +  1];
+		trans->curI = trans->driveI[gearbox->gear +  1];
 		if (car->ctrl->accelCmd > 0.1f) {
 		    car->ctrl->accelCmd = 0.1f;
 		}
