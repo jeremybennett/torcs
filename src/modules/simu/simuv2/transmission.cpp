@@ -178,9 +178,10 @@ SimGearboxUpdate(tCar *car)
 	if (clutch->timeToRelease <= 0.0) {
 	    clutch->state = CLUTCH_RELEASED;
 	} else  {
+	    // If user does not engage clutch, we do it automatically.
 	    if (clutch->transferValue > 0.99) {
-		clutch->transferValue = 1.0;
-		trans->curI = trans->driveI[gearbox->gear +  1];
+		clutch->transferValue = 0.0;
+		trans->curI = trans->freeI[gearbox->gear +  1];
 		if (car->ctrl->accelCmd > 0.1f) {
 		    car->ctrl->accelCmd = 0.1f;
 		}

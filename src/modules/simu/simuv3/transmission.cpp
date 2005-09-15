@@ -180,9 +180,10 @@ SimGearboxUpdate(tCar *car)
 		if (clutch->timeToRelease <= 0.0f) {
 			clutch->state = CLUTCH_RELEASED;
 		} else  {
+            // If user does not engage clutch, we do it automatically.
 			if (clutch->transferValue > 0.99f) {
-				clutch->transferValue = 1.0f; // 0.0f - FIXED
-                trans->curI = trans->driveI[gearbox->gear + 1];
+				clutch->transferValue = 0.0f;
+                trans->curI = trans->freeI[gearbox->gear + 1];
 
                 // NOTE: Shouldn't usage of accelerator when shifting be let
                 // to the user to decide? Especially when shifting down
