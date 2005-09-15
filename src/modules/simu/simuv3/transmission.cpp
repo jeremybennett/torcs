@@ -182,7 +182,8 @@ SimGearboxUpdate(tCar *car)
 		} else  {
 			if (clutch->transferValue > 0.99f) {
 				clutch->transferValue = 1.0f; // 0.0f - FIXED
-				trans->curI = trans->freeI[gearbox->gear +  1];
+                trans->curI = trans->driveI[gearbox->gear + 1];
+
                 // NOTE: Shouldn't usage of accelerator when shifting be let
                 // to the user to decide? Especially when shifting down
                 // in order to accelerate more, this could be annoying.
