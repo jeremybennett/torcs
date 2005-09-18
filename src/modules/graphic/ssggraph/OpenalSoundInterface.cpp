@@ -327,7 +327,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 			gear_change_sound->start();
 		}
 	}
-	
+
 }
 
 
