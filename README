@@ -97,7 +97,8 @@ Changes since 1.2.4
 - Fixed reading and writing of Olethros data files on non-Posix platforms
   (Bernhard).
 - Verified OpenAL volume jump, seems to be gone, perhaps caused by source
-  sheduler (Christos, Bernhard).
+  scheduler (Christos, Bernhard).
+- Track tutorial added to CVS (Christos).
 
 
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
