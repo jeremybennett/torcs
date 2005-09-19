@@ -155,7 +155,7 @@ void DiscretePolicy::saveState(FILE* f)
 DiscretePolicy::~DiscretePolicy()
 {
 	real sum = 0.0;
-	FILE* f = fopen ("/tmp/discrete","w");
+	FILE* f = fopen ("/tmp/discrete","wb");
 
 	int s;
 	for (s=0; s<n_states; s++) {
@@ -484,7 +484,7 @@ void DiscretePolicy::Reset ()
 void DiscretePolicy::loadFile (char* f)
 {
 	FILE* fh = NULL;
-	fh = fopen (f, "r");
+	fh = fopen (f, "rb");
 	if (fh==NULL) {
 		fprintf (stderr, "Failed to read file %s\n", f);
 		return;
@@ -549,7 +549,7 @@ void DiscretePolicy::loadFile (char* f)
 /// Save policy to a file.
 void DiscretePolicy::saveFile (char* f) {
 	FILE* fh = NULL;
-	fh = fopen (f, "w");
+	fh = fopen (f, "wb");
 	if (fh==NULL) {
 		fprintf (stderr, "Failed to write to file %s\n", f);
 		return;

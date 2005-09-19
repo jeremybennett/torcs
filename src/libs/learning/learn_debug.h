@@ -23,8 +23,8 @@
  
 
 
-#define ReadFile(f,fs) ((fs=fopen(f,"r"))!=NULL)
-#define WriteFile(f,fs) ((fs=fopen(f,"w"))!=NULL)
+#define ReadFile(f,fs) ((fs=fopen(f,"rb"))!=NULL)
+#define WriteFile(f,fs) ((fs=fopen(f,"wb"))!=NULL)
 #define CloseFile(f) {assert(f); fclose(f); f = NULL;}
 
 #define AllocM(type,x) ((type *) malloc (sizeof(type)*(x)))

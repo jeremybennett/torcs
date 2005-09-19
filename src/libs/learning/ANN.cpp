@@ -1169,7 +1169,7 @@ static inline void WriteToken (char* tag, FILE* f)
 /// Load an ANN from a filename.
 ANN* LoadANN(char* filename)
 {
-	FILE* f = fopen (filename, "r");
+	FILE* f = fopen (filename, "rb");
 	if (f) {
 		ANN* ann = LoadANN (f);
 		fclose (f);
@@ -1180,7 +1180,7 @@ ANN* LoadANN(char* filename)
 /// Save the ANN to a filename.
 int SaveANN(ANN* ann, char* filename)
 {
-	FILE* f = fopen (filename, "w");
+	FILE* f = fopen (filename, "wb");
 	if (f) {
 		int r = SaveANN (ann, f);
 		fclose (f);
