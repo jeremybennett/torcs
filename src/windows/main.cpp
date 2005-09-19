@@ -31,9 +31,7 @@
 static void
 init_args(int argc, char **argv)
 {
-/*
-	TODO: fix single texture code for windows (crashes).
-	  
+	int i;
 	i = 1;
 	while (i < argc) {
 		if ((strncmp(argv[i], "-s", 2) == 0) || (strncmp(argv[i], "/s", 2) == 0)) {
@@ -43,8 +41,7 @@ init_args(int argc, char **argv)
 			i++;		// Ignore bad args
 		}
 	}
-*/
-	int i;
+
 	static const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	strncpy(buf, argv[0], BUFSIZE);
@@ -69,7 +66,7 @@ init_args(int argc, char **argv)
 		SetLibDir("");
 	} else {
 		if (_fullpath(buf, argv[0], BUFSIZE) != NULL &&
-			(strcmp(argv[0], "wtorcs") == 0 || 
+			(strcmp(argv[0], "wtorcs") == 0 ||
 			 strcmp(argv[0], "wtorcs.exe") == 0)
 		   )
 		{
@@ -100,27 +97,27 @@ init_args(int argc, char **argv)
  *	Win32 entry point of TORCS
  *
  * Parameters
- *	
+ *
  *
  * Return
- *	
+ *
  *
  * Remarks
- *	
+ *
  */
-int 
+int
 main(int argc, char *argv[])
 {
     init_args(argc, argv);
 
     WindowsSpecInit();		/* init specific windows functions */
-    
+
     GfScrInit(argc, argv);	/* init screen */
 
     TorcsEntry();		/* launch TORCS */
-    
+
     glutMainLoop();		/* event loop of glut */
-    
+
     return 0;			/* just for the compiler, never reached */
 }
 
