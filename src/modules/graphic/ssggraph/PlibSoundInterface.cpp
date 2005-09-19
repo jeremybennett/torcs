@@ -70,8 +70,9 @@ slScheduler* PlibSoundInterface::getScheduler()
 
 TorcsSound* PlibSoundInterface::addSample (const char* filename, int flags, bool loop, bool static_pool)
 {
-	TorcsSound* sound = new PlibTorcsSound (sched, filename, flags, loop);
-	sound_list.push_back (sound);
+	PlibTorcsSound* sound = new PlibTorcsSound (sched, filename, flags, loop);
+    sound->setVolume (2.0*global_gain);
+	sound_list.push_back ((TorcsSound*) sound);
 	return sound;
 }
 	

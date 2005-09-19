@@ -110,6 +110,10 @@ void PlibTorcsSound::setVolume(float vol)
 		vol = MAX_VOL;
 	}
 	this->volume = vol;
+
+    if (loop==false) {
+        sample->adjustVolume (vol);
+    }
 }
 
 void PlibTorcsSound::play()
