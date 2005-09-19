@@ -94,7 +94,10 @@ Changes since 1.2.4
 -------------------
 - Fixed very little steering error around the center discovered by Eugen (Eugen,
   Christos, Bernhard).
-
+- Fixed reading and writing of Olethros data files on non-Posix platforms
+  (Bernhard).
+- Verified OpenAL volume jump, seems to be gone, perhaps caused by source
+  sheduler (Christos, Bernhard).
 
 
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
@@ -102,16 +105,8 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
 - Fix sound volume option (ask Christos). [Seems to be OK, check GUI code - Christos]
 - Fix and reenable -s option in Windows (car rendering ignores missing multitex
   extension).
-- fix temporary sound volume jump when changing camera with OpenAL (plib not
-  tested, verify) (ask Christos). [Seems to be OK]
 - When car is moving sideways, the engine sound source seems shifted to the side also
   under OpenAL.
-- Olethros data file interpreting fails on Windows, reports "Expected tag <bla>,
-  found <RADI>", where bla in "DM_FRICTION, PRED_ACCEL, PRED_STEER, END".
-  The file has been written and is in place, gets as well opened fine.
-  E.g. for e-track-6 the file is 20 bytes larger than the one which is created
-  on Linux... Arghhh. Hypotesis: fopen need to be set to binary "rb", "wb" to
-  avoid translation of some chars.
 - Missing doppler on Windows, investigate.
 - SDL port.
 - Check for memory leaks.
