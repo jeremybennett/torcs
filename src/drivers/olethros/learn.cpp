@@ -533,7 +533,7 @@ bool SegLearn::LoadParameter (float* p, int n, FILE* f)
 void SegLearn::loadParameters (char* fname)
 {
 	//std::cout << "Maybe load parameters from " << fname << std::endl;
-	FILE* f = fopen(fname,"r");
+	FILE* f = fopen(fname,"rb");
 	if (!f) { // no error here.
 		return;
 	}
@@ -572,7 +572,7 @@ void SegLearn::loadParameters (char* fname)
 /// Save
 void SegLearn::saveParameters (char* fname)
 {
-	FILE* f = fopen(fname,"w");
+	FILE* f = fopen(fname,"wb");
 	//std::cout << "Maybe save parameters to " << fname << std::endl;
 	if (!f) {
 		std::cerr << "Could not open " << fname << " for writing. Check permissions\n";
