@@ -160,7 +160,9 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
 - (add proper init/shutdown to every module which is not bound to anything else
   but the loading/init/shutdown/unloading process.)
 - (make use of pbuffers to render trackmap if available.)
-
+- Update FAQ
+  "mencoder -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=1800 \*.jpg -mf on:type=jpeg:fps=25"
+  the backslash got swallowed by the CMS.
 
 TODO for 1.9.x (pre 2.0 series, no release)
 --------------
