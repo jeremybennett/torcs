@@ -226,7 +226,7 @@
       <attstr name="side"   val="right"/>
       <attstr name="entry"  val="pit-entry"/>
       <attstr name="start"  val="arrival"/>
-      <attstr name="end"    val="start lane"/>
+      <attstr name="end"    val="start lane 2"/>
       <attstr name="exit"   val="pit-exit"/>
       <attnum name="length" val="15" unit="m"/>
       <attnum name="width"  val="5" unit="m"/>
