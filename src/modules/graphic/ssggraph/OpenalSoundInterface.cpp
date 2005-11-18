@@ -22,12 +22,19 @@
 #include "TorcsSound.h"
 
 
+/// Define this to use the OpenAL Doppler.
+#undef USE_OPENAL_DOPPLER
+
 const int OpenalSoundInterface::OSI_MIN_DYNAMIC_SOURCES = 4;
+
 
 
 OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels): SoundInterface (sampling_rate, n_channels)
 {
+	car_src = NULL;
+
 	ALfloat far_away[] = { 0.0f, 0.0f,  1000.0f };
+	ALfloat zeroes[] = { 0.0f, 0.0f,  0.0f };
 	ALfloat front[]  = { 0.0f, 0.0f,  1.0f, 0.0f, 1.0f, 0.0f };
 	dev = alcOpenDevice( NULL );
 	if( dev == NULL ) {
@@ -117,7 +124,7 @@ OpenalSoundInterface::OpenalSoundInterface(float sampling_rate, int n_channels):
 
 
 	alListenerfv(AL_POSITION, far_away );
-	alListenerfv(AL_VELOCITY, far_away );
+	alListenerfv(AL_VELOCITY, zeroes );
 	alListenerfv(AL_ORIENTATION, front );
 	error = alGetError();
 	if (error != AL_NO_ERROR) {
@@ -148,11 +155,16 @@ OpenalSoundInterface::~OpenalSoundInterface()
 	delete [] engpri;
 	alcDestroyContext (cc);
 	alcCloseDevice (dev);
+
+	if (car_src) {
+		delete [] car_src;
+	}
 }
 
 void OpenalSoundInterface::setNCars(int n_cars)
 {
 	engpri = new SoundPri[n_cars];
+	car_src = new SoundSource[n_cars];
 }
 
 
@@ -169,22 +181,36 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	ALfloat listener_pos[3];
 	ALfloat listener_speed[3];
 	ALfloat listener_orientation[6];
+    ALfloat zeros[] = {0.0f, 0.0f, 0.0f};
 	
 	int i;
 	for (i = 0; i<3; i++) {
 		listener_pos[i] = p_obs[i];
-		listener_speed[i] = u_obs[i];
+		listener_speed[i] = 0;// u_obs[i];
 		listener_orientation[i] = c_obs[i];
 		listener_orientation[i+3] = a_obs[i];
 	}
 	
 	alListenerfv(AL_POSITION, listener_pos );
+#ifdef USE_OPENAL_DOPPLER
 	alListenerfv(AL_VELOCITY, listener_speed );
+#else 
+    alListenerfv(AL_VELOCITY, zeros);
+#endif
 	alListenerfv(AL_ORIENTATION, listener_orientation );
 	alListenerf(AL_GAIN, getGlobalGain());
 
 	for (i = 0; i<n_cars; i++) {
 		car_sound_data[i]->copyEngPri(engpri[i]);
+		int id = engpri[i].id;
+		sgVec3 p;
+		sgVec3 u;
+		car_sound_data[id]->getCarPosition(p);
+		car_sound_data[id]->getCarSpeed(u);
+		car_src[id].setSource (p, u);
+		car_src[id].setListener (p_obs, u_obs);
+		car_src[id].update();
+		engpri[id].a = car_src[id].a;
 	}
 
 
@@ -204,7 +230,11 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		sound_data->getCarSpeed(u);
 		TorcsSound* engine = sound_data->getEngineSound();
 		engine->setSource(p, u);
+#ifdef USE_OPENAL_DOPPLER
 		engine->setPitch (sound_data->engine.f);
+#else
+		engine->setPitch (car_src[id].f*sound_data->engine.f);
+#endif
 		engine->setVolume (sound_data->engine.a);
 		//engine->setLPFilter(sound_data->engine.lp);
 
@@ -235,7 +265,13 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		WheelSoundData* sound_data = car_sound_data[id]->wheel;
 		skid_sound[i]->setSource (sound_data[i].p, sound_data[i].u);
 		skid_sound[i]->setVolume (sound_data[i].skid.a);
+#ifdef USE_OPENAL_DOPPLER
+        /// \note Why MIN() here?
 		skid_sound[i]->setPitch (MIN(sound_data[i].skid.f, 1.0f));
+#else
+		float mod_f = car_src[id].f;
+		skid_sound[i]->setPitch (sound_data[i].skid.f * mod_f);
+#endif
 		skid_sound[i]->update();
 		if (sound_data[i].skid.a > VOLUME_CUTOFF) {
 			skid_sound[i]->start();
@@ -282,13 +318,13 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 	for (id = 0; id<n_cars; id++) {
 		CarSoundData* sound_data = car_sound_data[id];
 		sgVec3 p;
-		sgVec3 u;
+		sgVec3 u = {0, 0, 0};
 		if (sound_data->crash) {
 			if (++curCrashSnd>=NB_CRASH_SOUND) {
 				curCrashSnd = 0;
 			}
-			car_sound_data[id]->getCarPosition(p);
-			car_sound_data[id]->getCarSpeed(u);
+			sound_data->getCarPosition(p);
+			sound_data->getCarSpeed(u);
 			crash_sound[curCrashSnd]->setSource (p, u);
 			crash_sound[curCrashSnd]->setVolume (1.0f);
 			crash_sound[curCrashSnd]->setPitch (1.0f);
@@ -297,8 +333,8 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		}
 
 		if (sound_data->bang) {
-			car_sound_data[id]->getCarPosition(p);
-			car_sound_data[id]->getCarSpeed(u);
+			sound_data->getCarPosition(p);
+			sound_data->getCarSpeed(u);
 			bang_sound->setSource (p, u);
 			bang_sound->setVolume (1.0f);
 			bang_sound->setPitch (1.0f);
@@ -307,8 +343,8 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		}
 
 		if (sound_data->bottom_crash) {
-			car_sound_data[id]->getCarPosition(p);
-			car_sound_data[id]->getCarSpeed(u);
+			sound_data->getCarPosition(p);
+			sound_data->getCarSpeed(u);
 			bottom_crash_sound->setSource (p, u);
 			bottom_crash_sound->setVolume (1.0f);
 			bottom_crash_sound->setPitch (1.0f);
@@ -317,8 +353,8 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 		}
 
 		if (sound_data->gear_changing) {
-			car_sound_data[id]->getCarPosition(p);
-			car_sound_data[id]->getCarSpeed(u);
+			sound_data->getCarPosition(p);
+			sound_data->getCarSpeed(u);
 			gear_change_sound->setSource (p, u);
 			gear_change_sound->setReferenceDistance (1.0f);
 			gear_change_sound->setVolume (1.0f);
@@ -354,5 +390,35 @@ bool OpenalSoundInterface::getStaticSource(ALuint *source)
 		}
 	} else {
 		return false;
+	}
+}
+
+void OpenalSoundInterface::SetMaxSoundCar(CarSoundData** car_sound_data, QueueSoundMap* smap)
+{
+	int id = smap->id;
+	float max_vol = smap->max_vol;
+	QSoundChar CarSoundData::*p2schar = smap->schar;
+	QSoundChar* schar = &(car_sound_data[id]->*p2schar);
+	TorcsSound* snd = smap->snd;
+
+	sgVec3 p;
+	sgVec3 u = {0.0f, 0.0f, 0.0f};
+
+	car_sound_data[id]->getCarPosition(p);
+#ifdef USE_OPENAL_DOPPLER
+	car_sound_data[id]->getCarSpeed(u);
+#endif
+	snd->setSource (p, u);
+	snd->setVolume (schar->a);
+#ifdef USE_OPENAL_DOPPLER
+	snd->setPitch (schar->f);
+#else
+	snd->setPitch (schar->f * car_src[id].f);
+#endif
+	snd->update();
+	if (max_vol > VOLUME_CUTOFF) {
+		snd->start();
+	} else {
+		snd->stop();
 	}
 }

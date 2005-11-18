@@ -60,7 +60,7 @@ PlibSoundInterface::~PlibSoundInterface()
 void PlibSoundInterface::setNCars(int n_cars)
 {
 	engpri = new SoundPri[n_cars];
-	car_src = new PlibSoundSource[n_cars];
+	car_src = new SoundSource[n_cars];
 }
 
 slScheduler* PlibSoundInterface::getScheduler()

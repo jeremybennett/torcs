@@ -20,20 +20,25 @@
 #include "TorcsSound.h"
 #include "SoundInterface.h"
 
+
+/// Set the volume \note effect not consistent across backends
 void TorcsSound::setVolume(float vol)
 {
 	this->volume = vol;
 }
+/// Set the pitch \note Effect not consistent across backends
 void TorcsSound::setPitch(float pitch)
 {
 	this->pitch = pitch;
 }
+/// Set the filter \note Effect not consistent across backends
 void TorcsSound::setLPFilter(float lp)
 {
 	this->lowpass = lp;
 }
 
-
+/// Create a new PLib sound. It requires a scheduler to be set up
+/// and a filename to read data from.
 PlibTorcsSound::PlibTorcsSound(slScheduler* sched,
 			       const char* filename,
 			       int flags,
@@ -83,6 +88,8 @@ PlibTorcsSound::PlibTorcsSound(slScheduler* sched,
 	paused = false;
 }
 
+
+/// Destructor.
 PlibTorcsSound::~PlibTorcsSound()
 {
 	sched->stopSample(sample);
@@ -104,6 +111,9 @@ PlibTorcsSound::~PlibTorcsSound()
 	delete sample;
 }
 
+/** Set the volume.  Since plib does not support envelopes for
+ * one-shot samples, we pre-adjust their volume
+ */
 void PlibTorcsSound::setVolume(float vol)
 {
 	if (vol > MAX_VOL) {
@@ -115,11 +125,12 @@ void PlibTorcsSound::setVolume(float vol)
         sample->adjustVolume (vol);
     }
 }
-
+/// Start the sample
 void PlibTorcsSound::play()
 {
 	start();
 }
+/// Start the sample
 void PlibTorcsSound::start()
 {
 	// TODO: consistency check?
@@ -133,6 +144,7 @@ void PlibTorcsSound::start()
 		sched->playSample (sample);
 	}
 }
+/// Stop the sample
 void PlibTorcsSound::stop()
 {
 	if (playing == true) {
@@ -140,11 +152,13 @@ void PlibTorcsSound::stop()
 		sched->stopSample (sample);
 	}
 }
+/// Resume a paused sample.
 void PlibTorcsSound::resume()
 {
 	sched->resumeSample (sample);
 	paused = false;
 }
+/// Pause a sample
 void PlibTorcsSound::pause()
 {
 	sched->pauseSample (sample);
@@ -153,11 +167,12 @@ void PlibTorcsSound::pause()
 
 
 
-
+/** Update the plib sounds.
+ * This should be called as often as possible from the main sound code,
+ * probably by looping through all the sounds used.
+ */
 void PlibTorcsSound::update()
 {
-
-
 	if (flags & ACTIVE_VOLUME) {
 		volume_env->setStep(0, 0.0f, volume);
 	}
@@ -170,15 +185,20 @@ void PlibTorcsSound::update()
 	}
 }
 
-
-PlibSoundSource::PlibSoundSource()
+/// Create a sound source
+SoundSource::SoundSource()
 {
 	a = 0.0;
 	f = 1.0;
 	lp = 1.0;
 }
 
-void PlibSoundSource::update()
+/** Calculate environmental parameters for current situation.
+ *
+ * At the moment this
+ */
+
+void SoundSource::update()
 {
 	// Get relative speed/position vector
 	sgVec3 u;
@@ -236,7 +256,10 @@ void PlibSoundSource::update()
 
 }
 
-void PlibSoundSource::setSource(sgVec3 p, sgVec3 u)
+
+/** Set source position and velocity.
+ */
+void SoundSource::setSource(sgVec3 p, sgVec3 u)
 {
 	for (int i=0; i<3; i++) {
 		p_src[i] = p[i];
@@ -244,8 +267,9 @@ void PlibSoundSource::setSource(sgVec3 p, sgVec3 u)
 	}
 }
 
-
-void PlibSoundSource::setListener (sgVec3 p, sgVec3 u)
+/** Set listener position and velocity.
+ */
+void SoundSource::setListener (sgVec3 p, sgVec3 u)
 {
 	for (int i=0; i<3; i++) {
 		p_lis[i] = p[i];
@@ -254,6 +278,10 @@ void PlibSoundSource::setListener (sgVec3 p, sgVec3 u)
 }
 
 
+/** Create a new torcs sound
+ * 
+ *
+ */
 OpenalTorcsSound::OpenalTorcsSound(const char* filename, OpenalSoundInterface* sitf, int flags, bool loop, bool static_pool)
 {
 
@@ -534,17 +562,18 @@ void OpenalTorcsSound::pause()
 
 void OpenalTorcsSound::update ()
 {
+    ALfloat zero_velocity[3] = {0.0f, 0.0f, 0.0f};
 	if (static_pool) {
 		if (is_enabled) {
 			alSourcefv (source, AL_POSITION, source_position);
-			alSourcefv (source, AL_VELOCITY, source_velocity);
+			alSourcefv (source, AL_VELOCITY, zero_velocity);
 			alSourcef (source, AL_PITCH, pitch);
 			alSourcef (source, AL_GAIN, volume);
 		}
 	} else {
 		if (itf->getSourcePool()->isSourceActive(this, &poolindex)) {
 			alSourcefv (source, AL_POSITION, source_position);
-			alSourcefv (source, AL_VELOCITY, source_velocity);
+			alSourcefv (source, AL_VELOCITY, zero_velocity);
 			alSourcef (source, AL_PITCH, pitch);
 			alSourcef (source, AL_GAIN, volume);		
 		}
