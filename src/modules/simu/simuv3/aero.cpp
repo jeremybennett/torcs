@@ -36,6 +36,18 @@ SimAeroConfig(tCar *car)
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
 	car->aero.Clift[0] *= aero_factor / 4.0f;
 	car->aero.Clift[1] *= aero_factor / 4.0f;
+    float max_lift = MaximumLiftGivenDrag (car->aero.SCx2, FrntArea);
+    float current_lift = 2.0f * (car->aero.Clift[0] + car->aero.Clift[1]);
+    if (current_lift > max_lift) {
+        fprintf (stderr, "Warning: car %s, driver %s: lift coefficients (%f, %f), generate a lift of %f, while maximum theoretical value is %f\n",
+                 car->carElt->_carName,
+                 car->carElt->_name,
+                 car->aero.Clift[0],
+                 car->aero.Clift[1],
+                 current_lift,
+                 max_lift);
+    }
+
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
 	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
     //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
@@ -188,13 +200,14 @@ SimWingConfig(tCar *car, int index)
     
 	switch (car->options->aeroflow_model) {
 	case SIMPLE:
-		wing->Kx = -1.23f * area;
+		wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
 		wing->Kz = car->options->aero_factor * wing->Kx;
 		break;
 	case PLANAR:
-		wing->Kx = -1.23f * area * 16.0f;
+		wing->Kx = -AIR_DENSITY * area * 16.0f;
 		wing->Kz = wing->Kx;
 		break;
+    case OPTIMAL:
 	default:
 		fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
 	}
@@ -330,3 +343,30 @@ tdble PartialFlowSphere(tdble theta, tdble psi)
     return (0.5*(1.0+sin((theta-psi)*M_PI/(2.0*theta))));
 }
            
+tdble Max_Cl_given_Cd (tdble Cd)
+{
+    // if Cd = 1, then all air hitting the surface is stopped.
+    // In any case, horizontal speed of air particles is given by
+    tdble ux = 1 - Cd;
+    
+    // We assume no energy lost and thus can calculate the maximum
+    // possible vertical speed imparted to the paticles
+    tdble uy = sqrt(1 - ux*ux);
+
+    // So now Cl is just the imparted speed
+    return uy;
+}
+
+tdble Max_SCl_given_Cd (tdble Cd, tdble A)
+{
+    tdble Cl = Max_Cl_given_Cd (Cd);
+    return A * Cl * AIR_DENSITY / 2.0f;
+}
+
+tdble MaximumLiftGivenDrag (tdble drag, tdble A)
+{
+    // We know the drag, C/2 \rho A.
+    // We must calculate the drag coefficient
+    tdble Cd = (drag / A) * 2.0f / AIR_DENSITY;
+    return Max_SCl_given_Cd (Cd, A);
+}

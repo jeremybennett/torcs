@@ -157,14 +157,16 @@ SimEngineUpdateTq(tCar *car)
 		engine->rads = engine->revsMax;
 	}
 	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
-	if (engine->rads > engine->revsLimiter) {
-		engine->Tq = -EngBrkK*(tanh(engine->rads - engine->revsLimiter)+1.0f);
-    } else if (engine->rads < engine->tickover) {
+
+    if (engine->rads < engine->tickover) {
 		engine->Tq = 0.0f;
 		engine->rads = engine->tickover;
 	} else {
 		tdble Tq_max = CalculateTorque(engine, engine->rads);
 		tdble alpha = car->ctrl->accelCmd;
+        if (engine->rads > engine->revsLimiter) {
+            alpha = 0.0;
+        }
 		tdble Tq_cur = (Tq_max + EngBrkK)* alpha;
 		engine->Tq =  Tq_cur;
 		if (engine->rads > engine->tickover) {

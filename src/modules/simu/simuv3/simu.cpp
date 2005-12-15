@@ -331,7 +331,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 	double timestamp_start = GfTimeClock();
     SimDeltaTime = deltaTime;
-    SimTelemetry = telemetry;
+    SimTelemetry = 0;//telemetry;
     for (ncar = 0; ncar < s->_ncars; ncar++) {
 		SimCarTable[ncar].collision = 0;
 		SimCarTable[ncar].blocked = 0;

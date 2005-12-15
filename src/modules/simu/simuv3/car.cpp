@@ -399,6 +399,10 @@ SimCarUpdateSpeed(tCar *car)
 		car->DynGCg.vel.x -= (car->DynGCg.vel.x) * Rr / vel;
 		car->DynGCg.vel.y -= (car->DynGCg.vel.y) * Rr / vel;
 		car->DynGCg.vel.z -= (car->DynGCg.vel.z) * Rr / vel;
+    } else {
+        car->DynGCg.vel.x -= (car->DynGCg.vel.x) * Rr; // vel;
+		car->DynGCg.vel.y -= (car->DynGCg.vel.y) * Rr; // vel;
+		car->DynGCg.vel.z -= (car->DynGCg.vel.z) * Rr; // vel;
     }
 
     /* We need to get the speed on the actual frame of reference
@@ -422,7 +426,7 @@ SimCarUpdateSpeed(tCar *car)
 	car->rot_mom[SG_Y] -= car->rot_acc[1] * SimDeltaTime;
 	car->rot_mom[SG_Z] -= car->rot_acc[2] * SimDeltaTime;
 	
-#if 0
+#if 1
     if (Rm > fabs(car->rot_mom[SG_Z])) {
 		Rm = fabs(car->rot_mom[SG_Z]);
     }
@@ -609,7 +613,7 @@ SimTelemetryOut(tCar *car)
 {
     int i;
     tdble Fzf, Fzr;
-    
+#if 0
     printf("-----------------------------\nCar: %d %s ---\n", car->carElt->index, car->carElt->_name);
     printf("Seg: %d (%s)  Ts:%f  Tr:%f\n",
 		   car->trkPos.seg->id, car->trkPos.seg->name, car->trkPos.toStart, car->trkPos.toRight);
@@ -620,16 +624,18 @@ SimTelemetryOut(tCar *car)
     printf("Vx: %f  Vy: %f  Vz: %f (m/s)\n", car->DynGC.vel.x, car->DynGC.vel.y, car->DynGC.vel.z);
     printf("Px: %f  Py: %f  Pz: %f (m)\n---\n", car->DynGC.pos.x, car->DynGC.pos.y, car->DynGC.pos.z);
     printf("As: %f\n---\n", sqrt(car->airSpeed2));
+
     for (i = 0; i < 4; i++) {
 		printf("wheel %d - RH:%f susp:%f zr:%.2f ", i, car->wheel[i].rideHeight, car->wheel[i].susp.x, car->wheel[i].zRoad);
 		printf("sx:%f sa:%f w:%f ", car->wheel[i].sx, car->wheel[i].sa, car->wheel[i].spinVel);
 		printf("fx:%f fy:%f fz:%f\n", car->wheel[i].forces.x, car->wheel[i].forces.y, car->wheel[i].forces.z);
     }
+
     Fzf = (car->aero.lift[0] + car->wing[0].forces.z) / 9.81;
     Fzr = (car->aero.lift[1] + car->wing[1].forces.z) / 9.81;
-    printf("Aero Fx:%f Fz:%f Fzf=%f Fzr=%f ratio=%f\n", car->aero.drag / 9.81, Fzf + Fzr,
+    printf("%f %f %f %f %f\n", car->aero.drag / 9.81, Fzf + Fzr,
 		   Fzf, Fzr, (Fzf + Fzr) / (car->aero.drag + 0.1) * 9.81);
-    
+#endif    
 }
 
 void

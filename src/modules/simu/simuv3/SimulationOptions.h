@@ -16,9 +16,10 @@
 
 ///	Aerodynamic flow model
 enum AeroFlowModel {
-	SIMPLE, ///< A simple model.
-	PLANAR, ///< A planar model.
-	SEGMENTS ///< A segmented surface model.
+	SIMPLE, ///< A simple model - can exceed theoretical limits
+	PLANAR, ///< A planar model - severely underperforms
+    OPTIMAL, ///< Gives the maximum theoretically allowed (accorindg to the principle of the conservation of energy) amount of lift for a given drag.
+	SEGMENTS ///< A segmented surface model - not implemented.. yet
 };
 
 /**

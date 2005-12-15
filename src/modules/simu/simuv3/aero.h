@@ -20,6 +20,8 @@
 #ifndef _AERO_H_
 #define _AERO_H_
 
+/// air density
+#define AIR_DENSITY 1.23
 typedef struct
 {
     /* dynamic */
@@ -51,6 +53,34 @@ typedef struct
     
 } tWing;
 
+/// Get the maximum possible lift coefficient given a drag coefficient
+tdble Max_Cl_given_Cd (tdble Cd);
+
+/// Get the maximum possible lift given a drag coefficient and area
+tdble Max_Cl_given_Cd (tdble Cd, tdble A);
+
+/** Get the maximum lift given drag.
+ * 
+ * The equation
+ *
+ * \f[
+ *    F = C/2 \rho u^2 A
+ * \f]
+ *
+ * can be used to calculate \f$F\f$, the exerted force on an object
+ * with cross-sectional area \f$A\f$, moving at a speed \f$u\f$
+ * through a fluid of density \f$\rho\f$.
+ * 
+ * For a plane perpendicular to the direction of motion, \f$C=1\$f.
+ * In fact, we can seperate it into two components, \f$C_x=1, ~
+ * C_y=0\f$, if we wish.
+ * 
+ * The next part is simple.  Given a drag, we can calculate a maximum lift
+ * if we know the cross-sectional area involved.
+ *
+ * \arg \c drag
+ */
+tdble MaximumLiftGivenDrag (tdble drag, tdble A = 1.0);
 
 
 #endif /* _AERO_H_  */ 
