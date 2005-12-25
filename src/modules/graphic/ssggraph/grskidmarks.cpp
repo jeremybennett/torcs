@@ -217,33 +217,46 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 
 		if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 1.0f) {
 	    	if (cur_clr[3] > 0.1f) {
-
+                
 				basevtx = new ssgVertexArray(4 * 2 + 1);
 				tdble sling_left = 0.0f;
-				tdble sling_right = 0.0f;
-
+				tdble sling_right = 0.0f;                
 				sling_right = sling_mud;
 				sling_left = -sling_mud;
 
+                // TO-DO: Temporary fix, trying to make sure that
+                // skids are above the road surface. This is needed
+                // because the wheel position depends on the current
+                // physical model road height, which is not exactly
+                // the same as the gfx road height, even if it is so
+                // on average, because the physical model adds some
+                // sinewave to the road height to simulate uneveness
+                // of the track.  A better fix would be to add a
+                // routine grTrackHeightL(tTrkLocPos *p), similar to 
+                // TrTrackHeightL(), but which aim to give the height
+                // of the graphical track.
+                tdble z_adjust = 0.95;
+                tdble contact_z = car->priv.wheel[i].relPos.z - car->_wheelRadius(i)*z_adjust; 
 
-				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
+
+				vtx[0] = car->priv.wheel[i].relPos.x - car->_tireHeight(i);
 				// Because of backface culling the winding of the triangles matters.
 				if (car->_speed_x > 0.0f) {
 					vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;
 				} else {
 					vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
 				}
-				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
+				vtx[2] = contact_z;
 				basevtx->add(vtx);
 
-				vtx[0] = car->priv.wheel[i].relPos.x-car->_tireHeight(i);
+				vtx[0] = car->priv.wheel[i].relPos.x - car->_tireHeight(i);
 				// Because of backface culling the winding of the triangles matters.
 				if (car->_speed_x > 0.0f) {
 					vtx[1] = car->priv.wheel[i].relPos.y + (sling_left - 1.0)* car->_tireWidth(i) / 2.0;
 				} else {
 					vtx[1] = car->priv.wheel[i].relPos.y + (sling_right + 1.0)*car->_tireWidth(i) / 2.0;
 				}
-				vtx[2] = car->priv.wheel[i].relPos.z-car->_wheelRadius(i)*1.1 ;
+				vtx[2] = contact_z;
 				basevtx->add(vtx);
 
 				texcoords = new ssgTexCoordArray();
