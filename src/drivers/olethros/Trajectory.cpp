@@ -41,8 +41,8 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
     }
 
     // Shuffle thoroughly
-    for (int i=3; i<N-4; ++i) {
-        int z = rand()%(N-3-i);
+    for (int i=0; i<N-1; ++i) {
+        int z = rand()%(N-i);
         int tmp = indices[i];
         indices[i] = indices[z+i];
         indices[z+i] = tmp;
@@ -57,11 +57,9 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
         float P = 0.0f;
         float dCdw2 = 0.0f;
         float EdCdw = 0.0f;
-        w[0] = w[1] = w[2] = w[3];
-        w[N-1] = w[N-2] = w[N-3] = w [N-4];
 
         float direction = 0.0;
-        for (int j=3; j<N-3; ++j) {
+        for (int j=0; j<N-1; ++j) {
             int i = indices[j];//rand()%(N-3) + 3;
             int i_p3 = i - 3;
             if (i_p3 < 0) i_p3 +=N;
