@@ -169,7 +169,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 		prev_time = s->currentTime;
 	}
 
-	if (time_since_accident < 2.0f) {
+	if (time_since_accident < 0.5f) {
 		time_since_accident += delta_time;
 		return;
 	}
@@ -314,7 +314,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
 			if (local_update) {
 				//radius[updateid[seg->id]] += 0.01*dr;
 				if (dr<0) {
-					PropagateUpdateBackwards (seg->prev, 0.01f*dr, 0.005f, 400.0f);
+					PropagateUpdateBackwards (seg->prev, 0.01f*dr, 0.002f, 400.0f);
 				} else {
 					PropagateUpdateBackwards (seg, 0.01f*dr, 0.05f, 100.0f);
 				}

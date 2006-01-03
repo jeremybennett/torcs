@@ -35,6 +35,8 @@
 #include "geometry.h"
 #include <math.h>
 #include <portability.h>
+#include "TrackData.h"
+#include "Trajectory.h"
 
 #ifdef WIN32
 #include <float.h>
@@ -252,7 +254,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	//radius = new float[track->nseg];
 	ideal_radius = new float[track->nseg];
 	prepareTrack();
-	//ShowPaths();
+	ShowPaths();
 
 	// Create just one instance of cardata shared by all drivers.
 	if (cardata == NULL) {
@@ -318,7 +320,7 @@ void Driver::drive(tSituation *s)
 			learn->SetSafetyThreshold (0.5f);
 		}
 	} else if (race_type==RM_TYPE_RACE) {
-		learn->SetSafetyThreshold (0.9f);
+		learn->SetSafetyThreshold (0.0f);
 	}
 
 	if (0)
@@ -516,8 +518,14 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	float dr = learn->getRadius(segment);
 
 	if ((alone > 0) && (fabs(myoffset) < USE_LEARNED_OFFSET_RANGE)) {
-		if (dr>-.5*r && !pit->getInPit()) {
-				r += dr;
+        float new_r = r+dr;
+        float min_r = r;
+        if (segment->type!=TR_STR) {
+            min_r = MIN(min_r, segment->radiusr);
+            min_r = MIN(min_r, segment->radiusl);
+        }
+		if (new_r > min_r && !pit->getInPit()) {
+            r = new_r;
 		}
 	} else {
 		//float calpha = seg_alpha[segment->id];
@@ -615,10 +623,10 @@ float Driver::getAccel()
 			max_allowed = 1.2f*max_speed_list[car->_trkPos.seg->id]; 
 			break;
 		case RM_TYPE_QUALIF:
-			max_allowed = 1.1f*max_speed_list[car->_trkPos.seg->id]; 
+			max_allowed = 1.2f*max_speed_list[car->_trkPos.seg->id]; 
 			break;
 		default:
-			max_allowed = 1.0f* max_speed_list[car->_trkPos.seg->id]; 
+			max_allowed = 1.2f* max_speed_list[car->_trkPos.seg->id]; 
 			break;
 		}
 
@@ -1918,210 +1926,32 @@ void Driver::prepareTrack()
 		targets[i] = 0.0;
 		radi[i] = 1.0; // set to 1, so that we get something useful even if we don't call AdjustRadi()
 	}
+    
+    TrackData track_data;
+    Trajectory trajectory;
+    SegmentList segment_list;
 
-
-
+    track_data.setStep(10.0f);
+    track_data.setWidth(10.0f);
 	// first make sure we are in the proper range.
 	int n_iter = 500;
-	float lr = 0.001f; // learning rate
+	float lr = 0.002f; // learning rate
 
+    
 	tTrackSeg* seg = track->seg;
-
 	seg = track->seg;
 	for (i=0; i<N; i++, seg=seg->next) {
 		seg_alpha[seg->id] = 0.5;
+        Point left(seg->vertex[TR_SL].x, seg->vertex[TR_SL].y);
+		Point right(seg->vertex[TR_SR].x, seg->vertex[TR_SR].y);
+        segment_list.Add(Segment(left, right));
 	}
 
-	//printf ("Optimising targets\n");
-	for (int iter=1; iter<n_iter; iter++) {
-		seg=track->seg;
-		float curve = 0.0; // estimated curvature
-		for (int i=0; i<N; i++, seg=seg->next) {
-			int id = seg->id;
-			tTrackSeg* pseg = seg->prev;
-			tTrackSeg* nseg = seg->next;
-			tTrackSeg* p2seg = pseg->prev;
-			tTrackSeg* n2seg = nseg->next;
-			float A = seg_alpha[seg->id];
-			float Ap = seg_alpha[pseg->id];
-			float An = seg_alpha[nseg->id];
-			float Ap2 = seg_alpha[p2seg->id];
-			float An2 = seg_alpha[n2seg->id];
-
-			v2d c;
-			v2d p;
-			v2d n;
-			v2d p2;
-			v2d n2;
-			c.x = (A*seg->vertex[TR_SL].x + (1-A)*seg->vertex[TR_SR].x);
-			c.y = (A*seg->vertex[TR_SL].y + (1-A)*seg->vertex[TR_SR].y);
-			p.x = (Ap*pseg->vertex[TR_SL].x + (1-Ap)*pseg->vertex[TR_SR].x);
-			p.y = (Ap*pseg->vertex[TR_SL].y + (1-Ap)*pseg->vertex[TR_SR].y);
-			n.x = (An*nseg->vertex[TR_SL].x + (1-An)*nseg->vertex[TR_SR].x);
-			n.y = (An*nseg->vertex[TR_SL].y + (1-An)*nseg->vertex[TR_SR].y);
-			p2.x = (Ap2*p2seg->vertex[TR_SL].x + (1-Ap2)*p2seg->vertex[TR_SR].x);
-			p2.y = (Ap2*p2seg->vertex[TR_SL].y + (1-Ap2)*p2seg->vertex[TR_SR].y);
-			n2.x = (An2*n2seg->vertex[TR_SL].x + (1-An2)*n2seg->vertex[TR_SR].x);
-			n2.y = (An2*n2seg->vertex[TR_SL].y + (1-An2)*n2seg->vertex[TR_SR].y);
-
-			v2d m;
-			m.x = 0.5f * (p.x + n.x);
-			m.y = 0.5f * (p.y + n.y);
-			float dx = m.x - c.x;
-			float dy = m.y - c.y;
-			{
-				float lx = (n.x - p.x);
-				float ly = (n.y - p.y);
-				float l = sqrt(lx*lx+ly*ly);
-				curve += (dx*dx+dy*dy)/l;
-			}
-			float dPx = seg->vertex[TR_SL].x - seg->vertex[TR_SR].x;
-			float dPy = seg->vertex[TR_SL].y - seg->vertex[TR_SR].y;
-			float dA  = 0.0;
-			if (A > .9 || A < .1) {
-				dA = 100.0f * (0.5f - A);
-			}
-			
-			float scale = 1.0f;
-			//scale = (n-p).len();
-			float dC = (dx * dPx + dy * dPy)/(scale);
-			A += lr * (dC+dA);
-			if (A<0.05f) A = 0.05f;
-			if (A>0.95f) A = 0.95f;
-			seg_alpha[id] = A;
-			
-#if 0
-			// cost function for point i includes curvature at adjacent points
-			{
-				v2d s;
-				s.x = p.x - p2.x;
-				s.y = p.y - p2.y;
-				float lt = sqrt(s.x*s.x + s.y*s.y);
-				float l = sqrt ((c.x - p.x)*(c.x - p.x)
-								+ (c.y - p.y)*(c.y - p.y))/lt;
-				m.x = p.x + s.x; //sx*l?
-				m.y = p.y + s.y; //sy*l?
-				float dx = m.x - c.x;
-				float dy = m.y - c.y;
-				float dA  = 0.0;//(0.5f - A);
-				scale = 1.0;
-				scale = (p-p2).len();
-				float dC = (dx * dPx + dy * dPy)/scale;
-				A += 0.1f * lr * (dC+dA);
-				if (A<0.05f) A = 0.05f;
-				if (A>0.95f) A = 0.95f;
-				seg_alpha[seg->id] = A;
-			}
-			{
-				v2d s;
-				s.x = n.x - n2.x;
-				s.y = n.y - n2.y;
-				float lt = sqrt(s.x*s.x + s.y*s.y);
-				float l = sqrt ((c.x - n.x)*(c.x - n.x)
-								+ (c.y - n.y)*(c.y - n.y))/lt;
-				m.x = n.x + s.x;
-				m.y = n.y + s.y;
-				float dx = m.x - c.x;
-				float dy = m.y - c.y;
-				float dA  = 0.0;//(0.5f - A);
-				scale = 1.0;
-				scale = (n-n2).len();
-				float dC = (dx * dPx + dy * dPy)/scale;
-				A += 0.1f * lr * (dC+dA);
-				if (A<0.05f) A = 0.05f;
-				if (A>0.95f) A = 0.95f;
-				seg_alpha[seg->id] = A;
-			}
-
-#endif
-
-
-#if 1
-			// cost function for point i includes curvature at
-			// adjacent points here implemented by doing a lot of
-			// smaller steps in the neighbourhood.. makes convergence
-			// a bit better.
-			v2d s;
-			s.x = c.x - p.x;
-			s.y = c.y - p.y;
-			float lt = sqrt(s.x*s.x + s.y*s.y);
-			float trace = 0.003f;
-			float trace_decay = .9f;
-			int k0;
-			for (k0=0; k0<10; k0++, nseg=nseg->next) {
-				trace *= trace_decay;
-				float An = seg_alpha[nseg->id];
-				float xk = (An*nseg->vertex[TR_SL].x + (1-An)*nseg->vertex[TR_SR].x);
-				float yk = (An*nseg->vertex[TR_SL].y + (1-An)*nseg->vertex[TR_SR].y);
-				float l = sqrt ((xk - c.x)*(xk - c.x) + (yk - c.y)*(yk - c.y))/lt;
-				float x = c.x + l*s.x;
-				float y = c.y + l*s.y;
-				float dx = x - xk;
-				float dy = y - yk;
-				float dPx = nseg->vertex[TR_SL].x - nseg->vertex[TR_SR].x;
-				float dPy = nseg->vertex[TR_SL].y - nseg->vertex[TR_SR].y;
-				A = seg_alpha[nseg->id];
-				float dA  = 0.0;//(0.5f - A);
-				float dC = (dx * dPx + dy * dPy);
-				A += trace * lr * (dC+dA);
-				if (A<0.05f) A = 0.05f;
-				if (A>0.95f) A = 0.95f;
-				seg_alpha[nseg->id] = A;
-			}
-
-			s.x = c.x - n.x;
-			s.y = c.y - n.y;
-			lt = sqrt(s.x*s.x + s.y*s.y);
-			trace = 0.003f;
-			for (k0=0; k0<10; k0++, pseg=pseg->prev) {
-				trace *= trace_decay;
-				float Ap = seg_alpha[pseg->id];
-				float xk = (Ap*pseg->vertex[TR_SL].x + (1-Ap)*pseg->vertex[TR_SR].x);
-				float yk = (Ap*pseg->vertex[TR_SL].y + (1-Ap)*pseg->vertex[TR_SR].y);
-				float l = sqrt ((xk - c.x)*(xk - c.x) + (yk - c.y)*(yk - c.y))/lt;
-				float x = c.x + l*s.x;
-				float y = c.y + l*s.y;
-				float dx = x - xk;
-				float dy = y - yk;
-				float dPx = pseg->vertex[TR_SL].x - pseg->vertex[TR_SR].x;
-				float dPy = pseg->vertex[TR_SL].y - pseg->vertex[TR_SR].y;
-				A = seg_alpha[pseg->id];
-				float dA  = 0.0;//(0.5f - A);
-				float dC = (dx * dPx + dy * dPy);
-				A += trace * lr * (dC+dA);
-				if (A<0.05f) A = 0.05f;
-				if (A>0.95f) A = 0.95f;
-				seg_alpha[pseg->id] = A;
-			}
-#endif			
-
-			
-		}
-		//float curve_average = curve/((float) N);
-		//printf ("%f %f #CURV\n", curve_average, curve);
+    trajectory.Optimise(segment_list, 1000, 0.01f);
+    seg = track->seg;
+	for (i=0; i<N; i++, seg=seg->next) {
+		seg_alpha[seg->id] = trajectory.w[i];
 	}
-
-
-#if 0
-
-	margin = 2.0f;
-	seg=track->seg;
-	for (int i=0; i<N; i++) {
-		int id = seg->id;
-		seg_alpha[id] = (1-squash) * seg_alpha[id] + 0.5f * squash;
-		if (seg->type==TR_STR) {
-			margin = 0.5f*(margin+1.0f);
-		} else {
-			margin = 0.5f*(margin+2.0f);
-		}
-		float lowlimit = margin*car->_dimension_y / track->width;
-		float hilimit = 1-lowlimit;
-		if (seg_alpha[id]<lowlimit) seg_alpha[id] = lowlimit;
-		if (seg_alpha[id]>hilimit) seg_alpha[id] = hilimit;
-		seg = seg->next;
-		seg_alpha_new[id] = seg_alpha[id];
-	}
-#endif
 
 
 	{
