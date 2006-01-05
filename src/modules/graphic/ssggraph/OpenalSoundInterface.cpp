@@ -235,7 +235,7 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 #else
 		engine->setPitch (car_src[id].f*sound_data->engine.f);
 #endif
-		engine->setVolume (sound_data->engine.a);
+		engine->setVolume (sound_data->engine.a * 1.5f * exp(sound_data->engine.lp-1.0));
 		//engine->setLPFilter(sound_data->engine.lp);
 
 		engine->update();
