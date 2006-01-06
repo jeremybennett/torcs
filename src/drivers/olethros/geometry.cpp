@@ -300,6 +300,9 @@ ParametricSphere::~ParametricSphere()
 	delete C;
 }
 
+/** Estimate an optimally fitting sphere.
+ *
+ */
 void EstimateSphere (std::vector<Vector> P, ParametricSphere* sphere)
 {
 	int N=P.size();

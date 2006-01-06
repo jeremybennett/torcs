@@ -118,8 +118,6 @@ protected:
 	void computeRadius(float *radius);
 	int isAlone();
 
-	float computeOptimalTarget(tTrackSeg* seg, FILE* f);
-	void FindBestCircle(tTrackSeg* seg, Vector* C, float& rmax);
 	float EstimateRadius2 (tTrackSeg* seg);
 	float EstimateRadius (tTrackSeg* seg, tTrackSeg* prev_seg, tTrackSeg* next_seg);
 	float FindCurveTarget(tTrackSeg* seg, Vector* C, float rmax);

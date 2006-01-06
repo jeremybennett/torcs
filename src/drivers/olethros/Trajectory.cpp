@@ -25,9 +25,14 @@ Point Trajectory::GetPoint (Segment& s, float w)
                   w*s.left.z + v*s.right.z);
 }
 
-void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
+#define EXP_COST
+#undef DBG_OPTIMISE
+void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset)
 {
     int N = track.size();
+    clock_t start_time = clock();
+    int min_iter = 2000; // minimum number of iterations to do
+    float time_limit = 2.0f; // if more than min_iter have been done, exit when time elapsed is larger than the time limit
     w.resize(N);
     dw.resize(N);
     dw2.resize(N);
@@ -35,24 +40,31 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
 
     // initialise vectors
     for (int i=0; i<N; ++i) {
-        w[i] = 0.5f;
+        if (reset) {w[i] = 0.5f;}
         dw2[i] = 1.0f;
         indices[i] = i;
     }
 
+
     // Shuffle thoroughly
+#if 1
+    srand(12358);
     for (int i=0; i<N-1; ++i) {
         int z = rand()%(N-i);
         int tmp = indices[i];
         indices[i] = indices[z+i];
         indices[z+i] = tmp;
     }
+#endif
 
     float prevC = 0.0;
     float Z = 10.0f;
     float lambda = 0.9;
+    float delta_C = 0.0f;
+    float prev_dCdw2 = 0.0;
 
     for (int iter=0; iter<max_iter; iter++) {
+
         float C = 0.0f;
         float P = 0.0f;
         float dCdw2 = 0.0f;
@@ -67,7 +79,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
             if (i_p2 < 0) i_p2 +=N;
             int i_p1 = i - 1;
             if (i_p1 < 0) i_p1 +=N;
-            int i_n3 = (i + 3)%N;
+            //int i_n3 = (i + 3)%N;
             int i_n2 = (i + 2)%N;
             int i_n1 = (i + 1)%N;
             Segment s_prv3 = track[i_p3];
@@ -91,7 +103,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
             u_cur.Normalise();
             u_nxt.Normalise();
             u_nxt2.Normalise();
-            float l_prv2 = (prv2 - prv3).Length();
+            //float l_prv2 = (prv2 - prv3).Length();
             float l_prv = (prv - prv2).Length();
             float l_cur = (cur - prv).Length();
             float l_nxt = (nxt - cur).Length();
@@ -105,9 +117,12 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
             Point a_nxt = (u_nxt - u_cur)/l_cur;
 #endif
 
-            C += a_prv.Length()*a_prv.Length()
+            float current_cost = a_prv.Length()*a_prv.Length()
                 + a_cur.Length()*a_cur.Length()
                 + a_nxt.Length()*a_nxt.Length();
+
+            C += current_cost;
+
             float dCdw = 0.0;
 
             if (1) {
@@ -118,8 +133,14 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
                     float dnorm2 = d.x*d.x + d.y*d.y;
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
+#ifdef EXP_COST
+                    float tmp = exp(a_cur.x*a_cur.x + a_cur.y*a_cur.y);
+                    dCdw += tmp * a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
+                    dCdw += tmp *a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#else
                     dCdw += a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw += a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#endif
                 }
                 {
                     Point lr = s_cur.left - s_cur.right;
@@ -127,8 +148,14 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
                     float dnorm2 = d.x*d.x + d.y*d.y;
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
+#ifdef EXP_COST
+                    float tmp = exp(a_cur.x*a_cur.x + a_cur.y*a_cur.y);
+                    dCdw += tmp * a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
+                    dCdw += tmp *a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#else
                     dCdw += a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw += a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#endif
                 }
             }
 
@@ -139,8 +166,14 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
                     float dnorm2 = d.x*d.x + d.y*d.y;
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
+#ifdef EXP_COST
+                    float tmp = exp(a_nxt.x*a_nxt.x + a_nxt.y*a_nxt.y);
+                    dCdw -= tmp * a_nxt.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
+                    dCdw -= tmp * a_nxt.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#else
                     dCdw -= a_nxt.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw -= a_nxt.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#endif
                 }
             }
 
@@ -151,14 +184,20 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
                     float dnorm2 = d.x*d.x + d.y*d.y;
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
+#ifdef EXP_COST
+                    float tmp = exp(a_prv.x*a_prv.x + a_prv.y*a_prv.y);
+                    dCdw -= tmp*a_prv.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
+                    dCdw -= tmp*a_prv.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#else
                     dCdw -= a_prv.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw -= a_prv.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+#endif
                 }
             }
             float K = 10.0;
             float penalty = 0.0;//K*(0.5f - w[i])*(exp(fabs(0.5-w[i]))-1);
             if (1) {
-                float b = 0.05;
+                float b = 0.1;
                 if (w[i] < b) {
                     penalty += K*(b - w[i]);
                 } else if (w[i] > 1.0 -b) {
@@ -169,10 +208,11 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
             dCdw += K*penalty;
             dw2[i] = lambda*dw2[i] + (1.0-lambda)*dCdw*dCdw;
             direction += dCdw * dw[i];
-            dw[i] = dCdw/(dw2[i] + 1.0);
-            w[i] += alpha * dw[i];
+            float delta = dCdw/(dw2[i] + 1.0);
+            dw[i] = delta;
+            w[i] += alpha * delta;
             
-            if (0) {
+            if (1) {
                 float b = 0.0;
                 if (w[i] < b) {
                     w[i] = b;
@@ -182,12 +222,15 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
             }
             
             dCdw2 += dCdw*dCdw;
-            EdCdw += dCdw;
+            EdCdw += delta/(float) N;
         } // indices
+
 
         if (direction<0) {
             alpha *= 0.9;
+#ifdef DBG_OPTIMISE
             fprintf (stderr, "# Reducing alpha to %f\n", alpha);
+#endif
         }
         Z = (dCdw2);
         if (Z<0.01) {
@@ -196,20 +239,52 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha)
 
 
 
-        fprintf (stderr, "%d %f %f %f %f\n", iter, C, P, dCdw2, EdCdw);
-        if (iter>10000 && C>prevC) {
+        bool early_exit = false;
+        delta_C = 0.9*delta_C + 0.1*fabs(EdCdw-prev_dCdw2);
+        prev_dCdw2 = EdCdw;
+
+        if (delta_C < 0.001f) {
+            early_exit = true;
+        }
+
+        if (iter%100==0) {
+            clock_t current_time = clock();
+            float elapsed_time = (float) (current_time-start_time) / (float) CLOCKS_PER_SEC;
+            if (elapsed_time > time_limit) {
+                early_exit = true;
+            }
+                                             
+#ifdef DBG_OPTIMISE
+            fprintf (stderr, "%d %f %f %f %f %f %f\n",
+                     iter,
+                     C / (float) N,
+                     P / (float) N, dCdw2, EdCdw, delta_C, elapsed_time);
+#endif
+        }
+
+        if (iter>min_iter && early_exit) {
+#ifdef DBG_OPTIMISE
             fprintf (stderr, "# Time to break\n");
             fflush (stderr);
+#endif
             break;
         }
         prevC = C;
     }
-    FILE* f = fopen ("/tmp/result", "w");
-    for (int i=0; i<N; ++i) {
-        Point p = GetPoint(track[i], w[i]);
-        fprintf (f, "%f %f\n", p.x, p.y);
+
+
+    if (fname && strcmp(fname, "")) {
+#ifdef DBG_OPTIMISE
+        fprintf (stderr, "# writing output to %s\n", fname);
+#endif
+        FILE* f = fopen (fname, "w");
+        for (int i=0; i<N; ++i) {
+            Point p = GetPoint(track[i], w[i]);
+            fprintf (f, "%f %f\n", p.x, p.y);
+        }
+        fclose(f);
     }
-    fclose(f);
+
 }
 
 

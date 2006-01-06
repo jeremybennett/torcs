@@ -419,7 +419,7 @@ float SegLearn::updateAccel (tSituation* s, tCarElt* car, float taccel, float de
 		
 	averages.Measure(taccel, derr, dtm);
 	
-	return  accel[quantum];//+ prev_quantum_accel);
+	return  0.0;//accel[quantum];//+ prev_quantum_accel);
 }
 
 float SegLearn::predictedError (tCarElt* car)
@@ -432,7 +432,7 @@ float SegLearn::predictedError (tCarElt* car)
 float SegLearn::predictedAccel (tTrackSeg* seg)
 {
 	int segid = seg->id;
-	return derror[segid];
+	return 0.0f;//derror[segid];
 }
 
 int SegLearn::segQuantum (int segid)
