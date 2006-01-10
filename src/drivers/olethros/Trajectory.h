@@ -26,6 +26,7 @@ class Trajectory
     std::vector<float> w; ///< parameters
     std::vector<float> dw; ///< parameter steps
     std::vector<float> dw2; ///<  parameter gradients
+    std::vector<float> accel; ///<  maximum acceleration
     std::vector<int> indices; ///< data indices
     static Point GetPoint (Segment& s, float w);
     void Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset = true);

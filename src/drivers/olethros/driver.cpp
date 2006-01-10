@@ -254,7 +254,7 @@ namespace olethros {
 	//radius = new float[track->nseg];
 	ideal_radius = new float[track->nseg];
 	prepareTrack();
-	//ShowPaths();
+	ShowPaths();
 
 	// Create just one instance of cardata shared by all drivers.
 	if (cardata == NULL) {
@@ -320,8 +320,10 @@ namespace olethros {
                 learn->SetSafetyThreshold (0.5f);
             }
 	} else if (race_type==RM_TYPE_RACE) {
-            learn->SetSafetyThreshold (0.0f);
-	}
+            learn->SetSafetyThreshold (0.5f);
+	} else if (race_type==RM_TYPE_QUALIF) {
+            learn->SetSafetyThreshold (0.5f);
+        }
 
 	if (0)
             {
@@ -459,6 +461,8 @@ namespace olethros {
 	currentseg = startseg;
 
 	do {
+            
+            //printf ("R: :%1.f %1.f %1.f\n", ideal_radius[currentseg->id], EstimateRadius2(currentseg), currentseg->radius);
             if (currentseg->type == TR_STR) {
                 lastsegtype = TR_STR;
                 if (isnan(ideal_radius[currentseg->id]) || 
@@ -469,7 +473,7 @@ namespace olethros {
                 float R = EstimateRadius2 (currentseg);
                 //printf ("R: %1.f %1.f\n", ideal_radius[currentseg->id], R);
                 radius[currentseg->id] = MAX(R, ideal_radius[currentseg->id]);
-
+                radius[currentseg->id] = ideal_radius[currentseg->id];
             } else {
                 if (currentseg->type != lastsegtype) {
                     float arc = 0.0;
@@ -491,6 +495,7 @@ namespace olethros {
                 float R = EstimateRadius2 (currentseg);
                 radius[currentseg->id] = MAX(radius[currentseg->id], ideal_radius[currentseg->id]);
                 radius[currentseg->id] = MAX(radius[currentseg->id],R);
+                radius[currentseg->id] = ideal_radius[currentseg->id];
             }
             currentseg = currentseg->next;
 	} while (currentseg != startseg);
@@ -1948,9 +1953,10 @@ namespace olethros {
             }
 	}
 
-        trajectory.Optimise(segment_list, 10000, 0.01f, NULL);
+        trajectory.Optimise(segment_list, 500, 0.02f, "/tmp/result");
         seg = track->seg;
         current_length = length_limit;
+
         {
             // copy optimised values
             tTrackSeg* seg = track->seg;
@@ -1975,14 +1981,22 @@ namespace olethros {
                     current_length = 0.0;
                 }
             }
-            trajectory2.Optimise(segment_list2, 1000, 0.01f, NULL, false);
+            trajectory2.Optimise(segment_list2, 1000, 0.005f, "/tmp/result2", false);
             seg = track->seg;
             for (i=0; i<N; i++, seg=seg->next) {
                 seg_alpha[seg->id] = trajectory2.w[i];
             }
+            seg = track->seg;
+            for (i=0; i<N; i++, seg = seg->next) {
+                int j = seg->id;
+                ideal_radius[j] = 1.0f / trajectory2.accel[i];
+            }
         }
 
-	{
+
+
+
+	if (0) {
             //printf ("Estimating least square error radius for smoothed points.\n");
             tTrackSeg* seg = track->seg;
             int prev_type = -track->seg->type;

@@ -136,7 +136,7 @@ float SimpleStrategy::getSpeedFactor(tCarElt* car, tSituation* s, Opponents* opp
 
 ManagedStrategy::ManagedStrategy() : SimpleStrategy()
 {
-	speed_factor = 0.0f;
+	speed_factor = 1.0f;
 }
 
 

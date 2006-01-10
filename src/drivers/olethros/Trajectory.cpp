@@ -17,6 +17,8 @@
 #include "Trajectory.h"
 
 
+
+/// Return a point
 Point Trajectory::GetPoint (Segment& s, float w)
 {
     float v = 1.0f - w;
@@ -27,16 +29,19 @@ Point Trajectory::GetPoint (Segment& s, float w)
 
 #define EXP_COST
 #undef DBG_OPTIMISE
+/// Optimise a track trajectory
 void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset)
 {
     int N = track.size();
     clock_t start_time = clock();
-    int min_iter = 2000; // minimum number of iterations to do
+    int min_iter = max_iter/2; // minimum number of iterations to do
     float time_limit = 2.0f; // if more than min_iter have been done, exit when time elapsed is larger than the time limit
+    float beta = 0.75f; // amount to reduce alpha to when it seems to be too large
     w.resize(N);
     dw.resize(N);
     dw2.resize(N);
     indices.resize(N);
+    accel.resize(N);
 
     // initialise vectors
     for (int i=0; i<N; ++i) {
@@ -121,6 +126,8 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
                 + a_cur.Length()*a_cur.Length()
                 + a_nxt.Length()*a_nxt.Length();
 
+            //accel[i] = +a_nxt.Length();
+            accel[i] = (a_prv.Length() + a_cur.Length() + a_nxt.Length())/3.0f;
             C += current_cost;
 
             float dCdw = 0.0;
@@ -227,7 +234,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
 
 
         if (direction<0) {
-            alpha *= 0.9;
+            alpha *= beta;
 #ifdef DBG_OPTIMISE
             fprintf (stderr, "# Reducing alpha to %f\n", alpha);
 #endif
