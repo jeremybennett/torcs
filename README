@@ -92,8 +92,9 @@ Bernhard.
 
 Changes since 1.2.4
 -------------------
-- Fixed very little steering error around the center discovered by Eugen (Eugen,
-  Christos, Bernhard).
+- Fixed curb height calculation in rttrack.cpp:RtTrackHeightL() (Christos)
+- Fixed very little steering error around the center discovered by Eugen
+  (Eugen, Christos, Bernhard).
 - Fixed reading and writing of Olethros data files on non-Posix platforms
   (Bernhard).
 - Verified OpenAL volume jump, seems to be gone, perhaps caused by source
@@ -105,10 +106,10 @@ Changes since 1.2.4
 
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
 --------------
-- Fix sound volume option (ask Christos). [Seems to be OK, check GUI code - Christos]
-- When car is moving sideways, the engine sound source seems shifted to the side also
-  under OpenAL.
-- Missing doppler on Windows, investigate.
+- Fix sound volume option (ask Christos). [Seems OK, check GUI code - Christos]
+- When car is moving sideways, the engine sound source seems shifted to the
+  side under OpenAL.
+- Missing doppler on Windows, investigate. [Added work around - Christos]
 - SDL port.
 - Check for memory leaks.
 - Add valgrind option to "torcs".
