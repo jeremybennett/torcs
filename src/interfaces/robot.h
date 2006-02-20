@@ -84,6 +84,7 @@ typedef struct RobotItf {
 #define ROB_LIST_INDEX		"index"
 
 #define ROB_ATTR_NAME		"name"
+#define ROB_ATTR_TEAM		"team"
 #define ROB_ATTR_DESC		"desc"
 #define ROB_ATTR_AUTHOR		"author"
 #define ROB_ATTR_CAR		"car name"

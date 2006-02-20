@@ -635,102 +635,109 @@ void grDrawBackground(class cGrCamera *cam, class cGrBackgroundCam *bgCam)
 void
 grCustomizePits(void)
 {
-    tTrackPitInfo	*pits;
-    int			i;
-    tdble		x, y;
-    tdble		x2, y2, z2;
-
-    ThePits = new ssgBranch();
-    PitsAnchor->addKid(ThePits);
-
-    pits = &(grTrack->pits);
-    /* draw the pit identification */
-
-    switch (pits->type) {
-    case TR_PIT_ON_TRACK_SIDE:
-	for (i = 0; i < pits->nMaxPits; i++) {
-	    char		buf[256];
-	    t3Dd		normalvector;
-	    sgVec3		vtx;
-	    sgVec4		clr = {0,0,0,1};
-	    sgVec3		nrm;
-	    sgVec2		tex;
-	    ssgState		*st;
-	    ssgVertexArray	*pit_vtx = new ssgVertexArray(4);
-	    ssgTexCoordArray	*pit_tex = new ssgTexCoordArray(4);
-	    ssgColourArray	*pit_clr = new ssgColourArray(1);
-	    ssgNormalArray	*pit_nrm = new ssgNormalArray(1);
-	    
-	    pit_clr->add(clr);
-
-	    if (pits->driversPits[i].car) {
-		sprintf(buf, "drivers/%s/%d;drivers/%s;data/textures;data/img;.",
-			pits->driversPits[i].car->_modName, pits->driversPits[i].car->_driverIndex,
-			pits->driversPits[i].car->_modName);
-	    } else {
-		sprintf(buf, "data/textures;data/img;.");
-	    }
-	    
+	tTrackPitInfo *pits;
+	int i;
+	tdble x, y;
+	tdble x2, y2, z2;
+	
+	ThePits = new ssgBranch();
+	PitsAnchor->addKid(ThePits);
+	
+	pits = &(grTrack->pits);
+	/* draw the pit identification */
+	
+	switch (pits->type) {
+	case TR_PIT_ON_TRACK_SIDE:
+		for (i = 0; i < pits->nMaxPits; i++) {
+			char buf[256];
+			t3Dd normalvector;
+			sgVec3 vtx;
+			sgVec4 clr = {0,0,0,1};
+			sgVec3 nrm;
+			sgVec2 tex;
+			ssgState *st;
+			ssgVertexArray *pit_vtx = new ssgVertexArray(4);
+			ssgTexCoordArray *pit_tex = new ssgTexCoordArray(4);
+			ssgColourArray *pit_clr = new ssgColourArray(1);
+			ssgNormalArray *pit_nrm = new ssgNormalArray(1);
+			
+			pit_clr->add(clr);
 		
-	    st = grSsgLoadTexStateEx("logo.rgb", buf, FALSE, FALSE);
-	    ((ssgSimpleState*)st)->setShininess(50);
-	    
-	    RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
-	    RtTrackSideNormalG(pits->driversPits[i].pos.seg, x, y, pits->side, &normalvector);
-	    x2 = x - pits->width/2.0 * normalvector.x + pits->len/2.0 * normalvector.y;
-	    y2 = y - pits->width/2.0 * normalvector.y - pits->len/2.0 * normalvector.x;
-	    z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
-
-	    nrm[0] = normalvector.x;
-	    nrm[1] = normalvector.y;
-	    nrm[2] = 0;
-	    pit_nrm->add(nrm);
-
-	    tex[0] = -0.7;
-	    tex[1] = 0.33;
-	    vtx[0] = x2;
-	    vtx[1] = y2;
-	    vtx[2] = z2;
-	    pit_tex->add(tex);
-	    pit_vtx->add(vtx);
-	    
-	    tex[0] = -0.7;
-	    tex[1] = 1.1;
-	    vtx[0] = x2;
-	    vtx[1] = y2;
-	    vtx[2] = z2 + 4.8;
-	    pit_tex->add(tex);
-	    pit_vtx->add(vtx);
-	    
-	    x2 = x - pits->width/2.0 * normalvector.x - pits->len/2.0 * normalvector.y;
-	    y2 = y - pits->width/2.0 * normalvector.y + pits->len/2.0 * normalvector.x;
-	    z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
-
-	    tex[0] = 1.3;
-	    tex[1] = 0.33;
-	    vtx[0] = x2;
-	    vtx[1] = y2;
-	    vtx[2] = z2;
-	    pit_tex->add(tex);
-	    pit_vtx->add(vtx);
-	    
-	    tex[0] = 1.3;
-	    tex[1] = 1.1;
-	    vtx[0] = x2;
-	    vtx[1] = y2;
-	    vtx[2] = z2 + 4.8;
-	    pit_tex->add(tex);
-	    pit_vtx->add(vtx);
-
-	    ssgVtxTable *pit = new ssgVtxTable(GL_TRIANGLE_STRIP, pit_vtx, pit_nrm, pit_tex, pit_clr);
-	    pit->setState(st);
-	    pit->setCullFace(0);
-	    ThePits->addKid(pit);
-	}
+			if (pits->driversPits[i].car[0]) {
+				// If we have more than one car in the pit use the team pit logo of driver 0. 
+				if (pits->driversPits[i].freeCarIndex == 1) { 
+					// One car assigned to the pit.
+					sprintf(buf, "drivers/%s/%d;drivers/%s;data/textures;data/img;.",
+						pits->driversPits[i].car[0]->_modName, pits->driversPits[i].car[0]->_driverIndex,
+						pits->driversPits[i].car[0]->_modName);
+				} else {
+					// Multiple cars assigned to the pit.
+					sprintf(buf, "drivers/%s;data/textures;data/img;.", pits->driversPits[i].car[0]->_modName);
+				}
+			} else {
+				sprintf(buf, "data/textures;data/img;.");
+			}
+			
+			
+			st = grSsgLoadTexStateEx("logo.rgb", buf, FALSE, FALSE);
+			((ssgSimpleState*)st)->setShininess(50);
+			
+			RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
+			RtTrackSideNormalG(pits->driversPits[i].pos.seg, x, y, pits->side, &normalvector);
+			x2 = x - pits->width/2.0 * normalvector.x + pits->len/2.0 * normalvector.y;
+			y2 = y - pits->width/2.0 * normalvector.y - pits->len/2.0 * normalvector.x;
+			z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
+		
+			nrm[0] = normalvector.x;
+			nrm[1] = normalvector.y;
+			nrm[2] = 0;
+			pit_nrm->add(nrm);
+		
+			tex[0] = -0.7;
+			tex[1] = 0.33;
+			vtx[0] = x2;
+			vtx[1] = y2;
+			vtx[2] = z2;
+			pit_tex->add(tex);
+			pit_vtx->add(vtx);
+			
+			tex[0] = -0.7;
+			tex[1] = 1.1;
+			vtx[0] = x2;
+			vtx[1] = y2;
+			vtx[2] = z2 + 4.8;
+			pit_tex->add(tex);
+			pit_vtx->add(vtx);
+			
+			x2 = x - pits->width/2.0 * normalvector.x - pits->len/2.0 * normalvector.y;
+			y2 = y - pits->width/2.0 * normalvector.y + pits->len/2.0 * normalvector.x;
+			z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
+		
+			tex[0] = 1.3;
+			tex[1] = 0.33;
+			vtx[0] = x2;
+			vtx[1] = y2;
+			vtx[2] = z2;
+			pit_tex->add(tex);
+			pit_vtx->add(vtx);
+			
+			tex[0] = 1.3;
+			tex[1] = 1.1;
+			vtx[0] = x2;
+			vtx[1] = y2;
+			vtx[2] = z2 + 4.8;
+			pit_tex->add(tex);
+			pit_vtx->add(vtx);
+		
+			ssgVtxTable *pit = new ssgVtxTable(GL_TRIANGLE_STRIP, pit_vtx, pit_nrm, pit_tex, pit_clr);
+			pit->setState(st);
+			pit->setCullFace(0);
+			ThePits->addKid(pit);
+		}
 	break;
-    case TR_PIT_ON_SEPARATE_PATH:
+	case TR_PIT_ON_SEPARATE_PATH:
 	break;
-    case TR_PIT_NONE:
+	case TR_PIT_NONE:
 	break;	
-    }
+	}
 }

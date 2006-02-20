@@ -266,6 +266,7 @@ typedef struct RmInfo
 #define RM_ATTR_LAPS		"laps"
 #define RM_ATTR_QUAL_LAPS	"Qualification laps"
 #define RM_ATTR_POLE		"pole position side"
+#define RM_ATTR_CARSPERPIT	"cars per pit"
 
 #define RM_ATTR_POINTS		"points"
 

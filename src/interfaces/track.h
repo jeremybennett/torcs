@@ -430,42 +430,42 @@ struct CarElt;
 /** Driver's pit */
 typedef struct TrackOwnPit
 {
-    tTrkLocPos		pos;	/**< Center of the pit position */
-
-    int			state;	/* not yet used (will be used for pit sharing within teams) */
-#define TR_PIT_STATE_FREE	0
-#define TR_PIT_STATE_USED	1
-#define TR_PIT_STATE_ASKED	2
-    tdble		lmin;	/**< Pitting area length min */
-    tdble		lmax;	/**< Pitting area length max */
-    struct CarElt	*car;	/**< Driver's car link */
+	tTrkLocPos pos;	/**< Center of the pit position */
+	int pitCarIndex;	/**< Index of the car in the car array below which occupies the pit. If the pit is free the value is TR_PIT_STATE_FREE */
+#define TR_PIT_STATE_FREE	-1
+#define TR_PIT_MAXCARPERPIT 4		// maximum cars per pit
+	tdble lmin;	/**< Pitting area length min */
+	tdble lmax;	/**< Pitting area length max */
+	int freeCarIndex;	// Index of next free car entry (look at the next line).
+	struct CarElt	*car[TR_PIT_MAXCARPERPIT];	/**< Car links for pit */
 } tTrackOwnPit;
 
 /** Pits Info Structure */
 typedef struct 
 {
-    int		type;		/**< Type of Pit:
+	int type;		/**< Type of Pit:
 				   - TR_PIT_NONE
 				   - TR_PIT_ON_TRACK_SIDE
 				 */
 #define TR_PIT_NONE		0 /**< No pits for that tracks */
 #define TR_PIT_ON_TRACK_SIDE	1 /**< The pits are on the track side */
 #define TR_PIT_ON_SEPARATE_PATH 2
-    int		nMaxPits;	/**< number max of pits */
-    int		nPitSeg;	/**< actual number of pits */
-    int		side;		/**< Pits side:
+	int nMaxPits;	/**< number max of pits */
+	int nPitSeg;	/**< actual number of pits */
+	int side;		/**< Pits side:
 				   - TR_RGT
 				   - TR_LFT
 				*/
-    tdble	len;		/**< Lenght of each pit stop */
-    tdble	width;		/**< Width of each pit stop */
-    tdble	speedLimit;	/**< Speed limit between pitStart and pitEnd */
-    tTrackSeg	*pitEntry;	/**< Pit lane segment */
-    tTrackSeg	*pitStart;	/**< Pit lane segment */
-    tTrackSeg	*pitEnd;	/**< Pit lane segment */
-    tTrackSeg	*pitExit;	/**< Pit lane segment */
-    tTrackOwnPit *driversPits;	/**< List of pits by driver */
-    int		driversPitsNb;	/**< Number of drivers */
+	tdble len;					/**< Lenght of each pit stop */
+	tdble width;				/**< Width of each pit stop */
+	tdble speedLimit;			/**< Speed limit between pitStart and pitEnd */
+	tTrackSeg *pitEntry;		/**< Pit lane segment */
+	tTrackSeg *pitStart;		/**< Pit lane segment */
+	tTrackSeg *pitEnd;			/**< Pit lane segment */
+	tTrackSeg *pitExit;			/**< Pit lane segment */
+	tTrackOwnPit *driversPits;	/**< List of pits by driver */
+	int carsPerPit;
+	int driversPitsNb;			/**< Number of drivers */
 } tTrackPitInfo;
 
 typedef struct

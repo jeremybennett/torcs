@@ -79,7 +79,7 @@ typedef struct
     tdble	wheeltrack;
     sgMat4	posMat;
     DtShapeRef	shape;		/* for collision */
-    int		blocked;
+    int		blocked;		// Flag to show if the car has had already a collision in the same timestep.
     int		dammage;
     
     tDynPt	restPos;	/* target rest position after the car is broken */

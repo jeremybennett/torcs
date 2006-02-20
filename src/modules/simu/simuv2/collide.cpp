@@ -170,8 +170,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 	car[0] = (tCar*)obj1;
 	car[1] = (tCar*)obj2;
 
-	if ((car[0]->carElt->_state & RM_CAR_STATE_NO_SIMU) ||
-		(car[1]->carElt->_state & RM_CAR_STATE_NO_SIMU))
+	// Handle cars collisions during pit stops as well.
+	static const int NO_SIMU_WITHOUT_PIT = RM_CAR_STATE_NO_SIMU & ~RM_CAR_STATE_PIT;
+
+	if ((car[0]->carElt->_state & NO_SIMU_WITHOUT_PIT) ||
+		(car[1]->carElt->_state & NO_SIMU_WITHOUT_PIT))
 	{
 		return;
 	}
@@ -196,29 +199,6 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 		n[1]  = -(float)collData->normal[1];
 	}
 
-	// TODO: find out if that (the isnan tests and length test) is still needed. If yes, add
-	// it as well in the wall collision code.
-	// HYPOTHESIS: Perhaps this code was needed before dtProcees has been guarded by dtTest?
-	// Remember dtProceed just works correct if all objects are disjoint.
-	// I will let people test this wihout the guards, see what happens...
-/*
-	if ((isnan(p[0][0]) ||
-		isnan(p[0][1]) ||
-		isnan(p[0][0]) ||
-		isnan(p[0][1]) ||
-		isnan(n[0])  ||
-		isnan(n[1]))) {
-		// I really don't know where the problem is...
-		GfOut ("Collide failed 1 (%s - %s)\n", car[0]->carElt->_name, car[1]->carElt->_name);
-		return;
-    }
-
-	if (sgLengthVec2 (n) == 0.0f) {
-		// I really don't know where the problem is...
-		GfOut ("Collide failed 2 (%s - %s)\n", car[0]->carElt->_name, car[1]->carElt->_name);
-		return;
-	}
-*/
 	sgNormaliseVec2(n);
 
 	sgVec2 rg[2];	// raduis oriented in global coordinates, still relative to CG (rotated aroung CG).
@@ -260,17 +240,14 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 	float distpab = sgLengthVec2(pab);
 
 	sgVec2 tmpv;
-	/*
-	static const float CAR_MIN_MOVEMENT = 0.02f;
-	static const float CAR_MAX_MOVEMENT = 0.05f;
-	sgScaleVec2(tmpv, n, MIN(MAX(distpab, CAR_MIN_MOVEMENT), CAR_MAX_MOVEMENT));
-	*/
+	
 	sgScaleVec2(tmpv, n, MIN(distpab, 0.05));
-	if (car[0]->blocked == 0) {
+	// No "for" loop here because of subtle difference AddVec/SubVec. 
+	if (car[0]->blocked == 0 && !(car[0]->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
 		sgAddVec2((float*)&(car[0]->DynGCg.pos), tmpv);
 		car[0]->blocked = 1;
     }
-	if (car[1]->blocked == 0) {
+	if (car[1]->blocked == 0 && !(car[1]->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
 		sgSubVec2((float*)&(car[1]->DynGCg.pos), tmpv);
 		car[1]->blocked = 1;
     }
@@ -297,10 +274,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 		((car[0]->Minv + car[1]->Minv) +
 		rpn[0] * rpn[0] * car[0]->Iinv.z + rpn[1] * rpn[1] * car[1]->Iinv.z);
 
-	// TODO: check that, eventually remove assert... should not go to production, IMHO.
-	//assert (!isnan(j));
-
 	for (i = 0; i < 2; i++) {
+		if (car[i]->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+			continue;
+		}
+
 		// Damage.
 		tdble damFactor, atmp;
 		atmp = atan2(r[i][1], r[i][0]);

@@ -73,6 +73,7 @@ typedef struct {
 /** Static Public info */
 typedef struct {
     char	name[MAX_NAME_LEN];	/**< Driver's name */
+	char	teamname[MAX_NAME_LEN];	/**< Team name */
     char	carName[MAX_NAME_LEN];	/**< Car object name */
     char	category[MAX_NAME_LEN];	/**< Car's category */
     int		raceNumber;		/**< Car's race number */
@@ -91,6 +92,7 @@ typedef struct {
 } tInitCar;
 /* structure access short cuts */
 #define _name		info.name			/**< short cut to tInitCar#name */
+#define _teamname	info.teamname		/**< short cut to tInitCar#teamname */
 #define _carName	info.carName			/**< short cut to tInitCar#carName */
 #define _category	info.cartegory			/**< short cut to tInitCar#cartegory */
 #define _driverType	info.driverType			/**< short cut to tInitCar#driverType */

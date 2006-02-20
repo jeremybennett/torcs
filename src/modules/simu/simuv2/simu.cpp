@@ -228,8 +228,18 @@ RemoveCar(tCar *car, tSituation *s)
 	}
 
 
-	if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
+	if (carElt->_state & (RM_CAR_STATE_NO_SIMU & ~RM_CAR_STATE_PIT)) {
 		return;
+	}
+
+	if (carElt->_state & RM_CAR_STATE_PIT) {
+		if ((s->_maxDammage) && (car->dammage > s->_maxDammage)) {
+			// Broken during pit stop.
+			carElt->_state &= ~RM_CAR_STATE_PIT;
+			carElt->_pit->pitCarIndex = TR_PIT_STATE_FREE;
+		} else {
+			return;
+		}
 	}
 
 	if ((s->_maxDammage) && (car->dammage > s->_maxDammage)) {
@@ -303,22 +313,22 @@ RemoveCar(tCar *car, tSituation *s)
 void
 SimUpdate(tSituation *s, double deltaTime, int telemetry)
 {
-    int		i;
-    int		ncar;
-    tCarElt 	*carElt;
-    tCar 	*car;
-
-    SimDeltaTime = deltaTime;
-    SimTelemetry = telemetry;
-    for (ncar = 0; ncar < s->_ncars; ncar++) {
-	SimCarTable[ncar].collision = 0;
-	SimCarTable[ncar].blocked = 0;
-    }
-
-    for (ncar = 0; ncar < s->_ncars; ncar++) {
+	int i;
+	int ncar;
+	tCarElt *carElt;
+	tCar *car;
+	
+	SimDeltaTime = deltaTime;
+	SimTelemetry = telemetry;
+	for (ncar = 0; ncar < s->_ncars; ncar++) {
+		SimCarTable[ncar].collision = 0;
+		SimCarTable[ncar].blocked = 0;
+	}
+	
+	for (ncar = 0; ncar < s->_ncars; ncar++) {
 		car = &(SimCarTable[ncar]);
 		carElt = car->carElt;
-
+	
 		if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 			RemoveCar(car, s);
 			continue;
@@ -330,11 +340,11 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 				continue;
 			}
 		}
-
+	
 		if (s->_raceState & RM_RACE_PRESTART) {
 			car->ctrl->gear = 0;
 		}
-
+	
 		CHECK(car);
 		ctrlCheck(car);
 		CHECK(car);
@@ -344,9 +354,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		CHECK(car);
 		SimEngineUpdateTq(car);
 		CHECK(car);
-
+	
 		if (!(s->_raceState & RM_RACE_PRESTART)) {
-
+	
 			SimCarUpdateWheelPos(car);
 			CHECK(car);
 			SimBrakeSystemUpdate(car);
@@ -378,26 +388,26 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		} else {
 			SimEngineUpdateRpm(car, 0.0);
 		}
-    }
-
-    SimCarCollideCars(s);
-
-    /* printf ("%f - ", s->currentTime); */
-
-    for (ncar = 0; ncar < s->_ncars; ncar++) {
+	}
+	
+	SimCarCollideCars(s);
+	
+	/* printf ("%f - ", s->currentTime); */
+	
+	for (ncar = 0; ncar < s->_ncars; ncar++) {
 		car = &(SimCarTable[ncar]);
 		CHECK(car);
 		carElt = car->carElt;
-
+	
 		if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
 			continue;
 		}
-
+	
 		CHECK(car);
 		SimCarUpdate2(car, s); /* telemetry */
-
+	
 		/* copy back the data to carElt */
-
+	
 		carElt->pub.DynGC = car->DynGC;
 		carElt->pub.DynGCg = car->DynGCg;
 		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
@@ -414,10 +424,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->_fuel = car->fuel;
 		carElt->priv.collision |= car->collision;
 		carElt->_dammage = car->dammage;
-
-		/* printf ("(%f / %f) ", carElt->_pos_X, carElt->_pos_Y); */
-    }
-    /* printf("\n"); */
+	}
 }
 
 
