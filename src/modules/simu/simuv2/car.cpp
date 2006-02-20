@@ -125,12 +125,15 @@ SimCarConfig(tCar *car)
     car->corner[FRNT_RGT].pos.x = car->dimension.x * .5 - car->statGC.x;
     car->corner[FRNT_RGT].pos.y = - overallwidth * .5 - car->statGC.y;
     car->corner[FRNT_RGT].pos.z = 0;
+
     car->corner[FRNT_LFT].pos.x = car->dimension.x * .5 - car->statGC.x;
     car->corner[FRNT_LFT].pos.y = overallwidth * .5 - car->statGC.y;
     car->corner[FRNT_LFT].pos.z = 0;
+
     car->corner[REAR_RGT].pos.x = - car->dimension.x * .5 - car->statGC.x;
     car->corner[REAR_RGT].pos.y = - overallwidth * .5 - car->statGC.y;
     car->corner[REAR_RGT].pos.z = 0;
+
     car->corner[REAR_LFT].pos.x = - car->dimension.x * .5 - car->statGC.x;
     car->corner[REAR_LFT].pos.y = overallwidth * .5 - car->statGC.y;
     car->corner[REAR_LFT].pos.z = 0;
@@ -382,9 +385,9 @@ SimCarUpdateCornerPos(tCar *car)
     int i;
 
     for (i = 0; i < 4; i++) {
-	tdble x = car->corner[i].pos.x;
-	tdble y = car->corner[i].pos.y;
-	tdble dx = x * Cosz - y * Sinz;
+	tdble x = car->corner[i].pos.x + car->statGC.x;
+	tdble y = car->corner[i].pos.y + car->statGC.y;
+    tdble dx = x * Cosz - y * Sinz;
 	tdble dy = x * Sinz + y * Cosz;
 	
 	car->corner[i].pos.ax = car->DynGCg.pos.x + dx;
