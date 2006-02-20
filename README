@@ -102,6 +102,13 @@ Changes since 1.2.4
 - Track tutorial added to CVS (Christos).
 - Fixed -s option in Windows and usage of Multitexturing if extension is not
   available (Bernhard).
+- Fixed wrong car corners for cars with noncentral center of gravity (Bernhard).
+- Added support for multiple cars per pit. The cars must be of the same team,
+  define it in the racemanager race section (e.g. "First Race" in endrace.xml)
+  with <attnum name="cars per pit" val="2"/>. Values from 1-4 are accepted. Be
+  aware that the robots are not adopted, this is just for TRB use for now
+  (Bernhard).
+
 
 
 TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
