@@ -92,6 +92,9 @@ Bernhard.
 
 Changes since 1.2.4
 -------------------
+- Added FoV fix (Felix Kuhling, Christos)
+- Added Doppler workaround for OpenAL Windows (Christos)
+- Added cameras for alpine-1 (Christos)
 - Fixed curb height calculation in rttrack.cpp:RtTrackHeightL() (Christos)
 - Fixed very little steering error around the center discovered by Eugen
   (Eugen, Christos, Bernhard).
@@ -116,7 +119,6 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
 - Fix sound volume option (ask Christos). [Seems OK, check GUI code - Christos]
 - When car is moving sideways, the engine sound source seems shifted to the
   side under OpenAL.
-- Missing doppler on Windows, investigate. [Added work around - Christos]
 - SDL port.
 - Check for memory leaks.
 - Add valgrind option to "torcs".
@@ -127,7 +129,7 @@ TODO for 1.3.0 (estimate: goal 12.2005, real 2.2006)
   sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
   (e.g. e-track-3, michigan, eventually wheel-1, e-track-2).
-- Add cameras (alpine, spring)
+- Add cameras (spring)
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
