@@ -222,6 +222,7 @@ void cGrOrthoCamera::setModelView(void)
 
 void cGrBackgroundCam::update(cGrCamera *curCam)
 {
+    static float BACKGROUND_FOVY_CUTOFF = 60.0f;
     memcpy(&eye, curCam->getPosv(), sizeof(eye));
     memcpy(&center, curCam->getCenterv(), sizeof(center));
     sgSubVec3(center, center, eye);
@@ -229,7 +230,10 @@ void cGrBackgroundCam::update(cGrCamera *curCam)
     speed[0]=0.0;
     speed[1]=0.0;
     speed[2]=0.0;
-    //fovy = curCam->getFovY();
+    fovy = curCam->getFovY();
+    if (fovy < BACKGROUND_FOVY_CUTOFF) {
+        fovy = BACKGROUND_FOVY_CUTOFF;
+    }
     memcpy(&up, curCam->getUpv(), sizeof(up));
 }
 
