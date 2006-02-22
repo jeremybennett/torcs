@@ -115,8 +115,6 @@ void cGrScreen::activate(int x, int y, int w, int h)
 {
     viewRatio = (float)w / (float)h;
 
-    if (viewRatio > 2.3) viewRatio = 2.3;
-    
     scrx = x;
     scry = y;
     scrw = w;

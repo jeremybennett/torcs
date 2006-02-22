@@ -111,7 +111,15 @@ cGrPerspCamera::cGrPerspCamera(class cGrScreen *myscreen, int id, int drawCurr, 
 
 void cGrPerspCamera::setProjection(void)
 {
-    grContext.setFOV(screen->getViewRatio() * fovy, fovy);
+    // PLib takes the field of view as angles in degrees. However, the
+    // aspect ratio really aplies to lengths in the projection
+    // plane. So we have to transform the fovy angle to a length in
+    // the projection plane, apply the aspect ratio and transform the
+    // result back to an angle. Care needs to be taken to because the
+    // tan and atan functions operate on angles in radians. Also,
+    // we're only interested in half the viewing angle.
+    float fovx = atan(screen->getViewRatio() * tan(fovy * M_PI / 360.0)) * 360.0 / M_PI;
+    grContext.setFOV(fovx, fovy);
     grContext.setNearFar(fnear, ffar);
 }
 
@@ -221,6 +229,7 @@ void cGrBackgroundCam::update(cGrCamera *curCam)
     speed[0]=0.0;
     speed[1]=0.0;
     speed[2]=0.0;
+    //fovy = curCam->getFovY();
     memcpy(&up, curCam->getUpv(), sizeof(up));
 }
 
@@ -239,12 +248,6 @@ class cGrCarCamInside : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -421,12 +424,6 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
 			 myfnear, myffar, myfogstart, myfogend) {
     }
 
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
-    }
-
     void update(tCarElt *car, tSituation *s) {
 	sgVec3 P, p;
 	
@@ -480,12 +477,6 @@ class cGrCarCamBehind : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -543,12 +534,6 @@ class cGrCarCamBehind2 : public cGrPerspCamera
 	up[2] = 1;
     }
 
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
-    }
-
     void update(tCarElt *car, tSituation *s) {
 	tdble A;
 	tdble CosA;
@@ -602,12 +587,6 @@ class cGrCarCamFront : public cGrPerspCamera
 	up[2] = 1;
     }
 
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
-    }
-
     void update(tCarElt *car, tSituation *s) {
 	tdble CosA = cos(car->_yaw);
 	tdble SinA = sin(car->_yaw);
@@ -651,12 +630,6 @@ protected:
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -717,12 +690,6 @@ class cGrCarCamUp : public cGrPerspCamera
 	}
     }
 
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
-    }
-
     void update(tCarElt *car, tSituation *s) {
 	tdble x = car->_pos_X;
 	tdble y = car->_pos_Y;
@@ -769,12 +736,6 @@ class cGrCarCamCenter : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void loadDefaults(char *attr) {
@@ -879,12 +840,6 @@ class cGrCarCamLookAt : public cGrPerspCamera
 	}
     }
 
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
-    }
-
     void update(tCarElt *car, tSituation *s) {
     }
 };
@@ -904,12 +859,6 @@ class cGrCarCamRoadNoZoom : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void update(tCarElt *car, tSituation *s) {
@@ -1080,12 +1029,6 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-    }
-
-    void limitFov(void) {
-	if ((screen->getViewRatio() * fovy) > 90.0) {
-	    fovy = 90.0 / screen->getViewRatio();
-	}
     }
 
     void loadDefaults(char *attr) {

@@ -122,6 +122,10 @@ class cGrCamera
     sgVec3 *getUpv(void) {
 	return &up;
     }
+
+    virtual float getFovY(void) {
+	return 67.5; // override in perspective camera
+    }
     
     /* Add the camera in the corresponding list */
     void add(tGrCamHead *head) {
@@ -174,6 +178,10 @@ class cGrPerspCamera : public cGrCamera
 
    void limitFov(void)  {}
    void onSelect(tCarElt *car, tSituation *s) {}
+
+   virtual float getFovY(void) {
+       return fovy;
+   }
 
 };
 
