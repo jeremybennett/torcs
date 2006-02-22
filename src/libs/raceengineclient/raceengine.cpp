@@ -136,85 +136,86 @@ ReManage(tCarElt *car)
 	}
 	
 	// Pitstop.
-	if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
-		// Pit already occupied?
-		if (car->_pit->pitCarIndex == TR_PIT_STATE_FREE) {
-			sprintf(car->ctrl.msg[2], "Can Pit");
-		} else {
-			sprintf(car->ctrl.msg[2], "Pit Occupied");
-		}
-		memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
-	}
-	
-	if (car->_state & RM_CAR_STATE_PIT) {
-		car->ctrl.raceCmd &= ~RM_CMD_PIT_ASKED; // clear the flag.
-		if (car->_scheduledEventTime < s->currentTime) {
-			car->_state &= ~RM_CAR_STATE_PIT;
-			car->_pit->pitCarIndex = TR_PIT_STATE_FREE;
-			sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
-			ReRaceMsgSet(buf, 5);
-		} else {
-			sprintf(car->ctrl.msg[2], "in pits %.1fs", s->currentTime - info->startPitTime);
-		}
-	} else if ((car->_pit) && 
-			   (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) &&
-				car->_pit->pitCarIndex == TR_PIT_STATE_FREE &&	
-			   (s->_maxDammage == 0 || car->_dammage <= s->_maxDammage))
-	{
-		tdble lgFromStart = car->_trkPos.seg->lgfromstart;
-		
-		switch (car->_trkPos.seg->type) {
-			case TR_STR:
-				lgFromStart += car->_trkPos.toStart;
-				break;
-			default:
-				lgFromStart += car->_trkPos.toStart * car->_trkPos.seg->radius;
-				break;
-		}
-	
-		if ((lgFromStart > car->_pit->lmin) && (lgFromStart < car->_pit->lmax)) {
-			pitok = 0;
-			int side;
-			tdble toBorder;
-			if (ReInfo->track->pits.side == TR_RGT) {
-				side = TR_SIDE_RGT;
-				toBorder = car->_trkPos.toRight;
+	if (car->_pit) {
+		if (car->ctrl.raceCmd & RM_CMD_PIT_ASKED) {
+			// Pit already occupied?
+			if (car->_pit->pitCarIndex == TR_PIT_STATE_FREE) {
+				sprintf(car->ctrl.msg[2], "Can Pit");
 			} else {
-				side = TR_SIDE_LFT;
-				toBorder = car->_trkPos.toLeft;
+				sprintf(car->ctrl.msg[2], "Pit Occupied");
 			}
-			
-			sseg = car->_trkPos.seg->side[side];
-			wseg = RtTrackGetWidth(sseg, car->_trkPos.toStart);
-			if (sseg->side[side]) {
-				sseg = sseg->side[side];
-				wseg += RtTrackGetWidth(sseg, car->_trkPos.toStart);
-			}
-			if (((toBorder + wseg) < (ReInfo->track->pits.width - car->_dimension_y / 2.0)) &&
-				(fabs(car->_speed_x) < 1.0) &&
-				(fabs(car->_speed_y) < 1.0))
-			{
-				pitok = 1;
-			}
-			
-			if (pitok) {
-				car->_state |= RM_CAR_STATE_PIT;
-				car->_nbPitStops++;
-				for (i = 0; i < car->_pit->freeCarIndex; i++) {
-					if (car->_pit->car[i] == car) {
-						car->_pit->pitCarIndex = i;
-						break;
-					}
-				}
-				info->startPitTime = s->currentTime;
-				sprintf(buf, "%s in pits", car->_name);
+			memcpy(car->ctrl.msgColor, color, sizeof(car->ctrl.msgColor));
+		}
+		
+		if (car->_state & RM_CAR_STATE_PIT) {
+			car->ctrl.raceCmd &= ~RM_CMD_PIT_ASKED; // clear the flag.
+			if (car->_scheduledEventTime < s->currentTime) {
+				car->_state &= ~RM_CAR_STATE_PIT;
+				car->_pit->pitCarIndex = TR_PIT_STATE_FREE;
+				sprintf(buf, "%s pit stop %.1fs", car->_name, info->totalPitTime);
 				ReRaceMsgSet(buf, 5);
-				if (car->robot->rbPitCmd(car->robot->index, car, s) == ROB_PIT_MENU) {
-					// the pit cmd is modified by menu.
-					ReStop();
-					RmPitMenuStart(car, (void*)car, ReUpdtPitCmd);
+			} else {
+				sprintf(car->ctrl.msg[2], "in pits %.1fs", s->currentTime - info->startPitTime);
+			}
+		} else if ((car->ctrl.raceCmd & RM_CMD_PIT_ASKED) &&
+					car->_pit->pitCarIndex == TR_PIT_STATE_FREE &&	
+				   (s->_maxDammage == 0 || car->_dammage <= s->_maxDammage))
+		{
+			tdble lgFromStart = car->_trkPos.seg->lgfromstart;
+			
+			switch (car->_trkPos.seg->type) {
+				case TR_STR:
+					lgFromStart += car->_trkPos.toStart;
+					break;
+				default:
+					lgFromStart += car->_trkPos.toStart * car->_trkPos.seg->radius;
+					break;
+			}
+		
+			if ((lgFromStart > car->_pit->lmin) && (lgFromStart < car->_pit->lmax)) {
+				pitok = 0;
+				int side;
+				tdble toBorder;
+				if (ReInfo->track->pits.side == TR_RGT) {
+					side = TR_SIDE_RGT;
+					toBorder = car->_trkPos.toRight;
 				} else {
-					ReUpdtPitTime(car);
+					side = TR_SIDE_LFT;
+					toBorder = car->_trkPos.toLeft;
+				}
+				
+				sseg = car->_trkPos.seg->side[side];
+				wseg = RtTrackGetWidth(sseg, car->_trkPos.toStart);
+				if (sseg->side[side]) {
+					sseg = sseg->side[side];
+					wseg += RtTrackGetWidth(sseg, car->_trkPos.toStart);
+				}
+				if (((toBorder + wseg) < (ReInfo->track->pits.width - car->_dimension_y / 2.0)) &&
+					(fabs(car->_speed_x) < 1.0) &&
+					(fabs(car->_speed_y) < 1.0))
+				{
+					pitok = 1;
+				}
+				
+				if (pitok) {
+					car->_state |= RM_CAR_STATE_PIT;
+					car->_nbPitStops++;
+					for (i = 0; i < car->_pit->freeCarIndex; i++) {
+						if (car->_pit->car[i] == car) {
+							car->_pit->pitCarIndex = i;
+							break;
+						}
+					}
+					info->startPitTime = s->currentTime;
+					sprintf(buf, "%s in pits", car->_name);
+					ReRaceMsgSet(buf, 5);
+					if (car->robot->rbPitCmd(car->robot->index, car, s) == ROB_PIT_MENU) {
+						// the pit cmd is modified by menu.
+						ReStop();
+						RmPitMenuStart(car, (void*)car, ReUpdtPitCmd);
+					} else {
+						ReUpdtPitTime(car);
+					}
 				}
 			}
 		}
