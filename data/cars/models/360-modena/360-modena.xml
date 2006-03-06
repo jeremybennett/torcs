@@ -21,9 +21,9 @@
   <section name="Driver">
 
     <!-- Position of the driver -->
-    <attnum name="xpos" val="0.75" unit="m"/>
-    <attnum name="ypos" val="0.00" unit="m"/>
-    <attnum name="zpos" val="0.95" unit="m"/>
+	<attnum name="xpos" val="0.75" unit="m"/>
+	<attnum name="ypos" val="0.00" unit="m"/>
+	<attnum name="zpos" val="0.95" unit="m"/>
   </section>
 
 
@@ -45,26 +45,22 @@
     <attnum name="speedometer max value" val="360" unit="km/h"/>
     <section name="Ranges">
       <section name="1">
-        <attnum name="threshold" val="40"/>
+        <attnum name="threshold" val="15"/>
         <attstr name="car" val="360-modena.acc"/>
-	<attstr name="wheels" val="yes"/>
+		<attstr name="wheels" val="yes"/>
       </section>
 
       <section name="2">
-        <attnum name="threshold" val="20"/>
+		<attnum name="threshold" val="10"/>
         <attstr name="car" val="360-modena-lod1.acc"/>
-	<attstr name="wheels" val="yes"/>
+		<attstr name="wheels" val="yes"/>
       </section>
 
       <section name="3">
-        <attnum name="threshold" val="10"/>
-        <attstr name="car" val="360-modena-lod2.acc"/>
-      </section>
-
-      <section name="4">
         <attnum name="threshold" val="0"/>
-        <attstr name="car" val="360-modena-lod3.acc"/>
-      </section>
+        <attstr name="car" val="360-modena-lod2.acc"/>
+		<attstr name="wheels" val="yes"/>
+	</section>
     </section>
 
     <section name="Light">
@@ -108,7 +104,23 @@
     <attnum name="fuel tank" unit="l" val="100.0"/>
     <attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
   </section>
-
+  
+  <section name="Exhaust">
+	  <!-- for flames -->
+	  <attnum name="power" val="1.5"/>
+	  <section name="1">
+		  <attnum name="xpos" val="-2.3"/>
+		  <attnum name="ypos" val="-0.65"/>
+		  <attnum name="zpos" val="0.32"/>
+	  </section>
+	  
+	  <section name="2">
+		  <attnum name="xpos" val="-2.3"/>
+		  <attnum name="ypos" val="0.65"/>
+		  <attnum name="zpos" val="0.32"/>
+	  </section>
+  </section>
+  
   <section name="Aerodynamics">
     <attnum name="Cx" min="0.20" max="2.0" val="0.28"/>
     <attnum name="front area" unit="m2" min="1.0" max="3.0" val="1.9"/>
