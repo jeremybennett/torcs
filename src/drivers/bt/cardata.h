@@ -31,12 +31,11 @@
 #include <robottools.h>
 #include <raceman.h>
 
-#include "linalg.h"
 
 
 class SingleCardata {
 	public:
-		inline void init(CarElt *car) { this->car = car; }
+		inline void init(CarElt *car) { this->car = car; /*teammate = false; teammatedamage = 0; */}
 
 		inline float getSpeedInTrackDirection() { return speed; }
 		inline float getWidthOnTrack() { return width; }

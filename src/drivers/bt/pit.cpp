@@ -43,7 +43,7 @@ Pit::Pit(tSituation *s, Driver *driver)
 		p[4].x = p[3].x + pitinfo->len;
 		p[0].x = pitinfo->pitEntry->lgfromstart;
 		p[1].x = pitinfo->pitStart->lgfromstart;
-		p[5].x = p[3].x + (pitinfo->nMaxPits - car->index)*pitinfo->len;
+		p[5].x = pitinfo->pitEnd->lgfromstart + pitinfo->len/2.0f;
 		p[6].x = pitinfo->pitExit->lgfromstart;
 
 		pitentry = p[0].x;
@@ -98,7 +98,7 @@ Pit::~Pit()
 float Pit::toSplineCoord(float x)
 {
 	x -= pitentry;
-	while (x < 0.0) {
+	while (x < 0.0f) {
 		x += track->length;
 	}
 	return x;
@@ -131,7 +131,7 @@ void Pit::setPitstop(bool pitstop)
 		this->pitstop = pitstop;
 	} else if (!pitstop) {
 		this->pitstop = pitstop;
-		pittimer = 0.0;
+		pittimer = 0.0f;
 	}
 }
 
@@ -161,13 +161,13 @@ bool Pit::isBetween(float fromstart)
 // ahead it is > 0, if we overshoot the pit it is < 0.
 bool Pit::isTimeout(float distance)
 {
-	if (car->_speed_x > 1.0 || distance > 3.0 || !getPitstop()) {
-		pittimer = 0.0;
+	if (car->_speed_x > 1.0f || distance > 3.0f || !getPitstop()) {
+		pittimer = 0.0f;
 		return false;
 	} else {
-		pittimer += (float) RCM_MAX_DT_ROBOTS;
-		if (pittimer > 3.0) {
-			pittimer = 0.0;
+		pittimer += RCM_MAX_DT_ROBOTS;
+		if (pittimer > 3.0f) {
+			pittimer = 0.0f;
 			return true;
 		} else {
 			return false;

@@ -35,7 +35,6 @@
 
 #include "driver.h"
 
-#define BUFSIZE 20
 #define NBBOTS 10
 
 static char* botname[NBBOTS] = {"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
@@ -58,7 +57,7 @@ static void endRace(int index, tCarElt *car, tSituation *s);
 extern "C" int bt(tModInfo *modInfo)
 {
 	int i;
-
+	
 	// Clear all structures.
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 

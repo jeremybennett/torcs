@@ -33,7 +33,7 @@ void SingleCardata::update()
 // compute speed component parallel to the track.
 float SingleCardata::getSpeed(tCarElt *car, float ltrackangle)
 {
-	v2d speed, dir;
+	vec2f speed, dir;
 	speed.x = car->_speed_X;
 	speed.y = car->_speed_Y;
 	dir.x = cos(ltrackangle);

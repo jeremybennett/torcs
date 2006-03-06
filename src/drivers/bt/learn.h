@@ -33,11 +33,9 @@
 #include <robottools.h>
 #include <robot.h>
 
-
-
 class SegLearn {
 	public:
-		SegLearn(tTrack* t);
+		SegLearn(tTrack* t, tSituation *s, int driverindex);
 		~SegLearn();
 
 		float getRadius(tTrackSeg *s) { return radius[s->id]; }
@@ -46,11 +44,19 @@ class SegLearn {
 	private:
 		float *radius;
 		int *updateid;
+		int nseg;
 
 		bool check;
 		float rmin;
 		int lastturn;
 		int prevtype;
+		static const int BUFSIZE;
+		char filename[1024];
+
+		void writeKarma();
+		FILE* getKarmaFilename(tTrack* t, tSituation *s, int driverindex);
+		FILE* tryKarmaFilename(char* buffer, int size, const char *path, int driverindex, const char *tbuf, bool storelocalfilename);
+		bool readKarma(tTrack* track, tSituation *s, float *radius, int *uid, int driverindex);
 };
 
 

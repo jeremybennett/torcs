@@ -32,7 +32,6 @@
 #include <robottools.h>
 #include <robot.h>
 
-#include "linalg.h"
 #include "driver.h"
 #include "cardata.h"
 
@@ -65,6 +64,10 @@ class Opponent {
 		float getSpeed() { return cardata->getSpeedInTrackDirection(); }
 		float getOverlapTimer() { return overlaptimer; }
 
+		bool isTeamMate() { return teammate; }
+		int getDamage() { return car->_dammage; }
+		void markAsTeamMate() { teammate = true; }
+
 		void update(tSituation *s, Driver *driver);
 
 	private:
@@ -79,6 +82,7 @@ class Opponent {
 
 		tCarElt *car;
 		SingleCardata *cardata;		// Pointer to global data about this opponent.
+		bool teammate;				// Is this opponent a team mate of me (configure it in setup XML)?
 
 		// class variables.
 		static tTrack *track;
@@ -104,6 +108,7 @@ class Opponents {
 		void update(tSituation *s, Driver *driver);
 		Opponent *getOpponentPtr() { return opponent; }
 		int getNOpponents() { return nopponents; }
+		void setTeamMate(char *teammate);
 
 	private:
 		Opponent *opponent;

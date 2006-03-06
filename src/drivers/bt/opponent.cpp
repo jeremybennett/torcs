@@ -22,17 +22,17 @@
 
 // class variables and constants.
 tTrack* Opponent::track;
-const float Opponent::FRONTCOLLDIST = 200.0;			// [m] distance on the track to check other cars.
-const float Opponent::BACKCOLLDIST = 70.0;				// [m] distance on the track to check other cars.
-const float Opponent::LENGTH_MARGIN = 3.0;				// [m] savety margin.
-const float Opponent::SIDE_MARGIN = 1.0;				// [m] savety margin.
-const float Opponent::EXACT_DIST = 12.0;				// [m] if the estimated distance is smaller, compute it more accurate
-const float Opponent::LAP_BACK_TIME_PENALTY = -30.0;	// [s]
-const float Opponent::OVERLAP_WAIT_TIME = 5.0;			// [s] overlaptimer must reach this time before we let the opponent pass.
-const float Opponent::SPEED_PASS_MARGIN = 5.0;			// [m/s] avoid overlapping opponents to stuck behind me.
+const float Opponent::FRONTCOLLDIST = 200.0f;			// [m] distance on the track to check other cars.
+const float Opponent::BACKCOLLDIST = 70.0f;				// [m] distance on the track to check other cars.
+const float Opponent::LENGTH_MARGIN = 3.0f;				// [m] savety margin.
+const float Opponent::SIDE_MARGIN = 1.0f;				// [m] savety margin.
+const float Opponent::EXACT_DIST = 12.0f;				// [m] if the estimated distance is smaller, compute it more accurate
+const float Opponent::LAP_BACK_TIME_PENALTY = -30.0f;	// [s]
+const float Opponent::OVERLAP_WAIT_TIME = 5.0f;			// [s] overlaptimer must reach this time before we let the opponent pass.
+const float Opponent::SPEED_PASS_MARGIN = 5.0f;			// [m/s] avoid overlapping opponents to stuck behind me.
 
 
-Opponent::Opponent()
+Opponent::Opponent() : teammate(false)
 {
 }
 
@@ -45,16 +45,16 @@ void Opponent::update(tSituation *s, Driver *driver)
 	state = OPP_IGNORE;
 
 	// If the car is out of the simulation ignore it.
-	if (car->_state & RM_CAR_STATE_NO_SIMU) {
+	if (car->_state & (RM_CAR_STATE_NO_SIMU & ~RM_CAR_STATE_PIT)) {
 		return;
 	}
 
 	// Updating distance along the middle.
 	float oppToStart = car->_trkPos.seg->lgfromstart + getDistToSegStart();
 	distance = oppToStart - mycar->_distFromStartLine;
-	if (distance > track->length/2.0) {
+	if (distance > track->length/2.0f) {
 		distance -= track->length;
-	} else if (distance < -track->length/2.0) {
+	} else if (distance < -track->length/2.0f) {
 		distance += track->length;
 	}
 
@@ -71,7 +71,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 
 			// If the distance is small we compute it more accurate.
 			if (distance < EXACT_DIST) {
-				Straight carFrontLine(
+				straight2f carFrontLine(
 					mycar->_corner_x(FRNT_LFT),
 					mycar->_corner_y(FRNT_LFT),
 					mycar->_corner_x(FRNT_RGT) - mycar->_corner_x(FRNT_LFT),
@@ -81,7 +81,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 				float mindist = FLT_MAX;
 				int i;
 				for (i = 0; i < 4; i++) {
-					v2d corner(car->_corner_x(i), car->_corner_y(i));
+					vec2f corner(car->_corner_x(i), car->_corner_y(i));
 					float dist = carFrontLine.dist(corner);
 					if (dist < mindist) {
 						mindist = dist;
@@ -97,7 +97,7 @@ void Opponent::update(tSituation *s, Driver *driver)
 
 			float cardist = car->_trkPos.toMiddle - mycar->_trkPos.toMiddle;
 			sidedist = cardist;
-			cardist = fabs(cardist) - fabs(getWidth()/2.0) - mycar->_dimension_y/2.0;
+			cardist = fabs(cardist) - fabs(getWidth()/2.0f) - mycar->_dimension_y/2.0f;
 			if (cardist < SIDE_MARGIN) {
 				state |= OPP_COLL;
 			}
@@ -149,9 +149,9 @@ void Opponent::updateOverlapTimer(tSituation *s, tCarElt *mycar)
 		} else if (getState() & OPP_FRONT) {
 			overlaptimer = LAP_BACK_TIME_PENALTY;
 		} else {
-			if (overlaptimer > 0.0) {
+			if (overlaptimer > 0.0f) {
 				if (getState() & OPP_FRONT_FAST) {
-					overlaptimer = MIN(0.0, overlaptimer);
+					overlaptimer = MIN(0.0f, overlaptimer);
 				} else {
 					overlaptimer -= s->deltaTime;
 				}
@@ -195,4 +195,19 @@ void Opponents::update(tSituation *s, Driver *driver)
 		opponent[i].update(s, driver);
 	}
 }
+
+
+void Opponents::setTeamMate(char *teammate)
+{
+	int i;
+	for (i = 0; i < nopponents; i++) {
+		if (strcmp(opponent[i].getCarPtr()->_name, teammate) == 0) {
+			opponent[i].markAsTeamMate();
+			break;	// Name should be unique, so we can stop.
+		}
+	}
+}
+
+
+
 

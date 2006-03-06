@@ -31,8 +31,8 @@
 #include <raceman.h>
 #include <robottools.h>
 #include <robot.h>
+#include <portability.h>
 
-#include "linalg.h"
 #include "opponent.h"
 #include "pit.h"
 #include "learn.h"
@@ -42,6 +42,11 @@
 #define BT_SECT_PRIV "bt private"
 #define BT_ATT_FUELPERLAP "fuelperlap"
 #define BT_ATT_MUFACTOR "mufactor"
+#define BT_ATT_PITTIME "pittime"
+#define BT_ATT_BESTLAP "bestlap"
+#define BT_ATT_WORSTLAP "worstlap"
+#define BT_ATT_TEAMMATE "teammate"
+
 
 class Opponents;
 class Opponent;
@@ -76,7 +81,7 @@ class Driver {
 		int getGear();
 		float getSteer();
 		float getClutch();
-		v2d getTargetPoint();
+		vec2f getTargetPoint();
 		float getOffset();
 		float brakedist(float allowedspeed, float mu);
 
@@ -173,6 +178,8 @@ class Driver {
 		static const float CLUTCH_FULL_MAX_TIME;
 		static const float USE_LEARNED_OFFSET_RANGE;
 
+		static const float TEAM_REAR_DIST;
+		static const int TEAM_DAMAGE_CHANGE_LEAD;
 
 		// Track variables.
 		tTrack* track;
