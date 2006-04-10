@@ -92,9 +92,7 @@ Bernhard.
 
 Changes since 1.2.4
 -------------------
-- Added FoV fix (Felix Kuhling, Christos)
 - Added Doppler workaround for OpenAL Windows (Christos)
-- Added cameras for alpine-1 (Christos)
 - Fixed curb height calculation in rttrack.cpp:RtTrackHeightL() (Christos)
 - Fixed very little steering error around the center discovered by Eugen
   (Eugen, Christos, Bernhard).
@@ -118,7 +116,8 @@ Changes since 1.2.4
 - Improved field of view ratio handling (Felix Kühling, Christos).
 - Fixed floating F10 camera (Christos).
 - Updated bt with changes from bt_2004 (Bernhard).
-
+- Totally reworked lotus-gt1 model (Andrew, Bernhard).
+- New textures for the new lotus-gt1 model (Bernhard).
 
 
 
