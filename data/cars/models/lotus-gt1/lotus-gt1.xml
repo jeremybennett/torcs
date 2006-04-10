@@ -3,9 +3,9 @@
 <!-- 
     file                 : viper-gts-r.xml
     created              : Sat Mar  3 18:46:37 CET 2001
-    copyright            : (C) 2001 by Eric Espi                        
+    copyright            : (C) 2001 by Eric Espié
     email                : Eric.Espie@torcs.org   
-    version              : $Id$                                  
+    version              : $Id$ 
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -47,11 +47,11 @@
 
     <section name="Ranges">
       <section name="1">
-        <attnum name="threshold" val="20"/>
+        <attnum name="threshold" val="0"/>
         <attstr name="car" val="lotus-gt1.acc"/>
 	<attstr name="wheels" val="yes"/>
       </section>
-      <section name="2">
+      <!--section name="2">
         <attnum name="threshold" val="10"/>
         <attstr name="car" val="lotus-gt1-lod1.acc"/>
 	<attstr name="wheels" val="yes"/>
@@ -60,23 +60,23 @@
         <attnum name="threshold" val="0"/>
         <attstr name="car" val="lotus-gt1-lod2.acc"/>
 	<attstr name="wheels" val="no"/>
-      </section>
+      </section-->
     </section>
 
     <section name="Light">
       <section name="1">
 	<attstr name="type" val="brake2"/>
-	<attnum name="xpos" val="-2.16"/>
-	<attnum name="ypos" val="0.53"/>
-	<attnum name="zpos" val="0.61"/>
-	<attnum name="size" val="0.3"/>
+	<attnum name="xpos" val="-2.12"/>
+	<attnum name="ypos" val="0.45"/>
+	<attnum name="zpos" val="0.53"/>
+	<attnum name="size" val="0.2"/>
       </section>
       <section name="2">
 	<attstr name="type" val="brake2"/>
-	<attnum name="xpos" val="-2.16"/>
-	<attnum name="ypos" val="-0.53"/>
-	<attnum name="zpos" val="0.61"/>
-	<attnum name="size" val="0.3"/>
+	<attnum name="xpos" val="-2.12"/>
+	<attnum name="ypos" val="-0.45"/>
+	<attnum name="zpos" val="0.53"/>
+	<attnum name="size" val="0.2"/>
       </section>
     </section>
 
@@ -84,12 +84,12 @@
 
   <section name="Car">
     <attstr name="category" val="Track-RWD-GrA"/>
-    <attnum name="body length" unit="m" val="4.45"/>
+    <attnum name="body length" unit="m" val="4.55"/>
     <attnum name="body width" unit="m" val="1.95"/>
-    <attnum name="body height" unit="m" val="1.1"/>
+    <attnum name="body height" unit="m" val="1.12"/>
 
     <!-- collision bounding box -->
-    <attnum name="overall length" unit="m" val="4.5"/>
+    <attnum name="overall length" unit="m" val="4.55"/>
     <attnum name="overall width" unit="m" val="2.0"/>
     <attnum name="mass" unit="kg" val="1000.0"/>
     <attnum name="GC height" unit="m" val="0.20"/>
@@ -110,33 +110,36 @@
     <!-- for flames -->
     <attnum name="power" val="1.5"/>
     <section name="1">
-      <attnum name="xpos" val="-2.13"/>
+      <attnum name="xpos" val="-2.3"/>
       <attnum name="ypos" val="-0.07"/>
-      <attnum name="zpos" val="0.30"/>
+      <attnum name="zpos" val="0.27"/>
     </section>
 
     <section name="2">
-      <attnum name="xpos" val="-2.13"/>
+      <attnum name="xpos" val="-2.3"/>
       <attnum name="ypos" val="0.07"/>
-      <attnum name="zpos" val="0.30"/>
+      <attnum name="zpos" val="0.27"/>
     </section>
   </section>
 
   <section name="Aerodynamics">
-    <attnum name="Cx" val="0.32"/>
-    <attnum name="front area" unit="m2" val="1.4"/>
+    <attnum name="Cx" val="0.34"/>
+    <attnum name="front area" unit="m2" val="1.6"/>
     <attnum name="front Clift" min="0.0" max="1.0" val="0.9"/>
     <attnum name="rear Clift" min="0.0" max="1.0" val="0.5"/>
   </section>
 
   <section name="Front Wing">
-    <attnum name="area" unit="m2" val="0"/>
+    <attnum name="area" unit="m2" val="0.6"/>
+	<attnum name="angle" unit="deg" min="0" max="12" val="6"/>
+	<attnum name="xpos" unit="m" val="1.95"/>
+    <attnum name="zpos" unit="m" val="0.05"/>
   </section>
 
   <section name="Rear Wing">
     <attnum name="area" unit="m2" val="1.5"/>
-    <attnum name="angle" unit="deg" min="0" max="30" val="9"/>
-    <attnum name="xpos" unit="m" val="-1.95"/>
+    <attnum name="angle" unit="deg" min="0" max="20" val="9"/>
+    <attnum name="xpos" unit="m" val="-1.85"/>
     <attnum name="zpos" unit="m" val="0.95"/>
   </section>
 
@@ -328,13 +331,13 @@
   </section>
 
   <section name="Front Axle">
-    <attnum name="xpos" min="0.5" max="2.5" val="1.35"/>
+    <attnum name="xpos" min="0.5" max="2.5" val="1.36"/>
     <attnum name="inertia" unit="kg.m2" val="0.0056"/>
     <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.012"/>
   </section>
 
   <section name="Rear Axle">
-    <attnum name="xpos" min="-2.5" max="-0.5" val="-1.47"/>
+    <attnum name="xpos" min="-2.5" max="-0.5" val="-1.46"/>
     <attnum name="inertia" unit="kg.m2" val="0.0080"/>
     <attnum name="roll center height" unit="m" min="0" max="0.5" val="0.04"/>
   </section>
@@ -355,8 +358,8 @@
   </section>
 
   <section name="Front Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.81"/>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"/>
+    <attnum name="ypos" unit="m" val="-0.815"/>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"/>
     <attnum name="tire width" unit="mm" min="135" max="335" val="285"/>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".40"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
@@ -374,8 +377,8 @@
   </section>
 
   <section name="Front Left Wheel">
-    <attnum name="ypos" unit="m" val="0.81"/>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"/>
+    <attnum name="ypos" unit="m" val="0.815"/>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"/>
     <attnum name="tire width" unit="mm" min="135" max="335" val="285"/>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".40"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
@@ -393,8 +396,8 @@
   </section>
 
   <section name="Rear Right Wheel">
-    <attnum name="ypos" unit="m" val="-0.82"/>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"/>
+    <attnum name="ypos" unit="m" val="-0.8"/>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"/>
     <attnum name="tire width" unit="mm" min="135" max="335" val="330"/>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".35"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
@@ -412,8 +415,8 @@
   </section>
 
   <section name="Rear Left Wheel">
-    <attnum name="ypos" unit="m" val="0.82"/>
-    <attnum name="rim diameter" unit="in" min="16" max="18" val="16.0"/>
+    <attnum name="ypos" unit="m" val="0.8"/>
+    <attnum name="rim diameter" unit="in" min="16" max="18" val="17.0"/>
     <attnum name="tire width" unit="mm" min="135" max="335" val="330"/>
     <attnum name="tire height-width ratio" min="0.3" max="0.8" val=".35"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
