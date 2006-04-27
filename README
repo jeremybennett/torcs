@@ -118,10 +118,19 @@ Changes since 1.2.4
 - Updated bt with changes from bt_2004 (Bernhard).
 - Totally reworked lotus-gt1 model (Andrew, Bernhard).
 - New textures for the new lotus-gt1 model (Bernhard).
+- Hide warning about too long debug symbols in vc++ debug project (Bernhard).
+- Updated binary files with admin -kb in CVS to solve problems of WinCVS
+  users (Bernhard).
+- Updated windows project files and code such that the projects compile
+  cleanly (except Olethros, disabled for now, need to resolve the "clock"
+  first) (Bernhard).
 
 
+TODO for 1.3.0 (5.2006, test1)
+--------------
+- Rework/Integrate Andrews Viper.
 
-TODO for 1.3.0 (5.2006)
+TODO for 1.3.0 (6.2006, test2)
 --------------
 - Fix sound volume option (ask Christos). [Seems OK, check GUI code - Christos]
 - When car is moving sideways, the engine sound source seems shifted to the
