@@ -117,14 +117,14 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 	strategy->setFuelAtRaceStart(t, carParmHandle, s, INDEX);
 
 	// Load and set parameters.
-	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69);
+	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69f);
 }
 
 
 // Start a new race.
 void Driver::newRace(tCarElt* car, tSituation *s)
 {
-	float deltaTime = RCM_MAX_DT_ROBOTS;
+	float deltaTime = (float) RCM_MAX_DT_ROBOTS;
 	MAX_UNSTUCK_COUNT = int(UNSTUCK_TIME_LIMIT/deltaTime);
 	OVERTAKE_OFFSET_INC = OVERTAKE_OFFSET_SPEED*deltaTime;
 	stuck = 0;
@@ -400,7 +400,7 @@ float Driver::getClutch()
 		clutchtime = MIN(CLUTCH_FULL_MAX_TIME, clutchtime);
 		float clutcht = (CLUTCH_FULL_MAX_TIME - clutchtime)/CLUTCH_FULL_MAX_TIME;
 		if (car->_gear == 1 && car->_accelCmd > 0.0f) {
-			clutchtime += RCM_MAX_DT_ROBOTS;
+			clutchtime += (float) RCM_MAX_DT_ROBOTS;
 		}
 
 		if (drpm > 0) {
