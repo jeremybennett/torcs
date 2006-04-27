@@ -27,6 +27,10 @@
 #ifndef ENDPOINT_H
 #define ENDPOINT_H
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include <3D/Basic.h>
 
 enum { MIN = 0, MAX = 1 };

@@ -27,6 +27,10 @@
 #ifndef _SHAPE_H_
 #define _SHAPE_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include "BBox.h"
 
 class Transform;

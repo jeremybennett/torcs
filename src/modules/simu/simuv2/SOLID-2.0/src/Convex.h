@@ -27,6 +27,10 @@
 #ifndef _CONVEX_H_
 #define _CONVEX_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include <3D/Point.h>
 #include "Shape.h"
 #include "BBox.h"

@@ -27,6 +27,10 @@
 #ifndef _BOX_H_
 #define _BOX_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include "Convex.h"
 
 class Box : public Convex {

@@ -27,6 +27,10 @@
 #ifndef _ALGOTABLE_H_
 #define _ALGOTABLE_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include "Shape.h"
 
 const int NUM_TYPES = 8;

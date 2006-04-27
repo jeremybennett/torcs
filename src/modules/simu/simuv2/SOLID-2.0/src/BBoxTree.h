@@ -27,6 +27,10 @@
 #ifndef _BBOXTREE_H_
 #define _BBOXTREE_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include "BBox.h"
 #include "Polytope.h"
 

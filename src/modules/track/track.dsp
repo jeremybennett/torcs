@@ -76,7 +76,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\track
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MDd /W2 /Gm- /Gi- /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
+# ADD CPP /nologo /G6 /W2 /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
 # SUBTRACT CPP /WX /Fr /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -87,7 +87,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 sg.lib tgf.lib robottools.lib txml.lib ssg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /libpath:"../../../export/libd" /libpath:"../../windows/lib"
+# ADD LINK32 tgf.lib robottools.lib txml.lib ssg.lib ul.lib sg.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
 # SUBTRACT LINK32 /pdb:none /incremental:no
 # Begin Special Build Tool
 WkspDir=.

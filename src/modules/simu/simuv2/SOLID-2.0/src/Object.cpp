@@ -24,6 +24,10 @@
 		  P.O. Box 513, 5600 MB Eindhoven, The Netherlands
 */
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include "Object.h"
 #include "AlgoTable.h"
 #include "Convex.h" 

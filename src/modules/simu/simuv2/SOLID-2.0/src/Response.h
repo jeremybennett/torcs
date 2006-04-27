@@ -27,6 +27,10 @@
 #ifndef _RESPONSE_H_
 #define _RESPONSE_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include <SOLID/solid.h>
 
 #include <3D/Point.h>

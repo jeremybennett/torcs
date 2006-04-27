@@ -27,6 +27,14 @@
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
+#ifdef _MSC_VER
+#pragma warning(disable:4786) // identifier was truncated to '255'
+#endif // _MSC_VER
+
 #include <3D/Point.h>
 #include <3D/Matrix.h>
 
