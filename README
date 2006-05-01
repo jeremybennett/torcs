@@ -126,6 +126,7 @@ Changes since 1.2.4
   first) (Bernhard).
 - Fixed a bug which prevented the display off all avilable resolutions which
   xrandr advertises (Bernhard).
+- Applied suggested gcc 4.1 compile fix (Mart Kelder, Bernhard).
 
 
 
