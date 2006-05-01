@@ -124,6 +124,9 @@ Changes since 1.2.4
 - Updated windows project files and code such that the projects compile
   cleanly (except Olethros, disabled for now, need to resolve the "clock"
   first) (Bernhard).
+- Fixed a bug which prevented the display off all avilable resolutions which
+  xrandr advertises (Bernhard).
+
 
 
 TODO for 1.3.0 (5.2006, test1)
