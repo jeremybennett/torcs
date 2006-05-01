@@ -2,7 +2,7 @@ Introduction
 ------------
 This is an all in one package of TORCS. Be aware that some included
 artwork has non free (in the GPL sense) licenses, you will find a "readme.txt"
-in those directories. The rest is either licenced under the GPL or the Free
+in those directories. The rest is either licensed under the GPL or the Free
 Art License.
 
 
@@ -35,7 +35,7 @@ Command line arguments:
 * -d run under gdb and print stack trace on exit, makes most sense when compile
      with --enable-debug
 * -e display the commands to issue when you want to run under gdb
-* -s disable multitexturing, imortant for older graphics cards
+* -s disable multitexturing, important for older graphics cards
 * -m use X mouse cursor and do not hide it during races
 
 
@@ -124,7 +124,7 @@ Changes since 1.2.4
 - Updated windows project files and code such that the projects compile
   cleanly (except Olethros, disabled for now, need to resolve the "clock"
   first) (Bernhard).
-- Fixed a bug which prevented the display off all avilable resolutions which
+- Fixed a bug which prevented the display of all available resolutions which
   xrandr advertises (Bernhard).
 - Applied suggested gcc 4.1 compile fix (Mart Kelder, Bernhard).
 - Fixed wrong flags (-kk) in ssggraph (Bernhard).
