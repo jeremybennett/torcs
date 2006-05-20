@@ -32,13 +32,13 @@ Free Documentation License".
 
         <h3>The Track</h3>
         <p>
-          Before we can start implementing simple steering we need to discuss how the track looks like for the
+          Before we can start implementing simple steering we need to discuss how the track looks for the
           robot. The track is partitioned into segments of the following types: left turns, right turns and
           straight segments. The segments are usually short, so a turn that looks like a big turn or a long
           straight is most often split into much smaller segments. The segments are organized as linked list
           in the memory. A straight segment has a width and a length, a turn has a width, a length and a radius,
-          everyting is measured in the middle of the track. All segments connect tangential to the next and
-          pervious segment, so the middle line is smooth. There is much more data available, the structure tTrack
+          everyting is measured in the middle of the track. All segments connect tangentially to the next and
+          previous segments, so the middle line is smooth. There is much more data available, the structure tTrack
           is defined in $TORCS_BASE/export/include/track.h.
         </p>
 
@@ -74,7 +74,7 @@ Free Documentation License".
         </p>
 
         <p>
-          The initial steer angle is then the difference:
+          The initial steering angle is then the difference:
         </p>
         <p>
           <tt>
@@ -92,7 +92,7 @@ Free Documentation License".
 
         <p>
           The distance to the middle is measured in meters, so the values are too big to add it directly to
-          the steer angle. So we divide it first through the width of the track and multiply it with a
+          the steering angle. So we divide it first through the width of the track and multiply it with a
           "tuning" constant.
           Now we put all the stuff together:
         <p>
@@ -109,7 +109,7 @@ Free Documentation License".
         <p>
           We need also to change to the first gear and apply a bit of accelerator pedal. The accelerator and
           brakes ranges from [0..1], the steer value from [-1.0..1.0]. Now this should raise a
-          question. In the upper code snippet I computed a steer angle, so how do we convert this to
+          question. In the upper code snippet I computed a steering angle, so how do we convert this to
           [-1.0..1.0]? For that there is a constant in the tCarElt struct:
         </p>
         <p>
@@ -118,7 +118,7 @@ Free Documentation License".
           </tt>
         </p>
         <p>
-          This value defines the angle of 100% steering (1.0), so we need to divide our steer angle by
+          This value defines the angle of 100% steering (1.0), so we need to divide our steering angle by
           car-&gt;_steerLock.
         </p>
 
@@ -161,7 +161,7 @@ drive(int index, tCarElt* car, tSituation *s)
           Compile and install your robot, and play a bit with it. In case you don't understand the algorithm,
           take a sheet of paper and a pencil and draw the situation with the track and the car, this will help.
           You will discover some problems which you have to
-          solve later. Change some of the values, run it on different tracks, add better steer correction,
+          solve later. Change some of the values, run it on different tracks, add better steering correction,
           whatever you like. You don't need to restart TORCS every time you did "make install", because if you
           start a new practice session, your robot module is reloaded. If you practice very often you should have
           an xosview or something similar running, because TORCS has memory leaks, so you have to restart it
