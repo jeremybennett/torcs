@@ -128,6 +128,7 @@ Changes since 1.2.4
   xrandr advertises (Bernhard).
 - Applied suggested gcc 4.1 compile fix (Mart Kelder, Bernhard).
 - Fixed wrong flags (-kk) in ssggraph (Bernhard).
+- Some corrections in the robot tutorial (Wino, Bernhard).
 
 
 
