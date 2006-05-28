@@ -130,6 +130,8 @@ Changes since 1.2.4
 - Fixed wrong flags (-kk) in ssggraph (Bernhard).
 - Some corrections in the robot tutorial (Wino, Bernhard).
 - Added track wheel-2 created by Andrew Sumner (Andrew, Bernhard).
+- Added track street-1 created by Andrew Sumner (Andrew, Bernhard).
+
 
 
 
