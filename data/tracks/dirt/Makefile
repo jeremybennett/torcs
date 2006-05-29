@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    file                 : Makefile
+#    file                 : Makefile<2>
 #    created              : Sun Mar 19 00:13:24 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
@@ -18,6 +18,7 @@
 
 DATASUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)	
 
+PKGSUBDIRS	= $(DATASUBDIRS)
 
 include ${MAKE_DEFAULT}
 
