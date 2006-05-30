@@ -1227,16 +1227,6 @@ if exist .\data\tracks\dirt-2\background.png copy .\data\tracks\dirt-2\backgroun
 if exist .\data\tracks\dirt-2\dirt-2.ac copy .\data\tracks\dirt-2\dirt-2.ac .\runtimed\tracks\dirt\dirt-2\dirt-2.ac
 if exist .\data\tracks\dirt-2\dirt-2.png copy .\data\tracks\dirt-2\dirt-2.png .\runtimed\tracks\dirt\dirt-2\dirt-2.png
 
-if exist .\data\tracks\dirt-3\*.* call .\create_dir .\runtimed
-if exist .\data\tracks\dirt-3\*.* call .\create_dir .\runtimed\tracks
-if exist .\data\tracks\dirt-3\*.* call .\create_dir .\runtimed\tracks\dirt
-if exist .\data\tracks\dirt-3\*.* call .\create_dir .\runtimed\tracks\dirt\dirt-3
-if exist .\data\tracks\dirt-3\dirt-3.xml copy .\data\tracks\dirt-3\dirt-3.xml .\runtimed\tracks\dirt\dirt-3\dirt-3.xml
-if exist .\data\tracks\dirt-3\background.png copy .\data\tracks\dirt-3\background.png .\runtimed\tracks\dirt\dirt-3\background.png
-if exist .\data\tracks\dirt-3\background2.png copy .\data\tracks\dirt-3\background2.png .\runtimed\tracks\dirt\dirt-3\background2.png
-if exist .\data\tracks\dirt-3\dirt-3.ac copy .\data\tracks\dirt-3\dirt-3.ac .\runtimed\tracks\dirt\dirt-3\dirt-3.ac
-if exist .\data\tracks\dirt-3\dirt-3.png copy .\data\tracks\dirt-3\dirt-3.png .\runtimed\tracks\dirt\dirt-3\dirt-3.png
-
 if exist .\data\tracks\dirt-4\*.* call .\create_dir .\runtimed
 if exist .\data\tracks\dirt-4\*.* call .\create_dir .\runtimed\tracks
 if exist .\data\tracks\dirt-4\*.* call .\create_dir .\runtimed\tracks\dirt
@@ -1726,6 +1716,43 @@ if exist .\data\tracks\road\street-1\truck0.rgb copy .\data\tracks\road\street-1
 if exist .\data\tracks\road\street-1\walls.rgb copy .\data\tracks\road\street-1\walls.rgb .\runtimed\tracks\road\street-1\walls.rgb
 if exist .\data\tracks\road\street-1\walls2.rgb copy .\data\tracks\road\street-1\walls2.rgb .\runtimed\tracks\road\street-1\walls2.rgb
 if exist .\data\tracks\road\street-1\readme.txt copy .\data\tracks\road\street-1\readme.txt .\runtimed\tracks\road\street-1\readme.txt
+
+if exist .\data\tracks\dirt\dirt-3\*.* call .\create_dir .\runtimed
+if exist .\data\tracks\dirt\dirt-3\*.* call .\create_dir .\runtimed\tracks
+if exist .\data\tracks\dirt\dirt-3\*.* call .\create_dir .\runtimed\tracks\dirt
+if exist .\data\tracks\dirt\dirt-3\*.* call .\create_dir .\runtimed\tracks\dirt\dirt-3
+if exist .\data\tracks\dirt\dirt-3\dirt-3.xml copy .\data\tracks\dirt\dirt-3\dirt-3.xml .\runtimed\tracks\dirt\dirt-3\dirt-3.xml
+if exist .\data\tracks\dirt\dirt-3\dirt-3.acc copy .\data\tracks\dirt\dirt-3\dirt-3.acc .\runtimed\tracks\dirt\dirt-3\dirt-3.acc
+if exist .\data\tracks\dirt\dirt-3\dirt-3.png copy .\data\tracks\dirt\dirt-3\dirt-3.png .\runtimed\tracks\dirt\dirt-3\dirt-3.png
+if exist .\data\tracks\dirt\dirt-3\readme.txt copy .\data\tracks\dirt\dirt-3\readme.txt .\runtimed\tracks\dirt\dirt-3\readme.txt
+if exist .\data\tracks\dirt\dirt-3\background.png copy .\data\tracks\dirt\dirt-3\background.png .\runtimed\tracks\dirt\dirt-3\background.png
+if exist .\data\tracks\dirt\dirt-3\ambush-inn.png copy .\data\tracks\dirt\dirt-3\ambush-inn.png .\runtimed\tracks\dirt\dirt-3\ambush-inn.png
+if exist .\data\tracks\dirt\dirt-3\dirt-grass.png copy .\data\tracks\dirt\dirt-3\dirt-grass.png .\runtimed\tracks\dirt\dirt-3\dirt-grass.png
+if exist .\data\tracks\dirt\dirt-3\sign-left_n.png copy .\data\tracks\dirt\dirt-3\sign-left_n.png .\runtimed\tracks\dirt\dirt-3\sign-left_n.png
+if exist .\data\tracks\dirt\dirt-3\dirt-pits.png copy .\data\tracks\dirt\dirt-3\dirt-pits.png .\runtimed\tracks\dirt\dirt-3\dirt-pits.png
+if exist .\data\tracks\dirt\dirt-3\sign-pit_n.png copy .\data\tracks\dirt\dirt-3\sign-pit_n.png .\runtimed\tracks\dirt\dirt-3\sign-pit_n.png
+if exist .\data\tracks\dirt\dirt-3\barrier-fence_n.png copy .\data\tracks\dirt\dirt-3\barrier-fence_n.png .\runtimed\tracks\dirt\dirt-3\barrier-fence_n.png
+if exist .\data\tracks\dirt\dirt-3\dirt-side.png copy .\data\tracks\dirt\dirt-3\dirt-side.png .\runtimed\tracks\dirt\dirt-3\dirt-side.png
+if exist .\data\tracks\dirt\dirt-3\stone1.png copy .\data\tracks\dirt\dirt-3\stone1.png .\runtimed\tracks\dirt\dirt-3\stone1.png
+if exist .\data\tracks\dirt\dirt-3\barrier-rusty.png copy .\data\tracks\dirt\dirt-3\barrier-rusty.png .\runtimed\tracks\dirt\dirt-3\barrier-rusty.png
+if exist .\data\tracks\dirt\dirt-3\grass-clump-arbor_n.png copy .\data\tracks\dirt\dirt-3\grass-clump-arbor_n.png .\runtimed\tracks\dirt\dirt-3\grass-clump-arbor_n.png
+if exist .\data\tracks\dirt\dirt-3\tank.png copy .\data\tracks\dirt\dirt-3\tank.png .\runtimed\tracks\dirt\dirt-3\tank.png
+if exist .\data\tracks\dirt\dirt-3\barrier-wooden_n.png copy .\data\tracks\dirt\dirt-3\barrier-wooden_n.png .\runtimed\tracks\dirt\dirt-3\barrier-wooden_n.png
+if exist .\data\tracks\dirt\dirt-3\hat.png copy .\data\tracks\dirt\dirt-3\hat.png .\runtimed\tracks\dirt\dirt-3\hat.png
+if exist .\data\tracks\dirt\dirt-3\tree_bush2_arbor_n.png copy .\data\tracks\dirt\dirt-3\tree_bush2_arbor_n.png .\runtimed\tracks\dirt\dirt-3\tree_bush2_arbor_n.png
+if exist .\data\tracks\dirt\dirt-3\black.png copy .\data\tracks\dirt\dirt-3\black.png .\runtimed\tracks\dirt\dirt-3\black.png
+if exist .\data\tracks\dirt\dirt-3\newdirt2.png copy .\data\tracks\dirt\dirt-3\newdirt2.png .\runtimed\tracks\dirt\dirt-3\newdirt2.png
+if exist .\data\tracks\dirt\dirt-3\tree_gum2_arbor_n.png copy .\data\tracks\dirt\dirt-3\tree_gum2_arbor_n.png .\runtimed\tracks\dirt\dirt-3\tree_gum2_arbor_n.png
+if exist .\data\tracks\dirt\dirt-3\bridgeplanks.png copy .\data\tracks\dirt\dirt-3\bridgeplanks.png .\runtimed\tracks\dirt\dirt-3\bridgeplanks.png
+if exist .\data\tracks\dirt\dirt-3\newdirt.png copy .\data\tracks\dirt\dirt-3\newdirt.png .\runtimed\tracks\dirt\dirt-3\newdirt.png
+if exist .\data\tracks\dirt\dirt-3\tree_gum_arbor_n.png copy .\data\tracks\dirt\dirt-3\tree_gum_arbor_n.png .\runtimed\tracks\dirt\dirt-3\tree_gum_arbor_n.png
+if exist .\data\tracks\dirt\dirt-3\cabin.png copy .\data\tracks\dirt\dirt-3\cabin.png .\runtimed\tracks\dirt\dirt-3\cabin.png
+if exist .\data\tracks\dirt\dirt-3\newgrass.png copy .\data\tracks\dirt\dirt-3\newgrass.png .\runtimed\tracks\dirt\dirt-3\newgrass.png
+if exist .\data\tracks\dirt\dirt-3\tr-house-arbor_n.png copy .\data\tracks\dirt\dirt-3\tr-house-arbor_n.png .\runtimed\tracks\dirt\dirt-3\tr-house-arbor_n.png
+if exist .\data\tracks\dirt\dirt-3\pit-walls.png copy .\data\tracks\dirt\dirt-3\pit-walls.png .\runtimed\tracks\dirt\dirt-3\pit-walls.png
+if exist .\data\tracks\dirt\dirt-3\poutre2_arbor_n.rgb copy .\data\tracks\dirt\dirt-3\poutre2_arbor_n.rgb .\runtimed\tracks\dirt\dirt-3\poutre2_arbor_n.rgb
+if exist .\data\tracks\dirt\dirt-3\poutre3_arbor_n.rgb copy .\data\tracks\dirt\dirt-3\poutre3_arbor_n.rgb .\runtimed\tracks\dirt\dirt-3\poutre3_arbor_n.rgb
+if exist .\data\tracks\dirt\dirt-3\shadow2.rgb copy .\data\tracks\dirt\dirt-3\shadow2.rgb .\runtimed\tracks\dirt\dirt-3\shadow2.rgb
 
 if exist .\*.* call .\create_dir .\runtimed
 if exist .\*.* call .\create_dir .\runtimed\.
