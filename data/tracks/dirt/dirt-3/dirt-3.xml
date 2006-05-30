@@ -203,7 +203,7 @@ the Free Software Foundation; either version 2 of the License, or
     </section>
   </section>
   <section name="Header">
-    <attstr name="name" val="dirt-3" />
+    <attstr name="name" val="Dirt 3" />
     <attstr name="category" val="dirt" />
     <attnum name="version" val="4" />
     <attstr name="author" val="Andrew Sumner" />
