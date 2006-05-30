@@ -144,8 +144,8 @@ the Free Software Foundation; either version 2 of the License, or
 	<attnum name="friction"           val="0.95"/>
 	<attnum name="rolling resistance" val="0.001"/>
 
-	<attnum name="roughness" val="0.06"/>
-	<attnum name="roughness wavelength" val="30.0"/>
+	<attnum name="roughness" val="0.02"/>
+	<attnum name="roughness wavelength" val="0.25"/>
     </section>
     <section name="barrier-rusty">
       <attnum name="color R1" val="1.0"/>
