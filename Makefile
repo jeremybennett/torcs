@@ -2,7 +2,7 @@
 #
 #    file                 : Makefile
 #    created              : Mon Dec 11 22:30:53 CET 2000
-#    copyright            : (C) 2000 by Eric Espié
+#    copyright            : (C) 2000 by Eric EspiÃ©
 #    email                : Eric.Espie@torcs.org
 #    version              : $Id$
 #
@@ -78,7 +78,7 @@ SUBDIRS		= src
 
 DATADIR 	= .
 
-DATA    	= CHANGELOG.html COPYING Ticon.png Ticon.ico tux.png logo-skinner.png
+DATA    	= COPYING Ticon.png Ticon.ico tux.png logo-skinner.png
 
 SHIPEXECDIR	= .
 
