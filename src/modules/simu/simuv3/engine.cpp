@@ -156,7 +156,8 @@ SimEngineUpdateTq(tCar *car)
 	if (engine->rads > engine->revsMax) {
 		engine->rads = engine->revsMax;
 	}
-	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (engine->rads) / (engine->revsMax);
+    const tdble static_friction = 0.1f;
+	tdble EngBrkK = curve->TqAtMaxPw * engine->brakeCoeff * (static_friction + (1.0f - static_friction)*(engine->rads) / (engine->revsMax));
 
     if (engine->rads < engine->tickover) {
 		engine->Tq = 0.0f;

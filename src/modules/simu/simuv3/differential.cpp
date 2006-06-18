@@ -30,7 +30,7 @@ SimDifferentialConfig(void *hdle, char *section, tDifferential *differential)
     differential->bias		= GfParmGetNum(hdle, section, PRM_BIAS, (char*)NULL, 0.1);
     differential->dTqMin	= GfParmGetNum(hdle, section, PRM_MIN_TQ_BIAS, (char*)NULL, 0.05);
     differential->dTqMax	= GfParmGetNum(hdle, section, PRM_MAX_TQ_BIAS, (char*)NULL, 0.80) - differential->dTqMin;
-    differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.2);
+    differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.75);
     differential->lockInputTq	= GfParmGetNum(hdle, section, PRM_LOCKING_TQ, (char*)NULL, 300.0);
     differential->viscosity	= GfParmGetNum(hdle, section, PRM_VISCOSITY_FACTOR, (char*)NULL, 2.0);
     differential->viscomax	= 1 - exp(-differential->viscosity);
@@ -126,115 +126,131 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 
     spdRatio = fabs(spinVel0 + spinVel1);
     if (spdRatio != 0) {
-		spdRatio = fabs(spinVel0 - spinVel1) / spdRatio;
+        spdRatio = fabs(spinVel0 - spinVel1) / spdRatio;
 
-		switch (differential->type) {
-		case DIFF_FREE:
-#if 0
-			/* the torque is limited by the weaker wheel */
-			if (inTq0 > inTq1) {
-				if (SIGN(DrTq) == SIGN(inTq1)) {
-					DrTq0 = MIN(DrTq, inTq1 * 2.0) * (0.5 + differential->bias);
-				} else {
-					DrTq0 = MIN(DrTq, -inTq1 * 2.0) * (0.5 + differential->bias);
-				}
-				DrTq1 = DrTq - DrTq0;
-			} else {
-				if (SIGN(DrTq) == SIGN(inTq0)) {
-					DrTq1 = MIN(DrTq, inTq0 * 2.0f) * (0.5f + differential->bias);
-				} else {
-					DrTq1 = MIN(DrTq, -inTq0 * 2.0f) * (0.5f + differential->bias);
-				}
-				DrTq0 = DrTq - DrTq1;
-			}
-#else
-			// I would think that the following is what a FREE
-			// differential should look like, with both wheels
-			// independent and linked through a spider gear.
-			//
-			// The reaction from each wheel is transmitted back to the
-			// spider gear. If both wheels react equally, then the
-			// spider gear does not turn. If one of the wheel is
-			// immobile, so that DrTq/2=inTq0 for example, then the
-			// reaction does not act against the drivetrain, but since
-			// the spider gear can turn freely, it acts on the other wheel.
-			// 
-			// This system is equivalent to a rotating gear attached
-			// in between two parallel surfaces, with DrTq being
-			// equivalent to a force acting in the center of the
-			// gear. If one surface is fixed, only the other surface
-			// moves and all the force is 'transferred' to the moving
-			// surface. Or, the way I like to think of it, the
-			// immobile surface reacts with an equal and opposite
-			// force[1] that cancels DrTq/2 exactly and which is
-			// transmitted directly with the rotating gear to the
-			// other, free, surface.
-			//
-			//
-			// A lot of explanation for 3 lines of code..  TODO: Check
-			// what bias would mean in such a system. Would it be
-			// implemented between the spider and the wheels?  Or
-			// between the spider and the drivetrain? If the latter
-			// then it meanst the spider would always be turning, even
-			// under an even load. I think in this case it is safest
-			// to ignore it completely because it is frequently used
-			// in cars with just FWD or RWD, and very frequently in
-			// just the front part of 4WD cars, while the default
-			// differential bias setting is 0.1...
-			//
-			// [1] For an object to remain at rest, all forces acting
-			// on it must sum to 0.
+        switch (differential->type) {
+        case DIFF_FREE:
+            // I would think that the following is what a FREE
+            // differential should look like, with both wheels
+            // independent and linked through a spider gear.
+            //
+            // The reaction from each wheel is transmitted back to the
+            // spider gear. If both wheels react equally, then the
+            // spider gear does not turn. If one of the wheel is
+            // immobile, so that DrTq/2=inTq0 for example, then the
+            // reaction does not act against the drivetrain, but since
+            // the spider gear can turn freely, it acts on the other wheel.
+            // 
+            // This system is equivalent to a rotating gear attached
+            // in between two parallel surfaces, with DrTq being
+            // equivalent to a force acting in the center of the
+            // gear. If one surface is fixed, only the other surface
+            // moves and all the force is 'transferred' to the moving
+            // surface. Or, the way I like to think of it, the
+            // immobile surface reacts with an equal and opposite
+            // force[1] that cancels DrTq/2 exactly and which is
+            // transmitted directly with the rotating gear to the
+            // other, free, surface.
+            //
+            //
+            // A lot of explanation for 3 lines of code..  TODO: Check
+            // what bias would mean in such a system. Would it be
+            // implemented between the spider and the wheels?  Or
+            // between the spider and the drivetrain? If the latter
+            // then it meanst the spider would always be turning, even
+            // under an even load. I think in this case it is safest
+            // to ignore it completely because it is frequently used
+            // in cars with just FWD or RWD, and very frequently in
+            // just the front part of 4WD cars, while the default
+            // differential bias setting is 0.1...
+            //
+            // [1] For an object to remain at rest, all forces acting
+            // on it must sum to 0.
 			
-			{
-				float spiderTq = inTq1 - inTq0;
-				DrTq0 = DrTq*0.5f + spiderTq;
-				DrTq1 = DrTq*0.5f - spiderTq;
-			}
-#endif
-			break;
-		case DIFF_LIMITED_SLIP:
-			if (DrTq > differential->lockInputTq) {
-				updateSpool(car, differential, first);
-				return;
-			}
-			spdRatioMax = differential->dSlipMax - DrTq * differential->dSlipMax / differential->lockInputTq;
-			if (spdRatio > spdRatioMax) {
-				deltaSpd = (spdRatio - spdRatioMax) * fabs(spinVel0 + spinVel1) / 2.0;
-				if (spinVel0 > spinVel1) {
-					spinVel0 -= deltaSpd;
-					spinVel1 += deltaSpd;
-				} else {
-					spinVel0 += deltaSpd;
-					spinVel1 -= deltaSpd;
-				}
-			}
-			if (spinVel0 > spinVel1) {
-				DrTq1 = DrTq * (0.5 + differential->bias);
-				DrTq0 = DrTq * (0.5 - differential->bias);
-			} else {
-				DrTq1 = DrTq * (0.5 - differential->bias);
-				DrTq0 = DrTq * (0.5 + differential->bias);
-			}
-			break;
-		case DIFF_VISCOUS_COUPLER:
-			if (spinVel0 >= spinVel1) {
-				DrTq0 = DrTq * differential->dTqMin;
-				DrTq1 = DrTq * (1 - differential->dTqMin);
-			} else {
-				deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * spinVel0 - spinVel1))) /
-					differential->viscomax * differential->dTqMax;
-				DrTq0 = DrTq * deltaTq;
-				DrTq1 = DrTq * (1 - deltaTq);
-			}
+            {
+                float spiderTq = inTq1 - inTq0;
+                DrTq0 = DrTq*0.5f + spiderTq;
+                DrTq1 = DrTq*0.5f - spiderTq;
+            }
+            break;
+
+                       
+        case DIFF_LOCKING:
+            // Locking differential - used to be LIMITED_SLIP
+                    
+            if (DrTq > differential->lockInputTq) {
+                updateSpool(car, differential, first);
+                return;
+            }	
+
+            spdRatioMax = differential->dSlipMax - DrTq * differential->dSlipMax / differential->lockInputTq;
+            if (spdRatio > spdRatioMax) {
+                deltaSpd = (spdRatio - spdRatioMax) * fabs(spinVel0 + spinVel1) / 2.0;
+                if (spinVel0 > spinVel1) {
+                    spinVel0 -= deltaSpd;
+                    spinVel1 += deltaSpd;
+                } else {
+                    spinVel0 += deltaSpd;
+                    spinVel1 -= deltaSpd;
+                }
+            }
+                    
+            if (spinVel0 > spinVel1) {
+                DrTq1 = DrTq * (0.5 + differential->bias);
+                DrTq0 = DrTq * (0.5 - differential->bias);
+            } else {
+                DrTq1 = DrTq * (0.5 - differential->bias);
+                DrTq0 = DrTq * (0.5 + differential->bias);
+            }
+            break;
+
+        case DIFF_LIMITED_SLIP:
+            // Limited slip differential with:
+            // - Gradual frictive locking
+            // - Open differential behaviour when not locked
+            //
+            // The spider gear transfers torque between the two axles
+            // When DrTq=lockInputTq, then the locking is at 66% (and
+            // almost 100% at double the torque).  When the
+            // differential is locked, there is a pressure applied due
+            // to the different amount of spin of each wheel.  This
+            // pressure creates a torque bias at the input, limited by
+            // dSlipMax.
+            // So the user should use lockInputTq to regulate how fast
+            // the differential locks and dSlipMax to regulate how much
+            // more torque should go to the slower moving wheel.
+            {
+                float spiderTq = inTq1 - inTq0; 
+                float propTq = DrTq/differential->lockInputTq;
+                float rate = 1.0f - exp(-propTq*propTq);
+
+                float pressure = tanh(rate*(spinVel1-spinVel0));
+                float bias = differential->dSlipMax * 0.5f* pressure;
+                float open = 1.0f;// - rate;
+                DrTq0 = DrTq*(0.5f+bias) + spiderTq*open;
+                DrTq1 = DrTq*(0.5f-bias) - spiderTq*open;
+            }
+            break;
+
+        case DIFF_VISCOUS_COUPLER:
+            if (spinVel0 >= spinVel1) {
+                DrTq0 = DrTq * differential->dTqMin;
+                DrTq1 = DrTq * (1 - differential->dTqMin);
+            } else {
+                deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * spinVel0 - spinVel1))) /
+                    differential->viscomax * differential->dTqMax;
+                DrTq0 = DrTq * deltaTq;
+                DrTq1 = DrTq * (1 - deltaTq);
+            }
 	
-			break;
-		default: /* NONE ? */
-			DrTq0 = DrTq1 = 0;
-			break;
-		}
+            break;
+        default: /* NONE ? */
+            DrTq0 = DrTq1 = 0;
+            break;
+        }
     } else {
-		DrTq0 = DrTq / 2.0;
-		DrTq1 = DrTq / 2.0;
+        DrTq0 = DrTq / 2.0;
+        DrTq1 = DrTq / 2.0;
     }
 
 

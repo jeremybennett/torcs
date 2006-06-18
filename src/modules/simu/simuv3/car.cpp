@@ -635,7 +635,12 @@ SimTelemetryOut(tCar *car)
     Fzr = (car->aero.lift[1] + car->wing[1].forces.z) / 9.81;
     printf("%f %f %f %f %f\n", car->aero.drag / 9.81, Fzf + Fzr,
 		   Fzf, Fzr, (Fzf + Fzr) / (car->aero.drag + 0.1) * 9.81);
-#endif    
+#endif
+    //    for (i=0; i<4; i++) {
+    //   printf ("%f ", car->wheel[i].spinVel);
+    //}
+    //printf ("| %f %f\n", car->engine.jointI, car->engine.rads);
+
 }
 
 void

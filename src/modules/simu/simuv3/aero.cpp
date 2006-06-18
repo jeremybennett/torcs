@@ -281,7 +281,7 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 		tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
 		hm = hm*hm;
 		hm = hm*hm;
-		hm = 2.0 * exp(-3.0*hm);
+		hm = 1.0 + exp(-3.0*hm);
 		car->aero.lift[index] = - car->aero.Clift[index] * vt2b * hm;
 		//car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
 		//printf ("%f\n", car->aero.lift[0]+car->aero.lift[1]);
