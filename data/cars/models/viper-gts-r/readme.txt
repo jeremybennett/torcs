@@ -1,12 +1,11 @@
-3D Model :
-Copyright 2000  ViPeR (viper@mttestdriver.com)
+Sports car model
+--
 
-Texture  :
-Copyright � 2002 Eric Espie
-
-Reworked Model (removed holes, better bottom, nicer texture,
-just single sided surfaces, new rear wing):
-Copyright � 2004, 2005 Bernhard Wymann
+© 2000  ViPeR (model) (viper@mttestdriver.com)
+© 2002 Eric Espie (texture)
+© 2004, 2005 Bernhard Wymann (totally reworked everything)
+© 2005 Andrew Sumner (totally reworked everything)
+© 2006 Bernhard Wymann (totally reworked everything)
 
 Copyleft: this work of art is free, you can redistribute
 it and/or modify it according to terms of the Free Art license.

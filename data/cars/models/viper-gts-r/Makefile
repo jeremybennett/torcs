@@ -2,9 +2,9 @@
 #
 #    file                 : Makefile
 #    created              : Sun Feb 18 21:02:29 /etc/localtime 2001
-#    copyright            : (C) 2000 by Eric Espié                        
-#    email                : Eric.Espie@torcs.org   
-#    version              : $Id$                                  
+#    copyright            : (C) 2000 by Eric EspiÃ©
+#    email                : Eric.Espie@torcs.org 
+#    version              : $Id$
 #
 ##############################################################################
 #
