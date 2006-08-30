@@ -90,7 +90,7 @@
 
     <!-- collision bounding box -->
     <attnum name="overall length" unit="m" val="4.55"/>
-    <attnum name="overall width" unit="m" val="2.0"/>
+    <attnum name="overall width" unit="m" val="1.95"/>
     <attnum name="mass" unit="kg" val="1000.0"/>
     <attnum name="GC height" unit="m" val="0.20"/>
 
