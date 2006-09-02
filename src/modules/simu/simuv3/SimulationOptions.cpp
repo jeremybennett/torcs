@@ -21,7 +21,7 @@ SimulationOptions::SimulationOptions()
 	option_list.AddOption<bool> (PRM_DAMAGE_AERO, &aero_damage, false);
 	option_list.AddOption<AeroFlowModel> (PRM_MODEL_AEROFLOW, &aeroflow_model, SIMPLE);
 	option_list.AddOption<bool> (PRM_MODEL_TYRE_TEMPERATURE, &tyre_temperature, false);
-	option_list.AddOption<float> (PRM_MODEL_AERO_FACTOR, &aero_factor, 2.0f);
+	option_list.AddOption<float> (PRM_MODEL_AERO_FACTOR, &aero_factor, 4.0f);
 }
 
 void SimulationOptions::SetFromSkill (int skill)

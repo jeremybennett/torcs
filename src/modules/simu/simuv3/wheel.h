@@ -96,7 +96,7 @@ typedef struct
     tdble	mass;		/* total wheel mass (incl. brake) (unsprung mass) */
     tdble	camber;		/* camber, negative toward exterior on both sides */
     tdble	pressure;	/* tire pressure */
-
+    tdble   rel_vel;    /* relative velocity - used for realstic suspension movement*/
 
 	/* axis damage */
 	tdble rotational_damage_x;
@@ -110,6 +110,8 @@ typedef struct
 	tdble   Em; // estimate of mass
 	tdble   s_old;
 	tdble   F_old;
+
+
 } tWheel;
 
     

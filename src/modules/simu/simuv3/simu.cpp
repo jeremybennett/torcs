@@ -371,7 +371,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		SimEngineUpdateTq(car);
 		CHECK(car);
 
+
 		if (!(s->_raceState & RM_RACE_PRESTART)) {
+
 				SimCarUpdateWheelPos(car);
 			CHECK(car);
 				SimBrakeSystemUpdate(car);

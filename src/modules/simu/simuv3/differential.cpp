@@ -222,7 +222,10 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
             {
                 float spiderTq = inTq1 - inTq0; 
                 float propTq = DrTq/differential->lockInputTq;
-                float rate = 1.0f - exp(-propTq*propTq);
+                float rate = 0.0f;
+                if (propTq > 0.0f) {
+                    rate = 1.0f - exp(-propTq*propTq);
+                }
 
                 float pressure = tanh(rate*(spinVel1-spinVel0));
                 float bias = differential->dSlipMax * 0.5f* pressure;

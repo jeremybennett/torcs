@@ -95,6 +95,7 @@ SimWheelConfig(tCar *car, int index)
 	wheel->feedBack.spinVel = 0.0f;
 	wheel->feedBack.Tq = 0.0f;
 	wheel->feedBack.brkTq = 0.0f;
+    wheel->rel_vel = 0.0f;
 }
 
 
@@ -109,7 +110,15 @@ SimWheelUpdateRide(tCar *car, int index)
 	RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
 	wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
 	prex = wheel->susp.x;
-	wheel->susp.x = wheel->rideHeight = wheel->pos.z - Zroad;
+
+    tdble new_susp_x= prex - wheel->rel_vel * SimDeltaTime;
+    tdble max_extend =  wheel->pos.z - Zroad;
+
+    if (max_extend < new_susp_x) {
+        new_susp_x = max_extend;
+        wheel->rel_vel = 0.0f;
+    } 
+	wheel->susp.x = wheel->rideHeight = new_susp_x;
 
 	// verify the suspension travel
 	SimSuspCheckIn(&(wheel->susp));
@@ -143,10 +152,15 @@ SimWheelUpdateForce(tCar *car, int index)
 	if ((wheel->state & SIM_SUSP_EXT) == 0) {
 		wheel->forces.z = axleFz + wheel->susp.force;
 		reaction_force = wheel->forces.z;
+        wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
 		if (wheel->forces.z < 0.0f) {
 			wheel->forces.z = 0.0f;
 		}
 	} else {
+        if (wheel->rel_vel < 0.0) {
+            wheel->rel_vel = 0.0;
+        }
+        wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
 		wheel->forces.z = 0.0f;
 	}
 
