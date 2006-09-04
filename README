@@ -139,6 +139,11 @@ Changes since 1.2.4
 - Fixed minor visual issues of the lotus-gt1 (Bernhard).
 - Reworked viper (Andrew).
 - Once again totally reworked viper (Bernhard).
+- New textures for all vipers (berniw, player, lliaw) (Bernhard).
+- Reduced front clift/increased rear clift of lotus-gt1 by 0.1
+  to make it more drivable with the keyboard (Bernhard).
+- Replaced the player setups for the viper, lotus and 360-modena
+  by berniw setups with minor adjustments (Bernhard).
 
 
 TODO for 1.3.0 test 1
