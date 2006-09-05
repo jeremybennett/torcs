@@ -144,6 +144,8 @@ Changes since 1.2.4
   to make it more drivable with the keyboard (Bernhard).
 - Replaced the player setups for the viper, lotus and 360-modena
   by berniw setups with minor adjustments (Bernhard).
+- Fixed aspect ratio of counters, works now fine with any screen
+  resolution (Bernhard).
 
 
 TODO for 1.3.0 test 1
