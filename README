@@ -146,6 +146,11 @@ Changes since 1.2.4
   by berniw setups with minor adjustments (Bernhard).
 - Fixed aspect ratio of counters, works now fine with any screen
   resolution (Bernhard).
+- Fixed multiplayer key handling when driver crashed (Mart Kelder,
+  Bernhard).
+- Fixed wrong key-state after pitmenu, excellent report by Mart Kelder,
+  needs more testing (Bernhard).
+
 
 
 TODO for 1.3.0 test 1
