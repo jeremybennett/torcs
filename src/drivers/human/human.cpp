@@ -87,6 +87,8 @@ static tKeyInfo skeyInfo[256];
 static int currentKey[256];
 static int currentSKey[256];
 
+static double lastKeyUpdate = -10.0;
+
 static int	firstTime = 0;
 
 #ifdef _WIN32
@@ -489,7 +491,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 		car->_raceCmd = RM_CMD_PIT_ASKED;
 	}
 
-	if (index == masterPlayer) {
+	if (lastKeyUpdate != s->currentTime) {
 		/* Update the controls only once for all the players */
 		updateKeys();
 
@@ -498,6 +500,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 		}
 
 		GfctrlMouseGetCurrent(mouseInfo);
+		lastKeyUpdate = s->currentTime;
 	}
 
 	if (((cmd[CMD_ABS].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_ABS].val]) ||
