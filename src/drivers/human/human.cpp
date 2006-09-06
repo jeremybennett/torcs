@@ -1063,6 +1063,27 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
 
 	car->_pitRepair = (int)car->_dammage;
 
+	int i;
+	int key;
+	tControlCmd *cmd;
+
+	if (HCtx[idx]) {
+		cmd = HCtx[idx]->CmdControl;
+		for (i = 0; i < nbCmdControl; i++) {
+			if (cmd[i].type == GFCTRL_TYPE_KEYBOARD || cmd[i].type == GFCTRL_TYPE_SKEYBOARD) {
+				key = cmd[i].val;
+				keyInfo[key].state = GFUI_KEY_UP;
+				keyInfo[key].edgeDn = 0;
+				keyInfo[key].edgeUp = 0;
+				skeyInfo[key].state = GFUI_KEY_UP;
+				skeyInfo[key].edgeDn = 0;
+				skeyInfo[key].edgeUp = 0;
+				currentKey[key] = GFUI_KEY_UP;
+				currentSKey[key] = GFUI_KEY_UP;
+			}
+		}
+	}
+
 	return ROB_PIT_MENU; /* The player is able to modify the value by menu */
 }
 
