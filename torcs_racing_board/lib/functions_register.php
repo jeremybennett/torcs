@@ -172,6 +172,11 @@
 			if ($_POST['register_password'] != $_POST['register_password2']) {
 				$formerrors |= ERR_PASSWORD_MISMATCH;
 			}
+
+			if (strlen(removeMagicQuotes($_POST['register_password'])) > MAX_USERNAME_LENGTH) {
+				die("Spammer...");
+			}
+
 			if (strlen(removeMagicQuotes($_POST['register_password'])) < MIN_PASSWORD_LENGTH) {
 				$formerrors |= ERR_PASSWORD_LENGTH;
 			} else {
