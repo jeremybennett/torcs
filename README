@@ -22,7 +22,7 @@ Linux Installation from Source
   1.8.3 works.
 - Requires OpenAL from www.torcs.org for best sound quality.
 - Untar the archive
-- cd into the torcs-1.2.4 directory
+- cd into the torcs-1.3.0 directory
 - ./configure (use --help for showing the options, of interest might be
   --enable-debug and --disable-xrandr).
 - make
@@ -45,7 +45,7 @@ Windows Installation from Source (Release)
   version goes to "runtime" and the debug to "runtimed".
 - requires VC++ 6.0 (tested with sp6)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.2.4 directory
+- cd into the torcs-1.3.0 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
 - select the TORCS project and the w32-Release version
@@ -60,12 +60,11 @@ Windows Installation from Source (Debug version)
   version goes to "runtimed" and the release to "runtime".
 - requires VC++ 6.0 (tested with sp6)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.2.4 directory
+- cd into the torcs-1.3.0 directory
 - run setup_win32_debug.bat
 - run setup_win32-data-from-CVS_debug.bat
 - select the TORCS project and the w32-Debug version
-- compile project (131 warnings about debug symbols too long, safe to ignore
-  those)
+- compile project (0 warnings)
 - cd into the "runtimed" directory.
 - run "wtorcs.exe"
 
@@ -156,14 +155,18 @@ Changes since 1.2.4
   as direct opponents) (Bernhard).
 - Improved possible packers thickness of category Track-RWD-GrA to 50mm
   (Bernhard).
+- Totally reworked michigan track (Bernhard).
+- Added -fno-strict-aliasing for now to avoid warnings with newer versions off
+  gcc which enables strict-aliasing by default (Bernhard).
+- Fixed compile warnings in img.cpp (Bernhard).
 
 
 TODO for 1.3.0 test 1
 ---------------------
-- Fix sound volume option (ask Christos). [Seems OK, check GUI code - Christos] (2.0)
-- When car is moving sideways, the engine sound source seems shifted to the
-  side under OpenAL (2.0).
-- SDL port (->2.0).
+
+
+TODO for 1.3.0 test 2
+---------------------
 - Check for memory leaks.
 - (get/write raceengine.xml to users local dir.)
 - screenshots to local dir.
@@ -172,10 +175,11 @@ TODO for 1.3.0 test 1
 
 
 
-
-
-Optional for 1.3.0:
+Later:
 -------------------
+- When car is moving sideways, the engine sound source seems shifted to the
+  side under OpenAL (2.0).
+- SDL port (->2.0).
 - Add valgrind option to "torcs".
 - Include suppressions file for valgrind.
 - (Fix parallel build with make -j n, breaks currently in SOLID) (Bernhard).
@@ -183,7 +187,7 @@ Optional for 1.3.0:
   emmissive color of lod (model becomes dark at a certain distance), single
   sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
-  (e.g. e-track-3, michigan, eventually wheel-1, e-track-2).
+  (e.g. e-track-3, eventually wheel-1, e-track-2).
 - Add cameras (spring)
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
