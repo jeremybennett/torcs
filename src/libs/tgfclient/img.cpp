@@ -1,10 +1,10 @@
 /***************************************************************************
-                          img.cpp -- Images manipulation                                 
-                             -------------------                                         
+                          img.cpp -- Images manipulation
+                             -------------------
     created              : Tue Aug 17 20:13:08 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
-    email                : torcs@free.fr   
-    version              : $Id$                                  
+    copyright            : (C) 1999 by Eric Espie
+    email                : torcs@free.fr
+    version              : $Id$
  ***************************************************************************/
 
 /***************************************************************************
@@ -59,121 +59,132 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 	png_infop info_ptr;
 	png_uint_32 width, height;
 	int	bit_depth, color_type, interlace_type;
-
+	
 	/*     png_color_16p	image_background; */
 	double gamma;
 	png_bytep *row_pointers;
 	unsigned char *image_ptr, *cur_ptr;
 	png_uint_32 rowbytes;
 	png_uint_32 i;
-
+	
 	if ((fp = fopen(filename, "rb")) == NULL) {
 		GfTrace("Can't open file %s\n", filename);
 		return (unsigned char *)NULL;
 	}
-
+	
 	if (fread(buf, 1, PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK) {
 		GfTrace("Can't read file %s\n", filename);
 		fclose(fp);
 		return (unsigned char *)NULL;
 	}
-
+	
 	if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0) {
 		GfTrace("File %s not in png format\n", filename);
 		fclose(fp);
 		return (unsigned char *)NULL;
 	}
-
+	
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
 	if (png_ptr == NULL) {
 		GfTrace("Img Failed to create read_struct\n");
 		fclose(fp);
 		return (unsigned char *)NULL;
 	}
-
+	
 	info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL)
-	{
+	if (info_ptr == NULL) {
 		fclose(fp);
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		return (unsigned char *)NULL;
 	}
-
+	
 	if (setjmp(png_ptr->jmpbuf))
 	{
-	    /* Free all of the memory associated with the png_ptr and info_ptr */
-	    png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-	    fclose(fp);
-	    /* If we get here, we had a problem reading the file */
-	    return (unsigned char *)NULL;
+		/* Free all of the memory associated with the png_ptr and info_ptr */
+		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+		fclose(fp);
+		/* If we get here, we had a problem reading the file */
+		return (unsigned char *)NULL;
 	}
-
+	
 	png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, PNG_BYTES_TO_CHECK);
-/*     png_set_invert_alpha(png_ptr); */
 	png_read_info(png_ptr, info_ptr);
-	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
-		&interlace_type, NULL, NULL);
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type, NULL, NULL);
 	*widthp = (int)width;
 	*heightp = (int)height;
-
+	
 	if (bit_depth == 1 && color_type == PNG_COLOR_TYPE_GRAY) png_set_invert_mono(png_ptr);
 	if (bit_depth == 16) {
 		png_set_swap(png_ptr);
 		png_set_strip_16(png_ptr);
 	}
-	if (bit_depth < 8) png_set_packing(png_ptr);
-	if (color_type == PNG_COLOR_TYPE_PALETTE) png_set_expand(png_ptr);
-	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) png_set_expand(png_ptr);
-	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_expand(png_ptr);
-	if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) png_set_gray_to_rgb(png_ptr);
-/*     if (png_get_bKGD(png_ptr, info_ptr, &image_background)) */
-/*         png_set_background(png_ptr, image_background, PNG_BACKGROUND_GAMMA_FILE, 1, 1.0); */
-    if (bit_depth == 8 && color_type == PNG_COLOR_TYPE_RGB) png_set_filler(png_ptr, 0xff, PNG_FILLER_AFTER);
-    if (png_get_gAMA(png_ptr, info_ptr, &gamma))
-	png_set_gamma(png_ptr, screen_gamma, gamma);
-    else
-	png_set_gamma(png_ptr, screen_gamma, 0.50);
-    png_read_update_info(png_ptr, info_ptr);
-    rowbytes = png_get_rowbytes(png_ptr, info_ptr);
-    /* RGBA expected... */
-    if (rowbytes != (4 * width)) {
-	GfTrace("%s bad byte count... %ld instead of %ld\n", filename, rowbytes, 4 * width);
+	
+	if (bit_depth < 8) {
+		png_set_packing(png_ptr);
+	}
+	
+	if (color_type == PNG_COLOR_TYPE_PALETTE) {
+		png_set_expand(png_ptr);
+	}
+	
+	if (color_type == PNG_COLOR_TYPE_GRAY && bit_depth < 8) {
+		png_set_expand(png_ptr);
+	}
+	
+	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
+		png_set_expand(png_ptr);
+	}
+	
+	if (color_type == PNG_COLOR_TYPE_GRAY || color_type == PNG_COLOR_TYPE_GRAY_ALPHA) {
+		png_set_gray_to_rgb(png_ptr);
+	}
+	
+	if (bit_depth == 8 && color_type == PNG_COLOR_TYPE_RGB) {
+		png_set_filler(png_ptr, 0xff, PNG_FILLER_AFTER);
+	}
+	
+	if (png_get_gAMA(png_ptr, info_ptr, &gamma)) {
+		png_set_gamma(png_ptr, screen_gamma, gamma);
+	} else {
+		png_set_gamma(png_ptr, screen_gamma, 0.50);
+	}
+	
+	png_read_update_info(png_ptr, info_ptr);
+	rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+	
+	// RGBA expected.
+	if (rowbytes != (4 * width)) {
+		GfTrace("%s bad byte count... %uld instead of %uld\n", filename, rowbytes, 4 * width);
+		fclose(fp);
+		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		return (unsigned char *)NULL;
+	}
+	
+	row_pointers = (png_bytep*)malloc(height * sizeof(png_bytep));
+	if (row_pointers == NULL) {
+		fclose(fp);
+		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		return (unsigned char *)NULL;
+	}
+	
+	image_ptr = (unsigned char *)malloc(height * rowbytes);
+	if (image_ptr == NULL) {
+		fclose(fp);
+		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
+		return (unsigned char *)NULL;
+	}
+	
+	for (i = 0, cur_ptr = image_ptr + (height - 1) * rowbytes ; i < height; i++, cur_ptr -= rowbytes) {
+		row_pointers[i] = cur_ptr;
+	}
+	
+	png_read_image(png_ptr, row_pointers);
+	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
+	free(row_pointers);
+	
 	fclose(fp);
-	png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-	return (unsigned char *)NULL;
-    }
-    row_pointers = (png_bytep*)malloc(height * sizeof(png_bytep));
-    if (row_pointers == NULL)
-	{
-	    fclose(fp);
-	    png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-	    return (unsigned char *)NULL;
-	}
-    image_ptr = (unsigned char *)malloc(height * rowbytes);
-    if (image_ptr == NULL)
-	{
-	    fclose(fp);
-	    png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-	    return (unsigned char *)NULL;
-	}
-    for (i = 0, cur_ptr = image_ptr + (height - 1) * rowbytes ; i < height; i++, cur_ptr -= rowbytes) {
-	row_pointers[i] = cur_ptr;
-    }
-    png_read_image(png_ptr, row_pointers);
-    png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-    free(row_pointers);
-
-    /* set the transparent color to magenta */
-/*     for (i = 0; i < height * rowbytes; i += 4) { */
-/* 	if ((image_ptr[i+0] == 255) && */
-/* 	    (image_ptr[i+1] == 0) && */
-/* 	    (image_ptr[i+2] == 255)) { */
-/* 	    image_ptr[i+3] = 0; */
-/* 	} */
-/*     } */
-    fclose(fp);
-    return image_ptr;
+	return image_ptr;
 }
 
 
@@ -189,69 +200,75 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 int
 GfImgWritePng(unsigned char *img, const char *filename, int width, int height)
 {
-    FILE		*fp;
-    png_structp		png_ptr;
-    png_infop		info_ptr;
-    png_bytep		*row_pointers;
-    png_uint_32		rowbytes;
-    int			i;
-    unsigned char	*cur_ptr;
+	FILE *fp;
+	png_structp	png_ptr;
+	png_infop info_ptr;
+	png_bytep *row_pointers;
+	png_uint_32 rowbytes;
+	int i;
+	unsigned char *cur_ptr;
 #if 0
     void		*handle;
 #endif
-    float		screen_gamma;
-    
-    fp = fopen(filename, "wb");
-    if (fp == NULL) {
-	GfTrace("Can't open file %s\n", filename);
-	return -1;
-    }
-    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
-    if (png_ptr == NULL) {
-	return -1;
-    }
-    info_ptr = png_create_info_struct(png_ptr);
-    if (info_ptr == NULL) {
-	png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
-	return -1;
-    }
-    if (setjmp(png_ptr->jmpbuf))
-    {    
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-        fclose(fp);
-        return -1;
-    }
-    png_init_io(png_ptr, fp);
-    png_set_IHDR(png_ptr, info_ptr, width, height, 8, PNG_COLOR_TYPE_RGB,
-		 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	float		screen_gamma;
+	
+	fp = fopen(filename, "wb");
+	if (fp == NULL) {
+		GfTrace("Can't open file %s\n", filename);
+		return -1;
+	}
+	
+	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, (png_error_ptr)NULL, (png_error_ptr)NULL);
+	if (png_ptr == NULL) {
+		return -1;
+	}
+	
+	info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return -1;
+	}
+	
+	if (setjmp(png_ptr->jmpbuf)) {    
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(fp);
+		return -1;
+	}
+	
+	png_init_io(png_ptr, fp);
+	png_set_IHDR(png_ptr, info_ptr, width, height, 8, PNG_COLOR_TYPE_RGB,
+			PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 #if 0
     handle = GfParmReadFile(GFSCR_CONF_FILE, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
     GfParmReleaseHandle(handle);
 #else
-    screen_gamma = 2.0;
+	screen_gamma = 2.0;
 #endif
-    png_set_gAMA(png_ptr, info_ptr, screen_gamma);
-    /* png_set_bgr(png_ptr);    TO INVERT THE COLORS !!!! */
-    png_write_info(png_ptr, info_ptr);
-    png_write_flush(png_ptr);
-    
-    rowbytes = width * 3;
-    row_pointers = (png_bytep*)malloc(height * sizeof(png_bytep));
-    if (row_pointers == NULL) {
-	fclose(fp);
+	png_set_gAMA(png_ptr, info_ptr, screen_gamma);
+	/* png_set_bgr(png_ptr);    TO INVERT THE COLORS !!!! */
+	png_write_info(png_ptr, info_ptr);
+	png_write_flush(png_ptr);
+	
+	rowbytes = width * 3;
+	row_pointers = (png_bytep*)malloc(height * sizeof(png_bytep));
+	
+	if (row_pointers == NULL) {
+		fclose(fp);
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		return -1;
+	}
+	
+	for (i = 0, cur_ptr = img + (height - 1) * rowbytes ; i < height; i++, cur_ptr -= rowbytes) {
+		row_pointers[i] = cur_ptr;
+	}
+	
+	png_write_image(png_ptr, row_pointers);
+	png_write_end(png_ptr, (png_infop)NULL);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
-	return -1;
-    }
-    for (i = 0, cur_ptr = img + (height - 1) * rowbytes ; i < height; i++, cur_ptr -= rowbytes) {
-	row_pointers[i] = cur_ptr;
-    }
-    png_write_image(png_ptr, row_pointers);
-    png_write_end(png_ptr, (png_infop)NULL);
-    png_destroy_write_struct(&png_ptr, &info_ptr);
-    fclose(fp);
-    free(row_pointers);
-    return 0;
+	fclose(fp);
+	free(row_pointers);
+	return 0;
 }
 
 /** Free the texture
