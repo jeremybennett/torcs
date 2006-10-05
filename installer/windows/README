@@ -39,7 +39,9 @@ Updating the torcs.nsi file
 - Run the installer and install to a clean directory, check with diff against
   the fresh built tree from above.  
 
-
+- For unistall entries use this after an install uninstall cycle:
+		
+		find . -type f | sed 's/\.\(.*\)$/  Delete "$INSTDIR\1"/g'
 
 Creating binary patches
 -----------------------
