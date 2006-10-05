@@ -160,6 +160,9 @@ Changes since 1.2.4
   gcc which enables strict-aliasing by default (Bernhard).
 - Fixed compile warnings in img.cpp (Bernhard).
 - Updated bat files to deploy michigan, ruudskogen and car1-trb1 (Bernhard).
+- Updated installer (Bernhard).
+- Fixed ancient and obscure menu crash bug (not executed "Quit" releases handle
+  of main menu "Quit") (Bernhard).
 
 
 TODO for 1.3.0 test 1
