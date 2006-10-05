@@ -76,8 +76,8 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\modules\track
 # PROP Ignore_Export_Lib 1
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /W2 /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
-# SUBTRACT CPP /WX /Fr /YX
+# ADD CPP /nologo /G6 /W2 /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRACK_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /Fr /FD /GZ /c
+# SUBTRACT CPP /WX /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
