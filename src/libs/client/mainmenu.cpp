@@ -34,9 +34,9 @@ tModList *RacemanModLoaded = (tModList*)NULL;
 static void
 TorcsMainMenuActivate(void * /* dummy */)
 {
-    if (RacemanModLoaded != NULL) {
-	GfModUnloadList(&RacemanModLoaded);
-    }
+	if (RacemanModLoaded != NULL) {
+		GfModUnloadList(&RacemanModLoaded);
+	}
 }
 
 /*
@@ -91,7 +91,7 @@ TorcsMainMenuInit(void)
 
     GfuiMenuBackQuitButtonCreate(menuHandle,
 				 "Quit", "Quit TORCS",
-				 TorcsExitMenuInit(menuHandle), GfuiScreenActivate);
+				 TorcsMainExitMenuInit(menuHandle), GfuiScreenActivate);
 
     return 0;
 }

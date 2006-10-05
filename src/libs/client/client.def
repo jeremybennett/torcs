@@ -9,6 +9,7 @@ SECTIONS .data READ WRITE
 EXPORTS
 	?TorcsEntry@@YAXXZ
 	TorcsExitMenuInit
+	TorcsMainExitMenuInit
 	RmTrackSelect
 	RmGetTrackName
 	RmDriversSelect

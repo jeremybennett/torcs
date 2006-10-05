@@ -34,6 +34,31 @@ endofprog(void * /* dummy */)
 }
 
 static void *exitmenuHandle = NULL;
+static void *exitMainMenuHandle = NULL;
+
+
+void * exitMenuInit(void *menu, void *menuHandle)
+{
+    if (menuHandle) {
+		GfuiScreenRelease(menuHandle);
+    }
+    
+    menuHandle = GfuiMenuScreenCreate("Quit ?");
+    GfuiScreenAddBgImg(menuHandle, "data/img/splash-quit.png");
+
+    GfuiMenuButtonCreate(menuHandle,
+		      "No, Back to Game",
+		      "Return to TORCS",
+		      menu,
+		      GfuiScreenActivate);
+    
+    GfuiMenuButtonCreate(menuHandle,
+		      "Yes, Let's Quit",
+		      "Exit of TORCS",
+		      NULL,
+		      endofprog);
+    return menuHandle;
+}
 
 /*
  * Function
@@ -51,27 +76,15 @@ static void *exitmenuHandle = NULL;
  * Remarks
  *	
  */
-void *
-TorcsExitMenuInit(void *mainMenu)
+void * TorcsExitMenuInit(void *menu)
 {
-    if (exitmenuHandle) {
-	GfuiScreenRelease(exitmenuHandle);
-    }
-    
-    exitmenuHandle = GfuiMenuScreenCreate("Quit ?");
-    GfuiScreenAddBgImg(exitmenuHandle, "data/img/splash-quit.png");
-
-    GfuiMenuButtonCreate(exitmenuHandle,
-		      "No, Back to Game",
-		      "Return to TORCS",
-		      mainMenu,
-		      GfuiScreenActivate);
-    
-    GfuiMenuButtonCreate(exitmenuHandle,
-		      "Yes, Let's Quit",
-		      "Exit of TORCS",
-		      NULL,
-		      endofprog);
-    return exitmenuHandle;
+	exitmenuHandle = exitMenuInit(menu, exitmenuHandle);
+	return exitmenuHandle;
 }
 
+
+void * TorcsMainExitMenuInit(void *mainMenu)
+{
+	exitMainMenuHandle = exitMenuInit(mainMenu, exitMainMenuHandle);
+	return exitMainMenuHandle;
+}

@@ -25,7 +25,8 @@
 #include <windows.h>
 #endif
 
-extern void *TorcsExitMenuInit(void *mainMenu);
+extern void *TorcsExitMenuInit(void *menu);
+extern void *TorcsMainExitMenuInit(void *mainMenu);
 
 #endif /* _EXITMENU_H_ */ 
 
