@@ -71,7 +71,11 @@ ReInit(void)
 	ReInfo = (tRmInfo *)calloc(1, sizeof(tRmInfo));
 	ReInfo->s = (tSituation *)calloc(1, sizeof(tSituation));
 	ReInfo->modList = &ReRaceModList;
-	ReInfo->_reParam = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+
+	char buf[1024];
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), RACE_ENG_CFG);
+
+	ReInfo->_reParam = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	GfOut("Loading Track Loader...\n");
 	dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "track", "");

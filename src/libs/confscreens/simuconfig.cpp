@@ -2,7 +2,7 @@
 
     file        : simuconfig.cpp
     created     : Wed Nov  3 21:48:26 CET 2004
-    copyright   : (C) 2004 by Eric Espié                        
+    copyright   : (C) 2004 by Eric Espiï¿½                       
     email       : eric.espie@free.fr  
     version     : $Id$                                  
 
@@ -29,6 +29,7 @@
 #include <raceinit.h>
 
 #include "simuconfig.h"
+#include <portability.h>
 
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
@@ -50,7 +51,10 @@ static void ReadSimuCfg(void)
 	char *versionName;
 	int i;
 
-	void *paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	char buf[1024];
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), RACE_ENG_CFG);
+
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	versionName = GfParmGetStr(paramHandle, "Modules", "simu", simuVersionList[0]);
 
 	for (i = 0; i < nbVersions; i++) {
@@ -69,14 +73,17 @@ static void ReadSimuCfg(void)
 /* Save the choosen values in the corresponding parameter file */
 static void SaveSimuVersion(void * /* dummy */)
 {
-    void *paramHandle = GfParmReadFile(RACE_ENG_CFG, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-    GfParmSetStr(paramHandle, "Modules", "simu", simuVersionList[curVersion]);
-    GfParmWriteFile(NULL, paramHandle, "raceengine");
-    GfParmReleaseHandle(paramHandle);
+	char buf[1024];
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), RACE_ENG_CFG);
 
-    /* return to previous screen */
-    GfuiScreenActivate(prevHandle);
-    return;
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	GfParmSetStr(paramHandle, "Modules", "simu", simuVersionList[curVersion]);
+	GfParmWriteFile(NULL, paramHandle, "raceengine");
+	GfParmReleaseHandle(paramHandle);
+	
+	/* return to previous screen */
+	GfuiScreenActivate(prevHandle);
+	return;
 }
 
 /* change the simulation version */

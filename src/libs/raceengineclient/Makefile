@@ -2,9 +2,9 @@
 #
 #    file        : Makefile
 #    created     : Sat Nov 16 09:38:51 CET 2002
-#    copyright   : (C) 2002 by Eric Espié                        
+#    copyright   : (C) 2002, 3006 by Eric EspiÃ©, Bernhard Wymann
 #    email       : Eric.Espie@torcs.org   
-#    version     : $Id$                                  
+#    version     : $Id$
 #
 ##############################################################################
 #
@@ -31,11 +31,14 @@ SHIPDIR      = config
 
 SHIP         = raceengine.xml style.xsl
 
+CONFIGCREATEDIRS = ${SHIPDIR}
+
+CONFIG    = $(SHIP)
+
+
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
 src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 
 include ${MAKE_DEFAULT}
-
-
