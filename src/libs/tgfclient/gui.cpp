@@ -31,6 +31,8 @@
 #include <tgfclient.h>
 #include "gui.h"
 
+#include <portability.h>
+
 tGfuiScreen	*GfuiScreen;	/* current screen */
 static int	GfuiMouseVisible = 1;
 tMouseInfo	GfuiMouse;
