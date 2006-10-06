@@ -276,8 +276,8 @@ the Free Software Foundation; either version 2 of the License, or
     <attstr name="name" val="Ruudskogen" />
     <attstr name="category" val="road" />
     <attnum name="version" val="4" />
-    <attstr name="author" val="Tor Arne Hustvedt, Andrew Sumner" />
-    <attstr name="description" val="A quick forested track converted from Racer" />
+    <attstr name="author" val="A. Sumner" />
+	<attstr name="description" val="Original track created by Tor Arne Hustvedt for Racer" />
   </section>
   <section name="Graphic">
     <attstr name="3d description" val="ruudskogen.acc" />

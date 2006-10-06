@@ -168,7 +168,7 @@ the Free Software Foundation; either version 2 of the License, or
     <attstr name="name" val="Wheel 2" />
     <attstr name="category" val="road" />
     <attnum name="version" val="4" />
-    <attstr name="author" val="Andrew Sumner" />
+    <attstr name="author" val="A. Sumner" />
     <attstr name="description" val="Fast, curvy track" />
   </section>
   <section name="Graphic">

@@ -206,7 +206,7 @@ the Free Software Foundation; either version 2 of the License, or
     <attstr name="name" val="Dirt 3" />
     <attstr name="category" val="dirt" />
     <attnum name="version" val="4" />
-    <attstr name="author" val="Andrew Sumner" />
+    <attstr name="author" val="A. Sumner" />
     <attstr name="description" val="A stroll in the Australian countryside" />
   </section>
   <section name="Graphic">
