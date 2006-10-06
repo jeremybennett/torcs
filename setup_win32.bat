@@ -265,6 +265,7 @@ if exist .\src\drivers\berniw\4\mixed-1.xml copy .\src\drivers\berniw\4\mixed-1.
 if exist .\src\drivers\berniw\4\mixed-2.xml copy .\src\drivers\berniw\4\mixed-2.xml .\runtime\drivers\berniw\4\mixed-2.xml
 if exist .\src\drivers\berniw\4\spring.xml copy .\src\drivers\berniw\4\spring.xml .\runtime\drivers\berniw\4\spring.xml
 if exist .\src\drivers\berniw\4\wheel-1.xml copy .\src\drivers\berniw\4\wheel-1.xml .\runtime\drivers\berniw\4\wheel-1.xml
+if exist .\src\drivers\berniw\4\ole-road-1.xml copy .\src\drivers\berniw\4\ole-road-1.xml .\runtime\drivers\berniw\4\ole-road-1.xml
 
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime\drivers
