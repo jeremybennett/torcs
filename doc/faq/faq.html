@@ -3,7 +3,7 @@
 <!--
 	file        : faq.html
 	created     : Wed Feb  25 18:27:13 CET 2004
-	copyright   : (C) 2004 by Bernhard Wymann
+	copyright   : (C) 2004-2006 by Bernhard Wymann
 	email       : berniw@bluewin.ch
 	version     : $Id$
 
@@ -30,7 +30,7 @@
       <td class="maincontent">
 
         <a name="topofthepage">
-		   <h1>The Official TORCS 1.2.4 FAQ</h1>
+		   <h1>The Official TORCS 1.3.0 FAQ</h1>
 		</a>
 
 		<h2>0. About this Document.</h2>
@@ -111,6 +111,7 @@
 			<li><h4><a href="#c4_4_2">4.4.2 Can I develop a robot using Windows?</a></h4></li>
 			<li><h4><a href="#c4_4_3">4.4.3 Is my joystick/steering wheel/gamepad supported?</a></h4></li>
 			<li><h4><a href="#c4_4_4">4.4.4 How do I set up a multiplayer game?</a></h4></li>
+			<li><h4><a href="#c4_4_5">4.4.5 I cannot adjust the joystick/wheel centering.</a></h4></li>
 		  </ul>
 		</ul>
 
@@ -147,7 +148,7 @@
 
 		<h3><a name="c0_2">0.2 Document version.</a></h3>
 		<p>
-			2005-08-25.
+			2006-10-06.
 		</p>
 
 
@@ -221,6 +222,12 @@
 		</p>
 
 		<h3><a name="c1_8">1.8 Why do you not replace GLUT with SDL?</a></h3>
+		
+		<p>
+		  We will switch soon because of portable threading and networking, but for fun I leave the	
+		  former answer.
+		</p>
+
 		<p>
 		  Ah, simple question, simple answer. Like you can easily see G-L-U-T has four letters
 		  and S-D-L has just three letters, that should be enough proof of superiority, is it? Ok,
@@ -661,6 +668,16 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			<li>Have fun;-)</li>
 		  </ul>
 		</p>
+
+
+		<h4><a name="c4_4_5">4.4.5 I cannot adjust the joystick/wheel centering.</a></h4>
+		<p>
+			Before you start TORCS make sure that the joystick/wheel is correctly set up/calibrated for the system.
+			You can use the "jscal" and "jstest" utilities for that, you should find them in your Linux distribution.
+			If this works fine center your axis (e.g. if you have noncentering axis like sliders), the start up TORCS
+			and set up your players and controls. It is important to center the axis before you go to the calibration.
+		</p>
+
 
 
 		<br/><h2>5. Problem reporting.</h2>
