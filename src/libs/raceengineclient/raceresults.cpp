@@ -189,7 +189,7 @@ ReUpdateStandings(void)
 	free(standings);
 
 	sprintf(str1, "%sconfig/params.dtd", GetDataDir());
-	sprintf(str2, "<?xml-stylesheet type=\"text/xsl\" href=\"%sconfig/style.xsl\"?>", GetDataDir());
+	sprintf(str2, "<?xml-stylesheet type=\"text/xsl\" href=\"file:///%sconfig/style.xsl\"?>", GetDataDir());
 
 	GfParmSetDTD (results, str1, str2);
 	GfParmWriteFile(0, results, "Results");
