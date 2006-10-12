@@ -89,6 +89,12 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.3.0 test 1
+--------------------------
+- Fixed bt pit bug reported by Mart Kelder (Mark Kelder, Bernhard).
+- Fixed missing car category reported by Mart Kelder (Mart Kelder, Bernhard).
+
+
 Changes since 1.2.4
 -------------------
 - Added Doppler workaround for OpenAL Windows (Christos)
