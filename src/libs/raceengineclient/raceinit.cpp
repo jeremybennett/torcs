@@ -36,6 +36,7 @@
 #include <portability.h>
 #include <string>
 #include <map>
+#include <portability.h>
 
 #include "raceengine.h"
 #include "racemain.h"
@@ -570,6 +571,9 @@ ReInitCars(void)
 					sprintf(buf, "Loading Driver %-20s... Car: %s", curModInfo->name, elt->_carName);
 					RmLoadingScreenSetText(buf);
 					if (category != 0) {
+						strncpy(elt->_category, category, MAX_NAME_LEN - 1);
+						elt->_category[MAX_NAME_LEN - 1] = '\0';
+
 						/* Read Car Category specifications */
 						sprintf(buf, "categories/%s.xml", category);
 						GfOut("Category Specification: %s\n", buf);
@@ -594,6 +598,7 @@ ReInitCars(void)
 						elt->_carHandle = handle;
 						//GfParmWriteFile("toto.xml", handle, "toto");
 					} else {
+						elt->_category[0] = '\0';
 						GfTrace("Bad Car category for driver %s\n", elt->_name);
 						break;
 					}

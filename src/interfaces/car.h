@@ -94,7 +94,7 @@ typedef struct {
 #define _name		info.name			/**< short cut to tInitCar#name */
 #define _teamname	info.teamname		/**< short cut to tInitCar#teamname */
 #define _carName	info.carName			/**< short cut to tInitCar#carName */
-#define _category	info.cartegory			/**< short cut to tInitCar#cartegory */
+#define _category	info.category			/**< short cut to tInitCar#category */
 #define _driverType	info.driverType			/**< short cut to tInitCar#driverType */
 #define _skillLevel	info.skillLevel			/**< short cut to tInitCar#skillLevel */
 #define _raceNumber	info.raceNumber			/**< short cut to tInitCar#raceNumber */
