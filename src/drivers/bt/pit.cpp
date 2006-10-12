@@ -43,8 +43,8 @@ Pit::Pit(tSituation *s, Driver *driver)
 		p[4].x = p[3].x + pitinfo->len;
 		p[0].x = pitinfo->pitEntry->lgfromstart;
 		p[1].x = pitinfo->pitStart->lgfromstart;
-		p[5].x = pitinfo->pitEnd->lgfromstart + pitinfo->len/2.0f;
-		p[6].x = pitinfo->pitExit->lgfromstart;
+		p[5].x = pitinfo->pitEnd->lgfromstart + pitinfo->pitEnd->length;
+		p[6].x = pitinfo->pitExit->lgfromstart + pitinfo->pitExit->length;
 
 		pitentry = p[0].x;
 		pitexit = p[6].x;
