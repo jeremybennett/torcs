@@ -422,7 +422,7 @@ float SegLearn::predictedError (tCarElt* car)
 
 float SegLearn::predictedAccel (tTrackSeg* seg)
 {
-    int segid = seg->id;
+    //int segid = seg->id;
     return 0.0f;//derror[segid];
 }
 
