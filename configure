@@ -4979,7 +4979,6 @@ fi;
 
 CFLAGS="$CFLAGS $ADDCFLAGS"
 CXXFLAGS="$CXXFLAGS $ADDCFLAGS"
-LDFLAGS="$LDFLAGS -L$x_libraries"
 
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
@@ -6450,6 +6449,9 @@ else
 echo "$as_me: error: Can't find libm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"" >&2;}
    { (exit 1); exit 1; }; }
 fi
+
+
+LDFLAGS="$LDFLAGS -L$x_libraries"
 
 
 echo "$as_me:$LINENO: checking for XOpenDisplay in -lX11" >&5

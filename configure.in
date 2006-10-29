@@ -76,7 +76,6 @@ AC_ARG_ENABLE(glextprototypes,
 
 CFLAGS="$CFLAGS $ADDCFLAGS"
 CXXFLAGS="$CXXFLAGS $ADDCFLAGS"
-LDFLAGS="$LDFLAGS -L$x_libraries"
 
 dnl Checks for includes (devel part of packages)
 AC_CHECK_HEADER(GL/gl.h,, AC_MSG_ERROR([Can't find GL/gl.h. Look for Mesa devel packages for your distro.]))
@@ -97,6 +96,9 @@ dnl Checks for libraries.
 
 dnl Replace `main' with a function in -lm:
 AC_CHECK_LIB(m, sin,,AC_MSG_ERROR([Can't find libm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
+
+LDFLAGS="$LDFLAGS -L$x_libraries"
+
 dnl Replace `main' with a function in -lX11:
 AC_CHECK_LIB(X11, XOpenDisplay,,AC_MSG_ERROR([Can't find libX11. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 dnl Replace `main' with a function in -lXext:
