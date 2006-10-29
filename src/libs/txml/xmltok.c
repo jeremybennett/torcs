@@ -473,16 +473,20 @@ static const struct normal_encoding little2_encoding = {
     0
 #endif
   },
+	{
 #include "asciitab.h"
 #include "latin1tab.h"
+	}
 };
 
 #if BYTE_ORDER != 21
 
 static const struct normal_encoding internal_little2_encoding = { 
   { VTABLE, 2, 0, 1 },
+	{
 #include "iasciitab.h"
 #include "latin1tab.h"
+	}
 };
 
 #endif
@@ -536,16 +540,20 @@ static const struct normal_encoding big2_encoding = {
   0
 #endif
   },
+	{
 #include "asciitab.h"
 #include "latin1tab.h"
+	}
 };
 
 #if BYTE_ORDER != 12
 
 static const struct normal_encoding internal_big2_encoding = {
   { VTABLE, 2, 0, 1 },
+	{
 #include "iasciitab.h"
 #include "latin1tab.h"
+	}
 };
 
 #endif

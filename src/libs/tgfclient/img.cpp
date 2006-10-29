@@ -155,7 +155,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 	
 	// RGBA expected.
 	if (rowbytes != (4 * width)) {
-		GfTrace("%s bad byte count... %uld instead of %uld\n", filename, rowbytes, 4 * width);
+		GfTrace("%s bad byte count... %u instead of %u\n", filename, rowbytes, 4 * width);
 		fclose(fp);
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		return (unsigned char *)NULL;

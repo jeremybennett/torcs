@@ -392,7 +392,8 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	    trackvertices[3*nbvert]   = x;			\
 	    trackvertices[3*nbvert+1] = y;			\
 	    trackvertices[3*nbvert+2] = z;			\
-	    trackindices[nbvert]      = nbvert++;		\
+	    trackindices[nbvert]      = nbvert;		\
+	    ++nbvert;								\
 	}							\
     } while (0)
 
@@ -403,7 +404,8 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	    trackvertices[3*nbvert]   = x;			\
 	    trackvertices[3*nbvert+1] = y;			\
 	    trackvertices[3*nbvert+2] = z;			\
-	    trackindices[nbvert]      = nbvert++;		\
+	    trackindices[nbvert]      = nbvert;		\
+	    ++nbvert;								\
 	    printf("x=%f y=%f z=%f  u=%f v=%f\n",		\
 		   (tdble)(x), (tdble)(y), (tdble)(z),		\
 		   (tdble)(t1), (tdble)(t2));			\
