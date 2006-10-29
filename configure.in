@@ -16,7 +16,7 @@
 
 AC_INIT(Make-config.in)
 AC_CONFIG_HEADERS(config.h)
-AM_INIT_AUTOMAKE(torcs, 1.3.0-test1)
+AM_INIT_AUTOMAKE(torcs, 1.3.0)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -86,7 +86,8 @@ AC_CHECK_HEADER(X11/Xlib.h,, AC_MSG_ERROR([Can't find X11/Xlib.h. Please check c
 AC_CHECK_HEADER(X11/Xatom.h,, AC_MSG_ERROR([Can't find X11/Xatom.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(X11/keysym.h,, AC_MSG_ERROR([Can't find X11/keysym.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(plib/ssg.h,, AC_MSG_ERROR([Can't find plib/ssg.h. PLIB can be found on http://plib.sourceforge.net/]))
-AC_CHECK_HEADER(AL/al.h,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL can be found on http://www.openal.org/]))
+AC_CHECK_HEADER(AL/al.h,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL and FreeALUT can be found on http://www.openal.org/]))
+AC_CHECK_HEADER(AL/alut.h,, AC_MSG_ERROR([Can't find AL/alut.h. OpenAL and FreeALUT can be found on http://www.openal.org/]))
 
 #AC_CHECK_HEADER(X11/Xfuncproto.h,, AC_MSG_ERROR([Can't find X11/Xfuncproto.h. Please check config.log and if you can't solve the problem send the file totorcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 #AC_CHECK_HEADER(X11/extensions/randr.h,, AC_MSG_ERROR([Can't find X11/extensions/randr.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
@@ -114,6 +115,9 @@ AC_CHECK_LIB(Xxf86vm, XF86VidModeSetViewPort,,AC_MSG_ERROR([Can't find libXxf86v
 AC_CHECK_LIB(Xrender, XRenderSetSubpixelOrder,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(Xrandr, XRRQueryVersion,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(openal, alEnable,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL can be found on http://www.openal.org/]))
+AC_CHECK_LIB(alut, alutLoadWAVFile,
+	LDFLAGS="$LDFLAGS -lalut",
+	LDFLAGS="$LDFLAGS")
 
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_FUNC(dlopen,,AC_MSG_ERROR([Can't find dlopen function. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
