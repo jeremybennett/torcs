@@ -49,26 +49,15 @@ Creating binary patches
 - Create a bat file to create the patch files in cygwin, run it aftrwards in the
   cmd shell (assumes GenPat in current dir):
 
-	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/
-	^Files \(\/.*\) and \(\/.*\/\)\(.*\)\.\(.*\) differ$/\GenPat \1 \2\3\.\4 \3_\4.
-	pat/' | sed 's/\//\\/g' | sed 's/GenPat/\.\\GenPat \/B=8 /' | sed 's/\\cygdrive
-	\\\(.\)/\1:/g'> gaga.bat
+	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/^Files \(\/.*\) and \(\/.*\/\)\(.*\)\.\(.*\) differ$/\GenPat \1 \2\3\.\4 \3_\4.pat/' | sed 's/\//\\/g' | sed 's/GenPat/\.\\GenPat -B=8 /' | sed 's/\\cygdrive\\\(.\)/\1:/g'> gaga.bat
 
 - Create the file list for the installer:
 
-	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/
-	^Files \(\/.*\) and \(\/.*\/\)\(.*\)\.\(.*\) differ$/  File \/oname=\$TEMP\\\3_
-	\4\.pat \3_\4\.pat/' | sed 's/\//\\/g' | sed 's/\\oname/\/oname/' > files
+	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/^Files \(\/.*\) and \(\/.*\/\)\(.*\)\.\(.*\) differ$/  File \/oname=\$TEMP\\\3_\4\.pat \3_\4\.pat/' | sed 's/\//\\/g' | sed 's/\\oname/\/oname/' > files
 
 - Create the patching commands:
 
-	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/
-	^Files \(\/.*\) and \(\/.*torcs\/\)\(.*\)\.\(.*\) differ$/  DetailPrint "Updati
-	ng $INSTDIR\\\3\.\4\.\.\."@@@@  vpatch::vpatchfile "$TEMP\\/' | sed 's/\//\\/g'
-	| sed 's/\(\$INSTDIR.*\\\)\(.*\)\.\(.*\)\(\.\.\..*\)/\1\2\.\3\4\2_\3.pat" "\1\
-	2\.\3" "\1\2\.\3_"@@@@  Pop \$R0@@@@  DetailPrint "Result: \$R0"@@@@  StrCmp \$
-	R0 "OK" 0 \+3@@@@  Delete "\1\2\.\3"@@@@  Rename "\1\2\.\3_" "\1\2\.\3"@@@@  De
-	lete "$TEMP\\\2_\3.pat"@@@@/' | sed 's/@@@@/\n/g' > commands
+	$ diff -rq /cygdrive/c/Programme/torcs-t2 /cygdrive/c/Programme/torcs | sed 's/^Files \(\/.*\) and \(\/.*torcs\/\)\(.*\)\.\(.*\) differ$/  DetailPrint "Updating $INSTDIR\\\3\.\4\.\.\."@@@@  vpatch::vpatchfile "$TEMP\\/' | sed 's/\//\\/g'| sed 's/\(\$INSTDIR.*\\\)\(.*\)\.\(.*\)\(\.\.\..*\)/\1\2\.\3\4\2_\3.pat" "\1\2\.\3" "\1\2\.\3_"@@@@  Pop \$R0@@@@  DetailPrint "Result: \$R0"@@@@  StrCmp \$R0 "OK" 0 \+3@@@@  Delete "\1\2\.\3"@@@@  Rename "\1\2\.\3_" "\1\2\.\3"@@@@  Delete "$TEMP\\\2_\3.pat"@@@@/' | sed 's/@@@@/\n/g' > commands
 
 - Do not forget to update the registery, fix menus, etc.
 
