@@ -504,7 +504,15 @@ GfScrReinit(void * /* dummy */)
 		}
 	}
 	
-	retcode = execlp(cmd, cmd, (const char *)NULL);
+	char cmdarg[CMDSIZE];
+	snprintf(cmdarg, CMDSIZE, "\"%swtorcs.exe\"", GetLocalDir());
+	for (i = 0; i < CMDSIZE && cmdarg[i] != NULL; i++) {
+		if (cmdarg[i] == '/') {
+			cmdarg[i] = '\\';
+		}
+	}
+
+	retcode = execlp(cmd, cmdarg, (const char *)NULL);
 #else
     GfScrShutdown();
 
