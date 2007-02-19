@@ -138,7 +138,7 @@
 
 	
   <section name="Car">
-    <attstr name="category" val="Track-RWD-GrB"/>
+    <attstr name="category" val="Track-RWD-GrA"/>
     <attnum name="body length" unit="m" val="4.47"/>
     <attnum name="body width" unit="m" val="1.94"/>
     <attnum name="body height" unit="m" val="1.15"/>
