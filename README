@@ -94,7 +94,7 @@ Changes since 1.3.0
 - Applied patch for screen resolution change program crash when the path
   contained spaces (Brian Gavin, Bernhard).
 - Added new car, car2-trb1 (Bernhard).
-
+- Added new car, car3-trb1 (Bernhard).
 
 
 TODO for 1.4.0
