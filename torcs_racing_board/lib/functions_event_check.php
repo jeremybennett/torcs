@@ -60,4 +60,46 @@
 		return FALSE;
 	}
 
+	// Function to check if joining is currently allowed (for joining during the season).
+	// Does just verify the timely correctness, permissions are not checked.
+	function isJoiningPhase(&$race_tablename, $eventid_for_db, $signin_start, $signin_end)
+	{
+		$sql = "SELECT r.robot_submission_start AS start, r.robot_submission_end AS end " .
+			   "FROM $race_tablename r WHERE r.eventid=$eventid_for_db ORDER BY r.robot_submission_end";
+		$result = mysql_query($sql);
+
+		$rows = 0;
+		$ct = time();
+		$signin_end_time = strtotime($signin_end);
+
+		while ($myrow = mysql_fetch_array($result)) {
+			// The first interval starts at signin start.
+			if ($rows == 0) {
+				$starttime = $signin_start - $ct; 
+			} else {
+				$starttime = strtotime($myrow['start']) - $ct;
+			}
+
+			$submission_end_time = strtotime($myrow['end']);	
+			if ($submission_end_time > $signin_end_time) {
+				$endtime = $signin_end_time;
+			} else {
+				$endtime = $submission_end_time;
+			}
+						
+			$endtime = $endtime - $ct;
+
+			if ($starttime <= 0 && $endtime >= 0) {
+				return TRUE;
+			}
+
+			if ($submission_end_time >= $signin_end_time) {
+				return FALSE;
+			}
+
+			$rows++;
+		}
+		return FALSE;
+	}
+
 ?>

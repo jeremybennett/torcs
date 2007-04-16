@@ -19,6 +19,7 @@
 	require_once($path_to_root . 'lib/template.inc');
 	require_once($path_to_root . 'lib/functions_validate.php');
 	require_once($path_to_root . 'lib/functions_event.php');
+	require_once($path_to_root . 'lib/functions_event_check.php');
 
 	if (!isset($_SESSION['uid']) ) {
 		session_defaults();
@@ -49,7 +50,7 @@
 	// Logout?
 	checkLogout();
 
-	$error = registerRobot($event_tablename, $event_team_table, $event_car_table, $team_tablename, $path_to_root);
+	$error = registerRobot($event_tablename, $race_tablename, $event_team_table, $event_car_table, $team_tablename, $path_to_root);
 
 	if ($_SESSION['logged'] == TRUE) {
 		// Login template for statusbar.

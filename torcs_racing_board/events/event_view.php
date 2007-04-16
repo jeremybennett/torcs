@@ -146,6 +146,9 @@
 				$registertimeframe = true;
 			}
 
+			// Check if upload is allowed (joining during the season)
+			$joining_phase = isJoiningPhase($race_tablename, $eventid_for_db, $myrow['signin_start'], $myrow['signin_end']);
+
 			$uid_for_db = quoteString(intval($_SESSION['uid']));
 			$has_team = FALSE;
 			if ($_SESSION['usergroup'] == 'racer') {
@@ -338,6 +341,9 @@
 				}
 				if (!$registertimeframe) {
 					$page->set_var("raceteamaddvar", "Event is not in register phase.");
+				}
+				if (!$joining_phase && $registertimeframe) {
+					$page->set_var("raceteamaddvar", "Event is in progress, join during the next robot upload phase.");
 				}
 				if ($teams_left < 1) {
 					$page->set_var("raceteamaddvar", "No more teams allowed.");

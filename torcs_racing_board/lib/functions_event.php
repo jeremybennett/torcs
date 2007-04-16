@@ -312,7 +312,7 @@
 	}
 
 
-	function registerRobot($event_tablename, $event_team_table, $event_car_table, $team_tablename, $path_to_root)
+	function registerRobot($event_tablename, $race_tablename, $event_team_table, $event_car_table, $team_tablename, $path_to_root)
 	{
 		$error = true;
 
@@ -340,7 +340,7 @@
 				$sql = "SELECT maxteams FROM $event_tablename WHERE eventid=$eventid_for_db";
 				$result = mysql_query($sql);
 				if (mysql_num_rows($result) != 1) {
-					return;
+					return $error;
 				}
 				$myrow = mysql_fetch_array($result);
 				$teams_max = $myrow['maxteams'];
@@ -349,13 +349,13 @@
 					   $eventid_for_db . " AND et.teamid=t.teamid";
 				$result = mysql_query($sql);
 				if (mysql_num_rows($result) != 1) {
-					return;
+					return $error;
 				}
 				$myrow = mysql_fetch_array($result);
 				$teams_registered = $myrow['count'];
 				$teams_left = intval($teams_max) - $teams_registered;
 				if ($teams_left < 1) {
-					return;
+					return $error;
 				}
 
 				// Check owner, id's, event, car and user.
@@ -367,14 +367,13 @@
 				$result = mysql_query($sql);
 
 				if (mysql_num_rows($result) == 1 && $myrow = mysql_fetch_array($result)) {
-					$ct = time();
-					$time1 = strtotime($myrow['start']) - $ct;
-					$time2 = strtotime($myrow['end']) - $ct;
-					if (!($time1 <= 0 && $time2 >= 0)) {
-						return;
+					// Check if upload is allowed (joining during the season)
+					$joining_phase = isJoiningPhase($race_tablename, $eventid_for_db, $myrow['start'], $myrow['end']);
+					if (!$joining_phase) {
+						return $error;
 					}
 
-					// Everythink looks ok, register team.
+					// Everything looks ok, register team.
 					$sql = "INSERT INTO $event_team_table (teamid, eventid) " .
 						   "VALUES ($teamid_for_db, $eventid_for_db)";
 					$result = mysql_query($sql);
@@ -397,7 +396,7 @@
 						if (is_uploaded_file($file['tmp_name'])) {
 							move_uploaded_file($file['tmp_name'], $path);
 						}
-						$error =false;
+						$error = false;
 					}
 				}
 			}
