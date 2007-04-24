@@ -505,6 +505,13 @@
 			<a href="{ROOTPATH}admin/loginlog_list.php">Login Log</a>
 		</td>
 	</tr>
+	</tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/mailto.php">Bulk Mail</a>
+		</td>
+	</tr>
 
 <!-- END admin_nav -->
 

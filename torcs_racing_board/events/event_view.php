@@ -59,7 +59,7 @@
 	checkLogout();
 
 	deleteRace($race_tablename, $race_report_driver_table, $race_report_team_table, $rawresult_tablename, $submitted_tablename);
-	unregisterRobot($event_team_table, $event_tablename, $team_tablename, $path_to_root);
+	unregisterRobot($event_team_table, $race_tablename, $event_tablename, $team_tablename, $path_to_root);
 
 	if ($_SESSION['logged'] == TRUE) {
 		// Login template for statusbar.
@@ -371,6 +371,9 @@
 				}
 				if (!$registertimeframe) {
 					$page->set_var("raceteamremovevar", "Event is not in register phase.");
+				}
+				if (!$joining_phase && $registertimeframe) {
+					$page->set_var("raceteamaddvar", "Event is in progress, leave during the next robot upload phase.");
 				}
 
 				$page->parse("racervar", "racer");

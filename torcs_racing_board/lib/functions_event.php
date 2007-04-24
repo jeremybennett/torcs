@@ -405,7 +405,7 @@
 	}
 
 
-	function unregisterRobot($event_team_table, $event_tablename, $team_tablename, $path_to_root)
+	function unregisterRobot($event_team_table, $race_tablename, $event_tablename, $team_tablename, $path_to_root)
 	{
 		if ($_SESSION['usergroup'] == 'racer' &&
 			isset($_GET['remteamid']) &&
@@ -425,13 +425,11 @@
 			$result = mysql_query($sql);
 
 			if (mysql_num_rows($result) == 1 && $myrow = mysql_fetch_array($result)) {
-				// Check time.
-				$ct = time();
-				$time1 = strtotime($myrow['start']) - $ct;
-				$time2 = strtotime($myrow['end']) - $ct;
-				if (!($time1 <= 0 && $time2 >= 0)) {
-					return;
-				}
+				// Check if leaving is currently allowed (joining during the season)
+				$joining_phase = isJoiningPhase($race_tablename, $eventid_for_db, $myrow['start'], $myrow['end']);
+				if (!$joining_phase) {
+					return $error;
+				}				
 
 				// Delete db entry.
 				$sql = "DELETE FROM $event_team_table WHERE teamid=$teamid_for_db AND eventid=$eventid_for_db";
