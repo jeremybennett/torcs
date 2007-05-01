@@ -52,16 +52,24 @@ SimAxleUpdate(tCar *car, int index)
     
     str = car->wheel[index*2].susp.x;
     stl = car->wheel[index*2+1].susp.x;
-
     sgn = SIGN(stl - str);
+#if 0
     axle->arbSusp.x = fabs(stl - str);
     SimSuspCheckIn(&(axle->arbSusp));
     SimSuspUpdate(&(axle->arbSusp));
-    
-    /* right */
+#else
+    axle->arbSusp.x = fabs(stl - str);
+    if (axle->arbSusp.x > axle->arbSusp.spring.xMax) {
+        axle->arbSusp.x = axle->arbSusp.spring.xMax;
+    }
+    axle->arbSusp.force = - axle->arbSusp.x *axle->arbSusp.spring.K;
+    //axle->arbSusp.force = pow (axle->arbSusp.x *axle->arbSusp.spring.K , 4.0);
+#endif
     car->wheel[index*2].axleFz =  sgn * axle->arbSusp.force;
-    /* left */
     car->wheel[index*2+1].axleFz = - sgn * axle->arbSusp.force;
-
+    //    printf ("%f %f %f ", stl, str, axle->arbSusp.force);
+    //    if (index==0) {
+    //        printf ("# SUSP\n");
+    //    }
 }
  

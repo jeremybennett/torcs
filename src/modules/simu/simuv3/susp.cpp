@@ -89,10 +89,14 @@ springForce(tSuspension *susp)
 
     /* K is < 0 */
     f = spring->K * (susp->x - spring->x0) + spring->F0;
+#if 0 // NOTE: Why should f be only positive?  Does not make sense.
     if (f < 0) {
 	f = 0;
     }
-
+#endif
+    if (susp->state & SIM_SUSP_COMP) {
+        f *= 2;
+    }
     return f;
 }
 
@@ -102,8 +106,11 @@ SimSuspCheckIn(tSuspension *susp)
 {
     susp->state = 0;
     if (susp->x < susp->spring.packers) {
-	susp->x = susp->spring.packers;
 	susp->state = SIM_SUSP_COMP;
+        if (susp->x < 0) {
+            susp->state |= SIM_SUSP_OVERCOMP;
+        }
+	susp->x = susp->spring.packers;
     }
 
     susp->x *= susp->spring.bellcrank;

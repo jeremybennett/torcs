@@ -66,7 +66,7 @@ typedef struct Suspension
     int    state;        /* indicate the state of the suspension */
 #define SIM_SUSP_COMP   1  	/* the suspension is fully compressed */
 #define SIM_SUSP_EXT    2  	/* the suspension is fully extended */
-
+#define SIM_SUSP_OVERCOMP 4 /* the suspension is overcompressed */
 } tSuspension;
 
 #define PRM_SUSPENSION_TYPE "suspension type"

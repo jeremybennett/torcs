@@ -15,13 +15,13 @@
 
 SimulationOptions::SimulationOptions()
 {
-	option_list.AddOption<float> (PRM_DAMAGE_TYRES, &tyre_damage, 0.0);
-	option_list.AddOption<bool> (PRM_DAMAGE_SUSPENSION, &suspension_damage, false);
-	option_list.AddOption<bool> (PRM_DAMAGE_ALIGNMENT, &alignment_damage, true);
-	option_list.AddOption<bool> (PRM_DAMAGE_AERO, &aero_damage, false);
-	option_list.AddOption<AeroFlowModel> (PRM_MODEL_AEROFLOW, &aeroflow_model, SIMPLE);
-	option_list.AddOption<bool> (PRM_MODEL_TYRE_TEMPERATURE, &tyre_temperature, false);
-	option_list.AddOption<float> (PRM_MODEL_AERO_FACTOR, &aero_factor, 4.0f);
+	option_list.AddOption (PRM_DAMAGE_TYRES, &tyre_damage, 0.0f);
+	option_list.AddOption (PRM_DAMAGE_SUSPENSION, &suspension_damage, false);
+	option_list.AddOption (PRM_DAMAGE_ALIGNMENT, &alignment_damage, true);
+	option_list.AddOption (PRM_DAMAGE_AERO, &aero_damage, false);
+	option_list.AddOption (PRM_MODEL_AEROFLOW, &aeroflow_model, SIMPLE);
+	option_list.AddOption (PRM_MODEL_TYRE_TEMPERATURE, &tyre_temperature, false);
+	option_list.AddOption (PRM_MODEL_AERO_FACTOR, &aero_factor, 4.0f);
 }
 
 void SimulationOptions::SetFromSkill (int skill)

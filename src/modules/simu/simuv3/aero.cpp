@@ -6,7 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -31,11 +31,11 @@ SimAeroConfig(tCar *car)
     FrntArea = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 2.5);
     car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
-	float aero_factor = car->options->aero_factor;
+    float aero_factor = car->options->aero_factor;
 
     car->aero.SCx2 = 0.645 * Cx * FrntArea;
-	car->aero.Clift[0] *= aero_factor / 4.0f;
-	car->aero.Clift[1] *= aero_factor / 4.0f;
+    car->aero.Clift[0] *= aero_factor / 4.0f;
+    car->aero.Clift[1] *= aero_factor / 4.0f;
     float max_lift = MaximumLiftGivenDrag (car->aero.SCx2, FrntArea);
     float current_lift = 2.0f * (car->aero.Clift[0] + car->aero.Clift[1]);
     if (current_lift > max_lift) {
@@ -48,20 +48,20 @@ SimAeroConfig(tCar *car)
                  max_lift);
     }
 
-	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
-	GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
+    GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, car->aero.Clift[0]);
+    GfParmSetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, car->aero.Clift[1]);
     //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
-	//printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
+    //printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
     car->aero.Cd += car->aero.SCx2;
-	car->aero.rot_front[0] = 0.0;
-	car->aero.rot_front[1] = 0.0;
-	car->aero.rot_front[2] = 0.0;
-	car->aero.rot_lateral[0] = 0.0;
-	car->aero.rot_lateral[1] = 0.0;
-	car->aero.rot_lateral[2] = 0.0;
-	car->aero.rot_vertical[0] = 0.0;
-	car->aero.rot_vertical[1] = 0.0;
-	car->aero.rot_vertical[2] = 0.0;
+    car->aero.rot_front[0] = 0.0;
+    car->aero.rot_front[1] = 0.0;
+    car->aero.rot_front[2] = 0.0;
+    car->aero.rot_lateral[0] = 0.0;
+    car->aero.rot_lateral[1] = 0.0;
+    car->aero.rot_lateral[2] = 0.0;
+    car->aero.rot_vertical[0] = 0.0;
+    car->aero.rot_vertical[1] = 0.0;
+    car->aero.rot_vertical[2] = 0.0;
 
 }
 
@@ -102,12 +102,12 @@ SimAeroUpdate(tCar *car, tSituation *s)
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car - reduce overall airflow */
-			tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
+                    tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
 
 		    tmpas = 1.0 - factor * exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y)/(otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    airSpeed = airSpeed * tmpas;
 		} else if (fabs(tmpsdpang) < 0.1396f) {	    /* 8 degrees */
-			tdble factor = 0.5f * (0.1396f-fabs(tmpsdpang))/(0.1396f);
+                    tdble factor = 0.5f * (0.1396f-fabs(tmpsdpang))/(0.1396f);
 		    /* before another car - breaks down rear eddies, reduces only drag*/
 		    tmpas = 1.0f - factor * exp(- 8.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) / (car->aero.Cd * car->DynGC.vel.x));
 		    dragK = dragK * tmpas;
@@ -119,7 +119,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
     car->airSpeed2 = airSpeed * airSpeed;
     
     tdble v2 = car->airSpeed2;
-	tdble dmg_coef = ((tdble)car->dammage / 10000.0);
+    tdble dmg_coef = ((tdble)car->dammage / 10000.0);
 
     car->aero.drag = -SIGN(car->DynGC.vel.x) * car->aero.SCx2 * v2 * (1.0 + dmg_coef) * dragK * dragK;
 
@@ -129,22 +129,22 @@ SimAeroUpdate(tCar *car, tSituation *s)
     // Also, no torque is produced since the effect can be
     // quite dramatic. Interesting idea to make all drags produce
     // torque when the car is damaged.
-	car->aero.Mx = car->aero.drag * dmg_coef * car->aero.rot_front[0];
-	car->aero.My = car->aero.drag * dmg_coef * car->aero.rot_front[1];
-	car->aero.Mz = car->aero.drag * dmg_coef * car->aero.rot_front[2];
+    car->aero.Mx = car->aero.drag * dmg_coef * car->aero.rot_front[0];
+    car->aero.My = car->aero.drag * dmg_coef * car->aero.rot_front[1];
+    car->aero.Mz = car->aero.drag * dmg_coef * car->aero.rot_front[2];
 
 
     v2 = car->DynGC.vel.y;
     car->aero.lateral_drag = -SIGN(v2)*v2*v2*0.7;
-	car->aero.Mx += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[0];
-	car->aero.My += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[1];
-	car->aero.Mz += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[2];
+    car->aero.Mx += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[0];
+    car->aero.My += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[1];
+    car->aero.Mz += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[2];
 
     v2 = car->DynGC.vel.z;
     car->aero.vertical_drag = -SIGN(v2)*v2*v2*1.5;
-	car->aero.Mx += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[0];
-	car->aero.My += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[1];
-	car->aero.Mz += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[2];
+    car->aero.Mx += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[0];
+    car->aero.My += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[1];
+    car->aero.Mz += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[2];
 
 
 
@@ -154,30 +154,30 @@ SimAeroUpdate(tCar *car, tSituation *s)
 
 void SimAeroDamage(tCar *car, sgVec3 poc, tdble F)
 {
-	tAero* aero = &car->aero;
-	tdble dmg = F*0.0001;
+    tAero* aero = &car->aero;
+    tdble dmg = F*0.0001;
 
-	aero->rot_front[0] += dmg*(urandom()-.5);
-	aero->rot_front[1] += dmg*(urandom()-.5);
-	aero->rot_front[2] += dmg*(urandom()-.5);
-	if (sgLengthVec3(car->aero.rot_front) > 1.0) {
-		sgNormaliseVec3 (car->aero.rot_front);
-	}
-	aero->rot_lateral[0] += dmg*(urandom()-.5);
-	aero->rot_lateral[1] += dmg*(urandom()-.5);
-	aero->rot_lateral[2] += dmg*(urandom()-.5);
-	if (sgLengthVec3(car->aero.rot_lateral) > 1.0) {
-		sgNormaliseVec3 (car->aero.rot_lateral);
-	}
-	aero->rot_vertical[0] += dmg*(urandom()-.5);
-	aero->rot_vertical[1] += dmg*(urandom()-.5);
-	aero->rot_vertical[2] += dmg*(urandom()-.5);
-	if (sgLengthVec3(car->aero.rot_vertical) > 1.0) {
-		sgNormaliseVec3 (car->aero.rot_vertical);
-	}
+    aero->rot_front[0] += dmg*(urandom()-.5);
+    aero->rot_front[1] += dmg*(urandom()-.5);
+    aero->rot_front[2] += dmg*(urandom()-.5);
+    if (sgLengthVec3(car->aero.rot_front) > 1.0) {
+        sgNormaliseVec3 (car->aero.rot_front);
+    }
+    aero->rot_lateral[0] += dmg*(urandom()-.5);
+    aero->rot_lateral[1] += dmg*(urandom()-.5);
+    aero->rot_lateral[2] += dmg*(urandom()-.5);
+    if (sgLengthVec3(car->aero.rot_lateral) > 1.0) {
+        sgNormaliseVec3 (car->aero.rot_lateral);
+    }
+    aero->rot_vertical[0] += dmg*(urandom()-.5);
+    aero->rot_vertical[1] += dmg*(urandom()-.5);
+    aero->rot_vertical[2] += dmg*(urandom()-.5);
+    if (sgLengthVec3(car->aero.rot_vertical) > 1.0) {
+        sgNormaliseVec3 (car->aero.rot_vertical);
+    }
 
-	//printf ("aero damage:%f (->%f %f %f)\n", dmg, sgLengthVec3(car->aero.rot_front),
-	//			sgLengthVec3(car->aero.rot_lateral), sgLengthVec3(car->aero.rot_vertical));
+    //printf ("aero damage:%f (->%f %f %f)\n", dmg, sgLengthVec3(car->aero.rot_front),
+    //			sgLengthVec3(car->aero.rot_lateral), sgLengthVec3(car->aero.rot_vertical));
 
 
 
@@ -198,19 +198,20 @@ SimWingConfig(tCar *car, int index)
     wing->staticPos.x = GfParmGetNum(hdle, WingSect[index], PRM_XPOS, (char*)NULL, 0);
     wing->staticPos.z = GfParmGetNum(hdle, WingSect[index], PRM_ZPOS, (char*)NULL, 0);
     
-	switch (car->options->aeroflow_model) {
-	case SIMPLE:
-		wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
-		wing->Kz = car->options->aero_factor * wing->Kx;
-		break;
-	case PLANAR:
-		wing->Kx = -AIR_DENSITY * area * 16.0f;
-		wing->Kz = wing->Kx;
-		break;
+    switch (car->options->aeroflow_model) {
+    case SIMPLE:
+        wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
+        wing->Kz = 4.0 * wing->Kx;
+        //wing->Kz = car->options->aero_factor * wing->Kx;
+        break;
+    case PLANAR:
+        wing->Kx = -AIR_DENSITY * area * 16.0f;
+        wing->Kz = wing->Kx;
+        break;
     case OPTIMAL:
-	default:
-		fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
-	}
+    default:
+        fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
+    }
 
 
     if (index == 1) {
@@ -234,9 +235,9 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
     // angles of attack.  (so it won't produce lift because it will be
     // completely shielded by the car's bottom)
     // The value -0.4 should depend on the positioning of the wing. 
-	// we also make this be like that.
+    // we also make this be like that.
     if (index==1) {
-		i_flow = PartialFlowSmooth (-0.4, aoa);
+        i_flow = PartialFlowSmooth (-0.4, aoa);
     } 
     // Flow to the wings gets cut off by other cars.
     tdble airSpeed = car->DynGC.vel.x;
@@ -263,29 +264,29 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 		(fabs(dyaw) < 0.1396)) {
 		if (fabs(tmpsdpang) > 2.9671) {	    /* 10 degrees */
 		    /* behind another car - reduce overall airflow */
-			tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
+                    tdble factor = (fabs(tmpsdpang)-2.9671)/(M_PI-2.9671);
 		    tmpas = 1.0 - factor*exp(- 2.0 * DIST(x, y, otherCar->DynGC.pos.x, otherCar->DynGC.pos.y) /
-				      (otherCar->aero.Cd * otherCar->DynGC.vel.x));
+                                             (otherCar->aero.Cd * otherCar->DynGC.vel.x));
 		    i_flow = i_flow * tmpas;
 		} 
 	    }
 	}
     }
-	//if (index==1) { -- thrown away so that we have different downforce
-	// reduction for front and rear parts.
-	if (1) {
-		// downforce due to body and ground effect.
-		tdble alpha = 0.0f;
-		tdble vt2b = vt2 * (alpha+(1-alpha)*i_flow);
-		vt2b = vt2b * vt2b;
-		tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
-		hm = hm*hm;
-		hm = hm*hm;
-		hm = 1.0 + exp(-3.0*hm);
-		car->aero.lift[index] = - car->aero.Clift[index] * vt2b * hm;
-		//car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
-		//printf ("%f\n", car->aero.lift[0]+car->aero.lift[1]);
-	}
+    //if (index==1) { -- thrown away so that we have different downforce
+    // reduction for front and rear parts.
+    if (1) {
+        // downforce due to body and ground effect.
+        tdble alpha = 0.0f;
+        tdble vt2b = vt2 * (alpha+(1-alpha)*i_flow);
+        vt2b = vt2b * vt2b;
+        tdble hm = 1.5 * (car->wheel[0].rideHeight + car->wheel[1].rideHeight + car->wheel[2].rideHeight + car->wheel[3].rideHeight);
+        hm = hm*hm;
+        hm = hm*hm;
+        hm = 1.0 + exp(-3.0*hm);
+        car->aero.lift[index] = - car->aero.Clift[index] * vt2b * hm;
+        //car->aero.lift[1] = - car->aero.Clift[1] * vt2b *  hm;
+        //printf ("%f\n", car->aero.lift[0]+car->aero.lift[1]);
+    }
 
 
     vt2=vt2*i_flow;
@@ -299,20 +300,20 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 
 
     if (car->DynGC.vel.x > 0.0f) {
-		switch (car->options->aeroflow_model) {
-		case SIMPLE:
-			wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
-			wing->forces.z = wing->Kz * vt2 * sinaoa;
-			break;
-		case PLANAR:
-			wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa * sinaoa * sinaoa;
-			wing->forces.z = wing->Kz * vt2 * sinaoa * sinaoa * cosaoa;
-			break;
+        switch (car->options->aeroflow_model) {
+        case SIMPLE:
+            wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
+            wing->forces.z = wing->Kz * vt2 * sinaoa;
+            break;
+        case PLANAR:
+            wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa * sinaoa * sinaoa;
+            wing->forces.z = wing->Kz * vt2 * sinaoa * sinaoa * cosaoa;
+            break;
 	default:
-		fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
-		}
+            fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
+        }
     } else {
-		wing->forces.x = wing->forces.z = 0.0f;
+        wing->forces.x = wing->forces.z = 0.0f;
     }
 }
 
