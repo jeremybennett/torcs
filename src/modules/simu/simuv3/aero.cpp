@@ -209,6 +209,9 @@ SimWingConfig(tCar *car, int index)
         wing->Kz = wing->Kx;
         break;
     case OPTIMAL:
+        wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
+        wing->Kz = wing->Kx;
+        break;
     default:
         fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
     }
@@ -309,6 +312,9 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
             wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa * sinaoa * sinaoa;
             wing->forces.z = wing->Kz * vt2 * sinaoa * sinaoa * cosaoa;
             break;
+        case OPTIMAL:
+            wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * (1.0f - cosaoa);
+            wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
 	default:
             fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
         }
