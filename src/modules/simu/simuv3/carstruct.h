@@ -6,7 +6,7 @@
     email                : torcs@free.fr
     version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -58,15 +58,15 @@ typedef struct
     tdble	Minv;		/* 1 / mass with pilot (without fuel) */
     tdble	tank;		/* fuel tank capa */
     t3Dd	statGC;		/* static pos of GC */
-	sgQuat  rot_mom;    /* rotational momentum */
-	sgVec3  rot_acc;    /* rotational acceleratiom */
+    sgQuat      rot_mom;        /* rotational momentum */
+    sgVec3      rot_acc;        /* rotational acceleratiom */
     t3Dd	Iinv;		/* inverse of inertial moment along the car's 3 axis */
 
     /* dynamic */
     tdble	fuel;		/* current fuel load */
-	tdble   fuel_consumption; /* average fuel consumption */
-	tdble   fuel_prev; /* average fuel consumption */
-	tdble   fuel_time; /* average fuel consumption */
+    tdble       fuel_consumption; /* average fuel consumption */
+    tdble       fuel_prev; /* average fuel consumption */
+    tdble       fuel_time; /* average fuel consumption */
     tDynPt	DynGC;		/* GC local data except position */
     tDynPt	DynGCg;		/* GC global data */
     tPosd	VelColl;	/* resulting velocity after collision */
@@ -90,11 +90,11 @@ typedef struct
     int		blocked;
     int		dammage;
     
-	tdble upside_down_timer;
+    tdble       upside_down_timer;
     tDynPt	restPos;	/* target rest position after the car is broken */
-	tRmInfo *ReInfo;
+    tRmInfo     *ReInfo;
     int		collisionAware;
-	SimulationOptions* options;
+    SimulationOptions* options;
 } tCar;
 
 #if 0

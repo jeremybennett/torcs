@@ -33,7 +33,7 @@ SimAeroConfig(tCar *car)
     car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
     float aero_factor = car->options->aero_factor;
 
-    car->aero.SCx2 = 0.645 * Cx * FrntArea;
+    car->aero.SCx2 = 0.5f * AIR_DENSITY * Cx * FrntArea;
     car->aero.Clift[0] *= aero_factor / 4.0f;
     car->aero.Clift[1] *= aero_factor / 4.0f;
     float max_lift = MaximumLiftGivenDrag (car->aero.SCx2, FrntArea);
@@ -315,6 +315,7 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
         case OPTIMAL:
             wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * (1.0f - cosaoa);
             wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
+            break;
 	default:
             fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
         }
