@@ -809,10 +809,10 @@ void SimCarAddAngularVelocity (tCar* car)
     // use quaternions for the rotation
     sgQuat w;
     sgVec3 new_position;
-
+    int i;
 
     // Translate momentum into rotational derivative.
-    for (int i=0; i<4; i++) {
+    for (/*int*/ i=0; i<4; i++) {
         w[i] = car->rot_mom[i];
     }
     w[SG_X] *= car->Iinv.x;
@@ -823,7 +823,7 @@ void SimCarAddAngularVelocity (tCar* car)
     sgPostMultQuat (w, car->posQuat);
 
     // Add derivative
-    for (int i=0; i<4; i++) {
+    for (/*int*/ i=0; i<4; i++) {
         car->posQuat[i] += w[i] * SimDeltaTime ;
     }
 
