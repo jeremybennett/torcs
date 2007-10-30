@@ -98,12 +98,19 @@ Changes since 1.3.0
 - TRB: allow signing in during season, mail tool for admin (Bernhard).
 - Added new car, car5-trb1 (Bernhard).
 - Added new car, car4-trb1 (Bernhard).
+- Suspension improvement, car does not lift up anymore magically on bumpy
+  surfaces (e.g. in the grass) (Christos, Bernhard).
+- Antirollbars are now functional (Bernhard).
+- Rolling resistance is now correctly working (this fixes as well the
+  "forever stuck in the sand" and the "wheel spinning like mad and
+  car stuck" problems (Bernhard).
 
 
 
 TODO for 1.4.0
 --------------
-- Car class for TRB.
+- Car class for TRB (car6 and 7).
+- Adjust categories and setups for updated simuv2.
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
@@ -128,7 +135,6 @@ Later:
   pit door, pits are quite dark around the logo).
 - merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
   not hurt).
-- review/comment simuv2 (e.g. rollres, fuel, collision, more).
 - fix tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers and use just one sided
   polygons (better diffuse lighting).
