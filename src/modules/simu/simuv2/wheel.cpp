@@ -95,32 +95,49 @@ SimWheelConfig(tCar *car, int index)
 	wheel->feedBack.spinVel = 0.0f;
 	wheel->feedBack.Tq = 0.0f;
 	wheel->feedBack.brkTq = 0.0f;
+	wheel->rel_vel = 0.0f;
 }
 
 
-void
-SimWheelUpdateRide(tCar *car, int index)
+void SimWheelUpdateRide(tCar *car, int index)
 {
 	tWheel *wheel = &(car->wheel[index]);
 	tdble Zroad;
-	tdble prex;
 
 	// compute suspension travel
 	RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
 	wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
-	prex = wheel->susp.x;
-	wheel->susp.x = wheel->rideHeight = wheel->pos.z - Zroad;
 
-	// verify the suspension travel
+	// Wheel susp.x is not the wheel movement, look at SimSuspCheckIn, it becomes there scaled with
+	// susp->spring.bellcrank, so we invert this here.
+	tdble prexwheel = wheel->susp.x / wheel->susp.spring.bellcrank;
+
+	tdble new_susp_x= prexwheel - wheel->rel_vel * SimDeltaTime;
+    tdble max_extend =  wheel->pos.z - Zroad;
+	wheel->rideHeight = max_extend;
+
+	if (max_extend < new_susp_x) {
+		new_susp_x = max_extend;
+		wheel->rel_vel = 0.0f;
+	} else if (new_susp_x < wheel->susp.spring.packers) {
+		wheel->rel_vel = 0.0f;
+	}
+ 
+	tdble prex = wheel->susp.x;
+	wheel->susp.x = new_susp_x;
+
+	// verify the suspension travel, beware, wheel->susp.x will be scaled by SimSuspCheckIn
 	SimSuspCheckIn(&(wheel->susp));
 	wheel->susp.v = (prex - wheel->susp.x) / SimDeltaTime;
+	
 	// update wheel brake
 	SimBrakeUpdate(car, wheel, &(wheel->brake));
 }
 
 
-void
-SimWheelUpdateForce(tCar *car, int index)
+
+
+void SimWheelUpdateForce(tCar *car, int index)
 {
 	tWheel *wheel = &(car->wheel[index]);
 	tdble axleFz = wheel->axleFz;
@@ -143,10 +160,15 @@ SimWheelUpdateForce(tCar *car, int index)
 	if ((wheel->state & SIM_SUSP_EXT) == 0) {
 		wheel->forces.z = axleFz + wheel->susp.force;
 		reaction_force = wheel->forces.z;
+		wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
 		if (wheel->forces.z < 0.0f) {
 			wheel->forces.z = 0.0f;
 		}
 	} else {
+		if (wheel->rel_vel < 0.0) {
+            wheel->rel_vel = 0.0;
+        }
+        wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
 		wheel->forces.z = 0.0f;
 	}
 
@@ -178,12 +200,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		sx = wrl;
 		sy = 0.0f;
 	} else {
-		sx = (vt - wrl) / v; /* target */
-		// TODO
-		// Commented out and reset because sometimes robots apply full throttle and the engine does not rev up
-		// nor do the wheels move. I'm not sure if that is the cause, but its actually the only visible candidate
-		// from simuv2 in 1.2.2 up to the current version...
-		//sx = (vt - wrl) / fabs(vt);
+		sx = (vt - wrl) / fabs(vt);
 		sy = sin(sa);
 	}
 

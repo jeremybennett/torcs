@@ -2,7 +2,7 @@
 
     file                 : transmission.h
     created              : Mon Apr 16 16:04:36 CEST 2001
-    copyright            : (C) 2001 by Eric Espié
+    copyright            : (C) 2001 by Eric Espiï¿½
     email                : Eric.Espie@torcs.org
     version              : $Id$
 
@@ -45,7 +45,6 @@ typedef struct
     tdble	timeToRelease;	/* remaining time before releasing the clutch pedal */
     tdble	releaseTime;	/* time needed for releasing the clutch pedal */
     tdble	transferValue;	/* 1.0 -> released, 0.0 -> applied */
-    tdble	plip;		/* automatic plip... */
 } tClutch;
 
 typedef struct
