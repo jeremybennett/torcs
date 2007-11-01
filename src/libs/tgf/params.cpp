@@ -1,10 +1,10 @@
 /***************************************************************************
-                 params.cpp -- configuration parameters management                                     
+                 params.cpp -- configuration parameters management
                              -------------------                                         
     created              : Fri Aug 13 22:27:57 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999 by Eric Espie
     email                : torcs@free.fr   
-    version              : $Id$                                  
+    version              : $Id$
  ***************************************************************************/
 
 /***************************************************************************
@@ -1191,7 +1191,6 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
 		t = handleEntities(t, s);
 		t += sprintf (t, "\">\n");
 
-		//sprintf (buffer, "%s<section name=\"%s\">\n", outCtrl->indent, s);
 		sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
 		outCtrl->state = 5;
 		return 1;
