@@ -1093,6 +1093,34 @@ GfParmReadFile (const char *file, int mode)
     return NULL;
 }
 
+
+
+static char* handleEntities(char *s, const char* val)
+{
+	int i = 0;
+	int len = strlen(val);
+	for (i = 0; i < len; i++) {
+		switch (val[i]) {
+			case '<':
+				s += sprintf(s, "&lt;"); break;
+			case '>':
+				s += sprintf(s, "&gt;"); break;
+			case '&':
+				s += sprintf(s, "&amp;"); break;
+			case '\'':
+				s += sprintf(s, "&apos;"); break;
+			case '"':
+				s += sprintf(s, "&quot;"); break;	
+			default:
+				*(s++) = val[i]; 
+				break;
+		}
+	}
+
+	return s;	
+}
+
+
 /**
  *	@image html output-state.png
  */
@@ -1104,7 +1132,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
     struct section	*curSection;
     struct param	*curParam;
     struct within	*curWithin;
-    char		*s;
+    char		*s, *t;
 
     while (1) {
 	switch (outCtrl->state) {
@@ -1150,61 +1178,71 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
 	    return 1;
 
 	case 4:			/* Parse section attributes list */
-	    outCtrl->curParam = GF_TAILQ_FIRST (&(outCtrl->curSection->paramList));
-	    s = strrchr (outCtrl->curSection->fullName, '/');
-	    if (!s) {
-		s = outCtrl->curSection->fullName;
-	    } else {
-		s++;
-	    }
-	    sprintf (buffer, "%s<section name=\"%s\">\n", outCtrl->indent, s);
-	    sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
-	    outCtrl->state = 5;
-	    return 1;
+		outCtrl->curParam = GF_TAILQ_FIRST (&(outCtrl->curSection->paramList));
+		s = strrchr (outCtrl->curSection->fullName, '/');
+		if (!s) {
+			s = outCtrl->curSection->fullName;
+		} else {
+			s++;
+		}
+		
+		t = buffer;
+		t += sprintf(t, "%s<section name=\"", outCtrl->indent);
+		t = handleEntities(t, s);
+		t += sprintf (t, "\">\n");
+
+		//sprintf (buffer, "%s<section name=\"%s\">\n", outCtrl->indent, s);
+		sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
+		outCtrl->state = 5;
+		return 1;
 
 	case 5:			/* Parse one attribute */
 	    if (!outCtrl->curParam) {
-		outCtrl->state = 6;
-		break;
-	    }
-	    curParam = outCtrl->curParam;
-	    if (curParam->type == P_STR) {
-		s = buffer;
-		s += sprintf (s, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
-		curWithin = GF_TAILQ_FIRST (&(curParam->withinList));
-		if (curWithin) {
-		    s += sprintf (s, " in=\"%s", curWithin->val);
-		    while ((curWithin = GF_TAILQ_NEXT (curWithin, linkWithin)) != NULL) {
-			s += sprintf (s, ",%s", curWithin->val);
-		    }
-		    s += sprintf (s, "\"");
+			outCtrl->state = 6;
+			break;
 		}
-		sprintf (s, " val=\"%s\"/>\n", curParam->value);
-		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
-		return 1;
 
+		curParam = outCtrl->curParam;
+		if (curParam->type == P_STR) {
+			s = buffer;
+			s += sprintf (s, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
+			curWithin = GF_TAILQ_FIRST (&(curParam->withinList));
+			if (curWithin) {
+				s += sprintf (s, " in=\"%s", curWithin->val);
+				while ((curWithin = GF_TAILQ_NEXT (curWithin, linkWithin)) != NULL) {
+					s += sprintf (s, ",%s", curWithin->val);
+				}
+				s += sprintf (s, "\"");
+			}
+
+			s += sprintf(s, " val=\"");
+			s = handleEntities(s, curParam->value);
+			s += sprintf (s, "\"/>\n");
+
+			outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+			return 1;			
 	    } else {
 
-		s = buffer;
-		s += sprintf (s, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
-		if (curParam->unit) {
-		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-			s += sprintf (s, " min=\"%g\" max=\"%g\"", 
-				       GfParmSI2Unit (curParam->unit, curParam->min),
-				       GfParmSI2Unit (curParam->unit, curParam->max));
-		    }
-		    s += sprintf (s, " unit=\"%s\" val=\"%g\"/>\n",
-				   curParam->unit, GfParmSI2Unit (curParam->unit, curParam->valnum));
-		} else {
-		    if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-			s += sprintf (s, " min=\"%g\" max=\"%g\"", 
-				       curParam->min, curParam->max);
-		    }
-		    s += sprintf (s, " val=\"%g\"/>\n", curParam->valnum);
-		}
-
-		outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
-		return 1;
+			s = buffer;
+			s += sprintf (s, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
+			if (curParam->unit) {
+				if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+					s += sprintf (s, " min=\"%g\" max=\"%g\"", 
+						GfParmSI2Unit (curParam->unit, curParam->min),
+						GfParmSI2Unit (curParam->unit, curParam->max));
+				}
+				s += sprintf (s, " unit=\"%s\" val=\"%g\"/>\n",
+					curParam->unit, GfParmSI2Unit (curParam->unit, curParam->valnum));
+			} else {
+				if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+					s += sprintf (s, " min=\"%g\" max=\"%g\"", 
+						curParam->min, curParam->max);
+				}
+				s += sprintf (s, " val=\"%g\"/>\n", curParam->valnum);
+			}
+	
+			outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+			return 1;
 	    }
 
 	case 6:			/* Parse sub-section list */
