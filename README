@@ -104,7 +104,8 @@ Changes since 1.3.0
 - Rolling resistance is now correctly working (this fixes as well the
   "forever stuck in the sand" and the "wheel spinning like mad and
   car stuck" problems (Bernhard).
-
+- Fixed XML parsing problem with entities (#1651190, reported by Carsten
+  Milkau) (Bernhard) 
 
 
 TODO for 1.4.0
