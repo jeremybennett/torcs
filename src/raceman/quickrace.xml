@@ -39,7 +39,7 @@
         <attnum name="distance between columns" val="20.000000"/>
         <attnum name="offset within a column" val="10.000000"/>
         <attnum name="initial speed" val="0.000000"/>
-        <attnum name="initial height" val="1.0"/>
+        <attnum name="initial height" val="0.2"/>
       </section>
       <attnum name="laps" val="3.000000"/>
     </section>
