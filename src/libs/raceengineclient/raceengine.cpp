@@ -57,7 +57,7 @@ ReUpdtPitTime(tCarElt *car)
 
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
-			info->totalPitTime = 2.0f + fabs(car->_pitFuel) / 8.0f + (tdble)(fabs(car->_pitRepair)) * 0.007f;
+			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f;
 			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
 			ReInfo->_reSimItf.reconfig(car);
 			for (i=0; i<4; i++) {

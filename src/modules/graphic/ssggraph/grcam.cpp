@@ -1749,7 +1749,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      4,		/* up axis */
 			      -grWrldX/2.0f,	/* eyex */
 			      -grWrldY/2.0f,	/* eyey */
-			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      0.25f * sqrt((double)(grWrldX*grWrldX+grWrldY*grWrldY)), /* eyez */
 			      grWrldX/2.0f,	/* centerx */
 			      grWrldY/2.0f,	/* centery */
 			      0.0f,		/* centerz */
@@ -1772,7 +1772,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      4,		/* up axis */
 			      -grWrldX/2.0f,	/* eyex */
 			      grWrldY * 3.0f/2.0f,	/* eyey */
-			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      0.25f * sqrt((double)(grWrldX*grWrldX+grWrldY*grWrldY)), /* eyez */
 			      grWrldX/2.0f,	/* centerx */
 			      grWrldY/2.0f,	/* centery */
 			      0.0f,		/* centerz */
@@ -1795,7 +1795,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      4,		/* up axis */
 			      grWrldX * 3.0f/2.0f,	/* eyex */
 			      grWrldY * 3.0f/2.0f,	/* eyey */
-			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      0.25f * sqrt((double)(grWrldX*grWrldX+grWrldY*grWrldY)), /* eyez */
 			      grWrldX/2.0f,	/* centerx */
 			      grWrldY/2.0f,	/* centery */
 			      0.0f,		/* centerz */
@@ -1818,7 +1818,7 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 			      4,		/* up axis */
 			      grWrldX * 3.0f/2.0f,	/* eyex */
 			      -grWrldY/2.0f,	/* eyey */
-			      0.25f * sqrt(grWrldX*grWrldX+grWrldY*grWrldY), /* eyez */
+			      0.25f * sqrt((double)(grWrldX*grWrldX+grWrldY*grWrldY)), /* eyez */
 			      grWrldX/2.0f,	/* centerx */
 			      grWrldY/2.0f,	/* centery */
 			      0.0f,		/* centerz */

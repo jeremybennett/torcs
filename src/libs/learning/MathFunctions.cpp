@@ -203,7 +203,7 @@ real LNorm (real* a, real* b, int n, real p)
 		register real d = (*a++) - (*b++);
 		sum += (real) pow(d,p);
 	}
-	return (real) pow(sum,1.0/p);
+	return (real) pow((double)sum,1.0/p);
 }
 
 real Sum (real* a, int n)

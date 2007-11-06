@@ -48,7 +48,7 @@ bool doMipMap(const char *tfname, int mipmap)
 
 	if (mipmap == TRUE) {
 		// Check the shadow.
-		s = strrchr(tfname, '/');
+		s = strrchr((char *)tfname, '/');
 		if (s == NULL) {
 			s = (char *) tfname;
 		} else {

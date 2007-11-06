@@ -273,10 +273,10 @@ ssgSaveLeaf (ssgEntity *ent, FILE *save_fd)
 
 	    if ((tfname != NULL) && (tfname[0] != 0)) {
 		if (writeTextureWithoutPath) {
-		    char *s = strrchr (tfname, '\\');
+		    char *s = strrchr ((char *)tfname, '\\');
 
 		    if (s == NULL) {
-			s = strrchr (tfname, '/');
+			s = strrchr ((char *)tfname, '/');
 		    }
 
 		    if (s == NULL) {
