@@ -48,7 +48,7 @@ void SimulationOptions::SetFromSkill (int skill)
         option_list.Set(PRM_DAMAGE_ALIGNMENT, true);
         option_list.Set(PRM_DAMAGE_AERO, true);
         option_list.Set(PRM_MODEL_TYRE_TEMPERATURE, false);
-        option_list.Set(PRM_MODEL_AERO_FACTOR, 1.0f);
+        option_list.Set(PRM_MODEL_AERO_FACTOR, 4.0f);
         option_list.Set(PRM_MODEL_AEROFLOW, SIMPLE);
         break;
     }

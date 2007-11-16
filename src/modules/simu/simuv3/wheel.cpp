@@ -104,21 +104,27 @@ SimWheelUpdateRide(tCar *car, int index)
 {
 	tWheel *wheel = &(car->wheel[index]);
 	tdble Zroad;
-	tdble prex;
 
 	// compute suspension travel
 	RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
 	wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
-	prex = wheel->susp.x;
 
-    tdble new_susp_x= prex - wheel->rel_vel * SimDeltaTime;
-    tdble max_extend =  wheel->pos.z - Zroad;
+	tdble prexwheel = wheel->susp.x / wheel->susp.spring.bellcrank;
+
+    tdble new_susp_x= prexwheel - wheel->rel_vel * SimDeltaTime;
+    tdble max_extend = wheel->pos.z - Zroad;
+	wheel->rideHeight = max_extend;
 
     if (max_extend < new_susp_x) {
         new_susp_x = max_extend;
         wheel->rel_vel = 0.0f;
-    } 
-	wheel->susp.x = wheel->rideHeight = new_susp_x;
+    } else if (new_susp_x < wheel->susp.spring.packers) {
+		wheel->rel_vel = 0.0f;
+	}
+
+	tdble prex = wheel->susp.x;
+	wheel->susp.x = new_susp_x;
+
 
 	// verify the suspension travel
 	SimSuspCheckIn(&(wheel->susp));

@@ -53,7 +53,7 @@ public:
 	template <typename T>
 	T Get (char* name)
 	{
-		return option_list.Get(name);
+		return option_list.Get<T>(name);
 	}
 	/// Set a single option
 	template <typename T>
