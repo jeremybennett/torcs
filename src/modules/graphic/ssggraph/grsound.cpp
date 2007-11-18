@@ -94,12 +94,22 @@ void grInitSound(tSituation* s, int ncars)
 		tCarElt	*car = s->cars[i];
 		char* param;
 		char filename[512];
+        FILE *file = NULL;
 
 		// ENGINE PARAMS
 		tdble rpm_scale;
 		param = GfParmGetStr(handle, "Sound", "engine sample", "engine-1.wav");
 		rpm_scale = GfParmGetNum(handle, "Sound", "rpm scale", NULL, 1.0);
-		sprintf (filename, "data/sound/%s", param);
+        sprintf (filename, "cars/%s/%s", car->_carName, param);
+        file = fopen(filename, "r");
+        if (!file)
+        {
+ 		    sprintf (filename, "data/sound/%s", param);
+        }
+        else
+        {
+            fclose(file);
+        }
 
 		car_sound_data[car->index] = new CarSoundData (car->index, sound_interface);
 		TorcsSound* engine_sound = sound_interface->addSample(filename, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true, false);
