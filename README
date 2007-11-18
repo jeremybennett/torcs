@@ -109,6 +109,7 @@ Changes since 1.3.0
 - Code adjustments for VC 2005 (Eric).
 - Added car6-trb1 created by Wolf-Dieter Beelitz and reworked by Bernhard
   (Wolf-Dieter Beelitz, Bernhard).
+- Car engine sound is now searched in the cars directory first (Eric).
 
 
 TODO for 1.4.0
