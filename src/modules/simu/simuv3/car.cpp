@@ -794,10 +794,10 @@ void QuatToEuler (sgVec3 hpr, const sgQuat quat )
     tdble sqy = quat[SG_Y] * quat[SG_Y];
     tdble sqz = quat[SG_Z] * quat[SG_Z];
 
-    hpr[0] = atan2(2.0*(quat[SG_X]*quat[SG_Y] + quat[SG_Z]*quat[SG_W]),
-                   (sqx - sqy - sqz + sqw));
-    hpr[1] = atan2(2.0*(quat[SG_Y]*quat[SG_Z] + quat[SG_X]*quat[SG_W]),
-                   (- sqx - sqy + sqz + sqw));
+    hpr[0] = atan2((tdble)(2.0*(quat[SG_X]*quat[SG_Y] + quat[SG_Z]*quat[SG_W])),
+                   (tdble)(sqx - sqy - sqz + sqw));
+    hpr[1] = atan2((tdble)(2.0*(quat[SG_Y]*quat[SG_Z] + quat[SG_X]*quat[SG_W])),
+                   (tdble)(- sqx - sqy + sqz + sqw));
     hpr[2] = asin(2.0*(quat[SG_X]*quat[SG_Z] - quat[SG_Y]*quat[SG_W]));
 }
 
