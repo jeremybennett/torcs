@@ -19,7 +19,7 @@ SimulationOptions::SimulationOptions()
     option_list.AddOption (PRM_DAMAGE_SUSPENSION, &suspension_damage, false);
     option_list.AddOption (PRM_DAMAGE_ALIGNMENT, &alignment_damage, true);
     option_list.AddOption (PRM_DAMAGE_AERO, &aero_damage, false);
-    option_list.AddOption (PRM_MODEL_AEROFLOW, &aeroflow_model, OPTIMAL);
+    option_list.AddOption (PRM_MODEL_AEROFLOW, &aeroflow_model, SIMPLE);
     option_list.AddOption (PRM_MODEL_TYRE_TEMPERATURE, &tyre_temperature, false);
     option_list.AddOption (PRM_MODEL_AERO_FACTOR, &aero_factor, 4.0f);
 }
@@ -48,7 +48,7 @@ void SimulationOptions::SetFromSkill (int skill)
         option_list.Set(PRM_DAMAGE_ALIGNMENT, true);
         option_list.Set(PRM_DAMAGE_AERO, true);
         option_list.Set(PRM_MODEL_TYRE_TEMPERATURE, false);
-        option_list.Set(PRM_MODEL_AERO_FACTOR, 4.0f);
+        option_list.Set(PRM_MODEL_AERO_FACTOR, 1.0f);
         option_list.Set(PRM_MODEL_AEROFLOW, SIMPLE);
         break;
     }

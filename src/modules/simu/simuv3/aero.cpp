@@ -201,16 +201,17 @@ SimWingConfig(tCar *car, int index)
     switch (car->options->aeroflow_model) {
     case SIMPLE:
         wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
-        wing->Kz = 4.0 * wing->Kx;
-        //wing->Kz = car->options->aero_factor * wing->Kx;
+        //wing->Kz = 4.0 * wing->Kx;
+        wing->Kz = car->options->aero_factor * wing->Kx;
         break;
     case PLANAR:
         wing->Kx = -AIR_DENSITY * area * 16.0f;
         wing->Kz = wing->Kx;
         break;
     case OPTIMAL:
+		fprintf (stderr, "Using optimal wings\n");
         wing->Kx = -AIR_DENSITY * area; ///< \bug: there should be a 1/2 here.
-        wing->Kz = wing->Kx;
+        wing->Kz = car->options->aero_factor * wing->Kx;
         break;
     default:
         fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);
