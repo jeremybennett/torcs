@@ -24,10 +24,6 @@
 
 #include "sim.h"
 
-#undef TEST_ROTATION
-
-const tdble aMax = 0.35; /*  */
-
 void
 SimCarConfig(tCar *car)
 {
@@ -81,9 +77,9 @@ SimCarConfig(tCar *car)
         car->fuel = car->tank;
     }
     car->fuel_prev = car->fuel;
-    k = k * k;
-    car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
-    car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
+    k = k * k; 
+    car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k *car->dimension.z * car->dimension.z));
+    car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + k * car->dimension.z * car->dimension.z));
     car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
     
     // initialise rotational momentum
@@ -91,6 +87,7 @@ SimCarConfig(tCar *car)
         car->rot_mom[i] = 0.0;
     }
     car->rot_mom[SG_W] = 1.0;
+
     /* configure components */
     w = car->mass * G;
 
