@@ -542,8 +542,9 @@ SimCarUpdate(tCar *car, tSituation * /* s */)
 void
 SimCarUpdate2(tCar *car, tSituation * /* s */)
 {
-    if (SimTelemetry == car->carElt->index) SimTelemetryOut(car);
 #if 0
+    if (SimTelemetry == car->carElt->index) SimTelemetryOut(car);
+
     static int cnt = 10;
 
     cnt--;

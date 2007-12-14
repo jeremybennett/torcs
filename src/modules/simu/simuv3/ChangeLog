@@ -1,3 +1,130 @@
+2007-12-14  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* car.cpp: Code cleanup.
+	Added mass distribution dependence of rotational inertia to the other axes,
+	since it was for some reason only added to the z axis.
+
+2007-12-01  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* SimulationOptions.cpp, aero.cpp, car.cpp: Fixed rolling resistance.
+	Reverted aero model to old one by default.
+
+2007-11-19  torcs  <torcs@olethros.no-ip.info>
+
+	* car.cpp: type casts for VC++ 2005 Express compilation
+
+2007-11-16  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* SimulationOptions.cpp, SimulationOptions.h, wheel.cpp:
+	Fixed wheel, incoroprating the changes from the simuv2 update by berniw.
+
+2007-05-03  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* car.cpp: Fix for VC bug.
+
+2007-05-02  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* Options.h, SimulationOptions.cpp, aero.cpp, car.cpp, carstruct.h:
+	More changes to make it compileable on CV6.
+
+2007-05-01  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* aero.cpp, SimulationOptions.cpp: Added 'optimal' wing as an option.
+
+	* SimulationOptions.cpp, aero.cpp, axle.cpp, collide.cpp, susp.cpp, susp.h:
+	Some modifications for VC6 compilation.  Minor tweaks in the sim.
+
+2006-09-02  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* SimulationOptions.cpp, differential.cpp, simu.cpp, wheel.cpp, wheel.h:
+	- A small bugfix in the differential.cpp.
+	- Changed default AERO factor to be 4.0 again.
+	- Changed wheel code so that it takes into account the mass of the wheel
+	when updating the suspension.  This should fix a strange behaviour that
+	occurs when a car enters a very rough patch of ground.  If the suspension
+	is long enough, then what you see is the wheels being always stuck to the
+	ground, while the car is flying high.  So now the wheels move according
+	to their own mass.  This is a candidate fix for going into simuv2.
+
+2006-06-18  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* SimulationOptions.cpp, aero.cpp, car.cpp, differential.cpp, differential.h, engine.cpp:
+	Modified Limited Slip Differential.
+	Changed aero options so that a factor of 1 is used at 'pro' level
+	and a factor of 2 at all other levels. This makes driving much harder.
+	(Simuv2 always uses a factor of 4).
+
+2005-12-15  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* SimulationOptions.cpp, SimulationOptions.h, aero.cpp, aero.h, car.cpp, engine.cpp, simu.cpp, wheel.cpp:
+	engine: Simplified the revs limiter in engine.cpp
+	aero: Added a check at startup for coefficients that violate the conservation of energy.
+	wheel: Copied over the old simulation from simuv2 - throwing away all the complicated coordinate transforms and the exact calculation of suspension length, since they only adds CPU time for a very limited effect.
+
+2005-09-15  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* transmission.cpp:
+	Had misunderstood code. Reverted 'fix' and added comment.
+
+	* transmission.cpp:
+	Bugfix, clutch->transferValue thresholded to the wrong value, causing a 'double' gear change
+
+2005-09-13  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* aero.cpp, collide.cpp, sim.h, simu.cpp, wheel.cpp:
+	CollideXYScene(): Brought code in line with simuv2
+
+	* engine.cpp:
+	Bugfix: Engine brake caused car to go backwards when idle.
+
+2005-09-02  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* car.cpp: revert position of lift force to equal that of simuv2
+
+2005-08-30  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* steer.cpp: Simplified and in line with simuv2
+
+2005-08-29  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* steer.cpp: Fixed left/right assymetry at small steering angles.
+
+2005-06-09  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* collide.cpp, engine.cpp, SimulationOptions.cpp, car.cpp:
+	Fixed a bug and removed auto-clutch in engine.cpp, changed default simulation options to remove tyre temperature/wear effects, minor changes in collide.cpp
+
+2005-04-10  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* differential.cpp, differential.h: Changed differential.
+
+2005-04-04  Christos Dimitrakakis  <olethros@olethros-desktop>
+
+	* ChangeLog: List of changes.
+
+	* simuitf.cpp, steer.cpp, steer.h, susp.cpp, susp.h, transmission.cpp, transmission.h, wheel.h, axle.cpp, axle.h, brake.cpp, brake.h, categories.cpp, collide.cpp, differential.h, engine.h, sim.h:
+	Minor differences.
+
+	* car.cpp, wheel.cpp: Changed some things to quaternions.
+
+	* engine.cpp: Auto-clutch code change.
+	Calculations rearranged.
+	Adjusted fuel consumption to match simuv2.
+
+	* differential.cpp:
+	Changed DIFF_FREE to what I think it should be. Review?
+
+	* carstruct.h, simu.cpp:
+	Added some profiling stuff for the wheels (temporarily).
+	Added a counter for when being upside down. After a threshold
+	the car is removed from the track.
+
+	* aero.cpp, aero.h:
+	Added aero factor and aeroflow model options. Implemented planar model.
+
+	* Options.h, SimulationOptions.cpp, SimulationOptions.h:
+	 Set aeroflow model to SIMPLE always.
+
 2005-04-04  Christos Dimitrakakis  <olethros@localhost.localdomain>
 
 	* aero.cpp: Added aero factor.
