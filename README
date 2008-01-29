@@ -110,11 +110,10 @@ Changes since 1.3.0
 - Added car6-trb1 created by Wolf-Dieter Beelitz and reworked by Bernhard
   (Wolf-Dieter Beelitz, Bernhard).
 - Car engine sound is now searched in the cars directory first (Eric).
-
+- Added new car, car7-trb1 (Bernhard).
 
 TODO for 1.4.0
 --------------
-- Car class for TRB (car6 and 7).
 - Adjust categories and setups for updated simuv2.
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
