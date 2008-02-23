@@ -26,7 +26,7 @@
 	
 	<section name="Sound">
 		<attstr name="engine sample" val="f360.wav"/>
-		<attnum name="rpm scale" val="1.25"/>
+		<attnum name="rpm scale" val="1.0"/>
 	</section>
 	
 	
@@ -54,15 +54,15 @@
 		<attstr name="type" val="brake2"/>
 		<attnum name="xpos" val="-2.18"/>
 		<attnum name="ypos" val="0.57"/>
-		<attnum name="zpos" val="0.65"/>
-		<attnum name="size" val="0.3"/>
+		<attnum name="zpos" val="0.63"/>
+		<attnum name="size" val="0.15"/>
 		</section>
 		<section name="2">
 		<attstr name="type" val="brake2"/>
 		<attnum name="xpos" val="-2.18"/>
 		<attnum name="ypos" val="-0.57"/>
-		<attnum name="zpos" val="0.65"/>
-		<attnum name="size" val="0.3"/>
+		<attnum name="zpos" val="0.63"/>
+		<attnum name="size" val="0.15"/>
 		</section>
 		</section>
 	
@@ -87,8 +87,8 @@
 	
 		<!-- used for inertia, indicates the good mass centering (lower values) -->
 		<attnum name="mass repartition coefficient" val="0.62"/>
-		<attnum name="fuel tank" unit="l" val="100.0"/>
-		<attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
+		<attnum name="fuel tank" unit="l" val="94.0"/>
+		<attnum name="initial fuel" unit="l" min="1.0" max="94.0" val="94.0"/>
 	</section>
 	
 	<section name="Exhaust">
@@ -108,14 +108,14 @@
 	</section>
 	
 	<section name="Aerodynamics">
-		<attnum name="Cx" min="0.20" max="2.0" val="0.33"/>
-		<attnum name="front area" unit="m2" min="1.0" max="3.0" val="1.9"/>
+		<attnum name="Cx" min="0.20" max="2.0" val="0.345"/>
+		<attnum name="front area" unit="m2" min="1.0" max="3.0" val="1.92"/>
 		<attnum name="front Clift" min="0.0" max="1.5" val="0.69"/>
-		<attnum name="rear Clift" min="0.0" max="1.5" val="0.72"/>
+		<attnum name="rear Clift" min="0.0" max="1.5" val="0.7"/>
 	</section>
 	
 	<section name="Front Wing">
-		<attnum name="area" unit="m2" val="0.2"/>
+		<attnum name="area" unit="m2" val="0.25"/>
 		<attnum name="angle" unit="deg" min="0" max="12" val="6"/>
 		<attnum name="xpos" unit="m" val="2.20"/>
 		<attnum name="zpos" unit="m" val="0.04"/>
@@ -134,7 +134,7 @@
 		<attnum name="revs maxi" unit="rpm" min="7921" max="10000" val="10000"/>
 		<attnum name="revs limiter" unit="rpm" min="7000" max="9152" val="9152"/>
 		<attnum name="tickover" unit="rpm" min="900" max="2519" val="900"/>
-		<attnum name="fuel cons factor" min="1.1" max="1.3" val="1.1"/>
+		<attnum name="fuel cons factor" min="1.1" max="1.3" val="1.13"/>
 		<attstr name="turbo" val="true"/>
 		<attnum name="turbo rpm" unit="rpm" val="3000"/>
 		<attnum name="turbo factor" val="1.0"/>
@@ -322,13 +322,13 @@
 	<section name="Front Axle">
 		<attnum name="xpos" min="0.5" max="2.5" val="1.22"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0056"/>
-		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.02"/>
+		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.07"/>
 	</section>
 	
 	<section name="Rear Axle">
 		<attnum name="xpos" min="-2.5" max="-0.5" val="-1.42"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
-		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.06"/>
+		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.09"/>
 	</section>
 	
 	<section name="Front Differential">
@@ -421,8 +421,8 @@
 	<section name="Front Right Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.07"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="0.8"/>
-		<attnum name="packers" unit="mm" min="0" max="50" val="20"/>
+		<attnum name="bellcrank" min="0.1" max="5" val="0.9"/>
+		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
 		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
@@ -432,8 +432,8 @@
 	<section name="Front Left Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.07"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="0.8"/>
-		<attnum name="packers" unit="mm" min="0" max="50" val="20"/>
+		<attnum name="bellcrank" min="0.1" max="5" val="0.9"/>
+		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
 		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
@@ -443,8 +443,8 @@
 	<section name="Rear Right Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="1.0"/>
-		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
+		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
+		<attnum name="packers" unit="mm" min="0" max="50" val="0"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
@@ -454,8 +454,8 @@
 	<section name="Rear Left Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="1.0"/>
-		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
+		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
+		<attnum name="packers" unit="mm" min="0" max="50" val="0"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>

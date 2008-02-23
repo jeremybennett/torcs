@@ -135,15 +135,15 @@
 		<attnum name="overall length" unit="m" val="4.5"/>
 		<attnum name="overall width" unit="m" val="1.94"/>
 		<attnum name="mass" unit="kg" val="1150.0"/>
-		<attnum name="GC height" unit="m" val="0.27"/>
+		<attnum name="GC height" unit="m" val="0.25"/>
 		<!-- weight bias -->
-		<attnum name="front-rear weight repartition" val="0.45"/>
+		<attnum name="front-rear weight repartition" val="0.47"/>
 		<attnum name="front right-left weight repartition" min="0.3" max="0.7" val="0.5"/>
 		<attnum name="rear right-left weight repartition" min="0.3" max="0.7" val="0.5"/>
 		<!-- used for inertia, indicates the good mass centering (lower values) -->
 		<attnum name="mass repartition coefficient" val="0.5"/>
 		<attnum name="fuel tank" unit="l" val="91.0"/>
-		<attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
+		<attnum name="initial fuel" unit="l" min="1.0" max="91.0" val="91.0"/>
 	</section>
 	<section name="Exhaust">
 		<!-- for flames -->
@@ -160,10 +160,10 @@
 		</section>
 	</section>
 	<section name="Aerodynamics">
-		<attnum name="Cx" val="0.355"/>
-		<attnum name="front area" unit="m2" val="2.00"/>
-		<attnum name="front Clift" min="0.0" max="1.0" val="0.74"/>
-		<attnum name="rear Clift" min="0.0" max="1.0" val="0.6"/>
+		<attnum name="Cx" val="0.345"/>
+		<attnum name="front area" unit="m2" val="1.99"/>
+		<attnum name="front Clift" min="0.0" max="1.0" val="0.69"/>
+		<attnum name="rear Clift" min="0.0" max="1.0" val="0.7"/>
 	</section>
 	<section name="Front Wing">
 		<attnum name="area" unit="m2" val="0.3"/>
@@ -173,7 +173,7 @@
 	</section>
 	<section name="Rear Wing">
 		<attnum name="area" unit="m2" val="0.70"/>
-		<attnum name="angle" unit="deg" min="0" max="17" val="12"/>
+		<attnum name="angle" unit="deg" min="0" max="17" val="9"/>
 		<attnum name="xpos" unit="m" val="-2.02"/>
 		<attnum name="zpos" unit="m" val="1.04"/>
 	</section>
@@ -224,7 +224,7 @@
 			</section>
 			<section name="9">
 				<attnum name="rpm" unit="rpm" val="8000"/>
-				<attnum name="Tq" unit="N.m" val="462.0"/>
+				<attnum name="Tq" unit="N.m" val="473.0"/>
 			</section>
 			<section name="10">
 				<attnum name="rpm" unit="rpm" val="9000"/>
@@ -314,7 +314,7 @@
 				<attnum name="efficiency" val="0.948"/>
 			</section>
 			<section name="6">
-				<attnum name="ratio" min="0" max="5" val="1.05"/>
+				<attnum name="ratio" min="0" max="5" val="1.03"/>
 				<attnum name="inertia" val="0.0150"/>
 				<attnum name="efficiency" val="0.940"/>
 			</section>
@@ -342,7 +342,7 @@
 	<section name="Rear Axle">
 		<attnum name="xpos" min="-2.5" max="-0.5" val="-1.58"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
-		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.18"/>
+		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.12"/>
 	</section>
 	<section name="Front Differential">
 		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->

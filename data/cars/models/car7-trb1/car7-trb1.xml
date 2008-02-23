@@ -135,7 +135,7 @@
 		<attnum name="overall length" unit="m" val="4.39"/>
 		<attnum name="overall width" unit="m" val="1.94"/>
 		<attnum name="mass" unit="kg" val="1150.0"/>
-		<attnum name="GC height" unit="m" val="0.24"/>
+		<attnum name="GC height" unit="m" val="0.22"/>
 		<!-- weight bias -->
 		<attnum name="front-rear weight repartition" val="0.495"/>
 		<attnum name="front right-left weight repartition" min="0.3" max="0.7" val="0.5"/>
@@ -162,8 +162,8 @@
 	<section name="Aerodynamics">
 		<attnum name="Cx" val="0.34"/>
 		<attnum name="front area" unit="m2" val="1.89"/>
-		<attnum name="front Clift" min="0.0" max="1.0" val="0.68"/>
-		<attnum name="rear Clift" min="0.0" max="1.0" val="0.66"/>
+		<attnum name="front Clift" min="0.0" max="1.0" val="0.7"/>
+		<attnum name="rear Clift" min="0.0" max="1.0" val="0.7"/>
 	</section>
 	<section name="Front Wing">
 		<attnum name="area" unit="m2" val="0.4"/>
@@ -173,7 +173,7 @@
 	</section>
 	<section name="Rear Wing">
 		<attnum name="area" unit="m2" val="0.72"/>
-		<attnum name="angle" unit="deg" min="0" max="17" val="12"/>
+		<attnum name="angle" unit="deg" min="0" max="17" val="8"/>
 		<attnum name="xpos" unit="m" val="-1.91"/>
 		<attnum name="zpos" unit="m" val="0.99"/>
 	</section>
@@ -224,7 +224,7 @@
 			</section>
 			<section name="9">
 				<attnum name="rpm" unit="rpm" val="8000"/>
-				<attnum name="Tq" unit="N.m" val="446.0"/>
+				<attnum name="Tq" unit="N.m" val="453.0"/>
 			</section>
 			<section name="10">
 				<attnum name="rpm" unit="rpm" val="9000"/>
@@ -337,12 +337,12 @@
 	<section name="Front Axle">
 		<attnum name="xpos" min="0.5" max="2.5" val="1.16"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0056"/>
-		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.08"/>
+		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.09"/>
 	</section>
 	<section name="Rear Axle">
 		<attnum name="xpos" min="-2.5" max="-0.5" val="-1.44"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
-		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.14"/>
+		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.09"/>
 	</section>
 	<section name="Front Differential">
 		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
