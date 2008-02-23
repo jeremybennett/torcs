@@ -111,6 +111,7 @@ Changes since 1.3.0
   (Wolf-Dieter Beelitz, Bernhard).
 - Car engine sound is now searched in the cars directory first (Eric).
 - Added new car, car7-trb1 (Bernhard).
+- Adjusted car1-7 performance settings (Bernhard).
 
 TODO for 1.4.0
 --------------
