@@ -112,6 +112,13 @@ Changes since 1.3.0
 - Car engine sound is now searched in the cars directory first (Eric).
 - Added new car, car7-trb1 (Bernhard).
 - Adjusted car1-7 performance settings (Bernhard).
+- Improvments for track Ruudskogen by Andrew (Andrew, Bernhard).
+- Improvments for track Street-1 by Andrew (Andrew, Bernhard).
+- Added new track Forza created by Andrew (Andrew, Bernhard).
+- Improvments for track wheel-2 by Andrew (Andrew, Bernhard).
+- Totally reworked track e-track-6 by Andrew (Andrew, Bernhard).
+- Improvments for track dirt-3 by Andrew (Andrew, Bernhard).
+- Improvments for track alpine-1 by Andrew (Andrew, Bernhard).
 
 TODO for 1.4.0
 --------------
@@ -146,7 +153,6 @@ Later:
 - fix sound in split screen multiplayer. [in progress] (ask Christos).
 - Add remaining kcendra cars.
 - Check and add Andrews car improvements.
-- Check and add Erics new car class.
 - Ongoing: Replace some defines with "static const" to be able to see the
   symbol name when debugging.
 - add more races to championship.
