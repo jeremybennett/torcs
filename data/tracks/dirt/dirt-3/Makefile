@@ -25,7 +25,8 @@ DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png readme.txt background.png amb
 			barrier-wooden_n.png hat.png tree_bush2_arbor_n.png black.png newdirt2.png \
 			tree_gum2_arbor_n.png bridgeplanks.png newdirt.png tree_gum_arbor_n.png \
 			cabin.png newgrass.png tr-house-arbor_n.png pit-walls.png poutre2_arbor_n.rgb \
-			poutre3_arbor_n.rgb shadow2.rgb
+			poutre3_arbor_n.rgb shadow2.rgb dirt-grass2.png shadow2.png shadow3.png \
+			advert-cola.png advert-joes.png advert-ols.png
 
 data-tracks-dirt_PKGFILES	= $(DATA)
 

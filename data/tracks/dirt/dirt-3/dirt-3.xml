@@ -20,12 +20,12 @@ the Free Software Foundation; either version 2 of the License, or
 <params name="test" type="param" mode="mw">
   <section name="Surfaces">&default-surfaces;
     <section name="newdirt">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="newdirt.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attnum name="texture size" val="25.0" unit="m"/>
@@ -34,19 +34,19 @@ the Free Software Foundation; either version 2 of the License, or
 	<attstr name="bump name" val="dirt-bump.png"/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.95"/>
+	<attnum name="friction"           val="0.85"/>
 	<attnum name="rolling resistance" val="0.005"/>
 
 	<attnum name="roughness" val="0.02"/>
 	<attnum name="roughness wavelength" val="30.0"/>
     </section>
     <section name="newdirt2">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="newdirt2.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attnum name="texture size" val="25.0" unit="m"/>
@@ -56,18 +56,18 @@ the Free Software Foundation; either version 2 of the License, or
 	<attnum name="bump size" val="2.0" unit="m"/>
 
 	<attnum name="friction"           val="0.75"/>
-	<attnum name="rolling resistance" val="0.005"/>
+	<attnum name="rolling resistance" val="0.05"/>
 
-	<attnum name="roughness" val="0.10"/>
+	<attnum name="roughness" val="0.08"/>
 	<attnum name="roughness wavelength" val="6.0"/>
     </section>
     <section name="dirt-side">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="dirt-side.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attnum name="texture size" val="25.0" unit="m"/>
@@ -83,12 +83,12 @@ the Free Software Foundation; either version 2 of the License, or
 	<attnum name="roughness wavelength" val="6.0"/>
     </section>
     <section name="dirt-grass">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="dirt-grass.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attnum name="texture size" val="25.0" unit="m"/>
@@ -104,12 +104,12 @@ the Free Software Foundation; either version 2 of the License, or
 	<attnum name="roughness wavelength" val="6.0"/>
     </section>
     <section name="dirt-pits">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="dirt-pits.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attstr name="texture link with previous" val="yes"/>
@@ -127,12 +127,12 @@ the Free Software Foundation; either version 2 of the License, or
 	<attnum name="roughness wavelength" val="6.0"/>
     </section>
     <section name="bridge">
-	<attnum name="color R1" val="0.2"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.3"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
+	<attnum name="color R1" val="0.3"/>
+	<attnum name="color G1" val="0.6"/>
+	<attnum name="color B1" val="0.2"/>
+	<attnum name="color R2" val="0.5"/>
+	<attnum name="color G2" val="0.7"/>
+	<attnum name="color B2" val="0.3"/>
 	<attstr name="texture name" val="bridgeplanks.png"/>
 	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 	<attnum name="texture size" val="12.5" unit="m"/>
@@ -207,7 +207,7 @@ the Free Software Foundation; either version 2 of the License, or
     <attstr name="category" val="dirt" />
     <attnum name="version" val="4" />
     <attstr name="author" val="A. Sumner" />
-    <attstr name="description" val="A stroll in the Australian countryside" />
+    <attstr name="description" val="A blast through the Australian countryside" />
   </section>
   <section name="Graphic">
     <attstr name="3d description" val="dirt-3.acc" />
@@ -224,12 +224,12 @@ the Free Software Foundation; either version 2 of the License, or
     <attnum name="diffuse color G" val="1"/>
     <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.1"/>
-    <attnum name="specular color G" val="0.1"/>
-    <attnum name="specular color B" val="0.1"/>
-    <attnum name="light position x" val="400"/>
-    <attnum name="light position y" val="1200"/>
-    <attnum name="light position z" val="544"/>
+    <attnum name="specular color R" val="0.5"/>
+    <attnum name="specular color G" val="0.5"/>
+    <attnum name="specular color B" val="0.5"/>
+    <attnum name="light position x" val="1800"/>
+    <attnum name="light position y" val="6420"/>
+    <attnum name="light position z" val="2400"/>
     <section name="Terrain Generation">
       <attnum name="track step" unit="m" val="20" />
       <attnum name="border margin" unit="m" val="500" />
