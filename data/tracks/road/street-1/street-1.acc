@@ -1,5 +1,5 @@
 AC3Db
-MATERIAL "" rgb 0.40 0.40 0.40 amb 0.80 0.80 0.80 emis 0.40 0.40 0.40 spec 0.50 0.50 0.50 shi  50 trans 0 
+MATERIAL "" rgb 0.40 0.40 0.40 amb 0.80 0.80 0.80 emis 0.40 0.40 0.40 spec 0.05 0.05 0.05 shi  50 trans 0 
 OBJECT world
 kids 74
 OBJECT group
