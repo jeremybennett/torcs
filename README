@@ -119,6 +119,8 @@ Changes since 1.3.0
 - Totally reworked track e-track-6 by Andrew (Andrew, Bernhard).
 - Improvments for track dirt-3 by Andrew (Andrew, Bernhard).
 - Improvments for track alpine-1 by Andrew (Andrew, Bernhard).
+- Fuel consumption adjustments on car1-7 (Wolf-Dieter, Andrew, Daniel,
+  Bernhard).
 
 TODO for 1.4.0
 --------------
