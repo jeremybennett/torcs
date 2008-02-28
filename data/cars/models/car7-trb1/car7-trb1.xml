@@ -143,7 +143,7 @@
 		<!-- used for inertia, indicates the good mass centering (lower values) -->
 		<attnum name="mass repartition coefficient" val="0.5"/>
 		<attnum name="fuel tank" unit="l" val="86.0"/>
-		<attnum name="initial fuel" unit="l" min="1.0" max="100.0" val="80.0"/>
+		<attnum name="initial fuel" unit="l" min="1.0" max="86.0" val="86.0"/>
 	</section>
 	<section name="Exhaust">
 		<!-- for flames -->
@@ -182,7 +182,7 @@
 		<attnum name="revs maxi" unit="rpm" val="10000"/>
 		<attnum name="revs limiter" unit="rpm" val="8500"/>
 		<attnum name="tickover" unit="rpm" val="2000"/>
-		<attnum name="fuel cons factor" min="1.0" max="2.0" val="1.17"/>
+		<attnum name="fuel cons factor" min="1.0" max="2.0" val="1.16"/>
 		
 		<attstr name="turbo" val="true"/>
 		<attnum name="turbo rpm" unit="rpm" val="3000"/>

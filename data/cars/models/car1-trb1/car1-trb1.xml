@@ -134,7 +134,7 @@
 		<attnum name="revs maxi" unit="rpm" min="7921" max="10000" val="10000"/>
 		<attnum name="revs limiter" unit="rpm" min="7000" max="9152" val="9152"/>
 		<attnum name="tickover" unit="rpm" min="900" max="2519" val="900"/>
-		<attnum name="fuel cons factor" min="1.1" max="1.3" val="1.13"/>
+		<attnum name="fuel cons factor" min="1.1" max="1.3" val="1.19"/>
 		<attstr name="turbo" val="true"/>
 		<attnum name="turbo rpm" unit="rpm" val="3000"/>
 		<attnum name="turbo factor" val="1.0"/>

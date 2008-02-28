@@ -86,8 +86,8 @@
 
     <!-- used for inertia, indicates the good mass centering (lower values) -->
     <attnum name="mass repartition coefficient" min="0.2" max="1.0" val="0.67"/>
-    <attnum name="fuel tank" unit="l" min="30.0" max="99.0" val="99.0"/>
-    <attnum name="initial fuel" unit="l" min="1.0" max="99.0" val="99.0"/>
+    <attnum name="fuel tank" unit="l" min="30.0" max="95.0" val="95.0"/>
+    <attnum name="initial fuel" unit="l" min="1.0" max="95.0" val="95.0"/>
   </section>
 
   <section name="Exhaust">
