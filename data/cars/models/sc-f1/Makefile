@@ -20,7 +20,7 @@ CAR       = sc-f1
 DATADIR   = cars/$(CAR)
 
 DATA      = $(CAR).xml readme.txt \
-            $(CAR).rgb tex-wheel.rgb shadow.rgb \
+            $(CAR).rgb shadow.rgb wheel3d.png \
             $(shell find *.acc -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGFILES	= $(DATA)

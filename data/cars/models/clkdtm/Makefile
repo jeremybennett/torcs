@@ -20,7 +20,7 @@ CAR	  = clkdtm
 DATADIR   = cars/$(CAR)
 
 DATA      = $(CAR).xml \
-            $(CAR).rgb shadow.rgb tex-wheel.rgb \
+            $(CAR).rgb shadow.rgb wheel3d.png \
             $(shell find *.acc -maxdepth 0 -type f -print) \
 	    readme.txt 
 
