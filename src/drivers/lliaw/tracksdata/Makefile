@@ -18,7 +18,7 @@
 
 SHIPDIR   = drivers/lliaw/tracksdata
 
-SHIP      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
+SHIP      = $(shell find . -maxdepth 1 -name '*.xml' -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
