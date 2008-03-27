@@ -43,9 +43,9 @@ static jsJoystick *js[NUM_JOY] = {NULL};
 static float 	ax[MAX_AXES * NUM_JOY] = {0};
 static int	rawb[NUM_JOY] = {0};
 
-#define NB_STEPS	6
+const int NB_STEPS	=  6;
 
-#define OFFSET_CMD	5
+const int OFFSET_CMD	= -1;
 
 static char *Instructions[] = {
     "Center the joystick then press a button",

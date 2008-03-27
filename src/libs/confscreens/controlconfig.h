@@ -26,7 +26,7 @@
 #ifndef _CONTROLCONFIG_H_
 #define _CONTROLCONFIG_H_
 
-extern void *TorcsControlMenuInit(void *prevMenu, int index);
+extern void *TorcsControlMenuInit(void *prevMenu, int index, char *gearShiftMode);
 
 
 typedef struct
@@ -34,6 +34,7 @@ typedef struct
     char	*name;
     tCtrlRef	ref;
     int		Id;
+    int         labelId;
     char	*minName;
     float	min;
     char	*maxName;

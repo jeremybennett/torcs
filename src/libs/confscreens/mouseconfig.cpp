@@ -40,7 +40,7 @@ static void 	*scrHandle2 = NULL;
 
 static tCtrlMouseInfo	mouseInfo;
 
-#define CMD_OFFSET	6
+const int CMD_OFFSET = 0;
 
 /*
  * Mouse calibration
