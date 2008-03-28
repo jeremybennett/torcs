@@ -66,12 +66,11 @@ SimEngineConfig(tCar *car)
     car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423);
     car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
     car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
-	car->engine.jointI = car->engine.I;
 	car->engine.pressure = 0.0f;
 	car->engine.exhaust_pressure = 0.0f;
 	car->engine.exhaust_refract = 0.1f;
-	car->engine.responseTq = 0.0f;
-
+	car->engine.Tq_response = 0.0f;
+    car->engine.I_joint = car->engine.I;
     sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
     car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
     edesc = (struct tEdesc*)malloc((car->engine.curve.nbPts + 1) * sizeof(struct tEdesc));
@@ -250,15 +249,16 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 #endif
 
     transfer = 0.0;
+    float alpha = 0.1; // transition coefficient
     float ttq = 0.0;
-	float responseI = trans->differential[0].feedBack.I + trans->differential[1].feedBack.I;
-	engine->responseTq = 0.0;
-	tdble dI = fabs(trans->curI - engine->jointI);
+	float I_response = trans->differential[0].feedBack.I + trans->differential[1].feedBack.I;
+	engine->Tq_response = 0.0;
+	tdble dI = fabs(trans->curI - engine->I_joint);
 	tdble sdI = dI;
 
 	if (sdI>1.0) sdI = 1.0;
-
-	engine->jointI =	engine->jointI * .9 +  .1 * trans->curI;
+    
+	engine->I_joint = engine->I_joint*(1.0-alpha) +  alpha*trans->curI;
 
     if ((clutch->transferValue > 0.01) && (trans->gearbox.gear)) {
 
@@ -267,7 +267,8 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 		ttq = dI* tanh(0.01*(axleRpm * trans->curOverallRatio * transfer + freerads * (1.0-transfer) -engine->rads))*100.0;
 		engine->rads = (1.0-sdI) * (axleRpm * trans->curOverallRatio * transfer + freerads * (1.0-transfer)) + sdI *(engine->rads + ((ttq)*SimDeltaTime)/(engine->I));
 		if (engine->rads < 0.0) {
-			engine->rads = 0; engine->Tq = 0.0;
+			engine->rads = 0;
+            engine->Tq = 0.0;
 		}
     } else {
 		engine->rads = freerads;
@@ -280,8 +281,8 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
             return engine->revsMax / trans->curOverallRatio;
         }
 
-    if ((trans->curOverallRatio!=0.0) && (responseI > 0)) {
-		return axleRpm - sdI * ttq * trans->curOverallRatio   * SimDeltaTime / ( responseI);
+    if ((trans->curOverallRatio!=0.0) && (I_response > 0)) {
+		return axleRpm - sdI * ttq * trans->curOverallRatio   * SimDeltaTime / ( I_response);
     } else {
 		return 0.0;
     }

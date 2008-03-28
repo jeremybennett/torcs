@@ -45,8 +45,8 @@ typedef struct
     tdble		I;
     tdble		rads;   /* revs in rad/s ... */
     tdble		Tq;	/* output torque */
-	tdble       responseTq; /* response Tq due to mismatch */
-	tdble       jointI; /* jointI */
+	tdble       Tq_response; /* response Tq due to mismatch */
+	tdble       I_joint; /* jointI */
     tdble		fuelcons;
     tdble		brakeCoeff;
 	tdble       pressure;

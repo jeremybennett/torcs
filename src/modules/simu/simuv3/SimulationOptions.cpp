@@ -28,12 +28,20 @@ void SimulationOptions::SetFromSkill (int skill)
 {
     switch (skill) {
     case 0:
+        option_list.Set(PRM_DAMAGE_TYRES, 0.0f);
+        option_list.Set(PRM_DAMAGE_SUSPENSION, false);
+        option_list.Set(PRM_DAMAGE_ALIGNMENT, true);
+        option_list.Set(PRM_DAMAGE_AERO, false);
+        option_list.Set(PRM_MODEL_TYRE_TEMPERATURE, false);
+        option_list.Set(PRM_MODEL_AERO_FACTOR, 4.0f);
+        break;
     case 1:
         option_list.Set(PRM_DAMAGE_TYRES, 0.0f);
         option_list.Set(PRM_DAMAGE_SUSPENSION, false);
         option_list.Set(PRM_DAMAGE_ALIGNMENT, true);
         option_list.Set(PRM_DAMAGE_AERO, false);
         option_list.Set(PRM_MODEL_TYRE_TEMPERATURE, false);
+        option_list.Set(PRM_MODEL_AERO_FACTOR, 3.0f);
         break;
     case 2:
         option_list.Set(PRM_DAMAGE_TYRES, 0.0f);
@@ -41,6 +49,7 @@ void SimulationOptions::SetFromSkill (int skill)
         option_list.Set(PRM_DAMAGE_ALIGNMENT, true);
         option_list.Set(PRM_DAMAGE_AERO, false);
         option_list.Set(PRM_MODEL_TYRE_TEMPERATURE, false);
+        option_list.Set(PRM_MODEL_AERO_FACTOR, 2.0f);
         break;
     case 3:
         option_list.Set(PRM_DAMAGE_TYRES, 0.0f);
