@@ -106,7 +106,6 @@ bool SimpleStrategy::needPitstop(tCarElt* car, tSituation *s, Opponents* opponen
 	if (car->_dammage > PIT_DAMMAGE) {
 		return true;
 	}
-
 	return false;
 }
 
@@ -157,7 +156,6 @@ bool ManagedStrategy::needPitstop(tCarElt* car, tSituation *s, Opponents* oppone
 				return true;
 		}
 	}
-
 	return RepairDamage(car, opponents);
 }
 
@@ -293,7 +291,7 @@ float ManagedStrategy::getSpeedFactor(tCarElt* car, tSituation* s, Opponents* op
 		if (catchtime > margin) {
 			float d = 0.02f * (margin - catchtime);
 			float a = exp(-d*d);
-			new_speed_factor = a + 0.9f * (1.0f-a);
+			new_speed_factor = a;
 		}
 		
 		if (fabs (new_speed_factor - speed_factor) > 0.01f) {
@@ -301,7 +299,22 @@ float ManagedStrategy::getSpeedFactor(tCarElt* car, tSituation* s, Opponents* op
 			speed_factor = new_speed_factor;
 		}
 	}
-
+        
+        if (car->_pos != 1) {
+		float catchtime = (float) car->_timeBehindPrev;
+		float margin = 2.0f;
+		if (catchtime < margin) {
+			float d = (margin - catchtime);
+			float a = exp(-d*d);
+			new_speed_factor = 2.0f - a;
+		}
+		
+		if (fabs (new_speed_factor - speed_factor) > 0.01f) {
+                    //printf ("SF: %f -> %f\n", speed_factor, new_speed_factor);
+			speed_factor = new_speed_factor;
+		}
+	}
+        
 	return speed_factor;
 }
 

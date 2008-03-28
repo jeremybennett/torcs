@@ -224,7 +224,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
             // if positive then we are to the left of our target.
             // theta is a simple threshold
             float target_error = fabs(target_toLeft - car->_trkPos.toLeft);
-            float theta = 0.5*seg->width - 0.5*car->_dimension_y;
+            float theta = 0.25*seg->width - 0.5*car->_dimension_y;
             float dtheta = theta - target_error;
 
             if (dtheta < 0) dtheta -= 1;

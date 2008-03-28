@@ -29,7 +29,7 @@ class Trajectory
     std::vector<float> accel; ///<  maximum acceleration
     std::vector<int> indices; ///< data indices
     static Point GetPoint (Segment& s, float w);
-    void Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset = true);
+    void Optimise(SegmentList track, int max_iter, float alpha, float margin, char* fname, bool reset = true);
 };
 
 #endif

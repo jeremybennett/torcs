@@ -38,6 +38,10 @@
 #include "TrackData.h"
 #include "Trajectory.h"
 
+#ifndef AERO_FACTOR
+#define AERO_FACTOR 4.0
+#endif
+
 #ifdef WIN32
 #include <float.h>
 #define isnan _isnan
@@ -55,24 +59,24 @@ namespace olethros {
     const float Driver::MIN_UNSTUCK_DIST = 2.0f;					///< [m] If we are closer to the middle we assume to be not stuck.
     const float Driver::G = 9.81f;								///< [m/(s*s)] Welcome on Earth.
     const float Driver::FULL_ACCEL_MARGIN = 3.0f;				///< [m/s] Margin reduce oscillation of brake/acceleration.
-    const float Driver::SHIFT = 0.98f;							///< [-] (% of rpmredline) When do we like to shift gears.
+    const float Driver::SHIFT = 0.95f;							///< [-] (% of rpmredline) When do we like to shift gears.
     const float Driver::SHIFT_MARGIN = 4.0f;						///< [m/s] Avoid oscillating gear changes.
     const float Driver::ABS_SLIP = 2.0f;							///< [m/s] range [0..10]
     const float Driver::ABS_RANGE = 5.0f;						///< [m/s] range [0..10]
     const float Driver::ABS_MINSPEED = 3.0f;						///< [m/s] Below this speed the ABS is disabled (numeric, division by small numbers).
     const float Driver::TCL_SLIP = 2.0f;							///< [m/s] range [0..10]
     const float Driver::TCL_RANGE = 10.0f;						///< [m/s] range [0..10]
-    const float Driver::LOOKAHEAD_CONST = 17.0f;					///< [m]
-    const float Driver::LOOKAHEAD_FACTOR = 0.33f;				///< [-]
+    const float Driver::LOOKAHEAD_CONST = 15.0f;					///< [m]
+    const float Driver::LOOKAHEAD_FACTOR = 0.3f;				///< [-]
     const float Driver::WIDTHDIV = 3.0f;							///< [-] Defines the percentage of the track to use (2/WIDTHDIV).
     const float Driver::SIDECOLL_MARGIN = 3.0f;					///< [m] Distance between car centers to avoid side collisions.
     const float Driver::BORDER_OVERTAKE_MARGIN = 0.5f;			///< [m]
     const float Driver::OVERTAKE_OFFSET_SPEED = 2.0f;			///< [m/s] Offset change speed.
-    const float Driver::OVERTAKE_TIME = 2.0f;			        ///< [s] Approach time to consider overtaking.
-    const float Driver::PIT_LOOKAHEAD = 6.0f;					///< [m] Lookahead to stop in the pit.
-    const float Driver::PIT_BRAKE_AHEAD = 200.0f;				///< [m] Workaround for "broken" pitentries.
+    const float Driver::OVERTAKE_TIME = 3.0f;			        ///< [s] Approach time to consider overtaking.
+    const float Driver::PIT_LOOKAHEAD = 5.0f;					///< [m] Lookahead to stop in the pit.
+    const float Driver::PIT_BRAKE_AHEAD = 500.0f;				///< [m] Workaround for "broken" pitentries.
     const float Driver::PIT_MU = 0.4f;							///< [-] Friction of pit concrete.
-    const float Driver::MAX_SPEED = 84.0f;						///< [m/s] Speed to compute the percentage of brake to apply.
+    const float Driver::MAX_SPEED = 89.0f;						///< [m/s] Speed to compute the percentage of brake to apply.
     const float Driver::MAX_FUEL_PER_METER = 0.0008f;			///< [liter/m] fuel consumtion.
     const float Driver::CLUTCH_SPEED = 5.0f;						///< [m/s]
     const float Driver::CENTERDIV = 0.1f;						///< [-] (factor) [0.01..0.6].
@@ -81,7 +85,7 @@ namespace olethros {
     const float Driver::CATCH_FACTOR = 10.0f;					///< [-] select MIN(catchdist, dist*CATCH_FACTOR) to overtake.
     const float Driver::CLUTCH_FULL_MAX_TIME = 1.0f;				///< [s] Time to apply full clutch.
     const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;			///< [m] if offset < this use the learned stuff
-    const float Driver::ACCELERATOR_LETGO_TIME = 0.1f;           ///< [s] Time to let go of accelerator before braking.
+    const float Driver::ACCELERATOR_LETGO_TIME = 0.5f;           ///< [s] Time to let go of accelerator before braking.
     const float Driver::MIN_BRAKE_FOLLOW_DISTANCE = 1.0f;        ///< [m] Predicted minimum distance from next opponent to apply full brake
     const float Driver::MAX_BRAKE_FOLLOW_DISTANCE = 2.0f;        ///< [m] Predicted minimum distance from next opponent to start applying brake.
     const float Driver::STEER_DIRECTION_GAIN = 1.0f; ///< [-] Gain to apply for basic steerin
@@ -320,9 +324,9 @@ namespace olethros {
                 learn->SetSafetyThreshold (0.5f);
             }
 	} else if (race_type==RM_TYPE_RACE) {
-            learn->SetSafetyThreshold (0.5f);
+            learn->SetSafetyThreshold (0.0f); // NOTE was 0.5
 	} else if (race_type==RM_TYPE_QUALIF) {
-            learn->SetSafetyThreshold (0.5f);
+            learn->SetSafetyThreshold (0.0f); // NOTE was 0.5
         }
 
 	if (0)
@@ -595,7 +599,7 @@ namespace olethros {
     float Driver::getAccel()
     {
 	if (car->_gear > 0) {
-            float allowedspeed = getAllowedSpeed(car->_trkPos.seg);
+            float allowedspeed = getAllowedSpeed(car->_trkPos.seg->next);
             if (1)
 		{
                     tTrackSeg *segptr = car->_trkPos.seg;
@@ -611,7 +615,10 @@ namespace olethros {
                         float u = MAX(0.1f, getSpeed());
                         float t = ACCELERATOR_LETGO_TIME + (1.0f - speed_factor);
                         if (overtaking) {
-                            t = -0.1f;
+                            //t = -0.1f;
+                            //printf ("overtaking: %f ->", t);
+                            t = (1.0f - speed_factor);
+                            //printf ("%f\n", t);
                         }
                         if (-delta/u<t) {
                             if (pallowedspeed < allowedspeed) {
@@ -686,7 +693,7 @@ namespace olethros {
             return 1.0;
 	} else {
             // We drive forward, normal braking.
-            tTrackSeg *segptr = car->_trkPos.seg;
+            tTrackSeg *segptr = car->_trkPos.seg->next;
             float mu = segptr->surface->kFriction;
             float maxlookaheaddist = currentspeedsqr/(2.0*mu*G);
             float lookaheaddist = getDistToSegEnd();
@@ -700,9 +707,53 @@ namespace olethros {
             segptr = segptr->next;
             while (lookaheaddist < maxlookaheaddist) {
                 allowedspeed = getAllowedSpeed(segptr);
+                float dr = learn->getRadius(segptr);
+
                 if (allowedspeed < car->_speed_x) {
-                    float delta = (brakedist(allowedspeed, mu) - lookaheaddist);
+                    float bd = brakedist(allowedspeed, mu);
+                    float delta = bd - lookaheaddist;
                     if (delta>0) {
+#if 1
+                        if (segptr->radius > 200.0 && lookaheaddist < 80.0 && allowedspeed > car->_speed_x+20.0 && (segptr->next->type == TR_STR || segptr->next->radius > 200.0))
+                            {
+                                if (bd < lookaheaddist + segptr->next->length)
+                                    {
+                                        lookaheaddist += segptr->length;
+                                        segptr = segptr->next;
+                                        continue;
+                                    }
+                            }
+                        float seglen = 0.0f;
+                        if (segptr->type != TR_STR)
+                            {
+                                tTrackSeg *nseg = segptr;
+                                do {
+                                    if (nseg->type == segptr->type && (fabs(segptr->radius-nseg->radius) < nseg->radius/2 || (nseg->radius <= 70.0 && segptr->radius <= 70.0)))
+                                        {
+                                            seglen += nseg->length;
+                                        }
+                                    else
+                                        break;
+                                    nseg = nseg->next;
+                                }
+                                while (nseg->type == segptr->type && nseg != segptr);
+                            }
+
+                        if (segptr->type != TR_STR && (segptr->radius > 100.0 || seglen < segptr->radius * 0.75))
+                            {
+                                // not a serious corner so don't over-brake
+                                float angle = RtTrackSideTgAngleL(&(car->_trkPos));
+                                angle -= car->_yaw;
+                                NORM_PI_PI(angle);
+
+                                if (dr > 0.0f && bd > lookaheaddist + dr/3 && fabs(angle) < 0.4 && fabs(car->_yaw_rate) < 0.7)
+                                    {
+                                        lookaheaddist += segptr->length;
+                                        segptr = segptr->next;
+                                        continue;
+                                    }
+                            }
+#endif
                         return tanh(0.1f*delta);
                     }
                 }
@@ -751,9 +802,9 @@ namespace olethros {
             float gr_down = car->_gearRatio[car->_gear + car->_gearOffset - 1];
             float prev_rpm = gr_down * (car->_speed_x) / wr;
 
-            if (prev_rpm < car->_enginerpmMaxPw * SHIFT
+            if (prev_rpm < car->_enginerpmMaxPw * SHIFT * SHIFT
                 && car->_gear > 1
-                && (EstimateTorque (prev_rpm) * gr_down
+                && (EstimateTorque (prev_rpm) * gr_down * SHIFT
                     > EstimateTorque (rpm) * gr_up)) {
                 return car->_gear - 1;
             }
@@ -1330,8 +1381,8 @@ namespace olethros {
 	int i;
 	for (i = 0; i < 4; i++)
             h += GfParmGetNum(car->_carHandle, WheelSect[i], PRM_RIDEHEIGHT, (char*) NULL, 0.20f);
-	h*= 1.5; h = h*h; h = h*h; h = 2.0 * exp(-3.0*h);
-	CA = h*cl + 4.0*wingca;
+	h*= 1.5; h = h*h; h = h*h; h = 0.5 * exp(-3.0*h) * AERO_FACTOR;
+	CA = h*cl + AERO_FACTOR*wingca;
     }
 
 
@@ -1947,13 +1998,13 @@ namespace olethros {
             if (current_length >= length_limit) {
                 Point left(seg->vertex[TR_SL].x, seg->vertex[TR_SL].y);
                 Point right(seg->vertex[TR_SR].x, seg->vertex[TR_SR].y);
-                segment_list.Add(Segment(left, right));
+                segment_list.Add(Segment(left, right), seg->width);
                 current_length = 0.0;
                 j++;
             }
 	}
 
-        trajectory.Optimise(segment_list, 500, 0.02f, "/tmp/result");
+        trajectory.Optimise(segment_list, 8000, 0.01f, car->_dimension_y, "/tmp/result");
         seg = track->seg;
         current_length = length_limit;
 
@@ -1964,24 +2015,75 @@ namespace olethros {
             SegmentList segment_list2;
             trajectory2.w.resize(N);
             int i,j;
+            int start = 0;
+            tTrackSeg* start_seg = seg;
             j = 0;
+            int prev_j = 0;
+            int prev2_j = 0;
             for (i=0; i<N; i++, seg=seg->next) {
                 float w =  trajectory.w[j];
                 seg_alpha[seg->id] = w;
                 trajectory2.w[i] = w;
                 Point left(seg->vertex[TR_SL].x, seg->vertex[TR_SL].y);
                 Point right(seg->vertex[TR_SR].x, seg->vertex[TR_SR].y);
-                segment_list2.Add(Segment(left, right));
+                segment_list2.Add(Segment(left, right), seg->width);
                 current_length += seg->length;
                 if (current_length >= length_limit) {
+                    trajectory2.w[start] = trajectory.w[prev_j];
+                    prev2_j = prev_j;
+                    prev_j = j;
                     j++;
                     if (j>=(int) trajectory.w.size()) {
                         j = 0;
                     }
+                    int k;
+
+                    float l = 0.0;
+                    float total_length = current_length + start_seg->length - seg->length;
+                    for (k=start; k<i-1; k++, start_seg = start_seg->next) {
+                        l += start_seg->length;
+                        float alpha = l/total_length;
+                        //alpha = 0.0f;
+                        float w = alpha * trajectory.w[prev_j] 
+                            + (1.0-alpha) * trajectory.w[prev2_j];
+                        if (alpha < 0.0 || alpha > 1.0) {
+                            fprintf (stderr, "Warning: alpha at %d %d = %f\n", i, k, alpha);
+                        }
+                        seg_alpha[start_seg->id] = w;
+                        trajectory2.w[k+1] = w;
+                    }
+
                     current_length = 0.0;
+                    start = i;
+                    start_seg = seg;
                 }
             }
-            trajectory2.Optimise(segment_list2, 1000, 0.005f, "/tmp/result2", false);
+
+            for (int iter2 = 0; iter2<-100; iter2++) {
+                // copy optimised values
+                trajectory2.Optimise(segment_list2, 1, 0.001f, car->_dimension_y, "/tmp/result2", false);
+                tTrackSeg* seg = track->seg;
+                int i,j;
+                float current_length = 0.0;
+                j = 0;
+                int prev_j = 0;
+                for (i=0; i<N; i++, seg=seg->next) {
+                    current_length += seg->length;
+                    //trajectory2.w[i] = 0;
+                    if (current_length >= length_limit) {
+                        trajectory2.w[i] = trajectory.w[prev_j];
+                        prev_j = j;
+                        j++;
+
+                        if (j>=(int) trajectory.w.size()) {
+                            j = 0;
+                        }
+                        current_length = 0.0;
+                    }
+                }
+
+            }
+            trajectory2.Optimise(segment_list2, 4000, 0.001f, car->_dimension_y, "/tmp/result2", false);
             seg = track->seg;
             for (i=0; i<N; i++, seg=seg->next) {
                 seg_alpha[seg->id] = trajectory2.w[i];
@@ -1991,8 +2093,8 @@ namespace olethros {
                 int j = seg->id;
                 ideal_radius[j] = 1.0f / trajectory2.accel[i];
             }
-        }
 
+        }
 
 
 

@@ -27,22 +27,26 @@ Point Trajectory::GetPoint (Segment& s, float w)
                   w*s.left.z + v*s.right.z);
 }
 
-#define EXP_COST
+#undef EXP_COST
 #undef DBG_OPTIMISE
 /// Optimise a track trajectory
-void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset)
+void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, float margin, char* fname, bool reset)
 {
     int N = track.size();
     clock_t start_time = clock();
     int min_iter = max_iter/2; // minimum number of iterations to do
-    float time_limit = 2.0f; // if more than min_iter have been done, exit when time elapsed is larger than the time limit
+    float time_limit = 4.0f; // if more than min_iter have been done, exit when time elapsed is larger than the time limit
     float beta = 0.75f; // amount to reduce alpha to when it seems to be too large
+    float eta = 1.0f; // exp constant!
+    float zeta = 0.0f; // flatten around 0
     w.resize(N);
     dw.resize(N);
     dw2.resize(N);
     indices.resize(N);
     accel.resize(N);
 
+    //float penalty_start = 1.0f/track.average_width;
+    float penalty_start = 0.5f * margin/track.average_width;
     // initialise vectors
     for (int i=0; i<N; ++i) {
         if (reset) {w[i] = 0.5f;}
@@ -141,9 +145,10 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
 #ifdef EXP_COST
-                    float tmp = exp(a_cur.x*a_cur.x + a_cur.y*a_cur.y);
+                    float tmp = exp(eta*(a_cur.x*a_cur.x + a_cur.y*a_cur.y)) - zeta;
+
                     dCdw += tmp * a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
-                    dCdw += tmp *a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
+                    dCdw += tmp * a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
 #else
                     dCdw += a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw += a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
@@ -156,7 +161,8 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
 #ifdef EXP_COST
-                    float tmp = exp(a_cur.x*a_cur.x + a_cur.y*a_cur.y);
+                    float tmp = exp(eta*(a_cur.x*a_cur.x + a_cur.y*a_cur.y)) - zeta;
+
                     dCdw += tmp * a_cur.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw += tmp *a_cur.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
 #else
@@ -174,7 +180,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
 #ifdef EXP_COST
-                    float tmp = exp(a_nxt.x*a_nxt.x + a_nxt.y*a_nxt.y);
+                    float tmp = exp(eta*(a_nxt.x*a_nxt.x + a_nxt.y*a_nxt.y)) - zeta;
                     dCdw -= tmp * a_nxt.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw -= tmp * a_nxt.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
 #else
@@ -192,7 +198,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
                     float dnorm = sqrt(dnorm2);
                     float dxdynorm = d.x * d.y / dnorm;
 #ifdef EXP_COST
-                    float tmp = exp(a_prv.x*a_prv.x + a_prv.y*a_prv.y);
+                    float tmp = exp(eta*(a_prv.x*a_prv.x + a_prv.y*a_prv.y)) - zeta;
                     dCdw -= tmp*a_prv.x * lr.x * (dnorm + d.x/dnorm + dxdynorm);
                     dCdw -= tmp*a_prv.y * lr.y * (dnorm + d.y/dnorm + dxdynorm);
 #else
@@ -204,7 +210,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
             float K = 10.0;
             float penalty = 0.0;//K*(0.5f - w[i])*(exp(fabs(0.5-w[i]))-1);
             if (1) {
-                float b = 0.1;
+                float b = penalty_start;
                 if (w[i] < b) {
                     penalty += K*(b - w[i]);
                 } else if (w[i] > 1.0 -b) {
@@ -220,7 +226,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
             w[i] += alpha * delta;
             
             if (1) {
-                float b = 0.0;
+                float b = 0.5f*penalty_start;
                 if (w[i] < b) {
                     w[i] = b;
                 } else if (w[i] > 1.0 -b) {

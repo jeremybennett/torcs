@@ -58,7 +58,7 @@ void TrackData::AddStraight (SegmentList& segments, float length, float end_widt
         Point right(mid.x + width_r*sin(angle + hpi),
                     mid.y + width_r*cos(angle + hpi),
                     mid.z);
-        segments.Add (Segment (left, right));
+        segments.Add (Segment (left, right), width_l + width_r);
         width_l+=d_width_l;
         width_r+=d_width_r;
     }
@@ -88,7 +88,7 @@ void TrackData::AddCurve (SegmentList& segments, float arc, float radius, float 
         Point right(mid.x + width_r*sin(angle + hpi),
                     mid.y + width_r*cos(angle + hpi),
                     mid.z);
-        segments.Add (Segment (left, right));
+        segments.Add (Segment (left, right), width_l + width_r);
         angle += d_angle;
         width_l += d_width_l;
         width_r += d_width_r;

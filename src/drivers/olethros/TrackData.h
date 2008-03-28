@@ -141,10 +141,19 @@ class Segment
 class SegmentList
 {
  protected:
+
     std::vector<Segment> segments;
  public:
-    void Add(Segment segment)
+    float average_width;
+    SegmentList()
     {
+        average_width = 0.0f;
+    }
+    void Add(Segment segment, float width)
+    {
+        float s = (float) size();
+        average_width = (average_width * s + width)/(s + 1.0f);
+        //printf ("%f\n", average_width);
         segments.push_back(segment);
     }
 
