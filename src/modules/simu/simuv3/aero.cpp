@@ -27,10 +27,10 @@ SimAeroConfig(tCar *car)
     void *hdle = car->params;
     tdble Cx, FrntArea;
     
-    Cx       = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.4);
-    FrntArea = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 2.5);
-    car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0);
-    car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0);
+    Cx       = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_CX, (char*)NULL, 0.4f);
+    FrntArea = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FRNTAREA, (char*)NULL, 2.5f);
+    car->aero.Clift[0] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0f);
+    car->aero.Clift[1] = GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0f);
     float aero_factor = car->options->aero_factor;
 
     car->aero.SCx2 = 0.5f * AIR_DENSITY * Cx * FrntArea;
@@ -53,16 +53,15 @@ SimAeroConfig(tCar *car)
     //printf ("%f %f\n", GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_FCL, (char*)NULL, 0.0), GfParmGetNum(hdle, SECT_AERODYNAMICS, PRM_RCL, (char*)NULL, 0.0));
     //printf ("cl: %f\n", car->aero.Clift[0]+car->aero.Clift[1]);
     car->aero.Cd += car->aero.SCx2;
-    car->aero.rot_front[0] = 0.0;
-    car->aero.rot_front[1] = 0.0;
-    car->aero.rot_front[2] = 0.0;
-    car->aero.rot_lateral[0] = 0.0;
-    car->aero.rot_lateral[1] = 0.0;
-    car->aero.rot_lateral[2] = 0.0;
-    car->aero.rot_vertical[0] = 0.0;
-    car->aero.rot_vertical[1] = 0.0;
-    car->aero.rot_vertical[2] = 0.0;
-
+    car->aero.rot_front[0] = 0.0f;
+    car->aero.rot_front[1] = 0.0f;
+    car->aero.rot_front[2] = 0.0f;
+    car->aero.rot_lateral[0] = 0.0f;
+    car->aero.rot_lateral[1] = 0.0f;
+    car->aero.rot_lateral[2] = 0.0f;
+    car->aero.rot_vertical[0] = 0.0f;
+    car->aero.rot_vertical[1] = 0.0f;
+    car->aero.rot_vertical[2] = 0.0f;
 }
 
 
@@ -72,11 +71,11 @@ SimAeroUpdate(tCar *car, tSituation *s)
     //tdble	hm;
     int		i;	    
     tdble	airSpeed;
-    tdble	dragK = 1.0;
+    tdble	dragK = 1.0f;
 
     airSpeed = car->DynGC.vel.x;
 
-    if (airSpeed > 10.0) {
+    if (airSpeed > 10.0f) {
 	tdble x = car->DynGC.pos.x;
 	tdble y = car->DynGC.pos.y;
 	//	tdble x = car->DynGC.pos.x + cos(yaw)*wing->staticPos.x;

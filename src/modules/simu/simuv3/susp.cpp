@@ -128,8 +128,8 @@ SimSuspCheckIn(tSuspension *susp)
 	    tdble y1 = susp->link.y * sin(link_u);
 	    tdble r1 = susp->link.z;
 	    tdble r0 = susp->link.x;
-	    tdble x0 = 0.1;
-	    tdble y0 = 0.20;
+	    tdble x0 = 0.1f;
+	    tdble y0 = 0.20f;
 	    tdble dx = x1 - x0;
 	    tdble dy = y1 - y0;
 	    tdble d2 =(dx*dx+dy*dy);
@@ -209,9 +209,9 @@ SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
     susp->dynamic_angles.x = 0.0;
     susp->dynamic_angles.y = 0.0;
     susp->dynamic_angles.z = 0.0;
-    susp->link.x = 0.7;//additional fishbone link length
-    susp->link.y = 0.8;//suspension+wheel link length
-    susp->link.z = 0.2;//space between fishbone links on the wheel
+    susp->link.x = 0.7f;//additional fishbone link length
+    susp->link.y = 0.8f;//suspension+wheel link length
+    susp->link.z = 0.2f;//space between fishbone links on the wheel
     initDamper(susp);
 }
 

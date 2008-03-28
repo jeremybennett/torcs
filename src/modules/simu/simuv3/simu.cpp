@@ -85,21 +85,21 @@ ctrlCheck(tCar *car)
     /* When the car is broken try to send it on the track side */
     if (car->carElt->_state & RM_CAR_STATE_BROKEN) {
 		car->ctrl->accelCmd = 0.0;
-		car->ctrl->brakeCmd = 0.1;
+		car->ctrl->brakeCmd = 0.1f;
 		car->ctrl->gear = 0;
 		if (car->trkPos.toRight >  car->trkPos.seg->width / 2.0) {
-			car->ctrl->steer = 0.1;
+			car->ctrl->steer = 0.1f;
 		} else {
-			car->ctrl->steer = -0.1;
+			car->ctrl->steer = -0.1f;
 		}
     } else if (car->carElt->_state & RM_CAR_STATE_ELIMINATED) {
 		car->ctrl->accelCmd = 0.0;
-		car->ctrl->brakeCmd = 0.1;
+		car->ctrl->brakeCmd = 0.1f;
 		car->ctrl->gear = 0;
 		if (car->trkPos.toRight >  car->trkPos.seg->width / 2.0) {
-			car->ctrl->steer = 0.1;
+			car->ctrl->steer = 0.1f;
 		} else {
-			car->ctrl->steer = -0.1;
+			car->ctrl->steer = -0.1f;
 		}
     } else if (car->carElt->_state & RM_CAR_STATE_FINISH) {
 		/* when the finish line is passed, continue at "slow" pace */
@@ -175,7 +175,7 @@ SimReConfig(tCarElt *carElt)
     }
     if (carElt->pitcmd.repair > 0) {
 		for (int i=0; i<4; i++) {
-			carElt->_tyreCondition(i) = 1.01;
+			carElt->_tyreCondition(i) = 1.01f;
 			carElt->_tyreT_in(i) = 50.0;
 			carElt->_tyreT_mid(i) = 50.0;
 			carElt->_tyreT_out(i) = 50.0;

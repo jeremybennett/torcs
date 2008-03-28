@@ -30,8 +30,8 @@ SimAxleConfig(tCar *car, int index)
     tAxle *axle = &(car->axle[index]);
 
     axle->xpos = GfParmGetNum(hdle, AxleSect[index], PRM_XPOS, (char*)NULL, 0);
-    axle->I    = GfParmGetNum(hdle, AxleSect[index], PRM_INERTIA, (char*)NULL, 0.15);
-    rollCenter = GfParmGetNum(hdle, AxleSect[index], PRM_ROLLCENTER, (char*)NULL, 0.15);
+    axle->I    = GfParmGetNum(hdle, AxleSect[index], PRM_INERTIA, (char*)NULL, 0.15f);
+    rollCenter = GfParmGetNum(hdle, AxleSect[index], PRM_ROLLCENTER, (char*)NULL, 0.15f);
     car->wheel[index*2].rollCenter = car->wheel[index*2+1].rollCenter = rollCenter;
 
     if (index == 0) {

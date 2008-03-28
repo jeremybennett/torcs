@@ -63,9 +63,9 @@ SimEngineConfig(tCar *car)
     car->engine.revsMax     = GfParmGetNum(hdle, SECT_ENGINE, PRM_REVSMAX, (char*)NULL, 1000);
     car->carElt->_enginerpmMax = car->engine.revsMax;
     car->engine.tickover    = GfParmGetNum(hdle, SECT_ENGINE, PRM_TICKOVER, (char*)NULL, 150);
-    car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423);
-    car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622);
-    car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33);
+    car->engine.I           = GfParmGetNum(hdle, SECT_ENGINE, PRM_INERTIA, (char*)NULL, 0.2423f);
+    car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622f);
+    car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33f);
 	car->engine.pressure = 0.0f;
 	car->engine.exhaust_pressure = 0.0f;
 	car->engine.exhaust_refract = 0.1f;
@@ -228,11 +228,11 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 	if (dp>rth) {
 		engine->exhaust_pressure += rth;
 	}
-	engine->exhaust_pressure*=.9;
+	engine->exhaust_pressure*=.9f;
 
 	
 	car->carElt->priv.smoke += 5.0*engine->exhaust_pressure;
-	car->carElt->priv.smoke *= 0.99;
+	car->carElt->priv.smoke *= 0.99f;
 #if 0
 	if (engine->exhaust_pressure>(engine->exhaust_refract)) {
 		//car->carElt->priv.smoke += engine->exhaust_pressure;//engine->exhaust_refract;
@@ -249,8 +249,8 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 #endif
 
     transfer = 0.0;
-    float alpha = 0.1; // transition coefficient
-    float ttq = 0.0;
+    float alpha = 0.1f; // transition coefficient
+    float ttq = 0.0f;
 	float I_response = trans->differential[0].feedBack.I + trans->differential[1].feedBack.I;
 	engine->Tq_response = 0.0;
 	tdble dI = fabs(trans->curI - engine->I_joint);

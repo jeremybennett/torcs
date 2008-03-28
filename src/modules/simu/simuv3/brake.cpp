@@ -24,12 +24,12 @@ SimBrakeConfig(void *hdle, char *section, tBrake *brake)
 {
     tdble diam, area, mu;
     
-    diam     = GfParmGetNum(hdle, section, PRM_BRKDIAM, (char*)NULL, 0.2);
-    area     = GfParmGetNum(hdle, section, PRM_BRKAREA, (char*)NULL, 0.002);
-    mu       = GfParmGetNum(hdle, section, PRM_MU, (char*)NULL, 0.30);
+    diam     = GfParmGetNum(hdle, section, PRM_BRKDIAM, (char*)NULL, 0.2f);
+    area     = GfParmGetNum(hdle, section, PRM_BRKAREA, (char*)NULL, 0.002f);
+    mu       = GfParmGetNum(hdle, section, PRM_MU, (char*)NULL, 0.30f);
     brake->coeff = diam * 0.5 * area * mu;
 
-    brake->I = GfParmGetNum(hdle, section, PRM_INERTIA, (char*)NULL, 0.13);
+    brake->I = GfParmGetNum(hdle, section, PRM_INERTIA, (char*)NULL, 0.13f);
     brake->radius = diam/2.0;
 }
 

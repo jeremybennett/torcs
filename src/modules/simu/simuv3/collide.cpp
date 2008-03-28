@@ -224,9 +224,9 @@ SimCarCollideZ(tCar *car)
                                 car->rot_mom[i] = 2.0*car->mass * SIGN(car->rot_mom[i]);
                             }
                         }
-                        car->rot_mom[SG_X]*=.999;
-                        car->rot_mom[SG_Y]*=.999;
-                        car->rot_mom[SG_Z]*=.999;
+                        car->rot_mom[SG_X]*=.999f;
+                        car->rot_mom[SG_Y]*=.999f;
+                        car->rot_mom[SG_Z]*=.999f;
                         car->DynGC.vel.ax = car->DynGCg.vel.ax = -2.0f*car->rot_mom[SG_X] * car->Iinv.x;
                         car->DynGC.vel.ay = car->DynGCg.vel.ay = -2.0f*car->rot_mom[SG_Y] * car->Iinv.y;
                         car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
