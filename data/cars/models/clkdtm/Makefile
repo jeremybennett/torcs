@@ -22,6 +22,7 @@ DATADIR   = cars/$(CAR)
 DATA      = $(CAR).xml \
             $(CAR).rgb shadow.rgb wheel3d.png \
             $(shell find *.acc -maxdepth 0 -type f -print) \
+        $(shell find *.png -maxdepth 0 -type f -print) \
 	    readme.txt 
 
 data-cars-extra_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)

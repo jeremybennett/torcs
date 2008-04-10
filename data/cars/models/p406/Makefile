@@ -20,7 +20,8 @@ DATADIR   = cars/p406
 
 DATA      = 	$(shell find *.xml -maxdepth 0 -type f -print) \
 		$(shell find *.acc -maxdepth 0 -type f -print) \
-		$(shell find *.rgb -maxdepth 0 -type f -print)
+		$(shell find *.rgb -maxdepth 0 -type f -print) \
+        $(shell find *.png -maxdepth 0 -type f -print)
 
 data-cars-extra_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)
 
