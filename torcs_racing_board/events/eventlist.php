@@ -138,7 +138,7 @@
 	$listentries_for_db = quoteString(LISTENTRIES+1); // Select one more to check if there are more.
 
 	$sql = "SELECT * FROM $event_tablename " .
-		   "ORDER BY enddate DESC LIMIT $listfrom_for_db,$listentries_for_db";
+		   "ORDER BY pointsystem DESC, enddate DESC LIMIT $listfrom_for_db,$listentries_for_db";
 	$result = mysql_query($sql);
 	$more_rows = (mysql_num_rows($result) > LISTENTRIES);
 	$page->set_var(array(
