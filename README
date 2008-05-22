@@ -121,6 +121,8 @@ Changes since 1.3.0
 - Improvments for track alpine-1 by Andrew (Andrew, Bernhard).
 - Fuel consumption adjustments on car1-7 (Wolf-Dieter, Andrew, Daniel,
   Bernhard).
+- Additional cameras on spring track by Wolf-Dieter (Wolf-Dieter, Bernhard).
+- Reparametrized 360-modena, renamed to car1-trb3 (Bernhard).
 
 TODO for 1.4.0
 --------------
@@ -128,7 +130,7 @@ TODO for 1.4.0
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
-
+- find . -name "*.xml" -exec grep -H -A 1 "Anti-Roll Bar" {} \; | grep -v "val=\"0\"" | less
 
 
 Later:

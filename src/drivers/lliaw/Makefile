@@ -2,9 +2,9 @@
 #
 #    file                 : Makefile
 #    created              : Sat Mar 18 23:18:59 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
-#    email                : torcs@free.fr   
-#    version              : $Id$                                  
+#    copyright            : (C) 2000 by Eric Espie
+#    email                : torcs@free.fr
+#    version              : $Id$
 #
 ##############################################################################
 #
@@ -26,7 +26,7 @@ SOURCES   = ${ROBOT}.cpp
 
 SHIPDIR   = drivers/${ROBOT}
 
-SHIP      = ${ROBOT}.xml car.xml viper-gts-r.rgb logo.rgb
+SHIP      = ${ROBOT}.xml car.xml car4-trb1.rgb logo.rgb
 
 SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 

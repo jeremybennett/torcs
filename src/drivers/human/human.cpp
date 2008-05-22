@@ -785,7 +785,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
 		if (meanSpd > 1.0) {
 			for (i = 0; i < 4; i++) {
-				if (((meanSpd - car->_wheelSpinVel(i)) / meanSpd) < -0.1) {
+				if (((meanSpd - car->_wheelSpinVel(i)) / meanSpd) < -0.05) {
 					slip = 1.0;
 				}
 			}

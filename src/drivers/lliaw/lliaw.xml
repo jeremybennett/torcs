@@ -2,9 +2,9 @@
 <!-- 
     file                 : lliaw.xml
     created              : Sat Mar 18 23:19:52 CET 2000
-    copyright            : (C) 2000 by Eric Espie                         
+    copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr   
-    version              : $Id$                                  
+    version              : $Id$
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -15,20 +15,18 @@
 <!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
 
 <params name="lliaw" type="robotdef">
-  <section name="Robots">
-
-    <section name="index">
-      <section name="1">
-	<attstr name="name" val="LLiaw"/>
-	<attstr name="desc" val="A robot dedicated to William"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="viper-gts-r"/>
-	<attnum name="race number" val="14"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="0.5"/>
-	<attnum name="blue" val="0.5"/>
-      </section>
-
-    </section>
-  </section>
+	<section name="Robots">		
+		<section name="index">
+			<section name="1">
+				<attstr name="name" val="LLiaw"/>
+				<attstr name="desc" val="A robot dedicated to William"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="car4-trb1"/>
+				<attnum name="race number" val="14"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="0.5"/>
+				<attnum name="blue" val="0.5"/>
+			</section>		
+		</section>
+	</section>
 </params>
