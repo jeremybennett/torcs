@@ -96,7 +96,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 7"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="porsche-gt3rs"/>
+		<attstr name="car name" val="car5-trb1"/>
 		<attnum name="race number" val="154"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -108,7 +108,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 8"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="clkdtm"/>
+		<attstr name="car name" val="car4-trb1"/>
 		<attnum name="race number" val="155"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -120,7 +120,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 9"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="mclaren-f1"/>
+		<attstr name="car name" val="car7-trb1"/>
 		<attnum name="race number" val="156"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
@@ -132,7 +132,7 @@
 		<attstr name="team" val="berniw"/>
 		<attstr name="desc" val="Berni's second Bot 10"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="360-modena"/>
+		<attstr name="car name" val="car1-trb3"/>
 		<attnum name="race number" val="157"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>

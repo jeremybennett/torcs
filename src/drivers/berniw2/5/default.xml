@@ -58,7 +58,7 @@
 		
 	<section name="Brake System">
 		<attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.68"/>
-		<attnum name="max pressure" min="100" max="1500000" unit="kPa" val="20000"/>
+		<attnum name="max pressure" min="100" max="1500000" unit="kPa" val="23000"/>
 	</section>
 		
 	<section name="Front Differential">

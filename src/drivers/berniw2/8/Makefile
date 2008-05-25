@@ -20,14 +20,13 @@ ROBOT = berniw2
 
 SHIPDIR   = drivers/${ROBOT}/8
 
-SHIP      = clkdtm.rgb $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = car4-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-berniw_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
 src-robots-berniw_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
-
 
 
 
