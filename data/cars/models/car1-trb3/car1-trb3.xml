@@ -178,32 +178,32 @@
 
       <section name="5">
         <attnum name="rpm" unit="rpm" val="4000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="350.0" val="280.0"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="350.0" val="300.0"/>
       </section>
 
       <section name="6">
         <attnum name="rpm" unit="rpm" val="5000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="405" val="335"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="405" val="350"/>
       </section>
 
       <section name="7">
         <attnum name="rpm" unit="rpm" val="6000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="443" val="375"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="443" val="405"/>
       </section>
 
       <section name="8">
         <attnum name="rpm" unit="rpm" val="7000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="465" val="405"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="465" val="435"/>
       </section>
 
       <section name="9">
         <attnum name="rpm" unit="rpm" val="8000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="483" val="390"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="483" val="430"/>
       </section>
 
       <section name="10">
         <attnum name="rpm" unit="rpm" val="9000"/>
-        <attnum name="Tq" unit="N.m" min="0.0" max="415" val="332"/>
+        <attnum name="Tq" unit="N.m" min="0.0" max="415" val="370"/>
       </section>
 
       <section name="11">
