@@ -282,7 +282,7 @@ extern char *GfParmGetFileName(void *handle);
 extern void GfParmSetDTD (void *parmHandle, char *dtd, char*header);
 
 /* get string parameter value */
-extern char *GfParmGetStr(void *handle, char *path, char *key, char *deflt);
+extern char *GfParmGetStr(void *handle, const char *path, const char *key, char *deflt);
 /* get string parameter value */
 extern char *GfParmGetCurStr(void *handle, char *path, char *key, char *deflt);
 /* set string parameter value */
@@ -291,11 +291,11 @@ extern int GfParmSetStr(void *handle, char *path, char *key, char *val);
 extern int GfParmSetCurStr(void *handle, char *path, char *key, char *val);
 
 /* get num parameter value */
-extern tdble GfParmGetNum(void *handle, char *path, char *key, char *unit, tdble deflt);
+extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* get num parameter value */
 extern tdble GfParmGetCurNum(void *handle, char *path, char *key, char *unit, tdble deflt);
 /* set num parameter value */
-extern int GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val);
+extern int GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
 /* set num parameter value */
 extern int GfParmSetCurNum(void *handle, char *path, char *key, char *unit, tdble val);
 
@@ -306,9 +306,9 @@ extern void GfParmClean(void *handle);
 extern void GfParmReleaseHandle(void *handle);
 
 /* Convert a value in "units" into SI */
-extern tdble GfParmUnit2SI(char *unit, tdble val);
+extern tdble GfParmUnit2SI(const char *unit, tdble val);
 /* convert a value in SI to "units" */
-extern tdble GfParmSI2Unit(char *unit, tdble val);
+extern tdble GfParmSI2Unit(const char *unit, tdble val);
 
 /* compare and merge different handles */
 extern int GfParmCheckHandle(void *ref, void *tgt);
@@ -610,9 +610,9 @@ class Profiler {
 typedef void (*tfHashFree)(void*);	/**< Function to call for releasing the user data associated with hash table */
 
 void *GfHashCreate(int type);
-int GfHashAddStr(void *hash, char *key, void *data);
+int GfHashAddStr(void *hash, const char *key, void *data);
 void *GfHashRemStr(void *hash, char *key);
-void *GfHashGetStr(void *hash, char *key);
+void *GfHashGetStr(void *hash, const char *key);
 void GfHashAddBuf(void *hash, char *key, size_t sz, void *data);
 void *GfHashRemBuf(void *hash, char *key, size_t sz);
 void *GfHashGetBuf(void *hash, char *key, size_t sz);

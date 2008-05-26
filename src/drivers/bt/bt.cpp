@@ -37,10 +37,15 @@
 
 #define NBBOTS 10
 
-static char* botname[NBBOTS] = {"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
-								"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"};
-static char* botdesc[NBBOTS] = {"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
-								"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"};
+static const char* botname[NBBOTS] = {
+	"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
+	"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"
+};
+
+static const char* botdesc[NBBOTS] = {
+	"bt 1", "bt 2", "bt 3", "bt 4", "bt 5",
+	"bt 6", "bt 7", "bt 8", "bt 9", "bt 10"
+};
 
 static Driver *driver[NBBOTS];
 
@@ -62,8 +67,8 @@ extern "C" int bt(tModInfo *modInfo)
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
 	for (i = 0; i < NBBOTS; i++) {
-		modInfo[i].name    = botname[i];  			// name of the module (short).
-		modInfo[i].desc    = botdesc[i];			// Description of the module (can be long).
+		modInfo[i].name    = strdup(botname[i]);	// name of the module (short).
+		modInfo[i].desc    = strdup(botdesc[i]);	// Description of the module (can be long).
 		modInfo[i].fctInit = InitFuncPt;			// Init function.
 		modInfo[i].gfId    = ROB_IDENT;				// Supported framework version.
 		modInfo[i].index   = i;						// Indices from 0 to 9.

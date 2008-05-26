@@ -136,17 +136,17 @@ GF_TAILQ_HEAD (parmHead, struct parmHandle);
 
 static struct parmHead	parmHandleList;
 
-static char *getFullName(char *sectionName, const char *paramName);
-static struct param *getParamByName (struct parmHeader *conf, char *sectionName, const char *paramName, int flag);
+static char *getFullName(const char *sectionName, const char *paramName);
+static struct param *getParamByName (struct parmHeader *conf, const char *sectionName, const char *paramName, int flag);
 static void removeParamByName (struct parmHeader *conf, char *sectionName, char *paramName);
 static void removeParam (struct parmHeader *conf, struct section *section, struct param *param);
 static struct param *addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value);
 static void removeSection (struct parmHeader *conf, struct section *section);
-static struct section *addSection (struct parmHeader *conf, char *sectionName);
+static struct section *addSection (struct parmHeader *conf, const char *sectionName);
 static void parmClean (struct parmHeader *conf);
 static void parmReleaseHandle (struct parmHandle *parmHandle);
 static void parmReleaseHeader (struct parmHeader *conf);
-static struct section *getParent (struct parmHeader *conf, char *sectionName);
+static struct section *getParent (struct parmHeader *conf, const char *sectionName);
 static void cleanUnusedSection (struct parmHeader *conf, struct section *section);
 
 
@@ -177,23 +177,23 @@ GfParmShutdown (void)
 /* Compute parameter full name           */
 /* Caller must release the returned name */
 static char *
-getFullName (char *sectionName, const char *paramName)
+getFullName (const char *sectionName, const char *paramName)
 {
-    char		*fullName;
-
-    fullName = (char *) malloc (strlen (sectionName) + strlen (paramName) + 2);
-    if (!fullName) {
-	GfError ("getFullName: malloc (%d) failed", strlen (sectionName) + strlen (paramName) + 2);
-	return NULL;
-    }
-    sprintf (fullName, "%s/%s", sectionName, paramName);
-
-    return fullName;
+	char *fullName;
+	
+	fullName = (char *) malloc (strlen (sectionName) + strlen (paramName) + 2);
+	if (!fullName) {
+		GfError ("getFullName: malloc (%d) failed", strlen (sectionName) + strlen (paramName) + 2);
+		return NULL;
+	}
+	sprintf (fullName, "%s/%s", sectionName, paramName);
+	
+	return fullName;
 }
 
 /* Get a parameter by section/param names */
 static struct param *
-getParamByName (struct parmHeader *conf, char *sectionName, const char *paramName, int flag)
+getParamByName (struct parmHeader *conf, const char *sectionName, const char *paramName, int flag)
 {
 	char *fullName;
 	struct param *param;
@@ -375,83 +375,84 @@ removeSection (struct parmHeader *conf, struct section *section)
 
 /* Get or create parent section */
 static struct section *
-getParent (struct parmHeader *conf, char *sectionName)
+getParent (struct parmHeader *conf, const char *sectionName)
 {
-    struct section	*section;
-    char		*tmpName;
-    char		*s;
+	struct section	*section;
+	char		*tmpName;
+	char		*s;
 
-    tmpName = strdup (sectionName);
-    if (!tmpName) {
-	GfError ("getParent: strdup (\"%s\") failed\n", sectionName);
-	return NULL;
-    }
-    s = strrchr (tmpName, '/');
-    if (s) {
-	*s = '\0';
-	section = (struct section *)GfHashGetStr (conf->sectionHash, tmpName);
-	if (section) {
-	    goto end;
+	tmpName = strdup (sectionName);
+	if (!tmpName) {
+		GfError ("getParent: strdup (\"%s\") failed\n", sectionName);
+		return NULL;
 	}
-	section = addSection (conf, tmpName);
-	goto end;
-    } else {
-	section = conf->rootSection;
-	goto end;
-    }
 
- end:
-    free (tmpName);
-    return section;
+	s = strrchr (tmpName, '/');
+	if (s) {
+		*s = '\0';
+		section = (struct section *)GfHashGetStr (conf->sectionHash, tmpName);
+		if (section) {
+			goto end;
+		}
+		section = addSection (conf, tmpName);
+		goto end;
+	} else {
+		section = conf->rootSection;
+		goto end;
+	}
+
+end:
+	free (tmpName);
+	return section;
 }
 
 /* Add a new section */
 static struct section *
-addSection (struct parmHeader *conf, char *sectionName)
+addSection (struct parmHeader *conf, const char *sectionName)
 {
-    struct section	*section;
-    struct section	*parent;
+	struct section	*section;
+	struct section	*parent;
 
-    if (GfHashGetStr (conf->sectionHash, sectionName)) {
-	GfError ("addSection: duplicate section [%s]\n", sectionName);
+	if (GfHashGetStr (conf->sectionHash, sectionName)) {
+		GfError ("addSection: duplicate section [%s]\n", sectionName);
+		return NULL;
+	}
+
+	parent = getParent(conf, sectionName);
+	if (!parent) {
+		GfError ("addSection: Problem with getParent for section [%s]\n", sectionName);
+		return NULL;
+	}
+
+	section = (struct section *) calloc (1, sizeof (struct section));
+	if (!section) {
+		GfError ("addSection: calloc (1, %d) failed\n", sizeof (struct section));
+		return NULL;
+	}
+
+	section->fullName = strdup(sectionName);
+	if (!section->fullName) {
+		GfError ("addSection: strdup (%s) failed\n", sectionName);
+		goto bailout;
+	}
+
+	if (GfHashAddStr (conf->sectionHash, sectionName, section)) {
+		GfError ("addSection: GfHashAddStr failed\n");
+		goto bailout;
+	}
+
+	/* no more bailout call */
+	section->parent = parent;
+	GF_TAILQ_INIT (&(section->paramList));
+	GF_TAILQ_INIT (&(section->subSectionList));
+	GF_TAILQ_INSERT_TAIL (&(parent->subSectionList), section, linkSection);
+
+	return section;
+
+bailout:
+	freez (section->fullName);
+	freez (section);
 	return NULL;
-    }
-
-    parent = getParent(conf, sectionName);
-    if (!parent) {
-	GfError ("addSection: Problem with getParent for section [%s]\n", sectionName);
-	return NULL;
-    }
-
-    section = (struct section *) calloc (1, sizeof (struct section));
-    if (!section) {
-	GfError ("addSection: calloc (1, %d) failed\n", sizeof (struct section));
-	return NULL;
-    }
-
-    section->fullName = strdup(sectionName);
-    if (!section->fullName) {
-	GfError ("addSection: strdup (%s) failed\n", sectionName);
-	goto bailout;
-    }
-
-    if (GfHashAddStr (conf->sectionHash, sectionName, section)) {
-	GfError ("addSection: GfHashAddStr failed\n");
-	goto bailout;
-    }
-
-    /* no more bailout call */
-    section->parent = parent;
-    GF_TAILQ_INIT (&(section->paramList));
-    GF_TAILQ_INIT (&(section->subSectionList));
-    GF_TAILQ_INSERT_TAIL (&(parent->subSectionList), section, linkSection);
-
-    return section;
-
- bailout:
-    freez (section->fullName);
-    freez (section);
-    return NULL;
 }
 
 static struct parmHeader *
@@ -1608,49 +1609,50 @@ evalUnit (char *unit, tdble *dest, int flg)
     @see	GfParmSI2Unit
  */
 tdble
-GfParmUnit2SI (char *unit, tdble val)
+GfParmUnit2SI (const char *unit, tdble val)
 {
-    char buf[256];
-    int  idx;
-    char *s;
-    int  inv;
-    tdble dest = val;
-    
-    if ((unit == NULL) || (strlen(unit) == 0)) return dest;
-
-    s = unit;
-    buf[0] = 0;
-    inv = 0;
-    idx = 0;
-    
-    while (*s != 0) {
-	switch (*s) {
-	case '.':
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    break;
-	case '/':
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    inv = 1;
-	    break;
-	case '2':
-	    evalUnit(buf, &dest, inv);
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    break;	    
-	default:
-	    buf[idx++] = *s;
-	    buf[idx] = 0;
-	    break;
+	char buf[256];
+	int  idx;
+	const char *s;
+	int  inv;
+	tdble dest = val;
+	
+	if ((unit == NULL) || (strlen(unit) == 0)) return dest;
+	
+	s = unit;
+	buf[0] = 0;
+	inv = 0;
+	idx = 0;
+	
+	while (*s != 0) {
+		switch (*s) {
+			case '.':
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				break;
+			case '/':
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				inv = 1;
+				break;
+			case '2':
+				evalUnit(buf, &dest, inv);
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				break;	    
+			default:
+				buf[idx++] = *s;
+				buf[idx] = 0;
+				break;
+		}
+		s++;
 	}
-	s++;
-    }
-    evalUnit(buf, &dest, inv);
-    return dest;
+
+	evalUnit(buf, &dest, inv);
+	return dest;
 }
 
 /** Convert a value in SI to "units".
@@ -1661,49 +1663,50 @@ GfParmUnit2SI (char *unit, tdble val)
     @see	GfParmUnit2SI
  */
 tdble
-GfParmSI2Unit (char *unit, tdble val)
+GfParmSI2Unit (const char *unit, tdble val)
 {
-    char buf[256];
-    int  idx;
-    char *s;
-    int  inv;
-    tdble dest = val;
-    
-    if ((unit == NULL) || (strlen(unit) == 0)) return dest;
-
-    s = unit;
-    buf[0] = 0;
-    inv = 1;
-    idx = 0;
-    
-    while (*s != 0) {
-	switch (*s) {
-	case '.':
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    break;
-	case '/':
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    inv = 0;
-	    break;
-	case '2':
-	    evalUnit(buf, &dest, inv);
-	    evalUnit(buf, &dest, inv);
-	    buf[0] = 0;
-	    idx = 0;
-	    break;	    
-	default:
-	    buf[idx++] = *s;
-	    buf[idx] = 0;
-	    break;
+	char buf[256];
+	int  idx;
+	const char *s;
+	int  inv;
+	tdble dest = val;
+	
+	if ((unit == NULL) || (strlen(unit) == 0)) return dest;
+	
+	s = unit;
+	buf[0] = 0;
+	inv = 1;
+	idx = 0;
+	
+	while (*s != 0) {
+		switch (*s) {
+			case '.':
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				break;
+			case '/':
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				inv = 0;
+				break;
+			case '2':
+				evalUnit(buf, &dest, inv);
+				evalUnit(buf, &dest, inv);
+				buf[0] = 0;
+				idx = 0;
+				break;	    
+			default:
+				buf[idx++] = *s;
+				buf[idx] = 0;
+				break;
+		}
+		s++;
 	}
-	s++;
-    }
-    evalUnit(buf, &dest, inv);
-    return dest;
+
+	evalUnit(buf, &dest, inv);
+	return dest;
 }
 
 
@@ -1938,7 +1941,7 @@ GfParmListGetCurEltName (void *handle, char *path)
     		produce incoherent pointer.
 */
 char *
-GfParmGetStr (void *parmHandle, char *path, char *key, char *deflt)
+GfParmGetStr (void *parmHandle, const char *path, const char *key, char *deflt)
 {
 	struct param *param;
 	struct parmHandle *handle = (struct parmHandle *)parmHandle;
@@ -2007,26 +2010,26 @@ GfParmGetCurStr (void *handle, char *path, char *key, char *deflt)
     @return	parameter value
  */
 tdble
-GfParmGetNum (void *handle, char *path, char *key, char *unit, tdble deflt)
+GfParmGetNum (void *handle, const char *path, const char *key, const char *unit, tdble deflt)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*param;
+	struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+	struct parmHeader	*conf = parmHandle->conf;
+	struct param	*param;
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmGetNum: bad handle (%p)\n", parmHandle);
-	return deflt;
-    }
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmGetNum: bad handle (%p)\n", parmHandle);
+		return deflt;
+	}
 
-    param = getParamByName (conf, path, key, 0);
-    if (!param ||  (param->type != P_NUM)) {
-	return deflt;
-    }
+	param = getParamByName (conf, path, key, 0);
+	if (!param ||  (param->type != P_NUM)) {
+		return deflt;
+	}
 
-    if (unit) {
-	return GfParmSI2Unit(unit, param->valnum);
-    }
-    return  param->valnum;
+	if (unit) {
+		return GfParmSI2Unit(unit, param->valnum);
+	}
+	return  param->valnum;
 }
 
 
@@ -2169,33 +2172,34 @@ GfParmSetCurStr(void *handle, char *path, char *key, char *val)
     @warning	The key is created is necessary
  */
 int
-GfParmSetNum(void *handle, char *path, char *key, char *unit, tdble val)
+GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*param;
+	struct parmHandle	*parmHandle = (struct parmHandle *)handle;
+	struct parmHeader	*conf = parmHandle->conf;
+	struct param	*param;
+	
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmSetNum: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
+	
+	param = getParamByName (conf, path, key, PARAM_CREATE);
+	if (!param) {
+		return -11;
+	}
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmSetNum: bad handle (%p)\n", parmHandle);
-	return -1;
-    }
-
-    param = getParamByName (conf, path, key, PARAM_CREATE);
-    if (!param) {
-	return -11;
-    }
-    param->type = P_NUM;
-    FREEZ (param->unit);
-    if (unit) {
-	param->unit = strdup (unit);
-    }
-
-    val = GfParmUnit2SI (unit, val);
-    param->valnum = val;
-    param->min = val;
-    param->max = val;
-
-    return 0;
+	param->type = P_NUM;
+	FREEZ (param->unit);
+	if (unit) {
+		param->unit = strdup (unit);
+	}
+	
+	val = GfParmUnit2SI (unit, val);
+	param->valnum = val;
+	param->min = val;
+	param->max = val;
+	
+	return 0;
 }
 
 /** Set a numerical parameter in a config file.

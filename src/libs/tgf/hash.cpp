@@ -2,7 +2,7 @@
 
     file        : hash.cpp
     created     : Sat Dec 14 16:40:15 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -54,22 +54,23 @@ typedef struct HashHeader
 #define DEFAULT_SIZE	32
 
 static unsigned int
-hash_str (tHashHeader *hash, char *sstr)
+hash_str (tHashHeader *hash, const char *sstr)
 {
-  unsigned char *str = (unsigned char *)sstr;
-  unsigned int val = 0;
+	const unsigned char *str = (const unsigned char *)sstr;
+	unsigned int val = 0;
+	
+	if (!str) {
+		return 0;
+	}
 
-  if (!str)
-    return 0;
-
-  /* Hash courtesy of the R5 hash in reiserfs modulo sign bits */
-  while (*str)
-    {
-      val = (val + (*str >> 4) + (*str << 4)) * 11;
-      str++;
-    }
-
-  return val % hash->size;
+	/* Hash courtesy of the R5 hash in reiserfs modulo sign bits */
+	while (*str)
+	{
+		val = (val + (*str >> 4) + (*str << 4)) * 11;
+		str++;
+	}
+	
+	return val % hash->size;
 }
 
 static unsigned int
@@ -167,32 +168,33 @@ gfIncreaseHash(tHashHeader *curHeader)
     @return	0 OK, 1 NOK.
 */
 int
-GfHashAddStr(void *hash, char *key, void *data)
+GfHashAddStr(void *hash, const char *key, void *data)
 {
-    tHashHeader		*curHeader = (tHashHeader *)hash;
-    tHashElem		*newElem;
-    unsigned int	index;
-    
-    if (curHeader->type != GF_HASH_TYPE_STR) {
-	return 1;
-    }
+	tHashHeader		*curHeader = (tHashHeader *)hash;
+	tHashElem		*newElem;
+	unsigned int	index;
+	
+	if (curHeader->type != GF_HASH_TYPE_STR) {
+		return 1;
+	}
+	
+	if ((curHeader->nbElem + 1) > (2 * curHeader->size)) {
+		gfIncreaseHash(curHeader);
+	}
+	
+	index = hash_str(curHeader, key);
+	newElem = (tHashElem*)malloc(sizeof(tHashElem));
+	if (!newElem) {
+		return 1;
+	}
 
-    if ((curHeader->nbElem + 1) > (2 * curHeader->size)) {
-	gfIncreaseHash(curHeader);
-    }
-
-    index = hash_str(curHeader, key);
-    newElem = (tHashElem*)malloc(sizeof(tHashElem));
-    if (!newElem) {
-	return 1;
-    }
-    newElem->key = strdup(key);
-    newElem->size = strlen(key) + 1;
-    newElem->data = data;
-    GF_TAILQ_INSERT_TAIL(&(curHeader->hashHead[index]), newElem, link);
-    curHeader->nbElem++;
-
-    return 0;
+	newElem->key = strdup(key);
+	newElem->size = strlen(key) + 1;
+	newElem->data = data;
+	GF_TAILQ_INSERT_TAIL(&(curHeader->hashHead[index]), newElem, link);
+	curHeader->nbElem++;
+	
+	return 0;
 }
 
 /* Remove a table element */
@@ -241,7 +243,7 @@ GfHashRemStr(void *hash, char *key)
     @return	User data.
 */
 void *
-GfHashGetStr(void *hash, char *key)
+GfHashGetStr(void *hash, const char *key)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
     tHashElem		*curElem;

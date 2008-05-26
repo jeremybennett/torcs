@@ -272,6 +272,8 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	) {
 		r += dr;
 	}*/
+	r = MAX(1.0, r);
+
 	return sqrt((mu*G*r)/(1.0f - MIN(1.0f, r*CA*mu/mass)));
 }
 
@@ -688,7 +690,7 @@ bool Driver::isStuck()
 // Compute aerodynamic downforce coefficient CA.
 void Driver::initCa()
 {
-	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 	float rearwingarea = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*) NULL, 0.0f);
 	float rearwingangle = GfParmGetNum(car->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*) NULL, 0.0f);
 	float wingca = 1.23f*rearwingarea*sin(rearwingangle);
@@ -716,7 +718,7 @@ void Driver::initCw()
 // Init the friction coefficient of the the tires.
 void Driver::initTireMu()
 {
-	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 	float tm = FLT_MAX;
 	int i;
 
