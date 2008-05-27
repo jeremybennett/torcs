@@ -1,7 +1,7 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:22:26 CET 2000
+#    created              : Sat Mar 18 23:11:09 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id$                                  
@@ -16,20 +16,18 @@
 ##############################################################################
 
 
-SHIPDIR   = drivers/inferno/5
+ROBOT = inferno
 
-SHIP      = $(shell find * -maxdepth 0 -type f -print)
+SHIPDIR   = drivers/${ROBOT}/5
+
+SHIP      = car3-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
-# Recursion
-
-SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
-
-PKGSUBDIRS  = ${SHIPSUBDIRS}
+src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
+
+
 
 

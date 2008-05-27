@@ -2,7 +2,7 @@
 ; inferno.def
 ;
 
-LIBRARY	inferno
+LIBRARY
 
 SECTIONS .data READ WRITE
 

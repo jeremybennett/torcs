@@ -1,10 +1,10 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:22:26 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
-#    email                : torcs@free.fr   
-#    version              : $Id$                                  
+#    created              : Sat Mar 18 23:11:09 CET 2000
+#    copyright            : (C) 2000 by Eric Espie
+#    email                : torcs@free.fr
+#    version              : $Id$
 #
 ##############################################################################
 #
@@ -15,20 +15,19 @@
 #
 ##############################################################################
 
-SHIPDIR   = drivers/inferno/9
 
-SHIP      = $(shell find * -maxdepth 0 -type f -print)
+ROBOT = inferno
+
+SHIPDIR   = drivers/${ROBOT}/9
+
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
-# Recursion
-
-SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
-
-PKGSUBDIRS  = ${SHIPSUBDIRS}
+src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
+
+
 
 
