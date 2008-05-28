@@ -1,10 +1,8 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:13:30 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
-#    email                : torcs@free.fr   
-#    version              : $Id$                                  
+#    created              : Wed Jan 8 18:31:16 CET 2003
+#    copyright            : (C) 2002 Bernhard Wymann
 #
 ##############################################################################
 #
@@ -15,17 +13,14 @@
 #
 ##############################################################################
 
+ROBOT       = damned
+SHIPDIR     = drivers/${ROBOT}/6
+SHIP        = default.xml
+SHIPSUBDIRS = 
 
-ROBOT = damned
-
-SHIPDIR   = drivers/${ROBOT}/6
-
-SHIP      =  car.xml car-dirt.xml logo.rgb
-
-src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
-
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
+PKGSUBDIRS  = ${SHIPSUBDIRS}
+src-robots-base_PKGFILES = $(shell find * -maxdepth 0 -type f -print)
+src-robots-base_PKGDIR   = ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 include ${MAKE_DEFAULT}
 
 

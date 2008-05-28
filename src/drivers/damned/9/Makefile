@@ -1,10 +1,8 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:14:27 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
-#    email                : torcs@free.fr   
-#    version              : $Id$                                  
+#    created              : Wed Jan 8 18:31:16 CET 2003
+#    copyright            : (C) 2002 Bernhard Wymann
 #
 ##############################################################################
 #
@@ -15,17 +13,15 @@
 #
 ##############################################################################
 
+ROBOT       = damned
+SHIPDIR     = drivers/${ROBOT}/9
+SHIP        = car1-trb3.rgb default.xml
+SHIPSUBDIRS = 
+#practice qualifying race
 
-ROBOT = damned
-
-SHIPDIR   = drivers/${ROBOT}/9
-
-SHIP      =   logo.rgb car.xml 360-modena.rgb
-
-src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
-
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
-
+PKGSUBDIRS  = ${SHIPSUBDIRS}
+src-robots-base_PKGFILES = $(shell find * -maxdepth 0 -type f -print)
+src-robots-base_PKGDIR   = ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 include ${MAKE_DEFAULT}
 
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
     file                 : damned.xml
-    created              : Sat Mar 18 23:10:44 CET 2000
-    copyright            : (C) 2000 by Eric Espie                         
-    email                : torcs@free.fr   
-    version              : $Id$                                  
+    created              : Wed Jan 8 18:31:16 CET 2003
+	copyright            : (C) 2000-2008 by Eric Espie, Bernhard Wymann
+    email                : berniw@bluewin.ch
+    version              : $Id$
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -14,121 +14,120 @@
 
 <!DOCTYPE params SYSTEM "../../libs/tgf/params.dtd">
 
-<params name="human" type="robotdef">
-  <section name="Robots">
-
-    <section name="index">
-      <section name="1">
-	<attstr name="name" val="Damned 1"/>
-	<attstr name="desc" val="first TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-focuswrc"/>
-	<attnum name="race number" val="1"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-
-      <section name="2">
-	<attstr name="name" val="Damned 2"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-206wrc"/>
-	<attnum name="race number" val="2"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="3">
-	<attstr name="name" val="Damned 3"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-306wrc"/>
-	<attnum name="race number" val="3"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="4">
-	<attstr name="name" val="Damned 4"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-evoviwrc"/>
-	<attnum name="race number" val="4"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="5">
-	<attstr name="name" val="Damned 5"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-imprezawrc"/>
-	<attnum name="race number" val="5"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="6">
-	<attstr name="name" val="Damned 6"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-corollawrc"/>
-	<attnum name="race number" val="6"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="7">
-	<attstr name="name" val="Damned 7"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="pw-evovwrc"/>
-	<attnum name="race number" val="7"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="8">
-	<attstr name="name" val="Damned 8"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="mclaren-f1"/>
-	<attnum name="race number" val="8"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="9">
-	<attstr name="name" val="Damned 9"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="360-modena"/>
-	<attnum name="race number" val="9"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-      <section name="10">
-	<attstr name="name" val="Damned 10"/>
-	<attstr name="desc" val="Second TORCS robot 09/98"/>
-	<attstr name="team" val="torcs"/>
-	<attstr name="author" val="Eric Espie"/>
-	<attstr name="car name" val="155-DTM"/>
-	<attnum name="race number" val="10"/>
-	<attnum name="red" val="0.0"/>
-	<attnum name="green" val="1.0"/>
-	<attnum name="blue" val="1.0"/>
-      </section>
-    </section>
-  </section>
+<params name="damned" type="robotdef">
+	<section name="Robots">
+		<section name="index">
+			<section name="0">
+				<attstr name="name" val="damned 1"/>
+				<attstr name="desc" val="first TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-focuswrc"/>
+				<attnum name="race number" val="1"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			
+			<section name="1">
+				<attstr name="name" val="damned 2"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-206wrc"/>
+				<attnum name="race number" val="2"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="2">
+				<attstr name="name" val="damned 3"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-306wrc"/>
+				<attnum name="race number" val="3"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="3">
+				<attstr name="name" val="damned 4"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-evoviwrc"/>
+				<attnum name="race number" val="4"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="4">
+				<attstr name="name" val="damned 5"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-imprezawrc"/>
+				<attnum name="race number" val="5"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="5">
+				<attstr name="name" val="damned 6"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="pw-corollawrc"/>
+				<attnum name="race number" val="6"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="6">
+				<attstr name="name" val="damned 7"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="car5-trb1"/>
+				<attnum name="race number" val="7"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="7">
+				<attstr name="name" val="damned 8"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="car6-trb1"/>
+				<attnum name="race number" val="8"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="8">
+				<attstr name="name" val="damned 9"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="car7-trb1"/>
+				<attnum name="race number" val="9"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+			<section name="9">
+				<attstr name="name" val="damned 10"/>
+				<attstr name="desc" val="Second TORCS robot 09/98"/>
+				<attstr name="team" val="torcs"/>
+				<attstr name="author" val="Eric Espie"/>
+				<attstr name="car name" val="car1-trb3"/>
+				<attnum name="race number" val="10"/>
+				<attnum name="red" val="0.0"/>
+				<attnum name="green" val="1.0"/>
+				<attnum name="blue" val="1.0"/>
+			</section>
+		</section>
+	</section>
 </params>
