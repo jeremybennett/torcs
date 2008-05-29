@@ -32,10 +32,15 @@ static int  InitFuncPt(int index, void *pt);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
 
-static char* botname[BOTS] = {"berniw hist 1", "berniw hist 2", "berniw hist 3", "berniw hist 4", "berniw hist 5",
-							  "berniw hist 6", "berniw hist 7", "berniw hist 8", "berniw hist 9", "berniw hist 10"};
-static char* botdesc[BOTS] = {"berniw hist 1", "berniw hist 2", "berniw hist 3", "berniw hist 4", "berniw hist 5",
-							  "berniw hist 6", "berniw hist 7", "berniw hist 8", "berniw hist 9", "berniw hist 10"};
+static const char* botname[BOTS] = {
+	"berniw hist 1", "berniw hist 2", "berniw hist 3", "berniw hist 4", "berniw hist 5",
+	"berniw hist 6", "berniw hist 7", "berniw hist 8", "berniw hist 9", "berniw hist 10"
+};
+
+static const char* botdesc[BOTS] = {
+	"berniw hist 1", "berniw hist 2", "berniw hist 3", "berniw hist 4", "berniw hist 5",
+	"berniw hist 6", "berniw hist 7", "berniw hist 8", "berniw hist 9", "berniw hist 10"
+};
 
 
 /* Module entry point */
@@ -44,12 +49,8 @@ extern "C" int berniw3(tModInfo *modInfo)
 	//char	buffer[BUFSIZE];
 
 	for (int i = 0; i < BOTS; i++) {
-		//sprintf(buffer, "berniw %d", i+1);
-		//botname[i] = strdup(buffer);
-		modInfo[i].name = botname[i];			/* name of the module (short) */
-		//sprintf(buffer, "berniw %d", i+1);
-		//botdesc[i] = strdup(buffer);
-		modInfo[i].desc = botdesc[i];			/* description of the module (can be long) */
+		modInfo[i].name = strdup(botname[i]);	/* name of the module (short) */
+		modInfo[i].desc = strdup(botdesc[i]);	/* description of the module (can be long) */
 		modInfo[i].fctInit = InitFuncPt;		/* init function */
 		modInfo[i].gfId    = ROB_IDENT;			/* supported framework version */
 		modInfo[i].index   = i+1;
