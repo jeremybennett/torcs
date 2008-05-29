@@ -108,8 +108,8 @@
 		<attnum name="rear right-left weight repartition" min="0.3" max="0.7" val="0.5"/>
 		<!-- used for inertia, indicates the good mass centering -->
 		<attnum name="mass repartition coefficient" val="0.7"/>
-		<attnum name="fuel tank" min="30.0" max="100.0" unit="l" val="100.0"/>
-		<attnum name="initial fuel" min="1.0" max="100.0" unit="l" val="100.0"/>
+		<attnum name="fuel tank" min="30.0" max="50.0" unit="l" val="50.0"/>
+		<attnum name="initial fuel" min="1.0" max="50.0" unit="l" val="50.0"/>
 	</section>
 	
 	<section name="Aerodynamics">
