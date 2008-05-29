@@ -49,34 +49,39 @@ static char	ParamNames[256];
 /* should be present in mswindows */
 BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 {
-    return TRUE;
+	return TRUE;
 }
 #endif
 
 static int
 pitCmd(int index, tCarElt *car, tSituation *s)
 {
-    int 	idx = index - 1;
-    int		remainLaps = s->_totLaps - car->_laps - car->_lapsBehindLeader + 1;
-    tdble	remainDist = remainLaps * DmTrack->length;
-    tdble	fuel;
+	int 	idx = index - 1;
+	int		remainLaps = s->_totLaps - car->_laps - car->_lapsBehindLeader + 1;
+	tdble	remainDist = remainLaps * DmTrack->length;
+	tdble	fuel;
+	
+	PitState[idx] = PIT_STATE_PIT_EXIT;
+	fuel = ConsFactor[idx] * (remainLaps + 1);
+	
+	if (fuel > car->_tank) fuel = car->_tank;
+	
+	fuel -=  car->_fuel;
+	
+	if (fuel < 0) fuel = 0;
+	
+	car->_pitFuel = fuel;
+	remainDist = remainLaps * DmTrack->length;
 
-    PitState[idx] = PIT_STATE_PIT_EXIT;
-    fuel = ConsFactor[idx] * (remainLaps + 1);
-    if (fuel > car->_tank) fuel = car->_tank;
-    fuel -=  car->_fuel;
-    if (fuel < 0) fuel = 0;
-    car->_pitFuel = fuel;
-    remainDist = remainLaps * DmTrack->length;
-    if (remainDist > 100) {
-	car->_pitRepair = (int)(car->_dammage);
-    } else if (remainDist > 60) {
-	car->_pitRepair = (int)(car->_dammage / 1.5);
-    } else {
-	car->_pitRepair = (int)(car->_dammage / 2.0);
-    }
-
-    return ROB_PIT_IM;
+	if (remainDist > 100) {
+		car->_pitRepair = (int)(car->_dammage);
+	} else if (remainDist > 60) {
+		car->_pitRepair = (int)(car->_dammage / 1.5);
+	} else {
+		car->_pitRepair = (int)(car->_dammage / 2.0);
+	}
+	
+	return ROB_PIT_IM;
 }
 
 /* #define RELAXATION(target, prev, gain) {(target) = (prev) + gain * ((target) - (prev)) * s->deltaTime; (prev) = (target);} */
@@ -106,22 +111,22 @@ shutdn(int index)
 static int
 InitFuncPt(int index, void *pt)
 {
-    tRobotItf *itf = (tRobotItf *)pt;
-    
-    itf->rbNewTrack = initTrack;			/* give the robot the track view called */
-    /* for every track change or new race */
-    itf->rbNewRace  = newrace;
-    itf->rbDrive    = drive;			/* drive during race */
-    itf->index      = index;
-    itf->rbPitCmd   = pitCmd;
-    itf->rbShutdown = shutdn;
-    return 0;
+	tRobotItf *itf = (tRobotItf *)pt;
+	
+	itf->rbNewTrack = initTrack;			/* give the robot the track view called */
+	/* for every track change or new race */
+	itf->rbNewRace  = newrace;
+	itf->rbDrive    = drive;			/* drive during race */
+	itf->index      = index;
+	itf->rbPitCmd   = pitCmd;
+	itf->rbShutdown = shutdn;
+	return 0;
 }
 
 
-static char* botname[10] = {"InfHist 1", "InfHist 2", "InfHist 3", "InfHist 4", "InfHist 5",
+static const char* botname[10] = {"InfHist 1", "InfHist 2", "InfHist 3", "InfHist 4", "InfHist 5",
 							"InfHist 6", "InfHist 7", "InfHist 8", "InfHist 9", "InfHist 10"};
-static char* botdesc[10] = {"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence",
+static const char* botdesc[10] = {"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence",
 							"For Laurence", "For Laurence", "For Laurence", "For Laurence", "For Laurence"};
 
 
@@ -144,18 +149,18 @@ static char* botdesc[10] = {"For Laurence", "For Laurence", "For Laurence", "For
 extern "C" int
 inferno2(tModInfo *modInfo)
 {
-    int		i;
-    //char	buf[256];
-
-    for (i = 0; i < 10; i++) {
-	//sprintf(buf, "InfHist %d", i + 1);
-	modInfo[i].name    = botname[i]; //strdup(buf);	/* name of the module (short) */
-	modInfo[i].desc    = botdesc[i];	/* description of the module (can be long) */
-	modInfo[i].fctInit = InitFuncPt;	/* init function */
-	modInfo[i].gfId    = ROB_IDENT;		/* supported framework version */
-	modInfo[i].index   = i + 1;
-    }
-    return 0;
+	int		i;
+	//char	buf[256];
+	
+	for (i = 0; i < 10; i++) {
+		//sprintf(buf, "InfHist %d", i + 1);
+		modInfo[i].name    = strdup(botname[i]);	/* name of the module (short) */
+		modInfo[i].desc    = strdup(botdesc[i]);	/* description of the module (can be long) */
+		modInfo[i].fctInit = InitFuncPt;			/* init function */
+		modInfo[i].gfId    = ROB_IDENT;				/* supported framework version */
+		modInfo[i].index   = i + 1;
+	}
+	return 0;
 }
 
 
@@ -248,78 +253,81 @@ tdble Gmax;
 
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
-    int 	idx = index - 1;
-    void	*hdle;
-    char	*str;
-    char	buf[256];
-    tdble	fuel;
-    tdble	tmpMu;
-    
-    
-    DmTrack = track;
-    str = strrchr(track->filename, '/') + 1;
-    sprintf(ParamNames, "drivers/inferno2/%d/tracksdata/car_%s", index, str);
-    *carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD);
-    if (*carParmHandle == NULL) {
-	sprintf(ParamNames, "drivers/inferno2/%d/defaultcar.xml", index);
-	*carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-	GfOut("%s Loaded\n", ParamNames);
-    } else {
-	GfOut("%s Loaded\n", ParamNames);
-    }
-    ConsFactor[idx] = 0.0007 * DmTrack->length;
-    fuel = ConsFactor[idx] * (s->_totLaps + 1);
-    
-    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
-
-    VM = track->pits.speedLimit;
-
-    Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-    tmpMu = GfParmGetNum(*carParmHandle, SECT_REARLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
-    Gmax = MIN(Gmax, tmpMu);
-/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
-
-    sprintf(buf, "drivers/inferno2/%d/tracksdata/%s", index, str);
-    hdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
-    if (!hdle) {
-	sprintf(buf, "drivers/inferno2/%d/default.xml", index);
+	int 	idx = index - 1;
+	void	*hdle;
+	char	*str;
+	char	buf[256];
+	tdble	fuel;
+	tdble	tmpMu;
+			
+			
+	DmTrack = track;
+	str = strrchr(track->filename, '/') + 1;
+	sprintf(ParamNames, "drivers/inferno2/%d/tracksdata/car_%s", index, str);
+	*carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD);
+	
+	if (*carParmHandle == NULL) {
+		sprintf(ParamNames, "drivers/inferno2/%d/defaultcar.xml", index);
+		*carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+		GfOut("%s Loaded\n", ParamNames);
+	} else {
+		GfOut("%s Loaded\n", ParamNames);
+	}
+	
+	ConsFactor[idx] = 0.0007 * DmTrack->length;
+	fuel = ConsFactor[idx] * (s->_totLaps + 1);
+			
+	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+		
+	VM = track->pits.speedLimit;
+		
+	Gmax = GfParmGetNum(*carParmHandle, SECT_FRNTRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+	tmpMu = GfParmGetNum(*carParmHandle, SECT_FRNTLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+	Gmax = MIN(Gmax, tmpMu);
+	tmpMu = GfParmGetNum(*carParmHandle, SECT_REARRGTWHEEL, PRM_MU, (char*)NULL, 1.0);
+	Gmax = MIN(Gmax, tmpMu);
+	tmpMu = GfParmGetNum(*carParmHandle, SECT_REARLFTWHEEL, PRM_MU, (char*)NULL, 1.0);
+	Gmax = MIN(Gmax, tmpMu);
+	/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
+		
+	sprintf(buf, "drivers/inferno2/%d/tracksdata/%s", index, str);
 	hdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
-    }
-    if (hdle) {
-	GfOut("%s Loaded\n", buf);
-
-	PGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, PGAIN,     NULL, PGain[0]);
-	AGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
-	PnGain[idx]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
-	Advance[idx]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
-	Advance2[idx]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
-	AdvStep[idx]   = GfParmGetNum(hdle, SIMU_PRMS, ADVSTEP,   NULL, AdvStep[0]);
-	VGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, VGAIN,     NULL, VGain[0]);
-	preDy[idx]     = GfParmGetNum(hdle, SIMU_PRMS, PREDY,     NULL, preDy[0]);
-	spdtgt[idx]    = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT,    NULL, spdtgt[0]);
-	spdtgt2[idx]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
-	steerMult[idx] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
-	Offset[idx]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSET,    NULL, Offset[0]);
-
-	OffsetApproach[idx] = GfParmGetNum(hdle, SIMU_PRMS, OFFSETAPPROACH, NULL, OffsetApproach[0]);
-	OffsetFinal[idx]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSETFINAL,    NULL, OffsetFinal[0]);
-	OffsetExit[idx]     = GfParmGetNum(hdle, SIMU_PRMS, OFFSETEXIT,     NULL, OffsetExit[0]);
-	O1[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET1,     NULL, O1[0]);
-	O2[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET2,     NULL, O2[0]);
-	OP[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETP,     NULL, OP[0]);
-	OA[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETA,     NULL, OA[0]);
-	O3[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET3,     NULL, O3[0]);
-	O4[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET4,     NULL, O4[0]);
-	O5[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET5,     NULL, O5[0]);
-	VM1[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX1,          NULL, VM1[0]);
-	VM2[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX2,          NULL, VM2[0]);
-	VM3[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX3,          NULL, VM3[0]);
-	GfParmReleaseHandle(hdle);
-    }
+	if (!hdle) {
+		sprintf(buf, "drivers/inferno2/%d/default.xml", index);
+		hdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
+	}
+	
+	if (hdle) {
+		GfOut("%s Loaded\n", buf);
+		
+		PGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, PGAIN,     NULL, PGain[0]);
+		AGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, AGAIN,     NULL, AGain[0]);
+		PnGain[idx]    = GfParmGetNum(hdle, SIMU_PRMS, PNGAIN,    NULL, PnGain[0]);
+		Advance[idx]   = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE,   NULL, Advance[0]);
+		Advance2[idx]  = GfParmGetNum(hdle, SIMU_PRMS, ADVANCE2,  NULL, Advance2[0]);
+		AdvStep[idx]   = GfParmGetNum(hdle, SIMU_PRMS, ADVSTEP,   NULL, AdvStep[0]);
+		VGain[idx]     = GfParmGetNum(hdle, SIMU_PRMS, VGAIN,     NULL, VGain[0]);
+		preDy[idx]     = GfParmGetNum(hdle, SIMU_PRMS, PREDY,     NULL, preDy[0]);
+		spdtgt[idx]    = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT,    NULL, spdtgt[0]);
+		spdtgt2[idx]   = GfParmGetNum(hdle, SIMU_PRMS, SPDTGT2,   NULL, spdtgt2[0]);
+		steerMult[idx] = GfParmGetNum(hdle, SIMU_PRMS, STEERMULT, NULL, steerMult[0]);
+		Offset[idx]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSET,    NULL, Offset[0]);
+		
+		OffsetApproach[idx] = GfParmGetNum(hdle, SIMU_PRMS, OFFSETAPPROACH, NULL, OffsetApproach[0]);
+		OffsetFinal[idx]    = GfParmGetNum(hdle, SIMU_PRMS, OFFSETFINAL,    NULL, OffsetFinal[0]);
+		OffsetExit[idx]     = GfParmGetNum(hdle, SIMU_PRMS, OFFSETEXIT,     NULL, OffsetExit[0]);
+		O1[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET1,     NULL, O1[0]);
+		O2[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET2,     NULL, O2[0]);
+		OP[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETP,     NULL, OP[0]);
+		OA[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSETA,     NULL, OA[0]);
+		O3[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET3,     NULL, O3[0]);
+		O4[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET4,     NULL, O4[0]);
+		O5[idx]          = GfParmGetNum(hdle, SIMU_PRMS, PITOFFSET5,     NULL, O5[0]);
+		VM1[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX1,          NULL, VM1[0]);
+		VM2[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX2,          NULL, VM2[0]);
+		VM3[idx]         = GfParmGetNum(hdle, SIMU_PRMS, VMAX3,          NULL, VM3[0]);
+		GfParmReleaseHandle(hdle);
+	}
 }
 
 /*
