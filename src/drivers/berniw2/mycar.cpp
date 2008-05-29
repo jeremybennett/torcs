@@ -163,7 +163,7 @@ void MyCar::info(void)
 	printf("Offset: %d\n", getCarPtr()->_gearOffset);
 	printf("#gears: %d\n", getCarPtr()->_gearNb);
 	printf("gear: %d\n", getCarPtr()->_gear);
-	printf("steerlock: %f rad, %f°\n", getCarPtr()->_steerLock, getCarPtr()->_steerLock * 180 / PI);
+	printf("steerlock: %f rad, %fï¿½\n", getCarPtr()->_steerLock, getCarPtr()->_steerLock * 180 / PI);
 	printf("cgcorr_b: %f\n", cgcorr_b);
 	printf("car index: %d\n", getCarPtr()->index);
 	printf("race nb: %d\n", getCarPtr()->_raceNumber);
@@ -219,7 +219,7 @@ void MyCar::loadBehaviour(int id) {
 
 void MyCar::updateCa()
 {
-	char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
 	double rearwingarea = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGAREA, (char*)NULL, 0);
     double rearwingangle = GfParmGetNum(me->_carHandle, SECT_REARWING, PRM_WINGANGLE, (char*)NULL, 0);
     double wingca = 1.23*rearwingarea*sin(rearwingangle);
