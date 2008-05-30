@@ -1144,7 +1144,7 @@ real linear_d(real x)
 }
 
 /// Check that tags match
-static inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
+static inline bool CheckMatchingToken (const char* tag, StringBuffer* buf, FILE* f)
 {
 	int l = 1+strlen(tag);
 	buf = SetStringBufferLength (buf, l);
@@ -1161,7 +1161,7 @@ static inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 }
 
 /// Write a token
-static inline void WriteToken (char* tag, FILE* f)
+static inline void WriteToken (const char* tag, FILE* f)
 {
 	fwrite (tag, sizeof(char), 1+strlen(tag), f);
 }

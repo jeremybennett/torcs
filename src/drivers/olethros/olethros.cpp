@@ -52,10 +52,15 @@ namespace olethros
 #define BUFSIZE 20
 #define NBBOTS 10
 
-static char* botname[NBBOTS] = {"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
-								"olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"};
-static char* botdesc[NBBOTS] = {"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
-								"olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"};
+static const char* botname[NBBOTS] = {
+	"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
+	"olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"
+};
+
+static const char* botdesc[NBBOTS] = {
+	"olethros 1", "olethros 2", "olethros 3", "olethros 4", "olethros 5",
+	"olethros 6", "olethros 7", "olethros 8", "olethros 9", "olethros 10"
+};
 
 static Driver *driver[NBBOTS];
 
@@ -77,8 +82,8 @@ extern "C" int olethros(tModInfo *modInfo)
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
 	for (i = 0; i < NBBOTS; i++) {
-		modInfo[i].name    = botname[i];			// name of the module (short).
-		modInfo[i].desc    = botdesc[i];			// Description of the module (can be long).
+		modInfo[i].name    = strdup(botname[i]);	// name of the module (short).
+		modInfo[i].desc    = strdup(botdesc[i]);	// Description of the module (can be long).
 		modInfo[i].fctInit = InitFuncPt;			// Init function.
 		modInfo[i].gfId    = ROB_IDENT;				// Supported framework version.
 		modInfo[i].index   = i;						// Indices from 0 to 9.

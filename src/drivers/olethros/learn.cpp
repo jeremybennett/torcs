@@ -34,7 +34,7 @@
 #endif
 
 /// Check that tags match
-inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
+inline bool CheckMatchingToken (const char* tag, StringBuffer* buf, FILE* f)
 {
     int l = 1+strlen(tag);
     buf = SetStringBufferLength (buf, l);
@@ -51,7 +51,7 @@ inline bool CheckMatchingToken (char* tag, StringBuffer* buf, FILE* f)
 }
 
 /// Write a token
-inline void WriteToken (char* tag, FILE* f)
+inline void WriteToken (const char* tag, FILE* f)
 {
     fwrite (tag, sizeof(char), 1+strlen(tag), f);
 }

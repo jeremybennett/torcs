@@ -30,7 +30,7 @@ Point Trajectory::GetPoint (Segment& s, float w)
 #define EXP_COST
 #undef DBG_OPTIMISE
 /// Optimise a track trajectory
-void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fname, bool reset)
+void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const char* fname, bool reset)
 {
     int N = track.size();
     clock_t start_time = clock();
@@ -284,12 +284,12 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, char* fn
 #ifdef DBG_OPTIMISE
         fprintf (stderr, "# writing output to %s\n", fname);
 #endif
-        FILE* f = fopen (fname, "w");
+        /*FILE* f = fopen (fname, "w");
         for (int i=0; i<N; ++i) {
             Point p = GetPoint(track[i], w[i]);
             fprintf (f, "%f %f\n", p.x, p.y);
         }
-        fclose(f);
+        fclose(f);*/
     }
 
 }
