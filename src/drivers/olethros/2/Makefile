@@ -15,8 +15,8 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/2
-SHIP        = default.xml porsche-gt1.rgb
-SHIPSUBDIRS = race practice qualifying
+SHIP        = default.xml
+SHIPSUBDIRS =
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
 src-robots-olethros_PKGFILES = $(shell find * -maxdepth 0 -type f -print)

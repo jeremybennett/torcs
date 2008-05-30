@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/1
-SHIP        = default.xml cg-nascar-rwd.rgb
+SHIP        = default.xml
 SHIPSUBDIRS =
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}

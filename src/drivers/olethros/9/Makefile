@@ -15,8 +15,8 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/9
-SHIP        = default.xml
-SHIPSUBDIRS = practice qualifying race
+SHIP        = default.xml car1-trb3.rgb
+SHIPSUBDIRS =
 #practice qualifying race
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
