@@ -38,10 +38,15 @@
 #define BUFSIZE 20
 #define NBBOTS 10
 
-static char* botname[NBBOTS] = {"sparkle 1", "sparkle 2", "sparkle 3", "sparkle 4", "sparkle 5",
-								"sparkle 6", "sparkle 7", "sparkle 8", "sparkle 9", "sparkle 10"};
-static char* botdesc[NBBOTS] = {"sparkle 1", "sparkle 2", "sparkle 3", "sparkle 4", "sparkle 5",
-								"sparkle 6", "sparkle 7", "sparkle 8", "sparkle 9", "sparkle 10"};
+static const char* botname[NBBOTS] = {
+	"sparkle 1", "sparkle 2", "sparkle 3", "sparkle 4", "sparkle 5",
+	"sparkle 6", "sparkle 7", "sparkle 8", "sparkle 9", "sparkle 10"
+};
+
+static const char* botdesc[NBBOTS] = {
+	"sparkle 1", "sparkle 2", "sparkle 3", "sparkle 4", "sparkle 5",
+	"sparkle 6", "sparkle 7", "sparkle 8", "sparkle 9", "sparkle 10"
+};
 
 static Driver *driver[NBBOTS];
 
@@ -63,11 +68,11 @@ extern "C" int sparkle(tModInfo *modInfo)
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
 	for (i = 0; i < NBBOTS; i++) {
-		modInfo[i].name    = botname[i];  /* name of the module (short) */
-		modInfo[i].desc    = botdesc[i];  /* description of the module (can be long) */
-		modInfo[i].fctInit = InitFuncPt;  /* init function */
-		modInfo[i].gfId    = ROB_IDENT;   /* supported framework version */
-		modInfo[i].index   = i;           /* indices from 0 to 9 */
+		modInfo[i].name    = strdup(botname[i]);	/* name of the module (short) */
+		modInfo[i].desc    = strdup(botdesc[i]);	/* description of the module (can be long) */
+		modInfo[i].fctInit = InitFuncPt;			/* init function */
+		modInfo[i].gfId    = ROB_IDENT;				/* supported framework version */
+		modInfo[i].index   = i;						/* indices from 0 to 9 */
 	}
 	return 0;
 }
