@@ -2,7 +2,7 @@
 ; tita.def
 ;
 
-LIBRARY	tita
+LIBRARY
 
 SECTIONS .data READ WRITE
 
