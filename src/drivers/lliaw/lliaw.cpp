@@ -1,9 +1,9 @@
 /***************************************************************************
 
-    file                 : lliaw.cpp
-    created              : Sat Oct 30 19:49:42 CEST 1999
-    copyright            : (C) 1999 by Eric Espie & Christophe Guionneau
-    email                : torcs@free.fr
+    file                 : berniw.cpp
+    created              : Mon Apr 17 13:51:00 CET 2000
+    copyright            : (C) 2000-2006 by Bernhard Wymann
+    email                : berniw@bluewin.ch
     version              : $Id$
 
  ***************************************************************************/
@@ -18,379 +18,492 @@
  ***************************************************************************/
 
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include "berniw.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
 
-#include <tgf.h>
+// Function prototypes.
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);
+static void drive(int index, tCarElt* car, tSituation *situation);
+static void newRace(int index, tCarElt* car, tSituation *situation);
+static int  InitFuncPt(int index, void *pt);
+static int  pitcmd(int index, tCarElt* car, tSituation *s);
+static void shutdown(int index);
+float getClutch(MyCar* myc, tCarElt* car);
 
-#include <track.h>
-#include <car.h>
-#include <raceman.h>
-#include <robot.h>
-#include <robottools.h>
+static const char* botname[BOTS] = {
+	"lliaw 1", "lliaw 2", "lliaw 3", "lliaw 4", "lliaw 5",
+	"lliaw 6", "lliaw 7", "lliaw 8", "lliaw 9", "lliaw 10"
+};
 
-static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s);
-static void drive(int index, tCarElt* car, tSituation *s);
-static void newrace(int index, tCarElt* car, tSituation *s);
+static const char* botdesc[BOTS] = {
+	"lliaw 1", "lliaw 2", "lliaw 3", "lliaw 4", "lliaw 5",
+	"lliaw 6", "lliaw 7", "lliaw 8", "lliaw 9", "lliaw 10"
+};
 
-tTrack    *DmTrack;
-
-#ifdef _WIN32
-/* should be present in mswindows */
-BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
+// Module entry point.
+extern "C" int lliaw(tModInfo *modInfo)
 {
-    return TRUE;
-}
-#endif
-
-/* #define RELAXATION(target, prev, gain) {(target) = (prev) + gain * ((target) - (prev)) * s->deltaTime; (prev) = (target);} */
-
-/*
- * Function
- *	InitFuncPt
- *
- * Description
- *	Robot functions initialisation
- *
- * Parameters
- *	pt	pointer on functions structure
- *
- * Return
- *	0
- *
- * Remarks
- *	
- */
-static int
-InitFuncPt(int index, void *pt)
-{
-    tRobotItf *itf = (tRobotItf *)pt;
-    
-    itf->rbNewTrack = initTrack;			/* give the robot the track view called */
-    /* for every track change or new race */
-    itf->rbNewRace  = newrace;
-    itf->rbDrive    = drive;			/* drive during race */
-    itf->index      = index;
-    return 0;
-}
-
-/*
- * Function
- *	lliaw
- *
- * Description
- *	DLL entry point (general to all types of modules)
- *
- * Parameters
- *	modInfo	administrative info on module
- *
- * Return
- *	0
- *
- * Remarks
- *	
- */
-extern "C" int
-lliaw(tModInfo *modInfo)
-{
-    modInfo->name    = "Lliaw";	/* name of the module (short) */
-    modInfo->desc    = "For William";	/* description of the module (can be long) */
-    modInfo->fctInit = InitFuncPt;	/* init function */
-    modInfo->gfId    = ROB_IDENT;	/* supported framework version */
-    modInfo->index   = 1;
-    return 0;
-}
-static tdble	Tright[10];
-static tdble	MaxSpeed[10];
-static tdble	hold[10] = {0};
-static tdble	shiftThld[10][MAX_GEARS+1];
-
-const  tdble PGain[1]    = {0.016f};
-const  tdble AGain[10]    = {0.004f};
-const  tdble PnGain[10]   = {0.025f};
-const  tdble Advance[10]  = {50.0};
-const  tdble Advance2[10] = {30.0};
-const  tdble Advance3[10] = {250.0};
-const  tdble AdvStep[10]  = {25.0};
-const  tdble VGain[10]    = {0.0005f};
-static tdble preDy[10]    = {0};
-static tdble spdtgt[10]   = {200.0};
-static tdble spdtgt2[10]  = {0.1f};
-static tdble Trightprev[10];
-
-#include "common.cpp"
-
-/*
- * Function
- *	
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- *
- * Remarks
- *	
- */
-typedef struct 
-{
-    tdble	tr;
-    tdble	dstfs;
-    tdble	spd;
-} tTgtPt;
-
-tTgtPt *TgtPts;
-
-#define SCT "Trajectory"
-#define LST "Trajectory/Points"
-#define TR  "to right"
-#define TL  "to left"
-#define TSL "to start line"
-#define SPD "speed"
-static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
-{
-    void	*hdle;
-    char	*str;
-    int		nbPts;
-    int		idx;
-    char	buf[256];
-    tdble	spd = spdtgt2[0];
-    tdble	tr = track->seg->next->width/2.0;
-    tdble	dstfs = 0, fuel;
-    
-    DmTrack = track;
-    str = strrchr(track->filename, '/') + 1;
-    sprintf(buf, "drivers/lliaw/tracksdata/car_%s", str);
-    *carParmHandle = GfParmReadFile(buf, GFPARM_RMODE_STD);
-    if (*carParmHandle == NULL) {
-	sprintf(buf, "drivers/lliaw/car.xml");
-	*carParmHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    } else {
-	GfOut("%s Loaded\n", buf);
-    }
-    fuel = 0.0007 * DmTrack->length * (s->_totLaps + 1);
-    GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
-
-    sprintf(buf, "drivers/lliaw/tracksdata/%s", str);
-    hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
-    if (hdle) {
-	nbPts = GfParmGetEltNb(hdle, LST);
-	TgtPts = (tTgtPt*)NULL;
-	if (nbPts) {
-	    TgtPts = (tTgtPt*)calloc(nbPts+1, sizeof(tTgtPt));
-	    GfParmListSeekFirst(hdle, LST);
-	    idx = 0;
-	    do {
-		tr = track->width - GfParmGetCurNum(hdle, LST, TL, (char*)NULL, (track->width - tr));
-		TgtPts[idx].tr = tr = GfParmGetCurNum(hdle, LST, TR, (char*)NULL, tr);
-		TgtPts[idx].dstfs = dstfs = GfParmGetCurNum(hdle, LST, TSL, (char*)NULL, dstfs);
-		TgtPts[idx].spd = spd = GfParmGetCurNum(hdle, LST, SPD, (char*)NULL, spd);
-		idx++;
-	    } while (GfParmListSeekNext(hdle, LST) == 0);
-	    TgtPts[idx].dstfs = track->length + 1.0;
-	    TgtPts[idx].tr = TgtPts[idx-1].tr;
-	    TgtPts[idx].spd = spd;
+	for (int i = 0; i < BOTS; i++) {
+		modInfo[i].name = strdup(botname[i]);	// Name of the module (short).
+		modInfo[i].desc = strdup(botdesc[i]);	// Description of the module (can be long).
+		modInfo[i].fctInit = InitFuncPt;		// Init function.
+		modInfo[i].gfId    = ROB_IDENT;			// Supported framework version.
+		modInfo[i].index   = i+1;
 	}
-	GfParmReleaseHandle(hdle);
-    }
-}
-
-/*
- * Function
- *	
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- */
-static int	curidx;
-
-void newrace(int index, tCarElt* car, tSituation *s)
-{
-    Tright[0] = Trightprev[0] = car->_trkPos.toRight;
-    hold[0] = 8.0;
-    curidx = 0;
-    InitGears(car, 0);
+	return 0;
 }
 
 
-
-/*
- * Function
- *	
- *
- * Description
- *	
- *
- * Parameters
- *	
- *
- * Return
- *	
- *
- * Remarks
- *	
- */
-						     
-
-static void drive(int index, tCarElt* car, tSituation *s)
+// Initialize function (callback) pointers for torcs.
+static int InitFuncPt(int index, void *pt)
 {
-    static tdble Curtime = 0;
-    tdble 	Dy, Dny;
-    tdble 	Vy;
-    tTrkLocPos	trkPos;
-    tdble 	X, Y, x, y, CosA, SinA, kk;
-    tTrackSeg	*seg;
-    tdble	Da, Db;
-    tdble tgtSpeed = -1.0;
-    tdble	lgfs;
-    tdble	vtgt1, vtgt2;
-    static tdble lgfsprev = 0.0;
-    tdble adv;
-    tdble	curAdv, curAdvMax, Amax, Atmp, AdvMax;
+	tRobotItf *itf = (tRobotItf *)pt;
 
-    static int   disp = 0;
-    
-    
-    memset(&(car->ctrl), 0, sizeof(tCarCtrl));
+	itf->rbNewTrack = initTrack;	// Init new track.
+	itf->rbNewRace  = newRace;		// Init new race.
+	itf->rbDrive    = drive;		// Drive during race.
+	itf->rbShutdown	= shutdown;		// Called for cleanup per driver.
+	itf->rbPitCmd   = pitcmd;		// Pit command.
+	itf->index      = index;
+	return 0;
+}
 
-    Curtime += s->deltaTime;
 
-    MaxSpeed[0] = 10000.0;
-    trkPos = car->_trkPos;
-    X = car->_pos_X;
-    Y = car->_pos_Y;
-    seg = trkPos.seg;
-    CosA = cos(car->_yaw);
-    SinA = sin(car->_yaw);
-    lgfs = GetDistToStart(car) + fabs(preDy[0]);
-    if (lgfs < DmTrack->seg->next->length) {
-	curidx = 0;
-	if (lgfsprev > lgfs) {
-	    lgfsprev = 0;
+static MyCar* mycar[BOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+static OtherCar* ocar = NULL;
+static TrackDesc* myTrackDesc = NULL;
+static double currenttime;
+static const tdble waitToTurn = 1.0; // How long should i wait till i try to turn backwards.
+
+
+// Release resources when the module gets unloaded.
+static void shutdown(int index) {
+	int i = index - 1;
+	if (mycar[i] != NULL) {
+		delete mycar[i];
+		mycar[i] = NULL;
 	}
-    }
-    if (TgtPts) {
-	while (lgfs > TgtPts[curidx+1].dstfs) {
-	    curidx++;
+	if (myTrackDesc != NULL) {
+		delete myTrackDesc;
+		myTrackDesc = NULL;
 	}
-	tgtSpeed = TgtPts[curidx].spd;
+	if (ocar != NULL) {
+		delete [] ocar;
+		ocar = NULL;
+	}
+}
+
+
+// Initialize track data, called for every selected driver.
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+{
+	if ((myTrackDesc != NULL) && (myTrackDesc->getTorcsTrack() != track)) {
+		delete myTrackDesc;
+		myTrackDesc = NULL;
+	}
+	if (myTrackDesc == NULL) {
+		myTrackDesc = new TrackDesc(track);
+	}
+
+	char buffer[BUFSIZE];
+	char* trackname = strrchr(track->filename, '/') + 1;
+
+	switch (situation->_raceType) {
+		case RM_TYPE_PRACTICE:
+			snprintf(buffer, BUFSIZE, "drivers/lliaw/%d/practice/%s", index, trackname);
+			break;
+		case RM_TYPE_QUALIF:
+			snprintf(buffer, BUFSIZE, "drivers/lliaw/%d/qualifying/%s", index, trackname);
+			break;
+		case RM_TYPE_RACE:
+			snprintf(buffer, BUFSIZE, "drivers/lliaw/%d/race/%s", index, trackname);
+			break;
+		default:
+			break;
+	}
+
+	*carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
+	if (*carParmHandle == NULL) {
+		snprintf(buffer, BUFSIZE, "drivers/lliaw/%d/default.xml", index);
+		*carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
     }
 
-    adv = Advance[0];
-    
-    if (Curtime > hold[0]) {
-	if (TgtPts) {
-	    Tright[0] = TgtPts[curidx].tr;
+	// Load and set parameters.
+	float fuel = GfParmGetNum(*carParmHandle, BERNIW_SECT_PRIV, BERNIW_ATT_FUELPERLAP,
+		(char*)NULL, track->length*MyCar::MAX_FUEL_PER_METER);
+	//printf("fuelperlap: %f\n", fuel);
+
+	float fuelmargin = (situation->_raceType == RM_TYPE_RACE) ? 1.0 : 0.0;
+
+	fuel *= (situation->_totLaps + fuelmargin);
+	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
+}
+
+
+// Initialize driver for the race, called for every selected driver.
+static void newRace(int index, tCarElt* car, tSituation *situation)
+{
+	if (ocar != NULL) {
+		delete [] ocar;
+	}
+	ocar = new OtherCar[situation->_ncars];
+	for (int i = 0; i < situation->_ncars; i++) {
+		ocar[i].init(myTrackDesc, situation->cars[i], situation);
+	}
+
+	if (mycar[index-1] != NULL) {
+		delete mycar[index-1];
+	}
+	mycar[index-1] = new MyCar(myTrackDesc, car, situation);
+
+	currenttime = situation->currentTime;
+}
+
+
+// Controls the car.
+static void drive(int index, tCarElt* car, tSituation *situation)
+{
+	tdble angle;
+	tdble brake;
+	tdble b1;							// Brake value in case we are to fast HERE and NOW.
+	tdble b2;							// Brake value for some brake point in front of us.
+	tdble b3;							// Brake value for control (avoid loosing control).
+	tdble b4;							// Brake value for avoiding high angle of attack.
+	tdble steer, targetAngle, shiftaccel;
+
+	MyCar* myc = mycar[index-1];
+	Pathfinder* mpf = myc->getPathfinderPtr();
+
+	b1 = b2 = b3 = b4 = 0.0;
+	shiftaccel = 0.0;
+
+	// Update some values needed.
+	myc->update(myTrackDesc, car, situation);
+
+	// Decide how we want to drive, choose a behaviour.
+	if ( car->_dammage < myc->undamaged/3 && myc->bmode != myc->NORMAL) {
+		myc->loadBehaviour(myc->NORMAL);
+	} else if (car->_dammage > myc->undamaged/3 && car->_dammage < (myc->undamaged*2)/3 && myc->bmode != myc->CAREFUL) {
+		myc->loadBehaviour(myc->CAREFUL);
+	} else if (car->_dammage > (myc->undamaged*2)/3 && myc->bmode != myc->SLOW) {
+		myc->loadBehaviour(myc->SLOW);
+	}
+
+	// Update the other cars just once.
+	if (currenttime != situation->currentTime) {
+		currenttime = situation->currentTime;
+		for (int i = 0; i < situation->_ncars; i++) ocar[i].update();
+	}
+
+	// Startmode.
+	if (myc->trtime < 5.0 && myc->bmode != myc->START) {
+		myc->loadBehaviour(myc->START);
+		myc->startmode = true;
+	}
+	if (myc->startmode && myc->trtime > 5.0) {
+		myc->startmode = false;
+		myc->loadBehaviour(myc->NORMAL);
+	}
+
+	// Compute path according to the situation.
+	mpf->plan(myc->getCurrentSegId(), car, situation, myc, ocar);
+
+	// Clear ctrl structure with zeros and set the current gear.
+	memset(&car->ctrl, 0, sizeof(tCarCtrl));
+	car->_gearCmd = car->_gear;
+
+	// Uncommenting the following line causes pitstop on every lap.
+	//if (!mpf->getPitStop()) mpf->setPitStop(true, myc->getCurrentSegId());
+
+	// Compute fuel consumption.
+	if (myc->getCurrentSegId() >= 0 && myc->getCurrentSegId() < 5 && !myc->fuelchecked) {
+		if (car->race.laps > 0) {
+			myc->fuelperlap = MAX(myc->fuelperlap, (myc->lastfuel+myc->lastpitfuel-car->priv.fuel));
+		}
+		myc->lastfuel = car->priv.fuel;
+		myc->lastpitfuel = 0.0;
+		myc->fuelchecked = true;
+	} else if (myc->getCurrentSegId() > 5) {
+		myc->fuelchecked = false;
+	}
+
+	// Decide if we need a pit stop.
+	if (!mpf->getPitStop() && (car->_remainingLaps-car->_lapsBehindLeader) > 0 && (car->_dammage > myc->MAXDAMMAGE ||
+		(car->priv.fuel < (myc->fuelperlap*(1.0+myc->FUEL_SAFETY_MARGIN)) &&
+		 car->priv.fuel < (car->_remainingLaps-car->_lapsBehindLeader)*myc->fuelperlap)))
+	{
+		mpf->setPitStop(true, myc->getCurrentSegId());
+	}
+
+	if (mpf->getPitStop()) {
+		car->_raceCmd = RM_CMD_PIT_ASKED;
+	}
+
+	// Steer toward the next target point.
+	targetAngle = atan2(myc->dynpath->getLoc(myc->destpathsegid)->y - car->_pos_Y, myc->dynpath->getLoc(myc->destpathsegid)->x - car->_pos_X);
+	targetAngle -= car->_yaw;
+	NORM_PI_PI(targetAngle);
+    steer = targetAngle / car->_steerLock;
+
+	// Steer P (proportional) controller. We add a steer correction proportional to the distance error
+	// to the path.
+	// Steer angle has usual meaning, therefore + is to left (CCW) and - to right (CW).
+	// derror sign is + to right and - to left.
+	if (!mpf->getPitStop()) {
+		steer = steer + MIN(myc->STEER_P_CONTROLLER_MAX, myc->derror*myc->STEER_P_CONTROLLER_GAIN)*myc->getErrorSgn();
+		if (fabs(steer) > 1.0) {
+			steer/=fabs(steer);
+		}
+	}
+
+	// Try to control angular velocity with a D (differential) controller.
+	double omega = myc->getSpeed()/myc->dynpath->getRadius(myc->currentpathsegid);
+	steer += myc->STEER_D_CONTROLLER_GAIN*(omega - myc->getCarPtr()->_yaw_rate);
+
+
+	// Brakes.
+    tdble brakecoeff = 1.0/(2.0*g*myc->currentseg->getKfriction()*myc->CFRICTION);
+    tdble brakespeed, brakedist;
+	tdble lookahead = 0.0;
+	int i = myc->getCurrentSegId();
+	brake = 0.0;
+
+	while (lookahead < brakecoeff * myc->getSpeedSqr()) {
+		lookahead += myc->dynpath->getLength(i);
+		brakespeed = myc->getSpeedSqr() - myc->dynpath->getSpeedsqr(i);
+		if (brakespeed > 0.0) {
+			tdble gm, qb, qs;
+			gm = myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKfriction()*myc->CFRICTION*myTrackDesc->getSegmentPtr(myc->getCurrentSegId())->getKalpha();
+			qs = myc->dynpath->getSpeedsqr(i);
+
+			brakedist = brakespeed*(myc->mass/(2.0*gm*g*myc->mass + qs*(gm*myc->ca + myc->cw)));
+
+			if (brakedist > lookahead - myc->getWheelTrack()) {
+				qb = brakespeed*brakecoeff/brakedist;
+				if (qb > b2) {
+					b2 = qb;
+				}
+			}
+		}
+		i = (i + 1 + mpf->getnPathSeg()) % mpf->getnPathSeg();
+	}
+
+	if (myc->getSpeedSqr() > myc->dynpath->getSpeedsqr(myc->currentpathsegid)) {
+		b1 = (myc->getSpeedSqr() - myc->dynpath->getSpeedsqr(myc->currentpathsegid)) / (myc->getSpeedSqr());
+	}
+
+	// Try to avoid flying.
+	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
+		b4 = 1.0;
+	}
+
+	// Check if we are on the way.
+	if (myc->getSpeed() > myc->TURNSPEED && myc->tr_mode == 0) {
+		if (myc->derror > myc->PATHERR) {
+			vec2d *cd = myc->getDir();
+			vec2d *pd = myc->dynpath->getDir(myc->currentpathsegid);
+			float z = cd->x*pd->y - cd->y*pd->x;
+			// If the car points away from the path brake.
+			if (z*myc->getErrorSgn() >= 0.0) {
+				targetAngle = atan2(myc->dynpath->getDir(myc->currentpathsegid)->y, myc->dynpath->getDir(myc->currentpathsegid)->x);
+				targetAngle -= car->_yaw;
+				NORM_PI_PI(targetAngle);
+				double toborder = MAX(1.0, myc->currentseg->getWidth()/2.0 - fabs(myTrackDesc->distToMiddle(myc->getCurrentSegId(), myc->getCurrentPos())));
+				b3 = (myc->getSpeed()/myc->STABLESPEED)*(myc->derror-myc->PATHERR)/toborder;
+			}
+		}
+	}
+
+	// Anti wheel locking and brake code.
+	if (b1 > b2) brake = b1; else brake = b2;
+	if (brake < b3) brake = b3;
+	if (brake < b4) {
+		brake = MIN(1.0, b4);
+		tdble abs_mean;
+		abs_mean = (car->_wheelSpinVel(REAR_LFT) + car->_wheelSpinVel(REAR_RGT))*car->_wheelRadius(REAR_LFT)/myc->getSpeed();
+		abs_mean /= 2.0;
+    	brake = brake * abs_mean;
 	} else {
-	    Tright[0] = seg->width / 2.0;
+		brake = MIN(1.0, brake);
+		tdble abs_min = 1.0;
+		for (int i = 0; i < 4; i++) {
+			tdble slip = car->_wheelSpinVel(i) * car->_wheelRadius(i) / myc->getSpeed();
+			if (slip < abs_min) abs_min = slip;
+		}
+    	brake = brake * abs_min;
 	}
-	
-    }
 
-    
-    vtgt1 = spdtgt[0];
-    vtgt2 = spdtgt2[0];
+	// Reduce brake value to the approximate normal force available on the wheels.
+	float weight = myc->mass*G;
+	float maxForce = weight + myc->ca*myc->MAX_SPEED*myc->MAX_SPEED;
+	float force = weight + myc->ca*myc->getSpeedSqr();
+	brake = brake*MIN(1.0, force/maxForce);
 
-    CollDet(car, 0, s, Curtime);
-    
-    kk = 0.8f;
-    RELAXATION(Tright[0], Trightprev[0], kk);
 
-    adv = 4 * MIN(Tright[0], seg->width - Tright[0]);
-    //adv = 4.0 * MIN(trkPos.toRight, trkPos.toLeft);
+	// Gear changing.
+	if (myc->tr_mode == 0) {
+		if (car->_gear <= 0) {
+			car->_gearCmd =  1;
+		} else {
+			float gr_up = car->_gearRatio[car->_gear + car->_gearOffset];
+			float omega = car->_enginerpmRedLine/gr_up;
+			float wr = car->_wheelRadius(2);
 
-    /* proportionnal */
-    Dy = Tright[0] - trkPos.toRight;
-    if (TgtPts) {
-	if (Curtime > hold[0]) {
-	    tgtSpeed -= fabs(Dy)/2.0;
+			if (omega*wr*myc->SHIFT < car->_speed_x) {
+				car->_gearCmd++;
+			} else {
+				float gr_down = car->_gearRatio[car->_gear + car->_gearOffset - 1];
+				omega = car->_enginerpmRedLine/gr_down;
+				if (car->_gear > 1 && omega*wr*myc->SHIFT > car->_speed_x + myc->SHIFT_MARGIN) {
+					car->_gearCmd--;
+				}
+			}
+		}
 	}
-	if ((lgfs - lgfsprev) > 10.0) {
-	    if (disp) printf("%f --> %f (%f) --> %f (%f)\n", lgfs, Tright[0], trkPos.toRight, tgtSpeed*3.6, car->_speed_x*3.6);
-	    lgfsprev = lgfs;
+
+
+	// Acceleration / brake execution.
+	tdble cerror, cerrorh;
+	cerrorh = sqrt(car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y);
+	if (cerrorh > myc->TURNSPEED) {
+		cerror = fabs(car->_speed_x)/cerrorh;
+	} else {
+		cerror = 1.0;
 	}
-    }
 
-    /* derivation */
-    Vy = (Dy - preDy[0]) / s->deltaTime;
-    preDy[0] = Dy;
-
-    Da = RtTrackSideTgAngleL(&trkPos) - car->_yaw;
-    NORM_PI_PI(Da);
-    
-    x = X + (CosA) * adv;
-    y = Y + (SinA) * adv;
-    RtTrackGlobal2Local(trkPos.seg, x, y, &trkPos, TR_LPOS_MAIN);
-    Dny = Tright[0] - trkPos.toRight;
-
-    car->_steerCmd = PGain[0] * Dy + VGain[0] * Vy + PnGain[0] * Dny + AGain[0] * Da * Da;
-
-    if (car->_speed_x < 0) {
-	car->_steerCmd *= 1.5;
-    } else {
-	car->_steerCmd *= 1.1f;
-    }
-
-    /*
-     * speed control
-     */
-    CosA = cos(car->_yaw + car->_steerCmd*2.0);
-    SinA = sin(car->_yaw + car->_steerCmd*2.0);
-    curAdv = Advance2[0];
-    AdvMax = car->_speed_x * 5.0;
-    Amax = 0;
-    while (curAdv < AdvMax) {
-	x = X + CosA * curAdv;
-	y = Y + SinA * curAdv;
-	RtTrackGlobal2Local(seg, x, y, &trkPos, TR_LPOS_MAIN);
-	Atmp = fabs(trkPos.toRight - seg->width / 2.0) / curAdv;
-	if (Amax < Atmp) {
-	    Amax = Atmp;
-	    curAdvMax = curAdv;
+	if (myc->tr_mode == 0) {
+		if (brake > 0.0) {
+			myc->accel = 0.0;
+			car->_accelCmd = myc->accel;
+			car->_brakeCmd = brake*cerror;
+		} else {
+			if (myc->getSpeedSqr() < myc->dynpath->getSpeedsqr(myc->getCurrentSegId())) {
+				if (myc->accel < myc->ACCELLIMIT) {
+					myc->accel += myc->ACCELINC;
+				}
+				car->_accelCmd = myc->accel/cerror;
+			} else {
+				if (myc->accel > 0.0) {
+					myc->accel -= myc->ACCELINC;
+				}
+				// TODO: shiftaccel always 0 at the moment...
+				car->_accelCmd = myc->accel = MIN(myc->accel/cerror, shiftaccel/cerror);
+			}
+			tdble slipspeed = myc->querySlipSpeed(car);
+			if (slipspeed > myc->TCL_SLIP) {
+				car->_accelCmd = car->_accelCmd - MIN(car->_accelCmd, (slipspeed - myc->TCL_SLIP)/myc->TCL_RANGE);
+			}
+		}
 	}
-	curAdv += AdvStep[0];
-    }
-
-    Db = car->_yaw_rate;
-    Amax = 1.0 - Amax;
-    Amax = Amax * Amax;
-    if (tgtSpeed < 0) {
-	tgtSpeed = (vtgt1 * Amax  + vtgt2) * (1.0 + tan(fabs(car->_trkPos.seg->angle[TR_XE]+car->_trkPos.seg->angle[TR_XS])));
-	tgtSpeed = MIN(tgtSpeed, MaxSpeed[0]);
-    }
-    SpeedStrategy(car, 0, tgtSpeed, s, Db);
 
 
-#define AMARG 0.6
-    if ((((Da > (PI/2.0-AMARG)) && (car->_trkPos.toRight < seg->width/3.0)) ||
-	 ((Da < (AMARG-PI/2.0)) && (car->_trkPos.toRight > (seg->width - seg->width/3.0)))) && 
-	(car->_gear < 2) && (car->_speed_x < 1.0)) {
-	car->_steerCmd = -car->_steerCmd * 3.0;
-	car->_gearCmd = -1;
-    } else if ((fabs(Da) > (PI - (PI/4.0))) &&
-	       ((car->_trkPos.toRight < 0) ||
-		(car->_trkPos.toRight > seg->width))) {
-	car->_steerCmd = -car->_steerCmd * 3.0;
-    }
-    if ((car->_speed_x < -0.5) && (car->_gear > 0)) {
-	car->_brakeCmd = 1.0;
-    }
-    
+	// Check if we are stuck, try to get unstuck.
+	tdble bx = myc->getDir()->x, by = myc->getDir()->y;
+	tdble cx = myc->currentseg->getMiddle()->x - car->_pos_X, cy = myc->currentseg->getMiddle()->y - car->_pos_Y;
+	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
+
+	if ((myc->getSpeed() < myc->TURNSPEED) && (parallel < cos(90.0*PI/180.0))  && (mpf->dist2D(myc->getCurrentPos(), myc->dynpath->getLoc(myc->getCurrentSegId())) > myc->TURNTOL)) {
+		myc->turnaround += situation->deltaTime;
+	} else myc->turnaround = 0.0;
+	if ((myc->turnaround >= waitToTurn) || (myc->tr_mode >= 1)) {
+		if (myc->tr_mode == 0) {
+			myc->tr_mode = 1;
+		}
+        if ((car->_gearCmd > -1) && (myc->tr_mode < 2)) {
+			car->_accelCmd = 0.0;
+			if (myc->tr_mode == 1) {
+				car->_gearCmd--;
+			}
+			car->_brakeCmd = 1.0;
+		} else {
+			myc->tr_mode = 2;
+			if (parallel < cos(90.0*PI/180.0) && (mpf->dist2D(myc->getCurrentPos(), myc->dynpath->getLoc(myc->getCurrentSegId())) > myc->TURNTOL)) {
+				angle = queryAngleToTrack(car);
+				car->_steerCmd = ( -angle > 0.0) ? 1.0 : -1.0;
+				car->_brakeCmd = 0.0;
+
+				if (myc->accel < 1.0) {
+					myc->accel += myc->ACCELINC;
+				}
+				car->_accelCmd = myc->accel;
+				tdble slipspeed = myc->querySlipSpeed(car);
+				if (slipspeed < -myc->TCL_SLIP) {
+					car->_accelCmd = car->_accelCmd - MIN(car->_accelCmd, (myc->TCL_SLIP - slipspeed)/myc->TCL_RANGE);
+				}
+			} else {
+				if (myc->getSpeed() < 1.0) {
+					myc->turnaround = 0;
+					myc->tr_mode = 0;
+					myc->loadBehaviour(myc->START);
+					myc->startmode = true;
+					myc->trtime = 0.0;
+				}
+				car->_brakeCmd = 1.0;
+				car->_steerCmd = 0.0;
+				car->_accelCmd = 0.0;
+			}
+		}
+	}
+
+	if (myc->tr_mode == 0) car->_steerCmd = steer;
+	car->_clutchCmd = getClutch(myc, car);
 }
 
+
+// Pitstop callback.
+static int pitcmd(int index, tCarElt* car, tSituation *s)
+{
+	MyCar* myc = mycar[index-1];
+	Pathfinder* mpf = myc->getPathfinderPtr();
+
+	float fullracedist = (myTrackDesc->getTorcsTrack()->length*s->_totLaps);
+	float remaininglaps = (fullracedist - car->_distRaced)/myTrackDesc->getTorcsTrack()->length;
+
+	car->_pitFuel = MAX(MIN(myc->fuelperlap*(remaininglaps+myc->FUEL_SAFETY_MARGIN) - car->_fuel, car->_tank - car->_fuel), 0.0);
+	myc->lastpitfuel = MAX(car->_pitFuel, 0.0);
+	car->_pitRepair = car->_dammage;
+	mpf->setPitStop(false, myc->getCurrentSegId());
+	myc->loadBehaviour(myc->START);
+	myc->startmode = true;
+	myc->trtime = 0.0;
+
+	return ROB_PIT_IM; // Return immediately.
+}
+
+
+// Compute the clutch value.
+// Does not work great when braking to 0 and accelerating again...
+// TODO: Improve.
+float getClutch(MyCar* myc, tCarElt* car)
+{
+	if (car->_gear > 1) {
+		myc->clutchtime = 0.0;
+		return 0.0;
+	} else {
+		float drpm = car->_enginerpm - car->_enginerpmRedLine/2.0;
+		myc->clutchtime = MIN(myc->CLUTCH_FULL_MAX_TIME, myc->clutchtime);
+		float clutcht = (myc->CLUTCH_FULL_MAX_TIME - myc->clutchtime)/myc->CLUTCH_FULL_MAX_TIME;
+		if (car->_gear == 1 && car->_accelCmd > 0.0) {
+			myc->clutchtime += (float) RCM_MAX_DT_ROBOTS;
+		}
+
+		//printf("ct: %f, car->_gear: %d, car->_gearCmd: %d, drpm: %f\n", myc->clutchtime, car->_gear, car->_gearCmd, drpm);
+		if (drpm > 0) {
+			float speedr;
+			if (car->_gearCmd == 1) {
+				// Compute corresponding speed to engine rpm.
+				float omega = car->_enginerpmRedLine/car->_gearRatio[car->_gear + car->_gearOffset];
+				float wr = car->_wheelRadius(2);
+				speedr = (myc->CLUTCH_SPEED + MAX(0.0, car->_speed_x))/fabs(wr*omega);
+				float clutchr = MAX(0.0, (1.0 - speedr*2.0*drpm/car->_enginerpmRedLine));
+				return MIN(clutcht, clutchr);
+			} else {
+				// For the reverse gear.
+				myc->clutchtime = 0.0;
+				return 0.0;
+			}
+		} else {
+			return clutcht;
+		}
+	}
+}

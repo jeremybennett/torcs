@@ -1,8 +1,8 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Oct 30 19:53:08 CEST 1999
-#    copyright            : (C) 1999 by Eric Espie                         
+#    created              : Sat Mar 18 23:11:09 CET 2000
+#    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id$                                  
 #
@@ -16,14 +16,18 @@
 ##############################################################################
 
 
-SHIPDIR   = drivers/lliaw/tracksdata
+ROBOT = lliaw
 
-SHIP      = $(shell find . -name '*.xml' -maxdepth 1 -type f -print)
+SHIPDIR   = drivers/${ROBOT}/8
+
+SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
+
+
 
 

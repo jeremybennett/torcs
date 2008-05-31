@@ -1,9 +1,9 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:18:59 CET 2000
-#    copyright            : (C) 2000 by Eric Espie
-#    email                : torcs@free.fr
+#    created              : Wed Jan 8 18:31:16 CET 2003
+#    copyright            : (C) 2002-2008 Bernhard Wymann
+#    email                : berniw@bluewin.ch
 #    version              : $Id$
 #
 ##############################################################################
@@ -15,27 +15,25 @@
 #
 ##############################################################################
 
-
 ROBOT = lliaw
 
-MODULE    = ${ROBOT}.so
+MODULE = ${ROBOT}.so
 
 MODULEDIR = drivers/${ROBOT}
 
-SOURCES   = ${ROBOT}.cpp
+SOURCES   = ${ROBOT}.cpp spline.cpp trackdesc.cpp pathfinder.cpp mycar.cpp
 
 SHIPDIR   = drivers/${ROBOT}
 
-SHIP      = ${ROBOT}.xml car.xml car4-trb1.rgb logo.rgb
+SHIP      = ${ROBOT}.xml logo.rgb
 
-SHIPSUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
+SHIPSUBDIRS = 1 2 3 4 5 6 7 8 9 10
 
-PKGSUBDIRS		= ${SHIPSUBDIRS}
+PKGSUBDIRS	= $(SHIPSUBDIRS)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-src-robots-base_PKGDIR		= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
+# Mandatory Line Do Not Remove
 include ${MAKE_DEFAULT}
-
-
