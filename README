@@ -123,6 +123,12 @@ Changes since 1.3.0
   Bernhard).
 - Additional cameras on spring track by Wolf-Dieter (Wolf-Dieter, Bernhard).
 - Reparametrized 360-modena, renamed to car1-trb3 (Bernhard).
+- Removed unmaintained car models (Bernhard).
+- Reparameterized several models (Bernhard).
+- Adopted robots to the new car set (Bernhard).
+- Applied fix for broken race result list from Jean-Philippe Meuret
+  (Jean-Philippe Meuret, Bernhard).
+
 
 TODO for 1.4.0
 --------------
