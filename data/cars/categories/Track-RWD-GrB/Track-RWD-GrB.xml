@@ -326,6 +326,7 @@
     <attnum name="mu" min="0.05" max="1.7" val="1.4"/>
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"/>
     <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
+	<attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
   <section name="Rear Left Wheel">
@@ -337,16 +338,17 @@
     <attnum name="mu" min="0.05" max="1.7" val="1.4"/>
     <attnum name="ride height" min="100" max="300" unit="mm" val="100"/>
     <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
+	<attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
-    <attnum name="spring" min="0" max="5000" unit="lbs/in" val="2000"/>
+    <attnum name="spring" min="0" max="5000" unit="lbs/in" val="0"/>
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="1" max="5" val="2.5"/>
   </section>
 
   <section name="Rear Anti-Roll Bar">
-    <attnum name="spring" min="0" max="5000" unit="lbs/in" val="2000"/>
+    <attnum name="spring" min="0" max="5000" unit="lbs/in" val="0"/>
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="1" max="5" val="2.5"/>
   </section>
@@ -356,8 +358,8 @@
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="0.1" max="5" val="2"/>
     <attnum name="packers" min="0" max="10" unit="mm" val="0"/>
-    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="80"/>
-    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="80"/>
+    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="180"/>
     <attnum name="fast bump" min="0" max="1000" unit="lbs/in/s" val="100"/>
     <attnum name="fast rebound" min="0" max="1000" unit="lbs/in/s" val="100"/>
   </section>
@@ -367,8 +369,8 @@
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="0.1" max="5" val="2"/>
     <attnum name="packers" min="0" max="10" unit="mm" val="0"/>
-    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="80"/>
-    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="80"/>
+    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="180"/>
     <attnum name="fast bump" min="0" max="1000" unit="lbs/in/s" val="100"/>
     <attnum name="fast rebound" min="0" max="1000" unit="lbs/in/s" val="100"/>
   </section>
@@ -378,8 +380,8 @@
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="0.1" max="5" val="2"/>
     <attnum name="packers" min="0" max="10" unit="mm" val="0"/>
-    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="80"/>
-    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="80"/>
+    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="180"/>
     <attnum name="fast bump" min="0" max="1000" unit="lbs/in/s" val="100"/>
     <attnum name="fast rebound" min="0" max="1000" unit="lbs/in/s" val="100"/>
   </section>
@@ -389,8 +391,8 @@
     <attnum name="suspension course" min="0" max="0.3" unit="m" val="0.2"/>
     <attnum name="bellcrank" min="0.1" max="5" val="2"/>
     <attnum name="packers" min="0" max="10" unit="mm" val="0"/>
-    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="80"/>
-    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="80"/>
+    <attnum name="slow bump" min="0" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="slow rebound" min="0" max="1000" unit="lbs/in/s" val="180"/>
     <attnum name="fast bump" min="0" max="1000" unit="lbs/in/s" val="100"/>
     <attnum name="fast rebound" min="0" max="1000" unit="lbs/in/s" val="100"/>
   </section>
