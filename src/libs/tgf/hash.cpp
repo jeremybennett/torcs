@@ -245,19 +245,19 @@ GfHashRemStr(void *hash, char *key)
 void *
 GfHashGetStr(void *hash, const char *key)
 {
-    tHashHeader		*curHeader = (tHashHeader *)hash;
-    tHashElem		*curElem;
-    unsigned int	index;
-
-    index = hash_str(curHeader, key);
-    curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[index]));
-    while (curElem) {
-	if (!strcmp(curElem->key, key)) {
-	    return curElem->data;
+	tHashHeader		*curHeader = (tHashHeader *)hash;
+	tHashElem		*curElem;
+	unsigned int	index;
+	
+	index = hash_str(curHeader, key);
+	curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[index]));
+	while (curElem) {
+		if (!strcmp(curElem->key, key)) {
+			return curElem->data;
+		}
+		curElem = GF_TAILQ_NEXT(curElem, link);
 	}
-	curElem = GF_TAILQ_NEXT(curElem, link);
-    }
-    return NULL;
+	return NULL;
 }
 
 

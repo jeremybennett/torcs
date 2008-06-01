@@ -296,57 +296,59 @@ removeParam (struct parmHeader *conf, struct section *section, struct param *par
 static struct param *
 addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
 {
-    char		*fullName;
-    struct param	*param = NULL;
-    char		*tmpVal = NULL;
+	char		*fullName;
+	struct param	*param = NULL;
+	char		*tmpVal = NULL;
+	
+	tmpVal = strdup (value);
+	if (!tmpVal) {
+		GfError ("addParam: strdup (%s) failed\n", value);
+		goto bailout;
+	}
+	
+	param = (struct param *) calloc (1, sizeof (struct param));
+	if (!param) {
+		GfError ("addParam: calloc (1, %d) failed\n", sizeof (struct param));
+		goto bailout;
+	}
 
-    tmpVal = strdup (value);
-    if (!tmpVal) {
-	GfError ("addParam: strdup (%s) failed\n", value);
-	goto bailout;
-    }
+	param->name = strdup (paramName);
+	if (!param->name) {
+		GfError ("addParam: strdup (%s) failed\n", paramName);
+		goto bailout;
+	}
+	
+	fullName = getFullName (section->fullName, paramName);
+	if (!fullName) {
+		GfError ("addParam: getFullName failed\n");
+		goto bailout;
+	}
 
-    param = (struct param *) calloc (1, sizeof (struct param));
-    if (!param) {
-	GfError ("addParam: calloc (1, %d) failed\n", sizeof (struct param));
-	goto bailout;
-    }
-    param->name = strdup (paramName);
-    if (!param->name) {
-	GfError ("addParam: strdup (%s) failed\n", paramName);
-	goto bailout;
-    }
-
-    fullName = getFullName (section->fullName, paramName);
-    if (!fullName) {
-	GfError ("addParam: getFullName failed\n");
-	goto bailout;
-    }
-    param->fullName = fullName;
-    if (GfHashAddStr (conf->paramHash, param->fullName, param)) {
-	goto bailout;
-    }
-
-    GF_TAILQ_INIT (&(param->withinList));
-
-    /* Attach to section */
-    GF_TAILQ_INSERT_TAIL (&(section->paramList), param, linkParam);
-
-    freez (param->value);
-    param->value = tmpVal;
-
-    return param;
-
- bailout:
-    if (param) {
-	freez (param->name);
-	freez (param->fullName);
+	param->fullName = fullName;
+	if (GfHashAddStr (conf->paramHash, param->fullName, param)) {
+		goto bailout;
+	}
+	
+	GF_TAILQ_INIT (&(param->withinList));
+	
+	/* Attach to section */
+	GF_TAILQ_INSERT_TAIL (&(section->paramList), param, linkParam);
+	
 	freez (param->value);
-	free  (param);
-    }
-    freez (tmpVal);
-
-    return NULL;
+	param->value = tmpVal;
+	
+	return param;
+	
+ bailout:
+	if (param) {
+		freez (param->name);
+		freez (param->fullName);
+		freez (param->value);
+		free  (param);
+	}
+	freez (tmpVal);
+	
+	return NULL;
 }
 
 
