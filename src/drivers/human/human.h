@@ -2,7 +2,7 @@
 
     file        : human.h
     created     : Sat May 10 19:12:46 CEST 2003
-    copyright   : (C) 2003 by Eric Espié                        
+    copyright   : (C) 2003 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -28,28 +28,34 @@
 
 typedef struct HumanContext
 {
-    int		NbPitStops;
-    int		LastPitStopLap;
-    int 	AutoReverseEngaged;
-    tdble	shiftThld[MAX_GEARS+1];
-    tdble	Gear;
-    tdble	distToStart;
-    float	ABS;
-    float	AntiSlip;
-    int		lap;
-    float	prevLeftSteer;
-    float	prevRightSteer;
-    int		manual;
-    int		Transmission;
-    int		NbPitStopProg;
-    int		ParamAsr;
-    int		ParamAbs;
-    int		RelButNeutral;
-    int		SeqShftAllowNeutral;
-    int		AutoReverse;
-    tControlCmd	*CmdControl;
-    int		MouseControlUsed;
-    int		lightCmd;
+	int		NbPitStops;
+	int		LastPitStopLap;
+	int 	AutoReverseEngaged;
+	tdble	shiftThld[MAX_GEARS+1];
+	tdble	Gear;
+	tdble	distToStart;
+	tdble	clutchtime;
+	tdble	clutchdelay;
+	tdble	ABS;
+	tdble	AntiSlip;
+	int		lap;
+	tdble	prevLeftSteer;
+	tdble	prevRightSteer;
+	tdble	paccel;
+	tdble	pbrake;
+	int		manual;
+	int		Transmission;
+	int		NbPitStopProg;
+	int		ParamAsr;
+	int		ParamAbs;
+	int		RelButNeutral;
+	int		SeqShftAllowNeutral;
+	int		AutoReverse;
+	int		drivetrain;
+	int		autoClutch;
+	tControlCmd	*CmdControl;
+	int		MouseControlUsed;
+	int		lightCmd;
 } tHumanContext;
 
 
