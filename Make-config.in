@@ -4,7 +4,7 @@
 #
 #    file                 : Make-config.in
 #    created              : Mon Dec 11 23:47:37 CET 2000
-#    copyright            : (C) 2000 by Eric Espié                        
+#    copyright            : (C) 2000 by Eric Espiï¿½                        
 #    email                : Eric.Espie@torcs.org   
 #    version              : $Id$                                  
 #
@@ -27,7 +27,8 @@ exec_prefix = @exec_prefix@
 
 bindir = @bindir@
 libdir = @libdir@/torcs
-datadir = @datadir@/games/torcs
+datarootdir = @datarootdir@
+datadir = @datarootdir@/games/torcs
 vardir = @localstatedir@/games/torcs
 
 top_builddir = .

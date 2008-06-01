@@ -132,6 +132,7 @@ Changes since 1.3.0
 - Fixed some gcc 4.2 warnings, not yet all to keep the interface stable
   (Bernhard).
 - Adjusted various setups for the suspension code changes (Bernhard).
+- Regenerated configure, adopted in files to autoconf changes (Bernhard).
 
 
 

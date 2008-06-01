@@ -23,7 +23,8 @@ exec_prefix=@exec_prefix@
 
 BINDIR=@bindir@
 LIBDIR=@libdir@/torcs
-DATADIR=@datadir@/games/torcs
+DATAROOTDIR=@datarootdir@
+DATADIR=$DATAROOTDIR/games/torcs
 VARDIR=@localstatedir@/games/torcs
 
 LOCAL_CONF=$HOME/.torcs
