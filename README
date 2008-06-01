@@ -20,7 +20,6 @@ Linux Installation from Source
 - Requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC
   on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
   1.8.3 works.
-- Requires OpenAL from www.torcs.org for best sound quality.
 - Untar the archive
 - cd into the torcs-1.3.0 directory
 - ./configure (use --help for showing the options, of interest might be
@@ -128,15 +127,20 @@ Changes since 1.3.0
 - Adopted robots to the new car set (Bernhard).
 - Applied fix for broken race result list from Jean-Philippe Meuret
   (Jean-Philippe Meuret, Bernhard).
+- Applied human driver patch from Andrew and Christos, added minor corrections
+  (Andrew, Christos, Bernhard).
+- Fixed some gcc 4.2 warnings, not yet all to keep the interface stable
+  (Bernhard).
+- Adjusted various setups for the suspension code changes (Bernhard).
+
 
 
 TODO for 1.4.0
 --------------
-- Adjust categories and setups for updated simuv2.
+- Adjust categories.
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
-- find . -name "*.xml" -exec grep -H -A 1 "Anti-Roll Bar" {} \; | grep -v "val=\"0\"" | less
 
 
 Later:
@@ -151,7 +155,6 @@ Later:
   sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
   (e.g. e-track-3, eventually wheel-1, e-track-2).
-- Add cameras (spring)
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
