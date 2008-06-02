@@ -1314,7 +1314,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 			segId = (int)GfParmGetNum(TrackHandle, path, TRK_ATT_ID, (char*)NULL, -1);
 			pitEntrySeg = theTrack->seg;
 			found = 0;
-			for(i = 0; i < theTrack->nseg; i++)  {
+			for(i = 0; i < theTrack->nseg + 1; i++)  {
 				if (pitEntrySeg->id == segId) {
 					found = 1;
 				} else if (found) {
@@ -1332,7 +1332,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 		if (segName != 0) {
 			pitExitSeg = theTrack->seg->next;
 			found = 0;
-			for(i = 0; i < theTrack->nseg; i++)  {
+			for(i = 0; i < theTrack->nseg + 1; i++)  {
 				/* set the flag on the last segment of pit_exit */
 				if (!strcmp(segName, pitExitSeg->name)) {
 					found = 1;
@@ -1351,7 +1351,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 		if (segName != 0) {
 			pitStart = theTrack->seg;
 			found = 0;
-			for(i = 0; i < theTrack->nseg; i++)  {
+			for(i = 0; i < theTrack->nseg + 1; i++)  {
 				if (!strcmp(segName, pitStart->name)) {
 					found = 1;
 				} else if (found) {
@@ -1369,7 +1369,7 @@ ReadTrack3(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 		if (segName != 0) {
 			pitEnd = theTrack->seg->next;
 			found = 0;
-			for(i = 0; i < theTrack->nseg; i++)  {
+			for(i = 0; i < theTrack->nseg + 1; i++)  {
 			if (!strcmp(segName, pitEnd->name)) {
 				found = 1;
 			} else if (found) {
