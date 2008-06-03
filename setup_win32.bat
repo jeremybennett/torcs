@@ -146,7 +146,7 @@ if exist .\src\drivers\berniw\10\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\10\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw\10\*.* call .\create_dir .\runtime\drivers\berniw
 if exist .\src\drivers\berniw\10\*.* call .\create_dir .\runtime\drivers\berniw\10
-if exist .\src\drivers\berniw\10\car1-trb3.rgb copy .\src\drivers\berniw\10\buggy.rgb .\runtime\drivers\berniw\10\car1-trb3.rgb
+if exist .\src\drivers\berniw\10\car1-trb3.rgb copy .\src\drivers\berniw\10\car1-trb3.rgb .\runtime\drivers\berniw\10\car1-trb3.rgb
 if exist .\src\drivers\berniw\10\default.xml copy .\src\drivers\berniw\10\default.xml .\runtime\drivers\berniw\10\default.xml
 
 if exist .\src\drivers\berniw\2\*.* call .\create_dir .\runtime
@@ -196,21 +196,20 @@ if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime\drivers\berniw
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\runtime\drivers\berniw\5
-if exist .\src\drivers\berniw\5\car3-trb1.rgb copy .\src\drivers\berniw\5\gt40.rgb .\runtime\drivers\berniw\5\car3-trb1.rgb
+if exist .\src\drivers\berniw\5\car3-trb1.rgb copy .\src\drivers\berniw\5\car3-trb1.rgb .\runtime\drivers\berniw\5\car3-trb1.rgb
 if exist .\src\drivers\berniw\5\default.xml copy .\src\drivers\berniw\5\default.xml .\runtime\drivers\berniw\5\default.xml
 
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\runtime\drivers\berniw
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\runtime\drivers\berniw\6
-if exist .\src\drivers\berniw\6\car4-trb1.rgb copy .\src\drivers\berniw\6\155-DTM.rgb .\runtime\drivers\berniw\6\car4-trb1.rgb
+if exist .\src\drivers\berniw\6\car4-trb1.rgb copy .\src\drivers\berniw\6\car4-trb1.rgb .\runtime\drivers\berniw\6\car4-trb1.rgb
 if exist .\src\drivers\berniw\6\default.xml copy .\src\drivers\berniw\6\default.xml .\runtime\drivers\berniw\6\default.xml
 
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\runtime\drivers\berniw
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\runtime\drivers\berniw\7
-if exist .\src\drivers\berniw\7\lotus-gt1.rgb copy .\src\drivers\berniw\7\lotus-gt1.rgb .\runtime\drivers\berniw\7\lotus-gt1.rgb
 if exist .\src\drivers\berniw\7\default.xml copy .\src\drivers\berniw\7\default.xml .\runtime\drivers\berniw\7\default.xml
 
 if exist .\src\drivers\berniw\8\*.* call .\create_dir .\runtime
@@ -241,7 +240,7 @@ if exist .\src\drivers\berniw2\10\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw2\10\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw2\10\*.* call .\create_dir .\runtime\drivers\berniw2
 if exist .\src\drivers\berniw2\10\*.* call .\create_dir .\runtime\drivers\berniw2\10
-if exist .\src\drivers\berniw2\10\car1-trb3.rgb copy .\src\drivers\berniw2\10\360-modena.rgb .\runtime\drivers\berniw2\10\car1-trb3.rgb
+if exist .\src\drivers\berniw2\10\car1-trb3.rgb copy .\src\drivers\berniw2\10\car1-trb3.rgb .\runtime\drivers\berniw2\10\car1-trb3.rgb
 if exist .\src\drivers\berniw2\10\default.xml copy .\src\drivers\berniw2\10\default.xml .\runtime\drivers\berniw2\10\default.xml
 
 if exist .\src\drivers\berniw2\2\*.* call .\create_dir .\runtime
@@ -278,14 +277,14 @@ if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtime\drivers\berniw2
 if exist .\src\drivers\berniw2\7\*.* call .\create_dir .\runtime\drivers\berniw2\7
-if exist .\src\drivers\berniw2\7\car5-trb1.rgb copy .\src\drivers\berniw2\7\porsche-gt3rs.rgb .\runtime\drivers\berniw2\7\car5-trb1.rgb
+if exist .\src\drivers\berniw2\7\car5-trb1.rgb copy .\src\drivers\berniw2\7\car5-trb1.rgb .\runtime\drivers\berniw2\7\car5-trb1.rgb
 if exist .\src\drivers\berniw2\7\default.xml copy .\src\drivers\berniw2\7\default.xml .\runtime\drivers\berniw2\7\default.xml
 
 if exist .\src\drivers\berniw2\8\*.* call .\create_dir .\runtime
 if exist .\src\drivers\berniw2\8\*.* call .\create_dir .\runtime\drivers
 if exist .\src\drivers\berniw2\8\*.* call .\create_dir .\runtime\drivers\berniw2
 if exist .\src\drivers\berniw2\8\*.* call .\create_dir .\runtime\drivers\berniw2\8
-if exist .\src\drivers\berniw2\8\car4-trb1.rgb copy .\src\drivers\berniw2\8\clkdtm.rgb .\runtime\drivers\berniw2\8\car4-trb1.rgb
+if exist .\src\drivers\berniw2\8\car4-trb1.rgb copy .\src\drivers\berniw2\8\car4-trb1.rgb .\runtime\drivers\berniw2\8\car4-trb1.rgb
 if exist .\src\drivers\berniw2\8\default.xml copy .\src\drivers\berniw2\8\default.xml .\runtime\drivers\berniw2\8\default.xml
 
 if exist .\src\drivers\berniw2\9\*.* call .\create_dir .\runtime
@@ -938,19 +937,7 @@ call .\create_dir .\runtime\drivers\berniw3
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\billy
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\bt
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\cylos1
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\cylos2
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
@@ -970,19 +957,11 @@ call .\create_dir .\runtime\drivers\inferno2
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\K1999
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\lliaw
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
 call .\create_dir .\runtime\drivers\sparkle
-
-call .\create_dir .\runtime
-call .\create_dir .\runtime\drivers
-call .\create_dir .\runtime\drivers\tanhoj
 
 call .\create_dir .\runtime
 call .\create_dir .\runtime\drivers
