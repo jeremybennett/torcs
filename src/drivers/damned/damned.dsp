@@ -87,7 +87,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pddamnedype:sept
-# ADD LINK32 tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pddamnedype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
+# ADD LINK32 tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /def:".\damned.def" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
+# SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
@@ -106,15 +107,24 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\drivers\damned
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\cardata.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\damned.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\damned.def
-# End Source File
-# Begin Source File
 
-SOURCE=.\cardata.cpp
+!IF  "$(CFG)" == "damned - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "damned - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

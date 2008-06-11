@@ -137,6 +137,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -149,6 +155,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -161,6 +173,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -194,6 +212,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name ssggraphlib
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -207,10 +231,10 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name tgf
+    Project_Dep_Name robottools
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name robottools
+    Project_Dep_Name tgf
     End Project Dependency
 }}}
 
@@ -243,10 +267,10 @@ Package=<5>
 Package=<4>
 {{{
     Begin Project Dependency
-    Project_Dep_Name tgf
+    Project_Dep_Name robottools
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name robottools
+    Project_Dep_Name tgf
     End Project Dependency
 }}}
 
@@ -260,6 +284,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -368,6 +398,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name solid
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -419,6 +455,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -431,6 +473,12 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name tgf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name robottools
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -443,6 +491,9 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name client
+    End Project Dependency
 }}}
 
 ###############################################################################

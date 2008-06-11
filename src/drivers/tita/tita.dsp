@@ -85,7 +85,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 robottools.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
+# ADD LINK32 tgf.lib robottools.lib sg.lib ul.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBC" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
@@ -104,14 +104,6 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed\drivers\tita
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\tita.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\tita.def
-# End Source File
-# Begin Source File
-
 SOURCE=.\mycar.cpp
 # End Source File
 # Begin Source File
@@ -121,6 +113,14 @@ SOURCE=.\pathfinder.cpp
 # Begin Source File
 
 SOURCE=.\spline.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tita.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tita.def
 # End Source File
 # Begin Source File
 
