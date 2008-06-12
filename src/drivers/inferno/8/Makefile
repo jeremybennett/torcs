@@ -20,7 +20,7 @@ ROBOT = inferno
 
 SHIPDIR   = drivers/${ROBOT}/8
 
-SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = car6-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
