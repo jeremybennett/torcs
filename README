@@ -134,6 +134,12 @@ Changes since 1.3.0
 - Adjusted various setups for the suspension code changes (Bernhard).
 - Regenerated configure, adopted in files to autoconf changes (Bernhard).
 - Updated vc++ 6.0 project files and bat scripts (Bernhard).
+- Added new track alpine-2 created by Daniel Schellhammer and Andrew (Daniel,
+  Andrew, Bernhard).
+- Reorganized bat scripts according suggestion of Jean-Philippe (Bernhard).
+- Added texture for inferno 9 (Andrew), tita 9 (Miguel Martinez), inferno 3
+  and 8 (Wolf-Dieter), berniw 7, inferno 7, bt 7, damned 7, olethros 7
+  (Bernhard), (Andrew, Miguel, Wolf-Dieter, Bernhard).
 
 
 
