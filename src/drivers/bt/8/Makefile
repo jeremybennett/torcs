@@ -15,7 +15,7 @@
 
 ROBOT       = bt
 SHIPDIR     = drivers/${ROBOT}/8
-SHIP        = default.xml
+SHIP        = car7-trb1.rgb default.xml
 SHIPSUBDIRS = 
 #practice qualifying race
 
