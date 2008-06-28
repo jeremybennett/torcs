@@ -20,7 +20,7 @@ ROBOT = lliaw
 
 SHIPDIR   = drivers/${ROBOT}/4
 
-SHIP      = $(shell find *.xml -maxdepth 0 -type f -print)
+SHIP      = car2-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
 src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
