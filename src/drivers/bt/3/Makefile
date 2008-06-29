@@ -15,7 +15,7 @@
 
 ROBOT       = bt
 SHIPDIR     = drivers/${ROBOT}/3
-SHIP        = default.xml
+SHIP        = car2-trb1.rgb default.xml
 SHIPSUBDIRS = 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
