@@ -15,7 +15,7 @@
 
 ROBOT       = olethros
 SHIPDIR     = drivers/${ROBOT}/4
-SHIP        = default.xml
+SHIP        = car3-trb1.rgb default.xml
 SHIPSUBDIRS =
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
