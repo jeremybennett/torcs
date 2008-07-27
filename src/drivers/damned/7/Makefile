@@ -15,7 +15,7 @@
 
 ROBOT       = damned
 SHIPDIR     = drivers/${ROBOT}/7
-SHIP        = default.xml
+SHIP        = car6-trb1.rgb default.xml
 SHIPSUBDIRS = 
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}
