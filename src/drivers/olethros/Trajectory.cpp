@@ -15,6 +15,7 @@
 #include <list>
 #include <vector>
 #include "Trajectory.h"
+#include <time.h>
 
 
 
@@ -44,7 +45,8 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
     accel.resize(N);
 
     // initialise vectors
-    for (int i=0; i<N; ++i) {
+	int i;
+    for (i=0; i<N; ++i) {
         if (reset) {w[i] = 0.5f;}
         dw2[i] = 1.0f;
         indices[i] = i;
@@ -54,7 +56,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
     // Shuffle thoroughly
 #if 1
     srand(12358);
-    for (int i=0; i<N-1; ++i) {
+    for (i=0; i<N-1; ++i) {
         int z = rand()%(N-i);
         int tmp = indices[i];
         indices[i] = indices[z+i];
@@ -62,11 +64,11 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
     }
 #endif
 
-    float prevC = 0.0;
+    float prevC = 0.0f;
     float Z = 10.0f;
-    float lambda = 0.9;
+    float lambda = 0.9f;
     float delta_C = 0.0f;
-    float prev_dCdw2 = 0.0;
+    float prev_dCdw2 = 0.0f;
 
     for (int iter=0; iter<max_iter; iter++) {
 
@@ -204,7 +206,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
             float K = 10.0;
             float penalty = 0.0;//K*(0.5f - w[i])*(exp(fabs(0.5-w[i]))-1);
             if (1) {
-                float b = 0.1;
+                float b = 0.1f;
                 if (w[i] < b) {
                     penalty += K*(b - w[i]);
                 } else if (w[i] > 1.0 -b) {
@@ -241,7 +243,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
         }
         Z = (dCdw2);
         if (Z<0.01) {
-            Z = 0.01;
+            Z = 0.01f;
         }
 
 

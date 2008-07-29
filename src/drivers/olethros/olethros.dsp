@@ -76,7 +76,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtime\drivers\olethros
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /W2 /Gm- /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /I "../../.." /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
+# ADD CPP /nologo /G6 /W2 /GX /ZI /Od /I "../../../export/include" /I "../../windows/include" /I "../../.." /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "OLETHROS_EXPORTS" /D "DEBUG" /D "DEBUG_OUT" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
@@ -144,6 +144,14 @@ SOURCE=.\spline.cpp
 
 SOURCE=.\strategy.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\TrackData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Trajectory.cpp
+# End Source File
 # End Group
 # Begin Group "Header-Dateien"
 
@@ -183,6 +191,14 @@ SOURCE=.\spline.h
 # Begin Source File
 
 SOURCE=.\strategy.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\TrackData.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Trajectory.h
 # End Source File
 # End Group
 # Begin Group "Ressourcendateien"

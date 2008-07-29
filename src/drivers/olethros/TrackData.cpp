@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "TrackData.h"
+#include <tgf.h>
 
 TrackData::TrackData()
 {
@@ -48,7 +49,7 @@ void TrackData::AddStraight (SegmentList& segments, float length, float end_widt
     float s = length / (float) N;
     float d_width_l = (end_width_l - width_l) / (float) N;
     float d_width_r = (end_width_r - width_r) / (float) N;
-    float hpi = M_PI/2.0f;
+    float hpi = PI/2.0f;
     for (int i=0; i<N; ++i) {
         mid.x += s*sin(angle);
         mid.y += s*cos(angle);
@@ -70,7 +71,7 @@ void TrackData::AddStraight (SegmentList& segments, float length, float end_widt
 /// arc in radians
 void TrackData::AddCurve (SegmentList& segments, float arc, float radius, float end_width_l, float end_width_r)
 {
-    arc = arc * M_PI/180.0f;
+    arc = arc * PI/180.0f;
     float length = fabs(arc) * radius;
     int N = 1 + (int) floor(length/step);
     float s = length / (float) N;
@@ -78,7 +79,7 @@ void TrackData::AddCurve (SegmentList& segments, float arc, float radius, float 
     float d_width_r = (end_width_r - width_r) / (float) N;
     float d_angle = arc / (float) N;
     float start_angle = angle;
-    float hpi = M_PI/2.0f;
+    float hpi = (float) (PI/2.0);
     for (int i=0; i<N; ++i) {
         mid.x += s*sin(angle);
         mid.y += s*cos(angle);
