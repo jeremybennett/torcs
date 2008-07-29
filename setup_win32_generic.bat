@@ -191,12 +191,14 @@ if exist .\src\drivers\berniw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\3
 if exist .\src\drivers\berniw\3\default.xml copy .\src\drivers\berniw\3\default.xml .\%RUNTIMEDIR%\drivers\berniw\3\default.xml
+if exist .\src\drivers\berniw\3\car1-trb1.rgb copy .\src\drivers\berniw\3\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\3\car1-trb1.rgb
 
 if exist .\src\drivers\berniw\4\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\4
 if exist .\src\drivers\berniw\4\default.xml copy .\src\drivers\berniw\4\default.xml .\%RUNTIMEDIR%\drivers\berniw\4\default.xml
+if exist .\src\drivers\berniw\4\car2-trb1.rgb copy .\src\drivers\berniw\4\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\4\car2-trb1.rgb
 
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -204,6 +206,7 @@ if exist .\src\drivers\berniw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\ber
 if exist .\src\drivers\berniw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\5
 if exist .\src\drivers\berniw\5\car3-trb1.rgb copy .\src\drivers\berniw\5\car3-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\5\car3-trb1.rgb
 if exist .\src\drivers\berniw\5\default.xml copy .\src\drivers\berniw\5\default.xml .\%RUNTIMEDIR%\drivers\berniw\5\default.xml
+if exist .\src\drivers\berniw\5\car3-trb1.rgb copy .\src\drivers\berniw\5\car3-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\5\car3-trb1.rgb
 
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -211,24 +214,28 @@ if exist .\src\drivers\berniw\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\ber
 if exist .\src\drivers\berniw\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\6
 if exist .\src\drivers\berniw\6\car4-trb1.rgb copy .\src\drivers\berniw\6\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\6\car4-trb1.rgb
 if exist .\src\drivers\berniw\6\default.xml copy .\src\drivers\berniw\6\default.xml .\%RUNTIMEDIR%\drivers\berniw\6\default.xml
+if exist .\src\drivers\berniw\6\car4-trb1.rgb copy .\src\drivers\berniw\6\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\6\car4-trb1.rgb
 
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\7
 if exist .\src\drivers\berniw\7\default.xml copy .\src\drivers\berniw\7\default.xml .\%RUNTIMEDIR%\drivers\berniw\7\default.xml
+if exist .\src\drivers\berniw\7\car5-trb1.rgb copy .\src\drivers\berniw\7\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\7\car5-trb1.rgb
 
 if exist .\src\drivers\berniw\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\8
 if exist .\src\drivers\berniw\8\default.xml copy .\src\drivers\berniw\8\default.xml .\%RUNTIMEDIR%\drivers\berniw\8\default.xml
+if exist .\src\drivers\berniw\8\car6-trb1.rgb copy .\src\drivers\berniw\8\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\8\car6-trb1.rgb
 
 if exist .\src\drivers\berniw\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\9
 if exist .\src\drivers\berniw\9\default.xml copy .\src\drivers\berniw\9\default.xml .\%RUNTIMEDIR%\drivers\berniw\9\default.xml
+if exist .\src\drivers\berniw\9\car7-trb1.rgb copy .\src\drivers\berniw\9\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw\9\car7-trb1.rgb
 
 if exist .\src\drivers\berniw\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -298,6 +305,7 @@ if exist .\src\drivers\berniw2\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw2\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw2
 if exist .\src\drivers\berniw2\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw2\9
 if exist .\src\drivers\berniw2\9\default.xml copy .\src\drivers\berniw2\9\default.xml .\%RUNTIMEDIR%\drivers\berniw2\9\default.xml
+if exist .\src\drivers\berniw2\9\car7-trb1.rgb copy .\src\drivers\berniw2\9\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\berniw2\9\car7-trb1.rgb
 
 if exist .\src\drivers\berniw2\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -439,42 +447,49 @@ if exist .\src\drivers\bt\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\2
 if exist .\src\drivers\bt\2\default.xml copy .\src\drivers\bt\2\default.xml .\%RUNTIMEDIR%\drivers\bt\2\default.xml
+if exist .\src\drivers\bt\2\car1-trb1.rgb copy .\src\drivers\bt\2\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\2\car1-trb1.rgb
 
 if exist .\src\drivers\bt\3\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\3
 if exist .\src\drivers\bt\3\default.xml copy .\src\drivers\bt\3\default.xml .\%RUNTIMEDIR%\drivers\bt\3\default.xml
+if exist .\src\drivers\bt\3\car2-trb1.rgb copy .\src\drivers\bt\3\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\3\car2-trb1.rgb
 
 if exist .\src\drivers\bt\4\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\4
 if exist .\src\drivers\bt\4\default.xml copy .\src\drivers\bt\4\default.xml .\%RUNTIMEDIR%\drivers\bt\4\default.xml
+if exist .\src\drivers\bt\4\car3-trb1.rgb copy .\src\drivers\bt\4\car3-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\4\car3-trb1.rgb
 
 if exist .\src\drivers\bt\5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\5
 if exist .\src\drivers\bt\5\default.xml copy .\src\drivers\bt\5\default.xml .\%RUNTIMEDIR%\drivers\bt\5\default.xml
+if exist .\src\drivers\bt\5\car4-trb1.rgb copy .\src\drivers\bt\5\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\5\car4-trb1.rgb
 
 if exist .\src\drivers\bt\6\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\6
 if exist .\src\drivers\bt\6\default.xml copy .\src\drivers\bt\6\default.xml .\%RUNTIMEDIR%\drivers\bt\6\default.xml
+if exist .\src\drivers\bt\6\car5-trb1.rgb copy .\src\drivers\bt\6\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\6\car5-trb1.rgb
 
 if exist .\src\drivers\bt\7\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\7
 if exist .\src\drivers\bt\7\default.xml copy .\src\drivers\bt\7\default.xml .\%RUNTIMEDIR%\drivers\bt\7\default.xml
+if exist .\src\drivers\bt\7\car6-trb1.rgb copy .\src\drivers\bt\7\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\7\car6-trb1.rgb
 
 if exist .\src\drivers\bt\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\8
 if exist .\src\drivers\bt\8\default.xml copy .\src\drivers\bt\8\default.xml .\%RUNTIMEDIR%\drivers\bt\8\default.xml
+if exist .\src\drivers\bt\8\car7-trb1.rgb copy .\src\drivers\bt\8\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\bt\8\car7-trb1.rgb
 
 if exist .\src\drivers\bt\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -529,18 +544,21 @@ if exist .\src\drivers\damned\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\damned\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned
 if exist .\src\drivers\damned\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned\6
 if exist .\src\drivers\damned\6\default.xml copy .\src\drivers\damned\6\default.xml .\%RUNTIMEDIR%\drivers\damned\6\default.xml
+if exist .\src\drivers\damned\6\car5-trb1.rgb copy .\src\drivers\damned\6\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\damned\6\car5-trb1.rgb
 
 if exist .\src\drivers\damned\7\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\damned\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\damned\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned
 if exist .\src\drivers\damned\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned\7
 if exist .\src\drivers\damned\7\default.xml copy .\src\drivers\damned\7\default.xml .\%RUNTIMEDIR%\drivers\damned\7\default.xml
+if exist .\src\drivers\damned\7\car6-trb1.rgb copy .\src\drivers\damned\7\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\damned\7\car6-trb1.rgb
 
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned
 if exist .\src\drivers\damned\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\damned\8
 if exist .\src\drivers\damned\8\default.xml copy .\src\drivers\damned\8\default.xml .\%RUNTIMEDIR%\drivers\damned\8\default.xml
+if exist .\src\drivers\damned\8\car7-trb1.rgb copy .\src\drivers\damned\8\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\damned\8\car7-trb1.rgb
 
 if exist .\src\drivers\damned\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\damned\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -601,12 +619,14 @@ if exist .\src\drivers\inferno\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\3
 if exist .\src\drivers\inferno\3\default.xml copy .\src\drivers\inferno\3\default.xml .\%RUNTIMEDIR%\drivers\inferno\3\default.xml
+if exist .\src\drivers\inferno\3\car1-trb1.rgb copy .\src\drivers\inferno\3\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\3\car1-trb1.rgb
 
 if exist .\src\drivers\inferno\4\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\4
 if exist .\src\drivers\inferno\4\default.xml copy .\src\drivers\inferno\4\default.xml .\%RUNTIMEDIR%\drivers\inferno\4\default.xml
+if exist .\src\drivers\inferno\4\car2-trb1.rgb copy .\src\drivers\inferno\4\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\4\car2-trb1.rgb
 
 if exist .\src\drivers\inferno\5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -620,24 +640,28 @@ if exist .\src\drivers\inferno\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\6
 if exist .\src\drivers\inferno\6\default.xml copy .\src\drivers\inferno\6\default.xml .\%RUNTIMEDIR%\drivers\inferno\6\default.xml
+if exist .\src\drivers\inferno\6\car4-trb1.rgb copy .\src\drivers\inferno\6\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\6\car4-trb1.rgb
 
 if exist .\src\drivers\inferno\7\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\7
 if exist .\src\drivers\inferno\7\default.xml copy .\src\drivers\inferno\7\default.xml .\%RUNTIMEDIR%\drivers\inferno\7\default.xml
+if exist .\src\drivers\inferno\7\car5-trb1.rgb copy .\src\drivers\inferno\7\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\7\car5-trb1.rgb
 
 if exist .\src\drivers\inferno\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\8
 if exist .\src\drivers\inferno\8\default.xml copy .\src\drivers\inferno\8\default.xml .\%RUNTIMEDIR%\drivers\inferno\8\default.xml
+if exist .\src\drivers\inferno\8\car6-trb1.rgb copy .\src\drivers\inferno\8\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\8\car6-trb1.rgb
 
 if exist .\src\drivers\inferno\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\inferno\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno
 if exist .\src\drivers\inferno\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\inferno\9
 if exist .\src\drivers\inferno\9\default.xml copy .\src\drivers\inferno\9\default.xml .\%RUNTIMEDIR%\drivers\inferno\9\default.xml
+if exist .\src\drivers\inferno\9\car7-trb1.rgb copy .\src\drivers\inferno\9\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\inferno\9\car7-trb1.rgb
 
 if exist .\src\drivers\inferno\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\inferno\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -757,12 +781,14 @@ if exist .\src\drivers\tita\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\3
 if exist .\src\drivers\tita\3\default.xml copy .\src\drivers\tita\3\default.xml .\%RUNTIMEDIR%\drivers\tita\3\default.xml
+if exist .\src\drivers\tita\3\car1-trb1.rgb copy .\src\drivers\tita\3\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\3\car1-trb1.rgb
 
 if exist .\src\drivers\tita\4\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\4
 if exist .\src\drivers\tita\4\default.xml copy .\src\drivers\tita\4\default.xml .\%RUNTIMEDIR%\drivers\tita\4\default.xml
+if exist .\src\drivers\tita\4\car2-trb1.rgb copy .\src\drivers\tita\4\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\4\car2-trb1.rgb
 
 if exist .\src\drivers\tita\5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -776,24 +802,28 @@ if exist .\src\drivers\tita\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\6
 if exist .\src\drivers\tita\6\default.xml copy .\src\drivers\tita\6\default.xml .\%RUNTIMEDIR%\drivers\tita\6\default.xml
+if exist .\src\drivers\tita\6\car4-trb1.rgb copy .\src\drivers\tita\6\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\6\car4-trb1.rgb
 
 if exist .\src\drivers\tita\7\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\7
 if exist .\src\drivers\tita\7\default.xml copy .\src\drivers\tita\7\default.xml .\%RUNTIMEDIR%\drivers\tita\7\default.xml
+if exist .\src\drivers\tita\7\car5-trb1.rgb copy .\src\drivers\tita\7\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\7\car5-trb1.rgb
 
 if exist .\src\drivers\tita\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\8
 if exist .\src\drivers\tita\8\default.xml copy .\src\drivers\tita\8\default.xml .\%RUNTIMEDIR%\drivers\tita\8\default.xml
+if exist .\src\drivers\tita\8\car6-trb1.rgb copy .\src\drivers\tita\8\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\8\car6-trb1.rgb
 
 if exist .\src\drivers\tita\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\tita\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita
 if exist .\src\drivers\tita\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\tita\9
 if exist .\src\drivers\tita\9\default.xml copy .\src\drivers\tita\9\default.xml .\%RUNTIMEDIR%\drivers\tita\9\default.xml
+if exist .\src\drivers\tita\9\car7-trb1.rgb copy .\src\drivers\tita\9\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\tita\9\car7-trb1.rgb
 
 if exist .\src\drivers\tita\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\tita\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -824,18 +854,21 @@ if exist .\src\drivers\lliaw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\3
 if exist .\src\drivers\lliaw\3\default.xml copy .\src\drivers\lliaw\3\default.xml .\%RUNTIMEDIR%\drivers\lliaw\3\default.xml
+if exist .\src\drivers\lliaw\3\car1-trb1.rgb copy .\src\drivers\lliaw\3\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\3\car1-trb1.rgb
 
 if exist .\src\drivers\lliaw\4\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\4
 if exist .\src\drivers\lliaw\4\default.xml copy .\src\drivers\lliaw\4\default.xml .\%RUNTIMEDIR%\drivers\lliaw\4\default.xml
+if exist .\src\drivers\lliaw\4\car2-trb1.rgb copy .\src\drivers\lliaw\4\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\4\car2-trb1.rgb
 
 if exist .\src\drivers\lliaw\5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\5
 if exist .\src\drivers\lliaw\5\default.xml copy .\src\drivers\lliaw\5\default.xml .\%RUNTIMEDIR%\drivers\lliaw\5\default.xml
+if exist .\src\drivers\lliaw\5\car3-trb1.rgb copy .\src\drivers\lliaw\5\car3-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\5\car3-trb1.rgb
 
 if exist .\src\drivers\lliaw\6\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -849,24 +882,103 @@ if exist .\src\drivers\lliaw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\7
 if exist .\src\drivers\lliaw\7\default.xml copy .\src\drivers\lliaw\7\default.xml .\%RUNTIMEDIR%\drivers\lliaw\7\default.xml
+if exist .\src\drivers\lliaw\7\car5-trb1.rgb copy .\src\drivers\lliaw\7\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\7\car5-trb1.rgb
 
 if exist .\src\drivers\lliaw\8\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\8
 if exist .\src\drivers\lliaw\8\default.xml copy .\src\drivers\lliaw\8\default.xml .\%RUNTIMEDIR%\drivers\lliaw\8\default.xml
+if exist .\src\drivers\lliaw\8\car6-trb1.rgb copy .\src\drivers\lliaw\8\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\8\car6-trb1.rgb
 
 if exist .\src\drivers\lliaw\9\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw\9
 if exist .\src\drivers\lliaw\9\default.xml copy .\src\drivers\lliaw\9\default.xml .\%RUNTIMEDIR%\drivers\lliaw\9\default.xml
+if exist .\src\drivers\lliaw\9\car7-trb1.rgb copy .\src\drivers\lliaw\9\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\lliaw\9\car7-trb1.rgb
+
 
 if exist .\src\drivers\lliaw\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\lliaw\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\lliaw\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\lliaw
 if exist .\src\drivers\lliaw\lliaw.xml copy .\src\drivers\lliaw\lliaw.xml .\%RUNTIMEDIR%\drivers\lliaw\lliaw.xml
 if exist .\src\drivers\lliaw\logo.rgb copy .\src\drivers\lliaw\logo.rgb .\%RUNTIMEDIR%\drivers\lliaw\logo.rgb
+
+
+if exist .\src\drivers\olethros\0\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\0
+if exist .\src\drivers\olethros\0\default.xml copy .\src\drivers\olethros\0\default.xml .\%RUNTIMEDIR%\drivers\olethros\0\default.xml
+
+if exist .\src\drivers\olethros\1\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\1
+if exist .\src\drivers\olethros\1\default.xml copy .\src\drivers\olethros\1\default.xml .\%RUNTIMEDIR%\drivers\olethros\1\default.xml
+
+if exist .\src\drivers\olethros\2\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\2
+if exist .\src\drivers\olethros\2\default.xml copy .\src\drivers\olethros\2\default.xml .\%RUNTIMEDIR%\drivers\olethros\2\default.xml
+if exist .\src\drivers\olethros\2\car1-trb1.rgb copy .\src\drivers\olethros\2\car1-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\2\car1-trb1.rgb
+
+if exist .\src\drivers\olethros\3\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\3
+if exist .\src\drivers\olethros\3\default.xml copy .\src\drivers\olethros\3\default.xml .\%RUNTIMEDIR%\drivers\olethros\3\default.xml
+if exist .\src\drivers\olethros\3\car2-trb1.rgb copy .\src\drivers\olethros\3\car2-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\3\car2-trb1.rgb
+
+if exist .\src\drivers\olethros\4\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\4\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\4
+if exist .\src\drivers\olethros\4\default.xml copy .\src\drivers\olethros\4\default.xml .\%RUNTIMEDIR%\drivers\olethros\4\default.xml
+if exist .\src\drivers\olethros\4\car3-trb1.rgb copy .\src\drivers\olethros\4\car3-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\4\car3-trb1.rgb
+
+if exist .\src\drivers\olethros\5\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\5\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\5
+if exist .\src\drivers\olethros\5\default.xml copy .\src\drivers\olethros\5\default.xml .\%RUNTIMEDIR%\drivers\olethros\5\default.xml
+if exist .\src\drivers\olethros\5\car4-trb1.rgb copy .\src\drivers\olethros\5\car4-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\5\car4-trb1.rgb
+
+if exist .\src\drivers\olethros\6\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\6\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\6
+if exist .\src\drivers\olethros\6\default.xml copy .\src\drivers\olethros\6\default.xml .\%RUNTIMEDIR%\drivers\olethros\6\default.xml
+if exist .\src\drivers\olethros\6\car5-trb1.rgb copy .\src\drivers\olethros\6\car5-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\6\car5-trb1.rgb
+
+if exist .\src\drivers\olethros\7\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\7\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\7
+if exist .\src\drivers\olethros\7\default.xml copy .\src\drivers\olethros\7\default.xml .\%RUNTIMEDIR%\drivers\olethros\7\default.xml
+if exist .\src\drivers\olethros\7\car6-trb1.rgb copy .\src\drivers\olethros\7\car6-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\7\car6-trb1.rgb
+
+if exist .\src\drivers\olethros\8\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\8\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\8
+if exist .\src\drivers\olethros\8\default.xml copy .\src\drivers\olethros\8\default.xml .\%RUNTIMEDIR%\drivers\olethros\8\default.xml
+if exist .\src\drivers\olethros\8\car7-trb1.rgb copy .\src\drivers\olethros\8\car7-trb1.rgb .\%RUNTIMEDIR%\drivers\olethros\8\car7-trb1.rgb
+
+if exist .\src\drivers\olethros\9\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\9\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros\9
+if exist .\src\drivers\olethros\9\default.xml copy .\src\drivers\olethros\9\default.xml .\%RUNTIMEDIR%\drivers\olethros\9\default.xml
+if exist .\src\drivers\olethros\9\car1-trb3.rgb copy .\src\drivers\olethros\9\car1-trb3.rgb .\%RUNTIMEDIR%\drivers\olethros\9\car1-trb3.rgb
+
+if exist .\src\drivers\olethros\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\src\drivers\olethros\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
+if exist .\src\drivers\olethros\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\olethros
+if exist .\src\drivers\olethros\olethros.xml copy .\src\drivers\olethros\olethros.xml .\%RUNTIMEDIR%\drivers\olethros\olethros.xml
+if exist .\src\drivers\olethros\logo.rgb copy .\src\drivers\olethros\logo.rgb .\%RUNTIMEDIR%\drivers\olethros\logo.rgb
 
 
 if exist .\src\libs\raceengineclient\*.* call .\create_dir .\%RUNTIMEDIR%
