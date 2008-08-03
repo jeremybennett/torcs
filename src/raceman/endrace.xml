@@ -2,7 +2,7 @@
 <!-- 
     file        : ncrace.xml
     created     : Thu Jan 23 22:50:09 CET 2003
-    copyright   : (C) 2003 by Eric Espié                         
+    copyright   : (C) 2003 by Eric Espiï¿½                         
     email       : Eric.Espie@torcs.org   
     version     : $Id$                                  
 -->
@@ -29,7 +29,7 @@
     <attnum name="maximum number" val="1"/>
 
     <section name="1">
-      <attstr name="name" val="e-track-4"/>
+      <attstr name="name" val="e-track-6"/>
       <attstr name="category" val="road"/>
     </section>
   </section>
@@ -40,7 +40,7 @@
     </section>
 
     <section name="2">
-      <attstr name="name" val="First Race"/>
+      <attstr name="name" val="Race"/>
     </section>
   </section>
 
@@ -61,21 +61,9 @@
       <attnum name="initial speed" val="0.000000"/>
       <attnum name="initial height" val="0.200000"/>
     </section>
-
-    <section name="Points">
-      <section name="1">
-	<attnum name="points" val="3"/>
-      </section>
-      <section name="2">
-	<attnum name="points" val="2"/>
-      </section>
-      <section name="3">
-	<attnum name="points" val="1"/>
-      </section>
-    </section>
   </section>
 
-  <section name="First Race">
+  <section name="Race">
     <attnum name="distance" val="500" unit="km"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="last race"/>
@@ -94,16 +82,16 @@
 
     <section name="Points">
       <section name="1">
-	<attnum name="points" val="15"/>
-      </section>
-      <section name="2">
 	<attnum name="points" val="10"/>
       </section>
-      <section name="3">
+      <section name="2">
 	<attnum name="points" val="8"/>
       </section>
-      <section name="4">
+      <section name="3">
 	<attnum name="points" val="6"/>
+      </section>
+      <section name="4">
+	<attnum name="points" val="5"/>
       </section>
       <section name="5">
 	<attnum name="points" val="4"/>
@@ -126,27 +114,27 @@
     <attnum name="focused idx" val="5.000000"/>
 
     <section name="1">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="cylos1"/>
+      <attnum name="idx" val="5"/>
+      <attstr name="module" val="berniw"/>
     </section>
 
     <section name="2">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="lliaw"/>
+      <attnum name="idx" val="6"/>
+      <attstr name="module" val="olethros"/>
     </section>
 
     <section name="3">
-      <attnum name="idx" val="1.000000"/>
-      <attstr name="module" val="tanhoj"/>
+      <attnum name="idx" val="7"/>
+      <attstr name="module" val="lliaw"/>
     </section>
 
     <section name="4">
-      <attnum name="idx" val="1.000000"/>
+      <attnum name="idx" val="1"/>
       <attstr name="module" val="human"/>
     </section>
 
     <section name="5">
-      <attnum name="idx" val="1.000000"/>
+      <attnum name="idx" val="3"/>
       <attstr name="module" val="tita"/>
     </section>
   </section>
