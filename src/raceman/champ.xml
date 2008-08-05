@@ -108,7 +108,7 @@
 	</section>
 	
 	<section name="Race">
-		<attnum name="distance" unit="km" val="10"/>
+		<attnum name="distance" unit="km" val="180"/>
 		<attstr name="type" val="race"/>
 		<attstr name="starting order" val="last race"/>
 		<attstr name="restart" val="no"/>
