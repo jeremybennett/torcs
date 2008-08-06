@@ -328,7 +328,7 @@
 	</section>
 	<section name="Steer">
 		<attnum name="steer lock" unit="deg" min="1" max="21" val="21"/>
-		<attnum name="max steer speed" unit="deg/s" min="1" max="360" val="120"/>
+		<attnum name="max steer speed" unit="deg/s" min="1" max="360" val="360"/>
 	</section>
 	<section name="Brake System">
 		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.52"/>
