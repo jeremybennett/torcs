@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file        : practice.xml
-    created     : Sun Jan  5 11:52:32 CET 2003
-    copyright   : (C) 2003 by Eric Espié                         
-    email       : Eric.Espie@torcs.org   
-    version     : $Id$                                  
--->
+	 file        : practice.xml
+	 created     : Sun Jan  5 11:52:32 CET 2003
+	 copyright   : (C) 2003 by Eric Espiï¿½                         
+	 email       : Eric.Espie@torcs.org   
+	 version     : $Id$                                  
+	 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
 <!--    it under the terms of the GNU General Public License as published by  -->
@@ -15,85 +15,85 @@
 <!DOCTYPE params SYSTEM "../libs/tgf/params.dtd">
 
 <params name="practice" type="param" mode="mw">
-
-  <section name="Header">
-    <attstr name="name" val="Practice"/>
-    <attstr name="description" val="Practice"/>
-    <attnum name="priority" val="100"/>
-    <attstr name="menu image" val="data/img/splash-practice.png"/>
-    <attstr name="run image" val="data/img/splash-run-practice.png"/>
-  </section>
-
-  <section name="Tracks">
-    <attnum name="maximum number" val="1"/>
-
-    <section name="1">
-      <attstr name="name" val="g-track-3"/>
-      <attstr name="category" val="road"/>
-    </section>
-  </section>
-
-  <section name="Races">
-
-    <section name="1">
-      <attstr name="name" val="Practice"/>
-    </section>
-  </section>
-
-  <section name="Practice">
-    <attnum name="laps" val="20"/>
-    <attstr name="type" val="practice"/>
-    <attstr name="starting order" val="drivers list"/>
-    <attstr name="restart" val="yes"/>
-    <attstr name="display mode" val="normal"/>
-    <attstr name="display results" val="yes"/>
-
-    <section name="Starting Grid">
-      <attnum name="rows"                      val="1"/>
-      <attnum name="distance to start"         val="100"/>
-      <attnum name="distance between columns"  val="20"/>
-      <attnum name="offset within a column"    val="10"/>
-      <attnum name="initial speed" unit="km/h" val="0"/>
-      <attnum name="initial height" unit="m"   val="0.2"/>
-    </section>
-  </section>
-
-  <section name="Drivers">
-    <attnum name="maximum number" val="1"/>
-    <attstr name="focused module" val="human"/>
-    <attnum name="focused idx" val="1"/>
-
-    <section name="1">
-      <attnum name="idx" val="4"/>
-      <attstr name="module" val="berniw"/>
-    </section>
-  </section>
-
-  <section name="Configuration">
-
-    <section name="1">
-      <attstr name="type" val="track select"/>
-    </section>
-
-    <section name="2">
-      <attstr name="type" val="drivers select"/>
-    </section>
-
-    <section name="3">
-      <attstr name="type" val="race config"/>
-      <attstr name="race" val="Practice"/>
-
-      <section name="Options">
-
-	<section name="1">
-	  <attstr name="type" val="race length"/>
+	
+	<section name="Header">
+		<attstr name="name" val="Practice"/>
+		<attstr name="description" val="Practice"/>
+		<attnum name="priority" val="100"/>
+		<attstr name="menu image" val="data/img/splash-practice.png"/>
+		<attstr name="run image" val="data/img/splash-run-practice.png"/>
 	</section>
-
-	<section name="2">
-	  <attstr name="type" val="display mode"/>
+	
+	<section name="Tracks">
+		<attnum name="maximum number" val="1"/>
+		
+		<section name="1">
+			<attstr name="name" val="g-track-1"/>
+			<attstr name="category" val="road"/>
+		</section>
 	</section>
-      </section>
-    </section>
-  </section>
-
+	
+	<section name="Races">
+		
+		<section name="1">
+			<attstr name="name" val="Practice"/>
+		</section>
+	</section>
+	
+	<section name="Practice">
+		<attnum name="laps" val="20"/>
+		<attstr name="type" val="practice"/>
+		<attstr name="starting order" val="drivers list"/>
+		<attstr name="restart" val="yes"/>
+		<attstr name="display mode" val="normal"/>
+		<attstr name="display results" val="yes"/>
+		
+		<section name="Starting Grid">
+			<attnum name="rows"                      val="1"/>
+			<attnum name="distance to start"         val="100"/>
+			<attnum name="distance between columns"  val="20"/>
+			<attnum name="offset within a column"    val="10"/>
+			<attnum name="initial speed" unit="km/h" val="0"/>
+			<attnum name="initial height" unit="m"   val="0.2"/>
+		</section>
+	</section>
+	
+	<section name="Drivers">
+		<attnum name="maximum number" val="1"/>
+		<attstr name="focused module" val="human"/>
+		<attnum name="focused idx" val="1"/>
+		
+		<section name="1">
+			<attnum name="idx" val="4"/>
+			<attstr name="module" val="inferno"/>
+		</section>
+	</section>
+	
+	<section name="Configuration">
+		
+		<section name="1">
+			<attstr name="type" val="track select"/>
+		</section>
+		
+		<section name="2">
+			<attstr name="type" val="drivers select"/>
+		</section>
+		
+		<section name="3">
+			<attstr name="type" val="race config"/>
+			<attstr name="race" val="Practice"/>
+			
+			<section name="Options">
+				
+				<section name="1">
+					<attstr name="type" val="race length"/>
+				</section>
+				
+				<section name="2">
+					<attstr name="type" val="display mode"/>
+				</section>
+			</section>
+		</section>
+	</section>
+	
 </params>
