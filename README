@@ -144,6 +144,9 @@ Changes since 1.3.0
 - Updated bat files to deploy textures (Bernhard).
 - Reintroduced Olethros on Windows, adjusted project dependencies and made
   code compile (Bernhard).
+- Adjusted race modes, take existing cars and tracks (Bernhard).
+- Adjusted preset driver "Player" (Bernhard).
+- Set steer speed to 360 on the trb1 cars (Bernhard).
 
 
 
