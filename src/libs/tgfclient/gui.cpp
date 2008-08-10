@@ -163,16 +163,34 @@ GfuiDisplay(void)
 	}
 	
 	if (GfuiScreen->bgImage != 0) {
+		GLfloat tx1 = 0.0f, tx2 = 1.0f, ty1 = 0.0f, ty2 = 1.0f;
+		
+		// All background images are 16:10 images which are stored as quadratic images.
+		// Compute texture coordinates to ensure proper unskewed/unstretched display of
+		// image content.
+		tdble rfactor = (16.0f*ViewH)/(10.0f*ViewW);
+		if (rfactor >= 1.0f) {
+			// Aspect ratio of view is smaller than 16:10, "cut off" sides
+			tdble tdx = (1.0f-1.0f/rfactor)/2.0f;
+			tx1 += tdx;
+			tx2 -= tdx;
+		} else {
+			// Aspect ratio of view is larger than 16:10, "cut off" top and bottom
+			tdble tdy = (1.0f-rfactor)/2.0f;
+			ty1 += tdy;
+			ty2 -= tdy;
+		}
+
 		glDisable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		glColor3f(0.0, 0.0, 1.0);
 		glBindTexture(GL_TEXTURE_2D, GfuiScreen->bgImage);
 		glBegin(GL_QUADS);
-		glTexCoord2f(0.0, 0.0); glVertex3f(0.0, 0.0, 0.0);
-		glTexCoord2f(0.0, 1.0); glVertex3f(0.0, GfuiScreen->height, 0.0);
-		glTexCoord2f(1.0, 1.0); glVertex3f(GfuiScreen->width, GfuiScreen->height, 0.0);
-		glTexCoord2f(1.0, 0.0); glVertex3f(GfuiScreen->width, 0.0, 0.0);
+		glTexCoord2f(tx1, ty1); glVertex3f(0.0, 0.0, 0.0);
+		glTexCoord2f(tx1, ty2); glVertex3f(0.0, GfuiScreen->height, 0.0);
+		glTexCoord2f(tx2, ty2); glVertex3f(GfuiScreen->width, GfuiScreen->height, 0.0);
+		glTexCoord2f(tx2, ty1); glVertex3f(GfuiScreen->width, 0.0, 0.0);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
