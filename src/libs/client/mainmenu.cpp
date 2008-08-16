@@ -68,7 +68,7 @@ TorcsMainMenuInit(void)
     GfuiTitleCreate(menuHandle, "TORCS", 0);
 
     GfuiLabelCreate(menuHandle,
-		    "The Open Racing Cars Simulator",
+		    "The Open Racing Car Simulator",
 		    GFUI_FONT_LARGE,
 		    320,
 		    420,
