@@ -151,6 +151,7 @@ Changes since 1.3.0
   16:10 (Bernhard).
 - Created new background images (Bernhard).
 - Splash screen scaling without distortion, added smoothing (Bernhard).
+- Added splash screen created by Eckhard M. Jäger (Eckhard, Bernhard).
 
 
 TODO for 1.4.0
@@ -276,7 +277,6 @@ TODO LATER
 - Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
 - Free camera controlled with mouse and keys.
 - Automate GL features verification (hopefully obsolete).
-- Investigate the oscillation and roughness problems reported by Christos.
 
 
 IDEAS FOR MUCH LATER
