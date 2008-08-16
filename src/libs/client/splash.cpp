@@ -130,8 +130,9 @@ static void splashDisplay( void )
 		
 		// Compute texture coordinates to ensure proper unskewed/unstretched display of
 		// image content.
-		tdble rfactor = (float)(s_imgWidth*ViewH)/(float)(s_imgHeight*ViewW);
-		
+		//tdble rfactor = (float)(s_imgWidth*ViewH)/(float)(s_imgHeight*ViewW);
+		tdble rfactor = (16.0f*ViewH)/(10.0f*ViewW);
+
 		if (rfactor >= 1.0f) {
 			// Aspect ratio of view is smaller than 16:10, "cut off" sides
 			tdble tdx = (1.0f-1.0f/rfactor)/2.0f;
