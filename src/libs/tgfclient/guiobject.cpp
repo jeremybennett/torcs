@@ -30,7 +30,7 @@ gfuiObjectInit(void)
 }
 
 void 
-gfuiPrintString(int x, int y, GfuiFontClass *font, char *string)
+gfuiPrintString(int x, int y, GfuiFontClass *font, const char *string)
 {
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -41,26 +41,26 @@ gfuiPrintString(int x, int y, GfuiFontClass *font, char *string)
     glDisable(GL_TEXTURE_2D);
 }
 
-void GfuiPrintString(char *text, float *fgColor, int font, int x, int y, int align)
+void GfuiPrintString(const char *text, float *fgColor, int font, int x, int y, int align)
 {
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.1) ;
-    glColor4fv(fgColor);
-    switch(align&0xF0) {
-    case 0x00 /* LEFT */:
-	gfuiFont[font]->output(x, y, text);
-	break;
-    case 0x10 /* CENTER */:
-	gfuiFont[font]->output(x - gfuiFont[font]->getWidth(text) / 2, y, text);
-	break;
-    case 0x20 /* RIGHT */:
-	gfuiFont[font]->output(x - gfuiFont[font]->getWidth(text), y, text);
-	break;
-    }
-    glDisable(GL_ALPHA_TEST);
-    glDisable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1) ;
+	glColor4fv(fgColor);
+	switch(align&0xF0) {
+		case 0x00 /* LEFT */:
+			gfuiFont[font]->output(x, y, text);
+			break;
+		case 0x10 /* CENTER */:
+			gfuiFont[font]->output(x - gfuiFont[font]->getWidth(text) / 2, y, text);
+			break;
+		case 0x20 /* RIGHT */:
+			gfuiFont[font]->output(x - gfuiFont[font]->getWidth(text), y, text);
+			break;
+	}
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_TEXTURE_2D);
 }
 
 int GfuiFontHeight(int font)
@@ -68,7 +68,7 @@ int GfuiFontHeight(int font)
     return gfuiFont[font]->getHeight();
 }
 
-int GfuiFontWidth(int font, char *text)
+int GfuiFontWidth(int font, const char *text)
 {
     return gfuiFont[font]->getWidth(text);
 }

@@ -181,9 +181,9 @@ extern int GfuiTitleCreate(void *scr, char *text, int maxlen);
 extern void GfuiLabelSetText(void *scr, int id, char *text);
 extern void GfuiLabelSetColor(void *scr, int id, float *color);
 
-extern void GfuiPrintString(char *text, float *fgColor, int font, int x, int y, int align);
+extern void GfuiPrintString(const char *text, float *fgColor, int font, int x, int y, int align);
 extern int  GfuiFontHeight(int font);
-extern int  GfuiFontWidth(int font, char *text);
+extern int  GfuiFontWidth(int font, const char *text);
 
 
 /* buttons */

@@ -250,7 +250,7 @@ extern void gfuiReleaseObject(tGfuiObject *curObject);
 extern void GfuiDrawCursor();
 extern void GfuiDraw(tGfuiObject *obj);;
 extern void gfuiUpdateFocus();
-extern void gfuiPrintString(int x, int y, GfuiFontClass *font, char *string);
+extern void gfuiPrintString(int x, int y, GfuiFontClass *font, const char *string);
 extern void gfuiMouseAction(void *action);
 extern void gfuiSelectNext(void *);
 extern void gfuiSelectPrev(void *);
