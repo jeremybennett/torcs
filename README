@@ -149,8 +149,8 @@ Changes since 1.3.0
 - Set steer speed to 360 on the trb1 cars (Bernhard).
 - Fit background images without distortion, background image aspect ratio is
   16:10 (Bernhard).
-
-
+- Created new background images (Bernhard).
+- Splash screen scaling without distortion, added smoothing (Bernhard).
 
 
 TODO for 1.4.0
@@ -176,17 +176,13 @@ Later:
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-- merge berniw_2004 code into berniw's (rescheduled, a bit more testing will
-  not hurt).
 - fix tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers and use just one sided
   polygons (better diffuse lighting).
 - fix sound in split screen multiplayer. [in progress] (ask Christos).
 - Add remaining kcendra cars.
-- Check and add Andrews car improvements.
 - Ongoing: Replace some defines with "static const" to be able to see the
   symbol name when debugging.
-- add more races to championship.
 - move berniw/bt spline code into math to share it.
 - hunt down all glGet* crap during the simulation.
 - check all textures for the user selectable cars, they should be nicer.
