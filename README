@@ -152,6 +152,8 @@ Changes since 1.3.0
 - Created new background images (Bernhard).
 - Splash screen scaling without distortion, added smoothing (Bernhard).
 - Added splash screen created by Eckhard M. Jäger (Eckhard, Bernhard).
+- Do not call anymore GfuiIdle for ordinary menus/screens to save power and
+  avoid annoying high frequency noise from graphics hardware (Bernhard).
 
 
 TODO for 1.4.0
