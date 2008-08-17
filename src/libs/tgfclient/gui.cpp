@@ -477,7 +477,7 @@ GfuiScreenActivate(void *screen)
 	glutMouseFunc(gfuiMouse);
 	glutMotionFunc(gfuiMotion);
 	glutPassiveMotionFunc(gfuiPassiveMotion);
-	glutIdleFunc(GfuiIdle);
+	glutIdleFunc((void(*)(void))NULL);
 	
 	if (GfuiScreen->onlyCallback == 0) {
 		if (GfuiScreen->hasFocus == NULL) {
