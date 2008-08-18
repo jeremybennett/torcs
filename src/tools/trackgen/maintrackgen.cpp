@@ -135,7 +135,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:azsSE:h:bBL:",
+	c = getopt_long(argc, argv, "hvn:c:azsSE:H:bBL:",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
