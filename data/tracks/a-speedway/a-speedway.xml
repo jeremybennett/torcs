@@ -29,7 +29,7 @@
     <attstr name="name"        val="A-Speedway"/>
     <attstr name="category"    val="oval"/>
     <attnum name="version"     val="3"/>
-    <attstr name="author"      val="E.Espie"/>
+    <attstr name="author"      val="E. Espie"/>
     <attstr name="description" val="Rectangle shaped Speedway"/>
   </section>
 

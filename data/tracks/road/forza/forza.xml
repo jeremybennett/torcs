@@ -152,7 +152,7 @@ the Free Software Foundation; either version 2 of the License, or
     <attstr name="name" val="Forza" />
     <attstr name="category" val="road" />
     <attnum name="version" val="4" />
-    <attstr name="author" val="Andrew Sumner" />
+    <attstr name="author" val="A. Sumner" />
 		<attstr name="description" val="Very fast and smooth circuit"/>
   </section>
   <section name="Graphic">

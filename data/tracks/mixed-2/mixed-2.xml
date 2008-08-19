@@ -30,7 +30,7 @@
     <attstr name="name"        val="Mixed 2"/>
     <attstr name="category"    val="dirt"/>
     <attnum name="version"     val="3"/>
-    <attstr name="author"      val="E.Espie"/>
+    <attstr name="author"      val="E. Espie"/>
     <attstr name="description" val=""/>
   </section>
 

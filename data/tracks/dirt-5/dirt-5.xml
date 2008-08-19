@@ -2,7 +2,7 @@
 <!-- 
     file                 : dirt-5.xml
     created              : Sat Mar 10 16:58:45 CET 2001
-    copyright            : (C) 2001 by Eric Espié                         
+    copyright            : (C) 2001 by Eric Espiï¿½                         
     email                : Eric.Espie@torcs.org   
     version              : $Id$                                  
 -->
@@ -29,7 +29,7 @@
     <attstr name="name"        val="Dirt 5"/>
     <attstr name="category"    val="dirt"/>
     <attnum name="version"     val="3"/>
-    <attstr name="author"      val="E.Espie"/>
+    <attstr name="author"      val="E. Espie"/>
     <attstr name="description" val="Track with small jumps"/>
   </section>
 
