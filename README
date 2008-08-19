@@ -159,6 +159,8 @@ Changes since 1.3.0
 - Fixed trackgen not building the elevation 3 map (Bernhard).
 - Equalized author name formatting for tracks (Bernhard).
 - Replaced forza track selection image with a track map (Bernhard).
+- Added new background image and color settings to track alpine-1, created
+  by Eckhard M. Jäger (Eckhard, Bernhard).
 
 
 TODO for 1.4.0
