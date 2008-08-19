@@ -152,9 +152,9 @@
 		
 		<attstr name="background image" val="background.png"/>
 		<attnum name="background type" val="4"/>
-		<attnum name="background color R" val="0.28"/>
-		<attnum name="background color G" val="0.44"/>
-		<attnum name="background color B" val="0.75"/>
+    <attnum name="background color R" val="0.35"/>
+    <attnum name="background color G" val="0.4"/>
+    <attnum name="background color B" val="0.3"/>
 		
 		<attnum name="ambient color R" val="0.1"/>
 		<attnum name="ambient color G" val="0.1"/>
@@ -164,9 +164,9 @@
 		<attnum name="diffuse color G" val="1"/>
 		<attnum name="diffuse color B" val="1"/>
 		
-		<attnum name="specular color R" val="0.5"/>
-		<attnum name="specular color G" val="0.5"/>
-		<attnum name="specular color B" val="0.5"/>
+    <attnum name="specular color R" val="0.1"/>
+    <attnum name="specular color G" val="0.1"/>
+    <attnum name="specular color B" val="0.1"/>
 		
 		
 		<attnum name="light position x" val="-0"/>
