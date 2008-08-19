@@ -1,27 +1,27 @@
 /***************************************************************************
 
-    file                 : elevation.cpp
-    created              : Mon May 20 22:31:09 CEST 2002
-    copyright            : (C) 2001 by Eric Espie
-    email                : eric.espie@torcs.org
-    version              : $Id$
+	file                 : elevation.cpp
+	created              : Mon May 20 22:31:09 CEST 2002
+	copyright            : (C) 2001 by Eric Espie
+	email                : eric.espie@torcs.org
+	version              : $Id$
 
- ***************************************************************************/
+***************************************************************************/
 
 /***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************/
 
 /** @file   
-    		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id$
-*/
+			
+	@author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+	@version	$Id$
+ */
 
 
 #include <stdio.h>
@@ -51,8 +51,7 @@ static int	width, height;
 
 #define MAX_CLR	255.0
 
-void
-LoadElevation(tTrack *track, void *TrackHandle, char *imgFile)
+void LoadElevation(tTrack *track, void *TrackHandle, char *imgFile)
 {
 	tdble zmin, zmax;
 	tdble xmin, xmax, ymin, ymax;
@@ -85,8 +84,7 @@ LoadElevation(tTrack *track, void *TrackHandle, char *imgFile)
 }
 
 
-tdble
-GetElevation(tdble x, tdble y, tdble z)
+tdble GetElevation(tdble x, tdble y, tdble z)
 {
 	int iX, iY;
 	int clr;
@@ -103,8 +101,7 @@ GetElevation(tdble x, tdble y, tdble z)
 }
 
 
-void
-SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int dispf)
+void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, int dispf)
 {
 	ssgLoaderOptionsEx options;
 	float zmin, zmax;
@@ -170,8 +167,8 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, i
 		return;
 	}
 
-    l = columns - 18;
-    for (j = 0; j < height; j++) {
+	l = columns - 18;
+	for (j = 0; j < height; j++) {
 		s = buf;
 		s += sprintf(buf, "%4d%% |", (j+1) * 100 / height);
 		for (k = s - buf; k < s - buf + l; k++) {
@@ -188,38 +185,32 @@ SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFile, i
 		for (i = 0; i < width; i++) {
 			x = i * kX + dX;
 			y = j * kY + dY;
-
-			switch (dispf) {
-			case 0:
-				clr = 0;
-				break;
-			case 1:
-				z = getHOT(root, x, y);
-				if (z != -1000000.0f) {
-					clr = (int)(z * kZ + dZ);
-				} else {
-					clr = (int)MAX_CLR;
+			z = getHOT(root, x, y);
+			if (z != -1000000.0f) {
+				switch (dispf) {
+					case 0:
+						clr = 0;
+						break;
+					case 1:
+						clr = (int)(z * kZ + dZ);
+						break;
+					case 2:
+						clr = (int)(floor((z + heightStep / 2.0) / heightStep) * heightStep * kZ + dZ);
+						break;
+					default:
+						clr = 0;
+						break;
 				}
-				break;
-			case 2:
-				z = getHOT(root, x, y);
-				if (z != -1000000.0f) {
-					clr = (int)(floor((z + heightStep / 2.0) / heightStep) * heightStep * kZ + dZ);
-				} else {
-					clr = (int)MAX_CLR;
-				}
-				break;
-			default:
-				clr = 0;
-				break;
+			} else {
+				clr = (int)MAX_CLR;
 			}
 
 			ElvImage[3 * (i + width * j)]     = (unsigned char)clr;
 			ElvImage[3 * (i + width * j) + 1] = (unsigned char)clr;
 			ElvImage[3 * (i + width * j) + 2] = (unsigned char)clr;
 		}
-    }
+	}
 
-    printf("\n");
-    GfImgWritePng(ElvImage, imgFile, width, height);
+	printf("\n");
+	GfImgWritePng(ElvImage, imgFile, width, height);
 }
