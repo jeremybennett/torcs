@@ -40,7 +40,7 @@ static int curOptionTextComp = 0;
 static int TextureCompressOptionId;
 
 // Texture sizing, order of list is important, do not change.
-static int textureSizeOptionList[] = {8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8092, 16384};
+static int textureSizeOptionList[] = {8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384};
 static int nbOptionsTextSize = sizeof(textureSizeOptionList) / sizeof(textureSizeOptionList[0]);
 static int curOptionTextSize = 0;
 static int TextureSizeOptionId;
