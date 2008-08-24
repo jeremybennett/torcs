@@ -161,6 +161,8 @@ Changes since 1.3.0
 - Added new background image and color settings to track alpine-1, created
   by Eckhard M. Jäger (Eckhard, Bernhard).
 - Fixed wrong texture size constant in openglconfg.cpp (Bernhard).
+- Fixed broken car light rendering, more adjustments will be required
+  (Bernhard).
 
 
 TODO for 1.4.0
