@@ -367,8 +367,14 @@ void grAddCarlight(tCarElt *car, int type, sgVec3 pos, double size)
 
 	theCarslight[car->index].lightAnchor->addKid(theCarslight[car->index].lightCurr[theCarslight[car->index].numberCarlight]);
 	CarlightCleanupAnchor->addKid(theCarslight[car->index].lightArray[theCarslight[car->index].numberCarlight]);
-	CarlightAnchor->addKid(theCarslight[car->index].lightAnchor);
+	//CarlightAnchor->addKid(theCarslight[car->index].lightAnchor);
 	theCarslight[car->index].numberCarlight++;
+}
+
+
+void grLinkCarlights(tCarElt *car)
+{
+	CarlightAnchor->addKid(theCarslight[car->index].lightAnchor);
 }
 
 
