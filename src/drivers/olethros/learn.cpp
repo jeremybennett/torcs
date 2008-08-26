@@ -257,6 +257,7 @@ void SegLearn::update(tSituation *s, tTrack *t, tCarElt *car, int alone, float o
                 if ((car->_trkPos.toLeft - min_out_factor*car->_dimension_y<0)
                     || (car->_speed_x < 0)) {
                     dtheta = - risk_factor;
+                    PropagateUpdateBackwards (seg, -0.1f, 0.01f, 200.0f);
                     PropagateUpdateBackwards (seg->prev, -0.1f, 0.01f, 200.0f);
                     time_since_accident = 0.0f;
                     //printf ("DTH %d\n ", seg->id);

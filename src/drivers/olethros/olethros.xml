@@ -35,7 +35,7 @@
         <attstr name="desc" val=""></attstr>
         <attstr name="team" val="olethros"></attstr>
         <attstr name="author" val="Christos Dimitrakakis"></attstr>
-        <attstr name="car name" val="cg-nascar-rwd"></attstr>
+        <attstr name="car name" val="ole-golf-r32"></attstr>
         <attnum name="race number" val="72"></attnum>
         <attnum name="red" val="1.0"></attnum>
         <attnum name="green" val="0.0"></attnum>
@@ -59,7 +59,7 @@
         <attstr name="desc" val=""></attstr>
         <attstr name="team" val="olethros"></attstr>
         <attstr name="author" val="Christos Dimitrakakis"></attstr>
-        <attstr name="car name" val="155-DTM"></attstr>
+        <attstr name="car name" val="ole-golf-gti"></attstr>
         <attnum name="race number" val="74"></attnum>
         <attnum name="red" val="1.0"></attnum>
         <attnum name="green" val="0.0"></attnum>
