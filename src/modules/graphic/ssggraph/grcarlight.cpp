@@ -127,7 +127,7 @@ void ssgVtxTableCarlight::draw_geometry ()
 		return;
 	}
 
-	alpha = 0.5f;
+	alpha = 0.75f;
 	glDepthMask(GL_FALSE);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
