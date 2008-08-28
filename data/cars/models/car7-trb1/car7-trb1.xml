@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file                 : car7-trb1.xml
-    created              : Sat Mar  3 18:46:37 CET 2001
-    copyright            : (C) 2001 by Eric Espié, 2006 Bernhard Wymann
-    email                : berniw@bluewin.ch
-    version              : $Id$
--->
+	 file                 : car7-trb1.xml
+	 created              : Sat Mar  3 18:46:37 CET 2001
+	 copyright            : (C) 2001 by Eric Espié, 2006 Bernhard Wymann
+	 email                : berniw@bluewin.ch
+	 version              : $Id$
+	 -->
 <!--    This program is free software; you can redistribute it and/or modify  -->
 <!--    it under the terms of the GNU General Public License as published by  -->
 <!--    the Free Software Foundation; either version 2 of the License, or     -->
@@ -41,88 +41,88 @@
 		</section>
 		<section name="Light">
 			<section name="1">
-				<attstr name="type" val="brake"/>
+				<attstr name="type" val="brake2"/>
 				<attnum name="xpos" val="-2.15"/>
 				<attnum name="ypos" val="0.52"/>
 				<attnum name="zpos" val="0.67"/>
-				<attnum name="size" val="0.08"/>
+				<attnum name="size" val="0.10"/>
 			</section>
 			<section name="2">
-				<attstr name="type" val="brake"/>
+				<attstr name="type" val="brake2"/>
 				<attnum name="xpos" val="-2.15"/>
 				<attnum name="ypos" val="-0.52"/>
 				<attnum name="zpos" val="0.67"/>
-				<attnum name="size" val="0.08"/>
+				<attnum name="size" val="0.10"/>
 			</section>
 			<section name="3">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.25"/>
-				<attnum name="ypos" val="0.57"/>
-				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.1"/>
+				<attnum name="xpos" val="-2.15"/>
+				<attnum name="ypos" val="0.52"/>
+				<attnum name="zpos" val="0.67"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="4">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.25"/>
-				<attnum name="ypos" val="-0.57"/>
-				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.1"/>
+				<attnum name="xpos" val="-2.15"/>
+				<attnum name="ypos" val="-0.52"/>
+				<attnum name="zpos" val="0.67"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="5">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.25"/>
-				<attnum name="ypos" val="0.71"/>
-				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.1"/>
+				<attnum name="xpos" val="-2.15"/>
+				<attnum name="ypos" val="0.64"/>
+				<attnum name="zpos" val="0.66"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="6">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.25"/>
-				<attnum name="ypos" val="-0.71"/>
-				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.1"/>
+				<attnum name="xpos" val="-2.15"/>
+				<attnum name="ypos" val="-0.64"/>
+				<attnum name="zpos" val="0.66"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="7">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="1.72"/>
-				<attnum name="ypos" val="0.65"/>
-				<attnum name="zpos" val="0.47"/>
-				<attnum name="size" val="0.100"/>
+				<attnum name="xpos" val="1.93"/>
+				<attnum name="ypos" val="0.725"/>
+				<attnum name="zpos" val="0.395"/>
+				<attnum name="size" val="0.08"/>
 			</section>
 			<section name="8">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="1.72"/>
-				<attnum name="ypos" val="-0.65"/>
-				<attnum name="zpos" val="0.47"/>
-				<attnum name="size" val="0.10"/>
+				<attnum name="xpos" val="1.93"/>
+				<attnum name="ypos" val="-0.725"/>
+				<attnum name="zpos" val="0.395"/>
+				<attnum name="size" val="0.08"/>
 			</section>
 			<section name="9">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="1.75"/>
-				<attnum name="ypos" val="0.51"/>
-				<attnum name="zpos" val="0.45"/>
-				<attnum name="size" val="0.05"/>
+				<attnum name="xpos" val="2.01"/>
+				<attnum name="ypos" val="0.605"/>
+				<attnum name="zpos" val="0.35"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="10">
 				<attstr name="type" val="head2"/>
-				<attnum name="xpos" val="1.75"/>
-				<attnum name="ypos" val="0.51"/>
-				<attnum name="zpos" val="0.45"/>
-				<attnum name="size" val="0.05"/>
+				<attnum name="xpos" val="2.01"/>
+				<attnum name="ypos" val="0.605"/>
+				<attnum name="zpos" val="0.35"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="11">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="1.75"/>
-				<attnum name="ypos" val="-0.51"/>
-				<attnum name="zpos" val="0.45"/>
-				<attnum name="size" val="0.05"/>
+				<attnum name="xpos" val="2.01"/>
+				<attnum name="ypos" val="-0.605"/>
+				<attnum name="zpos" val="0.35"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 			<section name="12">
 				<attstr name="type" val="head2"/>
-				<attnum name="xpos" val="1.75"/>
-				<attnum name="ypos" val="-0.51"/>
-				<attnum name="zpos" val="0.45"/>
-				<attnum name="size" val="0.05"/>
+				<attnum name="xpos" val="2.01"/>
+				<attnum name="ypos" val="-0.605"/>
+				<attnum name="zpos" val="0.35"/>
+				<attnum name="size" val="0.07"/>
 			</section>
 		</section>
 	</section>

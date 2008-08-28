@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file                 : car6-trb1.xml
-    created              : Sat Mar  3 18:46:37 CET 2001
-    copyright            : (C) 2001 by Eric Espié, 2006 Bernhard Wymann, 2007 Wolf-Dieter Beelitz
-    email                : Eric.Espie@torcs.org
-    version              :  
--->
+	 file                 : car6-trb1.xml
+	 created              : Sat Mar  3 18:46:37 CET 2001
+	 copyright            : (C) 2001 by Eric Espié, 2006 Bernhard Wymann, 2007 Wolf-Dieter Beelitz
+	 email                : Eric.Espie@torcs.org
+	 version              :  
+	 -->
 <!--    This program is free software; you can redistribute it and/or modify  -->
 <!--    it under the terms of the GNU General Public License as published by  -->
 <!--    the Free Software Foundation; either version 2 of the License, or     -->
@@ -39,20 +39,21 @@
 				<attstr name="wheels" val="yes"/>
 			</section>
 		</section>
+		
 		<section name="Light">
 			<section name="1">
-				<attstr name="type" val="brake"/>
+				<attstr name="type" val="brake2"/>
 				<attnum name="xpos" val="-2.25"/>
 				<attnum name="ypos" val="0.57"/>
 				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.2"/>
+				<attnum name="size" val="0.13"/>
 			</section>
 			<section name="2">
-				<attstr name="type" val="brake"/>
+				<attstr name="type" val="brake2"/>
 				<attnum name="xpos" val="-2.25"/>
 				<attnum name="ypos" val="-0.57"/>
 				<attnum name="zpos" val="0.61"/>
-				<attnum name="size" val="0.2"/>
+				<attnum name="size" val="0.13"/>
 			</section>
 			<section name="3">
 				<attstr name="type" val="rear"/>
