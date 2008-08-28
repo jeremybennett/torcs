@@ -163,6 +163,8 @@ Changes since 1.3.0
 - Fixed wrong texture size constant in openglconfg.cpp (Bernhard).
 - Fixed broken car light rendering, more adjustments will be required
   (Bernhard).
+- Added new light definitions for trb cars, created by Wolf-Dieter
+  (Wolf-Dieter, Bernhard).
 
 
 TODO for 1.4.0
