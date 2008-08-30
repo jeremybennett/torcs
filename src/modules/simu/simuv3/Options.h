@@ -128,7 +128,8 @@ public:
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {
-                if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                //if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                if (Option<T>* o = (Option<T>*) (options[i])) {
                     o->Set(value);
                     return;
                 }
@@ -142,7 +143,8 @@ public:
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {
-                if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                //if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                if (Option<T>* o = (Option<T>*) (options[i])) {
                     return o->Get();
                 }
             }
@@ -156,7 +158,8 @@ public:
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {
-                if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                //if (Option<T>* o = dynamic_cast<Option<T>*> (options[i])) {
+                if (Option<T>* o = (Option<T>*) (options[i])) {
                     return_value = o->Get();
                     return;
                 }

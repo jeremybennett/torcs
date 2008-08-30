@@ -58,7 +58,7 @@ SimAeroConfig(tCar *car)
     car->aero.rot_front[2] = 0.0f;
     car->aero.rot_lateral[0] = 0.0f;
     car->aero.rot_lateral[1] = 0.0f;
-    car->aero.rot_lateral[2] = 0.0f;
+    car->aero.rot_lateral[2] = -1.0f;
     car->aero.rot_vertical[0] = 0.0f;
     car->aero.rot_vertical[1] = 0.0f;
     car->aero.rot_vertical[2] = 0.0f;
@@ -128,22 +128,23 @@ SimAeroUpdate(tCar *car, tSituation *s)
     // Also, no torque is produced since the effect can be
     // quite dramatic. Interesting idea to make all drags produce
     // torque when the car is damaged.
-    car->aero.Mx = car->aero.drag * dmg_coef * car->aero.rot_front[0];
-    car->aero.My = car->aero.drag * dmg_coef * car->aero.rot_front[1];
-    car->aero.Mz = car->aero.drag * dmg_coef * car->aero.rot_front[2];
+    tdble dmg_coef2 = 1;
+    car->aero.Mx = car->aero.drag * dmg_coef2 * car->aero.rot_front[0];
+    car->aero.My = car->aero.drag * dmg_coef2 * car->aero.rot_front[1];
+    car->aero.Mz = car->aero.drag * dmg_coef2 * car->aero.rot_front[2];
 
 
     v2 = car->DynGC.vel.y;
     car->aero.lateral_drag = -SIGN(v2)*v2*v2*0.7;
-    car->aero.Mx += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[0];
-    car->aero.My += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[1];
-    car->aero.Mz += car->aero.lateral_drag * dmg_coef * car->aero.rot_lateral[2];
+    car->aero.Mx += car->aero.lateral_drag * dmg_coef2 * car->aero.rot_lateral[0];
+    car->aero.My += car->aero.lateral_drag * dmg_coef2 * car->aero.rot_lateral[1];
+    car->aero.Mz += car->aero.lateral_drag * dmg_coef2 * car->aero.rot_lateral[2];
 
     v2 = car->DynGC.vel.z;
     car->aero.vertical_drag = -SIGN(v2)*v2*v2*1.5;
-    car->aero.Mx += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[0];
-    car->aero.My += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[1];
-    car->aero.Mz += car->aero.vertical_drag * dmg_coef * car->aero.rot_vertical[2];
+    car->aero.Mx += car->aero.vertical_drag * dmg_coef2 * car->aero.rot_vertical[0];
+    car->aero.My += car->aero.vertical_drag * dmg_coef2 * car->aero.rot_vertical[1];
+    car->aero.Mz += car->aero.vertical_drag * dmg_coef2 * car->aero.rot_vertical[2];
 
 
 

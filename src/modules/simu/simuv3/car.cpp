@@ -78,9 +78,9 @@ SimCarConfig(tCar *car)
     }
     car->fuel_prev = car->fuel;
     k = k * k; 
-    car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k *car->dimension.z * car->dimension.z));
-    car->Iinv.y = 12.0 / (car->mass * (car->dimension.x * car->dimension.x + k * car->dimension.z * car->dimension.z));
-    car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
+    car->Iinv.x = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
+    car->Iinv.y = 12.0 / (car->mass * k * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
+    car->Iinv.z = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.x * car->dimension.x));
     
     // initialise rotational momentum
     for (i=0; i<4; i++) {
@@ -542,6 +542,7 @@ SimCarUpdate(tCar *car, tSituation * /* s */)
 void
 SimCarUpdate2(tCar *car, tSituation * /* s */)
 {
+    //printf("%f %f %f #Ax Ay Az\n", car->DynGC.acc.x/9.81, car->DynGC.acc.y/9.81, car->DynGC.acc.z/9.81);
 #if 0
     if (SimTelemetry == car->carElt->index) SimTelemetryOut(car);
 
