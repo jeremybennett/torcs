@@ -1,7 +1,7 @@
 Licenses
 --------
 Be aware of that not the whole TORCS distribution content has the same
-license. Especially the cars in the cars/kc-*, cars/pw-* and cars/vm-*
+license. Especially the cars in the cars/kc-* and cars/pw-*
 directories have special licenses, have a look at them. The rest of the
 distribution is licensed according the GPL and the Free Art License.
 
@@ -15,7 +15,7 @@ graphics drivers.
 Running TORCS
 -------------
 - Read the "How-To Drive" on www.torcs.org
-  (http://torcs.sourceforge.net/sections.php?op=viewarticle&artid=10).
+  (http://torcs.sourceforge.net/index.php?name=Sections&op=viewarticle&artid=10).
 - Press F1 anytime to get help (do it as well during the ride to learn about
   the options).
 - Read the FAQ to learn about split screen multiplayer and more.
@@ -24,7 +24,8 @@ Getting Help
 ------------
 First have a look at the available documentation on www.torcs.org and
 www.berniw.org. If you find no solution for the problem learn in the
-FAQ how and where to report a problem.
+FAQ how and where to report a problem. The best place to get help is the
+torcs-users mailing list, you find the link on www.torcs.org.
 
 Car Setups
 ----------
