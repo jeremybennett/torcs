@@ -209,9 +209,7 @@ SimWheelUpdateRide(tCar *car, int index)
 		wheel->rel_vel = 0.0f;
 	} else if (new_susp_x <= wheel->susp.spring.packers) {
         wheel->bump_force = wheel->mass * wheel->rel_vel / SimDeltaTime;
-        printf("BUMP: %f\n", wheel->bump_force);
-		wheel->rel_vel = 0.0f; // NOTE: Maybe we should just transfer the wheel's momentum to the car in that case
-
+		wheel->rel_vel = 0.0f; 
 	}
  
 	tdble prex = wheel->susp.x;
