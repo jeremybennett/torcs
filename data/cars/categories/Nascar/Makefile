@@ -20,9 +20,9 @@ DATADIR   = categories
 
 DATA      = $(shell find * -maxdepth 0 -type f -name '*.xml')
 
-data-cars-nascar_PKGFILES	= $(DATA)
+data_PKGFILES	= $(DATA)
 
-data-cars-nascar_PKGDIR		= $(DATADIR)
+data_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 

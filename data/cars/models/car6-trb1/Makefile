@@ -24,9 +24,9 @@ DATA      = $(CAR).xml \
             $(shell find *.acc -maxdepth 0 -type f -print) \
 	    	readme.txt 
 
-data-cars-extra_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)
+data_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)
 
-data-cars-extra_PKGDIR		= $(DATADIR)
+data_PKGDIR		= $(DATADIR)
 
 include ${MAKE_DEFAULT}
 
