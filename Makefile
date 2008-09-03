@@ -45,24 +45,17 @@ restart2:
 endif
 
 PKGLIST		= src \
-		  src-robots-base src-robots-berniw src-robots-K1999 \
+		  src-robots-base \
 		  data \
 		  data-cars-extra \
 		  data-cars-Patwo-Design \
-		  data-cars-VM \
-		  data-cars-nascar \
 		  data-cars-kcendra-gt \
 		  data-cars-kcendra-sport \
 		  data-cars-kcendra-roadsters \
 		  data-tracks-road \
 		  data-tracks-oval \
 		  data-tracks-dirt \
-		  data-devel \
-		  src-robots-bt \
-		  src-robots-olethros
-#\
-#		  src-robots-astigot \
-#		  src-robots-billy
+		  data-devel
 
 DATASUBDIRS	= data
 

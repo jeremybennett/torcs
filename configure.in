@@ -97,7 +97,9 @@ dnl Checks for libraries.
 dnl Replace `main' with a function in -lm:
 AC_CHECK_LIB(m, sin,,AC_MSG_ERROR([Can't find libm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 
-LDFLAGS="$LDFLAGS -L$x_libraries"
+if test "$x_libraries" != ""; then
+	LDFLAGS="$LDFLAGS -L$x_libraries"
+fi
 
 dnl Replace `main' with a function in -lX11:
 AC_CHECK_LIB(X11, XOpenDisplay,,AC_MSG_ERROR([Can't find libX11. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
@@ -225,6 +227,5 @@ AC_OUTPUT(Make-config \
 	src/tools/package/specfiles/torcs-data-tracks-base.spec \
 	src/tools/package/specfiles/torcs-robot-K1999.spec \
 	src/tools/package/specfiles/torcs-robot-base.spec \
-	src/tools/package/specfiles/torcs-robot-berniw.spec \
 	src/tools/package/specfiles/torcs.spec \
 )
