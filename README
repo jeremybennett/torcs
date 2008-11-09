@@ -87,6 +87,13 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.3.1-test1
+-------------------------
+- Compile fixes for gcc 4.3 reported by Mart Kelder (Mart Kelder, Bernhard).
+- Fixed clutch problems and improved ABS for human driver (Andrew Sumner,
+  Bernhard).
+- Set steer speed of car1-trb3 and p406 to 360 (Bernhard).
+
 Changes since 1.3.0
 -------------------
 - Applied patch for screen resolution change program crash when the path
@@ -110,19 +117,19 @@ Changes since 1.3.0
 - Car engine sound is now searched in the cars directory first (Eric).
 - Added new car, car7-trb1 (Bernhard).
 - Adjusted car1-7 performance settings (Bernhard).
-- Improvments for track Ruudskogen by Andrew (Andrew, Bernhard).
-- Improvments for track Street-1 by Andrew (Andrew, Bernhard).
+- Improvements for track Ruudskogen by Andrew (Andrew, Bernhard).
+- Improvements for track Street-1 by Andrew (Andrew, Bernhard).
 - Added new track Forza created by Andrew (Andrew, Bernhard).
-- Improvments for track wheel-2 by Andrew (Andrew, Bernhard).
+- Improvements for track wheel-2 by Andrew (Andrew, Bernhard).
 - Totally reworked track e-track-6 by Andrew (Andrew, Bernhard).
-- Improvments for track dirt-3 by Andrew (Andrew, Bernhard).
-- Improvments for track alpine-1 by Andrew (Andrew, Bernhard).
+- Improvements for track dirt-3 by Andrew (Andrew, Bernhard).
+- Improvements for track alpine-1 by Andrew (Andrew, Bernhard).
 - Fuel consumption adjustments on car1-7 (Wolf-Dieter, Andrew, Daniel,
   Bernhard).
 - Additional cameras on spring track by Wolf-Dieter (Wolf-Dieter, Bernhard).
 - Reparametrized 360-modena, renamed to car1-trb3 (Bernhard).
 - Removed unmaintained car models (Bernhard).
-- Reparameterized several models (Bernhard).
+- Reparametrized several models (Bernhard).
 - Adopted robots to the new car set (Bernhard).
 - Applied fix for broken race result list from Jean-Philippe Meuret
   (Jean-Philippe Meuret, Bernhard).
