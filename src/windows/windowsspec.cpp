@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include <sys/types.h>
 #include <time.h>
 #include <tgf.h>
@@ -247,7 +247,7 @@ windowsModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
     modnb = 0;
     curMod = (tModList*)calloc(1, sizeof(tModList));
 
-    // parcours du répertoire
+    // parcours du rï¿½pertoire
     _finddata_t FData;
     char Dir_name[ 1024 ];
     sprintf( Dir_name, "%s\\*.dll", dir );
