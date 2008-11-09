@@ -738,6 +738,10 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 			break;
 	}
 
+	// if player's used the clutch manually then we dispense with autoClutch
+	if (car->_clutchCmd != 0.0f)
+		HCtx[idx]->autoClutch = 0;
+
 	switch (cmd[CMD_THROTTLE].type) {
 		case GFCTRL_TYPE_JOY_AXIS:
 			throttle = joyInfo->ax[cmd[CMD_THROTTLE].val];
@@ -837,36 +841,17 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 				car->_brakeCmd = MIN(car->_brakeCmd, MAX(0.35, 1.0 - decel));
 			}
 
-			tdble meanSpd = 0;
+			const tdble abs_slip = 2.5;
+			const tdble abs_range = 5.0;
 
 			slip = 0;
 			for (i = 0; i < 4; i++) {
-				meanSpd += car->_wheelSpinVel(i);
+				slip += car->_wheelSpinVel(i) * car->_wheelRadius(i);
 			}
-			meanSpd /= 4.0;
+			slip = car->_speed_x - slip/4.0f;
 
-			if (meanSpd > 1.0) {
-				for (i = 0; i < 4; i++) {
-					if (((meanSpd - car->_wheelSpinVel(i)) / meanSpd) < -0.05) {
-						slip = 1.0;
-					}
-				}
-			}
-			if (slip != 0) {
-				HCtx[idx]->ABS *= 0.9;
-				if (HCtx[idx]->ABS < 0.1) {
-					HCtx[idx]->ABS = 0.1;
-				}
-			} else {
-				if (HCtx[idx]->ABS < 0.1) {
-					HCtx[idx]->ABS = 0.1;
-				}
-				HCtx[idx]->ABS *= 1.1;
-				if (HCtx[idx]->ABS > 1.0) {
-					HCtx[idx]->ABS = 1.0;
-				}
-			}
-			car->_brakeCmd = MIN(car->_brakeCmd, HCtx[idx]->ABS * 1.5);
+			if (slip > abs_slip)
+				car->_brakeCmd = car->_brakeCmd - MIN(car->_brakeCmd*0.8, (slip - abs_slip) / abs_range);
 		}
 	}
 
@@ -1040,7 +1025,7 @@ static void drive_mt(int index, tCarElt* car, tSituation *s)
 		}
 	}
 
-	if (HCtx[idx]->autoClutch)
+	if (HCtx[idx]->autoClutch && car->_clutchCmd == 0.0f)
 		car->_clutchCmd = getAutoClutch(idx, car->_gear, car->_gearCmd, car);
 
 }
@@ -1153,7 +1138,7 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 		}
     }
 
-	if (HCtx[idx]->autoClutch)
+	if (HCtx[idx]->autoClutch && car->_clutchCmd == 0.0f)
 	    car->_clutchCmd = getAutoClutch(idx, car->_gear, car->_gearCmd, car);
 }
 
