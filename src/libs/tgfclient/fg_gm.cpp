@@ -2,7 +2,7 @@
 
     file        : fg_gm.cpp
     created     : Sat Mar  8 14:40:50 CET 2003
-    copyright   : (C) 2003 by Eric Espié
+    copyright   : (C) 2003 by Eric Espiï¿½
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -45,7 +45,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <math.h>
 

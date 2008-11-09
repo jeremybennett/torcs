@@ -22,7 +22,6 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <string.h>
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -111,12 +110,10 @@ bool grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 
 	mipmap = doMipMap(fname, mipmap);
 
-#ifdef WIN32
 	GLubyte* tex2 = new GLubyte[w*h*4];
 	memcpy(tex2, tex, w*h*4);
 	free(tex);
 	tex = tex2;
-#endif // WIN32
 	
 	return grMakeMipMaps(tex, w, h, 4, mipmap);
 }

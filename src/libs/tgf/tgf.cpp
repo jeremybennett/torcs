@@ -27,7 +27,6 @@
 
 #include <tgf.h>
 #include <time.h>
-#include <string.h>
 
 extern void gfDirInit(void);
 extern void gfModInit(void);

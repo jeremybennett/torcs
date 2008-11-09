@@ -24,7 +24,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <tgfclient.h>
 #include <raceinit.h>
 #include <graphic.h>

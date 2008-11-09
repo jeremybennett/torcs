@@ -2,7 +2,7 @@
 
     file                 : texmapper.cpp
     created              : Mon Nov 13 21:25:19 CET 2000
-    copyright            : (C) 2000 by Eric Espié
+    copyright            : (C) 2000 by Eric Espiï¿½
     email                : Eric.Espie@torcs.org
     version              : $Id$
 
@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
+#include <cstring>
 #include <unistd.h>
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE

@@ -20,8 +20,6 @@
 #include <iostream>
 #include <iomanip>
 
-#include <string.h>
-
 #include <tgf.h>
 
 

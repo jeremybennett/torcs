@@ -2,7 +2,7 @@
 
     file        : soundconfig.cpp
     created     : Thu Dec 12 15:12:07 CET 2004
-    copyright   : (C) 2004 Eric Espié, Bernhard Wymann, baseed on simuconfig.cpp
+    copyright   : (C) 2004 Eric Espiï¿½, Bernhard Wymann, baseed on simuconfig.cpp
     email       : berniw@bluewin.ch
     version     : $Id$
 
@@ -24,7 +24,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <tgfclient.h>
 #include <raceinit.h>
 #include <graphic.h>

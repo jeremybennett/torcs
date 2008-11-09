@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // -dw- for memcpy
+#include <cstring>
 
 #ifdef macintosh
 #  include <InputSprocket.h>

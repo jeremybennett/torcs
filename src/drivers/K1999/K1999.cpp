@@ -27,7 +27,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <fstream.h>
-#include <string.h>
 
 #include "tgf.h" 
 #include "track.h" 

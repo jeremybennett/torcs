@@ -21,7 +21,7 @@
 #define _TORCS_PORTABILITY_H_
 
 #include <stdlib.h>
-#include <string.h>
+#include <cstring>
 
 #ifdef WIN32
 #define HAVE_CONFIG_H

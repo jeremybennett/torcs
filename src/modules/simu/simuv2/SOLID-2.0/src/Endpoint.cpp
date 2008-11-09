@@ -32,7 +32,7 @@
 #include "Object.h"
 #include "Encounter.h"
 
-#include <new.h>
+#include <new>
 
 void addPair(ObjectPtr object1, ObjectPtr object2);
 void removePair(ObjectPtr object1, ObjectPtr object2);

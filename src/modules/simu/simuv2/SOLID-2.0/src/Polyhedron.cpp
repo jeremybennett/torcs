@@ -37,7 +37,7 @@ extern "C" {
 }
 
 #include <vector>
-#include <new.h>  
+#include <new>  
 
 typedef vector<unsigned int> IndexBuf;
 

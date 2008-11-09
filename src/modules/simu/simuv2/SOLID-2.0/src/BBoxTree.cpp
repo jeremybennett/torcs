@@ -32,7 +32,7 @@
 #include "Transform.h"
 
 #include <algorithm>
-#include <new.h>
+#include <new>
 
 class BBoxCompAxis {
 public:

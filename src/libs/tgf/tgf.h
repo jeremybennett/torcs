@@ -37,7 +37,7 @@
 #include <windows.h>
 #endif
 #include <stdarg.h>
-#include <string.h>
+#include <cstring>
 #include <math.h>
 #include <osspec.h>
 
