@@ -254,7 +254,7 @@
 	
 	<section name="Steer">
 		<attnum name="steer lock" min="10" max="45" unit="deg" val="38"/>
-		<attnum name="max steer speed" min="1" max="360" unit="deg/s" val="120"/>
+		<attnum name="max steer speed" min="1" max="360" unit="deg/s" val="360"/>
 	</section>
 	
 	
