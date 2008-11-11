@@ -37,13 +37,18 @@ robot tutorial chapter 5
 
 Creating Tracks
 ---------------
-There is a track editor in development, have a look at
-http://katergo.rege.org/projects/trackeditor.
+The track editor is included in the TORCS distribution for Windows. It
+is automatically installed if you select to install the "developer
+tools".
+Alternatively you can get it from
+http://sourceforge.net/projects/trackeditor or
+http://www.berniw.org/trb/download/trackeditor-0.6.2c.tar.bz2.
+The sources are included in the jars.
 
 Robot programming
 -----------------
 You find a robot programming tutorial on www.berniw.org in the TORCS section.
 
-Robot racing
-------------
+Official Championships
+----------------------
 Visit www.berniw.org/trb for more information.

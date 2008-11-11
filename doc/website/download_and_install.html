@@ -13,7 +13,7 @@
 -->
 
 
-<h1>TORCS 1.3.0 Download &amp; Installation</h1>
+<h1>TORCS 1.3.1 Download &amp; Installation</h1>
 	<p><hr noshade="noshade" size="2" width="100%"></p>
 
 	<ul>
@@ -34,7 +34,7 @@
     <p><hr noshade="noshade" size="2" width="100%"></p>
     <h2><a name="win32-bin"></a>Binary Installer Package For Windows</h2>
     <ul>
-      <li>Download and run <a href="http://prdownloads.sourceforge.net/torcs/torcs_1_3_0_setup.exe?download">torcs_1_3_0_setup.exe</a>.
+      <li>Download and run <a href="http://prdownloads.sourceforge.net/torcs/torcs_1_3_1_setup.exe?download">torcs_1_3_1_setup.exe</a>.
 	  It requires at least an i686 compatible CPU to run.
       </li>
     </ul>
@@ -50,8 +50,8 @@
 		This binary is dynamically linked, be aware that it is possible that this does not work on your system.
 		If you try it anyway please report any problems or as well successful installs, such that we can improve it
 		(without feedback this is not possible, of course the installer works on our systems). You can get it
-		<a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.0-linux-glibc-2.3-pIII.bz2.run?download">here</a>.
-		Install it with "torcs-1.3.0-linux-glibc-2.3-pIII.bz2.run". To resolve missing dynamic libraries you
+		<a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.1-linux-glibc-2.3-pIII.bz2.run?download">here</a>.
+		Install it with "torcs-1.3.1-linux-glibc-2.3-pIII.bz2.run". To resolve missing dynamic libraries you
 		can run "torcs -l" (have a look at <a href="#commandlineopts">the command line options</a>).
 		It requires at least a Pentium 3 compatible CPU to run.
 	</p>
@@ -78,12 +78,12 @@
 
 	<ol>
 		<li>Check the <a href="#dependencies"><b>dependencies</b></a></li>
-		<li>Download the source package <a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.0.tar.bz2?download">torcs-1.3.0.tar.bz2</a>.</li>
-		<li>Unpack the package with "tar xfvj torcs-1.3.0.tar.bz2".</li>
+		<li>Download the source package <a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.1.tar.bz2?download">torcs-1.3.1.tar.bz2</a>.</li>
+		<li>Unpack the package with "tar xfvj torcs-1.3.1.tar.bz2".</li>
 		<li>Run the following commands:
 		<p>
 		<pre>
-$ cd torcs-1.3.0
+$ cd torcs-1.3.1
 $ ./configure        # --prefix="target dir", --enable-debug or --disable-xrandr might be of interest
 $ make
 $ make install
@@ -118,10 +118,10 @@ $ make datainstall
 
 	<ol>
 		<li>Requires VC++ 6.0 (tested with sp6).</li>
-		<li>Download the source package <a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.0.tar.bz2?download">torcs-1.3.0.tar.bz2</a>.</li>
-		<li>Unpack the package with "tar xfvj torcs-1.3.0.tar.bz2" or any application you like, be careful to select a path without whitespaces and other special characters.</li>
+		<li>Download the source package <a href="http://prdownloads.sourceforge.net/torcs/torcs-1.3.1.tar.bz2?download">torcs-1.3.1.tar.bz2</a>.</li>
+		<li>Unpack the package with "tar xfvj torcs-1.3.1.tar.bz2" or any application you like, be careful to select a path without whitespaces and other special characters.</li>
 		<li>Hint: You can build a release and a debug version side by side, the required step for the debug version is showed in brackets "()".</li>
-		<li>Open a command prompt and cd into the torcs-1.3.0 directory.</li>
+		<li>Open a command prompt and cd into the torcs-1.3.1 directory.</li>
 		<li>Run setup_win32.bat (setup_win32_debug.bat).
 		<li>Run setup_win32-data-from-CVS.bat (setup_win32-data-from-CVS_debug.bat).
 		<li>Open the file TORCS.dsw with vc++ 6.0.</li>
@@ -144,23 +144,16 @@ $ make datainstall
 		<li>Check the <a href="#dependencies"><b>dependencies</b></a></li>
 		<li>Download the following source packages:
 			<ul>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-src.tgz?download">TORCS-1.3.0-src.tgz</a> (<b>mandatory</b>)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-src-robots-base.tgz?download">TORCS-1.3.0-src-robots-base.tgz</a> (<b>mandatory</b>)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-src.tgz?download">TORCS-1.3.1-src.tgz</a> (<b>mandatory</b>)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-src-robots-base.tgz?download">TORCS-1.3.1-src-robots-base.tgz</a> (<b>mandatory</b>)</li>
 			</ul>
-			and optionally additional opponents, of course you should get all:
-			<ul>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-src-robots-berniw.tgz?download">TORCS-1.3.0-src-robots-berniw.tgz</a></li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-src-robots-bt.tgz?download">TORCS-1.3.0-src-robots-bt.tgz</a></li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-src-robots-olethros.tgz?download">TORCS-1.3.0-src-robots-olethros.tgz</a></li>
-			</ul>
-			<br>
 		</li>
 
 		<li>Unpack the packages (tar xvfz filename.tgz)</li>
 		<li>Run the following commands:
 		<p>
 		<pre>
-$ cd torcs-1.3.0
+$ cd torcs-1.3.1
 $ ./configure        # --prefix="target dir", --enable-debug or --disable-xrandr might be of interest
 $ make
 $ make install
@@ -180,17 +173,15 @@ $ make install
 
 		<li>Download the following data packages:
 			<ul>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data.tgz?download">TORCS-1.3.0-data.tgz</a> (<b>mandatory</b>, system data)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-tracks-road.tgz?download">TORCS-1.3.0-data-tracks-road.tgz</a> (<b>mandatory</b>, road-circuit tracks)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-extra.tgz?download">TORCS-1.3.0-data-cars-extra.tgz</a> (<b>mandatory</b>, cars)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-tracks-oval.tgz?download">TORCS-1.3.0-data-tracks-oval.tgz</a> (oval-like tracks, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-tracks-dirt.tgz?download">TORCS-1.3.0-data-tracks-dirt.tgz</a> (dirt tracks, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-nascar.tgz?download">TORCS-1.3.0-data-cars-nascar.tgz</a> (Nascar cars, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-Patwo-Design.tgz?download">TORCS-1.3.0-data-cars-Patwo-Design.tgz</a> (rally cars, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-kcendra-gt.tgz?download">TORCS-1.3.0-data-cars-kcendra-gt.tgz</a> (GT cars from the 60's, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-kcendra-roadsters.tgz?download">TORCS-1.3.0-data-cars-kcendra-roadsters.tgz</a> (roadsters from the 60's, optional)</li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-kcendra-sport.tgz?download">TORCS-1.3.0-data-cars-kcendra-sport.tgz</a> (sport cars from the 60's, optional) </li>
-				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.0-data-cars-VM.tgz?download">TORCS-1.3.0-data-cars-VM.tgz</a> (race cars, optional)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data.tgz?download">TORCS-1.3.1-data.tgz</a> (<b>mandatory</b>, system data)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-tracks-road.tgz?download">TORCS-1.3.1-data-tracks-road.tgz</a> (<b>mandatory</b>, road-circuit tracks)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-cars-extra.tgz?download">TORCS-1.3.1-data-cars-extra.tgz</a> (<b>mandatory</b>, cars)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-tracks-oval.tgz?download">TORCS-1.3.1-data-tracks-oval.tgz</a> (<b>mandatory</b>, oval-like tracks)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-tracks-dirt.tgz?download">TORCS-1.3.1-data-tracks-dirt.tgz</a> (<b>mandatory</b>, dirt tracks)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-cars-Patwo-Design.tgz?download">TORCS-1.3.1-data-cars-Patwo-Design.tgz</a> (rally cars, optional)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-cars-kcendra-gt.tgz?download">TORCS-1.3.1-data-cars-kcendra-gt.tgz</a> (GT cars from the 60's, optional)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-cars-kcendra-roadsters.tgz?download">TORCS-1.3.1-data-cars-kcendra-roadsters.tgz</a> (roadsters from the 60's, optional)</li>
+				<li><a href="http://prdownloads.sourceforge.net/torcs/TORCS-1.3.1-data-cars-kcendra-sport.tgz?download">TORCS-1.3.1-data-cars-kcendra-sport.tgz</a> (sport cars from the 60's, optional) </li>
 			</ul>
 			</br>
 		</li>
@@ -220,8 +211,8 @@ $ make install
     You have to run the following commands to get the sources (might sometimes not compile or crash):
     <p>
       <tt>cvs -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs login</tt>
-      <br></br>The main trunk is:<br></br>
-      <tt>cvs -z3 -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs co -P torcs</tt>
+      <br></br>The 1.3.1 trunk is:<br></br>
+      <tt>cvs -z3 -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs co -r r1-3-1 -P torcs</tt>
       <br></br>
       <a href="http://sourceforge.net/cvs/?group_id=3777">Get more info on CVS</a>
     </p>
@@ -268,8 +259,8 @@ $ make datainstall
 	<li>Hardware accelerated OpenGL (usually provided by your distro).</li>
 	<li><a href="http://www.opengl.org/developers/documentation/glut/index.html?glut#first_hit" target="_top">GLUT 3.7</a>.</li>
 	<li>Or <a href="http://freeglut.sourceforge.net/" target="_top">FreeGlut</a> (better for full screen support than GLUT).</li>
-	<li><a href="http://plib.sourceforge.net/" target="_top">PLIB 1.8.3 version</a>.</li>
-	<li><a href="http://sourceforge.net/project/showfiles.php?group_id=3777&package_id=158735">Modified OpenAL</a> for optimal sound.</li>
+	<li><a href="http://plib.sourceforge.net/" target="_top">PLIB 1.8.5 version</a>.</li>
+	<li><a href="http://www.openal.org">OpenAL</a>.</li>
 	<li><a href="http://libpng.sourceforge.net" target="_top">libpng and zlib</a> (usually provided by your distro).</li>
     </blockquote>
 
