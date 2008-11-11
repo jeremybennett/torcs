@@ -16,11 +16,11 @@ readme.txt for details:
 
 Linux Installation from Source
 -------------------------------
-- Requires plib 1.8.3, FreeGLUT or GLUT, be aware to compile plib with -fPIC
+- Requires plib 1.8.5, FreeGLUT or GLUT, be aware to compile plib with -fPIC
   on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
-  1.8.3 works.
+  1.8.5 works.
 - Untar the archive
-- cd into the torcs-1.3.0 directory
+- cd into the torcs-1.3.1 directory
 - ./configure (use --help for showing the options, of interest might be
   --enable-debug and --disable-xrandr).
 - make
@@ -43,7 +43,7 @@ Windows Installation from Source (Release)
   version goes to "runtime" and the debug to "runtimed".
 - requires VC++ 6.0 (tested with sp6)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.0 directory
+- cd into the torcs-1.3.1 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
 - select the TORCS project and the w32-Release version
@@ -58,7 +58,7 @@ Windows Installation from Source (Debug version)
   version goes to "runtimed" and the release to "runtime".
 - requires VC++ 6.0 (tested with sp6)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.0 directory
+- cd into the torcs-1.3.1 directory
 - run setup_win32_debug.bat
 - run setup_win32-data-from-CVS_debug.bat
 - select the TORCS project and the w32-Debug version
@@ -93,6 +93,8 @@ Changes since 1.3.1-test1
 - Fixed clutch problems and improved ABS for human driver (Andrew Sumner,
   Bernhard).
 - Set steer speed of car1-trb3 and p406 to 360 (Bernhard).
+- Removed outdated README/INSTALL files (Bernhard).
+- Update FAQ and installation instructions (Bernhard).
 
 Changes since 1.3.0
 -------------------
