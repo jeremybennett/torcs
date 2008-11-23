@@ -16,7 +16,7 @@
 
 AC_INIT(Make-config.in)
 AC_CONFIG_HEADERS(config.h)
-AM_INIT_AUTOMAKE(torcs, 1.3.1-test1)
+AM_INIT_AUTOMAKE(torcs, 1.3.1)
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -116,7 +116,7 @@ AC_CHECK_LIB(Xi, XOpenDevice,,AC_MSG_ERROR([Can't find libXi. Please check confi
 dnl Replace `main' with a function in -lXmu:
 AC_CHECK_LIB(Xmu, XmuSimpleErrorHandler,,AC_MSG_ERROR([Can't find libXmu. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(Xxf86vm, XF86VidModeSetViewPort,,AC_MSG_ERROR([Can't find libXxf86vm. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
-AC_CHECK_LIB(Xrender, XRenderSetSubpixelOrder,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
+AC_CHECK_LIB(Xrender, XRenderSetSubpixelOrder,,AC_MSG_ERROR([Can't find libXrender. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(Xrandr, XRRQueryVersion,,AC_MSG_ERROR([Can't find libXrandr. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_LIB(openal, alEnable,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL can be found on http://www.openal.org/]))
 AC_CHECK_LIB(alut, alutLoadWAVFile,
