@@ -77,7 +77,7 @@ Page custom PageReinstall PageLeaveReinstall
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "torcs_1_3_1-test1_setup.exe"
+OutFile "torcs_1_3_1_setup.exe"
 InstallDir "$PROGRAMFILES\torcs"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
