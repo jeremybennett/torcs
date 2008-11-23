@@ -94,7 +94,12 @@ Changes since 1.3.1-test1
   Bernhard).
 - Set steer speed of car1-trb3 and p406 to 360 (Bernhard).
 - Removed outdated README/INSTALL files (Bernhard).
-- Update FAQ and installation instructions (Bernhard).
+- Updated FAQ and installation instructions (Bernhard).
+- Applied wheel-2 texture updates created by Eckhard and Andrew (Eckhard,
+  Andrew, Bernhard).
+- Changed version to 1.3.1 (Bernhard).
+- Fixed #1674545 (Bernhard).
+
 
 Changes since 1.3.0
 -------------------
