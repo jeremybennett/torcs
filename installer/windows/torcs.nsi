@@ -15,8 +15,8 @@
 !define VER_MAJOR 1
 !define VER_MINOR 3
 !define VER_REVISION 1
-!define VER_EXTRA -test1
-!define VER_RELDATE 20080831
+!define VER_EXTRA
+!define VER_RELDATE 20081123
 
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
 !define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
@@ -1098,12 +1098,40 @@ Section "Base System" SEC01
   File "base\Ticon.ico"
   File "base\Ticon.png"
   File "base\trackgen.exe"
-  
-    SetOutPath "$INSTDIR\tracks\dirt\dirt-1"
+
+  SetOutPath "$INSTDIR\tracks\dirt\dirt-1"
   File "base\tracks\dirt\dirt-1\background.png"
-  File "base\tracks\dirt\dirt-1\dirt-1.ac"
+  File "base\tracks\dirt\dirt-1\castle-arbor_n.rgb"
+  File "base\tracks\dirt\dirt-1\concrete_white.rgb"
+  File "base\tracks\dirt\dirt-1\dirt-1.acc"
   File "base\tracks\dirt\dirt-1\dirt-1.png"
   File "base\tracks\dirt\dirt-1\dirt-1.xml"
+  File "base\tracks\dirt\dirt-1\pylon-arbor_n.rgb"
+  File "base\tracks\dirt\dirt-1\pylon3.rgb"
+  File "base\tracks\dirt\dirt-1\readme.txt"
+  File "base\tracks\dirt\dirt-1\rock3.rgb"
+  File "base\tracks\dirt\dirt-1\shadow2.rgb"
+  File "base\tracks\dirt\dirt-1\tr-barrier-curve.rgb"
+  File "base\tracks\dirt\dirt-1\tr-barrier-start.rgb"
+  File "base\tracks\dirt\dirt-1\tr-barrier.rgb"
+  File "base\tracks\dirt\dirt-1\tr-dirt.rgb"
+  File "base\tracks\dirt\dirt-1\tr-dirtb.rgb"
+  File "base\tracks\dirt\dirt-1\tr-grass.rgb"
+  File "base\tracks\dirt\dirt-1\tree13_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree15_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree16_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree17_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree1_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree2_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree3_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree4_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree5_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree7_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree8_n.rgb"
+  File "base\tracks\dirt\dirt-1\tree9_n.rgb"
+  File "base\tracks\dirt\dirt-1\water.rgb"
+  File "base\tracks\dirt\dirt-1\waterplants-arbor_n.rgb"
+
   SetOutPath "$INSTDIR\tracks\dirt\dirt-2"
   File "base\tracks\dirt\dirt-2\background.png"
   File "base\tracks\dirt\dirt-2\dirt-2.ac"
