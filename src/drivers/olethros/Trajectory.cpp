@@ -282,17 +282,6 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
     }
 
 
-    if (fname && strcmp(fname, "")) {
-#ifdef DBG_OPTIMISE
-        fprintf (stderr, "# writing output to %s\n", fname);
-#endif
-        /*FILE* f = fopen (fname, "w");
-        for (int i=0; i<N; ++i) {
-            Point p = GetPoint(track[i], w[i]);
-            fprintf (f, "%f %f\n", p.x, p.y);
-        }
-        fclose(f);*/
-    }
 
 }
 
