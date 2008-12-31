@@ -480,26 +480,26 @@ windowsModUnloadList(tModList **modlist)
 static int
 windowsModFreeInfoList(tModList **modlist)
 {
-    tModList	*curMod;
-    tModList	*nextMod;
-    int		i;
-    
-    curMod = *modlist;
-    nextMod = curMod->next;
-    do {
-	curMod = nextMod;
-	for (i = 0; i < MAX_MOD_ITF; i++) {
-	    if (curMod->modInfo[i].name) {
-		free(curMod->modInfo[i].name);
-		free(curMod->modInfo[i].desc);
-	    }
-	}
-	free(curMod->sopath);
-	free(curMod);
-    } while (curMod != *modlist);
-    
-    *modlist = (tModList *)NULL;
-    return 0;
+	tModList	*curMod;
+	tModList	*nextMod;
+	int		i;
+	
+	curMod = *modlist;
+	nextMod = curMod->next;
+	do {
+		curMod = nextMod;
+		for (i = 0; i < MAX_MOD_ITF; i++) {
+			if (curMod->modInfo[i].name) {
+				free(curMod->modInfo[i].name);
+				free(curMod->modInfo[i].desc);
+			}
+		}
+		free(curMod->sopath);
+		free(curMod);
+	} while (curMod != *modlist);
+	
+	*modlist = (tModList *)NULL;
+	return 0;
 }
 
 /*
@@ -516,7 +516,7 @@ windowsModFreeInfoList(tModList **modlist)
 *	list of directory entries
 */
 static tFList *
-windowsDirGetList(char *dir)
+windowsDirGetList(const char *dir)
 {
     tFList	*flist = NULL;
     tFList	*curf;
@@ -574,7 +574,7 @@ windowsDirGetList(char *dir)
 *	list of directory entries
 */
 static tFList *
-windowsDirGetListFiltered(char *dir, char *suffix)
+windowsDirGetListFiltered(const char *dir, const char *suffix)
 {
     tFList	*flist = NULL;
     tFList	*curf;

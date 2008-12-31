@@ -69,22 +69,22 @@ void SimulationOptions::LoadFromFile(void* handle) {
     SetFloatFromGfParm (handle, PRM_MODEL_AERO_FACTOR);
 }
 
-void SimulationOptions::SetFloatFromGfParm(void* handle, char* name) {
+void SimulationOptions::SetFloatFromGfParm(void* handle, const char* name) {
     float v;
     option_list.Get(name, v);
     v = GfParmGetNum (handle, SECT_SIMU_SETTINGS, name, (char*) NULL, v);
     option_list.Set(name, v);
 }
 
-void SimulationOptions::SetBoolFromGfParm(void* handle, char* name) {
+void SimulationOptions::SetBoolFromGfParm(void* handle, const char* name) {
     bool v;
     option_list.Get(name, v);
-    char* s = GfParmGetStr (handle, SECT_SIMU_SETTINGS, name, "none");
+    const char* s = GfParmGetStr (handle, SECT_SIMU_SETTINGS, name, "none");
     v = StrToBool (s, v);
     option_list.Set(name, v);
 }
 
-bool SimulationOptions::StrToBool (char* s, bool dontcare)
+bool SimulationOptions::StrToBool (const char* s, bool dontcare)
 {
     if (!strcasecmp(s,"true")) {
         return true;

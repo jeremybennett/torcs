@@ -79,8 +79,8 @@ const int nbCmdControl = sizeof(CmdControlRef) / sizeof(CmdControlRef[0]);
 
 typedef struct
 {
-    char	*settings;
-    char	*parmName;
+    const char	*settings;
+    const char	*parmName;
 } tCtrl;
 
 
@@ -92,15 +92,15 @@ static tCtrl	controlList[] = {
 static const int nbControl = sizeof(controlList) / sizeof(controlList[0]);
 
 
-char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
+const char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 
 /* int MouseControlUsed = 0; */
 
 void
 HmReadPrefs(int index)
 {
-    char	*prm;
-    char	*defaultSettings;
+    const char	*prm;
+    const char	*defaultSettings;
     char	sstring[1024];
     int		cmd;
     float	tmp;

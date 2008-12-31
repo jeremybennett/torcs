@@ -113,62 +113,62 @@ ChangeSkid(void * /* dummy */)
 void *
 GraphMenuInit(void *prevMenu)
 {
-    int		x, y, x2, dy;
-
-    /* screen already created */
-    if (scrHandle) {
-	return scrHandle;
-    }
-    
-    scrHandle = GfuiMenuScreenCreate("Graphic Configuration");
-
-    GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
-
-    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-    void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-
-    x = 50;
-    x2 = 200;
-    y = 370;
-    dy = 30;
-
-    GfuiLabelCreate(scrHandle, "Visibility (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-    FovFactorValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", 100.0);
-    sprintf(buf, "%d", FovFactorValue);
-    FovEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				  x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeFov);
-
-    y -= dy;
-    GfuiLabelCreate(scrHandle, "Smoke:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-    SmokeValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, 300.0);
-    sprintf(buf, "%d", SmokeValue);
-    SmokeEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				    x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeSmoke);
-
-    y -= dy;
-    GfuiLabelCreate(scrHandle, "Skid Marks:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-    SkidValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, 20.0);
-    sprintf(buf, "%d", SkidValue);
-    SkidEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				   x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeSkid);
-
-    y -= dy;
-    GfuiLabelCreate(scrHandle, "LOD factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-    LodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
-    sprintf(buf, "%g", LodFactorValue);
-    LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+	int		x, y, x2, dy;
+	
+	/* screen already created */
+	if (scrHandle) {
+		return scrHandle;
+	}
+	
+	scrHandle = GfuiMenuScreenCreate("Graphic Configuration");
+	
+	GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
+	
+	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	
+	x = 50;
+	x2 = 200;
+	y = 370;
+	dy = 30;
+	
+	GfuiLabelCreate(scrHandle, "Visibility (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	FovFactorValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", 100.0);
+	sprintf(buf, "%d", FovFactorValue);
+	FovEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+					x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeFov);
+	
+	y -= dy;
+	GfuiLabelCreate(scrHandle, "Smoke:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	SmokeValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, 300.0);
+	sprintf(buf, "%d", SmokeValue);
+	SmokeEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+					x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeSmoke);
+	
+	y -= dy;
+	GfuiLabelCreate(scrHandle, "Skid Marks:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	SkidValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, 20.0);
+	sprintf(buf, "%d", SkidValue);
+	SkidEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+					x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeSkid);
+	
+	y -= dy;
+	GfuiLabelCreate(scrHandle, "LOD factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	LodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
+	sprintf(buf, "%g", LodFactorValue);
+	LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, 100, 16, NULL, (tfuiCallback)NULL, ChangeLodFactor);
-
-
-    GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     prevMenu, SaveGraphicOptions, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-    GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-    GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
-
+	
+	
+	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				prevMenu, SaveGraphicOptions, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	
+	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	
+	GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
+	
 	GfParmReleaseHandle(grHandle);
-
-    return scrHandle;
+	
+	return scrHandle;
 }

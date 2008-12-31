@@ -119,7 +119,7 @@ void SimSuspUpdate(tSuspension *susp)
 
 
 
-void SimSuspConfig(void *hdle, char *section, tSuspension *susp, tdble F0, tdble X0)
+void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0, tdble X0)
 {
 	susp->spring.K          = GfParmGetNum(hdle, section, PRM_SPR, (char*)NULL, 175000.0f);
 	susp->spring.xMax       = GfParmGetNum(hdle, section, PRM_SUSPCOURSE, (char*)NULL, 0.5f);

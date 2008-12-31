@@ -33,7 +33,11 @@
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 // Texture compression.
-static char *textureCompressOptionList[] = {GR_ATT_TEXTURECOMPRESSION_DISABLED, GR_ATT_TEXTURECOMPRESSION_ENABLED};
+static const char *textureCompressOptionList[] = {
+	GR_ATT_TEXTURECOMPRESSION_DISABLED,
+	GR_ATT_TEXTURECOMPRESSION_ENABLED
+};
+
 static const int nbOptionsTextComp = sizeof(textureCompressOptionList) / sizeof(textureCompressOptionList[0]);
 static int curOptionTextComp = 0;
 static int TextureCompressOptionId;
@@ -61,7 +65,7 @@ static void readOpenGLCfg(void)
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	// Read texture compression parameters.
-	char *optionName = GfParmGetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, textureCompressOptionList[0]);
+	const char *optionName = GfParmGetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, textureCompressOptionList[0]);
 	for (i = 0; i < nbOptionsTextComp; i++) {
 		if (strcmp(optionName, textureCompressOptionList[i]) == 0) {
 			curOptionTextComp = i;

@@ -24,21 +24,21 @@
 
 
 typedef struct {
-    char	*name;		/* Name of the control */
+    const char	*name;		/* Name of the control */
     int		type;		/* Type of control (analog, joy button, keyboard) */
     int		val;		/* control index */
-    char	*minName;	/* Name of the min attribute */
+    const char	*minName;	/* Name of the min attribute */
     float	min;		/* min value for analog control */
     float	minVal;		/* another min value for analog control*/
-    char	*maxName;	/* Name of the max attribute */
+    const char	*maxName;	/* Name of the max attribute */
     float	max;		/* max value for analog control */
-    char	*sensName;	/* Name of the sens attribute */
+    const char	*sensName;	/* Name of the sens attribute */
     float	sens;		/* sensitivity of control */
-    char	*powName;	/* Name of the pow attribute */
+    const char	*powName;	/* Name of the pow attribute */
     float	pow;		/* power of curve command = pow(control, power) */
-    char	*spdSensName;	/* Name of the speed sensitivity attribute */
+    const char	*spdSensName;	/* Name of the speed sensitivity attribute */
     float	spdSens;	/* speed sensitivity */
-    char	*deadZoneName;	/* Name of the dead zone attribute */
+    const char	*deadZoneName;	/* Name of the dead zone attribute */
     float	deadZone;	/* dead zone (% of the available zone) */
 } tControlCmd;
 
@@ -48,7 +48,7 @@ extern void	*PrefHdle;
 extern const int nbCmdControl;
 
 
-extern char *Yn[];
+extern const char *Yn[];
 
 #define	CMD_UP_SHFT	0
 #define	CMD_DN_SHFT	1

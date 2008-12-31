@@ -136,8 +136,8 @@ typedef struct
     void		*gameScreen;
     void		*menuScreen;
     char		*filename;
-    char		*name;
-    char		*raceName;
+    const char *name;
+    const char *raceName;
     tReCarInfo		*carInfo;
     double		curTime;
     double		lastTime;
@@ -187,7 +187,7 @@ typedef struct RmMovieCapture
     double	deltaSimu;
     double	deltaFrame;
     double	lastFrame;
-    char	*outputBase;
+    const char *outputBase;
     int		currentCapture;
     int		currentFrame;
 } tRmMovieCapture;

@@ -32,7 +32,7 @@ static tdble 	ExtHeight;
 static tdble 	GridStep;
 static tdble	TrackStep;
 static char	buf[1024];
-static char	*TexName;
+static const char	*TexName;
 static tdble	TexSize;
 static tdble	TexRand;
 
@@ -1816,7 +1816,7 @@ groups(void)
 
 
 static void
-draw_ac(FILE *ac_file, char *name)
+draw_ac(FILE *ac_file, const char *name)
 {
     int			i, j, k;
     struct group	*curGrp;
@@ -2215,8 +2215,8 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 void
 GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, int noElevation)
 {
-    char	*FileName;
-    char	*mat;
+    const char	*FileName;
+    const char	*mat;
     FILE	*curFd = NULL;
 
     TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, 10.0);

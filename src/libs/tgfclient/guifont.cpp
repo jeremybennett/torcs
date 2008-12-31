@@ -38,7 +38,7 @@ static char buf[1024];
 
 #define FONT_NB	9
 GfuiFontClass *gfuiFont[FONT_NB];
-char *keySize[4] = { "size big", "size large", "size medium", "size small" };
+const char *keySize[4] = { "size big", "size large", "size medium", "size small" };
 
 
 #ifndef WIN32
@@ -62,14 +62,13 @@ void swap32(unsigned int *p, unsigned int size)
 void gfuiLoadFonts(void)
 {
 	void *param;
-	char *fontName;
 	int	size;
 	int	i;
 
 	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	param = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-	fontName = GfParmGetStr(param, "Menu Font", "name", "b5.glf");
+	const char* fontName = GfParmGetStr(param, "Menu Font", "name", "b5.glf");
 	sprintf(buf, "data/fonts/%s", fontName);
 
 	for(i = 0; i < 4; i++) {

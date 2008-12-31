@@ -42,7 +42,7 @@ class cGrBoard
     void grDispGGraph(tCarElt *car);
     void grDispCarBoard1(tCarElt *car, tSituation *s);
     void grDispMisc(tCarElt *car);
-    void grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, char *title);
+    void grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, const char *title);
     void grDispCarBoard2(tCarElt *car, tSituation *s);
     void grDispCarBoard(tCarElt *car, tSituation *s);
     void grDispCounterBoard(tCarElt *car);

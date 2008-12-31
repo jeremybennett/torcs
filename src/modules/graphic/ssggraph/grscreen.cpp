@@ -382,7 +382,7 @@ void cGrScreen::loadParams(tSituation *s)
 	int camNum;
 	int i;
 	class cGrCamera *cam;
-	char *carName;
+	const char *carName;
 	
 	sprintf(path, "%s/%d", GR_SCT_DISPMODE, id);
 	

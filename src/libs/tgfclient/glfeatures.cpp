@@ -65,11 +65,11 @@ void checkCompressARBEnabled(bool &result)
 	} else {
 		// Feature available, check if the user wants to use it.
 		// TODO: put this enabled/disable stuff in one function (it is used in grsound.cpp as well).
-		char *tcEnabledStr = GR_ATT_TEXTURECOMPRESSION_ENABLED;
+		const char *tcEnabledStr = GR_ATT_TEXTURECOMPRESSION_ENABLED;
 		char fnbuf[1024];
 		sprintf(fnbuf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 		void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-		char *optionName = GfParmGetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, GR_ATT_TEXTURECOMPRESSION_DISABLED);
+		const char *optionName = GfParmGetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, GR_ATT_TEXTURECOMPRESSION_DISABLED);
 
 		if (strcmp(optionName, tcEnabledStr) != 0) {
 			result = false;

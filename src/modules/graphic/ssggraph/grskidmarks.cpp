@@ -164,7 +164,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 		tdble sling_mud = 1.0f;
 
 		if (car->priv.wheel[i].seg) { // sanity check
-			char* s = car->priv.wheel[i].seg->surface->material;
+			const char* s = car->priv.wheel[i].seg->surface->material;
 			if (strstr(s, "sand")) {
 				cur_clr[0] = 0.8f;
 				cur_clr[1] = 0.6f;

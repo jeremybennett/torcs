@@ -19,7 +19,7 @@
 
 #include "sim.h"
 
-static char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
+static const char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
 
 void
 SimTransmissionConfig(tCar *car)
@@ -30,14 +30,13 @@ SimTransmissionConfig(tCar *car)
 	tTransmission	*trans = &(car->transmission);
 	tClutch		*clutch = &(trans->clutch);
 	tDifferential	*differential;
-	char		*transType;
 	int			i, j;
 	tdble		gRatio, fRatio, gEff, fEff;
 	tdble		gearI;
 	char		path[256];
 	
 	clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
-	transType		= GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
+	const char* transType = GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
 	clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2f);
 	
 	fRatio = 0;

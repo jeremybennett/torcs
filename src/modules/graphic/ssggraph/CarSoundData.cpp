@@ -207,7 +207,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
     }
 
     for (i = 0; i<4; i++) {
-        char* s = NULL;
+        const char* s = NULL;
         tdble roughness = 0.0f;
         tdble roughnessFreq = 1.0f;
         float ride  = 0.0001f;

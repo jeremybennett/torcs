@@ -108,7 +108,7 @@ class Opponents {
 		void update(tSituation *s, Driver *driver);
 		Opponent *getOpponentPtr() { return opponent; }
 		int getNOpponents() { return nopponents; }
-		void setTeamMate(char *teammate);
+		void setTeamMate(const char *teammate);
 
 	private:
 		Opponent *opponent;

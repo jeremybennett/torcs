@@ -59,7 +59,7 @@ Ac3dOpen(char *filename, int nbObjects)
 
 
 int
-Ac3dGroup(FILE *save_fd, char *name, int nbObjects)
+Ac3dGroup(FILE *save_fd, const char *name, int nbObjects)
 {
     fprintf(save_fd, "OBJECT group\n");
     fprintf(save_fd, "name \"%s\"\n", name);

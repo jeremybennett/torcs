@@ -75,7 +75,7 @@ double   tmptexa[200000];
 int     tmpsurf[100000];  
 ob_t * root_ob;
 int refs=0;
-char *shadowtexture="shadow2.rgb";
+const char *shadowtexture="shadow2.rgb";
 
 FILE * ofile;
 
@@ -98,7 +98,7 @@ char tex[256][256];
 int texnum=0;
 double smooth_angle=70.0;
 typedef struct verbaction {
-    char * verb;
+    const char * verb;
     int  (*doVerb)(char * Line,  ob_t *object, mat_t * material);
 } verbaction_t;
 
@@ -3666,7 +3666,7 @@ void normalMap( ob_t * object)
 		tmpob->textarray[i*2]= (tmpob->vertex[i].x-x_min)/(x_max-x_min) ;
 		tmpob->textarray[i*2+1]= (tmpob->vertex[i].y-y_min)/(y_max-y_min);
 	    }
-	tmpob->texture=shadowtexture;
+	tmpob->texture=strdup(shadowtexture);
 	tmpob=tmpob->next;
     }
 

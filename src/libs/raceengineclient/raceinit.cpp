@@ -46,7 +46,7 @@
 
 #include "raceinit.h"
 
-static char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
+static const char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 
 static tModList *reEventModList = 0;
 tModList *ReRaceModList = 0;
@@ -63,7 +63,6 @@ typedef struct
 void
 ReInit(void)
 {
-	char *dllname;
 	char key[256];
 	tRmMovieCapture *capture;
 
@@ -79,7 +78,7 @@ ReInit(void)
 	ReInfo->_reParam = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	GfOut("Loading Track Loader...\n");
-	dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "track", "");
+	const char* dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "track", "");
 	sprintf(key, "%smodules/track/%s.%s", GetLibDir (), dllname, DLLEXT);
 	if (GfModLoad(0, key, &reEventModList)) return;
 	reEventModList->modInfo->fctInit(reEventModList->modInfo->index, &ReInfo->_reTrackItf);
@@ -270,7 +269,7 @@ initStartingGrid(void)
 	tdble speedInit;
 	tdble heightInit;
 	tCarElt *car;
-	char *pole;
+	const char *pole;
 	void *trHdle = ReInfo->track->params;
 	void *params = ReInfo->params;
 
@@ -470,18 +469,16 @@ ReInitCars(void)
 	int nCars;
 	int index;
 	int i, j, k;
-	char *cardllname;
 	int robotIdx;
 	tModInfo *curModInfo;
 	tRobotItf *curRobot;
 	void *handle;
-	char *category;
+	//char *category;
 	void *cathdle;
 	void *carhdle;
 	void *robhdle;
 	tCarElt *elt;
-	char *focused;
-	char *str;
+	//char *str;
 	int focusedIdx;
 	void *params = ReInfo->params;
 
@@ -493,14 +490,13 @@ ReInitCars(void)
 	ReInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
 	FREEZ(ReInfo->rules);
 	ReInfo->rules = (tRmCarRules*)calloc(nCars, sizeof(tRmCarRules));
-	focused = GfParmGetStr(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, "");
 	focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
 	index = 0;
 
 	for (i = 1; i < nCars + 1; i++) {
 		/* Get Shared library name */
 		sprintf(path, "%s/%d", RM_SECT_DRIVERS_RACING, i);
-		cardllname = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
+		const char* cardllname = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
 		robotIdx = (int)GfParmGetNum(ReInfo->params, path, RM_ATTR_IDX, NULL, 0);
 		sprintf(path, "%sdrivers/%s/%s.%s", GetLibDir (), cardllname, cardllname, DLLEXT);
 
@@ -551,7 +547,7 @@ ReInitCars(void)
 						elt->_driverType = RM_DRV_ROBOT;
 					}
 					elt->_skillLevel = 0;
-					str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);
+					const char* str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);
 					for(k = 0; k < (int)(sizeof(level_str)/sizeof(char*)); k++) {
 						if (strcmp(level_str[k], str) == 0) {
 							elt->_skillLevel = k;
@@ -567,7 +563,7 @@ ReInitCars(void)
 					sprintf(buf, "cars/%s/%s.xml", elt->_carName, elt->_carName);
 					GfOut("Car Specification: %s\n", buf);
 					carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-					category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
+					const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
 					sprintf(buf, "Loading Driver %-20s... Car: %s", curModInfo->name, elt->_carName);
 					RmLoadingScreenSetText(buf);
 					if (category != 0) {
@@ -650,7 +646,7 @@ reDumpTrack(tTrack *track, int verbose)
     int		i;
     tTrackSeg	*seg;
 #ifdef DEBUG
-    char	*stype[4] = { "", "RGT", "LFT", "STR" };
+    const char *stype[4] = { "", "RGT", "LFT", "STR" };
 #endif
 
     RmLoadingScreenSetText("Loading Track Geometry...");
@@ -734,26 +730,25 @@ reDumpTrack(tTrack *track, int verbose)
 int
 ReInitTrack(void)
 {
-    char	*trackName;
-    char	*catName;
-    int		curTrkIdx;
-    void	*params = ReInfo->params;
-    void	*results = ReInfo->results;
+	int curTrkIdx;
+	void *params = ReInfo->params;
+	void *results = ReInfo->results;
+	
+	curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
+	sprintf(buf, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
+	const char* trackName = GfParmGetStr(params, buf, RM_ATTR_NAME, 0);
+	if (!trackName) return -1;
 
-    curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
-    sprintf(buf, "%s/%d", RM_SECT_TRACKS, curTrkIdx);
-    trackName = GfParmGetStr(params, buf, RM_ATTR_NAME, 0);
-    if (!trackName) return -1;
-    catName = GfParmGetStr(params, buf, RM_ATTR_CATEGORY, 0);
-    if (!catName) return -1;
-
-    sprintf(buf, "Loading Track %s...", trackName);
-    RmLoadingScreenSetText(buf);
-    sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
-    ReInfo->track = ReInfo->_reTrackItf.trkBuild(buf);
-    reDumpTrack(ReInfo->track, 0);
-
-    return 0;
+	const char* catName = GfParmGetStr(params, buf, RM_ATTR_CATEGORY, 0);
+	if (!catName) return -1;
+	
+	sprintf(buf, "Loading Track %s...", trackName);
+	RmLoadingScreenSetText(buf);
+	sprintf(buf, "tracks/%s/%s/%s.%s", catName, trackName, trackName, TRKEXT);
+	ReInfo->track = ReInfo->_reTrackItf.trkBuild(buf);
+	reDumpTrack(ReInfo->track, 0);
+	
+	return 0;
 }
 
 void
@@ -793,26 +788,26 @@ ReRaceCleanDrivers(void)
 }
 
 
-char *
+const char *
 ReGetCurrentRaceName(void)
 {
-    int		curRaceIdx;
-    void	*params = ReInfo->params;
-    void	*results = ReInfo->results;
-
-    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
-    sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
-    return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
+	int curRaceIdx;
+	void *params = ReInfo->params;
+	void *results = ReInfo->results;
+	
+	curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
+	sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
+	return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
 }
 
-char *
+const char *
 ReGetPrevRaceName(void)
 {
-    int		curRaceIdx;
-    void	*params = ReInfo->params;
-    void	*results = ReInfo->results;
-
-    curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1) - 1;
-    sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
-    return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
+	int curRaceIdx;
+	void *params = ReInfo->params;
+	void *results = ReInfo->results;
+	
+	curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1) - 1;
+	sprintf(path, "%s/%d", RM_SECT_RACES, curRaceIdx);
+	return GfParmGetStr(params, path, RM_ATTR_NAME, 0);
 }

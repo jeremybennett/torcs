@@ -118,67 +118,66 @@ TrackBuildEx(char *trackfile)
 static void 
 GetTrackHeader(void *TrackHandle)
 {
-    tTrackGraphicInfo	*graphic;
-    char		**env;
-    int			i;
-    char		buf[256];
-    char		*s;
-
-    theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
-    theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
-    theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
-    theTrack->author = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, "none");
-    theTrack->category = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_CAT, "road");
-
-    /* Graphic part */
-    graphic = &theTrack->graphic;
-
-    graphic->background = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND,
-				       "background.png");
-    graphic->bgtype = (int)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGTYPE, (char*)NULL, 0.0);
+	tTrackGraphicInfo *graphic;
+	const char **env;
+	int i;
+	char buf[256];
+	char *s;
+	
+	theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
+	theTrack->version = (int)GfParmGetNum(TrackHandle, TRK_SECT_HDR, TRK_ATT_VERSION, (char*)NULL, 0);
+	theTrack->width = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_WIDTH, (char*)NULL, 15.0);
+	theTrack->author = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_AUTHOR, "none");
+	theTrack->category = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_CAT, "road");
+	
+	/* Graphic part */
+	graphic = &theTrack->graphic;
+	
+	graphic->background = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND,
+						"background.png");
+	graphic->bgtype = (int)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGTYPE, (char*)NULL, 0.0);
 /*     if (graphic->bgtype > 2) { */
 /* 	graphic->background2 = GfParmGetStr(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BKGRND2, */
 /* 					    "background.png"); */
 /*     } */
-    graphic->bgColor[0] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_R, (char*)NULL, 0.0f);
-    graphic->bgColor[1] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_G, (char*)NULL, 0.0f);
-    graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1f);
+	graphic->bgColor[0] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_R, (char*)NULL, 0.0f);
+	graphic->bgColor[1] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_G, (char*)NULL, 0.0f);
+	graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1f);
+	
+	/* env map images */
+	sprintf(buf, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
+	graphic->envnb = GfParmGetEltNb(TrackHandle, buf);
+	if (graphic->envnb < 1) {
+		graphic->envnb = 1;
+	}
 
-    /* env map images */
-    sprintf(buf, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
-    graphic->envnb = GfParmGetEltNb(TrackHandle, buf);
-    if (graphic->envnb < 1) {
-	graphic->envnb = 1;
-    }
-    graphic->env = (char**)calloc(graphic->envnb, sizeof(char*));
-    env = graphic->env;
-    for (i = 1; i <= graphic->envnb; i++) {
-	sprintf(buf, "%s/%s/%d", TRK_SECT_GRAPH, TRK_LST_ENV, i);
-	*env = GfParmGetStr(TrackHandle, buf, TRK_ATT_ENVNAME, "env.png");
-	env ++;
-    }
-
+	graphic->env = (const char**)calloc(graphic->envnb, sizeof(char*));
+	env = graphic->env;
+	for (i = 1; i <= graphic->envnb; i++) {
+		sprintf(buf, "%s/%s/%d", TRK_SECT_GRAPH, TRK_LST_ENV, i);
+		*env = GfParmGetStr(TrackHandle, buf, TRK_ATT_ENVNAME, "env.png");
+		env ++;
+	}
+	
 	theTrack->nseg = 0;
-
+	
 	s = strrchr(theTrack->filename, '/');
 	if (s == NULL) {
 		s = theTrack->filename;
 	} else {
 		s++;
 	}
-
+	
 	theTrack->internalname = strdup(s);
 	s = strrchr(theTrack->internalname, '.');
 	if (s != NULL) {
 		*s = 0;
 	}
-
-    graphic->turnMarksInfo.height = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HEIGHT, NULL, 1);
-    graphic->turnMarksInfo.width  = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_WIDTH,  NULL, 1);
-    graphic->turnMarksInfo.vSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_VSPACE, NULL, 0);
-    graphic->turnMarksInfo.hSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HSPACE, NULL, 0);
-
-
+	
+	graphic->turnMarksInfo.height = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HEIGHT, NULL, 1);
+	graphic->turnMarksInfo.width  = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_WIDTH,  NULL, 1);
+	graphic->turnMarksInfo.vSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_VSPACE, NULL, 0);
+	graphic->turnMarksInfo.hSpace = GfParmGetNum(TrackHandle, TRK_SECT_TURNMARKS, TRK_ATT_HSPACE, NULL, 0);	
 }
 
 static void

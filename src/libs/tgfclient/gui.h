@@ -258,7 +258,7 @@ extern void gfuiSelectId(void *scr, int id);
 extern void gfuiAddObject(tGfuiScreen *screen, tGfuiObject *object);
 extern tGfuiObject *gfuiGetObject(void *scr, int id);
 
-extern void gfuiSetLabelText(tGfuiObject *object, tGfuiLabel *label, char *text);
+extern void gfuiSetLabelText(tGfuiObject *object, tGfuiLabel *label, const char *text);
 
 extern void gfuiDrawLabel(tGfuiObject *obj);
 extern void gfuiDrawButton(tGfuiObject *obj);

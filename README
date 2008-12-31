@@ -91,14 +91,12 @@ Bernhard.
 
 Changes since 1.3.1
 -------------------
+- Fixed remaining const char* gcc 4.3 warnings (Bernhard).
 
 
 
 TODO for 1.3.2
 --------------
-- This is intended as GCC compiler warning fix release. Fixing this warnings
-  will break the binary interface compatibility, that is the reason why I did
-  it not in 1.3.1. Maybe this will be no official release, we will see...
 - Rename *1 category/car (get rid of "*1")
 - Rename *ascar category/car (get rid of *acsar)
 

@@ -2,7 +2,7 @@
 
     file        : raceinit.h
     created     : Sat Nov 16 12:24:26 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -36,8 +36,8 @@ extern int  ReInitCars(void);
 extern int  ReInitTrack(void);
 extern void ReRaceCleanup(void);
 extern void ReRaceCleanDrivers(void);
-extern char *ReGetCurrentRaceName(void);
-extern char *ReGetPrevRaceName(void);
+extern const char *ReGetCurrentRaceName(void);
+extern const char *ReGetPrevRaceName(void);
 
 extern tModList *ReRaceModList;
 

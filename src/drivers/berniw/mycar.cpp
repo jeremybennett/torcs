@@ -85,7 +85,7 @@ MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)
 	mass = carmass + lastfuel;
 
 	/* which wheels are driven */
-	char *traintype = GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
+	const char *traintype = GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
 	if (strcmp(traintype, VAL_TRANS_RWD) == 0) {
 		drivetrain = DRWD;
 	} else if (strcmp(traintype, VAL_TRANS_FWD) == 0) {

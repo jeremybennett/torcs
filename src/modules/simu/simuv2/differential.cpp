@@ -19,10 +19,8 @@
 
 #include "sim.h"
 
-void SimDifferentialConfig(void *hdle, char *section, tDifferential *differential)
+void SimDifferentialConfig(void *hdle, const char *section, tDifferential *differential)
 {
-	char *type;
-	
 	differential->I		= GfParmGetNum(hdle, section, PRM_INERTIA, (char*)NULL, 0.1f);
 	differential->efficiency	= GfParmGetNum(hdle, section, PRM_EFFICIENCY, (char*)NULL, 1.0f);
 	differential->ratio		= GfParmGetNum(hdle, section, PRM_RATIO, (char*)NULL, 1.0f);
@@ -34,7 +32,7 @@ void SimDifferentialConfig(void *hdle, char *section, tDifferential *differentia
 	differential->viscosity	= GfParmGetNum(hdle, section, PRM_VISCOSITY_FACTOR, (char*)NULL, 2.0f);
 	differential->viscomax	= 1 - exp(-differential->viscosity);
 	
-	type = GfParmGetStr(hdle, section, PRM_TYPE, VAL_DIFF_NONE);
+	const char* type = GfParmGetStr(hdle, section, PRM_TYPE, VAL_DIFF_NONE);
 	if (strcmp(type, VAL_DIFF_LIMITED_SLIP) == 0) {
 		differential->type = DIFF_LIMITED_SLIP; 
 	} else if (strcmp(type, VAL_DIFF_VISCOUS_COUPLER) == 0) {

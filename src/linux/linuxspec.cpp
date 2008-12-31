@@ -494,26 +494,27 @@ linuxModUnloadList(tModList **modlist)
 static int
 linuxModFreeInfoList(tModList **modlist)
 {
-    tModList		*curMod;
-    tModList		*nextMod;
-    int			i;
-    
-    curMod = *modlist;
-    nextMod = curMod->next;
-    do {
-	curMod = nextMod;
-	for (i = 0; i < MAX_MOD_ITF; i++) {
-	    if (curMod->modInfo[i].name) {
-		free(curMod->modInfo[i].name);
-		free(curMod->modInfo[i].desc);
-	    }
-	}
-	free(curMod->sopath);
-	free(curMod);
-    } while (curMod != *modlist);
-    
-    *modlist = (tModList *)NULL;
-    return 0;
+	tModList		*curMod;
+	tModList		*nextMod;
+	int			i;
+	
+	curMod = *modlist;
+	nextMod = curMod->next;
+	do {
+		curMod = nextMod;
+		for (i = 0; i < MAX_MOD_ITF; i++) {
+			if (curMod->modInfo[i].name) {
+				free(curMod->modInfo[i].name);
+				free(curMod->modInfo[i].desc);
+			}
+		}
+	
+		free(curMod->sopath);
+		free(curMod);
+	} while (curMod != *modlist);
+	
+	*modlist = (tModList *)NULL;
+	return 0;
 }
 
 /*
@@ -530,7 +531,7 @@ linuxModFreeInfoList(tModList **modlist)
  *	list of directory entries
  */
 static tFList *
-linuxDirGetList(char *dir)
+linuxDirGetList(const char *dir)
 {
 	DIR *dp;
 	struct dirent *ep;
@@ -588,7 +589,7 @@ linuxDirGetList(char *dir)
  *	list of directory entries
  */
 static tFList *
-linuxDirGetListFiltered(char *dir, char *suffix)
+linuxDirGetListFiltered(const char *dir, const char *suffix)
 {
 	DIR	*dp;
 	struct dirent *ep;

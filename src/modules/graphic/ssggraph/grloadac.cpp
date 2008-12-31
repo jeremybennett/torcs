@@ -130,7 +130,7 @@ static int do_obj_light ( char *s ) ;
 
 struct Tag
 {
-  char *token ;
+  const char *token ;
   int (*func) ( char *s ) ;
 } ;
 

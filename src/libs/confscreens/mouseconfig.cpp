@@ -51,7 +51,7 @@ static int	scrw, scrh;
 static tCmdInfo *Cmd;
 static int maxCmd;
 
-static char *Instructions[] = {
+static const char *Instructions[] = {
     "Move Mouse for maximum left steer then press a button",
     "Move Mouse for maximum right steer then press a button",
     "Move Mouse for full throttle then press a button",

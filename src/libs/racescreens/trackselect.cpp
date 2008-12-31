@@ -194,7 +194,7 @@ RmGetTrackName(char *category, char *trackName)
 		name = strdup(GfParmGetStr(trackHandle, TRK_SECT_HDR, TRK_ATT_NAME, trackName));
 	} else {
 		GfTrace("File %s has pb\n", buf);
-		return "";
+		return strdup("");
 	}
 
 	GfParmReleaseHandle(trackHandle);
@@ -220,7 +220,7 @@ RmGetCategoryName(char *category)
 		name = strdup(GfParmGetStr(categoryHandle, TRK_SECT_HDR, TRK_ATT_NAME, category));
 	} else {
 		GfTrace("File %s has pb\n", buf);
-		return "";
+		return strdup("");
 	}
 
 	GfParmReleaseHandle(categoryHandle);
@@ -237,8 +237,8 @@ RmGetCategoryName(char *category)
 void
 RmTrackSelect(void *vs)
 {
-	char *defaultTrack;
-	char *defaultCategory;
+	const char *defaultTrack;
+	const char *defaultCategory;
 	tFList *CatCur;
 	tFList *TrList, *TrCur;
 	int Xpos, Ypos, DX, DY;

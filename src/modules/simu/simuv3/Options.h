@@ -40,7 +40,7 @@ public:
     {
     }
     /// Checks whether the option matches the name \c s
-    virtual bool Match(char* s) {
+    virtual bool Match(const char* s) {
         if (strcmp(s,name)) {
             return false;
         } else {
@@ -60,7 +60,7 @@ protected:
     T* value; ///< Actual value of option
 public:	
     /// Construct an option with literal name \c s and referenced value \c p
-    Option(char* s, T* p)
+    Option(const char* s, T* p)
     {
         if (!s) {
             throw std::invalid_argument("Null string");
@@ -116,7 +116,7 @@ public:
     /// Add an option with name \c name, a pointer \c handle to the
     /// value to be managed and a default value \c value.
     template <typename T>
-    void AddOption (char* name, T* handle, T value)
+    void AddOption (const char* name, T* handle, T value)
     {
         Option<T>* o = new Option<T> (name, handle);
         options.push_back (o);
@@ -124,7 +124,7 @@ public:
     }
     /// Set option \c name to \c value.
     template <typename T>
-    void Set (char* name, T value)
+    void Set (const char* name, T value)
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {
@@ -138,7 +138,7 @@ public:
     }
     /// Get the value of option \c name.
     template <typename T>
-    T Get (char* name)
+    T Get (const char* name)
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {
@@ -152,7 +152,7 @@ public:
     }
     /// Get the value of option \c name.
     template <typename T>
-    void Get (char* name, T& return_value)
+    void Get (const char* name, T& return_value)
     {
         for (unsigned int i=0 ; i<options.size(); i++) {
             if (options[i]->Match(name)) {

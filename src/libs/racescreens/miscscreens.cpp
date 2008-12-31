@@ -36,9 +36,9 @@ static void *fourStateHdle = 0;
 
 void *
 RmTwoStateScreen(
-	char *title,
-	char *label1, char *tip1, void *screen1,
-	char *label2, char *tip2, void *screen2)
+	const char *title,
+	const char *label1, const char *tip1, void *screen1,
+	const char *label2, const char *tip2, void *screen2)
 {
 	if (twoStateHdle) {
 		GfuiScreenRelease(twoStateHdle);
@@ -57,10 +57,10 @@ RmTwoStateScreen(
 
 void *
 RmTriStateScreen(
-	char *title,
-	char *label1, char *tip1, void *screen1,
-	char *label2, char *tip2, void *screen2,
-	char *label3, char *tip3, void *screen3)
+	const char *title,
+	const char *label1, const char *tip1, void *screen1,
+	const char *label2, const char *tip2, void *screen2,
+	const char *label3, const char *tip3, void *screen3)
 {
 	if (triStateHdle) {
 		GfuiScreenRelease(triStateHdle);
@@ -79,11 +79,11 @@ RmTriStateScreen(
 
 void *
 RmFourStateScreen(
-	char *title,
-	char *label1, char *tip1, void *screen1,
-	char *label2, char *tip2, void *screen2,
-	char *label3, char *tip3, void *screen3,
-	char *label4, char *tip4, void *screen4)
+	const char *title,
+	const char *label1, const char *tip1, void *screen1,
+	const char *label2, const char *tip2, void *screen2,
+	const char *label3, const char *tip3, void *screen3,
+	const char *label4, const char *tip4, void *screen4)
 {
 	if (fourStateHdle) {
 		GfuiScreenRelease(fourStateHdle);
@@ -135,25 +135,22 @@ rmChgStartScreen(void *vpsrc)
 static void
 rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 {
-	static char		path[1024];
-	int			nCars;
-	int			i;
-	int			y;
-	int			x, dx;
-	int			rows, curRow;
-	char		*img;
-	char		*name;
-	int			robotIdx;
-	void		*robhdle;
-	void		*carHdle;
-	char		*carName;
-	void		*params = info->params;
-	char		*race = info->_reRaceName;
+	static char path[1024];
+	int nCars;
+	int i;
+	int y;
+	int x, dx;
+	int rows, curRow;
+	int robotIdx;
+	void *robhdle;
+	void *carHdle;
+	void *params = info->params;
+	const char *race = info->_reRaceName;
 	
 	rmScrHdle = GfuiScreenCreate();
 	GfuiTitleCreate(rmScrHdle, race, strlen(race));	
 	
-	img = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_STARTIMG, 0);
+	const char* img = GfParmGetStr(params, RM_SECT_HEADER, RM_ATTR_STARTIMG, 0);
 	if (img) {
 		GfuiScreenAddBgImg(rmScrHdle, img);
 	}
@@ -172,7 +169,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 		for (i = start; i < MIN(start + MAX_LINES, nCars); i++) {
 			/* Find starting driver's name */
 			sprintf(path, "%s/%d", RM_SECT_DRIVERS_RACING, i + 1);
-			name = GfParmGetStr(info->params, path, RM_ATTR_MODULE, "");
+			const char* name = GfParmGetStr(info->params, path, RM_ATTR_MODULE, "");
 			robotIdx = (int)GfParmGetNum(info->params, path, RM_ATTR_IDX, NULL, 0);
 			
 			sprintf(path, "%sdrivers/%s/%s.xml", GetLocalDir(), name, name);
@@ -185,7 +182,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 			if (robhdle) {
 				sprintf(path, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, robotIdx);
 				name = GfParmGetStr(robhdle, path, ROB_ATTR_NAME, "<none>");
-				carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
+				const char* carName = GfParmGetStr(robhdle, path, ROB_ATTR_CAR, "");
 				
 				sprintf(path, "cars/%s/%s.xml", carName, carName);
 				carHdle = GfParmReadFile(path, GFPARM_RMODE_STD);

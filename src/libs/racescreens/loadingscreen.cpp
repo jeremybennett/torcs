@@ -55,44 +55,44 @@ rmDeativate(void * /* dummy */)
     @return	None.
 */
 void
-RmLoadingScreenStart(char *title, char *bgimg)
+RmLoadingScreenStart(const char *title, const char *bgimg)
 {
-    int		i;
-    int		y;
-
-    if (GfuiScreenIsActive(menuHandle)) {
-	/* Already active */
-	return;
-    }
-    
-    if (menuHandle) {
-	GfuiScreenRelease(menuHandle);
-    }
-    menuHandle = GfuiScreenCreateEx(black, NULL, NULL, NULL, rmDeativate, 0);
-
-    GfuiTitleCreate(menuHandle, title, strlen(title));
-
-    /* create 20 lines of text */
-    for (i = 0, y = 400; i < TEXTLINES; i++, y -= 16) {
-	white[i][0] = white[i][1] = white[i][2] = 1.0;
-	white[i][3] = (float)i * 0.0421 + 0.2;
-	rmTextId[i] = GfuiLabelCreateEx(menuHandle, "", white[i], GFUI_FONT_MEDIUM_C, 60, y, 
-					GFUI_ALIGN_HL_VB, 100);
-	if (rmTextLines[i]) {
-	    /* free old text */
-	    free(rmTextLines[i]);
-	    rmTextLines[i] = NULL;
+	int		i;
+	int		y;
+	
+	if (GfuiScreenIsActive(menuHandle)) {
+		/* Already active */
+		return;
 	}
-    }
-
-    rmCurText = 0;
-    
-    if (bgimg) {
-	GfuiScreenAddBgImg(menuHandle, bgimg);
-    }
-
-    GfuiScreenActivate(menuHandle);
-    GfuiDisplay();
+	
+	if (menuHandle) {
+		GfuiScreenRelease(menuHandle);
+	}
+	menuHandle = GfuiScreenCreateEx(black, NULL, NULL, NULL, rmDeativate, 0);
+	
+	GfuiTitleCreate(menuHandle, title, strlen(title));
+	
+	/* create 20 lines of text */
+	for (i = 0, y = 400; i < TEXTLINES; i++, y -= 16) {
+		white[i][0] = white[i][1] = white[i][2] = 1.0;
+		white[i][3] = (float)i * 0.0421 + 0.2;
+		rmTextId[i] = GfuiLabelCreateEx(menuHandle, "", white[i], GFUI_FONT_MEDIUM_C, 60, y, 
+						GFUI_ALIGN_HL_VB, 100);
+		if (rmTextLines[i]) {
+			/* free old text */
+			free(rmTextLines[i]);
+			rmTextLines[i] = NULL;
+		}
+	}
+	
+	rmCurText = 0;
+	
+	if (bgimg) {
+		GfuiScreenAddBgImg(menuHandle, bgimg);
+	}
+	
+	GfuiScreenActivate(menuHandle);
+	GfuiDisplay();
 }
 
 void
@@ -111,32 +111,32 @@ RmShutdownLoadingScreen(void)
     @return	None.
 */
 void
-RmLoadingScreenSetText(char *text)
+RmLoadingScreenSetText(const char *text)
 {
-    int		i, j;
-    
-    GfOut("%s\n", text);
-    
-    if (menuHandle) {
-	if (rmTextLines[rmCurText]) {
-	    free(rmTextLines[rmCurText]);
-	}
-	if (text) {
-	    rmTextLines[rmCurText] = strdup(text);
-	    rmCurText = (rmCurText + 1) % TEXTLINES;
-	}
+	int		i, j;
 	
-	i = rmCurText;
-	j = 0;
-	do {
-	    if (rmTextLines[i]) {
-		GfuiLabelSetText(menuHandle, rmTextId[j], rmTextLines[i]);
-	    }
-	    j++;
-	    i = (i + 1) % TEXTLINES;
-	} while (i != rmCurText);
+	GfOut("%s\n", text);
 	
-	GfuiDisplay();
-    }
+	if (menuHandle) {
+		if (rmTextLines[rmCurText]) {
+			free(rmTextLines[rmCurText]);
+		}
+		if (text) {
+			rmTextLines[rmCurText] = strdup(text);
+			rmCurText = (rmCurText + 1) % TEXTLINES;
+		}
+		
+		i = rmCurText;
+		j = 0;
+		do {
+			if (rmTextLines[i]) {
+			GfuiLabelSetText(menuHandle, rmTextId[j], rmTextLines[i]);
+			}
+			j++;
+			i = (i + 1) % TEXTLINES;
+		} while (i != rmCurText);
+		
+		GfuiDisplay();
+	}
 }
  

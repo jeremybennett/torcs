@@ -212,7 +212,7 @@ char * GfGetTimeStr(void)
 char * GfTime2Str(tdble sec, int sgn)
 {
 	char buf[256];
-	char* sign;
+	const char* sign;
 
 	if (sec < 0.0) {
 		sec = -sec;
@@ -244,9 +244,9 @@ char * GfTime2Str(tdble sec, int sgn)
 }
 
 
-static char *localDir = "";
-static char *libDir = "";
-static char *dataDir = "";
+static char *localDir = strdup("");
+static char *libDir = strdup("");
+static char *dataDir = strdup("");
 
 
 char * GetLocalDir(void)
@@ -257,6 +257,7 @@ char * GetLocalDir(void)
 
 void SetLocalDir(char *buf)
 {
+	free(localDir);
 	localDir = strdup(buf);
 }
 
@@ -269,6 +270,7 @@ char * GetLibDir(void)
 
 void SetLibDir(char *buf)
 {
+	free(libDir);
 	libDir = strdup(buf);
 }
 
@@ -281,6 +283,7 @@ char * GetDataDir(void)
 
 void SetDataDir(char *buf)
 {
+	free(dataDir);
 	dataDir = strdup(buf);
 }
 

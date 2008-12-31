@@ -2,7 +2,7 @@
 
     file        : controlconfig.h
     created     : Wed Mar 12 22:09:01 CET 2003
-    copyright   : (C) 2003 by Eric Espié                        
+    copyright   : (C) 2003 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -26,22 +26,21 @@
 #ifndef _CONTROLCONFIG_H_
 #define _CONTROLCONFIG_H_
 
-extern void *TorcsControlMenuInit(void *prevMenu, int index, char *gearShiftMode);
+extern void *TorcsControlMenuInit(void *prevMenu, int index);
 
 
 typedef struct
 {
-    char	*name;
-    tCtrlRef	ref;
-    int		Id;
-    int         labelId;
-    char	*minName;
-    float	min;
-    char	*maxName;
-    float	max;
-    char	*powName;
-    float	pow;
-    int		keyboardPossible;
+	const char *name;
+	tCtrlRef ref;
+	int Id;
+	const char *minName;
+	float min;
+	const char *maxName;
+	float max;
+	const char *powName;
+	float pow;
+	int keyboardPossible;
 } tCmdInfo;
 
 #endif /* _CONTROLCONFIG_H_ */ 

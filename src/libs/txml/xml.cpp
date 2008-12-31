@@ -267,14 +267,14 @@ xmlReadFile(const char *file)
 }
 
 static void
-wr(int indent, char *buf, FILE *out)
+wr(int indent, const char *buf, FILE *out)
 {
-    char		blank[BUFMAX];
-    int			i;
-    
-    for(i = 0; i < indent*2; i++) blank[i] = ' ';
-    blank[i] = 0;
-    fprintf(out, "%s%s", blank, buf);
+	char blank[BUFMAX];
+	int i;
+	
+	for(i = 0; i < indent*2; i++) blank[i] = ' ';
+	blank[i] = 0;
+	fprintf(out, "%s%s", blank, buf);
 }
 
 static void

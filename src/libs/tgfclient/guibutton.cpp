@@ -59,7 +59,7 @@ gfuiButtonInit(void)
 		<br>-1 Error
  */
 int
-GfuiGrButtonCreate(void *scr, char *disabled, char *enabled, char *focused, char *pushed,
+GfuiGrButtonCreate(void *scr, const char *disabled, const char *enabled, const char *focused, const char *pushed,
 		   int x, int y, int align, int mouse,
 		   void *userDataOnPush, tfuiCallback onPush, 
 		   void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
@@ -185,32 +185,33 @@ GfuiGrButtonCreate(void *scr, char *disabled, char *enabled, char *focused, char
 		<br>-1 Error
  */
 int
-GfuiButtonStateCreate(void *scr, char *text, int font, int x, int y, int width, int align, int mouse,
+GfuiButtonStateCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
 		      void *userDataOnPush, tfuiCallback onPush, 
 		      void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
 {
-    int		id;
-    tGfuiButton	*button;
-    tGfuiObject *curObject;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
-    
-    id = GfuiButtonCreate(scr, text, font, x, y, width, align, mouse, userDataOnPush, onPush, userDataOnFocus,
-			  onFocus, onFocusLost);
+	int id;
+	tGfuiButton	*button;
+	tGfuiObject *curObject;
+	tGfuiScreen	*screen = (tGfuiScreen*)scr;
+	
+	id = GfuiButtonCreate(scr, text, font, x, y, width, align, mouse, userDataOnPush, onPush, userDataOnFocus,
+				onFocus, onFocusLost);
+	
+	curObject = screen->objects;
+	if (curObject != NULL) {
+		do {
+			curObject = curObject->next;
+			if (curObject->id == id) {
+				if (curObject->widget == GFUI_BUTTON) {
+					button = &(curObject->u.button);
+					button->buttonType = GFUI_BTN_STATE;
+				}
+				return id;
+			}
+		} while (curObject != screen->objects);
+	}
 
-    curObject = screen->objects;
-    if (curObject != NULL) {
-	do {
-	    curObject = curObject->next;
-	    if (curObject->id == id) {
-		if (curObject->widget == GFUI_BUTTON) {
-		    button = &(curObject->u.button);
-		    button->buttonType = GFUI_BTN_STATE;
-		}
-		return id;
-	    }
-	} while (curObject != screen->objects);
-    }
-    return id;
+	return id;
 }
 
 
@@ -244,84 +245,86 @@ GfuiButtonStateCreate(void *scr, char *text, int font, int x, int y, int width, 
 		<br>-1 Error
  */
 int
-GfuiButtonCreate(void *scr, char *text, int font, int x, int y, int width, int align, int mouse,
+GfuiButtonCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
 		 void *userDataOnPush, tfuiCallback onPush, 
 		 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
 {
-    tGfuiButton	*button;
-    tGfuiLabel	*label;
-    tGfuiObject	*object;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
+	tGfuiButton	*button;
+	tGfuiLabel	*label;
+	tGfuiObject	*object;
+	tGfuiScreen	*screen = (tGfuiScreen*)scr;
 
 
-    object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
-    object->widget = GFUI_BUTTON;
-    object->focusMode = GFUI_FOCUS_MOUSE_MOVE;
-    object->id = screen->curId++;
-    object->visible = 1;
-    
-    button = &(object->u.button);
-    button->state = GFUI_BTN_RELEASED;
-    button->userDataOnPush = userDataOnPush;
-    button->onPush = onPush;
-    button->userDataOnFocus = userDataOnFocus;
-    button->onFocus = onFocus;
-    button->onFocusLost = onFocusLost;
-    button->mouseBehaviour = mouse;
-    button->buttonType = GFUI_BTN_PUSH;
+	object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
+	object->widget = GFUI_BUTTON;
+	object->focusMode = GFUI_FOCUS_MOUSE_MOVE;
+	object->id = screen->curId++;
+	object->visible = 1;
+	
+	button = &(object->u.button);
+	button->state = GFUI_BTN_RELEASED;
+	button->userDataOnPush = userDataOnPush;
+	button->onPush = onPush;
+	button->userDataOnFocus = userDataOnFocus;
+	button->onFocus = onFocus;
+	button->onFocusLost = onFocusLost;
+	button->mouseBehaviour = mouse;
+	button->buttonType = GFUI_BTN_PUSH;
 
-    button->bgColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
-    button->bgColor[1] = &(GfuiColor[GFUI_BGBTNENABLED][0]);
-    button->bgColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
-    button->bgFocusColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
-    button->bgFocusColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
-    button->bgFocusColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
-    button->fgColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
-    button->fgColor[1] = &(GfuiColor[GFUI_BTNENABLED][0]);
-    button->fgColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
-    button->fgFocusColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
-    button->fgFocusColor[1] = &(GfuiColor[GFUI_BTNFOCUS][0]);
-    button->fgFocusColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
+	button->bgColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
+	button->bgColor[1] = &(GfuiColor[GFUI_BGBTNENABLED][0]);
+	button->bgColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
+	button->bgFocusColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
+	button->bgFocusColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
+	button->bgFocusColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
+	button->fgColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
+	button->fgColor[1] = &(GfuiColor[GFUI_BTNENABLED][0]);
+	button->fgColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
+	button->fgFocusColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
+	button->fgFocusColor[1] = &(GfuiColor[GFUI_BTNFOCUS][0]);
+	button->fgFocusColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
 
-    label = &(button->label);
-    label->text = (char*)calloc(1, 100);
-    strncpy(label->text, text, 100);
-    label->font = gfuiFont[font];
-    label->maxlen = 99;
-    if (width == 0) {
-	width = gfuiFont[font]->getWidth((const char *)text);
-    }
-    label->align = align;
-    switch(align&0xF0) {
-    case 0x00 /* LEFT */:
-	label->x = object->xmin = x;
-	label->y = y - 2 * gfuiFont[font]->getDescender();
-	object->ymin = y;
-	object->xmax = x + width;
-	object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
-	break;
-    case 0x10 /* CENTER */:
-	object->xmin = x - width / 2;
-	label->x = x - gfuiFont[font]->getWidth((const char *)text) / 2;
-	label->y = y - 2 * gfuiFont[font]->getDescender();
-	object->ymin = y;
-	object->xmax = x + width / 2;
-	object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
-	break;
-    case 0x20 /* RIGHT */:
-	label->x = object->xmin = x - width;
-	label->y = y - 2 * gfuiFont[font]->getDescender();
-	object->ymin = y;
-	object->xmax = x;
-	object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
-	break;
-    }
+	label = &(button->label);
+	label->text = (char*)calloc(1, 100);
+	strncpy(label->text, text, 100);
+	label->font = gfuiFont[font];
+	label->maxlen = 99;
+	if (width == 0) {
+		width = gfuiFont[font]->getWidth((const char *)text);
+	}
+
+	label->align = align;
+
+	switch(align&0xF0) {
+		case 0x00 /* LEFT */:
+			label->x = object->xmin = x;
+			label->y = y - 2 * gfuiFont[font]->getDescender();
+			object->ymin = y;
+			object->xmax = x + width;
+			object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
+			break;
+		case 0x10 /* CENTER */:
+			object->xmin = x - width / 2;
+			label->x = x - gfuiFont[font]->getWidth((const char *)text) / 2;
+			label->y = y - 2 * gfuiFont[font]->getDescender();
+			object->ymin = y;
+			object->xmax = x + width / 2;
+			object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
+			break;
+		case 0x20 /* RIGHT */:
+			label->x = object->xmin = x - width;
+			label->y = y - 2 * gfuiFont[font]->getDescender();
+			object->ymin = y;
+			object->xmax = x;
+			object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
+			break;
+	}
 #define HORIZ_MARGIN 10
-    object->xmin -= HORIZ_MARGIN;
-    object->xmax += HORIZ_MARGIN;
+	object->xmin -= HORIZ_MARGIN;
+	object->xmax += HORIZ_MARGIN;
 
-    gfuiAddObject(screen, object);
-    return object->id;
+	gfuiAddObject(screen, object);
+	return object->id;
 }
 
 /** Change the label of a button.
@@ -331,28 +334,28 @@ GfuiButtonCreate(void *scr, char *text, int font, int x, int y, int width, int a
     @param	text	New label of the button
  */
 void
-GfuiButtonSetText(void *scr, int id, char *text)
+GfuiButtonSetText(void *scr, int id, const char *text)
 {
-    tGfuiObject *curObject;
-    tGfuiScreen	*screen = (tGfuiScreen*)scr;
-    int oldmin, oldmax;
-    
-    curObject = screen->objects;
-    if (curObject != NULL) {
-	do {
-	    curObject = curObject->next;
-	    if (curObject->id == id) {
-		if (curObject->widget == GFUI_BUTTON) {
-		    oldmax = curObject->xmax;
-		    oldmin = curObject->xmin;
-		    gfuiSetLabelText(curObject, &(curObject->u.button.label), text);
-		    curObject->xmax = oldmax;
-		    curObject->xmin = oldmin;
-		}
-		return;
-	    }
-	} while (curObject != screen->objects);
-    }    
+	tGfuiObject *curObject;
+	tGfuiScreen	*screen = (tGfuiScreen*)scr;
+	int oldmin, oldmax;
+	
+	curObject = screen->objects;
+	if (curObject != NULL) {
+		do {
+			curObject = curObject->next;
+			if (curObject->id == id) {
+				if (curObject->widget == GFUI_BUTTON) {
+					oldmax = curObject->xmax;
+					oldmin = curObject->xmin;
+					gfuiSetLabelText(curObject, &(curObject->u.button.label), text);
+					curObject->xmax = oldmax;
+					curObject->xmin = oldmin;
+				}
+				return;
+			}
+		} while (curObject != screen->objects);
+	}
 }
 
 /** Get the Id of the button focused in the current screen.

@@ -31,7 +31,7 @@
 #include <tgfclient.h>
 
 
-static char *GfJoyBtn[] = {
+static const char *GfJoyBtn[] = {
 "BTN1-0","BTN2-0","BTN3-0","BTN4-0","BTN5-0","BTN6-0","BTN7-0","BTN8-0","BTN9-0","BTN10-0","BTN11-0","BTN12-0","BTN13-0","BTN14-0","BTN15-0","BTN16-0",
 "BTN17-0","BTN18-0","BTN19-0","BTN20-0","BTN21-0","BTN22-0","BTN23-0","BTN24-0","BTN25-0","BTN26-0","BTN27-0","BTN28-0","BTN29-0","BTN30-0","BTN31-0","BTN32-0",
 "BTN1-1","BTN2-1","BTN3-1","BTN4-1","BTN5-1","BTN6-1","BTN7-1","BTN8-1","BTN9-1","BTN10-1","BTN11-1","BTN12-1","BTN13-1","BTN14-1","BTN15-1","BTN16-1",
@@ -50,7 +50,7 @@ static char *GfJoyBtn[] = {
 "BTN17-7","BTN18-7","BTN19-7","BTN20-7","BTN21-7","BTN22-7","BTN23-7","BTN24-7","BTN25-7","BTN26-7","BTN27-7","BTN28-7","BTN29-7","BTN30-7","BTN31-7","BTN32-7"
 };
 
-static char *GfJoyAxis[] = {
+static const char *GfJoyAxis[] = {
     "AXIS0-0", "AXIS1-0", "AXIS2-0", "AXIS3-0", "AXIS4-0", "AXIS5-0", "AXIS6-0", "AXIS7-0", "AXIS8-0", "AXIS9-0", "AXIS10-0", "AXIS11-0",
     "AXIS0-1", "AXIS1-1", "AXIS2-1", "AXIS3-1", "AXIS4-1", "AXIS5-1", "AXIS6-1", "AXIS7-1", "AXIS8-1", "AXIS9-1", "AXIS10-1", "AXIS11-1",
     "AXIS0-2", "AXIS1-2", "AXIS2-2", "AXIS3-2", "AXIS4-2", "AXIS5-2", "AXIS6-2", "AXIS7-2", "AXIS8-2", "AXIS9-2", "AXIS10-2", "AXIS11-2",
@@ -61,13 +61,13 @@ static char *GfJoyAxis[] = {
     "AXIS0-7", "AXIS1-7", "AXIS2-7", "AXIS3-7", "AXIS4-7", "AXIS5-7", "AXIS6-7", "AXIS7-7", "AXIS8-7", "AXIS9-7", "AXIS10-7", "AXIS11-7"
 };
 
-static char *GfMouseBtn[] = {"MOUSE_LEFT_BTN", "MOUSE_MIDDLE_BTN", "MOUSE_RIGHT_BTN"}; /* glut order */
+static const char *GfMouseBtn[] = {"MOUSE_LEFT_BTN", "MOUSE_MIDDLE_BTN", "MOUSE_RIGHT_BTN"}; /* glut order */
 
-static char *GfMouseAxis[] = {"MOUSE_LEFT", "MOUSE_RIGHT", "MOUSE_UP", "MOUSE_DOWN"};
+static const char *GfMouseAxis[] = {"MOUSE_LEFT", "MOUSE_RIGHT", "MOUSE_UP", "MOUSE_DOWN"};
 
 typedef struct
 {
-    char	*descr;
+    const char *descr;
     int		val;
 } tgfKeyBinding;
 
@@ -121,61 +121,68 @@ static jsJoystick *js[NUM_JOY] = {NULL};
     @see	tCtrlRef
 */
 tCtrlRef *
-GfctrlGetRefByName(char *name)
+GfctrlGetRefByName(const char *name)
 {
-    static tCtrlRef	ref;
-    int 		i;
+	static tCtrlRef	ref;
+	int i;
+	
+	if (!name || !strlen(name)) {
+		ref.index = -1;
+		ref.type = GFCTRL_TYPE_NOT_AFFECTED;
+		return &ref;
+	}
 
-    if (!name || !strlen(name)) {
-	ref.index = -1;
-	ref.type = GFCTRL_TYPE_NOT_AFFECTED;
+	for (i = 0; i < gfmaxJoyButton; i++) {
+		if (strcmp(name, GfJoyBtn[i]) == 0) {
+			ref.index = i;
+			ref.type = GFCTRL_TYPE_JOY_BUT;
+			return &ref;
+		}
+	}
+
+	for (i = 0; i < gfmaxJoyAxis; i++) {
+		if (strcmp(name, GfJoyAxis[i]) == 0) {
+			ref.index = i;
+			ref.type = GFCTRL_TYPE_JOY_AXIS;
+			return &ref;
+		}
+	}
+
+	for (i = 0; i < gfmaxMouseButton; i++) {
+		if (strcmp(name, GfMouseBtn[i]) == 0) {
+			ref.index = i;
+			ref.type = GFCTRL_TYPE_MOUSE_BUT;
+			return &ref;
+		}
+	}
+
+	for (i = 0; i < gfmaxMouseAxis; i++) {
+		if (strcmp(name, GfMouseAxis[i]) == 0) {
+			ref.index = i;
+			ref.type = GFCTRL_TYPE_MOUSE_AXIS;
+			return &ref;
+		}
+	}
+
+	for (i = 0; i < gfmaxSKey; i++) {
+		if (strcmp(name, GfSKey[i].descr) == 0) {
+			ref.index = GfSKey[i].val;
+			ref.type = GFCTRL_TYPE_SKEYBOARD;
+			return &ref;
+		}
+	}
+
+	for (i = 0; i < gfmaxKey; i++) {
+		if (strcmp(name, GfKey[i].descr) == 0) {
+			ref.index = GfKey[i].val;
+			ref.type = GFCTRL_TYPE_KEYBOARD;
+			return &ref;
+		}
+	}
+
+	ref.index = name[0];
+	ref.type = GFCTRL_TYPE_KEYBOARD;
 	return &ref;
-    }
-    for (i = 0; i < gfmaxJoyButton; i++) {
-	if (strcmp(name, GfJoyBtn[i]) == 0) {
-	    ref.index = i;
-	    ref.type = GFCTRL_TYPE_JOY_BUT;
-	    return &ref;
-	}
-    }
-    for (i = 0; i < gfmaxJoyAxis; i++) {
-	if (strcmp(name, GfJoyAxis[i]) == 0) {
-	    ref.index = i;
-	    ref.type = GFCTRL_TYPE_JOY_AXIS;
-	    return &ref;
-	}
-    }
-    for (i = 0; i < gfmaxMouseButton; i++) {
-	if (strcmp(name, GfMouseBtn[i]) == 0) {
-	    ref.index = i;
-	    ref.type = GFCTRL_TYPE_MOUSE_BUT;
-	    return &ref;
-	}
-    }
-    for (i = 0; i < gfmaxMouseAxis; i++) {
-	if (strcmp(name, GfMouseAxis[i]) == 0) {
-	    ref.index = i;
-	    ref.type = GFCTRL_TYPE_MOUSE_AXIS;
-	    return &ref;
-	}
-    }
-    for (i = 0; i < gfmaxSKey; i++) {
-	if (strcmp(name, GfSKey[i].descr) == 0) {
-	    ref.index = GfSKey[i].val;
-	    ref.type = GFCTRL_TYPE_SKEYBOARD;
-	    return &ref;
-	}
-    }
-    for (i = 0; i < gfmaxKey; i++) {
-	if (strcmp(name, GfKey[i].descr) == 0) {
-	    ref.index = GfKey[i].val;
-	    ref.type = GFCTRL_TYPE_KEYBOARD;
-	    return &ref;
-	}
-    }
-    ref.index = name[0];
-    ref.type = GFCTRL_TYPE_KEYBOARD;
-    return &ref;
 }
 
 /** Get a control name by its reference
@@ -184,7 +191,7 @@ GfctrlGetRefByName(char *name)
     @param	index	reference index
     @return	pointer on a static structure tCtrlRef
 */
-char *
+const char *
 GfctrlGetNameByRef(int type, int index)
 {
     static char buf[4];

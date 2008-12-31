@@ -183,7 +183,7 @@ void SimAeroDamage(tCar *car, sgVec3 poc, tdble F)
 
 }
 
-static char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
+static const char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
 
 void
 SimWingConfig(tCar *car, int index)

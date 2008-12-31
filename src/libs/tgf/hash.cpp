@@ -30,7 +30,7 @@ typedef struct HashElem
 {
     char				*key;
     int					size;
-    void				*data;
+    const void			*data;
     GF_TAILQ_ENTRY(struct HashElem) 	link;
 } tHashElem;
 
@@ -168,7 +168,7 @@ gfIncreaseHash(tHashHeader *curHeader)
     @return	0 OK, 1 NOK.
 */
 int
-GfHashAddStr(void *hash, const char *key, void *data)
+GfHashAddStr(void *hash, const char *key, const void *data)
 {
 	tHashHeader		*curHeader = (tHashHeader *)hash;
 	tHashElem		*newElem;
@@ -198,10 +198,10 @@ GfHashAddStr(void *hash, const char *key, void *data)
 }
 
 /* Remove a table element */
-static void *
+static const void *
 gfRemElem(tHashHead *hashHead, tHashElem *elem)
 {
-    void	*data;
+    const void *data;
 
     data = elem->data;
     free(elem->key);
@@ -217,7 +217,7 @@ gfRemElem(tHashHead *hashHead, tHashElem *elem)
     @param	key	key string to hash.
     @return	User data.
 */
-void *
+const void *
 GfHashRemStr(void *hash, char *key)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -242,7 +242,7 @@ GfHashRemStr(void *hash, char *key)
     @param	key	key string to hash.
     @return	User data.
 */
-void *
+const void *
 GfHashGetStr(void *hash, const char *key)
 {
 	tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -302,7 +302,7 @@ GfHashAddBuf(void *hash, char *key, size_t sz, void *data)
     @param	sz	size of the buffer.
     @return	User data.
 */
-void *
+const void *
 GfHashRemBuf(void *hash, char *key, size_t sz)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -329,7 +329,7 @@ GfHashRemBuf(void *hash, char *key, size_t sz)
     @param	sz	size of the buffer.
     @return	User data.
 */
-void *
+const void *
 GfHashGetBuf(void *hash, char *key, size_t sz)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -358,7 +358,7 @@ GfHashRelease(void *hash, tfHashFree hashFree)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
     tHashElem		*curElem;
-    void		*data;
+    const void		*data;
     int			i;
     
     for (i = 0; i < curHeader->size; i++) {
@@ -380,7 +380,7 @@ GfHashRelease(void *hash, tfHashFree hashFree)
     @return	User data.
     @see	GfHashGetNext
 */
-void *
+const void *
 GfHashGetFirst(void *hash)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;
@@ -399,7 +399,7 @@ GfHashGetFirst(void *hash)
     @return	User data.
     @see	GfHashGetFirst
 */
-void *
+const void *
 GfHashGetNext(void *hash)
 {
     tHashHeader		*curHeader = (tHashHeader *)hash;

@@ -233,7 +233,7 @@ typedef struct SegExt
 typedef struct trackSurface {
     struct trackSurface *next;	/**< Next surface in list */
 
-    char *material;		/**< Type of material used */
+    const char *material;		/**< Type of material used */
 
     tdble kFriction;		/**< Coefficient of friction */
     tdble kRebound;		/**< Coefficient of energy restitution */
@@ -265,7 +265,7 @@ typedef struct trackBarrier {
     @ingroup trackstruct
 */
 typedef struct trackSeg {
-    char *name;			/**< Segment name */
+    const char *name;			/**< Segment name */
     int	id;			/**< Segment number */
 
     int type;			/**< Geometrical type:
@@ -478,12 +478,12 @@ typedef struct
 
 typedef struct 
 {
-    char		*background;
+    const char *background;
     char		*background2;
     int			bgtype;
     float		bgColor[3];
     int			envnb;
-    char		**env;
+    const char		**env;
     tTurnMarksInfo	turnMarksInfo;
 } tTrackGraphicInfo;
 
@@ -492,12 +492,12 @@ typedef struct
 */
 typedef struct
 {
-    char	  *name;	/**< Name of the track */
-    char	  *author;	/**< Author's name */
+    const char *name;	/**< Name of the track */
+    const char *author;	/**< Author's name */
     char	  *filename;	/**< Filename of the track description */
     void	  *params;	/**< Parameters handle */
     char	  *internalname; /**< Internal name of the track */
-    char	  *category;	/**< Category of the track */
+    const char *category;	/**< Category of the track */
     int		  nseg;		/**< Number of segments */
     int		  version;	/**< Version of the track type */
     tdble	  length;	/**< main track length */

@@ -49,7 +49,7 @@ typedef struct Face
     GF_TAILQ_ENTRY(struct Face) link;
 
     ssgTransform	*branch;
-    char	*faceName;
+    const char *faceName;
 
     sgVec3	lbbmin;		/* Bounding (unscaled) box */
     sgVec3	lbbmax;
@@ -220,8 +220,8 @@ void init_graphics ()
 {
     int   fake_argc = 1 ;
     char *fake_argv[3] ;
-    fake_argv[0] = "TexMapper" ;
-    fake_argv[1] = "Texture Auto Mapper" ;
+    fake_argv[0] = strdup("TexMapper") ;
+    fake_argv[1] = strdup("Texture Auto Mapper") ;
     fake_argv[2] = NULL ;
 
     /*
@@ -543,7 +543,7 @@ void load_params(void)
     char	*col;
     char	buf[256];
     tFace	*curFace;
-    char	*s;
+    const char	*s;
     
     ImgSize  = (int)GfParmGetNum(ParamHandle, "image", "size", NULL, 256);
 
@@ -653,7 +653,7 @@ void init_args(int argc, char **argv)
     }
 
     if (!ulFileExists(InputFileName)) {
-	InputFileName = "car.ac";
+	InputFileName = strdup("car.ac");
 	if (!ulFileExists(InputFileName)) {
 	    fprintf(stderr, "The Input AC3D file must be provided\n");
 	    usage();
@@ -662,11 +662,11 @@ void init_args(int argc, char **argv)
     }
 
     if (OutputFileName == NULL) {
-	OutputFileName = "car-out.ac";
+	OutputFileName = strdup("car-out.ac");
     }
 
     if (!ulFileExists(ParamFileName)) {
-	ParamFileName = "texmapper.xml";
+	ParamFileName = strdup("texmapper.xml");
 	if (!ulFileExists(ParamFileName)) {
 	    fprintf(stderr, "The parameters file is mandatory\n");
 	    usage();
@@ -682,7 +682,7 @@ void init_args(int argc, char **argv)
     }
 
     if (SkinFileName == NULL) {
-	SkinFileName = "skin.rgb";
+	SkinFileName = strdup("skin.rgb");
     }
 }
 

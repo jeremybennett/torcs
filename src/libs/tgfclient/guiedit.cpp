@@ -53,76 +53,78 @@ gfuiEditboxInit(void)
 		<br>-1 Error
  */
 int
-GfuiEditboxCreate(void *scr, char *text, int font, int x, int y, int width, int maxlen,
+GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
 		  void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
 {
-    tGfuiEditbox	*editbox;
-    tGfuiLabel		*label;
-    tGfuiObject		*object;
-    tGfuiScreen		*screen = (tGfuiScreen*)scr;
+	tGfuiEditbox *editbox;
+	tGfuiLabel *label;
+	tGfuiObject *object;
+	tGfuiScreen *screen = (tGfuiScreen*)scr;
 
 
-    object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
-    object->widget = GFUI_EDITBOX;
-    object->focusMode = GFUI_FOCUS_MOUSE_CLICK;
-    object->id = screen->curId++;
-    object->visible = 1;
-    
-    editbox = &(object->u.editbox);
-    editbox->state = GFUI_BTN_RELEASED;
-    editbox->userDataOnFocus = userDataOnFocus;
-    editbox->onFocus = onFocus;
-    editbox->onFocusLost = onFocusLost;
+	object = (tGfuiObject*)calloc(1, sizeof(tGfuiObject));
+	object->widget = GFUI_EDITBOX;
+	object->focusMode = GFUI_FOCUS_MOUSE_CLICK;
+	object->id = screen->curId++;
+	object->visible = 1;
+	
+	editbox = &(object->u.editbox);
+	editbox->state = GFUI_BTN_RELEASED;
+	editbox->userDataOnFocus = userDataOnFocus;
+	editbox->onFocus = onFocus;
+	editbox->onFocusLost = onFocusLost;
 
-    editbox->bgColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
-    editbox->bgColor[1] = &(GfuiColor[GFUI_BGBTNENABLED][0]);
-    editbox->bgColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
-    editbox->bgFocusColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
-    editbox->bgFocusColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
-    editbox->bgFocusColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
-    editbox->fgColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
-    editbox->fgColor[1] = &(GfuiColor[GFUI_BTNENABLED][0]);
-    editbox->fgColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
-    editbox->fgFocusColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
-    editbox->fgFocusColor[1] = &(GfuiColor[GFUI_BTNFOCUS][0]);
-    editbox->fgFocusColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
-    editbox->cursorColor[0] = &(GfuiColor[GFUI_EDITCURSORCLR][0]);
-    editbox->cursorColor[1] = &(GfuiColor[GFUI_EDITCURSORCLR][1]);
-    editbox->cursorColor[2] = &(GfuiColor[GFUI_EDITCURSORCLR][2]);
-    
+	editbox->bgColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
+	editbox->bgColor[1] = &(GfuiColor[GFUI_BGBTNENABLED][0]);
+	editbox->bgColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
+	editbox->bgFocusColor[0] = &(GfuiColor[GFUI_BGBTNDISABLED][0]);
+	editbox->bgFocusColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
+	editbox->bgFocusColor[2] = &(GfuiColor[GFUI_BGBTNCLICK][0]);
+	editbox->fgColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
+	editbox->fgColor[1] = &(GfuiColor[GFUI_BTNENABLED][0]);
+	editbox->fgColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
+	editbox->fgFocusColor[0] = &(GfuiColor[GFUI_BTNDISABLED][0]);
+	editbox->fgFocusColor[1] = &(GfuiColor[GFUI_BTNFOCUS][0]);
+	editbox->fgFocusColor[2] = &(GfuiColor[GFUI_BTNCLICK][0]);
+	editbox->cursorColor[0] = &(GfuiColor[GFUI_EDITCURSORCLR][0]);
+	editbox->cursorColor[1] = &(GfuiColor[GFUI_EDITCURSORCLR][1]);
+	editbox->cursorColor[2] = &(GfuiColor[GFUI_EDITCURSORCLR][2]);
+	
 
-    label = &(editbox->label);
-    if (maxlen == 0) maxlen = strlen(text);
-    label->text = (char*)calloc(1, maxlen+1);
-    strncpy(label->text, text, maxlen+1);
-    label->font = gfuiFont[font];
-    label->maxlen = maxlen;
-    if (width == 0) {
-	char *buf;
-	int  i;
-	buf = (char*)malloc(maxlen+1);
-	if (buf == NULL) return -1;
-	for (i = 0; i < maxlen; i++) buf[i] = 'W';
-	buf[i] = '\0';
-	width = gfuiFont[font]->getWidth((const char *)buf);
-	free(buf);
-    }
-    label->align = GFUI_ALIGN_HL_VC;
-    label->x = object->xmin = x;
-    label->y = y - 2 * gfuiFont[font]->getDescender();
-    object->ymin = y;
-    object->xmax = x + width;
-    object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
-    editbox->cursory1 = object->ymin + 2;
-    editbox->cursory2 = object->ymax - 2;
-    editbox->cursorx = label->x;
-    
+	label = &(editbox->label);
+	if (maxlen == 0) maxlen = strlen(text);
+	label->text = (char*)calloc(1, maxlen+1);
+	strncpy(label->text, text, maxlen+1);
+	label->font = gfuiFont[font];
+	label->maxlen = maxlen;
+
+	if (width == 0) {
+		char *buf;
+		int  i;
+		buf = (char*)malloc(maxlen+1);
+		if (buf == NULL) return -1;
+		for (i = 0; i < maxlen; i++) buf[i] = 'W';
+		buf[i] = '\0';
+		width = gfuiFont[font]->getWidth((const char *)buf);
+		free(buf);
+	}
+
+	label->align = GFUI_ALIGN_HL_VC;
+	label->x = object->xmin = x;
+	label->y = y - 2 * gfuiFont[font]->getDescender();
+	object->ymin = y;
+	object->xmax = x + width;
+	object->ymax = y + gfuiFont[font]->getHeight() - gfuiFont[font]->getDescender();
+	editbox->cursory1 = object->ymin + 2;
+	editbox->cursory2 = object->ymax - 2;
+	editbox->cursorx = label->x;
+	
 #define HORIZ_MARGIN 10
-    object->xmin -= HORIZ_MARGIN;
-    object->xmax += HORIZ_MARGIN;
+	object->xmin -= HORIZ_MARGIN;
+	object->xmax += HORIZ_MARGIN;
 
-    gfuiAddObject(screen, object);
-    return object->id;
+	gfuiAddObject(screen, object);
+	return object->id;
 }
 
 
@@ -377,22 +379,22 @@ GfuiEditboxGetString(void *scr, int id)
     @param	text		text to set
     @return	none
  */
-void GfuiEditboxSetString(void *scr, int id, char *text)
+void GfuiEditboxSetString(void *scr, int id, const char *text)
 {
-    tGfuiObject		*curObject;
-    tGfuiEditbox	*editbox;
-    tGfuiLabel		*label;
-    
-    curObject = gfuiGetObject(scr, id);
-    
-    if ((curObject == NULL) || (curObject->widget != GFUI_EDITBOX)) {
-	return;
-    }
-
-    editbox = &(curObject->u.editbox);
-    label = &(editbox->label);
-
-    strncpy(label->text, text, label->maxlen);
+	tGfuiObject *curObject;
+	tGfuiEditbox *editbox;
+	tGfuiLabel *label;
+	
+	curObject = gfuiGetObject(scr, id);
+	
+	if ((curObject == NULL) || (curObject->widget != GFUI_EDITBOX)) {
+		return;
+	}
+	
+	editbox = &(curObject->u.editbox);
+	label = &(editbox->label);
+	
+	strncpy(label->text, text, label->maxlen);
 }
 
 

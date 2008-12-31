@@ -209,7 +209,7 @@ extern "C" int
 human(tModInfo *modInfo)
 {
 	int i;
-	char *driver;
+	const char *driver;
 
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
@@ -260,7 +260,7 @@ human(tModInfo *modInfo)
  */
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
-	char *carname;
+	const char *carname;
 	char *s1, *s2;
 	char trackname[256];
 	tdble fuel;
@@ -381,7 +381,7 @@ void newrace(int index, tCarElt* car, tSituation *s)
 #endif
 #endif
 
-	char *traintype =GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
+	const char *traintype =GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
 	if (strcmp(traintype, VAL_TRANS_RWD) == 0) {
 		HCtx[idx]->drivetrain = DRWD;
 	} else if (strcmp(traintype, VAL_TRANS_FWD) == 0) {
@@ -826,7 +826,6 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	{
 		if (fabs(car->_speed_x) > 10.0)
 		{
-			tdble rearskid = MAX(0.0, MAX(car->_skid[2], car->_skid[3]) - MAX(car->_skid[0], car->_skid[1]));
 			int i;
 
 			tdble skidAng = atan2(car->_speed_Y, car->_speed_X) - car->_yaw;

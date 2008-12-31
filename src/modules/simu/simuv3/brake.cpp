@@ -20,7 +20,7 @@
 #include "sim.h"
 
 void 
-SimBrakeConfig(void *hdle, char *section, tBrake *brake)
+SimBrakeConfig(void *hdle, const char *section, tBrake *brake)
 {
     tdble diam, area, mu;
     

@@ -45,7 +45,7 @@ static int		rmrpDistId;
 static int		rmrpLapsId;
 static int		rmDispModeEditId;
 static int		rmCurDispMode;
-static char		*rmCurDispModeList[] = { RM_VAL_VISIBLE, RM_VAL_INVISIBLE};
+static const char *rmCurDispModeList[] = { RM_VAL_VISIBLE, RM_VAL_INVISIBLE};
 
 
 static void

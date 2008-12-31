@@ -105,7 +105,7 @@ ReRaceMsgSet(char *msg, double life)
 
 
 static void
-ReRaceBigMsgSet(char *msg, double life)
+ReRaceBigMsgSet(const char *msg, double life)
 {
 	ReSetRaceBigMsg(msg);
 	bigMsgDisp = ReInfo->_reCurTime + life;
@@ -288,7 +288,7 @@ ReManage(tCarElt *car)
 				sprintf(buf, "Winner %s", car->_name);
 				ReRaceBigMsgSet(buf, 10);
 				} else {
-				char *numSuffix = "th";
+				const char *numSuffix = "th";
 				if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
 					switch (car->_pos % 10) {
 					case 1:

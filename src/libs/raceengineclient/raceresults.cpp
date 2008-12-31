@@ -45,7 +45,7 @@ static char path2[1024];
 
 typedef struct
 {
-	char	*carName;
+	const char *carName;
 	char	*modName;
 	int		drvIdx;
 	int		points;
@@ -100,7 +100,7 @@ ReUpdateStandings(void)
 	int			maxDrv;
 	int			curDrv;
 	int			runDrv;
-	char		*carName;
+	//char		*carName;
 	char		*modName;
 	int			drvIdx;
 	int			points;
@@ -133,7 +133,7 @@ ReUpdateStandings(void)
 		/* Search the driver in the standings */
 		found = 0;
 		sprintf(path, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, ReInfo->_reRaceName, RE_SECT_RANK, i + 1);
-		carName = GfParmGetStr(results, path, RE_ATTR_NAME, 0);
+		const char* carName = GfParmGetStr(results, path, RE_ATTR_NAME, 0);
 		for (j = 0; j < curDrv; j++) {
 			if (!strcmp(carName, standings[j].carName)) {
 				found = 1;
@@ -181,7 +181,7 @@ ReUpdateStandings(void)
 	for (i = 0; i < curDrv; i++) {
 		sprintf(path, "%s/%d", RE_SECT_STANDINGS, i + 1);
 		GfParmSetStr(results, path, RE_ATTR_NAME, standings[i].carName);
-		free(standings[i].carName);
+		//free(standings[i].carName);
 		GfParmSetStr(results, path, RE_ATTR_MODULE, standings[i].modName);
 		free(standings[i].modName);
 		GfParmSetNum(results, path, RE_ATTR_IDX, NULL, standings[i].drvIdx);
@@ -198,16 +198,16 @@ ReUpdateStandings(void)
 
 
 void
-ReStoreRaceResults(char *race)
+ReStoreRaceResults(const char *race)
 {
-	int		i;
-	int		nCars;
-	tCarElt	*car;
-	tSituation 	*s = ReInfo->s;
-	char	*carName;
-	void	*carparam;
-	void	*results = ReInfo->results;
-	void	*params = ReInfo->params;
+	int i;
+	int nCars;
+	tCarElt *car;
+	tSituation *s = ReInfo->s;
+	char *carName;
+	void *carparam;
+	void *results = ReInfo->results;
+	void *params = ReInfo->params;
 	
 	/* Store the number of laps of the race */
 	switch (ReInfo->s->_raceType) {
@@ -307,14 +307,14 @@ ReStoreRaceResults(char *race)
 void
 ReUpdateQualifCurRes(tCarElt *car)
 {
-	int		i;
-	int		nCars;
-	int		printed;
-	int		maxLines;
-	void	*carparam;
-	char	*carName;
-	char	*race = ReInfo->_reRaceName;
-	void	*results = ReInfo->results;
+	int i;
+	int nCars;
+	int printed;
+	int maxLines;
+	void *carparam;
+	char *carName;
+	const char *race = ReInfo->_reRaceName;
+	void *results = ReInfo->results;
 	
 	ReResEraseScreen();
 	maxLines = ReResGetLines();

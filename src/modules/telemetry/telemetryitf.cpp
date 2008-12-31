@@ -79,8 +79,8 @@ telemInit(int index, void *pt)
 extern "C" int
 telemetry(tModInfo *modInfo)
 {
-    modInfo->name = "telemetry";	/* name of the module (short) */
-    modInfo->desc = "Telemetry module, used to store telemetry information";	/* description of the module (can be long) */
+    modInfo->name = strdup("telemetry");	/* name of the module (short) */
+    modInfo->desc = strdup("Telemetry module, used to store telemetry information");	/* description of the module (can be long) */
     modInfo->fctInit = telemInit;	/* init function */
     modInfo->gfId = TLM_IDENT;		/* always loaded  */
     modInfo->index = 0;

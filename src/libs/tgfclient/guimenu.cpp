@@ -73,16 +73,16 @@ GfuiMenuDefaultKeysAdd(void *scr)
     @return	Handle of the menu
  */
 void *
-GfuiMenuScreenCreate(char *title)
+GfuiMenuScreenCreate(const char *title)
 {
-    void	*scr;
-
-    scr = GfuiScreenCreate();
-    GfuiTitleCreate(scr, title, strlen(title));
-
-    GfuiMenuDefaultKeysAdd(scr);
-
-    return scr;
+	void	*scr;
+	
+	scr = GfuiScreenCreate();
+	GfuiTitleCreate(scr, title, strlen(title));
+	
+	GfuiMenuDefaultKeysAdd(scr);
+	
+	return scr;
 }
 
 static void
@@ -107,40 +107,40 @@ remInfo(void *cbinfo)
     @return	Button Id
  */
 int
-GfuiMenuButtonCreate(void *scr, char *text, char *tip, void *userdata, tfuiCallback onpush)
+GfuiMenuButtonCreate(void *scr, const char *text, const char *tip, void *userdata, tfuiCallback onpush)
 {
-    tMnuCallbackInfo	*cbinfo;
-    int			xpos, ypos;
-    int			nbItems = ((tGfuiScreen*)scr)->nbItems++;
-    int			bId;
-
-    if (nbItems < 11) {
-	xpos = 320;
-	ypos = 380 - 30 * nbItems;
-    } else {
-	if (nbItems > 22) {
-	    GfTrace("Too many items in that menu !!!\n");
-	    return -1;
+	tMnuCallbackInfo *cbinfo;
+	int xpos, ypos;
+	int nbItems = ((tGfuiScreen*)scr)->nbItems++;
+	int bId;
+	
+	if (nbItems < 11) {
+		xpos = 320;
+		ypos = 380 - 30 * nbItems;
+	} else {
+		if (nbItems > 22) {
+			GfTrace("Too many items in that menu !!!\n");
+			return -1;
+		}
+		xpos = 380;
+		ypos = 380 - 30 * (nbItems - 11);
 	}
-	xpos = 380;
-	ypos = 380 - 30 * (nbItems - 11);
-    }
-
-    cbinfo = (tMnuCallbackInfo*)calloc(1, sizeof(tMnuCallbackInfo));
-    cbinfo->screen = scr;
-    cbinfo->labelId = GfuiTipCreate(scr, tip, strlen(tip));
-
-    GfuiVisibilitySet(scr, cbinfo->labelId, 0);
-    
-    bId = GfuiButtonCreate(scr,
-			   text,
-			   GFUI_FONT_LARGE,
-			   xpos, ypos, GFUI_BTNSZ, GFUI_ALIGN_HC_VB, 0,
-			   userdata, onpush,
-			   (void*)cbinfo, dispInfo,
-			   remInfo);
-
-    return bId;
+	
+	cbinfo = (tMnuCallbackInfo*)calloc(1, sizeof(tMnuCallbackInfo));
+	cbinfo->screen = scr;
+	cbinfo->labelId = GfuiTipCreate(scr, tip, strlen(tip));
+	
+	GfuiVisibilitySet(scr, cbinfo->labelId, 0);
+	
+	bId = GfuiButtonCreate(scr,
+				text,
+				GFUI_FONT_LARGE,
+				xpos, ypos, GFUI_BTNSZ, GFUI_ALIGN_HC_VB, 0,
+				userdata, onpush,
+				(void*)cbinfo, dispInfo,
+				remInfo);
+	
+	return bId;
 }
 
 /** Add the "Back" or "Quit" button at the bottom of the menu screen.
@@ -153,7 +153,7 @@ GfuiMenuButtonCreate(void *scr, char *text, char *tip, void *userdata, tfuiCallb
     @return	Button Id
  */
 int
-GfuiMenuBackQuitButtonCreate(void *scr, char *text, char *tip, void *userdata, tfuiCallback onpush)
+GfuiMenuBackQuitButtonCreate(void *scr, const char *text, const char *tip, void *userdata, tfuiCallback onpush)
 {
     tMnuCallbackInfo	*cbinfo;
     int			xpos, ypos;

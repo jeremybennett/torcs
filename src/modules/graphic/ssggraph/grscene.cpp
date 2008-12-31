@@ -179,7 +179,7 @@ int
 grLoadScene(tTrack *track)
 {
     void		*hndl = grTrackHandle;
-    char		*acname;
+    const char		*acname;
     ssgEntity		*desc;
     char		buf[256];
 

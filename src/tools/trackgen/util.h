@@ -2,7 +2,7 @@
 
     file                 : util.h
     created              : Wed May 29 22:20:44 CEST 2002
-    copyright            : (C) 2001 by Eric Espié
+    copyright            : (C) 2001 by Eric Espiï¿½
     email                : Eric.Espie@torcs.org
     version              : $Id$
 
@@ -28,7 +28,7 @@
 
 #include <plib/ssg.h>
 
-extern int GetFilename(char *filename, char *filepath, char *buf);
+extern int GetFilename(const char *filename, const char *filepath, char *buf);
 extern float getHOT(ssgRoot *root, float x, float y);
 
 /* Use the texture name to select options like mipmap */

@@ -151,7 +151,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	opponent = opponents->getOpponentPtr();
 
 	// Set team mate.
-	char *teammate = GfParmGetStr(car->_carHandle, BT_SECT_PRIV, BT_ATT_TEAMMATE, NULL);
+	const char *teammate = GfParmGetStr(car->_carHandle, BT_SECT_PRIV, BT_ATT_TEAMMATE, NULL);
 	if (teammate != NULL) {
 		opponents->setTeamMate(teammate);
 	}
@@ -926,7 +926,7 @@ float Driver::filterTCL(float accel)
 // Traction Control (TCL) setup.
 void Driver::initTCLfilter()
 {
-	char *traintype = GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
+	const char *traintype = GfParmGetStr(car->_carHandle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
 	if (strcmp(traintype, VAL_TRANS_RWD) == 0) {
 		GET_DRIVEN_WHEEL_SPEED = &Driver::filterTCL_RWD;
 	} else if (strcmp(traintype, VAL_TRANS_FWD) == 0) {

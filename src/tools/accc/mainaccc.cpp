@@ -274,7 +274,7 @@ void keyboard ( unsigned char, int, int )
 int
 main(int argc, char **argv)
 {
-  char *fake_argv[3] ;
+  const char *fake_argv[3] ;
   fake_argv[0] = "ac3dto3ds" ;
   fake_argv[1] = "converter" ;
   fake_argv[2] = NULL ;

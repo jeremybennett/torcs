@@ -49,13 +49,13 @@ void grInitSound(tSituation* s, int ncars)
 	GfOut("-- grInitSound\n");
 
 	// Check if we want sound (sound.xml).
-	char *soundDisabledStr = GR_ATT_SOUND_STATE_DISABLED;
-	char *soundOpenALStr = GR_ATT_SOUND_STATE_OPENAL;
-	char *soundPlibStr = GR_ATT_SOUND_STATE_PLIB;
+	const char *soundDisabledStr = GR_ATT_SOUND_STATE_DISABLED;
+	const char *soundOpenALStr = GR_ATT_SOUND_STATE_OPENAL;
+	const char *soundPlibStr = GR_ATT_SOUND_STATE_PLIB;
 	char fnbuf[1024];
 	sprintf(fnbuf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
 	void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-	char *optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOpenALStr);
+	const char *optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOpenALStr);
 	float global_volume = GfParmGetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", 100.0f);
 	if (!strcmp(optionName, soundDisabledStr)) {
 		sound_mode = DISABLED;
@@ -92,7 +92,7 @@ void grInitSound(tSituation* s, int ncars)
 	for (i = 0; i<ncars; i++) {
 		void* handle = s->cars[i]->_carHandle;
 		tCarElt	*car = s->cars[i];
-		char* param;
+		const char* param;
 		char filename[512];
         FILE *file = NULL;
 

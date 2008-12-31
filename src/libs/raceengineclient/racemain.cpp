@@ -2,7 +2,7 @@
 
     file        : racemain.cpp
     created     : Sat Nov 16 12:13:31 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -128,12 +128,10 @@ int
 RePreRace(void)
 {
 	tdble dist;
-	char *raceName;
-	char *raceType;
 	void *params = ReInfo->params;
 	void *results = ReInfo->results;
 
-	raceName = ReInfo->_reRaceName = ReGetCurrentRaceName();
+	const char* raceName = ReInfo->_reRaceName = ReGetCurrentRaceName();
 	if (!raceName) {
 		return RM_QUIT;
 	}
@@ -146,7 +144,7 @@ RePreRace(void)
 	}
 	ReInfo->s->_maxDammage = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DMG, NULL, 10000);
 
-	raceType = GfParmGetStr(params, raceName, RM_ATTR_TYPE, RM_VAL_RACE);
+	const char* raceType = GfParmGetStr(params, raceName, RM_ATTR_TYPE, RM_VAL_RACE);
 	if (!strcmp(raceType, RM_VAL_RACE)) {
 		ReInfo->s->_raceType = RM_TYPE_RACE;
 	} else if (!strcmp(raceType, RM_VAL_QUALIF)) {
@@ -172,7 +170,6 @@ reRaceRealStart(void)
 	int sw, sh, vw, vh;
 	tRobotItf *robot;
 	tReCarInfo *carInfo;
-	char *dllname;
 	char key[256];
 	int foundHuman;
 	void *params = ReInfo->params;
@@ -180,7 +177,7 @@ reRaceRealStart(void)
 	tSituation *s = ReInfo->s;
 
 	RmLoadingScreenSetText("Loading Simulation Engine...");
-	dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
+	const char* dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
 	sprintf(key, "%smodules/simu/%s.%s", GetLibDir (), dllname, DLLEXT);
 	if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
 	ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
@@ -295,9 +292,7 @@ ReRaceStart(void)
 	int i;
 	int nCars;
 	int maxCars;
-	char *prevRaceName;
-	char *gridType;
-	char *raceName = ReInfo->_reRaceName;
+	const char *raceName = ReInfo->_reRaceName;
 	void *params = ReInfo->params;
 	void *results = ReInfo->results;
 
@@ -324,13 +319,13 @@ ReRaceStart(void)
 		RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
 		RmLoadingScreenSetText("Preparing Starting Grid...");
 
-		gridType = GfParmGetStr(params, raceName, RM_ATTR_START_ORDER, RM_VAL_DRV_LIST_ORDER);
+		const char* gridType = GfParmGetStr(params, raceName, RM_ATTR_START_ORDER, RM_VAL_DRV_LIST_ORDER);
 		if (!strcmp(gridType, RM_VAL_LAST_RACE_ORDER)) {
 			/* Starting grid in the arrival of the previous race */
 			nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS);
 			maxCars = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DRV, NULL, 100);
 			nCars = MIN(nCars, maxCars);
-			prevRaceName = ReGetPrevRaceName();
+			const char* prevRaceName = ReGetPrevRaceName();
 			if (!prevRaceName) {
 				return RM_QUIT;
 			}
@@ -345,7 +340,7 @@ ReRaceStart(void)
 			nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS);
 			maxCars = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DRV, NULL, 100);
 			nCars = MIN(nCars, maxCars);
-			prevRaceName = ReGetPrevRaceName();
+			const char* prevRaceName = ReGetPrevRaceName();
 			if (!prevRaceName) {
 				return RM_QUIT;
 			}

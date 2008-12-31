@@ -94,7 +94,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
     car->aero.lift[1] = - car->aero.Clift[1] * v2 * hm;
 }
 
-static char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
+static const char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
 
 void
 SimWingConfig(tCar *car, int index)

@@ -2,7 +2,7 @@
 
     file        : nfsperf.cpp
     created     : Tue Aug  5 23:20:23 CEST 2003
-    copyright   : (C) 2003 by Eric Espié                        
+    copyright   : (C) 2003 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -38,10 +38,10 @@
 #include <tgf.h>
 
 char	*catfile = NULL;
-char	*infile = "carp.txt";
-char	*outfile = "carp.xml";
+const char	*infile = "carp.txt";
+const char	*outfile = "carp.xml";
 
-char	*gears[] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+const char	*gears[] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
 
 void usage(void)

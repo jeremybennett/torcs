@@ -33,9 +33,12 @@
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 // list of options.
-static char *soundOptionList[] = {GR_ATT_SOUND_STATE_OPENAL,
-								  GR_ATT_SOUND_STATE_PLIB,
-								  GR_ATT_SOUND_STATE_DISABLED};
+static const char *soundOptionList[] = {
+	GR_ATT_SOUND_STATE_OPENAL,
+	GR_ATT_SOUND_STATE_PLIB,
+	GR_ATT_SOUND_STATE_DISABLED
+};
+
 static const int nbOptions = sizeof(soundOptionList) / sizeof(soundOptionList[0]);
 static int curOption = 0;
 
@@ -54,7 +57,7 @@ static void	*prevHandle = NULL;
 // Read sound configuration.
 static void readSoundCfg(void)
 {
-	char *optionName;
+	const char *optionName;
 	int	i;
 	char buf[1024];
 

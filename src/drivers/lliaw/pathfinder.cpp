@@ -34,7 +34,7 @@ Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)
 
 	// Set team mate, TODO: support multiple teammates.
 	teammate = NULL;
-	char *teammatename = GfParmGetStr(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_TEAMMATE, NULL);
+	const char *teammatename = GfParmGetStr(car->_carHandle, BERNIW_SECT_PRIV, BERNIW_ATT_TEAMMATE, NULL);
 	// Teammate defined in XML setup file?
 	if (teammatename != NULL) {
 		// Teammate as well in the race?

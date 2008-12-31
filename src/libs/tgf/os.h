@@ -29,8 +29,8 @@ typedef int (*tfModGetInfo)(unsigned int, char*, tModList **);
 typedef int (*tfModGetInfoDir)(unsigned int, char*, int, tModList **);
 typedef int (*tfModFreeInfoList)(tModList **);
 /* directory interface */
-typedef tFList *(*tfDirGetList)(char *);
-typedef tFList *(*tfDirGetListFiltered)(char *, char *);
+typedef tFList *(*tfDirGetList)(const char *);
+typedef tFList *(*tfDirGetListFiltered)(const char *, const char *);
 /* time interface */
 typedef double (*tfTimeClock)(void);
 

@@ -27,7 +27,7 @@
 #define logmsg empty_log
 #endif
 
-void empty_log(char* s, ...)
+void empty_log(const char* s, ...)
 {
 }
 /// \brief Create a new discrete policy.
@@ -490,8 +490,8 @@ void DiscretePolicy::loadFile (char* f)
 		return;
 	}
 	char rtag[256];
-	char* start_tag="QSA";
-	char* close_tag="END";
+	const char* start_tag="QSA";
+	const char* close_tag="END";
 	int n_read_states, n_read_actions;
 
 	fread((void *) rtag, sizeof (char), strlen (start_tag)+1, fh);
@@ -555,8 +555,8 @@ void DiscretePolicy::saveFile (char* f) {
 		return;
 	}
 
-	char* start_tag="QSA";
-	char* close_tag="END";
+	const char* start_tag="QSA";
+	const char* close_tag="END";
 
 	fwrite((void *) start_tag, sizeof (char), strlen (start_tag)+1, fh);
 	fwrite((void *) &n_states, sizeof(int), 1, fh);

@@ -19,7 +19,7 @@
 
 #include "sim.h"
 
-static char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
+static const char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
 
 void
 SimTransmissionConfig(tCar *car)
@@ -30,7 +30,7 @@ SimTransmissionConfig(tCar *car)
     tTransmission	*trans = &(car->transmission);
     tClutch		*clutch = &(trans->clutch);
     tDifferential	*differential;
-    char		*transType;
+    const char		*transType;
     int			i, j;
     tdble		gRatio, fRatio, gEff, fEff;
     tdble		gearI;

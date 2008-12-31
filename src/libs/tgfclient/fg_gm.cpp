@@ -126,7 +126,7 @@ static SFG_State fgState;
  */
 static void fgInitialize(void)
 {
-	char* displayName;
+	const char* displayName;
 	displayName = getenv("DISPLAY");
 	if (!displayName) {
 		displayName = ":0.0";

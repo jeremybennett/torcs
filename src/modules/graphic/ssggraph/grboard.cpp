@@ -215,7 +215,7 @@ cGrBoard::grDispGGraph(tCarElt *car)
 
 
 void
-cGrBoard::grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, char *title)
+cGrBoard::grDrawGauge(tdble X1, tdble Y1, tdble H, float *clr1, float *clr2, tdble val, const char *title)
 {
 	tdble curH;
 
@@ -864,7 +864,7 @@ void grInitBoardCar(tCarElt *car)
 	char		buf[4096];
 	int			index;
 	void		*handle;
-	char		*param;
+	const char		*param;
 	myLoaderOptions	options ;
 	tgrCarInfo		*carInfo;
 	tgrCarInstrument	*curInst;

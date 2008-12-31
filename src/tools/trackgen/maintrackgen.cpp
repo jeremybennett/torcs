@@ -306,8 +306,8 @@ main(int argc, char **argv)
 static void
 Generate(void)
 {
-	char *trackdllname;
-	char *extName;
+	const char *trackdllname;
+	const char *extName;
 	FILE *outfd = NULL;
 
 	// Get the trackgen paramaters.

@@ -372,7 +372,7 @@ void
 grInitShadow(tCarElt *car)
 {
 	char		buf[256];
-	char		*shdTexName;
+	const char	*shdTexName;
 	int			i;
 	float		x;
 	sgVec3		vtx;
@@ -489,13 +489,13 @@ grInitCar(tCarElt *car)
 	int nranges;
 	int i, j;
 	void *handle;
-	char *param;
+	const char *param;
 	int lg;
 	char path[256];
 	myLoaderOptions options;
 	sgVec3 lightPos;
 	int lightNum;
-	char *lightType;
+	const char *lightType;
 	int lightTypeNum;
 
 
@@ -608,8 +608,12 @@ grInitCar(tCarElt *car)
 	/*carEntity = ssgLoad(param);*/
 	carEntity = grssgCarLoadAC3D(param, NULL, index);
 	grCarInfo[index].carEntity = carEntity;
+
 	/* Set a selector on the driver */
-	ssgBranch *b = (ssgBranch *)carEntity->getByName( "DRIVER" );
+	char* stmp = strdup("DRIVER");
+	ssgBranch *b = (ssgBranch *)carEntity->getByName(stmp);
+	free(stmp);
+
 	grCarInfo[index].driverSelector = new ssgSelector;
 	if (b) {
 		ssgBranch *bp = b->getParent(0);

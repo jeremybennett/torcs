@@ -63,9 +63,9 @@ public:
 	}
 private:
 	OptionList option_list;
-	void SetFloatFromGfParm(void* handle, char* name);
-	void SetBoolFromGfParm(void* handle, char* name);
-	bool StrToBool (char* s, bool dontcare=false);
+	void SetFloatFromGfParm(void* handle, const char* name);
+	void SetBoolFromGfParm(void* handle, const char* name);
+	bool StrToBool (const char* s, bool dontcare=false);
 };
 
 #endif

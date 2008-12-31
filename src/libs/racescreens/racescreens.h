@@ -50,7 +50,7 @@ typedef struct
     void        	*param;
     void        	*prevScreen;
     void        	*nextScreen;	/* Race manager screen to go after select */
-    char		*title;
+    const char *title;
     unsigned int	confMask;	/* Tell what to configure */
 #define RM_CONF_RACE_LEN	0x00000001
 #define RM_CONF_DISP_MODE	0x00000002
@@ -60,7 +60,7 @@ typedef void (*tfSelectFile) (char *);
 
 typedef struct
 {
-    char		*title;
+    const char *title;
     char		*path;
     void        	*prevScreen;
     tfSelectFile	select;
@@ -75,26 +75,26 @@ extern void RmDriverSelect(void * /* vs */);
 
 extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallback /* callback */);
 
-extern void RmLoadingScreenStart(char * /* text */, char * /* bgimg */);
-extern void RmLoadingScreenSetText(char * /* text */);
+extern void RmLoadingScreenStart(const char * /* text */, const char * /* bgimg */);
+extern void RmLoadingScreenSetText(const char * /* text */);
 extern void RmShutdownLoadingScreen(void);
 
 extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
 
-extern void *RmTwoStateScreen(char *title,
-			      char *label1, char *tip1, void *screen1,
-			      char *label2, char *tip2, void *screen2);
+extern void *RmTwoStateScreen(const char *title,
+			      const char *label1, const char *tip1, void *screen1,
+			      const char *label2, const char *tip2, void *screen2);
 
-extern void *RmTriStateScreen(char *title,
-			      char *label1, char *tip1, void *screen1,
-			      char *label2, char *tip2, void *screen2,
-			      char *label3, char *tip3, void *screen3);
+extern void *RmTriStateScreen(const char *title,
+			      const char *label1, const char *tip1, void *screen1,
+			      const char *label2, const char *tip2, void *screen2,
+			      const char *label3, const char *tip3, void *screen3);
 
-extern void *RmFourStateScreen(char *title,
-			       char *label1, char *tip1, void *screen1,
-			       char *label2, char *tip2, void *screen2,
-			       char *label3, char *tip3, void *screen3,
-			       char *label4, char *tip4, void *screen4);
+extern void *RmFourStateScreen(const char *title,
+			       const char *label1, const char *tip1, void *screen1,
+			       const char *label2, const char *tip2, void *screen2,
+			       const char *label3, const char *tip3, void *screen3,
+			       const char *label4, const char *tip4, void *screen4);
 
 extern void RmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr);
 

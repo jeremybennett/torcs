@@ -127,12 +127,12 @@ extern void GfuiScreenReplace(void *screen);
 extern void GfuiScreenDeactivate(void);
 extern void *GfuiHookCreate(void *userDataOnActivate, tfuiCallback onActivate);
 extern void GfuiHookRelease(void *hook);
-extern void GfuiAddKey(void *scr, unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
+extern void GfuiAddKey(void *scr, unsigned char key, const char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
 extern void GfuiRegisterKey(unsigned char key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
-extern void GfuiAddSKey(void *scr, int key, char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
+extern void GfuiAddSKey(void *scr, int key, const char *descr, void *userData, tfuiCallback onKeyPressed, tfuiCallback onKeyReleased);
 extern void GfuiHelpScreen(void *prevScreen);
 extern void GfuiScreenShot(void *notused);
-extern void GfuiScreenAddBgImg(void *scr, char *filename);
+extern void GfuiScreenAddBgImg(void *scr, const char *filename);
 extern void GfuiKeyEventRegister(void *scr, tfuiKeyCallback onKeyAction);
 extern void GfuiSKeyEventRegister(void *scr, tfuiSKeyCallback onSKeyAction);
 extern void GfuiKeyEventRegisterCurrent(tfuiKeyCallback onKeyAction);
@@ -171,14 +171,14 @@ extern void GfuiUnSelectCurrent(void);
 #define GFUI_FONT_MEDIUM_C	6
 #define GFUI_FONT_SMALL_C	7
 #define GFUI_FONT_DIGIT		8
-extern int GfuiLabelCreate(void *scr, char *text, 
+extern int GfuiLabelCreate(void *scr, const char *text, 
 			int font, int x, int y, int align, int maxlen);
-extern int GfuiLabelCreateEx(void *scr, char *text, float *fgColor, int font, int x, int y, int align, int maxlen);
+extern int GfuiLabelCreateEx(void *scr, const char *text, float *fgColor, int font, int x, int y, int align, int maxlen);
 
-extern int GfuiTipCreate(void *scr, char *text, int maxlen);
-extern int GfuiTitleCreate(void *scr, char *text, int maxlen);
+extern int GfuiTipCreate(void *scr, const char *text, int maxlen);
+extern int GfuiTitleCreate(void *scr, const char *text, int maxlen);
 
-extern void GfuiLabelSetText(void *scr, int id, char *text);
+extern void GfuiLabelSetText(void *scr, int id, const char *text);
 extern void GfuiLabelSetColor(void *scr, int id, float *color);
 
 extern void GfuiPrintString(const char *text, float *fgColor, int font, int x, int y, int align);
@@ -188,27 +188,27 @@ extern int  GfuiFontWidth(int font, const char *text);
 
 /* buttons */
 #define GFUI_BTNSZ	300
-extern int GfuiButtonCreate(void *scr, char *text, int font,
+extern int GfuiButtonCreate(void *scr, const char *text, int font,
 			    int x, int y, int width, int align, int mouse,
 			    void *userDataOnPush, tfuiCallback onPush, 
 			    void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-extern int GfuiButtonStateCreate(void *scr, char *text, int font, int x, int y, int width, int align, int mouse,
+extern int GfuiButtonStateCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
 				 void *userDataOnPush, tfuiCallback onPush, 
 				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
-extern int GfuiGrButtonCreate(void *scr, char *disabled, char *enabled, char *focused, char *pushed,
+extern int GfuiGrButtonCreate(void *scr, const char *disabled, const char *enabled, const char *focused, const char *pushed,
 			      int x, int y, int align, int mouse,
 			      void *userDataOnPush, tfuiCallback onPush, 
 			      void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
 
-extern void GfuiButtonSetText(void *scr, int id, char *text);
+extern void GfuiButtonSetText(void *scr, int id, const char *text);
 extern int GfuiButtonGetFocused(void);
 
 /* Edit Box */
-extern int GfuiEditboxCreate(void *scr, char *text, int font, int x, int y, int width, int maxlen,
+extern int GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
 			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
 extern int GfuiEditboxGetFocused(void);
 extern char *GfuiEditboxGetString(void *scr, int id);
-extern void GfuiEditboxSetString(void *scr, int id, char *text);
+extern void GfuiEditboxSetString(void *scr, int id, const char *text);
 
 /* Scrolling lists */
 extern int GfuiScrollListCreate(void *scr, int font, int x, int y, int align,
@@ -235,10 +235,10 @@ extern void GfuiStaticImageSet(void *scr, int id, char *name);
  * Menu Management Interface *
  *****************************/
 
-extern void *GfuiMenuScreenCreate(char *title);
+extern void *GfuiMenuScreenCreate(const char *title);
 extern void  GfuiMenuDefaultKeysAdd(void *scr);
-extern int   GfuiMenuButtonCreate(void *menu, char *text, char *tip, void *userdata, tfuiCallback onpush);
-extern int   GfuiMenuBackQuitButtonCreate(void *menu, char *text, char *tip, void *userdata, tfuiCallback onpush);
+extern int   GfuiMenuButtonCreate(void *menu, const char *text, const char *tip, void *userdata, tfuiCallback onpush);
+extern int   GfuiMenuBackQuitButtonCreate(void *menu, const char *text, const char *tip, void *userdata, tfuiCallback onpush);
 
 
 /*********************
@@ -296,10 +296,10 @@ extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseInitCenter(void);
-extern tCtrlRef *GfctrlGetRefByName(char *name);
-extern char *GfctrlGetNameByRef(int type, int index);
+extern tCtrlRef *GfctrlGetRefByName(const char *name);
+extern const char *GfctrlGetNameByRef(int type, int index);
 
-extern int GfuiGlutExtensionSupported(char *str);
+extern int GfuiGlutExtensionSupported(const char *str);
 
 
 #endif /* __TGFCLIENT__H__ */

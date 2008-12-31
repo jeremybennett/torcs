@@ -197,7 +197,7 @@ void Opponents::update(tSituation *s, Driver *driver)
 }
 
 
-void Opponents::setTeamMate(char *teammate)
+void Opponents::setTeamMate(const char *teammate)
 {
 	int i;
 	for (i = 0; i < nopponents; i++) {

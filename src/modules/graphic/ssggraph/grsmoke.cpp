@@ -248,7 +248,7 @@ void grAddSmoke(tCarElt *car, double t)
 				init_speed = 0.01f;
 
 				if (car->priv.wheel[i].seg) { // sanity check
-					char* surface = car->priv.wheel[i].seg->surface->material;
+					const char* surface = car->priv.wheel[i].seg->surface->material;
 					if (strstr(surface, "sand")) {
 						cur_clr[0] = 0.8f;
 						cur_clr[1] = 0.7f + urandom()*0.1f;

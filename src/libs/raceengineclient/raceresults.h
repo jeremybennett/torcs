@@ -2,7 +2,7 @@
 
     file        : raceresults.h
     created     : Thu Jan  2 12:43:28 CET 2003
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002 by Eric Espiï¿½                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -28,7 +28,7 @@
 
 
 extern void ReInitResults(void);
-extern void ReStoreRaceResults(char *race);
+extern void ReStoreRaceResults(const char *race);
 extern int  ReDisplayResults(void);
 extern void ReDisplayStandings(void);
 extern void ReSavePracticeLap(tCarElt *car);

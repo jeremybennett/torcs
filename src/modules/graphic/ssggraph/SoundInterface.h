@@ -29,7 +29,7 @@
 #define logmsg printf ("# "); printf
 #else
 #define logmsg empty_log
-static void empty_log(char* s, ...)
+static void empty_log(const char* s, ...)
 {
 }
 #endif
