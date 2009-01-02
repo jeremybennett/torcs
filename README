@@ -92,7 +92,9 @@ Bernhard.
 Changes since 1.3.1
 -------------------
 - Fixed remaining const char* gcc 4.3 warnings (Bernhard).
-
+- Just load ssggraph once to avoid weird crashes when going back to the options
+  menu and coming back to the race (just Linux was affected, the Windows
+  version does not work the same way concerning this) (Bernhard).
 
 
 TODO for 1.3.2
