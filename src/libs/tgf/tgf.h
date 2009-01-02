@@ -293,7 +293,7 @@ extern int GfParmSetCurStr(void *handle, char *path, char *key, char *val);
 /* get num parameter value */
 extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* get num parameter value */
-extern tdble GfParmGetCurNum(void *handle, const char *path, const char *key, char *unit, tdble deflt);
+extern tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* set num parameter value */
 extern int GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
 /* set num parameter value */
@@ -364,7 +364,7 @@ GfFatal(const char *fmt, ...)
     @fn	 GfOut(s, args...)
  */
 static inline void
-GfOut(char *fmt, ...)
+GfOut(const char *fmt, ...)
 {
 }
 

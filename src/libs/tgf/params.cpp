@@ -2048,7 +2048,7 @@ GfParmGetNum (void *handle, const char *path, const char *key, const char *unit,
     @return	parameter value
  */
 tdble
-GfParmGetCurNum (void *handle, const char *path, const char *key, char *unit, tdble deflt)
+GfParmGetCurNum (void *handle, const char *path, const char *key, const char *unit, tdble deflt)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
