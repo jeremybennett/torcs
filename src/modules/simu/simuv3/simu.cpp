@@ -298,7 +298,7 @@ RemoveCar(tCar *car, tSituation *s)
 
     trkPos.type = TR_LPOS_SEGMENT;
     RtTrackLocal2Global(&trkPos, &(car->restPos.pos.x), &(car->restPos.pos.y), trkFlag);
-    car->restPos.pos.z = RtTrackHeightL(&trkPos) + carElt->_statGC_z;
+    car->restPos.pos.z = RtTrackHeightL(&trkPos) + 0.1 + carElt->_statGC_z;
     car->restPos.pos.az = RtTrackSideTgAngleL(&trkPos);
     car->restPos.pos.ax = 0;
     car->restPos.pos.ay = 0;
@@ -372,11 +372,11 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		CHECK(car);
 
 
-		if (!(s->_raceState & RM_RACE_PRESTART)) {
+		if (1) { //!(s->_raceState & RM_RACE_PRESTART)) {
 
-				SimCarUpdateWheelPos(car);
+            SimCarUpdateWheelPos(car);
 			CHECK(car);
-				SimBrakeSystemUpdate(car);
+            SimBrakeSystemUpdate(car);
 			CHECK(car);
 				SimAeroUpdate(car, s);
 			CHECK(car);
@@ -400,7 +400,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		SimTransmissionUpdate(car);
 		CHECK(car);
 
-		if (!(s->_raceState & RM_RACE_PRESTART)) {
+		if (1) {//!(s->_raceState & RM_RACE_PRESTART)) {
 				SimWheelUpdateRotation(car);
 			CHECK(car);
 				SimCarUpdate(car, s);

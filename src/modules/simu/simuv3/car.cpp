@@ -201,14 +201,14 @@ SimCarUpdateForces(tCar *car)
         d.x = wheel->staticPos.x;
         d.z = car->statGC.z + wheel->rideHeight;
 
-        F.M.x += (wheel->forces.z * d.y + //susp_pos_y +
+        F.M.x += (wheel->forces.z * d.y + 
                   wheel->forces.y * d.z);
-        //(car->statGC.z + wheel->rideHeight));
-        F.M.y -= (wheel->forces.z * d.x + //wheel->staticPos.x + 
+
+        F.M.y -= (wheel->forces.z * d.x + 
                   wheel->forces.x * d.z);
-        //(car->statGC.z + wheel->rideHeight));
-        F.M.z += (-wheel->forces.x * d.y + //susp_pos_y +
-                  wheel->forces.y * d.x); //wheel->staticPos.x);
+
+        F.M.z += (-wheel->forces.x * d.y + 
+                  wheel->forces.y * d.x); 
     }
 
     F.M.x += car->aero.Mx;
@@ -322,10 +322,6 @@ SimCarUpdateSpeed(tCar *car)
         car->carElt->_fuelInstant = (1.0-alpha)*car->carElt->_fuelInstant + alpha*fi;
     }
 
-    // update angles
-    angles.x = car->DynGCg.pos.ax;
-    angles.y = car->DynGCg.pos.ay;
-    angles.z = car->DynGCg.pos.az;	
    
     // update linear velocity
     car->DynGCg.vel.x += car->DynGCg.acc.x * SimDeltaTime;
@@ -339,7 +335,15 @@ SimCarUpdateSpeed(tCar *car)
     original.x = car->DynGCg.vel.x;
     original.y = car->DynGCg.vel.y;
     original.z = car->DynGCg.vel.z;
+#if 1
+    QuatInverseRotate(original, car->posQuat, updated);
+#else    
+    // update angles
+    //angles.x = car->DynGCg.pos.ax;
+    //angles.y = car->DynGCg.pos.ay;
+    //angles.z = car->DynGCg.pos.az;	
     NaiveRotate (original, angles, &updated);
+#endif
     car->DynGC.vel.x = updated.x;
     car->DynGC.vel.y = updated.y;
     car->DynGC.vel.z = updated.z;
@@ -378,7 +382,6 @@ SimCarUpdateWheelPos(tCar *car)
         tWheel *wheel = &(car->wheel[i]);
 
         t3Dd pos;
-        //t3Dd angles;
         pos.x = wheel->staticPos.x;
         pos.y = wheel->staticPos.y;
         pos.z = -car->statGC.z; // or wheel->staticPos.z; ??
@@ -393,11 +396,7 @@ SimCarUpdateWheelPos(tCar *car)
         wheel->pos.y = pos3[SG_Y] + car->DynGC.pos.y;
         wheel->pos.z = pos3[SG_Z] + car->DynGC.pos.z;
 
-
-        // these two will be taken into account in wheel.cpp
-        //	    angles.x += wheel->relPos.ax;
-        //	    angles.z += wheel->steer + wheel->staticPos.az;
-	    
+        // TODO: Change this to use derivatives?
         wheel->bodyVel.x = vx
             - car->DynGC.vel.az * wheel->staticPos.y
             + car->DynGC.vel.ay * pos.z;

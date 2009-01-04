@@ -53,15 +53,18 @@ SimCarCollideZ(tCar *car)
     }
 
     
-    t3Dd angles;
 
     RtTrackSurfaceNormalL(&(car->trkPos), &normal);
     
+#if 0
+    t3Dd angles;
     angles.x = car->DynGCg.pos.ax;
     angles.y = car->DynGCg.pos.ay;
     angles.z = car->DynGCg.pos.az;
     NaiveRotate (normal, angles, &rel_normal);
-    
+#else
+    QuatInverseRotate(normal, car->posQuat, rel_normal);
+#endif
     if (rel_normal.z > 0) {
         upside_down = false;
         car->upside_down_timer = 0.0f;
@@ -96,10 +99,13 @@ SimCarCollideZ(tCar *car)
                 corner.z = orig.z;//wheel->susp.spring.packers - wheel->rideHeight;
                 flag = true;
             }
+#if 0
             angles.x = car->DynGCg.pos.ax;
             angles.y = car->DynGCg.pos.ay;
             angles.z = car->DynGCg.pos.az;
-            NaiveInverseRotate (orig, angles, &delta);
+#else
+            QuatRotate (orig, car->posQuat, delta);
+#endif
             if (((rel_normal.z <=0)
                  && (car->DynGCg.pos.z - delta.z < wheel->zRoad))
                 || (rel_normal.z > 0)) {
@@ -145,6 +151,7 @@ SimCarCollideZ(tCar *car)
                         car->collision |= 1;
                     }
 
+                    // Reduce total car speed if need be.
                     {
                         t3Dd N;
                                 
@@ -160,9 +167,9 @@ SimCarCollideZ(tCar *car)
                         // friction
                         tdble c;
                         if (rel_normal.z < 0) {
-                            c = 0.5;
+                            c = 0.2;
                         } else {
-                            c = 0.25;
+                            c = 0.1;
                         }
                         car->DynGCg.vel.x = ConstantFriction (car->DynGCg.vel.x, c*dotProd*SIGN(car->DynGCg.vel.x));
                         car->DynGCg.vel.y = ConstantFriction (car->DynGCg.vel.y, c*dotProd*SIGN(car->DynGCg.vel.y));
@@ -173,16 +180,16 @@ SimCarCollideZ(tCar *car)
                     if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
                         car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
                     }
-
-                    NaiveRotate (normal, angles, &rel_normal);
-                    // dotProd = (car->DynGC.vel.x * rel_normal.x + car->DynGC.vel.y * rel_normal.y + car->DynGC.vel.z * rel_normal.z) * wheel->trkPos.seg->surface->kRebound;
-                    //          printf ("%f\n", dotProd);
+                    
+                    QuatInverseRotate (normal, car->posQuat, rel_normal);
 #if 1
                     if (1) {//rel_normal.z <= 0) {
+                        tdble mu = 0.2;
                         t3Dd forces;
-                        forces.x = -0.25 * car->mass * dotProd * rel_normal.x;
-                        forces.y = -0.25 * car->mass * dotProd * rel_normal.y;
-                        forces.z = -0.25 * car->mass * dotProd * rel_normal.z;
+                        forces.x = - mu * car->mass * dotProd * rel_normal.x;
+                        forces.y = - mu * car->mass * dotProd * rel_normal.y;
+                        forces.z = - mu * car->mass * dotProd * rel_normal.z;
+
                         t3Dd friction;
                         cvx = car->corner[i].vel.x;
                         cvy = car->corner[i].vel.y;
@@ -194,7 +201,7 @@ SimCarCollideZ(tCar *car)
                             friction.x = cvx/sum_v;
                             friction.y = cvy/sum_v;
                             friction.z = cvz/sum_v;
-                            NaiveRotate(friction, angles, &fr_loc);
+                            QuatInverseRotate(friction, car->posQuat, fr_loc);
                             tdble C = 0.5f * dotProd;
 
                             forces.x += C*fr_loc.x;
@@ -220,13 +227,14 @@ SimCarCollideZ(tCar *car)
                              forces.y * wheel->relPos.x);
 
                         for (int i=0; i<3; i++) {
-                            if (fabs(car->rot_mom[i])>2.0*car->mass) {
-                                car->rot_mom[i] = 2.0*car->mass * SIGN(car->rot_mom[i]);
+                            tdble rot_mom_lim = 2.0;
+                            if (fabs(car->rot_mom[i])> rot_mom_lim*car->mass) {
+                                car->rot_mom[i] = rot_mom_lim*car->mass * SIGN(car->rot_mom[i]);
                             }
                         }
-                        car->rot_mom[SG_X]*=.999f;
-                        car->rot_mom[SG_Y]*=.999f;
-                        car->rot_mom[SG_Z]*=.999f;
+                        //car->rot_mom[SG_X]*=.9f;
+                        //car->rot_mom[SG_Y]*=.9f;
+                        //car->rot_mom[SG_Z]*=.9f;
                         car->DynGC.vel.ax = car->DynGCg.vel.ax = -2.0f*car->rot_mom[SG_X] * car->Iinv.x;
                         car->DynGC.vel.ay = car->DynGCg.vel.ay = -2.0f*car->rot_mom[SG_Y] * car->Iinv.y;
                         car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
@@ -249,7 +257,7 @@ SimCarCollideXYScene(tCar *car)
     tDynPt      *corner;
     //t3Dd      normal;
     tdble       initDotProd;
-    tdble       dotProd, cx, cy, dotprod2;
+    tdble       dotProd, dotprod2;
     tTrackBarrier *curBarrier;
     tdble       dmg;
     
@@ -259,8 +267,6 @@ SimCarCollideXYScene(tCar *car)
 
     corner = &(car->corner[0]);
     for (i = 0; i < 4; i++, corner++) {
-        cx = corner->pos.ax - car->DynGCg.pos.x;
-        cy = corner->pos.ay - car->DynGCg.pos.y;
         seg = car->trkPos.seg;
         RtTrackGlobal2Local(seg, corner->pos.ax, corner->pos.ay, &trkpos, TR_LPOS_TRACK);
         seg = trkpos.seg;
@@ -280,15 +286,13 @@ SimCarCollideXYScene(tCar *car)
 
         const tdble& nx = curBarrier->normal.x;
         const tdble& ny = curBarrier->normal.y;
-        t3Dd normal = {curBarrier->normal.x,
-                       curBarrier->normal.y,
-                       0.0f};
+        t3Dd normal = {nx, ny, 0.0f};
         car->DynGCg.pos.x -= nx * toSide;
         car->DynGCg.pos.y -= ny * toSide;
 
         // Corner position relative to center of gravity.
-        cx = corner->pos.ax - car->DynGCg.pos.x;
-        cy = corner->pos.ay - car->DynGCg.pos.y;
+        tdble cx = corner->pos.ax - car->DynGCg.pos.x;
+        tdble cy = corner->pos.ay - car->DynGCg.pos.y;
 
         car->blocked = 1;
         car->collision |= SEM_COLLISION;
@@ -313,9 +317,9 @@ SimCarCollideXYScene(tCar *car)
         static tdble VELSCALE = 10.0f;
         //static tdble VELMAX = 6.0f;           
         {
-
-            sgVec3 v = {normal.x, normal.y, normal.z};
-            tdble d2 = dotProd / SimDeltaTime;
+            sgVec3 v; 
+            tdble d2 = 0;//dotProd / SimDeltaTime;
+            t2sg3(normal, v);
             sgRotateVecQuat (v, car->posQuat);
             car->DynGC.acc.x -= v[SG_X] * d2;
             car->DynGC.acc.y -= v[SG_Y] * d2;
@@ -366,6 +370,17 @@ SimCarCollideXYScene(tCar *car)
             car->collpos.y = corner->pos.ay;
             car->DynGCg.vel.x -= nx * dotProd;
             car->DynGCg.vel.y -= ny * dotProd;
+        }
+        if (1) {
+            t3Dd original;
+            t3Dd updated;
+            original.x = car->DynGCg.vel.x;
+            original.y = car->DynGCg.vel.y;
+            original.z = car->DynGCg.vel.z;
+            QuatInverseRotate(original, car->posQuat, updated);
+            car->DynGC.vel.x = updated.x;
+            car->DynGC.vel.y = updated.y;
+            car->DynGC.vel.z = updated.z;
         }
 #if 0
         static tdble DEFORMATION_THRESHOLD = 0.01f;

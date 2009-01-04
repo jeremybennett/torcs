@@ -146,6 +146,26 @@ inline void sg2t3 (sgVec3& v, t3Dd& p)
 	p.z = v[SG_Z];
 }
 
+/// If a src vector is in local coordinates,
+/// transform it via q to global coordinates
+inline void QuatRotate(t3Dd& src, sgQuat& q, t3Dd& dst)
+{
+    sgVec3 V;
+    t2sg3(src, V);
+    sgRotateCoordQuat(V, q);
+    sg2t3(V, dst);
+}
+
+/// If a src vector is in global coordinates,
+/// transform it via q to local coordinates
+inline void QuatInverseRotate(t3Dd& src, sgQuat& q, t3Dd& dst)
+{
+    sgVec3 V;
+    t2sg3(src, V);
+    sgRotateVecQuat(V, q);
+    sg2t3(V, dst);
+}
+
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13
 #define SIM_VECT_ACCEL	14

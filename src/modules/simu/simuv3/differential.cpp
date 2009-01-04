@@ -226,16 +226,18 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
                 if (propTq > 0.0f) {
                     rate = 1.0f - exp(-propTq*propTq);
                 }
-
-                float pressure = tanh(rate*(spinVel1-spinVel0));
-                float bias = differential->dSlipMax * 0.5f* pressure;
+                float delta_spin = spinVel1-spinVel0;
+                float pressure = tanh(rate*delta_spin);
+                float bias = differential->dSlipMax * 0.5f* tanh(delta_spin);//pressure;
                 float open = 1.0f - fabs(pressure);
-                DrTq0 = DrTq*(0.5f + bias) + spiderTq;
-                DrTq1 = DrTq*(0.5f - bias) - spiderTq;
+                //DrTq0 = DrTq*(0.5f + bias) + spiderTq;
+                //DrTq1 = DrTq*(0.5f - bias) - spiderTq;
                 DrTq0 = open*(DrTq*(0.5f) + spiderTq)
                     + (1 - open)*(DrTq*(0.5f + bias));
                 DrTq1 = open*(DrTq*(0.5f) - spiderTq)
                     + (1 - open)*(DrTq*(0.5f - bias));
+                //printf ("%f %f %f %f #LSD\n",
+                //open, bias, delta_spin, DrTq1 - DrTq0);
             }
             break;
 
