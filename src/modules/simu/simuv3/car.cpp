@@ -454,19 +454,27 @@ SimCarUpdateCornerPos(tCar *car)
     int i;
 
     for (i = 0; i < 4; i++) {
-
+        
         tDynPt *corner = &(car->corner[i]);
 
-        sgVec3 v = {corner->pos.x, corner->pos.y, -car->statGC.z};
+        // global corner position
+        sgVec3 v = {car->statGC.x + corner->pos.x,
+                    car->statGC.y + corner->pos.y,
+                    -car->statGC.z};
+        //printf("c_%d = {%f %f %f} ->", i, v[SG_X], v[SG_Y], v[SG_Z]);
         sgRotateCoordQuat (v, car->posQuat);
+        //printf(" {%f %f %f}\n", v[SG_X], v[SG_Y], v[SG_Z]);
         corner->pos.ax = car->DynGCg.pos.x + v[SG_X];
         corner->pos.ay = car->DynGCg.pos.y + v[SG_Y];
         corner->pos.az = car->DynGCg.pos.z + v[SG_Z];
+
+
 
         // the following is local - confusing a bit.. vel local is
         // .ax, global is .x contrary to pos [was like that in previous code,
         // might redo it when I have time to look through all
         // potential users of this structure - Christos]
+        // TODO: use quaternion derivative instead?
         corner->vel.ax = - car->DynGC.vel.az * corner->pos.y;
         corner->vel.ay = car->DynGC.vel.az * corner->pos.x;
         corner->vel.az = car->DynGC.vel.ax * corner->pos.y

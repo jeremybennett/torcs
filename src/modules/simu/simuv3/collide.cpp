@@ -289,7 +289,8 @@ SimCarCollideXYScene(tCar *car)
         t3Dd normal = {nx, ny, 0.0f};
         car->DynGCg.pos.x -= nx * toSide;
         car->DynGCg.pos.y -= ny * toSide;
-
+        car->DynGC.pos.x = car->DynGCg.pos.x;
+        car->DynGC.pos.y = car->DynGCg.pos.y;
         // Corner position relative to center of gravity.
         tdble cx = corner->pos.ax - car->DynGCg.pos.x;
         tdble cy = corner->pos.ay - car->DynGCg.pos.y;
@@ -299,26 +300,36 @@ SimCarCollideXYScene(tCar *car)
 
         // Impact speed perpendicular to barrier (of corner).
         initDotProd = nx * corner->vel.x + ny * corner->vel.y;
-
+        //printf("%f = (%f %f)'(%f %f)\n", initDotProd, nx, ny, corner->vel.x, corner->vel.y);
         // Compute dmgDotProd (base value for later damage) with a heuristic.
         tdble absvel = MAX(1.0, sqrt(car->DynGCg.vel.x*car->DynGCg.vel.x + car->DynGCg.vel.y*car->DynGCg.vel.y));
         tdble GCgnormvel = car->DynGCg.vel.x*nx + car->DynGCg.vel.y*ny;
         tdble cosa = GCgnormvel/absvel;
         tdble dmgDotProd = GCgnormvel*cosa;
 
-
+        // TODO: Fix this to be applied only perpendicular to the normal
         dotProd = initDotProd * curBarrier->surface->kFriction;
-        car->DynGCg.vel.x -= nx * dotProd;
-        car->DynGCg.vel.y -= ny * dotProd;
         dotprod2 = (nx * cx + ny * cy);
-                
+        // calculate perpendicular
+        tdble nPx = ny;
+        tdble nPy = -nx;
+        // calculate projection of velocity to perpendicular
+        tdble dotProd_friction = nPx * corner->vel.x + nPy * corner->vel.y;
+        if (nPx * corner->vel.x + nPy * corner->vel.y > 0) {
+            nPx = -nPx;
+            nPy = -nPy;
+        }
+        car->DynGCg.vel.x -= nPx * dotProd;
+        car->DynGCg.vel.y -= nPy * dotProd;                
 
-        // Angular velocity change caused by friction of collisding car part with wall.
-        static tdble VELSCALE = 10.0f;
-        //static tdble VELMAX = 6.0f;           
+        // Angular velocity change caused by friction of colliding car
+        // part with wall.
+        // TODO: change arbitrary constant to distance from axis
+        static tdble VELSCALE = 10.0f; 
+        static tdble VELMAX = 6.0f;           
         {
             sgVec3 v; 
-            tdble d2 = 0;//dotProd / SimDeltaTime;
+            tdble d2 = dotProd / SimDeltaTime;
             t2sg3(normal, v);
             sgRotateVecQuat (v, car->posQuat);
             car->DynGC.acc.x -= v[SG_X] * d2;
@@ -327,6 +338,10 @@ SimCarCollideXYScene(tCar *car)
             car->carElt->_accel_y -= v[SG_Y] * d2;          
 
             car->rot_mom[SG_Z] +=  0.5f*dotprod2 * dotProd / (VELSCALE * car->Iinv.z);
+            if (fabs(car->rot_mom[SG_Z])*car->Iinv.z > VELMAX) {
+                car->rot_mom[SG_Z] =
+                    SIGN(car->rot_mom[SG_Z]) * VELMAX/car->Iinv.z;
+            }
             car->DynGCg.vel.az = car->DynGC.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
         }
 
@@ -359,8 +374,11 @@ SimCarCollideXYScene(tCar *car)
             dmg = 0.0f;
         }
 
-        dotProd *= curBarrier->surface->kRebound;
-
+        if (curBarrier->surface->kRebound > 1.0) {
+            printf("warning: rebound constant %f > 1\n", curBarrier->surface->kRebound);
+        } else {
+            dotProd *= curBarrier->surface->kRebound;
+        }
         // If the car moves toward the barrier, rebound.
         if (dotProd < 0.0f) {
             car->collision |= SEM_COLLISION_XYSCENE;
