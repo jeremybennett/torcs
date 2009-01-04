@@ -324,13 +324,8 @@ SimCarCollideXYScene(tCar *car)
         // calculate projection of velocity to perpendicular
         
 
-        // Angular velocity change caused by friction of colliding car
-        // part with wall.
-        // TODO: change arbitrary constant to distance from axis
-        static tdble VELSCALE = 100.0f; 
-        static tdble VELMAX = 6.0f;           
         {
-            // this is only used for passing the response to the gfx
+            // this is only used for propagating response to other layers
             sgVec3 normal_l; 
             tdble d2 = dotProd / SimDeltaTime;
             t2sg3(normal, normal_l);
@@ -339,35 +334,9 @@ SimCarCollideXYScene(tCar *car)
             car->DynGC.acc.y -= normal_l[SG_Y] * d2;
             car->carElt->_accel_x -= normal_l[SG_X] * d2;
             car->carElt->_accel_y -= normal_l[SG_Y] * d2;          
-#if 0
-            // this is the actual code
-            car->rot_mom[SG_Z] +=  0.5f*dotprod2 * dotProd / (VELSCALE * car->Iinv.z);
-            if (fabs(car->rot_mom[SG_Z])*car->Iinv.z > VELMAX) {
-                car->rot_mom[SG_Z] =
-                    SIGN(car->rot_mom[SG_Z]) * VELMAX/car->Iinv.z;
-            }
-            car->DynGCg.vel.az = car->DynGC.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
-#endif
-        }
-
-        {
-            sgVec3 v = {normal.x, normal.y, normal.z};
-            sgRotateVecQuat (v, car->posQuat);
-            car->DynGC.acc.x -= v[SG_X] * dotProd/SimDeltaTime;
-            car->DynGC.acc.y -= v[SG_Y] * dotProd/SimDeltaTime;
-            car->carElt->_accel_x -= v[SG_X] * dotProd/SimDeltaTime;
-            car->carElt->_accel_y -= v[SG_Y] * dotProd/SimDeltaTime;
         }
                 
         dotprod2 = (nx * cx + ny * cy);
-        {
-            sgVec3 v = {normal.x, normal.y, normal.z};
-            sgRotateVecQuat (v, car->posQuat);
-            car->DynGC.acc.x -= v[SG_X] * dotProd/SimDeltaTime;
-            car->DynGC.acc.y -= v[SG_Y] * dotProd/SimDeltaTime;
-            car->carElt->_accel_x -= v[SG_X] * dotProd/SimDeltaTime;
-            car->carElt->_accel_y -= v[SG_Y] * dotProd/SimDeltaTime;
-        }
 
 
         // Dammage.
@@ -385,9 +354,9 @@ SimCarCollideXYScene(tCar *car)
             dotProd *= curBarrier->surface->kRebound;
         }
         // If the car moves toward the barrier, rebound.
-        tdble normal_impulse_x = nx * dotProd;
-        tdble normal_impulse_y = ny * dotProd;
-        tdble dP3 = initDotProd * curBarrier->surface->kFriction;// could divide by vQ, but it's better (I think) to have it proportional to speed.
+        tdble normal_impulse_x = - nx * dotProd;
+        tdble normal_impulse_y = - ny * dotProd;
+        tdble dP3 = initDotProd * curBarrier->surface->kFriction / vQ;// could divide by vQ, but it's better (I think) to have it proportional to speed.
         tdble friction_impulse_x = vQx * dP3;
         tdble friction_impulse_y = vQy * dP3;
         if (dotProd < 0.0f) {
@@ -396,8 +365,36 @@ SimCarCollideXYScene(tCar *car)
             car->normal.y = ny * dmg;
             car->collpos.x = corner->pos.ax;
             car->collpos.y = corner->pos.ay;
-            car->DynGCg.vel.x -= normal_impulse_x - friction_impulse_x;
-            car->DynGCg.vel.y -= normal_impulse_y - friction_impulse_y;
+            car->DynGCg.vel.x += normal_impulse_x + friction_impulse_x;
+            car->DynGCg.vel.y += normal_impulse_y + friction_impulse_y;
+
+            //printf ("ColXY: (%f %f) + (%f %f)\n",
+            //normal_impulse_x, normal_impulse_y,
+            //friction_impulse_x, friction_impulse_y);
+
+            // Calculate change in rotational momentum.
+            // ----------------------------------------
+            // Put the impulse in a 3d vector
+            sgVec3 impulse = {normal_impulse_x + friction_impulse_x,
+                              normal_impulse_y + friction_impulse_y,
+                              0.0};
+            // rotate it to the target frame
+            sgRotateVecQuat (impulse, car->posQuat);
+            
+            // Put the point of impact in a 3d vector
+            sgVec3 v = {car->statGC.x + corner->pos.x,
+                        car->statGC.y + corner->pos.y,
+                        -car->statGC.z};
+            // Calculate moments
+            tdble Mx = + impulse[SG_Z] * v[SG_Y] + impulse[SG_Y] * v[SG_Z];
+            tdble My = - impulse[SG_Z] * v[SG_X] - impulse[SG_X] * v[SG_Z];
+            tdble Mz = - impulse[SG_X] * v[SG_Y] + impulse[SG_Y] * v[SG_X];
+            // Add moments to rotational inertia
+            tdble rot_mom_scale = car->mass * SimDeltaTime;
+            car->rot_mom[SG_X] -= rot_mom_scale * Mx;
+            car->rot_mom[SG_Y] -= rot_mom_scale * My;
+            car->rot_mom[SG_Z] -= rot_mom_scale* Mz;
+
         }
         // transform velocity to local frame
         if (1) {

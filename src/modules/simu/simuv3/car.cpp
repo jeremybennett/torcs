@@ -198,7 +198,7 @@ SimCarUpdateForces(tCar *car)
         /* moments */
         t3Dd d;
         d.y = susp_pos_y;
-        d.x = wheel->staticPos.x;
+        d.x = wheel->staticPos.x; // TODO: check whether we need to remove GC
         d.z = car->statGC.z + wheel->rideHeight;
 
         F.M.x += (wheel->forces.z * d.y + 
