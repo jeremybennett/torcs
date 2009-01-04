@@ -182,7 +182,7 @@ getFullName (const char *sectionName, const char *paramName)
 	
 	fullName = (char *) malloc (strlen (sectionName) + strlen (paramName) + 2);
 	if (!fullName) {
-		GfError ("getFullName: malloc (%d) failed", strlen (sectionName) + strlen (paramName) + 2);
+		GfError ("getFullName: malloc (%lu) failed", strlen (sectionName) + strlen (paramName) + 2);
 		return NULL;
 	}
 	sprintf (fullName, "%s/%s", sectionName, paramName);
@@ -307,7 +307,7 @@ addParam (struct parmHeader *conf, struct section *section, const char *paramNam
 	
 	param = (struct param *) calloc (1, sizeof (struct param));
 	if (!param) {
-		GfError ("addParam: calloc (1, %d) failed\n", sizeof (struct param));
+		GfError ("addParam: calloc (1, %lu) failed\n", sizeof (struct param));
 		goto bailout;
 	}
 
@@ -427,7 +427,7 @@ addSection (struct parmHeader *conf, const char *sectionName)
 
 	section = (struct section *) calloc (1, sizeof (struct section));
 	if (!section) {
-		GfError ("addSection: calloc (1, %d) failed\n", sizeof (struct section));
+		GfError ("addSection: calloc (1, %lu) failed\n", sizeof (struct section));
 		return NULL;
 	}
 
@@ -493,7 +493,7 @@ createParmHeader (const char *file)
 
     conf = (struct parmHeader *) calloc (1, sizeof (struct parmHeader));
     if (!conf) {
-	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct parmHeader));
+	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct parmHeader));
 	return NULL;
     }
 
@@ -501,7 +501,7 @@ createParmHeader (const char *file)
 
     conf->rootSection = (struct section *) calloc (1, sizeof (struct section));
     if (!conf->rootSection) {
-	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct section));
+	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct section));
 	goto bailout;
     }
     GF_TAILQ_INIT (&(conf->rootSection->paramList));
@@ -959,7 +959,7 @@ GfParmReadBuf (char *buffer)
     /* Handle creation */
     parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
     if (!parmHandle) {
-	GfError ("gfParmReadBuf: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
 	goto bailout;
     }
 
@@ -1032,7 +1032,7 @@ GfParmReadFile (const char *file, int mode)
     /* Handle creation */
     parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
     if (!parmHandle) {
-	GfError ("gfParmReadFile: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
 	goto bailout;
     }
 
@@ -2536,7 +2536,7 @@ GfParmMergeHandles(void *ref, void *tgt, int mode)
     /* Handle creation */
     parmHandleOut = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
     if (!parmHandleOut) {
-	GfError ("gfParmReadBuf: calloc (1, %d) failed\n", sizeof (struct parmHandle));
+	GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
 	parmReleaseHeader (confOut);
 	return NULL;
     }
