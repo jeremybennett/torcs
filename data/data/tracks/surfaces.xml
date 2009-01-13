@@ -411,7 +411,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.0"/>
+	<attnum name="friction"           val="0.2"/>
 
 	<attnum name="roughness" val="0.03"/>
 	<attnum name="roughness wavelength" val="4.0"/>
@@ -433,7 +433,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.0"/>
+	<attnum name="friction"           val="0.2"/>
 
 	<attnum name="roughness" val="0.03"/>
 	<attnum name="roughness wavelength" val="4.0"/>
@@ -455,7 +455,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.4"/>
+	<attnum name="friction"           val="0.3"/>
 
 	<attnum name="roughness" val="0.03"/>
 	<attnum name="roughness wavelength" val="4.0"/>
@@ -587,7 +587,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="1.4"/>
+	<attnum name="friction"           val="1.0"/>
 	<attnum name="rolling resistance" val="0.0025"/>
 
 	<attnum name="roughness" val="0.05"/>
@@ -609,7 +609,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="1.4"/>
+	<attnum name="friction"           val="1.0"/>
 	<attnum name="rolling resistance" val="0.0025"/>
 
 	<attnum name="roughness" val="0.05"/>
@@ -631,7 +631,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="1.4"/>
+	<attnum name="friction"           val="1.0"/>
 	<attnum name="rolling resistance" val="0.0025"/>
 
 	<attnum name="roughness" val="0.005"/>
@@ -653,7 +653,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.05"/>
+	<attnum name="friction"           val="0.3"/>
       </section>
 
 
@@ -672,7 +672,7 @@
 	<attstr name="bump name" val=""/>
 	<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.1"/>
+	<attnum name="friction"           val="0.4"/>
       </section>
 
       <section name="tire-wall">
