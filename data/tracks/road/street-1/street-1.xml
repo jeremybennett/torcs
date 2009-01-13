@@ -355,7 +355,7 @@ the Free Software Foundation; either version 2 of the License, or
       <attnum name="texture size" val="10.0" unit="m"/>
       <attnum name="texture mipmap" val="4.0"/>
 
-      <attnum name="friction"           val="0.0"/>
+      <attnum name="friction"           val="0.2"/>
 
       <attnum name="roughness" val="0.03"/>
       <attnum name="roughness wavelength" val="4.0"/>
@@ -378,7 +378,7 @@ the Free Software Foundation; either version 2 of the License, or
       <attstr name="bump name" val=""/>
       <attnum name="bump size" val="2.0" unit="m"/>
 
-      <attnum name="friction"           val="0.0"/>
+      <attnum name="friction"           val="0.2"/>
 
       <attnum name="roughness" val="0.03"/>
       <attnum name="roughness wavelength" val="4.0"/>
@@ -402,7 +402,7 @@ the Free Software Foundation; either version 2 of the License, or
       <attstr name="bump name" val=""/>
       <attnum name="bump size" val="2.0" unit="m"/>
 
-      <attnum name="friction"           val="0.0"/>
+      <attnum name="friction"           val="0.2"/>
 
       <attnum name="roughness" val="0.03"/>
       <attnum name="roughness wavelength" val="4.0"/>

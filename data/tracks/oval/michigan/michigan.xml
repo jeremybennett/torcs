@@ -113,7 +113,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 			
-			<attnum name="friction"           val="0.0"/>
+			<attnum name="friction"           val="0.3"/>
 			
 			<attnum name="roughness" val="0.03"/>
 			<attnum name="roughness wavelength" val="4.0"/>
@@ -135,7 +135,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 			
-			<attnum name="friction"           val="0.0"/>
+			<attnum name="friction"           val="0.3"/>
 			
 			<attnum name="roughness" val="0.03"/>
 			<attnum name="roughness wavelength" val="4.0"/>
@@ -214,7 +214,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 			
-			<attnum name="friction"           val="0.05"/>
+			<attnum name="friction"           val="0.2"/>
 		</section>
 
 	</section>

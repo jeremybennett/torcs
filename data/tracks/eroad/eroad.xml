@@ -1224,7 +1224,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 
-			<attnum name="friction"           val="0.05"/>
+			<attnum name="friction"           val="0.4"/>
 		</section>
 
 		<section name="wall-torcs-right">
@@ -1242,7 +1242,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 
-			<attnum name="friction"           val="0.05"/>
+			<attnum name="friction"           val="0.4"/>
 		</section>
 
 
@@ -1262,7 +1262,7 @@
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 
-			<attnum name="friction"           val="0.0"/>
+			<attnum name="friction"           val="0.1"/>
 
 			<attnum name="roughness" val="0.03"/>
 			<attnum name="roughness wavelength" val="4.0"/>
