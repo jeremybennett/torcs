@@ -152,8 +152,14 @@ SimConfig(tCarElt *carElt, tRmInfo* ReInfo)
     SimCarConfig(car);
 
     SimCarCollideConfig(car);
+
+    //    carElt->_yaw = 0.0;
+    //    carElt->_roll = 0.0;
+    //    carElt->_pitch = 0.0;
+
     sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 					RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+
 
 	sgEulerToQuat (car->posQuat, -RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_pitch), RAD2DEG(carElt->_roll));
 	sgQuatToMatrix (car->posMat, car->posQuat);
@@ -372,7 +378,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		CHECK(car);
 
 
-		if (1) { //!(s->_raceState & RM_RACE_PRESTART)) {
+		if (!(s->_raceState & RM_RACE_PRESTART)) {
 
             SimCarUpdateWheelPos(car);
 			CHECK(car);
@@ -400,7 +406,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		SimTransmissionUpdate(car);
 		CHECK(car);
 
-		if (1) {//!(s->_raceState & RM_RACE_PRESTART)) {
+		if (!(s->_raceState & RM_RACE_PRESTART)) {
 				SimWheelUpdateRotation(car);
 			CHECK(car);
 				SimCarUpdate(car, s);
@@ -444,9 +450,11 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->_trkPos = car->trkPos;
 		for (i = 0; i < 4; i++) {
 			carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
+            //carElt->priv.wheel[i].visible_z = RtTrackHeightL_smooth(&car->wheel[i].trkPos); //- car->DynGCg.pos.z;
 			carElt->_wheelSeg(i) = car->wheel[i].trkPos.seg;
 			carElt->_brakeTemp(i) = car->wheel[i].brake.temp;
 			carElt->pub.corner[i] = car->corner[i].pos;
+
 		}
 		carElt->_gear = car->transmission.gearbox.gear;
 		carElt->_enginerpm = car->engine.rads;

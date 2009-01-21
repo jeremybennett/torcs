@@ -56,6 +56,7 @@ typedef struct Suspension
     tDamper damper;
 
     tdble x; /* suspension travel */
+    tdble over_x; /* suspension travel beyond packers */
     tdble v; /* suspension travel speed */
     tdble fx; // pure elastic collision 
     tdble fy; // pure elastic collision

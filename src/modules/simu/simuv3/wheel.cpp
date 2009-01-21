@@ -292,6 +292,7 @@ SimWheelUpdateForce(tCar *car, int index)
     
     RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
     
+    // now rel_normal.x is the effective camber angle
 	if (USE_QUATERNIONS==0) {
 		angles.x = car->DynGCg.pos.ax + wheel->relPos.ax;
 		angles.y = car->DynGCg.pos.ay;
@@ -306,6 +307,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		sgRotateVecQuat (P, Q);
 		sg2t3 (P, rel_normal);
 	}
+    
     wheel->state = 0;
 	END_PROFILE(timer_coordinate_transform);
 
@@ -414,6 +416,8 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	BEGIN_PROFILE(timer_friction);
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
+    tdble camber_gain = 1.0;
+    tdble camber_shift = camber_gain * rel_normal.x;
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 	    sx = sy = sa = 0;
     } else if (absolute_speed < ABSOLUTE_SPEED_CUTOFF) {
@@ -421,13 +425,13 @@ SimWheelUpdateForce(tCar *car, int index)
 	    sy = wvy/ABSOLUTE_SPEED_CUTOFF;
 	    sa = atan2(wvy, wvx);
     } else {
-		// the division with absolute_speed is a bit of a hack. The
-		// real solution is to use a first or second-order integration
-		// model to update both the forces on the car and the
-		// appropriate spin velocity.
+		// The division with absolute_speed is a bit of a hack. 
+        // But the assumption is that the profile of friction
+        // scales linearly with speed.
 		sx = wvx/absolute_speed;
 		sy = wvy/absolute_speed;
 		sa = atan2(wvy, wvx);
+
     }
 
 	s = sqrt(sx*sx+sy*sy);
@@ -477,7 +481,7 @@ SimWheelUpdateForce(tCar *car, int index)
     F = dynamic_grip * static_grip;
 
 	{
-		tdble Bx = wheel->mfB * sa;
+		tdble Bx = wheel->mfB * (sa + camber_shift);
 		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) * static_grip;
 	}
 	END_PROFILE(timer_friction);

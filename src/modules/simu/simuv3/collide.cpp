@@ -21,6 +21,8 @@
 extern tRmInfo ReInfo;
 
 #define CAR_DAMMAGE     0.1
+#undef DEBUG_COLLIDE_Z
+
 
 void SimCarCollideAddDeformation(tCar* car, sgVec3 pos, sgVec3 force)
 {
@@ -42,8 +44,8 @@ void
 SimCarCollideZ(tCar *car)
 {
     int         i;
-    t3Dd        normal;
-    t3Dd        rel_normal;
+    t3Dd        car_normal;
+    t3Dd        rel_car_normal;
     tdble       dotProd;
     tWheel      *wheel;
     bool upside_down = false;
@@ -53,198 +55,295 @@ SimCarCollideZ(tCar *car)
     }
 
     
-
-    RtTrackSurfaceNormalL(&(car->trkPos), &normal);
+    // Get normal N
+    RtTrackSurfaceNormalL(&(car->trkPos), &car_normal);
     
-#if 0
-    t3Dd angles;
-    angles.x = car->DynGCg.pos.ax;
-    angles.y = car->DynGCg.pos.ay;
-    angles.z = car->DynGCg.pos.az;
-    NaiveRotate (normal, angles, &rel_normal);
-#else
-    QuatInverseRotate(normal, car->posQuat, rel_normal);
-#endif
-    if (rel_normal.z > 0) {
+    // Get normal N_q in local coordinate system
+    QuatInverseRotate(car_normal, car->posQuat, rel_car_normal);
+
+    // Increment the upside down timer.  This can be used later to
+    // remove cars that have been upside down for too long.
+    if (rel_car_normal.z > 0) {
         upside_down = false;
         car->upside_down_timer = 0.0f;
     } else {
         upside_down = true;
-        car->upside_down_timer += SimDeltaTime;
+        car->upside_down_timer += 0.01*SimDeltaTime;
     }
 
-    // TODO: possibly use this for a better implementation.
-    //float corner_reactions[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-
+    tdble gc_height_difference = MIN(0.0, car->DynGCg.pos.z - RtTrackHeightL(&(car->trkPos)));
+    // Go through all corners and check for collision.
+    tdble min_height_difference = MIN(0.0, gc_height_difference);
     for (i = 0; i < 4; i++) {
         wheel = &(car->wheel[i]);
-        if ((wheel->state & SIM_SUSP_COMP)
-            ||(rel_normal.z < 0)){
-            t3Dd angles;
-            t3Dd orig;
-            t3Dd delta;
-
-            t3Dd corner;
-
-            bool flag = false;
-            corner.z = -0.5;
-            if (rel_normal.z <= 0) {
-                orig.x = car->corner[i].pos.x;
-                orig.y = car->corner[i].pos.y;
-                orig.z = corner.z;
+        // We only need to check for body collision with the floor if
+        // the suspension is maximally compressed or the car is upside
+        // down.
+        for (int j=0; j<2; j++) {
+            t3Dd orig; // corner position in local coordinates
+            t3Dd delta; // corner position in global coordinates
+            t3Dd normal; // normal at corner position
+            t3Dd rel_normal; // normal at corner position (local coords)
+            
+            tDynPt *corner = &(car->corner[i]);
+        
+            
+            //if (rel_car_normal.z <= 0) {
+            if (j==0) {
+                // check top of car
+                orig.x = corner->pos.x;
+                orig.y = corner->pos.y;
+                orig.z = car->dimension.z - car->statGC.z;
             } else {
-                orig.x = 0.0;
-                orig.y = 0.0;
-                orig.z = wheel->susp.spring.packers - wheel->rideHeight;
-                corner.z = orig.z;//wheel->susp.spring.packers - wheel->rideHeight;
-                flag = true;
+                // check bottom of car
+                orig.x = corner->pos.x;
+                orig.y = corner->pos.y;
+                orig.z = - car->statGC.z;
             }
-#if 0
-            angles.x = car->DynGCg.pos.ax;
-            angles.y = car->DynGCg.pos.ay;
-            angles.z = car->DynGCg.pos.az;
-#else
+            //orig.x*=0.9;
+            //orig.y*=0.9;
+            //orig.z*=0.9;
+            // get relative coordinates in global frame
             QuatRotate (orig, car->posQuat, delta);
-#endif
-            if (((rel_normal.z <=0)
-                 && (car->DynGCg.pos.z - delta.z < wheel->zRoad))
-                || (rel_normal.z > 0)) {
-                        
-                //printf ("C[%d] %f (%f)\n", i, rel_normal.z, delta.z);
-                if (rel_normal.z <= 0) {
-                    delta.z =  -(car->DynGCg.pos.z - delta.z - wheel->zRoad);
-                }
-                car->DynGCg.pos.z += delta.z;
-
-                RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
-                tdble cvx = (car->DynGCg.vel.x);
-                tdble cvy = (car->DynGCg.vel.y);
-                tdble cvz = (car->DynGCg.vel.z);
-                //cvx = car->corner[i].vel.x;
-                //cvy = car->corner[i].vel.y;
-                //cvz = car->corner[i].vel.z;
-
-                dotProd = (cvx * normal.x + cvy * normal.y + cvz * normal.z) * wheel->trkPos.seg->surface->kRebound;
-                if (rel_normal.z < 0) {
-                    dotProd *=1.0;
-                }
-                if (dotProd < 0) {
-                    if (dotProd <-5.0) {
-                        car->collision |= 16;
-                        wheel->rotational_damage_x -= dotProd*0.01*urandom();
-                        wheel->rotational_damage_z -= dotProd*0.01*urandom();
-                        wheel->bent_damage_x += 0.1*urandom()-0.05;
-                        wheel->bent_damage_z += 0.1*urandom()-0.05;
-                        if (wheel->rotational_damage_x>0.25) {
-                            wheel->rotational_damage_x = 0.25;
-                        }
-                        if (wheel->rotational_damage_z>0.25) {
-                            wheel->rotational_damage_z = 0.25;
-                        }
-                        if (car->options->suspension_damage) {
-                            SimSuspDamage (&wheel->susp, dotProd+5);
-                        }
-                        car->collision |= 1;
-                    }
-                    car->collision |= 8;
-                    if (wheel->susp.state & SIM_SUSP_OVERCOMP) {
-                        car->collision |= 1;
-                    }
-
-                    // Reduce total car speed if need be.
-                    {
-                        t3Dd N;
-                                
-                        N.x = - normal.x * dotProd;
-                        N.y = - normal.y * dotProd;
-                        N.z = - normal.z * dotProd;
-
-                        // reaction
-                        car->DynGCg.vel.x += N.x;
-                        car->DynGCg.vel.y += N.y;
-                        car->DynGCg.vel.z += N.z;
-
-                        // friction
-                        tdble c;
-                        if (rel_normal.z < 0) {
-                            c = 0.2;
-                        } else {
-                            c = 0.1;
-                        }
-                        car->DynGCg.vel.x = ConstantFriction (car->DynGCg.vel.x, c*dotProd*SIGN(car->DynGCg.vel.x));
-                        car->DynGCg.vel.y = ConstantFriction (car->DynGCg.vel.y, c*dotProd*SIGN(car->DynGCg.vel.y));
-                        car->DynGCg.vel.z = ConstantFriction (car->DynGCg.vel.z, c*dotProd*SIGN(car->DynGCg.vel.z));
-                                
-                    }
-                        
-                    if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-                        car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
-                    }
-                    
-                    QuatInverseRotate (normal, car->posQuat, rel_normal);
-#if 1
-                    if (1) {//rel_normal.z <= 0) {
-                        tdble mu = 0.2;
-                        t3Dd forces;
-                        forces.x = - mu * car->mass * dotProd * rel_normal.x;
-                        forces.y = - mu * car->mass * dotProd * rel_normal.y;
-                        forces.z = - mu * car->mass * dotProd * rel_normal.z;
-
-                        t3Dd friction;
-                        cvx = car->corner[i].vel.x;
-                        cvy = car->corner[i].vel.y;
-                        cvz = car->corner[i].vel.z;
-
-                        tdble sum_v = sqrt(cvx*cvx + cvy*cvy + cvz*cvz);
-                        if (sum_v>1.0) {
-                            t3Dd fr_loc;
-                            friction.x = cvx/sum_v;
-                            friction.y = cvy/sum_v;
-                            friction.z = cvz/sum_v;
-                            QuatInverseRotate(friction, car->posQuat, fr_loc);
-                            tdble C = 0.5f * dotProd;
-
-                            forces.x += C*fr_loc.x;
-                            forces.y += C*fr_loc.y;
-                            forces.z += C*fr_loc.z;
-                                                        
-                            car->DynGC.vel.x += C*fr_loc.x;//*car->mass;
-                            car->DynGC.vel.y += C*fr_loc.y;//*car->mass;
-                            car->DynGC.vel.z += C*fr_loc.z;//*car->mass;
-
-                        }
-
-                        car->rot_mom[SG_X] -=
-                            (forces.z * wheel->relPos.y
-                             + forces.y * corner.z);
-
-                        car->rot_mom[SG_Y] +=
-                            (forces.z * wheel->relPos.x
-                             + forces.x * corner.z);
-
-                        car->rot_mom[SG_Z] -=
-                            (-forces.x * wheel->relPos.y +
-                             forces.y * wheel->relPos.x);
-
-                        for (int i=0; i<3; i++) {
-                            tdble rot_mom_lim = 2.0;
-                            if (fabs(car->rot_mom[i])> rot_mom_lim*car->mass) {
-                                car->rot_mom[i] = rot_mom_lim*car->mass * SIGN(car->rot_mom[i]);
-                            }
-                        }
-                        //car->rot_mom[SG_X]*=.9f;
-                        //car->rot_mom[SG_Y]*=.9f;
-                        //car->rot_mom[SG_Z]*=.9f;
-                        car->DynGC.vel.ax = car->DynGCg.vel.ax = -2.0f*car->rot_mom[SG_X] * car->Iinv.x;
-                        car->DynGC.vel.ay = car->DynGCg.vel.ay = -2.0f*car->rot_mom[SG_Y] * car->Iinv.y;
-                        car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
-                    }
-#endif
-                }
+            tTrkLocPos trkPos;
+            //RtTrackGlobal2Local(car->trkPos.seg,
+            //car->DynGCg.pos.x + orig.x,
+            //car->DynGCg.pos.y + orig.y,
+            //&trkPos, TR_LPOS_SEGMENT);
+            RtTrackGlobal2Local(car->trkPos.seg,
+                                corner->pos.ax,
+                                corner->pos.ay,
+                                &trkPos, TR_LPOS_SEGMENT);
+            tdble height_difference = car->DynGCg.pos.z + delta.z -  RtTrackHeightL(&trkPos);
+            //printf ("%d %d %f %f %f\n", i, j, height_difference, car->statGC.z, car->DynGCg.pos.z -  RtTrackHeightL(&trkPos));
+            if (height_difference > 0) {
+                continue;
+            } else if (height_difference < min_height_difference) {
+                min_height_difference = height_difference;
             }
-        }
-    }
+
+
+            // get the track normal n_g for the wheel
+            RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
+            // transform it to local coordinates: n = q' n_g q
+            QuatInverseRotate (normal, car->posQuat, rel_normal);
+
+            // calculate the velocity of the corner
+#if 0
+            // option 1: just use the car velocity
+            // this works fine when more than 1 corner hits at the same time
+            tdble cvx = (car->DynGCg.vel.x);
+            tdble cvy = (car->DynGCg.vel.y);
+            tdble cvz = (car->DynGCg.vel.z);
+#else
+            // option 2: add the hopefully correctly calculated corner velocity
+            // to use this, the code must take special consideration
+            // of multiple corner hits, or we can just update corner
+            // velocity and position after every hit
+            tdble cvx = corner->vel.x;
+            tdble cvy = corner->vel.y;
+            tdble cvz = corner->vel.z; // NOTE: this last one is an approximation, sadly
+#endif
+            // option 3: recalculate the velocity
+            // TODO
+
+            // c = K n'v,  v|n = cn
+            dotProd = (cvx * normal.x
+                       + cvy * normal.y
+                       + cvz * normal.z); 
+            if (dotProd < 0) {
+                tdble dotProd2 = dotProd *car->mass;
+                tdble mu = 0.5;
+                // normal
+                tdble nx = normal.x;
+                tdble ny = normal.y;
+                tdble nz = normal.z;
+#ifdef DEBUG_COLLIDE_Z
+                printf("CollideZ:  %d %d %f\n          N = (%f %f %f)\n", i, j, dotProd, nx, ny, nz);
+#endif
+
+                // veolcity projected to normal
+                tdble vPx = nx * cvx;
+                tdble vPy = ny * cvy;
+                tdble vPz = nz * cvz;
+                //tdble vP = sqrt(vPx*vPx + vPy*vPy + vPz*vPz);
+#ifdef DEBUG_COLLIDE_Z
+                printf("           V = (%.2f %.2f %.2f) -(P)-> (%.2f %.2f %.2f)\n",
+                       cvx, cvy, cvz,
+                       vPx, vPy, vPz);
+#endif
+                // veolcity projected to tangent plane
+                tdble vQx = cvx - vPx;
+                tdble vQy = cvy - vPy;
+                tdble vQz = cvz - vPz;
+                tdble vQ =  sqrt(vQx*vQx + vQy*vQy + vQz*vQz);
+
+                // v|n = n'v'n = cn
+                // reaction force - by definition has the
+                // same direction as the normal
+                t3Dd forces;
+            
+                forces.x = - dotProd2 * nx;
+                forces.y = - dotProd2 * ny;
+                forces.z = - dotProd2 * nz;
+                tdble dP3 = dotProd2 * mu / (0.001 + vQ);
+                t3Dd friction;
+                friction.x = vQx * dP3;
+                friction.y = vQy * dP3;
+                friction.z = vQz * dP3;
+#ifdef DEBUG_COLLIDE_Z
+                printf ("        Fn= %.2f %.2f %.2f\n",
+                        forces.x,
+                        forces.y,
+                        forces.z);
+                printf ("        Ff= %.2f %.2f %.2f\n",
+                        friction.x,
+                        friction.y,
+                        friction.z);
+#endif
+                // propagate damage to deformation
+                //car->normal.x = nx * dmg;
+                //car->normal.y = ny * dmg;
+                //car->normal.z = nz * dmg;
+                 
+                // change car physical state
+                // TODO: duplicate code: fix
+                // Calculate change in rotational momentum.
+                // ----------------------------------------
+                // Put the impulse in a 3d vector
+                sgVec3 impulse = {(forces.x + friction.x),
+                                  (forces.y + friction.y),
+                                  forces.z + friction.z};
+#ifdef DEBUG_COLLIDE_Z
+                printf ("        F = %.2f %.2f %.2f\n",
+                        impulse[SG_X],
+                        impulse[SG_Y],
+                        impulse[SG_Z]);
+#endif
+                // rotate it to the car's frame
+                sgRotateVecQuat (impulse, car->posQuat);
+
+                tdble E_prev = SimCarDynamicEnergy(car);
+
+                // add to local-frame speed
+                tdble acc_scale = SimDeltaTime / car->mass;
+                car->DynGC.vel.x += impulse[SG_X]*acc_scale;
+                car->DynGC.vel.y += impulse[SG_Y]*acc_scale;
+                car->DynGC.vel.z += impulse[SG_Z]*acc_scale;
+
+                // Put the point of impact in a 3d vector
+                sgVec3 v = {orig.x,
+                            orig.y,
+                            orig.z};
+
+#ifdef DEBUG_COLLIDE_Z
+
+                printf ("        F' = %.2f %.2f %.2f @ %.2f %.2f %.2f (%.2f %.2f)\n",
+                        impulse[SG_X],
+                        impulse[SG_Y],
+                        impulse[SG_Z],
+                        v[SG_X],
+                        v[SG_Y],
+                        v[SG_Z], orig.x, orig.y);
+#endif
+                // Calculate moments
+                tdble Mx = + impulse[SG_Z] * v[SG_Y] - impulse[SG_Y] * v[SG_Z];
+                tdble My = - impulse[SG_Z] * v[SG_X] + impulse[SG_X] * v[SG_Z];
+                tdble Mz = - impulse[SG_X] * v[SG_Y] + impulse[SG_Y] * v[SG_X];
+                // Add moments to rotational inertia
+                tdble rot_mom_scale = 1.0;//car->mass; // SimDeltaTime;
+                printf ("          J = (%f %f %f)\n",
+                        car->rot_mom[SG_X],
+                        car->rot_mom[SG_Y],
+                        car->rot_mom[SG_Z]);
+                car->rot_mom[SG_X] -= rot_mom_scale * Mx * car->Iinv.x;
+                car->rot_mom[SG_Y] -= rot_mom_scale * My * car->Iinv.y; 
+                car->rot_mom[SG_Z] -= rot_mom_scale * Mz * car->Iinv.z; 
+#ifdef DEBUG_COLLIDE_Z
+                printf ("          M = (%f %f %f), s = %f\n",
+                        Mx, My, Mz, rot_mom_scale);
+                printf ("       -> J = (%f %f %f)\n",
+                        car->rot_mom[SG_X],
+                        car->rot_mom[SG_Y],
+                        car->rot_mom[SG_Z]);
+#endif
+
+                // transform velocity to global frame
+                if (1) {
+                    t3Dd original;
+                    t3Dd updated;
+                    original.x = car->DynGC.vel.x;
+                    original.y = car->DynGC.vel.y;
+                    original.z = car->DynGC.vel.z;
+                    QuatRotate(original, car->posQuat, updated);
+                    car->DynGCg.vel.x = updated.x;
+                    car->DynGCg.vel.y = updated.y;
+                    car->DynGCg.vel.z = updated.z;
+                    // Translate angular momentum to angular velocity
+                    // NOTE: This translation is done again in SimCarAddAngularVelocity()
+                    car->DynGCg.vel.ax = car->DynGC.vel.ax = -2.0f*car->rot_mom[SG_X] * car->Iinv.x;
+                    car->DynGCg.vel.ay = car->DynGC.vel.ay = -2.0f*car->rot_mom[SG_Y] * car->Iinv.y;
+                    car->DynGCg.vel.az = car->DynGC.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
+                    
+                }
+                SimCarUpdateCornerPos(car);
+                SimCarLimitDynamicEnergy(car, 0.9999*E_prev);
+            }
+
+            
+
+            if (dotProd < 0) {
+                // should be this way..
+                if (dotProd <-5.0) {
+                    // if it's hard, do a damage thing
+                    static tdble WHEEL_ROT_DAMAGE = 0.01;
+                    static tdble WHEEL_BENT_DAMAGE = 0.1;
+                    static tdble WHEEL_DAMAGE_LIMIT = 0.25;
+                    static tdble SUSP_DAMAGE_CONST = 1.0;
+                    static tdble SUSP_DAMAGE = 0.1;
+                    car->collision |= 16;
+                    wheel->rotational_damage_x -= dotProd*WHEEL_ROT_DAMAGE*urandom();
+                    wheel->rotational_damage_z -= dotProd*WHEEL_ROT_DAMAGE*urandom();
+                    wheel->bent_damage_x += WHEEL_BENT_DAMAGE*(urandom()-0.5);
+                    wheel->bent_damage_z += WHEEL_BENT_DAMAGE*(urandom()-0.5);
+                    if (wheel->rotational_damage_x > WHEEL_DAMAGE_LIMIT) {
+                        wheel->rotational_damage_x = WHEEL_DAMAGE_LIMIT;
+                    }
+                    if (wheel->rotational_damage_z > WHEEL_DAMAGE_LIMIT) {
+                        wheel->rotational_damage_z = WHEEL_DAMAGE_LIMIT;
+                    }
+                    if (car->options->suspension_damage) {
+                        SimSuspDamage (&wheel->susp,
+                                       SUSP_DAMAGE*dotProd + SUSP_DAMAGE_CONST);
+                    }
+                    car->collision |= 1;
+                }
+                car->collision |= 8;
+                if (wheel->susp.state & SIM_SUSP_OVERCOMP) {
+                    car->collision |= 1;
+                }
+                
+                if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
+                    car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
+                }
+                
+
+
+            }
+        } // for j
+        //if (wheel->state & SIM_SUSP_COMP) {
+        //car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
+        //}
+
+    } // for i
+
+    
+    car->DynGCg.pos.z -= MIN(gc_height_difference, min_height_difference);
+
+    car->DynGC.pos.z = car->DynGCg.pos.z;
+
 }
+
 
 const tdble BorderFriction = 0.00;
 
@@ -257,7 +356,7 @@ SimCarCollideXYScene(tCar *car)
     tDynPt      *corner;
     //t3Dd      normal;
     tdble       initDotProd;
-    tdble       dotProd, dotprod2;
+    tdble       dotProd;
     tTrackBarrier *curBarrier;
     tdble       dmg;
     
@@ -292,8 +391,8 @@ SimCarCollideXYScene(tCar *car)
         car->DynGC.pos.x = car->DynGCg.pos.x;
         car->DynGC.pos.y = car->DynGCg.pos.y;
         // Corner position relative to center of gravity.
-        tdble cx = corner->pos.ax - car->DynGCg.pos.x;
-        tdble cy = corner->pos.ay - car->DynGCg.pos.y;
+        //tdble cx = corner->pos.ax - car->DynGCg.pos.x;
+        //tdble cy = corner->pos.ay - car->DynGCg.pos.y;
 
         car->blocked = 1;
         car->collision |= SEM_COLLISION;
@@ -310,7 +409,7 @@ SimCarCollideXYScene(tCar *car)
         // veolcity projected to normal
         tdble vPx = nx * corner->vel.x;
         tdble vPy = ny * corner->vel.y;
-        tdble vP = sqrt(vPx*vPx + vPy*vPy);
+        //tdble vP = sqrt(vPx*vPx + vPy*vPy);
 
         // veolcity projected to tangent plane
         tdble vQx = corner->vel.x - vPx;
@@ -319,7 +418,6 @@ SimCarCollideXYScene(tCar *car)
 
         // Fix this to be applied only perpendicular to the normal
         dotProd = initDotProd * curBarrier->surface->kFriction;
-        dotprod2 = (nx * cx + ny * cy);
 
         // calculate projection of velocity to perpendicular
         
@@ -327,7 +425,7 @@ SimCarCollideXYScene(tCar *car)
         {
             // this is only used for propagating response to other layers
             sgVec3 normal_l; 
-            tdble d2 = dotProd / SimDeltaTime;
+            tdble d2 = dotProd;
             t2sg3(normal, normal_l);
             sgRotateVecQuat (normal_l, car->posQuat);
             car->DynGC.acc.x -= normal_l[SG_X] * d2;
@@ -336,17 +434,10 @@ SimCarCollideXYScene(tCar *car)
             car->carElt->_accel_y -= normal_l[SG_Y] * d2;          
         }
                 
-        dotprod2 = (nx * cx + ny * cy);
-
 
         // Dammage.
         dotProd = initDotProd;
-        if (dotProd < 0.0f && (car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-            dmg = curBarrier->surface->kDammage * fabs(0.5*dmgDotProd*dmgDotProd) * simDammageFactor[car->carElt->_skillLevel];
-            car->dammage += (int)dmg;
-        } else {
-            dmg = 0.0f;
-        }
+        dmg = 0.0f;
 
         if (curBarrier->surface->kRebound > 1.0) {
             printf("warning: rebound constant %f > 1\n", curBarrier->surface->kRebound);
@@ -360,13 +451,24 @@ SimCarCollideXYScene(tCar *car)
         tdble friction_impulse_x = vQx * dP3;
         tdble friction_impulse_y = vQy * dP3;
         if (dotProd < 0.0f) {
+            printf ("CollideXY\n");
+
+            tdble E_prev = SimCarDynamicEnergy(car);
+
+
+            // propagate damages
+            if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
+                dmgDotProd = dmgDotProd*dmgDotProd*0.5
+                    + friction_impulse_x*friction_impulse_x
+                    + friction_impulse_y*friction_impulse_y;
+                dmg = curBarrier->surface->kDammage * dmgDotProd * simDammageFactor[car->carElt->_skillLevel];
+                car->dammage += (int)dmg;
+            }
             car->collision |= SEM_COLLISION_XYSCENE;
             car->normal.x = nx * dmg;
             car->normal.y = ny * dmg;
             car->collpos.x = corner->pos.ax;
             car->collpos.y = corner->pos.ay;
-            car->DynGCg.vel.x += normal_impulse_x + friction_impulse_x;
-            car->DynGCg.vel.y += normal_impulse_y + friction_impulse_y;
 
             //printf ("ColXY: (%f %f) + (%f %f)\n",
             //normal_impulse_x, normal_impulse_y,
@@ -381,32 +483,40 @@ SimCarCollideXYScene(tCar *car)
             // rotate it to the target frame
             sgRotateVecQuat (impulse, car->posQuat);
             
+            car->DynGC.vel.x += impulse[SG_X];
+            car->DynGC.vel.y += impulse[SG_Y];
+            car->DynGC.vel.z += impulse[SG_Z];
+
             // Put the point of impact in a 3d vector
             sgVec3 v = {car->statGC.x + corner->pos.x,
                         car->statGC.y + corner->pos.y,
                         -car->statGC.z};
+
             // Calculate moments
-            tdble Mx = + impulse[SG_Z] * v[SG_Y] + impulse[SG_Y] * v[SG_Z];
-            tdble My = - impulse[SG_Z] * v[SG_X] - impulse[SG_X] * v[SG_Z];
+            tdble Mx = + impulse[SG_Z] * v[SG_Y] - impulse[SG_Y] * v[SG_Z];
+            tdble My = - impulse[SG_Z] * v[SG_X] + impulse[SG_X] * v[SG_Z];
             tdble Mz = - impulse[SG_X] * v[SG_Y] + impulse[SG_Y] * v[SG_X];
             // Add moments to rotational inertia
-            tdble rot_mom_scale = car->mass * SimDeltaTime;
-            car->rot_mom[SG_X] -= rot_mom_scale * Mx;
-            car->rot_mom[SG_Y] -= rot_mom_scale * My;
-            car->rot_mom[SG_Z] -= rot_mom_scale* Mz;
-
-        }
-        // transform velocity to local frame
-        if (1) {
-            t3Dd original;
-            t3Dd updated;
-            original.x = car->DynGCg.vel.x;
-            original.y = car->DynGCg.vel.y;
-            original.z = car->DynGCg.vel.z;
-            QuatInverseRotate(original, car->posQuat, updated);
-            car->DynGC.vel.x = updated.x;
-            car->DynGC.vel.y = updated.y;
-            car->DynGC.vel.z = updated.z;
+            tdble rot_mom_scale = car->mass;//* SimDeltaTime;
+            car->rot_mom[SG_X] -= rot_mom_scale * Mx * car->Iinv.x;
+            car->rot_mom[SG_Y] -= rot_mom_scale * My * car->Iinv.y;
+            car->rot_mom[SG_Z] -= rot_mom_scale * Mz * car->Iinv.z;
+            printf ("M_w:%f J:%f M_c:%g\n", car->rot_acc[SG_Z], car->rot_mom[SG_Z], rot_mom_scale * Mz);
+            
+            // transform velocity to global frame
+            if (1) {
+                t3Dd original;
+                t3Dd updated;
+                original.x = car->DynGC.vel.x;
+                original.y = car->DynGC.vel.y;
+                original.z = car->DynGC.vel.z;
+                QuatRotate(original, car->posQuat, updated);
+                car->DynGCg.vel.x = updated.x;
+                car->DynGCg.vel.y = updated.y;
+                car->DynGCg.vel.z = updated.z;
+                
+            }
+            SimCarLimitDynamicEnergy(car, 0.9999*E_prev); 
         }
 #if 0
         static tdble DEFORMATION_THRESHOLD = 0.01f;
@@ -432,7 +542,6 @@ SimCarCollideXYScene(tCar *car)
         }
 #endif
     }
-
 }
 
 
@@ -477,29 +586,6 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
         n[1]  = -(float)collData->normal[1];
     }
 
-    // TODO: find out if that (the isnan tests and length test) is still needed. If yes, add
-    // it as well in the wall collision code.
-    // HYPOTHESIS: Perhaps this code was needed before dtProcees has been guarded by dtTest?
-    // Remember dtProceed just works correct if all objects are disjoint.
-    // I will let people test this wihout the guards, see what happens...
-    /*
-      if ((isnan(p[0][0]) ||
-      isnan(p[0][1]) ||
-      isnan(p[0][0]) ||
-      isnan(p[0][1]) ||
-      isnan(n[0])  ||
-      isnan(n[1]))) {
-      // I really don't know where the problem is...
-      GfOut ("Collide failed 1 (%s - %s)\n", car[0]->carElt->_name, car[1]->carElt->_name);
-      return;
-      }
-
-      if (sgLengthVec2 (n) == 0.0f) {
-      // I really don't know where the problem is...
-      GfOut ("Collide failed 2 (%s - %s)\n", car[0]->carElt->_name, car[1]->carElt->_name);
-      return;
-      }
-    */
     sgNormaliseVec2(n);
 
     sgVec2 rg[2];   // raduis oriented in global coordinates, still relative to CG (rotated aroung CG).

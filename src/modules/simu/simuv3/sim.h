@@ -48,6 +48,7 @@ extern void SimAxleUpdate(tCar *car, int index);
 extern void SimCarConfig(tCar *car);
 extern void SimCarUpdate(tCar *car, tSituation*);
 extern void SimCarUpdate2(tCar *car, tSituation*);
+extern void SimCarLimitDynamicEnergy(tCar* car, tdble E_limit);
 
 extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
@@ -75,6 +76,8 @@ extern void SimWingConfig(tCar *car, int index);
 extern void SimWingUpdate(tCar *car, int index, tSituation *s);
 
 extern void SimCarUpdateWheelPos(tCar *car);
+extern void SimCarUpdateCornerPos(tCar *car);
+
 
 extern void SimTransmissionConfig(tCar *car);
 extern void SimTransmissionUpdate(tCar *car);
@@ -95,6 +98,8 @@ extern void SimCarCollideConfig(tCar *car);
 extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(void);
 extern void SimCarCollideAddDeformation(tCar* car, sgVec3 pos, sgVec3 force);
+extern tdble SimCarDynamicEnergy(tCar* car);
+
 extern void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void QuatToEuler (sgVec3 hpr, const sgQuat quat);
@@ -165,6 +170,8 @@ inline void QuatInverseRotate(t3Dd& src, sgQuat& q, t3Dd& dst)
     sgRotateVecQuat(V, q);
     sg2t3(V, dst);
 }
+
+
 
 #define SIM_VECT_COLL	12
 #define SIM_VECT_SPD	13

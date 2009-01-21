@@ -39,7 +39,9 @@ SimAxleConfig(tCar *car, int index)
     } else {
 	SimSuspConfig(hdle, SECT_REARARB, &(axle->arbSusp), 0, 0);
     }
-    
+
+    axle->arbSusp.spring.K = -axle->arbSusp.spring.K;
+
     car->wheel[index*2].feedBack.I += axle->I / 2.0;
     car->wheel[index*2+1].feedBack.I += axle->I / 2.0;
 }
@@ -48,28 +50,21 @@ void
 SimAxleUpdate(tCar *car, int index)
 {
     tAxle *axle = &(car->axle[index]);
-    tdble str, stl, sgn;
     
-    str = car->wheel[index*2].susp.x;
-    stl = car->wheel[index*2+1].susp.x;
-    sgn = SIGN(stl - str);
-#if 0
-    axle->arbSusp.x = fabs(stl - str);
-    SimSuspCheckIn(&(axle->arbSusp));
-    SimSuspUpdate(&(axle->arbSusp));
-#else
-    axle->arbSusp.x = fabs(stl - str);
-    if (axle->arbSusp.x > axle->arbSusp.spring.xMax) {
-        axle->arbSusp.x = axle->arbSusp.spring.xMax;
-    }
-    axle->arbSusp.force = - axle->arbSusp.x *axle->arbSusp.spring.K;
-    //axle->arbSusp.force = pow (axle->arbSusp.x *axle->arbSusp.spring.K , 4.0);
-#endif
-    car->wheel[index*2].axleFz =  sgn * axle->arbSusp.force;
-    car->wheel[index*2+1].axleFz = - sgn * axle->arbSusp.force;
-    //    printf ("%f %f %f ", stl, str, axle->arbSusp.force);
-    //    if (index==0) {
-    //        printf ("# SUSP\n");
-    //    }
+    tdble str = car->wheel[index*2].susp.x;
+    tdble stl = car->wheel[index*2+1].susp.x;
+    tdble delta = stl - str;
+    tdble sgn = SIGN(delta);
+
+    axle->arbSusp.x = fabs(delta);
+    tSpring *spring = &(axle->arbSusp.spring);
+
+    // use a linear model - damping is done at the main suspension anyway
+    tdble F = sgn * spring->K * axle->arbSusp.x ;
+
+    // just use linear model
+    axle->arbSusp.force = F;
+    car->wheel[index*2].axleFz =  F; // right wheel
+    car->wheel[index*2+1].axleFz = - F; // left wheel
 }
  

@@ -315,7 +315,7 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
             break;
         case OPTIMAL:
             wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * (1.0f - cosaoa);
-            wing->forces.x = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
+            wing->forces.z = wing->Kx * vt2 * (1.0f + (tdble)car->dammage / 10000.0f) * sinaoa;
             break;
 	default:
             fprintf (stderr, "Unimplemented option %d for aeroflow model\n", car->options->aeroflow_model);

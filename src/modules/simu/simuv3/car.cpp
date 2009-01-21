@@ -24,6 +24,8 @@
 
 #include "sim.h"
 
+#undef ONLY_GRAVITY_FORCE
+
 void
 SimCarConfig(tCar *car)
 {
@@ -84,7 +86,7 @@ SimCarConfig(tCar *car)
     
     // initialise rotational momentum
     for (i=0; i<4; i++) {
-        car->rot_mom[i] = 0.0;
+        car->rot_mom[i] = 0.0;//
     }
     car->rot_mom[SG_W] = 1.0;
 
@@ -128,6 +130,7 @@ SimCarConfig(tCar *car)
         carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
     }
 
+    // this already has GC subtracted from it
     for (i = 0; i < 4; i++) {
         car->wheel[i].staticPos.x -= car->statGC.x;
         car->wheel[i].staticPos.y -= car->statGC.y;
@@ -183,34 +186,52 @@ SimCarUpdateForces(tCar *car)
     // initial torque 0.
     F.M.x = F.M.y = F.M.z = 0;
 
-    /* Wheels */
-    for (i = 0; i < 4; i++) {
-        tWheel* wheel = &(car->wheel[i]);
-        /* forces */
-        tdble susp_pos_y = wheel->staticPos.y - sin(wheel->staticPos.ax)*SIGN(wheel->staticPos.y);
-        //printf ("%f %f\n", wheel->staticPos.y, sin(wheel->staticPos.ax)*SIGN(wheel->staticPos.y));
+#ifndef ONLY_GRAVITY_FORCE
 
-        F.F.x += wheel->forces.x;
-        F.F.y += wheel->forces.y;
-        F.F.z += wheel->forces.z;
+    t3Dd        car_normal;
+    t3Dd        rel_car_normal;
+    // Get normal N
+    RtTrackSurfaceNormalL(&(car->trkPos), &car_normal);
+    
+    // Get normal N_q in local coordinate system
+    QuatInverseRotate(car_normal, car->posQuat, rel_car_normal);
 
-        //printf ("%f\n", car->statGC.z + wheel->rideHeight);
-        /* moments */
-        t3Dd d;
-        d.y = susp_pos_y;
-        d.x = wheel->staticPos.x; // TODO: check whether we need to remove GC
-        d.z = car->statGC.z + wheel->rideHeight;
+    // Increment the upside down timer.  This can be used later to
+    // remove cars that have been upside down for too long.
+    if (rel_car_normal.z > 0) {
+        /* Wheels */
+        for (i = 0; i < 4; i++) {
+            tWheel* wheel = &(car->wheel[i]);
+            /* forces */
+            tdble susp_pos_y = wheel->staticPos.y - sin(wheel->staticPos.ax)*SIGN(wheel->staticPos.y);
+            //printf ("%f %f\n", wheel->staticPos.y, sin(wheel->staticPos.ax)*SIGN(wheel->staticPos.y));
+            F.F.x += wheel->forces.x;
+            F.F.y += wheel->forces.y;
+            F.F.z += wheel->forces.z;
 
-        F.M.x += (wheel->forces.z * d.y + 
-                  wheel->forces.y * d.z);
+            //printf ("%f\n", car->statGC.z + wheel->rideHeight);
+            /* moments */
+            t3Dd d;
+            d.y = susp_pos_y;
+            d.x = wheel->staticPos.x; // NOTE: No need to remove GC since it has already been done
+            d.z = - (car->statGC.z + wheel->rideHeight);
 
-        F.M.y -= (wheel->forces.z * d.x + 
-                  wheel->forces.x * d.z);
+            F.M.x += wheel->forces.z * d.y  
+                - wheel->forces.y * d.z;
 
-        F.M.z += (-wheel->forces.x * d.y + 
-                  wheel->forces.y * d.x); 
+            F.M.y += - wheel->forces.z * d.x
+                + wheel->forces.x * d.z;
+
+            F.M.z += -wheel->forces.x * d.y
+                + wheel->forces.y * d.x; 
+
+            //            printf ("w[%d] = %f %f %f\n", 
+            //i,
+            //wheel->forces.x,
+            //wheel->forces.y,
+            //wheel->forces.z);
+        }
     }
-
     F.M.x += car->aero.Mx;
     F.M.y += car->aero.My;
     F.M.z += car->aero.Mz;
@@ -233,6 +254,7 @@ SimCarUpdateForces(tCar *car)
         F.M.y -= My;
     }
 
+#endif
 
     /* Rolling Resistance */
 	// This method updates rolling resistance using the wheels' resistance.
@@ -285,13 +307,14 @@ SimCarUpdateForces(tCar *car)
 		car->DynGCg.acc.y = accel[SG_Y];
 		car->DynGCg.acc.z = accel[SG_Z];	
 
-        car->rot_acc[0] = F.M.x;
-        car->rot_acc[1] = F.M.y;
-        car->rot_acc[2] = (F.M.z - Rm); 
+        car->rot_acc[SG_X] = F.M.x;
+        car->rot_acc[SG_Y] = F.M.y;
+        car->rot_acc[SG_Z] = (F.M.z - Rm); 
     }
 
     
 }
+
 
 
 static void
@@ -445,7 +468,7 @@ SimCarUpdatePos(tCar *car)
     RtTrackGlobal2Local(car->trkPos.seg, car->DynGCg.pos.x, car->DynGCg.pos.y, &(car->trkPos), TR_LPOS_MAIN);
 }
 
-static void
+void
 SimCarUpdateCornerPos(tCar *car)
 {
     tdble vx = car->DynGC.vel.x;
@@ -737,4 +760,39 @@ void SimCarAddAngularVelocity (tCar* car)
     car->DynGC.pos.az = DEG2RAD(new_position[2]);
 }
 
+// this is only an upper bound on the energy
+tdble SimCarDynamicEnergy(tCar* car)
+{
+    tdble E_kinetic = 0.5 * car->mass *
+        (car->DynGCg.vel.x*car->DynGCg.vel.x
+         + car->DynGCg.vel.y*car->DynGCg.vel.y
+         + car->DynGCg.vel.z*car->DynGCg.vel.z);
+    tdble wx = car->rot_mom[SG_X] * car->Iinv.x;
+    tdble wy = car->rot_mom[SG_Y] * car->Iinv.y;
+    tdble wz = car->rot_mom[SG_Z] * car->Iinv.z;
+    tdble E_rotational =  0.5 * (wx*wx/car->Iinv.x 
+                                 + wy*wy/car->Iinv.y
+                                 + wz*wz/car->Iinv.z);
+    return E_kinetic + E_rotational;
+}
+
+/// Makes the car's dynamic energy stay under some limit
+void SimCarLimitDynamicEnergy(tCar* car, tdble E_limit)
+{
+    tdble E_next = SimCarDynamicEnergy(car);
+    if (E_next > E_limit) {
+        tdble scale = sqrt(E_limit / E_next);
+        car->DynGCg.vel.x *= scale;
+        car->DynGCg.vel.y *= scale;
+        car->DynGCg.vel.z *= scale;
+        tdble wx = scale * car->rot_mom[SG_X] * car->Iinv.x;
+        tdble wy = scale * car->rot_mom[SG_Y] * car->Iinv.y;
+        tdble wz = scale * car->rot_mom[SG_Z] * car->Iinv.z;
+        car->rot_mom[SG_X] = wx / car->Iinv.x;
+        car->rot_mom[SG_Y] = wy / car->Iinv.y;
+        car->rot_mom[SG_Z] = wz / car->Iinv.z;
+        printf("       scaling down E: %f --(%f)--> %f\n", E_next, scale, E_limit);
+        //        printf (" => %f\n", SimCarDynamicEnergy(car));
+    }
+}
 
