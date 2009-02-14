@@ -164,6 +164,16 @@ SimEngineUpdateTq(tCar *car)
 	} else {
 		tdble Tq_max = CalculateTorque(engine, engine->rads);
 		tdble alpha = car->ctrl->accelCmd;
+        if (alpha < 1) {
+            //tdble da = 1 /(1 - alpha); // flow
+            alpha *= exp(alpha - engine->rads/engine->revsMax);
+            if (alpha < 0) {
+                alpha = 0;
+            }
+            if (alpha > 1) {
+                alpha = 1;
+            }
+        }
         if (engine->rads > engine->revsLimiter) {
             alpha = 0.0;
         }
