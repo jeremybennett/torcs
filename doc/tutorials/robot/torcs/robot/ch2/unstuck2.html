@@ -45,7 +45,7 @@ Free Documentation License".
           It is too fast and starts oversteering, so the angle between the track tangent and the car becomes
           bigger and bigger. At a certain point the angle is big enough to start incrementing "stuck". When the
           car hits the wall with its back "stuck" is 100 and we try to get unstuck. So we are with the back at
-          the wall and try to back up. So we are stuck again... Look careful at the sketch, it shows us also
+          the wall and try to back up. So we are stuck again... Look carefully at the sketch, it also shows us 
           the solution for the problem. The front of the car looks "inside" toward the track middle. But like you
           can see, there is never such a situation where we need to get unstuck. You simply can drive forward
           to come back on the track.
@@ -75,7 +75,7 @@ Free Documentation License".
 
         <h3>Additional Conditions</h3>
         <p>
-          As you can see, MAX_UNSTUCK_ANGLE is 30 degrees. This is quite much, and can still cause problems
+          As you can see, MAX_UNSTUCK_ANGLE is 30 degrees. This is quite large, and can still cause problems
           if we try to drive forward along the wall. So we will reduce that angle. We will also add the
           condition, that the speed has to be below a certain threshold, before we try to get unstuck. An
           additional problem can occur if we try to get unstuck on the middle of the track. The following

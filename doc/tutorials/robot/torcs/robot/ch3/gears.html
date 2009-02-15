@@ -32,7 +32,7 @@ Free Documentation License".
 
         <h3>Implementation</h3>
         <p>
-          I will show you an implementation similar to that used by the "Damned" robot from Eric Espié. I
+          I will show you an implementation similar to that used by the "Damned" robot from Eric Espiï¿½. I
           show you this, because it's simply better than my implementation in the berniw robot.
         </p>
         <p>
@@ -101,7 +101,7 @@ const float Driver::SHIFT_MARGIN = 4.0;  /* [m/s] */</pre>
         <h3>Testdrive</h3>
         <p>
           Do again some test runs with the different cars. Because we accelerate from the first gear we face
-          a new problem: the driven wheels are skidding, because we apply full throttle. It will be necessary
+          a new problem: the driving wheels skid, because we apply full throttle. It will be necessary
           to add some kind of traction control. The current lap times are:
         </p>
          <ul style="list-style-type:disk; color:black;">
@@ -116,7 +116,7 @@ const float Driver::SHIFT_MARGIN = 4.0;  /* [m/s] */</pre>
           we compute in every timestep a lot of stuff we could put in a preprocess and just compute it once
           (e. g the allowed speed on a segment, the gear ratios, ...).
           Why we didn't do that? It's because we need still some additional code, so in fact we don't know
-          how the robot looks like in the end. I would recommend to develop first straightforward, and if you
+          what the robot will look like in the end. I would recommend to develop first straightforward, and if you
           are happy with the result, then you can start improving performance. But you should do it, because
           there are some poor guys like me with just 550MHz.
         </p>

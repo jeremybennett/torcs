@@ -57,7 +57,7 @@ Free Documentation License".
           This doesn't apply to normal cars, because they don't have big spoilers nor specially for
           downforce designed chassis. The sign of the rightmost term is then negative and
           the force on the wheels is reduced proportional to the square of the speed... be careful!<br/>
-          We solve again the equation for the speed. There are now two unpleasant effects. First the
+          Once again we solve the equation for the speed. There are now two unpleasant effects. First the
           mass of the car doesn't cancel out anymore in the equation. Second, if r*ca*mu/m becomes
           greater than one we get a complex number as result... is the above formula wrong? In fact it is
           correct if we restrict the domain and range. Look at the formula as v=f(r). So v can range
@@ -219,8 +219,8 @@ endRace(tCarElt *car, tSituation *s) -&gt; endRace(tSituation *s)</pre></p>
           To estimate what we can expect from the new getAllowedSpeed(...) method I present you this plot. It is
           for a cg-nascar-rwd with full fuel tank on the track wheel-1. The mass is 1250 [kg], mu is 1.2 [-],
           CA is 2.61 [kg/m] and G is 9,81 [m/(s*s)]. The green curve is the new speed for a given radius,
-          the blue curve the old speed. One can see very nice that our new implementation has always
-          an advantage and that there are significant improvments. Especially on wide turns we can drive
+          the blue curve the old speed. One can see very nice that our new implementation always has an advantag
+          and that there are significant improvments. Especially on wide turns we can drive
           up to ~130% of the previous speed.
         </p>
       </td>

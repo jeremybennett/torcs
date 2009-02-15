@@ -51,7 +51,7 @@ Free Documentation License".
         <p>
           In the "Basic" sections of this chapter I will introduce you into driving without considering
           aerodynamics, anti wheel locking and traction control. In the "Advanced" sections we will add
-          this features. First we start with developing some useful utility functions.
+          these features. First we start with developing some useful utility functions.
         </p>
 
         <h3>About Speed Limits</h3>
@@ -100,7 +100,7 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 
         <h3>Distance</h3>
         <p>
-          For braking we need also to know distances. Here is a function that computes the distance of the car
+          For braking we also need to know distances. Here is a function that computes the distance of the car
           to the end of the current segment (remember the track segments or look up chapter 1.3). I put this into a function, because car->_trkPos.toStart contains
           depending on the segment type the arc or the length, so we need to convert it sometimes to the length
           (arc times radius = length).
