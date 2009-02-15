@@ -149,7 +149,7 @@ SimWheelConfig(tCar *car, int index)
 }
 
 
-#define MIN_NORMAL_Z 0.1
+#define MIN_NORMAL_Z 0.5
 void
 SimWheelUpdateRide(tCar *car, int index)
 {

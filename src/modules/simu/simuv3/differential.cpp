@@ -232,15 +232,15 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
                 float open = 1.0f - fabs(pressure);
                 //DrTq0 = DrTq*(0.5f + bias) + spiderTq;
                 //DrTq1 = DrTq*(0.5f - bias) - spiderTq;
-                DrTq0 = open*(DrTq*(0.5f) + spiderTq)
-                    + (1 - open)*(DrTq*(0.5f + bias));
-                DrTq1 = open*(DrTq*(0.5f) - spiderTq)
-                    + (1 - open)*(DrTq*(0.5f - bias));
+                float DriveTorque2 = 0.5f * DrTq;
+                float CouplingTorque = open*spiderTq + (1-open)*bias*DrTq;
+                DrTq0 = DriveTorque2 + CouplingTorque;
+                DrTq1 = DriveTorque2 - CouplingTorque;
                 //printf ("%f %f %f %f #LSD\n",
                 //open, bias, delta_spin, DrTq1 - DrTq0);
             }
             break;
-
+            
         case DIFF_VISCOUS_COUPLER:
             if (spinVel0 >= spinVel1) {
                 DrTq0 = DrTq * differential->dTqMin;

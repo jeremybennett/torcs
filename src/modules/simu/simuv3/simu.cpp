@@ -411,7 +411,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 			CHECK(car);
 				SimCarUpdate(car, s);
 			CHECK(car);
-		}
+		} else {
+            SimReConfig(carElt); // damages to 0
+        }
     }
 
     SimCarCollideCars(s);

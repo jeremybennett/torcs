@@ -79,10 +79,10 @@ SimCarConfig(tCar *car)
         car->fuel = car->tank;
     }
     car->fuel_prev = car->fuel;
-    k = k * k; 
-    car->Iinv.x = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
-    car->Iinv.y = 12.0 / (car->mass * k * (car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
-    car->Iinv.z = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.x * car->dimension.x));
+    k = k * k; // this constant affects front-to-back
+    car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
+    car->Iinv.y = 12.0 / (car->mass * (k * car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
+    car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
     
     // initialise rotational momentum
     for (i=0; i<4; i++) {
@@ -345,6 +345,13 @@ SimCarUpdateSpeed(tCar *car)
         car->carElt->_fuelInstant = (1.0-alpha)*car->carElt->_fuelInstant + alpha*fi;
     }
 
+    if (isnan(car->DynGCg.acc.x)
+        || isnan(car->DynGCg.acc.y)
+        || isnan(car->DynGCg.acc.z)) {
+        car->DynGCg.acc.x = car->DynGCg.acc.y =car->DynGCg.acc.z =
+            car->DynGC.acc.x = car->DynGC.acc.y =car->DynGC.acc.z = 0.0;;
+        car->DynGCg.acc.z = -9.81;
+    }
    
     // update linear velocity
     car->DynGCg.vel.x += car->DynGCg.acc.x * SimDeltaTime;
@@ -371,11 +378,17 @@ SimCarUpdateSpeed(tCar *car)
     car->DynGC.vel.y = updated.y;
     car->DynGC.vel.z = updated.z;
 
+    if (isnan(car->rot_acc[0])
+        || isnan(car->rot_acc[1])
+        || isnan(car->rot_acc[2])) {
+        car->rot_acc[0] = car->rot_acc[1] = car->rot_acc[2] = 0.0;
+    }
+   
 
     // Update angular momentum
-    car->rot_mom[SG_X] -= car->rot_acc[0] * SimDeltaTime;
-    car->rot_mom[SG_Y] -= car->rot_acc[1] * SimDeltaTime;
-    car->rot_mom[SG_Z] -= car->rot_acc[2] * SimDeltaTime;
+    car->rot_mom[SG_X] -= car->rot_acc[SG_X] * SimDeltaTime;
+    car->rot_mom[SG_Y] -= car->rot_acc[SG_Y] * SimDeltaTime;
+    car->rot_mom[SG_Z] -= car->rot_acc[SG_Z] * SimDeltaTime;
 	
 #if 0
     // spin limitation
@@ -442,7 +455,25 @@ SimCarUpdatePos(tCar *car)
     vx = car->DynGCg.vel.x;
     vy = car->DynGCg.vel.y;
     vz = car->DynGCg.vel.z;
-    
+    if (isnan(vx) || isnan(vy) || isnan(vz)
+        || isnan(car->rot_mom[0])
+        || isnan(car->rot_mom[1])
+        || isnan(car->rot_mom[2])
+        ) {
+        car->DynGCg.vel.x = car->DynGCg.vel.y= car->DynGCg.vel.z = 
+            car->DynGC.vel.x = car->DynGC.vel.y= car->DynGC.vel.z = 
+            vx = vy = vz = 0.0;
+        car->DynGCg.vel.ax = car->DynGC.vel.ax = 
+            car->DynGCg.vel.ay = car->DynGC.vel.ay = 
+            car->DynGCg.vel.az = car->DynGC.vel.az = 0.0;
+        car->rot_mom[0] = car->rot_mom[1] = car->rot_mom[2] = 0.0;
+        car->DynGCg.pos.ax = car->DynGC.pos.ax = 
+            car->DynGCg.pos.ay = car->DynGC.pos.ay = 
+            car->DynGCg.pos.az = car->DynGC.pos.az = 0.0;
+        sgEulerToQuat (car->posQuat, 0, 0, 0);
+        sgQuatToMatrix (car->posMat, car->posQuat);
+
+    }
     car->DynGCg.pos.x = car->DynGC.pos.x;
     car->DynGCg.pos.y = car->DynGC.pos.y;
     car->DynGCg.pos.z = car->DynGC.pos.z;
@@ -465,6 +496,30 @@ SimCarUpdatePos(tCar *car)
     car->DynGCg.pos.ay = car->DynGC.pos.ay;
     car->DynGCg.pos.az = car->DynGC.pos.az;    
     //printf ("a %f %f %f\n", car->DynGC.pos.ax, car->DynGC.pos.ay, car->DynGC.pos.az);
+    if (1) {
+        tdble gc_height_difference = car->DynGCg.pos.z - RtTrackHeightL(&(car->trkPos));
+
+        if (gc_height_difference < 0) {
+            car->DynGCg.pos.z = RtTrackHeightL(&(car->trkPos)) + 1;
+            car->DynGCg.vel.x = car->DynGCg.vel.y = car->DynGCg.vel.y = 
+                car->DynGC.vel.x = car->DynGC.vel.y = car->DynGC.vel.y = 0.0;
+            car->DynGCg.vel.ax = car->DynGC.vel.ax = 
+                car->DynGCg.vel.ay = car->DynGC.vel.ay = 
+                car->DynGCg.vel.az = car->DynGC.vel.az = 0.0;
+            car->rot_mom[0] = car->rot_mom[1] = car->rot_mom[2] = 0.0;
+        } else if (gc_height_difference > 100) {
+            car->DynGCg.pos.z = RtTrackHeightL(&(car->trkPos)) + 50;
+            car->DynGCg.vel.x = car->DynGCg.vel.y = car->DynGCg.vel.y = 
+                car->DynGC.vel.x = car->DynGC.vel.y = car->DynGC.vel.y = 0.0;
+            car->DynGCg.vel.ax = car->DynGC.vel.ax = 
+                car->DynGCg.vel.ay = car->DynGC.vel.ay = 
+                car->DynGCg.vel.az = car->DynGC.vel.az = 0.0;
+            car->rot_mom[0] = car->rot_mom[1] = car->rot_mom[2] = 0.0;
+        }
+        car->DynGC.pos.z =  car->DynGCg.pos.z;
+
+    }
+    
     RtTrackGlobal2Local(car->trkPos.seg, car->DynGCg.pos.x, car->DynGCg.pos.y, &(car->trkPos), TR_LPOS_MAIN);
 }
 
@@ -722,7 +777,11 @@ void SimCarAddAngularVelocity (tCar* car)
     sgQuat w;
     sgVec3 new_position;
     int i;
-
+    for (/*int*/ i=0; i<4; i++) {
+        if (isnan(car->rot_mom[i])) {
+            car->rot_mom[i] = 0.0;
+        }
+    }
     // Translate momentum into rotational derivative.
     for (/*int*/ i=0; i<4; i++) {
         w[i] = car->rot_mom[i];
@@ -791,8 +850,33 @@ void SimCarLimitDynamicEnergy(tCar* car, tdble E_limit)
         car->rot_mom[SG_X] = wx / car->Iinv.x;
         car->rot_mom[SG_Y] = wy / car->Iinv.y;
         car->rot_mom[SG_Z] = wz / car->Iinv.z;
-        printf("       scaling down E: %f --(%f)--> %f\n", E_next, scale, E_limit);
-        //        printf (" => %f\n", SimCarDynamicEnergy(car));
+        //printf("       scaling down E: %f --(%f)--> %f\n", E_next, scale, E_limit);
+        //printf (" => %f\n", SimCarDynamicEnergy(car));
     }
 }
 
+// this is only an upper bound on the energy
+tdble SimCarEnergy(tCar* car)
+{
+    return SimCarDynamicEnergy(car) + car->mass * 9.81 * car->DynGCg.pos.z;
+}
+
+/// Makes the car's dynamic energy stay under some limit
+void SimCarLimitEnergy(tCar* car, tdble E_limit)
+{
+    tdble E_next = SimCarEnergy(car);
+    if (E_next > E_limit) {
+        tdble scale = sqrt(E_limit / E_next);
+        car->DynGCg.vel.x *= scale;
+        car->DynGCg.vel.y *= scale;
+        car->DynGCg.vel.z *= scale;
+        tdble wx = scale * car->rot_mom[SG_X] * car->Iinv.x;
+        tdble wy = scale * car->rot_mom[SG_Y] * car->Iinv.y;
+        tdble wz = scale * car->rot_mom[SG_Z] * car->Iinv.z;
+        car->rot_mom[SG_X] = wx / car->Iinv.x;
+        car->rot_mom[SG_Y] = wy / car->Iinv.y;
+        car->rot_mom[SG_Z] = wz / car->Iinv.z;
+        //printf("       scaling down E: %f --(%f)--> %f\n", E_next, scale, E_limit);
+        //printf (" => %f\n", SimCarDynamicEnergy(car));
+    }
+}

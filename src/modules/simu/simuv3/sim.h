@@ -48,7 +48,10 @@ extern void SimAxleUpdate(tCar *car, int index);
 extern void SimCarConfig(tCar *car);
 extern void SimCarUpdate(tCar *car, tSituation*);
 extern void SimCarUpdate2(tCar *car, tSituation*);
+extern tdble SimCarDynamicEnergy(tCar* car);
+extern tdble SimCarEnergy(tCar* car);
 extern void SimCarLimitDynamicEnergy(tCar* car, tdble E_limit);
+extern void SimCarLimitEnergy(tCar* car, tdble E_limit);
 
 extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
@@ -98,7 +101,6 @@ extern void SimCarCollideConfig(tCar *car);
 extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(void);
 extern void SimCarCollideAddDeformation(tCar* car, sgVec3 pos, sgVec3 force);
-extern tdble SimCarDynamicEnergy(tCar* car);
 
 extern void NaiveRotate (t3Dd v, t3Dd u, t3Dd* v0);
 extern void NaiveInverseRotate (t3Dd v, t3Dd u, t3Dd* v0);
