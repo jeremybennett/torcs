@@ -17,7 +17,7 @@
 	define('TXML_SECT_RESULTS',				'Results');
 	define('TXML_SECT_RANK',				'Rank');
 	define('TXML_SECT_QUALIFICATION',		'Qualifications');
-	define('TXML_SECT_RACE1',				'First Race');
+	define('TXML_SECT_RACE1',				'Race');
 
 	define('TXML_ATTS_MODULENAME',			'dll name');
 	define('TXML_ATTS_MODULE',				'module');
