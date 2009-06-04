@@ -145,7 +145,7 @@
 				if (is_uploaded_file($filename) && $root = getRoot($filename)) {
 					// Create "indexed" node array.
 					$nodes = array();
-					children($root, $root->get_attribute(TXML_NAME), $nodes);
+					children($root, $root->getAttribute(TXML_NAME), $nodes);
 
 					// Do some simple sanity checks on the data.
 					// Get track info.

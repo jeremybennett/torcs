@@ -41,8 +41,10 @@
 	function getRoot($filename)
 	{
 		$result = NULL;
-		if ($dom = domxml_open_file($filename)) {
-			$result = $dom->document_element();
+		$dom = new DOMDocument();
+
+		if ($dom->load($filename)) {
+			$result = $dom->documentElement;
 		}
 		return $result;
 	}
@@ -51,12 +53,11 @@
 	// Get all XML_ELEMENT_NODES and build an "indexed" array.
 	function children(&$parent, &$path, &$nodes)
 	{
-		$ch = $parent->child_nodes();
-		for ($i = 0; $i < count($ch); $i++) {
-			$node = $ch[$i];
-			if ($node->node_type() == XML_ELEMENT_NODE) {
-				$namenode = $node->get_attribute_node(TXML_NAME);
-				$name = $namenode->value();
+		$ch = $parent->childNodes;
+		foreach ($ch as $node) {
+			if ($node->nodeType == XML_ELEMENT_NODE) {
+				$namenode = $node->getAttributeNode(TXML_NAME);
+				$name = $namenode->value;
 				$p = $path . "/" . $name;
 				$nodes[$p] = $node;
 				children($node, $p, $nodes);
@@ -68,10 +69,10 @@
 	// Get attribute "val" value of a specific element.
 	function getval(&$key, &$nodes)
 	{
-		if (isset($nodes[$key]) && $nodes[$key]->node_type() == XML_ELEMENT_NODE) {
+		if (isset($nodes[$key]) && $nodes[$key]->nodeType == XML_ELEMENT_NODE) {
 			$node = $nodes[$key];
-			$valnode = $node->get_attribute_node(TXML_VALUE);
-			return $valnode->value();
+			$valnode = $node->getAttributeNode(TXML_VALUE);
+			return $valnode->value;
 		}
 		return NULL;
 	}
@@ -81,15 +82,14 @@
 	function getvalarray(&$key, &$nodes)
 	{
 		$result = NULL;
-		if (isset($nodes[$key]) && $nodes[$key]->node_type() == XML_ELEMENT_NODE) {
-			$ch = $nodes[$key]->child_nodes();
-			for ($i = 0; $i < count($ch); $i++) {
-				$node = $ch[$i];
-				if ($node->node_type() == XML_ELEMENT_NODE) {
-					$namenode = $node->get_attribute_node(TXML_NAME);
-					$name = $namenode->value();
-					$valnode = $node->get_attribute_node(TXML_VALUE);
-					$val = $valnode->value();
+		if (isset($nodes[$key]) && $nodes[$key]->nodeType == XML_ELEMENT_NODE) {
+			$ch = $nodes[$key]->childNodes;
+			foreach ($ch as $node) {
+				if ($node->nodeType == XML_ELEMENT_NODE) {
+					$namenode = $node->getAttributeNode(TXML_NAME);
+					$name = $namenode->value;
+					$valnode = $node->getAttributeNode(TXML_VALUE);
+					$val = $valnode->value;
 					$result[$name] = $val;
 				}
 			}
