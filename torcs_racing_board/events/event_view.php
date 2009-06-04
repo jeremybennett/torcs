@@ -373,7 +373,7 @@
 					$page->set_var("raceteamremovevar", "Event is not in register phase.");
 				}
 				if (!$joining_phase && $registertimeframe) {
-					$page->set_var("raceteamaddvar", "Event is in progress, leave during the next robot upload phase.");
+					$page->set_var("raceteamremovevar", "Event is in progress, leave during the next robot upload phase.");
 				}
 
 				$page->parse("racervar", "racer");
