@@ -36,7 +36,7 @@
 				</p>
 			</td>
 			<td class="filledlist">
-				<input name="update_robot_package" type="file" size="60" maxlength="500000" accept="application/*">
+				<input name="update_robot_package" type="file" size="60" maxlength="{PC_ROBOTPACKAGE_SIZE}" accept="application/*">
 			</td>
 		</tr>
 	</table>
