@@ -633,4 +633,40 @@
 		$result = mysql_query($sql);
 		echo "Created Table $tablename: " . mysql_error() . "<br>\n";
 	}
+
+
+	// ----------------------------- INDICES --------------------------------
+	$tablename = $db_prefix . TBL_LOGIN_LOG;
+	$sql = "ALTER TABLE $tablename ADD INDEX `login` ( `id` , `ip` , `pf` , `username` , `time` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `time` )";
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_USERS;
+	$sql = "ALTER TABLE $tablename ADD INDEX `user` ( `username` , `password` , `active` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `username` , `cookie` , `active` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `username` , `cookie` , `session` , `ip` , `active` )";
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_FORUM;
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `id` , `id_thread` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `id_parent` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `id_parent` , `id_thread` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `created` )";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `author` )";
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_FORUM_TOPICDATA;
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `lastpost` )";
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_SESSIONCOUNT;
+	$sql = "ALTER TABLE $tablename ADD INDEX ( `start` )";
+	$result = mysql_query($sql);	
 ?>
