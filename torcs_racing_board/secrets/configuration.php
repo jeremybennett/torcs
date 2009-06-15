@@ -18,7 +18,7 @@
 	$db_prefix = 'test_';		// <-- CHANGE!
 
 	// Version
-	define('TRB_VERSION', '0.0.1');
+	define('TRB_VERSION', '0.0.2');
 
 	// Table with user data.
 	define('TBL_USERS', 'users');
