@@ -227,8 +227,9 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
                     rate = 1.0f - exp(-propTq*propTq);
                 }
                 float delta_spin = spinVel1-spinVel0;
-                float pressure = tanh(rate*delta_spin);
-                float bias = differential->dSlipMax * 0.5f* tanh(delta_spin);//pressure;
+                //float pressure =  tanh(rate*delta_spin);
+                float pressure =  rate;
+                float bias = differential->dSlipMax * 0.5f* tanh(delta_spin);
                 float open = 1.0f - fabs(pressure);
                 //DrTq0 = DrTq*(0.5f + bias) + spiderTq;
                 //DrTq1 = DrTq*(0.5f - bias) - spiderTq;
@@ -242,16 +243,15 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
             break;
             
         case DIFF_VISCOUS_COUPLER:
-            if (spinVel0 >= spinVel1) {
-                DrTq0 = DrTq * differential->dTqMin;
-                DrTq1 = DrTq * (1 - differential->dTqMin);
-            } else {
-                deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * spinVel0 - spinVel1))) /
-                    differential->viscomax * differential->dTqMax;
-                DrTq0 = DrTq * deltaTq;
-                DrTq1 = DrTq * (1 - deltaTq);
+            
+            //deltaTq = differential->dTqMin + (spinVel0 - spinVel1)*(1.0 - exp(-fabs(differential->viscosity * (spinVel0 - spinVel1)))) /
+            //differential->viscomax * differential->dTqMax;
+            {
+                float dSlip = -(spinVel0 - spinVel1);
+                deltaTq = 0.5*(tanh(dSlip) + 1.0);//*(1.0 - exp(-fabs(differential->viscosity * (spinVel0 - spinVel1))));
+                DrTq0 = DrTq * (deltaTq) + 100000*dSlip ;
+                DrTq1 = DrTq * (1 - deltaTq) - 100000*dSlip;
             }
-	
             break;
         default: /* NONE ? */
             DrTq0 = DrTq1 = 0;

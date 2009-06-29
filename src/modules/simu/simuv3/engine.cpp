@@ -166,7 +166,7 @@ SimEngineUpdateTq(tCar *car)
 		tdble alpha = car->ctrl->accelCmd;
         if (alpha < 1) {
             //tdble da = 1 /(1 - alpha); // flow
-            alpha *= exp(alpha - engine->rads/engine->revsMax);
+            alpha *= exp(MIN(0,alpha - engine->rads/engine->revsMax));
             if (alpha < 0) {
                 alpha = 0;
             }

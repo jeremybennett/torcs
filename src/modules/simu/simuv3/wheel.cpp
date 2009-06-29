@@ -34,7 +34,7 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-#define ABSOLUTE_SPEED_CUTOFF 1.0f
+#define ABSOLUTE_SPEED_CUTOFF 0.1f
 #define SKID_SCALE 0.0002f
 #define SKID_THRESHOLD 0.01f
 
@@ -55,7 +55,7 @@ SimWheelConfig(tCar *car, int index)
     tWheel *wheel = &(car->wheel[index]);
     tdble rimdiam, tirewidth, tireratio, pressure;
     tdble x0, Ca, RFactor, EFactor, patchLen;
-
+    
     pressure              = GfParmGetNum(hdle, WheelSect[index], PRM_PRESSURE, (char*)NULL, 275600);
     rimdiam               = GfParmGetNum(hdle, WheelSect[index], PRM_RIMDIAM, (char*)NULL, 0.33f);
     tirewidth             = GfParmGetNum(hdle, WheelSect[index], PRM_TIREWIDTH, (char*)NULL, 0.145f);
@@ -74,6 +74,7 @@ SimWheelConfig(tCar *car, int index)
     wheel->lfMin          = GfParmGetNum(hdle, WheelSect[index], PRM_LOADFMIN, (char*)NULL, 0.8f);
     wheel->opLoad         = GfParmGetNum(hdle, WheelSect[index], PRM_OPLOAD, (char*)NULL, wheel->weight0 * 1.2f);
     wheel->mass           = GfParmGetNum(hdle, WheelSect[index], PRM_MASS, (char*)NULL, 20.0f);
+    wheel->dynamic_camber = GfParmGetNum(hdle, WheelSect[index], PRM_DYNAMIC_CAMBER, (char*)NULL, -0.1f);
 
     wheel->condition = 1.0f;
     wheel->T_current = 50.0f;
@@ -89,8 +90,8 @@ SimWheelConfig(tCar *car, int index)
 		wheel->relPos.ax = wheel->staticPos.ax;
     }
     
-    wheel->lfMin = MIN(0.8, wheel->lfMin);
-    wheel->lfMax = MAX(1.6, wheel->lfMax);
+    wheel->lfMin = MIN(0.9, wheel->lfMin);
+    wheel->lfMax = MAX(1.1, wheel->lfMax);
     
     RFactor = MIN(1.0, RFactor);
     RFactor = MAX(0.1, RFactor);
@@ -209,6 +210,7 @@ SimWheelUpdateRide(tCar *car, int index)
 		wheel->rel_vel = 0.0f;
 	} else if (new_susp_x <= wheel->susp.spring.packers) {
         wheel->bump_force = wheel->mass * wheel->rel_vel / SimDeltaTime;
+        wheel->susp.x = wheel->susp.spring.packers;
 		wheel->rel_vel = 0.0f; 
 	}
  
@@ -222,6 +224,8 @@ SimWheelUpdateRide(tCar *car, int index)
     } else {
 		wheel->relPos.ax =  wheel->staticPos.ax;
     }
+
+    wheel->relPos.ax += wheel->dynamic_camber*wheel->steer;
 	if (car->options->alignment_damage && wheel->rotational_damage_x>0.0) {
 		wheel->relPos.ax += wheel->rotational_damage_x*sin(wheel->relPos.ay + wheel->bent_damage_x);
 		wheel->relPos.az += wheel->rotational_damage_z*cos(wheel->relPos.ay + wheel->bent_damage_z);
@@ -354,7 +358,7 @@ SimWheelUpdateForce(tCar *car, int index)
 			} else if (invrel_normal<=-4.0) {
 				invrel_normal = -4.0;
 			}
-			reaction_force = f_z * invrel_normal;
+			reaction_force = f_z; //* invrel_normal;
 			// the other reactions are then:
 			Ft = reaction_force*rel_normal.x;//*invrel_normal;
 			Fn = reaction_force*rel_normal.y;//*invrel_normal;
@@ -416,7 +420,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	BEGIN_PROFILE(timer_friction);
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
-    tdble camber_gain = 1.0;
+    tdble camber_gain = +1.0;
     tdble camber_shift = camber_gain * rel_normal.x;
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 	    sx = sy = sa = 0;
@@ -431,10 +435,11 @@ SimWheelUpdateForce(tCar *car, int index)
 		sx = wvx/absolute_speed;
 		sy = wvy/absolute_speed;
 		sa = atan2(wvy, wvx);
-
     }
-
 	s = sqrt(sx*sx+sy*sy);
+    sa -= camber_shift;
+    sx = cos(sa)*s;
+    sy = sin(sa)*s;
 
 	wcnt++;
 	access_times = (float) wcnt;
@@ -475,13 +480,15 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	/* load sensitivity */
     mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * reaction_force / wheel->opLoad));
+    //mu = wheel->mu;
     
 	tdble static_grip = wheel->condition * reaction_force * mu * wheel->trkPos.seg->surface->kFriction;
 
     F = dynamic_grip * static_grip;
-
+    // This is the steering torque
 	{
-		tdble Bx = wheel->mfB * (sa + camber_shift);
+		tdble Bx = wheel->mfB * (sa);// + camber_shift);
+        //printf ("%f %f\n", sa, camber_shift);
 		car->carElt->_wheelFy(index) =  cos(sa)*wheel->mfT * sin(wheel->mfC * atan(Bx * (1 - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0 + stmp * simSkidFactor[car->carElt->_skillLevel]) * static_grip;
 	}
 	END_PROFILE(timer_friction);
@@ -547,6 +554,7 @@ SimWheelUpdateForce(tCar *car, int index)
 			Ft2 = 0.0f;
 			Fn2 = 0.0f;
 		}
+        //Ft2 -= camber_shift*F;
     } else {
 		tdble sur_f = rel_normal_xz;
 		Ft2 = - sur_f*F*sx/epsilon;
@@ -611,8 +619,8 @@ SimWheelUpdateForce(tCar *car, int index)
 		wheel->forces.x +=(Ft* CosA - Fn * SinA);
 		wheel->forces.y +=(Ft* SinA + Fn * CosA);
 
-		RELAXATION2(wheel->forces.x, wheel->preFn, 50.0f);
-		RELAXATION2(wheel->forces.y, wheel->preFt, 50.0f);
+		//RELAXATION2(wheel->forces.x, wheel->preFn, 50.0f);
+		//RELAXATION2(wheel->forces.y, wheel->preFt, 50.0f);
 
 		wheel->forces.z = f_z + wheel->bump_force; // only suspension acts on z axis.
 		car->carElt->_wheelFx(index) = wheel->forces.x;

@@ -646,7 +646,7 @@ SimCarUpdate2(tCar *car, tSituation * /* s */)
         }
         float Fzf = (car->aero.lift[0] + car->wing[0].forces.z) / 9.81f;
         float Fzr = (car->aero.lift[1] + car->wing[1].forces.z) / 9.81f;
-        printf("%f %f\n", Fzf, Fzr);
+        printf("%f %f # FZ\n", Fzf, Fzr);
 #if 0
         printf(" %f %f %f %f\n",
                car->DynGCg.pos.x,

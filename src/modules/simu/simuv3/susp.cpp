@@ -89,11 +89,11 @@ springForce(tSuspension *susp)
 
     /* K is < 0 */
     f = spring->K * (susp->x - spring->x0) + spring->F0;
-    if (0 && susp->over_x < 0) {
-        printf ("over: %f ", f);
+    if (susp->over_x < 0) {
+        //printf ("over: %f ", f);
         tdble extra_f = MAX(spring->K, 2 * spring->K * susp->over_x);
-        //f += extra_f;
-        printf (" -> %f\n", f);
+        f += extra_f;
+        //printf (" -> %f\n", f);
     }
 #if 0 // NOTE: Why should f be only positive?  Does not make sense.
     if (f < 0) {

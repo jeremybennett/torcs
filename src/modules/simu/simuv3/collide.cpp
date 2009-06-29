@@ -89,7 +89,8 @@ SimCarCollideZ(tCar *car)
         return;
     }
 
-    
+    tdble E_prev = SimCarEnergy(car);
+    bool collide = false;
     // Get normal N
     RtTrackSurfaceNormalL(&(car->trkPos), &car_normal);
     
@@ -262,7 +263,7 @@ SimCarCollideZ(tCar *car)
                 // rotate it to the car's frame
                 sgRotateVecQuat (impulse, car->posQuat);
 
-                tdble E_prev = SimCarEnergy(car);
+                //tdble E_prev = SimCarEnergy(car);
 
                 // add to local-frame speed
                 car->DynGC.vel.x += impulse[SG_X];
@@ -333,7 +334,8 @@ SimCarCollideZ(tCar *car)
                     
                 }
                 SimCarUpdateCornerPos(car);
-                SimCarLimitEnergy(car, 0.99*E_prev);
+                //                SimCarLimitEnergy(car, 0.99*E_prev);
+                collide = true;
             }
 
             
@@ -401,7 +403,9 @@ SimCarCollideZ(tCar *car)
         car->rot_mom[0] = car->rot_mom[1] = car->rot_mom[2] = 0.0;
     }
     car->DynGC.pos.z = car->DynGCg.pos.z;
-
+    if (collide) {
+        SimCarLimitEnergy(car, 0.99*E_prev);
+    }
 }
 
 #endif
