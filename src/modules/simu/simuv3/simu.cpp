@@ -402,7 +402,21 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 				SimWheelUpdateForce(car, i);
 			}
 			CHECK(car);
-		}
+            /* } else {
+            
+            SimCarUpdateWheelPos(car);
+            CHECK(car);
+            for (i = 0; i < 4; i++){
+                SimWheelUpdateRide(car, i);
+            }
+            CHECK(car);
+            for (i = 0; i < 4; i++){
+                SimWheelUpdateForce(car, i);
+            }
+            CHECK(car);
+            SimCarUpdate(car, s);
+            CHECK(car);*/
+        }
 		SimTransmissionUpdate(car);
 		CHECK(car);
 
