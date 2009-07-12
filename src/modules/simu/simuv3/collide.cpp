@@ -84,11 +84,17 @@ SimCarCollideZ(tCar *car)
     tdble       dotProd;
     tWheel      *wheel;
     bool upside_down = false;
+    tdble corner_factor = 0.9; // how much to shrink the bounding box
+
+    if (car->collide_timer < 10.0) {
+        car->collide_timer += SimDeltaTime;
+    }
 
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
         return;
     }
 
+    tdble energy_restitution = 0.99;
     tdble E_prev = SimCarEnergy(car);
     bool collide = false;
     // Get normal N
@@ -135,14 +141,14 @@ SimCarCollideZ(tCar *car)
                 orig.x = corner->pos.x;
                 orig.y = corner->pos.y;
                 orig.z = - car->statGC.z;
-                if (!(wheel->state & SIM_SUSP_COMP)) {
+                /*if (!(wheel->state & SIM_SUSP_COMP)) {
                     continue;
-                }
+                    }*/
 
             }
-            orig.x*=0.9;
-            orig.y*=0.9;
-            orig.z*=0.9;
+            orig.x*= corner_factor;
+            orig.y*= corner_factor;
+            orig.z*= corner_factor;
             // get relative coordinates in global frame
             QuatRotate (orig, car->posQuat, delta);
             tTrkLocPos trkPos;
@@ -169,7 +175,7 @@ SimCarCollideZ(tCar *car)
             QuatInverseRotate (normal, car->posQuat, rel_normal);
 
             // calculate the velocity of the corner
-#if 0
+#if 1
             // option 1: just use the car velocity
             // this works fine when more than 1 corner hits at the same time
             tdble cvx = (car->DynGCg.vel.x);
@@ -301,9 +307,9 @@ SimCarCollideZ(tCar *car)
                 car->rot_mom[SG_Y] -= rot_mom_scale * My;// * car->Iinv.y; 
                 car->rot_mom[SG_Z] -= rot_mom_scale * Mz;// * car->Iinv.z; 
           for (int i=0; i<3; i++) {
-                if (fabs(car->rot_mom[i]) >500.0) {
-                    printf ("rot_mom: %f\n", (car->rot_mom[i]));
-                    car->rot_mom[i] = 500*SIGN(car->rot_mom[i]);
+              if (fabs(car->rot_mom[i]) >500.0) {
+                  //printf ("rot_mom: %f\n", (car->rot_mom[i]));
+                    car->rot_mom[i] = 250*SIGN(car->rot_mom[i]);
                 }
             }
 #ifdef DEBUG_COLLIDE_Z
@@ -334,7 +340,7 @@ SimCarCollideZ(tCar *car)
                     
                 }
                 SimCarUpdateCornerPos(car);
-                //                SimCarLimitEnergy(car, 0.99*E_prev);
+                SimCarLimitEnergy(car, E_prev);
                 collide = true;
             }
 
@@ -344,8 +350,8 @@ SimCarCollideZ(tCar *car)
                 // should be this way..
                 if (dotProd <-5.0) {
                     // if it's hard, do a damage thing
-                    static tdble WHEEL_ROT_DAMAGE = 0.01;
-                    static tdble WHEEL_BENT_DAMAGE = 0.1;
+                    static tdble WHEEL_ROT_DAMAGE = 0.001;
+                    static tdble WHEEL_BENT_DAMAGE = 0.01;
                     static tdble WHEEL_DAMAGE_LIMIT = 0.25;
                     static tdble SUSP_DAMAGE_CONST = 1.0;
                     static tdble SUSP_DAMAGE = 0.1;
@@ -404,7 +410,8 @@ SimCarCollideZ(tCar *car)
     }
     car->DynGC.pos.z = car->DynGCg.pos.z;
     if (collide) {
-        SimCarLimitEnergy(car, 0.99*E_prev);
+        SimCarLimitEnergy(car, energy_restitution * E_prev);
+        car->collide_timer = 0.0;
     }
 }
 
@@ -428,6 +435,8 @@ SimCarCollideXYScene(tCar *car)
     if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
         return;
     }
+
+    tdble energy_restitution = 0.999;
 
     corner = &(car->corner[0]);
     for (i = 0; i < 4; i++, corner++) {
@@ -517,7 +526,7 @@ SimCarCollideXYScene(tCar *car)
         tdble friction_impulse_x = vQx * dP3;
         tdble friction_impulse_y = vQy * dP3;
         if (dotProd < 0.0f) {
-            printf ("CollideXY\n");
+            //printf ("CollideXY\n");
 
             tdble E_prev = SimCarDynamicEnergy(car);
 
@@ -566,7 +575,7 @@ SimCarCollideXYScene(tCar *car)
             car->rot_mom[SG_X] -= rot_mom_scale * Mx;// * car->Iinv.x;
             car->rot_mom[SG_Y] -= rot_mom_scale * My;// * car->Iinv.y;
             car->rot_mom[SG_Z] -= rot_mom_scale * Mz; //* car->Iinv.z;
-            printf ("M_w:%f J:%f M_c:%g\n", car->rot_acc[SG_Z], car->rot_mom[SG_Z], rot_mom_scale * Mz);
+            //printf ("M_w:%f J:%f M_c:%g\n", car->rot_acc[SG_Z], car->rot_mom[SG_Z], rot_mom_scale * Mz);
             
             for (int i=0; i<3; i++) {
                 if (fabs(car->rot_mom[i]) > 2000.0) {
@@ -587,7 +596,7 @@ SimCarCollideXYScene(tCar *car)
                 car->DynGCg.vel.z = updated.z;
                 
             }
-            SimCarLimitDynamicEnergy(car, E_prev); 
+            SimCarLimitDynamicEnergy(car, energy_restitution*E_prev); 
         }
 #if 0
         static tdble DEFORMATION_THRESHOLD = 0.01f;

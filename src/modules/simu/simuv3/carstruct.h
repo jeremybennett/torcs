@@ -79,6 +79,7 @@ typedef struct
     tdble	Sinz;
     tDynPt	corner[4];	/* x,y,z for static relative pos, ax,ay,az for dyn. world coord */
     int		collision;
+    tdble collide_timer;
     t3Dd	normal;
     t3Dd	collpos;
     tdble	wheelbase;

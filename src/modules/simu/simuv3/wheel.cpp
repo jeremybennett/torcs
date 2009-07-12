@@ -34,7 +34,7 @@ static char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTW
 static char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-#define ABSOLUTE_SPEED_CUTOFF 0.1f
+#define ABSOLUTE_SPEED_CUTOFF 10.0f
 #define SKID_SCALE 0.0002f
 #define SKID_THRESHOLD 0.01f
 
@@ -420,7 +420,7 @@ SimWheelUpdateForce(tCar *car, int index)
 
 	BEGIN_PROFILE(timer_friction);
     tdble relative_speed = sqrt(wvx*wvx + wvy*wvy);
-    tdble camber_gain = +1.0;
+    tdble camber_gain = +0.1;
     tdble camber_shift = camber_gain * rel_normal.x;
     if ((wheel->state & SIM_SUSP_EXT) != 0) {
 	    sx = sy = sa = 0;
@@ -587,6 +587,9 @@ SimWheelUpdateForce(tCar *car, int index)
 		right_way_up = false;
     }
 
+    if (car->collide_timer < 0.00) {
+        right_way_up = false;
+    }
 
     if (right_way_up==false) {
 		Fn = 0.0f;

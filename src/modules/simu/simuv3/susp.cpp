@@ -36,7 +36,7 @@ initDamper(tSuspension *susp)
 
 void SimSuspDamage(tSuspension* susp, tdble dmg)
 {
-	susp->damper.efficiency *= exp(0.1*dmg);
+	susp->damper.efficiency *= exp(dmg);
 	//printf ("Leak: %f -> %f\n", exp(dmg), susp->damper.efficiency);
 }
 
