@@ -1,0 +1,160 @@
+%% Pre-amble - commonly defined macros.
+
+%% Packages
+
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{theorem}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{mathrsfs}
+\usepackage{paralist}
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{makeidx} 
+\usepackage{color}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{multido} 
+\usepackage{varioref}
+\usepackage{wrapfig} %% for wrapping text around figures
+%\usepackage{setspace} %% for using halfspaces
+\usepackage[numbers]{natbib}
+%\usepackage[left=2.5cm,right=2.5cm]{geometry}
+%\usepackage[french, english]{babel}
+
+\numberwithin{equation}{section} 
+
+\theoremstyle{plain} \newtheorem{remark}{Remark}[section]
+\theoremstyle{plain} \newtheorem{definition}{Definition}[section]
+\theoremstyle{plain} \newtheorem{example}{Example}[section]
+\theoremstyle{plain} \newtheorem{theorem}{Theorem}[section]
+\theoremstyle{plain} \newtheorem{lemma}{Lemma}[section]
+\theoremstyle{plain} \newtheorem{assumption}{Assumption}[section]
+
+
+
+\newenvironment{proof}[1][Proof]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.5em width0.5em depth0.25em\fi}
+
+\newcommand \E {\mathop{\mbox{\bf{E}}}\nolimits}
+\newcommand \hE {\hat{\mathop{\mbox{\bf{E}}}\nolimits}}
+\renewcommand \Pr {\mathop{\mbox{\bf{P}}}\nolimits}
+\newcommand \given {\mathrel{|}}
+\newcommand{\set}[2]{\{\, #1 \,:\, #2 \,\} }
+
+%% Special characters
+
+\newcommand \Reals {{\mathbb{R}}}
+\newcommand \Naturals {{\mathbb{N}}}
+
+\newcommand \FB {{\mathfrak{B}}}
+\newcommand \FD {{\mathfrak{D}}}
+\newcommand \FF {{\mathfrak{F}}}
+\newcommand \FK {{\mathfrak{K}}}
+\newcommand \FJ {{\mathfrak{J}}}
+\newcommand \FL {{\mathfrak{L}}}
+\newcommand \FO {{\mathfrak{O}}}
+\newcommand \FS {{\mathfrak{S}}}
+\newcommand \FT {{\mathfrak{T}}}
+\newcommand \FP {{\mathfrak{P}}}
+\newcommand \FR {{\mathfrak{R}}}
+
+
+\newcommand \CA {{\mathcal{A}}}
+\newcommand \CB {{\mathcal{B}}}
+\newcommand \CC {{\mathcal{C}}}
+\newcommand \CD {{\mathcal{D}}}
+\newcommand \CE {{\mathcal{E}}}
+\newcommand \CF {{\mathcal{F}}}
+\newcommand \CG {{\mathcal{G}}}
+\newcommand \CH {{\mathcal{H}}}
+\newcommand \CJ {{\mathcal{J}}}
+\newcommand \CL {{\mathcal{L}}}
+\newcommand \CM {{\mathcal{M}}}
+\newcommand \CN {{\mathcal{N}}}
+\newcommand \CO {{\mathcal{O}}}
+\newcommand \CP {{\mathcal{P}}}
+\newcommand \CQ {{\mathcal{Q}}}
+\newcommand \CR {{\mathcal{R}}}
+\newcommand \CS {{\mathcal{S}}}
+\newcommand \CT {{\mathcal{T}}}
+\newcommand \CU {{\mathcal{U}}}
+\newcommand \CV {{\mathcal{V}}}
+\newcommand \CW {{\mathcal{W}}}
+\newcommand \CX {{\mathcal{X}}}
+\newcommand \CY {{\mathcal{Y}}}
+\newcommand \CZ {{\mathcal{Z}}}
+
+\newcommand \BA {{\mathbb{A}}}
+\newcommand \BI {{\mathbb{I}}}
+\newcommand \BS {{\mathbb{S}}}
+
+\newcommand \bx {{\mathbf{x}}}
+\newcommand \by {{\mathbf{y}}}
+\newcommand \bu {{\mathbf{u}}}
+\newcommand \bw {{\mathbf{w}}}
+\newcommand \ba {{\mathbf{a}}}
+\newcommand \bh {{\mathbf{h}}}
+\newcommand \bo {{\mathbf{o}}}
+\newcommand \bp {{\mathbf{p}}}
+\newcommand \bs {{\mathbf{s}}}
+\newcommand \br {{\mathbf{r}}}
+
+\newcommand \SA {\mathscr{A}}
+\newcommand \SB {\mathscr{B}}
+\newcommand \SC {\mathscr{C}}
+\newcommand \SF {\mathscr{F}}
+\newcommand \SG {\mathscr{G}}
+\newcommand \SH {\mathscr{H}}
+\newcommand \SJ {\mathscr{J}}
+\newcommand \SL {\mathscr{L}}
+\newcommand \SP {\mathscr{P}}
+%%\newcommand \SS {\mathscr{S}}
+\newcommand \ST {\mathscr{T}}
+\newcommand \SU {\mathscr{U}}
+\newcommand \SV {\mathscr{V}}
+\newcommand \SW {\mathscr{W}}
+
+
+\newcommand \p {\partial}
+\newcommand \D {\Delta}
+%%\newcommand \d {\delta}
+
+\newcommand \then{\Rightarrow}
+\newcommand \defn {\mathrel{\triangleq}}
+%\newcommand \StateSet {{\CQ}}
+
+
+%% Commands
+
+\newcommand \argmax{\mathop{\rm arg\,max}}
+\newcommand \argmin{\mathop{\rm arg\,min}}
+\newcommand \dtan{\mathop{\rm dtan}}
+\newcommand \sgn{\mathop{\rm sgn}}
+\newcommand \trace{\mathop{\rm trace}}
+
+\newcommand \pnorm[2]{\|#1\|_{#2}}
+\newcommand \inftynorm[1]{\|#1\|_\infty}
+\newcommand \norm[1]{\|#1\|}
+
+
+\newcommand \Lceil {\left\lceil}
+\newcommand \Rceil {\right\rceil}
+
+
+\newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+\newcommand\Ind{\mbox{\bf{I}}}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "simuv3"
+%%% End: 
