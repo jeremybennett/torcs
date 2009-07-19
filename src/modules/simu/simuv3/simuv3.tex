@@ -1,0 +1,90 @@
+\documentclass[a4paper]{report}
+
+\include{preamble}
+
+\begin{document}
+
+\chapter{Introduction}
+
+\chapter{The message passing}
+
+\chapter{The components}
+
+\section{The differential}
+
+A differential links together three components, $C = \{c_0, c_1,
+c_2\}$.  By default, we shall refer to $c_0$ as the {\em input}
+component and the other two components as the output components.  The
+variables of interest in this setting are $\omega_i$, the angular
+velocity of each of the coupled components, and $N_i$, the torque
+applied by each component to the differential. Given the vectors
+$\omega, N$, the differential computes a new torque vector $N'$ for
+all of the components.
+
+\subsection{Free differential}
+
+A free, or open, differential links the two weels together through a
+spider gear.
+
+The reaction from each wheel is transmitted back to the spider
+gear. If both wheels react equally, then the spider gear does not
+turn. If one of the wheel is immobile, so that $\frac{1}{2} N_0 = N_1$
+for example, then the reaction does not act against the drivetrain,
+but since the spider gear can turn freely, it acts on the other wheel.
+ 
+This system is equivalent to a rotating gear attached in between two
+parallel surfaces, with the drive torque $N_0$ being equivalent to a
+force acting in the center of the gear. If one surface is fixed, only
+the other surface moves and all the force is 'transferred' to the
+moving surface. Or, the way I like to think of it, the immobile
+surface reacts with an equal and opposite force\footnote{For an object
+  to remain at rest, all forces acting on it must sum to 0.} that
+cancels $\frac{1}{2}N_0$ exactly and which is transmitted directly
+with the rotating gear to the other, free, surface.
+
+The output of this system looks as follows
+\begin{align}
+  N_s &= N_2 - N_1\\
+  N'_1 &= \frac{1}{2} N_0 + N_s\\
+  N'_2 &= \frac{1}{2} N_0 - N_s\\
+  N'_0 &= - N_0.
+\end{align}
+			
+\subsection{Viscous coupler}
+
+Here we have a normal open differential, but we also pass torque
+between the two components.  First, we define the current coupling
+between the components, which depends on their relative angular velocity,
+\begin{equation}
+  \alpha \defn 1.0 - e^{-|\omega_1 - \omega_2|}.
+\end{equation}
+Then, we define the amount of bias, 
+\begin{align}
+  \beta &= \frac{1}{2}[1 + \alpha\sgn(\omega_2 - \omega_1)].
+\end{align}
+The bias is in addition limited to $\beta \in [\beta_{\min},
+\beta_{\max}]$. We again set the spider gear torque to
+\begin{align}
+  N_s &= N_2 - N_1,
+\end{align}
+and in adition define the frictive torque
+\begin{align}
+  N_f &= \alpha v (\omega_2 - \omega_1).
+\end{align}
+Thus, the amount of coupling is determined by $\alpha$, which takes
+the form of a friction coeffiient. The static friction is handled by
+biasing the input torque, while the dynamic friction is handled via
+the frictive torque $N_f$. When the system is totally uncoupled, the
+differential behaves like an open differential.
+The output torques are in fact
+\begin{align}
+  N'_1 &= \beta N_0 + N_s + N_f\\
+  N'_2 &= (1 - \beta) N_0 - N_s - N_f\\
+  N'_0 &= - N_0.
+\end{align}
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
