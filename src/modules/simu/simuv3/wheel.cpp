@@ -560,7 +560,9 @@ SimWheelUpdateForce(tCar *car, int index)
 		Ft2 = - sur_f*F*sx/epsilon;
 		Fn2 = - sur_f*F*sy/epsilon;
 	}
-	Ft2 -= tanh(wrl) * fabs(wheel->rollRes);
+
+    Ft2 -= tanh(wvx) * fabs(wheel->rollRes);
+    Fn2 -= tanh(wvy) * fabs(wheel->rollRes);
 	wheel->forces.x = Ft2 * rel_normal_yz;
 	wheel->forces.y = Fn2 * rel_normal_xz; 
 	wheel->forces.z = Ft2 * rel_normal.x + Fn2 * rel_normal.y;
@@ -629,7 +631,7 @@ SimWheelUpdateForce(tCar *car, int index)
 		car->carElt->_wheelFx(index) = wheel->forces.x;
 		car->carElt->_wheelFz(index) = wheel->forces.z;
 
-		wheel->spinTq = Ft2 * adjRadius;
+		wheel->spinTq = (Ft2  + tanh(wrl)*fabs(wheel->rollRes))* adjRadius;
 		wheel->sa = sa;
 		wheel->sx = sx;
 		END_PROFILE (timer_wheel_to_car);
