@@ -232,7 +232,7 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
         }
 	tdble dp = engine->pressure;
 	engine->pressure = engine->pressure*.9 + .1*engine->Tq;
-	dp = (0.001*fabs(engine->pressure - dp));
+	dp = (0.01*fabs(engine->pressure - dp));
 	dp = fabs(dp);
 	tdble rth = urandom();
 	if (dp>rth) {
@@ -242,7 +242,7 @@ SimEngineUpdateRpm(tCar *car, tdble axleRpm)
 
 	
 	car->carElt->priv.smoke += 5.0*engine->exhaust_pressure;
-	car->carElt->priv.smoke *= 0.99f;
+	car->carElt->priv.smoke *= exp(-0.0001 * engine->rads);
 #if 0
 	if (engine->exhaust_pressure>(engine->exhaust_refract)) {
 		//car->carElt->priv.smoke += engine->exhaust_pressure;//engine->exhaust_refract;

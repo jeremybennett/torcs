@@ -80,9 +80,9 @@ SimCarConfig(tCar *car)
     }
     car->fuel_prev = car->fuel;
     k = k * k; // this constant affects front-to-back
-    car->Iinv.x = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
-    car->Iinv.y = 12.0 / (car->mass * (k * car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
-    car->Iinv.z = 12.0 / (car->mass * (car->dimension.y * car->dimension.y + k * car->dimension.x * car->dimension.x));
+    car->Iinv.x = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y + car->dimension.z * car->dimension.z));
+    car->Iinv.y = 12.0 / (car->mass * k * ( car->dimension.x * car->dimension.x + car->dimension.z * car->dimension.z));
+    car->Iinv.z = 12.0 / (car->mass * k * (car->dimension.y * car->dimension.y +  car->dimension.x * car->dimension.x));
     
     // initialise rotational momentum
     for (i=0; i<4; i++) {
