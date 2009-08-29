@@ -625,10 +625,126 @@ SimCarCollideXYScene(tCar *car)
 }
 
 
+// Collision response for walls.
+// TODO: Separate common code with car-car collision response.
+static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObjectRef obj2, const DtCollData *collData)
+{
+    tCar* car;      // The car colliding with the wall.
+    float nsign;    // Normal direction correction for collision plane.
+    sgVec2 p;       // Cars collision point delivered by solid.
+
+    // TODO: If other movable objects are added which could collide with the wall, it will be
+    // necessary to validate if the object is actually a car.
+
+    if (obj1 == clientdata) {
+        car = (tCar*) obj2;
+        nsign = -1.0f;
+        p[0] = (float) collData->point2[0];
+        p[1] = (float) collData->point2[1];
+    } else {
+        car = (tCar*) obj1;
+        nsign = 1.0f;
+        p[0] = (float) collData->point1[0];
+        p[1] = (float) collData->point1[1];
+    }
+
+    sgVec2 n;       // Collision normal delivered by solid, corrected such that it points away from the wall.
+    n[0] = nsign * (float) collData->normal[0];
+    n[1] = nsign * (float) collData->normal[1];
+    float pdist = sgLengthVec2(n);  // Distance of collision points.
+    sgNormaliseVec2(n);
+
+    sgVec2 r;
+    sgSubVec2(r, p, (const float*)&(car->statGC));
+
+    tCarElt *carElt = car->carElt;
+
+    sgVec2 vp;      // Speed of car collision point in global frame of reference.
+    sgVec2 rg;      // raduis oriented in global coordinates, still relative to CG (rotated aroung CG).
+
+    float sina = sin(carElt->_yaw);
+    float cosa = cos(carElt->_yaw);
+    rg[0] = r[0]*cosa - r[1]*sina;
+    rg[1] = r[0]*sina + r[1]*cosa;
+
+    vp[0] = car->DynGCg.vel.x - car->DynGCg.vel.az * rg[1];
+    vp[1] = car->DynGCg.vel.y + car->DynGCg.vel.az * rg[0];
+
+    sgVec2 tmpv;
+    static const float CAR_MIN_MOVEMENT = 0.02f;
+    static const float CAR_MAX_MOVEMENT = 0.05f;
+    sgScaleVec2(tmpv, n, MIN(MAX(pdist, CAR_MIN_MOVEMENT), CAR_MAX_MOVEMENT));
+    if (car->blocked == 0) {
+        sgAddVec2((float*)&(car->DynGCg.pos), tmpv);
+        car->blocked = 1;
+    }
+
+    // Doing no dammage and correction if the cars are moving out of each other.
+    if (sgScalarProductVec2(vp, n) > 0) {
+        return;
+    }
+
+    float rp = sgScalarProductVec2(rg, n);
+
+    // Pesudo cross product to find out if we are left or right.
+    // TODO: SIGN, scrap value?
+    float rpsign = n[0]*rg[1] - n[1]*rg[0];
+
+    const float e = 1.0f;   // energy restitution
+    float j = -(1.0f + e) * sgScalarProductVec2(vp, n) / (car->Minv + rp * rp * car->Iinv.z);
+    const float ROT_K = 0.5f;
+
+    // Damage.
+    tdble damFactor, atmp;
+    atmp = atan2(r[1], r[0]);
+    if (fabs(atmp) < (PI / 3.0)) {
+        // Front collision gives more damage.
+        damFactor = 1.5f;
+    } else {
+        // Rear collision gives less damage.
+        damFactor = 1.0f;
+    }
+
+    static const float DMGFACTOR = 0.00002f;
+    if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
+        car->dammage += (int)(CAR_DAMMAGE * (DMGFACTOR*j*j) * damFactor * simDammageFactor[car->carElt->_skillLevel]);
+    }
+
+    sgScaleVec2(tmpv, n, j * car->Minv);
+    sgVec2 v2a;
+
+    if (car->collision & SEM_COLLISION_CAR) {
+        sgAddVec2(v2a, (const float*)&(car->VelColl.x), tmpv);
+        car->VelColl.az = car->VelColl.az + j * rp * rpsign * car->Iinv.z * ROT_K;
+    } else {
+        sgAddVec2(v2a, (const float*)&(car->DynGCg.vel), tmpv);
+        car->VelColl.az = car->DynGCg.vel.az + j * rp * rpsign * car->Iinv.z * ROT_K;
+    }
+
+    static float VELMAX = 3.0f;
+    if (fabs(car->VelColl.az) > VELMAX) {
+        car->VelColl.az = SIGN(car->VelColl.az) * VELMAX;
+    }
+
+    sgCopyVec2((float*)&(car->VelColl.x), v2a);
+
+    // Move the car for the collision lib.
+    sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x, car->DynGCg.pos.y,
+                    car->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
+                    RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
+    dtSelectObject(car);
+    dtLoadIdentity();
+    dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0.0f);
+    dtMultMatrixf((const float *)(carElt->_posMat));
+
+    car->collision |= SEM_COLLISION_CAR;
+}
+
+
 
 static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRef obj2, const DtCollData *collData)
 {
-    sgVec2 n;               // Collision normal delivered by solid: Global(point1) - Global(point2)
+    sgVec2 n;       // Collision normal delivered by solid: Global(point1) - Global(point2)
     tCar *car[2];   // The cars.
     sgVec2 p[2];    // Collision points delivered by solid, in body local coordinates.
     sgVec2 r[2];    // Collision point relative to center of gravity.
@@ -640,8 +756,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
     car[0] = (tCar*)obj1;
     car[1] = (tCar*)obj2;
 
-    if ((car[0]->carElt->_state & RM_CAR_STATE_NO_SIMU) ||
-        (car[1]->carElt->_state & RM_CAR_STATE_NO_SIMU))
+    // Handle cars collisions during pit stops as well.
+    static const int NO_SIMU_WITHOUT_PIT = RM_CAR_STATE_NO_SIMU & ~RM_CAR_STATE_PIT;
+
+    if ((car[0]->carElt->_state & NO_SIMU_WITHOUT_PIT) ||
+        (car[1]->carElt->_state & NO_SIMU_WITHOUT_PIT))
         {
             return;
         }
@@ -707,17 +826,14 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
     float distpab = sgLengthVec2(pab);
 
     sgVec2 tmpv;
-    /*
-      static const float CAR_MIN_MOVEMENT = 0.02f;
-      static const float CAR_MAX_MOVEMENT = 0.05f;
-      sgScaleVec2(tmpv, n, MIN(MAX(distpab, CAR_MIN_MOVEMENT), CAR_MAX_MOVEMENT));
-    */
+    
     sgScaleVec2(tmpv, n, MIN(distpab, 0.05));
-    if (car[0]->blocked == 0) {
+    // No "for" loop here because of subtle difference AddVec/SubVec. 
+    if (car[0]->blocked == 0 && !(car[0]->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
         sgAddVec2((float*)&(car[0]->DynGCg.pos), tmpv);
         car[0]->blocked = 1;
     }
-    if (car[1]->blocked == 0) {
+    if (car[1]->blocked == 0 && !(car[1]->carElt->_state & RM_CAR_STATE_NO_SIMU)) {
         sgSubVec2((float*)&(car[1]->DynGCg.pos), tmpv);
         car[1]->blocked = 1;
     }
@@ -744,10 +860,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
         ((car[0]->Minv + car[1]->Minv) +
          rpn[0] * rpn[0] * car[0]->Iinv.z + rpn[1] * rpn[1] * car[1]->Iinv.z);
 
-    // TODO: check that, eventually remove assert... should not go to production, IMHO.
-    //assert (!isnan(j));
-
     for (i = 0; i < 2; i++) {
+        if (car[i]->carElt->_state & RM_CAR_STATE_NO_SIMU) {
+            continue;
+        }
+
         // Damage.
         tdble damFactor, atmp;
         atmp = atan2(r[i][1], r[i][0]);
@@ -778,7 +895,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
             car[i]->VelColl.az = car[i]->DynGCg.vel.az + js * rpsign[i] * rpn[i] * car[i]->Iinv.z * ROT_K;
         }
 
-        static float VELMAX = 3.0f;
+        static float VELMAX = 1.0f;
         if (fabs(car[i]->VelColl.az) > VELMAX) {
             car[i]->VelColl.az = SIGN(car[i]->VelColl.az) * VELMAX;
         }
@@ -794,10 +911,12 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
         dtLoadIdentity();
         dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0.0f);
         dtMultMatrixf((const float *)(carElt->_posMat));
-
+        sgMatrixToQuat (car[i]->posQuat, carElt->_posMat);
         car[i]->collision |= SEM_COLLISION_CAR;
     }
 }
+
+
 
 
 void
@@ -835,46 +954,7 @@ SimCarCollideInit(void)
 }
 
 
-#if 0
-void
-SimCarCollideCars(tSituation *s)
-{
-    tCar        *car;
-    tCarElt     *carElt;
-    int         i;
-    
-    for (i = 0; i < s->_ncars; i++) {
-        carElt = s->cars[i];
-        car = &(SimCarTable[carElt->index]);
-        dtSelectObject(car);
-        dtLoadIdentity();
-        dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0);
-        dtMultMatrixf((const float *)(carElt->_posMat));
-        memset(&(car->VelColl), 0, sizeof(tPosd));
-    }
 
-    if (dtTest() == 0) {
-        dtProceed();
-    }
-
-    for (i = 0; i < s->_ncars; i++) {
-        carElt = s->cars[i];
-        if (carElt->_state & RM_CAR_STATE_NO_SIMU) {
-            continue;
-        }
-        car = &(SimCarTable[carElt->index]);
-        if (car->collision & 4) {
-            car->DynGCg.vel.x = car->VelColl.x;
-            car->DynGCg.vel.y = car->VelColl.y;
-            //tdble delta = car->VelColl.az - car->DynGCg.vel.az;
-            //car->DynGCg.vel.az = car->VelColl.az;
-            car->rot_mom[SG_Z] = -car->VelColl.az/car->Iinv.z;
-            car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
-            //car->rot_mom[SG_Z] -= delta/car->Iinv.z;
-        }
-    }
-}
-#else
 void
 SimCarCollideCars(tSituation *s)
 {
@@ -913,13 +993,12 @@ SimCarCollideCars(tSituation *s)
         if (car->collision & SEM_COLLISION_CAR) {
             car->DynGCg.vel.x = car->VelColl.x;
             car->DynGCg.vel.y = car->VelColl.y;
-            car->rot_mom[SG_Z] = -car->VelColl.az/car->Iinv.z;
+            car->rot_mom[SG_Z] = car->VelColl.az/car->Iinv.z;
             car->DynGC.vel.az = car->DynGCg.vel.az = -2.0f*car->rot_mom[SG_Z] * car->Iinv.z;
         }
     }
 }
 
-#endif
 extern tdble ConstantFriction (tdble u, tdble du)
 {
     tdble u2 = u + du;

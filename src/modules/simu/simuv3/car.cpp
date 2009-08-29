@@ -322,7 +322,7 @@ SimCarUpdateSpeed(tCar *car)
 {
     t3Dd original;
     t3Dd updated;
-    t3Dd angles;
+    //t3Dd angles;
     tdble	mass;
     mass = car->mass + car->fuel;
 

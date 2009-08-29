@@ -462,6 +462,11 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->pub.posMat[1][3] =  SG_ZERO ;
 		carElt->pub.posMat[2][3] =  SG_ZERO ;
 		carElt->pub.posMat[3][3] =  SG_ONE ;
+
+        carElt->_yaw = car->DynGC.pos.az;
+        carElt->_roll = car->DynGC.pos.ax;
+        carElt->_pitch = car->DynGC.pos.ay;
+
 #endif
 		carElt->_trkPos = car->trkPos;
 		for (i = 0; i < 4; i++) {
