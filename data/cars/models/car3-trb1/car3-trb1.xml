@@ -141,10 +141,10 @@
 	</section>
 	
 	<section name="Aerodynamics">
-		<attnum name="Cx" val="0.34"/>
+		<attnum name="Cx" val="0.33"/>
 		<attnum name="front area" unit="m2" val="1.82"/>
-		<attnum name="front Clift" min="0.0" max="1.0" val="0.74"/>
-		<attnum name="rear Clift" min="0.0" max="1.0" val="0.64"/>
+		<attnum name="front Clift" min="0.0" max="1.0" val="0.71"/>
+		<attnum name="rear Clift" min="0.0" max="1.0" val="0.695"/>
 	</section>
 	
 	<section name="Front Wing">
@@ -344,7 +344,7 @@
 	</section>
 	
 	<section name="Brake System">
-		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.5"/>
+		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.52"/>
 		<attnum name="max pressure" unit="kPa" min="100" max="150000" val="28000"/>
 	</section>
 	
