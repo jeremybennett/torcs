@@ -1005,12 +1005,11 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 
 
 
-    void onSelect(tCarElt *car, tSituation *s)
-    {
-        printf ("%f select\n", s->currentTime);
-	timer = 0;
-	current = -1;
-    }
+	void onSelect(tCarElt *car, tSituation *s)
+	{
+		timer = 0;
+		current = -1;
+	}
 
 };
 
