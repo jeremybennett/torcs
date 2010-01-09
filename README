@@ -109,6 +109,7 @@ Changes since 1.3.1
 - Ground effect drop off more dramatic when airflow comes sideways, no ground
   effect anymore when driving reverse (Bernhard).
 - Increased Cd (drag coefficient) for car1-trb1 (Bernhard).
+- Improved efficiency of pit wall collision detection (Bernhard).
 
 
 TODO for 1.3.2
