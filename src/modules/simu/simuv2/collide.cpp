@@ -40,7 +40,7 @@ void SimCarCollideZ(tCar *car)
 			car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
 			RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
 			dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
-			if (dotProd < 0) {
+			if (dotProd < 0.0f) {
 				if (dotProd < CRASH_THRESHOLD) {
 					car->collision |= SEM_COLLISION_Z_CRASH;
 				}
@@ -56,7 +56,7 @@ void SimCarCollideZ(tCar *car)
 	}
 }
 
-const tdble BorderFriction = 0.00;
+const tdble BorderFriction = 0.0f;
 
 // Collision of car/track borders.
 // Be aware that it does not work for convex edges (e.g. e-track-2, end of the straight, left),
@@ -123,7 +123,7 @@ void SimCarCollideXYScene(tCar *car)
 		car->DynGCg.vel.y -= ny * dotProd;
 		dotprod2 = (nx * cx + ny * cy);
 
-		// Angular velocity change caused by friction of collisding car part with wall.
+		// Angular velocity change caused by friction of colliding car part with wall.
 		static tdble VELSCALE = 10.0f;
 		static tdble VELMAX = 6.0f;
 		car->DynGCg.vel.az -= dotprod2 * dotProd / VELSCALE;
@@ -131,7 +131,7 @@ void SimCarCollideXYScene(tCar *car)
 			car->DynGCg.vel.az = SIGN(car->DynGCg.vel.az) * VELMAX;
 		}
 
-		// Dammage.
+		// Damage.
 		dotProd = initDotProd;
 		if (dotProd < 0.0f && (car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
 			dmg = curBarrier->surface->kDammage * fabs(0.5*dmgDotProd*dmgDotProd) * simDammageFactor[car->carElt->_skillLevel];
@@ -201,7 +201,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 	sgNormaliseVec2(n);
 
-	sgVec2 rg[2];	// raduis oriented in global coordinates, still relative to CG (rotated aroung CG).
+	sgVec2 rg[2];	// radius oriented in global coordinates, still relative to CG (rotated aroung CG).
 	tCarElt *carElt;
 
 	for (i = 0; i < 2; i++) {
@@ -262,7 +262,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 	rpn[0] = sgScalarProductVec2(rg[0], n);
 	rpn[1] = sgScalarProductVec2(rg[1], n);
 
-	// Pesudo cross product to find out if we are left or right.
+	// Pseudo cross product to find out if we are left or right.
 	// TODO: SIGN, scrap value?
 	float rpsign[2];
 	rpsign[0] =  n[0]*rg[0][1] - n[1]*rg[0][0];
@@ -669,7 +669,18 @@ SimCarCollideConfig(tCar *car, tTrack *track)
 	// TODO: car body/curbs collision.
 	// TODO: car body/flat wall collision (e.g. for pavement, sidewalk).
 	// TODO: define static objects in XML file/tTrack, collide with them as well.
+}
 
+
+void
+SimCarCollideInit(tTrack *track)
+{
+	dtSetDefaultResponse(SimCarCollideResponse, DT_SMART_RESPONSE, NULL);
+	// Hmm, why is caching disabled, are our objects too fast, so it does not work?
+	// TODO: understand this and reconsider caching.
+	dtDisableCaching();
+	dtSetTolerance(0.001);
+	
 	fixedid = 0;
 
 	if (track != NULL) {
@@ -684,19 +695,7 @@ SimCarCollideConfig(tCar *car, tTrack *track)
 			dtCreateObject(&fixedobjects[i], fixedobjects[i]);
 			dtSetObjectResponse(&fixedobjects[i], SimCarWallCollideResponse, DT_SMART_RESPONSE, &fixedobjects[i]);
 		}
-
-	}
-}
-
-
-void
-SimCarCollideInit(void)
-{
-	dtSetDefaultResponse(SimCarCollideResponse, DT_SMART_RESPONSE, NULL);
-	// Hmm, why is caching disabled, are our objects too fast, so it does not work?
-	// TODO: understand this and reconsider caching.
-	dtDisableCaching();
-	dtSetTolerance(0.001);
+	}	
 }
 
 

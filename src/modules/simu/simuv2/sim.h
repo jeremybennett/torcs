@@ -92,7 +92,7 @@ extern void SimCarCollideXYScene(tCar *car);
 extern void SimCarCollideCars(tSituation*);
 extern void SimCarCollideConfig(tCar *car, tTrack *track);
 extern void SimCarCollideShutdown(int nbcars);
-extern void SimCarCollideInit(void);
+extern void SimCarCollideInit(tTrack *track);
 extern void SimCollideRemoveCar(tCar *car, int nbcars);
 
 extern tdble SimDeltaTime;

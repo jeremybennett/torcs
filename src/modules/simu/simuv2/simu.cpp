@@ -433,7 +433,7 @@ SimInit(int nbcars, tTrack* track)
 {
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
-    SimCarCollideInit();
+    SimCarCollideInit(track);
 }
 
 void
