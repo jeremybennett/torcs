@@ -110,6 +110,16 @@ Changes since 1.3.1
   effect anymore when driving reverse (Bernhard).
 - Increased Cd (drag coefficient) for car1-trb1 (Bernhard).
 - Improved efficiency of pit wall collision detection (Bernhard).
+- Applied Erics explicit wheel model code with some modifications: in the cars
+  "Graphic Objects" section you can define "3d wheel directory" (e.g. "mywheel-1")
+  and "3d wheel basename" (e.g. "mywheel"), then TORCS tries to load
+  "wheels/mywheel-1/mywheel?.acc", where ? is 0..3 for different rotation rates.
+  Later we could also move the wheel only specific similation properties into
+  and xml belonging to the wheel.
+  (Eric, Bernhard).
+- Do not try to load wheels when configuration is missing (Bernhard).
+- Added Erics wheels for sc-f1 with modified texture/configuration (Eric, Bernhard).
+
 
 
 TODO for 1.3.2
