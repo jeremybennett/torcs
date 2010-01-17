@@ -1,10 +1,10 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 22:55:40 CET 2000
-#    copyright            : (C) 2000 by Eric Espie                         
-#    email                : torcs@free.fr   
-#    version              : $Id$                                  
+#    created              : Sun Mar 25 01:32:41 CET 2001
+#    copyright            : (C) 2001 by Eric Espié
+#    email                : Eric.Espie@torcs.org 
+#    version              : $Id$
 #
 ##############################################################################
 #
@@ -16,11 +16,15 @@
 ##############################################################################
 
 
-DATASUBDIRS	= categories models wheels
+WHEEL     = wheel
 
-PKGSUBDIRS	= $(DATASUBDIRS)
+DATADIR   = wheels/openwheel1-1
 
+DATA      = wheel3d.png  readme.txt \
+            $(shell find *.acc -maxdepth 0 -type f -print)
+
+data_PKGFILES	= $(DATA) $(shell find *.xcf -maxdepth 0 -type f -print)
+
+data_PKGDIR	= $(DATADIR)
 
 include ${MAKE_DEFAULT}
-
-

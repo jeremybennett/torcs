@@ -1,7 +1,7 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 22:55:40 CET 2000
+#    created              : Sat Mar 18 23:00:54 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id$                                  
@@ -16,10 +16,9 @@
 ##############################################################################
 
 
-DATASUBDIRS	= categories models wheels
+DATASUBDIRS = $(shell find * -maxdepth 0 -type d -print | grep -v CVS)
 
 PKGSUBDIRS	= $(DATASUBDIRS)
-
 
 include ${MAKE_DEFAULT}
 
