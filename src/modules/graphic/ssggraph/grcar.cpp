@@ -259,22 +259,26 @@ static ssgTransform *initWheel(tCarElt *car, int wheel_index)
 	// Create wheels for 4 speeds (stillstanding - fast --> motion blur, look at the texture).
 	for (j = 0; j < 4; j++) {
 		ssgBranch *whl_branch = new ssgBranch;
-		ssgEntity *whl3d;
+		ssgEntity *whl3d = 0;
 
 		// load speed-dependant 3D wheels if available. wheel data files are located in the wheels directory.
 		// first set directory.
 		const int bufsize = 1024;
 		char buf[bufsize];
-		const char* wheel_dir = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_WHEEL_3D_DIR, "");
-		snprintf(buf, bufsize, "wheels/%s", wheel_dir);
-		ssgModelPath(buf);
-		ssgTexturePath(buf);
+		const char* wheel_dir = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_WHEEL_3D_DIR, 0);
+		if (wheel_dir != 0) {
+			snprintf(buf, bufsize, "wheels/%s", wheel_dir);
+			ssgModelPath(buf);
+			ssgTexturePath(buf);
+		}
 		
 		// set basename for wheel file 0..3 gets appended
-		const char* wheel_obj = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_WHEEL_3D, "wheel");
-		snprintf(buf, bufsize, "%s%d.acc", wheel_obj, j);
-		whl3d = grssgCarLoadAC3D(buf, NULL, car->index);
-
+		const char* wheel_obj = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_WHEEL_3D, 0);
+		if (wheel_obj != 0 && wheel_dir != 0) {
+			snprintf(buf, bufsize, "%s%d.acc", wheel_obj, j);
+			whl3d = grssgCarLoadAC3D(buf, NULL, car->index);
+		}
+		
 		// if we have a 3D wheel, use it.  otherwise use normal generated wheel...
 		if (whl3d) {
 			// Adapt size of the wheel
