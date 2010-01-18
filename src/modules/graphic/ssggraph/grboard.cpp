@@ -196,8 +196,8 @@ cGrBoard::grDispGGraph(tCarElt *car)
 
 	glVertex2f(X1, Y1 - THNSS);
 	glVertex2f(X1, Y1 + THNSS);
-	glVertex2f(X1 - car->ctrl.steer * 100.0f, Y1 + THNSS);
-	glVertex2f(X1 - car->ctrl.steer * 100.0f, Y1 - THNSS);
+	glVertex2f(X1 - car->ctrl.steer * 50.0f, Y1 + THNSS);
+	glVertex2f(X1 - car->ctrl.steer * 50.0f, Y1 - THNSS);
 
 	glVertex2f(xc - THNSS, yc);
 	glVertex2f(xc + THNSS, yc);
