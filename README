@@ -120,7 +120,9 @@ Changes since 1.3.1
 - Do not try to load wheels when configuration is missing (Bernhard).
 - Added Erics wheels for sc-f1 with modified texture/configuration (Eric, Bernhard).
 - Fixed wrong scaling of steering input display (Bernhard).
-
+- Created new car category for trb1, moved initially trb1 cars into it (Bernhard).
+- Improved moment calculations for aerodynamic forces (Bernhard).
+- Default setup adjustments for trb1 cars (Bernhard).
 
 
 TODO for 1.3.2
