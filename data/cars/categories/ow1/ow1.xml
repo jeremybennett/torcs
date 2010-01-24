@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-    file                 : F1.xml
+    file                 : ow1.xml
     created              : Sat Mar 18 22:59:09 CET 2000
     copyright            : (C) 2004 Speedy Chonchon
     version              : $Id$                                  
@@ -14,9 +14,9 @@
 
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 
-<params name="F1" type="template">
+<params name="ow1" type="template">
   <section name="Car">
-    <attstr name="category" val="F1"/>
+    <attstr name="category" val="ow1"/>
     <attnum name="body length" unit="m" min="1.5" max="25.0" val="4.683"/>
     <attnum name="body width" unit="m" min="0.5" max="4.0" val="1.4"/>
     <attnum name="body height" unit="m" min="0.5" max="10.0" val="1.173"/>

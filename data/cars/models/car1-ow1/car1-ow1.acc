@@ -4,10 +4,10 @@ OBJECT world
 kids 1
 OBJECT poly
 name "MESH001_s_220"
-texture "sc-f1.rgb" base
-texture "sc-f1.rgb" tiled
-texture "sc-f1.rgb" skids
-texture "sc-f1.rgb" shad
+texture "car1-ow1.rgb" base
+texture "car1-ow1.rgb" tiled
+texture "car1-ow1.rgb" skids
+texture "car1-ow1.rgb" shad
 numvert 1954
 -1.282850 0.188235 -0.013243 0.500582 0.839163 0.212656
 -1.445090 0.199191 -0.013243 -0.137866 0.016289 0.990317

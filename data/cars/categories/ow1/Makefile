@@ -18,7 +18,7 @@
 
 DATADIR   = categories
 
-DATA      = F1.xml
+DATA      = ow1.xml
 
 data_PKGFILES	= $(DATA)
 

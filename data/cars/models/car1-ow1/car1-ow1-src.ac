@@ -4,7 +4,7 @@ OBJECT world
 kids 1
 OBJECT poly
 name "Mesh.001"
-texture "sc-f1.rgb"
+texture "car1-ow1.rgb"
 crease 45.000000
 numvert 1113
 0.084795 0.387885 0.181919
