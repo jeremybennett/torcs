@@ -123,7 +123,8 @@ SimWingConfig(tCar *car, int index)
 	wing->angle       = GfParmGetNum(hdle, WingSect[index], PRM_WINGANGLE, (char*)NULL, 0);
 	wing->staticPos.x = GfParmGetNum(hdle, WingSect[index], PRM_XPOS, (char*)NULL, 0);
 	wing->staticPos.z = GfParmGetNum(hdle, WingSect[index], PRM_ZPOS, (char*)NULL, 0);
-
+	wing->staticPos.x -= car->statGC.x;
+	
 	wing->Kx = -1.23f * area;
 	wing->Kz = 4.0f * wing->Kx;
 

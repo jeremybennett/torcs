@@ -86,7 +86,10 @@ SimCarConfig(tCar *car)
 		SimWheelConfig(car, i); 
 	}
 	
-	
+	/* Set the origin to GC */
+	car->wheelbase = car->wheeltrack = 0;
+	car->statGC.x = car->wheel[FRNT_RGT].staticPos.x * gcfr + car->wheel[REAR_RGT].staticPos.x * (1 - gcfr);
+
 	SimEngineConfig(car);
 	SimTransmissionConfig(car);
 	SimSteerConfig(car);
@@ -95,11 +98,7 @@ SimCarConfig(tCar *car)
 	for (i = 0; i < 2; i++) {
 		SimWingConfig(car, i);
 	}
-	
-	/* Set the origin to GC */
-	car->wheelbase = car->wheeltrack = 0;
-	car->statGC.x = car->wheel[FRNT_RGT].staticPos.x * gcfr + car->wheel[REAR_RGT].staticPos.x * (1 - gcfr);
-	
+		
 	carElt->_dimension = car->dimension;
 	carElt->_statGC = car->statGC;
 	carElt->_tank = car->tank;
@@ -175,6 +174,7 @@ SimCarUpdateForces(tCar *car)
 		F.F.x += car->wheel[i].forces.x;
 		F.F.y += car->wheel[i].forces.y;
 		F.F.z += car->wheel[i].forces.z;
+		
 		/* moments */
 		F.M.x += car->wheel[i].forces.z * car->wheel[i].staticPos.y +
 			car->wheel[i].forces.y * car->wheel[i].rollCenter;
@@ -191,12 +191,12 @@ SimCarUpdateForces(tCar *car)
 	
 	/* Wings & Aero Downforce */
 	for (i = 0; i < 2; i++) {
-	/* forces */
-	F.F.z += car->wing[i].forces.z + car->aero.lift[i];
-	F.F.x += car->wing[i].forces.x;
-	/* moments */
-	F.M.y -= (car->wing[i].forces.z + car->aero.lift[i]) * car->wing[i].staticPos.x +
-		car->wing[i].forces.x * car->wing[i].staticPos.z;
+		/* forces */
+		F.F.z += car->wing[i].forces.z + car->aero.lift[i];
+		F.F.x += car->wing[i].forces.x;
+		/* moments */
+		F.M.y -= car->wing[i].forces.z * car->wing[i].staticPos.x + car->wing[i].forces.x * car->wing[i].staticPos.z;
+		F.M.y -= car->aero.lift[i] * (car->axle[i].xpos - car->statGC.x);
 	}
 	
 	/* Rolling Resistance */
