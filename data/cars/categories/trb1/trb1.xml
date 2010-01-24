@@ -49,7 +49,7 @@
   </section>
 
   <section name="Front Wing">
-    <attnum name="area" unit="m2" min="0.25" max="0.4" val="0.3"/>
+    <attnum name="area" unit="m2" min="0.23" max="0.4" val="0.3"/>
     <attnum name="angle" unit="deg" min="0" max="15" val="5"/>
     <attnum name="xpos" unit="m" min="0.0" max="2.5" val="2"/>
     <attnum name="zpos" unit="m" min="0.03" max="0.1" val="0.1"/>
