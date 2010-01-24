@@ -69,21 +69,21 @@
 	<attnum name="xpos" val="-2.18"/>
 	<attnum name="ypos" val="0.57"/>
 	<attnum name="zpos" val="0.65"/>
-	<attnum name="size" val="0.3"/>
+	<attnum name="size" val="0.15"/>
       </section>
       <section name="2">
 	<attstr name="type" val="brake2"/>
 	<attnum name="xpos" val="-2.18"/>
 	<attnum name="ypos" val="-0.57"/>
 	<attnum name="zpos" val="0.65"/>
-	<attnum name="size" val="0.3"/>
+	<attnum name="size" val="0.15"/>
       </section>
     </section>
 
   </section>
 
   <section name="Car">
-    <attstr name="category" val="Track-RWD-GrA"/>
+    <attstr name="category" val="trb3"/>
     <attnum name="body length" unit="m" min="4.5" max="5.0" val="4.48"/>
     <attnum name="body width" unit="m" min="0.8" max="2.0" val="1.922"/>
     <attnum name="body height" unit="m" min="1.1" max="1.7" val="1.1"/>
