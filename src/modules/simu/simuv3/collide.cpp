@@ -690,7 +690,7 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
     // TODO: SIGN, scrap value?
     float rpsign = n[0]*rg[1] - n[1]*rg[0];
 
-    const float e = 1.0f;   // energy restitution
+    const float e = 0.99f;   // energy restitution
     float j = -(1.0f + e) * sgScalarProductVec2(vp, n) / (car->Minv + rp * rp * car->Iinv.z);
     const float ROT_K = 0.5f;
 
@@ -895,7 +895,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
             car[i]->VelColl.az = car[i]->DynGCg.vel.az + js * rpsign[i] * rpn[i] * car[i]->Iinv.z * ROT_K;
         }
 
-        static float VELMAX = 1.0f;
+        static float VELMAX = 3.0f;
         if (fabs(car[i]->VelColl.az) > VELMAX) {
             car[i]->VelColl.az = SIGN(car[i]->VelColl.az) * VELMAX;
         }
