@@ -34,6 +34,7 @@
 #include <car.h>
 #include <graphic.h>
 #include <robottools.h>
+#include <portability.h>
 
 #include "grmain.h"
 #include "grshadow.h"
