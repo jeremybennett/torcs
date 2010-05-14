@@ -126,7 +126,7 @@ Changes since 1.3.1
 - Created new category ow1, moved sc-f* to car1-ow1 (Bernhard).
 - Adopted Windows port to changes (car categories, wheels, etc.) (Bernhard).
 - Bumped version to 1.3.2-test1 (Bernhard).
-- Created new wheel trb1-1 (Bernhard).
+- Created 6 new wheels trb1-1 to trb1-6 (Bernhard).
 
 
 
