@@ -41,6 +41,10 @@
 #define GR_ATT_TEXTURECOMPRESSION_ENABLED	"enabled"
 #define GR_ATT_TEXTURECOMPRESSION_DISABLED	"disabled"
 
+#define GR_ATT_WHEELRENDERING				"wheel rendering"
+#define GR_ATT_WHEELRENDERING_DETAILED		"detailed"
+#define GR_ATT_WHEELRENDERING_SIMPLE		"simple"
+
 #define GR_ATT_TEXTURESIZE					"user texture sizelimit"
 
 #define GR_SCT_DISPMODE		"Display Mode"

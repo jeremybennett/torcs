@@ -67,6 +67,7 @@ ssgContext grContext;
 class cGrScreen *grScreens[GR_NB_MAX_SCREEN] = {NULL, NULL, NULL, NULL};
 int grNbScreen = 1;
 tdble grLodFactorValue = 1.0;
+EWheelDetail grUseDetailedWheels = DETAILED;
 
 
 static char buf[1024];
@@ -291,6 +292,13 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
     grInitScene();
 
     grLodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
+	
+	const char* wheelDetailOption = GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_WHEELRENDERING, GR_ATT_WHEELRENDERING_DETAILED);
+	if (strcmp(wheelDetailOption,GR_ATT_WHEELRENDERING_DETAILED ) == 0) {
+		grUseDetailedWheels = DETAILED;
+	} else if (strcmp(wheelDetailOption,GR_ATT_WHEELRENDERING_SIMPLE ) == 0) {
+		grUseDetailedWheels = SIMPLE;	
+	}
 
     return 0;
 }

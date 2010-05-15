@@ -73,6 +73,9 @@ extern class cGrScreen *grScreens[];
 extern tdble grLodFactorValue;
 extern double grDeltaTime;
 
+enum EWheelDetail { DETAILED, SIMPLE };
+extern EWheelDetail grUseDetailedWheels;
+
 inline float urandom() {
 	return (((float)rand()/(1.0+(float)RAND_MAX)));
 }
