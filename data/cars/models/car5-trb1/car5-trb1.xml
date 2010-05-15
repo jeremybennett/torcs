@@ -39,7 +39,10 @@
 		<attstr name="speedometer texture" val="speed360.rgb"/>
 		<attnum name="speedometer min value" unit="km/h" val="0"/>
 		<attnum name="speedometer max value" unit="km/h" val="360"/>
-		
+
+		<attstr name="3d wheel basename" val="wheel"/>
+		<attstr name="3d wheel directory" val="trb1-3"/>
+
 		<section name="Ranges">
 			<section name="1">
 				<attnum name="threshold" val="0"/>

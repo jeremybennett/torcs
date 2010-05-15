@@ -43,14 +43,18 @@
     <attstr name="speedometer texture" val="speed360.rgb"/>
     <attnum name="speedometer min value" val="0" unit="km/h"/>
     <attnum name="speedometer max value" val="360" unit="km/h"/>
+    
+	<attstr name="3d wheel basename" val="wheel"/>
+	<attstr name="3d wheel directory" val="trb1-4"/>
+
     <section name="Ranges">
       <section name="1">
-        <attnum name="threshold" val="15"/>
+        <attnum name="threshold" val="0"/>
         <attstr name="car" val="car1-trb3.acc"/>
 		<attstr name="wheels" val="yes"/>
       </section>
 
-      <section name="2">
+      <!--section name="2">
 		<attnum name="threshold" val="10"/>
         <attstr name="car" val="car1-trb3-lod1.acc"/>
 		<attstr name="wheels" val="yes"/>
@@ -60,7 +64,7 @@
         <attnum name="threshold" val="0"/>
         <attstr name="car" val="car1-trb3-lod2.acc"/>
 		<attstr name="wheels" val="yes"/>
-	</section>
+	</section-->
     </section>
 
     <section name="Light">
