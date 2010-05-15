@@ -127,6 +127,10 @@ Changes since 1.3.1
 - Adopted Windows port to changes (car categories, wheels, etc.) (Bernhard).
 - Bumped version to 1.3.2-test1 (Bernhard).
 - Created 6 new wheels trb1-1 to trb1-6 (Bernhard).
+- Adopted new wheels to trb1/3 cars (Bernhard).
+- Added graphic option to switch off/on detailed wheels, they seem to use quite some
+  performance (Bernhard).
+- Adjusted graphics defaults to higher levels (FOV, skidmarks) (Bernhard).
 
 
 
@@ -134,7 +138,6 @@ TODO for 1.3.2
 --------------
 - Rename *ascar category/car (get rid of *acsar)
 - Menu sound
-- New wheels for trb1/3 cars
 - Some adoptions for gamepad calibration
 
 
