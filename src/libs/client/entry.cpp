@@ -24,6 +24,7 @@
 
 #include "mainmenu.h"
 #include "splash.h"
+#include <musicplayer/musicplayer.h>
 
 /*
  * Function
@@ -44,11 +45,13 @@
 void
 TorcsEntry(void)
 {
-    ssgInit();
+	ssgInit();
 
-    GfInitClient();
+	GfInitClient();
 
-    TorcsMainMenuInit();
-    
-    SplashScreen();
+	TorcsMainMenuInit();
+
+	SplashScreen();
+	
+	startMenuMusic();
 }
