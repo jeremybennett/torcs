@@ -16,7 +16,7 @@
 ##############################################################################
 
 
-DATASUBDIRS = img menu fonts textures sound objects tracks
+DATASUBDIRS = img menu fonts textures sound objects tracks music
 
 PKGSUBDIRS	= $(DATASUBDIRS)
 
