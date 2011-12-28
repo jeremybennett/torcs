@@ -32,6 +32,7 @@
 #include <tgfclient.h>
 #include "gui.h"
 #include "guifont.h"
+#include <portability.h>
 
 void
 gfuiScrListInit(void)
@@ -480,7 +481,8 @@ gfuiDrawScrollist(tGfuiObject *obj)
 	tGfuiListElement	*elt;
 	float		*fgColor;
 	float		*bgColor;
-	char		buf[256];
+	const int BUFSIZE = 256;
+	char		buf[BUFSIZE];
 	int			w, h, x, y;
 	int			index;
 
@@ -516,9 +518,9 @@ gfuiDrawScrollist(tGfuiObject *obj)
 	elt = scrollist->elts;
 	if (elt != NULL) {
 		if (scrollist->nbElts < 100) {
-			sprintf(buf, " 00 ");
+			snprintf(buf, BUFSIZE, " 00 ");
 		} else {
-			sprintf(buf, " 000 ");
+			snprintf(buf, BUFSIZE, " 000 ");
 		}
 		w = scrollist->font->getWidth((const char *)buf);
 
@@ -538,7 +540,7 @@ gfuiDrawScrollist(tGfuiObject *obj)
 				break;
 			}
 			y -= h;
-			sprintf(buf, " %d", index);
+			snprintf(buf, BUFSIZE, " %d", index);
 			gfuiPrintString(x, y, scrollist->font, buf);
 			gfuiPrintString(x + w, y, scrollist->font, elt->label);
 		} while (elt != scrollist->elts);

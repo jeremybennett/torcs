@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <tgfclient.h>
 #include <graphic.h>
+#include <portability.h>
 
 #include "graphconfig.h"
 
@@ -65,7 +66,7 @@ static void ExitGraphicOptions(void *prevMenu)
 
 static void SaveGraphicOptions(void *prevMenu)
 {
-	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
@@ -88,7 +89,7 @@ static void ChangeFov(void * /* dummy */)
 
 	val = GfuiEditboxGetString(scrHandle, FovEditId);
 	FovFactorValue = strtol(val, (char **)NULL, 0);
-	sprintf(buf, "%d", FovFactorValue);
+	snprintf(buf, 1024, "%d", FovFactorValue);
 	GfuiEditboxSetString(scrHandle, FovEditId, buf);
 }
 
@@ -101,7 +102,7 @@ static void ChangeLodFactor(void * /* dummy */)
 
 	val = GfuiEditboxGetString(scrHandle, LodFactorEditId);
 	sscanf(val, "%g", &LodFactorValue);
-	sprintf(buf, "%g", LodFactorValue);
+	snprintf(buf, 1024, "%g", LodFactorValue);
 	GfuiEditboxSetString(scrHandle, LodFactorEditId, buf);
 }
 
@@ -114,7 +115,7 @@ static void ChangeSmoke(void * /* dummy */)
 
 	val = GfuiEditboxGetString(scrHandle, SmokeEditId);
 	SmokeValue = strtol(val, (char **)NULL, 0);
-	sprintf(buf, "%d", SmokeValue);
+	snprintf(buf, 1024, "%d", SmokeValue);
 	GfuiEditboxSetString(scrHandle, SmokeEditId, buf);
 }
 
@@ -127,7 +128,7 @@ static void ChangeSkid(void * /* dummy */)
 
 	val = GfuiEditboxGetString(scrHandle, SkidEditId);
 	SkidValue = strtol(val, (char **)NULL, 0);
-	sprintf(buf, "%d", SkidValue);
+	snprintf(buf, 1024, "%d", SkidValue);
 	GfuiEditboxSetString(scrHandle, SkidEditId, buf);
 }
 
@@ -171,33 +172,33 @@ void *GraphMenuInit(void *prevMenu)
 	
 	GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 	
-	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);	
 	
 	GfuiLabelCreate(scrHandle, "Visibility (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	FovFactorValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", 100.0);
-	sprintf(buf, "%d", FovFactorValue);
+	snprintf(buf, 1024, "%d", FovFactorValue);
 	FovEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeFov);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "Smoke:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SmokeValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, 300.0);
-	sprintf(buf, "%d", SmokeValue);
+	snprintf(buf, 1024, "%d", SmokeValue);
 	SmokeEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSmoke);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "Skid Marks:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SkidValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, 20.0);
-	sprintf(buf, "%d", SkidValue);
+	snprintf(buf, 1024, "%d", SkidValue);
 	SkidEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSkid);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "LOD factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	LodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
-	sprintf(buf, "%g", LodFactorValue);
+	snprintf(buf, 1024, "%g", LodFactorValue);
 	LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeLodFactor);
 	

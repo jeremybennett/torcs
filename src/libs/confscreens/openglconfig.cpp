@@ -28,6 +28,7 @@
 #include <raceinit.h>
 #include <graphic.h>
 #include <glfeatures.h>
+#include <portability.h>
 #include "openglconfig.h"
 
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
@@ -61,7 +62,7 @@ static void readOpenGLCfg(void)
 	int	i;
 	char buf[1024];
 
-	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	// Read texture compression parameters.
@@ -111,7 +112,7 @@ static void readOpenGLCfg(void)
 			}
 		}
 	}
-	sprintf(valuebuf, "%d", textureSizeOptionList[curOptionTextSize]);
+	snprintf(valuebuf, 10, "%d", textureSizeOptionList[curOptionTextSize]);
 	GfuiLabelSetText(scrHandle, TextureSizeOptionId, valuebuf);
 
 	GfParmReleaseHandle(paramHandle);
@@ -122,7 +123,7 @@ static void readOpenGLCfg(void)
 static void saveOpenGLOption(void *)
 {
 	char buf[1024];
-	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	// Texture compression.
@@ -170,7 +171,7 @@ static void changeTextureSizeState(void *vp)
 		curOptionTextSize= 0;
 	}
 
-	sprintf(valuebuf, "%d", textureSizeOptionList[curOptionTextSize]);
+	snprintf(valuebuf, 10, "%d", textureSizeOptionList[curOptionTextSize]);
 	GfuiLabelSetText(scrHandle, TextureSizeOptionId, valuebuf);
 }
 

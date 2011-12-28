@@ -82,7 +82,7 @@ gfTraceInit(void)
 /*     } */
 /*     t = time(NULL); */
 /*     stm = localtime(&t); */
-/*     s += sprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ", */
+/*     s += snprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ", */
 /* 		 stm->tm_year+1900, stm->tm_mon+1, stm->tm_mday, */
 /* 		 stm->tm_hour, stm->tm_min, stm->tm_sec); */
 

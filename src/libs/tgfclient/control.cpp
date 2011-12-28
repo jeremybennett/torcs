@@ -29,6 +29,7 @@
 #include <js.h>
 
 #include <tgfclient.h>
+#include <portability.h>
 
 
 static const char *GfJoyBtn[] = {
@@ -194,7 +195,8 @@ GfctrlGetRefByName(const char *name)
 const char *
 GfctrlGetNameByRef(int type, int index)
 {
-    static char buf[4];
+	static const int BUFSIZE = 4; 
+    static char buf[BUFSIZE];
     int i;
     
     switch (type) {
@@ -243,7 +245,7 @@ GfctrlGetNameByRef(int type, int index)
 	    }
 	}
 	if (isprint(index)) {
-	    sprintf(buf, "%c", index);
+	    snprintf(buf, BUFSIZE, "%c", index);
 	    return buf;
 	}
 	return NULL;

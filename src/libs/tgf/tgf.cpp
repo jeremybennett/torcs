@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #endif
 #include <errno.h>
+#include <portability.h>
 
 #include <tgf.h>
 #include <time.h>
@@ -181,27 +182,6 @@ tdble gfMean(tdble v, tMeanVal *pvt, int n, int w)
 }
 
 
-static char bufstr[1024];
-
-char * GfGetTimeStr(void)
-{
-	struct tm *stm;
-	time_t t;
-
-	t = time(NULL);
-	stm = localtime(&t);
-	sprintf(bufstr, "%4d%02d%02d%02d%02d%02d",
-		stm->tm_year+1900,
-		stm->tm_mon+1,
-		stm->tm_mday,
-		stm->tm_hour,
-		stm->tm_min,
-		stm->tm_sec);
-
-	return bufstr;
-}
-
-
 /** Convert a time in seconds (float) to an ascii string.
     @ingroup	screen
     @param	sec	Time to convert
@@ -211,7 +191,8 @@ char * GfGetTimeStr(void)
  */
 char * GfTime2Str(tdble sec, int sgn)
 {
-	char buf[256];
+	const int BUFSIZE = 256;
+	char buf[BUFSIZE];
 	const char* sign;
 
 	if (sec < 0.0) {
@@ -234,11 +215,11 @@ char * GfTime2Str(tdble sec, int sgn)
 	int c = (int)floor((sec) * 100.0);
 
 	if (h) {
-		(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
+		snprintf(buf, BUFSIZE, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
 	} else if (m) {
-		(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
+		snprintf(buf, BUFSIZE, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
 	} else {
-		(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
+		snprintf(buf, BUFSIZE, "      %s%2.2d:%2.2d", sign,s,c);
 	}
 	return strdup(buf);
 }

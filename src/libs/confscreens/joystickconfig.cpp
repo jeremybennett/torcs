@@ -25,6 +25,7 @@
 #include <robot.h>
 #include "driverconfig.h"
 #include <playerpref.h>
+#include <portability.h>
 #include <js.h>
 
 #include "controlconfig.h"
@@ -98,7 +99,7 @@ JoyCalAutomaton(void)
 	Cmd[CalState + OFFSET_CMD].min = ax[axis];
 	Cmd[CalState + OFFSET_CMD].max = axCenter[axis];
 	Cmd[CalState + OFFSET_CMD].pow = 1.0;
-	sprintf(buf, "%.2g", ax[axis]);
+	snprintf(buf, 1024, "%.2g", ax[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[0], buf);
 	advanceStep();
 	break;
@@ -107,7 +108,7 @@ JoyCalAutomaton(void)
 	Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
 	Cmd[CalState + OFFSET_CMD].max = ax[axis];
 	Cmd[CalState + OFFSET_CMD].pow = 1.0;
-	sprintf(buf, "%.2g", ax[axis]);
+	snprintf(buf, 1024, "%.2g", ax[axis]);
 	GfuiLabelSetText(scrHandle2, LabMaxId[0], buf);
 	advanceStep();
 	break;
@@ -118,9 +119,9 @@ JoyCalAutomaton(void)
 	Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
 	Cmd[CalState + OFFSET_CMD].max = ax[axis]*1.1;
 	Cmd[CalState + OFFSET_CMD].pow = 1.2;
-	sprintf(buf, "%.2g", axCenter[axis]);
+	snprintf(buf, 1024, "%.2g", axCenter[axis]);
 	GfuiLabelSetText(scrHandle2, LabMinId[CalState - 2], buf);
-	sprintf(buf, "%.2g", ax[axis]*1.1);
+	snprintf(buf, 1024, "%.2g", ax[axis]*1.1);
 	GfuiLabelSetText(scrHandle2, LabMaxId[CalState - 2], buf);
 	advanceStep();
 	break;

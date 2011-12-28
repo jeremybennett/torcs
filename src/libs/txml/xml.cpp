@@ -28,6 +28,7 @@
 #include <sys/stat.h>
 #include "xmlparse.h"
 #include <xml.h>
+#include <portability.h>
 
 #define BUFMAX	256
 
@@ -282,7 +283,7 @@ wrrec(txmlElement *startElt, FILE *out)
 {
     txmlElement		*curElt;
     txmlAttribute	*curAttr;
-    char		buf[BUFMAX];
+    char buf[BUFMAX];
     
     curElt = startElt;
     
@@ -290,25 +291,25 @@ wrrec(txmlElement *startElt, FILE *out)
 	wr(0, "\n", out);
 	do {
 	    curElt = curElt->next;
-	    sprintf(buf, "<%s", curElt->name);
+	    snprintf(buf, BUFMAX, "<%s", curElt->name);
 	    wr(curElt->level, buf, out);
 	    curAttr = curElt->attr;
 	    if (curAttr) {
 		do {
 		    curAttr = curAttr->next;
-		    sprintf(buf, " %s=\"%s\"", curAttr->name, curAttr->value);
+		    snprintf(buf, BUFMAX, " %s=\"%s\"", curAttr->name, curAttr->value);
 		    wr(0, buf, out);
 		} while (curAttr != curElt->attr);
 	    }
-	    sprintf(buf, ">");
+	    snprintf(buf, BUFMAX, ">");
 	    wr(0, buf, out);
 	    if (curElt->pcdata) {
-		sprintf(buf, "%s", curElt->pcdata);
+		snprintf(buf, BUFMAX, "%s", curElt->pcdata);
 		wr(0, buf, out);
 	    }
 	    /* recurse the nested elements */
 	    wrrec(curElt->sub, out);
-	    sprintf(buf, "</%s>\n", curElt->name);
+	    snprintf(buf, BUFMAX, "</%s>\n", curElt->name);
 	    wr(0, buf, out);
 	} while (curElt != startElt);
 	wr(curElt->level-1, "", out);
@@ -344,9 +345,9 @@ xmlWriteFile(const char *file, txmlElement *startElt, char *dtd)
 	return -1;
     }
 
-    sprintf(buf, "<?xml version=\"1.0\" ?>\n");
+    snprintf(buf, BUFMAX, "<?xml version=\"1.0\" ?>\n");
     wr(0, buf, out);
-    sprintf(buf, "\n<!DOCTYPE params SYSTEM \"%s\">\n\n", dtd);
+    snprintf(buf, BUFMAX, "\n<!DOCTYPE params SYSTEM \"%s\">\n\n", dtd);
     wr(0, buf, out);
 
     wrrec(startElt, out);		

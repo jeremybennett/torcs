@@ -79,7 +79,7 @@ void message(const char* msg, ...)
 {
   va_list args;
   va_start(args,msg);
-  vsprintf(msgbuf, msg, args);
+  vsnprintf(msgbuf, 10000, msg, args);
   fprintf(msgport, "# %s\n", msgbuf);
   fflush(stdout);
   va_end(args);

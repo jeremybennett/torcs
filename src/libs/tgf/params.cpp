@@ -38,6 +38,7 @@
 #include <tgf.h>
 
 #include <assert.h>
+#include <portability.h>
 
 
 #define LINE_SZ		1024
@@ -109,11 +110,11 @@ struct parmHeader
 /** Ouput control structure */
 struct parmOutput
 {
-    int			state;
-    struct section	*curSection;
-    struct param	*curParam;
-    char		*filename;	/**< Name of the output configuration file */
-    char		*indent;
+	int state;
+	struct section *curSection;
+	struct param *curParam;
+	char *filename;	/**< Name of the output configuration file */
+	int indent;
 };
 
 
@@ -179,13 +180,14 @@ static char *
 getFullName (const char *sectionName, const char *paramName)
 {
 	char *fullName;
+	unsigned long len = strlen (sectionName) + strlen (paramName) + 2;
 	
-	fullName = (char *) malloc (strlen (sectionName) + strlen (paramName) + 2);
+	fullName = (char *) malloc(strlen (sectionName) + strlen (paramName) + 2);
 	if (!fullName) {
-		GfError ("getFullName: malloc (%lu) failed", strlen (sectionName) + strlen (paramName) + 2);
+		GfError ("getFullName: malloc (%lu) failed", len);
 		return NULL;
 	}
-	sprintf (fullName, "%s/%s", sectionName, paramName);
+	snprintf(fullName, len, "%s/%s", sectionName, paramName);
 	
 	return fullName;
 }
@@ -295,9 +297,10 @@ removeParam (struct parmHeader *conf, struct section *section, struct param *par
 static struct param *
 addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
 {
-	char		*fullName;
-	struct param	*param = NULL;
-	char		*tmpVal = NULL;
+	char *fullName;
+	struct param *param = NULL;
+	char *tmpVal = NULL;
+	const unsigned long len = sizeof (struct param);
 	
 	tmpVal = strdup (value);
 	if (!tmpVal) {
@@ -305,9 +308,9 @@ addParam (struct parmHeader *conf, struct section *section, const char *paramNam
 		goto bailout;
 	}
 	
-	param = (struct param *) calloc (1, sizeof (struct param));
+	param = (struct param *) calloc (1, len);
 	if (!param) {
-		GfError ("addParam: calloc (1, %lu) failed\n", sizeof (struct param));
+		GfError ("addParam: calloc (1, %lu) failed\n", len);
 		goto bailout;
 	}
 
@@ -413,6 +416,7 @@ addSection (struct parmHeader *conf, const char *sectionName)
 {
 	struct section	*section;
 	struct section	*parent;
+	const unsigned long len = sizeof (struct section);
 
 	if (GfHashGetStr (conf->sectionHash, sectionName)) {
 		GfError ("addSection: duplicate section [%s]\n", sectionName);
@@ -425,9 +429,9 @@ addSection (struct parmHeader *conf, const char *sectionName)
 		return NULL;
 	}
 
-	section = (struct section *) calloc (1, sizeof (struct section));
+	section = (struct section *) calloc (1, len);
 	if (!section) {
-		GfError ("addSection: calloc (1, %lu) failed\n", sizeof (struct section));
+		GfError ("addSection: calloc (1, %lu) failed\n", len);
 		return NULL;
 	}
 
@@ -489,56 +493,61 @@ getSharedHeader (const char *file, int mode)
 static struct parmHeader *
 createParmHeader (const char *file)
 {
-    struct parmHeader	*conf = NULL;
+	struct parmHeader	*conf = NULL;
+	const unsigned long parmheadersize = sizeof (struct parmHeader);
+	const unsigned long sectionsize = sizeof (struct section);
 
-    conf = (struct parmHeader *) calloc (1, sizeof (struct parmHeader));
-    if (!conf) {
-	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct parmHeader));
-	return NULL;
-    }
+	conf = (struct parmHeader *) calloc (1, parmheadersize);
+	if (!conf) {
+		GfError ("gfParmReadFile: calloc (1, %lu) failed\n", parmheadersize);
+		return NULL;
+	}
 
-    conf->refcount = 1;
+	conf->refcount = 1;
 
-    conf->rootSection = (struct section *) calloc (1, sizeof (struct section));
-    if (!conf->rootSection) {
-	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct section));
-	goto bailout;
-    }
-    GF_TAILQ_INIT (&(conf->rootSection->paramList));
-    GF_TAILQ_INIT (&(conf->rootSection->subSectionList));
+	conf->rootSection = (struct section *) calloc (1, sectionsize);
+	if (!conf->rootSection) {
+		GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sectionsize);
+		goto bailout;
+	}
+	
+	GF_TAILQ_INIT (&(conf->rootSection->paramList));
+	GF_TAILQ_INIT (&(conf->rootSection->subSectionList));
 
-    conf->paramHash = GfHashCreate (GF_HASH_TYPE_STR);
-    if (!conf->paramHash) {
-	GfError ("gfParmReadFile: GfHashCreate (paramHash) failed\n");
-	goto bailout;
-    }
+	conf->paramHash = GfHashCreate (GF_HASH_TYPE_STR);
+	if (!conf->paramHash) {
+		GfError ("gfParmReadFile: GfHashCreate (paramHash) failed\n");
+		goto bailout;
+	}
 
-    conf->sectionHash = GfHashCreate (GF_HASH_TYPE_STR);
-    if (!conf->sectionHash) {
-	GfError ("gfParmReadFile: GfHashCreate (sectionHash) failed\n");
-	goto bailout;
-    }
+	conf->sectionHash = GfHashCreate (GF_HASH_TYPE_STR);
+	if (!conf->sectionHash) {
+		GfError ("gfParmReadFile: GfHashCreate (sectionHash) failed\n");
+		goto bailout;
+	}
 
-    conf->filename = strdup (file);
-    if (!conf->filename) {
-	GfError ("gfParmReadFile: strdup (%s) failed\n", file);
-	goto bailout;
-    }
+	conf->filename = strdup (file);
+	if (!conf->filename) {
+		GfError ("gfParmReadFile: strdup (%s) failed\n", file);
+		goto bailout;
+	}
 
-    return conf;
+	return conf;
 
  bailout:
-    freez (conf->rootSection);
-    if (conf->paramHash) {
-	GfHashRelease (conf->paramHash, NULL);
-    }
-    if (conf->sectionHash) {
-	GfHashRelease (conf->sectionHash, NULL);
-    }
-    freez (conf->filename);
-    freez (conf);
+	freez (conf->rootSection);
+	if (conf->paramHash) {
+		GfHashRelease (conf->paramHash, NULL);
+	}
+	
+	if (conf->sectionHash) {
+		GfHashRelease (conf->sectionHash, NULL);
+	}
+	
+	freez (conf->filename);
+	freez (conf);
 
-    return NULL;
+	return NULL;
 }
 
 static void
@@ -674,7 +683,7 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 				GfError ("xmlStartElement: malloc (%d) failed\n", len);
 				goto bailout;
 			}
-		    sprintf (fullName, "%s/%s", parmHandle->curSection->fullName, shortName);
+		    snprintf (fullName, len, "%s/%s", parmHandle->curSection->fullName, shortName);
 		} else {
 			fullName = strdup (shortName);
 		}
@@ -946,51 +955,52 @@ parserXmlInit (struct parmHandle *parmHandle)
 void *
 GfParmReadBuf (char *buffer)
 {
-    struct parmHeader	*conf;
-    struct parmHandle	*parmHandle = NULL;
+	struct parmHeader *conf;
+	struct parmHandle *parmHandle = NULL;
+	const unsigned long parmhandlesize = sizeof (struct parmHandle);
 
-    /* Conf Header creation */
-    conf = createParmHeader ("");
-    if (!conf) {
-	GfError ("gfParmReadBuf: conf header creation failed\n");
-	goto bailout;
-    }
+	/* Conf Header creation */
+	conf = createParmHeader ("");
+	if (!conf) {
+		GfError ("gfParmReadBuf: conf header creation failed\n");
+		goto bailout;
+	}
 
-    /* Handle creation */
-    parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
-    if (!parmHandle) {
-	GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
-	goto bailout;
-    }
+	/* Handle creation */
+	parmHandle = (struct parmHandle *) calloc (1, parmhandlesize);
+	if (!parmHandle) {
+		GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", parmhandlesize);
+		goto bailout;
+	}
 
-    parmHandle->magic = PARM_MAGIC;
-    parmHandle->conf = conf;
-    parmHandle->val = NULL;
-    parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
+	parmHandle->magic = PARM_MAGIC;
+	parmHandle->conf = conf;
+	parmHandle->val = NULL;
+	parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
 
-    /* Parsers Initialization */
-    if (parserXmlInit (parmHandle)) {
-	GfError ("gfParmReadBuf: parserInit failed\n");
-	goto bailout;
-    }
+	/* Parsers Initialization */
+	if (parserXmlInit (parmHandle)) {
+		GfError ("gfParmReadBuf: parserInit failed\n");
+		goto bailout;
+	}
 
-    /* Parameters reading in buffer */
-    if (parseXml (parmHandle, buffer, strlen (buffer), 1)) {
-	GfError ("gfParmReadBuf: Parse failed for buffer\n");
-	goto bailout;
-    }
+	/* Parameters reading in buffer */
+	if (parseXml (parmHandle, buffer, strlen (buffer), 1)) {
+		GfError ("gfParmReadBuf: Parse failed for buffer\n");
+		goto bailout;
+	}
 
-    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
+	GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
 
-    return parmHandle;
+	return parmHandle;
 
  bailout:
-    freez (parmHandle);
-    if (conf) {
-	parmReleaseHeader (conf);
-    }
+	freez (parmHandle);
+	if (conf) {
+		parmReleaseHeader (conf);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /** Read a configuration file.
@@ -1009,79 +1019,80 @@ GfParmReadBuf (char *buffer)
 void *
 GfParmReadFile (const char *file, int mode)
 {
-    FILE		*in = NULL;
-    struct parmHeader	*conf;
-    struct parmHandle	*parmHandle = NULL;
-    char		buf[LINE_SZ];
-    int			len;
-    int			done;
+	FILE *in = NULL;
+	struct parmHeader *conf;
+	struct parmHandle *parmHandle = NULL;
+	char buf[LINE_SZ];
+	int len;
+	int done;
+	const unsigned long parmHandleSize = sizeof (struct parmHandle);
 
-    /* search for an already openned header & clean the conf if necessary */
-    conf = getSharedHeader (file, mode);
+	/* search for an already openned header & clean the conf if necessary */
+	conf = getSharedHeader (file, mode);
 
-    /* Conf Header creation */
-    if (conf == NULL) {
-	conf = createParmHeader (file);
-	if (!conf) {
-	    GfError ("gfParmReadFile: conf header creation failed\n");
-	    goto bailout;
-	}
-	mode |= GFPARM_RMODE_REREAD;
-    }
-
-    /* Handle creation */
-    parmHandle = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
-    if (!parmHandle) {
-	GfError ("gfParmReadFile: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
-	goto bailout;
-    }
-
-    parmHandle->magic = PARM_MAGIC;
-    parmHandle->conf = conf;
-    parmHandle->val = NULL;
-    if (mode & GFPARM_RMODE_PRIVATE) {
-	parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
-    }
-
-    /* File openning */
-    if (mode & GFPARM_RMODE_REREAD) {
-	in = fopen (file, "r");
-	if (!in && ((mode & GFPARM_RMODE_CREAT) == 0)) {
-	    GfOut ("gfParmReadFile: fopen \"%s\" failed\n", file);
-	    goto bailout;
+	/* Conf Header creation */
+	if (conf == NULL) {
+		conf = createParmHeader (file);
+		if (!conf) {
+			GfError ("gfParmReadFile: conf header creation failed\n");
+			goto bailout;
+		}
+		mode |= GFPARM_RMODE_REREAD;
 	}
 
-	if (in) {
-	    /* Parsers Initialization */
-	    if (parserXmlInit (parmHandle)) {
-		GfError ("gfParmReadBuf: parserInit failed for file \"%s\"\n", file);
+	/* Handle creation */
+	parmHandle = (struct parmHandle *) calloc (1, parmHandleSize);
+	if (!parmHandle) {
+		GfError ("gfParmReadFile: calloc (1, %lu) failed\n", parmHandleSize);
 		goto bailout;
-	    }
-	    /* Parameters reading */
-	    do {
-		len = fread (buf, 1, sizeof(buf), in);
-		done = len < (int)sizeof(buf);
-		if (parseXml (parmHandle, buf, len, done)) {
-		    GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
-		    goto bailout;
-		}
-		if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
-		    /* parse error occured, ignore */
-		    GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
-		    goto bailout;
-		}
-	    } while (!done);
-
-	    fclose (in);
-	    in = NULL;
 	}
-    }
 
-    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
+	parmHandle->magic = PARM_MAGIC;
+	parmHandle->conf = conf;
+	parmHandle->val = NULL;
+	if (mode & GFPARM_RMODE_PRIVATE) {
+		parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
+	}
 
-    GfOut ("GfParmReadFile: Openning \"%s\" (%p)\n", file, parmHandle);
+	/* File openning */
+	if (mode & GFPARM_RMODE_REREAD) {
+		in = fopen (file, "r");
+		if (!in && ((mode & GFPARM_RMODE_CREAT) == 0)) {
+			GfOut ("gfParmReadFile: fopen \"%s\" failed\n", file);
+			goto bailout;
+		}
 
-    return parmHandle;
+		if (in) {
+			/* Parsers Initialization */
+			if (parserXmlInit (parmHandle)) {
+				GfError ("gfParmReadBuf: parserInit failed for file \"%s\"\n", file);
+				goto bailout;
+			}
+			/* Parameters reading */
+			do {
+				len = fread (buf, 1, sizeof(buf), in);
+				done = len < (int)sizeof(buf);
+				if (parseXml (parmHandle, buf, len, done)) {
+					GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
+					goto bailout;
+				}
+				if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
+					/* parse error occured, ignore */
+					GfError ("gfParmReadFile: Parse failed in file \"%s\"\n", file);
+					goto bailout;
+				}
+			} while (!done);
+
+			fclose (in);
+			in = NULL;
+		}
+	}
+
+	GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
+
+	GfOut ("GfParmReadFile: Openning \"%s\" (%p)\n", file, parmHandle);
+
+	return parmHandle;
 
  bailout:
     if (in) {
@@ -1096,30 +1107,97 @@ GfParmReadFile (const char *file, int mode)
 }
 
 
-
-static char* handleEntities(char *s, const char* val)
+static char* handleEntities(char *buf, const int BUFSIZE, const char* val)
 {
 	int i = 0;
 	int len = strlen(val);
+	const char *replacement;
+	char *pos = buf;
+	int rlen;
+	
 	for (i = 0; i < len; i++) {
 		switch (val[i]) {
 			case '<':
-				s += sprintf(s, "&lt;"); break;
+				replacement = "&lt;"; break;
 			case '>':
-				s += sprintf(s, "&gt;"); break;
+				replacement = "&gt;"; break;
 			case '&':
-				s += sprintf(s, "&amp;"); break;
+				replacement = "&amp;"; break;
 			case '\'':
-				s += sprintf(s, "&apos;"); break;
+				replacement = "&apos;"; break;
 			case '"':
-				s += sprintf(s, "&quot;"); break;	
+				replacement = "&quot;"; break;	
 			default:
-				*(s++) = val[i]; 
-				break;
+				replacement = 0;		
+		}
+		
+		if (replacement == 0) {
+			replacement = &val[i];
+			rlen = 1;
+		} else {
+			rlen = strlen(replacement);
+		}
+		
+		if (pos-buf < BUFSIZE - rlen) {
+			memcpy(pos, replacement, rlen*sizeof(char));
+			pos += rlen;
+		} else {
+			GfError("handleEntities: buffer too small to convert %s", val);
+			break;
 		}
 	}
 
-	return s;	
+	*pos = '\0';
+
+	return buf;
+}
+
+
+static void createIndent(char *buf, const int BUFSIZE, const int blanks)
+{
+	int pos = 0;
+	while ((pos < BUFSIZE - 1) && (pos < blanks)) {
+		*buf++ = ' ';
+		pos++;
+	}
+	*buf = '\0';
+}
+
+
+static void createIn(char *buf, const int BUFSIZE, withinHead* head)
+{
+	const char* s = " in=\"";
+	struct within* curWithin = GF_TAILQ_FIRST(head);
+	int pos = 0;
+	bool separator = false;
+	*buf = '\0'; // Terminate for empty content
+	
+	while (curWithin != 0) {
+		int len = strlen(s);
+		if (pos < BUFSIZE - len - 1) {
+			memcpy(buf, s, len*sizeof(char));
+			buf += len;
+			pos += len;
+		} else {
+			break;
+		}
+		
+		if (separator) {
+			curWithin = GF_TAILQ_NEXT(curWithin, linkWithin);
+			if (curWithin != 0) {
+				s = ",";
+				separator = false;
+			}
+		} else {
+			s = curWithin->val;
+			separator = true;
+		}
+	}
+	
+	// Just terminate if we have written something
+	if (pos > 0) {
+		memcpy(buf, "\"", 2*sizeof(char));
+	}
 }
 
 
@@ -1127,161 +1205,164 @@ static char* handleEntities(char *s, const char* val)
  *	@image html output-state.png
  */
 static int
-xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int /* size */)
+xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 {
-    struct parmOutput	*outCtrl = &(parmHandle->outCtrl);
-    struct parmHeader	*conf = parmHandle->conf;
-    struct section	*curSection;
-    struct param	*curParam;
-    struct within	*curWithin;
-    char		*s, *t;
+	struct parmOutput *outCtrl = &(parmHandle->outCtrl);
+	struct parmHeader *conf = parmHandle->conf;
+	struct section *curSection;
+	struct param *curParam;
+	char *s;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	const int INDENTSIZE = 1024;
+	char indent[INDENTSIZE];
+	const int INSIZE = 1024;
+	char in[INSIZE];
+	const int NUMVALUE = 1024;
+	char numvalue[NUMVALUE];
 
-    while (1) {
-	switch (outCtrl->state) {
-	case 0:
-	    sprintf (buffer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-	    outCtrl->indent = (char *) malloc (LINE_SZ);
-	    if (!outCtrl->indent) {
-		GfError ("xmlGetOuputLine: malloc (%d) failed\n", LINE_SZ);
-		return 0;
-	    }
-	    outCtrl->state = 1;
-	    return 1;
-
-	case 1:
-	    if (conf->dtd == NULL) {
-		conf->dtd = strdup("params.dtd");
-	    }
-	    if (conf->header == NULL) {
-		conf->header = strdup("");
-	    }
-	    sprintf (buffer, "<!DOCTYPE params SYSTEM \"%s\">\n%s\n", conf->dtd, conf->header);
-	    *outCtrl->indent = 0;
-	    outCtrl->state = 2;
-	    return 1;
-
-	case 2:			/* Start Params */
-	    outCtrl->curSection = parmHandle->conf->rootSection;
-	    sprintf (buffer, "\n<params name=\"%s\">\n", parmHandle->conf->name);
-	    curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
-	    if (curSection) {
-		outCtrl->curSection = curSection;
-		sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
-		outCtrl->state = 4;
-	    } else {     
-		outCtrl->state = 3;
-	    }
-	    return 1;
-
-	case 3:			/* End Params */
-	    sprintf (buffer, "</params>\n");
-	    free (outCtrl->indent);
-	    outCtrl->state = 9;
-	    return 1;
-
-	case 4:			/* Parse section attributes list */
-		outCtrl->curParam = GF_TAILQ_FIRST (&(outCtrl->curSection->paramList));
-		s = strrchr (outCtrl->curSection->fullName, '/');
-		if (!s) {
-			s = outCtrl->curSection->fullName;
-		} else {
-			s++;
-		}
-		
-		t = buffer;
-		t += sprintf(t, "%s<section name=\"", outCtrl->indent);
-		t = handleEntities(t, s);
-		t += sprintf (t, "\">\n");
-
-		sprintf (outCtrl->indent + strlen (outCtrl->indent), "  ");
-		outCtrl->state = 5;
-		return 1;
-
-	case 5:			/* Parse one attribute */
-	    if (!outCtrl->curParam) {
-			outCtrl->state = 6;
-			break;
-		}
-
-		curParam = outCtrl->curParam;
-		if (curParam->type == P_STR) {
-			s = buffer;
-			s += sprintf (s, "%s<attstr name=\"%s\"", outCtrl->indent, curParam->name);
-			curWithin = GF_TAILQ_FIRST (&(curParam->withinList));
-			if (curWithin) {
-				s += sprintf (s, " in=\"%s", curWithin->val);
-				while ((curWithin = GF_TAILQ_NEXT (curWithin, linkWithin)) != NULL) {
-					s += sprintf (s, ",%s", curWithin->val);
-				}
-				s += sprintf (s, "\"");
-			}
-
-			s += sprintf(s, " val=\"");
-			s = handleEntities(s, curParam->value);
-			s += sprintf (s, "\"/>\n");
-
-			outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
-			return 1;			
-	    } else {
-
-			s = buffer;
-			s += sprintf (s, "%s<attnum name=\"%s\"", outCtrl->indent, curParam->name);
-			if (curParam->unit) {
-				if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-					s += sprintf (s, " min=\"%g\" max=\"%g\"", 
-						GfParmSI2Unit (curParam->unit, curParam->min),
-						GfParmSI2Unit (curParam->unit, curParam->max));
-				}
-				s += sprintf (s, " unit=\"%s\" val=\"%g\"/>\n",
-					curParam->unit, GfParmSI2Unit (curParam->unit, curParam->valnum));
-			} else {
-				if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
-					s += sprintf (s, " min=\"%g\" max=\"%g\"", 
-						curParam->min, curParam->max);
-				}
-				s += sprintf (s, " val=\"%g\"/>\n", curParam->valnum);
-			}
-	
-			outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+	while (1) {
+		switch (outCtrl->state) {
+		case 0:
+			snprintf (buffer, size, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			outCtrl->indent = 0;
+			outCtrl->state = 1;
 			return 1;
-	    }
 
-	case 6:			/* Parse sub-section list */
-	    curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
-	    if (curSection) {
-		outCtrl->curSection = curSection;
-		outCtrl->state = 4;
-		break;
-	    }
-	    outCtrl->state = 7;
-	    break;
+		case 1:
+			if (conf->dtd == NULL) {
+				conf->dtd = strdup("params.dtd");
+			}
+			if (conf->header == NULL) {
+				conf->header = strdup("");
+			}
+			snprintf (buffer, size, "<!DOCTYPE params SYSTEM \"%s\">\n%s\n", conf->dtd, conf->header);
+			outCtrl->indent = 0;
+			outCtrl->state = 2;
+			return 1;
 
-	case 7:			/* End Section */
-	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
-	    sprintf (buffer, "%s</section>\n\n", outCtrl->indent);
-	    outCtrl->state = 8;
-	    return 1;
+		case 2:			/* Start Params */
+			outCtrl->curSection = parmHandle->conf->rootSection;
+			snprintf (buffer, size, "\n<params name=\"%s\">\n", parmHandle->conf->name);
+			curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
+			if (curSection) {
+				outCtrl->curSection = curSection;
+				outCtrl->indent += 2;
+				outCtrl->state = 4;
+			} else {     
+				outCtrl->state = 3;
+			}
+			return 1;
 
-	case 8:			/* Parse next section at the same level */
-	    curSection = GF_TAILQ_NEXT (outCtrl->curSection, linkSection);
-	    if (curSection) {
-		outCtrl->curSection = curSection;
-		outCtrl->state = 4;
-		break;
-	    }
-	    curSection = outCtrl->curSection->parent;
-	    *(outCtrl->indent + strlen (outCtrl->indent) - 2) = 0;
-	    if (curSection->parent) {
-		outCtrl->curSection = curSection;
-		sprintf (buffer, "%s</section>\n\n", outCtrl->indent);
-		return 1;
-	    }
-	    outCtrl->state = 3;
-	    break;
-	case 9:
-	    return 0;
+		case 3:			/* End Params */
+			snprintf (buffer, size, "</params>\n");
+			outCtrl->state = 9;
+			return 1;
+
+		case 4:			/* Parse section attributes list */
+			outCtrl->curParam = GF_TAILQ_FIRST (&(outCtrl->curSection->paramList));
+			s = strrchr (outCtrl->curSection->fullName, '/');
+			if (!s) {
+				s = outCtrl->curSection->fullName;
+			} else {
+				s++;
+			}
+			
+			createIndent(indent, INDENTSIZE, outCtrl->indent);
+			handleEntities(buf, BUFSIZE, s);
+			snprintf(buffer, size, "%s<section name=\"%s\">\n", indent, buf);
+			
+			outCtrl->indent += 2;
+			outCtrl->state = 5;
+			return 1;
+
+		case 5:			/* Parse one attribute */
+			if (!outCtrl->curParam) {
+				outCtrl->state = 6;
+				break;
+			}
+
+			curParam = outCtrl->curParam;
+			if (curParam->type == P_STR) {
+				createIndent(indent, INDENTSIZE, outCtrl->indent);
+				createIn(in, INSIZE, &(curParam->withinList));
+				handleEntities(buf, BUFSIZE, curParam->value);
+				snprintf(buffer, size, "%s<attstr name=\"%s\"%s val=\"%s\"/>\n", indent, curParam->name, in, buf);
+				
+				outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+				return 1;
+			} else {
+				if (curParam->unit) {
+					if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+						snprintf(numvalue, NUMVALUE, " min=\"%g\" max=\"%g\" unit=\"%s\" val=\"%g\"/>\n", 
+							GfParmSI2Unit (curParam->unit, curParam->min),
+							GfParmSI2Unit (curParam->unit, curParam->max),
+							curParam->unit,
+							GfParmSI2Unit (curParam->unit, curParam->valnum)
+						);
+					} else {
+						snprintf(numvalue, NUMVALUE, " unit=\"%s\" val=\"%g\"/>\n", 
+							curParam->unit,
+							GfParmSI2Unit (curParam->unit, curParam->valnum)
+						);
+					}
+				} else {
+					if ((curParam->min != curParam->valnum) || (curParam->max != curParam->valnum)) {
+						snprintf (numvalue, NUMVALUE, " min=\"%g\" max=\"%g\" val=\"%g\"/>\n", 
+							curParam->min,
+							curParam->max,
+							curParam->valnum
+						);
+					} else {
+						snprintf (numvalue, NUMVALUE, " val=\"%g\"/>\n", curParam->valnum);
+					}
+				}
+				
+				createIndent(indent, INDENTSIZE, outCtrl->indent);
+				snprintf (buffer, size, "%s<attnum name=\"%s\"%s", indent, curParam->name, numvalue);
+
+				outCtrl->curParam = GF_TAILQ_NEXT (curParam, linkParam);
+				return 1;
+			}
+
+		case 6:			/* Parse sub-section list */
+			curSection = GF_TAILQ_FIRST (&(outCtrl->curSection->subSectionList));
+			if (curSection) {
+				outCtrl->curSection = curSection;
+				outCtrl->state = 4;
+				break;
+			}
+			outCtrl->state = 7;
+			break;
+
+		case 7:			/* End Section */
+			outCtrl->indent -= 2;
+			createIndent(indent, INDENTSIZE, outCtrl->indent);
+			snprintf (buffer, size, "%s</section>\n\n", indent);
+			outCtrl->state = 8;
+			return 1;
+
+		case 8:			/* Parse next section at the same level */
+			curSection = GF_TAILQ_NEXT (outCtrl->curSection, linkSection);
+			if (curSection) {
+				outCtrl->curSection = curSection;
+				outCtrl->state = 4;
+				break;
+			}
+			curSection = outCtrl->curSection->parent;
+			outCtrl->indent -= 2;
+			if (curSection->parent) {
+				outCtrl->curSection = curSection;
+				createIndent(indent, INDENTSIZE, outCtrl->indent);
+				snprintf (buffer, size, "%s</section>\n\n", indent);
+				return 1;
+			}
+			outCtrl->state = 3;
+			break;
+		case 9:
+			return 0;
+		}
 	}
-    }
 }
 
 /** Write a configuration buffer.
@@ -2502,128 +2583,130 @@ insertParam (struct parmHandle *parmHandle, char *path, struct param *param)
 void *
 GfParmMergeHandles(void *ref, void *tgt, int mode)
 {
-    struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
-    struct parmHandle	*parmHandleTgt = (struct parmHandle *)tgt;
-    struct parmHandle	*parmHandleOut;
-    struct parmHeader	*confRef = parmHandleRef->conf;
-    struct parmHeader	*confTgt = parmHandleTgt->conf;
-    struct parmHeader	*confOut;
-    struct section	*curSectionRef;
-    struct section	*nextSectionRef;
-    struct section	*curSectionTgt;
-    struct section	*nextSectionTgt;
-    struct param	*curParamRef;
-    struct param	*curParamTgt;
+	struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
+	struct parmHandle	*parmHandleTgt = (struct parmHandle *)tgt;
+	struct parmHandle	*parmHandleOut;
+	struct parmHeader	*confRef = parmHandleRef->conf;
+	struct parmHeader	*confTgt = parmHandleTgt->conf;
+	struct parmHeader	*confOut;
+	struct section	*curSectionRef;
+	struct section	*nextSectionRef;
+	struct section	*curSectionTgt;
+	struct section	*nextSectionTgt;
+	struct param	*curParamRef;
+	struct param	*curParamTgt;
+	const unsigned long parmHandleSize = sizeof (struct parmHandle);
 
-    GfOut ("Merging \"%s\" and \"%s\" (%s - %s)\n", confRef->filename, confTgt->filename, ((mode & GFPARM_MMODE_SRC) ? "SRC" : ""), ((mode & GFPARM_MMODE_DST) ? "DST" : ""));
+	GfOut ("Merging \"%s\" and \"%s\" (%s - %s)\n", confRef->filename, confTgt->filename, ((mode & GFPARM_MMODE_SRC) ? "SRC" : ""), ((mode & GFPARM_MMODE_DST) ? "DST" : ""));
 
-    if (parmHandleRef->magic != PARM_MAGIC) {
-	GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleRef);
-	return NULL;
-    }
-    if (parmHandleTgt->magic != PARM_MAGIC) {
-	GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleTgt);
-	return NULL;
-    }
-
-        /* Conf Header creation */
-    confOut = createParmHeader ("");
-    if (!confOut) {
-	GfError ("gfParmReadBuf: conf header creation failed\n");
-	return NULL;
-    }
-
-    /* Handle creation */
-    parmHandleOut = (struct parmHandle *) calloc (1, sizeof (struct parmHandle));
-    if (!parmHandleOut) {
-	GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", sizeof (struct parmHandle));
-	parmReleaseHeader (confOut);
-	return NULL;
-    }
-
-    parmHandleOut->magic = PARM_MAGIC;
-    parmHandleOut->conf = confOut;
-    parmHandleOut->flag = PARM_HANDLE_FLAG_PRIVATE;
-    
-    if (mode & GFPARM_MMODE_SRC) {
-	/* Traverse all the reference tree */
-	curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
-	while (curSectionRef) {
-	    curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
-	    while (curParamRef) {
-		/* compare params */
-		curParamTgt = getParamByName (confTgt, curSectionRef->fullName, curParamRef->name, 0);
-		if (curParamTgt) {
-		    insertParamMerge (parmHandleOut, curSectionRef->fullName, curParamRef, curParamTgt);
-		} else {
-		    insertParam (parmHandleOut, curSectionRef->fullName, curParamRef);
-		}
-		curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
-	    }
-	    nextSectionRef = GF_TAILQ_FIRST (&(curSectionRef->subSectionList));
-	    if (nextSectionRef) {
-		curSectionRef = nextSectionRef;
-	    } else {
-		nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
-		while (!nextSectionRef) {
-		    nextSectionRef = curSectionRef->parent;
-		    if (!nextSectionRef) {
-			/* Reached the root */
-			break;
-		    }
-		    curSectionRef = nextSectionRef;
-		    nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
-		}
-		curSectionRef = nextSectionRef;
-	    }
+	if (parmHandleRef->magic != PARM_MAGIC) {
+		GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleRef);
+		return NULL;
 	}
-    }
-    
-    if (mode & GFPARM_MMODE_DST) {
-	/* Traverse all the target tree */
-	curSectionTgt = GF_TAILQ_FIRST (&(confTgt->rootSection->subSectionList));
-	while (curSectionTgt) {
-	    curParamTgt = GF_TAILQ_FIRST (&(curSectionTgt->paramList));
-	    while (curParamTgt) {
-		/* compare params */
-		curParamRef = getParamByName (confRef, curSectionTgt->fullName, curParamTgt->name, 0);
-		if (curParamRef) {
-		    insertParamMerge (parmHandleOut, curSectionTgt->fullName, curParamRef, curParamTgt);
-		} else {
-		    insertParam (parmHandleOut, curSectionTgt->fullName, curParamTgt);
-		}
-		curParamTgt = GF_TAILQ_NEXT (curParamTgt, linkParam);
-	    }
-	    nextSectionTgt = GF_TAILQ_FIRST (&(curSectionTgt->subSectionList));
-	    if (nextSectionTgt) {
-		curSectionTgt = nextSectionTgt;
-	    } else {
-		nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
-		while (!nextSectionTgt) {
-		    nextSectionTgt = curSectionTgt->parent;
-		    if (!nextSectionTgt) {
-			/* Reached the root */
-			break;
-		    }
-		    curSectionTgt = nextSectionTgt;
-		    nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
-		}
-		curSectionTgt = nextSectionTgt;
-	    }
+	if (parmHandleTgt->magic != PARM_MAGIC) {
+		GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleTgt);
+		return NULL;
 	}
-    }
 
-    if (mode & GFPARM_MMODE_RELSRC) {
-	GfParmReleaseHandle(ref);
-    }
+		/* Conf Header creation */
+	confOut = createParmHeader ("");
+	if (!confOut) {
+		GfError ("gfParmReadBuf: conf header creation failed\n");
+		return NULL;
+	}
 
-    if (mode & GFPARM_MMODE_RELDST) {
-	GfParmReleaseHandle(tgt);
-    }
+	/* Handle creation */
+	parmHandleOut = (struct parmHandle *) calloc (1, parmHandleSize);
+	if (!parmHandleOut) {
+		GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", parmHandleSize);
+		parmReleaseHeader (confOut);
+		return NULL;
+	}
 
-    GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandleOut, linkHandle);
- 
-    return (void*)parmHandleOut;
+	parmHandleOut->magic = PARM_MAGIC;
+	parmHandleOut->conf = confOut;
+	parmHandleOut->flag = PARM_HANDLE_FLAG_PRIVATE;
+
+	if (mode & GFPARM_MMODE_SRC) {
+		/* Traverse all the reference tree */
+		curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
+		while (curSectionRef) {
+			curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
+			while (curParamRef) {
+				/* compare params */
+				curParamTgt = getParamByName (confTgt, curSectionRef->fullName, curParamRef->name, 0);
+				if (curParamTgt) {
+					insertParamMerge (parmHandleOut, curSectionRef->fullName, curParamRef, curParamTgt);
+				} else {
+					insertParam (parmHandleOut, curSectionRef->fullName, curParamRef);
+				}
+				curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
+			}
+			nextSectionRef = GF_TAILQ_FIRST (&(curSectionRef->subSectionList));
+			if (nextSectionRef) {
+				curSectionRef = nextSectionRef;
+			} else {
+				nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+				while (!nextSectionRef) {
+					nextSectionRef = curSectionRef->parent;
+					if (!nextSectionRef) {
+						/* Reached the root */
+						break;
+					}
+					curSectionRef = nextSectionRef;
+					nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+				}
+				curSectionRef = nextSectionRef;
+			}
+		}
+	}
+
+	if (mode & GFPARM_MMODE_DST) {
+		/* Traverse all the target tree */
+		curSectionTgt = GF_TAILQ_FIRST (&(confTgt->rootSection->subSectionList));
+		while (curSectionTgt) {
+			curParamTgt = GF_TAILQ_FIRST (&(curSectionTgt->paramList));
+			while (curParamTgt) {
+				/* compare params */
+				curParamRef = getParamByName (confRef, curSectionTgt->fullName, curParamTgt->name, 0);
+				if (curParamRef) {
+					insertParamMerge (parmHandleOut, curSectionTgt->fullName, curParamRef, curParamTgt);
+				} else {
+					insertParam (parmHandleOut, curSectionTgt->fullName, curParamTgt);
+				}
+				curParamTgt = GF_TAILQ_NEXT (curParamTgt, linkParam);
+			}
+			
+			nextSectionTgt = GF_TAILQ_FIRST (&(curSectionTgt->subSectionList));
+			if (nextSectionTgt) {
+				curSectionTgt = nextSectionTgt;
+			} else {
+				nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
+				while (!nextSectionTgt) {
+					nextSectionTgt = curSectionTgt->parent;
+					if (!nextSectionTgt) {
+						/* Reached the root */
+						break;
+					}
+					curSectionTgt = nextSectionTgt;
+					nextSectionTgt = GF_TAILQ_NEXT (curSectionTgt, linkSection);
+				}
+				curSectionTgt = nextSectionTgt;
+			}
+		}
+	}
+
+	if (mode & GFPARM_MMODE_RELSRC) {
+		GfParmReleaseHandle(ref);
+	}
+
+	if (mode & GFPARM_MMODE_RELDST) {
+		GfParmReleaseHandle(tgt);
+	}
+
+	GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandleOut, linkHandle);
+
+	return (void*)parmHandleOut;
 }
 
 

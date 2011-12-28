@@ -37,6 +37,9 @@
 
 #include <tgfclient.h>
 #include <portability.h>
+#include <musicplayer/musicplayer.h>
+#include <portability.h>
+
 #include "gui.h"
 #include "fg_gm.h"
 #include "glfeatures.h"
@@ -61,7 +64,6 @@ static int GfScrCenX;
 static int GfScrCenY;
 
 static void	*scrHandle = NULL;
-static char 	buf[1024];
 
 static int usedGM = 0;
 #if !defined(FREEGLUT) && !defined(WIN32)
@@ -245,8 +247,10 @@ void GfScrInit(int argc, char *argv[])
 	int fullscreen;
 	int maxfreq;
 	int i, depth;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
-	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	xw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, 640);
 	yw = (int)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, 480);
@@ -266,7 +270,7 @@ void GfScrInit(int argc, char *argv[])
 	if (strcmp(fscr, GFSCR_VAL_YES) == 0) {	// Resize the screen
 		GfOut ("Freeglut not detected...\n");
 		for (i = maxfreq; i > 59; i--) {
-			sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+			snprintf(buf, BUFSIZE, "%dx%d:%d@%d", winX, winY, depth, i);
 			GfOut("Trying %s mode\n", buf);
 			fglutGameModeString(buf);
 			if (fglutEnterGameMode()) {
@@ -369,7 +373,7 @@ void GfScrInit(int argc, char *argv[])
 
 	if (strcmp(fscr, GFSCR_VAL_YES) == 0) {
 		for (i = maxfreq; i > 59; i--) {
-			sprintf(buf, "%dx%d:%d@%d", winX, winY, depth, i);
+			snprintf(buf, BUFSIZE, "%dx%d:%d@%d", winX, winY, depth, i);
 			glutGameModeString(buf);
 			GfOut("2 - Trying %s mode\n", buf);
 			if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE)) {
@@ -485,6 +489,8 @@ GfScrReinit(void * /* dummy */)
 	static const int CMDSIZE = 1024;
 	char cmd[CMDSIZE];
 
+	stopMenuMusic();
+	
 #ifndef WIN32
     const char *arg[8];
     int		curArg;
@@ -513,7 +519,7 @@ GfScrReinit(void * /* dummy */)
 #else
 	GfScrShutdown();
 	
-	sprintf (cmd, "%storcs-bin", GetLibDir ());
+	snprintf (cmd, CMDSIZE, "%storcs-bin", GetLibDir ());
 	memset (arg, 0, sizeof (arg));
 	curArg = 0;
 	if (GfuiMouseHW) {
@@ -580,7 +586,10 @@ updateLabelText(void)
     GfuiLabelSetText (scrHandle, DepthLabelId, Depthlist[curDepth]);
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
 #ifdef WIN32
-    sprintf(buf, "%d", curMaxFreq);
+	const int BUFSIZE = 1024;
+	char buf[1024];
+
+	snprintf(buf, BUFSIZE, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
 #endif
 	GfuiLabelSetText (scrHandle, VInitLabelId, VInit[curVInit]);
@@ -656,11 +665,13 @@ initFromConf(void)
 {
 	int x, y, bpp;
 	int i;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	x = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, NULL, 640);
 	y = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, NULL, 480);
 
-	sprintf(buf, "%dx%d", x, y);
+	snprintf(buf, BUFSIZE, "%dx%d", x, y);
 	for (i = 0; i < nbRes; i++) {
 		if (!strcmp(buf, Res[i])) {
 			curRes = i;
@@ -684,7 +695,7 @@ initFromConf(void)
 	}
 
 	bpp = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_BPP, NULL, 24);
-	sprintf(buf, "%d", bpp);
+	snprintf(buf, BUFSIZE, "%d", bpp);
 	for (i = 0; i < nbDepth; i++) {
 		if (!strcmp(buf, Depthlist[i])) {
 			curDepth = i;
@@ -700,10 +711,12 @@ static void
 ChangeMaxFreq(void * /* dummy */)
 {
     char	*val;
+	const int BUFSIZE = 1024;
+	char buf[1024];
     
     val = GfuiEditboxGetString(scrHandle, MaxFreqId);
     curMaxFreq = (int)strtol(val, (char **)NULL, 0);
-    sprintf(buf, "%d", curMaxFreq);
+    snprintf(buf, BUFSIZE, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
 }
 #endif
@@ -724,12 +737,15 @@ void *
 GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
+	const int BUFSIZE = 1024;
+	char buf[1024];
+	
 #ifndef WIN32
 	const int yoffset1 = 30, yoffset2 = 60;
 #else // WIN32
 	const int yoffset1 = 30, yoffset2 = 40;
 #endif // WIN32
-    sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+    snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
     paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     if (scrHandle) return scrHandle;

@@ -35,12 +35,12 @@
 #include <raceman.h>
 #include <robot.h>
 #include <racescreens.h>
+#include <portability.h>
 
 static void		*scrHandle;
 static tRmRaceParam	*rp;
 static int		rmrpDistance;
 static int		rmrpLaps;
-static char		buf[256];
 static int		rmrpDistId;
 static int		rmrpLapsId;
 static int		rmDispModeEditId;
@@ -58,147 +58,159 @@ rmrpDeactivate(void *screen)
     }
 }
 
+
 static void
 rmrpUpdDist(void * /* dummy */)
 {
-    char	*val;
+	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-    val = GfuiEditboxGetString(scrHandle, rmrpDistId);
-    rmrpDistance = strtol(val, (char **)NULL, 0);
-    if (rmrpDistance == 0) {
-	strcpy(buf, "---");
-    } else {
-	sprintf(buf, "%d", rmrpDistance);
-	rmrpLaps = 0;
-	GfuiEditboxSetString(scrHandle, rmrpLapsId, "---");
-    }
-    GfuiEditboxSetString(scrHandle, rmrpDistId, buf);
+	val = GfuiEditboxGetString(scrHandle, rmrpDistId);
+	rmrpDistance = strtol(val, (char **)NULL, 0);
+	if (rmrpDistance == 0) {
+		strcpy(buf, "---");
+	} else {
+		snprintf(buf, BUFSIZE, "%d", rmrpDistance);
+		rmrpLaps = 0;
+		GfuiEditboxSetString(scrHandle, rmrpLapsId, "---");
+	}
+	GfuiEditboxSetString(scrHandle, rmrpDistId, buf);
 }
+
 
 static void
 rmrpUpdLaps(void * /* dummy */)
 {
-    char	*val;
+	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-    val = GfuiEditboxGetString(scrHandle, rmrpLapsId);
-    rmrpLaps = strtol(val, (char **)NULL, 0);
-    if (rmrpLaps == 0) {
-	strcpy(buf, "---");
-    } else {
-	sprintf(buf, "%d", rmrpLaps);
-	rmrpDistance = 0;
-	GfuiEditboxSetString(scrHandle, rmrpDistId, "---");
-    }
-    GfuiEditboxSetString(scrHandle, rmrpLapsId, buf);
+	val = GfuiEditboxGetString(scrHandle, rmrpLapsId);
+	rmrpLaps = strtol(val, (char **)NULL, 0);
+	if (rmrpLaps == 0) {
+		strcpy(buf, "---");
+	} else {
+		snprintf(buf, BUFSIZE, "%d", rmrpLaps);
+		rmrpDistance = 0;
+		GfuiEditboxSetString(scrHandle, rmrpDistId, "---");
+	}
+	GfuiEditboxSetString(scrHandle, rmrpLapsId, buf);
 }
 
 
 static void
 rmrpValidate(void * /* dummy */)
 {
-    if (rp->confMask & RM_CONF_RACE_LEN) {
-	rmrpUpdDist(0);
-	rmrpUpdLaps(0);
-	GfParmSetNum(rp->param, rp->title, RM_ATTR_DISTANCE, "km", rmrpDistance);
-	GfParmSetNum(rp->param, rp->title, RM_ATTR_LAPS, (char*)NULL, rmrpLaps);
-    }
+	if (rp->confMask & RM_CONF_RACE_LEN) {
+		rmrpUpdDist(0);
+		rmrpUpdLaps(0);
+		GfParmSetNum(rp->param, rp->title, RM_ATTR_DISTANCE, "km", rmrpDistance);
+		GfParmSetNum(rp->param, rp->title, RM_ATTR_LAPS, (char*)NULL, rmrpLaps);
+	}
 
-    if (rp->confMask & RM_CONF_DISP_MODE) {
-	GfParmSetStr(rp->param, rp->title, RM_ATTR_DISPMODE, rmCurDispModeList[rmCurDispMode]);
-    }
+	if (rp->confMask & RM_CONF_DISP_MODE) {
+		GfParmSetStr(rp->param, rp->title, RM_ATTR_DISPMODE, rmCurDispModeList[rmCurDispMode]);
+	}
 
-    rmrpDeactivate(rp->nextScreen);
+	rmrpDeactivate(rp->nextScreen);
 }
+
 
 static void
 rmrpAddKeys(void)
 {
-    GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate, NULL);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
-    GfuiAddKey(scrHandle, 13, "Validate Modifications", NULL, rmrpValidate, NULL);
+	GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddKey(scrHandle, 13, "Validate Modifications", NULL, rmrpValidate, NULL);
 }
+
 
 void
 rmChangeDisplayMode(void * /* dummy */)
 {
-    rmCurDispMode = 1 - rmCurDispMode;
-    GfuiLabelSetText(scrHandle, rmDispModeEditId, rmCurDispModeList[rmCurDispMode]);
+	rmCurDispMode = 1 - rmCurDispMode;
+	GfuiLabelSetText(scrHandle, rmDispModeEditId, rmCurDispModeList[rmCurDispMode]);
 }
 
 
 void
 RmRaceParamMenu(void *vrp)
 {
-    int		y, x, x2, dy, dx;
+	int y, x, x2, dy, dx;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-    rp = (tRmRaceParam*)vrp;
+	rp = (tRmRaceParam*)vrp;
+	
+	snprintf(buf, BUFSIZE, "%s Options", rp->title);
+	scrHandle = GfuiMenuScreenCreate(buf);
+	GfuiScreenAddBgImg(scrHandle, "data/img/splash-raceopt.png");
 
-    sprintf(buf, "%s Options", rp->title);
-    scrHandle = GfuiMenuScreenCreate(buf);
-    GfuiScreenAddBgImg(scrHandle, "data/img/splash-raceopt.png");
-    
-    x = 80;
-    x2 = 240;
-    y = 380;
-    dx = 200;
-    dy = GfuiFontHeight(GFUI_FONT_LARGE) + 5;
+	x = 80;
+	x2 = 240;
+	y = 380;
+	dx = 200;
+	dy = GfuiFontHeight(GFUI_FONT_LARGE) + 5;
 
-    if (rp->confMask & RM_CONF_RACE_LEN) {
-	GfuiLabelCreate(scrHandle, "Race Distance (km):", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
-	rmrpDistance = (int)GfParmGetNum(rp->param, rp->title, RM_ATTR_DISTANCE, "km", 0);
-	if (rmrpDistance == 0) {
-	    strcpy(buf, "---");
-	    rmrpLaps = (int)GfParmGetNum(rp->param, rp->title, RM_ATTR_LAPS, NULL, 25);
-	} else {
-	    sprintf(buf, "%d", rmrpDistance);
-	    rmrpLaps = 0;
+	if (rp->confMask & RM_CONF_RACE_LEN) {
+		GfuiLabelCreate(scrHandle, "Race Distance (km):", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+		rmrpDistance = (int)GfParmGetNum(rp->param, rp->title, RM_ATTR_DISTANCE, "km", 0);
+		if (rmrpDistance == 0) {
+			strcpy(buf, "---");
+			rmrpLaps = (int)GfParmGetNum(rp->param, rp->title, RM_ATTR_LAPS, NULL, 25);
+		} else {
+			snprintf(buf, BUFSIZE, "%d", rmrpDistance);
+			rmrpLaps = 0;
+		}
+		
+		rmrpDistId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+						x + dx, y,
+						0, 8, NULL, (tfuiCallback)NULL, rmrpUpdDist);
+
+		y -= dy;
+		GfuiLabelCreate(scrHandle, "Laps:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+		if (rmrpLaps == 0) {
+			strcpy(buf, "---");
+		} else {
+			snprintf(buf, BUFSIZE, "%d", rmrpLaps);
+		}
+		
+		rmrpLapsId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
+						x + dx, y,
+						0, 8, NULL, (tfuiCallback)NULL, rmrpUpdLaps);
+		y -= dy;
 	}
-	rmrpDistId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				       x + dx, y,
-				       0, 8, NULL, (tfuiCallback)NULL, rmrpUpdDist);
 
-	y -= dy;
-	GfuiLabelCreate(scrHandle, "Laps:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
-	if (rmrpLaps == 0) {
-	    strcpy(buf, "---");
-	} else {
-	    sprintf(buf, "%d", rmrpLaps);
+	if (rp->confMask & RM_CONF_DISP_MODE) {
+		GfuiLabelCreate(scrHandle, "Display:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+		GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+				"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+				x2, y, GFUI_ALIGN_HL_VB, 1,
+				(void*)0, rmChangeDisplayMode,
+				NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
+		GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+				"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+				x2 + 150, y, GFUI_ALIGN_HL_VB, 1,
+				(void*)1, rmChangeDisplayMode,
+				NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		if (!strcmp(GfParmGetStr(rp->param, rp->title, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+			rmCurDispMode = 1;
+		} else {
+			rmCurDispMode = 0;
+		}
+		rmDispModeEditId = GfuiLabelCreate(scrHandle, rmCurDispModeList[rmCurDispMode], GFUI_FONT_MEDIUM_C, x2 + 35, y, GFUI_ALIGN_HL_VB, 20);
+		y -= dy;
 	}
-	rmrpLapsId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
-				       x + dx, y,
-				       0, 8, NULL, (tfuiCallback)NULL, rmrpUpdLaps);
-	y -= dy;
-    }
 
-    if (rp->confMask & RM_CONF_DISP_MODE) {
-	GfuiLabelCreate(scrHandle, "Display:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
-	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
-			   "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
-			   x2, y, GFUI_ALIGN_HL_VB, 1,
-			   (void*)0, rmChangeDisplayMode,
-			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
-	GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
-			   "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-			   x2 + 150, y, GFUI_ALIGN_HL_VB, 1,
-			   (void*)1, rmChangeDisplayMode,
-			   NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	if (!strcmp(GfParmGetStr(rp->param, rp->title, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
-	    rmCurDispMode = 1;
-	} else {
-	    rmCurDispMode = 0;
-	}
-	rmDispModeEditId = GfuiLabelCreate(scrHandle, rmCurDispModeList[rmCurDispMode], GFUI_FONT_MEDIUM_C, x2 + 35, y, GFUI_ALIGN_HL_VB, 20);
-	y -= dy;
-    }
+	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				NULL, rmrpValidate, NULL, NULL, NULL);
 
-    GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, rmrpValidate, NULL, NULL, NULL);
+	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				rp->prevScreen, rmrpDeactivate, NULL, NULL, NULL);
 
-    GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     rp->prevScreen, rmrpDeactivate, NULL, NULL, NULL);
+	rmrpAddKeys();
 
-    rmrpAddKeys();
-    
-    GfuiScreenActivate(scrHandle);
+	GfuiScreenActivate(scrHandle);
 }

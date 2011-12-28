@@ -135,7 +135,7 @@ refreshEditVal(void)
 		GfuiEditboxSetString(scrHandle, NameEditId, curPlayer->_DispName);
 		GfuiEnable(scrHandle, NameEditId, GFUI_ENABLE);
 		
-		sprintf(buf, "%d", curPlayer->racenumber);
+		snprintf(buf, 1024, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 		GfuiEnable(scrHandle, RaceNumEditId, GFUI_ENABLE);
 		
@@ -144,13 +144,13 @@ refreshEditVal(void)
 		
 		GfuiLabelSetText(scrHandle, CatEditId, curPlayer->carinfo->cat->_DispName);
 		
-		sprintf(buf, "%d", curPlayer->racenumber);
+		snprintf(buf, 1024, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 		GfuiEnable(scrHandle, RaceNumEditId, GFUI_ENABLE);
 		
 		GfuiLabelSetText(scrHandle, TransEditId, curPlayer->transmission);
 		
-		sprintf(buf, "%d", curPlayer->nbpitstops);
+		snprintf(buf, 1024, "%d", curPlayer->nbpitstops);
 		GfuiEditboxSetString(scrHandle, PitsEditId, buf);
 		GfuiEnable(scrHandle, PitsEditId, GFUI_ENABLE);
 		
@@ -202,7 +202,7 @@ GenCarsInfo(void)
 			char* str = strchr(curFile->name, '.');
 			*str = '\0';
 			curCat->_Name = strdup(curFile->name);
-			sprintf(buf, "categories/%s.xml", curFile->name);
+			snprintf(buf, 1024, "categories/%s.xml", curFile->name);
 			hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 			if (!hdle) {
 				continue;
@@ -221,7 +221,7 @@ GenCarsInfo(void)
 			curFile = curFile->next;
 			curCar = (tCarInfo*)calloc(1, sizeof(tCarInfo));
 			curCar->_Name = strdup(curFile->name);
-			sprintf(buf, "cars/%s/%s.xml", curFile->name, curFile->name);
+			snprintf(buf, 1024, "cars/%s/%s.xml", curFile->name, curFile->name);
 			carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
 			if (!carparam) {
 				continue;
@@ -311,14 +311,14 @@ GenDrvList(void)
 	const char *str;
 	int found;
 
-	sprintf(buf, "%s%s", GetLocalDir(), HM_DRV_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_DRV_FILE);
 	drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
 	if (drvinfo == NULL) {
 		return -1;
 	}
 
 	for (i = 0; i < NB_DRV; i++) {
-		sprintf(sstring, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
+		snprintf(sstring, 256, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
 		driver = GfParmGetStr(drvinfo, sstring, ROB_ATTR_NAME, "");
 		if (strlen(driver) == 0) {
 			PlayersInfo[i]._DispName = strdup(NO_DRV);
@@ -364,7 +364,7 @@ GenDrvList(void)
     }
     UpdtScrollList();
 
-    sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
+    snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
     void* PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PrefHdle == NULL) {
 		GfParmReleaseHandle(drvinfo);
@@ -372,7 +372,7 @@ GenDrvList(void)
     }
 
     for (i = 0; i < NB_DRV; i++) {
-		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
+		snprintf(sstring, 256, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
 		str = GfParmGetStr(PrefHdle, sstring, HM_ATT_TRANS, HM_VAL_AUTO);
 		if (strcmp(str, HM_VAL_AUTO) == 0) {
 			PlayersInfo[i].transmission = HM_VAL_AUTO;
@@ -400,14 +400,14 @@ SaveDrvList(void * /* dummy */)
 	char	str[32];
 	int		i;
 	
-	sprintf(buf, "%s%s", GetLocalDir(), HM_DRV_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_DRV_FILE);
 	drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (drvinfo == NULL) {
 		return;
 	}
 
 	for (i = 0; i < NB_DRV; i++) {
-		sprintf(str, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
+		snprintf(str, 32, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
 		if (strcmp(PlayersInfo[i]._DispName, NO_DRV) == 0) {
 			GfParmSetStr(drvinfo, str, ROB_ATTR_NAME, "");
 		} else {
@@ -424,10 +424,10 @@ SaveDrvList(void * /* dummy */)
 	GfParmWriteFile(NULL, drvinfo, dllname);
 	GfParmReleaseHandle(drvinfo);
 
-	sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
 	void* PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	for (i = 0; i < NB_DRV; i++) {
-		sprintf(str, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
+		snprintf(str, 32, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
 		GfParmSetStr(PrefHdle, str, HM_ATT_TRANS, PlayersInfo[i].transmission);
 		GfParmSetNum(PrefHdle, str, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
 		GfParmSetStr(PrefHdle, str, HM_ATT_AUTOREVERSE, Yn[PlayersInfo[i].autoreverse]);
@@ -468,7 +468,7 @@ ChangeNum(void * /* dummy */)
 	val = GfuiEditboxGetString(scrHandle, RaceNumEditId);
 	if (curPlayer != NULL) {
 		curPlayer->racenumber = (int)strtol(val, (char **)NULL, 0);
-		sprintf(buf, "%d", curPlayer->racenumber);
+		snprintf(buf, 1024, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 	}
 }
@@ -481,7 +481,7 @@ ChangePits(void * /* dummy */)
 	val = GfuiEditboxGetString(scrHandle, PitsEditId);
 	if (curPlayer != NULL) {    
 		curPlayer->nbpitstops = (int)strtol(val, (char **)NULL, 0);
-		sprintf(buf, "%d", curPlayer->nbpitstops);
+		snprintf(buf, 1024, "%d", curPlayer->nbpitstops);
 		GfuiEditboxSetString(scrHandle, PitsEditId, buf);
 	}
 }

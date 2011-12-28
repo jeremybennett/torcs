@@ -39,8 +39,6 @@ tMouseInfo	GfuiMouse;
 int		GfuiMouseHW = 0;
 
 float		GfuiColor[GFUI_COLORNB][4];
-static		char buf[1024];
-
 
 static int	ScrW, ScrH, ViewW, ViewH;
 
@@ -52,6 +50,9 @@ static double LastTimeClick;
 static void
 gfuiColorInit(void)
 {
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
 	void *hdle;
 	int  i, j;
 	const char *rgba[4] = {GFSCR_ATTR_RED, GFSCR_ATTR_GREEN, GFSCR_ATTR_BLUE, GFSCR_ATTR_ALPHA};
@@ -64,12 +65,12 @@ gfuiColorInit(void)
 		GFSCR_ELT_EDITCURSORCLR
 	};
 	
-	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	hdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	for (i = 0; i < GFUI_COLORNB; i++) {
 		for (j = 0; j < 4; j++) {
-			sprintf(buf, "%s/%s/%s", GFSCR_SECT_MENUCOL, GFSCR_LIST_COLORS, clr[i]);
+			snprintf(buf, BUFSIZE, "%s/%s/%s", GFSCR_SECT_MENUCOL, GFSCR_LIST_COLORS, clr[i]);
 			GfuiColor[i][j] = GfParmGetNum(hdle, buf, rgba[j], (char*)NULL, 1.0);
 		}
 	}
@@ -755,7 +756,8 @@ GfuiAddKey(void *scr, unsigned char key, const char *descr, void *userData, tfui
 {
 	tGfuiKey	*curKey;
 	tGfuiScreen	*screen = (tGfuiScreen*)scr;
-	char	buf[16];
+	const int BUFSIZE = 16;
+	char buf[BUFSIZE];
 	
 	curKey = (tGfuiKey*)calloc(1, sizeof(tGfuiKey));
 	curKey->key = key;
@@ -785,7 +787,7 @@ GfuiAddKey(void *scr, unsigned char key, const char *descr, void *userData, tfui
 			curKey->name = strdup("space");
 			break;
 		default:
-			sprintf(buf, "%c", key);
+			snprintf(buf, BUFSIZE, "%c", key);
 			curKey->name = strdup(buf);
 			break;
 	}
@@ -975,12 +977,14 @@ GfuiScreenAddBgImg(void *scr, const char *filename)
 	float screen_gamma;
 	GLbyte *tex;
 	int w,h;
-
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
 	if (screen->bgImage != 0) {
 		glDeleteTextures(1, &screen->bgImage);
 	}
 
-	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
 	tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);

@@ -32,6 +32,7 @@
 #include <robot.h>
 #include <playerpref.h>
 #include <js.h>
+#include <portability.h>
 
 #include "controlconfig.h"
 #include "mouseconfig.h"
@@ -89,7 +90,7 @@ onSteerSensChange(void * /* dummy */)
 	val = GfuiEditboxGetString(scrHandle, SteerSensEditId);
 	
 	if (sscanf(val, "%f", &fv) == 1) {
-		sprintf(buf, "%f", fv);
+		snprintf(buf, 1024, "%f", fv);
 		SteerSensVal = fv;
 		GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
 	} else {
@@ -98,22 +99,23 @@ onSteerSensChange(void * /* dummy */)
 	
 }
 
+
 static void
 onDeadZoneChange(void * /* dummy */)
 {
-    char	*val;
-    float	fv;
+	char *val;
+	float fv;
 
-    val = GfuiEditboxGetString(scrHandle, DeadZoneEditId);
-    if (sscanf(val, "%f", &fv) == 1) {
-	sprintf(buf, "%f", fv);
-	DeadZoneVal = fv;
-	GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
-    } else {
-	GfuiEditboxSetString(scrHandle, SteerSensEditId, "");
-    }
-    
+	val = GfuiEditboxGetString(scrHandle, DeadZoneEditId);
+	if (sscanf(val, "%f", &fv) == 1) {
+		snprintf(buf, 1024, "%f", fv);
+		DeadZoneVal = fv;
+		GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
+	} else {
+		GfuiEditboxSetString(scrHandle, SteerSensEditId, "");
+    }    
 }
+
 
 static void
 onSave(void * /* dummy */)
@@ -149,6 +151,7 @@ onSave(void * /* dummy */)
 	GfuiScreenActivate(prevHandle);
 }
 
+
 static void
 updateButtonText(void)
 {
@@ -172,25 +175,28 @@ updateButtonText(void)
 		}
 	}
 	
-	sprintf(buf, "%f", SteerSensVal);
+	snprintf(buf, 1024, "%f", SteerSensVal);
 	GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
 	
-	sprintf(buf, "%f", DeadZoneVal);
+	snprintf(buf, 1024, "%f", DeadZoneVal);
 	GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
 	
 	GfuiVisibilitySet(scrHandle, MouseCalButton, displayMouseCal);
 	GfuiVisibilitySet(scrHandle, JoyCalButton, displayJoyCal);
 }
 
+
 static void
 onFocusLost(void * /* dummy */)
 {
-    updateButtonText();
+	updateButtonText();
 }
+
 
 static int CurrentCmd;
 
 static int InputWaited = 0;
+
 
 static int
 onKeyAction(unsigned char key, int /* modifier */, int state)
@@ -219,6 +225,7 @@ onKeyAction(unsigned char key, int /* modifier */, int state)
 	return 1;
 }
 
+
 static int
 onSKeyAction(int key, int /* modifier */, int state)
 {
@@ -239,30 +246,32 @@ onSKeyAction(int key, int /* modifier */, int state)
 	return 1;
 }
 
+
 static int
 getMovedAxis(void)
 {
-    int		i;
-    int		Index = -1;
-    float	maxDiff = 0.3;
+	int	i;
+	int	Index = -1;
+	float maxDiff = 0.3;
 
-    for (i = 0; i < MAX_AXES * NUM_JOY; i++) {
-	if (maxDiff < fabs(ax[i] - axCenter[i])) {
-	    maxDiff = fabs(ax[i] - axCenter[i]);
-	    Index = i;
+	for (i = 0; i < MAX_AXES * NUM_JOY; i++) {
+		if (maxDiff < fabs(ax[i] - axCenter[i])) {
+			maxDiff = fabs(ax[i] - axCenter[i]);
+			Index = i;
+		}
 	}
-    }
-    return Index;
+	return Index;
 }
+
 
 static void
 Idle(void)
 {
-	int		mask;
-	int		b, i;
-	int		index;
+	int mask;
+	int	b, i;
+	int	index;
 	const char *str;
-	int		axis;
+	int	axis;
 	
 	GfctrlMouseGetCurrent(&mouseInfo);
 	
@@ -301,18 +310,18 @@ Idle(void)
 		
 			/* Joystick buttons */
 			for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
-			if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
-				/* Button i fired */
-				glutIdleFunc(GfuiIdle);
-				InputWaited = 0;
-				str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
-				Cmd[CurrentCmd].ref.index = i + 32 * index;
-				Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_BUT;
-				GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
-				glutPostRedisplay();
-				rawb[index] = b;
-				return;
-			}
+				if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
+					/* Button i fired */
+					glutIdleFunc(GfuiIdle);
+					InputWaited = 0;
+					str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
+					Cmd[CurrentCmd].ref.index = i + 32 * index;
+					Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_BUT;
+					GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+					glutPostRedisplay();
+					rawb[index] = b;
+					return;
+				}
 			}
 			rawb[index] = b;
 		}
@@ -332,32 +341,36 @@ Idle(void)
 	}
 }
 
+
 static void
 onPush(void *vi)
 {
-    int		index;    
-    long	i = (long)vi;
-    
-    CurrentCmd = i;
-    GfuiButtonSetText (scrHandle, Cmd[i].Id, "");
-    Cmd[i].ref.index = -1;
-    Cmd[i].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-    GfParmSetStr(PrefHdle, CurrentSection, Cmd[i].name, "");
-    if (Cmd[CurrentCmd].keyboardPossible) {
-	InputWaited = 1;
-    }
-    glutIdleFunc(Idle);
-    GfctrlMouseInitCenter();
-    memset(&mouseInfo, 0, sizeof(mouseInfo));
-    GfctrlMouseGetCurrent(&mouseInfo);
+	int	index;    
+	long i = (long)vi;
 
-    for (index = 0; index < NUM_JOY; index++) {
-	if (js[index]) {
-	    js[index]->read(&rawb[index], &ax[index * MAX_AXES]); /* initial value */
+	CurrentCmd = i;
+	GfuiButtonSetText (scrHandle, Cmd[i].Id, "");
+	Cmd[i].ref.index = -1;
+	Cmd[i].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
+	GfParmSetStr(PrefHdle, CurrentSection, Cmd[i].name, "");
+	
+	if (Cmd[CurrentCmd].keyboardPossible) {
+		InputWaited = 1;
 	}
-    }
-    memcpy(axCenter, ax, sizeof(axCenter));
+	
+	glutIdleFunc(Idle);
+	GfctrlMouseInitCenter();
+	memset(&mouseInfo, 0, sizeof(mouseInfo));
+	GfctrlMouseGetCurrent(&mouseInfo);
+
+	for (index = 0; index < NUM_JOY; index++) {
+		if (js[index]) {
+			js[index]->read(&rawb[index], &ax[index * MAX_AXES]); /* initial value */
+		}
+	}
+	memcpy(axCenter, ax, sizeof(axCenter));
 }
+
 
 static void
 onActivate(void * /* dummy */)
@@ -367,7 +380,7 @@ onActivate(void * /* dummy */)
 	tCtrlRef *ref;
 
 	if (ReloadValues) {
-		sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
+		snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
 		PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	
 		/* Mouse Settings */
@@ -411,8 +424,8 @@ onActivate(void * /* dummy */)
 static void
 DevCalibrate(void *menu)
 {
-    ReloadValues = 0;
-    GfuiScreenActivate(menu);
+	ReloadValues = 0;
+	GfuiScreenActivate(menu);
 }
 
 
@@ -423,10 +436,10 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 	int		index;
 	
 	ReloadValues = 1;
-	sprintf(CurrentSection, "%s/%d", HM_SECT_DRVPREF, idx);
+	snprintf(CurrentSection, 1024, "%s/%d", HM_SECT_DRVPREF, idx);
 	
 	prevHandle = prevMenu;
-	sprintf(buf, "%s%s", GetLocalDir(), HM_PREF_FILE);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
 	PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	
 	if (scrHandle) {
@@ -457,15 +470,15 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 	dy = 30;
 	
 	for (i = 0; i < maxCmd; i++) {
-	GfuiLabelCreate(scrHandle, Cmd[i].name, GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
-	Cmd[i].Id = GfuiButtonStateCreate (scrHandle, "MOUSE_MIDDLE_BUTTON", GFUI_FONT_MEDIUM_C, x+x2, y, 0, GFUI_ALIGN_HC_VB, GFUI_MOUSE_DOWN, 
-						(void*)i, onPush, NULL, (tfuiCallback)NULL, onFocusLost);
-	y -= dy;
-	if (i == (maxCmd / 2 - 1)) {
-		x = 320;
-		y = 340;
-		x2 = 220;
-	}
+		GfuiLabelCreate(scrHandle, Cmd[i].name, GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+		Cmd[i].Id = GfuiButtonStateCreate (scrHandle, "MOUSE_MIDDLE_BUTTON", GFUI_FONT_MEDIUM_C, x+x2, y, 0, GFUI_ALIGN_HC_VB, GFUI_MOUSE_DOWN, 
+							(void*)i, onPush, NULL, (tfuiCallback)NULL, onFocusLost);
+		y -= dy;
+		if (i == (maxCmd / 2 - 1)) {
+			x = 320;
+			y = 340;
+			x2 = 220;
+		}
 	}
 	
 	GfuiLabelCreate(scrHandle, "Steer Sensibility", GFUI_FONT_MEDIUM, 30, 90, GFUI_ALIGN_HL_VB, 0);

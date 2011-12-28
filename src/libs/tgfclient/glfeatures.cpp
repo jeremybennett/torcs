@@ -27,6 +27,7 @@
 */
 
 #include <glfeatures.h>
+#include <portability.h>
 
 /*
 	----------------------- Texture Compression
@@ -66,8 +67,9 @@ void checkCompressARBEnabled(bool &result)
 		// Feature available, check if the user wants to use it.
 		// TODO: put this enabled/disable stuff in one function (it is used in grsound.cpp as well).
 		const char *tcEnabledStr = GR_ATT_TEXTURECOMPRESSION_ENABLED;
-		char fnbuf[1024];
-		sprintf(fnbuf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+		const int BUFSIZE = 1024;
+		char fnbuf[BUFSIZE];
+		snprintf(fnbuf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 		void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 		const char *optionName = GfParmGetStr(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURECOMPRESSION, GR_ATT_TEXTURECOMPRESSION_DISABLED);
 
@@ -117,8 +119,9 @@ void getGLTextureMaxSize(int &result)
 
 void getUserTextureMaxSize(int &result)
 {
-	char fnbuf[1024];
-	sprintf(fnbuf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	const int BUFSIZE = 1024;
+	char fnbuf[BUFSIZE];
+	snprintf(fnbuf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	result = (int) GfParmGetNum(paramHandle, GR_SCT_GLFEATURES, GR_ATT_TEXTURESIZE, (char*)NULL, (tdble) glTextureMaxSize);
 	if (result > glTextureMaxSize) {

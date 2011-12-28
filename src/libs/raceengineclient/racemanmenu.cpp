@@ -29,6 +29,7 @@
 #include <raceman.h>
 #include <racescreens.h>
 #include <driverconfig.h>
+#include <portability.h>
 
 #include "raceengine.h"
 #include "racemain.h"
@@ -127,7 +128,7 @@ reConfigRunState(void)
 		goto menuback;
 	}
 	
-	sprintf(path, "%s/%d", RM_SECT_CONF, curConf);
+	snprintf(path, 1024, "%s/%d", RM_SECT_CONF, curConf);
 	conf = GfParmGetStr(params, path, RM_ATTR_TYPE, 0);
 	if (!conf) {
 		GfOut("no %s here %s\n", RM_ATTR_TYPE, path);
@@ -169,10 +170,10 @@ reConfigRunState(void)
 		rp.title = GfParmGetStr(params, path, RM_ATTR_RACE, "Race");
 		/* Select options to configure */
 		rp.confMask = 0;
-		sprintf(path, "%s/%d/%s", RM_SECT_CONF, curConf, RM_SECT_OPTIONS);
+		snprintf(path, 1024, "%s/%d/%s", RM_SECT_CONF, curConf, RM_SECT_OPTIONS);
 		numOpt = GfParmGetEltNb(params, path);
 		for (i = 1; i < numOpt + 1; i++) {
-			sprintf(path, "%s/%d/%s/%d", RM_SECT_CONF, curConf, RM_SECT_OPTIONS, i);
+			snprintf(path, 1024, "%s/%d/%s/%d", RM_SECT_CONF, curConf, RM_SECT_OPTIONS, i);
 			opt = GfParmGetStr(params, path, RM_ATTR_TYPE, "");
 			if (!strcmp(opt, RM_VAL_CONFRACELEN)) {
 			/* Configure race length */
@@ -211,7 +212,7 @@ reConfigureMenu(void * /* dummy */)
 static void
 reSelectLoadFile(char *filename)
 {
-    sprintf(buf, "%sresults/%s/%s", GetLocalDir(), ReInfo->_reFilename, filename);
+    snprintf(buf, 1024, "%sresults/%s/%s", GetLocalDir(), ReInfo->_reFilename, filename);
     GfOut("Loading Saved File %s...\n", buf);
     ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
     ReInfo->_reRaceName = ReInfo->_reName;
@@ -231,7 +232,7 @@ reLoadMenu(void *prevHandle)
 		fs.title = str;
 	}
 
-	sprintf(buf, "%sresults/%s", GetLocalDir(), ReInfo->_reFilename);
+	snprintf(buf, 1024, "%sresults/%s", GetLocalDir(), ReInfo->_reFilename);
 	fs.path = buf;
 	
 	RmFileSelect((void*)&fs);
@@ -322,7 +323,7 @@ ReNewTrackMenu(void)
 	
 	GfuiMenuDefaultKeysAdd(newTrackMenuHdle);
 	
-	sprintf(buf, "Race Day #%d/%d on %s",
+	snprintf(buf, 1024, "Race Day #%d/%d on %s",
 		(int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1),
 		GfParmGetEltNb(params, RM_SECT_TRACKS),
 		ReInfo->track->name);

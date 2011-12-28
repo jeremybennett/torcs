@@ -37,7 +37,7 @@
 #include <direct.h>
 #endif
 
-static char buf[1024];
+#include <portability.h>
 
 #define PNG_BYTES_TO_CHECK 4
 
@@ -297,8 +297,10 @@ GfImgReadTex(char *filename)
 	GLbyte *tex;
 	int w, h;
 	GLuint retTex;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);
 	tex = (GLbyte*)GfImgReadPng(filename, &w, &h, screen_gamma);

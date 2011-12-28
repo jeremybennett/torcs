@@ -31,10 +31,9 @@
 #endif
 
 #include <tgfclient.h>
+#include <portability.h>
 
 #include "guifont.h"
-
-static char buf[1024];
 
 #define FONT_NB	9
 GfuiFontClass *gfuiFont[FONT_NB];
@@ -64,12 +63,14 @@ void gfuiLoadFonts(void)
 	void *param;
 	int	size;
 	int	i;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-	sprintf(buf, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
 	param = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	const char* fontName = GfParmGetStr(param, "Menu Font", "name", "b5.glf");
-	sprintf(buf, "data/fonts/%s", fontName);
+	snprintf(buf, BUFSIZE, "data/fonts/%s", fontName);
 
 	for(i = 0; i < 4; i++) {
 		size = (int)GfParmGetNum(param, "Menu Font", keySize[i], (char*)NULL, 10.0);
@@ -78,7 +79,7 @@ void gfuiLoadFonts(void)
 	}
 
 	fontName = GfParmGetStr(param, "Console Font", "name", "b7.glf");
-	sprintf(buf, "data/fonts/%s", fontName);
+	snprintf(buf, BUFSIZE, "data/fonts/%s", fontName);
 
 	for(i = 0; i < 4; i++) {
 		size = (int)GfParmGetNum(param, "Console Font", keySize[i], (char*)NULL, 10.0);
@@ -87,7 +88,7 @@ void gfuiLoadFonts(void)
 	}
 
 	fontName = GfParmGetStr(param, "Digital Font", "name", "digital.glf");
-	sprintf(buf, "data/fonts/%s", fontName);
+	snprintf(buf, BUFSIZE, "data/fonts/%s", fontName);
 	size = (int)GfParmGetNum(param, "Digital Font", keySize[0], (char*)NULL, 8.0);
 	gfuiFont[8] = new GfuiFontClass(buf);
 	gfuiFont[8]->create(size);

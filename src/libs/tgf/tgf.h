@@ -380,7 +380,6 @@ GfOut(const char *fmt, ...)
  * Time  Interface *
  *******************/
 extern double GfTimeClock(void);
-extern char *GfGetTimeStr(void);
 
 /* Mean values */
 #define GF_MEAN_MAX_VAL	5
