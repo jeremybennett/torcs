@@ -24,7 +24,7 @@ PROGRAM   	= texmapper-bin
 
 SOURCES   	= maintexmapper.cpp ssgSaveAC.cpp
 
-SOLIBS    	= -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -ltxml -lpng
+SOLIBS    	= -lplibssg -lplibsg -lplibul -ltgf -ltgfclient -lmusicplayer -ltxml -lpng
 
 src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 

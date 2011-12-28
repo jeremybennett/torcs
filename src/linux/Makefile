@@ -34,6 +34,7 @@ SOLIBS  =  -lracescreens  \
 	   -ltxml	  \
 	   -lplibul	  \
 	   -lraceengine   \
+	   -lmusicplayer  \
 	   -llearning
 
 EXPDIR  = include

@@ -19,4 +19,9 @@
 		<attstr name="state" val="openal"/>
 		<attnum name="volume" unit="%" val="100"/>
 	</section>
+	
+	<section name="Menu Music">
+		<attstr name="enable" val="enabled"/>
+	</section>
+
 </params>
