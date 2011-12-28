@@ -87,6 +87,16 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.3.1-test1
+-------------------------
+- Added menu music code (Bernhard).
+- Composed and added a menu song (Bernhard).
+- Added menu music customization (currently just enable/disable) (Bernhard).
+- Replaced sprintf's with snprintf's in lib (Bernhard).
+- Fixed warnings regarding size_t in printf (Bernhard).
+- Rewrote handleEntities to avoid buffer size problems (Bernhard).
+- Changed handling of identation when writing XML files to avoid buffer size
+  problems (Bernhard).
 
 
 Changes since 1.3.1
@@ -136,19 +146,25 @@ Changes since 1.3.1
 
 TODO for 1.3.2
 --------------
-- Rename *ascar category/car (get rid of *acsar)
-- Menu sound
 - Some adoptions for gamepad calibration
+- Bugtracking/recommended security-fixes
+- check for sprintf/fscanf/strcpy, etc (ongoing).
 
+
+TODO for 1.3.3
+--------------
+- Training session with adjustable setup
 
 
 TODO for 1.4.0
 --------------
+- Rename *ascar category/car (get rid of *acsar)
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
 - Move from VC++ 6.0 to 9.0 (VS2008)
-
+- Car asignment for human players.
+- Sound (alut depricated/scheduling for lots of cars)
 
 
 TODO for Compliance
