@@ -27,6 +27,8 @@
 #include <tgfclient.h>
 #include <raceinit.h>
 #include <graphic.h>
+#include <musicplayer/musicplayer.h>
+#include <portability.h>
 
 #include "soundconfig.h"
 
@@ -42,8 +44,15 @@ static const char *soundOptionList[] = {
 static const int nbOptions = sizeof(soundOptionList) / sizeof(soundOptionList[0]);
 static int curOption = 0;
 
+static const char *menuMusicList[] = {
+	MM_VAL_SOUND_DISABLED,
+	MM_VAL_SOUND_ENABLED
+};
+static int curOptionMenuMusic = 0;
+
 // gui label id.
 static int SoundOptionId;
+static int MenuMusicOptionId;
 
 // volume
 static float VolumeValue = 100.0f;
@@ -61,7 +70,8 @@ static void readSoundCfg(void)
 	int	i;
 	char buf[1024];
 
-	sprintf(buf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[0]);
 
@@ -83,6 +93,21 @@ static void readSoundCfg(void)
 	GfParmReleaseHandle(paramHandle);
 
 	GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
+	
+	// Read Menu music optons
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
+	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	optionName = GfParmGetStr(paramHandle, MM_SCT_SOUND, MM_ATT_SOUND_ENABLE, MM_VAL_SOUND_DISABLED);
+	
+	if (strcmp(optionName, MM_VAL_SOUND_ENABLED) == 0) {
+		GfuiLabelSetText(scrHandle, MenuMusicOptionId, MM_VAL_SOUND_ENABLED);
+		curOptionMenuMusic = 1;
+	} else {
+		GfuiLabelSetText(scrHandle, MenuMusicOptionId, MM_VAL_SOUND_DISABLED);
+		curOptionMenuMusic = 0;
+	}
+	
+	GfParmReleaseHandle(paramHandle);
 }
 
 
@@ -90,13 +115,26 @@ static void readSoundCfg(void)
 static void saveSoundOption(void *)
 {
 	char buf[1024];
-	sprintf(buf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	GfParmSetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[curOption]);
 	GfParmSetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", VolumeValue);
 	GfParmWriteFile(NULL, paramHandle, "sound");
 	GfParmReleaseHandle(paramHandle);
 
+	// Write Menu music optons
+	snprintf(buf, 1024, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
+	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	GfParmSetStr(paramHandle, MM_SCT_SOUND, MM_ATT_SOUND_ENABLE, menuMusicList[curOptionMenuMusic]);
+	GfParmWriteFile(NULL, paramHandle, "sound");
+	GfParmReleaseHandle(paramHandle);
+	
+	if (curOptionMenuMusic == 1) {
+		startMenuMusic();
+	} else {
+		stopMenuMusic();
+	}
+	
 	// Return to previous screen.
 	GfuiScreenActivate(prevHandle);
 	return;
@@ -120,6 +158,20 @@ static void changeSoundState(void *vp)
     GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
 }
 
+
+// Toggle menu music state between enabled and disabled.
+static void changeMenuMusicState(void *vp)
+{
+	if (curOptionMenuMusic == 0) {
+		curOptionMenuMusic = 1;
+	} else {
+		curOptionMenuMusic = 0;
+	}
+
+	GfuiLabelSetText(scrHandle, MenuMusicOptionId, menuMusicList[curOptionMenuMusic]);
+}
+
+
 // Volume
 /*
 static void changeVolume(void * )
@@ -128,7 +180,7 @@ static void changeVolume(void * )
 	char buf[1024];
     val = GfuiEditboxGetString(scrHandle, VolumeValueId);
     sscanf(val, "%g", &VolumeValue);
-    sprintf(buf, "%g", VolumeValue);
+    snprintf(buf, "%g", VolumeValue);
     GfuiEditboxSetString(scrHandle, VolumeValueId, buf);
 }
 */
@@ -182,12 +234,30 @@ void * SoundMenuInit(void *prevMenu)
 	SoundOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
 	GfuiLabelSetColor(scrHandle, SoundOptionId, LabelColor);
 
-/*
+	y -= dy;
+	
+	GfuiLabelCreate(scrHandle, "Menu Music:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+			"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+			x2, y-5, GFUI_ALIGN_HL_VB, 1,
+			(void*)-1, changeMenuMusicState,
+			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+	GfuiGrButtonCreate(scrHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+			"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+			x3, y-5, GFUI_ALIGN_HR_VB, 1,
+			(void*)1, changeMenuMusicState,
+			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+	MenuMusicOptionId = GfuiLabelCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
+	GfuiLabelSetColor(scrHandle, MenuMusicOptionId, LabelColor);
+
+	/*
     y -= dy;
     GfuiLabelCreate(scrHandle, "Volume:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 
 	
-    sprintf(buf, "%f", VolumeValue);
+    snprintf(buf, "%f", VolumeValue);
     VolumeValueId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 				    x2+10, y+2, x4-x2+20, 16, NULL, (tfuiCallback)NULL, changeVolume);
 
