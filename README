@@ -89,7 +89,7 @@ Bernhard.
 
 Changes since 1.3.1-test1
 -------------------------
-- Added menu music code (Bernhard).
+- Added menu music code (finally!!!) (Bernhard).
 - Composed and added a menu song (Bernhard).
 - Added menu music customization (currently just enable/disable) (Bernhard).
 - Replaced sprintf's with snprintf's in lib (Bernhard).
@@ -97,6 +97,16 @@ Changes since 1.3.1-test1
 - Rewrote handleEntities to avoid buffer size problems (Bernhard).
 - Changed handling of identation when writing XML files to avoid buffer size
   problems (Bernhard).
+- Ported sound/sprintf changes to Windows version (Bernhard).
+- Report #3405193, added torcs.desktop file provided by Jakob Matthes (Jakob,
+  Bernhard).
+- Report #3089384, applied/tested patch for CVE-2010-3384, reported/provided
+  by Rudy Godoy (Rudy, Bernhard).
+- Report #2887013, applied/tested patch for
+  http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=445806 reported by paletta
+  (paletta, Bernhard).
+- Report #2784518, applied/tested, provided by Hamid Homatash (Hamid, Bernhard).
+- Fixed possible buffer overflow reported by Andres Gomez (Andres, Bernhard).
 
 
 Changes since 1.3.1
@@ -147,13 +157,18 @@ Changes since 1.3.1
 TODO for 1.3.2
 --------------
 - Some adoptions for gamepad calibration
-- Bugtracking/recommended security-fixes
+- Update libraries for Windows version (libpng, zlib, ...)
 - check for sprintf/fscanf/strcpy, etc (ongoing).
+- Add VS2008 build
+- Review and eventually apply sparc patch
+- Review and eventually apply mac os x build
 
 
 TODO for 1.3.3
 --------------
 - Training session with adjustable setup
+- Bugtracking
+- check for sprintf/fscanf/strcpy, etc (ongoing).
 
 
 TODO for 1.4.0
