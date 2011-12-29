@@ -98,7 +98,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 		return (unsigned char *)NULL;
 	}
 	
-	if (setjmp(png_ptr->jmpbuf))
+	if (setjmp(png_jmpbuf(png_ptr)))
 	{
 		/* Free all of the memory associated with the png_ptr and info_ptr */
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
@@ -155,7 +155,7 @@ GfImgReadPng(const char *filename, int *widthp, int *heightp, float screen_gamma
 	
 	// RGBA expected.
 	if (rowbytes != (4 * width)) {
-		GfTrace("%s bad byte count... %lu instead of %lu\n", filename, rowbytes, 4 * width);
+		GfTrace("%s bad byte count... %lu instead of %lu\n", filename, (unsigned long) rowbytes, (unsigned long) (4 * width));
 		fclose(fp);
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		return (unsigned char *)NULL;
@@ -229,7 +229,7 @@ GfImgWritePng(unsigned char *img, const char *filename, int width, int height)
 		return -1;
 	}
 	
-	if (setjmp(png_ptr->jmpbuf)) {    
+	if (setjmp(png_jmpbuf(png_ptr))) {    
 		png_destroy_write_struct(&png_ptr, &info_ptr);
 		fclose(fp);
 		return -1;
