@@ -80,7 +80,8 @@ GfuiLabelCreateEx(void *scr, const char *text, float *fgColor, int font, int x, 
 	label->maxlen = maxlen;
 	
 	label->bgColor = screen->bgColor;
-	label->fgColor = fgColor;
+	//label->fgColor = fgColor;
+	label->fgColor.setRGBA(fgColor);
 	
 	label->font = gfuiFont[font];
 	width = gfuiFont[font]->getWidth((const char *)text);
@@ -244,7 +245,7 @@ GfuiLabelSetColor(void *scr, int id, float *color)
 	    curObject = curObject->next;
 	    if (curObject->id == id) {
 		if (curObject->widget == GFUI_LABEL) {
-		     curObject->u.label.fgColor = color;
+		     curObject->u.label.fgColor.setRGBA(color);
 		}
 		return;
 	    }
@@ -256,30 +257,29 @@ GfuiLabelSetColor(void *scr, int id, float *color)
 void
 gfuiDrawLabel(tGfuiObject *obj)
 {
-    tGfuiLabel	*label;
+	tGfuiLabel	*label;
 
-    label = &(obj->u.label);
-    if (label->bgColor[3] != 0.0) {
-	glColor4fv(label->bgColor);
-	glBegin(GL_QUADS);
-	glVertex2i(obj->xmin, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymin);
-	glEnd();
-    }
-    glColor4fv(label->fgColor);
-    gfuiPrintString(label->x, label->y, label->font, label->text);
-
+	label = &(obj->u.label);
+	if (label->bgColor[3] != 0.0) {
+		glColor4fv(label->bgColor);
+		glBegin(GL_QUADS);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glEnd();
+	}
+	glColor4fv(label->fgColor.getRGBA());
+	gfuiPrintString(label->x, label->y, label->font, label->text);
 }
 
 void
 gfuiReleaseLabel(tGfuiObject *obj)
 {
-    tGfuiLabel	*label;
+	tGfuiLabel *label;
 
-    label = &(obj->u.label);
+	label = &(obj->u.label);
 
-    free(label->text);
-    free(obj);
+	free(label->text);
+	free(obj);
 }

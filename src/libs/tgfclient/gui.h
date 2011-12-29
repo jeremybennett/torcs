@@ -47,15 +47,43 @@ extern float	GfuiColor[GFUI_COLORNB][4];
 #define GFUI_EDITCURSORCLR	20
 #define GFUI_IMAGE		21
 
+class ForeGroundColor {	
+	public:
+		/*ForeGroundColor(const float pr, const float pg, const float pb, const float pa) :
+			r(pr), g(pg), b(pb), a(pa)
+		{}
+		ForeGroundColor(const float prgba[4]) :
+			r(prgba[0]), g(prgba[1]), b(prgba[2]), a(prgba[3])
+		{}
+		ForeGroundColor() :
+			r(0.0f), g(0.0f), b(0.0f), a(0.0f)
+		{}
+		virtual ~ForeGroundColor() {}
+*/
+		void setRGBA(const float prgba[4]) {
+			r = prgba[0];
+			g = prgba[1];
+			b = prgba[2];
+			a = prgba[3];
+		}
+		const float* getRGBA() { return rgba; }
+
+		union {
+			struct { float r, g, b, a; };
+			float rgba[4];
+		};
+};
+
+
 typedef struct
 {
-    char	*text;		/* text */
-    float	*bgColor;	/* RGBA */
-    float	*fgColor;
-    GfuiFontClass	*font;		/* ttf font */
-    int		x, y;		/* label position */
-    int		align;
-    int		maxlen;
+	char *text;		/* text */
+	float *bgColor;	/* RGBA */
+	ForeGroundColor fgColor;
+	GfuiFontClass *font;		/* ttf font */
+	int x, y;		/* label position */
+	int align;
+	int maxlen;
 } tGfuiLabel;
 
 /* button state */

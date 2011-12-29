@@ -49,7 +49,6 @@ static int nbOptionsTextSize = sizeof(textureSizeOptionList) / sizeof(textureSiz
 static int curOptionTextSize = 0;
 static int TextureSizeOptionId;
 static const int defaultTextSize = 64; // In case everything goes wrong.
-static char valuebuf[10];
 
 // gui screen handles.
 static void	*scrHandle = NULL;
@@ -59,10 +58,11 @@ static void	*prevHandle = NULL;
 // Read OpenGL configuration.
 static void readOpenGLCfg(void)
 {
-	int	i;
-	char buf[1024];
+	int i;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	// Read texture compression parameters.
@@ -112,8 +112,8 @@ static void readOpenGLCfg(void)
 			}
 		}
 	}
-	snprintf(valuebuf, 10, "%d", textureSizeOptionList[curOptionTextSize]);
-	GfuiLabelSetText(scrHandle, TextureSizeOptionId, valuebuf);
+	snprintf(buf, BUFSIZE, "%d", textureSizeOptionList[curOptionTextSize]);
+	GfuiLabelSetText(scrHandle, TextureSizeOptionId, buf);
 
 	GfParmReleaseHandle(paramHandle);
 }
@@ -122,8 +122,9 @@ static void readOpenGLCfg(void)
 // Save the choosen values in the corresponding parameter file.
 static void saveOpenGLOption(void *)
 {
-	char buf[1024];
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	// Texture compression.
@@ -163,6 +164,9 @@ static void changeTextureCompressState(void *vp)
 // Scroll through texture sizes smaller or equal the system limit.
 static void changeTextureSizeState(void *vp)
 {
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
 	long delta = (long)vp;
 	curOptionTextSize += delta;
 	if (curOptionTextSize < 0) {
@@ -171,8 +175,8 @@ static void changeTextureSizeState(void *vp)
 		curOptionTextSize= 0;
 	}
 
-	snprintf(valuebuf, 10, "%d", textureSizeOptionList[curOptionTextSize]);
-	GfuiLabelSetText(scrHandle, TextureSizeOptionId, valuebuf);
+	snprintf(buf, BUFSIZE, "%d", textureSizeOptionList[curOptionTextSize]);
+	GfuiLabelSetText(scrHandle, TextureSizeOptionId, buf);
 }
 
 

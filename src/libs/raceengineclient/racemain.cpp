@@ -42,11 +42,6 @@
 
 #include "racemain.h"
 
-static char buf[1024];
-static char path[1024];
-static char path2[1024];
-
-
 /***************************************************************/
 /* ABANDON RACE HOOK */
 
@@ -133,6 +128,8 @@ RePreRace(void)
 	tdble dist;
 	void *params = ReInfo->params;
 	void *results = ReInfo->results;
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE];
 
 	const char* raceName = ReInfo->_reRaceName = ReGetCurrentRaceName();
 	if (!raceName) {
@@ -159,7 +156,7 @@ RePreRace(void)
 	ReInfo->s->_raceState = 0;
 
 	/* Cleanup results */
-	snprintf(path, 1024, "%s/%s/%s", ReInfo->track->name, RE_SECT_RESULTS, raceName);
+	snprintf(path, BUFSIZE, "%s/%s/%s", ReInfo->track->name, RE_SECT_RESULTS, raceName);
 	GfParmListClean(results, path);
 
 	return RM_SYNC | RM_NEXT_STEP;
@@ -173,7 +170,8 @@ reRaceRealStart(void)
 	int sw, sh, vw, vh;
 	tRobotItf *robot;
 	tReCarInfo *carInfo;
-	char key[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	int foundHuman;
 	void *params = ReInfo->params;
 	void *results = ReInfo->results;
@@ -181,8 +179,8 @@ reRaceRealStart(void)
 
 	RmLoadingScreenSetText("Loading Simulation Engine...");
 	const char* dllname = GfParmGetStr(ReInfo->_reParam, "Modules", "simu", "");
-	snprintf(key, 256, "%smodules/simu/%s.%s", GetLibDir (), dllname, DLLEXT);
-	if (GfModLoad(0, key, &ReRaceModList)) return RM_QUIT;
+	snprintf(buf, BUFSIZE, "%smodules/simu/%s.%s", GetLibDir (), dllname, DLLEXT);
+	if (GfModLoad(0, buf, &ReRaceModList)) return RM_QUIT;
 	ReRaceModList->modInfo->fctInit(ReRaceModList->modInfo->index, &ReInfo->_reSimItf);
 
 	if (ReInitCars()) {
@@ -213,7 +211,7 @@ reRaceRealStart(void)
 	}
 
 	for (i = 0; i < s->_ncars; i++) {
-		snprintf(buf, 1024, "Initializing Driver %s...", s->cars[i]->_name);
+		snprintf(buf, BUFSIZE, "Initializing Driver %s...", s->cars[i]->_name);
 		RmLoadingScreenSetText(buf);
 		robot = s->cars[i]->robot;
 		robot->rbNewRace(robot->index, s->cars[i], s);
@@ -238,7 +236,7 @@ reRaceRealStart(void)
 		if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
 			ReUpdateQualifCurRes(s->cars[0]);
 		} else {
-			snprintf(buf, 1024, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
+			snprintf(buf, BUFSIZE, "%s on %s", s->cars[0]->_name, ReInfo->track->name);
 			ReResScreenSetTitle(buf);
 		}
 	}
@@ -299,7 +297,8 @@ ReRaceStart(void)
 	const char *raceName = ReInfo->_reRaceName;
 	void *params = ReInfo->params;
 	void *results = ReInfo->results;
-
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE], path2[BUFSIZE];
 
 	FREEZ(ReInfo->_reCarInfo);
 	ReInfo->_reCarInfo = (tReCarInfo*)calloc(GfParmGetEltNb(params, RM_SECT_DRIVERS), sizeof(tReCarInfo));
@@ -315,8 +314,8 @@ ReRaceStart(void)
 			RmShutdownLoadingScreen();
 		}
 
-		snprintf(path, 1024, "%s/%d", RM_SECT_DRIVERS, i);
-		snprintf(path2, 1024, "%s/%d", RM_SECT_DRIVERS_RACING, 1);
+		snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
+		snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, 1);
 		GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(params, path, RM_ATTR_MODULE, ""));
 		GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, 0));
 	} else {
@@ -334,8 +333,8 @@ ReRaceStart(void)
 				return RM_QUIT;
 			}
 			for (i = 1; i < nCars + 1; i++) {
-				snprintf(path, 1024, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, i);
-				snprintf(path2, 1024, "%s/%d", RM_SECT_DRIVERS_RACING, i);
+				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, i);
+				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
 				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
 			}
@@ -349,8 +348,8 @@ ReRaceStart(void)
 				return RM_QUIT;
 			}
 			for (i = 1; i < nCars + 1; i++) {
-				snprintf(path, 1024, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, nCars - i + 1);
-				snprintf(path2, 1024, "%s/%d", RM_SECT_DRIVERS_RACING, i);
+				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, nCars - i + 1);
+				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
 				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
 			}
@@ -360,8 +359,8 @@ ReRaceStart(void)
 			maxCars = (int)GfParmGetNum(params, raceName, RM_ATTR_MAX_DRV, NULL, 100);
 			nCars = MIN(nCars, maxCars);
 			for (i = 1; i < nCars + 1; i++) {
-				snprintf(path, 1024, "%s/%d", RM_SECT_DRIVERS, i);
-				snprintf(path2, 1024, "%s/%d", RM_SECT_DRIVERS_RACING, i);
+				snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
+				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(params, path, RM_ATTR_MODULE, ""));
 				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, 0));
 			}

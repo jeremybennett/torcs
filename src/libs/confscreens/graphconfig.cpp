@@ -32,7 +32,6 @@
 #include "graphconfig.h"
 
 static void	*scrHandle = NULL;
-static char	buf[1024];
 static int	FovEditId;
 static int	FovFactorValue = 100;
 static int	SmokeEditId;
@@ -66,7 +65,10 @@ static void ExitGraphicOptions(void *prevMenu)
 
 static void SaveGraphicOptions(void *prevMenu)
 {
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	GfParmSetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", FovFactorValue);
@@ -86,10 +88,12 @@ static void SaveGraphicOptions(void *prevMenu)
 static void ChangeFov(void * /* dummy */)
 {
 	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	val = GfuiEditboxGetString(scrHandle, FovEditId);
 	FovFactorValue = strtol(val, (char **)NULL, 0);
-	snprintf(buf, 1024, "%d", FovFactorValue);
+	snprintf(buf, BUFSIZE, "%d", FovFactorValue);
 	GfuiEditboxSetString(scrHandle, FovEditId, buf);
 }
 
@@ -99,10 +103,12 @@ static void ChangeFov(void * /* dummy */)
 static void ChangeLodFactor(void * /* dummy */)
 {
 	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	val = GfuiEditboxGetString(scrHandle, LodFactorEditId);
 	sscanf(val, "%g", &LodFactorValue);
-	snprintf(buf, 1024, "%g", LodFactorValue);
+	snprintf(buf, BUFSIZE, "%g", LodFactorValue);
 	GfuiEditboxSetString(scrHandle, LodFactorEditId, buf);
 }
 
@@ -112,10 +118,12 @@ static void ChangeLodFactor(void * /* dummy */)
 static void ChangeSmoke(void * /* dummy */)
 {
 	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	val = GfuiEditboxGetString(scrHandle, SmokeEditId);
 	SmokeValue = strtol(val, (char **)NULL, 0);
-	snprintf(buf, 1024, "%d", SmokeValue);
+	snprintf(buf, BUFSIZE, "%d", SmokeValue);
 	GfuiEditboxSetString(scrHandle, SmokeEditId, buf);
 }
 
@@ -125,10 +133,12 @@ static void ChangeSmoke(void * /* dummy */)
 static void ChangeSkid(void * /* dummy */)
 {
 	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	val = GfuiEditboxGetString(scrHandle, SkidEditId);
 	SkidValue = strtol(val, (char **)NULL, 0);
-	snprintf(buf, 1024, "%d", SkidValue);
+	snprintf(buf, BUFSIZE, "%d", SkidValue);
 	GfuiEditboxSetString(scrHandle, SkidEditId, buf);
 }
 
@@ -168,37 +178,40 @@ void *GraphMenuInit(void *prevMenu)
 		return scrHandle;
 	}
 	
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
 	scrHandle = GfuiMenuScreenCreate("Graphic Configuration");
 	
 	GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 	
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);	
 	
 	GfuiLabelCreate(scrHandle, "Visibility (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	FovFactorValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", 100.0);
-	snprintf(buf, 1024, "%d", FovFactorValue);
+	snprintf(buf, BUFSIZE, "%d", FovFactorValue);
 	FovEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeFov);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "Smoke:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SmokeValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, 300.0);
-	snprintf(buf, 1024, "%d", SmokeValue);
+	snprintf(buf, BUFSIZE, "%d", SmokeValue);
 	SmokeEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSmoke);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "Skid Marks:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SkidValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, 20.0);
-	snprintf(buf, 1024, "%d", SkidValue);
+	snprintf(buf, BUFSIZE, "%d", SkidValue);
 	SkidEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSkid);
 	
 	y -= dy;
 	GfuiLabelCreate(scrHandle, "LOD factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	LodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
-	snprintf(buf, 1024, "%g", LodFactorValue);
+	snprintf(buf, BUFSIZE, "%g", LodFactorValue);
 	LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeLodFactor);
 	

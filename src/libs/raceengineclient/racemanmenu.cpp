@@ -38,31 +38,27 @@
 
 #include "racemanmenu.h"
 
-static float red[4]     = {1.0, 0.0, 0.0, 1.0};
+static float red[4]  = {1.0, 0.0, 0.0, 1.0};
 
-static void		*racemanMenuHdle = NULL;
-static void		*newTrackMenuHdle = NULL;
-static tRmTrackSelect	ts;
-static tRmDrvSelect	ds;
-static tRmRaceParam	rp;
-static tRmFileSelect    fs;
-
-static char		path[1024];
-static char		buf[1024];
-
+static void *racemanMenuHdle = NULL;
+static void *newTrackMenuHdle = NULL;
+static tRmTrackSelect ts;
+static tRmDrvSelect ds;
+static tRmRaceParam rp;
+static tRmFileSelect fs;
 
 static void reConfigRunState(void);
 
 static void
 reConfigBack(void)
 {
-    void	*params = ReInfo->params;
+	void *params = ReInfo->params;
 
-    /* Go back one step in the conf */
-    GfParmSetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 
-		 GfParmGetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1) - 2);
+	/* Go back one step in the conf */
+	GfParmSetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 
+			GfParmGetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1) - 2);
 
-    reConfigRunState();
+	reConfigRunState();
 }
 
 
@@ -73,19 +69,18 @@ static void	*configHookHandle = 0;
 static void
 configHookActivate(void * /* dummy */)
 {
-    reConfigRunState();
+	reConfigRunState();
 }
 
 static void *
 reConfigHookInit(void)
 {
-    if (configHookHandle) {
+	if (configHookHandle) {
+		return configHookHandle;
+	}
+
+	configHookHandle = GfuiHookCreate(0, configHookActivate);
 	return configHookHandle;
-    }
-
-    configHookHandle = GfuiHookCreate(0, configHookActivate);
-
-    return configHookHandle;
 }
 
 /***************************************************************/
@@ -96,19 +91,18 @@ static void	*ConfigBackHookHandle = 0;
 static void
 ConfigBackHookActivate(void * /* dummy */)
 {
-    reConfigBack();
+	reConfigBack();
 }
 
 static void *
 reConfigBackHookInit(void)
 {
-    if (ConfigBackHookHandle) {
+	if (ConfigBackHookHandle) {
+		return ConfigBackHookHandle;
+	}
+
+	ConfigBackHookHandle = GfuiHookCreate(0, ConfigBackHookActivate);
 	return ConfigBackHookHandle;
-    }
-
-    ConfigBackHookHandle = GfuiHookCreate(0, ConfigBackHookActivate);
-
-    return ConfigBackHookHandle;
 }
 
 static void
@@ -120,6 +114,8 @@ reConfigRunState(void)
 	int curConf;
 	int numOpt;
 	void *params = ReInfo->params;
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE];
 	
 	curConf = (int)GfParmGetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1);
 	if (curConf > GfParmGetEltNb(params, RM_SECT_CONF)) {
@@ -128,7 +124,7 @@ reConfigRunState(void)
 		goto menuback;
 	}
 	
-	snprintf(path, 1024, "%s/%d", RM_SECT_CONF, curConf);
+	snprintf(path, BUFSIZE, "%s/%d", RM_SECT_CONF, curConf);
 	conf = GfParmGetStr(params, path, RM_ATTR_TYPE, 0);
 	if (!conf) {
 		GfOut("no %s here %s\n", RM_ATTR_TYPE, path);
@@ -170,10 +166,10 @@ reConfigRunState(void)
 		rp.title = GfParmGetStr(params, path, RM_ATTR_RACE, "Race");
 		/* Select options to configure */
 		rp.confMask = 0;
-		snprintf(path, 1024, "%s/%d/%s", RM_SECT_CONF, curConf, RM_SECT_OPTIONS);
+		snprintf(path, BUFSIZE, "%s/%d/%s", RM_SECT_CONF, curConf, RM_SECT_OPTIONS);
 		numOpt = GfParmGetEltNb(params, path);
 		for (i = 1; i < numOpt + 1; i++) {
-			snprintf(path, 1024, "%s/%d/%s/%d", RM_SECT_CONF, curConf, RM_SECT_OPTIONS, i);
+			snprintf(path, BUFSIZE, "%s/%d/%s/%d", RM_SECT_CONF, curConf, RM_SECT_OPTIONS, i);
 			opt = GfParmGetStr(params, path, RM_ATTR_TYPE, "");
 			if (!strcmp(opt, RM_VAL_CONFRACELEN)) {
 			/* Configure race length */
@@ -195,29 +191,36 @@ reConfigRunState(void)
 
     /* Back to the race menu */
  menuback:
-    GfuiScreenActivate(racemanMenuHdle);
-    return;
+	GfuiScreenActivate(racemanMenuHdle);
+	return;
 }
 
 static void
 reConfigureMenu(void * /* dummy */)
 {
-    void *params = ReInfo->params;
+	void *params = ReInfo->params;
 
-    /* Reset configuration automaton */
-    GfParmSetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1);
-    reConfigRunState();
+	/* Reset configuration automaton */
+	GfParmSetNum(params, RM_SECT_CONF, RM_ATTR_CUR_CONF, NULL, 1);
+	reConfigRunState();
 }
 
 static void
 reSelectLoadFile(char *filename)
 {
-    snprintf(buf, 1024, "%sresults/%s/%s", GetLocalDir(), ReInfo->_reFilename, filename);
-    GfOut("Loading Saved File %s...\n", buf);
-    ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-    ReInfo->_reRaceName = ReInfo->_reName;
-    RmShowStandings(ReInfo->_reGameScreen, ReInfo);
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
+	snprintf(buf, BUFSIZE, "%sresults/%s/%s", GetLocalDir(), ReInfo->_reFilename, filename);
+	GfOut("Loading Saved File %s...\n", buf);
+	ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	ReInfo->_reRaceName = ReInfo->_reName;
+	RmShowStandings(ReInfo->_reGameScreen, ReInfo);
 }
+
+// FIXME: remove this static shared buffer!
+const int VARBUFSIZE = 1024;
+char varbuf[VARBUFSIZE];
 
 static void
 reLoadMenu(void *prevHandle)
@@ -232,8 +235,8 @@ reLoadMenu(void *prevHandle)
 		fs.title = str;
 	}
 
-	snprintf(buf, 1024, "%sresults/%s", GetLocalDir(), ReInfo->_reFilename);
-	fs.path = buf;
+	snprintf(varbuf, VARBUFSIZE, "%sresults/%s", GetLocalDir(), ReInfo->_reFilename);
+	fs.path = varbuf;
 	
 	RmFileSelect((void*)&fs);
 }
@@ -301,8 +304,10 @@ reStateManage(void * /* dummy */)
 int
 ReNewTrackMenu(void)
 {
-	void	*params = ReInfo->params;
-	void	*results = ReInfo->results;
+	void *params = ReInfo->params;
+	void *results = ReInfo->results;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	if (newTrackMenuHdle) {
 		GfuiScreenRelease(newTrackMenuHdle);
@@ -323,7 +328,7 @@ ReNewTrackMenu(void)
 	
 	GfuiMenuDefaultKeysAdd(newTrackMenuHdle);
 	
-	snprintf(buf, 1024, "Race Day #%d/%d on %s",
+	snprintf(buf, BUFSIZE, "Race Day #%d/%d on %s",
 		(int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1),
 		GfParmGetEltNb(params, RM_SECT_TRACKS),
 		ReInfo->track->name);

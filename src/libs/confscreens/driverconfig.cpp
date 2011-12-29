@@ -34,8 +34,6 @@
 static const char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
 static const int nbLevels = sizeof(level_str) / sizeof(level_str[0]);
 
-static char buf[1024];
-
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 static int	scrollList;
@@ -109,6 +107,9 @@ static const char *Yn[] = {HM_VAL_YES, HM_VAL_NO};
 static void
 refreshEditVal(void)
 {
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
 	if (curPlayer == NULL) {
 		GfuiEditboxSetString(scrHandle, NameEditId, "");
 		GfuiEnable(scrHandle, NameEditId, GFUI_DISABLE);
@@ -136,7 +137,7 @@ refreshEditVal(void)
 		GfuiEditboxSetString(scrHandle, NameEditId, curPlayer->_DispName);
 		GfuiEnable(scrHandle, NameEditId, GFUI_ENABLE);
 		
-		snprintf(buf, 1024, "%d", curPlayer->racenumber);
+		snprintf(buf, BUFSIZE, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 		GfuiEnable(scrHandle, RaceNumEditId, GFUI_ENABLE);
 		
@@ -145,13 +146,13 @@ refreshEditVal(void)
 		
 		GfuiLabelSetText(scrHandle, CatEditId, curPlayer->carinfo->cat->_DispName);
 		
-		snprintf(buf, 1024, "%d", curPlayer->racenumber);
+		snprintf(buf, BUFSIZE, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 		GfuiEnable(scrHandle, RaceNumEditId, GFUI_ENABLE);
 		
 		GfuiLabelSetText(scrHandle, TransEditId, curPlayer->transmission);
 		
-		snprintf(buf, 1024, "%d", curPlayer->nbpitstops);
+		snprintf(buf, BUFSIZE, "%d", curPlayer->nbpitstops);
 		GfuiEditboxSetString(scrHandle, PitsEditId, buf);
 		GfuiEnable(scrHandle, PitsEditId, GFUI_ENABLE);
 		
@@ -178,6 +179,8 @@ GenCarsInfo(void)
 	tFList *curFile;
 	void *carparam;
 	void *hdle;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	/* Empty the lists */
 	while ((curCat = GF_TAILQ_FIRST(&CatsInfoList)) != NULL) {
@@ -203,7 +206,7 @@ GenCarsInfo(void)
 			char* str = strchr(curFile->name, '.');
 			*str = '\0';
 			curCat->_Name = strdup(curFile->name);
-			snprintf(buf, 1024, "categories/%s.xml", curFile->name);
+			snprintf(buf, BUFSIZE, "categories/%s.xml", curFile->name);
 			hdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 			if (!hdle) {
 				continue;
@@ -222,7 +225,7 @@ GenCarsInfo(void)
 			curFile = curFile->next;
 			curCar = (tCarInfo*)calloc(1, sizeof(tCarInfo));
 			curCar->_Name = strdup(curFile->name);
-			snprintf(buf, 1024, "cars/%s/%s.xml", curFile->name, curFile->name);
+			snprintf(buf, BUFSIZE, "cars/%s/%s.xml", curFile->name, curFile->name);
 			carparam = GfParmReadFile(buf, GFPARM_RMODE_STD);
 			if (!carparam) {
 				continue;
@@ -303,7 +306,8 @@ static int
 GenDrvList(void)
 {
 	void *drvinfo;
-	char sstring[256];
+	const int SSTRINGSIZE = 256;
+	char sstring[SSTRINGSIZE];
 	int i;
 	int j;
 	const char *driver;
@@ -311,15 +315,17 @@ GenDrvList(void)
 	tCatInfo *cat;
 	const char *str;
 	int found;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_DRV_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_DRV_FILE);
 	drvinfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
 	if (drvinfo == NULL) {
 		return -1;
 	}
 
 	for (i = 0; i < NB_DRV; i++) {
-		snprintf(sstring, 256, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
+		snprintf(sstring, SSTRINGSIZE, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
 		driver = GfParmGetStr(drvinfo, sstring, ROB_ATTR_NAME, "");
 		if (strlen(driver) == 0) {
 			PlayersInfo[i]._DispName = strdup(NO_DRV);
@@ -365,7 +371,7 @@ GenDrvList(void)
     }
     UpdtScrollList();
 
-    snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
+    snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
     void* PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
     if (PrefHdle == NULL) {
 		GfParmReleaseHandle(drvinfo);
@@ -373,7 +379,7 @@ GenDrvList(void)
     }
 
     for (i = 0; i < NB_DRV; i++) {
-		snprintf(sstring, 256, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
+		snprintf(sstring, SSTRINGSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
 		str = GfParmGetStr(PrefHdle, sstring, HM_ATT_TRANS, HM_VAL_AUTO);
 		if (strcmp(str, HM_VAL_AUTO) == 0) {
 			PlayersInfo[i].transmission = HM_VAL_AUTO;
@@ -398,40 +404,41 @@ static void
 SaveDrvList(void * /* dummy */)
 {
 	void	*drvinfo;
-	char	str[32];
 	int		i;
-	
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_DRV_FILE);
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_DRV_FILE);
 	drvinfo = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (drvinfo == NULL) {
 		return;
 	}
 
 	for (i = 0; i < NB_DRV; i++) {
-		snprintf(str, 32, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
+		snprintf(buf, BUFSIZE, "%s/%s/%d", ROB_SECT_ROBOTS, ROB_LIST_INDEX, i+1);
 		if (strcmp(PlayersInfo[i]._DispName, NO_DRV) == 0) {
-			GfParmSetStr(drvinfo, str, ROB_ATTR_NAME, "");
+			GfParmSetStr(drvinfo, buf, ROB_ATTR_NAME, "");
 		} else {
-			GfParmSetStr(drvinfo, str, ROB_ATTR_NAME, PlayersInfo[i]._DispName);
-			GfParmSetStr(drvinfo, str, ROB_ATTR_CAR, PlayersInfo[i].carinfo->_Name);
-			GfParmSetNum(drvinfo, str, ROB_ATTR_RACENUM, (char*)NULL, PlayersInfo[i].racenumber);
-			GfParmSetNum(drvinfo, str, ROB_ATTR_RED, (char*)NULL, PlayersInfo[i].color[0]);
-			GfParmSetNum(drvinfo, str, ROB_ATTR_GREEN, (char*)NULL, PlayersInfo[i].color[1]);
-			GfParmSetNum(drvinfo, str, ROB_ATTR_BLUE, (char*)NULL, PlayersInfo[i].color[2]);
-			GfParmSetStr(drvinfo, str, ROB_ATTR_TYPE, ROB_VAL_HUMAN);
-			GfParmSetStr(drvinfo, str, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skilllevel]);
+			GfParmSetStr(drvinfo, buf, ROB_ATTR_NAME, PlayersInfo[i]._DispName);
+			GfParmSetStr(drvinfo, buf, ROB_ATTR_CAR, PlayersInfo[i].carinfo->_Name);
+			GfParmSetNum(drvinfo, buf, ROB_ATTR_RACENUM, (char*)NULL, PlayersInfo[i].racenumber);
+			GfParmSetNum(drvinfo, buf, ROB_ATTR_RED, (char*)NULL, PlayersInfo[i].color[0]);
+			GfParmSetNum(drvinfo, buf, ROB_ATTR_GREEN, (char*)NULL, PlayersInfo[i].color[1]);
+			GfParmSetNum(drvinfo, buf, ROB_ATTR_BLUE, (char*)NULL, PlayersInfo[i].color[2]);
+			GfParmSetStr(drvinfo, buf, ROB_ATTR_TYPE, ROB_VAL_HUMAN);
+			GfParmSetStr(drvinfo, buf, ROB_ATTR_LEVEL, level_str[PlayersInfo[i].skilllevel]);
 		}
 	}
 	GfParmWriteFile(NULL, drvinfo, dllname);
 	GfParmReleaseHandle(drvinfo);
 
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
 	void* PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	for (i = 0; i < NB_DRV; i++) {
-		snprintf(str, 32, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
-		GfParmSetStr(PrefHdle, str, HM_ATT_TRANS, PlayersInfo[i].transmission);
-		GfParmSetNum(PrefHdle, str, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
-		GfParmSetStr(PrefHdle, str, HM_ATT_AUTOREVERSE, Yn[PlayersInfo[i].autoreverse]);
+		snprintf(buf, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, i+1);
+		GfParmSetStr(PrefHdle, buf, HM_ATT_TRANS, PlayersInfo[i].transmission);
+		GfParmSetNum(PrefHdle, buf, HM_ATT_NBPITS, (char*)NULL, (tdble)PlayersInfo[i].nbpitstops);
+		GfParmSetStr(PrefHdle, buf, HM_ATT_AUTOREVERSE, Yn[PlayersInfo[i].autoreverse]);
 	}
 
 	GfParmWriteFile(NULL, PrefHdle, "preferences");
@@ -464,12 +471,14 @@ ChangeName(void * /* dummy */)
 static void
 ChangeNum(void * /* dummy */)
 {
-	char	*val;
+	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	val = GfuiEditboxGetString(scrHandle, RaceNumEditId);
 	if (curPlayer != NULL) {
 		curPlayer->racenumber = (int)strtol(val, (char **)NULL, 0);
-		snprintf(buf, 1024, "%d", curPlayer->racenumber);
+		snprintf(buf, BUFSIZE, "%d", curPlayer->racenumber);
 		GfuiEditboxSetString(scrHandle, RaceNumEditId, buf);
 	}
 }
@@ -477,12 +486,14 @@ ChangeNum(void * /* dummy */)
 static void
 ChangePits(void * /* dummy */)
 {
-	char	*val;
+	char *val;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	val = GfuiEditboxGetString(scrHandle, PitsEditId);
 	if (curPlayer != NULL) {    
 		curPlayer->nbpitstops = (int)strtol(val, (char **)NULL, 0);
-		snprintf(buf, 1024, "%d", curPlayer->nbpitstops);
+		snprintf(buf, BUFSIZE, "%d", curPlayer->nbpitstops);
 		GfuiEditboxSetString(scrHandle, PitsEditId, buf);
 	}
 }

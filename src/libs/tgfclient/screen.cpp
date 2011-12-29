@@ -587,7 +587,7 @@ updateLabelText(void)
     GfuiLabelSetText (scrHandle, ModeLabelId, Mode[curMode]);
 #ifdef WIN32
 	const int BUFSIZE = 1024;
-	char buf[1024];
+	char buf[BUFSIZE];
 
 	snprintf(buf, BUFSIZE, "%d", curMaxFreq);
     GfuiEditboxSetString(scrHandle, MaxFreqId, buf);
@@ -712,7 +712,7 @@ ChangeMaxFreq(void * /* dummy */)
 {
     char	*val;
 	const int BUFSIZE = 1024;
-	char buf[1024];
+	char buf[BUFSIZE];
     
     val = GfuiEditboxGetString(scrHandle, MaxFreqId);
     curMaxFreq = (int)strtol(val, (char **)NULL, 0);
@@ -738,7 +738,7 @@ GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
 	const int BUFSIZE = 1024;
-	char buf[1024];
+	char buf[BUFSIZE];
 	
 #ifndef WIN32
 	const int yoffset1 = 30, yoffset2 = 60;

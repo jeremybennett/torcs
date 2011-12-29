@@ -46,7 +46,8 @@ static int	MouseCalButton;
 static int	JoyCalButton;
 
 static tCtrlMouseInfo	mouseInfo;
-static char	CurrentSection[256];
+static const int CURRENTSECTIONSIZE = 256;
+static char	CurrentSection[CURRENTSECTIONSIZE];
 
 static tCmdInfo Cmd[] = {
     {HM_ATT_GEAR_R,     {-1, GFCTRL_TYPE_NOT_AFFECTED}, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -74,8 +75,6 @@ static int		rawb[NUM_JOY] = {0};
 static float SteerSensVal;
 static float DeadZoneVal;
 
-static char buf[1024];
-
 static int SteerSensEditId;
 static int DeadZoneEditId;
 
@@ -86,11 +85,13 @@ onSteerSensChange(void * /* dummy */)
 {
 	char *val;
 	float fv;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	val = GfuiEditboxGetString(scrHandle, SteerSensEditId);
 	
 	if (sscanf(val, "%f", &fv) == 1) {
-		snprintf(buf, 1024, "%f", fv);
+		snprintf(buf, BUFSIZE, "%f", fv);
 		SteerSensVal = fv;
 		GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
 	} else {
@@ -105,10 +106,12 @@ onDeadZoneChange(void * /* dummy */)
 {
 	char *val;
 	float fv;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	val = GfuiEditboxGetString(scrHandle, DeadZoneEditId);
 	if (sscanf(val, "%f", &fv) == 1) {
-		snprintf(buf, 1024, "%f", fv);
+		snprintf(buf, BUFSIZE, "%f", fv);
 		DeadZoneVal = fv;
 		GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
 	} else {
@@ -159,6 +162,8 @@ updateButtonText(void)
 	const char *str;
 	int displayMouseCal = GFUI_INVISIBLE;
 	int displayJoyCal = GFUI_INVISIBLE;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	for (i = 0; i < maxCmd; i++) {
 		str = GfctrlGetNameByRef(Cmd[i].ref.type, Cmd[i].ref.index);
@@ -175,10 +180,10 @@ updateButtonText(void)
 		}
 	}
 	
-	snprintf(buf, 1024, "%f", SteerSensVal);
+	snprintf(buf, BUFSIZE, "%f", SteerSensVal);
 	GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
 	
-	snprintf(buf, 1024, "%f", DeadZoneVal);
+	snprintf(buf, BUFSIZE, "%f", DeadZoneVal);
 	GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
 	
 	GfuiVisibilitySet(scrHandle, MouseCalButton, displayMouseCal);
@@ -378,9 +383,12 @@ onActivate(void * /* dummy */)
 	int cmd;
 	const char *prm;
 	tCtrlRef *ref;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
 
 	if (ReloadValues) {
-		snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
+		snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
 		PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	
 		/* Mouse Settings */
@@ -432,14 +440,16 @@ DevCalibrate(void *menu)
 void *
 TorcsControlMenuInit(void *prevMenu, int idx)
 {
-	int		x, y, x2, dy, i;
-	int		index;
+	int x, y, x2, dy, i;
+	int index;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
 	ReloadValues = 1;
-	snprintf(CurrentSection, 1024, "%s/%d", HM_SECT_DRVPREF, idx);
+	snprintf(CurrentSection, CURRENTSECTIONSIZE, "%s/%d", HM_SECT_DRVPREF, idx);
 	
 	prevHandle = prevMenu;
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), HM_PREF_FILE);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
 	PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	
 	if (scrHandle) {

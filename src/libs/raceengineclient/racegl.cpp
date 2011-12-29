@@ -357,9 +357,9 @@ ReResScreenInit(void)
 void
 ReResScreenSetTitle(char *title)
 {
-    if (reResScreenHdle) {
-	GfuiLabelSetText(reResScreenHdle, reResTitleId, title);
-    }
+	if (reResScreenHdle) {
+		GfuiLabelSetText(reResScreenHdle, reResTitleId, title);
+	}
 }
 
 void

@@ -54,23 +54,23 @@ rmClickOnFile(void * /*dummy*/)
 static void
 rmSelect(void * /* dummy */ )
 {
-    if (FileList) {
-	rmFs->select(FileSelected->name);
-	GfDirFreeList(FileList, NULL);
-	FileList = NULL;
-    } else {
-	rmFs->select(NULL);
-    }
+	if (FileList) {
+		rmFs->select(FileSelected->name);
+		GfDirFreeList(FileList, NULL);
+		FileList = NULL;
+	} else {
+		rmFs->select(NULL);
+	}
 }
 
 static void
 rmDeactivate(void * /* dummy */ )
 {
-    if (FileList) {
-	GfDirFreeList(FileList, NULL);
-	FileList = NULL;
-    }
-    GfuiScreenActivate(rmFs->prevScreen);
+	if (FileList) {
+		GfDirFreeList(FileList, NULL);
+		FileList = NULL;
+	}
+	GfuiScreenActivate(rmFs->prevScreen);
 }
 
 
@@ -81,41 +81,42 @@ rmDeactivate(void * /* dummy */ )
 void
 RmFileSelect(void *vs)
 {
-    tFList	*FileCur;
+	tFList *FileCur;
 
-    rmFs = (tRmFileSelect*)vs;
+	rmFs = (tRmFileSelect*)vs;
 
-    if (scrHandle) {
-	GfuiScreenRelease(scrHandle);
-    }
-    scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmActivate, NULL, (tfuiCallback)NULL, 1);
-    GfuiScreenAddBgImg(scrHandle, "data/img/splash-filesel.png");
-    GfuiTitleCreate(scrHandle, rmFs->title, 0);
+	if (scrHandle) {
+		GfuiScreenRelease(scrHandle);
+	}
+	scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, rmActivate, NULL, (tfuiCallback)NULL, 1);
+	GfuiScreenAddBgImg(scrHandle, "data/img/splash-filesel.png");
+	GfuiTitleCreate(scrHandle, rmFs->title, 0);
 
-    /* Scroll List containing the File list */
-    fileScrollList = GfuiScrollListCreate(scrHandle, GFUI_FONT_MEDIUM_C, 120, 80, GFUI_ALIGN_HC_VB,
-					  400, 310, GFUI_SB_RIGHT, NULL, rmClickOnFile);
+	/* Scroll List containing the File list */
+	fileScrollList = GfuiScrollListCreate(scrHandle, GFUI_FONT_MEDIUM_C, 120, 80, GFUI_ALIGN_HC_VB,
+						400, 310, GFUI_SB_RIGHT, NULL, rmClickOnFile);
 
-    FileList = GfDirGetList(rmFs->path);
-    if (FileList == NULL) {
-	GfuiScreenActivate(rmFs->prevScreen);
-	return;
-    }
-    FileSelected = FileList;
-    FileCur = FileList;
-    do {
-	FileCur = FileCur->next;
-	GfuiScrollListInsertElement(scrHandle, fileScrollList, FileCur->name, 1000, (void*)FileCur);
-    } while (FileCur != FileList);
+	FileList = GfDirGetList(rmFs->path);
+	if (FileList == NULL) {
+		GfuiScreenActivate(rmFs->prevScreen);
+		return;
+	}
+	
+	FileSelected = FileList;
+	FileCur = FileList;
+	do {
+		FileCur = FileCur->next;
+		GfuiScrollListInsertElement(scrHandle, fileScrollList, FileCur->name, 1000, (void*)FileCur);
+	} while (FileCur != FileList);
 
-    /* Bottom buttons */
-    GfuiButtonCreate(scrHandle, "Select", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, rmSelect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	/* Bottom buttons */
+	GfuiButtonCreate(scrHandle, "Select", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				NULL, rmSelect, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, rmDeactivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				NULL, rmDeactivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    /* Default menu keyboard actions */
-    GfuiMenuDefaultKeysAdd(scrHandle);
-    GfuiScreenActivate(scrHandle);
+	/* Default menu keyboard actions */
+	GfuiMenuDefaultKeysAdd(scrHandle);
+	GfuiScreenActivate(scrHandle);
 }

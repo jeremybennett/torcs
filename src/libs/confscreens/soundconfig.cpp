@@ -68,9 +68,10 @@ static void readSoundCfg(void)
 {
 	const char *optionName;
 	int	i;
-	char buf[1024];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
 	
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[0]);
@@ -95,7 +96,7 @@ static void readSoundCfg(void)
 	GfuiLabelSetText(scrHandle, SoundOptionId, soundOptionList[curOption]);
 	
 	// Read Menu music optons
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
 	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	optionName = GfParmGetStr(paramHandle, MM_SCT_SOUND, MM_ATT_SOUND_ENABLE, MM_VAL_SOUND_DISABLED);
 	
@@ -114,8 +115,10 @@ static void readSoundCfg(void)
 // Save the choosen values in the corresponding parameter file.
 static void saveSoundOption(void *)
 {
-	char buf[1024];
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
 	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	GfParmSetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOptionList[curOption]);
 	GfParmSetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", VolumeValue);
@@ -123,7 +126,7 @@ static void saveSoundOption(void *)
 	GfParmReleaseHandle(paramHandle);
 
 	// Write Menu music optons
-	snprintf(buf, 1024, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), MM_SOUND_PARM_CFG);
 	paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	GfParmSetStr(paramHandle, MM_SCT_SOUND, MM_ATT_SOUND_ENABLE, menuMusicList[curOptionMenuMusic]);
 	GfParmWriteFile(NULL, paramHandle, "sound");
@@ -177,10 +180,11 @@ static void changeMenuMusicState(void *vp)
 static void changeVolume(void * )
 {
     char	*val;
-	char buf[1024];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
     val = GfuiEditboxGetString(scrHandle, VolumeValueId);
     sscanf(val, "%g", &VolumeValue);
-    snprintf(buf, "%g", VolumeValue);
+    snprintf(buf, BUFSIZE, "%g", VolumeValue);
     GfuiEditboxSetString(scrHandle, VolumeValueId, buf);
 }
 */

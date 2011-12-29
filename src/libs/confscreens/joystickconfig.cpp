@@ -36,8 +36,6 @@ static void	*scrHandle2 = NULL;
 static tCmdInfo *Cmd;
 static int maxCmd;
 
-static char buf[1024];
-
 static jsJoystick *js[NUM_JOY] = {NULL};
 
 static float 	ax[MAX_AXES * NUM_JOY] = {0};
@@ -87,44 +85,46 @@ static void advanceStep (void)
 static void
 JoyCalAutomaton(void)
 {
-    static int axis;
-
+	static int axis;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
     switch (CalState) {
-    case 0:
-	memcpy(axCenter, ax, sizeof(axCenter));
-	advanceStep();
-	break;
-    case 1:
-	axis = Cmd[CalState + OFFSET_CMD].ref.index;
-	Cmd[CalState + OFFSET_CMD].min = ax[axis];
-	Cmd[CalState + OFFSET_CMD].max = axCenter[axis];
-	Cmd[CalState + OFFSET_CMD].pow = 1.0;
-	snprintf(buf, 1024, "%.2g", ax[axis]);
-	GfuiLabelSetText(scrHandle2, LabMinId[0], buf);
-	advanceStep();
-	break;
-    case 2:
-	axis = Cmd[CalState + OFFSET_CMD].ref.index;
-	Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
-	Cmd[CalState + OFFSET_CMD].max = ax[axis];
-	Cmd[CalState + OFFSET_CMD].pow = 1.0;
-	snprintf(buf, 1024, "%.2g", ax[axis]);
-	GfuiLabelSetText(scrHandle2, LabMaxId[0], buf);
-	advanceStep();
-	break;
-    case 3:
-    case 4:
-    case 5:
-	axis = Cmd[CalState + OFFSET_CMD].ref.index;
-	Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
-	Cmd[CalState + OFFSET_CMD].max = ax[axis]*1.1;
-	Cmd[CalState + OFFSET_CMD].pow = 1.2;
-	snprintf(buf, 1024, "%.2g", axCenter[axis]);
-	GfuiLabelSetText(scrHandle2, LabMinId[CalState - 2], buf);
-	snprintf(buf, 1024, "%.2g", ax[axis]*1.1);
-	GfuiLabelSetText(scrHandle2, LabMaxId[CalState - 2], buf);
-	advanceStep();
-	break;
+		case 0:
+			memcpy(axCenter, ax, sizeof(axCenter));
+			advanceStep();
+			break;
+		case 1:
+			axis = Cmd[CalState + OFFSET_CMD].ref.index;
+			Cmd[CalState + OFFSET_CMD].min = ax[axis];
+			Cmd[CalState + OFFSET_CMD].max = axCenter[axis];
+			Cmd[CalState + OFFSET_CMD].pow = 1.0;
+			snprintf(buf, BUFSIZE, "%.2g", ax[axis]);
+			GfuiLabelSetText(scrHandle2, LabMinId[0], buf);
+			advanceStep();
+			break;
+		case 2:
+			axis = Cmd[CalState + OFFSET_CMD].ref.index;
+			Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
+			Cmd[CalState + OFFSET_CMD].max = ax[axis];
+			Cmd[CalState + OFFSET_CMD].pow = 1.0;
+			snprintf(buf, BUFSIZE, "%.2g", ax[axis]);
+			GfuiLabelSetText(scrHandle2, LabMaxId[0], buf);
+			advanceStep();
+			break;
+		case 3:
+		case 4:
+		case 5:
+			axis = Cmd[CalState + OFFSET_CMD].ref.index;
+			Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
+			Cmd[CalState + OFFSET_CMD].max = ax[axis]*1.1;
+			Cmd[CalState + OFFSET_CMD].pow = 1.2;
+			snprintf(buf, BUFSIZE, "%.2g", axCenter[axis]);
+			GfuiLabelSetText(scrHandle2, LabMinId[CalState - 2], buf);
+			snprintf(buf, BUFSIZE, "%.2g", ax[axis]*1.1);
+			GfuiLabelSetText(scrHandle2, LabMaxId[CalState - 2], buf);
+			advanceStep();
+			break;
     }
     GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
 }

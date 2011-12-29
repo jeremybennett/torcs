@@ -926,13 +926,14 @@ void
 GfuiScreenShot(void * /* notused */)
 {
 	unsigned char *img;
-	char buf[1024];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	struct tm *stm;
 	time_t t;
 	int sw, sh, vw, vh;
-	char path[1024];
+	char path[BUFSIZE];
 	
-	snprintf(path, 1024, "%sscreenshots", GetLocalDir());
+	snprintf(path, BUFSIZE, "%sscreenshots", GetLocalDir());
 	// Ensure that screenshot directory exists.
 	if (GfCreateDir(path) == GF_DIR_CREATED) {
 	
@@ -949,7 +950,7 @@ GfuiScreenShot(void * /* notused */)
 		
 		t = time(NULL);
 		stm = localtime(&t);
-		snprintf(buf, 1024, "%s/torcs-%4d%02d%02d%02d%02d%02d.png",
+		snprintf(buf, BUFSIZE, "%s/torcs-%4d%02d%02d%02d%02d%02d.png",
 			path,
 			stm->tm_year+1900,
 			stm->tm_mon+1,
