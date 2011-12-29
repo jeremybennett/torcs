@@ -72,7 +72,13 @@ void grInitSound(tSituation* s, int ncars)
 	
 	switch (sound_mode) {
 	case OPENAL_MODE:
-		sound_interface = new OpenalSoundInterface (44100, 32);
+		try {
+			sound_interface = new OpenalSoundInterface (44100, 32);
+		} catch (const char* err) {
+			GfError("Disabling Sound: OpenAL initialisation failed: %s\n", err ? err : "");
+			sound_mode = DISABLED;
+			return;
+		}
 		break;
 	case PLIB_MODE:
 		sound_interface = new PlibSoundInterface(44100, 32);
