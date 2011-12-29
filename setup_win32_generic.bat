@@ -113,6 +113,14 @@ if exist .\src\libs\learning\MathFunctions.h copy .\src\libs\learning\MathFuncti
 if exist .\src\libs\learning\Distribution.h copy .\src\libs\learning\Distribution.h .\export\include\learning\Distribution.h
 rem if exist .\src\libs\learning\SmartAssert.h copy .\src\libs\learning\SmartAssert.h .\export\include\learning\SmartAssert.h
 
+if exist .\src\libs\musicplayer\*.* call .\create_dir .\export
+if exist .\src\libs\musicplayer\*.* call .\create_dir .\export\include
+if exist .\src\libs\musicplayer\*.* call .\create_dir .\export\include\musicplayer
+if exist .\src\libs\musicplayer\musicplayer.h copy .\src\libs\musicplayer\musicplayer.h .\export\include\musicplayer\musicplayer.h
+if exist .\src\libs\musicplayer\OggSoundStream.h copy .\src\libs\musicplayer\OggSoundStream.h .\export\include\musicplayer\OggSoundStream.h
+if exist .\src\libs\musicplayer\OpenALMusicPlayer.h copy .\src\libs\musicplayer\OpenALMusicPlayer.h .\export\include\musicplayer\OpenALMusicPlayer.h
+if exist .\src\libs\musicplayer\SoundStream.h copy .\src\libs\musicplayer\SoundStream.h .\export\include\musicplayer\SoundStream.h
+
 if exist .\src\libs\portability\*.* call .\create_dir .\export
 if exist .\src\libs\portability\*.* call .\create_dir .\export\include
 if exist .\src\libs\portability\portability.h copy .\src\libs\portability\portability.h .\export\include\portability.h
