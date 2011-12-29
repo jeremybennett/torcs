@@ -937,6 +937,10 @@ if exist .\data\data\sound\impreza2002_engine.wav copy .\data\data\sound\impreza
 if exist .\data\data\sound\porsche_engine.wav copy .\data\data\sound\porsche_engine.wav .\%RUNTIMEDIR%\data\sound\porsche_engine.wav
 if exist .\data\data\sound\xj220.wav copy .\data\data\sound\xj220.wav .\%RUNTIMEDIR%\data\sound\xj220.wav
 
+if exist .\data\data\music\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\data\music\*.* call .\create_dir .\%RUNTIMEDIR%\data
+if exist .\data\data\music\*.* call .\create_dir .\%RUNTIMEDIR%\data\music
+if exist .\data\data\music\torcs1.ogg copy .\data\data\music\torcs1.ogg .\%RUNTIMEDIR%\data\music\torcs1.ogg
 
 if exist .\data\data\sound\935.wav copy .\data\data\sound\935.wav .\%RUNTIMEDIR%\data\sound\935.wav
 if exist .\data\data\sound\944.wav copy .\data\data\sound\944.wav .\%RUNTIMEDIR%\data\sound\944.wav
