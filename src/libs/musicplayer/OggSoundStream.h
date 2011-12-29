@@ -22,6 +22,8 @@
 
 /* Concrete implementation for ogg sound streams */
 
+#define OV_EXCLUDE_STATIC_CALLBACKS
+
 #include <vorbis/vorbisfile.h>
 #include "SoundStream.h"
 

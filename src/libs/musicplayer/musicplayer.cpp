@@ -17,6 +17,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "musicplayer.h"
+
 #include <GL/glut.h>
 #include <string.h>
 #include <tgf.h>
@@ -24,7 +26,6 @@
 
 #include "OggSoundStream.h"
 #include "OpenALMusicPlayer.h"
-#include "musicplayer.h"
 
 
 static bool isEnabled()

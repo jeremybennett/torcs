@@ -24,6 +24,7 @@
 #include <robot.h>
 #include <playerpref.h>
 #include <controlconfig.h>
+#include <portability.h>
 
 #include "driverconfig.h"
 
