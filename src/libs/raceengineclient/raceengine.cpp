@@ -132,6 +132,7 @@ ReManage(tCarElt *car)
 	if (car->_speed_x > info->topSpd) {
 		info->topSpd = car->_speed_x;
 	}
+	
 	if (car->_speed_x < info->botSpd) {
 		info->botSpd = car->_speed_x;
 	}
@@ -224,107 +225,108 @@ ReManage(tCarElt *car)
 	
 	/* Start Line Crossing */
 	if (info->prevTrkPos.seg != car->_trkPos.seg) {
-	if ((info->prevTrkPos.seg->raceInfo & TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {
-		if (info->lapFlag == 0) {
-		if ((car->_state & RM_CAR_STATE_FINISH) == 0) {
-			car->_laps++;
-			car->_remainingLaps--;
-			if (car->_laps > 1) {
-			car->_lastLapTime = s->currentTime - info->sTime;
-			car->_curTime += car->_lastLapTime;
-			if (car->_bestLapTime != 0) {
-				car->_deltaBestLapTime = car->_lastLapTime - car->_bestLapTime;
-			}
-			if ((car->_lastLapTime < car->_bestLapTime) || (car->_bestLapTime == 0)) {
-				car->_bestLapTime = car->_lastLapTime;
-			}
-			if (car->_pos != 1) {
-				car->_timeBehindLeader = car->_curTime - s->cars[0]->_curTime;
-				car->_lapsBehindLeader = s->cars[0]->_laps - car->_laps;
-				car->_timeBehindPrev = car->_curTime - s->cars[car->_pos - 2]->_curTime;
-				s->cars[car->_pos - 2]->_timeBeforeNext = car->_timeBehindPrev;
-			} else {
-				car->_timeBehindLeader = 0;
-				car->_lapsBehindLeader = 0;
-				car->_timeBehindPrev = 0;
-			}
-			info->sTime = s->currentTime;
-			switch (ReInfo->s->_raceType) {
-			case RM_TYPE_PRACTICE:
-				if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
-				ReInfo->_refreshDisplay = 1;
-				char *t1, *t2;
-				t1 = GfTime2Str(car->_lastLapTime, 0);
-				t2 = GfTime2Str(car->_bestLapTime, 0);
-				snprintf(buf, 1024, "lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d",
-					car->_laps - 1, t1, t2,
-					info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
-				ReResScreenAddText(buf);
-				free(t1);
-				free(t2);
-				}
-				/* save the lap result */
-				ReSavePracticeLap(car);
-				break;
-				
-			case RM_TYPE_QUALIF:
-				if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
-				ReUpdateQualifCurRes(car);
-				}
-				break;
-			}
-			} else {
-			if ((ReInfo->_displayMode == RM_DISP_MODE_NONE) && (ReInfo->s->_raceType == RM_TYPE_QUALIF)) {
-				ReUpdateQualifCurRes(car);
-			}
-			}
-	
-			info->topSpd = car->_speed_x;
-			info->botSpd = car->_speed_x;
-			if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
-			car->_state |= RM_CAR_STATE_FINISH;
-			s->_raceState = RM_RACE_FINISHING;
-			if (ReInfo->s->_raceType == RM_TYPE_RACE) {
-				if (car->_pos == 1) {
-				snprintf(buf, 1024, "Winner %s", car->_name);
-				ReRaceBigMsgSet(buf, 10);
-				} else {
-				const char *numSuffix = "th";
-				if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
-					switch (car->_pos % 10) {
-					case 1:
-					numSuffix = "st";
-					break;
-					case 2:
-					numSuffix = "nd";
-					break;
-					case 3:
-					numSuffix = "rd";
-					break;
-					default:
-					break;
+		if ((info->prevTrkPos.seg->raceInfo & TR_LAST) && (car->_trkPos.seg->raceInfo & TR_START)) {
+			if (info->lapFlag == 0) {
+				if ((car->_state & RM_CAR_STATE_FINISH) == 0) {
+					car->_laps++;
+					car->_remainingLaps--;
+					if (car->_laps > 1) {
+						car->_lastLapTime = s->currentTime - info->sTime;
+						car->_curTime += car->_lastLapTime;
+						if (car->_bestLapTime != 0) {
+							car->_deltaBestLapTime = car->_lastLapTime - car->_bestLapTime;
+						}
+						if ((car->_lastLapTime < car->_bestLapTime) || (car->_bestLapTime == 0)) {
+							car->_bestLapTime = car->_lastLapTime;
+						}
+						if (car->_pos != 1) {
+							car->_timeBehindLeader = car->_curTime - s->cars[0]->_curTime;
+							car->_lapsBehindLeader = s->cars[0]->_laps - car->_laps;
+							car->_timeBehindPrev = car->_curTime - s->cars[car->_pos - 2]->_curTime;
+							s->cars[car->_pos - 2]->_timeBeforeNext = car->_timeBehindPrev;
+						} else {
+							car->_timeBehindLeader = 0;
+							car->_lapsBehindLeader = 0;
+							car->_timeBehindPrev = 0;
+						}
+						info->sTime = s->currentTime;
+						switch (ReInfo->s->_raceType) {
+							case RM_TYPE_PRACTICE:
+								if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
+									ReInfo->_refreshDisplay = 1;
+									char *t1, *t2;
+									t1 = GfTime2Str(car->_lastLapTime, 0);
+									t2 = GfTime2Str(car->_bestLapTime, 0);
+									snprintf(buf, 1024, "lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d",
+										car->_laps - 1, t1, t2,
+										info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
+									ReResScreenAddText(buf);
+									free(t1);
+									free(t2);
+								}
+								/* save the lap result */
+								ReSavePracticeLap(car);
+								break;
+								
+							case RM_TYPE_QUALIF:
+								if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
+									ReUpdateQualifCurRes(car);
+								}
+								break;
+						}
+					} else {
+						if ((ReInfo->_displayMode == RM_DISP_MODE_NONE) && (ReInfo->s->_raceType == RM_TYPE_QUALIF)) {
+							ReUpdateQualifCurRes(car);
+						}
 					}
+			
+					info->topSpd = car->_speed_x;
+					info->botSpd = car->_speed_x;
+					if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
+						car->_state |= RM_CAR_STATE_FINISH;
+						s->_raceState = RM_RACE_FINISHING;
+						if (ReInfo->s->_raceType == RM_TYPE_RACE) {
+							if (car->_pos == 1) {
+								snprintf(buf, 1024, "Winner %s", car->_name);
+								ReRaceBigMsgSet(buf, 10);
+							} else {
+								const char *numSuffix = "th";
+								if (abs(12 - car->_pos) > 1) { /* leave suffix as 'th' for 11 to 13 */
+									switch (car->_pos % 10) {
+									case 1:
+									numSuffix = "st";
+									break;
+									case 2:
+									numSuffix = "nd";
+									break;
+									case 3:
+									numSuffix = "rd";
+									break;
+									default:
+									break;
+									}
+								}
+								snprintf(buf, 1024, "%s Finished %d%s", car->_name, car->_pos, numSuffix);
+								ReRaceMsgSet(buf, 5);
+							}
+						}
+					}
+				} else {
+					/* prevent infinite looping of cars around track, allow one lap after finish for the first car */
+					for (i = 0; i < s->_ncars; i++) {
+						s->cars[i]->_state |= RM_CAR_STATE_FINISH;
+					}
+					return;
 				}
-				snprintf(buf, 1024, "%s Finished %d%s", car->_name, car->_pos, numSuffix);
-				ReRaceMsgSet(buf, 5);
-				}
+			} else {
+				info->lapFlag--;
 			}
-			}
-		} else {
-			/* prevent infinite looping of cars around track, allow one lap after finish for the first car */
-			for (i = 0; i < s->_ncars; i++) {
-				s->cars[i]->_state |= RM_CAR_STATE_FINISH;
-			}
-			return;
 		}
-		} else {
-		info->lapFlag--;
+
+		if ((info->prevTrkPos.seg->raceInfo & TR_START) && (car->_trkPos.seg->raceInfo & TR_LAST)) {
+			/* going backward through the start line */
+			info->lapFlag++;
 		}
-	}
-	if ((info->prevTrkPos.seg->raceInfo & TR_START) && (car->_trkPos.seg->raceInfo & TR_LAST)) {
-		/* going backward through the start line */
-		info->lapFlag++;
-	}
 	}
 	ReRaceRules(car);
 	
@@ -332,7 +334,7 @@ ReManage(tCarElt *car)
 	car->_curLapTime = s->currentTime - info->sTime;
 	car->_distFromStartLine = car->_trkPos.seg->lgfromstart +
 	(car->_trkPos.seg->type == TR_STR ? car->_trkPos.toStart : car->_trkPos.toStart * car->_trkPos.seg->radius);
-	car->_distRaced = (car->_laps - 1) * ReInfo->track->length + car->_distFromStartLine;
+	car->_distRaced = (car->_laps - (info->lapFlag + 1)) * ReInfo->track->length + car->_distFromStartLine;
 }
 
 static void 
