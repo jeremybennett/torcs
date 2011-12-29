@@ -27,7 +27,7 @@ DATAROOTDIR=@datarootdir@
 DATADIR=$DATAROOTDIR/games/torcs
 VARDIR=@localstatedir@/games/torcs
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBDIR/lib
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$LIBDIR/lib
 
 $LIBDIR/nfsperf-bin $*
 

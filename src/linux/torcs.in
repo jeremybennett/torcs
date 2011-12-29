@@ -37,7 +37,7 @@ then
 	mkdir -p $LOCAL_CONF
 	echo "$LOCAL_CONF created, copying/linking game data"
     fi
-    export LD_LIBRARY_PATH=$LIBDIR/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$LIBDIR/lib
     cd $DATADIR
     if [ -f $LIBDIR/setup_linux.sh ]
     then
