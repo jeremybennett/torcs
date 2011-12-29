@@ -58,7 +58,7 @@ WkspDir=.
 TargetDir=.\Release
 SOURCE="$(InputPath)"
 PostBuild_Desc=exports
-PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime	copy dll\glut32.dll $(WkspDir)\runtime	copy dll\OpenAL32.dll $(WkspDir)\runtime
+PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtime	copy dll\glut32.dll $(WkspDir)\runtime	copy dll\OpenAL32.dll $(WkspDir)\runtime	copy dll\libogg.dll $(WkspDir)\runtime	copy dll\libvorbis.dll $(WkspDir)\runtime	copy dll\libvorbisfile.dll $(WkspDir)\runtime
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "wtorcs - Win32 Debug"
@@ -91,7 +91,7 @@ WkspDir=.
 TargetDir=.\Debug
 SOURCE="$(InputPath)"
 PostBuild_Desc=exports
-PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed	copy dll\glut32.dll $(WkspDir)\runtimed	copy dll\OpenAL32.dll $(WkspDir)\runtimed
+PostBuild_Cmds=copy $(TargetDir)\wtorcs.exe $(WkspDir)\runtimed	copy dll\glut32.dll $(WkspDir)\runtimed	copy dll\OpenAL32.dll $(WkspDir)\runtimed	copy dll\libogg.dll $(WkspDir)\runtimed	copy dll\libvorbis.dll $(WkspDir)\runtimed	copy dll\libvorbisfile.dll $(WkspDir)\runtimed
 # End Special Build Tool
 
 !ENDIF 
