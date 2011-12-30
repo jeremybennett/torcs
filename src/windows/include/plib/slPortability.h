@@ -60,7 +60,7 @@
 #    include <linux/soundcard.h>
 #    include <sys/ioctl.h>
 #  elif defined(__FreeBSD__)
-#    include <machine/soundcard.h>
+#    include <sys/soundcard.h>
 #  else
     /*
       Tom thinks this file may be <sys/soundcard.h> under some

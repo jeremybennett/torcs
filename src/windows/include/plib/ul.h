@@ -98,11 +98,13 @@
 
 #endif
 
+
 /*
   Add specialised includes/defines...
 */
 
 #ifdef UL_WIN32
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h>
 #include <regstr.h>
@@ -152,7 +154,7 @@
 
 #define PLIB_MAJOR_VERSION 1
 #define PLIB_MINOR_VERSION 8
-#define PLIB_TINY_VERSION  3
+#define PLIB_TINY_VERSION  5
 
 #define PLIB_VERSION (PLIB_MAJOR_VERSION*100 \
                      +PLIB_MINOR_VERSION*10 \
@@ -180,6 +182,12 @@ typedef int bool ;
 const   int true  = 1 ;
 const   int false = 0 ;
 #endif
+
+/* Let's define our own "min" and "max" so that different operating systems
+ * don't complain
+ */
+#define ulMax(a,b)	((a)>(b)?(a):(b))
+#define ulMin(a,b)	((a)<(b)?(a):(b))
 
 
 /*
@@ -217,10 +225,10 @@ public:
     initPerformanceTimer () ;
 #endif
     start     = getRawTime () ;
-    now       = start ;
+    now       = 0.0 ;
     max_delta = 0.2 ; 
-    delta     = 1.0 / 30.0 ;  /* Faked so stoopid programs won't div0 */
-    last_time = now - delta ;
+    delta     = 0.0000001 ;  /* Faked so stoopid programs won't div0 */
+    last_time = 0.0 ;
   }
 
   void   setMaxDelta  ( double maxDelta ) { max_delta = maxDelta ; }

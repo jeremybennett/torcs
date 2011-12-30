@@ -99,6 +99,7 @@ void  ssgDeRefDelete ( ssgBase *br ) ;
 #define _SSG_TYPE_TRANSFORM        0x00001000
 #define _SSG_TYPE_TEXTRANS         0x00002000
 #define _SSG_TYPE_AXISTRANSFORM    0x00004000
+#define _SSG_TYPE_ANIMTRANSFORM    0x00008000
 #define _SSG_TYPE_SELECTOR         0x00000100
 #define _SSG_TYPE_RANGESELECTOR    0x00001000
 #define _SSG_TYPE_TIMEDSELECTOR    0x00002000
@@ -142,6 +143,7 @@ inline int ssgTypeBranch       () { return _SSG_TYPE_BRANCH    | ssgTypeEntity  
 inline int ssgTypeTweenController(){ return _SSG_TYPE_TWEENCONTROLLER | ssgTypeBranch() ; }
 inline int ssgTypeBaseTransform() { return _SSG_TYPE_BASETRANSFORM | ssgTypeBranch () ; }
 inline int ssgTypeTransform    () { return _SSG_TYPE_TRANSFORM | ssgTypeBaseTransform () ; }
+inline int ssgTypeAnimTransform() { return _SSG_TYPE_ANIMTRANSFORM  | ssgTypeTransform () ; }
 inline int ssgTypeTexTrans     () { return _SSG_TYPE_TEXTRANS  | ssgTypeBaseTransform () ; }
 inline int ssgTypeAxisTransform() { return _SSG_TYPE_AXISTRANSFORM  | ssgTypeTransform () ; }
 inline int ssgTypeSelector     () { return _SSG_TYPE_SELECTOR  | ssgTypeBranch  () ; }
@@ -198,6 +200,10 @@ inline int ssgTypeTexture      () { return _SSG_TYPE_TEXTURE   | ssgTypeBase    
 
 int ssgGetFrameCounter () ;
 void ssgSetFrameCounter ( int fc ) ;
+
+// Returns GL_TRUE if the OpenGL Extension whose name is *extName
+// is supported by the system, or GL_FALSE otherwise.
+bool ssgIsExtensionSupported(char *extName);
 
 class ssgList
 {
@@ -442,7 +448,8 @@ public:
 
   void removeAll ()
   {
-    delete [] list ;
+    if ( own_mem )
+      delete [] list ;
     list = NULL ;
     limit = total = 0 ;
   }
@@ -692,7 +699,7 @@ void ssgAddTextureFormat ( const char* extension,
                           bool (*) (const char*, ssgTextureInfo* info) ) ;
 
 int ssgGetNumTexelsLoaded () ;
-bool ssgMakeMipMaps ( GLubyte *image, int xsize, int ysize, int zsize ) ;
+bool ssgMakeMipMaps ( GLubyte *image, int xsize, int ysize, int zsize, bool freeData = true ) ;
 
 
 class ssgTexture : public ssgBase
@@ -1302,6 +1309,7 @@ extern sgVec4 _ssgColourWhite ;
 extern sgVec3 _ssgNormalUp    ;
 extern sgVec2 _ssgTexCoord00  ;
 extern short  _ssgIndex0      ;
+extern float _ssgGlobTime     ; // used by ssgAnimTransform. Has to be set by the appliation!
 
 
 class ssgVTable : public ssgLeaf
@@ -1469,18 +1477,14 @@ public:
   void getTexCoordList ( void **list ) { *list = texcoords -> get ( 0 ) ; } 
   void getColourList   ( void **list ) { *list = colours   -> get ( 0 ) ; } 
 
-  float *getVertex  (int i){ if(i>=getNumVertices())i=getNumVertices()-1;
-                             return (getNumVertices()<=0) ?
-				      _ssgVertex000 : vertices->get(i);}
-  float *getNormal  (int i){ if(i>=getNumNormals())i=getNumNormals()-1;
-			     return (getNumNormals()<=0) ?
-				    _ssgNormalUp    : normals->get(i);}
-  float *getTexCoord(int i){ if(i>=getNumTexCoords())i=getNumTexCoords()-1;
-                             return (getNumTexCoords()<=0) ?
-                                    _ssgTexCoord00  : texcoords->get(i);}
-  float *getColour  (int i){ if(i>=getNumColours())i=getNumColours()-1;
-			     return (getNumColours()<=0) ?
-				    _ssgColourWhite : colours->get(i);}
+  float *getVertex  (int i){ int nv=getNumVertices(); if(i>=nv)i=nv-1;
+                             return (nv<=0) ? _ssgVertex000:vertices->get(i);}
+  float *getNormal  (int i){ int nn=getNumNormals(); if(i>=nn)i=nn-1;
+			     return (nn<=0) ? _ssgNormalUp:normals->get(i);}
+  float *getTexCoord(int i){ int nc=getNumTexCoords(); if(i>=nc)i=nc-1;
+                             return (nc<=0) ? _ssgTexCoord00:texcoords->get(i);}
+  float *getColour  (int i){ int nc=getNumColours(); if(i>=nc)i=nc-1;
+			     return (nc<=0) ? _ssgColourWhite:colours->get(i);}
 
 	ssgVtxArray *getAs_ssgVtxArray ();
 
@@ -1586,9 +1590,8 @@ public:
 
   void getIndexList ( void **list ) { *list = indices  -> get ( 0 ) ; }
 
-  short *getIndex  (int i){ if(i>=getNumIndices())i=getNumIndices()-1;
-                             return (getNumIndices()<=0) ?
-				      &_ssgIndex0 : indices->get(i);}
+  short *getIndex  (int i){ int ni=getNumIndices();if(i>=ni)i=ni-1;
+                             return (ni<=0) ? &_ssgIndex0 : indices->get(i);}
 
 	void removeUnusedVertices();
   virtual ~ssgVtxArray (void) ;
@@ -2047,6 +2050,39 @@ public:
   virtual void recalcBSphere () ;
 } ;
 
+class ssgAnimTransform  : public ssgTransform 
+{
+  float curr_bank ;
+  int   mode ;  /* SSGTWEEN_STOP_AT_END or SSGTWEEN_REPEAT */
+  class ssgTransformArray transformations;
+
+protected:
+
+  virtual void copy_from ( ssgAnimTransform *src, int clone_flags ) ;
+
+public:
+
+  void setNum ( unsigned int n ) { transformations.setNum( n ); }
+  void setATransform ( sgMat4 thing, unsigned int n ) { transformations.raw_set ( (char *) thing, n ) ; } ;
+  
+
+  virtual ssgBase *clone ( int clone_flags = 0 ) ;
+  ssgAnimTransform (void) ;
+  virtual ~ssgAnimTransform (void) ;
+
+  void  setMode ( int _mode ) { mode = _mode ; }
+  int   getMode ()            { return mode ; }
+
+  void  selectBank ( float f ) { curr_bank = f ; }
+  float getCurrBank () { return curr_bank ; }
+
+  virtual void cull ( sgFrustum *f, sgMat4 m, int test_needed ) ;
+  virtual const char *getTypeName(void) ;
+  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2 ) ;
+  virtual int load ( FILE *fd ) ;
+  virtual int save ( FILE *fd ) ;
+} ;
+
 
 class ssgAxisTransform : public ssgTransform
 {
@@ -2175,8 +2211,8 @@ public:
 
   void setID ( int i ) { id = i ; }
   int  isOn () { return is_turned_on  ; }
-  void on  () { is_turned_on = TRUE  ; }
-  void off () { is_turned_on = FALSE ; }
+  void on   () { is_turned_on = TRUE  ; }
+  void off  () { is_turned_on = FALSE ; }
 
   void setPosition ( const sgVec3 pos ) { sgCopyVec3 ( position, pos ) ; }
   void getPosition ( sgVec3 pos )       { sgCopyVec3 ( pos, position ) ; }
@@ -2191,7 +2227,6 @@ public:
       case GL_SPECULAR : sgCopyVec4 ( specular, col ) ; break ;
       default : break ;
     }
-    setup () ;
   }
 
   void getColour   ( GLenum which, sgVec4 col )
@@ -2397,7 +2432,7 @@ public:
   ssgSimpleState *getState () { return currentState ; }
   void cull ( ssgBranch *r ) ;
 
-  void getCameraPosition ( sgVec3 pos ) ;
+  void getCameraPosition ( sgVec3   pos ) ;
   void setCamera ( sgMat4 mat ) ;
   void setCamera ( const sgCoord *coord ) ;
   void setCameraLookAt ( const sgVec3 eye, const sgVec3 center, const sgVec3 up ) ;
@@ -2715,12 +2750,14 @@ int        ssgSaveQHI  ( const char *fname, ssgEntity *ent ) ;
 int        ssgSaveATG  ( const char *fname, ssgEntity *ent ) ;
 int        ssgSaveVRML1( const char *fname, ssgEntity *ent ) ;
 int        ssgSaveASC  ( const char *fname, ssgEntity *ent ) ;
+int        ssgSaveIV   ( const char *fname, ssgEntity *ent ) ;
 int				 ssgSavePOV  ( const char *fname, ssgEntity *ent ) ;
 
 
 ssgEntity *ssgLoad     ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoad3ds  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadAC3D ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
+ssgEntity *ssgLoadASC  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadSSG  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadASE  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
 ssgEntity *ssgLoadDOF  ( const char *fname, const ssgLoaderOptions *options = NULL ) ;
@@ -2819,7 +2856,6 @@ ssgStatistics *ssgGetLatestStatistics () ;
 
 void ssgFlatten  ( ssgEntity *ent ) ;
 void ssgStripify ( ssgEntity *ent ) ;
-
 void ssgArrayTool ( ssgEntity *ent, float* vtol = 0, bool make_normals = false ) ;
 void ssgTransTool ( ssgEntity *ent, const sgMat4 trans ) ;
 
@@ -2833,6 +2869,9 @@ void ssgSetLoadOFFTranslucent ( int i );
 
 void ssgRegisterType ( int type, ssgBase * ( *create_func ) () ) ;
 ssgBase *ssgCreateOfType ( int type ) ;
+
+#define SSG_BACKFACE_COLLISIONS_SUPPORTED 1
+void ssgSetBackFaceCollisions ( bool b ) ;
 
 #endif
 
