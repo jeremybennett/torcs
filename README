@@ -114,6 +114,9 @@ Changes since 1.3.1-test1
 - Switched Windows VS 6 build to link with the multithreaded crt (Bernhard).
 - Added libraries for VS2008 build (Bernhard).
 - Developed/added VS 2008 project files (Bernhard).
+- Applied patch for OpenSolaris 2009.06, created by Andrey Sokolov (Andrey,
+  Bernhard).
+- Fixed various gcc compiler warnings (Bernhard). 
 
 
 Changes since 1.3.1

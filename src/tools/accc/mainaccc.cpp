@@ -241,25 +241,27 @@ void init_args(int argc, char **argv)
 	  }
       }
     else
-      {
-	if (InputFileName==NULL)
-	  InputFileName = strdup(argv[2]);
-	if (OutputFileName==NULL)
-	  OutputFileName = strdup(argv[3]);
+	{
+		if (InputFileName==NULL)
+			InputFileName = strdup(argv[2]);
+		
+		if (OutputFileName==NULL)
+			OutputFileName = strdup(argv[3]);
 
-	if (argc==7)
-	  {if (!strcmp(argv[5],"-order"))
-	      OrderString=argv[6];
-	  }
-	else
-	  if (typeConvertion==_AC3DTOAC3D)
-	    if (argc>=5)
-	      if (!strcmp(argv[4],"-order"))
-		OrderString=argv[5];
-	      else
-		far_dist=atoi(argv[4]);
-
-      }
+		if (argc==7) {
+			if (!strcmp(argv[5],"-order"))
+				OrderString=argv[6];
+		} else {
+			if (typeConvertion==_AC3DTOAC3D) {
+				if (argc>=5) {
+					if (!strcmp(argv[4],"-order"))
+						OrderString=argv[5];
+					else
+						far_dist=atoi(argv[4]);
+				}
+			}
+		}
+	}
 }
 
 /*extern void WindowsSpecInit(void);*/

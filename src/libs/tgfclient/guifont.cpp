@@ -26,6 +26,10 @@
 #include <windows.h>
 #elif defined(__FreeBSD__)
 #include <machine/endian.h>
+#elif defined(sun)
+#define BIG_ENDIAN 1234
+#define LITTLE_ENDIAN 4321
+#define BYTE_ORDER LITTLE_ENDIAN
 #else
 #include <endian.h>
 #endif

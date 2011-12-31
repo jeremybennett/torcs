@@ -573,7 +573,12 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 			} else if (ax0 < cmd[CMD_LEFTSTEER].min) {
 				ax0 = cmd[CMD_LEFTSTEER].min;
 			}
+			
+			// Correction for broken centering
+			
+			
 			leftSteer = -SIGN(ax0) * cmd[CMD_LEFTSTEER].pow * pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->_speed_x);
+			printf("left min: %f, max %f, spd: %f, left: %f\n", cmd[CMD_LEFTSTEER].min, cmd[CMD_LEFTSTEER].max, cmd[CMD_LEFTSTEER].spdSens, leftSteer);
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
 			ax0 = mouseInfo->ax[cmd[CMD_LEFTSTEER].val] - cmd[CMD_LEFTSTEER].deadZone;
@@ -618,7 +623,10 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 			} else if (ax0 < cmd[CMD_RIGHTSTEER].min) {
 				ax0 = cmd[CMD_RIGHTSTEER].min;
 			}
+			
 			rightSteer = -SIGN(ax0) * cmd[CMD_RIGHTSTEER].pow * pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->_speed_x);
+						printf("left min: %f, max %f, spd: %f, left: %f\n", cmd[CMD_RIGHTSTEER].min, cmd[CMD_RIGHTSTEER].max, cmd[CMD_RIGHTSTEER].spdSens, rightSteer);
+
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
 			ax0 = mouseInfo->ax[cmd[CMD_RIGHTSTEER].val] - cmd[CMD_RIGHTSTEER].deadZone;

@@ -199,12 +199,14 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
             break;
         }
     }
-    if (car->_state & RM_CAR_STATE_NO_SIMU
-        || 
-        ((car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y) < 0.1f)
-        && (flag == false)) {
-        return;
-    }
+    
+	if (
+		(car->_state & RM_CAR_STATE_NO_SIMU) || 
+		(((car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y) < 0.1f) &&
+		(flag == false))
+	) {
+		return;
+	}
 
     for (i = 0; i<4; i++) {
         const char* s = NULL;

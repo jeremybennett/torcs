@@ -767,38 +767,39 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 	}
 
 
-	if (distSplit>0 && typeConvertion!=_AC3DTOAC3DS )
-	    if(!strnicmp(object->next->name,"tkrb",4) || !strnicmp(object->next->name,"tkmn",4)
-	       || !strnicmp(object->next->name,"tkrs",4) 
-	       || !strnicmp(object->next->name,"tklb",4) 
-	       || !strnicmp(object->next->name,"brlt",4) 
-	       || !strnicmp(object->next->name,"brrt",4) 
-	       || !strnicmp(object->next->name,"tkls",4)
-	       || !strnicmp(object->next->name, "t0RB",4)
-	       || !strnicmp(object->next->name, "t1RB",4)
-	       || !strnicmp(object->next->name, "t2RB",4)
-	       || !strnicmp(object->next->name, "tkRS",4)
-	       || !strnicmp(object->next->name, "t0LB",4)
-	       || !strnicmp(object->next->name, "t1LB",4)
-	       || !strnicmp(object->next->name, "t2LB",4)
-	       || !strnicmp(object->next->name, "tkLS",4)
-	       || !strnicmp(object->next->name, "BOLt",4)
-	       || !strnicmp(object->next->name, "BORt",4) ) {
-		printf("no terrain split for %s\n",object->next->name);
-	    } else {
-		if (strstr( object->next->name,"terrain") 
-		    || strstr( object->next->name,"TERRAIN")
-		    ||strstr( object->next->name,"GROUND")
-		    ||strstr( object->next->name,"ground") ) {
-		    terrainSplitOb (&object->next);
-		    fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
+	if (distSplit > 0 && typeConvertion != _AC3DTOAC3DS) {
+		if(!strnicmp(object->next->name,"tkrb",4) || !strnicmp(object->next->name,"tkmn",4)
+			|| !strnicmp(object->next->name,"tkrs",4) 
+			|| !strnicmp(object->next->name,"tklb",4) 
+			|| !strnicmp(object->next->name,"brlt",4) 
+			|| !strnicmp(object->next->name,"brrt",4) 
+			|| !strnicmp(object->next->name,"tkls",4)
+			|| !strnicmp(object->next->name, "t0RB",4)
+			|| !strnicmp(object->next->name, "t1RB",4)
+			|| !strnicmp(object->next->name, "t2RB",4)
+			|| !strnicmp(object->next->name, "tkRS",4)
+			|| !strnicmp(object->next->name, "t0LB",4)
+			|| !strnicmp(object->next->name, "t1LB",4)
+			|| !strnicmp(object->next->name, "t2LB",4)
+			|| !strnicmp(object->next->name, "tkLS",4)
+			|| !strnicmp(object->next->name, "BOLt",4)
+			|| !strnicmp(object->next->name, "BORt",4) )
+		{
+			printf("no terrain split for %s\n",object->next->name);
+		} else {
+			if (strstr( object->next->name,"terrain") 
+				|| strstr( object->next->name,"TERRAIN")
+				||strstr( object->next->name,"GROUND")
+				||strstr( object->next->name,"ground")
+			) {
+				terrainSplitOb (&object->next);
+				fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
+			} else if (((object->next->x_max-object->next->x_min) >1.5*distSplit || (object->next->y_max-object->next->y_min) >1.5*distSplit)) {
+				fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
+				terrainSplitOb (&object->next);
+			}
 		}
-		else   if ( ((object->next->x_max-object->next->x_min) >1.5*distSplit ||
-			     (object->next->y_max-object->next->y_min) >1.5*distSplit)) {
-		    fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
-		    terrainSplitOb (&object->next);
-		}
-	    }
+	}
       
 	numrefs=numrefstotal=0;
 	numvertFound=0;

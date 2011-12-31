@@ -17,7 +17,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#ifdef sun
+ #include <ieeefp.h>
+#endif
 #include "learn.h"
 #include <learning/ANN.h>
 #include <learning/string_utils.h>

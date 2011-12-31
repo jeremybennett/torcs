@@ -56,18 +56,18 @@ ctrlCheck(tCar *car)
     tClutch		*clutch = &(trans->clutch);
 
     /* sanity check */
-#ifndef WIN32
-    if (isnan(car->ctrl->accelCmd) || isinf(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
-    if (isnan(car->ctrl->brakeCmd) || isinf(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
-    if (isnan(car->ctrl->clutchCmd) || isinf(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
-    if (isnan(car->ctrl->steer) || isinf(car->ctrl->steer)) car->ctrl->steer = 0;
-    if (isnan(car->ctrl->gear) || isinf(car->ctrl->gear)) car->ctrl->gear = 0;
-#else
+#if defined WIN32 || defined sun
     if (isnan(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
     if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
     if (isnan(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
     if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
+#else
+    if (isnan(car->ctrl->accelCmd) || isinf(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
+    if (isnan(car->ctrl->brakeCmd) || isinf(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
+    if (isnan(car->ctrl->clutchCmd) || isinf(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
+    if (isnan(car->ctrl->steer) || isinf(car->ctrl->steer)) car->ctrl->steer = 0;
+    if (isnan(car->ctrl->gear) || isinf(car->ctrl->gear)) car->ctrl->gear = 0;
 #endif
 
     /* When the car is broken try to send it on the track side */
