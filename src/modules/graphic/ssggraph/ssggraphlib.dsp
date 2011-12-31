@@ -70,7 +70,7 @@ PostBuild_Cmds=copy $(TargetDir)\*.lib ..\..\..\..\export\lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /G6 /MTd /W2 /GX /ZI /Od /I "./" /I "../../../../export/include" /I "../../../windows/include" /I "../../../.." /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "DEBUG" /D "DEBUG_OUT" /FR /FD /GZ /c
+# ADD CPP /nologo /G6 /MTd /W2 /GX /Zi /Od /I "./" /I "../../../../export/include" /I "../../../windows/include" /I "../../../.." /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "DEBUG" /D "DEBUG_OUT" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
 # ADD RSC /l 0x40c /d "_DEBUG"
