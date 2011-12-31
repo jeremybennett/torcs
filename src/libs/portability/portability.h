@@ -59,10 +59,10 @@ static char *strndup(const char *str, int len)
 
 #ifdef WIN32
 #define snprintf _snprintf
+#if _MSC_VER < 1500 
 #define vsnprintf _vsnprintf
 #endif
-
-
+#endif
 
 #endif // _TORCS_PORTABILITY_H_
 

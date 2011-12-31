@@ -21,7 +21,7 @@
 #include "learn.h"
 #include <learning/ANN.h>
 #include <learning/string_utils.h>
-#include <iostream>
+//#include <iostream>
 
 #ifdef WIN32
 #include <float.h>
@@ -523,7 +523,6 @@ bool SegLearn::LoadParameter (float* p, int n, FILE* f)
 
 void SegLearn::loadParameters (char* fname)
 {
-    //std::cout << "Maybe load parameters from " << fname << std::endl;
     FILE* f = fopen(fname,"rb");
     if (!f) { // no error here.
         return;
@@ -534,7 +533,8 @@ void SegLearn::loadParameters (char* fname)
     int local_n_quantums;
     fread (&local_n_quantums, sizeof(int), 1, f);
     if (local_n_quantums!=n_quantums) {
-        std::cerr << "Number of quantums " << local_n_quantums << " does not agree with current (" << n_quantums << "). Aborting read.\n";
+        // cerr and cout do not work on windows in combination with tgf memory functions, use GfOut and friends, or printf.
+		//std::cerr << "Number of quantums " << local_n_quantums << " does not agree with current (" << n_quantums << "). Aborting read.\n";
         fclose(f);
         return;
     }
@@ -557,16 +557,15 @@ void SegLearn::loadParameters (char* fname)
     CheckMatchingToken("END",rtag, f);
     FreeStringBuffer(&rtag);
     fclose(f);
-    //std::cout << "Parameters loaded\n";
 }
 
 /// Save
 void SegLearn::saveParameters (char* fname)
 {
     FILE* f = fopen(fname,"wb");
-    //std::cout << "Maybe save parameters to " << fname << std::endl;
     if (!f) {
-        std::cerr << "Could not open " << fname << " for writing. Check permissions\n";
+        // cerr and cout do not work on windows in combination with tgf memory functions, use GfOut and friends, or printf.
+        // std::cerr << "Could not open " << fname << " for writing. Check permissions\n";
         return;
     }
 
@@ -594,7 +593,6 @@ void SegLearn::saveParameters (char* fname)
     WriteToken("END", f);
     //FreeStringBuffer(&rtag);
     fclose(f);
-    //std::cout << "Parameters saved\n";
 }
 
 #ifdef USE_OLETHROS_NAMESPACE

@@ -15,7 +15,6 @@
 
 #include <learning/real.h>
 #include <cmath>
-#include <iostream>
 
 void setRandomSeed(unsigned int seed);
 real urandom();
@@ -69,7 +68,7 @@ public:
 		setMean (mean);
 		setVariance (std*std);
 	}
-	virtual ~NormalDistribution() {std::cout << "Normal dist destroyed\n";}
+	virtual ~NormalDistribution() { }
 	virtual real generate();
 	virtual real pdf(real x);
 	virtual void setVariance (real var) 

@@ -10,6 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstring>
 #include <learning/ANN.h>
 #include <learning/string_utils.h>
 #include <learning/Distribution.h>

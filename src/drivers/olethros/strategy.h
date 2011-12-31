@@ -28,7 +28,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstring>
 #include <math.h>
 
 #include <tgf.h>
