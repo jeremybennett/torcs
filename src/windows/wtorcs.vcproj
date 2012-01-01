@@ -75,7 +75,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="client.lib txml.lib libpng15_vs6static.lib tgf.lib"
+				AdditionalDependencies="client.lib txml.lib libpng15_vs2008_32.lib tgf.lib"
 				OutputFile=".\Release/wtorcs.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -173,7 +173,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="client.lib txml.lib libpng15_vs6static.lib tgf.lib"
+				AdditionalDependencies="client.lib txml.lib libpng15_vs2008_32.lib tgf.lib"
 				OutputFile=".\Debug/wtorcs.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

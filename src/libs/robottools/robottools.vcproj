@@ -77,7 +77,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="tgf.lib sg.lib ul.lib"
+				AdditionalDependencies="tgf.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Release/robottools.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -178,7 +178,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="tgf.lib sg.lib ul.lib"
+				AdditionalDependencies="tgf.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Debug/robottools.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

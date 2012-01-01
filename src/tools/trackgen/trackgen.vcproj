@@ -77,7 +77,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="sl.lib client.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng15_vs6static.lib tgf.lib"
+				AdditionalDependencies="sl_vs2008_32.lib client.lib robottools.lib sg_vs2008_32.lib ssg_vs2008_32.lib ssggraphlib.lib txml.lib ul_vs2008_32.lib libpng15_vs2008_32.lib tgf.lib"
 				OutputFile=".\Release/trackgen.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -175,7 +175,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="sl.lib client.lib robottools.lib sg.lib ssg.lib ssggraphlib.lib txml.lib ul.lib libpng15_vs6static.lib tgf.lib"
+				AdditionalDependencies="sl_vs2008_32.lib client.lib robottools.lib sg_vs2008_32.lib ssg_vs2008_32.lib ssggraphlib.lib txml.lib ul_vs2008_32.lib libpng15_vs2008_32.lib tgf.lib"
 				OutputFile=".\Debug/trackgen.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

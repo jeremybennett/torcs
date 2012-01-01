@@ -78,7 +78,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="learning.lib tgf.lib robottools.lib sg.lib ul.lib"
+				AdditionalDependencies="learning.lib tgf.lib robottools.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Release/olethros.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -180,7 +180,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="tgf.lib robottools.lib sg.lib ul.lib learning.lib"
+				AdditionalDependencies="tgf.lib robottools.lib sg_vs2008_32.lib ul_vs2008_32.lib learning.lib"
 				OutputFile=".\Debug/olethros.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

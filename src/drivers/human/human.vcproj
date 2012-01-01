@@ -77,7 +77,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="client.lib tgf.lib robottools.lib sg.lib ul.lib"
+				AdditionalDependencies="client.lib tgf.lib robottools.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Debug/human.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -183,7 +183,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="client.lib tgf.lib robottools.lib sg.lib ul.lib"
+				AdditionalDependencies="client.lib tgf.lib robottools.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Release/human.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

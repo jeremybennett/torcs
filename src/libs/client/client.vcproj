@@ -76,7 +76,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib"
+				AdditionalDependencies="txml.lib libpng15_vs2008_32.lib sg_vs2008_32.lib ul_vs2008_32.lib tgf.lib robottools.lib ssggraphlib.lib ssg_vs2008_32.lib ssgAux_vs2008_32.lib sl_vs2008_32.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs2008_32.lib"
 				OutputFile=".\Debug/client.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -182,7 +182,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib"
+				AdditionalDependencies="txml.lib libpng15_vs2008_32.lib sg_vs2008_32.lib ul_vs2008_32.lib tgf.lib robottools.lib ssggraphlib.lib ssg_vs2008_32.lib ssgAux_vs2008_32.lib sl_vs2008_32.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs2008_32.lib"
 				OutputFile=".\Release/client.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

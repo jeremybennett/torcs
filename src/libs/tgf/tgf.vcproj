@@ -78,7 +78,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="libpng15_vs6static.lib txml.lib sg.lib ul.lib"
+				AdditionalDependencies="libpng15_vs2008_32.lib txml.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Release/tgf.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -179,7 +179,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="libpng15_vs6static.lib txml.lib sg.lib ul.lib"
+				AdditionalDependencies="libpng15_vs2008_32.lib txml.lib sg_vs2008_32.lib ul_vs2008_32.lib"
 				OutputFile=".\Debug/tgf.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
