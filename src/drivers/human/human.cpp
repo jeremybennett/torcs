@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <js.h>
+#include <plib/js.h>
 
 #include <tgfclient.h>
 
@@ -520,8 +520,8 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 
 	if (((cmd[CMD_ABS].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_ABS].val]) ||
-	((cmd[CMD_ABS].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_ABS].val].edgeUp) ||
-	((cmd[CMD_ABS].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ABS].val].edgeUp))
+		((cmd[CMD_ABS].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_ABS].val].edgeUp) ||
+		((cmd[CMD_ABS].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ABS].val].edgeUp))
 	{
 		HCtx[idx]->ParamAbs = 1 - HCtx[idx]->ParamAbs;
 		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
@@ -530,8 +530,8 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	}
 
 	if (((cmd[CMD_ASR].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_ASR].val]) ||
-	((cmd[CMD_ASR].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_ASR].val].edgeUp) ||
-	((cmd[CMD_ASR].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ASR].val].edgeUp))
+		((cmd[CMD_ASR].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_ASR].val].edgeUp) ||
+		((cmd[CMD_ASR].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ASR].val].edgeUp))
 	{
 		HCtx[idx]->ParamAsr = 1 - HCtx[idx]->ParamAsr;
 		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
@@ -543,8 +543,8 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
 
 	if (((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_JOY_BUT) && (joyInfo->levelup[cmd[CMD_SPDLIM].val] == 1)) ||
-	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_KEYBOARD) && (keyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)) ||
-	((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_SKEYBOARD) && (skeyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)))
+		((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_KEYBOARD) && (keyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)) ||
+		((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_SKEYBOARD) && (skeyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)))
 	{
 		speedLimiter = 1;
 		sprintf(car->_msgCmd[1], "Speed Limiter On");
@@ -555,8 +555,8 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
 
 	if (((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_JOY_BUT) && joyInfo->edgeup[cmd[CMD_LIGHT1].val]) ||
-	((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_LIGHT1].val].edgeUp) ||
-	((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_LIGHT1].val].edgeUp))
+		((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_KEYBOARD) && keyInfo[cmd[CMD_LIGHT1].val].edgeUp) ||
+		((cmd[CMD_LIGHT1].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_LIGHT1].val].edgeUp))
 	{
 		if (HCtx[idx]->lightCmd & RM_LIGHT_HEAD1) {
 			HCtx[idx]->lightCmd &= ~(RM_LIGHT_HEAD1 | RM_LIGHT_HEAD2);
@@ -567,21 +567,19 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
 	switch (cmd[CMD_LEFTSTEER].type) {
 		case GFCTRL_TYPE_JOY_AXIS:
-			ax0 = joyInfo->ax[cmd[CMD_LEFTSTEER].val];
+			ax0 = joyInfo->ax[cmd[CMD_LEFTSTEER].val] + cmd[CMD_LEFTSTEER].deadZone;
 			if (ax0 > cmd[CMD_LEFTSTEER].max) {
 				ax0 = cmd[CMD_LEFTSTEER].max;
 			} else if (ax0 < cmd[CMD_LEFTSTEER].min) {
 				ax0 = cmd[CMD_LEFTSTEER].min;
 			}
 			
-			// Correction for broken centering
-			
-			
+			// normalize ax0 to -1..0
+			ax0 = (ax0 - cmd[CMD_LEFTSTEER].max) / (cmd[CMD_LEFTSTEER].max - cmd[CMD_LEFTSTEER].min);
 			leftSteer = -SIGN(ax0) * cmd[CMD_LEFTSTEER].pow * pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->_speed_x);
-			printf("left min: %f, max %f, spd: %f, left: %f\n", cmd[CMD_LEFTSTEER].min, cmd[CMD_LEFTSTEER].max, cmd[CMD_LEFTSTEER].spdSens, leftSteer);
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
-			ax0 = mouseInfo->ax[cmd[CMD_LEFTSTEER].val] - cmd[CMD_LEFTSTEER].deadZone;
+			ax0 = mouseInfo->ax[cmd[CMD_LEFTSTEER].val] - cmd[CMD_LEFTSTEER].deadZone; //FIXME: correct?
 			if (ax0 > cmd[CMD_LEFTSTEER].max) {
 				ax0 = cmd[CMD_LEFTSTEER].max;
 			} else if (ax0 < cmd[CMD_LEFTSTEER].min) {
@@ -617,16 +615,16 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 
 	switch (cmd[CMD_RIGHTSTEER].type) {
 		case GFCTRL_TYPE_JOY_AXIS:
-			ax0 = joyInfo->ax[cmd[CMD_RIGHTSTEER].val];
+			ax0 = joyInfo->ax[cmd[CMD_RIGHTSTEER].val] - cmd[CMD_RIGHTSTEER].deadZone;
 			if (ax0 > cmd[CMD_RIGHTSTEER].max) {
 				ax0 = cmd[CMD_RIGHTSTEER].max;
 			} else if (ax0 < cmd[CMD_RIGHTSTEER].min) {
 				ax0 = cmd[CMD_RIGHTSTEER].min;
 			}
 			
+			// normalize ax to 0..1
+			ax0 = (ax0 - cmd[CMD_RIGHTSTEER].min) / (cmd[CMD_RIGHTSTEER].max - cmd[CMD_RIGHTSTEER].min);
 			rightSteer = -SIGN(ax0) * cmd[CMD_RIGHTSTEER].pow * pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->_speed_x);
-						printf("left min: %f, max %f, spd: %f, left: %f\n", cmd[CMD_RIGHTSTEER].min, cmd[CMD_RIGHTSTEER].max, cmd[CMD_RIGHTSTEER].spdSens, rightSteer);
-
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
 			ax0 = mouseInfo->ax[cmd[CMD_RIGHTSTEER].val] - cmd[CMD_RIGHTSTEER].deadZone;
