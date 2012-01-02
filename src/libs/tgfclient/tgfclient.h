@@ -29,8 +29,10 @@
 
 #include <tgf.h>
 #include <GL/glut.h>
-#include <js.h>
+#include <plib/js.h>
 #include <screen_properties.h>
+
+#define NUM_JOY 8
 
 extern void GfInitClient(void);
 
@@ -270,7 +272,7 @@ typedef struct
 typedef struct
 {
     int		oldb[NUM_JOY];
-    float	ax[MAX_AXES * NUM_JOY];			/**< Axis values */
+    float	ax[_JS_MAX_AXES * NUM_JOY];			/**< Axis values */
     int		edgeup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from down (pressed) to up */
     int		edgedn[GFCTRL_JOY_MAXBUTTON * NUM_JOY];	/**< Button transition from up to down */
     int		levelup[GFCTRL_JOY_MAXBUTTON * NUM_JOY];/**< Button state (1 = up) */

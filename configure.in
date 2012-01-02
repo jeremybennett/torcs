@@ -86,6 +86,9 @@ AC_CHECK_HEADER(X11/Xlib.h,, AC_MSG_ERROR([Can't find X11/Xlib.h. Please check c
 AC_CHECK_HEADER(X11/Xatom.h,, AC_MSG_ERROR([Can't find X11/Xatom.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(X11/keysym.h,, AC_MSG_ERROR([Can't find X11/keysym.h. Please check config.log and if you can't solve the problem send the file to torcs-users@lists.sourceforge.net with the subject \"torcs compilation problem\"]))
 AC_CHECK_HEADER(plib/ssg.h,, AC_MSG_ERROR([Can't find plib/ssg.h. PLIB can be found on http://plib.sourceforge.net/]))
+AC_CHECK_HEADER(plib/ul.h,, AC_MSG_ERROR([Can't find plib/ul.h. PLIB can be found on http://plib.sourceforge.net/]))
+AC_CHECK_HEADER(plib/ssgAux.h,, AC_MSG_ERROR([Can't find plib/ssgAux.h. PLIB can be found on http://plib.sourceforge.net/]))
+AC_CHECK_HEADER(plib/js.h,, AC_MSG_ERROR([Can't find plib/js.h. PLIB can be found on http://plib.sourceforge.net/]))
 AC_CHECK_HEADER(AL/al.h,, AC_MSG_ERROR([Can't find AL/al.h. OpenAL and FreeALUT can be found on http://www.openal.org/]))
 AC_CHECK_HEADER(AL/alut.h,, AC_MSG_ERROR([Can't find AL/alut.h. OpenAL and FreeALUT can be found on http://www.openal.org/]))
 AC_CHECK_HEADER(vorbis/vorbisfile.h,, AC_MSG_ERROR([Can't find vorbis/vorbisfile.h]))
@@ -147,7 +150,7 @@ AC_CHECK_LIB(plibsl, main,,AC_MSG_ERROR([Can't find libplibsl. PLIB can be found
 AC_CHECK_LIB(plibsm, main,,AC_MSG_ERROR([Can't find libplibsm. PLIB can be found on http://plib.sourceforge.net/]))
 AC_CHECK_LIB(plibssg, main,,AC_MSG_ERROR([Can't find libplibssg. PLIB can be found on http://plib.sourceforge.net/]))
 AC_CHECK_LIB(plibssgaux, main,,AC_MSG_ERROR([Can't find libplibssgaux. PLIB can be found on http://plib.sourceforge.net/]))
-
+AC_CHECK_LIB(plibjs, main,,AC_MSG_ERROR([Can't find libjs. PLIB can be found on http://plib.sourceforge.net/]))
 
 
 dnl Taken from FlightGear

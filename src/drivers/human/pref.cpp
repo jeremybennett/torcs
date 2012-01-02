@@ -35,7 +35,7 @@
 #include <robottools.h>
 #include <robot.h>
 #include <playerpref.h>
-#include <js.h>
+#include <plib/js.h>
 
 #include "pref.h"
 #include "human.h"

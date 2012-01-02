@@ -26,7 +26,7 @@
 #include "driverconfig.h"
 #include <playerpref.h>
 #include <portability.h>
-#include <js.h>
+#include <plib/js.h>
 
 #include "controlconfig.h"
 #include "joystickconfig.h"
@@ -38,7 +38,7 @@ static int maxCmd;
 
 static jsJoystick *js[NUM_JOY] = {NULL};
 
-static float 	ax[MAX_AXES * NUM_JOY] = {0};
+static float 	ax[_JS_MAX_AXES * NUM_JOY] = {0};
 static int	rawb[NUM_JOY] = {0};
 
 #define NB_STEPS	6
@@ -72,13 +72,13 @@ onBack(void *prevMenu)
     GfuiScreenActivate(prevMenu);
 }
 
-static float 	axCenter[MAX_AXES * NUM_JOY];
+static float 	axCenter[_JS_MAX_AXES * NUM_JOY];
 
 static void advanceStep (void)
 {
-    do {
-	CalState++;
-    } while ((Cmd[CalState + OFFSET_CMD].ref.type != GFCTRL_TYPE_JOY_AXIS) && (CalState < NB_STEPS));
+	do {
+		CalState++;
+	} while ((Cmd[CalState + OFFSET_CMD].ref.type != GFCTRL_TYPE_JOY_AXIS) && (CalState < NB_STEPS));
 }
 
 
@@ -133,116 +133,117 @@ JoyCalAutomaton(void)
 static void
 Idle2(void)
 {
-    int		mask;
-    int		b, i;
-    int		index;
+	int mask;
+	int b, i;
+	int index;
 
-    for (index = 0; index < NUM_JOY; index++) {
-	if (js[index]) {
-	    js[index]->read(&b, &ax[index * MAX_AXES]);
-	    
-	    /* Joystick buttons */
-	    for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
-		if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
-		    /* Button fired */
-		    JoyCalAutomaton();
-		    if (CalState >= NB_STEPS) {
-			glutIdleFunc(GfuiIdle);
-		    }
-		    glutPostRedisplay();
-		    rawb[index] = b;
-		    return;
+	for (index = 0; index < NUM_JOY; index++) {
+		if (js[index]) {
+			js[index]->read(&b, &ax[index * _JS_MAX_AXES]);
+			
+			/* Joystick buttons */
+			for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
+			if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
+				/* Button fired */
+				JoyCalAutomaton();
+				if (CalState >= NB_STEPS) {
+					glutIdleFunc(GfuiIdle);
+				}
+				glutPostRedisplay();
+				rawb[index] = b;
+				return;
+			}
+			}
+			rawb[index] = b;
 		}
-	    }
-	    rawb[index] = b;
 	}
-    }
 }
 
 
 static void
 onActivate(void * /* dummy */)
 {
-    int i;
-    int index;
-    int step;
-    
-    CalState = 0;
-    GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
-    glutIdleFunc(Idle2);
-    glutPostRedisplay();
-    for (index = 0; index < NUM_JOY; index++) {
-	if (js[index]) {
-	    js[index]->read(&rawb[index], &ax[index * MAX_AXES]); /* initial value */
+	int i;
+	int index;
+	int step;
+
+	CalState = 0;
+	GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
+	glutIdleFunc(Idle2);
+	glutPostRedisplay();
+	for (index = 0; index < NUM_JOY; index++) {
+		if (js[index]) {
+			js[index]->read(&rawb[index], &ax[index * _JS_MAX_AXES]); /* initial value */
+		}
 	}
-    }
-    for (i = 0; i < 4; i++) {
-	if (i > 0) {
-	    step = i + 2;
-	} else {
-	    step = i + 1;
+
+	for (i = 0; i < 4; i++) {
+		if (i > 0) {
+			step = i + 2;
+		} else {
+			step = i + 1;
+		}
+		if (Cmd[step + OFFSET_CMD].ref.type == GFCTRL_TYPE_JOY_AXIS) {
+			GfuiLabelSetText(scrHandle2, LabAxisId[i], GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, Cmd[step + OFFSET_CMD].ref.index));
+		} else {
+			GfuiLabelSetText(scrHandle2, LabAxisId[i], "---");
+		}
+		GfuiLabelSetText(scrHandle2, LabMinId[i], "");
+		GfuiLabelSetText(scrHandle2, LabMaxId[i], "");
 	}
-	if (Cmd[step + OFFSET_CMD].ref.type == GFCTRL_TYPE_JOY_AXIS) {
-	    GfuiLabelSetText(scrHandle2, LabAxisId[i], GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, Cmd[step + OFFSET_CMD].ref.index));
-	} else {
-	    GfuiLabelSetText(scrHandle2, LabAxisId[i], "---");
-	}
-	GfuiLabelSetText(scrHandle2, LabMinId[i], "");
- 	GfuiLabelSetText(scrHandle2, LabMaxId[i], "");
-    }
 }
 
 
 void *
 JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
 {
-    int x, y, dy, i, index;
+	int x, y, dy, i, index;
 
-    Cmd = cmd;
-    maxCmd = maxcmd;
+	Cmd = cmd;
+	maxCmd = maxcmd;
 
-    if (scrHandle2) {
+	if (scrHandle2) {
+		return scrHandle2;
+	}
+
+	scrHandle2 = GfuiScreenCreateEx(NULL, NULL, onActivate, NULL, NULL, 1);
+	GfuiTitleCreate(scrHandle2, "Joystick Calibration", 0);
+	GfuiMenuDefaultKeysAdd(scrHandle2);
+
+	GfuiScreenAddBgImg(scrHandle2, "data/img/splash-joycal.png");
+
+	x = 128;
+	y = 300;
+	dy = 50;
+
+	for (i = 0; i < 4; i++) {
+		GfuiLabelCreate(scrHandle2, LabName[i], GFUI_FONT_LARGE, x, y, GFUI_ALIGN_HC_VC, 0);
+		LabAxisId[i] = GfuiLabelCreate(scrHandle2, "                ", GFUI_FONT_MEDIUM, 2 * x, y, GFUI_ALIGN_HC_VC, 0);
+		LabMinId[i] = GfuiLabelCreate(scrHandle2,  "                ", GFUI_FONT_MEDIUM, 3 * x, y, GFUI_ALIGN_HC_VC, 0);
+		LabMaxId[i] = GfuiLabelCreate(scrHandle2,  "                ", GFUI_FONT_MEDIUM, 4 * x, y, GFUI_ALIGN_HC_VC, 0);
+		y -= dy;
+	}
+
+	for (index = 0; index < NUM_JOY; index++) {
+		if (js[index] == NULL) {
+			js[index] = new jsJoystick(index);
+		}
+
+		if (js[index]->notWorking()) {
+			/* don't configure the joystick */
+			js[index] = NULL;
+		}
+	}
+
+	InstId = GfuiLabelCreate(scrHandle2, Instructions[0], GFUI_FONT_MEDIUM, 320, 80, GFUI_ALIGN_HC_VB, 60);
+
+	GfuiButtonCreate(scrHandle2, "Back", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				prevMenu, onBack, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+	GfuiButtonCreate(scrHandle2, "Reset", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				NULL, onActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
 	return scrHandle2;
-    }
-    
-    scrHandle2 = GfuiScreenCreateEx(NULL, NULL, onActivate, NULL, NULL, 1);
-    GfuiTitleCreate(scrHandle2, "Joystick Calibration", 0);
-    GfuiMenuDefaultKeysAdd(scrHandle2);
-
-    GfuiScreenAddBgImg(scrHandle2, "data/img/splash-joycal.png");
-
-    x = 128;
-    y = 300;
-    dy = 50;
-    
-    for (i = 0; i < 4; i++) {
-	GfuiLabelCreate(scrHandle2, LabName[i], GFUI_FONT_LARGE, x, y, GFUI_ALIGN_HC_VC, 0);
-	LabAxisId[i] = GfuiLabelCreate(scrHandle2, "                ", GFUI_FONT_MEDIUM, 2 * x, y, GFUI_ALIGN_HC_VC, 0);
-	LabMinId[i] = GfuiLabelCreate(scrHandle2,  "                ", GFUI_FONT_MEDIUM, 3 * x, y, GFUI_ALIGN_HC_VC, 0);
-	LabMaxId[i] = GfuiLabelCreate(scrHandle2,  "                ", GFUI_FONT_MEDIUM, 4 * x, y, GFUI_ALIGN_HC_VC, 0);
-	y -= dy;
-    }
-
-    for (index = 0; index < NUM_JOY; index++) {
-	if (js[index] == NULL) {
-	    js[index] = new jsJoystick(index);
-	}
-    
-	if (js[index]->notWorking()) {
-	    /* don't configure the joystick */
-	    js[index] = NULL;
-	}
-    }
-
-    InstId = GfuiLabelCreate(scrHandle2, Instructions[0], GFUI_FONT_MEDIUM, 320, 80, GFUI_ALIGN_HC_VB, 60);
-
-    GfuiButtonCreate(scrHandle2, "Back", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     prevMenu, onBack, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    
-    GfuiButtonCreate(scrHandle2, "Reset", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, onActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-    return scrHandle2;
 }
 
 

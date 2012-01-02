@@ -31,7 +31,7 @@
 #include <track.h>
 #include <robot.h>
 #include <playerpref.h>
-#include <js.h>
+#include <plib/js.h>
 #include <portability.h>
 
 #include "controlconfig.h"
@@ -68,8 +68,8 @@ static tCmdInfo Cmd[] = {
 static int maxCmd = sizeof(Cmd) / sizeof(Cmd[0]);
 
 static jsJoystick	*js[NUM_JOY] = {NULL};
-static float		ax[MAX_AXES * NUM_JOY] = {0};
-static float 		axCenter[MAX_AXES * NUM_JOY];
+static float		ax[_JS_MAX_AXES * NUM_JOY] = {0};
+static float 		axCenter[_JS_MAX_AXES * NUM_JOY];
 static int		rawb[NUM_JOY] = {0};
 
 static float SteerSensVal;
@@ -259,7 +259,7 @@ getMovedAxis(void)
 	int	Index = -1;
 	float maxDiff = 0.3;
 
-	for (i = 0; i < MAX_AXES * NUM_JOY; i++) {
+	for (i = 0; i < _JS_MAX_AXES * NUM_JOY; i++) {
 		if (maxDiff < fabs(ax[i] - axCenter[i])) {
 			maxDiff = fabs(ax[i] - axCenter[i]);
 			Index = i;
@@ -311,7 +311,7 @@ Idle(void)
 	/* Check for a Joystick button pressed */
 	for (index = 0; index < NUM_JOY; index++) {
 		if (js[index]) {
-			js[index]->read(&b, &ax[index * MAX_AXES]);
+			js[index]->read(&b, &ax[index * _JS_MAX_AXES]);
 		
 			/* Joystick buttons */
 			for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
@@ -331,7 +331,7 @@ Idle(void)
 			rawb[index] = b;
 		}
 	}
-	
+
 	/* detect joystick movement */
 	axis = getMovedAxis();
 	if (axis != -1) {
@@ -370,7 +370,7 @@ onPush(void *vi)
 
 	for (index = 0; index < NUM_JOY; index++) {
 		if (js[index]) {
-			js[index]->read(&rawb[index], &ax[index * MAX_AXES]); /* initial value */
+			js[index]->read(&rawb[index], &ax[index * _JS_MAX_AXES]); /* initial value */
 		}
 	}
 	memcpy(axCenter, ax, sizeof(axCenter));
