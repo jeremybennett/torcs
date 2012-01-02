@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib /nologo /dll /machine:I386 /def:".\client.def" /libpath:"../../../export/lib" /libpath:"../../windows/lib"
+# ADD LINK32 txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib js.lib Advapi32.lib /nologo /dll /machine:I386 /def:".\client.def" /libpath:"../../../export/lib" /libpath:"../../windows/lib"
 # SUBTRACT LINK32 /pdb:none
 # Begin Special Build Tool
 WkspDir=.
@@ -88,7 +88,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBCMT" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
+# ADD LINK32 txml.lib libpng15_vs6static.lib sg.lib ul.lib tgf.lib robottools.lib ssggraphlib.lib ssg.lib ssgAux.lib sl.lib OpenAL32.lib Alut.lib libogg.lib libvorbis.lib libvorbisfile.lib zlib1_vs6static.lib js.lib Advapi32.lib /nologo /dll /map /debug /machine:I386 /nodefaultlib:"LIBCMT" /pdbtype:sept /libpath:"../../../export/libd" /libpath:"../../windows/lib"
 # Begin Special Build Tool
 WkspDir=.
 TargetDir=.\Debug
