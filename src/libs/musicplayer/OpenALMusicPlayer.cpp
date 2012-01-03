@@ -26,7 +26,7 @@ const int OpenALMusicPlayer::BUFFERSIZE = 4096*64;
 OpenALMusicPlayer::OpenALMusicPlayer(SoundStream* soundStream):
 	device(NULL),
 	context(NULL),
-	source(NULL),
+	source(0),
 	stream(soundStream),
 	ready(false)
 {
