@@ -634,10 +634,14 @@ ReUpdate(void)
 			break;
 
 		case RM_DISP_MODE_NONE:
-			ReOneStep(RCM_MAX_DT_SIMU);
-			if (ReInfo->_refreshDisplay) {
-				GfuiDisplay();
+			// Just update view once per 2 seconds simulation time to avoid trouble with graphics cards
+			// which are bad in buffer switching (e.g. ATI fglrx driver on Linux).
+			t = ReInfo->_reCurTime;
+			while ((t - ReInfo->_reCurTime + 2.0) > 0.0) {
+				ReOneStep(RCM_MAX_DT_SIMU);
 			}
+
+			GfuiDisplay();
 			glutPostRedisplay();	/* Callback -> reDisplay */
 			break;
 
