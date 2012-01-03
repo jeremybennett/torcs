@@ -169,7 +169,6 @@ Changes since 1.3.1
 
 TODO for 1.3.2
 --------------
-- Some adoptions for gamepad calibration
 - Update libraries for Windows version (libpng, zlib, ...), done for vs6, 2008 pending
 - check for sprintf/fscanf/strcpy, etc (ongoing).
 - Add VS2008 build
@@ -207,6 +206,9 @@ p406 -> replace with car1-trb4
 
 Later:
 -------------------
+- Mixed axis controller (under linux some analouge buttons generate a button and axis
+  event, this is a problem for detection/calibration with the current workflow, e.g.
+  ps3 controller buttons l2/r2)
 - When car is moving sideways, the engine sound source seems shifted to the
   side under OpenAL (2.0).
 - Add valgrind option to "torcs".
