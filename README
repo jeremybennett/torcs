@@ -121,6 +121,9 @@ Changes since 1.3.1-test1
 - Fixed center calibration for steer axis (Bernhard).
 - Use plibjs instead of internal header (Bernhard).
 - Adopted available axis for controllers (Bernhard).
+- Just update view once per 2 seconds simulation time (in blind mode) to avoid
+  slowdown with graphics cards which are bad in buffer switching (e.g. ATI fglrx
+  driver on Linux) (Bernhard).
 
 
 Changes since 1.3.1
