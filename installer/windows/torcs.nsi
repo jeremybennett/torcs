@@ -14,9 +14,9 @@
 
 !define VER_MAJOR 1
 !define VER_MINOR 3
-!define VER_REVISION 1
-!define VER_EXTRA
-!define VER_RELDATE 20081123
+!define VER_REVISION 2
+!define VER_EXTRA -test2
+!define VER_RELDATE 20120104
 
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
 !define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
@@ -77,7 +77,7 @@ Page custom PageReinstall PageLeaveReinstall
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "torcs_1_3_1_setup.exe"
+OutFile "torcs_${PRODUCT_VERSION}_setup.exe"
 InstallDir "$PROGRAMFILES\torcs"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -194,6 +194,15 @@ Section "Base System" SEC01
   File "base\cars\car7-trb1\readme.txt"
   File "base\cars\car7-trb1\shadow.rgb"
   File "base\cars\car7-trb1\tex-wheel.rgb"
+  
+  SetOutPath "$INSTDIR\cars\car8-trb1"
+  File "base\cars\car8-trb1\car8-trb1.acc"
+  File "base\cars\car8-trb1\car8-trb1.rgb"
+  File "base\cars\car8-trb1\car8-trb1.xml"
+  File "base\cars\car8-trb1\driver.rgb"
+  File "base\cars\car8-trb1\readme.txt"
+  File "base\cars\car8-trb1\shadow.rgb"
+  File "base\cars\car8-trb1\tex-wheel.rgb"
 
   SetOutPath "$INSTDIR\cars\cg-nascar-rwd"
   File "base\cars\cg-nascar-rwd\cg-nascar-rwd-lod1.acc"
@@ -218,18 +227,19 @@ Section "Base System" SEC01
   File "base\cars\p406\p406.xml"
   File "base\cars\p406\shadow.rgb"
   File "base\cars\p406\tex-wheel.rgb"
-  
-  SetOutPath "$INSTDIR\cars\sc-f1"
-  File "base\cars\sc-f1\readme.txt"
-  File "base\cars\sc-f1\sc-f1.acc"
-  File "base\cars\sc-f1\sc-f1.rgb"
-  File "base\cars\sc-f1\sc-f1.xml"
-  File "base\cars\sc-f1\shadow.rgb"
-  File "base\cars\sc-f1\tex-wheel.rgb"
 
-  
+  SetOutPath "$INSTDIR\cars\car1-ow1"
+  File "base\cars\car1-ow1\car1-ow1.acc"
+  File "base\cars\car1-ow1\car1-ow1.rgb"
+  File "base\cars\car1-ow1\car1-ow1.xml"
+  File "base\cars\car1-ow1\readme.txt"
+  File "base\cars\car1-ow1\shadow.rgb"
+  File "base\cars\car1-ow1\tex-wheel.rgb"
+
   SetOutPath "$INSTDIR\categories"
-  File "base\categories\F1.xml"
+  File "base\categories\ow1.xml"
+  File "base\categories\trb1.xml"
+  File "base\categories\trb3.xml"
   File "base\categories\free.xml"
   File "base\categories\Historic.xml"
   File "base\categories\Nascar.xml"
@@ -241,6 +251,65 @@ Section "Base System" SEC01
   File "base\categories\Track-RWD-GrA.xml"
   File "base\categories\Track-RWD-GrB.xml"
   File "base\categories\Track-RWD-GrC.xml"
+  
+  SetOutPath "$INSTDIR\wheels\openwheel1-1"
+  File "base\wheels\openwheel1-1\readme.txt"
+  File "base\wheels\openwheel1-1\wheel0.acc"
+  File "base\wheels\openwheel1-1\wheel1.acc"
+  File "base\wheels\openwheel1-1\wheel2.acc"
+  File "base\wheels\openwheel1-1\wheel3.acc"
+  File "base\wheels\openwheel1-1\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-1"
+  File "base\wheels\trb1-1\readme.txt"
+  File "base\wheels\trb1-1\wheel0.acc"
+  File "base\wheels\trb1-1\wheel1.acc"
+  File "base\wheels\trb1-1\wheel2.acc"
+  File "base\wheels\trb1-1\wheel3.acc"
+  File "base\wheels\trb1-1\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-2"
+  File "base\wheels\trb1-2\readme.txt"
+  File "base\wheels\trb1-2\wheel0.acc"
+  File "base\wheels\trb1-2\wheel1.acc"
+  File "base\wheels\trb1-2\wheel2.acc"
+  File "base\wheels\trb1-2\wheel3.acc"
+  File "base\wheels\trb1-2\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-3"
+  File "base\wheels\trb1-3\readme.txt"
+  File "base\wheels\trb1-3\wheel0.acc"
+  File "base\wheels\trb1-3\wheel1.acc"
+  File "base\wheels\trb1-3\wheel2.acc"
+  File "base\wheels\trb1-3\wheel3.acc"
+  File "base\wheels\trb1-3\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-4"
+  File "base\wheels\trb1-4\readme.txt"
+  File "base\wheels\trb1-4\wheel0.acc"
+  File "base\wheels\trb1-4\wheel1.acc"
+  File "base\wheels\trb1-4\wheel2.acc"
+  File "base\wheels\trb1-4\wheel3.acc"
+  File "base\wheels\trb1-4\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-5"
+  File "base\wheels\trb1-5\readme.txt"
+  File "base\wheels\trb1-5\wheel0.acc"
+  File "base\wheels\trb1-5\wheel1.acc"
+  File "base\wheels\trb1-5\wheel2.acc"
+  File "base\wheels\trb1-5\wheel3.acc"
+  File "base\wheels\trb1-5\wheel3d.png"
+
+  SetOutPath "$INSTDIR\wheels\trb1-6"
+  File "base\wheels\trb1-6\readme.txt"
+  File "base\wheels\trb1-6\wheel0.acc"
+  File "base\wheels\trb1-6\wheel1.acc"
+  File "base\wheels\trb1-6\wheel2.acc"
+  File "base\wheels\trb1-6\wheel3.acc"
+  File "base\wheels\trb1-6\wheel3d.png"
+
+  SetOutPath "$INSTDIR\data\music"
+  File "base\data\music\torcs1.ogg"
   
   SetOutPath "$INSTDIR"
   File "base\client.dll"
@@ -1091,9 +1160,12 @@ Section "Base System" SEC01
   File "base\nfs2ac.exe"
   File "base\nfsperf.exe"
   File "base\OpenAL32.dll"
+  File "base\libogg.dll"
+  File "base\libvorbis.dll"
+  File "base\libvorbisfile.dll"
   File "base\robottools.dll"
   
-   SetOutPath "$INSTDIR"
+  SetOutPath "$INSTDIR"
   File "base\tgf.dll"
   File "base\Ticon.ico"
   File "base\Ticon.png"
