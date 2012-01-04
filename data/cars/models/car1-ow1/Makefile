@@ -20,7 +20,7 @@ CAR       = car1-ow1
 DATADIR   = cars/$(CAR)
 
 DATA      = $(CAR).xml readme.txt \
-            $(CAR).rgb shadow.rgb \
+            $(CAR).rgb tex-wheel.rgb shadow.rgb \
             $(shell find *.acc -maxdepth 0 -type f -print)
 
 data_PKGFILES	= $(DATA)
