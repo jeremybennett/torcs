@@ -102,7 +102,7 @@ Changes since 1.3.2-test1
 - Replaced sprintf's with snprintf's in lib (Bernhard).
 - Fixed warnings regarding size_t in printf (Bernhard).
 - Rewrote handleEntities to avoid buffer size problems (Bernhard).
-- Changed handling of identation when writing XML files to avoid buffer size
+- Changed handling of indentation when writing XML files to avoid buffer size
   problems (Bernhard).
 - Ported sound/sprintf changes to Windows version (Bernhard).
 - Report #3405193, added torcs.desktop file provided by Jakob Matthes (Jakob,
@@ -141,7 +141,7 @@ Changes since 1.3.1
 - Applied corrections suggested by Kim Oldfield to the robot tutorial (Kim, Bernhard).
 - Adopted TRB result submission for 1.3.1 (Bernhard).
 - Adopted TRB result submission for new PHP DOM version (Bernhard).
-- Fixed minor TRB bug which showed/labeled links to Signin/remove teams during the
+- Fixed minor TRB bug which showed/labeled links to signin/remove teams during the
   race phase (Bernhard).
 - Replaced hardcoded upload limit in TRB with configuration parameter (Bernhard).
 - Bumped TRB version number to 0.0.2 (Bernhard).
