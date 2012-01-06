@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="human"
 	ProjectGUID="{13ABA378-0B47-428F-9EB7-03704921F3A0}"
+	RootNamespace="human"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
