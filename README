@@ -95,6 +95,8 @@ Changes since 1.3.2-test2
 - Fixed simuv2 Makefile, parallel builds are now possible in Posix systems
   (e.g. MAKE="make -j 8" make). Because libsolid is a static library it must be
   built before simuv2, defined explicit dependency (Bernhard).
+- Fixed missing dependency in VS 2008 solution (human requires client for
+  input handling) (Bernhard).
 
 
 Changes since 1.3.2-test1
