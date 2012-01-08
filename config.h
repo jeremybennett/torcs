@@ -28,6 +28,9 @@
 /* Define to 1 if you have the `openal' library (-lopenal). */
 #define HAVE_LIBOPENAL 1
 
+/* Define to 1 if you have the `plibjs' library (-lplibjs). */
+#define HAVE_LIBPLIBJS 1
+
 /* Define to 1 if you have the `plibsg' library (-lplibsg). */
 #define HAVE_LIBPLIBSG 1
 
@@ -121,6 +124,9 @@
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME ""
 
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
+
 /* Define to the version of this package. */
 #define PACKAGE_VERSION ""
 
@@ -131,7 +137,7 @@
 #define TIME_WITH_SYS_TIME 1
 
 /* Version number of package */
-#define VERSION "1.3.2-test2"
+#define VERSION "1.3.2"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
