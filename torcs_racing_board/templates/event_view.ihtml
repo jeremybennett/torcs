@@ -126,7 +126,14 @@
 						Admin:
 					</td>
 					<td>
-						<a href="{ROOTPATH}admin/event_create_race.php?eventid={PC_EVENT_ID}">Create and add a race</a>.
+						<a href="{ROOTPATH}admin/event_create_race.php?eventid={PC_EVENT_ID}">Create one race</a>.
+					</td>
+				</tr>
+				<tr class="tight">
+					<td>
+					</td>
+					<td>
+						<a href="{ROOTPATH}admin/event_create_races.php?eventid={PC_EVENT_ID}">Create multiple races</a>.
 					</td>
 				</tr>
 				<!-- END admin -->

@@ -100,7 +100,7 @@
 		if (isset($_POST[$cs]) && strlen($_POST[$cs]) > 0) {
 			$val = removeMagicQuotes($_POST[$cs]);
 			$time = strtotime($val);
-			if ($time != -1) {
+			if ($time != FALSE) {
 				$retval = intval(0);
 			}
 		}

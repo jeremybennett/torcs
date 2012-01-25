@@ -18,6 +18,8 @@
 //error_reporting(E_ALL);
 error_reporting(0);
 
+date_default_timezone_set("Europe/Zurich");
+
 // Check if table already exists.
 // Preconditions: DB Connected and Selected.
 // Input:
@@ -205,8 +207,7 @@ function removeMagicQuotes($var)
 // Convert mysql timestamp to YYYY-MM-DD HH:MM:SS
 function mysqlToTime($time)
 {
-	return substr($time, 0, 4) . "-" . substr($time, 4, 2) . "-" . substr($time, 6, 2) . " " .
-		   substr($time, 8, 2) . ":" . substr($time, 10, 2) . ":" . substr($time, 12, 2);
+	return $time;
 }
 
 

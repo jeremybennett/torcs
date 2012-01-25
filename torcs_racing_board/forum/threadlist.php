@@ -132,8 +132,12 @@
 	$results = 0;
 	$toggle = intval(0);
 	while (($myrow = mysql_fetch_array($result)) && $results < LISTENTRIES) {
+		$tmpsubject = htmlentities($myrow['subject']);
+		if ($tmpsubject == "") {
+			$tmpsubject = "?";
+		}
 		$page->set_var(array(
-			'PC_TOPIC'			=> htmlentities($myrow['subject']),
+			'PC_TOPIC'			=> $tmpsubject,
 			'PC_TOPIC_ID'		=> $myrow['id'],
 			'PC_AUTHOR'		=> htmlentities($myrow['username']),
 			'PC_AUTHOR_ID'		=> $myrow['author'],

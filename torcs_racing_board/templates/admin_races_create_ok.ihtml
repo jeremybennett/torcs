@@ -1,0 +1,11 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<h3>Races Stored</h3>
+			<p>
+				The races have been stored. You can now <a href="{ROOTPATH}events/event_view.php?vieweventid={PB_EVENT_ID}">adjust the details</a>.
+			</p>
+		</td>
+	</tr>
+</table>
