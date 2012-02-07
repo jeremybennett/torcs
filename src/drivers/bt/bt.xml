@@ -23,7 +23,7 @@
         <attstr name="desc" val=""></attstr>
         <attstr name="team" val="berniw"></attstr>
         <attstr name="author" val="Bernhard Wymann"></attstr>
-        <attstr name="car name" val="cg-nascar-rwd"></attstr>
+        <attstr name="car name" val="car1-stock1"></attstr>
         <attnum name="race number" val="61"></attnum>
         <attnum name="red" val="1.0"></attnum>
         <attnum name="green" val="0.0"></attnum>
@@ -35,7 +35,7 @@
         <attstr name="desc" val=""></attstr>
         <attstr name="team" val="berniw"></attstr>
         <attstr name="author" val="Bernhard Wymann"></attstr>
-        <attstr name="car name" val="cg-nascar-rwd"></attstr>
+        <attstr name="car name" val="car1-stock1"></attstr>
         <attnum name="race number" val="62"></attnum>
         <attnum name="red" val="1.0"></attnum>
         <attnum name="green" val="0.0"></attnum>

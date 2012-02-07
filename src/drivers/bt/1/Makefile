@@ -15,7 +15,7 @@
 
 ROBOT       = bt
 SHIPDIR     = drivers/${ROBOT}/1
-SHIP        = default.xml cg-nascar-rwd.rgb
+SHIP        = default.xml car1-stock1.rgb
 SHIPSUBDIRS = practice qualifying race
 
 PKGSUBDIRS  = ${SHIPSUBDIRS}

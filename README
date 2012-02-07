@@ -98,6 +98,8 @@ Changes since 1.3.2
 - Created/added new wheels for stock cars (Bernhard).
 - Created/added new stock car category (Bernhard).
 - Created/added new stock car (Bernhard).
+- Created/added textures for drivers of the new stock car, berniw 1, berniw 2,
+  bt 1, bt 2, reconfigured drivers to use this car (Bernhard).
 
 
 TODO for 1.3.3
