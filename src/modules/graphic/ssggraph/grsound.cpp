@@ -99,14 +99,15 @@ void grInitSound(tSituation* s, int ncars)
 		void* handle = s->cars[i]->_carHandle;
 		tCarElt	*car = s->cars[i];
 		const char* param;
-		char filename[512];
+		const int BUFSIZE=1024;
+		char filename[BUFSIZE];
         FILE *file = NULL;
 
 		// ENGINE PARAMS
 		tdble rpm_scale;
 		param = GfParmGetStr(handle, "Sound", "engine sample", "engine-1.wav");
 		rpm_scale = GfParmGetNum(handle, "Sound", "rpm scale", NULL, 1.0);
-        sprintf (filename, "cars/%s/%s", car->_carName, param);
+        snprintf (filename, BUFSIZE, "cars/%s/%s", car->_carName, param);
         file = fopen(filename, "r");
         if (!file)
         {
