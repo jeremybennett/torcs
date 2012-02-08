@@ -19,7 +19,7 @@
 
 <params name="stock1" type="template">
   <section name="Car">
-    <attstr name="category" val="Nascar"/>
+    <attstr name="category" val="stock1"/>
     <attnum name="body length" unit="m" min="4.8" max="5.2" val="4.9"/>
     <attnum name="body width" unit="m" min="1.92" max="1.92" val="1.92"/>
     <attnum name="body height" unit="m" min="1.26" max="1.26" val="1.26"/>
