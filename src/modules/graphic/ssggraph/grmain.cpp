@@ -69,9 +69,6 @@ int grNbScreen = 1;
 tdble grLodFactorValue = 1.0;
 EWheelDetail grUseDetailedWheels = DETAILED;
 
-
-static char buf[1024];
-
 #ifdef WIN32
 #include <GL/glext.h>
 PFNGLMULTITEXCOORD2FARBPROC glMultiTexCoord2fARB = NULL;
@@ -230,69 +227,70 @@ grSwitchMirror(void * /* dummy */)
 int
 initView(int x, int y, int width, int height, int /* flag */, void *screen)
 {
-    int i;
-
-    if (maxTextureUnits==0)
-      {
-	InitMultiTex();
-      }
-    
-    grWinx = x;
-    grWiny = y;
-    grWinw = width;
-    grWinh = height;
-
-    grMouseRatioX = width / 640.0;
-    grMouseRatioY = height / 480.0;
-
-    OldTime = GfTimeClock();
-    nFrame = 0;
-    grFps = 0;
-
-    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-
-    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	grScreens[i]->initBoard ();
-    }
-
-    GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
-    GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom, NULL);
-
-    GfuiAddSKey(screen, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, grPrevCar, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_PAGE_DOWN, "Select Next Car",     (void*)0, grNextCar, NULL);
-
-    GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F4,   "Side Car Views",    (void*)2, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F5,   "Up Car View",       (void*)3, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F6,   "Persp Car View",    (void*)4, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F7,   "All Circuit Views", (void*)5, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F8,   "Track View",        (void*)6, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F9,   "Track View Zoomed", (void*)7, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera, NULL);
-    GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera, NULL);
-
-    GfuiAddKey(screen, '5',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
-    GfuiAddKey(screen, '4',            "G/Cmd Graph",      (void*)4, grSelectBoard, NULL);
-    GfuiAddKey(screen, '3',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
-    GfuiAddKey(screen, '2',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
-    GfuiAddKey(screen, '1',            "Driver Board",     (void*)0, grSelectBoard, NULL);
-    GfuiAddKey(screen, '9',            "Mirror",	   (void*)0, grSwitchMirror, NULL);
-    GfuiAddKey(screen, '0',            "Arcade Board",     (void*)5, grSelectBoard, NULL);
-    GfuiAddKey(screen, '>',            "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
-    GfuiAddKey(screen, '<',            "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
-    GfuiAddKey(screen, '[',            "Split Screen",     (void*)GR_SPLIT_ADD,	grSplitScreen, NULL);
-    GfuiAddKey(screen, ']',            "UnSplit Screen",   (void*)GR_SPLIT_REM,	grSplitScreen, NULL);
-    GfuiAddKey(screen, 'm',            "Track Maps",       (void*)0, grSelectTrackMap, NULL);
-
-    grAdaptScreenSize();
-
-    grInitScene();
-
-    grLodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
+	int i;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	
+	if (maxTextureUnits==0) {
+		InitMultiTex();
+	}
+
+	grWinx = x;
+	grWiny = y;
+	grWinw = width;
+	grWinh = height;
+
+	grMouseRatioX = width / 640.0;
+	grMouseRatioY = height / 480.0;
+
+	OldTime = GfTimeClock();
+	nFrame = 0;
+	grFps = 0;
+
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
+	for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+		grScreens[i]->initBoard ();
+	}
+
+	GfuiAddSKey(screen, GLUT_KEY_HOME, "Zoom Maximum",     (void*)GR_ZOOM_MAX,	grSetZoom, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_END,  "Zoom Minimum",     (void*)GR_ZOOM_MIN,	grSetZoom, NULL);
+	GfuiAddKey(screen, '*',            "Zoom Default",     (void*)GR_ZOOM_DFLT,	grSetZoom, NULL);
+
+	GfuiAddSKey(screen, GLUT_KEY_PAGE_UP,   "Select Previous Car", (void*)0, grPrevCar, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_PAGE_DOWN, "Select Next Car",     (void*)0, grNextCar, NULL);
+
+	GfuiAddSKey(screen, GLUT_KEY_F2,   "Driver Views",      (void*)0, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F3,   "Car Views",         (void*)1, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F4,   "Side Car Views",    (void*)2, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F5,   "Up Car View",       (void*)3, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F6,   "Persp Car View",    (void*)4, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F7,   "All Circuit Views", (void*)5, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F8,   "Track View",        (void*)6, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F9,   "Track View Zoomed", (void*)7, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F10,  "Follow Car Zoomed", (void*)8, grSelectCamera, NULL);
+	GfuiAddSKey(screen, GLUT_KEY_F11,  "TV Director View",  (void*)9, grSelectCamera, NULL);
+
+	GfuiAddKey(screen, '5',            "FPS Counter",      (void*)3, grSelectBoard, NULL);
+	GfuiAddKey(screen, '4',            "G/Cmd Graph",      (void*)4, grSelectBoard, NULL);
+	GfuiAddKey(screen, '3',            "Leaders Board",    (void*)2, grSelectBoard, NULL);
+	GfuiAddKey(screen, '2',            "Driver Counters",  (void*)1, grSelectBoard, NULL);
+	GfuiAddKey(screen, '1',            "Driver Board",     (void*)0, grSelectBoard, NULL);
+	GfuiAddKey(screen, '9',            "Mirror",	   (void*)0, grSwitchMirror, NULL);
+	GfuiAddKey(screen, '0',            "Arcade Board",     (void*)5, grSelectBoard, NULL);
+	GfuiAddKey(screen, '>',            "Zoom In",          (void*)GR_ZOOM_IN,	grSetZoom, NULL);
+	GfuiAddKey(screen, '<',            "Zoom Out",         (void*)GR_ZOOM_OUT,	grSetZoom, NULL);
+	GfuiAddKey(screen, '[',            "Split Screen",     (void*)GR_SPLIT_ADD,	grSplitScreen, NULL);
+	GfuiAddKey(screen, ']',            "UnSplit Screen",   (void*)GR_SPLIT_REM,	grSplitScreen, NULL);
+	GfuiAddKey(screen, 'm',            "Track Maps",       (void*)0, grSelectTrackMap, NULL);
+
+	grAdaptScreenSize();
+
+	grInitScene();
+
+	grLodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
+
 	const char* wheelDetailOption = GfParmGetStr(grHandle, GR_SCT_GRAPHIC, GR_ATT_WHEELRENDERING, GR_ATT_WHEELRENDERING_DETAILED);
 	if (strcmp(wheelDetailOption,GR_ATT_WHEELRENDERING_DETAILED ) == 0) {
 		grUseDetailedWheels = DETAILED;
@@ -300,7 +298,7 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
 		grUseDetailedWheels = SIMPLE;	
 	}
 
-    return 0;
+	return 0;
 }
 
 
@@ -345,25 +343,28 @@ refresh(tSituation *s)
 int
 initCars(tSituation *s)
 {
-    char	idx[16];
-    int		index;
-    int		i;
-    tCarElt 	*elt;
-    void	*hdle;
+	const int IDXSIZE = 16;
+	char idx[IDXSIZE];
+	int index;
+	int i;
+	tCarElt *elt;
+	void *hdle;
+	const int BUFSIZE = 1024;
+	char buf[1024];
+	
+	TRACE_GL("initCars: start");
 
-    TRACE_GL("initCars: start");
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+	grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
-    sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-    grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	grInitCommonState();
+	grInitCarlight(s->_ncars);
+	grMaxDammage = (tdble)s->_maxDammage;
+	grNbCars = s->_ncars;
 
-    grInitCommonState();
-    grInitCarlight(s->_ncars);
-    grMaxDammage = (tdble)s->_maxDammage;
-    grNbCars = s->_ncars;
+	grCustomizePits();
 
-    grCustomizePits();
-
-    grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
+	grCarInfo = (tgrCarInfo*)calloc(s->_ncars, sizeof(tgrCarInfo));
 
 	for (i = 0; i < s->_ncars; i++) {
 		elt = s->cars[i];
@@ -373,40 +374,39 @@ initCars(tSituation *s)
 		grInitSkidmarks(elt);
 	}
 
-    grNbScreen = 0;
-    for (i = 0; i < s->_ncars; i++) {
-	elt = s->cars[i];
-	index = elt->index;
-	hdle = elt->_paramsHandle;
-	sprintf(idx, "Robots/index/%d", elt->_driverIndex);
-	grCarInfo[index].iconColor[0] = GfParmGetNum(hdle, idx, "red",   (char*)NULL, 0);
-	grCarInfo[index].iconColor[1] = GfParmGetNum(hdle, idx, "green", (char*)NULL, 0);
-	grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
-	grCarInfo[index].iconColor[3] = 1.0;
-	grInitCar(elt);
-	if ((elt->_driverType == RM_DRV_HUMAN) && (grNbScreen < GR_NB_MAX_SCREEN)) {
-	    grScreens[grNbScreen]->setCurrentCar(elt);
-	    grNbScreen++;
+	grNbScreen = 0;
+	for (i = 0; i < s->_ncars; i++) {
+		elt = s->cars[i];
+		index = elt->index;
+		hdle = elt->_paramsHandle;
+		snprintf(idx, IDXSIZE, "Robots/index/%d", elt->_driverIndex);
+		grCarInfo[index].iconColor[0] = GfParmGetNum(hdle, idx, "red",   (char*)NULL, 0);
+		grCarInfo[index].iconColor[1] = GfParmGetNum(hdle, idx, "green", (char*)NULL, 0);
+		grCarInfo[index].iconColor[2] = GfParmGetNum(hdle, idx, "blue",  (char*)NULL, 0);
+		grCarInfo[index].iconColor[3] = 1.0;
+		grInitCar(elt);
+		if ((elt->_driverType == RM_DRV_HUMAN) && (grNbScreen < GR_NB_MAX_SCREEN)) {
+			grScreens[grNbScreen]->setCurrentCar(elt);
+			grNbScreen++;
+		}
 	}
-    }
 
-    if (grNbScreen == 0) {
-	grNbScreen = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NB_SCREENS, NULL, 1.0);
-    }
+	if (grNbScreen == 0) {
+		grNbScreen = (int)GfParmGetNum(grHandle, GR_SCT_DISPMODE, GR_ATT_NB_SCREENS, NULL, 1.0);
+	}
 
-    for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
-	grScreens[i]->initCams(s);
-    }
+	for (i = 0; i < GR_NB_MAX_SCREEN; i++) {
+		grScreens[i]->initCams(s);
+	}
 
-    TRACE_GL("initCars: end");
+	TRACE_GL("initCars: end");
 
-    grInitSmoke(s->_ncars);
-    grInitSound(s, s->_ncars);
+	grInitSmoke(s->_ncars);
+	grInitSound(s, s->_ncars);
 
-    grAdaptScreenSize();
+	grAdaptScreenSize();
 
-    return 0;
-    
+	return 0;
 }
 
 void

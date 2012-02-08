@@ -66,7 +66,8 @@ double * timeFire = 0;
 
 void grInitSmoke(int index)
 {
-    char buf[256];
+	const int BUFSIZE = 256;
+    char buf[BUFSIZE];
 
     grSmokeMaxNumber = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB,
 										 (char*)NULL, MAX_SMOKE_NUMBER);
@@ -99,7 +100,7 @@ void grInitSmoke(int index)
 
     // add temp object to get a reference on the states
     if (!mst) {
-		sprintf(buf, "data/textures;data/img;.");
+		snprintf(buf, BUFSIZE, "data/textures;data/img;.");
 		mst = (ssgSimpleState*)grSsgLoadTexStateEx("smoke.rgb", buf, FALSE, FALSE);
 		if (mst!=NULL) {
 			mst->disable(GL_LIGHTING);
@@ -111,7 +112,7 @@ void grInitSmoke(int index)
     }
 
     if (!mstf0) {
-		sprintf(buf, "data/textures;data/img;.");
+		snprintf(buf, BUFSIZE, "data/textures;data/img;.");
 		mstf0 = (ssgSimpleState*)grSsgLoadTexStateEx("fire0.rgb", buf, FALSE, FALSE);
 		if (mst!=NULL) {
 			mstf0->disable(GL_LIGHTING);
@@ -123,7 +124,7 @@ void grInitSmoke(int index)
     }
 
     if (!mstf1) {
-		sprintf(buf, "data/textures;data/img;.");
+		snprintf(buf, BUFSIZE, "data/textures;data/img;.");
 		mstf1 = (ssgSimpleState*)grSsgLoadTexStateEx("fire1.rgb", buf, FALSE, FALSE);
 		if (mst!=NULL) {
 			mstf1->disable(GL_LIGHTING);

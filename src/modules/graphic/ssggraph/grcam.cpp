@@ -41,9 +41,6 @@
 #include "grutil.h"
 #include <tgfclient.h>
 
-static char path[1024];
-
-
 float
 cGrCamera::getDist2 (tCarElt *car)
 {
@@ -133,10 +130,12 @@ void cGrPerspCamera::setModelView(void)
 
 void cGrPerspCamera::loadDefaults(char *attr)
 {
-    sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
-    fovy = (float)GfParmGetNum(grHandle, path,
-			       attr, (char*)NULL, fovydflt);
-    limitFov();
+	const int BUFSIZE=1024;
+	char path[BUFSIZE];
+	
+	snprintf(path, BUFSIZE, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+	fovy = (float)GfParmGetNum(grHandle, path, attr, (char*)NULL, fovydflt);
+	limitFov();
 }
 
 
@@ -165,46 +164,50 @@ float cGrPerspCamera::getLODFactor(float x, float y, float z) {
 
 void cGrPerspCamera::setZoom(int cmd)
 {
-    char	buf[256];
+	const int BUFSIZE=256;
+	char buf[BUFSIZE];
+	const int PATHSIZE=1024;
+	char path[PATHSIZE];
 
-    switch(cmd) {
-    case GR_ZOOM_IN:
-	if (fovy > 2) {
-	    fovy--;
-	} else {
-	    fovy /= 2.0;
+
+	switch(cmd) {
+		case GR_ZOOM_IN:
+			if (fovy > 2) {
+				fovy--;
+			} else {
+				fovy /= 2.0;
+			}
+			if (fovy < fovymin) {
+				fovy = fovymin;
+			}
+			break;
+
+		case GR_ZOOM_OUT:
+			fovy++;
+			if (fovy > fovymax) {
+				fovy = fovymax;
+			}
+			break;
+
+		case GR_ZOOM_MAX:
+			fovy = fovymax;
+			break;
+
+		case GR_ZOOM_MIN:
+			fovy = fovymin;
+			break;
+
+		case GR_ZOOM_DFLT:
+			fovy = fovydflt;
+			break;
 	}
-	if (fovy < fovymin) {
-	    fovy = fovymin;
-	}
-	break;
-	
-    case GR_ZOOM_OUT:
-	fovy++;
-	if (fovy > fovymax) {
-	    fovy = fovymax;
-	}
-	break;
 
-    case GR_ZOOM_MAX:
-	fovy = fovymax;
-	break;
+	limitFov();
 
-    case GR_ZOOM_MIN:
-	fovy = fovymin;
-	break;
-
-    case GR_ZOOM_DFLT:
-	fovy = fovydflt;
-	break;
-    }
-
-    limitFov();
-
-    sprintf(buf, "%s-%d-%d", GR_ATT_FOVY, screen->getCurCamHead(), getId());
-    sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
-    GfParmSetNum(grHandle, path, buf, (char*)NULL, (tdble)fovy);
-    GfParmWriteFile(NULL, grHandle, "Graph");
+	snprintf(buf, BUFSIZE, "%s-%d-%d", GR_ATT_FOVY, screen->getCurCamHead(), getId());
+	snprintf(path, PATHSIZE, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+	GfParmSetNum(grHandle, path, buf, (char*)NULL, (tdble)fovy);
+	GfParmWriteFile(NULL, grHandle, "Graph");
 }
 
 void cGrOrthoCamera::setProjection(void)
@@ -741,11 +744,13 @@ class cGrCarCamCenter : public cGrPerspCamera
 	up[1] = 0;
 	up[2] = 1;
     }
-
+    
     void loadDefaults(char *attr) {
-	sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
-	locfovy = (float)GfParmGetNum(grHandle, path,
-				   attr, (char*)NULL, fovydflt);
+		const int PATHSIZE=1024;
+		char path[PATHSIZE];
+
+		snprintf(path, PATHSIZE, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+		locfovy = (float)GfParmGetNum(grHandle, path, attr, (char*)NULL, fovydflt);
     }
 
     void setZoom(int cmd) {
@@ -925,11 +930,11 @@ class cGrCarCamRoadFly : public cGrPerspCamera
     }
     
     void update(tCarElt *car, tSituation *s) {
-	tRoadCam *curCam;
+	//tRoadCam *curCam;
 	float height;
 	float dt;
 
-	curCam = car->_trkPos.seg->cam;
+	//curCam = car->_trkPos.seg->cam;
 
 	if (currenttime == 0.0) {
 	    currenttime = s->currentTime;
@@ -1035,7 +1040,11 @@ class cGrCarCamRoadZoom : public cGrPerspCamera
     }
 
     void loadDefaults(char *attr) {
-	sprintf(path, "%s/%d", GR_SCT_DISPMODE, screen->getId());
+	
+   	const int PATHSIZE=1024;
+	char path[PATHSIZE];
+
+	snprintf(path, PATHSIZE, "%s/%d", GR_SCT_DISPMODE, screen->getId());
 	locfovy = (float)GfParmGetNum(grHandle, path,
 				   attr, (char*)NULL, fovydflt);
     }

@@ -42,11 +42,12 @@ char *grFilePath;			// Multiple path (';' separated) used to search for files.
 char *grTexturePath = NULL;	// Default ssg path.
 
 
-int grGetFilename(const char *filename, char *filepath, char *buf)
+int grGetFilename(const char *filename, char *filepath, char *buf, const int BUFSIZE)
 {
 	char *c1, *c2;
 	int found = 0;
 	int lg;
+	int flen = strlen(filename);
 
 	if (filepath) {
 		c1 = filepath;
@@ -54,12 +55,16 @@ int grGetFilename(const char *filename, char *filepath, char *buf)
 		while ((!found) && (c2 != NULL)) {
 			c2 = strchr(c1, ';');
 			if (c2 == NULL) {
-				sprintf(buf, "%s/%s", c1, filename);
+				snprintf(buf, BUFSIZE, "%s/%s", c1, filename);
 			} else {
 				lg = c2 - c1;
-				strncpy(buf, c1, lg);
-				buf[lg] = '/';
-				strcpy(buf + lg + 1, filename);
+				if (lg + flen + 2 < BUFSIZE) {
+					strncpy(buf, c1, lg);
+					buf[lg] = '/';
+					strcpy(buf + lg + 1, filename);
+				} else {
+					buf[0] = '\0';
+				}
 			}
 			if (ulFileExists(buf)) {
 				found = 1;
@@ -67,7 +72,7 @@ int grGetFilename(const char *filename, char *filepath, char *buf)
 			c1 = c2 + 1;
 		}
 	} else {
-		strcpy(buf, filename);
+		strncpy(buf, filename, BUFSIZE);
 		if (ulFileExists(buf)) {
 			found = 1;
 		}
@@ -184,7 +189,8 @@ static void grSetupState(grManagedState *st, char *buf)
 
 ssgState * grSsgLoadTexState(const char *img)
 {
-	char buf[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	const char *s;
 	grManagedState *st; 
 
@@ -196,7 +202,7 @@ ssgState * grSsgLoadTexState(const char *img)
 		s++;
 	}
 
-	if (!grGetFilename(s, grFilePath, buf)) {
+	if (!grGetFilename(s, grFilePath, buf, BUFSIZE)) {
 		GfOut("grSsgLoadTexState: File %s not found\n", s);
 		return NULL;
 	}
@@ -215,7 +221,8 @@ ssgState * grSsgLoadTexState(const char *img)
 
 ssgState * grSsgEnvTexState(const char *img)
 {
-	char buf[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	const char *s;
 	grMultiTexState *st;
 
@@ -227,7 +234,7 @@ ssgState * grSsgEnvTexState(const char *img)
 		s++;
     }
 
-	if (!grGetFilename(s, grFilePath, buf)) {
+	if (!grGetFilename(s, grFilePath, buf, BUFSIZE)) {
 		GfOut("grSsgLoadTexState: File %s not found\n", s);
 		return NULL;
     }
@@ -242,7 +249,8 @@ ssgState * grSsgEnvTexState(const char *img)
 ssgState *
 grSsgLoadTexStateEx(const char *img, char *filepath, int wrap, int mipmap)
 {
-	char buf[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 	const char *s;
 	grManagedState *st; 
 
@@ -254,7 +262,7 @@ grSsgLoadTexStateEx(const char *img, char *filepath, int wrap, int mipmap)
 		s++;
 	}
 
-	if (!grGetFilename(s, filepath, buf)) {
+	if (!grGetFilename(s, filepath, buf, BUFSIZE)) {
 		GfOut("File %s not found\n", s);
 		return NULL;
 	}
@@ -274,7 +282,8 @@ grSsgLoadTexStateEx(const char *img, char *filepath, int wrap, int mipmap)
 
 void  grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
 {
-	char  buf[256];
+	const int BUFSIZE = 256;
+	char  buf[BUFSIZE];
 	const char* sign;
 
 	if (sec < 0.0) {
@@ -296,11 +305,11 @@ void  grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn)
     sec -= s;
     int c = (int)floor((sec) * 100.0);
     if (h) {
-		(void)sprintf(buf, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
+		(void)snprintf(buf, BUFSIZE, "%s%2.2d:%2.2d:%2.2d:%2.2d", sign,h,m,s,c);
     } else if (m) {
-		(void)sprintf(buf, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
+		(void)snprintf(buf, BUFSIZE, "   %s%2.2d:%2.2d:%2.2d", sign,m,s,c);
     } else {
-		(void)sprintf(buf, "      %s%2.2d:%2.2d", sign,s,c);
+		(void)snprintf(buf, BUFSIZE, "      %s%2.2d:%2.2d", sign,s,c);
     }
 
     GfuiPrintString(buf, color, font, x, y, GFUI_ALIGN_HR_VB);

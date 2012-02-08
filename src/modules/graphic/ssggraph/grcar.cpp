@@ -429,7 +429,8 @@ static const int GR_SHADOW_POINTS = 6;
 
 void grInitShadow(tCarElt *car)
 {
-	char		buf[256];
+	const int BUFSIZE = 256;
+	char		buf[BUFSIZE];
 	const char	*shdTexName;
 	int			i;
 	float		x;
@@ -442,7 +443,7 @@ void grInitShadow(tCarElt *car)
 	ssgNormalArray	*shd_nrm = new ssgNormalArray(1);
 	ssgTexCoordArray	*shd_tex = new ssgTexCoordArray(GR_SHADOW_POINTS+1);
 
-	sprintf(buf, "cars/%s;", car->_carName);
+	snprintf(buf, BUFSIZE, "cars/%s;", car->_carName);
 	grFilePath = buf;
 
 	shdTexName = GfParmGetStr(car->_carHandle, SECT_GROBJECTS, PRM_SHADOW_TEXTURE, "");
@@ -525,7 +526,8 @@ void grPropagateDamage (ssgEntity* l, sgVec3 poc, sgVec3 force, int cnt)
 void 
 grInitCar(tCarElt *car)
 {
-	char buf[4096];
+	const int BUFSIZE=4096;
+	char buf[BUFSIZE];
 	int index;
 	int selIndex;
 	ssgEntity *carEntity;
@@ -536,7 +538,8 @@ grInitCar(tCarElt *car)
 	void *handle;
 	const char *param;
 	int lg;
-	char path[256];
+	const int PATHSIZE=256;
+	char path[PATHSIZE];
 	myLoaderOptions options;
 	sgVec3 lightPos;
 	int lightNum;
@@ -562,16 +565,16 @@ grInitCar(tCarElt *car)
 	car->_exhaustNb = MIN(car->_exhaustNb, 2);
 	car->_exhaustPower = GfParmGetNum(handle, SECT_EXHAUST, PRM_POWER, NULL, 1.0);
 	for (i = 0; i < car->_exhaustNb; i++) {
-		sprintf(path, "%s/%d", SECT_EXHAUST, i + 1);
+		snprintf(path, PATHSIZE, "%s/%d", SECT_EXHAUST, i + 1);
 		car->_exhaustPos[i].x = GfParmGetNum(handle, path, PRM_XPOS, NULL, -car->_dimension_x / 2.0);
 		car->_exhaustPos[i].y = -GfParmGetNum(handle, path, PRM_YPOS, NULL, car->_dimension_y / 2.0);
 		car->_exhaustPos[i].z = GfParmGetNum(handle, path, PRM_ZPOS, NULL, 0.1);
 	}
 
-	sprintf(path, "%s/%s", SECT_GROBJECTS, SECT_LIGHT);
+	snprintf(path, PATHSIZE, "%s/%s", SECT_GROBJECTS, SECT_LIGHT);
 	lightNum = GfParmGetEltNb(handle, path);
 	for (i = 0; i < lightNum; i++) {
-		sprintf(path, "%s/%s/%d", SECT_GROBJECTS, SECT_LIGHT, i + 1);
+		snprintf(path, PATHSIZE, "%s/%s/%d", SECT_GROBJECTS, SECT_LIGHT, i + 1);
 		lightPos[0] = GfParmGetNum(handle, path, PRM_XPOS, NULL, 0);
 		lightPos[1] = GfParmGetNum(handle, path, PRM_YPOS, NULL, 0);
 		lightPos[2] = GfParmGetNum(handle, path, PRM_ZPOS, NULL, 0);
@@ -596,13 +599,13 @@ grInitCar(tCarElt *car)
 
 	GfOut("[gr] Init(%d) car %s for driver %s index %d\n", index, car->_carName, car->_modName, car->_driverIndex);
 
-	grFilePath = (char*)malloc(4096);
+	grFilePath = (char*)malloc(BUFSIZE);
 	lg = 0;
-	lg += sprintf(grFilePath + lg, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
-	lg += sprintf(grFilePath + lg, "drivers/%s/%d;", car->_modName, car->_driverIndex);
-	lg += sprintf(grFilePath + lg, "drivers/%s/%s;", car->_modName, car->_carName);
-	lg += sprintf(grFilePath + lg, "drivers/%s;", car->_modName);
-	lg += sprintf(grFilePath + lg, "cars/%s", car->_carName);
+	lg += snprintf(grFilePath + lg, BUFSIZE - lg, "drivers/%s/%d/%s;", car->_modName, car->_driverIndex, car->_carName);
+	lg += snprintf(grFilePath + lg, BUFSIZE - lg, "drivers/%s/%d;", car->_modName, car->_driverIndex);
+	lg += snprintf(grFilePath + lg, BUFSIZE - lg, "drivers/%s/%s;", car->_modName, car->_carName);
+	lg += snprintf(grFilePath + lg, BUFSIZE - lg, "drivers/%s;", car->_modName);
+	lg += snprintf(grFilePath + lg, BUFSIZE - lg, "cars/%s", car->_carName);
 
 	param = GfParmGetStr(handle, SECT_GROBJECTS, PRM_WHEEL_TEXTURE, "");
 	if (strlen(param) != 0) {
@@ -621,7 +624,7 @@ grInitCar(tCarElt *car)
 	/* Level of details */
 	grCarInfo[index].LODSelector = LODSel = new ssgSelector;
 	grCarInfo[index].carTransform->addKid(LODSel);
-	sprintf(path, "%s/%s", SECT_GROBJECTS, LST_RANGES);
+	snprintf(path, PATHSIZE, "%s/%s", SECT_GROBJECTS, LST_RANGES);
 	nranges = GfParmGetEltNb(handle, path) + 1;
 	if (nranges < 2) {
 		GfOut("Error not enough levels of detail\n");
@@ -635,16 +638,16 @@ grInitCar(tCarElt *car)
 	LODSel->addKid(carBody);
 
 	/* The car's model is under cars/<model> */
-	sprintf(buf, "cars/%s", car->_carName);
+	snprintf(buf, BUFSIZE, "cars/%s", car->_carName);
 	ssgModelPath(buf);
-	sprintf(buf, "drivers/%s/%d;drivers/%s;cars/%s", car->_modName, car->_driverIndex, car->_modName, car->_carName);
+	snprintf(buf, BUFSIZE, "drivers/%s/%d;drivers/%s;cars/%s", car->_modName, car->_driverIndex, car->_modName, car->_carName);
 	ssgTexturePath(buf);
 	grTexturePath = strdup(buf);
 
 	/* loading raw car level 0*/
 	selIndex = 0; 	/* current selector index */
-	sprintf(buf, "%s.ac", car->_carName); /* default car name */
-	sprintf(path, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
+	snprintf(buf, BUFSIZE, "%s.ac", car->_carName); /* default car name */
+	snprintf(path, PATHSIZE, "%s/%s/1", SECT_GROBJECTS, LST_RANGES);
 	param = GfParmGetStr(handle, path, PRM_CAR, buf);
 	grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, path, PRM_THRESHOLD, NULL, 0.0);
 	/*carEntity = ssgLoad(param);*/
@@ -684,7 +687,7 @@ grInitCar(tCarElt *car)
 	/* Other LODs */
 	for (i = 2; i < nranges; i++) {
 		carBody = new ssgBranch;
-		sprintf(buf, "%s/%s/%d", SECT_GROBJECTS, LST_RANGES, i);
+		snprintf(buf, BUFSIZE, "%s/%s/%d", SECT_GROBJECTS, LST_RANGES, i);
 		param = GfParmGetStr(handle, buf, PRM_CAR, "");
 		grCarInfo[index].LODThreshold[selIndex] = GfParmGetNum(handle, buf, PRM_THRESHOLD, NULL, 0.0);
 		/* carEntity = ssgLoad(param); */

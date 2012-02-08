@@ -53,7 +53,7 @@ extern int	grMipMap;
 extern char *grFilePath;	/* Multiple path (: separated) used to search for files */
 extern char *grTexturePath;
 
-extern int grGetFilename(const char *filename, char *filepath, char *buf);
+extern int grGetFilename(const char *filename, char *filepath, char *buf, const int BUFSIZE);
 ssgState * grSsgEnvTexState(const char *img);
 extern ssgState *grSsgLoadTexState(const char *img);
 extern ssgState *grSsgLoadTexStateEx(const char *img, char *filepath, int wrap, int mipmap);

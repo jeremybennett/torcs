@@ -44,7 +44,8 @@ static enum SoundMode sound_mode = OPENAL_MODE;
 
 void grInitSound(tSituation* s, int ncars)
 {
-	char	buf[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
 	GfOut("-- grInitSound\n");
 
@@ -52,9 +53,8 @@ void grInitSound(tSituation* s, int ncars)
 	const char *soundDisabledStr = GR_ATT_SOUND_STATE_DISABLED;
 	const char *soundOpenALStr = GR_ATT_SOUND_STATE_OPENAL;
 	const char *soundPlibStr = GR_ATT_SOUND_STATE_PLIB;
-	char fnbuf[1024];
-	sprintf(fnbuf, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
-	void *paramHandle = GfParmReadFile(fnbuf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_SOUND_PARM_CFG);
+	void *paramHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	const char *optionName = GfParmGetStr(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_STATE, soundOpenALStr);
 	float global_volume = GfParmGetNum(paramHandle, GR_SCT_SOUND, GR_ATT_SOUND_VOLUME, "%", 100.0f);
 	if (!strcmp(optionName, soundDisabledStr)) {
@@ -99,19 +99,17 @@ void grInitSound(tSituation* s, int ncars)
 		void* handle = s->cars[i]->_carHandle;
 		tCarElt	*car = s->cars[i];
 		const char* param;
-		const int BUFSIZE=1024;
-		char filename[BUFSIZE];
         FILE *file = NULL;
 
 		// ENGINE PARAMS
 		tdble rpm_scale;
 		param = GfParmGetStr(handle, "Sound", "engine sample", "engine-1.wav");
 		rpm_scale = GfParmGetNum(handle, "Sound", "rpm scale", NULL, 1.0);
-        snprintf (filename, BUFSIZE, "cars/%s/%s", car->_carName, param);
-        file = fopen(filename, "r");
+        snprintf (buf, BUFSIZE, "cars/%s/%s", car->_carName, param);
+        file = fopen(buf, "r");
         if (!file)
         {
- 		    sprintf (filename, "data/sound/%s", param);
+ 		    snprintf (buf, BUFSIZE, "data/sound/%s", param);
         }
         else
         {
@@ -119,7 +117,7 @@ void grInitSound(tSituation* s, int ncars)
         }
 
 		car_sound_data[car->index] = new CarSoundData (car->index, sound_interface);
-		TorcsSound* engine_sound = sound_interface->addSample(filename, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true, false);
+		TorcsSound* engine_sound = sound_interface->addSample(buf, ACTIVE_VOLUME | ACTIVE_PITCH | ACTIVE_LP_FILTER, true, false);
 		car_sound_data[i]->setEngineSound (engine_sound, rpm_scale);
 
 		// TURBO PARAMS
@@ -152,7 +150,7 @@ void grInitSound(tSituation* s, int ncars)
 	sound_interface->setBackfireLoopSound("data/sound/backfire_loop.wav");
 
     for (i = 0; i < NB_CRASH_SOUND; i++) {
-		sprintf(buf, "data/sound/crash%d.wav", i+1);
+		snprintf(buf, BUFSIZE, "data/sound/crash%d.wav", i+1);
 		sound_interface->setCrashSound(buf, i);
     }
 

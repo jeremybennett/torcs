@@ -87,8 +87,6 @@ static void initBackground(void);
 
 extern ssgEntity *grssgLoadAC3D ( const char *fname, const ssgLoaderOptions* options );
 
-static char buf[1024];
-
 int preScene(ssgEntity *e)
 {
   return TRUE;
@@ -98,6 +96,8 @@ int preScene(ssgEntity *e)
 int
 grInitScene(void)
 {
+	const int BUFSIZE = 1024;
+	char buf[1024];
 	void *hndl = grTrackHandle;
 	ssgLight *light = ssgGetLight(0);
 
@@ -109,8 +109,8 @@ grInitScene(void)
 	GLfloat fog_clr[]        = {1.0, 1.0, 1.0, 0.5};
 
 	if (grHandle==NULL) {
-	sprintf(buf, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-	grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
+		grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	}
 
 	mat_specular[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_R, NULL, mat_specular[0]);
@@ -178,77 +178,77 @@ static ssgLoaderOptionsEx	options;
 int
 grLoadScene(tTrack *track)
 {
-    void		*hndl = grTrackHandle;
-    const char		*acname;
-    ssgEntity		*desc;
-    char		buf[256];
+	void *hndl = grTrackHandle;
+	const char *acname;
+	ssgEntity *desc;
+	const int BUFSIZE = 256;
+	char buf[BUFSIZE];
 
-    if (maxTextureUnits==0)
-      {
-	InitMultiTex();   
-      }
+	if (maxTextureUnits==0) {
+		InitMultiTex();   
+	}
 
-    ssgSetCurrentOptions(&options);
-    ssgAddTextureFormat(".png", grLoadPngTexture);
+	ssgSetCurrentOptions(&options);
+	ssgAddTextureFormat(".png", grLoadPngTexture);
 	grRegisterCustomSGILoader();
-	
-    grTrack = track;
-    TheScene = new ssgRoot;
 
-    /* Landscape */
-    LandAnchor = new ssgBranch;
-    TheScene->addKid(LandAnchor);
+	grTrack = track;
+	TheScene = new ssgRoot;
 
-    /* Pit stops walls */
-    PitsAnchor = new ssgBranch;
-    TheScene->addKid(PitsAnchor);
+	/* Landscape */
+	LandAnchor = new ssgBranch;
+	TheScene->addKid(LandAnchor);
 
-    /* Skid Marks */
-    SkidAnchor = new ssgBranch;
-    TheScene->addKid(SkidAnchor);
+	/* Pit stops walls */
+	PitsAnchor = new ssgBranch;
+	TheScene->addKid(PitsAnchor);
 
-    /* Car shadows */
-    ShadowAnchor = new ssgBranch;
-    TheScene->addKid(ShadowAnchor);
+	/* Skid Marks */
+	SkidAnchor = new ssgBranch;
+	TheScene->addKid(SkidAnchor);
+
+	/* Car shadows */
+	ShadowAnchor = new ssgBranch;
+	TheScene->addKid(ShadowAnchor);
 
 	/* Car lights */
-    CarlightAnchor = new ssgBranch;
-    TheScene->addKid(CarlightAnchor);
+	CarlightAnchor = new ssgBranch;
+	TheScene->addKid(CarlightAnchor);
 
-    /* Cars */
-    CarsAnchor = new ssgBranch;
-    TheScene->addKid(CarsAnchor);
+	/* Cars */
+	CarsAnchor = new ssgBranch;
+	TheScene->addKid(CarsAnchor);
 
-    /* Smoke */
-    SmokeAnchor = new ssgBranch;
-    TheScene->addKid(SmokeAnchor);
+	/* Smoke */
+	SmokeAnchor = new ssgBranch;
+	TheScene->addKid(SmokeAnchor);
 
-    /* Lens Flares */
-    SunAnchor = new ssgBranch;
-    TheScene->addKid(SunAnchor);
+	/* Lens Flares */
+	SunAnchor = new ssgBranch;
+	TheScene->addKid(SunAnchor);
 
 
-    initBackground();
-    
-    grWrldX = (int)(track->max.x - track->min.x + 1);
-    grWrldY = (int)(track->max.y - track->min.y + 1);
-    grWrldZ = (int)(track->max.z - track->min.z + 1);
-    grWrldMaxSize = (int)(MAX(MAX(grWrldX, grWrldY), grWrldZ));
+	initBackground();
 
-    acname = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, "track.ac");
-    if (strlen(acname) == 0) {
-	return -1;
-    }
+	grWrldX = (int)(track->max.x - track->min.x + 1);
+	grWrldY = (int)(track->max.y - track->min.y + 1);
+	grWrldZ = (int)(track->max.z - track->min.z + 1);
+	grWrldMaxSize = (int)(MAX(MAX(grWrldX, grWrldY), grWrldZ));
 
-    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", grTrack->category, grTrack->internalname);
-    ssgTexturePath(buf);
-    sprintf(buf, "tracks/%s/%s", grTrack->category, grTrack->internalname);
-    ssgModelPath(buf);
+	acname = GfParmGetStr(hndl, TRK_SECT_GRAPH, TRK_ATT_3DDESC, "track.ac");
+	if (strlen(acname) == 0) {
+		return -1;
+	}
 
-    desc = grssgLoadAC3D(acname, NULL);
-    LandAnchor->addKid(desc);
+	snprintf(buf, BUFSIZE, "tracks/%s/%s;data/textures;data/img;.", grTrack->category, grTrack->internalname);
+	ssgTexturePath(buf);
+	snprintf(buf, BUFSIZE, "tracks/%s/%s", grTrack->category, grTrack->internalname);
+	ssgModelPath(buf);
 
-    return 0;
+	desc = grssgLoadAC3D(acname, NULL);
+	LandAnchor->addKid(desc);
+
+	return 0;
 }
 
 
@@ -319,7 +319,8 @@ initBackground(void)
     sgVec4		clr;
     sgVec3		nrm;
     sgVec2		tex;
-    static char		buf[1024];
+    const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
     ssgVtxTable 	*bg;
     ssgVertexArray	*bg_vtx;
     ssgTexCoordArray	*bg_tex;
@@ -327,7 +328,7 @@ initBackground(void)
     ssgNormalArray	*bg_nrm;
     ssgSimpleState	*bg_st;
     
-    sprintf(buf, "tracks/%s/%s;data/img;data/textures;.", grTrack->category, grTrack->internalname);
+    snprintf(buf, BUFSIZE, "tracks/%s/%s;data/img;data/textures;.", grTrack->category, grTrack->internalname);
     grFilePath = buf;
     grGammaValue = 1.8;
     grMipMap = 0;
@@ -649,7 +650,8 @@ grCustomizePits(void)
 	switch (pits->type) {
 	case TR_PIT_ON_TRACK_SIDE:
 		for (i = 0; i < pits->nMaxPits; i++) {
-			char buf[256];
+			const int BUFSIZE=256;
+			char buf[BUFSIZE];
 			t3Dd normalvector;
 			sgVec3 vtx;
 			sgVec4 clr = {0,0,0,1};
@@ -667,15 +669,15 @@ grCustomizePits(void)
 				// If we have more than one car in the pit use the team pit logo of driver 0. 
 				if (pits->driversPits[i].freeCarIndex == 1) { 
 					// One car assigned to the pit.
-					sprintf(buf, "drivers/%s/%d;drivers/%s;data/textures;data/img;.",
+					snprintf(buf, BUFSIZE, "drivers/%s/%d;drivers/%s;data/textures;data/img;.",
 						pits->driversPits[i].car[0]->_modName, pits->driversPits[i].car[0]->_driverIndex,
 						pits->driversPits[i].car[0]->_modName);
 				} else {
 					// Multiple cars assigned to the pit.
-					sprintf(buf, "drivers/%s;data/textures;data/img;.", pits->driversPits[i].car[0]->_modName);
+					snprintf(buf, BUFSIZE, "drivers/%s;data/textures;data/img;.", pits->driversPits[i].car[0]->_modName);
 				}
 			} else {
-				sprintf(buf, "data/textures;data/img;.");
+				snprintf(buf, BUFSIZE, "data/textures;data/img;.");
 			}
 			
 			
