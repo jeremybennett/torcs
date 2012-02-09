@@ -58,8 +58,8 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 int joyPresent = 0;
 
-static char	sstring[1024];
-static char	buf[1024];
+//static char	sstring[1024];
+//static char	buf[1024];
 
 static tTrack	*curTrack;
 //static void	*DrvInfo;
@@ -210,15 +210,18 @@ human(tModInfo *modInfo)
 {
 	int i;
 	const char *driver;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	char sstring[BUFSIZE];
 
 	memset(modInfo, 0, 10*sizeof(tModInfo));
 
-	sprintf(buf, "%sdrivers/human/human.xml", GetLocalDir());
+	snprintf(buf, BUFSIZE, "%sdrivers/human/human.xml", GetLocalDir());
 	void *DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
 	if (DrvInfo != NULL) {
 		for (i = 0; i < 10; i++) {
-			sprintf(sstring, "Robots/index/%d", i+1);
+			snprintf(sstring, BUFSIZE, "Robots/index/%d", i+1);
 			driver = GfParmGetStr(DrvInfo, sstring, "name", "");
 			if (strlen(driver) == 0) {
 				break;
@@ -262,45 +265,55 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 {
 	const char *carname;
 	char *s1, *s2;
-	char trackname[256];
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	char sstring[BUFSIZE];
+	
+	const int TRACKNAMESIZE = 256;
+	char trackname[TRACKNAMESIZE];
 	tdble fuel;
 	int idx = index - 1;
 
 	curTrack = track;
 	s1 = strrchr(track->filename, '/') + 1;
 	s2 = strchr(s1, '.');
-	strncpy(trackname, s1, s2-s1);
-	trackname[s2-s1] = 0;
-	sprintf(sstring, "Robots/index/%d", index);
+	if (s2-s1 < TRACKNAMESIZE) {
+		strncpy(trackname, s1, s2-s1);
+		trackname[s2-s1] = 0;
+	} else {
+		trackname[0] = 0;
+		GfError("human.cpp, initTrack, filename too long");
+	}
+	snprintf(sstring, BUFSIZE, "Robots/index/%d", index);
 
-	sprintf(buf, "%sdrivers/human/human.xml", GetLocalDir());
+	snprintf(buf, BUFSIZE, "%sdrivers/human/human.xml", GetLocalDir());
 	void *DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	carname = "";
 	if (DrvInfo != NULL) {
 		carname = GfParmGetStr(DrvInfo, sstring, "car name", "");
 	}
 
-	sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s-%d.xml", GetLocalDir(), trackname, carname, index);
+	snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s-%d.xml", GetLocalDir(), trackname, carname, index);
 	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 	if (*carParmHandle != NULL) {
 		GfOut("Player: %s Loaded\n", sstring);
 	} else {
-		sprintf(sstring, "%sdrivers/human/tracks/%s/car-%s.xml", GetLocalDir(), trackname, carname);
+		snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s.xml", GetLocalDir(), trackname, carname);
 		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 		if (*carParmHandle != NULL) {
 			GfOut("Player: %s Loaded\n", sstring);
 		} else {
-			sprintf(sstring, "%sdrivers/human/car-%s-%d.xml", GetLocalDir(), carname, index);
+			snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s-%d.xml", GetLocalDir(), carname, index);
 			*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 			if (*carParmHandle != NULL) {
 				GfOut("Player: %s Loaded\n", sstring);
 			} else {
-				sprintf(sstring, "%sdrivers/human/car-%s.xml", GetLocalDir(), carname);
+				snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s.xml", GetLocalDir(), carname);
 				*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 				if (*carParmHandle != NULL) {
 					GfOut("Player: %s Loaded\n", sstring);
 				} else {
-					sprintf(sstring, "%sdrivers/human/car.xml", GetLocalDir ());
+					snprintf(sstring, BUFSIZE, "%sdrivers/human/car.xml", GetLocalDir ());
 					*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
 					if (*carParmHandle != NULL) {
 						GfOut("Player: %s Loaded\n", sstring);
@@ -311,7 +324,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	}
 
 	if (curTrack->pits.type != TR_PIT_NONE) {
-		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
+		snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 		HCtx[idx]->NbPitStopProg = (int)GfParmGetNum(PrefHdle, sstring, HM_ATT_NBPITS, (char*)NULL, 0);
 		GfOut("Player: index %d , Pits stops %d\n", index, HCtx[idx]->NbPitStopProg);
 	} else {
@@ -479,6 +492,9 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 	int scrw, scrh, dummy;
 	int idx = index - 1;
 	tControlCmd	*cmd = HCtx[idx]->CmdControl;
+	const int BUFSIZE = 1024;
+	char sstring[BUFSIZE];
+
 
 	static int firstTime = 1;
 
@@ -524,7 +540,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 		((cmd[CMD_ABS].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ABS].val].edgeUp))
 	{
 		HCtx[idx]->ParamAbs = 1 - HCtx[idx]->ParamAbs;
-		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
+		snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 		GfParmSetStr(PrefHdle, sstring, HM_ATT_ABS, Yn[1 - HCtx[idx]->ParamAbs]);
 		GfParmWriteFile(NULL, PrefHdle, "Human");
 	}
@@ -534,12 +550,13 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 		((cmd[CMD_ASR].type == GFCTRL_TYPE_SKEYBOARD) && skeyInfo[cmd[CMD_ASR].val].edgeUp))
 	{
 		HCtx[idx]->ParamAsr = 1 - HCtx[idx]->ParamAsr;
-		sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
+		snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
 		GfParmSetStr(PrefHdle, sstring, HM_ATT_ASR, Yn[1 - HCtx[idx]->ParamAsr]);
 		GfParmWriteFile(NULL, PrefHdle, "Human");
 	}
 
-	sprintf(car->_msgCmd[0], "%s %s", (HCtx[idx]->ParamAbs ? "ABS" : ""), (HCtx[idx]->ParamAsr ? "ASR" : ""));
+	const int bufsize = sizeof(car->_msgCmd[0]);
+	snprintf(car->_msgCmd[0], bufsize, "%s %s", (HCtx[idx]->ParamAbs ? "ABS" : ""), (HCtx[idx]->ParamAsr ? "ASR" : ""));
 	memcpy(car->_msgColorCmd, color, sizeof(car->_msgColorCmd));
 
 	if (((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_JOY_BUT) && (joyInfo->levelup[cmd[CMD_SPDLIM].val] == 1)) ||
@@ -547,10 +564,10 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 		((cmd[CMD_SPDLIM].type == GFCTRL_TYPE_SKEYBOARD) && (skeyInfo[cmd[CMD_SPDLIM].val].state == GFUI_KEY_DOWN)))
 	{
 		speedLimiter = 1;
-		sprintf(car->_msgCmd[1], "Speed Limiter On");
+		snprintf(car->_msgCmd[1], bufsize, "Speed Limiter On");
 	} else {
 		speedLimiter = 0;
-		sprintf(car->_msgCmd[1], "Speed Limiter Off");
+		snprintf(car->_msgCmd[1], bufsize, "Speed Limiter Off");
 	}
 
 

@@ -41,8 +41,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 static void drive(int index, tCarElt* car, tSituation *s);
 static void newrace(int index, tCarElt* car, tSituation *s);
 
-tTrack		*DmTrack;
-static char	ParamNames[256];
+tTrack *DmTrack;
 
 #ifdef _WIN32
 /* should be present in mswindows */
@@ -149,10 +148,8 @@ extern "C" int
 inferno2(tModInfo *modInfo)
 {
 	int		i;
-	//char	buf[256];
 	
 	for (i = 0; i < 10; i++) {
-		//sprintf(buf, "InfHist %d", i + 1);
 		modInfo[i].name    = strdup(botname[i]);	/* name of the module (short) */
 		modInfo[i].desc    = strdup(botdesc[i]);	/* description of the module (can be long) */
 		modInfo[i].fctInit = InitFuncPt;			/* init function */
@@ -255,23 +252,22 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	int 	idx = index - 1;
 	void	*hdle;
 	char	*str;
-	char	buf[256];
+	const int BUFSIZE = 256;
+	char	buf[BUFSIZE];
 	tdble	fuel;
 	tdble	tmpMu;
 			
 			
 	DmTrack = track;
 	str = strrchr(track->filename, '/') + 1;
-	sprintf(ParamNames, "drivers/inferno2/%d/tracksdata/car_%s", index, str);
-	*carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD);
+	snprintf(buf, BUFSIZE, "drivers/inferno2/%d/tracksdata/car_%s", index, str);
+	*carParmHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
 	
 	if (*carParmHandle == NULL) {
-		sprintf(ParamNames, "drivers/inferno2/%d/defaultcar.xml", index);
-		*carParmHandle = GfParmReadFile(ParamNames, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
-		GfOut("%s Loaded\n", ParamNames);
-	} else {
-		GfOut("%s Loaded\n", ParamNames);
+		snprintf(buf, BUFSIZE, "drivers/inferno2/%d/defaultcar.xml", index);
+		*carParmHandle = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	}
+	GfOut("%s Loaded\n", buf);
 	
 	ConsFactor[idx] = 0.0007 * DmTrack->length;
 	fuel = ConsFactor[idx] * (s->_totLaps + 1);
@@ -289,10 +285,10 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	Gmax = MIN(Gmax, tmpMu);
 	/*     Gmax = Gmax * GfParmGetNum(*carParmHandle, SECT_CAR, PRM_MASS, (char*)NULL, 1000.0); */
 		
-	sprintf(buf, "drivers/inferno2/%d/tracksdata/%s", index, str);
+	snprintf(buf, BUFSIZE, "drivers/inferno2/%d/tracksdata/%s", index, str);
 	hdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
 	if (!hdle) {
-		sprintf(buf, "drivers/inferno2/%d/default.xml", index);
+		snprintf(buf, BUFSIZE, "drivers/inferno2/%d/default.xml", index);
 		hdle = GfParmReadFile(buf, GFPARM_RMODE_REREAD);
 	}
 	
@@ -409,9 +405,9 @@ static void drive(int index, tCarElt* car, tSituation *s)
     tdble		tgtSpeed = -1.0;
     tdble		lgfs;
     tdble		vtgt1, vtgt2;
-    tdble		curAdv, curAdvMax, Amax, Atmp, AdvMax;
+    tdble		curAdv, /*curAdvMax,*/ Amax, Atmp, AdvMax;
 
-    static int		lap[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //static int		lap[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     static tdble	lgfsprev[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     static tdble	adv[10];
     
@@ -488,7 +484,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	Atmp = fabs(trkPos.toRight - car->_trkPos.toRight) / curAdv;
 	if (Amax < Atmp) {
 	    Amax = Atmp;
-	    curAdvMax = curAdv;
+	    //curAdvMax = curAdv;
 	}
 	curAdv += AdvStep[idx];
     }
@@ -542,7 +538,7 @@ static void drive(int index, tCarElt* car, tSituation *s)
 	}
     }
 #endif
-    lap[idx] = car->_laps;
+    //lap[idx] = car->_laps;
 
     InvBrkCmd = - car->_brakeCmd;
 }

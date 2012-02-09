@@ -116,11 +116,11 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	char buffer[BUFSIZE];
 	char* trackname = strrchr(track->filename, '/') + 1;
 
-	sprintf(buffer, "drivers/berniw2/%d/%s", index, trackname);
+	snprintf(buffer, BUFSIZE, "drivers/berniw2/%d/%s", index, trackname);
     *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
 
 	if (*carParmHandle == NULL) {
-		sprintf(buffer, "drivers/berniw2/%d/default.xml", index);
+		snprintf(buffer, BUFSIZE, "drivers/berniw2/%d/default.xml", index);
 	    *carParmHandle = GfParmReadFile(buffer, GFPARM_RMODE_STD);
 	}
 

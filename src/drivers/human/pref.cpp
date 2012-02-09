@@ -101,7 +101,8 @@ HmReadPrefs(int index)
 {
     const char	*prm;
     const char	*defaultSettings;
-    char	sstring[1024];
+    const int BUFSIZE = 1024;
+	char	sstring[BUFSIZE];
     int		cmd;
     float	tmp;
     tCtrlRef	*ref;
@@ -113,10 +114,10 @@ HmReadPrefs(int index)
     cmdCtrl = HCtx[idx]->CmdControl;
     memcpy(cmdCtrl, CmdControlRef, nbCmdControl * sizeof (tControlCmd));
 
-    sprintf(sstring, "%s%s", GetLocalDir(), HM_PREF_FILE);
+    snprintf(sstring, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
     PrefHdle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 
-    sprintf(sstring, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
+    snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
     prm = GfParmGetStr(PrefHdle, sstring, HM_ATT_TRANS, HM_VAL_AUTO);
     if (strcmp(prm, HM_VAL_AUTO) == 0) {
 	HCtx[idx]->Transmission = 0;
