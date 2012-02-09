@@ -19,6 +19,7 @@
 
 
 #include "berniw.h"
+#include <portability.h>
 
 #ifdef DMALLOC
 #include "dmalloc.h"

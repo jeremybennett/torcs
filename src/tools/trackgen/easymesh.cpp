@@ -17,6 +17,7 @@
 #include <tgf.h>
 #include <track.h>
 #include <robottools.h>
+#include <portability.h>
 
 #include "trackgen.h"
 #include "elevation.h"

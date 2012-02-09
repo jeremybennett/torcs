@@ -28,6 +28,7 @@
 #include <math.h>
 
 #include <tgfclient.h>
+#include <portability.h>
 
 #include <track.h>
 #include <car.h>

@@ -24,6 +24,7 @@
 #include <tgf.h>
 #include <robottools.h>
 #include <track.h>
+#include <portability.h>
 #include "trackinc.h"
 
 static tdble	xmin, xmax, ymin, ymax, zmin, zmax;

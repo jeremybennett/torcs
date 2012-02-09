@@ -29,6 +29,7 @@
 #include <plib/ssg.h>
 
 #include <tgfclient.h>
+#include <portability.h>
 
 #include "grutil.h"
 #include "grmultitexstate.h"

@@ -24,6 +24,7 @@
 
 #include <tgf.h>
 #include <track.h>
+#include <portability.h>
 #include "trackinc.h"
 
 const tdble DEGPRAD = 180.0 / PI;   /* degrees per radian */

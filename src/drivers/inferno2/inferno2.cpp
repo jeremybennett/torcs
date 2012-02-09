@@ -34,6 +34,7 @@
 #include <raceman.h>
 #include <robot.h>
 #include <robottools.h>
+#include <portability.h>
 
 #include "common.h"
 

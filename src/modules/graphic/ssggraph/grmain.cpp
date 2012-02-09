@@ -27,6 +27,7 @@
 #include <plib/ssg.h>
 
 #include <tgfclient.h>
+#include <portability.h>
 #include <graphic.h>
 
 #include "grmain.h"

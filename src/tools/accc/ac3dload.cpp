@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <cstring>
+#include <portability.h>
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif

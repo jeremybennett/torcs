@@ -34,6 +34,7 @@
 #include <tgfclient.h>
 #include <track.h>
 #include <robottools.h>
+#include <portability.h>
 
 #include "ac3d.h"
 #include "util.h"

@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <plib/ssg.h>
+#include <portability.h>
 
 #include "grcam.h"
 #include "grboard.h"

@@ -29,6 +29,7 @@
 #include <plib/ssg.h>
 
 #include <robottools.h>
+#include <portability.h>
 #include <graphic.h>
 #include "grcam.h"
 #include "grscreen.h"

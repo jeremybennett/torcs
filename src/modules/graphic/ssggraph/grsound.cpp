@@ -23,6 +23,7 @@
 #include <tgfclient.h>
 #include <graphic.h>
 #include <car.h>
+#include <portability.h>
 
 #include "grsound.h"
 #include "grmain.h"

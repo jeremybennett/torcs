@@ -18,6 +18,7 @@
  ***************************************************************************/
 
 #include "sim.h"
+#include <portability.h>
 
 void
 SimEngineConfig(tCar *car)
