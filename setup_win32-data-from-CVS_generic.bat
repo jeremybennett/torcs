@@ -15,10 +15,6 @@ if exist .\data\cars\categories\Historic\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\categories\Historic\*.* call .\create_dir .\%RUNTIMEDIR%\categories
 if exist .\data\cars\categories\Historic\Historic.xml copy .\data\cars\categories\Historic\Historic.xml .\%RUNTIMEDIR%\categories\Historic.xml
 
-if exist .\data\cars\categories\Nascar\*.* call .\create_dir .\%RUNTIMEDIR%
-if exist .\data\cars\categories\Nascar\*.* call .\create_dir .\%RUNTIMEDIR%\categories
-if exist .\data\cars\categories\Nascar\Nascar.xml copy .\data\cars\categories\Nascar\Nascar.xml .\%RUNTIMEDIR%\categories\Nascar.xml
-
 if exist .\data\cars\categories\Offroad-4WD-GrA\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\categories\Offroad-4WD-GrA\*.* call .\create_dir .\%RUNTIMEDIR%\categories
 if exist .\data\cars\categories\Offroad-4WD-GrA\Offroad-4WD-GrA.xml copy .\data\cars\categories\Offroad-4WD-GrA\Offroad-4WD-GrA.xml .\%RUNTIMEDIR%\categories\Offroad-4WD-GrA.xml
@@ -62,6 +58,10 @@ if exist .\data\cars\categories\trb1\trb1.xml copy .\data\cars\categories\trb1\t
 if exist .\data\cars\categories\trb3\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\categories\trb3\*.* call .\create_dir .\%RUNTIMEDIR%\categories
 if exist .\data\cars\categories\trb3\trb3.xml copy .\data\cars\categories\trb3\trb3.xml .\%RUNTIMEDIR%\categories\trb3.xml
+
+if exist .\data\cars\categories\stock1\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\categories\stock1\*.* call .\create_dir .\%RUNTIMEDIR%\categories
+if exist .\data\cars\categories\stock1\stock1.xml copy .\data\cars\categories\stock1\stock1.xml .\%RUNTIMEDIR%\categories\stock1.xml
 
 if exist .\data\cars\wheels\openwheel1-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\wheels\openwheel1-1\*.* call .\create_dir .\%RUNTIMEDIR%\wheels
@@ -132,6 +132,36 @@ if exist .\data\cars\wheels\trb1-6\wheel1.acc copy .\data\cars\wheels\trb1-6\whe
 if exist .\data\cars\wheels\trb1-6\wheel2.acc copy .\data\cars\wheels\trb1-6\wheel2.acc .\%RUNTIMEDIR%\wheels\trb1-6\wheel2.acc
 if exist .\data\cars\wheels\trb1-6\wheel3.acc copy .\data\cars\wheels\trb1-6\wheel3.acc .\%RUNTIMEDIR%\wheels\trb1-6\wheel3.acc
 if exist .\data\cars\wheels\trb1-6\wheel3d.png copy .\data\cars\wheels\trb1-6\wheel3d.png .\%RUNTIMEDIR%\wheels\trb1-6\wheel3d.png
+
+if exist .\data\cars\wheels\stock1-1\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\wheels\stock1-1\*.* call .\create_dir .\%RUNTIMEDIR%\wheels
+if exist .\data\cars\wheels\stock1-1\*.* call .\create_dir .\%RUNTIMEDIR%\wheels\stock1-1
+if exist .\data\cars\wheels\stock1-1\readme.txt copy .\data\cars\wheels\stock1-1\readme.txt .\%RUNTIMEDIR%\wheels\stock1-1\readme.txt
+if exist .\data\cars\wheels\stock1-1\wheel0.acc copy .\data\cars\wheels\stock1-1\wheel0.acc .\%RUNTIMEDIR%\wheels\stock1-1\wheel0.acc
+if exist .\data\cars\wheels\stock1-1\wheel1.acc copy .\data\cars\wheels\stock1-1\wheel1.acc .\%RUNTIMEDIR%\wheels\stock1-1\wheel1.acc
+if exist .\data\cars\wheels\stock1-1\wheel2.acc copy .\data\cars\wheels\stock1-1\wheel2.acc .\%RUNTIMEDIR%\wheels\stock1-1\wheel2.acc
+if exist .\data\cars\wheels\stock1-1\wheel3.acc copy .\data\cars\wheels\stock1-1\wheel3.acc .\%RUNTIMEDIR%\wheels\stock1-1\wheel3.acc
+if exist .\data\cars\wheels\stock1-1\wheel3d.png copy .\data\cars\wheels\stock1-1\wheel3d.png .\%RUNTIMEDIR%\wheels\stock1-1\wheel3d.png
+
+if exist .\data\cars\wheels\stock1-2\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\wheels\stock1-2\*.* call .\create_dir .\%RUNTIMEDIR%\wheels
+if exist .\data\cars\wheels\stock1-2\*.* call .\create_dir .\%RUNTIMEDIR%\wheels\stock1-2
+if exist .\data\cars\wheels\stock1-2\readme.txt copy .\data\cars\wheels\stock1-2\readme.txt .\%RUNTIMEDIR%\wheels\stock1-2\readme.txt
+if exist .\data\cars\wheels\stock1-2\wheel0.acc copy .\data\cars\wheels\stock1-2\wheel0.acc .\%RUNTIMEDIR%\wheels\stock1-2\wheel0.acc
+if exist .\data\cars\wheels\stock1-2\wheel1.acc copy .\data\cars\wheels\stock1-2\wheel1.acc .\%RUNTIMEDIR%\wheels\stock1-2\wheel1.acc
+if exist .\data\cars\wheels\stock1-2\wheel2.acc copy .\data\cars\wheels\stock1-2\wheel2.acc .\%RUNTIMEDIR%\wheels\stock1-2\wheel2.acc
+if exist .\data\cars\wheels\stock1-2\wheel3.acc copy .\data\cars\wheels\stock1-2\wheel3.acc .\%RUNTIMEDIR%\wheels\stock1-2\wheel3.acc
+if exist .\data\cars\wheels\stock1-2\wheel3d.png copy .\data\cars\wheels\stock1-2\wheel3d.png .\%RUNTIMEDIR%\wheels\stock1-2\wheel3d.png
+
+if exist .\data\cars\wheels\stock1-3\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\wheels\stock1-3\*.* call .\create_dir .\%RUNTIMEDIR%\wheels
+if exist .\data\cars\wheels\stock1-3\*.* call .\create_dir .\%RUNTIMEDIR%\wheels\stock1-3
+if exist .\data\cars\wheels\stock1-3\readme.txt copy .\data\cars\wheels\stock1-3\readme.txt .\%RUNTIMEDIR%\wheels\stock1-3\readme.txt
+if exist .\data\cars\wheels\stock1-3\wheel0.acc copy .\data\cars\wheels\stock1-3\wheel0.acc .\%RUNTIMEDIR%\wheels\stock1-3\wheel0.acc
+if exist .\data\cars\wheels\stock1-3\wheel1.acc copy .\data\cars\wheels\stock1-3\wheel1.acc .\%RUNTIMEDIR%\wheels\stock1-3\wheel1.acc
+if exist .\data\cars\wheels\stock1-3\wheel2.acc copy .\data\cars\wheels\stock1-3\wheel2.acc .\%RUNTIMEDIR%\wheels\stock1-3\wheel2.acc
+if exist .\data\cars\wheels\stock1-3\wheel3.acc copy .\data\cars\wheels\stock1-3\wheel3.acc .\%RUNTIMEDIR%\wheels\stock1-3\wheel3.acc
+if exist .\data\cars\wheels\stock1-3\wheel3d.png copy .\data\cars\wheels\stock1-3\wheel3d.png .\%RUNTIMEDIR%\wheels\stock1-3\wheel3d.png
 
 if exist .\data\cars\models\155-DTM\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\models\155-DTM\*.* call .\create_dir .\%RUNTIMEDIR%\cars
@@ -241,6 +271,19 @@ if exist .\data\cars\models\car1-trb3\car1-trb3.acc copy .\data\cars\models\car1
 if exist .\data\cars\models\car1-trb3\car1-trb3-lod1.acc copy .\data\cars\models\car1-trb3\car1-trb3-lod1.acc .\%RUNTIMEDIR%\cars\car1-trb3\car1-trb3-lod1.acc
 if exist .\data\cars\models\car1-trb3\car1-trb3-lod2.acc copy .\data\cars\models\car1-trb3\car1-trb3-lod2.acc .\%RUNTIMEDIR%\cars\car1-trb3\car1-trb3-lod2.acc
 
+if exist .\data\cars\models\car1-stock1\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\models\car1-stock1\*.* call .\create_dir .\%RUNTIMEDIR%\cars
+if exist .\data\cars\models\car1-stock1\*.* call .\create_dir .\%RUNTIMEDIR%\cars\car1-stock1
+if exist .\data\cars\models\car1-stock1\car1-stock1.xml copy .\data\cars\models\car1-stock1\car1-stock1.xml .\%RUNTIMEDIR%\cars\car1-stock1\car1-stock1.xml
+if exist .\data\cars\models\car1-stock1\readme.txt copy .\data\cars\models\car1-stock1\readme.txt .\%RUNTIMEDIR%\cars\car1-stock1\readme.txt
+if exist .\data\cars\models\car1-stock1\car1-stock1.rgb copy .\data\cars\models\car1-stock1\car1-stock1.rgb .\%RUNTIMEDIR%\cars\car1-stock1\car1-stock1.rgb
+if exist .\data\cars\models\car1-stock1\tex-wheel.rgb copy .\data\cars\models\car1-stock1\tex-wheel.rgb .\%RUNTIMEDIR%\cars\car1-stock1\tex-wheel.rgb
+if exist .\data\cars\models\car1-stock1\shadow.rgb copy .\data\cars\models\car1-stock1\shadow.rgb .\%RUNTIMEDIR%\cars\car1-stock1\shadow.rgb
+if exist .\data\cars\models\car1-stock1\car1-stock1.acc copy .\data\cars\models\car1-stock1\car1-stock1.acc .\%RUNTIMEDIR%\cars\car1-stock1\car1-stock1.acc
+if exist .\data\cars\models\car1-stock1\carbon-128.rgb copy .\data\cars\models\car1-stock1\carbon-128.rgb .\%RUNTIMEDIR%\cars\car1-stock1\carbon-128.rgb
+if exist .\data\cars\models\car1-stock1\grill.rgb copy .\data\cars\models\car1-stock1\grill.rgb .\%RUNTIMEDIR%\cars\car1-stock1\grill.rgb
+if exist .\data\cars\models\car1-stock1\driver.rgb copy .\data\cars\models\car1-stock1\driver.rgb .\%RUNTIMEDIR%\cars\car1-stock1\driver.rgb
+
 if exist .\data\cars\models\acura-nsx-sz\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\models\acura-nsx-sz\*.* call .\create_dir .\%RUNTIMEDIR%\cars
 if exist .\data\cars\models\acura-nsx-sz\*.* call .\create_dir .\%RUNTIMEDIR%\cars\acura-nsx-sz
@@ -276,19 +319,6 @@ if exist .\data\cars\models\buggy\buggy.acc copy .\data\cars\models\buggy\buggy.
 if exist .\data\cars\models\buggy\buggy-lod1.acc copy .\data\cars\models\buggy\buggy-lod1.acc .\%RUNTIMEDIR%\cars\buggy\buggy-lod1.acc
 if exist .\data\cars\models\buggy\buggy-lod2.acc copy .\data\cars\models\buggy\buggy-lod2.acc .\%RUNTIMEDIR%\cars\buggy\buggy-lod2.acc
 if exist .\data\cars\models\buggy\readme.txt copy .\data\cars\models\buggy\readme.txt .\%RUNTIMEDIR%\cars\buggy\readme.txt
-
-
-if exist .\data\cars\models\cg-nascar-rwd\*.* call .\create_dir .\%RUNTIMEDIR%
-if exist .\data\cars\models\cg-nascar-rwd\*.* call .\create_dir .\%RUNTIMEDIR%\cars
-if exist .\data\cars\models\cg-nascar-rwd\*.* call .\create_dir .\%RUNTIMEDIR%\cars\cg-nascar-rwd
-if exist .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.xml copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.xml .\%RUNTIMEDIR%\cars\cg-nascar-rwd\cg-nascar-rwd.xml
-if exist .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.rgb copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.rgb .\%RUNTIMEDIR%\cars\cg-nascar-rwd\cg-nascar-rwd.rgb
-if exist .\data\cars\models\cg-nascar-rwd\tex-wheel.rgb copy .\data\cars\models\cg-nascar-rwd\tex-wheel.rgb .\%RUNTIMEDIR%\cars\cg-nascar-rwd\tex-wheel.rgb
-if exist .\data\cars\models\cg-nascar-rwd\shadow.rgb copy .\data\cars\models\cg-nascar-rwd\shadow.rgb .\%RUNTIMEDIR%\cars\cg-nascar-rwd\shadow.rgb
-if exist .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.acc copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd.acc .\%RUNTIMEDIR%\cars\cg-nascar-rwd\cg-nascar-rwd.acc
-if exist .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd-lod1.acc copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd-lod1.acc .\%RUNTIMEDIR%\cars\cg-nascar-rwd\cg-nascar-rwd-lod1.acc
-if exist .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd-lod2.acc copy .\data\cars\models\cg-nascar-rwd\cg-nascar-rwd-lod2.acc .\%RUNTIMEDIR%\cars\cg-nascar-rwd\cg-nascar-rwd-lod2.acc
-if exist .\data\cars\models\cg-nascar-rwd\readme.txt copy .\data\cars\models\cg-nascar-rwd\readme.txt .\%RUNTIMEDIR%\cars\cg-nascar-rwd\readme.txt
 
 if exist .\data\cars\models\car1-ow1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\models\car1-ow1\*.* call .\create_dir .\%RUNTIMEDIR%\cars

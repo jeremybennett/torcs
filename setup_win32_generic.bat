@@ -129,32 +129,8 @@ if exist .\src\drivers\berniw\1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\1
-if exist .\src\drivers\berniw\1\cg-nascar-rwd.rgb copy .\src\drivers\berniw\1\cg-nascar-rwd.rgb .\%RUNTIMEDIR%\drivers\berniw\1\cg-nascar-rwd.rgb
-if exist .\src\drivers\berniw\1\aalborg.xml copy .\src\drivers\berniw\1\aalborg.xml .\%RUNTIMEDIR%\drivers\berniw\1\aalborg.xml
-if exist .\src\drivers\berniw\1\alpine-1.xml copy .\src\drivers\berniw\1\alpine-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\alpine-1.xml
-if exist .\src\drivers\berniw\1\a-speedway.xml copy .\src\drivers\berniw\1\a-speedway.xml .\%RUNTIMEDIR%\drivers\berniw\1\a-speedway.xml
+if exist .\src\drivers\berniw\1\car1-stock1.rgb copy .\src\drivers\berniw\1\car1-stock1.rgb .\%RUNTIMEDIR%\drivers\berniw\1\car1-stock1.rgb
 if exist .\src\drivers\berniw\1\default.xml copy .\src\drivers\berniw\1\default.xml .\%RUNTIMEDIR%\drivers\berniw\1\default.xml
-if exist .\src\drivers\berniw\1\dirt-1.xml copy .\src\drivers\berniw\1\dirt-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-1.xml
-if exist .\src\drivers\berniw\1\dirt-2.xml copy .\src\drivers\berniw\1\dirt-2.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-2.xml
-if exist .\src\drivers\berniw\1\dirt-3.xml copy .\src\drivers\berniw\1\dirt-3.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-3.xml
-if exist .\src\drivers\berniw\1\dirt-4.xml copy .\src\drivers\berniw\1\dirt-4.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-4.xml
-if exist .\src\drivers\berniw\1\dirt-5.xml copy .\src\drivers\berniw\1\dirt-5.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-5.xml
-if exist .\src\drivers\berniw\1\dirt-6.xml copy .\src\drivers\berniw\1\dirt-6.xml .\%RUNTIMEDIR%\drivers\berniw\1\dirt-6.xml
-if exist .\src\drivers\berniw\1\eroad.xml copy .\src\drivers\berniw\1\eroad.xml .\%RUNTIMEDIR%\drivers\berniw\1\eroad.xml
-if exist .\src\drivers\berniw\1\e-track-1.xml copy .\src\drivers\berniw\1\e-track-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-1.xml
-if exist .\src\drivers\berniw\1\e-track-2.xml copy .\src\drivers\berniw\1\e-track-2.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-2.xml
-if exist .\src\drivers\berniw\1\e-track-3.xml copy .\src\drivers\berniw\1\e-track-3.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-3.xml
-if exist .\src\drivers\berniw\1\e-track-4.xml copy .\src\drivers\berniw\1\e-track-4.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-4.xml
-if exist .\src\drivers\berniw\1\e-track-5.xml copy .\src\drivers\berniw\1\e-track-5.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-5.xml
-if exist .\src\drivers\berniw\1\e-track-6.xml copy .\src\drivers\berniw\1\e-track-6.xml .\%RUNTIMEDIR%\drivers\berniw\1\e-track-6.xml
-if exist .\src\drivers\berniw\1\g-track-1.xml copy .\src\drivers\berniw\1\g-track-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\g-track-1.xml
-if exist .\src\drivers\berniw\1\g-track-2.xml copy .\src\drivers\berniw\1\g-track-2.xml .\%RUNTIMEDIR%\drivers\berniw\1\g-track-2.xml
-if exist .\src\drivers\berniw\1\g-track-3.xml copy .\src\drivers\berniw\1\g-track-3.xml .\%RUNTIMEDIR%\drivers\berniw\1\g-track-3.xml
-if exist .\src\drivers\berniw\1\michigan.xml copy .\src\drivers\berniw\1\michigan.xml .\%RUNTIMEDIR%\drivers\berniw\1\michigan.xml
-if exist .\src\drivers\berniw\1\mixed-1.xml copy .\src\drivers\berniw\1\mixed-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\mixed-1.xml
-if exist .\src\drivers\berniw\1\mixed-2.xml copy .\src\drivers\berniw\1\mixed-2.xml .\%RUNTIMEDIR%\drivers\berniw\1\mixed-2.xml
-if exist .\src\drivers\berniw\1\spring.xml copy .\src\drivers\berniw\1\spring.xml .\%RUNTIMEDIR%\drivers\berniw\1\spring.xml
-if exist .\src\drivers\berniw\1\wheel-1.xml copy .\src\drivers\berniw\1\wheel-1.xml .\%RUNTIMEDIR%\drivers\berniw\1\wheel-1.xml
 
 if exist .\src\drivers\berniw\10\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\10\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -167,32 +143,8 @@ if exist .\src\drivers\berniw\2\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\berniw\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw
 if exist .\src\drivers\berniw\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\berniw\2
-if exist .\src\drivers\berniw\2\cg-nascar-rwd.rgb copy .\src\drivers\berniw\2\cg-nascar-rwd.rgb .\%RUNTIMEDIR%\drivers\berniw\2\cg-nascar-rwd.rgb
-if exist .\src\drivers\berniw\2\aalborg.xml copy .\src\drivers\berniw\2\aalborg.xml .\%RUNTIMEDIR%\drivers\berniw\2\aalborg.xml
-if exist .\src\drivers\berniw\2\alpine-1.xml copy .\src\drivers\berniw\2\alpine-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\alpine-1.xml
-if exist .\src\drivers\berniw\2\a-speedway.xml copy .\src\drivers\berniw\2\a-speedway.xml .\%RUNTIMEDIR%\drivers\berniw\2\a-speedway.xml
+if exist .\src\drivers\berniw\2\car1-stock1.rgb copy .\src\drivers\berniw\2\car1-stock1.rgb .\%RUNTIMEDIR%\drivers\berniw\2\car1-stock1.rgb
 if exist .\src\drivers\berniw\2\default.xml copy .\src\drivers\berniw\2\default.xml .\%RUNTIMEDIR%\drivers\berniw\2\default.xml
-if exist .\src\drivers\berniw\2\dirt-1.xml copy .\src\drivers\berniw\2\dirt-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-1.xml
-if exist .\src\drivers\berniw\2\dirt-2.xml copy .\src\drivers\berniw\2\dirt-2.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-2.xml
-if exist .\src\drivers\berniw\2\dirt-3.xml copy .\src\drivers\berniw\2\dirt-3.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-3.xml
-if exist .\src\drivers\berniw\2\dirt-4.xml copy .\src\drivers\berniw\2\dirt-4.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-4.xml
-if exist .\src\drivers\berniw\2\dirt-5.xml copy .\src\drivers\berniw\2\dirt-5.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-5.xml
-if exist .\src\drivers\berniw\2\dirt-6.xml copy .\src\drivers\berniw\2\dirt-6.xml .\%RUNTIMEDIR%\drivers\berniw\2\dirt-6.xml
-if exist .\src\drivers\berniw\2\eroad.xml copy .\src\drivers\berniw\2\eroad.xml .\%RUNTIMEDIR%\drivers\berniw\2\eroad.xml
-if exist .\src\drivers\berniw\2\e-track-1.xml copy .\src\drivers\berniw\2\e-track-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-1.xml
-if exist .\src\drivers\berniw\2\e-track-2.xml copy .\src\drivers\berniw\2\e-track-2.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-2.xml
-if exist .\src\drivers\berniw\2\e-track-3.xml copy .\src\drivers\berniw\2\e-track-3.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-3.xml
-if exist .\src\drivers\berniw\2\e-track-4.xml copy .\src\drivers\berniw\2\e-track-4.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-4.xml
-if exist .\src\drivers\berniw\2\e-track-5.xml copy .\src\drivers\berniw\2\e-track-5.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-5.xml
-if exist .\src\drivers\berniw\2\e-track-6.xml copy .\src\drivers\berniw\2\e-track-6.xml .\%RUNTIMEDIR%\drivers\berniw\2\e-track-6.xml
-if exist .\src\drivers\berniw\2\g-track-1.xml copy .\src\drivers\berniw\2\g-track-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\g-track-1.xml
-if exist .\src\drivers\berniw\2\g-track-2.xml copy .\src\drivers\berniw\2\g-track-2.xml .\%RUNTIMEDIR%\drivers\berniw\2\g-track-2.xml
-if exist .\src\drivers\berniw\2\g-track-3.xml copy .\src\drivers\berniw\2\g-track-3.xml .\%RUNTIMEDIR%\drivers\berniw\2\g-track-3.xml
-if exist .\src\drivers\berniw\2\michigan.xml copy .\src\drivers\berniw\2\michigan.xml .\%RUNTIMEDIR%\drivers\berniw\2\michigan.xml
-if exist .\src\drivers\berniw\2\mixed-1.xml copy .\src\drivers\berniw\2\mixed-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\mixed-1.xml
-if exist .\src\drivers\berniw\2\mixed-2.xml copy .\src\drivers\berniw\2\mixed-2.xml .\%RUNTIMEDIR%\drivers\berniw\2\mixed-2.xml
-if exist .\src\drivers\berniw\2\spring.xml copy .\src\drivers\berniw\2\spring.xml .\%RUNTIMEDIR%\drivers\berniw\2\spring.xml
-if exist .\src\drivers\berniw\2\wheel-1.xml copy .\src\drivers\berniw\2\wheel-1.xml .\%RUNTIMEDIR%\drivers\berniw\2\wheel-1.xml
 
 if exist .\src\drivers\berniw\3\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\berniw\3\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
@@ -393,62 +345,50 @@ if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\%RUNTIMEDIR%\driver
 if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0
 if exist .\src\drivers\bt\0\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0\practice
-if exist .\src\drivers\bt\0\practice\g-track-3.xml copy .\src\drivers\bt\0\practice\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\0\practice\g-track-3.xml
-if exist .\src\drivers\bt\0\practice\michigan.xml copy .\src\drivers\bt\0\practice\michigan.xml .\%RUNTIMEDIR%\drivers\bt\0\practice\michigan.xml
-if exist .\src\drivers\bt\0\practice\wheel-1.xml copy .\src\drivers\bt\0\practice\wheel-1.xml .\%RUNTIMEDIR%\drivers\bt\0\practice\wheel-1.xml
 
 if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0
 if exist .\src\drivers\bt\0\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0\qualifying
-if exist .\src\drivers\bt\0\qualifying\g-track-3.xml copy .\src\drivers\bt\0\qualifying\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\0\qualifying\g-track-3.xml
 
 if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0
 if exist .\src\drivers\bt\0\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0\race
-if exist .\src\drivers\bt\0\race\g-track-3.xml copy .\src\drivers\bt\0\race\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\0\race\g-track-3.xml
-if exist .\src\drivers\bt\0\race\wheel-1.xml copy .\src\drivers\bt\0\race\wheel-1.xml .\%RUNTIMEDIR%\drivers\bt\0\race\wheel-1.xml
 
 if exist .\src\drivers\bt\0\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\0\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\0
 if exist .\src\drivers\bt\0\default.xml copy .\src\drivers\bt\0\default.xml .\%RUNTIMEDIR%\drivers\bt\0\default.xml
-if exist .\src\drivers\bt\0\cg-nascar-rwd.rgb copy .\src\drivers\bt\0\cg-nascar-rwd.rgb .\%RUNTIMEDIR%\drivers\bt\0\cg-nascar-rwd.rgb
+if exist .\src\drivers\bt\0\car1-stock1.rgb copy .\src\drivers\bt\0\car1-stock1.rgb .\%RUNTIMEDIR%\drivers\bt\0\car1-stock1.rgb
 
 if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1
 if exist .\src\drivers\bt\1\practice\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1\practice
-if exist .\src\drivers\bt\1\practice\g-track-3.xml copy .\src\drivers\bt\1\practice\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\1\practice\g-track-3.xml
-if exist .\src\drivers\bt\1\practice\michigan.xml copy .\src\drivers\bt\1\practice\michigan.xml .\%RUNTIMEDIR%\drivers\bt\1\practice\michigan.xml
-if exist .\src\drivers\bt\1\practice\wheel-1.xml copy .\src\drivers\bt\1\practice\wheel-1.xml .\%RUNTIMEDIR%\drivers\bt\1\practice\wheel-1.xml
 
 if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1
 if exist .\src\drivers\bt\1\qualifying\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1\qualifying
-if exist .\src\drivers\bt\1\qualifying\g-track-3.xml copy .\src\drivers\bt\1\qualifying\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\1\qualifying\g-track-3.xml
 
 if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1
 if exist .\src\drivers\bt\1\race\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1\race
-if exist .\src\drivers\bt\1\race\g-track-3.xml copy .\src\drivers\bt\1\race\g-track-3.xml .\%RUNTIMEDIR%\drivers\bt\1\race\g-track-3.xml
-if exist .\src\drivers\bt\1\race\wheel-1.xml copy .\src\drivers\bt\1\race\wheel-1.xml .\%RUNTIMEDIR%\drivers\bt\1\race\wheel-1.xml
 
 if exist .\src\drivers\bt\1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
 if exist .\src\drivers\bt\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt
 if exist .\src\drivers\bt\1\*.* call .\create_dir .\%RUNTIMEDIR%\drivers\bt\1
 if exist .\src\drivers\bt\1\default.xml copy .\src\drivers\bt\1\default.xml .\%RUNTIMEDIR%\drivers\bt\1\default.xml
-if exist .\src\drivers\bt\1\cg-nascar-rwd.rgb copy .\src\drivers\bt\1\cg-nascar-rwd.rgb .\%RUNTIMEDIR%\drivers\bt\1\cg-nascar-rwd.rgb
+if exist .\src\drivers\bt\1\car1-stock1.rgb copy .\src\drivers\bt\1\car1-stock1.rgb .\%RUNTIMEDIR%\drivers\bt\1\car1-stock1.rgb
 
 if exist .\src\drivers\bt\2\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\src\drivers\bt\2\*.* call .\create_dir .\%RUNTIMEDIR%\drivers
