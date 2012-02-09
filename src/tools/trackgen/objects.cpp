@@ -154,7 +154,7 @@ InitObjects(tTrack *track, void *TrackHandle)
 	    exit(1);
 	}
 	
-	GetFilename(objName, search, buf);
+	GetFilename(objName, search, buf, BUFSIZE);
 	curObj->obj = ssgLoadAC(buf);
 	ssgFlatten(curObj->obj);
 	if (strcmp(GfParmGetCurStr(TrackHandle, TRK_SECT_OBJECTS, TRK_ATT_ORIENTATION_TYPE, ""), "random") == 0) {

@@ -28,7 +28,7 @@
 
 #include <plib/ssg.h>
 
-extern int GetFilename(const char *filename, const char *filepath, char *buf);
+extern int GetFilename(const char *filename, const char *filepath, char *buf, const int BUFSIZE);
 extern float getHOT(ssgRoot *root, float x, float y);
 
 /* Use the texture name to select options like mipmap */

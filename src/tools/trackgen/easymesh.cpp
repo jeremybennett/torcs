@@ -31,7 +31,6 @@ static tdble 	Margin;
 static tdble 	ExtHeight;
 static tdble 	GridStep;
 static tdble	TrackStep;
-static char	buf[1024];
 static const char	*TexName;
 static tdble	TexSize;
 static tdble	TexRand;
@@ -316,7 +315,7 @@ void spacing(int e, int n)
 int insert_node(double x, double y, double z, int spac,
 		int prev_n, int prev_s_mark, int mark, int next_s_mark, int next_n)
 {
-    int    i,j,k,e,ei,ej,ek, s,si,sj,sk;
+    int    i,j,k,e, ej,ek, s,si,sj,sk;
     double sx, sy;
 
     Nn++;          /* one new node */
@@ -355,7 +354,7 @@ int insert_node(double x, double y, double z, int spac,
     i  = elem[e].i;
     j  = elem[e].j;
     k  = elem[e].k;
-    ei = elem[e].ei;
+    //ei = elem[e].ei;
     ej = elem[e].ej;
     ek = elem[e].ek; 
     si = elem[e].si;
@@ -1947,7 +1946,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
     tTrackSeg 	*mseg;
     tTrkLocPos 	trkpos;
     tdble	x, y;
-    tdble 	radiusr, radiusl;
+    //tdble 	radiusr, radiusl;
     struct nod	*point2;
     int		nb_relief_vtx, nb_relief_seg;
 
@@ -2016,7 +2015,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 		step = TrackStep / (mseg->radiusr);
 		anz = seg->angle[TR_ZS] + step;
 		ts = step;
-		radiusr = seg->radiusr;
+		//radiusr = seg->radiusr;
 		trkpos.seg = seg;
 		trkpos.toRight = 0;
 		while (anz < seg->angle[TR_ZE]) {
@@ -2032,7 +2031,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 		step = TrackStep / (mseg->radiusl);
 		anz = seg->angle[TR_ZS] - step;
 		ts = step;
-		radiusr = seg->radiusr;
+		//radiusr = seg->radiusr;
 		trkpos.seg = seg;
 		trkpos.toRight = 0;
 		while (anz > seg->angle[TR_ZE]) {
@@ -2099,7 +2098,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 		step = TrackStep / (mseg->radiusr);
 		anz = seg->angle[TR_ZS] + step;
 		ts = step;
-		radiusl = seg->radiusl;
+		//radiusl = seg->radiusl;
 		trkpos.seg = seg;
 		while (anz < seg->angle[TR_ZE]) {
 		    trkpos.toStart = ts;
@@ -2115,7 +2114,7 @@ GenerateMesh(tTrack *Track, int rightside, int reverse, int exterior)
 		step = TrackStep / (mseg->radiusl);
 		anz = seg->angle[TR_ZS] - step;
 		ts = step;
-		radiusl = seg->radiusl;
+		//radiusl = seg->radiusl;
 		trkpos.seg = seg;
 		while (anz > seg->angle[TR_ZE]) {
 		    trkpos.toStart = ts;
@@ -2218,6 +2217,8 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
     const char	*FileName;
     const char	*mat;
     FILE	*curFd = NULL;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
 
     TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, 10.0);
     GfOut("Track step: %.2f ", TrackStep);
@@ -2241,9 +2242,9 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
 
     mat = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_SURF, "grass");
     if (track->version < 4) {
-	sprintf(buf, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);
+	snprintf(buf, BUFSIZE, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);
     } else {
-	sprintf(buf, "%s/%s", TRK_SECT_SURFACES, mat);
+	snprintf(buf, BUFSIZE, "%s/%s", TRK_SECT_SURFACES, mat);
     }
     TexName = GfParmGetStr(TrackHandle, buf, TRK_ATT_TEXTURE, "grass.rgb");
     TexSize = GfParmGetNum(TrackHandle, buf, TRK_ATT_TEXSIZE, (char*)NULL, 20.0);
@@ -2251,13 +2252,13 @@ GenerateTerrain(tTrack *track, void *TrackHandle, char *outfile, FILE *AllFd, in
 
     FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_RELIEF, NULL);
     if (FileName) {
-	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
+	snprintf(buf, BUFSIZE, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
 	LoadRelief(TrackHandle, buf);
     }
     if (noElevation == -1) {
 	FileName = GfParmGetStr(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_ELEVATION, NULL);
 	if (FileName) {
-	    sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
+	    snprintf(buf, BUFSIZE, "tracks/%s/%s/%s", track->category, track->internalname, FileName);
 	    LoadElevation(track, TrackHandle, buf);
 	}
     }

@@ -110,7 +110,8 @@ void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFi
 	int i, j, k, l;
 	ssgRoot	*root;
 	int columns;
-	static char	buf[1024];
+	const int BUFSIZE = 1024;
+	static char	buf[BUFSIZE];
 	char *s;
 	float heightStep;
 
@@ -154,9 +155,9 @@ void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFi
 	}
 
 	ssgSetCurrentOptions(&options);
-	sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
+	snprintf(buf, BUFSIZE, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
 	ssgTexturePath(buf);
-	sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
+	snprintf(buf, BUFSIZE, ".;tracks/%s/%s", track->category, track->internalname);
 	ssgModelPath(buf);
 	root = (ssgRoot*)ssgLoadAC(meshFile);
 
@@ -169,7 +170,7 @@ void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFi
 	l = columns - 18;
 	for (j = 0; j < height; j++) {
 		s = buf;
-		s += sprintf(buf, "%4d%% |", (j+1) * 100 / height);
+		s += snprintf(buf, BUFSIZE, "%4d%% |", (j+1) * 100 / height);
 		for (k = s - buf; k < s - buf + l; k++) {
 			if ((k - (s - buf)) > (l * (j+1) / height)) {
 				buf[k] = ' ';

@@ -816,8 +816,9 @@ int doName(char *Line, ob_t *object, mat_t *material)
 {
     char * p;
     char *q;
-    char name[256];
-    char name2[256];
+	const int SIZE = 256;
+    char name[SIZE];
+    char name2[SIZE];
     p=strstr(Line,"\"");
     if (p==NULL) {
 	fprintf(stderr,"unknown name format %s \n", Line);
@@ -825,16 +826,16 @@ int doName(char *Line, ob_t *object, mat_t *material)
     }
     else
 	p++;
-    sprintf(name,"%s",p);
+    snprintf(name, SIZE, "%s",p);
     p=strstr(name,"\n");
     if (p!=NULL)
 	*p='\0';
 
     if (!strcmp("\"n\"",name)) {
-	sprintf(name,"terrain%d",tmpIndice2++);
+	snprintf(name, SIZE, "terrain%d",tmpIndice2++);
     }
     if (!strcmp("\"NoName\"",name)) {
-	sprintf(name,"ob%d",tmpIndice3++);
+	snprintf(name, SIZE, "ob%d",tmpIndice3++);
     }
     p=name;
     q=name2;
@@ -847,7 +848,7 @@ int doName(char *Line, ob_t *object, mat_t *material)
 	}
 	p++;
     }
-    sprintf(name,"%s",name2);
+    snprintf(name, SIZE, "%s",name2);
 
     if (strlen(name)>11) {
 	fprintf(stderr,"truncating object name %s ", name);
@@ -856,7 +857,7 @@ int doName(char *Line, ob_t *object, mat_t *material)
     }
     /*sprintf(name,"terrain%d",tmpIndice2++);*/
     object->next->name=strdup(name);
-    sprintf(tmpname,"%s",name);
+    snprintf(tmpname, 256, "%s",name);
  
     fprintf(stderr,"loading  %s object                             \r", name);
     printf("loading  %s object\n", name);
@@ -1055,7 +1056,7 @@ int loadAC( char * inputFilename, char * outputFilename, int saveIn)
 {
     /* saveIn : 0= 3ds , 1= obj , 2=ac3d grouped (track) , 3 = ac3d strips (cars) */
     char Line[256];
-    int ret =0;
+    //int ret =0;
     int  (*doVerb)(char * Line,  ob_t *object, mat_t * material);
     FILE * file;
     ob_t * current_ob;
@@ -1096,10 +1097,10 @@ int loadAC( char * inputFilename, char * outputFilename, int saveIn)
 	    i++;
 	}
 	if (numvertFound==1 && doVerb==NULL) {
-	    ret = doGetVertex(Line, current_ob , current_material);
+	    doGetVertex(Line, current_ob , current_material);
 	}
 	else if (numrefsFound==1 && doVerb==NULL) {
-	    ret = doGetSurf(Line,current_ob,current_material);
+	    doGetSurf(Line,current_ob,current_material);
 	}
 	else {
 	    if (doVerb==NULL) {
@@ -1108,7 +1109,7 @@ int loadAC( char * inputFilename, char * outputFilename, int saveIn)
 	    }
 	    numvertFound=0;
 	    numrefsFound=0;
-	    ret = doVerb(Line, current_ob , current_material);
+	    doVerb(Line, current_ob , current_material);
 	}
     }
     fclose(file);
@@ -1134,7 +1135,7 @@ int loadAC( char * inputFilename, char * outputFilename, int saveIn)
 int loadACo( char * inputFilename, char * outputFilename, int saveIn)
 {
     char Line[256];
-    int ret =0;
+    //int ret =0;
     int  (*doVerb)(char * Line,  ob_t *object, mat_t * material);
     FILE * file;
     ob_t * current_ob;
@@ -1174,10 +1175,10 @@ int loadACo( char * inputFilename, char * outputFilename, int saveIn)
 	    i++;
 	}
 	if (numvertFound==1 && doVerb==NULL) {
-	    ret = doGetVertex(Line, current_ob , current_material);
+	    doGetVertex(Line, current_ob , current_material);
 	}
 	else if (numrefsFound==1 && doVerb==NULL) {
-	    ret = doGetSurf(Line,current_ob,current_material);
+	    doGetSurf(Line,current_ob,current_material);
 	}
 	else {
 	    if (doVerb==NULL) {
@@ -1186,7 +1187,7 @@ int loadACo( char * inputFilename, char * outputFilename, int saveIn)
 	    }
 	    numvertFound=0;
 	    numrefsFound=0;
-	    ret = doVerb(Line, current_ob , current_material);
+	    doVerb(Line, current_ob , current_material);
 	}
     }
     fclose(file);
@@ -1221,10 +1222,10 @@ void  saveIn3DSsubObject(ob_t * object,database3ds *db)
   
     if (object->numvert!=0) {
 	if (object->name==NULL) {
-	    sprintf(tmpname,"TMPNAME%d",tmpIndice);
+	    snprintf(tmpname, 256, "TMPNAME%d",tmpIndice);
 	    tmpIndice=0;
 	} else {
-	    sprintf(tmpname,"%s",object->name);
+	    snprintf(tmpname, 256, "%s",object->name);
 	}
   
 	printf("saving %s , numvert=%d , numsurf=%d\n",object->name,object->numvert,object->numsurf);
@@ -2403,7 +2404,7 @@ void computeSaveAC3D( char * OutputFilename, ob_t * object)
 			    printf("object =%s num kids_o=%d test with %s\n",tmpob->name,tmpob->kids_o,q);
 			} else {
 			    char  nameBuf[1024];
-			    sprintf(nameBuf,"%ss",q);
+			    snprintf(nameBuf, 1024, "%ss",q);
 			    if (!strncmp(tmpob->name,nameBuf,strlen(nameBuf))) {
 				printOb(tmpob);
 				printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
@@ -2480,7 +2481,7 @@ void computeSaveOBJ( char * OutputFilename, ob_t * object)
     }
 
     fprintf(ofile,"mtllib ./%s.mtl\n",OutputFilename);
-    sprintf(tname,"%s.mtl",OutputFilename);
+    snprintf(tname, 256, "%s.mtl",OutputFilename);
 
     if ((tfile=fopen (tname,"w"))==NULL) {
 	fprintf(stderr,"failed to open %s\n", tname);
@@ -2493,7 +2494,7 @@ void computeSaveOBJ( char * OutputFilename, ob_t * object)
 	} else {
 	    tmpob=object;
 	    while (tmpob!=NULL) {
-		int texnofound=0;
+		//int texnofound=0;
 		if (tmpob->name==NULL)  {
 		    tmpob=tmpob->next;
 		    continue;
@@ -2506,7 +2507,7 @@ void computeSaveOBJ( char * OutputFilename, ob_t * object)
 		    tmpob=tmpob->next;
 		    continue;
 		}
-		texnofound=1;
+		//texnofound=1;
 	    
 		if (tmpob->texture!=NULL)
 		    if (*tmpob->texture!='\0') {
@@ -2732,7 +2733,7 @@ void stripifyOb(ob_t * object,int writeit)
     int i=0;
     int debj=0;
     int dege=0;
-    int wasdege=0;
+    //int wasdege=0;
     tcoord_t      * stripvertexarray;
     int k, v1, v2, v0;
     k=0;
@@ -2891,7 +2892,7 @@ void stripifyOb(ob_t * object,int writeit)
 
     for (i=0; i<(int)NumStrips; i++)
 	{
-	    wasdege=0;
+	    //wasdege=0;
 	    /* get the first triangle */
 	    v1=StripPoint[StripStart[i]];
 	    v2=StripPoint[StripStart[i]+1];
@@ -3967,7 +3968,7 @@ void computeSaveAC3DStrip( char * OutputFilename, ob_t * object)
 				else
 				    {
 					char  nameBuf[1024];
-					sprintf(nameBuf,"%ss",q);
+					snprintf(nameBuf, 1024, "%ss",q);
 					if (!strncmp(tmpob->name,nameBuf,strlen(nameBuf))){
 					    printOb(tmpob);
 					    printf("object =%s num kids_o=%d\n",tmpob->name,tmpob->kids_o);
@@ -3996,7 +3997,7 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
     int  oldva1[10000];
     int  oldva2[10000];
     int n =0;
-    int m=0;
+    //int m=0;
     int i=0;
     int j=0;
 
@@ -4048,7 +4049,8 @@ ob_t * mergeObject (ob_t *ob1,ob_t * ob2, char * nameS)
 	    memcpy(tobS->textarray3, ob1->textarray3,ob1->numvert*2*sizeof(tcoord_t )); 
 	}
 
-    m=n=ob1->numvert;
+    //m=
+    n=ob1->numvert;
     for (i=0;i<ob2->numvert; i++)
 	{
 	    for(j=0; j<ob1->numvert; j++)
@@ -4153,7 +4155,7 @@ int mergeSplitted (ob_t **object)
     ob_t * tob=NULL;
     ob_t * tob0=NULL;
     ob_t * tobP=NULL;
-    int numtri;
+    //int numtri;
     int reduced=0;
   
     tob=*object;
@@ -4199,8 +4201,8 @@ int mergeSplitted (ob_t **object)
 		p=p+strlen("__split__");
 	    *p='\0';
 	    k=0;
-	    numtri=0;
-	    numtri=tob->numsurf;
+	    //numtri=0;
+	    //numtri=tob->numsurf;
 	    while (tob0)
 		{
 		    if(tob0->name==NULL )
