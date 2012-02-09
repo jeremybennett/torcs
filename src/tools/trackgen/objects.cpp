@@ -43,9 +43,6 @@
 #include "ac3d.h"
 #include "objects.h"
 
-static char		path[1024];
-static char		buf[1024];
-
 static ssgRoot	*Root = NULL;
 static ssgRoot	*GroupRoot = NULL;
 static ssgRoot	*TrackRoot = NULL;
@@ -94,7 +91,9 @@ tobjlist objhead;
 int
 GetObjectsNb(void *TrackHandle)
 {
-    sprintf(path, "%s/%s", TRK_SECT_TERRAIN, TRK_SECT_OBJMAP);
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE];
+    snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_TERRAIN, TRK_SECT_OBJMAP);
     return GfParmGetEltNb(TrackHandle, path);
 }
 
@@ -124,7 +123,10 @@ InitObjects(tTrack *track, void *TrackHandle)
     static char		*search;
     myLoaderOptions	options ;
     sgMat4		m;
-
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	char path[BUFSIZE];
+	
     ObjUniqId = 0;
     
     srand((unsigned int)GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_SEED, NULL, 1));
@@ -133,10 +135,10 @@ InitObjects(tTrack *track, void *TrackHandle)
 
     GF_TAILQ_INIT(&objhead);
 
-    sprintf(buf, "tracks/%s/%s;data/objects", track->category, track->internalname);
+    snprintf(buf, BUFSIZE, "tracks/%s/%s;data/objects", track->category, track->internalname);
     search = strdup(buf);
     
-    sprintf(path, "tracks/%s/%s;data/objects;data/textures;.", track->category, track->internalname);
+    snprintf(path, BUFSIZE, "tracks/%s/%s;data/objects;data/textures;.", track->category, track->internalname);
     ssgTexturePath(path);
     ssgModelPath(path);
 
@@ -231,6 +233,8 @@ ssgSaveLeaf (ssgEntity *ent, FILE *save_fd)
     int i;
     static sgVec3       *vlist;
     static saveTriangle *tlist;
+	const int BUFSIZE = 1024;
+	char buf[1024];
 
     ssgLeaf *vt = (ssgLeaf *)ent;
 
@@ -259,7 +263,7 @@ ssgSaveLeaf (ssgEntity *ent, FILE *save_fd)
     }
 
     fprintf (save_fd, "OBJECT poly\n");
-    sprintf(buf, "obj%d", ObjUniqId++);
+    snprintf(buf, BUFSIZE, "obj%d", ObjUniqId++);
     fprintf (save_fd, "name \"%s\"\n", buf);
 
     ssgState* st = vt->getState ();
@@ -323,10 +327,12 @@ static int
 ssgSaveACInner (ssgEntity *ent, FILE *save_fd)
 {
   /* WARNING - RECURSIVE! */
-
+  const int BUFSIZE = 1024;
+  char buf[BUFSIZE];
+  
   if (ent->isAKindOf (ssgTypeBranch())) {
       ssgBranch *br = (ssgBranch *) ent;
-      sprintf(buf, "objg%d", ObjUniqId++);
+      snprintf(buf, BUFSIZE, "objg%d", ObjUniqId++);
       Ac3dGroup (save_fd, buf, ent->getNumKids());
 
     for (int i = 0; i < br->getNumKids (); i++) {
@@ -426,11 +432,14 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
     int			index;
     const char		*extName;
     FILE		*curFd;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	char path[BUFSIZE];
 
     ssgSetCurrentOptions(&options);
-    sprintf(buf, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
+    snprintf(buf, BUFSIZE, "tracks/%s/%s;data/textures;data/img;.", track->category, track->internalname);
     ssgTexturePath(buf);
-    sprintf(buf, ".;tracks/%s/%s", track->category, track->internalname);
+    snprintf(buf, BUFSIZE, ".;tracks/%s/%s", track->category, track->internalname);
     ssgModelPath(buf);
     TrackRoot = (ssgRoot*)ssgLoadAC(meshFile);
 
@@ -443,7 +452,7 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
     ymin = track->min.y - Margin;
     ymax = track->max.y + Margin;
 
-    sprintf(path, "%s/%s", TRK_SECT_TERRAIN, TRK_SECT_OBJMAP);
+    snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_TERRAIN, TRK_SECT_OBJMAP);
     if (GfParmGetEltNb(TrackHandle, path) == 0) {
 	return;
     }
@@ -455,7 +464,7 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
 
 	index++;
 	map = GfParmGetCurStr(TrackHandle, path, TRK_ATT_OBJMAP, "");
-	sprintf(buf, "tracks/%s/%s/%s", track->category, track->internalname, map);
+	snprintf(buf, BUFSIZE, "tracks/%s/%s/%s", track->category, track->internalname, map);
 
 	printf("Processing object map %s\n", buf);
 	MapImage = GfImgReadPng(buf, &width, &height, 2.0);
@@ -480,7 +489,7 @@ GenerateObjects(tTrack *track, void *TrackHandle, void *CfgHandle, FILE *save_fd
 	Group(track, TrackHandle, Root);
 
 	extName = GfParmGetStr(CfgHandle, "Files", "object", "obj");
-	sprintf(buf, "%s-%s-%d.ac", OutputFileName, extName, index);
+	snprintf(buf, BUFSIZE, "%s-%s-%d.ac", OutputFileName, extName, index);
 	curFd = Ac3dOpen(buf, 1);
 	ssgSaveACInner(GroupRoot, curFd);
 	Ac3dClose(curFd);

@@ -196,10 +196,11 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     tdble		tmHeight = Track->graphic.turnMarksInfo.height;
     tdble		tmVSpace = Track->graphic.turnMarksInfo.vSpace;
     tdble		tmHSpace = Track->graphic.turnMarksInfo.hSpace;
-    char		buf[256];
     int			hasBorder;
     tDispElt		*theCurDispElt = NULL;
-    char		sname[256];
+    const int BUFSIZE = 256;
+	char		sname[BUFSIZE];
+    char		buf[BUFSIZE];
 
 #define	LG_STEP_MAX	50.0
 
@@ -321,11 +322,12 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	const char *texname;												\
 	const char *texnamebump;											\
 	int  mipmap;												\
-	static char path_[256];											\
+	const int BUFSIZE = 256;\
+	char path_[BUFSIZE];											\
 	if (Track->version < 4) {										\
-	    sprintf(path_, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);					\
+	    snprintf(path_, BUFSIZE, "%s/%s/%s", TRK_SECT_SURFACES, TRK_LST_SURF, mat);					\
         } else {												\
-	    sprintf(path_, "%s/%s", TRK_SECT_SURFACES, mat);							\
+	    snprintf(path_, BUFSIZE, "%s/%s", TRK_SECT_SURFACES, mat);							\
         }													\
 	texnamebump = GfParmGetStr(TrackHandle, path_, TRK_ATT_BUMPNAME, "");					\
 	texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");				\
@@ -362,8 +364,9 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     } while (0)
 
 #define CHECKDISPLIST2(texture, mipmap, name, id) do {		\
-	char texname[256];					\
-	sprintf(texname, "%s.rgb", texture);			\
+	const int TEXNAMESIZE = 256;\
+	char texname[TEXNAMESIZE];					\
+	snprintf(texname, TEXNAMESIZE, "%s.rgb", texture);			\
 	SETTEXTURE(texname, "", mipmap);			\
 	if (curTexId != prevTexId) {				\
 	    prevTexId = curTexId;				\
@@ -558,7 +561,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	texLen = 0;
 	startNeeded = 1;
 	runninglentgh = 0;
-	sprintf(sname, "t%dRB", j);
+	snprintf(sname, BUFSIZE, "t%dRB", j);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->rside != NULL) && (mseg->rside->type2 == TR_RBORDER)) {
 		seg = mseg->rside;
@@ -1082,7 +1085,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	texLen = 0;
 	startNeeded = 1;
 	runninglentgh = 0;
-	sprintf(sname, "t%dLB", j);
+	snprintf(sname, BUFSIZE, "t%dLB", j);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->lside != NULL) && (mseg->lside->type2 == TR_LBORDER)) {
 		seg = mseg->lside;
@@ -1599,7 +1602,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	texLen = 0;
 	startNeeded = 1;
 	runninglentgh = 0;
-	sprintf(sname, "B%dRt", j);
+	snprintf(sname, BUFSIZE, "B%dRt", j);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->rside != NULL) && (mseg->rside->raceInfo & TR_PIT)) {
 		startNeeded = 1;
@@ -1854,7 +1857,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	texLen = 0;
 	startNeeded = 1;
 	runninglentgh = 0;
-	sprintf(sname, "B%dLt", j);
+	snprintf(sname, BUFSIZE, "B%dLt", j);
 	for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 	    if ((mseg->lside != NULL) && (mseg->lside->raceInfo & TR_PIT)) {
 		runninglentgh = 0;
@@ -2138,10 +2141,10 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 		    }
 		
 		    if (seg->type == TR_RGT) {
-			sprintf(buf, "turn%dR", marks[j]);
+			snprintf(buf, BUFSIZE, "turn%dR", marks[j]);
 			trkpos.toRight = Track->width + tmHSpace + tmWidth;
 		    } else {
-			sprintf(buf, "turn%dL", marks[j]);
+			snprintf(buf, BUFSIZE, "turn%dL", marks[j]);
 			trkpos.toRight = -tmHSpace;
 		    }
 		    trkpos.toStart = lgfs - mseg->lgfromstart;
@@ -2368,7 +2371,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	    t3Dd	normvec;
 
 	    startNeeded = 1;
-	    sprintf(sname, "P%dts", uid++);
+	    snprintf(sname, BUFSIZE, "P%dts", uid++);
 	    CHECKDISPLIST3("concrete2.rgb", 4, sname, pits->driversPits[0].pos.seg->id);
 
 	    RtTrackLocal2Global(&(pits->driversPits[0].pos), &x, &y, pits->driversPits[0].pos.type);
@@ -2405,7 +2408,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 		tdble dx, dy;
 
 		startNeeded = 1;
-		sprintf(sname, "P%dts", uid++);
+		snprintf(sname, BUFSIZE, "P%dts", uid++);
 		CHECKDISPLIST3("concrete.rgb", 4, sname, pits->driversPits[i].pos.seg->id);
 
 		RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
@@ -2446,7 +2449,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	    }
 	    startNeeded = 1;
 	    i--;
-	    sprintf(sname, "P%dts", uid++);
+	    snprintf(sname, BUFSIZE, "P%dts", uid++);
 	    CHECKDISPLIST3("concrete2.rgb", 4, sname, pits->driversPits[i].pos.seg->id);
 
 	    RtTrackLocal2Global(&(pits->driversPits[i].pos), &x, &y, pits->driversPits[i].pos.type);
@@ -2560,18 +2563,19 @@ static void
 SaveMainTrack(FILE *curFd, int bump)
 {
     tDispElt		*aDispElt;
-    char		buf[256];
+    const int BUFSIZE = 256;
+	char		buf[BUFSIZE];
     int			i;
 
     for (i = 0; i < GroupNb; i++) {
 	if (Groups[i].nb != 0) {
 	    aDispElt = Groups[i].dispList;
-	    sprintf(buf, "TKMN%d", i);
+	    snprintf(buf, BUFSIZE, "TKMN%d", i);
 	    Ac3dGroup(curFd, buf, Groups[i].nb);
 	    do {
 		aDispElt = aDispElt->next;
 		if (aDispElt->nb != 0) {
-		    sprintf(buf, "%s%d", aDispElt->name, aDispElt->id);
+		    snprintf(buf, BUFSIZE, "%s%d", aDispElt->name, aDispElt->id);
 		    if (bump) {
 			saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->namebump, buf, aDispElt->surfType);
 		    } else {

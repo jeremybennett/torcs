@@ -73,10 +73,6 @@ int		JustCalculate;
 int		MergeAll;
 int		MergeTerrain;
 
-static char	buf[1024];
-static char	buf2[1024];
-static char	trackdef[1024];
-
 char		*OutTrackName;
 char		*OutMeshName;
 
@@ -127,6 +123,9 @@ void init_args(int argc, char **argv)
     saveElevation = -1;
 
 #ifndef WIN32
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	
     while (1) {
 	int option_index = 0;
 	static struct option long_options[] = {
@@ -197,7 +196,7 @@ void init_args(int argc, char **argv)
 	    UseBorder = 0;
 	    break;
 	case 'L':
-	    sprintf(buf, "%s/", optarg);
+	    snprintf(buf, BUFSIZE, "%s/", optarg);
 	    SetLibDir(buf);
 	    break;
 	default:
@@ -309,13 +308,17 @@ Generate(void)
 	const char *trackdllname;
 	const char *extName;
 	FILE *outfd = NULL;
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	char buf2[BUFSIZE];
+	char trackdef[BUFSIZE];
 
 	// Get the trackgen paramaters.
-	sprintf(buf, "%s", CFG_FILE);
+	snprintf(buf, BUFSIZE, "%s", CFG_FILE);
 	CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	trackdllname = GfParmGetStr(CfgHandle, "Modules", "track", "track");
-	sprintf(buf, "%smodules/track/%s.%s", GetLibDir (), trackdllname, DLLEXT);
+	snprintf(buf, BUFSIZE, "%smodules/track/%s.%s", GetLibDir (), trackdllname, DLLEXT);
 	if (GfModLoad(TRK_IDENT, buf, &modlist) < 0) {
 		GfFatal("Failed to find the track module %s", buf);
 	}
@@ -325,7 +328,7 @@ Generate(void)
 	}
 
 	// This is the track definition.
-	sprintf(trackdef, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
+	snprintf(trackdef, BUFSIZE, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
 	TrackHandle = GfParmReadFile(trackdef, GFPARM_RMODE_STD);
 	if (!TrackHandle) {
 		fprintf(stderr, "Cannot find %s\n", trackdef);
@@ -337,16 +340,16 @@ Generate(void)
 
 	if (!JustCalculate) {
 		// Get the output file radix.
-		sprintf(buf2, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+		snprintf(buf2, BUFSIZE, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
 		OutputFileName = strdup(buf2);
 
 		// Number of goups for the complete track.
 		if (TrackOnly) {
-			sprintf(buf2, "%s.ac", OutputFileName);
+			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 			// Track.
 			outfd = Ac3dOpen(buf2, 1);
 		} else if (MergeAll) {
-			sprintf(buf2, "%s.ac", OutputFileName);
+			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 			// track + terrain + objects.
 			outfd = Ac3dOpen(buf2, 2 + GetObjectsNb(TrackHandle));
 		}
@@ -358,7 +361,7 @@ Generate(void)
 			extName = "trk";
 		}
 
-		sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+		snprintf(buf2, BUFSIZE, "%s-%s.ac", OutputFileName, extName);
 		OutTrackName = strdup(buf2);
 	}
 
@@ -375,13 +378,13 @@ Generate(void)
 
 	// Terrain.
 	if (MergeTerrain && !MergeAll) {
-		sprintf(buf2, "%s.ac", OutputFileName);
+		snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 		/* terrain + objects  */
 		outfd = Ac3dOpen(buf2, 1 + GetObjectsNb(TrackHandle));
 	}
 
 	extName = "msh";
-	sprintf(buf2, "%s-%s.ac", OutputFileName, extName);
+	snprintf(buf2, BUFSIZE, "%s-%s.ac", OutputFileName, extName);
 	OutMeshName = strdup(buf2);
 
 	GenerateTerrain(Track, TrackHandle, OutMeshName, outfd, saveElevation);
@@ -393,26 +396,26 @@ Generate(void)
 		switch (saveElevation) {
 		case 0:
 		case 1:
-			sprintf(buf2, "%s.ac", OutputFileName);
-			sprintf(buf, "%s-elv.png", OutputFileName);
+			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
+			snprintf(buf, BUFSIZE, "%s-elv.png", OutputFileName);
 			SaveElevation(Track, TrackHandle, buf, buf2, 1);
 			if (saveElevation) {
 			break;
 			}
 		case 2:
-			sprintf(buf, "%s-elv2.png", OutputFileName);
+			snprintf(buf, BUFSIZE, "%s-elv2.png", OutputFileName);
 			SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
 			if (saveElevation) {
 			break;
 			}
 		case 3:
-			sprintf(buf, "%s-elv3.png", OutputFileName);
+			snprintf(buf, BUFSIZE, "%s-elv3.png", OutputFileName);
 			SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
 			if (saveElevation) {
 			break;
 			}
 		case 4:
-			sprintf(buf, "%s-elv4.png", OutputFileName);
+			snprintf(buf, BUFSIZE, "%s-elv4.png", OutputFileName);
 			SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
 			break;
 		}
