@@ -121,7 +121,8 @@ GetTrackHeader(void *TrackHandle)
 	tTrackGraphicInfo *graphic;
 	const char **env;
 	int i;
-	char buf[256];
+	const int BUFSIZE = 256;
+	char buf[BUFSIZE];
 	char *s;
 	
 	theTrack->name = GfParmGetStr(TrackHandle, TRK_SECT_HDR, TRK_ATT_NAME, "no name");
@@ -145,7 +146,7 @@ GetTrackHeader(void *TrackHandle)
 	graphic->bgColor[2] = (float)GfParmGetNum(TrackHandle, TRK_SECT_GRAPH, TRK_ATT_BGCLR_B, (char*)NULL, 0.1f);
 	
 	/* env map images */
-	sprintf(buf, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
+	snprintf(buf, BUFSIZE, "%s/%s", TRK_SECT_GRAPH, TRK_LST_ENV);
 	graphic->envnb = GfParmGetEltNb(TrackHandle, buf);
 	if (graphic->envnb < 1) {
 		graphic->envnb = 1;
@@ -154,7 +155,7 @@ GetTrackHeader(void *TrackHandle)
 	graphic->env = (const char**)calloc(graphic->envnb, sizeof(char*));
 	env = graphic->env;
 	for (i = 1; i <= graphic->envnb; i++) {
-		sprintf(buf, "%s/%s/%d", TRK_SECT_GRAPH, TRK_LST_ENV, i);
+		snprintf(buf, BUFSIZE, "%s/%s/%d", TRK_SECT_GRAPH, TRK_LST_ENV, i);
 		*env = GfParmGetStr(TrackHandle, buf, TRK_ATT_ENVNAME, "env.png");
 		env ++;
 	}
