@@ -22,11 +22,12 @@
 void
 SimEngineConfig(tCar *car)
 {
-	void	*hdle = car->params;
-	int		i;
-	tdble	maxTq;
-	tdble	rpmMaxTq = 0;
-	char	idx[64];
+	void *hdle = car->params;
+	int i;
+	tdble maxTq;
+	tdble rpmMaxTq = 0;
+	const int IDXSIZE = 64;
+	char idx[IDXSIZE];
 	tEngineCurveElem *data;
 	struct tEdesc {
 		tdble rpm;
@@ -46,12 +47,12 @@ SimEngineConfig(tCar *car)
 	car->engine.exhaust_refract = 0.1f;
 	
 	
-	sprintf(idx, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
+	snprintf(idx, IDXSIZE, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
 	car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
 	edesc = (struct tEdesc*)malloc((car->engine.curve.nbPts + 1) * sizeof(struct tEdesc));
 	
 	for (i = 0; i < car->engine.curve.nbPts; i++) {
-		sprintf(idx, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
+		snprintf(idx, IDXSIZE, "%s/%s/%d", SECT_ENGINE, ARR_DATAPTS, i+1);
 		edesc[i].rpm = GfParmGetNum(hdle, idx, PRM_RPM, (char*)NULL, car->engine.revsMax);
 		edesc[i].tq  = GfParmGetNum(hdle, idx, PRM_TQ, (char*)NULL, 0);
 	}

@@ -24,18 +24,19 @@ static const char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6"
 void
 SimTransmissionConfig(tCar *car)
 {
-	void		*hdle = car->params;
-	tCarElt		*carElt = car->carElt;
-	tdble		clutchI;
-	tTransmission	*trans = &(car->transmission);
-	tClutch		*clutch = &(trans->clutch);
-	tDifferential	*differential;
-	int			i, j;
-	tdble		gRatio, fRatio, gEff, fEff;
-	tdble		gearI;
-	char		path[256];
+	void *hdle = car->params;
+	tCarElt *carElt = car->carElt;
+	//tdble clutchI;
+	tTransmission *trans = &(car->transmission);
+	tClutch *clutch = &(trans->clutch);
+	tDifferential *differential;
+	int i, j;
+	tdble gRatio, fRatio, gEff; //fEff;
+	tdble gearI;
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
 	
-	clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
+	//clutchI = GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
 	const char* transType = GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
 	clutch->releaseTime	= GfParmGetNum(hdle, SECT_GEARBOX, PRM_SHIFTTIME, (char*)NULL, 0.2f);
 	
@@ -63,24 +64,24 @@ SimTransmissionConfig(tCar *car)
 		SimDifferentialConfig(hdle, SECT_REARDIFFERENTIAL, &(trans->differential[TRANS_REAR_DIFF]));
 		trans->type = TRANS_RWD;
 		fRatio = trans->differential[TRANS_REAR_DIFF].ratio;
-		fEff   = trans->differential[TRANS_REAR_DIFF].efficiency;
+		//fEff   = trans->differential[TRANS_REAR_DIFF].efficiency;
 	} else if (strcmp(VAL_TRANS_FWD, transType) == 0) {
 		SimDifferentialConfig(hdle, SECT_FRNTDIFFERENTIAL, &(trans->differential[TRANS_FRONT_DIFF]));
 		trans->type = TRANS_FWD;
 		fRatio = trans->differential[TRANS_FRONT_DIFF].ratio;
-		fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency;
+		//fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency;
 	} else if (strcmp(VAL_TRANS_4WD, transType) == 0) {
 		SimDifferentialConfig(hdle, SECT_FRNTDIFFERENTIAL, &(trans->differential[TRANS_FRONT_DIFF]));
 		SimDifferentialConfig(hdle, SECT_REARDIFFERENTIAL, &(trans->differential[TRANS_REAR_DIFF]));
 		SimDifferentialConfig(hdle, SECT_CENTRALDIFFERENTIAL, &(trans->differential[TRANS_CENTRAL_DIFF]));
 		trans->type = TRANS_4WD;
 		fRatio = trans->differential[TRANS_CENTRAL_DIFF].ratio;
-		fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency * trans->differential[TRANS_CENTRAL_DIFF].efficiency * trans->differential[TRANS_REAR_DIFF].efficiency;
+		//fEff   = trans->differential[TRANS_FRONT_DIFF].efficiency * trans->differential[TRANS_CENTRAL_DIFF].efficiency * trans->differential[TRANS_REAR_DIFF].efficiency;
 	}
 	
 	trans->gearbox.gearMax = 0;
 	for (i = MAX_GEARS - 1; i >= 0; i--) {
-		sprintf(path, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
+		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
 		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0);
 		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0)) {
 			trans->gearbox.gearMax = i - 1;

@@ -34,7 +34,8 @@ SimTransmissionConfig(tCar *car)
     int			i, j;
     tdble		gRatio, fRatio, gEff, fEff;
     tdble		gearI;
-    char		path[256];
+	const int BUFSIZE = 256;
+    char		path[BUFSIZE];
 
     clutchI		= GfParmGetNum(hdle, SECT_CLUTCH, PRM_INERTIA, (char*)NULL, 0.12f);
     transType		= GfParmGetStr(hdle, SECT_DRIVETRAIN, PRM_TYPE, VAL_TRANS_RWD);
@@ -80,7 +81,7 @@ SimTransmissionConfig(tCar *car)
     trans->gearbox.gearMax = 0;
     //printf ("engine I %f\n", car->engine.I);
     for (i = MAX_GEARS - 1; i >= 0; i--) {
-		sprintf(path, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
+		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
 		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0f);
 		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0f)) {
 			trans->gearbox.gearMax = i - 1;

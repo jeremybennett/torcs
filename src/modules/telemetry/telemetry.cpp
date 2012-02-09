@@ -113,7 +113,8 @@ TlmNewChannel(const char *name, tdble *var, tdble min, tdble max)
 void 
 TlmStartMonitoring(const char *filename)
 {
-    char	buf[1024];
+    const int BUFSIZE = 1024;
+	char	buf[BUFSIZE];
     FILE	*fout;
     FILE	*fcmd;
     tChannel	*curChan;
@@ -121,7 +122,7 @@ TlmStartMonitoring(const char *filename)
     
     GfOut("Telemetry: start monitoring\n");
 
-    sprintf(buf, "telemetry/%s.cmd", filename);
+    snprintf(buf, BUFSIZE, "telemetry/%s.cmd", filename);
     fcmd = fopen(buf, "w");
     if (fcmd == NULL) {
 	return;
@@ -152,7 +153,7 @@ TlmStartMonitoring(const char *filename)
     
     TlmData.cmdfile = strdup(buf);
     
-    sprintf(buf, "telemetry/%s.dat", filename);
+    snprintf(buf, BUFSIZE, "telemetry/%s.dat", filename);
     fout = TlmData.file = fopen(buf, "w");
     if (fout == NULL) {
 	return;
@@ -196,7 +197,8 @@ TlmUpdate(double time)
 void 
 TlmStopMonitoring(void)
 {
-    char	buf[256];
+	const int BUFSIZE = 256;
+    char	buf[BUFSIZE];
     
     if (TlmData.state == 1) {
 	fclose(TlmData.file);
@@ -205,7 +207,7 @@ TlmStopMonitoring(void)
     TlmData.state = 0;
     GfOut("Telemetry: stop monitoring\n");
 
-    sprintf(buf, "sh %s", TlmData.cmdfile);
+    snprintf(buf, BUFSIZE, "sh %s", TlmData.cmdfile);
     system(buf);
     free(TlmData.cmdfile);
 }
