@@ -104,6 +104,10 @@ Changes since 1.3.2
 - Fixed some gcc 4.6 warnings (not yet all though) (Bernhard).
 - Removed *ascar category and car (stock1 is the replacement) (Bernhard).
 - Adopted Windows ports/project files to the changes (Bernhard).
+- trb car users can now choose from all trb wheels (Bernhard).
+- minor setup adjustments for trb cars (suspension can extend a tad more)
+  (Bernhard).
+
 
 
 TODO for 1.3.3
