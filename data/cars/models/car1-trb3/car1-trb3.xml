@@ -354,7 +354,7 @@
     <attnum name="tire height-width ratio" val=".30"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
-    <attnum name="toe" unit="deg" val="0"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0.3"/>
     <attnum name="stiffness" val="19.0"/>
     <attnum name="camber" min="-4" max="-1" unit="deg" val="-3"/>
     <attnum name="dynamic friction" unit="%" val="80"/>
@@ -369,7 +369,7 @@
     <attnum name="tire height-width ratio" val=".30"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
     <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
-    <attnum name="toe" unit="deg" val="0"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="-0.3"/>
     <attnum name="stiffness" val="19.0"/>
     <attnum name="camber" min="-4" max="-1" unit="deg" val="-3"/>
     <attnum name="dynamic friction" unit="%" val="80"/>

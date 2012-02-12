@@ -284,7 +284,7 @@
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="70" max="120" val="100"/>
-    <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
@@ -302,7 +302,7 @@
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="70" max="120" val="100"/>
-    <attnum name="toe" unit="deg" min="0" max="0" val="0"/>
+    <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
 
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
