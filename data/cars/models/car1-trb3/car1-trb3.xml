@@ -45,7 +45,7 @@
     <attnum name="speedometer max value" val="360" unit="km/h"/>
     
 	<attstr name="3d wheel basename" val="wheel"/>
-	<attstr name="3d wheel directory" val="trb1-4"/>
+	<attstr name="3d wheel directory" in="trb1-1,trb1-2,trb1-3,trb1-4,trb1-5,trb1-6" val="trb1-4"/>
 
     <section name="Ranges">
       <section name="1">
@@ -323,7 +323,7 @@
     <attnum name="tire width" unit="mm" val="255"/>
     <attnum name="tire height-width ratio" val=".40"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
-    <attnum name="ride height" unit="mm" min="100" max="300" val="122"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" val="19.0"/>
     <attnum name="camber" min="-5" max="-2" unit="deg" val="-4"/>
@@ -338,7 +338,7 @@
     <attnum name="tire width" unit="mm" val="255"/>
     <attnum name="tire height-width ratio" val=".40"/>
     <attnum name="inertia" unit="kg.m2" val="1.2200"/>
-    <attnum name="ride height" unit="mm" min="100" max="300" val="122"/>
+    <attnum name="ride height" unit="mm" min="100" max="300" val="100"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" val="19.0"/>
     <attnum name="camber" min="-5" max="-2" unit="deg" val="-4"/>
@@ -387,7 +387,7 @@
 
   <section name="Front Right Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2800"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
 	<attnum name="bellcrank" min="0.1" max="5" val="1.2"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
@@ -398,7 +398,7 @@
 
   <section name="Front Left Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2800"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
     <attnum name="bellcrank" min="0.1" max="5" val="1.2"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
@@ -409,7 +409,7 @@
 
   <section name="Rear Right Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2800"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
 	<attnum name="bellcrank" min="0.1" max="5" val="1.2"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="160"/>
@@ -420,7 +420,7 @@
 
   <section name="Rear Left Suspension">
     <attnum name="spring" unit="lbs/in" min="0" max="10000" val="2800"/>
-    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
+    <attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
 	<attnum name="bellcrank" min="0.1" max="5" val="1.2"/>
     <attnum name="packers" unit="mm" min="0" max="10" val="0"/>
     <attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="160"/>
