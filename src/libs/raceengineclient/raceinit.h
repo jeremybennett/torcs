@@ -38,6 +38,7 @@ extern void ReRaceCleanup(void);
 extern void ReRaceCleanDrivers(void);
 extern const char *ReGetCurrentRaceName(void);
 extern const char *ReGetPrevRaceName(void);
+extern void ReRunRaceOnConsole(const char* raceconfig);
 
 extern tModList *ReRaceModList;
 

@@ -146,6 +146,7 @@ typedef struct
 #define RM_DISP_MODE_NORMAL	0
 #define RM_DISP_MODE_CAPTURE	1
 #define RM_DISP_MODE_NONE	2
+#define RM_DISP_MODE_CONSOLE	4
     int			displayMode;
     int			refreshDisplay;
 } tRaceEngineInfo;

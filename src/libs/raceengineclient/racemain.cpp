@@ -110,11 +110,20 @@ ReRaceEventInit(void)
 
 	RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
 	ReInitTrack();
-	RmLoadingScreenSetText("Loading Track 3D Description...");
-	ReInfo->_reGraphicItf.inittrack(ReInfo->track);
+	if (
+		(ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) &&
+		(ReInfo->_reGraphicItf.inittrack != 0)
+	) {
+		RmLoadingScreenSetText("Loading Track 3D Description...");
+		ReInfo->_reGraphicItf.inittrack(ReInfo->track);
+	};
 	ReEventInitResults();
 
-	if (GfParmGetEltNb(params, RM_SECT_TRACKS) > 1) {
+	if (
+		(GfParmGetEltNb(params, RM_SECT_TRACKS) > 1) &&
+		(ReInfo->_displayMode != RM_DISP_MODE_NONE) &&
+		(ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)
+	) {
 		ReNewTrackMenu();
 		return RM_ASYNC | RM_NEXT_STEP;
 	}
@@ -188,19 +197,21 @@ reRaceRealStart(void)
 	}
 
 	/* Blind mode or not */
-	ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
-	ReInfo->_reGameScreen = ReScreenInit();
-	foundHuman = 0;
-	for (i = 0; i < s->_ncars; i++) {
-		if (s->cars[i]->_driverType == RM_DRV_HUMAN) {
-			foundHuman = 1;
-			break;
+	if (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) {
+		ReInfo->_displayMode = RM_DISP_MODE_NORMAL;
+		ReInfo->_reGameScreen = ReScreenInit();
+		foundHuman = 0;
+		for (i = 0; i < s->_ncars; i++) {
+			if (s->cars[i]->_driverType == RM_DRV_HUMAN) {
+				foundHuman = 1;
+				break;
+			}
 		}
-	}
-	if (!foundHuman) {
-		if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
-			ReInfo->_displayMode = RM_DISP_MODE_NONE;
-			ReInfo->_reGameScreen = ReResScreenInit();
+		if (!foundHuman) {
+			if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPMODE, RM_VAL_VISIBLE), RM_VAL_INVISIBLE)) {
+				ReInfo->_displayMode = RM_DISP_MODE_NONE;
+				ReInfo->_reGameScreen = ReResScreenInit();
+			}
 		}
 	}
 
@@ -232,7 +243,7 @@ reRaceRealStart(void)
 		ReInfo->_reSimItf.update(s, RCM_MAX_DT_SIMU, -1);
 	}
 
-	if (ReInfo->_displayMode != RM_DISP_MODE_NORMAL) {
+	if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 		if (ReInfo->s->_raceType == RM_TYPE_QUALIF) {
 			ReUpdateQualifCurRes(s->cars[0]);
 		} else {
@@ -250,16 +261,18 @@ reRaceRealStart(void)
 
 	ReInfo->s->_raceState = RM_RACE_STARTING;
 
-	GfScrGetSize(&sw, &sh, &vw, &vh);
-	ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
+	if ((ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) &&  ReInfo->_reGraphicItf.initview != 0) {
+		GfScrGetSize(&sw, &sh, &vw, &vh);
+		ReInfo->_reGraphicItf.initview((sw-vw)/2, (sh-vh)/2, vw, vh, GR_VIEW_STD, ReInfo->_reGameScreen);
 
-	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
-		/* RmLoadingScreenSetText("Loading Cars 3D Objects..."); */
-		stopMenuMusic();
-		ReInfo->_reGraphicItf.initcars(s);
+		if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
+			/* RmLoadingScreenSetText("Loading Cars 3D Objects..."); */
+			stopMenuMusic();
+			ReInfo->_reGraphicItf.initcars(s);
+		}
+
+		GfuiScreenActivate(ReInfo->_reGameScreen);
 	}
-
-	GfuiScreenActivate(ReInfo->_reGameScreen);
 
 	return RM_SYNC | RM_NEXT_STEP;
 }
@@ -367,10 +380,12 @@ ReRaceStart(void)
 		}
 	}
 
-	if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_SPLASH_MENU, RM_VAL_NO), RM_VAL_YES)) {
-		RmShutdownLoadingScreen();
-		RmDisplayStartRace(ReInfo, StartRaceHookInit(), AbandonRaceHookInit());
-		return RM_ASYNC | RM_NEXT_STEP;
+	if (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) {
+		if (!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_SPLASH_MENU, RM_VAL_NO), RM_VAL_YES)) {
+			RmShutdownLoadingScreen();
+			RmDisplayStartRace(ReInfo, StartRaceHookInit(), AbandonRaceHookInit());
+			return RM_ASYNC | RM_NEXT_STEP;
+		}
 	}
 
 	return reRaceRealStart();
@@ -529,7 +544,12 @@ ReEventShutdown(void)
 	int ret = 0;
 	void *results = ReInfo->results;
 
-	ReInfo->_reGraphicItf.shutdowntrack();
+	if (
+		(ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) &&
+		(ReInfo->_reGraphicItf.shutdowntrack != 0)
+	) {
+		ReInfo->_reGraphicItf.shutdowntrack();
+	}
 
 	int curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
 	curTrkIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_TRACK, NULL, 1);
@@ -552,7 +572,7 @@ ReEventShutdown(void)
 		ret =  RM_NEXT_STEP;
 	}
 
-	if (nbTrk != 1) {
+	if ((nbTrk != 1) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
 		ReDisplayStandings();
 		return RM_ASYNC | ret;
 	}

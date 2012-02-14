@@ -144,6 +144,9 @@ ReStateManage(void)
 				break;
 
 			case RE_STATE_SHUTDOWN:
+				if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
+					exit(0);
+				}
 			case RE_STATE_ERROR:
 				GfOut("RaceEngine: state = RE_STATE_SHUTDOWN\n");
 				/* Back to race menu */

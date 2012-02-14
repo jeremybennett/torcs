@@ -379,15 +379,19 @@ ReDisplayResults(void)
 {
 	void *params = ReInfo->params;
 
-	if ((!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
-		(ReInfo->_displayMode == RM_DISP_MODE_NORMAL))
-	{
-		RmShowResults(ReInfo->_reGameScreen, ReInfo);
-	} else {
-		ReResShowCont();
+	if (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE) {
+		if ((!strcmp(GfParmGetStr(params, ReInfo->_reRaceName, RM_ATTR_DISPRES, RM_VAL_YES), RM_VAL_YES)) ||
+			(ReInfo->_displayMode == RM_DISP_MODE_NORMAL))
+		{
+			RmShowResults(ReInfo->_reGameScreen, ReInfo);
+		} else {
+			ReResShowCont();
+		}
+
+		return RM_ASYNC | RM_NEXT_STEP;
 	}
 
-	return RM_ASYNC | RM_NEXT_STEP;
+	return RM_SYNC | RM_NEXT_STEP;
 }
 
 

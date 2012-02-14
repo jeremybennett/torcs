@@ -353,9 +353,9 @@ GfFatal(const char *fmt, ...)
 #define GfError printf
 
 #if !(_DEBUG || DEBUG)
-#ifdef WIN32
-#define GfOut printf
-#else
+//#ifdef WIN32
+//#define GfOut printf
+//#else
 
 
 /** Console output
@@ -368,7 +368,7 @@ GfOut(const char *fmt, ...)
 {
 }
 
-#endif /* WIN32 */
+//#endif /* WIN32 */
 
 #else /* _DEBUG || DEBUG */
 

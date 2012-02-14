@@ -99,16 +99,20 @@ ReRaceMsgUpdate(void)
 static void
 ReRaceMsgSet(char *msg, double life)
 {
-	ReSetRaceMsg(msg);
-	msgDisp = ReInfo->_reCurTime + life;
+	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
+		ReSetRaceMsg(msg);
+		msgDisp = ReInfo->_reCurTime + life;
+	}
 }
 
 
 static void
 ReRaceBigMsgSet(const char *msg, double life)
 {
-	ReSetRaceBigMsg(msg);
-	bigMsgDisp = ReInfo->_reCurTime + life;
+	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
+		ReSetRaceBigMsg(msg);
+		bigMsgDisp = ReInfo->_reCurTime + life;
+	}
 }
 
 
@@ -249,6 +253,10 @@ ReManage(tCarElt *car)
 							car->_timeBehindLeader = 0;
 							car->_lapsBehindLeader = 0;
 							car->_timeBehindPrev = 0;
+
+							if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
+								printf("Sim Time: %8.2f [s], Leader Laps: %4d, Leader Distance: %8.3f [km]\n", s->currentTime, car->_laps - 1, car->_distRaced/1000.0f);
+							}
 						}
 						info->sTime = s->currentTime;
 						switch (ReInfo->s->_raceType) {
@@ -527,12 +535,14 @@ ReOneStep(double deltaTimeIncrement)
 	tRobotItf *robot;
 	tSituation *s = ReInfo->s;
 
-	if (floor(s->currentTime) == -2.0) {
-		ReRaceBigMsgSet("Ready", 1.0);
-	} else if (floor(s->currentTime) == -1.0) {
-		ReRaceBigMsgSet("Set", 1.0);
-	} else if (floor(s->currentTime) == 0.0) {
-		ReRaceBigMsgSet("Go", 1.0);
+	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
+		if (floor(s->currentTime) == -2.0) {
+			ReRaceBigMsgSet("Ready", 1.0);
+		} else if (floor(s->currentTime) == -1.0) {
+			ReRaceBigMsgSet("Set", 1.0);
+		} else if (floor(s->currentTime) == 0.0) {
+			ReRaceBigMsgSet("Go", 1.0);
+		}
 	}
 
 	ReInfo->_reCurTime += deltaTimeIncrement * ReInfo->_reTimeMult; /* "Real" time */
@@ -567,7 +577,9 @@ ReOneStep(double deltaTimeIncrement)
 	}
 	STOP_PROFILE("_reSimItf.update*");
 
-	ReRaceMsgUpdate();
+	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
+		ReRaceMsgUpdate();
+	}
 	ReSortCars();
 }
 
@@ -613,8 +625,9 @@ reCapture(void)
 int
 ReUpdate(void)
 {
-	double 		t;
+	double t;
 	tRmMovieCapture	*capture;
+	int mode = RM_ASYNC;
 
 	START_PROFILE("ReUpdate");
 	ReInfo->_refreshDisplay = 0;
@@ -658,10 +671,18 @@ ReUpdate(void)
 			glutPostRedisplay();	/* Callback -> reDisplay */
 			break;
 
+		case RM_DISP_MODE_CONSOLE:
+			t = ReInfo->_reCurTime;
+			while ((t - ReInfo->_reCurTime + 2.0) > 0.0) {
+				ReOneStep(RCM_MAX_DT_SIMU);
+			}
+			mode = RM_SYNC;
+			break;
+
 	}
 	STOP_PROFILE("ReUpdate");
 
-	return RM_ASYNC;
+	return mode;
 }
 
 void
