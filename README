@@ -113,6 +113,8 @@ Changes since 1.3.2
   The new -r option takes an ordinary race configuration, you can set it up
   as usual with the TORCS GUI or edit it manually/generate it. Human drivers
   are not allowed of course. (Bernhard)
+- Added track "Corkscrew", created by Gabor Kmetyko and Andrew Sumner
+  (Gabor, Andrew, Bernhard).
 
 
 
