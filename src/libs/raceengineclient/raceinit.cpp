@@ -181,7 +181,7 @@ void ReRunRaceOnConsole(const char* raceconfig)
 
 	ReInfo->params = GfParmReadFile(raceconfig, GFPARM_RMODE_STD);
 	if (ReInfo->params == 0) {
-		GfError("Could not open file: %s", raceconfig);
+		GfError("Could not open file: %s\n", raceconfig);
 		exit(1);
 	}
 
@@ -596,7 +596,7 @@ ReInitCars(void)
 					if (strcmp(GfParmGetStr(robhdle, path, ROB_ATTR_TYPE, ROB_VAL_ROBOT), ROB_VAL_ROBOT)) {
 						elt->_driverType = RM_DRV_HUMAN;
 						if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
-							GfError("Human drivers not allowed in console race, fix race setup.");
+							GfError("Human drivers not allowed in console race, fix race setup.\n");
 							exit(1);
 						}
 					} else {
