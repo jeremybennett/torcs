@@ -59,14 +59,16 @@ ReInitResults(void)
 	
 	t = time(NULL);
 	stm = localtime(&t);
-	snprintf(buf, BUFSIZE, "%sresults/%s/results-%4d-%02d-%02d-%02d-%02d.xml",
+	snprintf(buf, BUFSIZE, "%sresults/%s/results-%4d-%02d-%02d-%02d-%02d-%02d.xml",
 		GetLocalDir(),
 		ReInfo->_reFilename,
 		stm->tm_year+1900,
 		stm->tm_mon+1,
 		stm->tm_mday,
 		stm->tm_hour,
-		stm->tm_min);
+		stm->tm_min,
+		stm->tm_sec
+	);
 	
 	ReInfo->results = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	results = ReInfo->results;

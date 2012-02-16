@@ -118,7 +118,10 @@ Changes since 1.3.2
   (Gabor, Andrew, Bernhard).
 - Added track "Brondehach", created by Andrew Sumner, "Milestone" and Eckhard
   Jaeger (Andrew, Milestone, Eckhard, Bernhard).
-
+- Fixed another possible buffer overflow reported by Andres Gomez
+  (Andres, Bernhard).
+- Fixed #2838393 as suggested by David Zimmerman (added seconds to result file
+  name) (David, Bernhard).
 
 
 TODO for 1.3.3
