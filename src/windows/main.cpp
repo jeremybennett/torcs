@@ -123,8 +123,8 @@ main(int argc, char *argv[])
 {
 	const char* raceconfig = "";
 
-    init_args(argc, argv, &raceconfig);
-    WindowsSpecInit();			/* init specific windows functions */
+	init_args(argc, argv, &raceconfig);
+	WindowsSpecInit();			/* init specific windows functions */
 
 	if (strlen(raceconfig) == 0) {
 		GfScrInit(argc, argv);	/* init screen */
@@ -136,6 +136,6 @@ main(int argc, char *argv[])
 		ReRunRaceOnConsole(raceconfig);
 	}
 
-    return 0;			/* just for the compiler, never reached */
+	return 0;			/* just for the compiler, never reached */
 }
 
