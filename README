@@ -134,6 +134,8 @@ Changes since 1.3.2
   (Andres, Bernhard).
 - Fixed #2838393 as suggested by David Zimmerman (added seconds to result file
   name) (David, Bernhard).
+- Updated the FAQ regarding new command line mode and other questions (Bernhard).
+- Updated installer/version number etc. (Bernhard)
 
 
 TODO for 1.3.4
