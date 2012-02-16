@@ -128,6 +128,9 @@
 		  <li><h3><a href="#c6_3">6.3 How does the simulation work?</a></h3></li>
 		  <li><h3><a href="#c6_4">6.4 Can I record/send telemetry data somewhere?</a></h3></li>
 		  <li><h3><a href="#c6_5">6.5 From where is the simulation called?</a></h3></li>
+		  <li><h3><a href="#c6_6">6.6 How often is the robot code called?</a></h3></li>
+		  <li><h3><a href="#c6_7">6.7 Is there a command line mode for AI training?</a></h3></li>
+		  <li><h3><a href="#c6_8">6.8 How do I extend TORCS such that the AI can restart the race?</a></h3></li>
 		</ul>
 
 		<h2>7. Links.</h2>
@@ -716,8 +719,9 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 
 		<h3><a name="c6_3">6.3 How does the simulation work?</a></h3>
 		<p>
-			It integrates differential equations with an Euler step with a timestep of 0.002 seconds (simulation time), look
-			at src/interfaces/raceman.h (#define RCM_MAX_DT_SIMU).
+			It integrates differential equations with Euler steps, timestep is 0.002 seconds (500Hz, simulation time), look
+			at src/interfaces/raceman.h (#define RCM_MAX_DT_SIMU). The raceengine runs as well with this rate, but the robots are just
+			called all 0.02 seconds (50Hz).
 		</p>
 
 		<h3><a name="c6_4">6.4 Can I record/send telemetry data somewhere?</a></h3>
@@ -732,6 +736,61 @@ GLUT: Fatal Error in torcs-bin: visual with necessary capabilities not found.</p
 			The simulation timestep is performed in src/libs/raceengineclient/raceengine.cpp, ReOneStep.
 		</p>
 
+ 		<h3><a name="c6_6">6.6 How often is the robot code called?</a></h3>
+		<p>
+			The robots are called all 0.02s (50Hz), do not confuse this with the physics/raceengine simulation timestep which is 0.002s (500Hz).
+		</p>
+
+ 		<h3><a name="c6_7">6.7 Is there a command line mode for AI training?</a></h3>
+		<p>
+			Yes, since version 1.3.3. This mode is useful for testing as well. All you need is a race configuration xml,
+			the easiest way to create one is using TORCS. As example navigate in TORCS to the race configuration, select "Challenge Race",
+			set up a grid without human players. Then exit TORCS and run from the command line (Linux and other Posix like systems):
+<pre>~/torcs_bin/bin/torcs -r ~/.torcs/config/raceman/dtmrace.xml</pre>
+			Or if you use Windows:
+
+<pre>wtorcs.exe -r config/raceman/dtmrace.xml</pre>
+	
+			Beware, if you use Windows Vista or higher without a local (->in your users directory) TORCS installation the configuration and result files are placed in the virtual
+			store (e.g. under my Windows 7 64 bit it is below "berni/AppData/Local/VirtualStore/Program Files (x86)/torcs").
+		</p>
+		<p>
+			Any valid race configuration file can be consumed, so you can either set it up by TORCS, edit it manually or generate it somehow.
+			You can think of these XML files as command files for a state engine, have a look at src/libs/raceengineclient/racestate.cpp.
+		</p>
+
+ 		<h3><a name="c6_8">6.8 How do I extend TORCS such that the AI can restart the race?</a></h3>
+		<p>
+			The solution presented here is based on a discussion started by Alessandro Ghidotti Piovan on the <a href="http://lists.sourceforge.net/lists/listinfo/torcs-devel" target="_parent">torcs-devel mailing list</a>.
+			To feed back commands to the race state engine (src/libs/raceengineclient/racestate.cpp) add a field in the tCarCtrl struct to allow the robot to command the race state engine:
+<pre>typedef struct {
+    ....
+    ....
+    int        askRestart;    /** boolean; 1 = robot asked to restart the race */
+} tCarCtrl;</pre>
+			Modify e.g. raceengine.cpp->ReOneStep() to take action on the command:
+<pre>bool restartRequested = false;
+
+for (i = 0; i < s->_ncars; i++) {
+    if(s->cars[i]->ctrl.askRestart) {
+        restartRequested = true;
+            s->cars[i]->ctrl.askRestart = false;
+        }
+    }
+   
+    if(restartRequested){   
+        ReRaceCleanup();
+        ReInfo->_reState = RE_STATE_PRE_RACE;
+        GfuiScreenActivate(ReInfo->_reGameScreen);
+    }</pre>
+		The robot can now set askRestart when desired, e.g.:
+<pre>if(!car->ctrl.askRestart){
+       if (isStuck(car))
+        {
+            // as your robot tutorial and/or set car->askRestart = true if you need.
+        }
+    }</pre>
+		</p>
 
 
 		<br/><h2>7. Links.</h2>
