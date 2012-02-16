@@ -20,7 +20,7 @@ Linux Installation from Source
   on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
   1.8.5 works.
 - Untar the archive
-- cd into the torcs-1.3.2 directory
+- cd into the torcs-1.3.3 directory
 - ./configure (use --help for showing the options, of interest might be
   --enable-debug and --disable-xrandr).
 - make
@@ -35,6 +35,8 @@ Command line arguments:
 * -e display the commands to issue when you want to run under gdb
 * -s disable multitexturing, important for older graphics cards
 * -m use X mouse cursor and do not hide it during races
+* -r pathtoraceconfigfile, run race from command line only, for testing and AI
+     training, see FAQ for details 
 
 
 Windows Installation from Source (Release version)
@@ -43,7 +45,7 @@ Windows Installation from Source (Release version)
   version goes to "runtime" and the debug to "runtimed".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.2 directory
+- cd into the torcs-1.3.3 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
 - select the TORCS workspace (TORCS.dsw for VS 6) or solution (TORCS.sln
@@ -52,6 +54,11 @@ Windows Installation from Source (Release version)
 - cd into the "runtime" directory.
 - run "wtorcs.exe"
 
+Command line arguments:
+* -s disable multitexturing, important for older graphics cards
+* -r pathtoraceconfigfile, run race from command line only, for testing and AI
+     training, see FAQ for details 
+
 
 Windows Installation from Source (Debug version)
 ------------------------------------------------
@@ -59,7 +66,7 @@ Windows Installation from Source (Debug version)
   version goes to "runtimed" and the release to "runtime".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.2 directory
+- cd into the torcs-1.3.3 directory
 - run setup_win32_debug.bat
 - run setup_win32-data-from-CVS_debug.bat
 - select the TORCS workspace (TORCS.dsw for VS 6) or solution (TORCS.sln
@@ -67,6 +74,11 @@ Windows Installation from Source (Debug version)
 - compile project (0 warnings)
 - cd into the "runtimed" directory.
 - run "wtorcs.exe"
+
+Command line arguments:
+* -s disable multitexturing, important for older graphics cards
+* -r pathtoraceconfigfile, run race from command line only, for testing and AI
+     training, see FAQ for details 
 
 
 Testing
@@ -124,16 +136,16 @@ Changes since 1.3.2
   name) (David, Bernhard).
 
 
-TODO for 1.3.3
+TODO for 1.3.4
 --------------
 - Training session with adjustable setup (trb)
 - Bugtracking
 - check for sprintf/fscanf/strcpy/strndup, etc (ongoing)
   (ensure 0 termination of strings -> introduce string class?)
 
-
 TODO for 1.4.0
 --------------
+- Robot interface adoptions, rules
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
