@@ -64,7 +64,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
     }
 #endif
 
-    float prevC = 0.0f;
+    //float prevC = 0.0f;
     float Z = 10.0f;
     float lambda = 0.9f;
     float delta_C = 0.0f;
@@ -89,19 +89,19 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
             //int i_n3 = (i + 3)%N;
             int i_n2 = (i + 2)%N;
             int i_n1 = (i + 1)%N;
-            Segment s_prv3 = track[i_p3];
-            Segment s_prv2 = track[i_p2];
-            Segment s_prv = track[i_p1];
+            //Segment s_prv3 = track[i_p3];
+            //Segment s_prv2 = track[i_p2];
+            //Segment s_prv = track[i_p1];
             Segment s_cur = track[i];
-            Segment s_nxt = track[i_n1];
-            Segment s_nxt2 = track[i_n2];
-            Point prv3 = GetPoint(track[i_p3], w[i_p3]);
+            //Segment s_nxt = track[i_n1];
+            //Segment s_nxt2 = track[i_n2];
+            //Point prv3 = GetPoint(track[i_p3], w[i_p3]);
             Point prv2 = GetPoint(track[i_p2], w[i_p2]);
             Point prv = GetPoint(track[i_p1], w[i_p1]);
             Point cur = GetPoint(track[i], w[i]);
             Point nxt = GetPoint(track[i_n1], w[i_n1]);
             Point nxt2 = GetPoint(track[i_n2], w[i_n2]);
-            Point u_prv2 = prv2 - prv3;
+            //Point u_prv2 = prv2 - prv3;
             Point u_prv = prv - prv2;
             Point u_cur = cur - prv;
             Point u_nxt = nxt - cur;
@@ -278,7 +278,7 @@ void Trajectory::Optimise(SegmentList track, int max_iter, float alpha, const ch
 #endif
             break;
         }
-        prevC = C;
+        //prevC = C;
     }
 
 

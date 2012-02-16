@@ -837,13 +837,13 @@ namespace olethros {
 	float steer_direction = STEER_DIRECTION_GAIN * (targetAngle - car->_yaw - STEER_PREDICT_GAIN * car->_yaw_rate);
 
 	// over steer correction a la berniw
-	tTrackSeg *seg = car->_trkPos.seg;
-	float omega = 0.0;
+	//tTrackSeg *seg = car->_trkPos.seg;
+	/*float omega = 0.0;
 	if (seg->type==TR_LFT) {
             omega = getSpeed()/radius[seg->id];
 	} else if (seg->type == TR_RGT) {
             omega = -getSpeed()/radius[seg->id];
-	}
+	}*/
 	float correct_oversteer = 0.0f;//STEER_PREDICT_GAIN * (omega - car->_yaw_rate);
 
 
@@ -1758,10 +1758,10 @@ namespace olethros {
 	if (accel>0) {
             accel = filterTCL(accel);
 	}
-        float speed_to_inside = 0.0;
+        /*float speed_to_inside = 0.0;
 	if (car->_trkPos.toMiddle*speedangle > 0.0) {
             speed_to_inside = 0.5;
-	}
+	}*/
 	if (car->_speed_x < MAX_UNSTUCK_SPEED ||		// Too slow.
             pit->getInPit())// ||							// Pit stop.
             //car->_trkPos.toMiddle*speedangle > 0.0)		// Speedvector points to the inside of the turn.
@@ -1999,8 +1999,8 @@ namespace olethros {
 	if (0) {
             //printf ("Estimating least square error radius for smoothed points.\n");
             tTrackSeg* seg = track->seg;
-            int prev_type = -track->seg->type;
-            float prev_rad = seg->radius;
+            //int prev_type = -track->seg->type;
+            //float prev_rad = seg->radius;
             int cnt=0;
             int max_cnt = 5;
             float max_length = 50.0f;
@@ -2009,8 +2009,8 @@ namespace olethros {
                 float drad = 0;
                 //printf ("%f ", darc);
                 //printf("%f\n", seg->arc);
-                prev_rad = seg->radius;
-                prev_type = seg->type;
+                //prev_rad = seg->radius;
+                //prev_type = seg->type;
                 tTrackSeg* prev_seg = seg;
                 // look back until we find a segment of different type or
                 // radius or until the total length>max_length and we have looked

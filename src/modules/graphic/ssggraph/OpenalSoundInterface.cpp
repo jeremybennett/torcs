@@ -179,14 +179,14 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 {
 	
 	ALfloat listener_pos[3];
-	ALfloat listener_speed[3];
+	//ALfloat listener_speed[3];
 	ALfloat listener_orientation[6];
     ALfloat zeros[] = {0.0f, 0.0f, 0.0f};
 	
 	int i;
 	for (i = 0; i<3; i++) {
 		listener_pos[i] = p_obs[i];
-		listener_speed[i] = 0;// u_obs[i];
+		//listener_speed[i] = 0;// u_obs[i];
 		listener_orientation[i] = c_obs[i];
 		listener_orientation[i+3] = a_obs[i];
 	}

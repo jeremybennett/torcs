@@ -164,7 +164,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     tTrackSeg 		*seg;
     tTrackSeg 		*mseg;
     int 		nbvert;
-    tdble 		width, wi2;
+    tdble 		width; //, wi2;
     tdble 		anz, ts = 0;
     tdble               radiusr, radiusl;
     tdble 		step;
@@ -238,11 +238,11 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     GroupNb = Track->nseg;
     
     width = Track->width;
-    wi2 = width / 2.0;
+    //wi2 = width / 2.0;
 
     trkpos.type = TR_LPOS_MAIN;
 
-#define SETTEXTURE(texname, texnamebump, mipmap) do {			\
+#define SETTEXTURE(texname, texnamebump) do {			\
 	int found = 0;							\
 	curTexElt = texList;						\
 	if (curTexElt == NULL) {					\
@@ -322,7 +322,6 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 #define CHECKDISPLIST(mat, name, id, off) do {									\
 	const char *texname;												\
 	const char *texnamebump;											\
-	int  mipmap;												\
 	const int BUFSIZE = 256;\
 	char path_[BUFSIZE];											\
 	if (Track->version < 4) {										\
@@ -332,8 +331,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
         }													\
 	texnamebump = GfParmGetStr(TrackHandle, path_, TRK_ATT_BUMPNAME, "");					\
 	texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");				\
-	mipmap = (int)GfParmGetNum(TrackHandle, path_, TRK_ATT_TEXMIPMAP, (char*)NULL, 0);			\
-	SETTEXTURE(texname, texnamebump, mipmap);										\
+	SETTEXTURE(texname, texnamebump);										\
 	if ((curTexId != prevTexId) || (startNeeded)) {								\
 	    const char *textype;											\
             if (bump) {												\
@@ -368,7 +366,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
 	const int TEXNAMESIZE = 256;\
 	char texname[TEXNAMESIZE];					\
 	snprintf(texname, TEXNAMESIZE, "%s.rgb", texture);			\
-	SETTEXTURE(texname, "", mipmap);			\
+	SETTEXTURE(texname, "");			\
 	if (curTexId != prevTexId) {				\
 	    prevTexId = curTexId;				\
 	    NEWDISPLIST(1, name, id);				\
@@ -376,7 +374,7 @@ InitScene(tTrack *Track, void *TrackHandle, int bump)
     }  while (0)
 
 #define CHECKDISPLIST3(texture, mipmap, name, id) do {		\
-	SETTEXTURE(texture, "", mipmap);			\
+	SETTEXTURE(texture, "");			\
 	if (curTexId != prevTexId) {				\
 	    prevTexId = curTexId;				\
 	    NEWDISPLIST(1, name, id);				\

@@ -65,127 +65,126 @@ static void Idle2(void);
 static int
 GetNextAxis(void)
 {
-    int i;
+	int i;
 
-    for (i = CalState; i < 4; i++) {
-	if (Cmd[CMD_OFFSET + i].ref.type == GFCTRL_TYPE_MOUSE_AXIS) {
-	    return i;
+	for (i = CalState; i < 4; i++) {
+		if (Cmd[CMD_OFFSET + i].ref.type == GFCTRL_TYPE_MOUSE_AXIS) {
+			return i;
+		}
 	}
-    }
-    return i;
+	return i;
 }
 
 
 static void
 MouseCalAutomaton(void)
 {
-    float	axv;
+	float	axv;
 
-    switch (CalState) {
-    case 0:
-    case 1:
-	GfctrlMouseGetCurrent(&mouseInfo);
-	axv = mouseInfo.ax[Cmd[CMD_OFFSET + CalState].ref.index];
-	if (fabs(axv) < 0.01) {
-	    return;		/* ignore no move input */
+	switch (CalState) {
+		case 0:
+		case 1:
+			GfctrlMouseGetCurrent(&mouseInfo);
+			axv = mouseInfo.ax[Cmd[CMD_OFFSET + CalState].ref.index];
+			if (fabs(axv) < 0.01) {
+				return;		/* ignore no move input */
+			}
+			Cmd[CMD_OFFSET + CalState].max = axv;
+			Cmd[CMD_OFFSET + CalState].pow = 1.0 / axv;
+			break;
+
+		case 2:
+		case 3:
+			GfctrlMouseGetCurrent(&mouseInfo);
+			axv = mouseInfo.ax[Cmd[CMD_OFFSET + CalState].ref.index];
+				if (fabs(axv) < 0.01) {
+				return;		/* ignore no move input */
+			}
+			Cmd[CMD_OFFSET + CalState].max = axv;
+			Cmd[CMD_OFFSET + CalState].pow = 1.0 / axv;
+		break;
 	}
-	Cmd[CMD_OFFSET + CalState].max = axv;
-	Cmd[CMD_OFFSET + CalState].pow = 1.0 / axv;
-	break;
 
-    case 2:
-    case 3:
-	GfctrlMouseGetCurrent(&mouseInfo);
-	axv = mouseInfo.ax[Cmd[CMD_OFFSET + CalState].ref.index];
-	    if (fabs(axv) < 0.01) {
-	    return;		/* ignore no move input */
+	CalState++;
+	CalState = GetNextAxis();
+	GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
+	if (CalState < 4) {
+		glutIdleFunc(Idle2);
+	} else {
+		glutIdleFunc(GfuiIdle);
 	}
-	Cmd[CMD_OFFSET + CalState].max = axv;
-	Cmd[CMD_OFFSET + CalState].pow = 1.0 / axv;
-	break;
-	
-    }
-
-    CalState++;
-    CalState = GetNextAxis();
-    GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
-    if (CalState < 4) {
-	glutIdleFunc(Idle2);
-    } else {
-	glutIdleFunc(GfuiIdle);
-    }
 }
 
 static void
 Idle2(void)
 {
-    int	i;
+	int	i;
 
-    GfctrlMouseGetCurrent(&mouseInfo);
+	GfctrlMouseGetCurrent(&mouseInfo);
 
-    /* Check for a mouse button pressed */
-    for (i = 0; i < 3; i++) {
-	if (mouseInfo.edgedn[i]) {
-	    MouseCalAutomaton();
-	    return;
+	/* Check for a mouse button pressed */
+	for (i = 0; i < 3; i++) {
+		if (mouseInfo.edgedn[i]) {
+			MouseCalAutomaton();
+			return;
+		}
 	}
-    }
 }
 
 static void
 IdleMouseInit(void)
 {
-    /* Get the center mouse position  */
-    memset(&mouseInfo, 0, sizeof(mouseInfo));
-    GfctrlMouseGetCurrent(&mouseInfo);
-    GfctrlMouseInitCenter();
-    glutIdleFunc(Idle2);
+	/* Get the center mouse position  */
+	memset(&mouseInfo, 0, sizeof(mouseInfo));
+	GfctrlMouseGetCurrent(&mouseInfo);
+	GfctrlMouseInitCenter();
+	glutIdleFunc(Idle2);
 }
 
 static void
 onActivate2(void * /* dummy */)
 {
-    int dummy;
+	int dummy;
 
-    GfScrGetSize(&scrw, &scrh, &dummy, &dummy);
-    CalState = 0;
-    GetNextAxis();
-    GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
-    if (CalState < 4) {
-	glutIdleFunc(IdleMouseInit);
-	GfctrlMouseCenter();
-    }
+	GfScrGetSize(&scrw, &scrh, &dummy, &dummy);
+	CalState = 0;
+	GetNextAxis();
+	GfuiLabelSetText(scrHandle2, InstId, Instructions[CalState]);
+	if (CalState < 4) {
+		glutIdleFunc(IdleMouseInit);
+		GfctrlMouseCenter();
+	}
 }
 
 void *
 MouseCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
 {
-    int x, y, dy;
-    
-    Cmd = cmd;
-    maxCmd = maxcmd;
-    
-    if (scrHandle2) {
+	//int x, y, dy;
+
+	Cmd = cmd;
+	maxCmd = maxcmd;
+
+	if (scrHandle2) {
+		return scrHandle2;
+	}
+
+	scrHandle2 = GfuiScreenCreateEx(NULL, NULL, onActivate2, NULL, NULL, 1);
+	GfuiTitleCreate(scrHandle2, "Mouse Calibration", 0);
+	GfuiMenuDefaultKeysAdd(scrHandle2);
+
+	GfuiScreenAddBgImg(scrHandle2, "data/img/splash-mousecal.png");
+
+	//x = 128;
+	//y = 300;
+	//dy = 50;
+
+	InstId = GfuiLabelCreate(scrHandle2, "", GFUI_FONT_MEDIUM, 320, 80, GFUI_ALIGN_HC_VB, 60);
+
+	GfuiButtonCreate(scrHandle2, "Back", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+	GfuiButtonCreate(scrHandle2, "Reset", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+				NULL, onActivate2, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
 	return scrHandle2;
-    }
-
-    scrHandle2 = GfuiScreenCreateEx(NULL, NULL, onActivate2, NULL, NULL, 1);
-    GfuiTitleCreate(scrHandle2, "Mouse Calibration", 0);
-    GfuiMenuDefaultKeysAdd(scrHandle2);
-
-    GfuiScreenAddBgImg(scrHandle2, "data/img/splash-mousecal.png");
-
-    x = 128;
-    y = 300;
-    dy = 50;
-
-    InstId = GfuiLabelCreate(scrHandle2, "", GFUI_FONT_MEDIUM, 320, 80, GFUI_ALIGN_HC_VB, 60);
-
-    GfuiButtonCreate(scrHandle2, "Back", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-    
-    GfuiButtonCreate(scrHandle2, "Reset", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		     NULL, onActivate2, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-    return scrHandle2;
 }

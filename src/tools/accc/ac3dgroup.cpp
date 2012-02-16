@@ -49,7 +49,7 @@ void loadAndGroup( char *OutputFileName)
   ob_t * tmpob=NULL;
   ob_t * tmpob2=NULL;
   mat_t * tmat=NULL;
-  int requiredExtraGroup=0;
+  //int requiredExtraGroup=0;
   extern FILE * ofile;
   int num_tkmn=0;
   ob_groups_t * array_groups;
@@ -455,7 +455,7 @@ void loadAndGroup( char *OutputFileName)
 	    else
 	      {
 		printf("cannot insert object %s in group %s\n",tmpob->name,array_groups[i].name);
-		requiredExtraGroup=1;
+		//requiredExtraGroup=1;
 	      }
 	/*if (!strnicmp(tmpob->name, "tk",2)){
 	  tmpob2=tmpob;

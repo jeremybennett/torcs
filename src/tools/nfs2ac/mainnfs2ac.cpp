@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     int magic;
     int VertTblOffset;
     int TriaTblOffset;
-    int NormTblOffset;
+    //int NormTblOffset;
     int         NumParts ;
     tVector  * Parts;
     int     * P1stVertices;
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     if (magic == 0x00101014) {
 	ver = 4;			/* NFS 4 */
 	VertTblOffset = * ((int *)(mem + 0x0014));
-	NormTblOffset = * ((int *)(mem + 0x0018));
+	//NormTblOffset = * ((int *)(mem + 0x0018));
 	TriaTblOffset = * ((int *)(mem + 0x001C));
 	NumParts      = * ((int *)(mem + 0x011C));
 	Parts         = (tVector *)(mem + 0x0120);
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     } else {
 	ver = 3;			/* NFS 3 */
 	VertTblOffset = * ((int *)(mem + 0x0010));
-	NormTblOffset = * ((int *)(mem + 0x0014));
+	//NormTblOffset = * ((int *)(mem + 0x0014));
 	TriaTblOffset = * ((int *)(mem + 0x0018));
 	NumParts      = * ((int *)(mem + 0x00F8));
 	Parts         = (tVector *)(mem + 0x00FC);

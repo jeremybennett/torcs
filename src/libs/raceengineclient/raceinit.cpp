@@ -311,7 +311,7 @@ initStartingGrid(void)
 	int i;
 	tTrackSeg *curseg;
 	int rows;
-	tdble a, b, wi2;
+	tdble a, b; //, wi2;
 	tdble d1, d2,d3;
 	tdble startpos, tr, ts;
 	tdble speedInit;
@@ -347,7 +347,7 @@ initStartingGrid(void)
 		a = 0;
 		b = ReInfo->track->width;
 	}
-	wi2 = ReInfo->track->width * 0.5;
+	//wi2 = ReInfo->track->width * 0.5;
 
 	rows = (int)GfParmGetNum(params, path, RM_ATTR_ROWS, (char*)NULL, 2);
 	rows = (int)GfParmGetNum(trHdle, RM_SECT_STARTINGGRID, RM_ATTR_ROWS, (char*)NULL, rows);
@@ -529,7 +529,7 @@ ReInitCars(void)
 	void *robhdle;
 	tCarElt *elt;
 	//char *str;
-	int focusedIdx;
+	//int focusedIdx;
 	void *params = ReInfo->params;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE], path[BUFSIZE];
@@ -542,7 +542,7 @@ ReInitCars(void)
 	ReInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
 	FREEZ(ReInfo->rules);
 	ReInfo->rules = (tRmCarRules*)calloc(nCars, sizeof(tRmCarRules));
-	focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
+	//focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
 	index = 0;
 
 	for (i = 1; i < nCars + 1; i++) {

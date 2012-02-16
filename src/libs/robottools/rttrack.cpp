@@ -395,60 +395,62 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 tdble
 RtTrackHeightL(tTrkLocPos *p)
 {
-    tdble	lg;
-    tdble	tr = p->toRight;
-    tTrackSeg	*seg = p->seg;
-    bool left_side = true;
-    if ((tr < 0) && (seg->rside != NULL)) {
-        left_side = false;
-
-	seg = seg->rside;
- 	tr += seg->width;
-
+	tdble lg;
+	tdble tr = p->toRight;
+	tTrackSeg *seg = p->seg;
+	
+	//bool left_side = true;
 	if ((tr < 0) && (seg->rside != NULL)) {
-	    seg = seg->rside;
-	    tr += RtTrackGetWidth(seg, p->toStart);
-	}   
-    } else if ((tr > seg->width) && (seg->lside != NULL)) {
-	tr -= seg->width;
-	seg = seg->lside;
-	if ((tr > seg->width) && (seg->lside != NULL)) {
-	    tr -= RtTrackGetWidth(seg, p->toStart);
-	    seg = seg->lside;
-	}
-    }
-    
-    switch (seg->type) {
-    case TR_STR:
-	lg = p->toStart;
-	break;
-    default:
-	lg = p->toStart * seg->radius;
-	break;
-    }
-    if (seg->style == TR_CURB) {
-        // The final height = starting height + height difference due
-        // to track angle + height difference due to curb (this seems
-        // to be the way it is implemented in the graphics too: the
-        // curb does not adding an angle to the main track, but a
-        // height in global coords).
-	if (seg->type2 == TR_RBORDER) {
-            // alpha shows how far we've moved into this segment.
-            tdble alpha = seg->width - tr;
-            tdble angle = seg->angle[TR_XS] + p->toStart * seg->Kzw;
-            tdble noise = seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * alpha / seg->width;
-            tdble start_height = seg->vertex[TR_SR].z + p->toStart * seg->Kzl;
-            return start_height + tr * tan(angle) + alpha * atan2(seg->height, seg->width) + noise;
+		//left_side = false;
 
+		seg = seg->rside;
+		tr += seg->width;
+
+		if ((tr < 0) && (seg->rside != NULL)) {
+			seg = seg->rside;
+			tr += RtTrackGetWidth(seg, p->toStart);
+		}   
+	} else if ((tr > seg->width) && (seg->lside != NULL)) {
+		tr -= seg->width;
+		seg = seg->lside;
+		if ((tr > seg->width) && (seg->lside != NULL)) {
+			tr -= RtTrackGetWidth(seg, p->toStart);
+			seg = seg->lside;
+		}
+	}
+
+	switch (seg->type) {
+		case TR_STR:
+			lg = p->toStart;
+			break;
+		default:
+			lg = p->toStart * seg->radius;
+			break;
 	}
 	
-	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
-	    tr * (tan(seg->angle[TR_XS] + p->toStart * seg->Kzw)
-                  + atan2(seg->height, seg->width)) +
-	    seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * tr / seg->width;
-    }
-    
-    return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
+	if (seg->style == TR_CURB) {
+		// The final height = starting height + height difference due
+		// to track angle + height difference due to curb (this seems
+		// to be the way it is implemented in the graphics too: the
+		// curb does not adding an angle to the main track, but a
+		// height in global coords).
+		if (seg->type2 == TR_RBORDER) {
+			// alpha shows how far we've moved into this segment.
+			tdble alpha = seg->width - tr;
+			tdble angle = seg->angle[TR_XS] + p->toStart * seg->Kzw;
+			tdble noise = seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * alpha / seg->width;
+			tdble start_height = seg->vertex[TR_SR].z + p->toStart * seg->Kzl;
+			return start_height + tr * tan(angle) + alpha * atan2(seg->height, seg->width) + noise;
+		}
+
+		return
+			seg->vertex[TR_SR].z + p->toStart * seg->Kzl +
+			tr * (tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
+			atan2(seg->height, seg->width)) +
+			seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * lg) * tr / seg->width;
+	}
+
+	return seg->vertex[TR_SR].z + p->toStart * seg->Kzl + tr * tan(seg->angle[TR_XS] + p->toStart * seg->Kzw) +
 	seg->surface->kRoughness * sin(seg->surface->kRoughWaveLen * tr) * sin(seg->surface->kRoughWaveLen * lg);
 }
 

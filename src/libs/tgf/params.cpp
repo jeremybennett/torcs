@@ -1377,38 +1377,38 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 int
 GfParmWriteBuf (void *handle, char *buf, int size)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf;
-    char		line[LINE_SZ];
-    int			len;
-    int			curSize;
-    char		*s;
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	//struct parmHeader	*conf;
+	char line[LINE_SZ];
+	int len;
+	int curSize;
+	char *s;
 
-    conf = parmHandle->conf;
+	//conf = parmHandle->conf;
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("gfParmWriteBuf: bad handle (%p)\n", parmHandle);
-	return 1;
-    }
-
-    parmHandle->outCtrl.state = 0;
-    parmHandle->outCtrl.curSection = NULL;
-    parmHandle->outCtrl.curParam = NULL;
-    curSize = size;
-    s = buf;
-
-    while (curSize && xmlGetOuputLine (parmHandle, line, sizeof (line))) {
-	len = strlen (line);
-	if (len > curSize) {
-	    len = curSize;
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("gfParmWriteBuf: bad handle (%p)\n", parmHandle);
+		return 1;
 	}
-	memcpy (s, line, len);
-	s += len;
-	curSize -= len;
-    }
-    buf [size - 1] = 0;
-    
-    return 0;
+
+	parmHandle->outCtrl.state = 0;
+	parmHandle->outCtrl.curSection = NULL;
+	parmHandle->outCtrl.curParam = NULL;
+	curSize = size;
+	s = buf;
+
+	while (curSize && xmlGetOuputLine (parmHandle, line, sizeof (line))) {
+		len = strlen (line);
+		if (len > curSize) {
+			len = curSize;
+		}
+		memcpy (s, line, len);
+		s += len;
+		curSize -= len;
+	}
+	buf [size - 1] = 0;
+
+	return 0;
 }
 
 /** Set the dtd path and header if necessary

@@ -419,8 +419,8 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	char path[BUFSIZE];
 	char *str;
 	float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
-	int laps, totLaps;
-	tdble refTime;
+	//int laps, totLaps;
+	//tdble refTime;
 	int nbCars;
 	int offset;
 
@@ -443,16 +443,16 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
 	y -= 20;
 	
-	snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
-	totLaps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
-	snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, 1);
-	refTime = GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0);
+	//snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
+	//totLaps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
+	//snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, 1);
+	//refTime = GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0);
 	snprintf(path, BUFSIZE, "%s/%s/%s/%s", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK);
 	nbCars = (int)GfParmGetEltNb(results, path);
 	
 	for (i = start; i < MIN(start + MAX_LINES, nbCars); i++) {
-		snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
-		laps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
+		//snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+		//laps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
 
 		snprintf(buf, BUFSIZE, "%d", i+1);
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
