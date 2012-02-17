@@ -451,7 +451,7 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	nbCars = (int)GfParmGetEltNb(results, path);
 	
 	for (i = start; i < MIN(start + MAX_LINES, nbCars); i++) {
-		//snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+		snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 		//laps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
 
 		snprintf(buf, BUFSIZE, "%d", i+1);
