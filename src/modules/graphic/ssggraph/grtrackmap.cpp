@@ -209,7 +209,7 @@ cGrTrackMap::cGrTrackMap()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Set transformations and projection such that one pixel is one unit.
-		glViewport (grWinx, grWiny, grWinw, grWinh);
+		glViewport (0, 0, grWinw, grWinh);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glLoadIdentity();
