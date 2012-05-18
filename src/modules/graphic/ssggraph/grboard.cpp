@@ -337,8 +337,12 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
 	y -= dy;
 	
 	GfuiPrintString("Curr:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	if (!car->_commitBestLapTime) {
+		clr = grRed;
+	}
 	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_curLapTime, 0);
 	y -= dy;
+	clr = grWhite;
 	
 	GfuiPrintString("Last:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_lastLapTime, 0);
@@ -421,8 +425,12 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	y -= dy;
 	
 	GfuiPrintString("Time:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	if (!car->_commitBestLapTime) {
+		clr = grRed;
+	}
 	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_curLapTime, 0);    
 	y -= dy;
+	clr = grWhite;
 	
 	if (car->_pos != 1) {
 		snprintf(buf, BUFSIZE, "<- %s", s->cars[car->_pos - 2]->_name);
@@ -813,7 +821,12 @@ cGrBoard::grDispArcade(tCarElt *car, tSituation *s)
 	dy = GfuiFontHeight(GFUI_FONT_LARGE_C);
 	y -= dy;
 	GfuiPrintString("Time:", grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HL_VB);
-	grWriteTime(grDefaultClr, GFUI_FONT_LARGE_C, x + 150, y, car->_curLapTime, 0);
+	if (!car->_commitBestLapTime) {
+		clr = grRed;
+	} else {
+		clr = grDefaultClr;
+	}
+	grWriteTime(clr, GFUI_FONT_LARGE_C, x + 150, y, car->_curLapTime, 0);
 
 	y -= dy;
 	GfuiPrintString("Best:", grDefaultClr, GFUI_FONT_LARGE_C, x, y, GFUI_ALIGN_HL_VB);
