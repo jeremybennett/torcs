@@ -416,53 +416,55 @@ ReRaceRules(tCarElt *car)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	
-	// If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
-	// Invalidation and message is just shown on the first hit
-	if (car->_commitBestLapTime && (car->priv.collision & SEM_COLLISION_XYSCENE)) {
-		car->_commitBestLapTime = false;
-		snprintf(buf, BUFSIZE, "%s hit wall, laptime invalidated", car->_name);
-		ReRaceMsgSet(buf, 5);
-	}
-	
-	// If the car cuts a corner the lap time is invalidated. Cutting a corner means: the center of gravity is more than 0.7 times the car width
-	// away from the main track segment on the inside of a turn. The rule does not apply on the outside and on straights.
-	tTrackSeg *mainseg = car->_trkPos.seg;
-	
-	if (car->_commitBestLapTime && (mainseg->type != TR_STR)) {
-		tTrackPitInfo pitInfo = track->pits;
-		bool pit = false;
-		if (track->pits.type == TR_PIT_ON_TRACK_SIDE) {
-			if (pitInfo.pitEntry->id < pitInfo.pitExit->id) {
-				if ((mainseg->id >= pitInfo.pitEntry->id) && (mainseg->id <= pitInfo.pitExit->id)) {
-					pit = true;
-				}
-			} else {
-				if ((mainseg->id >= pitInfo.pitEntry->id) || (mainseg->id <= pitInfo.pitExit->id)) {
-					pit = true;
-				}
-			}
-		}
-		
-		tdble toborder = 0.0f;
-		if (mainseg->type == TR_LFT) {
-			toborder = car->_trkPos.toLeft;
-			if (pit && (pitInfo.side == TR_LFT)) {
-				toborder = 0.0f;
-			}
-		} else if (mainseg->type == TR_RGT) {
-			toborder = car->_trkPos.toRight;
-			if (pit && (pitInfo.side == TR_RGT)) {
-				toborder = 0.0f;
-			}
-		}
-
-		if (toborder < -car->_dimension_y*0.7) {
+	if (ReInfo->s->_raceType == RM_TYPE_QUALIF || ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+		// If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
+		// Invalidation and message is just shown on the first hit
+		if (car->_commitBestLapTime && (car->priv.collision & SEM_COLLISION_XYSCENE)) {
 			car->_commitBestLapTime = false;
-			snprintf(buf, BUFSIZE, "%s cut corner, laptime invalidated", car->_name);
+			snprintf(buf, BUFSIZE, "%s hit wall, laptime invalidated", car->_name);
 			ReRaceMsgSet(buf, 5);
 		}
 		
-		//TODO: if this happens often in the race, add penalty in pro mode.
+		// If the car cuts a corner the lap time is invalidated. Cutting a corner means: the center of gravity is more than 0.7 times the car width
+		// away from the main track segment on the inside of a turn. The rule does not apply on the outside and on straights.
+		tTrackSeg *mainseg = car->_trkPos.seg;
+		
+		if (car->_commitBestLapTime && (mainseg->type != TR_STR)) {
+			tTrackPitInfo pitInfo = track->pits;
+			bool pit = false;
+			if (track->pits.type == TR_PIT_ON_TRACK_SIDE) {
+				if (pitInfo.pitEntry->id < pitInfo.pitExit->id) {
+					if ((mainseg->id >= pitInfo.pitEntry->id) && (mainseg->id <= pitInfo.pitExit->id)) {
+						pit = true;
+					}
+				} else {
+					if ((mainseg->id >= pitInfo.pitEntry->id) || (mainseg->id <= pitInfo.pitExit->id)) {
+						pit = true;
+					}
+				}
+			}
+			
+			tdble toborder = 0.0f;
+			if (mainseg->type == TR_LFT) {
+				toborder = car->_trkPos.toLeft;
+				if (pit && (pitInfo.side == TR_LFT)) {
+					toborder = 0.0f;
+				}
+			} else if (mainseg->type == TR_RGT) {
+				toborder = car->_trkPos.toRight;
+				if (pit && (pitInfo.side == TR_RGT)) {
+					toborder = 0.0f;
+				}
+			}
+
+			if (toborder < -car->_dimension_y*0.7) {
+				car->_commitBestLapTime = false;
+				snprintf(buf, BUFSIZE, "%s cut corner, laptime invalidated", car->_name);
+				ReRaceMsgSet(buf, 5);
+			}
+			
+			//TODO: if this happens often in the race, add penalty in pro mode.
+		}
 	}
 	
 	if (car->_skillLevel < 3) {
