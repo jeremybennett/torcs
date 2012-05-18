@@ -184,7 +184,7 @@ ReScreenInit(void)
 				320,
 				400,
 				GFUI_ALIGN_HC_VB,
-				32);
+				42);
 
     rePauseId = GfuiLabelCreateEx(reScreenHandle,
 				  "P A U S E",
