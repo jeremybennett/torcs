@@ -84,7 +84,7 @@ GfuiLabelCreateEx(void *scr, const char *text, float *fgColor, int font, int x, 
 	label->fgColor.setRGBA(fgColor);
 	
 	label->font = gfuiFont[font];
-	width = gfuiFont[font]->getWidth((const char *)text);
+	width = gfuiFont[font]->getWidth((const char *)label->text);
 	label->align = align;
 	switch(align&0xF0) {
 		case 0x00 /* LEFT */:
@@ -182,8 +182,9 @@ gfuiSetLabelText(tGfuiObject *curObject, tGfuiLabel *label, const char *text)
 
 	pw = label->font->getWidth((const char *)label->text);
 	strncpy(label->text, text, label->maxlen);
-	w = label->font->getWidth((const char *)text);
-
+	label->text[label->maxlen] = '\0';
+	w = label->font->getWidth((const char *)label->text);
+	
 	switch(label->align&0xF0) {
 		case 0x00 /* LEFT */:
 			curObject->xmax = label->x + w;
