@@ -140,6 +140,7 @@ GF_TAILQ_HEAD(CarPenaltyHead, struct CarPenalty);
 /** Race Administrative info */
 typedef struct {
     double		bestLapTime;
+    bool commitBestLapTime;		/* If a rule violation happens (e.g. cutting a corner) the laptime is not commited (false) */
     double		deltaBestLapTime;
     double		curLapTime;
     double		lastLapTime;
@@ -162,6 +163,7 @@ typedef struct {
 } tCarRaceInfo;
 /* structure access */
 #define _bestLapTime		race.bestLapTime
+#define _commitBestLapTime race.commitBestLapTime
 #define _deltaBestLapTime	race.deltaBestLapTime
 #define _curLapTime		race.curLapTime
 #define _curTime		race.curTime
