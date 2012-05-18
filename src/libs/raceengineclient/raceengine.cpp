@@ -684,19 +684,27 @@ ReUpdate(void)
 	double t;
 	tRmMovieCapture	*capture;
 	int mode = RM_ASYNC;
-
+	int i;
+	const int MAXSTEPS = 2000;
+	
 	START_PROFILE("ReUpdate");
 	ReInfo->_refreshDisplay = 0;
 	switch (ReInfo->_displayMode) {
 		case RM_DISP_MODE_NORMAL:
 			t = GfTimeClock();
-
+			
+			i = 0;
 			START_PROFILE("ReOneStep*");
-			while (ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) {
+			while ((ReInfo->_reRunning && ((t - ReInfo->_reCurTime) > RCM_MAX_DT_SIMU)) && MAXSTEPS > i++) {
 				ReOneStep(RCM_MAX_DT_SIMU);
 			}
 			STOP_PROFILE("ReOneStep*");
 
+			if (i > MAXSTEPS) {
+				// Cannot keep up with time warp, reset time to avoid lag when running slower again
+				ReInfo->_reCurTime = GfTimeClock();
+			}
+			
 			GfuiDisplay();
 			ReInfo->_reGraphicItf.refresh(ReInfo->s);
 			glutPostRedisplay();	/* Callback -> reDisplay */
@@ -755,8 +763,8 @@ ReTimeMod (void *vcmd)
 			break;
 		case 1:
 			ReInfo->_reTimeMult *= 0.5;
-			if (ReInfo->_reTimeMult < 0.25) {
-				ReInfo->_reTimeMult = 0.25;
+			if (ReInfo->_reTimeMult < 1.0f/128.0f) {
+				ReInfo->_reTimeMult = 1.0f/128.0f;
 			}
 			break;
 		case 2:
