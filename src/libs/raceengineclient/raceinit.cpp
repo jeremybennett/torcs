@@ -367,6 +367,7 @@ initStartingGrid(void)
 	for (i = 0; i < ReInfo->s->_ncars; i++) {
 		car = &(ReInfo->carList[i]);
 		car->_speed_x = speedInit;
+		car->_commitBestLapTime = true;
 		startpos = ReInfo->track->length - (d1 + (i / rows) * d2 + (i % rows) * d3);
 		tr = a + b * ((i % rows) + 1) / (rows + 1);
 		curseg = ReInfo->track->seg;  /* last segment */
