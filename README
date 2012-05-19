@@ -119,6 +119,8 @@ Changes since 1.3.3
 - Timewarp goes now up to 128x real time, to keep the GUI responsive at least on
   every 2000th timestep a frame is rendered, it does not accumulate time anymore,
   so the slowdown commands are more responsive (Bernhard).
+- Fixed ordering issue when two drivers have the same qualifying time, the first runner
+  should now be always on top (Bernhard).
 
 
 
