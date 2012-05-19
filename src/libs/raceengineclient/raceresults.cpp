@@ -272,7 +272,7 @@ ReStoreRaceResults(const char *race)
 			
 				if (
 					(car->_bestLapTime != 0.0) && 
-					((car->_bestLapTime < opponentBestLapTime) || (opponentBestLapTime == 0.0))
+					((round(car->_bestLapTime*1000.0f) < round(opponentBestLapTime*1000.0f)) || (opponentBestLapTime == 0.0))
 				) {
 					/* shift */
 					snprintf(path2, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
@@ -297,7 +297,7 @@ ReStoreRaceResults(const char *race)
 			carName = GfParmGetName(carparam);
 			
 			GfParmSetStr(results, path, RE_ATTR_CAR, carName);
-			GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
+			GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, round(car->_bestLapTime*1000.0f)/1000.0f);
 			GfParmSetStr(results, path, RE_ATTR_MODULE, car->_modName);
 			GfParmSetNum(results, path, RE_ATTR_IDX, NULL, car->_driverIndex);
 			snprintf(path2, BUFSIZE, "%s/%s/%d", race, RM_SECT_POINTS, i + 1);
