@@ -64,5 +64,14 @@ static char *strndup(const char *str, int len)
 #endif
 #endif
 
+#ifdef WIN32
+#include <math.h>
+
+static float round(float x)
+{
+	return floor(x+0.5f);
+}
+#endif 
+
 #endif // _TORCS_PORTABILITY_H_
 

@@ -20,13 +20,6 @@
 #include "trackdesc.h"
 #include "berniw.h"
 
-#ifdef WIN32
-float round(float x)
-{
-	return floor(x+0.5f);
-}
-#endif 
-
 
 TrackSegment::TrackSegment()
 {
