@@ -43,7 +43,9 @@ gfuiScrollPlus(void *idv)
     tGfuiScrollBar	*scrollbar;
     tScrollBarInfo	info;
 
-    object = gfuiGetObject(GfuiScreen, (long)idv);
+	object = (tGfuiObject*) idv;
+
+    //object = gfuiGetObject(GfuiScreen, (long)idv);
     if (object == NULL) {
 	return;
     }
@@ -65,7 +67,8 @@ gfuiScrollMinus(void *idv)
     tGfuiScrollBar	*scrollbar;
     tScrollBarInfo	info;
 
-    object = gfuiGetObject(GfuiScreen, (long)idv);
+	object = (tGfuiObject*) idv;
+    //object = gfuiGetObject(GfuiScreen, (long)idv);
     if (object == NULL) {
 	return;
     }
@@ -134,108 +137,108 @@ GfuiScrollBarCreate(void *scr, int x, int y, int align, int width, int orientati
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x, y, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width, y, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HR_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x, y, GFUI_ALIGN_HR_VC, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width, y, GFUI_ALIGN_HL_VC, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HR_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x, y, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width, y, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VB:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width / 2, y, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width / 2, y, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width / 2, y, GFUI_ALIGN_HR_VC, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width / 2, y, GFUI_ALIGN_HL_VC, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width / 2, y, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x - width / 2, y, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VB:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width, y, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x, y, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width, y, GFUI_ALIGN_HR_VC, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x, y, GFUI_ALIGN_HL_VC, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-right.png", "data/img/arrow-right.png",
 			       "data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
 			       x + width, y, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			       x, y, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	default:
@@ -248,108 +251,108 @@ GfuiScrollBarCreate(void *scr, int x, int y, int align, int width, int orientati
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HR_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width / 2, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width / 2, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HR_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y, GFUI_ALIGN_HR_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width, GFUI_ALIGN_HR_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VB:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width, GFUI_ALIGN_HC_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y, GFUI_ALIGN_HC_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width / 2, GFUI_ALIGN_HC_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width / 2, GFUI_ALIGN_HC_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HC_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y, GFUI_ALIGN_HC_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width, GFUI_ALIGN_HC_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VB:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VC:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y + width / 2, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width / 2, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	case GFUI_ALIGN_HL_VT:
 	    GfuiGrButtonCreate(scr, "data/img/arrow-up.png", "data/img/arrow-up.png",
 			       "data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
 			       x, y, GFUI_ALIGN_HL_VT, 1,
-			       (void*)(object->id), gfuiScrollMinus,
+			       (void*)(object), gfuiScrollMinus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    GfuiGrButtonCreate(scr, "data/img/arrow-down.png", "data/img/arrow-down.png",
 			       "data/img/arrow-down.png", "data/img/arrow-down-pushed.png",
 			       x, y - width, GFUI_ALIGN_HL_VB, 1,
-			       (void*)(object->id), gfuiScrollPlus,
+			       (void*)(object), gfuiScrollPlus,
 			       NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);	    
 	    break;
 	default:
