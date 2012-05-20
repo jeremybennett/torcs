@@ -6098,12 +6098,7 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_openal_alEnable" >&5
 $as_echo "$ac_cv_lib_openal_alEnable" >&6; }
 if test "x$ac_cv_lib_openal_alEnable" = xyes; then :
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBOPENAL 1
-_ACEOF
-
-  LIBS="-lopenal $LIBS"
-
+  LDFLAGS="$LDFLAGS -lopenal"
 else
   as_fn_error $? "Can't find AL/al.h. OpenAL can be found on http://www.openal.org/" "$LINENO" 5
 fi
