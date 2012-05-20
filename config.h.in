@@ -24,9 +24,6 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
-/* Define to 1 if you have the `openal' library (-lopenal). */
-#undef HAVE_LIBOPENAL
-
 /* Define to 1 if you have the `plibjs' library (-lplibjs). */
 #undef HAVE_LIBPLIBJS
 
