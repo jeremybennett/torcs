@@ -26,7 +26,7 @@ prefix = /home/berni/torcs_bin
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
-libdir = ${exec_prefix}/lib/torcs
+libdir = ${exec_prefix}/lib64/torcs
 datarootdir = ${prefix}/share
 datadir = ${prefix}/share/games/torcs
 vardir = ${prefix}/var/games/torcs
@@ -52,10 +52,10 @@ CFLAGSD = -D_SVID_SOURCE -D_BSD_SOURCE -DSHM -DHAVE_CONFIG_H
 CXXFLAGS =  -march=barcelona -O2 -fno-strict-aliasing -Wall -fPIC -fno-strict-aliasing -O2 -DUSE_RANDR_EXT -DGL_GLEXT_PROTOTYPES -Wall -fPIC -fno-strict-aliasing -O2 -DUSE_RANDR_EXT -DGL_GLEXT_PROTOTYPES -march=barcelona -O2 -fno-strict-aliasing ${CFLAGSD}
 CFLAGS   =  -march=barcelona -O2 -fno-strict-aliasing -Wall -fPIC -fno-strict-aliasing -O2 -DUSE_RANDR_EXT -DGL_GLEXT_PROTOTYPES -Wall -fPIC -fno-strict-aliasing -O2 -DUSE_RANDR_EXT -DGL_GLEXT_PROTOTYPES ${CFLAGSD}
 
-#EXT_LIBS = -lpthread -lplibjs -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lopenal -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
-EXT_LIBS = -lplibjs -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lopenal -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
-#LDFLAGS =   -lalut -lvorbisfile -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
-LDFLAGS =  -L${EXPORTBASE}/lib  -lalut -lvorbisfile -L/usr/lib
+#EXT_LIBS = -lpthread -lplibjs -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
+EXT_LIBS = -lplibjs -lplibssgaux -lplibssg -lplibsm -lplibsl -lplibsg -lplibul -lglut -lGLU -lGL -lpng -lz -ldl -lXrandr -lXrender -lXxf86vm -lXmu -lXi -lXt -lSM -lICE -lXext -lX11 -lm 
+#LDFLAGS =   -lopenal -lalut -lvorbisfile -L${EXPORTBASE}/lib -L/usr/lib -L/usr/local/lib
+LDFLAGS =  -L${EXPORTBASE}/lib  -lopenal -lalut -lvorbisfile -L/usr/lib
 
 #INCFLAGS =  -I${EXPORTBASE}/include -I/usr/include -I/usr/local/include
 INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
@@ -63,7 +63,7 @@ INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
 CPP = gcc -E -march=barcelona -O2 -fno-strict-aliasing -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.3.3
+VERSION = 1.3.4-test1
 
 TAR = gtar
 GZIP_ENV = --best
