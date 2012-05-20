@@ -122,7 +122,7 @@ Changes since 1.3.3
 - Fixed ordering issue when two drivers have the same qualifying time, the first runner
   should now be always on top (Bernhard).
 - Added more damage when scratching parallel to the wall (Bernhard).
-- Applied OpenAl linkage patch provided by Paletta (Paletta, Bernhard).
+- Applied OpenAL linkage patch provided by Paletta, see #3517253 (Paletta, Bernhard).
 - Got rid of more gcc 4.6 warnings, just 2 left (Bernhard).
 
 
