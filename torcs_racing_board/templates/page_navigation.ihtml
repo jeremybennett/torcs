@@ -27,6 +27,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/search.php">Search</a>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
 		</td>
@@ -142,6 +149,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/search.php">Search</a>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}gallery/gallery.php">Screenshots</a>
 		</td>
@@ -253,6 +267,13 @@
 		</td>
 		<td>
 			<a href="{ROOTPATH}forum/write.php">New Topic</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/search.php">Search</a>
 		</td>
 	</tr>
 	<tr>
@@ -392,6 +413,13 @@
 		</td>
 		<td>
 			<a href="{ROOTPATH}admin/poll_create.php">Create a Poll</a>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/search.php">Search</a>
 		</td>
 	</tr>
 

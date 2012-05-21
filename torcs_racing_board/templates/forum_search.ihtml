@@ -1,0 +1,58 @@
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>The TORCS Racing Board Forum Search</h3>
+			<p>
+				Here you can search all threads in the forum, the search result consists of the containing threads
+				odered by the date of the last post.
+			</p>
+			<form method="post" action="{PC_SEARCHFORUM}">
+				<p>
+				Search in
+					<select name="searchin" size="1">
+						<option {PC_SELECTED1} value="subject">Subject</option>
+						<option {PC_SELECTED2} value="subjectandbody">Subject and body</option>
+					</select>
+				<br/>
+				<input type="text" name="search" size="80" maxlength="80" value="{PC_SEARCH}"/>
+				<br/>
+				<input type="submit" name="search_submit" value="Search">
+				</p>
+			</form>
+			<!-- BEGIN number_of_results -->
+			<p>
+				Number of results: {PC_RESULTS}
+			</p>
+			<!-- END number_of_results -->
+		</td>
+	</tr>
+</table>
+
+
+<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left" style="width:340px;">Topic</th>
+		<th class="filledlist" align="left">Author</th>
+		<th class="filledlist" align="left" title="Replies">R</th>
+		<th class="filledlist" align="left">Last Post</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR_POLL}">
+		<td class="filledlist" align="left" valign="top">
+			<a href="{ROOTPATH}forum/showthread.php?topicid={PC_TOPIC_ID}">{PC_TOPIC}</a>
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_AUTHOR_ID}">{PC_AUTHOR}</a>
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_REPLIES}
+		</td>
+		<td class="filledlist" align="left" valign="top">
+			{PC_LASTPOST}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+
+
