@@ -661,6 +661,10 @@
 	$result = mysql_query($sql);
 	$sql = "ALTER TABLE $tablename ADD INDEX ( `author` )";
 	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD FULLTEXT `subjecttext` (`subject`,`text`)";
+	$result = mysql_query($sql);
+	$sql = "ALTER TABLE $tablename ADD FULLTEXT `subject` (`subject`)";
+	$result = mysql_query($sql);
 
 	$tablename = $db_prefix . TBL_FORUM_TOPICDATA;
 	$sql = "ALTER TABLE $tablename ADD INDEX ( `lastpost` )";
