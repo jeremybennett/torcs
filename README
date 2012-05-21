@@ -101,6 +101,11 @@ Have fun, bye
 Bernhard.
 
 
+Changes since 1.3.4-test1
+-------------------------
+- Added search facility to TRB (Bernhard).
+
+
 Changes since 1.3.3
 -------------------
 - Fixed wrong map rendering when window was scaled/not fully filled, reported by
