@@ -4,7 +4,9 @@
 			<h3>The TORCS Racing Board Forum Search</h3>
 			<p>
 				Here you can search all threads in the forum, the search result consists of the containing threads
-				odered by the date of the last post.
+				ordered by the date of the last post. The search supports "+" (required for match), "-" (must not be present)
+				and "*" as wildcard. Examples: "+racing -problem +rul*" (racing AND NOT problem AND rul*), "racing problem"
+				(racing OR problem). The implementation uses MySQL fulltext search boolean mode.
 			</p>
 			<form method="post" action="{PC_SEARCHFORUM}">
 				<p>
@@ -14,9 +16,9 @@
 						<option {PC_SELECTED2} value="subjectandbody">Subject and body</option>
 					</select>
 				<br/>
-				<input type="text" name="search" size="80" maxlength="80" value="{PC_SEARCH}"/>
+				<input style="margin-top:5px;width:620px" type="text" name="search" size="80" maxlength="80" value="{PC_SEARCH}"/>
 				<br/>
-				<input type="submit" name="search_submit" value="Search">
+				<input style="margin-top:5px;" type="submit" name="search_submit" value="Search">
 				</p>
 			</form>
 			<!-- BEGIN number_of_results -->
