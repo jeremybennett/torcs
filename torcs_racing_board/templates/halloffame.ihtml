@@ -1,0 +1,39 @@
+
+<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>Hall of Fame</h3>
+			<p>
+				The champions. Get your team and here.
+			</p>
+		</td>
+	</tr>
+</table>
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>TRB Endurance Team Champions</h3>
+			<p>
+			<!-- BEGIN teamrow -->
+				<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENTID}">{PC_EVENTNAME}</a> won by
+				<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAMID}">{PC_TEAMNAME}</a>
+				({PC_POINTS} points)<br/>
+			<!-- END teamrow -->
+			<p>
+		</td>
+	</tr>
+</table>
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+			<h3>TRB Endurance Driver Champions</h3>
+			<p>
+			<!-- BEGIN driverrow -->
+				<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENTID}">{PC_EVENTNAME}</a> won by
+				<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAMID}">{PC_DRIVERNAME}</a>
+				({PC_POINTS} points)<br/>
+			<!-- END driverrow -->
+			<p>
+		</td>
+	</tr>
+</table>

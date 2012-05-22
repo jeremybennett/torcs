@@ -18,6 +18,11 @@
 	</tr>
 	<tr>
 		<td colspan="2">
+			<a href="{ROOTPATH}halloffame/halloffame.php">Hall of Fame</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
 			<a href="{ROOTPATH}index.php?page=faq">FAQ</a>
 		</td>
 	</tr>
@@ -129,6 +134,11 @@
 	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}halloffame/halloffame.php">Hall of Fame</a>
 		</td>
 	</tr>
 	<tr>
@@ -250,6 +260,11 @@
 	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}halloffame/halloffame.php">Hall of Fame</a>
 		</td>
 	</tr>
 	<tr>
@@ -376,11 +391,14 @@
 			<a href="{ROOTPATH}index.php">Home</a>
 		</td>
 	</tr>
-
-
 	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}news/news.php">News</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<a href="{ROOTPATH}halloffame/halloffame.php">Hall of Fame</a>
 		</td>
 	</tr>
 	<tr>
