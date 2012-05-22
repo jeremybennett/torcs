@@ -4,7 +4,7 @@
 		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
 			<h3>Hall of Fame</h3>
 			<p>
-				The champions. Get your team and here.
+				The champions. Get your team and drivers here.
 			</p>
 		</td>
 	</tr>
@@ -12,7 +12,7 @@
 <table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
 	<tr>
 		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
-			<h3>TRB Endurance Team Champions</h3>
+			<h3>TRB Team Champions</h3>
 			<p>
 			<!-- BEGIN teamrow -->
 				<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENTID}">{PC_EVENTNAME}</a> won by
@@ -26,7 +26,7 @@
 <table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
 	<tr>
 		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
-			<h3>TRB Endurance Driver Champions</h3>
+			<h3>TRB Driver Champions</h3>
 			<p>
 			<!-- BEGIN driverrow -->
 				<a href="{ROOTPATH}events/event_view.php?vieweventid={PC_EVENTID}">{PC_EVENTNAME}</a> won by
