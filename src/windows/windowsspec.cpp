@@ -447,6 +447,15 @@ static int windowsModUnloadList(tModList **modlist)
 		nextMod = curMod->next;
 		GfOut("<<< %s unloaded <<<\n", curMod->sopath);
 		FreeLibrary(curMod->handle);
+
+		int i;
+		for (i = 0; i < MAX_MOD_ITF; i++) {
+			if (curMod->modInfo[i].name) {
+				free(curMod->modInfo[i].name);
+				free(curMod->modInfo[i].desc);
+			}
+		}
+
 		free(curMod->sopath);
 		free(curMod);
 	} while (curMod != *modlist);
