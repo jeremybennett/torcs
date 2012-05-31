@@ -40,7 +40,7 @@ Complex::~Complex() {
   if (count >= 2) delete [] root;
   for (int i = 0; i < count; ++i) delete leaves[i].poly;
   delete [] leaves;
-  /* if (free_base) delete [] (void *)base.getPointer(); */  /* warning: deleting `void*' is undefined */
+  if (free_base) delete [] base.getPointer();
 }
 
 BBox Complex::bbox(const Transform& t) const {
