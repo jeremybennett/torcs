@@ -36,13 +36,13 @@
 class VertexBase {
 public:
   VertexBase() : base(0) {}
-  VertexBase(const void *ptr) : base(ptr) {}
+  VertexBase(const Point *ptr) : base(ptr) {}
   const void *getPointer() const { return base; }
   
   const Point& operator[](int i) const { return ((const Point *)base)[i]; }
 
 private:
-  const void *base;
+  const Point *base;
 };
 
 #endif

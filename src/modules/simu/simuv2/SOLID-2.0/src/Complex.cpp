@@ -53,7 +53,7 @@ BBox Complex::bbox(const Transform& t) const {
   return bb;
 }
 
-void Complex::changeBase(const void *ptr) {
+void Complex::changeBase(const Point *ptr) {
   base = ptr;
   for (int i = 0; i < count; ++i) leaves[i].fitBBox();
   for (int j = count-1; j;) ((BBoxInternal *)root)[--j].refitBBox(); 

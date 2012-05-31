@@ -130,7 +130,7 @@ void dtVertex(DtScalar x, DtScalar y, DtScalar z) {
   indexBuf.push_back(i);
 }
 
-void dtVertexBase(const void *base) { 
+void dtVertexBase(const Point *base) { 
   currentComplex->setBase(base); 
 }
 
@@ -176,7 +176,7 @@ void dtDeleteShape(DtShapeRef shape) {
   delete (Shape *)shape; 
 }
 
-void dtChangeVertexBase(DtShapeRef shape, const void *base) { 
+void dtChangeVertexBase(DtShapeRef shape, const Point *base) { 
   if (((Shape *)shape)->getType() == COMPLEX)
     ((Complex *)shape)->changeBase(base);
   for (ObjectList::const_iterator i = objectList.begin(); 

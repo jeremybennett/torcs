@@ -53,10 +53,10 @@ public:
   BBox bbox(const Transform& t) const;
 
   const VertexBase& getBase() const { return base; } 
-  void setBase(const void *ptr, bool free = false) { 
+  void setBase(const Point *ptr, bool free = false) { 
     base = ptr; free_base = free; 
   } 
-  void changeBase(const void *ptr);
+  void changeBase(const Point *ptr);
   void proceed() { prev_base = base; }
   void swapBase() { swap(base, prev_base); } 
 
