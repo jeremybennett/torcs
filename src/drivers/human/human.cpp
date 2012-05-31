@@ -202,9 +202,6 @@ InitFuncPt(int index, void *pt)
  *
  */
 
-#define MAXNAMELEN 100
-
-static char names[10][MAXNAMELEN];
 
 extern "C" int
 human(tModInfo *modInfo)
@@ -227,8 +224,8 @@ human(tModInfo *modInfo)
 			if (strlen(driver) == 0) {
 				break;
 			}
-			strncpy(names[i], driver, MAXNAMELEN);
-			modInfo->name    = names[i];	/* name of the module (short) */
+
+			modInfo->name    = strdup(driver);	/* name of the module (short) */
 			modInfo->desc    = strdup("Joystick controlable driver");	/* description of the module (can be long) */
 			modInfo->fctInit = InitFuncPt;	/* init function */
 			modInfo->gfId    = ROB_IDENT;	/* supported framework version */
