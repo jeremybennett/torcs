@@ -42,7 +42,7 @@
 
 typedef struct
 {
-	const char *carName;
+	char *carName;
 	char	*modName;
 	int		drvIdx;
 	int		points;
@@ -161,7 +161,8 @@ ReUpdateStandings(void)
 				break;
 			}
 			/* Swap with preceeding */
-			carName = standings[j].carName;
+			char* tmpCarName;
+			tmpCarName = standings[j].carName;
 			modName = standings[j].modName;
 			drvIdx  = standings[j].drvIdx;
 			points  = standings[j].points;
@@ -171,7 +172,7 @@ ReUpdateStandings(void)
 			standings[j].drvIdx  = standings[j - 1].drvIdx;
 			standings[j].points  = standings[j - 1].points;
 		
-			standings[j - 1].carName = carName;
+			standings[j - 1].carName = tmpCarName;
 			standings[j - 1].modName = modName;
 			standings[j - 1].drvIdx  = drvIdx;
 			standings[j - 1].points  = points;
@@ -184,7 +185,7 @@ ReUpdateStandings(void)
 	for (i = 0; i < curDrv; i++) {
 		snprintf(path, BUFSIZE, "%s/%d", RE_SECT_STANDINGS, i + 1);
 		GfParmSetStr(results, path, RE_ATTR_NAME, standings[i].carName);
-		//free(standings[i].carName);
+		free(standings[i].carName);
 		GfParmSetStr(results, path, RE_ATTR_MODULE, standings[i].modName);
 		free(standings[i].modName);
 		GfParmSetNum(results, path, RE_ATTR_IDX, NULL, standings[i].drvIdx);
