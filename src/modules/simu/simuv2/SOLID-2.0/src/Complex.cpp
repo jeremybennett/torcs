@@ -40,7 +40,10 @@ Complex::~Complex() {
   if (count >= 2) delete [] root;
   for (int i = 0; i < count; ++i) delete leaves[i].poly;
   delete [] leaves;
+#if (defined(_MSC_VER) && _MSC_VER < 1500)
+#else
   if (free_base) delete [] base.getPointer();
+#endif
 }
 
 BBox Complex::bbox(const Transform& t) const {
