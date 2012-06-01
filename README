@@ -117,6 +117,9 @@ Changes since 1.3.4-test1
   (useful for valgrind runs to get symbol information instead of ??)
   (Bernhard).
 - Fixed uninitialized variable in sound code (Bernhard).
+- Fixed a bug in MofFreeInfoList, was not significant, because the function has
+  never been used so far (Bernhard).
+- Fixed small memory leaks in driverselect (Bernhard).
 
 
 
