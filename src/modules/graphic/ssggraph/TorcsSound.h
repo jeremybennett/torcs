@@ -61,7 +61,9 @@ protected:
 	bool loop; ///< Whether it's a looping sound
 public:
     /// Consruct a sound.
-	TorcsSound(int flags = (ACTIVE_VOLUME|ACTIVE_PITCH))
+	TorcsSound(int flags = (ACTIVE_VOLUME|ACTIVE_PITCH)):
+		volume(0.0f),
+		pitch(0.0f)
 	{
 		this->flags = flags;
 		

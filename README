@@ -111,11 +111,12 @@ Changes since 1.3.4-test1
 - Fixed tiny memory leak (carname for results not released (Bernhard).
 - Adopted human.cpp to work with mem leak fixes (because of releasing
   memory now human.cpp would crash) (Bernhard).
-- Fixed small memory leak in solid, just significant for tracks with
-  pit walls (Bernhard).
-- Added command line option "-k" (keep) to supress the execution of dlclose
+- Fixed various small memory leaks in solid, just significant for 
+  tracks with pit walls (Bernhard).
+- Added command line option "-k" (keep) to suppress the execution of dlclose
   (useful for valgrind runs to get symbol information instead of ??)
   (Bernhard).
+- Fixed uninitialized variable in sound code (Bernhard).
 
 
 

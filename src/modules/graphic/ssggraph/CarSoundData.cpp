@@ -28,14 +28,20 @@ CarSoundData::CarSoundData(int id, SoundInterface* sound_interface)
     engine.f = 1.0f;
     engine.lp = 1.0f;
     smooth_accel = 0.0f;
+	base_frequency = 0.0f;
     drag_collision.a = 0.0f;
     drag_collision.f = 0.0f;
+    drag_collision.lp = 0.0f;	
     pre_axle = 0.0f;
     axle.a = 0.0f;
     axle.f = 0.0f;
+	axle.lp = 0.0f;
     turbo.a = 0.0f;
     turbo.f = 0.0f;
+	turbo.lp = 0.0f;
     engine_backfire.a=0.0f;
+    engine_backfire.f=0.0f;
+    engine_backfire.lp=0.0f;	
     prev_gear = 0;
     gear_changing = false;
     bottom_crash = false;
@@ -52,13 +58,27 @@ CarSoundData::CarSoundData(int id, SoundInterface* sound_interface)
         }
         wheel[i].skid.a = 0.0f;
         wheel[i].skid.f = 1.0f;
+		wheel[i].skid.lp = 0.0f;
     }
     sgVec3 zeroes = {0.0f, 0.0f, 0.0f};
     setCarPosition(zeroes);
     setCarSpeed(zeroes);
     setListenerPosition(zeroes);
+	engine_sound = NULL;
     
     attenuation = 0.0f;
+    grass_skid.a=0.0f;
+    grass_skid.f=0.0f;
+    grass_skid.lp=0.0f;	
+    grass.a=0.0f;
+    grass.f=0.0f;
+    grass.lp=0.0f;
+    road.a=0.0f;
+    road.f=0.0f;
+    road.lp=0.0f;
+    skid_metal.a=0.0f;
+    skid_metal.f=0.0f;
+    skid_metal.lp=0.0f;
 }
 void CarSoundData::setEngineSound (TorcsSound* engine_sound, float rpm_scale)
 {
