@@ -139,7 +139,6 @@ linuxModInfo(unsigned int /* gfid */, char *sopath, tModList **modlist)
 	tModList *curMod;
 	char dname[256];	/* name of the funtions */
 	char *lastSlash;
-	int i;
 	tModList *cMod;
 	int prio;
 	
@@ -159,12 +158,6 @@ linuxModInfo(unsigned int /* gfid */, char *sopath, tModList **modlist)
 			/* DLL loaded, init function exists, call it... */
 			if (fModInfo(curMod->modInfo) == 0) {
 				GfOut("Request Info for %s\n", sopath);
-				for (i = 0; i < MAX_MOD_ITF; i++) {
-					if (curMod->modInfo[i].name) {
-						curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
-						curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
-					}
-				}
 				curMod->handle = NULL;
 				curMod->sopath = strdup(sopath);
 				if (*modlist == NULL) {
@@ -342,7 +335,6 @@ linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlis
 	struct dirent *ep;		/* */
 	int modnb;		/* number on loaded modules */
 	tModList *curMod;
-	int i;
 	tModList *cMod;
 	int prio;
 
@@ -372,12 +364,6 @@ linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlis
 						/* DLL loaded, init function exists, call it... */
 						if (fModInfo(curMod->modInfo) == 0) {
 							modnb++;
-							for (i = 0; i < MAX_MOD_ITF; i++) {
-								if (curMod->modInfo[i].name) {
-									curMod->modInfo[i].name = strdup(curMod->modInfo[i].name);
-									curMod->modInfo[i].desc = strdup(curMod->modInfo[i].desc);
-								}
-							}
 							curMod->handle = NULL;
 							curMod->sopath = strdup(sopath);
 
@@ -529,6 +515,7 @@ linuxModFreeInfoList(tModList **modlist)
 	nextMod = curMod->next;
 	do {
 		curMod = nextMod;
+		nextMod = curMod->next;
 		for (i = 0; i < MAX_MOD_ITF; i++) {
 			if (curMod->modInfo[i].name) {
 				free(curMod->modInfo[i].name);

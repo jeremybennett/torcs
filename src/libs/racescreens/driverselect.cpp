@@ -376,8 +376,10 @@ RmDriversSelect(void *vs)
 				}
 			}
 		} while (curmod != list);
+		
+		GfModFreeInfoList(&list);
 	}
-
+	
 	nbSelectedDrivers = 0;
 	nbMaxSelectedDrivers = (int)GfParmGetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_MAXNUM, NULL, 0);
 	nCars = GfParmGetEltNb(ds->param, RM_SECT_DRIVERS);
