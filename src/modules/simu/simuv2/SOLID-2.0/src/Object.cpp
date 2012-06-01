@@ -88,11 +88,11 @@ bool intersectComplexComplex(const Shape& a, const Shape& b,
 }
 
 IntersectTable *intersectInitialize() {
-  IntersectTable *p = new IntersectTable;
-  p->addEntry(CONVEX, CONVEX, intersectConvexConvex);
-  p->addEntry(COMPLEX, CONVEX, intersectComplexConvex);
-  p->addEntry(COMPLEX, COMPLEX, intersectComplexComplex);
-  return p;
+  static IntersectTable p;
+  p.addEntry(CONVEX, CONVEX, intersectConvexConvex);
+  p.addEntry(COMPLEX, CONVEX, intersectComplexConvex);
+  p.addEntry(COMPLEX, COMPLEX, intersectComplexComplex);
+  return &p;
 }
 
 bool intersect(const Object& a, const Object& b, Vector& v) {
@@ -121,11 +121,11 @@ bool common_pointComplexComplex(const Shape& a, const Shape& b,
 }
 
 Common_pointTable *common_pointInitialize() {
-  Common_pointTable *p = new Common_pointTable;
-  p->addEntry(CONVEX, CONVEX, common_pointConvexConvex);
-  p->addEntry(COMPLEX, CONVEX, common_pointComplexConvex);
-  p->addEntry(COMPLEX, COMPLEX, common_pointComplexComplex);
-  return p;
+  static Common_pointTable p;
+  p.addEntry(CONVEX, CONVEX, common_pointConvexConvex);
+  p.addEntry(COMPLEX, CONVEX, common_pointComplexConvex);
+  p.addEntry(COMPLEX, COMPLEX, common_pointComplexComplex);
+  return &p;
 }
 
 bool common_point(const Object& a, const Object& b, Vector& v, Point& pa, Point& pb) {

@@ -34,6 +34,8 @@
 
 // Keep handle of ssggraph, it makes trouble when loaded multiple times dynamically
 static void * ssgHandle = NULL;
+bool bKeepModules = false;
+
 
 /*
  * Function
@@ -476,12 +478,11 @@ linuxModUnloadList(tModList **modlist)
 			fModShut();
 		}
 
-		// Comment out for valgrind runs, be aware that the driving with the keyboard does
-		// just work to first time this way.
-		
 		// Special case, hold ssg
 		if (curMod->handle != ssgHandle) {
-			dlclose(curMod->handle);
+			if (!bKeepModules) {	// specify "-k" option to keep modules for valgrind runs
+				dlclose(curMod->handle);
+			}
 		}
 
 		int i;

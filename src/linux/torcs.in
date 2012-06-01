@@ -83,6 +83,7 @@ EOF
 	    echo "   -e  display the commands to issue when you want to run under gdb"
 		echo "   -s  disable multitexturing, important for older graphics cards"
 		echo "   -r  run race in command line mode, see FAQ for details"
+		echo "   -k  suppress dlclose for modules (useful to get symbol information with valgrind)"
 	    ;;
 
 	# Normal run
