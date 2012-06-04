@@ -210,7 +210,7 @@ reRegisterRaceman(tFList *racemanCur)
 	
 	snprintf(buf, BUFSIZE, "%sconfig/raceman/%s", GetLocalDir(), racemanCur->name);
 	racemanCur->userData = GfParmReadFile(buf, GFPARM_RMODE_STD);
-	racemanCur->dispName = GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_NAME, 0);
+	racemanCur->dispName = strndup(GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_NAME, 0), 1024);
 }
 
 /* Sort race managers by priority */
