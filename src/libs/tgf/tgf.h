@@ -235,7 +235,7 @@ typedef struct FList
 	struct FList *next;		/**< Next entry */
 	struct FList *prev;		/**< Previous entry */
 	char *name;				/**< File name */
-	const char *dispName;	/**< Name to display on screen */
+	char *dispName;			/**< Name to display on screen */
 	void *userData;			/**< User data */
 } tFList;
 

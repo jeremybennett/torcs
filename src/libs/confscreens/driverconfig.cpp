@@ -216,7 +216,7 @@ GenCarsInfo(void)
 			GF_TAILQ_INSERT_TAIL(&CatsInfoList, curCat, link);
 		} while (curFile != files);
 	}
-	GfDirFreeList(files, NULL, true, true);
+	GfDirFreeList(files, NULL, true, false);
 	
 	files = GfDirGetList("cars");
 	curFile = files;
@@ -246,7 +246,7 @@ GenCarsInfo(void)
 			GF_TAILQ_INSERT_TAIL(&(curCat->CarsInfoList), curCar, link);
 		} while (curFile != files);
 	}
-	GfDirFreeList(files, NULL, true, true);
+	GfDirFreeList(files, NULL, true, false);
 	
 	/* Remove the empty categories */
 	curCat = GF_TAILQ_FIRST(&CatsInfoList);

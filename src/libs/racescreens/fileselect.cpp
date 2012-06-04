@@ -56,7 +56,7 @@ rmSelect(void * /* dummy */ )
 {
 	if (FileList) {
 		rmFs->select(FileSelected->name);
-		GfDirFreeList(FileList, NULL);
+		GfDirFreeList(FileList, NULL, true, false);
 		FileList = NULL;
 	} else {
 		rmFs->select(NULL);
@@ -67,7 +67,7 @@ static void
 rmDeactivate(void * /* dummy */ )
 {
 	if (FileList) {
-		GfDirFreeList(FileList, NULL);
+		GfDirFreeList(FileList, NULL, true, false);
 		FileList = NULL;
 	}
 	GfuiScreenActivate(rmFs->prevScreen);

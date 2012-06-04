@@ -73,8 +73,6 @@ tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
 */
 void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, bool freedispname)
 {
-	//tFList *cur;
-
 	if (list) {
 		// The list contains at least one element, checked above.
 		tFList *rl = list;
@@ -84,37 +82,16 @@ void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, 
 			if ((freeUserData) && (tmp->userData)) {
 				freeUserData(tmp->userData);
 			}
-			if (freename) {
+			if (freename && tmp->name != NULL) {
 				freez(tmp->name);
 			}
-			/*if (freedispname) {
+			if (freedispname && tmp->dispName != NULL) {
 				freez(tmp->dispName);
-			}*/
+			}
 			free(tmp);
 		} while (rl != list);
 	}
 
 	list = NULL;
-
-
-/*
-	while (list) {
-		if (list->next == list) {
-			if ((freeUserData) && (list->userData)) {
-				freeUserData(list->userData);
-			}
-			free(list);
-			list = NULL;
-		} else {
-			cur = list->next;
-			list->next = cur->next;
-			cur->next->prev = list;
-			if ((freeUserData) && (cur->userData)) {
-				freeUserData(cur->userData);
-			}
-			free(cur);
-		}
-	}
-*/
 }
 
