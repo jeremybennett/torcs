@@ -37,7 +37,28 @@ Command line arguments:
 * -s disable multitexturing, important for older graphics cards
 * -m use X mouse cursor and do not hide it during races
 * -r pathtoraceconfigfile, run race from command line only, for testing and AI
-     training, see FAQ for details 
+     training, see FAQ for details
+* -k (keep) suppress calls to dlclose to keep modules loaded (for valgrind runs,
+     to avoid ?? in the call stack)
+
+
+Running under Valgrind with Linux
+---------------------------------
+To find memory leaks run first:
+./torcs -g
+
+You will find the logfile valgrind.log in the .torcs directory. If you have
+?? in the call stack, you can run TORCS with the -k option to avoid unloading
+the modules:
+./torcs -g -k
+
+You should use -k just to investigate the ?? in the call stacks, because the
+suppression of dlclose can hide problems related with module release and cause
+problems because modules are just recycled but not reloaded.
+
+Of course you can use this with the console mode as well, e.g.:
+./torcs -g -r ~/.torcs/config/raceman/champ.xml
+./torcs -g -k -r ~/.torcs/config/raceman/dtmrace.xml
 
 
 Windows Installation from Source (Release version)
@@ -120,8 +141,8 @@ Changes since 1.3.4-test1
 - Fixed a bug in MofFreeInfoList, was not significant, because the function has
   never been used so far (Bernhard).
 - Fixed small memory leaks in driverselect (Bernhard).
-
-
+- Fixed small memory leak regarding directory.cpp (Bernhard).
+- Fixed small memory leak in trackselect.cpp (Bernhard).
 
 
 Changes since 1.3.3
@@ -156,16 +177,23 @@ TODO for 1.3.4
 - Bugtracking
 - check for sprintf/fscanf/strcpy/strndup, etc (ongoing)
   (ensure 0 termination of strings -> introduce string class?)
+- API to change setup during the practice mode.
+- Timed races (e.g. 24h).
+
 
 TODO for 1.4.0
 --------------
 - Robot interface adoptions, rules
+- More Rules.
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
 - Update OpenAL to 1.1, fix use of deprecated stuff.
 - Car asignment for human players.
 - Sound (alut depricated/scheduling for lots of cars)
 - Review and eventually apply mac os x build
+- Make it possible for a robot module to carry any arbitrary number of
+  drivers (instead of static 10).
+- Pace car and trucks to remove wrecks (remove "virtual" crane).
 
 
 TODO for Compliance
@@ -228,9 +256,6 @@ TODO LATER
 - Networking (2.0).
 - Rework the whole AC file loaders and state management (most of the remaining
   memory leaks).
-- Replace vector/matrix oprations with an efficient implementation (-> use
-  SIMD, e.g. enhanced version of v2/v3d.h with SIMD alternatives if compilers
-  are not more clever at this time (currently they suck on useful vectorizing)).
 - SMP simulaton core (for myself).
 - Replays.
 - Setup editor (add a function to the robot interface to ask the robot
@@ -245,14 +270,10 @@ TODO LATER
 - so/dll with libtool, common code?
 - 3d-grass.
 - Dynamic sky.
-- Pace car and trucks to remove wrecks (remove "virtual" crane).
-- More Rules.
 - TRB integration.
 - Fix/create new simu/switch to updated/new simu.
 - (clean up simuv3 conflicts)
 - Show just fitting resolutions for fullscreen/change for windowed mode.
-- Make it possible for a robot module to carry any arbitrary number of
-  drivers (instead of static 10).
 - Solve problem of wheels cutting the car body (stencil?).
 - Nicer Tires, a bit more round, better lighting.
 - Separate components more clean (e.g. ssgInit should go back to
@@ -264,9 +285,6 @@ TODO LATER
   fails if special characters are in the path).
 - Avoid cameras cutting the landscape.
 - Rework models (holes, just single sided polygons for culling, etc.)
-- Check (and fix if neccessary) screenshots on Windows, still wrong gamma?
-- API to change setup during the practice mode.
-- Timed races (e.g. 24h).
 - Allow more mouse events /suggested by Frieder -> mouse wheel for gear
   switching).
 - Start position marks on track (same technique like fake shadow, skids).
@@ -274,9 +292,7 @@ TODO LATER
 - Better transparency for track objects.
 - More driving aids, switch to AI and back.
 - localization (e.g English, French, German, ...).
-- add compatibility lib for strndup etc. on win32.
 - New GUI.
-- driving/races in reverse track direction.
 - Check for consistency of simuv2/simuv3.
 - verify that simulation obeys conservation of momentum and energy.
 - optimise simuv3.
