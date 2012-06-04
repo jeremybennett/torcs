@@ -59,7 +59,7 @@ static void rmtsActivate(void * /* dummy */)
 
 static void rmtsFreeLists(void *vl)
 {
-	GfDirFreeList((tFList*)(((tFList*)vl)->userData), NULL, true, true);
+	GfDirFreeList((tFList*)vl, NULL, true, true);
 }
 
 
