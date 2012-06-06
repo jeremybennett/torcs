@@ -47,7 +47,9 @@ class grManagedState : public ssgSimpleState {
 */
 		virtual ~grManagedState() {
 			//GfError("delete this: %0xd, #: %d\n", this, --ms);
-			grRemoveState(this->getTexture()->getFilename());
+			if (this->getTexture() != NULL) {
+				grRemoveState(this->getTexture()->getFilename());
+			}
 		}
 
 		virtual void setTexture(ssgTexture *tex) {
