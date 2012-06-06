@@ -428,6 +428,7 @@ shutdownCars(void)
 		for (i = 0; i < grNbCars; i++) {
 			ssgDeRefDelete(grCarInfo[i].envSelector);
 			ssgDeRefDelete(grCarInfo[i].shadowBase);
+			ssgDeRefDelete(grCarInfo[i].wheelTexture);
 			if (grCarInfo[i].driverSelectorinsg == false) {
 				delete grCarInfo[i].driverSelector;
 			}

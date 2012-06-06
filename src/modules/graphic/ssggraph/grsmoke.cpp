@@ -109,6 +109,8 @@ void grInitSmoke(int index)
 			mst->disable(GL_CULL_FACE);
 			mst->setTranslucent();
 			mst->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+			// Reference material to keep it,must be delete manually later
+			mst->ref();
 		}
     }
 
@@ -121,6 +123,8 @@ void grInitSmoke(int index)
 			mstf0->disable(GL_CULL_FACE);
 			mstf0->setTranslucent();
 			mstf0->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+			// Reference material to keep it,must be delete manually later
+			mstf0->ref();
 		}
     }
 
@@ -133,6 +137,8 @@ void grInitSmoke(int index)
 			mstf1->disable(GL_CULL_FACE);
 			mstf1->setTranslucent();
 			mstf1->setColourMaterial(GL_AMBIENT_AND_DIFFUSE);
+			// Reference material to keep it,must be delete manually later
+			mstf1->ref();
 		}
     }
 }
@@ -452,6 +458,21 @@ void grShutdownSmoke ()
 		timeSmoke = NULL;
 		timeFire=NULL;
     }
+
+	if (mst != NULL) {
+		ssgDeRefDelete(mst);
+		mst = NULL;
+	}
+
+	if (mstf0 != NULL) {
+		ssgDeRefDelete(mstf0);
+		mstf0 = NULL;
+	}
+
+	if (mstf1 != NULL) {
+		ssgDeRefDelete(mstf1);
+		mstf1 = NULL;
+	}
 }
 
 void ssgVtxTableSmoke::copy_from ( ssgVtxTableSmoke *src, int clone_flags )

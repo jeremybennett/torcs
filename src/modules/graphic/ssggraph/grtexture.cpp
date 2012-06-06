@@ -24,6 +24,8 @@
 
 #include "grtexture.h"
 
+//int grManagedState::ms = 0;
+
 bool doMipMap(const char *tfname, int mipmap)
 {
 	char *buf = (char *) malloc(strlen(tfname)+1);

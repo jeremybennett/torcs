@@ -31,6 +31,7 @@
 #include "grloadsgi.h"
 
 bool doMipMap(const char *tfname, int mipmap);
+void grRemoveState(char* img);
 
 
 // This state does currently not manage anything!
@@ -38,11 +39,24 @@ bool doMipMap(const char *tfname, int mipmap);
 class grManagedState : public ssgSimpleState {
 	public:
 		
+		/*static int ms;
+
+		grManagedState() {
+			GfError("Created state: %0xd, #: %d\n", this, ++ms);
+		}
+*/
+		virtual ~grManagedState() {
+			//GfError("delete this: %0xd, #: %d\n", this, --ms);
+			grRemoveState(this->getTexture()->getFilename());
+		}
+
 		virtual void setTexture(ssgTexture *tex) {
+			//printf("tex: %s\n", tex->getFilename());
 			ssgSimpleState::setTexture(tex);
 		}
 
 		virtual void setTexture(const char *fname, int _wrapu = TRUE, int _wrapv = TRUE, int _mipmap = TRUE) {
+			//printf("texw: %s\n", fname);
 			_mipmap = doMipMap(fname, _mipmap);
 			ssgSimpleState::setTexture(fname, _wrapu, _wrapv, _mipmap);
 		}
@@ -52,7 +66,6 @@ class grManagedState : public ssgSimpleState {
 			ssgSimpleState::setTexture(tex);
 		}
 };
-
 
 // Managed state factory.
 inline grManagedState* grStateFactory(void) { return new grManagedState(); }

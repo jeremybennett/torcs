@@ -56,12 +56,6 @@ int grWrldZ;
 int grWrldMaxSize;
 tTrack 	 *grTrack;
 
-int    BackgroundType = 0;
-GLuint BackgroundList = 0;
-GLuint BackgroundTex = 0;
-GLuint BackgroundList2;
-GLuint BackgroundTex2;
-
 ssgStateSelector	*grEnvSelector;
 grMultiTexState	*grEnvState=NULL;
 grMultiTexState	*grEnvShadowState=NULL;
@@ -70,6 +64,7 @@ grMultiTexState	*grEnvShadowStateOnCars=NULL;
 #define BG_DIST		1.0
 
 ssgRoot *TheScene = 0;
+static ssgRoot *TheBackground = 0;
 
 /* TheScene kid order */
 ssgBranch *SunAnchor = 0;
@@ -268,19 +263,9 @@ void grShutdownScene(void)
 		TheScene = 0;
 	}
 
-	if (BackgroundTex) {
-		glDeleteTextures(1, &BackgroundTex);
-		BackgroundTex = 0;
-	}
-
-	if (BackgroundList) {
-		glDeleteLists(BackgroundList, 1);
-		BackgroundList = 0;
-	}
-
-	if (BackgroundType > 2) {
-		glDeleteTextures(1, &BackgroundTex2);
-		glDeleteLists(BackgroundList2, 1);
+	if (TheBackground) {
+		delete TheBackground;
+		TheBackground = 0;
 	}
 
 	if (grEnvState != NULL) {
@@ -302,9 +287,6 @@ void grShutdownScene(void)
 
 	options.endLoad();
 }
-
-
-static ssgRoot *TheBackground;
 
 
 static void
@@ -336,7 +318,6 @@ initBackground(void)
 
     graphic = &grTrack->graphic;
     glClearColor(graphic->bgColor[0], graphic->bgColor[1], graphic->bgColor[2], 1.0);
-    BackgroundTex = BackgroundTex2 = 0;
 
     TheBackground = new ssgRoot();
     clr[0] = clr[1] = clr[2] = 1.0;
@@ -346,8 +327,7 @@ initBackground(void)
 
     z1 = -0.5;
     z2 = 1.0;
-    BackgroundType = graphic->bgtype;
-    switch (BackgroundType) {
+    switch (graphic->bgtype) {
     case 0:
 	bg_vtx = new ssgVertexArray(NB_BG_FACES + 1);
 	bg_tex = new ssgTexCoordArray(NB_BG_FACES + 1);
@@ -598,27 +578,34 @@ initBackground(void)
       envst = (ssgSimpleState*)grSsgLoadTexState(graphic->env[i]);
       envst->enable(GL_BLEND);
       grEnvSelector->setStep(i, envst);
-	  envst->deRef();
     }
     grEnvSelector->selectStep(0); /* mandatory !!! */
     grEnvState=(grMultiTexState*)grSsgEnvTexState(graphic->env[0]);
     grEnvShadowState=(grMultiTexState*)grSsgEnvTexState("envshadow.png");
     grEnvShadowStateOnCars=(grMultiTexState*)grSsgEnvTexState("shadow2.rgb");
-    if (grEnvShadowState==NULL)
-      {
-	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open envshadow.png for reading") ;
-	ulSetError ( UL_WARNING, "        mandatory for top env mapping ") ;
-	ulSetError ( UL_WARNING, "        should be in the .xml !! ") ;
-	ulSetError ( UL_WARNING, "        copy the envshadow.png from g-track-2 to the track you selected ") ;
-	ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
-	GfScrShutdown();
-	exit(-1);
-      }
-    if (grEnvShadowStateOnCars==NULL)
-      {
-	ulSetError ( UL_WARNING, "grscene:initBackground Failed to open shadow2.rgb for reading") ;
-	ulSetError ( UL_WARNING, "        no shadow mapping on cars for this track ") ;
-      }
+
+	if (grEnvState != NULL) {
+		grEnvState->ref();
+	}
+
+	if (grEnvShadowState == NULL) {
+		ulSetError ( UL_WARNING, "grscene:initBackground Failed to open envshadow.png for reading") ;
+		ulSetError ( UL_WARNING, "        mandatory for top env mapping ") ;
+		ulSetError ( UL_WARNING, "        should be in the .xml !! ") ;
+		ulSetError ( UL_WARNING, "        copy the envshadow.png from g-track-2 to the track you selected ") ;
+		ulSetError ( UL_WARNING, "        c'est pas classe comme sortie, mais ca evite un crash ") ;
+		GfScrShutdown();
+		exit(-1);
+	} else {
+		grEnvShadowState->ref();
+	}
+
+	if (grEnvShadowStateOnCars == NULL) {
+		ulSetError ( UL_WARNING, "grscene:initBackground Failed to open shadow2.rgb for reading") ;
+		ulSetError ( UL_WARNING, "        no shadow mapping on cars for this track ") ;
+	} else {
+		grEnvShadowStateOnCars->ref();
+	}
 }
 
 

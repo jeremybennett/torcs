@@ -690,19 +690,6 @@ cGrBoard::grDispLeaderBoard(tCarElt *car, tSituation *s)
 	}
 }
 
-class myLoaderOptions : public ssgLoaderOptions
-{
-public:
-  virtual void makeModelPath ( char* path, const char *fname ) const
-  {
-    ulFindFile ( path, model_dir, fname, NULL ) ;
-  }
-
-  virtual void makeTexturePath ( char* path, const char *fname ) const
-  {
-    ulFindFile ( path, texture_dir, fname, NULL ) ;
-  }
-} ;
 
 void
 cGrBoard::grDispCounterBoard2(tCarElt *car)
@@ -880,11 +867,6 @@ void cGrBoard::refreshBoard(tSituation *s, float Fps, int forceArcade, tCarElt *
 }
 
 
-// TODO: clean solution for cleanup.
-static ssgSimpleState* cleanup[1024];
-static int nstate = 0;
-
-
 void grInitBoardCar(tCarElt *car)
 {
 	const int BUFSIZE=1024;
@@ -912,9 +894,8 @@ void grInitBoardCar(tCarElt *car)
 	snprintf(buf, BUFSIZE, "drivers/%s/%d;drivers/%s;cars/%s;data/textures", car->_modName, car->_driverIndex, car->_modName, car->_carName);
 	grFilePath = strdup(buf);
 	curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
+	curInst->texture->ref();
 	free(grFilePath);
-	cleanup[nstate] = curInst->texture;
-	nstate++;
 	
 	/* Load the intrument placement */
 	xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_TACHO_XSZ, (char*)NULL, 128);
@@ -969,9 +950,8 @@ void grInitBoardCar(tCarElt *car)
 	snprintf(buf, BUFSIZE, "drivers/%s/%d;drivers/%s;cars/%s;data/textures", car->_modName, car->_driverIndex, car->_modName, car->_carName);
 	grFilePath = strdup(buf);
 	curInst->texture = (ssgSimpleState*)grSsgLoadTexState(param);
+	curInst->texture->ref();
 	free(grFilePath);
-	cleanup[nstate] = curInst->texture;
-	nstate++;
 	
 	/* Load the intrument placement */
 	xSz = GfParmGetNum(handle, SECT_GROBJECTS, PRM_SPEEDO_XSZ, (char*)NULL, 128);
@@ -1024,14 +1004,13 @@ void grInitBoardCar(tCarElt *car)
 
 void grShutdownBoardCar(void)
 {
-	/*int i;
-	for (i = 0; i < nstate; i++) {
-		printf("%d\n", i);
-		if (cleanup[i]->getRef() > 0) {
-			ssgDeRefDelete(cleanup[i]);
-		} else {
-			delete cleanup[i];
-		}
+	int i;
+	for (i = 0; i < grNbCars; i++) {
+		ssgDeRefDelete(grCarInfo[i].instrument[0].texture);	
+		ssgDeRefDelete(grCarInfo[i].instrument[1].texture);
+		glDeleteLists(grCarInfo[i].instrument[0].needleList, 1);
+		glDeleteLists(grCarInfo[i].instrument[1].needleList, 1);
+		glDeleteLists(grCarInfo[i].instrument[0].CounterList, 1);
+		glDeleteLists(grCarInfo[i].instrument[1].CounterList, 1);
 	}
-	nstate = 0;*/
 }

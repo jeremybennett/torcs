@@ -62,6 +62,8 @@ extern void grShutdownState(void);
 extern void grWriteTime(float *color, int font, int x, int y, tdble sec, int sgn);
 extern float grGetHOT(float x, float y);
 
+void grRemoveState(char* img);
+
 #endif /* _GRUTIL_H_ */ 
 
 

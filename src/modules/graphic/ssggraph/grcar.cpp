@@ -55,20 +55,6 @@ extern double carTrackRatioY;
 
 ssgBranch *CarsAnchorTmp = 0;
 
-class myLoaderOptions : public ssgLoaderOptions
-{
-public:
-	virtual void makeModelPath ( char* path, const char *fname ) const
-	{
-		ulFindFile ( path, model_dir, fname, NULL ) ;
-	}
-
-	virtual void makeTexturePath ( char* path, const char *fname ) const
-	{
-		ulFindFile ( path, texture_dir, fname, NULL ) ;
-	}
-} ;
-
 
 static int grCarIndex;
 
@@ -612,6 +598,7 @@ grInitCar(tCarElt *car)
 		grGammaValue = 1.8;
 		grMipMap = 0;
 		grCarInfo[index].wheelTexture = grSsgLoadTexState(param);
+		grCarInfo[index].wheelTexture->ref();
 	}
     
 	grCarInfo[index].envSelector = (ssgStateSelector*)grEnvSelector->clone();
@@ -713,6 +700,7 @@ grInitCar(tCarElt *car)
 
 	FREEZ(grTexturePath);
 	FREEZ(grFilePath);
+	options.endLoad();
 
 	TRACE_GL("loadcar: end");
 }

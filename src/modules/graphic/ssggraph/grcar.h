@@ -71,6 +71,20 @@ typedef struct
 
 extern tgrCarInfo	*grCarInfo;
 
+class myLoaderOptions : public ssgLoaderOptions
+{
+public:
+	virtual void makeModelPath ( char* path, const char *fname ) const
+	{
+		ulFindFile ( path, model_dir, fname, NULL ) ;
+	}
+
+	virtual void makeTexturePath ( char* path, const char *fname ) const
+	{
+		ulFindFile ( path, texture_dir, fname, NULL ) ;
+	}
+} ;
+
 extern void grInitCar(tCarElt *car);
 extern void grDrawCar(tCarElt*, tCarElt *, int, int, double curTime, class cGrPerspCamera *curCam);
 extern void grDrawShadow(tCarElt *car);

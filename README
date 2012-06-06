@@ -39,20 +39,20 @@ Command line arguments:
 * -r pathtoraceconfigfile, run race from command line only, for testing and AI
      training, see FAQ for details
 * -k (keep) suppress calls to dlclose to keep modules loaded (for valgrind runs,
-     to avoid ?? in the call stack)
+     to avoid "??" in the call stack)
 
 
 Running under Valgrind with Linux
 ---------------------------------
-To find memory leaks run first:
+To find memory leaks run first (valgrind must be in available in the path):
 ./torcs -g
 
 You will find the logfile valgrind.log in the .torcs directory. If you have
-?? in the call stack, you can run TORCS with the -k option to avoid unloading
+"??" in the call stack, you can run TORCS with the -k option to avoid unloading
 the modules:
 ./torcs -g -k
 
-You should use -k just to investigate the ?? in the call stacks, because the
+You should use -k just to investigate the "??" in the call stacks, because the
 suppression of dlclose can hide problems related with module release and cause
 problems because modules are just recycled but not reloaded.
 
@@ -129,7 +129,7 @@ Changes since 1.3.4-test1
 - Added hall of fame to TRB (Bernhard).
 - Added command line option to run under valgrind (-g) (Bernhard).
 - Fixed tiny memory leak (module info was not released) (Bernhard).
-- Fixed tiny memory leak (carname for results not released (Bernhard).
+- Fixed tiny memory leak (carname for results not released) (Bernhard).
 - Adopted human.cpp to work with mem leak fixes (because of releasing
   memory now human.cpp would crash) (Bernhard).
 - Fixed various small memory leaks in solid, just significant for 
@@ -143,6 +143,7 @@ Changes since 1.3.4-test1
 - Fixed small memory leaks in driverselect (Bernhard).
 - Fixed small memory leak regarding directory.cpp (Bernhard).
 - Fixed small memory leak in trackselect.cpp (Bernhard).
+- Fixed many memory leaks in ssggraph (Bernhard).
 
 
 Changes since 1.3.3
@@ -183,7 +184,7 @@ TODO for 1.3.4
 
 TODO for 1.4.0
 --------------
-- Robot interface adoptions, rules
+- Robot interface adoptions (maybe askfeatures, callonce, grid, postprocess, we will see...)
 - More Rules.
 - Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
   seriously).
@@ -220,7 +221,7 @@ Later:
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
-- fix tools (accc, trackgen, etc, these are way too touchy).
+- improve tools (accc, trackgen, etc, these are way too touchy).
 - make trackgen generate two sides for barriers and use just one sided
   polygons (better diffuse lighting).
 - fix sound in split screen multiplayer. [in progress] (ask Christos).
@@ -243,8 +244,6 @@ TODO for 1.9.x (pre 2.0 series, no release)
 
 TODO for 2.0.0
 --------------
-- Goal: best online racing game in terms of stability/playability. Most
-  commercial games really suck in this department, I hope we will do it better.
 - Initial Networking.
 
 
@@ -252,7 +251,6 @@ TODO LATER
 ----------
 - Add validation for the case no driver selected, do not exit to
   console.
-- Fix more memory leaks (already hunt down a LOT there are still more).
 - Networking (2.0).
 - Rework the whole AC file loaders and state management (most of the remaining
   memory leaks).
@@ -266,7 +264,6 @@ TODO LATER
 - Apply light maps to skid marks, smoke and wheels, etc.
 - Phong specular highlights (optional env, cube or GLSL).
 - Shadowmapped/Stenciled dynamic car shadows.
-- Compile/crosscompile on MinGW/Cygwin/Linux for Windows native.
 - so/dll with libtool, common code?
 - 3d-grass.
 - Dynamic sky.
@@ -274,8 +271,6 @@ TODO LATER
 - Fix/create new simu/switch to updated/new simu.
 - (clean up simuv3 conflicts)
 - Show just fitting resolutions for fullscreen/change for windowed mode.
-- Solve problem of wheels cutting the car body (stencil?).
-- Nicer Tires, a bit more round, better lighting.
 - Separate components more clean (e.g. ssgInit should go back to
   ssggraph, etc.)
 - persistent skidmarks (simply put them back into the shadowmap after

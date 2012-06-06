@@ -129,8 +129,9 @@ bool grLoadPngTexture (const char *fname, ssgTextureInfo* info)
 typedef struct stlist
 {
     struct stlist	*next;
+	struct stlist   *prev;
     grManagedState *state;
-    char		*name;
+    char		*name;	
 } stlist;
 
 
@@ -141,7 +142,7 @@ static grManagedState * grGetState(char *img)
 {
     stlist	*curr;
 
-    curr = stateList;
+	curr = stateList;
     while (curr != NULL) {
 	if (strcmp(curr->name, img) == 0) {
 	    return curr->state;
@@ -149,6 +150,32 @@ static grManagedState * grGetState(char *img)
 	curr = curr->next;
     }
     return NULL;
+}
+
+
+void grRemoveState(char* img)
+{
+	stlist	*curr;
+
+	curr = stateList;
+	while (curr != NULL) {
+		if (strcmp(curr->name, img) == 0) {
+			if (curr->prev != 0) {
+				curr->prev->next = curr->next;
+			}
+			if (curr->next != 0) {
+				curr->next->prev = curr->prev;
+			}
+			if (curr == stateList) {
+				stateList = curr->next;
+			}
+
+			free(curr->name);
+			free(curr);
+			break;
+		}
+		curr = curr->next;
+	}	
 }
 
 
@@ -160,9 +187,8 @@ void grShutdownState(void)
 	curr = stateList;
 	while (curr != NULL) {
 		next = curr->next;
-		//printf("Still in list : %s\n", curr->name);
+		printf("Still in list : %s\n", curr->name);
 		free(curr->name);
-		//ssgDeRefDelete(curr->state);
 		free(curr);
 		curr = next;
 	}
@@ -172,7 +198,6 @@ void grShutdownState(void)
 
 static void grSetupState(grManagedState *st, char *buf)
 {
-	st->ref();			// cannot be removed
 	st->enable(GL_LIGHTING);
 	st->enable(GL_TEXTURE_2D);
 	st->enable(GL_BLEND);
@@ -180,6 +205,9 @@ static void grSetupState(grManagedState *st, char *buf)
 
 	stlist *curr = (stlist*)calloc(sizeof(stlist), 1);
 	curr->next = stateList;
+	if (stateList != NULL) {
+		stateList->prev = curr;
+	}
 	stateList = curr;
 	curr->state = st;
 	curr->name = strdup(buf);
@@ -225,7 +253,7 @@ ssgState * grSsgEnvTexState(const char *img)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	const char *s;
-	grMultiTexState *st;
+	grManagedState *st;
 
 	// remove the directory
 	s = strrchr(img, '/');
@@ -240,7 +268,12 @@ ssgState * grSsgEnvTexState(const char *img)
 		return NULL;
     }
 
-	st = new grMultiTexState;
+	/*st = grGetState(buf);
+	if (st != NULL) {
+		return (ssgState*)st;
+	}*/
+
+	st = new grMultiTexState();
 	grSetupState(st, buf);
 	st->setTexture(buf);
 
