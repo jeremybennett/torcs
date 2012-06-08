@@ -176,6 +176,13 @@ grShutdownSound(int ncars)
 		return;
 	}
 
+	int i;
+	for (i = 0; i < ncars; i++) {
+		delete car_sound_data[i];
+	}
+	
+	delete [] car_sound_data;
+	
     if (!soundInitialized) {
 		return;
     }

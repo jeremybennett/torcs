@@ -679,9 +679,19 @@ static int do_numvert  ( char *s )
   t1tab = new sgVec2 [ nv ] ;
   t2tab = new sgVec2 [ nv ] ;
   t3tab = new sgVec2 [ nv ] ;
+  
+  if (vertlist != NULL) {
+	  ssgDeRefDelete(vertlist);
+  }
+  if (striplist != NULL) {
+	  ssgDeRefDelete(striplist);
+  }
+  
   vertlist=new ssgIndexArray ();
+  vertlist->ref();
   striplist=new ssgIndexArray ();
-
+  striplist->ref();
+  
   for ( int i = 0 ; i < nv ; i++ )
   {
     FGETS ( buffer, 1024, loader_fd ) ;
