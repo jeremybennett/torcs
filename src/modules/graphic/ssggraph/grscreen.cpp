@@ -64,7 +64,7 @@ cGrScreen::~cGrScreen()
 	int i;
 	class cGrCamera *cam;
 	
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < sizeof(cams)/sizeof(cams[0]); i++) {
 		while ((cam =  GF_TAILQ_FIRST(&cams[i])) != 0) {
 			cam->remove(&cams[i]);
 			delete cam;
@@ -484,6 +484,13 @@ void cGrScreen::initCams(tSituation *s)
 	}
 	
 	// Scene Cameras
+	class cGrCamera *cam;
+	for (i = 0; i < sizeof(cams)/sizeof(cams[0]); i++) {
+		while ((cam = GF_TAILQ_FIRST(&cams[i])) != 0) {
+			cam->remove(&cams[i]);
+			delete cam;
+		}
+	}
 	memset(cams, 0, sizeof(cams));
 	
 	grCamCreateSceneCameraList(this, cams, fovFactor);
