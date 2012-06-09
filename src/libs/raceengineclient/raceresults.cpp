@@ -323,6 +323,7 @@ ReUpdateQualifCurRes(tCarElt *car)
 	void *results = ReInfo->results;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE], path[BUFSIZE];
+	char *str;
 
 	ReResEraseScreen();
 	maxLines = ReResGetLines();
@@ -342,19 +343,25 @@ ReUpdateQualifCurRes(tCarElt *car)
 		snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i);
 		if (!printed) {
 			if ((car->_bestLapTime != 0.0) && (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {
-				snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, carName);
+				str = GfTime2Str(car->_bestLapTime, 0);
+				snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, str, car->_name, carName);
 				ReResScreenSetText(buf, i - 1, 1);
+				free(str);
 				printed = 1;
 			}
 		}
-		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i + printed, GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0),
+		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i + printed, str,
 		GfParmGetStr(results, path, RE_ATTR_NAME, ""), GfParmGetStr(results, path, RE_ATTR_CAR, ""));
 		ReResScreenSetText(buf, i - 1 + printed, 0);
+		free(str);
 	}
 
 	if (!printed) {
-		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, GfTime2Str(car->_bestLapTime, 0), car->_name, carName);
+		str = GfTime2Str(car->_bestLapTime, 0);
+		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, str, car->_name, carName);
 		ReResScreenSetText(buf, i - 1, 1);
+		free(str);
 	}
 
 	GfParmReleaseHandle(carparam);

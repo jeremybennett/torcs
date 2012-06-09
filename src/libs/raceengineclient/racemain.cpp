@@ -574,6 +574,7 @@ ReEventShutdown(void)
 
 	if ((nbTrk != 1) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
 		ReDisplayStandings();
+		FREEZ(ReInfo->_reCarInfo);
 		return RM_ASYNC | ret;
 	}
 	FREEZ(ReInfo->_reCarInfo);
