@@ -61,7 +61,7 @@ cGrScreen::cGrScreen(int myid)
 
 cGrScreen::~cGrScreen()
 {
-	int i;
+	unsigned int i;
 	class cGrCamera *cam;
 	
 	for (i = 0; i < sizeof(cams)/sizeof(cams[0]); i++) {
@@ -484,10 +484,11 @@ void cGrScreen::initCams(tSituation *s)
 	}
 	
 	// Scene Cameras
+	unsigned int j;
 	class cGrCamera *cam;
-	for (i = 0; i < sizeof(cams)/sizeof(cams[0]); i++) {
-		while ((cam = GF_TAILQ_FIRST(&cams[i])) != 0) {
-			cam->remove(&cams[i]);
+	for (j = 0; j < sizeof(cams)/sizeof(cams[0]); j++) {
+		while ((cam = GF_TAILQ_FIRST(&cams[j])) != 0) {
+			cam->remove(&cams[j]);
 			delete cam;
 		}
 	}
