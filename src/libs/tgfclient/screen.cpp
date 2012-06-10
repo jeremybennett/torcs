@@ -745,8 +745,6 @@ void *
 GfScrMenuInit(void *precMenu)
 {
     int		y, x1, x2;
-	const int BUFSIZE = 1024;
-	char buf[BUFSIZE];
 	
 #ifndef WIN32
 	const int yoffset1 = 30, yoffset2 = 60;

@@ -92,8 +92,6 @@ int preScene(ssgEntity *e)
 int
 grInitScene(void)
 {
-	const int BUFSIZE = 1024;
-	char buf[1024];
 	void *hndl = grTrackHandle;
 	ssgLight *light = ssgGetLight(0);
 
