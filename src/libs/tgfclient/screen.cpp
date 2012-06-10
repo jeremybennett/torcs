@@ -753,8 +753,6 @@ GfScrMenuInit(void *precMenu)
 #else // WIN32
 	const int yoffset1 = 30, yoffset2 = 40;
 #endif // WIN32
-    snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
-    void* paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     if (scrHandle) return scrHandle;
 
@@ -917,8 +915,6 @@ GfScrMenuInit(void *precMenu)
     GfuiAddKey(scrHandle, 27, "Cancel", precMenu, GfuiScreenActivate, NULL);
     GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     precMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-	GfParmReleaseHandle(paramHdle);
 
     return scrHandle;
 }
