@@ -910,6 +910,8 @@ GfScrMenuInit(void *precMenu)
     GfuiButtonCreate(scrHandle, "Back", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		     precMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+	GfParmReleaseHandle(paramHdle);
+
     return scrHandle;
 }
 

@@ -480,6 +480,8 @@ shutdownTrack(void)
 			grScreens[i] = NULL;
 		}
 	}
+
+	GfParmReleaseHandle(grTrackHandle);
 }
 
 /*void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt)

@@ -97,7 +97,7 @@ void gfuiLoadFonts(void)
 	gfuiFont[8] = new GfuiFontClass(buf);
 	gfuiFont[8]->create(size);
 
-	//GfParmReleaseHandle(param);
+	GfParmReleaseHandle(param);
 }
 
 
