@@ -42,25 +42,6 @@ Command line arguments:
      to avoid "??" in the call stack)
 
 
-Running under Valgrind with Linux
----------------------------------
-To find memory leaks run first (valgrind must be in available in the path):
-./torcs -g
-
-You will find the logfile valgrind.log in the .torcs directory. If you have
-"??" in the call stack, you can run TORCS with the -k option to avoid unloading
-the modules:
-./torcs -g -k
-
-You should use -k just to investigate the "??" in the call stacks, because the
-suppression of dlclose can hide problems related with module release and cause
-problems because modules are just recycled but not reloaded.
-
-Of course you can use this with the console mode as well, e.g.:
-./torcs -g -r ~/.torcs/config/raceman/champ.xml
-./torcs -g -k -r ~/.torcs/config/raceman/dtmrace.xml
-
-
 Windows Installation from Source (Release version)
 --------------------------------------------------
 - hint: you can have a release and a debug build side by side, the release
@@ -123,6 +104,44 @@ Have fun, bye
 Bernhard.
 
 
+Running under Valgrind with Linux
+---------------------------------
+First you need to build a debug version of TORCS, make sure that the CFLAGS,
+CPPFLAGS and CXXFLAGS environment variables are empty (usually thy are). Then
+run "make distclean", then configure script with the option --enable-debug
+and all other options which you require, build and install as usual.
+
+To find memory leaks run first (valgrind must be in available in the path):
+./torcs -g
+
+You will find the logfile valgrind.log in the .torcs directory. If you have
+"??" in the call stack, you can run TORCS with the -k option to avoid unloading
+the modules:
+./torcs -g -k
+
+You should use -k just to investigate the "??" in the call stacks, because the
+suppression of dlclose can hide problems related with module release and cause
+problems because modules are just recycled but not reloaded.
+
+Of course you can use this with the console (command line) mode as well, e.g.:
+./torcs -g -r ~/.torcs/config/raceman/champ.xml
+./torcs -g -k -r ~/.torcs/config/raceman/dtmrace.xml
+
+Some additional notes:
+- Valgrind reports on systems with the ATI flgrx OpenGL driver (8.961) lots of leaks,
+  according AMD Valgrind misinterprets memory blocks handed over to the kernel.
+  When I wrote suppressions the flgrx driver hung the X Server up, conclusion:
+  Give it a try (maybe another driver/kernel combination does/will do better), but if
+  you run in the mentioned problems, just use the TORCS command line mode or install
+  temporarily the Open Source ATI driver alternative, maybe this does do better
+  (not tested, send me a report;-) )
+- You can edit the "torcs" script and add "--leak-check=full --show-reachable=yes"
+  to see what is still reachable at exit. This is useful to reduce the amount of cached
+  xml file handles or hunt down missing releases of handles (they are not reported
+  usually because they are reachable via the cache), beware, it is perfectly
+  fine that the GUI and some handles are held permanent.
+
+
 Changes since 1.3.4-test1
 -------------------------
 - Added search facility to TRB (Bernhard).
@@ -144,6 +163,10 @@ Changes since 1.3.4-test1
 - Fixed small memory leak regarding directory.cpp (Bernhard).
 - Fixed small memory leak in trackselect.cpp (Bernhard).
 - Fixed many memory leaks in ssggraph (Bernhard).
+- Fixed remaining tiny memory leaks regarding GfTime2Str (Bernhard).
+- Disabled some xml caching to reduce memory footprint (Bernhard).
+
+
 
 
 Changes since 1.3.3
