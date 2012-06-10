@@ -211,8 +211,8 @@ int SplashScreen(void)
 	handle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	screen_gamma = (float)GfParmGetNum(handle, GFSCR_SECT_PROP, GFSCR_ATT_GAMMA, (char*)NULL, 2.0);	
 	GLbyte *tex = (GLbyte*)GfImgReadPng(filename, &s_imgWidth, &s_imgHeight, screen_gamma);
+	GfParmReleaseHandle(handle);
 	if (!tex) {
-		GfParmReleaseHandle(handle);
 		GfTrace("Couldn't read %s\n", filename);
 		return -1;
 	}
