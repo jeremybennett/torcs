@@ -299,6 +299,8 @@ initView(int x, int y, int width, int height, int /* flag */, void *screen)
 		grUseDetailedWheels = SIMPLE;	
 	}
 
+	GfParmReleaseHandle(grHandle);
+
 	return 0;
 }
 

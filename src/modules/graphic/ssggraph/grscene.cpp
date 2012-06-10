@@ -104,11 +104,6 @@ grInitScene(void)
 	GLfloat lmodel_diffuse[] = {0.8, 0.8, 0.8, 1.0};
 	GLfloat fog_clr[]        = {1.0, 1.0, 1.0, 0.5};
 
-	if (grHandle==NULL) {
-	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
-		grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
-	}
-
 	mat_specular[0] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_R, NULL, mat_specular[0]);
 	mat_specular[1] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_G, NULL, mat_specular[1]);
 	mat_specular[2] = GfParmGetNum(hndl, TRK_SECT_GRAPH, TRK_ATT_SPEC_B, NULL, mat_specular[2]);
