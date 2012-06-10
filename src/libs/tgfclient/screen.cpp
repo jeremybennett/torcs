@@ -102,8 +102,6 @@ static int	DepthLabelId;
 static int	ModeLabelId;
 static int VInitLabelId;
 
-static void	*paramHdle;
-
 static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 
 
@@ -460,9 +458,14 @@ static void
 saveParams(void)
 {
 	int x, y, bpp;
-
+	
 	sscanf(Res[curRes], "%dx%d", &x, &y);
 	sscanf(Depthlist[curDepth], "%d", &bpp);
+
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	void *paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
 	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, (char*)NULL, x);
 	GfParmSetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, (char*)NULL, y);
@@ -479,6 +482,7 @@ saveParams(void)
 		GfParmSetStr(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_FSCR, "no");
 	}
 	GfParmWriteFile(NULL, paramHdle, "Screen");
+	GfParmReleaseHandle(paramHdle);
 }
 
 
@@ -668,6 +672,9 @@ initFromConf(void)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 
+	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
+	void *paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+
 	x = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_X, NULL, 640);
 	y = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_Y, NULL, 480);
 
@@ -704,6 +711,7 @@ initFromConf(void)
 	}
 
 	curMaxFreq = (int)GfParmGetNum(paramHdle, GFSCR_SECT_PROP, GFSCR_ATT_MAXREFRESH, NULL, curMaxFreq);
+	GfParmReleaseHandle(paramHdle);
 }
 
 #ifdef WIN32
@@ -746,7 +754,7 @@ GfScrMenuInit(void *precMenu)
 	const int yoffset1 = 30, yoffset2 = 40;
 #endif // WIN32
     snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GFSCR_CONF_FILE);
-    paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+    void* paramHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
     if (scrHandle) return scrHandle;
 
