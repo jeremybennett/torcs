@@ -244,6 +244,7 @@ GenCarsInfo(void)
 			}
 			curCar->cat = curCat;
 			GF_TAILQ_INSERT_TAIL(&(curCat->CarsInfoList), curCar, link);
+			GfParmReleaseHandle(carparam);
 		} while (curFile != files);
 	}
 	GfDirFreeList(files, NULL, true, false);
