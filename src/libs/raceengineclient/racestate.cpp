@@ -145,6 +145,7 @@ ReStateManage(void)
 
 			case RE_STATE_SHUTDOWN:
 				if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
+					ReShutdown();
 					exit(0);
 				}
 			case RE_STATE_ERROR:
