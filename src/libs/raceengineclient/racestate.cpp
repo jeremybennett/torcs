@@ -145,6 +145,7 @@ ReStateManage(void)
 
 			case RE_STATE_SHUTDOWN:
 				if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
+					GfParmReleaseHandle(ReInfo->params);
 					ReShutdown();
 					exit(0);
 				}
