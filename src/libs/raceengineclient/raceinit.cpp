@@ -198,6 +198,8 @@ void ReRunRaceOnConsole(const char* raceconfig)
 	ReInitResults();
 
 	ReStateApply((void *) RE_STATE_EVENT_INIT);	
+	GfParmReleaseHandle(ReInfo->params);
+	ReShutdown();
 }
 
 

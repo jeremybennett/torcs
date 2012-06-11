@@ -145,9 +145,7 @@ ReStateManage(void)
 
 			case RE_STATE_SHUTDOWN:
 				if (ReInfo->_displayMode == RM_DISP_MODE_CONSOLE) {
-					GfParmReleaseHandle(ReInfo->params);
-					ReShutdown();
-					exit(0);
+					return;
 				}
 			case RE_STATE_ERROR:
 				GfOut("RaceEngine: state = RE_STATE_SHUTDOWN\n");
