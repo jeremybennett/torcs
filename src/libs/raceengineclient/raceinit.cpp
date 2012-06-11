@@ -842,6 +842,7 @@ ReRaceCleanDrivers(void)
 			robot->rbShutdown(robot->index);
 		}
 		GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
+		GfParmReleaseHandle(ReInfo->s->cars[i]->_carHandle);
 		free(robot);
 	}
 
