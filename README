@@ -165,7 +165,7 @@ Changes since 1.3.4-test1
 - Fixed many memory leaks in ssggraph (Bernhard).
 - Fixed remaining tiny memory leaks regarding GfTime2Str (Bernhard).
 - Disabled some xml caching to reduce memory footprint (Bernhard).
-
+- Fixed more remaining leaked handles (Bernhard).
 
 
 
