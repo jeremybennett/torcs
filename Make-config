@@ -63,7 +63,7 @@ INCFLAGS =  -I${EXPORTBASE}/include -I${TORCS_BASE}
 CPP = gcc -E -march=barcelona -O2 -fno-strict-aliasing -M -D__DEPEND__
 
 PACKAGE = torcs
-VERSION = 1.3.4-test1
+VERSION = 1.3.4-test2
 
 TAR = gtar
 GZIP_ENV = --best
