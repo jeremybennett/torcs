@@ -107,7 +107,7 @@ Bernhard.
 Running under Valgrind with Linux
 ---------------------------------
 First you need to build a debug version of TORCS, make sure that the CFLAGS,
-CPPFLAGS and CXXFLAGS environment variables are empty (usually thy are). Then
+CPPFLAGS and CXXFLAGS environment variables are empty (usually they are). Then
 run "make distclean", then configure script with the option --enable-debug
 and all other options which you require, build and install as usual.
 
@@ -144,6 +144,14 @@ Some additional notes:
 
 Changes since 1.3.4-test1
 -------------------------
+- Fixed illegal file open mode for VS 2008 runtime (Bernhard).
+- Refactored macros in trackgen to functions to be able to debug properly and to form the
+  base for code/feature improvment (Bernhard).
+- Run track.cpp of trackgen through astyle (Bernhard).
+
+
+Changes since 1.3.4-test1
+-------------------------
 - Added search facility to TRB (Bernhard).
 - Added hall of fame to TRB (Bernhard).
 - Added command line option to run under valgrind (-g) (Bernhard).
@@ -157,7 +165,7 @@ Changes since 1.3.4-test1
   (useful for valgrind runs to get symbol information instead of ??)
   (Bernhard).
 - Fixed uninitialized variable in sound code (Bernhard).
-- Fixed a bug in MofFreeInfoList, was not significant, because the function has
+- Fixed a bug in ModFreeInfoList, was not significant, because the function has
   never been used so far (Bernhard).
 - Fixed small memory leaks in driverselect (Bernhard).
 - Fixed small memory leak regarding directory.cpp (Bernhard).
@@ -298,7 +306,6 @@ TODO LATER
   ssggraph, etc.)
 - persistent skidmarks (simply put them back into the shadowmap after
   the race? Extra texture? Just restore them?), restore function.
-- Make Windows debug build work.
 - Fix windows project such that it compiles in all locations (currently it
   fails if special characters are in the path).
 - Avoid cameras cutting the landscape.
