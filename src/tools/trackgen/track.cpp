@@ -51,7 +51,6 @@ typedef struct texElt {
 typedef struct dispElt {
 	int start;
 	int nb;
-	int surfType;
 	char *name;
 	int id;
 	tTexElt *texture;
@@ -62,6 +61,12 @@ typedef struct group {
 	int nb;
 	tDispElt *dispList;
 } tGroup;
+
+typedef struct {
+	tdble tx, ty;
+	tdble x, y, z;
+} tPoint;
+
 
 static tGroup *Groups;
 static int ActiveGroups;
@@ -221,7 +226,6 @@ void newDispList(int texchange, int bump, int nbvert, int &startNeeded, const ch
 				aDispElt->name = strdup(name);
 				aDispElt->id = _id;
 				aDispElt->texture = curTexElt;
-				aDispElt->surfType = 0;
 				if (Groups[_id].nb == 0) {
 					ActiveGroups++;
 					aDispElt->next = aDispElt;
@@ -234,7 +238,6 @@ void newDispList(int texchange, int bump, int nbvert, int &startNeeded, const ch
 				Groups[_id].nb++;
 			} else {
 				(*theCurDispElt)->texture = curTexElt;
-				(*theCurDispElt)->surfType = 0;
 			}
 		} else {
 			*theCurDispElt = aDispElt = (tDispElt *)malloc(sizeof(tDispElt));
@@ -243,7 +246,6 @@ void newDispList(int texchange, int bump, int nbvert, int &startNeeded, const ch
 			aDispElt->name = strdup(name);
 			aDispElt->id = _id;
 			aDispElt->texture = curTexElt;
-			aDispElt->surfType = 0;
 			aDispElt->next = aDispElt;
 			Groups[_id].dispList = aDispElt;
 			Groups[_id].nb++;
@@ -347,7 +349,7 @@ void checkDispList2(
 	char texname[TEXNAMESIZE];
 	snprintf(texname, TEXNAMESIZE, "%s.rgb", texture);
 	setTexture(texList, curTexElt, curTexId, texname, "");
-	if (curTexId != prevTexId) {
+	if ((curTexId != prevTexId) || (startNeeded)) {
 		prevTexId = curTexId;
 		newDispList(1, bump, nbvert, startNeeded, name, id, theCurDispElt, *curTexElt);
 	}
@@ -371,7 +373,7 @@ void checkDispList3(
 )
 {
 	setTexture(texList, curTexElt, curTexId, texture, "");
-	if (curTexId != prevTexId) {
+	if ((curTexId != prevTexId) || (startNeeded)) {
 		prevTexId = curTexId;
 		newDispList(1, bump, nbvert, startNeeded, name, id, theCurDispElt, *curTexElt);
 	}
@@ -391,6 +393,80 @@ void setPoint(tTexElt *curTexElt, float t1, float t2, float x, float y, float z,
 		trackindices[nbvert]      = nbvert;
 		++nbvert;
 	}
+}
+
+
+#define PIT_HEIGHT	5.0f
+#define PIT_DEEP	10.0f
+#define PIT_TOP		0.2f
+
+/* 
+	Start or end of the pit lane building, depending on the side and driving direction.
+	The winding of the faces is CCW.
+*/
+void pitCapCCW(tTexElt *curTexElt, unsigned int &nbvert, tdble x, tdble y, tdble z, const t3Dd &normvec)
+{
+	tdble x2 = x + PIT_TOP * normvec.x;
+	tdble y2 = y + PIT_TOP * normvec.y;
+	
+	setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT - PIT_TOP, x2, y2, z + PIT_HEIGHT - PIT_TOP, nbvert);
+	setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT, x2, y2, z + PIT_HEIGHT, nbvert);
+
+	x2 = x;
+	y2 = y;
+
+	setPoint(curTexElt, 1.0, PIT_HEIGHT - PIT_TOP, x2, y2, z + PIT_HEIGHT - PIT_TOP, nbvert);
+
+	x2 = x - PIT_DEEP * normvec.x;
+	y2 = y - PIT_DEEP * normvec.y;
+
+	setPoint(curTexElt, 1.0 + PIT_DEEP, PIT_HEIGHT, x2, y2, z + PIT_HEIGHT, nbvert);
+
+	x2 = x;
+	y2 = y;
+
+	setPoint(curTexElt, 1.0, 0, x2, y2, z, nbvert);
+
+	x2 = x - PIT_DEEP * normvec.x;
+	y2 = y - PIT_DEEP * normvec.y;
+
+	setPoint(curTexElt, 1.0 + PIT_DEEP, 0, x2, y2, z, nbvert);
+}
+
+
+
+
+/* 
+	Start or end of the pit lane building, depending on the side and driving direction.
+	The winding of the faces is CW.
+*/
+void pitCapCW(tTexElt *curTexElt, unsigned int &nbvert, tdble x, tdble y, tdble z, const t3Dd &normvec)
+{
+	tdble x2 = x + PIT_TOP * normvec.x;
+	tdble y2 = y + PIT_TOP * normvec.y;
+
+	setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT, x2, y2, z + PIT_HEIGHT, nbvert);
+	setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT - PIT_TOP, x2, y2, z + PIT_HEIGHT - PIT_TOP, nbvert);
+
+	x2 = x - PIT_DEEP * normvec.x;
+	y2 = y - PIT_DEEP * normvec.y;
+
+	setPoint(curTexElt, 1.0 + PIT_DEEP, PIT_HEIGHT, x2, y2, z + PIT_HEIGHT, nbvert);
+
+	x2 = x;
+	y2 = y;
+
+	setPoint(curTexElt, 1.0, PIT_HEIGHT - PIT_TOP, x2, y2, z + PIT_HEIGHT - PIT_TOP, nbvert);
+
+	x2 = x - PIT_DEEP * normvec.x;
+	y2 = y - PIT_DEEP * normvec.y;
+
+	setPoint(curTexElt, 1.0 + PIT_DEEP, 0, x2, y2, z, nbvert);
+
+	x2 = x;
+	y2 = y;
+
+	setPoint(curTexElt, 1.0, 0, x2, y2, z, nbvert);
 }
 
 
@@ -496,10 +572,12 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 	}
 
 	nbvert++;
-	nbvert *= 30;
+	// Worst case (walls as barrier plus wall on each side -> (4*4 + 3*2)*2), can be less
+	// 4*4: 4 Walls, 4 vertices per slice, and 3 flat surfaces, 2 vertices per slice,
+	// *2: beginning and end (in worst case).
+	nbvert *= 44;
 	nbvert+=58; /* start bridge */
 	nbvert+=12 + 10 * Track->pits.driversPitsNb;
-	// TODO: Investigate if this is a feasible solution, nbvert was perviously += 1000.
 	nbvert+=10000; /* safety margin */
 	printf("=== Indices Array Size   = %d\n", nbvert);
 	printf("=== Vertex Array Size    = %d\n", nbvert * 3);
@@ -1704,6 +1782,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 							if (j == 0) {
 								setPoint(curTexElt, texLen, 0,   seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
 								setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z + curBarrier->height, nbvert);
+							} else if (j == 1) {
+								setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z + curBarrier->height, nbvert);
+								setPoint(curTexElt, texLen, 0,   seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
 							}
 							break;
 						case TR_WALL:
@@ -1751,6 +1832,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
+										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
 									}
 									break;
 								case TR_WALL:
@@ -1799,7 +1883,10 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 0.0, x, y, curHeight, nbvert);
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
-									}
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
+										setPoint(curTexElt, texLen, 0.0, x, y, curHeight, nbvert);
+									} 
 									break;
 								case TR_WALL:
 									switch (j) {
@@ -1848,6 +1935,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 0.0, x, y, curHeight, nbvert);
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
+										setPoint(curTexElt, texLen, 0.0, x, y, curHeight, nbvert);
 									}
 									break;
 								case TR_WALL:
@@ -1884,6 +1974,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 						if (j == 0) {
 							setPoint(curTexElt, texLen, 0.0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
 							setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z + curBarrier->height, nbvert);
+						} else if (j == 1) {
+							setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z + curBarrier->height, nbvert);
+							setPoint(curTexElt, texLen, 0.0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
 						}
 						break;
 					case TR_WALL:
@@ -1960,6 +2053,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 							if (j == 0) {
 								setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z + curBarrier->height, nbvert);
 								setPoint(curTexElt, texLen, 0.0, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
+							} else if (j == 1) {
+								setPoint(curTexElt, texLen, 0.0, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
+								setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z + curBarrier->height, nbvert);
 							}
 							break;
 						case TR_WALL:
@@ -2010,6 +2106,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 									}
 									break;
 								case TR_WALL:
@@ -2060,6 +2159,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 									}
 									break;
 								case TR_WALL:
@@ -2111,6 +2213,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 									if (j == 0) {
 										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+									} else if (j == 1) {
+										setPoint(curTexElt, texLen, 0,   x, y, curHeight, nbvert);
+										setPoint(curTexElt, texLen, 1.0, x, y, curHeight + curBarrier->height, nbvert);
 									}
 									break;
 								case TR_WALL:
@@ -2151,6 +2256,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 						if (j == 0) {
 							setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z + curBarrier->height, nbvert);
 							setPoint(curTexElt, texLen, 0,   seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
+						} else if (j == 1) {
+							setPoint(curTexElt, texLen, 0,   seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
+							setPoint(curTexElt, texLen, 1.0, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z + curBarrier->height, nbvert);
 						}
 						break;
 					case TR_WALL:
@@ -2231,7 +2339,6 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 						RtTrackSideNormalG(mseg, x, y, TR_LFT, &normvec);
 					}
 					checkDispList2(buf, "TuMk", mseg->id, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded);
-					theCurDispElt->surfType = 0x10;
 
 					setPoint(curTexElt, 0.0, 0.0, x, y, z, nbvert);
 					setPoint(curTexElt, 1.0, 0.0, x + tmWidth * normvec.x, y + tmWidth * normvec.y, z, nbvert);
@@ -2239,7 +2346,6 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 					setPoint(curTexElt, 1.0, 1.0, x + tmWidth * normvec.x, y + tmWidth * normvec.y, z + tmHeight, nbvert);
 
 					checkDispList2("back-sign", "TuMk", mseg->id, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded);
-					theCurDispElt->surfType = 0x10;
 
 					setPoint(curTexElt, 0.0, 0.0, x + tmWidth * normvec.x, y + tmWidth * normvec.y, z, nbvert);
 					setPoint(curTexElt, 1.0, 0.0, x, y, z, nbvert);
@@ -2428,9 +2534,6 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 
 
 		/* draw the pits */
-#define PIT_HEIGHT	5.0
-#define PIT_DEEP	10.0
-#define PIT_TOP		0.2
 
 		pits = &(Track->pits);
 		initPits(pits);
@@ -2447,32 +2550,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 			RtTrackSideNormalG(pits->driversPits[0].pos.seg, x, y, pits->side, &normvec);
 			z2 = RtTrackHeightG(pits->driversPits[0].pos.seg, x, y);
 
-			x2 = x + PIT_TOP * normvec.x;
-			y2 = y + PIT_TOP * normvec.y;
+			// To get the normal right choose the right winding.
+			if (pits->side == TR_RGT) {
+				pitCapCW(curTexElt, nbvert, x, y, z2, normvec);
+			} else {
+				pitCapCCW(curTexElt, nbvert, x, y, z2, normvec);
+			}
 
-			setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT - PIT_TOP, x2, y2, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-			setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT, x2, y2, z2 + PIT_HEIGHT, nbvert);
-
-			x2 = x;
-			y2 = y;
-
-			setPoint(curTexElt, 1.0, PIT_HEIGHT - PIT_TOP, x2, y2, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-
-			x2 = x - PIT_DEEP * normvec.x;
-			y2 = y - PIT_DEEP * normvec.y;
-
-			setPoint(curTexElt, 1.0 + PIT_DEEP, PIT_HEIGHT, x2, y2, z2 + PIT_HEIGHT, nbvert);
-
-			x2 = x;
-			y2 = y;
-
-			setPoint(curTexElt, 1.0, 0, x2, y2, z2, nbvert);
-
-			x2 = x - PIT_DEEP * normvec.x;
-			y2 = y - PIT_DEEP * normvec.y;
-
-			setPoint(curTexElt, 1.0 + PIT_DEEP, 0, x2, y2, z2, nbvert);
-
+			// Pit front, roof and back.
 			for (i = 0; i < pits->driversPitsNb; i++) {
 				tdble dx, dy;
 
@@ -2486,35 +2571,42 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 				y2 = y;
 				z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x2, y2);
 
+				// Different ordering for left and right to get correct face normals
+				int leftpoints[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};	// ordering for pit on the left
+				int rightpoints[10] = {1, 0, 3, 2, 5, 4, 7, 6, 9, 8};	// ordering for pit on the right
+				int *pindex;
+
 				if (pits->side == TR_RGT) {
 					x3 = x + pits->len * normvec.y;
 					y3 = y - pits->len * normvec.x;
+					pindex = rightpoints;
 				} else {
 					x3 = x - pits->len * normvec.y;
 					y3 = y + pits->len * normvec.x;
+					pindex = leftpoints;
 				}
 
 				z3 = RtTrackHeightG(pits->driversPits[i].pos.seg, x3, y3);
 
-				setPoint(curTexElt, pits->len, 0, x2, y2, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-				setPoint(curTexElt, 0, 0, x3, y3, z3 + PIT_HEIGHT - PIT_TOP, nbvert);
+				tPoint parray[10] = {
+					{pits->len,	0.0f,									x2,							y2,							z2 + PIT_HEIGHT - PIT_TOP},
+					{0.0f,		0.0f,									x3,							y3,							z3 + PIT_HEIGHT - PIT_TOP},
+					{pits->len, PIT_TOP,								x2 + PIT_TOP * normvec.x,	y2 + PIT_TOP * normvec.y,	z2 + PIT_HEIGHT - PIT_TOP},
+					{0.0f,		PIT_TOP,								x3 + PIT_TOP * normvec.x,	y3 + PIT_TOP * normvec.y,	z3 + PIT_HEIGHT - PIT_TOP},
+					{pits->len, 2.0f * PIT_TOP,							x2 + PIT_TOP * normvec.x,	y2 + PIT_TOP * normvec.y,	z2 + PIT_HEIGHT},
+					{0.0f,		2.0f * PIT_TOP,							x3 + PIT_TOP * normvec.x,	y3 + PIT_TOP * normvec.y,	z3 + PIT_HEIGHT},
+					{pits->len, 2.0f * PIT_TOP + PIT_DEEP,				x2 - PIT_DEEP * normvec.x,	y2 - PIT_DEEP * normvec.y,	z2 + PIT_HEIGHT},
+					{0.0f,		2.0f * PIT_TOP + PIT_DEEP,				x3 - PIT_DEEP * normvec.x,	y3 - PIT_DEEP * normvec.y,	z3 + PIT_HEIGHT},
+					{pits->len, 2.0f * PIT_TOP + PIT_DEEP + PIT_HEIGHT, x2 - PIT_DEEP * normvec.x,	y2 - PIT_DEEP * normvec.y,	z2},
+					{0.0f,		2.0f * PIT_TOP + PIT_DEEP + PIT_HEIGHT, x3 - PIT_DEEP * normvec.x,	y3 - PIT_DEEP * normvec.y,	z3}
+				};
 
-				dx = PIT_TOP * normvec.x;
-				dy = PIT_TOP * normvec.y;
+				int pp;
 
-				setPoint(curTexElt, pits->len, PIT_TOP, x2 + dx, y2 + dy, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-				setPoint(curTexElt, 0, PIT_TOP, x3 + dx, y3 + dy, z3 + PIT_HEIGHT - PIT_TOP, nbvert);
-				setPoint(curTexElt, pits->len, 2 * PIT_TOP, x2 + dx, y2 + dy, z2 + PIT_HEIGHT, nbvert);
-				setPoint(curTexElt, 0, 2 * PIT_TOP, x3 + dx, y3 + dy, z3 + PIT_HEIGHT, nbvert);
-
-				dx = - PIT_DEEP * normvec.x;
-				dy = - PIT_DEEP * normvec.y;
-
-				setPoint(curTexElt, pits->len, 2 * PIT_TOP + PIT_DEEP, x2 + dx, y2 + dy, z2 + PIT_HEIGHT, nbvert);
-				setPoint(curTexElt, 0, 2 * PIT_TOP + PIT_DEEP, x3 + dx, y3 + dy, z3 + PIT_HEIGHT, nbvert);
-				setPoint(curTexElt, pits->len, 2 * PIT_TOP + PIT_DEEP + PIT_HEIGHT, x2 + dx, y2 + dy, z2, nbvert);
-				setPoint(curTexElt, 0, 2 * PIT_TOP + PIT_DEEP + PIT_HEIGHT, x3 + dx, y3 + dy, z3, nbvert);
-
+				for (pp = 0; pp < 10; pp++) {
+					tPoint &p = parray[pindex[pp]]; 
+					setPoint(curTexElt, p.tx, p.ty, p.x, p.y, p.z, nbvert);
+				} 
 			}
 			startNeeded = 1;
 			i--;
@@ -2532,35 +2624,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 				y = y + pits->len * normvec.x;
 			}
 
-
 			z2 = RtTrackHeightG(pits->driversPits[i].pos.seg, x, y);
 
-			x2 = x + PIT_TOP * normvec.x;
-			y2 = y + PIT_TOP * normvec.y;
-
-			setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT, x2, y2, z2 + PIT_HEIGHT, nbvert);
-			setPoint(curTexElt, 1.0 - PIT_TOP, PIT_HEIGHT - PIT_TOP, x2, y2, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-
-			x2 = x - PIT_DEEP * normvec.x;
-			y2 = y - PIT_DEEP * normvec.y;
-
-			setPoint(curTexElt, 1.0 + PIT_DEEP, PIT_HEIGHT, x2, y2, z2 + PIT_HEIGHT, nbvert);
-
-			x2 = x;
-			y2 = y;
-
-			setPoint(curTexElt, 1.0, PIT_HEIGHT - PIT_TOP, x2, y2, z2 + PIT_HEIGHT - PIT_TOP, nbvert);
-
-			x2 = x - PIT_DEEP * normvec.x;
-			y2 = y - PIT_DEEP * normvec.y;
-
-			setPoint(curTexElt, 1.0 + PIT_DEEP, 0, x2, y2, z2, nbvert);
-
-			x2 = x;
-			y2 = y;
-
-			setPoint(curTexElt, 1.0, 0, x2, y2, z2, nbvert);
-
+			// To get the normal right choose the right winding.
+			if (pits->side == TR_RGT) {
+				pitCapCCW(curTexElt, nbvert, x, y, z2, normvec);
+			} else {
+				pitCapCW(curTexElt, nbvert, x, y, z2, normvec);
+			}
 		}
 	}
 
@@ -2573,7 +2644,7 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 
 
 static void
-saveObject(FILE *curFd, int nb, int start, char *texture, char *name, int surfType)
+saveObject(FILE *curFd, int nb, int start, char *texture, char *name)
 {
 	int	i, index;
 
@@ -2588,11 +2659,7 @@ saveObject(FILE *curFd, int nb, int start, char *texture, char *name, int surfTy
 	}
 
 	fprintf(curFd, "numsurf %d\n", nb - 2);
-	if (surfType) {
-		fprintf(curFd, "SURF 0x10\n");
-	} else {
-		fprintf(curFd, "SURF 0x30\n");
-	}
+	fprintf(curFd, "SURF 0x10\n");
 	fprintf(curFd, "mat 0\n");
 	fprintf(curFd, "refs 3\n");
 	fprintf(curFd, "%d %f %f\n", 0, tracktexcoord[2*start], tracktexcoord[2*start+1]);
@@ -2601,11 +2668,7 @@ saveObject(FILE *curFd, int nb, int start, char *texture, char *name, int surfTy
 
 	/* triangle strip conversion to triangles */
 	for (i = 2; i < nb-1; i++) {
-		if (surfType) {
-			fprintf(curFd, "SURF 0x10\n");
-		} else {
-			fprintf(curFd, "SURF 0x30\n");
-		}
+		fprintf(curFd, "SURF 0x10\n");
 		fprintf(curFd, "mat 0\n");
 		fprintf(curFd, "refs 3\n");
 		if ((i % 2) == 0) {
@@ -2646,9 +2709,9 @@ SaveMainTrack(FILE *curFd, int bump)
 				if (aDispElt->nb != 0) {
 					snprintf(buf, BUFSIZE, "%s%d", aDispElt->name, aDispElt->id);
 					if (bump) {
-						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->namebump, buf, aDispElt->surfType);
+						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->namebump, buf);
 					} else {
-						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf, aDispElt->surfType);
+						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf);
 					}
 				}
 			} while (aDispElt != Groups[i].dispList);
