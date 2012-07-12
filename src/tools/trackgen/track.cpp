@@ -2559,7 +2559,6 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 
 			// Pit front, roof and back.
 			for (i = 0; i < pits->driversPitsNb; i++) {
-				tdble dx, dy;
 
 				startNeeded = 1;
 				snprintf(sname, BUFSIZE, "P%dts", uid++);
