@@ -1753,9 +1753,8 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 		snprintf(sname, BUFSIZE, "B%dRt", j);
 		for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 			if ((mseg->rside != NULL) && (mseg->rside->raceInfo & TR_PIT)) {
-				startNeeded = 1;
 				runninglentgh = 0;
-				newDispList(0, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
+				newDispList(1, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
 			} else {
 				curBarrier = mseg->barrier[0];
 				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, 0, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
@@ -2025,8 +2024,7 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 		for (i = 0, mseg = Track->seg->next; i < Track->nseg; i++, mseg = mseg->next) {
 			if ((mseg->lside != NULL) && (mseg->lside->raceInfo & TR_PIT)) {
 				runninglentgh = 0;
-				startNeeded = 1;
-				newDispList(0, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
+				newDispList(1, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
 			} else {
 				curBarrier = mseg->barrier[1];
 				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, 0, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
