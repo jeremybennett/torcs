@@ -161,6 +161,8 @@ Changes since 1.3.4-test2
 - Fixed a bug in texture handling in trackgen which caused texture misplacement and
   spawning of new groups (Bernhard).
 - Trackgen does not anymore turn one sided objects into two sided ones (Bernhard).
+- Fixed a bug in trackgen which caused a "hole" in the wall right after the pit under
+  some special conditions (see e.g. g-track-1) (Bernhard).
 
 
 Changes since 1.3.4-test1
