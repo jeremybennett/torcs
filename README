@@ -158,6 +158,8 @@ Changes since 1.3.4-test2
   of 0x30), thats why I had to fix all the above annomalies, the resulting back-face
   culling will help a bit with performance, proper rendering and z-buffer-racing (Bernhard).
 - Fixed a crash bug in trackgen, related with terrain generation (Bernhard).
+- Fixed a bug in texture handling in trackgen which caused texture misplacement and
+  spawning of new groups (Bernhard).
 
 - TODO: Fix one sided objects inserted with object map, they are converted to two sided.
 
