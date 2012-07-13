@@ -230,7 +230,7 @@ ssgSaveLeaf (ssgEntity *ent, FILE *save_fd)
 	static saveTriangle *tlist;
 	const int BUFSIZE = 1024;
 	char buf[1024];
-	char *surf;
+	const char *surf;
 
 	ssgLeaf *vt = (ssgLeaf *)ent;
 	if (vt->getCullFace() == TRUE) {
