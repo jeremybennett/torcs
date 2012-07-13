@@ -188,12 +188,15 @@ void setTexture(tTexElt **texList, tTexElt **curTexElt, unsigned int &curTexId, 
 	} else {
 		// Search for texture, already registered?
 		do {
-			*curTexElt = (*curTexElt)->next;
 			if (strcmp(texname, (*curTexElt)->name) == 0) {
 				found = 1;
 				break;
 			}
-		} while (*curTexElt != (*curTexElt)->next);
+			if (*curTexElt == (*curTexElt)->next) {
+				break;
+			}
+			*curTexElt = (*curTexElt)->next;
+		} while (true);
 
 		if (!found) {
 			// Texture not known, register, insert new element on head
