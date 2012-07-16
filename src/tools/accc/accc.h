@@ -50,7 +50,6 @@ extern void loadAndGroup( char *OutputFileName);
 extern int loadAC( char * inputFilename, char * outputFilename, int saveIn);
 
 #define _AC3DTO3DS 1
-#define _3DSTOAC3D 2
 /** optimized version of ac3d using groups by section */
 #define _AC3DTOAC3D 3
 #define _AC3DTOOBJ 4

@@ -290,16 +290,9 @@ main(int argc, char **argv)
 	init_args(argc, argv);
 	extern int loadACo( char * inputFilename, char * outputFilename, int saveIn);
 	extern int loadAC( char * inputFilename, char * outputFilename, int saveIn);
-#ifdef _3DS
-	extern int load3ds( char * inputFilename, char * outputFilename);
-#endif
 
 	if (typeConvertion==_AC3DTO3DS) {
 		loadAC( InputFileName, OutputFileName,0);
-	} else if (typeConvertion==_3DSTOAC3D) {
-#ifdef _3DS
-		load3ds( InputFileName, OutputFileName);
-#endif
 	} else if (typeConvertion==_AC3DTOAC3D) {
 		loadACo( InputFileName, OutputFileName,0);
 	} else  if (typeConvertion==_AC3DTOOBJ) {
