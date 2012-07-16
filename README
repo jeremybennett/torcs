@@ -163,6 +163,11 @@ Changes since 1.3.4-test2
 - Trackgen does not anymore turn one sided objects into two sided ones (Bernhard).
 - Fixed a bug in trackgen which caused a "hole" in the wall right after the pit under
   some special conditions (see e.g. g-track-1) (Bernhard).
+- Fixed potential sscanf overflow in accc (Bernhard).
+- Fixed a crash bug for accc on Linux, strdup(0) gives segfault (specified behaviour,
+  but it worked on Windows), now building alpine-2 from ac files works as well on Linux
+  (Bernhard).
+- Removed unused 3D Studio Max loader code from accc (Bernhard).
 
 
 Changes since 1.3.4-test1
