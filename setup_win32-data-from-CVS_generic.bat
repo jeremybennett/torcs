@@ -1621,6 +1621,7 @@ if exist .\data\tracks\g-track-1\wall-green-yellow.rgb copy .\data\tracks\g-trac
 if exist .\data\tracks\g-track-1\wall-grey.rgb copy .\data\tracks\g-track-1\wall-grey.rgb .\%RUNTIMEDIR%\tracks\road\g-track-1\wall-grey.rgb
 if exist .\data\tracks\g-track-1\wall4.rgb copy .\data\tracks\g-track-1\wall4.rgb .\%RUNTIMEDIR%\tracks\road\g-track-1\wall4.rgb
 if exist .\data\tracks\g-track-1\shadow2.rgb copy .\data\tracks\g-track-1\shadow2.rgb .\%RUNTIMEDIR%\tracks\road\g-track-1\shadow2.rgb
+if exist .\data\tracks\g-track-1\raceline.png copy .\data\tracks\g-track-1\raceline.png .\%RUNTIMEDIR%\tracks\road\g-track-1\raceline.png
 
 if exist .\data\tracks\oval\michigan\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\oval\michigan\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
