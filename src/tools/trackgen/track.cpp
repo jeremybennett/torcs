@@ -559,8 +559,16 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 	GroupNb = Track->nseg;
 	width = Track->width;
 
+	double rlWidthScale = 1.0;
+	double rlOffset = 0.0;
+
 	if (raceline) {
-		generateRaceLine(Track);
+		double SideDistExt = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_RLEXT, (char*)NULL, 2.0);
+		double SideDistInt = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_RLINT, (char*)NULL, 2.0);
+		rlWidthScale = GfParmGetNum(TrackHandle, TRK_SECT_MAIN, TRK_ATT_RLWIDTHSCALE, (char*)NULL, 1.0);
+		rlOffset = (1.0 - 1.0/rlWidthScale)/2.0;
+
+		generateRaceLine(Track, SideDistExt, SideDistInt);
 	}
 
 	trkpos.type = TR_LPOS_MAIN;
@@ -623,9 +631,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 			ts = 0;
 			texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
 
-			double rlto = getTexureOffset(seg->lgfromstart);
-			setPoint(curTexElt, texLen, texMaxT + rlto, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
-			setPoint(curTexElt, texLen, 0.0 + rlto, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
+			double rlto = getTexureOffset(seg->lgfromstart)/rlWidthScale;
+			setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
+			setPoint(curTexElt, texLen, 0.0 + rlOffset + rlto, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
 		}
 
 		switch (seg->type) {
@@ -640,13 +648,13 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 					trkpos.toRight = width;
 					RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 
-					double rlto = getTexureOffset(seg->lgfromstart + ts);
-					setPoint(curTexElt, texLen, texMaxT + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
+					double rlto = getTexureOffset(seg->lgfromstart + ts)/rlWidthScale;
+					setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
 
 					trkpos.toRight = 0;
 					RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 
-					setPoint(curTexElt, texLen, 0.0 + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0.0 + rlOffset + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
 
 					ts += LMAX;
 				}
@@ -664,14 +672,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 					texLen += texStep;
 					trkpos.toStart = ts;
 
-					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius);
+					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius)/rlWidthScale;
 					/* left */
 					trkpos.toRight = width;
-					setPoint(curTexElt, texLen, texMaxT + rlto, seg->center.x + radiusl * sin(anz), seg->center.y - radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, seg->center.x + radiusl * sin(anz), seg->center.y - radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					/* right */
 					trkpos.toRight = 0;
-					setPoint(curTexElt, texLen, 0.0 + rlto, seg->center.x + radiusr * sin(anz), seg->center.y - radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0.0 + rlOffset + rlto, seg->center.x + radiusr * sin(anz), seg->center.y - radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					ts += step;
 					anz += step;
@@ -690,14 +698,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 					texLen += texStep;
 					trkpos.toStart = ts;
 
-					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius);
+					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius)/rlWidthScale;
 					/* left */
 					trkpos.toRight = width;
-					setPoint(curTexElt, texLen, texMaxT + rlto, seg->center.x - radiusl * sin(anz), seg->center.y + radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, seg->center.x - radiusl * sin(anz), seg->center.y + radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					/* right */
 					trkpos.toRight = 0;
-					setPoint(curTexElt, texLen, 0 + rlto, seg->center.x - radiusr * sin(anz), seg->center.y + radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0 + rlOffset + rlto, seg->center.x - radiusr * sin(anz), seg->center.y + radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					ts += step;
 					anz -= step;
@@ -707,9 +715,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 		}
 		texLen = (curTexSeg + seg->length) / curTexSize;
 
-		double rlto = getTexureOffset(seg->lgfromstart + seg->length);
-		setPoint(curTexElt, texLen, texMaxT + rlto, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
-		setPoint(curTexElt, texLen, 0 + rlto, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
+		double rlto = getTexureOffset(seg->lgfromstart + seg->length)/rlWidthScale;
+		setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
+		setPoint(curTexElt, texLen, 0 + rlOffset + rlto, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
 
 		startNeeded = 0;
 		runninglentgh += seg->length;

@@ -34,7 +34,7 @@
 
 extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump, int raceline);
 extern void CalculateTrack(tTrack * Track, void *TrackHandle);
-extern void generateRaceLine(tTrack *pTrack);
+extern void generateRaceLine(tTrack *pTrack, const double SideDistExt, const double SideDistInt);
 extern double getTexureOffset(double length);
 
 extern char	*OutputFileName;

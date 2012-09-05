@@ -131,6 +131,9 @@
 #define TRK_SECT_MAIN	"Main Track"
 #define TRK_LST_SEGMENTS	"Track Segments"
 #define TRK_ATT_TYPE		"type"
+#define TRK_ATT_RLEXT	"raceline ext"
+#define TRK_ATT_RLINT	"raceline int"
+#define TRK_ATT_RLWIDTHSCALE "raceline widthscale"
 
 #define TRK_VAL_STR		"str"
 #define TRK_VAL_LFT		"lft"
