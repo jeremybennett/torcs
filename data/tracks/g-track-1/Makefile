@@ -27,7 +27,7 @@ DATA      = g-track-1.xml g-track-1.acc background.png  g-track-1.png readme.txt
 			roof3.rgb spectator.rgb std.rgb tarmac-wall-2-g2.rgb tent.rgb torcs0_arbor_n.rgb torcs1.rgb \
 			tr-asphalt-aa-bw1_n.rgb tree53_n.rgb truck_arbor_berniw_n.rgb truck_arbor_bt_n.rgb \
 			truck_arbor_inferno_n.rgb truck_arbor_speedy_n.rgb truck_arbor_tita_n.rgb wall-green-yellow.rgb \
-			wall-grey.rgb wall4.rgb shadow2.rgb
+			wall-grey.rgb wall4.rgb shadow2.rgb raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 
