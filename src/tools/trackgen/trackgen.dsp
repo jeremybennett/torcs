@@ -126,6 +126,10 @@ SOURCE=.\objects.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\raceline.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\relief.cpp
 # End Source File
 # Begin Source File
@@ -144,6 +148,10 @@ SOURCE=..\..\windows\windowsspec.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\trackgen.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 
