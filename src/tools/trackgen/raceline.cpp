@@ -48,7 +48,7 @@ static const double SecurityR = 100.0; // Security radius
 static void SplitTrack(tTrack *ptrack)
 {
 	const tTrackSeg *seg = ptrack->seg;
-	const tTrackSeg *first;
+	const tTrackSeg *first = NULL;
 	// Find pointer to start (seems not to start at the "start" all the time, e.g e-track-1)
 	do {
 		if (seg->lgfromstart == 0.0) {
