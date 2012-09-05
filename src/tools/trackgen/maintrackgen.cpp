@@ -49,38 +49,39 @@
 #include "elevation.h"
 #include "trackgen.h"
 
-float	GridStep = 40.0;
-float	TrackStep = 5.0;
-float	Margin = 100.0;
-float	ExtHeight = 5.0;
+float GridStep = 40.0;
+float TrackStep = 5.0;
+float Margin = 100.0;
+float ExtHeight = 5.0;
 
 int	HeightSteps = 30;
 
 int	bump = 0;
+int raceline = 0;
 int	UseBorder = 1;
 
-char		*OutputFileName;
-char		*TrackName;
-char		*TrackCategory;
+char *OutputFileName;
+char *TrackName;
+char *TrackCategory;
 
-void		*TrackHandle;
-void		*CfgHandle;
+void *TrackHandle;
+void *CfgHandle;
 
-tTrack		*Track;
-tTrackItf	TrackItf;
+tTrack *Track;
+tTrackItf TrackItf;
 
-int		TrackOnly;
-int		JustCalculate;
-int		MergeAll;
-int		MergeTerrain;
+int TrackOnly;
+int JustCalculate;
+int MergeAll;
+int MergeTerrain;
 
-char		*OutTrackName;
-char		*OutMeshName;
+char *OutTrackName;
+char *OutMeshName;
 
-tModList	*modlist = NULL;
+tModList *modlist = NULL;
 
-int		saveElevation;
-char		*ElevationFile;
+int saveElevation;
+char *ElevationFile;
 
 static void Generate(void);
 
@@ -91,6 +92,7 @@ void usage(void)
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
     fprintf(stderr, "       -b             : draw bump track\n");
+	fprintf(stderr, "       -r             : draw raceline track\n");
     fprintf(stderr, "       -B             : Don't use terrain border (relief supplied int clockwise, ext CC)\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
     fprintf(stderr, "       -z             : Just calculate track parameters and exit\n");
@@ -140,135 +142,142 @@ void init_args(int argc, char **argv)
 	    break;
 	     
 	switch (c) {
-	case 0:
-	    switch (option_index) {
-	    case 0:
-		usage();
-		exit(0);
-		break;
-	    case 1:
-		printf("Terrain generator for tracks $Revision$ \n");
-		exit(0);
-		break;
-	    default:
-		usage();
-		exit(1);
-	    }
-	    break;
-	case 'h':
-	    usage();
-	    exit(0);
-	    break;
-	case 'H':
-	    HeightSteps = strtol(optarg, NULL, 0);
-	    break;
-	case 'v':
-	    printf("Terrain generator for tracks $Revision$ \n");
-	    exit(0);
-	    break;
-	case 'a':
-	    TrackOnly = 0;
-	    break;
-	case 'z':
-	    JustCalculate = 1;
-	    break;
-	case 'b':
-	    bump = 1;
-	    break;
-	case 's':
-	    MergeAll = 0;
-	    MergeTerrain = 1;
-	    break;
-	case 'S':
-	    MergeAll = 0;
-	    MergeTerrain = 0;
-	    break;
-	case 'n':
-	    TrackName = strdup(optarg);
-	    break;
-	case 'c':
-	    TrackCategory = strdup(optarg);
-	    break;
-	case 'E':
-	    saveElevation = strtol(optarg, NULL, 0);;
-	    TrackOnly = 0;
-	    break;
-	case 'B':
-	    UseBorder = 0;
-	    break;
-	case 'L':
-	    snprintf(buf, BUFSIZE, "%s/", optarg);
-	    SetLibDir(buf);
-	    break;
-	default:
-	    usage();
-	    exit(1);
-	    break;
-	}
+		case 0:
+			switch (option_index) {
+				case 0:
+					usage();
+					exit(0);
+					break;
+				case 1:
+					printf("Terrain generator for tracks $Revision$ \n");
+					exit(0);
+					break;
+				default:
+					usage();
+					exit(1);
+			}
+			break;
+		case 'h':
+			usage();
+			exit(0);
+			break;
+		case 'H':
+			HeightSteps = strtol(optarg, NULL, 0);
+			break;
+		case 'v':
+			printf("Terrain generator for tracks $Revision$ \n");
+			exit(0);
+			break;
+		case 'a':
+			TrackOnly = 0;
+			break;
+		case 'z':
+			JustCalculate = 1;
+			break;
+		case 'b':
+			bump = 1;
+			break;
+		case 'r':
+			raceline = 1;
+			break;
+		case 's':
+			MergeAll = 0;
+			MergeTerrain = 1;
+			break;
+		case 'S':
+			MergeAll = 0;
+			MergeTerrain = 0;
+			break;
+		case 'n':
+			TrackName = strdup(optarg);
+			break;
+		case 'c':
+			TrackCategory = strdup(optarg);
+			break;
+		case 'E':
+			saveElevation = strtol(optarg, NULL, 0);;
+			TrackOnly = 0;
+			break;
+		case 'B':
+			UseBorder = 0;
+			break;
+		case 'L':
+			snprintf(buf, BUFSIZE, "%s/", optarg);
+			SetLibDir(buf);
+			break;
+		default:
+			usage();
+			exit(1);
+			break;
+		}
     }
 #else
     i = 1;
     while (i < argc) {
-	if (strncmp(argv[i], "-h", 2) == 0) {
-	    usage();
-	    exit(0);
-	}
-	if (strncmp(argv[i], "-v", 2) == 0) {
-	    printf("Terrain generator for tracks $Revision$ \n");
-	    exit(0);
-	}
-	if (strncmp(argv[i], "-a", 2) == 0) {
-	    TrackOnly = 0;
-	} else if (strncmp(argv[i], "-z", 2) == 0) {
-	    JustCalculate = 1;
-	} else if (strncmp(argv[i], "-s", 2) == 0) {
-	    MergeAll = 0;
-	    MergeTerrain = 1;
-	} else if (strncmp(argv[i], "-B", 2) == 0) {
-	    UseBorder = 0;
-	} else if (strncmp(argv[i], "-S", 2) == 0) {
-	    MergeAll = 0;
-	    MergeTerrain = 0;
-	} else if (strncmp(argv[i], "-n", 2) == 0) {
-	    if (i + 1 < argc) {
-		TrackName = strdup(argv[++i]);
-	    } else {
-		usage();
-		exit(0);
-	    }
-	} else if (strncmp(argv[i], "-E", 2) == 0) {
-	    if (i + 1 < argc) {
-		saveElevation = strtol(argv[++i], NULL, 0);
-	    } else {
-		usage();
-		exit(0);
-	    }
-	    TrackOnly = 0;
-	} else if (strncmp(argv[i], "-c", 2) == 0) {
-	    if (i + 1 < argc) {
-		TrackCategory = strdup(argv[++i]);
-	    } else {
-		usage();
-		exit(0);
-	    }
-	} else if (strncmp(argv[i], "-H", 2) == 0) {
-	    if (i + 1 < argc) {
-		HeightSteps = strtol(argv[++i], NULL, 0);
-	    } else {
-		usage();
-		exit(0);
-	    }
-	} else {
-	    usage();
-	    exit(0);
-	}
-	i++;
+		if (strncmp(argv[i], "-h", 2) == 0) {
+			usage();
+			exit(0);
+		}
+		if (strncmp(argv[i], "-v", 2) == 0) {
+			printf("Terrain generator for tracks $Revision$ \n");
+			exit(0);
+		}
+		if (strncmp(argv[i], "-a", 2) == 0) {
+			TrackOnly = 0;
+		} else if (strncmp(argv[i], "-z", 2) == 0) {
+			JustCalculate = 1;
+		} else if (strncmp(argv[i], "-b", 2) == 0) {
+			bump = 1;
+		} else if (strncmp(argv[i], "-r", 2) == 0) {
+			raceline = 1;
+		} else if (strncmp(argv[i], "-s", 2) == 0) {
+			MergeAll = 0;
+			MergeTerrain = 1;
+		} else if (strncmp(argv[i], "-B", 2) == 0) {
+			UseBorder = 0;
+		} else if (strncmp(argv[i], "-S", 2) == 0) {
+			MergeAll = 0;
+			MergeTerrain = 0;
+		} else if (strncmp(argv[i], "-n", 2) == 0) {
+			if (i + 1 < argc) {
+			TrackName = strdup(argv[++i]);
+			} else {
+			usage();
+			exit(0);
+			}
+		} else if (strncmp(argv[i], "-E", 2) == 0) {
+			if (i + 1 < argc) {
+			saveElevation = strtol(argv[++i], NULL, 0);
+			} else {
+			usage();
+			exit(0);
+			}
+			TrackOnly = 0;
+		} else if (strncmp(argv[i], "-c", 2) == 0) {
+			if (i + 1 < argc) {
+			TrackCategory = strdup(argv[++i]);
+			} else {
+			usage();
+			exit(0);
+			}
+		} else if (strncmp(argv[i], "-H", 2) == 0) {
+			if (i + 1 < argc) {
+			HeightSteps = strtol(argv[++i], NULL, 0);
+			} else {
+			usage();
+			exit(0);
+			}
+		} else {
+			usage();
+			exit(0);
+		}
+		i++;
     }
 #endif
 
     if (!TrackName || !TrackCategory) {
-	usage();
-	exit(1);
+		usage();
+		exit(1);
     }
 }
 #ifndef WIN32
@@ -277,16 +286,14 @@ extern void LinuxSpecInit(void);
 extern void WindowsSpecInit(void);
 #endif
 
-int
-main(int argc, char **argv)
+
+
+
+int main(int argc, char **argv)
 {
-
     init_args(argc, argv);
-
-
     glutInit(&argc, argv);
     glutCreateWindow(argv[1]);
-
     ssgInit();
     
 #ifndef WIN32
@@ -299,12 +306,14 @@ main(int argc, char **argv)
     return 0;
 }
 
+
+
+
 #ifdef WIN32
 #define INSTBASE "./"
 #endif
 
-static void
-Generate(void)
+static void Generate(void)
 {
 	const char *trackdllname;
 	const char *extName;
@@ -348,7 +357,9 @@ Generate(void)
 		if (TrackOnly) {
 			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 			// Track.
-			outfd = Ac3dOpen(buf2, 1);
+			if (!bump && !raceline) {
+				outfd = Ac3dOpen(buf2, 1);
+			}
 		} else if (MergeAll) {
 			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 			// track + terrain + objects.
@@ -358,6 +369,8 @@ Generate(void)
 		// Main Track.
 		if (bump) {
 			extName = "trk-bump";
+		} else if (raceline) {
+			extName = "trk-raceline";
 		} else {
 			extName = "trk";
 		}
@@ -367,11 +380,11 @@ Generate(void)
 	}
 
 	if (JustCalculate){
-		CalculateTrack(Track, TrackHandle, bump);
+		CalculateTrack(Track, TrackHandle);
 		return;
 	}
 
-	GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump);
+	GenerateTrack(Track, TrackHandle, OutTrackName, outfd, bump, raceline);
 
 	if (TrackOnly) {
 		return;

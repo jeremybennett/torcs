@@ -336,6 +336,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\raceline.cpp"
+				>
+			</File>
+			<File
 				RelativePath="relief.cpp"
 				>
 				<FileConfiguration
@@ -428,6 +432,10 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
+			<File
+				RelativePath=".\trackgen.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

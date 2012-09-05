@@ -44,6 +44,7 @@
 typedef struct texElt {
 	char *name;
 	char *namebump;
+	char *nameraceline;
 	unsigned int texid;
 	struct texElt *next;
 } tTexElt;
@@ -172,7 +173,7 @@ unsigned int newTextureId()
 
 
 
-void setTexture(tTexElt **texList, tTexElt **curTexElt, unsigned int &curTexId, const char *texname, const char *texnamebump)
+void setTexture(tTexElt **texList, tTexElt **curTexElt, unsigned int &curTexId, const char *texname, const char *texnamebump, const char *texnameraceline)
 {
 	int found = 0;
 	*curTexElt = *texList;
@@ -184,11 +185,17 @@ void setTexture(tTexElt **texList, tTexElt **curTexElt, unsigned int &curTexId, 
 		*texList = *curTexElt;
 		(*curTexElt)->name = strdup(texname);
 		(*curTexElt)->namebump = strdup(texnamebump);
+		(*curTexElt)->nameraceline = strdup(texnameraceline);
+
 		(*curTexElt)->texid = newTextureId();
 	} else {
 		// Search for texture, already registered?
 		do {
-			if (strcmp(texname, (*curTexElt)->name) == 0) {
+			if (
+				strcmp(texname, (*curTexElt)->name) == 0 &&
+				strcmp(texnamebump, (*curTexElt)->namebump) == 0 &&
+				strcmp(texnameraceline, (*curTexElt)->nameraceline) == 0
+			) {
 				found = 1;
 				break;
 			}
@@ -205,6 +212,7 @@ void setTexture(tTexElt **texList, tTexElt **curTexElt, unsigned int &curTexId, 
 			*texList = *curTexElt;
 			(*curTexElt)->name = strdup(texname);
 			(*curTexElt)->namebump = strdup(texnamebump);
+			(*curTexElt)->nameraceline = strdup(texnameraceline);
 			(*curTexElt)->texid = newTextureId();
 		}
 	}
@@ -283,6 +291,7 @@ void checkDispList(
 {
 	const char *texname;
 	const char *texnamebump;
+	const char *texnameraceline;
 	const int BUFSIZE = 256;
 	char path_[BUFSIZE];
 
@@ -292,8 +301,9 @@ void checkDispList(
 		snprintf(path_, BUFSIZE, "%s/%s", TRK_SECT_SURFACES, mat);
 	}
 	texnamebump = GfParmGetStr(TrackHandle, path_, TRK_ATT_BUMPNAME, "");
+	texnameraceline = GfParmGetStr(TrackHandle, path_, TRK_ATT_RACELINENAME, "");
 	texname = GfParmGetStr(TrackHandle, path_, TRK_ATT_TEXTURE, "tr-asphalt.rgb");
-	setTexture(texList, curTexElt, curTexId, texname, texnamebump);
+	setTexture(texList, curTexElt, curTexId, texname, texnamebump, texnameraceline);
 	if ((curTexId != prevTexId) || (startNeeded)) {
 		const char *textype;
 		if (bump) {
@@ -351,7 +361,7 @@ void checkDispList2(
 	const int TEXNAMESIZE = 256;
 	char texname[TEXNAMESIZE];
 	snprintf(texname, TEXNAMESIZE, "%s.rgb", texture);
-	setTexture(texList, curTexElt, curTexId, texname, "");
+	setTexture(texList, curTexElt, curTexId, texname, "", "");
 	if ((curTexId != prevTexId) || (startNeeded)) {
 		prevTexId = curTexId;
 		newDispList(1, bump, nbvert, startNeeded, name, id, theCurDispElt, *curTexElt);
@@ -375,7 +385,7 @@ void checkDispList3(
     int &startNeeded
 )
 {
-	setTexture(texList, curTexElt, curTexId, texture, "");
+	setTexture(texList, curTexElt, curTexId, texture, "", "");
 	if ((curTexId != prevTexId) || (startNeeded)) {
 		prevTexId = curTexId;
 		newDispList(1, bump, nbvert, startNeeded, name, id, theCurDispElt, *curTexElt);
@@ -475,49 +485,48 @@ void pitCapCW(tTexElt *curTexElt, unsigned int &nbvert, tdble x, tdble y, tdble 
 
 
 
-int InitScene(tTrack *Track, void *TrackHandle, int bump)
+int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 {
-
-	int 		i, j;
-	tTrackSeg 		*seg;
-	tTrackSeg 		*mseg;
+	int i, j;
+	tTrackSeg *seg;
+	tTrackSeg *mseg;
 	unsigned int nbvert;
-	tdble 		width;
-	tdble 		anz, ts = 0;
-	tdble               radiusr, radiusl;
-	tdble 		step;
-	tTrkLocPos 		trkpos;
-	tdble		x, y, z;
-	tdble		x2, y2, z2;
-	tdble		x3, y3, z3;
-	int			startNeeded;
+	tdble width;
+	tdble anz, ts = 0;
+	tdble radiusr, radiusl;
+	tdble step;
+	tTrkLocPos trkpos;
+	tdble x, y, z;
+	tdble x2, y2, z2;
+	tdble x3, y3, z3;
+	int startNeeded;
 
-	unsigned int	prevTexId;
-	unsigned int	curTexId = 0;
-	int			curTexType = 0;
-	int			curTexLink = 0;
-	tdble		curTexOffset = 0;
-	tdble		curTexSeg;
-	tdble		curTexSize = 0;
-	tdble		curHeight;
-	tTexElt		*texList = (tTexElt *)NULL;
-	tTexElt		*curTexElt = NULL;
-	tTrackBarrier	*curBarrier;
-	tdble		texLen;
-	tdble		texStep;
-	tdble		texMaxT = 0;
-	tTrackPitInfo	*pits;
-	tdble		runninglentgh;
+	unsigned int prevTexId;
+	unsigned int curTexId = 0;
+	int	curTexType = 0;
+	int	curTexLink = 0;
+	tdble curTexOffset = 0;
+	tdble curTexSeg;
+	tdble curTexSize = 0;
+	tdble curHeight;
+	tTexElt *texList = (tTexElt *)NULL;
+	tTexElt *curTexElt = NULL;
+	tTrackBarrier *curBarrier;
+	tdble texLen;
+	tdble texStep;
+	tdble texMaxT = 0;
+	tTrackPitInfo *pits;
+	tdble runninglentgh;
 
-	tdble		tmWidth  = Track->graphic.turnMarksInfo.width;
-	tdble		tmHeight = Track->graphic.turnMarksInfo.height;
-	tdble		tmVSpace = Track->graphic.turnMarksInfo.vSpace;
-	tdble		tmHSpace = Track->graphic.turnMarksInfo.hSpace;
-	int			hasBorder;
-	tDispElt		*theCurDispElt = NULL;
+	tdble tmWidth  = Track->graphic.turnMarksInfo.width;
+	tdble tmHeight = Track->graphic.turnMarksInfo.height;
+	tdble tmVSpace = Track->graphic.turnMarksInfo.vSpace;
+	tdble tmHSpace = Track->graphic.turnMarksInfo.hSpace;
+	int hasBorder;
+	tDispElt *theCurDispElt = NULL;
 	const int BUFSIZE = 256;
-	char		sname[BUFSIZE];
-	char		buf[BUFSIZE];
+	char sname[BUFSIZE];
+	char buf[BUFSIZE];
 
 #define	LG_STEP_MAX	50.0
 
@@ -548,8 +557,11 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 	Groups = (tGroup *)calloc(Track->nseg, sizeof(tGroup));
 	ActiveGroups = 0;
 	GroupNb = Track->nseg;
-
 	width = Track->width;
+
+	if (raceline) {
+		generateRaceLine(Track);
+	}
 
 	trkpos.type = TR_LPOS_MAIN;
 
@@ -557,7 +569,7 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 	theCurDispElt->nb = nbvert - theCurDispElt->start;	\
     }  while (0)
 
-	/* Count the number of vertice to allocate */
+	/* Count the number of vertices to allocate */
 	nbvert = 0;
 	for (i = 0, seg = Track->seg->next; i < Track->nseg; i++, seg = seg->next) {
 		nbvert++;
@@ -611,8 +623,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 			ts = 0;
 			texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
 
-			setPoint(curTexElt, texLen, texMaxT, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
-			setPoint(curTexElt, texLen, 0.0, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
+			double rlto = getTexureOffset(seg->lgfromstart);
+			setPoint(curTexElt, texLen, texMaxT + rlto, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
+			setPoint(curTexElt, texLen, 0.0 + rlto, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
 		}
 
 		switch (seg->type) {
@@ -627,12 +640,13 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 					trkpos.toRight = width;
 					RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 
-					setPoint(curTexElt, texLen, texMaxT, x, y, RtTrackHeightL(&trkpos), nbvert);
+					double rlto = getTexureOffset(seg->lgfromstart + ts);
+					setPoint(curTexElt, texLen, texMaxT + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
 
 					trkpos.toRight = 0;
 					RtTrackLocal2Global(&trkpos, &x, &y, TR_TORIGHT);
 
-					setPoint(curTexElt, texLen, 0.0, x, y, RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0.0 + rlto, x, y, RtTrackHeightL(&trkpos), nbvert);
 
 					ts += LMAX;
 				}
@@ -650,13 +664,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 					texLen += texStep;
 					trkpos.toStart = ts;
 
+					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius);
 					/* left */
 					trkpos.toRight = width;
-					setPoint(curTexElt, texLen, texMaxT, seg->center.x + radiusl * sin(anz), seg->center.y - radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, texMaxT + rlto, seg->center.x + radiusl * sin(anz), seg->center.y - radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					/* right */
 					trkpos.toRight = 0;
-					setPoint(curTexElt, texLen, 0.0, seg->center.x + radiusr * sin(anz), seg->center.y - radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0.0 + rlto, seg->center.x + radiusr * sin(anz), seg->center.y - radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					ts += step;
 					anz += step;
@@ -675,13 +690,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 					texLen += texStep;
 					trkpos.toStart = ts;
 
+					double rlto = getTexureOffset(seg->lgfromstart + ts*seg->radius);
 					/* left */
 					trkpos.toRight = width;
-					setPoint(curTexElt, texLen, texMaxT, seg->center.x - radiusl * sin(anz), seg->center.y + radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, texMaxT + rlto, seg->center.x - radiusl * sin(anz), seg->center.y + radiusl * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					/* right */
 					trkpos.toRight = 0;
-					setPoint(curTexElt, texLen, 0, seg->center.x - radiusr * sin(anz), seg->center.y + radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
+					setPoint(curTexElt, texLen, 0 + rlto, seg->center.x - radiusr * sin(anz), seg->center.y + radiusr * cos(anz), RtTrackHeightL(&trkpos), nbvert);
 
 					ts += step;
 					anz -= step;
@@ -691,13 +707,19 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 		}
 		texLen = (curTexSeg + seg->length) / curTexSize;
 
-		setPoint(curTexElt, texLen, texMaxT, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
-		setPoint(curTexElt, texLen, 0, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
+		double rlto = getTexureOffset(seg->lgfromstart + seg->length);
+		setPoint(curTexElt, texLen, texMaxT + rlto, seg->vertex[TR_EL].x, seg->vertex[TR_EL].y, seg->vertex[TR_EL].z, nbvert);
+		setPoint(curTexElt, texLen, 0 + rlto, seg->vertex[TR_ER].x, seg->vertex[TR_ER].y, seg->vertex[TR_ER].z, nbvert);
 
 		startNeeded = 0;
 		runninglentgh += seg->length;
 	}
 
+	if (raceline) {
+		CLOSEDISPLIST();
+		printf("=== Indices really used = %d\n", nbvert);
+		return 0;
+	}
 
 	/* Right Border */
 	for (j = 0; j < 3; j++) {
@@ -2636,9 +2658,7 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump)
 	}
 
 	CLOSEDISPLIST();
-
 	printf("=== Indices really used = %d\n", nbvert);
-
 	return 0;
 }
 
@@ -2692,7 +2712,7 @@ saveObject(FILE *curFd, int nb, int start, char *texture, char *name)
 
 
 static void
-SaveMainTrack(FILE *curFd, int bump)
+SaveMainTrack(FILE *curFd, int bump, int raceline)
 {
 	tDispElt		*aDispElt;
 	const int BUFSIZE = 256;
@@ -2710,6 +2730,8 @@ SaveMainTrack(FILE *curFd, int bump)
 					snprintf(buf, BUFSIZE, "%s%d", aDispElt->name, aDispElt->id);
 					if (bump) {
 						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->namebump, buf);
+					} else if (raceline) { 
+						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->nameraceline, buf);
 					} else {
 						saveObject(curFd, aDispElt->nb, aDispElt->start, aDispElt->texture->name, buf);
 					}
@@ -2726,11 +2748,11 @@ SaveMainTrack(FILE *curFd, int bump)
     @param	TrackHandle	handle on the track description
     @return	none
 */
-void CalculateTrack(tTrack *Track, void *TrackHandle, int bump)
+void CalculateTrack(tTrack *Track, void *TrackHandle)
 {
 	TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
 	GfOut("Track step: %.2f ", TrackStep);
-	InitScene(Track, TrackHandle, bump);
+	InitScene(Track, TrackHandle, 0, 0);
 	printf("Calculation finished\n");
 }
 
@@ -2743,25 +2765,25 @@ void CalculateTrack(tTrack *Track, void *TrackHandle, int bump)
     @return	none
 */
 void
-GenerateTrack(tTrack *Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump)
+GenerateTrack(tTrack *Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump, int raceline)
 {
 	FILE *curFd;
 
 	TrackStep = GfParmGetNum(TrackHandle, TRK_SECT_TERRAIN, TRK_ATT_TSTEP, NULL, TrackStep);
 	GfOut("Track step: %.2f ", TrackStep);
 
-	InitScene(Track, TrackHandle, bump);
+	InitScene(Track, TrackHandle, bump, raceline);
 
 	if (outFile) {
 		curFd = Ac3dOpen(outFile, 1);
 		Ac3dGroup(curFd, "track", ActiveGroups);
-		SaveMainTrack(curFd, bump);
+		SaveMainTrack(curFd, bump, raceline);
 		Ac3dClose(curFd);
 	}
 
 	if (AllFd) {
 		Ac3dGroup(AllFd, "track", ActiveGroups);
-		SaveMainTrack(AllFd, bump);
+		SaveMainTrack(AllFd, bump, raceline);
 	}
 
 }

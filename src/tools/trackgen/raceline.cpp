@@ -48,6 +48,16 @@ static const double SecurityR = 100.0; // Security radius
 static void SplitTrack(tTrack *ptrack)
 {
 	const tTrackSeg *seg = ptrack->seg;
+	const tTrackSeg *first;
+	// Find pointer to start (seems not to start at the "start" all the time, e.g e-track-1)
+	do {
+		if (seg->lgfromstart == 0.0) {
+			first = seg;
+			break;
+		}
+		seg = seg->next;
+	} while (ptrack->seg != seg);
+	
 	trackWidth = seg->width;
 	nSegments = (int) floor(ptrack->length/SegLength);
 	rlseg = new RacelineSegment[nSegments];
@@ -104,7 +114,7 @@ static void SplitTrack(tTrack *ptrack)
 		}
 
 		seg = seg->next;
-	} while (ptrack->seg != seg);
+	} while (first != seg);
 }
 
 
@@ -218,7 +228,7 @@ static void Smooth(int Step)
 		double lNext = (rlseg[i].t-rlseg[next].t).len();
 		double TargetRInverse = (lNext * ri0 + lPrev * ri1) / (lNext + lPrev);
 
-		double Security = 0.0; //lPrev * lNext / (8 * SecurityR);
+		double Security = lPrev * lNext / (8 * SecurityR);
 		AdjustRadius(prev, i, next, TargetRInverse, Security);
 
 		prevprev = prev;

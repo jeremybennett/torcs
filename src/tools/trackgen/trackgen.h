@@ -32,8 +32,10 @@
 #define CFG_FILE	"tools/trackgen/trackgen.xml"
 
 
-extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump);
-extern void CalculateTrack(tTrack * Track, void *TrackHandle, int bump);
+extern void GenerateTrack(tTrack * Track, void *TrackHandle, char *outFile, FILE *AllFd, int bump, int raceline);
+extern void CalculateTrack(tTrack * Track, void *TrackHandle);
+extern void generateRaceLine(tTrack *pTrack);
+extern double getTexureOffset(double length);
 
 extern char	*OutputFileName;
 extern int	HeightSteps;
