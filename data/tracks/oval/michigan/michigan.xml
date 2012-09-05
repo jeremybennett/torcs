@@ -33,7 +33,8 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="18.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
-						
+			<attstr name="raceline name" val="raceline.png"/>
+			
 			<attnum name="friction"           val="1.05"/>
 			<attnum name="rolling resistance" val="0.001"/>
 			
@@ -52,6 +53,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="18.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/>
 			
 			<attnum name="friction"           val="1.05"/>
 			<attnum name="rolling resistance" val="0.001"/>
@@ -276,6 +278,9 @@
 		<attstr name="surface" val="asphalt-bw-m1"/>
 		<attnum name="width" unit="m" val="18.0"/>
 		<attnum name="profil steps length" val="15" unit="m"/>
+		<attnum name="raceline widthscale" val="2.5"/>
+		<attnum name="raceline int" val="3"/>
+		<attnum name="raceline ext" val="2"/>
 		
 		<section name="Right Side">
 			<attstr name="surface"  val="grass-m1-2"/>

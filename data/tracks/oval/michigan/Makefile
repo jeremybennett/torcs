@@ -27,7 +27,7 @@ DATA      = michigan.xml background.png michigan.acc michigan.png readme.txt \
 			tent.rgb torcs0_arbor_n.rgb torcs1.rgb torcs-url-yellow-red.rgb truck_arbor_berniw_n.rgb \
 			truck_arbor_bt_n.rgb truck_arbor_ctd_n.rgb truck_arbor_cylos_n.rgb truck_arbor_inferno_n.rgb \
 			truck_arbor_speedy_n.rgb truck_arbor_tanhoj_n.rgb truck_arbor_tita_n.rgb wall4.rgb \
-			wall-m1-2.rgb wall-m1.rgb wall-torcs.rgb shadow2.rgb
+			wall-m1-2.rgb wall-m1.rgb wall-torcs.rgb shadow2.rgb raceline.png
 
 
 data-tracks-oval_PKGFILES	= $(DATA)
