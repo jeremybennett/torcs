@@ -109,6 +109,7 @@
 #define TRK_ATT_REBOUND  "rebound"
 #define TRK_ATT_TEXTURE  "texture name"
 #define TRK_ATT_BUMPNAME "bump name"
+#define TRK_ATT_RACELINENAME "raceline name"
 #define TRK_ATT_TEXTYPE  "texture type"
 #define TRK_ATT_TEXLINK  "texture link with previous"
 #define TRK_ATT_TEXSIZE  "texture size"
