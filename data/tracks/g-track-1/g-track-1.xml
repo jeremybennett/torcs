@@ -88,6 +88,9 @@
 		<attnum name="width"   val="15.0"/>
 		<attstr name="surface" val="asphalt-g1"/>
 		<attnum name="profil steps length" val="15" unit="m"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="3"/>
+		<attnum name="raceline ext" val="3"/>		
 
 		<section name="Left Side">
 			<attnum name="width" val="6.0" unit="m"/>
@@ -579,6 +582,7 @@
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
 
+			<attstr name="raceline name" val="raceline.png"/> 
 			<attnum name="friction"           val="1.15"/>
 			<attnum name="rolling resistance" val="0.02"/>
 			<attnum name="roughness" val="0.01"/>
@@ -677,6 +681,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="continuous"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attnum name="friction"           val="1.15"/>
 			<attnum name="rolling resistance" val="0.02"/>
@@ -736,6 +741,7 @@
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
 			<attstr name="texture link with previous" val="yes"/>
 			<attstr name="texture start on boundary" val="yes"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attnum name="friction"           val="1.2"/>
 			<attnum name="rolling resistance" val="0.01"/>
@@ -756,6 +762,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attnum name="friction"           val="1.2"/>
 			<attnum name="rolling resistance" val="0.01"/>
@@ -778,6 +785,7 @@
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
 			<attstr name="texture link with previous" val="yes"/>
 			<attstr name="texture start on boundary" val="yes"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attnum name="friction"           val="1.2"/>
 			<attnum name="rolling resistance" val="0.01"/>
