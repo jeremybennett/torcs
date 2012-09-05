@@ -1669,6 +1669,7 @@ if exist .\data\tracks\oval\michigan\wall-m1-2.rgb copy .\data\tracks\oval\michi
 if exist .\data\tracks\oval\michigan\wall-m1.rgb copy .\data\tracks\oval\michigan\wall-m1.rgb .\%RUNTIMEDIR%\tracks\oval\michigan\wall-m1.rgb
 if exist .\data\tracks\oval\michigan\wall-torcs.rgb copy .\data\tracks\oval\michigan\wall-torcs.rgb .\%RUNTIMEDIR%\tracks\oval\michigan\wall-torcs.rgb
 if exist .\data\tracks\oval\michigan\shadow2.rgb copy .\data\tracks\oval\michigan\shadow2.rgb .\%RUNTIMEDIR%\tracks\oval\michigan\shadow2.rgb
+if exist .\data\tracks\oval\michigan\raceline.png copy .\data\tracks\oval\michigan\raceline.png .\%RUNTIMEDIR%\tracks\oval\michigan\raceline.png
 
 if exist .\data\tracks\road\ruudskogen\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\ruudskogen\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
