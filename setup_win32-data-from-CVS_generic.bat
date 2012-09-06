@@ -1820,6 +1820,7 @@ if exist .\data\tracks\road\alpine-1\truck0.rgb copy .\data\tracks\road\alpine-1
 if exist .\data\tracks\road\alpine-1\truck1.rgb copy .\data\tracks\road\alpine-1\truck1.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\truck1.rgb
 if exist .\data\tracks\road\alpine-1\walls2.rgb copy .\data\tracks\road\alpine-1\walls2.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\walls2.rgb
 if exist .\data\tracks\road\alpine-1\walls.rgb copy .\data\tracks\road\alpine-1\walls.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\walls.rgb
+if exist .\data\tracks\road\alpine-1\raceline.png copy .\data\tracks\road\alpine-1\raceline.png .\%RUNTIMEDIR%\tracks\road\alpine-1\raceline.png
 
 if exist .\data\tracks\road\g-track-2\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\g-track-2\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
