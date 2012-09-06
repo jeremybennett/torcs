@@ -204,6 +204,8 @@ Changes since 1.3.4-test1
 - Fixed remaining tiny memory leaks regarding GfTime2Str (Bernhard).
 - Disabled some xml caching to reduce memory footprint (Bernhard).
 - Fixed more remaining leaked handles (Bernhard).
+- Added raceline to ruudskogen (Bernhard).
+- adjusted lighting of corkscrew and brondehach (Bernhard).
 
 
 Changes since 1.3.3
