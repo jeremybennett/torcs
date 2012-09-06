@@ -1704,6 +1704,7 @@ if exist .\data\tracks\road\ruudskogen\road03.png copy .\data\tracks\road\ruudsk
 if exist .\data\tracks\road\ruudskogen\road-edge.png copy .\data\tracks\road\ruudskogen\road-edge.png .\%RUNTIMEDIR%\tracks\road\ruudskogen\road-edge.png
 if exist .\data\tracks\road\ruudskogen\ruudskog_arbor.png copy .\data\tracks\road\ruudskogen\ruudskog_arbor.png .\%RUNTIMEDIR%\tracks\road\ruudskogen\ruudskog_arbor.png
 if exist .\data\tracks\road\ruudskogen\sand01.png copy .\data\tracks\road\ruudskogen\sand01.png .\%RUNTIMEDIR%\tracks\road\ruudskogen\sand01.png
+if exist .\data\tracks\road\ruudskogen\raceline.png copy .\data\tracks\road\ruudskogen\raceline.png .\%RUNTIMEDIR%\tracks\road\ruudskogen\raceline.png
 
 if exist .\data\tracks\mixed-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\mixed-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
