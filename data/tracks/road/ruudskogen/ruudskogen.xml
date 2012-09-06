@@ -30,7 +30,8 @@ the Free Software Foundation; either version 2 of the License, or
 		<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 		<attnum name="texture size" val="35.0" unit="m"/>
 		<attnum name="texture mipmap" val="14.0" unit="m"/>
-	
+		<attstr name="raceline name" val="raceline.png"/>
+		
 		<attstr name="bump name" val=""/>
 		<attnum name="bump size" val="2.0" unit="m"/>
 	
@@ -51,6 +52,7 @@ the Free Software Foundation; either version 2 of the License, or
 		<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 		<attnum name="texture size" val="35.0" unit="m"/>
 		<attnum name="texture mipmap" val="14.0" unit="m"/>
+		<attstr name="raceline name" val="raceline.png"/>
 	
 		<attstr name="bump name" val=""/>
 		<attnum name="bump size" val="2.0" unit="m"/>
@@ -93,6 +95,7 @@ the Free Software Foundation; either version 2 of the License, or
 		<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 		<attnum name="texture size" val="35.0" unit="m"/>
 		<attnum name="texture mipmap" val="14.0" unit="m"/>
+		<attstr name="raceline name" val="raceline.png"/>
 	
 		<attstr name="bump name" val=""/>
 		<attnum name="bump size" val="2.0" unit="m"/>
@@ -294,9 +297,9 @@ the Free Software Foundation; either version 2 of the License, or
     <attnum name="diffuse color G" val="1"/>
     <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.5"/>
-    <attnum name="specular color G" val="0.5"/>
-    <attnum name="specular color B" val="0.5"/>
+    <attnum name="specular color R" val="0.1"/>
+    <attnum name="specular color G" val="0.1"/>
+    <attnum name="specular color B" val="0.1"/>
 
     <attnum name="light position x" val="2500"/>
     <attnum name="light position y" val="2500"/>
@@ -320,6 +323,7 @@ the Free Software Foundation; either version 2 of the License, or
     <attnum name="width" unit="m" val="11.0" />
     <attnum name="profil steps length" unit="m" val="4.0" />
     <attstr name="surface" val="rroad" />
+	<attnum name="raceline widthscale" val="1.5"/>
     <!--Left part of track-->
     <section name="Left Side">
       <attnum name="start width" unit="m" val="4.0" />
