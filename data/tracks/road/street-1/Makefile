@@ -26,7 +26,7 @@ DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png background.png barr1.rgb conc
 			tr-building8.rgb tr-building9.rgb tr-curb-bw-aa-r.rgb tree-border_n.rgb treeg10_n.rgb \
 			tree-new_n.rgb tree-poplar_n.rgb tr-house-arbor_n.png tr-house-arbor2_n.png tr-road1_n.rgb \
 			tr-road1-pit_n.rgb tr-spec.png truck_arbor_ctd_n.rgb truck0.rgb walls.rgb walls2.rgb \
-			readme.txt 
+			readme.txt raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 

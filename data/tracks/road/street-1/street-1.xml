@@ -32,6 +32,7 @@ the Free Software Foundation; either version 2 of the License, or
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="15.0001" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
+		<attstr name="raceline name" val="raceline.png"/> 
 
       <attstr name="bump name" val=""/>
       <attnum name="bump size" val="2.0" unit="m"/>
@@ -518,9 +519,9 @@ the Free Software Foundation; either version 2 of the License, or
     <attnum name="diffuse color G" val="1"/>
     <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.5"/>
-    <attnum name="specular color G" val="0.5"/>
-    <attnum name="specular color B" val="0.5"/>
+    <attnum name="specular color R" val="0.2"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.2"/>
         
     <attnum name="light position x" val="400"/>
     <attnum name="light position y" val="-1200"/>
@@ -547,6 +548,12 @@ the Free Software Foundation; either version 2 of the License, or
     <attnum name="profil steps length" unit="m" val="4.0" />
     <attstr name="profil" in="linear,spline" val="spline"/>
     <attstr name="surface" val="asphalt-aa-bw1" />
+			<attnum name="raceline widthscale" val="1.5"/>
+			<attnum name="raceline int" val="1.5"/>
+			<attnum name="raceline ext" val="2"/>		
+
+	
+	
     <!--Left part of track-->
     <section name="Left Side">
       <attnum name="start width" unit="m" val="2.0" />
