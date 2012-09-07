@@ -18,10 +18,32 @@
 		  
 <params name="Olethros Road 1" type="trackdef" mode="mw">
 	
-	
-	<!-- Surfaces -->
-	<section name="Surfaces">
-		&default-surfaces;
+		<!-- Surfaces -->
+		<section name="Surfaces">
+			&default-surfaces;
+			<section name="asphalt-lines-ole">
+			<attnum name="color R1" val="0.1"/>
+			<attnum name="color G1" val="0.1"/>
+			<attnum name="color B1" val="0.1"/>
+			<attnum name="color R2" val="0.2"/>
+			<attnum name="color G2" val="0.2"/>
+			<attnum name="color B2" val="0.2"/>
+			<attstr name="texture name" val="tr-asphalt-l_nmm.rgb"/>
+			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+			<attnum name="texture size" val="50.0" unit="m"/>
+			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
+
+			<attstr name="bump name" val="bump-as.rgb"/>
+			<attnum name="bump size" val="2.0" unit="m"/>
+
+			<attnum name="friction"           val="1.2"/>
+			<attnum name="rolling resistance" val="0.001"/>
+
+			<attnum name="roughness" val="0"/>
+			<attnum name="roughness wavelength" val="1.0"/>
+		</section>
+
 		<section name="concrete-patch">
 			<attnum name="color R1" val="0.3"/>
 			<attnum name="color G1" val="0.3"/>
@@ -33,6 +55,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="continuous"/>
 			<attnum name="texture size" val="10.0" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 			
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -75,7 +98,8 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="50.0" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
-			
+			<attstr name="raceline name" val="raceline.png"/> 
+
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
 			
@@ -96,6 +120,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="50.0" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 			
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -246,7 +271,10 @@
 		
 		<attnum name="width" unit="m" val="10.0"/>
 		<attnum name="profil steps length" unit="m" val="10"/>
-				
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="1.5"/>		
+
 		<!-- PITS -->
 		<section name="Pits">
 			<attstr name="type" val="track side"/>
@@ -263,7 +291,7 @@
 			
 			
 			<section name="s1">
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="100"/>
 				<section name="Left Side">
@@ -383,7 +411,7 @@
 			<section name="turn1-7">
 				<attnum name="profil steps length" unit="m" val="10"/>
 				<attstr name="type" val="lft"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="radius" unit="m" val="100"/>
 				<attnum name="arc" unit="deg" val="20"/>
 				<attnum name="banking end" unit="deg" val="2.0"/>
@@ -421,7 +449,7 @@
 			<section name="s4b">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="123"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 			</section>
 			<section name="s4c">
 				<attstr name="type" val="str"/>
@@ -444,7 +472,7 @@
 			<section name="s4f">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="200"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="grade" unit="%" val="1"/>
 			</section>
 			
@@ -465,7 +493,7 @@
 				<attnum name="profil steps length" unit="m" val="5"/>
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="35"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="banking end" unit="deg" val="-5.0"/>
 				<attnum name="grade" unit="%" val="5"/>
 			</section>
@@ -479,7 +507,7 @@
 			<section name="s5b">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="15"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="banking end" unit="deg" val="5.0"/>
 				<attnum name="grade" unit="%" val="5"/>
 			</section>
@@ -498,7 +526,7 @@
 			<section name="s6-1">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="10"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="banking end" unit="deg" val="0.0"/>
 				<attnum name="grade" unit="%" val="2"/>
 			</section>
@@ -512,7 +540,7 @@
 			<section name="s6-3">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="90"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="banking end" unit="deg" val="0.0"/>
 				<attnum name="grade" unit="%" val="2"/>
 			</section>
@@ -670,7 +698,7 @@
 			<section name="s9c">
 				<attstr name="type" val="str"/>
 				<attnum name="lg" unit="m" val="190.0"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="banking end" unit="deg" val="-5.0"/>
 				<attnum name="grade" unit="%" val="-2"/>
 			</section>
@@ -720,7 +748,7 @@
 			</section>
 			<section name="turn11">
 				<attstr name="type" val="lft"/>
-				<attstr name="surface" val="asphalt-lines"/>
+				<attstr name="surface" val="asphalt-lines-ole"/>
 				<attnum name="radius" unit="m" val="601.74"/>
 				<attnum name="arc" unit="deg" val="90"/>
 				<attnum name="z end" val="0"/>

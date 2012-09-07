@@ -24,7 +24,7 @@ DATADIR   = tracks/$(CATEGORY)/$(TRACK)
 DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png concrete-patch.png cracked-asphalt.png \
 			ole-concrete-pits.png ole-concrete-side.png patched-asphalt-1.png \
 			patched-asphalt-2.png readme.txt shadow2.rgb tr-asphalt-l_nmm.rgb close-bush.rgb \
-			background.png
+			background.png raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 
