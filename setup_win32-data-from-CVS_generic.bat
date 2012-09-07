@@ -2029,6 +2029,7 @@ if exist .\data\tracks\road\street-1\truck_arbor_ctd_n.rgb copy .\data\tracks\ro
 if exist .\data\tracks\road\street-1\truck0.rgb copy .\data\tracks\road\street-1\truck0.rgb .\%RUNTIMEDIR%\tracks\road\street-1\truck0.rgb
 if exist .\data\tracks\road\street-1\walls.rgb copy .\data\tracks\road\street-1\walls.rgb .\%RUNTIMEDIR%\tracks\road\street-1\walls.rgb
 if exist .\data\tracks\road\street-1\walls2.rgb copy .\data\tracks\road\street-1\walls2.rgb .\%RUNTIMEDIR%\tracks\road\street-1\walls2.rgb
+if exist .\data\tracks\road\street-1\raceline.png copy .\data\tracks\road\street-1\raceline.png .\%RUNTIMEDIR%\tracks\road\street-1\raceline.png
 if exist .\data\tracks\road\street-1\readme.txt copy .\data\tracks\road\street-1\readme.txt .\%RUNTIMEDIR%\tracks\road\street-1\readme.txt
 
 if exist .\data\tracks\dirt\dirt-3\*.* call .\create_dir .\%RUNTIMEDIR%
