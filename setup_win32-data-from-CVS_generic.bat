@@ -1921,6 +1921,7 @@ if exist .\data\tracks\road\ole-road-1\shadow2.rgb copy .\data\tracks\road\ole-r
 if exist .\data\tracks\road\ole-road-1\tr-asphalt-l_nmm.rgb copy .\data\tracks\road\ole-road-1\tr-asphalt-l_nmm.rgb .\%RUNTIMEDIR%\tracks\road\ole-road-1\tr-asphalt-l_nmm.rgb
 if exist .\data\tracks\road\ole-road-1\close-bush.rgb copy .\data\tracks\road\ole-road-1\close-bush.rgb .\%RUNTIMEDIR%\tracks\road\ole-road-1\close-bush.rgb
 if exist .\data\tracks\road\ole-road-1\background.png copy .\data\tracks\road\ole-road-1\background.png .\%RUNTIMEDIR%\tracks\road\ole-road-1\background.png
+if exist .\data\tracks\road\ole-road-1\raceline.png copy .\data\tracks\road\ole-road-1\raceline.png .\%RUNTIMEDIR%\tracks\road\ole-road-1\raceline.png
 
 if exist .\data\tracks\road\spring\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\spring\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
