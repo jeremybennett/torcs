@@ -181,6 +181,8 @@ Changes since 1.3.4-test2
 - Added raceline to ruudskogen (Bernhard).
 - Adjusted lighting of corkscrew and brondehach (Bernhard).
 - Did workflow related fixes on alpine-1, added raceline (Bernhard).
+- Added raceline to ole-road-1, removed generated/outdated files (Bernhard).
+- Added raceline to street-1 (Bernhard).
 
 
 Changes since 1.3.4-test1
