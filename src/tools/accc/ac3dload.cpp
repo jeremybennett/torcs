@@ -1190,7 +1190,7 @@ int loadACo( char *inputFilename, char *outputFilename, int saveIn)
 		} else {
 			if (doVerb==NULL) {
 				fprintf(stderr," Unknown verb %s\n", Line);
-				return (-1);
+				continue;
 			}
 			numvertFound=0;
 			numrefsFound=0;
