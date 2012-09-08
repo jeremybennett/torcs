@@ -1928,8 +1928,10 @@ if exist .\data\tracks\road\spring\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
 if exist .\data\tracks\road\spring\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\road
 if exist .\data\tracks\road\spring\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\road\spring
 if exist .\data\tracks\road\spring\spring.xml copy .\data\tracks\road\spring\spring.xml .\%RUNTIMEDIR%\tracks\road\spring\spring.xml
-if exist .\data\tracks\road\spring\spring.ac copy .\data\tracks\road\spring\spring.ac .\%RUNTIMEDIR%\tracks\road\spring\spring.ac
+if exist .\data\tracks\road\spring\spring.acc copy .\data\tracks\road\spring\spring.acc .\%RUNTIMEDIR%\tracks\road\spring\spring.acc
 if exist .\data\tracks\road\spring\spring.png copy .\data\tracks\road\spring\spring.png .\%RUNTIMEDIR%\tracks\road\spring\spring.png
+if exist .\data\tracks\road\spring\raceline.png copy .\data\tracks\road\spring\raceline.png .\%RUNTIMEDIR%\tracks\road\spring\raceline.png
+if exist .\data\tracks\road\spring\background.png copy .\data\tracks\road\spring\background.png .\%RUNTIMEDIR%\tracks\road\spring\background.png
 
 if exist .\data\tracks\wheel-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\wheel-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
