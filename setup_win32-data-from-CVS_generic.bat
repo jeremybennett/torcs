@@ -1384,8 +1384,9 @@ if exist .\data\tracks\e-track-4\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\roa
 if exist .\data\tracks\e-track-4\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\road\e-track-4
 if exist .\data\tracks\e-track-4\e-track-4.xml copy .\data\tracks\e-track-4\e-track-4.xml .\%RUNTIMEDIR%\tracks\road\e-track-4\e-track-4.xml
 if exist .\data\tracks\e-track-4\background.png copy .\data\tracks\e-track-4\background.png .\%RUNTIMEDIR%\tracks\road\e-track-4\background.png
-if exist .\data\tracks\e-track-4\e-track-4.ac copy .\data\tracks\e-track-4\e-track-4.ac .\%RUNTIMEDIR%\tracks\road\e-track-4\e-track-4.ac
+if exist .\data\tracks\e-track-4\e-track-4.acc copy .\data\tracks\e-track-4\e-track-4.acc .\%RUNTIMEDIR%\tracks\road\e-track-4\e-track-4.acc
 if exist .\data\tracks\e-track-4\e-track-4.png copy .\data\tracks\e-track-4\e-track-4.png .\%RUNTIMEDIR%\tracks\road\e-track-4\e-track-4.png
+if exist .\data\tracks\e-track-4\raceline.png copy .\data\tracks\e-track-4\raceline.png .\%RUNTIMEDIR%\tracks\road\e-track-4\raceline.png
 
 if exist .\data\tracks\e-track-5\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\e-track-5\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
