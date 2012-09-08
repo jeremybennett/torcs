@@ -1235,6 +1235,7 @@ if exist .\data\tracks\aalborg\tr-asphalt-to-g-aa-l_n.rgb copy .\data\tracks\aal
 if exist .\data\tracks\aalborg\tr-asphalt-aa-bw2-s_n.rgb copy .\data\tracks\aalborg\tr-asphalt-aa-bw2-s_n.rgb .\%RUNTIMEDIR%\tracks\road\aalborg\tr-asphalt-aa-bw2-s_n.rgb
 if exist .\data\tracks\aalborg\aalborg.png copy .\data\tracks\aalborg\aalborg.png .\%RUNTIMEDIR%\tracks\road\aalborg\aalborg.png
 if exist .\data\tracks\aalborg\background.png copy .\data\tracks\aalborg\background.png .\%RUNTIMEDIR%\tracks\road\aalborg\background.png
+if exist .\data\tracks\aalborg\raceline.png copy .\data\tracks\aalborg\raceline.png .\%RUNTIMEDIR%\tracks\road\aalborg\raceline.png
 
 if exist .\data\tracks\a-speedway\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\a-speedway\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
