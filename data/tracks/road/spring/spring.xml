@@ -159,8 +159,8 @@
 
 
     <attnum name="light position x" val="-0"/>
-    <attnum name="light position y" val="1000"/>
-    <attnum name="light position z" val="300"/>
+    <attnum name="light position y" val="30000"/>
+    <attnum name="light position z" val="9000"/>
 
     <attnum name="fov factor" val="1.2"/>
 
