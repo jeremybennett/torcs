@@ -25,7 +25,7 @@ DATA      = aalborg.xml aalborg.acc aalborg.png readme.txt allborg-trees_n.rgb s
 			tr-curb-bw-aa-r.rgb grass-aa.rgb tr-g-to-asphalt-aa-l_n.rgb tr-grass-aa-l_n.rgb \
 			tr-asphalt-2-aa-r_n.rgb tr-asphalt-aa-bw2-e_n.rgb tr-asphalt-aa-bw2_n.rgb \
 			tarmac-wall-1-g2.rgb tr-asphalt-to-g-aa-l_n.rgb tr-asphalt-aa-bw2-s_n.rgb \
-			aalborg.png background.png
+			aalborg.png background.png raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 

@@ -80,6 +80,9 @@
 		<attnum name="width"   val="10.0"/>
 		<attstr name="surface" val="asphalt-aa-bw1"/>
 		<attnum name="profil steps length" val="9" unit="m"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="2"/>		
 
 		<section name="Left Side">
 			<attnum name="width" val="3.0" unit="m"/>
@@ -1150,6 +1153,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -1244,6 +1248,7 @@
 			<attstr name="texture start on boundary" val="yes"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -1268,6 +1273,7 @@
 			<attstr name="texture start on boundary" val="yes"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -1290,6 +1296,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -1336,6 +1343,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val=""/>
 			<attnum name="bump size" val="2.0" unit="m"/>
