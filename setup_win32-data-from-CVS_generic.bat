@@ -1859,6 +1859,7 @@ if exist .\data\tracks\road\g-track-2\torcs0_arbor_n.rgb copy .\data\tracks\road
 if exist .\data\tracks\road\g-track-2\grassg1.rgb copy .\data\tracks\road\g-track-2\grassg1.rgb .\%RUNTIMEDIR%\tracks\road\g-track-2\grassg1.rgb
 if exist .\data\tracks\road\g-track-2\grassg3.rgb copy .\data\tracks\road\g-track-2\grassg3.rgb .\%RUNTIMEDIR%\tracks\road\g-track-2\grassg3.rgb
 if exist .\data\tracks\road\g-track-2\shadow2.rgb copy .\data\tracks\road\g-track-2\shadow2.rgb .\%RUNTIMEDIR%\tracks\road\g-track-2\shadow2.rgb
+if exist .\data\tracks\road\g-track-2\raceline.png copy .\data\tracks\road\g-track-2\raceline.png .\%RUNTIMEDIR%\tracks\road\g-track-2\raceline.png
 
 if exist .\data\tracks\road\g-track-3\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\g-track-3\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
