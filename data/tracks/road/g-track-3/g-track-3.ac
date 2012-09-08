@@ -248,7 +248,7 @@ refs 3
 kids 0
 OBJECT poly
 name "t1RB0"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 12
 446.824036 0.000000 -122.480789
 446.824036 0.000000 -107.480789
@@ -15937,7 +15937,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt133"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 16
 603.150635 20.000000 -586.577881
 603.150635 22.000000 -586.577881
@@ -16733,7 +16733,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt140"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 16
 641.172241 19.123339 -624.056213
 641.172241 21.123339 -624.056213
@@ -17470,7 +17470,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt147"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 14
 672.920654 18.522079 -671.113159
 672.920654 20.522079 -671.113159
@@ -18109,7 +18109,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt153"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 12
 694.779480 16.232634 -722.446533
 694.779480 18.232634 -722.446533
@@ -18636,7 +18636,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt158"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 699.213867 16.715435 -783.197998
 699.213867 18.715435 -783.197998
@@ -19152,7 +19152,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt162"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 673.532776 18.575407 -833.925415
 673.532776 20.575407 -833.925415
@@ -19609,7 +19609,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt166"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 625.637634 19.927561 -865.201416
 625.637634 21.927561 -865.201416
@@ -20055,7 +20055,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt170"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 571.524475 18.911861 -869.892700
 571.524475 20.911861 -869.892700
@@ -20423,7 +20423,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt174"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 520.244995 16.116203 -856.905640
 520.244995 18.116203 -856.905640
@@ -20922,7 +20922,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt178"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 474.687805 15.120713 -828.168579
 474.687805 17.120712 -828.168579
@@ -21407,7 +21407,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt182"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 10
 438.226501 15.167298 -783.353821
 438.226501 17.167297 -783.353821
@@ -22004,7 +22004,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt186"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 16
 419.397247 15.213882 -729.061279
 419.397247 17.213882 -729.061279
@@ -22660,7 +22660,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt193"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 16
 392.905029 14.456611 -683.936523
 392.905029 16.456612 -683.936523
@@ -23453,7 +23453,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt200"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 18
 346.076477 13.843750 -667.038452
 346.076477 15.843750 -667.038452
@@ -24335,7 +24335,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt208"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 14
 288.989319 12.951407 -658.372131
 288.989319 14.951407 -658.372131
@@ -25036,7 +25036,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt214"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 14
 240.036530 12.450074 -622.886841
 240.036530 14.450074 -622.886841
@@ -26067,7 +26067,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt220"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 34
 217.166153 12.012741 -566.441772
 217.166153 14.012741 -566.441772
@@ -27241,7 +27241,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Rt236"
-texture "barg4.rgb"
+texture "arbor-wood_n.rgb"
 numvert 4
 195.694778 10.018181 -524.175659
 195.694778 12.018181 -524.175659
@@ -36786,7 +36786,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Lt319"
-texture "barg1_n.rgb"
+texture "arbor2_n.rgb"
 numvert 18
 86.060059 7.000000 -141.475433
 86.060059 2.000000 -141.475433
@@ -37638,7 +37638,7 @@ refs 3
 kids 0
 OBJECT poly
 name "B0Lt327"
-texture "barg1_n.rgb"
+texture "arbor2_n.rgb"
 numvert 18
 136.727051 5.000000 -141.475479
 136.727051 0.000000 -141.475479
@@ -38154,7 +38154,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRS335"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 8
 186.727051 0.000000 -122.475540
 186.727081 0.000000 -107.475540
@@ -39993,7 +39993,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRS338"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 8
 238.745026 0.000000 -122.475601
 238.745041 0.000000 -107.475601
@@ -40296,7 +40296,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRS341"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 8
 290.763000 0.000000 -122.475655
 290.763000 0.000000 -107.475655
@@ -40599,7 +40599,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRS344"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 8
 342.781006 0.000000 -122.475716
 342.781006 0.000000 -107.475716
@@ -40902,7 +40902,7 @@ refs 3
 kids 0
 OBJECT poly
 name "tkRS347"
-texture "asp.rgb"
+texture "asp_n.rgb"
 numvert 8
 394.798981 0.000000 -122.475777
 394.799011 0.000000 -107.475777

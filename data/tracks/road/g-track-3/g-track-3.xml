@@ -52,9 +52,9 @@
     <attnum name="shininess" val="5000"/>
 
 
-    <attnum name="light position x" val="-300"/>
-    <attnum name="light position y" val="-300"/>
-    <attnum name="light position z" val="300"/>
+    <attnum name="light position x" val="-3000"/>
+    <attnum name="light position y" val="-3000"/>
+    <attnum name="light position z" val="3000"/>
 
     <section name="Environment Mapping">
       <section name="general">
@@ -100,6 +100,9 @@
     <attstr name="surface" val="gasphalt5"/>
     <attnum name="width" unit="m" val="10.0"/>
     <attnum name="profil steps length" val="10" unit="m"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="2"/>		
 
     <section name="Right Border">
       <attnum name="width" val="2.0"/>
@@ -147,11 +150,11 @@
 	<attnum name="lg" unit="m" val="40"/>
 	<attnum name="z end" val="+0" unit="m"/>
 
-	<section name="Right Border">
-	  <attnum name="width" val="2.0"/>
-	  <attstr name="surface" val="gconcrete"/>
+        <section name="Right Border">
+          <attnum name="width" val="2.0"/>
+          <attstr name="surface" val="g-sand-r"/>
 	  <attstr name="style" val="plan"/>
-	</section>
+        </section>
 
 	<section name="Right Barrier">
 	  <attstr name="style" val="fence"/>
@@ -1785,7 +1788,7 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="30.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
@@ -1807,7 +1810,7 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="30.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
@@ -1829,7 +1832,7 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="30.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
@@ -1851,7 +1854,7 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="30.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
@@ -1873,7 +1876,7 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="30.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
@@ -2084,7 +2087,7 @@
       <attnum name="color R2" val="0.2"/>
       <attnum name="color G2" val="0.2"/>
       <attnum name="color B2" val="0.2"/>
-      <attstr name="texture name" val="asp.rgb"/>
+      <attstr name="texture name" val="asp_n.rgb"/>
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attstr name="texture link with previous" val="yes"/>
       <attstr name="texture start on boundary" val="yes"/>
