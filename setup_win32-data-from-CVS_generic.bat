@@ -1343,6 +1343,7 @@ if exist .\data\tracks\e-track-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\roa
 if exist .\data\tracks\e-track-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks\road\e-track-1
 if exist .\data\tracks\e-track-1\e-track-1.xml copy .\data\tracks\e-track-1\e-track-1.xml .\%RUNTIMEDIR%\tracks\road\e-track-1\e-track-1.xml
 if exist .\data\tracks\e-track-1\background.png copy .\data\tracks\e-track-1\background.png .\%RUNTIMEDIR%\tracks\road\e-track-1\background.png
+if exist .\data\tracks\e-track-1\raceline.png copy .\data\tracks\e-track-1\raceline.png .\%RUNTIMEDIR%\tracks\road\e-track-1\raceline.png
 if exist .\data\tracks\e-track-1\e-track-1.acc copy .\data\tracks\e-track-1\e-track-1.acc .\%RUNTIMEDIR%\tracks\road\e-track-1\e-track-1.acc
 if exist .\data\tracks\e-track-1\e-track-1.png copy .\data\tracks\e-track-1\e-track-1.png .\%RUNTIMEDIR%\tracks\road\e-track-1\e-track-1.png
 if exist .\data\tracks\e-track-1\readme.txt copy .\data\tracks\e-track-1\readme.txt .\%RUNTIMEDIR%\tracks\road\e-track-1\readme.txt
