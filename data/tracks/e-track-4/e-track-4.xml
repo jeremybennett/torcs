@@ -22,6 +22,31 @@
   <!-- Surfaces -->
   <section name="Surfaces">
       &default-surfaces;
+	  
+	<section name="e4-road1">
+		<attnum name="color R1" val="0.1"/>
+		<attnum name="color G1" val="0.4"/>
+		<attnum name="color B1" val="0.1"/>
+		<attnum name="color R2" val="0.2"/>
+		<attnum name="color G2" val="0.5"/>
+		<attnum name="color B2" val="0.2"/>
+		<attstr name="texture name" val="tr-road1.rgb"/>
+		<attstr name="texture type" in="discrete, continuous" val="continuous"/>
+		<attnum name="texture size" val="15.0" unit="m"/>
+		<attnum name="texture mipmap" val="4.0"/>
+		<attstr name="raceline name" val="raceline.png"/> 
+
+		<attstr name="bump name" val=""/>
+		<attnum name="bump size" val="2.0" unit="m"/>
+
+		<attnum name="friction"           val="1.1"/>
+		<attnum name="rolling resistance" val="0.002"/>
+
+		<attnum name="roughness" val="0"/>
+		<attnum name="roughness wavelength" val="1.0"/>
+	</section>
+
+	  
   </section>  <!-- Surfaces -->
 
   <!-- Objects -->
@@ -38,9 +63,11 @@
   </section>
 
   <section name="Graphic">
-    <attstr name="3d description" val="e-track-4.ac"/>
+    <attstr name="3d description" val="e-track-4.acc"/>
     <attstr name="background image" val="background.png"/>
     <attnum name="fov factor" val="2.0"/>
+  	<attnum name="background type" val="4"/>
+
 
     <attnum name="ambient color R" val="0.4"/>
     <attnum name="ambient color G" val="0.4"/>
@@ -57,9 +84,9 @@
     <attnum name="shininess" val="5000"/>
 
 
-    <attnum name="light position x" val="-300"/>
-    <attnum name="light position y" val="-300"/>
-    <attnum name="light position z" val="300"/>
+    <attnum name="light position x" val="-3000"/>
+    <attnum name="light position y" val="-3000"/>
+    <attnum name="light position z" val="3000"/>
 
 
     <section name="Environment Mapping">
@@ -85,9 +112,12 @@
 
   <section name="Main Track">
 
-    <attstr name="surface" val="road1"/>
+    <attstr name="surface" val="e4-road1"/>
     <attnum name="width" unit="m" val="15.0"/>
     <attnum name="profil steps length" unit="m" val="10"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="2"/>		
 
     <!-- PITS -->
     <section name="Pits">
@@ -141,7 +171,7 @@
 	<attnum name="banking end" unit="deg" val="-1"/>
 
 	<section name="Left Side">
-	  <attstr name="surface" val="road1"/>
+	  <attstr name="surface" val="e4-road1"/>
 	  <attnum name="end width" val="10"/>
 	</section>
 
@@ -646,7 +676,7 @@
 
 	<section name="Left Side">
 	  <attnum name="end width" val="10"/>
-	  <attstr name="surface" val="road1"/>
+	  <attstr name="surface" val="e4-road1"/>
 	</section>
 
  	<section name="Left Border">
