@@ -52,8 +52,8 @@
 
 
 		<attnum name="light position x" val="-0"/>
-		<attnum name="light position y" val="1000"/>
-		<attnum name="light position z" val="300"/>
+		<attnum name="light position y" val="10000"/>
+		<attnum name="light position z" val="3000"/>
 
 
 		<section name="Environment Mapping">
@@ -87,6 +87,9 @@
 		<attnum name="width" unit="m" val="15.0"/>
 		<!--attstr name="surface" val="asphalt-lines"/-->
 		<attstr name="surface" val="asphalt-bw3"/>
+		<attnum name="raceline widthscale" val="1.3"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="2"/>		
 
 		<section name="Right Side">
 			<attstr name="surface"  val="grass-bw1"/>
@@ -968,6 +971,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val="bump-as.rgb"/>
 			<attnum name="bump size" val="2.0" unit="m"/>
@@ -992,6 +996,7 @@
 			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
 			<attnum name="texture size" val="15.0001" unit="m"/>
 			<attnum name="texture mipmap" val="0.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
 			<attstr name="bump name" val="bump-as.rgb"/>
 			<attnum name="bump size" val="2.0" unit="m"/>

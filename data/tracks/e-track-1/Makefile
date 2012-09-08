@@ -21,7 +21,7 @@ DATADIR   = tracks/road/e-track-1
 DATA      = e-track-1.xml background.png e-track-1.acc e-track-1.png readme.txt geo-bw1.rgb \
 			shadow2.rgb tr-barrier-bw.rgb tr-curb-bw-l.rgb tr-curb-bw-r.rgb tr-grass-bw1.rgb \
 			tr-grass-bw2.rgb tr-asphalt-bw3-pit-e_n.rgb tr-asphalt-bw3-pit-l_n.rgb \
-			tr-asphalt-bw3-pit_n.rgb tr-asphalt-bw3_n.rgb
+			tr-asphalt-bw3-pit_n.rgb tr-asphalt-bw3_n.rgb raceline.png
 
 
 data-tracks-road_PKGFILES	= $(DATA)
