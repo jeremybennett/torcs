@@ -23,7 +23,7 @@ DATA      = g-track-2.xml g-track-2.acc g-track-2.png background.png readme.txt 
 			asp_n.rgb asphalt4.rgb asphalt.rgb barr1.rgb spec.rgb torcs1.rgb poutre4.rgb tent.rgb \
 			barg2.rgb torcs2.rgb std.rgb asconcr.rgb trcurbr.rgb trcurbl.rgb barg3.rgb rock4.rgb \
 			gtirewall.rgb gsand.rgb treewate.rgb torcs0_arbor_n.rgb grassg1.rgb \
-			grassg3.rgb shadow2.rgb
+			grassg3.rgb shadow2.rgb raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 

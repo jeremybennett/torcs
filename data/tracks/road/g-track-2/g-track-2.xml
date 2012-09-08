@@ -33,6 +33,8 @@
   <section name="Graphic">
     <attstr name="3d description" val="g-track-2.acc"/>
     <attstr name="background image" val="background.png"/>
+  	<attnum name="background type" val="4"/>
+
     <attnum name="background color R" val="0.55"/>
     <attnum name="background color G" val="0.55"/>
     <attnum name="background color B" val="0.6"/>
@@ -45,9 +47,9 @@
     <attnum name="diffuse color G" val="1"/>
     <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.4"/>
-    <attnum name="specular color G" val="0.4"/>
-    <attnum name="specular color B" val="0.4"/>
+    <attnum name="specular color R" val="0.2"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.2"/>
 
     <attnum name="shininess" val="5"/>
 
@@ -98,6 +100,9 @@
     <attstr name="surface" val="gasphalt"/>
     <attnum name="width" unit="m" val="15.0"/>
     <attnum name="profil steps length" val="10" unit="m"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="1.5"/>
+		<attnum name="raceline ext" val="2"/>		
 
     <section name="Right Border">
       <attnum name="width" val="1.0"/>
@@ -1373,7 +1378,8 @@
       <attstr name="texture type" in="discrete, continuous" val="discrete"/>
       <attnum name="texture size" val="100.0" unit="m"/>
       <attnum name="texture mipmap" val="0.0" unit="m"/>
-      
+      <attstr name="raceline name" val="raceline.png"/> 
+
       <attnum name="friction"           val="1.2"/>
       <attnum name="rolling resistance" val="0.001"/>
 
