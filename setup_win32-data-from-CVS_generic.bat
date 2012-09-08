@@ -1901,7 +1901,7 @@ if exist .\data\tracks\road\g-track-3\walls2.rgb copy .\data\tracks\road\g-track
 if exist .\data\tracks\road\g-track-3\readme.txt copy .\data\tracks\road\g-track-3\readme.txt .\%RUNTIMEDIR%\tracks\road\g-track-3\readme.txt
 if exist .\data\tracks\road\g-track-3\background.png copy .\data\tracks\road\g-track-3\background.png .\%RUNTIMEDIR%\tracks\road\g-track-3\background.png
 if exist .\data\tracks\road\g-track-3\shadow2.rgb copy .\data\tracks\road\g-track-3\shadow2.rgb .\%RUNTIMEDIR%\tracks\road\g-track-3\shadow2.rgb
-if exist .\data\tracks\road\g-track-3\skid_m2.rgb copy .\data\tracks\road\g-track-3\skid_m2.rgb .\%RUNTIMEDIR%\tracks\road\g-track-3\skid_m2.rgb
+if exist .\data\tracks\road\g-track-3\raceline.png copy .\data\tracks\road\g-track-3\raceline.png .\%RUNTIMEDIR%\tracks\road\g-track-3\raceline.png
 
 if exist .\data\tracks\road\ole-road-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\ole-road-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
