@@ -1326,6 +1326,7 @@ if exist .\data\tracks\eroad\eroad.xml copy .\data\tracks\eroad\eroad.xml .\%RUN
 if exist .\data\tracks\eroad\background.png copy .\data\tracks\eroad\background.png .\%RUNTIMEDIR%\tracks\road\eroad\background.png
 if exist .\data\tracks\eroad\eroad.acc copy .\data\tracks\eroad\eroad.acc .\%RUNTIMEDIR%\tracks\road\eroad\eroad.acc
 if exist .\data\tracks\eroad\eroad.png copy .\data\tracks\eroad\eroad.png .\%RUNTIMEDIR%\tracks\road\eroad\eroad.png
+if exist .\data\tracks\eroad\raceline.png copy .\data\tracks\eroad\raceline.png .\%RUNTIMEDIR%\tracks\road\eroad\raceline.png
 if exist .\data\tracks\eroad\readme.txt copy .\data\tracks\eroad\readme.txt .\%RUNTIMEDIR%\tracks\road\eroad\readme.txt
 if exist .\data\tracks\eroad\tr-wall-torcs1-left.rgb copy .\data\tracks\eroad\tr-wall-torcs1-left.rgb .\%RUNTIMEDIR%\tracks\road\eroad\tr-wall-torcs1-left.rgb
 if exist .\data\tracks\eroad\tr-wall-torcs1-right.rgb copy .\data\tracks\eroad\tr-wall-torcs1-right.rgb .\%RUNTIMEDIR%\tracks\road\eroad\tr-wall-torcs1-right.rgb
