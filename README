@@ -186,6 +186,11 @@ Changes since 1.3.4-test2
 - Added raceline to spring (Bernhard).
 - Added raceline to g-track-3, minor adjustments (Bernhard).
 - Added raceline to g-track-2, minor adjustments (Bernhard).
+- Added raceline to aalborg (Bernhard).
+- Added raceline to e-track-4 (Bernhard).
+- Added raceline to eroad (Bernhard).
+- accc does not stop anymore on unknown verb with +shad (Bernhard).
+- Added raceline to e-track-1 (Bernhard).
 
 
 Changes since 1.3.4-test1
