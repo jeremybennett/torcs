@@ -8,6 +8,8 @@ think has been done in TORCS before.
 Copyright (C) 2002, Sean Stafford
 Copyright (C) 2002, William F. Butler
 Copyright (C) 2007, Andrew Sumner
+Copyright (C) 2012, Bernhard Wymann (fixed holes, raceline, shadow map, lighting)
+
 
 Copyleft: this work of art is free, you can redistribute
 it and/or modify it according to terms of the Free Art license.

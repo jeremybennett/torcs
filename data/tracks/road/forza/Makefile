@@ -33,12 +33,12 @@ DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png readme.txt \
 			PITBLD.png PITLITE.png PITPPL.png PITWB.png POLEA.png POLLOL.png REF.png Road-crack1.png \
 			Road-crack2.png ROADPGC.png ROADPL_n.png Road.png ROADSF_n.png RSA_n.png RSDOT_n.png \
 			RSGRAS_n.png RS_n.png RSROAD_n.png RSSAGR_n.png RSSAND_n.png SAND_n.png SANDT_n.png \
-			shadow2.png STAIRSD.png STAIRS.png STNDUND.png STNDUNDR.png TAGTNTOP.png TENTA.png \
+			shadow2.rgb STAIRSD.png STAIRS.png STNDUND.png STNDUNDR.png TAGTNTOP.png TENTA.png \
 			TENTD.png TENTG.png TENTH.png TEtree_n.png TIME1A.png TIME1B.png TIME2A.png TIME2B.png \
 			TIME2C.png TIRE2.png TIRE3.png TIRE4A.png TIRE4.png TNTSHD.png TOPCROWD.png tree1_n.png \
 			tree2_n.png tree3_n.png treefc_n.png treel1_n.png treel2_n.png treel3_n.png treel4_n.png \
 			treetd_n.png TRETRNK.png TRKJUMA.png TRKJUMB.png TRKJUMC.png TRKJUM.png TURNA.png TURNB.png \
-			WAtree_n.png WHEEL.png WIREWOOD.png
+			WAtree_n.png WHEEL.png WIREWOOD.png raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 
