@@ -584,51 +584,59 @@ void reorder(ob_t *ob,ob_t *ob2, double    *textarray,tcoord_t      *vertexarray
 			fabs(ob->vertex[i].y - ob2->vertex[i].y) > MINVAL ||
 			fabs(ob->vertex[i].z - ob2->vertex[i].z) > MINVAL
 		) {
+			int minindex = i;
+			double mindist = 10.0;
 			for (j=0; j<ob->numvert; j++) {
-				if (
-					fabs(ob->vertex[i].x - ob2->vertex[j].x) <= MINVAL &&
-					fabs(ob->vertex[i].y - ob2->vertex[j].y) <= MINVAL &&
-					fabs(ob->vertex[i].z - ob2->vertex[j].z) <= MINVAL
-				) {
-					double tx, ty, tz;
-					double tu,tv;
-					int tindice;
-					int tsaved;
-					double text;
-
-					k++;
-
-					tx=ob2->vertex[i].x;
-					ty=ob2->vertex[i].y;
-					tz=ob2->vertex[i].z;
-					ob2->vertex[i].x=ob2->vertex[j].x;
-					ob2->vertex[i].y=ob2->vertex[j].y;
-					ob2->vertex[i].z=ob2->vertex[j].z;
-					ob2->vertex[j].x=tx;
-					ob2->vertex[j].y=ty;
-					ob2->vertex[j].z=tz;
-
-					tu=vertexarray[i].u;
-					tv=vertexarray[i].v;
-					tindice=vertexarray[i].indice;
-					tsaved=vertexarray[i].saved;
-					vertexarray[i].u=vertexarray[j].u;
-					vertexarray[i].v=vertexarray[j].v;
-					vertexarray[i].indice=vertexarray[j].indice;
-					vertexarray[i].saved=vertexarray[j].saved;
-					vertexarray[j].u=tu;
-					vertexarray[j].v=tv;
-					vertexarray[j].saved=tsaved;
-					vertexarray[j].indice=tindice;
-
-					text=textarray[i*2];
-					textarray[i*2]=textarray[j*2];
-					textarray[j*2]=text;
-					text=textarray[i*2+1];
-					textarray[i*2+1]=textarray[j*2+1];
-					textarray[j*2+1]=text;
+				double dx = ob->vertex[i].x - ob2->vertex[j].x;
+				double dy = ob->vertex[i].y - ob2->vertex[j].y;
+				double dz = ob->vertex[i].z - ob2->vertex[j].z;
+				double dist = dx*dx + dy*dy + dz*dz;
+				if (dist < mindist) {
+					mindist = dist;
+					minindex = j;
 				}
 			}
+			
+			if (minindex == i) continue;
+			j = minindex;	
+
+			double tx, ty, tz;
+			double tu,tv;
+			int tindice;
+			int tsaved;
+			double text;
+
+			k++;
+
+			tx=ob2->vertex[i].x;
+			ty=ob2->vertex[i].y;
+			tz=ob2->vertex[i].z;
+			ob2->vertex[i].x=ob2->vertex[j].x;
+			ob2->vertex[i].y=ob2->vertex[j].y;
+			ob2->vertex[i].z=ob2->vertex[j].z;
+			ob2->vertex[j].x=tx;
+			ob2->vertex[j].y=ty;
+			ob2->vertex[j].z=tz;
+
+			tu=vertexarray[i].u;
+			tv=vertexarray[i].v;
+			tindice=vertexarray[i].indice;
+			tsaved=vertexarray[i].saved;
+			vertexarray[i].u=vertexarray[j].u;
+			vertexarray[i].v=vertexarray[j].v;
+			vertexarray[i].indice=vertexarray[j].indice;
+			vertexarray[i].saved=vertexarray[j].saved;
+			vertexarray[j].u=tu;
+			vertexarray[j].v=tv;
+			vertexarray[j].saved=tsaved;
+			vertexarray[j].indice=tindice;
+
+			text=textarray[i*2];
+			textarray[i*2]=textarray[j*2];
+			textarray[j*2]=text;
+			text=textarray[i*2+1];
+			textarray[i*2+1]=textarray[j*2+1];
+			textarray[j*2+1]=text;
 		}
 	}
 	printf("%s : reordered %d points\n",ob->name,k);
