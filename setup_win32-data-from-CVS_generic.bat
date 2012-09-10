@@ -2184,7 +2184,8 @@ if exist .\data\tracks\road\forza\RSSAGR_n.png copy .\data\tracks\road\forza\RSS
 if exist .\data\tracks\road\forza\RSSAND_n.png copy .\data\tracks\road\forza\RSSAND_n.png .\%RUNTIMEDIR%\tracks\road\forza\RSSAND_n.png
 if exist .\data\tracks\road\forza\SAND_n.png copy .\data\tracks\road\forza\SAND_n.png .\%RUNTIMEDIR%\tracks\road\forza\SAND_n.png
 if exist .\data\tracks\road\forza\SANDT_n.png copy .\data\tracks\road\forza\SANDT_n.png .\%RUNTIMEDIR%\tracks\road\forza\SANDT_n.png
-if exist .\data\tracks\road\forza\shadow2.png copy .\data\tracks\road\forza\shadow2.png .\%RUNTIMEDIR%\tracks\road\forza\shadow2.png
+if exist .\data\tracks\road\forza\shadow2.rgb copy .\data\tracks\road\forza\shadow2.rgb .\%RUNTIMEDIR%\tracks\road\forza\shadow2.rgb
+if exist .\data\tracks\road\forza\raceline.png copy .\data\tracks\road\forza\raceline.png .\%RUNTIMEDIR%\tracks\road\forza\raceline.png
 if exist .\data\tracks\road\forza\STAIRSD.png copy .\data\tracks\road\forza\STAIRSD.png .\%RUNTIMEDIR%\tracks\road\forza\STAIRSD.png
 if exist .\data\tracks\road\forza\STAIRS.png copy .\data\tracks\road\forza\STAIRS.png .\%RUNTIMEDIR%\tracks\road\forza\STAIRS.png
 if exist .\data\tracks\road\forza\STNDUND.png copy .\data\tracks\road\forza\STNDUND.png .\%RUNTIMEDIR%\tracks\road\forza\STNDUND.png
