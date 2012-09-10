@@ -579,12 +579,17 @@ void reorder(ob_t *ob,ob_t *ob2, double    *textarray,tcoord_t      *vertexarray
 	int k=0;
 
 	for (i=0; i<ob->numvert; i++) {
-		if ((ob->vertex[i].x != ob2->vertex[i].x ) || (ob->vertex[i].y != ob2->vertex[i].y )
-		        || (ob->vertex[i].z != ob2->vertex[i].z )) {
+		if (
+			fabs(ob->vertex[i].x - ob2->vertex[i].x) > MINVAL ||
+			fabs(ob->vertex[i].y - ob2->vertex[i].y) > MINVAL ||
+			fabs(ob->vertex[i].z - ob2->vertex[i].z) > MINVAL
+		) {
 			for (j=0; j<ob->numvert; j++) {
-				if ((ob->vertex[i].x==ob2->vertex[i].x) &&
-				        (ob->vertex[i].y==ob2->vertex[i].y) &&
-				        (ob->vertex[i].z==ob2->vertex[i].z) ) {
+				if (
+					fabs(ob->vertex[i].x - ob2->vertex[j].x) <= MINVAL &&
+					fabs(ob->vertex[i].y - ob2->vertex[j].y) <= MINVAL &&
+					fabs(ob->vertex[i].z - ob2->vertex[j].z) <= MINVAL
+				) {
 					double tx, ty, tz;
 					double tu,tv;
 					int tindice;
@@ -622,12 +627,9 @@ void reorder(ob_t *ob,ob_t *ob2, double    *textarray,tcoord_t      *vertexarray
 					text=textarray[i*2+1];
 					textarray[i*2+1]=textarray[j*2+1];
 					textarray[j*2+1]=text;
-
 				}
-
 			}
 		}
-
 	}
 	printf("%s : reordered %d points\n",ob->name,k);
 	return;
