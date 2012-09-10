@@ -44,7 +44,7 @@ void reorder(ob_t *ob,ob_t *ob2, double *textarray,tcoord_t *vertexarray);
 
 
 
-void assignArrays(ob_t *tmpob, ob_t* tmpob2, double *textarray, tcoord_t *vertexarray, char* texture)
+void assignArrays(ob_t *tmpob, ob_t* tmpob2, double **textarray, tcoord_t **vertexarray, char **texture)
 {
 	while (tmpob2!=NULL) {
 		if (tmpob2->name==NULL)  {
@@ -69,9 +69,9 @@ void assignArrays(ob_t *tmpob, ob_t* tmpob2, double *textarray, tcoord_t *vertex
 		int notinsameorder=FALSE;
 		if (!stricmp(tmpob2->name, tmpob->name) && tmpob->numvert==tmpob2->numvert) {
 			/* found an ob in ob1 */
-			texture=tmpob2->texture;
-			textarray=tmpob2->textarray;
-			vertexarray=tmpob2->vertexarray;
+			*texture=tmpob2->texture;
+			*textarray=tmpob2->textarray;
+			*vertexarray=tmpob2->vertexarray;
 			for (int i=0; i<tmpob->numvert; i++)
 				if (
 					fabs(tmpob->vertex[i].x - tmpob2->vertex[i].x )>MINVAL ||
@@ -82,7 +82,7 @@ void assignArrays(ob_t *tmpob, ob_t* tmpob2, double *textarray, tcoord_t *vertex
 				}
 				if (notinsameorder==TRUE) {
 					printf("%s : points not in the same order, reordering ...\n",tmpob->name);
-					reorder(tmpob,tmpob2,textarray,vertexarray);
+					reorder(tmpob,tmpob2,*textarray,*vertexarray);
 					printf("%s : reordering ... done\n",tmpob->name);
 				}
 				break;
@@ -162,9 +162,9 @@ void loadAndGroup( char *OutputFileName)
 			}
 		}
 
-		assignArrays(tmpob, ob1, ob1->textarray, ob1->vertexarray, ob1->texture);
-		assignArrays(tmpob, ob2, ob2->textarray, ob2->vertexarray, ob2->texture);
-		assignArrays(tmpob, ob3, ob3->textarray, ob3->vertexarray, ob2->texture);
+		assignArrays(tmpob, ob1, &tmpob->textarray1, &tmpob->vertexarray1, &tmpob->texture1);
+		assignArrays(tmpob, ob2, &tmpob->textarray2, &tmpob->vertexarray2, &tmpob->texture2);
+		assignArrays(tmpob, ob3, &tmpob->textarray3, &tmpob->vertexarray3, &tmpob->texture3);
 		
 		tmpob=tmpob->next;
 	}
