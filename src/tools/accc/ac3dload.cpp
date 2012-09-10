@@ -804,9 +804,9 @@ int doKids(char *Line, ob_t *object, mat_t *material)
 				        ||strstr( object->next->name,"ground")
 				   ) {
 					terrainSplitOb (&object->next);
-					fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
+					fprintf(stderr,"splitting surfaces of  %s                              \n", object->next->name);
 				} else if (((object->next->x_max-object->next->x_min) >1.5*distSplit || (object->next->y_max-object->next->y_min) >1.5*distSplit)) {
-					fprintf(stderr,"splitting surfaces of  %s                              \r", object->next->name);
+					fprintf(stderr,"splitting surfaces of  %s                              \n", object->next->name);
 					terrainSplitOb (&object->next);
 				}
 			}
@@ -862,16 +862,10 @@ int doName(char *Line, ob_t *object, mat_t *material)
 	}
 	snprintf(name, SIZE, "%s",name2);
 
-	if (strlen(name)>11) {
-		fprintf(stderr,"truncating object name %s ", name);
-		name[11]='\0';
-		fprintf(stderr," to %s \n", name);
-	}
-	/*sprintf(name,"terrain%d",tmpIndice2++);*/
 	object->next->name=strndup(name, SIZE);
 	snprintf(tmpname, SIZE, "%s",name);
 
-	fprintf(stderr,"loading  %s object                             \r", name);
+	fprintf(stderr,"loading  %s object                             \n", name);
 	printf("loading  %s object\n", name);
 	tmpIndice=0;
 	return (0);
@@ -2405,7 +2399,7 @@ void stripifyOb(ob_t *object,int writeit)
 
 	if (object->numsurf<3 && writeit==0)
 		return;
-	fprintf(stderr,"stripifying %s                    \r",object->name);
+	fprintf(stderr,"stripifying %s                    \n",object->name);
 	sprintf(filename, "temp.obj");
 	stripeout = fopen(filename, "w");
 	for (i=0; i<object->numvert; i++)

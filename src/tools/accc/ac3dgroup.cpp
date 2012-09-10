@@ -236,7 +236,7 @@ void loadAndGroup( char *OutputFileName)
 			tmpob=tmpob->next;
 			continue;
 		}
-		if (!strnicmp(tmpob->name, "tkmn",4) && strcmp(tmpob->type,"group")) {
+		if (tmpob->type != NULL && !strnicmp(tmpob->name, "tkmn",4) && strcmp(tmpob->type,"group")) {
 			tmpob=tmpob->next;
 			num_tkmn++;
 			continue;
@@ -267,7 +267,7 @@ void loadAndGroup( char *OutputFileName)
 			tmpob=tmpob->next;
 			continue;
 		}
-		if (!strnicmp(tmpob->name, "tkmn",4) && strcmp(tmpob->type,"group")) {
+		if (tmpob->type != NULL && !strnicmp(tmpob->name, "tkmn",4) && strcmp(tmpob->type,"group")) {
 			array_groups[i].tkmn=tmpob;
 			array_groups[i].numkids=1;
 			array_groups[i].name=tmpob->name;
