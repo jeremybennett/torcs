@@ -110,7 +110,6 @@ void loadAndGroup( char *OutputFileName)
 	int good_group=0;
 	int i=0;
 	double dist=0;
-	int notinsameorder=FALSE;
 
 	if (fileL0) {
 		fprintf(stderr,"\nloading file %s\n",fileL0);
