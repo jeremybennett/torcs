@@ -191,6 +191,13 @@ Changes since 1.3.4-test2
 - Added raceline to eroad (Bernhard).
 - accc does not stop anymore on unknown verb with +shad (Bernhard).
 - Added raceline to e-track-1 (Bernhard).
+- Fixed potential null pointer dereferencing in accc (Bernhard).
+- accc does not anymore truncate object names (could cause visual errors when
+  combining multiple ac's to acc with long object names) (Bernhard).
+- Fixed reordering of vertices in accc (Bernhard).
+- Created new shadow map for forza, fixed missing shadow on cars (Bernhard).
+- Adjusted forza for applying raceline, added raceline (Bernhard).
+- Fixed holes and z-fighting in forza (Bernhard).
 
 
 Changes since 1.3.4-test1
