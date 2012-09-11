@@ -2529,6 +2529,7 @@ if exist .\data\tracks\road\brondehach\wall.png copy .\data\tracks\road\brondeha
 if exist .\data\tracks\road\brondehach\WHEELS6.png copy .\data\tracks\road\brondehach\WHEELS6.png .\%RUNTIMEDIR%\tracks\road\brondehach\WHEELS6.png
 if exist .\data\tracks\road\brondehach\XRW1.png copy .\data\tracks\road\brondehach\XRW1.png .\%RUNTIMEDIR%\tracks\road\brondehach\XRW1.png
 if exist .\data\tracks\road\brondehach\XRW1SHD1.png copy .\data\tracks\road\brondehach\XRW1SHD1.png .\%RUNTIMEDIR%\tracks\road\brondehach\XRW1SHD1.png
+if exist .\data\tracks\road\brondehach\raceline.png copy .\data\tracks\road\brondehach\raceline.png .\%RUNTIMEDIR%\tracks\road\brondehach\raceline.png
 
 if exist .\data\tracks\road\corkscrew\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\road\corkscrew\*.* call .\create_dir .\%RUNTIMEDIR%\tracks

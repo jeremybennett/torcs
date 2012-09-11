@@ -2302,6 +2302,7 @@ SetOutPath "$INSTDIR\tracks\road\brondehach"
   File "base\tracks\road\brondehach\WHEELS6.png"
   File "base\tracks\road\brondehach\XRW1.png"
   File "base\tracks\road\brondehach\XRW1SHD1.png"
+  File "base\tracks\road\brondehach\raceline.png"
 
 SetOutPath "$INSTDIR\tracks\road\corkscrew"
   File "base\tracks\road\corkscrew\01.png"
