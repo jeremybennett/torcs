@@ -1,3 +1,9 @@
+1. Generate raceline: ~/torcs_bin/bin/trackgen -c road -n brondehach -r
+2. Edit raceline to match hierarchy in brondehach-src.ac (TKMN0, TKMN1)
+3. Generate shading: ~/torcs_bin/bin/accc +shad brondehach-src.ac brondehach-shade.ac
+4. Edit brondehach-shade.ac to use shadow.png
+5. Generate acc: ~/torcs_bin/bin/accc -g brondehach.acc -l0 brondehach-src.ac -l1 brondehach-shade.ac -l2 brondehach-trk-raceline.ac -d3 1000 -d2 500 -d1 300 -S 300 -es
+
 Brondehach (Brands Hatch Circuit)
 ------------------------------------------------------------------------------------
 ...is largely a conversion to TORCS of a Brands Hatch track, created for
@@ -20,6 +26,8 @@ The name Brondehach is Gaelic, meaning both "wooded slope" and "forest entrance"
 Copyright (C) 2001, "Milestone"
 Copyright (C) 2007, Andrew Sumner
 Copyright (C) 2010, Eckhard M. Jäger (texture rework)
+Copyright (C) 2012, Bernhard Wymann (fixed graph hierarchy, raceline, z-fighting)
+
 
 The following applies to the parts of the work created by Andrew Sumner...
 
