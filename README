@@ -198,6 +198,8 @@ Changes since 1.3.4-test2
 - Created new shadow map for forza, fixed missing shadow on cars (Bernhard).
 - Adjusted forza for applying raceline, added raceline (Bernhard).
 - Fixed holes and z-fighting in forza (Bernhard).
+- Fixed graph hierarchy of brondehach and added raceline (Bernhard).
+
 
 
 Changes since 1.3.4-test1
