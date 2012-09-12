@@ -1806,7 +1806,6 @@ if exist .\data\tracks\road\alpine-1\asgrassr_n.rgb copy .\data\tracks\road\alpi
 if exist .\data\tracks\road\alpine-1\background.png copy .\data\tracks\road\alpine-1\background.png .\%RUNTIMEDIR%\tracks\road\alpine-1\background.png
 if exist .\data\tracks\road\alpine-1\barg3.rgb copy .\data\tracks\road\alpine-1\barg3.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\barg3.rgb
 if exist .\data\tracks\road\alpine-1\barrier.rgb copy .\data\tracks\road\alpine-1\barrier.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\barrier.rgb
-if exist .\data\tracks\road\alpine-1\cham2.rgb copy .\data\tracks\road\alpine-1\cham2.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\cham2.rgb
 if exist .\data\tracks\road\alpine-1\concdal.rgb copy .\data\tracks\road\alpine-1\concdal.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\concdal.rgb
 if exist .\data\tracks\road\alpine-1\gconcrete.rgb copy .\data\tracks\road\alpine-1\gconcrete.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\gconcrete.rgb
 if exist .\data\tracks\road\alpine-1\ggrass3.rgb copy .\data\tracks\road\alpine-1\ggrass3.rgb .\%RUNTIMEDIR%\tracks\road\alpine-1\ggrass3.rgb
