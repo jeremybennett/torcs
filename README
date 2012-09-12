@@ -199,6 +199,9 @@ Changes since 1.3.4-test2
 - Adjusted forza for applying raceline, added raceline (Bernhard).
 - Fixed holes and z-fighting in forza (Bernhard).
 - Fixed graph hierarchy of brondehach and added raceline (Bernhard).
+- Fixed surface types in brondehach (SURF 0x0 to 0x10, on 0X0 is transformed to 0x24
+  by accc, so accc takes double sided surfaces and hence some z-fighting might happen
+  then. Do not use flat shaded surfaces in TORCS, they are not supported) (Bernhard).
 
 
 
