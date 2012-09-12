@@ -20,7 +20,7 @@ TRACK     = alpine-1
 DATADIR   = tracks/road/alpine-1
 
 DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png arbor01.rgb asgrassr_n.rgb barg3.rgb \
-			cham2.rgb concdal.rgb gconcrete.rgb ggrass3.rgb house.rgb mur2.rgb murpub.rgb \
+			concdal.rgb gconcrete.rgb ggrass3.rgb house.rgb mur2.rgb murpub.rgb \
 			poutre3.rgb readme.txt road1.rgb road4.rgb rockg0.rgb torcs2.rgb treeg10.rgb \
 			truck0.rgb truck1.rgb walls.rgb walls2.rgb background.png shadow2.rgb raceline.png
 
