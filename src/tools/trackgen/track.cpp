@@ -624,13 +624,26 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 			curTexSeg = seg->lgfromstart;
 		}
 		curTexSeg += curTexOffset;
+		
+		if (raceline) {
+			// Required if some smaller than width tiled texture is used.
+			curTexSize = seg->width;
+		}
+
 		texLen = curTexSeg / curTexSize;
+			
 		if (startNeeded || (runninglentgh > LG_STEP_MAX)) {
 			newDispList(0, bump, nbvert, startNeeded, "tkMn", i, &theCurDispElt, curTexElt);
 			runninglentgh = 0;
 			ts = 0;
-			texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
-
+			if (raceline) {
+				// Required if some smaller than width tiled texture is used.
+				texMaxT = 1.0;
+			} else {
+				// Normal case
+				texMaxT = (curTexType == 1 ? width / curTexSize : 1.0 + floor(width / curTexSize));
+			}
+			
 			double rlto = getTexureOffset(seg->lgfromstart)/rlWidthScale;
 			setPoint(curTexElt, texLen, texMaxT - rlOffset + rlto, seg->vertex[TR_SL].x, seg->vertex[TR_SL].y, seg->vertex[TR_SL].z, nbvert);
 			setPoint(curTexElt, texLen, 0.0 + rlOffset + rlto, seg->vertex[TR_SR].x, seg->vertex[TR_SR].y, seg->vertex[TR_SR].z, nbvert);
