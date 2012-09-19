@@ -903,7 +903,7 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 {
  protected:
     int current;
-    int timer;
+    float timer;
     float zOffset;
     float gain;
     float damp;
@@ -919,7 +919,7 @@ class cGrCarCamRoadFly : public cGrPerspCamera
 	up[0] = 0;
 	up[1] = 0;
 	up[2] = 1;
-	timer = 0;
+	timer = 0.0;
 	offset[0]=0.0;
 	offset[1]=0.0;
 	offset[2]=60.0;
@@ -953,10 +953,12 @@ class cGrCarCamRoadFly : public cGrPerspCamera
             reset_camera = true;
         }
 
-        timer--;
-        if (timer<0) {
+        //timer--;
+        if (timer<0.0) {
             reset_camera = true;
-        }
+        } else {
+			timer -= dt;
+		}
 
         if (current != car->index) {
             /* the target car changed */
@@ -967,21 +969,21 @@ class cGrCarCamRoadFly : public cGrPerspCamera
             zOffset = 0.0;
         }
 
-        if ((timer <= 0) || (zOffset > 0.0)) {
-            timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
+        if ((timer <= 0.0) || (zOffset > 0.0)) {
+            timer = 10.0 + (int)(5.0*rand()/(RAND_MAX+1.0));
             offset[0] = -0.5 + (rand()/(RAND_MAX+1.0));
             offset[1] = -0.5 + (rand()/(RAND_MAX+1.0));
             offset[2] = 10.0f + (50.0*rand()/(RAND_MAX+1.0)) + zOffset;
             offset[0] = offset[0]*(offset[2]+1.0);
             offset[1] = offset[1]*(offset[2]+1.0);
             // follow the car more closely when low
-            gain = 300.0/(10.0f+offset[2]); 
+            gain = 200.0/(10.0f+offset[2]); 
             damp = 5.0f;
         }
 
 
         if (reset_camera) {
-            eye[0] = car->_pos_X + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
+			eye[0] = car->_pos_X + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
             eye[1] = car->_pos_Y + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
             eye[2] = car->_pos_Z + 50.0 + (50.0*rand()/(RAND_MAX+1.0));
             speed[0] = speed[1] = speed[2] = 0.0f;
@@ -1002,7 +1004,7 @@ class cGrCarCamRoadFly : public cGrPerspCamera
         // avoid going under the scene
         height = grGetHOT(eye[0], eye[1]) + 1.0;
         if (eye[2] < height) {
-            timer = 500 + (int)(500.0*rand()/(RAND_MAX+1.0));
+            timer = 10.0 + (int)(10.0*rand()/(RAND_MAX+1.0));
             offset[2] = height - car->_pos_Z + 1.0;
             eye[2] = height;
         }
