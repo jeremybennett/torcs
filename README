@@ -203,6 +203,7 @@ Changes since 1.3.4-test2
   by accc, so accc takes double sided surfaces and hence some z-fighting might happen
   then. Do not use flat shaded surfaces in TORCS, they are not supported) (Bernhard).
 - Fixed framerate dependency of flying cam (Bernhard).
+- Fixed texture mirroring on the right side of the track in trackgen (Bernhard).
 
 
 Changes since 1.3.4-test1
