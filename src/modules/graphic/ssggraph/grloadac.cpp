@@ -156,12 +156,12 @@ static void skip_quotes ( char **s )
       t++ ;
 
     if ( *t != '\"' )
-      ulSetError ( UL_WARNING, "ac_to_gl: Mismatched double-quote ('\"') in '%s'", *s ) ;
+      ulSetError ( UL_WARNING, "ac_to_gl: Mismatched double-quote ('\"') in '%900s'", *s ) ;
 
     *t = '\0' ;
   }
   else
-    ulSetError ( UL_WARNING, "ac_to_gl: Expected double-quote ('\"') in '%s'", *s ) ;
+    ulSetError ( UL_WARNING, "ac_to_gl: Expected double-quote ('\"') in '%900s'", *s ) ;
 }
 
 
@@ -180,7 +180,7 @@ static int search ( Tag *tags, char *s )
       return (*(tags[i].func))( s ) ;
     }
 
-  ulSetError ( UL_FATAL, "ac_to_gl: Unrecognised token '%s' (%d)", s , strlen(s)) ;
+  ulSetError ( UL_WARNING, "ac_to_gl: Unrecognised token '%900s' (%d)", s , strlen(s)) ;
 
   return 0 ;  /* Should never get here */
 }
@@ -1214,7 +1214,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
 
   if ( loader_fd == NULL )
   {
-    ulSetError ( UL_WARNING, "ssgLoadAC: Failed to open '%s' for reading", filename ) ;
+    ulSetError ( UL_WARNING, "ssgLoadAC: Failed to open '%900s' for reading", filename ) ;
     return NULL ;
   }
 
@@ -1244,7 +1244,7 @@ static ssgEntity *myssgLoadAC ( const char *fname, const ssgLoaderOptions* optio
       if ( ! ulStrNEqual ( s, "AC3D", 4 ) )
       {
         FCLOSE ( loader_fd ) ;
-        ulSetError ( UL_WARNING, "ssgLoadAC: '%s' is not in AC3D format.", filename ) ;
+        ulSetError ( UL_WARNING, "ssgLoadAC: '%900s' is not in AC3D format.", filename ) ;
         return NULL ;
       }
     }
