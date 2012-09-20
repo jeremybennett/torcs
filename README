@@ -208,7 +208,9 @@ Changes since 1.3.4-test2
   right side) (Bernhard).
 - Fixed wrong state comparision in trackgen (could generate missing/broken/misplaced end
   caps on wall or curbs) (Bernhard).
-- Fixed curbs with height 0 generating non planar surfaces (Bernhard).
+- Fixed curbs with height 0 generating non planar surfaces in trackgen (Bernhard).
+- Fixed ssggraph exiting on unknown verbs, now just a warning is emitted (Bernhard).
+- Fixed more ulSetError string passing (Bernhard).
 
 
 Changes since 1.3.4-test1
@@ -273,6 +275,8 @@ TODO for 1.3.5
 - API to change setup during the practice mode.
 - Timed races (e.g. 24h).
 
+Decide about plib (not maintained anymore?) -> integration?
+Refactor trackgen (left/right -> half the code, maybe more)
 
 
 
