@@ -22,7 +22,7 @@ DATA      = e-track-3.xml background.png e-track-3.acc e-track-3.png readme.txt 
 	    asphalt2-bw-e3.png asphalt-bw-e3-lines-l.png asphalt-bw-e3-pit-l.png asphalt-bw-e3.png \
 	    asphalt-white-tile.png back-sign.png barrier.png BLBDBK.png concrete2.rgb concrete.rgb \
 	    CONCSH01.png curb-green-carpet.png curb-red-carpet.png curb-white-concrete.png \
-	    e-track-3.xml fence_arbor_n.png grass-e3.png grass-side-e3.png logo_megafuel.png \
+	    fence_arbor_n.png grass-e3.png grass-side-e3.png logo_megafuel.png \
 	    logo_trb2.png logo_x4y.png megafuel-wall.png mycast.png PASS10.png PASS3.png PASS4.png \
 	    PDKKA13.png pylon1.rgb pylon2.rgb pylon3.rgb raceline.png readme.txt shadow2.rgb \
 	    tirewall.png tree11_n.png tree12_n.png tree195_n.png tree19_n.png tree35_n.png \
