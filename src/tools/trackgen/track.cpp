@@ -1151,6 +1151,9 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 				if (hasBorder == 0) {
 					startNeeded = 1;
 					hasBorder = 1;
+				} else if (mseg->rside->width != mseg->prev->rside->width) {
+					// If border width changes we need a new start as well
+					startNeeded = 1;
 				}
 			} else {
 				if (hasBorder) {
@@ -1686,7 +1689,11 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 				if (hasBorder == 0) {
 					startNeeded = 1;
 					hasBorder = 1;
+				} else if (mseg->lside->width != mseg->prev->lside->width) {
+					// If border width changes we need a new start as well
+					startNeeded = 1;
 				}
+				
 			} else {
 				if (hasBorder) {
 					startNeeded = 1;
