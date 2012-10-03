@@ -262,7 +262,7 @@ RemoveCar(tCar *car, tSituation *s)
 	// collision detection.
 	SimCollideRemoveCar(car, s->_ncars);
 
-	carElt->priv.collision = car->collision = 0;
+	carElt->priv.simcollision = carElt->priv.collision = car->collision = 0;
 	for(i = 0; i < 4; i++) {
 		carElt->_skid[i] = 0;
 		carElt->_wheelSpinVel(i) = 0;
@@ -423,6 +423,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->_enginerpm = car->engine.rads;
 		carElt->_fuel = car->fuel;
 		carElt->priv.collision |= car->collision;
+		carElt->priv.simcollision = car->collision;
 		carElt->_dammage = car->dammage;
 	}
 }

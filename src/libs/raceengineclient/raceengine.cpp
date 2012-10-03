@@ -419,7 +419,7 @@ ReRaceRules(tCarElt *car)
 	if (ReInfo->s->_raceType == RM_TYPE_QUALIF || ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
 		// If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
 		// Invalidation and message is just shown on the first hit
-		if (car->_commitBestLapTime && (car->priv.collision & SEM_COLLISION_XYSCENE)) {
+		if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE)) {
 			car->_commitBestLapTime = false;
 			snprintf(buf, BUFSIZE, "%s hit wall, laptime invalidated", car->_name);
 			ReRaceMsgSet(buf, 5);

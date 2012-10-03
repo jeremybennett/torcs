@@ -304,7 +304,8 @@ typedef struct {
     int		gearOffset;		/**< gearRatio[gear + gearOffset] is the ratio for gear */
     tdble	skid[4];		/**< skid intensity */
     tdble	reaction[4];    /**< reaction on wheels */
-    int		collision;
+    int		collision;		/**< Collision value for graphics and sound, clearing is managed by consumers */
+	int		simcollision;	/**< For rules etc. reflects the collision state from simu */
 	float   smoke;
     t3Dd	normal;
     t3Dd	collpos;        /**< Collision position, useful for sound*/
