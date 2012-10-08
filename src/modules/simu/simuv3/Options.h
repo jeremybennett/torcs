@@ -15,6 +15,8 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
 
 #undef LOG_OPTIONS
 
