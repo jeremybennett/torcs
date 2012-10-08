@@ -13,7 +13,7 @@ EXPORTS
 	strBaseName
 	strRemoveSuffix
 	strConcat
-	message
+;	message
 ;	make_message
 	read_string
 	string_copy
