@@ -211,10 +211,13 @@ Changes since 1.3.4-test2
 - Fixed curbs with height 0 generating non planar surfaces in trackgen (Bernhard).
 - Fixed ssggraph exiting on unknown verbs, now just a warning is emitted (Bernhard).
 - Fixed more ulSetError string passing (Bernhard).
-- Totally reworked e-track-3 (Bernhard).
+- Totally reworked e-track-3 track (Bernhard).
 - Fixed wrong meshing in trackgen when border changes but side surface stays the same
   (Bernhard).
-
+- Fixed bug regarding new "barrier hit rule" introduced in 1.3.4-test1 (when sound was
+  switched off the priv.collision is not cleared, rules use now new priv.simcollision)
+  (Bernhard).
+- Totally reworked Wheel 1 track (Bernhard).
 
 
 Changes since 1.3.4-test1
