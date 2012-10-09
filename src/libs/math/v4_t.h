@@ -28,6 +28,7 @@
 #ifndef _LINALG_V4_T_H_
 #define _LINALG_V4_T_H_
 
+#include <math.h>
 
 template<class T> class v4t;
 #ifndef _MSC_VER

@@ -29,8 +29,8 @@
 #ifndef _LINALG_V2_T_H_
 #define _LINALG_V2_T_H_
 
+#include <math.h>
 #include <tmath/v3_t.h>
-
 
 template<class T> class v2t;
 #ifndef _MSC_VER

@@ -20,6 +20,7 @@
 #ifndef _LINALG_T_H_
 #define _LINALG_T_H_
 
+#include <math.h>
 #include <tmath/v2_t.h>
 #include <tmath/v3_t.h>
 #include <tmath/v4_t.h>
