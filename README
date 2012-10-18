@@ -128,12 +128,12 @@ Of course you can use this with the console (command line) mode as well, e.g.:
 ./torcs -g -k -r ~/.torcs/config/raceman/dtmrace.xml
 
 Some additional notes:
-- Valgrind reports on systems with the ATI flgrx OpenGL driver (8.961) lots of leaks,
-  according AMD Valgrind misinterprets memory blocks handed over to the kernel.
-  When I wrote suppressions the flgrx driver hung the X Server up, conclusion:
-  Give it a try (maybe another driver/kernel combination does/will do better), but if
-  you run in the mentioned problems, just use the TORCS command line mode or install
-  temporarily the Open Source ATI driver alternative, maybe this does do better
+- Valgrind (version 3.6.1) reports on systems with the ATI flgrx OpenGL driver (8.961)
+  lots of leaks, according AMD Valgrind misinterprets memory blocks handed over to the
+  kernel. When I wrote suppressions the flgrx driver hung the X Server up, conclusion:
+  Give it a try (maybe another valgrind/driver/kernel combination does/will do better),
+  but if you run in the mentioned problems, just use the TORCS command line mode or
+  install temporarily the Open Source ATI driver alternative, maybe this does do better
   (not tested, send me a report;-) )
 - You can edit the "torcs" script and add "--leak-check=full --show-reachable=yes"
   to see what is still reachable at exit. This is useful to reduce the amount of cached
@@ -218,6 +218,11 @@ Changes since 1.3.4-test2
   switched off the priv.collision is not cleared, rules use now new priv.simcollision)
   (Bernhard).
 - Totally reworked Wheel 1 track (Bernhard).
+- Made simuv3 compile with gcc 4.6, does not matter because not part of build (Bernhard).
+- Applied build fix for VS2010 suggested by Greg Duncan (Greg, Bernhard). 
+  (http://channel9.msdn.com/coding4fun/blog/Torquing-it-up-with-TORCS-The-Open-Racing-Car-Simulator)
+- Added math.h includes in TORCS math headers for gcc 4.7 (Bernhard).
+- Totally reworked Dirt-2 track (Bernhard).
 
 
 Changes since 1.3.4-test1
@@ -279,9 +284,11 @@ TODO for 1.3.4
 TODO for 1.3.5
 --------------
 - Training session with adjustable setup (trb)
-- API to change setup during the practice mode.
+- Setup change during the practice mode.
 - Timed races (e.g. 24h).
 - Remove invalid geometry from tracks 
+- Review and eventually apply mac os x build
+- Add raceline to wheel-2 and e-track-6.
 
 
 TODO for 1.4.0
@@ -293,17 +300,11 @@ TODO for 1.4.0
 - Update OpenAL to 1.1, fix use of deprecated stuff.
 - Car asignment for human players.
 - Sound (alut depricated/scheduling for lots of cars)
-- Review and eventually apply mac os x build
 - Make it possible for a robot module to carry any arbitrary number of
   drivers (instead of static 10).
 - Pace car and trucks to remove wrecks (remove "virtual" crane).
 
-Decide about plib (not maintained anymore?) -> integration?
-Refactor trackgen (left/right -> half the code, maybe more)
 
-- track4.cpp, line 218, borderHeight[side] does not carry over the previous state.
-Decide what to do (just assigning it changes the semantics of exisitng tracks if
-we are unlucky, either test/fix all or new track version).
 
 TODO for Compliance
 -------------------
@@ -317,6 +318,12 @@ rework buggy, baja bug
 
 Later:
 -------------------
+- trackgen state consistency, e.g
+  track4.cpp, line 218, borderHeight[side] does not carry over the previous state.
+  Decide what to do (just assigning it changes the semantics of exisitng tracks if
+  we are unlucky, either test/fix all or new track version).
+- Decide about plib (not maintained anymore?) -> integration?
+- Refactor trackgen (left/right -> half the code, maybe more)
 - Mixed axis controller (under linux some analouge buttons generate a button and axis
   event, this is a problem for detection/calibration with the current workflow, e.g.
   ps3 controller buttons l2/r2)
@@ -324,7 +331,7 @@ Later:
   emmissive color of lod (model becomes dark at a certain distance), single
   sided, add cockpit, lods).
 - Ongoing for every release: Improve visual quality of some existing tracks
-  (e.g. e-track-3, eventually wheel-1, e-track-2).
+  (e.g. e-track-2).
 - Texture clamp to edge needs explicit setting in nvidia driver tab in windows,
   have a look into that (otherwise the border is not taken as color around the
   pit door, pits are quite dark around the logo).
@@ -358,12 +365,7 @@ TODO LATER
 - Networking (2.0).
 - SMP simulaton core (for myself).
 - Replays.
-- Setup editor (add a function to the robot interface to ask the robot
-  about the location or a file handle for its setup file, perhaps a
-  close function is needed as well).
 - Telemetry recorder/viewer.
-- Redesign/Reimplement multitexturing and fileformat.
-- Apply light maps to skid marks, smoke and wheels, etc.
 - Phong specular highlights (optional env, cube or GLSL).
 - Shadowmapped/Stenciled dynamic car shadows.
 - so/dll with libtool, common code?
@@ -371,16 +373,12 @@ TODO LATER
 - Dynamic sky.
 - TRB integration.
 - Fix/create new simu/switch to updated/new simu.
-- (clean up simuv3 conflicts)
 - Show just fitting resolutions for fullscreen/change for windowed mode.
 - Separate components more clean (e.g. ssgInit should go back to
   ssggraph, etc.)
-- persistent skidmarks (simply put them back into the shadowmap after
-  the race? Extra texture? Just restore them?), restore function.
 - Fix windows project such that it compiles in all locations (currently it
   fails if special characters are in the path).
 - Avoid cameras cutting the landscape.
-- Rework models (holes, just single sided polygons for culling, etc.)
 - Allow more mouse events /suggested by Frieder -> mouse wheel for gear
   switching).
 - Start position marks on track (same technique like fake shadow, skids).
@@ -388,10 +386,6 @@ TODO LATER
 - Better transparency for track objects.
 - More driving aids, switch to AI and back.
 - localization (e.g English, French, German, ...).
-- New GUI.
-- Check for consistency of simuv2/simuv3.
-- verify that simulation obeys conservation of momentum and energy.
-- optimise simuv3.
 - Fix engine inertia/s of F1 cars, check/fix all other cars as well.
 - Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
 - Free camera controlled with mouse and keys.
