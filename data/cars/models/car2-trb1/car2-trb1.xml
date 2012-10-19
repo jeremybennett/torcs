@@ -19,7 +19,14 @@
 
 <params name="car2-trb1" type="template">
 	
-	<!--  3D model by Eric Espie -->
+	<section name="Bonnet">
+		<!-- Position of the driver -->
+		<attnum name="xpos" val="0.75" unit="m"/>
+		<attnum name="ypos" val="0.00" unit="m"/>
+		<attnum name="zpos" val="0.95" unit="m"/>
+	</section>
+	
+	
 	<section name="Driver">
 		<!-- Position of the driver -->
 		<attnum name="xpos" val="-0.09" unit="m"/>
