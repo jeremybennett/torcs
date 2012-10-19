@@ -12,6 +12,12 @@
 <!--    (at your option) any later version.                                   -->
 <!DOCTYPE params SYSTEM "../../../../src/libs/tgf/params.dtd">
 <params name="car7-trb1" type="template">
+	<section name="Bonnet">
+		<!-- Position of the driver -->
+		<attnum name="xpos" val="0.75" unit="m"/>
+		<attnum name="ypos" val="0.00" unit="m"/>
+		<attnum name="zpos" val="0.95" unit="m"/>
+	</section>
 	<section name="Driver">
 		<!-- Position of the driver -->
 		<attnum name="xpos" val="0.30" unit="m"/>
