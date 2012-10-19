@@ -1,7 +1,7 @@
 ;
 ;        file       : torcs.nsi
 ;        created    : Wed Feb 2 15:35:10 CET 2005
-;        copyright  : (C) 2005 Bernhard Wymann
+;        copyright  : (C) 2005, 2012 Bernhard Wymann
 ;        email      : berniw@bluewin.ch
 ;        version    : $Id$
 ;
@@ -14,9 +14,9 @@
 
 !define VER_MAJOR 1
 !define VER_MINOR 3
-!define VER_REVISION 3
+!define VER_REVISION 4
 !define VER_EXTRA
-!define VER_RELDATE 20120216
+!define VER_RELDATE 20121019
 
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
 !define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
@@ -2697,7 +2697,8 @@ SetOutPath "$INSTDIR\tracks\road\corkscrew"
   CreateDirectory "$INSTDIR\results\quickrace"
 SectionEnd
 
-Section "Developer Tools" SEC02
+Section "Trackeditor and Tools" SEC02
+  SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   File "base\accc.exe"
   File "base\nfsperf.exe"
@@ -2740,7 +2741,7 @@ Section "Developer Tools" SEC02
 
 SectionEnd
 
-Section "Non Free - Rally Cars" SEC03
+Section "Rally Cars" SEC03
   SetOverwrite try
   SetOutPath "$INSTDIR\cars\pw-206wrc"
   File "base\cars\pw-206wrc\pw-206wrc-lod1.acc"
@@ -2798,7 +2799,7 @@ Section "Non Free - Rally Cars" SEC03
   File "base\cars\pw-imprezawrc\tex-wheel.rgb"
 SectionEnd
 
-Section "Non Free - Classic Cars" SEC04
+Section "Classic Cars" SEC04
   SetOutPath "$INSTDIR\cars\kc-2000gt"
   File "base\cars\kc-2000gt\kc-2000gt-lod1.acc"
   File "base\cars\kc-2000gt\kc-2000gt-lod2.acc"
@@ -3011,6 +3012,13 @@ Section "Non Free - Classic Cars" SEC04
   File "base\cars\kc-p4\tex-wheel.rgb"
 SectionEnd
 
+Section "Stripe " SEC05
+  SetOverwrite ifnewer
+  SetOutPath "$INSTDIR"
+  File "base\stripe.exe"
+SectionEnd
+
+
 Section -AdditionalIcons
   SetOutPath $INSTDIR
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
@@ -3018,6 +3026,12 @@ Section -AdditionalIcons
   
   WriteIniStr "$INSTDIR\trb.url" "InternetShortcut" "URL" "http://www.berniw.org/trb"
   CreateShortCut "$SMPROGRAMS\TORCS\TORCS Racing Board.lnk" "$INSTDIR\trb.url"
+
+  WriteIniStr "$INSTDIR\trackgen.url" "InternetShortcut" "URL" "http://trackgen.pierlucalanzi.net"
+  CreateShortCut "$SMPROGRAMS\TORCS\Online track generator.lnk" "$INSTDIR\trackgen.url"
+
+  WriteIniStr "$INSTDIR\videos.url" "InternetShortcut" "URL" "http://www.youtube.com/user/berniwtorcs/videos?view=0"
+  CreateShortCut "$SMPROGRAMS\TORCS\Videos.lnk" "$INSTDIR\videos.url"
 
   CreateShortCut "$SMPROGRAMS\TORCS\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
@@ -3040,9 +3054,10 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "TORCS base system, contains the application, cars, tracks and opponents."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Developer tools."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC03} "Non free rally cars, read the readme.txt in the directory of the car for details."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC04} "Non free classic cars, read the readme.txt in the directory of the car for details."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "Track editor and tools, for track and car creation."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC03} "Rally cars, read the readme.txt in the directory of the car for licensing details (not free in GPL sense)."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC04} "Classic cars, read the readme.txt in the directory of the car for licensing details (not free in GPL sense)."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC05} "Stripe utility, required by some tools, used for car and advanced track creation, see README for licensing details (not free in GPL sense)."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -3068,6 +3083,9 @@ Section Uninstall
   Delete "$SMPROGRAMS\TORCS\TORCS Racing Board.lnk"
   Delete "$DESKTOP\TORCS - The Open Racing Car Simulator.lnk"
   Delete "$SMPROGRAMS\TORCS\TORCS - The Open Racing Car Simulator.lnk"
+
+  Delete "$SMPROGRAMS\TORCS\Online track generator.lnk"
+  Delete "$SMPROGRAMS\TORCS\Videos.lnk"
 
   RMDir "$SMPROGRAMS\TORCS"
 
