@@ -1,26 +1,52 @@
-Introduction
-------------
+1.  Introduction
+2.  Non-Free content (in GPL sense)
+3.  Track editor
+4.  Linux Installation from Source
+5.  Windows Installation from Source (Release version)
+6.  Windows Installation from Source (Debug version)
+7.  Testing
+8.  Getting Help
+9.  Running under Valgrind with Linux
+10. Changes
+11. TODO/Notes
+
+
+1. Introduction
+---------------
+First a big welcome, I hope you will enjoy your ride:-)
+
 This is an all in one package of TORCS. Be aware that some included
 artwork has non free (in the GPL sense) licenses, you will find a "readme.txt"
 in those directories. The rest is either licensed under the GPL or the Free
-Art License.
+Art License. If you want to create cars or advanced tracks using the accc tool,
+you will require stripe from http://www.cs.sunysb.edu/~stripe.
+
+Best regards
+
+Bernhard
 
 
-Non-Free content (in GPL sense)
--------------------------------
+2. Non-Free content (in GPL sense)
+----------------------------------
 Here the list with the directories containing non free content, look at the
 readme.txt for details:
 - data/cars/models/pw-*
 - data/cars/models/kc-*
 
 
-Linux Installation from Source
--------------------------------
+3. Track editor
+---------------
+The track editor is not included in this distribution, you can get it from
+http://sourceforge.net/projects/trackeditor.
+
+
+4. Linux Installation from Source
+---------------------------------
 - Requires plib 1.8.5, FreeGLUT or GLUT, be aware to compile plib with -fPIC
   on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
   1.8.5 works.
 - Untar the archive
-- cd into the torcs-1.3.3 directory
+- cd into the torcs-1.3.4 directory
 - ./configure (use --help for showing the options, of interest might be
   --enable-debug and --disable-xrandr).
 - make
@@ -32,23 +58,23 @@ Command line arguments:
 * -l list the dynamically linked libraries
 * -d run under gdb and print stack trace on exit, makes most sense when compile
      with --enable-debug
-* -g run under valgrind (requires a debug build for useful results)
+* -g run under Valgrind (requires a debug build for useful results)
 * -e display the commands to issue when you want to run under gdb
 * -s disable multitexturing, important for older graphics cards
 * -m use X mouse cursor and do not hide it during races
 * -r pathtoraceconfigfile, run race from command line only, for testing and AI
      training, see FAQ for details
-* -k (keep) suppress calls to dlclose to keep modules loaded (for valgrind runs,
+* -k (keep) suppress calls to dlclose to keep modules loaded (for Valgrind runs,
      to avoid "??" in the call stack)
 
 
-Windows Installation from Source (Release version)
---------------------------------------------------
+5. Windows Installation from Source (Release version)
+-----------------------------------------------------
 - hint: you can have a release and a debug build side by side, the release
   version goes to "runtime" and the debug to "runtimed".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.3 directory
+- cd into the torcs-1.3.4 directory
 - run setup_win32.bat
 - run setup_win32-data-from-CVS.bat
 - select the TORCS workspace (TORCS.dsw for VS 6) or solution (TORCS.sln
@@ -63,13 +89,13 @@ Command line arguments:
      training, see FAQ for details 
 
 
-Windows Installation from Source (Debug version)
-------------------------------------------------
+6. Windows Installation from Source (Debug version)
+---------------------------------------------------
 - hint: you can have a debug and a release build side by side, the debug
   version goes to "runtimed" and the release to "runtime".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1)
 - untar the archive into a path without whitespaces and special characters.
-- cd into the torcs-1.3.3 directory
+- cd into the torcs-1.3.4 directory
 - run setup_win32_debug.bat
 - run setup_win32-data-from-CVS_debug.bat
 - select the TORCS workspace (TORCS.dsw for VS 6) or solution (TORCS.sln
@@ -84,34 +110,30 @@ Command line arguments:
      training, see FAQ for details 
 
 
-Testing
--------
+7. Testing
+----------
 Please pick bugs below and retest them (you can find the original reports on
 http://sourceforge.net/tracker/?group_id=3777&atid=103777, select "any" bugs to
 see as well the closed ones). If you find problems which should be already
 fixed or new ones please report them to the torcs-users mailing list.
 
 
-Getting Help
-------------
+8. Getting Help
+---------------
 During the game press F1. For more in depth information visit www.torcs.org,
 you find there a lot of information, look at the documentation section on
 the left, have as well a look into the list of howto's. If you are stuck
 have a look into the FAQ to learn how and where to report a problem.
 
-Have fun, bye
 
-Bernhard.
-
-
-Running under Valgrind with Linux
----------------------------------
+9. Running under Valgrind with Linux
+------------------------------------
 First you need to build a debug version of TORCS, make sure that the CFLAGS,
 CPPFLAGS and CXXFLAGS environment variables are empty (usually they are). Then
 run "make distclean", then configure script with the option --enable-debug
 and all other options which you require, build and install as usual.
 
-To find memory leaks run first (valgrind must be in available in the path):
+To find memory leaks run first (Valgrind must be in available in the path):
 ./torcs -g
 
 You will find the logfile valgrind.log in the .torcs directory. If you have
@@ -131,7 +153,7 @@ Some additional notes:
 - Valgrind (version 3.6.1) reports on systems with the ATI flgrx OpenGL driver (8.961)
   lots of leaks, according AMD Valgrind misinterprets memory blocks handed over to the
   kernel. When I wrote suppressions the flgrx driver hung the X Server up, conclusion:
-  Give it a try (maybe another valgrind/driver/kernel combination does/will do better),
+  Give it a try (maybe another Valgrind/driver/kernel combination does/will do better),
   but if you run in the mentioned problems, just use the TORCS command line mode or
   install temporarily the Open Source ATI driver alternative, maybe this does do better
   (not tested, send me a report;-) )
@@ -142,11 +164,15 @@ Some additional notes:
   fine that the GUI and some handles are held permanent.
 
 
+10. Changes
+-----------
+
+
 Changes since 1.3.4-test2
 -------------------------
 - Fixed illegal file open mode for VS 2008 runtime in trackgen (Bernhard).
 - Refactored macros in trackgen to functions to be able to debug properly and to form the
-  base for code/feature improvment (Bernhard).
+  base for code/feature improvement (Bernhard).
 - Run track/elevation/object.cpp of trackgen through astyle (Bernhard).
 - Fixed error in trackgen which generated wrong faces inside of the pit building (Bernhard).
 - Fixed error in trackgen which caused wrong normals on "pit caps" (the beginning/end
@@ -155,7 +181,7 @@ Changes since 1.3.4-test2
 - Track side fences are now generated by trackgen with two surfaces, such that lighting
   is correct (Bernhard).
 - Changed trackgen to emit track and terrain as single sided surfaces (type 0x10 instead
-  of 0x30), thats why I had to fix all the above annomalies, the resulting back-face
+  of 0x30), that’s why I had to fix all the above anomalies, the resulting back-face
   culling will help a bit with performance, proper rendering and z-buffer-racing (Bernhard).
 - Fixed a crash bug in trackgen, related with terrain generation (Bernhard).
 - Fixed a bug in texture handling in trackgen which caused texture misplacement and
@@ -202,11 +228,11 @@ Changes since 1.3.4-test2
 - Fixed surface types in brondehach (SURF 0x0 to 0x10, on 0X0 is transformed to 0x24
   by accc, so accc takes double sided surfaces and hence some z-fighting might happen
   then. Do not use flat shaded surfaces in TORCS, they are not supported) (Bernhard).
-- Fixed framerate dependency of flying cam (Bernhard).
+- Fixed frame rate dependency of flying cam (Bernhard).
 - Changed texture orientation on the right side of the track in trackgen, beware, this has
   implications when regenerating existing tracks and "seamlessness" (e.g. g-track-1
   right side) (Bernhard).
-- Fixed wrong state comparision in trackgen (could generate missing/broken/misplaced end
+- Fixed wrong state comparison in trackgen (could generate missing/broken/misplaced end
   caps on walls or curbs) (Bernhard).
 - Fixed curbs with height 0 generating non planar surfaces in trackgen (Bernhard).
 - Fixed ssggraph exiting on unknown verbs, now just a warning is emitted (Bernhard).
@@ -223,13 +249,14 @@ Changes since 1.3.4-test2
   (http://channel9.msdn.com/coding4fun/blog/Torquing-it-up-with-TORCS-The-Open-Racing-Car-Simulator)
 - Added math.h includes in TORCS math headers for gcc 4.7 (Bernhard).
 - Totally reworked Dirt-2 track (Bernhard).
+- Added stripe.exe to the Windows installer with permission from Steven Skiena (Bernhard).
 
 
 Changes since 1.3.4-test1
 -------------------------
 - Added search facility to TRB (Bernhard).
 - Added hall of fame to TRB (Bernhard).
-- Added command line option to run under valgrind (-g) (Bernhard).
+- Added command line option to run under Valgrind (-g) (Bernhard).
 - Fixed tiny memory leak (module info was not released) (Bernhard).
 - Fixed tiny memory leak (carname for results not released) (Bernhard).
 - Adopted human.cpp to work with mem leak fixes (because of releasing
@@ -237,7 +264,7 @@ Changes since 1.3.4-test1
 - Fixed various small memory leaks in solid, just significant for 
   tracks with pit walls (Bernhard).
 - Added command line option "-k" (keep) to suppress the execution of dlclose
-  (useful for valgrind runs to get symbol information instead of ??)
+  (useful for Valgrind runs to get symbol information instead of ??)
   (Bernhard).
 - Fixed uninitialized variable in sound code (Bernhard).
 - Fixed a bug in ModFreeInfoList, was not significant, because the function has
@@ -276,9 +303,8 @@ Changes since 1.3.3
 - Got rid of more gcc 4.6 warnings, just 2 left (Bernhard).
 
 
-TODO for 1.3.4
+11. TODO/Notes
 --------------
-- Mostly done, sitting there waiting to escape;-)
 
 
 TODO for 1.3.5
