@@ -162,7 +162,7 @@ win32start:
 
 
 win32end:
-	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
+	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:/src/linux/:/src/windows/:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
@@ -478,7 +478,7 @@ endif
 ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
-	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LDFLAGS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
+	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${SOLIBS} ${LDFLAGS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \
