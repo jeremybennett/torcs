@@ -177,6 +177,7 @@ Changes since 1.3.4
   by Jasper van de Ven (Jasper, Bernhard).
 - Updated robotgen script for recent changes, patch provided by Jasper van de Ven
   (Jasper, Bernhard).
+- Updated installdb.php to allow longer session keys (Bernhard).
 
 
 11. TODO/Notes
