@@ -672,5 +672,14 @@
 
 	$tablename = $db_prefix . TBL_SESSIONCOUNT;
 	$sql = "ALTER TABLE $tablename ADD INDEX ( `start` )";
-	$result = mysql_query($sql);	
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_SESSIONCOUNT;
+	$sql = "ALTER TABLE $tablename CHANGE `session` `session` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''";
+	$result = mysql_query($sql);
+
+	$tablename = $db_prefix . TBL_USERS;
+	$sql = "ALTER TABLE $tablename CHANGE `session` `session` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''";
+	$result = mysql_query($sql);
+
 ?>
