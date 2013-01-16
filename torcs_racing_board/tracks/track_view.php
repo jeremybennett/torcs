@@ -15,6 +15,7 @@
 	$path_to_root = '../';
 	require_once($path_to_root . 'secrets/configuration.php');
 	require_once($path_to_root . 'lib/functions.php');
+	require_once($path_to_root . 'lib/functions_reports.php');
 	require_once($path_to_root . 'lib/classes.php');
 	require_once($path_to_root . 'lib/template.inc');
 
@@ -32,6 +33,13 @@
 	$stats_tablename = $db_prefix . TBL_STATS;
 	$loginlog_tablename = $db_prefix . TBL_LOGIN_LOG;
 	$track_tablename = $db_prefix . TBL_TRACK;
+
+	$race_report_driver_table = $db_prefix . TBL_RACE_REPORT_DRIVER;
+	$driver_tablename = $db_prefix . TBL_DRIVER;
+	$event_tablename = $db_prefix . TBL_EVENT;
+	$car_tablename = $db_prefix . TBL_CAR;
+	$race_tablename = $db_prefix . TBL_RACE;
+	$rawresult_tablename = $db_prefix . TBL_RAWRESULT;
 
 	countSession(session_id(), $stats_sessioncount_tablename, $stats_tablename);
 	countHit($_SERVER['PHP_SELF'], $stats_hitcount_tablename);
@@ -112,6 +120,40 @@
 				'PC_TRACK_DESCRIPTION'	=> htmlentities($myrow['description']),
 				'PC_TRACK_IMG_SRC'		=> $path_to_root . 'images/tracks/' . $trackid . '.jpg'
 			));
+
+			// Define the block template for a table row (fastest qualy times).
+			$page->set_block("PAGE_CONTENT_T", "timerow", "timerows");
+	
+			$sql = "SELECT c.name AS cname, p.carid, e.name AS ename, r.raceid, d.name AS dname, d.teamid, p.quali_laptime FROM " .
+				" $race_report_driver_table AS p, $driver_tablename AS d, $event_tablename AS e, $car_tablename AS c, " .
+				" $race_tablename AS r JOIN (SELECT uu.raceid, MIN(p.quali_laptime) AS quali_laptime FROM " .
+				" $race_tablename AS uu JOIN (SELECT driverid, raceid, MIN(quali_laptime) AS qlt FROM " .
+				" $rawresult_tablename GROUP BY driverid,raceid) AS x ON (uu.raceid=x.raceid), " .
+				" $race_report_driver_table AS p WHERE x.driverid=p.driverid AND x.qlt > 0 AND x.qlt <= p.quali_laptime AND " .
+				" uu.trackid = $trackid AND uu.raceid=p.raceid AND p.quali_laptime > 0 GROUP BY uu.raceid) as vv ON (vv.raceid=r.raceid) WHERE " .
+				" p.quali_laptime=vv.quali_laptime AND p.driverid=d.driverid AND " .
+				" r.eventid=e.eventid AND c.carid=p.carid AND r.trackid=$trackid ORDER BY e.eventid DESC";
+			$result = mysql_query($sql);
+
+			$results = 0;
+			while ($myrow = mysql_fetch_array($result)) {
+				$page->set_var(array(
+					'PC_EVENT'		=> htmlentities($myrow['ename']),
+					'PC_RACE_ID'	=> $myrow['raceid'],
+					'PC_TIME'		=> secondsToLaptime($myrow['quali_laptime']),
+					'PC_TEAM_ID'	=> $myrow['teamid'],
+					'PC_DRIVER'		=> htmlentities($myrow['dname']),
+					'PC_CAR'		=> htmlentities($myrow['cname']),
+					'PC_CAR_ID'		=> $myrow['carid'],
+					'PC_VERSION'	=> '-'		//TODO: db field on race
+				));
+				$page->parse("timerows", "timerow", true);
+				$results++;
+			}
+
+			if ($results == 0) {
+				$page->set_var("timerows", "");
+			}
 		}
 	}
 

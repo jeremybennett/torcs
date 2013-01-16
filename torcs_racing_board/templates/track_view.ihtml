@@ -65,4 +65,46 @@
 		</td>
 	</tr>
 </table>
+<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+	<tr>
+		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+
+			<table style="margin:6px;margin-top:5px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:624px;border-color:#a9a9a9;" class="text14" cellspacing="0">
+
+				<tr class="submitbuttoncolor">
+					<th class="rawresultlist" align="center" colspan="5">Best Qualifying Lap Times</th>
+				</tr>
+
+				<tr class="submitbuttoncolor">
+					<td class="rawresultlist" align="left">Event</td>
+					<td class="rawresultlist" align="left" title="[min]:[s]">Time</td>
+					<td class="rawresultlist" align="left">Driver</td>
+					<td class="rawresultlist" align="left">Car</td>
+					<td class="rawresultlist" align="left">Version</td>
+				</tr>
+
+				<!-- BEGIN timerow -->
+				<tr class="tight">
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}events/event_view_result.php?raceid={PC_RACE_ID}">{PC_EVENT}</a>
+					</td>
+					<td class="rawresultlist" title="[min]:[s]">
+						{PC_TIME}
+					</td>
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_DRIVER}</a>
+					</td>
+					<td class="rawresultlist">
+						<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_CAR_ID}">{PC_CAR}</a>
+					</td>
+					<td class="rawresultlist">
+						{PC_VERSION}
+					</td>
+				</tr-->
+				<!-- END timerow -->
+			</table>
+		</td>
+	</tr>
+
+</table>
 
