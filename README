@@ -180,6 +180,7 @@ Changes since 1.3.4
 - TRB: Updated installdb.php to allow longer session keys (Bernhard).
 - TRB: Added best qualifying lap times per event in track view (Bernhard).
 - TRB: Adjusted styling in templates towards themeing (Bernhard).
+- TRB: Added public download of robots when event is done (Bernhard).
 
 
 11. TODO/Notes
