@@ -560,4 +560,21 @@
 		return $error;
 	}
 
+	function isEventDone($event_tablename, $eventid)
+	{
+		$eventid = intval($eventid);
+
+		$sql = "SELECT enddate FROM $event_tablename WHERE eventid=" . quoteString($eventid);
+		$result = mysql_query($sql);
+
+		if ($myrow = mysql_fetch_array($result)) {
+			$ct = time();
+			$time = strtotime($myrow['enddate']) - $ct;
+			if (($time < 0)) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+
 ?>

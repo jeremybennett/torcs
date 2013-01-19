@@ -393,6 +393,37 @@
 			}
 			// TODO: show next step for the user.
 		}
+
+		// Offer the robots to download if the event is done to everyone.
+		$page->set_block("PAGE_CONTENT_T", "downloads", "downloadsvar");
+		
+		if (isEventDone($event_tablename, $eventid) == TRUE) {
+			// Find all teams, unsubscribed teams are not available (file gets deleted)
+			$toggle = intval(0);
+			$page->set_block("downloads", "filelist", "filelistrows");
+
+			$sql = "SELECT t.name, t.teamid, t.modulename FROM " .
+				   " $event_team_table et, $team_tablename t WHERE et.eventid=" .
+				   $eventid_for_db . " AND et.teamid=t.teamid";
+
+			$result = mysql_query($sql);
+			while ($myrow = mysql_fetch_array($result)) {
+				$page->set_var(array(
+					'PC_TEAM_ID'			=> $myrow['teamid'],
+					'PC_TEAM_NAME'			=> htmlentities($myrow['name']),
+					'PC_TEAM_MODULENAME'	=> htmlentities($myrow['modulename']) . ".tar.bz2",
+					'PC_EVENT_ID'			=> $eventid,
+					'PC_RACE_STATE_COLOR'	=> ($toggle == 0) ? COLOR_TB1 : COLOR_TB2
+				));
+				$page->parse("filelistrows", "filelist", true);
+				$toggle = ($toggle == 0) ? 1 : 0;
+			}
+
+			$page->parse("downloadsvar", "downloads");
+		} else {
+			$page->set_var("downloadsvar", "");
+		}	
+
 	}
 
 	require_once($path_to_root . 'lib/functions_navigation.php');
