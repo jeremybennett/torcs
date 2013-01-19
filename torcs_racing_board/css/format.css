@@ -26,23 +26,61 @@ th { font-size:14px; }
 
 body { font-family:Arial,Helvetica,sans-serif; margin-top:0px; margin-left:0px; }
 
-table.main_format { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; table-layout:fixed; }
+/* width 1024 
+.main_format { margin-top:10px; margin-left:20px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:1024px; table-layout:fixed; }
+table.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; table-layout:fixed; width:1024px; }
+table.embedded { width:844px; margin-left:10px; margin-top:0px; }
+table.embeddedts { width:844px; margin-left:10px; margin-top:5px; }
+table.embedded2 { margin:6px;margin-top:5px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:828px;border-color:#a9a9a9; }
+table.embedded3 { margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px; }
+table.statusbar { border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:1004px; margin-left:7px; margin-top:4px; }
+table.innertable { width:629px; margin-left:3px;margin-right:0px;border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+td.main_top { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:1024px; }
+td.main_status { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:1024px; }
+td.main_nav { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:150px; overflow:auto; vertical-align:top;}
+td.main_content { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:864px; overflow:auto; vertical-align:top;}
+td.main_footer { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:1024px; }
+td.main_right { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:10px; overflow:auto; vertical-align:top;}
+.admincol1 { width:120px; }
+.admincol2 { width:495px; }
+.admincol0 { width:615px; }
+.admincol11 { width:160px; }
+.admincol21 { width:455px; }
+*/
 
+/* width 800*/
+.main_format { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; table-layout:fixed; }
 table.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; table-layout:fixed; width:800px; }
+table.embedded { width:640px; margin-left:10px; margin-top:0px; }
+table.embeddedts { width:640px; margin-left:10px; margin-top:5px; }
+table.embedded2 { width:624px;margin:6px;margin-top:5px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;border-color:#a9a9a9; }
+table.statusbar {  width:780px;border-style:none; border-spacing:0px; border-width:0px; padding:0px; margin-left:7px; margin-top:4px; }
+table.innertable { width:629px; margin-left:3px;margin-right:0px;border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+td.main_top { width:800px;margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+td.main_status { width:800px;margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+td.main_nav { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:150px; overflow:auto; vertical-align:top;}
+td.main_content { width:650px; margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; overflow:auto; vertical-align:top;}
+td.main_footer { width:800px; margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
+td.main_right { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:10px; overflow:auto; vertical-align:top;}
+.admincol1 { width:120px; }
+.admincol2 { width:495px; }
+.admincol0 { width:615px; }
+.admincol11 { width:160px; }
+.admincol21 { width:455px; }
+
+table.embedded3 { margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px; }
+table.noborder { border-style:none; border-spacing:0px; }
+table.navmargin { margin-top:10px; } 
+form.embedded { margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
 
 tr.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;}
 td.tight { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;}
 
-td.main_top { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
-td.main_status { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
-td.main_nav { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:150px; overflow:auto; vertical-align:top;}
-td.main_content { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:650px; overflow:auto; vertical-align:top;}
-td.main_footer { margin:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:800px; }
 td.filledlist { border-top-style:solid; border-top-width:2px; border-color:#ffffff;}
 th.filledlist { border-top-style:solid; border-top-width:2px; border-color:#ffffff;}
-
 td.forumthread { border-style:none; border-spacing:0px; border-width:0px;}
 tr.forumthread { border-style:none; border-spacing:0px; border-width:0px;}
+th.topic { width:340px; }
 
 img.tight { margin:0px; border:0px; border-style:none; border-spacing:0px; border-width:0px; padding:0px; }
 p.statusbar { font-size:16px; text-align:center; margin:0px; }
@@ -52,7 +90,9 @@ p.statusbar { font-size:16px; text-align:center; margin:0px; }
 .text10 { font-family:Arial,Helvetica,sans-serif; font-size:10px; }
 
 .rawresultlist { border-color:#a9a9a9; border-style:solid; border-width:1px; border-bottom-width:0px; border-right-width:0px; }
-
+.smallmargintop { margin-top:5px; }
+.smallmarginbottom { margin-bottom:5px; }
+.border { margin:0px;border-style:solid; border-width:1px;border-spacing:0px; }
 
 .submitbuttoncolor { background-color:#e0ffe0; }
 .contentbordercolor { border-color:#e8e8e8; }
