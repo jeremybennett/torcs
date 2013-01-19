@@ -1,6 +1,6 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Race Result of {PC_EVENT_NAME}, {PC_TRACK_NAME}</h3>
 
@@ -13,7 +13,7 @@
 				<a href="{ROOTPATH}events/event_view_standings.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">the standings of the {PC_EVENT_NAME} here</a>.
 			</p>
 
-			<table style="margin:6px;margin-top:0px;border-style:solid;border-spacing:0px;border-width:1px;border-top-width:0px;border-left-width:0px;padding:0px;width:624px;border-color:#a9a9a9;" class="text14" cellspacing="0">
+			<table class="embedded2 text14" cellspacing="0">
 
 				<tr class="submitbuttoncolor">
 					<th class="rawresultlist" align="center" colspan="12">Drivers {PC_TRACK_NAME} Race Result</th>
@@ -79,7 +79,7 @@
 					<td class="rawresultlist" title="[min]:[s] (median)">
 						{PC_QUALI_LAPTIME}
 					</td>
-				</tr-->
+				</tr>
 				<!-- END driver -->
 
 				<tr>
@@ -117,11 +117,9 @@
 					<td class="rawresultlist" colspan="9">
 						&nbsp;
 					</td>
-				</tr-->
+				</tr>
 				<!-- END team -->
 			</table>
-
-
 		</td>
 	</tr>
 </table>

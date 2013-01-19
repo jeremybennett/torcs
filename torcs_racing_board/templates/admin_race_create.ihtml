@@ -1,21 +1,21 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Create a New Race</h3>
 			<p>
 				Here you can create a new race.
 			</p>
 
-			<form method="post" action="{PC_CREATERACEPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+			<form method="post" action="{PC_CREATERACEPAGE}" class="embedded">
 				<input type="hidden" name="event_id" value="{PC_EVENT_ID}">
 				<table class="text14" cellspacing="0">
 
 					<tr>
-						<td class="filledlist" style="width:160px">
+						<td class="admincol11 filledlist">
 							Robot submission start:
 						</td>
-						<td class="filledlist" style="width:455px">
+						<td class="admincol21 filledlist">
 							<input type="text" name="race_robot_sub_start" size="20" maxlength="19" value="{PC_RACE_ROBOT_SUBMIT_START}"/>
 						</td>
 					</tr>
@@ -24,7 +24,7 @@
 						<td class="filledlist">
 							Robot submission end:
 						</td>
-						<td class="filledlist" style="width:455px">
+						<td class="admincol21 filledlist">
 							<input type="text" name="race_robot_sub_end" size="20" maxlength="19" value="{PC_RACE_ROBOT_SUBMIT_END}"/>
 						</td>
 					</tr>
@@ -33,7 +33,7 @@
 						<td class="filledlist">
 							Result submission start:
 						</td>
-						<td class="filledlist" style="width:455px">
+						<td class="admincol21 filledlist">
 							<input type="text" name="race_result_sub_start" size="20" maxlength="19" value="{PC_RACE_RESULT_SUBMIT_START}"/>
 						</td>
 					</tr>
@@ -42,7 +42,7 @@
 						<td class="filledlist">
 							Result submission end:
 						</td>
-						<td class="filledlist" style="width:455px">
+						<td class="admincol21 filledlist">
 							<input type="text" name="race_result_sub_end" size="20" maxlength="19" value="{PC_RACE_RESULT_SUBMIT_END}"/>
 						</td>
 					</tr>

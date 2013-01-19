@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>Team Overview</h3>
 			<p>
 				"Gimmick" overview of the teams which have submitted images. For a complete list of all teams
@@ -11,7 +11,7 @@
 	</tr>
 </table>
 
-<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+<table class="embedded noborder text14" cellspacing="0">
 	<tr class="submitbuttoncolor">
 		<th class="filledlist" align="center" style="width:84px">Team</th>
 		<th class="filledlist" align="center" style="width:60px">Owner</th>
@@ -23,26 +23,26 @@
 	<tr bgcolor="{PC_COLOR}">
 		<td class="filledlist" style="width:84px;">
 			<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}" title="{PC_TEAM_NAME}" style="text-decoration:none;margin:0px;">
-			<img src="{PC_TEAM_LOGO_IMG}" style="border:0px;width:74px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"></img>
+			<img src="{PC_TEAM_LOGO_IMG}" style="border:0px;width:74px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"/>
 			</a>
 		</td>
 
 		<td class="filledlist" style="width:60px;">
 			<a href="{ROOTPATH}users/user_view.php?viewuserid={PC_TEAM_OWNER_ID}" title="{PC_TEAM_OWNER_NAME}, {PC_TEAM_OWNER_FNAME} {PC_TEAM_OWNER_LNAME}" style="text-decoration:none;margin:0px;">
-			<img src="{PC_TEAM_USER_IMG}" style="border:0px;width:50px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"></img>
+			<img src="{PC_TEAM_USER_IMG}" style="border:0px;width:50px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"/>
 			</a>
 		</td>
 
 		<td class="filledlist" style="width:186px;">
 			<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_TEAM_CAR_ID}" title="{PC_TEAM_CAR_NAME}" style="text-decoration:none;margin:0px;">
-			<img src="{PC_TEAM_SHOT1_IMG}" style="border:0px;width:83px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"></img>
-			<img src="{PC_TEAM_SHOT2_IMG}" style="border:0px;width:83px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"></img>
+			<img src="{PC_TEAM_SHOT1_IMG}" style="border:0px;width:83px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"/>
+			<img src="{PC_TEAM_SHOT2_IMG}" style="border:0px;width:83px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"/>
 			</a>
 		</td>
 
 		<td class="filledlist" style="width:84;">
 			<a name="gaga"  style="text-decoration:none;margin:0px;">
-			<img src="{PC_TEAM_FLAG_IMG}" style="border:0px;width:74px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"></img>
+			<img src="{PC_TEAM_FLAG_IMG}" style="border:0px;width:74px;height:50px;border-style:none;margin-top:4px;margin-left:5px;"/>
 			</a>
 		</td>
 
@@ -54,7 +54,7 @@
 	<!-- END row -->
 </table>
 
-<table style="width:640px; margin-top:10px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+<table class="embedded noborder navmargin text14" cellspacing="0">
 	<tr>
 		<td class="filledlist" style="text-align:left;">
 			<a href="javascript:history.back(-1)">{PC_LIST_PREV}</a>

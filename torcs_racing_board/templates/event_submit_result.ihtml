@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>{PC_EVENT_NAME}</h3>
 
 			<p>
@@ -43,7 +43,7 @@
 				<!-- BEGIN filelist -->
 				<tr class="tight">
 					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
-						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
+						style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14"<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
 					</td>
 					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
 						<a href="{ROOTPATH}events/event_download_robot.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}&teamid={PC_TEAM_ID}">{PC_TEAM_MODULENAME}</a>
@@ -95,7 +95,7 @@
 <form method="post" enctype="multipart/form-data" action="{ROOTPATH}events/event_result_submitted.php" style="margin-top:5px">
 	<input type="hidden" name="race_id" value="{PC_RACE_ID}"/>
 	<input type="hidden" name="event_id" value="{PC_EVENT_ID}"/>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded text14" style="border-style:none; border-spacing:0px;" cellspacing="0">
 		<tr bgcolor="#e8e8e8">
 			<td class="filledlist">
 				Result (*.xml):
@@ -105,7 +105,7 @@
 			</td>
 		</tr>
 	</table>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded text14" style="border-style:none; border-spacing:0px;" cellspacing="0">
 		<tr class="submitbuttoncolor">
 			<td class="filledlist">
 				<input type="submit" name="race_result_submit" value="Submit Race Result">
@@ -117,7 +117,7 @@
 <form method="post" action="{ROOTPATH}events/event_result_not_submitted.php" style="margin-top:5px">
 	<input type="hidden" name="race_id" value="{PC_RACE_ID}"/>
 	<input type="hidden" name="event_id" value="{PC_EVENT_ID}"/>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded text14" style="border-style:none; border-spacing:0px;" cellspacing="0">
 		<tr bgcolor="#e8e8e8">
 			<td class="filledlist" style="width:20px;">
 				<input type="checkbox" name="no_race_result" value="failed"/>
@@ -127,7 +127,7 @@
 			</td>
 		</tr>
 	</table>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded text14" style="border-style:none; border-spacing:0px;" cellspacing="0">
 		<tr class="submitbuttoncolor">
 			<td class="filledlist">
 				<input type="submit" name="no_race_result_submit" value="Submit">

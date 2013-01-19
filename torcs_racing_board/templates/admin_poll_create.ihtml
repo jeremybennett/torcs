@@ -1,6 +1,6 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Create a New Poll</h3>
 			<p>
@@ -10,14 +10,14 @@
 				and submit again.
 			</p>
 
-			<form method="post" action="{PC_CREATEPOLLPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+			<form method="post" action="{PC_CREATEPOLLPAGE}" class="embedded">
 				<table class="text14" cellspacing="0">
 					<tr>
-						<td class="filledlist" style="width:90px" align="left" valign="top">
+						<td class="admincol1 filledlist" align="left" valign="top">
 							Question:
 						</td>
 						<td class="filledlist">
-							<textarea name="poll_question" style="width:525px" rows="3"></textarea>
+							<textarea name="poll_question" class="admincol2" rows="3"></textarea>
 						</td>
 					</tr>
 
@@ -94,19 +94,19 @@
 
 				<table class="text14" cellspacing="0" id="theanswers">
 					<tr>
-						<td style="width:90px" class="filledlist">
+						<td class="admincol1 filledlist">
 							Answer 1:
 						</td>
 						<td class="filledlist">
-							<input type="text" name="poll_answer[]" maxlength="255" style="width:525px"/>
+							<input type="text" name="poll_answer[]" maxlength="255" class="admincol2"/>
 						</td>
 					</tr>
 					<tr>
-						<td style="width:90px" class="filledlist">
+						<td class="admincol1 filledlist">
 							Answer 2:
 						</td>
 						<td class="filledlist">
-							<input type="text" name="poll_answer[]" maxlength="255" style="width:525px"/>
+							<input type="text" name="poll_answer[]" maxlength="255" class="admincol2"/>
 						</td>
 					</tr>
 				</table>
@@ -122,14 +122,3 @@
 		</td>
 	</tr>
 </table>
-
-
-
-
-
-
-
-
-
-
-

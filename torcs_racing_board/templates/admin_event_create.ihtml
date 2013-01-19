@@ -1,6 +1,6 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Create a New Event</h3>
 			<p>
@@ -9,13 +9,13 @@
 				there must be errors, please correct them and submit again.
 			</p>
 
-			<form method="post" enctype="multipart/form-data" action="{PC_CREATEEVENTPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+			<form method="post" enctype="multipart/form-data" action="{PC_CREATEEVENTPAGE}" class="embedded">
 				<table class="text14" cellspacing="0">
 					<tr>
-						<td class="filledlist" style="width:120px">
+						<td class="admincol1 filledlist">
 							Name:
 						</td>
-						<td class="filledlist" style="width:495px">
+						<td class="admincol2 filledlist">
 							<input type="text" name="event_name" size="40" maxlength="40" value="{PC_EVENT_NAME}"/>
 						</td>
 					</tr>
@@ -25,7 +25,7 @@
 							Description:
 						</td>
 						<td class="filledlist">
-							<textarea name="event_description" rows="6" style="width:495px">{PC_EVENT_DESCRIPTION}</textarea>
+							<textarea name="event_description" rows="6" class="admincol2">{PC_EVENT_DESCRIPTION}</textarea>
 						</td>
 					</tr>
 
@@ -33,7 +33,7 @@
 						<td class="filledlist">
 							Sign-in start:
 						</td>
-						<td class="filledlist" style="width:495px">
+						<td class="admincol2 filledlist">
 							<input type="text" name="event_signin_start" size="20" maxlength="19" value="{PC_EVENT_SIGNIN_START}"/>
 						</td>
 					</tr>
@@ -42,7 +42,7 @@
 						<td class="filledlist">
 							Sign-in end:
 						</td>
-						<td class="filledlist" style="width:495px">
+						<td class="admincol2 filledlist">
 							<input type="text" name="event_signin_end" size="20" maxlength="19" value="{PC_EVENT_SIGNIN_END}"/>
 						</td>
 					</tr>
@@ -51,7 +51,7 @@
 						<td class="filledlist">
 							Start date:
 						</td>
-						<td class="filledlist" style="width:495px">
+						<td class="admincol2 filledlist">
 							<input type="text" name="event_start" size="20" maxlength="19" value="{PC_EVENT_START}"/>
 						</td>
 					</tr>
@@ -60,7 +60,7 @@
 						<td class="filledlist">
 							End date:
 						</td>
-						<td class="filledlist" style="width:495px">
+						<td class="admincol2 filledlist">
 							<input type="text" name="event_end" size="20" maxlength="19" value="{PC_EVENT_END}"/>
 						</td>
 					</tr>

@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>Cars</h3>
 			<p>
 				All available cars for races on the TORCS racing board.
@@ -12,7 +12,7 @@
 				<tr>
 					<!-- BEGIN col -->
 					<td style="margin:5px;padding:5px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
-						<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_CAR_ID}"><img src="{PC_CAR_IMG_SRC}" alt="car image" border="0" style="border:0px; width:140px; height:177px; border-style:hidden;" title="{PC_CAR_NAME}, {PC_CAR_TYPE}, {PC_CAR_MASS}kg, {PC_CAR_POWER}kW."></img></a>
+						<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_CAR_ID}"><img src="{PC_CAR_IMG_SRC}" alt="car image" border="0" style="border:0px; width:140px; height:177px; border-style:hidden;" title="{PC_CAR_NAME}, {PC_CAR_TYPE}, {PC_CAR_MASS}kg, {PC_CAR_POWER}kW."/></a>
 					</td>
 					<!-- END col -->
 				</tr>

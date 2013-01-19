@@ -1,6 +1,6 @@
 <!-- BEGIN article -->
 
-<table style="width:640px; margin-left:10px; margin-top:0px;margin-bottom:5px;" cellspacing="0" class="text14">
+<table class="embedded text14" style="margin-bottom:5px;" cellspacing="0">
 	<tr>
 		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;padding-left:5px;padding-right:5px;background-color:#e8e8e8;border-color:#e8e8e8;" align="left">{PC_NEWS_TITLE}</td>
 		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;;padding-right:5px;background-color:#e8e8e8;border-color:#e8e8e8;" align="right">
@@ -12,7 +12,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor" colspan="2">
+		<td class="border contentbordercolor" colspan="2">
 			<p>
 				{PC_NEWS_TEXT}
 			</p>
@@ -22,12 +22,12 @@
 
 <!-- END article -->
 
-<table style="width:640px; margin-left:10px; margin-top:0px;margin-bottom:5px;" cellspacing="0" class="text14">
+<table class="embedded noborder navmargin text14" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:none; border-width:0px;border-spacing:0px;padding-left:5px;padding-right:5px;background-color:#ffffff;border-color:#ffffff;" align="left">
+		<td class="filledlist" style="text-align:left;">
 			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
 		</td>
-		<td style="margin:0px;border-style:none; border-width:0px;border-spacing:0px;;padding-right:5px;background-color:#ffffff;border-color:#ffffff;" align="right">
+		<td class="filledlist" style="text-align:right;">
 			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
 		</td>
 	</tr>

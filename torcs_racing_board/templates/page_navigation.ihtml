@@ -422,6 +422,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}forum/search.php">Search</a>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}admin/poll_list.php">Poll List</a>
 		</td>
@@ -431,13 +438,6 @@
 		</td>
 		<td>
 			<a href="{ROOTPATH}admin/poll_create.php">Create a Poll</a>
-		</td>
-	</tr>
-	<tr>
-		<td style="width:15px;">
-		</td>
-		<td>
-			<a href="{ROOTPATH}forum/search.php">Search</a>
 		</td>
 	</tr>
 
@@ -545,13 +545,14 @@
 			Admin Functions
 		</td>
 	</tr>
+	<tr>
 		<td style="width:15px;">
 		</td>
 		<td>
 			<a href="{ROOTPATH}admin/loginlog_list.php">Login Log</a>
 		</td>
 	</tr>
-	</tr>
+	<tr>
 		<td style="width:15px;">
 		</td>
 		<td>

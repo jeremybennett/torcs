@@ -1,11 +1,11 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>Data of {PC_USER_NAME}</h3>
 
 			<!-- BEGIN userimage -->
-			<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:right; border:0px; width:150px; height:150px; border-style:hidden; margin:5px;"></img>
+			<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:right; border:0px; width:150px; height:150px; border-style:hidden; margin:5px;"/>
 			<!-- END userimage -->
 
 			<table style=" margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">

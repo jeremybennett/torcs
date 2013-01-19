@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>Your Account</h3>
 			<p>
 				Here you can manage your account. Change the settings and hit the
@@ -16,9 +16,9 @@
 
 </table>
 
-<form method="post" action="{PC_ACCOUNTPAGE}" style="margin-top:5px">
+<form method="post" action="{PC_ACCOUNTPAGE}" class="smallmargintop">
 	<input type="hidden" name="account_username" value="{PC_VALUE_USERNAME}"/>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded noborder text14" cellspacing="0">
 		<tr bgcolor="{PC_COLOR_USERNAME}">
 			<td class="filledlist">
 				Username:
@@ -104,7 +104,7 @@
 			</td>
 		</tr>
 	</table>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded text14 noborder" cellspacing="0">
 		<tr class="submitbuttoncolor">
 			<td class="filledlist">
 				<input type="submit" name="account_submit" value="Submit Changes">
@@ -114,16 +114,14 @@
 </form>
 
 <!-- BEGIN racer_image -->
-<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+<table class="embeddedts" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
-
-
+		<td class="border contentbordercolor">
 			<h3>Photo</h3>
 
 			<p>
 				<!-- BEGIN userimage -->
-				<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:left;border:0px;margin-right:5px;width:50px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"></img>
+				<img src="{PC_USER_IMG_SRC}" alt="user image" border="0" style="float:left;border:0px;margin-right:5px;width:50px;height:50px;border-style:hidden;margin-top:3px;margin-bottom:3px;"/>
 				<!-- END userimage -->
 				Optionally you can upload a photo of you. It will be visible for all visitors. It must
 				be of mime type image/jpeg, 150 pixels width and height and smaller than 20000 bytes. To delete
@@ -135,18 +133,18 @@
 </table>
 
 
-<form method="post" enctype="multipart/form-data" action="{PC_ACCOUNTPAGE}" style="margin-top:5px">
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+<form method="post" enctype="multipart/form-data" action="{PC_ACCOUNTPAGE}" class="smallmargintop">
+	<table class="embedded noborder text14" cellspacing="0">
 		<tr bgcolor="#e8e8e8">
 			<td class="filledlist">
 				Photo:
 			</td>
 			<td class="filledlist">
-				<input name="racer_image" type="file" size="70" maxlength="20000" accept="image/jpeg"/>
+				<input name="racer_image" type="file" size="65" maxlength="20000" accept="image/jpeg"/>
 			</td>
 		</tr>
 	</table>
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded noborder text14" cellspacing="0">
 		<tr class="submitbuttoncolor">
 			<td class="filledlist">
 				<input type="submit" name="racer_image_submit" value="Submit Photo">

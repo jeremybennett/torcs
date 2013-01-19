@@ -125,9 +125,9 @@
 	$more_rows = (mysql_num_rows($result) > LISTENTRIES);
 	$page->set_var(array(
 		'PC_LIST_NEXT_LINK'		=> ($more_rows === TRUE) ? $_SERVER['PHP_SELF'] . '?listfrom=' . ($listfrom+LISTENTRIES) : '',
-		'PC_LIST_NEXT'			=> ($more_rows === TRUE) ? 'Forward' : '',
+		'PC_LIST_NEXT'			=> ($more_rows === TRUE) ? 'Next' : '',
 		'PC_LIST_PREV_LINK'		=> ($listfrom > 0) ? $_SERVER['PHP_SELF'] . '?listfrom=' . max($listfrom-LISTENTRIES, 0) : '',
-		'PC_LIST_PREV'			=> ($listfrom > 0) ? 'Backward' : ''
+		'PC_LIST_PREV'			=> ($listfrom > 0) ? 'Previous' : ''
 	));
 
 

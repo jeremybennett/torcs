@@ -1,15 +1,15 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>{PC_EVENT_NAME}</h3>
 
-			<table style="margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;" class="text14" cellspacing="0">
+			<table class="embedded3 text14" cellspacing="0">
 				<tr class="tight">
-					<td style="width:100px;" align="left" valign="top">
+					<td class="admincol1" align="left" valign="top">
 						Description:
 					</td>
-					<td style="width:525px;">
+					<td class="admincol2">
 						{PC_EVENT_DESCRIPTION}
 					</td>
 				</tr>
@@ -65,10 +65,10 @@
 					</td>
 				</tr>
 				<tr class="tight">
-					<td style="width:100px;" align="left" valign="top">
+					<td class="admincol1" align="left" valign="top">
 						Allowed cars:
 					</td>
-					<td style="width:525px;">
+					<td class="admincol2">
 						<!-- BEGIN carlist -->
 						{PC_EVENT_CAR_SEP}<a href="{ROOTPATH}cars/car_view.php?viewcarid={PC_EVENT_CAR_ID}">{PC_EVENT_CAR_NAME}</a>
 						<!-- END carlist -->
@@ -89,8 +89,8 @@
 					<td align="left" valign="top">
 						Races:
 					</td>
-					<td style="margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;">
-						<table style="margin:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:525px" cellspacing="0" class="text14">
+					<td class="tight">
+						<table class="admincol2 text14" cellspacing="0">
 						<!-- BEGIN racelist -->
 							<tr class="tight">
 								<td style="border-bottom-style:solid; border-bottom-width:2px; border-color:#ffffff;background-color:#{PC_RACE_STATE_COLOR};">

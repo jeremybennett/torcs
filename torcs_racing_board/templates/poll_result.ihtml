@@ -8,7 +8,7 @@
 	<!-- BEGIN answer_row -->
 	<tr>
 		<td class="pollsmalltext">
-			<img src="{ROOTPATH}images/pollbar.gif" style="width:{PC_ANSWER_PERCENT}%; height:10px;"></img><img src="{ROOTPATH}images/pollbar_back.gif" style="width:{PC_ANSWER_PERCENT2}%; height:10px;"></img><br/>
+			<img src="{ROOTPATH}images/pollbar.gif" style="width:{PC_ANSWER_PERCENT}%; height:10px;"/><img src="{ROOTPATH}images/pollbar_back.gif" style="width:{PC_ANSWER_PERCENT2}%; height:10px;"/><br/>
 			{PC_ANSWER_TEXT} ({PC_ANSWER_COUNT}, {PC_ANSWER_PERCENT}%)
 		</td>
 	</tr>

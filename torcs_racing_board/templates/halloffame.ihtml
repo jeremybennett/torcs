@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>Hall of Fame</h3>
 			<p>
 				The champions. Get your team and drivers here.
@@ -9,9 +9,9 @@
 		</td>
 	</tr>
 </table>
-<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+<table class="embeddedts" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>TRB Team Champions</h3>
 			<p>
 			<!-- BEGIN teamrow -->
@@ -23,9 +23,9 @@
 		</td>
 	</tr>
 </table>
-<table style="width:640px; margin-left:10px; margin-top:5px" cellspacing="0">
+<table class="embeddedts" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>TRB Driver Champions</h3>
 			<p>
 			<!-- BEGIN driverrow -->

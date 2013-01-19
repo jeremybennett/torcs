@@ -1,4 +1,4 @@
-<table style="border-style:none; border-spacing:0px; border-width:0px; padding:0px; width:780px; margin-left:7px; margin-top:8px;" cellspacing="0">
+<table class="statusbar" style="margin-top:8px;" cellspacing="0">
 	<tr>
 		<td class="text14" title="You are logged in as {PS_ACCOUNT_TYPE} from {PS_IPADSRESS}">
 			Welcome, {PS_USERNAME}.

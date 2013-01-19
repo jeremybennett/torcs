@@ -1,6 +1,6 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Create a New Team</h3>
 			<p>
@@ -29,8 +29,8 @@
 				<li>On the place of the red test_2004 you should find your "<i>Module name</i>".
 				<li>Now look for the driver/robot names, you should find "name" lines similiar to those in the
 				rank sections:<br>
-				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 1</span>"/&gt<br>
-				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 2</span>"/&gt<br></li>
+				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 1</span>"/&gt;<br>
+				&lt;attstr name="name" val="<span style="color:#ff0000">test 2004 2</span>"/&gt;<br></li>
 				<li>On the place of the red names you should find your "<i>Name driver 1</i>" and
 				"<i>Name driver 2</i>".</li>
 				<li>It is very important that the driver names are consistent across the robot xml file
@@ -46,11 +46,11 @@
 	</tr>
 </table>
 
-<form method="post" action="{PC_CREATETEAMPAGE}" style="margin-top:5px">
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+<form method="post" action="{PC_CREATETEAMPAGE}" class="smallmargintop">
+	<table class="embedded noborder text14" cellspacing="0">
 
 		<tr bgcolor="{PC_COLOR_NAME}">
-			<td class="filledlist" style="width:120px">
+			<td class="admincol1 filledlist">
 				Name:
 			</td>
 			<td class="filledlist">
@@ -79,22 +79,22 @@
 
 	</table>
 
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded noborder text14" cellspacing="0">
 
 		<tr bgcolor="{PC_COLOR_DESCRIPTION}">
-			<td class="filledlist" align="left" valign="top" style="width:120px">
+			<td class="admincol1 filledlist" align="left" valign="top">
 				Description:
 			</td>
 			<td class="filledlist">
-				<textarea name="team_description" rows="6" style="width:495px">{PC_TEAM_DESCRIPTION}</textarea>
+				<textarea name="team_description" rows="6" class="admincol2">{PC_TEAM_DESCRIPTION}</textarea>
 			</td>
 		</tr>
 
 	</table>
 
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded noborder text14" cellspacing="0">
 		<tr bgcolor="{PC_COLOR_MODULENAME}">
-			<td class="filledlist" style="width:120px">
+			<td class="admincol1 filledlist">
 				Module name:
 			</td>
 			<td class="filledlist">
@@ -106,7 +106,7 @@
 		</tr>
 
 		<tr bgcolor="{PC_COLOR_DRIVER1}">
-			<td class="filledlist" style="width:120px">
+			<td class="admincol1 filledlist">
 				Name driver 1:
 			</td>
 			<td class="filledlist">
@@ -118,7 +118,7 @@
 		</tr>
 
 		<tr bgcolor="{PC_COLOR_DRIVER2}">
-			<td class="filledlist" style="width:120px">
+			<td class="admincol1 filledlist">
 				Name driver 2:
 			</td>
 			<td class="filledlist">
@@ -147,7 +147,7 @@
 		</tr>
 	</table>
 
-	<table style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14" cellspacing="0">
+	<table class="embedded noborder text14" cellspacing="0">
 		<tr class="submitbuttoncolor">
 			<td class="filledlist">
 				<input type="submit" name="team_submit" value="Create Team">

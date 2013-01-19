@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<!-- BEGIN sendnew -->
 			<h3>Sending E-Mail to Groups</h3>
@@ -18,9 +18,9 @@
 			</p>
 			<!-- END sendnewfailed -->
 
-			<form method="post" action="{PC_MAIL_SEND}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+			<form method="post" action="{PC_MAIL_SEND}" class="embedded">
 
-				<table class="text14" cellspacing="0" style="width:625px">
+				<table class="text14" cellspacing="0">
 
 					<tr>
 						<td class="filledlist" align="left" valign="top">
@@ -38,14 +38,14 @@
 					<tr>
 						<td class="filledlist" align="left" valign="top">
 							Subject:<br>
-							<input type="text" name="subject" value="[TRB] " style="width:620px"><br>
+							<input type="text" name="subject" value="[TRB] " class="admincol0"><br>
 						</td>
 					</tr>
 
 					<tr>
-						<td class="filledlist" style="width:100%" align="left" valign="top">
+						<td class="filledlist" align="left" valign="top">
 							Text:<br>
-							<textarea name="text" rows="12" style="width:620px"></textarea><br>
+							<textarea name="text" rows="12" class="admincol0"></textarea><br>
 						</td>
 					</tr>
 				</table>

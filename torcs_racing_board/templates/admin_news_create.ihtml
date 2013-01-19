@@ -1,23 +1,23 @@
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 
 			<h3>Write News</h3>
 
-			<form method="post" action="{PC_CREATENEWSPAGE}" style="margin:4px; border-style:none; border-spacing:0px; border-width:0px; padding:0px;">
+			<form method="post" action="{PC_CREATENEWSPAGE}" class="embedded">
 				<table class="text14" cellspacing="0">
 
 					<tr>
 						<td class="filledlist" align="left" valign="top">
 							Title:<br>
-							<input type="text" name="news_title" maxlength="100" value="{PC_NEWS_TITLE}" style="width:620px"><br>
+							<input type="text" name="news_title" maxlength="100" value="{PC_NEWS_TITLE}" class="admincol0"><br>
 						</td>
 					</tr>
 
 					<tr>
-						<td class="filledlist" style="width:100%" align="left" valign="top">
+						<td class="filledlist" align="left" valign="top">
 							Text:<br>
-							<textarea name="news_text" rows="12" style="width:620px">{PC_NEWS_TEXT}</textarea><br>
+							<textarea name="news_text" rows="12" class="admincol0">{PC_NEWS_TEXT}</textarea><br>
 						</td>
 					</tr>
 				</table>

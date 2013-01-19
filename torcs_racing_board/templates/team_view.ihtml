@@ -1,7 +1,7 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
+		<td class="border contentbordercolor">
 			<h3>{PC_TEAM_NAME} Team</h3>
 
 			<table style="margin:4px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:628px" class="text14" cellspacing="0">
@@ -14,11 +14,11 @@
 					</td>
 					<td rowspan="7" align="right" valign="top">
 						<!-- BEGIN logoimage -->
-						<img src="{PC_TEAM_IMG_LOGO}" alt="logo" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"></img>
+						<img src="{PC_TEAM_IMG_LOGO}" alt="logo" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"/>
 						<!-- END logoimage -->
 
 						<!-- BEGIN flagimage -->
-						<img src="{PC_TEAM_IMG_FLAG}" alt="flag" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"></img>
+						<img src="{PC_TEAM_IMG_FLAG}" alt="flag" border="0" style="border:1px; width:124px; height:84px; border-style:solid; margin:5px; border-color:#888888;"/>
 						<!-- END flagimage -->
 
 					</td>
@@ -121,11 +121,11 @@
 			</table>
 
 			<!-- BEGIN shot1image -->
-			<img src="{PC_TEAM_IMG_SHOT1}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"></img>
+			<img src="{PC_TEAM_IMG_SHOT1}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"/>
 			<!-- END shot1image -->
 
 			<!-- BEGIN shot2image -->
-			<img src="{PC_TEAM_IMG_SHOT2}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"></img>
+			<img src="{PC_TEAM_IMG_SHOT2}" alt="flag" border="0" style="border:0px; width:300px; height:180px; border-style:hidden; margin:7px;"/>
 			<!-- END shot2image -->
 
 		</td>

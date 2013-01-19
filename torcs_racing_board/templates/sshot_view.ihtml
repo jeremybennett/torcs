@@ -1,21 +1,25 @@
 
-<table style="width:640px; margin-left:10px; margin-top:0px" cellspacing="0">
+<table class="embedded border contentbordercolor" cellspacing="0">
 	<tr>
-		<td style="margin:0px;border-style:solid; border-width:1px;border-spacing:0px;" class="contentbordercolor">
-			<img src="{PC_SSHOT_IMG_SRC}" alt="screenshot" border="0" style="float:left; border:0px; width:620px; height:465px; border-style:hidden;margin-bottom:7px; margin-top:7px; margin-left:7px;"></img>
+		<td>
+			<img src="{PC_SSHOT_IMG_SRC}" alt="screenshot" border="0" style="display:block;margin-bottom:7px; margin-top:7px; margin-left:auto; margin-right:auto;"/>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<p style="text-align:center;">
 				{PC_SSHOT_DESC} {PC_SSHOT_TIMESTAMP}
 			</p>
-			<table style="width:625px;margin-left:4px;margin-right:6px;">
-				<tr>
-					<td style="text-align:left;">
-						<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
-					</td>
-					<td style="text-align:right;">
-						<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
-					</td>
-				</tr>
-			</table>
+		</td>
+	</tr>
+</table>
+<table class="embedded noborder navmargin text14" cellspacing="0">
+	<tr>
+		<td class="filledlist" style="text-align:left;">
+			<a href="{PC_LIST_PREV_LINK}">{PC_LIST_PREV}</a>
+		</td>
+		<td class="filledlist" style="text-align:right;">
+			<a href="{PC_LIST_NEXT_LINK}">{PC_LIST_NEXT}</a>
 		</td>
 	</tr>
 </table>
