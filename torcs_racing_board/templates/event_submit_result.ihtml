@@ -43,7 +43,7 @@
 				<!-- BEGIN filelist -->
 				<tr class="tight">
 					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
-						style="width:640px; margin-left:10px; border-style:none; border-spacing:0px;"  class="text14"<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
+						<a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">{PC_TEAM_NAME}</a>
 					</td>
 					<td class="filledlist" style="background-color:{PC_RACE_STATE_COLOR};">
 						<a href="{ROOTPATH}events/event_download_robot.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}&teamid={PC_TEAM_ID}">{PC_TEAM_MODULENAME}</a>
