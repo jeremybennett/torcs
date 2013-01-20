@@ -184,7 +184,7 @@
 			<h3>Downloads</h3>
 
 			<p>
-				The robots of completed championships can be downloaded here by everyone. The license
+				Here you can download the robots of this event. The license
 				of the code is the <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a>, the artwork
 				is licensed under the <a href="http://artlibre.org/licence/lal/en"/>FAL</a>. Check as
 				well the documentation in the package (if there is any). When a team unsubscribes during
@@ -194,7 +194,7 @@
 			<table style="margin:6px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:624px" class="text14" cellspacing="0">
 				<tr class="submitbuttoncolor">
                 	<th class="filledlist" align="left">Team Name</th>
-                	<th class="filledlist" align="left">Download Module</th>
+                	<th class="filledlist" align="left">Download Module (*)</th>
 				</tr>
 				<!-- BEGIN filelist -->
 				<tr class="tight">
@@ -207,6 +207,10 @@
 				</tr>
 				<!-- END filelist -->
 			</table>
+
+			<p>
+				(*) The name comes from the team database entry, so the year number can be misleading.
+			</p>
 		</td>
 	</tr>
 </table>
