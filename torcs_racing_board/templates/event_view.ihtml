@@ -187,8 +187,7 @@
 				Here you can download the robots of this event. The license
 				of the code is the <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a>, the artwork
 				is licensed under the <a href="http://artlibre.org/licence/lal/en"/>FAL</a>. Check as
-				well the documentation in the package (if there is any). When a team unsubscribes during
-				the season the robot is deleted from the server and not available.
+				well the documentation in the package (if there is any).
 			</p>
 
 			<table style="margin:6px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:624px" class="text14" cellspacing="0">
