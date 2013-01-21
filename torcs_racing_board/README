@@ -1,1 +1,83 @@
-Sorry, no README yet.
+This directory contains the code of the "TORCS Racing Board". It is licensed
+under the GPL version 2. You find a running instance on www.berniw.org/trb. 
+
+
+1. Requirements
+---------------
+- Apache (tested with 2.2)
+- PHP (tested with 5.3)
+- MySQL (tested with 5.5)
+- The server must be able to send mail via PHP
+
+Other versions might work as well with no or minor modification.
+
+
+2. Installation
+---------------
+- Copy the content of this directory to your server.
+- Create a database on the MySQL server.
+- Edit secrets/configuration.php, look for "CHANGE" to find the places which
+  you have to set up.
+- Run installdb.php once to create the tables, then delete the file from the
+  server (if you run it multiple times indices will get duplicated).
+- You can load the SQL from INSTALL_DATA into the database to have a base
+  collection of tracks and cars (outdated, but you get a place to start).
+
+
+3. Setup
+--------
+- Set up an admin account: Point with your browser to your trb, and create
+  an account (register), when everything works you end up with a "spectator"
+  account. Now use your database management tool to change this account to
+  type "admin" ("_users" table, "account" column).
+
+- Set up the spectator to racer quizz:
+	- Create a file "question.txt" with the format "questionkey:question" per
+      line, e.g.
+		1:What is the name of this file?
+		2:What format has this file?
+		3:What is the best rcing sim?
+		... you get the idea.
+	- Create a file "answers.txt" with the format "questionkey:check:answer",
+      where questionkey refers to the number in question.txt, check is "1" if
+      this answer can/should be checked, otherwise "0", e.g.
+		1:1:README.
+		1:0:COPYRIGHT.
+		2:0:JPEG.
+		2:0:XLS.
+		2:1:Plain text.
+		3:1:TORCS.
+		3:1:TORCS.
+		... you get the idea
+		
+		As you can see you can allow multiple answers as correct, but the user
+		can just check one. Also mix the order of the correct answer, do not
+		take always the first one as the correct;-)
+	- Load it into the database with (you need to adopt the table names because
+      of the prefix):
+		use mydb;
+		LOAD DATA INFILE '/home/berni/torcs/races/questions.txt' INTO TABLE
+		trb_quizz_questions FIELDS TERMINATED BY ':' (questionid, question);
+		LOAD DATA INFILE '/home/berni/torcs/races/answers.txt' INTO TABLE
+		trb_quizz_answers FIELDS TERMINATED BY ':' (questionid, true, answer);
+
+	Create a new account, go into "Your account" and hit the link to convert it
+    into a racer account,test it.
+
+- Set up tracks and cars, maybe you need to adjust the permissions of the
+  respective directories on the server).
+
+- Create an event and play through the whole process, make sure that you can
+  upload rules and robots. To create a race you need to set up at least one
+  TORCS version first to choose from (Events/Register Version).
+
+
+4. Customization
+----------------
+- Have a look at the file templates/page.ihtml, this is the "root" template.
+- In images you find the page pictures.
+- The style sheet is in css/format.css (it is not very "clean" yet, sorry).
+- In "pages" you find the static content, edit it to fit your needs.
+- Edit the mail templates, see templates/*.tpl files.
+
+Enjoy:-)
