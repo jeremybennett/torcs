@@ -1,0 +1,56 @@
+<table class="embedded" cellspacing="0">
+	<tr>
+		<td class="border contentbordercolor">
+
+			<h3>Register TORCS versions</h3>
+			<p>
+				Here you can define TORCS versions, they can then be used by the races (to document the version
+				which has been used).
+			</p>
+		</td>
+	</tr>
+</table>
+
+<table class="embedded noborder text14" cellspacing="0">
+	<tr class="submitbuttoncolor">
+		<th class="filledlist" align="left">ID</th>
+		<th class="filledlist" align="left">Name</th>
+	</tr>
+	<!-- BEGIN row -->
+	<tr bgcolor="{PC_COLOR}">
+		<td class="filledlist">
+			{PC_VERSION_ID}
+		</td>
+		<td class="filledlist">
+			{PC_VERSION_NAME}
+		</td>
+	</tr>
+	<!-- END row -->
+</table>
+
+<table class="embeddedts" cellspacing="0">
+	<tr>
+		<td class="border contentbordercolor">
+			<form method="post" action="{PC_CREATERACEPAGE}" class="embedded">
+				<table class="text14" cellspacing="0">
+
+					<tr>
+						<td class="admincol11 filledlist">
+							Add version:
+						</td>
+						<td class="admincol21 filledlist">
+							<input type="text" name="version_name" size="40" maxlength="39"/>
+						</td>
+					</tr>
+				</table>
+				<table class="text14" cellspacing="0">
+					<tr>
+						<td class="filledlist">
+							<input type="submit" name="version_submit" value="Submit Version">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>

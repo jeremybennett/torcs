@@ -526,6 +526,13 @@
 		</td>
 	</tr>
 	<tr>
+		<td style="width:15px;">
+		</td>
+		<td>
+			<a href="{ROOTPATH}admin/version_create.php">Register Version</a>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<a href="{ROOTPATH}users/userlist.php">Members</a>
 		</td>

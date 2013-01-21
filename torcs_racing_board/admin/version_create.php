@@ -1,7 +1,7 @@
 <?php
 
 /*
-	copyright   : (C) 2004 Bernhard Wymann
+	copyright   : (C) 2004-2013 Bernhard Wymann
 	email       : berniw@bluewin.ch
 	version     : $Id$
 
@@ -32,9 +32,7 @@
 	$stats_sessioncount_tablename = $db_prefix . TBL_SESSIONCOUNT;
 	$stats_tablename = $db_prefix . TBL_STATS;
 	$loginlog_tablename = $db_prefix . TBL_LOGIN_LOG;
-	$event_tablename = $db_prefix . TBL_EVENT;
-	$race_tablename = $db_prefix . TBL_RACE;
-	$track_tablename = $db_prefix . TBL_TRACK;
+
 	$version_tablename = $db_prefix . TBL_VERSION;
 
 	countSession(session_id(), $stats_sessioncount_tablename, $stats_tablename);
@@ -49,25 +47,16 @@
 	checkLogout();
 
 	$formerrors = intval(0);
-	$eventid = isset($_GET['eventid']) ? intval(removeMagicQuotes($_GET['eventid'])) : -1;
-	if ($eventid == -1) {
-		$eventid = isset($_POST['event_id']) ? intval(removeMagicQuotes($_POST['event_id'])) : -1;
-	}
 
 	if ($_SESSION['logged'] == TRUE) {
 		// Login template for statusbar.
 		$page_statusbar = 'page_statusbar_logged_in.ihtml';
-		if ($_SESSION['usergroup'] == 'admin' && existsEntry($event_tablename, 'eventid', $eventid)) {
-			if (isset($_POST['race_submit'])) {
-				if ($formerrors = checkRaceInput()) {
-					// Errors.
-					$page_content = 'admin_race_create.ihtml';
-				} else {
-					commitRaceInput($race_tablename, $event_tablename, $track_tablename, $path_to_root);
-					$page_content = 'admin_race_create_ok.ihtml';
-				}
+		if ($_SESSION['usergroup'] == 'admin') {
+			if (isset($_POST['version_submit'])) {
+				commitVersionInput($version_tablename, $path_to_root);
+				$page_content = 'admin_version_create.ihtml';
 			} else {
-				$page_content = 'admin_race_create.ihtml';
+				$page_content = 'admin_version_create.ihtml';
 			}
 		} else {
 			$page_content = 'admin_no_access.ihtml';
@@ -95,12 +84,11 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Race Creation Page',
-		'PB_DESCRIPTION'	=> 'Create a race for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'The TORCS Racing Board Version Creation Page',
+		'PB_DESCRIPTION'	=> 'Create a TORCS version for the TORCS racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, create',
-		'ROOTPATH'			=> $path_to_root,
-		'PB_EVENT_ID'		=> $eventid
+		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, version, create',
+		'ROOTPATH'			=> $path_to_root
 	));
 
 	if ($_SESSION['logged'] == TRUE) {
@@ -113,69 +101,27 @@
 			'PC_CREATERACEPAGE'		=> $_SERVER['PHP_SELF']
 		));
 
-		if ($_SESSION['usergroup'] == 'admin' && $page_content == 'admin_race_create.ihtml') {
-
-			$sql = "SELECT * FROM $track_tablename ORDER BY type, name ASC";
-			$tresult = mysql_query($sql);
+		if ($_SESSION['usergroup'] == 'admin' && $page_content == 'admin_version_create.ihtml') {
 			$page->set_block("PAGE_CONTENT_T", "row", "rows");
+			$results = 0;
+			$toggle = intval(0);
 
 			$sql = "SELECT * FROM $version_tablename ORDER BY name ASC";
-			$vresult = mysql_query($sql);
-			$page->set_block("PAGE_CONTENT_T", "version", "versions");
+			$result = mysql_query($sql);
 
-			if (isset($_POST['race_submit']) && $formerrors > 0) {
-
+			while ($myrow = mysql_fetch_array($result)) {
 				$page->set_var(array(
-					'PC_EVENT_ID'					=> $eventid,
-					'PC_RACE_ROBOT_SUBMIT_START'	=> isset($_POST['race_robot_sub_start']) ? htmlentities(removeMagicQuotes($_POST['race_robot_sub_start'])) : "",
-					'PC_RACE_ROBOT_SUBMIT_END'		=> isset($_POST['race_robot_sub_end']) ? htmlentities(removeMagicQuotes($_POST['race_robot_sub_end'])) : "",
-					'PC_RACE_RESULT_SUBMIT_START'	=> isset($_POST['race_result_sub_start']) ? htmlentities(removeMagicQuotes($_POST['race_result_sub_start'])) : "",
-					'PC_RACE_RESULT_SUBMIT_END'		=> isset($_POST['race_result_sub_end']) ? htmlentities(removeMagicQuotes($_POST['race_result_sub_end'])) : "",
+					'PC_VERSION_ID'		=> $myrow['id'],
+					'PC_VERSION_NAME'	=> $myrow['name'],
+					'PC_COLOR'			=> ($toggle == 0) ? COLOR_TB1 : COLOR_TB2
 				));
+				$page->parse("rows", "row", true);
+				$toggle = ($toggle == 0) ? 1 : 0;
+				$results++;
+			}
 
-				while ($tmyrow = mysql_fetch_array($tresult)) {
-					$page->set_var(array(
-						'PC_RACE_TRACK_SEL'		=> ($tmyrow['trackid'] == intval(removeMagicQuotes($_POST['race_track']))) ? 'selected' : '',
-						'PC_RACE_TRACK_ID'		=> $tmyrow['trackid'],
-						'PC_RACE_TRACK_NAME'	=> htmlentities($tmyrow['name'])
-					));
-					$page->parse("rows", "row", true);
-				}
-
-				while ($vmyrow = mysql_fetch_array($vresult)) {
-					$page->set_var(array(
-						'PC_VERSION_SEL'		=> ($vmyrow['id'] == intval(removeMagicQuotes($_POST['version']))) ? 'selected' : '',
-						'PC_VERSION_ID'			=> $vmyrow['id'],
-						'PC_VERSION_NAME'		=> htmlentities($vmyrow['name'])
-					));
-					$page->parse("versions", "version", true);
-				}
-			} else {
-				$page->set_var(array(
-					'PC_EVENT_ID'					=> $eventid,
-					'PC_RACE_ROBOT_SUBMIT_START'	=> "",
-					'PC_RACE_ROBOT_SUBMIT_END'		=> "",
-					'PC_RACE_RESULT_SUBMIT_START'	=> "",
-					'PC_RACE_RESULT_SUBMIT_END'		=> "",
-				));
-
-				while ($tmyrow = mysql_fetch_array($tresult)) {
-					$page->set_var(array(
-						'PC_RACE_TRACK_SEL'		=> "",
-						'PC_RACE_TRACK_ID'		=> $tmyrow['trackid'],
-						'PC_RACE_TRACK_NAME'	=> htmlentities($tmyrow['name'])
-					));
-					$page->parse("rows", "row", true);
-				}
-
-				while ($vmyrow = mysql_fetch_array($vresult)) {
-					$page->set_var(array(
-						'PC_VERSION_SEL'		=> "",
-						'PC_VERSION_ID'			=> $vmyrow['id'],
-						'PC_VERSION_NAME'		=> htmlentities($vmyrow['name'])
-					));
-					$page->parse("versions", "version", true);
-				}
+			if ($results == 0) {
+				$page->set_var("rows", "");
 			}
 		}
 	} else {

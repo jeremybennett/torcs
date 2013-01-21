@@ -634,6 +634,19 @@
 		echo "Created Table $tablename: " . mysql_error() . "<br>\n";
 	}
 
+	// ----------------------------- TBL_VERSION --------------------------------
+	$tablename = $db_prefix . TBL_VERSION;
+	if (existsTable($tablename)) {
+		echo "Table $tablename already exists, doing nothing.<br>\n";
+	} else {
+		// Create VERSION table.
+		$sql = "CREATE TABLE $tablename (" .
+			   "id INT NOT NULL AUTO_INCREMENT, " .
+			   "name VARCHAR(100) NOT NULL DEFAULT '', " .
+			   "PRIMARY KEY (id))";
+		$result = mysql_query($sql);
+		echo "Created Table $tablename: " . mysql_error() . "<br>\n";
+	}
 
 	// ----------------------------- INDICES --------------------------------
 	$tablename = $db_prefix . TBL_LOGIN_LOG;
@@ -682,4 +695,7 @@
 	$sql = "ALTER TABLE $tablename CHANGE `session` `session` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT ''";
 	$result = mysql_query($sql);
 
+	$tablename = $db_prefix . TBL_RACE;
+	$sql = "ALTER TABLE $tablename ADD `versionid` INT NOT NULL DEFAULT '0' AFTER `trackid`";
+	$result = mysql_query($sql);
 ?>

@@ -35,6 +35,7 @@
 	$event_tablename = $db_prefix . TBL_EVENT;
 	$race_tablename = $db_prefix . TBL_RACE;
 	$track_tablename = $db_prefix . TBL_TRACK;
+	$version_tablename = $db_prefix . TBL_VERSION;
 
 	countSession(session_id(), $stats_sessioncount_tablename, $stats_tablename);
 	countHit($_SERVER['PHP_SELF'], $stats_hitcount_tablename);
@@ -120,6 +121,10 @@
 			$tresult = mysql_query($sql);
 			$page->set_block("PAGE_CONTENT_T", "row", "rows");
 
+			$sql = "SELECT * FROM $version_tablename ORDER BY name ASC";
+			$vresult = mysql_query($sql);
+			$page->set_block("PAGE_CONTENT_T", "version", "versions");
+
 			if (isset($_POST['race_submit']) && $formerrors > 0) {
 
 				$page->set_var(array(
@@ -139,13 +144,22 @@
 					));
 					$page->parse("rows", "row", true);
 				}
+
+				while ($vmyrow = mysql_fetch_array($vresult)) {
+					$page->set_var(array(
+						'PC_VERSION_SEL'		=> ($vmyrow['id'] == intval(removeMagicQuotes($_POST['version']))) ? 'selected' : '',
+						'PC_VERSION_ID'			=> $vmyrow['id'],
+						'PC_VERSION_NAME'		=> htmlentities($vmyrow['name'])
+					));
+					$page->parse("versions", "version", true);
+				}
 			} elseif (isset($_GET['editraceid'])) {
 
 				$id_for_db = quoteString(intval(removeMagicQuotes($_GET['editraceid'])));
 				$sql = "SELECT * FROM $race_tablename WHERE raceid=" . $id_for_db;
 				$rresult = mysql_query($sql);
-				if ($rmyrow = mysql_fetch_array($rresult)) {
 
+				if ($rmyrow = mysql_fetch_array($rresult)) {
 					$page->set_var(array(
 						'PC_EVENT_ID'					=> $rmyrow['eventid'],
 						'PC_RACE_ID'					=> $rmyrow['raceid'],
@@ -162,6 +176,15 @@
 							'PC_RACE_TRACK_NAME'	=> htmlentities($tmyrow['name'])
 						));
 						$page->parse("rows", "row", true);
+					}
+
+					while ($vmyrow = mysql_fetch_array($vresult)) {
+						$page->set_var(array(
+							'PC_VERSION_SEL'		=> ($vmyrow['id'] == $rmyrow['versionid']) ? 'selected' : '',
+							'PC_VERSION_ID'			=> $vmyrow['id'],
+							'PC_VERSION_NAME'		=> htmlentities($vmyrow['name'])
+						));
+						$page->parse("versions", "version", true);
 					}
 				} else {
 					$page->set_file('PAGE_CONTENT_T', 'admin_no_access.ihtml');

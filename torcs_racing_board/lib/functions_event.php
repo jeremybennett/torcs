@@ -229,6 +229,7 @@
 
 		$formerrors += checkPostInt('event_id', 0, 10000);
 		$formerrors += checkPostInt('race_track', 0, 10000);
+		$formerrors += checkPostInt('version', 0, 10000);
 		$formerrors += checkPostDateTime('race_robot_sub_start');
 		$formerrors += checkPostDateTime('race_robot_sub_end');
 		$formerrors += checkPostDateTime('race_result_sub_start');
@@ -258,6 +259,7 @@
 		if ($_SESSION['usergroup'] == 'admin') {
 			$eventid_for_db = quoteString(intval(removeMagicQuotes($_POST['event_id'])));
 			$trackid_for_db = quoteString(intval(removeMagicQuotes($_POST['race_track'])));
+			$versionid_for_db = quoteString(intval(removeMagicQuotes($_POST['version'])));
 			$date_rob_start = quoteString(removeMagicQuotes($_POST['race_robot_sub_start']));
 			$date_rob_end = quoteString(removeMagicQuotes($_POST['race_robot_sub_end']));
 			$date_res_start = quoteString(removeMagicQuotes($_POST['race_result_sub_start']));
@@ -269,9 +271,9 @@
 				// Commit data.
 				$sql = "INSERT INTO $race_tablename " .
 				"(eventid, trackid, robot_submission_start, robot_submission_end, " .
-				"result_submission_start, result_submission_end) VALUES " .
+				"result_submission_start, result_submission_end, versionid) VALUES " .
 				"($eventid_for_db, $trackid_for_db, $date_rob_start, $date_rob_end, " .
-				"$date_res_start, $date_res_end)";
+				"$date_res_start, $date_res_end, $versionid_for_db)";
 				mysql_query($sql);
 			}
 		}
@@ -322,11 +324,29 @@
 	}
 
 
+	function commitVersionInput($version_tablename, $path_to_root)
+	{
+		if ($_SESSION['usergroup'] == 'admin') {
+			$name_for_db = quoteString(removeMagicQuotes($_POST['version_name']));
+			
+			if (removeMagicQuotes($_POST['version_name']) == '') {
+				return;
+			}
+
+			// Commit data.
+			$sql = "INSERT INTO $version_tablename " .
+			"(name) VALUES ($name_for_db)";
+			mysql_query($sql);
+		}
+	}
+
+
 	function updateRaceInput($race_tablename, $event_tablename, $track_tablename, $path_to_root)
 	{
 		if ($_SESSION['usergroup'] == 'admin' && isset($_POST['race_id'])) {
 			$raceid_for_db = quoteString(intval(removeMagicQuotes($_POST['race_id'])));
 			$trackid_for_db = quoteString(intval(removeMagicQuotes($_POST['race_track'])));
+			$versionid_for_db = quoteString(intval(removeMagicQuotes($_POST['version'])));
 			$date_rob_start = quoteString(removeMagicQuotes($_POST['race_robot_sub_start']));
 			$date_rob_end = quoteString(removeMagicQuotes($_POST['race_robot_sub_end']));
 			$date_res_start = quoteString(removeMagicQuotes($_POST['race_result_sub_start']));
@@ -335,8 +355,8 @@
 			if (existsEntry($track_tablename, 'trackid', $trackid_for_db)) {
 				$sql = "UPDATE $race_tablename SET trackid=$trackid_for_db, " .
 					   "robot_submission_start=$date_rob_start, robot_submission_end=$date_rob_end, " .
-					   "result_submission_start=$date_res_start, result_submission_end=$date_res_end " .
-					   "WHERE raceid=$raceid_for_db";
+					   "result_submission_start=$date_res_start, result_submission_end=$date_res_end, " .
+					   "versionid=$versionid_for_db WHERE raceid=$raceid_for_db";
 				mysql_query($sql);
 			}
 		}

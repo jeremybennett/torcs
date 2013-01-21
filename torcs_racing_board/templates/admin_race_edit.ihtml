@@ -60,6 +60,20 @@
 							</select>
 						</td>
 					</tr>
+
+					<tr>
+						<td class="filledlist" align="left" valign="top">
+							TORCS version:
+						</td>
+						<td class="filledlist">
+							<select name="version" size="1">
+							<!-- BEGIN version -->
+								<option {PC_VERSION_SEL} value="{PC_VERSION_ID}">{PC_VERSION_NAME}</option>
+							<!-- END version -->
+							</select>
+						</td>
+					</tr>
+
 				</table>
 
 				<table class="text14" cellspacing="0">

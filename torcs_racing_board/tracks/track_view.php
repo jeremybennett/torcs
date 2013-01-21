@@ -33,6 +33,7 @@
 	$stats_tablename = $db_prefix . TBL_STATS;
 	$loginlog_tablename = $db_prefix . TBL_LOGIN_LOG;
 	$track_tablename = $db_prefix . TBL_TRACK;
+	$version_tablename = $db_prefix . TBL_VERSION;
 
 	$race_report_driver_table = $db_prefix . TBL_RACE_REPORT_DRIVER;
 	$driver_tablename = $db_prefix . TBL_DRIVER;
@@ -124,13 +125,14 @@
 			// Define the block template for a table row (fastest qualy times).
 			$page->set_block("PAGE_CONTENT_T", "timerow", "timerows");
 	
-			$sql = "SELECT c.name AS cname, p.carid, e.name AS ename, r.raceid, d.name AS dname, d.teamid, p.quali_laptime FROM " .
+			$sql = "SELECT  v.name AS vname, c.name AS cname, p.carid, e.name AS ename, r.raceid, d.name AS dname, d.teamid, p.quali_laptime FROM " .
 				" $race_report_driver_table AS p, $driver_tablename AS d, $event_tablename AS e, $car_tablename AS c, " .
 				" $race_tablename AS r JOIN (SELECT uu.raceid, MIN(p.quali_laptime) AS quali_laptime FROM " .
 				" $race_tablename AS uu JOIN (SELECT driverid, raceid, MIN(quali_laptime) AS qlt FROM " .
 				" $rawresult_tablename GROUP BY driverid,raceid) AS x ON (uu.raceid=x.raceid), " .
 				" $race_report_driver_table AS p WHERE x.driverid=p.driverid AND x.qlt > 0 AND x.qlt <= p.quali_laptime AND " .
-				" uu.trackid = $trackid AND uu.raceid=p.raceid AND p.quali_laptime > 0 GROUP BY uu.raceid) as vv ON (vv.raceid=r.raceid) WHERE " .
+				" uu.trackid = $trackid AND uu.raceid=p.raceid AND p.quali_laptime > 0 GROUP BY uu.raceid) as vv ON (vv.raceid=r.raceid) " .
+				" LEFT JOIN $version_tablename AS v ON r.versionid = v.id WHERE " .
 				" p.quali_laptime=vv.quali_laptime AND p.driverid=d.driverid AND " .
 				" r.eventid=e.eventid AND c.carid=p.carid AND r.trackid=$trackid ORDER BY e.eventid DESC";
 			$result = mysql_query($sql);
@@ -145,7 +147,7 @@
 					'PC_DRIVER'		=> htmlentities($myrow['dname']),
 					'PC_CAR'		=> htmlentities($myrow['cname']),
 					'PC_CAR_ID'		=> $myrow['carid'],
-					'PC_VERSION'	=> '-'		//TODO: db field on race
+					'PC_VERSION'	=> is_null($myrow['vname']) ? '-' : htmlentities($myrow['vname']) 
 				));
 				$page->parse("timerows", "timerow", true);
 				$results++;

@@ -79,6 +79,7 @@
 
 	define('TBL_SCREENSHOT', 'screenshot');
 	define('TBL_NEWS', 'news');
+	define('TBL_VERSION', 'version');
 
 	// System settings/limits
 	define('TEAMS_PER_USER', 5);
