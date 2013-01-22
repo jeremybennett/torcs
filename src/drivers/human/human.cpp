@@ -90,7 +90,7 @@ static tKeyInfo skeyInfo[256];
 static int currentKey[256];
 static int currentSKey[256];
 
-static tdble lastKeyUpdate = -10.0;
+static double lastKeyUpdate = -10.0;
 
 static int	firstTime = 0;
 
