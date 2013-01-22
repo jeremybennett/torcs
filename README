@@ -183,6 +183,9 @@ Changes since 1.3.4
 - TRB: Added public download of robots when event is done (Bernhard).
 - TRB: Added TORCS versioning for races (Bernhard).
 - TRB: Added installation instructions (Bernhard).
+- Fixed bug #98 (non buttons for non leading human player) reported by Jon Zabala. The problem
+  was floating point comparison with different types (lastKeyUpdate != s->currentTime)
+  (Jon, Bernhard).
 
 
 11. TODO/Notes
