@@ -3,6 +3,7 @@
 3.  Track editor
 4.  Linux Installation from Source
 5.  Windows Installation from Source (Release version)
+5.1 Windows Installation from Source, additional notes
 6.  Windows Installation from Source (Debug version)
 7.  Testing
 8.  Getting Help
@@ -73,7 +74,7 @@ Command line arguments:
 - hint: you can have a release and a debug build side by side, the release
   version goes to "runtime" and the debug to "runtimed".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1), VS2010 is reported
-  to work as well.
+  to work as well. For express editions or VS 2012 read notes in section 5.1.
 - untar the archive into a path without whitespaces and special characters.
 - cd into the torcs-1.3.4 directory
 - run setup_win32.bat
@@ -90,12 +91,38 @@ Command line arguments:
      training, see FAQ for details 
 
 
+5.1 Windows Installation from Source, additional notes
+------------------------------------------------------
+5.1.1 VS 2005 Express (based on imported dsw), reported by Eric Espie:
+- Run up to the setup*.bat step in the above instructions, then open the TORCS.dsw
+  file and do the following changes
+- in wtorcs -> Source Files (Solution explorer) exclude torcs.rc
+- in client -> Source Files add the file errno.cpp to the solution (located
+  in src/libs/client)
+- change in the properties of all the sub-projects :
+        in "Configuration Properties -> Link Editor -> Entry : Ignore Specific Library"
+        change LIBCD in LIBC if present.
+
+5.1.2 VS 2005 Express (based on VS2008 sln), reported by Wolf-Dieter Beelitz:
+- Edit all vcproj (=xml) files and set the "version" from 9.00 to 8.00
+- Follow the instructions above.
+
+5.1.3 VS 2008 Express, reported by Stacey Pritchett:
+- in wtorcs -> Source Files (Solution explorer) exclude torcs.rc
+- Follow the instructions above.
+
+5.1.4 VS 2012, reported by SteveO:
+- In every project (except TORCS) add /SAFESEH:NO into the Additional Options
+  (Properties-Configuration Properties-Linker-Command Line), see also
+  http://msdn.microsoft.com/en-us/library/9a89h429.aspx.
+
+
 6. Windows Installation from Source (Debug version)
 ---------------------------------------------------
 - hint: you can have a debug and a release build side by side, the debug
   version goes to "runtimed" and the release to "runtime".
 - requires VS 6 (tested with sp6) or VS 2008 (tested with sp1), VS2010 is reported
-  to work as well.
+  to work as well. For express editions or VS 2012 read notes in section 5.1.
 - untar the archive into a path without whitespaces and special characters.
 - cd into the torcs-1.3.4 directory
 - run setup_win32_debug.bat
@@ -186,6 +213,8 @@ Changes since 1.3.4
 - Fixed bug #98 (non buttons for non leading human player) reported by Jon Zabala. The problem
   was floating point comparison with different types (lastKeyUpdate != s->currentTime)
   (Jon, Bernhard).
+- Added build notes for VS2005 Express, VS2008 Express, VS2010, VS2012 provided by Eric,
+  Wolf-Dieter, Stacey and Steve (Eric, Wolf-Dieter, Stacey, Steve, Bernhard).
 
 
 11. TODO/Notes
