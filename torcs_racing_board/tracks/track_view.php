@@ -134,7 +134,7 @@
 				" uu.trackid = $trackid AND uu.raceid=p.raceid AND p.quali_laptime > 0 GROUP BY uu.raceid) as vv ON (vv.raceid=r.raceid) " .
 				" LEFT JOIN $version_tablename AS v ON r.versionid = v.id WHERE " .
 				" p.quali_laptime=vv.quali_laptime AND p.raceid = r.raceid AND p.driverid=d.driverid AND " .
-				" r.eventid=e.eventid AND c.carid=p.carid AND r.trackid=$trackid ORDER BY e.eventid DESC";
+				" r.eventid=e.eventid AND c.carid=p.carid AND r.trackid=$trackid GROUP BY r.raceid, p.quali_laptime, d.teamid ORDER BY e.eventid DESC";
 			$result = mysql_query($sql);
 
 			$results = 0;
