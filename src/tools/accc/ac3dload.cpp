@@ -531,7 +531,7 @@ int splitOb (ob_t **object)
 	pttmp = (point_t *) calloc(4 * num, sizeof(point_t));
 	oldva = (int *) calloc(4 * num, sizeof(int));
 	snorm = (point_t *) calloc(4 * num, sizeof(point_t));
-	text  = (double *) calloc(3 * num, sizeof(double));
+	text  = (double *) calloc(6 * num, sizeof(double));
 
 
 	while (mustcontinue==1) {
