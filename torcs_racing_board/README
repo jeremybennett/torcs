@@ -38,6 +38,7 @@ Other versions might work as well with no or minor modification.
 		2:What format has this file?
 		3:What is the best rcing sim?
 		... you get the idea.
+
 	- Create a file "answers.txt" with the format "questionkey:check:answer",
       where questionkey refers to the number in question.txt, check is "1" if
       this answer can/should be checked, otherwise "0", e.g.
@@ -53,6 +54,7 @@ Other versions might work as well with no or minor modification.
 		As you can see you can allow multiple answers as correct, but the user
 		can just check one. Also mix the order of the correct answer, do not
 		take always the first one as the correct;-)
+
 	- Load it into the database with (you need to adopt the table names because
       of the prefix):
 		use mydb;
@@ -60,6 +62,13 @@ Other versions might work as well with no or minor modification.
 		trb_quizz_questions FIELDS TERMINATED BY ':' (questionid, question);
 		LOAD DATA INFILE '/home/berni/torcs/races/answers.txt' INTO TABLE
 		trb_quizz_answers FIELDS TERMINATED BY ':' (questionid, true, answer);
+
+	- Create an entry in _quizz with quizzid=1, define in allowederrors the number
+	  of wrong answers you accept and in nbquestions how many questions gets
+	  presented (should be <= the number of questions you have loaded before). Add
+	  as well a description.
+
+	- Link the questions in _quizz_quizzquestions to the quizz.
 
 	Create a new account, go into "Your account" and hit the link to convert it
     into a racer account,test it.
