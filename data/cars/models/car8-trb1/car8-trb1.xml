@@ -19,7 +19,7 @@
 	<section name="Driver">
 		
 		<!-- Position of the driver -->
-		<attnum name="xpos" unit="m" val="0.7"/>
+		<attnum name="xpos" unit="m" val="0.66"/>
 		<attnum name="ypos" unit="m" val="0.0"/>
 		<attnum name="zpos" unit="m" val="1.0"/>
 	</section>
@@ -54,70 +54,70 @@
 		<section name="Light">
 			<section name="1">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="2.12"/>
+				<attnum name="xpos" val="2.08"/>
 				<attnum name="ypos" val="0.65"/>
 				<attnum name="zpos" val="0.44"/>
 				<attnum name="size" val="0.19"/>
 			</section>
 			<section name="2">
 				<attstr name="type" val="head1"/>
-				<attnum name="xpos" val="2.12"/>
+				<attnum name="xpos" val="2.08"/>
 				<attnum name="ypos" val="-0.65"/>
 				<attnum name="zpos" val="0.44"/>
 				<attnum name="size" val="0.19"/>
 			</section>
 			<section name="3">
 				<attstr name="type" val="head2"/>
-				<attnum name="xpos" val="2.18"/>
+				<attnum name="xpos" val="2.14"/>
 				<attnum name="ypos" val="0.46"/>
 				<attnum name="zpos" val="0.41"/>
 				<attnum name="size" val="0.14"/>
 			</section>
 			<section name="4">
 				<attstr name="type" val="head2"/>
-				<attnum name="xpos" val="2.18"/>
+				<attnum name="xpos" val="2.14"/>
 				<attnum name="ypos" val="-0.46"/>
 				<attnum name="zpos" val="0.41"/>
 				<attnum name="size" val="0.14"/>
 			</section>
 			<section name="5">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.23"/>
+				<attnum name="xpos" val="-2.27"/>
 				<attnum name="ypos" val="0.50"/>
 				<attnum name="zpos" val="0.61"/>
 				<attnum name="size" val="0.06"/>
 			</section>
 			<section name="6">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.23"/>
+				<attnum name="xpos" val="-2.27"/>
 				<attnum name="ypos" val="-0.50"/>
 				<attnum name="zpos" val="0.61"/>
 				<attnum name="size" val="0.06"/>
 			</section>
 			<section name="7">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.23"/>
+				<attnum name="xpos" val="-2.27"/>
 				<attnum name="ypos" val="0.70"/>
 				<attnum name="zpos" val="0.61"/>
 				<attnum name="size" val="0.06"/>
 			</section>
 			<section name="8">
 				<attstr name="type" val="rear"/>
-				<attnum name="xpos" val="-2.23"/>
+				<attnum name="xpos" val="-2.27"/>
 				<attnum name="ypos" val="-0.70"/>
 				<attnum name="zpos" val="0.61"/>
 				<attnum name="size" val="0.06"/>
 			</section>
 			<section name="9">
 				<attstr name="type" val="brake2"/>
-				<attnum name="xpos" val="-2.24"/>
+				<attnum name="xpos" val="-2.28"/>
 				<attnum name="ypos" val="0.45"/>
 				<attnum name="zpos" val="0.655"/>
 				<attnum name="size" val="0.12"/>
 			</section>
 			<section name="10">
 				<attstr name="type" val="brake2"/>
-				<attnum name="xpos" val="-2.24"/>
+				<attnum name="xpos" val="-2.28"/>
 				<attnum name="ypos" val="-0.45"/>
 				<attnum name="zpos" val="0.655"/>
 				<attnum name="size" val="0.12"/>
@@ -152,13 +152,13 @@
 		<!-- for flames -->
 		<attnum name="power" val="1.5"/>
 		<section name="1">
-			<attnum name="xpos" val="-0.77"/>
+			<attnum name="xpos" val="-0.81"/>
 			<attnum name="ypos" val="-1.00"/>
 			<attnum name="zpos" val="0.06"/>
 		</section>
 		
 		<section name="2">
-			<attnum name="xpos" val="-0.77"/>
+			<attnum name="xpos" val="-0.81"/>
 			<attnum name="ypos" val="1.00"/>
 			<attnum name="zpos" val="0.06"/>
 		</section>
@@ -323,13 +323,13 @@
 	</section>
 	
 	<section name="Front Axle">
-		<attnum name="xpos" val="1.31"/>
+		<attnum name="xpos" val="1.2697"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0056"/>
 		<attnum name="roll center height" unit="m" val="0.08"/>
 	</section>
 	
 	<section name="Rear Axle">
-		<attnum name="xpos" val="-1.33"/>
+		<attnum name="xpos" val="-1.3703"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
 		<attnum name="roll center height" unit="m" val="0.08"/>
 	</section>
