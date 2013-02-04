@@ -100,13 +100,13 @@
 	<!-- for flames -->
 		<attnum name="power" val="1.5"/>
 		<section name="1">
-			<attnum name="xpos" val="-0.85"/>
+			<attnum name="xpos" val="-0.65"/>
 			<attnum name="ypos" val="-1.00"/>
 			<attnum name="zpos" val="0.12"/>
 		</section>
 
 		<section name="2">
-			<attnum name="xpos" val="-0.85"/>
+			<attnum name="xpos" val="-0.65"/>
 			<attnum name="ypos" val="1.00"/>
 			<attnum name="zpos" val="0.12"/>
 		</section>
