@@ -63,6 +63,10 @@ if exist .\data\cars\categories\stock1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\categories\stock1\*.* call .\create_dir .\%RUNTIMEDIR%\categories
 if exist .\data\cars\categories\stock1\stock1.xml copy .\data\cars\categories\stock1\stock1.xml .\%RUNTIMEDIR%\categories\stock1.xml
 
+if exist .\data\cars\categories\stock2\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\categories\stock2\*.* call .\create_dir .\%RUNTIMEDIR%\categories
+if exist .\data\cars\categories\stock2\stock2.xml copy .\data\cars\categories\stock2\stock2.xml .\%RUNTIMEDIR%\categories\stock2.xml
+
 if exist .\data\cars\wheels\openwheel1-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\wheels\openwheel1-1\*.* call .\create_dir .\%RUNTIMEDIR%\wheels
 if exist .\data\cars\wheels\openwheel1-1\*.* call .\create_dir .\%RUNTIMEDIR%\wheels\openwheel1-1
@@ -283,6 +287,18 @@ if exist .\data\cars\models\car1-stock1\car1-stock1.acc copy .\data\cars\models\
 if exist .\data\cars\models\car1-stock1\carbon-128.rgb copy .\data\cars\models\car1-stock1\carbon-128.rgb .\%RUNTIMEDIR%\cars\car1-stock1\carbon-128.rgb
 if exist .\data\cars\models\car1-stock1\grill.rgb copy .\data\cars\models\car1-stock1\grill.rgb .\%RUNTIMEDIR%\cars\car1-stock1\grill.rgb
 if exist .\data\cars\models\car1-stock1\driver.rgb copy .\data\cars\models\car1-stock1\driver.rgb .\%RUNTIMEDIR%\cars\car1-stock1\driver.rgb
+
+if exist .\data\cars\models\car1-stock2\*.* call .\create_dir .\%RUNTIMEDIR%
+if exist .\data\cars\models\car1-stock2\*.* call .\create_dir .\%RUNTIMEDIR%\cars
+if exist .\data\cars\models\car1-stock2\*.* call .\create_dir .\%RUNTIMEDIR%\cars\car1-stock2
+if exist .\data\cars\models\car1-stock2\car1-stock2.xml copy .\data\cars\models\car1-stock2\car1-stock2.xml .\%RUNTIMEDIR%\cars\car1-stock2\car1-stock2.xml
+if exist .\data\cars\models\car1-stock2\readme.txt copy .\data\cars\models\car1-stock2\readme.txt .\%RUNTIMEDIR%\cars\car1-stock2\readme.txt
+if exist .\data\cars\models\car1-stock2\car1-stock2.rgb copy .\data\cars\models\car1-stock2\car1-stock2.rgb .\%RUNTIMEDIR%\cars\car1-stock2\car1-stock2.rgb
+if exist .\data\cars\models\car1-stock2\tex-wheel.rgb copy .\data\cars\models\car1-stock2\tex-wheel.rgb .\%RUNTIMEDIR%\cars\car1-stock2\tex-wheel.rgb
+if exist .\data\cars\models\car1-stock2\shadow.rgb copy .\data\cars\models\car1-stock2\shadow.rgb .\%RUNTIMEDIR%\cars\car1-stock2\shadow.rgb
+if exist .\data\cars\models\car1-stock2\car1-stock2.acc copy .\data\cars\models\car1-stock2\car1-stock2.acc .\%RUNTIMEDIR%\cars\car1-stock2\car1-stock2.acc
+if exist .\data\cars\models\car1-stock2\carbon-128.rgb copy .\data\cars\models\car1-stock2\carbon-128.rgb .\%RUNTIMEDIR%\cars\car1-stock2\carbon-128.rgb
+if exist .\data\cars\models\car1-stock2\driver.rgb copy .\data\cars\models\car1-stock2\driver.rgb .\%RUNTIMEDIR%\cars\car1-stock2\driver.rgb
 
 if exist .\data\cars\models\acura-nsx-sz\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\cars\models\acura-nsx-sz\*.* call .\create_dir .\%RUNTIMEDIR%\cars
