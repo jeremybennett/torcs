@@ -215,7 +215,7 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectBorder[side]);
 			bw = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, borderWidth[side]);
 			borderWidth[side] = bw;
-			borderHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, 0.0);
+			borderHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, borderHeight[side]);
 			borderMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, borderMaterial[side]);
 			borderSurface[side] = AddTrackSurface(TrackHandle, theTrack, borderMaterial[side]);
 			style = GfParmGetStr(TrackHandle, path2, TRK_ATT_STYLE, ValStyle[borderStyle[side]]);
