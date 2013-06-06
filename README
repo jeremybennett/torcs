@@ -224,6 +224,8 @@ Changes since 1.3.4
   by Daniel Schellhammer (Daniel, Bernhard).
 - Fixed trackgen state consistency for border height, height is now carried over if there is
   no new definition given (Bernhard).
+- Fixed track barriers not taking into account the texture offset property ("texture start
+  on boundary") (Bernhard).
 
 
 
