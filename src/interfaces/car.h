@@ -484,6 +484,8 @@ typedef struct CarElt
 #define PRM_SLOWREBOUND		"slow rebound"
 #define PRM_FASTBUMP		"fast bump"
 #define PRM_FASTREBOUND		"fast rebound"
+#define PRM_BUMPTHRESHOLD	"fast bump threshold"
+#define PRM_REBOUNDTHRESHOLD	"fast rebound threshold"
 
 #define PRM_XPOS		"xpos"
 #define PRM_YPOS		"ypos"
