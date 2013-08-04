@@ -116,11 +116,16 @@ void SimWheelUpdateRide(tCar *car, int index)
     tdble max_extend =  wheel->pos.z - Zroad;
 	wheel->rideHeight = max_extend;
 
+	wheel->state &= ~SIM_WH_ONAIR;
 	if (max_extend < new_susp_x) {
 		new_susp_x = max_extend;
 		wheel->rel_vel = 0.0f;
 	} else if (new_susp_x < wheel->susp.spring.packers) {
 		wheel->rel_vel = 0.0f;
+	} 
+	
+	if (new_susp_x < max_extend) {
+		wheel->state |= SIM_WH_ONAIR;
 	}
  
 	tdble prex = wheel->susp.x;
@@ -148,7 +153,6 @@ void SimWheelUpdateForce(tCar *car, int index)
 	tdble s, sa, sx, sy; // slip vector
 	tdble stmp, F, Bx;
 	tdble mu;
-	tdble reaction_force = 0.0f;
 	wheel->state = 0;
 
 	// VERTICAL STUFF CONSIDERING SMALL PITCH AND ROLL ANGLES
@@ -157,23 +161,24 @@ void SimWheelUpdateForce(tCar *car, int index)
 
 	// check suspension state
 	wheel->state |= wheel->susp.state;
-	if ((wheel->state & SIM_SUSP_EXT) == 0) {
-		wheel->forces.z = axleFz + wheel->susp.force;
-		reaction_force = wheel->forces.z;
-		wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
-		if (wheel->forces.z < 0.0f) {
-			wheel->forces.z = 0.0f;
-		}
+	if ((wheel->state & SIM_SUSP_EXT) && wheel->rel_vel < 0.0) {
+		wheel->forces.z = wheel->rel_vel/SimDeltaTime*wheel->mass;
+		wheel->rel_vel = 0.0;
 	} else {
-		if (wheel->rel_vel < 0.0) {
-            wheel->rel_vel = 0.0;
-        }
-        wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
-		wheel->forces.z = 0.0f;
+		wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
+		wheel->forces.z = axleFz + wheel->susp.force;
 	}
 
 	// update wheel coord, center relative to GC
 	wheel->relPos.z = - wheel->susp.x / wheel->susp.spring.bellcrank + wheel->radius;
+
+	// Wheel contact with the ground can just push the car upwards, but not drag it towards the ground.
+	// Because forces.z includes the inertia of the wheel, the wheel force can act on the car body
+	// without interacting with the ground.
+	tdble zforce = wheel->forces.z;
+	if ((zforce < 0.0f) || (wheel->state & SIM_WH_ONAIR)) {
+		zforce = 0.0f;
+	}
 
 	// HORIZONTAL FORCES
 	waz = wheel->steer + wheel->staticPos.az;
@@ -194,7 +199,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 	NORM_PI_PI(sa);
 
 	wrl = wheel->spinVel * wheel->radius;
-	if ((wheel->state & SIM_SUSP_EXT) != 0) {
+	if ((wheel->state & SIM_WH_ONAIR) != 0) {
 		sx = sy = 0.0f;
 	} else if (v < 0.000001f) {
 		sx = wrl;
@@ -213,23 +218,22 @@ void SimWheelUpdateForce(tCar *car, int index)
 		if (v < 2.0f) {
 			car->carElt->_skid[index] = 0.0f;
 		} else {
-			car->carElt->_skid[index] =  MIN(1.0f, (s*reaction_force*0.0002f));
+			car->carElt->_skid[index] =  MIN(1.0f, (s*zforce*0.0002f));
 		}
-		car->carElt->_reaction[index] = reaction_force;
 	}
 
 	stmp = MIN(s, 1.5f);
-
+	
 	// MAGIC FORMULA
 	Bx = wheel->mfB * stmp;
 	F = sin(wheel->mfC * atan(Bx * (1.0f - wheel->mfE) + wheel->mfE * atan(Bx))) * (1.0f + stmp * simSkidFactor[car->carElt->_skillLevel]);
 
 	// load sensitivity
-	mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * wheel->forces.z / wheel->opLoad));
+	mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * zforce / wheel->opLoad));
 
-	F *= wheel->forces.z * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin(-wheel->staticPos.ax * 18.0f));	/* coeff */
+	F *= zforce * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin(-wheel->staticPos.ax * 18.0f));	/* coeff */
 
-	wheel->rollRes = wheel->forces.z * wheel->trkPos.seg->surface->kRollRes;
+	wheel->rollRes = zforce * wheel->trkPos.seg->surface->kRollRes;
     car->carElt->priv.wheel[index].rollRes = wheel->rollRes;
 
 	if (s > 0.000001f) {
@@ -255,7 +259,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 
 	car->carElt->_wheelSlipSide(index) = sy*v;
 	car->carElt->_wheelSlipAccel(index) = sx*v;
-	car->carElt->_reaction[index] = reaction_force;
+	car->carElt->_reaction[index] = zforce;
 }
 
 
