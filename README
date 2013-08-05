@@ -234,7 +234,9 @@ Changes since 1.3.4
 - Fixed applied force when wheel has lost touch with the ground (Bernhard).
 - Added suspension parameter to set up slow->fast thresholds, "fast bump threshold" and
   "fast rebound threshold" (Bernhard).
-
+- Adopted robots to brake full when in "landing zone" for saver pit stops (Bernhard).
+- Modified LSD (limited slip differential) from one way to 1.5 way, modified behaviour for
+  unlocked operation, see car8-trb1 as example (Bernhard).
 
 
 
