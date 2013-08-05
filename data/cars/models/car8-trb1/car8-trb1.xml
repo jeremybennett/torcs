@@ -345,6 +345,10 @@
 		<attnum name="inertia" unit="kg.m2" val="0.0488"/>
 		<attnum name="ratio" min="0" max="10" val="4.5"/>
 		<attnum name="efficiency" val="0.9625"/>
+		
+		<attnum name="max slip bias" val="0.03"/>
+		<attnum name="locking input torque" val="5000"/>
+		<attnum name="locking brake input torque" val="1500"/>
 	</section>
 	
 	<section name="Front Right Wheel">

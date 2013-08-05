@@ -27,8 +27,9 @@ void SimDifferentialConfig(void *hdle, const char *section, tDifferential *diffe
 	differential->bias		= GfParmGetNum(hdle, section, PRM_BIAS, (char*)NULL, 0.1f);
 	differential->dTqMin	= GfParmGetNum(hdle, section, PRM_MIN_TQ_BIAS, (char*)NULL, 0.05f);
 	differential->dTqMax	= GfParmGetNum(hdle, section, PRM_MAX_TQ_BIAS, (char*)NULL, 0.80f) - differential->dTqMin;
-	differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.2f);
-	differential->lockInputTq	= GfParmGetNum(hdle, section, PRM_LOCKING_TQ, (char*)NULL, 300.0f);
+	differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.03f);
+	differential->lockInputTq	= GfParmGetNum(hdle, section, PRM_LOCKING_TQ, (char*)NULL, 3000.0f);
+	differential->lockBrakeInputTq = GfParmGetNum(hdle, section, PRM_LOCKINGBRAKE_TQ, (char*)NULL, differential->lockInputTq*0.33f);
 	differential->viscosity	= GfParmGetNum(hdle, section, PRM_VISCOSITY_FACTOR, (char*)NULL, 2.0f);
 	differential->viscomax	= 1 - exp(-differential->viscosity);
 	
@@ -101,7 +102,7 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 	tdble	spinVel0, spinVel1;
 	tdble	inTq0, inTq1;
 	tdble	spdRatio, spdRatioMax;
-	tdble	deltaSpd, deltaTq;
+	tdble	deltaSpd, deltaTq, bias, lockTq, biassign;
 	tdble	BrTq;
 	tdble	engineReaction;
 	tdble	meanv;
@@ -118,7 +119,7 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 	
 	inTq0 = differential->inAxis[0]->Tq;
 	inTq1 = differential->inAxis[1]->Tq;
-	
+
 	spdRatio = fabs(spinVel0 + spinVel1);
 	if (spdRatio != 0) {
 		spdRatio = fabs(spinVel0 - spinVel1) / spdRatio;
@@ -169,28 +170,39 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 			}
 			break;
 		case DIFF_LIMITED_SLIP:
-			if (DrTq > differential->lockInputTq) {
+			if (DrTq > differential->lockInputTq || DrTq < -differential->lockBrakeInputTq) {
 				updateSpool(car, differential, first);
 				return;
 			}
-			spdRatioMax = differential->dSlipMax - DrTq * differential->dSlipMax / differential->lockInputTq;
+
+			if (DrTq >= 0.0f) {
+				lockTq = differential->lockInputTq;
+				biassign = 1.0f;
+			} else {
+				lockTq = -differential->lockBrakeInputTq;
+				biassign = -1.0f;
+			}
+
+			spdRatioMax = differential->dSlipMax - DrTq * differential->dSlipMax / lockTq;
+			bias = 0.0f;
 			if (spdRatio > spdRatioMax) {
 				deltaSpd = (spdRatio - spdRatioMax) * fabs(spinVel0 + spinVel1) / 2.0;
 				if (spinVel0 > spinVel1) {
 					spinVel0 -= deltaSpd;
 					spinVel1 += deltaSpd;
+					bias = -(spdRatio - spdRatioMax);
 				} else {
 					spinVel0 += deltaSpd;
 					spinVel1 -= deltaSpd;
+					bias = (spdRatio - spdRatioMax);
 				}
 			}
-			if (spinVel0 > spinVel1) {
-				DrTq1 = DrTq * (0.5 + differential->bias);
-				DrTq0 = DrTq * (0.5 - differential->bias);
-			} else {
-				DrTq1 = DrTq * (0.5 - differential->bias);
-				DrTq0 = DrTq * (0.5 + differential->bias);
-			}
+
+			{
+				float spiderTq = inTq1 - inTq0;
+				DrTq0 = DrTq*(0.5f+bias*biassign) + spiderTq;
+				DrTq1 = DrTq*(0.5f-bias*biassign) - spiderTq;
+			}			
 			break;
 		case DIFF_VISCOUS_COUPLER:
 			if (spinVel0 >= spinVel1) {

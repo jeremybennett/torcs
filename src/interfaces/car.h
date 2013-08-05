@@ -542,6 +542,7 @@ typedef struct CarElt
 #define PRM_MAX_TQ_BIAS		"max torque bias"
 #define PRM_MAX_SLIP_BIAS	"max slip bias"
 #define PRM_LOCKING_TQ		"locking input torque"
+#define PRM_LOCKINGBRAKE_TQ		"locking brake input torque"
 #define PRM_VISCOSITY_FACTOR	"viscosity factor"
 
 

@@ -45,6 +45,7 @@ typedef struct
     tdble	dTqMax;
     tdble	dSlipMax;
     tdble	lockInputTq;
+	tdble   lockBrakeInputTq;
     tdble	viscosity;
     tdble	viscomax;
 
