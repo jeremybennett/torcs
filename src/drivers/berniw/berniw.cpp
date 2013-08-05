@@ -157,12 +157,13 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	tdble b2;							/* brake value for some brake point in front of us */
 	tdble b3;							/* brake value for control (avoid loosing control) */
 	tdble b4;							/* brake value for avoiding high angle of attack */
+	tdble b5;							// Brake for the pit;
 	tdble steer, targetAngle, shiftaccel;
 
 	MyCar* myc = mycar[index-1];
 	Pathfinder* mpf = myc->getPathfinderPtr();
 
-	b1 = b2 = b3 = b4 = 0.0;
+	b1 = b2 = b3 = b4 = b5 = 0.0;
 	shiftaccel = 0.0;
 
 	/* update some values needed */
@@ -224,6 +225,12 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	if (mpf->getPitStop()) {
 		car->_raceCmd = RM_CMD_PIT_ASKED;
+		// Check if we are almost in the pit to set brake to the max to avoid overrun.
+		tdble dl, dw;
+		RtDistToPit(car, myTrackDesc->getTorcsTrack(), &dl, &dw);
+		if (dl < 1.0f) {
+			b5 = 1.0f;
+		}
 	}
 
 	/* steer to next target point */
@@ -314,6 +321,9 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	float maxForce = weight + myc->ca*myc->MAX_SPEED*myc->MAX_SPEED;
 	float force = weight + myc->ca*myc->getSpeedSqr();
 	brake = brake*MIN(1.0, force/maxForce);
+	if (b5 > 0.0f) {
+		brake = b5;
+	}
 
 	// Gear changing.
 	if (myc->tr_mode == 0) {
