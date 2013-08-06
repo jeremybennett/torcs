@@ -101,7 +101,7 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 	tdble	ndot0, ndot1;
 	tdble	spinVel0, spinVel1;
 	tdble	inTq0, inTq1;
-	tdble	spdRatio, spdRatioMax;
+	tdble	spdRatioMax, commomSpinVel;
 	tdble	deltaSpd, deltaTq, bias, lockTq, biassign;
 	tdble	BrTq;
 	tdble	engineReaction;
@@ -120,53 +120,16 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 	inTq0 = differential->inAxis[0]->Tq;
 	inTq1 = differential->inAxis[1]->Tq;
 
-	spdRatio = fabs(spinVel0 + spinVel1);
-	if (spdRatio != 0) {
-		spdRatio = fabs(spinVel0 - spinVel1) / spdRatio;
+	commomSpinVel = fabs(spinVel0) + fabs(spinVel1);
+	if (commomSpinVel != 0) {
+		tdble spdRatio = fabs(spinVel0 - spinVel1) / commomSpinVel;
 		
 		switch (differential->type) {
-		case DIFF_FREE:
-			// I would think that the following is what a FREE
-			// differential should look like, with both wheels
-			// independent and linked through a spider gear.
-			//
-			// The reaction from each wheel is transmitted back to the
-			// spider gear. If both wheels react equally, then the
-			// spider gear does not turn. If one of the wheel is
-			// immobile, so that DrTq/2=inTq0 for example, then the
-			// reaction does not act against the drivetrain, but since
-			// the spider gear can turn freely, it acts on the other wheel.
-			// 
-			// This system is equivalent to a rotating gear attached
-			// in between two parallel surfaces, with DrTq being
-			// equivalent to a force acting in the center of the
-			// gear. If one surface is fixed, only the other surface
-			// moves and all the force is 'transferred' to the moving
-			// surface. Or, the way I like to think of it, the
-			// immobile surface reacts with an equal and opposite
-			// force[1] that cancels DrTq/2 exactly and which is
-			// transmitted directly with the rotating gear to the
-			// other, free, surface.
-			//
-			//
-			// A lot of explanation for 3 lines of code..  TODO: Check
-			// what bias would mean in such a system. Would it be
-			// implemented between the spider and the wheels?  Or
-			// between the spider and the drivetrain? If the latter
-			// then it meanst the spider would always be turning, even
-			// under an even load. I think in this case it is safest
-			// to ignore it completely because it is frequently used
-			// in cars with just FWD or RWD, and very frequently in
-			// just the front part of 4WD cars, while the default
-			// differential bias setting is 0.1...
-			//
-			// [1] For an object to remain at rest, all forces acting
-			// on it must sum to 0.
-				
+		case DIFF_FREE:				
 			{
 				float spiderTq = inTq1 - inTq0;
-				DrTq0 = DrTq*0.5f + spiderTq;
-				DrTq1 = DrTq*0.5f - spiderTq;
+				DrTq0 = (DrTq + spiderTq)*0.5f;
+				DrTq1 = (DrTq - spiderTq)*0.5f;
 			}
 			break;
 		case DIFF_LIMITED_SLIP:
@@ -186,7 +149,7 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 			spdRatioMax = differential->dSlipMax - DrTq * differential->dSlipMax / lockTq;
 			bias = 0.0f;
 			if (spdRatio > spdRatioMax) {
-				deltaSpd = (spdRatio - spdRatioMax) * fabs(spinVel0 + spinVel1) / 2.0;
+				deltaSpd = (spdRatio - spdRatioMax) * commomSpinVel / 2.0;
 				if (spinVel0 > spinVel1) {
 					spinVel0 -= deltaSpd;
 					spinVel1 += deltaSpd;
@@ -200,8 +163,8 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 
 			{
 				float spiderTq = inTq1 - inTq0;
-				DrTq0 = DrTq*(0.5f+bias*biassign) + spiderTq;
-				DrTq1 = DrTq*(0.5f-bias*biassign) - spiderTq;
+				DrTq0 = (DrTq*(1.0f + bias*biassign) + spiderTq)*0.5f;
+				DrTq1 = (DrTq*(1.0f - bias*biassign) - spiderTq)*0.5f;
 			}			
 			break;
 		case DIFF_VISCOUS_COUPLER:
