@@ -47,7 +47,6 @@ typedef struct
     tdble	lockInputTq;
 	tdble   lockBrakeInputTq;
     tdble	viscosity;
-    tdble	viscomax;
 
     /* dynamic data */
     tDynAxis	in;

@@ -30,8 +30,7 @@ void SimDifferentialConfig(void *hdle, const char *section, tDifferential *diffe
 	differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.03f);
 	differential->lockInputTq	= GfParmGetNum(hdle, section, PRM_LOCKING_TQ, (char*)NULL, 3000.0f);
 	differential->lockBrakeInputTq = GfParmGetNum(hdle, section, PRM_LOCKINGBRAKE_TQ, (char*)NULL, differential->lockInputTq*0.33f);
-	differential->viscosity	= GfParmGetNum(hdle, section, PRM_VISCOSITY_FACTOR, (char*)NULL, 2.0f);
-	differential->viscomax	= 1 - exp(-differential->viscosity);
+	differential->viscosity	= GfParmGetNum(hdle, section, PRM_VISCOSITY_FACTOR, (char*)NULL, 1.0f);
 	
 	const char* type = GfParmGetStr(hdle, section, PRM_TYPE, VAL_DIFF_NONE);
 	if (strcmp(type, VAL_DIFF_LIMITED_SLIP) == 0) {
@@ -172,8 +171,7 @@ SimDifferentialUpdate(tCar *car, tDifferential *differential, int first)
 				DrTq0 = DrTq * differential->dTqMin;
 				DrTq1 = DrTq * (1 - differential->dTqMin);
 			} else {
-				deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * spinVel0 - spinVel1))) /
-									differential->viscomax * differential->dTqMax;
+				deltaTq = differential->dTqMin + (1.0 - exp(-fabs(differential->viscosity * (spinVel0 - spinVel1)))) * differential->dTqMax;
 				DrTq0 = DrTq * deltaTq;
 				DrTq1 = DrTq * (1 - deltaTq);
 			}
