@@ -40,7 +40,6 @@ typedef struct
     tdble	ratio;
     tdble	I;
     tdble	efficiency;
-    tdble	bias;
     tdble	dTqMin;
     tdble	dTqMax;
     tdble	dSlipMax;

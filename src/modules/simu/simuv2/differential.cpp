@@ -24,7 +24,6 @@ void SimDifferentialConfig(void *hdle, const char *section, tDifferential *diffe
 	differential->I		= GfParmGetNum(hdle, section, PRM_INERTIA, (char*)NULL, 0.1f);
 	differential->efficiency	= GfParmGetNum(hdle, section, PRM_EFFICIENCY, (char*)NULL, 1.0f);
 	differential->ratio		= GfParmGetNum(hdle, section, PRM_RATIO, (char*)NULL, 1.0f);
-	differential->bias		= GfParmGetNum(hdle, section, PRM_BIAS, (char*)NULL, 0.1f);
 	differential->dTqMin	= GfParmGetNum(hdle, section, PRM_MIN_TQ_BIAS, (char*)NULL, 0.05f);
 	differential->dTqMax	= GfParmGetNum(hdle, section, PRM_MAX_TQ_BIAS, (char*)NULL, 0.80f) - differential->dTqMin;
 	differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.03f);
