@@ -122,6 +122,7 @@ void SimWheelUpdateRide(tCar *car, int index)
 		wheel->rel_vel = 0.0f;
 	} else if (new_susp_x < wheel->susp.spring.packers) {
 		wheel->rel_vel = 0.0f;
+		new_susp_x = wheel->susp.spring.packers;
 	} 
 	
 	if (new_susp_x < max_extend) {
@@ -161,7 +162,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 
 	// check suspension state
 	wheel->state |= wheel->susp.state;
-	if ((wheel->state & SIM_SUSP_EXT) && wheel->rel_vel < 0.0) {
+	if ((wheel->state & SIM_SUSP_EXT) && wheel->rel_vel <= 0.0f) {
 		wheel->forces.z = wheel->rel_vel/SimDeltaTime*wheel->mass;
 		wheel->rel_vel = 0.0;
 	} else {
