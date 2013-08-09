@@ -29,50 +29,66 @@
 		<attnum name="maximum number" val="20"/>
 		
 		<section name="1">
-			<attstr name="name" val="g-track-1"/>
+			<attstr name="name" val="corkscrew"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="2">
-			<attstr name="name" val="e-track-6"/>
+			<attstr name="name" val="wheel-1"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="3">
-			<attstr name="name" val="g-track-3"/>
+			<attstr name="name" val="brondehach"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="4">
-			<attstr name="name" val="street-1"/>
+			<attstr name="name" val="e-track-3"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="5">
-			<attstr name="name" val="wheel-2"/>
+			<attstr name="name" val="g-track-1"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="6">
-			<attstr name="name" val="ruudskogen"/>
+			<attstr name="name" val="e-track-6"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="7">
-			<attstr name="name" val="aalborg"/>
+			<attstr name="name" val="g-track-3"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="8">
-			<attstr name="name" val="alpine-1"/>
+			<attstr name="name" val="street-1"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="9">
-			<attstr name="name" val="dirt-3"/>
-			<attstr name="category" val="dirt"/>
+			<attstr name="name" val="wheel-2"/>
+			<attstr name="category" val="road"/>
 		</section>
 		<section name="10">
-			<attstr name="name" val="michigan"/>
-			<attstr name="category" val="oval"/>
+			<attstr name="name" val="ruudskogen"/>
+			<attstr name="category" val="road"/>
 		</section>
 		<section name="11">
-			<attstr name="name" val="forza"/>
+			<attstr name="name" val="aalborg"/>
 			<attstr name="category" val="road"/>
 		</section>
 		<section name="12">
+			<attstr name="name" val="alpine-1"/>
+			<attstr name="category" val="road"/>
+		</section>
+		<section name="13">
+			<attstr name="name" val="dirt-3"/>
+			<attstr name="category" val="dirt"/>
+		</section>
+		<section name="14">
+			<attstr name="name" val="michigan"/>
+			<attstr name="category" val="oval"/>
+		</section>
+		<section name="15">
+			<attstr name="name" val="forza"/>
+			<attstr name="category" val="road"/>
+		</section>
+		<section name="16">
 			<attstr name="name" val="alpine-2"/>
 			<attstr name="category" val="road"/>
 		</section>		
