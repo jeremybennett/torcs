@@ -63,7 +63,7 @@ I refused to integrate uncommon/too much stuff because of size/complexity, quali
 assurance and development flexibility, so we had different goals, which led to this
 fork, read the post for details.
 
-GZRacer:
+GZRacing:
 - Commercial Mac OS X port of TORCS, sources available.
 
 
