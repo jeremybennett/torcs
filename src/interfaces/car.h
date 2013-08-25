@@ -290,8 +290,6 @@ typedef struct {
     tPosd	corner[4];	/**< car's corners position */
     int		gear;	    	/**< current gear */
     tdble	fuel;	    	/**< remaining fuel (liters) */
-	tdble   fuel_consumption_total; // l
-	tdble   fuel_consumption_instant; // l/100km (>100 means infinity)
     tdble	enginerpm;
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
@@ -314,8 +312,6 @@ typedef struct {
 	tCollisionState collision_state; /**< collision state */
 } tPrivCar;
 /* structure access */
-#define _fuelTotal priv.fuel_consumption_total
-#define _fuelInstant priv.fuel_consumption_instant
 #define _driverIndex	priv.driverIndex
 #define _paramsHandle	priv.paramsHandle
 #define _carHandle	priv.carHandle
@@ -366,6 +362,63 @@ typedef struct {
 
 struct RobotItf;
 
+typedef struct 
+{
+	tdble value;
+	tdble min;
+	tdble max;
+} tCarPitSetupValue;
+
+
+
+typedef struct 
+{
+	// Steer
+	tCarPitSetupValue steerLock;
+	
+	//Wheel
+	tCarPitSetupValue wheelcamber[4];
+	tCarPitSetupValue wheeltoe[4];
+	tCarPitSetupValue wheelrideheight[4];
+
+	// Brake
+	tCarPitSetupValue brakePressure;
+	tCarPitSetupValue brakeRepartition;
+
+	//Suspension
+	tCarPitSetupValue suspspring[4];
+	tCarPitSetupValue susppackers[4];
+	tCarPitSetupValue suspslowbump[4];
+	tCarPitSetupValue suspslowrebound[4];
+	tCarPitSetupValue suspfastbump[4];
+	tCarPitSetupValue suspfastrebound[4];
+
+	// Anti-rollbar
+	tCarPitSetupValue arbspring[2];
+
+	// Third element
+	tCarPitSetupValue thirdspring[2];
+	tCarPitSetupValue thirdbump[2];
+	tCarPitSetupValue thirdrebound[2];
+	tCarPitSetupValue thirdX0[2];
+
+	// Gears [1-8]
+	tCarPitSetupValue gearsratio[8];
+
+	// Wings
+	tCarPitSetupValue wingangle[2];
+
+	// Differential
+	tCarPitSetupValue diffratio[3];
+	tCarPitSetupValue diffmintqbias[3];
+	tCarPitSetupValue diffmaxtqbias[3];
+	tCarPitSetupValue diffslipbias[3];
+	tCarPitSetupValue difflockinginputtq[3];
+	tCarPitSetupValue difflockinginputbraketq[3];
+	enum TDiffType { NONE = 0, SPOOL = 1, FREE = 2, LIMITED_SLIP = 3, VISCOUS_COUPLER = 4};
+	TDiffType diffType[3];
+} tCarPitSetup;
+
 /** Command issued by the car during pit stop */
 typedef struct 
 {
@@ -374,6 +427,7 @@ typedef struct
 #define RM_PIT_REPAIR		0
 #define RM_PIT_STOPANDGO	1
     int			stopType;
+	tCarPitSetup setup;
 } tCarPitCmd;
 #define _pitFuel	pitcmd.fuel
 #define _pitRepair	pitcmd.repair
