@@ -127,8 +127,8 @@ void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0,
 	susp->spring.packers    = GfParmGetNum(hdle, section, PRM_PACKERS, (char*)NULL, 0.0f);
 	susp->damper.bump.C1    = GfParmGetNum(hdle, section, PRM_SLOWBUMP, (char*)NULL, 0.0f);
 	susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0.0f);
-	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, 0.0f);
-	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0.0f);
+	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, susp->damper.bump.C1);
+	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, susp->damper.rebound.C1);
 	susp->damper.bump.v1	= GfParmGetNum(hdle, section, PRM_BUMPTHRESHOLD, (char*)NULL, 0.5f);
 	susp->damper.rebound.v1	= GfParmGetNum(hdle, section, PRM_REBOUNDTHRESHOLD, (char*)NULL, 0.5f);
 
