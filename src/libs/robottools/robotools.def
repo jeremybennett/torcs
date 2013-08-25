@@ -19,3 +19,6 @@ EXPORTS
 	RtGetDistFromStart2
 	RtDistToPit
 	RtTrackGetSeg
+	RtInitCarPitSetup
+	RtSaveCarPitSetup
+	RtGetCarPitSetupFilename

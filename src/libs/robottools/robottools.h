@@ -179,6 +179,23 @@ extern void RtTelemStopMonitoring(void);
 extern void RtTelemUpdate(double time);
 extern void RtTelemShutdown(void);
 
+typedef enum rtCarPitSetupType {
+	PRACTICE = 0,
+	QUALIFYING = 1,
+	RACE = 2,
+	BACKUP1 = 3,
+	BACKUP2 = 4,
+	BACKUP3 = 5
+} rtCarPitSetupType;
+
+extern void RtGetCarPitSetupFilename(rtCarPitSetupType type, int robidx, const char* carname, const char* trackname, char* filename, const int len);
+extern void RtSaveCarPitSetup(void *hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname);
+extern void RtSaveCarPitSetupFile(void *hdlecar, tCarPitSetup* s, const char* filepath, const char* carname);	
+extern void RtInitCarPitSetup(void* carparmhandle, tCarPitSetup* setup, bool minmaxonly);
+
+
+
+
 #endif /* _ROBOTTOOLS_H_ */ 
 
 

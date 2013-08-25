@@ -28,6 +28,7 @@
     @ingroup	robottools
 */
 
+#include <portability.h>
 #include <stdlib.h>
 #include <math.h>
 #ifdef WIN32
@@ -748,3 +749,228 @@ RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW)
 
 	return 0;
 }
+
+
+static void RtReadCarPitSetupEntry(tCarPitSetupValue* v, const char* path, const char* key, void *hdle, bool minmaxonly)
+{
+	if (!minmaxonly) {
+		v->value = GfParmGetNum(hdle, path, key, (char*)NULL, 0.0f);
+	}
+	GfParmGetNumBoundaries(hdle, path, key, &v->min, &v->max);
+}
+
+
+void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
+{
+	static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
+
+	// Steer
+	RtReadCarPitSetupEntry(&s->steerLock, SECT_STEER, PRM_STEERLOCK, hdle, minmaxonly);
+
+	int i;
+	for (i=0; i < 4; i++) {
+		// Wheel
+		RtReadCarPitSetupEntry(&s->wheelcamber[i], WheelSect[i], PRM_CAMBER, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->wheeltoe[i], WheelSect[i], PRM_TOE, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->wheelrideheight[i], WheelSect[i], PRM_RIDEHEIGHT, hdle, minmaxonly);
+
+		// Suspension
+		RtReadCarPitSetupEntry(&s->suspspring[i], SuspSect[i], PRM_SPR, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->susppackers[i], SuspSect[i], PRM_PACKERS, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspslowbump[i], SuspSect[i], PRM_SLOWBUMP, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspslowrebound[i], SuspSect[i], PRM_SLOWREBOUND, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspfastbump[i], SuspSect[i], PRM_FASTBUMP, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspfastrebound[i], SuspSect[i], PRM_FASTREBOUND, hdle, minmaxonly);
+	}
+
+	// Brake
+	RtReadCarPitSetupEntry(&s->brakeRepartition, SECT_BRKSYST, PRM_BRKREP, hdle, minmaxonly);
+	RtReadCarPitSetupEntry(&s->brakePressure, SECT_BRKSYST, PRM_BRKPRESS, hdle, minmaxonly);
+
+	// Anti roll bar
+	static const char *ArbSect[2] = {SECT_FRNTARB, SECT_REARARB};
+	for (i=0; i < 2; i++) { 
+		RtReadCarPitSetupEntry(&s->arbspring[i], ArbSect[i], PRM_SPR, hdle, minmaxonly);	
+	}
+
+	// Third element
+	static const char *AxleSect[2] = {SECT_FRNTAXLE, SECT_REARAXLE};
+	for (i=0; i < 2; i++) { 
+		RtReadCarPitSetupEntry(&s->thirdspring[i], AxleSect[i], PRM_SPR, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->thirdbump[i], AxleSect[i], PRM_SLOWBUMP, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->thirdrebound[i], AxleSect[i], PRM_SLOWREBOUND, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->thirdX0[i], AxleSect[i], PRM_SUSPCOURSE, hdle, minmaxonly);
+	}
+
+	// Gears
+	static const char *GearName[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+	for (i=0; i < 8; i++) { 
+		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, GearName[i]);
+		RtReadCarPitSetupEntry(&s->gearsratio[i], path, PRM_RATIO, hdle, minmaxonly);
+	}
+
+	// Wings
+	static const char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
+	for (i=0; i < 2; i++) { 
+		RtReadCarPitSetupEntry(&s->wingangle[i], WingSect[i], PRM_WINGANGLE, hdle, minmaxonly);
+	}
+
+	// Differentials
+	static const char *DiffSect[3] = {SECT_FRNTDIFFERENTIAL, SECT_REARDIFFERENTIAL, SECT_CENTRALDIFFERENTIAL};
+	for (i=0; i < 3; i++) { 
+		RtReadCarPitSetupEntry(&s->diffratio[i], DiffSect[i], PRM_RATIO, hdle, minmaxonly);	
+		RtReadCarPitSetupEntry(&s->diffmintqbias[i], DiffSect[i], PRM_MIN_TQ_BIAS, hdle, minmaxonly);	
+		RtReadCarPitSetupEntry(&s->diffmaxtqbias[i], DiffSect[i], PRM_MAX_TQ_BIAS, hdle, minmaxonly);	
+		RtReadCarPitSetupEntry(&s->diffslipbias[i], DiffSect[i], PRM_MAX_SLIP_BIAS, hdle, minmaxonly);	
+		RtReadCarPitSetupEntry(&s->difflockinginputtq[i], DiffSect[i], PRM_LOCKING_TQ, hdle, minmaxonly);	
+		RtReadCarPitSetupEntry(&s->difflockinginputbraketq[i], DiffSect[i], PRM_LOCKINGBRAKE_TQ, hdle, minmaxonly);	
+	
+		const char* type = GfParmGetStr(hdle, DiffSect[i], PRM_TYPE, VAL_DIFF_NONE);
+		if (strcmp(type, VAL_DIFF_LIMITED_SLIP) == 0) {
+			s->diffType[i] = tCarPitSetup::LIMITED_SLIP; 
+		} else if (strcmp(type, VAL_DIFF_VISCOUS_COUPLER) == 0) {
+			s->diffType[i] = tCarPitSetup::VISCOUS_COUPLER;
+		} else if (strcmp(type, VAL_DIFF_SPOOL) == 0) {
+			s->diffType[i] = tCarPitSetup::SPOOL;
+		}  else if (strcmp(type, VAL_DIFF_FREE) == 0) {
+			s->diffType[i] = tCarPitSetup::FREE;
+		} else {
+			s->diffType[i] = tCarPitSetup::NONE; 
+		}
+	}
+}
+
+static const char* CarPitSetupFilenames[6] = { "practice", "qualifying", "race", "backup1", "backup2", "backup3" };
+
+void RtGetCarPitSetupFilename(
+	rtCarPitSetupType type,		// the setup type
+	int robidx,					// player/robot instance
+	const char* carname,		// car filename
+	const char* trackname,		// track file name
+	char* filename,				// buffer for result								  
+	const int len				// buffer size						  							  
+)
+{
+	snprintf(filename, len, "%s_%s_%d_%s" , carname, trackname, robidx, CarPitSetupFilenames[type]);
+}
+
+
+static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
+{
+	GfParmSetNumEx(hdlesetup, path, key, unit, GfParmSI2Unit(unit, v->value), GfParmSI2Unit(unit, v->min), GfParmSI2Unit(unit, v->max));
+
+}
+
+
+void RtSaveCarPitSetupFile(
+	void *hdlecar,			// handle to car definition file, for min/max merge
+	tCarPitSetup* s,		// the setup data to save
+	const char* filepath,	// full path including filename and extension
+	const char* carname
+)	
+{
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
+	void* hdlesetup = GfParmReadFile(filepath, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	
+	// Steer
+	RtParmSetNum(hdlesetup, SECT_STEER, PRM_STEERLOCK, "deg", &s->steerLock);
+
+	static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
+	static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
+
+	int i;
+	for (i=0; i < 4; i++) {
+		// Wheel
+		RtParmSetNum(hdlesetup, WheelSect[i], PRM_CAMBER, "deg", &s->wheelcamber[i]);
+		RtParmSetNum(hdlesetup, WheelSect[i], PRM_TOE, "deg", &s->wheeltoe[i]);
+		RtParmSetNum(hdlesetup, WheelSect[i], PRM_RIDEHEIGHT, "mm", &s->wheelrideheight[i]);
+
+		// Suspension
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_SPR, "lbs/in", &s->suspspring[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_PACKERS, "mm", &s->susppackers[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_SLOWBUMP, "lbs/in/s", &s->suspslowbump[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_SLOWREBOUND, "lbs/in/s", &s->suspslowrebound[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_FASTBUMP, "lbs/in/s", &s->suspfastbump[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_FASTREBOUND, "lbs/in/s", &s->suspfastrebound[i]);
+	}
+
+	// Brake
+	RtParmSetNum(hdlesetup, SECT_BRKSYST, PRM_BRKREP, NULL, &s->brakeRepartition);
+	RtParmSetNum(hdlesetup, SECT_BRKSYST, PRM_BRKPRESS, "kPa", &s->brakePressure);
+
+	// Anti roll bar
+	static const char *ArbSect[2] = {SECT_FRNTARB, SECT_REARARB};
+	for (i=0; i < 2; i++) {
+		RtParmSetNum(hdlesetup, ArbSect[i], PRM_SPR, "lbs/in", &s->arbspring[i]);
+	}
+
+	// Third element
+	static const char *AxleSect[2] = {SECT_FRNTAXLE, SECT_REARAXLE};
+	for (i=0; i < 2; i++) {
+		RtParmSetNum(hdlesetup, AxleSect[i], PRM_SPR, "lbs/in", &s->thirdspring[i]);
+		RtParmSetNum(hdlesetup, AxleSect[i], PRM_SLOWBUMP, "lbs/in/s", &s->thirdbump[i]);
+		RtParmSetNum(hdlesetup, AxleSect[i], PRM_SLOWREBOUND, "lbs/in/s", &s->thirdrebound[i]);
+		RtParmSetNum(hdlesetup, AxleSect[i], PRM_SUSPCOURSE, "mm", &s->thirdX0[i]);
+	}
+
+	// Gears
+	static const char *GearName[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+	for (i=0; i < 8; i++) { 
+		snprintf(path, BUFSIZE, "%s/%s/%d", SECT_GEARBOX, ARR_GEARS, i+1);
+		RtParmSetNum(hdlesetup, path, PRM_RATIO, NULL, &s->gearsratio[i]);
+	}
+
+	// Wings
+	static const char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
+	for (i=0; i < 2; i++) { 
+		RtParmSetNum(hdlesetup, WingSect[i], PRM_WINGANGLE, "deg", &s->wingangle[i]);
+	}
+
+	// Differentials
+	static const char *DiffSect[3] = {SECT_FRNTDIFFERENTIAL, SECT_REARDIFFERENTIAL, SECT_CENTRALDIFFERENTIAL};
+	for (i=0; i < 3; i++) { 
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_RATIO, NULL, &s->diffratio[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MIN_TQ_BIAS, NULL, &s->diffmintqbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_TQ_BIAS, NULL, &s->diffmaxtqbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_SLIP_BIAS, NULL, &s->diffslipbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKING_TQ, "N.m", &s->difflockinginputtq[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKINGBRAKE_TQ, "N.m", &s->difflockinginputbraketq[i]);
+	} 
+
+	hdlesetup = GfParmMergeHandles(hdlecar, hdlesetup, GFPARM_MMODE_DST | GFPARM_MMODE_RELDST);
+	GfParmWriteFile(filepath, hdlesetup, carname);
+	GfParmReleaseHandle(hdlesetup);
+}
+
+					   
+void RtSaveCarPitSetup(
+	void *hdlecar,				// handle to car definition file, for min/max merge
+	tCarPitSetup* s,			// the setup data to save
+	rtCarPitSetupType type,		// the setup type
+	const char* modulename,		// modulename
+	int robidx,					// player/robot instance
+	const char* trackname,		// track file name without extension
+	const char* carname			// car file name without extension
+)
+{
+	const int filelen = 256;
+	char filename[filelen];
+	RtGetCarPitSetupFilename(type, robidx, carname, trackname, filename, filelen);
+
+	const int pathlen = 1024;
+	char path[pathlen];
+
+	snprintf(path, pathlen, "%sdrivers/%s/setups", GetLocalDir(), modulename);
+	if (GfCreateDir(path) == GF_DIR_CREATED) {
+		snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
+		RtSaveCarPitSetupFile(hdlecar, s, path, carname);		
+	} else {
+		GfError("RtSaveCarPitSetup, could not create %s\n", path);
+	}
+}
+
+void RtLoadCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly){}
