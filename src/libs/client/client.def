@@ -66,6 +66,7 @@ EXPORTS
 	GfuiFontHeight
 	GfuiFontWidth
 	GfuiButtonCreate
+	GfuiLeanButtonCreate
 	GfuiButtonStateCreate
 	GfuiGrButtonCreate
 	GfuiButtonSetText
