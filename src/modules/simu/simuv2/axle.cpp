@@ -33,6 +33,9 @@ void SimAxleConfig(tCar *car, int index)
 	rollCenter = GfParmGetNum(hdle, AxleSect[index], PRM_ROLLCENTER, (char*)NULL, 0.15f);
 	car->wheel[index*2].rollCenter = car->wheel[index*2+1].rollCenter = rollCenter;
 	
+	tdble x0 = GfParmGetNum(hdle, AxleSect[index], PRM_SUSPCOURSE, (char*)NULL, 0.0f);
+	SimSuspConfig(hdle, AxleSect[index], &(axle->thirdSusp), 0, x0);
+
 	if (index == 0) {
 		SimSuspConfig(hdle, SECT_FRNTARB, &(axle->arbSusp), 0, 0);
 		axle->arbSusp.spring.K = -axle->arbSusp.spring.K;
@@ -46,29 +49,37 @@ void SimAxleConfig(tCar *car, int index)
 }
 
 
-
-
 void SimAxleUpdate(tCar *car, int index)
 {
 	tAxle *axle = &(car->axle[index]);
-	tdble str, stl, sgn;
+	tdble str, stl, vr, vl;
 	
 	str = car->wheel[index*2].susp.x;
 	stl = car->wheel[index*2+1].susp.x;
+	vr = car->wheel[index*2].susp.v;
+	vl = car->wheel[index*2+1].susp.v;
 	
-	sgn = SIGN(stl - str);
-	axle->arbSusp.x = fabs(stl - str);		
+	// Anti roll bar
+	axle->arbSusp.x = stl - str;		
 	tSpring *spring = &(axle->arbSusp.spring);
 
 	// To save CPU power we compute the force here directly. Just the spring
 	// is considered.
-	tdble f;
-	f = spring->K * axle->arbSusp.x;
-	
+	tdble farb = spring->K * axle->arbSusp.x;
+
+	// Third element
+	axle->thirdSusp.x = (stl + str)/2.0f;
+	axle->thirdSusp.v = (vl + vr)/2.0f;
+	SimSuspUpdate(&axle->thirdSusp);
+	tdble fthird = 0.0f;
+	if (axle->thirdSusp.x < axle->thirdSusp.spring.xMax) {
+		fthird = axle->thirdSusp.force/2.0f;
+	}
+
 	// right
-	car->wheel[index*2].axleFz =  + sgn * f;
+	car->wheel[index*2].axleFz = farb + fthird;
 	// left
-	car->wheel[index*2+1].axleFz = - sgn * f;
+	car->wheel[index*2+1].axleFz = -farb + fthird;
 }
 
 
