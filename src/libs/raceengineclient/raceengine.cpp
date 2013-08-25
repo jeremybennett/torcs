@@ -81,7 +81,6 @@ ReUpdtPitCmd(void *pvcar)
 	tCarElt *car = (tCarElt*)pvcar;
 
 	ReUpdtPitTime(car);
-	//ReStart(); /* resynchro */
 	GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
@@ -219,7 +218,7 @@ ReManage(tCarElt *car)
 					if (car->robot->rbPitCmd(car->robot->index, car, s) == ROB_PIT_MENU) {
 						// the pit cmd is modified by menu.
 						ReStop();
-						RmPitMenuStart(car, (void*)car, ReUpdtPitCmd);
+						RmPitMenuStart(car, ReInfo, (void*)car, ReUpdtPitCmd);
 					} else {
 						ReUpdtPitTime(car);
 					}

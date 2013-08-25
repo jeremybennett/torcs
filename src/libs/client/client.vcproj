@@ -230,6 +230,10 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
+				RelativePath="..\racescreens\carsetupscreen.cpp"
+				>
+			</File>
+			<File
 				RelativePath="client.def"
 				>
 				<FileConfiguration
