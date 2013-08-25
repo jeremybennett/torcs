@@ -651,7 +651,7 @@ ReInitCars(void)
 							handle = carhdle;
 						}
 						elt->_carHandle = handle;
-						//GfParmWriteFile("toto.xml", handle, "toto");
+						RtInitCarPitSetup(handle, &(elt->pitcmd.setup), false);
 					} else {
 						elt->_category[0] = '\0';
 						GfTrace("Bad Car category for driver %s\n", elt->_name);
