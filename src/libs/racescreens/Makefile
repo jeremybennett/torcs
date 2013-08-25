@@ -20,7 +20,7 @@ SOLIBRARY = libracescreens.so
 
 SOLIBDIR  = .
 
-SOURCES   = trackselect.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp fileselect.cpp
+SOURCES   = trackselect.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp fileselect.cpp carsetupscreen.cpp
 
 EXPDIR    = include
 
