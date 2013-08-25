@@ -29,6 +29,7 @@ EXPORTS
 	GfParmGetNum
 	GfParmGetCurNum
 	GfParmSetNum
+	GfParmSetNumEx
 	GfParmSetCurNum
 	GfParmClean
 	GfParmReleaseHandle

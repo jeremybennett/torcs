@@ -296,6 +296,7 @@ extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const
 extern tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* set num parameter value */
 extern int GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
+extern int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *unit, tdble val, tdble min, tdble max);
 /* set num parameter value */
 extern int GfParmSetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
 
@@ -317,7 +318,7 @@ extern int GfParmCheckHandle(void *ref, void *tgt);
 #define GFPARM_MMODE_RELSRC	4 /**< release ref after the merge */
 #define GFPARM_MMODE_RELDST	8 /**< release tgt after the merge */
 extern void *GfParmMergeHandles(void *ref, void *tgt, int mode);
-extern int GfParmGetNumBoundaries(void *handle, char *path, char *key, tdble *min, tdble *max);
+extern int GfParmGetNumBoundaries(void *handle, const char *path, const char *key, tdble *min, tdble *max);
 
 
 extern int GfParmGetEltNb(void *handle, const char *path);

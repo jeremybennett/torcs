@@ -2304,7 +2304,7 @@ GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, 
     @warning	The key is created is necessary
  */
 int
-GfParmSetNumEx(void *handle, char *path, char *key, char *unit, tdble val, tdble min, tdble max)
+GfParmSetNumEx(void *handle, const char *path, const char *key, const char *unit, tdble val, tdble min, tdble max)
 {
     struct parmHandle	*parmHandle = (struct parmHandle *)handle;
     struct parmHeader	*conf = parmHandle->conf;
@@ -2721,7 +2721,7 @@ GfParmMergeHandles(void *ref, void *tgt, int mode)
 		<br>-1 Parameter not existing
  */
 int
-GfParmGetNumBoundaries(void *handle, char *path, char *key, tdble *min, tdble *max)
+GfParmGetNumBoundaries(void *handle, const char *path, const char *key, tdble *min, tdble *max)
 {
     struct parmHandle	*parmHandle = (struct parmHandle *)handle;
     struct parmHeader	*conf = parmHandle->conf;
