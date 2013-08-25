@@ -73,7 +73,8 @@ extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
 extern void RmDriversSelect(void * /* vs */);
 extern void RmDriverSelect(void * /* vs */);
 
-extern void RmPitMenuStart(tCarElt * /* car */, void * /* userdata */, tfuiCallback /* callback */);
+extern void RmPitMenuStart(tCarElt * /* car */, tRmInfo *rmInfo, void * /* userdata */, tfuiCallback /* callback */);
+extern void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo);
 
 extern void RmLoadingScreenStart(const char * /* text */, const char * /* bgimg */);
 extern void RmLoadingScreenSetText(const char * /* text */);
