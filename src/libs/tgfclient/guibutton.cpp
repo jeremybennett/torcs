@@ -327,6 +327,25 @@ GfuiButtonCreate(void *scr, const char *text, int font, int x, int y, int width,
 	return object->id;
 }
 
+
+int GfuiLeanButtonCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
+				 void *userDataOnPush, tfuiCallback onPush, 
+				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
+{
+	int id = GfuiButtonCreate(scr, text, font, x, y, width, align, mouse,
+		userDataOnPush, onPush, userDataOnFocus, onFocus, onFocusLost);
+	tGfuiObject *o = gfuiGetObject(scr, id);
+	if (o->widget == GFUI_BUTTON) {
+		// Undo margins 
+		o->xmax -= HORIZ_MARGIN;
+		o->xmin += HORIZ_MARGIN;
+	
+		tGfuiButton	*button = &(o->u.button);
+		button->bgColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
+	}
+	return id;
+}
+
 /** Change the label of a button.
     @ingroup	gui
     @param	scr	Screen

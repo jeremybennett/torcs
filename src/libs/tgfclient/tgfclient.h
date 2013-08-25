@@ -194,6 +194,10 @@ extern int GfuiButtonCreate(void *scr, const char *text, int font,
 			    int x, int y, int width, int align, int mouse,
 			    void *userDataOnPush, tfuiCallback onPush, 
 			    void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
+extern int GfuiLeanButtonCreate(void *scr, const char *text, int font,
+							int x, int y, int width, int align, int mouse,
+							void *userDataOnPush, tfuiCallback onPush, 
+							void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
 extern int GfuiButtonStateCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
 				 void *userDataOnPush, tfuiCallback onPush, 
 				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
@@ -207,7 +211,7 @@ extern int GfuiButtonGetFocused(void);
 
 /* Edit Box */
 extern int GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
-			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
+			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost, int margin = 10);
 extern int GfuiEditboxGetFocused(void);
 extern char *GfuiEditboxGetString(void *scr, int id);
 extern void GfuiEditboxSetString(void *scr, int id, const char *text);

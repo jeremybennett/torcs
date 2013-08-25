@@ -54,7 +54,7 @@ gfuiEditboxInit(void)
  */
 int
 GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
-		  void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
+		  void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost, int margin)
 {
 	tGfuiEditbox *editbox;
 	tGfuiLabel *label;
@@ -119,9 +119,8 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 	editbox->cursory2 = object->ymax - 2;
 	editbox->cursorx = label->x;
 	
-#define HORIZ_MARGIN 10
-	object->xmin -= HORIZ_MARGIN;
-	object->xmax += HORIZ_MARGIN;
+	object->xmin -= margin;
+	object->xmax += margin;
 
 	gfuiAddObject(screen, object);
 	return object->id;
