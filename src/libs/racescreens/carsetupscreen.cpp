@@ -298,7 +298,8 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	}
 	
 	scrHandle = GfuiScreenCreateEx(NULL, NULL, onActivate, NULL, NULL, 1);
-	GfuiTitleCreate(scrHandle, "Car Setup", strlen("Car Setup"));
+	snprintf(buf, BUFSIZE, "Car Setup - %s - %s - %d", rmCarName, rmTrack, rmIdx);
+	GfuiLabelCreate(scrHandle, buf, GFUI_FONT_MEDIUM, 320, 450, GFUI_ALIGN_HC_VB, strlen(buf));
 	GfuiMenuDefaultKeysAdd(scrHandle);
 
 	static const int x0 = 20;
