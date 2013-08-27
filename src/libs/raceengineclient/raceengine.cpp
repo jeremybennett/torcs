@@ -2,7 +2,7 @@
 
     file        : raceengine.cpp
     created     : Sat Nov 23 09:05:23 CET 2002
-    copyright   : (C) 2002 by Eric Espié 
+    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann 
     email       : eric.espie@torcs.org 
     version     : $Id$
 

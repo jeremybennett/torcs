@@ -157,7 +157,8 @@ void SimReConfig(tCarElt *carElt)
 		if (car->dammage < 0) car->dammage = 0;
 	}
 
-	SimSteerReConfig(car);	
+	SimSteerReConfig(car);
+	SimBrakeSystemReConfig(car);
 
 }
 
