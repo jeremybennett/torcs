@@ -859,7 +859,10 @@ void RtGetCarPitSetupFilename(
 
 static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
 {
-	GfParmSetNumEx(hdlesetup, path, key, unit, GfParmSI2Unit(unit, v->value), GfParmSI2Unit(unit, v->min), GfParmSI2Unit(unit, v->max));
+	// If min == max there is nothing to adjust, so we do not need to write the value.
+	if (fabs(v->min - v->max) >= 0.0001f) {
+		GfParmSetNumEx(hdlesetup, path, key, unit, GfParmSI2Unit(unit, v->value), GfParmSI2Unit(unit, v->min), GfParmSI2Unit(unit, v->max));
+	}
 }
 
 
@@ -929,6 +932,7 @@ void RtSaveCarPitSetupFile(
 
 	// Differentials
 	static const char *DiffSect[3] = {SECT_FRNTDIFFERENTIAL, SECT_REARDIFFERENTIAL, SECT_CENTRALDIFFERENTIAL};
+	static const char *DiffType[5] = {VAL_DIFF_NONE, VAL_DIFF_SPOOL, VAL_DIFF_FREE, VAL_DIFF_LIMITED_SLIP, VAL_DIFF_VISCOUS_COUPLER};
 	for (i=0; i < 3; i++) { 
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_RATIO, NULL, &s->diffratio[i]);
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MIN_TQ_BIAS, NULL, &s->diffmintqbias[i]);
@@ -936,6 +940,10 @@ void RtSaveCarPitSetupFile(
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_SLIP_BIAS, NULL, &s->diffslipbias[i]);
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKING_TQ, "N.m", &s->difflockinginputtq[i]);
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKINGBRAKE_TQ, "N.m", &s->difflockinginputbraketq[i]);
+
+		if (s->diffType[i] != tCarPitSetup::NONE) {
+			GfParmSetStr(hdlesetup, DiffSect[i], PRM_TYPE, DiffType[s->diffType[i]]);
+		}
 	} 
 
 	hdlesetup = GfParmMergeHandles(hdlecar, hdlesetup, GFPARM_MMODE_DST | GFPARM_MMODE_RELDST);

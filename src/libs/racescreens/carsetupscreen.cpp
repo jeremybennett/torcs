@@ -89,9 +89,11 @@ class cGuiSetupValue {
 
 		void update(tdble delta)
 		{
-			tdble value = v->value;
-			value += delta;
-			setValue(value);
+			if (fabs(v->min - v->max) >= 0.0001f) {
+				tdble value = v->value;
+				value += delta;
+				setValue(value);
+			}
 		}
 
 		cGuiSetupValue(void* scr, tCarPitSetupValue* v, const char* unit, const char* format, int font, int x, int y, int w, int len):
@@ -102,28 +104,46 @@ class cGuiSetupValue {
 		{
 			const int BUFSIZE = 256;
 			char buf[BUFSIZE];
+			int enable = GFUI_ENABLE;
 
 			steerincb = (v->max - v->min)/10.0f;
 			steerdecb = -steerincb;
 			steerincs = steerincb/10.0f;
 			steerdecs = -steerincs;
 
-			snprintf(buf, BUFSIZE, format, GfParmSI2Unit(unit, v->value));
+			// If min == max there is nothing to adjust, so we  disable the fields
+			if (fabs(v->min - v->max) < 0.0001f) {
+				snprintf(buf, BUFSIZE, "%s", "N/A");
+				len = 3;
+				enable = GFUI_DISABLE;
+			} else {
+				snprintf(buf, BUFSIZE, format, GfParmSI2Unit(unit, v->value));
+			}
+
 			const int sp = 3;
 			const int bw = 10;
 			const int minw = 30+4*(bw+sp);
 			if (w < minw) w = minw; // Minimal width;
+
 			id = GfuiEditboxCreate(scr, buf, font, x + 2*(bw+sp) + 5, y, w - 4*(bw+sp) - 10, len, this, (tfuiCallback)NULL, rmSet, 5);
+			GfuiEnable(scr, id, enable);
 
 			tdble bid;
 			bid = GfuiLeanButtonCreate(scr, "-", font, x+bw/2, y, bw, GFUI_ALIGN_HC_VB, 1,
 				this, rmUpdateMM, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+			GfuiEnable(scr, bid, enable);
+
 			bid = GfuiLeanButtonCreate(scr, "-", font, x+bw/2+bw+sp, y, bw, GFUI_ALIGN_HC_VB, 1,
 				this, rmUpdateM, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+			GfuiEnable(scr, bid, enable);
+
 			bid = GfuiLeanButtonCreate(scr, "+", font, x+w-(bw+sp+bw/2), y, bw, GFUI_ALIGN_HC_VB, 1,
 				this, rmUpdateP, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+			GfuiEnable(scr, bid, enable);
+
 			bid = GfuiLeanButtonCreate(scr, "+", font, x+w-bw/2, y, bw, GFUI_ALIGN_HC_VB, 1,
 				this, rmUpdatePP, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+			GfuiEnable(scr, bid, enable);
 		}
 	
 };
@@ -402,14 +422,7 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 			(void*) &setuptype[j], onLoad, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 	}	
 
-	//	GfuiScreenAddBgImg(scrHandle, "data/img/splash-mouseconf.png");	
-//	GfuiMenuDefaultKeysAdd(scrHandle);
-
-	//GfuiAddKey(scrHandle, 13, "Save", NULL, onSave, NULL);
-	/*GfuiButtonCreate(scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-*/
-
+	// Save & Continue
 	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 		
