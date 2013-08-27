@@ -37,6 +37,7 @@ static char* rmModName = NULL;
 static int rmIdx = 0;
 static char* rmTrack = NULL;
 static char* rmCarName = NULL;
+static int rmRaceType = RM_TYPE_PRACTICE;
 
 static void rmSet(void *vp);
 static void rmUpdateMM(void *vp);
@@ -196,6 +197,22 @@ static void onSave(void *vp)
 }
 
 
+static void onSaveAndExit(void *vp)
+{
+	rtCarPitSetupType type = (rmRaceType == RM_TYPE_PRACTICE) ? PRACTICE : QUALIFYING;
+	RtSaveCarPitSetup(
+		rmCarHandle,
+		rmSetup,
+		type,
+		rmModName,
+		rmIdx,
+		rmTrack,
+		rmCarName
+	);
+	GfuiScreenActivate(vp);
+}
+
+
 static std::vector<cGuiSetupValue*> values;
 
 static const char* unitdeg = "deg";
@@ -270,6 +287,7 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	rmIdx = car->_driverIndex;
 	rmTrack = reInfo->track->internalname;
 	rmCarName = car->_carName;
+	rmRaceType = reInfo->s->raceInfo.type;
 
 	if (scrHandle) {
 		GfuiScreenRelease(scrHandle);
@@ -422,9 +440,18 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 			(void*) &setuptype[j], onLoad, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 	}	
 
-	// Save & Continue
-	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	// Exit/Exit and save buttons
+	GfuiButtonCreate(scrHandle, "Leave without saving", GFUI_FONT_MEDIUM, 447, 52, 306, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+	const char* savebuttontext;
+	if (rmRaceType == RM_TYPE_PRACTICE) {
+		savebuttontext = "Save practice setup and leave";
+	} else {
+		savebuttontext = "Save qualifying setup and leave";
+	}
+	GfuiButtonCreate(scrHandle, savebuttontext, GFUI_FONT_MEDIUM, 447, 28, 306, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		prevMenu, onSaveAndExit, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 		
 	return scrHandle;
 }
