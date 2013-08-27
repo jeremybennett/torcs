@@ -507,8 +507,6 @@ GfuiScreenReplace(void *screen)
 {
 	tGfuiScreen	*oldScreen = GfuiScreen;
 
-	//GfuiScreenActivate(screen);
-
 	if (oldScreen) {
 		GfuiScreenRelease(oldScreen);
 	}
@@ -557,8 +555,6 @@ GfuiScreenCreate(void)
 		screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
 	}
 
-
-	// screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
 	screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
 	screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
 	screen->mouseAllowed = 1;
@@ -600,16 +596,7 @@ GfuiScreenCreateEx(float *bgColor,
 			screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
 		}
 	}
-	
-	/*
-	if (bgColor != NULL) {
-		screen->bgColor = (float*)calloc(4, sizeof(float));
-		for(i = 0; i < 4; i++) {
-			screen->bgColor[i] = bgColor[i];
-		}
-	} else {
-		screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
-	}*/
+
 	screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
 	screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
 	screen->onActivate = onActivate;
