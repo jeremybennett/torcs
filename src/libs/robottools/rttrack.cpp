@@ -993,10 +993,10 @@ bool RtCarPitSetupExists(
 
 	const int pathlen = 1024;
 	char path[pathlen];
-	FILE* file;
 
 	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
-	if (file = fopen(path, "r")) {
+	FILE* file = fopen(path, "r");
+	if (file) {
 		fclose(file);
 		return true;
 	}
