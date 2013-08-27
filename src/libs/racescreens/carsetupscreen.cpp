@@ -31,14 +31,19 @@
 static void *scrHandle = NULL;
 static void	*prevHandle = NULL;
 
-static tCarElt	*rmCar;
-static tRmInfo  *rmInfo;
+static void* rmCarHandle = NULL;
+static tCarPitSetup* rmSetup = NULL;
+static char* rmModName = NULL;
+static int rmIdx = 0;
+static char* rmTrack = NULL;
+static char* rmCarName = NULL;
 
 static void rmSet(void *vp);
 static void rmUpdateMM(void *vp);
 static void rmUpdateM(void *vp);
 static void rmUpdateP(void *vp);
 static void rmUpdatePP(void *vp);
+static void enableLoadButtons();
 
 class cGuiSetupValue {
 	private:
@@ -155,17 +160,19 @@ static void rmUpdatePP(void *vp)
 }
 
 
-static void onSave(void * /* dummy */)
+static void onSave(void *vp)
 {
+	rtCarPitSetupType* type = (rtCarPitSetupType*)vp;
 	RtSaveCarPitSetup(
-		rmCar->_carHandle,
-		&(rmCar->pitcmd.setup),
-		PRACTICE,
-		rmCar->_modName,
-		rmCar->_driverIndex,
-		rmInfo->track->internalname,
-		rmCar->_carName
+		rmCarHandle,
+		rmSetup,
+		*type,
+		rmModName,
+		rmIdx,
+		rmTrack,
+		rmCarName
 	);
+	enableLoadButtons();
 }
 
 
@@ -183,6 +190,52 @@ static const char* f43 = "%4.3f";
 static const char* d3 = "%3.0f";
 static const char* d5 = "%5.0f";
 
+static rtCarPitSetupType setuptype[6] = { PRACTICE, QUALIFYING, RACE, BACKUP1, BACKUP2, BACKUP3};
+static const char* setuplabel[6] = { "Practice", "Qualifying", "Race", "Backup 1", "Backup 2", "Backup 3"};
+static int loadbuttonid[6];
+
+
+static void onLoad(void *vp)
+{
+	rtCarPitSetupType* type = (rtCarPitSetupType*)vp;
+	RtLoadCarPitSetup(
+		rmCarHandle, 
+		rmSetup,
+		*type,		
+		rmModName,	
+		rmIdx,				
+		rmTrack,	
+		rmCarName,
+		false
+		);
+	
+	// Update GUI
+	for (std::vector<cGuiSetupValue*>::iterator it = values.begin(); it != values.end(); ++it) {
+		(*it)->update(0.0f);
+	}
+}
+
+
+// Enable/disable load button depending on file existence
+static void enableLoadButtons()
+{
+	const int n = sizeof(loadbuttonid)/sizeof(loadbuttonid[0]);
+	int i;
+	for (i = 0; i < n; i++) {
+		if (RtCarPitSetupExists(setuptype[i], rmModName, rmIdx, rmTrack, rmCarName)) {
+			GfuiEnable(scrHandle, loadbuttonid[i], GFUI_ENABLE);
+		} else {
+			GfuiEnable(scrHandle, loadbuttonid[i], GFUI_DISABLE);
+		}
+	}
+}
+
+
+static void onActivate(void *vp)
+{
+	enableLoadButtons();
+}
+
 
 void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 {
@@ -191,8 +244,12 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	
 	prevHandle = prevMenu;
 	
-	rmCar = car;
-	rmInfo = reInfo;
+	rmCarHandle = car->_carHandle;
+	rmSetup = &(car->pitcmd.setup);
+	rmModName = car->_modName;
+	rmIdx = car->_driverIndex;
+	rmTrack = reInfo->track->internalname;
+	rmCarName = car->_carName;
 
 	if (scrHandle) {
 		GfuiScreenRelease(scrHandle);
@@ -202,8 +259,9 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		values.clear();
 	}
 	
-	scrHandle = GfuiMenuScreenCreate("Car Setup");
-
+	scrHandle = GfuiScreenCreateEx(NULL, NULL, onActivate, NULL, NULL, 1);
+	GfuiTitleCreate(scrHandle, "Car Setup", strlen("Car Setup"));
+	GfuiMenuDefaultKeysAdd(scrHandle);
 
 	static const int x0 = 20;
 	static const int y0 = 415;
@@ -233,17 +291,17 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	for (i = 0; i < 4; i++) {
 		col = 0;
 		GfuiLabelCreate(scrHandle, wheellabel[i], font, x0 + xoff*(i+1) + xoff2, y0 - dy, GFUI_ALIGN_HL_VB, 0);
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.wheelrideheight[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.wheelcamber[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.wheeltoe[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheelrideheight[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheelcamber[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheeltoe[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
 		y = y0 + (3.3f * dy);
 		col = 0;	
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.suspspring[i]), unitlbsin, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.susppackers[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.suspslowbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.suspslowrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.suspfastbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.suspfastrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspspring[i]), unitlbsin, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->susppackers[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 	
 	}
 
@@ -259,11 +317,11 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	GfuiLabelCreate(scrHandle, "Rear wing [deg]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	
 	col = 1;
-	values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.steerLock), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
-	values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.brakeRepartition), NULL, f43, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
-	values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.brakePressure), unitkpa, d5, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
-	values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.wingangle[0]), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
-	values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.wingangle[1]), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
+	values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->steerLock), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
+	values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->brakeRepartition), NULL, f43, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
+	values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->brakePressure), unitkpa, d5, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
+	values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wingangle[0]), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
+	values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wingangle[1]), unitdeg, f52, font, x0 + xoff + xoff2, y + (col++ * dy), 102, 5));
 
 	col = 1;
 	i = 2;
@@ -281,13 +339,11 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		i = j + 3;
 
 		GfuiLabelCreate(scrHandle, axlelabel[j], font, x0 + xoff*i + xoff2, y, GFUI_ALIGN_HL_VB, 0);
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.arbspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.thirdspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.thirdbump[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.thirdrebound[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.thirdX0[j]), unitmm, d3, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-
-
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->arbspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdbump[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdrebound[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdX0[j]), unitmm, d3, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
 	}
 
 	// Differential and gears
@@ -309,13 +365,13 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		col = 0;
 		
 		GfuiLabelCreate(scrHandle, diffPos[i], font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-		GfuiLabelCreate(scrHandle, diffType[rmCar->pitcmd.setup.diffType[i]], font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.diffratio[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.diffmintqbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.diffmaxtqbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.diffslipbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.difflockinginputtq[i]), unitNm, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.difflockinginputbraketq[i]), unitNm, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		GfuiLabelCreate(scrHandle, diffType[rmSetup->diffType[i]], font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->diffratio[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->diffmintqbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->diffmaxtqbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->diffslipbias[i]), NULL, f43, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->difflockinginputtq[i]), unitNm, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->difflockinginputbraketq[i]), unitNm, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 	}
 
 	col = 0;
@@ -324,16 +380,35 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	for (i = 0; i < 8; i++) {
 		snprintf(buf, BUFSIZE, "%d:", i + 1);
 		GfuiLabelCreate(scrHandle, buf, font, x0 + xoff*4 + xoff2, y + (col * dy), GFUI_ALIGN_HL_VB, 0);
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmCar->pitcmd.setup.gearsratio[i]), NULL, f43, font, x0 + xoff*4 + xoff2 + 12, y + (col++ * dy), 90, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->gearsratio[i]), NULL, f43, font, x0 + xoff*4 + xoff2 + 12, y + (col++ * dy), 90, 5));
 	}
 
-//	GfuiScreenAddBgImg(scrHandle, "data/img/splash-mouseconf.png");	
+	// Save buttons
+	y = 100;
+	const int buttonwidth = 102;
+	int x = buttonwidth/2 + x0;
+
+	GfuiLabelCreate(scrHandle, "Save setup:", font, x0, y, GFUI_ALIGN_HL_VB, 0);
+	
+	for (j = 0; j < 6; j++) {
+		GfuiLeanButtonCreate(scrHandle, setuplabel[j], font, x, y + (dy*(j+1)), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+			(void*) &setuptype[j], onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	}	
+
+	// Load buttons
+	GfuiLabelCreate(scrHandle, "Load setup:", font, x0 + xoff + xoff2, y, GFUI_ALIGN_HL_VB, 0);
+	for (j = 0; j < 6; j++) {
+		loadbuttonid[j] = GfuiLeanButtonCreate(scrHandle, setuplabel[j], font, x + xoff + xoff2, y + (dy*(j+1)), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+			(void*) &setuptype[j], onLoad, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	}	
+
+	//	GfuiScreenAddBgImg(scrHandle, "data/img/splash-mouseconf.png");	
 //	GfuiMenuDefaultKeysAdd(scrHandle);
 
 	//GfuiAddKey(scrHandle, 13, "Save", NULL, onSave, NULL);
-	GfuiButtonCreate(scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	/*GfuiButtonCreate(scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
+*/
 
 	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
