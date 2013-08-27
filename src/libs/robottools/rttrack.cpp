@@ -806,9 +806,8 @@ void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
 	}
 
 	// Gears
-	static const char *GearName[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 	for (i=0; i < 8; i++) { 
-		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, GearName[i]);
+		snprintf(path, BUFSIZE, "%s/%s/%d", SECT_GEARBOX, ARR_GEARS, i+1);
 		RtReadCarPitSetupEntry(&s->gearsratio[i], path, PRM_RATIO, hdle, minmaxonly);
 	}
 
@@ -861,7 +860,6 @@ void RtGetCarPitSetupFilename(
 static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
 {
 	GfParmSetNumEx(hdlesetup, path, key, unit, GfParmSI2Unit(unit, v->value), GfParmSI2Unit(unit, v->min), GfParmSI2Unit(unit, v->max));
-
 }
 
 
@@ -918,7 +916,6 @@ void RtSaveCarPitSetupFile(
 	}
 
 	// Gears
-	static const char *GearName[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 	for (i=0; i < 8; i++) { 
 		snprintf(path, BUFSIZE, "%s/%s/%d", SECT_GEARBOX, ARR_GEARS, i+1);
 		RtParmSetNum(hdlesetup, path, PRM_RATIO, NULL, &s->gearsratio[i]);
@@ -973,4 +970,66 @@ void RtSaveCarPitSetup(
 	}
 }
 
-void RtLoadCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly){}
+
+bool RtCarPitSetupExists(
+	rtCarPitSetupType type,		// the setup type
+	const char* modulename,		// modulename
+	int robidx,					// player/robot instance
+	const char* trackname,		// track file name without extension
+	const char* carname			// car file name without extension	 
+)
+{
+	const int filelen = 256;
+	char filename[filelen];
+	RtGetCarPitSetupFilename(type, robidx, carname, trackname, filename, filelen);
+
+	const int pathlen = 1024;
+	char path[pathlen];
+	FILE* file;
+
+	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
+	if (file = fopen(path, "r")) {
+		fclose(file);
+		return true;
+	}
+
+	return false;
+}
+
+
+bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly)
+{
+	void* hdlesetup = GfParmReadFile(filepath, GFPARM_RMODE_STD);
+	if (hdlesetup) {
+		hdlesetup = GfParmMergeHandles(hdlecar, hdlesetup, GFPARM_MMODE_DST | GFPARM_MMODE_RELDST);
+		RtInitCarPitSetup(hdlesetup, s, minmaxonly);
+		GfParmReleaseHandle(hdlesetup);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+bool RtLoadCarPitSetup(
+	void* hdlecar, 
+	tCarPitSetup* s,
+	rtCarPitSetupType type,		
+	const char* modulename,	
+	int robidx,				
+	const char* trackname,	
+	const char* carname,
+	bool minmaxonly
+)
+{
+	const int filelen = 256;
+	char filename[filelen];
+	RtGetCarPitSetupFilename(type, robidx, carname, trackname, filename, filelen);
+
+	const int pathlen = 1024;
+	char path[pathlen];
+	FILE* file;
+
+	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
+	return RtLoadCarPitSetupFilename(hdlecar, path, s, minmaxonly);
+}

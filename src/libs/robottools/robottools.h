@@ -192,6 +192,9 @@ extern void RtGetCarPitSetupFilename(rtCarPitSetupType type, int robidx, const c
 extern void RtSaveCarPitSetup(void *hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname);
 extern void RtSaveCarPitSetupFile(void *hdlecar, tCarPitSetup* s, const char* filepath, const char* carname);	
 extern void RtInitCarPitSetup(void* carparmhandle, tCarPitSetup* setup, bool minmaxonly);
+extern bool RtCarPitSetupExists(rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname);
+extern bool RtLoadCarPitSetup(void* hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname, bool minmaxonly);
+extern bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly);
 
 
 

@@ -22,3 +22,6 @@ EXPORTS
 	RtInitCarPitSetup
 	RtSaveCarPitSetup
 	RtGetCarPitSetupFilename
+	RtCarPitSetupExists
+	RtLoadCarPitSetup
+	RtLoadCarPitSetupFilename
