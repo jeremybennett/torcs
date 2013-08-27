@@ -107,6 +107,10 @@ PostBuild_Cmds=copy $(TargetDir)\*.dll $(WkspDir)\runtimed	copy $(TargetDir)\*.l
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\racescreens\carsetupscreen.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\client.def
 
 !IF  "$(CFG)" == "client - Win32 Release"
