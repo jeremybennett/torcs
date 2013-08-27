@@ -407,42 +407,45 @@ GfuiButtonGetFocused(void)
 void
 gfuiDrawButton(tGfuiObject *obj)
 {
-    tGfuiLabel	*label;
-    tGfuiButton	*button;
-    float	*fgColor;
-    float	*bgColor;
+	tGfuiLabel *label;
+	tGfuiButton	*button;
+	float *fgColor;
+	float *bgColor;
 
-    button = &(obj->u.button);
-    if (obj->state == GFUI_DISABLE) {
-	button->state = GFUI_BTN_DISABLE;
-    }
-    if (obj->focus) {
-	fgColor = button->fgFocusColor[button->state];
-	bgColor = button->bgFocusColor[button->state];
-    } else {
-	fgColor = button->fgColor[button->state];
-	bgColor = button->bgColor[button->state];
-    }
-    if (bgColor[3] != 0.0) {
-	glColor4fv(bgColor);
-	glBegin(GL_QUADS);
-	glVertex2i(obj->xmin, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymin);
-	glEnd();
+	button = &(obj->u.button);
+	if (obj->state == GFUI_DISABLE) {
+		button->state = GFUI_BTN_DISABLE;
+	} else if (obj->state == GFUI_ENABLE && button->state == GFUI_BTN_DISABLE) {
+		button->state = GFUI_BTN_RELEASED;
+	}
+
+	if (obj->focus) {
+		fgColor = button->fgFocusColor[button->state];
+		bgColor = button->bgFocusColor[button->state];
+	} else {
+		fgColor = button->fgColor[button->state];
+		bgColor = button->bgColor[button->state];
+	}
+	if (bgColor[3] != 0.0) {
+		glColor4fv(bgColor);
+		glBegin(GL_QUADS);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glEnd();
+		glColor4fv(fgColor);
+		glBegin(GL_LINE_STRIP);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymin);
+		glEnd();	
+	}
+	label = &(button->label);
 	glColor4fv(fgColor);
-	glBegin(GL_LINE_STRIP);
-	glVertex2i(obj->xmin, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymin);
-	glEnd();	
-    }
-    label = &(button->label);
-    glColor4fv(fgColor);
-    gfuiPrintString(label->x, label->y, label->font, label->text);
+	gfuiPrintString(label->x, label->y, label->font, label->text);
 }
 
 void
