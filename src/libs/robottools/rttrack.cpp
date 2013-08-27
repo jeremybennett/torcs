@@ -2,7 +2,7 @@
                       rttrack.cpp -- Track utilities functions                              
                              -------------------                                         
     created              : Sat Aug 14 23:03:22 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
