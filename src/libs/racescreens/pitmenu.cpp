@@ -69,52 +69,6 @@ static void rmUpdtRepair(void * /* dummy */)
 }
 
 
-/*static void CarSetupScreen(void *  )
-{
-	GfuiScreenActivate(RmCarSetupScreenInit(menuHandle, rmCar));
-}*/
-
-
-static tdble steerincs = 0.0f;
-static tdble steerdecs = 0.0f;
-static tdble steerincb = 0.0f;
-static tdble steerdecb = 0.0f;
-
-static void rmSetSteerLock(tdble value)
-{
-	if (value > rmCar->pitcmd.setup.steerLock.max) {
-		value = rmCar->pitcmd.setup.steerLock.max;
-	} else if (value < rmCar->pitcmd.setup.steerLock.min) {
-		value = rmCar->pitcmd.setup.steerLock.min;
-	}
-	rmCar->pitcmd.setup.steerLock.value = value;
-	value = GfParmSI2Unit("deg", value);
-	const int BUFSIZE = 32;
-	char buf[BUFSIZE];
-
-	snprintf(buf, BUFSIZE, "%4.2f", value);
-	GfuiEditboxSetString(menuHandle, steerLockId, buf);
-}
-
-
-static void rmEnterSteerLock(void *vp)
-{
-	const char *val = GfuiEditboxGetString(menuHandle, steerLockId);
-	tdble value = (tdble) atof(val);
-	value = GfParmUnit2SI("deg", value);
-	rmSetSteerLock(value);
-}
-
-
-static void rmUpdtSteerLock(void *vp)
-{
-	tdble delta = *((tdble*)vp);
-	tdble value = rmCar->pitcmd.setup.steerLock.value;
-	value += delta;
-	rmSetSteerLock(value);
-}
-
-
 static tfuiCallback rmCallback;
 static void *rmUserData;
 
