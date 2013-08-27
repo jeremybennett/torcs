@@ -1036,7 +1036,6 @@ bool RtLoadCarPitSetup(
 
 	const int pathlen = 1024;
 	char path[pathlen];
-	FILE* file;
 
 	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
 	return RtLoadCarPitSetupFilename(hdlecar, path, s, minmaxonly);
