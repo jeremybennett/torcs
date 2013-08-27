@@ -226,8 +226,8 @@ Changes since 1.3.4
   by Daniel Schellhammer (Daniel, Bernhard).
 - Fixed trackgen state consistency for border height, height is now carried over if there is
   no new definition given (Bernhard).
-- Fixed track barriers not taking into account the texture offset property ("texture start
-  on boundary") (Bernhard).
+- Fixed track barriers not taking into account the texture offset property in trackgen
+  ("texture start on boundary") (Bernhard).
 - Adopted download location of trackeditor in README (Bernhard).
 - Fixed car flying off with extreme suspension settings, see
   http://www.berniw.org/trb/forum/showthread.php?topicid=3640 (Bernhard).
@@ -259,6 +259,10 @@ Changes since 1.3.4
 - Added RtGetCarPitSetupFilename, RtSaveCarPitSetup, RtSaveCarPitSetup, RtLoadCarSetup and
   RtInitCarPitSetup to robottools (Bernhard).
 - Adopted builds to carsetupscreen (Bernhard).
+- Bugfix regarding editbox and  enable/disable, did not matter so far because it was not
+  used like this (Bernhard).
+- Added button enable/disable logic in pitmenu (e.g. just enabe "stop and go" if a peanlty
+  is pending") (Bernhard).
 
 
 11. TODO/Notes
@@ -274,6 +278,7 @@ TODO for 1.3.5/6
 - Review and eventually apply mac os x build
 - Add raceline to wheel-2 and e-track-6.
 - Review Morphos changes
+- Fix pending penalties at the end of the race (transform to penalty time, release memory)
 
 TODO for 1.4.0
 --------------
