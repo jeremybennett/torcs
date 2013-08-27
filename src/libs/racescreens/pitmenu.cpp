@@ -182,98 +182,26 @@ RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback callb
 					0, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
 
 
-	y -= dy;
-	GfuiLabelCreate(menuHandle, "Steer Lock:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
-
-//GfParmSI2Unit("deg", car->pitcmd.setup.steerLock.value);
-
-	/*static const char* tip = "This is a tip";
-	tMnuCallbackInfo *cbinfo = (tMnuCallbackInfo*)calloc(1, sizeof(tMnuCallbackInfo));
-	cbinfo->screen = menuHandle;
-	cbinfo->labelId = GfuiTipCreate(menuHandle, tip, strlen(tip));
-	GfuiVisibilitySet(menuHandle, cbinfo->labelId, 0);*/
-
-	static const int w = 40;
-
-	steerincb = (rmCar->pitcmd.setup.steerLock.max - rmCar->pitcmd.setup.steerLock.min)/20.0f;
-	steerdecb = -steerincb;
-	steerincs = steerincb/10.0f;
-	steerdecs = -steerincs;
-
-	snprintf(buf, BUFSIZE, "%4.2f", GfParmSI2Unit("deg", car->pitcmd.setup.steerLock.value));
-	steerLockId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
-		x + dx, y,
-		w, 5, NULL, (tfuiCallback)NULL, rmEnterSteerLock);
-
-	GfuiGrButtonCreate(menuHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
-		"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
-		x + dx - 12 - 24, y-5, GFUI_ALIGN_HR_VB, 1,
-		(void*)&steerdecb, rmUpdtSteerLock,
-		NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-	GfuiGrButtonCreate(menuHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
-		"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
-		x + dx - 12, y-5, GFUI_ALIGN_HR_VB, 1,
-		(void*)&steerdecs, rmUpdtSteerLock,
-		NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-	/*GfuiGrButtonCreate(menuHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
-		"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		x + dx + w + 12, y-5, GFUI_ALIGN_HL_VB, 1,
-		(void*)&steerincs, rmUpdtSteerLock,
-		NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-*/
-	GfuiGrButtonCreate(menuHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
-		"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
-		x + dx + w + 12 + 24, y-5, GFUI_ALIGN_HL_VB, 1,
-		(void*)&steerincb, rmUpdtSteerLock,
-		NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-	int id = GfuiLeanButtonCreate(menuHandle, "+", GFUI_FONT_MEDIUM_C,
-		x + dx + w + 12 + 6, y, 12, GFUI_ALIGN_HC_VB, 1,
-		(void*)NULL, NULL,
-		NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	//GfuiEnable(menuHandle, steerLockId, GFUI_DISABLE);
-
-/*
-#define	GFUI_DISABLE	1
-#define	GFUI_ENABLE	0
-	extern int GfuiEnable(void *scr, int id, int flag);
-*/
-
-/*
-	cbinfo = (tMnuCallbackInfo*)calloc(1, sizeof(tMnuCallbackInfo));
-	cbinfo->screen = scr;
-	cbinfo->labelId = GfuiTipCreate(scr, tip, strlen(tip));
-
-	GfuiVisibilitySet(scr, cbinfo->labelId, 0);
-
-	bId = GfuiButtonCreate(scr,
-		text,
-		GFUI_FONT_LARGE,
-		xpos, ypos, GFUI_BTNSZ, GFUI_ALIGN_HC_VB, 0,
-		userdata, onpush,
-		(void*)cbinfo, dispInfo,
-		remInfo);
-*/
-
-
-
-
-
-	//GfuiMenuBackQuitButtonCreate(menuHandle, "Repair", "Return to race", userdata, callback);
-	// TODO: Only show in practise/qualifying
-	GfuiButtonCreate(menuHandle, "Setup", GFUI_FONT_LARGE, 160, 80, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		RmCarSetupScreenInit(menuHandle, rmCar, rmInfo), GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-
-	GfuiButtonCreate(menuHandle, "Repair", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	GfuiButtonCreate(menuHandle, "Repair", GFUI_FONT_LARGE, 160, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 				NULL, rmRepair, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 	rmCallback = callback;
 	rmUserData = userdata;
 
-	// TODO: Just show stop and go if penalty is pending
-	GfuiButtonCreate(menuHandle, "Stop & Go", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	int buttonid;
+	// Just enable stop and go if penalty is pending
+	buttonid = GfuiButtonCreate(menuHandle, "Stop & Go", GFUI_FONT_LARGE, 320, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 				NULL, rmStopAndGo, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	tCarPenalty *penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+	if (!penalty || (penalty && penalty->penalty != RM_PENALTY_STOPANDGO)) {
+		GfuiEnable(menuHandle, buttonid, GFUI_DISABLE);
+	}
 
+	// Just enable car setup button in practice and qualifying sessions
+	buttonid = GfuiButtonCreate(menuHandle, "Setup", GFUI_FONT_LARGE, 480, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		RmCarSetupScreenInit(menuHandle, rmCar, rmInfo), GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	if (reInfo->s->raceInfo.type != RM_TYPE_PRACTICE && reInfo->s->raceInfo.type != RM_TYPE_PRACTICE) {
+		GfuiEnable(menuHandle, buttonid, GFUI_DISABLE);
+	}
+	
 	GfuiScreenActivate(menuHandle);
 }
