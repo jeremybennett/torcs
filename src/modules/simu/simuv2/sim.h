@@ -2,7 +2,7 @@
 
     file                 : sim.h
     created              : Sun Mar 19 00:07:42 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -61,6 +61,7 @@ extern void SimUpdateFreeWheels(tCar *car, int axlenb);
 
 
 extern void SimSteerConfig(tCar *car);
+extern void SimSteerReConfig(tCar *car);
 extern void SimSteerUpdate(tCar *car);
 
 extern void SimBrakeConfig(void *hdle, const char *section, tBrake *brake);
@@ -94,6 +95,8 @@ extern void SimCarCollideConfig(tCar *car, tTrack *track);
 extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(tTrack *track);
 extern void SimCollideRemoveCar(tCar *car, int nbcars);
+
+extern bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v);
 
 extern tdble SimDeltaTime;
 extern int SimTelemetry;

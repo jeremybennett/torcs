@@ -2,7 +2,7 @@
 
     file                 : simu.cpp
     created              : Sun Mar 19 00:07:53 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -144,18 +144,21 @@ SimConfig(tCarElt *carElt, RmInfo *info)
 }
 
 /* After pit stop */
-void
-SimReConfig(tCarElt *carElt)
+void SimReConfig(tCarElt *carElt)
 {
-    tCar *car = &(SimCarTable[carElt->index]);
-    if (carElt->pitcmd.fuel > 0) {
-	car->fuel += carElt->pitcmd.fuel;
-	if (car->fuel > car->tank) car->fuel = car->tank;
-    }
-    if (carElt->pitcmd.repair > 0) {
-	car->dammage -= carElt->pitcmd.repair;
-	if (car->dammage < 0) car->dammage = 0;
-    }
+	tCar *car = &(SimCarTable[carElt->index]);
+	if (carElt->pitcmd.fuel > 0) {
+		car->fuel += carElt->pitcmd.fuel;
+		if (car->fuel > car->tank) car->fuel = car->tank;
+	}
+
+	if (carElt->pitcmd.repair > 0) {
+		car->dammage -= carElt->pitcmd.repair;
+		if (car->dammage < 0) car->dammage = 0;
+	}
+
+	SimSteerReConfig(car);	
+
 }
 
 
@@ -454,3 +457,19 @@ SimShutdown(void)
     }
 }
 
+
+bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v)
+{
+	// If min == max there is nothing to adjust
+	if (fabs(v->max - v->min) >= 0.0001f) {
+		// Ensure that value is in intended borders
+		if (v->value > v->max) {
+			v->value = v->max;
+		} else if (v->value < v->min) {
+			v->value = v->min;
+		}
+		return true;
+	}
+
+	return false;
+}
