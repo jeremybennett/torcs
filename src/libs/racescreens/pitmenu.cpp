@@ -38,9 +38,6 @@ static int		repairId;
 static tCarElt	*rmCar;
 static tRmInfo  *rmInfo;
 
-static int steerLockId;
-
-
 
 static void
 rmUpdtFuel(void * /* dummy */)
