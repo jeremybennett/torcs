@@ -474,8 +474,12 @@ gfuiDrawGrButton(tGfuiObject *obj)
 void
 gfuiGrButtonAction(int action)
 {
-    tGfuiGrButton	*button;
+	tGfuiObject	*object = GfuiScreen->hasFocus;
+	if (object->state == GFUI_DISABLE) {
+		return;
+	}
 
+	tGfuiGrButton	*button;
     button = &(GfuiScreen->hasFocus->u.grbutton);
 
     switch (button->buttonType) {
@@ -545,8 +549,12 @@ gfuiGrButtonAction(int action)
 void
 gfuiButtonAction(int action)
 {
-    tGfuiButton	*button;
+	tGfuiObject	*object = GfuiScreen->hasFocus;
+	if (object->state == GFUI_DISABLE) {
+		return;
+	}
 
+	tGfuiButton	*button;
     button = &(GfuiScreen->hasFocus->u.button);
 
     switch (button->buttonType) {

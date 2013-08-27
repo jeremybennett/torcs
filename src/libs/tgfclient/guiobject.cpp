@@ -200,6 +200,10 @@ GfuiUnSelectCurrent(void)
 static void
 gfuiLoseFocus(tGfuiObject *obj)
 {
+	if (obj->state == GFUI_DISABLE) {
+		return;
+	}
+
     tGfuiButton		*button;
     tGfuiEditbox	*editbox;
     tGfuiGrButton	*grbutton;
@@ -234,7 +238,11 @@ gfuiLoseFocus(tGfuiObject *obj)
 static void
 gfuiSetFocus(tGfuiObject *obj)
 {
-    tGfuiButton		*button;
+	if (obj->state == GFUI_DISABLE) {
+		return;
+	}
+
+	tGfuiButton		*button;
     tGfuiEditbox	*editbox;
     tGfuiGrButton	*grbutton;
     
@@ -452,20 +460,24 @@ gfuiMouseAction(void *vaction)
 
     curObject = GfuiScreen->hasFocus;
     if (curObject != NULL) {
-	switch (curObject->widget) {
-	case GFUI_BUTTON:
-	    gfuiButtonAction((int)action);
-	    break;
-	case GFUI_GRBUTTON:
-	    gfuiGrButtonAction((int)action);
-	    break;
-	case GFUI_SCROLLIST:
-	    gfuiScrollListAction((int)action);
-	    break;
-	case GFUI_EDITBOX:
-	    gfuiEditboxAction((int)action);
-	    break;
-	}
+		if (curObject->state == GFUI_DISABLE) {
+			return;
+		}
+		
+		switch (curObject->widget) {
+		case GFUI_BUTTON:
+			gfuiButtonAction((int)action);
+			break;
+		case GFUI_GRBUTTON:
+			gfuiGrButtonAction((int)action);
+			break;
+		case GFUI_SCROLLIST:
+			gfuiScrollListAction((int)action);
+			break;
+		case GFUI_EDITBOX:
+			gfuiEditboxAction((int)action);
+			break;
+		}
     }
 }
 
