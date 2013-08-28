@@ -2,7 +2,7 @@
 
     file                 : wheel.cpp
     created              : Sun Mar 19 00:09:06 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -24,8 +24,7 @@ static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_RE
 static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static const char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-void
-SimWheelConfig(tCar *car, int index)
+void SimWheelConfig(tCar *car, int index)
 {
 	void *hdle = car->params;
 	tCarElt *carElt = car->carElt;
@@ -96,6 +95,33 @@ SimWheelConfig(tCar *car, int index)
 	wheel->feedBack.Tq = 0.0f;
 	wheel->feedBack.brkTq = 0.0f;
 	wheel->rel_vel = 0.0f;
+}
+
+
+void SimWheelReConfig(tCar *car, int index)
+{
+	tWheel *wheel = &(car->wheel[index]);
+
+	// Camber
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.wheelcamber[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		wheel->staticPos.ax = v->value;
+		if (index % 2) {
+			wheel->relPos.ax = -wheel->staticPos.ax;
+		} else {
+			wheel->relPos.ax = wheel->staticPos.ax;
+		}
+	}
+
+	// Toe
+	v = &car->carElt->pitcmd.setup.wheeltoe[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		wheel->staticPos.az = v->value;
+	}
+
+	// Ride height/suspension
+	v = &car->carElt->pitcmd.setup.wheelrideheight[index];
+	SimSuspReConfig(car, index, &(wheel->susp), wheel->weight0, v->value);
 }
 
 

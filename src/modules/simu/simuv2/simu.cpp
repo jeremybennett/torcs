@@ -160,9 +160,15 @@ void SimReConfig(tCarElt *carElt)
 	int i;
 	SimSteerReConfig(car);
 	SimBrakeSystemReConfig(car);
+	
 	for (i = 0; i < 2; i++) {
 		SimWingReConfig(car, i);
 	}
+
+	for (i = 0; i < 4; i++) {
+		SimWheelReConfig(car, i);
+	}
+
 }
 
 

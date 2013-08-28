@@ -139,3 +139,48 @@ void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0,
 	initDamper(susp);
 }
 
+
+void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0)
+{
+	// Spring
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.suspspring[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->spring.K = v->value;
+	}
+
+	// Packers
+	v = &car->carElt->pitcmd.setup.susppackers[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->spring.packers = v->value;
+	}
+
+	// Slow bump
+	v = &car->carElt->pitcmd.setup.suspslowbump[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.C1 = v->value;
+	}
+
+	// Slow rebound
+	v = &car->carElt->pitcmd.setup.suspslowrebound[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.C1 = v->value;
+	}
+
+	// Fast bump
+	v = &car->carElt->pitcmd.setup.suspfastbump[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.C2 = v->value;
+	}
+
+	// Fast rebound
+	v = &car->carElt->pitcmd.setup.suspfastrebound[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.C2 = v->value;
+	}
+
+	susp->spring.x0 = susp->spring.bellcrank * X0;
+	susp->spring.F0 = F0 / susp->spring.bellcrank;
+	susp->spring.K = - susp->spring.K;
+
+	initDamper(susp);
+}
