@@ -1051,14 +1051,14 @@ void* RtLoadOriginalCarSettings(const char* carname)
 	snprintf(buf, BUFSIZE, "%scars/%s/%s.xml", GetDataDir(), carname, carname);
 	void* carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (carhdle == 0) {
-		GfError("carhdle NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfError("carhdle NULL in %s, line %d\n", __FILE__, __LINE__);
 		return NULL;
 	}
 
 	// Get category
 	const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
 	if (category == 0) {
-		GfError("category string NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfError("category string NULL in %s, line %d\n", __FILE__, __LINE__);
 		GfParmReleaseHandle(carhdle);
 		return NULL;
 	}
@@ -1067,7 +1067,7 @@ void* RtLoadOriginalCarSettings(const char* carname)
 	snprintf(buf, BUFSIZE, "%scategories/%s.xml", GetDataDir(), category);
 	void* cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (cathdle == 0) {
-		GfError("cathdle NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfError("cathdle NULL in %s, line %d\n", __FILE__, __LINE__);
 		GfParmReleaseHandle(carhdle);
 		return NULL;
 	}

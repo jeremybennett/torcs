@@ -278,7 +278,7 @@ static void onLoadDefault(void* vp)
 {
 	void* carhandle = RtLoadOriginalCarSettings(rmCarName);
 	if (carhandle == 0) {
-		GfError("carhandle NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfError("carhandle NULL in %s, line %d\n", __FILE__, __LINE__);
 		return;
 	}
 
