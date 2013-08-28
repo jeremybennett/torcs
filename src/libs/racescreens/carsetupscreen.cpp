@@ -274,6 +274,24 @@ static void onActivate(void *vp)
 }
 
 
+static void onLoadDefault(void* vp)
+{
+	void* carhandle = RtLoadOriginalCarSettings(rmCarName);
+	if (carhandle == 0) {
+		GfError("carhandle NULL in %s, line %s\n", __FILE__, __LINE__);
+		return;
+	}
+
+	RtInitCarPitSetup(carhandle, rmSetup, false);
+	GfParmReleaseHandle(carhandle);
+
+	// Update GUI
+	for (std::vector<cGuiSetupValue*>::iterator it = values.begin(); it != values.end(); ++it) {
+		(*it)->update(0.0f);
+	}
+}
+
+
 void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 {
 	const int BUFSIZE = 1024;
@@ -440,6 +458,11 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		loadbuttonid[j] = GfuiLeanButtonCreate(scrHandle, setuplabel[j], font, x + xoff + xoff2, y + (dy*(j+1)), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 			(void*) &setuptype[j], onLoad, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 	}	
+
+	// Reload original car setup
+	GfuiLeanButtonCreate(scrHandle, "Car Default", font, x + xoff + xoff2, y + (dy*7), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		NULL, onLoadDefault, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
 
 	// Exit/Exit and save buttons
 	GfuiButtonCreate(scrHandle, "Leave without saving", GFUI_FONT_MEDIUM, 447, 52, 306, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,

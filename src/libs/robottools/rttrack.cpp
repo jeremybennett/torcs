@@ -1040,3 +1040,41 @@ bool RtLoadCarPitSetup(
 	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
 	return RtLoadCarPitSetupFilename(hdlecar, path, s, minmaxonly);
 }
+
+
+void* RtLoadOriginalCarSettings(const char* carname)
+{
+	const int BUFSIZE = 1024;
+	char buf[BUFSIZE];
+
+	// Fetch car handle
+	snprintf(buf, BUFSIZE, "%scars/%s/%s.xml", GetDataDir(), carname, carname);
+	void* carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	if (carhdle == 0) {
+		GfError("carhdle NULL in %s, line %s\n", __FILE__, __LINE__);
+		return NULL;
+	}
+
+	// Get category
+	const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
+	if (category == 0) {
+		GfError("category string NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfParmReleaseHandle(carhdle);
+		return NULL;
+	}
+
+	// Fetch category handle
+	snprintf(buf, BUFSIZE, "%scategories/%s.xml", GetDataDir(), category);
+	void* cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+	if (cathdle == 0) {
+		GfError("cathdle NULL in %s, line %s\n", __FILE__, __LINE__);
+		GfParmReleaseHandle(carhdle);
+		return NULL;
+	}
+
+	// Compose final result, MergeHandles releases source handles with given parameters
+	cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+	carhdle = GfParmMergeHandles(cathdle, carhdle, GFPARM_MMODE_SRC | GFPARM_MMODE_DST | GFPARM_MMODE_RELSRC | GFPARM_MMODE_RELDST);
+
+	return carhdle;
+}

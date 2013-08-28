@@ -25,3 +25,4 @@ EXPORTS
 	RtCarPitSetupExists
 	RtLoadCarPitSetup
 	RtLoadCarPitSetupFilename
+	RtLoadOriginalCarSettings
