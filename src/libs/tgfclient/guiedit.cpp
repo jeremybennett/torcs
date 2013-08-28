@@ -94,7 +94,8 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 	label = &(editbox->label);
 	if (maxlen == 0) maxlen = strlen(text);
 	label->text = (char*)calloc(1, maxlen+1);
-	strncpy(label->text, text, maxlen+1);
+	strncpy(label->text, text, maxlen);
+	label->text[maxlen] = '\0';
 	label->font = gfuiFont[font];
 	label->maxlen = maxlen;
 
@@ -394,6 +395,7 @@ void GfuiEditboxSetString(void *scr, int id, const char *text)
 	label = &(editbox->label);
 	
 	strncpy(label->text, text, label->maxlen);
+	label->text[label->maxlen] = '\0';
 }
 
 

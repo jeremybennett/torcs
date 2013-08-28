@@ -2,7 +2,7 @@
                              guibutton.cpp                             
                              -------------------                                         
     created              : Fri Aug 13 22:18:21 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -287,6 +287,7 @@ GfuiButtonCreate(void *scr, const char *text, int font, int x, int y, int width,
 	label = &(button->label);
 	label->text = (char*)calloc(1, 100);
 	strncpy(label->text, text, 100);
+	label->text[99] = '\0';
 	label->font = gfuiFont[font];
 	label->maxlen = 99;
 	if (width == 0) {
