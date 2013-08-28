@@ -460,7 +460,7 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	}	
 
 	// Reload original car setup
-	GfuiLeanButtonCreate(scrHandle, "Car Default", font, x + xoff + xoff2, y + (dy*7), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	GfuiLeanButtonCreate(scrHandle, "Car default", font, x + xoff + xoff2, y + (dy*7), buttonwidth, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		NULL, onLoadDefault, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
 
