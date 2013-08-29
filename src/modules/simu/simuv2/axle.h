@@ -28,7 +28,7 @@ typedef struct
 {
     tdble xpos;
 
-    tSuspension arbSusp;	/* anti-roll bar */
+	tdble arbSuspSpringK;
 	tSuspension thirdSusp;	// Third element
     tdble	wheight0;
 

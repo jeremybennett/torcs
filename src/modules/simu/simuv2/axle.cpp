@@ -2,7 +2,7 @@
 
     file                 : axle.cpp
     created              : Sun Mar 19 00:05:09 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -37,11 +37,9 @@ void SimAxleConfig(tCar *car, int index)
 	SimSuspConfig(hdle, AxleSect[index], &(axle->thirdSusp), 0, x0);
 
 	if (index == 0) {
-		SimSuspConfig(hdle, SECT_FRNTARB, &(axle->arbSusp), 0, 0);
-		axle->arbSusp.spring.K = -axle->arbSusp.spring.K;
+		axle->arbSuspSpringK = GfParmGetNum(hdle, SECT_FRNTARB, PRM_SPR, (char*)NULL, 0.0f);
 	} else {
-		SimSuspConfig(hdle, SECT_REARARB, &(axle->arbSusp), 0, 0);
-		axle->arbSusp.spring.K = -axle->arbSusp.spring.K;
+		axle->arbSuspSpringK = GfParmGetNum(hdle, SECT_REARARB, PRM_SPR, (char*)NULL, 0.0f);
 	}
 	
 	car->wheel[index*2].feedBack.I += axle->I / 2.0;
@@ -60,12 +58,7 @@ void SimAxleUpdate(tCar *car, int index)
 	vl = car->wheel[index*2+1].susp.v;
 	
 	// Anti roll bar
-	axle->arbSusp.x = stl - str;		
-	tSpring *spring = &(axle->arbSusp.spring);
-
-	// To save CPU power we compute the force here directly. Just the spring
-	// is considered.
-	tdble farb = spring->K * axle->arbSusp.x;
+	tdble farb = axle->arbSuspSpringK * (stl - str);
 
 	// Third element
 	axle->thirdSusp.x = (stl + str)/2.0f;
