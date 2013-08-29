@@ -356,14 +356,14 @@ void newrace(int index, tCarElt* car, tSituation *s)
 	int i;
 	int idx = index - 1;
 
-	for (i = 0; i < MAX_GEARS; i++) {
+	/*for (i = 0; i < MAX_GEARS; i++) {
 		if (car->_gearRatio[i] != 0) {
 			HCtx[idx]->shiftThld[i] = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.85 / car->_gearRatio[i];
 			GfOut("Gear %d: Spd %f\n", i, HCtx[idx]->shiftThld[i] * 3.6);
 		} else {
 	    	HCtx[idx]->shiftThld[i] = 10000.0;
 		}
-	}
+	}*/
 
 	if (HCtx[idx]->MouseControlUsed) {
 		GfctrlMouseCenter();
@@ -1130,11 +1130,20 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 
 	/* auto shift */
 	if (!HCtx[idx]->manual && !HCtx[idx]->AutoReverseEngaged) {
-		if (car->_speed_x > HCtx[idx]->shiftThld[gear]) {
-			car->_gearCmd++;
-		} else if ((car->_gearCmd > 1) && (car->_speed_x < (HCtx[idx]->shiftThld[gear-1] - 4.0))) {
-			car->_gearCmd--;
+		tdble omega = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.95;
+		tdble shiftThld = 10000.0f;
+		if (car->_gearRatio[gear] != 0) {
+			shiftThld = omega / car->_gearRatio[gear];			
 		}
+
+		if (car->_speed_x > shiftThld) {
+			car->_gearCmd++;
+		} else if (car->_gearCmd > 1) {
+			if (car->_speed_x < (omega / car->_gearRatio[gear-1] - 4.0)) {
+				car->_gearCmd--;
+			}
+		}
+
 		if (car->_gearCmd <= 0) {
 			car->_gearCmd++;
 		}
