@@ -630,6 +630,7 @@ ReInitCars(void)
 						elt->_category[MAX_NAME_LEN - 1] = '\0';
 
 						/* Read Car Category specifications */
+						// TODO: eventually use new Rt function
 						snprintf(buf, BUFSIZE, "categories/%s.xml", category);
 						GfOut("Category Specification: %s\n", buf);
 						cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
