@@ -2,7 +2,7 @@
 
     file                 : car.h
     created              : Sun Jan 30 12:00:15 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -403,7 +403,7 @@ typedef struct
 	tCarPitSetupValue thirdX0[2];
 
 	// Gears [1-8]
-	tCarPitSetupValue gearsratio[8];
+	tCarPitSetupValue gearsratio[MAX_GEARS - 2];	// without reverse/neutral
 
 	// Wings
 	tCarPitSetupValue wingangle[2];

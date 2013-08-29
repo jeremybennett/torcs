@@ -2,7 +2,7 @@
 
     file                 : transmission.cpp
     created              : Sun Mar 19 00:07:19 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -22,8 +22,7 @@
 
 static const char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
 
-void
-SimTransmissionConfig(tCar *car)
+void SimTransmissionConfig(tCar *car)
 {
 	void *hdle = car->params;
 	tCarElt *carElt = car->carElt;
@@ -155,8 +154,48 @@ SimTransmissionConfig(tCar *car)
 	
 }
 
-void
-SimGearboxUpdate(tCar *car)
+
+void SimTransmissionReConfig(tCar *car)
+{
+	void *hdle = car->params;
+	tCarElt *carElt = car->carElt;
+	tTransmission *trans = &(car->transmission);
+	int i;
+	tdble fRatio = 0.0f;
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
+
+	if (trans->type == TRANS_RWD) {
+		SimDifferentialReConfig(car, TRANS_REAR_DIFF);
+		fRatio = trans->differential[TRANS_REAR_DIFF].ratio;
+	} else if (trans->type == TRANS_FWD) {
+		SimDifferentialReConfig(car, TRANS_FRONT_DIFF);
+		fRatio = trans->differential[TRANS_FRONT_DIFF].ratio;
+	} else if (trans->type == TRANS_4WD) {
+		SimDifferentialReConfig(car, TRANS_FRONT_DIFF);
+		SimDifferentialReConfig(car, TRANS_REAR_DIFF);
+		SimDifferentialReConfig(car, TRANS_CENTRAL_DIFF);
+		fRatio = trans->differential[TRANS_CENTRAL_DIFF].ratio;
+	}
+	
+	for (i = MAX_GEARS - 1; i - 2 >= 0; i--) {
+		if (trans->overallRatio[i] > 0.0f) {
+			tCarPitSetupValue* v = &car->carElt->pitcmd.setup.gearsratio[i-2];
+			if (SimAdjustPitCarSetupParam(v)) {
+				tdble gRatio = v->value;
+				carElt->priv.gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
+				snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
+				
+				tdble gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0f);
+				trans->driveI[i] = (car->engine.I + gearI) * (gRatio * gRatio * fRatio * fRatio);
+				trans->freeI[i] = gearI * (gRatio * gRatio * fRatio * fRatio);
+			}
+		}
+	}
+}
+
+
+void SimGearboxUpdate(tCar *car)
 {
 	/* manages gear change */
 	tTransmission *trans = &(car->transmission);

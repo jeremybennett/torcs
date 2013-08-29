@@ -169,6 +169,8 @@ void SimReConfig(tCarElt *carElt)
 	for (i = 0; i < 4; i++) {
 		SimWheelReConfig(car, i);
 	}
+
+	SimTransmissionReConfig(car);
 }
 
 

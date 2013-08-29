@@ -2,7 +2,7 @@
 
     file                 : differential.cpp
     created              : Sun Mar 19 00:06:33 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -49,6 +49,52 @@ void SimDifferentialConfig(void *hdle, const char *section, tDifferential *diffe
 }
 
 
+void SimDifferentialReConfig(tCar* car, int index)
+{	
+	tDifferential *differential = &car->transmission.differential[index];
+
+	// Ratio
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.diffratio[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->ratio = v->value;
+		differential->feedBack.I = differential->I * differential->ratio * differential->ratio +
+			(differential->inAxis[0]->I + differential->inAxis[1]->I) / differential->efficiency;
+	}
+
+	// Min torque bias
+	v = &car->carElt->pitcmd.setup.diffmintqbias[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->dTqMin = v->value;
+	}
+
+	// Max torque bias
+	v = &car->carElt->pitcmd.setup.diffmaxtqbias[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->dTqMax = v->value - differential->dTqMin;
+		if (differential->dTqMax < 0.0f) {
+			differential->dTqMax = 0.0f;
+			v->value = differential->dTqMin;
+		}
+	}
+
+	// Slip bias
+	v = &car->carElt->pitcmd.setup.diffslipbias[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->dSlipMax = v->value;
+	}
+
+	// Locking input torque
+	v = &car->carElt->pitcmd.setup.difflockinginputtq[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->lockInputTq = v->value;
+	}
+
+	// Locking brake input torque
+	v = &car->carElt->pitcmd.setup.difflockinginputbraketq[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		differential->lockBrakeInputTq = v->value;
+	}
+}
 
 
 static void updateSpool(tCar *car, tDifferential *differential, int first)
