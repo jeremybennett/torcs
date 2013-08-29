@@ -481,5 +481,6 @@ bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v)
 		return true;
 	}
 
+	v->value = v->max;
 	return false;
 }

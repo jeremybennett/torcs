@@ -121,6 +121,7 @@ void SimWheelReConfig(tCar *car, int index)
 
 	// Ride height/suspension
 	v = &car->carElt->pitcmd.setup.wheelrideheight[index];
+	SimAdjustPitCarSetupParam(v);
 	SimSuspReConfig(car, index, &(wheel->susp), wheel->weight0, v->value);
 }
 
