@@ -196,6 +196,7 @@ extern bool RtCarPitSetupExists(rtCarPitSetupType type, const char* modulename, 
 extern bool RtLoadCarPitSetup(void* hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname, bool minmaxonly);
 extern bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly);
 extern void* RtLoadOriginalCarSettings(const char* carname);
+extern bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname);
 
 
 

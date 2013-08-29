@@ -26,3 +26,4 @@ EXPORTS
 	RtLoadCarPitSetup
 	RtLoadCarPitSetupFilename
 	RtLoadOriginalCarSettings
+	RtInitCarPitSetupFromDefault

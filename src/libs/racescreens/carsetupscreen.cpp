@@ -276,14 +276,10 @@ static void onActivate(void *vp)
 
 static void onLoadDefault(void* vp)
 {
-	void* carhandle = RtLoadOriginalCarSettings(rmCarName);
-	if (carhandle == 0) {
-		GfError("carhandle NULL in %s, line %d\n", __FILE__, __LINE__);
+	if (!RtInitCarPitSetupFromDefault(rmSetup, rmCarName)) {
+		GfError("failed to init from default setup in %s, line %d\n", __FILE__, __LINE__);
 		return;
 	}
-
-	RtInitCarPitSetup(carhandle, rmSetup, false);
-	GfParmReleaseHandle(carhandle);
 
 	// Update GUI
 	for (std::vector<cGuiSetupValue*>::iterator it = values.begin(); it != values.end(); ++it) {
@@ -465,8 +461,8 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 
 
 	// Exit/Exit and save buttons
-	GfuiButtonCreate(scrHandle, "Leave without saving", GFUI_FONT_MEDIUM, 447, 52, 306, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	//GfuiButtonCreate(scrHandle, "Leave without saving", GFUI_FONT_MEDIUM, 447, 52, 306, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	//	prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
 	const char* savebuttontext;
 	if (rmRaceType == RM_TYPE_PRACTICE) {

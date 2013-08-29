@@ -857,6 +857,13 @@ void RtGetCarPitSetupFilename(
 }
 
 
+/**	Robottool internal: Set parameter if min != max, save as well min and max values	
+	@ingroup	tracktools
+	@param hdlesetup	Handle to set parameter into
+	@param	key			key	name
+	@param	unit		unit to convert the result to (NULL if SI wanted)	
+	@param	v			tCarPitSetupValue to set	
+*/
 static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
 {
 	// If min == max there is nothing to adjust, so we do not need to write the value.
@@ -866,6 +873,13 @@ static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, con
 }
 
 
+/**	Save a custom car setup to a given filename. The setup is validated against the setup given in hdlecar.
+	@ingroup	tracktools
+	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
+	@param s			Pointer to tCarPitSetup struct to save
+	@param filepath		Full path to setup file
+	@param carname		TORCS internal name car name
+ */
 void RtSaveCarPitSetupFile(
 	void *hdlecar,			// handle to car definition file, for min/max merge
 	tCarPitSetup* s,		// the setup data to save
@@ -951,7 +965,20 @@ void RtSaveCarPitSetupFile(
 	GfParmReleaseHandle(hdlesetup);
 }
 
-					   
+			
+/**	Save a custom car setup for a given robot, car, track and session (race, practice, qualifying, ...) type.
+	The setup is validated against the setup given in hdlecar.
+	@ingroup	tracktools
+	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
+	@param s			Pointer to tCarPitSetup struct to save
+	@param type			Setup type
+	@param modulename	name of robot module without extension
+	@param robidx		index of robot
+	@param trackname	TORCS internal name name of track
+	@param carname		TORCS internal name car name
+	@note robot, car, track and session information are used to compose a standard setup filename
+	@see RtSaveCarPitSetupFile
+ */
 void RtSaveCarPitSetup(
 	void *hdlecar,				// handle to car definition file, for min/max merge
 	tCarPitSetup* s,			// the setup data to save
@@ -979,6 +1006,15 @@ void RtSaveCarPitSetup(
 }
 
 
+/**	Checks if a specific car setup is available
+	@ingroup	tracktools
+	@param type			Setup type
+	@param modulename	name of robot module without extension
+	@param robidx		index of robot
+	@param trackname	TORCS internal name name of track
+	@param carname		TORCS internal name car name
+	@return	true on success, false on failure
+ */
 bool RtCarPitSetupExists(
 	rtCarPitSetupType type,		// the setup type
 	const char* modulename,		// modulename
@@ -995,7 +1031,7 @@ bool RtCarPitSetupExists(
 	char path[pathlen];
 
 	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
-	FILE* file = fopen(path, "r");
+	FILE* file = fopen(path, "r");	// TODO: maybe "stat" would be enough here
 	if (file) {
 		fclose(file);
 		return true;
@@ -1005,6 +1041,14 @@ bool RtCarPitSetupExists(
 }
 
 
+/**	Load a custom car setup from a given filename. The setup is validated against the setup given in hdlecar.
+	@ingroup	tracktools
+	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
+	@param filepath		Full path to setup file
+	@param s			Pointer to tCarPitSetup struct to fill/initialize
+	@param minmaxonly	If true, just the min/max values of s are modified
+	@return	true on success, false on failure
+ */
 bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly)
 {
 	void* hdlesetup = GfParmReadFile(filepath, GFPARM_RMODE_STD);
@@ -1019,6 +1063,21 @@ bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetu
 }
 
 
+/**	Load a custom car setup for a given robot, car, track and session (race, practice, qualifying, ...) type.
+	The setup is validated against the setup given in hdlecar.
+	@ingroup	tracktools
+	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
+	@param s			Pointer to tCarPitSetup struct to fill/initialize
+	@param type			Setup type
+	@param modulename	name of robot module without extension
+	@param robidx		index of robot
+	@param trackname	TORCS internal name name of track
+	@param carname		TORCS internal name car name
+	@param minmaxonly	If true, just the min/max values of s are modified
+	@return	true on success, false on failure
+	@note robot, car, track and session information are used to compose a standard setup filename
+	@see RtLoadCarPitSetupFilename
+ */
 bool RtLoadCarPitSetup(
 	void* hdlecar, 
 	tCarPitSetup* s,
@@ -1042,6 +1101,12 @@ bool RtLoadCarPitSetup(
 }
 
 
+/** Gets a handle to a parameter file containing the original TORCS car setup, that means the car setup
+	merged with the cars category setup
+    @ingroup	tracktools
+	@param	carname TORCS internal name of the car (directory/filename)
+    @return	NULL on failure, a valid handle otherwise
+ */
 void* RtLoadOriginalCarSettings(const char* carname)
 {
 	const int BUFSIZE = 1024;
@@ -1077,4 +1142,25 @@ void* RtLoadOriginalCarSettings(const char* carname)
 	carhdle = GfParmMergeHandles(cathdle, carhdle, GFPARM_MMODE_SRC | GFPARM_MMODE_DST | GFPARM_MMODE_RELSRC | GFPARM_MMODE_RELDST);
 
 	return carhdle;
+}
+
+
+/** Initialize the given tCarPitSetup with the original TORCS setup, that means the car setup
+	merged with the cars category setup
+    @ingroup	tracktools
+    @param	s	Pointer to tCarPitSetup struct to fill/initialize
+	@param	carname TORCS internal name of the car (directory/filename)
+    @return	true on success, false on failure
+ */
+bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
+{
+	void* carhandle = RtLoadOriginalCarSettings(carname);
+	if (carhandle == 0) {
+		GfError("carhandle NULL in %s, line %d\n", __FILE__, __LINE__);
+		return false;
+	}
+
+	RtInitCarPitSetup(carhandle, s, false);
+	GfParmReleaseHandle(carhandle);
+	return true;
 }
