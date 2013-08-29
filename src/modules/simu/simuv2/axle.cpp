@@ -34,7 +34,7 @@ void SimAxleConfig(tCar *car, int index)
 	car->wheel[index*2].rollCenter = car->wheel[index*2+1].rollCenter = rollCenter;
 	
 	tdble x0 = GfParmGetNum(hdle, AxleSect[index], PRM_SUSPCOURSE, (char*)NULL, 0.0f);
-	SimSuspConfig(hdle, AxleSect[index], &(axle->thirdSusp), 0, x0);
+	SimSuspConfig(hdle, AxleSect[index], &(axle->thirdSusp), 0.0f, x0);
 
 	if (index == 0) {
 		axle->arbSuspSpringK = GfParmGetNum(hdle, SECT_FRNTARB, PRM_SPR, (char*)NULL, 0.0f);
@@ -44,6 +44,24 @@ void SimAxleConfig(tCar *car, int index)
 	
 	car->wheel[index*2].feedBack.I += axle->I / 2.0;
 	car->wheel[index*2+1].feedBack.I += axle->I / 2.0;
+}
+
+
+void SimAxleReConfig(tCar *car, int index)
+{
+	tAxle *axle = &(car->axle[index]);
+
+	// Anti rollbar spring
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.arbspring[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		axle->arbSuspSpringK = v->value;
+	}
+
+	// Third element
+	// Ride height/suspension
+	v = &car->carElt->pitcmd.setup.thirdX0[index];
+	SimAdjustPitCarSetupParam(v);
+	SimSuspReConfig(car, index, &(axle->thirdSusp), 0.0f, v->value);
 }
 
 

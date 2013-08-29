@@ -43,6 +43,7 @@ extern void SimInit(int nbcars, tTrack* track);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);
+extern void SimAxleReConfig(tCar *car, int index);
 extern void SimAxleUpdate(tCar *car, int index);
 
 extern void SimCarConfig(tCar *car);
