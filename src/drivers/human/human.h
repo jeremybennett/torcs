@@ -31,7 +31,6 @@ typedef struct HumanContext
 	int		NbPitStops;
 	int		LastPitStopLap;
 	int 	AutoReverseEngaged;
-	//tdble	shiftThld[MAX_GEARS+1];
 	tdble	Gear;
 	tdble	distToStart;
 	tdble	clutchtime;

@@ -353,17 +353,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
-	int i;
 	int idx = index - 1;
-
-	/*for (i = 0; i < MAX_GEARS; i++) {
-		if (car->_gearRatio[i] != 0) {
-			HCtx[idx]->shiftThld[i] = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.85 / car->_gearRatio[i];
-			GfOut("Gear %d: Spd %f\n", i, HCtx[idx]->shiftThld[i] * 3.6);
-		} else {
-	    	HCtx[idx]->shiftThld[i] = 10000.0;
-		}
-	}*/
 
 	if (HCtx[idx]->MouseControlUsed) {
 		GfctrlMouseCenter();
