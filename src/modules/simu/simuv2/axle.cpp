@@ -58,10 +58,9 @@ void SimAxleReConfig(tCar *car, int index)
 	}
 
 	// Third element
-	// Ride height/suspension
 	v = &car->carElt->pitcmd.setup.thirdX0[index];
 	SimAdjustPitCarSetupParam(v);
-	SimSuspReConfig(car, index, &(axle->thirdSusp), 0.0f, v->value);
+	SimSuspThirdReConfig(car, index, &(axle->thirdSusp), 0.0f, v->value);
 }
 
 

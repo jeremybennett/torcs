@@ -54,6 +54,7 @@ extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
 extern void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0, tdble X0);
 extern void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0);
+extern void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0);
 
 extern void SimWheelConfig(tCar *car, int index);
 extern void SimWheelReConfig(tCar *car, int index);
