@@ -2,7 +2,7 @@
 
     file        : miscscreens.cpp
     created     : Sun Dec  8 13:01:47 CET 2002
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2013 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -33,6 +33,7 @@
 static void *twoStateHdle = 0;
 static void *triStateHdle = 0;
 static void *fourStateHdle = 0;
+static void *nStateHandle = 0;
 
 
 void *
@@ -102,6 +103,31 @@ RmFourStateScreen(
 	return fourStateHdle;
 }
 
+void *RmNStateScreen(
+	const char *title,
+	const char** label,
+	const char** tip,
+	void** screen,
+	const int n
+)
+{
+	if (nStateHandle) {
+		GfuiScreenRelease(nStateHandle);
+	}
+	
+	nStateHandle = GfuiMenuScreenCreate(title);
+	GfuiScreenAddBgImg(nStateHandle, "data/img/splash-quit.png");
+
+	int i;
+	for (i = 0; i < n; i++) {
+		GfuiMenuButtonCreate(nStateHandle, label[i], tip[i], screen[i], GfuiScreenActivate);
+	}
+
+	GfuiAddKey(nStateHandle, 27, tip[n-1], screen[n-1], GfuiScreenActivate, NULL);
+	GfuiScreenActivate(nStateHandle);
+
+	return nStateHandle;
+}
 
 
 /*********************************************************

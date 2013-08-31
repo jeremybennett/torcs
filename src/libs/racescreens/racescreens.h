@@ -2,7 +2,7 @@
 
     file                 : racemantools.h
     created              : Sat Mar 18 23:33:01 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -96,6 +96,14 @@ extern void *RmFourStateScreen(const char *title,
 			       const char *label2, const char *tip2, void *screen2,
 			       const char *label3, const char *tip3, void *screen3,
 			       const char *label4, const char *tip4, void *screen4);
+
+extern void *RmNStateScreen(
+					 const char *title,
+					 const char** label,
+					 const char** tip,
+					 void** screen,
+					 const int n
+);
 
 extern void RmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr);
 

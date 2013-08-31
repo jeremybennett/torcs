@@ -18,6 +18,7 @@ EXPORTS
 	RmLoadingScreenSetText
 	RmRaceParamMenu
 	RmShowResults
+	RmNStateScreen
 	RmFourStateScreen
 	RmTriStateScreen
 	RmTwoStateScreen
