@@ -150,7 +150,7 @@ RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback callb
 	// Just enable car setup button in practice and qualifying sessions
 	buttonid = GfuiButtonCreate(menuHandle, "Setup", GFUI_FONT_LARGE, 480, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		RmCarSetupScreenInit(menuHandle, rmCar, rmInfo), GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	if (reInfo->s->raceInfo.type != RM_TYPE_PRACTICE && reInfo->s->raceInfo.type != RM_TYPE_PRACTICE) {
+	if (reInfo->s->raceInfo.type != RM_TYPE_PRACTICE && reInfo->s->raceInfo.type != RM_TYPE_QUALIF) {
 		GfuiEnable(menuHandle, buttonid, GFUI_DISABLE);
 	}
 	
