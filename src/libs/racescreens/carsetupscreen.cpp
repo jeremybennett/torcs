@@ -209,7 +209,9 @@ static void onSaveAndExit(void *vp)
 		rmTrack,
 		rmCarName
 	);
-	GfuiScreenActivate(vp);
+	if (vp != NULL) {
+		GfuiScreenActivate(vp);
+	}
 }
 
 
