@@ -263,6 +263,8 @@ Changes since 1.3.4
   used like this (Bernhard).
 - Added button enable/disable logic in pitmenu (e.g. just enabe "stop and go" if a peanlty
   is pending") (Bernhard).
+- Finished car setup screen (Bernhard).
+- Use setups in human driver (Bernhard).
 
 
 11. TODO/Notes
