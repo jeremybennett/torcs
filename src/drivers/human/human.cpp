@@ -262,28 +262,15 @@ human(tModInfo *modInfo)
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
 	const char *carname;
-	char *s1, *s2;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	char sstring[BUFSIZE];
-	
-	const int TRACKNAMESIZE = 256;
-	char trackname[TRACKNAMESIZE];
 	tdble fuel;
 	int idx = index - 1;
 
 	curTrack = track;
-	s1 = strrchr(track->filename, '/') + 1;
-	s2 = strchr(s1, '.');
-	if (s2-s1 < TRACKNAMESIZE) {
-		strncpy(trackname, s1, s2-s1);
-		trackname[s2-s1] = 0;
-	} else {
-		trackname[0] = 0;
-		GfError("human.cpp, initTrack, filename too long");
-	}
-	snprintf(sstring, BUFSIZE, "Robots/index/%d", index);
 
+	snprintf(sstring, BUFSIZE, "Robots/index/%d", index);
 	snprintf(buf, BUFSIZE, "%sdrivers/human/human.xml", GetLocalDir());
 	void *DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	carname = "";
@@ -291,35 +278,30 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		carname = GfParmGetStr(DrvInfo, sstring, "car name", "");
 	}
 
-	snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s-%d.xml", GetLocalDir(), trackname, carname, index);
-	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-	if (*carParmHandle != NULL) {
-		GfOut("Player: %s Loaded\n", sstring);
-	} else {
-		snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s.xml", GetLocalDir(), trackname, carname);
-		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-		if (*carParmHandle != NULL) {
-			GfOut("Player: %s Loaded\n", sstring);
-		} else {
-			snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s-%d.xml", GetLocalDir(), carname, index);
-			*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-			if (*carParmHandle != NULL) {
-				GfOut("Player: %s Loaded\n", sstring);
-			} else {
-				snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s.xml", GetLocalDir(), carname);
-				*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-				if (*carParmHandle != NULL) {
-					GfOut("Player: %s Loaded\n", sstring);
-				} else {
-					snprintf(sstring, BUFSIZE, "%sdrivers/human/car.xml", GetLocalDir ());
-					*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-					if (*carParmHandle != NULL) {
-						GfOut("Player: %s Loaded\n", sstring);
-					}
-				}
-			}
-		}
+	*carParmHandle = NULL;
+	// If session type is "race" and we have a race setup use it
+	if (s->_raceType == RM_TYPE_RACE) {
+		*carParmHandle = RtParmReadSetup(RACE, "human", index, track->internalname, carname);
 	}
+
+	// If session type is "qualifying" and we have a qualifying setup use it, use qualifying setup as 
+	// fallback if not race setup is available
+	if (s->_raceType == RM_TYPE_QUALIF || (*carParmHandle == NULL && s->_raceType == RM_TYPE_RACE)) {
+		*carParmHandle = RtParmReadSetup(QUALIFYING, "human", index, track->internalname, carname);
+	}
+
+	// If we have not yet loaded a setup we have not found a fitting one or want to use the practice setup,
+	// so try to load this
+	if (*carParmHandle == NULL) {
+		*carParmHandle = RtParmReadSetup(PRACTICE, "human", index, track->internalname, carname);
+	}
+
+	// Absolute fallback, nothing found
+	if (*carParmHandle == NULL) {
+		snprintf(sstring, BUFSIZE, "%sdrivers/human/car.xml", GetLocalDir ());
+		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
+	}
+
 
 	if (curTrack->pits.type != TR_PIT_NONE) {
 		snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
@@ -329,7 +311,9 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		HCtx[idx]->NbPitStopProg = 0;
 	}
 	fuel = 0.0008 * curTrack->length * (s->_totLaps + 1) / (1.0 + ((tdble)HCtx[idx]->NbPitStopProg)) + 20.0;
-	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+	if (*carParmHandle) {
+		GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+	}
 	Vtarget = curTrack->pits.speedLimit;
 	if (DrvInfo != NULL) {
 		GfParmReleaseHandle(DrvInfo);
