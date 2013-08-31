@@ -2,7 +2,7 @@
 
     file        : racemain.cpp
     created     : Sat Nov 16 12:13:31 CET 2002
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann                    
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -477,11 +477,30 @@ ReRaceStop(void)
 					"Resume Race", "Return to Race", BackToRaceHookInit(),
 					"Quit Game", "Quit the game", QuitHookInit());
 	} else {
-		StopScrHandle = RmFourStateScreen("Race Stopped",
-					"Restart Race", "Restart the current race", RestartRaceHookInit(),
-					"Abandon Race", "Abort current race", AbortRaceHookInit(),
-					"Resume Race", "Return to Race", BackToRaceHookInit(),
-					"Quit Game", "Quit the game", QuitHookInit());
+		if (
+			(ReInfo->s->raceInfo.type == RM_TYPE_PRACTICE || ReInfo->s->raceInfo.type == RM_TYPE_QUALIF) &&
+			(ReInfo->s->raceInfo.ncars == 1) &&
+			(ReInfo->carList[0].info.driverType == RM_DRV_HUMAN)
+		) {
+			tCarElt* carElt = &ReInfo->carList[0];
+			static const char* label[5] = { "Restart Race",  "Setup Car, Restart", "Abandon Race", "Resume Race", "Quit Game" };
+			static const char* tip[5] = { "Restart the current race",  "Setup car and restart the current race", "Abort the current race", "Return to the race", "Quit TORCS" };
+			void* screen[5];
+
+			screen[0] = RestartRaceHookInit();
+			screen[1] = RmCarSetupScreenInit(RestartRaceHookInit(), carElt, ReInfo);
+			screen[2] = AbortRaceHookInit();
+			screen[3] = BackToRaceHookInit();
+			screen[4] = QuitHookInit();
+
+			StopScrHandle = RmNStateScreen("Race Stopped", label, tip, screen, 5);
+		} else {
+			StopScrHandle = RmFourStateScreen("Race Stopped",
+						"Restart Race", "Restart the current race", RestartRaceHookInit(),
+						"Abandon Race", "Abort current race", AbortRaceHookInit(),
+						"Resume Race", "Return to Race", BackToRaceHookInit(),
+						"Quit Game", "Quit the game", QuitHookInit());
+			}
 	}
 	return RM_ASYNC | RM_NEXT_STEP;
 }
