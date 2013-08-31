@@ -1164,3 +1164,33 @@ bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
 	GfParmReleaseHandle(carhandle);
 	return true;
 }
+
+
+/**	Load a custom car setup file for a given robot, car, track and session (race, practice, qualifying, ...) type.
+	@ingroup	tracktools
+	@param type			Setup type
+	@param modulename	name of robot module without extension
+	@param robidx		index of robot
+	@param trackname	TORCS internal name name of track
+	@param carname		TORCS internal name car name
+	@return	Handle to data, or NULL on failure (e.g. if file is not available) 
+	@note robot, car, track and session information are used to compose a standard setup filename
+ */
+void* RtParmReadSetup(
+	rtCarPitSetupType type,		
+	const char* modulename,	
+	int robidx,				
+	const char* trackname,	
+	const char* carname
+)
+{
+	const int filelen = 256;
+	char filename[filelen];
+	RtGetCarPitSetupFilename(type, robidx, carname, trackname, filename, filelen);
+
+	const int pathlen = 1024;
+	char path[pathlen];
+
+	snprintf(path, pathlen, "%sdrivers/%s/setups/%s.xml", GetLocalDir(), modulename, filename);
+	return GfParmReadFile(path, GFPARM_RMODE_STD);
+}

@@ -197,8 +197,7 @@ extern bool RtLoadCarPitSetup(void* hdlecar, tCarPitSetup* s, rtCarPitSetupType 
 extern bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly);
 extern void* RtLoadOriginalCarSettings(const char* carname);
 extern bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname);
-
-
+extern void* RtParmReadSetup(rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname,	const char* carname);
 
 
 #endif /* _ROBOTTOOLS_H_ */ 
