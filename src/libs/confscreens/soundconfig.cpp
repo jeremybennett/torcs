@@ -37,7 +37,7 @@ static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 // list of options.
 static const char *soundOptionList[] = {
 	GR_ATT_SOUND_STATE_OPENAL,
-	GR_ATT_SOUND_STATE_PLIB,
+	//GR_ATT_SOUND_STATE_PLIB,
 	GR_ATT_SOUND_STATE_DISABLED
 };
 
