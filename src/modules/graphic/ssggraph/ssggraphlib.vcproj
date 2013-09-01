@@ -689,6 +689,10 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
+				RelativePath="..\..\..\interfaces\graphic.h"
+				>
+			</File>
+			<File
 				RelativePath="grboard.h"
 				>
 			</File>
