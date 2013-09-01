@@ -655,6 +655,7 @@ ReStart(void)
 void
 ReStop(void)
 {
+	ReInfo->_reGraphicItf.muteformenu();
     ReInfo->_reRunning = 0;
 }
 

@@ -2,7 +2,7 @@
                  params.cpp -- configuration parameters management
                              -------------------                                         
     created              : Fri Aug 13 22:27:57 CEST 1999
-    copyright            : (C) 1999 by Eric Espie
+    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr   
     version              : $Id$
  ***************************************************************************/

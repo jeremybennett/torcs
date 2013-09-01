@@ -2,7 +2,7 @@
 
     file                 : ssggraph.cpp
     created              : Thu Aug 17 23:19:19 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -41,6 +41,7 @@ graphInit(int /* idx */, void *pt)
     itf->refresh       = refresh;
     itf->shutdowncars  = shutdownCars;
     itf->shutdowntrack = shutdownTrack;
+	itf->muteformenu   = muteForMenu; 
     //itf->bendcar       = bendCar;
     return 0;
 }

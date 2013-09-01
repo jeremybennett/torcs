@@ -2,7 +2,7 @@
 
     file                 : grmain.h
     created              : Fri Aug 18 00:00:41 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -59,6 +59,7 @@ extern int  refresh(tSituation *s);
 extern void shutdownCars(void);
 extern int  initTrack(tTrack *track);
 extern void shutdownTrack(void);
+extern void muteForMenu(void);
 //extern void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt);
 extern int maxTextureUnits;
 extern tdble grMaxDammage;

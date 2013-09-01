@@ -2,7 +2,7 @@
 
     file                 : pitmenu.cpp
     created              : Mon Apr 24 18:16:37 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 

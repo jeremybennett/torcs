@@ -2,7 +2,7 @@
 
     file                 : graphic.h
     created              : Sun Jan 30 22:58:45 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -111,6 +111,7 @@ typedef int (*tfGraphicInitView)(int /*x*/, int /*y*/, int /*width*/, int /*heig
 typedef int (*tfGraphicRefresh)(struct Situation *);
 typedef void (*tfGraphicShutdwnCars)(void);
 typedef void (*tfGraphicShutdwnTrack)(void);
+typedef void (*tGraphicMuteForMenu)(void);
 
 class ssgEntity;
 typedef void (*tfGraphicBendCar) (int /*index*/, sgVec3 /*poc*/, sgVec3 /*force*/, int /*cnt*/);
@@ -123,6 +124,7 @@ typedef struct {
     tfGraphicRefresh	    refresh;	    /* Graphic refresh function */
     tfGraphicShutdwnCars    shutdowncars;   /* Graphic shutdown function */
     tfGraphicShutdwnTrack   shutdowntrack;  /* Graphic shutdown function */
+	tGraphicMuteForMenu		muteformenu;	/* Set volume temporarily to 0, next refresh will undo it (for menus) */
 	//tfGraphicBendCar        bendcar;
 } tGraphicItf;
 
