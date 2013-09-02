@@ -303,7 +303,7 @@
 		<attnum name="shift time" unit="s" val="0.15"/>
 		<section name="gears">
 			<section name="r">
-				<attnum name="ratio" min="-3" max="0" val="-2.0"/>
+				<attnum name="ratio" min="-6" max="-3" val="-5.5"/>
 				<attnum name="inertia" val="0.0037"/>
 				<attnum name="efficiency" val="0.957"/>
 			</section>
@@ -362,34 +362,41 @@
 	
 	<section name="Brake System">
 		<attnum name="front-rear brake repartition" min="0.3" max="0.7" val="0.5"/>
-		<attnum name="max pressure" unit="kPa" min="100" max="150000" val="25000"/>
+		<attnum name="max pressure" unit="kPa" min="5000" max="40000" val="25000"/>
 	</section>
 	
 	<section name="Front Axle">
 		<attnum name="xpos" min="0.5" max="2.5" val="1.22"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0056"/>
 		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.11"/>
+		
+		<attnum name="spring" unit="lbs/in" min="0" max="40000" val="0"/>
+		<attnum name="suspension course" unit="mm" min="0" max="60" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="0"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="0"/>
 	</section>
 	
 	<section name="Rear Axle">
 		<attnum name="xpos" min="-2.5" max="-0.5" val="-1.14"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
 		<attnum name="roll center height" unit="m" min="0" max="0.5" val="0.14"/>
+		
+		<attnum name="spring" unit="lbs/in" min="0" max="40000" val="0"/>
+		<attnum name="suspension course" unit="mm" min="0" max="60" val="0"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="0"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="0"/>
 	</section>
 	
-	<section name="Front Differential">
-		
-		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-		<attstr name="type" in="NONE" val="NONE"/>
-	</section>
-	
-	<section name="Rear Differential">
-		
+	<section name="Rear Differential">		
 		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
 		<attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0488"/>
 		<attnum name="ratio" min="0" max="10" val="3.07"/>
 		<attnum name="efficiency" val="0.9625"/>
+
+		<attnum name="max slip bias" min="0.0" max="0.5" val="0.03"/>
+		<attnum name="locking input torque" min="500" max="90000" val="5000"/>
+		<attnum name="locking brake input torque" min="150" max="90000" val="1500"/>
 	</section>
 	
 	<section name="Front Right Wheel">
@@ -401,7 +408,7 @@
 		
 		<!-- initial ride height -->
 		<attnum name="ride height" unit="mm" min="70" max="120" val="90"/>
-		<attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+		<attnum name="toe" unit="deg" min="-1" max="1" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
 		
 		<!-- Adherence -->
@@ -420,7 +427,7 @@
 		
 		<!-- initial ride height -->
 		<attnum name="ride height" unit="mm" min="70" max="120" val="90"/>
-		<attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
+		<attnum name="toe" unit="deg" min="-1" max="1" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
 		
 		<!-- Adherence -->
@@ -439,7 +446,7 @@
 		
 		<!-- initial ride height -->
 		<attnum name="ride height" unit="mm" min="70" max="120" val="105"/>
-		<attnum name="toe" unit="deg" min="0" max="0" val="0"/>
+		<attnum name="toe" unit="deg" min="-1" max="1" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-2"/>
 		
 		<!-- Adherence -->
@@ -458,7 +465,7 @@
 		
 		<!-- initial ride height -->
 		<attnum name="ride height" unit="mm" min="70" max="120" val="105"/>
-		<attnum name="toe" unit="deg" min="0" max="0" val="0"/>
+		<attnum name="toe" unit="deg" min="-1" max="1" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-2"/>
 		
 		<!-- Adherence -->
@@ -470,58 +477,54 @@
 	
 	<section name="Front Anti-Roll Bar">
 		<attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
-		<attnum name="bellcrank" min="1" max="5" val="2.5"/>
 	</section>
 	
 	<section name="Rear Anti-Roll Bar">
 		<attnum name="spring" unit="lbs/in" min="0" max="5000" val="0"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.2"/>
-		<attnum name="bellcrank" min="1" max="5" val="2.5"/>
 	</section>
 	
 	<section name="Front Right Suspension">
-		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
+		<attnum name="spring" unit="lbs/in" min="500" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.25" val="0.2"/>
 		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
-		<attnum name="packers" unit="mm" min="0" max="20" val="10"/>
-		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="300"/>
-		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="200"/>
-		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
-		<attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="60"/>
+		<attnum name="packers" unit="mm" min="0" max="30" val="10"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="50" max="1000" val="300"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="50" max="1000" val="200"/>
+		<attnum name="fast bump" unit="lbs/in/s" min="10" max="200" val="60"/>
+		<attnum name="fast rebound" unit="lbs/in/s" min="10" max="200" val="60"/>
 	</section>
 	
 	<section name="Front Left Suspension">
-		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
+		<attnum name="spring" unit="lbs/in" min="500" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.25" val="0.2"/>
 		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
-		<attnum name="packers" unit="mm" min="0" max="20" val="10"/>
-		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="300"/>
-		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="200"/>
-		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
-		<attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="60"/>
+		<attnum name="packers" unit="mm" min="0" max="30" val="10"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="50" max="1000" val="300"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="50" max="1000" val="200"/>
+		<attnum name="fast bump" unit="lbs/in/s" min="10" max="200" val="60"/>
+		<attnum name="fast rebound" unit="lbs/in/s" min="10" max="200" val="60"/>
 	</section>
 	
 	<section name="Rear Right Suspension">
-		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
+		<attnum name="spring" unit="lbs/in" min="500" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.25" val="0.2"/>
 		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
-		<attnum name="packers" unit="mm" min="0" max="10" val="10"/>
-		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="200"/>
-		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
-		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
-		<attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="60"/>
+		<attnum name="packers" unit="mm" min="0" max="30" val="10"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="50" max="1000" val="200"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="50" max="1000" val="300"/>
+		<attnum name="fast bump" unit="lbs/in/s" min="10" max="200" val="60"/>
+		<attnum name="fast rebound" unit="lbs/in/s" min="10" max="200" val="60"/>
 	</section>
 	
 	<section name="Rear Left Suspension">
-		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
+		<attnum name="spring" unit="lbs/in" min="500" max="10000" val="5500"/>
 		<attnum name="suspension course" unit="m" min="0" max="0.25" val="0.2"/>
 		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
-		<attnum name="packers" unit="mm" min="0" max="10" val="10"/>
-		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="200"/>
-		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
-		<attnum name="fast bump" unit="lbs/in/s" min="0" max="1000" val="60"/>
-		<attnum name="fast rebound" unit="lbs/in/s" min="0" max="1000" val="60"/>
+		<attnum name="packers" unit="mm" min="0" max="30" val="10"/>
+		<attnum name="slow bump" unit="lbs/in/s" min="50" max="1000" val="200"/>
+		<attnum name="slow rebound" unit="lbs/in/s" min="50" max="1000" val="300"/>
+		<attnum name="fast bump" unit="lbs/in/s" min="10" max="200" val="60"/>
+		<attnum name="fast rebound" unit="lbs/in/s" min="10" max="200" val="60"/>
 	</section>
 	
 	<section name="Front Right Brake">
