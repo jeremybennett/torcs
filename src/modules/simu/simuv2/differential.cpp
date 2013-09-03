@@ -26,6 +26,7 @@ void SimDifferentialConfig(void *hdle, const char *section, tDifferential *diffe
 	differential->ratio		= GfParmGetNum(hdle, section, PRM_RATIO, (char*)NULL, 1.0f);
 	differential->dTqMin	= GfParmGetNum(hdle, section, PRM_MIN_TQ_BIAS, (char*)NULL, 0.05f);
 	differential->dTqMax	= GfParmGetNum(hdle, section, PRM_MAX_TQ_BIAS, (char*)NULL, 0.80f) - differential->dTqMin;
+	if (differential->dTqMax < 0.0f) differential->dTqMax = 0.0f;
 	differential->dSlipMax	= GfParmGetNum(hdle, section, PRM_MAX_SLIP_BIAS, (char*)NULL, 0.03f);
 	differential->lockInputTq	= GfParmGetNum(hdle, section, PRM_LOCKING_TQ, (char*)NULL, 3000.0f);
 	differential->lockBrakeInputTq = GfParmGetNum(hdle, section, PRM_LOCKINGBRAKE_TQ, (char*)NULL, differential->lockInputTq*0.33f);
