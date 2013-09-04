@@ -147,7 +147,7 @@
   </section>
 
   <section name="Gearbox">
-    <attnum name="shift time" val="0.150000"/>
+    <attnum name="shift time" val="0.50000"/>
 
     <section name="gears">
       <section name="r">
