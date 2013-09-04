@@ -232,12 +232,12 @@
 
         <section name="17">
           <attnum name="rpm" unit="rpm" val="8000"/>
-          <attnum name="Tq" unit="N.m" val="0"/>
+          <attnum name="Tq" unit="N.m" val="300"/>
         </section>
 
         <section name="18">
           <attnum name="rpm" unit="rpm" val="8500"/>
-          <attnum name="Tq" unit="N.m" val="0"/>
+          <attnum name="Tq" unit="N.m" val="250"/>
         </section>
 
         <section name="19">
@@ -333,7 +333,7 @@
     <section name="Rear Differential">
       <attstr name="type" in="FREE,LIMITED SLIP" val="FREE"/>
       <attnum name="inertia" unit="kg.m2" val="0.0488"/>
-      <attnum name="ratio" min="1.0" max="10.0" val="3.54"/>
+      <attnum name="ratio" min="1.0" max="10.0" val="3.2"/>
       <attnum name="efficiency" val="0.9"/>
     </section>
 
