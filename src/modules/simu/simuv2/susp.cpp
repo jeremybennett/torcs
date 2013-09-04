@@ -198,12 +198,14 @@ void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdb
 	v = &car->carElt->pitcmd.setup.thirdbump[index];
 	if (SimAdjustPitCarSetupParam(v)) {
 		susp->damper.bump.C1 = v->value;
+		susp->damper.bump.C2 = v->value;
 	}
 
 	// Rebound
 	v = &car->carElt->pitcmd.setup.thirdrebound[index];
 	if (SimAdjustPitCarSetupParam(v)) {
 		susp->damper.rebound.C1 = v->value;
+		susp->damper.rebound.C2 = v->value;
 	}
 
 	susp->spring.xMax = X0;
