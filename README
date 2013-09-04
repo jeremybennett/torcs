@@ -281,6 +281,9 @@ Changes since 1.3.4
 - Adopted Offroad-4WD-GrA category for setup screen (Bernhard).
 - Adopted pw-206/306/corolla/evoiv/focus/impreza-wrc car settings, changed front
   differential from free to limited slip (Bernhard).
+- Adopted Track-4WD-GrB category and 155-DTM car for setup screen (Bernhard).
+- Adopted Track-RWD-GrB category and acura-nsx-sz car for setup screen (Bernhard).
+- Adopted Offroad-RWD-GrA category and bajy-bug/buggy car for setup screen (Bernhard).
 
 
 
