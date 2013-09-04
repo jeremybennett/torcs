@@ -267,7 +267,7 @@
       <section name="gears">
 
         <section name="r">
-          <attnum name="ratio" val="-4"/>
+          <attnum name="ratio" val="-5"/>
           <attnum name="inertia" val="0.0037"/>
           <attnum name="efficiency" val="0.9"/>
         </section>
