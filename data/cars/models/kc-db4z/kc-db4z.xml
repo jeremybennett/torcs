@@ -126,8 +126,8 @@
     <attnum name="front right-left weight repartition" val="0.5"/>
     <attnum name="rear right-left weight repartition" val="0.5"/>
     <attnum name="mass repartition coefficient" val="0.8"/>
-    <attnum name="fuel tank" unit="l" val="50"/>
-    <attnum name="initial fuel" min="1" max="50" unit="l" val="50"/>
+    <attnum name="fuel tank" unit="l" val="136"/>
+    <attnum name="initial fuel" min="1" max="136" unit="l" val="50"/>
   </section>
   <section name="Aerodynamics">
     <attnum name="Cx" val="0.4"/>
