@@ -157,7 +157,7 @@
 
   <section name="Rear Wing">
     <attnum name="area" unit="m2" val=".3"/>
-    <attnum name="angle" unit="deg" val="30"/>
+    <attnum name="angle" unit="deg" val="2"/>
     <attnum name="xpos" unit="m" val="-2"/>
     <attnum name="zpos" val="0.78"/>
   </section>
