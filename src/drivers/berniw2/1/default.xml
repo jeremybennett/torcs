@@ -60,21 +60,6 @@
 		<attnum name="front-rear brake repartition" min="0.0" max="1.0" val="0.66"/>
 		<attnum name="max pressure" min="100" max="1500000" unit="kPa" val="20000"/>
 	</section>
-		
-	<section name="Front Differential">
-		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-		<attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP" val="FREE"/>
-	</section>
-	
-	<section name="Rear Differential">
-		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-		<attstr name="type" in="NONE,SPOOL,FREE,LIMITED SLIP" val="LIMITED SLIP"/>
-	</section>
-	
-	<section name="Central Differential">
-		<!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
-		<attnum name="ratio" min="0" max="10" val="6.85"/>
-	</section>
 	
 	<section name="Front Right Wheel">
 		<attnum name="ride height" min="50" max="2000" unit="mm" val="100"/>
