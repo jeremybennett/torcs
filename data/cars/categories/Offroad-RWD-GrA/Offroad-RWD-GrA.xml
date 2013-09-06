@@ -264,7 +264,7 @@
   <section name="Rear Differential">
     <!-- type of differential : SPOOL (locked), FREE, LIMITED SLIP -->
     <attstr name="type" in="SPOOL,FREE,LIMITED SLIP" val="FREE"/>
-    <attnum name="inertia" unit="kg.m2" val="0.04"/>
+    <attnum name="inertia" unit="kg.m2" min="0.02" max="0.5" val="0.04"/>
     <attnum name="ratio" min="1" max="10" val="3.5"/>
     <attnum name="efficiency" val="0.9625"/>
   </section>
@@ -274,12 +274,12 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="18.0"/>
     <attnum name="tire width" unit="mm" min="135" max="200" val="200"/>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"/>
-    <attnum name="inertia" unit="kg.m2" val="1.00"/>
+    <attnum name="inertia" unit="kg.m2" min="0.5" max="1.5" val="1.00"/>
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="500"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
-    <attnum name="rolling resistance" val="0.00105"/>
+    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"/>
     <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
@@ -291,12 +291,12 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="18.0"/>
     <attnum name="tire width" unit="mm" min="135" max="200" val="200"/>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"/>
-    <attnum name="inertia" unit="kg.m2" val="1.00"/>
+    <attnum name="inertia" unit="kg.m2" min="0.5" max="1.5" val="1.00"/>
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="500"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
-    <attnum name="rolling resistance" val="0.00105"/>
+    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="toe" unit="deg" min="-5" max="5" val="0"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"/>
     <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
@@ -308,12 +308,12 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="18.0"/>
     <attnum name="tire width" unit="mm" min="135" max="200" val="200"/>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"/>
-    <attnum name="inertia" unit="kg.m2" val="1.00"/>
+    <attnum name="inertia" unit="kg.m2" min="0.5" max="1.5" val="1.00"/>
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="500"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
-    <attnum name="rolling resistance" val="0.00105"/>
+    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"/>
     <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
@@ -324,12 +324,12 @@
     <attnum name="rim diameter" unit="in" min="13" max="18" val="18.0"/>
     <attnum name="tire width" unit="mm" min="135" max="200" val="200"/>
     <attnum name="tire height-width ratio" min="0.5" max="1.0" val="0.8"/>
-    <attnum name="inertia" unit="kg.m2" val="1.00"/>
+    <attnum name="inertia" unit="kg.m2" min="0.5" max="1.5" val="1.00"/>
 
     <!-- initial ride height -->
     <attnum name="ride height" unit="mm" min="200" max="800" val="500"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.7"/>
-    <attnum name="rolling resistance" val="0.00105"/>
+    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="stiffness" min="5.0" max="20.0" val="20.0"/>
     <attnum name="dynamic friction" min="75" max="120" val="100" unit="%"/>
     <attnum name="elasticity factor" min="0" max="0.9" val="0.7"/>
