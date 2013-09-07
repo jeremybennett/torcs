@@ -41,6 +41,7 @@ graphics drivers.
 - Press F1 anytime to get help (do it as well during the ride to learn about
   the options).
 - Read the FAQ to learn about split screen multiplayer and more.
+- Or watch videos, you find the links on www.torcs.org
 
 4. Getting Help
 ---------------
@@ -51,11 +52,13 @@ torcs-users mailing list, you find the link on www.torcs.org.
 
 5. Car Setups
 -------------
-For the player driver, the car parameters are located in the files
-"drivers/human/car*.xml" depending on the car used. You can
-change them with a text editor, for more information look into the
-robot tutorial chapter 5
-(http://www.berniw.org/torcs/robot/ch5/properties.html).
+Since 1.3.5 there is a car setup screen integrated in TORCS, if you run
+a practice or qualifying session as human player you can hit the "esc"
+(escape) key, then in the menu "setup car, restart" or if the track has
+a pit, make a pit stop and hit there the "setup" button. Your setups
+are stored then in "drivers/human/*.xml". For some information about the
+properties ook into the robot tutorial chapter 5
+(http://www.berniw.org/tutorials/robot/ch5/properties.html).
 
 6. Creating Tracks
 ------------------
