@@ -1645,6 +1645,8 @@ evalUnit (char *unit, tdble *dest, int flg)
 	coeff = 0.0254f; /* m */
     } else if ((strcmp(unit, "lbs") == 0)  || (strcmp(unit, "lb") == 0)) {
 	coeff = 0.45359237f; /* kg */
+	} else if (strcmp(unit, "lbf") == 0) {
+		coeff = 0.45359237f*G; /* N (kg*m/s^2) */
     } else if ((strcmp(unit, "slug") == 0) || (strcmp(unit, "slugs") == 0)) {
 	coeff = 14.59484546f; /* kg */
     } else if (strcmp(unit, "kPa") == 0) {

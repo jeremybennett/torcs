@@ -235,9 +235,9 @@ static std::vector<cGuiSetupValue*> values;
 
 static const char* unitdeg = "deg";
 static const char* unitkpa = "kPa";
-static const char* unitlbsin = "lbs/in";
+static const char* unitlbfin = "lbf/in";
 static const char* unitmm = "mm";
-static const char* unitlbsins = "lbs/in/s";
+static const char* unitlbfins = "lbf/in/s";
 static const char* unitNm = "N.m";
 
 static const char* f52 = "%5.2f";
@@ -350,12 +350,12 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	GfuiLabelCreate(scrHandle, "Toe [deg]:", font, x0, y0 + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	int y = y0 + (3.3f * dy);
 	col = 0;
-	GfuiLabelCreate(scrHandle, "Spring [lbs/in]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Spring [lbf/in]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Packers [mm]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Slow bump [lbs/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Slow rebound [lbs/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Fast bump [lbs/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Fast rebound [lbs/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Slow bump [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Slow rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Fast bump [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Fast rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 
 	static const char* wheellabel[4] = {"Front right wheel", "Front left wheel", "Rear right wheel", "Rear left wheel"};
 
@@ -367,12 +367,12 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheeltoe[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
 		y = y0 + (3.3f * dy);
 		col = 0;	
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspspring[i]), unitlbsin, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspspring[i]), unitlbfin, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->susppackers[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastbump[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastrebound[i]), unitlbsins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowbump[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowrebound[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastbump[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastrebound[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 	
 	}
 
@@ -396,10 +396,10 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 
 	col = 1;
 	i = 2;
-	GfuiLabelCreate(scrHandle, "ARB spring [lbs/in]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "3rd spring [lbs/in]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "3rd bump [lbs/in/s]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "3rd rebound [lbs/in/s]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "ARB spring [lbf/in]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "3rd spring [lbf/in]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "3rd bump [lbf/in/s]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "3rd rebound [lbf/in/s]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "3rd X0 [mm]:", font, x0 + xoff*i + xoff2, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	
 	static const char* axlelabel[2] = {"Front axle", "Rear axle"};
@@ -410,10 +410,10 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		i = j + 3;
 
 		GfuiLabelCreate(scrHandle, axlelabel[j], font, x0 + xoff*i + xoff2, y, GFUI_ALIGN_HL_VB, 0);
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->arbspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdspring[j]), unitlbsin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdbump[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
-		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdrebound[j]), unitlbsins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->arbspring[j]), unitlbfin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdspring[j]), unitlbfin, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdbump[j]), unitlbfins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdrebound[j]), unitlbfins, d5, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->thirdX0[j]), unitmm, d3, font, x0 + xoff*i + xoff2, y + (col++ * dy), 102, 5));
 	}
 
