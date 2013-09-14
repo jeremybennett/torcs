@@ -290,8 +290,13 @@ Changes since 1.3.4
 - Refitted various Historic cars with real world data (Bernhard).
 - Adopted car1-trb3 car and trb3 category for setup screen (Bernhard).
 - Adopted robots to setup changes (Bernhard).
-- Changed version to 1.3.5-test1
-
+- Changed version to 1.3.5-test1 (Bernhard).
+- Updated Windows installer (Bernhard).
+- Released as 1.3.5-test1 (Bernhard).
+- Added support for unit "lbf" in params.cpp (Bernhard).
+- Changed unit from lbs to lbf in carsetupscreen for catalogue like spring/damper rates
+  (with lbs the problem is that it is not detected as force, so the 9.80665 (G) is not
+  taken into account) (Bernhard).
 
 
 11. TODO/Notes
@@ -352,7 +357,7 @@ p406 -> replace with car1-trb4
 rework buggy, baja bug
 replace rally cars
 Remove invalid geometry from tracks 
-
+convert force units internally from lbs to lbf
 
 
 Later:
