@@ -2172,6 +2172,7 @@ if exist .\data\tracks\road\wheel-2\shadow2.rgb copy .\data\tracks\road\wheel-2\
 if exist .\data\tracks\road\wheel-2\texwheel.rgb copy .\data\tracks\road\wheel-2\texwheel.rgb .\%RUNTIMEDIR%\tracks\road\wheel-2\texwheel.rgb
 if exist .\data\tracks\road\wheel-2\torcs1.rgb copy .\data\tracks\road\wheel-2\torcs1.rgb .\%RUNTIMEDIR%\tracks\road\wheel-2\torcs1.rgb
 if exist .\data\tracks\road\wheel-2\truck0.rgb copy .\data\tracks\road\wheel-2\truck0.rgb .\%RUNTIMEDIR%\tracks\road\wheel-2\truck0.rgb
+if exist .\data\tracks\road\wheel-2\raceline.png copy .\data\tracks\road\wheel-2\raceline.png .\%RUNTIMEDIR%\tracks\road\wheel-2\raceline.png
 
 
 if exist .\data\tracks\road\street-1\*.* call .\create_dir .\%RUNTIMEDIR%

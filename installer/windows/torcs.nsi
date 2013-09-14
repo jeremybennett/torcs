@@ -2255,6 +2255,7 @@ SetOutPath "$INSTDIR\data\music"
   File "base\tracks\road\wheel-2\wheel-2.png"
   File "base\tracks\road\wheel-2\wheel-2.xml"
   File "base\tracks\road\wheel-2\wheel.png"
+  File "base\tracks\road\wheel-2\raceline.png"
   
 SetOutPath "$INSTDIR\tracks\road\brondehach"
   File "base\tracks\road\brondehach\01.png"
