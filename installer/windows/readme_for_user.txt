@@ -54,10 +54,10 @@ torcs-users mailing list, you find the link on www.torcs.org.
 -------------
 Since 1.3.5 there is a car setup screen integrated in TORCS, if you run
 a practice or qualifying session as human player you can hit the "esc"
-(escape) key, then in the menu "setup car, restart" or if the track has
-a pit, make a pit stop and hit there the "setup" button. Your setups
-are stored then in "drivers/human/*.xml". For some information about the
-properties ook into the robot tutorial chapter 5
+(escape) key, then choose in the menu "setup car, restart", or if the
+track has a pit, make a pit stop and hit there the "setup" button. Your
+setups are stored then in "drivers/human/*.xml". For some information
+about the properties look into the robot tutorial chapter 5
 (http://www.berniw.org/tutorials/robot/ch5/properties.html).
 
 6. Creating Tracks
