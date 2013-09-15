@@ -299,6 +299,7 @@ Changes since 1.3.4
   taken into account) (Bernhard).
 - Fixed some z-fighting on wheel-2 (Bernhard).
 - Added raceline to wheel-2 (Bernhard).
+- Adjusted lighting of wheel-2, brightened shadow map (Bernhard).
 
 
 11. TODO/Notes
