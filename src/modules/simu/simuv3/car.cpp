@@ -41,8 +41,6 @@ SimCarConfig(tCar *car)
 
     car->fuel_time = 0.0;
     car->fuel_consumption = 0.0;
-    car->carElt->_fuelTotal = 0.0;
-    car->carElt->_fuelInstant = 10.0;
 
     car->carElt->priv.collision_state.collision_count = 0;
     for (i=0; i<3; i++) {
@@ -299,27 +297,6 @@ SimCarUpdateSpeed(tCar *car)
     t3Dd original;
     t3Dd updated;
     t3Dd angles;
-    tdble	mass;
-    mass = car->mass + car->fuel;
-
-    
-    {
-        // fuel consumption
-        tdble delta_fuel = car->fuel_prev - car->fuel;
-        car->fuel_prev = car->fuel;
-        if (delta_fuel > 0) {
-            car->carElt->_fuelTotal += delta_fuel;
-        }
-        tdble fi;
-        tdble as = sqrt(car->airSpeed2);
-        if (as<0.1) {
-            fi = 99.9;
-        } else {
-            fi = 100000 * delta_fuel / (as*SimDeltaTime);
-        }
-        tdble alpha = 0.1;
-        car->carElt->_fuelInstant = (1.0-alpha)*car->carElt->_fuelInstant + alpha*fi;
-    }
 
     // update angles
     angles.x = car->DynGCg.pos.ax;
