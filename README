@@ -303,6 +303,9 @@ Changes since 1.3.4
 - Removed isnan/isinf check in simu.cpp on gear variable, reported by Rene Ladan
   (Rene, Bernhard).
 - Fixed compilation of simuv3 (Bernhard).
+- Added raceline to e-track-6 (Bernhard).
+- Adjusted lighting of e-track-6 (Bernhard).
+- Adjusted surface properties of e-track-6 (Bernhard).
 
 
 11. TODO/Notes
@@ -314,7 +317,6 @@ TODO for 1.3.5
 - Finish new e-track-2
 - Review wheel specular values (seen weird rendering on youtube, not reproducable here)
 - Timed races (e.g. 24h).
-- Add raceline to e-track-6.
 - Fix pending penalties at the end of the race (transform to penalty time, release memory)
 - Review penalty/clearing
 - add wdbees minspeed
