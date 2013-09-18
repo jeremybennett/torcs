@@ -1696,6 +1696,7 @@ if exist .\data\tracks\road\e-track-6\pylon1.rgb copy .\data\tracks\road\e-track
 if exist .\data\tracks\road\e-track-6\shadow2.rgb copy .\data\tracks\road\e-track-6\shadow2.rgb .\%RUNTIMEDIR%\tracks\road\e-track-6\shadow2.rgb
 if exist .\data\tracks\road\e-track-6\torcsad1.rgb copy .\data\tracks\road\e-track-6\torcsad1.rgb .\%RUNTIMEDIR%\tracks\road\e-track-6\torcsad1.rgb
 if exist .\data\tracks\road\e-track-6\torcsad2.rgb copy .\data\tracks\road\e-track-6\torcsad2.rgb .\%RUNTIMEDIR%\tracks\road\e-track-6\torcsad2.rgb
+if exist .\data\tracks\road\e-track-6\raceline.png copy .\data\tracks\road\e-track-6\raceline.png .\%RUNTIMEDIR%\tracks\road\e-track-6\raceline.png
 
 if exist .\data\tracks\g-track-1\*.* call .\create_dir .\%RUNTIMEDIR%
 if exist .\data\tracks\g-track-1\*.* call .\create_dir .\%RUNTIMEDIR%\tracks
