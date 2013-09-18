@@ -2,7 +2,7 @@
 <!-- 
     file                 : e-track-5.xml
     created              : Sun Apr 30 15:45:57 CEST 2000
-    copyright            : (C) 2000 by Eric Espie                         
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
 -->
@@ -21,52 +21,77 @@
 
 <params name="e-track-6" type="template" mode="mw">
 
-  <!-- Surfaces -->
-  <section name="Surfaces">
-      &default-surfaces;
-      <section name="e6grass6">
-	<attnum name="color R1" val="0.4"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.1"/>
-	<attnum name="color R2" val="0.5"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.2"/>
-	<attstr name="texture name" val="tr-grass6.rgb"/>
-	<attstr name="texture type" in="discrete, continuous" val="continuous"/>
-	<attnum name="texture size" val="5.0" unit="m"/>
-	<attnum name="texture mipmap" val="4.0"/>
+	<!-- Surfaces -->
+	<section name="Surfaces">
+		&default-surfaces;
+	  
+		<section name="road1-e6">
+			<attnum name="color R1" val="0.1"/>
+			<attnum name="color G1" val="0.4"/>
+			<attnum name="color B1" val="0.1"/>
+			<attnum name="color R2" val="0.2"/>
+			<attnum name="color G2" val="0.5"/>
+			<attnum name="color B2" val="0.2"/>
+			<attstr name="texture name" val="tr-road1.rgb"/>
+			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+			<attnum name="texture size" val="30.0" unit="m"/>
+			<attnum name="texture mipmap" val="4.0"/>
 
-	<attstr name="bump name" val=""/>
-	<attnum name="bump size" val="2.0" unit="m"/>
+			<attstr name="bump name" val=""/>
+			<attnum name="bump size" val="2.0" unit="m"/>
+			<attstr name="raceline name" val="raceline.png"/> 
 
-	<attnum name="friction"           val="0.4"/>
-	<attnum name="rolling resistance" val="0.015"/>
+			<attnum name="friction"           val="1.08"/>
+			<attnum name="rolling resistance" val="0.012"/>
 
-	<attnum name="roughness" val="0.05"/>
-	<attnum name="roughness wavelength" val="0.8"/>
-      </section>
-      <section name="e6-road1-grass6-l2">
-	<attnum name="color R1" val="0.4"/>
-	<attnum name="color G1" val="0.4"/>
-	<attnum name="color B1" val="0.2"/>
-	<attnum name="color R2" val="0.5"/>
-	<attnum name="color G2" val="0.5"/>
-	<attnum name="color B2" val="0.3"/>
-	<attstr name="texture name" val="tr-e6-road1-grass6-l2.rgb"/>
-	<attstr name="texture type" in="discrete, continuous" val="discrete"/>
-	<attnum name="texture size" val="5.0" unit="m"/>
-	<attnum name="texture mipmap" val="4.0"/>
+			<attnum name="roughness" val="0.0009"/>
+			<attnum name="roughness wavelength" val="1.0"/>
+		</section>
+		
+		<section name="e6grass6">
+			<attnum name="color R1" val="0.4"/>
+			<attnum name="color G1" val="0.4"/>
+			<attnum name="color B1" val="0.1"/>
+			<attnum name="color R2" val="0.5"/>
+			<attnum name="color G2" val="0.5"/>
+			<attnum name="color B2" val="0.2"/>
+			<attstr name="texture name" val="tr-grass6.rgb"/>
+			<attstr name="texture type" in="discrete, continuous" val="continuous"/>
+			<attnum name="texture size" val="5.0" unit="m"/>
+			<attnum name="texture mipmap" val="4.0"/>
 
-	<attstr name="bump name" val=""/>
-	<attnum name="bump size" val="2.0" unit="m"/>
+			<attstr name="bump name" val=""/>
+			<attnum name="bump size" val="2.0" unit="m"/>
 
-	<attnum name="friction"           val="0.7"/>
-	<attnum name="rolling resistance" val="0.005"/>
+			<attnum name="friction"           val="0.4"/>
+			<attnum name="rolling resistance" val="0.03"/>
 
-	<attnum name="roughness" val="0.03"/>
-	<attnum name="roughness wavelength" val="1.5"/>
-      </section>
-  </section>
+			<attnum name="roughness" val="0.05"/>
+			<attnum name="roughness wavelength" val="0.8"/>
+		</section>
+		
+		<section name="e6-road1-grass6-l2">
+			<attnum name="color R1" val="0.4"/>
+			<attnum name="color G1" val="0.4"/>
+			<attnum name="color B1" val="0.2"/>
+			<attnum name="color R2" val="0.5"/>
+			<attnum name="color G2" val="0.5"/>
+			<attnum name="color B2" val="0.3"/>
+			<attstr name="texture name" val="tr-e6-road1-grass6-l2.rgb"/>
+			<attstr name="texture type" in="discrete, continuous" val="discrete"/>
+			<attnum name="texture size" val="5.0" unit="m"/>
+			<attnum name="texture mipmap" val="4.0"/>
+
+			<attstr name="bump name" val=""/>
+			<attnum name="bump size" val="2.0" unit="m"/>
+
+			<attnum name="friction"           val="0.7"/>
+			<attnum name="rolling resistance" val="0.04"/>
+
+			<attnum name="roughness" val="0.03"/>
+			<attnum name="roughness wavelength" val="1.5"/>
+		</section>
+	</section>
 
   <!-- Objects -->
   <section name="Objects">
@@ -99,13 +124,13 @@
     <attnum name="diffuse color G" val="1"/>
     <attnum name="diffuse color B" val="1"/>
 
-    <attnum name="specular color R" val="0.5"/>
-    <attnum name="specular color G" val="0.5"/>
-    <attnum name="specular color B" val="0.5"/>
+    <attnum name="specular color R" val="0.1"/>
+    <attnum name="specular color G" val="0.1"/>
+    <attnum name="specular color B" val="0.1"/>
 
-    <attnum name="light position y" val="900"/>
-    <attnum name="light position x" val="-3220"/>
-    <attnum name="light position z" val="1543"/>
+    <attnum name="light position y" val="9000"/>
+    <attnum name="light position x" val="-32200"/>
+    <attnum name="light position z" val="15430"/>
 
     <section name="Environment Mapping">
       <section name="1">
@@ -134,6 +159,9 @@
 
     <attnum name="width" unit="m" val="13"/>
     <attnum name="profil steps length" unit="m" val="10"/>
+		<attnum name="raceline widthscale" val="1.5"/>
+		<attnum name="raceline int" val="2"/>
+		<attnum name="raceline ext" val="2"/>
 
     <!-- PITS -->
     <section name="Pits">
@@ -154,7 +182,7 @@
       <section name="start lane">
         <attstr name="type" val="str"/>
 	<attnum name="lg" unit="m" val="150"/>
-	<attstr name="surface" val="road1"/>
+	<attstr name="surface" val="road1-e6"/>
 
 	<section name="Right Side">
 	  <attnum name="start width" val="10"/>
@@ -199,7 +227,7 @@
 	</section>
 
 	<section name="Left Side">
-	  <attstr name="surface" val="road1"/>
+	  <attstr name="surface" val="road1-e6"/>
 	  <attnum name="end width" val="10"/>
 	</section>
       </section>
@@ -927,7 +955,7 @@
 	</section>
 
 	<section name="Left Side">
-	  <attstr name="surface" val="road1"/>
+	  <attstr name="surface" val="road1-e6"/>
 	  <attnum name="end width" val="15"/>
 	</section>
       </section>

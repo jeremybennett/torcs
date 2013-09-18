@@ -44,7 +44,7 @@ DATA      = e-track-6.xml e-track-6.acc readme.txt \
 			treeUGLIES01_n.png treeUGLIES02_n.png treeUGLIES04_n.png TRIBA07_arbor_n.png \
 			TRIBA08.png TRIBA09_arbor_n.png TRIBA11.png TRIBB01.png TRIBB02.png TRIBB03.png \
 			wall2.png WHEEL.png WHEELS6.png ZBRID.png ZPIT3.png ZPIT.png block1.rgb \
-			concrete2.rgb concrete.rgb pylon1.rgb shadow2.rgb torcsad1.rgb torcsad2.rgb
+			concrete2.rgb concrete.rgb pylon1.rgb shadow2.rgb torcsad1.rgb torcsad2.rgb raceline.png
 
 data-tracks-road_PKGFILES	= $(DATA)
 
