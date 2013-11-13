@@ -2719,7 +2719,7 @@ fi
 # Define the identity of the package.
 
  PACKAGE=torcs
- VERSION=1.3.5-test1
+ VERSION=1.3.5
 
 
 cat >>confdefs.h <<_ACEOF
