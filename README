@@ -143,10 +143,8 @@ Command line arguments:
 
 7. Testing
 ----------
-Please pick bugs below and retest them (you can find the original reports on
-http://sourceforge.net/tracker/?group_id=3777&atid=103777, select "any" bugs to
-see as well the closed ones). If you find problems which should be already
-fixed or new ones please report them to the torcs-users mailing list.
+If you find problems which should be already fixed or new ones please report them
+to the torcs-users mailing list.
 
 
 8. Getting Help
@@ -296,16 +294,17 @@ Changes since 1.3.4
 - Added support for unit "lbf" in params.cpp (Bernhard).
 - Changed unit from lbs to lbf in carsetupscreen for catalogue like spring/damper rates
   (with lbs the problem is that it is not detected as force, so the 9.80665 (G) is not
-  taken into account) (Bernhard).
+  taken into account when converting to SI for internal use) (Bernhard).
 - Fixed some z-fighting on wheel-2 (Bernhard).
 - Added raceline to wheel-2 (Bernhard).
 - Adjusted lighting of wheel-2, brightened shadow map (Bernhard).
 - Removed isnan/isinf check in simu.cpp on gear variable, reported by Rene Ladan
-  (Rene, Bernhard).
+  (FreeBSD LLVM clang compatibility) (Rene, Bernhard).
 - Fixed compilation of simuv3 (Bernhard).
 - Added raceline to e-track-6 (Bernhard).
 - Adjusted lighting of e-track-6 (Bernhard).
 - Adjusted surface properties of e-track-6 (Bernhard).
+- Totally reworked e-track-2 (Bernhard).
 
 
 11. TODO/Notes
@@ -314,20 +313,20 @@ Changes since 1.3.4
 
 TODO for 1.3.5
 --------------
-- Finish new e-track-2
-- Review wheel specular values (seen weird rendering on youtube, not reproducable here)
-- Timed races (e.g. 24h).
-- Fix pending penalties at the end of the race (transform to penalty time, release memory)
-- Review penalty/clearing
-- add wdbees minspeed
+- wdbee speed max
 
-TODO for 1.3.6/x (squeezing the last drop out of 1.3)
+
+TODO for 1.3.6/x
 ----------------
 - Review and eventually apply mac os x build
 - Review MorphOS changes
 - Review/reduce dynamic memory allocation/release during rendering
+- Review/apply David Savinkoff's automatic gear change patch 
+- Fix pending penalties at the end of the race (transform to penalty time, release memory)
+- Review penalty/clearing
+- Review wheel specular values (seen weird rendering on youtube, not reproducable here)
 
-eventually (otherwise in 1.4):
+eventually (otherwise in 1.4.x):
 - Skidmarks/shadows masking with stencil
 - Phong specular highlights/in shadow occlusion
 - Skidmarks to simu/persistency (get rid of frame rate dependency)
@@ -335,26 +334,28 @@ eventually (otherwise in 1.4):
 - Configurable rules in racemanager (no damage, no fuel, damage/fuelx2/3/4/5, etc.)
 - Store all graphics engine state in a context struct/object (to be able to render telemetry
   in the car setup screen or during a running session)
-- track extensions (crossings, split/join, variable width)
+- Telemetry
+- Timed races (e.g. 24h).
+- Menu trackmaps and scaling
 
-
-TODO for 1.4.0
+TODO for 1.4.x
 --------------
 - Robot interface adoptions (maybe askfeatures, callonce, grid, postprocess, we will see...)
 - More Rules.
-- Apply SDL patch from Brian Gavin (rescheduled to 1.4.0 to get to to test
-  seriously).
+- Apply SDL patch from Brian Gavin but moving directly to SDL 2.0.
 - Update OpenAL to 1.1, fix use of deprecated stuff.
 - Car asignment for human players.
 - Sound (alut depricated/scheduling for lots of cars)
 - Make it possible for a robot module to carry any arbitrary number of
   drivers (instead of static 10).
-- Pace car and trucks to remove wrecks (remove "virtual" crane).
+- Pace car and trucks to remove wrecks (remove "virtual" crane?).
 - Replace wav sounds with ogg?
+- Track extensions (crossings, split/join, variable width)
+- Replays
 
 TODO TRB
 --------
-- RSS feed (suggested by Quinten)
+- RSS feed(s) (suggested by Quinten)
 
 TODO for Compliance
 -------------------
