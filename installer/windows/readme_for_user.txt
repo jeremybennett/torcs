@@ -4,7 +4,8 @@ First a big welcome, I hope you will enjoy your ride:-) Do not forget to look
 into the TORCS program menu, it contains very interesting things (e.g. a link
 to the online track generator, track editor, documentation, etc.).
 
-Best regards
+Kind regards
+
 Bernhard
 
 1. Licenses
@@ -18,8 +19,8 @@ Bernhard
 
 1. Licenses
 -----------
-Be aware of that not the whole TORCS distribution content has the same
-license. Non free in the GPL or Free Art License sense are:
+Not the whole TORCS distribution content has the same license. Non free in the
+GPL or Free Art License sense are:
 - The cars in cars/kc-* and cars/pw-* directories, have a look at the specific
   readme.txt files in those directories (rally and classic cars).
 - The stripe utility. It is free for noncommercial use and is included with
