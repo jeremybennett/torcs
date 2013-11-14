@@ -146,6 +146,7 @@ typedef struct {
     double		lastLapTime;
     double		curTime;
     tdble		topSpeed;
+	tdble		currentMinSpeedForLap;	// Min speed on current lap, reset on start line crossing
     int			laps;
     int			nbPitStops;
     int			remainingLaps;
@@ -169,6 +170,7 @@ typedef struct {
 #define _curTime		race.curTime
 #define _lastLapTime		race.lastLapTime
 #define _topSpeed		race.topSpeed
+#define _currentMinSpeedForLap	race.currentMinSpeedForLap
 #define _laps			race.laps
 #define _nbPitStops		race.nbPitStops
 #define _remainingLaps		race.remainingLaps

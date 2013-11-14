@@ -146,6 +146,7 @@ ReManage(tCarElt *car)
 	
 	if (car->_speed_x < info->botSpd) {
 		info->botSpd = car->_speed_x;
+		car->_currentMinSpeedForLap = car->_speed_x;
 	}
 	
 	// Pitstop.
@@ -302,6 +303,7 @@ ReManage(tCarElt *car)
 			
 					info->topSpd = car->_speed_x;
 					info->botSpd = car->_speed_x;
+					car->_currentMinSpeedForLap = car->_speed_x;
 					if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
 						car->_state |= RM_CAR_STATE_FINISH;
 						s->_raceState = RM_RACE_FINISHING;
