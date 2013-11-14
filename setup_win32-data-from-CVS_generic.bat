@@ -1444,7 +1444,6 @@ if exist .\data\tracks\road\e-track-2\background.png copy .\data\tracks\road\e-t
 if exist .\data\tracks\road\e-track-2\back-sign.png copy .\data\tracks\road\e-track-2\back-sign.png .\%RUNTIMEDIR%\tracks\road\e-track-2\back-sign.png
 if exist .\data\tracks\road\e-track-2\barrier-1.png copy .\data\tracks\road\e-track-2\barrier-1.png .\%RUNTIMEDIR%\tracks\road\e-track-2\barrier-1.png
 if exist .\data\tracks\road\e-track-2\barrier-2.png copy .\data\tracks\road\e-track-2\barrier-2.png .\%RUNTIMEDIR%\tracks\road\e-track-2\barrier-2.png
-if exist .\data\tracks\road\e-track-2\bat copy .\data\tracks\road\e-track-2\bat .\%RUNTIMEDIR%\tracks\road\e-track-2\bat
 if exist .\data\tracks\road\e-track-2\block4f.png copy .\data\tracks\road\e-track-2\block4f.png .\%RUNTIMEDIR%\tracks\road\e-track-2\block4f.png
 if exist .\data\tracks\road\e-track-2\block4s.png copy .\data\tracks\road\e-track-2\block4s.png .\%RUNTIMEDIR%\tracks\road\e-track-2\block4s.png
 if exist .\data\tracks\road\e-track-2\block5-arbor_n.png copy .\data\tracks\road\e-track-2\block5-arbor_n.png .\%RUNTIMEDIR%\tracks\road\e-track-2\block5-arbor_n.png
