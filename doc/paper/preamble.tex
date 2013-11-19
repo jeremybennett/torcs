@@ -1,0 +1,348 @@
+%% Pre-amble - commonly defined macros.
+
+%% Packages
+
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{amsthm}
+\usepackage{dsfont}
+%%\usepackage{theorem}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{mathrsfs}
+\usepackage{paralist}
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{makeidx} 
+\usepackage{color}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{multido} 
+\usepackage{varioref}
+\usepackage{wrapfig} %% for wrapping text around figures
+%\usepackage{setspace} %% for using halfspaces
+\usepackage[numbers]{natbib}
+%\usepackage[left=2.5cm,right=2.5cm]{geometry}
+%\usepackage[french, english]{babel}
+
+\numberwithin{equation}{section} 
+
+\theoremstyle{plain} \newtheorem{remark}{Remark}[section]
+\theoremstyle{plain} \newtheorem{definition}{Definition}[section]
+\theoremstyle{plain} \newtheorem{example}{Example}[section]
+\theoremstyle{plain} \newtheorem{assumption}{Assumption}[section]
+\theoremstyle{plain} \newtheorem{conjecture}{Conjecture}[section]
+\theoremstyle{plain} \newtheorem{theorem}{Theorem}[section]
+\theoremstyle{plain} \newtheorem{proposition}{Proposition}[section]
+\theoremstyle{plain} \newtheorem{lemma}{Lemma}[section]
+\theoremstyle{plain} \newtheorem{corollary}{Corollary}[section]
+
+
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%      \ifdim\lastskip<1.5em \hskip-\lastskip
+%      \hskip1.5em plus0em minus0.5em \fi \nobreak
+%      \vrule height0.5em width0.5em depth0.25em\fi}
+
+\newcommand \E {\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}
+\newcommand \hE {\hat{\mathop{\mbox{\ensuremath{\mathbb{E}}}}\nolimits}}
+\renewcommand \Pr {\mathop{\mbox{\ensuremath{\mathbb{P}}}}\nolimits}
+\newcommand \given {\mathrel{|}}
+\newcommand \gvn {|}
+\newcommand \eq {{=}}
+\newcommand{\set}[1]{\left\{\, #1 \,\right\} }
+\newcommand{\cset}[2]{\left\{\, #1 ~\middle|~ #2 \,\right\} }
+\newcommand{\meas}[1]{\mu\left(#1\right)}
+
+%% Special characters
+\newcommand\Reals {{\mathds{R}}}
+\newcommand\Naturals {{\mathds{N}}} 
+
+\newcommand \FB {{\mathfrak{B}}}
+\newcommand \FD {{\mathfrak{D}}}
+\newcommand \FF {{\mathfrak{F}}}
+\newcommand \FM {{\mathfrak{M}}}
+\newcommand \FK {{\mathfrak{K}}}
+\newcommand \FJ {{\mathfrak{J}}}
+\newcommand \FL {{\mathfrak{L}}}
+\newcommand \FO {{\mathfrak{O}}}
+\newcommand \FS {{\mathfrak{S}}}
+\newcommand \FT {{\mathfrak{T}}}
+\newcommand \FP {{\mathfrak{P}}}
+\newcommand \FR {{\mathfrak{R}}}
+
+
+\newcommand \CA {{\mathcal{A}}}
+\newcommand \CB {{\mathcal{B}}}
+\newcommand \CC {{\mathcal{C}}}
+\newcommand \CD {{\mathcal{D}}}
+\newcommand \CE {{\mathcal{E}}}
+\newcommand \CF {{\mathcal{F}}}
+\newcommand \CG {{\mathcal{G}}}
+\newcommand \CH {{\mathcal{H}}}
+\newcommand \CJ {{\mathcal{J}}}
+\newcommand \CL {{\mathcal{L}}}
+\newcommand \CM {{\mathcal{M}}}
+\newcommand \CN {{\mathcal{N}}}
+\newcommand \CO {{\mathcal{O}}}
+\newcommand \CP {{\mathcal{P}}}
+\newcommand \CQ {{\mathcal{Q}}}
+\newcommand \CR {{\mathcal{R}}}
+\newcommand \CS {{\mathcal{S}}}
+\newcommand \CT {{\mathcal{T}}}
+\newcommand \CU {{\mathcal{U}}}
+\newcommand \CV {{\mathcal{V}}}
+\newcommand \CW {{\mathcal{W}}}
+\newcommand \CX {{\mathcal{X}}}
+\newcommand \CY {{\mathcal{Y}}}
+\newcommand \CZ {{\mathcal{Z}}}
+
+\newcommand \BA {{\mathbb{A}}}
+\newcommand \BI {{\mathbb{I}}}
+\newcommand \BS {{\mathbb{S}}}
+
+\newcommand \bx {{\mathbf{x}}}
+\newcommand \by {{\mathbf{y}}}
+\newcommand \bu {{\mathbf{u}}}
+\newcommand \bw {{\mathbf{w}}}
+\newcommand \ba {{\mathbf{a}}}
+\newcommand \bat {{\mathbf{a}_t}}
+\newcommand \bh {{\mathbf{h}}}
+\newcommand \bo {{\mathbf{o}}}
+\newcommand \bp {{\mathbf{p}}}
+\newcommand \bs {{\mathbf{s}}}
+\newcommand \br {{\mathbf{r}}}
+
+\newcommand \SA {\mathscr{A}}
+\newcommand \SB {\mathscr{B}}
+\newcommand \SC {\mathscr{C}}
+\newcommand \SF {\mathscr{F}}
+\newcommand \SG {\mathscr{G}}
+\newcommand \SH {\mathscr{H}}
+\newcommand \SJ {\mathscr{J}}
+\newcommand \SL {\mathscr{L}}
+\newcommand \SP {\mathscr{P}}
+%%\newcommand \SS {\mathscr{S}}
+\newcommand \ST {\mathscr{T}}
+\newcommand \SU {\mathscr{U}}
+\newcommand \SV {\mathscr{V}}
+\newcommand \SW {\mathscr{W}}
+
+
+\newcommand {\ha} {\hat{a}}
+
+\newcommand \p {\partial}
+\newcommand \D {\Delta}
+%%\newcommand \d {\delta}
+
+\newcommand \then{\Rightarrow}
+\newcommand \defn {\mathrel{\triangleq}}
+%\newcommand \StateSet {{\CQ}}
+
+
+%% Commands
+
+\newcommand \argmax{\mathop{\rm arg\,max}}
+\newcommand \argmin{\mathop{\rm arg\,min}}
+\newcommand \dtan{\mathop{\rm dtan}}
+\newcommand \sgn{\mathop{\rm sgn}}
+\newcommand \trace{\mathop{\rm trace}}
+
+\newcommand \onenorm[1]{\left\|#1\right\|_1}
+\newcommand \pnorm[2]{\left\|#1\right\|_{#2}}
+\newcommand \inftynorm[1]{\left\right\|#1\|_\infty}
+\newcommand \norm[1]{\left\|#1\right\|}
+
+%%\newcommand \defn {\triangleq}
+%%\newcommand \defn {\equiv}
+%%\newcommand \defn {\coloneq}
+%%\newcommand \defn {\stackrel{\text{\tiny def}}{=}}
+%%\newcommand \defn {\stackrel{\text{def}}{\hbox{\equalsfill}}}
+
+\newcommand \xt {x_t}
+\newcommand \st {s_t}
+\newcommand \rt {r_t}
+\newcommand \ot {o_t}
+\newcommand \at {a_t}
+\newcommand \xit {\xi_t}
+\newcommand \xti {\xt^i}
+\newcommand \wt {\omega_t}
+\newcommand \wti {\omega_t^i}
+
+\newcommand \xtn {x_{t+1}}
+\newcommand \stn {s_{t+1}}
+\newcommand \rtn {r_{t+1}}
+\newcommand \otn {o_{t+1}}
+\newcommand \atn {a_{t+1}}
+\newcommand \xitn {\xi_{t+1}}
+\newcommand \wtn {\omega_{t+1}}
+
+\newcommand \xtp {x_{t-1}}
+\newcommand \stp {s_{t-1}}
+\newcommand \rtp {r_{t-1}}
+\newcommand \otp {o_{t-1}}
+\newcommand \atp {a_{t-1}}
+\newcommand \xitp {\xi_{t-1}}
+\newcommand \wtp {\omega_{t-1}}
+
+\newcommand \stk {s_{t+k}}
+\newcommand \rtk {r_{t+k}}
+\newcommand \otk {o_{t+k}}
+\newcommand \atk {a_{t+k}}
+\newcommand \xitk {\xi_{t+k}}
+\newcommand \xitki {\xi_{t+k}^i}
+\newcommand \wtk {\omega_{t+k}}
+\newcommand \wtki {\omega_{t+k}^i}
+
+\newcommand \Vtp {{V_{t,T}^\pl}}
+\newcommand \Vtnp {{V_{t+1,T}^\pl}}
+\newcommand \Vtps {{V_{t,T}^\ps}}
+\newcommand \Vtnps {{V_{t+1,T}^\ps}}
+\newcommand \Vtpm {{V_{t,T}^{\pl,\mu}}}
+\newcommand \Vtnpm {{V_{\mu,t+1,T}^{\pl}}}
+\newcommand \Vtpsm {{V_{\mu,t,T}^{\ps}}}
+\newcommand \Vtnpsm {{V_{\mu,t+1,T}^{\ps}}}
+\newcommand \Vpsm {{V_\mu^\ps}}
+\newcommand \Vts {{V_{t,T}^*}}
+\newcommand \Vtns {{V_{t+1,T}^*}}
+\newcommand \Vp {{V^\pl}}
+\newcommand \Vpm {{V_\mu^\pl}}
+\newcommand \Vps {{V^\ps}}
+\newcommand \Vs {{V^*}}
+
+\newcommand \VL {V_L}
+\newcommand \VLn {v_n}
+\newcommand \VU {V_U}
+\newcommand \VUn {\hat{u}_n}
+\newcommand \VUi {\tilde{u}_i}
+\newcommand \VLk {V_L^k}
+\newcommand \VUk {V_U^k}
+\newcommand \VLkp {V_L^{k'}}
+\newcommand \VUkp {V_U^{k'}}
+\newcommand \DV {\Delta V}
+\newcommand \Dt {\Delta_t}
+
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\newcommand \Poisson {\mathop{\mathpzc{Poisson}}\nolimits}
+\newcommand \Multinomial {\mathop{\mathpzc{Multinomial}}\nolimits}
+\newcommand \Dirichlet {\mathop{\mathpzc{Dirichlet}}\nolimits}
+\newcommand \Bernoulli {\mathop{\mathpzc{Bernoulli}}\nolimits}
+\newcommand \Beta {\mathop{\mathpzc{Beta}}\nolimits}
+\newcommand \GammaDist {\mathop{\mathpzc{Gamma}}\nolimits}
+\newcommand \Softmax{\mathop{\mathpzc{Softmax}}\nolimits}
+\newcommand \Exp{\mathop{\mathpzc{Exp}}\nolimits}
+\newcommand \Uniform{\mathop{\mathpzc{Unif}}\nolimits}
+
+\newcommand \Beliefs {\Xi}
+\newcommand \Actions {\CA}
+\newcommand \States {\CS}
+\newcommand \Superstates {\CW}
+
+\newcommand \Borel[1] {\FF(#1)}
+\newcommand \Probs[1] {\FM(#1)}
+
+\newcommand \bel {\xi}
+\newcommand \belt {\xi_t}
+\newcommand \beltn {\xi_{t+1}}
+\newcommand \beltp {\xi_{t-1}}
+
+
+\newcommand \hats {\hat{a}_t^*}
+\newcommand \has {\hat{a}^*}
+\newcommand \hans {\hat{a}_n^*}
+\newcommand \as {a^*}
+\newcommand \ats {a_t^*}
+
+\newcommand \Vb {V^b}
+\newcommand \Vbp {V^{b'}}
+\newcommand \bV {\bar{V}}
+\newcommand \hV {\hat{V}}
+\newcommand \hVL {\hat{V}_L}
+\newcommand \hVU {\hat{V}_U}
+
+\newcommand \meanMDP {{\bar{\mu}_\xi}}
+
+\newcommand \Vmean {V_{\meanMDP}}
+\newcommand \Vpsmean {\Vmean^{\ps(\meanMDP)}}
+\newcommand \Vpmean {\Vmean^\pl}
+\newcommand \Vkmean {\Vmean^k}
+\newcommand \Vknmean {\Vmean^{k+1}}
+\newcommand \Vm {V_\mu}
+\newcommand \Vkm {\Vm^k}
+\newcommand \Vknm {\Vm^{k+1}}
+
+\newcommand \Tm {\CT_{\mu}}
+\newcommand \Tmean {\CT_{\meanMDP}}
+\newcommand \Tpmean {\Tmean^\pl}
+\newcommand \Tkmean {\Tmean^k}
+\newcommand \Tknmean {\Tmean^{k+1}}
+
+\newcommand \Rm {R_{\mu}}
+\newcommand \Rpm {\Rm^\pl}
+\newcommand \Rmean {R_{\meanMDP}}
+\newcommand \Rpmean {\Rmean^\pl}
+
+
+\newcommand \tV {\tilde{V}}
+\newcommand \hVn {\hat{V}_n}
+
+\newcommand \hv {\hat{v}}
+\newcommand \hvs {\hv^*}
+\newcommand \hvsc {\hv^*_c}
+\newcommand \hvst {\hv^*_t}
+\newcommand \vs {v^*}
+\newcommand \bv {\bar{v}}
+\newcommand \bvs {\bv^*}
+\newcommand \tv {\tilde{v}}
+\newcommand \tvs {\tilde{v}^*}
+\newcommand \hvn {\hat{v}_n}
+
+\newcommand \hks {\hat{k}^*}
+
+\newcommand \hbs {\hat{b}^*}
+\newcommand \hVLb {\hVL^{b}}
+\newcommand \hVLbp {\hVL^{b'}}
+\newcommand \hVLhbs {\hVL^{\hbs}}
+\newcommand \hVLbs {\hVL^{b^*}}
+\newcommand \hVUb {\hVU^{b}}
+\newcommand \hVUbp {\hVU^{b'}}
+\newcommand \hVUhbs {\hVU^{\hbs}}
+\newcommand \hVUbs {\hVU^{b^*}}
+
+\newcommand \Vhbs {V^{\hbs}}
+
+\newcommand \VLb {\VL^{b}}
+\newcommand \VLbp {\VL^{b'}}
+\newcommand \VLhbs {\VL^{\hbs}}
+\newcommand \VLbs {\VL^{b^*}}
+\newcommand \VUb {\VU^{b}}
+\newcommand \VUbp {\VU^{b'}}
+\newcommand \VUhbs {\VU^{\hbs}}
+\newcommand \VUbs {\VU^{b^*}}
+
+\newcommand \hDL {\hat{\Delta}_L}
+\newcommand \hDU {\hat{\Delta}_U}
+\newcommand \DL {\Delta_L}
+\newcommand \DU {\Delta_U}
+
+\newcommand \rmax {r_{\textrm{max}}}
+
+\newcommand \As {\Actions^*}
+\newcommand \Ase {\Actions^*_\epsilon}
+
+\newcommand \Lceil {\left\lceil}
+\newcommand \Rceil {\right\rceil}
+
+\newcommand {\msqr} {\vrule height0.33cm width0.44cm}
+\newcommand {\bsqr} {\vrule height0.55cm width0.66cm}
+
+\newcommand\ind[1]{\mathop{\mbox{\ensuremath{\mathbb{I}}}}\left\{#1\right\}}
+\newcommand\Ind{\mbox{\bf{I}}}
+
+\newcommand\dd{\,\mathrm{d}}

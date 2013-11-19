@@ -1,0 +1,63 @@
+\documentclass[a4paper]{article}
+
+\title{TORCS: The open racing car simulator}
+\author{Bernhard Wymann \and Eric Espi\'e \and Christophe Guionneau \and Christos Dimitrakakis \and R\'emi Coulom \and Andrew Sumner}
+
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+The oper racing car simulator (TORCS~\cite{TORCS}), is a modern, modular, highly-portable multi-player, multi-agent car simulator. Its high degree of modularity and portability render it ideal for artificial intelligence research. Indeed, a number of research- competitions and papers have already appeared that make use of the TORCS engine. The purpose of this document is to introduce the structure of TORCS to artificial intelligence and machine learning researchers and explain how it is possible to tests agents on the platform.
+
+TORCS can be used to develop artificially intelligent (AI) agents for a variety of problems. At the car level, new simulation modules can be developed, which include intelligent control systems for various car components. At the driver level, a low-level API gives detailed (but only partial) access to the simulation state. This could be used to develop anything from mid-level control systems to complex driving agents that find optimal racing lines, react successfully in unexpected situations and make good tactical race decisions. Finally, for researchers that like a challenge and are also interested in visual processing, a 3d projection interface is available.
+
+\section{The simulation engine}
+
+The simulation is a discrete-time simulation, with simple Euler integration of differential equations. The discretisation is set to $0.002s$ of simulated time. The simulator is geared towards simplicity, yet it handles all basic elements of a vehicular simulation.
+This includes (i) the basic properties of the vehicular system such as the mass and rotational inertia of the car, engine, wheels and other components  (ii) mechanical details such as different suspension types, links and differentials (iii) dynamic and static friction profile of tyres for different ground types, and finally (iv) a simple, but realistic, aerodynamic model including slipstreaming and ground effects.
+
+As TORCS is completely modular, the simulation can be easily replaced.\footnote{In fact, a more complex simulation with fewer simplifications in the contact forces and aerodynamics is also available.}
+This would be of particular interest to researchers interested in developing low-level controllers for electronic drive systems. 
+
+\section{The robots}
+
+In TORCS, the participating players are referred to as ``robots''. They are loaded as external modules in TORCS. This means that new artificially intelligent agents can be developed independently and they only have to satisfy the basic API requirements for robot code. At the moment, a large number of dedicated TORCS robots exist, some of which can operate at a level exceeding that of human performance in the game. Consequently, they form a challenging metric against any AI player must be evaluated.
+
+Before every race, each robot can gather and process information about the track's geometry and surfaces. It is up to the user to decide how much information of this information to use. This is an opportunity to calculate a reasonable initial racing line for the track, perform a suitable set-up for the cars and decide upon a team and pit strategy.
+
+The robots have the opportunity to interact the simulation every $0.02s$. The default interface is through a low-level API which can provide detailed information about the race status to the robot, exact position, distance from the edge of the track, the position of other cars, etc. Even if all the information is used, there are many parts of the simulation state to which the robots have no access. Consequently, even the basic driving problem is partially observable. 
+
+Robots may also use a calculated three-dimensional projection, instead of the low-level API. This is intended to be used for researchers that have an interest in visual processing. However, the overall problem then becomes much harder as there is significantly less information directly available. 
+
+\subsection{The API}
+
+There are a number of application interfaces available. A low-level API, SCR, and ...
+
+The API is implemented via \texttt{raceman.h}
+
+\section{The racing problem}
+
+The racing problem can be split into a number of different components, including robust control of the vehicle, dynamic and static trajectory planning, car setup, inference and vision, tactical decisions (such as overtaking) and finally overall racing strategy. With only a single car on the track, most of these problems can be seen as a partially observable Markov decision processes. However, in general they form a partially observable stochastic game. Having said that, there are a number of different objectives that may be formulated within the context of racing.
+
+The \emph{trajectory planning} problem is the problem of finding an optimal trajectory according to some criterion (such as time to complete the track).
+In the static case, we are given the track geometry and calculate the trajectory. The dynamic case involves calculating trajectories on the fly. This can happen for many reasons such as a lack of geometry information,  or an unexpected deviation from the trajectory, or the appearance of obstacles.
+
+\emph{Robust control} problems would include maintaining the
+The \emph{minimal time} problem is to find a driving policy that minimises the expected time taken to complete one or more laps of the track. It is easy to see that this objective such a can be formalised via an additive utility function, c.f. the racetrack problem in~\cite{Sutton+Barto:1998}.
+
+The \emph{inference} and \emph{vision} problems appear when the robot is not using the 3d-projection interface rather than the detailed low-level API information. In that case, the robot must infer its speed, its position on the track, the relative location of other cars, the distance to obstacles and track-edges, etc. However, inference problems already exist even with the API, since the robots do not have access to the simulation itself. Consequently, they must have some level of uncertainty regarding the effect of any action or plan. 
+
+The \emph{overall} racing problem itself can be formalised as maximising the probability of winning a race, minimising expected race rank or maximising the expected number of points obtained for the team in a championship setting. While it is possible to formulate an additive utility function for this problem, it would necessarily be very sparse. In that sense, it would be similar to the utility function in games such as go~\cite{gelly:uct-go}.
+
+\bibliographystyle{plain}
+\bibliography{torcs}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
