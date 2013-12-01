@@ -1,4 +1,5 @@
 \documentclass[a4paper]{article}
+\usepackage{url}
 
 \title{TORCS: The open racing car simulator}
 \author{Bernhard Wymann \and Eric Espi\'e \and Christophe Guionneau \and Christos Dimitrakakis \and R\'emi Coulom \and Andrew Sumner}
@@ -32,11 +33,9 @@ The robots have the opportunity to interact the simulation every $0.02s$. The de
 
 Robots may also use a calculated three-dimensional projection, instead of the low-level API. This is intended to be used for researchers that have an interest in visual processing. However, the overall problem then becomes much harder as there is significantly less information directly available. 
 
-\subsection{The API}
+%\subsection{The API}
 
-There are a number of application interfaces available. A low-level API, SCR, and ...
-
-The API is implemented via \texttt{raceman.h}
+%The low-level API is implemented via \texttt{raceman.h}
 
 \section{The racing problem}
 
@@ -51,6 +50,18 @@ The \emph{minimal time} problem is to find a driving policy that minimises the e
 The \emph{inference} and \emph{vision} problems appear when the robot is not using the 3d-projection interface rather than the detailed low-level API information. In that case, the robot must infer its speed, its position on the track, the relative location of other cars, the distance to obstacles and track-edges, etc. However, inference problems already exist even with the API, since the robots do not have access to the simulation itself. Consequently, they must have some level of uncertainty regarding the effect of any action or plan. 
 
 The \emph{overall} racing problem itself can be formalised as maximising the probability of winning a race, minimising expected race rank or maximising the expected number of points obtained for the team in a championship setting. While it is possible to formulate an additive utility function for this problem, it would necessarily be very sparse. In that sense, it would be similar to the utility function in games such as go~\cite{gelly:uct-go}.
+
+\section{Conclusion}
+
+There is now a large set of software surrounding TORCS, such as an online interactive track generator~\cite{cardamone2011interactive}. In addition, there are now multiple forks. One of them is Speed Dreams~\cite{speed-dreams} which is geared towards a better human player experience, pyTorcs~\cite{pytorcs}, which is a port of TORCS to Python replacing many modules  with standard open-source software.
+
+There are also two major competitions using TORCS. One of them is the simulated car racing championship~\cite{car-racing}, organised around the evolutionary computation conference GECCO. This is mainly a research-oriented event. The second is the annual TORCS endurance world championship\cite{torcs-endurance}, which usually lasts around 6 months every calendar year. Due to its length, the event is geared towards hobbyists.
+
+As a result, more than 300 research papers have now been written employing TORCS as a basis. Most of them use it as a test-bed for artificial intelligence algorithms. While most of those use the low-level API features, or the auxiliary API for driver development\cite{caldeiratorcs}, others are more ambitious and try to employ vision~\cite{koutnikevolving,tran2010towards}. 
+However, TORCS has found other uses, beyond AI research. For example, it has been used to create an automotive test-bed \cite{drolia2011autoplug}, to perform a study on driver attention and stress\cite{benoit2009multimodal}, to develop highway platooning controllers and to access economical driving for trucks\cite{bogoni2012use}.
+
+TORCS continues to evolve, and we feel that it has a lot more to offer to both hobbyists and the academic research community. However, one of our main goals is to maintain a stable API so as to avoid disruption for its many users. Finally, the modular architecture of TORCS and open source licensing allows it to continue to live long after its original creators and current maintainers have moved on. 
+
 
 \bibliographystyle{plain}
 \bibliography{torcs}
