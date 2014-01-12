@@ -85,6 +85,7 @@ void grInitSound(tSituation* s, int ncars)
 		sound_interface = new PlibSoundInterface(44100, 32);
 		break;
 	case DISABLED:
+		sound_interface = 0;
 		return;
 	default:
 		GfOut (" -- Unknown sound mode %d\n", sound_mode);
@@ -247,7 +248,7 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 
 void grMuteForMenu(void)
 {
-	if (sound_mode != DISABLED) {
+	if (sound_interface != 0 && sound_mode != DISABLED) {
 		sound_interface->muteForMenu();
 	}
 
