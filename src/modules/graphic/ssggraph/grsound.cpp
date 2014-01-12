@@ -190,6 +190,7 @@ grShutdownSound(int ncars)
     soundInitialized = 0;
 
 	delete sound_interface;
+	sound_interface = 0;
 
     if (__slPendingError) {
 		GfOut("!!! error ignored: %s\n", __slPendingError);
