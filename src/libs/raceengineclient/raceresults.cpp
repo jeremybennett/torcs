@@ -2,7 +2,7 @@
 
     file        : raceresults.cpp
     created     : Thu Jan  2 12:43:10 CET 2003
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002, 2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -47,6 +47,108 @@ typedef struct
 	int		drvIdx;
 	int		points;
 } tReStandings;
+
+
+/*
+	Applies pending penalties after the race:
+	- Time penalties
+	- Pending stop & go (can happen if penalty is given within the last 5 laps)
+	- Pending drive through (dito)
+
+	I assume that the average track speed is 300km/h (v0), and that the pit entry
+	and exit costs 10s. We call the pit speed limit v1, and the length of the pit
+	lane s. So the time lost with driving through the pit lane is
+	dt = s*(v0-v1)/(v0*v1). We assume that stopping costs additional 6 seconds.  
+	
+	Drive through: 10 + dt [s]
+	Stop & Go: 10 + 6 + dt [s]
+
+	Applying time penalties with cars in different laps is problematic, picture
+	this situation: We have 3 cars running, pos 1 car is right behind the pos 3
+	car (so it will overlap in a moment), pos 3 car is right behind pos 2 car,
+	and pos 2 car has a 30s penalty pending. Now right before the finish line the
+	pos 1 car passes (overlaps) the pos 3 car, so the race is done for pos 1 car,
+	and a moment later for the pos 3 car. But the pos 2 car can finish its last
+	lap, although it has a 30s penalty pending, which would have thrown it behind
+	the pos 3 car, if the overlapping not had happened.
+
+	So just adding times is not enough (btw. the FIA does just add times... weird).
+	
+	All time penalties are added up and then applied to the ranking like this:
+	We "pump up" the result of the opponents with less laps up to our laps
+	with a simple linear model: opponent_race_time/opponent_laps*our_race_laps, so
+	we are worse when:
+	our_race_time + our_penalty_time > 
+	opponent_race_time/opponent_laps*our_race_laps + opponent_penalty_time
+	
+	This works as well for opponents in the same lap, opponent_laps*our_race_laps is
+	then 1.
+*/
+static void ReApplyRaceTimePenalties(void)
+{
+	// First update all penalty times, apply pending drive through/stop and go
+	int i;
+	tSituation *s = ReInfo->s;
+	tCarPenalty *penalty;
+	tCarElt* car;
+
+	if (ReInfo->track->pits.type == TR_PIT_ON_TRACK_SIDE) {
+		const tdble drivethrough = 10.0f;
+		const tdble stopandgo = 6.0f + drivethrough;
+
+		const tdble v0 = 84.0f;
+		tdble v1 = ReInfo->track->pits.speedLimit;
+		tdble dv = v0 - v1;
+		tdble dt = 0.0;
+
+		if (dv > 1.0f && v1 > 1.0f) {
+			dt = (ReInfo->track->pits.nMaxPits*ReInfo->track->pits.len)*dv/(v0*v1);
+		}
+
+		for (i = 0; i < s->_ncars; i++) {
+			car = s->cars[i];
+			penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+			while (penalty) {
+				if (penalty->penalty == RM_PENALTY_DRIVETHROUGH) {
+					car->_penaltyTime += dt + drivethrough;
+				} else if (penalty->penalty == RM_PENALTY_STOPANDGO) {
+					car->_penaltyTime += dt + stopandgo;
+				} else {
+					GfError("Unknown penalty.");
+				}
+				penalty = GF_TAILQ_NEXT(penalty, link);
+			}		
+		}
+	}
+
+	// Now resort the cars taking into account the penalties.
+	int j;
+	for (i = 1; i < s->_ncars; i++) {
+		j = i;
+		while (j > 0) {
+			// Order without penalties is already ok, so if there is no penalty we do not move down
+			if (s->cars[j-1]->_penaltyTime > 0.0f) {
+				int l1 = MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1;
+				int l2 = MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1;
+				tdble t1 = s->cars[j-1]->_curTime + s->cars[j-1]->_penaltyTime;
+				tdble t2 = s->cars[j]->_curTime*tdble(l1)/tdble(l2) + s->cars[j]->_penaltyTime;
+
+				if (t1 > t2) {
+					// Swap
+					car = s->cars[j];
+					s->cars[j] = s->cars[j-1];
+					s->cars[j-1] = car;
+					s->cars[j]->_pos = j+1;
+					s->cars[j-1]->_pos = j;
+					j--;
+					continue;
+				}
+			}
+			j = 0;
+		}
+	}
+}
+
 
 void
 ReInitResults(void)
@@ -201,8 +303,7 @@ ReUpdateStandings(void)
 }
 
 
-void
-ReStoreRaceResults(const char *race)
+void ReStoreRaceResults(const char *race)
 {
 	int i;
 	int nCars;
@@ -225,6 +326,8 @@ ReStoreRaceResults(const char *race)
 			GfParmListClean(results, path);
 			GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
 			
+			ReApplyRaceTimePenalties();
+
 			for (i = 0; i < s->_ncars; i++) {
 				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 				car = s->cars[i];
@@ -309,6 +412,7 @@ ReStoreRaceResults(const char *race)
 			break;
 	}
 }
+
 
 void
 ReUpdateQualifCurRes(tCarElt *car)

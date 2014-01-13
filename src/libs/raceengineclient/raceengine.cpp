@@ -57,7 +57,7 @@ ReUpdtPitTime(tCarElt *car)
 
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
-			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f;
+			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f + car->_penaltyTime;
 			if (ReInfo->s->raceInfo.type == RM_TYPE_PRACTICE || ReInfo->s->raceInfo.type == RM_TYPE_QUALIF) { 
 				// Ensure that the right min/max values are in the setup structure (could have been modified by the robot))
 				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), true);
@@ -66,6 +66,7 @@ ReUpdtPitTime(tCarElt *car)
 				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), false);
 			}
 			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
+			car->_penaltyTime = 0.0f;
 			ReInfo->_reSimItf.reconfig(car);
 			for (i=0; i<4; i++) {
 				car->_tyreCondition(i) = 1.01;
@@ -359,42 +360,44 @@ ReManage(tCarElt *car)
 	car->_distRaced = (car->_laps - (info->lapFlag + 1)) * ReInfo->track->length + car->_distFromStartLine;
 }
 
-static void 
-ReSortCars(void)
-{
-    int		i,j;
-    tCarElt	*car;
-    int		allfinish;
-    tSituation	*s = ReInfo->s;
 
-    if ((s->cars[0]->_state & RM_CAR_STATE_FINISH) == 0) {
-	allfinish = 0;
-    } else {
-	allfinish = 1;
-    }
-    
-    for (i = 1; i < s->_ncars; i++) {
-	j = i;
-	while (j > 0) {
-	    if ((s->cars[j]->_state & RM_CAR_STATE_FINISH) == 0) {
+static void ReSortCars(void)
+{
+	int i, j;
+	tCarElt	*car;
+	int	allfinish;
+	tSituation *s = ReInfo->s;
+
+	if ((s->cars[0]->_state & RM_CAR_STATE_FINISH) == 0) {
 		allfinish = 0;
-		if (s->cars[j]->_distRaced > s->cars[j-1]->_distRaced) {
-		    car = s->cars[j];
-		    s->cars[j] = s->cars[j-1];
-		    s->cars[j-1] = car;
-		    s->cars[j]->_pos = j+1;
-		    s->cars[j-1]->_pos = j;
-		    j--;
-		    continue;
-		}
-	    }
-	    j = 0;
+	} else {
+		allfinish = 1;
 	}
-    }
-    if (allfinish) {
-	ReInfo->s->_raceState = RM_RACE_ENDED;
-    }
+
+	for (i = 1; i < s->_ncars; i++) {
+		j = i;
+		while (j > 0) {
+			if ((s->cars[j]->_state & RM_CAR_STATE_FINISH) == 0) {
+				allfinish = 0;
+				if (s->cars[j]->_distRaced > s->cars[j-1]->_distRaced) {
+					car = s->cars[j];
+					s->cars[j] = s->cars[j-1];
+					s->cars[j-1] = car;
+					s->cars[j]->_pos = j+1;
+					s->cars[j-1]->_pos = j;
+					j--;
+					continue;
+				}
+			}
+			j = 0;
+		}
+	}
+
+	if (allfinish) {
+		ReInfo->s->_raceState = RM_RACE_ENDED;
+	}
 }
+
 
 /* Compute the race rules and penalties */
 static void
