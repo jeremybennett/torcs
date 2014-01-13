@@ -204,6 +204,13 @@ Changes since 1.3.5
 - Added citation guideline to FAQ and README, proposed by Christos (Christos, Bernhard).
 - Fixed null pointer dereferencing in blind mode, grsound.cpp, bug introduced in 1.3.5
   (Wolf-Dieter, Bernhard).
+- Introduced _penaltyTime to transform late penalties into time penalties and to add
+  penalties for corner cutting etc. (Bernhard).
+- During repair pit stops accumulated penalty time is added to pit stop and then cleared
+  (Bernhard).
+- Stop&Go and drive-through penalties pending at the end of the race are now transformed
+  into a time penalty, see comment in raceresults.cpp, ReApplyRaceTimePenalties (Bernhard).
+- Free memory of pending penalties after the race (Bernhard).
 
 
 
@@ -215,8 +222,6 @@ TODO for 1.3.6/x
 ----------------
 - Review human control defaults, currently it uses always the "mouse" section (
   offer values directly in GUI, other default selection, ...?)
-- Fix pending penalties at the end of the race (transform to penalty time, release memory)
-- Review penalty/clearing
 - Review wheel specular values (seen weird rendering on youtube, not reproducable here)
 - Review/apply David Savinkoff's automatic gear change patch
 - Integrate Wolf-Dieters suggestion for VS Express regarding Icon/.rc
