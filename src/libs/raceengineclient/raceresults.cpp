@@ -128,8 +128,8 @@ static void ReApplyRaceTimePenalties(void)
 		while (j > 0) {
 			// Order without penalties is already ok, so if there is no penalty we do not move down
 			if (s->cars[j-1]->_penaltyTime > 0.0f) {
-				int l1 = MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1;
-				int l2 = MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1;
+				int l1 = MAX(1, (MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1));
+				int l2 = MAX(1, (MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1));
 				tdble t1 = s->cars[j-1]->_curTime + s->cars[j-1]->_penaltyTime;
 				tdble t2 = s->cars[j]->_curTime*tdble(l1)/tdble(l2) + s->cars[j]->_penaltyTime;
 

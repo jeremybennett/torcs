@@ -847,6 +847,14 @@ ReRaceCleanDrivers(void)
 		GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
 		GfParmReleaseHandle(ReInfo->s->cars[i]->_carHandle);
 		free(robot);
+
+		// Release penalties
+		tCarPenalty *penalty = GF_TAILQ_FIRST(&(ReInfo->s->cars[i]->_penaltyList));
+		while (penalty) {
+			GF_TAILQ_REMOVE(&(ReInfo->s->cars[i]->_penaltyList), penalty, link);
+			FREEZ(penalty);
+			penalty = GF_TAILQ_FIRST(&(ReInfo->s->cars[i]->_penaltyList));
+		}
 	}
 
 	FREEZ(ReInfo->s->cars);
