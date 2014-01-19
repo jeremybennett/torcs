@@ -211,7 +211,8 @@ Changes since 1.3.5
 - Stop&Go and drive-through penalties pending at the end of the race are now transformed
   into a time penalty, see comment in raceresults.cpp, ReApplyRaceTimePenalties (Bernhard).
 - Free memory of pending penalties after the race (Bernhard).
-
+- Adjusted Bellcrank and Suspension Course min/max values for trb1 category and cars
+  (Bernhard).
 
 
 11. TODO/Notes
