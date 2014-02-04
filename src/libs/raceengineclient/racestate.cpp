@@ -2,7 +2,7 @@
 
     file        : racestate.cpp
     created     : Sat Nov 16 12:00:42 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 

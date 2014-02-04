@@ -2,7 +2,7 @@
 
     file        : racemanmenu.cpp
     created     : Fri Jan  3 22:24:41 CET 2003
-    copyright   : (C) 2003 by Eric Espi�                        
+    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 

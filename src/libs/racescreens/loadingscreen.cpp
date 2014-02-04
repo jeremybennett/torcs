@@ -2,7 +2,7 @@
 
     file                 : loadingscreen.cpp
     created              : Sun Feb 25 00:34:46 /etc/localtime 2001
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : eric.espie@torcs.org
     version              : $Id$
 

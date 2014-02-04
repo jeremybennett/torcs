@@ -2,7 +2,7 @@
 
     file        : raceresults.h
     created     : Thu Jan  2 12:43:28 CET 2003
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 

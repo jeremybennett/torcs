@@ -2,7 +2,7 @@
                   trackselect.cpp -- interactive track selection
                              -------------------
     created              : Mon Aug 16 21:43:00 CEST 1999
-    copyright            : (C) 1999 by Eric Espie
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
  ***************************************************************************/

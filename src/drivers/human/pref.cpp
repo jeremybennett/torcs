@@ -2,7 +2,7 @@
 
     file                 : pref.cpp
     created              : Sat Apr 29 16:51:03 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
