@@ -2,7 +2,7 @@
                         directory.cpp -- directory management                       
                              -------------------                                         
     created              : Fri Aug 13 21:58:55 CEST 1999
-    copyright            : (C) 1999 by                          
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                       
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -91,7 +91,5 @@ void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, 
 			free(tmp);
 		} while (rl != list);
 	}
-
-	list = NULL;
 }
 
