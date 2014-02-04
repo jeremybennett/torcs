@@ -2,7 +2,7 @@
                     tgfclient.h -- Interface file for The Gaming Framework                                    
                              -------------------                                         
     created              : Fri Aug 13 22:32:14 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -48,7 +48,7 @@ extern GLuint GfImgReadTex(char *filename);
 extern void GfScrInit(int argc, char *argv[]);
 extern void GfScrShutdown(void);
 extern void *GfScrMenuInit(void *precMenu);
-extern char *GfTime2Str(tdble sec, int sgn);
+extern void GfTime2Str(char *result, int resultSize, tdble sec, int sgn);
 extern void GfScrGetSize(int *ScrW, int *ScrH, int *ViewW, int *ViewH);
 extern void GfScrReinit(void*);
 

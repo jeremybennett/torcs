@@ -276,15 +276,14 @@ ReManage(tCarElt *car)
 							case RM_TYPE_PRACTICE:
 								if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 									ReInfo->_refreshDisplay = 1;
-									char *t1, *t2;
-									t1 = GfTime2Str(car->_lastLapTime, 0);
-									t2 = GfTime2Str(car->_bestLapTime, 0);
+									const int TIMEFMTSIZE=256;
+									char t1[TIMEFMTSIZE], t2[TIMEFMTSIZE];
+									GfTime2Str(t1, TIMEFMTSIZE, car->_lastLapTime, 0);
+									GfTime2Str(t2, TIMEFMTSIZE, car->_bestLapTime, 0);
 									snprintf(buf, BUFSIZE, "lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d",
 										car->_laps - 1, t1, t2,
 										info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
 									ReResScreenAddText(buf);
-									free(t1);
-									free(t2);
 								}
 								/* save the lap result */
 								ReSavePracticeLap(car);

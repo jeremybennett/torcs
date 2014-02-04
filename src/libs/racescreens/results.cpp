@@ -2,7 +2,7 @@
 
     file                 : results.cpp
     created              : Fri Apr 14 22:36:36 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -89,7 +89,8 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	char path[BUFSIZE];
-	char *str;
+	const int TIMEFMTSIZE = 256;
+	char timefmt[TIMEFMTSIZE];
 	float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
 	int totLaps;
 
@@ -130,14 +131,12 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
 
 		/* Time */
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
-		GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
-		free(str);
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
+		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x2, y, GFUI_ALIGN_HL_VB, 0);
 
 		/* Best Lap Time */
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
-		GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
-		free(str);
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HL_VB, 0);
 
 		/* Top Spd */
 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_TOP_SPEED, NULL, 0) * 3.6));
@@ -237,7 +236,8 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	char path[BUFSIZE];
-	char *str;
+	const int TIMEFMTSIZE = 256;
+	char timefmt[TIMEFMTSIZE];
 	float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
 	int laps, totLaps;
 	tdble refTime;
@@ -290,12 +290,11 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 
 		if (laps == totLaps) {
 			if (i == 0) {
-				str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
+				GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
 			} else {
-				str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) - refTime, 1);
+				GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) - refTime, 1);
 			}
-			GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
-			free(str);
+			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
 		} else {
 			dlap = totLaps - laps;
 			if (dlap == 1) {
@@ -310,10 +309,9 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 				x3, y, GFUI_ALIGN_HR_VB, 0);
 	*/
 
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
-		GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C,
 				x4, y, GFUI_ALIGN_HR_VB, 0);
-		free(str);
 
 		snprintf(buf, BUFSIZE, "%d", laps);
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
@@ -417,7 +415,8 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	char path[BUFSIZE];
-	char *str;
+	const int TIMEFMTSIZE = 256;
+	char timefmt[TIMEFMTSIZE];
 	float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
 	//int laps, totLaps;
 	//tdble refTime;
@@ -461,10 +460,9 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 		GfuiLabelCreate(rmScrHdle, GfParmGetStr(results, path, RE_ATTR_NAME, ""), GFUI_FONT_MEDIUM_C,
 				x2, y, GFUI_ALIGN_HL_VB, 0);
 
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
-		GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C,
 				x3, y, GFUI_ALIGN_HR_VB, 0);
-		free(str);
 		y -= 15;
 	}
 
