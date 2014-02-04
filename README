@@ -214,6 +214,8 @@ Changes since 1.3.5
 - Adjusted Bellcrank and Suspension Course min/max values for trb1 category and cars
   (Bernhard).
 - Updated doxygen configuration, headers and footers (Bernhard).
+- GfTime2Str operates now over the stack, no heap anymore (less error prone, performance)
+  (Bernhard).
 
 
 11. TODO/Notes
