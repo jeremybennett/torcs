@@ -2,7 +2,7 @@
 
     file                 : guiedit.cpp
     created              : Mon Apr 24 10:23:28 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -103,7 +103,7 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 		char *buf;
 		int  i;
 		buf = (char*)malloc(maxlen+1);
-		if (buf == NULL) return -1;
+		if (buf == NULL) return -1;	// Memory leak does not matter, this must not happen
 		for (i = 0; i < maxlen; i++) buf[i] = 'W';
 		buf[i] = '\0';
 		width = gfuiFont[font]->getWidth((const char *)buf);
