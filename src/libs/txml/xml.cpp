@@ -236,35 +236,37 @@ CharacterData(void *userData, const char *s, int len)
 txmlElement *
 xmlReadFile(const char *file)
 {
-    FILE		*in;
-    char		buf[BUFSIZ];
-    XML_Parser		parser;
-    int			done;
-    txmlElement		*retElt;
-	
-    if ((in = fopen(file, "r")) == NULL) {
-        fprintf(stderr, "xmlReadFile: file %s has pb (access rights ?)\n", file);
-	return (txmlElement*)NULL;
-    }
-    
-    parser = XML_ParserCreate((XML_Char*)NULL);
-    XML_SetUserData(parser, &retElt);
-    XML_SetElementHandler(parser, startElement, endElement);
-    XML_SetCharacterDataHandler(parser, CharacterData);
-    do {
-	size_t len = fread(buf, 1, sizeof(buf), in);
-	done = len < sizeof(buf);
-	if (!XML_Parse(parser, buf, len, done)) {
-	    fprintf(stderr, "file: %s -> %s at line %d\n",
-		   file,
-		   XML_ErrorString(XML_GetErrorCode(parser)),
-		   XML_GetCurrentLineNumber(parser));
-	    return (txmlElement*)NULL;
-	}
-    } while (!done);
-    XML_ParserFree(parser);
+	FILE *in;
+	char buf[BUFSIZ];
+	XML_Parser parser;
+	int done;
+	txmlElement *retElt;
 
-    return retElt;
+	if ((in = fopen(file, "r")) == NULL) {
+		fprintf(stderr, "xmlReadFile: file %s has pb (access rights ?)\n", file);
+		return (txmlElement*)NULL;
+	}
+
+	parser = XML_ParserCreate((XML_Char*)NULL);
+	XML_SetUserData(parser, &retElt);
+	XML_SetElementHandler(parser, startElement, endElement);
+	XML_SetCharacterDataHandler(parser, CharacterData);
+	do {
+		size_t len = fread(buf, 1, sizeof(buf), in);
+		done = len < sizeof(buf);
+		if (!XML_Parse(parser, buf, len, done)) {
+			fprintf(stderr, "file: %s -> %s at line %d\n", file, XML_ErrorString(XML_GetErrorCode(parser)), XML_GetCurrentLineNumber(parser));
+
+			XML_ParserFree(parser);
+			fclose(in);			
+			return (txmlElement*)NULL;
+		}
+	} while (!done);
+
+	XML_ParserFree(parser);
+	fclose(in);
+
+	return retElt;
 }
 
 static void
