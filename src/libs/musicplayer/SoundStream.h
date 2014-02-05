@@ -37,7 +37,7 @@ class SoundStream
 		virtual int getRateInHz() = 0;
 		virtual SoundFormat getSoundFormat() = 0;
 
-		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char* error) = 0;
+		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char** error) = 0;
 		virtual void rewind() = 0;
 		virtual void display() = 0;
 		// isValid is not nice, but I do not want to introduce exceptions into TORCS at this time

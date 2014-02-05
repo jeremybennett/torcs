@@ -62,10 +62,10 @@ OggSoundStream::~OggSoundStream()
 
 
 
-bool OggSoundStream::read(char* buffer, const int bufferSize, int* resultSize, const char* error)
+bool OggSoundStream::read(char* buffer, const int bufferSize, int* resultSize, const char** error)
 {
 	if (!isValid()) {
-		error = "OggSoundStream: Invalid, no data available.";
+		*error = "OggSoundStream: Invalid, no data available.";
 		return false;
 	}
 
@@ -79,7 +79,7 @@ bool OggSoundStream::read(char* buffer, const int bufferSize, int* resultSize, c
 			*resultSize += result;
 		} else {
 			if(result < 0) {
-				error = errorString(result);
+				*error = errorString(result);
 				return false;
 			} else {
 				// Loop to the beginning of the stream
@@ -89,7 +89,7 @@ bool OggSoundStream::read(char* buffer, const int bufferSize, int* resultSize, c
 	}
 
 	if(*resultSize == 0) {
-		error = "OggSoundStream: Read 0 bytes.";
+		*error = "OggSoundStream: Read 0 bytes.";
 		return false;
 	}
 	

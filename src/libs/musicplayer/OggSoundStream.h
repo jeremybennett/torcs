@@ -36,7 +36,7 @@ class OggSoundStream : public SoundStream
 		virtual int getRateInHz() { return rateInHz; }
 		virtual SoundFormat getSoundFormat() { return format; }
 		
-		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char* error);
+		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char** error);
 		virtual void rewind();
 		virtual void display();
 		virtual bool isValid() { return valid; }
