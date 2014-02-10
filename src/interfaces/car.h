@@ -191,7 +191,8 @@ typedef struct {
 /** Public info on the cars */
 typedef struct {
     tDynPt	DynGC;		/**< GC data (car axis) */    
-    tDynPt	DynGCg;		/**< GC data (world axis) */    
+    tDynPt	DynGCg;		/**< GC data (world axis) */
+	tdble	speed;		// total speed, sqrt(vx*vx + vy*vy + vz*vz)
     sgMat4	posMat;		/**< position matrix */
     tTrkLocPos	trkPos;		/**< current track position. The segment is the track segment (not sides)*/
     int		state;	    	/**< state of the car.

@@ -87,11 +87,9 @@ void  SimAeroUpdate(tCar *car, tSituation *s)
 	tdble v2 = car->airSpeed2;
 	
 	// simulate ground effect drop off caused by non-frontal airflow (diffusor stops working etc.)
-	tdble speed = sqrt(car->DynGC.vel.x*car->DynGC.vel.x + car->DynGC.vel.y*car->DynGC.vel.y);
-	tdble cosa = 1.0f;
-	
-	if (speed > 1.0f) {
-		cosa = car->DynGC.vel.x/speed;
+	tdble cosa = 1.0f;	
+	if (car->speed > 1.0f) {
+		cosa = car->DynGC.vel.x/car->speed;
 	}
 	
 	if (cosa < 0.0f) {

@@ -423,6 +423,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	
 		carElt->pub.DynGC = car->DynGC;
 		carElt->pub.DynGCg = car->DynGCg;
+		carElt->pub.speed = car->speed;
 		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 				RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		carElt->_trkPos = car->trkPos;

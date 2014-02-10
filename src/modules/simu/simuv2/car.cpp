@@ -2,7 +2,7 @@
 
     file                 : car.cpp
     created              : Sun Mar 19 00:05:43 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -240,9 +240,6 @@ static void
 SimCarUpdateSpeed(tCar *car)
 {
 	tdble	Cosz, Sinz;
-	//tdble	mass;
-	
-	//mass = car->mass + car->fuel;
 		
 	Cosz = car->Cosz;
 	Sinz = car->Sinz;
@@ -302,13 +299,9 @@ static void
 SimCarUpdatePos(tCar *car)
 {
 	tdble vx, vy;
-	//tdble accx, accy;
 	
 	vx = car->DynGCg.vel.x;
 	vy = car->DynGCg.vel.y;
-	
-	//accx = car->DynGCg.acc.x;
-	//accy = car->DynGCg.acc.y;
 	
 	car->DynGCg.pos.x += vx * SimDeltaTime;
 	car->DynGCg.pos.y += vy * SimDeltaTime;
@@ -419,6 +412,7 @@ SimCarUpdate(tCar *car, tSituation * /* s */)
 	CHECK(car);
 	SimCarCollideXYScene(car);
 	CHECK(car);
+	car->speed = sqrt(car->DynGC.vel.x*car->DynGC.vel.x + car->DynGC.vel.y*car->DynGC.vel.y + car->DynGC.vel.z*car->DynGC.vel.z);
 }
 
 void
