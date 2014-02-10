@@ -225,6 +225,9 @@ Changes since 1.3.5
 - Added absolute value of speed vector, accessible in tCarElt->pub.speed, use it in
   aero.cpp, grsmoke.cpp, grskidmarks.cpp, CarSoundData.cpp and human.cpp (David,
   Bernhard).
+- Improved display of track maps in track select menu, aspect ratio (Bernhard).
+- Recreated most track maps for consistent look (Bernhard).
+
 
 11. TODO/Notes
 --------------
@@ -250,7 +253,6 @@ eventually (otherwise in 1.4.x):
   in the car setup screen or during a running session)
 - Telemetry
 - Timed races (e.g. 24h).
-- Menu trackmaps and scaling
 - Review/reduce dynamic memory allocation/release during rendering
 
 TODO for 1.4.x
