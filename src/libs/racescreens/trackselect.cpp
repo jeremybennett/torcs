@@ -379,8 +379,10 @@ RmTrackSelect(void *vs)
 			(void*)1, rmtsPrevNext,
 			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+	int scrw, scrh, vw, vh;
+	GfScrGetSize(&scrw, &scrh, &vw, &vh);
 	MapId = GfuiStaticImageCreate(scrHandle,
-				320, 100, 260, 195,
+				320, 100, (int) (vh*260.0f/vw), 195,
 				rmGetMapName(buf, BUFSIZE));
 
 	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,

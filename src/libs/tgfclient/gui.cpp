@@ -162,7 +162,7 @@ GfuiDisplay(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	if (GfuiScreen->bgImage != 0) {
+	if (glIsTexture(GfuiScreen->bgImage) == GL_TRUE) {
 		GLfloat tx1 = 0.0f, tx2 = 1.0f, ty1 = 0.0f, ty2 = 1.0f;
 		
 		// All background images are 16:10 images which are stored as quadratic images.
@@ -627,7 +627,7 @@ GfuiScreenRelease(void *scr)
 		GfuiScreenDeactivate();
 	}
 
-	if (screen->bgImage != 0) {
+	if (glIsTexture(screen->bgImage) == GL_TRUE) {
 		glDeleteTextures(1, &screen->bgImage);
 	}
 
@@ -968,7 +968,7 @@ GfuiScreenAddBgImg(void *scr, const char *filename)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	
-	if (screen->bgImage != 0) {
+	if (glIsTexture(screen->bgImage) == GL_TRUE) {
 		glDeleteTextures(1, &screen->bgImage);
 	}
 
