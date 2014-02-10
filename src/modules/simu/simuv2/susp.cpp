@@ -145,7 +145,7 @@ void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0
 	// Spring
 	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.suspspring[index];
 	if (SimAdjustPitCarSetupParam(v)) {
-		susp->spring.K = v->value;
+		susp->spring.K = - v->value;	
 	}
 
 	// Packers
@@ -180,7 +180,6 @@ void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0
 
 	susp->spring.x0 = susp->spring.bellcrank * X0;
 	susp->spring.F0 = F0 / susp->spring.bellcrank;
-	susp->spring.K = - susp->spring.K;
 
 	initDamper(susp);
 }
@@ -191,7 +190,7 @@ void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdb
 	// Spring
 	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.thirdspring[index];
 	if (SimAdjustPitCarSetupParam(v)) {
-		susp->spring.K = v->value;
+		susp->spring.K = - v->value;
 	}
 
 	// Bump
@@ -212,7 +211,6 @@ void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdb
 
 	susp->spring.x0 = susp->spring.bellcrank * X0;
 	susp->spring.F0 = F0 / susp->spring.bellcrank;
-	susp->spring.K = - susp->spring.K;
 
 	initDamper(susp);
 }
