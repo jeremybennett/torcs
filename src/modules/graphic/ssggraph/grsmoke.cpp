@@ -2,7 +2,7 @@
 
     file                 : grsmoke.cpp
     created              : Fri Mar 22 23:17:54 CET 2002
-    copyright            : (C) 2001 by Christophe Guionneau
+    copyright            : (C) 2001-2014 by Christophe Guionneau, Bernhard Wymann
     version              : $Id$
 
 ***************************************************************************/
@@ -226,17 +226,14 @@ void grAddSmoke(tCarElt *car, double t)
 	ssgVertexArray *shd_vtx ;
 	tgrCarInstrument *curInst;
 	tdble val;
-	tdble spd2;
 	int index;
 
 	if (!grSmokeMaxNumber) {
 		return;
 	}
 
-	spd2 = car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y;
-
 	for (i = 0; i < 4; i++) {
-		if (spd2 > 0.001f) {
+		if (car->pub.speed > 0.03f) {	// 0.03 -> sqrt(0.001)
 			if (smokeManager->number < grSmokeMaxNumber) {
 				if ((t - timeSmoke[car->index*4+i]) < grSmokeDeltaT) {
 					continue;
@@ -302,7 +299,7 @@ void grAddSmoke(tCarElt *car, double t)
 				}
 
 				smoke_life_coefficient = smoke_life_coefficient * (1.0f - urandom()*urandom());
-				tdble spd_fx=tanh(0.001f*car->_reaction[i])*smoke_speed_coefficient*sqrt(spd2);
+				tdble spd_fx=tanh(0.001f*car->_reaction[i])*smoke_speed_coefficient*car->pub.speed;
 				if (car->_skid[i] + 0.025f*urandom()*spd_fx>urandom() + threshold) {// instead of 0.3, to randomize
 
 					float init_speed_z = 0.1f;
@@ -339,7 +336,7 @@ void grAddSmoke(tCarElt *car, double t)
 
 					//printf("%f\n", car->_reaction[i]);
 					tmp->smoke->max_life = grSmokeLife *
-						(car->_skid[i]*sqrt(spd2)+urandom()*spd_fx)/ smoke_life_coefficient;
+						(car->_skid[i]*car->pub.speed+urandom()*spd_fx)/ smoke_life_coefficient;
 					for (int c = 0; c < 3; c++) {
 						tmp->smoke->cur_col[c] = cur_clr[c];
 					}
@@ -369,7 +366,7 @@ void grAddSmoke(tCarElt *car, double t)
 		}
     }
 
-    if (car->_exhaustNb && (spd2 > 10.0)) {
+    if (car->_exhaustNb && (car->pub.speed > 3.0f)) {
 		if (smokeManager->number < grSmokeMaxNumber) {
 			index = car->index;	/* current car's index */
 			if ((t - timeFire[index]) > grFireDeltaT) {
