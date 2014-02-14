@@ -2,7 +2,7 @@
 
     file                 : joystickconfig.cpp
     created              : Wed Mar 21 21:46:11 CET 2001
-    copyright            : (C) 2001 by Eric Espie
+    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
     email                : eric.espie@torcs.org
     version              : $Id$
 
@@ -65,12 +65,11 @@ static int  LabMinId[4];
 static int  LabMaxId[4];
 
 
-
-static void
-onBack(void *prevMenu)
+static void onBack(void *prevMenu)
 {
     GfuiScreenActivate(prevMenu);
 }
+
 
 static float 	axCenter[_JS_MAX_AXES * NUM_JOY];
 
@@ -82,8 +81,7 @@ static void advanceStep (void)
 }
 
 
-static void
-JoyCalAutomaton(void)
+static void JoyCalAutomaton(void)
 {
 	static int axis;
 	const int BUFSIZE = 1024;
@@ -117,11 +115,11 @@ JoyCalAutomaton(void)
 		case 5:
 			axis = Cmd[CalState + OFFSET_CMD].ref.index;
 			Cmd[CalState + OFFSET_CMD].min = axCenter[axis];
-			Cmd[CalState + OFFSET_CMD].max = ax[axis]*1.1;
-			Cmd[CalState + OFFSET_CMD].pow = 1.2;
+			Cmd[CalState + OFFSET_CMD].max = ax[axis];
+			Cmd[CalState + OFFSET_CMD].pow = 1.0;
 			snprintf(buf, BUFSIZE, "%.2g", axCenter[axis]);
 			GfuiLabelSetText(scrHandle2, LabMinId[CalState - 2], buf);
-			snprintf(buf, BUFSIZE, "%.2g", ax[axis]*1.1);
+			snprintf(buf, BUFSIZE, "%.2g", ax[axis]);
 			GfuiLabelSetText(scrHandle2, LabMaxId[CalState - 2], buf);
 			advanceStep();
 			break;
@@ -130,8 +128,7 @@ JoyCalAutomaton(void)
 }
 
 
-static void
-Idle2(void)
+static void Idle2(void)
 {
 	int mask;
 	int b, i;
@@ -160,8 +157,7 @@ Idle2(void)
 }
 
 
-static void
-onActivate(void * /* dummy */)
+static void onActivate(void * /* dummy */)
 {
 	int i;
 	int index;
@@ -194,8 +190,7 @@ onActivate(void * /* dummy */)
 }
 
 
-void *
-JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
+void *JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
 {
 	int x, y, dy, i, index;
 
@@ -245,8 +240,3 @@ JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
 
 	return scrHandle2;
 }
-
-
-
-
-

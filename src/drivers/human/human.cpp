@@ -59,11 +59,7 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 int joyPresent = 0;
 
-//static char	sstring[1024];
-//static char	buf[1024];
-
 static tTrack	*curTrack;
-//static void	*DrvInfo;
 
 static float color[] = {0.0, 0.0, 1.0, 1.0};
 
@@ -105,13 +101,11 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 static void
 shutdown(int index)
 {
-	//static int	firstTime = 1;
-	int		idx = index - 1;
+	int	idx = index - 1;
 
 	free (HCtx[idx]);
 
 	if (firstTime) {
-		//GfParmReleaseHandle(DrvInfo);
 		GfParmReleaseHandle(PrefHdle);
 		GfctrlJoyRelease(joyInfo);
 		GfctrlMouseRelease(mouseInfo);
@@ -151,7 +145,6 @@ InitFuncPt(int index, void *pt)
 
 	if (firstTime < 1) {
 		firstTime = 1;
-		//DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 		joyInfo = GfctrlJoyInit();
 		if (joyInfo) {
 			joyPresent = 1;

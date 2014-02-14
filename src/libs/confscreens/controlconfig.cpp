@@ -38,7 +38,7 @@
 #include "mouseconfig.h"
 #include "joystickconfig.h"
 
-static void 	*scrHandle = NULL;
+static void *scrHandle = NULL;
 static void	*prevHandle = NULL;
 static void	*PrefHdle = NULL;
 
@@ -67,68 +67,61 @@ static tCmdInfo Cmd[] = {
 
 static int maxCmd = sizeof(Cmd) / sizeof(Cmd[0]);
 
-static jsJoystick	*js[NUM_JOY] = {NULL};
-static float		ax[_JS_MAX_AXES * NUM_JOY] = {0};
-static float 		axCenter[_JS_MAX_AXES * NUM_JOY];
-static int		rawb[NUM_JOY] = {0};
-
-static float SteerSensVal;
-static float DeadZoneVal;
-
-static int SteerSensEditId;
-static int DeadZoneEditId;
-
+static jsJoystick *js[NUM_JOY] = {NULL};
+static float ax[_JS_MAX_AXES * NUM_JOY] = {0};
+static float axCenter[_JS_MAX_AXES * NUM_JOY];
+static int rawb[NUM_JOY] = {0};
 static int ReloadValues = 1;
 
-static void
-onSteerSensChange(void * /* dummy */)
+
+typedef struct {
+	const char *key;
+	const char *label;
+	int id;
+	float value;
+} EditboxValue;
+
+static EditboxValue editBoxValues[] = {
+	{ HM_ATT_STEER_SENS,	"Steer sensitivity",	0, 0.0f},
+	{ HM_ATT_LEFTSTEER_POW,	"Steer power",			0, 0.0f},
+	{ HM_ATT_STEER_DEAD,	"Steer dead zone",		0, 0.0f},
+	{ HM_ATT_STEER_SPD,		"Steer speed factor",	0, 0.0f},
+	{ HM_ATT_BRAKE_SENS,	"Brake sensitivity",	0, 0.0f},
+	{ HM_ATT_BRAKE_POW,		"Brake power",			0, 0.0f},
+	{ HM_ATT_THROTTLE_SENS,	"Throttle sensitivity",	0, 0.0f},
+	{ HM_ATT_CLUTCH_SENS,	"Clutch sensitivity",	0, 0.0f},
+};
+
+static const int IDX_LEFTSTEER_POW = 1;	// Index for the list above
+static const int IDX_BRAKE_POW = 5;		// Index for the list above
+static const int nbEditboxValues = sizeof(editBoxValues)/sizeof(editBoxValues[0]);
+
+
+static void onValueChange(void* v)
 {
-	char *val;
+	EditboxValue* editBoxValue = (EditboxValue*) v;
 	float fv;
-	const int BUFSIZE = 1024;
+	const int BUFSIZE = 10;
 	char buf[BUFSIZE];
-	
-	val = GfuiEditboxGetString(scrHandle, SteerSensEditId);
-	
+
+	char* val = GfuiEditboxGetString(scrHandle, editBoxValue->id);
+
 	if (sscanf(val, "%f", &fv) == 1) {
-		snprintf(buf, BUFSIZE, "%f", fv);
-		SteerSensVal = fv;
-		GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
+		snprintf(buf, BUFSIZE, "%6.4f", fv);
+		editBoxValue->value = fv;
+		GfuiEditboxSetString(scrHandle, editBoxValue->id, buf);
 	} else {
-		GfuiEditboxSetString(scrHandle, SteerSensEditId, "");
+		GfuiEditboxSetString(scrHandle, editBoxValue->id, "");
 	}
-	
 }
 
 
-static void
-onDeadZoneChange(void * /* dummy */)
-{
-	char *val;
-	float fv;
-	const int BUFSIZE = 1024;
-	char buf[BUFSIZE];
-
-	val = GfuiEditboxGetString(scrHandle, DeadZoneEditId);
-	if (sscanf(val, "%f", &fv) == 1) {
-		snprintf(buf, BUFSIZE, "%f", fv);
-		DeadZoneVal = fv;
-		GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
-	} else {
-		GfuiEditboxSetString(scrHandle, SteerSensEditId, "");
-    }    
-}
-
-
-static void
-onSave(void * /* dummy */)
+static void onSave(void * /* dummy */)
 {
 	int i;
 	const char *str;
 	
-	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_STEER_SENS, NULL, SteerSensVal);
-	GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_STEER_DEAD, NULL, DeadZoneVal);
-	
+	// First write the command values
 	for (i = 0; i < maxCmd; i++) {
 		str = GfctrlGetNameByRef(Cmd[i].ref.type, Cmd[i].ref.index);
 		if (str) {
@@ -149,7 +142,15 @@ onSave(void * /* dummy */)
 			GfParmSetNum(PrefHdle, CurrentSection, Cmd[i].powName, NULL, Cmd[i].pow);
 		}
 	}
-	
+
+	// The editbox values must be written after the command values, otherwise the wrong "power" values are saved
+	for (i = 0; i < nbEditboxValues; i++) {
+		GfParmSetNum(PrefHdle, CurrentSection, editBoxValues[i].key, NULL, editBoxValues[i].value);
+		if (strcmp(HM_ATT_LEFTSTEER_POW, editBoxValues[i].key) == 0) {
+			GfParmSetNum(PrefHdle, CurrentSection, HM_ATT_RIGHTSTEER_POW, NULL, editBoxValues[i].value); // In GUI we set left == right
+		}
+	}
+
 	GfParmWriteFile(NULL, PrefHdle, "preferences");
 	GfuiScreenActivate(prevHandle);
 }
@@ -179,13 +180,12 @@ updateButtonText(void)
 			displayJoyCal = GFUI_VISIBLE;
 		}
 	}
-	
-	snprintf(buf, BUFSIZE, "%f", SteerSensVal);
-	GfuiEditboxSetString(scrHandle, SteerSensEditId, buf);
-	
-	snprintf(buf, BUFSIZE, "%f", DeadZoneVal);
-	GfuiEditboxSetString(scrHandle, DeadZoneEditId, buf);
-	
+
+	for (i = 0; i < nbEditboxValues; i++) {
+		snprintf(buf, BUFSIZE, "%6.4f", editBoxValues[i].value);
+		GfuiEditboxSetString(scrHandle, editBoxValues[i].id, buf);
+	}
+
 	GfuiVisibilitySet(scrHandle, MouseCalButton, displayMouseCal);
 	GfuiVisibilitySet(scrHandle, JoyCalButton, displayJoyCal);
 }
@@ -198,7 +198,7 @@ onFocusLost(void * /* dummy */)
 }
 
 
-static int CurrentCmd;
+static tCmdInfo* CurrentCmd;
 
 static int InputWaited = 0;
 
@@ -214,14 +214,14 @@ onKeyAction(unsigned char key, int /* modifier */, int state)
 
 	if (key == 27) {
 		/* escape */
-		Cmd[CurrentCmd].ref.index = -1;
-		Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-		GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, "");
+		CurrentCmd->ref.index = -1;
+		CurrentCmd->ref.type = GFCTRL_TYPE_NOT_AFFECTED;
+		GfParmSetStr(PrefHdle, CurrentSection, CurrentCmd->name, "");
 	} else {
 		name = GfctrlGetNameByRef(GFCTRL_TYPE_KEYBOARD, (int)key);
-		Cmd[CurrentCmd].ref.index = (int)key;
-		Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_KEYBOARD;
-		GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, name);
+		CurrentCmd->ref.index = (int)key;
+		CurrentCmd->ref.type = GFCTRL_TYPE_KEYBOARD;
+		GfParmSetStr(PrefHdle, CurrentSection, CurrentCmd->name, name);
 	}
 	
 	glutIdleFunc(GfuiIdle);
@@ -241,9 +241,9 @@ onSKeyAction(int key, int /* modifier */, int state)
 	}
 
 	name = GfctrlGetNameByRef(GFCTRL_TYPE_SKEYBOARD, key);
-	Cmd[CurrentCmd].ref.index = key;
-	Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_SKEYBOARD;
-	GfParmSetStr(PrefHdle, CurrentSection, Cmd[CurrentCmd].name, name);
+	CurrentCmd->ref.index = key;
+	CurrentCmd->ref.type = GFCTRL_TYPE_SKEYBOARD;
+	GfParmSetStr(PrefHdle, CurrentSection, CurrentCmd->name, name);
 	
 	glutIdleFunc(GfuiIdle);
 	InputWaited = 0;
@@ -286,9 +286,9 @@ Idle(void)
 			glutIdleFunc(GfuiIdle);
 			InputWaited = 0;
 			str = GfctrlGetNameByRef(GFCTRL_TYPE_MOUSE_BUT, i);
-			Cmd[CurrentCmd].ref.index = i;
-			Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_MOUSE_BUT;
-			GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+			CurrentCmd->ref.index = i;
+			CurrentCmd->ref.type = GFCTRL_TYPE_MOUSE_BUT;
+			GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
 			glutPostRedisplay();
 			return;
 		}
@@ -300,9 +300,9 @@ Idle(void)
 			glutIdleFunc(GfuiIdle);
 			InputWaited = 0;
 			str = GfctrlGetNameByRef(GFCTRL_TYPE_MOUSE_AXIS, i);
-			Cmd[CurrentCmd].ref.index = i;
-			Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_MOUSE_AXIS;
-			GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+			CurrentCmd->ref.index = i;
+			CurrentCmd->ref.type = GFCTRL_TYPE_MOUSE_AXIS;
+			GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
 			glutPostRedisplay();
 			return;
 		}
@@ -320,9 +320,9 @@ Idle(void)
 					glutIdleFunc(GfuiIdle);
 					InputWaited = 0;
 					str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
-					Cmd[CurrentCmd].ref.index = i + 32 * index;
-					Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_BUT;
-					GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+					CurrentCmd->ref.index = i + 32 * index;
+					CurrentCmd->ref.type = GFCTRL_TYPE_JOY_BUT;
+					GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
 					glutPostRedisplay();
 					rawb[index] = b;
 					return;
@@ -337,10 +337,10 @@ Idle(void)
 	if (axis != -1) {
 		glutIdleFunc(GfuiIdle);
 		InputWaited = 0;
-		Cmd[CurrentCmd].ref.type = GFCTRL_TYPE_JOY_AXIS;
-		Cmd[CurrentCmd].ref.index = axis;
+		CurrentCmd->ref.type = GFCTRL_TYPE_JOY_AXIS;
+		CurrentCmd->ref.index = axis;
 		str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_AXIS, axis);
-		GfuiButtonSetText (scrHandle, Cmd[CurrentCmd].Id, str);
+		GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
 		glutPostRedisplay();
 		return;
 	}
@@ -351,15 +351,14 @@ static void
 onPush(void *vi)
 {
 	int	index;    
-	long i = (long)vi;
 
-	CurrentCmd = i;
-	GfuiButtonSetText (scrHandle, Cmd[i].Id, "");
-	Cmd[i].ref.index = -1;
-	Cmd[i].ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-	GfParmSetStr(PrefHdle, CurrentSection, Cmd[i].name, "");
+	CurrentCmd = (tCmdInfo*) vi;
+	GfuiButtonSetText (scrHandle, CurrentCmd->Id, "");
+	CurrentCmd->ref.index = -1;
+	CurrentCmd->ref.type = GFCTRL_TYPE_NOT_AFFECTED;
+	GfParmSetStr(PrefHdle, CurrentSection, CurrentCmd->name, "");
 	
-	if (Cmd[CurrentCmd].keyboardPossible) {
+	if (CurrentCmd->keyboardPossible) {
 		InputWaited = 1;
 	}
 	
@@ -391,7 +390,6 @@ onActivate(void * /* dummy */)
 		snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), HM_PREF_FILE);
 		PrefHdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 	
-		/* Mouse Settings */
 		for (cmd = 0; cmd < maxCmd; cmd++) {
 			prm = GfctrlGetNameByRef(Cmd[cmd].ref.type, Cmd[cmd].ref.index);
 			if (!prm) {
@@ -400,32 +398,41 @@ onActivate(void * /* dummy */)
 
 			prm = GfParmGetStr(PrefHdle, HM_SECT_MOUSEPREF, Cmd[cmd].name, prm);
 			prm = GfParmGetStr(PrefHdle, CurrentSection, Cmd[cmd].name, prm);
-			ref = GfctrlGetRefByName(prm);
-			Cmd[cmd].ref.type = ref->type;
-			Cmd[cmd].ref.index = ref->index;
+			GfctrlGetRefByName(prm, &Cmd[cmd].ref);
 
 			if (Cmd[cmd].minName) {
-				Cmd[cmd].min = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, Cmd[cmd].minName, NULL, Cmd[cmd].min);
+				Cmd[cmd].min = GfParmGetNum(PrefHdle, GfctrlGetDefaultSection(Cmd[cmd].ref.type), Cmd[cmd].minName, NULL, Cmd[cmd].min);
 				Cmd[cmd].min = GfParmGetNum(PrefHdle, CurrentSection, Cmd[cmd].minName, NULL, Cmd[cmd].min);
 			}
 
 			if (Cmd[cmd].maxName) {
-				Cmd[cmd].max = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, Cmd[cmd].maxName, NULL, Cmd[cmd].max);
+				Cmd[cmd].max = GfParmGetNum(PrefHdle, GfctrlGetDefaultSection(Cmd[cmd].ref.type), Cmd[cmd].maxName, NULL, Cmd[cmd].max);
 				Cmd[cmd].max = GfParmGetNum(PrefHdle, CurrentSection, Cmd[cmd].maxName, NULL, Cmd[cmd].max);
 			}
 
 			if (Cmd[cmd].powName) {
-				Cmd[cmd].pow = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, Cmd[cmd].powName, NULL, Cmd[cmd].pow);
+				Cmd[cmd].pow = GfParmGetNum(PrefHdle, GfctrlGetDefaultSection(Cmd[cmd].ref.type), Cmd[cmd].powName, NULL, Cmd[cmd].pow);
 				Cmd[cmd].pow = GfParmGetNum(PrefHdle, CurrentSection, Cmd[cmd].powName, NULL, Cmd[cmd].pow);
 			}
 		}
 	
-		SteerSensVal = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, HM_ATT_STEER_SENS, NULL, 0);
-		SteerSensVal = GfParmGetNum(PrefHdle, CurrentSection, HM_ATT_STEER_SENS, NULL, SteerSensVal);
-		DeadZoneVal = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, HM_ATT_STEER_DEAD, NULL, 0);
-		DeadZoneVal = GfParmGetNum(PrefHdle, CurrentSection, HM_ATT_STEER_DEAD, NULL, DeadZoneVal);
+		int i;
+		for (i = 0; i < nbEditboxValues; i++) {
+			editBoxValues[i].value = GfParmGetNum(PrefHdle, HM_SECT_MOUSEPREF, editBoxValues[i].key, NULL, 0);
+			editBoxValues[i].value = GfParmGetNum(PrefHdle, CurrentSection, editBoxValues[i].key, NULL, editBoxValues[i].value);
+		}
 	}
-	
+
+	// Update GUI after calibration to avoid nonsense values (inefficient)
+	for (cmd = 0; cmd < maxCmd; cmd++) {
+		if (strcmp(Cmd[cmd].name, HM_ATT_LEFTSTEER) == 0) {
+			editBoxValues[IDX_LEFTSTEER_POW].value = Cmd[cmd].pow;
+		}
+		if (strcmp(Cmd[cmd].name, HM_ATT_BRAKE) == 0) {
+			editBoxValues[IDX_BRAKE_POW].value = Cmd[cmd].pow;
+		}
+	}
+
 	updateButtonText();
 }
 
@@ -476,44 +483,50 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 	
 	x = 10;
 	x2 = 210;
-	y = 340;
+	y = 390;
 	dy = 30;
 	
 	for (i = 0; i < maxCmd; i++) {
 		GfuiLabelCreate(scrHandle, Cmd[i].name, GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 		Cmd[i].Id = GfuiButtonStateCreate (scrHandle, "MOUSE_MIDDLE_BUTTON", GFUI_FONT_MEDIUM_C, x+x2, y, 0, GFUI_ALIGN_HC_VB, GFUI_MOUSE_DOWN, 
-							(void*)i, onPush, NULL, (tfuiCallback)NULL, onFocusLost);
+							(void*)&Cmd[i], onPush, NULL, (tfuiCallback)NULL, onFocusLost);
 		y -= dy;
 		if (i == (maxCmd / 2 - 1)) {
 			x = 320;
-			y = 340;
+			y = 390;
 			x2 = 220;
 		}
 	}
 	
-	GfuiLabelCreate(scrHandle, "Steer Sensibility", GFUI_FONT_MEDIUM, 30, 90, GFUI_ALIGN_HL_VB, 0);
-	SteerSensEditId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
-					200, 90, 80, 8, NULL, (tfuiCallback)NULL, onSteerSensChange);
-	
-	GfuiLabelCreate(scrHandle, "Steer Dead Zone", GFUI_FONT_MEDIUM, 340, 90, GFUI_ALIGN_HL_VB, 0);
-	DeadZoneEditId = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C,
-					510, 90, 80, 8, NULL, (tfuiCallback)NULL, onDeadZoneChange);
-	
+	int y0 = 180;
+
+	for (i = 0; i < nbEditboxValues; i++) {
+		y = y0 - (i%4)*dy;
+		GfuiLabelCreate(scrHandle, editBoxValues[i].label, GFUI_FONT_MEDIUM, 10 + (i/4*310), y, GFUI_ALIGN_HL_VB, 0);
+		editBoxValues[i].id = GfuiEditboxCreate(scrHandle, "", GFUI_FONT_MEDIUM_C, 10 + (i/4*310) + 190, y, 80, 6, &editBoxValues[i], (tfuiCallback)NULL, onValueChange);
+	}
 	
 	GfuiAddKey(scrHandle, 13, "Save", NULL, onSave, NULL);
-	GfuiButtonCreate(scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-				NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	GfuiButtonCreate(
+		scrHandle, "Save", GFUI_FONT_LARGE, 160, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		NULL, onSave, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
+	);
 	
-	MouseCalButton = GfuiButtonCreate(scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-						MouseCalMenuInit(scrHandle, Cmd, maxCmd), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	MouseCalButton = GfuiButtonCreate(
+		scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		MouseCalMenuInit(scrHandle, Cmd, maxCmd), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
+	);
 	
-	JoyCalButton = GfuiButtonCreate(scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-					JoyCalMenuInit(scrHandle, Cmd, maxCmd), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+	JoyCalButton = GfuiButtonCreate(
+		scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		JoyCalMenuInit(scrHandle, Cmd, maxCmd), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
+	);
 	
 	GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);
-	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-				prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	
+	GfuiButtonCreate(
+		scrHandle, "Cancel", GFUI_FONT_LARGE, 480, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+		prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
+	);
 	
 	GfuiKeyEventRegister(scrHandle, onKeyAction);
 	GfuiSKeyEventRegister(scrHandle, onSKeyAction);

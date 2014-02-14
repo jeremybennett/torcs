@@ -25,21 +25,21 @@
 
 typedef struct {
     const char	*name;		/* Name of the control */
-    int		type;		/* Type of control (analog, joy button, keyboard) */
+    GfCtrlType type;		/* Type of control (analog, joy button, keyboard) */
     int		val;		/* control index */
     const char	*minName;	/* Name of the min attribute */
-    float	min;		/* min value for analog control */
-    float	minVal;		/* another min value for analog control*/
+    tdble	min;		/* min value for analog control */
+    tdble	minVal;		/* another min value for analog control*/
     const char	*maxName;	/* Name of the max attribute */
-    float	max;		/* max value for analog control */
+    tdble	max;		/* max value for analog control */
     const char	*sensName;	/* Name of the sens attribute */
-    float	sens;		/* sensitivity of control */
+    tdble	sens;		/* sensitivity of control */
     const char	*powName;	/* Name of the pow attribute */
-    float	pow;		/* power of curve command = pow(control, power) */
+    tdble	pow;		/* power of curve command = pow(control, power) */
     const char	*spdSensName;	/* Name of the speed sensitivity attribute */
-    float	spdSens;	/* speed sensitivity */
+    tdble	spdSens;	/* speed sensitivity */
     const char	*deadZoneName;	/* Name of the dead zone attribute */
-    float	deadZone;	/* dead zone (% of the available zone) */
+    tdble	deadZone;	/* dead zone (% of the available zone) */
 } tControlCmd;
 
 extern void	*PrefHdle;

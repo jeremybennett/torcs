@@ -2,7 +2,7 @@
 
     file        : control.cpp
     created     : Thu Mar  6 22:01:33 CET 2003
-    copyright   : (C) 2003 by Eric Espi�                        
+    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -30,7 +30,7 @@
 
 #include <tgfclient.h>
 #include <portability.h>
-
+#include <playerpref.h>
 
 static const char *GfJoyBtn[] = {
 "BTN1-0","BTN2-0","BTN3-0","BTN4-0","BTN5-0","BTN6-0","BTN7-0","BTN8-0","BTN9-0","BTN10-0","BTN11-0","BTN12-0","BTN13-0","BTN14-0","BTN15-0","BTN16-0",
@@ -118,72 +118,68 @@ static jsJoystick *js[NUM_JOY] = {NULL};
 /** Get a control reference by its name
     @ingroup	ctrl
     @param	name	name of the control
-    @return	pointer on a static structure tCtrlRef
     @see	tCtrlRef
 */
-tCtrlRef *
-GfctrlGetRefByName(const char *name)
+void GfctrlGetRefByName(const char *name, tCtrlRef* ref)
 {
-	static tCtrlRef	ref;
 	int i;
 	
 	if (!name || !strlen(name)) {
-		ref.index = -1;
-		ref.type = GFCTRL_TYPE_NOT_AFFECTED;
-		return &ref;
+		ref->index = -1;
+		ref->type = GFCTRL_TYPE_NOT_AFFECTED;
+		return;
 	}
 
 	for (i = 0; i < gfmaxJoyButton; i++) {
 		if (strcmp(name, GfJoyBtn[i]) == 0) {
-			ref.index = i;
-			ref.type = GFCTRL_TYPE_JOY_BUT;
-			return &ref;
+			ref->index = i;
+			ref->type = GFCTRL_TYPE_JOY_BUT;
+			return;
 		}
 	}
 
 	for (i = 0; i < gfmaxJoyAxis; i++) {
 		if (strcmp(name, GfJoyAxis[i]) == 0) {
-			ref.index = i;
-			ref.type = GFCTRL_TYPE_JOY_AXIS;
-			return &ref;
+			ref->index = i;
+			ref->type = GFCTRL_TYPE_JOY_AXIS;
+			return;
 		}
 	}
 
 	for (i = 0; i < gfmaxMouseButton; i++) {
 		if (strcmp(name, GfMouseBtn[i]) == 0) {
-			ref.index = i;
-			ref.type = GFCTRL_TYPE_MOUSE_BUT;
-			return &ref;
+			ref->index = i;
+			ref->type = GFCTRL_TYPE_MOUSE_BUT;
+			return;
 		}
 	}
 
 	for (i = 0; i < gfmaxMouseAxis; i++) {
 		if (strcmp(name, GfMouseAxis[i]) == 0) {
-			ref.index = i;
-			ref.type = GFCTRL_TYPE_MOUSE_AXIS;
-			return &ref;
+			ref->index = i;
+			ref->type = GFCTRL_TYPE_MOUSE_AXIS;
+			return;
 		}
 	}
 
 	for (i = 0; i < gfmaxSKey; i++) {
 		if (strcmp(name, GfSKey[i].descr) == 0) {
-			ref.index = GfSKey[i].val;
-			ref.type = GFCTRL_TYPE_SKEYBOARD;
-			return &ref;
+			ref->index = GfSKey[i].val;
+			ref->type = GFCTRL_TYPE_SKEYBOARD;
+			return;
 		}
 	}
 
 	for (i = 0; i < gfmaxKey; i++) {
 		if (strcmp(name, GfKey[i].descr) == 0) {
-			ref.index = GfKey[i].val;
-			ref.type = GFCTRL_TYPE_KEYBOARD;
-			return &ref;
+			ref->index = GfKey[i].val;
+			ref->type = GFCTRL_TYPE_KEYBOARD;
+			return;
 		}
 	}
 
-	ref.index = name[0];
-	ref.type = GFCTRL_TYPE_KEYBOARD;
-	return &ref;
+	ref->index = name[0];
+	ref->type = GFCTRL_TYPE_KEYBOARD;
 }
 
 /** Get a control name by its reference
@@ -193,7 +189,7 @@ GfctrlGetRefByName(const char *name)
     @return	pointer on a static structure tCtrlRef
 */
 const char *
-GfctrlGetNameByRef(int type, int index)
+GfctrlGetNameByRef(GfCtrlType type, int index)
 {
 	static const int BUFSIZE = 4; 
     static char buf[BUFSIZE];
@@ -276,6 +272,18 @@ gfJoyFirstInit(void)
 	    gfctrlJoyPresent = GFCTRL_JOY_PRESENT;
 	}
     }
+}
+
+
+const char *GfctrlGetDefaultSection(GfCtrlType type)
+{
+	switch (type) {
+		case GFCTRL_TYPE_JOY_AXIS:
+			return HM_SECT_JSPREF;
+		default:
+			return HM_SECT_MOUSEPREF;
+	}
+	return "";
 }
 
 /** Initialize the joystick control

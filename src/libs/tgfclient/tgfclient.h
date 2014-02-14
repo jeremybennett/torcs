@@ -251,18 +251,20 @@ extern int   GfuiMenuBackQuitButtonCreate(void *menu, const char *text, const ch
  * Control interface *
  *********************/
 
-#define GFCTRL_TYPE_NOT_AFFECTED	0
-#define GFCTRL_TYPE_JOY_AXIS		1
-#define GFCTRL_TYPE_JOY_BUT		2
-#define GFCTRL_TYPE_KEYBOARD		3
-#define GFCTRL_TYPE_MOUSE_BUT		4
-#define GFCTRL_TYPE_MOUSE_AXIS		5
-#define GFCTRL_TYPE_SKEYBOARD		6
+typedef enum {
+	GFCTRL_TYPE_NOT_AFFECTED = 0,
+	GFCTRL_TYPE_JOY_AXIS = 1,
+	GFCTRL_TYPE_JOY_BUT = 2,
+	GFCTRL_TYPE_KEYBOARD = 3,
+	GFCTRL_TYPE_MOUSE_BUT = 4,
+	GFCTRL_TYPE_MOUSE_AXIS = 5,
+	GFCTRL_TYPE_SKEYBOARD = 6
+} GfCtrlType;
 
 typedef struct
 {
-    int		index;
-    int		type;
+    int index;
+    GfCtrlType type;
 } tCtrlRef;
 
 
@@ -302,8 +304,9 @@ extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseInitCenter(void);
-extern tCtrlRef *GfctrlGetRefByName(const char *name);
-extern const char *GfctrlGetNameByRef(int type, int index);
+extern void GfctrlGetRefByName(const char *name, tCtrlRef* ref);
+extern const char *GfctrlGetNameByRef(GfCtrlType type, int index);
+extern const char *GfctrlGetDefaultSection(GfCtrlType type);
 
 extern int GfuiGlutExtensionSupported(const char *str);
 

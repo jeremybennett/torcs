@@ -35,8 +35,6 @@
 
 #define HM_SECT_DRVPREF		"Preferences/Drivers"
 
-#define HM_ATT_CONTROL		"control"
-
 #define HM_ATT_UP_SHFT		"up shift"
 #define HM_ATT_DN_SHFT		"down shift"
 #define HM_ATT_ASR_CMD		"ASR cmd"
@@ -110,8 +108,7 @@
 #define HM_ATT_NBPITS	"programmed pit stops"
 
 #define HM_VAL_AUTO	"auto"
-#define HM_VAL_SEQ	"sequential"
-#define HM_VAL_GRID	"grid"
+#define HM_VAL_MANUAL	"manual"
 
 #define HM_VAL_YES	"yes"
 #define HM_VAL_NO	"no"

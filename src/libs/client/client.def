@@ -103,6 +103,7 @@ EXPORTS
 	GfuiSKeyEventRegisterCurrent
 	GfctrlGetRefByName
 	GfctrlGetNameByRef
+	GfctrlGetDefaultSection
 	GfctrlMouseInit
 	GfctrlJoyInit
 	GfctrlMouseRelease
