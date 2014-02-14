@@ -217,16 +217,21 @@ Changes since 1.3.5
 - GfTime2Str operates now over the stack, no heap anymore (less error prone, performance)
   (Bernhard).
 - Reviewed cppcheck warnings (Bernhard).
-- Changed wheels shininess to 1 (from 128) to fix some ugly rendering seen on some
-  videos (Bernhard).
+- Changed wheels shininess to 1 (from 128) to fix some ugly rendering seen on some videos,
+  not reproducable here (Bernhard).
 - Fixed a problem regarding SimReConfig spring adjustments discovered by Wolf-Dieter
-  (spring values were inverted for special case when parameter is not adjustable, 
+  (spring values were inverted for special case when parameter was not adjustable, 
   min == max) (Wolf-Dieter, Bernhard).
 - Added absolute value of speed vector, accessible in tCarElt->pub.speed, use it in
   aero.cpp, grsmoke.cpp, grskidmarks.cpp, CarSoundData.cpp and human.cpp (David,
   Bernhard).
 - Improved display of track maps in track select menu, aspect ratio (Bernhard).
-- Recreated most track maps for consistent look (Bernhard).
+- Recreated most track maps for consistent look of track selection menu (Bernhard).
+- Improved/cleaned up reading of player preferences, controller setup (Bernhard).
+- Fixed GCC 4.7 compiler warning in controlconfig.cpp (Bernhard).
+- Added several configuration fields to controller setup GUI (Bernhard).
+- Fixed automatic clutch for human driver not working out of the box under some
+  conditions (Bernhard). 
 
 
 11. TODO/Notes
@@ -235,15 +240,17 @@ Changes since 1.3.5
 
 TODO for 1.3.6/x
 ----------------
-- Review human control defaults, currently it uses always the "mouse" section (
-  offer values directly in GUI, other default selection, ...?)
+- corner cutting time penalty.
 - Integrate Wolf-Dieters suggestion for VS Express regarding Icon/.rc
 - Review and eventually apply mac os x build
 - Review MorphOS changes
 - Clean up doxygen docs
 
 
-eventually (otherwise in 1.4.x):
+eventually (otherwise in 1.4.x or later):
+- more historic cars setups.
+- track wall properties
+
 - Skidmarks/shadows masking with stencil
 - Phong specular highlights/in shadow occlusion
 - Skidmarks to simu/persistency (get rid of frame rate dependency)
