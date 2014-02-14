@@ -96,13 +96,19 @@
 		<attnum name="throttle min" val="0"/>
 		<attnum name="throttle max" val="1"/>
 		<attnum name="throttle sensitivity" val="1.0"/>
-		<attnum name="throttle power" val="0"/>
+		<attnum name="throttle power" val="1.0"/>
 
 		<attstr name="brake" val="Down Arrow"/>
 		<attnum name="brake min" val="0"/>
 		<attnum name="brake max" val="1"/>
 		<attnum name="brake sensitivity" val="1.0"/>
-		<attnum name="brake power" val="0"/>
+		<attnum name="brake power" val="1"/>
+
+		<attstr name="clutch" val="-"/>
+		<attnum name="clutch min" val="0"/>
+		<attnum name="clutch max" val="1"/>
+		<attnum name="clutch sensitivity" val="1.0"/>
+		<attnum name="clutch power" val="1"/>
 	</section>
 
 	<section name="Preferences">
