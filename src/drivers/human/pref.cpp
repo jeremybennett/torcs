@@ -77,8 +77,6 @@ void HmReadPrefs(int index)
 	char sstring[BUFSIZE];
     int	cmd;
     float tmp;
-    tCtrlRef *ref;
-    int	i;
     int	idx = index - 1;
     tControlCmd	*cmdCtrl;
 

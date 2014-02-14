@@ -381,7 +381,6 @@ onActivate(void * /* dummy */)
 {
 	int cmd;
 	const char *prm;
-	tCtrlRef *ref;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 
