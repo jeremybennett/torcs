@@ -232,7 +232,9 @@ Changes since 1.3.5
 - Added several configuration fields to controller setup GUI (Bernhard).
 - Fixed automatic clutch for human driver not working out of the box under some
   conditions (Bernhard). 
-
+- Remaining penalty time by the end of the race is recorded in the race results
+  and added to the race total time (Bernhard).
+- Added column for penalty time to race result screen (Bernhard).
 
 11. TODO/Notes
 --------------
@@ -251,6 +253,8 @@ eventually (otherwise in 1.4.x or later):
 - more historic cars setups.
 - track wall properties
 
+- Solve problems with side entering/exiting pit lane rules (repeated violations give
+  only one penalty under some conditions).
 - Skidmarks/shadows masking with stencil
 - Phong specular highlights/in shadow occlusion
 - Skidmarks to simu/persistency (get rid of frame rate dependency)
