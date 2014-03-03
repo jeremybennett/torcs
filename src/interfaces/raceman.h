@@ -2,7 +2,7 @@
 
     file                 : raceman.h
     created              : Sun Jan 30 22:59:17 CET 2000
-    copyright            : (C) 2000,2002 by Eric Espie
+    copyright            : (C) 2000,2002-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -337,6 +337,7 @@ typedef struct RmInfo
 #define RE_ATTR_DAMMAGES	"dammages"
 #define RE_ATTR_NB_PIT_STOPS	"pits stops"
 #define RE_ATTR_POINTS		"points"
+#define RE_ATTR_PENALTYTIME	"penaltytime"
 
 #endif /* _RACEMANV1_H_ */ 
 

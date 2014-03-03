@@ -179,20 +179,6 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 			(tfuiCallback)NULL,
 			(tfuiCallback)NULL);
 
-/*     rmSaveId = GfuiButtonCreate(rmScrHdle, */
-/* 				"Save", */
-/* 				GFUI_FONT_LARGE, */
-/* 				430, */
-/* 				40, */
-/* 				150, */
-/* 				GFUI_ALIGN_HC_VB, */
-/* 				0, */
-/* 				info, */
-/* 				rmSaveRes, */
-/* 				NULL, */
-/* 				(tfuiCallback)NULL, */
-/* 				(tfuiCallback)NULL); */
-
 	if (i < totLaps) {
 		RmNextRace.prevHdle = prevHdle;
 		RmNextRace.info     = info;
@@ -230,7 +216,7 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	void *results = info->results;
 	const char *race = info->_reRaceName;
 	int i;
-	int x1, x2, x3, x4, x5, x6, x7, x8;
+	int x1, x2, x3, x4, x5, x6, x7, x8, x9;
 	int dlap;
 	int y;
 	const int BUFSIZE = 1024;
@@ -253,12 +239,13 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	
 	x1 = 30;
 	x2 = 60;
-	x3 = 240;
+	x3 = 260;
 	x4 = 330;
 	x5 = 360;
 	x6 = 420;
-	x7 = 510;
-	x8 = 595;
+	x7 = 490;
+	x8 = 545;
+	x9 = 630;
 	
 	y = 400;
 	GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
@@ -267,8 +254,9 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HR_VB, 0);
 	GfuiLabelCreateEx(rmScrHdle, "Laps",      fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
 	GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Damages",  fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Pit Stops", fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Damage",    fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Penalty",   fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);	
 	y -= 20;
 	
 	snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -305,9 +293,6 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 			GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
 
 		}
-		/*GfuiLabelCreate(rmScrHdle, str, GFUI_FONT_MEDIUM_C,
-				x3, y, GFUI_ALIGN_HR_VB, 0);
-	*/
 
 		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
 		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C,
@@ -328,20 +313,23 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 				x8, y, GFUI_ALIGN_HC_VB, 0);
+
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
+		GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
+
 		y -= 15;
 	}
 
-
 	if (start > 0) {
-	RmPrevRace.prevHdle = prevHdle;
-	RmPrevRace.info     = info;
-	RmPrevRace.start    = start - MAX_LINES;
-	GfuiGrButtonCreate(rmScrHdle, "data/img/arrow-up.png", "data/img/arrow-up.png",
-			"data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
-			80, 40, GFUI_ALIGN_HL_VB, 1,
-			(void*)&RmPrevRace, rmChgRaceScreen,
-			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgRaceScreen, NULL);
+		RmPrevRace.prevHdle = prevHdle;
+		RmPrevRace.info     = info;
+		RmPrevRace.start    = start - MAX_LINES;
+		GfuiGrButtonCreate(rmScrHdle, "data/img/arrow-up.png", "data/img/arrow-up.png",
+				"data/img/arrow-up.png", "data/img/arrow-up-pushed.png",
+				80, 40, GFUI_ALIGN_HL_VB, 1,
+				(void*)&RmPrevRace, rmChgRaceScreen,
+				NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous Results", (void*)&RmPrevRace, rmChgRaceScreen, NULL);
 	}
 
 	GfuiButtonCreate(rmScrHdle,
@@ -358,20 +346,6 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 			NULL,
 			(tfuiCallback)NULL,
 			(tfuiCallback)NULL);
-
-/*     rmSaveId = GfuiButtonCreate(rmScrHdle, */
-/* 				"Save", */
-/* 				GFUI_FONT_LARGE, */
-/* 				430, */
-/* 				40, */
-/* 				150, */
-/* 				GFUI_ALIGN_HC_VB, */
-/* 				0, */
-/* 				info, */
-/* 				rmSaveRes, */
-/* 				NULL, */
-/* 				(tfuiCallback)NULL, */
-/* 				(tfuiCallback)NULL); */
 
 	if (i < nbCars) {
 		RmNextRace.prevHdle = prevHdle;
@@ -418,8 +392,6 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	const int TIMEFMTSIZE = 256;
 	char timefmt[TIMEFMTSIZE];
 	float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
-	//int laps, totLaps;
-	//tdble refTime;
 	int nbCars;
 	int offset;
 
@@ -442,16 +414,11 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 	GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
 	y -= 20;
 	
-	//snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
-	//totLaps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
-	//snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, 1);
-	//refTime = GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0);
 	snprintf(path, BUFSIZE, "%s/%s/%s/%s", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK);
 	nbCars = (int)GfParmGetEltNb(results, path);
 	
 	for (i = start; i < MIN(start + MAX_LINES, nbCars); i++) {
 		snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", info->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
-		//laps = (int)GfParmGetNum(results, path, RE_ATTR_LAPS, NULL, 0);
 
 		snprintf(buf, BUFSIZE, "%d", i+1);
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
@@ -492,20 +459,6 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 			NULL,
 			(tfuiCallback)NULL,
 			(tfuiCallback)NULL);
-
-/*     rmSaveId = GfuiButtonCreate(rmScrHdle, */
-/* 				"Save", */
-/* 				GFUI_FONT_LARGE, */
-/* 				430, */
-/* 				40, */
-/* 				150, */
-/* 				GFUI_ALIGN_HC_VB, */
-/* 				0, */
-/* 				info, */
-/* 				rmSaveRes, */
-/* 				NULL, */
-/* 				(tfuiCallback)NULL, */
-/* 				(tfuiCallback)NULL); */
 
 	if (i < nbCars) {
 		RmNextRace.prevHdle = prevHdle;

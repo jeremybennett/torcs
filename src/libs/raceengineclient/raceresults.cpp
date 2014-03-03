@@ -343,7 +343,8 @@ void ReStoreRaceResults(const char *race)
 				GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
 			
 				GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
-				GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
+				GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime + car->_penaltyTime);
+				GfParmSetNum(results, path, RE_ATTR_PENALTYTIME, NULL, car->_penaltyTime);
 				GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
 				GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, car->_topSpeed);
 				GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
