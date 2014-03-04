@@ -235,6 +235,14 @@ Changes since 1.3.5
 - Remaining penalty time by the end of the race is recorded in the race results
   and added to the race total time (Bernhard).
 - Added column for penalty time to race result screen (Bernhard).
+- During stop&go stops accumulated penalty time is added to pit stop time and then
+  cleared (Bernhard).
+- Implemented corner cutting penalty for races, the penalty is currently calculated
+  as speed*timestep*deviation/minlegalradius, see raceengine.cpp (Bernhard).
+- Best lap time committing is in races now handled like in qualifying and practice,
+  so if you cut corners or hit walls the lap cannot be a best lap (Bernhard).
+- Penalty time is displayed in top left panels (Bernhard).
+
 
 11. TODO/Notes
 --------------
@@ -242,7 +250,6 @@ Changes since 1.3.5
 
 TODO for 1.3.6/x
 ----------------
-- corner cutting time penalty.
 - Integrate Wolf-Dieters suggestion for VS Express regarding Icon/.rc
 - Review and eventually apply mac os x build
 - Review MorphOS changes
