@@ -105,7 +105,7 @@ ReRaceMsgUpdate(void)
 }
 
 static void
-ReRaceMsgSet(char *msg, double life)
+ReRaceMsgSet(const char *msg, double life)
 {
 	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
 		ReSetRaceMsg(msg);
