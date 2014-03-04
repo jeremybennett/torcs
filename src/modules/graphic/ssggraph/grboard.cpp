@@ -295,8 +295,8 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
 	glColor4f(0.1, 0.1, 0.1, 0.8);
 	glVertex2f(x-5, y + dy);
 	glVertex2f(x+dx+5, y + dy);
-	glVertex2f(x+dx+5, y-5 - dy2 * 8 /* lines */);
-	glVertex2f(x-5, y-5 - dy2 * 8 /* lines */);
+	glVertex2f(x+dx+5, y-5 - dy2 * 9 /* lines */);
+	glVertex2f(x-5, y-5 - dy2 * 9 /* lines */);
 	glEnd();
 	glDisable(GL_BLEND);
 	
@@ -352,10 +352,13 @@ cGrBoard::grDispCarBoard1(tCarElt *car, tSituation *s)
 	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_bestLapTime, 0);
 	y -= dy;
 	
+	GfuiPrintString("Penalty:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_penaltyTime, 0);
+	y -= dy;
+
 	GfuiPrintString("Top Speed:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 	snprintf(buf, BUFSIZE, "%d", (int)(car->_topSpeed * 3.6));
 	GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x2, y, GFUI_ALIGN_HR_VB);
-	y -= dy;
 }
 
 void
@@ -379,7 +382,7 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	snprintf(buf, BUFSIZE, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
 	dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
 	dx = MAX(dx, (x3-x));
-	lines = 6;
+	lines = 7;
 	for (i = 0; i < 4; i++) {
 		if (car->ctrl.msg[i]) {
 			lines++;
@@ -432,6 +435,10 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	y -= dy;
 	clr = grWhite;
 	
+	GfuiPrintString("Penalty:", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
+	grWriteTime(clr, GFUI_FONT_SMALL_C, x2, y, car->_penaltyTime, 0);
+	y -= dy;
+
 	if (car->_pos != 1) {
 		snprintf(buf, BUFSIZE, "<- %s", s->cars[car->_pos - 2]->_name);
 		GfuiPrintString(buf, clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
@@ -459,6 +466,7 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 		GfuiPrintString("       --:--", clr, GFUI_FONT_SMALL_C, x3, y, GFUI_ALIGN_HR_VB);
 	}
 	y -= dy;
+
 	for (i = 0; i < 4; i++) {
 		if (car->ctrl.msg[i]) {
 			GfuiPrintString(car->ctrl.msg[i], car->ctrl.msgColor, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
