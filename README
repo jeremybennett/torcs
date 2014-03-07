@@ -242,7 +242,8 @@ Changes since 1.3.5
 - Best lap time committing is in races now handled like in qualifying and practice,
   so if you cut corners or hit walls the lap cannot be a best lap (Bernhard).
 - Penalty time is displayed in top left panels (Bernhard).
-
+- Applied Wolf-Dieters suggestion for VS Express regarding Icon/.rc (Wolf-Dieter,
+  Bernhard).
 
 11. TODO/Notes
 --------------
@@ -250,7 +251,6 @@ Changes since 1.3.5
 
 TODO for 1.3.6/x
 ----------------
-- Integrate Wolf-Dieters suggestion for VS Express regarding Icon/.rc
 - Review and eventually apply mac os x build
 - Review MorphOS changes
 - Clean up doxygen docs
