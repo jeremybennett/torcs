@@ -244,6 +244,9 @@ Changes since 1.3.5
 - Penalty time is displayed in top left panels (Bernhard).
 - Applied Wolf-Dieters suggestion for VS Express regarding Icon/.rc (Wolf-Dieter,
   Bernhard).
+- Removed custom starting grid for e-track-2 (Bernhard).
+- Added e-track-2 to championship (Bernhard).
+- Adopted berniw/berniw2 default setup's to new trb1 boundaries (Bernhard).
 
 11. TODO/Notes
 --------------
