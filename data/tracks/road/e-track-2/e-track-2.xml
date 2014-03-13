@@ -740,31 +740,6 @@
 		<attnum name="light position y" val="-10000"/>
 		<attnum name="light position z" val="10000"/>
 
-		
-		
-		<!--attnum name="background color R" val="0.30"/>
-		<attnum name="background color G" val="0.11"/>
-		<attnum name="background color B" val="0.08"/>
-
-		<attnum name="ambient color R" val="0.2"/>
-		<attnum name="ambient color G" val="0.2"/>
-		<attnum name="ambient color B" val="0.2"/>
-
-		<attnum name="diffuse color R" val="1"/>
-		<attnum name="diffuse color G" val="0.6"/>
-		<attnum name="diffuse color B" val="0.3"/>
-
-		<attnum name="specular color R" val="0.2"/>
-		<attnum name="specular color G" val="0.2"/>
-		<attnum name="specular color B" val="0.2"/>
-
-
-		<attnum name="light position x" val="500"/>
-		<attnum name="light position y" val="-200"/>
-		<attnum name="light position z" val="100"/>
-
-		<attnum name="fov factor" val="0.8"/-->
-
 		<section name="Environment Mapping">
 			<section name="general">
 				<attstr name="env map image" val="env.png"/>
@@ -777,19 +752,11 @@
 			<attnum name="border step" unit="m" val="40"/>
 			<attstr name="surface" val="grass-d2"/>
 
-			<!--attstr name="relief file" val="e-track-2-relief.ac"/>
-			<attstr name="elevation map" val="elevation-map.png"/-->
 			<attnum name="maximum altitude" val="40"/>
 			<attnum name="minimum altitude" val="0"/>
 			<attnum name="group size" val="3000"/>
 
 			<section name="Object Maps">
-				<!--section name="map 1">
-					<attstr name="object map" val="object-map1.png"/>
-				</section>
-				<section name="map 2">
-					<attstr name="object map" val="object-map2.png"/>
-				</section-->
 			</section>
 		</section>
 
@@ -803,14 +770,14 @@
 	</section>  <!-- Graphic -->
 
 
-	<section name="Starting Grid">
+	<!--section name="Starting Grid">
 		<attnum name="rows" val="2"/>
 		<attstr name="pole position side" val="left"/>
 		<attnum name="distance to start" unit="m" val="4.0"/>
 		<attnum name="distance between columns" unit="m" val="8.0"/>
 		<attnum name="offset within a column" unit="m" val="4.0"/>
 		<attnum name="initial height" unit="m" val="0.2"/>
-	</section>
+	</section-->
 
 	<!-- Main Track -->
 	<section name="Main Track">
