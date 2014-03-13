@@ -32,19 +32,9 @@
 #include "sim.h"
 
 tCar *SimCarTable = 0;
-
 tdble SimDeltaTime;
-
 int SimTelemetry;
-
 static int SimNbCars = 0;
-
-t3Dd vectStart[16];
-t3Dd vectEnd[16];
-
-#define MEANNB 0
-#define MEANW  1
-
 
 /*
  * Check the input control from robots
@@ -198,7 +188,6 @@ RemoveCar(tCar *car, tSituation *s)
 		if (carElt->_pos_Z > (car->restPos.pos.z + PULL_Z_OFFSET)) {
 			carElt->_state &= ~RM_CAR_STATE_PULLUP;
 			carElt->_state |= RM_CAR_STATE_PULLSIDE;
-
 			// Moved pullside velocity computation down due to floating point error accumulation.
 		}
 		return;

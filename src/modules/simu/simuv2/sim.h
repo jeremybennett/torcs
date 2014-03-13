@@ -109,8 +109,6 @@ extern bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v);
 extern tdble SimDeltaTime;
 extern int SimTelemetry;
 extern tCar *SimCarTable;
-extern t3Dd vectStart[];
-extern t3Dd vectEnd[];
 
 extern tdble simDammageFactor[];
 extern tdble simSkidFactor[];
