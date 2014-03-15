@@ -382,6 +382,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>    
   </section>
   <section name="Front Left Suspension">
     <attnum name="spring" min="500" max="10000" unit="lbs/in" val="3500"/>
@@ -390,6 +394,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>    
   </section>
   <section name="Rear Right Suspension">
     <attnum name="spring" min="500" max="10000" unit="lbs/in" val="3500"/>
@@ -398,6 +406,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>    
   </section>
   <section name="Rear Left Suspension">
     <attnum name="spring" min="500" max="10000" unit="lbs/in" val="3500"/>
@@ -406,6 +418,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>    
   </section>
   <section name="Front Right Brake">
     <attnum name="disk diameter" unit="mm" val="250"/>
