@@ -349,13 +349,16 @@
     <attnum name="roll center height" unit="m" val="0.2"/>
   </section>
 
-
-    <section name="Rear Differential">
-      <attstr name="type" in="FREE,LIMITED SLIP" val="FREE"/>
-      <attnum name="inertia" unit="kg.m2" val="0.0488"/>
-      <attnum name="ratio" min="1.0" max="10.0" val="2.9"/>
-      <attnum name="efficiency" val="0.9"/>
-    </section>
+  <section name="Rear Differential">
+    <attstr name="type" in="FREE,LIMITED SLIP" val="LIMITED SLIP"/>
+    <attnum name="inertia" unit="kg.m2" val="0.0488"/>
+    <attnum name="ratio" min="1.0" max="10.0" val="2.9"/>
+    <attnum name="efficiency" val="0.9"/>
+    
+    <attnum name="max slip bias" min="0.0" max="0.5" val="0.03"/>
+    <attnum name="locking input torque" min="500" max="90000" val="2000"/>
+    <attnum name="locking brake input torque" min="150" max="90000" val="600"/>
+  </section>
 
   <section name="Front Right Wheel">
     <attnum name="ypos" min="-2" max="-0.1" unit="m" val="-0.71"/>
@@ -432,6 +435,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="220"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>
   </section>
 
   <section name="Front Left Suspension">
@@ -441,6 +448,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="220"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="180"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>
   </section>
 
   <section name="Rear Right Suspension">
@@ -450,6 +461,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>
   </section>
 
   <section name="Rear Left Suspension">
@@ -459,6 +474,10 @@
     <attnum name="bellcrank" val="1"/>
     <attnum name="slow bump" min="20" max="1000" unit="lbs/in/s" val="200"/>
     <attnum name="slow rebound" min="20" max="1000" unit="lbs/in/s" val="200"/>
+    <attnum name="fast bump" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast rebound" min="10" max="200" unit="lbs/in/s" val="30"/>
+    <attnum name="fast bump threshold" unit="m/s" val="0.15"/>
+    <attnum name="fast rebound threshold" unit="m/s" val="0.15"/>
   </section>
 
   <section name="Front Right Brake">
@@ -476,14 +495,14 @@
   </section>
 
   <section name="Rear Right Brake">
-    <attnum name="disk diameter" min="100" max="500" unit="mm" val="200"/>
+    <attnum name="disk diameter" min="100" max="500" unit="mm" val="150"/>
     <attnum name="piston area" min="25" max="200" unit="cm2" val="25"/>
     <attnum name="mu" min="0.25" max="0.5" val="0.45"/>
     <attnum name="inertia" min="0.05" max="0.3" unit="kg.m2" val="0.06"/>
   </section>
 
   <section name="Rear Left Brake">
-    <attnum name="disk diameter" min="100" max="500" unit="mm" val="200"/>
+    <attnum name="disk diameter" min="100" max="500" unit="mm" val="150"/>
     <attnum name="piston area" min="25" max="200" unit="cm2" val="25"/>
     <attnum name="mu" min="0.25" max="0.5" val="0.45"/>
     <attnum name="inertia" min="0.05" max="0.3" unit="kg.m2" val="0.06"/>
