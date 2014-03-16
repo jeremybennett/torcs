@@ -333,7 +333,7 @@
   </section>
 
   <section name="Brake System">
-        <attnum name="front-rear brake repartition" min="0.3" max="0.8" val="0.6"/>
+        <attnum name="front-rear brake repartition" min="0.3" max="0.8" val="0.7"/>
         <attnum name="max pressure" min="5000" max="40000" unit="kPa" val="20000"/>
   </section>
 
