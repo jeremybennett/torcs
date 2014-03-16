@@ -139,7 +139,7 @@
     <attnum name="front right-left weight repartition" min="0.1" max="0.9" val="0.5"/>
     <attnum name="rear right-left weight repartition" min="0.1" max="0.9" val="0.5"/>
     <attnum name="mass repartition coefficient" min="0.1" max="3" val="0.7"/>
-    <attnum name="fuel tank" min="20" max="300" unit="l" val="50"/>
+    <attnum name="fuel tank" unit="l" val="83"/>
     <attnum name="initial fuel" min="1" max="300" unit="l" val="50"/>
   </section>
 
@@ -178,22 +178,22 @@
 
         <section name="2">
           <attnum name="rpm" unit="rpm" val="500"/>
-          <attnum name="Tq" unit="N.m" val="90"/>
+          <attnum name="Tq" unit="N.m" val="230"/>
         </section>
 
         <section name="3">
           <attnum name="rpm" unit="rpm" val="1000"/>
-          <attnum name="Tq" unit="N.m" val="140"/>
+          <attnum name="Tq" unit="N.m" val="290"/>
         </section>
 
         <section name="4">
           <attnum name="rpm" unit="rpm" val="1500"/>
-          <attnum name="Tq" unit="N.m" val="210"/>
+          <attnum name="Tq" unit="N.m" val="340"/>
         </section>
 
         <section name="5">
           <attnum name="rpm" unit="rpm" val="2000"/>
-          <attnum name="Tq" unit="N.m" val="330"/>
+          <attnum name="Tq" unit="N.m" val="390"/>
         </section>
 
         <section name="6">
@@ -203,42 +203,42 @@
 
         <section name="7">
           <attnum name="rpm" unit="rpm" val="3000"/>
-          <attnum name="Tq" unit="N.m" val="500"/>
+          <attnum name="Tq" unit="N.m" val="445"/>
         </section>
 
         <section name="8">
           <attnum name="rpm" unit="rpm" val="3500"/>
-          <attnum name="Tq" unit="N.m" val="540"/>
+          <attnum name="Tq" unit="N.m" val="455"/>
         </section>
 
         <section name="9">
           <attnum name="rpm" unit="rpm" val="4000"/>
-          <attnum name="Tq" unit="N.m" val="615"/>
+          <attnum name="Tq" unit="N.m" val="460"/>
         </section>
 
         <section name="10">
           <attnum name="rpm" unit="rpm" val="4500"/>
-          <attnum name="Tq" unit="N.m" val="580"/>
+          <attnum name="Tq" unit="N.m" val="455"/>
         </section>
 
         <section name="11">
           <attnum name="rpm" unit="rpm" val="5000"/>
-          <attnum name="Tq" unit="N.m" val="540"/>
+          <attnum name="Tq" unit="N.m" val="450"/>
         </section>
 
         <section name="12">
           <attnum name="rpm" unit="rpm" val="5500"/>
-          <attnum name="Tq" unit="N.m" val="521"/>
+          <attnum name="Tq" unit="N.m" val="440"/>
         </section>
 
         <section name="13">
           <attnum name="rpm" unit="rpm" val="6000"/>
-          <attnum name="Tq" unit="N.m" val="480"/>
+          <attnum name="Tq" unit="N.m" val="425"/>
         </section>
 
         <section name="14">
           <attnum name="rpm" unit="rpm" val="6500"/>
-          <attnum name="Tq" unit="N.m" val="440"/>
+          <attnum name="Tq" unit="N.m" val="410"/>
         </section>
 
         <section name="15">
