@@ -279,7 +279,6 @@
 
     <!-- initial ride height -->
     <attnum name="ride height" min="50" max="250" unit="mm" val="100"/>
-    <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
     <attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
@@ -291,7 +290,6 @@
     <attnum name="inertia" min="1" unit="kg.m2" val="1.2200"/>
     <attnum name="mu" min="0.05" max="1.6" val="1.4"/>
     <attnum name="ride height" min="50" max="250" unit="mm" val="100"/>
-    <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
     <attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
@@ -303,7 +301,6 @@
     <attnum name="inertia" min="1" unit="kg.m2" val="1.2200"/>
     <attnum name="mu" min="0.05" max="1.7" val="1.4"/>
     <attnum name="ride height" min="50" max="250" unit="mm" val="100"/>
-    <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
 	<attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
@@ -315,7 +312,6 @@
     <attnum name="inertia" min="1" unit="kg.m2" val="1.2200"/>
     <attnum name="mu" min="0.05" max="1.7" val="1.4"/>
     <attnum name="ride height" min="50" max="250" unit="mm" val="100"/>
-    <attnum name="rolling resistance" min="0.005" max="0.1" val="0.0105"/>
 	<attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
   </section>
 
