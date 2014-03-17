@@ -348,7 +348,6 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="27.0"/>
 		<attnum name="dynamic friction" unit="%" val="80"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" min="0.05" max="1.6" val="1.6"/>
 	</section>
 	<section name="Front Left Wheel">
@@ -364,7 +363,6 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="27.0"/>
 		<attnum name="dynamic friction" unit="%" val="80"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" min="0.05" max="1.6" val="1.6"/>
 	</section>
 	<section name="Rear Right Wheel">
@@ -380,7 +378,6 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="27.0"/>
 		<attnum name="dynamic friction" unit="%" val="80"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" min="0.05" max="1.6" val="1.6"/>
 	</section>
 	<section name="Rear Left Wheel">
@@ -396,7 +393,6 @@
 		<!-- Adherence -->
 		<attnum name="stiffness" val="27.0"/>
 		<attnum name="dynamic friction" unit="%" val="80"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" min="0.05" max="1.6" val="1.6"/>
 	</section>
 	<section name="Front Anti-Roll Bar">

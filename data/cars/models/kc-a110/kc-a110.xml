@@ -340,7 +340,6 @@
     <attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
     <attnum name="stiffness" val="5"/>
     <attnum name="dynamic friction" unit="%" val="100"/>
-    <attnum name="rolling resistance" val="0.01"/>
     <attnum name="mu" val="1.2"/>
   </section>
   <section name="Front Left Wheel">
@@ -354,7 +353,6 @@
     <attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
     <attnum name="stiffness" val="5"/>
     <attnum name="dynamic friction" unit="%" val="100"/>
-    <attnum name="rolling resistance" val="0.01"/>
     <attnum name="mu" val="1.2"/>
   </section>
   <section name="Rear Right Wheel">
@@ -368,7 +366,6 @@
     <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
     <attnum name="stiffness" val="5"/>
     <attnum name="dynamic friction" unit="%" val="100"/>
-    <attnum name="rolling resistance" val="0.01"/>
     <attnum name="mu" val="1.2"/>
   </section>
   <section name="Rear Left Wheel">
@@ -382,7 +379,6 @@
     <attnum name="camber" min="-5" max="0" unit="deg" val="-5"/>
     <attnum name="stiffness" val="5"/>
     <attnum name="dynamic friction" unit="%" val="100"/>
-    <attnum name="rolling resistance" val="0.01"/>
     <attnum name="mu" val="1.2"/>
   </section>
   

@@ -306,7 +306,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="22.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.1" val="0.031"/>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"/>
   </section>
 
@@ -323,7 +322,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="22.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.1" val="0.031"/>
     <attnum name="mu" min="0.05" max="1.5" val="1.5"/>
   </section>
 
@@ -340,7 +338,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="22.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.1" val="0.031"/>
     <attnum name="mu" min="0.05" max="1.6" val="1.5"/>
   </section>
 
@@ -357,7 +354,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="22.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.1" val="0.031"/>
     <attnum name="mu" min="0.05" max="1.6" val="1.5"/>
   </section>
 

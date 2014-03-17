@@ -342,7 +342,6 @@
     <attnum name="stiffness" min="1.0" max="30.0" val="5.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="100"/>
     <attnum name="ride height" min="150" max="180" unit="mm" val="170"/>
-    <attnum name="rolling resistance" val="0.012"/>
   </section>
 
   <section name="Front Left Wheel">
@@ -354,7 +353,6 @@
     <attnum name="stiffness" min="1.0" max="30.0" val="5.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="100"/>
     <attnum name="ride height" min="150" max="180" unit="mm" val="170"/>
-    <attnum name="rolling resistance" val="0.012"/>
   </section>
 
   <section name="Rear Right Wheel">
@@ -366,7 +364,6 @@
     <attnum name="stiffness" min="1.0" max="30.0" val="5.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="100"/>
     <attnum name="ride height" min="150" max="180" unit="mm" val="170"/>
-    <attnum name="rolling resistance" val="0.014"/>
   </section>
 
   <section name="Rear Left Wheel">
@@ -378,7 +375,6 @@
     <attnum name="stiffness" min="1.0" max="30.0" val="5.0"/>
     <attnum name="dynamic friction" min="50" max="100" unit="%" val="100"/>
     <attnum name="ride height" min="150" max="180" unit="mm" val="170"/>
-    <attnum name="rolling resistance" val="0.014"/>
   </section>
 
     <section name="Front Anti-Roll Bar">
