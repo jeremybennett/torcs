@@ -260,7 +260,6 @@
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-4"/>
 		<attnum name="stiffness" min="5.0" max="30.0" val="20.0"/>
 		<attnum name="dynamic friction" unit="%" val="90"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" val="1.4"/>
 	</section>
 
@@ -277,7 +276,6 @@
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-4"/>
 		<attnum name="stiffness" min="5.0" max="30.0" val="20.0"/>
 		<attnum name="dynamic friction" unit="%" val="90"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" val="1.4"/>
 	</section>
 
@@ -294,7 +292,6 @@
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-3"/>
 		<attnum name="stiffness" min="5.0" max="30.0" val="20.0"/>
 		<attnum name="dynamic friction" unit="%" val="90"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" val="1.4"/>
 	</section>
 
@@ -311,7 +308,6 @@
 		<attnum name="camber" min="-5" max="0" unit="deg" val="-3"/>
 		<attnum name="stiffness" min="5.0" max="30.0" val="20.0"/>
 		<attnum name="dynamic friction" unit="%" val="90"/>
-		<attnum name="rolling resistance" val="0.02"/>
 		<attnum name="mu" val="1.4"/>
 	</section>
 
