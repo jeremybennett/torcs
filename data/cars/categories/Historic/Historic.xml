@@ -154,7 +154,7 @@
     <attnum name="inertia" min="0.5" max="4.0" unit="kg.m2" val="1.2200"/>
 
     <!-- initial ride height -->
-    <attnum name="ride height" min="100" max="400" unit="mm" val="180"/>
+    <attnum name="ride height" min="50" max="400" unit="mm" val="180"/>
     <attnum name="toe" min="-5" max="5" unit="deg" val="0"/>
     <attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
 
