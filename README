@@ -204,7 +204,7 @@ Changes since 1.3.5
 - Added citation guideline to FAQ and README, proposed by Christos (Christos, Bernhard).
 - Fixed null pointer dereferencing in blind mode, grsound.cpp, bug introduced in 1.3.5
   (Wolf-Dieter, Bernhard).
-- Introduced _penaltyTime to transform late penalties into time penalties and to add
+- Introduced _penaltyTime to transform late penalties into time penalties and to add time
   penalties for corner cutting etc. (Bernhard).
 - During repair pit stops accumulated penalty time is added to pit stop and then cleared
   (Bernhard).
@@ -247,6 +247,12 @@ Changes since 1.3.5
 - Removed custom starting grid for e-track-2 (Bernhard).
 - Added e-track-2 to championship (Bernhard).
 - Adopted berniw/berniw2 default setup's to new trb1 boundaries (Bernhard).
+- Removed obsolete wheel parameter "rolling resistance" (Bernhard).
+- Opened up the range of the "dynamic friction" tire parameter for some categories,
+  to enable a larger grip drop-off with large slip (Bernhard).
+- Car xml changes (real world data, suspension, ...) in kc-grifo, kc-giulietta,
+  kc-ghibli, kc-dino, kc-dbs, kc-db4z, kc-daytona, kc-corvette-ttop, kc-conrero,
+  kc-conero, kc-coda, kc-cobra, kc-bigh, kc-alfatz2, kc-5300gt, kc-2000gt (Bernhard).
 
 11. TODO/Notes
 --------------
@@ -260,9 +266,9 @@ TODO for 1.3.6/x
 
 
 eventually (otherwise in 1.4.x or later):
-- more historic cars setups.
 - track wall properties
 
+- Going full 3D (Quaternion, simcollisionZ, ...)
 - Solve problems with side entering/exiting pit lane rules (repeated violations give
   only one penalty under some conditions).
 - Skidmarks/shadows masking with stencil
