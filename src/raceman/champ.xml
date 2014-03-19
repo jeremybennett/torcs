@@ -2,7 +2,7 @@
 <!-- 
 	 file        : champ.xml
 	 created     : Sat Jan 25 08:58:03 CET 2003
-	 copyright   : (C) 2003 by Eric Espi�                         
+	 copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                         
 	 email       : Eric.Espie@torcs.org   
 	 version     : $Id$                                  
 	 -->
@@ -115,7 +115,6 @@
 		<attstr name="display mode" val="results only"/>
 		<attstr name="restart" val="no"/>
 		<attstr name="display results" val="yes"/>
-		<attstr name="must complete" val="yes"/>
 		
 		<section name="Starting Grid">
 			<attnum name="rows" val="1.000000"/>
