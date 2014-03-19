@@ -227,13 +227,11 @@ typedef struct RmInfo
 #define RM_ATTR_CUR_CONF	"current configuration"
 #define RM_ATTR_START_ORDER	"starting order"
 #define RM_ATTR_ALLOW_RESTART	"restart"
-#define RM_ATTR_MUST_COMPLETE	"must complete"
 #define RM_ATTR_SPLASH_MENU	"splash menu"
 #define RM_ATTR_DISP_START_GRID	"display starting grid"
 
 #define RM_ATTR_MAXNUM		"maximum number"
 #define RM_ATTR_MAX_DRV		"maximum drivers"
-#define RM_ATTR_CAR		"car"
 
 #define RM_ATTR_PRIO		"priority"
 #define RM_ATTR_NAME		"name"
@@ -251,8 +249,6 @@ typedef struct RmInfo
 #define RM_ATTR_DISPMODE	"display mode"
 #define RM_ATTR_DISPRES		"display results"
 
-#define RM_ATTR_TIMESTEP	"time step"
-
 #define RM_ATTR_TYPE		"type"
 #define RM_ATTR_RACE		"race"
 #define RM_ATTR_ROWS		"rows"
@@ -261,11 +257,9 @@ typedef struct RmInfo
 #define RM_ATTR_COLOFFSET	"offset within a column"
 #define RM_ATTR_INITSPEED	"initial speed"
 #define RM_ATTR_INITHEIGHT	"initial height"
-#define RM_ATTR_SHOW_RACE	"show race"
 #define RM_ATTR_MAX_DMG		"maximum dammage"
 #define RM_ATTR_DISTANCE	"distance"
 #define RM_ATTR_LAPS		"laps"
-#define RM_ATTR_QUAL_LAPS	"Qualification laps"
 #define RM_ATTR_POLE		"pole position side"
 #define RM_ATTR_CARSPERPIT	"cars per pit"
 
@@ -302,27 +296,17 @@ typedef struct RmInfo
 
 #define RE_SECT_HEADER		"Header"
 #define RE_ATTR_DATE		"date"
-#define RE_ATTR_TYPE		"race"
 
 #define RE_SECT_CURRENT		"Current"
 #define RE_ATTR_CUR_RACE	"current race"
 #define RE_ATTR_CUR_TRACK	"current track"
 #define RE_ATTR_CUR_DRIVER	"current driver"
 
-#define RE_SECT_DRIVERS		"Drivers"
-#define RE_SECT_DRIVER		"Driver"
 #define RE_ATTR_DLL_NAME	"dll name"
 #define RE_ATTR_INDEX		"index"
 
 #define RE_SECT_STANDINGS	"Standings"
-
 #define RE_SECT_RESULTS		"Results"
-#define RE_SECT_STARTINGGRID	"Starting Grid"
-
-#define RE_SECT_QUALIF		"Qualifications"
-
-#define RE_SECT_FINAL		"Final"
-
 #define RE_SECT_RANK		"Rank"		
 
 #define RE_ATTR_NAME		"name"
