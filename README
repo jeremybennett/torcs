@@ -253,6 +253,7 @@ Changes since 1.3.5
 - Car xml changes (real world data, suspension, ...) in kc-grifo, kc-giulietta,
   kc-ghibli, kc-dino, kc-dbs, kc-db4z, kc-daytona, kc-corvette-ttop, kc-conrero,
   kc-conero, kc-coda, kc-cobra, kc-bigh, kc-alfatz2, kc-5300gt, kc-2000gt (Bernhard).
+- Updated manual page torcs.6, added command line options (Bernhard).
 
 11. TODO/Notes
 --------------
