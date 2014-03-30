@@ -127,7 +127,7 @@ SimConfig(tCarElt *carElt, RmInfo *info)
     SimCarConfig(car);
 
     SimCarCollideConfig(car, info->track);
-    sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+    sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 }
 
@@ -182,7 +182,7 @@ RemoveCar(tCar *car, tSituation *s)
 		carElt->_yaw += car->restPos.vel.az * SimDeltaTime;
 		carElt->_roll += car->restPos.vel.ax * SimDeltaTime;
 		carElt->_pitch += car->restPos.vel.ay * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if (carElt->_pos_Z > (car->restPos.pos.z + PULL_Z_OFFSET)) {
@@ -206,7 +206,7 @@ RemoveCar(tCar *car, tSituation *s)
 
 		carElt->_pos_X += car->restPos.vel.x * SimDeltaTime;
 		carElt->_pos_Y += car->restPos.vel.y * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if ((fabs(car->restPos.pos.x - carElt->_pos_X) < 0.5) && (fabs(car->restPos.pos.y - carElt->_pos_Y) < 0.5)) {
@@ -219,7 +219,7 @@ RemoveCar(tCar *car, tSituation *s)
 
 	if (carElt->_state & RM_CAR_STATE_PULLDN) {
 		carElt->_pos_Z -= car->restPos.vel.z * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if (carElt->_pos_Z < car->restPos.pos.z) {
@@ -413,7 +413,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->pub.DynGC = car->DynGC;
 		carElt->pub.DynGCg = car->DynGCg;
 		carElt->pub.speed = car->speed;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 				RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		carElt->_trkPos = car->trkPos;
 		for (i = 0; i < 4; i++) {
