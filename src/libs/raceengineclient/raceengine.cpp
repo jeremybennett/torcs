@@ -429,10 +429,12 @@ ReRaceRules(tCarElt *car)
 
 	// If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
 	// Invalidation and message is just shown on the first hit
-	if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE)) {
-		car->_commitBestLapTime = false;
-		if (ReInfo->s->_raceType != RM_TYPE_RACE) {
-			ReRaceMsgSet("Hit wall, laptime invalidated", 5);
+	if (ReInfo->raceRules.enabled & RmRaceRules::WALL_HIT_TIME_INVALIDATE) {
+		if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE)) {
+			car->_commitBestLapTime = false;
+			if (ReInfo->s->_raceType != RM_TYPE_RACE) {
+				ReRaceMsgSet("Hit wall, laptime invalidated", 5);
+			}
 		}
 	}
 		
@@ -473,11 +475,13 @@ ReRaceRules(tCarElt *car)
 
 	tdble cuttinglimit = car->_dimension_y*0.7f;
 	if (toborder < -cuttinglimit) {
-		if (ReInfo->s->_raceType != RM_TYPE_RACE && car->_commitBestLapTime) {
-			ReRaceMsgSet("Cut corner, laptime invalidated", 5);
+		if (ReInfo->raceRules.enabled & RmRaceRules::CORNER_CUTTING_TIME_INVALIDATE) {
+			if (ReInfo->s->_raceType != RM_TYPE_RACE && car->_commitBestLapTime) {
+				ReRaceMsgSet("Cut corner, laptime invalidated", 5);
+			}
+			car->_commitBestLapTime = false;
 		}
-		car->_commitBestLapTime = false;
-		if (ReInfo->s->_raceType == RM_TYPE_RACE) {
+		if (ReInfo->s->_raceType == RM_TYPE_RACE && ReInfo->raceRules.enabled & RmRaceRules::CORNER_CUTTING_TIME_PENALTY) {
 			// In race, apply additionally corner cutting time penalty
 			minradius -= cuttinglimit;
 			if (minradius > 1.0f) {

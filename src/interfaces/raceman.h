@@ -176,6 +176,17 @@ typedef struct
 #define RM_PNST_SPD		0x00010000
 #define RM_PNST_STNGO		0x00020000
 
+typedef struct RmRaceRules
+{
+	enum RmRuleFlags {
+		CORNER_CUTTING_TIME_INVALIDATE = 1,
+		WALL_HIT_TIME_INVALIDATE = 2,
+		CORNER_CUTTING_TIME_PENALTY = 4
+	};
+
+	int enabled;
+} tRmRaceRules;
+
 typedef struct RmCarRules
 {
     int			ruleState;
@@ -208,6 +219,7 @@ typedef struct RmInfo
     tRmCarRules		*rules;		/**< by car rules */
     tRaceEngineInfo	raceEngineInfo;
     tRmMovieCapture	movieCapture;
+	tRmRaceRules raceRules;
 } tRmInfo;
 
 /*
@@ -262,6 +274,10 @@ typedef struct RmInfo
 #define RM_ATTR_LAPS		"laps"
 #define RM_ATTR_POLE		"pole position side"
 #define RM_ATTR_CARSPERPIT	"cars per pit"
+
+#define RM_ATTR_INVALIDATE_BEST_LAP_WALL_TOUCH "invalidate best lap on wall touch"
+#define RM_ATTR_INVALIDATE_BEST_LAP_CORNER_CUT "invalidate best lap on corner cutting"
+#define RM_ATTR_CORNER_CUT_TIME_PENALTY "corner cutting time penalty"
 
 #define RM_ATTR_POINTS		"points"
 

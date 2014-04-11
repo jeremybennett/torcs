@@ -131,8 +131,29 @@ ReRaceEventInit(void)
 }
 
 
-int
-RePreRace(void)
+void ReInitRules(tRmInfo* ReInfo)
+{
+	// Invalidate best lap time when wall is hit?
+	const char* value = GfParmGetStr(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_INVALIDATE_BEST_LAP_WALL_TOUCH, RM_VAL_YES);
+	if (!strcmp(value, RM_VAL_YES)) {
+		ReInfo->raceRules.enabled |= RmRaceRules::WALL_HIT_TIME_INVALIDATE;
+	}
+
+	// Invalidate best lap time when corner is cut?
+	value = GfParmGetStr(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_INVALIDATE_BEST_LAP_CORNER_CUT, RM_VAL_YES);
+	if (!strcmp(value, RM_VAL_YES)) {
+		ReInfo->raceRules.enabled |= RmRaceRules::CORNER_CUTTING_TIME_INVALIDATE;
+	}
+
+	// Time penalty for corner cutting?
+	value = GfParmGetStr(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_CORNER_CUT_TIME_PENALTY, RM_VAL_YES);
+	if (!strcmp(value, RM_VAL_YES)) {
+		ReInfo->raceRules.enabled |= RmRaceRules::CORNER_CUTTING_TIME_PENALTY;
+	}
+}
+
+
+int RePreRace(void)
 {
 	tdble dist;
 	void *params = ReInfo->params;
@@ -168,12 +189,14 @@ RePreRace(void)
 	snprintf(path, BUFSIZE, "%s/%s/%s", ReInfo->track->name, RE_SECT_RESULTS, raceName);
 	GfParmListClean(results, path);
 
+	ReInitRules(ReInfo);
+
 	return RM_SYNC | RM_NEXT_STEP;
 }
 
+
 /* return state mode */
-static int
-reRaceRealStart(void)
+static int reRaceRealStart(void)
 {
 	int i, j;
 	int sw, sh, vw, vh;
@@ -282,14 +305,14 @@ reRaceRealStart(void)
 
 static void	*StartRaceHookHandle = 0;
 
-static void
-StartRaceHookActivate(void * /* dummy */)
+
+static void StartRaceHookActivate(void * /* dummy */)
 {
 	reRaceRealStart();
 }
 
-static void *
-StartRaceHookInit(void)
+
+static void* StartRaceHookInit(void)
 {
 	if (StartRaceHookHandle) {
 		return StartRaceHookHandle;
@@ -300,9 +323,9 @@ StartRaceHookInit(void)
 	return StartRaceHookHandle;
 }
 
+
 /* return state mode */
-int
-ReRaceStart(void)
+int ReRaceStart(void)
 {
 	int i;
 	int nCars;
@@ -396,15 +419,14 @@ ReRaceStart(void)
 
 static void	*BackToRaceHookHandle = 0;
 
-static void
-BackToRaceHookActivate(void * /* dummy */)
+static void BackToRaceHookActivate(void * /* dummy */)
 {
 	ReInfo->_reState = RE_STATE_RACE;
 	GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
-static void *
-BackToRaceHookInit(void)
+
+static void* BackToRaceHookInit(void)
 {
 	if (BackToRaceHookHandle) {
 		return BackToRaceHookHandle;
@@ -420,16 +442,14 @@ BackToRaceHookInit(void)
 
 static void	*RestartRaceHookHandle = 0;
 
-static void
-RestartRaceHookActivate(void * /* dummy */)
+static void RestartRaceHookActivate(void * /* dummy */)
 {
 	ReRaceCleanup();
 	ReInfo->_reState = RE_STATE_PRE_RACE;
 	GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
-static void *
-RestartRaceHookInit(void)
+static void* RestartRaceHookInit(void)
 {
 	if (RestartRaceHookHandle) {
 		return RestartRaceHookHandle;
@@ -446,16 +466,15 @@ RestartRaceHookInit(void)
 static void	*QuitHookHandle = 0;
 static void	*StopScrHandle = 0;
 
-static void
-QuitHookActivate(void * /* dummy */)
+static void QuitHookActivate(void * /* dummy */)
 {
 	if (StopScrHandle) {
 		GfuiScreenActivate(TorcsExitMenuInit(StopScrHandle));
 	}
 }
 
-static void *
-QuitHookInit(void)
+
+static void* QuitHookInit(void)
 {
 	if (QuitHookHandle) {
 		return QuitHookHandle;
@@ -466,8 +485,8 @@ QuitHookInit(void)
 	return QuitHookHandle;
 }
 
-int
-ReRaceStop(void)
+
+int ReRaceStop(void)
 {
 	void	*params = ReInfo->params;
 	ReInfo->_reGraphicItf.muteformenu();
@@ -507,8 +526,7 @@ ReRaceStop(void)
 }
 
 
-int
-ReRaceEnd(void)
+int ReRaceEnd(void)
 {
 	int curDrvIdx;
 	void *params = ReInfo->params;
@@ -531,8 +549,7 @@ ReRaceEnd(void)
 }
 
 
-int
-RePostRace(void)
+int RePostRace(void)
 {
 	int curRaceIdx;
 	void *results = ReInfo->results;
@@ -555,8 +572,7 @@ RePostRace(void)
 }
 
 
-int
-ReEventShutdown(void)
+int ReEventShutdown(void)
 {
 	int curTrkIdx;
 	void *params = ReInfo->params;
