@@ -257,6 +257,8 @@ Changes since 1.3.5
 - Removed some unused defines from raceman.h and associated entries in raceman
   configuration XML's (Bernhard).
 - Fixed a problem in simuv2 regarding off centered cars (Bernhard).
+- Added configuration of wall hit and corner cutting rules, by default all are
+  enabled, see practice.xml for the options (Bernhard).
 
 11. TODO/Notes
 --------------
