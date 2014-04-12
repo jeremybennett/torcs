@@ -185,6 +185,8 @@ typedef struct RmRaceRules
 	};
 
 	int enabled;
+	tdble fuelFactor;
+	tdble damageFactor;
 } tRmRaceRules;
 
 typedef struct RmCarRules
@@ -278,6 +280,8 @@ typedef struct RmInfo
 #define RM_ATTR_INVALIDATE_BEST_LAP_WALL_TOUCH "invalidate best lap on wall touch"
 #define RM_ATTR_INVALIDATE_BEST_LAP_CORNER_CUT "invalidate best lap on corner cutting"
 #define RM_ATTR_CORNER_CUT_TIME_PENALTY "corner cutting time penalty"
+#define RM_ATTR_DAMAGE_FACTOR "damage factor"
+#define RM_ATTR_FUEL_FACTOR "fuel consumption factor"
 
 #define RM_ATTR_POINTS		"points"
 

@@ -36,6 +36,9 @@ tdble SimDeltaTime;
 int SimTelemetry;
 static int SimNbCars = 0;
 
+tdble rulesFuelFactor = 1.0f;
+tdble rulesDamageFactor = 1.0f;
+
 /*
  * Check the input control from robots
  */
@@ -433,8 +436,10 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 
 void
-SimInit(int nbcars, tTrack* track)
+SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor)
 {
+	rulesFuelFactor = fuelFactor;
+	rulesDamageFactor = damageFactor;
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
     SimCarCollideInit(track);

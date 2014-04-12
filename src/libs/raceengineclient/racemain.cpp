@@ -150,6 +150,12 @@ void ReInitRules(tRmInfo* ReInfo)
 	if (!strcmp(value, RM_VAL_YES)) {
 		ReInfo->raceRules.enabled |= RmRaceRules::CORNER_CUTTING_TIME_PENALTY;
 	}
+
+	tdble factor = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_FUEL_FACTOR, NULL, 1.0f);
+	ReInfo->raceRules.fuelFactor = factor;
+
+	factor = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_DAMAGE_FACTOR, NULL, 1.0f);
+	ReInfo->raceRules.damageFactor = factor;
 }
 
 

@@ -686,7 +686,7 @@ ReInitCars(void)
 	// I stuff for now anything into one call because collision detection works with the same
 	// library on all objects, so it is a bit dangerous to distribute the handling to various
 	// locations (because the library maintains global state like a default collision handler etc.).
-    ReInfo->_reSimItf.init(nCars, ReInfo->track);
+    ReInfo->_reSimItf.init(nCars, ReInfo->track, ReInfo->raceRules.fuelFactor, ReInfo->raceRules.damageFactor);
 
     initStartingGrid();
 

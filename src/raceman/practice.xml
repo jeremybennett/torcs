@@ -51,6 +51,8 @@
 		<attstr name="invalidate best lap on wall touch" val="yes"/>
 		<attstr name="invalidate best lap on corner cutting" val="yes"/>
 		<attstr name="corner cutting time penalty" val="yes"/>
+		<attnum name="fuel consumption factor" min="0.0" max="5.0" val="1.0"/>
+		<attnum name="damage factor" min="0.0" max="5.0" val="1.0"/>
 
 		<section name="Starting Grid">
 			<attnum name="rows"                      val="1"/>

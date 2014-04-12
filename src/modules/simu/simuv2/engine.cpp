@@ -46,7 +46,7 @@ SimEngineConfig(tCar *car)
 	car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33f);
 	car->engine.exhaust_pressure = 0.0f;
 	car->engine.exhaust_refract = 0.1f;
-	
+	car->engine.fuelcons *= rulesFuelFactor;
 	
 	snprintf(idx, IDXSIZE, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
 	car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
