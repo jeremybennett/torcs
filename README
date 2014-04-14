@@ -263,14 +263,17 @@ Changes since 1.3.5
   now possible to set up racing with no damage/no fuel consumption (0.0) or up
   to 5 times damage/fuel consumption for more pit action, see practice.xml for the
   options (Bernhard).
+- Changed version to 1.3.6 (Bernhard).
 
 
 11. TODO/Notes
 --------------
 
 
-TODO for 1.3.6/x
+TODO for 1.3.7/x
 ----------------
+- Z-Collision
+- Merge simuv3 parts into simuv2
 - Review and eventually apply mac os x build
 - Review MorphOS changes
 - Clean up doxygen docs
@@ -279,7 +282,6 @@ TODO for 1.3.6/x
 eventually (otherwise in 1.4.x or later):
 - track wall properties
 
-- Going full 3D (Quaternion, simcollisionZ, ...)
 - Solve problems with side entering/exiting pit lane rules (repeated violations give
   only one penalty under some conditions).
 - Skidmarks/shadows masking with stencil
@@ -310,6 +312,9 @@ TODO for 1.4.x
 TODO TRB
 --------
 - RSS feed(s) (suggested by Quinten)
+- Race XML generation
+- Content exchange
+- E-Mail exchange
 
 TODO for Compliance
 -------------------
