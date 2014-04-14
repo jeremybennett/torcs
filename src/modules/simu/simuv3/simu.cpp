@@ -465,7 +465,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 
 void
-SimInit(int nbcars, tTrack* track)
+SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor)
 {
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));

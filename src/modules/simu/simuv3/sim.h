@@ -39,7 +39,7 @@
 extern void SimConfig(tCarElt *carElt, tRmInfo* ReInfo);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
-extern void SimInit(int nbcars, tTrack* track);
+extern void SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);
