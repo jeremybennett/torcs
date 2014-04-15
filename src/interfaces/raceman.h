@@ -187,6 +187,9 @@ typedef struct RmRaceRules
 	int enabled;
 	tdble fuelFactor;
 	tdble damageFactor;
+	tdble refuelFuelFlow;
+	tdble damageRepairFactor;
+	tdble pitstopBaseTime;
 } tRmRaceRules;
 
 typedef struct RmCarRules
@@ -282,6 +285,10 @@ typedef struct RmInfo
 #define RM_ATTR_CORNER_CUT_TIME_PENALTY "corner cutting time penalty"
 #define RM_ATTR_DAMAGE_FACTOR "damage factor"
 #define RM_ATTR_FUEL_FACTOR "fuel consumption factor"
+#define RM_ATTR_PIT_SPEED_LIMIT "pit speed limit"
+#define RM_ATTR_REFUEL_FUEL_FLOW "refuel fuel flow"
+#define RM_ATTR_DAMAGE_REPAIR_FACTOR "damage repair factor"
+#define RM_ATTR_PITSTOP_BASE_TIME "pitstop base time"
 
 #define RM_ATTR_POINTS		"points"
 

@@ -151,11 +151,35 @@ void ReInitRules(tRmInfo* ReInfo)
 		ReInfo->raceRules.enabled |= RmRaceRules::CORNER_CUTTING_TIME_PENALTY;
 	}
 
-	tdble factor = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_FUEL_FACTOR, NULL, 1.0f);
-	ReInfo->raceRules.fuelFactor = factor;
+	// Fuel consumption factor
+	tdble number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_FUEL_FACTOR, NULL, 1.0f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative factor
+	ReInfo->raceRules.fuelFactor = number;
 
-	factor = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_DAMAGE_FACTOR, NULL, 1.0f);
-	ReInfo->raceRules.damageFactor = factor;
+	// Damage factor
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_DAMAGE_FACTOR, NULL, 1.0f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative factor
+	ReInfo->raceRules.damageFactor = number;
+
+	// Refuel fuel flow
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_REFUEL_FUEL_FLOW, NULL, 8.0f);
+	if (number < 1.0f) number = 1.0f;	// Avoid division by zero or negative pit times
+	ReInfo->raceRules.refuelFuelFlow = number;
+
+	// Damage repair factor
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_DAMAGE_REPAIR_FACTOR, NULL, 0.007f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative pit times
+	ReInfo->raceRules.damageRepairFactor = number;
+
+	// Pit stop base time (time for a stop even if nothing is done)
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_PITSTOP_BASE_TIME, NULL, 2.0f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative pit times
+	ReInfo->raceRules.pitstopBaseTime = number;
+
+	// Race specific pit speed limit, if available
+	number = ReInfo->track->pits.speedLimit;
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_PIT_SPEED_LIMIT, NULL, number);
+	ReInfo->track->pits.speedLimit = number;
 }
 
 

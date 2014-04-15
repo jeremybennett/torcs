@@ -57,7 +57,7 @@ ReUpdtPitTime(tCarElt *car)
 
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
-			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f + car->_penaltyTime;
+			info->totalPitTime = ReInfo->raceRules.pitstopBaseTime + fabs((double)(car->_pitFuel)) / ReInfo->raceRules.refuelFuelFlow + (tdble)(fabs((double)(car->_pitRepair))) * ReInfo->raceRules.damageRepairFactor + car->_penaltyTime;
 			if (ReInfo->s->raceInfo.type == RM_TYPE_PRACTICE || ReInfo->s->raceInfo.type == RM_TYPE_QUALIF) { 
 				// Ensure that the right min/max values are in the setup structure (could have been modified by the robot))
 				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), true);
