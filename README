@@ -267,7 +267,8 @@ Changes since 1.3.5
 - Added pit stop time configuration options for race sections in racemanager xml,
   see raceman.h and racemain.cpp, ReInitRules. Refuel fuel flow, repair time factor,
   pit base time and pit speed limit can be changed, inspired by Rick (Rick,
-  Bernhard). 
+  Bernhard).
+- Smoothed lighting on some parts of car6-trb1 (Wolf-Dieter, Bernhard).
 
 
 11. TODO/Notes
