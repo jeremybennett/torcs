@@ -269,6 +269,9 @@ Changes since 1.3.5
   pit base time and pit speed limit can be changed, inspired by Rick (Rick,
   Bernhard).
 - Smoothed lighting on some parts of car6-trb1 (Wolf-Dieter, Bernhard).
+- Fixed missing "spring" track map on track selection screen under Windows
+  (Bernhard).
+- Installers/packaging, released as 1.3.6 (Bernhard).
 
 
 11. TODO/Notes
