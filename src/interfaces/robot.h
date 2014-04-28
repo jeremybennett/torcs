@@ -2,7 +2,7 @@
 
     file                 : robot.h
     created              : Sun Jan 30 22:59:40 CET 2000, 2002
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 

@@ -2,7 +2,7 @@
 
     file                 : simu.h
     created              : Sun Jan 30 12:02:05 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 

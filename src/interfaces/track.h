@@ -2,7 +2,7 @@
 
     file                 : track.h
     created              : Sun Jan 30 23:00:06 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 

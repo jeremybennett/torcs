@@ -2,7 +2,7 @@
 
     file                 : playerpref.h
     created              : Wed Mar 21 21:50:23 CET 2001
-    copyright            : (C) 2001 by Eric Espié
+    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
     email                : Eric.Espie@torcs.org
     version              : $Id$
 
