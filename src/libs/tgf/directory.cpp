@@ -51,9 +51,10 @@ tFList * GfDirGetList(const char *dir)
 }
 
 
-/** Get the list of files of a given directory
+/** Get the list of files with matching suffix of a given directory
     @ingroup	dir
     @param	dir	directory name
+    @param	suffix suffix (without dot)
     @return	The list of files
  */
 tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
@@ -69,6 +70,8 @@ tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
     @ingroup	dir
     @param	list	List of files
     @param	freeUserData	User function used to free the user data
+    @param	freename	If true name gets freed too
+    @param  freedispname	If true display name gets freed too
     @return	none
 */
 void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, bool freedispname)

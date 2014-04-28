@@ -378,18 +378,18 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
     the height is computed using the tangent to the banking
     of the segment (or side).
     @verbatim
-|                + Point given
-|               .^
-|              . |
-|             .  |
-|            .   |
-|           /    | heigth
-|          /     |
-|   ______/      v
-|   ^    ^^  ^
-|   |    ||  |
-|    track side
-    @endverbatim
+                 + Point given
+                .^
+               . |
+              .  |
+             .   |
+            /    | heigth
+           /     |
+    ______/      v
+    ^    ^^  ^
+    |    ||  |
+    track side
+	@endverbatim
     @ingroup	tracktools
     @param	p	Local position
     @return	Height in meters

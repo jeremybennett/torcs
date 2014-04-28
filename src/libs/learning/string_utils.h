@@ -56,8 +56,8 @@ extern char *strBaseName(char *filename);
 */
 extern char *strRemoveSuffix(char *filename, char c='.');
 
-/** Returns the concatenation #n# strings.
-    The strings are the parameters given after #n#;
+/** Returns the concatenation \p n strings.
+    The strings are the parameters given after \p n
     You have to free the memory!
 */
 extern char *strConcat(int n, ...);

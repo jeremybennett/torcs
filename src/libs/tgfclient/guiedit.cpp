@@ -49,6 +49,7 @@ gfuiEditboxInit(void)
     @param	userDataOnFocus	Parameter to the Focus (and lost) callback
     @param	onFocus		Focus callback function
     @param	onFocusLost	Focus Lost callback function
+    @param	margin		Margin adjustment, default is 10 pixels
     @return	Editbox Id
 		<br>-1 Error
  */

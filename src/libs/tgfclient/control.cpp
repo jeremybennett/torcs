@@ -118,6 +118,7 @@ static jsJoystick *js[NUM_JOY] = {NULL};
 /** Get a control reference by its name
     @ingroup	ctrl
     @param	name	name of the control
+    @param	ref	Pointer to tCtrlRef to fill in
     @see	tCtrlRef
 */
 void GfctrlGetRefByName(const char *name, tCtrlRef* ref)

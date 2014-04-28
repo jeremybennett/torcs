@@ -184,9 +184,9 @@ tdble gfMean(tdble v, tMeanVal *pvt, int n, int w)
 
 /** Convert a time in seconds (float) to an ascii string.
     @ingroup	screen
-	@param  buffer for the formatted string
-	@param  size of the buffer
-	@param	sec	Time to convert
+    @param	result	buffer for the formatted string
+    @param	resultSize	size of the buffer
+    @param	sec	Time to convert
     @param	sgn	Flag to indicate if the sign (+) is to be displayed for positive values of time.
     @return	Time string.
  */

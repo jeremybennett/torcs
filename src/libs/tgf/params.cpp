@@ -947,8 +947,7 @@ parserXmlInit (struct parmHandle *parmHandle)
 
 /** Read a configuration buffer.
     @ingroup	conf
-    @param	logHandle	log handle
-    @param	buf		input buffer.
+    @param	buffer	input buffer.
     @return	handle on the configuration data
     <br>0 if Error
 */
@@ -1004,15 +1003,13 @@ GfParmReadBuf (char *buffer)
 }
 
 /** Read a configuration file.
-    @note	Called by #gfInitThread
     @ingroup	conf
-    @param	logHandle	log handle
     @param	file		name of the file to read or content if input is a buffer.
     @param	mode		openning mode is a mask of:
-    				#GF_PARM_RMODE_STD
-    				#GF_PARM_RMODE_REREAD
-    				#GF_PARM_RMODE_CREAT
-    				#GF_PARM_RMODE_PRIVATE
+    				#GFPARM_RMODE_STD
+    				#GFPARM_RMODE_REREAD
+    				#GFPARM_RMODE_CREAT
+    				#GFPARM_RMODE_PRIVATE
     @return	handle on the configuration data
     <br>0 if Error
 */
@@ -1367,8 +1364,7 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 
 /** Write a configuration buffer.
     @ingroup	conf
-    @param	logHandle	log handle
-    @param	parmHandle	Configuration handle
+    @param	handle	Configuration handle
     @param	buf		buffer to write the configuration
     @param	size		buffer size
     @return	0 if OK
@@ -1597,9 +1593,7 @@ static void parmReleaseHandle (struct parmHandle *parmHandle)
 
 
 /** Clean the parms and release the handle without updating the file
-    @note	Called by #gfShutdownThread
     @ingroup	conf
-    @param	logHandle	log handle
     @param	parmHandle	Configuration handle
     @return	none
 */
