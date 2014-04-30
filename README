@@ -204,6 +204,7 @@ Changes since 1.3.6
 - Added missing pictures for Doxygen generated documentation (Bernhard).
 - Fixed all Doxygen warnings (Bernhard).
 - Adjusted Doxygen configuration (Bernhard).
+- Added architecture overview to documentation (Bernhard).
 
 
 
@@ -219,21 +220,14 @@ TODO for 1.3.7/x
 - Review MorphOS changes
 - Clean up doxygen docs
 
-
 eventually (otherwise in 1.4.x or later):
 - track wall properties
-
 - Solve problems with side entering/exiting pit lane rules (repeated violations give
   only one penalty under some conditions).
-- Skidmarks/shadows masking with stencil
-- Phong specular highlights/in shadow occlusion
-- Skidmarks to simu/persistency (get rid of frame rate dependency)
 - Rules/Modes which do not requrie 1.4 changes
-- Store all graphics engine state in a context struct/object (to be able to render telemetry
-  in the car setup screen or during a running session)
 - Telemetry
 - Timed races (e.g. 24h).
-- Review/reduce dynamic memory allocation/release during rendering
+
 
 TODO for 1.4.x
 --------------
@@ -249,6 +243,12 @@ TODO for 1.4.x
 - Replace wav sounds with ogg?
 - Track extensions (crossings, split/join, variable width)
 - Replays
+- Skidmarks/shadows masking with stencil
+- Phong specular highlights/in shadow occlusion
+- Skidmarks to simu/persistency (get rid of frame rate dependency)
+- Review/reduce dynamic memory allocation/release during rendering
+- Store all graphics engine state in a context struct/object (to be able to render telemetry
+  in the car setup screen or during a running session)
 
 TODO TRB
 --------
