@@ -203,6 +203,7 @@ Changes since 1.3.6
 -------------------
 - Added missing pictures for Doxygen generated documentation (Bernhard).
 - Fixed all Doxygen warnings (Bernhard).
+- Adjusted Doxygen configuration (Bernhard).
 
 
 
