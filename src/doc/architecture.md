@@ -1,9 +1,6 @@
 Architecture Overview {#architecture}
 =====================
 
-Introduction
-------------
-
 The goal of this chapter is to give an introduction into the major TORCS 
 concepts and components, and to document where you find it in the source tree.
 The TORCS architecture view presented here identifies 3 major 
@@ -26,7 +23,8 @@ human supervisor as fast as possible. The relevant code is in
 [src/windows/main.cpp](@ref src/windows/main.cpp) for Windows systems.
 
 The command line mode starts up directly the State Engine 
-in src/libs/raceengineclient/raceinit.cpp, [ReRunRaceOnConsole](@ref raceinit.cpp#ReRunRaceOnConsole), it is an 
+in src/libs/raceengineclient/raceinit.cpp,
+[ReRunRaceOnConsole](@ref raceinit.cpp#ReRunRaceOnConsole), it is an 
 excellent starting point to review the minimum required setup to start up, run 
 and shutdown the simulation.
 
@@ -45,17 +43,20 @@ very simple sessions (e.g. practice.xml) up to full championships
 (e.g. champ.xml).
 
 When the user finally selects a Race Manager the State Engine is started up in 
-src/libs/raceengineclient/raceinit.cpp, reSelectRaceMan.
+src/libs/raceengineclient/raceinit.cpp,
+[reSelectRaceman](@ref raceinit.cpp#reSelectRaceman).
 
 State Engine
 ------------
 The State Engine controls the execution of the Race manager specific 
 configuration, setup, run and shutdown of the simulation 
-(src/libs/raceengineclient/racestate.cpp, [ReStateManage](@ref racestate.cpp#ReStateManage)). To trigger state 
+(src/libs/raceengineclient/racestate.cpp,
+[ReStateManage](@ref racestate.cpp#ReStateManage)). To trigger state 
 changes the state of TORCS data can be inspected or for more simple cases the 
-return value of a function call can be considered. Understanding of the State Engine can make some tasks really simple, e.g. 
-implementing a robot which can restart the simulation by itself (not supported 
-by TORCS out of the box, but very easy to add, see TORCS FAQ 6.8).
+return value of a function call can be considered. Understanding of the State
+Engine can make some tasks really simple, e.g. implementing a robot which can
+restart the simulation by itself (not supported  by TORCS out of the box, but
+very easy to add, see TORCS FAQ 6.8).
 
 ![State Engine](@ref raceenginestate.gif)
 
@@ -120,8 +121,9 @@ implementations, you can find more robots on The TORCS Racing Board (you can
 download robots of past events) or on the SCR site.
 
 
-2. Simulation Loop Internals
-----------------------------
+Simulation Loop Internals
+=========================
+
 After discussing the TORCS architecture we are now ready to dig into some 
 details of the simulation loop. This seems to be a topic which is usually not 
 too easy to understand. Let start with taking about time. There are two 
