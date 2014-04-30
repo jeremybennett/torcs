@@ -2,7 +2,7 @@
 
     file                 : torcsdoc.h
     created              : Sat Jul 27 14:24:31 CEST 2002
-    copyright            : (C) 2001 by Eric Espié
+    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
     email                : Eric.Espie@torcs.org
     version              : $Id$
 
@@ -132,24 +132,25 @@
 */
 
 /**
-    @mainpage	Welcome to the TORCS documentation !
+    @mainpage	Welcome to the TORCS Documentation
 
-    @section robotlist		Robots related documentation.
-    <ul>
-    <li><a class="el" href="group__robotmodint.html">Robots functions interface.</a>
-    <li><a class="el" href="group__robottools.html">Tools for robots.</a>
-    <li><a class="el" href="group__params.html">Parameters file management.</a>
-    <li><a class="el" href="group__trackstruct.html">Tracks Structure</a>
-    <li><a class="el" href="group__carstruct.html">Cars Structure</a>
-    </ul>
+    @section archlist Architecture Documentation
+    
+    - [Architecture Overview](@ref architecture)
+    
+    @section robotlist Robot Related Documentation
+    
+    - [Robots functions interface](@ref robotmodint)
+    - [Tools for robots](@ref robottools)
+    - [Parameters file management](@ref params)
+    - [Tracks structure](@ref trackstruct)
+    - [Cars structure](@ref carstruct)
 
-    @section racemanlist	Race Managers related documentation.
+    @section racemanlist Race Managers Related Documentation
 
-    <ul>
-    <li><a class="el" href="group__racemantools.html">Tools for race managers.</a>
-    <li><a class="el" href="group__params.html">Parameters file management.</a>
-    <li><a class="el" href="group__trackstruct.html">Tracks Structure</a>
-    </ul>
+    - [Tools for race managers](@ref racemantools)
+    - [Parameters file management](@ref params)
+    - [Tracks structure](@ref trackstruct)
 
 */
 
