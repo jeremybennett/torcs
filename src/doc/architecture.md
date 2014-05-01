@@ -6,13 +6,13 @@ concepts and components, and to document where you find it in the source tree.
 The TORCS architecture view presented here identifies 3 major 
 component types. These are components responsible for controlling the major 
 program flow (Orchestration), interfaces and libraries with common code (TORCS 
-API and Libraries) and modules loaded during runtime (Plugins).
+API and Libraries) and modules loaded during run time (Plugins).
 
 ![Architecture Overview](@ref architecture.png)
 
 Entry Stage
 -----------
-At startup TORCS goes first through the Entry stage. During this 
+At start up TORCS goes first through the Entry stage. During this 
 stage the command line is analysed, and depending on the desired operation mode 
 TORCS is run either with a command line specified race configuration file in 
 command line mode (option -r), or the graphical menu is started. The command 
@@ -31,7 +31,7 @@ and shutdown the simulation.
 Menu
 ----
 The Menu and its components are responsible to offer a visual user interface to 
-ease the setup of TORCS, e.g. the selection of predefined races, changeing the 
+ease the setup of TORCS, e.g. the selection of predefined races, changing the 
 selection of robots, graphics and much more. All these settings are persisted 
 in XML files and are later read by the respective components. 
 
@@ -56,7 +56,7 @@ changes the state of TORCS data can be inspected or for more simple cases the
 return value of a function call can be considered. Understanding of the State
 Engine can make some tasks really simple, e.g. implementing a robot which can
 restart the simulation by itself (not supported  by TORCS out of the box, but
-very easy to add, see TORCS FAQ 6.8).
+very easy to add, see [TORCS FAQ 6.8](http://torcs.sourceforge.net/index.php?name=Sections&op=viewarticle&artid=30#c6_8)).
 
 ![State Engine](@ref raceenginestate.gif)
 
@@ -76,23 +76,23 @@ plugin you can configure TORCS to use it. As example there are two simulation
 implementations, simuv2 and simuv3, you can simply change a configuration 
 file to change it. Typical use cases are replacing some of the actual modules 
 with wrappers or adapters, e.g. to run the simulation on MATLAB or to run 
-robots with simulated sensors over the network on other machines (SCR).
+robots with simulated sensors over the network on other machines ([SCR](http://scr.geccocompetitions.com)).
 
 Rendering
 ---------
 Rendering is responsible for rendering the situation. The current default 
 implementation does visual 3D rendering including sound, based on the OpenGL 
 1.3 and OpenAL API's. The interface is specified in src/interfaces/graphic.h. 
-The major function is "refresh", which takes as argument a "struct Situation *" 
+The major function is [refresh](@ref tfGraphicRefresh), which takes as argument a [struct Situation *](@ref Situation) 
 and renders it. The code of the actual module is located in 
 src/modules/graphic/ssggraph.
 
 Simulation
 ----------
-Simulation is responsible for progressing the situation by a given timestep. 
+Simulation is responsible for progressing the situation by a given time step. 
 The interface is specified in src/interfaces/simu.h. The major function is 
-"update", which takes the "struct Situation *" and simulation timestep (0.002s) 
-as argument, and progresses the simulation by the timestep. The code of the 
+[update](@ref tfSimUpdate), which takes the [struct Situation *](@ref Situation) and simulation timestep (usually [RCM_MAX_DT_SIMU](@ref RCM_MAX_DT_SIMU)) 
+as argument, and progresses the simulation by the time step. The code of the 
 default module is located in src/modules/simu/simuv2.
 
 Track
@@ -132,7 +132,7 @@ basically just the time axis on which we calculate the simulation intermediate
 results, so if it takes 1 real minute or 1 real ms to simulate 1s in simulation 
 time, the simulation time is just one second, real time does not matter. Real 
 time in contrary is the time observed by the user. So it is very important to 
-know that the whole TORCS architecture just uses simulation time do 
+understand that the whole TORCS architecture just uses simulation time perform 
 calculations, evaluation of rules etc., real time does not matter in that 
 respect. Real time is only used to synchronize in some modes simulation time 
 with real time, e.g. to enable a human to drive a car.
