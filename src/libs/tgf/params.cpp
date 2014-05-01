@@ -1199,7 +1199,7 @@ static void createIn(char *buf, const int BUFSIZE, withinHead* head)
 
 
 /**
- *	@image html output-state.png
+ *	
  */
 static int
 xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
