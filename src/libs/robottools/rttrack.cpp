@@ -860,6 +860,7 @@ void RtGetCarPitSetupFilename(
 /**	Robottool internal: Set parameter if min != max, save as well min and max values	
 	@ingroup	tracktools
 	@param hdlesetup	Handle to set parameter into
+	@param path			path of parameter
 	@param	key			key	name
 	@param	unit		unit to convert the result to (NULL if SI wanted)	
 	@param	v			tCarPitSetupValue to set	
