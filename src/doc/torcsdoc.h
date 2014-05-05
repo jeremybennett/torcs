@@ -134,11 +134,11 @@
 /**
     @mainpage	Welcome to the TORCS Documentation
 
-    @section archlist Architecture Documentation
+    @section archlist Architecture
     
     - [Architecture Overview](@ref architecture)
     
-    @section robotlist Robot Related Documentation
+    @section robotlist Robots API
     
     - [Robots functions interface](@ref robotmodint)
     - [Tools for robots](@ref robottools)
@@ -146,7 +146,7 @@
     - [Tracks structure](@ref trackstruct)
     - [Cars structure](@ref carstruct)
 
-    @section racemanlist Race Managers Related Documentation
+    @section racemanlist Race Manager API
 
     - [Tools for race managers](@ref racemantools)
     - [Parameters file management](@ref params)

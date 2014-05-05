@@ -33,10 +33,10 @@ Menu
 The Menu and its components are responsible to offer a visual user interface to 
 ease the setup of TORCS, e.g. the selection of predefined races, changing the 
 selection of robots, graphics and much more. All these settings are persisted 
-in XML files and are later read by the respective components. 
+in XML files and are read later by the respective components. 
 
 The Race menu is a special menu, because the entries presented here are the 
-direct reflection of Race Manager configuration files (look up /src/raceman). 
+direct reflection of Race Manager configuration files (look up src/raceman). 
 You can completely customize the Race Manager configuration files if desired 
 (that means adding, removing, renaming and editing), they offer the creation of 
 very simple sessions (e.g. practice.xml) up to full championships 
@@ -65,16 +65,19 @@ TORCS API and Libraries
 -----------------------
 TORCS defines some interfaces and libraries which are used in multiple parts of 
 the project, e.g. XML parameter file handling, common functions for robots, 
-etc. The header files for the interfaces can be found in /src/interfaces, the 
-libraries in /src/libs, the most interesting ones for robot programming are 
-tgf, robottools, portability, math and learning.
+etc. The header files for the interfaces can be found in
+[src/interfaces](@ref src/interfaces), the 
+libraries in [src/libs](@ref src/libs), the most interesting ones for robot programming are 
+[tgf](@ref src/libs/tgf), [robottools](@ref robottools), [portability](@ref src/libs/portability),
+[math](@ref src/libs/math) and [learning](@ref src/libs/learning).
 
 Plugins
 -------
 The Plugins share all in common that they have specified interfaces and are 
 loaded based on the configuration during run time, so if you have an alternative 
 plugin you can configure TORCS to use it. As example there are two simulation 
-implementations, simuv2 and simuv3, you can simply change a configuration 
+implementations, [simuv2](@ref src/modules/simu/simuv2) and simuv3, you can
+simply change a configuration 
 file to change it. Typical use cases are replacing some of the actual modules 
 with wrappers or adapters, e.g. to run the simulation on MATLAB or to run 
 robots with simulated sensors over the network on other machines 
@@ -88,7 +91,7 @@ implementation does visual 3D rendering including sound, based on the OpenGL
 The major function is [refresh](@ref tfGraphicRefresh), which takes as argument 
 a [struct Situation *](@ref Situation) 
 and renders it. The code of the actual module is located in 
-src/modules/graphic/ssggraph.
+[src/modules/graphic/ssggraph](@ref src/modules/graphic/ssggraph).
 
 ### Simulation #
 
@@ -97,13 +100,13 @@ The interface is specified in src/interfaces/simu.h. The major function is
 [update](@ref tfSimUpdate), which takes the [struct Situation *](@ref Situation) 
 and simulation timestep (usually [RCM_MAX_DT_SIMU](@ref RCM_MAX_DT_SIMU)) 
 as argument, and progresses the simulation by the time step. The code of the 
-default module is located in src/modules/simu/simuv2.
+default module is located in [src/modules/simu/simuv2](@ref src/modules/simu/simuv2).
 
 ### Track #
 
 Track is responsible for loading tracks into the TORCS tTrack structure. The 
 interface is specified in src/interfaces/track.h. The code of the default module 
-is located in src/modules/track.
+is located in [src/modules/track](@ref src/modules/track).
 
 ### Robot #
 
