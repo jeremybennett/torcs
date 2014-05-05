@@ -1,15 +1,16 @@
 1.  Introduction
-2.  Non-Free content (in GPL sense)
-3.  Track editor
-4.  Linux Installation from Source
-5.  Windows Installation from Source (Release version)
-5.1 Windows Installation from Source, additional notes
-6.  Windows Installation from Source (Debug version)
-7.  Testing
-8.  Getting Help
-9.  Running under Valgrind with Linux
-10. Changes
-11. TODO/Notes
+2.  Documentation
+3.  Non-Free content (in GPL sense)
+4.  Track editor
+5.  Linux Installation from Source
+6.  Windows Installation from Source (Release version)
+6.1 Windows Installation from Source, additional notes
+7.  Windows Installation from Source (Debug version)
+8.  Testing
+9.  Getting Help
+10.  Running under Valgrind with Linux
+11. Changes
+12. TODO/Notes
 
 
 1. Introduction
@@ -30,7 +31,15 @@ Kind regards
 Bernhard
 
 
-2. Non-Free content (in GPL sense)
+2. Documentation
+----------------
+You can find a variety of links on www.torcs.org (video tutorials about content
+creation/usage, written documentation like the robot tutorial, etc.). The TORCS
+API and architecture documentation can be generated with Doxygen 1.8, run
+"make doc", the result can be found in doc/manual/api, point to index.html.
+
+
+3. Non-Free content (in GPL sense)
 ----------------------------------
 Here the list with the directories containing non free content, look at the
 readme.txt for details:
@@ -38,7 +47,7 @@ readme.txt for details:
 - data/cars/models/kc-*
 
 
-3. Track editor
+4. Track editor
 ---------------
 The track editor is not included in this distribution, you can get it from
 http://www.berniw.org/trb/download/trackeditor-0.6.2c.tar.bz2, the sources
@@ -46,7 +55,7 @@ are included in the jar. The sources are also available here:
 http://sourceforge.net/projects/trackeditor.
 
 
-4. Linux Installation from Source
+5. Linux Installation from Source
 ---------------------------------
 - Requires plib 1.8.5, FreeGLUT or GLUT, be aware to compile plib with -fPIC
   on AMD64 if you run a 64 bit version of Linux. Be aware that maybe just
@@ -74,7 +83,7 @@ Command line arguments:
      to avoid "??" in the call stack)
 
 
-5. Windows Installation from Source (Release version)
+6. Windows Installation from Source (Release version)
 -----------------------------------------------------
 - hint: you can have a release and a debug build side by side, the release
   version goes to "runtime" and the debug to "runtimed".
@@ -96,9 +105,9 @@ Command line arguments:
      training, see FAQ for details 
 
 
-5.1 Windows Installation from Source, additional notes
+6.1 Windows Installation from Source, additional notes
 ------------------------------------------------------
-5.1.1 VS 2005 Express (based on imported dsw), reported by Eric Espie:
+6.1.1 VS 2005 Express (based on imported dsw), reported by Eric Espie:
 - Run up to the setup*.bat step in the above instructions, then open the TORCS.dsw
   file and do the following changes
 - in wtorcs -> Source Files (Solution explorer) exclude torcs.rc
@@ -108,21 +117,21 @@ Command line arguments:
         in "Configuration Properties -> Link Editor -> Entry : Ignore Specific Library"
         change LIBCD in LIBC if present.
 
-5.1.2 VS 2005 Express (based on VS2008 sln), reported by Wolf-Dieter Beelitz:
+6.1.2 VS 2005 Express (based on VS2008 sln), reported by Wolf-Dieter Beelitz:
 - Edit all vcproj (=xml) files and set the "version" from 9.00 to 8.00
 - Follow the instructions above.
 
-5.1.3 VS 2008 Express, reported by Stacey Pritchett:
+6.1.3 VS 2008 Express, reported by Stacey Pritchett:
 - in wtorcs -> Source Files (Solution explorer) exclude torcs.rc
 - Follow the instructions above.
 
-5.1.4 VS 2012, reported by SteveO:
+6.1.4 VS 2012, reported by SteveO:
 - In every project (except TORCS) add /SAFESEH:NO into the Additional Options
   (Properties-Configuration Properties-Linker-Command Line), see also
   http://msdn.microsoft.com/en-us/library/9a89h429.aspx.
 
 
-6. Windows Installation from Source (Debug version)
+7. Windows Installation from Source (Debug version)
 ---------------------------------------------------
 - hint: you can have a debug and a release build side by side, the debug
   version goes to "runtimed" and the release to "runtime".
@@ -144,13 +153,13 @@ Command line arguments:
      training, see FAQ for details 
 
 
-7. Testing
+8. Testing
 ----------
 If you find problems which should be already fixed or new ones please report them
 to the torcs-users mailing list.
 
 
-8. Getting Help
+9. Getting Help
 ---------------
 During the game press F1. For more in depth information visit www.torcs.org,
 you find there a lot of information, look at the documentation section on
@@ -158,7 +167,7 @@ the left, have as well a look into the list of howto's. If you are stuck
 have a look into the FAQ to learn how and where to report a problem.
 
 
-9. Running under Valgrind with Linux
+10. Running under Valgrind with Linux
 ------------------------------------
 First you need to build a debug version of TORCS, make sure that the CFLAGS,
 CPPFLAGS and CXXFLAGS environment variables are empty (usually they are). Then
@@ -196,7 +205,7 @@ Some additional notes:
   fine that the GUI and some handles are held permanent.
 
 
-10. Changes
+11. Changes
 -----------
 
 Changes since 1.3.6
@@ -208,7 +217,7 @@ Changes since 1.3.6
 
 
 
-11. TODO/Notes
+12. TODO/Notes
 --------------
 
 
