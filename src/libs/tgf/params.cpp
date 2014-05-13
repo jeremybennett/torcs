@@ -2378,219 +2378,263 @@ GfParmSetCurNum(void *handle, const char *path, const char *key, const char *uni
 
 
 
-/** Check a parameter set against another.
-    @ingroup	paramsfile
-    @param	ref	Contains the min and max values (reference)
-    @param	tgt	Contains the parameters to check.
-    @return	0 Match
-		<br>-1 Values are out of bounds
-    @warning	Only the parameters present in tgt and in ref are tested.
-    @see	GfParmMergeHandles
+/** @brief Check the values in the parameter set @e tgt against the min/max/within definitions in the @e ref parameter set.
+ * 
+ *  @ingroup	paramsfile
+ *  @param[in]	ref	reference parameter set handle for check (min/max/within)
+ *  @param[in]	tgt	target parameter set handle for check (values) 
+ *  @return	0 All checked values are ok
+ *	<br>-1 Some values are out of bounds
+ *  @warning	Only the parameters present in both sets, @e tgt and @e ref, are tested.
+ *  Min/max/within values eventually present in @e tgt are not checked.
+ *  @see	GfParmMergeHandles
  */
-int
-GfParmCheckHandle(void *ref, void *tgt)
+int GfParmCheckHandle(void *ref, void *tgt)
 {
-    struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
-    struct parmHandle	*parmHandle = (struct parmHandle *)tgt;
-    struct parmHeader	*confRef = parmHandleRef->conf;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct section	*curSectionRef;
-    struct section	*nextSectionRef;
-    struct param	*curParamRef;
-    struct param	*curParam;
-    struct within	*curWithinRef;
-    int			found;
-    int			error = 0;
+	struct parmHandle *parmHandleRef = (struct parmHandle *)ref;
+	struct parmHandle *parmHandle = (struct parmHandle *)tgt;
+	struct parmHeader *confRef = parmHandleRef->conf;
+	struct parmHeader *conf = parmHandle->conf;
+	struct section *curSectionRef;
+	struct section *nextSectionRef;
+	struct param *curParamRef;
+	struct param *curParam;
+	struct within *curWithinRef;
+	int found;
+	int error = 0;
 
-    if ((parmHandleRef->magic != PARM_MAGIC) || (parmHandle->magic != PARM_MAGIC)) {
-	GfFatal ("GfParmCheckHandle: bad handle (%p)\n", parmHandle);
-	return -1;
-    }
+	if ((parmHandleRef->magic != PARM_MAGIC) || (parmHandle->magic != PARM_MAGIC)) {
+		GfFatal ("GfParmCheckHandle: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
 
-    /* Traverse all the reference tree */
-    curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
-    while (curSectionRef) {
-	curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
-	while (curParamRef) {
-	    /* compare params */
-	    curParam = getParamByName (conf, curSectionRef->fullName, curParamRef->name, 0);
-	    if (curParam) {
-		if (curParamRef->type != curParam->type) {
-		    GfError("GfParmCheckHandle: type mismatch for parameter \"%s\" in (\"%s\" - \"%s\")\n",
-			    curParamRef->fullName, conf->name, conf->filename);
-		    error = -1;
-		} else if (curParamRef->type == P_NUM) {
-		    if ((curParam->valnum < curParamRef->min) || (curParam->valnum > curParamRef->max)) {
-			GfError("GfParmCheckHandle: parameter \"%s\" out of bounds: min:%g max:%g val:%g in (\"%s\" - \"%s\")\n",
-				curParamRef->fullName, curParamRef->min, curParamRef->max, curParam->valnum, conf->name, conf->filename);
-			//error = -1;
-		    }
-		} else {
-		    curWithinRef = GF_TAILQ_FIRST (&(curParamRef->withinList));
-		    found = 0;
-		    while (!found && curWithinRef) {
-			if (!strcmp (curWithinRef->val, curParam->value)) {
-			    found = 1;
-			} else {
-			    curWithinRef = GF_TAILQ_NEXT (curWithinRef, linkWithin);
+	/* Traverse all the reference tree */
+	curSectionRef = GF_TAILQ_FIRST (&(confRef->rootSection->subSectionList));
+	while (curSectionRef) {
+		curParamRef = GF_TAILQ_FIRST (&(curSectionRef->paramList));
+		while (curParamRef) {
+			/* compare params */
+			curParam = getParamByName (conf, curSectionRef->fullName, curParamRef->name, 0);
+			if (curParam) {
+				if (curParamRef->type != curParam->type) {
+					GfError("GfParmCheckHandle: type mismatch for parameter \"%s\" in (\"%s\" - \"%s\")\n",
+						curParamRef->fullName, conf->name, conf->filename);
+					error = -1;
+				} else if (curParamRef->type == P_NUM) {
+					if ((curParam->valnum < curParamRef->min) || (curParam->valnum > curParamRef->max)) {
+						GfError("GfParmCheckHandle: parameter \"%s\" out of bounds: min:%g max:%g val:%g in (\"%s\" - \"%s\")\n",
+							curParamRef->fullName, curParamRef->min, curParamRef->max, curParam->valnum, conf->name, conf->filename);
+					}
+				} else {
+					curWithinRef = GF_TAILQ_FIRST (&(curParamRef->withinList));
+					found = 0;
+					while (!found && curWithinRef) {
+						if (!strcmp (curWithinRef->val, curParam->value)) {
+							found = 1;
+						} else {
+							curWithinRef = GF_TAILQ_NEXT (curWithinRef, linkWithin);
+						}
+					}
+					if (!found && strcmp (curParamRef->value, curParam->value)) {
+						GfError("GfParmCheckHandle: parameter \"%s\" value:\"%s\" not allowed in (\"%s\" - \"%s\")\n",
+							curParamRef->fullName, curParam->value, conf->name, conf->filename);
+					}
+				}
 			}
-		    }
-		    if (!found && strcmp (curParamRef->value, curParam->value)) {
-			GfError("GfParmCheckHandle: parameter \"%s\" value:\"%s\" not allowed in (\"%s\" - \"%s\")\n",
-				curParamRef->fullName, curParam->value, conf->name, conf->filename);
-			//error = -1;
-		    }
+			curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
 		}
-	    }
-	    curParamRef = GF_TAILQ_NEXT (curParamRef, linkParam);
-	}
-	nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
-	while (!nextSectionRef) {
-	    nextSectionRef = curSectionRef->parent;
-	    if (!nextSectionRef) {
-		/* Reached the root */
-		break;
-	    }
-	    curSectionRef = nextSectionRef;
-	    nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
-	}
-	curSectionRef = nextSectionRef;
-    }
-    
-    return error;
-}
-
-static void
-insertParamMerge (struct parmHandle *parmHandle, char *path, struct param *paramRef, struct param *param)
-{
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*paramNew;
-    struct within	*withinRef;
-    struct within	*within;
-    tdble		num;
-    char		*str;
- 
-    paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
-    if (!paramNew) {
-	return;
-    }
-    if (param->type == P_NUM) {
-	paramNew->type = P_NUM;
-	FREEZ (paramNew->unit);
-	if (param->unit) {
-	    paramNew->unit = strdup (param->unit);
-	}
-	if (param->min < paramRef->min) {
-	    num = paramRef->min;
-	} else {
-	    num = param->min;
-	}
-	paramNew->min = num;
-	if (param->max > paramRef->max) {
-	    num = paramRef->max;
-	} else {
-	    num = param->max;
-	}
-	paramNew->max = num;
-	num = param->valnum;
-	if (num < paramNew->min) {
-	    num = paramNew->min;
-	}
-	if (num > paramNew->max) {
-	    num = paramNew->max;
-	}
-	paramNew->valnum = num;
-    } else {
-	paramNew->type = P_STR;
-	FREEZ (paramNew->value);
-	within = GF_TAILQ_FIRST (&(param->withinList));
-	while (within) {
-	    withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
-	    while (withinRef) {
-		if (!strcmp (withinRef->val, within->val)) {
-		    addWithin (paramNew, within->val);
-		    break;
+		
+		nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
+		while (!nextSectionRef) {
+			nextSectionRef = curSectionRef->parent;
+			if (!nextSectionRef) {
+				/* Reached the root */
+				break;
+			}
+			curSectionRef = nextSectionRef;
+			nextSectionRef = GF_TAILQ_NEXT (curSectionRef, linkSection);
 		}
-		withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
-	    }
-	    within = GF_TAILQ_NEXT (within, linkWithin);
+		curSectionRef = nextSectionRef;
 	}
-	str = NULL;
-	withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
-	while (withinRef) {
-	    if (!strcmp (withinRef->val, param->value)) {
-		str = param->value;
-		break;
-	    }
-	    withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
-	}
-	if (!str) {
-	    str = paramRef->value;
-	}
-	paramNew->value = strdup (str);
-    }
-}
 
-static void
-insertParam (struct parmHandle *parmHandle, char *path, struct param *param)
-{
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*paramNew;
-    struct within	*within;
-
-    paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
-    if (!paramNew) {
-	return;
-    }
-    if (param->type == P_NUM) {
-	paramNew->type = P_NUM;
-	FREEZ (paramNew->unit);
-	if (param->unit) {
-	    paramNew->unit = strdup (param->unit);
-	}
-	paramNew->valnum = param->valnum;
-	paramNew->min = param->min;
-	paramNew->max = param->max;
-    } else {
-	paramNew->type = P_STR;
-	FREEZ (paramNew->value);
-	paramNew->value = strdup (param->value);
-	within = GF_TAILQ_FIRST (&(param->withinList));
-	while (within) {
-	    addWithin (paramNew, within->val);
-	    within = GF_TAILQ_NEXT (within, linkWithin);
-	}
-    }
+	return error;
 }
 
 
-/** Merge two parameters sets into a new one.
-    @ingroup	paramsfile
-    @param	ref	reference handle
-    @param	tgt	target handle for merge
-    @param	mode	merge mode, can be any combination of:
-		<br>#GFPARM_MMODE_SRC Use ref and modify existing parameters with tgt
-		<br>#GFPARM_MMODE_DST Use tgt and verify ref parameters
-		<br>#GFPARM_MMODE_RELSRC Release ref after the merge
-		<br>#GFPARM_MMODE_RELDST Release tgt after the merge
-    @return	The new handle containing the merge.
-    @see	GfParmCheckHandle
+/** @brief Helper function to merge a parameter into a parameter set.
+ * 
+ *  If the parameter @e param already exists in @e paramHandle, the values are overwritten with the values from @e param.
+ *  If the parameter @e param does not yet exist in @e paramHandle, it gets created. The value and restrictions (min, max, within)
+ *  in @e param are checked against the restrictions given by @e parmRef and adjusted if required. 
+ * 
+ *  @param[in,out]	parmHandle	parameter set handle
+ *  @param[in]	path	path to the parameter
+ *  @param[in]	paramRef reference parameter for min/max boundaries or string set restrictions
+ *  @param[in]	param	parameter
+ *  @see	GfParmMergeHandles
+ * 
  */
-void *
-GfParmMergeHandles(void *ref, void *tgt, int mode)
+static void insertParamMerge (struct parmHandle *parmHandle, char *path, struct param *paramRef, struct param *param)
 {
-	struct parmHandle	*parmHandleRef = (struct parmHandle *)ref;
-	struct parmHandle	*parmHandleTgt = (struct parmHandle *)tgt;
-	struct parmHandle	*parmHandleOut;
-	struct parmHeader	*confRef = parmHandleRef->conf;
-	struct parmHeader	*confTgt = parmHandleTgt->conf;
-	struct parmHeader	*confOut;
-	struct section	*curSectionRef;
-	struct section	*nextSectionRef;
-	struct section	*curSectionTgt;
-	struct section	*nextSectionTgt;
-	struct param	*curParamRef;
-	struct param	*curParamTgt;
+	struct parmHeader *conf = parmHandle->conf;
+	struct param *paramNew;
+	struct within *withinRef;
+	struct within *within;
+	tdble num;
+	char *str;
+
+	paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
+	if (!paramNew) {
+		return;
+	}
+	
+	if (param->type == P_NUM) {
+		paramNew->type = P_NUM;
+		FREEZ (paramNew->unit);
+		if (param->unit) {
+			paramNew->unit = strdup (param->unit);
+		}
+		
+		if (param->min < paramRef->min) {
+			num = paramRef->min;
+		} else {
+			num = param->min;
+		}
+		paramNew->min = num;
+		
+		if (param->max > paramRef->max) {
+			num = paramRef->max;
+		} else {
+			num = param->max;
+		}
+		paramNew->max = num;
+		num = param->valnum;
+		
+		if (num < paramNew->min) {
+			num = paramNew->min;
+		}
+		
+		if (num > paramNew->max) {
+			num = paramNew->max;
+		}
+		paramNew->valnum = num;
+	} else {
+		paramNew->type = P_STR;
+		FREEZ (paramNew->value);
+		within = GF_TAILQ_FIRST (&(param->withinList));
+		
+		while (within) {
+			withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
+			while (withinRef) {
+				if (!strcmp (withinRef->val, within->val)) {
+					addWithin (paramNew, within->val);
+					break;
+				}
+				withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
+			}
+			within = GF_TAILQ_NEXT (within, linkWithin);
+		}
+		str = NULL;
+		withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
+		
+		while (withinRef) {
+			if (!strcmp (withinRef->val, param->value)) {
+				str = param->value;
+				break;
+			}
+			withinRef = GF_TAILQ_NEXT (withinRef, linkWithin);
+		}
+		
+		if (!str) {
+			str = paramRef->value;
+		}
+		
+		paramNew->value = strdup (str);
+	}
+}
+
+
+/** @brief Helper function to insert a parameter into a parameter set.
+ * 
+ *  If the parameter @e param already exists in @e paramHandle, the values are overwritten with the values from @e param.
+ *  If the parameter @e param does not yet exist in @e paramHandle, it gets created.
+ * 
+ *  @param[in,out]	parmHandle	parameter set handle
+ *  @param[in]	path	path to the parameter
+ *  @param[in]	param	parameter
+ *  @see	GfParmMergeHandles
+ * 
+ */
+static void insertParam (struct parmHandle *parmHandle, char *path, struct param *param)
+{
+	struct parmHeader *conf = parmHandle->conf;
+	struct param *paramNew;
+	struct within *within;
+
+	paramNew = getParamByName (conf, path, param->name, PARAM_CREATE);
+	if (!paramNew) {
+		return;
+	}
+	
+	if (param->type == P_NUM) {
+		paramNew->type = P_NUM;
+		FREEZ (paramNew->unit);
+		if (param->unit) {
+			paramNew->unit = strdup (param->unit);
+		}
+		paramNew->valnum = param->valnum;
+		paramNew->min = param->min;
+		paramNew->max = param->max;
+	} else {
+		paramNew->type = P_STR;
+		FREEZ (paramNew->value);
+		paramNew->value = strdup (param->value);
+		within = GF_TAILQ_FIRST (&(param->withinList));
+		while (within) {
+			addWithin (paramNew, within->val);
+			within = GF_TAILQ_NEXT (within, linkWithin);
+		}
+	}
+}
+
+
+/** @brief Merge two parameter sets into a new one, either containing parameters from @e ref, @e tgt or from both sets, the @e ref and @e tgt sets are not changed.
+ *   
+ *  Used to create a new parameter set from two exising ones, e.g. like the car category and car. If #GFPARM_MMODE_SRC
+ *  mode is used, all parameterers from @e ref will exist in the new parameter set. If #GFPARM_MMODE_DST
+ *  mode is used, all parameterers from @e tgt will exist in the new parameter set. You can combine #GFPARM_MMODE_SRC and
+ *  #GFPARM_MMODE_DST to get all parameters from both sets into the new set.
+ *   
+ *  The parameter value is taken from the @e tgt set if the parameter exists in the @e tgt set. If a parameter exists in
+ *  both sets (@e ref and @e tgt) and has different min/max values, then the greater min value and the smaller max value
+ *  is selected, so with combining parameters it is only possible to shrink the possible range. If the parameter value
+ *  does not fit the new min/max range it is adjusted.
+ *   
+ *  @ingroup	paramsfile
+ *  @param[in]	ref	reference parameter set handle for merge
+ *  @param[in]	tgt	target parameter set handle for merge
+ *  @param[in]	mode	merge mode, can be any combination (binary or opearator, "|") of:
+ *	<br>#GFPARM_MMODE_SRC Use parameters from @e ref and modify parameters existing in @e tgt with @e tgt
+ *	<br>#GFPARM_MMODE_DST Use parameters from @e tgt and verify parameters existing in @e ref against @e ref
+ *	<br>#GFPARM_MMODE_RELSRC Release @e ref handle after the merge
+ *	<br>#GFPARM_MMODE_RELDST Release @e tgt handle after the merge
+ *  @return	The new handle containing the merge
+ *  @see	GfParmCheckHandle
+ */
+void *GfParmMergeHandles(void *ref, void *tgt, int mode)
+{
+	struct parmHandle *parmHandleRef = (struct parmHandle *)ref;
+	struct parmHandle *parmHandleTgt = (struct parmHandle *)tgt;
+	struct parmHandle *parmHandleOut;
+	struct parmHeader *confRef = parmHandleRef->conf;
+	struct parmHeader *confTgt = parmHandleTgt->conf;
+	struct parmHeader *confOut;
+	struct section *curSectionRef;
+	struct section *nextSectionRef;
+	struct section *curSectionTgt;
+	struct section *nextSectionTgt;
+	struct param *curParamRef;
+	struct param *curParamTgt;
 	const unsigned long parmHandleSize = sizeof (struct parmHandle);
 
 	GfOut ("Merging \"%s\" and \"%s\" (%s - %s)\n", confRef->filename, confTgt->filename, ((mode & GFPARM_MMODE_SRC) ? "SRC" : ""), ((mode & GFPARM_MMODE_DST) ? "DST" : ""));
@@ -2706,37 +2750,36 @@ GfParmMergeHandles(void *ref, void *tgt, int mode)
 }
 
 
-/** Get the min and max of a numerical parameter.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of the attribute
-    @param	key	key name	
-    @param	min	Receives the min value
-    @param	max	Receives the max value
-    @return	0 Ok
-		<br>-1 Parameter not existing
+/** @brief Get the min and max of a numerical parameter.
+ *  @ingroup	paramsdata
+ *  @param[in]	handle	parameter set handle
+ *  @param[in]	path	path of the attribute
+ *  @param[in]	key	key name	
+ *  @param[out]	min	Receives the min value
+ *  @param[out]	max	Receives the max value
+ *  @return	0 Ok
+ *	<br>-1 Parameter does not exist
  */
-int
-GfParmGetNumBoundaries(void *handle, const char *path, const char *key, tdble *min, tdble *max)
+int GfParmGetNumBoundaries(void *handle, const char *path, const char *key, tdble *min, tdble *max)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*param;
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+	struct param *param;
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmGetNumBoundaries: bad handle (%p)\n", parmHandle);
-	return -1;
-    }
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmGetNumBoundaries: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
 
-    param = getParamByName (conf, path, key, 0);
-    if (!param || (param->type != P_NUM)) {
-	return -1;
-    }
+	param = getParamByName (conf, path, key, 0);
+	if (!param || (param->type != P_NUM)) {
+		return -1;
+	}
 
-    *min = param->min;
-    *max = param->max;
+	*min = param->min;
+	*max = param->max;
 
-    return 0;
+	return 0;
 }
 
  
