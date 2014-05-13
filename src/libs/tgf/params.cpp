@@ -1965,18 +1965,25 @@ GfParmListClean (void *handle, const char *path)
 }
 
 
-/** Get the current element name.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	Name of the current element in the list
-		<br>NULL if failed
-    @see	GfParmListSeekFirst	
-    @see	GfParmListSeekNext
-    @note	String MUST be released by called.
+/** @brief Get current subsection name during subsection iteration.
+ * 
+ *  The internal state of the parameter set @e handle must point to a current subsection,
+ *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. This call
+ *  returns the name of the current subsection.
+ * 
+ *  @ingroup paramslist
+ *  @param[in] handle parameter set handle
+ *  @param[in] path path of the section used to iterate subsections
+ *  @return	Name of the current subsection
+ *  <br>NULL if failed
+ *  @note	The pointer returned is for immediate use, if you plan
+ *   		to keep the value for a long time, it is necessary to
+ *   		copy the string, because removing the section will
+ *   		produce an incoherent pointer.
+ *   @see GfParmListSeekFirst
+ *   @see GfParmListSeekNext
  */
-char *
-GfParmListGetCurEltName (void *handle, const char *path)
+char* GfParmListGetCurEltName(void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1993,42 +2000,37 @@ GfParmListGetCurEltName (void *handle, const char *path)
 		return NULL;
 	}
 
-	//printf("WARNING: EVENTUALLY STRDUP ON USER SIDE REQUIRED!");
-
-	s = strrchr (section->curSubSection->fullName, '/');
+	s = strrchr(section->curSubSection->fullName, '/');
 	if (s) {
 		s++;
 		return s;
-		//return strdup (s);
 	}
 
 	return section->curSubSection->fullName;
-	//return strdup (section->curSubSection->fullName);
 }
 
 
-/** Get string parameter value.
-    @ingroup	paramsdata
-    @param	parmHandle	Configuration handle
-    @param	path		Parameter section name
-    @param	key		Parameter name
-    @param	deflt		Default value if parameter not existing
-    @return	Parameter value
-    <br>deflt if Error or not found
-    @note	The pointer returned is for immediate use, if you plan
-    		to keep the value for a long time, it is necessary to
-    		copy it elsewhere, because removing the attribute will
-    		produce incoherent pointer.
-*/
-const char *
-GfParmGetStr (void *parmHandle, const char *path, const char *key, const char *deflt)
+/** @brief Get a string parameter from the parameter set @e handle.
+ * 
+ *  If the parameter does not yet exist the given default is returned.
+ * 
+ *  @ingroup paramsdata
+ *  @param[in] parmHandle parameter set handle
+ *  @param[in] path path of the parameter
+ *  @param[in] key parameter key name
+ *  @param[in] deflt default string
+ *  @return parameter value
+ *  <br>deflt if error or not found
+ *  @note	The pointer returned is for immediate use, if you plan
+ *   		to keep the value for a long time, it is necessary to
+ *   		copy the string, because removing the attribute will
+ *   		produce an incoherent pointer.
+ */
+const char* GfParmGetStr(void *parmHandle, const char *path, const char *key, const char *deflt)
 {
 	struct param *param;
 	struct parmHandle *handle = (struct parmHandle *)parmHandle;
-	struct parmHeader *conf;
-	char *val;
-
-	conf = handle->conf;
+	struct parmHeader *conf = handle->conf;
 
 	if (handle->magic != PARM_MAGIC) {
 		GfFatal ("gfParmGetStr: bad handle (%p)\n", parmHandle);
@@ -2040,23 +2042,31 @@ GfParmGetStr (void *parmHandle, const char *path, const char *key, const char *d
 		return deflt;
 	}
 
-	val = param->value;
-
-	return val;
+	return param->value;
 }
 
-/** Get a string parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	deflt	default string	
-    @return	parameter value
-    @warning	the return value is allocated by the function the caller must free it.
-    @see	GfParmListSeekNext
-*/
-const char *
-GfParmGetCurStr (void *handle, const char *path, const char *key, const char *deflt)
+
+/** @brief Get a string parameter from the parameter set @e handle based on subsection iteration.
+ * 
+ *  The internal state of the parameter set @e handle must point to a current subsection,
+ *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
+ *  does not yet exist the given default is returned.
+ * 
+ *  @ingroup paramslist
+ *  @param[in] handle parameter set handle
+ *  @param[in] path path of the section used to iterate subsections
+ *  @param[in] key parameter key name
+ *  @param[in] deflt default string
+ *  @return parameter value
+ *  <br>deflt if error or not found
+ *  @note	The pointer returned is for immediate use, if you plan
+ *   		to keep the value for a long time, it is necessary to
+ *   		copy the string, because removing the attribute will
+ *   		produce an incoherent pointer.
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListSeekNext
+ */
+const char* GfParmGetCurStr(void *handle, const char *path, const char *key, const char *deflt)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -2081,21 +2091,24 @@ GfParmGetCurStr (void *handle, const char *path, const char *key, const char *de
 	return param->value;
 }
 
-/** Get a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	deflt	default string	
-    @return	parameter value
+
+/** @brief Get a numerical parameter from the parameter set @e handle.
+ *  
+ *  If the parameter does not exist the given default value is returned without unit conversion.
+ * 
+ *  @ingroup paramsdata
+ *  @param[in] handle parameter set handle
+ *  @param[in] path path of the parameter
+ *  @param[in] key parameter key name
+ *  @param[in] unit unit to convert the result to (NULL if SI is desired)
+ *  @param[in] deflt default value
+ *  @return	parameter value
  */
-tdble
-GfParmGetNum (void *handle, const char *path, const char *key, const char *unit, tdble deflt)
+tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt)
 {
-	struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-	struct parmHeader	*conf = parmHandle->conf;
-	struct param	*param;
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+	struct param *param;
 
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("GfParmGetNum: bad handle (%p)\n", parmHandle);
@@ -2110,22 +2123,28 @@ GfParmGetNum (void *handle, const char *path, const char *key, const char *unit,
 	if (unit) {
 		return GfParmSI2Unit(unit, param->valnum);
 	}
+	
 	return  param->valnum;
 }
 
 
-
-/** Get a numerical parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	deflt	default string	
-    @return	parameter value
+/** @brief Get a numerical parameter from the parameter set @e handle based on subsection iteration.
+ * 
+ *  The internal state of the parameter set @e handle must point to a current subsection,
+ *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
+ *  does not exist the given default value is returned without unit conversion.
+ * 
+ *  @ingroup paramslist
+ *  @param[in] handle parameter set handle
+ *  @param[in] path path of the section used to iterate subsections
+ *  @param[in] key parameter key name
+ *  @param[in] unit unit to convert the result to (NULL if SI is desired)
+ *  @param[in] deflt default value
+ *  @return	parameter value
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListSeekNext
  */
-tdble
-GfParmGetCurNum (void *handle, const char *path, const char *key, const char *unit, tdble deflt)
+tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -2150,6 +2169,7 @@ GfParmGetCurNum (void *handle, const char *path, const char *key, const char *un
 	if (unit) {
 		return GfParmSI2Unit(unit, param->valnum);
 	}
+	
 	return  param->valnum;
 }
 
@@ -2363,7 +2383,7 @@ int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *
  *  @see GfParmListSeekNext
  */
 int GfParmSetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
-	{
+{
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
 	struct section *section;
@@ -2407,7 +2427,7 @@ int GfParmSetCurNum(void *handle, const char *path, const char *key, const char 
  *  @param[in]	tgt	target parameter set handle for check (values) 
  *  @return	0 All checked values are ok
  *	<br>-1 Some values are out of bounds
- *  @warning	Only the parameters present in both sets, @e tgt and @e ref, are tested.
+ *  @note	Only the parameters present in both sets, @e tgt and @e ref, are tested.
  *  Min/max/within values eventually present in @e tgt are not checked.
  *  @see	GfParmMergeHandles
  */
@@ -2496,7 +2516,7 @@ int GfParmCheckHandle(void *ref, void *tgt)
  *  @see	GfParmMergeHandles
  * 
  */
-static void insertParamMerge (struct parmHandle *parmHandle, char *path, struct param *paramRef, struct param *param)
+static void insertParamMerge(struct parmHandle *parmHandle, char *path, struct param *paramRef, struct param *param)
 {
 	struct parmHeader *conf = parmHandle->conf;
 	struct param *paramNew;
@@ -2587,7 +2607,7 @@ static void insertParamMerge (struct parmHandle *parmHandle, char *path, struct 
  *  @see	GfParmMergeHandles
  * 
  */
-static void insertParam (struct parmHandle *parmHandle, char *path, struct param *param)
+static void insertParam(struct parmHandle *parmHandle, char *path, struct param *param)
 {
 	struct parmHeader *conf = parmHandle->conf;
 	struct param *paramNew;
@@ -2772,7 +2792,7 @@ void *GfParmMergeHandles(void *ref, void *tgt, int mode)
 }
 
 
-/** @brief Get the min and max of a numerical parameter.
+/** @brief Get the min and max of a numerical parameter from the parameter set @e handle.
  *  @ingroup	paramsdata
  *  @param[in]	handle	parameter set handle
  *  @param[in]	path	path of the parameter
