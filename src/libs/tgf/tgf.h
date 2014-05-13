@@ -288,7 +288,7 @@ extern const char *GfParmGetCurStr(void *handle, const char *path, const char *k
 /* set string parameter value */
 extern int GfParmSetStr(void *handle, const char *path, const char *key, const char *val);
 /* set string parameter value */
-extern int GfParmSetCurStr(void *handle, char *path, char *key, char *val);
+extern int GfParmSetCurStr(void *handle, const char *path, const char *key, const char *val);
 
 /* get num parameter value */
 extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);

@@ -2154,18 +2154,19 @@ GfParmGetCurNum (void *handle, const char *path, const char *key, const char *un
 }
 
 
-/** Set a string parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	val	value (NULL or empty string to remove the parameter)	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary	
+/** @brief Set a string parameter in the parameter set @e handle.
+ * 
+ *  If the parameter  does not yet exist it is created. The within constraint is not checked.
+ * 
+ *  @ingroup paramsdata
+ *  @param[in,out] handle parameter set handle
+ *  @param[in] path path of the parameter
+ *  @param[in] key parameter key name
+ *  @param[in] val value (NULL or empty string to remove the parameter)
+ *  @return 0 ok
+ *  <br>-1 error
  */
-int
-GfParmSetStr(void *handle, const char *path, const char *key, const char *val)
+int GfParmSetStr(void *handle, const char *path, const char *key, const char *val)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -2200,63 +2201,78 @@ GfParmSetStr(void *handle, const char *path, const char *key, const char *val)
 	return 0;
 }
 
-/** Set a string parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	val	value	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary	
+
+/** @brief Set a string parameter in the parameter set @e handle based on subsection iteration.
+ * 
+ *  The internal state of the parameter set @e handle must point to a current subsection,
+ *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
+ *  does not yet exist it is created. The within constraint is not checked.
+ * 
+ *  @ingroup paramslist
+ *  @param[in,out] handle parameter set handle
+ *  @param[in] path path of the section used to iterate subsections
+ *  @param[in] key parameter key name
+ *  @param[in] val value (NULL or empty string to remove the parameter)
+ *  @return 0 ok
+ *  <br>-1 error
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListSeekNext
  */
-int
-GfParmSetCurStr(void *handle, char *path, char *key, char *val)
+int GfParmSetCurStr(void *handle, const char *path, const char *key, const char *val)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct section	*section;
-    struct param	*param;
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+	struct section *section;
+	struct param *param;
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmSetCurStr: bad handle (%p)\n", parmHandle);
-	return -1;
-    }
-    section = (struct section *)GfHashGetStr (conf->sectionHash, path);
-    if ((!section) || (!section->curSubSection)) {
-	return -1;
-    }
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmSetCurStr: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
 
-    param = getParamByName (conf, section->curSubSection->fullName, key, PARAM_CREATE);
-    if (!param) {
-	return -1;
-    }
-    param->type = P_STR;
-    freez (param->value);
-    param->value = strdup (val);
-    if (!param->value) {
-	GfError ("gfParmSetStr: strdup (%s) failed\n", val);
-	removeParamByName (conf, path, key);
-	return -1;
-    }
+	section = (struct section *)GfHashGetStr (conf->sectionHash, path);
+	if ((!section) || (!section->curSubSection)) {
+		return -1;
+	}
 
-    return 0;
+	if (!val || !strlen (val)) {
+		/* Remove the entry */
+		removeParamByName (conf, section->curSubSection->fullName, key);
+		return 0;
+	}
+
+	param = getParamByName (conf, section->curSubSection->fullName, key, PARAM_CREATE);
+	if (!param) {
+		return -1;
+	}
+	
+	param->type = P_STR;
+	freez (param->value);
+	param->value = strdup (val);
+	if (!param->value) {
+		GfError ("gfParmSetStr: strdup (%s) failed\n", val);
+		removeParamByName (conf, section->curSubSection->fullName, key);
+		return -1;
+	}
+
+	return 0;
 }
 
 
-/** Set a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
+/** @brief Set a numerical parameter in the parameter set @e handle.
+ * 
+ *  If the parameter does not yet exist it is created. The value is assigned to the value, min and max.
+ * 
+ *  @ingroup	paramsdata
+ *  @param[in,out]	handle	parameter set handle
+ *  @param[in]	path	path of the parameter
+ *  @param[in]	key	parameter key name
+ *  @param[in]	unit	unit to convert the result to (NULL if SI desired)	
+ *  @param[in]	val	value to set	
+ *  @return	0	ok
+ *  <br>-1	error
  */
-int
-GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
+int GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
 {
 	struct parmHandle	*parmHandle = (struct parmHandle *)handle;
 	struct parmHeader	*conf = parmHandle->conf;
@@ -2286,67 +2302,73 @@ GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, 
 	return 0;
 }
 
-/** Set a numerical parameter in a config file.
-    @ingroup	paramsdata
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set
-    @param	min	min value
-    @param	max	max value
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
+
+/** @brief Set a numerical parameter in the parameter set @e handle including min and max.
+ *  @ingroup	paramsdata
+ *  @param[in,out]	handle	parameter set handle
+ *  @param[in]	path	path of the parameter
+ *  @param[in]	key	parameter key name
+ *  @param[in]	unit	unit to convert the result to (NULL if SI desired)	
+ *  @param[in]	val	value to set
+ *  @param[in]	min	min value to set
+ *  @param[in]	max	max value to set
+ *  @return	0	ok
+ *   		<br>-1	error
  */
-int
-GfParmSetNumEx(void *handle, const char *path, const char *key, const char *unit, tdble val, tdble min, tdble max)
+int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *unit, tdble val, tdble min, tdble max)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-    struct param	*param;
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+	struct param *param;
 
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmSetNumEx: bad handle (%p)\n", parmHandle);
-	return -1;
-    }
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmSetNumEx: bad handle (%p)\n", parmHandle);
+		return -1;
+	}
 
-    param = getParamByName (conf, path, key, PARAM_CREATE);
-    if (!param) {
-	return -1;
-    }
-    param->type = P_NUM;
-    FREEZ (param->unit);
-    if (unit) {
-	param->unit = strdup (unit);
-    }
+	param = getParamByName (conf, path, key, PARAM_CREATE);
+	if (!param) {
+		return -1;
+	}
+	
+	param->type = P_NUM;
+	FREEZ (param->unit);
+	if (unit) {
+		param->unit = strdup (unit);
+	}
 
-    param->valnum = GfParmUnit2SI (unit, val);
-    param->min = GfParmUnit2SI (unit, min);
-    param->max = GfParmUnit2SI (unit, max);
+	param->valnum = GfParmUnit2SI (unit, val);
+	param->min = GfParmUnit2SI (unit, min);
+	param->max = GfParmUnit2SI (unit, max);
 
-    return 0;
+	return 0;
 }
 
-/** Set a numerical parameter in a config file.
-    @ingroup	paramslist
-    @param	handle	handle of parameters	
-    @param	path	path of param
-    @param	key	key name	
-    @param	unit	unit to convert the result to (NULL if SI wanted)	
-    @param	val	value to set	
-    @return	0	ok
-    		<br>-1	error
-    @warning	The key is created is necessary
+
+/** @brief Set a numerical parameter in the parameter set @e handle based on subsection iteration.
+ * 
+ *  The internal state of the parameter set @e handle must point to a current subsection,
+ *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
+ *  does not yet exist it is created. The value is assigned to the value, min and max.
+ * 
+ *  @ingroup paramslist
+ *  @param[in,out]	handle	parameter set handle
+ *  @param[in]	path	path of the section used to iterate subsections
+ *  @param[in]	key	parameter key name	
+ *  @param[in]	unit	unit to convert the result to (NULL if SI is desired)	
+ *  @param[in]	val	value to set	
+ *  @return	0	ok
+ *  <br>-1	error
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListSeekNext
  */
-int
-GfParmSetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
-{
+int GfParmSetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble val)
+	{
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
 	struct section *section;
 	struct param *param;
-	
+
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("GfParmSetCurNum: bad handle (%p)\n", parmHandle);
 		return -1;
@@ -2356,7 +2378,7 @@ GfParmSetCurNum(void *handle, const char *path, const char *key, const char *uni
 	if ((!section) || (!section->curSubSection)) {
 		return -1;
 	}
-	
+
 	param = getParamByName(conf, section->curSubSection->fullName, key, PARAM_CREATE);
 	if (!param) {
 		return -1;
@@ -2367,12 +2389,12 @@ GfParmSetCurNum(void *handle, const char *path, const char *key, const char *uni
 	if (unit) {
 		param->unit = strdup (unit);
 	}
-	
+
 	val = GfParmUnit2SI (unit, val);
 	param->valnum = val;
 	param->min = val;
 	param->max = val;
-	
+
 	return 0;
 }
 
@@ -2753,8 +2775,8 @@ void *GfParmMergeHandles(void *ref, void *tgt, int mode)
 /** @brief Get the min and max of a numerical parameter.
  *  @ingroup	paramsdata
  *  @param[in]	handle	parameter set handle
- *  @param[in]	path	path of the attribute
- *  @param[in]	key	key name	
+ *  @param[in]	path	path of the parameter
+ *  @param[in]	key	parameter key name	
  *  @param[out]	min	Receives the min value
  *  @param[out]	max	Receives the max value
  *  @return	0 Ok
