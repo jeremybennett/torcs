@@ -1610,85 +1610,104 @@ void GfParmReleaseHandle (void *parmHandle)
 }
 
 
-static void
-evalUnit (char *unit, tdble *dest, int flg)
+/** @brief Support function to multiply or divide @e dest with unit conversion factor.
+ * 
+ *  This function is used by @ref GfParmUnit2SI and @ref GfParmSI2Unit. The given unit string
+ *  gets split up and processed unit by unit with evalUnit.
+ * 
+ *  @ingroup paramsdata
+ *  @param[in] unit unit name from dest
+ *  @param[in,out] dest pointer to value to convert
+ *  @param flg multiply (0) or divide (otherwise)
+ *  @see GfParmUnit2SI
+ *  @see GfParmSI2Unit
+ */
+static void evalUnit (char *unit, tdble *dest, int flg)
 {
-    tdble coeff = 1.0;
-    
-    if (strcmp(unit, "m") == 0) return;
-    if (strcmp(unit, "kg") == 0) return;
-    if (strcmp(unit, "s") == 0) return;
-    if (strcmp(unit, "rad") == 0) return;
-    if (strcmp(unit, "Pa") == 0) return;
+	tdble coeff = 1.0;
 
-    if ((strcmp(unit, "feet") == 0) || (strcmp(unit, "ft") == 0)) {
-	coeff = 0.304801f; /* m */
-    } else if (strcmp(unit, "deg") == 0) {
-	coeff = (float) (M_PI/180.0); /* rad */
-    } else if ((strcmp(unit, "h") == 0) || (strcmp(unit, "hour") == 0) || (strcmp(unit, "hours") == 0)) {
-	coeff = 3600.0; /* s */
-    } else if ((strcmp(unit, "day") == 0) || (strcmp(unit, "days") == 0)) {
-	coeff = 24*3600.0; /* s */
-    } else if (strcmp(unit, "km") == 0) {
-	coeff = 1000.0; /* m */
-    } else if (strcmp(unit, "mm") == 0) {
-	coeff = 0.001f; /* m */
-    } else if (strcmp(unit, "cm") == 0) {
-	coeff = 0.01f; /* m */
-    } else if ((strcmp(unit, "in") == 0) || (strcmp(unit, "inch") == 0) || (strcmp(unit, "inches") == 0)) {
-	coeff = 0.0254f; /* m */
-    } else if ((strcmp(unit, "lbs") == 0)  || (strcmp(unit, "lb") == 0)) {
-	coeff = 0.45359237f; /* kg */
+	if (strcmp(unit, "m") == 0) return;
+	if (strcmp(unit, "kg") == 0) return;
+	if (strcmp(unit, "s") == 0) return;
+	if (strcmp(unit, "rad") == 0) return;
+	if (strcmp(unit, "Pa") == 0) return;
+
+	if ((strcmp(unit, "feet") == 0) || (strcmp(unit, "ft") == 0)) {
+		coeff = 0.304801f; /* m */
+	} else if (strcmp(unit, "deg") == 0) {
+		coeff = (float) (M_PI/180.0); /* rad */
+	} else if ((strcmp(unit, "h") == 0) || (strcmp(unit, "hour") == 0) || (strcmp(unit, "hours") == 0)) {
+		coeff = 3600.0; /* s */
+	} else if ((strcmp(unit, "day") == 0) || (strcmp(unit, "days") == 0)) {
+		coeff = 24*3600.0; /* s */
+	} else if (strcmp(unit, "km") == 0) {
+		coeff = 1000.0; /* m */
+	} else if (strcmp(unit, "mm") == 0) {
+		coeff = 0.001f; /* m */
+	} else if (strcmp(unit, "cm") == 0) {
+		coeff = 0.01f; /* m */
+	} else if ((strcmp(unit, "in") == 0) || (strcmp(unit, "inch") == 0) || (strcmp(unit, "inches") == 0)) {
+		coeff = 0.0254f; /* m */
+	} else if ((strcmp(unit, "lbs") == 0)  || (strcmp(unit, "lb") == 0)) {
+		coeff = 0.45359237f; /* kg */
 	} else if (strcmp(unit, "lbf") == 0) {
 		coeff = 0.45359237f*G; /* N (kg*m/s^2) */
-    } else if ((strcmp(unit, "slug") == 0) || (strcmp(unit, "slugs") == 0)) {
-	coeff = 14.59484546f; /* kg */
-    } else if (strcmp(unit, "kPa") == 0) {
-	coeff = 1000.0; /* Pa */
-    } else if (strcmp(unit, "MPa") == 0) {
-	coeff = 1000000.0; /* Pa */
-    } else if ((strcmp(unit, "PSI") == 0) || (strcmp(unit, "psi") == 0)){
-	coeff = 6894.76f; /* Pa */
-    } else if ((strcmp(unit, "rpm") == 0) || (strcmp(unit, "RPM") == 0)) {
-	coeff = 0.104719755f; /* rad/s */
-    } else if ((strcmp(unit, "percent") == 0) || (strcmp(unit, "%") == 0)) {
-	coeff = 0.01f;
-    } else if ((strcmp(unit, "mph") == 0) || (strcmp(unit, "MPH") == 0)) {
-	coeff = 0.44704f; /* m/s */
-    }
+	} else if ((strcmp(unit, "slug") == 0) || (strcmp(unit, "slugs") == 0)) {
+		coeff = 14.59484546f; /* kg */
+	} else if (strcmp(unit, "kPa") == 0) {
+		coeff = 1000.0; /* Pa */
+	} else if (strcmp(unit, "MPa") == 0) {
+		coeff = 1000000.0; /* Pa */
+	} else if ((strcmp(unit, "PSI") == 0) || (strcmp(unit, "psi") == 0)){
+		coeff = 6894.76f; /* Pa */
+	} else if ((strcmp(unit, "rpm") == 0) || (strcmp(unit, "RPM") == 0)) {
+		coeff = 0.104719755f; /* rad/s */
+	} else if ((strcmp(unit, "percent") == 0) || (strcmp(unit, "%") == 0)) {
+		coeff = 0.01f;
+	} else if ((strcmp(unit, "mph") == 0) || (strcmp(unit, "MPH") == 0)) {
+		coeff = 0.44704f; /* m/s */
+	}
 
-    if (flg) {
-	*dest /= coeff;
-    } else {
-	*dest *= coeff;
-    }
-    
-    return;
+	if (flg) {
+		*dest /= coeff;
+	} else {
+		*dest *= coeff;
+	}
+
+	return;
 }
 
-/** Convert a value in "units" into SI.
-    @ingroup	paramsdata
-    @param	unit	unit name
-    @param	val	value in units
-    @return	the value in corresponding SI unit
-    @warning	The supported units are:
-    			<br><ul><li><b>feet</b> or <b>ft</b>  converted to <b>m</b></li>
-			<li><b>inches</b> or <b>in</b> converted to <b>m</b></li>
-			<li><b>lbs</b> converted to <b>kg</b></li>
-			<li><b>slug</b> or <b>slugs</b> converted to <b>kg</b></li>
-			<li><b>h</b> or <b>hours</b> converted to <b>s</b></li>
-			<li><b>day</b> or <b>days</b> converted to <b>s</b></li>
-			<li><b>km</b> converted to <b>m</b></li>
-			<li><b>cm</b> converted to <b>m</b></li>
-			<li><b>mm</b> converted to <b>m</b></li>
-			<li><b>kPa</b> converted to <b>Pa</b></li>
-			<li><b>deg</b> converted to <b>rad</b></li>
-			<li><b>rpm</b> or <b>RPM</b> converted to <b>rad/s</b></li>
-			<li><b>percent</b> or <b>%</b> divided by <b>100</b></li></ul>
-    @see	GfParmSI2Unit
+
+/** @brief Convert a value given in unit to SI.
+ * 
+ *   The units can be combined with "/" (divide), "." (multiply) and "2" (square), e.g. "lbf/in", "N.m", "kg.m/s2".  
+ *   
+ *   @ingroup paramsdata
+ *   @param[in] unit unit name from val
+ *   @param[in] val value in unit
+ *   @return the value converted to SI
+ *   @note	The supported units are:
+ *   <br><ul>
+ *   <li><b>feet</b> or <b>ft</b>  converted to <b>m</b></li>
+ *   <li><b>inches</b>,<b>inch</b> or <b>in</b> converted to <b>m</b></li>
+ *   <li><b>km</b> converted to <b>m</b></li>
+ *   <li><b>cm</b> converted to <b>m</b></li>
+ *   <li><b>mm</b> converted to <b>m</b></li>
+ *   <li><b>lbs</b> converted to <b>kg</b></li>
+ *   <li><b>slug</b> or <b>slugs</b> converted to <b>kg</b></li>
+ *   <li><b>h</b>,<b>hour</b> or <b>hours</b> converted to <b>s</b></li>
+ *   <li><b>day</b> or <b>days</b> converted to <b>s</b></li>
+ *   <li><b>kPa</b> or <b>MPa</b> converted to <b>Pa</b></li>
+ *   <li><b>PSI</b> or <b>psi</b> converted to <b>Pa</b></li>
+ *   <li><b>deg</b> converted to <b>rad</b></li>
+ *   <li><b>rpm</b> or <b>RPM</b> converted to <b>rad/s</b></li>
+ *   <li><b>percent</b> or <b>%</b> divided by <b>100</b></li>
+ *   <li><b>lbf</b> converted to <b>N</b></li>
+ *   </ul>
+ * 
+ *   @see GfParmSI2Unit
  */
-tdble
-GfParmUnit2SI (const char *unit, tdble val)
+tdble GfParmUnit2SI (const char *unit, tdble val)
 {
 	char buf[256];
 	int  idx;
@@ -1734,15 +1753,15 @@ GfParmUnit2SI (const char *unit, tdble val)
 	return dest;
 }
 
-/** Convert a value in SI to "units".
-    @ingroup	paramsdata
-    @param	unit	unit name to convert to
-    @param	val	value in SI units to be converted to units
-    @return	converted value to units
-    @see	GfParmUnit2SI
+
+/** @brief Convert a value from SI to given unit.
+ *  @ingroup paramsdata
+ *  @param[in] unit unit name to convert to
+ *  @param[in] val value in SI units to be converted to unit
+ *  @return converted value in unit
+ *  @see GfParmUnit2SI
  */
-tdble
-GfParmSI2Unit (const char *unit, tdble val)
+tdble GfParmSI2Unit (const char *unit, tdble val)
 {
 	char buf[256];
 	int  idx;
@@ -1790,54 +1809,67 @@ GfParmSI2Unit (const char *unit, tdble val)
 
 
 
-/** Get the pararmeters name
-    @ingroup	paramsdata
-    @param	handle	Handle on the parameters
-    @return	Name
-*/
-char *
-GfParmGetName (void *handle)
-{
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmGetName: bad handle (%p)\n", parmHandle);
-	return NULL;
-    }
-
-    return conf->name;
-}
-
-
-/** Get the pararmeters file name
-    @ingroup	paramsfile
-    @param	handle	Handle on the parameters
-    @return	File Name
-*/
-char *
-GfParmGetFileName (void *handle)
-{
-    struct parmHandle	*parmHandle = (struct parmHandle *)handle;
-    struct parmHeader	*conf = parmHandle->conf;
-
-    if (parmHandle->magic != PARM_MAGIC) {
-	GfFatal ("GfParmGetFileName: bad handle (%p)\n", parmHandle);
-	return NULL;
-    }
-
-    return conf->filename;
-}
-
-
-/** Count the number of section elements of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	element count
+/** @brief Get the name property of the parameter set @e handle.
+ *
+ *  @ingroup paramsdata
+ *  @param[in] handle parameter set handle
+ *  @return Name
+ *  <br>NULL if failed or not set
+ *  @note	The pointer returned is for immediate use, if you plan
+ *   		to keep the value for a long time, it is necessary to
+ *   		copy the string, because manipulating the handle will
+ *   		produce an incoherent pointer.
  */
-int
-GfParmGetEltNb (void *handle, const char *path)
+char* GfParmGetName (void *handle)
+{
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmGetName: bad handle (%p)\n", parmHandle);
+		return NULL;
+	}
+
+	return conf->name;
+}
+
+
+/** @brief Get the filename property of the parameter set @e handle.
+ *
+ *  @ingroup paramsfile
+ *  @param[in] handle parameter set handle
+ *  @return File name
+ *  <br>NULL if failed or not set
+ *  @note	The pointer returned is for immediate use, if you plan
+ *   		to keep the value for a long time, it is necessary to
+ *   		copy the string, because manipulating the handle will
+ *   		produce an incoherent pointer.
+ */
+char* GfParmGetFileName (void *handle)
+{
+	struct parmHandle *parmHandle = (struct parmHandle *)handle;
+	struct parmHeader *conf = parmHandle->conf;
+
+	if (parmHandle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmGetFileName: bad handle (%p)\n", parmHandle);
+		return NULL;
+	}
+
+	return conf->filename;
+}
+
+
+/** @brief Count the number of subsections in a section in the parameter set @e handle.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
+ * 
+ *  @ingroup paramslist
+ *  @param[in] handle parameter set handle
+ *  @param[in] path path of the section containing the subsections to count
+ *  @return element count
+ */
+int GfParmGetEltNb (void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1866,17 +1898,20 @@ GfParmGetEltNb (void *handle, const char *path)
 
 
 
-/** Seek the first section element of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	list path
-    @return	0 Ok
-    		<br>-1 Failed
-    @see	GfParmListSeekNext
-    @see	GfParmListGetCurEltName
+/** @brief Go the the first subsection element in the parameter set @e handle.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
+ * 
+ *  @ingroup paramslist
+ *  @param[in,out] handle parameter set handle, interation state is internally stored
+ *  @param[in] path path of the section containing the subsections to iterate through
+ *  @return 0 Ok
+ *  <br>-1 Failed
+ *  @see GfParmListSeekNext
+ *  @see GfParmListGetCurEltName
  */
-int
-GfParmListSeekFirst (void *handle, const char *path)
+int GfParmListSeekFirst (void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1893,21 +1928,26 @@ GfParmListSeekFirst (void *handle, const char *path)
 	}
 	
 	section->curSubSection = GF_TAILQ_FIRST (&(section->subSectionList));
+	
 	return 0;
 }
 
-/** Go to the next section element in the current list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	0 Ok
-    		<br>1 End of list reached
-    		<br>-1 Failed
-    @see	GfParmListSeekFirst	
-    @see	GfParmListGetCurEltName
+
+/** @brief Go the the next subsection element in the parameter set @e handle.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
+ * 
+ *  @ingroup paramslist
+ *  @param[in,out] handle parameter set handle, interation state is internally stored
+ *  @param[in] path path of the section containing the subsections to iterate through
+ *  @return	0 Ok
+ *  <br>1 End of list reached
+ *  <br>-1 Failed
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListGetCurEltName
  */
-int
-GfParmListSeekNext (void *handle, const char *path)
+int GfParmListSeekNext (void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1928,19 +1968,23 @@ GfParmListSeekNext (void *handle, const char *path)
 	if (section->curSubSection) {
 		return 0;
 	}
-	return 1;			/* EOL reached */
+	
+	return 1;
 }
 
 
-/** Remove all the section elements of a list.
-    @ingroup	paramslist
-    @param	handle	handle of parameters
-    @param	path	path of list
-    @return	0 Ok
-		<br>-1 Error
+/** @brief Remove all the subsections in a section in the parameter set @e handle.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
+ * 
+ *  @ingroup paramslist
+ *  @param[in,out] handle parameter set handle
+ *  @param[in] path path of the section containing the subsections to remove
+ *  @return 0 Ok
+ *	<br>-1 Error
  */
-int
-GfParmListClean (void *handle, const char *path)
+int GfParmListClean (void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1961,15 +2005,19 @@ GfParmListClean (void *handle, const char *path)
 	while ((section = GF_TAILQ_FIRST (&(listSection->subSectionList))) != NULL) {
 		removeSection (conf, section);
 	}
+	
 	return 0;
 }
 
 
-/** @brief Get current subsection name during subsection iteration.
+/** @brief Get current subsection name of the parameter set @e handle during subsection iteration.
  * 
  *  The internal state of the parameter set @e handle must point to a current subsection,
  *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. This call
  *  returns the name of the current subsection.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
  * 
  *  @ingroup paramslist
  *  @param[in] handle parameter set handle
@@ -1980,8 +2028,8 @@ GfParmListClean (void *handle, const char *path)
  *   		to keep the value for a long time, it is necessary to
  *   		copy the string, because removing the section will
  *   		produce an incoherent pointer.
- *   @see GfParmListSeekFirst
- *   @see GfParmListSeekNext
+ *  @see GfParmListSeekFirst
+ *  @see GfParmListSeekNext
  */
 char* GfParmListGetCurEltName(void *handle, const char *path)
 {
@@ -2051,6 +2099,9 @@ const char* GfParmGetStr(void *parmHandle, const char *path, const char *key, co
  *  The internal state of the parameter set @e handle must point to a current subsection,
  *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
  *  does not yet exist the given default is returned.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
  * 
  *  @ingroup paramslist
  *  @param[in] handle parameter set handle
@@ -2133,6 +2184,9 @@ tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *
  *  The internal state of the parameter set @e handle must point to a current subsection,
  *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
  *  does not exist the given default value is returned without unit conversion.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
  * 
  *  @ingroup paramslist
  *  @param[in] handle parameter set handle
@@ -2227,6 +2281,9 @@ int GfParmSetStr(void *handle, const char *path, const char *key, const char *va
  *  The internal state of the parameter set @e handle must point to a current subsection,
  *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
  *  does not yet exist it is created. The within constraint is not checked.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
  * 
  *  @ingroup paramslist
  *  @param[in,out] handle parameter set handle
@@ -2370,6 +2427,9 @@ int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *
  *  The internal state of the parameter set @e handle must point to a current subsection,
  *  this is done using @ref GfParmListSeekFirst or @ref GfParmListSeekNext. If the parameter
  *  does not yet exist it is created. The value is assigned to the value, min and max.
+ * 
+ *  A subsection can have any name and structure, any section element enclosed by the section given in
+ *  the @e path is a subsection.
  * 
  *  @ingroup paramslist
  *  @param[in,out]	handle	parameter set handle
