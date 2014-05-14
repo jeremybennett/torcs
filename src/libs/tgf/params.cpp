@@ -1104,6 +1104,14 @@ GfParmReadFile (const char *file, int mode)
 }
 
 
+/** Helper function to convert the input line given in @e val into proper XML notation, the output goes into @e buf.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] buf buffer for the processed line
+ *  @param[in] BUFSIZE buffer size
+ *  @param[in] val input line
+ *  @return pointer to given buffer @e buf
+ */
 static char* handleEntities(char *buf, const int BUFSIZE, const char* val)
 {
 	int i = 0;
@@ -1150,6 +1158,13 @@ static char* handleEntities(char *buf, const int BUFSIZE, const char* val)
 }
 
 
+/** @brief Helper function for indentation in the XML.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] buf buffer for the result
+ *  @param[in] BUFSIZE buffer size
+ *  @param[in] blanks number of blanks to write
+ */
 static void createIndent(char *buf, const int BUFSIZE, const int blanks)
 {
 	int pos = 0;
@@ -1161,6 +1176,13 @@ static void createIndent(char *buf, const int BUFSIZE, const int blanks)
 }
 
 
+/** @brief Helper function to support the serialization into the XML of the "within" attribute.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] buf buffer for the result
+ *  @param[in] BUFSIZE buffer size
+ *  @param[in] head head of the list with the within options
+ */
 static void createIn(char *buf, const int BUFSIZE, withinHead* head)
 {
 	const char* s = " in=\"";
@@ -1198,11 +1220,18 @@ static void createIn(char *buf, const int BUFSIZE, withinHead* head)
 }
 
 
-/**
- *	
+/** @brief Helper function to output one line of XML generated from the given parameter set.
+ * 
+ *  The parameter set handle @e parmHandle keeps track of the progress internally.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] parmHandle parameter set handle
+ *  @param[in,out] buffer buffer for the line
+ *  @param[in] size buffer size
+ *  @return	1 more lines available
+ *  <br>0 done
  */
-static int
-xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
+static int xmlGetOuputLine(struct parmHandle *parmHandle, char *buffer, int size)
 {
 	struct parmOutput *outCtrl = &(parmHandle->outCtrl);
 	struct parmHeader *conf = parmHandle->conf;
@@ -1362,25 +1391,23 @@ xmlGetOuputLine (struct parmHandle *parmHandle, char *buffer, int size)
 	}
 }
 
-/** Write a configuration buffer.
-    @ingroup	conf
-    @param	handle	Configuration handle
-    @param	buf		buffer to write the configuration
-    @param	size		buffer size
-    @return	0 if OK
-    		<br>1 if Error
-*/
-int
-GfParmWriteBuf (void *handle, char *buf, int size)
+
+/** @brief Write a parameter set into a memory buffer.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] handle parameter set handle
+ *  @param[in,out] buf buffer to write the configuration to (must be big enough)
+ *  @param[in] size buffer size
+ *  @return	0 if ok
+ *  <br>1 if error
+ */
+int GfParmWriteBuf(void *handle, char *buf, int size)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
-	//struct parmHeader	*conf;
 	char line[LINE_SZ];
 	int len;
 	int curSize;
 	char *s;
-
-	//conf = parmHandle->conf;
 
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("gfParmWriteBuf: bad handle (%p)\n", parmHandle);
@@ -1407,41 +1434,41 @@ GfParmWriteBuf (void *handle, char *buf, int size)
 	return 0;
 }
 
-/** Set the dtd path and header if necessary
-    @ingroup	conf
-    @param	parmHandle	Configuration handle
-    @param	dtd		Optional dtd path
-    @param	header		Optional header
-    @return	none
-*/
-void
-GfParmSetDTD (void *parmHandle, char *dtd, char*header)
-{
-    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
-    struct parmHeader	*conf = handle->conf;
 
-    if (dtd) {
-	FREEZ(conf->dtd);
-	conf->dtd = strdup(dtd);
-    }
-    
-    if (header) {
-	FREEZ(conf->header);
-	conf->header = strdup(header);
-    }
+/** @brief Set the dtd path and header.
+ * 
+ *  @ingroup paramsfile
+ *  @param	parmHandle parameter set handle
+ *  @param	dtd optional dtd path
+ *  @param	header optional header
+ */
+void GfParmSetDTD(void *parmHandle, char *dtd, char*header)
+{
+	struct parmHandle *handle = (struct parmHandle *)parmHandle;
+	struct parmHeader *conf = handle->conf;
+
+	if (dtd) {
+		FREEZ(conf->dtd);
+		conf->dtd = strdup(dtd);
+	}
+
+	if (header) {
+		FREEZ(conf->header);
+		conf->header = strdup(header);
+	}
 }
 
 
-/** Write a configuration file.
-    @ingroup	conf
-    @param	parmHandle	Configuration handle
-    @param	file		Name of the file to write (NULL if previously read file)
-    @param	name	Name of the parameters
-    @return	0 if OK
-    <br>1 if Error
-*/
-int
-GfParmWriteFile (const char *file, void *parmHandle, const char *name)
+/** @brief Write parameter set into file.
+ * 
+ *   @ingroup paramsfile
+ *   @param[in] file if NULL the internally stored filename is used, if not NULL the given filename is used (it is not stored in the handle)
+ *   @param[in,out] parmHandle parameter set handle
+ *   @param[in] name if NULL the internally stored name is used, if not NULL the given name is used and stored in the handle
+ *   @return 0 if ok
+ *   <br>1 if Error
+ */
+int GfParmWriteFile(const char *file, void *parmHandle, const char *name)
 {
 	struct parmHandle *handle = (struct parmHandle *)parmHandle;
 	struct parmHeader *conf = handle->conf;
@@ -1489,31 +1516,36 @@ GfParmWriteFile (const char *file, void *parmHandle, const char *name)
 	return 0;
 }
 
-/** Remove a parameter.
-    @ingroup	conf
-    @param	parmHandle	Configuration handle
-    @param	sectionName	Parameter section name
-    @param	paramName	Parameter name
-    @return	none
-*/
-void
-GfParmRemove (void *parmHandle, char *sectionName, char *paramName)
+
+/** @brief Remove a parameter from a parameter set.
+ * 
+ *  @ingroup paramsdata
+ *  @param parmHandle parameter set handle
+ *  @param sectionName parameter section name
+ *  @param paramName parameter name
+ */
+void GfParmRemove(void *parmHandle, char *sectionName, char *paramName)
 {
-    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
-    struct parmHeader	*conf;
+	struct parmHandle *handle = (struct parmHandle *)parmHandle;
+	struct parmHeader *conf;
 
-    conf = handle->conf;
+	conf = handle->conf;
 
-    if (handle->magic != PARM_MAGIC) {
-	GfFatal ("gfParmRemove: bad handle (%p)\n", parmHandle);
-	return;
-    }
+	if (handle->magic != PARM_MAGIC) {
+		GfFatal ("gfParmRemove: bad handle (%p)\n", parmHandle);
+		return;
+	}
 
-    removeParamByName (conf, sectionName, paramName);
+	removeParamByName(conf, sectionName, paramName);
 }
 
 
-static void parmClean (struct parmHeader *conf)
+/** @brief Helper function to release the parameter set content.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] conf parameter set header
+ */
+static void parmClean(struct parmHeader *conf)
 {
 	struct section	*section;
 
@@ -1525,29 +1557,40 @@ static void parmClean (struct parmHeader *conf)
 }
 
 
-/** Clean all the parameters of a set.
-    @ingroup	conf
-    @param	parmHandle	Configuration handle
-    @return	0 if OK
-    		<br>-1 if Error
-*/
-void
-GfParmClean (void *parmHandle)
+/** @brief Clean all the parameters of a parameter set.
+ *
+ *  Removes all contained parameters in the parameter set, the
+ *  @e parmHande remains valid. 
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] parmHandle parameter set handle
+ *  @return	0 if OK
+ *  <br>-1 if Error
+ */
+void GfParmClean(void *parmHandle)
 {
-    struct parmHandle	*handle = (struct parmHandle *)parmHandle;
-    struct parmHeader	*conf;
+	struct parmHandle *handle = (struct parmHandle *)parmHandle;
+	struct parmHeader *conf;
 
-    conf = handle->conf;
+	conf = handle->conf;
 
-    if (handle->magic != PARM_MAGIC) {
-	GfFatal ("gfParmClean: bad handle (%p)\n", parmHandle);
-	return;
-    }
+	if (handle->magic != PARM_MAGIC) {
+		GfFatal ("gfParmClean: bad handle (%p)\n", parmHandle);
+		return;
+	}
 
-    parmClean (conf);
+	parmClean (conf);
 }
 
 
+/** @brief Helper function to release the parameter set if the reference counter is 0.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] conf parameter set header
+ *  @see GfParmReleaseHandle
+ *  @see GfParmWriteFile
+ *  @see GfParmReadFile
+ */
 static void parmReleaseHeader(struct parmHeader *conf)
 {
 	conf->refcount--;
@@ -1577,7 +1620,15 @@ static void parmReleaseHeader(struct parmHeader *conf)
 }
 
 
-static void parmReleaseHandle (struct parmHandle *parmHandle)
+/** @brief Helper function to release the handle and eventually the referenced parameter set (if the reference counter falls to 0).
+ *
+ *  @ingroup paramsfile
+ *  @param[in] parmHandle parameter set handle
+ *  @see GfParmReleaseHandle
+ *  @see GfParmWriteFile
+ *  @see GfParmReadFile
+ */
+static void parmReleaseHandle(struct parmHandle *parmHandle)
 {
 	struct parmHeader *conf = parmHandle->conf;
 
@@ -1592,12 +1643,25 @@ static void parmReleaseHandle (struct parmHandle *parmHandle)
 }
 
 
-/** Clean the parms and release the handle without updating the file
-    @ingroup	conf
-    @param	parmHandle	Configuration handle
-    @return	none
-*/
-void GfParmReleaseHandle (void *parmHandle)
+/** @brief Release given parameter set handle @e parmHandle.
+ * 
+ *  Releases the parameter set handle and eventally the parameter set which it
+ *  refers to. 
+ * 
+ *  The parameter sets are internally reused and reference counted, so if the
+ *  parameter set has still a reference counter greater than 0, just the reference
+ *  counter is decremented, if it reaches 0, the whole parameter set is deleted from
+ *  memory.
+ * 
+ *  The parameter file is not written on release, write operations are done explicitely
+ *  with @ref GfParmWriteFile.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] parmHandle parameter set handle
+ *  @see GfParmWriteFile
+ *  @see GfParmReadFile
+ */
+void GfParmReleaseHandle(void *parmHandle)
 {
 	struct parmHandle *handle = (struct parmHandle *)parmHandle;
 
@@ -1622,7 +1686,7 @@ void GfParmReleaseHandle (void *parmHandle)
  *  @see GfParmUnit2SI
  *  @see GfParmSI2Unit
  */
-static void evalUnit (char *unit, tdble *dest, int flg)
+static void evalUnit(char *unit, tdble *dest, int flg)
 {
 	tdble coeff = 1.0;
 
@@ -1707,7 +1771,7 @@ static void evalUnit (char *unit, tdble *dest, int flg)
  * 
  *   @see GfParmSI2Unit
  */
-tdble GfParmUnit2SI (const char *unit, tdble val)
+tdble GfParmUnit2SI(const char *unit, tdble val)
 {
 	char buf[256];
 	int  idx;
@@ -1761,7 +1825,7 @@ tdble GfParmUnit2SI (const char *unit, tdble val)
  *  @return converted value in unit
  *  @see GfParmUnit2SI
  */
-tdble GfParmSI2Unit (const char *unit, tdble val)
+tdble GfParmSI2Unit(const char *unit, tdble val)
 {
 	char buf[256];
 	int  idx;
@@ -1820,7 +1884,7 @@ tdble GfParmSI2Unit (const char *unit, tdble val)
  *   		copy the string, because manipulating the handle will
  *   		produce an incoherent pointer.
  */
-char* GfParmGetName (void *handle)
+char* GfParmGetName(void *handle)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1845,7 +1909,7 @@ char* GfParmGetName (void *handle)
  *   		copy the string, because manipulating the handle will
  *   		produce an incoherent pointer.
  */
-char* GfParmGetFileName (void *handle)
+char* GfParmGetFileName(void *handle)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1869,7 +1933,7 @@ char* GfParmGetFileName (void *handle)
  *  @param[in] path path of the section containing the subsections to count
  *  @return element count
  */
-int GfParmGetEltNb (void *handle, const char *path)
+int GfParmGetEltNb(void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1911,7 +1975,7 @@ int GfParmGetEltNb (void *handle, const char *path)
  *  @see GfParmListSeekNext
  *  @see GfParmListGetCurEltName
  */
-int GfParmListSeekFirst (void *handle, const char *path)
+int GfParmListSeekFirst(void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1947,7 +2011,7 @@ int GfParmListSeekFirst (void *handle, const char *path)
  *  @see GfParmListSeekFirst
  *  @see GfParmListGetCurEltName
  */
-int GfParmListSeekNext (void *handle, const char *path)
+int GfParmListSeekNext(void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
@@ -1984,7 +2048,7 @@ int GfParmListSeekNext (void *handle, const char *path)
  *  @return 0 Ok
  *	<br>-1 Error
  */
-int GfParmListClean (void *handle, const char *path)
+int GfParmListClean(void *handle, const char *path)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)handle;
 	struct parmHeader *conf = parmHandle->conf;
