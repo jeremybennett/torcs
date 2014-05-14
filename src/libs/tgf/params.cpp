@@ -227,8 +227,7 @@ getParamByName (struct parmHeader *conf, const char *sectionName, const char *pa
 }
 
 /* Remove a parameter */
-static void
-removeParamByName (struct parmHeader *conf, const char *sectionName, const char *paramName)
+static void removeParamByName(struct parmHeader *conf, const char *sectionName, const char *paramName)
 {
 	char *fullName;
 	struct param *param;
@@ -254,23 +253,25 @@ removeParamByName (struct parmHeader *conf, const char *sectionName, const char 
 	cleanUnusedSection(conf, section);
 }
 
-/* Clean up unused sections and parents */
-static void
-cleanUnusedSection (struct parmHeader *conf, struct section *section)
-{
-    struct section	*parent;
 
-    if (!section->fullName ||
-	(!GF_TAILQ_FIRST (&(section->paramList)) &&
-	 !GF_TAILQ_FIRST (&(section->subSectionList)))) {
-	parent = section->parent;
-	removeSection (conf, section);
-	if (parent) {
-	    /* check if the parent is unused */
-	    cleanUnusedSection (conf, parent);
+/* Clean up unused sections and parents */
+static void cleanUnusedSection (struct parmHeader *conf, struct section *section)
+{
+	struct section	*parent;
+
+	if (
+		!section->fullName ||
+		(!GF_TAILQ_FIRST (&(section->paramList)) && !GF_TAILQ_FIRST (&(section->subSectionList)))
+	) {
+		parent = section->parent;
+		removeSection (conf, section);
+		if (parent) {
+			/* check if the parent is unused */
+			cleanUnusedSection (conf, parent);
+		}
 	}
-    }
 }
+
 
 /* Remove a parameter */
 static void
@@ -287,15 +288,15 @@ removeParam (struct parmHeader *conf, struct section *section, struct param *par
 	}
 
 	freez (param->name);
-    freez (param->fullName);
-    freez (param->value);
+	freez (param->fullName);
+	freez (param->value);
 	freez (param->unit);
-    freez (param);
+	freez (param);
 }
 
+
 /* Add a parameter anywhere, does not check for duplicate. */
-static struct param *
-addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
+static struct param *addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
 {
 	char *fullName;
 	struct param *param = NULL;
@@ -355,8 +356,7 @@ addParam (struct parmHeader *conf, struct section *section, const char *paramNam
 
 
 /* Remove a section */
-static void
-removeSection (struct parmHeader *conf, struct section *section)
+static void removeSection (struct parmHeader *conf, struct section *section)
 {
 	struct param *param;
 	struct section *subSection;
@@ -377,9 +377,9 @@ removeSection (struct parmHeader *conf, struct section *section)
 	freez (section);
 }
 
+
 /* Get or create parent section */
-static struct section *
-getParent (struct parmHeader *conf, const char *sectionName)
+static struct section *getParent (struct parmHeader *conf, const char *sectionName)
 {
 	struct section	*section;
 	char		*tmpName;
@@ -410,12 +410,19 @@ end:
 	return section;
 }
 
-/* Add a new section */
-static struct section *
-addSection (struct parmHeader *conf, const char *sectionName)
+
+/** @brief Helper function to add a section to a parameter set.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] conf parameter set header
+ *  @param[in] sectionName section name
+ *  @return section on success
+ *  <br>NULL on error
+ */
+static struct section *addSection (struct parmHeader *conf, const char *sectionName)
 {
-	struct section	*section;
-	struct section	*parent;
+	struct section *section;
+	struct section *parent;
 	const unsigned long len = sizeof (struct section);
 
 	if (GfHashGetStr (conf->sectionHash, sectionName)) {
@@ -460,38 +467,60 @@ bailout:
 	return NULL;
 }
 
-static struct parmHeader *
-getSharedHeader (const char *file, int mode)
+
+/** @brief Helper function for looking up parameter sets in the cache.
+ * 
+ *  @ingroup paramsfile
+ *  @param file name of the file to look up
+ *  @param mode opening mode is a mask of:
+ *  <br>#GFPARM_RMODE_STD if the parameter set is already loaded and not private return
+ *  a handle pointing to the existing parameter set (default)
+ *  <br>#GFPARM_RMODE_REREAD re-read the parameters file
+ *  <br>#GFPARM_RMODE_CREAT if the parameters file does not exist return a handle
+ *  pointing to an empty parameter set (does not create a file on disk,
+ *  this is done using @ref GfParmWriteFile).
+ *  <br>#GFPARM_RMODE_PRIVATE mark handle as private
+ *  @return	handle to parameter set
+ *  <br>0 if not in cache
+ *  @see GfParmReadFile
+ */
+ static struct parmHeader *getSharedHeader(const char *file, int mode)
 {
-    struct parmHeader	*conf = NULL;
-    struct parmHandle	*parmHandle;
+	struct parmHeader *conf = NULL;
+	struct parmHandle *parmHandle;
 
-    /* Search for existing conf */
-    if ((mode & GFPARM_RMODE_PRIVATE) == 0) {
-
-	for (parmHandle = GF_TAILQ_FIRST (&parmHandleList);
-	     parmHandle != GF_TAILQ_END (&parmHandleList);
-	     parmHandle = GF_TAILQ_NEXT (parmHandle, linkHandle)) {
-
-	    if ((parmHandle->flag & PARM_HANDLE_FLAG_PRIVATE) == 0) {
-		conf = parmHandle->conf;
-		if (!strcmp(conf->filename, file)) {
-		    if (mode & GFPARM_RMODE_REREAD) {
-			parmClean (conf);
-		    }
-		    conf->refcount++;
-		    return conf;
+	/* Search for existing conf */
+	if ((mode & GFPARM_RMODE_PRIVATE) == 0) {
+		for (
+			parmHandle = GF_TAILQ_FIRST (&parmHandleList);
+			parmHandle != GF_TAILQ_END (&parmHandleList);
+			parmHandle = GF_TAILQ_NEXT (parmHandle, linkHandle)
+		) {
+			if ((parmHandle->flag & PARM_HANDLE_FLAG_PRIVATE) == 0) {
+				conf = parmHandle->conf;
+				if (!strcmp(conf->filename, file)) {
+					if (mode & GFPARM_RMODE_REREAD) {
+						parmClean (conf);
+					}
+					conf->refcount++;
+					return conf;
+				}
+			}
 		}
-	    }
 	}
-    }
 
-    return NULL;
+	return NULL;
 }
 
-/* Conf header creation */
-static struct parmHeader *
-createParmHeader (const char *file)
+
+/** @brief Helper function to create header for parameter set handle.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] file filename
+ *  @return parmHeader in case of success
+ *  <br>NULL on error
+ */
+static struct parmHeader* createParmHeader (const char *file)
 {
 	struct parmHeader	*conf = NULL;
 	const unsigned long parmheadersize = sizeof (struct parmHeader);
@@ -550,8 +579,14 @@ createParmHeader (const char *file)
 	return NULL;
 }
 
-static void
-addWithin (struct param *curParam, char *s1)
+
+/** @brief Helper function to add "within" options to parameter @e curParam.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] curParam parameter to add "within" option
+ *  @param[in] s1 option string
+ */
+static void addWithin (struct param *curParam, char *s1)
 {
 	struct within *curWithin;
 
@@ -565,31 +600,42 @@ addWithin (struct param *curParam, char *s1)
 }
 
 
-/* XML Processing */
-static int
-myStrcmp(const void *s1, const void * s2)
+static int myStrcmp(const void *s1, const void * s2)
 {
     return strcmp((const char *)s1, (const char *)s2);
 }
 
-static tdble
-getValNumFromStr (const char *str)
+
+/** @brief Helper function to parse number.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] str number as string
+ *  @return number
+ */
+static tdble getValNumFromStr (const char *str)
 {
-    tdble val;
+	tdble val;
 
-    if (!str || !strlen (str)) {
-	return 0.0;
-    }
+	if (!str || !strlen (str)) {
+		return 0.0;
+	}
 
-    if (strncmp (str, "0x", 2) == 0) {
-	return (tdble)strtol(str, NULL, 0);
-    }
-    
-    sscanf (str, "%g", &val);
-    return val;
+	if (strncmp (str, "0x", 2) == 0) {
+		return (tdble)strtol(str, NULL, 0);
+	}
+
+	sscanf (str, "%g", &val);
+	return val;
 }
 
-/* XML Processing */
+
+/** @brief Helper function to process opening XML elements.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] userData handle to parameter set to read data into
+ *  @param[in] name name of the current XML element
+ *  @param[in] atts attributes of the XML element 
+ */
 static void xmlStartElement (void *userData , const char *name, const char **atts)
 {
 	struct parmHandle *parmHandle = (struct parmHandle *)userData;
@@ -828,71 +874,87 @@ static void xmlStartElement (void *userData , const char *name, const char **att
     return;
 }
 
-static void
-xmlEndElement (void *userData, const XML_Char *name)
+
+/** @brief Helper function to process closing XML elements.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] userData handle to parameter set to read data into
+ *  @param[in] name name of the current XML element 
+ */
+static void xmlEndElement (void *userData, const XML_Char *name)
 {
-    struct parmHandle	*parmHandle = (struct parmHandle *)userData;
+	struct parmHandle *parmHandle = (struct parmHandle *)userData;
 
-    if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
-	/* parse error occured, ignore */
-	return;
-    }
-
-    if (!strcmp(name, "section")) {
-	if ((!parmHandle->curSection) || (!parmHandle->curSection->parent)) {
-	    GfError ("xmlEndElement: Syntax error in \"%s\"\n", name);
-	    return;
+	if (parmHandle->flag & PARM_HANDLE_FLAG_PARSE_ERROR) {
+		/* parse error occured, ignore */
+		return;
 	}
-	parmHandle->curSection = parmHandle->curSection->parent;
-    }
+
+	if (!strcmp(name, "section")) {
+		if ((!parmHandle->curSection) || (!parmHandle->curSection->parent)) {
+			GfError ("xmlEndElement: Syntax error in \"%s\"\n", name);
+			return;
+		}
+		parmHandle->curSection = parmHandle->curSection->parent;
+	}
 }
 
-static int
-xmlExternalEntityRefHandler (XML_Parser mainparser,
-			     const XML_Char *openEntityNames,
-			     const XML_Char * /* base */,
-			     const XML_Char *systemId,
-			     const XML_Char * /* publicId */)
+
+/** @brief Helper function to handle external XML entities (XML referencing over multiple files/URI's).
+ * 
+ * @ingroup paramsfile
+ * @param[in] mainparser parent XML parser
+ * @param[in] openEntityNames space separated list of names of entities that are open for the parse of this entity
+ * @param[in] base unused (base path for resolving system id)
+ * @param[in] systemId path to external entity (SYSTEM in XML)
+ * @param[in] publicId unused (public identifier of external entity, PUBLIC in XML)
+ * @return 1 ok
+ * <br>0 error
+ */
+static int xmlExternalEntityRefHandler(
+	XML_Parser mainparser,
+	const XML_Char *openEntityNames,
+	const XML_Char *base,
+	const XML_Char *systemId,
+	const XML_Char *publicId)
 {
-    FILE 		*in;
-    char		buf[BUFSIZ];
-    XML_Parser 		parser;
-    int			done;
-    char		fin[LINE_SZ];
-    char		*s;
-    struct parmHandle	*parmHandle;
-    struct parmHeader	*conf;
+	FILE *in;
+	char buf[BUFSIZ];
+	XML_Parser parser;
+	int done;
+	char fin[LINE_SZ];
+	char *s;
+	struct parmHandle *parmHandle;
+	struct parmHeader *conf;
 
-    parmHandle = (struct parmHandle *)XML_GetUserData (mainparser);
-    conf = parmHandle->conf;
+	parmHandle = (struct parmHandle *)XML_GetUserData (mainparser);
+	conf = parmHandle->conf;
 
-    parser = XML_ExternalEntityParserCreate (mainparser,
-					     openEntityNames,
-					     (const XML_Char *)NULL);
+	parser = XML_ExternalEntityParserCreate (mainparser, openEntityNames, (const XML_Char *)NULL);
 
-    if (systemId[0] == '/') {
-	strncpy (fin, systemId, sizeof (fin));
-	fin[LINE_SZ - 1] = 0;
-    } else {
-	/* relative path */
-	strncpy (fin, conf->filename, sizeof (fin));
-	fin[LINE_SZ - 1] = 0;
-	s = strrchr (fin, '/');
-	if (s) {
-	    s++;
+	if (systemId[0] == '/') {
+		strncpy (fin, systemId, sizeof (fin));
+		fin[LINE_SZ - 1] = 0;
 	} else {
-	    s = fin;
+		/* relative path */
+		strncpy (fin, conf->filename, sizeof (fin));
+		fin[LINE_SZ - 1] = 0;
+		s = strrchr (fin, '/');
+		if (s) {
+			s++;
+		} else {
+			s = fin;
+		}
+		strncpy (s, systemId, sizeof (fin) - (s - fin));
+		fin[LINE_SZ - 1] = 0;
 	}
-	strncpy (s, systemId, sizeof (fin) - (s - fin));
-	fin[LINE_SZ - 1] = 0;
-    }
 
 	in = fopen (fin, "r");
-    if (in == NULL) {
+	if (in == NULL) {
 		perror (fin);
 		GfError ("GfReadParmFile: file %s has pb\n", systemId);
 		return 0;
-    }
+	}
 
 	XML_SetElementHandler (parser, xmlStartElement, xmlEndElement);
 	do {
@@ -903,10 +965,11 @@ xmlExternalEntityRefHandler (XML_Parser mainparser,
 				systemId,
 				XML_ErrorString(XML_GetErrorCode(parser)),
 				XML_GetCurrentLineNumber(parser));
-	    	fclose (in);
+			fclose (in);
 			return 0;
 		}
 	} while (!done);
+	
 	XML_ParserFree (parser);
 	fclose(in);
 
@@ -914,9 +977,17 @@ xmlExternalEntityRefHandler (XML_Parser mainparser,
 }
 
 
-/* xml type parameters line parser */
-static int
-parseXml (struct parmHandle *parmHandle, char *buf, int len, int done)
+/** @brief Helper function to parse one line of XML.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in,out] parmHandle parameter set handle
+ *  @param[in] buf line to parse
+ *  @param[in] len buffer size
+ *  @param[in] done this was the last slice, no more input available
+ *  @return 0 ok
+ *  <br>1 error
+ */
+static int parseXml(struct parmHandle *parmHandle, char *buf, int len, int done)
 {
 	if (!XML_Parse(parmHandle->parser, buf, len, done)) {
 		GfError ("parseXml: %s at line %d\n",
@@ -934,8 +1005,12 @@ parseXml (struct parmHandle *parmHandle, char *buf, int len, int done)
 }
 
 
-static int
-parserXmlInit (struct parmHandle *parmHandle)
+/** @brief Helper function to set up XML parser in @e parmHandle.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] parmHandle parameter set handle
+ */
+static int parserXmlInit (struct parmHandle *parmHandle)
 {
     parmHandle->parser = XML_ParserCreate((XML_Char*)NULL);
     XML_SetElementHandler(parmHandle->parser, xmlStartElement, xmlEndElement);
@@ -945,14 +1020,16 @@ parserXmlInit (struct parmHandle *parmHandle)
     return 0;
 }
 
-/** Read a configuration buffer.
-    @ingroup	conf
-    @param	buffer	input buffer.
-    @return	handle on the configuration data
-    <br>0 if Error
-*/
-void *
-GfParmReadBuf (char *buffer)
+
+/** @brief Read parameter set from memory buffer and return handle to parameter set.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] buffer buffer to read the configuration from 
+ *  @return	handle to the parameter set
+ *  <br>0 if Error
+ *  @see GfParmWriteBuf
+ */
+void* GfParmReadBuf (char *buffer)
 {
 	struct parmHeader *conf;
 	struct parmHandle *parmHandle = NULL;
@@ -1002,19 +1079,24 @@ GfParmReadBuf (char *buffer)
 	return NULL;
 }
 
-/** Read a configuration file.
-    @ingroup	conf
-    @param	file		name of the file to read or content if input is a buffer.
-    @param	mode		openning mode is a mask of:
-    				#GFPARM_RMODE_STD
-    				#GFPARM_RMODE_REREAD
-    				#GFPARM_RMODE_CREAT
-    				#GFPARM_RMODE_PRIVATE
-    @return	handle on the configuration data
-    <br>0 if Error
-*/
-void *
-GfParmReadFile (const char *file, int mode)
+
+/** @brief Read parameter set from file and return handle to parameter set.
+ * 
+ *  @ingroup paramsfile
+ *  @param[in] file name of the file to read
+ *  @param mode opening mode is a mask of:
+ *  <br>#GFPARM_RMODE_STD if the parameter set is already loaded and not private return
+ *  a handle pointing to the existing parameter set (default)
+ *  <br>#GFPARM_RMODE_REREAD re-read the parameters file
+ *  <br>#GFPARM_RMODE_CREAT if the parameters file does not exist return a handle
+ *  pointing to an empty parameter set (does not create a file on disk,
+ *  this is done using @ref GfParmWriteFile).
+ *  <br>#GFPARM_RMODE_PRIVATE mark handle as private
+ *  @return	handle to parameter set
+ *  <br>0 if error
+ *  @see GfParmWriteFile
+ */
+void* GfParmReadFile(const char *file, int mode)
 {
 	FILE *in = NULL;
 	struct parmHeader *conf;
@@ -1051,7 +1133,7 @@ GfParmReadFile (const char *file, int mode)
 		parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
 	}
 
-	/* File openning */
+	/* File opening */
 	if (mode & GFPARM_RMODE_REREAD) {
 		in = fopen (file, "r");
 		if (!in && ((mode & GFPARM_RMODE_CREAT) == 0)) {
@@ -1087,24 +1169,24 @@ GfParmReadFile (const char *file, int mode)
 
 	GF_TAILQ_INSERT_HEAD (&parmHandleList, parmHandle, linkHandle);
 
-	GfOut ("GfParmReadFile: Openning \"%s\" (%p)\n", file, parmHandle);
+	GfOut ("GfParmReadFile: Opening \"%s\" (%p)\n", file, parmHandle);
 
 	return parmHandle;
 
- bailout:
-    if (in) {
-	fclose (in);
-    }
-    freez (parmHandle);
-    if (conf) {
-	parmReleaseHeader (conf);
-    }
+	bailout:
+		if (in) {
+			fclose (in);
+		}
+		freez (parmHandle);
+		if (conf) {
+			parmReleaseHeader (conf);
+		}
 
-    return NULL;
+	return NULL;
 }
 
 
-/** Helper function to convert the input line given in @e val into proper XML notation, the output goes into @e buf.
+/** @brief Helper function to convert the input line given in @e val into proper XML notation, the output goes into @e buf.
  * 
  *  @ingroup paramsfile
  *  @param[in,out] buf buffer for the processed line
