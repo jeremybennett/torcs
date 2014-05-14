@@ -247,3 +247,5 @@ applications are expected to run stable  up to 1 Million Days simulation time
 (the simulation core itself does only depend on the time step, so it would run
 stable for ever). The longest known performed experiments are 100000 km races in
 command line mode.
+
+@author Bernhard Wymann

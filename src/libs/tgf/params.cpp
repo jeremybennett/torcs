@@ -17,8 +17,8 @@
  ***************************************************************************/
 
 /** @file
-    		This is the parameters manipulation API.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+    Parameter handling API
+    @author Bernhard Wymann, Eric Espie
     @version	$Id$
     @ingroup	params
 */
@@ -413,13 +413,13 @@ end:
 
 /** @brief Helper function to add a section to a parameter set.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] conf parameter set header
  *  @param[in] sectionName section name
  *  @return section on success
  *  <br>NULL on error
  */
-static struct section *addSection (struct parmHeader *conf, const char *sectionName)
+static struct section *addSection(struct parmHeader *conf, const char *sectionName)
 {
 	struct section *section;
 	struct section *parent;
@@ -470,7 +470,7 @@ bailout:
 
 /** @brief Helper function for looking up parameter sets in the cache.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param file name of the file to look up
  *  @param mode opening mode is a mask of:
  *  <br>#GFPARM_RMODE_STD if the parameter set is already loaded and not private return
@@ -515,7 +515,7 @@ bailout:
 
 /** @brief Helper function to create header for parameter set handle.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] file filename
  *  @return parmHeader in case of success
  *  <br>NULL on error
@@ -582,7 +582,7 @@ static struct parmHeader* createParmHeader (const char *file)
 
 /** @brief Helper function to add "within" options to parameter @e curParam.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] curParam parameter to add "within" option
  *  @param[in] s1 option string
  */
@@ -608,7 +608,7 @@ static int myStrcmp(const void *s1, const void * s2)
 
 /** @brief Helper function to parse number.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] str number as string
  *  @return number
  */
@@ -631,7 +631,7 @@ static tdble getValNumFromStr (const char *str)
 
 /** @brief Helper function to process opening XML elements.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] userData handle to parameter set to read data into
  *  @param[in] name name of the current XML element
  *  @param[in] atts attributes of the XML element 
@@ -877,7 +877,7 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 
 /** @brief Helper function to process closing XML elements.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] userData handle to parameter set to read data into
  *  @param[in] name name of the current XML element 
  */
@@ -902,7 +902,7 @@ static void xmlEndElement (void *userData, const XML_Char *name)
 
 /** @brief Helper function to handle external XML entities (XML referencing over multiple files/URI's).
  * 
- * @ingroup paramsfile
+ *  @ingroup paramshelper
  * @param[in] mainparser parent XML parser
  * @param[in] openEntityNames space separated list of names of entities that are open for the parse of this entity
  * @param[in] base unused (base path for resolving system id)
@@ -979,7 +979,7 @@ static int xmlExternalEntityRefHandler(
 
 /** @brief Helper function to parse one line of XML.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] parmHandle parameter set handle
  *  @param[in] buf line to parse
  *  @param[in] len buffer size
@@ -1007,7 +1007,7 @@ static int parseXml(struct parmHandle *parmHandle, char *buf, int len, int done)
 
 /** @brief Helper function to set up XML parser in @e parmHandle.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] parmHandle parameter set handle
  */
 static int parserXmlInit (struct parmHandle *parmHandle)
@@ -1188,7 +1188,7 @@ void* GfParmReadFile(const char *file, int mode)
 
 /** @brief Helper function to convert the input line given in @e val into proper XML notation, the output goes into @e buf.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] buf buffer for the processed line
  *  @param[in] BUFSIZE buffer size
  *  @param[in] val input line
@@ -1242,7 +1242,7 @@ static char* handleEntities(char *buf, const int BUFSIZE, const char* val)
 
 /** @brief Helper function for indentation in the XML.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] buf buffer for the result
  *  @param[in] BUFSIZE buffer size
  *  @param[in] blanks number of blanks to write
@@ -1260,7 +1260,7 @@ static void createIndent(char *buf, const int BUFSIZE, const int blanks)
 
 /** @brief Helper function to support the serialization into the XML of the "within" attribute.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] buf buffer for the result
  *  @param[in] BUFSIZE buffer size
  *  @param[in] head head of the list with the within options
@@ -1306,7 +1306,7 @@ static void createIn(char *buf, const int BUFSIZE, withinHead* head)
  * 
  *  The parameter set handle @e parmHandle keeps track of the progress internally.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in,out] parmHandle parameter set handle
  *  @param[in,out] buffer buffer for the line
  *  @param[in] size buffer size
@@ -1624,7 +1624,7 @@ void GfParmRemove(void *parmHandle, char *sectionName, char *paramName)
 
 /** @brief Helper function to release the parameter set content.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] conf parameter set header
  */
 static void parmClean(struct parmHeader *conf)
@@ -1667,7 +1667,7 @@ void GfParmClean(void *parmHandle)
 
 /** @brief Helper function to release the parameter set if the reference counter is 0.
  * 
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] conf parameter set header
  *  @see GfParmReleaseHandle
  *  @see GfParmWriteFile
@@ -1704,7 +1704,7 @@ static void parmReleaseHeader(struct parmHeader *conf)
 
 /** @brief Helper function to release the handle and eventually the referenced parameter set (if the reference counter falls to 0).
  *
- *  @ingroup paramsfile
+ *  @ingroup paramshelper
  *  @param[in] parmHandle parameter set handle
  *  @see GfParmReleaseHandle
  *  @see GfParmWriteFile
@@ -1761,7 +1761,7 @@ void GfParmReleaseHandle(void *parmHandle)
  *  This function is used by @ref GfParmUnit2SI and @ref GfParmSI2Unit. The given unit string
  *  gets split up and processed unit by unit with evalUnit.
  * 
- *  @ingroup paramsdata
+ *  @ingroup paramshelper
  *  @param[in] unit unit name from dest
  *  @param[in,out] dest pointer to value to convert
  *  @param flg multiply (0) or divide (otherwise)
@@ -2715,6 +2715,7 @@ int GfParmCheckHandle(void *ref, void *tgt)
  *  If the parameter @e param does not yet exist in @e paramHandle, it gets created. The value and restrictions (min, max, within)
  *  in @e param are checked against the restrictions given by @e parmRef and adjusted if required. 
  * 
+ *  @ingroup paramshelper
  *  @param[in,out]	parmHandle	parameter set handle
  *  @param[in]	path	path to the parameter
  *  @param[in]	paramRef reference parameter for min/max boundaries or string set restrictions
@@ -2807,6 +2808,7 @@ static void insertParamMerge(struct parmHandle *parmHandle, char *path, struct p
  *  If the parameter @e param already exists in @e paramHandle, the values are overwritten with the values from @e param.
  *  If the parameter @e param does not yet exist in @e paramHandle, it gets created.
  * 
+ *  @ingroup paramshelper
  *  @param[in,out]	parmHandle	parameter set handle
  *  @param[in]	path	path to the parameter
  *  @param[in]	param	parameter
