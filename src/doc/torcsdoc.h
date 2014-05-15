@@ -53,8 +53,10 @@
    @defgroup dir		Directory Management.
    This is used for directory manipulation.
 */
+
+
 /**
-    @defgroup params Parameter handling API
+    @defgroup params Parameter Handling API
     @brief With this API you can handle parameter sets in TORCS, this includes
     manipulation of data in memory, and writing into/reading from XML files.
     
@@ -68,7 +70,7 @@
 	so usually multiple handles can refer to the same parameter set.
 */
 /**
-   @defgroup paramsfile Parameter file handling API
+   @defgroup paramsfile Parameter File Handling API
    Create, read and write parameter files
    @ingroup params
 */
@@ -78,20 +80,22 @@
    @ingroup params
 */
 /**
-   @defgroup paramsdata Parameter data handling API
+   @defgroup paramsdata Parameter Data Handling API
    Handling of data in parameter sets 
    @ingroup params
 */
 /**
-   @defgroup paramslist Parameter list manipulation API
+   @defgroup paramslist Parameter List Manipulation API
    Handling of multiple sections or subsections and the elements in parameter sets
    @ingroup params
 */
 /**
-   @defgroup paramshelper Parameter helper functions
+   @defgroup paramshelper Parameter Helper Functions
    Internal (not exported) helper functions, not part of the API
    @ingroup params
 */
+
+
 /**
    @defgroup screen		Screen management.
 */
@@ -158,14 +162,14 @@
     
     - [Robots functions interface](@ref robotmodint)
     - [Tools for robots](@ref robottools)
-    - [Parameter handling API](@ref params)
+    - [Parameter Handling API](@ref params)
     - [Tracks structure](@ref trackstruct)
     - [Cars structure](@ref carstruct)
 
     @section racemanlist Race Manager API
 
     - [Tools for race managers](@ref racemantools)
-    - [Parameter handling API](@ref params)
+    - [Parameter Handling API](@ref params)
     - [Tracks structure](@ref trackstruct)
 
 */

@@ -174,10 +174,18 @@ GfParmShutdown (void)
     }
 }
 
-/* Compute parameter full name           */
-/* Caller must release the returned name */
-static char *
-getFullName (const char *sectionName, const char *paramName)
+
+/** @brief Helper function to get the full name of a parameter (full name: "sectionName/paramName").
+ * 
+ *  @ingroup paramshelper
+ *  @param[in] sectionName name of the section containing the parameter
+ *  @param[in] paramName name of the parameter
+ *  @return string
+ *  <br>NULL on error
+ *  @note Heap memory is allocated for the return value, so the caller is responsible for releasing the
+ *  memory of the returned string.
+ */
+static char *getFullName (const char *sectionName, const char *paramName)
 {
 	char *fullName;
 	unsigned long len = strlen (sectionName) + strlen (paramName) + 2;
@@ -192,9 +200,18 @@ getFullName (const char *sectionName, const char *paramName)
 	return fullName;
 }
 
-/* Get a parameter by section/param names */
-static struct param *
-getParamByName (struct parmHeader *conf, const char *sectionName, const char *paramName, int flag)
+
+/** @brief Helper function to get (or create) a parameter by name.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in] sectionName name of the section containing the parameter
+ *  @param[in] paramName name of the parameter
+ *  @param[in] flag if in flag the @ref PARAM_CREATE bit is set the parameter gets created if it is not found
+ *  @return param
+ *  <br>NULL on error or  not found
+ */
+static struct param* getParamByName(struct parmHeader *conf, const char *sectionName, const char *paramName, int flag)
 {
 	char *fullName;
 	struct param *param;
@@ -226,7 +243,15 @@ getParamByName (struct parmHeader *conf, const char *sectionName, const char *pa
 	return param;
 }
 
-/* Remove a parameter */
+
+/** @brief Helper function to remove a parameter with given name @e paramName.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in] sectionName name of the section containing the parameter
+ *  @param[in] paramName name of the parameter
+ *  @note @ref cleanUnusedSection is called after removing the parameter.
+ */
 static void removeParamByName(struct parmHeader *conf, const char *sectionName, const char *paramName)
 {
 	char *fullName;
@@ -254,10 +279,19 @@ static void removeParamByName(struct parmHeader *conf, const char *sectionName, 
 }
 
 
-/* Clean up unused sections and parents */
-static void cleanUnusedSection (struct parmHeader *conf, struct section *section)
+/** @brief Helper function to clean up unused (empty) sections starting with given @e section.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in] section section to start up cleaning
+ *  @note A section is unused if it does not contain subsections or elements, or if the fullName
+ *  property is empty. If the given section is in use nothing is changed. If the section is
+ *  unused it gets cleaned up and the process continues with the parent section (could now be
+ *  empty as well).
+ */
+static void cleanUnusedSection(struct parmHeader *conf, struct section *section)
 {
-	struct section	*parent;
+	struct section *parent;
 
 	if (
 		!section->fullName ||
@@ -273,9 +307,14 @@ static void cleanUnusedSection (struct parmHeader *conf, struct section *section
 }
 
 
-/* Remove a parameter */
-static void
-removeParam (struct parmHeader *conf, struct section *section, struct param *param)
+/** @brief Helper function to remove given parameter.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in,out] section section to remove parameter from
+ *  @param[in] param parameter to remove
+ */
+static void removeParam(struct parmHeader *conf, struct section *section, struct param *param)
 {
 	GfHashRemStr (conf->paramHash, param->fullName);
 	GF_TAILQ_REMOVE (&(section->paramList), param, linkParam);
@@ -295,8 +334,17 @@ removeParam (struct parmHeader *conf, struct section *section, struct param *par
 }
 
 
-/* Add a parameter anywhere, does not check for duplicate. */
-static struct param *addParam (struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
+/** @brief Helper function to add parameter, does not check for duplicated name.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in,out] section section to add parameter to
+ *  @param[in] paramName parameter name
+ *  @param[in] value value of parameter
+ *  @return param
+ *  <br>NULL on error
+ */
+static struct param *addParam(struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
 {
 	char *fullName;
 	struct param *param = NULL;
@@ -355,8 +403,13 @@ static struct param *addParam (struct parmHeader *conf, struct section *section,
 }
 
 
-/* Remove a section */
-static void removeSection (struct parmHeader *conf, struct section *section)
+/** @brief Helper function to remove a section and its contents (subsections, elements).
+ * 
+ *  @ingroup paramshelper
+ *  @param[in,out] conf parameter set header
+ *  @param[in] section section to remove
+ */
+static void removeSection(struct parmHeader *conf, struct section *section)
 {
 	struct param *param;
 	struct section *subSection;
@@ -378,12 +431,19 @@ static void removeSection (struct parmHeader *conf, struct section *section)
 }
 
 
-/* Get or create parent section */
-static struct section *getParent (struct parmHeader *conf, const char *sectionName)
+/** @brief Helper function to get (or create if not found) parent section of section given in @e sectionName.
+ * 
+ *  @ingroup paramshelper
+ *  @param[in] conf parameter set header
+ *  @param[in] sectionName name of the section
+ *  @return section
+ *  <br>NULL on error
+ */
+static struct section *getParent(struct parmHeader *conf, const char *sectionName)
 {
-	struct section	*section;
-	char		*tmpName;
-	char		*s;
+	struct section *section;
+	char *tmpName;
+	char *s;
 
 	tmpName = strdup (sectionName);
 	if (!tmpName) {
