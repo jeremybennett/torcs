@@ -32,7 +32,7 @@
 extern void gfDirInit(void);
 extern void gfModInit(void);
 extern void gfOsInit(void);
-extern void gfParamInit(void);
+extern void GfParmInit(void);
 extern void gfRlstInit(void);
 
 
@@ -140,7 +140,7 @@ void GfInit(void)
 	gfDirInit();
 	gfModInit();
 	gfOsInit();
-	gfParamInit();
+	GfParmInit();
 }
 
 

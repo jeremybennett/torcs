@@ -150,28 +150,25 @@ static struct section *getParent (struct parmHeader *conf, const char *sectionNa
 static void cleanUnusedSection (struct parmHeader *conf, struct section *section);
 
 
-/** Configuration initialization.
-    @ingroup	conf
-    @return	none.
-*/
-void
-gfParamInit (void)
+/** @brief Parameter set library API initialization, set up parameter set handle cache. 
+ *  @ingroup conf
+ */
+void GfParmInit (void)
 {
-    GF_TAILQ_INIT (&parmHandleList);
+	GF_TAILQ_INIT (&parmHandleList);
 }
 
-/** Configuration shutdown.
-    @ingroup	conf
-    @return	none
-*/
-void
-GfParmShutdown (void)
-{
-    struct parmHandle	*parmHandle;
 
-    while ((parmHandle = GF_TAILQ_FIRST (&parmHandleList)) != GF_TAILQ_END (&parmHandleList)) {
-	parmReleaseHandle (parmHandle);
-    }
+/** @brief Parameter set library API shutdown, removes parameter set handle cache. 
+ *  @ingroup conf
+ */
+void GfParmShutdown (void)
+{
+	struct parmHandle	*parmHandle;
+
+	while ((parmHandle = GF_TAILQ_FIRST (&parmHandleList)) != GF_TAILQ_END (&parmHandleList)) {
+		parmReleaseHandle (parmHandle);
+	}
 }
 
 
