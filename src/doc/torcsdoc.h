@@ -70,13 +70,13 @@
 	so usually multiple handles can refer to the same parameter set.
 */
 /**
-   @defgroup paramsfile Parameter File Handling API
-   Create, read and write parameter files
+   @defgroup conf Parameter Handling API Setup
+   Initialize and shutdown the Parameter Handling API
    @ingroup params
 */
 /**
-   @defgroup conf		Test.
-   TESTRead, write, merge parameters files.
+   @defgroup paramsfile Parameter File Handling API
+   Create, read and write parameter files
    @ingroup params
 */
 /**
@@ -85,7 +85,7 @@
    @ingroup params
 */
 /**
-   @defgroup paramslist Parameter List Manipulation API
+   @defgroup paramslist Parameter List Handling API
    Handling of multiple sections or subsections and the elements in parameter sets
    @ingroup params
 */

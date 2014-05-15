@@ -2,7 +2,7 @@
                  params.cpp -- configuration parameters management
                              -------------------                                         
     created              : Fri Aug 13 22:27:57 CEST 1999
-    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr   
     version              : $Id$
  ***************************************************************************/
@@ -36,39 +36,43 @@
 #include <windows.h>
 #endif
 #include <tgf.h>
-
 #include <assert.h>
 #include <portability.h>
 
 
-#define LINE_SZ		1024
-
+#define LINE_SZ			1024
 #define PARAM_CREATE	0x01
 
+#define P_NUM			0
+#define P_STR			1
+
+/** @brief Structure to hold linked list of within options */
 struct within
 {
-    char				*val;
-    GF_TAILQ_ENTRY (struct within)	linkWithin;
+	char *val;	/**< Value of within option */
+	GF_TAILQ_ENTRY (struct within) linkWithin;	/**< Link to next entry */
 };
 
 GF_TAILQ_HEAD (withinHead, struct within);
 
-#define P_NUM 0
-#define P_STR 1
 
-/** Parameter header structure */
+
+/** Parameter header structure, a parameter can either carry a numeric or a string value,
+ *  numeric value is constraint by min and max, string value by options in within
+ *  @see GfParmUnit2SI
+ */
 struct param
 {
-    char				*name;		/**< Name of the parameter  */
-    char				*fullName;	/**< Name of the parameter including the full section name ('/' separated) */
-    char				*value;		/**< Value of the parameter */
-    tdble				valnum;
-    int					type;
-    char				*unit;		/* for output only */
-    tdble				min;
-    tdble				max;
-    struct withinHead			withinList;
-    GF_TAILQ_ENTRY (struct param)	linkParam;	/**< Next parameter in the same section */
+	char				*name;		/**< Name of the parameter  */
+	char				*fullName;	/**< Name of the parameter including the full section name ('/' separated) */
+	char				*value;		/**< String value of the parameter */
+	tdble				valnum;		/**< Numeric value of the parameter */
+	int					type;		/**< Type, either @ref P_NUM or @ref P_STR */
+	char				*unit;		/**< Unit, see @ref GfParmUnit2SI for supported units */
+	tdble				min;		/**< Minimum for numeric value */
+	tdble				max;		/**< Maximum for numeric value */
+	struct withinHead	withinList;	/**< Linked list containing the options for legal string values */
+	GF_TAILQ_ENTRY (struct param)	linkParam;	/**< Next parameter in the same section */
 };
 
 GF_TAILQ_HEAD (paramHead, struct param);
@@ -79,12 +83,12 @@ GF_TAILQ_HEAD (sectionHead, struct section);
 /** Section header structure */
 struct section
 {
-    char *fullName;	/**< Name of the section including full path ('/' separated) */
-    struct paramHead			paramList;	/**< List of the parameters of this section */
-    GF_TAILQ_ENTRY (struct section)	linkSection;	/**< Next section at the same level */
-    struct sectionHead			subSectionList;	/**< List of sub-sections (linked by linkSection)*/
-    struct section			*curSubSection;
-    struct section			*parent;	/**< Upper section */
+	char *fullName;									/**< Name of the section including full path ('/' separated) */
+	struct paramHead paramList;						/**< List of the parameters in this section */
+	GF_TAILQ_ENTRY (struct section)	linkSection;	/**< Next section at the same level */
+	struct sectionHead subSectionList;				/**< List of sub-sections (linked by linkSection) */
+	struct section *curSubSection;					/**< Current subsection, for iterations, see @ref GfParmListSeekFirst and @ref GfParmListSeekNext */
+	struct section *parent;							/**< Parent section */
 };
 
 
@@ -93,41 +97,41 @@ struct section
 /** Configuration header structure */
 struct parmHeader
 {
-    char				*filename;	/**< Name of the configuration file */
-    char				*name;		/**< Name of the data */
-    char				*dtd;		/**< Optional DTD location */
-    char				*header;	/**< Optional header (comment, xsl...) */
-    int					refcount;	/**< Use counter (number of conf handle) */
-    struct section			*rootSection;	/**< List of sections at the first level */
-    void				*paramHash;	/**< Hash table for parameter access */
-    void				*sectionHash;	/**< Hash table for section access */
+	char				*filename;	/**< Name of the configuration file */
+	char				*name;		/**< Name of the data */
+	char				*dtd;		/**< Optional DTD location */
+	char				*header;	/**< Optional header (comment, xsl...) */
+	int					refcount;	/**< Use counter (number of conf handle) */
+	struct section		*rootSection;	/**< List of sections at the first level */
+	void				*paramHash;	/**< Hash table for parameter access */
+	void				*sectionHash;	/**< Hash table for section access */
 };
 
-#define PARM_HANDLE_FLAG_PRIVATE	0x01
+#define PARM_HANDLE_FLAG_PRIVATE		0x01
 #define PARM_HANDLE_FLAG_PARSE_ERROR	0x02
 
 
-/** Ouput control structure */
+/** Ouput control structure used for serializing parameter set into XML*/
 struct parmOutput
 {
-	int state;
-	struct section *curSection;
-	struct param *curParam;
-	char *filename;	/**< Name of the output configuration file */
-	int indent;
+	int state;						/**< Internal state */
+	struct section *curSection;		/**< Current section */
+	struct param *curParam;			/**< Current parameter */
+	char *filename;					/**< Name of the output file */
+	int indent;						/**< Keep track of indentation */
 };
 
 
-/** Configuration handle structure */
+/** Parameter set handle structure, multiple handles can reference the same parameter set */
 struct parmHandle
 {
-	int magic;
-	struct parmHeader *conf;
+	int magic;					/**< Magic number (to detect wrong type casts and such) */
+	struct parmHeader *conf;	/**< Header of the parameter set */
 	char *val;
-	int flag;
-	XML_Parser parser;
-	struct section *curSection;
-	struct parmOutput outCtrl;
+	int flag;					/**< Flag (@ref PARM_HANDLE_FLAG_PARSE_ERROR, @ref PARM_HANDLE_FLAG_PRIVATE) */
+	XML_Parser parser;			/**< Parser */
+	struct section *curSection;	/**< Current section, for iterations, see @ref GfParmListSeekFirst and @ref GfParmListSeekNext */
+	struct parmOutput outCtrl;	/**< Ouput control structure used for serializing parameter set into XML */
 	GF_TAILQ_ENTRY (struct parmHandle)	linkHandle;	/**< Next configuration handle */
 };
 
