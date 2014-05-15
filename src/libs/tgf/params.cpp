@@ -127,7 +127,6 @@ struct parmHandle
 {
 	int magic;					/**< Magic number (to detect wrong type casts and such) */
 	struct parmHeader *conf;	/**< Header of the parameter set */
-	char *val;
 	int flag;					/**< Flag (@ref PARM_HANDLE_FLAG_PARSE_ERROR, @ref PARM_HANDLE_FLAG_PRIVATE) */
 	XML_Parser parser;			/**< Parser */
 	struct section *curSection;	/**< Current section, for iterations, see @ref GfParmListSeekFirst and @ref GfParmListSeekNext */
@@ -1112,7 +1111,6 @@ void* GfParmReadBuf (char *buffer)
 
 	parmHandle->magic = PARM_MAGIC;
 	parmHandle->conf = conf;
-	parmHandle->val = NULL;
 	parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
 
 	/* Parsers Initialization */
@@ -1189,7 +1187,6 @@ void* GfParmReadFile(const char *file, int mode)
 
 	parmHandle->magic = PARM_MAGIC;
 	parmHandle->conf = conf;
-	parmHandle->val = NULL;
 	if (mode & GFPARM_RMODE_PRIVATE) {
 		parmHandle->flag = PARM_HANDLE_FLAG_PRIVATE;
 	}
@@ -1779,7 +1776,6 @@ static void parmReleaseHandle(struct parmHandle *parmHandle)
 
 	GF_TAILQ_REMOVE (&parmHandleList, parmHandle, linkHandle);
 	parmHandle->magic = 0;
-	freez (parmHandle->val);
 	freez (parmHandle);
 
 	parmReleaseHeader(conf);
