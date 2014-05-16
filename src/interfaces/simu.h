@@ -17,6 +17,19 @@
  *                                                                         *
  ***************************************************************************/
  
+/** @file   
+    Simulation Module Interface Definition
+    @author	<a href=mailto:eric.espie@torcs.org>Bernhard Wymann, Eric Espie</a>
+    @version	$Id$
+    @ingroup	simumodint
+*/
+
+/**
+   @defgroup simumodint Simulation Module Interface
+   @brief Interface for simulation modules, the simulation module is discovered and loaded during runtime.
+   
+   @ingroup	modint
+*/
  
 #ifndef _SIMUV1_H_
 #define _SIMUV1_H_
@@ -29,19 +42,56 @@
 struct Situation;
 struct RmInfo;
 
-typedef void (*tfSimInit)(int, tTrack*, tdble, tdble);
-typedef void (*tfSimConfig)(tCarElt*, struct RmInfo*);
-typedef void (*tfSimReConfig)(tCarElt*);
-typedef void (*tfSimUpdate)(struct Situation*, double, int);
+/** Callback function prototype for simulation module initialization (bring up module and hand over track and parameters)
+ *  @ingroup simumodint
+ *  @param[in] nbCars Number of cars to simulate
+ *  @param[in] track Track to race on
+ *  @param[in] fuelFactor Factor for fuel consumtion, e.g 1 for normal, 0 for none, etc.
+ *  @param[in] damageFactor Factor for damage, e.g. 1 for normal, 0 for none, etc.
+ */
+typedef void (*tfSimInit)(int nbCars, tTrack* track, tdble fuelFactor, tdble damageFactor);
+
+
+/** Callback function prototype for simulation configuration of a given car
+ *  @ingroup simumodint
+ *  @param[in] carElt Car to configure
+ *  @param[in] reInfo Race manager info
+ */
+typedef void (*tfSimConfig)(tCarElt* carElt, struct RmInfo* reInfo);
+
+
+/** Callback function prototype for simulation reconfiguration of a given car (refueling, setup adjustments)
+ *  @ingroup simumodint
+ *  @param[in] carElt Car to reconfigure
+ */
+typedef void (*tfSimReConfig)(tCarElt* carElt);
+
+
+
+/** Callback function prototype for progressing the given Situation by a given simulation time step
+ *  @ingroup simumodint
+ *  @param[in,out] s Situation to progress
+ *  @param[in] deltaTime Timestep, usually @ref RCM_MAX_DT_SIMU
+ *  @param[in] telemetry Index of car to receive telemetry
+ */
+typedef void (*tfSimUpdate)(struct Situation* s, double deltaTime, int telemetry);
+
+
+/** Callback function prototype for simulation module shutdown
+ *  @ingroup simumodint
+ */
 typedef void (*tfSimShutdown)(void);
 
+/** Interface Structure for Simulation
+    @ingroup simumodint
+*/
 typedef struct
 {
-    tfSimInit	  init;
-    tfSimConfig   config;
-    tfSimReConfig reconfig;
-    tfSimUpdate   update;
-    tfSimShutdown shutdown;
+	tfSimInit		init;
+	tfSimConfig		config;
+	tfSimReConfig	reconfig;
+	tfSimUpdate		update;
+	tfSimShutdown	shutdown;
 } tSimItf;
 
 

@@ -18,18 +18,24 @@
  ***************************************************************************/
  
 /** @file   
-    		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    Robot Module Interface Definition
+    @author	<a href=mailto:eric.espie@torcs.org>Bernhard Wymann, Eric Espie</a>
     @version	$Id$
     @ingroup	robotmodint
 */
 
 /**
-   @defgroup	robotmodint	Robots functions interface.
+   @defgroup robotmodint Robot Module Interface
+   @brief Interface for robot modules, robot modules are discovered and loaded during runtime.
+   
+   Multiple robot modules can be loaded at the same time, one robot module can host up to 10
+   instances of a robot.
    This is the call flow of the robots callbacks during a race event.
-   <br>The square boxes are for the race manager and
-   <br>the ellipses are for the robot.
+   <br>The square boxes are for the race manager and the ellipses are for the robot.
    @image	html robot_call.gif
+   
+   A detailed robot tutorial is available, visit [www.torcs.org](http://www.torcs.org) for details.
+   
    @ingroup	modint
 */
  
@@ -57,21 +63,21 @@ typedef int  (*tfRbPitCmd)  (int index, tCarElt* car, tSituation *s);
 #define ROB_PIT_MENU	1	/**< Call the interactive menu for pit command */
 
 
-/** Interface for robots.
-    @ingroup	robotmodint
+/** Interface Structure for Robots
+    @ingroup robotmodint
 */
 typedef struct RobotItf {
-    tfRbNewTrack rbNewTrack;	/**< Give the robot the track view. Called for every track change or new race */
-    tfRbNewRace  rbNewRace;	/**< Start a new race */
-    tfRbEndRace  rbEndRace;	/**< End of the current race */
-    tfRbDrive	 rbDrive;	/**< Drive during race */
-    tfRbPitCmd	 rbPitCmd;	/**< Get the driver's pit commands.
-				 <br>Returns:
-				 - ROB_PIT_IM
-				 - ROB_PIT_MENU
-				*/
-    tfRbShutdown rbShutdown;	/**< Called before the dll is unloaded */
-    int		 index;		/**< Index used if multiple interfaces */
+	tfRbNewTrack rbNewTrack;	/**< Give the robot the track view. Called for every track change or new race */
+	tfRbNewRace  rbNewRace;		/**< Start a new race */
+	tfRbEndRace  rbEndRace;		/**< End of the current race */
+	tfRbDrive	 rbDrive;		/**< Drive during race */
+	tfRbPitCmd	 rbPitCmd;		/**< Get the driver's pit commands.
+	<br>Returns:
+	- ROB_PIT_IM
+	- ROB_PIT_MENU
+	*/
+	tfRbShutdown rbShutdown;	/**< Called before the dll/so is unloaded */
+	int index;					/**< Index used if the module handles multiple robot instances */
 } tRobotItf;
 
 

@@ -19,7 +19,7 @@
  
 /** @file    
     		
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+    @author	<a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
     @version	$Id$
 */
 
@@ -27,7 +27,7 @@
 #define _TORCSDOC_H_
 
 /**
-   @defgroup module		Dynamic Modules
+   @defgroup module Dynamic Modules API
    This is the interface to load/unload the shared libraries (or DLLs).
    <br>Two modes are allowed, the access by filename, of the access by entire directory.
    <br>When the directory mode is used, the filenames are not known by advance, this
@@ -41,16 +41,16 @@
    <br>This API is not used for shared libraries linked staticaly at compilation time.
 */
 /**
-   @defgroup gui		GUI Management.
+   @defgroup gui GUI Management API
    This is an interface to manage menus.
    @note	The screen size is fiwed to 640x480 and the origin is in the lower-left corner.
 */
 /**
-   @defgroup img		Image Management.
+   @defgroup img Image Management API
    Load and store png images with easy interface.
 */
 /**
-   @defgroup dir		Directory Management.
+   @defgroup dir Directory Management API
    This is used for directory manipulation.
 */
 
@@ -97,35 +97,35 @@
 
 
 /**
-   @defgroup screen		Screen management.
+   @defgroup screen Screen Management API
 */
 /**
-   @defgroup trace		Trace management.
+   @defgroup trace		Trace Management
    Allow the trace in the file <tt>trace.txt</tt>
 */
 /** 
-    @defgroup OS		OS dependant functions
+    @defgroup OS OS Dependant Functions
     OS specific function table
 */
 /**
-   @defgroup definitions	Global definitions
+   @defgroup definitions Global Definitions
    This is the global definitions used in TORCS.
 */
 /**
-   @defgroup trackstruct	Tracks Structure
+   @defgroup trackstruct Track Structure
    This is the tracks structure definition.
    <br><b>tTrack</b> is the main track structure.
    <br><b>trackSeg</b> is the segment structure.
    @ingroup definitions
 */
 /**
-   @defgroup carstruct		Cars Structure
+   @defgroup carstruct Car Structure
    This is the cars structure definition.
    <br><b>CarElt</b> is the main car structure.
    @ingroup definitions
 */
 /**
-   @defgroup raceinfo	Race Information
+   @defgroup raceinfo Race Information Structure
    This is the race information structures definition.
    @ingroup definitions
 */
@@ -136,15 +136,15 @@
 */
 
 /**
-   @defgroup modint	Modules interfaces
-   This is the interfaces for the dynamic modules.
+   @defgroup modint	Modules Interfaces
+   This are the interfaces for dynamic modules.
 */
 /**
    @defgroup tailq	Tail Queue Management
    This is the management of tail queues.
 */
 /**
-   @defgroup hash	Hash tables Management
+   @defgroup hash	Hash Tables Management
    This is the hash computation API.
 */
 /**
@@ -161,11 +161,11 @@
     
     @section robotlist Robots API
     
-    - [Robots functions interface](@ref robotmodint)
+    - [Robot Module Interface](@ref robotmodint)
     - [Robottools API](@ref robottools)
     - [Parameter Handling API](@ref params)
-    - [Tracks structure](@ref trackstruct)
-    - [Cars structure](@ref carstruct)
+    - [Track Structure](@ref trackstruct)
+    - [Car Structure](@ref carstruct)
 
     @section racemanlist Race Manager API
 

@@ -17,6 +17,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#if 0
+
 /** @file	
     		This is a collection of useful functions for using telemetry in a robot.
 		You can see an example of telemetry usage in the human driver.
@@ -30,7 +32,9 @@
     <br>The graphs are build by gnuplot.
     @ingroup	robottools
 */
-    
+
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef WIN32
