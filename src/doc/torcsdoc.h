@@ -129,11 +129,12 @@
    This is the race information structures definition.
    @ingroup definitions
 */
-/**
-   @defgroup robottools		Tools for robots.
-   This is a collection of useful functions for programming a robot.
 
+/**
+   @defgroup robottools Robottools API
+   API for gathering track information and handling of car setups
 */
+
 /**
    @defgroup modint	Modules interfaces
    This is the interfaces for the dynamic modules.
@@ -161,7 +162,7 @@
     @section robotlist Robots API
     
     - [Robots functions interface](@ref robotmodint)
-    - [Tools for robots](@ref robottools)
+    - [Robottools API](@ref robottools)
     - [Parameter Handling API](@ref params)
     - [Tracks structure](@ref trackstruct)
     - [Cars structure](@ref carstruct)

@@ -2,7 +2,7 @@
                       rttrack.cpp -- Track utilities functions                              
                              -------------------                                         
     created              : Sat Aug 14 23:03:22 CEST 1999
-    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -17,16 +17,22 @@
  ***************************************************************************/
 
 /** @file	
-    		This is a collection of useful functions for programming a robot.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+    Common functions for robots.
+    @author	<a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
     @version	$Id$
     @ingroup	robottools
 */
 
-/** @defgroup tracktools	Track related tools for robots.
-    All the accesses to the track structure, car position...
-    @ingroup	robottools
+/** @defgroup tracktools Robot Track Tools API
+    API to gather information about the track and the cars state relative to the track.
+    @ingroup robottools
 */
+
+/** @defgroup setuptools Robot Setup Tools API
+    API to load and store car setups in a unified way, and to support setup changes during pit stops.
+    @ingroup robottools
+*/
+
 
 #include <portability.h>
 #include <stdlib.h>
@@ -760,6 +766,12 @@ static void RtReadCarPitSetupEntry(tCarPitSetupValue* v, const char* path, const
 }
 
 
+/** Initialize tCarPitSetup from data in parameter set given in handle @e hdle.
+ *  @ingroup setuptools 
+ *  @param[in] hdle			Handle to setup parameter set
+ *  @param[in,out] s		Pointer to tCarPitSetup struct to initialize
+ *  @param[in] minmaxonly	If true, just the min/max values of s are modified
+ */
 void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
 {
 	static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_REARRGTWHEEL, SECT_REARLFTWHEEL};
@@ -842,15 +854,27 @@ void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
 	}
 }
 
+
+/** Array with names for rtCarPitSetupType enumeration */
 static const char* CarPitSetupFilenames[6] = { "practice", "qualifying", "race", "backup1", "backup2", "backup3" };
 
+
+/** Compose filename from given strings
+ *  @ingroup setuptools
+	@param[in] type			Setup type
+	@param[in] robidx		Index of robot
+	@param[in] carname		TORCS internal name car name
+	@param[in] trackname	TORCS internal name name of track	
+	@param[in,out] filename	Buffer for result
+	@param[in] len			Buffer size
+ */
 void RtGetCarPitSetupFilename(
-	rtCarPitSetupType type,		// the setup type
-	int robidx,					// player/robot instance
-	const char* carname,		// car filename
-	const char* trackname,		// track file name
-	char* filename,				// buffer for result								  
-	const int len				// buffer size						  							  
+	rtCarPitSetupType type,
+	int robidx,
+	const char* carname,
+	const char* trackname,
+	char* filename,
+	const int len
 )
 {
 	snprintf(filename, len, "%s_%s_%d_%s" , carname, trackname, robidx, CarPitSetupFilenames[type]);
@@ -858,12 +882,12 @@ void RtGetCarPitSetupFilename(
 
 
 /**	Robottool internal: Set parameter if min != max, save as well min and max values	
-	@ingroup	tracktools
-	@param hdlesetup	Handle to set parameter into
-	@param path			path of parameter
-	@param	key			key	name
-	@param	unit		unit to convert the result to (NULL if SI wanted)	
-	@param	v			tCarPitSetupValue to set	
+	@ingroup setuptools
+	@param[in,out] hdlesetup	Handle to parameter set to write into
+	@param[in] path				path of parameter
+	@param[in]	key				key	name
+	@param[in]	unit			unit to convert the result to (NULL if SI wanted)	
+	@param[in]	v				tCarPitSetupValue to set	
 */
 static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
 {
@@ -875,11 +899,11 @@ static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, con
 
 
 /**	Save a custom car setup to a given filename. The setup is validated against the setup given in hdlecar.
-	@ingroup	tracktools
-	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
-	@param s			Pointer to tCarPitSetup struct to save
-	@param filepath		Full path to setup file
-	@param carname		TORCS internal name car name
+	@ingroup setuptools
+	@param[in] hdlecar		Handle to "master setup" (parameter set) to validate against (min/max and other checks)
+	@param[in] s			Pointer to tCarPitSetup struct to save
+	@param[in] filepath		Full path to setup file
+	@param[in] carname		TORCS internal name car name
  */
 void RtSaveCarPitSetupFile(
 	void *hdlecar,			// handle to car definition file, for min/max merge
@@ -966,28 +990,28 @@ void RtSaveCarPitSetupFile(
 	GfParmReleaseHandle(hdlesetup);
 }
 
-			
+
 /**	Save a custom car setup for a given robot, car, track and session (race, practice, qualifying, ...) type.
 	The setup is validated against the setup given in hdlecar.
-	@ingroup	tracktools
-	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
-	@param s			Pointer to tCarPitSetup struct to save
-	@param type			Setup type
-	@param modulename	name of robot module without extension
-	@param robidx		index of robot
-	@param trackname	TORCS internal name name of track
-	@param carname		TORCS internal name car name
-	@note robot, car, track and session information are used to compose a standard setup filename
+	@ingroup setuptools
+	@param[in] hdlecar		Handle to "master setup" (parameter set) to validate against (min/max and other checks)
+	@param[in] s			Pointer to tCarPitSetup struct to save
+	@param[in] type			Setup type
+	@param[in] modulename	Name of robot module without extension
+	@param[in] robidx		Index of robot
+	@param[in] trackname	TORCS internal name name of track
+	@param[in] carname		TORCS internal name car name
+	@note Robot, car, track and session information are used to compose a standard setup filename
 	@see RtSaveCarPitSetupFile
  */
 void RtSaveCarPitSetup(
-	void *hdlecar,				// handle to car definition file, for min/max merge
-	tCarPitSetup* s,			// the setup data to save
-	rtCarPitSetupType type,		// the setup type
-	const char* modulename,		// modulename
-	int robidx,					// player/robot instance
-	const char* trackname,		// track file name without extension
-	const char* carname			// car file name without extension
+	void *hdlecar,
+	tCarPitSetup* s,
+	rtCarPitSetupType type,
+	const char* modulename,
+	int robidx,
+	const char* trackname,
+	const char* carname
 )
 {
 	const int filelen = 256;
@@ -1008,20 +1032,20 @@ void RtSaveCarPitSetup(
 
 
 /**	Checks if a specific car setup is available
-	@ingroup	tracktools
-	@param type			Setup type
-	@param modulename	name of robot module without extension
-	@param robidx		index of robot
-	@param trackname	TORCS internal name name of track
-	@param carname		TORCS internal name car name
-	@return	true on success, false on failure
+	@ingroup setuptools
+	@param[in] type			Setup type
+	@param[in] modulename	Name of robot module without extension
+	@param[in] robidx		Index of robot
+	@param[in] trackname	TORCS internal name name of track
+	@param[in] carname		TORCS internal name car name
+	@return	True on success, false on failure
  */
 bool RtCarPitSetupExists(
-	rtCarPitSetupType type,		// the setup type
-	const char* modulename,		// modulename
-	int robidx,					// player/robot instance
-	const char* trackname,		// track file name without extension
-	const char* carname			// car file name without extension	 
+	rtCarPitSetupType type,
+	const char* modulename,
+	int robidx,
+	const char* trackname,
+	const char* carname
 )
 {
 	const int filelen = 256;
@@ -1043,12 +1067,12 @@ bool RtCarPitSetupExists(
 
 
 /**	Load a custom car setup from a given filename. The setup is validated against the setup given in hdlecar.
-	@ingroup	tracktools
-	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
-	@param filepath		Full path to setup file
-	@param s			Pointer to tCarPitSetup struct to fill/initialize
-	@param minmaxonly	If true, just the min/max values of s are modified
-	@return	true on success, false on failure
+	@ingroup setuptools
+	@param[in] hdlecar		Handle to "master setup" (parameter set) to validate against (min/max and other checks)
+	@param[in] filepath		Full path to setup file
+	@param[in,out] s		Pointer to tCarPitSetup struct to fill/initialize
+	@param[in] minmaxonly	If true, just the min/max values of s are modified
+	@return	True on success, false on failure
  */
 bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly)
 {
@@ -1066,26 +1090,26 @@ bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetu
 
 /**	Load a custom car setup for a given robot, car, track and session (race, practice, qualifying, ...) type.
 	The setup is validated against the setup given in hdlecar.
-	@ingroup	tracktools
-	@param hdlecar		Handle to master setup to validate against (min/max and other checks)
-	@param s			Pointer to tCarPitSetup struct to fill/initialize
-	@param type			Setup type
-	@param modulename	name of robot module without extension
-	@param robidx		index of robot
-	@param trackname	TORCS internal name name of track
-	@param carname		TORCS internal name car name
-	@param minmaxonly	If true, just the min/max values of s are modified
+	@ingroup setuptools
+	@param[in] hdlecar		Handle to "master setup" (parameter set) to validate against (min/max and other checks)
+	@param[in,out] s		Pointer to tCarPitSetup struct to fill/initialize
+	@param[in] type			Setup type
+	@param[in] modulename	Name of robot module without extension
+	@param[in] robidx		Index of robot
+	@param[in] trackname	TORCS internal name name of track
+	@param[in] carname		TORCS internal name car name
+	@param[in] minmaxonly	If true, just the min/max values of s are modified
 	@return	true on success, false on failure
-	@note robot, car, track and session information are used to compose a standard setup filename
+	@note Robot, car, track and session information are used to compose a standard setup filename
 	@see RtLoadCarPitSetupFilename
  */
 bool RtLoadCarPitSetup(
-	void* hdlecar, 
+	void* hdlecar,
 	tCarPitSetup* s,
-	rtCarPitSetupType type,		
-	const char* modulename,	
-	int robidx,				
-	const char* trackname,	
+	rtCarPitSetupType type,
+	const char* modulename,
+	int robidx,
+	const char* trackname,
 	const char* carname,
 	bool minmaxonly
 )
@@ -1104,8 +1128,8 @@ bool RtLoadCarPitSetup(
 
 /** Gets a handle to a parameter file containing the original TORCS car setup, that means the car setup
 	merged with the cars category setup
-    @ingroup	tracktools
-	@param	carname TORCS internal name of the car (directory/filename)
+    @ingroup setuptools
+	@param[in] carname TORCS internal name of the car (directory/filename)
     @return	NULL on failure, a valid handle otherwise
  */
 void* RtLoadOriginalCarSettings(const char* carname)
@@ -1148,10 +1172,10 @@ void* RtLoadOriginalCarSettings(const char* carname)
 
 /** Initialize the given tCarPitSetup with the original TORCS setup, that means the car setup
 	merged with the cars category setup
-    @ingroup	tracktools
-    @param	s	Pointer to tCarPitSetup struct to fill/initialize
-	@param	carname TORCS internal name of the car (directory/filename)
-    @return	true on success, false on failure
+    @ingroup setuptools
+    @param[in,out] s	Pointer to tCarPitSetup struct to fill/initialize
+	@param[in] carname	TORCS internal name of the car (directory/filename)
+    @return	True on success, false on failure
  */
 bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
 {
@@ -1168,20 +1192,20 @@ bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
 
 
 /**	Load a custom car setup file for a given robot, car, track and session (race, practice, qualifying, ...) type.
-	@ingroup	tracktools
-	@param type			Setup type
-	@param modulename	name of robot module without extension
-	@param robidx		index of robot
-	@param trackname	TORCS internal name name of track
-	@param carname		TORCS internal name car name
+	@ingroup setuptools
+	@param[in] type			Setup type
+	@param[in] modulename	Name of robot module without extension
+	@param[in] robidx		Index of robot
+	@param[in] trackname	TORCS internal name name of track
+	@param[in] carname		TORCS internal name car name
 	@return	Handle to data, or NULL on failure (e.g. if file is not available) 
-	@note robot, car, track and session information are used to compose a standard setup filename
+	@note Robot, car, track and session information are used to compose a standard setup filename
  */
 void* RtParmReadSetup(
-	rtCarPitSetupType type,		
-	const char* modulename,	
-	int robidx,				
-	const char* trackname,	
+	rtCarPitSetupType type,
+	const char* modulename,
+	int robidx,
+	const char* trackname,
 	const char* carname
 )
 {
