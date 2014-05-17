@@ -46,17 +46,55 @@
 
 #define ROB_IDENT	0
 
-/** Callback prototype */
+/** Callback function prototype for robot module, give the robot the track view, called for every track change or new race
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ *  @param[in] track Track
+ *  @param[in] carhandle Original car parameter set, intended for read only by the robot
+ *  @param[out] myCarSettings Robot instance specific parameter set
+ *  @param[in] s Situation
+ */
 typedef void (*tfRbNewTrack)(int index, tTrack *track, void *carHandle, void **myCarSettings, tSituation *s);
-/** Callback prototype */
+
+/** Callback function prototype for robot module, initialization for new race
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ *  @param[in] car Car
+ *  @param[in] s Situation
+ */
 typedef void (*tfRbNewRace) (int index, tCarElt *car, tSituation *s);
-/** Callback prototype */
+
+/** Callback function prototype for robot module, teardown after race, this is currently NOT called by TORCS
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ *  @param[in] car Car
+ *  @param[in] s Situation
+ */
 typedef void (*tfRbEndRace) (int index, tCarElt *car, tSituation *s);
-/** Callback prototype */
+
+/** Callback function prototype for robot module, driving the car
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ *  @param[in,out] car Car, the tCarCtrl is modified to return the driving commands
+ *  @param[in] s Situation
+ */
 typedef void (*tfRbDrive)   (int index, tCarElt *car, tSituation *s);
-/** Callback prototype */
+
+/** Callback function prototype for robot module, shutdown robot instance for given index
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ */
 typedef void (*tfRbShutdown)(int index);
-/** Callback prototype */
+
+/** Callback function prototype for robot module, handing over pit stop commands
+ *  @ingroup robotmodint
+ *  @param[in] index Index of the robot instance
+ *  @param[in,out] car Car, the tCarPitCmd is modified to return the pitstop commands (refuel, repair, setup changes)
+ *  @param[in] s Situation
+ *  @return
+ *  - #ROB_PIT_IM, immediate return from pit command
+ *  - #ROB_PIT_MENU, call the interactive menu for pit command
+ */
 typedef int  (*tfRbPitCmd)  (int index, tCarElt* car, tSituation *s);
 
 #define ROB_PIT_IM	0	/**< Immediate return from pit command */
@@ -67,17 +105,13 @@ typedef int  (*tfRbPitCmd)  (int index, tCarElt* car, tSituation *s);
     @ingroup robotmodint
 */
 typedef struct RobotItf {
-	tfRbNewTrack rbNewTrack;	/**< Give the robot the track view. Called for every track change or new race */
-	tfRbNewRace  rbNewRace;		/**< Start a new race */
-	tfRbEndRace  rbEndRace;		/**< End of the current race */
-	tfRbDrive	 rbDrive;		/**< Drive during race */
-	tfRbPitCmd	 rbPitCmd;		/**< Get the driver's pit commands.
-	<br>Returns:
-	- ROB_PIT_IM
-	- ROB_PIT_MENU
-	*/
-	tfRbShutdown rbShutdown;	/**< Called before the dll/so is unloaded */
-	int index;					/**< Index used if the module handles multiple robot instances */
+	tfRbNewTrack rbNewTrack;
+	tfRbNewRace  rbNewRace;
+	tfRbEndRace  rbEndRace;
+	tfRbDrive	 rbDrive;
+	tfRbPitCmd	 rbPitCmd;
+	tfRbShutdown rbShutdown;
+	int index;
 } tRobotItf;
 
 

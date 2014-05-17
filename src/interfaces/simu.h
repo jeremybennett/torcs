@@ -51,7 +51,6 @@ struct RmInfo;
  */
 typedef void (*tfSimInit)(int nbCars, tTrack* track, tdble fuelFactor, tdble damageFactor);
 
-
 /** Callback function prototype for simulation configuration of a given car
  *  @ingroup simumodint
  *  @param[in] carElt Car to configure
@@ -59,14 +58,11 @@ typedef void (*tfSimInit)(int nbCars, tTrack* track, tdble fuelFactor, tdble dam
  */
 typedef void (*tfSimConfig)(tCarElt* carElt, struct RmInfo* reInfo);
 
-
 /** Callback function prototype for simulation reconfiguration of a given car (refueling, setup adjustments)
  *  @ingroup simumodint
  *  @param[in] carElt Car to reconfigure
  */
 typedef void (*tfSimReConfig)(tCarElt* carElt);
-
-
 
 /** Callback function prototype for progressing the given Situation by a given simulation time step
  *  @ingroup simumodint
@@ -75,7 +71,6 @@ typedef void (*tfSimReConfig)(tCarElt* carElt);
  *  @param[in] telemetry Index of car to receive telemetry
  */
 typedef void (*tfSimUpdate)(struct Situation* s, double deltaTime, int telemetry);
-
 
 /** Callback function prototype for simulation module shutdown
  *  @ingroup simumodint
