@@ -137,7 +137,7 @@
 
 /**
    @defgroup modint	Modules Interfaces
-   This are the interfaces for dynamic modules.
+   These are the interfaces for dynamic modules.
 */
 /**
    @defgroup tailq	Tail Queue Management

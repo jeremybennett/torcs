@@ -21,6 +21,19 @@
 #ifndef _GRAPHV1_H_
 #define _GRAPHV1_H_
 
+/** @file   
+    Graphic Module Interface Definition
+    @author	<a href=mailto:eric.espie@torcs.org>Bernhard Wymann, Eric Espie</a>
+    @version	$Id$
+    @ingroup	graphicmodint
+*/
+
+/**
+   @defgroup graphicmodint Graphic Module Interface
+   @brief Interface for graphic rendering of the simulation, the graphic module is discovered and loaded during runtime.
+   @ingroup	modint
+*/
+
 #include <track.h>
 #include <car.h>
 
@@ -102,29 +115,70 @@
 
 struct Situation;
 
-typedef int (*tfGraphicInitTrack)(tTrack *);
-typedef int (*tfGraphicInitCars)(struct Situation *); 
-typedef int (*tfGraphicInitView)(int /*x*/, int /*y*/, int /*width*/, int /*height*/, int /*flag*/, void * /*screen*/);
 #define GR_VIEW_STD  0 /* full screen view */
 #define GR_VIEW_PART 1 /* partial screen view (scissor test) */
 
+/** @brief Load and set up track model for rendering
+ *  @ingroup graphicmodint
+ *  @param[in] track Track structure
+ */
+typedef int (*tfGraphicInitTrack)(tTrack* track);
+
+/** @brief Load and set up car models for rendering
+ *  @ingroup graphicmodint
+ *  @param[in] s Situation containing list with cars
+ */
+typedef int (*tfGraphicInitCars)(struct Situation* s); 
+
+/** @brief Init viewport for rendering
+ *  @ingroup graphicmodint
+ *  @param[in] x X position of viewport
+ *  @param[in] y Y position of viewport
+ *  @param[in] width Width of viewport
+ *  @param[in] height Height of viewport
+ *  @param[in] flag Currently unused
+ *  @param[in] screen Screen (tGfuiScreen)
+ *  @return 0, unused
+ *  @see ReScreenInit
+ */ 
+typedef int (*tfGraphicInitView)(int x, int y, int width, int height, int flag, void * screen);
+
+/** @brief Render scene based on given situation
+ *  @ingroup graphicmodint
+ *  @param[in] s Situation
+ *  @return 0, unsued
+ */
 typedef int (*tfGraphicRefresh)(struct Situation *);
+
+/** @brief Shut down and release car models
+ *  @ingroup graphicmodint
+ */
 typedef void (*tfGraphicShutdwnCars)(void);
+
+/** @brief Shut down and release track model
+ *  @ingroup graphicmodint
+ */
 typedef void (*tfGraphicShutdwnTrack)(void);
+
+/** @brief Set output audio gain to 0 to mute sound, used for menus during race, tfGraphicRefresh will reset the gain to normal level
+ *  @ingroup graphicmodint
+ */
 typedef void (*tGraphicMuteForMenu)(void);
 
 class ssgEntity;
 typedef void (*tfGraphicBendCar) (int /*index*/, sgVec3 /*poc*/, sgVec3 /*force*/, int /*cnt*/);
 
-/* Interface with the graphic lib */
+/** @brief Interface Structure for Graphic Renering Module
+ *  @ingroup graphicmodint
+ */
 typedef struct {
-    tfGraphicInitTrack	    inittrack;	    /* Graphic init function */
-    tfGraphicInitView       initview;       /* Graphic init function */
-    tfGraphicInitCars	    initcars;	    /* Graphic init function */
-    tfGraphicRefresh	    refresh;	    /* Graphic refresh function */
-    tfGraphicShutdwnCars    shutdowncars;   /* Graphic shutdown function */
-    tfGraphicShutdwnTrack   shutdowntrack;  /* Graphic shutdown function */
-	tGraphicMuteForMenu		muteformenu;	/* Set volume temporarily to 0, next refresh will undo it (for menus) */
+	tfGraphicInitTrack	    inittrack;
+	tfGraphicInitView       initview;
+	tfGraphicInitCars	    initcars;
+	tfGraphicRefresh	    refresh;
+	tfGraphicShutdwnCars    shutdowncars;
+	tfGraphicShutdwnTrack   shutdowntrack;
+	tGraphicMuteForMenu		muteformenu;
 	//tfGraphicBendCar        bendcar;
 } tGraphicItf;
 
