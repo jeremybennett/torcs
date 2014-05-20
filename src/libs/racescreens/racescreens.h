@@ -31,10 +31,10 @@
  */
 typedef struct
 {
-	void *param;			/* Pointer to race manager parameter set (to set the track) */
-	void *prevScreen;		/* Race manager screen to go back */
-	void *nextScreen;		/* Race manager screen to go after select */
-	tTrackItf trackItf;		/* Track module interface */
+	void *param;			/**< Pointer to race manager parameter set (to set the track) */
+	void *prevScreen;		/**< Race manager screen to go back */
+	void *nextScreen;		/**< Race manager screen to go after select */
+	tTrackItf trackItf;		/**< Track module interface */
 } tRmTrackSelect;
 
 
@@ -49,13 +49,16 @@ typedef struct
 } tRmDrvSelect;
 
 
+/** @brief Structure for configuring parameters
+ *  @ingroup racemantools
+ */
 typedef struct
 {
-    void        	*param;
-    void        	*prevScreen;
-    void        	*nextScreen;	/* Race manager screen to go after select */
-    const char *title;
-    unsigned int	confMask;	/* Tell what to configure */
+	void *param;			/**< Pointer to race manager parameter set (to set the parameters) */
+	void *prevScreen;		/**< Race manager screen to go back */
+	void *nextScreen;		/**< Race manager screen to go after select */
+	const char *title;		/**< Title for race parameters (for screen title) */
+	unsigned int confMask;	/**< Tell what to configure */
 #define RM_CONF_RACE_LEN	0x00000001
 #define RM_CONF_DISP_MODE	0x00000002
 } tRmRaceParam;

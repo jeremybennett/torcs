@@ -18,11 +18,11 @@
  ***************************************************************************/
 
 /** @file   
-    		Pit menu command
-    @ingroup	racemantools
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
+    Pit menu
+    @author Bernhard Wymann, Eric Espie
+    @version $Id$
 */
+
 #include <stdlib.h>
 #ifdef WIN32
 #include <windows.h>
@@ -32,15 +32,14 @@
 #include <portability.h>
 #include <racescreens.h>
 
-static void		*menuHandle = NULL;
-static int		fuelId;
-static int		repairId;
-static tCarElt	*rmCar;
-static tRmInfo  *rmInfo;
+static void *menuHandle = NULL;
+static int fuelId;
+static int repairId;
+static tCarElt *rmCar;
+static tRmInfo *rmInfo;
 
 
-static void
-rmUpdtFuel(void * /* dummy */)
+static void rmUpdtFuel(void * /* dummy */)
 {
 	char *val;
 	const int BUFSIZE = 32;
@@ -70,24 +69,28 @@ static tfuiCallback rmCallback;
 static void *rmUserData;
 
 
-static void
-rmStopAndGo(void * /* dummy */)
+static void rmStopAndGo(void * /* dummy */)
 {
 	rmCar->_pitStopType = RM_PIT_STOPANDGO;
 	rmCallback(rmUserData);
 }
 
 
-static void
-rmRepair(void* /* dummy */)
+static void rmRepair(void* /* dummy */)
 {
 	rmCar->_pitStopType = RM_PIT_REPAIR;
 	rmCallback(rmUserData);
 }
 
 
-void
-RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback callback)
+/** @brief Pit menu
+ *  @ingroup racemantools
+ *  @param[in,out] car Car data is returned in tCarElt.pitcmd
+ *  @param[in] reInfo Required for passing data to car setup screen, RmCarSetupScreenInit
+ *  @param[in] userdata Userdata for callback
+ *  @param[in] callback Callback to take action on the changes made
+ */ 
+void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback callback)
 {
 	const int BUFSIZE = 256;
 	char buf[BUFSIZE];
