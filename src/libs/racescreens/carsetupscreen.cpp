@@ -17,6 +17,12 @@
  *                                                                         *
  ***************************************************************************/
 
+/** @file
+    Car setup screen.
+    @author Bernhard Wymann</a>
+    @version $Id$
+*/
+
 #include <stdlib.h>
 #ifdef WIN32
 #include <windows.h>
@@ -306,6 +312,15 @@ static void onLoadDefault(void* vp)
 }
 
 
+/** @brief Display car setup screen, for loading, saving and changing car setups
+ *  @ingroup racemantools
+ *  @param[in] prevMenu Link to previous menu
+ *  @param[in,out] car Car to set up, changes go into tCarElt.pitcmd.setup, see tCarPitSetup
+ *  @param[in] reInfo Information to construct setup file name (track name, session type)
+ *  @return Handle to car setup screen
+ *  @see tCarPitCmd
+ *  @see tCarPitSetup
+ */
 void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 {
 	const int BUFSIZE = 1024;
