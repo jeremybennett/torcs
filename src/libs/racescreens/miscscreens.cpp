@@ -2,7 +2,7 @@
 
     file        : miscscreens.cpp
     created     : Sun Dec  8 13:01:47 CET 2002
-    copyright   : (C) 2013 by Eric Espie, Bernhard Wymann                        
+    copyright   : (C) 2000-2013 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -18,9 +18,9 @@
  ***************************************************************************/
 
 /** @file   
-    		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id$
+    Common screens for race manager menus
+    @author bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 #include <stdio.h>
@@ -36,8 +36,18 @@ static void *fourStateHdle = 0;
 static void *nStateHandle = 0;
 
 
-void *
-RmTwoStateScreen(
+/** @brief Screen with 2 menu options (buttons)
+ *  @ingroup racemantools
+ *  @param[in] title Title of the screen
+ *  @param[in] label1 Button text for first option
+ *  @param[in] tip1 Description for first option
+ *  @param[in] screen1 Target screen to activate for first option
+ *  @param[in] label2 Button text for second option
+ *  @param[in] tip2 Description for second option
+ *  @param[in] screen2 Target screen to activate for second option
+ *  @return Handle to screen
+ */
+void *RmTwoStateScreen(
 	const char *title,
 	const char *label1, const char *tip1, void *screen1,
 	const char *label2, const char *tip2, void *screen2)
@@ -57,8 +67,21 @@ RmTwoStateScreen(
 }
 
 
-void *
-RmTriStateScreen(
+/** @brief Screen with 3 menu options (buttons)
+ *  @ingroup racemantools
+ *  @param[in] title Title of the screen
+ *  @param[in] label1 Button text for first option
+ *  @param[in] tip1 Description for first option
+ *  @param[in] screen1 Target screen to activate for first option
+ *  @param[in] label2 Button text for second option
+ *  @param[in] tip2 Description for second option
+ *  @param[in] screen2 Target screen to activate for second option
+ *  @param[in] label3 Button text for third option
+ *  @param[in] tip3 Description for third option
+ *  @param[in] screen3 Target screen to activate for third option
+ *  @return Handle to screen
+ */
+void *RmTriStateScreen(
 	const char *title,
 	const char *label1, const char *tip1, void *screen1,
 	const char *label2, const char *tip2, void *screen2,
@@ -79,8 +102,25 @@ RmTriStateScreen(
 	return triStateHdle;
 }
 
-void *
-RmFourStateScreen(
+
+/** @brief Screen with 4 menu options (buttons)
+ *  @ingroup racemantools
+ *  @param[in] title Title of the screen
+ *  @param[in] label1 Button text for first option
+ *  @param[in] tip1 Description for first option
+ *  @param[in] screen1 Target screen to activate for first option
+ *  @param[in] label2 Button text for second option
+ *  @param[in] tip2 Description for second option
+ *  @param[in] screen2 Target screen to activate for second option
+ *  @param[in] label3 Button text for third option
+ *  @param[in] tip3 Description for third option
+ *  @param[in] screen3 Target screen to activate for third option
+ *  @param[in] label4 Button text for fourth option
+ *  @param[in] tip4 Description for fourth option
+ *  @param[in] screen4 Target screen to activate for fourth option
+ *  @return Handle to screen
+ */
+void *RmFourStateScreen(
 	const char *title,
 	const char *label1, const char *tip1, void *screen1,
 	const char *label2, const char *tip2, void *screen2,
@@ -103,6 +143,16 @@ RmFourStateScreen(
 	return fourStateHdle;
 }
 
+
+/** @brief Screen with N menu options (buttons)
+ *  @ingroup racemantools
+ *  @param[in] title Title of the screen
+ *  @param[in] label Array of n button texts
+ *  @param[in] tip Array of n descriptions
+ *  @param[in] screen Array of n screens
+ *  @param[in] n Size of arrays
+ *  @return Handle to screen
+ */
 void *RmNStateScreen(
 	const char *title,
 	const char** label,

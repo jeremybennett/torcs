@@ -27,31 +27,43 @@
 #define _TORCSDOC_H_
 
 /**
-   @defgroup module Dynamic Modules API
-   This is the interface to load/unload the shared libraries (or DLLs).
-   <br>Two modes are allowed, the access by filename, of the access by entire directory.
-   <br>When the directory mode is used, the filenames are not known by advance, this
-   <br>allow more flexibility at runtime.
-   <br>
-   <br>The generic information can be retrieved, without keeping the DLL loaded.
-   <br>
-   <br>The gfid parameter is use to differentiate the modules using different includes.
-   <br>This functionality is not used yet.
-   <br>
-   <br>This API is not used for shared libraries linked staticaly at compilation time.
+   @defgroup ctrl Control Device Management API
+   This is the API to use control devices (Keyboard, mouse and joysticks).
 */
+
+/**
+   @defgroup dir Directory Management API
+   This is used for directory manipulation.
+*/
+
+/**
+   @defgroup module Dynamic Modules API
+        
+    This is the interface to load/unload the shared libraries (or DLLs).
+    Two modes are allowed, the access by filename, of the access by the entire directory.
+    When the directory mode is used, the filenames are not known in advance, this allows
+    more flexibility at runtime.
+
+    The generic information can be retrieved, without keeping the DLL loaded.
+    The gfid parameter is used to differentiate the modules using different includes. This
+    functionality is not used yet. This API is not used for shared libraries linked
+    staticaly at compilation time.
+*/
+
 /**
    @defgroup gui GUI Management API
    This is an interface to manage menus.
    @note	The screen size is fiwed to 640x480 and the origin is in the lower-left corner.
 */
+
+/**
+   @defgroup hash Hash Tables API
+   Hash tables API.
+*/
+
 /**
    @defgroup img Image Management API
    Load and store png images with easy interface.
-*/
-/**
-   @defgroup dir Directory Management API
-   This is used for directory manipulation.
 */
 
 
@@ -95,18 +107,25 @@
    @ingroup params
 */
 
+/**
+    @defgroup racemantools Race Managers API
+    Common functions for race managers.
+*/
+
+/**
+   @defgroup robottools Robottools API
+   API for gathering track information and handling of car setups
+*/
 
 /**
    @defgroup screen Screen Management API
 */
+
 /**
-   @defgroup trace		Trace Management
-   Allow the trace in the file <tt>trace.txt</tt>
+   @defgroup tailq	Tail Queue Management API
+   This is the management of tail queues.
 */
-/** 
-    @defgroup OS OS Dependant Functions
-    OS specific function table
-*/
+
 /**
    @defgroup definitions Global Definitions
    This is the global definitions used in TORCS.
@@ -131,29 +150,18 @@
 */
 
 /**
-   @defgroup robottools Robottools API
-   API for gathering track information and handling of car setups
-*/
-
-/**
    @defgroup modint	Modules Interfaces
    These are the interfaces for dynamic modules.
 */
-/**
-   @defgroup tailq	Tail Queue Management
-   This is the management of tail queues.
+
+/** 
+    @defgroup OS OS Dependant Functions
+    OS specific function table
 */
+
 /**
-   @defgroup hash	Hash Tables Management
-   This is the hash computation API.
-*/
-/**
-   @defgroup ctrl	Control Device Management
-   This is the API to use control devices (Keyboard, mouse and joysticks).
-*/
-/**
-    @defgroup racemantools Race Managers API
-    Common functions for race managers.
+   @defgroup trace		Trace Management
+   Allow the trace in the file <tt>trace.txt</tt>
 */
 
 /**

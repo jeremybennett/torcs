@@ -20,7 +20,6 @@
     Parameter handling API
     @author Bernhard Wymann, Eric Espie
     @version	$Id$
-    @ingroup	params
 */
 
 #include <stdlib.h>

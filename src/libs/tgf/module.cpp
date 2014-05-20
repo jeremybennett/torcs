@@ -2,7 +2,7 @@
                       module.cpp -- Dynamic module management                                
                              -------------------                                         
     created              : Fri Aug 13 22:25:53 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -17,22 +17,21 @@
  ***************************************************************************/
 
 /** @file   
-    		Dynamic module management.
-    		This is the interface to load/unload the shared libraries (or DLLs).
-		<br>Two modes are allowed, the access by filename, of the access by entire directory.
-		<br>When the directory mode is used, the filenames are not known by advance, this
-		<br>allow more flexibility at runtime.
-		<br>
-		<br>The generic information can be retrieved, without keeping the DLL loaded.
-		<br>
-		<br>The gfid parameter is use to differentiate the modules using different includes.
-		<br>This functionality is not used yet.
-		<br>
-		<br>This API is not used for shared libraries linked staticaly at compilation time.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
-    @ingroup	module
+    Dynamic module API.
+        
+    This is the interface to load/unload the shared libraries (or DLLs).
+    Two modes are allowed, the access by filename, of the access by the entire directory.
+    When the directory mode is used, the filenames are not known in advance, this allows
+    more flexibility at runtime.
+
+    The generic information can be retrieved, without keeping the DLL loaded.
+    The gfid parameter is used to differentiate the modules using different includes. This
+    functionality is not used yet. This API is not used for shared libraries linked
+    staticaly at compilation time.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id$
 */
+
 #ifdef WIN32
 #include <windows.h>
 #endif

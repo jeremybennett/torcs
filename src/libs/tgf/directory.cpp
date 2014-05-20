@@ -17,10 +17,9 @@
  ***************************************************************************/
 
 /** @file
-    		This is used for directory manipulation.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
-    @ingroup	dir
+    Directory API.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 #include <stdlib.h>

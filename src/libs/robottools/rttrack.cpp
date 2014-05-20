@@ -18,9 +18,8 @@
 
 /** @file	
     Common functions for robots.
-    @author	<a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
+    @author Bernhard Wymann, Eric Espie
     @version	$Id$
-    @ingroup	robottools
 */
 
 /** @defgroup tracktools Robot Track Tools API
