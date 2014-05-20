@@ -18,9 +18,8 @@
  ***************************************************************************/
 
 /** @file
-    		This is a Loading... screen management.
-    @ingroup	racemantools		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    Loading screen.
+    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie, Bernhard Wymann</a>
     @version	$Id$
 */
 
@@ -31,34 +30,31 @@
 #include <tgfclient.h>
 #include <car.h>
 
-static void		*menuHandle = NULL;
-#define			TEXTLINES	23
-static int		rmTextId[TEXTLINES];
-static char		*rmTextLines[TEXTLINES] = {0};
-static int		rmCurText;
+static void *menuHandle = NULL;
+#define TEXTLINES 23
+static int rmTextId[TEXTLINES];
+static char *rmTextLines[TEXTLINES] = {0};
+static int rmCurText;
 
-float	black[4] = {0.0, 0.0, 0.0, 0.0};
-float	white[TEXTLINES][4];
+float black[4] = { 0.0, 0.0, 0.0, 0.0 };
+float white[TEXTLINES][4];
 
 
 
-static void
-rmDeativate(void * /* dummy */)
+static void rmDeativate(void * /* dummy */)
 {
 }
 
 
-/** 
-    @ingroup	racemantools
-    @param	title	Screen title.
-    @param	bgimg	Optionnal backgrounf image (0 for no img).
-    @return	None.
+/** @brief Set up loading screen
+ *  @ingroup racemantools
+ *  @param title Screen title.
+ *  @param bgimg Optionnal backgrounf image (NULL for no img).
 */
-void
-RmLoadingScreenStart(const char *title, const char *bgimg)
+void RmLoadingScreenStart(const char *title, const char *bgimg)
 {
-	int		i;
-	int		y;
+	int i;
+	int y;
 	
 	if (GfuiScreenIsActive(menuHandle)) {
 		/* Already active */
@@ -72,7 +68,7 @@ RmLoadingScreenStart(const char *title, const char *bgimg)
 	
 	GfuiTitleCreate(menuHandle, title, strlen(title));
 	
-	/* create 20 lines of text */
+	/* create TEXTLINES lines of text */
 	for (i = 0, y = 400; i < TEXTLINES; i++, y -= 16) {
 		white[i][0] = white[i][1] = white[i][2] = 1.0;
 		white[i][3] = (float)i * 0.0421 + 0.2;
@@ -95,33 +91,35 @@ RmLoadingScreenStart(const char *title, const char *bgimg)
 	GfuiDisplay();
 }
 
-void
-RmShutdownLoadingScreen(void)
+
+/** @brief Shut down loading screen
+ *  @ingroup racemantools
+ */
+void RmShutdownLoadingScreen(void)
 {
-    if (menuHandle) {
-	GfuiScreenRelease(menuHandle);
-	menuHandle = 0;
-    }
+	if (menuHandle) {
+		GfuiScreenRelease(menuHandle);
+		menuHandle = 0;
+		// TODO: release rmTextLines here instead of in RmLoadingScreenStart, or both?
+	}
 }
 
 
-/** 
-    @ingroup	racemantools
-    @param	text	Text to display.
-    @return	None.
-*/
-void
-RmLoadingScreenSetText(const char *text)
+/** @brief Set a new line of text on the loading screen
+ *  @ingroup racemantools
+ *  @param[in] text Text to display
+ */
+void RmLoadingScreenSetText(const char *text)
 {
-	int		i, j;
+	int i, j;
 	
 	GfOut("%s\n", text);
 	
 	if (menuHandle) {
-		if (rmTextLines[rmCurText]) {
-			free(rmTextLines[rmCurText]);
-		}
 		if (text) {
+			if (rmTextLines[rmCurText]) {
+				free(rmTextLines[rmCurText]);
+			}
 			rmTextLines[rmCurText] = strdup(text);
 			rmCurText = (rmCurText + 1) % TEXTLINES;
 		}
@@ -130,7 +128,7 @@ RmLoadingScreenSetText(const char *text)
 		j = 0;
 		do {
 			if (rmTextLines[i]) {
-			GfuiLabelSetText(menuHandle, rmTextId[j], rmTextLines[i]);
+				GfuiLabelSetText(menuHandle, rmTextId[j], rmTextLines[i]);
 			}
 			j++;
 			i = (i + 1) % TEXTLINES;
@@ -139,4 +137,3 @@ RmLoadingScreenSetText(const char *text)
 		GfuiDisplay();
 	}
 }
- 
