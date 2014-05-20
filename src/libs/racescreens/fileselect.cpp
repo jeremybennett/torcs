@@ -19,7 +19,7 @@
 
 /** @file   
     Files selection screen.
-    @author	<a href=mailto:eric.espie@torcs.org>Bernhard Wymann, Eric Espie</a>
+    @author	Bernhard Wymann, Eric Espie
     @version	$Id$
 */
 

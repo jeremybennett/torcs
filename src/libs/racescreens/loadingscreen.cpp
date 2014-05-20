@@ -19,7 +19,7 @@
 
 /** @file
     Loading screen.
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie, Bernhard Wymann</a>
+    @author	Eric Espie, Bernhard Wymann
     @version	$Id$
 */
 
