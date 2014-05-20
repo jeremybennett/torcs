@@ -2,7 +2,7 @@
                   driverselect.cpp -- drivers interactive selection                              
                              -------------------                                         
     created              : Mon Aug 16 20:40:44 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -17,10 +17,9 @@
  ***************************************************************************/
 
 /** @file
-    		This is a set of tools useful for race managers.
-    @ingroup	racemantools
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
+    Driver selection screen.
+    @author <a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
+    @version $Id$
 */
 
 
@@ -38,26 +37,26 @@
 #include <racescreens.h>
 #include <portability.h>
 
-static void		*scrHandle;
+static void *scrHandle;
 static tRmDrvSelect	*ds;
-static int		selectedScrollList, unselectedScrollList;
-static int		FocDrvLabelId;
-static int		PickDrvNameLabelId;
-static int		PickDrvCarLabelId;
-static int		PickDrvCategoryLabelId;
-static float	aColor[] = {1.0, 0.0, 0.0, 1.0};
-static int		nbSelectedDrivers;
-static int		nbMaxSelectedDrivers;
+static int selectedScrollList, unselectedScrollList;
+static int FocDrvLabelId;
+static int PickDrvNameLabelId;
+static int PickDrvCarLabelId;
+static int PickDrvCategoryLabelId;
+static float aColor[] = { 1.0, 0.0, 0.0, 1.0 };
+static int nbSelectedDrivers;
+static int nbMaxSelectedDrivers;
 
 typedef struct DrvElt
 {
-    int		index;
-    char	*dname;
-    char	*name;
-    int		sel;
-    int		human;
-    void	*car;
-    GF_TAILQ_ENTRY(struct DrvElt)	link;
+	int index;
+	char *dname;
+	char *name;
+	int sel;
+	int human;
+	void *car;
+	GF_TAILQ_ENTRY(struct DrvElt)	link;
 } tDrvElt;
 
 GF_TAILQ_HEAD(DrvListHead, tDrvElt);
@@ -66,15 +65,14 @@ tDrvListHead DrvList;
 
 static void rmFreeDrvList(void);
 
-static void
-rmdsActivate(void * /* notused */)
+
+static void rmdsActivate(void * /* notused */)
 {
     /* call display function of graphic */
 }
 
 
-static void
-rmdsDeactivate(void *screen)
+static void rmdsDeactivate(void *screen)
 {
 	rmFreeDrvList();    
 	GfuiScreenRelease(scrHandle);
@@ -85,8 +83,7 @@ rmdsDeactivate(void *screen)
 }
 
 
-static void
-rmdsSetFocus(void * /* dummy */)
+static void rmdsSetFocus(void * /* dummy */)
 {
 	char *name;
 	tDrvElt	*curDrv;
@@ -100,8 +97,7 @@ rmdsSetFocus(void * /* dummy */)
 }
 
 
-static void
-rmdsSelect(void * /* dummy */)
+static void rmdsSelect(void * /* dummy */)
 {
 	char *name;
 	tDrvElt	*curDrv;
@@ -126,16 +122,14 @@ rmdsSelect(void * /* dummy */)
 }
 
 
-static void
-rmMove(void *vd)
+static void rmMove(void *vd)
 {
 	GfuiScrollListMoveSelectedElement(scrHandle, selectedScrollList, (long)vd);
 	GfuiScrollListMoveSelectedElement(scrHandle, unselectedScrollList, (long)vd);
 }
 
 
-static void
-rmdsClickOnDriver(void * /* dummy */)
+static void rmdsClickOnDriver(void * /* dummy */)
 {
 	char *name;
 	tDrvElt	*curDrv;
@@ -168,8 +162,7 @@ rmdsClickOnDriver(void * /* dummy */)
 	}
 }
 
-static void
-rmSelectDeselect(void * /* dummy */ )
+static void rmSelectDeselect(void * /* dummy */ )
 {
 	char *name;
 	int src, dst;
@@ -235,8 +228,7 @@ rmSelectDeselect(void * /* dummy */ )
 }
 
 
-static void
-rmdsAddKeys(void)
+static void rmdsAddKeys(void)
 {
 	GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate, NULL);
 	GfuiAddKey(scrHandle, 13, "Accept Selection", NULL, rmdsSelect, NULL);
@@ -249,12 +241,12 @@ rmdsAddKeys(void)
 }
 
 
-/** Interactive Drivers list selection
-    @param	vs	Pointer on tRmDrvSelect structure (cast to void)
-    @warning	The race manager params are modified but not saved.
+/** @brief Drivers list selection, the race manager parameter set is handed over in vs, tRmDrvSelect.param
+ *  @ingroup racemantools
+ *  @param[in,out] vs Pointer on tRmDrvSelect structure (cast to void)
+ *  @note The race manager parameter set is modified in memory but not persisted.
  */
-void
-RmDriversSelect(void *vs)
+void RmDriversSelect(void *vs)
 {
 	tModList *list;
 	tModList *curmod;
@@ -454,8 +446,7 @@ RmDriversSelect(void *vs)
 }
 
 
-static void
-rmFreeDrvList(void)
+static void rmFreeDrvList(void)
 {
 	tDrvElt	*cur;
 

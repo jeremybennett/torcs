@@ -698,7 +698,6 @@ ReInitCars(void)
 /** Dump the track segments on screen
     @param	track	track to dump
     @param	verbose	if set to 1 all the segments are described (long)
-    @ingroup	racemantools
  */
 static void
 reDumpTrack(tTrack *track, int verbose)

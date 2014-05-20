@@ -2,7 +2,7 @@
 
     file        : fileselect.cpp
     created     : Sun Feb 16 13:09:23 CET 2003
-    copyright   : (C) 2003 by Eric Espi�                        
+    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -18,9 +18,8 @@
  ***************************************************************************/
 
 /** @file   
-    		Files manipulation screens.
-    @ingroup	racemantools
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
+    Files selection screen.
+    @author	<a href=mailto:eric.espie@torcs.org>Bernhard Wymann, Eric Espie</a>
     @version	$Id$
 */
 
@@ -34,25 +33,25 @@
 #include <tgfclient.h>
 #include <racescreens.h>
 
-static void		*scrHandle = NULL;
-static int		fileScrollList;
-static tRmFileSelect	*rmFs;
-static tFList		*FileList = NULL;
-static tFList		*FileSelected;
+static void *scrHandle = NULL;
+static int fileScrollList;
+static tRmFileSelect *rmFs;
+static tFList *FileList = NULL;
+static tFList *FileSelected;
 
-static void
-rmActivate(void * /* dummy */ )
+
+static void rmActivate(void * /* dummy */ )
 {
 }
 
-static void
-rmClickOnFile(void * /*dummy*/)
+
+static void rmClickOnFile(void * /*dummy*/)
 {
     GfuiScrollListGetSelectedElement(scrHandle, fileScrollList, (void**)&FileSelected);
 }
 
-static void
-rmSelect(void * /* dummy */ )
+
+static void rmSelect(void * /* dummy */ )
 {
 	if (FileList) {
 		rmFs->select(FileSelected->name);
@@ -63,8 +62,7 @@ rmSelect(void * /* dummy */ )
 	}
 }
 
-static void
-rmDeactivate(void * /* dummy */ )
+static void rmDeactivate(void * /* dummy */ )
 {
 	if (FileList) {
 		GfDirFreeList(FileList, NULL, true, false);
@@ -74,12 +72,13 @@ rmDeactivate(void * /* dummy */ )
 }
 
 
-/** File selection
-    @param	vs	Pointer on tRmFileSelect structure (cast to void)
-    @return	none
-*/
-void
-RmFileSelect(void *vs)
+/** @brief File selection
+ * 
+ *  The files listed are the ones contained in the directory given by the path in tRmFileSelect.path
+ *  @ingroup racemantools
+ *  @param[in,out] vs Pointer on tRmFileSelect structure (cast to void)
+ */
+void RmFileSelect(void *vs)
 {
 	tFList *FileCur;
 

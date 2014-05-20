@@ -17,11 +17,6 @@
  *                                                                         *
  ***************************************************************************/
  
-/**
-    @defgroup	racemantools	Tools for race managers.
-    This is a collection of useful functions for programming a race manager.
-*/
-
 #ifndef __RACEMANTOOLS_H__
 #define __RACEMANTOOLS_H__
 
@@ -30,20 +25,29 @@
 #include <track.h>
 #include <simu.h>
 
+
+/** @brief Structure for track selection
+ *  @ingroup racemantools
+ */
 typedef struct
 {
-    void        *param;		/* Race manager parameters where to set the selected track */
-    void        *prevScreen;	/* Race manager screen to go back */
-    void        *nextScreen;	/* Race manager screen to go after select */
-    tTrackItf	trackItf;	/* Track module interface */
+	void *param;			/* Pointer to race manager parameter set (to set the track) */
+	void *prevScreen;		/* Race manager screen to go back */
+	void *nextScreen;		/* Race manager screen to go after select */
+	tTrackItf trackItf;		/* Track module interface */
 } tRmTrackSelect;
 
+
+/** @brief Structure for driver selection
+ *  @ingroup racemantools
+ */
 typedef struct
 {
-    void        *param;
-    void        *prevScreen;	/* Race manager screen to go back */
-    void        *nextScreen;	/* Race manager screen to go after select */
+	void *param;		/**< Pointer to race manager parameter set (to set the driver) */
+	void *prevScreen;	/**< Race manager screen to go back */
+	void *nextScreen;	/**< Race manager screen to go after select */
 } tRmDrvSelect;
+
 
 typedef struct
 {
@@ -56,14 +60,22 @@ typedef struct
 #define RM_CONF_DISP_MODE	0x00000002
 } tRmRaceParam;
 
+
+/** @brief Callback function definition for handling file selection
+ *  @ingroup racemantools
+ */
 typedef void (*tfSelectFile) (char *);
 
+
+/** @brief Structure for file selection
+ *  @ingroup racemantools
+ */
 typedef struct
 {
-    const char *title;
-    char		*path;
-    void        	*prevScreen;
-    tfSelectFile	select;
+	const char *title;		/**< Title for file selection (for screen title) */
+	char *path;				/**< Directory containing the files to list */
+	void *prevScreen;		/**< Link to previous screen */
+	tfSelectFile select;	/**< Callback function to handle the selection (store the selection in the caller) */
 } tRmFileSelect;
 
 

@@ -2,7 +2,7 @@
 
     file                 : racemantools.h
     created              : Sat Mar 18 23:33:01 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -17,11 +17,6 @@
  *                                                                         *
  ***************************************************************************/
  
-/**
-    @defgroup	racemantools	Tools for race managers.
-    This is a collection of useful functions for programming a race manager.
-*/
-
 #ifndef __RACEMANTOOLS_H__
 #define __RACEMANTOOLS_H__
 

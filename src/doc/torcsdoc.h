@@ -151,6 +151,10 @@
    @defgroup ctrl	Control Device Management
    This is the API to use control devices (Keyboard, mouse and joysticks).
 */
+/**
+    @defgroup racemantools Race Managers API
+    Common functions for race managers.
+*/
 
 /**
     @mainpage	Welcome to the TORCS Documentation
@@ -169,7 +173,7 @@
 
     @section racemanlist Race Manager API
 
-    - [Tools for race managers](@ref racemantools)
+    - [Race Managers API](@ref racemantools)
     - [Parameter Handling API](@ref params)
     - [Tracks structure](@ref trackstruct)
 
