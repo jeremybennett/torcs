@@ -68,7 +68,7 @@ the project, e.g. XML parameter file handling, common functions for robots,
 etc. The header files for the interfaces can be found in
 [src/interfaces](@ref src/interfaces), the 
 libraries in [src/libs](@ref src/libs), the most interesting ones for robot programming are 
-[tgf](@ref src/libs/tgf), [robottools](@ref robottools), [portability](@ref src/libs/portability),
+[parameter handling](@ref params), [robottools](@ref robottools), [portability](@ref src/libs/portability),
 [math](@ref src/libs/math) and [learning](@ref src/libs/learning).
 
 Plugins
@@ -81,11 +81,12 @@ simply change a configuration
 file to change it. Typical use cases are replacing some of the actual modules 
 with wrappers or adapters, e.g. to run the simulation on MATLAB or to run 
 robots with simulated sensors over the network on other machines 
-([SCR](http://scr.geccocompetitions.com)).
+([SCR](http://scr.geccocompetitions.com)). The interface definitions can be
+reviewed [here](@ref modint).
 
 ### Rendering #
 
-Rendering is responsible for rendering the situation. The current default 
+Rendering (@ref graphicmodint) is responsible for rendering the situation. The current default 
 implementation does visual 3D rendering including sound, based on the OpenGL 
 1.3 and OpenAL API's. The interface is specified in src/interfaces/graphic.h. 
 The major function is [refresh](@ref tfGraphicRefresh), which takes as argument 
@@ -95,7 +96,7 @@ and renders it. The code of the actual module is located in
 
 ### Simulation #
 
-Simulation is responsible for progressing the situation by a given time step. 
+Simulation (@ref simumodint) is responsible for progressing the situation by a given time step. 
 The interface is specified in src/interfaces/simu.h. The major function is 
 [update](@ref tfSimUpdate), which takes the [struct Situation *](@ref Situation) 
 and simulation timestep (usually [RCM_MAX_DT_SIMU](@ref RCM_MAX_DT_SIMU)) 
@@ -104,13 +105,13 @@ default module is located in [src/modules/simu/simuv2](@ref src/modules/simu/sim
 
 ### Track #
 
-Track is responsible for loading tracks into the TORCS tTrack structure. The 
+Track (@ref trackmodint) is responsible for loading tracks into the TORCS tTrack structure. The 
 interface is specified in src/interfaces/track.h. The code of the default module 
 is located in [src/modules/track](@ref src/modules/track).
 
 ### Robot #
 
-The robot module(s) drive the cars in the simulation. TORCS can load multiple 
+The robot module(s) (@ref robotmodint) drive the cars in the simulation. TORCS can load multiple 
 robots at the same time to drive multiple cars, one robot supports up to 10 
 cars at once. The major function is [rbDrive](@ref tfRbDrive), which takes as 
 argument an index 
