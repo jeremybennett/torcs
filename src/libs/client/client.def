@@ -12,6 +12,7 @@ EXPORTS
 	TorcsMainExitMenuInit
 	RmTrackSelect
 	RmGetTrackName
+	RmGetCategoryName
 	RmDriversSelect
 	RmPitMenuStart
 	RmLoadingScreenStart
