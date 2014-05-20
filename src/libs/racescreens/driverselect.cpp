@@ -18,7 +18,7 @@
 
 /** @file
     Driver selection screen.
-    @author <a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
+    @author Bernhard Wymann, Eric Espie
     @version $Id$
 */
 

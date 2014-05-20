@@ -19,7 +19,7 @@
 
 /** @file
     Car setup screen.
-    @author Bernhard Wymann</a>
+    @author Bernhard Wymann
     @version $Id$
 */
 

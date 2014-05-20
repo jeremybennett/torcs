@@ -18,10 +18,9 @@
  ***************************************************************************/
 
 /** @file
-    		This is a set of tools useful for race managers to display results.
-    @ingroup	racemantools
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
+    Display results.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 #include <stdlib.h>
@@ -48,17 +47,16 @@ static void rmShowStandings(void *prevHdle, tRmInfo *info, int start);
 
 typedef struct
 {
-    void	*prevHdle;
-    tRmInfo	*info;
-    int		start;
+	void *prevHdle;
+	tRmInfo *info;
+	int start;
 } tRaceCall;
 
-tRaceCall	RmNextRace;
-tRaceCall	RmPrevRace;
+tRaceCall RmNextRace;
+tRaceCall RmPrevRace;
 
 
-static void
-rmSaveRes(void *vInfo)
+static void rmSaveRes(void *vInfo)
 {
 	tRmInfo *info = (tRmInfo *)vInfo;
 	GfParmWriteFile(0, info->results, "Results");
@@ -66,8 +64,7 @@ rmSaveRes(void *vInfo)
 }
 
 
-static void
-rmChgPracticeScreen(void *vprc)
+static void rmChgPracticeScreen(void *vprc)
 {
 	void *prevScr = rmScrHdle;
 	tRaceCall *prc = (tRaceCall*)vprc;
@@ -77,8 +74,7 @@ rmChgPracticeScreen(void *vprc)
 }
 
 
-static void
-rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
+static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 {
 	void *results = info->results;
 	const char *race = info->_reRaceName;
@@ -199,8 +195,7 @@ rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 }
 
 
-static void
-rmChgRaceScreen(void *vprc)
+static void rmChgRaceScreen(void *vprc)
 {
 	void *prevScr = rmScrHdle;
 	tRaceCall *prc = (tRaceCall*)vprc;
@@ -210,8 +205,7 @@ rmChgRaceScreen(void *vprc)
 }
 
 
-static void
-rmRaceResults(void *prevHdle, tRmInfo *info, int start)
+static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 {
 	void *results = info->results;
 	const char *race = info->_reRaceName;
@@ -367,8 +361,7 @@ rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 }
 
 
-static void
-rmChgQualifScreen(void *vprc)
+static void rmChgQualifScreen(void *vprc)
 {
 	void *prevScr = rmScrHdle;
 	tRaceCall *prc = (tRaceCall*)vprc;
@@ -378,8 +371,7 @@ rmChgQualifScreen(void *vprc)
 }
 
 
-static void
-rmQualifResults(void *prevHdle, tRmInfo *info, int start)
+static void rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 {
 	void *results = info->results;
 	const char *race = info->_reRaceName;
@@ -480,8 +472,7 @@ rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 }
 
 
-static void
-rmChgStandingScreen(void *vprc)
+static void rmChgStandingScreen(void *vprc)
 {
 	void *prevScr = rmScrHdle;
 	tRaceCall *prc = (tRaceCall*)vprc;
@@ -491,8 +482,7 @@ rmChgStandingScreen(void *vprc)
 }
 
 
-static void
-rmShowStandings(void *prevHdle, tRmInfo *info, int start)
+static void rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 {
 	int i;
 	int x1, x2, x3;
@@ -601,8 +591,12 @@ rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 }
 
 
-void
-RmShowResults(void *prevHdle, tRmInfo *info)
+/** @brief Display results
+ *  @ingroup racemantools
+ *  @param[in] prevHdle Handle to previous result screen (used if the results require more than one screen)
+ *  @param[in] info tRmInfo.results carries the result parameter set handle
+ */
+void RmShowResults(void *prevHdle, tRmInfo *info)
 {
 	switch (info->s->_raceType) {
 		case RM_TYPE_PRACTICE:
@@ -620,8 +614,12 @@ RmShowResults(void *prevHdle, tRmInfo *info)
 }
 
 
-void
-RmShowStandings(void *prevHdle, tRmInfo *info)
+/** @brief Display standings
+ *  @ingroup racemantools
+ *  @param[in] prevHdle Handle to previous standings screen (used if the standings require more than one screen)
+ *  @param[in] info tRmInfo.results carries the result parameter set handle containing the standings
+ */
+void RmShowStandings(void *prevHdle, tRmInfo *info)
 {
     rmShowStandings(prevHdle, info, 0);
 }
