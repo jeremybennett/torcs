@@ -25,7 +25,7 @@ SOURCES   = controlconfig.cpp  graphconfig.cpp mouseconfig.cpp driverconfig.cpp 
 
 EXPDIR    = include
 
-EXPORTS   = confscreens.h driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h\
+EXPORTS   = driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h\
 			simuconfig.h soundconfig.h openglconfig.h
 
 LIBS      = -lplibjs
