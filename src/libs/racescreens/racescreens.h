@@ -81,9 +81,9 @@ typedef struct
 
 extern void RmTrackSelect(void * /* vs */);
 extern char *RmGetTrackName(char * /* category */, char * /* trackName */);
+extern char *RmGetCategoryName(char /* *category*/);
 
 extern void RmDriversSelect(void * /* vs */);
-extern void RmDriverSelect(void * /* vs */);
 
 extern void RmPitMenuStart(tCarElt * /* car */, tRmInfo *rmInfo, void * /* userdata */, tfuiCallback /* callback */);
 extern void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo);
