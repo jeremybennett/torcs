@@ -82,7 +82,10 @@ typedef struct
 	opponent_race_time/opponent_laps*our_race_laps + opponent_penalty_time
 	
 	This works as well for opponents in the same lap, opponent_laps*our_race_laps is
-	then 1.
+	then 1. The calculation requires that at least one full lap has been driven by
+	the drivers which are compared.
+
+	Wrecked cars are considered worse than a penalty.
 */
 static void ReApplyRaceTimePenalties(void)
 {
@@ -121,15 +124,29 @@ static void ReApplyRaceTimePenalties(void)
 		}
 	}
 
-	// Now resort the cars taking into account the penalties.
+	// Now sort the cars taking into account the penalties
 	int j;
 	for (i = 1; i < s->_ncars; i++) {
 		j = i;
 		while (j > 0) {
 			// Order without penalties is already ok, so if there is no penalty we do not move down
 			if (s->cars[j-1]->_penaltyTime > 0.0f) {
-				int l1 = MAX(1, (MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1));
-				int l2 = MAX(1, (MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1));
+				int l1 = MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1;
+				int l2 = MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1;
+				// If the drivers did not at least complete one lap we cannot apply the rule, check.
+				// If the cars are wrecked we do not care about penalties.
+				if (
+					l1 < 1 ||
+					l2 < 1 ||
+					(s->raceInfo.maxDammage < s->cars[j-1]->_dammage) ||
+					(s->raceInfo.maxDammage < s->cars[j]->_dammage))
+				{
+					// Because the cars came already presorted, all following cars must be even worse,
+					// so we can break the iteration here.
+					i = s->_ncars;	// Break outer loop
+					break;			// Break inner loop
+				}
+				
 				tdble t1 = s->cars[j-1]->_curTime + s->cars[j-1]->_penaltyTime;
 				tdble t2 = s->cars[j]->_curTime*tdble(l1)/tdble(l2) + s->cars[j]->_penaltyTime;
 
