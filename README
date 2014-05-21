@@ -211,7 +211,7 @@ Some additional notes:
 Changes since 1.3.6
 -------------------
 - Added missing pictures for Doxygen generated documentation (Bernhard).
-- Fixed all Doxygen warnings (Bernhard).
+- Fixed all Doxygen (version 1.8.2) warnings (Bernhard).
 - Adjusted Doxygen configuration (Bernhard).
 - Added architecture overview to documentation (Bernhard).
 - Updated documentation in params.cpp (Bernhard).
@@ -224,6 +224,8 @@ Changes since 1.3.6
 - Added RmGetCategoryName to race manager API, as the name suggests (Bernhard).
 - Removed obsolete file confscreens.h (Bernhard).
 - Enabled documentation client side (Javascript) search engine (Bernhard).
+- Improved ReApplyRaceTimePenalties for cases where drivers did not complete a
+  single lap or the car has been wrecked (Bernhard).
 
 
 
@@ -233,6 +235,8 @@ Changes since 1.3.6
 
 TODO for 1.3.7/x
 ----------------
+- Use Windows user directory on Windows
+- Curb sound
 - Z-Collision
 - Merge simuv3 parts into simuv2
 - Review and eventually apply mac os x build
