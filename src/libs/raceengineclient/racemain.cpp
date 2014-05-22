@@ -585,8 +585,6 @@ int RePostRace(void)
 	void *results = ReInfo->results;
 	void *params = ReInfo->params;
 
-	//ReUpdateStandings();
-
 	curRaceIdx = (int)GfParmGetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_RACE, NULL, 1);
 	if (curRaceIdx < GfParmGetEltNb(params, RM_SECT_RACES)) {
 		curRaceIdx++;
