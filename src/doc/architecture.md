@@ -163,8 +163,8 @@ has ended).
 It has four 
 distinct operating modes:
 
-RM_DISP_MODE_NORMAL
--------------------
+Interactive Mode
+----------------
 [RM_DISP_MODE_NORMAL](@ref RM_DISP_MODE_NORMAL):
 This mode is mostly suitable for interactive 
 simulations, it takes into account simulation time and real time. It basically 
@@ -191,8 +191,8 @@ time step, this is required to keep the GUI interactive (processing the event
 queue). There is as well a time warp (up to 128 times real time) and slow motion 
 mode (down to 1/64 times real time).
 
-RM_DISP_MODE_NONE
------------------
+Blind Mode
+----------
 
 [RM_DISP_MODE_NONE](@ref RM_DISP_MODE_NONE):
 This mode is used for the "blind mode" in practice sessions, it does just 
@@ -203,7 +203,7 @@ experiments with almost no overhead, but you can switch quickly in the GUI
 between runs from and back to [RM_DISP_MODE_NORMAL](@ref RM_DISP_MODE_NORMAL) 
 to investigate problems.
 
-RM_DISP_MODE_CAPTURE
+Frame Capturing Mode
 --------------------
 
 [RM_DISP_MODE_CAPTURE](@ref RM_DISP_MODE_CAPTURE):
@@ -214,8 +214,8 @@ Time warp and slow motion modes are available as well. This would be with some
 little modification the most suitable mode for creating an AI driving based on 
 video frames.
 
-RM_DISP_MODE_CONSOLE
---------------------
+Console Mode
+------------
 
 [RM_DISP_MODE_CONSOLE](@ref RM_DISP_MODE_CONSOLE):
 This mode is used when you start TORCS with the -r option from the command 
