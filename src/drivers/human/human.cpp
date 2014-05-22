@@ -17,10 +17,10 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @file   
-    		
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
+/** @file
+	Human driver
+	@author	Bernhard Wymann, Eric Espie
+	@version	$Id$
 */
 
 
