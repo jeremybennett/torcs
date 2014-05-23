@@ -372,7 +372,7 @@ int GfCreateDirForFile(const char *filenameandpath)
 		const int BUFSIZE = 1024;
 		char buf[BUFSIZE];
 		const int size = MIN(lastdelim - filenameandpath, BUFSIZE - 1);
-		snprintf(buf, size, "%s", filenameandpath);
+		snprintf(buf, BUFSIZE, "%s", filenameandpath);
 		buf[size] = '\0';
 
 		return GfCreateDir(buf);
