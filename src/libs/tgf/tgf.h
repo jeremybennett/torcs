@@ -2,7 +2,7 @@
                     tgf.h -- Interface file for The Gaming Framework                                    
                              -------------------                                         
     created              : Fri Aug 13 22:32:14 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -17,9 +17,9 @@
  ***************************************************************************/
 
 /** @file   
-    	The Gaming Framework API.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id$
+    The Gaming Framework API.
+    @author	Bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 
@@ -274,6 +274,7 @@ extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserDatabool, bool
 extern void *GfParmReadFile(const char *file, int mode);
 /* parameter file write */
 extern int GfParmWriteFile(const char *file, void* handle, const char *name);
+extern int GfParmCreateDirectory(const char *file, void *parmHandle);
 
 extern char *GfParmGetName(void *handle);
 extern char *GfParmGetFileName(void *handle);
@@ -405,6 +406,8 @@ extern int GetSingleTextureMode (void);
 extern void SetSingleTextureMode (void);
 extern int GfNearestPow2 (int x);
 extern int GfCreateDir(char *path);
+extern int GfCreateDirForFile(const char *filenameandpath);
+
 
 /*
  * Copyright (c) 1991, 1993

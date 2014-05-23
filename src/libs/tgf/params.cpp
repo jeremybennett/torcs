@@ -1614,8 +1614,6 @@ int GfParmWriteFile(const char *file, void *parmHandle, const char *name)
 	char line[LINE_SZ];
 	FILE *fout;
 	
-	conf = handle->conf;
-	
 	if (handle->magic != PARM_MAGIC) {
 		GfFatal ("gfParmWriteFile: bad handle (%p)\n", parmHandle);
 		return 1;
@@ -1652,6 +1650,40 @@ int GfParmWriteFile(const char *file, void *parmHandle, const char *name)
 	
 	fclose (fout);
 	
+	return 0;
+}
+
+
+/** @brief Create directory for parameter set handle if it does not yet exist.
+ * 
+ *   @ingroup paramsfile
+ *   @param[in] file if NULL the internally stored path is used, if not NULL the given path is used (it is not stored in the handle)
+ *   @param[in,out] parmHandle parameter set handle
+ *   @return 0 if ok
+ *   <br>1 if Error
+ */
+int GfParmCreateDirectory(const char *file, void *parmHandle)
+{
+	struct parmHandle *handle = (struct parmHandle *)parmHandle;
+	struct parmHeader *conf = handle->conf;
+	
+	if (handle->magic != PARM_MAGIC) {
+		GfFatal ("GfParmCreateDirectory: bad handle (%p)\n", parmHandle);
+		return 1;
+	}
+	
+	if (!file) {
+		file = conf->filename;
+		if (!file) {
+			GfError ("GfParmCreateDirectory: bad file name\n");
+			return 1;
+		}
+	}
+
+	if (GfCreateDirForFile(file) != GF_DIR_CREATED) {
+		return 1;
+	}
+
 	return 0;
 }
 

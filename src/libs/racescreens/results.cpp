@@ -59,6 +59,7 @@ tRaceCall RmPrevRace;
 static void rmSaveRes(void *vInfo)
 {
 	tRmInfo *info = (tRmInfo *)vInfo;
+	GfParmCreateDirectory(0, info->results);
 	GfParmWriteFile(0, info->results, "Results");
 	GfuiVisibilitySet(rmScrHdle, rmSaveId, GFUI_INVISIBLE);
 }

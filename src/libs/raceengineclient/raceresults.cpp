@@ -18,9 +18,9 @@
  ***************************************************************************/
 
 /** @file   
-    		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id$
+    Processing of race results		
+    @author	Bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 #include <stdlib.h>
@@ -316,6 +316,7 @@ ReUpdateStandings(void)
 	snprintf(str2, BUFSIZE, "<?xml-stylesheet type=\"text/xsl\" href=\"file:///%sconfig/style.xsl\"?>", GetDataDir());
 	
 	GfParmSetDTD (results, str1, str2);
+	GfParmCreateDirectory(0, results);
 	GfParmWriteFile(0, results, "Results");
 }
 

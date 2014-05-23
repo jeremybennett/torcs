@@ -502,7 +502,7 @@ GfScrReinit(void * /* dummy */)
     saveParams();
 
 #ifdef WIN32
-	snprintf(cmd, CMDSIZE, "%swtorcs.exe", GetLocalDir());
+	snprintf(cmd, CMDSIZE, "%swtorcs.exe", GetLibDir());
     int i;
 	for (i = 0; i < CMDSIZE && cmd[i] != NULL; i++) {
 		if (cmd[i] == '/') {
@@ -511,7 +511,7 @@ GfScrReinit(void * /* dummy */)
 	}
 	
 	char cmdarg[CMDSIZE];
-	snprintf(cmdarg, CMDSIZE, "\"%swtorcs.exe\"", GetLocalDir());
+	snprintf(cmdarg, CMDSIZE, "\"%swtorcs.exe\"", GetLibDir());
 	for (i = 0; i < CMDSIZE && cmdarg[i] != NULL; i++) {
 		if (cmdarg[i] == '/') {
 			cmdarg[i] = '\\';

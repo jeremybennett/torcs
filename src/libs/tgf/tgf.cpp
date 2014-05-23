@@ -301,6 +301,11 @@ int GfNearestPow2 (int x)
 }
 
 
+/** @brief Create directory for given path recursively, so all missing parent directories are created as well
+ *  @param[in] path Path
+ *  @return #GF_DIR_CREATED if directory was created or already exits
+ *  <br>#GF_DIR_CREATION_FAILED if directory could not be created
+ */
 int GfCreateDir(char *path)
 {
 	if (path == NULL) {
@@ -349,3 +354,29 @@ int GfCreateDir(char *path)
 	}
 }
 
+
+/** @brief Create directory for given file path recursively, so all missing parent directories are created as well
+ *  @param[in] filenameandpath Path including file name
+ *  @return #GF_DIR_CREATED if directory was created or already exits
+ *  <br>#GF_DIR_CREATION_FAILED if directory could not be created
+ *  @see GfCreateDir
+ */
+int GfCreateDirForFile(const char *filenameandpath)
+{
+	if (filenameandpath == 0) {
+		return GF_DIR_CREATION_FAILED;
+	}
+	
+	const char* lastdelim = strrchr(filenameandpath, '/');
+	if (lastdelim != NULL && lastdelim != filenameandpath) {
+		const int BUFSIZE = 1024;
+		char buf[BUFSIZE];
+		const int size = MIN(lastdelim - filenameandpath, BUFSIZE - 1);
+		snprintf(buf, size, "%s", filenameandpath);
+		buf[size] = '\0';
+
+		return GfCreateDir(buf);
+	}
+
+	return GF_DIR_CREATED;
+}
