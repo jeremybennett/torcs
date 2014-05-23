@@ -226,6 +226,13 @@ Changes since 1.3.6
 - Enabled documentation client side (Javascript) search engine (Bernhard).
 - Improved ReApplyRaceTimePenalties for cases where drivers did not complete a
   single lap or the car has been wrecked (Bernhard).
+- Removed some outdated files from human driver (Bernhard).
+- TORCS configuration and result files go now to correct place on Windows,
+  see e.g. to AppData/Local/torcs on Windows 7 (Bernhard).
+- Result saving creates directory if not available, matters when creating
+  custom racemanagers or running custom batches with -r (Bernhard).
+- Improved -r on Windows, paths containing backslashes ('\') are now working
+  (Bernhard). 
 
 
 
@@ -235,7 +242,6 @@ Changes since 1.3.6
 
 TODO for 1.3.7/x
 ----------------
-- Use Windows user directory on Windows
 - Curb sound
 - Z-Collision
 - Merge simuv3 parts into simuv2
