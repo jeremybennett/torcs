@@ -18,9 +18,8 @@
  ***************************************************************************/
  
 /** @file    
-    		
-    @author	<a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
-    @version	$Id$
+    @author Bernhard Wymann, Eric Espie
+    @version $Id$
 */
 
 #ifndef _TORCSDOC_H_
@@ -171,6 +170,15 @@
     
     - [Architecture Overview](@ref architecture)
     
+    @section doclist Other Documentation
+    
+    - [Robot Tutorial](http://www.berniw.org/tutorials/robot)
+    - [Track Tutorial](http://www.berniw.org/aboutme/publications/build_your_trocs_track_in_20_minutes_v2.odt)
+    - [Car Creation Tutorial](http://www.youtube.com/playlist?list=PLq-L0hhLuRI04BLdNW0QrSxhvuyPml8zp)
+    - [Research Papers](http://scholar.google.com/scholar?q=torcs+car)
+
+    The most resent links and news can be found on the [TORCS site](http://www.torcs.org).
+    
     @section robotlist Robots API
     
     - [Robot Module Interface](@ref robotmodint)
@@ -184,6 +192,12 @@
     - [Race Managers API](@ref racemantools)
     - [Parameter Handling API](@ref params)
     - [Tracks structure](@ref trackstruct)
+    
+    @section modlist Module Interfaces
+    - [Graphic Module Interface](@ref graphicmodint)
+    - [Robot Module Interface](@ref robotmodint)
+    - [Simulation Module Interface](@ref simumodint)
+    - [Track Loader Module Interface](@ref trackmodint)
 
 */
 
