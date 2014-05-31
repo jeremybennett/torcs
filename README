@@ -234,7 +234,7 @@ Changes since 1.3.6
   single lap or the car has been wrecked (Bernhard).
 - Removed some outdated files from human driver (Bernhard).
 - TORCS configuration and result files go now to correct place on Windows,
-  see e.g. to AppData/Local/torcs on Windows 7 (Bernhard).
+  e.g. to AppData/Local/torcs on Windows 7 (Bernhard).
 - Result saving creates directory if not available, matters when creating
   custom racemanagers or running custom batches with -r (Bernhard).
 - Improved -r on Windows, paths containing backslashes ('\') are now working
@@ -242,7 +242,7 @@ Changes since 1.3.6
 - Added ShFolder.lib to VS 6 project files (required for SHGetFolderPath).
   For VS 6 builds you will need to install the Windows Server 2003 February
   Edtion CORE SDK (the last one which worked with VS 6) and set the lib
-  and include path in the options.
+  and include path in the VS 6 options (Bernhard).
 
 
 12. TODO/Notes
@@ -356,28 +356,22 @@ TODO LATER
 - 3d-grass.
 - Dynamic sky.
 - TRB integration.
-- Fix/create new simu/switch to updated/new simu.
 - Show just fitting resolutions for fullscreen/change for windowed mode.
 - Separate components more clean (e.g. ssgInit should go back to
   ssggraph, etc.)
-- Fix windows project such that it compiles in all locations (currently it
-  fails if special characters are in the path).
 - Avoid cameras cutting the landscape.
 - Start position marks on track (same technique like fake shadow, skids).
 - Start procedures (pace car, etc).
 - Better transparency for track objects.
 - More driving aids, switch to AI and back.
-- localization (e.g English, French, German, ...).
-- Fix engine inertia/s of F1 cars, check/fix all other cars as well.
 - Opponent sets for human players (e.g 20 Open Wheel cars, etc.)
 - Free camera controlled with mouse and keys.
-- Automate GL features verification (hopefully obsolete).
 
 
 IDEAS FOR MUCH LATER
 --------------------
 - Weather.
-- Dynamic day/night-time, car lights with projective texturing.
+- Dynamic day/night-time, car lights.
 - Pit crew.
 - Dynamic "intelligent" Objects (e.g. Helicopter)
 - Solid/dynamic obstacles.
@@ -391,6 +385,5 @@ IDEAS FOR MUCH LATER
 - Separate pit path, Y segments, etc?
 - TORCS as benchmark or screensaver?
 - Force feedback.
-- (Compressed data files?)
 - Story mode with message.
 - Traffic simulator
