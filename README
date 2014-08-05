@@ -243,6 +243,8 @@ Changes since 1.3.6
   For VS 6 builds you will need to install the Windows Server 2003 February
   Edtion CORE SDK (the last one which worked with VS 6) and set the lib
   and include path in the VS 6 options (Bernhard).
+- Fixed some gcc 4.8.1 warnings (Bernhard).
+- Disabled penalties after race finish, reported by MarkP (MarkP, Bernhard).
 
 
 12. TODO/Notes
