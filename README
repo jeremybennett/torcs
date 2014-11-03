@@ -258,6 +258,7 @@ TODO for 1.3.7/x
 - Merge simuv3 parts into simuv2
 - Review and eventually apply mac os x build
 - Review MorphOS changes
+- Review WD's ABS suggestion, apply.
 
 eventually (otherwise in 1.4.x or later):
 - track wall properties
