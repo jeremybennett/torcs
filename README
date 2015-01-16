@@ -245,6 +245,8 @@ Changes since 1.3.6
   and include path in the VS 6 options (Bernhard).
 - Fixed some gcc 4.8.1 warnings (Bernhard).
 - Disabled penalties after race finish, reported by MarkP (MarkP, Bernhard).
+- Added new options to trackgen for testing, see -i, -o (Bernhard).
+- Added a testsuite to generate a bulk of tracks ("test" directory) (Bernhard). 
 
 
 12. TODO/Notes
@@ -259,6 +261,7 @@ TODO for 1.3.7/x
 - Review and eventually apply mac os x build
 - Review MorphOS changes
 - Review WD's ABS suggestion, apply.
+- Review WD's 4WD analysis/patch.
 
 eventually (otherwise in 1.4.x or later):
 - track wall properties
