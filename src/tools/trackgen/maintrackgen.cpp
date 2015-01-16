@@ -2,7 +2,7 @@
 
     file                 : trackgen.cpp
     created              : Sat Dec 23 09:27:43 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2015 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -63,6 +63,8 @@ int	UseBorder = 1;
 char *OutputFileName;
 char *TrackName;
 char *TrackCategory;
+char *TrackXMLFilePath; // Full path to track XML input file to read from (mainly for unittests)
+char *TrackACFilePath;	// Full path to track AC output file to write into (mainly for unittests)
 
 void *TrackHandle;
 void *CfgHandle;
@@ -88,14 +90,16 @@ static void Generate(void);
 void usage(void)
 {
     fprintf(stderr, "Terrain generator for tracks $Revision$ \n");
-    fprintf(stderr, "Usage: trackgen -c category -n name [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
+    fprintf(stderr, "Usage: trackgen -c category -n name [-i xml_path] [-o ac_path] [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
     fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
     fprintf(stderr, "       -n name        : track name\n");
+	fprintf(stderr, "       -i xml_path    : path to track XML file, for unit tests (instead of fetching it from standard location)\n");
+	fprintf(stderr, "       -o ac_path     : path of the generated ac file, for unit tests (instead of putting it to the standard location)\n");
     fprintf(stderr, "       -b             : draw bump track\n");
 	fprintf(stderr, "       -r             : draw raceline track\n");
-    fprintf(stderr, "       -B             : Don't use terrain border (relief supplied int clockwise, ext CC)\n");
+    fprintf(stderr, "       -B             : don't use terrain border (relief supplied int clockwise, ext CC)\n");
     fprintf(stderr, "       -a             : draw all (default is track only)\n");
-    fprintf(stderr, "       -z             : Just calculate track parameters and exit\n");
+    fprintf(stderr, "       -z             : just calculate track parameters and exit\n");
     fprintf(stderr, "       -s             : split the track and the terrain\n");
     fprintf(stderr, "       -S             : split all\n");
     fprintf(stderr, "       -E <n>         : save elevation file n\n");
@@ -124,6 +128,8 @@ void init_args(int argc, char **argv)
     TrackName = NULL;
     TrackCategory = NULL;
     saveElevation = -1;
+	TrackXMLFilePath = NULL;
+	TrackACFilePath = NULL;
 
 #ifndef WIN32
 	const int BUFSIZE = 1024;
@@ -136,7 +142,7 @@ void init_args(int argc, char **argv)
 	    {"version", 1, 0, 0}
 	};
 
-	c = getopt_long(argc, argv, "hvn:c:azsSE:H:rbBL:",
+	c = getopt_long(argc, argv, "hvn:c:i:o:azsSE:H:rbBL:",
 			long_options, &option_index);
 	if (c == -1)
 	    break;
@@ -194,6 +200,12 @@ void init_args(int argc, char **argv)
 		case 'c':
 			TrackCategory = strdup(optarg);
 			break;
+		case 'i':
+			TrackXMLFilePath = strdup(optarg);
+			break;
+		case 'o':
+			TrackACFilePath = strdup(optarg);
+			break;
 		case 'E':
 			saveElevation = strtol(optarg, NULL, 0);;
 			TrackOnly = 0;
@@ -240,32 +252,46 @@ void init_args(int argc, char **argv)
 			MergeTerrain = 0;
 		} else if (strncmp(argv[i], "-n", 2) == 0) {
 			if (i + 1 < argc) {
-			TrackName = strdup(argv[++i]);
+				TrackName = strdup(argv[++i]);
 			} else {
-			usage();
-			exit(0);
+				usage();
+				exit(0);
 			}
 		} else if (strncmp(argv[i], "-E", 2) == 0) {
 			if (i + 1 < argc) {
-			saveElevation = strtol(argv[++i], NULL, 0);
+				saveElevation = strtol(argv[++i], NULL, 0);
 			} else {
-			usage();
-			exit(0);
+				usage();
+				exit(0);
 			}
 			TrackOnly = 0;
 		} else if (strncmp(argv[i], "-c", 2) == 0) {
 			if (i + 1 < argc) {
-			TrackCategory = strdup(argv[++i]);
+				TrackCategory = strdup(argv[++i]);
 			} else {
-			usage();
-			exit(0);
+				usage();
+				exit(0);
+			}
+		} else if (strncmp(argv[i], "-i", 2) == 0) {
+			if (i + 1 < argc) {
+				TrackXMLFilePath = strdup(argv[++i]);
+			} else {
+				usage();
+				exit(0);
+			}
+		} else if (strncmp(argv[i], "-o", 2) == 0) {
+			if (i + 1 < argc) {
+				TrackACFilePath = strdup(argv[++i]);
+			} else {
+				usage();
+				exit(0);
 			}
 		} else if (strncmp(argv[i], "-H", 2) == 0) {
 			if (i + 1 < argc) {
-			HeightSteps = strtol(argv[++i], NULL, 0);
+				HeightSteps = strtol(argv[++i], NULL, 0);
 			} else {
-			usage();
-			exit(0);
+				usage();
+				exit(0);
 			}
 		} else {
 			usage();
@@ -323,7 +349,7 @@ static void Generate(void)
 	char buf2[BUFSIZE];
 	char trackdef[BUFSIZE];
 
-	// Get the trackgen paramaters.
+	// Get the trackgen parameters.
 	snprintf(buf, BUFSIZE, "%s", CFG_FILE);
 	CfgHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 
@@ -338,7 +364,12 @@ static void Generate(void)
 	}
 
 	// This is the track definition.
-	snprintf(trackdef, BUFSIZE, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
+	if (TrackXMLFilePath == NULL) {
+		snprintf(trackdef, BUFSIZE, "tracks/%s/%s/%s.xml", TrackCategory, TrackName, TrackName);
+	} else {
+		snprintf(trackdef, BUFSIZE, "%s/%s.xml", TrackXMLFilePath, TrackName);
+	}
+
 	TrackHandle = GfParmReadFile(trackdef, GFPARM_RMODE_STD);
 	if (!TrackHandle) {
 		fprintf(stderr, "Cannot find %s\n", trackdef);
@@ -350,10 +381,14 @@ static void Generate(void)
 
 	if (!JustCalculate) {
 		// Get the output file radix.
-		snprintf(buf2, BUFSIZE, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+		if (TrackACFilePath == NULL) {
+			snprintf(buf2, BUFSIZE, "tracks/%s/%s/%s", Track->category, Track->internalname, Track->internalname);
+		} else {
+			snprintf(buf2, BUFSIZE, "%s/%s", TrackACFilePath, Track->internalname);
+		}
 		OutputFileName = strdup(buf2);
 
-		// Number of goups for the complete track.
+		// Number of groups for the complete track.
 		if (TrackOnly) {
 			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
 			// Track.
