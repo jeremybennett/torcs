@@ -1,0 +1,11 @@
+Test data and scripts for trackgen.
+
+data: required for XML processing
+source: original tracks as reference
+generated: generated track to check if trackgen delivers the same result
+generate.sh: scripts to generate all tracks for verification/comparision
+clean.sh: script to clean up generated tracks
+
+After a change in trackgen you can run generate.sh to run trackgen on all
+tracks, then you can compare the source and generated directories to check
+if the output is still the same.
