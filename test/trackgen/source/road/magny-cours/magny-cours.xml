@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE params SYSTEM "../../../src/libs/tgf/params.dtd" [
+<!-- general definitions for tracks -->
+<!ENTITY default-surfaces SYSTEM "../../../data/tracks/surfaces.xml">
+<!ENTITY default-objects SYSTEM "../../../data/tracks/objects.xml">
+]>
+
+<params name="Magny-cours" type="trackdef" mode="mw">
+
+  <!-- Header -->
+  <section name="Header">
+    <attstr name="name"        val="Magny-cours"/>
+    <attstr name="category"    val="road"/>
+    <attnum name="version"     val="4"/>
+    <attstr name="author"      val="Thierry Leconte"/>
+    <attstr name="description" val="F1 French grand prix"/>
+  </section>  <!-- Header -->
+
+  <!-- Surfaces -->
+  <section name="Surfaces">
+      &default-surfaces;
+  </section>  <!-- Surfaces -->
+
+  <!-- Objects -->
+  <section name="Objects">
+      &default-objects;
+  </section>  <!-- Objects -->
+
+  <!-- Graphic -->
+  <section name="Graphic">
+    <attstr name="3d description" val="magny-cours.ac"/>
+
+    <attstr name="background image" val="background.png"/>
+    <attnum name="background type" val="4"/>
+
+    <attnum name="background color R" val="0.30"/>
+    <attnum name="background color G" val="0.11"/>
+    <attnum name="background color B" val="0.08"/>
+
+    <attnum name="ambient color R" val="0.2"/>
+    <attnum name="ambient color G" val="0.2"/>
+    <attnum name="ambient color B" val="0.2"/>
+
+    <attnum name="diffuse color R" val="1"/>
+    <attnum name="diffuse color G" val="0.6"/>
+    <attnum name="diffuse color B" val="0.3"/>
+
+    <attnum name="specular color R" val="0.2"/>
+    <attnum name="specular color G" val="0.2"/>
+    <attnum name="specular color B" val="0.2"/>
+
+
+    <attnum name="light position x" val="500"/>
+    <attnum name="light position y" val="-200"/>
+    <attnum name="light position z" val="100"/>
+
+    <attnum name="fov factor" val="0.8"/>
+
+    <section name="Environment Mapping">
+      <section name="general">
+	<attstr name="env map image" val="env.png"/>
+      </section>
+    </section>
+
+    <section name="Terrain Generation">
+      <attnum name="track step" unit="m" val="20"/>
+      <attnum name="border margin" unit="m" val="150"/>
+      <attnum name="border step" unit="m" val="20"/>
+      <attstr name="surface" val="grass"/>
+
+      <attstr name="elevation map" val="magny-cours-elv3.png"/>
+      <attnum name="maximum altitude" val="15"/>
+      <attnum name="minimum altitude" val="0"/>
+      <attnum name="group size" val="100"/>
+
+    </section>
+
+    <section name="Turn Marks">
+      <attnum name="width" unit="m" val="1.0"/>
+      <attnum name="height" unit="m" val="1.0"/>
+      <attnum name="vertical space" unit="m" val="0.0"/>
+      <attnum name="horizontal space" unit="m" val="2.0"/>
+    </section>
+
+  </section>  <!-- Graphic -->
+
+
+  <section name="Starting Grid">
+    <attnum name="rows" val="2"/>
+    <attstr name="pole position side" val="left"/>
+    <attnum name="distance to start" unit="m" val="4.0"/>
+    <attnum name="distance between columns" unit="m" val="8.0"/>
+    <attnum name="offset within a column" unit="m" val="4.0"/>
+    <attnum name="initial height" unit="m" val="0.2"/>
+  </section>
+
+  <!-- Main Track -->
+  <section name="Main Track">
+
+    <attnum name="width" unit="m" val="11.0"/>
+    <attstr name="surface" val="asphalt2-lines"/>
+
+    <section name="Right Side">
+      <attstr name="surface" val="grass3"/>
+      <attnum name="width" val="9.0"/>
+      <attstr name="banking type" in="tangent,level" val="tangent"/> <!-- shared with border -->
+    </section>
+
+    <section name="Right Border">
+      <attnum name="width" val="1.0"/>
+      <attstr name="surface" val="tar-grass3-r"/>
+      <attstr name="style" val="plan"/>
+    </section>
+
+    <section name="Left Side">
+      <attstr name="surface" val="grass3"/>
+      <attnum name="width" val="15.0"/>
+      <attstr name="banking type" in="tangent,level" val="tangent"/>
+    </section>
+
+
+    <!-- PITS -->
+    <section name="Pits">
+      <attstr name="side" val="left"/>
+      <attstr name="entry" val="pit-entry"/>
+      <attstr name="start" val="pit-start"/>
+      <attstr name="end" val="start lane"/>
+      <attstr name="exit" val="pit-exit"/>
+      <attnum name="length" unit="m" val="15"/>
+      <attnum name="width" unit="m" val="5"/>
+    </section>  <!-- PITS -->
+
+    <!-- Track Segments -->
+    <section name="Track Segments">
+
+
+
+<section name="start lane">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="120.712"/>
+<attnum name="width" unit="m" val="23.0"/>
+        <section name="Left Side">
+          <attnum name="width" val="18.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="5.0"/>
+        </section>
+
+</section>
+
+<section name="pit-exit">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="51.7763"/>
+        <section name="Left Side">
+          <attnum name="end width" val="15.0"/>
+        </section>
+</section>
+
+<section name="seg-3">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="6.68652" unit="m"/>
+<attnum name="arc" unit="deg" val="50.3477"/>
+<attnum name="radius" unit="m" val="66.8652"/>
+<attnum name="end radius" unit="m" val="67.6835"/>
+<attnum name="end width" unit="m" val="13.0"/>
+        <section name="Right Side">
+          <attnum name="width" val="50.0"/>
+        </section>
+</section>
+
+<section name="seg-4">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="112.292"/>
+        <section name="Left Side">
+          <attnum name="end width" val="21.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="28.0"/>
+        </section>
+</section>
+
+<section name="seg-5">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="4.89062" unit="m"/>
+<attnum name="arc" unit="deg" val="29.7023"/>
+<attnum name="radius" unit="m" val="48.9062"/>
+<attnum name="end radius" unit="m" val="50.0877"/>
+</section>
+
+<section name="seg-6">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="27.3776"/>
+        <section name="Left Side">
+          <attnum name="end width" val="15.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="50.0"/>
+        </section>
+</section>
+
+<section name="seg-7">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="8.1657" unit="m"/>
+<attnum name="arc" unit="deg" val="29.2674"/>
+<attnum name="radius" unit="m" val="81.657"/>
+<attnum name="end radius" unit="m" val="82.0468"/>
+        <section name="Left Side">
+          <attnum name="end width" val="32.0"/>
+        </section>
+</section>
+
+<section name="seg-8">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="10.2026"/>
+</section>
+
+<section name="seg-9">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="10.5775" unit="m"/>
+<attnum name="arc" unit="deg" val="87.2811"/>
+<attnum name="radius" unit="m" val="105.775"/>
+<attnum name="end radius" unit="m" val="107.283"/>
+        <section name="Right Side">
+          <attnum name="width" val="40.0"/>
+        </section>
+</section>
+
+<section name="seg-10">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="12.4914"/>
+</section>
+
+<section name="seg-11">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="8.30291" unit="m"/>
+<attnum name="arc" unit="deg" val="53.0992"/>
+<attnum name="radius" unit="m" val="85.0648"/>
+<attnum name="end radius" unit="m" val="83.0291"/>
+        <section name="Right Side">
+          <attnum name="width" val="35.0"/>
+        </section>
+
+</section>
+
+<section name="seg-12">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="6.8751"/>
+</section>
+
+<section name="seg-13">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="19.8551" unit="m"/>
+<attnum name="arc" unit="deg" val="14.3247"/>
+<attnum name="radius" unit="m" val="199.899"/>
+<attnum name="end radius" unit="m" val="198.551"/>
+        <section name="Right Side">
+          <attnum name="width" val="28.0"/>
+        </section>
+</section>
+
+<section name="seg-14">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="61.2071"/>
+        <section name="Left Side">
+          <attnum name="end width" val="25.0"/>
+        </section>
+
+</section>
+<section name="seg-15">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="32.0989" unit="m"/>
+<attnum name="arc" unit="deg" val="20.9777"/>
+<attnum name="radius" unit="m" val="322.199"/>
+<attnum name="end radius" unit="m" val="320.989"/>
+        <section name="Left Side">
+          <attnum name="end width" val="5.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="15.0"/>
+        </section>
+</section>
+
+<section name="seg-16">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="220.504"/>
+        <section name="Right Side">
+          <attnum name="width" val="5.0"/>
+        </section></section>
+
+<section name="seg-17">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="40.6068" unit="m"/>
+<attnum name="arc" unit="deg" val="18.7399"/>
+<attnum name="radius" unit="m" val="406.068"/>
+<attnum name="end radius" unit="m" val="409.557"/>
+        <section name="Left Side">
+          <attnum name="end width" val="28.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="15.0"/>
+        </section>
+</section>
+
+<section name="seg-18">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="344.311"/>
+        <section name="Left Side">
+          <attnum name="end width" val="3.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="5.0"/>
+        </section>
+</section>
+
+<section name="seg-19">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="0.508787" unit="m"/>
+<attnum name="arc" unit="deg" val="156.332"/>
+<attnum name="radius" unit="m" val="5.08787"/>
+<attnum name="end radius" unit="m" val="20.9427"/>
+        <section name="Left Side">
+          <attnum name="end width" val="27.0"/>
+        </section>
+</section>
+
+<section name="seg-20">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="94.8088"/>
+        <section name="Left Side">
+          <attnum name="end width" val="10.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="25.0"/>
+        </section>
+</section>
+
+<section name="seg-21">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="3.11681" unit="m"/>
+<attnum name="arc" unit="deg" val="16.3906"/>
+<attnum name="radius" unit="m" val="31.1681"/>
+<attnum name="end radius" unit="m" val="31.779"/>
+        <section name="Right Side">
+          <attnum name="width" val="20.0"/>
+        </section>
+</section>
+
+<section name="seg-22">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="118.742"/>
+        <section name="Left Side">
+          <attnum name="end width" val="28.0"/>
+        </section>
+</section>
+
+
+<section name="seg-23">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="13.3687" unit="m"/>
+<attnum name="arc" unit="deg" val="3.91982"/>
+<attnum name="radius" unit="m" val="133.936"/>
+<attnum name="end radius" unit="m" val="133.687"/>
+        <section name="Right Side">
+          <attnum name="width" val="20.0"/>
+        </section>
+</section>
+
+<section name="seg-24">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="10.8446"/>
+</section>
+
+<section name="seg-25">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="9.98253" unit="m"/>
+<attnum name="arc" unit="deg" val="13.2311"/>
+<attnum name="radius" unit="m" val="99.8253"/>
+<attnum name="end radius" unit="m" val="99.9439"/>
+        <section name="Left Side">
+          <attnum name="end width" val="20.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="15.0"/>
+        </section>
+</section>
+
+<section name="seg-26">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="255.352"/>
+        <section name="Left Side">
+          <attnum name="end width" val="3.0"/>
+        </section>
+</section>
+
+<section name="seg-27">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="2.51422" unit="m"/>
+<attnum name="arc" unit="deg" val="51.096"/>
+<attnum name="radius" unit="m" val="25.1422"/>
+<attnum name="end radius" unit="m" val="26.552"/>
+        <section name="Left Side">
+          <attnum name="end width" val="20.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="25.0"/>
+        </section>
+</section>
+
+<section name="seg-28">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="19.5864"/>
+        <section name="Left Side">
+          <attnum name="end width" val="23.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="15.0"/>
+        </section>
+</section>
+<section name="seg-29">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="6.9451" unit="m"/>
+<attnum name="arc" unit="deg" val="48.5839"/>
+<attnum name="radius" unit="m" val="69.451"/>
+<attnum name="end radius" unit="m" val="70.1075"/>
+        <section name="Left Side">
+          <attnum name="end width" val="28.0"/>
+        </section>
+</section>
+
+<section name="seg-30">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="30.6985"/>
+        <section name="Left Side">
+          <attnum name="end width" val="12.0"/>
+        </section>
+        <section name="Right Side">
+          <attnum name="width" val="15.0"/>
+        </section></section>
+
+<section name="seg-31">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="28.0583" unit="m"/>
+<attnum name="arc" unit="deg" val="16.7392"/>
+<attnum name="radius" unit="m" val="280.583"/>
+<attnum name="end radius" unit="m" val="280.863"/>
+</section>
+
+<section name="seg-32">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="43.3648"/>
+</section>
+<section name="seg-33">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="5.02832" unit="m"/>
+<attnum name="arc" unit="deg" val="77.4224"/>
+<attnum name="radius" unit="m" val="50.2832"/>
+<attnum name="end radius" unit="m" val="64.0287"/>
+        <section name="Left Side">
+          <attnum name="end width" val="18.0"/>
+        </section>
+</section>
+<section name="seg-34">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="8.42786"/>
+</section>
+<section name="seg-35">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="3.26608" unit="m"/>
+<attnum name="arc" unit="deg" val="122.715"/>
+<attnum name="radius" unit="m" val="32.6608"/>
+<attnum name="end radius" unit="m" val="33.286"/>
+</section>
+<section name="seg-36">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="24.8268"/>
+</section>
+<section name="seg-37">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="9.49251" unit="m"/>
+<attnum name="arc" unit="deg" val="32.7338"/>
+<attnum name="radius" unit="m" val="94.9602"/>
+<attnum name="end radius" unit="m" val="94.9251"/>
+</section>
+<section name="seg-38">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="18.5153"/>
+</section>
+<section name="seg-39">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="8.66911" unit="m"/>
+<attnum name="arc" unit="deg" val="20.5512"/>
+<attnum name="radius" unit="m" val="88.3998"/>
+<attnum name="end radius" unit="m" val="86.6911"/>
+        <section name="Left Side">
+          <attnum name="end width" val="14.0"/>
+        </section>
+</section>
+<section name="seg-40">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="67.9048"/>
+        <section name="Left Side">
+          <attnum name="end width" val="20.0"/>
+        </section>
+</section>
+<section name="seg-41">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="22.3165" unit="m"/>
+<attnum name="arc" unit="deg" val="18.3739"/>
+<attnum name="radius" unit="m" val="223.165"/>
+<attnum name="end radius" unit="m" val="223.472"/>
+        <section name="Left Side">
+          <attnum name="end width" val="5.0"/>
+        </section>
+</section>
+<section name="seg-42">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="291.073"/>
+</section>
+<section name="seg-43">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="4.18499" unit="m"/>
+<attnum name="arc" unit="deg" val="46.7034"/>
+<attnum name="radius" unit="m" val="41.8499"/>
+<attnum name="end radius" unit="m" val="41.9823"/>
+        <section name="Left Side">
+          <attnum name="end width" val="21.0"/>
+        </section>
+</section>
+<section name="seg-44">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="35.2546"/>
+        <section name="Left Side">
+          <attnum name="end width" val="35.0"/>
+        </section>
+</section>
+<section name="seg-45">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="4.61415" unit="m"/>
+<attnum name="arc" unit="deg" val="45.252"/>
+<attnum name="radius" unit="m" val="46.9372"/>
+<attnum name="end radius" unit="m" val="46.1415"/>
+        <section name="Left Side">
+          <attnum name="end width" val="42.0"/>
+        </section>
+</section>
+<section name="seg-46">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="32.013"/>
+</section>
+<section name="seg-47">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="19.5758" unit="m"/>
+<attnum name="arc" unit="deg" val="17.4788"/>
+<attnum name="radius" unit="m" val="195.758"/>
+<attnum name="end radius" unit="m" val="196.461"/>
+        <section name="Left Side">
+          <attnum name="end width" val="35.0"/>
+        </section>
+</section>
+<section name="seg-48">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="93.9596"/>
+        <section name="Left Side">
+          <attnum name="end width" val="15.0"/>
+        </section>
+</section>
+<section name="seg-49">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="1.05415" unit="m"/>
+<attnum name="arc" unit="deg" val="88.8956"/>
+<attnum name="radius" unit="m" val="10.5415"/>
+<attnum name="end radius" unit="m" val="14.4703"/>
+        <section name="Left Side">
+          <attnum name="end width" val="42.0"/>
+        </section>
+</section>
+<section name="seg-50">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="7.99801"/>
+</section>
+<section name="seg-51">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="7.98034" unit="m"/>
+<attnum name="arc" unit="deg" val="67.8847"/>
+<attnum name="radius" unit="m" val="103.587"/>
+<attnum name="end radius" unit="m" val="79.8034"/>
+        <section name="Left Side">
+          <attnum name="end width" val="15.0"/>
+        </section>
+</section>
+<section name="seg-52">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="174.276"/>
+        <section name="Left Side">
+          <attnum name="end width" val="5.0"/>
+        </section>
+</section>
+<section name="seg-53">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="29.7042" unit="m"/>
+<attnum name="arc" unit="deg" val="31.346"/>
+<attnum name="radius" unit="m" val="297.042"/>
+<attnum name="end radius" unit="m" val="302.797"/>
+</section>
+<section name="seg-54">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="146.514"/>
+</section>
+<section name="seg-55">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="0.969989" unit="m"/>
+<attnum name="arc" unit="deg" val="97.6979"/>
+<attnum name="radius" unit="m" val="10.1585"/>
+<attnum name="end radius" unit="m" val="9.69989"/>
+        <section name="Left Side">
+          <attnum name="end width" val="33.0"/>
+        </section>
+</section>
+<section name="seg-56">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="31.3887"/>
+        <section name="Left Side">
+          <attnum name="end width" val="27.0"/>
+        </section>
+</section>
+<section name="seg-57">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="10.6402" unit="m"/>
+<attnum name="arc" unit="deg" val="18.2524"/>
+<attnum name="radius" unit="m" val="107.861"/>
+<attnum name="end radius" unit="m" val="106.402"/>
+        <section name="Left Side">
+          <attnum name="end width" val="15.0"/>
+        </section>
+</section>
+<section name="seg-58">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="27.3473"/>
+        <section name="Left Side">
+          <attnum name="end width" val="13.0"/>
+        </section>
+</section>
+<section name="seg-59">
+<attstr name="type" val="rgt"/>
+<attnum name="profil steps length" val="1.03828" unit="m"/>
+<attnum name="arc" unit="deg" val="83.2753"/>
+<attnum name="radius" unit="m" val="10.3828"/>
+<attnum name="end radius" unit="m" val="13.6848"/>
+        <section name="Left Side">
+          <attnum name="end width" val="10.0"/>
+        </section>
+</section>
+<section name="seg-60">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="9.52448"/>
+        <section name="Left Side">
+          <attnum name="end width" val="8.0"/>
+        </section>
+</section>
+<section name="seg-61">
+<attstr name="type" val="lft"/>
+<attnum name="profil steps length" val="1.33306" unit="m"/>
+<attnum name="arc" unit="deg" val="76.231"/>
+<attnum name="radius" unit="m" val="13.3306"/>
+<attnum name="end radius" unit="m" val="14.1897"/>
+        <section name="Left Side">
+          <attnum name="end width" val="5.0"/>
+        </section>
+</section>
+<section name="pit-entry">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="61.3108"/>
+        <section name="Left Side">
+          <attnum name="end width" val="18.0"/>
+        </section>
+</section>
+<section name="pit-start">
+<attstr name="type" val="str"/>
+<attnum name="lg" unit="m" val="191.946"/>
+</section>
+
+
+
+    </section>    <!-- Track Segments -->
+
+  </section>  <!-- Main Track -->
+
+</params>
