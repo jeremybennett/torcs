@@ -2,8 +2,8 @@
 
     file                 : track4.cpp
     created              : Sat May 18 12:46:26 CEST 2002
-    copyright            : (C) 2002 by Eric Espie
-    email                : eric.espie@torcs.org
+    copyright            : (C) 2002-2015 by Eric Espie, Bernhard Wymann
+    email                : berniw@bluewin.ch
     version              : $Id$
 
  ***************************************************************************/
@@ -16,6 +16,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+/** @file       
+    Track loader for tracks of version 4.
+    @author Bernhard Wymann, Eric Espie
+    @version    $Id$
+*/
 
 #include <stdlib.h>
 #include <math.h>
@@ -80,14 +86,14 @@ static tdble	GlobalStepLen = 0;
 
 // Function prototype
 static void initSideInTurn(
-	int turntype,
-	tTrackSeg* curBorder,
-	tTrackSeg* curSeg,
-	int side,
-	int bankingtype,
-	tdble startwidth,
-	tdble endwidth,
-	tdble maxwidth
+	const int turntype,
+	tTrackSeg* const curBorder,
+	const tTrackSeg* const curSeg,
+	const int side,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth,
+	const tdble maxwidth
 );
 
 static tTrackSurface*
@@ -189,9 +195,6 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	tTrackSeg *curBorder;
 	tTrackBarrier *curBarrier;
 	tdble x, y, z;
-	tdble al, alfl;
-	int j;
-	tdble x1, x2, y1, y2;
 	tdble w, sw, ew, bw;
 	tdble minWidth;
 	tdble maxWidth;
@@ -1355,27 +1358,29 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 }
 
 
-/** Set up border track segment.
-
+/** Set up side and border track segments for turns.
+ 
+	Border segments are the ones touching the main segment (e.g. curbs), side segments are the segments touching the barrier.
+	
 	@ingroup track
-    @param type Turn type, either TR_LFT or TR_RGT
-	@param curBorder Border segment to set up
-	@param curSeg Connecting inner segment (e.g. main track segment for borders)
-	@param side 0 for right side, 1 for left side (TRK_SECT_RSIDE, TRK_SECT_LSIDE)
-	@param bankingtype For TRK_VAL_TANGENT 1, for TRK_VAL_LEVEL 0
-	@param startwidth Start width of the border
-	@param endwidth End width of the border
-	@param maxwidth Maximum width of the border
+	@param[in] turntype Turn type, either [TR_LFT](@ref TR_LFT) or [TR_RGT](@ref TR_RGT)
+	@param[in,out] curBorder Border segment to set up
+	@param[in] curSeg Connecting inner segment (e.g. main track segment for borders)
+	@param[in] side 0 for right side, 1 for left side ([TRK_SECT_RSIDE](@ref TRK_SECT_RSIDE), [TRK_SECT_LSIDE](@ref TRK_SECT_RSIDE))
+	@param[in] bankingtype For [TRK_VAL_TANGENT](@ref TRK_VAL_TANGENT) 1, for [TRK_VAL_LEVEL](@ref TRK_VAL_LEVEL) 0
+	@param[in] startwidth Start width of the border
+	@param[in] endwidth End width of the border
+	@param[in] maxwidth Maximum width of the border
  */
 static void initSideInTurn(
-	int turntype,
-	tTrackSeg* curBorder,
-	tTrackSeg* curSeg,
-	int side,
-	int bankingtype,
-	tdble startwidth,
-	tdble endwidth,
-	tdble maxwidth
+	const int turntype,
+	tTrackSeg* const curBorder,
+	const tTrackSeg* const curSeg,
+	const int side,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth,
+	const tdble maxwidth
 )
 {
 	tdble al, alfl, sign, z, x1, y1, x2, y2;
