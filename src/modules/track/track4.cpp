@@ -85,7 +85,7 @@ static tTrackSurface *barrierSurface[2];
 static tdble	GlobalStepLen = 0;
 
 // Function prototype
-static void initSideInTurn(
+static void initSideForTurn(
 	const int turntype,
 	tTrackSeg* const curBorder,
 	const tTrackSeg* const curSeg,
@@ -95,6 +95,16 @@ static void initSideInTurn(
 	const tdble endwidth,
 	const tdble maxwidth
 );
+
+static void initSideForStraight(
+	tTrackSeg* const curBorder,
+	const tTrackSeg* const curSeg,
+	const int side,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth
+);
+
 
 static tTrackSurface*
 AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
@@ -298,46 +308,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 			switch(curSeg->type) {
 				case TR_STR:
 					curBorder->length = curSeg->length;
-
-					switch(side) {
-						case 1:
-							curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + bw * curSeg->rgtSideNormal.x;
-							curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + bw * curSeg->rgtSideNormal.y;
-							curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-							x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + bw * curSeg->rgtSideNormal.x;	    
-							y = curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + bw * curSeg->rgtSideNormal.y;
-							z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)type * bw * tan(curSeg->angle[TR_XE]);
-							break;
-						case 0:
-							curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - bw * curSeg->rgtSideNormal.x;
-							curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - bw * curSeg->rgtSideNormal.y;
-							curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble)type * bw * tan(curSeg->angle[TR_XS]);
-							x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - bw * curSeg->rgtSideNormal.x;	    
-							y = curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - bw * curSeg->rgtSideNormal.y;
-							z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)type * bw * tan(curSeg->angle[TR_XE]);
-							break;
-					}
-					curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z, curBorder->length);
-					curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z, curBorder->length);
-
-					curBorder->Kzl = tan(curBorder->angle[TR_YR]);
-					curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->length;
-					curBorder->Kyl = 0;
-
-					curBorder->rgtSideNormal.x = curSeg->rgtSideNormal.x;
-					curBorder->rgtSideNormal.y = curSeg->rgtSideNormal.y;
-
-					TSTX(x);
-					TSTY(y);
-					TSTZ(z);
+					initSideForStraight(curBorder, curSeg, side, type, bw, bw);
 					break;
-
 				case TR_LFT:
-					initSideInTurn(TR_LFT, curBorder, curSeg, side, type, bw, bw, bw);
-					break;
-					
+					initSideForTurn(TR_LFT, curBorder, curSeg, side, type, bw, bw, bw);
+					break;					
 				case TR_RGT:
-					initSideInTurn(TR_RGT, curBorder, curSeg, side, type, bw, bw, bw);
+					initSideForTurn(TR_RGT, curBorder, curSeg, side, type, bw, bw, bw);
 					break;
 			}
 
@@ -378,48 +355,15 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 			switch(curSeg->type) {
 				case TR_STR:
 					curSide->length = curSeg->length;
-
-					switch(side) {
-						case 1:
-							curSide->vertex[TR_SL].x = curSide->vertex[TR_SR].x + sw * curSeg->rgtSideNormal.x;
-							curSide->vertex[TR_SL].y = curSide->vertex[TR_SR].y + sw * curSeg->rgtSideNormal.y;
-							curSide->vertex[TR_SL].z = curSide->vertex[TR_SR].z + (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-							x = curSide->vertex[TR_EL].x = curSide->vertex[TR_ER].x + ew * curSeg->rgtSideNormal.x;	    
-							y = curSide->vertex[TR_EL].y = curSide->vertex[TR_ER].y + ew * curSeg->rgtSideNormal.y;
-							z = curSide->vertex[TR_EL].z = curSide->vertex[TR_ER].z + (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-							break;
-						case 0:
-							curSide->vertex[TR_SR].x = curSide->vertex[TR_SL].x - sw * curSeg->rgtSideNormal.x;
-							curSide->vertex[TR_SR].y = curSide->vertex[TR_SL].y - sw * curSeg->rgtSideNormal.y;
-							curSide->vertex[TR_SR].z = curSide->vertex[TR_SL].z - (tdble)type * sw * tan(curSeg->angle[TR_XS]);
-							x = curSide->vertex[TR_ER].x = curSide->vertex[TR_EL].x - ew * curSeg->rgtSideNormal.x;	    
-							y = curSide->vertex[TR_ER].y = curSide->vertex[TR_EL].y - ew * curSeg->rgtSideNormal.y;
-							z = curSide->vertex[TR_ER].z = curSide->vertex[TR_EL].z - (tdble)type * ew * tan(curSeg->angle[TR_XE]);
-							break;
-					}
-					curSide->angle[TR_YR] = atan2(curSide->vertex[TR_ER].z - curSide->vertex[TR_SR].z, curSide->length);
-					curSide->angle[TR_YL] = atan2(curSide->vertex[TR_EL].z - curSide->vertex[TR_SL].z, curSide->length);
-
-					curSide->Kzl = tan(curSide->angle[TR_YR]);
-					curSide->Kzw = (curSide->angle[TR_XE] - curSide->angle[TR_XS]) / curSide->length;
-					curSide->Kyl = (ew - sw) / curSide->length;
-
-					curSide->rgtSideNormal.x = curSeg->rgtSideNormal.x;
-					curSide->rgtSideNormal.y = curSeg->rgtSideNormal.y;
-
-					TSTX(x);
-					TSTY(y);
-					TSTZ(z);
+					initSideForStraight(curSide, curSeg, side, type, sw, ew);
 					break;
-
-			case TR_LFT:
-				initSideInTurn(TR_LFT, curSide, curSeg, side, type, sw, ew, maxWidth);
-				break;
-
-			case TR_RGT:
-				initSideInTurn(TR_RGT, curSide, curSeg, side, type, sw, ew, maxWidth);
-				break;
-			}
+				case TR_LFT:
+					initSideForTurn(TR_LFT, curSide, curSeg, side, type, sw, ew, maxWidth);
+					break;
+				case TR_RGT:
+					initSideForTurn(TR_RGT, curSide, curSeg, side, type, sw, ew, maxWidth);
+					break;
+				}
 		}
 
 		/* Barrier */
@@ -1362,17 +1306,16 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
  
 	Border segments are the ones touching the main segment (e.g. curbs), side segments are the segments touching the barrier.
 	
-	@ingroup track
 	@param[in] turntype Turn type, either [TR_LFT](@ref TR_LFT) or [TR_RGT](@ref TR_RGT)
 	@param[in,out] curBorder Border segment to set up
 	@param[in] curSeg Connecting inner segment (e.g. main track segment for borders)
-	@param[in] side 0 for right side, 1 for left side ([TRK_SECT_RSIDE](@ref TRK_SECT_RSIDE), [TRK_SECT_LSIDE](@ref TRK_SECT_RSIDE))
+	@param[in] side 0 for right side, 1 for left side ([TRK_SECT_RSIDE](@ref TRK_SECT_RSIDE), [TRK_SECT_LSIDE](@ref TRK_SECT_LSIDE))
 	@param[in] bankingtype For [TRK_VAL_TANGENT](@ref TRK_VAL_TANGENT) 1, for [TRK_VAL_LEVEL](@ref TRK_VAL_LEVEL) 0
 	@param[in] startwidth Start width of the border
 	@param[in] endwidth End width of the border
 	@param[in] maxwidth Maximum width of the border
  */
-static void initSideInTurn(
+static void initSideForTurn(
 	const int turntype,
 	tTrackSeg* const curBorder,
 	const tTrackSeg* const curSeg,
@@ -1383,7 +1326,7 @@ static void initSideInTurn(
 	const tdble maxwidth
 )
 {
-	tdble al, alfl, sign, z, x1, y1, x2, y2;
+	tdble al, alfl, sign, z, x, y;
 	int j;
 
 	if (turntype == TR_LFT) {
@@ -1395,6 +1338,8 @@ static void initSideInTurn(
 	curBorder->center.x = curSeg->center.x;
 	curBorder->center.y = curSeg->center.y;
 
+	// Combining code for case 0 (TRK_SECT_RSIDE) and 1 (TRK_SECT_LSIDE)?
+	// Tried it, but the setup code is then as long as the copy and less readable because of the additional 8 variables
 	switch(side) {
 		case 1:
 			curBorder->radius = curSeg->radiusl - sign * startwidth / 2.0;
@@ -1425,10 +1370,10 @@ static void initSideInTurn(
 
 			for (j = 0; j < 36; j++) {
 				alfl += al;
-				x1 = curBorder->center.x + (curBorder->radiusl) * cos(alfl);   /* location of end */
-				y1 = curBorder->center.y + (curBorder->radiusl) * sin(alfl);
-				TSTX(x1);
-				TSTY(y1);
+				x = curBorder->center.x + (curBorder->radiusl) * cos(alfl);   /* location of end */
+				y = curBorder->center.y + (curBorder->radiusl) * sin(alfl);
+				TSTX(x);
+				TSTY(y);
 			}
 			TSTZ(z);
 			break;
@@ -1452,22 +1397,78 @@ static void initSideInTurn(
 			curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
 				curBorder->arc * curBorder->radiusl);
 
-			curBorder->Kzl = tan(curBorder->angle[TR_YR]) * (curBorder->radiusr);
+			curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
 			curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
 			curBorder->Kyl = (endwidth - startwidth) / curBorder->arc;
 
-			/* to find the boundary */
+			/* to find the boundary (global min/max, approximation) */
 			al = curBorder->arc / 36.0 * sign;
 			alfl = curBorder->angle[TR_CS];
 
 			for (j = 0; j < 36; j++) {
 				alfl += al;
-				x2 = curBorder->center.x + (curBorder->radiusr) * cos(alfl);   /* location of end */
-				y2 = curBorder->center.y + (curBorder->radiusr) * sin(alfl);
-				TSTX(x2);
-				TSTY(y2);
+				x = curBorder->center.x + (curBorder->radiusr) * cos(alfl);   /* location of end */
+				y = curBorder->center.y + (curBorder->radiusr) * sin(alfl);
+				TSTX(x);
+				TSTY(y);
 			}
 			TSTZ(z);
 			break;
 	}
+}
+
+/** Set up side and border track segments for straight segments.
+ 
+	Border segments are the ones touching the main segment (e.g. curbs), side segments are the segments touching the barrier.
+	
+	@param[in,out] curBorder Border segment to set up
+	@param[in] curSeg Connecting inner segment (e.g. main track segment for borders)
+	@param[in] side 0 for right side, 1 for left side ([TRK_SECT_RSIDE](@ref TRK_SECT_RSIDE), [TRK_SECT_LSIDE](@ref TRK_SECT_LSIDE))
+	@param[in] bankingtype For [TRK_VAL_TANGENT](@ref TRK_VAL_TANGENT) 1, for [TRK_VAL_LEVEL](@ref TRK_VAL_LEVEL) 0
+	@param[in] startwidth Start width of the border
+	@param[in] endwidth End width of the border
+ */
+static void initSideForStraight(
+	tTrackSeg* const curBorder,
+	const tTrackSeg* const curSeg,
+	const int side,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth
+)
+{
+	tdble z, x, y;
+
+	switch(side) {
+		case 1:
+			curBorder->vertex[TR_SL].x = curBorder->vertex[TR_SR].x + startwidth * curSeg->rgtSideNormal.x;
+			curBorder->vertex[TR_SL].y = curBorder->vertex[TR_SR].y + startwidth * curSeg->rgtSideNormal.y;
+			curBorder->vertex[TR_SL].z = curBorder->vertex[TR_SR].z + (tdble) bankingtype * startwidth * tan(curSeg->angle[TR_XS]);
+			x = curBorder->vertex[TR_EL].x = curBorder->vertex[TR_ER].x + endwidth * curSeg->rgtSideNormal.x;	    
+			y = curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y + endwidth * curSeg->rgtSideNormal.y;
+			z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble) bankingtype * endwidth * tan(curSeg->angle[TR_XE]);
+			break;
+		case 0:
+			curBorder->vertex[TR_SR].x = curBorder->vertex[TR_SL].x - startwidth * curSeg->rgtSideNormal.x;
+			curBorder->vertex[TR_SR].y = curBorder->vertex[TR_SL].y - startwidth * curSeg->rgtSideNormal.y;
+			curBorder->vertex[TR_SR].z = curBorder->vertex[TR_SL].z - (tdble) bankingtype * startwidth * tan(curSeg->angle[TR_XS]);
+			x = curBorder->vertex[TR_ER].x = curBorder->vertex[TR_EL].x - endwidth * curSeg->rgtSideNormal.x;	    
+			y = curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y - endwidth * curSeg->rgtSideNormal.y;
+			z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble) bankingtype * endwidth * tan(curSeg->angle[TR_XE]);
+			break;
+	}
+
+	curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z, curBorder->length);
+	curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z, curBorder->length);
+
+	curBorder->Kzl = tan(curBorder->angle[TR_YR]);
+	curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->length;
+	curBorder->Kyl = (endwidth - startwidth) / curBorder->length;
+
+	curBorder->rgtSideNormal.x = curSeg->rgtSideNormal.x;
+	curBorder->rgtSideNormal.y = curSeg->rgtSideNormal.y;
+
+	TSTX(x);
+	TSTY(y);
+	TSTZ(z);
 }
