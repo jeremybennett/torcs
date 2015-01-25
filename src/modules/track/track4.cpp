@@ -204,7 +204,6 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	tTrackSeg *mSeg;
 	tTrackSeg *curBorder;
 	tTrackBarrier *curBarrier;
-	tdble x, y, z;
 	tdble w, sw, ew, bw;
 	tdble minWidth;
 	tdble maxWidth;
@@ -217,7 +216,6 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	char path2[BUFSIZE];
 	char *segName;
 
-	x = y = z = 0;
 	mSeg = curSeg;
 
 	snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS);
@@ -1438,6 +1436,7 @@ static void initSideForStraight(
 )
 {
 	tdble z, x, y;
+	x = y = z = 0.0f;
 
 	switch(side) {
 		case 1:
