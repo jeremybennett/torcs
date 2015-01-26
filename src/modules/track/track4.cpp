@@ -1300,6 +1300,51 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 }
 
 
+/** Update global min/max values for turns (discretized approximation).
+
+    @param[in] curBorder Border segment
+	@param[in] radius Radius to hand over, either curBorder->radiusl or curBorder->radiusr
+	@param[in] sign Sign to consider turn type ([TR_LFT](@ref TR_LFT) or [TR_RGT](@ref TR_RGT))
+	@param[in] z Z value
+ */
+static void updateMinMaxForTurn(const tTrackSeg* const curBorder, const tdble radius, const tdble sign, const tdble z)
+{
+	tdble al, alfl, x, y;
+	int j;
+
+	// to find the boundary (global min/max, approximation)
+	al = curBorder->arc / 36.0 * sign;
+	alfl = curBorder->angle[TR_CS];
+
+	for (j = 0; j < 36; j++) {
+		alfl += al;
+		x = curBorder->center.x + radius * cos(alfl);   // location of end
+		y = curBorder->center.y + radius * sin(alfl);
+		TSTX(x);
+		TSTY(y);
+	}
+	TSTZ(z);
+}
+
+
+/** Set up border segment angles and gradients.
+
+    @param[in,out] curBorder Border segment to set up
+	@param[in] startwidth Start width of the border
+	@param[in] endwidth End width of the border
+ */
+static void initAnglesAndGradients(tTrackSeg* const curBorder, const tdble startwidth, const tdble endwidth) {
+	curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
+		curBorder->arc * curBorder->radiusr);
+	curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
+		curBorder->arc * curBorder->radiusl);
+
+	curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
+	curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
+	curBorder->Kyl = (endwidth - startwidth) / curBorder->arc;
+}
+
+
 /** Set up side and border track segments for turns.
  
 	Border segments are the ones touching the main segment (e.g. curbs), side segments are the segments touching the barrier.
@@ -1324,8 +1369,7 @@ static void initSideForTurn(
 	const tdble maxwidth
 )
 {
-	tdble al, alfl, sign, z, x, y;
-	int j;
+	tdble sign, z;
 
 	if (turntype == TR_LFT) {
 		sign = 1.0f;
@@ -1353,27 +1397,8 @@ static void initSideForTurn(
 			curBorder->vertex[TR_EL].y = curBorder->vertex[TR_ER].y - sign * endwidth * sin(curBorder->angle[TR_CS] + sign * curBorder->arc);
 			z = curBorder->vertex[TR_EL].z = curBorder->vertex[TR_ER].z + (tdble)bankingtype * endwidth * tan(curSeg->angle[TR_XE]);
 
-			curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
-				curBorder->arc * curBorder->radiusr);
-			curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
-				curBorder->arc * curBorder->radiusl);
-
-			curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
-			curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
-			curBorder->Kyl = (endwidth - startwidth) / curBorder->arc;
-
-			/* to find the boundary (global min/max, approximation) */
-			al = curBorder->arc / 36.0 * sign;
-			alfl = curBorder->angle[TR_CS];
-
-			for (j = 0; j < 36; j++) {
-				alfl += al;
-				x = curBorder->center.x + (curBorder->radiusl) * cos(alfl);   /* location of end */
-				y = curBorder->center.y + (curBorder->radiusl) * sin(alfl);
-				TSTX(x);
-				TSTY(y);
-			}
-			TSTZ(z);
+			initAnglesAndGradients(curBorder, startwidth, endwidth);
+			updateMinMaxForTurn(curBorder, curBorder->radiusl, sign, z);
 			break;
 
 		case 0:
@@ -1390,30 +1415,12 @@ static void initSideForTurn(
 			curBorder->vertex[TR_ER].y = curBorder->vertex[TR_EL].y + sign * endwidth * sin(curBorder->angle[TR_CS] + sign * curBorder->arc);
 			z = curBorder->vertex[TR_ER].z = curBorder->vertex[TR_EL].z - (tdble)bankingtype * endwidth * tan(curSeg->angle[TR_XE]);
 
-			curBorder->angle[TR_YR] = atan2(curBorder->vertex[TR_ER].z - curBorder->vertex[TR_SR].z,
-				curBorder->arc * curBorder->radiusr);
-			curBorder->angle[TR_YL] = atan2(curBorder->vertex[TR_EL].z - curBorder->vertex[TR_SL].z,
-				curBorder->arc * curBorder->radiusl);
-
-			curBorder->Kzl = tan(curBorder->angle[TR_YR]) * curBorder->radiusr;
-			curBorder->Kzw = (curBorder->angle[TR_XE] - curBorder->angle[TR_XS]) / curBorder->arc;
-			curBorder->Kyl = (endwidth - startwidth) / curBorder->arc;
-
-			/* to find the boundary (global min/max, approximation) */
-			al = curBorder->arc / 36.0 * sign;
-			alfl = curBorder->angle[TR_CS];
-
-			for (j = 0; j < 36; j++) {
-				alfl += al;
-				x = curBorder->center.x + (curBorder->radiusr) * cos(alfl);   /* location of end */
-				y = curBorder->center.y + (curBorder->radiusr) * sin(alfl);
-				TSTX(x);
-				TSTY(y);
-			}
-			TSTZ(z);
+			initAnglesAndGradients(curBorder, startwidth, endwidth);
+			updateMinMaxForTurn(curBorder, curBorder->radiusr, sign, z);
 			break;
 	}
 }
+
 
 /** Set up side and border track segments for straight segments.
  
