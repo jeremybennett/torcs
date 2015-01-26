@@ -105,6 +105,19 @@ static void initSideForStraight(
 	const tdble endwidth
 );
 
+static tTrackSeg* commonSideInit(
+	tTrackSeg* const curSeg,
+	const int side,
+	const int lefttype,
+	const int righttype,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth,
+	tTrackSurface* surface,
+	const tdble borderheight,
+	const int borderstyle
+);
+
 
 static tTrackSurface*
 AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
@@ -205,7 +218,6 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	tTrackSeg *curBorder;
 	tTrackBarrier *curBarrier;
 	tdble w, sw, ew, bw;
-	tdble minWidth;
 	tdble maxWidth;
 	int type;
 	int side;
@@ -273,95 +285,15 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 		sw = sw + (tdble)(curStep) * Kew;
 
 		/* Borders */
-		if (bw != 0.0) {
-			curBorder = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
-			if (side == 1) {
-				curSeg->lside = curBorder;
-				curBorder->vertex[TR_SR] = curSeg->vertex[TR_SL];
-				curBorder->vertex[TR_ER] = curSeg->vertex[TR_EL];
-				curBorder->type2 = TR_LBORDER;
-			} else {
-				curSeg->rside = curBorder;
-				curBorder->vertex[TR_SL] = curSeg->vertex[TR_SR];
-				curBorder->vertex[TR_EL] = curSeg->vertex[TR_ER];
-				curBorder->type2 = TR_RBORDER;
-			}
-
-			type = sideBankType[side];
-			curBorder->startWidth = bw;
-			curBorder->endWidth = bw;
-			curBorder->width = bw;
-			curBorder->type = curSeg->type;
-			curBorder->surface = borderSurface[side];
-			curBorder->height = borderHeight[side];
-			curBorder->style = borderStyle[side];
-			curBorder->envIndex = envIndex;
-			curBorder->DoVfactor = DoVfactor;
-			curBorder->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
-			curBorder->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
-			curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
-			curBorder->angle[TR_ZE] = curSeg->angle[TR_ZE];
-			curBorder->angle[TR_CS] = curSeg->angle[TR_CS];
-
-			switch(curSeg->type) {
-				case TR_STR:
-					curBorder->length = curSeg->length;
-					initSideForStraight(curBorder, curSeg, side, type, bw, bw);
-					break;
-				case TR_LFT:
-					initSideForTurn(TR_LFT, curBorder, curSeg, side, type, bw, bw, bw);
-					break;					
-				case TR_RGT:
-					initSideForTurn(TR_RGT, curBorder, curSeg, side, type, bw, bw, bw);
-					break;
-			}
-
-			curSeg = curBorder;
+		if (bw > 0.0f) {
+			curSeg = commonSideInit(curSeg, side, TR_LBORDER, TR_RBORDER, sideBankType[side], bw, bw,
+				borderSurface[side], borderHeight[side], borderStyle[side]);
 		}
 
-
 		/* Sides */
-		if ((sw != 0.0) || (ew != 0)) {
-			curSide = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
-			if (side == 1) {
-				curSeg->lside = curSide;
-				curSide->vertex[TR_SR] = curSeg->vertex[TR_SL];
-				curSide->vertex[TR_ER] = curSeg->vertex[TR_EL];
-				curSide->type2 = TR_LSIDE;
-			} else {
-				curSeg->rside = curSide;
-				curSide->vertex[TR_SL] = curSeg->vertex[TR_SR];
-				curSide->vertex[TR_EL] = curSeg->vertex[TR_ER];
-				curSide->type2 = TR_RSIDE;
-			}
-
-			type = sideBankType[side];
-			curSide->startWidth = sw;
-			curSide->endWidth = ew;
-			curSide->width = minWidth = MIN(sw, ew);
-			maxWidth = MAX(sw, ew);
-			curSide->type = curSeg->type;
-			curSide->surface = sideSurface[side];
-			curSide->envIndex = envIndex;
-			curSide->DoVfactor = DoVfactor;
-			curSide->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble)type;
-			curSide->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble)type;
-			curSide->angle[TR_ZS] = curSeg->angle[TR_ZS];
-			curSide->angle[TR_ZE] = curSeg->angle[TR_ZE];
-			curSide->angle[TR_CS] = curSeg->angle[TR_CS];
-
-			switch(curSeg->type) {
-				case TR_STR:
-					curSide->length = curSeg->length;
-					initSideForStraight(curSide, curSeg, side, type, sw, ew);
-					break;
-				case TR_LFT:
-					initSideForTurn(TR_LFT, curSide, curSeg, side, type, sw, ew, maxWidth);
-					break;
-				case TR_RGT:
-					initSideForTurn(TR_RGT, curSide, curSeg, side, type, sw, ew, maxWidth);
-					break;
-				}
+		if ((sw > 0.0f) || (ew > 0.0f)) {
+			commonSideInit(curSeg, side, TR_LSIDE, TR_RSIDE, sideBankType[side], sw, ew,
+				sideSurface[side], 0.0f, TR_PLAN);
 		}
 
 		/* Barrier */
@@ -1477,4 +1409,78 @@ static void initSideForStraight(
 	TSTX(x);
 	TSTY(y);
 	TSTZ(z);
+}
+
+
+/** Common side/border allocation and initialization for straights and turns.
+
+	@param[in,out] curSeg Segment to attach the new side/border
+	@param[in] side 0 for right side, 1 for left side ([TRK_SECT_RSIDE](@ref TRK_SECT_RSIDE), [TRK_SECT_LSIDE](@ref TRK_SECT_LSIDE))
+	@param[in] lefttype For side: [TR_LSIDE](@ref TR_LSIDE), for border: [TR_LBORDER](@ref TR_LBORDER)
+	@param[in] righttype For side: [TR_RSIDE](@ref TR_RSIDE), for border: [TR_RBORDER](@ref TR_RBORDER)
+	@param[in] bankingtype For [TRK_VAL_TANGENT](@ref TRK_VAL_TANGENT) 1, for [TRK_VAL_LEVEL](@ref TRK_VAL_LEVEL) 0
+	@param[in] startwidth Start width of the border
+	@param[in] endwidth End width of the border
+	@param[in] surface Surface for the side/border
+	@param[in] borderheight Border height for borders, should usually be 0.0 for sides
+	@param[in] borderstyle Type of segment, for sides always [TR_PLAN](@ref TR_PLAN), for borders either [TR_PLAN](@ref TR_PLAN),
+	           [TR_CURB](@ref TR_CURB) or [TR_WALL](@ref TR_WALL)
+ */
+static tTrackSeg* commonSideInit(
+	tTrackSeg* const curSeg,
+	const int side,
+	const int lefttype,
+	const int righttype,
+	const int bankingtype,
+	const tdble startwidth,
+	const tdble endwidth,
+	tTrackSurface* surface,
+	const tdble borderheight,
+	const int borderstyle
+)
+{
+	tTrackSeg* curBorder = (tTrackSeg*)calloc(1, sizeof(tTrackSeg));
+	if (side == 1) {
+		curSeg->lside = curBorder;
+		curBorder->vertex[TR_SR] = curSeg->vertex[TR_SL];
+		curBorder->vertex[TR_ER] = curSeg->vertex[TR_EL];
+		curBorder->type2 = lefttype;
+	} else {
+		curSeg->rside = curBorder;
+		curBorder->vertex[TR_SL] = curSeg->vertex[TR_SR];
+		curBorder->vertex[TR_EL] = curSeg->vertex[TR_ER];
+		curBorder->type2 = righttype;
+	}
+
+	curBorder->startWidth = startwidth;
+	curBorder->endWidth = endwidth;
+	curBorder->width = MIN(startwidth, endwidth);
+	tdble maxWidth = MAX(startwidth, endwidth);
+
+	curBorder->type = curSeg->type;
+	curBorder->surface = surface;
+	curBorder->height = borderheight;
+	curBorder->style = borderstyle;
+	curBorder->envIndex = envIndex;
+	curBorder->DoVfactor = DoVfactor;
+	curBorder->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble) bankingtype;
+	curBorder->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble) bankingtype;
+	curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
+	curBorder->angle[TR_ZE] = curSeg->angle[TR_ZE];
+	curBorder->angle[TR_CS] = curSeg->angle[TR_CS];
+
+	switch(curSeg->type) {
+		case TR_STR:
+			curBorder->length = curSeg->length;
+			initSideForStraight(curBorder, curSeg, side, bankingtype, startwidth, endwidth);
+			break;
+		case TR_LFT:
+			initSideForTurn(TR_LFT, curBorder, curSeg, side, bankingtype, startwidth, endwidth, maxWidth);
+			break;					
+		case TR_RGT:
+			initSideForTurn(TR_RGT, curBorder, curSeg, side, bankingtype, startwidth, endwidth, maxWidth);
+			break;
+	}
+
+	return curBorder;
 }
