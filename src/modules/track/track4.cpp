@@ -213,13 +213,9 @@ InitSides(void *TrackHandle, tTrack *theTrack)
 static void
 AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, int steps)
 {
-	tTrackSeg *curSide;
 	tTrackSeg *mSeg;
-	tTrackSeg *curBorder;
 	tTrackBarrier *curBarrier;
 	tdble w, sw, ew, bw;
-	tdble maxWidth;
-	int type;
 	int side;
 	const char *style;
 	tdble Kew;
