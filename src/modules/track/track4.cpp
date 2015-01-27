@@ -57,15 +57,13 @@ static const char *SectSide[2]    = {TRK_SECT_RSIDE, TRK_SECT_LSIDE};
 static const char *SectBorder[2]  = {TRK_SECT_RBORDER, TRK_SECT_LBORDER};
 static const char *SectBarrier[2] = {TRK_SECT_RBARRIER, TRK_SECT_LBARRIER};
 
-static const char *ValStyle[] = {TRK_VAL_PLAN, TRK_VAL_CURB, TRK_VAL_WALL, TRK_VAL_FENCE, TRK_VAL_FENCE};
-
+static const char *ValStyle[] = {TRK_VAL_PLAN, TRK_VAL_CURB, TRK_VAL_WALL, TRK_VAL_FENCE, TRK_VAL_FENCE}; // TODO: TRK_VAL_FENCE 2 times, remove?
 
 static tdble sideEndWidth[2];
 static tdble sideStartWidth[2];
 static int sideBankType[2];
 static const char *sideMaterial[2];
 static tTrackSurface *sideSurface[2];
-
 
 static int envIndex;
 static tdble DoVfactor=1.0;
@@ -84,7 +82,7 @@ static tTrackSurface *barrierSurface[2];
 
 static tdble	GlobalStepLen = 0;
 
-// Function prototype
+// Function prototypes
 static void initSideForTurn(
 	const int turntype,
 	tTrackSeg* const curBorder,
@@ -119,14 +117,23 @@ static tTrackSeg* commonSideInit(
 );
 
 
-static tTrackSurface*
-AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
+/** Gets surface properties based on the material.
+
+	If the material is not known, then a new material is created, initialized and attached to tTrack.
+
+	@param[in] trackHandle Handle to track parameter set
+	@param[in,out] theTrack Pointer to track structure
+	@param[in] material Material name of the surface
+
+	@return tTrackSurface* for the material
+ */
+static tTrackSurface* getTrackSurface(void *trackHandle, tTrack *theTrack, const char *material)
 {
 	const int BUFSIZE = 256;
 	char path[BUFSIZE];
 	tTrackSurface *curSurf;
 
-	/* search within existing surfaces */
+	// Search within existing surfaces
 	curSurf = theTrack->surfaces;
 	while (curSurf) {
 		if (strcmp(curSurf->material, material) == 0) {
@@ -135,7 +142,7 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
 		curSurf = curSurf->next;
 	}
 
-	/* Create a new surface */
+	// Create a new surface
 	curSurf = (tTrackSurface*)malloc(sizeof(tTrackSurface));
 	if (!curSurf) {
 		GfFatal("AddTrackSurface: Memory allocation failed\n");
@@ -143,12 +150,12 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
 
 	curSurf->material = material;
 	snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_SURFACES, material);
-	curSurf->kFriction     = GfParmGetNum(TrackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8f);
-	curSurf->kRollRes      = GfParmGetNum(TrackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001f);
-	curSurf->kRoughness    = GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0f) /  2.0f;
-	curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(TrackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0f);
-	curSurf->kDammage      = GfParmGetNum(TrackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0f);
-	curSurf->kRebound      = GfParmGetNum(TrackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 0.5f);
+	curSurf->kFriction     = GfParmGetNum(trackHandle, path, TRK_ATT_FRICTION, (char*)NULL, 0.8f);
+	curSurf->kRollRes      = GfParmGetNum(trackHandle, path, TRK_ATT_ROLLRES, (char*)NULL, 0.001f);
+	curSurf->kRoughness    = GfParmGetNum(trackHandle, path, TRK_ATT_ROUGHT, (char*)NULL, 0.0f) /  2.0f;
+	curSurf->kRoughWaveLen = 2.0 * PI / GfParmGetNum(trackHandle, path, TRK_ATT_ROUGHTWL, (char*)NULL, 1.0f);
+	curSurf->kDammage      = GfParmGetNum(trackHandle, path, TRK_ATT_DAMMAGE, (char*)NULL, 10.0f);
+	curSurf->kRebound      = GfParmGetNum(trackHandle, path, TRK_ATT_REBOUND, (char*)NULL, 0.5f);
 
 	curSurf->next = theTrack->surfaces;
 	theTrack->surfaces = curSurf;
@@ -157,34 +164,41 @@ AddTrackSurface(void *TrackHandle, tTrack *theTrack, const char *material)
 }
 
 
-static void
-InitSides(void *TrackHandle, tTrack *theTrack)
+/** Reads default side/border track segment parameters.
+
+	@param[in] trackHandle Handle to track parameter set
+	@param[in,out] theTrack Pointer to track structure
+ */
+static void readDefaultSideParameters(void *trackHandle, tTrack *theTrack)
 {
 	int side;
 	const char *style;
 	const int BUFSIZE = 256;
 	char path[BUFSIZE];
     
+	// Side: right and left (see SectSide, SectBorder, SectBarrier)
     for (side = 0; side < 2; side++) {
-		/* Sides */
+		// Side parameters
 		snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, SectSide[side]);
-		sideMaterial[side] = GfParmGetStr(TrackHandle, path, TRK_ATT_SURF, TRK_VAL_GRASS);
-		sideSurface[side] = AddTrackSurface(TrackHandle, theTrack, sideMaterial[side]);
-		sideEndWidth[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.0);
-		/* banking of sides */
-		if (strcmp(TRK_VAL_LEVEL, GfParmGetStr(TrackHandle, path, TRK_ATT_BANKTYPE, TRK_VAL_LEVEL)) == 0) {
+		sideMaterial[side] = GfParmGetStr(trackHandle, path, TRK_ATT_SURF, TRK_VAL_GRASS);
+		sideSurface[side] = getTrackSurface(trackHandle, theTrack, sideMaterial[side]);
+		sideEndWidth[side] = GfParmGetNum(trackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.0);
+		
+		// Banking of sides
+		if (strcmp(TRK_VAL_LEVEL, GfParmGetStr(trackHandle, path, TRK_ATT_BANKTYPE, TRK_VAL_LEVEL)) == 0) {
 			sideBankType[side] = 0;
 		} else {
 			sideBankType[side] = 1;
 		}
 
-		/* Borders */
+		// Border parameters
 		snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, SectBorder[side]);
-		borderMaterial[side] = GfParmGetStr(TrackHandle, path, TRK_ATT_SURF, TRK_VAL_GRASS);
-		borderSurface[side] = AddTrackSurface(TrackHandle, theTrack, borderMaterial[side]);
-		borderWidth[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.0);
-		borderHeight[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.0);
-		style = GfParmGetStr(TrackHandle, path, TRK_ATT_STYLE, TRK_VAL_PLAN);
+		borderMaterial[side] = GfParmGetStr(trackHandle, path, TRK_ATT_SURF, TRK_VAL_GRASS);
+		borderSurface[side] = getTrackSurface(trackHandle, theTrack, borderMaterial[side]);
+		borderWidth[side] = GfParmGetNum(trackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.0);
+		borderHeight[side] = GfParmGetNum(trackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.0);
+		style = GfParmGetStr(trackHandle, path, TRK_ATT_STYLE, TRK_VAL_PLAN);
+		
 		if (strcmp(style, TRK_VAL_PLAN) == 0) {
 			borderStyle[side] = TR_PLAN;
 		} else if (strcmp(style, TRK_VAL_CURB) == 0) {
@@ -193,25 +207,32 @@ InitSides(void *TrackHandle, tTrack *theTrack)
 			borderStyle[side] = TR_WALL;
 		}
 
-		/* Barrier parameters */
+		// Barrier parameters
 		snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, SectBarrier[side]);
-		barrierMaterial[side] = GfParmGetStr(TrackHandle, path, TRK_ATT_SURF, TRK_VAL_BARRIER);
-		barrierSurface[side] = AddTrackSurface(TrackHandle, theTrack, barrierMaterial[side]);
-		barrierHeight[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.6f);
-		style = GfParmGetStr(TrackHandle, path, TRK_ATT_STYLE, TRK_VAL_FENCE);
+		barrierMaterial[side] = GfParmGetStr(trackHandle, path, TRK_ATT_SURF, TRK_VAL_BARRIER);
+		barrierSurface[side] = getTrackSurface(trackHandle, theTrack, barrierMaterial[side]);
+		barrierHeight[side] = GfParmGetNum(trackHandle, path, TRK_ATT_HEIGHT, (char*)NULL, 0.6f);
+		style = GfParmGetStr(trackHandle, path, TRK_ATT_STYLE, TRK_VAL_FENCE);
 		if (strcmp(style, TRK_VAL_FENCE) == 0) {
 			barrierStyle[side] = TR_FENCE;
 			barrierWidth[side] = 0;
 		} else {
 			barrierStyle[side] = TR_WALL;
-			barrierWidth[side] = GfParmGetNum(TrackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.5);
+			barrierWidth[side] = GfParmGetNum(trackHandle, path, TRK_ATT_WIDTH, (char*)NULL, 0.5);
 		}
     }
 }
 
 
-static void
-AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, int steps)
+/** Adds the specified side/border/barrier segments to given main track segement.
+	
+	@param[in,out] curSeg Main track segment to process
+	@param[in] trackHandle Handle to track parameter set
+	@param[in] theTrack Pointer to track structure
+	@param[in] curStep Current step (for segment subdivision)
+	@param[in] steps Number of steps (segment subdivisions)
+ */
+static void addSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, int steps)
 {
 	tTrackSeg *mSeg;
 	tTrackBarrier *curBarrier;
@@ -229,27 +250,32 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 	snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS);
 	segName = GfParmListGetCurEltName(TrackHandle, path);
 	snprintf(path, BUFSIZE, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS, segName);
+	
 	for (side = 0; side < 2; side++) {
 		curSeg = mSeg;
+
 		if (curStep == 0) {
-			/* Side parameters */
+			// Initialize on the first step
+			// Side parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectSide[side]);
 			sw = GfParmGetNum(TrackHandle, path2, TRK_ATT_SWIDTH, (char*)NULL, sideEndWidth[side]);
 			w = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, sw);
 			ew = GfParmGetNum(TrackHandle, path2, TRK_ATT_EWIDTH, (char*)NULL, w);
+			
 			sideStartWidth[side] = sw;
 			sideEndWidth[side] = ew;
 			sideMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, sideMaterial[side]);
-			sideSurface[side] = AddTrackSurface(TrackHandle, theTrack, sideMaterial[side]);
+			sideSurface[side] = getTrackSurface(TrackHandle, theTrack, sideMaterial[side]);
 
-			/* Border parameters */
+			// Border parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectBorder[side]);
 			bw = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, borderWidth[side]);
 			borderWidth[side] = bw;
 			borderHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, borderHeight[side]);
 			borderMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, borderMaterial[side]);
-			borderSurface[side] = AddTrackSurface(TrackHandle, theTrack, borderMaterial[side]);
+			borderSurface[side] = getTrackSurface(TrackHandle, theTrack, borderMaterial[side]);
 			style = GfParmGetStr(TrackHandle, path2, TRK_ATT_STYLE, ValStyle[borderStyle[side]]);
+			
 			if (strcmp(style, TRK_VAL_PLAN) == 0) {
 				borderStyle[side] = TR_PLAN;
 			} else if (strcmp(style, TRK_VAL_CURB) == 0) {
@@ -258,12 +284,13 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 				borderStyle[side] = TR_WALL;
 			}
 
-			/* Barrier parameters */
+			// Barrier parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectBarrier[side]);
 			barrierMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, barrierMaterial[side]);
-			barrierSurface[side] = AddTrackSurface(TrackHandle, theTrack, barrierMaterial[side]);
+			barrierSurface[side] = getTrackSurface(TrackHandle, theTrack, barrierMaterial[side]);
 			barrierHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, barrierHeight[side]);
 			style = GfParmGetStr(TrackHandle, path2, TRK_ATT_STYLE, ValStyle[barrierStyle[side]]);
+			
 			if (strcmp(style, TRK_VAL_FENCE) == 0) {
 				barrierStyle[side] = TR_FENCE;
 				barrierWidth[side] = 0;
@@ -272,27 +299,30 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 				barrierWidth[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, barrierWidth[side]);
 			}
 		} else {
+			// Reset sw, ew, bw for steps after initialization
 			sw = sideStartWidth[side];
 			ew = sideEndWidth[side];
 			bw = borderWidth[side];
 		}
+
+		// Calculate parameters considering the current step
 		Kew = (ew - sw) / (tdble)steps;
 		ew = sw + (tdble)(curStep+1) * Kew;
 		sw = sw + (tdble)(curStep) * Kew;
 
-		/* Borders */
+		// Add borders
 		if (bw > 0.0f) {
 			curSeg = commonSideInit(curSeg, side, TR_LBORDER, TR_RBORDER, sideBankType[side], bw, bw,
 				borderSurface[side], borderHeight[side], borderStyle[side]);
 		}
 
-		/* Sides */
+		// Add sides
 		if ((sw > 0.0f) || (ew > 0.0f)) {
 			commonSideInit(curSeg, side, TR_LSIDE, TR_RSIDE, sideBankType[side], sw, ew,
 				sideSurface[side], 0.0f, TR_PLAN);
 		}
 
-		/* Barrier */
+		// Add barriers
 		curBarrier = (tTrackBarrier*)malloc(sizeof(tTrackBarrier));
 		if (!curBarrier) {
 			GfFatal("AddSides: memory allocation error");
@@ -334,8 +364,11 @@ AddSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, in
 }
 
 
-static void
-normSeg(tTrackSeg *curSeg)
+/** Segment coordinate normalization, track is moved to the origin of the coordiante system.
+
+	@param[in,out] curSeg Segment to normalize
+ */
+static void normSeg(tTrackSeg *curSeg)
 {
 	curSeg->vertex[TR_SR].x -= xmin;
 	curSeg->vertex[TR_SR].y -= ymin;
@@ -353,8 +386,8 @@ normSeg(tTrackSeg *curSeg)
 	curSeg->center.y -= ymin;
 }
 
-static void
-CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *end, int ext)
+
+static void CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *end, int ext)
 {
     int		j;
     int		segread, curindex;
@@ -441,10 +474,10 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 
     /* Main Track */
     material = GfParmGetStr(TrackHandle, TRK_SECT_MAIN, TRK_ATT_SURF, TRK_VAL_ASPHALT);
-    surface = AddTrackSurface(TrackHandle, theTrack, material);
+    surface = getTrackSurface(TrackHandle, theTrack, material);
     envIndex = 0;
     DoVfactor =1.0;
-    InitSides(TrackHandle, theTrack);
+    readDefaultSideParameters(TrackHandle, theTrack);
     
     if (ext) {
 	segNameHash = GfHashCreate(GF_HASH_TYPE_STR);
@@ -482,7 +515,7 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 	
 	/* surface change */
 	material = GfParmGetCurStr(TrackHandle, path, TRK_ATT_SURF, material);
-	surface = AddTrackSurface(TrackHandle, theTrack, material);
+	surface = getTrackSurface(TrackHandle, theTrack, material);
 	envIndex = (int) GfParmGetCurNum(TrackHandle, path, TRK_ATT_ENVIND, (char*)NULL, (float) (envIndex+1)) - 1;
 	// TODO: is the (int) intended?
 	DoVfactor = (float) ((int) GfParmGetCurNum(TrackHandle, path, TRK_ATT_DOVFACTOR, (char*)NULL, 1.0)) ;
@@ -847,7 +880,7 @@ CreateSegRing(void *TrackHandle, tTrack *theTrack, tTrackSeg *start, tTrackSeg *
 
 	    }
 
-	    AddSides(curSeg, TrackHandle, theTrack, curStep, steps);
+	    addSides(curSeg, TrackHandle, theTrack, curStep, steps);
 
 	    totLength += curSeg->length;
 	    xr = newxr;
@@ -1458,8 +1491,8 @@ static tTrackSeg* commonSideInit(
 	curBorder->surface = surface;
 	curBorder->height = borderheight;
 	curBorder->style = borderstyle;
-	curBorder->envIndex = envIndex;
-	curBorder->DoVfactor = DoVfactor;
+	curBorder->envIndex = envIndex;		// TODO: Global?
+	curBorder->DoVfactor = DoVfactor;	// TODO: Global?
 	curBorder->angle[TR_XS] = curSeg->angle[TR_XS] * (tdble) bankingtype;
 	curBorder->angle[TR_XE] = curSeg->angle[TR_XE] * (tdble) bankingtype;
 	curBorder->angle[TR_ZS] = curSeg->angle[TR_ZS];
