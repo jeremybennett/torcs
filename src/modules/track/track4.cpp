@@ -232,7 +232,7 @@ static void readDefaultSideParameters(void *trackHandle, tTrack *theTrack)
 	@param[in] curStep Current step (for segment subdivision)
 	@param[in] steps Number of steps (segment subdivisions)
  */
-static void addSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int curStep, int steps)
+static void addSides(tTrackSeg *curSeg, void *trackHandle, tTrack *theTrack, int curStep, int steps)
 {
 	tTrackSeg *mSeg;
 	tTrackBarrier *curBarrier;
@@ -248,7 +248,7 @@ static void addSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int
 	mSeg = curSeg;
 
 	snprintf(path, BUFSIZE, "%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS);
-	segName = GfParmListGetCurEltName(TrackHandle, path);
+	segName = GfParmListGetCurEltName(trackHandle, path);
 	snprintf(path, BUFSIZE, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS, segName);
 	
 	for (side = 0; side < 2; side++) {
@@ -258,23 +258,23 @@ static void addSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int
 			// Initialize on the first step
 			// Side parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectSide[side]);
-			sw = GfParmGetNum(TrackHandle, path2, TRK_ATT_SWIDTH, (char*)NULL, sideEndWidth[side]);
-			w = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, sw);
-			ew = GfParmGetNum(TrackHandle, path2, TRK_ATT_EWIDTH, (char*)NULL, w);
+			sw = GfParmGetNum(trackHandle, path2, TRK_ATT_SWIDTH, (char*)NULL, sideEndWidth[side]);
+			w = GfParmGetNum(trackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, sw);
+			ew = GfParmGetNum(trackHandle, path2, TRK_ATT_EWIDTH, (char*)NULL, w);
 			
 			sideStartWidth[side] = sw;
 			sideEndWidth[side] = ew;
-			sideMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, sideMaterial[side]);
-			sideSurface[side] = getTrackSurface(TrackHandle, theTrack, sideMaterial[side]);
+			sideMaterial[side] = GfParmGetStr(trackHandle, path2, TRK_ATT_SURF, sideMaterial[side]);
+			sideSurface[side] = getTrackSurface(trackHandle, theTrack, sideMaterial[side]);
 
 			// Border parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectBorder[side]);
-			bw = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, borderWidth[side]);
+			bw = GfParmGetNum(trackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, borderWidth[side]);
 			borderWidth[side] = bw;
-			borderHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, borderHeight[side]);
-			borderMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, borderMaterial[side]);
-			borderSurface[side] = getTrackSurface(TrackHandle, theTrack, borderMaterial[side]);
-			style = GfParmGetStr(TrackHandle, path2, TRK_ATT_STYLE, ValStyle[borderStyle[side]]);
+			borderHeight[side] = GfParmGetNum(trackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, borderHeight[side]);
+			borderMaterial[side] = GfParmGetStr(trackHandle, path2, TRK_ATT_SURF, borderMaterial[side]);
+			borderSurface[side] = getTrackSurface(trackHandle, theTrack, borderMaterial[side]);
+			style = GfParmGetStr(trackHandle, path2, TRK_ATT_STYLE, ValStyle[borderStyle[side]]);
 			
 			if (strcmp(style, TRK_VAL_PLAN) == 0) {
 				borderStyle[side] = TR_PLAN;
@@ -286,17 +286,17 @@ static void addSides(tTrackSeg *curSeg, void *TrackHandle, tTrack *theTrack, int
 
 			// Barrier parameters
 			snprintf(path2, BUFSIZE, "%s/%s", path, SectBarrier[side]);
-			barrierMaterial[side] = GfParmGetStr(TrackHandle, path2, TRK_ATT_SURF, barrierMaterial[side]);
-			barrierSurface[side] = getTrackSurface(TrackHandle, theTrack, barrierMaterial[side]);
-			barrierHeight[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, barrierHeight[side]);
-			style = GfParmGetStr(TrackHandle, path2, TRK_ATT_STYLE, ValStyle[barrierStyle[side]]);
+			barrierMaterial[side] = GfParmGetStr(trackHandle, path2, TRK_ATT_SURF, barrierMaterial[side]);
+			barrierSurface[side] = getTrackSurface(trackHandle, theTrack, barrierMaterial[side]);
+			barrierHeight[side] = GfParmGetNum(trackHandle, path2, TRK_ATT_HEIGHT, (char*)NULL, barrierHeight[side]);
+			style = GfParmGetStr(trackHandle, path2, TRK_ATT_STYLE, ValStyle[barrierStyle[side]]);
 			
 			if (strcmp(style, TRK_VAL_FENCE) == 0) {
 				barrierStyle[side] = TR_FENCE;
 				barrierWidth[side] = 0;
 			} else {
 				barrierStyle[side] = TR_WALL;
-				barrierWidth[side] = GfParmGetNum(TrackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, barrierWidth[side]);
+				barrierWidth[side] = GfParmGetNum(trackHandle, path2, TRK_ATT_WIDTH, (char*)NULL, barrierWidth[side]);
 			}
 		} else {
 			// Reset sw, ew, bw for steps after initialization
