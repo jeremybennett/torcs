@@ -1415,12 +1415,13 @@ static void initSideForStraight(
 	@param[in] lefttype For side: [TR_LSIDE](@ref TR_LSIDE), for border: [TR_LBORDER](@ref TR_LBORDER)
 	@param[in] righttype For side: [TR_RSIDE](@ref TR_RSIDE), for border: [TR_RBORDER](@ref TR_RBORDER)
 	@param[in] bankingtype For [TRK_VAL_TANGENT](@ref TRK_VAL_TANGENT) 1, for [TRK_VAL_LEVEL](@ref TRK_VAL_LEVEL) 0
-	@param[in] startwidth Start width of the border
-	@param[in] endwidth End width of the border
+	@param[in] startwidth Start width of the side/border
+	@param[in] endwidth End width of the side/border
 	@param[in] surface Surface for the side/border
 	@param[in] borderheight Border height for borders, should usually be 0.0 for sides
 	@param[in] borderstyle Type of segment, for sides always [TR_PLAN](@ref TR_PLAN), for borders either [TR_PLAN](@ref TR_PLAN),
 	           [TR_CURB](@ref TR_CURB) or [TR_WALL](@ref TR_WALL)
+	@return Pointer to the newly created side/border segment
  */
 static tTrackSeg* commonSideInit(
 	tTrackSeg* const curSeg,
