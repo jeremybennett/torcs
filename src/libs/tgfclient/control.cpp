@@ -2,7 +2,7 @@
 
     file        : control.cpp
     created     : Thu Mar  6 22:01:33 CET 2003
-    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                        
+    copyright   : (C) 2003-2015 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -188,89 +188,95 @@ void GfctrlGetRefByName(const char *name, tCtrlRef* ref)
     @param	index	reference index
     @return	pointer on a static structure tCtrlRef
 */
-const char *
-GfctrlGetNameByRef(GfCtrlType type, int index)
+const char *GfctrlGetNameByRef(GfCtrlType type, int index)
 {
 	static const int BUFSIZE = 4; 
     static char buf[BUFSIZE];
     int i;
     
     switch (type) {
-    case GFCTRL_TYPE_NOT_AFFECTED:
-	return NULL;
-    case GFCTRL_TYPE_JOY_BUT:
-	if (index < gfmaxJoyButton) {
-	    return GfJoyBtn[index];
-	} else {
-	    return NULL;
-	}
-	break;
-    case GFCTRL_TYPE_JOY_AXIS:
-	if (index < gfmaxJoyAxis) {
-	    return GfJoyAxis[index];
-	} else {
-	    return NULL;
-	}
-	break;
-    case GFCTRL_TYPE_MOUSE_BUT:
-	if (index < gfmaxMouseButton) {
-	    return GfMouseBtn[index];
-	} else {
-	    return NULL;
-	}
-	break;
-    case GFCTRL_TYPE_MOUSE_AXIS:
-	if (index < gfmaxMouseAxis) {
-	    return GfMouseAxis[index];
-	} else {
-	    return NULL;
-	}
-	break;
-    case GFCTRL_TYPE_SKEYBOARD:
-	for (i = 0; i < gfmaxSKey; i++) {
-	    if (index == GfSKey[i].val) {
-		return GfSKey[i].descr;
-	    }
-	}
-	return NULL;
-	break;
-    case GFCTRL_TYPE_KEYBOARD:
-	for (i = 0; i < gfmaxKey; i++) {
-	    if (index == GfKey[i].val) {
-		return GfKey[i].descr;
-	    }
-	}
-	if (isprint(index)) {
-	    snprintf(buf, BUFSIZE, "%c", index);
-	    return buf;
-	}
-	return NULL;
-	break;
-    default:
-	break;
+		case GFCTRL_TYPE_NOT_AFFECTED:
+			return NULL;
+
+		case GFCTRL_TYPE_JOY_BUT:
+			if (index < gfmaxJoyButton) {
+				return GfJoyBtn[index];
+			} else {
+				return NULL;
+			}
+			break;
+
+		case GFCTRL_TYPE_JOY_AXIS:
+			if (index < gfmaxJoyAxis) {
+				return GfJoyAxis[index];
+			} else {
+				return NULL;
+			}
+			break;
+
+		case GFCTRL_TYPE_MOUSE_BUT:
+			if (index < gfmaxMouseButton) {
+				return GfMouseBtn[index];
+			} else {
+				return NULL;
+			}
+			break;
+
+		case GFCTRL_TYPE_MOUSE_AXIS:
+			if (index < gfmaxMouseAxis) {
+				return GfMouseAxis[index];
+			} else {
+				return NULL;
+			}
+			break;
+
+		case GFCTRL_TYPE_SKEYBOARD:
+			for (i = 0; i < gfmaxSKey; i++) {
+				if (index == GfSKey[i].val) {
+					return GfSKey[i].descr;
+				}
+			}
+			return NULL;
+			break;
+
+		case GFCTRL_TYPE_KEYBOARD:
+			for (i = 0; i < gfmaxKey; i++) {
+				if (index == GfKey[i].val) {
+					return GfKey[i].descr;
+				}
+			}
+			if (isprint(index)) {
+				snprintf(buf, BUFSIZE, "%c", index);
+				return buf;
+			}
+			return NULL;
+			break;
+
+		default:
+			break;
     }
+
     return NULL;
 }
 
 
-static void
-gfJoyFirstInit(void)
+static void gfJoyFirstInit(void)
 {
     int index;
     
     gfctrlJoyPresent = GFCTRL_JOY_NONE;
 
     for (index = 0; index < NUM_JOY; index++) {
-	if (js[index] == NULL) {
-	    js[index] = new jsJoystick(index);
-	}
-    
-	if (js[index]->notWorking()) {
-	    /* don't configure the joystick */
-	    js[index] = NULL;
-	} else {
-	    gfctrlJoyPresent = GFCTRL_JOY_PRESENT;
-	}
+		if (js[index] == NULL) {
+			js[index] = new jsJoystick(index);
+		}
+	    
+		if (js[index]->notWorking()) {
+			/* don't configure the joystick */
+			js[index] = NULL;
+		} else {
+			gfctrlJoyPresent = GFCTRL_JOY_PRESENT;
+		}
     }
 }
 
@@ -294,27 +300,25 @@ const char *GfctrlGetDefaultSection(GfCtrlType type)
     @see	GfctrlJoyRelease
     @see	tCtrlJoyInfo
 */
-tCtrlJoyInfo *
-GfctrlJoyInit(void)
+tCtrlJoyInfo *GfctrlJoyInit(void)
 {
-    tCtrlJoyInfo	*joyInfo = NULL;
+    tCtrlJoyInfo *joyInfo = NULL;
 
     if (gfctrlJoyPresent == GFCTRL_JOY_UNTESTED) {
-	gfJoyFirstInit();
+		gfJoyFirstInit();
     }
 
     joyInfo = (tCtrlJoyInfo *)calloc(1, sizeof(tCtrlJoyInfo));
-    
     return joyInfo;
 }
+
 
 /** Release the tCtrlJoyInfo structure
     @ingroup	ctrl
     @param	joyInfo	joystick structure
     @return	none
 */
-void
-GfctrlJoyRelease(tCtrlJoyInfo *joyInfo)
+void GfctrlJoyRelease(tCtrlJoyInfo *joyInfo)
 {
     FREEZ(joyInfo);
 }
@@ -325,11 +329,10 @@ GfctrlJoyRelease(tCtrlJoyInfo *joyInfo)
     @return	GFCTRL_JOY_NONE	if no joystick
 		<br>GFCTRL_JOY_PRESENT if a joystick is present
 */
-int
-GfctrlJoyIsPresent(void)
+int GfctrlJoyIsPresent(void)
 {
     if (gfctrlJoyPresent == GFCTRL_JOY_UNTESTED) {
-	gfJoyFirstInit();
+		gfJoyFirstInit();
     }
 
     return gfctrlJoyPresent;
@@ -343,48 +346,47 @@ GfctrlJoyIsPresent(void)
 		<br><tt>-1 .. </tt>Error
     @note	The tCtrlJoyInfo structure is updated with the new values
 */
-int
-GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo)
+int GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo)
 {
-    int			ind;
-    int			i;
-    int			b;
-    unsigned int	mask;
+    int ind;
+    int i;
+    int b;
+    unsigned int mask;
 
     if (gfctrlJoyPresent == GFCTRL_JOY_PRESENT) {
     	for (ind = 0; ind < NUM_JOY; ind++) {
-	    if (js[ind]) {
-		js[ind]->read(&b, &(joyInfo->ax[_JS_MAX_AXES * ind]));
+			if (js[ind]) {
+				js[ind]->read(&b, &(joyInfo->ax[_JS_MAX_AXES * ind]));
 
-		/* Joystick buttons */
-		for (i = 0, mask = 1; i < GFCTRL_JOY_MAXBUTTON; i++, mask *= 2) {
-		    if (((b & mask) != 0) && ((joyInfo->oldb[ind] & mask) == 0)) {
-			joyInfo->edgeup[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
-		    } else {
-			joyInfo->edgeup[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
-		    }
-		    if (((b & mask) == 0) && ((joyInfo->oldb[ind] & mask) != 0)) {
-			joyInfo->edgedn[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
-		    } else {
-			joyInfo->edgedn[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
-		    }
-		    if ((b & mask) != 0) {
-			joyInfo->levelup[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
-		    } else {
-			joyInfo->levelup[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
-		    }
+				/* Joystick buttons */
+				for (i = 0, mask = 1; i < GFCTRL_JOY_MAXBUTTON; i++, mask *= 2) {
+					if (((b & mask) != 0) && ((joyInfo->oldb[ind] & mask) == 0)) {
+						joyInfo->edgeup[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
+					} else {
+						joyInfo->edgeup[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
+					}
+
+					if (((b & mask) == 0) && ((joyInfo->oldb[ind] & mask) != 0)) {
+						joyInfo->edgedn[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
+					} else {
+						joyInfo->edgedn[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
+					}
+
+					if ((b & mask) != 0) {
+						joyInfo->levelup[i + GFCTRL_JOY_MAXBUTTON * ind] = 1;
+					} else {
+						joyInfo->levelup[i + GFCTRL_JOY_MAXBUTTON * ind] = 0;
+					}
+				}
+				joyInfo->oldb[ind] = b;
+			}
 		}
-		joyInfo->oldb[ind] = b;
-	    }
-	}
     } else {
-	return -1;
+		return -1;
     }
 
     return 0;
 }
-
-
 
 
 /** Initialize the mouse control
@@ -394,26 +396,24 @@ GfctrlJoyGetCurrent(tCtrlJoyInfo *joyInfo)
     @note	call GfctrlMouseRelease to free the tCtrlMouseInfo structure
     @see	GfctrlMouseRelease
 */
-tCtrlMouseInfo *
-GfctrlMouseInit(void)
+tCtrlMouseInfo *GfctrlMouseInit(void)
 {
     tCtrlMouseInfo	*mouseInfo = NULL;
-
     mouseInfo = (tCtrlMouseInfo *)calloc(1, sizeof(tCtrlMouseInfo));
-
     return mouseInfo;
 }
+
 
 /** Release the tCtrlMouseInfo structure
     @ingroup	ctrl
     @param	mouseInfo	mouse structure
     @return	none
 */
-void
-GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo)
+void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo)
 {
     FREEZ(mouseInfo);
 }
+
 
 static tMouseInfo refMouse;
 
@@ -424,46 +424,46 @@ static tMouseInfo refMouse;
 		<br><tt>-1 .. </tt>Error
     @note	The tCtrlMouseInfo structure is updated with the new values
 */
-int
-GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
+int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
 {
     float	mouseMove;
     tMouseInfo	*mouse;
     int		i;
 
     mouse = GfuiMouseInfo();
-
     mouseMove = (float)(refMouse.X - mouse->X);
     
     if (mouseMove < 0) {
-	mouseInfo->ax[1] = -mouseMove;
-	mouseInfo->ax[0] = 0;
+		mouseInfo->ax[1] = -mouseMove;
+		mouseInfo->ax[0] = 0;
     } else {
-	mouseInfo->ax[0] = mouseMove;
-	mouseInfo->ax[1] = 0;
+		mouseInfo->ax[0] = mouseMove;
+		mouseInfo->ax[1] = 0;
     }
+
     mouseMove = (float)(refMouse.Y - mouse->Y);
     if (mouseMove < 0) {
-	mouseInfo->ax[2] = -mouseMove;
-	mouseInfo->ax[3] = 0;
+		mouseInfo->ax[2] = -mouseMove;
+		mouseInfo->ax[3] = 0;
     } else {
-	mouseInfo->ax[3] = mouseMove;
-	mouseInfo->ax[2] = 0;
+		mouseInfo->ax[3] = mouseMove;
+		mouseInfo->ax[2] = 0;
     }
+
     for (i = 0; i < 3; i++) {
-	if (mouseInfo->button[i] != mouse->button[i]) {
-	    if (mouse->button[i]) {
-		mouseInfo->edgedn[i] = 1;
-		mouseInfo->edgeup[i] = 0;
-	    } else {
-		mouseInfo->edgeup[i] = 1;
-		mouseInfo->edgedn[i] = 0;
-	    }
-	    mouseInfo->button[i] = mouse->button[i];
-	} else {
-	    mouseInfo->edgeup[i] = 0;
-	    mouseInfo->edgedn[i] = 0;
-	}
+		if (mouseInfo->button[i] != mouse->button[i]) {
+			if (mouse->button[i]) {
+				mouseInfo->edgedn[i] = 1;
+				mouseInfo->edgeup[i] = 0;
+			} else {
+				mouseInfo->edgeup[i] = 1;
+				mouseInfo->edgedn[i] = 0;
+			}
+			mouseInfo->button[i] = mouse->button[i];
+		} else {
+			mouseInfo->edgeup[i] = 0;
+			mouseInfo->edgedn[i] = 0;
+		}
     }
     return 0;
 }
@@ -473,8 +473,7 @@ GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo)
     @ingroup	ctrl
     @return	none
 */
-void
-GfctrlMouseCenter(void)
+void GfctrlMouseCenter(void)
 {
     int sw, sh, vw, vh;
 
@@ -482,12 +481,31 @@ GfctrlMouseCenter(void)
     GfuiMouseSetPos(sw / 2, sh / 2);
 }
 
+
 /** Get the reference position.
     @ingroup	ctrl
     @return	none
 */
-void
-GfctrlMouseInitCenter(void)
+void GfctrlMouseInitCenter(void)
 {
     memcpy(&refMouse, GfuiMouseInfo(), sizeof(refMouse));
+}
+
+
+/** Check if given event is blacklisted (used for buttons or axis which fire a button AND move event)
+    @ingroup	ctrl
+	@param		parmHandle Parameters containgn the blacklist
+	@param		driversSection Specific parameter section
+	@param		event Name of the Event, usually obtaned with GfctrlGetRefByName, e.g. "BTN7-0"
+	@return		true if blacklisted, false otherwise
+*/
+bool GfctrlIsEventBlacklisted(void *parmHandle, const char* driversSection, const char* event)
+{
+	const char* eventBlacklist = GfParmGetStr(parmHandle, driversSection, HM_ATT_EVENTBLACKLIST, NULL);
+	if (eventBlacklist && strstr(eventBlacklist, event)) {
+		GfOut("Blacklisted event: %s\n", event);
+		return true;
+	}
+
+	return false;
 }

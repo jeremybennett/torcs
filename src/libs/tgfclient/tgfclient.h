@@ -307,6 +307,7 @@ extern void GfctrlMouseInitCenter(void);
 extern void GfctrlGetRefByName(const char *name, tCtrlRef* ref);
 extern const char *GfctrlGetNameByRef(GfCtrlType type, int index);
 extern const char *GfctrlGetDefaultSection(GfCtrlType type);
+extern bool GfctrlIsEventBlacklisted(void *parmHandle, const char* driversSection, const char* event);
 
 extern int GfuiGlutExtensionSupported(const char *str);
 

@@ -26,7 +26,7 @@
 #ifndef _JOYSTICKCONFIG_H_
 #define _JOYSTICKCONFIG_H_
 
-extern void *JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd);
+extern void *JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd, void *parmHandle, const char* driverSection);
 
 #endif /* _JOYSTICKCONFIG_H_ */ 
 

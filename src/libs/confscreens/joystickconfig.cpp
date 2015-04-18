@@ -2,7 +2,7 @@
 
     file                 : joystickconfig.cpp
     created              : Wed Mar 21 21:46:11 CET 2001
-    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2001-2015 by Eric Espie, Bernhard Wymann
     email                : eric.espie@torcs.org
     version              : $Id$
 
@@ -35,15 +35,17 @@ static void	*scrHandle2 = NULL;
 
 static tCmdInfo *Cmd;
 static int maxCmd;
+static void *parmHandle;
+static const char* driverSection;
 
 static jsJoystick *js[NUM_JOY] = {NULL};
 
-static float 	ax[_JS_MAX_AXES * NUM_JOY] = {0};
-static int	rawb[NUM_JOY] = {0};
+static float ax[_JS_MAX_AXES * NUM_JOY] = {0};
+static int rawb[NUM_JOY] = {0};
 
-#define NB_STEPS	6
+#define NB_STEPS 6
 
-#define OFFSET_CMD	5
+#define OFFSET_CMD 5
 
 static const char *Instructions[] = {
     "Center the joystick then press a button",
@@ -71,7 +73,7 @@ static void onBack(void *prevMenu)
 }
 
 
-static float 	axCenter[_JS_MAX_AXES * NUM_JOY];
+static float axCenter[_JS_MAX_AXES * NUM_JOY];
 
 static void advanceStep (void)
 {
@@ -140,16 +142,19 @@ static void Idle2(void)
 			
 			/* Joystick buttons */
 			for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
-			if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
-				/* Button fired */
-				JoyCalAutomaton();
-				if (CalState >= NB_STEPS) {
-					glutIdleFunc(GfuiIdle);
+				if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
+					const char *str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
+					if (!GfctrlIsEventBlacklisted(parmHandle, driverSection, str)) {
+						/* Button fired */
+						JoyCalAutomaton();
+						if (CalState >= NB_STEPS) {
+							glutIdleFunc(GfuiIdle);
+						}
+						glutPostRedisplay();
+						rawb[index] = b;
+						return;
+					}
 				}
-				glutPostRedisplay();
-				rawb[index] = b;
-				return;
-			}
 			}
 			rawb[index] = b;
 		}
@@ -190,12 +195,14 @@ static void onActivate(void * /* dummy */)
 }
 
 
-void *JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd)
+void *JoyCalMenuInit(void *prevMenu, tCmdInfo *cmd, int maxcmd, void *parmhandle, const char* driversection)
 {
 	int x, y, dy, i, index;
 
 	Cmd = cmd;
 	maxCmd = maxcmd;
+	parmHandle = parmhandle;
+	driverSection = driversection;
 
 	if (scrHandle2) {
 		return scrHandle2;

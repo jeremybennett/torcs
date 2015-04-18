@@ -156,8 +156,7 @@ static void onSave(void * /* dummy */)
 }
 
 
-static void
-updateButtonText(void)
+static void updateButtonText(void)
 {
 	int i;
 	const char *str;
@@ -191,8 +190,7 @@ updateButtonText(void)
 }
 
 
-static void
-onFocusLost(void * /* dummy */)
+static void onFocusLost(void * /* dummy */)
 {
 	updateButtonText();
 }
@@ -203,8 +201,7 @@ static tCmdInfo* CurrentCmd;
 static int InputWaited = 0;
 
 
-static int
-onKeyAction(unsigned char key, int /* modifier */, int state)
+static int onKeyAction(unsigned char key, int /* modifier */, int state)
 {
 	const char *name;
 	
@@ -231,8 +228,7 @@ onKeyAction(unsigned char key, int /* modifier */, int state)
 }
 
 
-static int
-onSKeyAction(int key, int /* modifier */, int state)
+static int onSKeyAction(int key, int /* modifier */, int state)
 {
 	const char *name;
 	
@@ -252,8 +248,7 @@ onSKeyAction(int key, int /* modifier */, int state)
 }
 
 
-static int
-getMovedAxis(void)
+static int getMovedAxis(void)
 {
 	int	i;
 	int	Index = -1;
@@ -269,8 +264,7 @@ getMovedAxis(void)
 }
 
 
-static void
-Idle(void)
+static void Idle(void)
 {
 	int mask;
 	int	b, i;
@@ -317,15 +311,17 @@ Idle(void)
 			for (i = 0, mask = 1; i < 32; i++, mask *= 2) {
 				if (((b & mask) != 0) && ((rawb[index] & mask) == 0)) {
 					/* Button i fired */
-					glutIdleFunc(GfuiIdle);
-					InputWaited = 0;
 					str = GfctrlGetNameByRef(GFCTRL_TYPE_JOY_BUT, i + 32 * index);
-					CurrentCmd->ref.index = i + 32 * index;
-					CurrentCmd->ref.type = GFCTRL_TYPE_JOY_BUT;
-					GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
-					glutPostRedisplay();
-					rawb[index] = b;
-					return;
+					if (!GfctrlIsEventBlacklisted(PrefHdle, CurrentSection, str)) {
+						glutIdleFunc(GfuiIdle);
+						InputWaited = 0;
+						CurrentCmd->ref.index = i + 32 * index;
+						CurrentCmd->ref.type = GFCTRL_TYPE_JOY_BUT;
+						GfuiButtonSetText (scrHandle, CurrentCmd->Id, str);
+						glutPostRedisplay();
+						rawb[index] = b;
+						return;
+					}
 				}
 			}
 			rawb[index] = b;
@@ -347,8 +343,7 @@ Idle(void)
 }
 
 
-static void
-onPush(void *vi)
+static void onPush(void *vi)
 {
 	int	index;    
 
@@ -376,8 +371,7 @@ onPush(void *vi)
 }
 
 
-static void
-onActivate(void * /* dummy */)
+static void onActivate(void * /* dummy */)
 {
 	int cmd;
 	const char *prm;
@@ -435,16 +429,14 @@ onActivate(void * /* dummy */)
 	updateButtonText();
 }
 
-static void
-DevCalibrate(void *menu)
+static void DevCalibrate(void *menu)
 {
 	ReloadValues = 0;
 	GfuiScreenActivate(menu);
 }
 
 
-void *
-TorcsControlMenuInit(void *prevMenu, int idx)
+void * TorcsControlMenuInit(void *prevMenu, int idx)
 {
 	int x, y, x2, dy, i;
 	int index;
@@ -518,7 +510,7 @@ TorcsControlMenuInit(void *prevMenu, int idx)
 	
 	JoyCalButton = GfuiButtonCreate(
 		scrHandle, "Calibrate", GFUI_FONT_LARGE, 320, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
-		JoyCalMenuInit(scrHandle, Cmd, maxCmd), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
+		JoyCalMenuInit(scrHandle, Cmd, maxCmd, PrefHdle, CurrentSection), DevCalibrate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL
 	);
 	
 	GfuiAddKey(scrHandle, 27, "Cancel", prevMenu, GfuiScreenActivate, NULL);

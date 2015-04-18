@@ -107,6 +107,8 @@
 #define HM_ATT_ASR	"ASR on"
 #define HM_ATT_NBPITS	"programmed pit stops"
 
+#define HM_ATT_EVENTBLACKLIST "blacklisted events"
+
 #define HM_VAL_AUTO	"auto"
 #define HM_VAL_MANUAL	"manual"
 
