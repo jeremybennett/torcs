@@ -492,11 +492,11 @@ void GfctrlMouseInitCenter(void)
 }
 
 
-/** Check if given event is blacklisted (used for buttons or axis which fire a button AND move event)
+/** Check if given event is blacklisted (used for buttons or axis which fire a button AND move event).
     @ingroup	ctrl
-	@param		parmHandle Parameters containgn the blacklist
+	@param		parmHandle Parameters containing the blacklist
 	@param		driversSection Specific parameter section
-	@param		event Name of the Event, usually obtaned with GfctrlGetRefByName, e.g. "BTN7-0"
+	@param		event Name of the event, usually obtaned with #GfctrlGetRefByName, e.g. "BTN7-0"
 	@return		true if blacklisted, false otherwise
 */
 bool GfctrlIsEventBlacklisted(void *parmHandle, const char* driversSection, const char* event)
