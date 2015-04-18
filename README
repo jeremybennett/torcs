@@ -246,8 +246,12 @@ Changes since 1.3.6
 - Fixed some gcc 4.8.1 warnings (Bernhard).
 - Disabled penalties after race finish, reported by MarkP (MarkP, Bernhard).
 - Added new options to trackgen for testing, see -i, -o (Bernhard).
-- Added a testsuite to generate a bulk of tracks ("test" directory) (Bernhard). 
-
+- Added a testsuite to generate a bulk of tracks ("test" directory) (Bernhard).
+- Added blacklisting of button events in player perferences, needed to set up
+  input devices which fire button and axis events on analogue buttons, e.g.
+  L2/R2 of playstation controllers. Add in the drivers section of
+  preferences.xml e.g. <attstr name="blacklisted events" val="BTN7-0,BTN8-0"/>
+  (Bernhard).
 
 12. TODO/Notes
 --------------
@@ -317,9 +321,7 @@ Later:
 - Decide about plib (not maintained anymore?) -> integration of minimal subset as base
   for own engine?
 - Refactor trackgen (left/right -> half the code, maybe more)
-- Mixed axis controller (under linux some analouge buttons generate a button and axis
-  event, this is a problem for detection/calibration with the current workflow, e.g.
-  ps3 controller buttons l2/r2)
+- GUI for event blacklisting.
 - Ongoing for every release: rework free car models (several holes, no
   emmissive color of lod (model becomes dark at a certain distance), single
   sided, add cockpit, lods).
