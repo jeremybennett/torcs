@@ -193,8 +193,8 @@ void SimWheelUpdateForce(tCar *car, int index)
 		wheel->forces.z = wheel->rel_vel/SimDeltaTime*wheel->mass;
 		wheel->rel_vel = 0.0;
 	} else {
-		wheel->rel_vel -= SimDeltaTime * wheel->susp.force / wheel->mass;
 		wheel->forces.z = axleFz + wheel->susp.force;
+		wheel->rel_vel -= SimDeltaTime * wheel->forces.z / wheel->mass;
 	}
 
 	// update wheel coord, center relative to GC
