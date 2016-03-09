@@ -2,7 +2,7 @@
 
     file                 : susp.cpp
     created              : Sun Mar 19 00:08:41 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2016 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -85,6 +85,7 @@ static tdble springForce(tSuspension *susp)
 	/* K is < 0 */
 	f = spring->K * (susp->x - spring->x0) + spring->F0;
 	if (f < 0.0f) {
+		// Compression spring, so the force can never change the sign.
 		f = 0.0f;
 	}
 	
@@ -98,9 +99,13 @@ void SimSuspCheckIn(tSuspension *susp)
 {
 	susp->state = 0;
 	if (susp->x < susp->spring.packers) {
+		// Packers are not scaled with susp->spring.bellcrank, because they are a hard
+		// rubber element or plate spring packs directly mounted on the piston of the
+		// damper.
 		susp->x = susp->spring.packers;
 		susp->state = SIM_SUSP_COMP;
 	}
+	
 	susp->x *= susp->spring.bellcrank;
 	if (susp->x > susp->spring.xMax) {
 		susp->x = susp->spring.xMax;
@@ -113,7 +118,16 @@ void SimSuspCheckIn(tSuspension *susp)
 
 void SimSuspUpdate(tSuspension *susp)
 {
+	tdble prevForce = susp->force;
 	susp->force = (springForce(susp) + damperForce(susp)) * susp->spring.bellcrank;
+	if (susp->force * prevForce < 0.0f) {
+		// Workaround for undersampling: The damper force can at its best just stop the
+		// movement, but it cannot invert it (because damping is always in the opposite
+		// direction of movement). For "normal" spring/damper setups the condition
+		// (susp->force * prevForce < 0.0f) is usually not true, it is just to catch
+		// extreme "spikes".
+		susp->force = 0.0f;
+	}
 }
 
 
