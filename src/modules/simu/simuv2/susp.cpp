@@ -118,16 +118,19 @@ void SimSuspCheckIn(tSuspension *susp)
 
 void SimSuspUpdate(tSuspension *susp)
 {
-	tdble prevForce = susp->force;
-	susp->force = (springForce(susp) + damperForce(susp)) * susp->spring.bellcrank;
-	if (susp->force * prevForce < 0.0f) {
+	tdble prevDamperForce = susp->damperForce;
+	tdble currentDamperForce = damperForce(susp);
+	tdble currentSpringForce = springForce(susp);
+	if (prevDamperForce * currentDamperForce < 0.0f) {
 		// Workaround for undersampling: The damper force can at its best just stop the
 		// movement, but it cannot invert it (because damping is always in the opposite
-		// direction of movement). For "normal" spring/damper setups the condition
-		// (susp->force * prevForce < 0.0f) is usually not true, it is just to catch
-		// extreme "spikes".
-		susp->force = 0.0f;
+		// direction of movement).
+		susp->force = currentSpringForce * susp->spring.bellcrank;
+	} else {
+		susp->force = (currentSpringForce + currentDamperForce) * susp->spring.bellcrank;
 	}
+
+	susp->damperForce = currentDamperForce;
 }
 
 
