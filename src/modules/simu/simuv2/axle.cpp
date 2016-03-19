@@ -2,7 +2,7 @@
 
     file                 : axle.cpp
     created              : Sun Mar 19 00:05:09 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2016 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -82,7 +82,7 @@ void SimAxleUpdate(tCar *car, int index)
 	axle->thirdSusp.v = (vl + vr)/2.0f;
 	SimSuspUpdate(&axle->thirdSusp);
 	tdble fthird = 0.0f;
-	if (axle->thirdSusp.x < axle->thirdSusp.spring.xMax) {
+	if (axle->thirdSusp.x < axle->thirdSusp.spring.xMax && axle->thirdSusp.force > 0.0f) {
 		fthird = axle->thirdSusp.force/2.0f;
 	}
 
