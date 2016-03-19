@@ -143,6 +143,8 @@ void SimWheelUpdateRide(tCar *car, int index)
     tdble max_extend =  wheel->pos.z - Zroad;
 	wheel->rideHeight = max_extend;
 
+	bool updateRelvel = false;
+	
 	wheel->state &= ~SIM_WH_ONAIR;
 	if (max_extend < new_susp_x) {
 		new_susp_x = max_extend;
@@ -150,7 +152,9 @@ void SimWheelUpdateRide(tCar *car, int index)
 	} else if (new_susp_x < wheel->susp.spring.packers) {
 		wheel->rel_vel = 0.0f;
 		new_susp_x = wheel->susp.spring.packers;
-	} 
+	} else {
+		updateRelvel = true;
+	}
 	
 	if (new_susp_x < max_extend) {
 		wheel->state |= SIM_WH_ONAIR;
@@ -162,6 +166,9 @@ void SimWheelUpdateRide(tCar *car, int index)
 	// verify the suspension travel, beware, wheel->susp.x will be scaled by SimSuspCheckIn
 	SimSuspCheckIn(&(wheel->susp));
 	wheel->susp.v = (prex - wheel->susp.x) / SimDeltaTime;
+	if (updateRelvel) {
+		wheel->rel_vel = wheel->susp.v * wheel->susp.spring.bellcrank;
+	}
 	
 	// update wheel brake
 	SimBrakeUpdate(car, wheel, &(wheel->brake));

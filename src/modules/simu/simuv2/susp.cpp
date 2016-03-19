@@ -118,19 +118,17 @@ void SimSuspCheckIn(tSuspension *susp)
 
 void SimSuspUpdate(tSuspension *susp)
 {
-	tdble prevDamperForce = susp->damperForce;
-	tdble currentDamperForce = damperForce(susp);
-	tdble currentSpringForce = springForce(susp);
-	if (prevDamperForce * currentDamperForce < 0.0f) {
-		// Workaround for undersampling: The damper force can at its best just stop the
-		// movement, but it cannot invert it (because damping is always in the opposite
-		// direction of movement).
-		susp->force = currentSpringForce * susp->spring.bellcrank;
+	tdble internalForce = springForce(susp) + damperForce(susp);
+	if (internalForce <= 0.0f) {
+		// The damping can at its best cancel out the spring force. Requred because
+		// of numerical integration artefacts with (if the velocity is 0 there is no
+		// damping, so the spring accelarates the system for one time step; if the
+		// damping is set very high this can result in a counterforce larger than the
+		// spring force in the next timestep)
+		susp->force = 0.0f;
 	} else {
-		susp->force = (currentSpringForce + currentDamperForce) * susp->spring.bellcrank;
+		susp->force = internalForce * susp->spring.bellcrank;
 	}
-
-	susp->damperForce = currentDamperForce;
 }
 
 
