@@ -23,7 +23,7 @@
 
 #include "sim.h"
 
-const tdble aMax = 0.35f; /*  */
+const tdble aMax = 1.04f; // 60 degrees DOF limit
 
 void
 SimCarConfig(tCar *car)

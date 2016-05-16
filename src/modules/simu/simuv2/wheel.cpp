@@ -146,7 +146,7 @@ void SimWheelUpdateRide(tCar *car, int index)
 	wheel->state &= ~SIM_WH_ONAIR;
 	if (max_extend < new_susp_x) {
 		new_susp_x = max_extend;
-		wheel->rel_vel = 0.0f;		
+		wheel->rel_vel = 0.0f;
 	} else if (new_susp_x < wheel->susp.spring.packers) {
 		new_susp_x = wheel->susp.spring.packers;
 		wheel->rel_vel = 0.0f;
