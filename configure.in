@@ -2,7 +2,7 @@
 #
 #    file                 : configure.in
 #    created              : Mon Dec 11 22:34:38 CET 2000
-#    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
+#    copyright            : (C) 2000-2016 by Eric Espie, Bernhard Wymann
 #    email                : Eric.Espie@torcs.org
 #    version              : $Id$
 #
@@ -17,7 +17,7 @@
 
 AC_INIT(Make-config.in)
 AC_CONFIG_HEADERS(config.h)
-AM_INIT_AUTOMAKE(torcs, 1.3.6)
+AM_INIT_AUTOMAKE(torcs, 1.3.7)
 
 dnl Checks for programs.
 AC_PROG_CC
