@@ -1,7 +1,7 @@
 <!--
 	file        : download_and_install.html
 	created     : Fri Aug  12 13:39:11 CET 2005
-	copyright   : (C) 2005-2012 by Eric Espie, Bernhard Wymann
+	copyright   : (C) 2005-2016 by Eric Espie, Bernhard Wymann
 	email       : berniw@bluewin.ch
 	version     : $Id$
 
@@ -34,7 +34,7 @@
     <p><hr noshade="noshade" size="2" width="100%"></p>
     <h2><a name="win32-bin"></a>Binary Installer Package For Windows</h2>
     <ul>
-      <li>Download and run <a href="http://sourceforge.net/projects/torcs/files/torcs-win32-bin/1.3.6/torcs_1.3.6_setup.exe/download">torcs_1.3.6_setup.exe</a>.
+      <li>Download and run <a href="http://sourceforge.net/projects/torcs/files/torcs-win32-bin/1.3.7/torcs_1.3.7_setup.exe/download">torcs_1.3.7_setup.exe</a>.
       </li>
     </ul>
 
@@ -77,12 +77,12 @@
 
 	<ol>
 		<li>Check the <a href="#dependencies"><b>dependencies</b></a></li>
-		<li>Download the source package <a href="http://sourceforge.net/projects/torcs/files/all-in-one/1.3.6/torcs-1.3.6.tar.bz2/download">torcs-1.3.6.tar.bz2</a>.</li>
-		<li>Unpack the package with "tar xfvj torcs-1.3.6.tar.bz2".</li>
+		<li>Download the source package <a href="http://sourceforge.net/projects/torcs/files/all-in-one/1.3.7/torcs-1.3.7.tar.bz2/download">torcs-1.3.7.tar.bz2</a>.</li>
+		<li>Unpack the package with "tar xfvj torcs-1.3.7.tar.bz2".</li>
 		<li>Run the following commands:
 		<p>
 		<pre>
-$ cd torcs-1.3.6
+$ cd torcs-1.3.7
 $ ./configure        # --prefix="target dir", --enable-debug or --disable-xrandr might be of interest
 $ make
 $ make install
@@ -117,10 +117,10 @@ $ make datainstall
 
 	<ol>
 		<li>Requires VS 6.0 (tested with sp6) or VS 2008 (tested with sp1).</li>
-		<li>Download the source package <a href="http://sourceforge.net/projects/torcs/files/all-in-one/1.3.6/torcs-1.3.6.tar.bz2/download">torcs-1.3.6.tar.bz2</a>.</li>
-		<li>Unpack the package with "tar xfvj torcs-1.3.6.tar.bz2" or any application you like, be careful to select a path without whitespaces and other special characters.</li>
+		<li>Download the source package <a href="http://sourceforge.net/projects/torcs/files/all-in-one/1.3.7/torcs-1.3.7.tar.bz2/download">torcs-1.3.7.tar.bz2</a>.</li>
+		<li>Unpack the package with "tar xfvj torcs-1.3.7.tar.bz2" or any application you like, be careful to select a path without whitespaces and other special characters.</li>
 		<li>Hint: You can build a release and a debug version side by side, the required step for the debug version is showed in brackets "()".</li>
-		<li>Open a command prompt and cd into the torcs-1.3.6 directory.</li>
+		<li>Open a command prompt and cd into the torcs-1.3.7 directory.</li>
 		<li>Run setup_win32.bat (setup_win32_debug.bat).
 		<li>Run setup_win32-data-from-CVS.bat (setup_win32-data-from-CVS_debug.bat).
 		<li>Open the file TORCS.dsw with VS 6.0 or the TORCS.sln with VS 2008.</li>
@@ -143,8 +143,8 @@ $ make datainstall
 		<li>Check the <a href="#dependencies"><b>dependencies</b></a></li>
 		<li>Download the following source packages:
 			<ul>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-src/1.3.6/TORCS-1.3.6-src.tgz/download">TORCS-1.3.6-src.tgz</a> (<b>mandatory</b>)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-src/1.3.6/TORCS-1.3.6-src-robots-base.tgz/download">TORCS-1.3.6-src-robots-base.tgz</a> (<b>mandatory</b>)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-src/1.3.7/TORCS-1.3.7-src.tgz/download">TORCS-1.3.7-src.tgz</a> (<b>mandatory</b>)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-src/1.3.7/TORCS-1.3.7-src-robots-base.tgz/download">TORCS-1.3.7-src-robots-base.tgz</a> (<b>mandatory</b>)</li>
 			</ul>
 		</li>
 
@@ -152,7 +152,7 @@ $ make datainstall
 		<li>Run the following commands:
 		<p>
 		<pre>
-$ cd torcs-1.3.6
+$ cd torcs-1.3.7
 $ ./configure        # --prefix="target dir", --enable-debug or --disable-xrandr might be of interest
 $ make
 $ make install
@@ -172,15 +172,15 @@ $ make install
 
 		<li>Download the following data packages:
 			<ul>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-data/1.3.6/TORCS-1.3.6-data.tgz/download">TORCS-1.3.6-data.tgz</a> (<b>mandatory</b>, system data)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.6/TORCS-1.3.6-data-tracks-road.tgz/download">TORCS-1.3.6-data-tracks-road.tgz</a> (<b>mandatory</b>, road-circuit tracks)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.6/TORCS-1.3.6-data-tracks-oval.tgz/download">TORCS-1.3.6-data-tracks-oval.tgz</a> (<b>mandatory</b>, oval-like tracks)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.6/TORCS-1.3.6-data-tracks-dirt.tgz/download">TORCS-1.3.6-data-tracks-dirt.tgz</a> (<b>mandatory</b>, dirt tracks)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-cars/1.3.6/TORCS-1.3.6-data-cars-extra.tgz/download">TORCS-1.3.6-data-cars-extra.tgz</a> (<b>mandatory</b>, cars)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.6/TORCS-1.3.6-data-cars-Patwo-Design.tgz/download">TORCS-1.3.6-data-cars-Patwo-Design.tgz</a> (rally cars, optional)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.6/TORCS-1.3.6-data-cars-kcendra-gt.tgz/download">TORCS-1.3.6-data-cars-kcendra-gt.tgz</a> (GT cars from the 60's, optional)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.6/TORCS-1.3.6-data-cars-kcendra-roadsters.tgz/download">TORCS-1.3.6-data-cars-kcendra-roadsters.tgz</a> (roadsters from the 60's, optional)</li>
-				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.6/TORCS-1.3.6-data-cars-kcendra-sport.tgz/download">TORCS-1.3.6-data-cars-kcendra-sport.tgz</a> (sport cars from the 60's, optional) </li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-data/1.3.7/TORCS-1.3.7-data.tgz/download">TORCS-1.3.7-data.tgz</a> (<b>mandatory</b>, system data)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.7/TORCS-1.3.7-data-tracks-road.tgz/download">TORCS-1.3.7-data-tracks-road.tgz</a> (<b>mandatory</b>, road-circuit tracks)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.7/TORCS-1.3.7-data-tracks-oval.tgz/download">TORCS-1.3.7-data-tracks-oval.tgz</a> (<b>mandatory</b>, oval-like tracks)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-tracks/1.3.7/TORCS-1.3.7-data-tracks-dirt.tgz/download">TORCS-1.3.7-data-tracks-dirt.tgz</a> (<b>mandatory</b>, dirt tracks)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/torcs-cars/1.3.7/TORCS-1.3.7-data-cars-extra.tgz/download">TORCS-1.3.7-data-cars-extra.tgz</a> (<b>mandatory</b>, cars)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.7/TORCS-1.3.7-data-cars-Patwo-Design.tgz/download">TORCS-1.3.7-data-cars-Patwo-Design.tgz</a> (rally cars, optional)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.7/TORCS-1.3.7-data-cars-kcendra-gt.tgz/download">TORCS-1.3.7-data-cars-kcendra-gt.tgz</a> (GT cars from the 60's, optional)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.7/TORCS-1.3.7-data-cars-kcendra-roadsters.tgz/download">TORCS-1.3.7-data-cars-kcendra-roadsters.tgz</a> (roadsters from the 60's, optional)</li>
+				<li><a href="http://sourceforge.net/projects/torcs/files/non-free/1.3.7/TORCS-1.3.7-data-cars-kcendra-sport.tgz/download">TORCS-1.3.7-data-cars-kcendra-sport.tgz</a> (sport cars from the 60's, optional) </li>
 			</ul>
 			</br>
 		</li>
@@ -210,7 +210,7 @@ $ make install
     You have to run the following commands to get the sources (might sometimes not compile or crash):
     <p>
       <tt>cvs -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs login</tt>
-      <br></br>The 1.3.6 trunk is on branch r1-3-1:<br></br>
+      <br></br>The 1.3.7 trunk is on branch r1-3-1:<br></br>
       <tt>cvs -z3 -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs co -r r1-3-1 -P torcs</tt>
       <br></br>
       <a href="https://sourceforge.net/p/torcs/code/?source=navbar">Get more info on CVS</a>
