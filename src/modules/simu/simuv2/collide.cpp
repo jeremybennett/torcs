@@ -2,7 +2,7 @@
 
     file                 : collide.cpp
     created              : Sun Mar 19 00:06:19 CET 2000
-    copyright            : (C) 2000-2005 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -200,6 +200,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 	}
 
 	sgNormaliseVec2(n);
+    
+	// Because of the type conversion and the transformation to 2D the length of the normal might be 0 now, which could cause NaN
+	if (isnan(n[0]) || isnan(n[1])) {
+		return;
+	}
 
 	sgVec2 rg[2];	// radius oriented in global coordinates, still relative to CG (rotated aroung CG).
 	tCarElt *carElt;
@@ -358,6 +363,11 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	n[1] = nsign * (float) collData->normal[1];
 	float pdist = sgLengthVec2(n);	// Distance of collision points.
 	sgNormaliseVec2(n);
+	
+	// Because of the type conversion and the transformation to 2D the length of the normal might be 0 now, which could cause NaN
+	if (isnan(n[0]) || isnan(n[1])) {
+		return;
+	}
 
 	sgVec2 r;
 	sgSubVec2(r, p, (const float*)&(car->statGC));
