@@ -25,32 +25,71 @@
 void SimCarCollideZ(tCar *car)
 {
 	int i;
-	t3Dd normal;
 	tdble dotProd;
-	tWheel *wheel;
 	const float CRASH_THRESHOLD = -5.0f;
 
 	if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
 		return;
 	}
 
+	// Calculate transformation matrix to transform the surface normal into the car body local coordinate system.
+	// Because this is just a rotation matrix the inverse is the transposed matrix.
+	sgMat4 dst;
+	sgMakeRotMat4(dst, RAD2DEG(car->DynGC.pos.az), RAD2DEG(car->DynGC.pos.ax), RAD2DEG(car->DynGC.pos.ay));
+	sgTransposeNegateMat4(dst);
+	
+	// Get the normal of the surface under the center of gravity of the car. Beware, TR_LPOS_SEGMENT must
+	// be set to get this result.
+	t3Dd normal;
+	tTrkLocPos normalPos;
+	RtTrackGlobal2Local(car->trkPos.seg, car->DynGCg.pos.x, car->DynGCg.pos.y, &normalPos, TR_LPOS_SEGMENT);
+	RtTrackSurfaceNormalL(&normalPos, &normal);
+
+	// Now transform the normal to the car body coordinate system.
+	sgVec3 dstVec;
+	sgXformVec3(dstVec, (float *) &normal.x, dst);
+	tdble sumdz = 0.0f;
+
+	// Check if any car corners are below the surface. If so, try to rotate the corner out of the ground.
 	for (i = 0; i < 4; i++) {
-		wheel = &(car->wheel[i]);
-		if (wheel->state & SIM_SUSP_COMP) {
-			car->DynGCg.pos.z += wheel->susp.spring.packers - wheel->rideHeight;
-			RtTrackSurfaceNormalL(&(wheel->trkPos), &normal);
-			dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z) * wheel->trkPos.seg->surface->kRebound;
-			if (dotProd < 0.0f) {
-				if (dotProd < CRASH_THRESHOLD) {
-					car->collision |= SEM_COLLISION_Z_CRASH;
-				}
-				car->collision |= SEM_COLLISION | SEM_COLLISION_Z;
-				car->DynGCg.vel.x -= normal.x * dotProd;
-				car->DynGCg.vel.y -= normal.y * dotProd;
-				car->DynGCg.vel.z -= normal.z * dotProd;
-				if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-					car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * rulesDamageFactor * simDammageFactor[car->carElt->_skillLevel]);
-				}
+		tTrkLocPos cornerPos;
+		RtTrackGlobal2Local(car->trkPos.seg, car->corner[i].pos.ax, car->corner[i].pos.ay, &cornerPos, TR_LPOS_SEGMENT);
+		tdble z = RtTrackHeightL(&cornerPos);
+		tdble dz = car->corner[i].pos.az - z;
+		sumdz += dz;
+
+		// Car corner below surface
+		if (dz < 0.0f) {
+			tdble dPosAy = dz/car->corner[i].pos.x*fabs(dstVec[0]);
+			car->DynGCg.pos.ay += dPosAy;
+			tdble dPosAx = dz/car->corner[i].pos.y*fabs(dstVec[1]);
+			car->DynGCg.pos.ax -= dPosAx;
+			car->collision |= SEM_COLLISION | SEM_COLLISION_Z;
+		}
+	}
+
+	if (sumdz > 0.0f) sumdz = 0.0f;
+
+	// The above part cannot resolve the collision in all cases, e.g. when all corners are below the surface.
+	// For this case we check if the car floor below the center of gravity is eventually below the ground too.
+	tdble z = RtTrackHeightG(car->trkPos.seg, car->DynGCg.pos.x, car->DynGCg.pos.y);
+	tdble dz =  car->DynGCg.pos.z - (car->statGC.z - sumdz)/normal.z - z;
+
+	if (dz < 0.0f) {
+		tdble dotProd;
+
+		dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z);
+		if (dotProd < 0.0f) {
+			if (dotProd < CRASH_THRESHOLD) {
+				car->collision |= SEM_COLLISION_Z_CRASH;
+			}
+			car->collision |= SEM_COLLISION | SEM_COLLISION_Z;
+			car->DynGCg.vel.x -= normal.x * dotProd;
+			car->DynGCg.vel.y -= normal.y * dotProd;
+			car->DynGCg.vel.z -= normal.z * dotProd;
+
+			if ((car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
+				car->dammage += (int)(normalPos.seg->surface->kDammage * fabs(dotProd) * rulesDamageFactor * simDammageFactor[car->carElt->_skillLevel]);
 			}
 		}
 	}

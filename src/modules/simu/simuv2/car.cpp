@@ -2,7 +2,7 @@
 
     file                 : car.cpp
     created              : Sun Mar 19 00:05:43 CET 2000
-    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -334,8 +334,6 @@ SimCarUpdateCornerPos(tCar *car)
 {
 	tdble Cosz = car->Cosz;
 	tdble Sinz = car->Sinz;
-	tdble vx = car->DynGCg.vel.x;
-	tdble vy = car->DynGCg.vel.y;
 	int i;
 	
 	for (i = 0; i < 4; i++) {
@@ -346,26 +344,29 @@ SimCarUpdateCornerPos(tCar *car)
 		
 		car->corner[i].pos.ax = car->DynGCg.pos.x + dx;
 		car->corner[i].pos.ay = car->DynGCg.pos.y + dy;
-		/*car->corner[i].pos.az = car->DynGC.pos.z - car->statGC.z + x * sin(car->DynGC.pos.ay) + y * sin(car->DynGC.pos.ax);*/
+		car->corner[i].pos.az = car->DynGCg.pos.z - car->statGC.z - x * sin(car->DynGCg.pos.ay) + y * sin(car->DynGCg.pos.ax);
 		
-		/* add the body rotation to the wheel        */
+		/* add the body rotation to the corner       */
 		/* the speed is vel.az * r                   */
 		/* where r = sqrt(x*x + y*y)                 */
 		/* the tangent vector is -y / r and x / r    */
 		// compute corner velocity at local frame
 		car->corner[i].vel.ax = - car->DynGC.vel.az * y;
 		car->corner[i].vel.ay = car->DynGC.vel.az * x;
+		car->corner[i].vel.az = car->DynGC.vel.ax * y - car->DynGC.vel.ay * x;
 		
 		// rotate to global and add global center of mass velocity
 		// note: global to local.
-		car->corner[i].vel.x = vx
+		car->corner[i].vel.x = car->DynGCg.vel.x
 			+ car->corner[i].vel.ax * Cosz - car->corner[i].vel.ay * Sinz;
-		car->corner[i].vel.y = vy
+		car->corner[i].vel.y = car->DynGCg.vel.y
 			+ car->corner[i].vel.ax * Sinz + car->corner[i].vel.ay * Cosz;
-		
+		car->corner[i].vel.z = car->DynGCg.vel.z + car->corner[i].vel.az;
+
 		// add local center of mass velocity
 		car->corner[i].vel.ax += car->DynGC.vel.x;
 		car->corner[i].vel.ay += car->DynGC.vel.y;
+		car->corner[i].vel.az += car->DynGC.vel.z;
 	}
 }
 
