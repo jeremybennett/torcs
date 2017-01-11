@@ -216,18 +216,19 @@ Some additional notes:
 
 Changes since 1.3.7
 -------------------
-
-
+- Added isnan check in collision response calculation (type and dimension transformation
+  could potentially lead to a normal with length 0) (Wolf-Dieter, Daniel, Bernhard).
+- Z collisions reworked (car-road) (Bernhard).
 
 12. TODO/Notes
 --------------
 
 TODO for 1.3.8 "worn & blown"
 --------------
-- Z-Collision
 - Eventually Z calculation
 - Caster
-- Threshold and caster adjustable- Dynamic track
+- Threshold and caster adjustable
+- Dynamic track
 - Wind/Temp
 - Tire Wear/Temp
 - Curb sound
