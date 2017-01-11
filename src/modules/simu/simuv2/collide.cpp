@@ -25,7 +25,6 @@
 void SimCarCollideZ(tCar *car)
 {
 	int i;
-	tdble dotProd;
 	const float CRASH_THRESHOLD = -5.0f;
 
 	if (car->carElt->_state & RM_CAR_STATE_NO_SIMU) {
@@ -76,9 +75,7 @@ void SimCarCollideZ(tCar *car)
 	tdble dz =  car->DynGCg.pos.z - (car->statGC.z - sumdz)/normal.z - z;
 
 	if (dz < 0.0f) {
-		tdble dotProd;
-
-		dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z);
+		tdble dotProd = (car->DynGCg.vel.x * normal.x + car->DynGCg.vel.y * normal.y + car->DynGCg.vel.z * normal.z);
 		if (dotProd < 0.0f) {
 			if (dotProd < CRASH_THRESHOLD) {
 				car->collision |= SEM_COLLISION_Z_CRASH;
