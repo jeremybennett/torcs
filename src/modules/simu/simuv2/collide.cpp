@@ -359,7 +359,7 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 		// Move the car for the collision lib.
 		tCarElt *carElt = car[i]->carElt;
-		sgMakeCoordMat4(carElt->pub.posMat, car[i]->DynGCg.pos.x - carElt->_statGC_x, car[i]->DynGCg.pos.y - carElt->_statGC_y,
+		sgMakeCoordMat4(carElt->pub.posMat, car[i]->DynGCg.pos.x, car[i]->DynGCg.pos.y,
 						car[i]->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
 						RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		dtSelectObject(car[i]);
@@ -480,7 +480,7 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	sgCopyVec2((float*)&(car->VelColl.x), v2a);
 
 	// Move the car for the collision lib.
-	sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x - carElt->_statGC_x, car->DynGCg.pos.y - carElt->_statGC_y,
+	sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x, car->DynGCg.pos.y,
 					car->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
 					RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 	dtSelectObject(car);
