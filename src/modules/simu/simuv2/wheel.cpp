@@ -2,7 +2,7 @@
 
     file                 : wheel.cpp
     created              : Sun Mar 19 00:09:06 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -133,14 +133,15 @@ void SimWheelUpdateRide(tCar *car, int index)
 
 	// compute suspension travel
 	RtTrackGlobal2Local(car->trkPos.seg, wheel->pos.x, wheel->pos.y, &(wheel->trkPos), TR_LPOS_SEGMENT);
+	RtTrackSurfaceNormalL(&(wheel->trkPos), &(wheel->surfaceNormal));
 	wheel->zRoad = Zroad = RtTrackHeightL(&(wheel->trkPos));
 
 	// Wheel susp.x is not the wheel movement, look at SimSuspCheckIn, it becomes there scaled with
 	// susp->spring.bellcrank, so we invert this here.
 	tdble prexwheel = wheel->susp.x / wheel->susp.spring.bellcrank;
 
-	tdble new_susp_x= prexwheel - wheel->rel_vel * SimDeltaTime;
-    tdble max_extend =  wheel->pos.z - Zroad;
+	tdble new_susp_x = prexwheel - wheel->rel_vel * SimDeltaTime;
+    tdble max_extend = (wheel->pos.z - Zroad)*wheel->surfaceNormal.z;
 	wheel->rideHeight = max_extend;
 	
 	wheel->state &= ~SIM_WH_ONAIR;

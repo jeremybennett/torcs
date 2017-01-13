@@ -2,7 +2,7 @@
 
     file                 : wheel.h
     created              : Sun Mar 19 00:09:18 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -47,6 +47,7 @@ typedef struct
 #define SIM_WH_ONAIR 4	/* the wheel has no contact to the ground although the suspension is not fully extended */
     tdble	axleFz;		/* force from axle (anti-roll bar) */
     tTrkLocPos	trkPos;		/* current track position */
+	t3Dd	surfaceNormal;	// Normal of the surface under this wheel
     tPosd	relPos;		/* relative pos / GC */
     tdble	sa;		/* slip angle */
     tdble	sx;		/* longitudinal slip value */
