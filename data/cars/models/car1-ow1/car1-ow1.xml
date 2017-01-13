@@ -19,9 +19,9 @@
 	<section name="Driver">
 		
 		<!-- Position of the driver -->
-		<attnum name="xpos" val="0.1" unit="m"/>
+		<attnum name="xpos" val="-0.25" unit="m"/>
 		<attnum name="ypos" val="0.0" unit="m"/>
-		<attnum name="zpos" val="0.73" unit="m"/>
+		<attnum name="zpos" val="0.78" unit="m"/>
 	</section>
 	
 	<section name="Sound">
@@ -72,13 +72,13 @@
 	
 	<section name="Car">
 		<attstr name="category" val="ow1"/>
-		<attnum name="body length" unit="m" val="4.8"/>
+		<attnum name="body length" unit="m" val="4.51"/>
 		<attnum name="body width" unit="m" val="1.8"/>
 		<attnum name="body height" unit="m" val="1.08"/>
 		
 		<!-- collision bounding box -->
-		<attnum name="overall length" unit="m" val="4.8"/>
-		<attnum name="overall width" unit="m" val="2.4"/>
+		<attnum name="overall length" unit="m" val="4.51"/>
+		<attnum name="overall width" unit="m" val="1.8"/>
 		<attnum name="mass" unit="kg" val="600.0"/>
 		<attnum name="GC height" unit="m" val="0.20"/>
 		
@@ -335,7 +335,7 @@
 	</section>
 	
 	<section name="Front Axle">
-		<attnum name="xpos" unit="m" val="1.6"/>
+		<attnum name="xpos" unit="m" val="1.231"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0056"/>
 		<attnum name="roll center height" unit="m" val="0.012"/>
 		
@@ -346,7 +346,7 @@
 	</section>
 	
 	<section name="Rear Axle">
-		<attnum name="xpos" unit="m" val="-1.35"/>
+		<attnum name="xpos" unit="m" val="-1.719"/>
 		<attnum name="inertia" unit="kg.m2" val="0.0080"/>
 		<attnum name="roll center height" unit="m" val="0.04"/>
 
