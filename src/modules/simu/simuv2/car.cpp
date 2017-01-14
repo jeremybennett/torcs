@@ -269,29 +269,23 @@ SimCarUpdateSpeed(tCar *car)
 void
 SimCarUpdateWheelPos(tCar *car)
 {
+	sgMat4 dst;
+	sgMakeRotMat4(dst, RAD2DEG(car->DynGC.pos.az), RAD2DEG(car->DynGC.pos.ax), RAD2DEG(car->DynGC.pos.ay));
+		
 	int i;
-	tdble vx;
-	tdble vy;
-	tdble Cosz, Sinz;
-	
-	Cosz = car->Cosz;
-	Sinz = car->Sinz;
-	vx = car->DynGC.vel.x;
-	vy = car->DynGC.vel.y;
-	
+		
 	/* Wheels data */
 	for (i = 0; i < 4; i++) {
-		tdble x = car->wheel[i].staticPos.x;
-		tdble y = car->wheel[i].staticPos.y;
-		tdble dx = x * Cosz - y * Sinz;
-		tdble dy = x * Sinz + y * Cosz;
+		tWheel* wheel = &(car->wheel[i]);
+		sgVec3 dstVec;
+		sgXformVec3(dstVec, (float *) &(wheel->staticPos.x), dst);
+
+		wheel->pos.x = car->DynGCg.pos.x + dstVec[0];
+		wheel->pos.y = car->DynGCg.pos.y + dstVec[1];
+		wheel->pos.z = car->DynGCg.pos.z + dstVec[2];
 		
-		car->wheel[i].pos.x = car->DynGCg.pos.x + dx;
-		car->wheel[i].pos.y = car->DynGCg.pos.y + dy;
-		car->wheel[i].pos.z = car->DynGCg.pos.z - car->statGC.z - x * sin(car->DynGCg.pos.ay) + y * sin(car->DynGCg.pos.ax);
-		
-		car->wheel[i].bodyVel.x = vx - car->DynGC.vel.az * y;
-		car->wheel[i].bodyVel.y = vy + car->DynGC.vel.az * x;
+		wheel->bodyVel.x = car->DynGC.vel.x - car->DynGC.vel.az * car->wheel[i].staticPos.y;
+		wheel->bodyVel.y = car->DynGC.vel.y + car->DynGC.vel.az * car->wheel[i].staticPos.x;
 	}
 }
 

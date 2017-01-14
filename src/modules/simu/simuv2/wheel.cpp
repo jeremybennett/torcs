@@ -66,6 +66,8 @@ void SimWheelConfig(tCar *car, int index)
 
 	patchLen = wheel->weight0 / (tirewidth * pressure);
 
+	wheel->staticPos.z = -car->statGC.z;
+	
 	wheel->radius = rimdiam / 2.0f + tirewidth * tireratio;
 	wheel->tireSpringRate = wheel->weight0 / (wheel->radius * (1.0f - cos(asin(patchLen / (2.0f * wheel->radius)))));
 	wheel->relPos.x = wheel->staticPos.x = car->axle[index/2].xpos;
