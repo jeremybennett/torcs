@@ -268,7 +268,7 @@ SimCarUpdateSpeed(tCar *car)
 
 void
 SimCarUpdateWheelPos(tCar *car)
-{
+{	
 	sgMat4 dst;
 	sgMakeRotMat4(dst, RAD2DEG(car->DynGC.pos.az), RAD2DEG(car->DynGC.pos.ax), RAD2DEG(car->DynGC.pos.ay));
 		
@@ -326,28 +326,36 @@ SimCarUpdatePos(tCar *car)
 static void
 SimCarUpdateCornerPos(tCar *car)
 {
+	sgMat4 dst;
+	sgMakeRotMat4(dst, RAD2DEG(car->DynGC.pos.az), RAD2DEG(car->DynGC.pos.ax), RAD2DEG(car->DynGC.pos.ay));
+
 	tdble Cosz = car->Cosz;
 	tdble Sinz = car->Sinz;
 	int i;
 	
 	for (i = 0; i < 4; i++) {
-		tdble x = car->corner[i].pos.x + car->statGC.x;
-		tdble y = car->corner[i].pos.y + car->statGC.y;
-		tdble dx = x * Cosz - y * Sinz;
-		tdble dy = x * Sinz + y * Cosz;
+		tPosd* corner = &(car->corner[i].pos);
+		sgVec3 localPos;
 		
-		car->corner[i].pos.ax = car->DynGCg.pos.x + dx;
-		car->corner[i].pos.ay = car->DynGCg.pos.y + dy;
-		car->corner[i].pos.az = car->DynGCg.pos.z - car->statGC.z - x * sin(car->DynGCg.pos.ay) + y * sin(car->DynGCg.pos.ax);
+		localPos[0] = corner->x + car->statGC.x;
+		localPos[1] = corner->y + car->statGC.y;
+		localPos[2] = corner->z - car->statGC.z;
+
+		sgVec3 dstVec;
+		sgXformVec3(dstVec, localPos, dst);
 		
+		car->corner[i].pos.ax = car->DynGCg.pos.x + dstVec[0];
+		car->corner[i].pos.ay = car->DynGCg.pos.y + dstVec[1];
+		car->corner[i].pos.az = car->DynGCg.pos.z + dstVec[2];
+
 		/* add the body rotation to the corner       */
 		/* the speed is vel.az * r                   */
 		/* where r = sqrt(x*x + y*y)                 */
 		/* the tangent vector is -y / r and x / r    */
 		// compute corner velocity at local frame
-		car->corner[i].vel.ax = - car->DynGC.vel.az * y;
-		car->corner[i].vel.ay = car->DynGC.vel.az * x;
-		car->corner[i].vel.az = car->DynGC.vel.ax * y - car->DynGC.vel.ay * x;
+		car->corner[i].vel.ax = - car->DynGC.vel.az * localPos[1];
+		car->corner[i].vel.ay = car->DynGC.vel.az * localPos[0];
+		car->corner[i].vel.az = car->DynGC.vel.ax * localPos[1] - car->DynGC.vel.ay * localPos[0];
 		
 		// rotate to global and add global center of mass velocity
 		// note: global to local.
