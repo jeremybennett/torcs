@@ -112,8 +112,8 @@
 	
 	
 	<section name="Aerodynamics">
-		<attnum name="Cx" val="0.32"/>
-		<attnum name="front area" unit="m2" val="2.0"/>
+		<attnum name="Cx" val="0.64"/>
+		<attnum name="front area" unit="m2" val="1.00"/>
 		<attnum name="front Clift" val="0.2"/>
 		<attnum name="rear Clift" val="0.7"/>
 	</section>
@@ -129,7 +129,7 @@
 		<attnum name="area" unit="m2" val="1.1"/>
 		<attnum name="angle" unit="deg"  min="0" max="35" val="10"/>
 		<attnum name="xpos" unit="m" val="-2.0"/>
-		<attnum name="zpos" unit="m" val=".5"/>
+		<attnum name="zpos" unit="m" val=".65"/>
 	</section>
 	
 	
