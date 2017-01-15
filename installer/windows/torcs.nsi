@@ -1,7 +1,7 @@
 ;
 ;        file       : torcs.nsi
 ;        created    : Wed Feb 2 15:35:10 CET 2005
-;        copyright  : (C) 2005, 2016 Bernhard Wymann
+;        copyright  : (C) 2005, 2012 Bernhard Wymann
 ;        email      : berniw@bluewin.ch
 ;        version    : $Id$
 ;
@@ -14,9 +14,9 @@
 
 !define VER_MAJOR 1
 !define VER_MINOR 3
-!define VER_REVISION 7
+!define VER_REVISION 6
 !define VER_EXTRA
-!define VER_RELDATE 20160526
+!define VER_RELDATE 20140424
 
 !define PRODUCT_NAME "TORCS - The Open Racing Car Simulator"
 !define PRODUCT_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_REVISION}${VER_EXTRA}"
@@ -3200,8 +3200,8 @@ Section -AdditionalIcons
   WriteIniStr "$INSTDIR\trb.url" "InternetShortcut" "URL" "http://www.berniw.org/trb"
   CreateShortCut "$SMPROGRAMS\TORCS\TORCS Racing Board.lnk" "$INSTDIR\trb.url"
 
-#  WriteIniStr "$INSTDIR\trackgen.url" "InternetShortcut" "URL" "http://trackgen.pierlucalanzi.net"
-#  CreateShortCut "$SMPROGRAMS\TORCS\Online track generator.lnk" "$INSTDIR\trackgen.url"
+  WriteIniStr "$INSTDIR\trackgen.url" "InternetShortcut" "URL" "http://trackgen.pierlucalanzi.net"
+  CreateShortCut "$SMPROGRAMS\TORCS\Online track generator.lnk" "$INSTDIR\trackgen.url"
 
   WriteIniStr "$INSTDIR\videos.url" "InternetShortcut" "URL" "http://www.youtube.com/user/berniwtorcs/videos?view=0"
   CreateShortCut "$SMPROGRAMS\TORCS\Videos.lnk" "$INSTDIR\videos.url"
@@ -3257,7 +3257,7 @@ Section Uninstall
   Delete "$DESKTOP\TORCS - The Open Racing Car Simulator.lnk"
   Delete "$SMPROGRAMS\TORCS\TORCS - The Open Racing Car Simulator.lnk"
 
-#  Delete "$SMPROGRAMS\TORCS\Online track generator.lnk"
+  Delete "$SMPROGRAMS\TORCS\Online track generator.lnk"
   Delete "$SMPROGRAMS\TORCS\Videos.lnk"
 
   RMDir "$SMPROGRAMS\TORCS"
