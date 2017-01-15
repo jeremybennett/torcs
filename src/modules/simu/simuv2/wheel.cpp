@@ -43,6 +43,7 @@ void SimWheelConfig(tCar *car, int index)
 	x0                    = GfParmGetNum(hdle, WheelSect[index], PRM_RIDEHEIGHT, (char*)NULL, 0.20f);
 	wheel->staticPos.az   = GfParmGetNum(hdle, WheelSect[index], PRM_TOE, (char*)NULL, 0.0f);
 	wheel->staticPos.ax   = GfParmGetNum(hdle, WheelSect[index], PRM_CAMBER, (char*)NULL, 0.0f);
+	wheel->staticPos.ay   = GfParmGetNum(hdle, WheelSect[index], PRM_CASTER, (char*)NULL, 0.0f);
 	Ca                    = GfParmGetNum(hdle, WheelSect[index], PRM_CA, (char*)NULL, 30.0f);
 	RFactor               = GfParmGetNum(hdle, WheelSect[index], PRM_RFACTOR, (char*)NULL, 0.8f);
 	EFactor               = GfParmGetNum(hdle, WheelSect[index], PRM_EFACTOR, (char*)NULL, 0.7f);
@@ -50,12 +51,6 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->lfMin          = GfParmGetNum(hdle, WheelSect[index], PRM_LOADFMIN, (char*)NULL, 0.8f);
 	wheel->opLoad         = GfParmGetNum(hdle, WheelSect[index], PRM_OPLOAD, (char*)NULL, wheel->weight0 * 1.2f);
 	wheel->mass           = GfParmGetNum(hdle, WheelSect[index], PRM_MASS, (char*)NULL, 20.0f);
-
-	if (index % 2) {
-		wheel->relPos.ax = -wheel->staticPos.ax;
-	} else {
-		wheel->relPos.ax = wheel->staticPos.ax;
-	}
 
 	wheel->lfMin = MIN(0.8f, wheel->lfMin);
 	wheel->lfMax = MAX(1.6f, wheel->lfMax);
@@ -73,7 +68,7 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->relPos.x = wheel->staticPos.x = car->axle[index/2].xpos;
 	wheel->relPos.y = wheel->staticPos.y;
 	wheel->relPos.z = wheel->radius - wheel->susp.spring.x0;
-	wheel->relPos.ay = wheel->relPos.az = 0.0f;
+	wheel->relPos.ax = wheel->relPos.ay = wheel->relPos.az = 0.0f;
 	wheel->steer = 0.0f;
 
 	/* components */
@@ -108,11 +103,6 @@ void SimWheelReConfig(tCar *car, int index)
 	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.wheelcamber[index];
 	if (SimAdjustPitCarSetupParam(v)) {
 		wheel->staticPos.ax = v->value;
-		if (index % 2) {
-			wheel->relPos.ax = -wheel->staticPos.ax;
-		} else {
-			wheel->relPos.ax = wheel->staticPos.ax;
-		}
 	}
 
 	// Toe
@@ -253,6 +243,16 @@ void SimWheelUpdateForce(tCar *car, int index)
 		}
 	}
 
+	tdble casterCamber = sin(wheel->staticPos.ay)*wheel->steer;
+	tdble camberDelta;
+	if (index % 2) {
+		wheel->relPos.ax = -wheel->staticPos.ax - casterCamber;
+		camberDelta = -casterCamber;
+	} else {
+		wheel->relPos.ax = wheel->staticPos.ax - casterCamber;
+		camberDelta = casterCamber;
+	}
+
 	stmp = MIN(s, 1.5f);
 	
 	// MAGIC FORMULA
@@ -262,7 +262,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 	// load sensitivity
 	mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * zforce / wheel->opLoad));
 
-	F *= zforce * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin(-wheel->staticPos.ax * 18.0f));	/* coeff */
+	F *= zforce * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin((-wheel->staticPos.ax + camberDelta) * 18.0f));	/* coeff */
 
 	wheel->rollRes = zforce * wheel->trkPos.seg->surface->kRollRes;
     car->carElt->priv.wheel[index].rollRes = wheel->rollRes;
@@ -277,7 +277,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 	RELAXATION2(Ft, wheel->preFt, 50.0f);
 
 	wheel->relPos.az = waz;
-
+	
 	wheel->forces.x = Ft * CosA - Fn * SinA;
 	wheel->forces.y = Ft * SinA + Fn * CosA;
 	wheel->spinTq = Ft * wheel->radius;

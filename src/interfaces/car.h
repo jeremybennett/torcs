@@ -2,7 +2,7 @@
 
     file                 : car.h
     created              : Sun Jan 30 12:00:15 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -525,6 +525,7 @@ typedef struct CarElt
 #define PRM_RIDEHEIGHT		"ride height"
 #define PRM_TOE			"toe"
 #define PRM_CAMBER		"camber"
+#define PRM_CASTER		"caster"
 #define PRM_CA			"stiffness"
 #define PRM_RFACTOR		"dynamic friction"
 #define PRM_EFACTOR		"elasticity factor"

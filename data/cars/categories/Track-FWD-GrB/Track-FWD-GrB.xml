@@ -268,6 +268,7 @@
 		<attnum name="dynamic friction" min="50" max="100" unit="%" val="90"/>
 		<attnum name="toe" min="-1" max="1" unit="deg" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
+		<attnum name="caster" min="0" max="10" unit="deg" val="0"/>
 	</section>
 	
 	<section name="Front Left Wheel">
@@ -282,6 +283,7 @@
 		<attnum name="dynamic friction" min="50" max="100" unit="%" val="90"/>
 		<attnum name="toe" min="-1" max="1" unit="deg" val="0"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
+		<attnum name="caster" min="0" max="10" unit="deg" val="0"/>
 	</section>
 	
 	<section name="Rear Right Wheel">
@@ -296,6 +298,7 @@
 		<attnum name="ride height" min="100" max="250" unit="mm" val="100"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
 		<attnum name="toe" min="-1" max="1" unit="deg" val="0"/>
+		<attnum name="caster" min="0" max="0" unit="deg" val="0"/>
 	</section>
 	
 	<section name="Rear Left Wheel">
@@ -310,6 +313,7 @@
 		<attnum name="ride height" min="100" max="250" unit="mm" val="100"/>
 		<attnum name="camber" min="-5" max="0" unit="deg" val="0"/>
 		<attnum name="toe" min="-1" max="1" unit="deg" val="0"/>
+		<attnum name="caster" min="0" max="0" unit="deg" val="0"/>
 	</section>
 	
 	<section name="Front Anti-Roll Bar">
