@@ -2,7 +2,7 @@
 
     file        : carsetupscreen.cpp
     created     : Wed Aug 21 13:27:34 CET 2013
-    copyright   : (C) 2013 Bernhard Wymann
+    copyright   : (C) 2013-2017 Bernhard Wymann
     email       : berniw@bluewin.ch
     version     : $Id$                                  
 
@@ -245,6 +245,7 @@ static const char* unitlbfin = "lbf/in";
 static const char* unitmm = "mm";
 static const char* unitlbfins = "lbf/in/s";
 static const char* unitNm = "N.m";
+static const char* unitcms = "cm/s";
 
 static const char* f52 = "%5.2f";
 static const char* f43 = "%4.3f";
@@ -346,11 +347,11 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	
 	scrHandle = GfuiScreenCreateEx(NULL, NULL, onActivate, NULL, NULL, 1);
 	snprintf(buf, BUFSIZE, "Car Setup - %s - %s - %d", rmCarName, rmTrack, rmIdx);
-	GfuiLabelCreate(scrHandle, buf, GFUI_FONT_MEDIUM, 320, 450, GFUI_ALIGN_HC_VB, strlen(buf));
+	GfuiLabelCreate(scrHandle, buf, GFUI_FONT_MEDIUM, 320, 460, GFUI_ALIGN_HC_VB, strlen(buf));
 	GfuiMenuDefaultKeysAdd(scrHandle);
 
 	static const int x0 = 20;
-	static const int y0 = 415;
+	static const int y0 = 428;
 	static const int dy = -12;
 	static const int xoff = 112;
 	static const int xoff2 = 40;
@@ -363,7 +364,9 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	GfuiLabelCreate(scrHandle, "Ride height [mm]:", font, x0, y0 + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Camber [deg]:", font, x0, y0 + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Toe [deg]:", font, x0, y0 + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	int y = y0 + (3.3f * dy);
+	GfuiLabelCreate(scrHandle, "Caster [deg]:", font, x0, y0 + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+
+	int y = y0 + (4.3f * dy);
 	col = 0;
 	GfuiLabelCreate(scrHandle, "Spring [lbf/in]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Packers [mm]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
@@ -371,6 +374,8 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	GfuiLabelCreate(scrHandle, "Slow rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Fast bump [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Fast rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Bump Threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Rebound Threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 
 	static const char* wheellabel[4] = {"Front right wheel", "Front left wheel", "Rear right wheel", "Rear left wheel"};
 
@@ -380,7 +385,9 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheelrideheight[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheelcamber[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheeltoe[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
-		y = y0 + (3.3f * dy);
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->wheelcaster[i]), unitdeg, f52, font, x0 + xoff*(i+1) + xoff2, y0 + (col++ * dy), 102, 5));
+
+		y = y0 + (4.3f * dy);
 		col = 0;	
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspspring[i]), unitlbfin, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->susppackers[i]), unitmm, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
@@ -388,11 +395,14 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspslowrebound[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastbump[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
 		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspfastrebound[i]), unitlbfins, d5, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
-	
+
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspbumpthreshold[i]), unitcms, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+		values.push_back(new cGuiSetupValue(scrHandle, &(rmSetup->suspreboundthreshold[i]), unitcms, d3, font, x0 + xoff*(i+1) + xoff2, y + (col++ * dy), 102, 5));
+
 	}
 
 	// Steer, brake and axle settings
-	y = y0 + 9.8f*dy;
+	y = y0 + 12.7f*dy;
 	col = 1;
 	GfuiLabelCreate(scrHandle, "Various settings", font, x0 + xoff + xoff2, y, GFUI_ALIGN_HL_VB, 0);
 
@@ -433,7 +443,7 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	}
 
 	// Differential and gears
-	y = y + 6.8f*dy;
+	y = y + 6.5f*dy;
 	col = 1;
 	GfuiLabelCreate(scrHandle, "Type:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Ratio [-]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
@@ -470,7 +480,7 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	}
 
 	// Save buttons
-	y = 100;
+	y = y0 + 27.8f*dy;
 	const int buttonwidth = 102;
 	int x = buttonwidth/2 + x0;
 

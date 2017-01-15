@@ -787,6 +787,7 @@ void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
 		RtReadCarPitSetupEntry(&s->wheelcamber[i], WheelSect[i], PRM_CAMBER, hdle, minmaxonly);
 		RtReadCarPitSetupEntry(&s->wheeltoe[i], WheelSect[i], PRM_TOE, hdle, minmaxonly);
 		RtReadCarPitSetupEntry(&s->wheelrideheight[i], WheelSect[i], PRM_RIDEHEIGHT, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->wheelcaster[i], WheelSect[i], PRM_CASTER, hdle, minmaxonly);
 
 		// Suspension
 		RtReadCarPitSetupEntry(&s->suspspring[i], SuspSect[i], PRM_SPR, hdle, minmaxonly);
@@ -795,6 +796,8 @@ void RtInitCarPitSetup(void *hdle,  tCarPitSetup* s, bool minmaxonly)
 		RtReadCarPitSetupEntry(&s->suspslowrebound[i], SuspSect[i], PRM_SLOWREBOUND, hdle, minmaxonly);
 		RtReadCarPitSetupEntry(&s->suspfastbump[i], SuspSect[i], PRM_FASTBUMP, hdle, minmaxonly);
 		RtReadCarPitSetupEntry(&s->suspfastrebound[i], SuspSect[i], PRM_FASTREBOUND, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspbumpthreshold[i], SuspSect[i], PRM_BUMPTHRESHOLD, hdle, minmaxonly);
+		RtReadCarPitSetupEntry(&s->suspreboundthreshold[i], SuspSect[i], PRM_REBOUNDTHRESHOLD, hdle, minmaxonly);
 	}
 
 	// Brake
@@ -927,6 +930,7 @@ void RtSaveCarPitSetupFile(
 		RtParmSetNum(hdlesetup, WheelSect[i], PRM_CAMBER, "deg", &s->wheelcamber[i]);
 		RtParmSetNum(hdlesetup, WheelSect[i], PRM_TOE, "deg", &s->wheeltoe[i]);
 		RtParmSetNum(hdlesetup, WheelSect[i], PRM_RIDEHEIGHT, "mm", &s->wheelrideheight[i]);
+		RtParmSetNum(hdlesetup, WheelSect[i], PRM_CASTER, "deg", &s->wheelcaster[i]);
 
 		// Suspension
 		RtParmSetNum(hdlesetup, SuspSect[i], PRM_SPR, "lbs/in", &s->suspspring[i]);
@@ -935,6 +939,8 @@ void RtSaveCarPitSetupFile(
 		RtParmSetNum(hdlesetup, SuspSect[i], PRM_SLOWREBOUND, "lbs/in/s", &s->suspslowrebound[i]);
 		RtParmSetNum(hdlesetup, SuspSect[i], PRM_FASTBUMP, "lbs/in/s", &s->suspfastbump[i]);
 		RtParmSetNum(hdlesetup, SuspSect[i], PRM_FASTREBOUND, "lbs/in/s", &s->suspfastrebound[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_BUMPTHRESHOLD, "cm/s", &s->suspbumpthreshold[i]);
+		RtParmSetNum(hdlesetup, SuspSect[i], PRM_REBOUNDTHRESHOLD, "cm/s", &s->suspreboundthreshold[i]);
 	}
 
 	// Brake

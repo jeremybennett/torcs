@@ -385,6 +385,7 @@ typedef struct
 	tCarPitSetupValue wheelcamber[4];
 	tCarPitSetupValue wheeltoe[4];
 	tCarPitSetupValue wheelrideheight[4];
+	tCarPitSetupValue wheelcaster[4];
 
 	// Brake
 	tCarPitSetupValue brakePressure;
@@ -397,6 +398,8 @@ typedef struct
 	tCarPitSetupValue suspslowrebound[4];
 	tCarPitSetupValue suspfastbump[4];
 	tCarPitSetupValue suspfastrebound[4];
+	tCarPitSetupValue suspbumpthreshold[4];
+	tCarPitSetupValue suspreboundthreshold[4];
 
 	// Anti-rollbar
 	tCarPitSetupValue arbspring[2];

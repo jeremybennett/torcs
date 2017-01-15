@@ -193,6 +193,18 @@ void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0
 		susp->damper.rebound.C2 = v->value;
 	}
 
+	// Bump threshold
+	v = &car->carElt->pitcmd.setup.suspbumpthreshold[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.v1 = v->value;
+	}
+
+	// Rebound threshold
+	v = &car->carElt->pitcmd.setup.suspreboundthreshold[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.v1 = v->value;
+	}
+
 	susp->spring.x0 = susp->spring.bellcrank * X0;
 	susp->spring.F0 = F0 / susp->spring.bellcrank;
 

@@ -111,6 +111,12 @@ void SimWheelReConfig(tCar *car, int index)
 		wheel->staticPos.az = v->value;
 	}
 
+	// Caster
+	v = &car->carElt->pitcmd.setup.wheelcaster[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		wheel->staticPos.ay = v->value;
+	}
+
 	// Ride height/suspension
 	v = &car->carElt->pitcmd.setup.wheelrideheight[index];
 	SimAdjustPitCarSetupParam(v);
