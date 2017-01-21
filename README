@@ -225,6 +225,7 @@ Changes since 1.3.7
 - Adjusted parameters and shadow of car1-ow1 (Wolf-Dieter, Bernhard).
 - Implemented caster, adjustable via setup structure and screen (Bernhard).
 - Suspension slow/fast threshold is adjustable too (Bernhard).
+- Changed 2.5D calculations to 3D (Bernhard).
 
 
 12. TODO/Notes
