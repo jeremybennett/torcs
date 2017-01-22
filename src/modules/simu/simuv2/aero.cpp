@@ -2,7 +2,7 @@
 
     file                 : aero.cpp
     created              : Sun Mar 19 00:04:50 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -150,7 +150,7 @@ void SimWingUpdate(tCar *car, int index, tSituation* s)
 	tWing  *wing = &(car->wing[index]);
 	tdble vt2 = car->airSpeed2;
 	// compute angle of attack
-	tdble aoa = atan2(car->DynGC.vel.z, car->DynGC.vel.x) + car->DynGCg.pos.ay;
+	tdble aoa = atan2(car->DynGC.vel.z, car->DynGC.vel.x);
 	aoa += wing->angle;
 	// the sinus of the angle of attack
 	tdble sinaoa = sin(aoa);
