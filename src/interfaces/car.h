@@ -536,6 +536,9 @@ typedef struct CarElt
 #define PRM_LOADFMAX		"load factor max"
 #define PRM_LOADFMIN		"load factor min"
 #define PRM_OPLOAD		"operating load"
+#define PRM_TREADTHICKNESS	"tread thickness"
+#define PRM_RIMMASS		"rim mass"
+#define PRM_HYSTERESIS "hysteresis"
 
 
 #define PRM_SPR			"spring"

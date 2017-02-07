@@ -83,10 +83,12 @@ typedef struct
 	
 	// Additional parameters for the tire wear model
 	tdble treadMass;				// Initial mass of the tread
-	tdble baseMass;					// Mass of the tire minus the tread 
+	tdble baseMass;					// Mass of the tire minus the tread
 	tdble treadThinkness;			// Thinkness of the initial tread (brand new tire)
 	tdble tireGasMass;				// Mass of the gas in the tire (constant)
 	tdble tireConvectionSurface;	// Surface area regarding the convection model
+	tdble initialTemperature;		// Initial temperature of the tire (initial pressure, p0/T0=constant)
+	tdble hysteresisFactor;			// Factor to adjust the hysteresis (model fitting), usually close to 1.0.
 	
 	// Dynamic Tire properties (temp, wear, etc.)
 	tdble	currentPressure;		// current tire pressure considering temperature
