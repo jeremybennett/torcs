@@ -73,13 +73,29 @@ typedef struct
     tdble	opLoad;		/* Operating load */
     tdble	mass;		/* total wheel mass (incl. brake) (unsprung mass) */
     tdble	camber;		/* camber, negative toward exterior on both sides */
-    tdble	pressure;	/* tire pressure */
+    tdble	pressure;	/* initial tire pressure, environment temperature */
 	tdble   rel_vel;    /* relative velocity - used for realstic suspension movement*/
 
     tDynAxis	in;
     tDynAxis	feedBack;
 
     tdble	preFn, preFt;
+	
+	// Additional parameters for the tire wear model
+	tdble treadMass;				// Initial mass of the tread
+	tdble baseMass;					// Mass of the tire minus the tread 
+	tdble treadThinkness;			// Thinkness of the initial tread (brand new tire)
+	tdble tireGasMass;				// Mass of the gas in the tire (constant)
+	tdble tireConvectionSurface;	// Surface area regarding the convection model
+	
+	// Dynamic Tire properties (temp, wear, etc.)
+	tdble	currentPressure;		// current tire pressure considering temperature
+	tdble	currentTemperature;		// current temperature
+	tdble	currentWear;			// [0..1], 1 means totally worn (tread thickness 0)
+	tdble	currentGraining;		// [0..1], 1 means totally grained
+	tdble	currentGripFactor;		// [0..1], 1 means best grip
+    
+	
 } tWheel;
 
     

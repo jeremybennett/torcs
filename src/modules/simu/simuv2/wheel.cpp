@@ -24,6 +24,8 @@ static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_RE
 static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static const char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
+void SimWheelUpdateTire(tWheel *wheel, tdble slip, tdble normalForce);
+
 void SimWheelConfig(tCar *car, int index)
 {
 	void *hdle = car->params;
@@ -55,6 +57,9 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->lfMin = MIN(0.8f, wheel->lfMin);
 	wheel->lfMax = MAX(1.6f, wheel->lfMax);
 
+	wheel->pressure			= pressure;
+	wheel->currentPressure	= pressure;
+		
 	RFactor = MIN(1.0f, RFactor);
 	RFactor = MAX(0.1f, RFactor);
 	EFactor = MIN(1.0f, EFactor);
@@ -92,6 +97,43 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->feedBack.Tq = 0.0f;
 	wheel->feedBack.brkTq = 0.0f;
 	wheel->rel_vel = 0.0f;
+	
+	// Additional parameters for the tire wear model
+	wheel->treadThinkness = 0.005f;		// 5mm, TODO: read from config
+	
+	const tdble rubberDensity = 930.0f;	// Density of Rubber (NR) in [kg/m^3].	
+	
+	tdble rimmass = 7.0f; // TODO: read from config
+	wheel->treadMass = (2.0f*wheel->radius - wheel->treadThinkness)*PI*tirewidth*wheel->treadThinkness*rubberDensity;
+	wheel->baseMass = wheel->mass - wheel->treadMass - rimmass;
+	if (wheel->baseMass < 0.0f) {
+		wheel->baseMass = 3.0f;
+		GfError("Wheel mass minus tire tread mass minus rim mass is smaller than 0.0kg, setting it to 3.0 kg");
+	}
+	
+	// Surface area for convection model
+	tdble innerRadius = rimdiam / 2.0f;
+	tdble tireSideArea = PI*(wheel->radius*wheel->radius - innerRadius*innerRadius);
+	
+	printf("sidea: %8.3f, ", tireSideArea);
+	wheel->tireConvectionSurface = 2.0f*(PI*tirewidth*wheel->radius);
+	
+	// Mass of gas in the tire m=P*V/(R*T)
+	tdble temperature = 273.15f + 20.0f;		// Kelvin
+	tdble volume = tireSideArea*tirewidth;		// meter*meter*meter
+	tdble nitrogenR = 296.8f;					// Joule/(kg*Kelvin), N2
+	
+	// TODO:absolute pressure
+	wheel->tireGasMass = (wheel->pressure * volume) / (nitrogenR * temperature);	// kg
+	
+	wheel->currentTemperature = 273.15f + 20.0f;	// TODO: get from sim, initially environment temp.
+
+	wheel->currentWear = 0.0f;
+	wheel->currentGraining = 0.0f;
+	wheel->currentGripFactor = 1.0f;
+	
+	printf("wheel: %d, convectionsurface: %8.3f, tiregasmass: %8.3f, treadmass: %8.3f, basemass: %8.3f\n", 
+		index, wheel->tireConvectionSurface, wheel->tireGasMass, wheel->treadMass, wheel->baseMass);
 }
 
 
@@ -268,6 +310,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 	// load sensitivity
 	mu = wheel->mu * (wheel->lfMin + (wheel->lfMax - wheel->lfMin) * exp(wheel->lfK * zforce / wheel->opLoad));
 
+	// TODO: take into account wear/temp/graining, wheel->currentGripFactor
 	F *= zforce * mu * wheel->trkPos.seg->surface->kFriction * (1.0f + 0.05f * sin((-wheel->staticPos.ax + camberDelta) * 18.0f));	/* coeff */
 
 	wheel->rollRes = zforce * wheel->trkPos.seg->surface->kRollRes;
@@ -297,6 +340,10 @@ void SimWheelUpdateForce(tCar *car, int index)
 	car->carElt->_wheelSlipSide(index) = sy*v;
 	car->carElt->_wheelSlipAccel(index) = sx*v;
 	car->carElt->_reaction[index] = zforce;
+	
+	// Update temperature model if tire model is on
+	printf("%d: ", index);
+	SimWheelUpdateTire(wheel, s, zforce);	
 }
 
 
@@ -346,4 +393,62 @@ SimUpdateFreeWheels(tCar *car, int axlenb)
 		wheel->spinVel += ndot;
 		wheel->in.spinVel = wheel->spinVel;
 	}
+}
+
+
+void SimWheelUpdateTire(tWheel *wheel, tdble slip, tdble normalForce) {
+	// TODO: get this with function implemented in rt.
+	const tdble environmentTemperature = 273.15f + 20.0f;
+	tdble wheelSpeed = fabs(wheel->spinVel*wheel->radius);
+	tdble deltaTemperature = wheel->currentTemperature - environmentTemperature;
+
+	// Calculate factor for energy which is turned into heat, according papers this seems to be pretty constant
+	// for a specific construction and constant slip (empiric value with model validation, called hysteresis).
+	// A value of 0.1 is available in papers, so for 10% slip I head for 0.1, where 0.05 come from rolling and
+	// the other 0.05 from slip. Additionaly the hysteresis goes down with wear.
+	
+	// TODO: wear, sqrt(wear), E=1/2*k*x^2
+	// TODO: function of pressure (Elaticity depends on it?
+	tdble hysteresis = (0.05f*wheel->currentWear + 0.5f*slip);
+	
+	// Calculate energy input for the tire
+	tdble energyGain = normalForce*wheelSpeed*SimDeltaTime*hysteresis;
+	
+	// Calculate energy loss of the tire (convection, convection model approximation from papers, 
+	// 5.9f + airspeed*3.7f [W/(meter*meter*Kelvin)]). Because the model is linear it is reasonable to apply
+	// it to the whole tire at once (no subdivision in elements).
+	tdble energyLoss = (5.9f + wheelSpeed*3.7f)*deltaTemperature*wheel->tireConvectionSurface*SimDeltaTime/2.0f;
+	
+	tdble deltaEnergy = energyGain - energyLoss;
+	
+	// Calculate heat capacity. Basically the heat capacity of the gas in the tire accounts for a "normal" TORCS tire
+	// around 2 percent of the whole tire heat capacity, so one could neglect this. I put it into the model because it:
+	// - is more than 1 percent
+	// - you could think of some tire build where this ratio is significantly higher (e.g. 4 percent)
+	//
+	// Because the tire is a sufficiently rigid volume we assume for the isochoric process (constant volume, variable
+	// pressure and temperature).
+	//
+	// Material properties: The heat capacity of nitorgen N2 is "almost" constant over our temperature ranges:
+	// 29.1 (at 25°C) vs 29.3 (at 100°C) [J/(mol*Kelvin)]. So this is assumed constant, error less than 1 percent.
+	// But this does not apply for Rubber (NR):
+	// 1.982 (at 20°C) [J/(g*Kelvin)] vs 2.121 (at 100°C), so this is more than 6 percent.
+	tdble tireCelsius = wheel->currentTemperature - 273.15f;
+	tdble cpRubber = 2009.0f - 1.962f*tireCelsius + 3.077f*tireCelsius*tireCelsius/100.0f;
+	
+	// Calculate the actual rubber mass. This is some base mass (constant) plus the mass of the tread (dynamic,
+	// wears down).
+	tdble actualRubberMass = wheel->treadMass*wheel->currentWear;
+	
+	// Calculate actual heat capacity
+	const tdble cvNitrogen = 1041.0f - 296.8f;	// cv = cp - R, [J/(kg*Kelvin)]
+	tdble heatCapacity = cpRubber * actualRubberMass + cvNitrogen * wheel->tireGasMass + wheel->baseMass*500.0f;
+	
+	// Energy transfer into the tire
+	wheel->currentTemperature += deltaEnergy/heatCapacity;
+	
+//	printf("s: %8.3f, h: %8.3f, egain: %8.3f, eloss: %8.3f, deltae: %8.3f, cpRubber: %8.3f, rubberm: %8.3f, heatcapacity: %8.3f, T: %8.3f\n", slip, hysteresis, energyGain, energyLoss, deltaEnergy, cpRubber, actualRubberMass, heatCapacity, wheel->currentTemperature - 273.15f);
+
+		printf("s: %8.3f, h: %8.3f, deltae: %8.3f, heatcapacity: %8.3f, T: %8.3f\n", slip, hysteresis, deltaEnergy, heatCapacity, wheel->currentTemperature - 273.15f);
+
 }
