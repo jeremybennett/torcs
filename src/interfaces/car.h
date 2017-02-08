@@ -538,7 +538,9 @@ typedef struct CarElt
 #define PRM_OPLOAD		"operating load"
 #define PRM_TREADTHICKNESS	"tread thickness"
 #define PRM_RIMMASS		"rim mass"
-#define PRM_HYSTERESIS "hysteresis"
+#define PRM_HYSTERESIS	"hysteresis"
+#define PRM_IDEALTEMP	"ideal temperature"
+#define PRM_WEAR		"wear"
 
 
 #define PRM_SPR			"spring"

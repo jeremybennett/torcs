@@ -382,6 +382,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 			CHECK(car);
 			for (i = 0; i < 4; i++){
 				SimWheelUpdateForce(car, i);
+				if (s->_raceState == 0) {
+					SimWheelResetWear(car, i);
+				}
 			}
 			CHECK(car);
 			SimTransmissionUpdate(car);

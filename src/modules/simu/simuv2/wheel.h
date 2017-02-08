@@ -89,6 +89,8 @@ typedef struct
 	tdble tireConvectionSurface;	// Surface area regarding the convection model
 	tdble initialTemperature;		// Initial temperature of the tire (initial pressure, p0/T0=constant)
 	tdble hysteresisFactor;			// Factor to adjust the hysteresis (model fitting), usually close to 1.0.
+	tdble wearFactor;				// Factor to adjust the wear (model fitting), usually close to 1.0.
+	tdble idealTemperature;			// Ideal tire temperature for best grip.
 	
 	// Dynamic Tire properties (temp, wear, etc.)
 	tdble	currentPressure;		// current tire pressure considering temperature

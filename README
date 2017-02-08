@@ -227,6 +227,7 @@ Changes since 1.3.7
 - Suspension slow/fast threshold is adjustable too (Bernhard).
 - Changed 2.5D calculations to 3D (Bernhard).
 - Fixed calculation of the angle of attack for spoilers (Bernhard).
+- Added initial tire temperature model (Bernhard).
 
 
 12. TODO/Notes
