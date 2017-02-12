@@ -53,7 +53,6 @@ ReUpdtPitTime(tCarElt *car)
 {
 	tSituation *s = ReInfo->s;
 	tReCarInfo *info = &(ReInfo->_reCarInfo[car->index]);
-	int i;
 
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
