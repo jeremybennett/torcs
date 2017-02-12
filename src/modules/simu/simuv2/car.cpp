@@ -90,6 +90,7 @@ SimCarConfig(tCar *car)
 	car->wheelbase = car->wheeltrack = 0;
 	car->statGC.x = car->wheel[FRNT_RGT].staticPos.x * gcfr + car->wheel[REAR_RGT].staticPos.x * (1 - gcfr);
 
+	SimAtmosphereConfig(car);
 	SimEngineConfig(car);
 	SimTransmissionConfig(car);
 	SimSteerConfig(car);

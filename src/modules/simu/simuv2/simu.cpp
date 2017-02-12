@@ -351,7 +351,8 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		if (s->_raceState & RM_RACE_PRESTART) {
 			car->ctrl->gear = 0;
 		}
-	
+		
+		SimAtmosphereUpdate(car, s);
 		CHECK(car);
 		ctrlCheck(car);
 		CHECK(car);
@@ -449,6 +450,7 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->priv.collision |= car->collision;
 		carElt->priv.simcollision = car->collision;
 		carElt->_dammage = car->dammage;
+		carElt->priv.localPressure = car->localPressure;
 	}
 }
 

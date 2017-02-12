@@ -312,6 +312,7 @@ typedef struct {
     int		dammage;
     int		debug;
 	tCollisionState collision_state; /**< collision state */
+	tdble localPressure;	// Environment pressure at cars location
 } tPrivCar;
 /* structure access */
 #define _driverIndex	priv.driverIndex

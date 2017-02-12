@@ -256,6 +256,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\atmosphere.cpp"
+				>
+			</File>
+			<File
 				RelativePath="axle.cpp"
 				>
 				<FileConfiguration

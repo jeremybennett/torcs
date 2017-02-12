@@ -404,17 +404,14 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	tdble normalForce = wheel->tireZForce;
 	tdble slip = wheel->tireSlip;
 	
-	// TODO: get this with function implemented in rt.
-	const tdble environmentTemperature = 273.15f + 20.0f;
-	
 	tdble wheelSpeed = fabs(wheel->spinVel*wheel->radius);
-	tdble deltaTemperature = wheel->currentTemperature - environmentTemperature;
+	tdble deltaTemperature = wheel->currentTemperature - car->localTemperature;
 	
 	// Calculate factor for energy which is turned into heat, according papers this seems to be pretty constant
 	// for a specific construction and constant slip (empiric value with model validation, called hysteresis).
 	// A value of 0.1 is available in papers, so for 10% slip I head for 0.1, where 0.05 come from rolling and
 	// the other 0.05 from slip. Additionaly the hysteresis goes down with wear.	
-	tdble elasticity = wheel->pressure/wheel->currentPressure;
+	tdble elasticity = (wheel->pressure - car->localPressure)/(wheel->currentPressure - car->localPressure);
 	tdble hysteresis = (0.05f*(sqrt(1.0f - wheel->currentWear))*elasticity + 0.5f*slip)*wheel->hysteresisFactor;
 	
 	// Calculate energy input for the tire
@@ -455,7 +452,7 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	wheel->currentPressure = wheel->currentTemperature/wheel->initialTemperature*wheel->pressure;
 	
 	// Wear
-	tdble deltaWear = wheel->currentPressure*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
+	tdble deltaWear = (wheel->currentPressure - car->localPressure)*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
 	wheel->currentWear += deltaWear*rulesTireFactor;
 	if (wheel->currentWear > 1.0f) wheel->currentWear = 1.0f;
 	
@@ -476,11 +473,7 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	tdble di = (wheel->currentTemperature - wheel->idealTemperature)/(wheel->idealTemperature - wheel->initialTemperature);
 	wheel->currentGripFactor = ((1.0f-(di*di))/4.0f + 3.0f/4.0f)*(1.0f - wheel->currentGraining/10.0f);
 	
-	
-//	printf("s: %8.3f, h: %8.3f, egain: %8.3f, eloss: %8.3f, deltae: %8.3f, cpRubber: %8.3f, rubberm: %8.3f, heatcapacity: %8.3f, T: %8.3f\n", slip, hysteresis, energyGain, energyLoss, deltaEnergy, cpRubber, actualRubberMass, heatCapacity, wheel->currentTemperature - 273.15f);
-
-		printf("s: %4.3f, h: %4.3f, deltae: %8.3f, heatcapacity: %8.3f, T: %6.3f, wear: %7.6f, grip: %6.5f, grain: %6.5f\n", slip, hysteresis, deltaEnergy, heatCapacity, wheel->currentTemperature - 273.15f, wheel->currentWear, wheel->currentGripFactor, wheel->currentGraining);
-
+	//printf("s: %4.3f, h: %4.3f, deltae: %8.3f, heatcapacity: %8.3f, T: %6.3f, wear: %7.6f, grip: %6.5f, grain: %6.5f\n", slip, hysteresis, deltaEnergy, heatCapacity, wheel->currentTemperature - 273.15f, wheel->currentWear, wheel->currentGripFactor, wheel->currentGraining);
 }
 
 
@@ -490,7 +483,7 @@ SimWheelResetWear(tCar *car, int index)
 	tWheel *wheel = &(car->wheel[index]);
 	
 	wheel->currentPressure = wheel->pressure;
-	wheel->currentTemperature = wheel->initialTemperature;
+	wheel->currentTemperature = car->localTemperature;
 	wheel->currentWear = 0.0f;
 	wheel->currentGraining = 0.0f;
 	wheel->currentGripFactor = 1.0f;

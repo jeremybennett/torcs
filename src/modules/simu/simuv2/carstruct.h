@@ -85,7 +85,10 @@ typedef struct
     tDynPt	restPos;	/* target rest position after the car is broken */
 
     int		collisionAware;
-	tdble	speed;		// total speed = sqrt(vx*vx + vy*vy + vz*vz) 
+	tdble	speed;		// total speed = sqrt(vx*vx + vy*vy + vz*vz)
+
+	tdble	localTemperature;	// Environment temperature for the car
+	tdble	localPressure;		// Environment pressure for the car
 } tCar;
 
 #if 0
