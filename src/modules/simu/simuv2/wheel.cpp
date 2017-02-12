@@ -452,7 +452,8 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	wheel->currentPressure = wheel->currentTemperature/wheel->initialTemperature*wheel->pressure;
 	
 	// Wear
-	tdble deltaWear = (wheel->currentPressure - car->localPressure)*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
+	double deltaWear = (wheel->currentPressure - car->localPressure)*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
+	
 	wheel->currentWear += deltaWear*rulesTireFactor;
 	if (wheel->currentWear > 1.0f) wheel->currentWear = 1.0f;
 	

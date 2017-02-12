@@ -95,7 +95,7 @@ typedef struct
 	// Dynamic Tire properties (temp, wear, etc.)
 	tdble currentPressure;			// current tire pressure considering temperature
 	tdble currentTemperature;		// current temperature
-	tdble currentWear;				// [0..1], 1 means totally worn (tread thickness 0)
+	double currentWear;				// [0..1], 1 means totally worn (tread thickness 0)
 	tdble currentGraining;			// [0..1], 1 means totally grained
 	tdble currentGripFactor;		// [0..1], 1 means best grip
     
