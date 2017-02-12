@@ -2,7 +2,7 @@
 
     file                 : simuitf.cpp
     created              : Sun Mar 19 00:08:04 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 

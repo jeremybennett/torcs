@@ -24,8 +24,6 @@ static const char *WheelSect[4] = {SECT_FRNTRGTWHEEL, SECT_FRNTLFTWHEEL, SECT_RE
 static const char *SuspSect[4] = {SECT_FRNTRGTSUSP, SECT_FRNTLFTSUSP, SECT_REARRGTSUSP, SECT_REARLFTSUSP};
 static const char *BrkSect[4] = {SECT_FRNTRGTBRAKE, SECT_FRNTLFTBRAKE, SECT_REARRGTBRAKE, SECT_REARLFTBRAKE};
 
-void SimWheelUpdateTire(tWheel *wheel, tdble slip, tdble normalForce);
-
 void SimWheelConfig(tCar *car, int index)
 {
 	void *hdle = car->params;
@@ -334,6 +332,9 @@ void SimWheelUpdateForce(tCar *car, int index)
 	wheel->sa = sa;
 	wheel->sx = sx;
 
+	wheel->tireZForce = zforce;
+	wheel->tireSlip = stmp;
+
 	wheel->feedBack.spinVel = wheel->spinVel;
 	wheel->feedBack.Tq = wheel->spinTq;
 	wheel->feedBack.brkTq = wheel->brake.Tq;
@@ -341,10 +342,6 @@ void SimWheelUpdateForce(tCar *car, int index)
 	car->carElt->_wheelSlipSide(index) = sy*v;
 	car->carElt->_wheelSlipAccel(index) = sx*v;
 	car->carElt->_reaction[index] = zforce;
-	
-	// Update temperature model if tire model is on
-	printf("%d: ", index);
-	SimWheelUpdateTire(wheel, stmp, zforce);	
 }
 
 
@@ -397,7 +394,16 @@ SimUpdateFreeWheels(tCar *car, int axlenb)
 }
 
 
-void SimWheelUpdateTire(tWheel *wheel, tdble slip, tdble normalForce) {
+void SimWheelUpdateTire(tCar *car, int index) {
+	if (!(rulesTireFactor > 0.0f)) {
+		return;
+	}
+	
+	tWheel *wheel = &(car->wheel[index]);
+	
+	tdble normalForce = wheel->tireZForce;
+	tdble slip = wheel->tireSlip;
+	
 	// TODO: get this with function implemented in rt.
 	const tdble environmentTemperature = 273.15f + 20.0f;
 	
@@ -450,7 +456,7 @@ void SimWheelUpdateTire(tWheel *wheel, tdble slip, tdble normalForce) {
 	
 	// Wear
 	tdble deltaWear = wheel->currentPressure*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
-	wheel->currentWear += deltaWear;
+	wheel->currentWear += deltaWear*rulesTireFactor;
 	if (wheel->currentWear > 1.0f) wheel->currentWear = 1.0f;
 	
 	// Graining

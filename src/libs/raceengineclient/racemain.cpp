@@ -2,7 +2,7 @@
 
     file        : racemain.cpp
     created     : Sat Nov 16 12:13:31 CET 2002
-    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann                    
+    copyright   : (C) 2002-2017 by Eric Espie, Bernhard Wymann                    
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -160,6 +160,11 @@ void ReInitRules(tRmInfo* ReInfo)
 	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_DAMAGE_FACTOR, NULL, 1.0f);
 	if (number < 0.0f) number = 0.0f;	// Avoid negative factor
 	ReInfo->raceRules.damageFactor = number;
+
+	// Tire model factor, for 0.0 the model is switched completely off
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_TIRE_FACTOR, NULL, 1.0f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative factor
+	ReInfo->raceRules.tireFactor = number;
 
 	// Refuel fuel flow
 	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_REFUEL_FUEL_FLOW, NULL, 8.0f);

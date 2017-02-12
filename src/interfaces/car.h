@@ -254,13 +254,15 @@ typedef struct {
     int		state;		/**< wheel state */
     tTrackSeg	*seg;		/**< Track segment where the wheel is */
     tdble rollRes;              /**< rolling resistance, useful for sound */
-	tdble   temp_in, temp_mid, temp_out;
-	tdble   condition;
 	tdble slipSide;
 	tdble slipAccel;
 	tdble Fx;
 	tdble Fy;
 	tdble Fz;
+	tdble currentPressure;		// current tire pressure considering temperature
+	tdble currentTemperature;	// current temperature
+	tdble currentWear;			// [0..1], 1 means totally worn (tread thickness 0)
+	tdble currentGraining;		// [0..1], 1 means totally grained
 } tWheelState;
 #define _ride(i)	priv.wheel[i].relPos.z
 #define _brakeTemp(i)	priv.wheel[i].brakeTemp
@@ -271,11 +273,6 @@ typedef struct {
 #define _wheelFx(i) priv.wheel[i].Fx
 #define _wheelFy(i) priv.wheel[i].Fy
 #define _wheelFz(i) priv.wheel[i].Fz
-#define _tyreT_in(i) priv.wheel[i].temp_in
-#define _tyreT_mid(i) priv.wheel[i].temp_mid
-#define _tyreT_out(i) priv.wheel[i].temp_out
-#define _tyreCondition(i) priv.wheel[i].condition
-
 
 #define MAX_GEARS	10	/* including reverse and neutral */
 

@@ -2,7 +2,7 @@
 
     file                 : simu.h
     created              : Sun Jan 30 12:02:05 CET 2000
-    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -48,8 +48,9 @@ struct RmInfo;
  *  @param[in] track Track to race on
  *  @param[in] fuelFactor Factor for fuel consumtion, e.g 1 for normal, 0 for none, etc.
  *  @param[in] damageFactor Factor for damage, e.g. 1 for normal, 0 for none, etc.
+ *  @param[in] tireFactor Factor for tire wear, e.g. 1 for normal, 0 for none, etc.
  */
-typedef void (*tfSimInit)(int nbCars, tTrack* track, tdble fuelFactor, tdble damageFactor);
+typedef void (*tfSimInit)(int nbCars, tTrack* track, tdble fuelFactor, tdble damageFactor, tdble tireFactor);
 
 /** Callback function prototype for simulation configuration of a given car
  *  @ingroup simumodint

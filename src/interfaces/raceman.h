@@ -2,7 +2,7 @@
 
     file                 : raceman.h
     created              : Sun Jan 30 22:59:17 CET 2000
-    copyright            : (C) 2000,2002-2014 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000,2002-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -190,6 +190,7 @@ typedef struct RmRaceRules
 	tdble refuelFuelFlow;
 	tdble damageRepairFactor;
 	tdble pitstopBaseTime;
+	tdble tireFactor;
 } tRmRaceRules;
 
 typedef struct RmCarRules
@@ -285,6 +286,7 @@ typedef struct RmInfo
 #define RM_ATTR_CORNER_CUT_TIME_PENALTY "corner cutting time penalty"
 #define RM_ATTR_DAMAGE_FACTOR "damage factor"
 #define RM_ATTR_FUEL_FACTOR "fuel consumption factor"
+#define RM_ATTR_TIRE_FACTOR "tire factor"
 #define RM_ATTR_PIT_SPEED_LIMIT "pit speed limit"
 #define RM_ATTR_REFUEL_FUEL_FLOW "refuel fuel flow"
 #define RM_ATTR_DAMAGE_REPAIR_FACTOR "damage repair factor"

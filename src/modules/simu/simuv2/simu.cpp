@@ -2,7 +2,7 @@
 
     file                 : simu.cpp
     created              : Sun Mar 19 00:07:53 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -38,6 +38,7 @@ static int SimNbCars = 0;
 
 tdble rulesFuelFactor = 1.0f;
 tdble rulesDamageFactor = 1.0f;
+tdble rulesTireFactor = 0.0f;
 
 /*
  * Check the input control from robots
@@ -159,6 +160,7 @@ void SimReConfig(tCarElt *carElt)
 
 	for (i = 0; i < 4; i++) {
 		SimWheelReConfig(car, i);
+		SimWheelResetWear(car, i);
 	}
 
 	SimTransmissionReConfig(car);
@@ -382,6 +384,9 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 			CHECK(car);
 			for (i = 0; i < 4; i++){
 				SimWheelUpdateForce(car, i);
+				SimWheelUpdateTire(car, i);
+				
+				// Reset tire damage in pre simulation state (when the model is thrown in the world) 
 				if (s->_raceState == 0) {
 					SimWheelResetWear(car, i);
 				}
@@ -422,12 +427,22 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
 				RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		carElt->_trkPos = car->trkPos;
+
 		for (i = 0; i < 4; i++) {
-			carElt->priv.wheel[i].relPos = car->wheel[i].relPos;
-			carElt->_wheelSeg(i) = car->wheel[i].trkPos.seg;
-			carElt->_brakeTemp(i) = car->wheel[i].brake.temp;
+			tWheelState* const wheelState = &(carElt->priv.wheel[i]);
+			const tWheel* const wheel = &(car->wheel[i]);
+
+			wheelState->relPos = wheel->relPos;
+			wheelState->seg = wheel->trkPos.seg;
+			wheelState->brakeTemp = wheel->brake.temp;
+			wheelState->currentGraining = wheel->currentGraining;
+			wheelState->currentPressure = wheel->currentPressure;
+			wheelState->currentTemperature = wheel->currentTemperature;
+			wheelState->currentWear = wheel->currentWear;
+
 			carElt->pub.corner[i] = car->corner[i].pos;
 		}
+
 		carElt->_gear = car->transmission.gearbox.gear;
 		carElt->_enginerpm = car->engine.rads;
 		carElt->_fuel = car->fuel;
@@ -439,10 +454,11 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 
 
 void
-SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor)
+SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor, tdble tireFactor)
 {
 	rulesFuelFactor = fuelFactor;
 	rulesDamageFactor = damageFactor;
+	rulesTireFactor = tireFactor;
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
     SimCarCollideInit(track);

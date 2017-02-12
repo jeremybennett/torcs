@@ -2,7 +2,7 @@
 
     file                 : sim.h
     created              : Sun Mar 19 00:07:42 CET 2000
-    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -39,7 +39,7 @@
 extern void SimConfig(tCarElt *carElt, RmInfo *);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
-extern void SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor);
+extern void SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor, tdble tireFactor);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);
@@ -62,6 +62,7 @@ extern void SimWheelUpdateRide(tCar *car, int index);
 extern void SimWheelUpdateForce(tCar *car, int index);
 extern void SimWheelUpdateRotation(tCar *car);
 extern void SimUpdateFreeWheels(tCar *car, int axlenb);
+extern void SimWheelUpdateTire(tCar *car, int index);
 extern void SimWheelResetWear(tCar *car, int index);
 
 
@@ -112,6 +113,7 @@ extern int SimTelemetry;
 extern tCar *SimCarTable;
 extern tdble rulesFuelFactor;
 extern tdble rulesDamageFactor;
+extern tdble rulesTireFactor;
 
 extern tdble simDammageFactor[];
 extern tdble simSkidFactor[];

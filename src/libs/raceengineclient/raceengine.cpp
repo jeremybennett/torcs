@@ -68,12 +68,6 @@ ReUpdtPitTime(tCarElt *car)
 			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
 			car->_penaltyTime = 0.0f;
 			ReInfo->_reSimItf.reconfig(car);
-			for (i=0; i<4; i++) {
-				car->_tyreCondition(i) = 1.01;
-				car->_tyreT_in(i) = 50.0;
-				car->_tyreT_mid(i) = 50.0;
-				car->_tyreT_out(i) = 50.0;
-			}
 			break;
 		case RM_PIT_STOPANDGO:
 			info->totalPitTime = car->_penaltyTime;

@@ -2,7 +2,7 @@
 
     file        : raceinit.cpp
     created     : Sat Nov 16 10:34:35 CET 2002
-    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann                
+    copyright   : (C) 2002-2017 by Eric Espie, Bernhard Wymann                
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -682,11 +682,13 @@ ReInitCars(void)
 		ReInfo->s->cars[i] = &(ReInfo->carList[i]);
 	}
 
-	// TODO: reconsider splitting the call into one for cars, track and maybe other objects.
-	// I stuff for now anything into one call because collision detection works with the same
-	// library on all objects, so it is a bit dangerous to distribute the handling to various
-	// locations (because the library maintains global state like a default collision handler etc.).
-    ReInfo->_reSimItf.init(nCars, ReInfo->track, ReInfo->raceRules.fuelFactor, ReInfo->raceRules.damageFactor);
+    ReInfo->_reSimItf.init(
+		nCars,
+		ReInfo->track,
+		ReInfo->raceRules.fuelFactor,
+		ReInfo->raceRules.damageFactor,
+		ReInfo->raceRules.tireFactor
+	);
 
     initStartingGrid();
 
