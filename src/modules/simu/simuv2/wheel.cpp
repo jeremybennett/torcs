@@ -132,9 +132,6 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->currentWear = 0.0f;
 	wheel->currentGraining = 0.0f;
 	wheel->currentGripFactor = 1.0f;
-	
-	printf("wheel: %d, convectionsurface: %8.3f, tiregasmass: %8.3f, treadmass: %8.3f, basemass: %8.3f\n", 
-		index, wheel->tireConvectionSurface, wheel->tireGasMass, wheel->treadMass, wheel->baseMass);
 }
 
 
@@ -278,7 +275,7 @@ void SimWheelUpdateForce(tCar *car, int index)
 		sx = (vt - wrl) / fabs(vt);
 		sy = sin(sa);
 	}
-
+	
 	Ft = 0.0f;
 	Fn = 0.0f;
 	s = sqrt(sx*sx+sy*sy);
@@ -397,7 +394,7 @@ SimUpdateFreeWheels(tCar *car, int axlenb)
 
 
 void SimWheelUpdateTire(tCar *car, int index) {
-	if (!(rulesTireFactor > 0.0f)) {
+	if (!(rulesTireFactor > 0.0f) || car->carElt->info.skillLevel != 3) {
 		return;
 	}
 	
@@ -454,7 +451,7 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	wheel->currentPressure = wheel->currentTemperature/wheel->initialTemperature*wheel->pressure;
 	
 	// Wear
-	double deltaWear = (wheel->currentPressure - car->localPressure)*slip*SimDeltaTime*normalForce*wheel->wearFactor*0.000000000005;
+	double deltaWear = (wheel->currentPressure - car->localPressure)*slip*wheelSpeed*SimDeltaTime*normalForce*wheel->wearFactor*0.00000000000009;
 	
 	wheel->currentWear += deltaWear*rulesTireFactor;
 	if (wheel->currentWear > 1.0f) wheel->currentWear = 1.0f;
@@ -475,8 +472,6 @@ void SimWheelUpdateTire(tCar *car, int index) {
 	
 	tdble di = (wheel->currentTemperature - wheel->idealTemperature)/(wheel->idealTemperature - wheel->initialTemperature);
 	wheel->currentGripFactor = ((1.0f-(di*di))/4.0f + 3.0f/4.0f)*(1.0f - wheel->currentGraining/10.0f);
-	
-	//printf("s: %4.3f, h: %4.3f, deltae: %8.3f, heatcapacity: %8.3f, T: %6.3f, wear: %7.6f, grip: %6.5f, grain: %6.5f\n", slip, hysteresis, deltaEnergy, heatCapacity, wheel->currentTemperature - 273.15f, wheel->currentWear, wheel->currentGripFactor, wheel->currentGraining);
 }
 
 

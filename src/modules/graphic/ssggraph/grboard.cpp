@@ -369,7 +369,7 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	char buf[BUFSIZE];
 	float *clr;
 	int dy, dy2, dx;
-	int lines, i;
+	int i;
 	
 	x = 10;
 	x2 = 110;
@@ -382,12 +382,6 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	snprintf(buf, BUFSIZE, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
 	dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
 	dx = MAX(dx, (x3-x));
-	lines = 14;
-	for (i = 0; i < 4; i++) {
-		if (car->ctrl.msg[i]) {
-			lines++;
-		}
-	}
 	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) ;
@@ -400,21 +394,22 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	glVertex2f(x-5, y2);
 	glEnd();
 
-
+	if (car->info.skillLevel == 3) {
+		glBegin(GL_QUADS);
+		glVertex2f(x-5, y2 - 2);
+		glVertex2f(x+dx+5, y2 - 2);
+		y2 = y2 - 2 - dy2 * 6;
+		glVertex2f(x+dx+5, y2);
+		glVertex2f(x-5, y2);
+		glEnd();
+	}
+	
 	glBegin(GL_QUADS);
 	glVertex2f(x-5, y2 - 2);
 	glVertex2f(x+dx+5, y2 - 2);
-	int y3 = y2 - 2 - dy2 * 6;
-	glVertex2f(x+dx+5, y3);
-	glVertex2f(x-5, y3);
-	glEnd();
-
-	glBegin(GL_QUADS);
-	glVertex2f(x-5, y3 - 2);
-	glVertex2f(x+dx+5, y3 - 2);
-	int y4 = y3 - 2 - dy2 * 4;
-	glVertex2f(x+dx+5, y4);
-	glVertex2f(x-5, y4);
+	y2 = y2 - 2 - dy2 * 4;
+	glVertex2f(x+dx+5, y2);
+	glVertex2f(x-5, y2);
 	glEnd();
 	glDisable(GL_BLEND);
 	
@@ -485,30 +480,32 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	}
 	y -= dy+5;
 	
-	static const char* wheellabel[4] = {"FR", "FL", "RR", "RL"};
+	if (car->info.skillLevel == 3) {
+		static const char* wheellabel[4] = {"FR", "FL", "RR", "RL"};
 
-	GfuiPrintString("T[Celsius], P[Bar], Wear[-], Grain[-]", grWhite, GFUI_FONT_SMALL_C, x, y-5*dy, GFUI_ALIGN_HL_VB);	
+		GfuiPrintString("T[Celsius], P[Bar], Wear[-], Grain[-]", grWhite, GFUI_FONT_SMALL_C, x, y-5*dy, GFUI_ALIGN_HL_VB);	
 
-	static const int tx0 = 45;
-	static const int tdx = 47;
-	
-	for (i = 0; i < 4; i++) {
-		const tWheelState* const wheel = &(car->priv.wheel[i]);
+		static const int tx0 = 45;
+		static const int tdx = 47;
 		
-		GfuiPrintString(wheellabel[i], grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y, GFUI_ALIGN_HR_VB);
+		for (i = 0; i < 4; i++) {
+			const tWheelState* const wheel = &(car->priv.wheel[i]);
+			
+			GfuiPrintString(wheellabel[i], grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y, GFUI_ALIGN_HR_VB);
+			
+			snprintf(buf, BUFSIZE, "%4.1f", wheel->currentTemperature - 273.15f);
+			GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-dy, GFUI_ALIGN_HR_VB);
+			snprintf(buf, BUFSIZE, "%4.3f", (wheel->currentPressure - car->priv.localPressure)/100000.0f);
+			GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-2*dy, GFUI_ALIGN_HR_VB);
+			snprintf(buf, BUFSIZE, "%5.4f", wheel->currentWear);
+			GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-3*dy, GFUI_ALIGN_HR_VB);
+			snprintf(buf, BUFSIZE, "%5.4f", wheel->currentGraining);
+			GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-4*dy, GFUI_ALIGN_HR_VB);
+		}
 		
-		snprintf(buf, BUFSIZE, "%4.1f", wheel->currentTemperature - 273.15f);
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-dy, GFUI_ALIGN_HR_VB);
-		snprintf(buf, BUFSIZE, "%4.3f", (wheel->currentPressure - car->priv.localPressure)/100000.0f);
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-2*dy, GFUI_ALIGN_HR_VB);
-		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentWear);
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-3*dy, GFUI_ALIGN_HR_VB);
-		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentGraining);
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-4*dy, GFUI_ALIGN_HR_VB);
+		y -= dy*6+2;
 	}
 	
-	y -= dy*6+2;
-
 	for (i = 0; i < 4; i++) {
 		if (car->ctrl.msg[i]) {
 			GfuiPrintString(car->ctrl.msg[i], car->ctrl.msgColor, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
