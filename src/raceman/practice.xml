@@ -53,6 +53,7 @@
 		<attstr name="corner cutting time penalty" val="yes"/>
 		<attnum name="fuel consumption factor" min="0.0" max="5.0" val="1.0"/>
 		<attnum name="damage factor" min="0.0" max="5.0" val="1.0"/>
+	    <attnum name="tire factor" min="0" max="5" val="1"/>
 
 		<section name="Starting Grid">
 			<attnum name="rows"                      val="1"/>
