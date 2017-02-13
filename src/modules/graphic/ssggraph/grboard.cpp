@@ -2,7 +2,7 @@
 
     file                 : grboard.cpp
     created              : Thu Aug 17 23:52:20 CEST 2000
-    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2000-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -373,7 +373,7 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	
 	x = 10;
 	x2 = 110;
-	x3 = 250; // 170
+	x3 = 186;
 	dy = GfuiFontHeight(GFUI_FONT_MEDIUM_C);
 	dy2 = GfuiFontHeight(GFUI_FONT_SMALL_C);
 	
@@ -382,7 +382,7 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	snprintf(buf, BUFSIZE, "%d/%d - %s", car->_pos, s->_ncars, car->_name);
 	dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, buf);
 	dx = MAX(dx, (x3-x));
-	lines = 13;
+	lines = 14;
 	for (i = 0; i < 4; i++) {
 		if (car->ctrl.msg[i]) {
 			lines++;
@@ -395,8 +395,26 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 	glColor4f(0.1, 0.1, 0.1, 0.8);
 	glVertex2f(x-5, y + dy);
 	glVertex2f(x+dx+5, y + dy);
-	glVertex2f(x+dx+5, y-5 - dy2 * lines);
-	glVertex2f(x-5, y-5 - dy2 * lines);
+	int y2 = y-5 - dy2 * 7;
+	glVertex2f(x+dx+5, y2);
+	glVertex2f(x-5, y2);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glVertex2f(x-5, y2 - 2);
+	glVertex2f(x+dx+5, y2 - 2);
+	int y3 = y2 - 2 - dy2 * 6;
+	glVertex2f(x+dx+5, y3);
+	glVertex2f(x-5, y3);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex2f(x-5, y3 - 2);
+	glVertex2f(x+dx+5, y3 - 2);
+	int y4 = y3 - 2 - dy2 * 4;
+	glVertex2f(x+dx+5, y4);
+	glVertex2f(x-5, y4);
 	glEnd();
 	glDisable(GL_BLEND);
 	
@@ -465,41 +483,37 @@ cGrBoard::grDispCarBoard2(tCarElt *car, tSituation *s)
 		GfuiPrintString("-> ", clr, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 		GfuiPrintString("       --:--", clr, GFUI_FONT_SMALL_C, x3, y, GFUI_ALIGN_HR_VB);
 	}
-	y -= dy;
+	y -= dy+5;
+	
+	static const char* wheellabel[4] = {"FR", "FL", "RR", "RL"};
+
+	GfuiPrintString("T[Celsius], P[Bar], Wear[-], Grain[-]", grWhite, GFUI_FONT_SMALL_C, x, y-5*dy, GFUI_ALIGN_HL_VB);	
+
+	static const int tx0 = 45;
+	static const int tdx = 47;
+	
+	for (i = 0; i < 4; i++) {
+		const tWheelState* const wheel = &(car->priv.wheel[i]);
+		
+		GfuiPrintString(wheellabel[i], grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y, GFUI_ALIGN_HR_VB);
+		
+		snprintf(buf, BUFSIZE, "%4.1f", wheel->currentTemperature - 273.15f);
+		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-dy, GFUI_ALIGN_HR_VB);
+		snprintf(buf, BUFSIZE, "%4.3f", (wheel->currentPressure - car->priv.localPressure)/100000.0f);
+		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-2*dy, GFUI_ALIGN_HR_VB);
+		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentWear);
+		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-3*dy, GFUI_ALIGN_HR_VB);
+		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentGraining);
+		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-4*dy, GFUI_ALIGN_HR_VB);
+	}
+	
+	y -= dy*6+2;
 
 	for (i = 0; i < 4; i++) {
 		if (car->ctrl.msg[i]) {
 			GfuiPrintString(car->ctrl.msg[i], car->ctrl.msgColor, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
 			y -= dy;
 		}
-	}
-
-	y -=dy;
-
-	static const char* wheellabel[4] = {"FR", "FL", "RR", "RL"};
-
-	GfuiPrintString("Tire:", grWhite, GFUI_FONT_SMALL_C, x, y, GFUI_ALIGN_HL_VB);
-	GfuiPrintString("T[Celsius]:", grWhite, GFUI_FONT_SMALL_C, x, y-dy, GFUI_ALIGN_HL_VB);
-	GfuiPrintString("dP[Bar]:", grWhite, GFUI_FONT_SMALL_C, x, y-2*dy, GFUI_ALIGN_HL_VB);
-	GfuiPrintString("Wear[-]:", grWhite, GFUI_FONT_SMALL_C, x, y-3*dy, GFUI_ALIGN_HL_VB);
-	GfuiPrintString("Grain[-]:", grWhite, GFUI_FONT_SMALL_C, x, y-4*dy, GFUI_ALIGN_HL_VB);
-
-	static const int tx0 = 100;
-	static const int tdx = 50;
-	
-	for (i = 0; i < 4; i++) {
-		const tWheelState* const wheel = &(car->priv.wheel[i]);
-
-		GfuiPrintString(wheellabel[i], grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y, GFUI_ALIGN_HR_VB);			
-		
-		snprintf(buf, BUFSIZE, "%4.1f", wheel->currentTemperature - 273.15f);
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-dy, GFUI_ALIGN_HR_VB);			
-		snprintf(buf, BUFSIZE, "%4.3f", (wheel->currentPressure - car->priv.localPressure)/100000.0f);		
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-2*dy, GFUI_ALIGN_HR_VB);
-		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentWear);		
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-3*dy, GFUI_ALIGN_HR_VB);
-		snprintf(buf, BUFSIZE, "%5.4f", wheel->currentGraining);				
-		GfuiPrintString(buf, grWhite, GFUI_FONT_SMALL_C, tx0+i*tdx, y-4*dy, GFUI_ALIGN_HR_VB);
 	}
 }
 

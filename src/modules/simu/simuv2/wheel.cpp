@@ -103,6 +103,8 @@ void SimWheelConfig(tCar *car, int index)
 	wheel->hysteresisFactor = GfParmGetNum(hdle, WheelSect[index], PRM_HYSTERESIS, (char*)NULL, 1.0f);				// default 1.0 [-]
 	wheel->wearFactor = GfParmGetNum(hdle, WheelSect[index], PRM_WEAR, (char*)NULL, 1.0f);							// default 1.0 [-]
 	wheel->idealTemperature = GfParmGetNum(hdle, WheelSect[index], PRM_IDEALTEMP, (char*)NULL, 95.0f + 273.15f);	// default 95°C
+
+	carElt->info.wheel[index].idealTemperature = wheel->idealTemperature;
 	
 	const tdble rubberDensity = 930.0f;	// Density of Rubber (NR) in [kg/m^3].	
 	wheel->treadMass = (2.0f*wheel->radius - wheel->treadThinkness)*PI*tirewidth*wheel->treadThinkness*rubberDensity;

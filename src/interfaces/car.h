@@ -55,6 +55,7 @@ typedef struct
     tdble	tireWidth;	/**< Tire width */
     tdble	brakeDiskRadius; /**< Brake disk radius */
     tdble	wheelRadius;	/**< Overall wheel radius */
+    tdble	idealTemperature; // Tire ideal temperature
 } tWheelSpec;
 /* structure access short cuts */
 #define _rimRadius(i)		info.wheel[i].rimRadius 	/**< short cut to tWheelSpec#rimRadius */
