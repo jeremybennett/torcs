@@ -112,6 +112,10 @@ SOURCE=.\aero.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\atmosphere.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\axle.cpp
 # End Source File
 # Begin Source File
