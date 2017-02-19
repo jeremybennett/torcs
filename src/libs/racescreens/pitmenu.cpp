@@ -99,7 +99,7 @@ static void rmRepair(void* /* dummy */)
 // Manage tire change state.
 static void changeTireState(void *vp)
 {
-	int i = (int) vp;
+	long i = (long) vp;
 
 	if (i > 0) {
 		currentTireChangeOption++;
