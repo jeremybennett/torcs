@@ -2,7 +2,7 @@
 
     file                 : pitmenu.cpp
     created              : Mon Apr 24 18:16:37 CEST 2000
-    copyright            : (C) 2013 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2013-2017 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
     version              : $Id$
 
@@ -37,7 +37,21 @@ static int fuelId;
 static int repairId;
 static tCarElt *rmCar;
 static tRmInfo *rmInfo;
+static int tireChangeId;
 
+static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
+
+// list of tire change options.
+static const char *tireChangeLabel[] = {
+	"All",
+	"None"
+};
+static const tCarPitCmd::TireChange tireChangeList[] = {
+	tCarPitCmd::ALL,
+	tCarPitCmd::NONE
+};
+static const int nbtireChangeOptions = sizeof(tireChangeLabel) / sizeof(tireChangeLabel[0]);
+static int currentTireChangeOption = 0;
 
 static void rmUpdtFuel(void * /* dummy */)
 {
@@ -82,6 +96,28 @@ static void rmRepair(void* /* dummy */)
 	rmCallback(rmUserData);
 }
 
+// Manage tire change state.
+static void changeTireState(void *vp)
+{
+	int i = (int) vp;
+
+	if (i > 0) {
+		currentTireChangeOption++;
+		if (currentTireChangeOption >= nbtireChangeOptions) {
+			currentTireChangeOption = 0;
+		}
+	} else {
+		currentTireChangeOption--;
+		if (currentTireChangeOption < 0) {
+			currentTireChangeOption = nbtireChangeOptions - 1;
+		}
+	}
+
+	rmCar->pitcmd.tireChange = tireChangeList[currentTireChangeOption];
+	GfuiLabelSetText(menuHandle, tireChangeId, tireChangeLabel[currentTireChangeOption]);
+}
+
+
 
 /** @brief Pit menu
  *  @ingroup racemantools
@@ -125,7 +161,7 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	snprintf(buf, BUFSIZE, "%d", (int)car->pitcmd.fuel);
 	fuelId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
 					x + dx, y,
-					0, 10, NULL, (tfuiCallback)NULL, rmUpdtFuel);
+					100, 10, NULL, (tfuiCallback)NULL, rmUpdtFuel);
 
 	y -= dy;
 	GfuiLabelCreate(menuHandle, "Repair amount:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
@@ -133,8 +169,37 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	snprintf(buf, BUFSIZE, "%d", (int)car->pitcmd.repair);
 	repairId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
 					x + dx, y,
-					0, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
+					100, 10, NULL, (tfuiCallback)NULL, rmUpdtRepair);
 
+	y -= dy;
+
+	int x2 = x + dx - 15;
+	int x3 = x + dx + 100 + 14;
+	int x4 = (x2+x3)/2;
+
+	GfuiLabelCreate(menuHandle, "Tire change:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+
+	if (!(reInfo->raceRules.tireFactor > 0.0f) || car->info.skillLevel != 3) {
+		currentTireChangeOption = tCarPitCmd::NONE;
+		rmCar->pitcmd.tireChange = tCarPitCmd::NONE;
+		tireChangeId = GfuiLabelCreate(menuHandle, "Tire wear is off", GFUI_FONT_MEDIUM_C, x + dx, y, GFUI_ALIGN_HL_VB, 32);
+	} else {
+		tireChangeId = GfuiLabelCreate(menuHandle, tireChangeLabel[currentTireChangeOption], GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
+
+		GfuiGrButtonCreate(menuHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
+			"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
+			x2, y-5, GFUI_ALIGN_HL_VB, 1,
+			(void*)-1, changeTireState,
+			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+		GfuiGrButtonCreate(menuHandle, "data/img/arrow-right.png", "data/img/arrow-right.png",
+			"data/img/arrow-right.png", "data/img/arrow-right-pushed.png",
+			x3, y-5, GFUI_ALIGN_HR_VB, 1,
+			(void*)1, changeTireState,
+			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
+
+		rmCar->pitcmd.tireChange = tireChangeList[currentTireChangeOption];
+		GfuiLabelSetColor(menuHandle, tireChangeId, LabelColor);
+	}
 
 	GfuiButtonCreate(menuHandle, "Repair", GFUI_FONT_LARGE, 160, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 				NULL, rmRepair, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
