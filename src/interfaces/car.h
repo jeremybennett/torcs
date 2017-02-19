@@ -435,6 +435,10 @@ typedef struct
 #define RM_PIT_STOPANDGO	1
     int			stopType;
 	tCarPitSetup setup;
+	
+	enum TireChange { NONE = 0, ALL = 1};
+
+	TireChange tireChange;
 } tCarPitCmd;
 #define _pitFuel	pitcmd.fuel
 #define _pitRepair	pitcmd.repair

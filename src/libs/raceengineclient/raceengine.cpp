@@ -218,6 +218,7 @@ ReManage(tCarElt *car)
 					info->startPitTime = s->currentTime;
 					snprintf(buf, BUFSIZE, "%s in pits", car->_name);
 					ReRaceMsgSet(buf, 5);
+					car->pitcmd.tireChange = tCarPitCmd::ALL;
 					if (car->robot->rbPitCmd(car->robot->index, car, s) == ROB_PIT_MENU) {
 						// the pit cmd is modified by menu.
 						ReStop();

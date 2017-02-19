@@ -160,7 +160,9 @@ void SimReConfig(tCarElt *carElt)
 
 	for (i = 0; i < 4; i++) {
 		SimWheelReConfig(car, i);
-		SimWheelResetWear(car, i);
+		if (carElt->pitcmd.tireChange == tCarPitCmd::ALL) {
+			SimWheelResetWear(car, i);
+		}
 	}
 
 	SimTransmissionReConfig(car);
