@@ -234,6 +234,8 @@ Changes since 1.3.7
   example. If the factor is 0, the temperature/wheel model gets disabled (Bernhard).
 - Just enable tire temperature/wear in pro mode (Bernhard).
 - Added new track created by Andrew Sumner, Hidden Valley (Andrew, Bernhard).
+- Added field to tPitCmd struct to control tire change (Bernhard).
+- Updated pit stop screen to change tires or leave it on (Bernhard).
 
 
 12. TODO/Notes
