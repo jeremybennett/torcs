@@ -374,8 +374,8 @@ void *RmCarSetupScreenInit(void *prevMenu, tCarElt *car, tRmInfo* reInfo)
 	GfuiLabelCreate(scrHandle, "Slow rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Fast bump [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 	GfuiLabelCreate(scrHandle, "Fast rebound [lbf/in/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Bump Threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreate(scrHandle, "Rebound Threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Bump threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Rebound threshold [cm/s]:", font, x0, y + (col++ * dy), GFUI_ALIGN_HL_VB, 0);
 
 	static const char* wheellabel[4] = {"Front right wheel", "Front left wheel", "Rear right wheel", "Rear left wheel"};
 
