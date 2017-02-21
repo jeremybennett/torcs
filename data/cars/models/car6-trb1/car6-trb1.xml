@@ -153,7 +153,7 @@
 		<attnum name="rear right-left weight repartition" min="0.3" max="0.7" val="0.5"/>
 		<!-- used for inertia, indicates the good mass centering (lower values) -->
 		<attnum name="mass repartition coefficient" val="0.5"/>
-		<attnum name="fuel tank" unit="l" val="91.0"/>
+		<attnum name="fuel tank" unit="l" val="92.0"/>
 		<attnum name="initial fuel" unit="l" min="1.0" max="91.0" val="91.0"/>
 	</section>
 	<section name="Exhaust">
@@ -173,8 +173,8 @@
 	<section name="Aerodynamics">
 		<attnum name="Cx" val="0.345"/>
 		<attnum name="front area" unit="m2" val="1.99"/>
-		<attnum name="front Clift" min="0.0" max="1.0" val="0.69"/>
-		<attnum name="rear Clift" min="0.0" max="1.0" val="0.7"/>
+		<attnum name="front Clift" min="0.0" max="1.0" val="0.67"/>
+		<attnum name="rear Clift" min="0.0" max="1.0" val="0.72"/>
 	</section>
 	<section name="Front Wing">
 		<attnum name="area" unit="m2" val="0.3"/>
