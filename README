@@ -236,6 +236,7 @@ Changes since 1.3.7
 - Added new track created by Andrew Sumner, Hidden Valley (Andrew, Bernhard).
 - Added field to tPitCmd struct to control tire change (Bernhard).
 - Updated pit stop screen to change tires or leave it on (Bernhard).
+- Performance adjustment for car6-trb1, should now be more competitive (Wolf-Dieter, Bernhard).
 
 
 12. TODO/Notes
@@ -243,13 +244,11 @@ Changes since 1.3.7
 
 TODO for 1.3.8 "worn & blown"
 --------------
+- Brake balance adjustable during ride
+- Curb sound
 - Dynamic track
 - Wind/Temp
-- Curb sound
-- Brake balance adjustable during ride
-- Eventually differential(s) adjustable during ride
-- Remove circular dependency (raceman.h, simu.h).
-- Remove sound property calculation in wheel.cpp.
+- Car adjustments (tire wear, performance balance)
 
 TODO for 1.3.9 "analysed"
 --------------
@@ -287,6 +286,9 @@ TODO for 1.3.14 or 1.4.x "everywhere"
 - Review MorphOS changes
 - Review WD's ABS suggestion, apply.
 - Review WD's 4WD analysis/patch.
+- Remove circular dependency (raceman.h, simu.h).
+- Eventually differential(s) adjustable during ride
+- Remove sound property calculation in wheel.cpp.
 
 TODO for 1.3.15+
 ----------------
