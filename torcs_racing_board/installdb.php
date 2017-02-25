@@ -698,4 +698,9 @@
 	$tablename = $db_prefix . TBL_RACE;
 	$sql = "ALTER TABLE $tablename ADD `versionid` INT NOT NULL DEFAULT '0' AFTER `trackid`";
 	$result = mysql_query($sql);
+	
+	$tablename = $db_prefix . TBL_TRACK;
+	$sql = "ALTER TABLE $tablename ADD `internalname` VARCHAR(255) NULL DEFAULT NULL AFTER `description`;";
+	$result = mysql_query($sql);
+
 ?>

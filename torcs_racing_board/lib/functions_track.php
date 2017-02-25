@@ -17,6 +17,8 @@
 
 		// Check name.
 		$formerrors += checkPostString('track_name', MIN_USERNAME_LENGTH, 40);
+		// Check internal name.
+		$formerrors += checkPostString('track_internalname', MIN_USERNAME_LENGTH, 40);
 		// Check author.
 		$formerrors += checkPostString('track_author', MIN_USERNAME_LENGTH, 40);
 		// Check width.
@@ -37,6 +39,7 @@
 	function commitTrackInput($track_tablename, $path_to_root)
 	{
 		$name_for_db = quoteString(removeMagicQuotes($_POST['track_name']));
+		$internalname_for_db = quoteString(removeMagicQuotes($_POST['track_internalname']));
 		$nbpits_for_db = quoteString(intval(removeMagicQuotes($_POST['track_nbpits'])));
 		$width_for_db = quoteString(floatval(removeMagicQuotes($_POST['track_width'])));
 		$length_for_db = quoteString(floatval(removeMagicQuotes($_POST['track_length'])));
@@ -48,9 +51,9 @@
 
 		// Commit data.
 		$sql = "INSERT INTO $track_tablename " .
-			   "(name, nbpits, width, length, author, type, description) VALUES " .
+			   "(name, nbpits, width, length, author, type, description, internalname) VALUES " .
 			   "($name_for_db, $nbpits_for_db, $width_for_db, $length_for_db, " .
-			   " $author_for_db, $type_for_db, $desc_for_db)";
+			   " $author_for_db, $type_for_db, $desc_for_db, $internalname_for_db)";
 		mysql_query($sql);
 
 		// Move file (picture).
@@ -76,6 +79,7 @@
 			$trackid = intval(removeMagicQuotes($_POST['track_id']));
 			$trackid_for_db = quoteString($trackid);
 			$name_for_db = quoteString(removeMagicQuotes($_POST['track_name']));
+			$internalname_for_db = quoteString(removeMagicQuotes($_POST['track_internalname']));
 			$nbpits_for_db = quoteString(intval(removeMagicQuotes($_POST['track_nbpits'])));
 			$width_for_db = quoteString(floatval(removeMagicQuotes($_POST['track_width'])));
 			$length_for_db = quoteString(floatval(removeMagicQuotes($_POST['track_length'])));
@@ -89,7 +93,7 @@
 				   "name=$name_for_db, nbpits=$nbpits_for_db, " .
 				   "width=$width_for_db, length=$length_for_db, " .
 				   "author=$author_for_db, type=$type_for_db, " .
-				   "description=$desc_for_db " .
+				   "description=$desc_for_db, internalname=$internalname_for_db " .
 				   "WHERE trackid=$trackid_for_db";
 			mysql_query($sql);
 

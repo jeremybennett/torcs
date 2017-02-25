@@ -115,6 +115,7 @@
 			$page->set_var(array(
 				'PC_TRACK_ID'			=> intval(removeMagicQuotes($_POST['track_id'])),
 				'PC_TRACK_NAME'			=> isset($_POST['track_name']) ? htmlentities(removeMagicQuotes($_POST['track_name'])) : "",
+				'PC_TRACK_INTERNALNAME'	=> isset($_POST['track_internalname']) ? htmlentities(removeMagicQuotes($_POST['track_internalname'])) : "",
 				'PC_TRACK_NBPITS'		=> isset($_POST['track_nbpits']) ? htmlentities(removeMagicQuotes($_POST['track_nbpits'])) : "",
 				'PC_TRACK_WIDTH'		=> isset($_POST['track_width']) ? htmlentities(removeMagicQuotes($_POST['track_width'])) : "",
 				'PC_TRACK_LENGTH'		=> isset($_POST['track_length']) ? htmlentities(removeMagicQuotes($_POST['track_length'])) : "",
@@ -133,6 +134,7 @@
 				$page->set_var(array(
 					'PC_TRACK_ID'			=> $myrow['trackid'],
 					'PC_TRACK_NAME'			=> htmlentities($myrow['name']),
+					'PC_TRACK_INTERNALNAME'	=> htmlentities($myrow['internalname']),
 					'PC_TRACK_NBPITS'		=> $myrow['nbpits'],
 					'PC_TRACK_WIDTH'		=> $myrow['width'],
 					'PC_TRACK_LENGTH'		=> $myrow['length'],

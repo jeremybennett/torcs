@@ -113,6 +113,7 @@
 			$page->set_var(array(
 				'PC_TRACK_ID'			=> $myrow['trackid'],
 				'PC_TRACK_NAME'			=> htmlentities($myrow['name']),
+				'PC_TRACK_INTERNALNAME' => htmlentities($myrow['internalname']),
 				'PC_TRACK_NBPITS'		=> $myrow['nbpits'],
 				'PC_TRACK_WIDTH'		=> sprintf("%01.2f", $myrow['width']),
 				'PC_TRACK_LENGTH'		=> sprintf("%01.2f", $myrow['length']),

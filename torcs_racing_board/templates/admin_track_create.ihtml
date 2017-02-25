@@ -22,6 +22,15 @@
 
 					<tr>
 						<td class="filledlist">
+							Internal name:
+						</td>
+						<td class="filledlist">
+							<input type="text" name="track_internalname" size="40" maxlength="40" value="{PC_TRACK_INTERNALNAME}"/>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="filledlist">
 							Author:
 						</td>
 						<td class="filledlist">

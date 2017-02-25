@@ -112,6 +112,7 @@
 		if (isset($_POST['track_submit']) && $formerrors > 0) {
 			$page->set_var(array(
 				'PC_TRACK_NAME'			=> isset($_POST['track_name']) ? htmlentities(removeMagicQuotes($_POST['track_name'])) : "",
+				'PC_TRACK_INTERNALNAME'	=> isset($_POST['track_internalname']) ? htmlentities(removeMagicQuotes($_POST['track_internalname'])) : "",
 				'PC_TRACK_NBPITS'		=> isset($_POST['track_nbpits']) ? htmlentities(removeMagicQuotes($_POST['track_nbpits'])) : "",
 				'PC_TRACK_WIDTH'		=> isset($_POST['track_width']) ? htmlentities(removeMagicQuotes($_POST['track_width'])) : "",
 				'PC_TRACK_LENGTH'		=> isset($_POST['track_length']) ? htmlentities(removeMagicQuotes($_POST['track_length'])) : "",
@@ -125,6 +126,7 @@
 		} else {
 			$page->set_var(array(
 				'PC_TRACK_NAME'			=> "",
+				'PC_TRACK_INTERNALNAME'	=> "",
 				'PC_TRACK_NBPITS'		=> "",
 				'PC_TRACK_WIDTH'		=> "",
 				'PC_TRACK_LENGTH'		=> "",
