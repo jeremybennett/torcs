@@ -2,7 +2,7 @@
 
     file        : raceengine.cpp
     created     : Sat Nov 23 09:05:23 CET 2002
-    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann 
+    copyright   : (C) 2002-2017 by Eric Espie, Bernhard Wymann 
     email       : eric.espie@torcs.org 
     version     : $Id$
 
@@ -57,6 +57,12 @@ ReUpdtPitTime(tCarElt *car)
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
 			info->totalPitTime = ReInfo->raceRules.pitstopBaseTime + fabs((double)(car->_pitFuel)) / ReInfo->raceRules.refuelFuelFlow + (tdble)(fabs((double)(car->_pitRepair))) * ReInfo->raceRules.damageRepairFactor + car->_penaltyTime;
+			
+			// Add time for tire change
+			if (car->pitcmd.tireChange == tCarPitCmd::ALL && car->info.skillLevel == 3 && ReInfo->raceRules.tireFactor > 0.0f) {
+				info->totalPitTime += ReInfo->raceRules.allTiresChangeTime;
+			}
+			
 			if (ReInfo->s->raceInfo.type == RM_TYPE_PRACTICE || ReInfo->s->raceInfo.type == RM_TYPE_QUALIF) { 
 				// Ensure that the right min/max values are in the setup structure (could have been modified by the robot))
 				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), true);

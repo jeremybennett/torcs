@@ -191,6 +191,7 @@ typedef struct RmRaceRules
 	tdble damageRepairFactor;
 	tdble pitstopBaseTime;
 	tdble tireFactor;
+	tdble allTiresChangeTime;
 } tRmRaceRules;
 
 typedef struct RmCarRules
@@ -291,6 +292,7 @@ typedef struct RmInfo
 #define RM_ATTR_REFUEL_FUEL_FLOW "refuel fuel flow"
 #define RM_ATTR_DAMAGE_REPAIR_FACTOR "damage repair factor"
 #define RM_ATTR_PITSTOP_BASE_TIME "pitstop base time"
+#define RM_ATTR_ALL_TIRES_CHANGE_TIME "all tires change time"
 
 #define RM_ATTR_POINTS		"points"
 

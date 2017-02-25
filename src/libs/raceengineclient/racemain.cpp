@@ -181,6 +181,11 @@ void ReInitRules(tRmInfo* ReInfo)
 	if (number < 0.0f) number = 0.0f;	// Avoid negative pit times
 	ReInfo->raceRules.pitstopBaseTime = number;
 
+	// Tire change time for all 4 tires
+	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_ALL_TIRES_CHANGE_TIME, NULL, 16.0f);
+	if (number < 0.0f) number = 0.0f;	// Avoid negative tire change times
+	ReInfo->raceRules.allTiresChangeTime = number;
+
 	// Race specific pit speed limit, if available
 	number = ReInfo->track->pits.speedLimit;
 	number = GfParmGetNum(ReInfo->params, ReInfo->_reRaceName, RM_ATTR_PIT_SPEED_LIMIT, NULL, number);
