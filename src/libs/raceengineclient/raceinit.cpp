@@ -511,6 +511,25 @@ initPits(void)
 	}
 }
 
+bool isItThisRobot(void *params, const char* path, tModInfo* modInfo)
+{
+	int robotIdx = (int) GfParmGetNum(params, path, RM_ATTR_IDX, NULL, -9999);
+	// Check normal TORCS case where index is given
+	if (robotIdx != tModInfo::INVALID_INDEX) {
+		if (modInfo->index == robotIdx) {
+			return true;
+		}
+	}
+
+	// Check TRB case where driver name is given
+	const char* driverName = GfParmGetStr(params, path, RM_ATTR_DRVNAME, NULL);
+	if (modInfo->name != NULL && driverName != NULL && strcmp(modInfo->name, driverName) == 0) {
+		return true;
+	}
+
+	return false;
+}
+
 /** Initialize the cars for a race.
     The car are positionned on the starting grid.
     @return	0 Ok
@@ -519,40 +538,39 @@ initPits(void)
 int
 ReInitCars(void)
 {
-	int nCars;
 	int index;
 	int i, j, k;
-	int robotIdx;
-	tModInfo *curModInfo;
 	tRobotItf *curRobot;
 	void *handle;
-	//char *category;
-	void *cathdle;
-	void *carhdle;
-	void *robhdle;
 	tCarElt *elt;
-	//char *str;
-	//int focusedIdx;
 	void *params = ReInfo->params;
 	const int BUFSIZE = 1024;
-	char buf[BUFSIZE], path[BUFSIZE];
+	char buf[BUFSIZE], path[BUFSIZE];	
 
 	/* Get the number of cars racing */
-	nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS_RACING);
+	int nCars = GfParmGetEltNb(params, RM_SECT_DRIVERS_RACING);
 	GfOut("loading %d cars\n", nCars);
 
 	FREEZ(ReInfo->carList);
 	ReInfo->carList = (tCarElt*)calloc(nCars, sizeof(tCarElt));
 	FREEZ(ReInfo->rules);
 	ReInfo->rules = (tRmCarRules*)calloc(nCars, sizeof(tRmCarRules));
-	//focusedIdx = (int)GfParmGetNum(ReInfo->params, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, NULL, 0);
 	index = 0;
+
+	// Adjust skill level default if overridden
+	int defaultSkillLevel = 2;
+	const char* defaultSkillLevelStr = GfParmGetStr(params, RM_SECT_DRIVERS, RM_ATTR_SKILL_LEVEL_DEFAULT, ROB_VAL_SEMI_PRO);
+	for(k = 0; k < (int)(sizeof(level_str)/sizeof(char*)); k++) {
+		if (strcmp(level_str[k], defaultSkillLevelStr) == 0) {
+			defaultSkillLevel = k;
+			break;
+		}
+	}
 
 	for (i = 1; i < nCars + 1; i++) {
 		/* Get Shared library name */
 		snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
-		const char* cardllname = GfParmGetStr(ReInfo->params, path, RM_ATTR_MODULE, "");
-		robotIdx = (int)GfParmGetNum(ReInfo->params, path, RM_ATTR_IDX, NULL, 0);
+		const char* cardllname = GfParmGetStr(params, path, RM_ATTR_MODULE, "");
 		snprintf(path, BUFSIZE, "%sdrivers/%s/%s.%s", GetLibDir (), cardllname, cardllname, DLLEXT);
 
 		/* load the robot shared library */
@@ -563,15 +581,17 @@ ReInitCars(void)
 
 		/* search for corresponding index */
 		for (j = 0; j < MAX_MOD_ITF; j++) {
-			if ((*(ReInfo->modList))->modInfo[j].index == robotIdx) {
+			tModInfo* curModInfo = &((*(ReInfo->modList))->modInfo[j]);
+			snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
+			if (isItThisRobot(params, path, curModInfo)) {
 				/* good robot found */
-				curModInfo = &((*(ReInfo->modList))->modInfo[j]);
+				int robotIdx = curModInfo->index;
 				GfOut("Driver's name: %s\n", curModInfo->name);
 				/* retrieve the robot interface (function pointers) */
 				curRobot = (tRobotItf*)calloc(1, sizeof(tRobotItf));
 				curModInfo->fctInit(robotIdx, (void*)(curRobot));
 				snprintf(buf, BUFSIZE, "%sdrivers/%s/%s.xml", GetLocalDir(), cardllname, cardllname);
-				robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
+				void* robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 				if (!robhdle) {
 					snprintf(buf, BUFSIZE, "drivers/%s/%s.xml", cardllname, cardllname);
 					robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
@@ -606,7 +626,7 @@ ReInitCars(void)
 						elt->_driverType = RM_DRV_ROBOT;
 					}
 					elt->_skillLevel = 0;
-					const char* str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, ROB_VAL_SEMI_PRO);
+					const char* str = GfParmGetStr(robhdle, path, ROB_ATTR_LEVEL, level_str[defaultSkillLevel]);
 					for(k = 0; k < (int)(sizeof(level_str)/sizeof(char*)); k++) {
 						if (strcmp(level_str[k], str) == 0) {
 							elt->_skillLevel = k;
@@ -621,7 +641,7 @@ ReInitCars(void)
 					/* Read Car model specifications */
 					snprintf(buf, BUFSIZE, "cars/%s/%s.xml", elt->_carName, elt->_carName);
 					GfOut("Car Specification: %s\n", buf);
-					carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+					void* carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 					const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
 					snprintf(buf, BUFSIZE, "Loading Driver %-20s... Car: %s", curModInfo->name, elt->_carName);
 					RmLoadingScreenSetText(buf);
@@ -633,7 +653,7 @@ ReInitCars(void)
 						// TODO: eventually use new Rt function
 						snprintf(buf, BUFSIZE, "categories/%s.xml", category);
 						GfOut("Category Specification: %s\n", buf);
-						cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
+						void* cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
 						if (GfParmCheckHandle(cathdle, carhdle)) {
 							GfTrace("Car %s not in Category %s (driver %s) !!!\n", elt->_carName, category, elt->_name);
 							break;

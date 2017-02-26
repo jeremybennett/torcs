@@ -393,7 +393,8 @@ int ReRaceStart(void)
 		snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
 		snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, 1);
 		GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(params, path, RM_ATTR_MODULE, ""));
-		GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, 0));
+		GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, tModInfo::INVALID_INDEX));
+		GfParmSetStr(params, path2, RM_ATTR_DRVNAME, GfParmGetStr(params, path, RM_ATTR_DRVNAME, ""));
 	} else {
 		RmLoadingScreenStart(ReInfo->_reName, "data/img/splash-qrloading.png");
 		RmLoadingScreenSetText("Preparing Starting Grid...");
@@ -412,7 +413,8 @@ int ReRaceStart(void)
 				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, i);
 				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
-				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
+				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, tModInfo::INVALID_INDEX));
+				GfParmSetStr(params, path2, RM_ATTR_DRVNAME, GfParmGetStr(params, path, RM_ATTR_DRVNAME, ""));
 			}
 		} else if (!strcmp(gridType, RM_VAL_LAST_RACE_RORDER)) {
 			/* Starting grid in the reversed arrival order of the previous race */
@@ -427,7 +429,8 @@ int ReRaceStart(void)
 				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, prevRaceName, RE_SECT_RANK, nCars - i + 1);
 				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(results, path, RE_ATTR_MODULE, ""));
-				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, 0));
+				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(results, path, RE_ATTR_IDX, NULL, tModInfo::INVALID_INDEX));
+				GfParmSetStr(params, path2, RM_ATTR_DRVNAME, GfParmGetStr(params, path, RM_ATTR_DRVNAME, ""));
 			}
 		} else {
 			/* Starting grid in the drivers list order */
@@ -438,7 +441,8 @@ int ReRaceStart(void)
 				snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
 				snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
 				GfParmSetStr(params, path2, RM_ATTR_MODULE, GfParmGetStr(params, path, RM_ATTR_MODULE, ""));
-				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, 0));
+				GfParmSetNum(params, path2, RM_ATTR_IDX, NULL, GfParmGetNum(params, path, RM_ATTR_IDX, NULL, tModInfo::INVALID_INDEX));
+				GfParmSetStr(params, path2, RM_ATTR_DRVNAME, GfParmGetStr(params, path, RM_ATTR_DRVNAME, ""));
 			}
 		}
 	}

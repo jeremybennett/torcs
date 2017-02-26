@@ -2,7 +2,7 @@
                     tgf.h -- Interface file for The Gaming Framework                                    
                              -------------------                                         
     created              : Fri Aug 13 22:32:14 CEST 1999
-    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
+    copyright            : (C) 1999-2017 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -194,6 +194,7 @@ typedef struct ModInfo {
     int			index;		/**< index if multiple interface in one dll */
     int			prio;		/**< priority if needed */
     int			magic;		/**< magic number for integrity check */
+	enum		{ INVALID_INDEX = -9999 };
 } tModInfo;
 
 /* module init function interface */

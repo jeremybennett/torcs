@@ -251,6 +251,7 @@ typedef struct RmInfo
 
 #define RM_ATTR_MAXNUM		"maximum number"
 #define RM_ATTR_MAX_DRV		"maximum drivers"
+#define RM_ATTR_SKILL_LEVEL_DEFAULT "skill level default"
 
 #define RM_ATTR_PRIO		"priority"
 #define RM_ATTR_NAME		"name"

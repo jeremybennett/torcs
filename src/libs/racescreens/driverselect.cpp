@@ -2,7 +2,7 @@
                   driverselect.cpp -- drivers interactive selection                              
                              -------------------                                         
     created              : Mon Aug 16 20:40:44 CEST 1999
-    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
+    copyright            : (C) 1999-2017 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
     version              : $Id$                                  
  ***************************************************************************/
@@ -379,12 +379,13 @@ void RmDriversSelect(void *vs)
 	for (i = 1; i < nCars+1; i++) {
 		snprintf(dname, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
 		const char* cardllname = GfParmGetStr(ds->param, dname, RM_ATTR_MODULE, "");
-		robotIdx = (int)GfParmGetNum(ds->param, dname, RM_ATTR_IDX, (char*)NULL, 0);
+		robotIdx = (int)GfParmGetNum(ds->param, dname, RM_ATTR_IDX, (char*)NULL, tModInfo::INVALID_INDEX);
+		const char* robotName = GfParmGetStr(ds->param, dname, RM_ATTR_DRVNAME, "");
 	
 		curDrv = GF_TAILQ_FIRST(&DrvList);
 		if (curDrv != NULL) {
 			do {
-				if ((curDrv->index == robotIdx) && (strcmp(curDrv->dname, cardllname) == 0)) {
+				if ((curDrv->index == robotIdx || strcmp(curDrv->name, robotName) == 0) && (strcmp(curDrv->dname, cardllname) == 0)) {
 					if (nbSelectedDrivers < nbMaxSelectedDrivers) {
 						GfuiScrollListInsertElement(scrHandle, selectedScrollList, curDrv->name, index, (void*)curDrv);
 						curDrv->sel = index++;
