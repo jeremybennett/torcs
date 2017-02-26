@@ -241,6 +241,8 @@ Changes since 1.3.7
 - Tire change time can now be configured as parameter "all tires change time", the default
   is 16 seconds (Bernhard).
 - Added track internal name field to TRB for XML generation (Bernhard).
+- TRB adoptions, selecting driver optionally by name (previously only by index), added
+  configuration option for "skill level default" in the "Drivers" section (Bernhard).
 
 12. TODO/Notes
 --------------
