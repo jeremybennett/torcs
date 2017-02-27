@@ -308,10 +308,10 @@ the Free Software Foundation; either version 2 of the License, or
   </section>
   <section name="Header">
     <attstr name="name" val="Hidden Valley" />
-    <attstr name="category" val="" />
+    <attstr name="category" val="road" />
     <attnum name="version" val="4" />
     <attstr name="author" val="Andrew Sumner" />
-    <attstr name="description" val="Technical track with good overtaking opportunities" />
+    <attstr name="description" val="A mix of fast sectors and challenging corners with hard braking zones" />
   </section>
   <section name="Graphic">
     <attstr name="3d description" val="hidden-valley.acc" />
@@ -332,20 +332,7 @@ the Free Software Foundation; either version 2 of the License, or
 		<attnum name="specular color G" val="0.1"/>
 		<attnum name="specular color B" val="0.1"/>
 
-<!--	
-    <attnum name="ambient color R" val="0.2"/>
-    <attnum name="ambient color G" val="0.2"/>
-    <attnum name="ambient color B" val="0.2"/>
-
-    <attnum name="diffuse color R" val="0.8"/>
-    <attnum name="diffuse color G" val="0.8"/>
-    <attnum name="diffuse color B" val="0.8"/>
-
-    <attnum name="specular color R" val="0.3"/>
-    <attnum name="specular color G" val="0.3"/>
-    <attnum name="specular color B" val="0.3"/>
-		-->
-    <attnum name="light position x" val="4400"/>
+		<attnum name="light position x" val="4400"/>
     <attnum name="light position y" val="-9000"/>
     <attnum name="light position z" val="3000"/>
 
