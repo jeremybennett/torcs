@@ -243,6 +243,8 @@ Changes since 1.3.7
 - Added track internal name field to TRB for XML generation (Bernhard).
 - TRB adoptions, selecting driver optionally by name (previously only by index), added
   configuration option for "skill level default" in the "Drivers" section (Bernhard).
+- Added initial race configuration generator for TRB (Bernhard).
+  
 
 12. TODO/Notes
 --------------
