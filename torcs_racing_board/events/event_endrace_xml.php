@@ -13,8 +13,8 @@
 	session_start();
 	$path_to_root = '../';
 
-//	header('Content-type: text/xml');
-//	header('Content-Disposition: attachment; filename="endrace.xml"');
+	header('Content-type: text/xml');
+	header('Content-Disposition: attachment; filename="endrace.xml"');
 
 	require_once($path_to_root . 'secrets/configuration.php');
 	require_once($path_to_root . 'lib/functions.php');
@@ -45,7 +45,7 @@
 
 	// Define template file(s).
 	$page->set_file(array(
-		'page'				=> 'endrace.ixml'
+		'page' => 'endrace.ixml'
 	));
 
 	if (isset($_GET['eventid']) && isset($_GET['raceid'])) {
@@ -64,10 +64,14 @@
 			die;
 		}
 
+		// TODO: generate seeds and persist in db on first request
+		
 		$myrow = mysql_fetch_array($result);
 		$page->set_var(array(
 			'PC_TRACK_INTERNALNAME'		=> htmlentities($myrow['internalname']),
-			'PC_TRACK_TYPE'				=> htmlentities($myrow['type'])
+			'PC_TRACK_TYPE'				=> htmlentities($myrow['type']),
+			'PC_RNG_SEED_Q'				=> 0.1234,
+			'PC_RNG_SEED_R'				=> 0.2345
 		));
 
 		// Create start list.

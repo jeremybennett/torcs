@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    file        : ncrace.xml
-    created     : Thu Jan 23 22:50:09 CET 2003
-    copyright   : (C) 2003-2017 by Eric Espie, Bernhard Wymann                         
-    email       : Eric.Espie@torcs.org   
-    version     : $Id$                                  
+file        : ncrace.xml
+created     : Thu Jan 23 22:50:09 CET 2003
+copyright   : (C) 2003-2017 by Eric Espie, Bernhard Wymann                         
+email       : Eric.Espie@torcs.org   
+version     : $Id$                                  
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -15,120 +15,142 @@
 <!DOCTYPE params SYSTEM "../libs/tgf/params.dtd">
 
 <params name="endurance race" type="param" mode="mw">
+	
+	<section name="Header">
+		<attstr name="name" val="Endurance Race"/>
+		<attstr name="description" val="Endurance Race"/>
+		<attnum name="priority" val="21"/>
+		<attstr name="menu image" val="data/img/splash-dtm.png"/>
+		<attstr name="run image" val="data/img/splash-run-practice.png"/>
+		<attstr name="start image" val="data/img/splash-dtm.png"/>
+	</section>
+	
+	<section name="Tracks">
+		<attnum name="maximum number" val="1"/>
+		
+		<section name="1">
+			<attstr name="name" val="{PC_TRACK_INTERNALNAME}"/>
+			<attstr name="category" val="{PC_TRACK_TYPE}"/>
+		</section>
+	</section>
+	
+	<section name="Races">
+		<section name="1">
+			<attstr name="name" val="Qualifications"/>
+		</section>
+		
+		<section name="2">
+			<attstr name="name" val="Race"/>
+		</section>
+	</section>
+	
+	<section name="Qualifications">
+		<attnum name="laps" val="3"/>
+		<attstr name="type" val="qualifications"/>
+		<attstr name="starting order" val="drivers list"/>
+		<attstr name="display mode" val="results only"/>
+		<attstr name="restart" val="no"/>
+		<attstr name="display results" val="yes"/>
+		
+		<attstr name="invalidate best lap on wall touch" val="yes"/>
+		<attstr name="invalidate best lap on corner cutting" val="yes"/>
+		<attstr name="corner cutting time penalty" val="yes"/>
+		<attnum name="fuel consumption factor" min="0.0" max="5.0" val="1.0"/>
+		<attnum name="damage factor" min="0.0" max="5.0" val="1.0"/>
 
-  <section name="Header">
-    <attstr name="name" val="Endurance Race"/>
-    <attstr name="description" val="Endurance Race"/>
-    <attnum name="priority" val="21"/>
-    <attstr name="menu image" val="data/img/splash-dtm.png"/>
-    <attstr name="run image" val="data/img/splash-run-practice.png"/>
-    <attstr name="start image" val="data/img/splash-dtm.png"/>
-  </section>
+		<attnum name="random number seed" val="{PC_RNG_SEED_Q}"/>
+		
+		<section name="Starting Grid">
+			<attnum name="rows" val="1.000000"/>
+			<attnum name="distance to start" val="100.000000"/>
+			<attnum name="distance between columns" val="20.000000"/>
+			<attnum name="offset within a column" val="10.000000"/>
+			<attnum name="initial speed" val="0.000000"/>
+			<attnum name="initial height" val="0.200000"/>
+		</section>
+	</section>
+	
+	<section name="Race">
+		<attnum name="distance" val="500" unit="km"/>
+		<attstr name="type" val="race"/>
+		<attstr name="starting order" val="last race"/>
+		<attstr name="restart" val="no"/>
+		<attnum name="maximum drivers" val="50"/>
+		<attstr name="splash menu" val="yes"/>
+		
+		<attstr name="invalidate best lap on wall touch" val="yes"/>
+		<attstr name="invalidate best lap on corner cutting" val="yes"/>
+		<attstr name="corner cutting time penalty" val="yes"/>
+		<attnum name="fuel consumption factor" min="0.0" max="5.0" val="1.0"/>
+		<attnum name="damage factor" min="0.0" max="5.0" val="1.0"/>
+		
+		<attnum name="tire factor" min="0" max="5" val="1.0"/>
+		<attnum name="all tire change time" min="0" max="60" val="16.0"/>
+		
+		<attnum name="cars per pit" val="2"/>
 
-  <section name="Tracks">
-    <attnum name="maximum number" val="1"/>
+		<attnum name="random number seed" val="{PC_RNG_SEED_R}"/>
+		
+		<section name="Starting Grid">
+			<attnum name="rows" val="2.000000"/>
+			<attnum name="distance to start" val="25.000000"/>
+			<attnum name="distance between columns" val="30.000000"/>
+			<attnum name="offset within a column" val="10.000000"/>
+			<attnum name="initial speed" val="0.000000"/>
+			<attnum name="initial height" val="0.200000"/>
+		</section>
+		
+		<section name="Points">
+			<section name="1">
+				<attnum name="points" val="10"/>
+			</section>
+			<section name="2">
+				<attnum name="points" val="8"/>
+			</section>
+			<section name="3">
+				<attnum name="points" val="6"/>
+			</section>
+			<section name="4">
+				<attnum name="points" val="5"/>
+			</section>
+			<section name="5">
+				<attnum name="points" val="4"/>
+			</section>
+			<section name="6">
+				<attnum name="points" val="3"/>
+			</section>
+			<section name="7">
+				<attnum name="points" val="2"/>
+			</section>
+			<section name="8">
+				<attnum name="points" val="1"/>
+			</section>
+		</section>
+	</section>
+	
+	<section name="Drivers">
+		<attnum name="maximum number" val="50"/>
+		<attstr name="focused module" val="human"/>
+		<attnum name="focused idx" val="5.000000"/>
 
-    <section name="1">
-      <attstr name="name" val="{PC_TRACK_INTERNALNAME}"/>
-      <attstr name="category" val="{PC_TRACK_TYPE}"/>
-    </section>
-  </section>
-
-  <section name="Races">
-    <section name="1">
-      <attstr name="name" val="Qualifications"/>
-    </section>
-
-    <section name="2">
-      <attstr name="name" val="Race"/>
-    </section>
-  </section>
-
-  <section name="Qualifications">
-    <attnum name="laps" val="3"/>
-    <attstr name="type" val="qualifications"/>
-    <attstr name="starting order" val="drivers list"/>
-    <attstr name="display mode" val="results only"/>
-    <attstr name="restart" val="no"/>
-    <attstr name="display results" val="yes"/>
-
-    <section name="Starting Grid">
-      <attnum name="rows" val="1.000000"/>
-      <attnum name="distance to start" val="100.000000"/>
-      <attnum name="distance between columns" val="20.000000"/>
-      <attnum name="offset within a column" val="10.000000"/>
-      <attnum name="initial speed" val="0.000000"/>
-      <attnum name="initial height" val="0.200000"/>
-    </section>
-  </section>
-
-  <section name="Race">
-    <attnum name="distance" val="500" unit="km"/>
-    <attstr name="type" val="race"/>
-    <attstr name="starting order" val="last race"/>
-    <attstr name="restart" val="no"/>
-    <attnum name="maximum drivers" val="50"/>
-    <attstr name="splash menu" val="yes"/>
-
-    <section name="Starting Grid">
-      <attnum name="rows" val="2.000000"/>
-      <attnum name="distance to start" val="25.000000"/>
-      <attnum name="distance between columns" val="30.000000"/>
-      <attnum name="offset within a column" val="10.000000"/>
-      <attnum name="initial speed" val="0.000000"/>
-      <attnum name="initial height" val="0.200000"/>
-    </section>
-
-    <section name="Points">
-      <section name="1">
-	<attnum name="points" val="10"/>
-      </section>
-      <section name="2">
-	<attnum name="points" val="8"/>
-      </section>
-      <section name="3">
-	<attnum name="points" val="6"/>
-      </section>
-      <section name="4">
-	<attnum name="points" val="5"/>
-      </section>
-      <section name="5">
-	<attnum name="points" val="4"/>
-      </section>
-      <section name="6">
-	<attnum name="points" val="3"/>
-      </section>
-      <section name="7">
-	<attnum name="points" val="2"/>
-      </section>
-      <section name="8">
-	<attnum name="points" val="1"/>
-      </section>
-    </section>
-  </section>
-
-  <section name="Drivers">
-    <attnum name="maximum number" val="50"/>
-    <attstr name="focused module" val="human"/>
-    <attnum name="focused idx" val="5.000000"/>
-
-	<!-- BEGIN driverlist -->
-    <section name="{PC_DRIVER_NO}">
-		<attstr name="module" val="{PC_DRIVER_MODULE}"/>
-		<attstr name="driver name" val="{PC_DRIVER_NAME}"/>
-    </section>
-	<!-- END driverlist -->
-  </section>
-
-  <section name="Configuration">
-
-    <section name="1">
-      <attstr name="type" val="track select"/>
-    </section>
-
-    <section name="2">
-      <attstr name="type" val="drivers select"/>
-    </section>
-  </section>
-
+		<attstr name="skill level default" val="pro"/>
+		
+		<!-- BEGIN driverlist -->
+		<section name="{PC_DRIVER_NO}">
+			<attstr name="module" val="{PC_DRIVER_MODULE}"/>
+			<attstr name="driver name" val="{PC_DRIVER_NAME}"/>
+		</section>
+		<!-- END driverlist -->
+	</section>
+	
+	<section name="Configuration">		
+		<section name="1">
+			<attstr name="type" val="track select"/>
+		</section>
+		
+		<section name="2">
+			<attstr name="type" val="drivers select"/>
+		</section>
+	</section>
+	
 </params>
