@@ -26,11 +26,12 @@
 				<li>2. Download all robots from the list below into the empty directory.</li>
 				<li>3. Unpack all robots with "<tt>find . -type f -exec tar xfvj {} \;</tt>".</li>
 				<li>4. Install all robots with "<tt>find . -type d -maxdepth 1 -exec bash -c "cd {}; make clean install" \;</tt>".</li>
-				<li>5. Start the <a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}#c6_1">TORCS version required by the rules</a>.</li>
-				<li>6. Choose the race type and track (<a href="{ROOTPATH}tracks/track_view.php?viewtrackid={PC_TRACK_ID}">{PC_TRACK_NAME}</a>) according to the rules and schedule.</li>
-				<li>7. Fill in the start list <span style="color:#ff0000">exactly</span> like stated below (same order).</li>
-				<li>8. Run the race.</li>
-				<li>9. Submit the result (it is below ~/.torcs/results).</li>
+				<li>5. Start the <a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}#c6_1">TORCS version required by the rules</a> with the 
+						<a href="{ROOTPATH}events/event_endrace_xml.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">race configuration xml</a>.</li>
+				<li>6. Run the race in command line or graphical mode.</li>
+				<li>7. Submit the result (it is below ~/.torcs/results).</li>
+				<li>8. If the generated xml file does not work, merge the changes manually into a working configuration, check the start list, and run the race with your manually fixed
+						version, report the problem to get it fixed.</li>
 			</ul>
 
 			<h4>File List</h4>
@@ -52,7 +53,7 @@
 				<!-- END filelist -->
 			</table>
 
-			<h4>Start List and Order</h4>
+			<h4>Start List and Order (for manual set up if the downloaded XML does not work)</h4>
 
 			<table style="margin:6px;margin-top:0px;border-style:none;border-spacing:0px;border-width:0px;padding:0px;width:624px" class="text14" cellspacing="0">
 				<tr class="submitbuttoncolor">
