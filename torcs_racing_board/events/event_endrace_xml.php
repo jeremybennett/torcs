@@ -35,7 +35,6 @@
 	$race_tablename = $db_prefix . TBL_RACE;
 	$track_tablename = $db_prefix . TBL_TRACK;
 	$driver_tablename = $db_prefix . TBL_DRIVER;
-	$submitted_tablename = $db_prefix . TBL_RESULTSUBMITTED;
 		
 	countSession(session_id(), $stats_sessioncount_tablename, $stats_tablename);
 	countHit($_SERVER['PHP_SELF'], $stats_hitcount_tablename);
@@ -54,8 +53,34 @@
 		$raceid = intval(removeMagicQuotes($_GET['raceid']));
 		$raceid_for_db = quoteString($raceid);
 		
+		$trackid = 0;
+		if (!isSubmissionPhase($race_tablename, $raceid_for_db, $eventid_for_db, $trackid)) {
+			die;
+		}
+		
+		$sql = "SELECT r.qualifyingseed AS qualifyingseed, r.raceseed AS raceseed FROM $race_tablename r WHERE r.raceid=$raceid_for_db AND r.eventid=$eventid_for_db";
+		$result = mysql_query($sql);
+		if (mysql_num_rows($result) == 1) {
+			$myrow = mysql_fetch_array($result);
+			if (is_null($myrow['qualifyingseed'])) {
+				$sql = "LOCK TABLES $race_tablename WRITE";
+				$result = mysql_query($sql);
+				
+				$qseed = mt_rand()/mt_getrandmax();
+				$rseed = mt_rand()/mt_getrandmax();
+				
+				$sql = "UPDATE $race_tablename SET qualifyingseed=$qseed, raceseed=$rseed WHERE raceid=$raceid_for_db AND eventid=$eventid_for_db";
+				$result = mysql_query($sql);
+			
+				$sql = "UNLOCK TABLES";
+				$result = mysql_query($sql);
+			}
+		} else {
+			die;
+		}
+		
 		// Get the track name
-		$sql = "SELECT t.internalname AS internalname, t.type AS type FROM $race_tablename r, $track_tablename t WHERE r.raceid=$raceid_for_db AND r.eventid=$eventid_for_db AND r.trackid=t.trackid";
+		$sql = "SELECT t.internalname AS internalname, t.type AS type, r.qualifyingseed AS qualifyingseed, r.raceseed AS raceseed FROM $race_tablename r, $track_tablename t WHERE r.raceid=$raceid_for_db AND r.eventid=$eventid_for_db AND r.trackid=t.trackid";
 		
 		$result = mysql_query($sql);
 		if (mysql_num_rows($result) == 1) {
@@ -63,15 +88,13 @@
 		} else {
 			die;
 		}
-
-		// TODO: generate seeds and persist in db on first request
 		
 		$myrow = mysql_fetch_array($result);
 		$page->set_var(array(
 			'PC_TRACK_INTERNALNAME'		=> htmlentities($myrow['internalname']),
 			'PC_TRACK_TYPE'				=> htmlentities($myrow['type']),
-			'PC_RNG_SEED_Q'				=> 0.1234,
-			'PC_RNG_SEED_R'				=> 0.2345
+			'PC_RNG_SEED_Q'				=> htmlentities($myrow['qualifyingseed']),
+			'PC_RNG_SEED_R'				=> htmlentities($myrow['raceseed'])
 		));
 
 		// Create start list.

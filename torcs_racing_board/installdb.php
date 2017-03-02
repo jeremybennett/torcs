@@ -703,4 +703,11 @@
 	$sql = "ALTER TABLE $tablename ADD `internalname` VARCHAR(255) NULL DEFAULT NULL AFTER `description`;";
 	$result = mysql_query($sql);
 
+	$tablename = $db_prefix . TBL_RACE;
+	$sql = "ALTER TABLE $tablename ADD `qualifyingseed` FLOAT NULL DEFAULT NULL AFTER `report_updated`";
+	$result = mysql_query($sql);
+	
+	$tablename = $db_prefix . TBL_RACE;
+	$sql = "ALTER TABLE $tablename ADD `raceseed` FLOAT NULL DEFAULT NULL AFTER `qualifyingseed`";
+	$result = mysql_query($sql);
 ?>
