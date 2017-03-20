@@ -513,7 +513,7 @@ initPits(void)
 
 bool isItThisRobot(void *params, const char* path, tModInfo* modInfo)
 {
-	int robotIdx = (int) GfParmGetNum(params, path, RM_ATTR_IDX, NULL, -9999);
+	int robotIdx = (int) GfParmGetNum(params, path, RM_ATTR_IDX, NULL, tModInfo::INVALID_INDEX);
 	// Check normal TORCS case where index is given
 	if (robotIdx != tModInfo::INVALID_INDEX) {
 		if (modInfo->index == robotIdx) {
@@ -524,6 +524,8 @@ bool isItThisRobot(void *params, const char* path, tModInfo* modInfo)
 	// Check TRB case where driver name is given
 	const char* driverName = GfParmGetStr(params, path, RM_ATTR_DRVNAME, NULL);
 	if (modInfo->name != NULL && driverName != NULL && strcmp(modInfo->name, driverName) == 0) {
+		// Add index to internal structure for compatibility.
+		GfParmSetNum(params, path, RM_ATTR_IDX, NULL, modInfo->index);
 		return true;
 	}
 
