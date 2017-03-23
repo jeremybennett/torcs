@@ -2,7 +2,7 @@
 
     file        : raceresults.cpp
     created     : Thu Jan  2 12:43:10 CET 2003
-    copyright   : (C) 2002, 2014 by Eric Espie, Bernhard Wymann                        
+    copyright   : (C) 2002, 2017 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
     version     : $Id$                                  
 
@@ -212,7 +212,8 @@ ReEventInitResults(void)
 		snprintf(path, BUFSIZE, "%s/%s/%d", ReInfo->track->name, RM_SECT_DRIVERS, i);
 		snprintf(path2, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
 		GfParmSetStr(results, path, RE_ATTR_DLL_NAME, GfParmGetStr(params, path2, RM_ATTR_MODULE, ""));
-		GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, GfParmGetNum(params, path2, RM_ATTR_IDX, (char*)NULL, 0));
+		GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, GfParmGetNum(params, path2, RM_ATTR_IDX, (char*)NULL, tModInfo::INVALID_INDEX));
+		GfParmSetStr(results, path, RM_ATTR_DRVNAME, GfParmGetStr(params, path2, RM_ATTR_DRVNAME, ""));
     }
 }
 

@@ -511,9 +511,9 @@ initPits(void)
 	}
 }
 
-bool isItThisRobot(void *params, const char* path, tModInfo* modInfo)
+bool isItThisRobot(tRmInfo* reInfo, const char* path, tModInfo* modInfo)
 {
-	int robotIdx = (int) GfParmGetNum(params, path, RM_ATTR_IDX, NULL, tModInfo::INVALID_INDEX);
+	int robotIdx = (int) GfParmGetNum(reInfo->params, path, RM_ATTR_IDX, NULL, tModInfo::INVALID_INDEX);
 	// Check normal TORCS case where index is given
 	if (robotIdx != tModInfo::INVALID_INDEX) {
 		if (modInfo->index == robotIdx) {
@@ -522,10 +522,25 @@ bool isItThisRobot(void *params, const char* path, tModInfo* modInfo)
 	}
 
 	// Check TRB case where driver name is given
-	const char* driverName = GfParmGetStr(params, path, RM_ATTR_DRVNAME, NULL);
+	const char* driverName = GfParmGetStr(reInfo->params, path, RM_ATTR_DRVNAME, NULL);
 	if (modInfo->name != NULL && driverName != NULL && strcmp(modInfo->name, driverName) == 0) {
-		// Add index to internal structure for compatibility.
-		GfParmSetNum(params, path, RM_ATTR_IDX, NULL, modInfo->index);
+		// Update the index in the result list.
+		const int BUFSIZE = 1024;
+		char path2[BUFSIZE];
+		snprintf(path2, BUFSIZE, "%s/%s", reInfo->track->name, RM_SECT_DRIVERS);
+		if (GfParmListSeekFirst(reInfo->results, path2) != 0) {
+			GfError("Driver list in results is empty");
+		} else {
+			do {
+				const char* resultDriverName = GfParmGetCurStr(reInfo->results, path2, RM_ATTR_DRVNAME, "");
+				if (resultDriverName != NULL && strcmp(resultDriverName, modInfo->name) == 0) {
+					GfParmSetCurNum(reInfo->results, path2, RE_ATTR_INDEX, NULL, modInfo->index);
+					break;
+				}
+				
+			} while (GfParmListSeekNext(reInfo->results, path2) == 0);
+		}
+		
 		return true;
 	}
 
@@ -568,7 +583,7 @@ ReInitCars(void)
 			break;
 		}
 	}
-
+	
 	for (i = 1; i < nCars + 1; i++) {
 		/* Get Shared library name */
 		snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
@@ -585,7 +600,7 @@ ReInitCars(void)
 		for (j = 0; j < MAX_MOD_ITF; j++) {
 			tModInfo* curModInfo = &((*(ReInfo->modList))->modInfo[j]);
 			snprintf(path, BUFSIZE, "%s/%d", RM_SECT_DRIVERS_RACING, i);
-			if (isItThisRobot(params, path, curModInfo)) {
+			if (isItThisRobot(ReInfo, path, curModInfo)) {
 				/* good robot found */
 				int robotIdx = curModInfo->index;
 				GfOut("Driver's name: %s\n", curModInfo->name);
