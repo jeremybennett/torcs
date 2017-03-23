@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-file        : ncrace.xml
+file        : endrace.xml
 created     : Thu Jan 23 22:50:09 CET 2003
 copyright   : (C) 2003-2017 by Eric Espie, Bernhard Wymann                         
 email       : Eric.Espie@torcs.org   
@@ -130,8 +130,6 @@ version     : $Id$
 	
 	<section name="Drivers">
 		<attnum name="maximum number" val="50"/>
-		<attstr name="focused module" val="human"/>
-		<attnum name="focused idx" val="5.000000"/>
 
 		<attstr name="skill level default" val="pro"/>
 		
