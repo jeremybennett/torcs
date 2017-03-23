@@ -214,6 +214,15 @@ Some additional notes:
 11. Changes
 -----------
 
+Changes since 1.3.8-test1
+-------------------------
+- Adopted car1-stock1 for tire wear (Bernhard).
+- Adopted car1-stock2 for tire wear (Bernhard).
+- Adopted car1-ow1 for tire wear (Bernhard).
+- Fixed a bug regarding TRB result submission (Wolf-Dieter, Bernhard).
+- Cleanup of endrace.ixml template (Wolf-Dieter, Bernhard).
+
+
 Changes since 1.3.7
 -------------------
 - Added isnan check in collision response calculation (type and dimension transformation
@@ -308,7 +317,8 @@ TODO for 1.3.15+
 
 TODO for 1.4.x
 --------------
-- Robot interface adoptions (maybe askfeatures, callonce, grid, postprocess, we will see...)
+- Robot interface adoptions (maybe askfeatures, callonce, grid, postprocess, we will see...).
+  How to identify robots, get rid of Index (name only)?
 - More Rules.
 - Brake/Engine Wear (with cooling)
 - Apply SDL patch from Brian Gavin but moving directly to SDL 2.0.
