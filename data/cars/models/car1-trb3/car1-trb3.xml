@@ -3,7 +3,7 @@
 <!-- 
     file                 : car1-trb3.xml
     created              : Sun Jan 13 09:42:04 CET 2002
-    copyright            : (C) 2001 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 2001-2017 by Eric Espie, Bernhard Wymann
     email                : Eric.Espie@torcs.org 
     version              : $Id$
 -->
@@ -326,6 +326,7 @@
     <attnum name="camber" min="-5" max="-2" unit="deg" val="-4"/>
     <attnum name="dynamic friction" unit="%" val="80"/>
     <attnum name="mu" val="1.4"/>
+    <attnum name="hysteresis" val="1.05"/>
   </section>
 
   <section name="Front Left Wheel">
@@ -340,6 +341,7 @@
     <attnum name="camber" min="-5" max="-2" unit="deg" val="-4"/>
     <attnum name="dynamic friction" unit="%" val="80"/>
     <attnum name="mu" val="1.4"/>
+    <attnum name="hysteresis" val="1.05"/>
   </section>
 
   <section name="Rear Right Wheel">
@@ -354,6 +356,7 @@
     <attnum name="camber" min="-4" max="-1" unit="deg" val="-3"/>
     <attnum name="dynamic friction" unit="%" val="80"/>
     <attnum name="mu" val="1.4"/>
+    <attnum name="hysteresis" val="1.1"/>
   </section>
 
   <section name="Rear Left Wheel">
@@ -368,6 +371,7 @@
     <attnum name="camber" min="-4" max="-1" unit="deg" val="-3"/>
     <attnum name="dynamic friction" unit="%" val="80"/>
     <attnum name="mu" val="1.4"/>
+    <attnum name="hysteresis" val="1.1"/>
   </section>
 
   <section name="Front Anti-Roll Bar">
