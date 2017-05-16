@@ -20,7 +20,7 @@
 
 #include "geometry.h"
 #include <cstdlib>
-#include <cmath>
+#include <math.h>
 #include <cstdio>
 #include <exception>
 #include <stdexcept>
