@@ -1,0 +1,28 @@
+# Since we build in place, we'll need to ignore all build artifacts.
+*.o
+*.a
+*.so
+*.depend
+*.spec
+config.h
+Make-config
+.torcs.rc
+config.log
+config.status
+export/
+src/doc/torcsdoc.conf
+src/libs/txml/gennmtab/gennmtab
+src/linux/torcs
+src/linux/torcs-bin
+src/tools/accc/accc
+src/tools/accc/accc-bin
+src/tools/nfs2ac/nfs2ac
+src/tools/nfs2ac/nfs2ac-bin
+src/tools/nfsperf/nfsperf
+src/tools/nfsperf/nfsperf-bin
+src/tools/texmapper/texmapper
+src/tools/texmapper/texmapper-bin
+src/tools/trackgen/trackgen
+src/tools/trackgen/trackgen-bin
+# And generated manual
+doc/manual/
