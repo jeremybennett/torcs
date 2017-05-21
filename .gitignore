@@ -1,3 +1,5 @@
+# Editor backup files
+*~
 # Since we build in place, we'll need to ignore all build artifacts.
 *.o
 *.a
