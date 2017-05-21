@@ -1,0 +1,48 @@
+* Notes on TORCS
+  Based on Ubuntu 16.04
+
+* Prequisites
+
+These are the packages needed to built TORCS
+```
+sudo apt install build-essential
+sudo apt install libgl1-mesa-dev
+sudo apt install freeglut3-dev
+sudo apt install libplib-dev
+sudo apt install libopenal-dev
+sudo apt install libalut-dev
+sudo apt install libvorbis-dev
+sudo apt install libxi-dev
+sudo apt install libxmu-dev
+sudo apt install libxrender-dev
+sudo apt install libxrandr-dev
+sudo apt install libz-dev
+sudo apt install libpng-dev
+```
+
+These are the packages needed to build the documentation
+```
+sudo apt install doxygen
+sudo apt install graphviz
+sudo apt install texlive
+```
+
+Documentation is built using `make doc` and will fail the first time (possible doxygen bug). Just type `q` to go into batchmode. Let it complete and then retry `make doc` and it should build without problem.
+
+* Checking out
+
+Beware - there are various slightly different versions of the instructions for checking out from CVS. Use the wrong one and you'll get an ancient version of TORCS!
+```
+cvs -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs login
+cvs -z3 -d:pserver:anonymous@torcs.cvs.sourceforge.net:/cvsroot/torcs co -r r1-3-1 -P torcs
+```
+
+*Note in particular* that you need the r1-3-1 branch in order to get the latest code.
+
+Available branches appear to be:
+```
+MAIN
+r1-2-0-maint
+r1-3-1
+r1-3-x
+```
