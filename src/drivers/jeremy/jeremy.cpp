@@ -22,13 +22,16 @@
 #include <string.h>
 
 #include "Driver.h"
+
+#include "robot.h"
+
 #include <math.h>
 
 
 //! Maximum number of drivers we can control.  This really ought to be set
 //! system wide.
 
-static const int MAX_DRIVERS 10;
+static const int MAX_DRIVERS = 10;
 
 //! Static array of instances of the drivers.
 
@@ -103,12 +106,12 @@ drive (int          index,
 //! @param[in,out] car    Car to be processed (unused).
 //! @param[in]     s      All the info about the race
 
-static void
+static int
 pitCmd (int          index,
 	 tCarElt    * car __attribute__ ((unused)),
 	 tSituation * s)
 {
-  driver[index]->pitCmd (s);
+  return driver[index]->pitCmd (s);
 
 }	// pitCmd ()
 
@@ -152,7 +155,7 @@ static int
 initFunc (int   index,
 	  void * pt)
 {
-  tRobotItf * itf  = static_cast <<tRobotItf *>> pt;
+  tRobotItf * itf  = static_cast <tRobotItf *> (pt);
 
   driver[index] = new Driver (index);	// Each driver knows its index
 
@@ -162,6 +165,7 @@ initFunc (int   index,
   itf->rbPitCmd   = pitCmd;	// Called when pitting
   itf->rbEndRace  = endRace;	// Called at end of race
   itf->rbShutdown = shutdown;	// Called when robot is unloaded
+
   itf->index      = index; 	// Driver number
 
   return 0;
@@ -182,8 +186,8 @@ initFunc (int   index,
 extern "C" int
 jeremy (tModInfo * modInfo)
 {
-  char *buf = malloc (strlen ("jeremy 10"));	// In which to build name
-  int   i;					// Loop counter
+  char *buf = (char * ) malloc (strlen ("jeremy 10"));	// to build name
+  int   i;						// Loop counter
 
   memset (modInfo, 0, MAX_DRIVERS * sizeof (*modInfo));
 
@@ -195,15 +199,16 @@ jeremy (tModInfo * modInfo)
       sprintf (buf, "jeremy %d", i);
       modInfo[i].name    = strdup (buf);	// short name of the module
       modInfo[i].desc    = strdup("");		// long desc of the module
-      modInfo[i].fctInit = initFunc;		// init function - important
+      modInfo[i].fctInit = &initFunc;		// init function - important
       modInfo[i].gfId    = ROB_IDENT;		// supported framework version
       modInfo[i].index   = i;
     }
 
-  free buf;
+  free (buf);
   return 0;				// We always succeed :)
 
 }	// jeremy ()
+
 
 // Local Variables:
 // mode: C++
