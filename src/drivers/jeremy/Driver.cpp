@@ -77,7 +77,9 @@ void
 Driver::newRace (tCarElt *    car,
 		 tSituation * s)
 {
-  mCar = car;
+  mCar       = car;
+  mGear      = 1;		// Start in first gear
+  mPrevAngle = 0.0;		// Assume we start pointing along the track!
 
 }	// Driver::newRace ()
 
@@ -91,18 +93,39 @@ Driver::newRace (tCarElt *    car,
 void
 Driver::drive (tSituation * s)
 {
-  float trackangle = RtTrackSideTgAngleL (&(mCar->_trkPos));
-  float angle = trackangle - mCar->_yaw;
+  tdble trackangle = RtTrackSideTgAngleL (&(mCar->_trkPos));
+  tdble angle = trackangle - mCar->_yaw;
   NORM_PI_PI (angle);
 
   memset (&(mCar->ctrl), 0, sizeof (mCar->ctrl));
 
-  float steerangle = angle - mCar->_trkPos.toMiddle / mCar->_trkPos.seg->width;
+  tdble steerangle = angle - mCar->_trkPos.toMiddle / mCar->_trkPos.seg->width;
 
   mCar->_steerCmd  = steerangle / mCar->_steerLock;
-  mCar->_gearCmd   = 1; // first gear
-  mCar->_accelCmd  = 0.3; // 30% accelerator pedal
-  mCar->_brakeCmd  = 0.0; // no brakes  mCar->_steerCmd  = 0.0;
+
+  // Gear control depends on RPM
+
+  if (mCar->_enginerpm > (mCar->_enginerpmRedLine * 0.9))
+    mGear = (mGear < (mCar->_gearNb - 2)) ? mGear + 1 : mGear;
+  else if (mCar->_enginerpm < (mCar->_enginerpmRedLine * 0.3))
+    mGear = (mGear > 1) ? mGear - 1 : mGear;
+
+  mCar->_gearCmd   = mGear;
+
+  // Whether we accellerate or decellerate depends on whether we are going off
+  // track. However 20ms before the bend is really too late to start breaking!
+
+  if (fabs (angle) > fabs (mPrevAngle))
+    {
+      mCar->_accelCmd  = 1.0; // Flat out
+      mCar->_brakeCmd  = 0.0; // No brakes
+    }
+  else
+    {
+      mCar->_accelCmd  = 0.0; // Going too fast
+      mCar->_brakeCmd  = 1.0; // Hammer on the anchors
+    }
+
   mCar->_clutchCmd = 0.0;
 
 }	// Driver::drive ()

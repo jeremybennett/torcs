@@ -71,6 +71,14 @@ private:
 
   tCarElt * mCar;
 
+  //! Currently selected gear
+
+  int  mGear;
+
+  //! Angle to the track last time.
+
+  tdble mPrevAngle;
+
 };	// class Driver
 
 
