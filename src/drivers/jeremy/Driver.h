@@ -63,6 +63,10 @@ private:
 
   int  mIndex;
 
+  //! The track currently being raced
+
+  tTrack * mTrack;
+
   //! The car currently being used by the driver
 
   tCarElt * mCar;

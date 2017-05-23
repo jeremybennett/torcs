@@ -14,7 +14,7 @@
 <params name="jeremy" type="robotdef">
   <section name="Robots">
     <section name="index">
-      <section name="1">
+      <section name="0">
 	<attstr name="name" val="jeremy"></attstr>
 	<attstr name="desc" val=""></attstr>
 	<attstr name="team" val=""></attstr>

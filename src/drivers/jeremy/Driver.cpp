@@ -21,6 +21,7 @@
 #include "Driver.h"
 
 #include "robot.h"
+#include "robottools.h"
 
 
 //! Constructor
@@ -56,9 +57,12 @@ Driver::~Driver()
 void
 Driver::initTrack (tTrack *     t,
 		   void *       carHandle __attribute__ ((unused)),
-		   void **      carParmHandle __attribute__ ((unused)),
+		   void **      carParmHandle,
 		   tSituation * s)
 {
+  mTrack = t;
+  *carParmHandle = NULL;
+
 }	// Driver::initTrack ()
 
 
@@ -87,12 +91,18 @@ Driver::newRace (tCarElt *    car,
 void
 Driver::drive (tSituation * s)
 {
+  float trackangle = RtTrackSideTgAngleL (&(mCar->_trkPos));
+  float angle = trackangle - mCar->_yaw;
+  NORM_PI_PI (angle);
+
   memset (&(mCar->ctrl), 0, sizeof (mCar->ctrl));
 
-  mCar->_steerCmd  = 0.0;
-  mCar->_gearCmd   = 6;
-  mCar->_accelCmd  = 1.0;
-  mCar->_brakeCmd  = 0.0;
+  float steerangle = angle - mCar->_trkPos.toMiddle / mCar->_trkPos.seg->width;
+
+  mCar->_steerCmd  = steerangle / mCar->_steerLock;
+  mCar->_gearCmd   = 1; // first gear
+  mCar->_accelCmd  = 0.3; // 30% accelerator pedal
+  mCar->_brakeCmd  = 0.0; // no brakes  mCar->_steerCmd  = 0.0;
   mCar->_clutchCmd = 0.0;
 
 }	// Driver::drive ()

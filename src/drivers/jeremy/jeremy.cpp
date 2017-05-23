@@ -22,10 +22,7 @@
 #include <string.h>
 
 #include "Driver.h"
-
 #include "robot.h"
-
-#include <math.h>
 
 
 //! Maximum number of drivers we can control.  This really ought to be set
@@ -33,18 +30,22 @@
 
 static const int MAX_DRIVERS = 10;
 
+//! How many drivers we actually have
+
+static const int NUM_DRIVERS = 1;
+
 //! Static array of instances of the drivers.
 
-static Driver *driver[MAX_DRIVERS];
+static Driver *driver[NUM_DRIVERS];
 
 
 //! Callback for every track change or new race.
 
-//! @param[in] index          Number of the driver pitting
-//! @param[in] track          The track we are using
-//! @param[in] carHandle      What is this?
-//! @param[in] carParmHandle  What is this?
-//! @param[in] s              All the info about the race
+//! @param[in]  index          Number of the driver pitting
+//! @param[in]  track          The track we are using
+//! @param[in]  carHandle      What is this?
+//! @param[out] carParmHandle  What is this?
+//! @param[in]  s              All the info about the race
 
 static void
 initTrack (int          index,
@@ -189,14 +190,14 @@ jeremy (tModInfo * modInfo)
   char *buf = (char * ) malloc (strlen ("jeremy 10"));	// to build name
   int   i;						// Loop counter
 
-  memset (modInfo, 0, MAX_DRIVERS * sizeof (*modInfo));
+  memset (modInfo, 0, NUM_DRIVERS * sizeof (*modInfo));
 
   // We set this up for every possible driver. Other code just sets up the
   // number of drivers  being declared.
 
-  for (i = 0; i < MAX_DRIVERS; i++)
+  for (i = 0; i < NUM_DRIVERS; i++)
     {
-      sprintf (buf, "jeremy %d", i);
+      sprintf (buf, "jeremy %d", i + 1);
       modInfo[i].name    = strdup (buf);	// short name of the module
       modInfo[i].desc    = strdup("");		// long desc of the module
       modInfo[i].fctInit = &initFunc;		// init function - important
