@@ -173,13 +173,13 @@ void rmtsSelect(void * /* dummy */)
 
 static void rmtsAddKeys(void)
 {
-	GfuiAddKey(scrHandle, 13, "Select Track", NULL, rmtsSelect, NULL);
-	GfuiAddKey(scrHandle, 27, "Cancel Selection", ts->prevScreen, rmtsDeactivate, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Track", (void*)0, rmtsPrevNext, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Track", (void*)1, rmtsPrevNext, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_UP, "Previous Track Category", (void*)0, rmCatPrevNext, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_DOWN, "Next Track Category", (void*)1, rmCatPrevNext, NULL);
+	GfuiAddKey(scrHandle, 13, "Select track", NULL, rmtsSelect, NULL);
+	GfuiAddKey(scrHandle, 27, "Cancel selection", ts->prevScreen, rmtsDeactivate, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous track", (void*)0, rmtsPrevNext, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next track", (void*)1, rmtsPrevNext, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_UP, "Previous track category", (void*)0, rmCatPrevNext, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_DOWN, "Next track category", (void*)1, rmCatPrevNext, NULL);
 }
 
 
@@ -452,7 +452,7 @@ void RmTrackSelect(void *vs)
 	Ypos -= DY;
 
 	GfuiLabelCreate(scrHandle,
-			"Pits:",
+			"Pit Stalls:",
 			GFUI_FONT_MEDIUM,
 			Xpos, Ypos,
 			GFUI_ALIGN_HL_VB, 0);

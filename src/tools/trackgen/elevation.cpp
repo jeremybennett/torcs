@@ -180,7 +180,7 @@ void SaveElevation(tTrack *track, void *TrackHandle, char *imgFile, char *meshFi
 			}
 		}
 		s += l;
-		sprintf(s, "| row %4d", j+1);
+		snprintf(s, BUFSIZE - (s - buf), "| row %4d", j+1);
 		printf("\r%s", buf);
 		fflush(stdout);
 		for (i = 0; i < width; i++) {

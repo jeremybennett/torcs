@@ -230,14 +230,14 @@ static void rmSelectDeselect(void * /* dummy */ )
 
 static void rmdsAddKeys(void)
 {
-	GfuiAddKey(scrHandle, 27, "Cancel Selection", ds->prevScreen, rmdsDeactivate, NULL);
-	GfuiAddKey(scrHandle, 13, "Accept Selection", NULL, rmdsSelect, NULL);
+	GfuiAddKey(scrHandle, 27, "Cancel selection", ds->prevScreen, rmdsDeactivate, NULL);
+	GfuiAddKey(scrHandle, 13, "Accept selection", NULL, rmdsSelect, NULL);
 	GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
-	GfuiAddKey(scrHandle, '-', "Move Up", (void*)-1, rmMove, NULL);
-	GfuiAddKey(scrHandle, '+', "Move Down", (void*)1, rmMove, NULL);
-	GfuiAddKey(scrHandle, ' ', "Select/Deselect", NULL, rmSelectDeselect, NULL);
-	GfuiAddKey(scrHandle, 'f', "Set Focus", NULL, rmdsSetFocus, NULL);    
+	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
+	GfuiAddKey(scrHandle, '-', "Move driver up", (void*)-1, rmMove, NULL);
+	GfuiAddKey(scrHandle, '+', "Move driver down", (void*)1, rmMove, NULL);
+	GfuiAddKey(scrHandle, ' ', "Select or deselect driver", NULL, rmSelectDeselect, NULL);
+	GfuiAddKey(scrHandle, 'f', "Set focused driver", NULL, rmdsSetFocus, NULL);    
 }
 
 
@@ -327,7 +327,7 @@ void RmDriversSelect(void *vs)
 					} else {
 						sp++;
 					}
-					strcpy(dname, sp);
+					snprintf(dname, BUFSIZE, "%s", sp);
 					dname[strlen(dname) - strlen(DLLEXT) - 1] = 0; /* cut .so or .dll */
 					snprintf(buf, BUFSIZE, "%sdrivers/%s/%s.xml", GetLocalDir(), dname, dname);
 					robhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
@@ -406,7 +406,7 @@ void RmDriversSelect(void *vs)
 		} while ((curDrv = GF_TAILQ_NEXT(curDrv, link)) != NULL);
 	}
 
-	GfuiLabelCreate(scrHandle, "Focused:", GFUI_FONT_MEDIUM, 320, B_BASE - 5 * B_HT, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreate(scrHandle, "Focused Driver:", GFUI_FONT_MEDIUM, 320, B_BASE - 5 * B_HT, GFUI_ALIGN_HC_VB, 0);
 	const char* cardllname = GfParmGetStr(ds->param, RM_SECT_DRIVERS, RM_ATTR_FOCUSED, "");
 	robotIdx = (int)GfParmGetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_FOCUSEDIDX, (char*)NULL, 0);
 	curDrv = GF_TAILQ_FIRST(&DrvList);
@@ -431,13 +431,13 @@ void RmDriversSelect(void *vs)
     }
 
 	/* Picked Driver Info */
-	GfuiLabelCreate(scrHandle, "Driver:", GFUI_FONT_MEDIUM, 320, B_BASE - 7 * B_HT, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreate(scrHandle, "Driver Name:", GFUI_FONT_MEDIUM, 320, B_BASE - 7 * B_HT, GFUI_ALIGN_HC_VB, 0);
 	PickDrvNameLabelId = GfuiLabelCreateEx(scrHandle, "", aColor, GFUI_FONT_MEDIUM_C,
 						320, B_BASE - 7 * B_HT - GfuiFontHeight(GFUI_FONT_MEDIUM), GFUI_ALIGN_HC_VB, 256);
-	GfuiLabelCreate(scrHandle, "Car:", GFUI_FONT_MEDIUM, 320, B_BASE - 8 * B_HT, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreate(scrHandle, "Car Model:", GFUI_FONT_MEDIUM, 320, B_BASE - 8 * B_HT, GFUI_ALIGN_HC_VB, 0);
 	PickDrvCarLabelId = GfuiLabelCreateEx(scrHandle, "", aColor, GFUI_FONT_MEDIUM_C,
 						320, B_BASE - 8 * B_HT - GfuiFontHeight(GFUI_FONT_MEDIUM), GFUI_ALIGN_HC_VB, 256);
-	GfuiLabelCreate(scrHandle, "Category:", GFUI_FONT_MEDIUM, 320, B_BASE - 9 * B_HT, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreate(scrHandle, "Car Category:", GFUI_FONT_MEDIUM, 320, B_BASE - 9 * B_HT, GFUI_ALIGN_HC_VB, 0);
 	PickDrvCategoryLabelId = GfuiLabelCreateEx(scrHandle, "", aColor, GFUI_FONT_MEDIUM_C,
 							320, B_BASE - 9 * B_HT - GfuiFontHeight(GFUI_FONT_MEDIUM), GFUI_ALIGN_HC_VB, 256);
 	GfuiMenuDefaultKeysAdd(scrHandle);

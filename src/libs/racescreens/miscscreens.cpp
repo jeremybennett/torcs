@@ -288,7 +288,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 						80, 40, GFUI_ALIGN_HL_VB, 1,
 						(void*)&prevStartRace, rmChgStartScreen,
 						NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-			GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous drivers", (void*)&prevStartRace, rmChgStartScreen, NULL);
+			GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_UP,   "Previous page", (void*)&prevStartRace, rmChgStartScreen, NULL);
 		}
 		
 		if (i < nCars) {
@@ -301,7 +301,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 						540, 40, GFUI_ALIGN_HL_VB, 1,
 						(void*)&nextStartRace, rmChgStartScreen,
 						NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
-			GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next Drivers", (void*)&nextStartRace, rmChgStartScreen, NULL);
+			GfuiAddSKey(rmScrHdle, GLUT_KEY_PAGE_DOWN, "Next page", (void*)&nextStartRace, rmChgStartScreen, NULL);
 		}
 	}
 	
@@ -335,7 +335,7 @@ rmDisplayStartRace(tRmInfo *info, void *startScr, void *abortScr, int start)
 				(tfuiCallback)NULL);
 	GfuiAddKey(rmScrHdle, (unsigned char)27, "Abandon", abortScr, GfuiScreenReplace, NULL);
 	
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
 	
 	GfuiScreenActivate(rmScrHdle);
 }

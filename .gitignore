@@ -26,3 +26,6 @@ src/tools/trackgen/trackgen
 src/tools/trackgen/trackgen-bin
 # And generated manual
 doc/manual/
+# Test build artifacts and header symlinks
+test/math/test_math
+test/math/tmath

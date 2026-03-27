@@ -226,7 +226,7 @@ int main (int argc, char **argv)
 		    s = end;
 		    continue;
 		}
-		sprintf (path, "Gearbox/gears/%s", gears [i++]);
+		snprintf (path, sizeof(path), "Gearbox/gears/%s", gears [i++]);
 		GfParmSetNum (param, path, "ratio", NULL, valf);
 		s = end;
 	    }
@@ -245,7 +245,7 @@ int main (int argc, char **argv)
 		    end++;
 		}
 		sscanf (s, "%f", &valf);
-		sprintf (path, "Gearbox/gears/%s", gears [i++]);
+		snprintf (path, sizeof(path), "Gearbox/gears/%s", gears [i++]);
 		GfParmSetNum (param, path, "efficiency", NULL, valf);
 		s = end;
 	    }
@@ -264,7 +264,7 @@ int main (int argc, char **argv)
 		    end++;
 		}
 		sscanf (s, "%f", &valf);
-		sprintf (path, "Engine/data points/%d", i + 1);
+		snprintf (path, sizeof(path), "Engine/data points/%d", i + 1);
 		GfParmSetNum (param, path, "rpm", "rpm", 500.0f * i);
 		GfParmSetNum (param, path, "Tq", "N.m", valf);
 		s = end;

@@ -138,7 +138,7 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	if (menuHandle) {
 		GfuiScreenRelease(menuHandle);
 	}
-	menuHandle = GfuiMenuScreenCreate("Pit Stop Info");
+	menuHandle = GfuiMenuScreenCreate("Pit Stop");
 
 	x = 80;
 	y = 380;
@@ -147,24 +147,24 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	dy = GfuiFontHeight(GFUI_FONT_LARGE_C) + 5;
 
 	y -= dy;
-	snprintf(buf, BUFSIZE, "Remaining Laps: %d", car->_remainingLaps);
+	snprintf(buf, BUFSIZE, "Laps Remaining: %d", car->_remainingLaps);
 	GfuiLabelCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
 
 	y -= dy;
-	snprintf(buf, BUFSIZE, "Remaining Fuel: %.1f l", car->_fuel);
+	snprintf(buf, BUFSIZE, "Fuel Remaining: %.1f l", car->_fuel);
 	GfuiLabelCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
 
 	y -= dy;
-	GfuiLabelCreate(menuHandle, "Fuel amount (liters):", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(menuHandle, "Fuel to add (liters):", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
 
-	int dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Fuel amount (liters)") + 20;
+	int dx = GfuiFontWidth(GFUI_FONT_MEDIUM_C, "Fuel to add (liters)") + 20;
 	snprintf(buf, BUFSIZE, "%d", (int)car->pitcmd.fuel);
 	fuelId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
 					x + dx, y,
 					100, 10, NULL, (tfuiCallback)NULL, rmUpdtFuel);
 
 	y -= dy;
-	GfuiLabelCreate(menuHandle, "Repair amount:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(menuHandle, "Repair damage:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
 
 	snprintf(buf, BUFSIZE, "%d", (int)car->pitcmd.repair);
 	repairId = GfuiEditboxCreate(menuHandle, buf, GFUI_FONT_MEDIUM_C,
@@ -177,12 +177,12 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	int x3 = x + dx + 100 + 14;
 	int x4 = (x2+x3)/2;
 
-	GfuiLabelCreate(menuHandle, "Tire change:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(menuHandle, "Change tires:", GFUI_FONT_MEDIUM_C, x, y, GFUI_ALIGN_HL_VB, 0);
 
 	if (!(reInfo->raceRules.tireFactor > 0.0f) || car->info.skillLevel != 3) {
 		currentTireChangeOption = tCarPitCmd::NONE;
 		rmCar->pitcmd.tireChange = tCarPitCmd::NONE;
-		tireChangeId = GfuiLabelCreate(menuHandle, "Tire wear is off", GFUI_FONT_MEDIUM_C, x + dx, y, GFUI_ALIGN_HL_VB, 32);
+		tireChangeId = GfuiLabelCreate(menuHandle, "Tire wear disabled", GFUI_FONT_MEDIUM_C, x + dx, y, GFUI_ALIGN_HL_VB, 32);
 	} else {
 		tireChangeId = GfuiLabelCreate(menuHandle, tireChangeLabel[currentTireChangeOption], GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 32);
 
@@ -216,7 +216,7 @@ void RmPitMenuStart(tCarElt *car, tRmInfo *reInfo, void *userdata, tfuiCallback 
 	}
 
 	// Just enable car setup button in practice and qualifying sessions
-	buttonid = GfuiButtonCreate(menuHandle, "Setup", GFUI_FONT_LARGE, 480, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
+	buttonid = GfuiButtonCreate(menuHandle, "Car Setup", GFUI_FONT_LARGE, 480, 40, 130, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 		RmCarSetupScreenInit(menuHandle, rmCar, rmInfo), GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 	if (reInfo->s->raceInfo.type != RM_TYPE_PRACTICE && reInfo->s->raceInfo.type != RM_TYPE_QUALIF) {
 		GfuiEnable(menuHandle, buttonid, GFUI_DISABLE);

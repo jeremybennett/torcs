@@ -4,7 +4,7 @@
 
 			<h3>Register the {PC_TEAM_NAME} Team for the {PC_EVENT_NAME}</h3>
 			<p>
-				For the registration you need to upload your TORCS robot. Make sure that
+				For the registration you need to upload your robot. Make sure that
 				the robot fulfills the rules and matches <a href="{ROOTPATH}teams/team_view.php?viewteamid={PC_TEAM_ID}">with the team definition</a>.
 				Then do a "make clean" and package it up in a tar.bz2. Example:
 			</p>

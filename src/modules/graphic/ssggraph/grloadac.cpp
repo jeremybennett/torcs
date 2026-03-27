@@ -528,8 +528,8 @@ static int do_texture  ( char *s )
 	skip_quotes ( &s ) ;
 	current_tbase = new char [ strlen(s)+1 ] ;
 	current_tfname = new char [ strlen(s)+1 ] ;
-	strcpy ( current_tbase, s ) ;
-	strcpy ( current_tfname, s ) ;
+	snprintf ( current_tbase, strlen(s)+1, "%s", s ) ;
+	snprintf ( current_tfname, strlen(s)+1, "%s", s ) ;
       }
     else  if ((p=strstr(s," tiled"))!=NULL)
       {
@@ -546,7 +546,7 @@ static int do_texture  ( char *s )
 	    mapLevel|=LEVEL1;
 	    skip_quotes ( &s ) ;
 	    current_ttiled = new char [ strlen(s)+1 ] ;
-	    strcpy ( current_ttiled, s ) ;
+	    snprintf ( current_ttiled, strlen(s)+1, "%s", s ) ;
 	  }
       }
     else  if ((p=strstr(s," skids"))!=NULL)
@@ -562,7 +562,7 @@ static int do_texture  ( char *s )
 	    mapLevel|=LEVEL2;
 	    skip_quotes ( &s ) ;
 	    current_tskids = new char [ strlen(s)+1 ] ;
-	    strcpy ( current_tskids, s ) ;
+	    snprintf ( current_tskids, strlen(s)+1, "%s", s ) ;
 	  }
       }
     else  if ((p=strstr(s," shad"))!=NULL)
@@ -576,7 +576,7 @@ static int do_texture  ( char *s )
 	    mapLevel|=LEVEL3;
 	    skip_quotes ( &s ) ;
 	    current_tshad = new char [ strlen(s)+1 ] ;
-	    strcpy ( current_tshad, s ) ;
+	    snprintf ( current_tshad, strlen(s)+1, "%s", s ) ;
 	  }
       }
     else
@@ -594,7 +594,7 @@ static int do_texture  ( char *s )
 	delete [] current_tshad ;
 	current_tshad = 0;
 	current_tfname = new char [ strlen(s)+1 ] ;
-	strcpy ( current_tfname, s ) ;
+	snprintf ( current_tfname, strlen(s)+1, "%s", s ) ;
       }
   }
 

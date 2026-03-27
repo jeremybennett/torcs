@@ -55,8 +55,8 @@ GetFilename(const char *filename, const char *filepath, char *buf, const int BUF
 				lg = c2 - c1;
 				if (lg + flen + 2 < BUFSIZE) {
 					strncpy(buf, c1, lg);
-					buf[lg] = '/';
-					strcpy(buf + lg + 1, filename);
+					buf[lg] = '\0';
+					snprintf(buf + lg, BUFSIZE - lg, "/%s", filename);
 				} else {
 					buf[0] = '\0';
 				}

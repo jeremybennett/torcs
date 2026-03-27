@@ -80,10 +80,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Account activation page',
-		'PB_DESCRIPTION'	=> 'Account activation page for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Account activation page',
+		'PB_DESCRIPTION'	=> 'Account activation page for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, account, activation',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, account, activation',
 		'ROOTPATH'			=> $path_to_root
 	));
 

@@ -17,7 +17,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdio.h>
+#include <cstdio>
 #include "sim.h"
 
 /*
@@ -136,16 +136,16 @@ void SimSuspUpdate(tSuspension *susp)
 
 void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0, tdble X0)
 {
-	susp->spring.K          = GfParmGetNum(hdle, section, PRM_SPR, (char*)NULL, 175000.0f);
-	susp->spring.xMax       = GfParmGetNum(hdle, section, PRM_SUSPCOURSE, (char*)NULL, 0.5f);
-	susp->spring.bellcrank  = GfParmGetNum(hdle, section, PRM_BELLCRANK, (char*)NULL, 1.0f);
-	susp->spring.packers    = GfParmGetNum(hdle, section, PRM_PACKERS, (char*)NULL, 0.0f);
-	susp->damper.bump.C1    = GfParmGetNum(hdle, section, PRM_SLOWBUMP, (char*)NULL, 0.0f);
-	susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0.0f);
-	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, susp->damper.bump.C1);
-	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, susp->damper.rebound.C1);
-	susp->damper.bump.v1	= GfParmGetNum(hdle, section, PRM_BUMPTHRESHOLD, (char*)NULL, 0.5f);
-	susp->damper.rebound.v1	= GfParmGetNum(hdle, section, PRM_REBOUNDTHRESHOLD, (char*)NULL, 0.5f);
+	susp->spring.K          = GfParmGetNum(hdle, section, PRM_SPR, (char*)nullptr, 175000.0f);
+	susp->spring.xMax       = GfParmGetNum(hdle, section, PRM_SUSPCOURSE, (char*)nullptr, 0.5f);
+	susp->spring.bellcrank  = GfParmGetNum(hdle, section, PRM_BELLCRANK, (char*)nullptr, 1.0f);
+	susp->spring.packers    = GfParmGetNum(hdle, section, PRM_PACKERS, (char*)nullptr, 0.0f);
+	susp->damper.bump.C1    = GfParmGetNum(hdle, section, PRM_SLOWBUMP, (char*)nullptr, 0.0f);
+	susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)nullptr, 0.0f);
+	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)nullptr, susp->damper.bump.C1);
+	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)nullptr, susp->damper.rebound.C1);
+	susp->damper.bump.v1	= GfParmGetNum(hdle, section, PRM_BUMPTHRESHOLD, (char*)nullptr, 0.5f);
+	susp->damper.rebound.v1	= GfParmGetNum(hdle, section, PRM_REBOUNDTHRESHOLD, (char*)nullptr, 0.5f);
 
 	susp->spring.x0 = susp->spring.bellcrank * X0;
 	susp->spring.F0 = F0 / susp->spring.bellcrank;

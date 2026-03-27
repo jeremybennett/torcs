@@ -6,7 +6,7 @@
 
 			<p>
 				Here you can download the robots for running the race and submit your result. I recommend that you use a
-				dedicated user and TORCS installation for doing that, <span style="color:#ff0000">be aware of the risks of running
+				dedicated user and simulator installation for doing that, <span style="color:#ff0000">be aware of the risks of running
 				foreign unreviewed code!</span> If your environment is set up correctly ($TORCS_BASE, $MAKE_DEFAULT,
 				permissions)
 				you can compile and install the robots from any directory, so I recommend to download the
@@ -26,7 +26,7 @@
 				<li>2. Download all robots from the list below into the empty directory.</li>
 				<li>3. Unpack all robots with "<tt>find . -type f -exec tar xfvj {} \;</tt>".</li>
 				<li>4. Install all robots with "<tt>find . -type d -maxdepth 1 -exec bash -c "cd {}; make clean install" \;</tt>".</li>
-				<li>5. Start the <a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}#c6_1">TORCS version required by the rules</a> with the 
+				<li>5. Start the <a href="{ROOTPATH}events/rules_view.php?viewrulesid={PC_EVENT_ID}#c6_1">simulator version required by the rules</a> with the 
 						<a href="{ROOTPATH}events/event_endrace_xml.php?eventid={PC_EVENT_ID}&raceid={PC_RACE_ID}">race configuration xml</a>.</li>
 				<li>6. Run the race in command line or graphical mode.</li>
 				<li>7. Submit the result (it is below ~/.torcs/results).</li>
@@ -76,14 +76,14 @@
 			<h4>Submit result</h4>
 			<p>
 				Before you submit the result please check the following points. If you tried to run the race
-				but it did not work because of TORCS itself check this option. If a robot did not compile or
-				crashes/hangs TORCS remove the offending robot (after you checked if it is really the robots fault),
+				but it did not work because of the simulator check this option. If a robot did not compile or
+				crashes/hangs the simulator remove the offending robot (after you checked if it is really the robots fault),
 				rerun the race and submit the result.
 				In this case you
 				have to post your findings in the forum. You can just submit one valid result!
 			</p>
 			<ul>
-				<li>Did you use the correct TORCS version?</li>
+				<li>Did you use the correct simulator version?</li>
 				<li>Did you a clean install of all robots like stated above?</li>
 				<li>Did you choose the correct race type?</li>
 				<li>Was the start list and track correct?</li>
@@ -124,7 +124,7 @@
 				<input type="checkbox" name="no_race_result" value="failed"/>
 			</td>
 			<td class="filledlist">
-				I was not able to run the race because of a TORCS problem.
+				I was not able to run the race because of a simulator problem.
 			</td>
 		</tr>
 	</table>

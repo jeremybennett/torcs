@@ -70,10 +70,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Forum',
-		'PB_DESCRIPTION'	=> 'Forum search of the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Forum',
+		'PB_DESCRIPTION'	=> 'Forum search of the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, Discussion, Board, Forum, Search',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, Discussion, Board, Forum, Search',
 		'ROOTPATH'			=> $path_to_root,
 	));
 

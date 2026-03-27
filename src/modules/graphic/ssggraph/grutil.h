@@ -35,9 +35,9 @@
 {								\
     char __buf__[256];						\
     if (subindex != -1) {					\
-        sprintf(__buf__, "%s-%d-%d", name, index, subindex);	\
+        snprintf(__buf__, sizeof(__buf__), "%s-%d-%d", name, index, subindex);	\
     } else {							\
-	sprintf(__buf__, "%s-%d", name, index);			\
+	snprintf(__buf__, sizeof(__buf__), "%s-%d", name, index);		\
     }								\
     (base)->setName((const char *)__buf__);			\
 }

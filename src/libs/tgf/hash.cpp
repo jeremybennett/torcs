@@ -102,14 +102,14 @@ void *GfHashCreate(int type)
 
 	curHeader = (tHashHeader*)malloc(sizeof(tHashHeader));
 	if (!curHeader) {
-		return NULL;
+		return nullptr;
 	}
 	
 	curHeader->type = type;
 	curHeader->size = DEFAULT_SIZE;
 	curHeader->nbElem = 0;
 	curHeader->curIndex = 0;
-	curHeader->curElem = NULL;
+	curHeader->curElem = nullptr;
 	curHeader->hashHead = (tHashHead *)malloc(DEFAULT_SIZE * sizeof(tHashHead));
 	for (i = 0; i < DEFAULT_SIZE; i++) {
 		GF_TAILQ_INIT(&(curHeader->hashHead[i]));
@@ -138,7 +138,7 @@ static void gfIncreaseHash(tHashHeader *curHeader)
 
 	/* copy the elements */
 	for (i = 0; i < oldSize; i++) {
-		while ((curElem = GF_TAILQ_FIRST(&(oldHashHead[i]))) != NULL) {
+		while ((curElem = GF_TAILQ_FIRST(&(oldHashHead[i]))) != nullptr) {
 			/* remove from old list */
 			GF_TAILQ_REMOVE(&(oldHashHead[i]), curElem, link);
 			/* insert in new list */
@@ -214,7 +214,7 @@ static const void *gfRemElem(tHashHead *hashHead, tHashElem *elem)
  *  @ingroup hash
  *  @param hash Current hash table handle
  *  @param key Key string to hash
- *  @return User data or NULL if not found
+ *  @return User data or nullptr if not found
  */
 const void *GfHashRemStr(void *hash, char *key)
 {
@@ -232,7 +232,7 @@ const void *GfHashRemStr(void *hash, char *key)
 		curElem = GF_TAILQ_NEXT(curElem, link);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -240,7 +240,7 @@ const void *GfHashRemStr(void *hash, char *key)
  *  @ingroup hash
  *  @param hash Current hash table handle.
  *  @param key Key string to hash.
- *  @return User data or NULL if not found
+ *  @return User data or nullptr if not found
  */
 const void *GfHashGetStr(void *hash, const char *key)
 {
@@ -257,7 +257,7 @@ const void *GfHashGetStr(void *hash, const char *key)
 		curElem = GF_TAILQ_NEXT(curElem, link);
 	}
 	
-	return NULL;
+	return nullptr;
 }
 
 
@@ -298,7 +298,7 @@ void GfHashAddBuf(void *hash, char *key, size_t sz, void *data)
  *  @param hash Current hash table handle
  *  @param key Key buffer to hash
  *  @param sz Size of the buffer
- *  @return User data or NULL if not found
+ *  @return User data or nullptr if not found
  */
 const void *GfHashRemBuf(void *hash, char *key, size_t sz)
 {
@@ -316,7 +316,7 @@ const void *GfHashRemBuf(void *hash, char *key, size_t sz)
 		curElem = GF_TAILQ_NEXT(curElem, link);
 	}
 	
-	return NULL;
+	return nullptr;
 }
 
 
@@ -325,7 +325,7 @@ const void *GfHashRemBuf(void *hash, char *key, size_t sz)
  *   @param hash Current hash table handle
  *   @param key Key buffer to hash
  *   @param sz Size of the buffer
- *   @return User data or NULL if not found
+ *   @return User data or nullptr if not found
  */
 const void *GfHashGetBuf(void *hash, char *key, size_t sz)
 {
@@ -342,13 +342,13 @@ const void *GfHashGetBuf(void *hash, char *key, size_t sz)
 		curElem = GF_TAILQ_NEXT(curElem, link);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /** Release a hash table.
  *   @ingroup hash
  *   @param hash Current hash table handle
- *   @param hashFree Pointer on user function used to free the user data (NULL if not used)
+ *   @param hashFree Pointer on user function used to free the user data (nullptr if not used)
  */
 void GfHashRelease(void *hash, tfHashFree hashFree)
 {
@@ -358,7 +358,7 @@ void GfHashRelease(void *hash, tfHashFree hashFree)
 	int i;
 
 	for (i = 0; i < curHeader->size; i++) {
-		while ((curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[i]))) != NULL) {
+		while ((curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[i]))) != nullptr) {
 			data = gfRemElem(&(curHeader->hashHead[i]), curElem);
 			if (hashFree) {
 				hashFree(data);
@@ -373,7 +373,7 @@ void GfHashRelease(void *hash, tfHashFree hashFree)
 /** Get the first user data of a hash table, this is used for table scans
  *  @ingroup hash
  *  @param hash Current hash table handle
- *  @return User data or NULL if empty
+ *  @return User data or nullptr if empty
  *  @see GfHashGetNext
  */
 const void * GfHashGetFirst(void *hash)
@@ -381,7 +381,7 @@ const void * GfHashGetFirst(void *hash)
 	tHashHeader *curHeader = (tHashHeader *)hash;
 
 	curHeader->curIndex = -1;
-	curHeader->curElem = NULL;
+	curHeader->curElem = nullptr;
 
 	return GfHashGetNext(hash);
 }
@@ -390,7 +390,7 @@ const void * GfHashGetFirst(void *hash)
 /** Get the next user data of a hash table, this is used for table scans
  *  @ingroup hash
  *  @param hash Current hash table handle
- *  @return User data or NULL if we have reached the end
+ *  @return User data or nullptr if we have reached the end
  *  @see GfHashGetFirst
  */
 const void *GfHashGetNext(void *hash)
@@ -404,7 +404,7 @@ const void *GfHashGetNext(void *hash)
 	while (!curHeader->curElem) {
 		curHeader->curIndex++;
 		if (curHeader->curIndex == curHeader->size) {
-			return NULL;
+			return nullptr;
 		}
 		curHeader->curElem = GF_TAILQ_FIRST(&(curHeader->hashHead[curHeader->curIndex]));
 	}

@@ -70,10 +70,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Robot Upload Page',
-		'PB_DESCRIPTION'	=> 'Upload a robot for an event on the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Robot Upload Page',
+		'PB_DESCRIPTION'	=> 'Upload a robot for an event on the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, register, team, robot, upload',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, register, team, robot, upload',
 		'ROOTPATH'			=> $path_to_root
 	));
 

@@ -181,35 +181,35 @@ void *GraphMenuInit(void *prevMenu)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 
-	scrHandle = GfuiMenuScreenCreate("Graphic Configuration");
+	scrHandle = GfuiMenuScreenCreate("Graphics Configuration");
 	
 	GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphconf.png");
 	
 	snprintf(buf, BUFSIZE, "%s%s", GetLocalDir(), GR_PARAM_FILE);
 	void * grHandle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);	
 	
-	GfuiLabelCreate(scrHandle, "Visibility (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Visibility factor (%):", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	FovFactorValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_FOVFACT, "%", 100.0);
 	snprintf(buf, BUFSIZE, "%d", FovFactorValue);
 	FovEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeFov);
 	
 	y -= dy;
-	GfuiLabelCreate(scrHandle, "Smoke:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Smoke particles:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SmokeValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_SMOKENB, NULL, 300.0);
 	snprintf(buf, BUFSIZE, "%d", SmokeValue);
 	SmokeEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSmoke);
 	
 	y -= dy;
-	GfuiLabelCreate(scrHandle, "Skid Marks:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Skid mark strips:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	SkidValue = (int)GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_MAXSTRIPBYWHEEL, NULL, 20.0);
 	snprintf(buf, BUFSIZE, "%d", SkidValue);
 	SkidEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,
 					x2+10, y, width-20, 16, NULL, (tfuiCallback)NULL, ChangeSkid);
 	
 	y -= dy;
-	GfuiLabelCreate(scrHandle, "LOD factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Level of detail factor:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	LodFactorValue = GfParmGetNum(grHandle, GR_SCT_GRAPHIC, GR_ATT_LODFACTOR, NULL, 1.0);
 	snprintf(buf, BUFSIZE, "%g", LodFactorValue);
 	LodFactorEditId = GfuiEditboxCreate(scrHandle, buf, GFUI_FONT_MEDIUM_C,

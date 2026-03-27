@@ -95,10 +95,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Edit Event Page',
-		'PB_DESCRIPTION'	=> 'Edit an event for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Edit Event Page',
+		'PB_DESCRIPTION'	=> 'Edit an event for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, edit',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, event, race, edit',
 		'ROOTPATH'			=> $path_to_root
 	));
 

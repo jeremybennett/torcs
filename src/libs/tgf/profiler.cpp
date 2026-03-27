@@ -36,19 +36,19 @@ ProfileInstance::ProfileInstance(const char * pname) {
 
 //////////////////////////////////////////////////////////
 
-Profiler * Profiler::profiler = NULL;
+Profiler * Profiler::profiler = nullptr;
 
 Profiler::Profiler() {
   fStartTime = GfTimeClock();
-  curProfile = NULL;
+  curProfile = nullptr;
 }
 
 Profiler::~Profiler() {
-  profiler = NULL;
+  profiler = nullptr;
 }
 
 Profiler * Profiler::getInstance() {
-  if (profiler == NULL) {
+  if (profiler == nullptr) {
     profiler = new Profiler();
   }
   return profiler;
@@ -73,8 +73,8 @@ void Profiler::startProfile(const char * name) {
   ++(newProfile->calls);
 
   // add child and push current profile to stack
-  if (curProfile != NULL) {
-    curProfile->mapChildren.insert(std::pair<ProfileInstance*, void *>(newProfile, NULL));
+  if (curProfile != nullptr) {
+    curProfile->mapChildren.insert(std::pair<ProfileInstance*, void *>(newProfile, nullptr));
     stkProfiles.push_back(curProfile);
     assert(stkProfiles.size() < 100);
   }
@@ -82,14 +82,14 @@ void Profiler::startProfile(const char * name) {
 }
 
 void Profiler::stopProfile() {
-  assert(curProfile != NULL);
+  assert(curProfile != nullptr);
   assert(curProfile->openCalls > 0);
 
   double elapsed = 0.0;
   elapsed = GfTimeClock() - curProfile->tmpStart;
   // add a warning if time to short
   if (elapsed < 0.00001) {
-    this->mapWarning.insert(std::pair<ProfileInstance *, void*>(curProfile, NULL));
+    this->mapWarning.insert(std::pair<ProfileInstance *, void*>(curProfile, nullptr));
   }
   curProfile->addTime += elapsed;
   // recursive call check
@@ -105,12 +105,12 @@ void Profiler::stopProfile() {
     curProfile->subTime += elapsed;
     stkProfiles.pop_back();
   } else {
-    curProfile = NULL;
+    curProfile = nullptr;
   }
 }
 
 void Profiler::stopActiveProfiles() {
-  while (curProfile != NULL) {
+  while (curProfile != nullptr) {
     this->stopProfile();
   }
 }

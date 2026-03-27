@@ -65,11 +65,7 @@ linuxModLoad(unsigned int /* gfid */, char *sopath, tModList **modlist)
 	curMod = (tModList*)calloc(1, sizeof(tModList));
 	
 	lastSlash = strrchr(sopath, '/');
-	if (lastSlash) {
-		strcpy(dname, lastSlash+1);
-	} else {
-		strcpy(dname, sopath);
-	}
+	snprintf(dname, sizeof(dname), "%s", lastSlash ? lastSlash+1 : sopath);
 	dname[strlen(dname) - 3] = 0; /* cut .so */
 	
 	if (ssgHandle && strcmp(dname,"ssggraph") == 0) {
@@ -145,11 +141,7 @@ linuxModInfo(unsigned int /* gfid */, char *sopath, tModList **modlist)
 	curMod = (tModList*)calloc(1, sizeof(tModList));
 	
 	lastSlash = strrchr(sopath, '/');
-	if (lastSlash) {
-		strcpy(dname, lastSlash+1);
-	} else {
-		strcpy(dname, sopath);
-	}
+	snprintf(dname, sizeof(dname), "%s", lastSlash ? lastSlash+1 : sopath);
 	dname[strlen(dname) - 3] = 0; /* cut .so */
 	
 	handle = dlopen(sopath, RTLD_LAZY);
@@ -243,8 +235,8 @@ linuxModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
 		while ((ep = readdir (dp)) != 0) {
 			if ((strlen(ep->d_name) > 4) &&
 						  (strcmp(".so", ep->d_name+strlen(ep->d_name)-3) == 0)) { /* xxxx.so */
-				sprintf(sopath, "%s/%s", dir, ep->d_name);
-				strcpy(dname, ep->d_name);
+				snprintf(sopath, sizeof(sopath), "%s/%s", dir, ep->d_name);
+				snprintf(dname, sizeof(dname), "%s", ep->d_name);
 				dname[strlen(dname) - 3] = 0; /* cut .so */
 				handle = dlopen(sopath, RTLD_LAZY);
 				if (handle != NULL) {
@@ -350,11 +342,11 @@ linuxModInfoDir(unsigned int /* gfid */, char *dir, int level, tModList **modlis
 						   (strcmp(".so", ep->d_name+strlen(ep->d_name)-3) == 0)) || 
 						   ((level == 1) && (ep->d_name[0] != '.'))) { /* xxxx.so */
 				if (level == 1) {
-					sprintf(sopath, "%s/%s/%s.so", dir, ep->d_name, ep->d_name);
-					strcpy(dname, ep->d_name);
+					snprintf(sopath, sizeof(sopath), "%s/%s/%s.so", dir, ep->d_name, ep->d_name);
+					snprintf(dname, sizeof(dname), "%s", ep->d_name);
 				} else {
-					sprintf(sopath, "%s/%s", dir, ep->d_name);
-					strcpy(dname, ep->d_name);
+					snprintf(sopath, sizeof(sopath), "%s/%s", dir, ep->d_name);
+					snprintf(dname, sizeof(dname), "%s", ep->d_name);
 					dname[strlen(dname) - 3] = 0; /* cut .so */
 				}
 				handle = dlopen(sopath, RTLD_LAZY);
@@ -453,12 +445,13 @@ linuxModUnloadList(tModList **modlist)
 		GfOut("<<< %s unloaded <<<\n", curMod->sopath);
 		
 		lastSlash = strrchr(curMod->sopath, '/');
-		if (lastSlash) {
-			strcpy(dname, lastSlash+1);
-		} else {
-			strcpy(dname, curMod->sopath);
+		snprintf(dname, sizeof(dname), "%s", lastSlash ? lastSlash+1 : curMod->sopath);
+		{
+			size_t dnLen = strlen(dname);
+			if (dnLen >= 3) {
+				snprintf(&dname[dnLen - 3], sizeof(dname) - dnLen + 3, "Shut"); /* cut .so */
+			}
 		}
-		strcpy(&dname[strlen(dname) - 3], "Shut"); /* cut .so */
 		if ((fModShut = (tfModShut)dlsym(curMod->handle, dname)) != NULL) {
 			GfOut("Call %s\n", dname);
 			fModShut();

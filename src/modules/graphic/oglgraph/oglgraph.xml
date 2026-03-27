@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE params SYSTEM "params.dtd">
+<params name="oglgraph" type="config">
+  <section name="OpenGL Features">
+    <attnum name="shadow map size" val="2048"/>
+    <attnum name="bloom passes" val="5"/>
+    <attnum name="HDR exposure" val="1.0"/>
+  </section>
+  <section name="Graphic">
+    <attnum name="smoke value" val="300"/>
+    <attnum name="smoke interval" val="0.01"/>
+    <attnum name="smoke duration" val="2.0"/>
+    <attnum name="skid value" val="100"/>
+    <attnum name="skid length" val="300"/>
+    <attnum name="skid interval" val="0.05"/>
+    <attnum name="LOD Factor" val="1.0"/>
+  </section>
+</params>

@@ -199,7 +199,7 @@ void * OpenGLMenuInit(void *prevMenu)
 	prevHandle = prevMenu;
 
 	scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
-	GfuiTitleCreate(scrHandle, "OpenGL Options", 0);
+	GfuiTitleCreate(scrHandle, "OpenGL Configuration", 0);
 	GfuiScreenAddBgImg(scrHandle, "data/img/splash-simucfg.png");
 
 	y = 400;

@@ -77,10 +77,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Register Team Status',
-		'PB_DESCRIPTION'	=> 'Status of the team registration on the TORCS Racing Board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Register Team Status',
+		'PB_DESCRIPTION'	=> 'Status of the team registration on the Open Racing Simulator Racing Board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, view, robot, submission, submit, register, team',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, view, robot, submission, submit, register, team',
 		'ROOTPATH'			=> $path_to_root
 	));
 

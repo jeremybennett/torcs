@@ -41,7 +41,7 @@ char *strRemoveSuffix(char *filename, char c)
     copy[i-1] = '\0';
   } else {
     copy = (char*)malloc(sizeof(char)*(len+1));
-    strcpy(copy,filename);
+    snprintf(copy, len+1, "%s", filename);
   }
   return copy;
 }
@@ -63,10 +63,14 @@ char *strConcat(int n, ...)
   taille++; // Pour le truc de fin
 
   char *the_concat = (char *)malloc(sizeof(char)*taille);
-  the_concat[0] = '\0';
+  size_t pos = 0;
 
-  for(i = 0; i < n; i++)
-    strcat(the_concat, strs[i]);
+  for(i = 0; i < n; i++) {
+    size_t slen = strlen(strs[i]);
+    memcpy(the_concat + pos, strs[i], slen);
+    pos += slen;
+  }
+  the_concat[pos] = '\0';
 
   free(strs);
 
@@ -166,7 +170,8 @@ char* string_copy (char* c)
 {
      char* r;
      if (c==NULL) return NULL;
-     r = AllocM (char, (strlen(c)+1));
-     strcpy (r, c);
+     size_t len = strlen(c) + 1;
+     r = AllocM (char, len);
+     snprintf (r, len, "%s", c);
      return r;
 }

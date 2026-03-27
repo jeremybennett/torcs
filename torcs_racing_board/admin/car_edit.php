@@ -94,10 +94,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Car Data Edit Page',
-		'PB_DESCRIPTION'	=> 'Edit a cars data for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Car Data Edit Page',
+		'PB_DESCRIPTION'	=> 'Edit a cars data for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, car, data, edit',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, car, data, edit',
 		'ROOTPATH'			=> $path_to_root
 	));
 

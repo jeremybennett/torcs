@@ -80,10 +80,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'Lost Password of The TORCS Racing Board',
+		'PB_PAGETITLE'		=> 'Lost Password of Open Racing Simulator — Racing Board',
 		'PB_DESCRIPTION'	=> 'recover from lost password',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World. password, lost, retrieve, send',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World. password, lost, retrieve, send',
 		'ROOTPATH'			=> $path_to_root
 	));
 

@@ -92,10 +92,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Track Creation Page',
-		'PB_DESCRIPTION'	=> 'Create a track for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Track Creation Page',
+		'PB_DESCRIPTION'	=> 'Create a track for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, track, create',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, track, create',
 		'ROOTPATH'			=> $path_to_root
 	));
 

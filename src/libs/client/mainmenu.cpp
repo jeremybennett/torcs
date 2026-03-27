@@ -65,32 +65,32 @@ TorcsMainMenuInit(void)
 
     GfuiScreenAddBgImg(menuHandle, "data/img/splash-main.png");
 
-    GfuiTitleCreate(menuHandle, "TORCS", 0);
+    GfuiTitleCreate(menuHandle, "Open Racing Simulator", 0);
 
     GfuiLabelCreate(menuHandle,
-		    "The Open Racing Car Simulator",
-		    GFUI_FONT_LARGE,
+		    "Version 1.3.8",
+		    GFUI_FONT_MEDIUM,
 		    320,
 		    420,
 		    GFUI_ALIGN_HC_VB,
 		    0);
 
     GfuiMenuButtonCreate(menuHandle,
-			 "Race", "Races Menu",
+			 "Race", "Start a race",
 			 ReSinglePlayerInit(menuHandle), GfuiScreenActivate);
 
     GfuiMenuButtonCreate(menuHandle,
-			 "Configure Players", "Players configuration menu",
+			 "Player Profiles", "Configure player profiles and controls",
 			 TorcsDriverMenuInit(menuHandle), GfuiScreenActivate);
 
     GfuiMenuButtonCreate(menuHandle,
-			 "Options", "Configure",
+			 "Options", "Configure graphics, sound and simulation",
 			 TorcsOptionOptionInit(menuHandle), GfuiScreenActivate);
     
     GfuiMenuDefaultKeysAdd(menuHandle);
 
     GfuiMenuBackQuitButtonCreate(menuHandle,
-				 "Quit", "Quit TORCS",
+				 "Quit", "Exit the game",
 				 TorcsMainExitMenuInit(menuHandle), GfuiScreenActivate);
 
     return 0;

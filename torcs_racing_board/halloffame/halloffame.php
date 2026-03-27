@@ -81,10 +81,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Hall of Fame',
-		'PB_DESCRIPTION'	=> 'Hall of Fame of the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Hall of Fame',
+		'PB_DESCRIPTION'	=> 'Hall of Fame of the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, Board, Car, List, Hall, Fame',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, Board, Car, List, Hall, Fame',
 		'ROOTPATH'			=> $path_to_root,
 	));
 

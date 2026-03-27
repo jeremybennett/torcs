@@ -222,7 +222,7 @@ void * SoundMenuInit(void *prevMenu)
 
 	y -= dy;
 
-	GfuiLabelCreate(scrHandle, "Sound System:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Sound engine:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			x2, y-5, GFUI_ALIGN_HL_VB, 1,
@@ -240,7 +240,7 @@ void * SoundMenuInit(void *prevMenu)
 
 	y -= dy;
 	
-	GfuiLabelCreate(scrHandle, "Menu Music:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreate(scrHandle, "Menu music:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
 	GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
 			"data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 			x2, y-5, GFUI_ALIGN_HL_VB, 1,
@@ -273,11 +273,11 @@ void * SoundMenuInit(void *prevMenu)
 	GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
 	prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-	GfuiAddKey(scrHandle, 13, "Save", NULL, saveSoundOption, NULL);
-	GfuiAddKey(scrHandle, 27, "Cancel Selection", prevMenu, GfuiScreenActivate, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Option in list", (void*)0, changeSoundState, NULL);
-	GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Option in list", (void*)1, changeSoundState, NULL);
+	GfuiAddKey(scrHandle, 13, "Save settings", NULL, saveSoundOption, NULL);
+	GfuiAddKey(scrHandle, 27, "Cancel changes", prevMenu, GfuiScreenActivate, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous option", (void*)0, changeSoundState, NULL);
+	GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next option", (void*)1, changeSoundState, NULL);
 
 	readSoundCfg();
 

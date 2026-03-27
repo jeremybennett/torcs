@@ -554,7 +554,7 @@ void load_params(void)
     for (i = 0; i < NbRows; i++) {
 	col = GfParmListGetCurEltName(ParamHandle, "faces");
 	GF_TAILQ_INIT(&(Row[i].faces));
-	sprintf(buf, "faces/%s/col", col);
+	snprintf(buf, sizeof(buf), "faces/%s/col", col);
 	nbcol = GfParmGetEltNb(ParamHandle, buf);
 	GfParmListSeekFirst(ParamHandle, buf);
 	for (j = 0; j < nbcol; j++) {

@@ -1,37 +1,38 @@
 Architecture Overview {#architecture}
 =====================
 
-The goal of this chapter is to give an introduction into the major TORCS 
-concepts and components, and to document where you find them in the source tree.
-The TORCS architecture view presented here identifies 3 major 
-component types. These are components responsible for controlling the major 
-program flow (Orchestration), interfaces and libraries with common code (TORCS 
-API and Libraries) and modules loaded during run time (Plugins).
+The goal of this chapter is to give an introduction into the major Open Racing
+Simulator concepts and components, and to document where you find them in the
+source tree.
+The architecture view presented here identifies 3 major component types.  These
+are components responsible for controlling the major program flow
+(Orchestration), interfaces and libraries with common code (Simulator API and
+Libraries) and modules loaded during run time (Plugins).
 
 ![Architecture Overview](@ref architecture.png)
 
 Entry Stage
 -----------
-At start up TORCS goes first through the Entry stage. During this 
-stage the command line is analysed, and depending on the desired operation mode 
-TORCS is run either with a command line specified race configuration file in 
-command line mode (option -r), or the graphical menu is started. The command 
-line mode does not output any graphics, and the simulation time is not 
-synchronized with real time, so this mode is ideal to run simulations without 
-human supervisor as fast as possible. The relevant code is in 
+At start up the simulator goes first through the Entry stage. During this
+stage the command line is analysed, and depending on the desired operation mode
+it is run either with a command line specified race configuration file in
+command line mode (option -r), or the graphical menu is started. The command
+line mode does not output any graphics, and the simulation time is not
+synchronized with real time, so this mode is ideal to run simulations without
+a human supervisor as fast as possible. The relevant code is in
 [src/linux/main.cpp](@ref src/linux/main.cpp) for Posix systems, or in
 [src/windows/main.cpp](@ref src/windows/main.cpp) for Windows systems.
 
-The command line mode starts up directly the State Engine 
+The command line mode starts up directly the State Engine
 in src/libs/raceengineclient/raceinit.cpp,
-[ReRunRaceOnConsole](@ref raceinit.cpp#ReRunRaceOnConsole), it is an 
-excellent starting point to review the minimum required setup to start up, run 
+[ReRunRaceOnConsole](@ref raceinit.cpp#ReRunRaceOnConsole), it is an
+excellent starting point to review the minimum required setup to start up, run
 and shutdown the simulation.
 
 Menu
 ----
 The Menu and its components are responsible to offer a visual user interface to 
-ease the setup of TORCS, e.g. the selection of predefined races, changing the 
+ease the setup of the simulator, e.g. the selection of predefined races, changing the 
 selection of robots, graphics and much more. All these settings are persisted 
 in XML files and are read later by the respective components. 
 
@@ -52,18 +53,18 @@ The State Engine controls the execution of the Race manager specific
 configuration, setup, run and shutdown of the simulation 
 (src/libs/raceengineclient/racestate.cpp,
 [ReStateManage](@ref racestate.cpp#ReStateManage)). To trigger state 
-changes the state of TORCS data can be inspected or for more simple cases the 
+changes the simulator state can be inspected or for more simple cases the 
 return value of a function call can be considered. Understanding of the State
 Engine can make some tasks really simple, e.g. implementing a robot which can
-restart the simulation by itself (not supported  by TORCS out of the box, but
+restart the simulation by itself (not supported out of the box, but
 very easy to add, see 
-[TORCS FAQ 6.8](http://torcs.sourceforge.net/index.php?name=Sections&op=viewarticle&artid=30#c6_8)).
+the upstream TORCS FAQ).
 
 ![State Engine](@ref raceenginestate.gif)
 
-TORCS API and Libraries
+Simulator API and Libraries
 -----------------------
-TORCS defines some interfaces and libraries which are used in multiple parts of 
+The simulator defines interfaces and libraries which are used in multiple parts of 
 the project, e.g. XML parameter file handling, common functions for robots, 
 etc. The header files for the interfaces can be found in
 [src/interfaces](@ref src/interfaces), the 
@@ -75,7 +76,7 @@ Plugins
 -------
 The Plugins share all in common that they have specified interfaces and are 
 loaded based on the configuration during run time, so if you have an alternative 
-plugin you can configure TORCS to use it. As example there are two simulation 
+plugin you can configure the simulator to use it. As example there are two simulation 
 implementations, [simuv2](@ref src/modules/simu/simuv2) and simuv3, you can
 simply change a configuration 
 file to change it. Typical use cases are replacing some of the actual modules 
@@ -105,13 +106,13 @@ default module is located in [src/modules/simu/simuv2](@ref src/modules/simu/sim
 
 ### Track #
 
-Track (@ref trackmodint) is responsible for loading tracks into the TORCS tTrack structure. The 
+Track (@ref trackmodint) is responsible for loading tracks into the tTrack structure. The 
 interface is specified in src/interfaces/track.h. The code of the default module 
 is located in [src/modules/track](@ref src/modules/track).
 
 ### Robot #
 
-The robot module(s) (@ref robotmodint) drive the cars in the simulation. TORCS can load multiple 
+The robot module(s) (@ref robotmodint) drive the cars in the simulation. The simulator can load multiple 
 robots at the same time to drive multiple cars, one robot supports up to 10 
 cars at once. The major function is [rbDrive](@ref tfRbDrive), which takes as 
 argument an index 
@@ -121,7 +122,7 @@ the car and a [struct Situation *](@ref Situation) containing the situation.
 As result the call fills 
 in the tCarCtrl struct, which contains commands to drive the car (steer, 
 brake, accelerator,clutch, ...). The interface is specified in 
-src/interfaces/robot.h. Various drivers implementations are shipped with TORCS, 
+src/interfaces/robot.h. Various drivers implementations are shipped with Open Racing Simulator, 
 have a look into src/drivers. Specially to mention is the "Human Driver" 
 (human), it takes input from the user to control the car, so if your experiment 
 requires adoption regarding user input have a look at this robot.
@@ -137,20 +138,20 @@ download robots of past events) or on the
 Simulation Loop Internals
 =========================
 
-After discussing the TORCS architecture we are now ready to dig into some 
+After discussing the simulator architecture we are now ready to dig into some 
 details of the simulation loop. This seems to be a topic which is usually not 
 too easy to understand. Let start with taking about time. There are two 
-different times in TORCS, simulation time and real time. The simulation time is 
+different time concepts: simulation time and real time. The simulation time is 
 basically just the time axis on which we calculate the simulation intermediate 
 results, so if it takes 1 real minute or 1 real ms to simulate 1s in simulation 
 time, the simulation time is just one second, real time does not matter. Real 
 time in contrary is the time observed by the user. So it is very important to 
-understand that the whole TORCS architecture just uses simulation time to perform 
+understand that the whole architecture uses simulation time to perform 
 calculations, evaluation of rules etc., real time does not matter in that 
 respect. Real time is only used to synchronize in some modes simulation time 
 with real time, e.g. to enable a human to drive a car.
 
-The TORCS Simulation Loop starts in the State Engine, 
+The Simulation Loop starts in the State Engine, 
 src/libs/raceengineclient/racestate.cpp, 
 [ReStateManage](@ref racestate.cpp#ReStateManage),
 case [RE_STATE_RACE](@ref RE_STATE_RACE). In 
@@ -172,9 +173,9 @@ works like this: Progress the simulation time until simulation time has caught u
 with real time, then render a frame.
 
 Now this has some consequences, because 
-TORCS is usually not the only running process in the operating environment and 
+The simulator is usually not the only running process in the operating environment and 
 is usually not running as real time task. So if another process or the 
-operating environment hooks up some resources, it might happen that TORCS sleeps 
+operating environment hooks up some resources, it might happen that the simulator sleeps 
 for a moment, and after that nap it has to catch up. So a consequence of 
 this mode is that even if you repeat runs of the exact same simulation in simulation time, 
 that the rendered frames will quite likely not be the identical ones. This can 
@@ -218,7 +219,7 @@ Console Mode
 ------------
 
 [RM_DISP_MODE_CONSOLE](@ref RM_DISP_MODE_CONSOLE):
-This mode is used when you start TORCS with the -r option from the command 
+This mode is used when you start the simulator with the -r option from the command 
 line, it does have no GUI at all, it just prints out some progress information. 
 This mode is intended for batch operation and unit testing.
 
@@ -228,7 +229,7 @@ Simulation Time Step
 As you can see in all these modes, [ReOneStep](@ref ReOneStep) in 
 src/libs/raceengineclient/raceengine.cpp is then called at some point, this 
 actually executes the simulation time step. Here is a good point to set a 
-break point to investigate the call stack when you are new to the TORCS code
+break point to investigate the call stack when you are new to the code
 base.
 
 The discretisation and simulation loop has another consequence which is to 

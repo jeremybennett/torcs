@@ -22,7 +22,7 @@
     @version $Id$
 */
 
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -45,7 +45,7 @@ tFList * GfDirGetList(const char *dir)
 	if (GfOs.dirGetList) {
 		return GfOs.dirGetList(dir);
 	} else {
-		return (tFList*)NULL;
+		return (tFList*)nullptr;
 	}
 }
 
@@ -61,7 +61,7 @@ tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
 	if (GfOs.dirGetListFiltered) {
 		return GfOs.dirGetListFiltered(dir, suffix);
 	} else {
-		return (tFList*)NULL;
+		return (tFList*)nullptr;
 	}
 }
 
@@ -84,10 +84,10 @@ void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, 
 			if ((freeUserData) && (tmp->userData)) {
 				freeUserData(tmp->userData);
 			}
-			if (freename && tmp->name != NULL) {
+			if (freename && tmp->name != nullptr) {
 				freez(tmp->name);
 			}
-			if (freedispname && tmp->dispName != NULL) {
+			if (freedispname && tmp->dispName != nullptr) {
 				freez(tmp->dispName);
 			}
 			free(tmp);

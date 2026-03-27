@@ -28,8 +28,7 @@
 
 bool doMipMap(const char *tfname, int mipmap)
 {
-	char *buf = (char *) malloc(strlen(tfname)+1);
-	strcpy(buf, tfname);
+	char *buf = strdup(tfname);
 
 	// find the filename extension.
 	char *s = strrchr(buf, '.');

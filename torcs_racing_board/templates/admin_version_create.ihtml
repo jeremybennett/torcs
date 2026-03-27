@@ -2,9 +2,9 @@
 	<tr>
 		<td class="border contentbordercolor">
 
-			<h3>Register TORCS versions</h3>
+			<h3>Register simulator versions</h3>
 			<p>
-				Here you can define TORCS versions, they can then be used by the races (to document the version
+				Here you can define simulator versions, they can then be used by the races (to document the version
 				which has been used).
 			</p>
 		</td>

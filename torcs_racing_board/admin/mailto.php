@@ -88,10 +88,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board, send mail to groups',
-		'PB_DESCRIPTION'	=> 'Send Mail to User Groups of the TORCS Racing Board forum',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board, send mail to groups',
+		'PB_DESCRIPTION'	=> 'Send Mail to User Groups of the Open Racing Simulator Racing Board forum',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, write, mail, post, forum, discuss',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, write, mail, post, forum, discuss',
 		'ROOTPATH'			=> $path_to_root,
 	));
 

@@ -34,8 +34,8 @@
 
 
 #include <portability.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -319,7 +319,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 	/* Consider all the track with the sides */
 	/* Stay on main segment */
 	if (type == TR_LPOS_TRACK) {
-		if (seg->rside != NULL) {
+		if (seg->rside != nullptr) {
 			sseg = seg->rside;
 			p->toRight += RtTrackGetWidth(sseg, p->toStart);
 			sseg = sseg->rside;
@@ -327,7 +327,7 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 				p->toRight += RtTrackGetWidth(sseg, p->toStart);
 			}
 		}
-		if (seg->lside != NULL) {
+		if (seg->lside != nullptr) {
 			sseg = seg->lside;
 			p->toLeft += RtTrackGetWidth(sseg, p->toStart);
 			sseg = sseg->lside;
@@ -339,14 +339,14 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 
 	/* Relative to a segment, change to the side segment if necessary */
 	if (type == TR_LPOS_SEGMENT) {
-		if ((p->toRight < 0) && (seg->rside != NULL)) {
+		if ((p->toRight < 0) && (seg->rside != nullptr)) {
 			sseg = seg->rside;
 			p->seg = sseg;
 			curWidth = RtTrackGetWidth(sseg, p->toStart);
 			p->toRight +=  curWidth;
 			p->toLeft -= seg->width;
 			p->toMiddle += (seg->width + curWidth) / 2.0;
-			if ((p->toRight < 0) && (sseg->rside != NULL)) {
+			if ((p->toRight < 0) && (sseg->rside != nullptr)) {
 				p->toLeft -= curWidth;
 				p->toMiddle += curWidth / 2.0;
 				seg = sseg;
@@ -356,14 +356,14 @@ RtTrackGlobal2Local(tTrackSeg *segment, tdble X, tdble Y, tTrkLocPos *p, int typ
 				p->toRight +=  curWidth;
 				p->toMiddle += curWidth / 2.0;
 			}
-		} else if ((p->toLeft < 0) && (seg->lside != NULL)) {
+		} else if ((p->toLeft < 0) && (seg->lside != nullptr)) {
 			sseg = seg->lside;
 			p->seg = sseg;
 			curWidth = RtTrackGetWidth(sseg, p->toStart);
 			p->toRight += -seg->width;
 			p->toMiddle -= (seg->width + curWidth) / 2.0;
 			p->toLeft += curWidth;
-			if ((p->toLeft < 0) && (sseg->lside != NULL)) {
+			if ((p->toLeft < 0) && (sseg->lside != nullptr)) {
 				p->toRight -= curWidth;
 				p->toMiddle -= curWidth / 2.0;
 				seg = sseg;
@@ -407,20 +407,20 @@ RtTrackHeightL(tTrkLocPos *p)
 	tTrackSeg *seg = p->seg;
 	
 	//bool left_side = true;
-	if ((tr < 0) && (seg->rside != NULL)) {
+	if ((tr < 0) && (seg->rside != nullptr)) {
 		//left_side = false;
 
 		seg = seg->rside;
 		tr += seg->width;
 
-		if ((tr < 0) && (seg->rside != NULL)) {
+		if ((tr < 0) && (seg->rside != nullptr)) {
 			seg = seg->rside;
 			tr += RtTrackGetWidth(seg, p->toStart);
 		}   
-	} else if ((tr > seg->width) && (seg->lside != NULL)) {
+	} else if ((tr > seg->width) && (seg->lside != nullptr)) {
 		tr -= seg->width;
 		seg = seg->lside;
-		if ((tr > seg->width) && (seg->lside != NULL)) {
+		if ((tr > seg->width) && (seg->lside != nullptr)) {
 			tr -= RtTrackGetWidth(seg, p->toStart);
 			seg = seg->lside;
 		}
@@ -468,17 +468,17 @@ RtTrackGetSeg(tTrkLocPos *p)
 	tdble tr = p->toRight;
 	tTrackSeg *seg = p->seg;
 
-	if ((tr < 0) && (seg->rside != NULL)) {
+	if ((tr < 0) && (seg->rside != nullptr)) {
 		seg = seg->rside;
 		tr += seg->width;
-		if ((tr < 0) && (seg->rside != NULL)) {
+		if ((tr < 0) && (seg->rside != nullptr)) {
 			seg = seg->rside;
 			tr += RtTrackGetWidth(seg, p->toStart);
 		}   
-	} else if ((tr > seg->width) && (seg->lside != NULL)) {
+	} else if ((tr > seg->width) && (seg->lside != nullptr)) {
 		tr -= seg->width;
 		seg = seg->lside;
-		if ((tr > seg->width) && (seg->lside != NULL)) {
+		if ((tr > seg->width) && (seg->lside != nullptr)) {
 			tr -= RtTrackGetWidth(seg, p->toStart);
 			seg = seg->lside;
 		}
@@ -726,7 +726,7 @@ RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW)
 	tdble pitts;
 	tdble carts;
 
-	if (car->_pit == NULL) return 1;
+	if (car->_pit == nullptr) return 1;
 
 	pitpos = &(car->_pit->pos);
 	carpos = &(car->_trkPos);
@@ -759,7 +759,7 @@ RtDistToPit(struct CarElt *car, tTrack *track, tdble *dL, tdble *dW)
 static void RtReadCarPitSetupEntry(tCarPitSetupValue* v, const char* path, const char* key, void *hdle, bool minmaxonly)
 {
 	if (!minmaxonly) {
-		v->value = GfParmGetNum(hdle, path, key, (char*)NULL, 0.0f);
+		v->value = GfParmGetNum(hdle, path, key, (char*)nullptr, 0.0f);
 	}
 	GfParmGetNumBoundaries(hdle, path, key, &v->min, &v->max);
 }
@@ -888,7 +888,7 @@ void RtGetCarPitSetupFilename(
 	@param[in,out] hdlesetup	Handle to parameter set to write into
 	@param[in] path				path of parameter
 	@param[in]	key				key	name
-	@param[in]	unit			unit to convert the result to (NULL if SI wanted)	
+	@param[in]	unit			unit to convert the result to (nullptr if SI wanted)	
 	@param[in]	v				tCarPitSetupValue to set	
 */
 static void RtParmSetNum(void* hdlesetup, const char* path, const char* key, const char* unit, tCarPitSetupValue* v)
@@ -944,7 +944,7 @@ void RtSaveCarPitSetupFile(
 	}
 
 	// Brake
-	RtParmSetNum(hdlesetup, SECT_BRKSYST, PRM_BRKREP, NULL, &s->brakeRepartition);
+	RtParmSetNum(hdlesetup, SECT_BRKSYST, PRM_BRKREP, nullptr, &s->brakeRepartition);
 	RtParmSetNum(hdlesetup, SECT_BRKSYST, PRM_BRKPRESS, "kPa", &s->brakePressure);
 
 	// Anti roll bar
@@ -965,7 +965,7 @@ void RtSaveCarPitSetupFile(
 	// Gears
 	for (i=0; i < 8; i++) { 
 		snprintf(path, BUFSIZE, "%s/%s/%d", SECT_GEARBOX, ARR_GEARS, i+1);
-		RtParmSetNum(hdlesetup, path, PRM_RATIO, NULL, &s->gearsratio[i]);
+		RtParmSetNum(hdlesetup, path, PRM_RATIO, nullptr, &s->gearsratio[i]);
 	}
 
 	// Wings
@@ -978,10 +978,10 @@ void RtSaveCarPitSetupFile(
 	static const char *DiffSect[3] = {SECT_FRNTDIFFERENTIAL, SECT_REARDIFFERENTIAL, SECT_CENTRALDIFFERENTIAL};
 	static const char *DiffType[5] = {VAL_DIFF_NONE, VAL_DIFF_SPOOL, VAL_DIFF_FREE, VAL_DIFF_LIMITED_SLIP, VAL_DIFF_VISCOUS_COUPLER};
 	for (i=0; i < 3; i++) { 
-		RtParmSetNum(hdlesetup, DiffSect[i], PRM_RATIO, NULL, &s->diffratio[i]);
-		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MIN_TQ_BIAS, NULL, &s->diffmintqbias[i]);
-		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_TQ_BIAS, NULL, &s->diffmaxtqbias[i]);
-		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_SLIP_BIAS, NULL, &s->diffslipbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_RATIO, nullptr, &s->diffratio[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MIN_TQ_BIAS, nullptr, &s->diffmintqbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_TQ_BIAS, nullptr, &s->diffmaxtqbias[i]);
+		RtParmSetNum(hdlesetup, DiffSect[i], PRM_MAX_SLIP_BIAS, nullptr, &s->diffslipbias[i]);
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKING_TQ, "N.m", &s->difflockinginputtq[i]);
 		RtParmSetNum(hdlesetup, DiffSect[i], PRM_LOCKINGBRAKE_TQ, "N.m", &s->difflockinginputbraketq[i]);
 
@@ -1135,7 +1135,7 @@ bool RtLoadCarPitSetup(
 	merged with the cars category setup
     @ingroup setuptools
 	@param[in] carname TORCS internal name of the car (directory/filename)
-    @return	NULL on failure, a valid handle otherwise
+    @return	nullptr on failure, a valid handle otherwise
  */
 void* RtLoadOriginalCarSettings(const char* carname)
 {
@@ -1146,25 +1146,25 @@ void* RtLoadOriginalCarSettings(const char* carname)
 	snprintf(buf, BUFSIZE, "%scars/%s/%s.xml", GetDataDir(), carname, carname);
 	void* carhdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (carhdle == 0) {
-		GfError("carhdle NULL in %s, line %d\n", __FILE__, __LINE__);
-		return NULL;
+		GfError("carhdle nullptr in %s, line %d\n", __FILE__, __LINE__);
+		return nullptr;
 	}
 
 	// Get category
-	const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, NULL);
+	const char* category = GfParmGetStr(carhdle, SECT_CAR, PRM_CATEGORY, nullptr);
 	if (category == 0) {
-		GfError("category string NULL in %s, line %d\n", __FILE__, __LINE__);
+		GfError("category string nullptr in %s, line %d\n", __FILE__, __LINE__);
 		GfParmReleaseHandle(carhdle);
-		return NULL;
+		return nullptr;
 	}
 
 	// Fetch category handle
 	snprintf(buf, BUFSIZE, "%scategories/%s.xml", GetDataDir(), category);
 	void* cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD);
 	if (cathdle == 0) {
-		GfError("cathdle NULL in %s, line %d\n", __FILE__, __LINE__);
+		GfError("cathdle nullptr in %s, line %d\n", __FILE__, __LINE__);
 		GfParmReleaseHandle(carhdle);
-		return NULL;
+		return nullptr;
 	}
 
 	// Compose final result, MergeHandles releases source handles with given parameters
@@ -1186,7 +1186,7 @@ bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
 {
 	void* carhandle = RtLoadOriginalCarSettings(carname);
 	if (carhandle == 0) {
-		GfError("carhandle NULL in %s, line %d\n", __FILE__, __LINE__);
+		GfError("carhandle nullptr in %s, line %d\n", __FILE__, __LINE__);
 		return false;
 	}
 
@@ -1203,7 +1203,7 @@ bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname)
 	@param[in] robidx		Index of robot
 	@param[in] trackname	TORCS internal name name of track
 	@param[in] carname		TORCS internal name car name
-	@return	Handle to data, or NULL on failure (e.g. if file is not available) 
+	@return	Handle to data, or nullptr on failure (e.g. if file is not available) 
 	@note Robot, car, track and session information are used to compose a standard setup filename
  */
 void* RtParmReadSetup(

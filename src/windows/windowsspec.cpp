@@ -59,11 +59,7 @@ static int windowsModLoad(unsigned int gfid, char *sopath, tModList **modlist)
 	curMod = (tModList*)calloc(1, sizeof(tModList));
 	GfOut("loading windows module %s\n",sopath);
 	lastSlash = strrchr(sopath, '/');
-	if (lastSlash) {
-		strcpy(dname, lastSlash+1);
-	} else {
-		strcpy(dname, sopath);
-	}
+	snprintf(dname, sizeof(dname), "%s", lastSlash ? lastSlash+1 : sopath);
 	dname[strlen(dname) - 4] = 0; /* cut .dll */
 	
 	GfOut("LoadLibrary from %s\n",sopath);
@@ -149,11 +145,7 @@ static int windowsModInfo(unsigned int gfid, char *sopath, tModList **modlist)
 	curMod = (tModList*)calloc(1, sizeof(tModList));
     
 	lastSlash = strrchr(sopath, '/');
-	if (lastSlash) {
-		strcpy(dname, lastSlash+1);
-	} else {
-		strcpy(dname, sopath);
-	}
+	snprintf(dname, sizeof(dname), "%s", lastSlash ? lastSlash+1 : sopath);
 	dname[strlen(dname) - 4] = 0; /* cut .dll */
     
 	handle = LoadLibrary( sopath );
@@ -240,11 +232,11 @@ static int windowsModLoadDir(unsigned int gfid, char *dir, tModList **modlist)
     // parcours du r�pertoire
 	_finddata_t FData;
 	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.dll", dir );
+	snprintf(Dir_name, sizeof(Dir_name), "%s\\*.dll", dir );
 	long Dirent = _findfirst( Dir_name, &FData );
 	if ( Dirent != -1 )
 		do {
-		sprintf(sopath, "%s\\%s", dir, FData.name);
+		snprintf(sopath, sizeof(sopath), "%s\\%s", dir, FData.name);
 		handle = LoadLibrary( sopath );
 		if (handle != NULL) {
 			if ((fModInfo = (tfModInfo)GetProcAddress(handle, dname)) != NULL) {
@@ -332,7 +324,7 @@ static int windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList *
 	_finddata_t FData;
 
 	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.*", dir );
+	snprintf(Dir_name, sizeof(Dir_name), "%s\\*.*", dir );
 	GfOut("trying dir info %s\n",dir);
 	long Dirent = _findfirst( Dir_name, &FData );
 	if ( Dirent != -1 ) {
@@ -340,11 +332,11 @@ static int windowsModInfoDir(unsigned int gfid, char *dir, int level, tModList *
 			if (((strlen(FData.name) > 5) && 
 						   (strcmp(".dll", FData.name+strlen(FData.name)-4) == 0)) || (level == 1)) { /* xxxx.dll */
 				if (level == 1) {
-					sprintf(sopath, "%s/%s/%s.dll", dir, FData.name, FData.name);
-					strcpy(dname, FData.name);
+					snprintf(sopath, sizeof(sopath), "%s/%s/%s.dll", dir, FData.name, FData.name);
+					snprintf(dname, sizeof(dname), "%s", FData.name);
 				} else {
-					sprintf(sopath, "%s/%s", dir, FData.name);
-					strcpy(dname, FData.name);
+					snprintf(sopath, sizeof(sopath), "%s/%s", dir, FData.name);
+					snprintf(dname, sizeof(dname), "%s", FData.name);
 					dname[strlen(dname) - 4] = 0; /* cut .dll */
 				}
 				handle = LoadLibrary( sopath );
@@ -512,7 +504,7 @@ static tFList* windowsDirGetList(const char *dir)
 	
 	_finddata_t FData;
 	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.*", dir );
+	snprintf(Dir_name, sizeof(Dir_name), "%s\\*.*", dir );
 	GfOut("trying dir %s\n",dir);
 	long Dirent = _findfirst( Dir_name, &FData );
 	if ( Dirent != -1 ) {
@@ -576,7 +568,7 @@ static tFList *windowsDirGetListFiltered(const char *dir, const char *suffix)
 	
 	_finddata_t FData;
 	char Dir_name[ 1024 ];
-	sprintf( Dir_name, "%s\\*.*", dir );
+	snprintf(Dir_name, sizeof(Dir_name), "%s\\*.*", dir );
 	GfOut("trying dir %s\n",dir);
 	long Dirent = _findfirst( Dir_name, &FData );
 	if ( Dirent != -1 ) {

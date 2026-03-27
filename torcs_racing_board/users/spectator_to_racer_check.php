@@ -85,10 +85,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board racers entry quizz result page',
-		'PB_DESCRIPTION'	=> 'Your result of the racer entry quizz for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board racers entry quizz result page',
+		'PB_DESCRIPTION'	=> 'Your result of the racer entry quizz for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, result, entry, quizz, exam, test',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, result, entry, quizz, exam, test',
 		'ROOTPATH'			=> $path_to_root
 	));
 

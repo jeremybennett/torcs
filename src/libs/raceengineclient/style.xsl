@@ -14,10 +14,10 @@
 <xsl:template match="/params">
 
 	<html>
-	<head><title>TORCS Race Results</title></head>
+	<head><title>Race Results — Open Racing Simulator</title></head>
 	<body>
 
-	<p><A HREF="http://www.torcs.org">TORCS Home Page</A></p>
+	<p><strong>Open Racing Simulator</strong> — Race Results</p>
 
 	<!-- print Params attributes -->
 	<xsl:for-each select="@*">

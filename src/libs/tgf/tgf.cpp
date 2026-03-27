@@ -23,11 +23,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #endif
-#include <errno.h>
+#include <cerrno>
 #include <portability.h>
 
 #include <tgf.h>
-#include <time.h>
+#include <ctime>
 
 extern void gfDirInit(void);
 extern void gfModInit(void);
@@ -38,7 +38,7 @@ extern void gfRlstInit(void);
 
 #ifdef WIN32
 #include <crtdbg.h>
-#include <assert.h>
+#include <cassert>
 
 
 void * _tgf_win_malloc(size_t size)
@@ -52,8 +52,8 @@ void * _tgf_win_malloc(size_t size)
 	return p + 2*sizeof(int);
 #else // _DEBUG
 	char * p = (char*)GlobalAlloc(GMEM_FIXED, size + sizeof(int));
-	if (p == NULL) {
-		return NULL;
+	if (p == nullptr) {
+		return nullptr;
 	}
 	*(int*)(p) = size;
 	return p + sizeof(int);
@@ -73,15 +73,15 @@ void * _tgf_win_realloc(void * memblock, size_t size)
 {
 	if (size == 0) {
 		_tgf_win_free(memblock);
-		return NULL;
+		return nullptr;
 	}
 
 	void * p = _tgf_win_malloc(size);
-	if (p == NULL) {
-		return NULL;
+	if (p == nullptr) {
+		return nullptr;
 	}
 
-	if (memblock != NULL) {
+	if (memblock != nullptr) {
 #ifdef _DEBUG
 		memcpy(p, memblock, min(*(int*)((char*)memblock-2*sizeof(int)), (int)size));
 #else // _DEBUG
@@ -127,8 +127,9 @@ void _tgf_win_free(void * memblock)
 
 char * _tgf_win_strdup(const char * str)
 {
-	char * s = (char*)_tgf_win_malloc(strlen(str)+1);
-	strcpy(s,str);
+	size_t len = strlen(str) + 1;
+	char * s = (char*)_tgf_win_malloc(len);
+	snprintf(s, len, "%s", str);
 
 	return s;
 }
@@ -308,7 +309,7 @@ int GfNearestPow2 (int x)
  */
 int GfCreateDir(char *path)
 {
-	if (path == NULL) {
+	if (path == nullptr) {
 		return GF_DIR_CREATION_FAILED;
 	}
 
@@ -368,7 +369,7 @@ int GfCreateDirForFile(const char *filenameandpath)
 	}
 	
 	const char* lastdelim = strrchr(filenameandpath, '/');
-	if (lastdelim != NULL && lastdelim != filenameandpath) {
+	if (lastdelim != nullptr && lastdelim != filenameandpath) {
 		const int BUFSIZE = 1024;
 		char buf[BUFSIZE];
 		const int size = MIN(lastdelim - filenameandpath, BUFSIZE - 1);

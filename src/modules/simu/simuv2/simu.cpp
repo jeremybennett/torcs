@@ -17,10 +17,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <memory.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 #ifdef WIN32
 #include <windows.h>
 #include <float.h>

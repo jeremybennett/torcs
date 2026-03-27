@@ -27,18 +27,18 @@
 #ifndef __TGF__H__
 #define __TGF__H__
 
-#include <stdio.h>
+#include <cstdio>
 #ifndef WIN32
 #include <sys/param.h>
-#include <assert.h>
+#include <cassert>
 #endif /* WIN32 */
-#include <stdlib.h>
+#include <cstdlib>
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <stdarg.h>
+#include <cstdarg>
 #include <cstring>
-#include <math.h>
+#include <cmath>
 #include <osspec.h>
 
 
@@ -61,7 +61,7 @@ extern void GfInit(void);
 #define FREEZ(x) do {				\
     if (x) {					\
 	free(x);				\
-	x = 0;					\
+	x = nullptr;				\
     }						\
 } while (0)
 
@@ -472,7 +472,7 @@ struct {								\
 #define	GF_TAILQ_NEXT(elm, field)	((elm)->field.tqe_next)
 /** End of a TAILQ
     @ingroup tailq */
-#define	GF_TAILQ_END(head)		NULL
+#define	GF_TAILQ_END(head)		nullptr
 /** Last element of a TAILQ
     @ingroup tailq */
 #define GF_TAILQ_LAST(head, headname) 					\
@@ -488,21 +488,21 @@ struct {								\
 /** Head initialization (Mandatory)
     @ingroup tailq */
 #define	GF_TAILQ_INIT(head) do {					\
-	(head)->tqh_first = NULL;					\
+	(head)->tqh_first = nullptr;					\
 	(head)->tqh_last = &(head)->tqh_first;				\
 } while (0)
 
 /** Entry initialization (optionnal if inserted)
     @ingroup tailq */
 #define GF_TAILQ_INIT_ENTRY(elm, field) do {	\
-  (elm)->field.tqe_next = 0;			\
-  (elm)->field.tqe_prev = 0;			\
+  (elm)->field.tqe_next = nullptr;		\
+  (elm)->field.tqe_prev = nullptr;		\
 } while (0)
 
 /** Insert an element at the head
     @ingroup tailq */
 #define GF_TAILQ_INSERT_HEAD(head, elm, field) do {			\
-	if (((elm)->field.tqe_next = (head)->tqh_first) != NULL)	\
+	if (((elm)->field.tqe_next = (head)->tqh_first) != nullptr)	\
 		(head)->tqh_first->field.tqe_prev =			\
 		    &(elm)->field.tqe_next;				\
 	else								\
@@ -514,7 +514,7 @@ struct {								\
 /** Insert an element at the tail
     @ingroup tailq */
 #define GF_TAILQ_INSERT_TAIL(head, elm, field) do {			\
-	(elm)->field.tqe_next = NULL;					\
+	(elm)->field.tqe_next = nullptr;				\
 	(elm)->field.tqe_prev = (head)->tqh_last;			\
 	*(head)->tqh_last = (elm);					\
 	(head)->tqh_last = &(elm)->field.tqe_next;			\
@@ -523,7 +523,7 @@ struct {								\
 /** Insert an element after another element
     @ingroup tailq */
 #define GF_TAILQ_INSERT_AFTER(head, listelm, elm, field) do {		\
-	if (((elm)->field.tqe_next = (listelm)->field.tqe_next) != NULL)\
+	if (((elm)->field.tqe_next = (listelm)->field.tqe_next) != nullptr)\
 		(elm)->field.tqe_next->field.tqe_prev = 		\
 		    &(elm)->field.tqe_next;				\
 	else								\
@@ -544,7 +544,7 @@ struct {								\
 /** Remove an element
     @ingroup tailq */
 #define GF_TAILQ_REMOVE(head, elm, field) do {				\
-	if (((elm)->field.tqe_next) != NULL)				\
+	if (((elm)->field.tqe_next) != nullptr)				\
 		(elm)->field.tqe_next->field.tqe_prev = 		\
 		    (elm)->field.tqe_prev;				\
 	else								\

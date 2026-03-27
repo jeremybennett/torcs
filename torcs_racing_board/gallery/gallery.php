@@ -72,10 +72,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'TORCS Screenshots',
-		'PB_DESCRIPTION'	=> 'TORCS screenshots',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator Screenshots',
+		'PB_DESCRIPTION'	=> 'Open Racing Simulator screenshots',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, Board, screenshots',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, Board, screenshots',
 		'ROOTPATH'			=> $path_to_root,
 	));
 

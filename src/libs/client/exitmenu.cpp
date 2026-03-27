@@ -43,20 +43,22 @@ void * exitMenuInit(void *menu, void *menuHandle)
 		GfuiScreenRelease(menuHandle);
     }
     
-    menuHandle = GfuiMenuScreenCreate("Quit ?");
+    menuHandle = GfuiMenuScreenCreate("Quit?");
     GfuiScreenAddBgImg(menuHandle, "data/img/splash-quit.png");
 
     GfuiMenuButtonCreate(menuHandle,
-		      "No, Back to Game",
-		      "Return to TORCS",
+		      "No, Continue",
+		      "Return to the game",
 		      menu,
 		      GfuiScreenActivate);
     
     GfuiMenuButtonCreate(menuHandle,
-		      "Yes, Let's Quit",
-		      "Exit of TORCS",
+		      "Yes, Exit",
+		      "Exit the game",
 		      NULL,
 		      endofprog);
+
+    GfuiAddKey(menuHandle, (unsigned char)27, "Return to the game", menu, GfuiScreenActivate, NULL);
     return menuHandle;
 }
 

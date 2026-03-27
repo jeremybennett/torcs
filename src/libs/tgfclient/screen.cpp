@@ -754,7 +754,7 @@ GfScrMenuInit(void *precMenu)
     if (scrHandle) return scrHandle;
 
     scrHandle = GfuiScreenCreateEx((float*)NULL, NULL, onActivate, NULL, (tfuiCallback)NULL, 1);
-    GfuiTitleCreate(scrHandle, "Screen configuration", 0);
+    GfuiTitleCreate(scrHandle, "Display Configuration", 0);
     GfuiScreenAddBgImg(scrHandle, "data/img/splash-graphic.png");
 
     x1 = 200;

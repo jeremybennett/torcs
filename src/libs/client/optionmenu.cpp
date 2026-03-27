@@ -32,35 +32,33 @@ TorcsOptionOptionInit(void *precMenu)
 {
     if (optionHandle) return optionHandle;
 
-    optionHandle = GfuiMenuScreenCreate("OPTIONS");
+    optionHandle = GfuiMenuScreenCreate("Options");
 
     GfuiScreenAddBgImg(optionHandle, "data/img/splash-options.png");
 
     GfuiMenuButtonCreate(optionHandle,
-			 "Graphic", "Configure graphic parameters",
+			 "Display", "Configure screen resolution and display settings",
+			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(optionHandle,
+			 "Graphics", "Configure rendering quality and visual effects",
 			 GraphMenuInit(optionHandle), GfuiScreenActivate);
 
     GfuiMenuButtonCreate(optionHandle,
-			 "Display", "Configure display parameters",
-			 GfScrMenuInit(optionHandle), GfuiScreenActivate);
-
-/*
-    GfuiMenuButtonCreate(optionHandle,
-			 "Simulation", "Configure simulation parameters",
-			 SimuMenuInit(optionHandle), GfuiScreenActivate);
-*/
-
-    GfuiMenuButtonCreate(optionHandle,
-			 "Sound", "Configure sound parameters",
+			 "Sound", "Configure sound volume and audio settings",
 			 SoundMenuInit(optionHandle), GfuiScreenActivate);
 
     GfuiMenuButtonCreate(optionHandle,
-			 "OpenGL", "Configure OpenGL parameters",
+			 "OpenGL", "Configure advanced OpenGL rendering options",
 			 OpenGLMenuInit(optionHandle), GfuiScreenActivate);
+
+    GfuiMenuButtonCreate(optionHandle,
+			 "Simulation", "Configure physics simulation engine",
+			 SimuMenuInit(optionHandle), GfuiScreenActivate);
 
     GfuiMenuBackQuitButtonCreate(optionHandle,
 				 "Back",
-				 "Back to Main",
+				 "Return to Main Menu",
 				 precMenu,
 				 GfuiScreenActivate);
 

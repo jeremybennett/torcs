@@ -136,7 +136,7 @@ SimuMenuInit(void *prevMenu)
     dy = 30;
 
     y -= dy;
-    GfuiLabelCreate(scrHandle, "Simulation version:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
+    GfuiLabelCreate(scrHandle, "Physics engine:", GFUI_FONT_MEDIUM, x, y, GFUI_ALIGN_HL_VB, 0);
     GfuiGrButtonCreate(scrHandle, "data/img/arrow-left.png", "data/img/arrow-left.png",
 		       "data/img/arrow-left.png", "data/img/arrow-left-pushed.png",
 		       x2, y, GFUI_ALIGN_HL_VB, 1,
@@ -156,11 +156,11 @@ SimuMenuInit(void *prevMenu)
     GfuiButtonCreate(scrHandle, "Cancel", GFUI_FONT_LARGE, 430, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,
      prevMenu, GfuiScreenActivate, NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
-    GfuiAddKey(scrHandle, 13, "Save", NULL, SaveSimuVersion, NULL);
-    GfuiAddKey(scrHandle, 27, "Cancel Selection", prevMenu, GfuiScreenActivate, NULL);
-    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Screen-Shot", NULL, GfuiScreenShot, NULL);
-    GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous Version in list", (void*)0, ChangeSimuVersion, NULL);
-    GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next Version in list", (void*)1, ChangeSimuVersion, NULL);
+    GfuiAddKey(scrHandle, 13, "Save settings", NULL, SaveSimuVersion, NULL);
+    GfuiAddKey(scrHandle, 27, "Cancel changes", prevMenu, GfuiScreenActivate, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_LEFT, "Previous engine", (void*)0, ChangeSimuVersion, NULL);
+    GfuiAddSKey(scrHandle, GLUT_KEY_RIGHT, "Next engine", (void*)1, ChangeSimuVersion, NULL);
 
     ReadSimuCfg();
   

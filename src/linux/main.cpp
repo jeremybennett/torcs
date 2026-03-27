@@ -43,7 +43,7 @@ init_args(int argc, char **argv, const char **raceconfig)
 
 			if(i < argc) {
 				buf = (char *)malloc(strlen(argv[i]) + 2);
-				sprintf(buf, "%s/", argv[i]);
+				snprintf(buf, strlen(argv[i]) + 2, "%s/", argv[i]);
 				SetLocalDir(buf);
 				free(buf);
 				i++;
@@ -53,7 +53,7 @@ init_args(int argc, char **argv, const char **raceconfig)
 
 			if(i < argc) {
 				buf = (char *)malloc(strlen(argv[i]) + 2);
-				sprintf(buf, "%s/", argv[i]);
+				snprintf(buf, strlen(argv[i]) + 2, "%s/", argv[i]);
 				SetLibDir(buf);
 				free(buf);
 				i++;
@@ -63,7 +63,7 @@ init_args(int argc, char **argv, const char **raceconfig)
 
 			if(i < argc) {
 				buf = (char *)malloc(strlen(argv[i]) + 2);
-				sprintf(buf, "%s/", argv[i]);
+				snprintf(buf, strlen(argv[i]) + 2, "%s/", argv[i]);
 				SetDataDir(buf);
 				free(buf);
 				i++;

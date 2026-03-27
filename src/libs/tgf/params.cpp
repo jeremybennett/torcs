@@ -22,20 +22,20 @@
     @version	$Id$
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <sys/stat.h>
 #ifndef _WIN32
 #include <unistd.h>
 #endif
-#include <math.h>
+#include <cmath>
 
 #include <xmlparse.h>
 #ifdef WIN32
 #include <windows.h>
 #endif
 #include <tgf.h>
-#include <assert.h>
+#include <cassert>
 #include <portability.h>
 
 
@@ -180,7 +180,7 @@ void GfParmShutdown (void)
  *  @param[in] sectionName name of the section containing the parameter
  *  @param[in] paramName name of the parameter
  *  @return string
- *  <br>NULL on error
+ *  <br>nullptr on error
  *  @note Heap memory is allocated for the return value, so the caller is responsible for releasing the
  *  memory of the returned string.
  */
@@ -192,7 +192,7 @@ static char *getFullName (const char *sectionName, const char *paramName)
 	fullName = (char *) malloc(strlen (sectionName) + strlen (paramName) + 2);
 	if (!fullName) {
 		GfError ("getFullName: malloc (%lu) failed", len);
-		return NULL;
+		return nullptr;
 	}
 	snprintf(fullName, len, "%s/%s", sectionName, paramName);
 	
@@ -208,7 +208,7 @@ static char *getFullName (const char *sectionName, const char *paramName)
  *  @param[in] paramName name of the parameter
  *  @param[in] flag if in flag the @ref PARAM_CREATE bit is set the parameter gets created if it is not found
  *  @return param
- *  <br>NULL on error or  not found
+ *  <br>nullptr on error or  not found
  */
 static struct param* getParamByName(struct parmHeader *conf, const char *sectionName, const char *paramName, int flag)
 {
@@ -219,7 +219,7 @@ static struct param* getParamByName(struct parmHeader *conf, const char *section
 	fullName = getFullName (sectionName, paramName);
 	if (!fullName) {
 		GfError ("getParamByName: getFullName failed\n");
-		return NULL;
+		return nullptr;
 	}
 
 	param = (struct param *)GfHashGetStr (conf->paramHash, fullName);
@@ -234,7 +234,7 @@ static struct param* getParamByName(struct parmHeader *conf, const char *section
 		section = addSection (conf, sectionName);
 		if (!section) {
 			GfError ("getParamByName: addSection failed\n");
-			return NULL;
+			return nullptr;
 		}
 	}
 	param = addParam (conf, section, paramName, "");
@@ -341,13 +341,13 @@ static void removeParam(struct parmHeader *conf, struct section *section, struct
  *  @param[in] paramName parameter name
  *  @param[in] value value of parameter
  *  @return param
- *  <br>NULL on error
+ *  <br>nullptr on error
  */
 static struct param *addParam(struct parmHeader *conf, struct section *section, const char *paramName, const char *value)
 {
 	char *fullName;
-	struct param *param = NULL;
-	char *tmpVal = NULL;
+	struct param *param = nullptr;
+	char *tmpVal = nullptr;
 	const unsigned long len = sizeof (struct param);
 	
 	tmpVal = strdup (value);
@@ -398,7 +398,7 @@ static struct param *addParam(struct parmHeader *conf, struct section *section, 
 	}
 	freez (tmpVal);
 	
-	return NULL;
+	return nullptr;
 }
 
 
@@ -413,7 +413,7 @@ static void removeSection(struct parmHeader *conf, struct section *section)
 	struct param *param;
 	struct section *subSection;
 
-	while ((subSection = GF_TAILQ_FIRST (&(section->subSectionList))) != NULL) {
+	while ((subSection = GF_TAILQ_FIRST (&(section->subSectionList))) != nullptr) {
 		removeSection (conf, subSection);
 	}
 
@@ -436,7 +436,7 @@ static void removeSection(struct parmHeader *conf, struct section *section)
  *  @param[in] conf parameter set header
  *  @param[in] sectionName name of the section
  *  @return section
- *  <br>NULL on error
+ *  <br>nullptr on error
  */
 static struct section *getParent(struct parmHeader *conf, const char *sectionName)
 {
@@ -447,7 +447,7 @@ static struct section *getParent(struct parmHeader *conf, const char *sectionNam
 	tmpName = strdup (sectionName);
 	if (!tmpName) {
 		GfError ("getParent: strdup (\"%s\") failed\n", sectionName);
-		return NULL;
+		return nullptr;
 	}
 
 	s = strrchr (tmpName, '/');
@@ -476,7 +476,7 @@ end:
  *  @param[in,out] conf parameter set header
  *  @param[in] sectionName section name
  *  @return section on success
- *  <br>NULL on error
+ *  <br>nullptr on error
  */
 static struct section *addSection(struct parmHeader *conf, const char *sectionName)
 {
@@ -486,19 +486,19 @@ static struct section *addSection(struct parmHeader *conf, const char *sectionNa
 
 	if (GfHashGetStr (conf->sectionHash, sectionName)) {
 		GfError ("addSection: duplicate section [%s]\n", sectionName);
-		return NULL;
+		return nullptr;
 	}
 
 	parent = getParent(conf, sectionName);
 	if (!parent) {
 		GfError ("addSection: Problem with getParent for section [%s]\n", sectionName);
-		return NULL;
+		return nullptr;
 	}
 
 	section = (struct section *) calloc (1, len);
 	if (!section) {
 		GfError ("addSection: calloc (1, %lu) failed\n", len);
-		return NULL;
+		return nullptr;
 	}
 
 	section->fullName = strdup(sectionName);
@@ -523,7 +523,7 @@ static struct section *addSection(struct parmHeader *conf, const char *sectionNa
 bailout:
 	freez (section->fullName);
 	freez (section);
-	return NULL;
+	return nullptr;
 }
 
 
@@ -545,7 +545,7 @@ bailout:
  */
  static struct parmHeader *getSharedHeader(const char *file, int mode)
 {
-	struct parmHeader *conf = NULL;
+	struct parmHeader *conf = nullptr;
 	struct parmHandle *parmHandle;
 
 	/* Search for existing conf */
@@ -568,7 +568,7 @@ bailout:
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -577,18 +577,18 @@ bailout:
  *  @ingroup paramshelper
  *  @param[in] file filename
  *  @return parmHeader in case of success
- *  <br>NULL on error
+ *  <br>nullptr on error
  */
 static struct parmHeader* createParmHeader (const char *file)
 {
-	struct parmHeader	*conf = NULL;
+	struct parmHeader	*conf = nullptr;
 	const unsigned long parmheadersize = sizeof (struct parmHeader);
 	const unsigned long sectionsize = sizeof (struct section);
 
 	conf = (struct parmHeader *) calloc (1, parmheadersize);
 	if (!conf) {
 		GfError ("gfParmReadFile: calloc (1, %lu) failed\n", parmheadersize);
-		return NULL;
+		return nullptr;
 	}
 
 	conf->refcount = 1;
@@ -625,17 +625,17 @@ static struct parmHeader* createParmHeader (const char *file)
  bailout:
 	freez (conf->rootSection);
 	if (conf->paramHash) {
-		GfHashRelease (conf->paramHash, NULL);
+		GfHashRelease (conf->paramHash, nullptr);
 	}
 	
 	if (conf->sectionHash) {
-		GfHashRelease (conf->sectionHash, NULL);
+		GfHashRelease (conf->sectionHash, nullptr);
 	}
 	
 	freez (conf->filename);
 	freez (conf);
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -680,7 +680,7 @@ static tdble getValNumFromStr (const char *str)
 	}
 
 	if (strncmp (str, "0x", 2) == 0) {
-		return (tdble)strtol(str, NULL, 0);
+		return (tdble)strtol(str, nullptr, 0);
 	}
 
 	sscanf (str, "%g", &val);
@@ -765,7 +765,7 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 			goto bailout;
 		}
 
-		shortName = NULL;
+		shortName = nullptr;
 
 		while (*atts) {
 			s1 = *atts++;
@@ -808,9 +808,9 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 			goto bailout;
 		}
 
-		shortName = NULL;
-		val = NULL;
-		min = max = unit = NULL;
+		shortName = nullptr;
+		val = nullptr;
+		min = max = unit = nullptr;
 
 		while (*atts) {
 			s1 = *atts++;
@@ -879,9 +879,9 @@ static void xmlStartElement (void *userData , const char *name, const char **att
 			goto bailout;
 		}
 
-		shortName = NULL;
-		val = NULL;
-		within = NULL;
+		shortName = nullptr;
+		val = nullptr;
+		within = nullptr;
 
 		while (*atts) {
 			s1 = *atts++;
@@ -989,7 +989,7 @@ static int xmlExternalEntityRefHandler(
 	parmHandle = (struct parmHandle *)XML_GetUserData (mainparser);
 	conf = parmHandle->conf;
 
-	parser = XML_ExternalEntityParserCreate (mainparser, openEntityNames, (const XML_Char *)NULL);
+	parser = XML_ExternalEntityParserCreate (mainparser, openEntityNames, (const XML_Char *)nullptr);
 
 	if (systemId[0] == '/') {
 		strncpy (fin, systemId, sizeof (fin));
@@ -1009,7 +1009,7 @@ static int xmlExternalEntityRefHandler(
 	}
 
 	in = fopen (fin, "r");
-	if (in == NULL) {
+	if (in == nullptr) {
 		perror (fin);
 		GfError ("GfReadParmFile: file %s has pb\n", systemId);
 		return 0;
@@ -1071,7 +1071,7 @@ static int parseXml(struct parmHandle *parmHandle, char *buf, int len, int done)
  */
 static int parserXmlInit (struct parmHandle *parmHandle)
 {
-    parmHandle->parser = XML_ParserCreate((XML_Char*)NULL);
+    parmHandle->parser = XML_ParserCreate((XML_Char*)nullptr);
     XML_SetElementHandler(parmHandle->parser, xmlStartElement, xmlEndElement);
     XML_SetExternalEntityRefHandler(parmHandle->parser, xmlExternalEntityRefHandler);
     XML_SetUserData(parmHandle->parser, parmHandle);
@@ -1091,7 +1091,7 @@ static int parserXmlInit (struct parmHandle *parmHandle)
 void* GfParmReadBuf (char *buffer)
 {
 	struct parmHeader *conf;
-	struct parmHandle *parmHandle = NULL;
+	struct parmHandle *parmHandle = nullptr;
 	const unsigned long parmhandlesize = sizeof (struct parmHandle);
 
 	/* Conf Header creation */
@@ -1134,7 +1134,7 @@ void* GfParmReadBuf (char *buffer)
 		parmReleaseHeader (conf);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -1156,9 +1156,9 @@ void* GfParmReadBuf (char *buffer)
  */
 void* GfParmReadFile(const char *file, int mode)
 {
-	FILE *in = NULL;
+	FILE *in = nullptr;
 	struct parmHeader *conf;
-	struct parmHandle *parmHandle = NULL;
+	struct parmHandle *parmHandle = nullptr;
 	char buf[LINE_SZ];
 	int len;
 	int done;
@@ -1168,7 +1168,7 @@ void* GfParmReadFile(const char *file, int mode)
 	conf = getSharedHeader (file, mode);
 
 	/* Conf Header creation */
-	if (conf == NULL) {
+	if (conf == nullptr) {
 		conf = createParmHeader (file);
 		if (!conf) {
 			GfError ("gfParmReadFile: conf header creation failed\n");
@@ -1220,7 +1220,7 @@ void* GfParmReadFile(const char *file, int mode)
 			} while (!done);
 
 			fclose (in);
-			in = NULL;
+			in = nullptr;
 		}
 	}
 
@@ -1239,7 +1239,7 @@ void* GfParmReadFile(const char *file, int mode)
 			parmReleaseHeader (conf);
 		}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -1395,10 +1395,10 @@ static int xmlGetOuputLine(struct parmHandle *parmHandle, char *buffer, int size
 			return 1;
 
 		case 1:
-			if (conf->dtd == NULL) {
+			if (conf->dtd == nullptr) {
 				conf->dtd = strdup("params.dtd");
 			}
-			if (conf->header == NULL) {
+			if (conf->header == nullptr) {
 				conf->header = strdup("");
 			}
 			snprintf (buffer, size, "<!DOCTYPE params SYSTEM \"%s\">\n%s\n", conf->dtd, conf->header);
@@ -1554,8 +1554,8 @@ int GfParmWriteBuf(void *handle, char *buf, int size)
 	}
 
 	parmHandle->outCtrl.state = 0;
-	parmHandle->outCtrl.curSection = NULL;
-	parmHandle->outCtrl.curParam = NULL;
+	parmHandle->outCtrl.curSection = nullptr;
+	parmHandle->outCtrl.curParam = nullptr;
 	curSize = size;
 	s = buf;
 
@@ -1601,9 +1601,9 @@ void GfParmSetDTD(void *parmHandle, char *dtd, char*header)
 /** @brief Write parameter set into file.
  * 
  *   @ingroup paramsfile
- *   @param[in] file if NULL the internally stored filename is used, if not NULL the given filename is used (it is not stored in the handle)
+ *   @param[in] file if nullptr the internally stored filename is used, if not nullptr the given filename is used (it is not stored in the handle)
  *   @param[in,out] parmHandle parameter set handle
- *   @param[in] name if NULL the internally stored name is used, if not NULL the given name is used and stored in the handle
+ *   @param[in] name if nullptr the internally stored name is used, if not nullptr the given name is used and stored in the handle
  *   @return 0 if ok
  *   <br>1 if Error
  */
@@ -1639,8 +1639,8 @@ int GfParmWriteFile(const char *file, void *parmHandle, const char *name)
 	}
 	
 	handle->outCtrl.state = 0;
-	handle->outCtrl.curSection = NULL;
-	handle->outCtrl.curParam = NULL;
+	handle->outCtrl.curSection = nullptr;
+	handle->outCtrl.curParam = nullptr;
 	
 	while (xmlGetOuputLine (handle, line, sizeof (line))) {
 		fputs (line, fout);
@@ -1657,7 +1657,7 @@ int GfParmWriteFile(const char *file, void *parmHandle, const char *name)
 /** @brief Create directory for parameter set handle if it does not yet exist.
  * 
  *   @ingroup paramsfile
- *   @param[in] file if NULL the internally stored path is used, if not NULL the given path is used (it is not stored in the handle)
+ *   @param[in] file if nullptr the internally stored path is used, if not nullptr the given path is used (it is not stored in the handle)
  *   @param[in,out] parmHandle parameter set handle
  *   @return 0 if ok
  *   <br>1 if Error
@@ -1775,11 +1775,11 @@ static void parmReleaseHeader(struct parmHeader *conf)
 
 	freez (conf->filename);
 	if (conf->paramHash) {
-		GfHashRelease (conf->paramHash, NULL);
+		GfHashRelease (conf->paramHash, nullptr);
 	}
 
 	if (conf->sectionHash) {
-		GfHashRelease (conf->sectionHash, NULL);
+		GfHashRelease (conf->sectionHash, nullptr);
 	}
 
 	freez (conf->rootSection->fullName);
@@ -1949,7 +1949,7 @@ tdble GfParmUnit2SI(const char *unit, tdble val)
 	int  inv;
 	tdble dest = val;
 	
-	if ((unit == NULL) || (strlen(unit) == 0)) return dest;
+	if ((unit == nullptr) || (strlen(unit) == 0)) return dest;
 	
 	s = unit;
 	buf[0] = 0;
@@ -2003,7 +2003,7 @@ tdble GfParmSI2Unit(const char *unit, tdble val)
 	int  inv;
 	tdble dest = val;
 	
-	if ((unit == NULL) || (strlen(unit) == 0)) return dest;
+	if ((unit == nullptr) || (strlen(unit) == 0)) return dest;
 	
 	s = unit;
 	buf[0] = 0;
@@ -2048,7 +2048,7 @@ tdble GfParmSI2Unit(const char *unit, tdble val)
  *  @ingroup paramsdata
  *  @param[in] handle parameter set handle
  *  @return Name
- *  <br>NULL if failed or not set
+ *  <br>nullptr if failed or not set
  *  @note	The pointer returned is for immediate use, if you plan
  *   		to keep the value for a long time, it is necessary to
  *   		copy the string, because manipulating the handle will
@@ -2061,7 +2061,7 @@ char* GfParmGetName(void *handle)
 
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("GfParmGetName: bad handle (%p)\n", parmHandle);
-		return NULL;
+		return nullptr;
 	}
 
 	return conf->name;
@@ -2073,7 +2073,7 @@ char* GfParmGetName(void *handle)
  *  @ingroup paramsfile
  *  @param[in] handle parameter set handle
  *  @return File name
- *  <br>NULL if failed or not set
+ *  <br>nullptr if failed or not set
  *  @note	The pointer returned is for immediate use, if you plan
  *   		to keep the value for a long time, it is necessary to
  *   		copy the string, because manipulating the handle will
@@ -2086,7 +2086,7 @@ char* GfParmGetFileName(void *handle)
 
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("GfParmGetFileName: bad handle (%p)\n", parmHandle);
-		return NULL;
+		return nullptr;
 	}
 
 	return conf->filename;
@@ -2236,7 +2236,7 @@ int GfParmListClean(void *handle, const char *path)
 		return -1;
 	}
 
-	while ((section = GF_TAILQ_FIRST (&(listSection->subSectionList))) != NULL) {
+	while ((section = GF_TAILQ_FIRST (&(listSection->subSectionList))) != nullptr) {
 		removeSection (conf, section);
 	}
 	
@@ -2257,7 +2257,7 @@ int GfParmListClean(void *handle, const char *path)
  *  @param[in] handle parameter set handle
  *  @param[in] path path of the section used to iterate subsections
  *  @return	Name of the current subsection
- *  <br>NULL if failed
+ *  <br>nullptr if failed
  *  @note	The pointer returned is for immediate use, if you plan
  *   		to keep the value for a long time, it is necessary to
  *   		copy the string, because removing the section will
@@ -2274,12 +2274,12 @@ char* GfParmListGetCurEltName(void *handle, const char *path)
 
 	if (parmHandle->magic != PARM_MAGIC) {
 		GfFatal ("GfParmListGetCurEltName: bad handle (%p)\n", parmHandle);
-		return NULL;
+		return nullptr;
 	}
 
 	section = (struct section *)GfHashGetStr (conf->sectionHash, path);
 	if ((!section) || (!section->curSubSection)) {
-		return NULL;
+		return nullptr;
 	}
 
 	s = strrchr(section->curSubSection->fullName, '/');
@@ -2385,7 +2385,7 @@ const char* GfParmGetCurStr(void *handle, const char *path, const char *key, con
  *  @param[in] handle parameter set handle
  *  @param[in] path path of the parameter
  *  @param[in] key parameter key name
- *  @param[in] unit unit to convert the result to (NULL if SI is desired)
+ *  @param[in] unit unit to convert the result to (nullptr if SI is desired)
  *  @param[in] deflt default value
  *  @return	parameter value
  */
@@ -2426,7 +2426,7 @@ tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *
  *  @param[in] handle parameter set handle
  *  @param[in] path path of the section used to iterate subsections
  *  @param[in] key parameter key name
- *  @param[in] unit unit to convert the result to (NULL if SI is desired)
+ *  @param[in] unit unit to convert the result to (nullptr if SI is desired)
  *  @param[in] deflt default value
  *  @return	parameter value
  *  @see GfParmListSeekFirst
@@ -2470,7 +2470,7 @@ tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const cha
  *  @param[in,out] handle parameter set handle
  *  @param[in] path path of the parameter
  *  @param[in] key parameter key name
- *  @param[in] val value (NULL or empty string to remove the parameter)
+ *  @param[in] val value (nullptr or empty string to remove the parameter)
  *  @return 0 ok
  *  <br>-1 error
  */
@@ -2523,7 +2523,7 @@ int GfParmSetStr(void *handle, const char *path, const char *key, const char *va
  *  @param[in,out] handle parameter set handle
  *  @param[in] path path of the section used to iterate subsections
  *  @param[in] key parameter key name
- *  @param[in] val value (NULL or empty string to remove the parameter)
+ *  @param[in] val value (nullptr or empty string to remove the parameter)
  *  @return 0 ok
  *  <br>-1 error
  *  @see GfParmListSeekFirst
@@ -2578,7 +2578,7 @@ int GfParmSetCurStr(void *handle, const char *path, const char *key, const char 
  *  @param[in,out]	handle	parameter set handle
  *  @param[in]	path	path of the parameter
  *  @param[in]	key	parameter key name
- *  @param[in]	unit	unit to convert the result to (NULL if SI desired)	
+ *  @param[in]	unit	unit to convert the result to (nullptr if SI desired)	
  *  @param[in]	val	value to set	
  *  @return	0	ok
  *  <br>-1	error
@@ -2619,7 +2619,7 @@ int GfParmSetNum(void *handle, const char *path, const char *key, const char *un
  *  @param[in,out]	handle	parameter set handle
  *  @param[in]	path	path of the parameter
  *  @param[in]	key	parameter key name
- *  @param[in]	unit	unit to convert the result to (NULL if SI desired)	
+ *  @param[in]	unit	unit to convert the result to (nullptr if SI desired)	
  *  @param[in]	val	value to set
  *  @param[in]	min	min value to set
  *  @param[in]	max	max value to set
@@ -2669,7 +2669,7 @@ int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *
  *  @param[in,out]	handle	parameter set handle
  *  @param[in]	path	path of the section used to iterate subsections
  *  @param[in]	key	parameter key name	
- *  @param[in]	unit	unit to convert the result to (NULL if SI is desired)	
+ *  @param[in]	unit	unit to convert the result to (nullptr if SI is desired)	
  *  @param[in]	val	value to set	
  *  @return	0	ok
  *  <br>-1	error
@@ -2871,7 +2871,7 @@ static void insertParamMerge(struct parmHandle *parmHandle, char *path, struct p
 			}
 			within = GF_TAILQ_NEXT (within, linkWithin);
 		}
-		str = NULL;
+		str = nullptr;
 		withinRef = GF_TAILQ_FIRST (&(paramRef->withinList));
 		
 		while (withinRef) {
@@ -2979,18 +2979,18 @@ void *GfParmMergeHandles(void *ref, void *tgt, int mode)
 
 	if (parmHandleRef->magic != PARM_MAGIC) {
 		GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleRef);
-		return NULL;
+		return nullptr;
 	}
 	if (parmHandleTgt->magic != PARM_MAGIC) {
 		GfFatal ("GfParmMergeHandles: bad handle (%p)\n", parmHandleTgt);
-		return NULL;
+		return nullptr;
 	}
 
 		/* Conf Header creation */
 	confOut = createParmHeader ("");
 	if (!confOut) {
 		GfError ("gfParmReadBuf: conf header creation failed\n");
-		return NULL;
+		return nullptr;
 	}
 
 	/* Handle creation */
@@ -2998,7 +2998,7 @@ void *GfParmMergeHandles(void *ref, void *tgt, int mode)
 	if (!parmHandleOut) {
 		GfError ("gfParmReadBuf: calloc (1, %lu) failed\n", parmHandleSize);
 		parmReleaseHeader (confOut);
-		return NULL;
+		return nullptr;
 	}
 
 	parmHandleOut->magic = PARM_MAGIC;

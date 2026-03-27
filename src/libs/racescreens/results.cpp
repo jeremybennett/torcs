@@ -110,12 +110,12 @@ static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 	x6 = offset + 400;
 	
 	y = 400;
-	GfuiLabelCreateEx(rmScrHdle, "Lap",       fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Time",      fgcolor, GFUI_FONT_MEDIUM_C, x2+20, y, GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_MEDIUM_C, x3+20, y, GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Min Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Damages",  fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Lap",        fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Time",       fgcolor, GFUI_FONT_MEDIUM_C, x2+20, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Best",       fgcolor, GFUI_FONT_MEDIUM_C, x3+20, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Top Speed",  fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Min Speed",  fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Damage",     fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
 	y -= 20;
 	
 	snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -190,7 +190,7 @@ static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start)
 
 	GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
 	GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
 
 	GfuiScreenActivate(rmScrHdle);
 }
@@ -243,15 +243,15 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	x9 = 630;
 	
 	y = 400;
-	GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Driver",    fgcolor, GFUI_FONT_MEDIUM_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Total",     fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Best",      fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HR_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Laps",      fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Damage",    fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
-	GfuiLabelCreateEx(rmScrHdle, "Penalty",   fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);	
+	GfuiLabelCreateEx(rmScrHdle, "Rank",       fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Driver",     fgcolor, GFUI_FONT_MEDIUM_C, x2+10, y, GFUI_ALIGN_HL_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Total",      fgcolor, GFUI_FONT_MEDIUM_C, x3, y, GFUI_ALIGN_HR_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Best Lap",   fgcolor, GFUI_FONT_MEDIUM_C, x4, y, GFUI_ALIGN_HR_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Laps",       fgcolor, GFUI_FONT_MEDIUM_C, x5, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Top Speed",  fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Damage",     fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Pits",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+	GfuiLabelCreateEx(rmScrHdle, "Penalty",    fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);	
 	y -= 20;
 	
 	snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -356,7 +356,7 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 
 	GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
 	GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
 
 	GfuiScreenActivate(rmScrHdle);
 }
@@ -467,7 +467,7 @@ static void rmQualifResults(void *prevHdle, tRmInfo *info, int start)
 
 	GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
 	GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
 
 	GfuiScreenActivate(rmScrHdle);
 }
@@ -586,7 +586,7 @@ static void rmShowStandings(void *prevHdle, tRmInfo *info, int start)
 	
 	GfuiAddKey(rmScrHdle, (unsigned char)27, "", prevHdle, GfuiScreenReplace, NULL);
 	GfuiAddKey(rmScrHdle, (unsigned char)13, "", prevHdle, GfuiScreenReplace, NULL);
-	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a Screen Shot", NULL, GfuiScreenShot, NULL);
+	GfuiAddSKey(rmScrHdle, GLUT_KEY_F12, "Take a screenshot", NULL, GfuiScreenShot, NULL);
 	
 	GfuiScreenActivate(rmScrHdle);
 }

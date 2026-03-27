@@ -29,15 +29,15 @@
 #include <windowsx.h>
 #endif /* _WIN32 */
 
-#include <stdio.h>
-#include <assert.h>
-#include <time.h>
+#include <cstdio>
+#include <cassert>
+#include <ctime>
 #ifdef WIN32
 #include <windows.h>
 #endif
 #include <tgf.h>
 
-/* static FILE *outTrace = (FILE*)NULL; */
+/* static FILE *outTrace = (FILE*)nullptr; */
 
 /* static char TraceStr[1024]; */
 
@@ -74,13 +74,13 @@ gfTraceInit(void)
 /*     va_end(ap); */
 /*     fflush(stderr); */
 
-/*     if (outTrace == NULL) { */
-/* 	if ((outTrace = fopen("trace.txt", "w+")) == NULL) { */
+/*     if (outTrace == nullptr) { */
+/* 	if ((outTrace = fopen("trace.txt", "w+")) == nullptr) { */
 /* 	    perror("trace.txt"); */
 /* 	    return; */
 /* 	} */
 /*     } */
-/*     t = time(NULL); */
+/*     t = time(nullptr); */
 /*     stm = localtime(&t); */
 /*     s += snprintf(TraceStr, "%4d/%02d/%02d %02d:%02d:%02d ", */
 /* 		 stm->tm_year+1900, stm->tm_mon+1, stm->tm_mday, */

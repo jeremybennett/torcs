@@ -35,8 +35,8 @@
 
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #ifdef WIN32
 #include <windows.h>
 #endif

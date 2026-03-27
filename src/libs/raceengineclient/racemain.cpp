@@ -548,7 +548,7 @@ int ReRaceStop(void)
 		) {
 			tCarElt* carElt = &ReInfo->carList[0];
 			static const char* label[5] = { "Restart Race",  "Setup Car, Restart", "Abandon Race", "Resume Race", "Quit Game" };
-			static const char* tip[5] = { "Restart the current race",  "Setup car and restart the current race", "Abort the current race", "Return to the race", "Quit TORCS" };
+			static const char* tip[5] = { "Restart the current race",  "Setup car and restart the current race", "Abort the current race", "Return to the race", "Quit the game" };
 			void* screen[5];
 
 			screen[0] = RestartRaceHookInit();

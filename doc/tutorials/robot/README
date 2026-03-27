@@ -1,4 +1,20 @@
-To read the tutorial point with your browser to the file index.html.
+Open Racing Simulator — Robot Tutorial
+======================================
+
+This is the browser-based tutorial for developing robot drivers in Open Racing
+Simulator (a community fork of TORCS).
+
+To read the tutorial, open `index.html` in your browser.  The tutorial walks
+through installing the simulator, setting up a build environment, and building
+a robot driver step by step in C++.
+
+The tutorial was originally written by Bernhard Wymann for TORCS.  The
+underlying simulator API is largely unchanged, so the content remains
+applicable.  Refer to `src/doc/architecture.md` in the repository root for
+an up-to-date overview of the simulator's architecture.
+
+For contributor setup instructions see `CONTRIBUTING.md` in the repository
+root.
 
 Have fun,
 

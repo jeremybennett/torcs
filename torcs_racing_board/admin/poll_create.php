@@ -91,10 +91,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board Poll Creation Page',
-		'PB_DESCRIPTION'	=> 'Create a poll for the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board Poll Creation Page',
+		'PB_DESCRIPTION'	=> 'Create a poll for the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, poll, create',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, poll, create',
 		'ROOTPATH'			=> $path_to_root
 	));
 

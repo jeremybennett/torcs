@@ -83,10 +83,10 @@
 
 	// Set up page header.
 	$page->set_var(array(
-		'PB_PAGETITLE'		=> 'The TORCS Racing Board View Race Result Page',
-		'PB_DESCRIPTION'	=> 'View race result on the TORCS racing board',
+		'PB_PAGETITLE'		=> 'Open Racing Simulator — Racing Board View Race Result Page',
+		'PB_DESCRIPTION'	=> 'View race result on the Open Racing Simulator racing board',
 		'PB_AUTHOR'			=> 'Bernhard Wymann',
-		'PB_KEYWORDS'		=> 'TORCS, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, view, results, driver, team',
+		'PB_KEYWORDS'		=> 'Open Racing Simulator, racing, berniw, Bernhard, Wymann, Championship, World, event, race, competition, view, results, driver, team',
 		'ROOTPATH'			=> $path_to_root
 	));
 
